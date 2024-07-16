@@ -12,6 +12,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useMemo } from "react";
 
 import { NetworkMenu } from "../NetworkMenu";
 import { AmpEvent, track } from "lib/amplitude";
@@ -29,10 +30,14 @@ import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
 
-import { getNavDrawerFull, getNavDrawerLite } from "./utils";
+import {
+  getNavDrawerFull,
+  getNavDrawerLite,
+  getNavDrawerSequencer,
+} from "./utils";
 
 export const NavDrawer = () => {
-  const { isFullTier } = useTierConfig();
+  const { tier } = useTierConfig();
   const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });
@@ -43,37 +48,63 @@ export const NavDrawer = () => {
   const { getSavedPublicProjects } = usePublicProjectStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const navMenu = isFullTier
-    ? getNavDrawerFull(
-        govConfig.enabled,
-        wasmConfig.enabled,
-        moveConfig.enabled,
-        nftConfig.enabled
-      )
-    : getNavDrawerLite(
-        govConfig.enabled,
-        wasmConfig.enabled,
-        moveConfig.enabled
-      );
+  const navMenu = useMemo(() => {
+    let navMenuTmp = [];
+    switch (tier) {
+      case "full":
+        navMenuTmp = getNavDrawerFull(
+          govConfig.enabled,
+          wasmConfig.enabled,
+          moveConfig.enabled,
+          nftConfig.enabled
+        );
+        break;
+      case "sequencer":
+        navMenuTmp = getNavDrawerSequencer(
+          govConfig.enabled,
+          wasmConfig.enabled,
+          moveConfig.enabled
+        );
+        break;
+      case "lite":
+        navMenuTmp = getNavDrawerLite(
+          govConfig.enabled,
+          wasmConfig.enabled,
+          moveConfig.enabled
+        );
+        break;
+      default:
+        throw new Error(`Invalid tier: ${tier}`);
+    }
 
-  if (publicProject.enabled) {
-    navMenu.push({
-      category: "Public Projects",
-      slug: "public-projects",
-      submenu: [
-        ...getSavedPublicProjects().map((list) => ({
-          name: list.name,
-          slug: `/projects/${list.slug}`,
-          logo: list.logo,
-        })),
-        {
-          name: "View All Projects",
-          slug: "/projects",
-          icon: "public-project" as IconKeys,
-        },
-      ],
-    });
-  }
+    if (publicProject.enabled)
+      navMenuTmp.push({
+        category: "Public Projects",
+        slug: "public-projects",
+        submenu: [
+          ...getSavedPublicProjects().map((list) => ({
+            name: list.name,
+            slug: `/projects/${list.slug}`,
+            logo: list.logo,
+          })),
+          {
+            name: "View All Projects",
+            slug: "/projects",
+            icon: "public-project" as IconKeys,
+          },
+        ],
+      });
+
+    return navMenuTmp;
+  }, [
+    getSavedPublicProjects,
+    govConfig.enabled,
+    moveConfig.enabled,
+    nftConfig.enabled,
+    publicProject.enabled,
+    tier,
+    wasmConfig.enabled,
+  ]);
 
   return (
     <>

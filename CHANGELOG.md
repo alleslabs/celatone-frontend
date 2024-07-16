@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1026](https://github.com/alleslabs/celatone-frontend/pull/1026) Add missing menu items for sequencer tier
 - [#1025](https://github.com/alleslabs/celatone-frontend/pull/1025) Handle new tx query params for contract txs
 
 ## v1.7.1
