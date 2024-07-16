@@ -29,5 +29,5 @@ export const zOverviewsStatsResponseSequencer = z
   .transform<OverviewsStats>((val) => ({
     txCount: val.data[val.data.length - 1].tx_count,
     latestBlock: val.last_block_height,
-    blockTime: 0,
+    blockTime: null,
   }));

@@ -95,7 +95,7 @@ export const HomeSequencer = () => {
           <CardInfo
             title={txInfo.title}
             tooltip={txInfo.tooltip}
-            value={overviewsStats?.txCount?.toLocaleString()}
+            value={overviewsStats?.txCount?.toString()}
             isLoading={isOverviewsStatesLoading}
             navigate={toTxs}
           />

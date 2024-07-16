@@ -86,7 +86,7 @@ export const HomeFull = () => {
           <CardInfo
             title={txInfo.title}
             tooltip={txInfo.tooltip}
-            value={overviewsStats?.txCount?.toLocaleString()}
+            value={overviewsStats?.txCount?.toString()}
             isLoading={isLoading}
             navigate={toTxs}
           />
