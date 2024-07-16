@@ -191,6 +191,12 @@ export const zBlocksResponseSequencer = z.object({
   pagination: zPagination,
 });
 
+export const zBlockTimeAverageSequencer = z
+  .object({
+    avg_block_time: z.number().nonnegative(),
+  })
+  .transform(snakeToCamel);
+
 export const zBlockDataResponseSequencer = zBlockSequencer.transform<BlockData>(
   (val) => ({
     hash: val.hash,

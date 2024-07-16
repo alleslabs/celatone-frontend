@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { snakeToCamel } from "lib/utils";
+
 export const zOverviewsStatsResponse = z
   .object({
     transaction_count: z.number().nonnegative().nullable(),
@@ -15,30 +17,15 @@ export const zOverviewsStatsResponse = z
 export type OverviewsStats = z.infer<typeof zOverviewsStatsResponse>;
 
 export const zOverviewsStatsResponseSequencer = z
-  .tuple([
-    z
-      .object({
-        last_block_height: z.number().nonnegative(),
-        data: z.array(
-          z.object({
-            date: z.string(),
-            tvl: z.number().nonnegative(),
-            tx_count: z.number().nonnegative(),
-            active_accounts: z.number().nonnegative(),
-          })
-        ),
+  .object({
+    last_block_height: z.number().nonnegative(),
+    data: z.array(
+      z.object({
+        date: z.string(),
+        tvl: z.number().nonnegative(),
+        tx_count: z.number().nonnegative(),
+        active_accounts: z.number().nonnegative(),
       })
-      .nullable(),
-    z
-      .object({
-        avg_block_time: z.number().nonnegative(),
-      })
-      .nullable(),
-  ])
-  .transform<OverviewsStats>(([stat, avg]) => ({
-    latestBlock: stat?.last_block_height ?? null,
-    txCount:
-      stat?.data.sort((a, b) => b.date.localeCompare(a.date))[0].tx_count ??
-      null,
-    blockTime: avg?.avg_block_time ?? null,
-  }));
+    ),
+  })
+  .transform(snakeToCamel);
