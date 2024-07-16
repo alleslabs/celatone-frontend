@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   zBlockDataResponseSequencer,
   zBlocksResponseSequencer,
+  zBlockTimeAverageSequencer,
 } from "../types";
 import type { Option } from "lib/types";
 import { parseWithError } from "lib/utils";
@@ -42,6 +43,11 @@ export const getBlocksSequencer = async (
       },
     })
     .then(({ data }) => parseWithError(zBlocksResponseSequencer, data));
+
+export const getBlockTimeAverageSequencer = async (endpoint: string) =>
+  axios
+    .get(`${endpoint}/indexer/block/v1/avg_blocktime`)
+    .then(({ data }) => parseWithError(zBlockTimeAverageSequencer, data));
 
 export const getBlockDataSequencer = async (endpoint: string, height: number) =>
   axios

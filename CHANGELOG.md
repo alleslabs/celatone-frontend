@@ -48,6 +48,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1022](https://github.com/alleslabs/celatone-frontend/pull/1022) Separate API requests in home page overview component
+
 ### Bug fixes
 
 ## v1.7.1
