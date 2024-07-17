@@ -170,7 +170,7 @@ const zNftByAccountResponseSequencer = z
     nft: zNftSequencer,
   })
   .transform(snakeToCamel);
-type NftByAccountResponseSequencer = z.infer<
+export type NftByAccountResponseSequencer = z.infer<
   typeof zNftByAccountResponseSequencer
 >;
 
@@ -198,5 +198,5 @@ export const zNftsByAccountResponseSequencer = z
         collectionName,
       })
     ),
-    total: val.pagination.total,
+    pagination: val.pagination,
   }));

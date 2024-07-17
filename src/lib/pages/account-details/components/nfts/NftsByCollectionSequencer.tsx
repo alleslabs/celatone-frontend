@@ -22,8 +22,8 @@ export const NftsByCollectionSequencer = ({
 
   const { data, isLoading } = useNftsByAccountByCollection(
     accountAddress,
-    10000,
-    0,
+    undefined,
+    undefined,
     debouncedSearch,
     collectionAddress
   );

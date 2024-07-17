@@ -1,11 +1,12 @@
 import { Badge, Box, Flex, Heading, Stack } from "@chakra-ui/react";
+import { groupBy } from "lodash";
 import { useState } from "react";
 
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
-import { useCollectionsByAccount } from "lib/services/nft-collection";
+import { useNftsByAccountByCollection } from "lib/services/nft";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 
 import { FilterItem } from "./FilterItem";
@@ -25,14 +26,20 @@ interface NftsSectionProps {
 export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
-  const { data: collections, isLoading } = useCollectionsByAccount(address);
+  const { data: accountNfts, isLoading } = useNftsByAccountByCollection(
+    address,
+    undefined,
+    undefined
+  );
+
+  const collections = groupBy(accountNfts?.nfts, "collectionAddress");
 
   const [selectedCollection, setSelectedCollection] =
     useState<SelectedCollection>();
 
   if (isLoading) return <Loading />;
   if (!collections) return <ErrorFetching dataName="collections" />;
-  if (!collections.length)
+  if (!Object.keys(collections).length)
     return (
       <EmptyState
         imageVariant="empty"
@@ -61,24 +68,22 @@ export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
             isActive={selectedCollection === undefined}
             count={totalData}
             isDefault
-            showCount={isFullTier}
           />
-          {collections.map((item) => (
+          {Object.entries(collections).map(([collectionAddress, nfts]) => (
             <FilterItem
-              key={item.collectionAddress}
-              collectionName={item.collectionName}
+              key={collectionAddress}
+              collectionName={nfts[0].collectionName}
               onClick={() =>
                 handleOnClick({
-                  collectionAddress: item.collectionAddress,
-                  nftsCount: item.hold,
+                  collectionAddress: collectionAddress as HexAddr32,
+                  nftsCount: nfts.length,
                 })
               }
-              uri={item.uri}
+              uri={nfts[0].uri}
               isActive={
-                selectedCollection?.collectionAddress === item.collectionAddress
+                selectedCollection?.collectionAddress === collectionAddress
               }
-              count={item.hold}
-              showCount={isFullTier}
+              count={nfts.length}
             />
           ))}
         </Stack>

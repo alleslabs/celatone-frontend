@@ -28,7 +28,10 @@ import { useAccountStore } from "lib/providers/store";
 import { useAccountData } from "lib/services/account";
 import { useModulesByAddress } from "lib/services/move/module";
 import { useResourcesByAddressLcd } from "lib/services/move/resource";
-import { useNftsCountByAccount } from "lib/services/nft";
+import {
+  useNftsByAccountByCollection,
+  useNftsCountByAccount,
+} from "lib/services/nft";
 import { useInitiaUsernameByAddress } from "lib/services/username";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
@@ -101,6 +104,8 @@ const AccountDetailsBody = ({
   // nft
   const { data: nftsCount, isFetching: isNftsCountLoading } =
     useNftsCountByAccount(hexAddress, isFullTier);
+
+  const { data: accountNfts } = useNftsByAccountByCollection(hexAddress, 5, 0);
 
   const hasTotalBonded =
     !isTotalBondedLoading &&
@@ -212,7 +217,7 @@ const AccountDetailsBody = ({
             Delegations
           </CustomTab>
           <CustomTab
-            count={nftsCount}
+            count={nftsCount ?? accountNfts?.total}
             isDisabled={nftsCount === 0}
             onClick={handleTabChange(TabIndex.Nfts, nftsCount)}
             isLoading={isNftsCountLoading}
@@ -452,7 +457,7 @@ const AccountDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0}>
-            <NftsSection address={hexAddress} totalData={nftsCount} />
+            <NftsSection address={hexAddress} totalData={accountNfts?.total} />
             <UserDocsLink
               title="What is NFTs in the account?"
               cta="Read more about NFTs in Account"

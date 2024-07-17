@@ -17,7 +17,7 @@ import {
   useNftConfig,
   useTierConfig,
 } from "lib/app-provider";
-import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
+import type { HexAddr, HexAddr32, MutateEvent, Option } from "lib/types";
 
 import {
   getMetadata,
@@ -206,8 +206,8 @@ export const useNftsCountByAccount = (
 
 export const useNftsByAccountByCollection = (
   accountAddress: HexAddr,
-  limit: number,
-  offset: number,
+  limit: Option<number>,
+  offset: Option<number>,
   search = "",
   collectionAddress?: HexAddr32,
   options: Pick<
@@ -244,8 +244,8 @@ export const useNftsByAccountByCollection = (
           getNftsByAccount(
             chainConfig.indexer,
             accountAddress,
-            limit,
-            offset,
+            limit ?? 10,
+            offset ?? 0,
             collectionAddress,
             search
           ),
