@@ -8,7 +8,7 @@ import type {
 } from "lib/services/searchService";
 import type { Option } from "lib/types";
 
-import { SearchDisplayResult } from "./SearchDisplayResult";
+import { SearchResultItemBody } from "./SearchResultItemBody";
 import { getRouteOptions } from "./utils";
 
 interface ResultItemProps {
@@ -89,7 +89,7 @@ export const SearchResultItem = ({
           ) : (
             <CustomIcon name={getIcon(type)} color="gray.600" />
           )}
-          <SearchDisplayResult
+          <SearchResultItemBody
             metadata={metadata}
             value={value}
             type={type}

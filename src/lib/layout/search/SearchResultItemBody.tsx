@@ -6,19 +6,19 @@ import type {
   SearchResultType,
 } from "lib/services/searchService";
 
-interface DisplayResultProps {
+interface SearchResultItemBodyProps {
   metadata: ResultMetadata;
   value: string;
   type: SearchResultType;
   isAccountAddress: boolean;
 }
 
-export const SearchDisplayResult = ({
+export const SearchResultItemBody = ({
   metadata,
   value,
   type,
   isAccountAddress,
-}: DisplayResultProps) => {
+}: SearchResultItemBodyProps) => {
   const normalizedIcnsValue = value.endsWith(`.${metadata.icns.bech32Prefix}`)
     ? value
     : `${value}.${metadata.icns.bech32Prefix}`;
