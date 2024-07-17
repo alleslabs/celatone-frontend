@@ -1,16 +1,14 @@
 import { Stack } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { useTierConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { LoadNext } from "lib/components/LoadNext";
 import { NftList } from "lib/components/nft";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
-import { useNftsByAccountByCollectionSequencer } from "lib/services/nft";
+import { useNftsByAccountByCollection } from "lib/services/nft";
 import type { HexAddr, HexAddr32 } from "lib/types";
 
-interface NftsByCollectionSequencerProps {
+interface NftsByCollectionFullProps {
   accountAddress: HexAddr;
   collectionAddress?: HexAddr32;
 }
@@ -18,24 +16,22 @@ interface NftsByCollectionSequencerProps {
 export const NftsByCollectionSequencer = ({
   accountAddress,
   collectionAddress,
-}: NftsByCollectionSequencerProps) => {
-  const { isFullTier } = useTierConfig();
+}: NftsByCollectionFullProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
-    useNftsByAccountByCollectionSequencer(
-      accountAddress,
-      10,
-      debouncedSearch,
-      collectionAddress,
-      !isFullTier
-    );
+  const { data, isLoading } = useNftsByAccountByCollection(
+    accountAddress,
+    10000,
+    0,
+    debouncedSearch,
+    collectionAddress
+  );
 
   return (
     <Stack spacing="24px" w="full">
       <InputWithIcon
-        placeholder={`Search with Token ID${isFullTier ? " or NFT VM Address" : ""}`}
+        placeholder="Search with Token ID"
         value={searchKeyword}
         autoFocus
         onChange={(e) => setSearchKeyword(e.target.value)}
@@ -43,7 +39,7 @@ export const NftsByCollectionSequencer = ({
         amptrackSection="nft-account-detail-tokenid-search"
       />
       <NftList
-        nfts={data?.nfts}
+        nfts={data?.nfts.filter((nft) => nft.tokenId.includes(debouncedSearch))}
         isLoading={isLoading}
         emptyState={
           <EmptyState
@@ -58,13 +54,6 @@ export const NftsByCollectionSequencer = ({
         }
         showCollection
       />
-      {hasNextPage && (
-        <LoadNext
-          text="Load more 10 NFTs"
-          fetchNextPage={fetchNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-        />
-      )}
     </Stack>
   );
 };

@@ -1,5 +1,5 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import type {
   Metadata,
@@ -9,11 +9,13 @@ import type {
   NftsByAccountResponse,
   NftTransactions,
 } from "../types";
+import { handleQueryByTier } from "../utils";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
   useLcdEndpoint,
   useNftConfig,
+  useTierConfig,
 } from "lib/app-provider";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 
@@ -214,6 +216,8 @@ export const useNftsByAccountByCollection = (
   > = {}
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const { tier } = useTierConfig();
+  const lcdEndpoint = useLcdEndpoint();
 
   return useQuery<NftsByAccountResponse>(
     [
@@ -226,59 +230,30 @@ export const useNftsByAccountByCollection = (
       search,
     ],
     async () =>
-      getNftsByAccount(
-        chainConfig.indexer,
-        accountAddress,
-        limit,
-        offset,
-        collectionAddress,
-        search
-      ),
+      handleQueryByTier({
+        tier,
+        threshold: "sequencer",
+        querySequencer: () =>
+          getNftsByAccountSequencer(
+            lcdEndpoint,
+            accountAddress,
+            limit,
+            collectionAddress
+          ),
+        queryFull: () =>
+          getNftsByAccount(
+            chainConfig.indexer,
+            accountAddress,
+            limit,
+            offset,
+            collectionAddress,
+            search
+          ),
+      }),
     {
       retry: 1,
       refetchOnWindowFocus: false,
       ...options,
     }
   );
-};
-
-export const useNftsByAccountByCollectionSequencer = (
-  accountAddress: HexAddr,
-  limit = 10,
-  search = "",
-  collectionAddress?: HexAddr32,
-  enabled = true
-) => {
-  const lcdEndpoint = useLcdEndpoint();
-
-  const { data, ...rest } = useInfiniteQuery(
-    [
-      CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION_SEQUENCER,
-      accountAddress,
-      limit,
-      search,
-      collectionAddress,
-    ],
-    ({ pageParam }) =>
-      getNftsByAccountSequencer(
-        lcdEndpoint,
-        accountAddress,
-        pageParam,
-        limit,
-        search,
-        collectionAddress
-      ),
-    {
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
-      refetchOnWindowFocus: false,
-      enabled,
-    }
-  );
-
-  return {
-    data: {
-      nfts: data?.pages.flatMap((page) => page.nfts),
-    },
-    ...rest,
-  };
 };

@@ -198,5 +198,5 @@ export const zNftsByAccountResponseSequencer = z
         collectionName,
       })
     ),
-    pagination: val.pagination,
+    total: val.pagination.total,
   }));
