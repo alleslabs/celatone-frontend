@@ -11,6 +11,10 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import {
+  useBlockTimeAverageSequencer,
+  useLatestBlockLcd,
+} from "lib/services/block";
 import { useOverviewsStats } from "lib/services/stats";
 
 import { DevShortcut, TopDecorations } from "./components";
@@ -40,7 +44,12 @@ export const HomeSequencer = () => {
     theme,
   } = useCelatoneApp();
 
-  const { data: overviewsStats, isLoading } = useOverviewsStats();
+  const { data: overviewsStats, isLoading: isOverviewsStatesLoading } =
+    useOverviewsStats();
+  const { data: latestBlock, isLoading: isLatestBlockLoading } =
+    useLatestBlockLcd();
+  const { data: blockTimeAverage, isLoading: isBlockTimeAverageLoading } =
+    useBlockTimeAverageSequencer();
 
   const toTxs = () =>
     navigate({
@@ -86,22 +95,22 @@ export const HomeSequencer = () => {
           <CardInfo
             title={txInfo.title}
             tooltip={txInfo.tooltip}
-            value={overviewsStats?.txCount.toLocaleString()}
-            isLoading={isLoading}
+            value={overviewsStats?.txCount?.toString()}
+            isLoading={isOverviewsStatesLoading}
             navigate={toTxs}
           />
           <CardInfo
             title={blockInfo.title}
             tooltip={blockInfo.tooltip}
-            value={overviewsStats?.latestBlock.toString()}
-            isLoading={isLoading}
+            value={latestBlock?.toString()}
+            isLoading={isLatestBlockLoading}
             navigate={toBlocks}
           />
           <CardInfo
             title={blockTimeInfo.title}
             tooltip={blockTimeInfo.tooltip}
-            value={overviewsStats?.blockTime.toFixed(3).concat("s")}
-            isLoading={isLoading}
+            value={blockTimeAverage?.avgBlockTime?.toFixed(3).concat("s")}
+            isLoading={isBlockTimeAverageLoading}
             navigate={toTxs}
           />
         </Flex>

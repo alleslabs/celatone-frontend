@@ -42,7 +42,7 @@ export const useOverviewsStats = (
       handleQueryByTier({
         tier,
         threshold: "sequencer",
-        querySequencer: () => getOverviewStatsSequencer(lcdEndpoint, chainId),
+        querySequencer: () => getOverviewStatsSequencer(chainId),
         queryFull: () => getOverviewsStats(apiEndpoint),
       }),
     {
