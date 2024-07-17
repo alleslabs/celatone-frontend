@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text, useToast, useToken } from "@chakra-ui/react";
+import { Box, Flex, Text, useToast } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
 
@@ -7,6 +7,8 @@ import { useSelectChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useNetworkStore } from "lib/providers/store";
 import type { Option } from "lib/types";
+
+import { NetworkImage } from "./NetworkImage";
 
 interface NetworkCommonProps {
   chainId: string;
@@ -132,8 +134,6 @@ export const NetworkCard = observer(
     onClose,
   }: NetworkCardProps) => {
     const selectChain = useSelectChain();
-    const [secondaryDarker] = useToken("colors", ["secondary.darker"]);
-    const fallbackImage = `https://ui-avatars.com/api/?name=${CHAIN_CONFIGS[chainId]?.prettyName || chainId}&background=${secondaryDarker.replace("#", "")}&color=fff`;
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
 
     const toast = useHandleToast();
@@ -144,14 +144,14 @@ export const NetworkCard = observer(
         pinNetwork({
           name: CHAIN_CONFIGS[chainId]?.prettyName,
           chainId,
-          logo: image || fallbackImage,
+          logo: image,
           id: "",
         });
         toast({
           title: `Pinned \u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 successfully`,
         });
       },
-      [pinNetwork, image, chainId, toast, fallbackImage]
+      [pinNetwork, image, chainId, toast]
     );
 
     const handleRemove = useCallback(
@@ -207,13 +207,7 @@ export const NetworkCard = observer(
           left="0px"
         />
         <Flex alignItems="center" gap={4}>
-          <Image
-            w={6}
-            h={6}
-            borderRadius="full"
-            src={image}
-            fallbackSrc={fallbackImage}
-          />
+          <NetworkImage chainId={chainId} image={image} />
           <Flex direction="column">
             <Text variant="body2" fontWeight={600}>
               {CHAIN_CONFIGS[chainId]?.prettyName || chainId}

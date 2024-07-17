@@ -8,7 +8,7 @@ import type { Dict } from "lib/types";
 export interface Network {
   name: string;
   chainId: string;
-  logo: string;
+  logo?: string;
   id: string;
 }
 
