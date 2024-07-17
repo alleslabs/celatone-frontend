@@ -2,7 +2,7 @@ import { Badge, Box, Flex, Heading, Stack } from "@chakra-ui/react";
 import { groupBy } from "lodash";
 import { useState } from "react";
 
-import { useMobile, useTierConfig } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
@@ -25,7 +25,6 @@ interface NftsSectionProps {
 
 export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
   const isMobile = useMobile();
-  const { isFullTier } = useTierConfig();
   const { data: accountNfts, isLoading } = useNftsByAccountByCollection(
     address,
     undefined,
@@ -54,7 +53,7 @@ export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
     <Box mt={{ base: 4, md: 8 }}>
       <Flex gap="8px" align="center">
         <Heading variant="h6">NFTs</Heading>
-        {isFullTier && <Badge>{totalData}</Badge>}
+        <Badge>{totalData}</Badge>
       </Flex>
       <Flex gap="40px" mt="32px" flexDir={isMobile ? "column" : "row"}>
         <Stack

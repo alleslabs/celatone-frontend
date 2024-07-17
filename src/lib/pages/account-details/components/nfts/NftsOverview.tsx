@@ -20,7 +20,6 @@ export const NftsOverview = ({
   onViewMore,
 }: NftsOverviewProps) => {
   const isMobile = useMobile();
-
   const { data, isFetching } = useNftsByAccountByCollection(userAddress, 5, 0);
 
   return (

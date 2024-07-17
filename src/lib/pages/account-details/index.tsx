@@ -103,9 +103,18 @@ const AccountDetailsBody = ({
     useResourcesByAddressLcd(accountAddress);
   // nft
   const { data: nftsCount, isFetching: isNftsCountLoading } =
-    useNftsCountByAccount(hexAddress, isFullTier);
+    useNftsCountByAccount(hexAddress, isFullTier && nft.enabled);
 
-  const { data: accountNfts } = useNftsByAccountByCollection(hexAddress, 5, 0);
+  const { data: accountNfts } = useNftsByAccountByCollection(
+    hexAddress,
+    5,
+    0,
+    "",
+    undefined,
+    {
+      enabled: isSequencerTier && nft.enabled,
+    }
+  );
 
   const totalNfts = nftsCount ?? accountNfts?.total;
 
@@ -459,7 +468,7 @@ const AccountDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0}>
-            <NftsSection address={hexAddress} totalData={accountNfts?.total} />
+            <NftsSection address={hexAddress} totalData={totalNfts} />
             <UserDocsLink
               title="What is NFTs in the account?"
               cta="Read more about NFTs in Account"
