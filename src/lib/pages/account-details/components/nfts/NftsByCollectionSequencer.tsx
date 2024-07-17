@@ -39,7 +39,9 @@ export const NftsByCollectionSequencer = ({
         amptrackSection="nft-account-detail-tokenid-search"
       />
       <NftList
-        nfts={data?.nfts.filter((nft) => nft.tokenId.includes(debouncedSearch))}
+        nfts={data?.nfts.filter((nft) =>
+          nft.tokenId.toLowerCase().includes(debouncedSearch.toLowerCase())
+        )}
         isLoading={isLoading}
         emptyState={
           <EmptyState
