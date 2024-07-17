@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#992](https://github.com/alleslabs/celatone-frontend/pull/992) Add new search function
 - [#1021](https://github.com/alleslabs/celatone-frontend/pull/1021) Add Milkyway network (glados-1)
 - [#1020](https://github.com/alleslabs/celatone-frontend/pull/1020) Add Sequencer for recent txs, overview page
 - [#1009](https://github.com/alleslabs/celatone-frontend/pull/1009) Add Sequencer for account details page

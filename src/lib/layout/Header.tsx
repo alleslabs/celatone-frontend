@@ -6,7 +6,7 @@ import { FaucetBtn } from "lib/components/button";
 import { WalletSection } from "lib/components/Wallet";
 
 import { NetworkMenu } from "./NetworkMenu";
-import Searchbar from "./Searchbar";
+import { SearchComponent } from "./search";
 
 const Header = () => {
   const { theme } = useCelatoneApp();
@@ -33,7 +33,7 @@ const Header = () => {
           _hover={{ cursor: "pointer", opacity: 0.85 }}
         />
       </AppLink>
-      <Searchbar />
+      <SearchComponent />
       <Flex gap={4}>
         <FaucetBtn />
         <NetworkMenu />

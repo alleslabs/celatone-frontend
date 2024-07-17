@@ -269,7 +269,7 @@ export const ICONS = {
         fill="currentColor"
       />
     ),
-    viewBox: viewboxDefault,
+    viewBox: "-2 0 16 16",
   },
   bookmark: {
     svg: (
