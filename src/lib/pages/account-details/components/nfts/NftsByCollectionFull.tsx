@@ -44,7 +44,7 @@ export const NftsByCollectionFull = ({
     debouncedSearch,
     collectionAddress,
     {
-      onSuccess: ({ total }: { total: number }) => setTotalData(total),
+      onSuccess: ({ total }) => setTotalData(total),
     }
   );
 

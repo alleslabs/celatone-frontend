@@ -8,7 +8,6 @@ import { useMetadata } from "lib/services/nft";
 interface FilterItemProps {
   collectionName: string;
   count: number;
-  showCount?: boolean;
   onClick: () => void;
   uri?: string;
   isActive?: boolean;
@@ -18,7 +17,6 @@ interface FilterItemProps {
 export const FilterItem = ({
   collectionName,
   count,
-  showCount = true,
   onClick,
   uri,
   isActive,
@@ -68,7 +66,7 @@ export const FilterItem = ({
           {collectionName}
         </Text>
       </Flex>
-      {showCount && <Badge>{count}</Badge>}
+      <Badge>{count}</Badge>
     </Flex>
   );
 };

@@ -107,6 +107,8 @@ const AccountDetailsBody = ({
 
   const { data: accountNfts } = useNftsByAccountByCollection(hexAddress, 5, 0);
 
+  const totalNfts = nftsCount ?? accountNfts?.total;
+
   const hasTotalBonded =
     !isTotalBondedLoading &&
     totalBonded &&
@@ -217,9 +219,9 @@ const AccountDetailsBody = ({
             Delegations
           </CustomTab>
           <CustomTab
-            count={nftsCount ?? accountNfts?.total}
+            count={totalNfts}
             isDisabled={nftsCount === 0}
-            onClick={handleTabChange(TabIndex.Nfts, nftsCount)}
+            onClick={handleTabChange(TabIndex.Nfts, totalNfts)}
             isLoading={isNftsCountLoading}
             hidden={!nft.enabled || (!isFullTier && !isSequencerTier)}
           >
@@ -349,9 +351,9 @@ const AccountDetailsBody = ({
             )}
             {nft.enabled && (isFullTier || isSequencerTier) && (
               <NftsOverview
-                totalCount={nftsCount}
+                totalCount={totalNfts}
                 userAddress={hexAddress}
-                onViewMore={handleTabChange(TabIndex.Nfts, nftsCount)}
+                onViewMore={handleTabChange(TabIndex.Nfts, totalNfts)}
               />
             )}
             <TxsTable

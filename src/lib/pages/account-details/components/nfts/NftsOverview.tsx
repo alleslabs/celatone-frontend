@@ -26,16 +26,9 @@ export const NftsOverview = ({
   return (
     <Box mt={{ base: 4, md: 8 }} mb={{ base: 0, md: 8 }}>
       {isMobile ? (
-        <MobileTitle
-          title="NFTs"
-          count={totalCount ?? data?.total}
-          onViewMore={onViewMore}
-        />
+        <MobileTitle title="NFTs" count={totalCount} onViewMore={onViewMore} />
       ) : (
-        <AccountSectionWrapper
-          title="NFTs"
-          totalData={totalCount ?? data?.total}
-        >
+        <AccountSectionWrapper title="NFTs" totalData={totalCount}>
           <Flex
             direction="column"
             borderBottom={data?.nfts?.length ? "1px solid" : "0px"}
