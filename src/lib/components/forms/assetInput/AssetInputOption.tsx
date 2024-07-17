@@ -3,16 +3,11 @@ import type { OptionProps } from "chakra-react-select";
 import { components } from "chakra-react-select";
 
 import { TokenImageRenderWithCache } from "lib/components/token";
+import type { AssetOption } from "lib/types";
 import { getTokenLabel } from "lib/utils";
 
-import type { AssetOption } from "./AssetInput";
-
-export const AssetInputOption = (
-  props: OptionProps<AssetOption>,
-  selected: string
-) => {
-  const { data } = props;
-  const isSelected = data.value === selected;
+export const AssetInputOption = (props: OptionProps<AssetOption>) => {
+  const { data, isSelected } = props;
   const textMainColor =
     data.isDisabled && !isSelected ? "text.disabled" : "text.main";
 
