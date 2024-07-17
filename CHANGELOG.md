@@ -40,11 +40,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#997](https://github.com/alleslabs/celatone-frontend/pull/997) Redesign asset selector
+- [#1007](https://github.com/alleslabs/celatone-frontend/pull/1007) Add app menu for initia
+- [#992](https://github.com/alleslabs/celatone-frontend/pull/992) Add new search function
+- [#1021](https://github.com/alleslabs/celatone-frontend/pull/1021) Add Milkyway network (glados-1)
+- [#1020](https://github.com/alleslabs/celatone-frontend/pull/1020) Add Sequencer for recent txs, overview page
+- [#1009](https://github.com/alleslabs/celatone-frontend/pull/1009) Add Sequencer for account details page
+- [#1006](https://github.com/alleslabs/celatone-frontend/pull/1006) Add Sequencer for past txs
+- [#994](https://github.com/alleslabs/celatone-frontend/pull/994) Add Sequencer, Mesa tier and TierSwitcher component
 - [#1005](https://github.com/alleslabs/celatone-frontend/pull/1005) Support recent blocks, block details in sequencer tier
 
 ### Improvements
 
+- [#1022](https://github.com/alleslabs/celatone-frontend/pull/1022) Separate API requests in home page overview component
+
 ### Bug fixes
+
+- [#1026](https://github.com/alleslabs/celatone-frontend/pull/1026) Add missing menu items for sequencer tier
+- [#1025](https://github.com/alleslabs/celatone-frontend/pull/1025) Handle new tx query params for contract txs
+- [#1027](https://github.com/alleslabs/celatone-frontend/pull/1027) Fix balances pagination nullable
 
 ## v1.7.1
 
@@ -60,7 +73,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#1015](https://github.com/alleslabs/celatone-frontend/pull/1015) Fix getNftQuery & getNftMintInfoQuery
+- [#1018](https://github.com/alleslabs/celatone-frontend/pull/1018) Fix module txs response type
+- [#1016](https://github.com/alleslabs/celatone-frontend/pull/1016) Fix handling event value nullable
 - [#1004](https://github.com/alleslabs/celatone-frontend/pull/1004) Fix empty string moniker
 - [#1010](https://github.com/alleslabs/celatone-frontend/pull/1010) Fix signer info sign mode multi type validation
 

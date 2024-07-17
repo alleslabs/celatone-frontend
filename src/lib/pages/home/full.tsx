@@ -10,10 +10,10 @@ import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { RecentBlocksTableFull } from "lib/pages/blocks/components/RecentBlocksTableFull";
-import { TxsTable } from "lib/pages/txs/components/TxsTable";
-import { useOverviewsStats } from "lib/services/overviewService";
+import { TxsTableFull } from "lib/pages/txs/components/TxsTableFull";
+import { useOverviewsStats } from "lib/services/stats";
 
-import { DevShortcut, TopDecorations } from "./components";
+import { DevShortcut } from "./components";
 import { CardInfo } from "./components/CardInfo";
 
 const txInfo = {
@@ -56,18 +56,11 @@ export const HomeFull = () => {
     <PageContainer>
       <Flex
         direction="column"
-        p={{ base: 3, md: 12 }}
         mb={12}
-        borderRadius="12px"
-        border="0px 0px 4px 0px"
-        borderColor="gray.800"
-        boxShadow="0px 6px 1px 0px var(--chakra-colors-gray-800)"
-        bgColor="gray.900"
         position="relative"
         overflow="hidden"
         sx={{ "& > div": { zIndex: 1 } }}
       >
-        <TopDecorations />
         <Flex
           justifyContent="space-between"
           alignItems="center"
@@ -86,21 +79,21 @@ export const HomeFull = () => {
           <CardInfo
             title={txInfo.title}
             tooltip={txInfo.tooltip}
-            value={overviewsStats?.txCount.toLocaleString()}
+            value={overviewsStats?.txCount?.toString()}
             isLoading={isLoading}
             navigate={toTxs}
           />
           <CardInfo
             title={blockInfo.title}
             tooltip={blockInfo.tooltip}
-            value={overviewsStats?.latestBlock.toString()}
+            value={overviewsStats?.latestBlock?.toString()}
             isLoading={isLoading}
             navigate={toBlocks}
           />
           <CardInfo
             title={blockTimeInfo.title}
             tooltip={blockTimeInfo.tooltip}
-            value={overviewsStats?.blockTime.toFixed(3).concat("s")}
+            value={overviewsStats?.blockTime?.toFixed(3).concat("s")}
             isLoading={isLoading}
             navigate={toTxs}
           />
@@ -109,6 +102,9 @@ export const HomeFull = () => {
       {!isMobile && (
         <Box as="section" mb="48px">
           <Flex gap={4} direction="column">
+            <Heading as="h5" variant="h5">
+              Dev Shortcuts
+            </Heading>
             <ConnectWalletAlert
               title={`Connect wallet to start using ${theme.branding.seo.appName}`}
               subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."
@@ -121,7 +117,7 @@ export const HomeFull = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Transactions
         </Heading>
-        <TxsTable isViewMore />
+        <TxsTableFull isViewMore />
         {overviewsStats?.txCount && overviewsStats.txCount > 5 && (
           <ViewMore onClick={toTxs} />
         )}

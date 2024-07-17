@@ -20,6 +20,8 @@ export const ConnectWalletButton = ({
     onClick={onClickConnectBtn}
     variant={variant}
     gap={1}
+    minH="64px"
+    borderRadius={0}
   >
     <CustomIcon name="connect" />
     {buttonText || "Connect"}

@@ -91,10 +91,6 @@ const JENNIE_BASE_THEME: ThemeConfig = {
       "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/search-empty.png",
     disconnected:
       "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/disconnected.png",
-    overview: {
-      // Fill image url
-      main: "",
-    },
   },
   socialMedia: {
     website: "https://initia.tech/",

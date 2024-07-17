@@ -87,3 +87,10 @@ export interface ChainConfig {
 export interface ChainConfigs {
   [chainId: string]: ChainConfig;
 }
+
+export const TierMap: Record<ChainConfig["tier"], number> = {
+  lite: 0,
+  mesa: 1,
+  sequencer: 2,
+  full: 3,
+};

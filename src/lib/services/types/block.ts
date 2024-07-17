@@ -14,7 +14,12 @@ import {
   zUtcDate,
   zValidatorAddr,
 } from "lib/types";
-import { createTxHash, parseTxHash, snakeToCamel } from "lib/utils";
+import {
+  createTxHash,
+  getTxBadges,
+  parseTxHash,
+  snakeToCamel,
+} from "lib/utils";
 
 import { zTx } from "./tx";
 
@@ -115,6 +120,17 @@ export const zBlockDataResponseLcd = zBlockLcd
         type: msg["@type"],
       }));
 
+      const { isIbc, isOpinit } = messages.reduce(
+        (acc, msg) => {
+          const current = getTxBadges(msg.type, undefined);
+          return {
+            isIbc: acc.isIbc || current.isIbc,
+            isOpinit: acc.isOpinit || current.isOpinit,
+          };
+        },
+        { isIbc: false, isOpinit: false }
+      );
+
       return {
         hash: txHashes[idx],
         messages,
@@ -122,12 +138,12 @@ export const zBlockDataResponseLcd = zBlockLcd
         isSigner: true,
         height: val.block.header.height,
         created: val.block.header.time,
-        success: false, // NOTE: Hidden in Lite Tier
+        success: false, // NOTE: Hidden in Lite Tier,
+        isIbc,
+        isOpinit,
         // TODO: implement below later
         actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
         furtherAction: MsgFurtherAction.NONE,
-        isIbc: false,
-        isOpinit: false,
         isInstantiate: false,
       };
     });
@@ -174,6 +190,12 @@ export const zBlocksResponseSequencer = z.object({
   blocks: z.array(zBlocksResponseItemSequencer),
   pagination: zPagination,
 });
+
+export const zBlockTimeAverageSequencer = z
+  .object({
+    avg_block_time: z.number().nonnegative(),
+  })
+  .transform(snakeToCamel);
 
 export const zBlockDataResponseSequencer = zBlockSequencer.transform<BlockData>(
   (val) => ({

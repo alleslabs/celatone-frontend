@@ -16,7 +16,11 @@ import {
 
 import { getBlockData, getBlocks } from "./api";
 import { getBlockDataLcd, getLatestBlockLcd } from "./lcd";
-import { getBlockDataSequencer, getBlocksSequencer } from "./sequencer";
+import {
+  getBlockDataSequencer,
+  getBlocksSequencer,
+  getBlockTimeAverageSequencer,
+} from "./sequencer";
 
 export const useBlocks = (
   limit: number,
@@ -94,12 +98,12 @@ export const useLatestBlockLcd = () => {
   );
 };
 
-export const useBlocksSequencer = () => {
+export const useBlocksSequencer = (limit = 10) => {
   const endpoint = useLcdEndpoint();
 
   const { data, ...rest } = useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, endpoint],
-    async ({ pageParam }) => getBlocksSequencer(endpoint, pageParam),
+    [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, endpoint, limit],
+    async ({ pageParam }) => getBlocksSequencer(endpoint, pageParam, limit),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,
@@ -110,6 +114,19 @@ export const useBlocksSequencer = () => {
     data: data?.pages.flatMap((page) => page.blocks),
     ...rest,
   };
+};
+
+export const useBlockTimeAverageSequencer = () => {
+  const endpoint = useLcdEndpoint();
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.BLOCK_TIME_AVERAGE_SEQUENCER, endpoint],
+    async () => getBlockTimeAverageSequencer(endpoint),
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useBlockDataSequencer = (height: number) => {
