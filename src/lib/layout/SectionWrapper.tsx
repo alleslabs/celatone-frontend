@@ -1,11 +1,12 @@
+import type { BoxProps, FlexboxProps, FlexProps } from "@chakra-ui/react";
 import { Flex } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
 interface SectionWrapperProps {
   children: ReactNode;
-  minW?: string;
-  w?: string;
-  justifyContent?: string;
+  minW?: FlexProps["minW"];
+  w?: BoxProps["w"];
+  justifyContent?: FlexboxProps["justifyContent"];
   borderRight?: boolean;
 }
 
