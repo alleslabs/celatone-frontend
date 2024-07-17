@@ -1,5 +1,4 @@
 import { Flex, Image } from "@chakra-ui/react";
-import type { ReactNode } from "react";
 
 import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
@@ -9,30 +8,7 @@ import { WalletSection } from "lib/components/Wallet";
 import { AppMenu } from "./AppMenu";
 import { NetworkMenu } from "./NetworkMenu";
 import { SearchComponent } from "./search";
-
-export const SectionWrapper = ({
-  children,
-  minW = "auto",
-  w = "auto",
-  justifyContent = "center",
-}: {
-  children: ReactNode;
-  minW?: string;
-  w?: string;
-  justifyContent?: string;
-}) => (
-  <Flex
-    borderRight="1px solid"
-    borderColor="gray.700"
-    h="full"
-    alignItems="center"
-    w={w}
-    minW={minW}
-    justifyContent={justifyContent}
-  >
-    {children}
-  </Flex>
-);
+import { SectionWrapper } from "./SectionWrapper";
 
 const Header = () => {
   const { theme } = useCelatoneApp();

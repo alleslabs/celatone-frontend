@@ -184,7 +184,7 @@ export const SearchComponent = () => {
           onClick={onOpen}
           w="full"
           h="full"
-          p={2}
+          p={4}
           alignItems="center"
           justifyContent="space-between"
           cursor="pointer"

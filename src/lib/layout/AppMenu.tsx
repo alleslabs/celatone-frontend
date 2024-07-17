@@ -81,6 +81,7 @@ export const AppMenu = ({
               px={4}
               borderRadius={8}
               w="full"
+              cursor="pointer"
               transition="all 0.25s ease-in-out"
               _hover={{
                 background: app.name !== "scan" && "gray.700",
@@ -119,11 +120,6 @@ export const AppMenu = ({
                       height="20px"
                       minH="20px"
                     />
-                    {/* <CustomIcon
-                      name={app.name === "scan" ? "check" : "launch"}
-                      color={app.name === "scan" ? "gray.100" : "gray.600"}
-                      boxSize={3}
-                    /> */}
                   </Flex>
                 </Link>
               )}

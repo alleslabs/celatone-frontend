@@ -113,7 +113,7 @@ export const NavDrawer = () => {
         h="full"
         borderRadius={0}
         gap={1}
-        onClick={() => onOpen()}
+        onClick={onOpen}
       >
         <CustomIcon name="menu" boxSize={3} />
         Menu
