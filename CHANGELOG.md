@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#992](https://github.com/alleslabs/celatone-frontend/pull/992) Add new search function
+- [#1021](https://github.com/alleslabs/celatone-frontend/pull/1021) Add Milkyway network (glados-1)
 - [#1020](https://github.com/alleslabs/celatone-frontend/pull/1020) Add Sequencer for recent txs, overview page
 - [#1009](https://github.com/alleslabs/celatone-frontend/pull/1009) Add Sequencer for account details page
 - [#1006](https://github.com/alleslabs/celatone-frontend/pull/1006) Add Sequencer for past txs
@@ -48,7 +49,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1022](https://github.com/alleslabs/celatone-frontend/pull/1022) Separate API requests in home page overview component
+
 ### Bug fixes
+
+- [#1026](https://github.com/alleslabs/celatone-frontend/pull/1026) Add missing menu items for sequencer tier
+- [#1025](https://github.com/alleslabs/celatone-frontend/pull/1025) Handle new tx query params for contract txs
+- [#1027](https://github.com/alleslabs/celatone-frontend/pull/1027) Fix balances pagination nullable
 
 ## v1.7.1
 

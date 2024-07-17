@@ -7,7 +7,7 @@ import type { Option } from "lib/types";
 
 import { SearchResultItem } from "./SearchResultItem";
 
-interface SearchResultRendererProps {
+interface SearchResultsProps {
   results: SearchResultType[];
   keyword: string;
   cursor: Option<number>;
@@ -16,7 +16,7 @@ interface SearchResultRendererProps {
   handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
   onClose?: () => void;
 }
-export const SearchResultRenderer = ({
+export const SearchResults = ({
   results,
   keyword,
   cursor,
@@ -24,7 +24,7 @@ export const SearchResultRenderer = ({
   setCursor,
   handleSelectResult,
   onClose,
-}: SearchResultRendererProps) => (
+}: SearchResultsProps) => (
   <>
     {!results.length ? (
       <EmptyState

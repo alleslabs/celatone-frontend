@@ -15,18 +15,13 @@ export const SearchZeroState = ({
   isGov,
   isFullTier,
 }: SearchZeroStateProps) => {
-  const starter = ["Account Address", "TX Hash", "Block Height"];
+  const base = ["Account Address", "TX Hash", "Block Height"];
   const govText = isGov ? ["Validator Address", "Proposal ID"] : [];
   const wasmText = isWasm ? ["Code ID", "Contract Address"] : [];
   const moveText = isMove ? ["Module Path"] : [];
   const poolText = isPool && isFullTier ? ["Pool ID"] : [];
 
-  const supportedItemsType = starter.concat(
-    govText,
-    wasmText,
-    moveText,
-    poolText
-  );
+  const supportedItemsType = base.concat(govText, wasmText, moveText, poolText);
 
   return (
     <Flex direction="column" gap={4} py={8}>
@@ -40,7 +35,7 @@ export const SearchZeroState = ({
         borderRadius={8}
       >
         {supportedItemsType.map((item) => (
-          <Flex alignItems="center" gap={3}>
+          <Flex alignItems="center" gap={3} key={item}>
             <Flex w={1} h={1} borderRadius="full" bgColor="primary.darker" />
             <Text color="text.dark">{item}</Text>
           </Flex>

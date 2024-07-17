@@ -41,7 +41,7 @@ export const SearchDisplayResult = ({
             fontWeight={{ base: "auto", md: 500 }}
             color="text.disabled"
           >
-            <span>–</span> {type}
+            – {type}
           </Text>
         </Flex>
       </Flex>
@@ -84,7 +84,7 @@ export const SearchDisplayResult = ({
             fontWeight={{ base: "auto", md: 500 }}
             color="text.disabled"
           >
-            <span>–</span> {type}
+            – {type}
           </Text>
         </Flex>
       </Flex>
@@ -106,7 +106,7 @@ export const SearchDisplayResult = ({
           fontWeight={{ base: "auto", md: 500 }}
           color="text.disabled"
         >
-          <span>–</span> {type}
+          – {type}
         </Text>
       </Flex>
     );
@@ -121,7 +121,7 @@ export const SearchDisplayResult = ({
         fontWeight={{ base: "auto", md: 500 }}
         color="text.disabled"
       >
-        <span>–</span> {type}
+        – {type}
       </Text>
     </Flex>
   );

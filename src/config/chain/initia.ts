@@ -487,4 +487,51 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       isValidatorExternalLink: null,
     },
   },
+  "glados-1": {
+    tier: "sequencer",
+    chain: "initia",
+    registryChainName: "milkywaytestnet",
+    prettyName: "Milkyway",
+    lcd: "https://lcd.testnet.milkyway.zone",
+    rpc: "https://rpc.testnet.milkyway.zone",
+    indexer: "",
+    wallets: [...initiaWallets, ...keplrWallets],
+    features: {
+      faucet: {
+        enabled: false,
+      },
+      wasm: {
+        enabled: true,
+        storeCodeMaxFileSize: 800_000,
+        clearAdminGas: 50_000,
+      },
+      move: {
+        enabled: false,
+      },
+      pool: {
+        enabled: false,
+      },
+      publicProject: {
+        enabled: true,
+      },
+      gov: {
+        enabled: false,
+      },
+      nft: {
+        enabled: false,
+      },
+    },
+    gas: {
+      gasPrice: {
+        tokenPerGas: 0.151,
+        denom:
+          "ibc/37A3FB4FED4CA04ED6D9E5DA36C6D27248645F0E22F585576A1488B8A89C5A50",
+      },
+      gasAdjustment: 1.5,
+      maxGasLimit: 25_000_000,
+    },
+    extra: {
+      isValidatorExternalLink: null,
+    },
+  },
 };

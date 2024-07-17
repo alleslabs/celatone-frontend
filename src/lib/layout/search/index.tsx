@@ -31,34 +31,12 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { useEaster } from "lib/hooks";
 import type { SearchResultType } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
-import type { Addr, Option } from "lib/types";
+import type { Addr } from "lib/types";
 import { splitModule } from "lib/utils";
 
-import { SearchResultRenderer } from "./SearchResultRenderer";
+import { SearchResults } from "./SearchResults";
 import { SearchZeroState } from "./SearchZeroState";
-import { getRouteOptions } from "./utils";
-
-const getNextCursor = (
-  key: string,
-  current: Option<number>,
-  lastIndex: number
-) => {
-  switch (key) {
-    case "ArrowUp":
-      if (current === undefined) return lastIndex;
-      return current <= 0 ? lastIndex : current - 1;
-    case "ArrowDown":
-      if (current === undefined) return 0;
-      return current >= lastIndex ? 0 : current + 1;
-    default:
-      return undefined;
-  }
-};
-
-const generateQueryObject = (params: string[], value: string | string[]) =>
-  typeof value === "string"
-    ? { [params[0]]: value }
-    : params.reduce((acc, curr, idx) => ({ ...acc, [curr]: value[idx] }), {});
+import { generateQueryObject, getNextCursor, getRouteOptions } from "./utils";
 
 export const SearchComponent = () => {
   const isMobile = useMobile();
@@ -318,7 +296,7 @@ export const SearchComponent = () => {
                         {results.length} Matched results...
                       </Text>
                     )}
-                    <SearchResultRenderer
+                    <SearchResults
                       results={results}
                       keyword={keyword}
                       cursor={cursor}
