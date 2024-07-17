@@ -1,21 +1,15 @@
-import { useMemo } from "react";
-
 import type { HexAddr, HexAddr32 } from "lib/types";
 import { isHexModuleAddress, isTxHash } from "lib/utils";
 
-export const useCollectionsExpression = (search = "") =>
-  useMemo(() => {
-    if (search.trim().length === 0) return {};
+export const getCollectionsExpression = (search = "") => {
+  if (search.trim().length === 0) return {};
 
-    return {
-      _or: [
-        { name: { _iregex: search } },
-        { id: { _eq: search.toLowerCase() } },
-      ],
-    };
-  }, [search]);
+  return {
+    _or: [{ name: { _iregex: search } }, { id: { _eq: search.toLowerCase() } }],
+  };
+};
 
-export const useCollectionActivitiesExpression = (
+export const getCollectionActivitiesExpression = (
   collectionAddress: HexAddr32,
   search = ""
 ) => {
@@ -35,56 +29,54 @@ export const useCollectionActivitiesExpression = (
 
   const searchOption = isHash ? txHashSearch : tokenIdSearch;
 
-  return useMemo(
-    () => ({
-      collection_id: { _eq: collectionAddress },
-      ...(search ? { _and: searchOption } : {}),
-    }),
-    [collectionAddress, search, searchOption]
-  );
+  return {
+    collection_id: { _eq: collectionAddress },
+    ...(search ? { _and: searchOption } : {}),
+  };
 };
 
-export const useNftsExpression = (collectionAddress: HexAddr32, search = "") =>
-  useMemo(() => {
-    const orExpression = {
-      _or: [
-        { token_id: { _iregex: search } },
-        ...(isHexModuleAddress(search)
-          ? [{ id: { _eq: search.toLowerCase() } }]
-          : []),
-      ],
-    };
+export const getNftsExpression = (
+  collectionAddress: HexAddr32,
+  search = ""
+) => {
+  const orExpression = {
+    _or: [
+      { token_id: { _iregex: search } },
+      ...(isHexModuleAddress(search)
+        ? [{ id: { _eq: search.toLowerCase() } }]
+        : []),
+    ],
+  };
 
-    return {
-      collection: { _eq: collectionAddress },
-      is_burned: { _eq: false },
-      ...(search.trim().length > 0 ? orExpression : {}),
-    };
-  }, [collectionAddress, search]);
+  return {
+    collection: { _eq: collectionAddress },
+    is_burned: { _eq: false },
+    ...(search.trim().length > 0 ? orExpression : {}),
+  };
+};
 
-export const useNftsByAccountExpression = (
+export const getNftsByAccountExpression = (
   accountAddress: HexAddr,
   collectionAddress?: HexAddr32,
   search = ""
-) =>
-  useMemo(() => {
-    const orExpression = {
-      _or: [
-        { token_id: { _iregex: search } },
-        ...(isHexModuleAddress(search)
-          ? [{ id: { _eq: search.toLowerCase() } }]
-          : []),
-      ],
-    };
+) => {
+  const orExpression = {
+    _or: [
+      { token_id: { _iregex: search } },
+      ...(isHexModuleAddress(search)
+        ? [{ id: { _eq: search.toLowerCase() } }]
+        : []),
+    ],
+  };
 
-    const collectionExpression = {
-      collection: { _eq: collectionAddress?.toLowerCase() },
-    };
+  const collectionExpression = {
+    collection: { _eq: collectionAddress?.toLowerCase() },
+  };
 
-    return {
-      owner: { _eq: accountAddress },
-      is_burned: { _eq: false },
-      ...(collectionAddress ? collectionExpression : {}),
-      ...(search.trim().length > 0 ? orExpression : {}),
-    };
-  }, [accountAddress, collectionAddress, search]);
+  return {
+    owner: { _eq: accountAddress },
+    is_burned: { _eq: false },
+    ...(collectionAddress ? collectionExpression : {}),
+    ...(search.trim().length > 0 ? orExpression : {}),
+  };
+};

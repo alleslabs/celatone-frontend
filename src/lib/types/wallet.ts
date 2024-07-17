@@ -27,7 +27,6 @@ export interface ConnectWalletType {
   iconColor?: string;
   variant?: string;
   onClickConnectBtn?: MouseEventHandler<HTMLButtonElement>;
-  isFullButton?: boolean;
 }
 
 export interface ConnectedUserCardType {

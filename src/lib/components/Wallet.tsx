@@ -38,7 +38,6 @@ export const WalletSection = () => {
             buttonText="Connect"
             onClick={onClickConnect}
             iconColor="text.main"
-            isFullButton
           />
         }
         connecting={<Connecting />}

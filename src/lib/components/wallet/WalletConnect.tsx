@@ -12,7 +12,6 @@ export const ConnectWalletButton = ({
   isDisabled,
   onClickConnectBtn,
   variant,
-  isFullButton = false,
 }: ConnectWalletType) => (
   <Button
     w="170px"
@@ -22,7 +21,7 @@ export const ConnectWalletButton = ({
     variant={variant}
     gap={1}
     minH="64px"
-    borderRadius={isFullButton ? "0" : "inherit"}
+    borderRadius={0}
   >
     <CustomIcon name="connect" />
     {buttonText || "Connect"}
@@ -34,20 +33,17 @@ export const Connected = ({
   onClick,
   icon,
   variant,
-  isFullButton,
 }: {
   buttonText: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
   icon?: IconKeys;
   variant?: string;
-  isFullButton?: boolean;
 }) => (
   <ConnectWalletButton
     buttonText={buttonText}
     onClickConnectBtn={onClick}
     icon={icon}
     variant={variant}
-    isFullButton={isFullButton}
   />
 );
 
@@ -55,7 +51,6 @@ export const Disconnected = (props: {
   buttonText: string;
   iconColor: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
-  isFullButton: boolean;
 }) => <Connected {...props} />;
 
 export const Connecting = () => <ConnectWalletButton isLoading />;

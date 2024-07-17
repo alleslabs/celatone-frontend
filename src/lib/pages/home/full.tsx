@@ -9,9 +9,9 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { RecentBlocksTable } from "lib/pages/blocks/components/RecentBlocksTable";
-import { TxsTable } from "lib/pages/txs/components/TxsTable";
-import { useOverviewsStats } from "lib/services/overviewService";
+import { RecentBlocksTableFull } from "lib/pages/blocks/components/RecentBlocksTableFull";
+import { TxsTableFull } from "lib/pages/txs/components/TxsTableFull";
+import { useOverviewsStats } from "lib/services/stats";
 
 import { DevShortcut } from "./components";
 import { CardInfo } from "./components/CardInfo";
@@ -79,21 +79,21 @@ export const HomeFull = () => {
           <CardInfo
             title={txInfo.title}
             tooltip={txInfo.tooltip}
-            value={overviewsStats?.txCount.toLocaleString()}
+            value={overviewsStats?.txCount?.toString()}
             isLoading={isLoading}
             navigate={toTxs}
           />
           <CardInfo
             title={blockInfo.title}
             tooltip={blockInfo.tooltip}
-            value={overviewsStats?.latestBlock.toString()}
+            value={overviewsStats?.latestBlock?.toString()}
             isLoading={isLoading}
             navigate={toBlocks}
           />
           <CardInfo
             title={blockTimeInfo.title}
             tooltip={blockTimeInfo.tooltip}
-            value={overviewsStats?.blockTime.toFixed(3).concat("s")}
+            value={overviewsStats?.blockTime?.toFixed(3).concat("s")}
             isLoading={isLoading}
             navigate={toTxs}
           />
@@ -117,7 +117,7 @@ export const HomeFull = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Transactions
         </Heading>
-        <TxsTable isViewMore />
+        <TxsTableFull isViewMore />
         {overviewsStats?.txCount && overviewsStats.txCount > 5 && (
           <ViewMore onClick={toTxs} />
         )}
@@ -126,7 +126,7 @@ export const HomeFull = () => {
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
         </Heading>
-        <RecentBlocksTable isViewMore />
+        <RecentBlocksTableFull isViewMore />
         {overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (
           <ViewMore onClick={toBlocks} />
         )}

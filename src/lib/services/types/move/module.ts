@@ -49,7 +49,6 @@ export type AccountModulesResponse = z.infer<typeof zAccountModulesResponse>;
 
 export const zModuleVerificationInternal = z
   .object({
-    id: z.number(),
     module_address: zHexAddr,
     module_name: z.string(),
     verified_at: z.string(),
@@ -112,7 +111,6 @@ export type ModuleTableCountsResponse = z.infer<
 
 export const zModuleTxsResponse = z.object({
   items: z.array(zTxsResponseItem),
-  total: z.number().nonnegative(),
 });
 export type ModuleTxsResponse = z.infer<typeof zModuleTxsResponse>;
 

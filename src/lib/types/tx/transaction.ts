@@ -1,6 +1,7 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
 import { z } from "zod";
 
+import type { Event } from "lib/services/types";
 import type { BechAddr, Option, Pubkey } from "lib/types";
 
 export enum ActionMsgType {
@@ -39,6 +40,7 @@ export interface Transaction {
   isIbc: boolean;
   isInstantiate: boolean;
   isOpinit: boolean;
+  events?: Event[];
 }
 
 export type TransactionWithSignerPubkey = Omit<Transaction, "sender"> & {

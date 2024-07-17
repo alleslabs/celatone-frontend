@@ -3,11 +3,11 @@ import { gql } from "graphql-request";
 export const getCollectionsQuery = gql`
   query getCollectionsQuery(
     $offset: Int!
-    $pageSize: Int!
+    $limit: Int!
     $expression: collections_bool_exp!
   ) {
     collections(
-      limit: $pageSize
+      limit: $limit
       offset: $offset
       where: $expression
       order_by: { name: asc }
@@ -107,10 +107,10 @@ export const getCollectionActivitiesQuery = gql`
   query getCollectionActivitiesQuery(
     $expression: collection_transactions_bool_exp
     $offset: Int!
-    $pageSize: Int!
+    $limit: Int!
   ) {
     collection_transactions(
-      limit: $pageSize
+      limit: $limit
       offset: $offset
       where: $expression
       order_by: [
@@ -144,10 +144,10 @@ export const getCollectionMutateEventsQuery = gql`
   query getCollectionMutateEventsQuery(
     $collectionAddress: String!
     $offset: Int!
-    $pageSize: Int!
+    $limit: Int!
   ) {
     collection_mutation_events(
-      limit: $pageSize
+      limit: $limit
       offset: $offset
       where: { collection_id: { _eq: $collectionAddress } }
       order_by: { block_height: desc }
