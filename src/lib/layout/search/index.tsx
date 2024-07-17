@@ -169,20 +169,24 @@ export const SearchComponent = () => {
   return (
     <>
       {isMobile ? (
-        <Button variant="outline-gray" size="sm" onClick={onOpen}>
+        <Button
+          variant="ghost-gray"
+          size="sm"
+          onClick={onOpen}
+          minW="60px"
+          minH="60px"
+          borderRadius={0}
+        >
           <CustomIcon name="search" boxSize={3} />
         </Button>
       ) : (
         <Flex
           onClick={onOpen}
           w="full"
-          maxH="40px"
-          p={2}
+          h="full"
+          p={4}
           alignItems="center"
           justifyContent="space-between"
-          border="1px solid"
-          borderColor="gray.700"
-          borderRadius={8}
           cursor="pointer"
           transition="all 0.25s ease-in-out"
           _hover={{

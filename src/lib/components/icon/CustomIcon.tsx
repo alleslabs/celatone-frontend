@@ -196,6 +196,23 @@ export const ICONS = {
     ),
     viewBox: viewboxDefault,
   },
+  apps: {
+    svg: (
+      <>
+        <rect width="3.33333" height="3.33333" fill="currentColor" />
+        <rect y="6" width="3.33333" height="3.33333" fill="currentColor" />
+        <rect x="6" width="3.33333" height="3.33333" fill="currentColor" />
+        <rect
+          x="6"
+          y="6"
+          width="3.33333"
+          height="3.33333"
+          fill="currentColor"
+        />
+      </>
+    ),
+    viewBox: "0 0 10 10",
+  },
   "arrow-left": {
     svg: (
       <path
