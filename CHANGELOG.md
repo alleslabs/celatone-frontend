@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1024](https://github.com/alleslabs/celatone-frontend/pull/1024) Add Sequencer for account detail NFTs
 - [#1020](https://github.com/alleslabs/celatone-frontend/pull/1020) Add Sequencer for recent txs, overview page
 - [#1009](https://github.com/alleslabs/celatone-frontend/pull/1009) Add Sequencer for account details page
 - [#1006](https://github.com/alleslabs/celatone-frontend/pull/1006) Add Sequencer for past txs
