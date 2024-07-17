@@ -8,7 +8,7 @@ import { WalletSection } from "lib/components/Wallet";
 
 import { AppMenu } from "./AppMenu";
 import { NetworkMenu } from "./NetworkMenu";
-import Searchbar from "./Searchbar";
+import { SearchComponent } from "./search";
 
 export const SectionWrapper = ({
   children,
@@ -74,7 +74,7 @@ const Header = () => {
         </SectionWrapper>
       </Flex>
       <SectionWrapper w="full">
-        <Searchbar />
+        <SearchComponent />
       </SectionWrapper>
       <Flex h="full">
         {isFaucetEnabled && (

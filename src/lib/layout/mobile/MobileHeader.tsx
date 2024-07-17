@@ -2,7 +2,7 @@ import { Flex, Image } from "@chakra-ui/react";
 
 import { AppMenu } from "../AppMenu";
 import { SectionWrapper } from "../Header";
-import Searchbar from "../Searchbar";
+import { SearchComponent } from "../search";
 import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 
@@ -47,7 +47,7 @@ const MobileHeader = () => {
       </SectionWrapper>
       <Flex h="full">
         <SectionWrapper>
-          <Searchbar />
+          <SearchComponent />
         </SectionWrapper>
         <SectionWrapper>
           <NavDrawer />
