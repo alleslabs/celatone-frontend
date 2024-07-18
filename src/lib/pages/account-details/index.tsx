@@ -39,8 +39,11 @@ import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
 import { ModuleLists } from "./components/modules";
-import { NftsOverview, NftsSectionFull } from "./components/nfts";
-import { NftsSectionSequencer } from "./components/nfts/NftsSectionSequencer";
+import {
+  NftsOverview,
+  NftsSectionFull,
+  NftsSectionSequencer,
+} from "./components/nfts";
 import { PublicAccountDesc } from "./components/PublicAccountDesc";
 import { ResourceOverview, ResourceSection } from "./components/resources";
 import {
