@@ -4,9 +4,9 @@ import { CHAIN_CONFIGS } from "config/chain";
 import { useCelatoneApp } from "lib/app-provider";
 import type { Option } from "lib/types";
 
-import { NetworkCard } from "./NetworkCard";
+import { NetworkCard } from "./network-card";
 
-interface NetworkSubsectionProps {
+interface NetworkAccordionSubsectionProps {
   title?: string;
   networks: string[];
   cursor: Option<number>;
@@ -15,14 +15,14 @@ interface NetworkSubsectionProps {
   onClose: () => void;
 }
 
-export const NetworkSubsection = ({
+export const NetworkAccordionSubsection = ({
   title,
   networks,
   cursor,
   setCursor,
   subsectionStartIndex,
   onClose,
-}: NetworkSubsectionProps) => {
+}: NetworkAccordionSubsectionProps) => {
   const { currentChainId } = useCelatoneApp();
 
   return (

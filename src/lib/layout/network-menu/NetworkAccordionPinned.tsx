@@ -28,7 +28,7 @@ import { useNetworkStore } from "lib/providers/store";
 import type { Network } from "lib/stores/networks";
 import type { Nullable, Option } from "lib/types";
 
-import { NetworkCardDraggable } from "./NetworkCardDraggable";
+import { NetworkCardDraggable } from "./network-card";
 
 interface NetworkAccodionPinnedProps {
   pinnedNetworks: Network[];

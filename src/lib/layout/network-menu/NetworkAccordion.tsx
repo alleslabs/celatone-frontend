@@ -10,7 +10,7 @@ import {
 import { CHAIN_CONFIGS } from "config/chain";
 import type { Option } from "lib/types";
 
-import { NetworkSubsection } from "./NetworkSubsection";
+import { NetworkAccordionSubsection } from "./NetworkAccordionSubsection";
 
 interface NetworkAccordionProps {
   title: string;
@@ -50,7 +50,7 @@ export const NetworkAccordion = ({
         </Flex>
       </AccordionButton>
       <AccordionPanel p={0}>
-        <NetworkSubsection
+        <NetworkAccordionSubsection
           networks={nonInitiaNetworks}
           cursor={cursor}
           setCursor={setCursor}
@@ -58,7 +58,7 @@ export const NetworkAccordion = ({
           onClose={onClose}
         />
         {l1Networks.length > 0 && (
-          <NetworkSubsection
+          <NetworkAccordionSubsection
             title="Initia (Layer 1)"
             networks={l1Networks}
             cursor={cursor}
@@ -68,7 +68,7 @@ export const NetworkAccordion = ({
           />
         )}
         {l2Networks.length > 0 && (
-          <NetworkSubsection
+          <NetworkAccordionSubsection
             title="Minitia (Layer 2)"
             networks={l2Networks}
             cursor={cursor}
