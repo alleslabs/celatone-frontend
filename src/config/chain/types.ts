@@ -59,7 +59,6 @@ export interface ChainConfig {
   prettyName: string;
   logoUrl?: string;
   networkType: "mainnet" | "testnet";
-  layer: "1" | "2" | null;
   lcd: string;
   rpc: string;
   indexer: string;
@@ -84,6 +83,7 @@ export interface ChainConfig {
   extra: {
     disableAnyOfAddresses?: boolean;
     isValidatorExternalLink?: Nullable<string>;
+    layer?: "1" | "2";
   };
 }
 

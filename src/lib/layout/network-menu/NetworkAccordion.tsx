@@ -55,10 +55,10 @@ export const NetworkAccodion = ({
 }: NetworkAccodionProps) => {
   const isInitia = useInitia();
   const l1Networks = normalNetworks.filter(
-    (chainId) => CHAIN_CONFIGS[chainId]?.layer === "1"
+    (chainId) => CHAIN_CONFIGS[chainId]?.extra.layer === "1"
   );
   const l2Networks = normalNetworks.filter(
-    (chainId) => CHAIN_CONFIGS[chainId]?.layer === "2"
+    (chainId) => CHAIN_CONFIGS[chainId]?.extra.layer === "2"
   );
 
   return (

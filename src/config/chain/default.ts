@@ -6,7 +6,6 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
   registryChainName: "",
   prettyName: "",
   networkType: "testnet",
-  layer: null,
   lcd: "",
   rpc: "",
   indexer: "",
