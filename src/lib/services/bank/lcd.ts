@@ -20,7 +20,7 @@ export const getBalancesLcd = async (
       })
       .then(({ data }) => parseWithError(zBalancesReponseLcd, data));
     result.push(...res.balances);
-    if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
+    if (res.pagination?.nextKey) await fetchFn(res.pagination.nextKey);
   };
 
   await fetchFn(null);

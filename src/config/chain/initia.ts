@@ -440,7 +440,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "landlord-1": {
-    tier: "full",
+    tier: "sequencer",
     chain: "initia",
     registryChainName: "civitiatestnet",
     prettyName: "Civitia",
@@ -471,7 +471,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       nft: {
-        enabled: true,
+        enabled: false,
       },
     },
     gas: {
