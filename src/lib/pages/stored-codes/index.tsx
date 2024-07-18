@@ -54,7 +54,7 @@ const StoredCodes = observer(() => {
     useUploadAccessParamsLcd();
 
   const isPermissionedNetwork =
-    data?.permission !== AccessConfigPermission.EVERYBODY;
+    data && data.permission !== AccessConfigPermission.EVERYBODY;
   const isAllowed = Boolean(address && data?.addresses?.includes(address));
 
   useEffect(() => {

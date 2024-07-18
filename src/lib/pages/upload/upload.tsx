@@ -39,7 +39,7 @@ export const Upload = ({
   } = useUploadCode(onComplete, false);
 
   const isPermissionedNetwork =
-    data?.permission !== AccessConfigPermission.EVERYBODY;
+    data && data.permission !== AccessConfigPermission.EVERYBODY;
 
   const enableUpload =
     !isPermissionedNetwork ||
