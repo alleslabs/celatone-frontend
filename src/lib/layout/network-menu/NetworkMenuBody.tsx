@@ -7,10 +7,9 @@ import {
   AccordionPanel,
   Divider,
   Flex,
-  FormControl,
   Heading,
 } from "@chakra-ui/react";
-import type { Active, DragEndEvent, DropAnimation } from "@dnd-kit/core";
+import type { Active, DragEndEvent } from "@dnd-kit/core";
 import {
   closestCenter,
   defaultDropAnimationSideEffects,
@@ -34,7 +33,7 @@ import { useCelatoneApp, useSelectChain } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import { useNetworkStore } from "lib/providers/store";
-import type { Option } from "lib/types";
+import type { Nullable, Option } from "lib/types";
 
 import { NetworkAccodion } from "./NetworkAccordion";
 import { NetworkDragItemWrapper } from "./NetworkDragItemWrapper";
@@ -43,6 +42,22 @@ interface NetworkMenuBodyProps {
   currentChainId: string;
   onClose: () => void;
 }
+
+const filterChains = (
+  chainIds: string[],
+  keyword: string,
+  type: "mainnet" | "testnet"
+) =>
+  chainIds
+    .filter((chain) => CHAIN_CONFIGS[chain]?.networkType === type)
+    .filter(
+      (network) =>
+        !keyword ||
+        CHAIN_CONFIGS[network]?.prettyName
+          .toLowerCase()
+          .includes(keyword.toLowerCase()) ||
+        network.toLowerCase().includes(keyword.toLowerCase())
+    );
 
 const getNextCursor = (
   key: string,
@@ -61,48 +76,18 @@ const getNextCursor = (
   }
 };
 
-const dropAnimationConfig: DropAnimation = {
-  sideEffects: defaultDropAnimationSideEffects({
-    styles: {
-      active: {
-        opacity: "0.4",
-      },
-    },
-  }),
-};
-
 export const NetworkMenuBody = observer(
   ({ currentChainId, onClose }: NetworkMenuBodyProps) => {
     const selectChain = useSelectChain();
     const { availableChainIds } = useCelatoneApp();
+    const { getPinnedNetworks, setPinnedNetworks } = useNetworkStore();
+
     const [cursor, setCursor] = useState<number>();
     const [keyword, setKeyword] = useState("");
+    const [dndActive, setDndActive] = useState<Nullable<Active>>(null);
 
     // Get chains info
-    const filteredChains = useMemo(() => {
-      const filterChains = (type: "mainnet" | "testnet") =>
-        availableChainIds
-          .filter((chain) => CHAIN_CONFIGS[chain]?.networkType === type)
-          .filter(
-            (network) =>
-              !keyword ||
-              CHAIN_CONFIGS[network]?.prettyName
-                .toLowerCase()
-                .includes(keyword.toLowerCase()) ||
-              network.toLowerCase().includes(keyword.toLowerCase())
-          );
-      return {
-        testnet: filterChains("testnet"),
-        mainnet: filterChains("mainnet"),
-      };
-    }, [availableChainIds, keyword]);
-
-    const filteredTestnetChains = filteredChains.testnet;
-    const filteredMainnetChains = filteredChains.mainnet;
-
-    const { getPinnedNetworks, setPinnedNetworks } = useNetworkStore();
     const pinnedNetworks = getPinnedNetworks();
-
     const filteredPinnedNetworks = useMemo(() => {
       if (!keyword) return [...pinnedNetworks];
       return pinnedNetworks.filter(
@@ -114,14 +99,24 @@ export const NetworkMenuBody = observer(
       );
     }, [pinnedNetworks, keyword]);
 
+    const [filteredMainnetChains, filteredTestnetChains] = useMemo(
+      () => [
+        filterChains(availableChainIds, keyword, "mainnet"),
+        filterChains(availableChainIds, keyword, "testnet"),
+      ],
+      [availableChainIds, keyword]
+    );
+
+    const allNetworks = useMemo(
+      () => [
+        ...filteredPinnedNetworks.map((network) => network.chainId),
+        ...filteredMainnetChains,
+        ...filteredTestnetChains,
+      ],
+      [filteredPinnedNetworks, filteredMainnetChains, filteredTestnetChains]
+    );
+
     // Drag and drop feature
-
-    const areAllNetworksEmpty =
-      !filteredPinnedNetworks.length &&
-      !filteredMainnetChains.length &&
-      !filteredTestnetChains.length;
-
-    const [dndActive, setDndActive] = useState<Active | null>(null);
 
     const activeItem = useMemo(
       () => filteredPinnedNetworks.find((item) => item.id === dndActive?.id),
@@ -147,19 +142,6 @@ export const NetworkMenuBody = observer(
     };
 
     // Navigate with arrow keys
-
-    const formattedPinnedNetworks = filteredPinnedNetworks.map(
-      (x) => x.chainId
-    );
-    const allNetworks = useMemo(
-      () => [
-        ...formattedPinnedNetworks,
-        ...filteredMainnetChains,
-        ...filteredTestnetChains,
-      ],
-      [formattedPinnedNetworks, filteredMainnetChains, filteredTestnetChains]
-    );
-
     const handleOnKeyEnter = useCallback(
       (e: ReactKeyboardEvent<HTMLDivElement>) => {
         if (!allNetworks.length) return;
@@ -201,17 +183,15 @@ export const NetworkMenuBody = observer(
           setDndActive(null);
         }}
       >
-        <FormControl>
-          <InputWithIcon
-            placeholder="Search by Name or Chain ID"
-            size="md"
-            value={keyword}
-            autoFocus
-            onChange={(e) => setKeyword(e.target.value)}
-            onKeyDown={handleOnKeyEnter}
-            amptrackSection="network-search"
-          />
-        </FormControl>
+        <InputWithIcon
+          placeholder="Search by Name or Chain ID"
+          size="md"
+          value={keyword}
+          autoFocus
+          onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={handleOnKeyEnter}
+          amptrackSection="network-search"
+        />
         <Accordion
           variant="transparent"
           allowMultiple
@@ -245,7 +225,17 @@ export const NetworkMenuBody = observer(
                   />
                 ))}
               </SortableContext>
-              <DragOverlay dropAnimation={dropAnimationConfig}>
+              <DragOverlay
+                dropAnimation={{
+                  sideEffects: defaultDropAnimationSideEffects({
+                    styles: {
+                      active: {
+                        opacity: "0.4",
+                      },
+                    },
+                  }),
+                }}
+              >
                 {activeItem ? (
                   <NetworkDragItemWrapper
                     key={activeItem.chainId}
@@ -267,9 +257,8 @@ export const NetworkMenuBody = observer(
             />
           )}
           <NetworkAccodion
-            isHidden={filteredMainnetChains.length === 0}
             title="Mainnet"
-            normalNetworks={filteredMainnetChains}
+            networks={filteredMainnetChains}
             currentChainId={currentChainId}
             cursor={cursor}
             setCursor={setCursor}
@@ -284,9 +273,8 @@ export const NetworkMenuBody = observer(
             />
           )}
           <NetworkAccodion
-            isHidden={filteredTestnetChains.length === 0}
             title="Testnet"
-            normalNetworks={filteredTestnetChains}
+            networks={filteredTestnetChains}
             currentChainId={currentChainId}
             cursor={cursor}
             setCursor={setCursor}
@@ -296,7 +284,7 @@ export const NetworkMenuBody = observer(
             onClose={onClose}
           />
         </Accordion>
-        {areAllNetworksEmpty && (
+        {allNetworks.length === 0 && (
           <EmptyState
             my={0}
             imageVariant="empty"

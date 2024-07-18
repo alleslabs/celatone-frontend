@@ -16,9 +16,8 @@ import { NetworkCard } from "./NetworkCard";
 
 interface NetworkAccodionProps {
   title: string;
-  normalNetworks: string[];
+  networks: string[];
   currentChainId: string;
-  isHidden?: boolean;
   cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
   startIndex: number;
@@ -44,26 +43,25 @@ const SectionTitle = ({ networks, title, mb = 4 }: SectionTitleProps) => (
 
 export const NetworkAccodion = ({
   title,
-  normalNetworks,
+  networks,
   currentChainId,
-  isHidden = false,
   cursor,
   setCursor,
   startIndex,
   onClose,
 }: NetworkAccodionProps) => {
-  const nonInitiaNetworks = normalNetworks.filter(
+  const nonInitiaNetworks = networks.filter(
     (chainId) => CHAIN_CONFIGS[chainId]?.extra.layer === undefined
   );
-  const l1Networks = normalNetworks.filter(
+  const l1Networks = networks.filter(
     (chainId) => CHAIN_CONFIGS[chainId]?.extra.layer === "1"
   );
-  const l2Networks = normalNetworks.filter(
+  const l2Networks = networks.filter(
     (chainId) => CHAIN_CONFIGS[chainId]?.extra.layer === "2"
   );
 
   return (
-    <AccordionItem hidden={isHidden}>
+    <AccordionItem hidden={networks.length === 0}>
       <AccordionButton p={0}>
         <Flex justifyContent="space-between" w="full" mb={4}>
           <Heading as="h6" variant="h6">
