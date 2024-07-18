@@ -99,9 +99,6 @@ const ProposalToWhitelist = () => {
   });
 
   const minDeposit = govParams?.depositParams.minDeposit;
-  const isPermissionless =
-    !uploadAccessParams ||
-    uploadAccessParams.permission === AccessConfigPermission.EVERYBODY;
   const addressesArray = addresses.map((addressObj) => addressObj.address);
   const formErrorsKey = Object.keys(formErrors);
   const enabledTx = useMemo(
@@ -132,7 +129,7 @@ const ProposalToWhitelist = () => {
         description,
         changesValue: JSON.stringify({
           ...uploadAccessParams,
-          permission: !isPermissionless
+          permission: uploadAccessParams?.isPermissionedNetwork
             ? AccessConfigPermission.ANY_OF_ADDRESSES
             : AccessConfigPermission.EVERYBODY,
           addresses: uploadAccessParams?.addresses?.concat(addressesArray),
@@ -146,7 +143,6 @@ const ProposalToWhitelist = () => {
     addressesArray,
     description,
     initialDeposit,
-    isPermissionless,
     minDeposit?.precision,
     title,
     uploadAccessParams,
@@ -243,17 +239,17 @@ const ProposalToWhitelist = () => {
           templateAreas={`"prespace alert alert postspace" "prespace main sidebar postspace"`}
           templateColumns="1fr 6fr 4fr 1fr"
           sx={
-            isPermissionless
-              ? {
+            uploadAccessParams?.isPermissionedNetwork
+              ? undefined
+              : {
                   "> div:not(.permissionless-alert)": {
                     opacity: 0.5,
                     pointerEvents: "none",
                   },
                 }
-              : undefined
           }
         >
-          {isPermissionless && (
+          {!uploadAccessParams?.isPermissionedNetwork && (
             <GridItem area="alert" className="permissionless-alert" mb={10}>
               <PermissionlessAlert />
             </GridItem>
@@ -446,7 +442,9 @@ const ProposalToWhitelist = () => {
               marginTop="128px"
               metadata={SIDEBAR_WHITELIST_DETAILS(
                 prettyName,
-                isPermissionless ? "permissionless" : "permissioned"
+                uploadAccessParams?.isPermissionedNetwork
+                  ? "permissioned"
+                  : "permissionless"
               )}
             />
           </GridItem>

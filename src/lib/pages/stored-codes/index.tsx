@@ -20,7 +20,6 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
-import { AccessConfigPermission } from "lib/types";
 
 import { ProposalButton } from "./components/ProposalButton";
 import { UploadButton } from "./components/UploadButton";
@@ -53,8 +52,6 @@ const StoredCodes = observer(() => {
   const { data, isFetching: isUploadAccessFetching } =
     useUploadAccessParamsLcd();
 
-  const isPermissionedNetwork =
-    data && data.permission !== AccessConfigPermission.EVERYBODY;
   const isAllowed = Boolean(address && data?.addresses?.includes(address));
 
   useEffect(() => {
@@ -97,7 +94,7 @@ const StoredCodes = observer(() => {
             gap={2}
             borderRadius={8}
           >
-            {isPermissionedNetwork ? (
+            {data?.isPermissionedNetwork ? (
               <>
                 <UploadButton isAllowed={isAllowed} />
                 {govConfig.enabled &&

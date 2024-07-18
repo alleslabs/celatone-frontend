@@ -15,7 +15,6 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
-import { AccessConfigPermission } from "lib/types";
 
 export const Upload = ({
   onComplete,
@@ -38,11 +37,8 @@ export const Upload = ({
     isDisabledProcess,
   } = useUploadCode(onComplete, false);
 
-  const isPermissionedNetwork =
-    data && data.permission !== AccessConfigPermission.EVERYBODY;
-
   const enableUpload =
-    !isPermissionedNetwork ||
+    !data?.isPermissionedNetwork ||
     (address && Boolean(data?.addresses?.includes(address)));
 
   useEffect(() => {
