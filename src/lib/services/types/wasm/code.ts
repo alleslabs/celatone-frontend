@@ -17,7 +17,7 @@ const zUploadAccessParams = z
     addresses: zBechAddr.array(),
   })
   .transform((val) => ({
-    isPermissionedNetwork: val.permission === AccessConfigPermission.EVERYBODY,
+    isPermissionedNetwork: val.permission !== AccessConfigPermission.EVERYBODY,
     ...val,
   }));
 export type UploadAccessParams = z.infer<typeof zUploadAccessParams>;
