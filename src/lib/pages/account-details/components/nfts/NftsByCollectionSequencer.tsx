@@ -7,13 +7,13 @@ import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
 import type { Nft } from "lib/services/types";
 
-interface NftsByCollectionFullProps {
+interface NftsByCollectionSequencerProps {
   nfts: Nft[];
 }
 
 export const NftsByCollectionSequencer = ({
   nfts,
-}: NftsByCollectionFullProps) => {
+}: NftsByCollectionSequencerProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
 
