@@ -27,12 +27,12 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import { useNfts } from "lib/services/nft";
 import {
   useCollectionActivitiesCount,
   useCollectionByCollectionAddress,
   useCollectionMutateEventsCount,
-  useNfts,
-} from "lib/services/nft";
+} from "lib/services/nft-collection";
 import { isHexModuleAddress } from "lib/utils";
 
 import { CollectionInfoSection } from "./components/CollectionInfoSection";

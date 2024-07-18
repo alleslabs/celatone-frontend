@@ -21,6 +21,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountDelegationInfos } from "lib/model/account";
@@ -28,14 +29,21 @@ import { useAccountStore } from "lib/providers/store";
 import { useAccountData } from "lib/services/account";
 import { useModulesByAddress } from "lib/services/move/module";
 import { useResourcesByAddressLcd } from "lib/services/move/resource";
-import { useNftsCountByAccount } from "lib/services/nft";
+import {
+  useNftsByAccountByCollectionSequencer,
+  useNftsCountByAccount,
+} from "lib/services/nft";
 import { useInitiaUsernameByAddress } from "lib/services/username";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
 import { ModuleLists } from "./components/modules";
-import { NftsOverview, NftsSection } from "./components/nfts";
+import {
+  NftsOverview,
+  NftsSectionFull,
+  NftsSectionSequencer,
+} from "./components/nfts";
 import { PublicAccountDesc } from "./components/PublicAccountDesc";
 import { ResourceOverview, ResourceSection } from "./components/resources";
 import {
@@ -64,6 +72,7 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 const AccountDetailsBody = ({
   accountAddressParam,
   tabParam,
+  // eslint-disable-next-line sonarjs/cognitive-complexity
 }: AccountDetailsBodyProps) => {
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
@@ -76,7 +85,7 @@ const AccountDetailsBody = ({
   const navigate = useInternalNavigate();
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
-  const { isFullTier } = useTierConfig();
+  const { isFullTier, isSequencerTier } = useTierConfig();
 
   // ------------------------------------------//
   // ------------------QUERIES-----------------//
@@ -99,7 +108,16 @@ const AccountDetailsBody = ({
     useResourcesByAddressLcd(accountAddress);
   // nft
   const { data: nftsCount, isFetching: isNftsCountLoading } =
-    useNftsCountByAccount(hexAddress);
+    useNftsCountByAccount(hexAddress, isFullTier && nft.enabled);
+
+  const { data: accountNfts } = useNftsByAccountByCollectionSequencer(
+    hexAddress,
+    undefined,
+    undefined,
+    isSequencerTier
+  );
+
+  const totalNfts = nftsCount ?? accountNfts?.total;
 
   const hasTotalBonded =
     !isTotalBondedLoading &&
@@ -133,6 +151,8 @@ const AccountDetailsBody = ({
     isLoading: isInitiaUsernameDataLoading,
     isFetching: isInitiaUsernameDataFetching,
   } = useInitiaUsernameByAddress(hexAddress, move.enabled);
+
+  const nftEnabled = nft.enabled && (isFullTier || isSequencerTier);
 
   const pageTitle = useMemo(() => {
     switch (true) {
@@ -211,11 +231,11 @@ const AccountDetailsBody = ({
             Delegations
           </CustomTab>
           <CustomTab
-            count={nftsCount}
+            count={totalNfts}
             isDisabled={nftsCount === 0}
-            onClick={handleTabChange(TabIndex.Nfts, nftsCount)}
+            onClick={handleTabChange(TabIndex.Nfts, totalNfts)}
             isLoading={isNftsCountLoading}
-            hidden={!nft.enabled || !isFullTier}
+            hidden={!nftEnabled}
           >
             NFTs
           </CustomTab>
@@ -341,11 +361,11 @@ const AccountDetailsBody = ({
                 />
               </Flex>
             )}
-            {nft.enabled && isFullTier && (
+            {nftEnabled && (
               <NftsOverview
-                totalCount={nftsCount}
+                totalCount={totalNfts}
                 userAddress={hexAddress}
-                onViewMore={handleTabChange(TabIndex.Nfts, nftsCount)}
+                onViewMore={handleTabChange(TabIndex.Nfts, totalNfts)}
               />
             )}
             <TxsTable
@@ -451,7 +471,17 @@ const AccountDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0}>
-            <NftsSection address={hexAddress} totalData={nftsCount} />
+            <TierSwitcher
+              full={
+                <NftsSectionFull address={hexAddress} totalData={totalNfts} />
+              }
+              sequencer={
+                <NftsSectionSequencer
+                  address={hexAddress}
+                  totalData={totalNfts}
+                />
+              }
+            />
             <UserDocsLink
               title="What is NFTs in the account?"
               cta="Read more about NFTs in Account"

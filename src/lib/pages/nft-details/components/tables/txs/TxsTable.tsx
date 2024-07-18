@@ -1,7 +1,7 @@
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { NftTransactions } from "lib/services/nft";
+import type { NftTransactions } from "lib/services/types";
 import type { Option } from "lib/types";
 
 import { TxsTableHeader } from "./TxsTableHeader";
