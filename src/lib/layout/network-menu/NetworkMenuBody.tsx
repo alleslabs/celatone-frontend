@@ -1,42 +1,18 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Divider,
-  Flex,
-  Heading,
-} from "@chakra-ui/react";
-import type { Active, DragEndEvent } from "@dnd-kit/core";
-import {
-  closestCenter,
-  defaultDropAnimationSideEffects,
-  DndContext,
-  DragOverlay,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { Accordion, Divider, Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useCallback, useMemo, useState } from "react";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { CHAIN_CONFIGS } from "config/chain";
 import { useCelatoneApp, useSelectChain } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import { useNetworkStore } from "lib/providers/store";
-import type { Nullable, Option } from "lib/types";
+import type { Option } from "lib/types";
 
 import { NetworkAccordion } from "./NetworkAccordion";
-import { NetworkDragItemWrapper } from "./NetworkDragItemWrapper";
+import { NetworkAccodionPinned } from "./NetworkAccordionPinned";
 
 interface NetworkMenuBodyProps {
   onClose: () => void;
@@ -77,12 +53,11 @@ const getNextCursor = (
 
 export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
   const selectChain = useSelectChain();
-  const { availableChainIds, currentChainId } = useCelatoneApp();
-  const { getPinnedNetworks, setPinnedNetworks } = useNetworkStore();
+  const { availableChainIds } = useCelatoneApp();
+  const { getPinnedNetworks } = useNetworkStore();
 
   const [cursor, setCursor] = useState<number>();
   const [keyword, setKeyword] = useState("");
-  const [dndActive, setDndActive] = useState<Nullable<Active>>(null);
 
   // Get chains info
   const pinnedNetworks = getPinnedNetworks();
@@ -113,31 +88,6 @@ export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
     ],
     [filteredPinnedNetworks, filteredMainnetChains, filteredTestnetChains]
   );
-
-  // Drag and drop feature
-
-  const activeItem = useMemo(
-    () => filteredPinnedNetworks.find((item) => item.id === dndActive?.id),
-    [dndActive, filteredPinnedNetworks]
-  );
-
-  const sensors = useSensors(
-    useSensor(MouseSensor, {
-      activationConstraint: {
-        delay: 100,
-        tolerance: 5,
-      },
-    }),
-    useSensor(TouchSensor)
-  );
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (active.id !== over?.id) {
-      setPinnedNetworks(active.id.toString(), over?.id.toString());
-    }
-  };
 
   // Navigate with arrow keys
   const handleOnKeyEnter = useCallback(
@@ -170,17 +120,7 @@ export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
   );
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={({ active }) => {
-        setDndActive(active);
-      }}
-      onDragEnd={handleDragEnd}
-      onDragCancel={() => {
-        setDndActive(null);
-      }}
-    >
+    <Flex direction="column" gap={6}>
       <InputWithIcon
         placeholder="Search by Name or Chain ID"
         size="md"
@@ -197,56 +137,12 @@ export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
         width="full"
         p={0}
       >
-        <AccordionItem hidden={filteredPinnedNetworks.length === 0}>
-          <AccordionButton p={0}>
-            <Flex mb={4} justifyContent="space-between" w="full">
-              <Heading as="h6" variant="h6">
-                Pinned Network
-              </Heading>
-              <AccordionIcon color="gray.600" />
-            </Flex>
-          </AccordionButton>
-          <AccordionPanel p={0} mb={2}>
-            <SortableContext
-              items={filteredPinnedNetworks.map((item) => item.chainId)}
-              strategy={verticalListSortingStrategy}
-            >
-              {filteredPinnedNetworks.map((item, index) => (
-                <NetworkDragItemWrapper
-                  key={item.chainId}
-                  chainId={item.chainId}
-                  currentChainId={currentChainId}
-                  index={index}
-                  cursor={cursor}
-                  setCursor={setCursor}
-                  onClose={onClose}
-                />
-              ))}
-            </SortableContext>
-            <DragOverlay
-              dropAnimation={{
-                sideEffects: defaultDropAnimationSideEffects({
-                  styles: {
-                    active: {
-                      opacity: "0.4",
-                    },
-                  },
-                }),
-              }}
-            >
-              {activeItem ? (
-                <NetworkDragItemWrapper
-                  key={activeItem.chainId}
-                  chainId={activeItem.chainId}
-                  currentChainId={currentChainId}
-                  cursor={cursor}
-                  setCursor={setCursor}
-                  onClose={onClose}
-                />
-              ) : null}
-            </DragOverlay>
-          </AccordionPanel>
-        </AccordionItem>
+        <NetworkAccodionPinned
+          pinnedNetworks={filteredPinnedNetworks}
+          cursor={cursor}
+          setCursor={setCursor}
+          onClose={onClose}
+        />
         {filteredPinnedNetworks.length > 0 && (
           <Divider
             borderColor="gray.700"
@@ -290,6 +186,6 @@ export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
 Please check your keyword."
         />
       )}
-    </DndContext>
+    </Flex>
   );
 });

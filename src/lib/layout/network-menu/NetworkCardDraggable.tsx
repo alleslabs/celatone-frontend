@@ -7,22 +7,22 @@ import type { Option } from "lib/types";
 
 import { NetworkCard } from "./NetworkCard";
 
-interface NetworkDragItemWrapperProps {
+interface NetworkCardDraggableProps {
   chainId: string;
-  currentChainId: string;
+  isSelected: boolean;
   index?: number;
   cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
   onClose: () => void;
 }
-export const NetworkDragItemWrapper = ({
+export const NetworkCardDraggable = ({
   chainId,
-  currentChainId,
+  isSelected,
   index,
   cursor,
   setCursor,
   onClose,
-}: NetworkDragItemWrapperProps) => {
+}: NetworkCardDraggableProps) => {
   const {
     attributes,
     listeners,
@@ -53,7 +53,7 @@ export const NetworkDragItemWrapper = ({
         isDraggable
         image={CHAIN_CONFIGS[chainId]?.logoUrl}
         chainId={chainId}
-        isSelected={chainId === currentChainId}
+        isSelected={isSelected}
         index={index}
         cursor={cursor}
         setCursor={setCursor}

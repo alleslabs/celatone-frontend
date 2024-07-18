@@ -115,9 +115,7 @@ export const NetworkMenu = observer(() => {
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
           <DrawerBody overflow="scroll" px={4} pb={6}>
-            <Flex direction="column" gap={6}>
-              <NetworkMenuBody onClose={onClose} />
-            </Flex>
+            <NetworkMenuBody onClose={onClose} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>
