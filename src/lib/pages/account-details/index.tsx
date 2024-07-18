@@ -21,6 +21,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountDelegationInfos } from "lib/model/account";
@@ -38,7 +39,8 @@ import { truncate } from "lib/utils";
 
 import { AccountHeader } from "./components/AccountHeader";
 import { ModuleLists } from "./components/modules";
-import { NftsOverview, NftsSection } from "./components/nfts";
+import { NftsOverview, NftsSectionFull } from "./components/nfts";
+import { NftsSectionSequencer } from "./components/nfts/NftsSectionSequencer";
 import { PublicAccountDesc } from "./components/PublicAccountDesc";
 import { ResourceOverview, ResourceSection } from "./components/resources";
 import {
@@ -468,7 +470,17 @@ const AccountDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0}>
-            <NftsSection address={hexAddress} totalData={totalNfts} />
+            <TierSwitcher
+              full={
+                <NftsSectionFull address={hexAddress} totalData={totalNfts} />
+              }
+              sequencer={
+                <NftsSectionSequencer
+                  address={hexAddress}
+                  totalData={totalNfts}
+                />
+              }
+            />
             <UserDocsLink
               title="What is NFTs in the account?"
               cta="Read more about NFTs in Account"

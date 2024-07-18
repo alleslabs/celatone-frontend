@@ -1,44 +1,38 @@
 import { Badge, Box, Flex, Heading, Stack } from "@chakra-ui/react";
-import { groupBy } from "lodash";
 import { useState } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { TierSwitcher } from "lib/components/TierSwitcher";
-import { useNftsByAccountByCollection } from "lib/services/nft";
+import { useCollectionsByAccount } from "lib/services/nft-collection";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 
 import { FilterItem } from "./FilterItem";
 import { NftsByCollectionFull } from "./NftsByCollectionFull";
-import { NftsByCollectionSequencer } from "./NftsByCollectionSequencer";
 
 interface SelectedCollection {
   collectionAddress: HexAddr32;
   nftsCount: number;
 }
 
-interface NftsSectionProps {
+interface NftsSectionFullProps {
   address: HexAddr;
   totalData: Option<number>;
 }
 
-export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
+export const NftsSectionFull = ({
+  address,
+  totalData = 0,
+}: NftsSectionFullProps) => {
   const isMobile = useMobile();
-  const { data: accountNfts, isLoading } = useNftsByAccountByCollection(
-    address,
-    undefined,
-    undefined
-  );
-
-  const collections = groupBy(accountNfts?.nfts, "collectionAddress");
+  const { data: collections, isLoading } = useCollectionsByAccount(address);
 
   const [selectedCollection, setSelectedCollection] =
     useState<SelectedCollection>();
 
   if (isLoading) return <Loading />;
   if (!collections) return <ErrorFetching dataName="collections" />;
-  if (!Object.keys(collections).length)
+  if (!collections.length)
     return (
       <EmptyState
         imageVariant="empty"
@@ -68,37 +62,27 @@ export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
             count={totalData}
             isDefault
           />
-          {Object.entries(collections).map(([collectionAddress, nfts]) => (
+          {collections.map((item) => (
             <FilterItem
-              key={collectionAddress}
-              collectionName={nfts[0].collectionName}
+              key={item.collectionAddress}
+              collectionName={item.collectionName}
               onClick={() =>
                 handleOnClick({
-                  collectionAddress: collectionAddress as HexAddr32,
-                  nftsCount: nfts.length,
+                  collectionAddress: item.collectionAddress,
+                  nftsCount: item.hold,
                 })
               }
-              uri={nfts[0].uri}
+              uri={item.uri}
               isActive={
-                selectedCollection?.collectionAddress === collectionAddress
+                selectedCollection?.collectionAddress === item.collectionAddress
               }
-              count={nfts.length}
+              count={item.hold}
             />
           ))}
         </Stack>
-        <TierSwitcher
-          full={
-            <NftsByCollectionFull
-              accountAddress={address}
-              collectionAddress={selectedCollection?.collectionAddress}
-            />
-          }
-          sequencer={
-            <NftsByCollectionSequencer
-              accountAddress={address}
-              collectionAddress={selectedCollection?.collectionAddress}
-            />
-          }
+        <NftsByCollectionFull
+          accountAddress={address}
+          collectionAddress={selectedCollection?.collectionAddress}
         />
       </Flex>
     </Box>

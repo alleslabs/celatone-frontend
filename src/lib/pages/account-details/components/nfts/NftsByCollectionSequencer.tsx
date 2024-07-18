@@ -5,28 +5,17 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
-import { useNftsByAccountByCollection } from "lib/services/nft";
-import type { HexAddr, HexAddr32 } from "lib/types";
+import type { Nft } from "lib/services/types";
 
 interface NftsByCollectionFullProps {
-  accountAddress: HexAddr;
-  collectionAddress?: HexAddr32;
+  nfts: Nft[];
 }
 
 export const NftsByCollectionSequencer = ({
-  accountAddress,
-  collectionAddress,
+  nfts,
 }: NftsByCollectionFullProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
-
-  const { data, isLoading } = useNftsByAccountByCollection(
-    accountAddress,
-    undefined,
-    undefined,
-    debouncedSearch,
-    collectionAddress
-  );
 
   return (
     <Stack spacing="24px" w="full">
@@ -39,10 +28,9 @@ export const NftsByCollectionSequencer = ({
         amptrackSection="nft-account-detail-tokenid-search"
       />
       <NftList
-        nfts={data?.nfts.filter((nft) =>
+        nfts={nfts.filter((nft) =>
           nft.tokenId.toLowerCase().includes(debouncedSearch.toLowerCase())
         )}
-        isLoading={isLoading}
         emptyState={
           <EmptyState
             message={

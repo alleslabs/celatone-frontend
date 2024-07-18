@@ -9,7 +9,7 @@ import { NftCard } from "./NftCard";
 
 interface NftListProps {
   nfts: Option<Nft[]>;
-  isLoading: boolean;
+  isLoading?: boolean;
   emptyState: JSX.Element;
   showCollection: boolean;
 }
