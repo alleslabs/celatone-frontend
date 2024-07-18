@@ -19,7 +19,6 @@ import { Stepper } from "lib/components/stepper";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
-import { AccessConfigPermission } from "lib/types";
 
 const getAlertContent = (
   enabled: boolean,
@@ -62,11 +61,8 @@ const Deploy = () => {
   } = useCelatoneApp();
   const { data, isFetching } = useUploadAccessParamsLcd();
 
-  const isPermissionedNetwork =
-    data?.permission !== AccessConfigPermission.EVERYBODY;
-
   const enableUpload =
-    !isPermissionedNetwork ||
+    !data?.isPermissionedNetwork ||
     Boolean(address && data?.addresses?.includes(address));
 
   useWasmConfig({ shouldRedirect: true });
@@ -103,7 +99,7 @@ const Deploy = () => {
         subtitle="You need to connect wallet to proceed this action"
         mb={4}
       />
-      {address && isPermissionedNetwork && (
+      {address && data?.isPermissionedNetwork && (
         <Alert variant={variant} mb={4} alignItems="flex-start" gap={2}>
           {icon}
           <AlertDescription>{description}</AlertDescription>
@@ -112,7 +108,7 @@ const Deploy = () => {
       <ButtonCard
         title="Upload new WASM File"
         description={
-          isPermissionedNetwork
+          data?.isPermissionedNetwork
             ? "Available for whitelisted addresses only"
             : "Store a new Wasm file on-chain"
         }
