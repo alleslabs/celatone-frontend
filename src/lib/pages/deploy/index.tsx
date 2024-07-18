@@ -63,7 +63,7 @@ const Deploy = () => {
   const { data, isFetching } = useUploadAccessParamsLcd();
 
   const isPermissionedNetwork =
-    data?.permission !== AccessConfigPermission.EVERYBODY;
+    data && data.permission !== AccessConfigPermission.EVERYBODY;
 
   const enableUpload =
     !isPermissionedNetwork ||

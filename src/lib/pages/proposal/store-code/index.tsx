@@ -100,7 +100,8 @@ const StoreCodeProposal = () => {
   const { data: uploadAccessParams } = useUploadAccessParamsLcd();
   const minDeposit = govParams?.depositParams.minDeposit;
   const isPermissionless =
-    uploadAccessParams?.permission === AccessConfigPermission.EVERYBODY;
+    !uploadAccessParams ||
+    uploadAccessParams.permission === AccessConfigPermission.EVERYBODY;
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const submitStoreCodeProposalTx = useSubmitStoreCodeProposalTx();
   const { broadcast } = useTxBroadcast();

@@ -27,7 +27,8 @@ export const MigrateOptions = ({
     chainConfig: { prettyName: chainPrettyName },
   } = useCelatoneApp();
   const isPermissionedNetwork =
-    uploadAccessParams?.permission !== AccessConfigPermission.EVERYBODY;
+    uploadAccessParams &&
+    uploadAccessParams.permission !== AccessConfigPermission.EVERYBODY;
   const isAllowed = resolvePermission(
     address,
     uploadAccessParams?.permission,

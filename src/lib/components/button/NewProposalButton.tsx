@@ -12,7 +12,7 @@ export const NewProposalButton = () => {
   const govConfig = useGovConfig({ shouldRedirect: false });
   // const { data: govParams } = useGovParams();
   // const isPermissionless =
-  //   govParams?.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
+  //   !govParams || govParams.uploadAccess.permission === AccessConfigPermission.EVERYBODY;
 
   if (govConfig.enabled && govConfig.hideOpenProposal) return null;
 

@@ -100,7 +100,8 @@ const ProposalToWhitelist = () => {
 
   const minDeposit = govParams?.depositParams.minDeposit;
   const isPermissionless =
-    uploadAccessParams?.permission === AccessConfigPermission.EVERYBODY;
+    !uploadAccessParams ||
+    uploadAccessParams.permission === AccessConfigPermission.EVERYBODY;
   const addressesArray = addresses.map((addressObj) => addressObj.address);
   const formErrorsKey = Object.keys(formErrors);
   const enabledTx = useMemo(
