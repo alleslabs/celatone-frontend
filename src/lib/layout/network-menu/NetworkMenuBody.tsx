@@ -35,11 +35,10 @@ import { EmptyState } from "lib/components/state";
 import { useNetworkStore } from "lib/providers/store";
 import type { Nullable, Option } from "lib/types";
 
-import { NetworkAccodion } from "./NetworkAccordion";
+import { NetworkAccordion } from "./NetworkAccordion";
 import { NetworkDragItemWrapper } from "./NetworkDragItemWrapper";
 
 interface NetworkMenuBodyProps {
-  currentChainId: string;
   onClose: () => void;
 }
 
@@ -76,225 +75,221 @@ const getNextCursor = (
   }
 };
 
-export const NetworkMenuBody = observer(
-  ({ currentChainId, onClose }: NetworkMenuBodyProps) => {
-    const selectChain = useSelectChain();
-    const { availableChainIds } = useCelatoneApp();
-    const { getPinnedNetworks, setPinnedNetworks } = useNetworkStore();
+export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
+  const selectChain = useSelectChain();
+  const { availableChainIds, currentChainId } = useCelatoneApp();
+  const { getPinnedNetworks, setPinnedNetworks } = useNetworkStore();
 
-    const [cursor, setCursor] = useState<number>();
-    const [keyword, setKeyword] = useState("");
-    const [dndActive, setDndActive] = useState<Nullable<Active>>(null);
+  const [cursor, setCursor] = useState<number>();
+  const [keyword, setKeyword] = useState("");
+  const [dndActive, setDndActive] = useState<Nullable<Active>>(null);
 
-    // Get chains info
-    const pinnedNetworks = getPinnedNetworks();
-    const filteredPinnedNetworks = useMemo(() => {
-      if (!keyword) return [...pinnedNetworks];
-      return pinnedNetworks.filter(
-        (network) =>
-          CHAIN_CONFIGS[network.chainId]?.prettyName
-            .toLowerCase()
-            .includes(keyword.toLowerCase()) ||
-          network.chainId.toLowerCase().includes(keyword.toLowerCase())
-      );
-    }, [pinnedNetworks, keyword]);
-
-    const [filteredMainnetChains, filteredTestnetChains] = useMemo(
-      () => [
-        filterChains(availableChainIds, keyword, "mainnet"),
-        filterChains(availableChainIds, keyword, "testnet"),
-      ],
-      [availableChainIds, keyword]
+  // Get chains info
+  const pinnedNetworks = getPinnedNetworks();
+  const filteredPinnedNetworks = useMemo(() => {
+    if (!keyword) return [...pinnedNetworks];
+    return pinnedNetworks.filter(
+      (network) =>
+        CHAIN_CONFIGS[network.chainId]?.prettyName
+          .toLowerCase()
+          .includes(keyword.toLowerCase()) ||
+        network.chainId.toLowerCase().includes(keyword.toLowerCase())
     );
+  }, [pinnedNetworks, keyword]);
 
-    const allNetworks = useMemo(
-      () => [
-        ...filteredPinnedNetworks.map((network) => network.chainId),
-        ...filteredMainnetChains,
-        ...filteredTestnetChains,
-      ],
-      [filteredPinnedNetworks, filteredMainnetChains, filteredTestnetChains]
-    );
+  const [filteredMainnetChains, filteredTestnetChains] = useMemo(
+    () => [
+      filterChains(availableChainIds, keyword, "mainnet"),
+      filterChains(availableChainIds, keyword, "testnet"),
+    ],
+    [availableChainIds, keyword]
+  );
 
-    // Drag and drop feature
+  const allNetworks = useMemo(
+    () => [
+      ...filteredPinnedNetworks.map((network) => network.chainId),
+      ...filteredMainnetChains,
+      ...filteredTestnetChains,
+    ],
+    [filteredPinnedNetworks, filteredMainnetChains, filteredTestnetChains]
+  );
 
-    const activeItem = useMemo(
-      () => filteredPinnedNetworks.find((item) => item.id === dndActive?.id),
-      [dndActive, filteredPinnedNetworks]
-    );
+  // Drag and drop feature
 
-    const sensors = useSensors(
-      useSensor(MouseSensor, {
-        activationConstraint: {
-          delay: 100,
-          tolerance: 5,
-        },
-      }),
-      useSensor(TouchSensor)
-    );
+  const activeItem = useMemo(
+    () => filteredPinnedNetworks.find((item) => item.id === dndActive?.id),
+    [dndActive, filteredPinnedNetworks]
+  );
 
-    const handleDragEnd = (event: DragEndEvent) => {
-      const { active, over } = event;
-
-      if (active.id !== over?.id) {
-        setPinnedNetworks(active.id.toString(), over?.id.toString());
-      }
-    };
-
-    // Navigate with arrow keys
-    const handleOnKeyEnter = useCallback(
-      (e: ReactKeyboardEvent<HTMLDivElement>) => {
-        if (!allNetworks.length) return;
-        switch (e.key) {
-          case "ArrowUp":
-          case "ArrowDown": {
-            const lastIndex = allNetworks.length - 1;
-            const nextCursor = getNextCursor(e.key, cursor, lastIndex);
-            const listItem = document.getElementById(`item-${nextCursor}`);
-            e.preventDefault();
-            setCursor(nextCursor);
-            listItem?.scrollIntoView({ block: "nearest", inline: "center" });
-            break;
-          }
-          case "Enter":
-            e.currentTarget.blur();
-            if (cursor) {
-              const selectedNetwork = allNetworks[cursor].toString();
-              selectChain(selectedNetwork);
-              onClose();
-            }
-            break;
-          default:
-            break;
-        }
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        delay: 100,
+        tolerance: 5,
       },
-      [allNetworks, cursor, selectChain, onClose, setCursor]
-    );
+    }),
+    useSensor(TouchSensor)
+  );
 
-    return (
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={({ active }) => {
-          setDndActive(active);
-        }}
-        onDragEnd={handleDragEnd}
-        onDragCancel={() => {
-          setDndActive(null);
-        }}
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      setPinnedNetworks(active.id.toString(), over?.id.toString());
+    }
+  };
+
+  // Navigate with arrow keys
+  const handleOnKeyEnter = useCallback(
+    (e: ReactKeyboardEvent<HTMLDivElement>) => {
+      if (!allNetworks.length) return;
+      switch (e.key) {
+        case "ArrowUp":
+        case "ArrowDown": {
+          const lastIndex = allNetworks.length - 1;
+          const nextCursor = getNextCursor(e.key, cursor, lastIndex);
+          const listItem = document.getElementById(`item-${nextCursor}`);
+          e.preventDefault();
+          setCursor(nextCursor);
+          listItem?.scrollIntoView({ block: "nearest", inline: "center" });
+          break;
+        }
+        case "Enter":
+          e.currentTarget.blur();
+          if (cursor) {
+            const selectedNetwork = allNetworks[cursor].toString();
+            selectChain(selectedNetwork);
+            onClose();
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    [allNetworks, cursor, selectChain, onClose, setCursor]
+  );
+
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={({ active }) => {
+        setDndActive(active);
+      }}
+      onDragEnd={handleDragEnd}
+      onDragCancel={() => {
+        setDndActive(null);
+      }}
+    >
+      <InputWithIcon
+        placeholder="Search by Name or Chain ID"
+        size="md"
+        value={keyword}
+        autoFocus
+        onChange={(e) => setKeyword(e.target.value)}
+        onKeyDown={handleOnKeyEnter}
+        amptrackSection="network-search"
+      />
+      <Accordion
+        variant="transparent"
+        allowMultiple
+        defaultIndex={[0, 1, 2]}
+        width="full"
+        p={0}
       >
-        <InputWithIcon
-          placeholder="Search by Name or Chain ID"
-          size="md"
-          value={keyword}
-          autoFocus
-          onChange={(e) => setKeyword(e.target.value)}
-          onKeyDown={handleOnKeyEnter}
-          amptrackSection="network-search"
-        />
-        <Accordion
-          variant="transparent"
-          allowMultiple
-          defaultIndex={[0, 1, 2]}
-          width="full"
-          p={0}
-        >
-          <AccordionItem hidden={filteredPinnedNetworks.length === 0}>
-            <AccordionButton p={0}>
-              <Flex mb={4} justifyContent="space-between" w="full">
-                <Heading as="h6" variant="h6">
-                  Pinned Network
-                </Heading>
-                <AccordionIcon color="gray.600" />
-              </Flex>
-            </AccordionButton>
-            <AccordionPanel p={0} mb={2}>
-              <SortableContext
-                items={filteredPinnedNetworks.map((item) => item.chainId)}
-                strategy={verticalListSortingStrategy}
-              >
-                {filteredPinnedNetworks.map((item, index) => (
-                  <NetworkDragItemWrapper
-                    key={item.chainId}
-                    chainId={item.chainId}
-                    currentChainId={currentChainId}
-                    index={index}
-                    cursor={cursor}
-                    setCursor={setCursor}
-                    onClose={onClose}
-                  />
-                ))}
-              </SortableContext>
-              <DragOverlay
-                dropAnimation={{
-                  sideEffects: defaultDropAnimationSideEffects({
-                    styles: {
-                      active: {
-                        opacity: "0.4",
-                      },
+        <AccordionItem hidden={filteredPinnedNetworks.length === 0}>
+          <AccordionButton p={0}>
+            <Flex mb={4} justifyContent="space-between" w="full">
+              <Heading as="h6" variant="h6">
+                Pinned Network
+              </Heading>
+              <AccordionIcon color="gray.600" />
+            </Flex>
+          </AccordionButton>
+          <AccordionPanel p={0} mb={2}>
+            <SortableContext
+              items={filteredPinnedNetworks.map((item) => item.chainId)}
+              strategy={verticalListSortingStrategy}
+            >
+              {filteredPinnedNetworks.map((item, index) => (
+                <NetworkDragItemWrapper
+                  key={item.chainId}
+                  chainId={item.chainId}
+                  currentChainId={currentChainId}
+                  index={index}
+                  cursor={cursor}
+                  setCursor={setCursor}
+                  onClose={onClose}
+                />
+              ))}
+            </SortableContext>
+            <DragOverlay
+              dropAnimation={{
+                sideEffects: defaultDropAnimationSideEffects({
+                  styles: {
+                    active: {
+                      opacity: "0.4",
                     },
-                  }),
-                }}
-              >
-                {activeItem ? (
-                  <NetworkDragItemWrapper
-                    key={activeItem.chainId}
-                    chainId={activeItem.chainId}
-                    currentChainId={currentChainId}
-                    cursor={cursor}
-                    setCursor={setCursor}
-                    onClose={onClose}
-                  />
-                ) : null}
-              </DragOverlay>
-            </AccordionPanel>
-          </AccordionItem>
-          {filteredPinnedNetworks.length > 0 && (
-            <Divider
-              borderColor="gray.700"
-              pt={filteredPinnedNetworks.length ? 2 : 0}
-              mb={4}
-            />
-          )}
-          <NetworkAccodion
-            title="Mainnet"
-            networks={filteredMainnetChains}
-            currentChainId={currentChainId}
-            cursor={cursor}
-            setCursor={setCursor}
-            startIndex={filteredPinnedNetworks.length}
-            onClose={onClose}
-          />
-          {filteredMainnetChains.length > 0 && (
-            <Divider
-              borderColor="gray.700"
-              pt={filteredPinnedNetworks.length ? 2 : 0}
-              mb={4}
-            />
-          )}
-          <NetworkAccodion
-            title="Testnet"
-            networks={filteredTestnetChains}
-            currentChainId={currentChainId}
-            cursor={cursor}
-            setCursor={setCursor}
-            startIndex={
-              filteredPinnedNetworks.length + filteredMainnetChains.length
-            }
-            onClose={onClose}
-          />
-        </Accordion>
-        {allNetworks.length === 0 && (
-          <EmptyState
-            my={0}
-            imageVariant="empty"
-            imageWidth={40}
-            textVariant="body2"
-            message="No matched result found.
-Please check your keyword."
+                  },
+                }),
+              }}
+            >
+              {activeItem ? (
+                <NetworkDragItemWrapper
+                  key={activeItem.chainId}
+                  chainId={activeItem.chainId}
+                  currentChainId={currentChainId}
+                  cursor={cursor}
+                  setCursor={setCursor}
+                  onClose={onClose}
+                />
+              ) : null}
+            </DragOverlay>
+          </AccordionPanel>
+        </AccordionItem>
+        {filteredPinnedNetworks.length > 0 && (
+          <Divider
+            borderColor="gray.700"
+            pt={filteredPinnedNetworks.length ? 2 : 0}
+            mb={4}
           />
         )}
-      </DndContext>
-    );
-  }
-);
+        <NetworkAccordion
+          title="Mainnet"
+          networks={filteredMainnetChains}
+          cursor={cursor}
+          setCursor={setCursor}
+          startIndex={filteredPinnedNetworks.length}
+          onClose={onClose}
+        />
+        {filteredMainnetChains.length > 0 && (
+          <Divider
+            borderColor="gray.700"
+            pt={filteredPinnedNetworks.length ? 2 : 0}
+            mb={4}
+          />
+        )}
+        <NetworkAccordion
+          title="Testnet"
+          networks={filteredTestnetChains}
+          cursor={cursor}
+          setCursor={setCursor}
+          startIndex={
+            filteredPinnedNetworks.length + filteredMainnetChains.length
+          }
+          onClose={onClose}
+        />
+      </Accordion>
+      {allNetworks.length === 0 && (
+        <EmptyState
+          my={0}
+          imageVariant="empty"
+          imageWidth={40}
+          textVariant="body2"
+          message="No matched result found.
+Please check your keyword."
+        />
+      )}
+    </DndContext>
+  );
+});

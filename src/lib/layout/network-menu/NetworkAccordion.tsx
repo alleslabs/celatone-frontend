@@ -3,53 +3,32 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Badge,
   Flex,
   Heading,
-  Text,
 } from "@chakra-ui/react";
 
 import { CHAIN_CONFIGS } from "config/chain";
 import type { Option } from "lib/types";
 
-import { NetworkCard } from "./NetworkCard";
+import { NetworkSubsection } from "./NetworkSubsection";
 
-interface NetworkAccodionProps {
+interface NetworkAccordionProps {
   title: string;
   networks: string[];
-  currentChainId: string;
   cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
   startIndex: number;
   onClose: () => void;
 }
 
-interface SectionTitleProps {
-  networks: string[];
-  title: string;
-  mb?: number;
-}
-
-const SectionTitle = ({ networks, title, mb = 4 }: SectionTitleProps) => (
-  <Flex alignItems="center" mb={mb}>
-    <Text color="text.dark" fontWeight={600} variant="body2">
-      {title}
-    </Text>
-    <Badge variant="gray" ml={2}>
-      {networks.length}
-    </Badge>
-  </Flex>
-);
-
-export const NetworkAccodion = ({
+export const NetworkAccordion = ({
   title,
   networks,
-  currentChainId,
   cursor,
   setCursor,
   startIndex,
   onClose,
-}: NetworkAccodionProps) => {
+}: NetworkAccordionProps) => {
   const nonInitiaNetworks = networks.filter(
     (chainId) => CHAIN_CONFIGS[chainId]?.extra.layer === undefined
   );
@@ -71,58 +50,34 @@ export const NetworkAccodion = ({
         </Flex>
       </AccordionButton>
       <AccordionPanel p={0}>
-        <Flex direction="column" gap={1} mb={4}>
-          {nonInitiaNetworks.map((chainId, index) => (
-            <NetworkCard
-              key={chainId}
-              image={CHAIN_CONFIGS[chainId]?.logoUrl}
-              chainId={chainId}
-              isSelected={chainId === currentChainId}
-              index={startIndex + index}
-              cursor={cursor}
-              setCursor={setCursor}
-              onClose={onClose}
-            />
-          ))}
-        </Flex>
+        <NetworkSubsection
+          networks={nonInitiaNetworks}
+          cursor={cursor}
+          setCursor={setCursor}
+          subsectionStartIndex={startIndex}
+          onClose={onClose}
+        />
         {l1Networks.length > 0 && (
-          <Flex direction="column" gap={1} mb={4}>
-            <SectionTitle networks={l1Networks} title="Initia (Layer 1)" />
-            {l1Networks.map((chainId, index) => (
-              <NetworkCard
-                key={chainId}
-                image={CHAIN_CONFIGS[chainId]?.logoUrl}
-                chainId={chainId}
-                isSelected={chainId === currentChainId}
-                index={startIndex + nonInitiaNetworks.length + index}
-                cursor={cursor}
-                setCursor={setCursor}
-                onClose={onClose}
-              />
-            ))}
-          </Flex>
+          <NetworkSubsection
+            title="Initia (Layer 1)"
+            networks={l1Networks}
+            cursor={cursor}
+            setCursor={setCursor}
+            subsectionStartIndex={startIndex + nonInitiaNetworks.length}
+            onClose={onClose}
+          />
         )}
         {l2Networks.length > 0 && (
-          <Flex direction="column" gap={1} mb={4}>
-            <SectionTitle networks={l2Networks} title="Minitia (Layer 2)" />
-            {l2Networks.map((chainId, index) => (
-              <NetworkCard
-                key={chainId}
-                image={CHAIN_CONFIGS[chainId]?.logoUrl}
-                chainId={chainId}
-                isSelected={chainId === currentChainId}
-                index={
-                  startIndex +
-                  nonInitiaNetworks.length +
-                  l1Networks.length +
-                  index
-                }
-                cursor={cursor}
-                setCursor={setCursor}
-                onClose={onClose}
-              />
-            ))}
-          </Flex>
+          <NetworkSubsection
+            title="Minitia (Layer 2)"
+            networks={l2Networks}
+            cursor={cursor}
+            setCursor={setCursor}
+            subsectionStartIndex={
+              startIndex + nonInitiaNetworks.length + l1Networks.length
+            }
+            onClose={onClose}
+          />
         )}
       </AccordionPanel>
     </AccordionItem>

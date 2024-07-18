@@ -23,13 +23,8 @@ import { CustomIcon } from "lib/components/icon";
 
 import { NetworkMenuBody } from "./NetworkMenuBody";
 
-const NetworkButton = ({
-  isMobile,
-  currentChainId,
-}: {
-  isMobile: boolean;
-  currentChainId: string;
-}) => {
+const NetworkButton = ({ isMobile }: { isMobile: boolean }) => {
+  const { currentChainId } = useCelatoneApp();
   const width = isMobile ? "220px" : "170px";
   return (
     <MenuButton
@@ -67,7 +62,6 @@ const NetworkButton = ({
 export const NetworkMenu = observer(() => {
   const isMobile = useMobile();
   const isMac = useIsMac();
-  const { currentChainId } = useCelatoneApp();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   useEffect(() => {
@@ -96,7 +90,7 @@ export const NetworkMenu = observer(() => {
       }}
       autoSelect={!isMobile}
     >
-      <NetworkButton isMobile={isMobile} currentChainId={currentChainId} />
+      <NetworkButton isMobile={isMobile} />
       <Drawer isOpen={isOpen} onClose={onClose} placement="right">
         <DrawerOverlay />
         <DrawerContent h="100%" background="background.main">
@@ -122,10 +116,7 @@ export const NetworkMenu = observer(() => {
           <DrawerCloseButton color="text.dark" />
           <DrawerBody overflow="scroll" px={4} pb={6}>
             <Flex direction="column" gap={6}>
-              <NetworkMenuBody
-                currentChainId={currentChainId}
-                onClose={onClose}
-              />
+              <NetworkMenuBody onClose={onClose} />
             </Flex>
           </DrawerBody>
         </DrawerContent>
