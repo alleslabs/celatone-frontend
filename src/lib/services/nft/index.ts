@@ -253,10 +253,10 @@ export const useNftsByAccountByCollectionSequencer = (
   return useQuery<NftsByAccountResponse>(
     [
       CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION,
+      lcdEndpoint,
       accountAddress,
       collectionAddress,
       search,
-      lcdEndpoint,
     ],
     async () =>
       getNftsByAccountSequencer(lcdEndpoint, accountAddress, collectionAddress),

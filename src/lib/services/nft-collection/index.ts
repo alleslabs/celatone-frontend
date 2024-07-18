@@ -212,9 +212,9 @@ export const useCollectionsByAccount = (accountAddress: HexAddr) => {
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTIONS_BY_ACCOUNT,
       chainConfig.indexer,
-      accountAddress,
       lcdEndpoint,
       tier,
+      accountAddress,
     ],
     async () =>
       handleQueryByTier({

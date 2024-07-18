@@ -22,7 +22,8 @@ export const NftsByCollectionSequencer = ({
       nfts.filter((nft) =>
         nft.tokenId.toLowerCase().includes(debouncedSearch.toLowerCase())
       ),
-    [debouncedSearch, nfts]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [debouncedSearch, JSON.stringify(nfts)]
   );
 
   return (
