@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { useNftsByAccountByCollection } from "lib/services/nft";
+import { useNftsByAccountByCollectionSequencer } from "lib/services/nft";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 
 import { FilterItem } from "./FilterItem";
@@ -26,11 +26,8 @@ export const NftsSectionSequencer = ({
   totalData = 0,
 }: NftsSectionSequencerProps) => {
   const isMobile = useMobile();
-  const { data: accountNfts, isLoading } = useNftsByAccountByCollection(
-    address,
-    undefined,
-    undefined
-  );
+  const { data: accountNfts, isLoading } =
+    useNftsByAccountByCollectionSequencer(address, undefined, undefined);
 
   const collections = groupBy(accountNfts?.nfts, "collectionAddress");
 

@@ -9,15 +9,13 @@ import type {
   NftsByAccountResponse,
   NftTransactions,
 } from "../types";
-import { handleQueryByTier } from "../utils";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
   useLcdEndpoint,
   useNftConfig,
-  useTierConfig,
 } from "lib/app-provider";
-import type { HexAddr, HexAddr32, MutateEvent, Option } from "lib/types";
+import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 
 import {
   getMetadata,
@@ -206,8 +204,8 @@ export const useNftsCountByAccount = (
 
 export const useNftsByAccountByCollection = (
   accountAddress: HexAddr,
-  limit: Option<number>,
-  offset: Option<number>,
+  limit: number,
+  offset: number,
   search = "",
   collectionAddress?: HexAddr32,
   options: Pick<
@@ -216,8 +214,6 @@ export const useNftsByAccountByCollection = (
   > = {}
 ) => {
   const { chainConfig } = useCelatoneApp();
-  const { tier } = useTierConfig();
-  const lcdEndpoint = useLcdEndpoint();
 
   return useQuery<NftsByAccountResponse>(
     [
@@ -230,30 +226,44 @@ export const useNftsByAccountByCollection = (
       search,
     ],
     async () =>
-      handleQueryByTier({
-        tier,
-        threshold: "sequencer",
-        querySequencer: () =>
-          getNftsByAccountSequencer(
-            lcdEndpoint,
-            accountAddress,
-            limit,
-            collectionAddress
-          ),
-        queryFull: () =>
-          getNftsByAccount(
-            chainConfig.indexer,
-            accountAddress,
-            limit ?? 10,
-            offset ?? 0,
-            collectionAddress,
-            search
-          ),
-      }),
+      getNftsByAccount(
+        chainConfig.indexer,
+        accountAddress,
+        limit,
+        offset,
+        collectionAddress,
+        search
+      ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
       ...options,
+    }
+  );
+};
+
+export const useNftsByAccountByCollectionSequencer = (
+  accountAddress: HexAddr,
+  search = "",
+  collectionAddress?: HexAddr32,
+  enabled = true
+) => {
+  const lcdEndpoint = useLcdEndpoint();
+
+  return useQuery<NftsByAccountResponse>(
+    [
+      CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION,
+      accountAddress,
+      collectionAddress,
+      search,
+      lcdEndpoint,
+    ],
+    async () =>
+      getNftsByAccountSequencer(lcdEndpoint, accountAddress, collectionAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };

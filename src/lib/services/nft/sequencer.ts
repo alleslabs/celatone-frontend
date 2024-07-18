@@ -2,14 +2,13 @@ import axios from "axios";
 
 import type { Nft } from "../types";
 import { zNftsByAccountResponseSequencer } from "../types";
-import type { HexAddr, Nullable } from "lib/types";
+import type { HexAddr, HexAddr32, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getNftsByAccountSequencer = async (
   endpoint: string,
   accountAddress: HexAddr,
-  limit?: number,
-  collectionAddress?: string
+  collectionAddress?: HexAddr32
 ) => {
   const nfts: Nft[] = [];
 
@@ -37,7 +36,7 @@ export const getNftsByAccountSequencer = async (
   await fetchFn(null);
 
   return {
-    nfts: limit ? nfts.slice(0, limit) : nfts,
+    nfts,
     total: nfts.length,
   };
 };

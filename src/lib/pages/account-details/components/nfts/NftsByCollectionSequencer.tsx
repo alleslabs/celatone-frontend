@@ -1,5 +1,5 @@
 import { Stack } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
@@ -17,6 +17,14 @@ export const NftsByCollectionSequencer = ({
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
 
+  const nftsFiltered = useMemo(
+    () =>
+      nfts.filter((nft) =>
+        nft.tokenId.toLowerCase().includes(debouncedSearch.toLowerCase())
+      ),
+    [debouncedSearch, nfts]
+  );
+
   return (
     <Stack spacing="24px" w="full">
       <InputWithIcon
@@ -28,9 +36,7 @@ export const NftsByCollectionSequencer = ({
         amptrackSection="nft-account-detail-tokenid-search"
       />
       <NftList
-        nfts={nfts.filter((nft) =>
-          nft.tokenId.toLowerCase().includes(debouncedSearch.toLowerCase())
-        )}
+        nfts={nftsFiltered}
         emptyState={
           <EmptyState
             message={

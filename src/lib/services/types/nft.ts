@@ -169,7 +169,16 @@ const zNftByAccountResponseSequencer = z
     owner_addr: zHexAddr,
     nft: zNftSequencer,
   })
-  .transform(snakeToCamel);
+  .transform((val) => ({
+    uri: val.nft.uri,
+    tokenId: val.nft.token_id,
+    description: val.nft.description,
+    isBurned: false,
+    ownerAddress: val.owner_addr,
+    nftAddress: val.object_addr,
+    collectionAddress: val.collection_addr,
+    collectionName: val.collection_name,
+  }));
 export type NftByAccountResponseSequencer = z.infer<
   typeof zNftByAccountResponseSequencer
 >;
@@ -180,23 +189,6 @@ export const zNftsByAccountResponseSequencer = z
     pagination: zPagination,
   })
   .transform((val) => ({
-    nfts: val.tokens.map(
-      ({
-        nft,
-        ownerAddr,
-        objectAddr,
-        collectionAddr,
-        collectionName,
-      }: NftByAccountResponseSequencer) => ({
-        uri: nft.uri,
-        tokenId: nft.tokenId,
-        description: nft.description,
-        isBurned: false,
-        ownerAddress: ownerAddr,
-        nftAddress: objectAddr,
-        collectionAddress: collectionAddr,
-        collectionName,
-      })
-    ),
+    nfts: val.tokens,
     pagination: val.pagination,
   }));
