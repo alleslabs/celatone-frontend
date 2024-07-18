@@ -128,7 +128,6 @@ const ProposalToWhitelist = () => {
         title,
         description,
         changesValue: JSON.stringify({
-          ...uploadAccessParams,
           permission: uploadAccessParams?.isPermissionedNetwork
             ? AccessConfigPermission.ANY_OF_ADDRESSES
             : AccessConfigPermission.EVERYBODY,
