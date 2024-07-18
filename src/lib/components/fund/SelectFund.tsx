@@ -7,11 +7,10 @@ import type { Control, UseFormSetValue } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
 
 import { useCurrentChain } from "lib/app-provider";
-import type { AssetOption } from "lib/components/forms";
 import { AssetInput, ControllerInput } from "lib/components/forms";
 import { useAssetInfoList, useAssetInfos } from "lib/services/assetService";
 import { useBalances } from "lib/services/bank";
-import type { BechAddr20, Token, U, USD } from "lib/types";
+import type { AssetOption, BechAddr20, Token, U, USD } from "lib/types";
 import {
   coinToTokenWithValue,
   formatPrice,
