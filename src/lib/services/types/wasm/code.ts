@@ -11,10 +11,15 @@ import {
 } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
 
-const zUploadAccessParams = z.object({
-  permission: z.nativeEnum(AccessConfigPermission),
-  addresses: zBechAddr.array(),
-});
+const zUploadAccessParams = z
+  .object({
+    permission: z.nativeEnum(AccessConfigPermission),
+    addresses: zBechAddr.array(),
+  })
+  .transform((val) => ({
+    isPermissionedNetwork: val.permission === AccessConfigPermission.EVERYBODY,
+    ...val,
+  }));
 export type UploadAccessParams = z.infer<typeof zUploadAccessParams>;
 
 export const zUploadAccessParamsLcd = z
@@ -23,8 +28,7 @@ export const zUploadAccessParamsLcd = z
       code_upload_access: zUploadAccessParams,
     }),
   })
-  .transform(snakeToCamel)
-  .transform<UploadAccessParams>((val) => val.params.codeUploadAccess);
+  .transform<UploadAccessParams>((val) => val.params.code_upload_access);
 
 export const zUploadAccessParamsSubspaceLcd = z
   .object({

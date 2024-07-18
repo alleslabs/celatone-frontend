@@ -6,7 +6,6 @@ import { CustomIcon } from "lib/components/icon";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { UploadAccessParams } from "lib/services/types";
 import type { Option } from "lib/types";
-import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
 
 interface MigrateOptionsProps {
@@ -26,14 +25,13 @@ export const MigrateOptions = ({
   const {
     chainConfig: { prettyName: chainPrettyName },
   } = useCelatoneApp();
-  const isPermissionedNetwork =
-    uploadAccessParams &&
-    uploadAccessParams.permission !== AccessConfigPermission.EVERYBODY;
-  const isAllowed = resolvePermission(
-    address,
-    uploadAccessParams?.permission,
-    uploadAccessParams?.addresses
-  );
+  const isAllowed =
+    !uploadAccessParams?.isPermissionedNetwork ||
+    resolvePermission(
+      address,
+      uploadAccessParams?.permission,
+      uploadAccessParams?.addresses
+    );
   return (
     <>
       <Flex direction="column" alignItems="center" gap={4} mb={6}>
@@ -62,7 +60,7 @@ export const MigrateOptions = ({
         disabled={!isAdmin || !isAllowed}
         title="Upload new WASM File"
         description={
-          isPermissionedNetwork
+          uploadAccessParams?.isPermissionedNetwork
             ? "Available for whitelisted addresses only"
             : "Deploy contract by uploading new Wasm file"
         }
