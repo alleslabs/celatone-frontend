@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 
 import { CHAIN_CONFIGS } from "config/chain";
-import { useInitia } from "lib/app-provider";
 import type { Option } from "lib/types";
 
 import { NetworkCard } from "./NetworkCard";
@@ -53,7 +52,9 @@ export const NetworkAccodion = ({
   startIndex,
   onClose,
 }: NetworkAccodionProps) => {
-  const isInitia = useInitia();
+  const nonInitiaNetworks = normalNetworks.filter(
+    (chainId) => CHAIN_CONFIGS[chainId]?.extra.layer === undefined
+  );
   const l1Networks = normalNetworks.filter(
     (chainId) => CHAIN_CONFIGS[chainId]?.extra.layer === "1"
   );
@@ -64,7 +65,7 @@ export const NetworkAccodion = ({
   return (
     <AccordionItem hidden={isHidden}>
       <AccordionButton p={0}>
-        <Flex mb={4} justifyContent="space-between" w="full">
+        <Flex justifyContent="space-between" w="full" mb={4}>
           <Heading as="h6" variant="h6">
             {title}
           </Heading>
@@ -72,52 +73,52 @@ export const NetworkAccodion = ({
         </Flex>
       </AccordionButton>
       <AccordionPanel p={0}>
-        {isInitia ? (
-          <>
-            {l1Networks.length > 0 && (
-              <Flex direction="column" gap={1} mb={4}>
-                <SectionTitle networks={l1Networks} title="Initia (Layer 1)" />
-                {l1Networks.map((chainId, index) => (
-                  <NetworkCard
-                    key={chainId}
-                    image={CHAIN_CONFIGS[chainId]?.logoUrl}
-                    chainId={chainId}
-                    isSelected={chainId === currentChainId}
-                    index={startIndex + index}
-                    cursor={cursor}
-                    setCursor={setCursor}
-                    onClose={onClose}
-                  />
-                ))}
-              </Flex>
-            )}
-            {l2Networks.length > 0 && (
-              <Flex direction="column" gap={1}>
-                <SectionTitle networks={l2Networks} title="Minitia (Layer 2)" />
-                {l2Networks.map((chainId, index) => (
-                  <NetworkCard
-                    key={chainId}
-                    image={CHAIN_CONFIGS[chainId]?.logoUrl}
-                    chainId={chainId}
-                    isSelected={chainId === currentChainId}
-                    index={startIndex + l1Networks.length + index}
-                    cursor={cursor}
-                    setCursor={setCursor}
-                    onClose={onClose}
-                  />
-                ))}
-              </Flex>
-            )}
-          </>
-        ) : (
-          <Flex direction="column" gap={1}>
-            {normalNetworks.map((chainId, index) => (
+        <Flex direction="column" gap={1} mb={4}>
+          {nonInitiaNetworks.map((chainId, index) => (
+            <NetworkCard
+              key={chainId}
+              image={CHAIN_CONFIGS[chainId]?.logoUrl}
+              chainId={chainId}
+              isSelected={chainId === currentChainId}
+              index={startIndex + index}
+              cursor={cursor}
+              setCursor={setCursor}
+              onClose={onClose}
+            />
+          ))}
+        </Flex>
+        {l1Networks.length > 0 && (
+          <Flex direction="column" gap={1} mb={4}>
+            <SectionTitle networks={l1Networks} title="Initia (Layer 1)" />
+            {l1Networks.map((chainId, index) => (
               <NetworkCard
                 key={chainId}
                 image={CHAIN_CONFIGS[chainId]?.logoUrl}
                 chainId={chainId}
                 isSelected={chainId === currentChainId}
-                index={startIndex + index}
+                index={startIndex + nonInitiaNetworks.length + index}
+                cursor={cursor}
+                setCursor={setCursor}
+                onClose={onClose}
+              />
+            ))}
+          </Flex>
+        )}
+        {l2Networks.length > 0 && (
+          <Flex direction="column" gap={1} mb={4}>
+            <SectionTitle networks={l2Networks} title="Minitia (Layer 2)" />
+            {l2Networks.map((chainId, index) => (
+              <NetworkCard
+                key={chainId}
+                image={CHAIN_CONFIGS[chainId]?.logoUrl}
+                chainId={chainId}
+                isSelected={chainId === currentChainId}
+                index={
+                  startIndex +
+                  nonInitiaNetworks.length +
+                  l1Networks.length +
+                  index
+                }
                 cursor={cursor}
                 setCursor={setCursor}
                 onClose={onClose}
