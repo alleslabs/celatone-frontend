@@ -80,8 +80,8 @@ export const NetworkMenuBody = observer(
 
     // Get chains info
     const filteredChains = useMemo(() => {
-      const filterChains = (type: "mainnet" | "testnet") => {
-        return availableChainIds
+      const filterChains = (type: "mainnet" | "testnet") =>
+        availableChainIds
           .filter((chain) => CHAIN_CONFIGS[chain]?.networkType === type)
           .filter(
             (network) =>
@@ -91,7 +91,6 @@ export const NetworkMenuBody = observer(
                 .includes(keyword.toLowerCase()) ||
               network.toLowerCase().includes(keyword.toLowerCase())
           );
-      };
       return {
         testnet: filterChains("testnet"),
         mainnet: filterChains("mainnet"),

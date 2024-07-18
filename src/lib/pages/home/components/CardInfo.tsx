@@ -13,7 +13,6 @@ const cardProps: SystemStyleObject = {
   alignItems: "center",
   height: "100%",
   cursor: "pointer",
-  boxShadow: "0px 4px 1px 0px var(--chakra-colors-gray-700)",
 };
 
 interface CardInfoProps {

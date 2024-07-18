@@ -11,9 +11,13 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import {
+  useBlockTimeAverageSequencer,
+  useLatestBlockLcd,
+} from "lib/services/block";
 import { useOverviewsStats } from "lib/services/stats";
 
-import { DevShortcut, TopDecorations } from "./components";
+import { DevShortcut } from "./components";
 import { CardInfo } from "./components/CardInfo";
 
 const txInfo = {
@@ -40,7 +44,12 @@ export const HomeSequencer = () => {
     theme,
   } = useCelatoneApp();
 
-  const { data: overviewsStats, isLoading } = useOverviewsStats();
+  const { data: overviewsStats, isLoading: isOverviewsStatesLoading } =
+    useOverviewsStats();
+  const { data: latestBlock, isLoading: isLatestBlockLoading } =
+    useLatestBlockLcd();
+  const { data: blockTimeAverage, isLoading: isBlockTimeAverageLoading } =
+    useBlockTimeAverageSequencer();
 
   const toTxs = () =>
     navigate({
@@ -56,18 +65,11 @@ export const HomeSequencer = () => {
     <PageContainer>
       <Flex
         direction="column"
-        p={{ base: 3, md: 12 }}
         mb={12}
-        borderRadius="12px"
-        border="0px 0px 4px 0px"
-        borderColor="gray.800"
-        boxShadow="0px 6px 1px 0px var(--chakra-colors-gray-800)"
-        bgColor="gray.900"
         position="relative"
         overflow="hidden"
         sx={{ "& > div": { zIndex: 1 } }}
       >
-        <TopDecorations />
         <Flex
           justifyContent="space-between"
           alignItems="center"
@@ -86,22 +88,22 @@ export const HomeSequencer = () => {
           <CardInfo
             title={txInfo.title}
             tooltip={txInfo.tooltip}
-            value={overviewsStats?.txCount.toLocaleString()}
-            isLoading={isLoading}
+            value={overviewsStats?.txCount?.toString()}
+            isLoading={isOverviewsStatesLoading}
             navigate={toTxs}
           />
           <CardInfo
             title={blockInfo.title}
             tooltip={blockInfo.tooltip}
-            value={overviewsStats?.latestBlock.toString()}
-            isLoading={isLoading}
+            value={latestBlock?.toString()}
+            isLoading={isLatestBlockLoading}
             navigate={toBlocks}
           />
           <CardInfo
             title={blockTimeInfo.title}
             tooltip={blockTimeInfo.tooltip}
-            value={overviewsStats?.blockTime.toFixed(3).concat("s")}
-            isLoading={isLoading}
+            value={blockTimeAverage?.avgBlockTime?.toFixed(3).concat("s")}
+            isLoading={isBlockTimeAverageLoading}
             navigate={toTxs}
           />
         </Flex>
@@ -109,6 +111,9 @@ export const HomeSequencer = () => {
       {!isMobile && (
         <Box as="section" mb="48px">
           <Flex gap={4} direction="column">
+            <Heading as="h5" variant="h5">
+              Dev Shortcuts
+            </Heading>
             <ConnectWalletAlert
               title={`Connect wallet to start using ${theme.branding.seo.appName}`}
               subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."

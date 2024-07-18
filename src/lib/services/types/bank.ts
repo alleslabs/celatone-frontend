@@ -7,7 +7,7 @@ export const zBalancesResponse = z.array(zCoin);
 
 export const zBalancesReponseLcd = z.object({
   balances: zBalancesResponse,
-  pagination: zPagination,
+  pagination: zPagination.nullable(),
 });
 
 export interface BalanceInfos {

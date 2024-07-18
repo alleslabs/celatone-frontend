@@ -4,7 +4,7 @@ import { generateTheme } from "./utils";
 
 const INITIA_BASE_THEME: ThemeConfig = {
   branding: {
-    logo: "https://assets.alleslabs.dev/integrations/initia/logo.png",
+    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/scan.svg",
     favicon: "https://assets.alleslabs.dev/integrations/initia/favicon.svg",
     seo: {
       appName: "Initia",
@@ -39,7 +39,7 @@ const INITIA_BASE_THEME: ThemeConfig = {
     },
     background: {
       main: "#070708",
-      overlay: "rgba(17, 17, 23, 0.7)",
+      overlay: "rgba(7, 7, 8, 0.7)",
     },
     text: {
       main: "#F5F5F5",
@@ -71,12 +71,12 @@ const INITIA_BASE_THEME: ThemeConfig = {
     },
     gray: {
       100: "#F5F5F5",
-      400: "#B7B7B7",
+      400: "#D1D9E0",
       500: "#A1A6AA",
-      600: "#7C7F83",
-      700: "#3B3E41",
-      800: "#26282B",
-      900: "#151617",
+      600: "#757C82",
+      700: "#303437",
+      800: "#222426",
+      900: "#161717",
     },
   },
   jsonTheme: "monokai",
@@ -91,10 +91,6 @@ const INITIA_BASE_THEME: ThemeConfig = {
       "https://assets.alleslabs.dev/integrations/initia/illustration/search-empty.svg",
     disconnected:
       "https://assets.alleslabs.dev/integrations/initia/illustration/disconnected.svg",
-    overview: {
-      // Fill image url
-      main: "",
-    },
   },
   socialMedia: {
     website: "https://initia.tech/",

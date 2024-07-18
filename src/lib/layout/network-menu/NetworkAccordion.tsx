@@ -38,7 +38,7 @@ const SectionTitle = ({ networks, title, mb = 4 }: SectionTitleProps) => (
       {title}
     </Text>
     <Badge variant="gray" ml={2}>
-      {networks.length !== undefined ? networks.length : "N/A"}
+      {networks.length}
     </Badge>
   </Flex>
 );

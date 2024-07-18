@@ -57,7 +57,7 @@ import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
 import { useGovParamsDeprecated } from "lib/model/proposal";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import type { BechAddr, SimulateStatus, UploadSectionState } from "lib/types";
-import { AccessConfigPermission, AccessType } from "lib/types";
+import { AccessType } from "lib/types";
 import {
   composeStoreCodeProposalMsg,
   getAmountToVote,
@@ -99,8 +99,7 @@ const StoreCodeProposal = () => {
   const { data: govParams } = useGovParamsDeprecated();
   const { data: uploadAccessParams } = useUploadAccessParamsLcd();
   const minDeposit = govParams?.depositParams.minDeposit;
-  const isPermissionless =
-    uploadAccessParams?.permission === AccessConfigPermission.EVERYBODY;
+
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const submitStoreCodeProposalTx = useSubmitStoreCodeProposalTx();
   const { broadcast } = useTxBroadcast();
@@ -599,7 +598,9 @@ const StoreCodeProposal = () => {
               marginTop="128px"
               metadata={SIDEBAR_STORE_CODE_DETAILS(
                 prettyName,
-                isPermissionless ? "permissionless" : "permissioned"
+                uploadAccessParams?.isPermissionedNetwork
+                  ? "permissioned"
+                  : "permissionless"
               )}
             />
           </GridItem>
