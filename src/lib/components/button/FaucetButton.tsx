@@ -23,9 +23,11 @@ export const FaucetBtn = () => {
 
   return enabled ? (
     <Button
-      variant="outline-gray"
+      variant="ghost-gray"
       leftIcon={<CustomIcon name="faucet" />}
       onClick={onClick}
+      h="full"
+      borderRadius={0}
     >
       Faucet
     </Button>

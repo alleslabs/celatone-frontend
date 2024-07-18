@@ -7,6 +7,7 @@ import { Drawer } from "./drawer";
 import { Form } from "./form";
 import { Heading } from "./heading";
 import { Input } from "./input";
+import { Kbd } from "./kbd";
 import { Link } from "./link";
 import { Menu } from "./menu";
 import { Modal } from "./modal";
@@ -29,6 +30,7 @@ export const components = {
   Link,
   Form,
   Input,
+  Kbd,
   Modal,
   Radio,
   Select,
