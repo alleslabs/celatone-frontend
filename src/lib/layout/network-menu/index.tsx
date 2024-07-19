@@ -9,8 +9,6 @@ import {
   Flex,
   Heading,
   Kbd,
-  Menu,
-  MenuButton,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -18,46 +16,10 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 
 import { AmpEvent } from "lib/amplitude";
-import { useCelatoneApp, useIsMac, useMobile } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon";
+import { useIsMac, useMobile } from "lib/app-provider";
 
+import { NetworkButton } from "./NetworkButton";
 import { NetworkMenuBody } from "./NetworkMenuBody";
-
-const NetworkButton = ({ isMobile }: { isMobile: boolean }) => {
-  const { currentChainId } = useCelatoneApp();
-  const width = isMobile ? "220px" : "170px";
-  return (
-    <MenuButton
-      px={4}
-      py={2}
-      h="full"
-      _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
-      w={width}
-      borderRadius={isMobile ? "8px" : 0}
-      borderWidth={isMobile ? "1px" : 0}
-      borderColor={isMobile ? "gray.700" : "transparent"}
-    >
-      <Flex
-        alignItems="center"
-        justifyContent="space-between"
-        display="flex"
-        ml={1}
-      >
-        <Text
-          textOverflow="ellipsis"
-          variant="body2"
-          overflow="hidden"
-          whiteSpace="nowrap"
-          maxW={width}
-        >
-          {currentChainId}
-        </Text>
-        <CustomIcon name="chevron-down" color="gray.600" />
-      </Flex>
-    </MenuButton>
-  );
-};
 
 export const NetworkMenu = observer(() => {
   const isMobile = useMobile();
@@ -83,14 +45,14 @@ export const NetworkMenu = observer(() => {
   }, [isMac, isOpen, onClose, onOpen]);
 
   return (
-    <Menu
-      onOpen={() => {
-        track(AmpEvent.USE_SELECT_NETWORK);
-        onOpen();
-      }}
-      autoSelect={!isMobile}
-    >
-      <NetworkButton isMobile={isMobile} />
+    <>
+      <NetworkButton
+        isMobile={isMobile}
+        onClick={() => {
+          track(AmpEvent.USE_SELECT_NETWORK);
+          onOpen();
+        }}
+      />
       <Drawer isOpen={isOpen} onClose={onClose} placement="right">
         <DrawerOverlay />
         <DrawerContent h="100%" background="background.main">
@@ -119,6 +81,6 @@ export const NetworkMenu = observer(() => {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-    </Menu>
+    </>
   );
 });
