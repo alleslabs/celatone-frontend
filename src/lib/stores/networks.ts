@@ -9,7 +9,6 @@ export interface Network {
   name: string;
   chainId: string;
   logo?: string;
-  id: string;
 }
 
 export class NetworkStore {

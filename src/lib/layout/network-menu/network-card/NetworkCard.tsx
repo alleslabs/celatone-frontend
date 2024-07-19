@@ -4,20 +4,18 @@ import { useCallback } from "react";
 
 import { NetworkImage } from "../NetworkImage";
 import { CHAIN_CONFIGS } from "config/chain";
-import { useSelectChain } from "lib/app-provider";
+import { useCelatoneApp, useSelectChain } from "lib/app-provider";
 import type { Option } from "lib/types";
 
 import { NetworkIcons } from "./NetworkIcons";
 
 interface NetworkCardProps {
   chainId: string;
-  isSelected: boolean;
-  isDraggable?: boolean;
-  image?: string;
   index?: number;
   cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
   onClose: () => void;
+  isDraggable?: boolean;
 }
 
 const getCardBackground = (
@@ -46,15 +44,14 @@ const getDisplayCursor = (isDraggable: boolean, isSelected: boolean) => {
 
 export const NetworkCard = observer(
   ({
-    image,
     chainId,
-    isSelected,
-    isDraggable = false,
     index,
     cursor,
     setCursor,
     onClose,
+    isDraggable = false,
   }: NetworkCardProps) => {
+    const { currentChainId } = useCelatoneApp();
     const selectChain = useSelectChain();
 
     const handleClick = useCallback(
@@ -66,6 +63,7 @@ export const NetworkCard = observer(
       [selectChain, chainId, onClose]
     );
 
+    const isSelected = chainId === currentChainId;
     return (
       <Flex
         id={`item-${index}`}
@@ -99,7 +97,7 @@ export const NetworkCard = observer(
           left="0px"
         />
         <Flex alignItems="center" gap={4}>
-          <NetworkImage chainId={chainId} image={image} />
+          <NetworkImage chainId={chainId} />
           <Flex direction="column">
             <Text variant="body2" fontWeight={600}>
               {CHAIN_CONFIGS[chainId]?.prettyName || chainId}
@@ -112,7 +110,6 @@ export const NetworkCard = observer(
         <NetworkIcons
           chainId={chainId}
           isSelected={isSelected}
-          image={image}
           isDraggable={isDraggable}
         />
       </Flex>

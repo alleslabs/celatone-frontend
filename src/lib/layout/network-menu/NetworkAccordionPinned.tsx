@@ -22,8 +22,8 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 
-import { useCelatoneApp } from "lib/app-provider";
 import { useNetworkStore } from "lib/providers/store";
 import type { Network } from "lib/stores/networks";
 import type { Nullable, Option } from "lib/types";
@@ -43,13 +43,12 @@ export const NetworkAccodionPinned = ({
   setCursor,
   onClose,
 }: NetworkAccodionPinnedProps) => {
-  const { currentChainId } = useCelatoneApp();
   const { setPinnedNetworks } = useNetworkStore();
   const [dndActive, setDndActive] = useState<Nullable<Active>>(null);
 
   // Drag and drop feature
   const activeItem = useMemo(
-    () => pinnedNetworks.find((item) => item.id === dndActive?.id),
+    () => pinnedNetworks.find((item) => item.chainId === dndActive?.id),
     [dndActive, pinnedNetworks]
   );
 
@@ -60,7 +59,12 @@ export const NetworkAccodionPinned = ({
         tolerance: 5,
       },
     }),
-    useSensor(TouchSensor)
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 100,
+        tolerance: 5,
+      },
+    })
   );
 
   return (
@@ -98,7 +102,6 @@ export const NetworkAccodionPinned = ({
               <NetworkCardDraggable
                 key={item.chainId}
                 chainId={item.chainId}
-                isSelected={item.chainId === currentChainId}
                 index={index}
                 cursor={cursor}
                 setCursor={setCursor}
@@ -106,28 +109,31 @@ export const NetworkAccodionPinned = ({
               />
             ))}
           </SortableContext>
-          <DragOverlay
-            dropAnimation={{
-              sideEffects: defaultDropAnimationSideEffects({
-                styles: {
-                  active: {
-                    opacity: "0.4",
+          {createPortal(
+            <DragOverlay
+              dropAnimation={{
+                sideEffects: defaultDropAnimationSideEffects({
+                  styles: {
+                    active: {
+                      opacity: "0.4",
+                    },
                   },
-                },
-              }),
-            }}
-          >
-            {activeItem ? (
-              <NetworkCardDraggable
-                key={activeItem.chainId}
-                chainId={activeItem.chainId}
-                isSelected={activeItem.chainId === currentChainId}
-                cursor={cursor}
-                setCursor={setCursor}
-                onClose={onClose}
-              />
-            ) : null}
-          </DragOverlay>
+                }),
+              }}
+              zIndex={2000}
+            >
+              {activeItem ? (
+                <NetworkCardDraggable
+                  key={activeItem.chainId}
+                  chainId={activeItem.chainId}
+                  cursor={cursor}
+                  setCursor={setCursor}
+                  onClose={onClose}
+                />
+              ) : null}
+            </DragOverlay>,
+            document.body
+          )}
         </DndContext>
       </AccordionPanel>
     </AccordionItem>

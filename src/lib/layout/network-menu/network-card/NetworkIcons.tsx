@@ -18,12 +18,11 @@ const iconProps = {
 interface NetworkIconsProps {
   chainId: string;
   isSelected: boolean;
-  image?: string;
   isDraggable?: boolean;
 }
 
 export const NetworkIcons = observer(
-  ({ chainId, isSelected, image, isDraggable }: NetworkIconsProps) => {
+  ({ chainId, isSelected, isDraggable }: NetworkIconsProps) => {
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
     const toast = useToast({
       status: "success",
@@ -39,14 +38,13 @@ export const NetworkIcons = observer(
         pinNetwork({
           name: CHAIN_CONFIGS[chainId]?.prettyName,
           chainId,
-          logo: image,
-          id: "",
+          logo: CHAIN_CONFIGS[chainId]?.logoUrl,
         });
         toast({
           title: `Pinned \u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 successfully`,
         });
       },
-      [pinNetwork, image, chainId, toast]
+      [pinNetwork, chainId, toast]
     );
 
     const handleRemove = useCallback(

@@ -61,18 +61,20 @@ export const NetworkMenu = observer(() => {
               <Heading as="h6" variant="h6">
                 Select Network
               </Heading>
-              <Flex gap={1}>
-                <Kbd size="sm">
-                  <Text variant="body3" gap={1}>
-                    {isMac ? "⌘" : "Ctrl"}
-                  </Text>
-                </Kbd>
-                <Kbd>
-                  <Text variant="body3" gap={1}>
-                    /
-                  </Text>
-                </Kbd>
-              </Flex>
+              {!isMobile && (
+                <Flex gap={1}>
+                  <Kbd size="sm">
+                    <Text variant="body3" gap={1}>
+                      {isMac ? "⌘" : "Ctrl"}
+                    </Text>
+                  </Kbd>
+                  <Kbd>
+                    <Text variant="body3" gap={1}>
+                      /
+                    </Text>
+                  </Kbd>
+                </Flex>
+              )}
             </Flex>
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
