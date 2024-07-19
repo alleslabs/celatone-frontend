@@ -92,6 +92,7 @@ export const SearchResultItemBody = ({
 
   if (
     isAccountAddress ||
+    type === "NFT Collection Address" ||
     type === "Validator Address" ||
     type === "Transaction Hash" ||
     type === "Module Path"
