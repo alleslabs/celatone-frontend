@@ -6,7 +6,7 @@ import {
   Flex,
   Heading,
 } from "@chakra-ui/react";
-import type { Active, DragEndEvent } from "@dnd-kit/core";
+import type { Active } from "@dnd-kit/core";
 import {
   closestCenter,
   defaultDropAnimationSideEffects,
@@ -63,14 +63,6 @@ export const NetworkAccodionPinned = ({
     useSensor(TouchSensor)
   );
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (active.id !== over?.id) {
-      setPinnedNetworks(active.id.toString(), over?.id.toString());
-    }
-  };
-
   return (
     <AccordionItem hidden={pinnedNetworks.length === 0}>
       <AccordionButton p={0}>
@@ -88,7 +80,12 @@ export const NetworkAccodionPinned = ({
           onDragStart={({ active }) => {
             setDndActive(active);
           }}
-          onDragEnd={handleDragEnd}
+          onDragEnd={({ active, over }) => {
+            if (over && active.id !== over.id) {
+              setPinnedNetworks(active.id.toString(), over.id.toString());
+            }
+            setDndActive(null);
+          }}
           onDragCancel={() => {
             setDndActive(null);
           }}

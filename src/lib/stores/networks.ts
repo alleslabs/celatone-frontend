@@ -63,9 +63,8 @@ export class NetworkStore {
     );
   }
 
-  setPinnedNetworks(activeId: string, overId?: string): void {
-    const newItems = this.networks[this.userKey] ?? [];
-    const items = [...newItems];
+  setPinnedNetworks(activeId: string, overId: string): void {
+    const items = this.networks[this.userKey] ?? [];
     const oldIndex = findIndex(items, (item) => item.chainId === activeId);
     const newIndex = findIndex(items, (item) => item.chainId === overId);
     this.networks[this.userKey] = arrayMove(items, oldIndex, newIndex);
