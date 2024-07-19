@@ -40,7 +40,7 @@ export const useIcnsNamesByAddressLcd = (address: Option<BechAddr>) => {
   );
 };
 
-export const useAddressByIcnsNameLcd = (name: string) => {
+export const useAddressByIcnsNameLcd = (name: string, enabled = true) => {
   const lcdEndpoint = useLcdEndpoint();
   const getAddressType = useGetAddressType();
   const {
@@ -77,7 +77,7 @@ export const useAddressByIcnsNameLcd = (name: string) => {
     ],
     queryFn,
     refetchOnWindowFocus: false,
-    enabled: Boolean(name),
+    enabled: enabled && Boolean(name),
     retry: 1,
   });
 };

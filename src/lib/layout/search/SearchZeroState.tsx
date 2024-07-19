@@ -5,6 +5,7 @@ interface SearchZeroStateProps {
   isPool: boolean;
   isMove: boolean;
   isGov: boolean;
+  isNft: boolean;
   isFullTier: boolean;
 }
 
@@ -13,6 +14,7 @@ export const SearchZeroState = ({
   isPool,
   isMove,
   isGov,
+  isNft,
   isFullTier,
 }: SearchZeroStateProps) => {
   const base = ["Account Address", "TX Hash", "Block Height"];
@@ -20,8 +22,15 @@ export const SearchZeroState = ({
   const wasmText = isWasm ? ["Code ID", "Contract Address"] : [];
   const moveText = isMove ? ["Module Path"] : [];
   const poolText = isPool && isFullTier ? ["Pool ID"] : [];
+  const nftCollectionText = isNft ? ["Collection Address"] : [];
 
-  const supportedItemsType = base.concat(govText, wasmText, moveText, poolText);
+  const supportedItemsType = base.concat(
+    govText,
+    wasmText,
+    moveText,
+    poolText,
+    nftCollectionText
+  );
 
   return (
     <Flex direction="column" gap={4} py={8}>

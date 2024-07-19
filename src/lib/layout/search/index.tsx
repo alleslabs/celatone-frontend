@@ -15,6 +15,7 @@ import {
   useDisclosure,
   useOutsideClick,
 } from "@chakra-ui/react";
+import plur from "plur";
 import type { ChangeEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -51,6 +52,7 @@ export const SearchComponent = () => {
         wasm: { enabled: isWasm },
         move: { enabled: isMove },
         pool: { enabled: isPool },
+        nft: { enabled: isNft },
       },
     },
   } = useCelatoneApp();
@@ -297,7 +299,8 @@ export const SearchComponent = () => {
                   <List>
                     {results.length > 0 && (
                       <Text variant="body2" color="text.dark" mb={3}>
-                        {results.length} Matched results...
+                        {results.length} Matched{" "}
+                        {plur("result", results.length)}...
                       </Text>
                     )}
                     <SearchResults
@@ -318,6 +321,7 @@ export const SearchComponent = () => {
                   isPool={isPool}
                   isMove={isMove}
                   isGov={isGov}
+                  isNft={isNft}
                   isFullTier={isFullTier}
                 />
               </Flex>
