@@ -259,6 +259,7 @@ export const useSearchHandler = (
 
   return {
     results: [
+      nftCollectionData && "NFT Collection Address",
       addressResult,
       moduleData && "Module Path",
       txData && "Transaction Hash",
@@ -267,7 +268,6 @@ export const useSearchHandler = (
       proposalData?.info && "Proposal ID",
       validatorData && "Validator Address",
       poolData && "Pool ID",
-      nftCollectionData && "NFT Collection Address",
     ].filter((res) => Boolean(res)) as SearchResultType[],
     isLoading:
       moduleFetching ||
