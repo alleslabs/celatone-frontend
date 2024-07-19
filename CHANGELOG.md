@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1005](https://github.com/alleslabs/celatone-frontend/pull/1005) New network selector
+- [#1024](https://github.com/alleslabs/celatone-frontend/pull/1024) Add Sequencer for account detail NFTs
 - [#1007](https://github.com/alleslabs/celatone-frontend/pull/1007) Add app menu for initia
 - [#992](https://github.com/alleslabs/celatone-frontend/pull/992) Add new search function
 - [#1021](https://github.com/alleslabs/celatone-frontend/pull/1021) Add Milkyway network (glados-1)

@@ -1,8 +1,5 @@
-import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-
-import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
-import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
+import type { UseQueryOptions } from "@tanstack/react-query";
 
 import type {
   Activity,
@@ -10,7 +7,16 @@ import type {
   CollectionCreatorResponse,
   CollectionsByAccountResponse,
   CollectionsResponse,
-} from "./collection";
+} from "../types";
+import { handleQueryByTier } from "../utils";
+import {
+  CELATONE_QUERY_KEYS,
+  useCelatoneApp,
+  useLcdEndpoint,
+  useTierConfig,
+} from "lib/app-provider";
+import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
+
 import {
   getCollectionActivities,
   getCollectionActivitiesCount,
@@ -21,7 +27,8 @@ import {
   getCollections,
   getCollectionsByAccount,
   getCollectionUniqueHoldersCount,
-} from "./collection";
+} from "./gql";
+import { getCollectionsByAccountSequencer } from "./sequencer";
 
 export const useCollections = (
   limit: number,
@@ -198,13 +205,26 @@ export const useCollectionUniqueHoldersCount = (
 
 export const useCollectionsByAccount = (accountAddress: HexAddr) => {
   const { chainConfig } = useCelatoneApp();
+  const lcdEndpoint = useLcdEndpoint();
+  const { tier } = useTierConfig();
+
   return useQuery<CollectionsByAccountResponse[]>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTIONS_BY_ACCOUNT,
       chainConfig.indexer,
+      lcdEndpoint,
+      tier,
       accountAddress,
     ],
-    async () => getCollectionsByAccount(chainConfig.indexer, accountAddress),
+    async () =>
+      handleQueryByTier({
+        tier,
+        threshold: "sequencer",
+        querySequencer: () =>
+          getCollectionsByAccountSequencer(lcdEndpoint, accountAddress),
+        queryFull: () =>
+          getCollectionsByAccount(chainConfig.indexer, accountAddress),
+      }),
     {
       retry: 1,
       refetchOnWindowFocus: false,

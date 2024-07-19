@@ -59,16 +59,16 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       layer: "2",
     },
   },
-  "minimove-1-sequencer": {
+  "init-ai-1-sequencer": {
     tier: "sequencer",
     chain: "initia",
-    registryChainName: "minimovetestnet",
-    prettyName: "Minimove",
+    registryChainName: "initaitestnet",
+    prettyName: "INIT AI",
     networkType: "testnet",
-    logoUrl: "https://assets.alleslabs.dev/integrations/chains/minimove.png",
-    lcd: "https://lcd.minimove-1.initia.xyz",
-    rpc: "https://rpc.minimove-1.initia.xyz",
-    indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/initai.png",
+    lcd: "https://maze-rest-617bacff-7d34-4eb8-87f4-ee16fb4e0ac7.ue1-prod.newmetric.xyz",
+    rpc: "https://maze-rpc-617bacff-7d34-4eb8-87f4-ee16fb4e0ac7.ue1-prod.newmetric.xyz",
+    indexer: "https://init-ai-1-graphql.alleslabs.dev/v1/graphql",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -100,7 +100,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasPrice: {
         tokenPerGas: 0.151,
         denom:
-          "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
+          "l2/aadf1a9da6a38b7e7e11839364ee42002260eff1657f403b9ce608337bcb986b",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
@@ -468,7 +468,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
   },
   "landlord-1": {
-    tier: "full",
+    tier: "sequencer",
     chain: "initia",
     registryChainName: "civitiatestnet",
     prettyName: "Civitia",

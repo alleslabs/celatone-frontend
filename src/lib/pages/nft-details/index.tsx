@@ -26,12 +26,12 @@ import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import {
-  useCollectionByCollectionAddress,
   useMetadata,
   useNftByNftAddress,
   useNftMutateEventsCount,
   useNftTransactionsCount,
 } from "lib/services/nft";
+import { useCollectionByCollectionAddress } from "lib/services/nft-collection";
 
 import {
   Attributes,
