@@ -33,13 +33,18 @@ export const NetworkCardDraggable = ({
 
   const style = {
     opacity: isDragging ? 0 : 1,
-    cursor: isDragging ? "grabbing" : "grab",
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
   return (
-    <Box ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <Box
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      cursor={index === undefined ? "grabbing" : "grab"}
+    >
       <NetworkCard
         chainId={chainId}
         index={index}
