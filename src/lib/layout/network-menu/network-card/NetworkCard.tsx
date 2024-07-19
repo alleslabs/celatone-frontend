@@ -4,7 +4,7 @@ import { useCallback } from "react";
 
 import { NetworkImage } from "../NetworkImage";
 import { CHAIN_CONFIGS } from "config/chain";
-import { useCelatoneApp, useSelectChain } from "lib/app-provider";
+import { useCelatoneApp, useMobile, useSelectChain } from "lib/app-provider";
 import type { Option } from "lib/types";
 
 import { NetworkIcons } from "./NetworkIcons";
@@ -51,6 +51,7 @@ export const NetworkCard = observer(
     onClose,
     isDraggable = false,
   }: NetworkCardProps) => {
+    const isMobile = useMobile();
     const { currentChainId } = useCelatoneApp();
     const selectChain = useSelectChain();
 
@@ -79,12 +80,16 @@ export const NetworkCard = observer(
         background={getCardBackground(index, cursor, isSelected)}
         cursor={getDisplayCursor(isDraggable, isSelected)}
         onMouseMove={() => index !== cursor && setCursor(index)}
-        _hover={{
-          background: isSelected ? "gray.700" : "gray.800",
-          "> .icon-wrapper > .icon-container": {
-            opacity: 1,
-          },
-        }}
+        _hover={
+          isMobile
+            ? undefined
+            : {
+                background: isSelected ? "gray.700" : "gray.800",
+                "> .icon-wrapper > .icon-container": {
+                  opacity: 1,
+                },
+              }
+        }
       >
         <Box
           opacity={isSelected ? 1 : 0}

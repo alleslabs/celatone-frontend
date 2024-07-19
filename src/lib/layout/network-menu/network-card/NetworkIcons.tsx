@@ -3,17 +3,9 @@ import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
 
 import { CHAIN_CONFIGS } from "config/chain";
+import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useNetworkStore } from "lib/providers/store";
-
-const customTransition = "opacity 0.1s ease-in-out";
-
-const iconProps = {
-  cursor: "pointer",
-  className: "icon-container",
-  align: "center",
-  padding: 1,
-};
 
 interface NetworkIconsProps {
   chainId: string;
@@ -23,6 +15,7 @@ interface NetworkIconsProps {
 
 export const NetworkIcons = observer(
   ({ chainId, isSelected, isDraggable }: NetworkIconsProps) => {
+    const isMobile = useMobile();
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
     const toast = useToast({
       status: "success",
@@ -58,41 +51,40 @@ export const NetworkIcons = observer(
       [removeNetwork, chainId, toast]
     );
 
+    const opacityStyle = {
+      opacity: isMobile ? 1 : 0,
+    };
+
+    const pinIconStyles = {
+      cursor: "pointer",
+      className: "icon-container",
+      align: "center",
+      padding: 1,
+      _hover: isMobile
+        ? undefined
+        : {
+            background: isSelected ? "gray.800" : "gray.900",
+            borderRadius: 4,
+          },
+    };
+
     return (
       <Flex className="icon-wrapper" gap={2} zIndex={1}>
         {isDraggable && (
-          <Flex
-            align="center"
-            className="icon-container"
-            opacity={0}
-            _hover={{ opacity: 1, transition: customTransition }}
-          >
+          <Flex align="center" className="icon-container" {...opacityStyle}>
             <CustomIcon name="drag" color="gray.600" />
           </Flex>
         )}
         {isNetworkPinned(chainId) ? (
-          <Flex
-            data-no-dnd="true"
-            {...iconProps}
-            onClick={handleRemove}
-            _hover={{
-              background: isSelected ? "gray.800" : "gray.900",
-              borderRadius: 4,
-              transition: customTransition,
-            }}
-          >
+          <Flex data-no-dnd="true" {...pinIconStyles} onClick={handleRemove}>
             <CustomIcon name="pin-solid" />
           </Flex>
         ) : (
           <Flex
-            {...iconProps}
+            {...pinIconStyles}
+            {...opacityStyle}
+            transition="opacity 0.25s ease-in-out"
             onClick={handleSave}
-            sx={{ opacity: 0, transition: "opacity 0.25s ease-in-out" }}
-            _hover={{
-              background: isSelected ? "gray.800" : "gray.900",
-              borderRadius: 4,
-              transition: customTransition,
-            }}
           >
             <CustomIcon name="pin" />
           </Flex>

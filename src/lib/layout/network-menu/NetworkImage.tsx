@@ -17,7 +17,7 @@ export const NetworkImage = ({ chainId }: NetworkImageProps) => {
       w={6}
       h={6}
       borderRadius="full"
-      src={image}
+      src={image ?? fallbackImage}
       fallbackSrc={fallbackImage}
       fallbackStrategy="onError"
     />

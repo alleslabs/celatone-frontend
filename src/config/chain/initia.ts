@@ -524,6 +524,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     registryChainName: "milkywaytestnet",
     prettyName: "Milkyway",
     networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/milkyway.png",
     lcd: "https://lcd.testnet.milkyway.zone",
     rpc: "https://rpc.testnet.milkyway.zone",
     indexer: "",

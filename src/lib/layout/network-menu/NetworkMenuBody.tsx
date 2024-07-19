@@ -5,7 +5,7 @@ import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useCallback, useMemo, useState } from "react";
 
 import { CHAIN_CONFIGS } from "config/chain";
-import { useCelatoneApp, useSelectChain } from "lib/app-provider";
+import { useCelatoneApp, useMobile, useSelectChain } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import { useNetworkStore } from "lib/providers/store";
@@ -52,6 +52,7 @@ const getNextCursor = (
 };
 
 export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
+  const isMobile = useMobile();
   const selectChain = useSelectChain();
   const { availableChainIds } = useCelatoneApp();
   const { getPinnedNetworks } = useNetworkStore();
@@ -125,7 +126,7 @@ export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
         placeholder="Search by Name or Chain ID"
         size="md"
         value={keyword}
-        autoFocus
+        autoFocus={!isMobile}
         onChange={(e) => setKeyword(e.target.value)}
         onKeyDown={handleOnKeyEnter}
         amptrackSection="network-search"
