@@ -259,7 +259,7 @@ export const useSearchHandler = (
 
   return {
     results: [
-      nftCollectionData && "NFT Collection Address",
+      nftCollectionData?.data && "NFT Collection Address",
       addressResult,
       moduleData && "Module Path",
       txData && "Transaction Hash",
