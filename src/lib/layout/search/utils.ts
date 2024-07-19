@@ -35,7 +35,7 @@ export const getRouteOptions = (
         pathname: "/modules/[address]/[moduleName]",
         query: ["address", "moduleName"],
       };
-    case "Collection Address":
+    case "NFT Collection Address":
       return {
         pathname: "/nft-collections/[collectionAddress]",
         query: ["collectionAddress"],

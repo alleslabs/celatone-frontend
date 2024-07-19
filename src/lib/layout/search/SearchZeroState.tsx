@@ -22,7 +22,7 @@ export const SearchZeroState = ({
   const wasmText = isWasm ? ["Code ID", "Contract Address"] : [];
   const moveText = isMove ? ["Module Path"] : [];
   const poolText = isPool && isFullTier ? ["Pool ID"] : [];
-  const nftCollectionText = isNft ? ["Collection Address"] : [];
+  const nftCollectionText = isNft ? ["NFT Collection Address"] : [];
 
   const supportedItemsType = base.concat(
     govText,

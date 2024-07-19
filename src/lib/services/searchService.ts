@@ -43,7 +43,7 @@ export type SearchResultType =
   | "Pool ID"
   | "Validator Address"
   | "Module Path"
-  | "Collection Address";
+  | "NFT Collection Address";
 
 export interface ResultMetadata {
   icns: {
@@ -267,7 +267,7 @@ export const useSearchHandler = (
       proposalData?.info && "Proposal ID",
       validatorData && "Validator Address",
       poolData && "Pool ID",
-      nftCollectionData && "Collection Address",
+      nftCollectionData && "NFT Collection Address",
     ].filter((res) => Boolean(res)) as SearchResultType[],
     isLoading:
       moduleFetching ||
