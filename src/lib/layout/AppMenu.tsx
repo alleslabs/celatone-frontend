@@ -21,6 +21,11 @@ const appList = [
     link: "https://scan.testnet.initia.xyz/",
   },
   {
+    name: "minitswap",
+    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/minitswap.svg",
+    link: "https://minitswap.testnet.initia.xyz/",
+  },
+  {
     name: "usernames",
     logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/usernames.svg",
     link: "https://usernames.testnet.initia.xyz/",
