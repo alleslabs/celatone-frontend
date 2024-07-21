@@ -9,6 +9,7 @@ import {
   useInternalNavigate,
   useWasmConfig,
 } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractInputSection } from "lib/components/ContractInputSection";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -18,7 +19,6 @@ import { Loading } from "lib/components/Loading";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { TierSwitcher } from "lib/components/TierSwitcher";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import { useContractData } from "lib/services/wasm/contract";
@@ -154,7 +154,7 @@ const Migrate = () => {
   return (
     <>
       <CelatoneSeo pageName="Migrate Contract" />
-      <WasmPageContainer>
+      <ActionPageContainer>
         {firstStep ? (
           <Box w="full" mb={6}>
             <Text
@@ -202,7 +202,7 @@ const Migrate = () => {
         <Box mt={12} w="full">
           {renderBody()}
         </Box>
-      </WasmPageContainer>
+      </ActionPageContainer>
       {migrateStep === "upload_new_code" && (
         <FooterCTA
           cancelButton={{
