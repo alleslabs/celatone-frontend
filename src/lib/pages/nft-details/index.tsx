@@ -1,13 +1,4 @@
-import {
-  Divider,
-  Flex,
-  Image,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-} from "@chakra-ui/react";
+import { Divider, Flex, Image, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -15,7 +6,6 @@ import { useEffect } from "react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
-import { CustomTab } from "lib/components/CustomTab";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { JsonLink } from "lib/components/JsonLink";
 import { Loading } from "lib/components/Loading";
@@ -25,12 +15,7 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
-import {
-  useMetadata,
-  useNftByNftAddress,
-  useNftMutateEventsCount,
-  useNftTransactionsCount,
-} from "lib/services/nft";
+import { useMetadata, useNftByNftAddress } from "lib/services/nft";
 import { useCollectionByCollectionAddress } from "lib/services/nft-collection";
 
 import {
@@ -39,9 +24,7 @@ import {
   DescriptionBox,
   MintInfo,
   NftInfoItem,
-  NftMutateEvents,
   Title,
-  Txs,
   ViewResourceButton,
 } from "./components";
 import type { NftDetailQueryParams } from "./types";
@@ -61,8 +44,9 @@ const NftDetailsBody = ({
     collectionAddress,
     nftAddress
   );
-  const { data: txCount = 0 } = useNftTransactionsCount(nftAddress);
-  const { data: mutateEventsCount = 0 } = useNftMutateEventsCount(nftAddress);
+
+  // const { data: txCount = 0 } = useNftTransactionsCount(nftAddress);
+  // const { data: mutateEventsCount = 0 } = useNftMutateEventsCount(nftAddress);
   const { data: metadata } = useMetadata(nft?.data?.uri ?? "");
 
   if (isCollectionLoading || isNftLoading) return <Loading />;
@@ -103,7 +87,7 @@ const NftDetailsBody = ({
                 displayCollectionName={displayCollectionName}
                 tokenId={tokenId}
                 nftAddress={nftAddress}
-                isBurned={isBurned}
+                isBurned={!!isBurned}
               />
             )}
             <div
@@ -160,7 +144,7 @@ const NftDetailsBody = ({
                     displayCollectionName={displayCollectionName}
                     tokenId={tokenId}
                     nftAddress={nftAddress}
-                    isBurned={isBurned}
+                    isBurned={!!isBurned}
                   />
                 )}
               </Flex>
@@ -232,7 +216,7 @@ const NftDetailsBody = ({
           </Flex>
         </Flex>
         <Divider width="100%" color="gray.700" />
-        <Tabs
+        {/* <Tabs
           isLazy
           lazyBehavior="keepMounted"
           onChange={(tab) =>
@@ -266,7 +250,7 @@ const NftDetailsBody = ({
               />
             </TabPanel>
           </TabPanels>
-        </Tabs>
+        </Tabs> */}
         <UserDocsLink
           title="What is a NFT?"
           cta="Read more about NFT"
@@ -278,7 +262,7 @@ const NftDetailsBody = ({
 };
 
 const NftDetails = observer(() => {
-  useTierConfig({ minTier: "full" });
+  useTierConfig({ minTier: "sequencer" });
   const router = useRouter();
   const validated = zNftDetailQueryParams.safeParse(router.query);
 

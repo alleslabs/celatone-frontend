@@ -4,16 +4,18 @@ import { useQuery } from "@tanstack/react-query";
 import type {
   Metadata,
   Nft,
-  NftByNftAddressResponse,
   NftMintInfo,
   NftsByAccountResponse,
   NftTransactions,
 } from "../types";
+import { handleQueryByTier } from "../utils";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
+  useCurrentChain,
   useLcdEndpoint,
   useNftConfig,
+  useTierConfig,
 } from "lib/app-provider";
 import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 
@@ -29,7 +31,11 @@ import {
   getNftTransactions,
   getNftTransactionsCount,
 } from "./gql";
-import { getNftsByAccountSequencer } from "./sequencer";
+import {
+  getNftByNftAddressSequencer,
+  getNftMintInfoSequencer,
+  getNftsByAccountSequencer,
+} from "./sequencer";
 
 export const useNfts = (
   collectionAddress: HexAddr32,
@@ -62,8 +68,10 @@ export const useNftByNftAddress = (
   nftAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const { tier } = useTierConfig();
+  const lcdEndpoint = useLcdEndpoint();
 
-  return useQuery<NftByNftAddressResponse>(
+  return useQuery(
     [
       CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS,
       chainConfig.indexer,
@@ -71,7 +79,18 @@ export const useNftByNftAddress = (
       nftAddress,
     ],
     async () =>
-      getNftByNftAddress(chainConfig.indexer, collectionAddress, nftAddress),
+      handleQueryByTier({
+        tier,
+        threshold: "sequencer",
+        queryFull: () =>
+          getNftByNftAddress(
+            chainConfig.indexer,
+            collectionAddress,
+            nftAddress
+          ),
+        querySequencer: () =>
+          getNftByNftAddressSequencer(lcdEndpoint, nftAddress),
+      }),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -81,9 +100,29 @@ export const useNftByNftAddress = (
 
 export const useNftMintInfo = (nftAddress: HexAddr32) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
+  const { tier } = useTierConfig();
+  const lcdEndpoint = useLcdEndpoint();
+
   return useQuery<NftMintInfo>(
-    [CELATONE_QUERY_KEYS.NFT_TOKEN_MINT_INFO, chainConfig.indexer, nftAddress],
-    async () => getNftMintInfo(chainConfig.indexer, nftAddress),
+    [
+      CELATONE_QUERY_KEYS.NFT_TOKEN_MINT_INFO,
+      chainConfig.indexer,
+      nftAddress,
+      tier,
+      prefix,
+      lcdEndpoint,
+    ],
+    async () =>
+      handleQueryByTier({
+        tier,
+        threshold: "sequencer",
+        queryFull: () => getNftMintInfo(chainConfig.indexer, nftAddress),
+        querySequencer: () =>
+          getNftMintInfoSequencer(lcdEndpoint, prefix, nftAddress),
+      }),
     {
       retry: 1,
       refetchOnWindowFocus: false,

@@ -153,3 +153,9 @@ export interface ModuleInitialPublishInfo {
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
 }
+
+export const zMoveViewJsonResponse = z
+  .object({
+    data: z.string(),
+  })
+  .transform((val) => JSON.parse(val.data));

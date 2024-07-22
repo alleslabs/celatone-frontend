@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { HexAddr32, MutateEvent } from "lib/types";
+import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
 import {
   zBechAddr,
   zHexAddr,
@@ -28,11 +28,11 @@ export const zNft = z
     uri: val.uri,
     tokenId: val.token_id,
     description: val.description,
-    isBurned: val.is_burned,
+    isBurned: val.is_burned || null,
     ownerAddress: val.owner,
-    nftAddress: val.id,
+    nftAddress: val.id || null,
     collectionAddress: val.collection,
-    collectionName: val.collectionByCollection.name,
+    collectionName: val.collectionByCollection.name || null,
   }));
 export type Nft = z.infer<typeof zNft>;
 
@@ -53,7 +53,7 @@ export const zNftOld = z
     uri: val.uri,
     tokenId: val.token_id,
     description: val.description,
-    isBurned: val.is_burned,
+    isBurned: val.is_burned || null,
     ownerAddress: val.vmAddressByOwner?.vm_address,
     nftAddress: val.vm_address?.vm_address || ("" as HexAddr32),
     collectionAddress: val.collectionByCollection.vm_address.vm_address,
@@ -173,7 +173,7 @@ const zNftByAccountResponseSequencer = z
     uri: val.nft.uri,
     tokenId: val.nft.token_id,
     description: val.nft.description,
-    isBurned: false,
+    isBurned: null,
     ownerAddress: val.owner_addr,
     nftAddress: val.object_addr,
     collectionAddress: val.collection_addr,
@@ -191,4 +191,29 @@ export const zNftsByAccountResponseSequencer = z
   .transform((val) => ({
     nfts: val.tokens,
     pagination: val.pagination,
+  }));
+
+export const zNftByNftAddressResponseSequencer = z
+  .tuple([
+    z.string(),
+    z
+      .object({
+        collection: zHexAddr32,
+        description: z.string(),
+        token_id: z.string(),
+        uri: z.string(),
+      })
+      .transform(snakeToCamel),
+  ])
+  .transform<{ data: Nft }>(([holder, info]) => ({
+    data: {
+      uri: info.uri,
+      tokenId: info.tokenId,
+      description: info.description,
+      isBurned: null,
+      ownerAddress: holder as HexAddr,
+      nftAddress: null,
+      collectionAddress: info.collection,
+      collectionName: null,
+    },
   }));

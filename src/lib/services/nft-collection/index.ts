@@ -28,7 +28,10 @@ import {
   getCollectionsByAccount,
   getCollectionUniqueHoldersCount,
 } from "./gql";
-import { getCollectionsByAccountSequencer } from "./sequencer";
+import {
+  getCollectionByCollectionAddressSequence,
+  getCollectionsByAccountSequencer,
+} from "./sequencer";
 
 export const useCollections = (
   limit: number,
@@ -58,6 +61,9 @@ export const useCollectionByCollectionAddress = (
   collectionAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const { tier } = useTierConfig();
+  const lcdEndpoint = useLcdEndpoint();
+
   return useQuery<CollectionByCollectionAddressResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_BY_COLLECTION_ADDRESS,
@@ -65,7 +71,20 @@ export const useCollectionByCollectionAddress = (
       collectionAddress,
     ],
     async () =>
-      getCollectionByCollectionAddress(chainConfig.indexer, collectionAddress),
+      handleQueryByTier({
+        tier,
+        threshold: "sequencer",
+        queryFull: () =>
+          getCollectionByCollectionAddress(
+            chainConfig.indexer,
+            collectionAddress
+          ),
+        querySequencer: () =>
+          getCollectionByCollectionAddressSequence(
+            lcdEndpoint,
+            collectionAddress
+          ),
+      }),
     {
       retry: 1,
       refetchOnWindowFocus: false,

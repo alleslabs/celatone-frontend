@@ -78,8 +78,9 @@ export const zCollectionByCollectionAddressResponse = z.object({
       description: val.description,
       name: val.name,
       uri: val.uri,
-      createdHeight:
-        val.vmAddressByCreator.collectionsByCreator[0].block_height,
+      createdHeight: val.vmAddressByCreator.collectionsByCreator.length
+        ? val.vmAddressByCreator.collectionsByCreator[0].block_height
+        : null,
       creatorAddress:
         val.vmAddressByCreator.collectionsByCreator[0].vmAddressByCreator
           .vm_address,
@@ -309,3 +310,17 @@ export const zCollectionsByAccountResponseSequencer = z
 export type CollectionsByAccountResponseSequencer = z.infer<
   typeof zCollectionsByAccountResponseSequencer
 >;
+
+export const zCollectionByCollectionAddressResponseSequencer = z
+  .object({
+    collection: zCollectionByAccountResponseSequencer,
+  })
+  .transform<CollectionByCollectionAddressResponse>((val) => ({
+    data: {
+      description: val.collection.collection.description,
+      name: val.collection.collection.name,
+      uri: val.collection.collection.uri,
+      createdHeight: null,
+      creatorAddress: val.collection.collection.creator,
+    },
+  }));
