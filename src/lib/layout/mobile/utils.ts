@@ -47,6 +47,11 @@ export const getNavDrawerLite = (
               slug: "/accounts/0x1",
               icon: "hex" as IconKeys,
             },
+            {
+              name: "View Module",
+              slug: "/interact",
+              icon: "query" as IconKeys,
+            },
           ]
         : []),
     ],
