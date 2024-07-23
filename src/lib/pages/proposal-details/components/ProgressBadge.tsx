@@ -30,7 +30,7 @@ const BadgeIcon = ({ state }: { state: PeriodState }) => {
         <StyledCustomIcon name="check-circle-solid" color="success.main" />
       );
     default:
-      return <StyledCustomIcon name="circle" color="gray.600" />;
+      return <StyledCustomIcon name="legend" color="gray.600" />;
   }
 };
 

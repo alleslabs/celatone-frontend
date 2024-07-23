@@ -35,7 +35,7 @@ export const VotingResult = ({
         <StatusChip status={ProposalStatus.FAILED} />
       ) : (
         <>
-          <CustomIcon name="circle" boxSize="14px" color={resultColor} />
+          <CustomIcon name="legend" boxSize="14px" color={resultColor} />
           <Text variant="body2" color="text.main" fontWeight={700}>
             {result}
           </Text>

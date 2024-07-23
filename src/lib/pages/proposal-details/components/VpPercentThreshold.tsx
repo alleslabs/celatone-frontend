@@ -60,7 +60,7 @@ export const VpPercentThreshold = ({
           py={2}
         >
           <Flex gap={2} alignItems="center">
-            <CustomIcon name="circle" boxSize="14px" color={color} />
+            <CustomIcon name="legend" boxSize="14px" color={color} />
             <Text variant="body2" color="text.main" fontWeight={700}>
               {option}
             </Text>

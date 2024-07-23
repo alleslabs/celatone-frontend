@@ -54,7 +54,7 @@ export const VotingOverviewQuorum = ({
               <Flex gap={2}>
                 <CustomIcon
                   boxSize="10px"
-                  name="circle"
+                  name="legend"
                   color="voteParticipations.voted"
                 />
                 <Text>
@@ -65,7 +65,7 @@ export const VotingOverviewQuorum = ({
               <Flex gap={2}>
                 <CustomIcon
                   boxSize="10px"
-                  name="circle"
+                  name="legend"
                   color="voteParticipations.votedAbstain"
                 />
                 <Text>

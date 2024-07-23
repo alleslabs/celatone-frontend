@@ -45,7 +45,7 @@ export const getNavDrawerLite = (
             {
               name: "0x1 Page",
               slug: "/accounts/0x1",
-              icon: "hex" as IconKeys,
+              icon: "0x1" as IconKeys,
             },
           ]
         : []),
@@ -106,7 +106,7 @@ export const getNavDrawerSequencer = (
             {
               name: "0x1 Page",
               slug: "/accounts/0x1",
-              icon: "hex" as IconKeys,
+              icon: "0x1" as IconKeys,
             },
             {
               name: "View Module",
@@ -183,7 +183,7 @@ export const getNavDrawerFull = (
             {
               name: "0x1 Page",
               slug: "/accounts/0x1",
-              icon: "hex" as IconKeys,
+              icon: "0x1" as IconKeys,
             },
             {
               name: "View Module",
@@ -197,7 +197,7 @@ export const getNavDrawerFull = (
             {
               name: "NFT Collections",
               slug: "/nft-collections",
-              icon: "group" as IconKeys,
+              icon: "collection" as IconKeys,
             },
           ]
         : []),

@@ -66,7 +66,7 @@ export const VotingOverviewThreshold = ({
               ) : (
                 <>
                   <CustomIcon
-                    name="circle"
+                    name="legend"
                     boxSize="14px"
                     color={resultColor}
                   />

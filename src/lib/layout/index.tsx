@@ -83,7 +83,7 @@ const Layout = ({ children }: LayoutProps) => {
         </>
       )}
       <GridItem area="main" overflowX="hidden" id="content">
-        <CustomIcon name="group" />
+        <CustomIcon name="collection" />
         <div style={{ minHeight: "calc(100vh - 129px)", position: "relative" }}>
           {children}
         </div>
