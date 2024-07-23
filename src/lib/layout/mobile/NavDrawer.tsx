@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-import { NetworkMenu } from "../NetworkMenu";
+import { NetworkMenu } from "../network-menu";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useGovConfig,

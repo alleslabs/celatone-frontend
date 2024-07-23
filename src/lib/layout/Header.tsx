@@ -6,7 +6,7 @@ import { FaucetBtn } from "lib/components/button";
 import { WalletSection } from "lib/components/Wallet";
 
 import { AppMenu } from "./AppMenu";
-import { NetworkMenu } from "./NetworkMenu";
+import { NetworkMenu } from "./network-menu";
 import { SearchComponent } from "./search";
 import { SectionWrapper } from "./SectionWrapper";
 

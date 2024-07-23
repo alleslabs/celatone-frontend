@@ -59,3 +59,8 @@ export function useSchemaStore() {
   const { schemaStore } = useStore();
   return schemaStore;
 }
+
+export function useNetworkStore() {
+  const { networkStore } = useStore();
+  return networkStore;
+}
