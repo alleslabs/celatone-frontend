@@ -16,23 +16,23 @@ export const zNft = z
     uri: z.string(),
     token_id: z.string(),
     description: z.string().optional(),
-    is_burned: z.boolean(),
+    is_burned: z.boolean().nullable(),
     owner: zHexAddr,
-    id: zHexAddr32,
+    id: zHexAddr32.nullable(),
     collection: zHexAddr32,
     collectionByCollection: z.object({
-      name: z.string(),
+      name: z.string().nullable(),
     }),
   })
   .transform((val) => ({
     uri: val.uri,
     tokenId: val.token_id,
     description: val.description,
-    isBurned: val.is_burned || null,
+    isBurned: val.is_burned,
     ownerAddress: val.owner,
-    nftAddress: val.id || null,
+    nftAddress: val.id,
     collectionAddress: val.collection,
-    collectionName: val.collectionByCollection.name || null,
+    collectionName: val.collectionByCollection.name,
   }));
 export type Nft = z.infer<typeof zNft>;
 
@@ -53,7 +53,7 @@ export const zNftOld = z
     uri: val.uri,
     tokenId: val.token_id,
     description: val.description,
-    isBurned: val.is_burned || null,
+    isBurned: val.is_burned ?? null,
     ownerAddress: val.vmAddressByOwner?.vm_address,
     nftAddress: val.vm_address?.vm_address || ("" as HexAddr32),
     collectionAddress: val.collectionByCollection.vm_address.vm_address,
