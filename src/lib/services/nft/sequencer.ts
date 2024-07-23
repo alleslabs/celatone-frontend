@@ -126,9 +126,6 @@ export const getNftTransactionsSequencer = async (
     undefined
   );
 
-  if (!txsByAccountAddress.items.length)
-    throw new Error("No transactions found");
-
   const nftsTxs: NftTransactions[] = [];
 
   txsByAccountAddress.items.forEach((tx) => {
