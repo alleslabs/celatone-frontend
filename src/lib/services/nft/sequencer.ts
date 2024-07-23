@@ -79,9 +79,9 @@ export const getNftByNftAddressSequencer = async (
       uri: info.uri,
       tokenId: info.tokenId,
       description: info.description,
-      isBurned: null,
+      isBurned: false,
       ownerAddress: holder,
-      nftAddress: null,
+      nftAddress,
       collectionAddress: info.collection,
       collectionName: null,
     },
@@ -96,7 +96,8 @@ export const getNftMintInfoSequencer = async (
     endpoint,
     nftAddress,
     undefined,
-    1
+    1,
+    false
   );
 
   if (!txsByAccountAddress.items.length)
