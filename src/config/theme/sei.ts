@@ -91,10 +91,6 @@ const SEI_BASE_THEME: ThemeConfig = {
       "https://assets.alleslabs.dev/integrations/sei/illustration/search-empty.svg",
     disconnected:
       "https://assets.alleslabs.dev/integrations/sei/illustration/disconnected.svg",
-    overview: {
-      // Fill image url
-      main: "",
-    },
   },
   footer: {
     logo: "https://assets.alleslabs.dev/integrations/sei/logo-sei.png",

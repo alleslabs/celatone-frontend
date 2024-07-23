@@ -17,7 +17,7 @@ import {
 } from "lib/services/block";
 import { useOverviewsStats } from "lib/services/stats";
 
-import { DevShortcut, TopDecorations } from "./components";
+import { DevShortcut } from "./components";
 import { CardInfo } from "./components/CardInfo";
 
 const txInfo = {
@@ -65,18 +65,11 @@ export const HomeSequencer = () => {
     <PageContainer>
       <Flex
         direction="column"
-        p={{ base: 3, md: 12 }}
         mb={12}
-        borderRadius="12px"
-        border="0px 0px 4px 0px"
-        borderColor="gray.800"
-        boxShadow="0px 6px 1px 0px var(--chakra-colors-gray-800)"
-        bgColor="gray.900"
         position="relative"
         overflow="hidden"
         sx={{ "& > div": { zIndex: 1 } }}
       >
-        <TopDecorations />
         <Flex
           justifyContent="space-between"
           alignItems="center"
@@ -118,6 +111,9 @@ export const HomeSequencer = () => {
       {!isMobile && (
         <Box as="section" mb="48px">
           <Flex gap={4} direction="column">
+            <Heading as="h5" variant="h5">
+              Dev Shortcuts
+            </Heading>
             <ConnectWalletAlert
               title={`Connect wallet to start using ${theme.branding.seo.appName}`}
               subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."

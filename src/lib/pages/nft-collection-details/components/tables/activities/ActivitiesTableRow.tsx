@@ -3,7 +3,7 @@ import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
-import type { Activity } from "lib/services/nft/collection";
+import type { Activity } from "lib/services/types";
 import type { HexAddr32 } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
