@@ -4,14 +4,14 @@ import { AppLink } from "../AppLink";
 import { AmpEvent, track } from "lib/amplitude";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
-import type { HexAddr32, Option } from "lib/types";
+import type { HexAddr32, Nullable } from "lib/types";
 
 interface NftCardProps {
   uri: string;
   tokenId: string;
-  collectionName: string;
+  collectionName: Nullable<string>;
   collectionAddress: HexAddr32;
-  nftAddress: Option<HexAddr32>;
+  nftAddress: Nullable<HexAddr32>;
   showCollection?: boolean;
 }
 

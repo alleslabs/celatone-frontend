@@ -21,7 +21,7 @@ export const zNft = z
     id: zHexAddr32,
     collection: zHexAddr32,
     collectionByCollection: z.object({
-      name: z.string(),
+      name: z.string().nullable(),
     }),
   })
   .transform((val) => ({
@@ -192,3 +192,12 @@ export const zNftsByAccountResponseSequencer = z
     nfts: val.tokens,
     pagination: val.pagination,
   }));
+
+export const zNftInfoSequencer = z
+  .object({
+    collection: zHexAddr32,
+    description: z.string(),
+    token_id: z.string(),
+    uri: z.string(),
+  })
+  .transform(snakeToCamel);
