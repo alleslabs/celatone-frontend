@@ -69,6 +69,8 @@ export const useCollectionByCollectionAddress = (
       CELATONE_QUERY_KEYS.NFT_COLLECTION_BY_COLLECTION_ADDRESS,
       chainConfig.indexer,
       collectionAddress,
+      tier,
+      lcdEndpoint,
     ],
     async () =>
       handleQueryByTier({

@@ -118,7 +118,7 @@ const NftDetailsBody = ({
                 displayCollectionName={displayCollectionName}
                 tokenId={tokenId}
                 nftAddress={nftAddress}
-                isBurned={!!isBurned}
+                isBurned={isBurned}
               />
             )}
             <div
@@ -175,7 +175,7 @@ const NftDetailsBody = ({
                     displayCollectionName={displayCollectionName}
                     tokenId={tokenId}
                     nftAddress={nftAddress}
-                    isBurned={!!isBurned}
+                    isBurned={isBurned}
                   />
                 )}
               </Flex>

@@ -2,7 +2,7 @@ import { Alert, Flex, Heading, Text } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import type { HexAddr32 } from "lib/types";
+import type { HexAddr32, Nullable } from "lib/types";
 
 import { ViewResourceButton } from "./ViewResourceButton";
 
@@ -11,7 +11,7 @@ interface TitleProps {
   nftAddress: HexAddr32;
   displayCollectionName: string;
   tokenId: string;
-  isBurned?: boolean;
+  isBurned: Nullable<boolean>;
 }
 
 export const Title = ({

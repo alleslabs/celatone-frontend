@@ -78,6 +78,8 @@ export const useNftByNftAddress = (
       chainConfig.indexer,
       collectionAddress,
       nftAddress,
+      tier,
+      lcdEndpoint,
     ],
     async () =>
       handleQueryByTier({
@@ -242,6 +244,7 @@ export const useNftMutateEventsCount = (
       CELATONE_QUERY_KEYS.NFT_MUTATE_EVENTS_COUNT,
       chainConfig.indexer,
       nftAddress,
+      enabled,
     ],
     async () => getNftMutateEventsCount(chainConfig.indexer, nftAddress),
     {
