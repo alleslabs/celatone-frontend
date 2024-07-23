@@ -8,9 +8,9 @@ import { useFieldArray } from "react-hook-form";
 
 import { useCurrentChain } from "lib/app-provider";
 import { AssetInput, ControllerInput } from "lib/components/forms";
-import { useAssetInfoList, useAssetInfos } from "lib/services/assetService";
+import { useAssetInfosByType } from "lib/services/assetService";
 import { useBalances } from "lib/services/bank";
-import type { AssetOption, BechAddr20, Token, U, USD } from "lib/types";
+import type { AssetOption, Token, U, USD } from "lib/types";
 import {
   coinToTokenWithValue,
   formatPrice,
@@ -37,19 +37,17 @@ export const SelectFund = ({
   labelBgColor,
 }: SelectFundProps) => {
   const { address } = useCurrentChain();
-  const { data: balances } = useBalances(address as BechAddr20);
-  const { data: assetInfos = [] } = useAssetInfoList({ assetType: "native" });
-  const { data: assetInfosWithPrices } = useAssetInfos({ withPrices: true });
+  const { data: balances } = useBalances(address, !!address);
+  const { data: assetInfos } = useAssetInfosByType({
+    assetType: "native",
+  });
   const { fields, append, remove } = useFieldArray({
     control,
     name: ASSETS_SELECT,
   });
 
   const selectedAssets = assetsSelect.map((asset) => asset.denom);
-  const assetInfosMap = assetInfos?.reduce((acc, asset) => {
-    acc.set(asset.id, asset);
-    return acc;
-  }, new Map());
+
   const balanceMap = balances?.reduce((acc, balance) => {
     acc.set(balance.denom, balance);
     return acc;
@@ -60,7 +58,7 @@ export const SelectFund = ({
       const token = coinToTokenWithValue(
         denom,
         balance?.amount ?? "0",
-        assetInfosWithPrices,
+        assetInfos,
         undefined
       );
 
@@ -75,7 +73,7 @@ export const SelectFund = ({
 
       return { formatted, price };
     },
-    [assetInfosWithPrices]
+    [assetInfos]
   );
 
   const assetOptions = useMemo(() => {
@@ -134,16 +132,16 @@ export const SelectFund = ({
         },
         error:
           isSelected && overBalance
-            ? `Not enough ${assetInfosMap.get(selectedAssets[idx])?.symbol} in your wallet`
+            ? `Not enough ${assetInfos?.[selectedAssets[idx]]?.symbol} in your wallet`
             : undefined,
       };
     },
     [
+      assetInfos,
       assetsSelect,
       balanceMap,
-      selectedAssets,
-      assetInfosMap,
       handleGetFormattedBalance,
+      selectedAssets,
     ]
   );
 
