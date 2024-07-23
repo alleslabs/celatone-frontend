@@ -6,8 +6,8 @@ import type { BechAddr32, ContractInfo } from "lib/types";
 
 import { ContractInstantiatorCell } from "./ContractInstantiatorCell";
 import { ContractNameCell } from "./ContractNameCell";
-import type { CTAInfo } from "./ContractsTableRowCTA";
-import { ContractsTableRowCTA } from "./ContractsTableRowCTA";
+import type { CtaInfo } from "./ContractsTableRowCta";
+import { ContractsTableRowCta } from "./ContractsTableRowCta";
 import { TagsCell } from "./TagsCell";
 
 interface ContractsTableRowProps {
@@ -17,7 +17,7 @@ interface ContractsTableRowProps {
   showTag: boolean;
   showLastUpdate: boolean;
   isReadOnly: boolean;
-  withCTA?: CTAInfo;
+  withCta?: CtaInfo;
 }
 
 export const ContractsTableRow = ({
@@ -27,7 +27,7 @@ export const ContractsTableRow = ({
   showTag,
   showLastUpdate,
   isReadOnly,
-  withCTA,
+  withCta,
 }: ContractsTableRowProps) => (
   <Grid
     templateColumns={templateColumns}
@@ -69,9 +69,9 @@ export const ContractsTableRow = ({
     )}
 
     {!isReadOnly && (
-      <ContractsTableRowCTA
+      <ContractsTableRowCta
         contractInfo={contractInfo}
-        withCTA={withCTA}
+        withCta={withCta}
         showLastUpdate={showLastUpdate}
       />
     )}
