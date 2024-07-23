@@ -7,6 +7,18 @@ import {
 import type { HexAddr, HexAddr32 } from "lib/types";
 import { parseWithError } from "lib/utils";
 
+export const getCollectionByCollectionAddressSequencer = async (
+  endpoint: string,
+  collectionAddress: HexAddr32
+) =>
+  axios
+    .get(
+      `${endpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddress)}`
+    )
+    .then(({ data }) =>
+      parseWithError(zCollectionByCollectionAddressResponseSequencer, data)
+    );
+
 export const getCollectionsByAccountSequencer = async (
   endpoint: string,
   accountAddress: HexAddr
@@ -23,16 +35,4 @@ export const getCollectionsByAccountSequencer = async (
     )
     .then(({ data }) =>
       parseWithError(zCollectionsByAccountResponseSequencer, data)
-    );
-
-export const getCollectionByCollectionAddressSequence = async (
-  endpoint: string,
-  collectionAddress: HexAddr32
-) =>
-  axios
-    .get(
-      `${endpoint}/indexer/nft/v1/collections/${encodeURI(collectionAddress)}`
-    )
-    .then(({ data }) =>
-      parseWithError(zCollectionByCollectionAddressResponseSequencer, data)
     );

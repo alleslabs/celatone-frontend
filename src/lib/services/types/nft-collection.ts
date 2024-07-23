@@ -287,7 +287,7 @@ const zCollectionSequencer = z.object({
   nfts: zCollectionNftsSequencer,
 });
 
-const zCollectionByAccountResponseSequencer = z
+export const zCollectionResponseSequencer = z
   .object({
     object_addr: zHexAddr32,
     collection: zCollectionSequencer,
@@ -296,7 +296,7 @@ const zCollectionByAccountResponseSequencer = z
 
 export const zCollectionsByAccountResponseSequencer = z
   .object({
-    collections: z.array(zCollectionByAccountResponseSequencer),
+    collections: z.array(zCollectionResponseSequencer),
     pagination: zPagination,
   })
   .transform<CollectionsByAccountResponse[]>(({ collections }) =>
@@ -313,7 +313,7 @@ export type CollectionsByAccountResponseSequencer = z.infer<
 
 export const zCollectionByCollectionAddressResponseSequencer = z
   .object({
-    collection: zCollectionByAccountResponseSequencer,
+    collection: zCollectionResponseSequencer,
   })
   .transform<CollectionByCollectionAddressResponse>((val) => ({
     data: {
