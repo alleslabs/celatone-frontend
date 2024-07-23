@@ -27,7 +27,7 @@ export const getTxsByAccountAddressSequencer = async (
   endpoint: string,
   address: BechAddr20,
   paginationKey: Option<string>,
-  limit: number
+  limit: Option<number>
 ) =>
   axios
     .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {

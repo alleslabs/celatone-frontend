@@ -35,6 +35,7 @@ import {
   getNftByNftAddressSequencer,
   getNftMintInfoSequencer,
   getNftsByAccountSequencer,
+  getNftTransactionsSequencer,
 } from "./sequencer";
 
 export const useNfts = (
@@ -148,6 +149,7 @@ export const useNftTransactions = (
   nftAddress: HexAddr32
 ) => {
   const { chainConfig } = useCelatoneApp();
+
   return useQuery<NftTransactions[]>(
     [
       CELATONE_QUERY_KEYS.NFT_TRANSACTIONS,
@@ -165,7 +167,32 @@ export const useNftTransactions = (
   );
 };
 
-export const useNftTransactionsCount = (nftAddress: HexAddr32) => {
+export const useNftTransactionsSequencer = (
+  nftAddress: HexAddr32,
+  enabled = true
+) => {
+  const lcdEndpoint = useLcdEndpoint();
+
+  return useQuery<NftTransactions[]>(
+    [
+      CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER,
+      nftAddress,
+      lcdEndpoint,
+      enabled,
+    ],
+    async () => getNftTransactionsSequencer(lcdEndpoint, nftAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
+    }
+  );
+};
+
+export const useNftTransactionsCount = (
+  nftAddress: HexAddr32,
+  enabled = true
+) => {
   const { chainConfig } = useCelatoneApp();
   return useQuery<number>(
     [
@@ -177,6 +204,7 @@ export const useNftTransactionsCount = (nftAddress: HexAddr32) => {
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
@@ -204,7 +232,10 @@ export const useNftMutateEvents = (
   );
 };
 
-export const useNftMutateEventsCount = (nftAddress: HexAddr32) => {
+export const useNftMutateEventsCount = (
+  nftAddress: HexAddr32,
+  enabled = true
+) => {
   const { chainConfig } = useCelatoneApp();
   return useQuery<number>(
     [
@@ -216,6 +247,7 @@ export const useNftMutateEventsCount = (nftAddress: HexAddr32) => {
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };

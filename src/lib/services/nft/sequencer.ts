@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { getMoveViewJson } from "../move/module/api";
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
-import type { Nft, NftMintInfo } from "../types";
+import type { Nft, NftMintInfo, NftTransactions } from "../types";
 import {
   zNftByNftAddressResponseSequencer,
   zNftsByAccountResponseSequencer,
@@ -103,4 +103,41 @@ export const getNftMintInfoSequencer = async (
     height: tx.height,
     timestamp: tx.created,
   };
+};
+
+export const getNftTransactionsSequencer = async (
+  endpoint: string,
+  nftAddress: HexAddr32
+) => {
+  const txsByAccountAddress = await getTxsByAccountAddressSequencer(
+    endpoint,
+    nftAddress as unknown as BechAddr20,
+    undefined,
+    undefined
+  );
+
+  if (!txsByAccountAddress.items.length)
+    throw new Error("No transactions found");
+
+  const nftsTxs: NftTransactions[] = [];
+
+  txsByAccountAddress.items.forEach((tx) => {
+    const { events, hash, created } = tx;
+
+    events?.reverse()?.forEach((event) => {
+      if (!event.attributes[0].value.includes("0x1::object::")) return;
+
+      const eventValue = event.attributes[0].value.split("::")[2];
+
+      nftsTxs.push({
+        txhash: hash,
+        timestamp: created,
+        isNftBurn: false,
+        isNftMint: eventValue === "CreateEvent",
+        isNftTransfer: eventValue === "TransferEvent",
+      });
+    });
+  });
+
+  return nftsTxs;
 };
