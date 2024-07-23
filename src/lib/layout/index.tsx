@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useEffect, useMemo } from "react";
 
 import { useMobile, useNavContext } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
 import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";
@@ -82,6 +83,7 @@ const Layout = ({ children }: LayoutProps) => {
         </>
       )}
       <GridItem area="main" overflowX="hidden" id="content">
+        <CustomIcon name="group" />
         <div style={{ minHeight: "calc(100vh - 129px)", position: "relative" }}>
           {children}
         </div>
