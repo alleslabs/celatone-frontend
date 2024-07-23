@@ -76,10 +76,10 @@ export const useNftByNftAddress = (
     [
       CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS,
       chainConfig.indexer,
+      lcdEndpoint,
+      tier,
       collectionAddress,
       nftAddress,
-      tier,
-      lcdEndpoint,
     ],
     async () =>
       handleQueryByTier({
@@ -113,10 +113,10 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
     [
       CELATONE_QUERY_KEYS.NFT_TOKEN_MINT_INFO,
       chainConfig.indexer,
-      nftAddress,
-      tier,
-      prefix,
       lcdEndpoint,
+      tier,
+      nftAddress,
+      prefix,
     ],
     async () =>
       handleQueryByTier({
@@ -178,8 +178,8 @@ export const useNftTransactionsSequencer = (
   return useQuery<NftTransactions[]>(
     [
       CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER,
-      nftAddress,
       lcdEndpoint,
+      nftAddress,
       enabled,
     ],
     async () => getNftTransactionsSequencer(lcdEndpoint, nftAddress),

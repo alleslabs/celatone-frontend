@@ -81,9 +81,10 @@ export const zCollectionByCollectionAddressResponse = z.object({
       createdHeight: val.vmAddressByCreator.collectionsByCreator.length
         ? val.vmAddressByCreator.collectionsByCreator[0].block_height
         : null,
-      creatorAddress:
-        val.vmAddressByCreator.collectionsByCreator[0].vmAddressByCreator
-          .vm_address,
+      creatorAddress: val.vmAddressByCreator.collectionsByCreator.length
+        ? val.vmAddressByCreator.collectionsByCreator[0].vmAddressByCreator
+            .vm_address
+        : null,
     }))
     .optional(),
 });

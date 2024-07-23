@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
+import type { HexAddr32, MutateEvent } from "lib/types";
 import {
   zBechAddr,
   zHexAddr,
@@ -41,7 +41,7 @@ export const zNftOld = z
     uri: z.string(),
     token_id: z.string(),
     description: z.string().optional(),
-    is_burned: z.boolean(),
+    is_burned: z.boolean().nullable(),
     vmAddressByOwner: z.object({ vm_address: zHexAddr }),
     vm_address: z.object({ vm_address: zHexAddr32 }).optional(),
     collectionByCollection: z.object({
@@ -53,7 +53,7 @@ export const zNftOld = z
     uri: val.uri,
     tokenId: val.token_id,
     description: val.description,
-    isBurned: val.is_burned ?? null,
+    isBurned: val.is_burned,
     ownerAddress: val.vmAddressByOwner?.vm_address,
     nftAddress: val.vm_address?.vm_address || ("" as HexAddr32),
     collectionAddress: val.collectionByCollection.vm_address.vm_address,
@@ -195,7 +195,7 @@ export const zNftsByAccountResponseSequencer = z
 
 export const zNftByNftAddressResponseSequencer = z
   .tuple([
-    z.string(),
+    zHexAddr,
     z
       .object({
         collection: zHexAddr32,
@@ -211,7 +211,7 @@ export const zNftByNftAddressResponseSequencer = z
       tokenId: info.tokenId,
       description: info.description,
       isBurned: null,
-      ownerAddress: holder as HexAddr,
+      ownerAddress: holder,
       nftAddress: null,
       collectionAddress: info.collection,
       collectionName: null,

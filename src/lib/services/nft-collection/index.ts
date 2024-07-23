@@ -72,8 +72,6 @@ export const useCollectionByCollectionAddress = (
       lcdEndpoint,
       tier,
       collectionAddress,
-      tier,
-      lcdEndpoint,
     ],
     async () =>
       handleQueryByTier({
