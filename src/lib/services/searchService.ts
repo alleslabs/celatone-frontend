@@ -7,7 +7,7 @@ import {
   useTierConfig,
   useValidateAddress,
 } from "lib/app-provider";
-import type { Addr, BechAddr, Nullish, Option } from "lib/types";
+import type { Addr, BechAddr, HexAddr32, Nullish, Option } from "lib/types";
 import { zBechAddr32, zValidatorAddr } from "lib/types";
 import type { IcnsNamesByAddress } from "lib/types/name";
 import {
@@ -21,6 +21,7 @@ import {
 import { useBlockData } from "./block";
 import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
+import { useCollectionByCollectionAddress } from "./nft-collection";
 import { usePoolByPoolId } from "./poolService";
 import { useProposalData, useProposalDataLcd } from "./proposal";
 import { useTxData } from "./tx";
@@ -41,7 +42,8 @@ export type SearchResultType =
   | "Block"
   | "Pool ID"
   | "Validator Address"
-  | "Module Path";
+  | "Module Path"
+  | "NFT Collection Address";
 
 export interface ResultMetadata {
   icns: {
@@ -68,7 +70,7 @@ export const useSearchHandler = (
   resetHandlerStates: () => void
   // eslint-disable-next-line sonarjs/cognitive-complexity
 ): SearchHandlerResponse => {
-  const { isFullTier } = useTierConfig();
+  const { isFullTier, isLiteTier } = useTierConfig();
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
   const {
     chainConfig: {
@@ -77,6 +79,7 @@ export const useSearchHandler = (
         wasm: { enabled: isWasm },
         pool: { enabled: isPool },
         move: { enabled: isMove },
+        nft: { enabled: isNft },
       },
     },
   } = useCelatoneApp();
@@ -111,7 +114,7 @@ export const useSearchHandler = (
 
   // ICNS
   const { data: icnsAddressData, isFetching: icnsAddressFetching } =
-    useAddressByIcnsNameLcd(debouncedKeyword);
+    useAddressByIcnsNameLcd(debouncedKeyword, isWasm);
   // provide ICNS metadata result
   const address = (
     isAddr ? debouncedKeyword : icnsAddressData?.address
@@ -225,6 +228,7 @@ export const useSearchHandler = (
     [addr, functionName, isMove, isSomeValidAddress, moduleName]
   );
 
+  // Module
   const { data: moduleData, isFetching: moduleFetching } =
     useModuleByAddressLcd({
       address: addr,
@@ -238,6 +242,13 @@ export const useSearchHandler = (
 
   // TODO: handle module function later
 
+  // NFT Collection
+  const { data: nftCollectionData, isFetching: nftCollectionFetching } =
+    useCollectionByCollectionAddress(
+      debouncedKeyword as HexAddr32,
+      isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
+    );
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setDebouncedKeyword(keyword);
@@ -248,6 +259,7 @@ export const useSearchHandler = (
 
   return {
     results: [
+      nftCollectionData?.data && "NFT Collection Address",
       addressResult,
       moduleData && "Module Path",
       txData && "Transaction Hash",
@@ -268,7 +280,8 @@ export const useSearchHandler = (
       initiaUsernameFetching ||
       poolFetching ||
       proposalFetching ||
-      validatorFetching,
+      validatorFetching ||
+      nftCollectionFetching,
     metadata: {
       icns: {
         icnsNames,

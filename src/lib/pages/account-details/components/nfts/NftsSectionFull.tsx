@@ -4,23 +4,26 @@ import { useState } from "react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { useCollectionsByAccount } from "lib/services/nft";
+import { useCollectionsByAccount } from "lib/services/nft-collection";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 
 import { FilterItem } from "./FilterItem";
-import { NftsByCollection } from "./NftsByCollection";
+import { NftsByCollectionFull } from "./NftsByCollectionFull";
 
 interface SelectedCollection {
   collectionAddress: HexAddr32;
   nftsCount: number;
 }
 
-interface NftsSectionProps {
+interface NftsSectionFullProps {
   address: HexAddr;
   totalData: Option<number>;
 }
 
-export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
+export const NftsSectionFull = ({
+  address,
+  totalData = 0,
+}: NftsSectionFullProps) => {
   const isMobile = useMobile();
   const { data: collections, isLoading } = useCollectionsByAccount(address);
 
@@ -77,7 +80,7 @@ export const NftsSection = ({ address, totalData = 0 }: NftsSectionProps) => {
             />
           ))}
         </Stack>
-        <NftsByCollection
+        <NftsByCollectionFull
           accountAddress={address}
           collectionAddress={selectedCollection?.collectionAddress}
         />
