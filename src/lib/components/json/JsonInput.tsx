@@ -110,7 +110,7 @@ const JsonInput = ({
   }, [text, minLines, maxLines]);
 
   return (
-    <>
+    <Flex direction="column" flexGrow={1}>
       <Box
         p="16px 12px"
         borderWidth="thin"
@@ -169,7 +169,7 @@ const JsonInput = ({
       >
         {response}
       </Flex>
-    </>
+    </Flex>
   );
 };
 
