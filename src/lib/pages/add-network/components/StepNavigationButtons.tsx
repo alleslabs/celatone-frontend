@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
 
@@ -39,7 +39,6 @@ export const StepNavigationButtons = ({
         <Button minW="128px" onClick={prevStep} isDisabled={currentStep === 0}>
           Previous
         </Button>
-
         <Button
           minW="128px"
           pr={1}
@@ -50,10 +49,10 @@ export const StepNavigationButtons = ({
           Next
         </Button>
       </Flex>
-      {/* <Text variant="body2" color="text.dark" textAlign="center">
+      <Text variant="body2" color="text.dark" textAlign="center">
         The custom Minitia you add on Initiascan will only be stored locally on
         your device.
-      </Text> */}
+      </Text>
     </Flex>
   </Box>
 );

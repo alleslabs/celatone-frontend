@@ -8,8 +8,8 @@ import { z } from "zod";
 import { ControllerInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 
-import { AddNetworkHeader } from "./components/AddNetworkHeader";
-import { AddNetworkSubheader } from "./components/AddNetworkSubheader";
+import { AddNetworkHeader } from "./AddNetworkHeader";
+import { AddNetworkSubheader } from "./AddNetworkSubheader";
 
 // interface DenomUnit {
 //   denom: string;
@@ -23,6 +23,7 @@ import { AddNetworkSubheader } from "./components/AddNetworkSubheader";
 //   denomUnits: DenomUnit[];
 // }
 
+// TODO add validation
 const schema = z.object({
   bech32Prefix: z.string(),
   slip44: z.string(),

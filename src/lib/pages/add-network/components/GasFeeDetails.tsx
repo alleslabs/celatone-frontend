@@ -17,14 +17,15 @@ import { z } from "zod";
 
 import { ControllerInput } from "lib/components/forms";
 
-import { AddNetworkHeader } from "./components/AddNetworkHeader";
-import { AddNetworkSubheader } from "./components/AddNetworkSubheader";
+import { AddNetworkHeader } from "./AddNetworkHeader";
+import { AddNetworkSubheader } from "./AddNetworkSubheader";
 
 export enum GasPriceConfiguration {
   STANDARD = "standard",
   CUSTOM = "custom",
 }
 
+// TODO add validation
 const schema = z.object({
   gasAdjustment: z.string(),
   maxGasLimit: z.string(),

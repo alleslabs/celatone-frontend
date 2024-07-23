@@ -1,8 +1,8 @@
 import { Checkbox, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { AddNetworkHeader } from "./components/AddNetworkHeader";
-import { AddNetworkSubheader } from "./components/AddNetworkSubheader";
+import { AddNetworkHeader } from "./AddNetworkHeader";
+import { AddNetworkSubheader } from "./AddNetworkSubheader";
 
 const initialFeatures = [
   { label: "Wasm", isChecked: false },

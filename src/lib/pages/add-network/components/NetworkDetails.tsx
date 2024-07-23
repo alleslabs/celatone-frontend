@@ -5,8 +5,8 @@ import { z } from "zod";
 
 import { ControllerInput } from "lib/components/forms";
 
-import { AddNetworkHeader } from "./components/AddNetworkHeader";
-import { AddNetworkSubheader } from "./components/AddNetworkSubheader";
+import { AddNetworkHeader } from "./AddNetworkHeader";
+import { AddNetworkSubheader } from "./AddNetworkSubheader";
 
 const URL_REGEX =
   /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$/;
@@ -17,6 +17,7 @@ const NetworkDetails = () => {
   } = useForm({
     resolver: zodResolver(
       z.object({
+        // TODO add validation max length 50
         networkName: z.string(),
         lcdUrl: z.string().regex(URL_REGEX, "Please enter a valid LCD URL"),
         rpcUrl: z.string().regex(URL_REGEX, "Please enter a valid RPC URL"),
