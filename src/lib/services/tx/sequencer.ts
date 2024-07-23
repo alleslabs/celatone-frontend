@@ -5,7 +5,7 @@ import {
   zTxsByHashResponseSequencer,
   zTxsResponseSequencer,
 } from "../types";
-import type { BechAddr20, Option } from "lib/types";
+import type { Addr, Option } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getTxsSequencer = async (
@@ -25,7 +25,7 @@ export const getTxsSequencer = async (
 
 export const getTxsByAccountAddressSequencer = async (
   endpoint: string,
-  address: BechAddr20,
+  address: Addr,
   paginationKey: Option<string>,
   limit: Option<number>
 ) =>

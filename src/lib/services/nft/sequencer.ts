@@ -3,11 +3,9 @@ import axios from "axios";
 import { getMoveViewJson } from "../move/module/api";
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import type { Nft, NftMintInfo, NftTransactions } from "../types";
-import {
-  zNftByNftAddressResponseSequencer,
-  zNftsByAccountResponseSequencer,
-} from "../types";
-import type { BechAddr20, HexAddr, HexAddr32, Nullable } from "lib/types";
+import { zNftInfoSequencer, zNftsByAccountResponseSequencer } from "../types";
+import { zHexAddr } from "lib/types";
+import type { HexAddr, HexAddr32, Nullable } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
   parseWithError,
@@ -57,7 +55,7 @@ const getNftHolder = async (endpoint: string, nftAddress: HexAddr32) =>
     "owner",
     ["0x1::nft::Nft"],
     [`"${nftAddress}"`]
-  );
+  ).then((data) => parseWithError(zHexAddr, data));
 
 const getNftInfo = async (endpoint: string, nftAddress: HexAddr32) =>
   getMoveViewJson(
@@ -67,7 +65,7 @@ const getNftInfo = async (endpoint: string, nftAddress: HexAddr32) =>
     "nft_info",
     [],
     [`"${nftAddress}"`]
-  );
+  ).then((data) => parseWithError(zNftInfoSequencer, data));
 
 export const getNftByNftAddressSequencer = async (
   endpoint: string,
@@ -76,7 +74,18 @@ export const getNftByNftAddressSequencer = async (
   Promise.all([
     getNftHolder(endpoint, nftAddress),
     getNftInfo(endpoint, nftAddress),
-  ]).then((data) => parseWithError(zNftByNftAddressResponseSequencer, data));
+  ]).then<{ data: Nft }>(([holder, info]) => ({
+    data: {
+      uri: info.uri,
+      tokenId: info.tokenId,
+      description: info.description,
+      isBurned: null,
+      ownerAddress: holder,
+      nftAddress: null,
+      collectionAddress: info.collection,
+      collectionName: null,
+    },
+  }));
 
 export const getNftMintInfoSequencer = async (
   endpoint: string,
@@ -85,7 +94,7 @@ export const getNftMintInfoSequencer = async (
 ): Promise<NftMintInfo> => {
   const txsByAccountAddress = await getTxsByAccountAddressSequencer(
     endpoint,
-    nftAddress as unknown as BechAddr20,
+    nftAddress,
     undefined,
     1
   );
@@ -111,7 +120,7 @@ export const getNftTransactionsSequencer = async (
 ) => {
   const txsByAccountAddress = await getTxsByAccountAddressSequencer(
     endpoint,
-    nftAddress as unknown as BechAddr20,
+    nftAddress,
     undefined,
     undefined
   );

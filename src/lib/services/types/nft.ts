@@ -193,27 +193,11 @@ export const zNftsByAccountResponseSequencer = z
     pagination: val.pagination,
   }));
 
-export const zNftByNftAddressResponseSequencer = z
-  .tuple([
-    zHexAddr,
-    z
-      .object({
-        collection: zHexAddr32,
-        description: z.string(),
-        token_id: z.string(),
-        uri: z.string(),
-      })
-      .transform(snakeToCamel),
-  ])
-  .transform<{ data: Nft }>(([holder, info]) => ({
-    data: {
-      uri: info.uri,
-      tokenId: info.tokenId,
-      description: info.description,
-      isBurned: null,
-      ownerAddress: holder,
-      nftAddress: null,
-      collectionAddress: info.collection,
-      collectionName: null,
-    },
-  }));
+export const zNftInfoSequencer = z
+  .object({
+    collection: zHexAddr32,
+    description: z.string(),
+    token_id: z.string(),
+    uri: z.string(),
+  })
+  .transform(snakeToCamel);
