@@ -18,6 +18,7 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import {
+  arrayMove,
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
@@ -25,13 +26,12 @@ import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { useNetworkStore } from "lib/providers/store";
-import type { Network } from "lib/stores/networks";
 import type { Nullable, Option } from "lib/types";
 
 import { NetworkCardDraggable } from "./network-card";
 
 interface NetworkAccodionPinnedProps {
-  pinnedNetworks: Network[];
+  pinnedNetworks: string[];
   cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
   onClose: () => void;
@@ -43,12 +43,12 @@ export const NetworkAccodionPinned = ({
   setCursor,
   onClose,
 }: NetworkAccodionPinnedProps) => {
-  const { setPinnedNetworks } = useNetworkStore();
+  const { getPinnedNetworks, setPinnedNetworks } = useNetworkStore();
   const [dndActive, setDndActive] = useState<Nullable<Active>>(null);
 
   // Drag and drop feature
   const activeItem = useMemo(
-    () => pinnedNetworks.find((item) => item.chainId === dndActive?.id),
+    () => pinnedNetworks.find((item) => item === dndActive?.id),
     [dndActive, pinnedNetworks]
   );
 
@@ -86,7 +86,12 @@ export const NetworkAccodionPinned = ({
           }}
           onDragEnd={({ active, over }) => {
             if (over && active.id !== over.id) {
-              setPinnedNetworks(active.id.toString(), over.id.toString());
+              const pinnedChainIds = getPinnedNetworks();
+              const activeIndex = pinnedChainIds.indexOf(active.id.toString());
+              const overIndex = pinnedChainIds.indexOf(over.id.toString());
+              setPinnedNetworks(
+                arrayMove(pinnedChainIds, activeIndex, overIndex)
+              );
             }
             setDndActive(null);
           }}
@@ -95,13 +100,13 @@ export const NetworkAccodionPinned = ({
           }}
         >
           <SortableContext
-            items={pinnedNetworks.map((item) => item.chainId)}
+            items={pinnedNetworks}
             strategy={verticalListSortingStrategy}
           >
             {pinnedNetworks.map((item, index) => (
               <NetworkCardDraggable
-                key={item.chainId}
-                chainId={item.chainId}
+                key={item}
+                chainId={item}
                 index={index}
                 cursor={cursor}
                 setCursor={setCursor}
@@ -124,8 +129,8 @@ export const NetworkAccodionPinned = ({
             >
               {activeItem ? (
                 <NetworkCardDraggable
-                  key={activeItem.chainId}
-                  chainId={activeItem.chainId}
+                  key={activeItem}
+                  chainId={activeItem}
                   cursor={cursor}
                   setCursor={setCursor}
                   onClose={onClose}

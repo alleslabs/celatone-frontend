@@ -7,7 +7,7 @@ import { CHAIN_CONFIGS } from "config/chain";
 import { useCelatoneApp, useMobile, useSelectChain } from "lib/app-provider";
 import type { Option } from "lib/types";
 
-import { NetworkIcons } from "./NetworkIcons";
+import { NetworkCardCta } from "./NetworkCardCta";
 
 interface NetworkCardProps {
   chainId: string;
@@ -112,7 +112,7 @@ export const NetworkCard = observer(
             </Text>
           </Flex>
         </Flex>
-        <NetworkIcons
+        <NetworkCardCta
           chainId={chainId}
           isSelected={isSelected}
           isDraggable={isDraggable}

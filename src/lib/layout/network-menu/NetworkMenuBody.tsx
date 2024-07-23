@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useCallback, useMemo, useState } from "react";
 
+import type { ChainConfig } from "config/chain";
 import { CHAIN_CONFIGS } from "config/chain";
 import { useCelatoneApp, useMobile, useSelectChain } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -21,18 +22,20 @@ interface NetworkMenuBodyProps {
 const filterChains = (
   chainIds: string[],
   keyword: string,
-  type: "mainnet" | "testnet"
-) =>
-  chainIds
-    .filter((chain) => CHAIN_CONFIGS[chain]?.networkType === type)
-    .filter(
-      (network) =>
-        !keyword ||
-        CHAIN_CONFIGS[network]?.prettyName
-          .toLowerCase()
-          .includes(keyword.toLowerCase()) ||
-        network.toLowerCase().includes(keyword.toLowerCase())
-    );
+  type?: ChainConfig["networkType"]
+) => {
+  const chainIdsByType = type
+    ? chainIds.filter((chainId) => CHAIN_CONFIGS[chainId]?.networkType === type)
+    : chainIds;
+  return chainIdsByType.filter(
+    (chainId) =>
+      !keyword ||
+      CHAIN_CONFIGS[chainId]?.prettyName
+        .toLowerCase()
+        .includes(keyword.toLowerCase()) ||
+      chainId.toLowerCase().includes(keyword.toLowerCase())
+  );
+};
 
 const getNextCursor = (
   key: string,
@@ -62,32 +65,24 @@ export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
 
   // Get chains info
   const pinnedNetworks = getPinnedNetworks();
-  const filteredPinnedNetworks = useMemo(() => {
-    if (!keyword) return [...pinnedNetworks];
-    return pinnedNetworks.filter(
-      (network) =>
-        CHAIN_CONFIGS[network.chainId]?.prettyName
-          .toLowerCase()
-          .includes(keyword.toLowerCase()) ||
-        network.chainId.toLowerCase().includes(keyword.toLowerCase())
-    );
-  }, [pinnedNetworks, keyword]);
 
-  const [filteredMainnetChains, filteredTestnetChains] = useMemo(
-    () => [
-      filterChains(availableChainIds, keyword, "mainnet"),
-      filterChains(availableChainIds, keyword, "testnet"),
-    ],
-    [availableChainIds, keyword]
-  );
+  const [filteredPinnedChains, filteredMainnetChains, filteredTestnetChains] =
+    useMemo(
+      () => [
+        filterChains(pinnedNetworks, keyword),
+        filterChains(availableChainIds, keyword, "mainnet"),
+        filterChains(availableChainIds, keyword, "testnet"),
+      ],
+      [availableChainIds, keyword, pinnedNetworks]
+    );
 
   const allNetworks = useMemo(
     () => [
-      ...filteredPinnedNetworks.map((network) => network.chainId),
+      ...filteredPinnedChains,
       ...filteredMainnetChains,
       ...filteredTestnetChains,
     ],
-    [filteredPinnedNetworks, filteredMainnetChains, filteredTestnetChains]
+    [filteredPinnedChains, filteredMainnetChains, filteredTestnetChains]
   );
 
   // Navigate with arrow keys
@@ -139,15 +134,15 @@ export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
         p={0}
       >
         <NetworkAccodionPinned
-          pinnedNetworks={filteredPinnedNetworks}
+          pinnedNetworks={filteredPinnedChains}
           cursor={cursor}
           setCursor={setCursor}
           onClose={onClose}
         />
-        {filteredPinnedNetworks.length > 0 && (
+        {filteredPinnedChains.length > 0 && (
           <Divider
             borderColor="gray.700"
-            pt={filteredPinnedNetworks.length ? 2 : 0}
+            pt={filteredPinnedChains.length ? 2 : 0}
             mb={4}
           />
         )}
@@ -156,13 +151,13 @@ export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
           networks={filteredMainnetChains}
           cursor={cursor}
           setCursor={setCursor}
-          startIndex={filteredPinnedNetworks.length}
+          startIndex={filteredPinnedChains.length}
           onClose={onClose}
         />
         {filteredMainnetChains.length > 0 && (
           <Divider
             borderColor="gray.700"
-            pt={filteredPinnedNetworks.length ? 2 : 0}
+            pt={filteredPinnedChains.length ? 2 : 0}
             mb={4}
           />
         )}
@@ -172,7 +167,7 @@ export const NetworkMenuBody = observer(({ onClose }: NetworkMenuBodyProps) => {
           cursor={cursor}
           setCursor={setCursor}
           startIndex={
-            filteredPinnedNetworks.length + filteredMainnetChains.length
+            filteredPinnedChains.length + filteredMainnetChains.length
           }
           onClose={onClose}
         />

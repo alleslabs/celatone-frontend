@@ -1,20 +1,12 @@
-import { arrayMove } from "@dnd-kit/sortable";
-import { findIndex } from "lodash";
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import type { Dict } from "lib/types";
 
-export interface Network {
-  name: string;
-  chainId: string;
-  logo?: string;
-}
-
 export class NetworkStore {
   private userKey: string;
 
-  networks: Dict<string, Network[]>;
+  networks: Dict<string, string[]>;
 
   constructor() {
     this.userKey = "";
@@ -40,32 +32,27 @@ export class NetworkStore {
     this.userKey = userKey;
   }
 
-  getPinnedNetworks(): Network[] {
+  getPinnedNetworks(): string[] {
     return this.networks[this.userKey] ?? [];
   }
 
   isNetworkPinned(chainId: string): boolean {
-    const networkByUserKey = this.getPinnedNetworks();
-
-    return networkByUserKey.findIndex((x) => x.chainId === chainId) > -1;
+    return this.getPinnedNetworks().findIndex((item) => item === chainId) > -1;
   }
 
-  pinNetwork(newNetwork: Network): void {
-    if (!this.isNetworkPinned(newNetwork.chainId)) {
-      this.networks[this.userKey] = [...this.getPinnedNetworks(), newNetwork];
+  pinNetwork(chainId: string): void {
+    if (!this.isNetworkPinned(chainId)) {
+      this.networks[this.userKey] = [...this.getPinnedNetworks(), chainId];
     }
   }
 
   removeNetwork(chainId: string): void {
-    this.networks[this.userKey] = this.networks[this.userKey]?.filter(
-      (each) => each.chainId !== chainId
+    this.networks[this.userKey] = this.getPinnedNetworks().filter(
+      (item) => item !== chainId
     );
   }
 
-  setPinnedNetworks(activeId: string, overId: string): void {
-    const items = this.networks[this.userKey] ?? [];
-    const oldIndex = findIndex(items, (item) => item.chainId === activeId);
-    const newIndex = findIndex(items, (item) => item.chainId === overId);
-    this.networks[this.userKey] = arrayMove(items, oldIndex, newIndex);
+  setPinnedNetworks(chainIds: string[]): void {
+    this.networks[this.userKey] = chainIds;
   }
 }

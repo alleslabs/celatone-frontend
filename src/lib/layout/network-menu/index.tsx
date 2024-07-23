@@ -39,9 +39,8 @@ export const NetworkMenu = observer(() => {
       }
     };
     document.addEventListener("keydown", openSearchHandler);
-    return () => {
-      document.removeEventListener("keydown", openSearchHandler);
-    };
+
+    return () => document.removeEventListener("keydown", openSearchHandler);
   }, [isMac, isOpen, onClose, onOpen]);
 
   return (

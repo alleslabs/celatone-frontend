@@ -7,14 +7,14 @@ import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useNetworkStore } from "lib/providers/store";
 
-interface NetworkIconsProps {
+interface NetworkCardCtaProps {
   chainId: string;
   isSelected: boolean;
   isDraggable?: boolean;
 }
 
-export const NetworkIcons = observer(
-  ({ chainId, isSelected, isDraggable }: NetworkIconsProps) => {
+export const NetworkCardCta = observer(
+  ({ chainId, isSelected, isDraggable }: NetworkCardCtaProps) => {
     const isMobile = useMobile();
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
     const toast = useToast({
@@ -28,11 +28,7 @@ export const NetworkIcons = observer(
     const handleSave = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        pinNetwork({
-          name: CHAIN_CONFIGS[chainId]?.prettyName,
-          chainId,
-          logo: CHAIN_CONFIGS[chainId]?.logoUrl,
-        });
+        pinNetwork(chainId);
         toast({
           title: `Pinned \u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 successfully`,
         });
