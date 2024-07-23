@@ -80,10 +80,6 @@ export type ThemeConfig = {
     searchNotFound: string;
     searchEmpty: string;
     disconnected: string;
-    overview: {
-      main: string;
-      secondary?: string;
-    };
   };
   jsonTheme: "monokai" | "one_dark" | "pastel_on_dark";
   footer?: {

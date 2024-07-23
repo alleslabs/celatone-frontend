@@ -7,7 +7,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useDebounce } from "lib/hooks";
-import { useCollections } from "lib/services/nft";
+import { useCollections } from "lib/services/nft-collection";
 
 import { CollectionList } from "./CollectionList";
 

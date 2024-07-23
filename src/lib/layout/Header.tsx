@@ -1,15 +1,25 @@
 import { Flex, Image } from "@chakra-ui/react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { FaucetBtn } from "lib/components/button";
 import { WalletSection } from "lib/components/Wallet";
 
-import { NetworkMenu } from "./NetworkMenu";
+import { AppMenu } from "./AppMenu";
+import { NetworkMenu } from "./network-menu";
 import { SearchComponent } from "./search";
+import { SectionWrapper } from "./SectionWrapper";
 
 const Header = () => {
   const { theme } = useCelatoneApp();
+  const {
+    chainConfig: {
+      features: {
+        faucet: { enabled: isFaucetEnabled },
+      },
+    },
+  } = useCelatoneApp();
+  const isInitia = useInitia();
   return (
     <Flex
       as="header"
@@ -17,27 +27,43 @@ const Header = () => {
       height="full"
       align="center"
       justifyContent="space-between"
-      px={6}
-      mb={1}
-      gap={6}
     >
-      <AppLink href="/">
-        <Image
-          src={theme.branding.logo}
-          alt="Celatone"
-          minWidth="152px"
-          width="152px"
-          maxWidth="152px"
-          mr={8}
-          transition="all 0.25s ease-in-out"
-          _hover={{ cursor: "pointer", opacity: 0.85 }}
-        />
-      </AppLink>
-      <SearchComponent />
-      <Flex gap={4}>
-        <FaucetBtn />
-        <NetworkMenu />
-        <WalletSection />
+      <Flex h="full">
+        {isInitia && (
+          <SectionWrapper minW="64px">
+            <AppMenu />
+          </SectionWrapper>
+        )}
+        <SectionWrapper minW={isInitia ? "auto" : "234px"}>
+          <AppLink href="/">
+            <Image
+              src={theme.branding.logo}
+              alt="Celatone"
+              minWidth="139px"
+              width="139px"
+              maxWidth="139px"
+              transition="all 0.25s ease-in-out"
+              _hover={{ cursor: "pointer", opacity: 0.85 }}
+              mx={4}
+            />
+          </AppLink>
+        </SectionWrapper>
+      </Flex>
+      <SectionWrapper w="full">
+        <SearchComponent />
+      </SectionWrapper>
+      <Flex h="full">
+        {isFaucetEnabled && (
+          <SectionWrapper>
+            <FaucetBtn />
+          </SectionWrapper>
+        )}
+        <SectionWrapper>
+          <NetworkMenu />
+        </SectionWrapper>
+        <SectionWrapper>
+          <WalletSection />
+        </SectionWrapper>
       </Flex>
     </Flex>
   );

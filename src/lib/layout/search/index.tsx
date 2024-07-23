@@ -15,6 +15,7 @@ import {
   useDisclosure,
   useOutsideClick,
 } from "@chakra-ui/react";
+import plur from "plur";
 import type { ChangeEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -51,6 +52,7 @@ export const SearchComponent = () => {
         wasm: { enabled: isWasm },
         move: { enabled: isMove },
         pool: { enabled: isPool },
+        nft: { enabled: isNft },
       },
     },
   } = useCelatoneApp();
@@ -169,20 +171,24 @@ export const SearchComponent = () => {
   return (
     <>
       {isMobile ? (
-        <Button variant="outline-gray" size="sm" onClick={onOpen}>
+        <Button
+          variant="ghost-gray"
+          size="sm"
+          onClick={onOpen}
+          minW="60px"
+          minH="60px"
+          borderRadius={0}
+        >
           <CustomIcon name="search" boxSize={3} />
         </Button>
       ) : (
         <Flex
           onClick={onOpen}
           w="full"
-          maxH="40px"
-          p={2}
+          h="full"
+          p={4}
           alignItems="center"
           justifyContent="space-between"
-          border="1px solid"
-          borderColor="gray.700"
-          borderRadius={8}
           cursor="pointer"
           transition="all 0.25s ease-in-out"
           _hover={{
@@ -293,7 +299,8 @@ export const SearchComponent = () => {
                   <List>
                     {results.length > 0 && (
                       <Text variant="body2" color="text.dark" mb={3}>
-                        {results.length} Matched results...
+                        {results.length} Matched{" "}
+                        {plur("result", results.length)}...
                       </Text>
                     )}
                     <SearchResults
@@ -314,6 +321,7 @@ export const SearchComponent = () => {
                   isPool={isPool}
                   isMove={isMove}
                   isGov={isGov}
+                  isNft={isNft}
                   isFullTier={isFullTier}
                 />
               </Flex>

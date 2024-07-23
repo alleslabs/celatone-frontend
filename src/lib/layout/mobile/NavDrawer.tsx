@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-import { NetworkMenu } from "../NetworkMenu";
+import { NetworkMenu } from "../network-menu";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useGovConfig,
@@ -108,7 +108,13 @@ export const NavDrawer = () => {
 
   return (
     <>
-      <Button variant="outline-gray" size="sm" gap={1} onClick={() => onOpen()}>
+      <Button
+        variant="ghost-gray"
+        h="full"
+        borderRadius={0}
+        gap={1}
+        onClick={onOpen}
+      >
         <CustomIcon name="menu" boxSize={3} />
         Menu
       </Button>

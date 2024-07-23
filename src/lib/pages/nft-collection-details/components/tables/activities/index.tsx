@@ -6,7 +6,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
-import { useCollectionActivities } from "lib/services/nft";
+import { useCollectionActivities } from "lib/services/nft-collection";
 import type { HexAddr32 } from "lib/types";
 
 import { ActivitiesTable } from "./ActivitiesTable";

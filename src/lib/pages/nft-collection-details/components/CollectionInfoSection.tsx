@@ -4,7 +4,7 @@ import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
-import { useCollectionCreator } from "lib/services/nft";
+import { useCollectionCreator } from "lib/services/nft-collection";
 import type { HexAddr32 } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
