@@ -96,7 +96,7 @@ export const VotingOverviewThreshold = ({
         >
           <CustomIcon
             boxSize={4}
-            name="alert-circle-solid"
+            name="alert-triangle-solid"
             color="warning.main"
           />
           <Text variant="body2" color="warning.main">

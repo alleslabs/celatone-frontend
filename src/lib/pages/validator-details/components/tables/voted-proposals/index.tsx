@@ -158,7 +158,7 @@ export const VotedProposalsTable = ({
       {!onViewMore && (
         <>
           <Alert variant="info" gap={4} display={{ base: "none", md: "flex" }}>
-            <CustomIcon boxSize={4} name="info-circle-solid" />
+            <CustomIcon boxSize={4} name="info-circle" />
             <Text variant="body2" color="text.dark">
               Kindly note that the validator may not have voted on the proposal
               due to ineligibility, such as being recently added to the network.

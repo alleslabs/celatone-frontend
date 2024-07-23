@@ -43,11 +43,7 @@ const getAlertContent = (
     : {
         variant: "primary",
         icon: (
-          <CustomIcon
-            name="info-circle-solid"
-            color="primary.light"
-            boxSize={4}
-          />
+          <CustomIcon name="info-circle" color="primary.light" boxSize={4} />
         ),
         description: `${chainPrettyName} is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.`,
       };

@@ -111,7 +111,7 @@ export const ViewArea = ({
           {error && (
             <Alert variant="error" alignItems="center" gap={4}>
               <CustomIcon
-                name="alert-circle-solid"
+                name="alert-triangle-solid"
                 color="error.main"
                 boxSize={4}
               />

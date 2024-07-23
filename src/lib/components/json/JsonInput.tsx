@@ -55,7 +55,7 @@ const getResponse = (jsonState: JsonState) => {
         response: (
           <>
             <CustomIcon
-              name="alert-circle-solid"
+              name="alert-triangle-solid"
               color="error.light"
               boxSize={3}
             />

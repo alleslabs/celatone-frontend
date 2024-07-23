@@ -30,7 +30,7 @@ export const ResourceDetailCard = ({
     return (
       <Flex bg="gray.900" p={4} borderRadius={8} alignItems="center">
         <CustomIcon
-          name="alert-circle-solid"
+          name="alert-triangle-solid"
           color="gray.600"
           boxSize={4}
           mr={3}
