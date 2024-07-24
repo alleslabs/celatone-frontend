@@ -11,6 +11,7 @@ import {
 import { zHexAddr } from "lib/types";
 import type { HexAddr, HexAddr32, Nullable, Option } from "lib/types";
 import {
+  bech32AddressToHex,
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
@@ -137,7 +138,9 @@ export const getNftMintInfoSequencer = async (
 
   const tx = txsByNftAddress.items[0];
 
-  const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
+  const sender = bech32AddressToHex(
+    convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix)
+  );
 
   return {
     minter: sender,

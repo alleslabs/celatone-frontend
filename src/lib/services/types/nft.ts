@@ -2,7 +2,6 @@ import { z } from "zod";
 
 import type { HexAddr32, MutateEvent } from "lib/types";
 import {
-  zBechAddr,
   zHexAddr,
   zHexAddr32,
   zPagination,
@@ -68,7 +67,7 @@ export type NftByNftAddressResponse = z.infer<typeof zNftByNftAddressResponse>;
 export const zNftMintInfoResponse = z
   .object({
     account: z.object({
-      address: zBechAddr,
+      address: zHexAddr,
     }),
     block: z.object({
       timestamp: zUtcDate,
