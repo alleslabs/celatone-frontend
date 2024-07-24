@@ -13,7 +13,6 @@ import { AttachFundsType } from "./types";
 interface AttachFundContentProps {
   control: Control<AttachFundsState>;
   setValue: UseFormSetValue<AttachFundsState>;
-  labelBgColor?: string;
 }
 
 const attachFundsOptions = [
@@ -34,11 +33,7 @@ const attachFundsOptions = [
   },
 ];
 
-const AttachFundContent = ({
-  control,
-  setValue,
-  labelBgColor,
-}: AttachFundContentProps) => {
+const AttachFundContent = ({ control, setValue }: AttachFundContentProps) => {
   const [assetsSelect, assetsJson, attachFundsOption] = useWatch({
     control,
     name: [ASSETS_SELECT, ASSETS_JSON_STR, ATTACH_FUNDS_OPTION],
@@ -51,7 +46,6 @@ const AttachFundContent = ({
           assetsSelect={assetsSelect}
           control={control}
           setValue={setValue}
-          labelBgColor={labelBgColor}
         />
       );
     case AttachFundsType.ATTACH_FUNDS_JSON:
@@ -70,7 +64,6 @@ const AttachFundContent = ({
 interface AttachFundProps {
   control: Control<AttachFundsState>;
   attachFundsOption: AttachFundsType;
-  labelBgColor?: string;
   setValue: UseFormSetValue<AttachFundsState>;
   showLabel?: boolean;
 }
@@ -78,7 +71,6 @@ interface AttachFundProps {
 export const AttachFund = ({
   control,
   attachFundsOption,
-  labelBgColor,
   setValue,
   showLabel = true,
 }: AttachFundProps) => (
@@ -100,13 +92,8 @@ export const AttachFund = ({
             option will be used.
           </Text>
         }
-        labelBgColor={labelBgColor}
       />
     </Flex>
-    <AttachFundContent
-      control={control}
-      setValue={setValue}
-      labelBgColor={labelBgColor}
-    />
+    <AttachFundContent control={control} setValue={setValue} />
   </>
 );

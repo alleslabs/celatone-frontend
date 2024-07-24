@@ -7,7 +7,7 @@ import { RemoveCodeModal, SaveOrEditCodeModal } from "lib/components/modal";
 import { useCodeStore } from "lib/providers/store";
 import type { CodeInfo } from "lib/types";
 
-export const CTASection = observer((codeInfo: CodeInfo) => {
+export const CtaSection = observer((codeInfo: CodeInfo) => {
   const { isCodeIdSaved, getCodeLocalInfo } = useCodeStore();
   const isSaved = isCodeIdSaved(codeInfo.id);
   return (

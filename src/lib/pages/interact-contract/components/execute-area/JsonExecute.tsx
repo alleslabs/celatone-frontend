@@ -236,44 +236,46 @@ export const JsonExecute = ({
         cmds={execCmds}
         setMsg={setMsg}
       />
-      <Flex gap={8} mt={8} direction={{ sm: "column", lg: "row" }}>
-        <Box w={{ sm: "full", lg: "50%" }}>
-          <JsonInput topic="Execute Msg" text={msg} setText={setMsg} />
-          {error && <ErrorMessageRender error={error} mb={4} />}
-        </Box>
-        <Box w={{ sm: "full", lg: "50%" }}>
-          <AttachFund
-            control={control}
-            setValue={setValue}
-            attachFundsOption={attachFundsOption}
-          />
-        </Box>
-      </Flex>
-      <Flex alignItems="center" justify="space-between">
-        <Flex gap={2}>
-          <CopyButton
-            isDisable={!msg.length}
-            value={msg}
-            amptrackSection="execute_msg"
-          />
-          <WasmCodeSnippet
-            type="execute"
-            contractAddress={contractAddress}
-            message={msg}
-            funds={funds}
-          />
-        </Flex>
-        <Flex direction="row" align="center" gap={2}>
-          <Flex fontSize="14px" color="text.dark" alignItems="center">
-            Transaction Fee:{" "}
-            <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
+      <Flex direction="column" gap={10}>
+        <Flex gap={8} mt={8} direction={{ sm: "column", lg: "row" }}>
+          <Flex direction="column" w={{ sm: "full", lg: "50%" }}>
+            <JsonInput topic="Execute Msg" text={msg} setText={setMsg} />
+            {error && <ErrorMessageRender error={error} mb={4} />}
           </Flex>
-          <SubmitButton
-            text="Execute"
-            isLoading={processing}
-            onSubmit={proceed}
-            isDisabled={isButtonDisabled}
-          />
+          <Box w={{ sm: "full", lg: "50%" }}>
+            <AttachFund
+              control={control}
+              setValue={setValue}
+              attachFundsOption={attachFundsOption}
+            />
+          </Box>
+        </Flex>
+        <Flex alignItems="center" justify="space-between">
+          <Flex gap={2}>
+            <CopyButton
+              isDisable={!msg.length}
+              value={msg}
+              amptrackSection="execute_msg"
+            />
+            <WasmCodeSnippet
+              type="execute"
+              contractAddress={contractAddress}
+              message={msg}
+              funds={funds}
+            />
+          </Flex>
+          <Flex direction="row" align="center" gap={2}>
+            <Flex fontSize="14px" color="text.dark" alignItems="center">
+              Transaction Fee:{" "}
+              <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
+            </Flex>
+            <SubmitButton
+              text="Execute"
+              isLoading={processing}
+              onSubmit={proceed}
+              isDisabled={isButtonDisabled}
+            />
+          </Flex>
         </Flex>
       </Flex>
     </>

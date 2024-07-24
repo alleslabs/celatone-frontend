@@ -1,7 +1,7 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
 
-interface FooterCTAProps {
+interface FooterCtaProps {
   loading?: boolean;
   cancelButton: ButtonProps;
   cancelLabel?: string;
@@ -9,13 +9,13 @@ interface FooterCTAProps {
   actionLabel?: string;
 }
 
-export const FooterCTA = ({
+export const FooterCta = ({
   loading = false,
   cancelButton,
   cancelLabel = "Previous",
   actionButton,
   actionLabel = "Submit",
-}: FooterCTAProps) => (
+}: FooterCtaProps) => (
   <Box
     w="full"
     bg="gray.900"
