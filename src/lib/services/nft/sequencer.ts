@@ -151,14 +151,14 @@ export const getNftTransactionsSequencer = async (
   endpoint: string,
   nftAddress: HexAddr32
 ) => {
-  const txsByAccountAddress = await getTxsByAccountAddressSequencer({
+  const txsByNftAddress = await getTxsByAccountAddressSequencer({
     endpoint,
     address: nftAddress,
   });
 
   const nftsTxs: NftTransactions[] = [];
 
-  txsByAccountAddress.items.forEach((tx) => {
+  txsByNftAddress.items.forEach((tx) => {
     const { events, hash, created } = tx;
 
     events?.reverse()?.forEach((event) => {
