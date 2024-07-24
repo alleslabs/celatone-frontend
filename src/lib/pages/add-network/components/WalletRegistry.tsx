@@ -5,11 +5,12 @@ import type { Control, FieldErrors } from "react-hook-form";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
+import {
+  CustomNetworkPageHeader,
+  CustomNetworkSubheader,
+} from "lib/components/custom-network";
 import { ControllerInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-
-import { AddNetworkHeader } from "./AddNetworkHeader";
-import { AddNetworkSubheader } from "./AddNetworkSubheader";
 
 // interface DenomUnit {
 //   denom: string;
@@ -195,9 +196,9 @@ const WalletRegistry = () => {
 
   return (
     <Flex direction="column" gap={2} alignItems="center">
-      <AddNetworkHeader title="Add Wallet Registry" />
+      <CustomNetworkPageHeader title="Add Wallet Registry" />
       <Flex w="full" direction="column" gap={6} my={8}>
-        <AddNetworkSubheader title="Account Prefix and Registered Coin Type" />
+        <CustomNetworkSubheader title="Account Prefix and Registered Coin Type" />
         <Flex gap={6}>
           <ControllerInput
             name="bech32Prefix"
@@ -243,7 +244,7 @@ const WalletRegistry = () => {
         )}
       </Flex>
       <Flex w="full" direction="column" gap={6} mb={8}>
-        <AddNetworkSubheader
+        <CustomNetworkSubheader
           title="Assets"
           subtitle="List the available supported tokens in this network"
         />

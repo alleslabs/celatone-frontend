@@ -2,12 +2,12 @@ import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
 import ActionPageContainer from "lib/components/ActionPageContainer";
+import { CustomNetworkFooterCta } from "lib/components/custom-network";
 import { CelatoneSeo } from "lib/components/Seo";
 
 import { AddNetworkStepper } from "./components/AddNetworkStepper";
 import GasFeeDetails from "./components/GasFeeDetails";
 import NetworkDetails from "./components/NetworkDetails";
-import { StepNavigationButtons } from "./components/StepNavigationButtons";
 import SupportedFeatures from "./components/SupportedFeatures";
 import WalletRegistry from "./components/WalletRegistry";
 
@@ -43,11 +43,11 @@ export const AddNetwork = () => {
         <ActionPageContainer width={640}>
           {steps[currentStep]}
         </ActionPageContainer>
-        <StepNavigationButtons
+        <CustomNetworkFooterCta
           currentStep={currentStep}
           totalSteps={steps.length}
-          nextStep={nextStep}
-          prevStep={prevStep}
+          leftButtonAction={nextStep}
+          rightButtonAction={prevStep}
         />
       </Flex>
     </>

@@ -3,10 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import {
+  CustomNetworkPageHeader,
+  CustomNetworkSubheader,
+} from "lib/components/custom-network";
 import { ControllerInput } from "lib/components/forms";
-
-import { AddNetworkHeader } from "./AddNetworkHeader";
-import { AddNetworkSubheader } from "./AddNetworkSubheader";
 
 const URL_REGEX =
   /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$/;
@@ -44,9 +45,9 @@ const NetworkDetails = () => {
 
   return (
     <Flex direction="column" gap={2} alignItems="center">
-      <AddNetworkHeader title="Add Network Details" />
+      <CustomNetworkPageHeader title="Add Network Details" />
       <Flex w="full" direction="column" gap={6} mt={8}>
-        <AddNetworkSubheader
+        <CustomNetworkSubheader
           title="Network Details"
           subtitle="Enter the Minitia’s general information and gather data touch points"
         />
