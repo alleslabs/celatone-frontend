@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1039](https://github.com/alleslabs/celatone-frontend/pull/1039) Make NFT Txs to load more style
 - [#1022](https://github.com/alleslabs/celatone-frontend/pull/1022) Separate API requests in home page overview component
 
 ### Bug fixes
