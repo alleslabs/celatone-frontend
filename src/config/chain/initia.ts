@@ -68,7 +68,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     logoUrl: "https://assets.alleslabs.dev/integrations/chains/initai.png",
     lcd: "https://maze-rest-617bacff-7d34-4eb8-87f4-ee16fb4e0ac7.ue1-prod.newmetric.xyz",
     rpc: "https://maze-rpc-617bacff-7d34-4eb8-87f4-ee16fb4e0ac7.ue1-prod.newmetric.xyz",
-    indexer: "https://init-ai-1-graphql.alleslabs.dev/v1/graphql",
+    indexer: "",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {

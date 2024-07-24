@@ -23,13 +23,19 @@ export const getTxsSequencer = async (
     })
     .then(({ data }) => parseWithError(zTxsResponseSequencer, data));
 
-export const getTxsByAccountAddressSequencer = async (
-  endpoint: string,
-  address: Addr,
-  paginationKey: Option<string>,
-  limit: Option<number>,
-  reverse = true
-) =>
+export const getTxsByAccountAddressSequencer = async ({
+  endpoint,
+  address,
+  paginationKey,
+  limit,
+  reverse = true,
+}: {
+  endpoint: string;
+  address: Addr;
+  paginationKey?: string;
+  limit?: number;
+  reverse?: boolean;
+}) =>
   axios
     .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {
       params: {

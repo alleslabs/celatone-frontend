@@ -1,5 +1,6 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 
 import type {
   Metadata,
@@ -35,6 +36,7 @@ import {
   getNftByNftAddressSequencer,
   getNftMintInfoSequencer,
   getNftsByAccountSequencer,
+  getNftsSequencer,
   getNftTransactionsSequencer,
 } from "./sequencer";
 
@@ -42,7 +44,8 @@ export const useNfts = (
   collectionAddress: HexAddr32,
   limit: number,
   offset: number,
-  search = ""
+  search = "",
+  enabled = true
 ) => {
   const { chainConfig } = useCelatoneApp();
 
@@ -60,8 +63,47 @@ export const useNfts = (
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
+};
+
+export const useNftsSequencer = (
+  collectionAddress: HexAddr32,
+  limit: number,
+  offset: number,
+  search = "",
+  enabled = true
+) => {
+  const lcdEndpoint = useLcdEndpoint();
+
+  const { data, ...rest } = useQuery<Nft[]>(
+    [
+      CELATONE_QUERY_KEYS.NFTS_SEQUENCER,
+      lcdEndpoint,
+      collectionAddress,
+      search,
+    ],
+    async () => getNftsSequencer(lcdEndpoint, collectionAddress),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
+    }
+  );
+
+  const computedData = useMemo(() => {
+    if (!data) return data;
+    const filteredData = data.filter((val) =>
+      val.tokenId.toLowerCase().includes(search.toLowerCase())
+    );
+    return limit ? filteredData?.slice(offset, limit + offset) : filteredData;
+  }, [data, limit, offset, search]);
+
+  return {
+    data: computedData,
+    ...rest,
+  };
 };
 
 export const useNftByNftAddress = (
