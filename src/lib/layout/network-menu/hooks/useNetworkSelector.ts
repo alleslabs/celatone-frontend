@@ -1,39 +1,43 @@
 import { isUndefined } from "lodash";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
-import type { Option } from "lib/types";
+import { useCelatoneApp } from "lib/app-provider";
+import { useNetworkStore } from "lib/providers/store";
 
-const getNextCursor = (
-  key: string,
-  current: Option<number>,
-  lastIndex: number
-) => {
-  switch (key) {
-    case "ArrowUp":
-      if (current === undefined) return lastIndex;
-      return current <= 0 ? lastIndex : current - 1;
-    case "ArrowDown":
-      if (current === undefined) return 0;
-      return current >= lastIndex ? 0 : current + 1;
-    default:
-      return undefined;
-  }
-};
+import { filterChains, getNextCursor } from "./utils";
 
 export const useNetworkSelector = (onClose: () => void) => {
+  const { availableChainIds } = useCelatoneApp();
+  const { getPinnedNetworks } = useNetworkStore();
+
   const [keyword, setKeyword] = useState("");
   const [cursor, setCursor] = useState<number>();
-  const [networks, setNetworks] = useState<string[]>([]);
+
+  const pinnedNetworks = getPinnedNetworks();
+  const [filteredPinnedChains, filteredMainnetChains, filteredTestnetChains] =
+    useMemo(
+      () => [
+        filterChains(pinnedNetworks, keyword),
+        filterChains(availableChainIds, keyword, "mainnet"),
+        filterChains(availableChainIds, keyword, "testnet"),
+      ],
+      [availableChainIds, keyword, pinnedNetworks]
+    );
+
+  const totalNetworks =
+    filteredPinnedChains.length +
+    filteredMainnetChains.length +
+    filteredTestnetChains.length;
 
   const handleOnKeyDown = useCallback(
     (e: ReactKeyboardEvent<HTMLDivElement>) => {
-      if (!networks.length) return;
+      if (!totalNetworks) return;
       switch (e.key) {
         case "ArrowUp":
         case "ArrowDown": {
           e.preventDefault();
-          const nextCursor = getNextCursor(e.key, cursor, networks.length - 1);
+          const nextCursor = getNextCursor(e.key, cursor, totalNetworks - 1);
           const element = document.getElementById(`item-${nextCursor}`);
           setCursor(nextCursor);
           element?.scrollIntoView({ block: "nearest", inline: "center" });
@@ -51,16 +55,17 @@ export const useNetworkSelector = (onClose: () => void) => {
           break;
       }
     },
-    [networks, cursor, onClose]
+    [cursor, onClose, totalNetworks]
   );
 
   return {
     keyword,
     setKeyword,
     handleOnKeyDown,
-    networks,
-    setNetworks,
     cursor,
     setCursor,
+    filteredPinnedChains,
+    filteredMainnetChains,
+    filteredTestnetChains,
   };
 };

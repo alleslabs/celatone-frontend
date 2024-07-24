@@ -9,45 +9,31 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
 
 import { AmpEvent } from "lib/amplitude";
-import { useIsMac, useMobile } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 
-import { useNetworkSelector } from "./hooks/useNetworkSelector";
+import { useNetworkSelector, useNetworkShortCut } from "./hooks";
 import { NetworkButton } from "./NetworkButton";
 import { NetworkMenuBody } from "./NetworkMenuBody";
 import { NetworkMenuTop } from "./NetworkMenuTop";
 
 export const NetworkMenu = observer(() => {
   const isMobile = useMobile();
-  const isMac = useIsMac();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
+
   const {
     keyword,
     setKeyword,
     handleOnKeyDown,
-    setNetworks,
     cursor,
     setCursor,
+    filteredPinnedChains,
+    filteredMainnetChains,
+    filteredTestnetChains,
   } = useNetworkSelector(onClose);
 
-  useEffect(() => {
-    const openSearchHandler = (event: KeyboardEvent) => {
-      const specialKey = isMac ? event.metaKey : event.ctrlKey;
-      if (event.key === `/` && specialKey) {
-        event.preventDefault();
-        if (isOpen) {
-          onClose();
-        } else {
-          onOpen();
-        }
-      }
-    };
-    document.addEventListener("keydown", openSearchHandler);
-
-    return () => document.removeEventListener("keydown", openSearchHandler);
-  }, [isMac, isOpen, onClose, onOpen]);
+  useNetworkShortCut(onToggle);
 
   return (
     <>
@@ -76,10 +62,11 @@ export const NetworkMenu = observer(() => {
           <DrawerCloseButton color="text.dark" />
           <DrawerBody px={4} pt={0} pb={6}>
             <NetworkMenuBody
-              keyword={keyword}
-              setNetworks={setNetworks}
               cursor={cursor}
               setCursor={setCursor}
+              filteredPinnedChains={filteredPinnedChains}
+              filteredMainnetChains={filteredMainnetChains}
+              filteredTestnetChains={filteredTestnetChains}
               onClose={onClose}
             />
           </DrawerBody>
