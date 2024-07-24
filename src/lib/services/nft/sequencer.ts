@@ -9,7 +9,7 @@ import {
   zNftsResponseSequencer,
 } from "../types";
 import { zHexAddr } from "lib/types";
-import type { HexAddr, HexAddr32, Nullable } from "lib/types";
+import type { HexAddr, HexAddr32, Nullable, Option } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
   parseWithError,
@@ -149,11 +149,14 @@ export const getNftMintInfoSequencer = async (
 
 export const getNftTransactionsSequencer = async (
   endpoint: string,
+  paginationKey: Option<string>,
   nftAddress: HexAddr32
 ) => {
   const txsByAccountAddress = await getTxsByAccountAddressSequencer({
     endpoint,
     address: nftAddress,
+    paginationKey,
+    limit: 10,
   });
 
   const nftsTxs: NftTransactions[] = [];
@@ -176,5 +179,8 @@ export const getNftTransactionsSequencer = async (
     });
   });
 
-  return nftsTxs;
+  return {
+    items: nftsTxs,
+    pagination: txsByAccountAddress.pagination,
+  };
 };

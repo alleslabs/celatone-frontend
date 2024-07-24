@@ -32,7 +32,6 @@ import {
   useNftByNftAddress,
   useNftMutateEventsCount,
   useNftTransactionsCount,
-  useNftTransactionsSequencer,
 } from "lib/services/nft";
 import { useCollectionByCollectionAddress } from "lib/services/nft-collection";
 
@@ -58,7 +57,7 @@ const NftDetailsBody = ({
   nftAddress,
 }: NftDetailQueryParams) => {
   const isMobile = useMobile();
-  const { isFullTier, isSequencerTier } = useTierConfig();
+  const { isFullTier } = useTierConfig();
 
   const { data: collection, isLoading: isCollectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
@@ -68,11 +67,7 @@ const NftDetailsBody = ({
   );
 
   const { data: txCount = 0 } = useNftTransactionsCount(nftAddress, isFullTier);
-  const { data: transactions } = useNftTransactionsSequencer(
-    nftAddress,
-    isSequencerTier
-  );
-  const totalTxs = isFullTier ? txCount : transactions?.length ?? 0;
+  const totalTxs = isFullTier ? txCount : undefined;
 
   const { data: mutateEventsCount = 0 } = useNftMutateEventsCount(
     nftAddress,
