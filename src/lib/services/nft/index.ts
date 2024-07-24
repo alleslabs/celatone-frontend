@@ -78,12 +78,7 @@ export const useNftsSequencer = (
   const lcdEndpoint = useLcdEndpoint();
 
   const { data, ...rest } = useQuery<Nft[]>(
-    [
-      CELATONE_QUERY_KEYS.NFTS_SEQUENCER,
-      lcdEndpoint,
-      collectionAddress,
-      search,
-    ],
+    [CELATONE_QUERY_KEYS.NFTS_SEQUENCER, lcdEndpoint, collectionAddress],
     async () => getNftsSequencer(lcdEndpoint, collectionAddress),
     {
       retry: 1,
@@ -94,8 +89,10 @@ export const useNftsSequencer = (
 
   const computedData = useMemo(() => {
     if (!data) return data;
-    const filteredData = data.filter((val) =>
-      val.tokenId.toLowerCase().includes(search.toLowerCase())
+    const filteredData = data.filter(
+      (val) =>
+        val.tokenId.toLowerCase().includes(search.toLowerCase()) ||
+        val.nftAddress.toLowerCase() === search.toLowerCase()
     );
     return limit ? filteredData?.slice(offset, limit + offset) : filteredData;
   }, [data, limit, offset, search]);
