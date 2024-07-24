@@ -26,7 +26,7 @@ export const NetworkMenu = observer(() => {
   const {
     keyword,
     setKeyword,
-    handleOnKeyEnter,
+    handleOnKeyDown,
     setNetworks,
     cursor,
     setCursor,
@@ -70,7 +70,7 @@ export const NetworkMenu = observer(() => {
             <NetworkMenuTop
               keyword={keyword}
               setKeyword={setKeyword}
-              handleOnKeyEnter={handleOnKeyEnter}
+              handleOnKeyDown={handleOnKeyDown}
             />
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />

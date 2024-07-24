@@ -7,13 +7,13 @@ import InputWithIcon from "lib/components/InputWithIcon";
 interface NetworkMenuTopProps {
   keyword: string;
   setKeyword: (value: string) => void;
-  handleOnKeyEnter: (e: ReactKeyboardEvent<HTMLDivElement>) => void;
+  handleOnKeyDown: (e: ReactKeyboardEvent<HTMLDivElement>) => void;
 }
 
 export const NetworkMenuTop = ({
   keyword,
   setKeyword,
-  handleOnKeyEnter,
+  handleOnKeyDown,
 }: NetworkMenuTopProps) => {
   const isMobile = useMobile();
   const isMac = useIsMac();
@@ -47,7 +47,7 @@ export const NetworkMenuTop = ({
         value={keyword}
         autoFocus={!isMobile}
         onChange={(e) => setKeyword(e.target.value)}
-        onKeyDown={handleOnKeyEnter}
+        onKeyDown={handleOnKeyDown}
         amptrackSection="network-search"
       />
     </Flex>

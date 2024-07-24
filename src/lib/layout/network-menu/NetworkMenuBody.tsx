@@ -2,6 +2,8 @@ import { Accordion, Divider, Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo } from "react";
 
+import type { ChainConfig } from "config/chain";
+import { CHAIN_CONFIGS } from "config/chain";
 import { useCelatoneApp } from "lib/app-provider";
 import { EmptyState } from "lib/components/state";
 import { useNetworkStore } from "lib/providers/store";
@@ -9,7 +11,25 @@ import type { Option } from "lib/types";
 
 import { NetworkAccordion } from "./NetworkAccordion";
 import { NetworkAccodionPinned } from "./NetworkAccordionPinned";
-import { filterChains } from "./utils";
+
+const filterChains = (
+  chainIds: string[],
+  keyword: string,
+  type?: ChainConfig["networkType"]
+) => {
+  const chainIdsByType = type
+    ? chainIds.filter((chainId) => CHAIN_CONFIGS[chainId]?.networkType === type)
+    : chainIds;
+
+  return chainIdsByType.filter(
+    (chainId) =>
+      !keyword ||
+      CHAIN_CONFIGS[chainId]?.prettyName
+        .toLowerCase()
+        .includes(keyword.toLowerCase()) ||
+      chainId.toLowerCase().includes(keyword.toLowerCase())
+  );
+};
 
 interface NetworkMenuBodyProps {
   keyword: string;
@@ -51,8 +71,9 @@ export const NetworkMenuBody = observer(
     );
 
     useEffect(() => {
+      setCursor(undefined);
       setNetworks(allNetworks);
-    }, [allNetworks, setNetworks]);
+    }, [allNetworks, setCursor, setNetworks]);
 
     return (
       <Flex direction="column" gap={6}>
