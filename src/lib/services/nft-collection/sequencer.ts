@@ -98,17 +98,12 @@ export const getCollectionActivitiesSequencer = async (
         return;
 
       const eventValue = event.attributes[0].value.split("::")[2];
-      // eslint-disable-next-line no-console
-      console.log("txHash: ", hash);
-      // eslint-disable-next-line no-console
-      console.log("event: ", event);
-
       let tokenId;
       try {
         tokenId = JSON.parse(event.attributes[1].value).token_id;
       } catch (err) {
         // eslint-disable-next-line no-console
-        console.log("Error getting tokenId: ", err);
+        console.error("Error getting tokenId: ", err);
       }
 
       collectionActivities.push({

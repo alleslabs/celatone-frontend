@@ -66,7 +66,6 @@ export const AddressInput = <T extends FieldValues>({
       control={control}
       label={label}
       placeholder={placeholder ?? exampleUserAddress}
-      type="text"
       variant="fixed-floating"
       status={status}
       labelBgColor={labelBgColor}
