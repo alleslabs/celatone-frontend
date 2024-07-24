@@ -33,7 +33,7 @@ const TokenIdRender = ({
 
   if (!nftAddress) {
     return (
-      <Text color="secondary.main" wordBreak="break-word">
+      <Text color="text.dark" wordBreak="break-word">
         {tokenId}
       </Text>
     );
