@@ -17,7 +17,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     logoUrl: "https://assets.alleslabs.dev/integrations/chains/minimove.png",
     lcd: "https://lcd.minimove-1.initia.xyz",
     rpc: "https://rpc.minimove-1.initia.xyz",
-    indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
+    indexer: "",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
