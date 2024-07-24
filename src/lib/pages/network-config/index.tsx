@@ -1,4 +1,5 @@
 import {
+  Button,
   chakra,
   Flex,
   Grid,
@@ -6,7 +7,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Tag,
 } from "@chakra-ui/react";
 
 import ActionPageContainer from "lib/components/ActionPageContainer";
@@ -15,6 +15,7 @@ import {
   CustomNetworkPageHeader,
 } from "lib/components/custom-network";
 import { CustomTab } from "lib/components/CustomTab";
+import { CustomIcon } from "lib/components/icon";
 
 import { ExportNetworkConfig } from "./components/ExportNetworkConfig";
 import { UpdateGasFeeDetails } from "./components/UpdateGasFeeDetails";
@@ -54,6 +55,18 @@ export const NetworkConfig = () => {
     <UpdateWalletRegistry />,
   ];
 
+  const leftButtonProps = {
+    label: "Cancel",
+    action: () => {},
+    variant: "outline-secondary",
+  };
+
+  const rightButtonProps = {
+    label: "Update",
+    action: () => {},
+    variant: "primary",
+  };
+
   return (
     <>
       <ActionPageContainer width={900}>
@@ -68,11 +81,19 @@ export const NetworkConfig = () => {
               {TabMenu.map((item) => (
                 <StyledCustomTab key={item.key}>{item.name}</StyledCustomTab>
               ))}
-              <StyledCustomTab pointerEvents="none" isDisabled>
+              <StyledCustomTab>
                 <Flex gap={2} align="center">
-                  Export JSON <Tag size="xs">Soon</Tag>
+                  Export JSON
                 </Flex>
               </StyledCustomTab>
+              <Button
+                variant="outline-gray"
+                mt={10}
+                size="sm"
+                leftIcon={<CustomIcon name="delete" />}
+              >
+                Remove Network
+              </Button>
             </TabList>
             <TabPanels px={8} w="full">
               {forms.map((item) => (
@@ -86,8 +107,8 @@ export const NetworkConfig = () => {
         </Tabs>
       </ActionPageContainer>
       <CustomNetworkFooterCta
-        leftButtonAction={() => {}}
-        rightButtonAction={() => {}}
+        leftButtonProps={leftButtonProps}
+        rightButtonProps={rightButtonProps}
         isCenterAlign={false}
       />
     </>
