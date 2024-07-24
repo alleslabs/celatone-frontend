@@ -1,55 +1,43 @@
-import { Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import { Alert, AlertDescription, Flex, Heading, Text } from "@chakra-ui/react";
 
+import { useInternalNavigate } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
-import { CustomNetworkFooterCta } from "lib/components/custom-network";
+import { ButtonCard } from "lib/components/ButtonCard";
 import { CelatoneSeo } from "lib/components/Seo";
 
-import { AddNetworkStepper } from "./components/AddNetworkStepper";
-import GasFeeDetails from "./components/GasFeeDetails";
-import NetworkDetails from "./components/NetworkDetails";
-import SupportedFeatures from "./components/SupportedFeatures";
-import WalletRegistry from "./components/WalletRegistry";
-
 export const AddNetwork = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-
-  const steps = [
-    <NetworkDetails key="network-details" />,
-    <SupportedFeatures key="supported-features" />,
-    <GasFeeDetails key="gas-fee-details" />,
-    <WalletRegistry key="wallet-registry" />,
-  ];
-
-  const nextStep = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const prevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
+  const navigate = useInternalNavigate();
 
   return (
-    <>
+    <ActionPageContainer>
       <CelatoneSeo pageName="Add Minitias" />
-      <Flex direction="column" position="relative" w="full">
-        <Flex position="sticky" top={0} left={0} w="full" zIndex={2}>
-          <AddNetworkStepper currentStep={currentStep} />
+      <Flex direction="column" gap={12}>
+        <Flex direction="column" gap={4} textAlign="center">
+          <Heading as="h4" variant="h4">
+            Add Custom Minitia
+          </Heading>
+          <Alert my={4} p={3} variant="info">
+            <AlertDescription>
+              <Text color="text.dark" textAlign="center" lineHeight="normal">
+                Please note that the custom Minitia you add on our website will
+                only be stored locally on your device.
+              </Text>
+            </AlertDescription>
+          </Alert>
         </Flex>
-        <ActionPageContainer width={640}>
-          {steps[currentStep]}
-        </ActionPageContainer>
-        <CustomNetworkFooterCta
-          currentStep={currentStep}
-          totalSteps={steps.length}
-          leftButtonAction={nextStep}
-          rightButtonAction={prevStep}
-        />
+        <Flex direction="column" gap={4}>
+          <ButtonCard
+            title="Fill in Network Details Manually"
+            description="Add new Minitia through fill in each configuration manually"
+            onClick={() => navigate({ pathname: "/add-network/manual" })}
+          />
+          <ButtonCard
+            title="Import JSON"
+            description="Import available JSON that contains all the configuration"
+            onClick={() => navigate({ pathname: "/add-network/json" })}
+          />
+        </Flex>
       </Flex>
-    </>
+    </ActionPageContainer>
   );
 };
