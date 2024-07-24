@@ -15,10 +15,11 @@ import type { Control, FieldErrors } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import {
+  CustomNetworkPageHeader,
+  CustomNetworkSubheader,
+} from "lib/components/custom-network";
 import { ControllerInput } from "lib/components/forms";
-
-import { AddNetworkHeader } from "./AddNetworkHeader";
-import { AddNetworkSubheader } from "./AddNetworkSubheader";
 
 export enum GasPriceConfiguration {
   STANDARD = "standard",
@@ -137,10 +138,10 @@ const GasFeeDetails = () => {
 
   return (
     <Flex direction="column" gap={2} alignItems="center">
-      <AddNetworkHeader title="Add Gas & Fee Details" />
+      <CustomNetworkPageHeader title="Add Gas & Fee Details" />
       <Flex w="full" direction="column" gap={8} mt={8}>
         <Flex direction="column" gap={6}>
-          <AddNetworkSubheader title="Gas & Fee Details" />
+          <CustomNetworkSubheader title="Gas & Fee Details" />
           <Flex gap={6}>
             <ControllerInput
               name="gasAdjustment"
@@ -175,7 +176,7 @@ const GasFeeDetails = () => {
           />
         </Flex>
         <Flex direction="column" gap={6}>
-          <AddNetworkSubheader title="Gas Price Configuration" />
+          <CustomNetworkSubheader title="Gas Price Configuration" />
           <RadioGroup
             onChange={(nextVal) =>
               setGasConfigs(nextVal as GasPriceConfiguration)

@@ -1,24 +1,95 @@
-import { Flex, Grid, Heading } from "@chakra-ui/react";
+import {
+  chakra,
+  Flex,
+  Grid,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Tag,
+} from "@chakra-ui/react";
 
 import ActionPageContainer from "lib/components/ActionPageContainer";
+import {
+  CustomNetworkFooterCta,
+  CustomNetworkPageHeader,
+} from "lib/components/custom-network";
+import { CustomTab } from "lib/components/CustomTab";
+
+import { ExportNetworkConfig } from "./components/ExportNetworkConfig";
+import { UpdateGasFeeDetails } from "./components/UpdateGasFeeDetails";
+import { UpdateNetworkDetails } from "./components/UpdateNetworkDetails";
+import { UpdateSupportedFeatures } from "./components/UpdateSupportedFeatures";
+import { UpdateWalletRegistry } from "./components/UpdateWalletRegistry";
+
+const StyledCustomTab = chakra(CustomTab, {
+  baseStyle: {
+    border: "unset",
+    borderRadius: "4px",
+    _selected: { bgColor: "gray.800" },
+    _hover: { bgColor: "gray.700" },
+  },
+});
+
+const StyledTabPanel = chakra(TabPanel, {
+  baseStyle: {
+    p: 0,
+    width: "550px",
+    minWidth: "550px",
+  },
+});
+
+const TabMenu = [
+  { name: "Network Details", key: "network-details" },
+  { name: "Supported Features", key: "supported-features" },
+  { name: "Gas & Fee Details", key: "gas-fee-details" },
+  { name: "Wallet Registry", key: "wallet-registry" },
+];
 
 export const NetworkConfig = () => {
+  const forms = [
+    <UpdateNetworkDetails />,
+    <UpdateSupportedFeatures />,
+    <UpdateGasFeeDetails />,
+    <UpdateWalletRegistry />,
+  ];
+
   return (
-    <Flex>
+    <>
       <ActionPageContainer width={900}>
-        <Flex direction="column" gap={2} alignItems="center">
-          <Heading as="h6" variant="h6" color="text.dark">
-            Custom Minitia
-          </Heading>
-          <Heading as="h4" variant="h4">
-            CHAIN_NAME
-          </Heading>
-        </Flex>
-        <Grid templateColumns="2fr 5fr" gap={6} w="full" my={8}>
-          <Flex bg="tomato">ff</Flex>
-          <Flex bg="tomato">ff</Flex>
-        </Grid>
+        <CustomNetworkPageHeader
+          title="CHAIN_NAME"
+          subtitle="Your Custom Minitia"
+          hasAlert={false}
+        />
+        <Tabs variant="unstyled" orientation="vertical" mt={6}>
+          <Grid templateColumns="2fr 5fr" gap={6} w="full" my={8}>
+            <TabList w="full">
+              {TabMenu.map((item) => (
+                <StyledCustomTab key={item.key}>{item.name}</StyledCustomTab>
+              ))}
+              <StyledCustomTab pointerEvents="none" isDisabled>
+                <Flex gap={2} align="center">
+                  Export JSON <Tag size="xs">Soon</Tag>
+                </Flex>
+              </StyledCustomTab>
+            </TabList>
+            <TabPanels px={8} w="full">
+              {forms.map((item) => (
+                <StyledTabPanel>{item}</StyledTabPanel>
+              ))}
+              <StyledTabPanel>
+                <ExportNetworkConfig />
+              </StyledTabPanel>
+            </TabPanels>
+          </Grid>
+        </Tabs>
       </ActionPageContainer>
-    </Flex>
+      <CustomNetworkFooterCta
+        leftButtonAction={() => {}}
+        rightButtonAction={() => {}}
+        isCenterAlign={false}
+      />
+    </>
   );
 };

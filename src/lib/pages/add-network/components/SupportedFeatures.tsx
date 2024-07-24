@@ -1,8 +1,10 @@
 import { Checkbox, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { AddNetworkHeader } from "./AddNetworkHeader";
-import { AddNetworkSubheader } from "./AddNetworkSubheader";
+import {
+  CustomNetworkPageHeader,
+  CustomNetworkSubheader,
+} from "lib/components/custom-network";
 
 const initialFeatures = [
   { label: "Wasm", isChecked: false },
@@ -20,9 +22,9 @@ const SupportedFeatures = () => {
 
   return (
     <Flex direction="column" gap={2} alignItems="center">
-      <AddNetworkHeader title="Select Supported Features" />
+      <CustomNetworkPageHeader title="Select Supported Features" />
       <Flex w="full" direction="column" gap={6} my={8}>
-        <AddNetworkSubheader
+        <CustomNetworkSubheader
           title="Feature Lists"
           subtitle="Choose supported features for your custom Minitia. This can be changed later."
         />
