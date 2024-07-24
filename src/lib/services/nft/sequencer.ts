@@ -181,6 +181,6 @@ export const getNftTransactionsSequencer = async (
 
   return {
     items: nftsTxs,
-    pagination: txsByAccountAddress.pagination,
+    pagination: txsByNftAddress.pagination,
   };
 };

@@ -29,7 +29,7 @@ export const TxsSequencer = ({ nftAddress }: TxsSequencerProps) => {
       />
       {hasNextPage && (
         <LoadNext
-          text="Load more activities"
+          text="Load more transactions"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
         />
