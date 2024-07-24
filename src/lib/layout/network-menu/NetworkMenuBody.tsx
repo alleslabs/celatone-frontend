@@ -63,44 +63,36 @@ export const NetworkMenuBody = observer(
           width="full"
           p={0}
         >
-          <NetworkAccodionPinned
-            pinnedNetworks={filteredPinnedChains}
-            cursor={cursor}
-            setCursor={setCursor}
-            onClose={onClose}
-          />
-          {filteredPinnedChains.length > 0 && (
-            <Divider
-              borderColor="gray.700"
-              pt={filteredPinnedChains.length ? 2 : 0}
-              mb={4}
+          <Flex direction="column" gap={4}>
+            <NetworkAccodionPinned
+              pinnedNetworks={filteredPinnedChains}
+              cursor={cursor}
+              setCursor={setCursor}
+              onClose={onClose}
             />
-          )}
-          <NetworkAccordion
-            title="Mainnet"
-            networks={filteredMainnetChains}
-            cursor={cursor}
-            setCursor={setCursor}
-            startIndex={filteredPinnedChains.length}
-            onClose={onClose}
-          />
-          {filteredMainnetChains.length > 0 && (
-            <Divider
-              borderColor="gray.700"
-              pt={filteredPinnedChains.length ? 2 : 0}
-              mb={4}
+            {!!filteredPinnedChains.length && (
+              <Divider borderColor="gray.700" />
+            )}
+            <NetworkAccordion
+              title="Mainnet"
+              networks={filteredMainnetChains}
+              cursor={cursor}
+              setCursor={setCursor}
+              startIndex={filteredPinnedChains.length}
+              onClose={onClose}
             />
-          )}
-          <NetworkAccordion
-            title="Testnet"
-            networks={filteredTestnetChains}
-            cursor={cursor}
-            setCursor={setCursor}
-            startIndex={
-              filteredPinnedChains.length + filteredMainnetChains.length
-            }
-            onClose={onClose}
-          />
+            {!!filteredMainnetChains && <Divider borderColor="gray.700" />}
+            <NetworkAccordion
+              title="Testnet"
+              networks={filteredTestnetChains}
+              cursor={cursor}
+              setCursor={setCursor}
+              startIndex={
+                filteredPinnedChains.length + filteredMainnetChains.length
+              }
+              onClose={onClose}
+            />
+          </Flex>
         </Accordion>
         {allNetworks.length === 0 && (
           <EmptyState

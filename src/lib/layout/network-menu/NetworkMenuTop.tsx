@@ -19,7 +19,7 @@ export const NetworkMenuTop = ({
   const isMac = useIsMac();
 
   return (
-    <Flex direction="column" gap={4}>
+    <Flex direction="column" gap={4} width="100%">
       <Flex direction="column" gap={1}>
         <Flex alignItems="center" gap={2}>
           <Heading as="h6" variant="h6">

@@ -60,8 +60,13 @@ export const NetworkMenu = observer(() => {
       />
       <Drawer isOpen={isOpen} onClose={onClose} placement="right">
         <DrawerOverlay />
-        <DrawerContent h="100%" background="background.main" minW="343px">
-          <DrawerHeader p={4} pb={0}>
+        <DrawerContent
+          h="100%"
+          background="background.main"
+          minW="343px"
+          gap={6}
+        >
+          <DrawerHeader px={4} pt={6} pb={0}>
             <NetworkMenuTop
               keyword={keyword}
               setKeyword={setKeyword}
@@ -69,7 +74,7 @@ export const NetworkMenu = observer(() => {
             />
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
-          <DrawerBody px={4} py={0}>
+          <DrawerBody px={4} pt={0} pb={6}>
             <NetworkMenuBody
               keyword={keyword}
               setNetworks={setNetworks}
