@@ -1,5 +1,5 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 import type {
@@ -214,20 +214,22 @@ export const useNftTransactionsSequencer = (
 ) => {
   const lcdEndpoint = useLcdEndpoint();
 
-  return useQuery<NftTransactions[]>(
-    [
-      CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER,
-      lcdEndpoint,
-      nftAddress,
-      enabled,
-    ],
-    async () => getNftTransactionsSequencer(lcdEndpoint, nftAddress),
+  const { data, ...rest } = useInfiniteQuery(
+    [CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER, lcdEndpoint],
+    async ({ pageParam }) =>
+      getNftTransactionsSequencer(lcdEndpoint, pageParam, nftAddress),
     {
-      retry: 1,
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,
       enabled,
+      retry: 1,
     }
   );
+
+  return {
+    data: data?.pages.flatMap((page) => page.items),
+    ...rest,
+  };
 };
 
 export const useNftTransactionsCount = (
