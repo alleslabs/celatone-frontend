@@ -27,12 +27,14 @@ export const HomeFull = () => {
   return (
     <PageContainer>
       <HomeTop
-        tx={overviewsStats?.txCount?.toString()}
-        isTxLoading={isLoading}
-        block={overviewsStats?.latestBlock?.toString()}
-        isBlockLoading={isLoading}
-        blockTime={overviewsStats?.blockTime?.toFixed(3).concat("s")}
+        totalTxs={overviewsStats?.txCount}
+        isTotalTxsLoading={isLoading}
+        latestBlock={overviewsStats?.latestBlock}
+        isLatestBlockLoading={isLoading}
+        blockTime={overviewsStats?.blockTime}
         isBlockTimeLoading={isLoading}
+        toTxs={toTxs}
+        toBlocks={toBlocks}
       />
       <Box as="section" mb="48px">
         <Heading as="h5" variant="h5" mb={5}>

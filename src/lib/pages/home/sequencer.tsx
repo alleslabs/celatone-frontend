@@ -36,12 +36,14 @@ export const HomeSequencer = () => {
   return (
     <PageContainer>
       <HomeTop
-        tx={overviewsStats?.txCount?.toString()}
-        isTxLoading={isOverviewsStatsLoading}
-        block={latestBlock?.toString()}
-        isBlockLoading={isLatestBlockLoading}
-        blockTime={blockTimeAverage?.avgBlockTime?.toFixed(3).concat("s")}
+        totalTxs={overviewsStats?.txCount}
+        isTotalTxsLoading={isOverviewsStatsLoading}
+        latestBlock={latestBlock}
+        isLatestBlockLoading={isLatestBlockLoading}
+        blockTime={blockTimeAverage?.avgBlockTime}
         isBlockTimeLoading={isBlockTimeAverageLoading}
+        toTxs={toTxs}
+        toBlocks={toBlocks}
       />
       <Box as="section" mb="48px">
         <Heading as="h5" variant="h5" mb={5}>

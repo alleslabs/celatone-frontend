@@ -1,13 +1,9 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
-import {
-  useCelatoneApp,
-  useInternalNavigate,
-  useMobile,
-} from "lib/app-provider";
+import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import type { Option } from "lib/types";
+import type { Nullish } from "lib/types";
 
 import { CardInfo } from "./CardInfo";
 import { DevShortcut } from "./DevShortcut";
@@ -29,38 +25,31 @@ const blockTimeInfo = {
 };
 
 interface HomeTopProps {
-  tx: Option<string>;
-  isTxLoading: boolean;
-  block: Option<string>;
-  isBlockLoading: boolean;
-  blockTime: Option<string>;
+  totalTxs: Nullish<number>;
+  isTotalTxsLoading: boolean;
+  latestBlock: Nullish<number>;
+  isLatestBlockLoading: boolean;
+  blockTime: Nullish<number>;
   isBlockTimeLoading: boolean;
+  toTxs: () => void;
+  toBlocks: () => void;
 }
 
 export const HomeTop = ({
-  tx,
-  isTxLoading,
-  block,
-  isBlockLoading,
+  totalTxs,
+  isTotalTxsLoading,
+  latestBlock,
+  isLatestBlockLoading,
   blockTime,
   isBlockTimeLoading,
+  toTxs,
+  toBlocks,
 }: HomeTopProps) => {
   const isMobile = useMobile();
-  const navigate = useInternalNavigate();
   const {
     chainConfig: { prettyName },
     theme,
   } = useCelatoneApp();
-
-  const toTxs = () =>
-    navigate({
-      pathname: "/txs",
-    });
-
-  const toBlocks = () =>
-    navigate({
-      pathname: "/blocks",
-    });
 
   return (
     <>
@@ -89,23 +78,23 @@ export const HomeTop = ({
           <CardInfo
             title={txInfo.title}
             tooltip={txInfo.tooltip}
-            value={tx}
-            isLoading={isTxLoading}
+            value={totalTxs?.toString()}
+            isLoading={isTotalTxsLoading}
             navigate={toTxs}
           />
           <CardInfo
             title={blockInfo.title}
             tooltip={blockInfo.tooltip}
-            value={block}
-            isLoading={isBlockLoading}
+            value={latestBlock?.toString()}
+            isLoading={isLatestBlockLoading}
             navigate={toBlocks}
           />
           <CardInfo
             title={blockTimeInfo.title}
             tooltip={blockTimeInfo.tooltip}
-            value={blockTime}
+            value={blockTime?.toFixed(3).concat("s")}
             isLoading={isBlockTimeLoading}
-            navigate={toTxs}
+            navigate={toBlocks}
           />
         </Flex>
       </Flex>
