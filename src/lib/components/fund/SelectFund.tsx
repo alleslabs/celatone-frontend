@@ -164,12 +164,9 @@ export const SelectFund = ({
               control={control}
               label="Amount"
               variant="fixed-floating"
-              type="number"
+              type="decimal"
               labelBgColor={labelBgColor}
               placeholder="0.00"
-              onKeyDown={(e) => {
-                if (e.key === "-") e.preventDefault();
-              }}
             />
           }
         />

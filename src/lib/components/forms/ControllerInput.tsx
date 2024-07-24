@@ -18,14 +18,17 @@ import type {
 } from "react-hook-form";
 import { useController, useWatch } from "react-hook-form";
 
+import { useRestrictedNumberInput } from "lib/app-provider";
+
 import type { FormStatus } from "./FormStatus";
 import { getResponseMsg, getStatusIcon } from "./FormStatus";
 import type { TextInputProps } from "./TextInput";
 
 export interface ControllerInputProps<T extends FieldValues>
-  extends Omit<TextInputProps, "value" | "setInputState"> {
+  extends Omit<TextInputProps, "value" | "setInputState" | "type"> {
   name: FieldPath<T>;
   control: Control<T>;
+  type?: "text" | "number" | "decimal";
   rules?: UseControllerProps["rules"];
   status?: FormStatus;
   maxLength?: number;
@@ -83,6 +86,20 @@ export const ControllerInput = <T extends FieldValues>({
     return 0;
   };
 
+  const decimalHandlers = useRestrictedNumberInput({
+    type: "decimal",
+    maxIntegerPoinsts: 7,
+    maxDecimalPoints: 6,
+    onChange: field.onChange,
+  });
+
+  const numberHandlers = useRestrictedNumberInput({
+    type: "integer",
+    maxIntegerPoinsts: 7,
+    maxDecimalPoints: 0,
+    onChange: field.onChange,
+  });
+
   return (
     <FormControl
       size={size}
@@ -108,13 +125,14 @@ export const ControllerInput = <T extends FieldValues>({
         <Input
           size={size}
           placeholder={placeholder}
-          type={type}
           value={watcher}
-          onChange={field.onChange}
+          type="text"
           maxLength={maxLength}
           autoFocus={autoFocus}
           cursor={cursor}
           pr={inputPaddingRight()}
+          {...(type === "decimal" && decimalHandlers)}
+          {...(type === "number" && numberHandlers)}
         />
         <InputRightElement h="full" pr={cta ? 3 : 0}>
           {status && getStatusIcon(status.state)}

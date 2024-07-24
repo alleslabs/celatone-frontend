@@ -24,11 +24,13 @@ export const useAssetInfosByType = ({
   assetType: "all" | "native" | "cw20";
 }) => {
   const { data, ...rest } = useAssetInfos({ withPrices: true });
+
+  if (assetType === "all") return { data, ...rest };
+
   return {
-    data:
-      data && assetType !== "all"
-        ? pickBy(data, (assetInfo) => assetInfo.type === assetType)
-        : undefined,
+    data: data
+      ? pickBy(data, (assetInfo) => assetInfo.type === assetType)
+      : undefined,
     ...rest,
   };
 };
