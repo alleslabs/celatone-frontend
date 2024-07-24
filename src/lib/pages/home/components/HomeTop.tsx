@@ -4,6 +4,7 @@ import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { Nullish } from "lib/types";
+import { d0Formatter } from "lib/utils";
 
 import { CardInfo } from "./CardInfo";
 import { DevShortcut } from "./DevShortcut";
@@ -78,14 +79,14 @@ export const HomeTop = ({
           <CardInfo
             title={txInfo.title}
             tooltip={txInfo.tooltip}
-            value={totalTxs?.toString()}
+            value={totalTxs ? d0Formatter(totalTxs, "0") : undefined}
             isLoading={isTotalTxsLoading}
             navigate={toTxs}
           />
           <CardInfo
             title={blockInfo.title}
             tooltip={blockInfo.tooltip}
-            value={latestBlock?.toString()}
+            value={latestBlock ? d0Formatter(latestBlock, "0") : undefined}
             isLoading={isLatestBlockLoading}
             navigate={toBlocks}
           />
