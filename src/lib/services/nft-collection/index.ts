@@ -64,6 +64,7 @@ export const useCollectionByCollectionAddress = (
   const { chainConfig } = useCelatoneApp();
   const { tier } = useTierConfig();
   const lcdEndpoint = useLcdEndpoint();
+
   return useQuery<CollectionByCollectionAddressResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_BY_COLLECTION_ADDRESS,
@@ -76,18 +77,17 @@ export const useCollectionByCollectionAddress = (
       handleQueryByTier({
         tier,
         threshold: "sequencer",
-        querySequencer: () =>
-          getCollectionByCollectionAddressSequencer(
-            lcdEndpoint,
-            collectionAddress
-          ),
         queryFull: () =>
           getCollectionByCollectionAddress(
             chainConfig.indexer,
             collectionAddress
           ),
+        querySequencer: () =>
+          getCollectionByCollectionAddressSequencer(
+            lcdEndpoint,
+            collectionAddress
+          ),
       }),
-
     {
       retry: 1,
       refetchOnWindowFocus: false,

@@ -5,7 +5,7 @@ import {
   zTxsByHashResponseSequencer,
   zTxsResponseSequencer,
 } from "../types";
-import type { BechAddr20, Option } from "lib/types";
+import type { Addr, Option } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getTxsSequencer = async (
@@ -25,15 +25,16 @@ export const getTxsSequencer = async (
 
 export const getTxsByAccountAddressSequencer = async (
   endpoint: string,
-  address: BechAddr20,
+  address: Addr,
   paginationKey: Option<string>,
-  limit: number
+  limit: Option<number>,
+  reverse = true
 ) =>
   axios
     .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {
       params: {
         "pagination.limit": limit,
-        "pagination.reverse": true,
+        "pagination.reverse": reverse,
         "pagination.key": paginationKey,
       },
     })
