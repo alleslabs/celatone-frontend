@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { pickBy } from "lodash";
 
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { useBaseApiRoute } from "lib/app-provider/hooks/useBaseApiRoute";
@@ -17,22 +18,19 @@ export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
   );
 };
 
-export const useAssetInfoList = ({
+export const useAssetInfosByType = ({
   assetType,
 }: {
   assetType: "all" | "native" | "cw20";
 }) => {
-  const assetsApiRoute = useBaseApiRoute("assets").concat(
-    assetType !== "all" ? `/type/${assetType}` : ""
-  );
+  const { data, ...rest } = useAssetInfos({ withPrices: true });
 
-  return useQuery(
-    [CELATONE_QUERY_KEYS.ASSET_INFO_LIST, assetsApiRoute],
-    async () => getAssetInfos(assetsApiRoute, false),
-    {
-      enabled: Boolean(assetsApiRoute),
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
+  if (assetType === "all") return { data, ...rest };
+
+  return {
+    data: data
+      ? pickBy(data, (assetInfo) => assetInfo.type === assetType)
+      : undefined,
+    ...rest,
+  };
 };

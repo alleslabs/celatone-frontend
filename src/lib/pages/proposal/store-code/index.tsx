@@ -528,7 +528,7 @@ const StoreCodeProposal = () => {
                     label="Amount"
                     placeholder="0.00"
                     variant="fixed-floating"
-                    type="number"
+                    type="decimal"
                     helperAction={
                       <Text
                         textAlign="right"

@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#997](https://github.com/alleslabs/celatone-frontend/pull/997) Redesign asset selector
 - [#1033](https://github.com/alleslabs/celatone-frontend/pull/1033) Add Sequencer for NFT details
 - [#1015](https://github.com/alleslabs/celatone-frontend/pull/1015) New network selector
 - [#1032](https://github.com/alleslabs/celatone-frontend/pull/1032) Search collection address on both full and sequencer tier
