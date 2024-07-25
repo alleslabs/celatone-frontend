@@ -22,7 +22,7 @@ import type { FormStatus } from "./FormStatus";
 import { getResponseMsg, getStatusIcon } from "./FormStatus";
 import type { TextInputProps } from "./TextInput";
 
-interface ControllerInputProps<T extends FieldValues>
+export interface ControllerInputProps<T extends FieldValues>
   extends Omit<TextInputProps, "value" | "setInputState"> {
   name: FieldPath<T>;
   control: Control<T>;
@@ -99,6 +99,7 @@ export const ControllerInput = <T extends FieldValues>({
           autoFocus={autoFocus}
           cursor={cursor}
           pr={status ? "2rem" : 0}
+          onBlur={field.onBlur}
         />
         <InputRightElement h="full">
           {status && getStatusIcon(status.state)}

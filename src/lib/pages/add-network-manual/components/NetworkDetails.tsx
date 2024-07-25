@@ -1,48 +1,19 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { Control, FieldErrors } from "react-hook-form";
 
+import type { AddNetworkManualForm } from "../types";
 import {
   CustomNetworkPageHeader,
   CustomNetworkSubheader,
 } from "lib/components/custom-network";
 import { ControllerInput } from "lib/components/forms";
 
-const URL_REGEX =
-  /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$/;
-const NetworkDetails = () => {
-  const {
-    control,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(
-      z.object({
-        // TODO add validation max length 50
-        networkName: z.string(),
-        lcdUrl: z.string().regex(URL_REGEX, "Please enter a valid LCD URL"),
-        rpcUrl: z.string().regex(URL_REGEX, "Please enter a valid RPC URL"),
-        chainId: z
-          .string()
-          .regex(/^[a-z-]+$/, "Enter alphabet (a-z) and dash (-) only"),
-        registryChainName: z
-          .string()
-          .regex(/^[a-z]+$/, "Enter alphabet (a-z) with no spaces"),
-        logoUri: z.string().regex(URL_REGEX, "Please enter a valid URL"),
-      })
-    ),
-    mode: "all",
-    reValidateMode: "onChange",
-    defaultValues: {
-      networkName: "",
-      lcdUrl: "",
-      rpcUrl: "",
-      chainId: "",
-      registryChainName: "",
-      logoUri: "",
-    },
-  });
+interface NetworkDetailsProps {
+  control: Control<AddNetworkManualForm>;
+  errors: FieldErrors<AddNetworkManualForm>;
+}
 
+export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
   return (
     <Flex direction="column" gap={2} alignItems="center">
       <CustomNetworkPageHeader title="Add Network Details" />
@@ -122,9 +93,6 @@ const NetworkDetails = () => {
           variant="fixed-floating"
           w="full"
           placeholder="https://"
-          rules={{
-            required: "",
-          }}
           error={errors.logoUri?.message}
         />
       </Flex>
@@ -136,5 +104,3 @@ const NetworkDetails = () => {
     </Flex>
   );
 };
-
-export default NetworkDetails;

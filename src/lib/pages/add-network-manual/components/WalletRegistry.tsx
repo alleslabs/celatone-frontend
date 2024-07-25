@@ -152,7 +152,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
   );
 };
 
-const WalletRegistry = () => {
+export const WalletRegistry = () => {
   const {
     control,
     formState: { errors },
@@ -379,5 +379,3 @@ const WalletRegistry = () => {
     </Flex>
   );
 };
-
-export default WalletRegistry;

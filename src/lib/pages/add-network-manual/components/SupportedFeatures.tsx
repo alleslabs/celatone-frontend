@@ -12,8 +12,9 @@ const initialFeatures = [
   { label: "NFTs", isChecked: false },
 ];
 
-const SupportedFeatures = () => {
+export const SupportedFeatures = () => {
   const [features, setFeatures] = useState(initialFeatures);
+
   const handleCheckboxChange = (index: number) => {
     const newFeatures = [...features];
     newFeatures[index].isChecked = !newFeatures[index].isChecked;
@@ -66,5 +67,3 @@ const SupportedFeatures = () => {
     </Flex>
   );
 };
-
-export default SupportedFeatures;
