@@ -13,7 +13,7 @@ import {
   useLcdEndpoint,
 } from "lib/app-provider";
 import { big } from "lib/types";
-import type { BechAddr, TokenWithValue, USD } from "lib/types";
+import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import {
   coinToTokenWithValue,
   compareTokenWithValues,
@@ -24,7 +24,10 @@ import {
 import { getBalances } from "./api";
 import { getBalancesLcd } from "./lcd";
 
-export const useBalances = (address: BechAddr): UseQueryResult<Coin[]> => {
+export const useBalances = (
+  address: Option<BechAddr>,
+  enabled = true
+): UseQueryResult<Coin[]> => {
   const {
     chainConfig: { chain },
   } = useCelatoneApp();
@@ -35,11 +38,13 @@ export const useBalances = (address: BechAddr): UseQueryResult<Coin[]> => {
 
   return useQuery(
     [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isSei],
-    async () =>
-      isSei
+    async () => {
+      if (!address) throw new Error("address is undefined (useBalances)");
+      return isSei
         ? getBalances(endpoint, address)
-        : getBalancesLcd(endpoint, address),
-    { retry: 1, refetchOnWindowFocus: false }
+        : getBalancesLcd(endpoint, address);
+    },
+    { retry: 1, refetchOnWindowFocus: false, enabled }
   );
 };
 

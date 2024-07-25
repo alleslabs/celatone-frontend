@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1037](https://github.com/alleslabs/celatone-frontend/pull/1037) Add Sequencer for Collection details
+- [#997](https://github.com/alleslabs/celatone-frontend/pull/997) Redesign asset selector
 - [#1033](https://github.com/alleslabs/celatone-frontend/pull/1033) Add Sequencer for NFT details
 - [#1015](https://github.com/alleslabs/celatone-frontend/pull/1015) New network selector
 - [#1032](https://github.com/alleslabs/celatone-frontend/pull/1032) Search collection address on both full and sequencer tier
@@ -55,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#1040](https://github.com/alleslabs/celatone-frontend/pull/1040) Refactor networks selector
+- [#1039](https://github.com/alleslabs/celatone-frontend/pull/1039) Make NFT Txs to load more style
 - [#1036](https://github.com/alleslabs/celatone-frontend/pull/1036) Refactor home and change some component names to match the current convention
 - [#1022](https://github.com/alleslabs/celatone-frontend/pull/1022) Separate API requests in home page overview component
 

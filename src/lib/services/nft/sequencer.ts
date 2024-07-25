@@ -3,13 +3,46 @@ import axios from "axios";
 import { getMoveViewJson } from "../move/module/api";
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import type { Nft, NftMintInfo, NftTransactions } from "../types";
-import { zNftInfoSequencer, zNftsByAccountResponseSequencer } from "../types";
+import {
+  zNftInfoSequencer,
+  zNftsByAccountResponseSequencer,
+  zNftsResponseSequencer,
+} from "../types";
 import { zHexAddr } from "lib/types";
-import type { HexAddr, HexAddr32, Nullable } from "lib/types";
+import type { HexAddr, HexAddr32, Nullable, Option } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
+
+export const getNftsSequencer = async (
+  endpoint: string,
+  collectionAddress: HexAddr32
+) => {
+  const nfts: Nft[] = [];
+
+  const fetchFn = async (paginationKey: Nullable<string>) => {
+    const res = await axios
+      .get(
+        `${endpoint}/indexer/nft/v1/tokens/by_collection/${collectionAddress}`,
+        {
+          params: {
+            "pagination.reverse": true,
+            "pagination.key": paginationKey,
+          },
+        }
+      )
+      .then(({ data }) => parseWithError(zNftsResponseSequencer, data));
+
+    nfts.push(...res.tokens);
+
+    if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
+  };
+
+  await fetchFn(null);
+
+  return nfts;
+};
 
 export const getNftsByAccountSequencer = async (
   endpoint: string,
@@ -92,18 +125,17 @@ export const getNftMintInfoSequencer = async (
   prefix: string,
   nftAddress: HexAddr32
 ): Promise<NftMintInfo> => {
-  const txsByAccountAddress = await getTxsByAccountAddressSequencer(
+  const txsByNftAddress = await getTxsByAccountAddressSequencer({
     endpoint,
-    nftAddress,
-    undefined,
-    1,
-    false
-  );
+    address: nftAddress,
+    limit: 1,
+    reverse: false,
+  });
 
-  if (!txsByAccountAddress.items.length)
+  if (!txsByNftAddress.items.length)
     throw new Error("No mint transaction found");
 
-  const tx = txsByAccountAddress.items[0];
+  const tx = txsByNftAddress.items[0];
 
   const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
 
@@ -117,18 +149,19 @@ export const getNftMintInfoSequencer = async (
 
 export const getNftTransactionsSequencer = async (
   endpoint: string,
+  paginationKey: Option<string>,
   nftAddress: HexAddr32
 ) => {
-  const txsByAccountAddress = await getTxsByAccountAddressSequencer(
+  const txsByNftAddress = await getTxsByAccountAddressSequencer({
     endpoint,
-    nftAddress,
-    undefined,
-    undefined
-  );
+    address: nftAddress,
+    paginationKey,
+    limit: 10,
+  });
 
   const nftsTxs: NftTransactions[] = [];
 
-  txsByAccountAddress.items.forEach((tx) => {
+  txsByNftAddress.items.forEach((tx) => {
     const { events, hash, created } = tx;
 
     events?.reverse()?.forEach((event) => {
@@ -146,5 +179,8 @@ export const getNftTransactionsSequencer = async (
     });
   });
 
-  return nftsTxs;
+  return {
+    items: nftsTxs,
+    pagination: txsByNftAddress.pagination,
+  };
 };

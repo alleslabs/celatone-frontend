@@ -435,12 +435,12 @@ export const useTxsByAddressSequencer = (
         if (!address)
           throw new Error("address is undefined (useTxsByAddressSequncer)");
 
-        return getTxsByAccountAddressSequencer(
+        return getTxsByAccountAddressSequencer({
           endpoint,
           address,
-          pageParam,
-          limit
-        );
+          paginationKey: pageParam,
+          limit,
+        });
       })();
     },
     [address, endpoint, prefix, search, limit]

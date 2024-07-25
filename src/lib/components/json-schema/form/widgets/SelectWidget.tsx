@@ -167,7 +167,7 @@ const SelectWidget = <
         autoFocus={autofocus}
         value={selectedIndex === undefined ? undefined : formValue}
         menuPosition="fixed"
-        menuPortalTarget={document.querySelector("body")}
+        menuPortalTarget={document.body}
         chakraStyles={{
           control: (provided) => ({
             ...provided,
