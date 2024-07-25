@@ -6,42 +6,34 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  Flex,
-  Heading,
-  Kbd,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
 
 import { AmpEvent } from "lib/amplitude";
-import { useIsMac, useMobile } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 
+import { useNetworkSelector, useNetworkShortCut } from "./hooks";
 import { NetworkButton } from "./NetworkButton";
 import { NetworkMenuBody } from "./NetworkMenuBody";
+import { NetworkMenuTop } from "./NetworkMenuTop";
 
 export const NetworkMenu = observer(() => {
   const isMobile = useMobile();
-  const isMac = useIsMac();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
 
-  useEffect(() => {
-    const openSearchHandler = (event: KeyboardEvent) => {
-      const specialKey = isMac ? event.metaKey : event.ctrlKey;
-      if (event.key === `/` && specialKey) {
-        event.preventDefault();
-        if (isOpen) {
-          onClose();
-        } else {
-          onOpen();
-        }
-      }
-    };
-    document.addEventListener("keydown", openSearchHandler);
+  const {
+    keyword,
+    setKeyword,
+    handleOnKeyDown,
+    cursor,
+    setCursor,
+    filteredPinnedChains,
+    filteredMainnetChains,
+    filteredTestnetChains,
+  } = useNetworkSelector(onClose);
 
-    return () => document.removeEventListener("keydown", openSearchHandler);
-  }, [isMac, isOpen, onClose, onOpen]);
+  useNetworkShortCut(onToggle);
 
   return (
     <>
@@ -54,31 +46,29 @@ export const NetworkMenu = observer(() => {
       />
       <Drawer isOpen={isOpen} onClose={onClose} placement="right">
         <DrawerOverlay />
-        <DrawerContent h="100%" background="background.main">
-          <DrawerHeader>
-            <Flex alignItems="center" gap={2}>
-              <Heading as="h6" variant="h6">
-                Select Network
-              </Heading>
-              {!isMobile && (
-                <Flex gap={1}>
-                  <Kbd size="sm">
-                    <Text variant="body3" gap={1}>
-                      {isMac ? "⌘" : "Ctrl"}
-                    </Text>
-                  </Kbd>
-                  <Kbd>
-                    <Text variant="body3" gap={1}>
-                      /
-                    </Text>
-                  </Kbd>
-                </Flex>
-              )}
-            </Flex>
+        <DrawerContent
+          h="100%"
+          background="background.main"
+          minW="343px"
+          gap={6}
+        >
+          <DrawerHeader px={4} pt={6} pb={0}>
+            <NetworkMenuTop
+              keyword={keyword}
+              setKeyword={setKeyword}
+              handleOnKeyDown={handleOnKeyDown}
+            />
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
-          <DrawerBody overflow="scroll" px={4} pb={6}>
-            <NetworkMenuBody onClose={onClose} />
+          <DrawerBody px={4} pt={0} pb={6}>
+            <NetworkMenuBody
+              cursor={cursor}
+              setCursor={setCursor}
+              filteredPinnedChains={filteredPinnedChains}
+              filteredMainnetChains={filteredMainnetChains}
+              filteredTestnetChains={filteredTestnetChains}
+              onClose={onClose}
+            />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

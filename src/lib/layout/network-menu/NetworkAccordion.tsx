@@ -41,45 +41,49 @@ export const NetworkAccordion = ({
 
   return (
     <AccordionItem hidden={networks.length === 0}>
-      <AccordionButton p={0}>
-        <Flex justifyContent="space-between" w="full" mb={4}>
-          <Heading as="h6" variant="h6">
-            {title}
-          </Heading>
-          <AccordionIcon color="gray.600" />
-        </Flex>
-      </AccordionButton>
-      <AccordionPanel p={0}>
-        <NetworkAccordionSubsection
-          networks={nonInitiaNetworks}
-          cursor={cursor}
-          setCursor={setCursor}
-          subsectionStartIndex={startIndex}
-          onClose={onClose}
-        />
-        {l1Networks.length > 0 && (
-          <NetworkAccordionSubsection
-            title="Initia (Layer 1)"
-            networks={l1Networks}
-            cursor={cursor}
-            setCursor={setCursor}
-            subsectionStartIndex={startIndex + nonInitiaNetworks.length}
-            onClose={onClose}
-          />
-        )}
-        {l2Networks.length > 0 && (
-          <NetworkAccordionSubsection
-            title="Minitia (Layer 2)"
-            networks={l2Networks}
-            cursor={cursor}
-            setCursor={setCursor}
-            subsectionStartIndex={
-              startIndex + nonInitiaNetworks.length + l1Networks.length
-            }
-            onClose={onClose}
-          />
-        )}
-      </AccordionPanel>
+      <Flex direction="column" gap={4}>
+        <AccordionButton p={0}>
+          <Flex justifyContent="space-between" w="full">
+            <Heading as="h6" variant="h6">
+              {title}
+            </Heading>
+            <AccordionIcon color="gray.600" />
+          </Flex>
+        </AccordionButton>
+        <AccordionPanel p={0}>
+          <Flex direction="column" gap={4}>
+            <NetworkAccordionSubsection
+              networks={nonInitiaNetworks}
+              cursor={cursor}
+              setCursor={setCursor}
+              subsectionStartIndex={startIndex}
+              onClose={onClose}
+            />
+            {l1Networks.length > 0 && (
+              <NetworkAccordionSubsection
+                title="Initia (Layer 1)"
+                networks={l1Networks}
+                cursor={cursor}
+                setCursor={setCursor}
+                subsectionStartIndex={startIndex + nonInitiaNetworks.length}
+                onClose={onClose}
+              />
+            )}
+            {l2Networks.length > 0 && (
+              <NetworkAccordionSubsection
+                title="Minitia (Layer 2)"
+                networks={l2Networks}
+                cursor={cursor}
+                setCursor={setCursor}
+                subsectionStartIndex={
+                  startIndex + nonInitiaNetworks.length + l1Networks.length
+                }
+                onClose={onClose}
+              />
+            )}
+          </Flex>
+        </AccordionPanel>
+      </Flex>
     </AccordionItem>
   );
 };
