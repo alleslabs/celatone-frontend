@@ -62,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#1042](https://github.com/alleslabs/celatone-frontend/pull/1042) Fix vm address on NFT details
+- [#1042](https://github.com/alleslabs/celatone-frontend/pull/1042) Fix bugbash for sequencer tier release
 - [#1029](https://github.com/alleslabs/celatone-frontend/pull/1029) Fix default wasm permission to permissionless
 - [#1026](https://github.com/alleslabs/celatone-frontend/pull/1026) Add missing menu items for sequencer tier
 - [#1025](https://github.com/alleslabs/celatone-frontend/pull/1025) Handle new tx query params for contract txs
