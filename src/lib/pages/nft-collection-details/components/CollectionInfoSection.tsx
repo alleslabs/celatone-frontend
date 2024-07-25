@@ -118,8 +118,10 @@ export const CollectionInfoSection = ({
               textOverflow="ellipsis"
               variant="body2"
               wordBreak="break-word"
+              color={collectionName.length ? "text.main" : "text.disabled"}
+              fontWeight={collectionName.length ? "600" : "300"}
             >
-              {collectionName}
+              {collectionName.length ? collectionName : "Untitled Collection"}
             </Text>
           </Flex>
           <Flex gap={infoGap} flexDir={infoDirection}>
