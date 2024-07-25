@@ -15,6 +15,7 @@ import {
   coinToTokenWithValue,
   formatPrice,
   formatUTokenWithPrecision,
+  toToken,
 } from "lib/utils";
 
 import { ASSETS_SELECT } from "./data";
@@ -69,9 +70,11 @@ export const SelectFund = ({
         token.amount.toNumber() > 999 ? 6 : undefined
       );
 
+      const raw = toToken(token.amount, token.precision ?? 0).toFixed();
+
       const price = formatPrice(token.value as USD<BigSource>);
 
-      return { formatted, price };
+      return { raw, formatted, price };
     },
     [assetInfos]
   );
@@ -111,7 +114,7 @@ export const SelectFund = ({
     (idx: number) => {
       if (!assetsSelect[idx]) return {};
 
-      const { formatted } = handleGetFormattedBalance(
+      const { formatted, raw } = handleGetFormattedBalance(
         balanceMap?.get(selectedAssets[idx]),
         selectedAssets[idx]
       );
@@ -127,7 +130,7 @@ export const SelectFund = ({
         cta: isSelected && {
           label: "MAX",
           onClick: (changeValue: (value: string) => void) => {
-            changeValue?.(formatted);
+            changeValue?.(raw);
           },
         },
         error:

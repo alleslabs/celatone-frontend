@@ -237,7 +237,7 @@ export const JsonExecute = ({
         setMsg={setMsg}
       />
       <Flex direction="column" gap={10}>
-        <Flex gap={8} mt={8} direction={{ sm: "column", lg: "row" }}>
+        <Flex gap={8} direction={{ sm: "column", lg: "row" }}>
           <Flex direction="column" w={{ sm: "full", lg: "50%" }}>
             <JsonInput topic="Execute Msg" text={msg} setText={setMsg} />
             {error && <ErrorMessageRender error={error} mb={4} />}
