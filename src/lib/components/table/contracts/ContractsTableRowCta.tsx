@@ -40,27 +40,27 @@ const StyledIconButton = chakra(IconButton, {
   },
 });
 
-export interface CTAInfo {
+export interface CtaInfo {
   removingContractList: Option<LVPair>;
 }
 
-interface ContractsTableRowCTAProps {
+interface ContractsTableRowCtaProps {
   contractInfo: ContractInfo;
-  withCTA?: CTAInfo;
+  withCta?: CtaInfo;
   showLastUpdate?: boolean;
 }
 
-export const ContractsTableRowCTA = ({
+export const ContractsTableRowCta = ({
   contractInfo,
-  withCTA,
+  withCta,
   showLastUpdate = true,
-}: ContractsTableRowCTAProps) => {
+}: ContractsTableRowCtaProps) => {
   const { address } = useCurrentChain();
   const { isFullTier } = useTierConfig();
   const navigate = useInternalNavigate();
 
   const isAdmin = !!address && address === contractInfo.admin;
-  return withCTA ? (
+  return withCta ? (
     <>
       <TableRow>
         <Flex
@@ -165,12 +165,12 @@ export const ContractsTableRowCTA = ({
                 />
               </>
             )}
-            {!!withCTA.removingContractList && (
+            {!!withCta.removingContractList && (
               <>
                 <MenuDivider />
                 <RemoveContractModal
                   contractLocalInfo={contractInfo}
-                  contractRemovalInfo={withCTA.removingContractList}
+                  contractRemovalInfo={withCta.removingContractList}
                   menuItemProps={{
                     icon: <CustomIcon name="delete" color="error.light" />,
                     children: "Remove from this list",

@@ -78,11 +78,13 @@ export const zCollectionByCollectionAddressResponse = z.object({
       description: val.description,
       name: val.name,
       uri: val.uri,
-      createdHeight:
-        val.vmAddressByCreator.collectionsByCreator[0].block_height,
-      creatorAddress:
-        val.vmAddressByCreator.collectionsByCreator[0].vmAddressByCreator
-          .vm_address,
+      createdHeight: val.vmAddressByCreator.collectionsByCreator.length
+        ? val.vmAddressByCreator.collectionsByCreator[0].block_height
+        : null,
+      creatorAddress: val.vmAddressByCreator.collectionsByCreator.length
+        ? val.vmAddressByCreator.collectionsByCreator[0].vmAddressByCreator
+            .vm_address
+        : null,
     }))
     .optional(),
 });
@@ -286,7 +288,7 @@ const zCollectionSequencer = z.object({
   nfts: zCollectionNftsSequencer,
 });
 
-const zCollectionByAccountResponseSequencer = z
+export const zCollectionResponseSequencer = z
   .object({
     object_addr: zHexAddr32,
     collection: zCollectionSequencer,
@@ -295,7 +297,7 @@ const zCollectionByAccountResponseSequencer = z
 
 export const zCollectionsByAccountResponseSequencer = z
   .object({
-    collections: z.array(zCollectionByAccountResponseSequencer),
+    collections: z.array(zCollectionResponseSequencer),
     pagination: zPagination,
   })
   .transform<CollectionsByAccountResponse[]>(({ collections }) =>
@@ -309,3 +311,17 @@ export const zCollectionsByAccountResponseSequencer = z
 export type CollectionsByAccountResponseSequencer = z.infer<
   typeof zCollectionsByAccountResponseSequencer
 >;
+
+export const zCollectionByCollectionAddressResponseSequencer = z
+  .object({
+    collection: zCollectionResponseSequencer,
+  })
+  .transform<CollectionByCollectionAddressResponse>((val) => ({
+    data: {
+      description: val.collection.collection.description,
+      name: val.collection.collection.name,
+      uri: val.collection.collection.uri,
+      createdHeight: null,
+      creatorAddress: val.collection.collection.creator,
+    },
+  }));

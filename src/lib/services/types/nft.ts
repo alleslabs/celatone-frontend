@@ -21,7 +21,7 @@ export const zNft = z
     id: zHexAddr32,
     collection: zHexAddr32,
     collectionByCollection: z.object({
-      name: z.string(),
+      name: z.string().nullable(),
     }),
   })
   .transform((val) => ({
@@ -152,24 +152,22 @@ export const zNftsByAccountResponse = z
   }));
 export type NftsByAccountResponse = z.infer<typeof zNftsByAccountResponse>;
 
-const zNftSequencer = z.object({
-  collection: z.object({
-    inner: zHexAddr32,
-  }),
-  description: z.string(),
-  token_id: z.string(),
-  uri: z.string(),
-});
-
-const zNftByAccountResponseSequencer = z
+const zNftSequencer = z
   .object({
     object_addr: zHexAddr32,
     collection_addr: zHexAddr32,
     collection_name: z.string(),
     owner_addr: zHexAddr,
-    nft: zNftSequencer,
+    nft: z.object({
+      collection: z.object({
+        inner: zHexAddr32,
+      }),
+      description: z.string(),
+      token_id: z.string(),
+      uri: z.string(),
+    }),
   })
-  .transform((val) => ({
+  .transform<Nft>((val) => ({
     uri: val.nft.uri,
     tokenId: val.nft.token_id,
     description: val.nft.description,
@@ -179,16 +177,28 @@ const zNftByAccountResponseSequencer = z
     collectionAddress: val.collection_addr,
     collectionName: val.collection_name,
   }));
-export type NftByAccountResponseSequencer = z.infer<
-  typeof zNftByAccountResponseSequencer
->;
+export type NftSequencer = z.infer<typeof zNftSequencer>;
+
+export const zNftsResponseSequencer = z.object({
+  tokens: z.array(zNftSequencer),
+  pagination: zPagination,
+});
 
 export const zNftsByAccountResponseSequencer = z
   .object({
-    tokens: z.array(zNftByAccountResponseSequencer),
+    tokens: z.array(zNftSequencer),
     pagination: zPagination,
   })
   .transform((val) => ({
     nfts: val.tokens,
     pagination: val.pagination,
   }));
+
+export const zNftInfoSequencer = z
+  .object({
+    collection: zHexAddr32,
+    description: z.string(),
+    token_id: z.string(),
+    uri: z.string(),
+  })
+  .transform(snakeToCamel);

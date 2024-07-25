@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import { AmpEvent, trackUseFilter, trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";
-import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
@@ -78,42 +77,42 @@ export const VotedProposalsTable = ({
         label: `Yes (${answers?.yes ?? 0})`,
         value: ProposalVoteType.YES,
         disabled: !answers?.yes,
-        icon: "legend" as IconKeys,
+        hasLegend: true,
         iconColor: "success.main",
       },
       {
         label: `No (${answers?.no ?? 0})`,
         value: ProposalVoteType.NO,
         disabled: !answers?.no,
-        icon: "legend" as IconKeys,
+        hasLegend: true,
         iconColor: "error.main",
       },
       {
         label: `No with veto (${answers?.noWithVeto ?? 0})`,
         value: ProposalVoteType.NO_WITH_VETO,
         disabled: !answers?.noWithVeto,
-        icon: "legend" as IconKeys,
+        hasLegend: true,
         iconColor: "error.dark",
       },
       {
         label: `Abstain (${answers?.abstain ?? 0})`,
         value: ProposalVoteType.ABSTAIN,
         disabled: !answers?.abstain,
-        icon: "legend" as IconKeys,
+        hasLegend: true,
         iconColor: "gray.600",
       },
       {
         label: `Did not vote (${answers?.didNotVote ?? 0})`,
         value: ProposalVoteType.DID_NOT_VOTE,
         disabled: !answers?.didNotVote,
-        icon: "legend" as IconKeys,
+        hasLegend: true,
         iconColor: "gray.600",
       },
       {
         label: `Weighted (${answers?.weighted ?? 0})`,
         value: ProposalVoteType.WEIGHTED,
         disabled: !answers?.weighted,
-        icon: "legend" as IconKeys,
+        hasLegend: true,
         iconColor: "primary.light",
       },
     ],

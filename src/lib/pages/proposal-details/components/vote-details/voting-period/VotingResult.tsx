@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { CustomIcon } from "lib/components/icon";
+import { LegendText } from "lib/components/LegendText";
 import { StatusChip } from "lib/components/table";
 import { getVoteResult } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
@@ -34,12 +34,13 @@ export const VotingResult = ({
       {status === ProposalStatus.FAILED ? (
         <StatusChip status={ProposalStatus.FAILED} />
       ) : (
-        <>
-          <CustomIcon name="legend" boxSize="14px" color={resultColor} />
-          <Text variant="body2" color="text.main" fontWeight={700}>
-            {result}
-          </Text>
-        </>
+        <LegendText
+          label={result}
+          legendColor={resultColor}
+          variant="body2"
+          color="text.main"
+          fontWeight={700}
+        />
       )}
     </Flex>
   );

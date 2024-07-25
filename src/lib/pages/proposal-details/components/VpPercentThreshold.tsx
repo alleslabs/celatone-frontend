@@ -2,7 +2,7 @@ import { Divider, Flex, Text } from "@chakra-ui/react";
 import { Fragment } from "react";
 
 import { normalizeVotesInfo } from "../utils";
-import { CustomIcon } from "lib/components/icon";
+import { LegendText } from "lib/components/LegendText";
 import type { ProposalVotesInfo } from "lib/types";
 import { d0Formatter, formatPrettyPercent } from "lib/utils";
 
@@ -59,12 +59,13 @@ export const VpPercentThreshold = ({
           borderBottomColor="gray.700"
           py={2}
         >
-          <Flex gap={2} alignItems="center">
-            <CustomIcon name="legend" boxSize="14px" color={color} />
-            <Text variant="body2" color="text.main" fontWeight={700}>
-              {option}
-            </Text>
-          </Flex>
+          <LegendText
+            label={option}
+            legendColor={color}
+            variant="body2"
+            color="text.main"
+            fontWeight={700}
+          />
           <Flex direction="column" align="end">
             <Text variant="body2" color="text.main">
               {formatPrettyPercent(ratio, 2, true)}

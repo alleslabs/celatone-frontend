@@ -6,7 +6,7 @@ import type { BechAddr32, ContractInfo, Option } from "lib/types";
 import { ContractsTableHeader } from "./ContractsTableHeader";
 import { ContractsTableMobileCard } from "./ContractsTableMobileCard";
 import { ContractsTableRow } from "./ContractsTableRow";
-import type { CTAInfo } from "./ContractsTableRowCTA";
+import type { CtaInfo } from "./ContractsTableRowCta";
 
 interface ContractsTableProps {
   contracts: Option<ContractInfo[]>;
@@ -16,7 +16,7 @@ interface ContractsTableProps {
   showTag?: boolean;
   showLastUpdate?: boolean;
   isReadOnly?: boolean;
-  withCTA?: CTAInfo;
+  withCta?: CtaInfo;
 }
 
 export const ContractsTable = ({
@@ -27,7 +27,7 @@ export const ContractsTable = ({
   showTag = true,
   showLastUpdate = true,
   isReadOnly = false,
-  withCTA,
+  withCta,
 }: ContractsTableProps) => {
   const isMobile = useMobile();
 
@@ -66,7 +66,7 @@ export const ContractsTable = ({
         showTag={showTag}
         showLastUpdate={showLastUpdate}
         isReadOnly={isReadOnly}
-        withCTA={withCTA}
+        withCta={withCta}
       />
       {contracts.map((contractInfo) => (
         <ContractsTableRow
@@ -83,7 +83,7 @@ export const ContractsTable = ({
           showTag={showTag}
           showLastUpdate={showLastUpdate}
           isReadOnly={isReadOnly}
-          withCTA={withCTA}
+          withCta={withCta}
         />
       ))}
     </TableContainer>

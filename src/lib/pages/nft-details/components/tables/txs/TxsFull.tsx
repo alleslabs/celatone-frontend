@@ -8,12 +8,12 @@ import type { HexAddr32 } from "lib/types";
 
 import { TxsTable } from "./TxsTable";
 
-interface TxsProps {
+interface TxsFullProps {
   nftAddress: HexAddr32;
   totalData: number;
 }
 
-export const Txs = ({ nftAddress, totalData }: TxsProps) => {
+export const TxsFull = ({ nftAddress, totalData }: TxsFullProps) => {
   const {
     pagesQuantity,
     currentPage,

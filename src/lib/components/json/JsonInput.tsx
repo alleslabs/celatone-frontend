@@ -110,7 +110,7 @@ const JsonInput = ({
   }, [text, minLines, maxLines]);
 
   return (
-    <>
+    <Flex direction="column" flexGrow={1}>
       <Box
         p="16px 12px"
         borderWidth="thin"
@@ -122,6 +122,7 @@ const JsonInput = ({
         _hover={{
           borderColor: "gray.600",
         }}
+        height="100%"
       >
         <JsonEditor
           value={text}
@@ -168,7 +169,7 @@ const JsonInput = ({
       >
         {response}
       </Flex>
-    </>
+    </Flex>
   );
 };
 

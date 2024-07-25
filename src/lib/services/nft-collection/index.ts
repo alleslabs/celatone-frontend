@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
 
 import type {
@@ -12,6 +12,7 @@ import { handleQueryByTier } from "../utils";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
+  useCurrentChain,
   useLcdEndpoint,
   useTierConfig,
 } from "lib/app-provider";
@@ -28,7 +29,12 @@ import {
   getCollectionsByAccount,
   getCollectionUniqueHoldersCount,
 } from "./gql";
-import { getCollectionsByAccountSequencer } from "./sequencer";
+import {
+  getCollectionActivitiesSequencer,
+  getCollectionByCollectionAddressSequencer,
+  getCollectionCreatorSequencer,
+  getCollectionsByAccountSequencer,
+} from "./sequencer";
 
 export const useCollections = (
   limit: number,
@@ -55,33 +61,67 @@ export const useCollections = (
 };
 
 export const useCollectionByCollectionAddress = (
-  collectionAddress: HexAddr32
+  collectionAddress: HexAddr32,
+  enabled = true
 ) => {
   const { chainConfig } = useCelatoneApp();
+  const { tier } = useTierConfig();
+  const lcdEndpoint = useLcdEndpoint();
+
   return useQuery<CollectionByCollectionAddressResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_BY_COLLECTION_ADDRESS,
       chainConfig.indexer,
+      lcdEndpoint,
+      tier,
       collectionAddress,
     ],
     async () =>
-      getCollectionByCollectionAddress(chainConfig.indexer, collectionAddress),
+      handleQueryByTier({
+        tier,
+        threshold: "sequencer",
+        queryFull: () =>
+          getCollectionByCollectionAddress(
+            chainConfig.indexer,
+            collectionAddress
+          ),
+        querySequencer: () =>
+          getCollectionByCollectionAddressSequencer(
+            lcdEndpoint,
+            collectionAddress
+          ),
+      }),
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
 
 export const useCollectionCreator = (collectionAddress: HexAddr32) => {
   const { chainConfig } = useCelatoneApp();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
+  const { tier } = useTierConfig();
+  const lcdEndpoint = useLcdEndpoint();
+
   return useQuery<CollectionCreatorResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_CREATOR,
       chainConfig.indexer,
       collectionAddress,
     ],
-    async () => getCollectionCreator(chainConfig.indexer, collectionAddress),
+    async () =>
+      handleQueryByTier({
+        tier,
+        threshold: "sequencer",
+        queryFull: () =>
+          getCollectionCreator(chainConfig.indexer, collectionAddress),
+        querySequencer: () =>
+          getCollectionCreatorSequencer(lcdEndpoint, prefix, collectionAddress),
+      }),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -120,7 +160,10 @@ export const useCollectionActivities = (
   );
 };
 
-export const useCollectionActivitiesCount = (collectionAddress: HexAddr32) => {
+export const useCollectionActivitiesCount = (
+  collectionAddress: HexAddr32,
+  enabled = true
+) => {
   const { chainConfig } = useCelatoneApp();
   return useQuery<number>(
     [
@@ -133,8 +176,34 @@ export const useCollectionActivitiesCount = (collectionAddress: HexAddr32) => {
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
+};
+
+export const useCollectionActivitiesSequencer = (
+  collectionAddress: HexAddr32
+) => {
+  const lcdEndpoint = useLcdEndpoint();
+
+  const { data, ...rest } = useInfiniteQuery(
+    [CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_SEQUENCER, lcdEndpoint],
+    async ({ pageParam }) =>
+      getCollectionActivitiesSequencer(
+        lcdEndpoint,
+        pageParam,
+        collectionAddress
+      ),
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return {
+    data: data?.pages.flatMap((page) => page.items),
+    ...rest,
+  };
 };
 
 export const useCollectionMutateEvents = (
@@ -166,7 +235,8 @@ export const useCollectionMutateEvents = (
 };
 
 export const useCollectionMutateEventsCount = (
-  collectionAddress: HexAddr32
+  collectionAddress: HexAddr32,
+  enabled = true
 ) => {
   const { chainConfig } = useCelatoneApp();
   return useQuery<number>(
@@ -180,6 +250,7 @@ export const useCollectionMutateEventsCount = (
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };

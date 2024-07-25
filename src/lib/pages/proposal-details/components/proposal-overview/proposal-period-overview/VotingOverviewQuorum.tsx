@@ -4,7 +4,7 @@ import { isNull } from "lodash";
 import { VoteQuorumBadge } from "../../VoteQuorumBadge";
 import { VoteQuorumCircle } from "../../VoteQuorumCircle";
 import { VoteQuorumText } from "../../VoteQuorumText";
-import { CustomIcon } from "lib/components/icon";
+import { LegendText } from "lib/components/LegendText";
 import { Tooltip } from "lib/components/Tooltip";
 import {
   extractParams,
@@ -51,28 +51,16 @@ export const VotingOverviewQuorum = ({
         <Tooltip
           label={
             <div>
-              <Flex gap={2}>
-                <CustomIcon
-                  boxSize="10px"
-                  name="legend"
-                  color="voteParticipations.voted"
-                />
-                <Text>
-                  {nonAbstainRatio ? formatPrettyPercent(nonAbstainRatio) : "-"}{" "}
-                  Vote response
-                </Text>
-              </Flex>
-              <Flex gap={2}>
-                <CustomIcon
-                  boxSize="10px"
-                  name="legend"
-                  color="voteParticipations.votedAbstain"
-                />
-                <Text>
-                  {abstainRatio ? formatPrettyPercent(abstainRatio) : "-"} Vote
-                  abstain
-                </Text>
-              </Flex>
+              <LegendText
+                label={`${nonAbstainRatio ? formatPrettyPercent(nonAbstainRatio) : "-"}${" "}
+            Vote response`}
+                legendColor="voteParticipations.voted"
+              />
+              <LegendText
+                label={`${abstainRatio ? formatPrettyPercent(abstainRatio) : "-"} Vote
+                abstain`}
+                legendColor="voteParticipations.votedAbstain"
+              />
             </div>
           }
           bgColor="gray.700"

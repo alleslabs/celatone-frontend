@@ -62,7 +62,7 @@ const ContractListContent = ({
       }
       onRowSelect={onContractSelect}
       isReadOnly={isReadOnly}
-      withCTA={
+      withCta={
         isReadOnly
           ? undefined
           : {

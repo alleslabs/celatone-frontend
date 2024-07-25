@@ -47,7 +47,7 @@ const unsupportedTokensContent = (
     }
     default:
       return {
-        icon: "question-solid",
+        icon: "alert-triangle-solid",
         header: "Invalid Address",
       };
   }
