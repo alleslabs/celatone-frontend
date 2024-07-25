@@ -70,7 +70,7 @@ export const SelectFund = ({
         token.amount.toNumber() > 999 ? 6 : undefined
       );
 
-      const raw = toToken(token.amount, token.precision ?? 0).toFixed();
+      const raw = toToken(token.amount, token.precision ?? 0).toNumber();
 
       const price = formatPrice(token.value as USD<BigSource>);
 
@@ -119,7 +119,7 @@ export const SelectFund = ({
         selectedAssets[idx]
       );
       const isSelected = balanceMap?.get(selectedAssets[idx]);
-      const overBalance = Number(assetsSelect[idx].amount) > Number(formatted);
+      const overBalance = Number(assetsSelect[idx].amount) > Number(raw);
 
       return {
         helperText: isSelected && (
@@ -130,7 +130,7 @@ export const SelectFund = ({
         cta: isSelected && {
           label: "MAX",
           onClick: (changeValue: (value: string) => void) => {
-            changeValue?.(raw);
+            changeValue?.(raw.toString());
           },
         },
         error:
