@@ -13,7 +13,7 @@ export const EditCodeDetailsModal = ({
   <CodeDetailsTemplateModal
     title="Edit Code Name"
     mainBtnTitle="Save"
-    icon="edit-solid"
+    icon="edit"
     isNewCode={false}
     codeInfo={codeInfo}
     triggerElement={triggerElement}

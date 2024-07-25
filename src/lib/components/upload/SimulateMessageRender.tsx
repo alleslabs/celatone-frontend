@@ -20,7 +20,7 @@ const item = {
   fail: {
     color: "error.main",
     icon: (
-      <CustomIcon name="alert-circle-solid" color="error.main" boxSize="3" />
+      <CustomIcon name="alert-triangle-solid" color="error.main" boxSize="3" />
     ),
   },
   loading: {

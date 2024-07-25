@@ -79,7 +79,7 @@ export const getDevSubmenuMove = (isMove: boolean) =>
         {
           name: "0x1 Page",
           slug: "/accounts/0x1",
-          icon: "hex" as IconKeys,
+          icon: "0x1" as IconKeys,
           trackEvent: () => track(AmpEvent.USE_TO_0X1_PAGE),
         },
         {

@@ -14,7 +14,7 @@ export const renderSocial = (name: string): IconKeys => {
     case "discord":
       return "discord";
     default:
-      return "info-circle-solid";
+      return "info-circle";
   }
 };
 

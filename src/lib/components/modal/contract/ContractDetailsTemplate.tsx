@@ -26,7 +26,7 @@ interface ContractDetailsTemplateModalProps {
 export const ContractDetailsTemplateModal = ({
   title,
   subtitle,
-  icon = "edit-solid",
+  icon = "edit",
   contractLocalInfo,
   triggerElement,
   defaultList = [],

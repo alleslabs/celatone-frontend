@@ -143,7 +143,7 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
       base.push({
         title: "0x1 Page",
         slug: "/accounts/0x1",
-        icon: "hex" as IconKeys,
+        icon: "0x1" as IconKeys,
         isDocument: false,
       });
 

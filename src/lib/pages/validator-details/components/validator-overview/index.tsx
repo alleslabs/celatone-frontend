@@ -50,7 +50,7 @@ export const ValidatorOverview = ({
       {(!isActive || isJailed) && (
         <Alert variant="error" gap={2} my={6}>
           <CustomIcon
-            name="alert-circle-solid"
+            name="alert-triangle-solid"
             boxSize={4}
             color="error.main"
           />

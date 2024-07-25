@@ -37,8 +37,8 @@ interface Result {
 
 const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
   success: "check-circle-solid",
-  error: "alert-circle-solid",
-  warning: "alert-circle-solid",
+  error: "alert-triangle-solid",
+  warning: "alert-triangle-solid",
 };
 
 const Faucet = () => {

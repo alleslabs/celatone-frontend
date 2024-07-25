@@ -37,14 +37,11 @@ interface TooltipInfoProps extends Omit<TooltipProps, "children"> {
   iconVariant?: "default" | "solid";
 }
 
-export const TooltipInfo = ({
-  iconVariant = "default",
-  ...tooltipProps
-}: TooltipInfoProps) => (
+export const TooltipInfo = ({ ...tooltipProps }: TooltipInfoProps) => (
   <Tooltip {...tooltipProps}>
     <CustomIcon
       color="gray.600"
-      name={iconVariant === "solid" ? "info-circle-solid" : "info-circle"}
+      name="info-circle"
       boxSize={3}
       m={0}
       cursor="pointer"

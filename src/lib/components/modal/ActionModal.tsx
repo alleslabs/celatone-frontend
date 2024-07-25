@@ -40,7 +40,7 @@ export interface ActionModalProps {
   buttonRemark?: string;
 }
 export function ActionModal({
-  icon = "edit-solid",
+  icon = "edit",
   iconColor = "gray.600",
   title,
   subtitle,

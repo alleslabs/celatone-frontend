@@ -48,11 +48,7 @@ export const MigrateOptions = ({
 
       {address && !isAllowed && (
         <Alert variant="primary" mb={4} alignItems="flex-start" gap={2}>
-          <CustomIcon
-            name="info-circle-solid"
-            color="primary.light"
-            boxSize={4}
-          />
+          <CustomIcon name="info-circle" color="primary.light" boxSize={4} />
           <AlertDescription>{`${chainPrettyName} is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.`}</AlertDescription>
         </Alert>
       )}

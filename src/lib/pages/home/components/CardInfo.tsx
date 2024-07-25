@@ -43,7 +43,7 @@ export const CardInfo = ({
         <Text variant="body2" color="text.dark">
           {title}
         </Text>
-        <TooltipInfo label={tooltip} iconVariant="solid" />
+        <TooltipInfo label={tooltip} />
       </Flex>
       {isLoading ? (
         <Spinner size="md" />

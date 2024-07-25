@@ -69,7 +69,7 @@ export const EditSavedAccountModal = ({
   return (
     <ActionModal
       title="Edit account"
-      icon="edit-solid"
+      icon="edit"
       headerContent={
         <SavedAccountModalHeader address={accountLocalInfo.address} />
       }

@@ -40,7 +40,7 @@ export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
   return (
     <ActionModal
       title={`Remove ${shortenName(list.label)}?`}
-      icon="delete-solid"
+      icon="delete"
       iconColor="error.light"
       trigger={<MenuItem {...menuItemProps} as="button" />}
       mainBtnTitle="Yes, Remove list"

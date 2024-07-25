@@ -92,11 +92,7 @@ export const submitWhitelistProposalTx = ({
               : "."
           }`,
           headerIcon: (
-            <CustomIcon
-              name="submit-proposal-solid"
-              color="gray.600"
-              boxSize={5}
-            />
+            <CustomIcon name="submit-proposal" color="gray.600" boxSize={5} />
           ),
         },
         actionVariant: "proposal",
@@ -177,11 +173,7 @@ export const submitStoreCodeProposalTx = ({
               : ` ${capitalize(chainName)} governance voting.`
           }`,
           headerIcon: (
-            <CustomIcon
-              name="submit-proposal-solid"
-              color="gray.600"
-              boxSize="5"
-            />
+            <CustomIcon name="submit-proposal" color="gray.600" boxSize="5" />
           ),
         },
         actionVariant: "proposal",

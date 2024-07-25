@@ -4,6 +4,7 @@ import { VoteThresholdBadge } from "../../VoteThresholdBadge";
 import { VoteThresholdBar } from "../../VoteThresholdBar";
 import { VpPercentThreshold } from "../../VpPercentThreshold";
 import { CustomIcon } from "lib/components/icon";
+import { LegendText } from "lib/components/LegendText";
 import { StatusChip } from "lib/components/table";
 import {
   extractParams,
@@ -64,16 +65,13 @@ export const VotingOverviewThreshold = ({
               {proposalData.status === ProposalStatus.FAILED ? (
                 <StatusChip status={ProposalStatus.FAILED} />
               ) : (
-                <>
-                  <CustomIcon
-                    name="circle"
-                    boxSize="14px"
-                    color={resultColor}
-                  />
-                  <Text variant="body2" color="text.main" fontWeight={700}>
-                    {result}
-                  </Text>
-                </>
+                <LegendText
+                  label={result}
+                  legendColor={resultColor}
+                  variant="body2"
+                  color="text.main"
+                  fontWeight={700}
+                />
               )}
             </Flex>
           )}
@@ -96,7 +94,7 @@ export const VotingOverviewThreshold = ({
         >
           <CustomIcon
             boxSize={4}
-            name="alert-circle-solid"
+            name="alert-triangle-solid"
             color="warning.main"
           />
           <Text variant="body2" color="warning.main">

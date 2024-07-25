@@ -22,7 +22,7 @@ const InfoComponent = ({
       >
         {title}
       </Text>
-      <TooltipInfo label={tooltip} iconVariant="solid" />
+      <TooltipInfo label={tooltip} />
     </Flex>
     <Text color="gray.100" fontSize="18px" fontWeight={600}>
       {content ?? "∞"}
@@ -59,7 +59,7 @@ export const CollectionSupplyInfo = ({
       <div>
         <Flex fontSize="14px" fontWeight={600} align="center" gap="4px">
           <Text color="gray.400">Current Supply (Minted - Burned)</Text>
-          <TooltipInfo label={currentSupplyTooltip} iconVariant="solid" />
+          <TooltipInfo label={currentSupplyTooltip} />
         </Flex>
         <Flex fontWeight={600} align="end" gap="8px">
           <Text fontSize="16px">{currentSupply}</Text>
@@ -72,7 +72,7 @@ export const CollectionSupplyInfo = ({
       <div>
         <Flex fontSize="14px" fontWeight={600} align="center" gap="4px">
           <Text color="gray.400">Max Supply</Text>
-          <TooltipInfo label={maxSupplyTooltip} iconVariant="solid" />
+          <TooltipInfo label={maxSupplyTooltip} />
         </Flex>
         <Text fontSize="18px" fontWeight={600}>
           {maxSupply ?? "∞"}

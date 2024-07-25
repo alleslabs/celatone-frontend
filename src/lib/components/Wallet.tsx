@@ -35,16 +35,17 @@ export const WalletSection = () => {
         walletStatus={status}
         disconnect={
           <Disconnected
-            buttonText="Connect"
+            buttonText="Connect Wallet"
             onClick={onClickConnect}
             iconColor="text.main"
+            icon="wallet"
           />
         }
         connecting={<Connecting />}
         connected={
           <Connected
             buttonText={truncate(address)}
-            icon="wallet"
+            icon="wallet-solid"
             onClick={onClickOpenView}
             variant="ghost-accent"
           />

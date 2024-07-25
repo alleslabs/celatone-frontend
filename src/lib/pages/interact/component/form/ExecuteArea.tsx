@@ -145,7 +145,7 @@ export const ExecuteArea = ({
       ) : (
         <Alert variant="warning" mb={8} alignItems="center" gap={4}>
           <CustomIcon
-            name="alert-circle-solid"
+            name="alert-triangle-solid"
             boxSize={4}
             color="warning.main"
           />

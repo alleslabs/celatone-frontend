@@ -118,7 +118,7 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         p={4}
       >
         <Flex fontSize="14px" gap={2} fontWeight={500} align="center">
-          <CustomIcon name="contract-list" boxSize={4} color="gray.600" m={0} />
+          <CustomIcon name="list" boxSize={4} color="gray.600" m={0} />
           {`[${msgIndex}] ${event.type}`}
         </Flex>
         <CustomIcon

@@ -64,7 +64,6 @@ export const PoolAssetsTableRow = ({
               <Flex className="widget" display="none" align="center" gap={1}>
                 <TooltipInfo
                   label={`Token ID: ${token.denom}`}
-                  iconVariant="solid"
                   className="copier"
                 />
                 <Copier

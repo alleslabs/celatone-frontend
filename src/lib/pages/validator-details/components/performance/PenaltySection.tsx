@@ -28,7 +28,11 @@ export const PenaltySection = ({ penaltyEvents }: PenaltySectionProps) => (
     </Flex>
     {penaltyEvents.length === 0 ? (
       <Flex gap={2} alignItems="center">
-        <CustomIcon name="check-circle" color="success.main" boxSize={5} />
+        <CustomIcon
+          name="check-circle-solid"
+          color="success.main"
+          boxSize={5}
+        />
         <Text variant="body2" color="text.dark">
           This validator never had any slash or jailed history within 90 days.
         </Text>

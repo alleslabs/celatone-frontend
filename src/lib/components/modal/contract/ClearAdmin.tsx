@@ -28,7 +28,7 @@ export const ClearAdminModal = ({
   return (
     <ActionModal
       title="You'll no longer have admin access"
-      icon="delete-solid"
+      icon="delete"
       iconColor="error.light"
       trigger={triggerElement}
       mainBtnTitle="Yes, clear it"
