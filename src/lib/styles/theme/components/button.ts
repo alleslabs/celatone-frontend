@@ -152,13 +152,13 @@ export const Button: ComponentStyleConfig = {
       },
       disabled: {
         border: borderDefault,
-        borderColor: gray700,
-        color: gray600,
+        borderColor: secondaryBg,
+        color: secondaryMain,
         "> svg": {
-          color: gray600,
+          color: secondaryMain,
         },
       },
-      hoverBg: gray700,
+      hoverBg: secondaryBg,
       activeBg: "transparent",
     }),
     "outline-gray": generateStyle({

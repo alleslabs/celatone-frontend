@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { CustomNetworkFooterCta } from "lib/components/custom-network";
+import { CustomIcon } from "lib/components/icon";
 import { CelatoneSeo } from "lib/components/Seo";
 
 import { AddNetworkStepper } from "./components/AddNetworkStepper";
@@ -33,6 +34,21 @@ export const AddNetworkManual = () => {
     }
   };
 
+  const leftButtonProps = {
+    label: "Previous",
+    action: prevStep,
+    variant: "outline-secondary",
+    isDisabled: currentStep === 0,
+  };
+
+  const rightButtonProps = {
+    label: "Next",
+    action: nextStep,
+    variant: "primary",
+    isDisabled: currentStep === steps.length - 1,
+    rightIcon: <CustomIcon name="chevron-right" />,
+  };
+
   return (
     <>
       <CelatoneSeo pageName="Add Minitias" />
@@ -44,10 +60,8 @@ export const AddNetworkManual = () => {
           {steps[currentStep]}
         </ActionPageContainer>
         <CustomNetworkFooterCta
-          currentStep={currentStep}
-          totalSteps={steps.length}
-          leftButtonAction={nextStep}
-          rightButtonAction={prevStep}
+          leftButtonProps={leftButtonProps}
+          rightButtonProps={rightButtonProps}
         />
       </Flex>
     </>
