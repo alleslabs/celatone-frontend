@@ -65,14 +65,14 @@ export const ControllerInput = <T extends FieldValues>({
 
   const {
     field,
-    fieldState: { isTouched },
+    fieldState: { isTouched, isDirty },
   } = useController<T>({
     name,
     control,
     rules,
   });
 
-  const isError = isTouched && !!error;
+  const isError = (isTouched || isDirty) && !!error;
   const isRequired = "required" in rules;
   const inputPaddingRight = () => {
     if (status) {
