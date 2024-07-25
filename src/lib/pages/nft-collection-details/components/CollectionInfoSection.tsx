@@ -121,7 +121,7 @@ export const CollectionInfoSection = ({
               color={collectionName.length ? "text.main" : "text.disabled"}
               fontWeight={collectionName.length ? "600" : "300"}
             >
-              {collectionName.length ? collectionName : "Untitled Collection"}
+              {collectionName || "Untitled Collection"}
             </Text>
           </Flex>
           <Flex gap={infoGap} flexDir={infoDirection}>
