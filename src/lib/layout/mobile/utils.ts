@@ -44,8 +44,13 @@ export const getNavDrawerLite = (
         ? [
             {
               name: "0x1 Page",
-              slug: "/account/0x1",
+              slug: "/accounts/0x1",
               icon: "hex" as IconKeys,
+            },
+            {
+              name: "View Module",
+              slug: "/interact",
+              icon: "query" as IconKeys,
             },
           ]
         : []),
@@ -105,7 +110,7 @@ export const getNavDrawerSequencer = (
         ? [
             {
               name: "0x1 Page",
-              slug: "/account/0x1",
+              slug: "/accounts/0x1",
               icon: "hex" as IconKeys,
             },
             {
@@ -182,7 +187,7 @@ export const getNavDrawerFull = (
             },
             {
               name: "0x1 Page",
-              slug: "/account/0x1",
+              slug: "/accounts/0x1",
               icon: "hex" as IconKeys,
             },
             {

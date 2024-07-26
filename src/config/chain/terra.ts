@@ -3,12 +3,16 @@ import { wallets as staionWallets } from "@cosmos-kit/station";
 
 import type { ChainConfigs } from "./types";
 
+const TERRA_LOGO = "https://assets.alleslabs.dev/integrations/chains/terra.png";
+
 export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
   "pisco-1-lite": {
     tier: "lite",
     chain: "terra",
     registryChainName: "terra2testnet",
     prettyName: "Terra Testnet Lite",
+    networkType: "testnet",
+    logoUrl: TERRA_LOGO,
     lcd: "https://terra-testnet-api.polkachu.com",
     rpc: "https://terra-testnet-rpc.polkachu.com:443",
     indexer: "",
@@ -55,6 +59,8 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "terra",
     registryChainName: "terra2",
     prettyName: "Terra",
+    networkType: "mainnet",
+    logoUrl: TERRA_LOGO,
     lcd: "https://phoenix-lcd.terra.dev:443",
     rpc: "https://terra2-rpc.lavenderfive.com:443",
     indexer: "https://terra-mainnet-graphql.alleslabs.dev/v1/graphql",
@@ -101,6 +107,8 @@ export const TERRA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "terra",
     registryChainName: "terra2testnet",
     prettyName: "Terra Testnet",
+    networkType: "testnet",
+    logoUrl: TERRA_LOGO,
     lcd: "https://terra-testnet-api.polkachu.com",
     rpc: "https://terra-testnet-rpc.polkachu.com:443",
     indexer: "https://pisco-1-graphql.alleslabs.dev/v1/graphql",

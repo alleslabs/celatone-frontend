@@ -128,7 +128,6 @@ const ProposalToWhitelist = () => {
         title,
         description,
         changesValue: JSON.stringify({
-          ...uploadAccessParams,
           permission: uploadAccessParams?.isPermissionedNetwork
             ? AccessConfigPermission.ANY_OF_ADDRESSES
             : AccessConfigPermission.EVERYBODY,
@@ -389,7 +388,7 @@ const ProposalToWhitelist = () => {
                   label="Amount"
                   placeholder="0.00"
                   variant="fixed-floating"
-                  type="number"
+                  type="decimal"
                   helperAction={
                     <Text
                       textAlign="right"

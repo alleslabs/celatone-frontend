@@ -1,7 +1,7 @@
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { Activity } from "lib/services/nft/collection";
+import type { Activity } from "lib/services/types";
 import type { HexAddr32, Option } from "lib/types";
 
 import { ActivitiesTableHeader } from "./ActivitiesTableHeader";

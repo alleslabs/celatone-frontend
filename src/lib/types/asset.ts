@@ -45,3 +45,10 @@ export type TokenWithValue = BaseTokenWithValue &
         poolInfo: PoolInfo;
       }
   );
+
+export interface AssetOption {
+  label: string;
+  value: string;
+  isDisabled: boolean;
+  [key: string]: string | boolean;
+}

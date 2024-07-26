@@ -13,9 +13,11 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "minimovetestnet",
     prettyName: "Minimove",
+    networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/minimove.png",
     lcd: "https://lcd.minimove-1.initia.xyz",
     rpc: "https://rpc.minimove-1.initia.xyz",
-    indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
+    indexer: "",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -54,16 +56,19 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {
       isValidatorExternalLink: null,
+      layer: "2",
     },
   },
-  "minimove-1-sequencer": {
+  "init-ai-1-sequencer": {
     tier: "sequencer",
     chain: "initia",
-    registryChainName: "minimovetestnet",
-    prettyName: "Minimove",
-    lcd: "https://lcd.minimove-1.initia.xyz",
-    rpc: "https://rpc.minimove-1.initia.xyz",
-    indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
+    registryChainName: "initaitestnet",
+    prettyName: "INIT AI",
+    networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/initai.png",
+    lcd: "https://maze-rest-617bacff-7d34-4eb8-87f4-ee16fb4e0ac7.ue1-prod.newmetric.xyz",
+    rpc: "https://maze-rpc-617bacff-7d34-4eb8-87f4-ee16fb4e0ac7.ue1-prod.newmetric.xyz",
+    indexer: "",
     wallets: [...initiaWallets, ...keplrWallets],
     features: {
       faucet: {
@@ -95,13 +100,14 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasPrice: {
         tokenPerGas: 0.151,
         denom:
-          "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
+          "l2/aadf1a9da6a38b7e7e11839364ee42002260eff1657f403b9ce608337bcb986b",
       },
       gasAdjustment: 1.5,
       maxGasLimit: 25_000_000,
     },
     extra: {
       isValidatorExternalLink: null,
+      layer: "2",
     },
   },
   "initiation-1": {
@@ -109,6 +115,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "initiatestnet",
     prettyName: "Initia",
+    networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/initia.png",
     lcd: "https://lcd.initiation-1.initia.xyz",
     rpc: "https://rpc.initiation-1.initia.xyz",
     indexer: "https://initiation-1-graphql.alleslabs.dev/v1/graphql",
@@ -151,13 +159,17 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       gasAdjustment: 1.5,
       maxGasLimit: 200_000_000,
     },
-    extra: {},
+    extra: {
+      layer: "1",
+    },
   },
   "minimove-1": {
     tier: "full",
     chain: "initia",
     registryChainName: "minimovetestnet",
     prettyName: "Minimove",
+    networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/minimove.png",
     lcd: "https://lcd.minimove-1.initia.xyz",
     rpc: "https://rpc.minimove-1.initia.xyz",
     indexer: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
@@ -199,6 +211,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {
       isValidatorExternalLink: null,
+      layer: "2",
     },
   },
   "miniwasm-1": {
@@ -206,6 +219,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "miniwasmtestnet",
     prettyName: "Miniwasm",
+    networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/miniwasm.png",
     lcd: "https://lcd.miniwasm-1.initia.xyz",
     rpc: "https://rpc.miniwasm-1.initia.xyz:443",
     indexer: "https://miniwasm-1-graphql.alleslabs.dev/v1/graphql",
@@ -246,6 +261,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {
       isValidatorExternalLink: null,
+      layer: "2",
     },
   },
   "tomcat-1": {
@@ -253,6 +269,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "blackwingtestnet",
     prettyName: "Blackwing",
+    networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/blackwing.png",
     lcd: "https://maze-rest-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
     rpc: "https://maze-rpc-18bdff44-3aa4-425e-9bc0-06a2afa40af8.ase1-prod.newmetric.xyz",
     indexer: "https://tomcat-1-graphql.alleslabs.dev/v1/graphql",
@@ -294,6 +312,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {
       isValidatorExternalLink: null,
+      layer: "2",
     },
   },
   "init-ai-1": {
@@ -301,6 +320,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "initaitestnet",
     prettyName: "INIT AI",
+    networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/initai.png",
     lcd: "https://maze-rest-617bacff-7d34-4eb8-87f4-ee16fb4e0ac7.ue1-prod.newmetric.xyz",
     rpc: "https://maze-rpc-617bacff-7d34-4eb8-87f4-ee16fb4e0ac7.ue1-prod.newmetric.xyz",
     indexer: "https://init-ai-1-graphql.alleslabs.dev/v1/graphql",
@@ -342,6 +363,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {
       isValidatorExternalLink: null,
+      layer: "2",
     },
   },
   "burrito-1": {
@@ -349,6 +371,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "noontestnet",
     prettyName: "Noon",
+    networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/noon.png",
     lcd: "https://burrito-1-lcd.lunchlunch.xyz",
     rpc: "https://burrito-1-rpc.lunchlunch.xyz",
     indexer: "https://burrito-1-graphql.alleslabs.dev/v1/graphql",
@@ -390,6 +414,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {
       isValidatorExternalLink: null,
+      layer: "2",
     },
   },
   "birdee-1": {
@@ -397,6 +422,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "tucanatestnet",
     prettyName: "Tucana",
+    networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/tucana.png",
     lcd: "https://maze-rest-c9796789-107d-49ab-b6de-059724d2a91d.ue1-prod.newmetric.xyz",
     rpc: "https://maze-rpc-c9796789-107d-49ab-b6de-059724d2a91d.ue1-prod.newmetric.xyz",
     indexer: "https://birdee-1-graphql.alleslabs.dev/v1/graphql",
@@ -437,6 +464,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {
       isValidatorExternalLink: null,
+      layer: "2",
     },
   },
   "landlord-1": {
@@ -444,6 +472,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "civitiatestnet",
     prettyName: "Civitia",
+    networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/civitia.png",
     lcd: "https://maze-rest-sequencer-beab9b6f-d96d-435e-9caf-5679296d8172.ue1-prod.newmetric.xyz",
     rpc: "https://maze-rpc-sequencer-beab9b6f-d96d-435e-9caf-5679296d8172.ue1-prod.newmetric.xyz",
     indexer: "https://landlord-1-graphql.alleslabs.dev/v1/graphql",
@@ -471,7 +501,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
         enabled: false,
       },
       nft: {
-        enabled: false,
+        enabled: true,
       },
     },
     gas: {
@@ -485,6 +515,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {
       isValidatorExternalLink: null,
+      layer: "2",
     },
   },
   "glados-1": {
@@ -492,6 +523,8 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     chain: "initia",
     registryChainName: "milkywaytestnet",
     prettyName: "Milkyway",
+    networkType: "testnet",
+    logoUrl: "https://assets.alleslabs.dev/integrations/chains/milkyway.png",
     lcd: "https://lcd.testnet.milkyway.zone",
     rpc: "https://rpc.testnet.milkyway.zone",
     indexer: "",
@@ -532,6 +565,7 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
     },
     extra: {
       isValidatorExternalLink: null,
+      layer: "2",
     },
   },
 };

@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import {
   Divider,
   Flex,
@@ -22,16 +23,17 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import {
-  useCollectionByCollectionAddress,
   useMetadata,
   useNftByNftAddress,
   useNftMutateEventsCount,
   useNftTransactionsCount,
 } from "lib/services/nft";
+import { useCollectionByCollectionAddress } from "lib/services/nft-collection";
 
 import {
   Attributes,
@@ -41,7 +43,8 @@ import {
   NftInfoItem,
   NftMutateEvents,
   Title,
-  Txs,
+  TxsFull,
+  TxsSequencer,
   ViewResourceButton,
 } from "./components";
 import type { NftDetailQueryParams } from "./types";
@@ -54,6 +57,7 @@ const NftDetailsBody = ({
   nftAddress,
 }: NftDetailQueryParams) => {
   const isMobile = useMobile();
+  const { isFullTier } = useTierConfig();
 
   const { data: collection, isLoading: isCollectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
@@ -61,8 +65,14 @@ const NftDetailsBody = ({
     collectionAddress,
     nftAddress
   );
-  const { data: txCount = 0 } = useNftTransactionsCount(nftAddress);
-  const { data: mutateEventsCount = 0 } = useNftMutateEventsCount(nftAddress);
+
+  const { data: txCount = 0 } = useNftTransactionsCount(nftAddress, isFullTier);
+  const totalTxs = isFullTier ? txCount : undefined;
+
+  const { data: mutateEventsCount = 0 } = useNftMutateEventsCount(
+    nftAddress,
+    isFullTier
+  );
   const { data: metadata } = useMetadata(nft?.data?.uri ?? "");
 
   if (isCollectionLoading || isNftLoading) return <Loading />;
@@ -96,7 +106,12 @@ const NftDetailsBody = ({
           gap={{ base: 2, md: 8 }}
           mt={6}
         >
-          <Flex direction="column" gap={6} maxW={{ md: "360px" }}>
+          <Flex
+            direction="column"
+            gap={6}
+            minW={{ md: "360px" }}
+            maxW={{ md: "360px" }}
+          >
             {isMobile && (
               <Title
                 collectionAddress={collectionAddress}
@@ -122,9 +137,10 @@ const NftDetailsBody = ({
                   width: "100%",
                   height: "100%",
                   borderRadius: "8px",
-                  objectFit: "cover",
+                  objectFit: "contain",
                   backgroundPosition: "center",
                 }}
+                background="gray.900"
                 borderRadius="8px"
                 src={metadata?.image}
                 fallbackSrc={NFT_IMAGE_PLACEHOLDER}
@@ -247,24 +263,31 @@ const NftDetailsBody = ({
             borderColor="gray.700"
             overflowX="scroll"
           >
-            <CustomTab count={txCount}>Transactions</CustomTab>
-            <CustomTab
-              count={mutateEventsCount}
-              isDisabled={!mutateEventsCount}
-            >
-              Mutate Events
-            </CustomTab>
+            <CustomTab count={totalTxs}>Transactions</CustomTab>
+            {isFullTier && (
+              <CustomTab
+                count={mutateEventsCount}
+                isDisabled={!mutateEventsCount}
+              >
+                Mutate Events
+              </CustomTab>
+            )}
           </TabList>
           <TabPanels>
             <TabPanel p={0}>
-              <Txs nftAddress={nftAddress} totalData={txCount} />
-            </TabPanel>
-            <TabPanel p={0}>
-              <NftMutateEvents
-                nftAddress={nftAddress}
-                totalData={mutateEventsCount}
+              <TierSwitcher
+                full={<TxsFull nftAddress={nftAddress} totalData={txCount} />}
+                sequencer={<TxsSequencer nftAddress={nftAddress} />}
               />
             </TabPanel>
+            {isFullTier && (
+              <TabPanel p={0}>
+                <NftMutateEvents
+                  nftAddress={nftAddress}
+                  totalData={mutateEventsCount}
+                />
+              </TabPanel>
+            )}
           </TabPanels>
         </Tabs>
         <UserDocsLink
@@ -278,7 +301,7 @@ const NftDetailsBody = ({
 };
 
 const NftDetails = observer(() => {
-  useTierConfig({ minTier: "full" });
+  useTierConfig({ minTier: "sequencer" });
   const router = useRouter();
   const validated = zNftDetailQueryParams.safeParse(router.query);
 
