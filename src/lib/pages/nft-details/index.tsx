@@ -106,7 +106,12 @@ const NftDetailsBody = ({
           gap={{ base: 2, md: 8 }}
           mt={6}
         >
-          <Flex direction="column" gap={6} maxW={{ md: "360px" }}>
+          <Flex
+            direction="column"
+            gap={6}
+            minW={{ md: "360px" }}
+            maxW={{ md: "360px" }}
+          >
             {isMobile && (
               <Title
                 collectionAddress={collectionAddress}
@@ -132,9 +137,10 @@ const NftDetailsBody = ({
                   width: "100%",
                   height: "100%",
                   borderRadius: "8px",
-                  objectFit: "cover",
+                  objectFit: "contain",
                   backgroundPosition: "center",
                 }}
+                background="gray.900"
                 borderRadius="8px"
                 src={metadata?.image}
                 fallbackSrc={NFT_IMAGE_PLACEHOLDER}
