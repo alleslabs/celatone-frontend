@@ -52,13 +52,15 @@ export const NetworkAccordion = ({
         </AccordionButton>
         <AccordionPanel p={0}>
           <Flex direction="column" gap={4}>
-            <NetworkAccordionSubsection
-              networks={nonInitiaNetworks}
-              cursor={cursor}
-              setCursor={setCursor}
-              subsectionStartIndex={startIndex}
-              onClose={onClose}
-            />
+            {nonInitiaNetworks.length > 0 && (
+              <NetworkAccordionSubsection
+                networks={nonInitiaNetworks}
+                cursor={cursor}
+                setCursor={setCursor}
+                subsectionStartIndex={startIndex}
+                onClose={onClose}
+              />
+            )}
             {l1Networks.length > 0 && (
               <NetworkAccordionSubsection
                 title="Initia (Layer 1)"
