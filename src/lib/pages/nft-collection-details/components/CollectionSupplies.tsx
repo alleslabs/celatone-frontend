@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { useTierConfig } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
 import { Pagination } from "lib/components/pagination";
@@ -20,6 +20,7 @@ export const CollectionSupplies = ({
   collectionAddress,
   totalSupply,
 }: CollectionSuppliesProps) => {
+  const isMobile = useMobile();
   const { isFullTier, isSequencerTier } = useTierConfig();
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
@@ -61,7 +62,7 @@ export const CollectionSupplies = ({
       <InputWithIcon
         placeholder="Search with Token ID or NFT VM Address"
         value={searchKeyword}
-        autoFocus
+        autoFocus={!isMobile}
         onChange={(e) => setSearchKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}
         amptrackSection="collection-supplies-tokenId-search"

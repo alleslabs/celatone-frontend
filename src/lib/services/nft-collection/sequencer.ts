@@ -1,5 +1,6 @@
 import axios from "axios";
 
+import { getCollectionByCollectionAddressLite } from "../nft/lite";
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import type { Activity, CollectionCreatorResponse } from "../types";
 import {
@@ -23,6 +24,10 @@ export const getCollectionByCollectionAddressSequencer = async (
     )
     .then(({ data }) =>
       parseWithError(zCollectionByCollectionAddressResponseSequencer, data)
+    )
+    // Fallback to lite version if the collection is not found
+    .catch(() =>
+      getCollectionByCollectionAddressLite(endpoint, collectionAddress)
     );
 
 export const getCollectionsByAccountSequencer = async (
