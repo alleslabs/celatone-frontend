@@ -39,6 +39,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+## v1.7.2
+
+### Features
+
 - [#1037](https://github.com/alleslabs/celatone-frontend/pull/1037) Add Sequencer for Collection details
 - [#997](https://github.com/alleslabs/celatone-frontend/pull/997) Redesign asset selector
 - [#1033](https://github.com/alleslabs/celatone-frontend/pull/1033) Add Sequencer for NFT details
