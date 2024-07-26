@@ -26,6 +26,13 @@ export const zNetworkDetailsForm = z.object({
 });
 export type NetworkDetailsForm = z.infer<typeof zNetworkDetailsForm>;
 
+export const zSupportedFeaturesForm = z.object({
+  isWasm: z.boolean(),
+  isMove: z.boolean(),
+  isNfts: z.boolean(),
+});
+export type SupportedFeaturesForm = z.infer<typeof zSupportedFeaturesForm>;
+
 export const zGasFeeDetailsForm = z.object({
   gasAdjustment: z.string(),
   maxGasLimit: z.string(),
@@ -40,6 +47,7 @@ export const zGasFeeDetailsForm = z.object({
 });
 export type GasFeeDetailsForm = z.infer<typeof zGasFeeDetailsForm>;
 
-export const zAddNetworkManualForm =
-  zNetworkDetailsForm.merge(zGasFeeDetailsForm);
+export const zAddNetworkManualForm = zNetworkDetailsForm
+  .merge(zSupportedFeaturesForm)
+  .merge(zGasFeeDetailsForm);
 export type AddNetworkManualForm = z.infer<typeof zAddNetworkManualForm>;

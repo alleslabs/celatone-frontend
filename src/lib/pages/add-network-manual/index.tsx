@@ -27,13 +27,15 @@ export const AddNetworkManual = () => {
     mode: "all",
     reValidateMode: "onChange",
     defaultValues: {
-      networkName: "",
-      lcdUrl: "",
-      rpcUrl: "",
-      chainId: "",
-      registryChainName: "",
+      networkName: "Jennie",
+      lcdUrl: "https://celat.one",
+      rpcUrl: "https://celat.one",
+      chainId: "jennie-init",
+      registryChainName: "jennitinit",
       logoUri: "",
-      // Gas fee details
+      isWasm: false,
+      isMove: false,
+      isNfts: false,
       gasAdjustment: "",
       maxGasLimit: "",
       feeTokenDenom: "",
@@ -47,8 +49,17 @@ export const AddNetworkManual = () => {
     },
   });
 
-  const { networkName, lcdUrl, rpcUrl, chainId, registryChainName, logoUri } =
-    watch();
+  const {
+    networkName,
+    lcdUrl,
+    rpcUrl,
+    chainId,
+    registryChainName,
+    logoUri,
+    isWasm,
+    isMove,
+    isNfts,
+  } = watch();
 
   const handleSubmitForm = () => {
     //
@@ -63,7 +74,7 @@ export const AddNetworkManual = () => {
     if (currentStep === 0)
       return <NetworkDetails control={control} errors={errors} />;
 
-    if (currentStep === 1) return <SupportedFeatures />;
+    if (currentStep === 1) return <SupportedFeatures control={control} />;
 
     if (currentStep === 2) return <GasFeeDetails />;
 
@@ -84,6 +95,12 @@ export const AddNetworkManual = () => {
     return false;
   };
 
+  const handleActionLabel = () => {
+    if (currentStep === 1 && !isWasm && !isMove && !isNfts) return "Skip";
+
+    return "Next";
+  };
+
   return (
     <>
       <CelatoneSeo pageName="Add Minitias" />
@@ -95,15 +112,18 @@ export const AddNetworkManual = () => {
         cancelButton={{
           onClick: handlePrevious,
           variant: "outline-secondary",
+          isDisabled: currentStep === 0,
         }}
         actionButton={{
           onClick: handleNext,
           isDisabled: isFormDisabled(),
         }}
-        actionLabel="Next"
+        actionLabel={handleActionLabel()}
         helperText="The added custom Minitia on Initiascan will be stored locally on your device."
-        backgroundColor="background.main"
-        borderColor="gray.700"
+        sx={{
+          backgroundColor: "background.main",
+          borderColor: "gray.700",
+        }}
       />
     </>
   );
