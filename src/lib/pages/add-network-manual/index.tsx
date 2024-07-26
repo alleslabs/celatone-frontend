@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import ActionPageContainer from "lib/components/ActionPageContainer";
-import { CustomNetworkFooterCta } from "lib/components/custom-network";
+import { FooterCta } from "lib/components/layouts";
 import { CelatoneSeo } from "lib/components/Seo";
 
 import {
@@ -14,14 +14,14 @@ import {
 } from "./components";
 import GasFeeDetails from "./components/GasFeeDetails";
 import { useNetworkStepper } from "./hooks/useNetworkStepper";
-import { zAddNetworkManualForm } from "./types";
+import { zAddNetworkManualForm, zNetworkDetailsForm } from "./types";
 
 export const AddNetworkManual = () => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-    // getFieldState,
+    watch,
   } = useForm({
     resolver: zodResolver(zAddNetworkManualForm),
     mode: "all",
@@ -47,6 +47,9 @@ export const AddNetworkManual = () => {
     },
   });
 
+  const { networkName, lcdUrl, rpcUrl, chainId, registryChainName, logoUri } =
+    watch();
+
   const handleSubmitForm = () => {
     //
   };
@@ -67,29 +70,19 @@ export const AddNetworkManual = () => {
     return <WalletRegistry />;
   };
 
-  // const validateFieldState = useCallback(
-  //   (shape: string[]): boolean => {
-  //     let isFieldValid = true;
+  const isFormDisabled = () => {
+    if (currentStep === 0)
+      return !zNetworkDetailsForm.safeParse({
+        networkName,
+        lcdUrl,
+        rpcUrl,
+        chainId,
+        registryChainName,
+        logoUri,
+      }).success;
 
-  //     shape.forEach((key) => {
-  //       const fieldState = getFieldState(key as keyof AddNetworkManualForm);
-  //       const { invalid, isDirty } = fieldState;
-
-  //       if (invalid || !isDirty) isFieldValid = false;
-  //     });
-
-  //     return isFieldValid;
-  //   },
-  //   [getFieldState]
-  // );
-
-  // const isFormDisabled = useMemo(() => {
-  //   if (currentStep === 0) {
-  //     return !validateFieldState(Object.keys(zNetworkDetailsForm.shape));
-  //   }
-
-  //   return false;
-  // }, [validateFieldState, currentStep]);
+    return false;
+  };
 
   return (
     <>
@@ -98,11 +91,19 @@ export const AddNetworkManual = () => {
         <AddNetworkStepper currentStep={currentStep} />
       </Flex>
       <ActionPageContainer width={640}>{renderFormUI()}</ActionPageContainer>
-      <CustomNetworkFooterCta
-        leftButtonLabel="Previous"
-        leftButtonAction={handlePrevious}
-        rightButtonLabel="Next"
-        rightButtonAction={handleNext}
+      <FooterCta
+        cancelButton={{
+          onClick: handlePrevious,
+          variant: "outline-secondary",
+        }}
+        actionButton={{
+          onClick: handleNext,
+          isDisabled: isFormDisabled(),
+        }}
+        actionLabel="Next"
+        helperText="The added custom Minitia on Initiascan will be stored locally on your device."
+        backgroundColor="background.main"
+        borderColor="gray.700"
       />
     </>
   );

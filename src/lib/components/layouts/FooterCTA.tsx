@@ -1,5 +1,5 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
+import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
 
 interface FooterCTAProps {
   loading?: boolean;
@@ -7,19 +7,29 @@ interface FooterCTAProps {
   cancelLabel?: string;
   actionButton: ButtonProps;
   actionLabel?: string;
+  helperText?: string;
+  backgroundColor?: string;
+  borderColor?: string;
 }
 
-export const FooterCTA = ({
+export const FooterCta = ({
   loading = false,
   cancelButton,
   cancelLabel = "Previous",
   actionButton,
   actionLabel = "Submit",
+  helperText,
+  backgroundColor,
+  borderColor,
 }: FooterCTAProps) => (
-  <Box
+  <Flex
+    direction="column"
+    gap={2}
     w="full"
-    bg="gray.900"
-    h="70px"
+    bg={backgroundColor ?? "gray.900"}
+    borderTop="1px solid"
+    borderColor={borderColor ?? "gray.900"}
+    py={4}
     bottom="0"
     position="sticky"
     zIndex={2}
@@ -33,5 +43,10 @@ export const FooterCTA = ({
         {loading ? <Spinner size="md" variant="light" /> : actionLabel}
       </Button>
     </Flex>
-  </Box>
+    {helperText && (
+      <Text variant="body2" color="text.dark" textAlign="center">
+        {helperText}
+      </Text>
+    )}
+  </Flex>
 );

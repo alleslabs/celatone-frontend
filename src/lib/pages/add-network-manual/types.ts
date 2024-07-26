@@ -1,5 +1,7 @@
 import { z, ZodIssueCode } from "zod";
 
+const pleaseEnterAValidUrl = "Please enter a valid URL";
+
 export const zNetworkDetailsForm = z.object({
   networkName: z.string().superRefine(
     (val, ctx) =>
@@ -9,15 +11,18 @@ export const zNetworkDetailsForm = z.object({
         message: `Minitia Name is too long. (${val.length}/50)`,
       })
   ),
-  lcdUrl: z.string().url({ message: "Please enter a valid URL" }),
-  rpcUrl: z.string().url({ message: "Please enter a valid URL" }),
+  lcdUrl: z.string().url({ message: pleaseEnterAValidUrl }),
+  rpcUrl: z.string().url({ message: pleaseEnterAValidUrl }),
   chainId: z.string().regex(/^[a-z-]+$/, {
     message: "Enter alphabet (a-z) and dash (-) only",
   }),
   registryChainName: z.string().regex(/^[a-z-]+$/, {
     message: "Enter alphabet (a-z) and dash (-) only",
   }),
-  logoUri: z.string().min(0).url(),
+  logoUri: z.union([
+    z.string().url({ message: "Please enter a valid URL" }),
+    z.literal(""),
+  ]),
 });
 export type NetworkDetailsForm = z.infer<typeof zNetworkDetailsForm>;
 
