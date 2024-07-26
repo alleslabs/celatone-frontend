@@ -63,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1049](https://github.com/alleslabs/celatone-frontend/pull/1049) Change nft image ratio from conver to contain
 - [#1044](https://github.com/alleslabs/celatone-frontend/pull/1044) Fix incorrect formatted value in attached funds
 - [#1042](https://github.com/alleslabs/celatone-frontend/pull/1042) Fix bugbash for sequencer tier release
 - [#1029](https://github.com/alleslabs/celatone-frontend/pull/1029) Fix default wasm permission to permissionless
