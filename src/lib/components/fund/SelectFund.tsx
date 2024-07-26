@@ -119,7 +119,7 @@ export const SelectFund = ({
         selectedAssets[idx]
       );
       const isSelected = balanceMap?.get(selectedAssets[idx]);
-      const overBalance = Number(assetsSelect[idx].amount) > Number(raw);
+      const overBalance = Number(assetsSelect[idx].amount) > raw;
 
       return {
         helperText: isSelected && (
