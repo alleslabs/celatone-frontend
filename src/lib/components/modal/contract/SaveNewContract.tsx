@@ -89,6 +89,7 @@ export function SaveNewContractModal({
   };
 
   const { refetch } = useContractData(contractAddressState as BechAddr32, {
+    enabled: false,
     onSuccess: (data) => {
       const contractLocalInfo = getContractLocalInfo(contractAddressState);
       reset({

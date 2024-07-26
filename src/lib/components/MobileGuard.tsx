@@ -1,7 +1,8 @@
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 
-import { useCelatoneApp, useMobile } from "lib/app-provider";
+import { SUPPORTED_CHAIN_IDS } from "env";
+import { useMobile } from "lib/app-provider";
 
 import { NoMobile } from "./modal";
 
@@ -11,11 +12,10 @@ interface MobileGuardProps {
 export const MobileGuard = ({ children }: MobileGuardProps) => {
   const router = useRouter();
   const isMobile = useMobile();
-  const { currentChainId } = useCelatoneApp();
 
   const pathName = router.asPath;
   const isResponsive =
-    pathName === `/${currentChainId}` ||
+    SUPPORTED_CHAIN_IDS.includes(pathName.slice(1)) ||
     pathName.includes(`/accounts`) ||
     pathName.includes(`/txs`) ||
     pathName.includes(`/blocks`) ||

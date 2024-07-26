@@ -57,6 +57,8 @@ export interface ChainConfig {
   chain: string;
   registryChainName: string;
   prettyName: string;
+  logoUrl?: string;
+  networkType: "mainnet" | "testnet";
   lcd: string;
   rpc: string;
   indexer: string;
@@ -81,9 +83,17 @@ export interface ChainConfig {
   extra: {
     disableAnyOfAddresses?: boolean;
     isValidatorExternalLink?: Nullable<string>;
+    layer?: "1" | "2";
   };
 }
 
 export interface ChainConfigs {
   [chainId: string]: ChainConfig;
 }
+
+export const TierMap: Record<ChainConfig["tier"], number> = {
+  lite: 0,
+  mesa: 1,
+  sequencer: 2,
+  full: 3,
+};

@@ -9,6 +9,7 @@ import { TierSwitcher } from "lib/components/TierSwitcher";
 import { InvalidBlock } from "./components/InvalidBlock";
 import { BlockDetailsFull } from "./full";
 import { BlockDetailsLite } from "./lite";
+import { BlockDetailsSequencer } from "./sequencer";
 import { zBlockDetailQueryParams } from "./types";
 
 interface BlockDetailsBodyProps {
@@ -20,6 +21,7 @@ const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => (
     <CelatoneSeo pageName={`Block #${height.toString()}`} />
     <TierSwitcher
       full={<BlockDetailsFull height={height} />}
+      sequencer={<BlockDetailsSequencer height={height} />}
       lite={<BlockDetailsLite height={height} />}
     />
   </>

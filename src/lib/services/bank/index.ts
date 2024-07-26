@@ -9,11 +9,11 @@ import type { BalanceInfos } from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useLcdEndpoint,
-  useTierConfig,
 } from "lib/app-provider";
 import { big } from "lib/types";
-import type { BechAddr, TokenWithValue, USD } from "lib/types";
+import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import {
   coinToTokenWithValue,
   compareTokenWithValues,
@@ -24,19 +24,27 @@ import {
 import { getBalances } from "./api";
 import { getBalancesLcd } from "./lcd";
 
-export const useBalances = (address: BechAddr): UseQueryResult<Coin[]> => {
-  const { isFullTier } = useTierConfig();
+export const useBalances = (
+  address: Option<BechAddr>,
+  enabled = true
+): UseQueryResult<Coin[]> => {
+  const {
+    chainConfig: { chain },
+  } = useCelatoneApp();
+  const isSei = chain === "sei";
   const apiEndpoint = useBaseApiRoute("accounts");
   const lcdEndpoint = useLcdEndpoint();
-  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
+  const endpoint = isSei ? apiEndpoint : lcdEndpoint;
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isFullTier],
-    async () =>
-      isFullTier
+    [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isSei],
+    async () => {
+      if (!address) throw new Error("address is undefined (useBalances)");
+      return isSei
         ? getBalances(endpoint, address)
-        : getBalancesLcd(endpoint, address),
-    { retry: 1, refetchOnWindowFocus: false }
+        : getBalancesLcd(endpoint, address);
+    },
+    { retry: 1, refetchOnWindowFocus: false, enabled }
   );
 };
 

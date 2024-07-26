@@ -4,8 +4,8 @@ import { useCallback } from "react";
 
 import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import { getTxsByPoolIdPagination, getTxsCountByPoolId } from "lib/query";
-import { createQueryFnWithTimeout } from "lib/query-utils";
 import { usePoolTxExpression } from "lib/services/expression";
+import { createQueryFnWithTimeout } from "lib/services/utils";
 import type {
   BechAddr,
   Message,

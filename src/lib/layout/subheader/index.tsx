@@ -14,12 +14,16 @@ import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 
-import { getSubHeaderFull, getSubHeaderLite } from "./utils";
+import {
+  getSubHeaderFull,
+  getSubHeaderLite,
+  getSubHeaderSequencer,
+} from "./utils";
 
 const ACTIVE_COLOR = "primary.light";
 
 const SubHeader = () => {
-  const { isFullTier } = useTierConfig();
+  const { tier } = useTierConfig();
   const govConfig = useGovConfig({ shouldRedirect: false });
   const wasmConfig = useWasmConfig({ shouldRedirect: false });
   const moveConfig = useMoveConfig({ shouldRedirect: false });
@@ -28,26 +32,31 @@ const SubHeader = () => {
 
   const isCurrentPage = useIsCurrentPage();
 
-  const subHeaderMenu = useMemo(
-    () =>
-      isFullTier
-        ? getSubHeaderFull(
-            govConfig.enabled,
-            wasmConfig.enabled,
-            moveConfig.enabled,
-            nftConfig.enabled,
-            poolConfig.enabled
-          )
-        : getSubHeaderLite(govConfig.enabled, wasmConfig.enabled),
-    [
-      isFullTier,
-      govConfig.enabled,
-      wasmConfig.enabled,
-      moveConfig.enabled,
-      nftConfig.enabled,
-      poolConfig.enabled,
-    ]
-  );
+  const subHeaderMenu = useMemo(() => {
+    switch (tier) {
+      case "full":
+        return getSubHeaderFull(
+          govConfig.enabled,
+          wasmConfig.enabled,
+          moveConfig.enabled,
+          nftConfig.enabled,
+          poolConfig.enabled
+        );
+      case "sequencer":
+      case "mesa":
+        return getSubHeaderSequencer(govConfig.enabled, wasmConfig.enabled);
+      case "lite":
+      default:
+        return getSubHeaderLite(govConfig.enabled, wasmConfig.enabled);
+    }
+  }, [
+    tier,
+    govConfig.enabled,
+    wasmConfig.enabled,
+    moveConfig.enabled,
+    nftConfig.enabled,
+    poolConfig.enabled,
+  ]);
 
   return (
     <Flex px={6} h="full">

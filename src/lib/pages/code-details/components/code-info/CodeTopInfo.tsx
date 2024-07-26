@@ -1,6 +1,6 @@
 import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 
-import { CTASection } from "../CTASection";
+import { CtaSection } from "../CtaSection";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
@@ -14,10 +14,10 @@ import type { Nullable, ProjectInfo, PublicCodeInfo } from "lib/types";
 import { getCw2Info } from "lib/utils";
 
 interface CodeTopInfoProps {
+  codeId: number;
   code: Code;
   projectInfo: Nullable<ProjectInfo>;
   publicInfo: Nullable<PublicCodeInfo>;
-  codeId: number;
 }
 
 export const CodeTopInfo = ({
@@ -26,15 +26,13 @@ export const CodeTopInfo = ({
   projectInfo,
   publicInfo,
 }: CodeTopInfoProps) => {
+  const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
 
   const { getCodeLocalInfo } = useCodeStore();
   const localCodeInfo = getCodeLocalInfo(codeId);
 
-  const isMobile = useMobile();
-
   const cw2Info = getCw2Info(code.cw2Contract, code.cw2Version);
-
   return (
     <>
       <Breadcrumb
@@ -132,7 +130,7 @@ export const CodeTopInfo = ({
         </Flex>
         <Flex direction="column" gap={1}>
           {!isMobile && (
-            <CTASection
+            <CtaSection
               id={codeId}
               uploader={localCodeInfo?.uploader ?? code.uploader}
               name={localCodeInfo?.name}

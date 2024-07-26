@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import type { MenuInfo } from "../navbar/types";
 import type { IconKeys } from "lib/components/icon";
 
@@ -43,8 +44,79 @@ export const getNavDrawerLite = (
         ? [
             {
               name: "0x1 Page",
-              slug: "/account/0x1",
+              slug: "/accounts/0x1",
               icon: "hex" as IconKeys,
+            },
+            {
+              name: "View Module",
+              slug: "/interact",
+              icon: "query" as IconKeys,
+            },
+          ]
+        : []),
+    ],
+  },
+];
+
+export const getNavDrawerSequencer = (
+  isGov: boolean,
+  isWasm: boolean,
+  isMove: boolean
+): MenuInfo[] => [
+  {
+    category: "Overview",
+    slug: "overview",
+    submenu: [
+      { name: "Overview", slug: "/", icon: "home" as IconKeys },
+      {
+        name: "Transactions",
+        slug: "/txs",
+        icon: "file" as IconKeys,
+      },
+      {
+        name: "Blocks",
+        slug: "/blocks",
+        icon: "block" as IconKeys,
+      },
+      ...(isGov
+        ? [
+            {
+              name: "Validators",
+              slug: "/validators",
+              icon: "validator" as IconKeys,
+            },
+            {
+              name: "Proposals",
+              slug: "/proposals",
+              icon: "proposal" as IconKeys,
+            },
+          ]
+        : []),
+      ...(isWasm
+        ? [
+            {
+              name: "Codes",
+              slug: "/codes",
+              icon: "code" as IconKeys,
+            },
+            {
+              name: "Query",
+              slug: "/interact-contract",
+              icon: "query" as IconKeys,
+            },
+          ]
+        : []),
+      ...(isMove
+        ? [
+            {
+              name: "0x1 Page",
+              slug: "/accounts/0x1",
+              icon: "hex" as IconKeys,
+            },
+            {
+              name: "View Module",
+              slug: "/interact",
+              icon: "query" as IconKeys,
             },
           ]
         : []),
@@ -115,7 +187,7 @@ export const getNavDrawerFull = (
             },
             {
               name: "0x1 Page",
-              slug: "/account/0x1",
+              slug: "/accounts/0x1",
               icon: "hex" as IconKeys,
             },
             {
