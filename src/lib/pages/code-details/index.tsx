@@ -22,6 +22,7 @@ import {
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import { VerifyPublishCodeModal } from "lib/components/modal";
+import { CodeVerificationStatus } from "lib/components/modal/code-verification-status";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
@@ -129,6 +130,8 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         <TabPanels>
           <TabPanel p={0}>
             <Flex>
+              {/* TODO remove */}
+              <CodeVerificationStatus />
               <Button onClick={onOpen}>Verfiy Code</Button>
             </Flex>
             <CodeInfoSection
