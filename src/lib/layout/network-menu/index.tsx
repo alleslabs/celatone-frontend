@@ -44,7 +44,12 @@ export const NetworkMenu = observer(() => {
           onOpen();
         }}
       />
-      <Drawer isOpen={isOpen} onClose={onClose} placement="right">
+      <Drawer
+        isOpen={isOpen}
+        onClose={onClose}
+        placement="right"
+        autoFocus={false}
+      >
         <DrawerOverlay />
         <DrawerContent
           h="100%"
