@@ -1,6 +1,7 @@
 import { Stack } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
+import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
 import { EmptyState } from "lib/components/state";
@@ -14,6 +15,7 @@ interface NftsByCollectionSequencerProps {
 export const NftsByCollectionSequencer = ({
   nfts,
 }: NftsByCollectionSequencerProps) => {
+  const isMobile = useMobile();
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
 
@@ -31,7 +33,7 @@ export const NftsByCollectionSequencer = ({
       <InputWithIcon
         placeholder="Search with Token ID"
         value={searchKeyword}
-        autoFocus
+        autoFocus={!isMobile}
         onChange={(e) => setSearchKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}
         amptrackSection="nft-account-detail-tokenid-search"

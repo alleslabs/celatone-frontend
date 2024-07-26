@@ -40,6 +40,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1002](https://github.com/alleslabs/celatone-frontend/pull/1002) Add contract verification modal
+
+### Improvements
+
+### Bug fixes
+
+## v1.7.2
+
+### Features
+
+- [#1048](https://github.com/alleslabs/celatone-frontend/pull/1048) Support getCollectionByCollectionAddress in Lite tier
 - [#1037](https://github.com/alleslabs/celatone-frontend/pull/1037) Add Sequencer for Collection details
 - [#997](https://github.com/alleslabs/celatone-frontend/pull/997) Redesign asset selector
 - [#1033](https://github.com/alleslabs/celatone-frontend/pull/1033) Add Sequencer for NFT details
@@ -64,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1049](https://github.com/alleslabs/celatone-frontend/pull/1049) Change nft image ratio from cover to contain
 - [#1044](https://github.com/alleslabs/celatone-frontend/pull/1044) Fix incorrect formatted value in attached funds
 - [#1042](https://github.com/alleslabs/celatone-frontend/pull/1042) Fix bugbash for sequencer tier release
 - [#1029](https://github.com/alleslabs/celatone-frontend/pull/1029) Fix default wasm permission to permissionless
