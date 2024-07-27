@@ -7,20 +7,20 @@ const steps = [
   {
     label: "Getting Source Code",
     timestamp: "Apr 19, 2024, 14:58:34 PM (GMT+7)",
-    status: "Failed",
+    state: "Failed",
     errorMsg: "Wasm file name is invalid",
   },
   {
     label: "Compiling Source Code",
     timestamp: "Apr 19, 2024, 14:58:34 PM (GMT+7)",
-    status: "Completed",
+    state: "Completed",
   },
-  { label: "Comparing The Code Hash", status: "In Progress" },
-  { label: "Verification Completed", status: "Pending" },
+  { label: "Comparing The Code Hash", state: "In Progress" },
+  { label: "Verification Completed", state: "Pending" },
 ];
 
-const ProcessIcon = ({ status }: { status: string }) => {
-  switch (status) {
+const ProcessIcon = ({ state }: { state: string }) => {
+  switch (state) {
     case "Failed":
       return <CustomIcon name="close-circle-solid" color="error.main" />;
     case "Completed":
@@ -56,6 +56,7 @@ const ProcessIcon = ({ status }: { status: string }) => {
       );
   }
 };
+
 export const CodeVerificationProcess = () => {
   return (
     <Flex direction="column">
@@ -67,7 +68,7 @@ export const CodeVerificationProcess = () => {
           <Flex key={step.label} justifyContent="space-between">
             <Flex alignItems={step.errorMsg ? "start" : "center"} gap={2}>
               <Flex position="relative">
-                <ProcessIcon status={step.status} />
+                <ProcessIcon state={step.state} />
                 {index < steps.length - 1 && (
                   <Box
                     position="absolute"
@@ -97,9 +98,9 @@ export const CodeVerificationProcess = () => {
                   {step.timestamp}
                 </Text>
               )}
-              {step.status === "In Progress" && (
+              {step.state === "In Progress" && (
                 <Text variant="body2" color="success.main">
-                  {step.status}
+                  {step.state}
                 </Text>
               )}
             </Flex>

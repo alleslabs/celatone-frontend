@@ -11,6 +11,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import type { ReactNode } from "react";
 
 import { CustomIcon } from "../../icon";
 
@@ -18,11 +19,23 @@ import { CodeVerificationAlert } from "./CodeVerificationAlert";
 import { CodeVerificationInfo } from "./CodeVerificationInfo";
 import { CodeVerificationProcess } from "./CodeVerificationProcess";
 
-export const CodeVerificationStatus = () => {
+interface CodeVerificationStatusProps {
+  triggerElement: ReactNode;
+}
+export const CodeVerificationStatus = ({
+  triggerElement,
+}: CodeVerificationStatusProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <>
-      <Button onClick={onOpen}>test</Button>
+      <Flex
+        onClick={(e) => {
+          e.stopPropagation();
+          onOpen();
+        }}
+      >
+        {triggerElement}
+      </Flex>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -39,7 +52,7 @@ export const CodeVerificationStatus = () => {
             <Flex w="full" direction="row" alignItems="center" gap={2}>
               <CustomIcon
                 name="verification-solid"
-                boxSize={8}
+                boxSize={6}
                 color="gray.600"
               />
               <Heading variant="h5" as="h5">

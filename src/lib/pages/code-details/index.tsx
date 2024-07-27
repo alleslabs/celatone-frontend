@@ -5,7 +5,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -28,6 +27,7 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import { VerificationStatus } from "lib/components/VerificationBadge";
 import { useSchemaStore } from "lib/providers/store";
 import { useCodeData } from "lib/services/wasm/code";
 
@@ -38,6 +38,7 @@ import {
 } from "./components/code-info";
 import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
 import { CodeSchemaSection } from "./components/json-schema/CodeSchemaSection";
+import { CodeVerificationSection } from "./components/verification-info/CodeVerificationSection";
 import { useCodeDataLcd } from "./data";
 import { TabIndex, zCodeDetailsQueryParams } from "./types";
 
@@ -52,7 +53,6 @@ const InvalidCode = () => <InvalidState title="Code does not exist" />;
 
 const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const isMobile = useMobile();
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const { isFullTier } = useTierConfig();
 
   const navigate = useInternalNavigate();
@@ -89,12 +89,6 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
 
   return (
     <>
-      <VerifyPublishCodeModal
-        isOpen={isOpen}
-        onClose={onClose}
-        codeId={codeId.toString()}
-        codeHash={code.hash}
-      />
       <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code Detail"} />
       <CodeTopInfo
         code={code}
@@ -129,17 +123,48 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         )}
         <TabPanels>
           <TabPanel p={0}>
-            <Flex>
-              {/* TODO remove */}
-              <CodeVerificationStatus />
-              <Button onClick={onOpen}>Verfiy Code</Button>
-            </Flex>
             <CodeInfoSection
               code={code}
               chainId={currentChainId}
               attached={!!jsonSchema}
               toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
             />
+            <Flex direction="column" alignItems="flex-start" />
+            <Flex>
+              <CodeVerificationStatus
+                triggerElement={<Button>View Verification Details</Button>}
+              />
+              <VerifyPublishCodeModal
+                codeId={codeId.toString()}
+                codeHash={code.hash}
+                triggerElement={
+                  <Button variant="outline-primary" size="sm">
+                    Verify
+                  </Button>
+                }
+              />
+            </Flex>
+            <CodeVerificationSection
+              codeId={codeId.toString()}
+              codeHash={code.hash}
+              status={VerificationStatus.NOT_VERIFIED}
+            />
+            <CodeVerificationSection
+              codeId={codeId.toString()}
+              codeHash={code.hash}
+              status={VerificationStatus.IN_PROGRESS}
+            />
+            <CodeVerificationSection
+              codeId={codeId.toString()}
+              codeHash={code.hash}
+              status={VerificationStatus.VERIFIED}
+            />
+            <CodeVerificationSection
+              codeId={codeId.toString()}
+              codeHash={code.hash}
+              status={VerificationStatus.INDIRECTLY_VERIFIED}
+            />
+
             <TierSwitcher
               full={<CodeContractsTableFull codeId={codeId} />}
               lite={<CodeContractsTableLite codeId={codeId} />}

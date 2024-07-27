@@ -6,7 +6,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -59,7 +58,6 @@ const ContractDetailsBody = observer(
     const isMobile = useMobile();
     const navigate = useInternalNavigate();
     const gov = useGovConfig({ shouldRedirect: false });
-    const { isOpen, onClose, onOpen } = useDisclosure();
 
     // ------------------------------------------//
     // ------------------QUERIES-----------------//
@@ -110,13 +108,6 @@ const ContractDetailsBody = observer(
 
     return (
       <>
-        <VerifyPublishCodeModal
-          isOpen={isOpen}
-          onClose={onClose}
-          codeId={contract.codeId.toString()}
-          codeHash={contract.codeHash}
-          contractAddress={contractAddress}
-        />
         <CelatoneSeo pageName={`Contract – ${truncate(contractAddress)}`} />
         <ContractTop
           contractAddress={contractAddress}
@@ -172,9 +163,12 @@ const ContractDetailsBody = observer(
                       contractLocalInfo={contractLocalInfo}
                     />
                   )}
-                  <Flex>
-                    <Button onClick={onOpen}>Verfiy Code</Button>
-                  </Flex>
+                  <VerifyPublishCodeModal
+                    codeId={contract.codeId.toString()}
+                    codeHash={contract.codeHash}
+                    contractAddress={contractAddress}
+                    triggerElement={<Button>Verfiy Code</Button>}
+                  />
                   <CommandSection
                     contractAddress={contractAddress}
                     codeHash={contract.codeHash}

@@ -1,4 +1,4 @@
-import type { TextProps } from "@chakra-ui/react";
+import type { FlexProps, TextProps } from "@chakra-ui/react";
 import { Divider, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
@@ -29,11 +29,16 @@ const baseTextStyle: TextProps = {
   variant: "body2",
 };
 
+const baseContainerStyle: FlexProps = {
+  gap: 2,
+  alignItems: "center",
+};
+
 export const CodeVerificationInfo = () => {
   return (
     <>
       <Flex gap={6}>
-        <Flex gap={2} alignItems="center" w={32} minW={32}>
+        <Flex {...baseContainerStyle} w={32} minW={32}>
           <Text {...baseTextStyle}>Code ID:</Text>
           <ExplorerLink
             type="code_id"
@@ -42,7 +47,7 @@ export const CodeVerificationInfo = () => {
             showCopyOnHover
           />
         </Flex>
-        <Flex gap={2} alignItems="center">
+        <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Code Hash:</Text>
           <ExplorerLink
             type="code_id"
@@ -52,9 +57,9 @@ export const CodeVerificationInfo = () => {
           />
         </Flex>
       </Flex>
-      <Divider borderColor="gray.700" />
+      <Divider borderColor="gray.700" />{" "}
       <Flex direction="column" gap={1}>
-        <Flex gap={2} alignItems="center">
+        <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Source Code:</Text>
           <Link
             href={MOCKUP_DATA.verificationInfo.gitUrl}
@@ -88,19 +93,19 @@ export const CodeVerificationInfo = () => {
             </Flex>
           </Link>
         </Flex>
-        <Flex gap={2} alignItems="center">
+        <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Wasm File Name:</Text>
           <Text color="text.main" variant="body2">
             {MOCKUP_DATA.verificationInfo.fileName}
           </Text>
         </Flex>
-        <Flex gap={2} alignItems="center">
+        <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Compiler Version:</Text>
           <Text color="text.main" variant="body2">
             {MOCKUP_DATA.verificationInfo.compilerVersion}
           </Text>
         </Flex>
-        <Flex gap={2} alignItems="center">
+        <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Submitted on:</Text>
           <Text color="text.main" variant="body2">
             {formatUTC(

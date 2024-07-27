@@ -116,7 +116,7 @@ export const VerifyPublishCode = ({
     <>
       <ModalHeader pb={0}>
         <Flex w="full" direction="row" alignItems="center" gap={2}>
-          <CustomIcon name="verification-solid" boxSize={8} color="gray.600" />
+          <CustomIcon name="verification-solid" boxSize={6} color="gray.600" />
           <Heading variant="h5" as="h5">
             Verify & Publish Source Code
           </Heading>
