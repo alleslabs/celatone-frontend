@@ -3,20 +3,20 @@ import { Grid } from "@chakra-ui/react";
 
 import { TableHeader } from "../tableComponents";
 
-import type { CTAInfo } from "./ContractsTableRowCTA";
+import type { CtaInfo } from "./ContractsTableRowCta";
 
 export const ContractsTableHeader = ({
   templateColumns,
   showTag,
   showLastUpdate,
   isReadOnly,
-  withCTA,
+  withCta,
 }: {
   templateColumns: GridProps["templateColumns"];
   showTag: boolean;
   showLastUpdate: boolean;
   isReadOnly: boolean;
-  withCTA?: CTAInfo;
+  withCta?: CtaInfo;
 }) => (
   <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Contract Address</TableHeader>
@@ -27,7 +27,7 @@ export const ContractsTableHeader = ({
       <>
         {showLastUpdate && (
           <>
-            {withCTA ? <TableHeader /> : <TableHeader>Timestamp</TableHeader>}
+            {withCta ? <TableHeader /> : <TableHeader>Timestamp</TableHeader>}
           </>
         )}
         <TableHeader />

@@ -11,7 +11,7 @@ import { Loading } from "lib/components/Loading";
 import { NftCard } from "lib/components/nft";
 import { EmptyState } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
-import type { Nft } from "lib/services/nft";
+import type { Nft } from "lib/services/types";
 import type { Option } from "lib/types";
 
 interface CollectionSuppliesOverviewProps {

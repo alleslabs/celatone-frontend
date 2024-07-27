@@ -1,5 +1,3 @@
-export * from "./CardInfo";
-export * from "./DevShortcut";
-export * from "./TopDecorations";
+export * from "./HomeTop";
 export * from "./QuickMenuLite";
 export * from "./QuickMenuMobileLite";

@@ -547,6 +547,72 @@ export const initiatestnet: Chain[] = [
       svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/civitia/images/civitia.svg",
     },
   },
+  {
+    $schema: CHAIN_SCHEMA,
+    chain_name: "milkywaytestnet",
+    chain_id: "glados-1",
+    website: "https://miilkyway.zone",
+    pretty_name: "MilkyWay",
+    status: "live",
+    network_type: "testnet",
+    bech32_prefix: "init",
+    daemon_name: "milkywayd",
+    node_home: "$HOME/.milkywayd",
+    key_algos: ["secp256k1"],
+    slip44: 118,
+    fees: {
+      fee_tokens: [
+        {
+          denom: "umilk",
+          fixed_min_gas_price: 0.15,
+          low_gas_price: 0.2,
+          average_gas_price: 0.3,
+          high_gas_price: 0.4,
+        },
+        {
+          denom:
+            "ibc/37A3FB4FED4CA04ED6D9E5DA36C6D27248645F0E22F585576A1488B8A89C5A50",
+          fixed_min_gas_price: 0.15,
+          low_gas_price: 0.2,
+          average_gas_price: 0.3,
+          high_gas_price: 0.4,
+        },
+      ],
+    },
+    staking: {
+      staking_tokens: [],
+    },
+    apis: {
+      rpc: [
+        {
+          address: "https://rpc.testnet.milkyway.zone",
+          provider: "MilkyWay Labs",
+        },
+      ],
+      rest: [
+        {
+          address: "https://lcd.testnet.milkyway.zone",
+          provider: "MilkyWay Labs",
+        },
+      ],
+    },
+    explorers: [
+      {
+        kind: "initia scan",
+        url: "https://scan.testnet.initia.xyz/glados-1",
+      },
+    ],
+    images: [
+      {
+        png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/MilkyWay.png",
+        svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/MilkyWay.svg",
+      },
+    ],
+    logo_URIs: {
+      png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/MilkyWay.png",
+      svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/MilkyWay.svg",
+    },
+  },
 ];
 
 const ASSETLIST_SCHEMA = "../assetlist.schema.json";
@@ -1258,6 +1324,97 @@ export const initiatestnetAssets: AssetList[] = [
         logo_URIs: {
           png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/civitia/images/INIT.png",
           svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/civitia/images/INIT.svg",
+        },
+      },
+    ],
+  },
+  {
+    $schema: ASSETLIST_SCHEMA,
+    chain_name: "milkywaytestnet",
+    assets: [
+      {
+        description: "The native token of MilkyWay",
+        denom_units: [
+          {
+            denom: "umilk",
+            exponent: 0,
+          },
+          {
+            denom: "MILK",
+            exponent: 6,
+          },
+        ],
+        base: "umilk",
+        display: "MILK",
+        name: "MilkyWay Native Token",
+        symbol: "MILK",
+        coingecko_id: "",
+        images: [
+          {
+            png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/MILK.png",
+            svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/MILK.svg",
+          },
+        ],
+        logo_URIs: {
+          png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/MILK.png",
+          svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/MILK.svg",
+        },
+      },
+      {
+        description: "The INIT Liquid Staking Token",
+        denom_units: [
+          {
+            denom: "milkuinit",
+            exponent: 0,
+          },
+          {
+            denom: "milkINIT",
+            exponent: 6,
+          },
+        ],
+        base: "milkuinit",
+        display: "milkINIT",
+        name: "INIT Liquid Staking Token",
+        symbol: "milkINIT",
+        coingecko_id: "",
+        images: [
+          {
+            png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/milkINIT.png",
+            svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/milkINIT.svg",
+          },
+        ],
+        logo_URIs: {
+          png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/milkINIT.png",
+          svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/milkyway/images/milkINIT.svg",
+        },
+      },
+      {
+        description: "The native token of Initia (IBC-Bridged)",
+        denom_units: [
+          {
+            denom:
+              "ibc/37A3FB4FED4CA04ED6D9E5DA36C6D27248645F0E22F585576A1488B8A89C5A50",
+            exponent: 0,
+          },
+          {
+            denom: "INIT",
+            exponent: 6,
+          },
+        ],
+        base: "ibc/37A3FB4FED4CA04ED6D9E5DA36C6D27248645F0E22F585576A1488B8A89C5A50",
+        display: "INIT",
+        name: "Initia Native Token (IBC)",
+        symbol: "INIT",
+        coingecko_id: "",
+        images: [
+          {
+            png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
+            svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
+          },
+        ],
+        logo_URIs: {
+          png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
+          svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
         },
       },
     ],

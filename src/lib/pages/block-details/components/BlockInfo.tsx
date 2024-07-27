@@ -12,7 +12,7 @@ interface BlockInfoProps {
 
 export const BlockInfo = ({ blockData }: BlockInfoProps) => {
   const { currentChainId } = useCelatoneApp();
-  const { isFullTier } = useTierConfig();
+  const { isLiteTier } = useTierConfig();
   return (
     <Box mb={12}>
       <Flex mb={6} justifyContent="space-between">
@@ -20,7 +20,7 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
           Block Info
         </Heading>
       </Flex>
-      {isFullTier ? (
+      {!isLiteTier ? (
         <Flex
           gap={{ base: 4, md: 12 }}
           direction={{ base: "column", md: "row" }}

@@ -4,7 +4,7 @@ interface TierSwitcherProps {
   full: React.ReactNode;
   sequencer?: React.ReactNode;
   mesa?: React.ReactNode;
-  lite: React.ReactNode;
+  lite?: React.ReactNode;
 }
 
 export const TierSwitcher = ({

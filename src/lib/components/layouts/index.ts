@@ -1,1 +1,1 @@
-export * from "./FooterCTA";
+export * from "./FooterCta";

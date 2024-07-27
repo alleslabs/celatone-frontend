@@ -18,7 +18,7 @@ export const useUploadAccessParamsLcd = () => {
   return useQuery(
     [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS_LCD, endpoint],
     () => getUploadAccessParamsLcd(endpoint),
-    { keepPreviousData: true, refetchOnWindowFocus: false }
+    { keepPreviousData: true, refetchOnWindowFocus: false, retry: false }
   );
 };
 

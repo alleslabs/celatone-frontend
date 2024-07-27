@@ -1,13 +1,11 @@
 import axios from "axios";
 
 import type {
-  AccountModulesResponse,
   DecodeModuleReturn,
   ModuleTableCountsResponse,
   ModuleVerificationInternal,
 } from "lib/services/types";
 import {
-  zAccountModulesResponse,
   zModuleHistoriesResponse,
   zModulePublishInfoResponse,
   zModuleRelatedProposalsResponse,
@@ -15,6 +13,7 @@ import {
   zModuleTableCountsResponse,
   zModuleTxsResponse,
   zModuleVerificationInternal,
+  zMoveViewJsonResponse,
 } from "lib/services/types";
 import type {
   AbiFormData,
@@ -31,14 +30,6 @@ import {
   parseWithError,
   serializeAbiData,
 } from "lib/utils";
-
-export const getModulesByAddress = async (
-  endpoint: string,
-  address: Addr
-): Promise<AccountModulesResponse> =>
-  axios
-    .get(`${endpoint}/${encodeURI(address)}/move/modules`)
-    .then(({ data }) => parseWithError(zAccountModulesResponse, data));
 
 export const getModuleVerificationStatus = async (
   endpoint: string,
@@ -190,3 +181,21 @@ export const getModuleRelatedProposals = async (
       }
     )
     .then(({ data }) => parseWithError(zModuleRelatedProposalsResponse, data));
+
+export const getMoveViewJson = async (
+  endpoint: string,
+  vmAddress: HexAddr,
+  moduleName: string,
+  functionName: string,
+  typeArgs: string[],
+  args: string[]
+) =>
+  axios
+    .post(`${endpoint}/initia/move/v1/view/json`, {
+      address: vmAddress,
+      module_name: moduleName,
+      function_name: functionName,
+      type_args: typeArgs,
+      args,
+    })
+    .then(({ data }) => parseWithError(zMoveViewJsonResponse, data));

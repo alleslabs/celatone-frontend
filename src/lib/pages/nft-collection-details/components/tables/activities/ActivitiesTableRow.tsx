@@ -3,7 +3,7 @@ import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
-import type { Activity } from "lib/services/nft/collection";
+import type { Activity } from "lib/services/types";
 import type { HexAddr32 } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -18,6 +18,41 @@ export const getEventMessage = (
   if (isNftTransfer) return "Transferred";
   if (isCollectionCreate) return "Collection created";
   return "-";
+};
+
+const TokenIdRender = ({
+  tokenId,
+  nftAddress,
+  collectionAddress,
+}: {
+  tokenId: Activity["tokenId"];
+  nftAddress: Activity["nftAddress"];
+  collectionAddress: HexAddr32;
+}) => {
+  if (!tokenId) return <Text>-</Text>;
+
+  if (!nftAddress) {
+    return (
+      <Text color="text.dark" wordBreak="break-word">
+        {tokenId}
+      </Text>
+    );
+  }
+
+  return (
+    <AppLink href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}>
+      <Text
+        color="secondary.main"
+        _hover={{
+          textDecoration: "underline",
+          color: "secondary.light",
+        }}
+        wordBreak="break-word"
+      >
+        {tokenId}
+      </Text>
+    </AppLink>
+  );
 };
 
 interface ActivitiesTableRowProps {
@@ -59,24 +94,11 @@ export const ActivitiesTableRow = ({
           />
         </TableRow>
         <TableRow>
-          {tokenId ? (
-            <AppLink
-              href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
-            >
-              <Text
-                color="secondary.main"
-                _hover={{
-                  textDecoration: "underline",
-                  color: "secondary.light",
-                }}
-                wordBreak="break-word"
-              >
-                {tokenId}
-              </Text>
-            </AppLink>
-          ) : (
-            "-"
-          )}
+          <TokenIdRender
+            tokenId={tokenId}
+            nftAddress={nftAddress}
+            collectionAddress={collectionAddress}
+          />
         </TableRow>
         <TableRow>
           <Text>

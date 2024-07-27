@@ -4,7 +4,7 @@ import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
-import type { Collection } from "lib/services/nft";
+import type { Collection } from "lib/services/types";
 
 interface CollectionCardProps {
   collectionInfo: Collection;
@@ -31,7 +31,8 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
           minW={{ base: 28, md: 40 }}
           w={{ base: 28, md: 40 }}
           h={{ base: 28, md: 40 }}
-          objectFit="cover"
+          objectFit="contain"
+          background="gray.900"
           backgroundPosition="center"
           borderRadius="8px"
           src={metadata?.image}

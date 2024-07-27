@@ -48,7 +48,15 @@ export const SingleMsg = ({
             token={token}
             // TODO: add `ampCopierSection` later
           />
-          {index < tokens.length - 2 ? <Text>,</Text> : <Text ml={1}>and</Text>}
+          {tokens.length > 1 && (
+            <>
+              {index < tokens.length - 2 ? (
+                <Text>,</Text>
+              ) : (
+                <Text ml={1}>and</Text>
+              )}
+            </>
+          )}
         </Flex>
       ))}
       {/* Tags  */}

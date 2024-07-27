@@ -4,14 +4,14 @@ import { AppLink } from "../AppLink";
 import { AmpEvent, track } from "lib/amplitude";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
-import type { HexAddr32, Option } from "lib/types";
+import type { HexAddr32, Nullable } from "lib/types";
 
 interface NftCardProps {
   uri: string;
   tokenId: string;
-  collectionName: string;
+  collectionName: Nullable<string>;
   collectionAddress: HexAddr32;
-  nftAddress: Option<HexAddr32>;
+  nftAddress: Nullable<HexAddr32>;
   showCollection?: boolean;
 }
 
@@ -38,7 +38,8 @@ export const NftCard = ({
             left={0}
             width="100%"
             height="100%"
-            objectFit="cover"
+            objectFit="contain"
+            background="gray.900"
             backgroundPosition="center"
             borderRadius="8px"
             src={metadata?.image}

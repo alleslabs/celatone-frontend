@@ -30,14 +30,14 @@ const NavInfo = ({ submenu, isCurrentPage }: NavInfoProps) => (
     p={2}
     cursor={submenu.isDisable ? undefined : "pointer"}
     _hover={
-      submenu.isDisable ? undefined : { bg: "gray.700", borderRadius: "8px" }
+      submenu.isDisable ? undefined : { bg: "gray.700", borderRadius: "4px" }
     }
     my="1px"
     transition="all 0.25s ease-in-out"
     alignItems="center"
     position="relative"
     bgColor={isCurrentPage(submenu.slug) ? "gray.800" : "transparent"}
-    borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
+    borderRadius={isCurrentPage(submenu.slug) ? "4px" : "0px"}
   >
     <Box
       opacity={isCurrentPage(submenu.slug) ? 1 : 0}
@@ -129,7 +129,7 @@ const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
       }}
       onChange={handleChange}
     >
-      <AccordionItem>
+      <AccordionItem bg="transparent">
         <AccordionButton justifyContent="space-between" alignItems="center">
           <Text py={2} variant="body3" fontWeight={700}>
             {menuInfo.category}

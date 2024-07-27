@@ -90,11 +90,6 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
       "https://assets.alleslabs.dev/celatone-brand/illustration/states/search-empty.svg",
     disconnected:
       "https://assets.alleslabs.dev/celatone-brand/illustration/states/disconnected.svg",
-    overview: {
-      main: "https://assets.alleslabs.dev/celatone-brand/illustration/left.svg",
-      secondary:
-        "https://assets.alleslabs.dev/celatone-brand/illustration/right.svg",
-    },
   },
   socialMedia: {
     website: "https://celat.one/",

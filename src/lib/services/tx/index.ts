@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -17,10 +17,9 @@ import {
   useLcdEndpoint,
   useMoveConfig,
   useTierConfig,
-  useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
-import { createQueryFnWithTimeout } from "lib/query-utils";
+import { createQueryFnWithTimeout } from "lib/services/utils";
 import type {
   BechAddr,
   BechAddr20,
@@ -49,6 +48,12 @@ import {
   getTxsByContractAddressLcd,
   getTxsByHashLcd,
 } from "./lcd";
+import {
+  getTxsByAccountAddressSequencer,
+  getTxsByBlockHeightSequencer,
+  getTxsByHashSequencer,
+  getTxsSequencer,
+} from "./sequencer";
 
 export const useTxData = (
   txHash: Option<string>,
@@ -290,22 +295,32 @@ export const useTxsByAddressLcd = (
   options: UseQueryOptions<TxsResponse> = {}
 ) => {
   const endpoint = useLcdEndpoint();
-  const { validateContractAddress } = useValidateAddress();
   const {
     chain: { bech32_prefix: prefix },
   } = useCurrentChain();
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const queryfn = useCallback(async () => {
     const txs = await (async () => {
-      if (search && isTxHash(search)) return getTxsByHashLcd(endpoint, search);
+      if (search && isTxHash(search)) {
+        const txsByHash = await getTxsByHashLcd(endpoint, search);
 
-      if (search && !validateContractAddress(search))
-        return getTxsByContractAddressLcd(
-          endpoint,
-          search as BechAddr32,
-          limit,
-          offset
+        if (txsByHash.total === 0)
+          throw new Error("transaction not found (getTxsByHashLcd)");
+
+        const tx = txsByHash.items[0];
+        const sender = convertAccountPubkeyToAccountAddress(
+          tx.signerPubkey,
+          prefix
         );
+
+        if (address === sender) return txsByHash;
+
+        throw new Error("address is not equal to sender (getTxsByHashLcd)");
+      }
+
+      if (search && !isTxHash(search))
+        throw new Error("search is not a tx hash (useTxsByAddressLcd)");
 
       if (!address)
         throw new Error("address is undefined (useTxsByAddressLcd)");
@@ -319,15 +334,7 @@ export const useTxsByAddressLcd = (
       })),
       total: txs.total,
     };
-  }, [
-    address,
-    endpoint,
-    limit,
-    offset,
-    prefix,
-    search,
-    validateContractAddress,
-  ]);
+  }, [address, endpoint, limit, offset, prefix, search]);
 
   return useQuery<TxsResponse>(
     [
@@ -341,6 +348,172 @@ export const useTxsByAddressLcd = (
     createQueryFnWithTimeout(queryfn, 20000),
     { ...options, retry: 1, refetchOnWindowFocus: false }
   );
+};
+
+export const useTxsSequencer = (limit = 10) => {
+  const endpoint = useLcdEndpoint();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
+
+  const queryfn = useCallback(
+    async (pageParam: Option<string>) => {
+      return getTxsSequencer(endpoint, pageParam, limit);
+    },
+    [endpoint, limit]
+  );
+
+  const { data, ...rest } = useInfiniteQuery(
+    [CELATONE_QUERY_KEYS.TXS_SEQUENCER, endpoint, limit],
+    ({ pageParam }) => queryfn(pageParam),
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return {
+    ...rest,
+    data: data?.pages.flatMap<Transaction>((page) =>
+      page.items.map((item) => {
+        const sender = convertAccountPubkeyToAccountAddress(
+          item.signerPubkey,
+          prefix
+        );
+
+        return {
+          ...item,
+          sender,
+        };
+      })
+    ),
+  };
+};
+
+export const useTxsByAddressSequencer = (
+  address: Option<BechAddr20>,
+  search: Option<string>,
+  limit = 10
+) => {
+  const endpoint = useLcdEndpoint();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
+
+  const queryfn = useCallback(
+    // eslint-disable-next-line sonarjs/cognitive-complexity
+    async (pageParam: Option<string>) => {
+      return (async () => {
+        if (search && isTxHash(search)) {
+          const txsByHash = await getTxsByHashSequencer(endpoint, search);
+
+          if (txsByHash.pagination.total === 0)
+            throw new Error("transaction not found (getTxsByHashSequencer)");
+
+          const tx = txsByHash.items[0];
+          const sender = convertAccountPubkeyToAccountAddress(
+            tx.signerPubkey,
+            prefix
+          );
+
+          if (address === sender) return txsByHash;
+
+          const findAddressFromEvents = tx.events?.some((event) =>
+            event.attributes.some((attr) => attr.value === address)
+          );
+
+          if (findAddressFromEvents) return txsByHash;
+
+          throw new Error(
+            "transaction is not related (useTxsByAddressSequncer)"
+          );
+        }
+
+        if (search && !isTxHash(search))
+          throw new Error("search is not a tx hash (useTxsByAddressSequncer)");
+
+        if (!address)
+          throw new Error("address is undefined (useTxsByAddressSequncer)");
+
+        return getTxsByAccountAddressSequencer({
+          endpoint,
+          address,
+          paginationKey: pageParam,
+          limit,
+        });
+      })();
+    },
+    [address, endpoint, prefix, search, limit]
+  );
+
+  const { data, ...rest } = useInfiniteQuery(
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER,
+      endpoint,
+      address,
+      search,
+      limit,
+    ],
+    ({ pageParam }) => queryfn(pageParam),
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  return {
+    ...rest,
+    data: data?.pages.flatMap((page) =>
+      page.items.map((item) => {
+        const sender = convertAccountPubkeyToAccountAddress(
+          item.signerPubkey,
+          prefix
+        );
+
+        return {
+          ...item,
+          sender,
+          isSigner: sender === address,
+        };
+      })
+    ),
+  };
+};
+
+export const useTxsByBlockHeightSequencer = (height: number) => {
+  const endpoint = useLcdEndpoint();
+  const {
+    chain: { bech32_prefix: prefix },
+  } = useCurrentChain();
+
+  const { data, ...rest } = useInfiniteQuery(
+    [CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER, endpoint, height],
+    async ({ pageParam }) => {
+      const { txs, pagination } = await getTxsByBlockHeightSequencer(
+        endpoint,
+        height,
+        pageParam
+      );
+
+      return {
+        txs: txs.map<Transaction>((tx) => ({
+          ...tx,
+          sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+        })),
+        pagination,
+      };
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    }
+  );
+
+  return {
+    data: data?.pages.flatMap((page) => page.txs),
+    ...rest,
+  };
 };
 
 export * from "./gql";

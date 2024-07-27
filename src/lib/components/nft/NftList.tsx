@@ -2,14 +2,14 @@ import { SimpleGrid } from "@chakra-ui/react";
 
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
-import type { Nft } from "lib/services/nft";
+import type { Nft } from "lib/services/types";
 import type { Option } from "lib/types";
 
 import { NftCard } from "./NftCard";
 
 interface NftListProps {
   nfts: Option<Nft[]>;
-  isLoading: boolean;
+  isLoading?: boolean;
   emptyState: JSX.Element;
   showCollection: boolean;
 }
