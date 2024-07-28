@@ -14,7 +14,13 @@ import {
 } from "./components";
 import GasFeeDetails from "./components/GasFeeDetails";
 import { useNetworkStepper } from "./hooks/useNetworkStepper";
-import { zAddNetworkManualForm, zNetworkDetailsForm } from "./types";
+import type { AddNetworkManualForm } from "./types";
+import {
+  zAddNetworkManualForm,
+  zGasFeeDetailsForm,
+  zNetworkDetailsForm,
+  zWalletRegistryForm,
+} from "./types";
 
 export const AddNetworkManual = () => {
   const {
@@ -22,16 +28,17 @@ export const AddNetworkManual = () => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm({
+    setValue,
+  } = useForm<AddNetworkManualForm>({
     resolver: zodResolver(zAddNetworkManualForm),
     mode: "all",
     reValidateMode: "onChange",
     defaultValues: {
       networkName: "Jennie",
-      lcdUrl: "https://celat.one",
-      rpcUrl: "https://celat.one",
-      chainId: "jennie-init",
-      registryChainName: "jennitinit",
+      lcdUrl: "https://dev.celat.one",
+      rpcUrl: "https://dev.celat.one",
+      chainId: "jennie",
+      registryChainName: "jennie",
       logoUri: "",
       isWasm: false,
       isMove: false,
@@ -39,13 +46,17 @@ export const AddNetworkManual = () => {
       gasAdjustment: "",
       maxGasLimit: "",
       feeTokenDenom: "",
+      gasConfig: "standard",
       gasPrice: "",
       fixedMinimumGasPrice: "",
       lowGasPrice: "",
       averageGasPrice: "",
       highGasPrice: "",
       gasForCosmosSend: "",
-      gasForIBC: "",
+      gasForIbc: "",
+      bech32Prefix: "",
+      slip44: 118,
+      assets: [],
     },
   });
 
@@ -59,10 +70,25 @@ export const AddNetworkManual = () => {
     isWasm,
     isMove,
     isNfts,
+    gasAdjustment,
+    maxGasLimit,
+    feeTokenDenom,
+    gasConfig,
+    gasPrice,
+    fixedMinimumGasPrice,
+    lowGasPrice,
+    averageGasPrice,
+    highGasPrice,
+    gasForCosmosSend,
+    gasForIbc,
+    bech32Prefix,
+    slip44,
+    assets,
   } = watch();
 
   const handleSubmitForm = () => {
-    //
+    // alert("Please view the console to see the form data");
+    // console.log(JSON.stringify(data, null, 2));
   };
 
   const { currentStep, handleNext, handlePrevious } = useNetworkStepper(
@@ -76,9 +102,12 @@ export const AddNetworkManual = () => {
 
     if (currentStep === 1) return <SupportedFeatures control={control} />;
 
-    if (currentStep === 2) return <GasFeeDetails />;
+    if (currentStep === 2)
+      return (
+        <GasFeeDetails control={control} errors={errors} setValue={setValue} />
+      );
 
-    return <WalletRegistry />;
+    return <WalletRegistry control={control} errors={errors} />;
   };
 
   const isFormDisabled = () => {
@@ -92,11 +121,35 @@ export const AddNetworkManual = () => {
         logoUri,
       }).success;
 
+    if (currentStep === 2)
+      return !zGasFeeDetailsForm.safeParse({
+        gasAdjustment,
+        maxGasLimit,
+        feeTokenDenom,
+        gasConfig,
+        gasPrice,
+        fixedMinimumGasPrice,
+        lowGasPrice,
+        averageGasPrice,
+        highGasPrice,
+        gasForCosmosSend,
+        gasForIbc,
+      }).success;
+
+    if (currentStep === 3)
+      return !zWalletRegistryForm.safeParse({
+        bech32Prefix,
+        slip44,
+        assets,
+      }).success;
+
     return false;
   };
 
   const handleActionLabel = () => {
     if (currentStep === 1 && !isWasm && !isMove && !isNfts) return "Skip";
+
+    if (currentStep === 3) return "Save new Minitia";
 
     return "Next";
   };

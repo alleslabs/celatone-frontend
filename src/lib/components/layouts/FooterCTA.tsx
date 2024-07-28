@@ -38,7 +38,7 @@ export const FooterCta = ({
       <Button variant="outline-gray" w="128px" {...cancelButton}>
         {cancelLabel}
       </Button>
-      <Button variant="primary" w="128px" {...actionButton}>
+      <Button variant="primary" minW="128px" {...actionButton}>
         {loading ? <Spinner size="md" variant="light" /> : actionLabel}
       </Button>
     </Flex>

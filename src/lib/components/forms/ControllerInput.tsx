@@ -30,6 +30,7 @@ export interface ControllerInputProps<T extends FieldValues>
   status?: FormStatus;
   maxLength?: number;
   helperAction?: ReactNode;
+  rtl?: boolean;
 }
 
 export const ControllerInput = <T extends FieldValues>({
@@ -48,6 +49,7 @@ export const ControllerInput = <T extends FieldValues>({
   autoFocus,
   cursor,
   helperAction,
+  rtl = false,
   ...componentProps
 }: ControllerInputProps<T>) => {
   const watcher = useWatch({
@@ -72,6 +74,7 @@ export const ControllerInput = <T extends FieldValues>({
       size={size}
       isInvalid={isError || status?.state === "error"}
       isRequired={isRequired}
+      dir={rtl ? "rtl" : "ltr"}
       {...componentProps}
       {...field}
     >
@@ -98,7 +101,17 @@ export const ControllerInput = <T extends FieldValues>({
           maxLength={maxLength}
           autoFocus={autoFocus}
           cursor={cursor}
-          pr={status ? "2rem" : 0}
+          pr={(function getInputPaddingRight() {
+            if (status) {
+              return "2rem";
+            }
+
+            if (rtl) {
+              return "1rem";
+            }
+
+            return 0;
+          })()}
           onBlur={field.onBlur}
         />
         <InputRightElement h="full">

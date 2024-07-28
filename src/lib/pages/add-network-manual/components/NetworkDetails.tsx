@@ -66,7 +66,6 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
             variant="fixed-floating"
             w="full"
             placeholder="ex. jennie-init-1"
-            helperText="Enter alphabet (a-z) and dash (-) only"
             rules={{
               required: "",
             }}
@@ -79,7 +78,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
             variant="fixed-floating"
             w="full"
             placeholder="ex. jennieinit"
-            helperText="Enter alphabet (a-z) with no spaces"
+            helperText="Lower case letter (a-z) or number (0-9)"
             rules={{
               required: "",
             }}

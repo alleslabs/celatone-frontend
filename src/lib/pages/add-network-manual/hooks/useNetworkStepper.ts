@@ -9,10 +9,7 @@ export const useNetworkStepper = (limit: number, handleSubmit: () => void) => {
   const { currentChainId } = useCelatoneApp();
 
   useEffect(() => {
-    if (!router.isReady) return;
-    const { step } = router.query;
-
-    if (step) return;
+    if (Number(currentStep) === 1) return;
 
     router.push(
       {
@@ -24,7 +21,8 @@ export const useNetworkStepper = (limit: number, handleSubmit: () => void) => {
       undefined,
       { shallow: true }
     );
-  }, [router, router.isReady, currentChainId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleNext = () =>
     currentStep && Number(currentStep) < limit
