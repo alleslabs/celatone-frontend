@@ -20,6 +20,41 @@ export const getEventMessage = (
   return "-";
 };
 
+const TokenIdRender = ({
+  tokenId,
+  nftAddress,
+  collectionAddress,
+}: {
+  tokenId: Activity["tokenId"];
+  nftAddress: Activity["nftAddress"];
+  collectionAddress: HexAddr32;
+}) => {
+  if (!tokenId) return <Text>-</Text>;
+
+  if (!nftAddress) {
+    return (
+      <Text color="text.dark" wordBreak="break-word">
+        {tokenId}
+      </Text>
+    );
+  }
+
+  return (
+    <AppLink href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}>
+      <Text
+        color="secondary.main"
+        _hover={{
+          textDecoration: "underline",
+          color: "secondary.light",
+        }}
+        wordBreak="break-word"
+      >
+        {tokenId}
+      </Text>
+    </AppLink>
+  );
+};
+
 interface ActivitiesTableRowProps {
   activity: Activity;
   templateColumns: string;
@@ -59,24 +94,11 @@ export const ActivitiesTableRow = ({
           />
         </TableRow>
         <TableRow>
-          {tokenId ? (
-            <AppLink
-              href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
-            >
-              <Text
-                color="secondary.main"
-                _hover={{
-                  textDecoration: "underline",
-                  color: "secondary.light",
-                }}
-                wordBreak="break-word"
-              >
-                {tokenId}
-              </Text>
-            </AppLink>
-          ) : (
-            "-"
-          )}
+          <TokenIdRender
+            tokenId={tokenId}
+            nftAddress={nftAddress}
+            collectionAddress={collectionAddress}
+          />
         </TableRow>
         <TableRow>
           <Text>

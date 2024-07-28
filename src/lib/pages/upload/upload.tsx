@@ -8,7 +8,7 @@ import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
-import { FooterCTA } from "lib/components/layouts";
+import { FooterCta } from "lib/components/layouts";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
@@ -81,7 +81,7 @@ export const Upload = ({
           isSimulating={isSimulating}
         />
       </ActionPageContainer>
-      <FooterCTA
+      <FooterCta
         cancelButton={{
           leftIcon: <CustomIcon name="chevron-left" />,
           onClick: router.back,

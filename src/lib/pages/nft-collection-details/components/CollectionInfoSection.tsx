@@ -1,6 +1,6 @@
 import { Flex, Heading, Link, Text } from "@chakra-ui/react";
 
-import { useMobile } from "lib/app-provider";
+import { useMobile, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
@@ -34,6 +34,7 @@ export const CollectionInfoSection = ({
   onClickMutateEvents,
 }: CollectionInfoSectionProps) => {
   const isMobile = useMobile();
+  const { isFullTier } = useTierConfig();
   const { data: collectionCreator, isLoading } =
     useCollectionCreator(collectionAddress);
 
@@ -117,8 +118,10 @@ export const CollectionInfoSection = ({
               textOverflow="ellipsis"
               variant="body2"
               wordBreak="break-word"
+              color={collectionName.length ? "text.main" : "text.disabled"}
+              fontWeight={collectionName.length ? "600" : "300"}
             >
-              {collectionName}
+              {collectionName || "Untitled Collection"}
             </Text>
           </Flex>
           <Flex gap={infoGap} flexDir={infoDirection}>
@@ -159,13 +162,15 @@ export const CollectionInfoSection = ({
           onClick={onClickActivities}
           isDisabled={activities === 0}
         />
-        <InfoCard
-          title="Mutate Events"
-          icon="migrate"
-          content={mutateEventes}
-          onClick={onClickMutateEvents}
-          isDisabled={mutateEventes === 0}
-        />
+        {isFullTier && (
+          <InfoCard
+            title="Mutate Events"
+            icon="migrate"
+            content={mutateEventes}
+            onClick={onClickMutateEvents}
+            isDisabled={mutateEventes === 0}
+          />
+        )}
       </Flex>
     </Flex>
   );

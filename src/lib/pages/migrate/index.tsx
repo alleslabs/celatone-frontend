@@ -14,7 +14,7 @@ import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractInputSection } from "lib/components/ContractInputSection";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
-import { FooterCTA } from "lib/components/layouts";
+import { FooterCta } from "lib/components/layouts";
 import { Loading } from "lib/components/Loading";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
@@ -204,7 +204,7 @@ const Migrate = () => {
         </Box>
       </ActionPageContainer>
       {migrateStep === "upload_new_code" && (
-        <FooterCTA
+        <FooterCta
           cancelButton={{
             leftIcon: <CustomIcon name="chevron-left" />,
             onClick: handleBack,

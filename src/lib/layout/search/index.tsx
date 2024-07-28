@@ -128,7 +128,7 @@ export const SearchComponent = () => {
     ]
   );
 
-  const handleOnKeyEnter = useCallback(
+  const handleOnKeyDown = useCallback(
     (e: ReactKeyboardEvent<HTMLInputElement>) => {
       if (!results.length) return;
       switch (e.key) {
@@ -251,11 +251,11 @@ export const SearchComponent = () => {
                   size="lg"
                   placeholder="Enter your keyword..."
                   style={{ maxHeight: "54px", border: "none" }}
-                  pr={28}
+                  pr={40}
                   pl={10}
                   value={keyword}
                   onChange={handleSearchChange}
-                  onKeyDown={handleOnKeyEnter}
+                  onKeyDown={handleOnKeyDown}
                   autoComplete="off"
                 />
               </Flex>

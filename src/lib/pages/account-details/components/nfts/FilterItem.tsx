@@ -4,9 +4,10 @@ import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
+import type { Nullable } from "lib/types";
 
 interface FilterItemProps {
-  collectionName: string;
+  collectionName: Nullable<string>;
   count: number;
   onClick: () => void;
   uri?: string;

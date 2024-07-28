@@ -98,7 +98,7 @@ export const SearchResultItemBody = ({
     type === "Module Path"
   )
     return (
-      <Flex gap={{ base: 0, md: 1 }} direction={{ base: "column", md: "row" }}>
+      <Flex gap={{ base: 0, md: 1 }} direction="column">
         <Text variant="body2" wordBreak="break-all">
           {value}
         </Text>

@@ -43,7 +43,7 @@ import {
   SchemaInputSection,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
-import { FooterCTA } from "lib/components/layouts";
+import { FooterCta } from "lib/components/layouts";
 import { CodeSelectSection } from "lib/components/select-code";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
@@ -539,7 +539,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
           />
         </Flex>
       </ActionPageContainer>
-      <FooterCTA
+      <FooterCta
         loading={processing}
         cancelButton={{
           onClick: router.back,

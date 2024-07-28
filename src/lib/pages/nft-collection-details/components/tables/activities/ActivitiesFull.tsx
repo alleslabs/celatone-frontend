@@ -11,15 +11,15 @@ import type { HexAddr32 } from "lib/types";
 
 import { ActivitiesTable } from "./ActivitiesTable";
 
-interface ActivitiesProps {
+interface ActivitiesFullProps {
   collectionAddress: HexAddr32;
   totalCount: number;
 }
 
-export const Activities = ({
+export const ActivitiesFull = ({
   collectionAddress,
   totalCount,
-}: ActivitiesProps) => {
+}: ActivitiesFullProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
 
