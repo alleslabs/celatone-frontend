@@ -14,13 +14,13 @@ import {
 } from "./components";
 import GasFeeDetails from "./components/GasFeeDetails";
 import { useNetworkStepper } from "./hooks/useNetworkStepper";
-import type { AddNetworkManualForm } from "./types";
 import {
   zAddNetworkManualForm,
   zGasFeeDetailsForm,
   zNetworkDetailsForm,
   zWalletRegistryForm,
 } from "./types";
+import type { AddNetworkManualForm } from "./types";
 
 export const AddNetworkManual = () => {
   const {

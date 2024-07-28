@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1038](https://github.com/alleslabs/celatone-frontend/pull/1038) Add custom networks options page to navigate between manual and upload json
+
 ### Improvements
 
 ### Bug fixes
