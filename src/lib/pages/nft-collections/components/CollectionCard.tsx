@@ -31,7 +31,8 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
           minW={{ base: 28, md: 40 }}
           w={{ base: 28, md: 40 }}
           h={{ base: 28, md: 40 }}
-          objectFit="cover"
+          objectFit="contain"
+          background="gray.900"
           backgroundPosition="center"
           borderRadius="8px"
           src={metadata?.image}

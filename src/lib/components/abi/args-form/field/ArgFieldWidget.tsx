@@ -96,7 +96,7 @@ export const ArgFieldWidget = ({
         )}
         onChange={(e) => onChange(e?.value)}
         menuPosition="fixed"
-        menuPortalTarget={document.querySelector("body")}
+        menuPortalTarget={document.body}
         chakraStyles={{
           control: (provided) => ({
             ...provided,

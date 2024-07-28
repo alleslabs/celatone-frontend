@@ -40,6 +40,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1038](https://github.com/alleslabs/celatone-frontend/pull/1038) Add custom networks options page to navigate between manual and upload json
+
+### Improvements
+
+### Bug fixes
+
+- [#1050](https://github.com/alleslabs/celatone-frontend/pull/1050) Fix gap between network subsection
+
+## v1.7.2
+
+### Features
+
+- [#1048](https://github.com/alleslabs/celatone-frontend/pull/1048) Support getCollectionByCollectionAddress in Lite tier
+- [#1037](https://github.com/alleslabs/celatone-frontend/pull/1037) Add Sequencer for Collection details
+- [#997](https://github.com/alleslabs/celatone-frontend/pull/997) Redesign asset selector
+- [#1033](https://github.com/alleslabs/celatone-frontend/pull/1033) Add Sequencer for NFT details
 - [#1015](https://github.com/alleslabs/celatone-frontend/pull/1015) New network selector
 - [#1032](https://github.com/alleslabs/celatone-frontend/pull/1032) Search collection address on both full and sequencer tier
 - [#1024](https://github.com/alleslabs/celatone-frontend/pull/1024) Add Sequencer for account detail NFTs
@@ -54,10 +69,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1040](https://github.com/alleslabs/celatone-frontend/pull/1040) Refactor networks selector
+- [#1039](https://github.com/alleslabs/celatone-frontend/pull/1039) Make NFT Txs to load more style
+- [#1036](https://github.com/alleslabs/celatone-frontend/pull/1036) Refactor home and change some component names to match the current convention
 - [#1022](https://github.com/alleslabs/celatone-frontend/pull/1022) Separate API requests in home page overview component
 
 ### Bug fixes
 
+- [#1049](https://github.com/alleslabs/celatone-frontend/pull/1049) Change nft image ratio from cover to contain
+- [#1044](https://github.com/alleslabs/celatone-frontend/pull/1044) Fix incorrect formatted value in attached funds
+- [#1042](https://github.com/alleslabs/celatone-frontend/pull/1042) Fix bugbash for sequencer tier release
 - [#1029](https://github.com/alleslabs/celatone-frontend/pull/1029) Fix default wasm permission to permissionless
 - [#1026](https://github.com/alleslabs/celatone-frontend/pull/1026) Add missing menu items for sequencer tier
 - [#1025](https://github.com/alleslabs/celatone-frontend/pull/1025) Handle new tx query params for contract txs

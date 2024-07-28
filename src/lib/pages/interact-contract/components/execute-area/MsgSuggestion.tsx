@@ -16,7 +16,7 @@ export const MsgSuggestion = ({
   cmds,
   setMsg,
 }: MsgSuggestionProps) => (
-  <Box>
+  <Box mb={8}>
     {contractAddress && (
       <Text variant="body3" mb={2}>
         Message Suggestions:

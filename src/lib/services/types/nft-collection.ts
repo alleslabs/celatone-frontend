@@ -78,11 +78,13 @@ export const zCollectionByCollectionAddressResponse = z.object({
       description: val.description,
       name: val.name,
       uri: val.uri,
-      createdHeight:
-        val.vmAddressByCreator.collectionsByCreator[0].block_height,
-      creatorAddress:
-        val.vmAddressByCreator.collectionsByCreator[0].vmAddressByCreator
-          .vm_address,
+      createdHeight: val.vmAddressByCreator.collectionsByCreator.length
+        ? val.vmAddressByCreator.collectionsByCreator[0].block_height
+        : null,
+      creatorAddress: val.vmAddressByCreator.collectionsByCreator.length
+        ? val.vmAddressByCreator.collectionsByCreator[0].vmAddressByCreator
+            .vm_address
+        : null,
     }))
     .optional(),
 });
@@ -314,15 +316,12 @@ export const zCollectionByCollectionAddressResponseSequencer = z
   .object({
     collection: zCollectionResponseSequencer,
   })
-  .transform<CollectionByCollectionAddressResponse>((val) => {
-    const { collection } = val.collection;
-    return {
-      data: {
-        description: collection.description,
-        name: collection.name,
-        uri: collection.uri,
-        createdHeight: 0, // TODO: make it nullable
-        creatorAddress: collection.creator,
-      },
-    };
-  });
+  .transform<CollectionByCollectionAddressResponse>((val) => ({
+    data: {
+      description: val.collection.collection.description,
+      name: val.collection.collection.name,
+      uri: val.collection.collection.uri,
+      createdHeight: null,
+      creatorAddress: val.collection.collection.creator,
+    },
+  }));
