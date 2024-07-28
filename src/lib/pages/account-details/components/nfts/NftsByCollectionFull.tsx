@@ -1,6 +1,7 @@
 import { Stack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
+import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
 import { Pagination } from "lib/components/pagination";
@@ -19,6 +20,7 @@ export const NftsByCollectionFull = ({
   accountAddress,
   collectionAddress,
 }: NftsByCollectionFullProps) => {
+  const isMobile = useMobile();
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
 
@@ -61,7 +63,7 @@ export const NftsByCollectionFull = ({
       <InputWithIcon
         placeholder="Search with Token ID or NFT VM Address"
         value={searchKeyword}
-        autoFocus
+        autoFocus={!isMobile}
         onChange={(e) => setSearchKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}
         amptrackSection="nft-account-detail-tokenid-search"

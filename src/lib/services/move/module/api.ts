@@ -13,6 +13,7 @@ import {
   zModuleTableCountsResponse,
   zModuleTxsResponse,
   zModuleVerificationInternal,
+  zMoveViewJsonResponse,
 } from "lib/services/types";
 import type {
   AbiFormData,
@@ -180,3 +181,21 @@ export const getModuleRelatedProposals = async (
       }
     )
     .then(({ data }) => parseWithError(zModuleRelatedProposalsResponse, data));
+
+export const getMoveViewJson = async (
+  endpoint: string,
+  vmAddress: HexAddr,
+  moduleName: string,
+  functionName: string,
+  typeArgs: string[],
+  args: string[]
+) =>
+  axios
+    .post(`${endpoint}/initia/move/v1/view/json`, {
+      address: vmAddress,
+      module_name: moduleName,
+      function_name: functionName,
+      type_args: typeArgs,
+      args,
+    })
+    .then(({ data }) => parseWithError(zMoveViewJsonResponse, data));

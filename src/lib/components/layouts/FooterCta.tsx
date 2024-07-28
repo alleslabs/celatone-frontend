@@ -1,7 +1,7 @@
 import type { ButtonProps, SystemStyleObject } from "@chakra-ui/react";
 import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
 
-interface FooterCTAProps {
+interface FooterCtaProps {
   loading?: boolean;
   cancelButton: ButtonProps;
   cancelLabel?: string;
@@ -19,7 +19,7 @@ export const FooterCta = ({
   actionLabel = "Submit",
   helperText,
   sx,
-}: FooterCTAProps) => (
+}: FooterCtaProps) => (
   <Flex
     direction="column"
     gap={2}

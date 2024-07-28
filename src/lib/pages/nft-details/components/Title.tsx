@@ -11,7 +11,7 @@ interface TitleProps {
   nftAddress: HexAddr32;
   displayCollectionName: string;
   tokenId: string;
-  isBurned?: boolean;
+  isBurned: boolean;
 }
 
 export const Title = ({

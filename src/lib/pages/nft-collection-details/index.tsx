@@ -25,9 +25,10 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { TierSwitcher } from "lib/components/TierSwitcher";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useNfts } from "lib/services/nft";
+import { useNfts, useNftsSequencer } from "lib/services/nft";
 import {
   useCollectionActivitiesCount,
   useCollectionByCollectionAddress,
@@ -39,7 +40,7 @@ import { CollectionInfoSection } from "./components/CollectionInfoSection";
 import { CollectionSupplies } from "./components/CollectionSupplies";
 import { CollectionSuppliesOverview } from "./components/CollectionSuppliesOverview";
 import { CollectionSupplyInfo } from "./components/CollectionSupplyInfo";
-import { Activities } from "./components/tables";
+import { ActivitiesFull, ActivitiesSequencer } from "./components/tables";
 import { CollectionMutateEvents } from "./components/tables/CollectionMutateEvents";
 import { useCollectionInfos } from "./data";
 import type { CollectionDetailQueryParams } from "./types";
@@ -57,21 +58,34 @@ const CollectionDetailsBody = ({
 }: CollectionDetailQueryParams) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
+  const { isFullTier, isSequencerTier } = useTierConfig();
 
   const { data: collection, isLoading: isCollectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
-  const { data: nfts, isLoading: isNftLoading } = useNfts(
+
+  const dataNftsFull = useNfts(collectionAddress, 6, 0, undefined, isFullTier);
+  const dataNftsSequencer = useNftsSequencer(
     collectionAddress,
     6,
-    0
+    0,
+    undefined,
+    isSequencerTier
   );
+  const { data: nfts, isLoading: isNftsLoading } = isFullTier
+    ? dataNftsFull
+    : dataNftsSequencer;
 
   const { collectionInfos, isLoading: isCollectionInfosLoading } =
     useCollectionInfos(collectionAddress);
-  const { data: activitiesCount } =
-    useCollectionActivitiesCount(collectionAddress);
-  const { data: mutateEventsCount } =
-    useCollectionMutateEventsCount(collectionAddress);
+
+  const { data: activitiesCount } = useCollectionActivitiesCount(
+    collectionAddress,
+    isFullTier
+  );
+  const { data: mutateEventsCount } = useCollectionMutateEventsCount(
+    collectionAddress,
+    isFullTier
+  );
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -233,13 +247,15 @@ const CollectionDetailsBody = ({
           >
             Activities
           </CustomTab>
-          <CustomTab
-            count={mutateEventsCount}
-            onClick={handleTabChange(TabIndex.MutateEvents)}
-            isDisabled={mutateEventsCount === 0}
-          >
-            Mutate Events
-          </CustomTab>
+          {isFullTier && (
+            <CustomTab
+              count={mutateEventsCount}
+              onClick={handleTabChange(TabIndex.MutateEvents)}
+              isDisabled={mutateEventsCount === 0}
+            >
+              Mutate Events
+            </CustomTab>
+          )}
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
@@ -253,7 +269,7 @@ const CollectionDetailsBody = ({
               <CollectionSuppliesOverview
                 totalCount={currentSupply}
                 nfts={nfts}
-                isLoading={isNftLoading}
+                isLoading={isNftsLoading}
                 onViewMore={handleTabChange(TabIndex.Supplies)}
               />
               <CollectionInfoSection
@@ -281,17 +297,26 @@ const CollectionDetailsBody = ({
             />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <Activities
-              collectionAddress={collectionAddress}
-              totalCount={activitiesCount ?? 0}
+            <TierSwitcher
+              full={
+                <ActivitiesFull
+                  collectionAddress={collectionAddress}
+                  totalCount={activitiesCount ?? 0}
+                />
+              }
+              sequencer={
+                <ActivitiesSequencer collectionAddress={collectionAddress} />
+              }
             />
           </TabPanel>
-          <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-            <CollectionMutateEvents
-              collectionAddress={collectionAddress}
-              totalCount={mutateEventsCount ?? 0}
-            />
-          </TabPanel>
+          {isFullTier && (
+            <TabPanel p={0} pt={{ base: 4, md: 0 }}>
+              <CollectionMutateEvents
+                collectionAddress={collectionAddress}
+                totalCount={mutateEventsCount ?? 0}
+              />
+            </TabPanel>
+          )}
         </TabPanels>
       </Tabs>
     </>
@@ -299,7 +324,7 @@ const CollectionDetailsBody = ({
 };
 
 const CollectionDetails = () => {
-  useTierConfig({ minTier: "full" });
+  useTierConfig({ minTier: "sequencer" });
   const router = useRouter();
   const validated = zCollectionDetailQueryParams.safeParse(router.query);
 

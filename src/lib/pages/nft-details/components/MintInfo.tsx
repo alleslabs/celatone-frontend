@@ -6,7 +6,7 @@ import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
 import { useNftMintInfo } from "lib/services/nft";
 import type { HexAddr32 } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import { bech32AddressToHex, dateFromNow, formatUTC } from "lib/utils";
 
 interface MintInfoProps {
   nftAddress: HexAddr32;
@@ -47,7 +47,7 @@ export const MintInfo = ({ nftAddress }: MintInfoProps) => {
           </LabelText>
           <LabelText label="Minted by" helperText1="(VM Address)">
             <ExplorerLink
-              value={mintInfo.minter}
+              value={bech32AddressToHex(mintInfo.minter)}
               type="user_address"
               showCopyOnHover
               ampCopierSection="nft-detail-mint-information"

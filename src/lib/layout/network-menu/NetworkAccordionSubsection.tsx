@@ -21,7 +21,7 @@ export const NetworkAccordionSubsection = ({
   subsectionStartIndex,
   onClose,
 }: NetworkAccordionSubsectionProps) => (
-  <Flex direction="column" gap={1} mb={4}>
+  <Flex direction="column" gap={2}>
     {title !== undefined && (
       <Flex alignItems="center">
         <Text color="text.dark" fontWeight={600} variant="body2">
