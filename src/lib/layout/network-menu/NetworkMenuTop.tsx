@@ -1,19 +1,22 @@
-import { Flex, Heading, Kbd, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Kbd, Text } from "@chakra-ui/react";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 
 import { useIsMac, useMobile } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
 import InputWithIcon from "lib/components/InputWithIcon";
 
 interface NetworkMenuTopProps {
   keyword: string;
   setKeyword: (value: string) => void;
   handleOnKeyDown: (e: ReactKeyboardEvent<HTMLDivElement>) => void;
+  onClose: () => void;
 }
 
 export const NetworkMenuTop = ({
   keyword,
   setKeyword,
   handleOnKeyDown,
+  onClose,
 }: NetworkMenuTopProps) => {
   const isMobile = useMobile();
   const isMac = useIsMac();
@@ -40,6 +43,16 @@ export const NetworkMenuTop = ({
             </Flex>
           )}
         </Flex>
+        <Box>
+          <Text as="span" variant="body3" color="text.dark">
+            Want to add your network?
+          </Text>{" "}
+          <AppLink href="/add-network" onClick={onClose}>
+            <Text as="span" variant="body3" color="secondary.main">
+              Add a custom chain.
+            </Text>
+          </AppLink>
+        </Box>
       </Flex>
       <InputWithIcon
         placeholder="Search by Name or Chain ID"
