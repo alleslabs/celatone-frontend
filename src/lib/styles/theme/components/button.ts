@@ -74,13 +74,6 @@ export const Button: ComponentStyleConfig = {
       fontWeight: 700,
       letterSpacing: "0.4px",
     },
-    lg: {
-      fontSize: "16px",
-      padding: "8px 16px",
-      height: "45px",
-      fontWeight: 700,
-      letterSpacing: "0.4px",
-    },
   },
   variants: {
     primary: generateStyle({

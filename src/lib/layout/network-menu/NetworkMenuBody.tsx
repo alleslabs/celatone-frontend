@@ -1,4 +1,4 @@
-import { Accordion, Button, Divider, Flex, Heading } from "@chakra-ui/react";
+import { Accordion, Button, Divider, Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
 import { AppLink } from "lib/components/AppLink";
@@ -64,14 +64,14 @@ export const NetworkMenuBody = observer(
           <Divider borderColor="gray.700" />
           <AppLink href="/add-network">
             <Button
-              variant="gray-solid"
+              variant="outline-gray"
               justifyContent="flex-start"
               leftIcon={<CustomIcon name="plus" boxSize={4} color="gray.600" />}
-              size="lg"
               onClick={onClose}
               w="full"
+              h={12}
             >
-              <Heading variant="h7">Add custom Minitia</Heading>
+              Add custom Minitia
             </Button>
           </AppLink>
         </Flex>
