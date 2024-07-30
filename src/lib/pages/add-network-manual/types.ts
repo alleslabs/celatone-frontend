@@ -58,8 +58,9 @@ const zNumberFormRequired = zNumberForm.superRefine((val, ctx) => {
 const zGasFeeDetails = z.object({
   gasAdjustment: zNumberFormRequired,
   maxGasLimit: zNumberFormRequired,
-  feeTokenDenom: z.string().regex(/^[a-z0-9/:._-]+$/, {
-    message: mustBeAlphabetNumberAndSpecialCharacters,
+  feeTokenDenom: z.string().regex(/^[a-zA-Z0-9/:._-]+$/, {
+    message:
+      "Must be uppercase (A-Z), lowercase (a-z), numbers (0-9), or these special characters: “/”, “:”, “.”, “_”, “-”",
   }),
   gasConfig: z.enum(["standard", "custom"]),
   gasPrice: zNumberForm,
