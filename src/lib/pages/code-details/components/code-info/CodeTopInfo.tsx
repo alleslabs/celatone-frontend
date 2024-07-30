@@ -7,6 +7,10 @@ import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import { PublicDescription } from "lib/components/PublicDescription";
+import {
+  VerificationBadge,
+  VerificationStatus,
+} from "lib/components/VerificationBadge";
 import { useCodeStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
 import { AccessConfigPermission } from "lib/types";
@@ -69,6 +73,10 @@ export const CodeTopInfo = ({
               <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
                 {localCodeInfo?.name ?? publicInfo?.name ?? codeId}
               </Heading>
+              <VerificationBadge
+                status={VerificationStatus.INDIRECTLY_VERIFIED}
+                type="code"
+              />
             </Flex>
           </Flex>
           {publicInfo && (

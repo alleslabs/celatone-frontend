@@ -5,12 +5,12 @@ import { VerifyPublishCodeModal } from "lib/components/modal";
 export const VerifyButton = ({
   codeId,
   codeHash,
-  label,
+  label = "Verify code",
   minW = "96px",
 }: {
   codeId: string;
   codeHash: string;
-  label: string;
+  label?: string;
   minW?: string;
 }) => (
   <VerifyPublishCodeModal

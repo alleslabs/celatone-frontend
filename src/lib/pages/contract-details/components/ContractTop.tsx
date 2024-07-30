@@ -20,6 +20,10 @@ import {
   SaveContractDetailsModal,
 } from "lib/components/modal";
 import { TotalValue } from "lib/components/TotalValue";
+import {
+  VerificationBadge,
+  VerificationStatus,
+} from "lib/components/VerificationBadge";
 import type { Contract } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import { ContractInteractionTabs } from "lib/types";
@@ -159,6 +163,10 @@ export const ContractTop = ({
             >
               {displayName}
             </Heading>
+            <VerificationBadge
+              status={VerificationStatus.VERIFIED}
+              type="code"
+            />
           </Flex>
           <Flex gap={{ base: 2, md: 1 }} direction="column">
             <Flex

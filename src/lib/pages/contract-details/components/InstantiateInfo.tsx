@@ -8,6 +8,11 @@ import {
 import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
+import { VerifyPublishCodeModal } from "lib/components/modal";
+import {
+  VerificationBadge,
+  VerificationStatus,
+} from "lib/components/VerificationBadge";
 import type { Contract, ContractRest } from "lib/services/types";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { Nullable, Option } from "lib/types";
@@ -118,14 +123,53 @@ export const InstantiateInfo = ({
         <LabelText flex="1" label="Network">
           {chainId}
         </LabelText>
-        <LabelText flex="1" label="From Code" helperText1={codeLocalInfo?.name}>
-          <ExplorerLink
-            type="code_id"
-            value={contract.codeId.toString()}
-            showCopyOnHover
-            fixedHeight
-          />
-        </LabelText>
+        <Flex direction="column">
+          <Flex>
+            <LabelText
+              flex="1"
+              label="From Code"
+              helperText1={codeLocalInfo?.name}
+            >
+              <Flex gap={1}>
+                <ExplorerLink
+                  type="code_id"
+                  value={contract.codeId.toString()}
+                  showCopyOnHover
+                  fixedHeight
+                />
+                {/* TODO Add status */}
+                <VerificationBadge
+                  type="code"
+                  hasText
+                  status={VerificationStatus.INDIRECTLY_VERIFIED}
+                />
+              </Flex>
+            </LabelText>
+          </Flex>
+          {/* TODO Add condition that only show when verification status === not verified, indirectly verify, failed */}
+          <Text variant="body2" color="text.dark">
+            Is this your code?{" "}
+            <Flex display="inline-flex" px={1}>
+              <VerifyPublishCodeModal
+                codeId={contract.codeId.toString()}
+                codeHash={contract.codeHash}
+                triggerElement={
+                  <Text
+                    cursor="pointer"
+                    color="primary.main"
+                    transition="all 0.25s ease-in-out"
+                    _hover={{
+                      textDecoration: "underline",
+                      textDecorationColor: "primary.light",
+                    }}
+                  >
+                    Verify Code
+                  </Text>
+                }
+              />
+            </Flex>
+          </Text>
+        </Flex>
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
         <LabelText flex="1" label="CW2 Info">

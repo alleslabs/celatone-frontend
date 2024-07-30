@@ -85,10 +85,10 @@ export const VerificationBadge = ({
 }: VerificationBadgeProps) => {
   return (
     <Tooltip label={getTooltipText(type, status)}>
-      <Flex gap={1}>
+      <Flex gap={1} alignItems="center">
         <VerificationIcon status={status} />
         {hasText && status !== VerificationStatus.NOT_VERIFIED && (
-          <Text color={getstatusProperties(status).color}>
+          <Text variant="body2" color={getstatusProperties(status).color}>
             {getstatusProperties(status).label}
           </Text>
         )}

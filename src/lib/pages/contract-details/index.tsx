@@ -30,6 +30,7 @@ import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import { VerificationStatus } from "lib/components/VerificationBadge";
 import { useAccountDelegationInfos } from "lib/model/account";
 import { useBalances } from "lib/services/bank";
 import type { BechAddr32 } from "lib/types";
@@ -38,6 +39,7 @@ import { jsonPrettify, truncate } from "lib/utils";
 import { CommandSection } from "./components/CommandSection";
 import { ContractDesc } from "./components/contract-description";
 import { ContractStates } from "./components/contract-states";
+import { ContractVerificationSection } from "./components/contract-verification/ContractVerificationSection";
 import { ContractTop } from "./components/ContractTop";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { ContractTables } from "./components/tables";
@@ -163,11 +165,16 @@ const ContractDetailsBody = observer(
                       contractLocalInfo={contractLocalInfo}
                     />
                   )}
+                  <ContractVerificationSection
+                    codeId={contract.codeId.toString()}
+                    codeHash={contract.codeHash}
+                    status={VerificationStatus.NOT_VERIFIED}
+                  />
                   <VerifyPublishCodeModal
                     codeId={contract.codeId.toString()}
                     codeHash={contract.codeHash}
                     contractAddress={contractAddress}
-                    triggerElement={<Button>Verfiy Code</Button>}
+                    triggerElement={<Button>Verify Code</Button>}
                   />
                   <CommandSection
                     contractAddress={contractAddress}
@@ -198,7 +205,6 @@ const ContractDetailsBody = observer(
                     </Flex>
                   )}
                 </Flex>
-
                 {/* Instantiate/Contract Info Section */}
                 <Flex direction="column" gap={6}>
                   {!isMobile && (

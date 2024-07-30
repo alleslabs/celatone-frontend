@@ -149,27 +149,10 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
               codeHash={code.hash}
               status={VerificationStatus.NOT_VERIFIED}
             />
-            <CodeVerificationSection
-              codeId={codeId.toString()}
-              codeHash={code.hash}
-              status={VerificationStatus.IN_PROGRESS}
-            />
-            <CodeVerificationSection
-              codeId={codeId.toString()}
-              codeHash={code.hash}
-              status={VerificationStatus.VERIFIED}
-            />
-            <CodeVerificationSection
-              codeId={codeId.toString()}
-              codeHash={code.hash}
-              status={VerificationStatus.INDIRECTLY_VERIFIED}
-            />
-
             <TierSwitcher
               full={<CodeContractsTableFull codeId={codeId} />}
               lite={<CodeContractsTableLite codeId={codeId} />}
             />
-
             <UserDocsLink
               title="What is Code in CosmWasm?"
               cta="Read more about Code Details"
