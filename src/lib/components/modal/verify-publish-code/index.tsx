@@ -1,5 +1,6 @@
 import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/react";
-import { useState } from "react";
+
+import { useSubmitWasmVerify } from "lib/services/verification/wasm";
 
 import { VerifyPublishCode } from "./verifyPublishCode";
 import { VerifyPublishCodeCompleted } from "./verifyPublishCodeCompleted";
@@ -8,64 +9,46 @@ import { VerifyPublishCodeFailed } from "./verifyPublishCodeFailed";
 interface VerifyPublishCodeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  codeId: string;
+  codeId: number;
   codeHash: string;
   contractAddress?: string;
 }
 
-enum VerifyState {
-  VerifyStatePublishCode = "verifyPublishCode",
-  VerifyStatePublishCodeCompleted = "verifyPublishCodeCompleted",
-  VerifyStatePublishCodeFailed = "verifyPublishCodeFailed",
-}
-
-export const VerifyPublishCodeModal = ({
-  isOpen,
+const VerifyPublishCodeModalBody = ({
   onClose,
   codeId,
   codeHash,
   contractAddress,
-}: VerifyPublishCodeModalProps) => {
-  const [verifyState, setVerifyState] = useState<VerifyState>(
-    VerifyState.VerifyStatePublishCode
-  );
+}: Omit<VerifyPublishCodeModalProps, "isOpen">) => {
+  const { mutate, isLoading, isSuccess, isError } = useSubmitWasmVerify();
 
-  const handleOnSubmitVerifyPublishCode = () => {
-    setVerifyState(VerifyState.VerifyStatePublishCodeCompleted);
-    setTimeout(() => {
-      onClose();
-      setVerifyState(VerifyState.VerifyStatePublishCode);
-    }, 3000);
-  };
-
+  if (isError) return <VerifyPublishCodeFailed onClose={onClose} />;
+  if (isSuccess) return <VerifyPublishCodeCompleted />;
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      isCentered
-      returnFocusOnClose={false}
-    >
-      <ModalOverlay />
-      <ModalContent
-        w={{ base: "full", md: "645px" }}
-        bg="gray.800"
-        maxW="100vw"
-      >
-        {verifyState === VerifyState.VerifyStatePublishCode && (
-          <VerifyPublishCode
-            codeId={codeId}
-            codeHash={codeHash}
-            contractAddress={contractAddress}
-            onSubmitVerifyPublishCode={handleOnSubmitVerifyPublishCode}
-          />
-        )}
-        {verifyState === VerifyState.VerifyStatePublishCodeCompleted && (
-          <VerifyPublishCodeCompleted />
-        )}
-        {verifyState === VerifyState.VerifyStatePublishCodeFailed && (
-          <VerifyPublishCodeFailed onClose={onClose} />
-        )}
-      </ModalContent>
-    </Modal>
+    <VerifyPublishCode
+      codeId={codeId}
+      codeHash={codeHash}
+      contractAddress={contractAddress}
+      onSubmitVerifyPublishCode={mutate}
+      isLoading={isLoading}
+    />
   );
 };
+
+export const VerifyPublishCodeModal = ({
+  isOpen,
+  onClose,
+  ...props
+}: VerifyPublishCodeModalProps) => (
+  <Modal
+    isOpen={isOpen}
+    onClose={onClose}
+    isCentered
+    returnFocusOnClose={false}
+  >
+    <ModalOverlay />
+    <ModalContent w={{ base: "full", md: "645px" }} bg="gray.800" maxW="100vw">
+      <VerifyPublishCodeModalBody onClose={onClose} {...props} />
+    </ModalContent>
+  </Modal>
+);

@@ -11,6 +11,7 @@ export interface VerifyPublishCodeOpiton {
   label: string;
   value: string;
   version: string;
+  lastUpdated: Date;
 }
 
 interface VerifyPublishCodeSelectInputProps<T extends FieldValues> {

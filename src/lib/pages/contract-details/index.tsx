@@ -113,7 +113,7 @@ const ContractDetailsBody = observer(
         <VerifyPublishCodeModal
           isOpen={isOpen}
           onClose={onClose}
-          codeId={contract.codeId.toString()}
+          codeId={contract.codeId}
           codeHash={contract.codeHash}
           contractAddress={contractAddress}
         />

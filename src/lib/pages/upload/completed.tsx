@@ -39,7 +39,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
       <VerifyPublishCodeModal
         isOpen={isOpen}
         onClose={onClose}
-        codeId={txResult.codeId}
+        codeId={Number(txResult.codeId)}
         codeHash={txResult.codeHash}
       />
       <WasmPageContainer>

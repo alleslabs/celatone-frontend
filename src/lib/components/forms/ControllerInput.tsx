@@ -132,6 +132,7 @@ export const ControllerInput = <T extends FieldValues>({
           cursor={cursor}
           pr={inputPaddingRight()}
           onBlur={field.onBlur}
+          onChange={field.onChange}
           {...(type === "decimal" && decimalHandlers)}
           {...(type === "number" && numberHandlers)}
         />
