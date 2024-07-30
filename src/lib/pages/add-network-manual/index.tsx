@@ -29,6 +29,7 @@ export const AddNetworkManual = () => {
     formState: { errors },
     watch,
     setValue,
+    trigger,
   } = useForm<AddNetworkManualForm>({
     resolver: zodResolver(zAddNetworkManualForm),
     mode: "all",
@@ -104,7 +105,12 @@ export const AddNetworkManual = () => {
 
     if (currentStep === 2)
       return (
-        <GasFeeDetails control={control} errors={errors} setValue={setValue} />
+        <GasFeeDetails
+          control={control}
+          errors={errors}
+          setValue={setValue}
+          trigger={trigger}
+        />
       );
 
     return <WalletRegistry control={control} errors={errors} />;
@@ -146,8 +152,10 @@ export const AddNetworkManual = () => {
     return false;
   };
 
+  const showSkipButton = currentStep === 1 && !isWasm && !isMove && !isNfts;
+
   const handleActionLabel = () => {
-    if (currentStep === 1 && !isWasm && !isMove && !isNfts) return "Skip";
+    if (showSkipButton) return "Skip";
 
     if (currentStep === 3) return "Save new Minitia";
 
@@ -165,11 +173,12 @@ export const AddNetworkManual = () => {
         cancelButton={{
           onClick: handlePrevious,
           variant: "outline-secondary",
-          isDisabled: currentStep === 0,
         }}
+        cancelLabel={currentStep === 0 ? "Cancel" : "Previous"}
         actionButton={{
           onClick: handleNext,
           isDisabled: isFormDisabled(),
+          variant: !showSkipButton ? "primary" : "outline-white",
         }}
         actionLabel={handleActionLabel()}
         helperText="The added custom Minitia on Initiascan will be stored locally on your device."

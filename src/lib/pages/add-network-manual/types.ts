@@ -6,37 +6,6 @@ const mustBeAlphabetNumberAndSpecialCharacters =
   "Must be alphabet (a-z), numbers (0-9), or these special characters: “/”, “:”, “.”, “_”, “-”";
 const mustBeNumbersOnly = "Must be numbers only";
 
-export const zNetworkDetailsForm = z.object({
-  networkName: z.string().superRefine(
-    (val, ctx) =>
-      val.length > 50 &&
-      ctx.addIssue({
-        code: ZodIssueCode.custom,
-        message: `Minitia Name is too long. (${val.length}/50)`,
-      })
-  ),
-  lcdUrl: z.string().url({ message: pleaseEnterAValidUrl }),
-  rpcUrl: z.string().url({ message: pleaseEnterAValidUrl }),
-  chainId: z.string().regex(/^[^\s]+$/, {
-    message: "Required",
-  }),
-  registryChainName: z.string().regex(/^[a-z0-9]+$/, {
-    message: "Lower case letter (a-z) or number (0-9)",
-  }),
-  logoUri: z.union([
-    z.string().url({ message: "Please enter a valid URL" }),
-    z.literal(""),
-  ]),
-});
-export type NetworkDetailsForm = z.infer<typeof zNetworkDetailsForm>;
-
-export const zSupportedFeaturesForm = z.object({
-  isWasm: z.boolean(),
-  isMove: z.boolean(),
-  isNfts: z.boolean(),
-});
-export type SupportedFeaturesForm = z.infer<typeof zSupportedFeaturesForm>;
-
 const zNumberForm = z
   .union([
     z.literal(""),
@@ -54,6 +23,35 @@ const zNumberFormRequired = zNumberForm.superRefine((val, ctx) => {
 
   return true;
 });
+
+export const zNetworkDetailsForm = z.object({
+  networkName: z.string().superRefine(
+    (val, ctx) =>
+      val.length > 50 &&
+      ctx.addIssue({
+        code: ZodIssueCode.custom,
+        message: `Minitia Name is too long. (${val.length}/50)`,
+      })
+  ),
+  lcdUrl: z.string().url({ message: pleaseEnterAValidUrl }),
+  rpcUrl: z.string().url({ message: pleaseEnterAValidUrl }),
+  chainId: z.string().min(1, { message: " " }),
+  registryChainName: z.string().regex(/^[a-z0-9]+$/, {
+    message: "Lower case letter (a-z) or number (0-9)",
+  }),
+  logoUri: z.union([
+    z.string().url({ message: "Please enter a valid URL" }),
+    z.literal(""),
+  ]),
+});
+export type NetworkDetailsForm = z.infer<typeof zNetworkDetailsForm>;
+
+export const zSupportedFeaturesForm = z.object({
+  isWasm: z.boolean(),
+  isMove: z.boolean(),
+  isNfts: z.boolean(),
+});
+export type SupportedFeaturesForm = z.infer<typeof zSupportedFeaturesForm>;
 
 const zGasFeeDetails = z.object({
   gasAdjustment: zNumberFormRequired,
@@ -124,16 +122,7 @@ const zWalletRegistryAssetDenomForm = z.object({
   denom: z.string().regex(/^[a-z0-9/:._-]+$/, {
     message: mustBeAlphabetNumberAndSpecialCharacters,
   }),
-  exponent: z
-    .union([
-      z.literal(""),
-      z.coerce.number({
-        invalid_type_error: mustBeNumbersOnly,
-      }),
-    ])
-    .refine((val) => val !== "", {
-      message: " ",
-    }),
+  exponent: zNumberFormRequired,
 });
 
 const zWalletRegistryAssetForm = z.object({

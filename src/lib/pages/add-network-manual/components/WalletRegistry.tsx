@@ -6,7 +6,7 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react";
-import { useFieldArray, useWatch } from "react-hook-form";
+import { useController, useFieldArray } from "react-hook-form";
 import type { Control, FieldErrors } from "react-hook-form";
 
 import type { AddNetworkManualForm } from "../types";
@@ -80,6 +80,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
               control={control}
               label="Exponent"
               variant="fixed-floating"
+              type="number"
               w="full"
               placeholder="ex. 2"
               rules={{
@@ -122,10 +123,13 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
 };
 
 export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
-  const bech32Prefix = useWatch({
-    control,
+  const bech32Prefix = useController({
     name: "bech32Prefix",
+    control,
   });
+
+  const { field: bech32PrefixField, fieldState: bech32PrefixFieldState } =
+    bech32Prefix;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -163,7 +167,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
             error={errors.slip44?.message}
           />
         </Flex>
-        {bech32Prefix && (
+        {bech32PrefixField.value && !bech32PrefixFieldState.error && (
           <Flex
             direction="column"
             gap={1}
@@ -175,7 +179,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
               Account address in this Minitia will look like this:
             </Text>
             <Text variant="body2" color="text.main">
-              {bech32Prefix}
+              {bech32PrefixField.value}
               1cvhde2nst3qewz8x58m6tuupfk08zspeev4ud3
             </Text>
           </Flex>

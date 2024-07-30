@@ -78,7 +78,11 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
             variant="fixed-floating"
             w="full"
             placeholder="ex. jennieinit"
-            helperText="Lower case letter (a-z) or number (0-9)"
+            helperText={
+              errors.registryChainName?.message
+                ? ""
+                : "Lower case letter (a-z) or number (0-9)"
+            }
             rules={{
               required: "",
             }}

@@ -38,8 +38,7 @@ export const useNetworkStepper = (limit: number, handleSubmit: () => void) => {
         )
       : handleSubmit();
 
-  const handlePrevious = () =>
-    currentStep && Number(currentStep) > 1 ? router.back() : null;
+  const handlePrevious = () => router.back();
 
   return {
     currentStep: Number(currentStep) - 1,

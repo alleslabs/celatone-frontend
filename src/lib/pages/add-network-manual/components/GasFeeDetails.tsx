@@ -13,7 +13,12 @@ import {
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useWatch } from "react-hook-form";
-import type { Control, FieldErrors, UseFormSetValue } from "react-hook-form";
+import type {
+  Control,
+  FieldErrors,
+  UseFormSetValue,
+  UseFormTrigger,
+} from "react-hook-form";
 
 import type { AddNetworkManualForm } from "../types";
 import {
@@ -31,18 +36,19 @@ interface GasFeeDetailsProps {
   control: Control<AddNetworkManualForm>;
   errors: FieldErrors<AddNetworkManualForm>;
   setValue: UseFormSetValue<AddNetworkManualForm>;
+  trigger: UseFormTrigger<AddNetworkManualForm>;
 }
 
 const GasOptionStandard = ({
   control,
   errors,
-}: Omit<GasFeeDetailsProps, "setValue">) => (
+}: Omit<GasFeeDetailsProps, "setValue" | "trigger">) => (
   <ControllerInput
     name="gasPrice"
     control={control}
     label="Gas Price"
     variant="fixed-floating"
-    type="number"
+    type="decimal"
     w="full"
     placeholder="0.00"
     error={errors.gasPrice?.message}
@@ -53,7 +59,7 @@ const GasOptionStandard = ({
 const GasOptionCustom = ({
   control,
   errors,
-}: Omit<GasFeeDetailsProps, "setValue">) => (
+}: Omit<GasFeeDetailsProps, "setValue" | "trigger">) => (
   <>
     <Flex justifyContent="space-between" alignItems="center">
       <Box>
@@ -68,7 +74,7 @@ const GasOptionCustom = ({
         name="fixedMinimumGasPrice"
         control={control}
         variant="fixed-floating"
-        type="number"
+        type="decimal"
         w="256px"
         placeholder="0.00"
         error={errors.fixedMinimumGasPrice?.message}
@@ -88,7 +94,7 @@ const GasOptionCustom = ({
         name="lowGasPrice"
         control={control}
         variant="fixed-floating"
-        type="number"
+        type="decimal"
         w="256px"
         placeholder="0.00"
         error={errors.lowGasPrice?.message}
@@ -108,7 +114,7 @@ const GasOptionCustom = ({
         name="averageGasPrice"
         control={control}
         variant="fixed-floating"
-        type="number"
+        type="decimal"
         w="256px"
         placeholder="0.00"
         error={errors.averageGasPrice?.message}
@@ -128,7 +134,7 @@ const GasOptionCustom = ({
         name="highGasPrice"
         control={control}
         variant="fixed-floating"
-        type="number"
+        type="decimal"
         w="256px"
         placeholder="0.00"
         error={errors.highGasPrice?.message}
@@ -138,7 +144,12 @@ const GasOptionCustom = ({
   </>
 );
 
-const GasFeeDetails = ({ control, errors, setValue }: GasFeeDetailsProps) => {
+const GasFeeDetails = ({
+  control,
+  errors,
+  setValue,
+  trigger,
+}: GasFeeDetailsProps) => {
   const { gasPrice, gasConfig } = useWatch({ control });
 
   useEffect(() => {
@@ -146,6 +157,7 @@ const GasFeeDetails = ({ control, errors, setValue }: GasFeeDetailsProps) => {
 
     if (gasConfig === GasPriceConfiguration.CUSTOM) {
       setValue("gasPrice", "");
+      trigger();
 
       return;
     }
@@ -155,8 +167,9 @@ const GasFeeDetails = ({ control, errors, setValue }: GasFeeDetailsProps) => {
       setValue("lowGasPrice", gasPrice);
       setValue("averageGasPrice", gasPrice);
       setValue("highGasPrice", gasPrice);
+      trigger();
     }
-  }, [gasConfig, setValue, gasPrice]);
+  }, [gasConfig, setValue, gasPrice, trigger]);
 
   return (
     <Flex direction="column" gap={2} alignItems="center">
@@ -170,7 +183,7 @@ const GasFeeDetails = ({ control, errors, setValue }: GasFeeDetailsProps) => {
               control={control}
               label="Gas Adjustment"
               variant="fixed-floating"
-              type="number"
+              type="decimal"
               w="full"
               placeholder="0.00"
               rules={{ required: "" }}
@@ -181,7 +194,7 @@ const GasFeeDetails = ({ control, errors, setValue }: GasFeeDetailsProps) => {
               control={control}
               label="Max Gas Limit"
               variant="fixed-floating"
-              type="number"
+              type="decimal"
               w="full"
               placeholder="0.00"
               rules={{ required: "" }}
@@ -253,6 +266,7 @@ const GasFeeDetails = ({ control, errors, setValue }: GasFeeDetailsProps) => {
                   control={control}
                   label="Gas Cost for Cosmos Send"
                   variant="fixed-floating"
+                  type="decimal"
                   w="full"
                   placeholder="0.00"
                   error={errors.gasForCosmosSend?.message}
@@ -263,6 +277,7 @@ const GasFeeDetails = ({ control, errors, setValue }: GasFeeDetailsProps) => {
                   control={control}
                   label="Gas Cost for IBC"
                   variant="fixed-floating"
+                  type="decimal"
                   w="full"
                   placeholder="0.00"
                   error={errors.gasForIbc?.message}

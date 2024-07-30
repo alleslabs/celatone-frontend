@@ -111,7 +111,6 @@ export const ControllerInput = <T extends FieldValues>({
       size={size}
       isInvalid={isError || status?.state === "error"}
       isRequired={isRequired}
-      dir={rtl ? "rtl" : "ltr"}
       {...componentProps}
       {...field}
     >
@@ -141,6 +140,7 @@ export const ControllerInput = <T extends FieldValues>({
           pr={inputPaddingRight()}
           {...(type === "decimal" && decimalHandlers)}
           {...(type === "number" && numberHandlers)}
+          textAlign={rtl ? "right" : "left"}
         />
         <InputRightElement h="full" pr={cta ? 3 : 0}>
           {status && getStatusIcon(status.state)}
