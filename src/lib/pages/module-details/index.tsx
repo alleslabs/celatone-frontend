@@ -16,7 +16,7 @@ import {
   useModuleByAddressLcd,
   useModulePublishInfo,
   useModuleTableCounts,
-  useVerifyModule,
+  useMoveVerifyInfo,
 } from "lib/services/move/module";
 import { truncate } from "lib/utils";
 
@@ -64,7 +64,7 @@ const ModuleDetailsBody = ({
     isFullTier
   );
   const { data: verificationData, isLoading: verificationLoading } =
-    useVerifyModule({
+    useMoveVerifyInfo({
       address: vmAddress,
       moduleName,
     });
