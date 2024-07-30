@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import ActionPageContainer from "lib/components/ActionPageContainer";
+import { CustomIcon } from "lib/components/icon";
 import { FooterCta } from "lib/components/layouts";
 import { CelatoneSeo } from "lib/components/Seo";
 
@@ -92,10 +93,8 @@ export const AddNetworkManual = () => {
     // console.log(JSON.stringify(data, null, 2));
   };
 
-  const { currentStep, handleNext, handlePrevious } = useNetworkStepper(
-    4,
-    handleSubmit(handleSubmitForm)
-  );
+  const { currentStep, handleNext, handlePrevious, hasNext, hasPrevious } =
+    useNetworkStepper(4, handleSubmit(handleSubmitForm));
 
   const renderFormUI = () => {
     if (currentStep === 0)
@@ -174,11 +173,14 @@ export const AddNetworkManual = () => {
           onClick: handlePrevious,
           variant: "outline-secondary",
         }}
-        cancelLabel={currentStep === 0 ? "Cancel" : "Previous"}
+        cancelLabel={hasPrevious ? "Previous" : "Cancel"}
         actionButton={{
           onClick: handleNext,
           isDisabled: isFormDisabled(),
           variant: !showSkipButton ? "primary" : "outline-white",
+          rightIcon: hasNext ? (
+            <CustomIcon name="chevron-right" boxSize={4} />
+          ) : undefined,
         }}
         actionLabel={handleActionLabel()}
         helperText="The added custom Minitia on Initiascan will be stored locally on your device."

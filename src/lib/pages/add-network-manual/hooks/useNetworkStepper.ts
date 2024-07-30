@@ -44,5 +44,7 @@ export const useNetworkStepper = (limit: number, handleSubmit: () => void) => {
     currentStep: Number(currentStep) - 1,
     handleNext,
     handlePrevious,
+    hasNext: Number(currentStep) < limit,
+    hasPrevious: Number(currentStep) > 1,
   };
 };

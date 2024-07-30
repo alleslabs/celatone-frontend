@@ -142,7 +142,11 @@ export const ControllerInput = <T extends FieldValues>({
           {...(type === "number" && numberHandlers)}
           textAlign={rtl ? "right" : "left"}
         />
-        <InputRightElement h="full" pr={cta ? 3 : 0}>
+        <InputRightElement
+          h="full"
+          w={status || cta ? "2.5rem" : 0}
+          pr={cta ? 3 : 0}
+        >
           {status && getStatusIcon(status.state)}
           {cta && (
             <Text
