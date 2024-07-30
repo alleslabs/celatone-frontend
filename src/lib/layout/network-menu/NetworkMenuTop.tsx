@@ -48,7 +48,12 @@ export const NetworkMenuTop = ({
             Want to add your network?
           </Text>{" "}
           <AppLink href="/add-network" onClick={onClose}>
-            <Text as="span" variant="body3" color="secondary.main">
+            <Text
+              as="span"
+              variant="body3"
+              color="secondary.main"
+              _hover={{ textDecoration: "underline" }}
+            >
               Add a custom chain.
             </Text>
           </AppLink>
