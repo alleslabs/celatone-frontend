@@ -22,6 +22,8 @@ import {
   HASURA_ADMIN_SECRET,
   SUPPORTED_CHAIN_IDS,
 } from "env";
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import { useChainConfigStore } from "lib/providers/store";
 import { changeFavicon } from "lib/utils";
 
 interface AppProviderProps {
@@ -59,6 +61,7 @@ const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
 export const AppProvider = ({ children }: AppProviderProps) => {
   const { setModalTheme } = useModalTheme();
   const { chainConfigs } = useChainConfigs();
+  const { isHydrated: isChainConfigStoreHydrated } = useChainConfigStore();
 
   const [states, setStates] = useState<AppContextInterface>(DEFAULT_STATES);
 
@@ -107,6 +110,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   useNetworkChange(handleOnChainIdChange);
 
+  if (!isChainConfigStoreHydrated) return <LoadingOverlay />;
   return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
 };
 

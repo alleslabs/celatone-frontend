@@ -191,7 +191,6 @@ export const useChainConfigs = (): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // TODO: add isHydrated?
   const local = useMemo(
     () =>
       Object.values(chainConfigs).reduce(
