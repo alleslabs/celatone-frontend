@@ -11,6 +11,7 @@ interface NetworkAccordionSubsectionProps {
   setCursor: (index: Option<number>) => void;
   subsectionStartIndex: number;
   onClose: () => void;
+  isEditable?: boolean;
 }
 
 export const NetworkAccordionSubsection = ({
@@ -20,6 +21,7 @@ export const NetworkAccordionSubsection = ({
   setCursor,
   subsectionStartIndex,
   onClose,
+  isEditable,
 }: NetworkAccordionSubsectionProps) => (
   <Flex direction="column" gap={2}>
     {title !== undefined && (
@@ -40,6 +42,7 @@ export const NetworkAccordionSubsection = ({
         cursor={cursor}
         setCursor={setCursor}
         onClose={onClose}
+        isEditable={isEditable}
       />
     ))}
   </Flex>

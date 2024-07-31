@@ -16,20 +16,26 @@ export const useNetworkSelector = (onClose: () => void) => {
   const [cursor, setCursor] = useState<number>();
 
   const pinnedNetworks = getPinnedNetworks();
-  const [filteredPinnedChains, filteredMainnetChains, filteredTestnetChains] =
-    useMemo(
-      () => [
-        filterChains(chainConfigs, pinnedNetworks, keyword),
-        filterChains(chainConfigs, availableChainIds, keyword, "mainnet"),
-        filterChains(chainConfigs, availableChainIds, keyword, "testnet"),
-      ],
-      [availableChainIds, chainConfigs, keyword, pinnedNetworks]
-    );
+  const [
+    filteredPinnedChains,
+    filteredMainnetChains,
+    filteredTestnetChains,
+    filteredLocalChains,
+  ] = useMemo(
+    () => [
+      filterChains(chainConfigs, pinnedNetworks, keyword),
+      filterChains(chainConfigs, availableChainIds, keyword, "mainnet"),
+      filterChains(chainConfigs, availableChainIds, keyword, "testnet"),
+      filterChains(chainConfigs, availableChainIds, keyword, "local"),
+    ],
+    [availableChainIds, chainConfigs, keyword, pinnedNetworks]
+  );
 
   const totalNetworks =
     filteredPinnedChains.length +
     filteredMainnetChains.length +
-    filteredTestnetChains.length;
+    filteredTestnetChains.length +
+    filteredLocalChains.length;
 
   const handleOnKeyDown = useCallback(
     (e: ReactKeyboardEvent<HTMLDivElement>) => {
@@ -68,5 +74,6 @@ export const useNetworkSelector = (onClose: () => void) => {
     filteredPinnedChains,
     filteredMainnetChains,
     filteredTestnetChains,
+    filteredLocalChains,
   };
 };

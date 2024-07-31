@@ -15,6 +15,7 @@ interface NetworkMenuBodyProps {
   filteredPinnedChains: string[];
   filteredMainnetChains: string[];
   filteredTestnetChains: string[];
+  filteredLocalChains: string[];
   onClose: () => void;
 }
 
@@ -25,13 +26,14 @@ export const NetworkMenuBody = observer(
     filteredPinnedChains,
     filteredMainnetChains,
     filteredTestnetChains,
+    filteredLocalChains,
     onClose,
   }: NetworkMenuBodyProps) => (
     <>
       <Accordion
         variant="transparent"
         allowMultiple
-        defaultIndex={[0, 1, 2]}
+        defaultIndex={[0, 1, 2, 3]}
         p={0}
       >
         <Flex direction="column" gap={4}>
@@ -62,6 +64,19 @@ export const NetworkMenuBody = observer(
             onClose={onClose}
           />
           <Divider borderColor="gray.700" />
+          <NetworkAccordion
+            title="Your Local Minitias"
+            networks={filteredLocalChains}
+            cursor={cursor}
+            setCursor={setCursor}
+            startIndex={
+              filteredPinnedChains.length +
+              filteredMainnetChains.length +
+              filteredTestnetChains.length
+            }
+            onClose={onClose}
+            isEditable
+          />
           <AppLink href="/add-network">
             <Button
               variant="outline-gray"

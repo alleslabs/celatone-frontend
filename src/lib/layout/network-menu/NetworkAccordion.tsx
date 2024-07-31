@@ -19,6 +19,7 @@ interface NetworkAccordionProps {
   setCursor: (index: Option<number>) => void;
   startIndex: number;
   onClose: () => void;
+  isEditable?: boolean;
 }
 
 export const NetworkAccordion = ({
@@ -28,6 +29,7 @@ export const NetworkAccordion = ({
   setCursor,
   startIndex,
   onClose,
+  isEditable,
 }: NetworkAccordionProps) => {
   const { chainConfigs } = useChainConfigs();
   const nonInitiaNetworks = networks.filter(
@@ -41,7 +43,7 @@ export const NetworkAccordion = ({
   );
 
   return (
-    <AccordionItem hidden={networks.length === 0}>
+    <AccordionItem hidden={networks.length === 0} aria-expanded="true">
       <Flex direction="column" gap={4}>
         <AccordionButton p={0}>
           <Flex justifyContent="space-between" w="full">
@@ -60,6 +62,7 @@ export const NetworkAccordion = ({
                 setCursor={setCursor}
                 subsectionStartIndex={startIndex}
                 onClose={onClose}
+                isEditable={isEditable}
               />
             )}
             {l1Networks.length > 0 && (
@@ -70,6 +73,7 @@ export const NetworkAccordion = ({
                 setCursor={setCursor}
                 subsectionStartIndex={startIndex + nonInitiaNetworks.length}
                 onClose={onClose}
+                isEditable={isEditable}
               />
             )}
             {l2Networks.length > 0 && (
@@ -82,6 +86,7 @@ export const NetworkAccordion = ({
                   startIndex + nonInitiaNetworks.length + l1Networks.length
                 }
                 onClose={onClose}
+                isEditable={isEditable}
               />
             )}
           </Flex>

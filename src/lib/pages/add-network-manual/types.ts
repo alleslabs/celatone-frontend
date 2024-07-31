@@ -259,7 +259,7 @@ export const zAddNetworkManualChainConfigJson = ({
       isValidatorExternalLink: null,
       layer: "2",
     },
-    network_type: "testnet",
+    network_type: "local",
     fees: {
       fee_tokens: [
         {
