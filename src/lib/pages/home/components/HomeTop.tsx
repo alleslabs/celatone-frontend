@@ -6,7 +6,7 @@ import type { Nullish } from "lib/types";
 import { d0Formatter } from "lib/utils";
 
 import { CardInfo } from "./CardInfo";
-import { DevShortcut } from "./DevShortcut";
+import { DevShortcuts } from "./DevShortcuts";
 
 const txInfo = {
   title: "Total Transactions",
@@ -97,7 +97,7 @@ export const HomeTop = ({
           />
         </Flex>
       </Flex>
-      {!isMobile && <DevShortcut />}
+      {!isMobile && <DevShortcuts />}
     </>
   );
 };
