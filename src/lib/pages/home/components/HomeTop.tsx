@@ -1,7 +1,6 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 
 import { useCelatoneApp, useMobile } from "lib/app-provider";
-import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { Nullish } from "lib/types";
 import { d0Formatter } from "lib/utils";
@@ -49,7 +48,6 @@ export const HomeTop = ({
   const isMobile = useMobile();
   const {
     chainConfig: { prettyName },
-    theme,
   } = useCelatoneApp();
 
   return (
@@ -99,20 +97,7 @@ export const HomeTop = ({
           />
         </Flex>
       </Flex>
-      {!isMobile && (
-        <Box as="section" mb="48px">
-          <Flex gap={4} direction="column">
-            <Heading as="h5" variant="h5">
-              Dev Shortcuts
-            </Heading>
-            <ConnectWalletAlert
-              title={`Connect wallet to start using ${theme.branding.seo.appName}`}
-              subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."
-            />
-            <DevShortcut />
-          </Flex>
-        </Box>
-      )}
+      {!isMobile && <DevShortcut />}
     </>
   );
 };
