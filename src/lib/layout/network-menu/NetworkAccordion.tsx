@@ -43,7 +43,7 @@ export const NetworkAccordion = ({
   );
 
   return (
-    <AccordionItem hidden={networks.length === 0} aria-expanded="true">
+    <AccordionItem hidden={networks.length === 0}>
       <Flex direction="column" gap={4}>
         <AccordionButton p={0}>
           <Flex justifyContent="space-between" w="full">
