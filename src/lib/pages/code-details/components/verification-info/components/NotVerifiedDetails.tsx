@@ -5,7 +5,7 @@ import { VerifyPublishCodeModal } from "lib/components/modal";
 import { VerifyButton } from "./VerifyButton";
 
 interface NotVerifiedDetailsProps {
-  codeId: string;
+  codeId: number;
   codeHash: string;
 }
 

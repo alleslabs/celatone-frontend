@@ -13,7 +13,7 @@ import { VerifiedDetails } from "./components/VerifiedDetails";
 
 interface CodeVerificationSectionProps {
   status: VerificationStatus;
-  codeId: string;
+  codeId: number;
   codeHash: string;
 }
 
@@ -47,29 +47,22 @@ export const CodeVerificationSection = ({
   status,
   codeId,
   codeHash,
-}: CodeVerificationSectionProps) => {
-  return (
-    <Flex direction="column" my={8} gap={4}>
-      <Flex gap={2} alignItems="center">
-        <Heading as="h6" variant="h6">
-          Verification Info
-        </Heading>
-        <VerificationBadge hasText status={status} type="code" />
-      </Flex>
-      <Flex background="gray.900" borderRadius={8} px={6} py={4}>
-        <Flex
-          justifyContent="space-between"
-          alignItems="center"
-          w="full"
-          gap={2}
-        >
-          <CodeVerificationSectionBody
-            status={status}
-            codeId={codeId}
-            codeHash={codeHash}
-          />
-        </Flex>
+}: CodeVerificationSectionProps) => (
+  <Flex direction="column" my={8} gap={4}>
+    <Flex gap={2} alignItems="center">
+      <Heading as="h6" variant="h6">
+        Verification Info
+      </Heading>
+      <VerificationBadge hasText status={status} type="code" />
+    </Flex>
+    <Flex background="gray.900" borderRadius={8} px={6} py={4}>
+      <Flex justifyContent="space-between" alignItems="center" w="full" gap={2}>
+        <CodeVerificationSectionBody
+          status={status}
+          codeId={codeId}
+          codeHash={codeHash}
+        />
       </Flex>
     </Flex>
-  );
-};
+  </Flex>
+);

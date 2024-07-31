@@ -5,7 +5,7 @@ import { CodeVerificationStatus } from "lib/components/modal/code-verification-s
 import { VerifyButton } from "./VerifyButton";
 
 interface FailedDetailsProps {
-  codeId: string;
+  codeId: number;
   codeHash: string;
   submittedTime: string;
 }

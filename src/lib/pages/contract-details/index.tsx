@@ -166,12 +166,12 @@ const ContractDetailsBody = observer(
                     />
                   )}
                   <ContractVerificationSection
-                    codeId={contract.codeId.toString()}
+                    codeId={contract.codeId}
                     codeHash={contract.codeHash}
                     status={VerificationStatus.NOT_VERIFIED}
                   />
                   <VerifyPublishCodeModal
-                    codeId={contract.codeId.toString()}
+                    codeId={contract.codeId}
                     codeHash={contract.codeHash}
                     contractAddress={contractAddress}
                     triggerElement={<Button>Verify Code</Button>}

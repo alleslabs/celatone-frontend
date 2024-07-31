@@ -3,7 +3,7 @@ import { Text } from "@chakra-ui/react";
 import { VerifyButton } from "./VerifyButton";
 
 interface IndirectlyVerifiedDetailsProps {
-  codeId: string;
+  codeId: number;
   codeHash: string;
 }
 

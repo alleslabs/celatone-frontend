@@ -151,7 +151,7 @@ export const InstantiateInfo = ({
             Is this your code?{" "}
             <Flex display="inline-flex" px={1}>
               <VerifyPublishCodeModal
-                codeId={contract.codeId.toString()}
+                codeId={contract.codeId}
                 codeHash={contract.codeHash}
                 triggerElement={
                   <Text

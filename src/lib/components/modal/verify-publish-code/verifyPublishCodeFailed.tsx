@@ -28,8 +28,9 @@ export const VerifyPublishCodeFailed = ({
           />
           <Heading variant="h5">Verification is unavailable</Heading>
           <Text variant="body2" textAlign="center">
-            This code has been submitted and is currently undergoing
-            verification. You can check the verification status on the code page
+            This code has already been submitted and is currently undergoing
+            verification. You can check its verification status on the code
+            page.
           </Text>
         </Flex>
         <Button onClick={onClose} variant="outline-primary" w="100%">

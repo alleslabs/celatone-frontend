@@ -131,9 +131,10 @@ export const ControllerInput = <T extends FieldValues>({
           autoFocus={autoFocus}
           cursor={cursor}
           pr={inputPaddingRight()}
+          onBlur={field.onBlur}
+          onChange={field.onChange}
           {...(type === "decimal" && decimalHandlers)}
           {...(type === "number" && numberHandlers)}
-          onBlur={field.onBlur}
         />
         <InputRightElement h="full" pr={cta ? 3 : 0}>
           {status && getStatusIcon(status.state)}

@@ -29,6 +29,7 @@ import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { VerificationStatus } from "lib/components/VerificationBadge";
 import { useSchemaStore } from "lib/providers/store";
+import { useGetWasmVerifyInfos } from "lib/services/verification/wasm";
 import { useCodeData } from "lib/services/wasm/code";
 
 import {
@@ -62,6 +63,9 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const resApi = useCodeData(codeId, isFullTier);
   const resLcd = useCodeDataLcd(codeId, !isFullTier);
   const { data, isLoading } = isFullTier ? resApi : resLcd;
+  const { data: wasmVerifyInfo } = useGetWasmVerifyInfos(currentChainId, [
+    codeId,
+  ]);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -86,6 +90,9 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
 
   const { info: code, projectInfo, publicInfo } = data;
   const jsonSchema = getSchemaByCodeHash(code.hash);
+
+  // eslint-disable-next-line no-console
+  console.log(wasmVerifyInfo?.[codeId]);
 
   return (
     <>
@@ -135,7 +142,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
                 triggerElement={<Button>View Verification Details</Button>}
               />
               <VerifyPublishCodeModal
-                codeId={codeId.toString()}
+                codeId={codeId}
                 codeHash={code.hash}
                 triggerElement={
                   <Button variant="outline-primary" size="sm">
@@ -145,7 +152,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
               />
             </Flex>
             <CodeVerificationSection
-              codeId={codeId.toString()}
+              codeId={codeId}
               codeHash={code.hash}
               status={VerificationStatus.NOT_VERIFIED}
             />

@@ -105,7 +105,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
       </Flex>
       <Flex mt={10}>
         <VerifyPublishCodeModal
-          codeId={txResult.codeId}
+          codeId={Number(txResult.codeId)}
           codeHash={txResult.codeHash}
           triggerElement={<Button>Verfiy Code</Button>}
         />

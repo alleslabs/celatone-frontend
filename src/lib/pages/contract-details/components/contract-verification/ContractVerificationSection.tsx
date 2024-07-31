@@ -11,7 +11,7 @@ import { VerifiedDetails } from "./VerifiedDetails";
 
 interface ContractVerificationSectionProps {
   status: VerificationStatus;
-  codeId: string;
+  codeId: number;
   codeHash: string;
 }
 
@@ -45,20 +45,18 @@ export const ContractVerificationSection = ({
   codeHash,
   codeId,
   status,
-}: ContractVerificationSectionProps) => {
-  return (
-    <Flex direction="column" mb={6} gap={4}>
-      <Flex justifyContent="space-between" alignItems="center" w="full" gap={2}>
-        <StatusMessageBox
-          content={
-            <ContractVerificationSectionBody
-              status={status}
-              codeHash={codeHash}
-              codeId={codeId}
-            />
-          }
-        />
-      </Flex>
+}: ContractVerificationSectionProps) => (
+  <Flex direction="column" mb={6} gap={4}>
+    <Flex justifyContent="space-between" alignItems="center" w="full" gap={2}>
+      <StatusMessageBox
+        content={
+          <ContractVerificationSectionBody
+            status={status}
+            codeHash={codeHash}
+            codeId={codeId}
+          />
+        }
+      />
     </Flex>
-  );
-};
+  </Flex>
+);

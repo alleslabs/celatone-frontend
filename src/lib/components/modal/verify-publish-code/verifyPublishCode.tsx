@@ -9,23 +9,24 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { sortBy } from "lodash";
-import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ControllerInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-import { useDockerImageTag } from "lib/services/docker-image";
+import type { WasmVerifyRequest } from "lib/services/types";
 
+import { useRustOptimizerVersions } from "./hooks";
 import { VerifyPublishCodeSelectInput } from "./verifyPublishCodeSelectInput";
 
 interface VerifyPublishCodeProps {
-  codeId: string;
+  codeId: number;
   codeHash: string;
   contractAddress?: string;
-  onSubmitVerifyPublishCode: () => void;
+  onSubmitVerifyPublishCode: (wasmVerifyRequest: WasmVerifyRequest) => void;
+  isLoading: boolean;
 }
 
 export const VerifyPublishCode = ({
@@ -33,34 +34,10 @@ export const VerifyPublishCode = ({
   codeHash,
   contractAddress,
   onSubmitVerifyPublishCode,
+  isLoading,
 }: VerifyPublishCodeProps) => {
-  const { data: rustOptimizer } = useDockerImageTag(
-    "cosmwasm",
-    "rust-optimizer"
-  );
-  const { data: rustOptimizerArm64 } = useDockerImageTag(
-    "cosmwasm",
-    "rust-optimizer-arm64"
-  );
-
-  const options = useMemo(() => {
-    const rustOptimizerResult =
-      rustOptimizer?.results.map((result) => ({
-        label: `cosmwasm/optimizer:${result.name}`,
-        value: result.digest,
-        version: result.name,
-      })) ?? [];
-    const rustOptimizerArm64Result =
-      rustOptimizerArm64?.results.map((result) => ({
-        label: `cosmwasm/optimizer-arm64:${result.name}`,
-        value: result.digest,
-        version: result.name,
-      })) ?? [];
-
-    const results = [...rustOptimizerResult, ...rustOptimizerArm64Result];
-
-    return sortBy(results, ["version"]).reverse();
-  }, [rustOptimizer, rustOptimizerArm64]);
+  const { currentChainId } = useCelatoneApp();
+  const rustOptimizerVersions = useRustOptimizerVersions();
 
   const {
     control,
@@ -69,7 +46,7 @@ export const VerifyPublishCode = ({
   } = useForm({
     resolver: zodResolver(
       z.object({
-        githubRepository: z
+        gitUrl: z
           .string()
           .min(1, {
             message: "Please provide the source code’s GitHub commit URL",
@@ -82,7 +59,7 @@ export const VerifyPublishCode = ({
             message:
               "Please enter GitHub URL in format: https://github.com/yourrepositoryname",
           }),
-        commitHash: z
+        commit: z
           .string()
           .min(1, { message: "Commit hash is requried" })
           .regex(
@@ -92,7 +69,7 @@ export const VerifyPublishCode = ({
           .max(40, {
             message: "The commit hash length must be 40 characters or fewer",
           }),
-        wasmFileName: z
+        packageName: z
           .string()
           .min(1, { message: "Wasm file name is required" })
           .regex(
@@ -105,9 +82,9 @@ export const VerifyPublishCode = ({
     mode: "all",
     reValidateMode: "onChange",
     defaultValues: {
-      githubRepository: "",
-      commitHash: "",
-      wasmFileName: "",
+      gitUrl: "",
+      commit: "",
+      packageName: "",
       compilerVersion: "",
     },
   });
@@ -150,7 +127,11 @@ export const VerifyPublishCode = ({
                 <Text fontWeight={500} color="text.dark" variant="body2">
                   Code ID:
                 </Text>
-                <ExplorerLink type="code_id" value={codeId} showCopyOnHover />
+                <ExplorerLink
+                  type="code_id"
+                  value={codeId.toString()}
+                  showCopyOnHover
+                />
                 {contractAddress && (
                   <Text>
                     (via{" "}
@@ -171,42 +152,35 @@ export const VerifyPublishCode = ({
               </Flex>
             </Flex>
             <ControllerInput
-              name="githubRepository"
+              name="gitUrl"
               control={control}
               label="GitHub Repository URL:"
               labelBgColor="gray.800"
               variant="fixed-floating"
               placeholder="e.g. https://github.com/initiascan/"
-              helperText="Please provide the source code’s GitHub commit URL"
-              rules={{
-                required: "",
-              }}
-              error={errors.githubRepository?.message}
+              isRequired
+              error={errors.gitUrl?.message}
             />
             <ControllerInput
-              name="commitHash"
+              name="commit"
               control={control}
               label="Commit Hash:"
               labelBgColor="gray.800"
               variant="fixed-floating"
               placeholder="e.g. a1b2c3d4e5f67890abcdef1234567890abcdef12"
-              rules={{
-                required: "",
-              }}
-              error={errors.commitHash?.message}
+              isRequired
+              error={errors.commit?.message}
             />
             <Flex gap={4} alignItems="center">
               <ControllerInput
-                name="wasmFileName"
+                name="packageName"
                 control={control}
                 label="Wasm File Name:"
                 labelBgColor="gray.800"
                 variant="fixed-floating"
                 placeholder="e.g. initia_contract"
-                rules={{
-                  required: "",
-                }}
-                error={errors.wasmFileName?.message}
+                isRequired
+                error={errors.packageName?.message}
               />
               <Text color="text.dark" variant="body1">
                 .wasm
@@ -215,13 +189,20 @@ export const VerifyPublishCode = ({
             <VerifyPublishCodeSelectInput
               name="compilerVersion"
               control={control}
-              options={options}
+              options={rustOptimizerVersions}
             />
           </Flex>
           <Button
             variant="primary"
-            onClick={handleSubmit(onSubmitVerifyPublishCode)}
             isDisabled={!isValid}
+            isLoading={isLoading}
+            onClick={handleSubmit((data) => {
+              onSubmitVerifyPublishCode({
+                chainId: currentChainId,
+                codeId,
+                ...data,
+              });
+            })}
           >
             Verify & Publish
           </Button>

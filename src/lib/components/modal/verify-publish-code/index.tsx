@@ -6,44 +6,51 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import type { ReactNode } from "react";
-import { useState } from "react";
+
+import { useSubmitWasmVerify } from "lib/services/verification/wasm";
 
 import { VerifyPublishCode } from "./verifyPublishCode";
 import { VerifyPublishCodeCompleted } from "./verifyPublishCodeCompleted";
 import { VerifyPublishCodeFailed } from "./verifyPublishCodeFailed";
 
 interface VerifyPublishCodeModalProps {
-  codeId: string;
+  codeId: number;
   codeHash: string;
   contractAddress?: string;
   triggerElement: ReactNode;
 }
 
-enum VerifyState {
-  VerifyStatePublishCode = "verifyPublishCode",
-  VerifyStatePublishCodeCompleted = "verifyPublishCodeCompleted",
-  VerifyStatePublishCodeFailed = "verifyPublishCodeFailed",
+interface VerifyPublishCodeModalBodyProps
+  extends Omit<VerifyPublishCodeModalProps, "triggerElement"> {
+  onClose: () => void;
 }
 
-export const VerifyPublishCodeModal = ({
+const VerifyPublishCodeModalBody = ({
   codeId,
   codeHash,
   contractAddress,
+  onClose,
+}: VerifyPublishCodeModalBodyProps) => {
+  const { mutate, isLoading, isSuccess, isError } = useSubmitWasmVerify();
+
+  if (isError) return <VerifyPublishCodeFailed onClose={onClose} />;
+  if (isSuccess) return <VerifyPublishCodeCompleted />;
+  return (
+    <VerifyPublishCode
+      codeId={codeId}
+      codeHash={codeHash}
+      contractAddress={contractAddress}
+      onSubmitVerifyPublishCode={mutate}
+      isLoading={isLoading}
+    />
+  );
+};
+
+export const VerifyPublishCodeModal = ({
   triggerElement,
+  ...props
 }: VerifyPublishCodeModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-
-  const [verifyState, setVerifyState] = useState<VerifyState>(
-    VerifyState.VerifyStatePublishCode
-  );
-
-  const handleOnSubmitVerifyPublishCode = () => {
-    setVerifyState(VerifyState.VerifyStatePublishCodeCompleted);
-    setTimeout(() => {
-      onClose();
-      setVerifyState(VerifyState.VerifyStatePublishCode);
-    }, 3000);
-  };
 
   return (
     <>
@@ -67,20 +74,7 @@ export const VerifyPublishCodeModal = ({
           bg="gray.800"
           maxW="100vw"
         >
-          {verifyState === VerifyState.VerifyStatePublishCode && (
-            <VerifyPublishCode
-              codeId={codeId}
-              codeHash={codeHash}
-              contractAddress={contractAddress}
-              onSubmitVerifyPublishCode={handleOnSubmitVerifyPublishCode}
-            />
-          )}
-          {verifyState === VerifyState.VerifyStatePublishCodeCompleted && (
-            <VerifyPublishCodeCompleted />
-          )}
-          {verifyState === VerifyState.VerifyStatePublishCodeFailed && (
-            <VerifyPublishCodeFailed onClose={onClose} />
-          )}
+          <VerifyPublishCodeModalBody {...props} onClose={onClose} />
         </ModalContent>
       </Modal>
     </>
