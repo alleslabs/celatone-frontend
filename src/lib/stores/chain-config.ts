@@ -49,4 +49,8 @@ export class ChainConfigStore {
   isChainIdExist(chainId: string): boolean {
     return !!this.chainConfigs[chainId];
   }
+
+  isPrettyNameExist(name: string): boolean {
+    return !!_.find(this.chainConfigs, { prettyName: name });
+  }
 }

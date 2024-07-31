@@ -1,5 +1,6 @@
 import { useModalTheme } from "@cosmos-kit/react";
 import { GraphQLClient } from "graphql-request";
+import { observer } from "mobx-react-lite";
 import type { ReactNode } from "react";
 import {
   createContext,
@@ -58,7 +59,7 @@ const DEFAULT_STATES: AppContextInterface = {
 
 const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
 
-export const AppProvider = ({ children }: AppProviderProps) => {
+export const AppProvider = observer(({ children }: AppProviderProps) => {
   const { setModalTheme } = useModalTheme();
   const { chainConfigs } = useChainConfigs();
   const { isHydrated: isChainConfigStoreHydrated } = useChainConfigStore();
@@ -112,7 +113,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   if (!isChainConfigStoreHydrated) return <LoadingOverlay />;
   return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
-};
+});
 
 export const useCelatoneApp = (): AppContextInterface => {
   return useContext(AppContext);

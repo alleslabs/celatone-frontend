@@ -207,7 +207,7 @@ const GasFeeDetails = ({
             label="Fee Tokens Denom"
             variant="fixed-floating"
             w="full"
-            placeholder="ex. INIT"
+            placeholder="ex. uinit"
             rules={{ required: "" }}
             error={errors.feeTokenDenom?.message}
           />
