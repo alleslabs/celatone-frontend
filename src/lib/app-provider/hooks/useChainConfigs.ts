@@ -203,6 +203,7 @@ export const useChainConfigs = (): {
             chain: each.chain,
             registryChainName: each.registryChainName,
             prettyName: each.prettyName,
+            logoUrl: each.logo_URIs?.png,
             networkType: each.network_type,
             lcd: each.lcd,
             rpc: each.rpc,
