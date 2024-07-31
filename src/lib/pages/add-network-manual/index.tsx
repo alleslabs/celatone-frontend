@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { useAllowCustomNetworks } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { CustomNetworkFooterCta } from "lib/components/custom-network";
 import { CustomIcon } from "lib/components/icon";
@@ -13,6 +14,8 @@ import SupportedFeatures from "./components/SupportedFeatures";
 import WalletRegistry from "./components/WalletRegistry";
 
 export const AddNetworkManual = () => {
+  useAllowCustomNetworks({ shouldRedirect: true });
+
   const [currentStep, setCurrentStep] = useState(0);
 
   const steps = [

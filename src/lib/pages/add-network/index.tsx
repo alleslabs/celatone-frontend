@@ -1,11 +1,12 @@
 import { Alert, AlertDescription, Flex, Heading, Text } from "@chakra-ui/react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useAllowCustomNetworks, useInternalNavigate } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { CelatoneSeo } from "lib/components/Seo";
 
 export const AddNetwork = () => {
+  useAllowCustomNetworks({ shouldRedirect: true });
   const navigate = useInternalNavigate();
 
   return (
