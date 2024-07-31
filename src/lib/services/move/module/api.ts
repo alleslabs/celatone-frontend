@@ -59,7 +59,7 @@ export const getFunctionView = async (
 
 export const decodeModule = async (moduleEncode: string): Promise<ModuleAbi> =>
   axios
-    .post<DecodeModuleReturn>(INITIA_MOVE_DECODER, {
+    .post<DecodeModuleReturn>(`${INITIA_MOVE_DECODER}/decode_module`, {
       code_bytes: moduleEncode,
     })
     .then(({ data }) => parseJsonABI<ModuleAbi>(libDecode(data.abi)));
