@@ -311,17 +311,18 @@ export const useSearchHandler = (
       // eslint-disable-next-line sonarjs/no-duplicate-string
       type: contractData ? "Contract Address" : "Account Address",
       metadata: {
-        icns: icnsNamesByKeyword
-          ? {
-              icnsNames: icnsNamesByKeyword,
-              address: debouncedKeyword as BechAddr,
-            }
-          : undefined,
+        icns:
+          icnsNamesByKeyword && icnsNamesByKeyword.names.length > 0
+            ? {
+                icnsNames: icnsNamesByKeyword,
+                address: debouncedKeyword as BechAddr,
+              }
+            : undefined,
         initiaUsername: iuNameByKeyword?.username ?? undefined,
       },
     });
 
-  if (icnsAddrByKeyword?.address)
+  if (icnsAddrByKeyword && icnsAddrByKeyword.address !== "")
     results.push({
       value: debouncedKeyword.endsWith(`.${bech32Prefix}`)
         ? debouncedKeyword
@@ -331,12 +332,13 @@ export const useSearchHandler = (
           ? "Contract Address"
           : "Account Address",
       metadata: {
-        icns: icnsNamesByIcnsAddr
-          ? {
-              icnsNames: icnsNamesByIcnsAddr,
-              address: icnsAddrByKeyword.address as BechAddr,
-            }
-          : undefined,
+        icns:
+          icnsNamesByIcnsAddr && icnsNamesByIcnsAddr.names.length > 0
+            ? {
+                icnsNames: icnsNamesByIcnsAddr,
+                address: icnsAddrByKeyword.address as BechAddr,
+              }
+            : undefined,
       },
     });
 
