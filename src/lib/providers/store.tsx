@@ -64,3 +64,8 @@ export function useNetworkStore() {
   const { networkStore } = useStore();
   return networkStore;
 }
+
+export function useChainConfigStore() {
+  const { chainConfigStore } = useStore();
+  return chainConfigStore;
+}
