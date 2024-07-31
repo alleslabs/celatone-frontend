@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1054](https://github.com/alleslabs/celatone-frontend/pull/1054) Add chain config store, useChainConfig hook, and apply it all places
+
 ### Improvements
 
 ### Bug fixes
