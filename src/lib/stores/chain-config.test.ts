@@ -35,6 +35,14 @@ const MOCK_CONFIG: ChainConfig = {
       },
     ],
   },
+  registry: {
+    bech32_prefix: "test",
+    slip44: 118,
+    staking: {
+      staking_tokens: [],
+    },
+    assets: [],
+  },
 };
 
 describe("chain config management", () => {
@@ -44,7 +52,7 @@ describe("chain config management", () => {
   });
 
   test("get chain config", () => {
-    chainConfigStore.updateChainConfig("test-1", MOCK_CONFIG);
+    chainConfigStore.addChainConfig("test-1", MOCK_CONFIG);
     const chainConfig = chainConfigStore.getChainConfig("test-1");
     expect(chainConfig).toEqual(MOCK_CONFIG);
   });
@@ -53,7 +61,7 @@ describe("chain config management", () => {
     chainConfigStore.addChainConfig("test-1", MOCK_CONFIG);
     const chainConfig = chainConfigStore.getChainConfig("test-1");
     expect(chainConfig).toEqual(MOCK_CONFIG);
-    // expect(chainConfigStore.isChainIdExist("test-1")).toBeTruthy();
+    expect(chainConfigStore.isChainIdExist("test-1")).toBeTruthy();
   });
 
   test("update chain config", () => {
