@@ -31,11 +31,12 @@ export const AddNetwork = () => {
             description="Add new Minitia through fill in each configuration manually"
             onClick={() => navigate({ pathname: "/add-network/manual" })}
           />
-          <ButtonCard
+          {/* // TODO: Open this code to enable import JSON option entry point */}
+          {/* <ButtonCard
             title="Import JSON"
             description="Import available JSON that contains all the configuration"
             onClick={() => navigate({ pathname: "/add-network/json" })}
-          />
+          /> */}
         </Flex>
       </Flex>
     </ActionPageContainer>
