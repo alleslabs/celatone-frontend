@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1057](https://github.com/alleslabs/celatone-frontend/pull/1057) Add local minitias to network selector
 - [#1043](https://github.com/alleslabs/celatone-frontend/pull/1043) Save custom minitias JSON form to localstorage
 - [#1052](https://github.com/alleslabs/celatone-frontend/pull/1052) Add entry point to add custom minitias network in network selector
 - [#1038](https://github.com/alleslabs/celatone-frontend/pull/1038) Add custom networks options page to navigate between manual and upload json
