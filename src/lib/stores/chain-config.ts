@@ -26,7 +26,6 @@ export class ChainConfigStore {
   }
 
   getChainConfig(chainId: string): Option<SharedChainConfig> {
-    if (!this.chainConfigs[chainId]) return undefined;
     return this.chainConfigs[chainId];
   }
 
