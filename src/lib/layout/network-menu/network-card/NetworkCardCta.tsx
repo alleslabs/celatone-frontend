@@ -2,8 +2,7 @@ import { Flex, useToast } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
 
-import { CHAIN_CONFIGS } from "config/chain";
-import { useMobile } from "lib/app-provider";
+import { useChainConfigs, useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useNetworkStore } from "lib/providers/store";
 
@@ -15,6 +14,7 @@ interface NetworkCardCtaProps {
 
 export const NetworkCardCta = observer(
   ({ chainId, isSelected, isDraggable }: NetworkCardCtaProps) => {
+    const { chainConfigs } = useChainConfigs();
     const isMobile = useMobile();
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
     const toast = useToast({
@@ -30,10 +30,10 @@ export const NetworkCardCta = observer(
         e.stopPropagation();
         pinNetwork(chainId);
         toast({
-          title: `Pinned \u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 successfully`,
+          title: `Pinned \u2018${chainConfigs[chainId]?.prettyName}\u2019 successfully`,
         });
       },
-      [pinNetwork, chainId, toast]
+      [pinNetwork, chainId, toast, chainConfigs]
     );
 
     const handleRemove = useCallback(
@@ -41,10 +41,10 @@ export const NetworkCardCta = observer(
         e.stopPropagation();
         removeNetwork(chainId);
         toast({
-          title: `\u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 is removed from Pinned Networks`,
+          title: `\u2018${chainConfigs[chainId]?.prettyName}\u2019 is removed from Pinned Networks`,
         });
       },
-      [removeNetwork, chainId, toast]
+      [removeNetwork, chainId, toast, chainConfigs]
     );
 
     const opacityStyle = {

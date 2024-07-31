@@ -1,22 +1,7 @@
 import type { EndpointOptions } from "@cosmos-kit/core";
 import { ChainProvider as Provider } from "@cosmos-kit/react";
-import { assets, chains } from "chain-registry";
 
-import { CHAIN_CONFIGS } from "config/chain";
-import { useCelatoneApp } from "lib/app-provider";
-import {
-  initiatestnet,
-  initiatestnetAssets,
-} from "lib/chain-registry/initiatestnet";
-import {
-  localosmosis,
-  localosmosisAsset,
-} from "lib/chain-registry/localosmosis";
-import { sei, seiAssets } from "lib/chain-registry/sei";
-import {
-  terra2testnet,
-  terra2testnetAssets,
-} from "lib/chain-registry/terra2testnet";
+import { useCelatoneApp, useChainConfigs } from "lib/app-provider";
 
 import { getCustomedSigningCosmwasm } from "./options";
 
@@ -26,7 +11,8 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
   const {
     chainConfig: { wallets },
   } = useCelatoneApp();
-  const availableChainsEndpoints = Object.values(CHAIN_CONFIGS).reduce<
+  const { chainConfigs, registryChains, registryAssets } = useChainConfigs();
+  const availableChainsEndpoints = Object.values(chainConfigs).reduce<
     EndpointOptions["endpoints"]
   >(
     (endpoints, config) => ({
@@ -41,14 +27,8 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Provider
-      chains={[...chains, localosmosis, sei, terra2testnet, ...initiatestnet]}
-      assetLists={[
-        ...assets,
-        localosmosisAsset,
-        seiAssets,
-        terra2testnetAssets,
-        ...initiatestnetAssets,
-      ]}
+      chains={registryChains}
+      assetLists={registryAssets}
       wallets={wallets}
       // TODO
       walletConnectOptions={{

@@ -7,7 +7,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-import { CHAIN_CONFIGS } from "config/chain";
+import { useChainConfigs } from "lib/app-provider";
 import type { Option } from "lib/types";
 
 import { NetworkAccordionSubsection } from "./NetworkAccordionSubsection";
@@ -29,14 +29,15 @@ export const NetworkAccordion = ({
   startIndex,
   onClose,
 }: NetworkAccordionProps) => {
+  const { chainConfigs } = useChainConfigs();
   const nonInitiaNetworks = networks.filter(
-    (chainId) => CHAIN_CONFIGS[chainId]?.extra.layer === undefined
+    (chainId) => chainConfigs[chainId]?.extra.layer === undefined
   );
   const l1Networks = networks.filter(
-    (chainId) => CHAIN_CONFIGS[chainId]?.extra.layer === "1"
+    (chainId) => chainConfigs[chainId]?.extra.layer === "1"
   );
   const l2Networks = networks.filter(
-    (chainId) => CHAIN_CONFIGS[chainId]?.extra.layer === "2"
+    (chainId) => chainConfigs[chainId]?.extra.layer === "2"
   );
 
   return (
