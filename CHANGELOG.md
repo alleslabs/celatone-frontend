@@ -45,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1050](https://github.com/alleslabs/celatone-frontend/pull/1050) Fix gap between network subsection
+
 ## v1.7.2
 
 ### Features
