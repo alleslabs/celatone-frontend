@@ -62,6 +62,7 @@ export const NetworkMenu = observer(() => {
               keyword={keyword}
               setKeyword={setKeyword}
               handleOnKeyDown={handleOnKeyDown}
+              onClose={onClose}
             />
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
