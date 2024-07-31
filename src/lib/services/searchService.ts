@@ -4,10 +4,11 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useGetAddressType,
+  useInitia,
   useTierConfig,
   useValidateAddress,
 } from "lib/app-provider";
-import type { Addr, BechAddr, HexAddr32, Nullish, Option } from "lib/types";
+import type { Addr, BechAddr, HexAddr32 } from "lib/types";
 import { zBechAddr32, zValidatorAddr } from "lib/types";
 import type { IcnsNamesByAddress } from "lib/types/name";
 import {
@@ -21,6 +22,7 @@ import {
 import { useBlockData } from "./block";
 import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
+import { useNftByNftAddressLcd } from "./nft";
 import { useCollectionByCollectionAddress } from "./nft-collection";
 import { usePoolByPoolId } from "./poolService";
 import { useProposalData, useProposalDataLcd } from "./proposal";
@@ -43,25 +45,26 @@ export type SearchResultType =
   | "Pool ID"
   | "Validator Address"
   | "Module Path"
+  | "NFT Address"
   | "NFT Collection Address";
 
-export interface ResultMetadata {
-  icns: {
-    icnsNames: Option<IcnsNamesByAddress>;
-    address: Option<BechAddr>;
-    bech32Prefix: string;
+interface ResultMetadata {
+  icns?: {
+    icnsNames: IcnsNamesByAddress;
+    address: BechAddr;
   };
-  initiaUsername: {
-    username: Nullish<string>;
-    address: Nullish<Addr>;
-    bech32Prefix: string;
-  };
+  initiaUsername?: string;
+}
+
+export interface SearchResult {
+  value: string;
+  type: SearchResultType;
+  metadata?: ResultMetadata;
 }
 
 interface SearchHandlerResponse {
-  results: SearchResultType[];
+  results: SearchResult[];
   isLoading: boolean;
-  metadata: ResultMetadata;
 }
 
 // eslint-disable-next-line complexity
@@ -86,6 +89,7 @@ export const useSearchHandler = (
   const {
     chain: { bech32_prefix: bech32Prefix },
   } = useCurrentChain();
+  const isInitia = useInitia();
 
   const getAddressType = useGetAddressType();
   const {
@@ -93,9 +97,91 @@ export const useSearchHandler = (
     validateValidatorAddress,
     isSomeValidAddress,
   } = useValidateAddress();
-  const addressType = getAddressType(debouncedKeyword);
 
-  // Contract
+  /// /////////////////////////////////////////////////////
+  //                      Account
+  /// /////////////////////////////////////////////////////
+  const addressType = getAddressType(debouncedKeyword);
+  const isAddr =
+    addressType === "user_address" ||
+    addressType === "contract_address" ||
+    (isMove &&
+      (isHexWalletAddress(debouncedKeyword) ||
+        isHexModuleAddress(debouncedKeyword)));
+
+  // ICNS
+  const { data: icnsAddrByKeyword, isFetching: icnsAddrByKeywordFetching } =
+    useAddressByIcnsNameLcd(debouncedKeyword, isWasm);
+  const { data: icnsNamesByIcnsAddr, isFetching: icnsNamesByIcnsAddrFetching } =
+    useIcnsNamesByAddressLcd(
+      icnsAddrByKeyword?.address as BechAddr,
+      !isInitia && icnsAddrByKeyword !== undefined
+    );
+  const { data: icnsNamesByKeyword, isFetching: icnsNamesByKeywordFetching } =
+    useIcnsNamesByAddressLcd(debouncedKeyword as BechAddr, !isInitia && isAddr);
+
+  // Initia Username (IU)
+  const { data: iuAddrByKeyword, isFetching: iuAddrByKeywordFetching } =
+    useAddressByInitiaUsername(debouncedKeyword);
+  const { data: iuNameByKeyword, isFetching: iuNameByKeywordFetching } =
+    useInitiaUsernameByAddress(debouncedKeyword as Addr, isInitia && isAddr);
+
+  /// /////////////////////////////////////////////////////
+  //                       NFT
+  /// /////////////////////////////////////////////////////
+
+  const { data: nftData, isFetching: nftFetching } = useNftByNftAddressLcd(
+    debouncedKeyword as HexAddr32,
+    isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
+  );
+
+  const { data: nftCollectionData, isFetching: nftCollectionFetching } =
+    useCollectionByCollectionAddress(
+      debouncedKeyword as HexAddr32,
+      isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
+    );
+
+  /// /////////////////////////////////////////////////////
+  //                       Move
+  /// /////////////////////////////////////////////////////
+
+  const [addr, moduleName, functionName] = splitModule(debouncedKeyword);
+
+  const enableModuleFetching = useMemo(
+    () =>
+      Boolean(
+        isMove &&
+          isSomeValidAddress(addr) &&
+          moduleName &&
+          functionName === undefined
+      ),
+    [addr, functionName, isMove, isSomeValidAddress, moduleName]
+  );
+
+  const { data: moduleData, isFetching: moduleFetching } =
+    useModuleByAddressLcd({
+      address: addr,
+      moduleName: moduleName ?? "",
+      options: {
+        enabled: enableModuleFetching,
+        refetchOnWindowFocus: false,
+        retry: false,
+      },
+    });
+
+  // TODO: handle module function later
+
+  /// /////////////////////////////////////////////////////
+  //                       Wasm
+  /// /////////////////////////////////////////////////////
+
+  const { data: codeData, isFetching: codeFetching } = useCodeLcd(
+    Number(debouncedKeyword),
+    {
+      enabled: isWasm && isId(debouncedKeyword),
+    }
+  );
+
   const { data: contractData, isFetching: contractFetching } = useContractData(
     zBechAddr32.parse(debouncedKeyword),
     {
@@ -105,64 +191,16 @@ export const useSearchHandler = (
     }
   );
 
-  const isAddr =
-    addressType === "user_address" ||
-    addressType === "contract_address" ||
-    (isMove &&
-      (isHexWalletAddress(debouncedKeyword) ||
-        isHexModuleAddress(debouncedKeyword)));
+  /// /////////////////////////////////////////////////////
+  //                       Transaction
+  /// /////////////////////////////////////////////////////
 
-  // ICNS
-  const { data: icnsAddressData, isFetching: icnsAddressFetching } =
-    useAddressByIcnsNameLcd(debouncedKeyword, isWasm);
-  // provide ICNS metadata result
-  const address = (
-    isAddr ? debouncedKeyword : icnsAddressData?.address
-  ) as BechAddr;
-  const { data: icnsNames } = useIcnsNamesByAddressLcd(address);
-
-  // Initia Username
-  const {
-    data: initiaUsernameAddrData,
-    isFetching: initiaUsernameAddrFetching,
-  } = useAddressByInitiaUsername(debouncedKeyword);
-
-  const { data: initiaUsername, isFetching: initiaUsernameFetching } =
-    useInitiaUsernameByAddress(
-      isAddr ? (debouncedKeyword as Addr) : initiaUsernameAddrData?.address,
-      isMove
-    );
-
-  const addressResult = useMemo(() => {
-    if (isAddr) {
-      // eslint-disable-next-line sonarjs/no-duplicate-string
-      return contractData ? "Contract Address" : "Account Address";
-    }
-
-    if (icnsAddressData?.address)
-      return (
-        icnsAddressData.address &&
-        (icnsAddressData.addressType === "contract_address"
-          ? "Contract Address"
-          : "Account Address")
-      );
-
-    if (initiaUsernameAddrData?.address) return "Account Address";
-
-    return false;
-  }, [isAddr, icnsAddressData, initiaUsernameAddrData, contractData]);
-  // Code
-  const { data: codeData, isFetching: codeFetching } = useCodeLcd(
-    Number(debouncedKeyword),
-    {
-      enabled: isWasm && isId(debouncedKeyword),
-    }
-  );
-
-  // Tx
   const { data: txData, isFetching: txFetching } = useTxData(debouncedKeyword);
 
-  // Block
+  /// /////////////////////////////////////////////////////
+  //                         Block
+  /// /////////////////////////////////////////////////////
+
   const blockApi = useBlockData(
     Number(debouncedKeyword),
     isPosDecimal(debouncedKeyword) && isFullTier
@@ -173,7 +211,10 @@ export const useSearchHandler = (
     return { foundBlock: blockApi.data, isFetching: blockApi.isFetching };
   }, [blockApi.data, blockApi.isFetching, debouncedKeyword, isFullTier]);
 
-  // Proposal
+  /// /////////////////////////////////////////////////////
+  //                         Proposal
+  /// /////////////////////////////////////////////////////
+
   const { data: proposalApiData, isFetching: proposalApiIsFetching } =
     useProposalData(
       Number(debouncedKeyword),
@@ -195,7 +236,10 @@ export const useSearchHandler = (
         proposalLcdIsFetching,
       ];
 
-  // Validator
+  /// /////////////////////////////////////////////////////
+  //                         Validator
+  /// /////////////////////////////////////////////////////
+
   const validatorApi = useValidatorData(
     zValidatorAddr.parse(debouncedKeyword),
     isGov && validateValidatorAddress(debouncedKeyword) === null && isFullTier
@@ -208,46 +252,14 @@ export const useSearchHandler = (
     ? validatorApi
     : validatorLcd;
 
-  // Pool
+  /// /////////////////////////////////////////////////////
+  //                     Osmosis Pool
+  /// /////////////////////////////////////////////////////
+
   const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
     Number(debouncedKeyword),
     isPool && isId(debouncedKeyword) && isFullTier
   );
-
-  // Move
-  const [addr, moduleName, functionName] = splitModule(debouncedKeyword);
-
-  const enableModuleFetching = useMemo(
-    () =>
-      Boolean(
-        isMove &&
-          isSomeValidAddress(addr) &&
-          moduleName &&
-          functionName === undefined
-      ),
-    [addr, functionName, isMove, isSomeValidAddress, moduleName]
-  );
-
-  // Module
-  const { data: moduleData, isFetching: moduleFetching } =
-    useModuleByAddressLcd({
-      address: addr,
-      moduleName: moduleName ?? "",
-      options: {
-        enabled: enableModuleFetching,
-        refetchOnWindowFocus: false,
-        retry: false,
-      },
-    });
-
-  // TODO: handle module function later
-
-  // NFT Collection
-  const { data: nftCollectionData, isFetching: nftCollectionFetching } =
-    useCollectionByCollectionAddress(
-      debouncedKeyword as HexAddr32,
-      isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
-    );
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -257,44 +269,132 @@ export const useSearchHandler = (
     return () => clearTimeout(timeoutId);
   }, [keyword, resetHandlerStates]);
 
+  if (
+    icnsAddrByKeywordFetching ||
+    icnsNamesByIcnsAddrFetching ||
+    icnsNamesByKeywordFetching ||
+    iuAddrByKeywordFetching ||
+    iuNameByKeywordFetching ||
+    nftFetching ||
+    nftCollectionFetching ||
+    moduleFetching ||
+    codeFetching ||
+    contractFetching ||
+    txFetching ||
+    blockFetching ||
+    proposalFetching ||
+    validatorFetching ||
+    poolFetching
+  )
+    return {
+      results: [],
+      isLoading: true,
+    };
+
+  const results: SearchResult[] = [];
+
+  if (nftData)
+    results.push({
+      value: debouncedKeyword,
+      type: "NFT Address",
+    });
+
+  if (nftCollectionData?.data)
+    results.push({
+      value: debouncedKeyword,
+      type: "NFT Collection Address",
+    });
+
+  if (isAddr)
+    results.push({
+      value: debouncedKeyword,
+      // eslint-disable-next-line sonarjs/no-duplicate-string
+      type: contractData ? "Contract Address" : "Account Address",
+      metadata: {
+        icns: icnsNamesByKeyword
+          ? {
+              icnsNames: icnsNamesByKeyword,
+              address: debouncedKeyword as BechAddr,
+            }
+          : undefined,
+        initiaUsername: iuNameByKeyword?.username ?? undefined,
+      },
+    });
+
+  if (icnsAddrByKeyword?.address)
+    results.push({
+      value: debouncedKeyword.endsWith(`.${bech32Prefix}`)
+        ? debouncedKeyword
+        : `${debouncedKeyword}.${bech32Prefix}`,
+      type:
+        icnsAddrByKeyword.addressType === "contract_address"
+          ? "Contract Address"
+          : "Account Address",
+      metadata: {
+        icns: icnsNamesByIcnsAddr
+          ? {
+              icnsNames: icnsNamesByIcnsAddr,
+              address: icnsAddrByKeyword.address as BechAddr,
+            }
+          : undefined,
+      },
+    });
+
+  if (iuAddrByKeyword?.address)
+    results.push({
+      value: iuAddrByKeyword.address,
+      type: "Account Address",
+      metadata: {
+        initiaUsername: debouncedKeyword.endsWith(`.${bech32Prefix}`)
+          ? debouncedKeyword
+          : `${debouncedKeyword}.${bech32Prefix}`,
+      },
+    });
+
+  if (moduleData)
+    results.push({
+      value: debouncedKeyword,
+      type: "Module Path",
+    });
+
+  if (codeData)
+    results.push({
+      value: debouncedKeyword,
+      type: "Code ID",
+    });
+
+  if (txData)
+    results.push({
+      value: debouncedKeyword,
+      type: "Transaction Hash",
+    });
+
+  if (foundBlock)
+    results.push({
+      value: debouncedKeyword,
+      type: "Block",
+    });
+
+  if (proposalData)
+    results.push({
+      value: debouncedKeyword,
+      type: "Proposal ID",
+    });
+
+  if (validatorData)
+    results.push({
+      value: debouncedKeyword,
+      type: "Validator Address",
+    });
+
+  if (poolData)
+    results.push({
+      value: debouncedKeyword,
+      type: "Pool ID",
+    });
+
   return {
-    results: [
-      nftCollectionData?.data && "NFT Collection Address",
-      addressResult,
-      moduleData && "Module Path",
-      txData && "Transaction Hash",
-      codeData && "Code ID",
-      foundBlock && "Block",
-      proposalData?.info && "Proposal ID",
-      validatorData && "Validator Address",
-      poolData && "Pool ID",
-    ].filter((res) => Boolean(res)) as SearchResultType[],
-    isLoading:
-      moduleFetching ||
-      txFetching ||
-      codeFetching ||
-      contractFetching ||
-      blockFetching ||
-      icnsAddressFetching ||
-      initiaUsernameAddrFetching ||
-      initiaUsernameFetching ||
-      poolFetching ||
-      proposalFetching ||
-      validatorFetching ||
-      nftCollectionFetching,
-    metadata: {
-      icns: {
-        icnsNames,
-        address,
-        bech32Prefix,
-      },
-      initiaUsername: {
-        username: initiaUsername?.username,
-        address: isAddr
-          ? (debouncedKeyword as Addr)
-          : initiaUsernameAddrData?.address,
-        bech32Prefix,
-      },
-    },
+    results,
+    isLoading: false,
   };
 };

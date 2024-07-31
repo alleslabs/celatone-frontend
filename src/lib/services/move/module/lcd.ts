@@ -1,8 +1,12 @@
 import axios from "axios";
 
 import type { AccountModulesResponse } from "lib/services/types";
-import { zModuleResponseLcd, zModulesResponseLcd } from "lib/services/types";
-import type { Addr, IndexedModule, Nullable } from "lib/types";
+import {
+  zModuleResponseLcd,
+  zModulesResponseLcd,
+  zMoveViewJsonResponse,
+} from "lib/services/types";
+import type { Addr, HexAddr, IndexedModule, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getModuleByAddressLcd = async (
@@ -44,3 +48,21 @@ export const getModulesByAddressLcd = async (
     total: result.length,
   };
 };
+
+export const getMoveViewJson = async (
+  endpoint: string,
+  vmAddress: HexAddr,
+  moduleName: string,
+  functionName: string,
+  typeArgs: string[],
+  args: string[]
+) =>
+  axios
+    .post(`${endpoint}/initia/move/v1/view/json`, {
+      address: vmAddress,
+      module_name: moduleName,
+      function_name: functionName,
+      type_args: typeArgs,
+      args,
+    })
+    .then(({ data }) => parseWithError(zMoveViewJsonResponse, data));

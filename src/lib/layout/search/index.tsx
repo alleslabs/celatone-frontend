@@ -30,7 +30,7 @@ import {
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { useEaster } from "lib/hooks";
-import type { SearchResultType } from "lib/services/searchService";
+import type { SearchResult } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
 import type { Addr } from "lib/types";
 import { splitModule } from "lib/utils";
@@ -59,12 +59,16 @@ export const SearchComponent = () => {
 
   const boxRef = useRef<HTMLDivElement>(null);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   const [keyword, setKeyword] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [cursor, setCursor] = useState<number>();
   const [isKeywordCleared, setIsKeywordCleared] = useState(false);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const onCloseWithClear = useCallback(() => {
+    setKeyword("");
+    onClose();
+  }, [onClose]);
 
   useEffect(() => {
     const openSearchHandler = (event: KeyboardEvent) => {
@@ -72,7 +76,7 @@ export const SearchComponent = () => {
       if (event.key === "k" && specialKey) {
         event.preventDefault();
         if (isOpen) {
-          onClose();
+          onCloseWithClear();
         } else {
           onOpen();
         }
@@ -82,9 +86,9 @@ export const SearchComponent = () => {
     return () => {
       document.removeEventListener("keydown", openSearchHandler);
     };
-  }, [isMac, isOpen, onClose, onOpen]);
+  }, [isMac, isOpen, onCloseWithClear, onOpen]);
 
-  const { results, isLoading, metadata } = useSearchHandler(keyword, () =>
+  const { results, isLoading } = useSearchHandler(keyword, () =>
     setIsTyping(false)
   );
 
@@ -96,36 +100,31 @@ export const SearchComponent = () => {
   };
 
   const handleSelectResult = useCallback(
-    (type?: SearchResultType, isClick = false) => {
+    (result?: SearchResult, isClick = false) => {
       const getQueryValue = () => {
-        if (type === "Module Path")
+        if (result?.type === "Module Path")
           return splitModule(keyword) as [Addr, string];
-        if (type === "Account Address")
+        if (result?.type === "Account Address")
           return (
-            metadata.icns.address || metadata.initiaUsername.address || keyword
+            result?.metadata?.icns?.address ||
+            result?.metadata?.initiaUsername ||
+            keyword
           );
         return keyword;
       };
 
-      trackUseMainSearch(isClick, type);
-      const routeOptions = getRouteOptions(type);
+      trackUseMainSearch(isClick, result?.type);
+      const routeOptions = getRouteOptions(result?.type);
       if (routeOptions) {
         const queryValues = getQueryValue();
         navigate({
           pathname: routeOptions.pathname,
           query: generateQueryObject(routeOptions.query, queryValues),
         });
-        setKeyword("");
-        onClose();
+        onCloseWithClear();
       }
     },
-    [
-      keyword,
-      metadata.icns.address,
-      metadata.initiaUsername.address,
-      navigate,
-      onClose,
-    ]
+    [keyword, navigate, onCloseWithClear]
   );
 
   const handleOnKeyDown = useCallback(
@@ -151,19 +150,26 @@ export const SearchComponent = () => {
             setKeyword("");
             setIsKeywordCleared(true);
           } else if (isKeywordCleared) {
-            onClose();
+            onCloseWithClear();
           }
           break;
         default:
           break;
       }
     },
-    [cursor, handleSelectResult, isKeywordCleared, keyword, onClose, results]
+    [
+      cursor,
+      handleSelectResult,
+      isKeywordCleared,
+      keyword,
+      onCloseWithClear,
+      results,
+    ]
   );
 
   useOutsideClick({
     ref: boxRef,
-    handler: onClose,
+    handler: onCloseWithClear,
   });
 
   useEaster(keyword);
@@ -210,7 +216,7 @@ export const SearchComponent = () => {
       )}
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={onCloseWithClear}
         isCentered
         returnFocusOnClose={false}
       >
@@ -235,7 +241,7 @@ export const SearchComponent = () => {
                     borderRadius={8}
                     bgColor="gray.700"
                     ml={3}
-                    onClick={onClose}
+                    onClick={onCloseWithClear}
                     cursor="pointer"
                   >
                     <CustomIcon
@@ -305,9 +311,7 @@ export const SearchComponent = () => {
                     )}
                     <SearchResults
                       results={results}
-                      keyword={keyword}
                       cursor={cursor}
-                      metadata={metadata}
                       setCursor={setCursor}
                       handleSelectResult={handleSelectResult}
                     />

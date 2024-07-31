@@ -1,13 +1,13 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { z } from "zod";
 
-import { getMoveViewJson } from "../move/module/api";
+import { getMoveViewJson } from "../move/module/lcd";
 import type { CollectionByCollectionAddressResponse } from "../types";
 import { zHexAddr } from "lib/types";
 import type { HexAddr, HexAddr32 } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-export const getCollectionByCollectionAddressLite = async (
+export const getCollectionByCollectionAddressLcd = async (
   endpoint: string,
   collectionAddress: HexAddr32
 ) =>
