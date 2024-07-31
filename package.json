@@ -42,10 +42,11 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@alleslabs/shared": "1.0.0-dev1",
     "@amplitude/analytics-browser": "^2.3.3",
     "@amplitude/analytics-types": "^2.3.0",
     "@amplitude/plugin-user-agent-enrichment-browser": "^1.0.0",
-    "@chain-registry/types": "0.17.0",
+    "@chain-registry/types": "0.45.36",
     "@chakra-ui/anatomy": "^2.2.2",
     "@chakra-ui/card": "^2.2.0",
     "@chakra-ui/icons": "^2.1.1",
