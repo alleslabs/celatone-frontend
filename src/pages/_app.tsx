@@ -27,7 +27,6 @@ const isBrowser = typeof window !== "undefined";
 configurePersistable({
   storage: isBrowser ? localforage : undefined,
   stringify: false,
-  debugMode: true,
 });
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
