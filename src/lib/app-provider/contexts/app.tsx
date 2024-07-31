@@ -9,8 +9,9 @@ import {
   useState,
 } from "react";
 
+import { useChainConfigs } from "../hooks/useChainConfigs";
 import { useNetworkChange } from "../hooks/useNetworkChange";
-import { CHAIN_CONFIGS, FALLBACK_CHAIN_CONFIG } from "config/chain";
+import { FALLBACK_CHAIN_CONFIG } from "config/chain";
 import type { ChainConfig } from "config/chain";
 import { PROJECT_CONSTANTS } from "config/project";
 import type { ProjectConstants } from "config/project";
@@ -21,6 +22,8 @@ import {
   HASURA_ADMIN_SECRET,
   SUPPORTED_CHAIN_IDS,
 } from "env";
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import { useChainConfigStore } from "lib/providers/store";
 import { changeFavicon } from "lib/utils";
 
 interface AppProviderProps {
@@ -57,32 +60,37 @@ const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
 
 export const AppProvider = ({ children }: AppProviderProps) => {
   const { setModalTheme } = useModalTheme();
+  const { chainConfigs } = useChainConfigs();
+  const { isHydrated: isChainConfigStoreHydrated } = useChainConfigStore();
 
   const [states, setStates] = useState<AppContextInterface>(DEFAULT_STATES);
 
   // Remark: this function is only used in useSelectChain. Do not use in other places.
-  const handleOnChainIdChange = useCallback((newChainId: string) => {
-    const chainConfig = CHAIN_CONFIGS[newChainId] ?? FALLBACK_CHAIN_CONFIG;
+  const handleOnChainIdChange = useCallback(
+    (newChainId: string) => {
+      const chainConfig = chainConfigs[newChainId] ?? FALLBACK_CHAIN_CONFIG;
 
-    const theme = getTheme(chainConfig.chain);
-    changeFavicon(theme.branding.favicon);
+      const theme = getTheme(chainConfig.chain);
+      changeFavicon(theme.branding.favicon);
 
-    setStates({
-      isHydrated: true,
-      availableChainIds: SUPPORTED_CHAIN_IDS,
-      currentChainId: newChainId,
-      chainConfig,
-      indexerGraphClient: new GraphQLClient(chainConfig.indexer, {
-        headers: {
-          "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
-        },
-      }),
-      constants: PROJECT_CONSTANTS,
-      theme,
-      setTheme: (newTheme: ThemeConfig) =>
-        setStates((prev) => ({ ...prev, theme: newTheme })),
-    });
-  }, []);
+      setStates({
+        isHydrated: true,
+        availableChainIds: SUPPORTED_CHAIN_IDS,
+        currentChainId: newChainId,
+        chainConfig,
+        indexerGraphClient: new GraphQLClient(chainConfig.indexer, {
+          headers: {
+            "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
+          },
+        }),
+        constants: PROJECT_CONSTANTS,
+        theme,
+        setTheme: (newTheme: ThemeConfig) =>
+          setStates((prev) => ({ ...prev, theme: newTheme })),
+      });
+    },
+    [chainConfigs]
+  );
 
   // Disable "Leave page" alert
   useEffect(() => {
@@ -102,6 +110,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   useNetworkChange(handleOnChainIdChange);
 
+  if (!isChainConfigStoreHydrated) return <LoadingOverlay />;
   return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
 };
 

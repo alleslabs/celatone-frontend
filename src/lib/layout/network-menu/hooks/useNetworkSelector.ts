@@ -2,12 +2,13 @@ import { isUndefined } from "lodash";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useCallback, useMemo, useState } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useChainConfigs } from "lib/app-provider";
 import { useNetworkStore } from "lib/providers/store";
 
 import { filterChains, getNextCursor } from "./utils";
 
 export const useNetworkSelector = (onClose: () => void) => {
+  const { chainConfigs } = useChainConfigs();
   const { availableChainIds } = useCelatoneApp();
   const { getPinnedNetworks } = useNetworkStore();
 
@@ -18,11 +19,11 @@ export const useNetworkSelector = (onClose: () => void) => {
   const [filteredPinnedChains, filteredMainnetChains, filteredTestnetChains] =
     useMemo(
       () => [
-        filterChains(pinnedNetworks, keyword),
-        filterChains(availableChainIds, keyword, "mainnet"),
-        filterChains(availableChainIds, keyword, "testnet"),
+        filterChains(chainConfigs, pinnedNetworks, keyword),
+        filterChains(chainConfigs, availableChainIds, keyword, "mainnet"),
+        filterChains(chainConfigs, availableChainIds, keyword, "testnet"),
       ],
-      [availableChainIds, keyword, pinnedNetworks]
+      [availableChainIds, chainConfigs, keyword, pinnedNetworks]
     );
 
   const totalNetworks =

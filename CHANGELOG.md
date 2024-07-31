@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#1043](https://github.com/alleslabs/celatone-frontend/pull/1043) Save custom minitias JSON form to localstorage
 - [#1038](https://github.com/alleslabs/celatone-frontend/pull/1038) Add custom networks options page to navigate between manual and upload json
+- [#1054](https://github.com/alleslabs/celatone-frontend/pull/1054) Add chain config store, useChainConfig hook, and apply it all places
 
 ### Improvements
 

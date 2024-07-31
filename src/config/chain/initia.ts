@@ -4,7 +4,7 @@ import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
 import type { ChainConfigs } from "./types";
 
-const INITIA_DECODER =
+export const INITIA_DECODER =
   "https://initia-api-jiod42ec2q-as.a.run.app/decode_module";
 
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
