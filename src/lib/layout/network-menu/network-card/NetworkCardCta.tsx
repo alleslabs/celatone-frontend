@@ -2,7 +2,11 @@ import { Flex, useToast } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
 
-import { useChainConfigs, useMobile } from "lib/app-provider";
+import {
+  useChainConfigs,
+  useInternalNavigate,
+  useMobile,
+} from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useNetworkStore } from "lib/providers/store";
 
@@ -10,10 +14,12 @@ interface NetworkCardCtaProps {
   chainId: string;
   isSelected: boolean;
   isDraggable?: boolean;
+  isEditable?: boolean;
 }
 
 export const NetworkCardCta = observer(
-  ({ chainId, isSelected, isDraggable }: NetworkCardCtaProps) => {
+  ({ chainId, isSelected, isDraggable, isEditable }: NetworkCardCtaProps) => {
+    const navigate = useInternalNavigate();
     const { chainConfigs } = useChainConfigs();
     const isMobile = useMobile();
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
@@ -83,6 +89,14 @@ export const NetworkCardCta = observer(
             onClick={handleSave}
           >
             <CustomIcon name="pin" />
+          </Flex>
+        )}
+        {isEditable && (
+          <Flex
+            {...pinIconStyles}
+            onClick={() => navigate({ pathname: "/network-config" })}
+          >
+            <CustomIcon name="settings" color="gray.600" boxSize={6} />
           </Flex>
         )}
       </Flex>

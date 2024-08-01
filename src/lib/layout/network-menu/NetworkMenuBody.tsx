@@ -8,6 +8,7 @@ import { EmptyState } from "lib/components/state";
 import type { Option } from "lib/types";
 
 import { NetworkAccordion } from "./NetworkAccordion";
+import { NetworkAccordionLocal } from "./NetworkAccordionLocal";
 import { NetworkAccodionPinned } from "./NetworkAccordionPinned";
 
 interface NetworkMenuBodyProps {
@@ -16,6 +17,7 @@ interface NetworkMenuBodyProps {
   filteredPinnedChains: string[];
   filteredMainnetChains: string[];
   filteredTestnetChains: string[];
+  filteredLocalChains: string[];
   onClose: () => void;
 }
 
@@ -26,6 +28,7 @@ export const NetworkMenuBody = observer(
     filteredPinnedChains,
     filteredMainnetChains,
     filteredTestnetChains,
+    filteredLocalChains,
     onClose,
   }: NetworkMenuBodyProps) => {
     const isAllowCustomNetworks = useAllowCustomNetworks({
@@ -37,7 +40,7 @@ export const NetworkMenuBody = observer(
         <Accordion
           variant="transparent"
           allowMultiple
-          defaultIndex={[0, 1, 2]}
+          defaultIndex={[0, 1, 2, 3]}
           p={0}
         >
           <Flex direction="column" gap={4}>
@@ -74,6 +77,17 @@ export const NetworkMenuBody = observer(
             {isAllowCustomNetworks && (
               <>
                 <Divider borderColor="gray.700" />
+                <NetworkAccordionLocal
+                  networks={filteredLocalChains}
+                  cursor={cursor}
+                  setCursor={setCursor}
+                  startIndex={
+                    filteredPinnedChains.length +
+                    filteredMainnetChains.length +
+                    filteredTestnetChains.length
+                  }
+                  onClose={onClose}
+                />
                 <AppLink href="/add-network">
                   <Button
                     variant="outline-gray"
@@ -94,7 +108,8 @@ export const NetworkMenuBody = observer(
         </Accordion>
         {filteredPinnedChains.length +
           filteredMainnetChains.length +
-          filteredTestnetChains.length ===
+          filteredTestnetChains.length +
+          filteredLocalChains.length ===
           0 && (
           <EmptyState
             my={0}
