@@ -62,7 +62,6 @@ export const SearchComponent = () => {
   const [keyword, setKeyword] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [cursor, setCursor] = useState<number>();
-  const [isKeywordCleared, setIsKeywordCleared] = useState(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const onCloseWithClear = useCallback(() => {
@@ -129,7 +128,6 @@ export const SearchComponent = () => {
 
   const handleOnKeyDown = useCallback(
     (e: ReactKeyboardEvent<HTMLInputElement>) => {
-      if (!results.length) return;
       switch (e.key) {
         case "ArrowUp":
         case "ArrowDown": {
@@ -147,24 +145,15 @@ export const SearchComponent = () => {
           break;
         case "Escape":
           if (keyword.length > 0) {
+            e.preventDefault();
             setKeyword("");
-            setIsKeywordCleared(true);
-          } else if (isKeywordCleared) {
-            onCloseWithClear();
           }
           break;
         default:
           break;
       }
     },
-    [
-      cursor,
-      handleSelectResult,
-      isKeywordCleared,
-      keyword,
-      onCloseWithClear,
-      results,
-    ]
+    [cursor, handleSelectResult, keyword.length, results]
   );
 
   useOutsideClick({
