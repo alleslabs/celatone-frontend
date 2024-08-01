@@ -88,7 +88,7 @@ export const NetworkMenuBody = observer(
                   }
                   onClose={onClose}
                 />
-                <AppLink href="/custom-network">
+                <AppLink href="/custom-network/add">
                   <Button
                     variant="outline-gray"
                     justifyContent="flex-start"
