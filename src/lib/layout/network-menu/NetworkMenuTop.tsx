@@ -51,7 +51,7 @@ export const NetworkMenuTop = ({
             <Text as="span" variant="body3" color="text.dark">
               Want to add your network?
             </Text>{" "}
-            <AppLink href="/add-network" onClick={onClose}>
+            <AppLink href="/custom-network" onClick={onClose}>
               <Text
                 as="span"
                 variant="body3"
