@@ -96,6 +96,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => (
         w="full"
         placeholder="https://"
         error={errors.logoUri?.message}
+        helperText="1:1 ratio image is recommended"
       />
     </Flex>
     <Flex mt={8}>
