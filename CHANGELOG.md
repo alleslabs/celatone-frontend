@@ -46,6 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1053](https://github.com/alleslabs/celatone-frontend/pull/1053) Move move decoder and verifier links to env
+
 ### Bug fixes
 
 - [#1050](https://github.com/alleslabs/celatone-frontend/pull/1050) Fix gap between network subsection
