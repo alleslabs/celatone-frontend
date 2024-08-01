@@ -7,6 +7,7 @@ import { EmptyState } from "lib/components/state";
 import type { Option } from "lib/types";
 
 import { NetworkAccordion } from "./NetworkAccordion";
+import { NetworkAccordionLocal } from "./NetworkAccordionLocal";
 import { NetworkAccodionPinned } from "./NetworkAccordionPinned";
 
 interface NetworkMenuBodyProps {
@@ -64,8 +65,7 @@ export const NetworkMenuBody = observer(
             onClose={onClose}
           />
           <Divider borderColor="gray.700" />
-          <NetworkAccordion
-            title="Your Local Minitias"
+          <NetworkAccordionLocal
             networks={filteredLocalChains}
             cursor={cursor}
             setCursor={setCursor}
@@ -75,7 +75,6 @@ export const NetworkMenuBody = observer(
               filteredTestnetChains.length
             }
             onClose={onClose}
-            isEditable
           />
           <AppLink href="/add-network">
             <Button
@@ -93,7 +92,8 @@ export const NetworkMenuBody = observer(
       </Accordion>
       {filteredPinnedChains.length +
         filteredMainnetChains.length +
-        filteredTestnetChains.length ===
+        filteredTestnetChains.length +
+        filteredLocalChains.length ===
         0 && (
         <EmptyState
           my={0}
