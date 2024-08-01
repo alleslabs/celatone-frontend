@@ -17,6 +17,7 @@ import type {
 import { getCodeHash } from "lib/utils";
 
 import { CodeHashBox } from "./CodeHashBox";
+import { IndirectlyVerifiedAlert } from "./IndirectlyVerifiedAlert";
 import { InstantiatePermissionRadio } from "./InstantiatePermissionRadio";
 import { SimulateMessageRender } from "./SimulateMessageRender";
 import { UploadCard } from "./UploadCard";
@@ -112,6 +113,7 @@ export const UploadSection = ({
         }
         variant="fixed-floating"
       />
+      <IndirectlyVerifiedAlert />
       <Flex direction="column">
         <Heading as="h6" variant="h6" fontWeight={600} my={2}>
           Instantiate Permission

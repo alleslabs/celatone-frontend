@@ -10,7 +10,7 @@ import { CustomIcon } from "lib/components/icon";
 import { FooterCta } from "lib/components/layouts";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
-import { UploadSection } from "lib/components/upload/UploadSection";
+import { UploadSection } from "lib/components/upload";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
