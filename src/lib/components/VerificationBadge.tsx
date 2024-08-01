@@ -1,5 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
+import { VerificationStatus } from "lib/services/types";
+
 import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
 
@@ -7,14 +9,6 @@ interface VerificationBadgeProps {
   status: VerificationStatus;
   hasText?: boolean;
   type: "contract" | "code";
-}
-
-export enum VerificationStatus {
-  NOT_VERIFIED,
-  IN_PROGRESS,
-  VERIFIED,
-  INDIRECTLY_VERIFIED,
-  FAILED,
 }
 
 const getstatusProperties = (status: VerificationStatus) => {

@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 
 import { StatusMessageBox } from "lib/components/StatusMessageBox";
-import { VerificationStatus } from "lib/components/VerificationBadge";
+import { VerificationStatus } from "lib/services/types";
 
 import { FailedDetails } from "./FailedDetails";
 import { IndirectlyVerifiedDetails } from "./IndirectlyVerifiedDetails";

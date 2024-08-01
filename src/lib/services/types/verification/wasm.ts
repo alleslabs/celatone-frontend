@@ -2,6 +2,14 @@ import { z } from "zod";
 
 import { zUtcDate } from "lib/types";
 
+export enum VerificationStatus {
+  NOT_VERIFIED,
+  IN_PROGRESS,
+  VERIFIED,
+  INDIRECTLY_VERIFIED,
+  FAILED,
+}
+
 export interface WasmVerifyRequest {
   chainId: string;
   codeId: number;

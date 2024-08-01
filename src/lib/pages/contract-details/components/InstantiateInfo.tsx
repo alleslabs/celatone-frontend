@@ -9,10 +9,8 @@ import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { VerifyPublishCodeModal } from "lib/components/modal";
-import {
-  VerificationBadge,
-  VerificationStatus,
-} from "lib/components/VerificationBadge";
+import { VerificationBadge } from "lib/components/VerificationBadge";
+import { VerificationStatus } from "lib/services/types";
 import type { Contract, ContractRest } from "lib/services/types";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { Nullable, Option } from "lib/types";

@@ -30,9 +30,9 @@ import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { VerificationStatus } from "lib/components/VerificationBadge";
 import { useAccountDelegationInfos } from "lib/model/account";
 import { useBalances } from "lib/services/bank";
+import { VerificationStatus } from "lib/services/types";
 import type { BechAddr32 } from "lib/types";
 import { jsonPrettify, truncate } from "lib/utils";
 

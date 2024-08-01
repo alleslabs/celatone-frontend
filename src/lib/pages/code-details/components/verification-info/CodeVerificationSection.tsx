@@ -1,9 +1,7 @@
 import { Flex, Heading } from "@chakra-ui/react";
 
-import {
-  VerificationBadge,
-  VerificationStatus,
-} from "lib/components/VerificationBadge";
+import { VerificationBadge } from "lib/components/VerificationBadge";
+import { VerificationStatus } from "lib/services/types";
 
 import { FailedDetails } from "./components/FailedDetails";
 import { IndirectlyVerifiedDetails } from "./components/IndirectlyVerifiedDetails";

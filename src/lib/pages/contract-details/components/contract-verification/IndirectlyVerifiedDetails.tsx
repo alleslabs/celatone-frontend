@@ -1,10 +1,8 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 
 import { VerifyPublishCodeModal } from "lib/components/modal";
-import {
-  VerificationBadge,
-  VerificationStatus,
-} from "lib/components/VerificationBadge";
+import { VerificationBadge } from "lib/components/VerificationBadge";
+import { VerificationStatus } from "lib/services/types";
 
 interface IndirectlyVerifiedDetailsProps {
   codeId: number;

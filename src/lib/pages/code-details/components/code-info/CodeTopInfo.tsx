@@ -7,11 +7,9 @@ import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import { PublicDescription } from "lib/components/PublicDescription";
-import {
-  VerificationBadge,
-  VerificationStatus,
-} from "lib/components/VerificationBadge";
+import { VerificationBadge } from "lib/components/VerificationBadge";
 import { useCodeStore } from "lib/providers/store";
+import { VerificationStatus } from "lib/services/types";
 import type { Code } from "lib/services/types";
 import { AccessConfigPermission } from "lib/types";
 import type { Nullable, ProjectInfo, PublicCodeInfo } from "lib/types";

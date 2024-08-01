@@ -27,8 +27,8 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { VerificationStatus } from "lib/components/VerificationBadge";
 import { useSchemaStore } from "lib/providers/store";
+import { VerificationStatus } from "lib/services/types";
 import { useGetWasmVerifyInfos } from "lib/services/verification/wasm";
 import { useCodeData } from "lib/services/wasm/code";
 
