@@ -4,17 +4,23 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Box,
   Flex,
+  Grid,
   Radio,
   RadioGroup,
   Text,
 } from "@chakra-ui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import type { Control, FieldErrors } from "react-hook-form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { useEffect } from "react";
+import { useWatch } from "react-hook-form";
+import type {
+  Control,
+  FieldErrors,
+  UseFormSetValue,
+  UseFormTrigger,
+} from "react-hook-form";
 
+import type { AddNetworkManualForm } from "../types";
 import {
   CustomNetworkPageHeader,
   CustomNetworkSubheader,
@@ -26,115 +32,144 @@ export enum GasPriceConfiguration {
   CUSTOM = "custom",
 }
 
-// TODO add validation
-const schema = z.object({
-  gasAdjustment: z.string(),
-  maxGasLimit: z.string(),
-  feeTokenDenom: z.string(),
-  gasPrice: z.string().optional(),
-  fixedMinimumGasPrice: z.string().optional(),
-  lowGasPrice: z.string().optional(),
-  averageGasPrice: z.string().optional(),
-  highGasPrice: z.string().optional(),
-  gasForCosmosSend: z.string().optional(),
-  gasForIBC: z.string().optional(),
-});
+interface GasFeeDetailsProps {
+  control: Control<AddNetworkManualForm>;
+  errors: FieldErrors<AddNetworkManualForm>;
+  setValue: UseFormSetValue<AddNetworkManualForm>;
+  trigger: UseFormTrigger<AddNetworkManualForm>;
+}
 
-type FormData = z.infer<typeof schema>;
-
-const GasOptionRender = ({
-  gasConfigs,
+const GasOptionStandard = ({
   control,
   errors,
-}: {
-  gasConfigs: GasPriceConfiguration;
-  control: Control<FormData>;
-  errors: FieldErrors<FormData>;
-}) => (
+}: Omit<GasFeeDetailsProps, "setValue" | "trigger">) => (
+  <ControllerInput
+    name="gasPrice"
+    control={control}
+    label="Gas Price"
+    variant="fixed-floating"
+    type="decimal"
+    w="full"
+    placeholder="0.00"
+    error={errors.gasPrice?.message}
+    rules={{ required: "" }}
+  />
+);
+
+const GasOptionCustom = ({
+  control,
+  errors,
+}: Omit<GasFeeDetailsProps, "setValue" | "trigger">) => (
   <>
-    {gasConfigs === GasPriceConfiguration.STANDARD && (
+    <Flex justifyContent="space-between" alignItems="center">
+      <Box>
+        <Text variant="body1" color="gray.500">
+          Fixed Minimum Gas Price
+        </Text>
+        <Text variant="body3" color="error.main">
+          (Required)
+        </Text>
+      </Box>
       <ControllerInput
-        name="gasPrice"
+        name="fixedMinimumGasPrice"
         control={control}
-        label="Gas Price"
         variant="fixed-floating"
-        w="full"
+        type="decimal"
+        w="256px"
         placeholder="0.00"
-        error={errors.gasPrice?.message}
+        error={errors.fixedMinimumGasPrice?.message}
+        textAlign="right"
       />
-    )}
-    {gasConfigs === GasPriceConfiguration.CUSTOM && (
-      <>
-        <ControllerInput
-          name="fixedMinimumGasPrice"
-          control={control}
-          label="Fixed Minimum Gas Price"
-          variant="fixed-floating"
-          w="full"
-          placeholder="0.00"
-          rules={{ required: "" }}
-          error={errors.fixedMinimumGasPrice?.message}
-        />
-        <ControllerInput
-          name="lowGasPrice"
-          control={control}
-          label="Low Gas Price"
-          variant="fixed-floating"
-          w="full"
-          placeholder="0.00"
-          rules={{ required: "" }}
-          error={errors.lowGasPrice?.message}
-        />
-        <ControllerInput
-          name="averageGasPrice"
-          control={control}
-          label="Average Gas Price"
-          variant="fixed-floating"
-          w="full"
-          placeholder="0.00"
-          rules={{ required: "" }}
-          error={errors.averageGasPrice?.message}
-        />
-        <ControllerInput
-          name="highGasPrice"
-          control={control}
-          label="High Gas Price"
-          variant="fixed-floating"
-          w="full"
-          placeholder="0.00"
-          rules={{ required: "" }}
-          error={errors.highGasPrice?.message}
-        />
-      </>
-    )}
+    </Flex>
+    <Flex justifyContent="space-between" alignItems="center">
+      <Box>
+        <Text variant="body1" color="gray.500">
+          Low Gas Price
+        </Text>
+        <Text variant="body3" color="error.main">
+          (Required)
+        </Text>
+      </Box>
+      <ControllerInput
+        name="lowGasPrice"
+        control={control}
+        variant="fixed-floating"
+        type="decimal"
+        w="256px"
+        placeholder="0.00"
+        error={errors.lowGasPrice?.message}
+        textAlign="right"
+      />
+    </Flex>
+    <Flex justifyContent="space-between" alignItems="center">
+      <Box>
+        <Text variant="body1" color="gray.500">
+          Average Gas Price
+        </Text>
+        <Text variant="body3" color="error.main">
+          (Required)
+        </Text>
+      </Box>
+      <ControllerInput
+        name="averageGasPrice"
+        control={control}
+        variant="fixed-floating"
+        type="decimal"
+        w="256px"
+        placeholder="0.00"
+        error={errors.averageGasPrice?.message}
+        textAlign="right"
+      />
+    </Flex>
+    <Flex justifyContent="space-between" alignItems="center">
+      <Box>
+        <Text variant="body1" color="gray.500">
+          High Gas Price
+        </Text>
+        <Text variant="body3" color="error.main">
+          (Required)
+        </Text>
+      </Box>
+      <ControllerInput
+        name="highGasPrice"
+        control={control}
+        variant="fixed-floating"
+        type="decimal"
+        w="256px"
+        placeholder="0.00"
+        error={errors.highGasPrice?.message}
+        textAlign="right"
+      />
+    </Flex>
   </>
 );
 
-const GasFeeDetails = () => {
-  const [gasConfigs, setGasConfigs] = useState<GasPriceConfiguration>(
-    GasPriceConfiguration.STANDARD
-  );
+const GasFeeDetails = ({
+  control,
+  errors,
+  setValue,
+  trigger,
+}: GasFeeDetailsProps) => {
+  const { gasPrice, gasConfig } = useWatch({ control });
 
-  const {
-    control,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    mode: "all",
-    reValidateMode: "onChange",
-    defaultValues: {
-      gasAdjustment: "",
-      maxGasLimit: "",
-      feeTokenDenom: "",
-      gasPrice: "",
-      fixedMinimumGasPrice: "",
-      lowGasPrice: "",
-      averageGasPrice: "",
-      highGasPrice: "",
-      gasForCosmosSend: "",
-      gasForIBC: "",
-    },
-  });
+  useEffect(() => {
+    if (!gasPrice) return;
+
+    if (gasConfig === GasPriceConfiguration.CUSTOM) {
+      setValue("gasPrice", "");
+      trigger();
+
+      return;
+    }
+
+    if (gasConfig === GasPriceConfiguration.STANDARD) {
+      setValue("fixedMinimumGasPrice", gasPrice);
+      setValue("lowGasPrice", gasPrice);
+      setValue("averageGasPrice", gasPrice);
+      setValue("highGasPrice", gasPrice);
+      trigger();
+    }
+  }, [gasConfig, setValue, gasPrice, trigger]);
 
   return (
     <Flex direction="column" gap={2} alignItems="center">
@@ -148,6 +183,7 @@ const GasFeeDetails = () => {
               control={control}
               label="Gas Adjustment"
               variant="fixed-floating"
+              type="decimal"
               w="full"
               placeholder="0.00"
               rules={{ required: "" }}
@@ -158,6 +194,7 @@ const GasFeeDetails = () => {
               control={control}
               label="Max Gas Limit"
               variant="fixed-floating"
+              type="decimal"
               w="full"
               placeholder="0.00"
               rules={{ required: "" }}
@@ -170,7 +207,7 @@ const GasFeeDetails = () => {
             label="Fee Tokens Denom"
             variant="fixed-floating"
             w="full"
-            placeholder="ex. INIT"
+            placeholder="ex. uinit"
             rules={{ required: "" }}
             error={errors.feeTokenDenom?.message}
           />
@@ -179,44 +216,41 @@ const GasFeeDetails = () => {
           <CustomNetworkSubheader title="Gas Price Configuration" />
           <RadioGroup
             onChange={(nextVal) =>
-              setGasConfigs(nextVal as GasPriceConfiguration)
+              setValue("gasConfig", nextVal as GasPriceConfiguration)
             }
-            value={gasConfigs}
+            value={gasConfig}
           >
-            <Flex gap={6} maxW={640}>
-              <Flex>
-                <Radio
-                  variant="gray-card"
-                  width="fit-content"
-                  value={GasPriceConfiguration.STANDARD}
-                >
-                  Standard Gas Price
-                  <Text variant="body3">
-                    Set the standard gas price as the default for all gas price
-                    configurations
-                  </Text>
-                </Radio>
-              </Flex>
-              <Flex>
-                <Radio
-                  variant="gray-card"
-                  width="fit-content"
-                  value={GasPriceConfiguration.CUSTOM}
-                >
-                  Custom Gas Prices
-                  <Text variant="body3">
-                    Set the custom value for minimum, low, average, and high gas
-                    price
-                  </Text>
-                </Radio>
-              </Flex>
-            </Flex>
+            <Grid gridTemplateColumns="repeat(2, 1fr)" gap={6} maxW={640}>
+              <Radio
+                variant="gray-card"
+                width="fit-content"
+                value={GasPriceConfiguration.STANDARD}
+              >
+                Standard Gas Price
+                <Text variant="body3">
+                  Set the standard gas price as the default for all gas price
+                  configurations
+                </Text>
+              </Radio>
+              <Radio
+                variant="gray-card"
+                width="fit-content"
+                value={GasPriceConfiguration.CUSTOM}
+              >
+                Custom Gas Prices
+                <Text variant="body3">
+                  Set the custom value for minimum, low, average, and high gas
+                  price
+                </Text>
+              </Radio>
+            </Grid>
           </RadioGroup>
-          <GasOptionRender
-            gasConfigs={gasConfigs}
-            control={control}
-            errors={errors}
-          />
+          {gasConfig === GasPriceConfiguration.STANDARD && (
+            <GasOptionStandard control={control} errors={errors} />
+          )}
+          {gasConfig === GasPriceConfiguration.CUSTOM && (
+            <GasOptionCustom control={control} errors={errors} />
+          )}
         </Flex>
         <Accordion allowToggle w="full">
           <AccordionItem>
@@ -232,19 +266,21 @@ const GasFeeDetails = () => {
                   control={control}
                   label="Gas Cost for Cosmos Send"
                   variant="fixed-floating"
+                  type="decimal"
                   w="full"
                   placeholder="0.00"
                   error={errors.gasForCosmosSend?.message}
                 />
                 <ControllerInput
                   labelBgColor="gray.900"
-                  name="gasForIBC"
+                  name="gasForIbc"
                   control={control}
                   label="Gas Cost for IBC"
                   variant="fixed-floating"
+                  type="decimal"
                   w="full"
                   placeholder="0.00"
-                  error={errors.gasForIBC?.message}
+                  error={errors.gasForIbc?.message}
                 />
               </Flex>
             </AccordionPanel>

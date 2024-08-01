@@ -1,4 +1,5 @@
 import type { ChainConfig as SharedChainConfig } from "@alleslabs/shared";
+import { find } from "lodash";
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
@@ -51,5 +52,9 @@ export class ChainConfigStore {
 
   isChainIdExist(chainId: string): boolean {
     return !!this.chainConfigs[chainId];
+  }
+
+  isPrettyNameExist(name: string): boolean {
+    return !!find(this.chainConfigs, { prettyName: name });
   }
 }

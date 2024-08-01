@@ -6,7 +6,7 @@ import { wallets as initiaWallets } from "@cosmos-kit/initia";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 import { wallets as staionWallets } from "@cosmos-kit/station";
 import { assets, chains } from "chain-registry";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 import type { ChainConfig, ChainConfigs } from "config/chain";
 import { CHAIN_CONFIGS } from "config/chain";
@@ -49,145 +49,7 @@ export const useChainConfigs = (): {
   registryChains: Chain[];
   registryAssets: AssetList[];
 } => {
-  const { chainConfigs, addChainConfig } = useChainConfigStore();
-
-  // For test only
-  useEffect(() => {
-    addChainConfig("minimove-1-sequencer", {
-      tier: "sequencer",
-      chainId: "minimove-1-sequencer",
-      chain: "initia",
-      registryChainName: "minimovetestnet",
-      prettyName: "Minimove Sequencer",
-      logo_URIs: {
-        png: "https://assets.alleslabs.dev/integrations/chains/minimove.png",
-      },
-      lcd: "https://lcd.minimove-1.initia.xyz",
-      rpc: "https://rpc.minimove-1.initia.xyz",
-      graphql: "https://minimove-1-graphql.alleslabs.dev/v1/graphql",
-      wallets: ["initia", "keplr"],
-      features: {
-        faucet: {
-          enabled: false,
-        },
-        wasm: {
-          enabled: false,
-        },
-        move: {
-          enabled: false,
-        },
-        pool: {
-          enabled: false,
-        },
-        publicProject: {
-          enabled: true,
-        },
-        gov: {
-          enabled: false,
-        },
-        nft: {
-          enabled: true,
-        },
-      },
-      gas: {
-        gasAdjustment: 1.4,
-        maxGasLimit: 1000000,
-      },
-      extra: {
-        isValidatorExternalLink: null,
-        layer: "2",
-      },
-      network_type: "testnet",
-      fees: {
-        fee_tokens: [
-          {
-            denom:
-              "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
-            fixed_min_gas_price: 0.15,
-            low_gas_price: 0.15,
-            average_gas_price: 0.15,
-            high_gas_price: 0.4,
-          },
-          {
-            denom:
-              "ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5",
-            fixed_min_gas_price: 0.15,
-            low_gas_price: 0.15,
-            average_gas_price: 0.15,
-            high_gas_price: 0.4,
-          },
-        ],
-      },
-      registry: {
-        bech32_prefix: "init",
-        slip44: 118,
-        staking: {
-          staking_tokens: [],
-        },
-        assets: [
-          {
-            description: "The native token of Initia",
-            denom_units: [
-              {
-                denom:
-                  "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
-                exponent: 0,
-              },
-              {
-                denom: "INIT",
-                exponent: 6,
-              },
-            ],
-            base: "l2/771d639f30fbe45e3fbca954ffbe2fcc26f915f5513c67a4a2d0bc1d635bdefd",
-            display: "INIT",
-            name: "Initia Native Token",
-            symbol: "INIT",
-            coingecko_id: "",
-            images: [
-              {
-                png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/minimove/images/INIT.png",
-                svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/minimove/images/INIT.svg",
-              },
-            ],
-            logo_URIs: {
-              png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/minimove/images/INIT.png",
-              svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/minimove/images/INIT.svg",
-            },
-          },
-          {
-            description: "The fake USDC",
-            denom_units: [
-              {
-                denom:
-                  "ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5",
-                exponent: 0,
-              },
-              {
-                denom: "USDC",
-                exponent: 6,
-              },
-            ],
-            base: "ibc/8E27BA2D5493AF5636760E354E46004562C46AB7EC0CC4C1CA14E9E20E2545B5",
-            display: "USDC",
-            name: "USDC",
-            symbol: "USDC",
-            coingecko_id: "",
-            images: [
-              {
-                png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/minimove/images/USDC.png",
-                svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/minimove/images/USDC.svg",
-              },
-            ],
-            logo_URIs: {
-              png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/minimove/images/USDC.png",
-              svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/minimove/images/USDC.svg",
-            },
-          },
-        ],
-      },
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { chainConfigs } = useChainConfigStore();
 
   const local = useMemo(
     () =>

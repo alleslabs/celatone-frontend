@@ -33,6 +33,7 @@ export interface ControllerInputProps<T extends FieldValues>
   status?: FormStatus;
   maxLength?: number;
   helperAction?: ReactNode;
+  textAlign?: "left" | "right";
   cta?: {
     label: string;
     onClick: (changeValue?: (...event: string[]) => void) => void;
@@ -55,6 +56,7 @@ export const ControllerInput = <T extends FieldValues>({
   autoFocus,
   cursor,
   helperAction,
+  textAlign = "left",
   cta,
   ...componentProps
 }: ControllerInputProps<T>) => {
@@ -81,6 +83,10 @@ export const ControllerInput = <T extends FieldValues>({
 
     if (cta) {
       return "3rem";
+    }
+
+    if (textAlign === "right") {
+      return "1rem";
     }
 
     return 0;
@@ -130,11 +136,17 @@ export const ControllerInput = <T extends FieldValues>({
           maxLength={maxLength}
           autoFocus={autoFocus}
           cursor={cursor}
+          onBlur={field.onBlur}
           pr={inputPaddingRight()}
           {...(type === "decimal" && decimalHandlers)}
           {...(type === "number" && numberHandlers)}
+          textAlign={textAlign}
         />
-        <InputRightElement h="full" pr={cta ? 3 : 0}>
+        <InputRightElement
+          h="full"
+          w={status || cta ? "2.5rem" : 0}
+          pr={cta ? 3 : 0}
+        >
           {status && getStatusIcon(status.state)}
           {cta && (
             <Text
