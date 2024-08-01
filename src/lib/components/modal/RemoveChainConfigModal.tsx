@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { useChainConfigStore } from "lib/providers/store";
+import { useChainConfigStore, useNetworkStore } from "lib/providers/store";
 
 import { ActionModal } from "./ActionModal";
 
@@ -17,14 +17,18 @@ export function RemoveChainConfigModal({
   trigger,
 }: RemoveChainConfigModalProps) {
   const { removeChainConfig, getChainConfig } = useChainConfigStore();
+  const { removeNetwork } = useNetworkStore();
   const navigate = useInternalNavigate();
 
   const chainConfig = getChainConfig(chainId);
 
   const toast = useToast();
   const handleRemove = () => {
+    // remove chain id from chain config store
     removeChainConfig(chainId);
-    navigate({ pathname: "/", replace: true });
+
+    // remove chain id from pinned network
+    removeNetwork(chainId);
 
     setTimeout(() => {
       toast({
@@ -35,6 +39,8 @@ export function RemoveChainConfigModal({
         position: "bottom-right",
         icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       });
+      // redirect to home page
+      navigate({ pathname: "/", replace: true });
     }, 1000);
   };
 

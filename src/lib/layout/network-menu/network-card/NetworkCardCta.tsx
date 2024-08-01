@@ -96,7 +96,7 @@ export const NetworkCardCta = observer(
             {...pinIconStyles}
             onClick={() =>
               navigate({
-                pathname: "/custom-network/edit",
+                pathname: "/custom-network/edit/[chainId]",
                 query: {
                   chainId,
                 },
