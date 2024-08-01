@@ -10,6 +10,7 @@ import { useMemo } from "react";
 
 import type { ChainConfig, ChainConfigs } from "config/chain";
 import { CHAIN_CONFIGS } from "config/chain";
+import { SUPPORTED_CHAIN_IDS } from "env";
 import {
   initiatestnet,
   initiatestnetAssets,
@@ -48,6 +49,7 @@ export const useChainConfigs = (): {
   chainConfigs: ChainConfigs;
   registryChains: Chain[];
   registryAssets: AssetList[];
+  supportedChainIds: string[];
 } => {
   const { chainConfigs } = useChainConfigStore();
 
@@ -88,7 +90,7 @@ export const useChainConfigs = (): {
             pretty_name: each.prettyName,
             chain_id: each.chainId,
             bech32_prefix: each.registry?.bech32_prefix ?? "",
-            slip44: 118,
+            slip44: each.registry?.slip44 ?? 118,
             fees: each.fees,
             staking: each.registry?.staking,
             logo_URIs: each.logo_URIs,
@@ -107,12 +109,14 @@ export const useChainConfigs = (): {
             },
             registryChains: [...acc.registryChains, localRegistryChain],
             registryAssets: [...acc.registryAssets, localRegistryAssets],
+            supportedChainIds: [...acc.supportedChainIds, each.chainId],
           };
         },
         {
           chainConfigs: {} as ChainConfigs,
           registryChains: [] as Chain[],
           registryAssets: [] as AssetList[],
+          supportedChainIds: [] as string[],
         }
       ),
     [chainConfigs]
@@ -139,5 +143,6 @@ export const useChainConfigs = (): {
       ...initiatestnetAssets,
       ...local.registryAssets,
     ],
+    supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
   };
 };
