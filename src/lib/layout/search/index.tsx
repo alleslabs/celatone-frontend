@@ -104,11 +104,7 @@ export const SearchComponent = () => {
         if (result?.type === "Module Path")
           return splitModule(keyword) as [Addr, string];
         if (result?.type === "Account Address")
-          return (
-            result?.metadata?.icns?.address ||
-            result?.metadata?.initiaUsername ||
-            keyword
-          );
+          return result?.metadata?.icns?.address || keyword;
         return keyword;
       };
 
