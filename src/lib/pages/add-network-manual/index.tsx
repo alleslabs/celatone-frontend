@@ -10,13 +10,10 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { useChainConfigStore } from "lib/providers/store";
 
 import {
+  AddNetworkForm,
   AddNetworkStepper,
-  NetworkDetails,
   SuccessAddCustomMinitiaModal,
-  SupportedFeatures,
-  WalletRegistry,
 } from "./components";
-import GasFeeDetails from "./components/GasFeeDetails";
 import { useNetworkStepper } from "./hooks/useNetworkStepper";
 import {
   zAddNetworkManualChainConfigJson,
@@ -114,25 +111,6 @@ export const AddNetworkManual = () => {
   const { currentStep, handleNext, handlePrevious, hasNext, hasPrevious } =
     useNetworkStepper(4, handleSubmit(handleSubmitForm));
 
-  const renderFormUI = () => {
-    if (currentStep === 0)
-      return <NetworkDetails control={control} errors={errors} />;
-
-    if (currentStep === 1) return <SupportedFeatures control={control} />;
-
-    if (currentStep === 2)
-      return (
-        <GasFeeDetails
-          control={control}
-          errors={errors}
-          setValue={setValue}
-          trigger={trigger}
-        />
-      );
-
-    return <WalletRegistry control={control} errors={errors} />;
-  };
-
   const isFormDisabled = () => {
     if (currentStep === 0)
       return !zNetworkDetailsForm({
@@ -188,7 +166,15 @@ export const AddNetworkManual = () => {
       <Flex position="sticky" top={0} left={0} w="full" zIndex={2}>
         <AddNetworkStepper currentStep={currentStep} />
       </Flex>
-      <ActionPageContainer width={640}>{renderFormUI()}</ActionPageContainer>
+      <ActionPageContainer width={640}>
+        <AddNetworkForm
+          currentStep={currentStep}
+          control={control}
+          errors={errors}
+          setValue={setValue}
+          trigger={trigger}
+        />
+      </ActionPageContainer>
       <FooterCta
         cancelButton={{
           onClick: handlePrevious,
