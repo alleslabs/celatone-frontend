@@ -6,7 +6,7 @@ import { AppLink } from "../AppLink";
 import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import { ModuleInteractionMobileStep } from "lib/pages/interact/types";
-import { useVerifyModule } from "lib/services/move/module";
+import { useMoveVerifyInfo } from "lib/services/move/module";
 import type { BechAddr, IndexedModule, Option } from "lib/types";
 
 import { CountBadge } from "./CountBadge";
@@ -28,7 +28,7 @@ export const ModuleCard = ({
   setStep,
   readOnly = false,
 }: ModuleCardProps) => {
-  const { data: isVerified } = useVerifyModule({
+  const { data: isVerified } = useMoveVerifyInfo({
     address: selectedAddress,
     moduleName: module.moduleName,
   });

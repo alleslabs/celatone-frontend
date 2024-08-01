@@ -10,6 +10,7 @@ import {
   Tag,
 } from "@chakra-ui/react";
 
+import { useAllowCustomNetworks } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import {
   CustomNetworkFooterCta,
@@ -49,6 +50,8 @@ const TabMenu = [
 ];
 
 export const NetworkConfig = () => {
+  useAllowCustomNetworks({ shouldRedirect: true });
+
   const forms = [
     <UpdateNetworkDetails />,
     <UpdateSupportedFeatures />,

@@ -18,3 +18,4 @@ export * from "./usePlatform";
 export * from "./useInitia";
 export * from "./useIsConnected";
 export * from "./useChainConfigs";
+export * from "./useAllowCustomNetworks";

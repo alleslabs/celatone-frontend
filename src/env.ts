@@ -29,3 +29,9 @@ export const CELATONE_API_OVERRIDE =
 
 export const HASURA_ADMIN_SECRET =
   process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET ?? "";
+
+export const INITIA_MOVE_DECODER =
+  process.env.NEXT_PUBLIC_INITIA_MOVE_DECODER ?? "";
+
+export const INITIA_MOVE_VERIFIER =
+  process.env.NEXT_PUBLIC_INITIA_MOVE_VERIFIER ?? "";
