@@ -1,5 +1,4 @@
-import { SUPPORTED_CHAIN_IDS } from "env";
-
+import { useChainConfigs } from "./useChainConfigs";
 import { useInternalNavigate } from "./useInternalNavigate";
 
 export const useAllowCustomNetworks = ({
@@ -8,8 +7,9 @@ export const useAllowCustomNetworks = ({
   shouldRedirect: boolean;
 }) => {
   const navigate = useInternalNavigate();
+  const { supportedChainIds } = useChainConfigs();
 
-  const isAllow = SUPPORTED_CHAIN_IDS.some(
+  const isAllow = supportedChainIds.some(
     (chainId) => chainId === "initiation-1"
   );
 

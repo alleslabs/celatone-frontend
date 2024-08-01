@@ -1,9 +1,10 @@
 import { Text, useToast } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 
-import { useInternalNavigate } from "lib/app-provider";
+import { useCelatoneApp } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { useChainConfigStore } from "lib/providers/store";
+import { useChainConfigStore, useNetworkStore } from "lib/providers/store";
 
 import { ActionModal } from "./ActionModal";
 
@@ -17,14 +18,22 @@ export function RemoveChainConfigModal({
   trigger,
 }: RemoveChainConfigModalProps) {
   const { removeChainConfig, getChainConfig } = useChainConfigStore();
-  const navigate = useInternalNavigate();
+  const { removeNetwork } = useNetworkStore();
+  const router = useRouter();
+  const { currentChainId } = useCelatoneApp();
 
   const chainConfig = getChainConfig(chainId);
 
   const toast = useToast();
   const handleRemove = () => {
+    // remove chain id from chain config store
     removeChainConfig(chainId);
-    navigate({ pathname: "/", replace: true });
+
+    // remove chain id from pinned network
+    removeNetwork(chainId);
+
+    // redirect to home page
+    router.push(currentChainId === chainId ? "/" : `/${currentChainId}`);
 
     setTimeout(() => {
       toast({

@@ -59,7 +59,7 @@ const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
 
 export const AppProvider = observer(({ children }: AppProviderProps) => {
   const { setModalTheme } = useModalTheme();
-  const { chainConfigs } = useChainConfigs();
+  const { chainConfigs, supportedChainIds } = useChainConfigs();
 
   const [states, setStates] = useState<AppContextInterface>(DEFAULT_STATES);
 
@@ -73,7 +73,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
 
       setStates({
         isHydrated: true,
-        availableChainIds: SUPPORTED_CHAIN_IDS,
+        availableChainIds: supportedChainIds,
         currentChainId: newChainId,
         chainConfig,
         indexerGraphClient: new GraphQLClient(chainConfig.indexer, {
@@ -87,7 +87,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
           setStates((prev) => ({ ...prev, theme: newTheme })),
       });
     },
-    [chainConfigs]
+    [chainConfigs, supportedChainIds]
   );
 
   // Disable "Leave page" alert

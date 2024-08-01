@@ -148,7 +148,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
             label="Bech32 Prefix"
             variant="fixed-floating"
             w="full"
-            placeholder="ex. Init"
+            placeholder="ex. init"
             rules={{
               required: "",
             }}

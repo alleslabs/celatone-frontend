@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
-import { FALLBACK_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
+import { FALLBACK_SUPPORTED_CHAIN_ID } from "env";
 import { useChainConfigStore } from "lib/providers/store";
 import { getFirstQueryParam } from "lib/utils";
 
+import { useChainConfigs } from "./useChainConfigs";
 import { useInternalNavigate } from "./useInternalNavigate";
 
 export const useNetworkChange = (
@@ -13,6 +14,7 @@ export const useNetworkChange = (
   const router = useRouter();
   const networkRef = useRef<string>();
   const navigate = useInternalNavigate();
+  const { supportedChainIds } = useChainConfigs();
   const { isHydrated: isChainConfigStoreHydrated } = useChainConfigStore();
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export const useNetworkChange = (
         });
       } else if (
         router.pathname === "/[network]" &&
-        !SUPPORTED_CHAIN_IDS.includes(networkRoute)
+        !supportedChainIds.includes(networkRoute)
       ) {
         // Redirect to default network 404 if `/invalid_network`
         navigate({
@@ -47,7 +49,7 @@ export const useNetworkChange = (
       navigate({
         pathname: "/404",
         query: {
-          network: SUPPORTED_CHAIN_IDS.includes(networkRoute)
+          network: supportedChainIds.includes(networkRoute)
             ? networkRoute
             : FALLBACK_SUPPORTED_CHAIN_ID,
         },
@@ -61,5 +63,6 @@ export const useNetworkChange = (
     router.isReady,
     router.pathname,
     router.query,
+    supportedChainIds,
   ]);
 };
