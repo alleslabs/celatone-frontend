@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#1054](https://github.com/alleslabs/celatone-frontend/pull/1054) Improve main search bar to show both address and address as username
+- [#1053](https://github.com/alleslabs/celatone-frontend/pull/1053) Move move decoder and verifier links to env
 
 ### Bug fixes
 

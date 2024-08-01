@@ -1,5 +1,6 @@
 import axios from "axios";
 
+import { INITIA_MOVE_DECODER, INITIA_MOVE_VERIFIER } from "env";
 import type {
   DecodeModuleReturn,
   ModuleTableCountsResponse,
@@ -30,13 +31,14 @@ import {
   serializeAbiData,
 } from "lib/utils";
 
-export const getModuleVerificationStatus = async (
-  endpoint: string,
+export const getMoveVerifyInfo = async (
   address: Addr,
   moduleName: string
 ): Promise<Nullable<ModuleVerificationInternal>> =>
   axios
-    .get(`${endpoint}/${encodeURI(address)}/${encodeURI(moduleName)}`)
+    .get(
+      `${INITIA_MOVE_VERIFIER}/${encodeURI(address)}/${encodeURI(moduleName)}`
+    )
     .then(({ data }) => parseWithError(zModuleVerificationInternal, data))
     .catch(() => null);
 
@@ -54,22 +56,19 @@ export const getFunctionView = async (
   return data.data;
 };
 
-export const decodeModule = async (
-  decodeAPI: string,
-  moduleEncode: string
-): Promise<ModuleAbi> =>
+export const decodeModule = async (moduleEncode: string): Promise<ModuleAbi> =>
   axios
-    .post<DecodeModuleReturn>(decodeAPI, {
+    .post<DecodeModuleReturn>(`${INITIA_MOVE_DECODER}/decode_module`, {
       code_bytes: moduleEncode,
     })
     .then(({ data }) => parseJsonABI<ModuleAbi>(libDecode(data.abi)));
 
 export const decodeScript = async (
-  decodeAPI: string,
+  endpoint: string,
   scriptBytes: string
 ): Promise<ExposedFunction> =>
   axios
-    .post<DecodeModuleReturn>(decodeAPI, {
+    .post<DecodeModuleReturn>(endpoint, {
       code_bytes: scriptBytes,
     })
     .then(({ data }) => parseJsonABI<ExposedFunction>(libDecode(data.abi)));

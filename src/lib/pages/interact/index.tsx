@@ -18,7 +18,7 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { useOpenNewTab } from "lib/hooks";
 import {
   useModuleByAddressLcd,
-  useVerifyModule,
+  useMoveVerifyInfo,
 } from "lib/services/move/module";
 import type { Addr, ExposedFunction, IndexedModule } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
@@ -182,7 +182,7 @@ export const Interact = () => {
     [navigate, router.query]
   );
 
-  const { data: verificationData } = useVerifyModule({
+  const { data: verificationData } = useMoveVerifyInfo({
     address: module?.address,
     moduleName: module?.moduleName,
   });
