@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Kbd, Text } from "@chakra-ui/react";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 
-import { useIsMac, useMobile } from "lib/app-provider";
+import { useAllowCustomNetworks, useIsMac, useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import InputWithIcon from "lib/components/InputWithIcon";
 
@@ -20,6 +20,9 @@ export const NetworkMenuTop = ({
 }: NetworkMenuTopProps) => {
   const isMobile = useMobile();
   const isMac = useIsMac();
+  const isAllowCustomNetworks = useAllowCustomNetworks({
+    shouldRedirect: false,
+  });
 
   return (
     <Flex direction="column" gap={4} width="100%">
@@ -43,21 +46,23 @@ export const NetworkMenuTop = ({
             </Flex>
           )}
         </Flex>
-        <Box>
-          <Text as="span" variant="body3" color="text.dark">
-            Want to add your network?
-          </Text>{" "}
-          <AppLink href="/add-network" onClick={onClose}>
-            <Text
-              as="span"
-              variant="body3"
-              color="secondary.main"
-              _hover={{ textDecoration: "underline" }}
-            >
-              Add a custom chain.
-            </Text>
-          </AppLink>
-        </Box>
+        {isAllowCustomNetworks && (
+          <Box>
+            <Text as="span" variant="body3" color="text.dark">
+              Want to add your network?
+            </Text>{" "}
+            <AppLink href="/add-network" onClick={onClose}>
+              <Text
+                as="span"
+                variant="body3"
+                color="secondary.main"
+                _hover={{ textDecoration: "underline" }}
+              >
+                Add a custom chain.
+              </Text>
+            </AppLink>
+          </Box>
+        )}
       </Flex>
       <InputWithIcon
         placeholder="Search by Name or Chain ID"

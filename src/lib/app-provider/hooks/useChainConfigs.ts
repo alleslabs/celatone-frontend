@@ -6,7 +6,6 @@ import { wallets as initiaWallets } from "@cosmos-kit/initia";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 import { wallets as staionWallets } from "@cosmos-kit/station";
 import { assets, chains } from "chain-registry";
-import _ from "lodash";
 import { useEffect, useMemo } from "react";
 
 import type { ChainConfig, ChainConfigs } from "config/chain";
@@ -194,15 +193,15 @@ export const useChainConfigs = (): {
     () =>
       Object.values(chainConfigs).reduce(
         (acc, each) => {
-          if (!each) {
-            return acc;
-          }
-
           const localChainConfig: ChainConfig = {
             tier: each.tier,
             chain: each.chain,
             registryChainName: each.registryChainName,
             prettyName: each.prettyName,
+            logoUrl:
+              each.logo_URIs?.png ??
+              each.logo_URIs?.svg ??
+              each.logo_URIs?.jpeg,
             networkType: each.network_type,
             lcd: each.lcd,
             rpc: each.rpc,
@@ -211,12 +210,8 @@ export const useChainConfigs = (): {
             features: each.features,
             gas: {
               gasPrice: {
-                tokenPerGas: _.get(
-                  each,
-                  "fees.fee_tokens[0].fixed_min_gas_price",
-                  0
-                ),
-                denom: _.get(each, "fees.fee_tokens[0].denom", ""),
+                tokenPerGas: each.fees?.fee_tokens[0]?.fixed_min_gas_price ?? 0,
+                denom: each.fees?.fee_tokens[0]?.denom ?? "",
               },
               gasAdjustment: each.gas.gasAdjustment,
               maxGasLimit: each.gas.maxGasLimit,
@@ -244,7 +239,6 @@ export const useChainConfigs = (): {
           };
 
           return {
-            ...acc,
             chainConfigs: {
               ...acc.chainConfigs,
               [each.chainId]: localChainConfig,
@@ -263,7 +257,10 @@ export const useChainConfigs = (): {
   );
 
   return {
-    chainConfigs: _.merge(CHAIN_CONFIGS, local.chainConfigs),
+    chainConfigs: {
+      ...CHAIN_CONFIGS,
+      ...local.chainConfigs,
+    },
     registryChains: [
       ...chains,
       localosmosis,

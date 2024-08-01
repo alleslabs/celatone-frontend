@@ -1,5 +1,6 @@
 import { useModalTheme } from "@cosmos-kit/react";
 import { GraphQLClient } from "graphql-request";
+import { observer } from "mobx-react-lite";
 import type { ReactNode } from "react";
 import {
   createContext,
@@ -11,10 +12,10 @@ import {
 
 import { useChainConfigs } from "../hooks/useChainConfigs";
 import { useNetworkChange } from "../hooks/useNetworkChange";
-import { FALLBACK_CHAIN_CONFIG } from "config/chain";
 import type { ChainConfig } from "config/chain";
-import { PROJECT_CONSTANTS } from "config/project";
+import { FALLBACK_CHAIN_CONFIG } from "config/chain";
 import type { ProjectConstants } from "config/project";
+import { PROJECT_CONSTANTS } from "config/project";
 import { FALLBACK_THEME, getTheme } from "config/theme";
 import type { ThemeConfig } from "config/theme/types";
 import {
@@ -22,8 +23,6 @@ import {
   HASURA_ADMIN_SECRET,
   SUPPORTED_CHAIN_IDS,
 } from "env";
-import { LoadingOverlay } from "lib/components/LoadingOverlay";
-import { useChainConfigStore } from "lib/providers/store";
 import { changeFavicon } from "lib/utils";
 
 interface AppProviderProps {
@@ -58,14 +57,13 @@ const DEFAULT_STATES: AppContextInterface = {
 
 const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
 
-export const AppProvider = ({ children }: AppProviderProps) => {
+export const AppProvider = observer(({ children }: AppProviderProps) => {
   const { setModalTheme } = useModalTheme();
   const { chainConfigs } = useChainConfigs();
-  const { isHydrated: isChainConfigStoreHydrated } = useChainConfigStore();
 
   const [states, setStates] = useState<AppContextInterface>(DEFAULT_STATES);
 
-  // Remark: this function is only used in useSelectChain. Do not use in other places.
+  // Remark: this function is only used in useNetworkChange. Do not use in other places.
   const handleOnChainIdChange = useCallback(
     (newChainId: string) => {
       const chainConfig = chainConfigs[newChainId] ?? FALLBACK_CHAIN_CONFIG;
@@ -110,9 +108,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   useNetworkChange(handleOnChainIdChange);
 
-  if (!isChainConfigStoreHydrated) return <LoadingOverlay />;
   return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
-};
+});
 
 export const useCelatoneApp = (): AppContextInterface => {
   return useContext(AppContext);
