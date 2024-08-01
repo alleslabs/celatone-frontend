@@ -342,7 +342,7 @@ export const useSearchHandler = (
       },
     });
 
-  if (iuAddrByKeyword?.address)
+  if (iuAddrByKeyword && iuAddrByKeyword.address !== null)
     results.push({
       value: iuAddrByKeyword.address,
       type: "Account Address",
