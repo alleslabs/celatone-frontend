@@ -33,7 +33,7 @@ export interface ControllerInputProps<T extends FieldValues>
   status?: FormStatus;
   maxLength?: number;
   helperAction?: ReactNode;
-  rtl?: boolean;
+  textAlign?: "left" | "right";
   cta?: {
     label: string;
     onClick: (changeValue?: (...event: string[]) => void) => void;
@@ -56,7 +56,7 @@ export const ControllerInput = <T extends FieldValues>({
   autoFocus,
   cursor,
   helperAction,
-  rtl = false,
+  textAlign = "left",
   cta,
   ...componentProps
 }: ControllerInputProps<T>) => {
@@ -85,7 +85,7 @@ export const ControllerInput = <T extends FieldValues>({
       return "3rem";
     }
 
-    if (rtl) {
+    if (textAlign === "right") {
       return "1rem";
     }
 
@@ -140,7 +140,7 @@ export const ControllerInput = <T extends FieldValues>({
           pr={inputPaddingRight()}
           {...(type === "decimal" && decimalHandlers)}
           {...(type === "number" && numberHandlers)}
-          textAlign={rtl ? "right" : "left"}
+          textAlign={textAlign}
         />
         <InputRightElement
           h="full"

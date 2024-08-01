@@ -78,7 +78,7 @@ const GasOptionCustom = ({
         w="256px"
         placeholder="0.00"
         error={errors.fixedMinimumGasPrice?.message}
-        rtl
+        textAlign="right"
       />
     </Flex>
     <Flex justifyContent="space-between" alignItems="center">
@@ -98,7 +98,7 @@ const GasOptionCustom = ({
         w="256px"
         placeholder="0.00"
         error={errors.lowGasPrice?.message}
-        rtl
+        textAlign="right"
       />
     </Flex>
     <Flex justifyContent="space-between" alignItems="center">
@@ -118,7 +118,7 @@ const GasOptionCustom = ({
         w="256px"
         placeholder="0.00"
         error={errors.averageGasPrice?.message}
-        rtl
+        textAlign="right"
       />
     </Flex>
     <Flex justifyContent="space-between" alignItems="center">
@@ -138,7 +138,7 @@ const GasOptionCustom = ({
         w="256px"
         placeholder="0.00"
         error={errors.highGasPrice?.message}
-        rtl
+        textAlign="right"
       />
     </Flex>
   </>
