@@ -21,9 +21,7 @@ export const SearchResultItemBody = ({
           direction={{ base: "column", md: "row" }}
         >
           <Text variant="body2" color="text.dark" wordBreak="break-all">
-            {result.metadata.initiaUsername
-              ? `(${result.value})`
-              : result.value}
+            ({result.value})
           </Text>
           <Text
             variant="body2"
@@ -46,8 +44,9 @@ export const SearchResultItemBody = ({
               {result.metadata.icns.icnsNames.primaryName}
             </Text>
           </Flex>
-          {result.value !== result.metadata.icns.address &&
-            result.value !== result.metadata.icns.icnsNames.primaryName && (
+          {result.metadata.icns.searchedName &&
+            result.metadata.icns.searchedName !==
+              result.metadata.icns.icnsNames.primaryName && (
               <Text
                 variant="body2"
                 _before={{
@@ -57,7 +56,7 @@ export const SearchResultItemBody = ({
                   mr: 1,
                 }}
               >
-                {result.value}
+                {result.metadata.icns.searchedName}
               </Text>
             )}
         </Flex>
@@ -66,9 +65,7 @@ export const SearchResultItemBody = ({
           direction={{ base: "column", md: "row" }}
         >
           <Text variant="body2" color="text.dark" wordBreak="break-all">
-            {result.metadata.icns.icnsNames.primaryName
-              ? `(${result.metadata.icns.address})`
-              : result.metadata.icns.address}
+            ({result.value})
           </Text>
           <Text
             variant="body2"

@@ -102,10 +102,8 @@ export const SearchComponent = () => {
     (result?: SearchResult, isClick = false) => {
       const getQueryValue = () => {
         if (result?.type === "Module Path")
-          return splitModule(keyword) as [Addr, string];
-        if (result?.type === "Account Address")
-          return result?.metadata?.icns?.address || keyword;
-        return keyword;
+          return splitModule(result.value) as [Addr, string];
+        return result?.value || keyword;
       };
 
       trackUseMainSearch(isClick, result?.type);
