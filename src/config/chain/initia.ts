@@ -4,9 +4,6 @@ import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 
 import type { ChainConfigs } from "./types";
 
-export const INITIA_DECODER =
-  "https://initia-api-jiod42ec2q-as.a.run.app/decode_module";
-
 export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
   "minimove-1-lite": {
     tier: "lite",
@@ -29,8 +26,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "",
       },
       pool: {
         enabled: false,
@@ -80,8 +75,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "",
       },
       pool: {
         enabled: false,
@@ -131,8 +124,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "https://compiler.initiation-1.initia.xyz/contracts/verify",
       },
       pool: {
         enabled: false,
@@ -184,8 +175,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "",
       },
       pool: {
         enabled: false,
@@ -285,8 +274,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "",
       },
       pool: {
         enabled: false,
@@ -336,8 +323,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "",
       },
       pool: {
         enabled: false,
@@ -387,8 +372,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "",
       },
       pool: {
         enabled: false,
@@ -438,8 +421,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "",
       },
       pool: {
         enabled: false,
@@ -488,8 +469,6 @@ export const INITIA_CHAIN_CONFIGS: ChainConfigs = {
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
-        decodeApi: INITIA_DECODER,
-        verify: "",
       },
       pool: {
         enabled: false,

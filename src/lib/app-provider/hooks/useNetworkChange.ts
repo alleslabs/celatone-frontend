@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
 import { FALLBACK_SUPPORTED_CHAIN_ID, SUPPORTED_CHAIN_IDS } from "env";
+import { useChainConfigStore } from "lib/providers/store";
 import { getFirstQueryParam } from "lib/utils";
 
 import { useInternalNavigate } from "./useInternalNavigate";
@@ -12,9 +13,10 @@ export const useNetworkChange = (
   const router = useRouter();
   const networkRef = useRef<string>();
   const navigate = useInternalNavigate();
+  const { isHydrated: isChainConfigStoreHydrated } = useChainConfigStore();
 
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && isChainConfigStoreHydrated) {
       const networkRoute = getFirstQueryParam(router.query.network);
       // Redirect to default chain if there is no network query provided
       if (!router.query.network) {
@@ -53,6 +55,7 @@ export const useNetworkChange = (
     }
   }, [
     handleOnChainIdChange,
+    isChainConfigStoreHydrated,
     navigate,
     router.asPath,
     router.isReady,

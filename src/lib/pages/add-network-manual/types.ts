@@ -2,8 +2,6 @@ import type { ChainConfig } from "@alleslabs/shared";
 import type { RefinementCtx } from "zod";
 import { z, ZodIssueCode } from "zod";
 
-import { INITIA_DECODER } from "config/chain/initia";
-
 const pleaseEnterAValidUrl = "Please enter a valid URL";
 const mustBeAlphabetNumberAndSpecialCharacters =
   "Must be alphabet (a-z), numbers (0-9), or these special characters: “/”, “:”, “.”, “_”, “-”";
@@ -234,8 +232,6 @@ export const zAddNetworkManualChainConfigJson = ({
         ? {
             enabled: true,
             moduleMaxFileSize: 1_048_576,
-            decodeApi: INITIA_DECODER,
-            verify: "",
           }
         : { enabled: false },
       pool: {
