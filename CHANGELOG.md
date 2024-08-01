@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1061](https://github.com/alleslabs/celatone-frontend/pull/1061) Refactor custom network routes
+- [#1061](https://github.com/alleslabs/celatone-frontend/pull/1061) Refactor custom network routes and add support chain ids to hook
 - [#1053](https://github.com/alleslabs/celatone-frontend/pull/1053) Move move decoder and verifier links to env
 
 ### Bug fixes
