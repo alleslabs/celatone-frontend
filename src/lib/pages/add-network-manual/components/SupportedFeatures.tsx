@@ -94,6 +94,7 @@ export const SupportedFeatures = ({ control }: SupportedFeaturesProps) => (
         <Stack gap={4}>
           {initialFeatures.map(({ label, name }) => (
             <SupportedFeaturesCheckbox
+              key={name}
               label={label}
               name={name}
               control={control}
