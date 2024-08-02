@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 
 export const useNetworkStepper = (limit: number, handleSubmit: () => void) => {
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const currentStep = router.query.step;
   const { currentChainId } = useCelatoneApp();
 
@@ -38,7 +39,14 @@ export const useNetworkStepper = (limit: number, handleSubmit: () => void) => {
         )
       : handleSubmit();
 
-  const handlePrevious = () => router.back();
+  const handlePrevious = () => {
+    if (Number(currentStep) === 1) {
+      navigate({ pathname: "/custom-network/add" });
+      return;
+    }
+
+    router.back();
+  };
 
   return {
     currentStep: Number(currentStep) - 1,
