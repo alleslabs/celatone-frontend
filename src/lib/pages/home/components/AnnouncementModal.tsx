@@ -34,13 +34,13 @@ export const AnnouncementModal = ({
           <Divider color="gray.700" mb={6} />
           <Flex direction="column" gap={3} alignItems="center">
             <Heading as="h5" variant="h5">
-              Annoucement Title
+              Alles Labs is joining Initia Labs
             </Heading>
             <Text variant="body1" textAlign="center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
-              illo sed facere voluptatum similique harum, ducimus, incidunt
-              ipsum fugit vitae dicta, laborum voluptatem delectus quo
-              perferendis neque qui exercitationem dolorum.
+              Alles Labs, the team behind Celatone, is joining Initia Labs to
+              enhance the user and developer experience within the Initia
+              ecosystem. The Celatone explorer on existing chains will continue
+              to operate without any changes.
             </Text>
           </Flex>
         </ModalBody>

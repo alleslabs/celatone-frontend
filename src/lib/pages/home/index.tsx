@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
+import { useInitia } from "lib/app-provider";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { StorageKeys } from "lib/data";
 import { useLocalStorage } from "lib/hooks";
@@ -13,6 +14,8 @@ import { HomeSequencer } from "./sequencer";
 
 const Home = () => {
   const router = useRouter();
+  const isInitia = useInitia();
+
   const [hasVisited, setHasVisited] = useLocalStorage(
     StorageKeys.Annoucement,
     false
@@ -32,10 +35,12 @@ const Home = () => {
 
   return (
     <>
-      <AnnouncementModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-      />
+      {!isInitia && (
+        <AnnouncementModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+        />
+      )}
       <TierSwitcher
         full={<HomeFull />}
         sequencer={<HomeSequencer />}
