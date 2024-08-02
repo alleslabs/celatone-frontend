@@ -23,6 +23,7 @@ interface UploadCompleteProps {
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
+  // TODO: change to a new service by codeHash
   const { data: wasmVerifyInfos } = useGetWasmVerifyInfos([
     Number(txResult.codeId),
   ]);

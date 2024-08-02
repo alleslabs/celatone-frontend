@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { Fragment } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
 import { WasmVerifyBadge } from "../WasmVerifyBadge";
@@ -16,10 +17,9 @@ const RelatedVerifiedCodes = ({
   return (
     <>
       {displayedCodes.map((code, index) => (
-        <>
+        <Fragment key={code.toString()}>
           <ExplorerLink
             type="code_id"
-            key={code.toString()}
             value={code.toString()}
             showCopyOnHover
           />
@@ -28,7 +28,7 @@ const RelatedVerifiedCodes = ({
             ","}
           {index < displayedCodes.length - 1 && " "}
           {index === relatedVerifiedCodes.length - 2 && "and "}
-        </>
+        </Fragment>
       ))}
       {relatedVerifiedCodes.length > 3 && " and more"}
     </>
