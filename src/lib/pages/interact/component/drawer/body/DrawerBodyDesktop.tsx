@@ -1,5 +1,5 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type {
   DisplayMode,
@@ -27,6 +27,13 @@ export const DrawerBodyDesktop = ({
   closeModal,
 }: ModuleSelectBodyProps) => {
   const [selectedModule, setSelectedModule] = useState<IndexedModule>();
+
+  useEffect(() => {
+    // clear selected module when modules change
+    setSelectedModule(undefined);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(modules)]);
 
   return (
     <Grid

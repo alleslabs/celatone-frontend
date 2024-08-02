@@ -46,7 +46,6 @@ export const NetworkAccordionLocal = ({
               cursor={cursor}
               setCursor={setCursor}
               onClose={onClose}
-              isEditable
             />
           ))}
         </Flex>

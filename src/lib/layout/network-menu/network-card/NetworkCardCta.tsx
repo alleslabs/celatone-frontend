@@ -8,20 +8,21 @@ import {
   useMobile,
 } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { useNetworkStore } from "lib/providers/store";
+import { useChainConfigStore, useNetworkStore } from "lib/providers/store";
 
 interface NetworkCardCtaProps {
   chainId: string;
   isSelected: boolean;
   isDraggable?: boolean;
-  isEditable?: boolean;
 }
 
 export const NetworkCardCta = observer(
-  ({ chainId, isSelected, isDraggable, isEditable }: NetworkCardCtaProps) => {
+  ({ chainId, isSelected, isDraggable }: NetworkCardCtaProps) => {
     const navigate = useInternalNavigate();
     const { chainConfigs } = useChainConfigs();
+    const { isChainIdExist } = useChainConfigStore();
     const isMobile = useMobile();
+    const isEditable = isChainIdExist(chainId);
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
     const toast = useToast({
       status: "success",

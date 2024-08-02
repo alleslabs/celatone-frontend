@@ -20,7 +20,6 @@ interface NetworkCardProps {
   setCursor: (index: Option<number>) => void;
   onClose: () => void;
   isDraggable?: boolean;
-  isEditable?: boolean;
 }
 
 const getCardBackground = (
@@ -55,7 +54,6 @@ export const NetworkCard = observer(
     setCursor,
     onClose,
     isDraggable = false,
-    isEditable,
   }: NetworkCardProps) => {
     const { chainConfigs } = useChainConfigs();
     const isMobile = useMobile();
@@ -123,7 +121,6 @@ export const NetworkCard = observer(
           chainId={chainId}
           isSelected={isSelected}
           isDraggable={isDraggable}
-          isEditable={isEditable}
         />
       </Flex>
     );
