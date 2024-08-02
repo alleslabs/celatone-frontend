@@ -2,27 +2,12 @@ import type { FlexProps, TextProps } from "@chakra-ui/react";
 import { Divider, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
-import { Copier } from "lib/components/copy";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { formatUTC, parseDate } from "lib/utils";
-
-const MOCKUP_DATA = {
-  verificationInfo: {
-    chainId: "osmo-test-5",
-    codeId: 9453,
-    gitUrl: "https://github.com/songwongtp/json-template",
-    commit: "68a4114",
-    fileName: "json-template",
-    compilerVersion: "cosmwasm/rust-optimizer:0.15.0",
-    submittedTimestamp: "2024-07-24T14:43:34.490Z",
-    downloadedTimestamp: "2024-07-24T14:43:39.303Z",
-    compiledTimestamp: "2024-07-24T14:44:41.547Z",
-    comparedTimestamp: "2024-07-24T14:44:41.565Z",
-    errorMessage: null,
-  },
-  schema: {},
-  relatedVerifiedCodes: [9453],
-};
+import { Copier } from "../../copy";
+import { CopyLink } from "../../CopyLink";
+import { ExplorerLink } from "../../ExplorerLink";
+import { WasmVerifyBadge } from "../../WasmVerifyBadge";
+import type { WasmVerifyInfoBase } from "lib/types";
+import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 
 const baseTextStyle: TextProps = {
   color: "text.dark",
@@ -30,39 +15,60 @@ const baseTextStyle: TextProps = {
 };
 
 const baseContainerStyle: FlexProps = {
-  gap: 2,
-  alignItems: "center",
+  direction: { base: "column", sm: "row" },
+  gap: { base: 0, sm: 2 },
+  alignItems: { bases: "start", sm: "center" },
 };
 
-export const CodeVerificationInfo = () => {
+interface WasmVerifyRequestInfoProps {
+  codeHash: string;
+  verificationInfo: WasmVerifyInfoBase;
+  relatedVerifiedCodes: number[];
+}
+
+export const WasmVerifyRequestInfo = ({
+  codeHash,
+  verificationInfo,
+  relatedVerifiedCodes,
+}: WasmVerifyRequestInfoProps) => {
+  const wasmVerifyStatus = getWasmVerifyStatus({
+    verificationInfo,
+    relatedVerifiedCodes,
+  });
+
   return (
     <>
-      <Flex gap={6}>
-        <Flex {...baseContainerStyle} w={32} minW={32}>
+      <Flex direction={{ base: "column", sm: "row" }} gap={{ base: 2, sm: 6 }}>
+        <Flex gap={2} alignItems="center">
           <Text {...baseTextStyle}>Code ID:</Text>
           <ExplorerLink
             type="code_id"
-            value={MOCKUP_DATA.verificationInfo.codeId.toString()}
+            value={verificationInfo.codeId.toString()}
             openNewTab
             showCopyOnHover
           />
+          <WasmVerifyBadge
+            status={wasmVerifyStatus}
+            relatedVerifiedCodes={relatedVerifiedCodes}
+          />
         </Flex>
-        <Flex {...baseContainerStyle}>
+        <Flex gap={2} alignItems="center">
           <Text {...baseTextStyle}>Code Hash:</Text>
-          <ExplorerLink
-            type="code_id"
-            value={MOCKUP_DATA.verificationInfo.codeId.toString()}
-            openNewTab
+          <CopyLink
+            type="code_hash"
+            amptrackSection="code_hash"
+            value={codeHash.toUpperCase()}
+            isTruncate
             showCopyOnHover
           />
         </Flex>
       </Flex>
       <Divider borderColor="gray.700" />{" "}
-      <Flex direction="column" gap={1}>
+      <Flex direction="column" gap={{ base: 2, sm: 1 }}>
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Source Code:</Text>
           <Link
-            href={MOCKUP_DATA.verificationInfo.gitUrl}
+            href={verificationInfo.gitUrl}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -83,34 +89,32 @@ export const CodeVerificationInfo = () => {
               }}
             >
               <Text color="secondary.main" variant="body2">
-                {MOCKUP_DATA.verificationInfo.gitUrl}
+                {verificationInfo.gitUrl}
               </Text>
               <Copier
                 ml={1}
                 type="source_code"
-                value={MOCKUP_DATA.verificationInfo.gitUrl}
+                value={verificationInfo.gitUrl}
               />
             </Flex>
           </Link>
         </Flex>
         <Flex {...baseContainerStyle}>
-          <Text {...baseTextStyle}>Wasm File Name:</Text>
+          <Text {...baseTextStyle}>Package Name:</Text>
           <Text color="text.main" variant="body2">
-            {MOCKUP_DATA.verificationInfo.fileName}
+            {verificationInfo.packageName}
           </Text>
         </Flex>
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Compiler Version:</Text>
           <Text color="text.main" variant="body2">
-            {MOCKUP_DATA.verificationInfo.compilerVersion}
+            {verificationInfo.compilerVersion}
           </Text>
         </Flex>
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Submitted on:</Text>
           <Text color="text.main" variant="body2">
-            {formatUTC(
-              parseDate(MOCKUP_DATA.verificationInfo.submittedTimestamp)
-            )}
+            {formatUTC(verificationInfo.submittedTimestamp)}
           </Text>
         </Flex>
       </Flex>

@@ -4,20 +4,14 @@ import { Select } from "chakra-react-select";
 import { useController, useWatch } from "react-hook-form";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
-import { VerifyPublishCodeInputNoOptionsMessage } from "./verifyPublishCodeInputNoOptionsMessage";
-import { VerifyPublishCodeInputOption } from "./verifyPublishCodeInputOption";
+import { WasmVerifySubmitFormSelectNoOptionsMessage } from "./WasmVerifySubmitFormSelectNoOptionsMessage";
+import type { WasmVerifySubmitFormOption } from "./WasmVerifySubmitFormSelectOption";
+import { WasmVerifySubmitFormSelectOption } from "./WasmVerifySubmitFormSelectOption";
 
-export interface VerifyPublishCodeOpiton {
-  label: string;
-  value: string;
-  version: string;
-  lastUpdated: Date;
-}
-
-interface VerifyPublishCodeSelectInputProps<T extends FieldValues> {
+interface WasmVerifySubmitFormSelectProps<T extends FieldValues> {
   name: FieldPath<T>;
   control: Control<T>;
-  options: VerifyPublishCodeOpiton[];
+  options: WasmVerifySubmitFormOption[];
 }
 
 const dropdownStyles = {
@@ -43,11 +37,11 @@ const dropdownStyles = {
   }),
 };
 
-export const VerifyPublishCodeSelectInput = <T extends FieldValues>({
+export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
   name,
   control,
   options,
-}: VerifyPublishCodeSelectInputProps<T>) => {
+}: WasmVerifySubmitFormSelectProps<T>) => {
   const watcher = useWatch({
     name,
     control,
@@ -102,8 +96,8 @@ export const VerifyPublishCodeSelectInput = <T extends FieldValues>({
           return true;
         }}
         components={{
-          NoOptionsMessage: VerifyPublishCodeInputNoOptionsMessage,
-          Option: VerifyPublishCodeInputOption,
+          NoOptionsMessage: WasmVerifySubmitFormSelectNoOptionsMessage,
+          Option: WasmVerifySubmitFormSelectOption,
         }}
         value={options.find((option) => option.value === watcher) || null}
       />

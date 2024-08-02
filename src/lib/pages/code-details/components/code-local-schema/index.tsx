@@ -33,7 +33,7 @@ const StyledTabPanel = chakra(TabPanel, {
   },
 });
 
-interface CodeSchemaSectionProps {
+interface CodeLocalSchemaSectionProps {
   codeId: number;
   codeHash: string;
   jsonSchema: Option<CodeSchema>;
@@ -46,11 +46,11 @@ const SchemaMsgTabList = [
   SchemaProperties.MIGRATE as "migrate",
 ];
 
-export const CodeSchemaSection = ({
+export const CodeLocalSchemaSection = ({
   codeId,
   codeHash,
   jsonSchema,
-}: CodeSchemaSectionProps) => {
+}: CodeLocalSchemaSectionProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (

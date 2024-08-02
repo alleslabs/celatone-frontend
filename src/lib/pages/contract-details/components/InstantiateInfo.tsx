@@ -8,19 +8,25 @@ import {
 import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import { VerifyPublishCodeModal } from "lib/components/modal";
-import { VerificationBadge } from "lib/components/VerificationBadge";
-import { VerificationStatus } from "lib/services/types";
+import { WasmVerifySubmitModal } from "lib/components/modal";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type { Contract, ContractRest } from "lib/services/types";
 import type { CodeLocalInfo } from "lib/stores/code";
-import type { Nullable, Option } from "lib/types";
-import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
+import type { Nullable, Nullish, Option, WasmVerifyInfo } from "lib/types";
+import { WasmVerifyStatus } from "lib/types";
+import {
+  dateFromNow,
+  formatUTC,
+  getCw2Info,
+  getWasmVerifyStatus,
+} from "lib/utils";
 import { getAddressTypeText } from "lib/utils/address";
 
 interface InstantiateInfoProps {
   contract: Contract;
   contractRest: Nullable<ContractRest>;
   codeLocalInfo: Option<CodeLocalInfo>;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 const Container = chakra(Flex, {
@@ -104,6 +110,7 @@ export const InstantiateInfo = ({
   contract,
   contractRest,
   codeLocalInfo,
+  wasmVerifyInfo,
 }: InstantiateInfoProps) => {
   const { isFullTier } = useTierConfig();
   const getAddressType = useGetAddressType();
@@ -114,6 +121,7 @@ export const InstantiateInfo = ({
   const instantiatorType = getAddressType(contract.instantiator);
   const adminType = getAddressType(contract.admin ?? undefined);
   const cw2 = getCw2Info(contract.cw2Contract, contract.cw2Version);
+  const wasmVerifyStatus = getWasmVerifyStatus(wasmVerifyInfo);
 
   return (
     <Container w={{ base: "full", md: "auto" }} h="fit-content">
@@ -135,38 +143,41 @@ export const InstantiateInfo = ({
                   showCopyOnHover
                   fixedHeight
                 />
-                {/* TODO Add status */}
-                <VerificationBadge
-                  type="code"
+                <WasmVerifyBadge
+                  status={wasmVerifyStatus}
+                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
                   hasText
-                  status={VerificationStatus.INDIRECTLY_VERIFIED}
+                  linkedCodeId={contract.codeId}
                 />
               </Flex>
             </LabelText>
           </Flex>
-          {/* TODO Add condition that only show when verification status === not verified, indirectly verify, failed */}
-          <Text variant="body2" color="text.dark">
-            Is this your code?{" "}
-            <Flex display="inline-flex" px={1}>
-              <VerifyPublishCodeModal
-                codeId={contract.codeId}
-                codeHash={contract.codeHash}
-                triggerElement={
-                  <Text
-                    cursor="pointer"
-                    color="primary.main"
-                    transition="all 0.25s ease-in-out"
-                    _hover={{
-                      textDecoration: "underline",
-                      textDecorationColor: "primary.light",
-                    }}
-                  >
-                    Verify Code
-                  </Text>
-                }
-              />
-            </Flex>
-          </Text>
+          {wasmVerifyStatus !== WasmVerifyStatus.VERIFIED &&
+            wasmVerifyStatus !== WasmVerifyStatus.IN_PROGRESS && (
+              <Text variant="body2" color="text.dark">
+                Is this your code?{" "}
+                <WasmVerifySubmitModal
+                  codeId={contract.codeId}
+                  codeHash={contract.codeHash}
+                  wasmVerifyStatus={wasmVerifyStatus}
+                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                  contractAddress={contract.address}
+                  triggerElement={
+                    <Text
+                      cursor="pointer"
+                      color="primary.main"
+                      transition="all 0.25s ease-in-out"
+                      _hover={{
+                        textDecoration: "underline",
+                        textDecorationColor: "primary.light",
+                      }}
+                    >
+                      Verify Code
+                    </Text>
+                  }
+                />
+              </Text>
+            )}
         </Flex>
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>

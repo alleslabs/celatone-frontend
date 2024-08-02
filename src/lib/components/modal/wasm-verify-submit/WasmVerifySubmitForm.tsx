@@ -13,29 +13,36 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { useCelatoneApp } from "lib/app-provider";
+import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ControllerInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type { WasmVerifyRequest } from "lib/services/types";
+import type { BechAddr32, WasmVerifyStatus } from "lib/types";
 
 import { useRustOptimizerVersions } from "./hooks";
-import { VerifyPublishCodeSelectInput } from "./verifyPublishCodeSelectInput";
+import { WasmVerifySubmitFormSelect } from "./WasmVerifySubmitFormSelect";
 
-interface VerifyPublishCodeProps {
+interface WasmVerifySubmitFormProps {
   codeId: number;
   codeHash: string;
-  contractAddress?: string;
-  onSubmitVerifyPublishCode: (wasmVerifyRequest: WasmVerifyRequest) => void;
+  wasmVerifyStatus: WasmVerifyStatus;
+  relatedVerifiedCodes?: number[];
+  contractAddress?: BechAddr32;
+  onSubmit: (wasmVerifyRequest: WasmVerifyRequest) => void;
   isLoading: boolean;
 }
 
-export const VerifyPublishCode = ({
+export const WasmVerifySubmitForm = ({
   codeId,
   codeHash,
+  wasmVerifyStatus,
+  relatedVerifiedCodes,
   contractAddress,
-  onSubmitVerifyPublishCode,
+  onSubmit,
   isLoading,
-}: VerifyPublishCodeProps) => {
+}: WasmVerifySubmitFormProps) => {
   const { currentChainId } = useCelatoneApp();
   const rustOptimizerVersions = useRustOptimizerVersions();
 
@@ -132,6 +139,11 @@ export const VerifyPublishCode = ({
                   value={codeId.toString()}
                   showCopyOnHover
                 />
+                <WasmVerifyBadge
+                  status={wasmVerifyStatus}
+                  relatedVerifiedCodes={relatedVerifiedCodes}
+                  linkedCodeId={contractAddress ? codeId : undefined}
+                />
                 {contractAddress && (
                   <Text>
                     (via{" "}
@@ -148,7 +160,13 @@ export const VerifyPublishCode = ({
                 <Text fontWeight={500} color="text.dark" variant="body2">
                   Code Hash:
                 </Text>
-                <ExplorerLink type="tx_hash" value={codeHash} showCopyOnHover />
+                <CopyLink
+                  type="code_hash"
+                  amptrackSection="code_hash"
+                  value={codeHash.toUpperCase()}
+                  isTruncate
+                  showCopyOnHover
+                />
               </Flex>
             </Flex>
             <ControllerInput
@@ -186,7 +204,7 @@ export const VerifyPublishCode = ({
                 .wasm
               </Text>
             </Flex>
-            <VerifyPublishCodeSelectInput
+            <WasmVerifySubmitFormSelect
               name="compilerVersion"
               control={control}
               options={rustOptimizerVersions}
@@ -197,7 +215,7 @@ export const VerifyPublishCode = ({
             isDisabled={!isValid}
             isLoading={isLoading}
             onClick={handleSubmit((data) => {
-              onSubmitVerifyPublishCode({
+              onSubmit({
                 chainId: currentChainId,
                 codeId,
                 ...data,

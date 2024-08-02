@@ -1,11 +1,4 @@
-import {
-  Button,
-  Flex,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/react";
+import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
@@ -20,15 +13,12 @@ import {
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
-import { VerifyPublishCodeModal } from "lib/components/modal";
-import { CodeVerificationStatus } from "lib/components/modal/code-verification-status";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
-import { VerificationStatus } from "lib/services/types";
 import { useGetWasmVerifyInfos } from "lib/services/verification/wasm";
 import { useCodeData } from "lib/services/wasm/code";
 
@@ -36,10 +26,10 @@ import {
   CodeContractsTableFull,
   CodeContractsTableLite,
   CodeInfoSection,
+  CodeTopInfo,
 } from "./components/code-info";
-import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
-import { CodeSchemaSection } from "./components/json-schema/CodeSchemaSection";
-import { CodeVerificationSection } from "./components/verification-info/CodeVerificationSection";
+import { CodeLocalSchemaSection } from "./components/code-local-schema";
+import { CodeVerificationSection } from "./components/CodeVerificationSection";
 import { useCodeDataLcd } from "./data";
 import { TabIndex, zCodeDetailsQueryParams } from "./types";
 
@@ -63,9 +53,8 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const resApi = useCodeData(codeId, isFullTier);
   const resLcd = useCodeDataLcd(codeId, !isFullTier);
   const { data, isLoading } = isFullTier ? resApi : resLcd;
-  const { data: wasmVerifyInfo } = useGetWasmVerifyInfos(currentChainId, [
-    codeId,
-  ]);
+  const { data: wasmVerifyInfos, isLoading: isWasmVerifyInfoLoading } =
+    useGetWasmVerifyInfos([codeId]);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -84,16 +73,14 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
     [codeId, tab, navigate]
   );
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isWasmVerifyInfoLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="code information" />;
   if (!data.info) return <InvalidCode />;
 
   const { info: code, projectInfo, publicInfo } = data;
+  const wasmVerifyInfo = wasmVerifyInfos?.[codeId];
+
   const jsonSchema = getSchemaByCodeHash(code.hash);
-
-  // eslint-disable-next-line no-console
-  console.log(wasmVerifyInfo?.[codeId]);
-
   return (
     <>
       <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code Detail"} />
@@ -102,6 +89,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         projectInfo={projectInfo}
         publicInfo={publicInfo}
         codeId={codeId}
+        wasmVerifyInfo={wasmVerifyInfo}
       />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
@@ -136,25 +124,10 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
               attached={!!jsonSchema}
               toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
             />
-            <Flex direction="column" alignItems="flex-start" />
-            <Flex>
-              <CodeVerificationStatus
-                triggerElement={<Button>View Verification Details</Button>}
-              />
-              <VerifyPublishCodeModal
-                codeId={codeId}
-                codeHash={code.hash}
-                triggerElement={
-                  <Button variant="outline-primary" size="sm">
-                    Verify
-                  </Button>
-                }
-              />
-            </Flex>
             <CodeVerificationSection
               codeId={codeId}
               codeHash={code.hash}
-              status={VerificationStatus.NOT_VERIFIED}
+              wasmVerifyInfo={wasmVerifyInfo}
             />
             <TierSwitcher
               full={<CodeContractsTableFull codeId={codeId} />}
@@ -167,7 +140,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <CodeSchemaSection
+            <CodeLocalSchemaSection
               codeId={codeId}
               codeHash={code.hash}
               jsonSchema={jsonSchema}
