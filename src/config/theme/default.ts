@@ -8,8 +8,8 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
     favicon: "https://assets.alleslabs.dev/celatone-brand/favicon.ico",
     seo: {
       appName: "Celatone",
-      title: "Celatone Explorer for Cosmos chain",
-      description: "A smart contract powered explorer for the Cosmos.",
+      title: "Celatone Explorer",
+      description: "All in one place.",
       image: "/celatone-ogimage.jpg",
       twitter: {
         handle: "@celatone_",
