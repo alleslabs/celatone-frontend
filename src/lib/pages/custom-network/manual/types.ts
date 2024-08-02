@@ -50,8 +50,12 @@ export const zNetworkDetailsForm = ({
 
       return true;
     }),
-    lcdUrl: z.string().url({ message: pleaseEnterAValidUrl }),
-    rpcUrl: z.string().url({ message: pleaseEnterAValidUrl }),
+    lcdUrl: z.string().regex(/^(http|https):\/\/[^\s$.?#].[^\s]*$/, {
+      message: pleaseEnterAValidUrl,
+    }),
+    rpcUrl: z.string().regex(/^(http|https):\/\/[^\s$.?#].[^\s]*$/, {
+      message: pleaseEnterAValidUrl,
+    }),
     chainId: z
       .string()
       .min(1, { message: " " })
@@ -68,7 +72,9 @@ export const zNetworkDetailsForm = ({
       message: "Lower case letter (a-z) or number (0-9)",
     }),
     logoUri: z.union([
-      z.string().url({ message: "Please enter a valid URL" }),
+      z.string().regex(/^(http|https):\/\/[^\s$.?#].[^\s]*$/, {
+        message: pleaseEnterAValidUrl,
+      }),
       z.literal(""),
     ]),
   });
