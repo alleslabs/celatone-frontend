@@ -1,12 +1,4 @@
-import {
-  Button,
-  Flex,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
@@ -21,7 +13,6 @@ import {
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
-import { VerifyPublishCodeModal } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
@@ -35,9 +26,10 @@ import {
   CodeContractsTableFull,
   CodeContractsTableLite,
   CodeInfoSection,
+  CodeTopInfo,
 } from "./components/code-info";
-import { CodeTopInfo } from "./components/code-info/CodeTopInfo";
-import { CodeSchemaSection } from "./components/json-schema/CodeSchemaSection";
+import { CodeLocalSchemaSection } from "./components/code-local-schema";
+import { CodeVerificationSection } from "./components/CodeVerificationSection";
 import { useCodeDataLcd } from "./data";
 import { TabIndex, zCodeDetailsQueryParams } from "./types";
 
@@ -52,7 +44,6 @@ const InvalidCode = () => <InvalidState title="Code does not exist" />;
 
 const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const isMobile = useMobile();
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const { isFullTier } = useTierConfig();
 
   const navigate = useInternalNavigate();
@@ -62,9 +53,8 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const resApi = useCodeData(codeId, isFullTier);
   const resLcd = useCodeDataLcd(codeId, !isFullTier);
   const { data, isLoading } = isFullTier ? resApi : resLcd;
-  const { data: wasmVerifyInfo } = useGetWasmVerifyInfos(currentChainId, [
-    codeId,
-  ]);
+  const { data: wasmVerifyInfos, isLoading: isWasmVerifyInfoLoading } =
+    useGetWasmVerifyInfos([codeId]);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -83,30 +73,23 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
     [codeId, tab, navigate]
   );
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isWasmVerifyInfoLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="code information" />;
   if (!data.info) return <InvalidCode />;
 
   const { info: code, projectInfo, publicInfo } = data;
+  const wasmVerifyInfo = wasmVerifyInfos?.[codeId];
+
   const jsonSchema = getSchemaByCodeHash(code.hash);
-
-  // eslint-disable-next-line no-console
-  console.log(wasmVerifyInfo?.[codeId]);
-
   return (
     <>
-      <VerifyPublishCodeModal
-        isOpen={isOpen}
-        onClose={onClose}
-        codeId={codeId}
-        codeHash={code.hash}
-      />
       <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code Detail"} />
       <CodeTopInfo
         code={code}
         projectInfo={projectInfo}
         publicInfo={publicInfo}
         codeId={codeId}
+        wasmVerifyInfo={wasmVerifyInfo}
       />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
@@ -135,20 +118,21 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         )}
         <TabPanels>
           <TabPanel p={0}>
-            <Flex>
-              <Button onClick={onOpen}>Verfiy Code</Button>
-            </Flex>
             <CodeInfoSection
               code={code}
               chainId={currentChainId}
               attached={!!jsonSchema}
               toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
             />
+            <CodeVerificationSection
+              codeId={codeId}
+              codeHash={code.hash}
+              wasmVerifyInfo={wasmVerifyInfo}
+            />
             <TierSwitcher
               full={<CodeContractsTableFull codeId={codeId} />}
               lite={<CodeContractsTableLite codeId={codeId} />}
             />
-
             <UserDocsLink
               title="What is Code in CosmWasm?"
               cta="Read more about Code Details"
@@ -156,7 +140,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
             />
           </TabPanel>
           <TabPanel p={0}>
-            <CodeSchemaSection
+            <CodeLocalSchemaSection
               codeId={codeId}
               codeHash={code.hash}
               jsonSchema={jsonSchema}

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 
 import { getWasmVerifyInfos, submitWasmVerify } from "./api";
 
@@ -9,12 +9,19 @@ export const useSubmitWasmVerify = () =>
     mutationFn: submitWasmVerify,
   });
 
-export const useGetWasmVerifyInfos = (chainId: string, codeIds: number[]) =>
-  useQuery(
-    [CELATONE_QUERY_KEYS.WASM_VERIFICATION_INFOS, ...codeIds.sort()],
-    () => getWasmVerifyInfos(chainId, codeIds),
+export const useGetWasmVerifyInfos = (codeIds: number[], enabled = true) => {
+  const { currentChainId } = useCelatoneApp();
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.WASM_VERIFICATION_INFOS,
+      currentChainId,
+      ...codeIds.sort(),
+    ],
+    () => getWasmVerifyInfos(currentChainId, codeIds),
     {
+      enabled,
       refetchOnWindowFocus: false,
       retry: false,
     }
   );
+};

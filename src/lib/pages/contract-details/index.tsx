@@ -6,7 +6,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
@@ -26,13 +25,13 @@ import { DelegationsSection } from "lib/components/delegations";
 import { CustomIcon } from "lib/components/icon";
 import { JsonInfo } from "lib/components/json/JsonInfo";
 import { Loading } from "lib/components/Loading";
-import { VerifyPublishCodeModal } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAccountDelegationInfos } from "lib/model/account";
 import { useBalances } from "lib/services/bank";
+import { useGetWasmVerifyInfos } from "lib/services/verification/wasm";
 import type { BechAddr32 } from "lib/types";
 import { jsonPrettify, truncate } from "lib/utils";
 
@@ -40,6 +39,7 @@ import { CommandSection } from "./components/CommandSection";
 import { ContractDesc } from "./components/contract-description";
 import { ContractStates } from "./components/contract-states";
 import { ContractTop } from "./components/ContractTop";
+import { ContractVerificationSection } from "./components/ContractVerificationSection";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { ContractTables } from "./components/tables";
 import { useContractDataWithLocalInfos } from "./data";
@@ -59,7 +59,6 @@ const ContractDetailsBody = observer(
     const isMobile = useMobile();
     const navigate = useInternalNavigate();
     const gov = useGovConfig({ shouldRedirect: false });
-    const { isOpen, onClose, onOpen } = useDisclosure();
 
     // ------------------------------------------//
     // ------------------QUERIES-----------------//
@@ -76,6 +75,11 @@ const ContractDetailsBody = observer(
 
     const { isTotalBondedLoading, totalBonded } =
       useAccountDelegationInfos(contractAddress);
+
+    const { data: wasmVerifyInfos } = useGetWasmVerifyInfos(
+      [contractData?.contract.codeId ?? 0],
+      !!contractData
+    );
     // ------------------------------------------//
     // -----------------CALLBACKS----------------//
     // ------------------------------------------//
@@ -102,6 +106,7 @@ const ContractDetailsBody = observer(
     if (contractData.contract === null) return <InvalidContract />;
 
     const { projectInfo, publicInfo, contract, contractRest } = contractData;
+    const wasmVerifyInfo = wasmVerifyInfos?.[contract.codeId];
 
     const hasTotalBonded =
       !isTotalBondedLoading &&
@@ -110,13 +115,6 @@ const ContractDetailsBody = observer(
 
     return (
       <>
-        <VerifyPublishCodeModal
-          isOpen={isOpen}
-          onClose={onClose}
-          codeId={contract.codeId}
-          codeHash={contract.codeHash}
-          contractAddress={contractAddress}
-        />
         <CelatoneSeo pageName={`Contract – ${truncate(contractAddress)}`} />
         <ContractTop
           contractAddress={contractAddress}
@@ -124,6 +122,7 @@ const ContractDetailsBody = observer(
           publicInfo={publicInfo}
           contract={contract}
           contractLocalInfo={contractLocalInfo}
+          wasmVerifyInfo={wasmVerifyInfo}
         />
         <Tabs
           index={Object.values(TabIndex).indexOf(tab)}
@@ -172,9 +171,12 @@ const ContractDetailsBody = observer(
                       contractLocalInfo={contractLocalInfo}
                     />
                   )}
-                  <Flex>
-                    <Button onClick={onOpen}>Verfiy Code</Button>
-                  </Flex>
+                  <ContractVerificationSection
+                    codeId={contract.codeId}
+                    codeHash={contract.codeHash}
+                    wasmVerifyInfo={wasmVerifyInfo}
+                    contractAddress={contract.address}
+                  />
                   <CommandSection
                     contractAddress={contractAddress}
                     codeHash={contract.codeHash}
@@ -204,7 +206,6 @@ const ContractDetailsBody = observer(
                     </Flex>
                   )}
                 </Flex>
-
                 {/* Instantiate/Contract Info Section */}
                 <Flex direction="column" gap={6}>
                   {!isMobile && (
@@ -228,6 +229,7 @@ const ContractDetailsBody = observer(
                         contract={contract}
                         contractRest={contractRest}
                         codeLocalInfo={codeLocalInfo}
+                        wasmVerifyInfo={wasmVerifyInfo}
                       />
                       <Button
                         size="sm"

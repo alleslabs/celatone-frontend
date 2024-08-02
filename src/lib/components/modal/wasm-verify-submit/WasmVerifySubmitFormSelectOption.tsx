@@ -2,10 +2,15 @@ import { Box, Text } from "@chakra-ui/react";
 import type { OptionProps } from "chakra-react-select";
 import { components } from "chakra-react-select";
 
-import type { VerifyPublishCodeOpiton } from "./verifyPublishCodeSelectInput";
+export interface WasmVerifySubmitFormOption {
+  label: string;
+  value: string;
+  version: string;
+  lastUpdated: Date;
+}
 
-export const VerifyPublishCodeInputOption = (
-  props: OptionProps<VerifyPublishCodeOpiton>
+export const WasmVerifySubmitFormSelectOption = (
+  props: OptionProps<WasmVerifySubmitFormOption>
 ) => {
   const { isSelected, data } = props;
 

@@ -9,13 +9,13 @@ import {
 
 import { CustomIcon } from "lib/components/icon";
 
-interface VerifyPublishCodeFailedProps {
+interface WasmVerifySubmitFailedProps {
   onClose: () => void;
 }
 
-export const VerifyPublishCodeFailed = ({
+export const WasmVerifySubmitFailed = ({
   onClose,
-}: VerifyPublishCodeFailedProps) => (
+}: WasmVerifySubmitFailedProps) => (
   <>
     <ModalCloseButton color="gray.400" />
     <ModalBody overflow="overlay">

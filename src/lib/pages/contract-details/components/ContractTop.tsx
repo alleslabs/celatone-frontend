@@ -20,17 +20,20 @@ import {
   SaveContractDetailsModal,
 } from "lib/components/modal";
 import { TotalValue } from "lib/components/TotalValue";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type { Contract } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import { ContractInteractionTabs } from "lib/types";
 import type {
   BechAddr32,
   Nullable,
+  Nullish,
   Option,
   ProjectInfo,
   PublicContractInfo,
+  WasmVerifyInfo,
 } from "lib/types";
-import { truncate } from "lib/utils";
+import { ContractInteractionTabs } from "lib/types";
+import { getWasmVerifyStatus, truncate } from "lib/utils";
 
 interface ContractTopProps {
   contractAddress: BechAddr32;
@@ -38,6 +41,7 @@ interface ContractTopProps {
   publicInfo: Nullable<PublicContractInfo>;
   contract: Contract;
   contractLocalInfo: Option<ContractLocalInfo>;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const ContractTop = ({
@@ -46,6 +50,7 @@ export const ContractTop = ({
   publicInfo,
   contract,
   contractLocalInfo,
+  wasmVerifyInfo,
 }: ContractTopProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -159,6 +164,11 @@ export const ContractTop = ({
             >
               {displayName}
             </Heading>
+            <WasmVerifyBadge
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              linkedCodeId={contract.codeId}
+            />
           </Flex>
           <Flex gap={{ base: 2, md: 1 }} direction="column">
             <Flex
