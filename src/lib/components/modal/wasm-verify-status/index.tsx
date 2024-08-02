@@ -14,17 +14,24 @@ import {
 import type { ReactNode } from "react";
 
 import { CustomIcon } from "../../icon";
+import type { WasmVerifyInfoBase } from "lib/types";
 
-import { CodeVerificationAlert } from "./CodeVerificationAlert";
-import { CodeVerificationInfo } from "./CodeVerificationInfo";
-import { CodeVerificationProcess } from "./CodeVerificationProcess";
+import { WasmVerifyAlert } from "./WasmVerifyAlert";
+import { WasmVerifyProcess } from "./WasmVerifyProcess";
+import { WasmVerifyRequestInfo } from "./WasmVerifyRequestInfo";
 
-interface CodeVerificationStatusProps {
+interface WasmVerifyStatusModalProps {
+  codeHash: string;
+  verificationInfo: WasmVerifyInfoBase;
+  relatedVerifiedCodes: number[];
   triggerElement: ReactNode;
 }
-export const CodeVerificationStatus = ({
+export const WasmVerifyStatusModal = ({
+  codeHash,
+  verificationInfo,
+  relatedVerifiedCodes,
   triggerElement,
-}: CodeVerificationStatusProps) => {
+}: WasmVerifyStatusModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <>
@@ -61,12 +68,18 @@ export const CodeVerificationStatus = ({
             </Flex>
           </ModalHeader>
           <ModalCloseButton color="gray.400" />
-          <ModalBody>
-            <CodeVerificationAlert />
-            <Flex direction="column" mt={6} gap={4}>
-              <CodeVerificationInfo />
+          <ModalBody p={6}>
+            {!verificationInfo.comparedTimestamp && (
+              <WasmVerifyAlert errorMsg={verificationInfo.errorMessage} />
+            )}
+            <Flex direction="column" gap={4}>
+              <WasmVerifyRequestInfo
+                codeHash={codeHash}
+                verificationInfo={verificationInfo}
+                relatedVerifiedCodes={relatedVerifiedCodes}
+              />
               <Divider borderColor="gray.700" />
-              <CodeVerificationProcess />
+              <WasmVerifyProcess verificationInfo={verificationInfo} />
               <Button onClick={onClose} variant="outline-primary" mt={2}>
                 Close
               </Button>

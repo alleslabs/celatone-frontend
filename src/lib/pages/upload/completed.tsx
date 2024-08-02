@@ -7,7 +7,7 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { UploadSchema } from "lib/components/json-schema";
-import { VerifyPublishCodeModal } from "lib/components/modal";
+import { WasmVerifySubmitModal } from "lib/components/modal";
 import { Stepper } from "lib/components/stepper";
 import { TxReceiptRender } from "lib/components/tx";
 import {
@@ -17,7 +17,8 @@ import {
 } from "lib/components/upload";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useSchemaStore } from "lib/providers/store";
-import { feeFromStr } from "lib/utils";
+import { useGetWasmVerifyInfos } from "lib/services/verification/wasm";
+import { feeFromStr, getWasmVerifyStatus } from "lib/utils";
 
 interface UploadCompleteProps {
   txResult: StoreCodeTxInternalResult;
@@ -26,6 +27,11 @@ interface UploadCompleteProps {
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
+  const { data: wasmVerifyInfos } = useGetWasmVerifyInfos([
+    Number(txResult.codeId),
+  ]);
+
+  const wasmVerifyInfo = wasmVerifyInfos?.[Number(txResult.codeId)];
   const schema = getSchemaByCodeHash(txResult.codeHash);
   const attached = Boolean(schema);
 
@@ -88,9 +94,11 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
             Would you like to:
           </Heading>
           <Flex gap={4} mt={2}>
-            <VerifyPublishCodeModal
+            <WasmVerifySubmitModal
               codeId={Number(txResult.codeId)}
               codeHash={txResult.codeHash}
+              wasmVerifyStatus={getWasmVerifyStatus(wasmVerifyInfo)}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
               triggerElement={
                 <OptionButton
                   title="Verify Code"

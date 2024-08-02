@@ -6,4 +6,5 @@ export * from "./ActionModal";
 export * from "./NoMobile";
 export * from "./RedoModal";
 export * from "./UnsupportedTokensModal";
-export * from "./verify-publish-code";
+export * from "./wasm-verify-status";
+export * from "./wasm-verify-submit";

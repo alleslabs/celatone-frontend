@@ -2,7 +2,7 @@ import { Flex, Heading, ModalBody, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
 
-export const VerifyPublishCodeCompleted = () => (
+export const WasmVerifySubmitCompleted = () => (
   <ModalBody overflow="overlay">
     <Flex
       direction="column"
