@@ -57,7 +57,7 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
     },
     background: {
       main: "#070708",
-      overlay: "rgba(2, 6, 23, 0.7)",
+      overlay: "rgba(7, 7, 8, 0.7)",
     },
     success: {
       main: "#42BEA6",

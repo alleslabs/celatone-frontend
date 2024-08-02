@@ -24,7 +24,7 @@ export const AnnouncementModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
-      <ModalContent w="640px">
+      <ModalContent w="640px" background="gray.800">
         <ModalHeader py={2}>
           <Flex w="full" justifyContent="center" alignItems="center" pt={4}>
             <Image src="/allesinitialogo.svg" alt="" width={320} />
