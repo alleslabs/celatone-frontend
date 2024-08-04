@@ -4,7 +4,6 @@ import { getStepStyles } from "../hooks/utils";
 
 const steps = [
   { label: "Network Details" },
-  { label: "Supported Features" },
   { label: "Gas & Fee Details" },
   { label: "Wallet Registry" },
 ];

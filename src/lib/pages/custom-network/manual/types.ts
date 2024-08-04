@@ -30,11 +30,17 @@ interface ValidateExistingChain {
   isPrettyNameExist: (name: string) => boolean;
 }
 
+export enum VmType {
+  MOVE = "move",
+  WASM = "wasm",
+}
+
 export const zNetworkDetailsForm = ({
   isChainIdExist,
   isPrettyNameExist,
 }: ValidateExistingChain) =>
   z.object({
+    vmType: z.nativeEnum(VmType),
     networkName: z.string().superRefine((val, ctx) => {
       if (val.length > 50)
         ctx.addIssue({
@@ -75,13 +81,6 @@ export const zNetworkDetailsForm = ({
 export type NetworkDetailsForm = z.infer<
   ReturnType<typeof zNetworkDetailsForm>
 >;
-
-export const zSupportedFeaturesForm = z.object({
-  isWasm: z.boolean(),
-  isMove: z.boolean(),
-  isNfts: z.boolean(),
-});
-export type SupportedFeaturesForm = z.infer<typeof zSupportedFeaturesForm>;
 
 const zGasFeeDetails = z.object({
   gasAdjustment: zNumberFormRequired,
@@ -188,7 +187,6 @@ export const zAddNetworkManualForm = ({
   isPrettyNameExist,
 }: ValidateExistingChain) =>
   zNetworkDetailsForm({ isChainIdExist, isPrettyNameExist })
-    .merge(zSupportedFeaturesForm)
     .merge(zGasFeeDetailsForm.innerType())
     .merge(zWalletRegistryForm)
     .superRefine(gasConfigCustomFormValidator);
@@ -221,19 +219,21 @@ export const zAddNetworkManualChainConfigJson = ({
       faucet: {
         enabled: false,
       },
-      wasm: val.isWasm
-        ? {
-            enabled: true,
-            storeCodeMaxFileSize: 1024 * 1024 * 2,
-            clearAdminGas: 1000000,
-          }
-        : { enabled: false },
-      move: val.isMove
-        ? {
-            enabled: true,
-            moduleMaxFileSize: 1_048_576,
-          }
-        : { enabled: false },
+      wasm:
+        val.vmType === VmType.WASM
+          ? {
+              enabled: true,
+              storeCodeMaxFileSize: 1024 * 1024 * 2,
+              clearAdminGas: 1000000,
+            }
+          : { enabled: false },
+      move:
+        val.vmType === VmType.MOVE
+          ? {
+              enabled: true,
+              moduleMaxFileSize: 1_048_576,
+            }
+          : { enabled: false },
       pool: {
         enabled: false,
       },
@@ -244,7 +244,7 @@ export const zAddNetworkManualChainConfigJson = ({
         enabled: false,
       },
       nft: {
-        enabled: val.isNfts,
+        enabled: val.vmType === VmType.MOVE,
       },
     },
     gas: {

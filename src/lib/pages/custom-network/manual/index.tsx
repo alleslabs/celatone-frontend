@@ -16,6 +16,7 @@ import {
 } from "./components";
 import { useNetworkStepper } from "./hooks/useNetworkStepper";
 import {
+  VmType,
   zAddNetworkManualChainConfigJson,
   zAddNetworkManualForm,
   zGasFeeDetailsForm,
@@ -50,9 +51,7 @@ export const AddNetworkManual = () => {
       chainId: "",
       registryChainName: "",
       logoUri: "",
-      isWasm: false,
-      isMove: false,
-      isNfts: false,
+      vmType: VmType.MOVE,
       gasAdjustment: "",
       maxGasLimit: "",
       feeTokenDenom: "",
@@ -71,15 +70,13 @@ export const AddNetworkManual = () => {
   });
 
   const {
+    vmType,
     networkName,
     lcdUrl,
     rpcUrl,
     chainId,
     registryChainName,
     logoUri,
-    isWasm,
-    isMove,
-    isNfts,
     gasAdjustment,
     maxGasLimit,
     feeTokenDenom,
@@ -109,7 +106,7 @@ export const AddNetworkManual = () => {
   };
 
   const { currentStep, handleNext, handlePrevious, hasNext, hasPrevious } =
-    useNetworkStepper(4, handleSubmit(handleSubmitForm));
+    useNetworkStepper(3, handleSubmit(handleSubmitForm));
 
   const isFormDisabled = () => {
     if (currentStep === 0)
@@ -117,6 +114,7 @@ export const AddNetworkManual = () => {
         isChainIdExist,
         isPrettyNameExist,
       }).safeParse({
+        vmType,
         networkName,
         lcdUrl,
         rpcUrl,
@@ -125,7 +123,7 @@ export const AddNetworkManual = () => {
         logoUri,
       }).success;
 
-    if (currentStep === 2)
+    if (currentStep === 1)
       return !zGasFeeDetailsForm.safeParse({
         gasAdjustment,
         maxGasLimit,
@@ -140,7 +138,7 @@ export const AddNetworkManual = () => {
         gasForIbc,
       }).success;
 
-    if (currentStep === 3)
+    if (currentStep === 2)
       return !zWalletRegistryForm.safeParse({
         bech32Prefix,
         slip44,
@@ -150,12 +148,8 @@ export const AddNetworkManual = () => {
     return false;
   };
 
-  const showSkipButton = currentStep === 1 && !isWasm && !isMove && !isNfts;
-
   const handleActionLabel = () => {
-    if (showSkipButton) return "Skip";
-
-    if (currentStep === 3) return "Save new Minitia";
+    if (currentStep === 2) return "Save new Minitia";
 
     return "Next";
   };
@@ -184,7 +178,6 @@ export const AddNetworkManual = () => {
         actionButton={{
           onClick: handleNext,
           isDisabled: isFormDisabled(),
-          variant: !showSkipButton ? "primary" : "outline-white",
           rightIcon: hasNext ? (
             <CustomIcon name="chevron-right" boxSize={4} />
           ) : undefined,

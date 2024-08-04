@@ -9,7 +9,6 @@ import type { AddNetworkManualForm } from "../types";
 
 import GasFeeDetails from "./GasFeeDetails";
 import { NetworkDetails } from "./NetworkDetails";
-import { SupportedFeatures } from "./SupportedFeatures";
 import { WalletRegistry } from "./WalletRegistry";
 
 interface AddNetworkFormProps {
@@ -30,9 +29,7 @@ export const AddNetworkForm = ({
   if (currentStep === 0)
     return <NetworkDetails control={control} errors={errors} />;
 
-  if (currentStep === 1) return <SupportedFeatures control={control} />;
-
-  if (currentStep === 2)
+  if (currentStep === 1)
     return (
       <GasFeeDetails
         control={control}
