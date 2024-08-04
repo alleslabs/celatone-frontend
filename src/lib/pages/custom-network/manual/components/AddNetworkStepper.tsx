@@ -9,15 +9,17 @@ const steps = [
 ];
 
 interface AddNetworkStepperProps {
-  currentStep: number;
+  currentStepIndex: number;
 }
 
-export const AddNetworkStepper = ({ currentStep }: AddNetworkStepperProps) => (
+export const AddNetworkStepper = ({
+  currentStepIndex,
+}: AddNetworkStepperProps) => (
   <Flex justifyContent="space-between" mb={8} w="full">
     {steps.map((step, index) => {
       const { bgColor, textColor, borderColor, content } = getStepStyles(
         index,
-        currentStep
+        currentStepIndex
       );
 
       return (

@@ -41,7 +41,7 @@ export const useNetworkStepper = (limit: number, handleSubmit: () => void) => {
   const handlePrevious = () => router.back();
 
   return {
-    currentStep: Number(currentStep) - 1,
+    currentStepIndex: Number(currentStep) - 1,
     handleNext,
     handlePrevious,
     hasNext: Number(currentStep) < limit,
