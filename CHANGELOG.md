@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1066](https://github.com/alleslabs/celatone-frontend/pull/1066) Remove add custom minitia supported feature step and add vm type in network detail
 - [#1050](https://github.com/alleslabs/celatone-frontend/pull/1050) Fix gap between network subsection
 
 ## v1.7.2
