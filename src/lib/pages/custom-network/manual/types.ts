@@ -209,7 +209,7 @@ export const zAddNetworkManualChainConfigJson = ({
     registryChainName: val.registryChainName,
     prettyName: val.networkName,
     logo_URIs: {
-      png: val.logoUri,
+      png: val.logoUri || undefined,
     },
     lcd: val.lcdUrl,
     rpc: val.rpcUrl,

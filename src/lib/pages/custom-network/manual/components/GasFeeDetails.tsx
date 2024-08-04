@@ -53,6 +53,7 @@ const GasOptionStandard = ({
     placeholder="0.00"
     error={errors.gasPrice?.message}
     rules={{ required: "" }}
+    restrictedNumberInputParams={{}}
   />
 );
 
@@ -79,6 +80,7 @@ const GasOptionCustom = ({
         placeholder="0.00"
         error={errors.fixedMinimumGasPrice?.message}
         textAlign="right"
+        restrictedNumberInputParams={{}}
       />
     </Flex>
     <Flex justifyContent="space-between" alignItems="center">
@@ -99,6 +101,7 @@ const GasOptionCustom = ({
         placeholder="0.00"
         error={errors.lowGasPrice?.message}
         textAlign="right"
+        restrictedNumberInputParams={{}}
       />
     </Flex>
     <Flex justifyContent="space-between" alignItems="center">
@@ -119,6 +122,7 @@ const GasOptionCustom = ({
         placeholder="0.00"
         error={errors.averageGasPrice?.message}
         textAlign="right"
+        restrictedNumberInputParams={{}}
       />
     </Flex>
     <Flex justifyContent="space-between" alignItems="center">
@@ -139,6 +143,7 @@ const GasOptionCustom = ({
         placeholder="0.00"
         error={errors.highGasPrice?.message}
         textAlign="right"
+        restrictedNumberInputParams={{}}
       />
     </Flex>
   </>
@@ -188,6 +193,7 @@ const GasFeeDetails = ({
               placeholder="0.00"
               rules={{ required: "" }}
               error={errors.gasAdjustment?.message}
+              restrictedNumberInputParams={{}}
             />
             <ControllerInput
               name="maxGasLimit"
@@ -199,6 +205,7 @@ const GasFeeDetails = ({
               placeholder="0.00"
               rules={{ required: "" }}
               error={errors.maxGasLimit?.message}
+              restrictedNumberInputParams={{}}
             />
           </Flex>
           <ControllerInput
@@ -270,6 +277,7 @@ const GasFeeDetails = ({
                   w="full"
                   placeholder="0.00"
                   error={errors.gasForCosmosSend?.message}
+                  restrictedNumberInputParams={{}}
                 />
                 <ControllerInput
                   labelBgColor="gray.900"
@@ -281,6 +289,7 @@ const GasFeeDetails = ({
                   w="full"
                   placeholder="0.00"
                   error={errors.gasForIbc?.message}
+                  restrictedNumberInputParams={{}}
                 />
               </Flex>
             </AccordionPanel>
