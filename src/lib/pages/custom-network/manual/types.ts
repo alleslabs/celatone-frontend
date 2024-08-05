@@ -2,10 +2,13 @@ import type { ChainConfig } from "@alleslabs/shared";
 import type { RefinementCtx } from "zod";
 import { z, ZodIssueCode } from "zod";
 
-const pleaseEnterAValidUrl = "Please enter a valid URL";
 const mustBeAlphabetNumberAndSpecialCharacters =
   "Must be alphabet (a-z), numbers (0-9), or these special characters: “/”, “:”, “.”, “_”, “-”";
 const mustBeNumbersOnly = "Must be numbers only";
+
+const zHttpsUrl = z.string().regex(/^(http|https):\/\/[^\s$.?#].[^\s]*$/, {
+  message: "Please enter a valid URL",
+});
 
 const zNumberForm = z
   .union([
@@ -30,11 +33,17 @@ interface ValidateExistingChain {
   isPrettyNameExist: (name: string) => boolean;
 }
 
+export enum VmType {
+  MOVE = "move",
+  WASM = "wasm",
+}
+
 export const zNetworkDetailsForm = ({
   isChainIdExist,
   isPrettyNameExist,
 }: ValidateExistingChain) =>
   z.object({
+    vmType: z.nativeEnum(VmType),
     networkName: z.string().superRefine((val, ctx) => {
       if (val.length > 50)
         ctx.addIssue({
@@ -50,12 +59,8 @@ export const zNetworkDetailsForm = ({
 
       return true;
     }),
-    lcdUrl: z.string().regex(/^(http|https):\/\/[^\s$.?#].[^\s]*$/, {
-      message: pleaseEnterAValidUrl,
-    }),
-    rpcUrl: z.string().regex(/^(http|https):\/\/[^\s$.?#].[^\s]*$/, {
-      message: pleaseEnterAValidUrl,
-    }),
+    lcdUrl: zHttpsUrl,
+    rpcUrl: zHttpsUrl,
     chainId: z
       .string()
       .min(1, { message: " " })
@@ -71,23 +76,11 @@ export const zNetworkDetailsForm = ({
     registryChainName: z.string().regex(/^[a-z0-9]+$/, {
       message: "Lower case letter (a-z) or number (0-9)",
     }),
-    logoUri: z.union([
-      z.string().regex(/^(http|https):\/\/[^\s$.?#].[^\s]*$/, {
-        message: pleaseEnterAValidUrl,
-      }),
-      z.literal(""),
-    ]),
+    logoUri: z.union([zHttpsUrl, z.literal("")]),
   });
 export type NetworkDetailsForm = z.infer<
   ReturnType<typeof zNetworkDetailsForm>
 >;
-
-export const zSupportedFeaturesForm = z.object({
-  isWasm: z.boolean(),
-  isMove: z.boolean(),
-  isNfts: z.boolean(),
-});
-export type SupportedFeaturesForm = z.infer<typeof zSupportedFeaturesForm>;
 
 const zGasFeeDetails = z.object({
   gasAdjustment: zNumberFormRequired,
@@ -194,7 +187,6 @@ export const zAddNetworkManualForm = ({
   isPrettyNameExist,
 }: ValidateExistingChain) =>
   zNetworkDetailsForm({ isChainIdExist, isPrettyNameExist })
-    .merge(zSupportedFeaturesForm)
     .merge(zGasFeeDetailsForm.innerType())
     .merge(zWalletRegistryForm)
     .superRefine(gasConfigCustomFormValidator);
@@ -217,7 +209,7 @@ export const zAddNetworkManualChainConfigJson = ({
     registryChainName: val.registryChainName,
     prettyName: val.networkName,
     logo_URIs: {
-      png: val.logoUri,
+      png: val.logoUri || undefined,
     },
     lcd: val.lcdUrl,
     rpc: val.rpcUrl,
@@ -227,19 +219,21 @@ export const zAddNetworkManualChainConfigJson = ({
       faucet: {
         enabled: false,
       },
-      wasm: val.isWasm
-        ? {
-            enabled: true,
-            storeCodeMaxFileSize: 1024 * 1024 * 2,
-            clearAdminGas: 1000000,
-          }
-        : { enabled: false },
-      move: val.isMove
-        ? {
-            enabled: true,
-            moduleMaxFileSize: 1_048_576,
-          }
-        : { enabled: false },
+      wasm:
+        val.vmType === VmType.WASM
+          ? {
+              enabled: true,
+              storeCodeMaxFileSize: 1024 * 1024 * 2,
+              clearAdminGas: 1000000,
+            }
+          : { enabled: false },
+      move:
+        val.vmType === VmType.MOVE
+          ? {
+              enabled: true,
+              moduleMaxFileSize: 1_048_576,
+            }
+          : { enabled: false },
       pool: {
         enabled: false,
       },
@@ -250,7 +244,7 @@ export const zAddNetworkManualChainConfigJson = ({
         enabled: false,
       },
       nft: {
-        enabled: val.isNfts,
+        enabled: val.vmType === VmType.MOVE,
       },
     },
     gas: {

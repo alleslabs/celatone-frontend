@@ -55,6 +55,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#1065](https://github.com/alleslabs/celatone-frontend/pull/1065) Fix zod url validation to allow only http and https in add custom minitia page
+- [#1064](https://github.com/alleslabs/celatone-frontend/pull/1064) Fix cancel button in add custom minitia page
+- [#1068](https://github.com/alleslabs/celatone-frontend/pull/1068) Add fetching bech32 prefix from lcd and disable close success modal on overlay click
+- [#1067](https://github.com/alleslabs/celatone-frontend/pull/1067) Add gas fee details to support more decimal digits and add default value
+- [#1066](https://github.com/alleslabs/celatone-frontend/pull/1066) Remove add custom minitia supported feature step and add vm type in network detail
 - [#1050](https://github.com/alleslabs/celatone-frontend/pull/1050) Fix gap between network subsection
 
 ## v1.7.2
