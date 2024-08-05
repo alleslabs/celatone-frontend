@@ -51,7 +51,7 @@ export const NumberInput = ({
 
   const handlers = useRestrictedNumberInput({
     type: "integer",
-    maxIntegerPoinsts: 7,
+    maxIntegerPoints: 7,
     maxDecimalPoints: 0,
     onChange: inputOnChange,
   });

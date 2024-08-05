@@ -96,7 +96,7 @@ export const useAccountBech32 = (
   endpoint: string
 ): UseQueryResult<AccountBech32LcdResponse> =>
   useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_BECH_32],
+    [CELATONE_QUERY_KEYS.ACCOUNT_BECH_32_LCD],
     async () => getAccountBech32Lcd(endpoint),
     {
       retry: 1,
