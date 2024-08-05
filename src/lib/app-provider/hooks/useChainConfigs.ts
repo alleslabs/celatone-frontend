@@ -6,7 +6,8 @@ import { wallets as initiaWallets } from "@cosmos-kit/initia";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 import { wallets as staionWallets } from "@cosmos-kit/station";
 import { assets, chains } from "chain-registry";
-import { useMemo } from "react";
+import { find } from "lodash";
+import { useCallback, useMemo } from "react";
 
 import type { ChainConfig, ChainConfigs } from "config/chain";
 import { CHAIN_CONFIGS } from "config/chain";
@@ -24,7 +25,7 @@ import {
   terra2testnet,
   terra2testnetAssets,
 } from "lib/chain-registry/terra2testnet";
-import { useChainConfigStore } from "lib/providers/store";
+import { useLocalChainConfigStore } from "lib/providers/store";
 
 const getWallets = (wallets: SharedChainConfig["wallets"]) =>
   wallets.reduce(
@@ -50,12 +51,15 @@ export const useChainConfigs = (): {
   registryChains: Chain[];
   registryAssets: AssetList[];
   supportedChainIds: string[];
+  isChainIdExist: (chainId: string) => boolean;
+  isPrettyNameExist: (name: string) => boolean;
 } => {
-  const { chainConfigs } = useChainConfigStore();
+  const { localChainConfigs, isLocalChainIdExist, isLocalPrettyNameExist } =
+    useLocalChainConfigStore();
 
   const local = useMemo(
     () =>
-      Object.values(chainConfigs).reduce(
+      Object.values(localChainConfigs).reduce(
         (acc, each) => {
           const localChainConfig: ChainConfig = {
             tier: each.tier,
@@ -119,7 +123,21 @@ export const useChainConfigs = (): {
           supportedChainIds: [] as string[],
         }
       ),
-    [chainConfigs]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(localChainConfigs)]
+  );
+
+  const isChainIdExist = useCallback(
+    (chainId: string) =>
+      !!CHAIN_CONFIGS[chainId] || isLocalChainIdExist(chainId),
+    [isLocalChainIdExist]
+  );
+
+  const isPrettyNameExist = useCallback(
+    (name: string) =>
+      !!find(CHAIN_CONFIGS, { prettyName: name }) ||
+      isLocalPrettyNameExist(name),
+    [isLocalPrettyNameExist]
   );
 
   return {
@@ -144,5 +162,7 @@ export const useChainConfigs = (): {
       ...local.registryAssets,
     ],
     supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
+    isChainIdExist,
+    isPrettyNameExist,
   };
 };

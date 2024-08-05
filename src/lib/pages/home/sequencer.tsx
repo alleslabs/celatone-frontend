@@ -9,15 +9,15 @@ import {
   useBlockTimeAverageSequencer,
   useLatestBlockLcd,
 } from "lib/services/block";
-import { useOverviewsStats } from "lib/services/stats";
+import { useTxsCountSequencer } from "lib/services/tx";
 
 import { HomeTop } from "./components";
 
 export const HomeSequencer = () => {
   const navigate = useInternalNavigate();
 
-  const { data: overviewsStats, isLoading: isOverviewsStatsLoading } =
-    useOverviewsStats();
+  const { data: txsCount, isLoading: isTxsCountLoading } =
+    useTxsCountSequencer();
   const { data: latestBlock, isLoading: isLatestBlockLoading } =
     useLatestBlockLcd();
   const { data: blockTimeAverage, isLoading: isBlockTimeAverageLoading } =
@@ -36,8 +36,8 @@ export const HomeSequencer = () => {
   return (
     <PageContainer>
       <HomeTop
-        totalTxs={overviewsStats?.txCount}
-        isTotalTxsLoading={isOverviewsStatsLoading}
+        totalTxs={txsCount}
+        isTotalTxsLoading={isTxsCountLoading}
         latestBlock={latestBlock}
         isLatestBlockLoading={isLatestBlockLoading}
         blockTime={blockTimeAverage?.avgBlockTime}
@@ -50,18 +50,14 @@ export const HomeSequencer = () => {
           Recent Transactions
         </Heading>
         <TxsTableSequencer isViewMore />
-        {!!overviewsStats?.txCount && overviewsStats.txCount > 5 && (
-          <ViewMore onClick={toTxs} />
-        )}
+        {!!txsCount && txsCount > 5 && <ViewMore onClick={toTxs} />}
       </Box>
       <Box as="section">
         <Heading as="h5" variant="h5" mb={5}>
           Recent Blocks
         </Heading>
         <RecentBlocksTableSequencer isViewMore />
-        {!!overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (
-          <ViewMore onClick={toBlocks} />
-        )}
+        {!!latestBlock && latestBlock > 5 && <ViewMore onClick={toBlocks} />}
       </Box>
     </PageContainer>
   );
