@@ -41,7 +41,12 @@ export const SuccessAddCustomMinitiaModal = ({
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      isCentered
+      closeOnOverlayClick={false}
+    >
       <ModalOverlay />
       <ModalContent w="645px" bg="gray.800" maxW="100vw" py={10}>
         {fakeLoading ? (
