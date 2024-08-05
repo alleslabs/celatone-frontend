@@ -75,8 +75,9 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
         subtitle="Your Custom Minitia"
         hasAlert={false}
       />
-      <Grid templateColumns="2fr 5fr" gap={6} w="full" my={8}>
-        <RemoveChainConfigModal
+      {/* TODO: switch back to templateColumns="2fr 5fr" when left panel is available */}
+      <Grid gap={6} w="full" my={8}>
+        {/* <RemoveChainConfigModal
           chainId={chainId}
           trigger={
             <Button
@@ -88,7 +89,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
               Remove Network
             </Button>
           }
-        />
+        /> */}
         <Stack>
           <Heading as="h6" variant="h6">
             Current Configuration in JSON
@@ -97,6 +98,21 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
             text={jsonPrettify(JSON.stringify(chainConfig))}
             canCopy
             fullWidth
+          />
+          <RemoveChainConfigModal
+            chainId={chainId}
+            trigger={
+              <Button
+                variant="ghost-error"
+                mt={10}
+                size="md"
+                border="1px solid"
+                borderColor="error.main"
+                leftIcon={<CustomIcon name="delete" />}
+              >
+                Remove Network
+              </Button>
+            }
           />
         </Stack>
       </Grid>
