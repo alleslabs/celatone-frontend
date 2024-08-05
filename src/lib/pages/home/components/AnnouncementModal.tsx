@@ -22,7 +22,7 @@ export const AnnouncementModal = ({
   onClose,
 }: AnnouncementModalProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal isOpen={isOpen} isCentered onClose={() => {}}>
       <ModalOverlay />
       <ModalContent w="640px">
         <ModalHeader py={2}>
@@ -63,8 +63,9 @@ export const AnnouncementModal = ({
             gap={4}
           >
             <Button
+              minW="256px"
               cursor="pointer"
-              variant="ghost-secondary"
+              variant="outline-secondary"
               onClick={onClose}
             >
               Close

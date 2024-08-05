@@ -158,7 +158,7 @@ export const Button: ComponentStyleConfig = {
           color: gray600,
         },
       },
-      hoverBg: gray700,
+      hoverBg: "secondary.background",
       activeBg: "transparent",
     }),
     "outline-gray": generateStyle({

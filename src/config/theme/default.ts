@@ -10,7 +10,7 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
       appName: "Celatone",
       title: "Celatone Explorer",
       description: "All in one place.",
-      image: "/celatone-ogimage.jpg",
+      image: "/celatone-ogimg.jpg",
       twitter: {
         handle: "@celatone_",
         cardType: "summary_large_image",
