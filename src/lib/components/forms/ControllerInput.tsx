@@ -41,7 +41,7 @@ export interface ControllerInputProps<T extends FieldValues>
   };
   restrictedNumberInputParams?: Pick<
     RestrictedNumberInputParams,
-    "maxDecimalPoints" | "maxIntegerPoinsts"
+    "maxDecimalPoints" | "maxIntegerPoints"
   >;
 }
 
@@ -63,10 +63,7 @@ export const ControllerInput = <T extends FieldValues>({
   helperAction,
   textAlign = "left",
   cta,
-  restrictedNumberInputParams = {
-    maxIntegerPoinsts: 7,
-    maxDecimalPoints: 6,
-  },
+  restrictedNumberInputParams,
   ...componentProps
 }: ControllerInputProps<T>) => {
   const watcher = useWatch({
@@ -103,14 +100,13 @@ export const ControllerInput = <T extends FieldValues>({
 
   const decimalHandlers = useRestrictedNumberInput({
     type: "decimal",
-    maxIntegerPoinsts: restrictedNumberInputParams.maxIntegerPoinsts,
-    maxDecimalPoints: restrictedNumberInputParams.maxDecimalPoints,
     onChange: field.onChange,
+    ...restrictedNumberInputParams,
   });
 
   const numberHandlers = useRestrictedNumberInput({
     type: "integer",
-    maxIntegerPoinsts: 7,
+    maxIntegerPoints: 7,
     maxDecimalPoints: 0,
     onChange: field.onChange,
   });

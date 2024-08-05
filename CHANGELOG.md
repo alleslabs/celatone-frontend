@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#1063](https://github.com/alleslabs/celatone-frontend/pull/1063) Fix bug bash for add custom networks
+- [#1069](https://github.com/alleslabs/celatone-frontend/pull/1069) Fix add custom minitia network manually
 - [#1065](https://github.com/alleslabs/celatone-frontend/pull/1065) Fix zod url validation to allow only http and https in add custom minitia page
 - [#1064](https://github.com/alleslabs/celatone-frontend/pull/1064) Fix cancel button in add custom minitia page
 - [#1068](https://github.com/alleslabs/celatone-frontend/pull/1068) Add fetching bech32 prefix from lcd and disable close success modal on overlay click
