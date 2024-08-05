@@ -5,6 +5,7 @@ import {
   Grid,
   Heading,
   IconButton,
+  SkeletonText,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -133,7 +134,8 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
     name: "lcdUrl",
   });
 
-  const { data: accountBech32 } = useAccountBech32(lcdUrl);
+  const { data: accountBech32, isLoading: isAccountBech32Loading } =
+    useAccountBech32(lcdUrl);
 
   const { field: bech32PrefixField } = useController({
     name: "bech32Prefix",
@@ -161,7 +163,11 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
         <Stack bg="gray.900" py={4} px={6} rounded={8} gap={4}>
           <Grid gridTemplateColumns="repeat(2, 1fr)" gap={6}>
             <LabelText label="Bech32">
-              {accountBech32?.bech32Prefix ?? "init"}
+              {isAccountBech32Loading ? (
+                <SkeletonText noOfLines={1} skeletonHeight={4} />
+              ) : (
+                accountBech32?.bech32Prefix ?? "init"
+              )}
             </LabelText>
             <LabelText label="Slip44">118</LabelText>
           </Grid>
@@ -174,12 +180,16 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
             <Text variant="body2" color="text.dark" fontWeight={600}>
               Account address in this Minitia will look like this:
             </Text>
-            <Text variant="body2" color="text.main">
-              {accountBech32?.bech32Prefix}
-              1cvhde2nst3qewz8x58m6tuupfk08zspeev4ud3
-            </Text>
+            {isAccountBech32Loading ? (
+              <SkeletonText noOfLines={1} skeletonHeight={4} />
+            ) : (
+              <Text variant="body2" color="text.main">
+                {accountBech32?.bech32Prefix ?? "init"}
+                1cvhde2nst3qewz8x58m6tuupfk08zspeev4ud3
+              </Text>
+            )}
           </Flex>
-          {!accountBech32 && (
+          {!isAccountBech32Loading && !accountBech32 && (
             <>
               <Divider />
               <Text variant="body2" color="warning.main">
