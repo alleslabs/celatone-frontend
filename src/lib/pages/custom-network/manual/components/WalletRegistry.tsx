@@ -129,9 +129,9 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
 };
 
 export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
-  const lcdUrl = useWatch({
+  const [lcdUrl, bech32Prefix] = useWatch({
     control,
-    name: "lcdUrl",
+    name: ["lcdUrl", "bech32Prefix"],
   });
 
   const { data: accountBech32, isLoading: isAccountBech32Loading } =
@@ -143,9 +143,10 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
   });
 
   useEffect(() => {
-    if (!accountBech32?.bech32Prefix) return;
-    bech32PrefixField.onChange(accountBech32.bech32Prefix);
-  }, [accountBech32, bech32PrefixField]);
+    if (accountBech32?.bech32Prefix === bech32Prefix) return;
+    bech32PrefixField.onChange(accountBech32?.bech32Prefix ?? "init");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountBech32?.bech32Prefix, bech32Prefix]);
 
   const { fields, append, remove } = useFieldArray({
     control,

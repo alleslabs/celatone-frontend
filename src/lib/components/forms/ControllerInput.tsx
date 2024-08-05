@@ -137,6 +137,7 @@ export const ControllerInput = <T extends FieldValues>({
           size={size}
           placeholder={placeholder}
           value={watcher}
+          onChange={field.onChange}
           type="text"
           maxLength={maxLength}
           autoFocus={autoFocus}
