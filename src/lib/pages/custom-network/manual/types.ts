@@ -2,10 +2,13 @@ import type { ChainConfig } from "@alleslabs/shared";
 import type { RefinementCtx } from "zod";
 import { z, ZodIssueCode } from "zod";
 
-const pleaseEnterAValidUrl = "Please enter a valid URL";
 const mustBeAlphabetNumberAndSpecialCharacters =
   "Must be alphabet (a-z), numbers (0-9), or these special characters: “/”, “:”, “.”, “_”, “-”";
 const mustBeNumbersOnly = "Must be numbers only";
+
+const zHttpsUrl = z.string().regex(/^(http|https):\/\/[^\s$.?#].[^\s]*$/, {
+  message: "Please enter a valid URL",
+});
 
 const zNumberForm = z
   .union([
@@ -56,8 +59,8 @@ export const zNetworkDetailsForm = ({
 
       return true;
     }),
-    lcdUrl: z.string().url({ message: pleaseEnterAValidUrl }),
-    rpcUrl: z.string().url({ message: pleaseEnterAValidUrl }),
+    lcdUrl: zHttpsUrl,
+    rpcUrl: zHttpsUrl,
     chainId: z
       .string()
       .min(1, { message: " " })
@@ -73,10 +76,7 @@ export const zNetworkDetailsForm = ({
     registryChainName: z.string().regex(/^[a-z0-9]+$/, {
       message: "Lower case letter (a-z) or number (0-9)",
     }),
-    logoUri: z.union([
-      z.string().url({ message: "Please enter a valid URL" }),
-      z.literal(""),
-    ]),
+    logoUri: z.union([zHttpsUrl, z.literal("")]),
   });
 export type NetworkDetailsForm = z.infer<
   ReturnType<typeof zNetworkDetailsForm>
