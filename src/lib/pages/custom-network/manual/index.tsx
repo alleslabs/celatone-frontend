@@ -54,7 +54,7 @@ export const AddNetworkManual = () => {
       vmType: VmType.MOVE,
       gasAdjustment: 1.5,
       maxGasLimit: 25000000,
-      feeTokenDenom: "uinit",
+      feeTokenDenom: "umin",
       gasConfig: "standard",
       gasPrice: 0.15,
       fixedMinimumGasPrice: 0.15,
