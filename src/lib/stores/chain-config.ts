@@ -5,20 +5,20 @@ import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import type { Option } from "lib/types";
 
-export class ChainConfigStore {
-  chainConfigs: Record<
+export class LocalChainConfigStore {
+  localChainConfigs: Record<
     string, // chainId
     SharedChainConfig
   >;
 
   constructor() {
-    this.chainConfigs = {};
+    this.localChainConfigs = {};
 
     makeAutoObservable(this, {}, { autoBind: true });
 
     makePersistable(this, {
       name: "ChainConfigStore",
-      properties: ["chainConfigs"],
+      properties: ["localChainConfigs"],
     });
   }
 
@@ -26,35 +26,35 @@ export class ChainConfigStore {
     return isHydrated(this);
   }
 
-  getChainConfig(chainId: string): Option<SharedChainConfig> {
-    if (!this.isChainIdExist(chainId)) {
+  getLocalChainConfig(chainId: string): Option<SharedChainConfig> {
+    if (!this.isLocalChainIdExist(chainId)) {
       return undefined;
     }
 
-    return this.chainConfigs[chainId];
+    return this.localChainConfigs[chainId];
   }
 
-  updateChainConfig(chainId: string, chainConfig: SharedChainConfig) {
-    this.chainConfigs[chainId] = chainConfig;
+  updateLocalChainConfig(chainId: string, chainConfig: SharedChainConfig) {
+    this.localChainConfigs[chainId] = chainConfig;
   }
 
-  addChainConfig(chainId: string, chainConfig: SharedChainConfig) {
-    if (this.isChainIdExist(chainId)) {
+  addLocalChainConfig(chainId: string, chainConfig: SharedChainConfig) {
+    if (this.isLocalChainIdExist(chainId)) {
       return;
     }
 
-    this.updateChainConfig(chainId, chainConfig);
+    this.updateLocalChainConfig(chainId, chainConfig);
   }
 
-  removeChainConfig(chainId: string) {
-    delete this.chainConfigs[chainId];
+  removeLocalChainConfig(chainId: string) {
+    delete this.localChainConfigs[chainId];
   }
 
-  isChainIdExist(chainId: string): boolean {
-    return !!this.chainConfigs[chainId];
+  isLocalChainIdExist(chainId: string): boolean {
+    return !!this.localChainConfigs[chainId];
   }
 
-  isPrettyNameExist(name: string): boolean {
-    return !!find(this.chainConfigs, { prettyName: name });
+  isLocalPrettyNameExist(name: string): boolean {
+    return !!find(this.localChainConfigs, { prettyName: name });
   }
 }

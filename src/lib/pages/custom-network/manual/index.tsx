@@ -2,12 +2,12 @@ import { Flex, useDisclosure } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { useAllowCustomNetworks } from "lib/app-provider";
+import { useAllowCustomNetworks, useChainConfigs } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { CustomIcon } from "lib/components/icon";
 import { FooterCta } from "lib/components/layouts";
 import { CelatoneSeo } from "lib/components/Seo";
-import { useChainConfigStore } from "lib/providers/store";
+import { useLocalChainConfigStore } from "lib/providers/store";
 
 import {
   AddNetworkForm,
@@ -28,8 +28,8 @@ import type { AddNetworkManualForm } from "./types";
 export const AddNetworkManual = () => {
   useAllowCustomNetworks({ shouldRedirect: true });
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { addChainConfig, isChainIdExist, isPrettyNameExist } =
-    useChainConfigStore();
+  const { addLocalChainConfig } = useLocalChainConfigStore();
+  const { isChainIdExist, isPrettyNameExist } = useChainConfigs();
 
   const {
     control,
@@ -94,7 +94,7 @@ export const AddNetworkManual = () => {
   } = watch();
 
   const handleSubmitForm = (data: AddNetworkManualForm) => {
-    addChainConfig(
+    addLocalChainConfig(
       data.chainId,
       zAddNetworkManualChainConfigJson({
         isChainIdExist,

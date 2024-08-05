@@ -65,7 +65,7 @@ export function useNetworkStore() {
   return networkStore;
 }
 
-export function useChainConfigStore() {
-  const { chainConfigStore } = useStore();
-  return chainConfigStore;
+export function useLocalChainConfigStore() {
+  const { localChainConfigStore } = useStore();
+  return localChainConfigStore;
 }

@@ -1,6 +1,6 @@
 import type { ChainConfig } from "@alleslabs/shared";
 
-import { ChainConfigStore } from "./chain-config";
+import { LocalChainConfigStore } from "./chain-config";
 
 const MOCK_CONFIG: ChainConfig = {
   tier: "sequencer",
@@ -46,22 +46,22 @@ const MOCK_CONFIG: ChainConfig = {
 };
 
 describe("chain config management", () => {
-  let chainConfigStore: ChainConfigStore;
+  let chainConfigStore: LocalChainConfigStore;
   beforeEach(() => {
-    chainConfigStore = new ChainConfigStore();
+    chainConfigStore = new LocalChainConfigStore();
   });
 
   test("get chain config", () => {
-    chainConfigStore.addChainConfig("test-1", MOCK_CONFIG);
-    const chainConfig = chainConfigStore.getChainConfig("test-1");
+    chainConfigStore.addLocalChainConfig("test-1", MOCK_CONFIG);
+    const chainConfig = chainConfigStore.getLocalChainConfig("test-1");
     expect(chainConfig).toEqual(MOCK_CONFIG);
   });
 
   test("save chain config", () => {
-    chainConfigStore.addChainConfig("test-1", MOCK_CONFIG);
-    const chainConfig = chainConfigStore.getChainConfig("test-1");
+    chainConfigStore.addLocalChainConfig("test-1", MOCK_CONFIG);
+    const chainConfig = chainConfigStore.getLocalChainConfig("test-1");
     expect(chainConfig).toEqual(MOCK_CONFIG);
-    expect(chainConfigStore.isChainIdExist("test-1")).toBeTruthy();
+    expect(chainConfigStore.isLocalChainIdExist("test-1")).toBeTruthy();
   });
 
   test("update chain config", () => {
@@ -69,14 +69,18 @@ describe("chain config management", () => {
       ...MOCK_CONFIG,
       rpc: "https://rpc.test.com",
     };
-    chainConfigStore.updateChainConfig("test-1", newChainConfig);
-    expect(chainConfigStore.getChainConfig("test-1")).not.toEqual(MOCK_CONFIG);
-    expect(chainConfigStore.getChainConfig("test-1")).toEqual(newChainConfig);
+    chainConfigStore.updateLocalChainConfig("test-1", newChainConfig);
+    expect(chainConfigStore.getLocalChainConfig("test-1")).not.toEqual(
+      MOCK_CONFIG
+    );
+    expect(chainConfigStore.getLocalChainConfig("test-1")).toEqual(
+      newChainConfig
+    );
   });
 
   test("delete chain config", () => {
-    chainConfigStore.updateChainConfig("test-1", MOCK_CONFIG);
-    chainConfigStore.removeChainConfig("test-1");
-    expect(chainConfigStore.chainConfigs).toEqual({});
+    chainConfigStore.updateLocalChainConfig("test-1", MOCK_CONFIG);
+    chainConfigStore.removeLocalChainConfig("test-1");
+    expect(chainConfigStore.localChainConfigs).toEqual({});
   });
 });

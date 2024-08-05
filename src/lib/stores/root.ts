@@ -1,5 +1,5 @@
 import { AccountStore } from "./account";
-import { ChainConfigStore } from "./chain-config";
+import { LocalChainConfigStore } from "./chain-config";
 import { CodeStore } from "./code";
 import { ContractStore } from "./contract";
 import { NetworkStore } from "./networks";
@@ -19,7 +19,7 @@ export class RootStore {
 
   networkStore: NetworkStore;
 
-  chainConfigStore: ChainConfigStore;
+  localChainConfigStore: LocalChainConfigStore;
 
   constructor() {
     this.accountStore = new AccountStore();
@@ -28,6 +28,6 @@ export class RootStore {
     this.publicProjectStore = new PublicProjectStore();
     this.schemaStore = new SchemaStore();
     this.networkStore = new NetworkStore();
-    this.chainConfigStore = new ChainConfigStore();
+    this.localChainConfigStore = new LocalChainConfigStore();
   }
 }
