@@ -179,6 +179,9 @@ export const AddNetworkManual = () => {
         cancelButton={{
           onClick: handlePrevious,
           variant: "outline-secondary",
+          leftIcon: hasPrevious ? (
+            <CustomIcon name="chevron-left" boxSize={4} />
+          ) : undefined,
         }}
         cancelLabel={hasPrevious ? "Previous" : "Cancel"}
         actionButton={{
