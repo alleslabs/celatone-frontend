@@ -1,12 +1,16 @@
 import {
   Button,
+  Divider,
   Flex,
   Grid,
   Heading,
   IconButton,
+  SkeletonText,
+  Stack,
   Text,
 } from "@chakra-ui/react";
-import { useController, useFieldArray } from "react-hook-form";
+import { useEffect } from "react";
+import { useController, useFieldArray, useWatch } from "react-hook-form";
 import type { Control, FieldErrors } from "react-hook-form";
 
 import type { AddNetworkManualForm } from "../types";
@@ -16,6 +20,8 @@ import {
 } from "lib/components/custom-network";
 import { ControllerInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
+import { LabelText } from "lib/components/LabelText";
+import { useAccountBech32 } from "lib/services/account";
 
 interface WalletRegistryProps {
   control: Control<AddNetworkManualForm>;
@@ -123,13 +129,23 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
 };
 
 export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
-  const bech32Prefix = useController({
+  const lcdUrl = useWatch({
+    control,
+    name: "lcdUrl",
+  });
+
+  const { data: accountBech32, isLoading: isAccountBech32Loading } =
+    useAccountBech32(lcdUrl);
+
+  const { field: bech32PrefixField } = useController({
     name: "bech32Prefix",
     control,
   });
 
-  const { field: bech32PrefixField, fieldState: bech32PrefixFieldState } =
-    bech32Prefix;
+  useEffect(() => {
+    if (!accountBech32?.bech32Prefix) return;
+    bech32PrefixField.onChange(accountBech32.bech32Prefix);
+  }, [accountBech32, bech32PrefixField]);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -140,50 +156,49 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
     <Flex direction="column" gap={2} alignItems="center">
       <CustomNetworkPageHeader title="Add Wallet Registry" />
       <Flex w="full" direction="column" gap={6} my={8}>
-        <CustomNetworkSubheader title="Account Prefix and Registered Coin Type" />
-        <Flex gap={6}>
-          <ControllerInput
-            name="bech32Prefix"
-            control={control}
-            label="Bech32 Prefix"
-            variant="fixed-floating"
-            w="full"
-            placeholder="ex. init"
-            rules={{
-              required: "",
-            }}
-            error={errors.bech32Prefix?.message}
-          />
-          <ControllerInput
-            name="slip44"
-            control={control}
-            label="Slip44"
-            variant="fixed-floating"
-            type="number"
-            w="full"
-            rules={{
-              required: "",
-            }}
-            error={errors.slip44?.message}
-          />
-        </Flex>
-        {bech32PrefixField.value && !bech32PrefixFieldState.error && (
+        <CustomNetworkSubheader
+          title="Account Prefix and Registered Coin Type"
+          subtitle="This information is fetched from provided LCD URL"
+        />
+        <Stack bg="gray.900" py={4} px={6} rounded={8} gap={4}>
+          <Grid gridTemplateColumns="repeat(2, 1fr)" gap={6}>
+            <LabelText label="Bech32">
+              {isAccountBech32Loading ? (
+                <SkeletonText noOfLines={1} skeletonHeight={4} />
+              ) : (
+                accountBech32?.bech32Prefix ?? "init"
+              )}
+            </LabelText>
+            <LabelText label="Slip44">118</LabelText>
+          </Grid>
           <Flex
             direction="column"
-            gap={1}
-            px={4}
+            pl={4}
             borderLeft="2px solid"
             borderColor="gray.100"
           >
             <Text variant="body2" color="text.dark" fontWeight={600}>
               Account address in this Minitia will look like this:
             </Text>
-            <Text variant="body2" color="text.main">
-              {bech32PrefixField.value}
-              1cvhde2nst3qewz8x58m6tuupfk08zspeev4ud3
-            </Text>
+            {isAccountBech32Loading ? (
+              <SkeletonText noOfLines={1} skeletonHeight={4} />
+            ) : (
+              <Text variant="body2" color="text.main">
+                {accountBech32?.bech32Prefix ?? "init"}
+                1cvhde2nst3qewz8x58m6tuupfk08zspeev4ud3
+              </Text>
+            )}
           </Flex>
-        )}
+          {!isAccountBech32Loading && !accountBech32 && (
+            <>
+              <Divider />
+              <Text variant="body2" color="warning.main">
+                * Bech32 and Slip44 data is not available from LCD. The input
+                above will be set as default.
+              </Text>
+            </>
+          )}
+        </Stack>
       </Flex>
       <Flex w="full" direction="column" gap={6} mb={8}>
         <CustomNetworkSubheader

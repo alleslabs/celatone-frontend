@@ -37,3 +37,13 @@ export const zAccountTypeLcd = z
     }),
   })
   .transform((data) => data.account["@type"]);
+
+export const zAccountBech32LcdResponse = z
+  .object({
+    bech32_prefix: z.string(),
+  })
+  .transform(snakeToCamel);
+
+export type AccountBech32LcdResponse = z.infer<
+  typeof zAccountBech32LcdResponse
+>;
