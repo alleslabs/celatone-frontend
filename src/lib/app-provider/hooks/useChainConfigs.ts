@@ -51,11 +51,11 @@ export const useChainConfigs = (): {
   registryAssets: AssetList[];
   supportedChainIds: string[];
 } => {
-  const { chainConfigs } = useChainConfigStore();
+  const { chainConfigs: localChainConfigs } = useChainConfigStore();
 
   const local = useMemo(
     () =>
-      Object.values(chainConfigs).reduce(
+      Object.values(localChainConfigs).reduce(
         (acc, each) => {
           const localChainConfig: ChainConfig = {
             tier: each.tier,
@@ -119,7 +119,8 @@ export const useChainConfigs = (): {
           supportedChainIds: [] as string[],
         }
       ),
-    [chainConfigs]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(localChainConfigs)]
   );
 
   return {
