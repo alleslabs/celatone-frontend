@@ -18,6 +18,7 @@ import type {
 } from "react-hook-form";
 import { useController, useWatch } from "react-hook-form";
 
+import type { RestrictedNumberInputParams } from "lib/app-provider";
 import { useRestrictedNumberInput } from "lib/app-provider";
 
 import type { FormStatus } from "./FormStatus";
@@ -38,6 +39,10 @@ export interface ControllerInputProps<T extends FieldValues>
     label: string;
     onClick: (changeValue?: (...event: string[]) => void) => void;
   };
+  restrictedNumberInputParams?: Pick<
+    RestrictedNumberInputParams,
+    "maxDecimalPoints" | "maxIntegerPoinsts"
+  >;
 }
 
 export const ControllerInput = <T extends FieldValues>({
@@ -58,6 +63,10 @@ export const ControllerInput = <T extends FieldValues>({
   helperAction,
   textAlign = "left",
   cta,
+  restrictedNumberInputParams = {
+    maxIntegerPoinsts: 7,
+    maxDecimalPoints: 6,
+  },
   ...componentProps
 }: ControllerInputProps<T>) => {
   const watcher = useWatch({
@@ -94,8 +103,8 @@ export const ControllerInput = <T extends FieldValues>({
 
   const decimalHandlers = useRestrictedNumberInput({
     type: "decimal",
-    maxIntegerPoinsts: 7,
-    maxDecimalPoints: 6,
+    maxIntegerPoinsts: restrictedNumberInputParams.maxIntegerPoinsts,
+    maxDecimalPoints: restrictedNumberInputParams.maxDecimalPoints,
     onChange: field.onChange,
   });
 
