@@ -137,16 +137,17 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
   const { data: accountBech32, isLoading: isAccountBech32Loading } =
     useAccountBech32(lcdUrl);
 
-  const { field: bech32PrefixField } = useController({
+  const {
+    field: { onChange },
+  } = useController({
     name: "bech32Prefix",
     control,
   });
 
   useEffect(() => {
     if (accountBech32?.bech32Prefix === bech32Prefix) return;
-    bech32PrefixField.onChange(accountBech32?.bech32Prefix ?? "init");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accountBech32?.bech32Prefix, bech32Prefix]);
+    onChange(accountBech32?.bech32Prefix ?? "init");
+  }, [accountBech32?.bech32Prefix, bech32Prefix, onChange]);
 
   const { fields, append, remove } = useFieldArray({
     control,
