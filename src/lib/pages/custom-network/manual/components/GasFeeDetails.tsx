@@ -155,13 +155,25 @@ const GasFeeDetails = ({
   setValue,
   trigger,
 }: GasFeeDetailsProps) => {
-  const { gasPrice, gasConfig } = useWatch({ control });
+  const {
+    gasPrice,
+    gasConfig,
+    fixedMinimumGasPrice,
+    lowGasPrice,
+    averageGasPrice,
+    highGasPrice,
+  } = useWatch({ control });
 
   useEffect(() => {
     if (!gasPrice) return;
 
     if (gasConfig === GasPriceConfiguration.CUSTOM) {
-      setValue("gasPrice", "");
+      const isCustomValueEqual =
+        fixedMinimumGasPrice === lowGasPrice &&
+        lowGasPrice === averageGasPrice &&
+        averageGasPrice === highGasPrice;
+
+      setValue("gasPrice", isCustomValueEqual ? fixedMinimumGasPrice : "");
       trigger();
 
       return;
@@ -174,7 +186,16 @@ const GasFeeDetails = ({
       setValue("highGasPrice", gasPrice);
       trigger();
     }
-  }, [gasConfig, setValue, gasPrice, trigger]);
+  }, [
+    gasConfig,
+    setValue,
+    gasPrice,
+    trigger,
+    fixedMinimumGasPrice,
+    lowGasPrice,
+    averageGasPrice,
+    highGasPrice,
+  ]);
 
   return (
     <Flex direction="column" gap={2} alignItems="center">
