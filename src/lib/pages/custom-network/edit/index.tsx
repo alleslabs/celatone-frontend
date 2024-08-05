@@ -11,7 +11,7 @@ import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { RemoveChainConfigModal } from "lib/components/modal/RemoveChainConfigModal";
 import { InvalidState } from "lib/components/state";
-import { useChainConfigStore } from "lib/providers/store";
+import { useLocalChainConfigStore } from "lib/providers/store";
 import { jsonPrettify } from "lib/utils";
 
 // import { ExportNetworkConfig } from "./components/ExportNetworkConfig";
@@ -51,8 +51,8 @@ interface NetworkConfigBodyProps {
 }
 
 const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
-  const { getChainConfig } = useChainConfigStore();
-  const chainConfig = getChainConfig(chainId);
+  const { getLocalChainConfig } = useLocalChainConfigStore();
+  const chainConfig = getLocalChainConfig(chainId);
 
   // const leftButtonProps = {
   //   label: "Cancel",

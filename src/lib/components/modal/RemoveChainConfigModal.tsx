@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { useChainConfigStore, useNetworkStore } from "lib/providers/store";
+import { useLocalChainConfigStore, useNetworkStore } from "lib/providers/store";
 
 import { ActionModal } from "./ActionModal";
 
@@ -17,17 +17,18 @@ export function RemoveChainConfigModal({
   chainId,
   trigger,
 }: RemoveChainConfigModalProps) {
-  const { removeChainConfig, getChainConfig } = useChainConfigStore();
+  const { removeLocalChainConfig, getLocalChainConfig } =
+    useLocalChainConfigStore();
   const { removeNetwork } = useNetworkStore();
   const router = useRouter();
   const { currentChainId } = useCelatoneApp();
 
-  const chainConfig = getChainConfig(chainId);
+  const chainConfig = getLocalChainConfig(chainId);
 
   const toast = useToast();
   const handleRemove = () => {
     // remove chain id from chain config store
-    removeChainConfig(chainId);
+    removeLocalChainConfig(chainId);
 
     // remove chain id from pinned network
     removeNetwork(chainId);
