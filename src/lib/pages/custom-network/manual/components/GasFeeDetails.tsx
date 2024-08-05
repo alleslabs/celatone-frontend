@@ -53,6 +53,7 @@ const GasOptionStandard = ({
     placeholder="0.00"
     error={errors.gasPrice?.message}
     rules={{ required: "" }}
+    restrictedNumberInputParams={{}}
   />
 );
 
@@ -79,6 +80,7 @@ const GasOptionCustom = ({
         placeholder="0.00"
         error={errors.fixedMinimumGasPrice?.message}
         textAlign="right"
+        restrictedNumberInputParams={{}}
       />
     </Flex>
     <Flex justifyContent="space-between" alignItems="center">
@@ -99,6 +101,7 @@ const GasOptionCustom = ({
         placeholder="0.00"
         error={errors.lowGasPrice?.message}
         textAlign="right"
+        restrictedNumberInputParams={{}}
       />
     </Flex>
     <Flex justifyContent="space-between" alignItems="center">
@@ -119,6 +122,7 @@ const GasOptionCustom = ({
         placeholder="0.00"
         error={errors.averageGasPrice?.message}
         textAlign="right"
+        restrictedNumberInputParams={{}}
       />
     </Flex>
     <Flex justifyContent="space-between" alignItems="center">
@@ -139,6 +143,7 @@ const GasOptionCustom = ({
         placeholder="0.00"
         error={errors.highGasPrice?.message}
         textAlign="right"
+        restrictedNumberInputParams={{}}
       />
     </Flex>
   </>
@@ -150,13 +155,25 @@ const GasFeeDetails = ({
   setValue,
   trigger,
 }: GasFeeDetailsProps) => {
-  const { gasPrice, gasConfig } = useWatch({ control });
+  const {
+    gasPrice,
+    gasConfig,
+    fixedMinimumGasPrice,
+    lowGasPrice,
+    averageGasPrice,
+    highGasPrice,
+  } = useWatch({ control });
 
   useEffect(() => {
     if (!gasPrice) return;
 
     if (gasConfig === GasPriceConfiguration.CUSTOM) {
-      setValue("gasPrice", "");
+      const isCustomValueEqual =
+        fixedMinimumGasPrice === lowGasPrice &&
+        lowGasPrice === averageGasPrice &&
+        averageGasPrice === highGasPrice;
+
+      setValue("gasPrice", isCustomValueEqual ? fixedMinimumGasPrice : "");
       trigger();
 
       return;
@@ -169,7 +186,16 @@ const GasFeeDetails = ({
       setValue("highGasPrice", gasPrice);
       trigger();
     }
-  }, [gasConfig, setValue, gasPrice, trigger]);
+  }, [
+    gasConfig,
+    setValue,
+    gasPrice,
+    trigger,
+    fixedMinimumGasPrice,
+    lowGasPrice,
+    averageGasPrice,
+    highGasPrice,
+  ]);
 
   return (
     <Flex direction="column" gap={2} alignItems="center">
@@ -188,6 +214,7 @@ const GasFeeDetails = ({
               placeholder="0.00"
               rules={{ required: "" }}
               error={errors.gasAdjustment?.message}
+              restrictedNumberInputParams={{}}
             />
             <ControllerInput
               name="maxGasLimit"
@@ -199,6 +226,7 @@ const GasFeeDetails = ({
               placeholder="0.00"
               rules={{ required: "" }}
               error={errors.maxGasLimit?.message}
+              restrictedNumberInputParams={{}}
             />
           </Flex>
           <ControllerInput
@@ -270,6 +298,7 @@ const GasFeeDetails = ({
                   w="full"
                   placeholder="0.00"
                   error={errors.gasForCosmosSend?.message}
+                  restrictedNumberInputParams={{}}
                 />
                 <ControllerInput
                   labelBgColor="gray.900"
@@ -281,6 +310,7 @@ const GasFeeDetails = ({
                   w="full"
                   placeholder="0.00"
                   error={errors.gasForIbc?.message}
+                  restrictedNumberInputParams={{}}
                 />
               </Flex>
             </AccordionPanel>
