@@ -2,7 +2,7 @@
 import axios from "axios";
 
 import { getIcnsNamesByAddressLcd } from "../name/lcd";
-import { zAccountTypeLcd } from "../types";
+import { zAccountBech32LcdResponse, zAccountTypeLcd } from "../types";
 import type { AccountData } from "../types";
 import { AccountType } from "lib/types";
 import type { BechAddr } from "lib/types";
@@ -38,3 +38,8 @@ export const getAccountTypeLcd = async (
 
   return isContract ? AccountType.ContractAccount : accountTypeLcd;
 };
+
+export const getAccountBech32Lcd = async (endpoint: string) =>
+  axios
+    .get(`${endpoint}/cosmos/auth/v1beta1/bech32`)
+    .then(({ data }) => parseWithError(zAccountBech32LcdResponse, data));
