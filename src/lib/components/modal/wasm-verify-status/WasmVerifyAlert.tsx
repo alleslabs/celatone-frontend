@@ -8,19 +8,23 @@ interface WasmVerifyAlertProps {
 }
 export const WasmVerifyAlert = ({ errorMsg }: WasmVerifyAlertProps) => {
   const variant = errorMsg ? "error" : "accent";
+  const icon = errorMsg ? "alert-triangle-solid" : "info-circle-solid";
   return (
-    <Alert p={2} variant={variant} gap={4} mb={6}>
-      <CustomIcon
-        name="alert-triangle-solid"
-        boxSize={4}
-        color={`${variant}.main`}
-      />
+    <Alert
+      p={2}
+      variant={variant}
+      gap={{ base: 2, md: 4 }}
+      mb={{ base: 4, md: 6 }}
+      alignItems="flex-start"
+    >
+      <CustomIcon name={icon} boxSize={4} color={`${variant}.main`} />
       <AlertDescription>
         <Flex direction="column" gap={1}>
           <Text
             variant="body2"
             color={`${variant}.main`}
-            style={{ fontWeight: 500 }}
+            fontWeight={600}
+            lineHeight="normal"
           >
             {errorMsg
               ? "Verification failed"
@@ -29,8 +33,8 @@ export const WasmVerifyAlert = ({ errorMsg }: WasmVerifyAlertProps) => {
           <Text
             variant="body3"
             color={`${variant}.main`}
-            wordBreak="break-all"
-            lineHeight={1.2}
+            wordBreak={errorMsg ? "break-all" : "break-word"}
+            lineHeight="normal"
           >
             {errorMsg ||
               "You can close this page and view the verification process on code details page"}

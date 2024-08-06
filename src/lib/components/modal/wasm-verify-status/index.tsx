@@ -62,13 +62,13 @@ export const WasmVerifyStatusModal = ({
                 boxSize={6}
                 color="gray.600"
               />
-              <Heading variant="h5" as="h5">
+              <Heading variant={{ base: "h6", md: "h5" }} as="h5">
                 Code Verification Status
               </Heading>
             </Flex>
           </ModalHeader>
           <ModalCloseButton color="gray.400" />
-          <ModalBody p={6}>
+          <ModalBody p={{ base: 4, md: 6 }}>
             {!verificationInfo.comparedTimestamp && (
               <WasmVerifyAlert errorMsg={verificationInfo.errorMessage} />
             )}

@@ -84,7 +84,13 @@ const WasmVerifySectionBody = ({
 };
 
 export const WasmVerifySection = (props: WasmVerifySectionProps) => (
-  <Flex justifyContent="space-between" alignItems="center" w="full" gap={2}>
+  <Flex
+    direction={{ base: "column", md: "row" }}
+    alignItems={{ base: "start", md: "center" }}
+    justifyContent="space-between"
+    w="full"
+    gap={2}
+  >
     <WasmVerifySectionBody {...props} />
   </Flex>
 );
