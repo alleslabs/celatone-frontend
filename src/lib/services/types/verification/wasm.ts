@@ -15,3 +15,8 @@ export const zWasmVerifyInfosResponse = z.record(
   z.coerce.number(),
   zWasmVerifyInfo.nullable()
 );
+
+export const zWasmRelatedVerifyInfosResponse = z.record(
+  z.string(),
+  zWasmVerifyInfo.omit({ verificationInfo: true })
+);

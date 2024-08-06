@@ -13,7 +13,7 @@ import { Stepper } from "lib/components/stepper";
 import { TxReceiptRender } from "lib/components/tx";
 import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useSchemaStore } from "lib/providers/store";
-import { useGetWasmVerifyInfos } from "lib/services/verification/wasm";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { feeFromStr, getWasmVerifyStatus } from "lib/utils";
 
 interface UploadCompleteProps {
@@ -23,12 +23,11 @@ interface UploadCompleteProps {
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
-  // TODO: change to a new service by codeHash
-  const { data: wasmVerifyInfos } = useGetWasmVerifyInfos([
+  const { data: derviedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
     Number(txResult.codeId),
-  ]);
+    txResult.codeHash
+  );
 
-  const wasmVerifyInfo = wasmVerifyInfos?.[Number(txResult.codeId)];
   const schema = getSchemaByCodeHash(txResult.codeHash);
   const attached = Boolean(schema);
 
@@ -114,8 +113,8 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         <WasmVerifySubmitModal
           codeId={Number(txResult.codeId)}
           codeHash={txResult.codeHash}
-          wasmVerifyStatus={getWasmVerifyStatus(wasmVerifyInfo)}
-          relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+          wasmVerifyStatus={getWasmVerifyStatus(derviedWasmVerifyInfo)}
+          relatedVerifiedCodes={derviedWasmVerifyInfo?.relatedVerifiedCodes}
           triggerElement={<Button>Verfiy Code</Button>}
         />
       </Flex>

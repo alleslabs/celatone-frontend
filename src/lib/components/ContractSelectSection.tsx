@@ -1,14 +1,16 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useMobile } from "lib/app-provider";
 import { useContractStore } from "lib/providers/store";
 import type { ContractData } from "lib/services/types";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useContractData } from "lib/services/wasm/contract";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
+import { getWasmVerifyStatus } from "lib/utils";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { CustomIcon } from "./icon";
@@ -18,6 +20,7 @@ import {
   SelectContractAdmin,
   SelectContractInstantiator,
 } from "./select-contract";
+import { WasmVerifyBadge } from "./WasmVerifyBadge";
 
 interface DisplayNameProps {
   notSelected: boolean;
@@ -52,9 +55,9 @@ const modeStyle = (mode: string) => {
     case "only-admin":
       return {
         container: "12",
-        contractAddrContainer: "40%",
-        contractAddrW: "144px",
-        contractNameContainer: "60%",
+        contractAddrContainer: "30%",
+        contractAddrW: "180px",
+        contractNameContainer: "70%",
       };
     default:
       return {
@@ -140,8 +143,10 @@ export const ContractSelectSection = observer(
     onContractSelect,
     successCallback,
   }: ContractSelectSectionProps) => {
-    const { getContractLocalInfo } = useContractStore();
     const isMobile = useMobile();
+    const { getContractLocalInfo } = useContractStore();
+    const [codeId, setCodeId] = useState<Option<number>>();
+    const [codeHash, setCodeHash] = useState<Option<string>>();
 
     const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
@@ -166,9 +171,17 @@ export const ContractSelectSection = observer(
           instantiator: data.contract.instantiator,
           label: data.contract.label,
         });
+
+        setCodeId(data.contract.codeId);
+        setCodeHash(data.contract.codeHash);
       },
       onError: () => reset(defaultValues),
     });
+
+    const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+      codeId,
+      codeHash
+    );
 
     useEffect(() => {
       if (!contractLocalInfo) {
@@ -218,6 +231,14 @@ export const ContractSelectSection = observer(
                   maxWidth="none"
                   minWidth={style.contractAddrW}
                   wordBreak="break-all"
+                  rightIcon={
+                    <WasmVerifyBadge
+                      status={getWasmVerifyStatus(derivedWasmVerifyInfo)}
+                      relatedVerifiedCodes={
+                        derivedWasmVerifyInfo?.relatedVerifiedCodes
+                      }
+                    />
+                  }
                 />
               ) : (
                 <Text color="text.disabled" variant="body2">

@@ -1,6 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 
+import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import { WasmVerifyStatus } from "lib/types";
+import { getWasmVerifyStatus } from "lib/utils";
 
 import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
@@ -130,5 +132,25 @@ export const WasmVerifyBadge = ({
         )}
       </Flex>
     </Tooltip>
+  );
+};
+
+export const WasmVerifyBadgeById = ({
+  codeId,
+  hasText = false,
+  linkedCodeId,
+}: Pick<WasmVerifyBadgeProps, "hasText" | "linkedCodeId"> & {
+  codeId: number;
+}) => {
+  const { data } = useWasmVerifyInfos([codeId]);
+  const wasmVerifyInfo = data?.[codeId];
+
+  return (
+    <WasmVerifyBadge
+      status={getWasmVerifyStatus(wasmVerifyInfo)}
+      relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+      hasText={hasText}
+      linkedCodeId={linkedCodeId}
+    />
   );
 };
