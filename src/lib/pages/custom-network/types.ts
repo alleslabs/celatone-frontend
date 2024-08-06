@@ -288,3 +288,96 @@ export const zAddNetworkManualChainConfigJson = ({
       })),
     },
   }));
+
+export type AddNetworkManualChainConfigJson = z.infer<
+  ReturnType<typeof zAddNetworkManualChainConfigJson>
+>;
+
+export const zAddNetworkJsonChainConfigJson = z.object({
+  tier: z.enum(["full", "sequencer", "mesa", "lite"]),
+  chainId: z.string(),
+  chain: z.string(),
+  registryChainName: z.string(),
+  prettyName: z.string(),
+  logo_URIs: z.object({
+    png: z.string().optional(),
+  }),
+  lcd: zHttpsUrl,
+  rpc: zHttpsUrl,
+  graphql: z.string(),
+  wallets: z.array(z.string()),
+  features: z.object({
+    faucet: z.object({
+      enabled: z.boolean(),
+    }),
+    wasm: z.object({
+      enabled: z.boolean(),
+      storeCodeMaxFileSize: z.number().optional(),
+      clearAdminGas: z.number().optional(),
+    }),
+    move: z.object({
+      enabled: z.boolean(),
+      moduleMaxFileSize: z.number().optional(),
+    }),
+    pool: z.object({
+      enabled: z.boolean(),
+    }),
+    publicProject: z.object({
+      enabled: z.boolean(),
+    }),
+    gov: z.object({
+      enabled: z.boolean(),
+    }),
+    nft: z.object({
+      enabled: z.boolean(),
+    }),
+  }),
+  gas: z.object({
+    gasAdjustment: z.number(),
+    maxGasLimit: z.number(),
+  }),
+  extra: z.object({
+    isValidatorExternalLink: z.string().nullable(),
+    layer: z.string(),
+  }),
+  network_type: z.string(),
+  fees: z.object({
+    fee_tokens: z.array(
+      z.object({
+        denom: z.string(),
+        fixed_min_gas_price: z.number(),
+        low_gas_price: z.number(),
+        average_gas_price: z.number(),
+        gas_costs: z.object({
+          cosmos_send: z.number(),
+          ibc_transfer: z.number(),
+        }),
+      })
+    ),
+  }),
+  registry: z.object({
+    bech32_prefix: z.string(),
+    slip44: z.number(),
+    staking: z.object({
+      staking_tokens: z.array(z.object({})),
+    }),
+    assets: z.array(
+      z.object({
+        name: z.string(),
+        base: z.string(),
+        symbol: z.string(),
+        denom_units: z.array(
+          z.object({
+            denom: z.string(),
+            exponent: z.number(),
+          })
+        ),
+        display: z.string(),
+      })
+    ),
+  }),
+});
+
+export type AddNetworkJsonChainConfigJson = z.infer<
+  typeof zAddNetworkJsonChainConfigJson
+>;

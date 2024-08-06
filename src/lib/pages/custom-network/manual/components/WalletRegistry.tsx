@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { useController, useFieldArray, useWatch } from "react-hook-form";
 import type { Control, FieldErrors } from "react-hook-form";
 
-import type { AddNetworkManualForm } from "../types";
+import type { AddNetworkManualForm } from "../../types";
 import {
   CustomNetworkPageHeader,
   CustomNetworkSubheader,

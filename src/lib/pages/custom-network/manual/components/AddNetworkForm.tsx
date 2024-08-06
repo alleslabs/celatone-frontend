@@ -5,7 +5,7 @@ import type {
   UseFormTrigger,
 } from "react-hook-form";
 
-import type { AddNetworkManualForm } from "../types";
+import type { AddNetworkManualForm } from "../../types";
 
 import GasFeeDetails from "./GasFeeDetails";
 import { NetworkDetails } from "./NetworkDetails";
