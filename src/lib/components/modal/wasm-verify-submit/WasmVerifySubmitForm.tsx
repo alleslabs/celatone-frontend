@@ -137,12 +137,14 @@ export const WasmVerifySubmitForm = ({
                 <ExplorerLink
                   type="code_id"
                   value={codeId.toString()}
+                  rightIcon={
+                    <WasmVerifyBadge
+                      status={wasmVerifyStatus}
+                      relatedVerifiedCodes={relatedVerifiedCodes}
+                      linkedCodeId={contractAddress ? codeId : undefined}
+                    />
+                  }
                   showCopyOnHover
-                />
-                <WasmVerifyBadge
-                  status={wasmVerifyStatus}
-                  relatedVerifiedCodes={relatedVerifiedCodes}
-                  linkedCodeId={contractAddress ? codeId : undefined}
                 />
                 {contractAddress && (
                   <Text>
