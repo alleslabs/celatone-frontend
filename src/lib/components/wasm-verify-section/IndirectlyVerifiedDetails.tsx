@@ -3,6 +3,7 @@ import { Fragment } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
 import { WasmVerifyBadge } from "../WasmVerifyBadge";
+import { useMobile } from "lib/app-provider";
 import type { BechAddr32 } from "lib/types";
 import { WasmVerifyStatus } from "lib/types";
 
@@ -47,8 +48,9 @@ export const IndirectlyVerifiedDetails = ({
   codeHash,
   relatedVerifiedCodes,
   contractAddress,
-}: IndirectlyVerifiedDetailsProps) => (
-  <>
+}: IndirectlyVerifiedDetailsProps) => {
+  const isMobile = useMobile();
+  return isMobile ? (
     <Text variant="body2" color="text.dark">
       {contractAddress ? (
         <>
@@ -69,17 +71,46 @@ export const IndirectlyVerifiedDetails = ({
         <>
           This code has the same code hash as the following verified stored
           codes: {RelatedVerifiedCodes({ relatedVerifiedCodes })}.
-          <br /> If you are the code owner, you can verify this code to specify
-          the GitHub repository.
+          <br /> <br /> If you are the code owner, you can verify this code to
+          specify the GitHub repository on the desktop interface.
         </>
       )}
     </Text>
-    <VerifyButton
-      codeId={codeId}
-      codeHash={codeHash}
-      wasmVerifyStatus={WasmVerifyStatus.INDIRECTLY_VERIFIED}
-      relatedVerifiedCodes={relatedVerifiedCodes}
-      contractAddress={contractAddress}
-    />
-  </>
-);
+  ) : (
+    <>
+      <Text variant="body2" color="text.dark">
+        {contractAddress ? (
+          <>
+            This contract is an instance of code ID{" "}
+            <Flex display="inline-flex" alignItems="center">
+              <Text color="secondary.main" display="inline-flex" lineHeight={0}>
+                {codeId}
+              </Text>{" "}
+              <WasmVerifyBadge
+                status={WasmVerifyStatus.INDIRECTLY_VERIFIED}
+                relatedVerifiedCodes={relatedVerifiedCodes}
+              />
+            </Flex>
+            which has the same code hash with other verified codes. If you are
+            the code owner, you can verify this code to specify the GitHub
+            repository
+          </>
+        ) : (
+          <>
+            This code has the same code hash as the following verified stored
+            codes: {RelatedVerifiedCodes({ relatedVerifiedCodes })}.
+            <br /> If you are the code owner, you can verify this code to
+            specify the GitHub repository.
+          </>
+        )}
+      </Text>
+      <VerifyButton
+        codeId={codeId}
+        codeHash={codeHash}
+        wasmVerifyStatus={WasmVerifyStatus.INDIRECTLY_VERIFIED}
+        relatedVerifiedCodes={relatedVerifiedCodes}
+        contractAddress={contractAddress}
+      />
+    </>
+  );
+};
