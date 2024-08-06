@@ -51,21 +51,26 @@ export const AddNetworkJson = () => {
 
       const validate = zAddNetworkJsonChainConfigJson.safeParse(data);
 
-      setJson(data);
-
       if (!validate.success) {
         failedModalOnOpen();
 
         return;
       }
 
-      if (isChainIdExist(data.chainId) || isPrettyNameExist(data.prettyName)) {
+      const { data: validatedData } = validate;
+
+      setJson(validatedData);
+
+      if (
+        isChainIdExist(validatedData.chainId) ||
+        isPrettyNameExist(validatedData.prettyName)
+      ) {
         duplicatedModalOnOpen();
 
         return;
       }
 
-      addLocalChainConfig(data.chainId, data);
+      addLocalChainConfig(validatedData.chainId, validatedData);
       successModalOnOpen();
     };
 
