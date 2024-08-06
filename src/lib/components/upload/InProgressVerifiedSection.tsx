@@ -3,10 +3,12 @@ import { Flex, Text } from "@chakra-ui/react";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 
-interface VerificationStatusProps {
+interface InProgressVerifiedSectionProps {
   codeId: string;
 }
-export const VerificationStatus = ({ codeId }: VerificationStatusProps) => (
+export const InProgressVerifiedSection = ({
+  codeId,
+}: InProgressVerifiedSectionProps) => (
   <Flex
     border="1px solid"
     borderColor="gray.700"

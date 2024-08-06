@@ -28,7 +28,9 @@ const RelatedVerifiedCodes = ({
             index < displayedCodes.length - 1 &&
             ","}
           {index < displayedCodes.length - 1 && " "}
-          {index === relatedVerifiedCodes.length - 2 && "and "}
+          {index === relatedVerifiedCodes.length - 2 &&
+            index < displayedCodes.length - 1 &&
+            "and "}
         </Fragment>
       ))}
       {relatedVerifiedCodes.length > 3 && " and more"}
