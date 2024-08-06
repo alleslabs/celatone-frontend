@@ -3,12 +3,12 @@ import { capitalize } from "lodash";
 import plur from "plur";
 
 import { AmpEvent, track } from "lib/amplitude";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { CelatoneSeo } from "lib/components/Seo";
 import { TxReceiptRender } from "lib/components/tx";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { feeFromStr } from "lib/utils";
 
 import type { PublishCompleteState } from ".";
@@ -23,7 +23,7 @@ export const PublishCompleted = ({
   publishTxInfo: { txHash, txFee, upgradePolicy, modules },
   resetState,
 }: PublishCompletedProps) => (
-  <WasmPageContainer>
+  <ActionPageContainer>
     <CelatoneSeo pageName="Publish / Republish Modules" />
     <CustomIcon boxSize={8} color="success.main" name="check-circle-solid" />
     <Heading as="h4" variant="h4" mt={4} mb={2}>
@@ -78,5 +78,5 @@ export const PublishCompleted = ({
     >
       Publish more modules
     </Button>
-  </WasmPageContainer>
+  </ActionPageContainer>
 );

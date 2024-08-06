@@ -9,6 +9,7 @@ import type { AxiosError } from "axios";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useGovConfig,
   useInitia,
   useLcdEndpoint,
@@ -47,7 +48,7 @@ import {
   getModules,
   getModuleTableCounts,
   getModuleTxs,
-  getModuleVerificationStatus,
+  getMoveVerifyInfo,
 } from "./api";
 import { getModuleByAddressLcd, getModulesByAddressLcd } from "./lcd";
 
@@ -100,24 +101,25 @@ export const useModulesByAddress = ({
   );
 };
 
-export const useVerifyModule = ({
+// TODO: move to verification/move service folder
+export const useMoveVerifyInfo = ({
   address,
   moduleName,
 }: {
   address: Option<Addr>;
   moduleName: Option<string>;
 }): UseQueryResult<Nullable<ModuleVerificationInternal>> => {
-  const move = useMoveConfig({ shouldRedirect: false });
-  const endpoint = move.enabled ? move.verify : "";
+  const { currentChainId } = useCelatoneApp();
+  const isInitiation1 = currentChainId === "initiation-1";
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, endpoint, address, moduleName],
+    [CELATONE_QUERY_KEYS.MODULE_VERIFY_INFO, address, moduleName],
     () => {
-      if (!endpoint || !address || !moduleName) return null;
-      return getModuleVerificationStatus(endpoint, address, moduleName);
+      if (!address || !moduleName) return null;
+      return getMoveVerifyInfo(address, moduleName);
     },
     {
-      enabled: Boolean(address && moduleName),
+      enabled: isInitiation1 && Boolean(address && moduleName),
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
@@ -175,7 +177,7 @@ export const useDecodeModule = ({
 
   const queryFn = async (): Promise<DecodeModuleQueryResponse> => {
     if (!move.enabled) throw new Error("Move configuration is disabled.");
-    const abi = await decodeModule(move.decodeApi, base64EncodedFile);
+    const abi = await decodeModule(base64EncodedFile);
     const modulePath = `${truncate(abi.address)}::${abi.name}`;
 
     const currentPolicy = await getModuleByAddressLcd(

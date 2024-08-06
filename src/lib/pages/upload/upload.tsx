@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { AmpEvent, track } from "lib/amplitude";
 import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
 import { FooterCta } from "lib/components/layouts";
@@ -12,7 +13,6 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload/UploadSection";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadCode } from "lib/hooks";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 
@@ -50,7 +50,7 @@ export const Upload = ({
 
   return (
     <>
-      <WasmPageContainer>
+      <ActionPageContainer>
         <CelatoneSeo pageName="Upload Wasm File" />
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
@@ -80,7 +80,7 @@ export const Upload = ({
           simulateStatus={simulateStatus}
           isSimulating={isSimulating}
         />
-      </WasmPageContainer>
+      </ActionPageContainer>
       <FooterCta
         cancelButton={{
           leftIcon: <CustomIcon name="chevron-left" />,

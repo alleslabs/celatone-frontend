@@ -23,6 +23,7 @@ import {
   useValidateAddress,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -47,7 +48,6 @@ import { CodeSelectSection } from "lib/components/select-code";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
@@ -390,7 +390,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
 
   return (
     <>
-      <WasmPageContainer>
+      <ActionPageContainer>
         <CelatoneSeo pageName="Instantiate Contract" />
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
@@ -538,7 +538,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             loading={isSimulating}
           />
         </Flex>
-      </WasmPageContainer>
+      </ActionPageContainer>
       <FooterCta
         loading={processing}
         cancelButton={{

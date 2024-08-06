@@ -31,6 +31,7 @@ export const NetworkMenu = observer(() => {
     filteredPinnedChains,
     filteredMainnetChains,
     filteredTestnetChains,
+    filteredLocalChains,
   } = useNetworkSelector(onClose);
 
   useNetworkShortCut(onToggle);
@@ -62,6 +63,7 @@ export const NetworkMenu = observer(() => {
               keyword={keyword}
               setKeyword={setKeyword}
               handleOnKeyDown={handleOnKeyDown}
+              onClose={onClose}
             />
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
@@ -72,6 +74,7 @@ export const NetworkMenu = observer(() => {
               filteredPinnedChains={filteredPinnedChains}
               filteredMainnetChains={filteredMainnetChains}
               filteredTestnetChains={filteredTestnetChains}
+              filteredLocalChains={filteredLocalChains}
               onClose={onClose}
             />
           </DrawerBody>

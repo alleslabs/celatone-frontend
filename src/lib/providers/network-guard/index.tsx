@@ -2,8 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
 
-import { CHAIN_CONFIGS } from "config/chain";
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useChainConfigs } from "lib/app-provider";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_ADDRESS } from "lib/data";
 import {
@@ -27,6 +26,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     currentChainId,
     chainConfig: { registryChainName },
   } = useCelatoneApp();
+  const { chainConfigs } = useChainConfigs();
   const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
@@ -53,7 +53,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     setProjectUserKey,
   ]);
 
-  if (isHydrated && !(currentChainId in CHAIN_CONFIGS))
+  if (isHydrated && !(currentChainId in chainConfigs))
     return <NetworkErrorState />;
 
   if (
