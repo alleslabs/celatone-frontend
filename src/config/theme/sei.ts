@@ -9,7 +9,7 @@ const SEI_BASE_THEME: ThemeConfig = {
     favicon: "https://assets.alleslabs.dev/integrations/sei/favicon.ico",
     seo: {
       appName: "SeiScan",
-      title: "SeiScan powered by Celatone",
+      title: "SeiScan",
       description:
         "Explore, deploy, execute, and query smart contracts on Sei from a user-friendly web UI",
       image: "https://assets.alleslabs.dev/integrations/sei/cover.jpg",
