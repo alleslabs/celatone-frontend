@@ -86,6 +86,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1078](https://github.com/alleslabs/celatone-frontend/pull/1078) Add banner modal and adjust color
 - [#1040](https://github.com/alleslabs/celatone-frontend/pull/1040) Refactor networks selector
 - [#1039](https://github.com/alleslabs/celatone-frontend/pull/1039) Make NFT Txs to load more style
 - [#1036](https://github.com/alleslabs/celatone-frontend/pull/1036) Refactor home and change some component names to match the current convention
