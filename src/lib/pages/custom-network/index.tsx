@@ -36,7 +36,6 @@ export const AddNetwork = () => {
             title="Import JSON"
             description="Import available JSON that contains all the configuration"
             onClick={() => navigate({ pathname: "/custom-network/add/json" })}
-            hasIcon={false}
           />
         </Flex>
       </Flex>
