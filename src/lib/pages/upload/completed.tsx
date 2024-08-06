@@ -108,6 +108,9 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           />
         )}
       </Flex>
+      {wasmVerifyStatus === WasmVerifyStatus.IN_PROGRESS && (
+        <VerificationStatus codeId={txResult.codeId} />
+      )}
       {!attached && (
         <>
           <Heading as="h6" variant="h6" fontWeight={500} mb={2}>
@@ -141,8 +144,6 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           </Flex>
         </>
       )}
-      {/* TODO: add condition to show only when user submit the verification */}
-      <VerificationStatus codeId={txResult.codeId} />
       {attached && (
         <Flex direction="column" w="full" gap={10} position="relative">
           <UploadSchema

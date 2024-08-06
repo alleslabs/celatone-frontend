@@ -14,12 +14,11 @@ export const IndirectlyVerifiedAlert = ({
   <Alert variant="accent" alignItems="center">
     <Flex gap={2}>
       <CustomIcon name="info-circle" boxSize={4} />
-      {/* TODO: add code that have the same hash */}
       <AlertDescription wordBreak="break-word">
-        <span>
+        <span style={{ fontWeight: 500 }}>
           This code has the same code hash as the following verified stored
           codes:
-        </span>
+        </span>{" "}
         {formatRelatedVerifiedCodes(relatedVerifiedCodes)}
       </AlertDescription>
     </Flex>

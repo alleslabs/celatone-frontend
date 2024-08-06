@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // TODO: refactor app-provider/app-fns
 import { useCelatoneApp } from "lib/app-provider/contexts";
@@ -11,10 +11,23 @@ import {
   submitWasmVerify,
 } from "./api";
 
-export const useSubmitWasmVerify = () =>
-  useMutation({
+export const useSubmitWasmVerify = () => {
+  const queryClient = useQueryClient();
+  const { currentChainId } = useCelatoneApp();
+
+  return useMutation({
     mutationFn: submitWasmVerify,
+    onSuccess(data, variables) {
+      queryClient.invalidateQueries({
+        queryKey: [
+          CELATONE_QUERY_KEYS.WASM_VERIFICATION_INFOS,
+          currentChainId,
+          variables.codeId,
+        ],
+      });
+    },
   });
+};
 
 export const useWasmVerifyInfos = (codeIds: number[], enabled = true) => {
   const { currentChainId } = useCelatoneApp();
@@ -37,7 +50,7 @@ const useWasmRelatedVerifyInfos = (hashes: string[], enabled = true) => {
   const { currentChainId } = useCelatoneApp();
   return useQuery(
     [
-      CELATONE_QUERY_KEYS.WASM_VERIFICATION_INFOS,
+      CELATONE_QUERY_KEYS.WASM_RELATED_VERIFICATION_INFOS,
       currentChainId,
       ...hashes.sort(),
     ],
@@ -65,7 +78,8 @@ export const useDerivedWasmVerifyInfo = (
     return { data: undefined, isLoading: true };
 
   const wasmVerifyInfo = wasmVerifyInfos?.[Number(codeId)];
-  const wasmRelatedVerifyInfo = wasmRelatedVerifyInfos?.[hash ?? ""];
+  const wasmRelatedVerifyInfo =
+    wasmRelatedVerifyInfos?.[hash?.toUpperCase() ?? ""];
   return {
     data: {
       verificationInfo: wasmVerifyInfo?.verificationInfo ?? null,
