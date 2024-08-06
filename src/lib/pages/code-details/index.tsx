@@ -19,7 +19,7 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
-import { useGetWasmVerifyInfos } from "lib/services/verification/wasm";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeData } from "lib/services/wasm/code";
 
 import {
@@ -53,8 +53,11 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const resApi = useCodeData(codeId, isFullTier);
   const resLcd = useCodeDataLcd(codeId, !isFullTier);
   const { data, isLoading } = isFullTier ? resApi : resLcd;
-  const { data: wasmVerifyInfos, isLoading: isWasmVerifyInfoLoading } =
-    useGetWasmVerifyInfos([codeId]);
+
+  const {
+    data: derivedWasmVerifyInfo,
+    isLoading: isDerivedWasmVerifyInfoLoading,
+  } = useDerivedWasmVerifyInfo(codeId, data?.info.hash);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -73,13 +76,11 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
     [codeId, tab, navigate]
   );
 
-  if (isLoading || isWasmVerifyInfoLoading) return <Loading />;
+  if (isLoading || isDerivedWasmVerifyInfoLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="code information" />;
   if (!data.info) return <InvalidCode />;
 
   const { info: code, projectInfo, publicInfo } = data;
-  const wasmVerifyInfo = wasmVerifyInfos?.[codeId];
-
   const jsonSchema = getSchemaByCodeHash(code.hash);
   return (
     <>
@@ -89,7 +90,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         projectInfo={projectInfo}
         publicInfo={publicInfo}
         codeId={codeId}
-        wasmVerifyInfo={wasmVerifyInfo}
+        wasmVerifyInfo={derivedWasmVerifyInfo}
       />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
@@ -127,7 +128,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
             <CodeVerificationSection
               codeId={codeId}
               codeHash={code.hash}
-              wasmVerifyInfo={wasmVerifyInfo}
+              wasmVerifyInfo={derivedWasmVerifyInfo}
             />
             <TierSwitcher
               full={<CodeContractsTableFull codeId={codeId} />}

@@ -1,6 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 
+import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import { WasmVerifyStatus } from "lib/types";
+import { formatRelatedVerifiedCodes, getWasmVerifyStatus } from "lib/utils";
 
 import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
@@ -20,23 +22,6 @@ const getBadgeStatus = (
   if (status === WasmVerifyStatus.VERIFIED) return BadgeStatus.VERIFIED;
   if (relatedVerifiedCodes.length > 0) return BadgeStatus.INDIRECTLY_VERIFIED;
   return BadgeStatus.NONE;
-};
-
-const formatRelatedVerifiedCodes = (relatedVerifiedCodes: number[]) => {
-  const displayedCodes = relatedVerifiedCodes.slice(0, 3);
-
-  let res = "";
-  displayedCodes.forEach((code, index) => {
-    res += code.toString();
-    if (relatedVerifiedCodes.length > 2 && index < displayedCodes.length - 1)
-      res += ",";
-    if (index < displayedCodes.length - 1) res += " ";
-    if (index === relatedVerifiedCodes.length - 2) res += "and ";
-    return res;
-  });
-  if (relatedVerifiedCodes.length > 3) res += " and more";
-
-  return res;
 };
 
 const getTooltipText = (
@@ -87,11 +72,13 @@ const getTextProperties = (badgeStatus: BadgeStatus) => {
 const WasmVerifyIcon = ({ badgeStatus }: { badgeStatus: BadgeStatus }) => {
   switch (badgeStatus) {
     case BadgeStatus.IN_PROGRESS:
-      return <CustomIcon name="hourglass" color="text.dark" />;
+      return <CustomIcon name="hourglass" color="text.dark" mr={0} />;
     case BadgeStatus.VERIFIED:
-      return <CustomIcon name="verification-solid" color="accent.main" />;
+      return (
+        <CustomIcon name="verification-solid" color="accent.main" mr={0} />
+      );
     case BadgeStatus.INDIRECTLY_VERIFIED:
-      return <CustomIcon name="verification" color="accent.main" />;
+      return <CustomIcon name="verification" color="accent.main" mr={0} />;
     default:
       return undefined;
   }
@@ -130,5 +117,25 @@ export const WasmVerifyBadge = ({
         )}
       </Flex>
     </Tooltip>
+  );
+};
+
+export const WasmVerifyBadgeById = ({
+  codeId,
+  hasText = false,
+  linkedCodeId,
+}: Pick<WasmVerifyBadgeProps, "hasText" | "linkedCodeId"> & {
+  codeId: number;
+}) => {
+  const { data } = useWasmVerifyInfos([codeId]);
+  const wasmVerifyInfo = data?.[codeId];
+
+  return (
+    <WasmVerifyBadge
+      status={getWasmVerifyStatus(wasmVerifyInfo)}
+      relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+      hasText={hasText}
+      linkedCodeId={linkedCodeId}
+    />
   );
 };

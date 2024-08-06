@@ -16,8 +16,10 @@ import {
   VerificationStatus,
 } from "lib/components/upload";
 import WasmPageContainer from "lib/components/WasmPageContainer";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import { useSchemaStore } from "lib/providers/store";
-import { useGetWasmVerifyInfos } from "lib/services/verification/wasm";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
+import { WasmVerifyStatus } from "lib/types";
 import { feeFromStr, getWasmVerifyStatus } from "lib/utils";
 
 interface UploadCompleteProps {
@@ -27,11 +29,12 @@ interface UploadCompleteProps {
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
-  const { data: wasmVerifyInfos } = useGetWasmVerifyInfos([
+  const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
     Number(txResult.codeId),
-  ]);
+    txResult.codeHash
+  );
 
-  const wasmVerifyInfo = wasmVerifyInfos?.[Number(txResult.codeId)];
+  const wasmVerifyStatus = getWasmVerifyStatus(derivedWasmVerifyInfo);
   const schema = getSchemaByCodeHash(txResult.codeHash);
   const attached = Boolean(schema);
 
@@ -67,7 +70,20 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
             receipts={[
               {
                 title: "Code ID",
-                html: <ExplorerLink type="code_id" value={txResult.codeId} />,
+                html: (
+                  <ExplorerLink
+                    type="code_id"
+                    value={txResult.codeId}
+                    rightIcon={
+                      <WasmVerifyBadge
+                        status={wasmVerifyStatus}
+                        relatedVerifiedCodes={
+                          derivedWasmVerifyInfo?.relatedVerifiedCodes
+                        }
+                      />
+                    }
+                  />
+                ),
               },
               {
                 title: "Tx Hash",
@@ -86,7 +102,11 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
             variant="full"
           />
         </Flex>
-        <IndirectlyVerifiedAlert />
+        {wasmVerifyStatus === WasmVerifyStatus.INDIRECTLY_VERIFIED && (
+          <IndirectlyVerifiedAlert
+            relatedVerifiedCodes={derivedWasmVerifyInfo?.relatedVerifiedCodes}
+          />
+        )}
       </Flex>
       {!attached && (
         <>
@@ -97,8 +117,8 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
             <WasmVerifySubmitModal
               codeId={Number(txResult.codeId)}
               codeHash={txResult.codeHash}
-              wasmVerifyStatus={getWasmVerifyStatus(wasmVerifyInfo)}
-              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              wasmVerifyStatus={getWasmVerifyStatus(derivedWasmVerifyInfo)}
+              relatedVerifiedCodes={derivedWasmVerifyInfo?.relatedVerifiedCodes}
               triggerElement={
                 <OptionButton
                   title="Verify Code"

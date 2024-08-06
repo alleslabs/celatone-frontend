@@ -137,12 +137,14 @@ export const WasmVerifySubmitForm = ({
                 <ExplorerLink
                   type="code_id"
                   value={codeId.toString()}
+                  rightIcon={
+                    <WasmVerifyBadge
+                      status={wasmVerifyStatus}
+                      relatedVerifiedCodes={relatedVerifiedCodes}
+                      linkedCodeId={contractAddress ? codeId : undefined}
+                    />
+                  }
                   showCopyOnHover
-                />
-                <WasmVerifyBadge
-                  status={wasmVerifyStatus}
-                  relatedVerifiedCodes={relatedVerifiedCodes}
-                  linkedCodeId={contractAddress ? codeId : undefined}
                 />
                 {contractAddress && (
                   <Text>
@@ -189,21 +191,17 @@ export const WasmVerifySubmitForm = ({
               isRequired
               error={errors.commit?.message}
             />
-            <Flex gap={4} alignItems="center">
-              <ControllerInput
-                name="packageName"
-                control={control}
-                label="Wasm File Name:"
-                labelBgColor="gray.800"
-                variant="fixed-floating"
-                placeholder="e.g. initia_contract"
-                isRequired
-                error={errors.packageName?.message}
-              />
-              <Text color="text.dark" variant="body1">
-                .wasm
-              </Text>
-            </Flex>
+            <ControllerInput
+              name="packageName"
+              control={control}
+              label="Packages Name:"
+              labelBgColor="gray.800"
+              variant="fixed-floating"
+              placeholder="e.g. contract-name"
+              helperText="This should be the same name that is specified in Cargo.toml"
+              isRequired
+              error={errors.packageName?.message}
+            />
             <WasmVerifySubmitFormSelect
               name="compilerVersion"
               control={control}

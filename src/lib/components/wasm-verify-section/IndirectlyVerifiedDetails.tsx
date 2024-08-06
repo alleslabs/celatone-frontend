@@ -1,7 +1,9 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
+import { Fragment } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
 import { WasmVerifyBadge } from "../WasmVerifyBadge";
+import { useMobile } from "lib/app-provider";
 import type { BechAddr32 } from "lib/types";
 import { WasmVerifyStatus } from "lib/types";
 
@@ -16,10 +18,9 @@ const RelatedVerifiedCodes = ({
   return (
     <>
       {displayedCodes.map((code, index) => (
-        <>
+        <Fragment key={code.toString()}>
           <ExplorerLink
             type="code_id"
-            key={code.toString()}
             value={code.toString()}
             showCopyOnHover
           />
@@ -28,7 +29,7 @@ const RelatedVerifiedCodes = ({
             ","}
           {index < displayedCodes.length - 1 && " "}
           {index === relatedVerifiedCodes.length - 2 && "and "}
-        </>
+        </Fragment>
       ))}
       {relatedVerifiedCodes.length > 3 && " and more"}
     </>
@@ -47,39 +48,45 @@ export const IndirectlyVerifiedDetails = ({
   codeHash,
   relatedVerifiedCodes,
   contractAddress,
-}: IndirectlyVerifiedDetailsProps) => (
-  <>
-    <Text variant="body2" color="text.dark">
-      {contractAddress ? (
-        <>
-          This contract is an instance of code ID{" "}
-          <Flex display="inline-flex" alignItems="center">
-            <Text color="secondary.main" display="inline-flex" lineHeight={0}>
-              {codeId}
-            </Text>{" "}
-            <WasmVerifyBadge
-              status={WasmVerifyStatus.INDIRECTLY_VERIFIED}
-              relatedVerifiedCodes={relatedVerifiedCodes}
-            />
-          </Flex>
-          which has the same code hash with other verified codes. If you are the
-          code owner, you can verify this code to specify the GitHub repository
-        </>
-      ) : (
-        <>
-          This code has the same code hash as the following verified stored
-          codes: {RelatedVerifiedCodes({ relatedVerifiedCodes })}.
-          <br /> If you are the code owner, you can verify this code to specify
-          the GitHub repository.
-        </>
-      )}
-    </Text>
-    <VerifyButton
-      codeId={codeId}
-      codeHash={codeHash}
-      wasmVerifyStatus={WasmVerifyStatus.INDIRECTLY_VERIFIED}
-      relatedVerifiedCodes={relatedVerifiedCodes}
-      contractAddress={contractAddress}
-    />
-  </>
-);
+}: IndirectlyVerifiedDetailsProps) => {
+  const isMobile = useMobile();
+  return (
+    <>
+      <Text variant="body2" color="text.dark">
+        {contractAddress ? (
+          <>
+            This contract is an instance of code ID{" "}
+            <ExplorerLink
+              value={codeId.toString()}
+              type="code_id"
+              showCopyOnHover
+              rightIcon={
+                <WasmVerifyBadge
+                  status={WasmVerifyStatus.INDIRECTLY_VERIFIED}
+                  relatedVerifiedCodes={relatedVerifiedCodes}
+                />
+              }
+            />{" "}
+            which has the same code hash with other verified codes.
+          </>
+        ) : (
+          <>
+            This code has the same code hash as the following verified stored
+            codes: {RelatedVerifiedCodes({ relatedVerifiedCodes })}.
+          </>
+        )}
+        <br />
+        {isMobile && <br />}
+        If you are the code owner, you can verify this code to specify the
+        GitHub repository{isMobile && " on the desktop interface"}.
+      </Text>
+      <VerifyButton
+        codeId={codeId}
+        codeHash={codeHash}
+        wasmVerifyStatus={WasmVerifyStatus.INDIRECTLY_VERIFIED}
+        relatedVerifiedCodes={relatedVerifiedCodes}
+        contractAddress={contractAddress}
+      />
+    </>
+  );
+};

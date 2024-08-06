@@ -5,16 +5,19 @@ import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { PermissionChip } from "lib/components/PermissionChip";
-import type { CodeInfo } from "lib/types";
-import { getCw2Info } from "lib/utils";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
+import type { CodeInfo, Nullish, WasmVerifyInfo } from "lib/types";
+import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
 
 interface CodesTableMobileCardProps {
   codeInfo: CodeInfo;
   showCw2andContracts: boolean;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 export const CodesTableMobileCard = ({
   codeInfo,
   showCw2andContracts,
+  wasmVerifyInfo,
 }: CodesTableMobileCardProps) => {
   const cw2Info = getCw2Info(codeInfo.cw2Contract, codeInfo.cw2Version);
   const navigate = useInternalNavigate();
@@ -34,6 +37,12 @@ export const CodesTableMobileCard = ({
             <ExplorerLink
               type="code_id"
               value={codeInfo.id.toString()}
+              rightIcon={
+                <WasmVerifyBadge
+                  status={getWasmVerifyStatus(wasmVerifyInfo)}
+                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                />
+              }
               showCopyOnHover
             />
           </Flex>
