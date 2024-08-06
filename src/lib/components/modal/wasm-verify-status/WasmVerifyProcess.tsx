@@ -24,7 +24,7 @@ export const WasmVerifyProcess = ({
       <Flex direction="column" mt={4}>
         {steps.map((step, index) => (
           <Flex key={step.label} justifyContent="space-between">
-            <Flex gap={2}>
+            <Flex gap={2} alignItems="center">
               <Flex direction="column" alignItems="center" height="full">
                 <WasmVerifyProcessStepIcon state={step.state} />
                 {index < steps.length - 1 && (

@@ -38,13 +38,7 @@ export const VerifiedDetails = ({
   contractAddress,
 }: VerifyDetailsProps) =>
   contractAddress ? (
-    <Flex
-      direction={{ base: "column", md: "row" }}
-      gap={{ base: 2 }}
-      w="full"
-      alignItems={{ base: "flex-start", md: "center" }}
-      justifyContent={{ md: "space-between" }}
-    >
+    <>
       <Text variant="body2" color="text.dark">
         This contract is an instance of code ID{" "}
         <Flex as="span" display="inline-flex" align="center">
@@ -67,7 +61,7 @@ export const VerifiedDetails = ({
           </Button>
         }
       />
-    </Flex>
+    </>
   ) : (
     <Flex direction="column" gap={6}>
       <Flex direction="column" gap={1}>

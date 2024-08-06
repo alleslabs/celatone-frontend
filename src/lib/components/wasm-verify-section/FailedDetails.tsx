@@ -1,5 +1,6 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 
+import { ExplorerLink } from "../ExplorerLink";
 import { useMobile } from "lib/app-provider";
 import { WasmVerifyStatusModal } from "lib/components/modal";
 import type { BechAddr32, WasmVerifyInfoBase } from "lib/types";
@@ -23,53 +24,17 @@ export const FailedDetails = ({
   contractAddress,
 }: FailedDetailsProps) => {
   const isMobile = useMobile();
-  return isMobile ? (
-    <Flex direction="column" gap={4}>
-      <Text variant="body2" color="text.dark">
-        {contractAddress ? (
-          <Text variant="body2" color="text.dark">
-            This contract is an instance of code ID{" "}
-            <Text color="secondary.main" display="inline-flex" lineHeight={0}>
-              {codeId}
-            </Text>
-            , verification was submitted on{" "}
-            {formatUTC(verificationInfo.submittedTimestamp)} but an error
-            occurred. <br />
-            <br />
-            If you are the code owner, you can reverify this code on the desktop
-            interface.
-          </Text>
-        ) : (
-          <>
-            Verification failed: Verification was submitted on{" "}
-            {formatUTC(verificationInfo.submittedTimestamp)} but an error
-            occurred. <br />
-            <br />
-            If you are the code owner, you can reverify this code on the desktop
-            interface.
-          </>
-        )}
-      </Text>
-      <WasmVerifyStatusModal
-        codeHash={codeHash}
-        verificationInfo={verificationInfo}
-        relatedVerifiedCodes={relatedVerifiedCodes}
-        triggerElement={
-          <Button variant="ghost-primary" size="sm">
-            View Details
-          </Button>
-        }
-      />
-    </Flex>
-  ) : (
+  return (
     <>
       <Text variant="body2" color="text.dark">
         {contractAddress ? (
           <Text variant="body2" color="text.dark">
             This contract is an instance of code ID{" "}
-            <Text color="secondary.main" display="inline-flex" lineHeight={0}>
-              {codeId}
-            </Text>
+            <ExplorerLink
+              value={codeId.toString()}
+              type="code_id"
+              showCopyOnHover
+            />
             , verification was submitted on{" "}
             {formatUTC(verificationInfo.submittedTimestamp)} but an error
             occurred.
@@ -79,6 +44,14 @@ export const FailedDetails = ({
             Verification failed: Verification was submitted on{" "}
             {formatUTC(verificationInfo.submittedTimestamp)} but an error
             occurred.
+          </>
+        )}
+        {isMobile && (
+          <>
+            <br />
+            <br />
+            If you are the code owner, you can reverify this code on the desktop
+            interface.
           </>
         )}
       </Text>
@@ -93,16 +66,18 @@ export const FailedDetails = ({
             </Button>
           }
         />
-        <VerifyButton
-          codeId={codeId}
-          codeHash={codeHash}
-          wasmVerifyStatus={getWasmVerifyStatus({
-            verificationInfo,
-            relatedVerifiedCodes,
-          })}
-          relatedVerifiedCodes={relatedVerifiedCodes}
-          label="Reverify Code"
-        />
+        {!isMobile && (
+          <VerifyButton
+            codeId={codeId}
+            codeHash={codeHash}
+            wasmVerifyStatus={getWasmVerifyStatus({
+              verificationInfo,
+              relatedVerifiedCodes,
+            })}
+            relatedVerifiedCodes={relatedVerifiedCodes}
+            label="Reverify Code"
+          />
+        )}
       </Flex>
     </>
   );

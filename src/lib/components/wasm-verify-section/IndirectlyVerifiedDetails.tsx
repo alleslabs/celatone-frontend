@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { Fragment } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
@@ -50,64 +50,35 @@ export const IndirectlyVerifiedDetails = ({
   contractAddress,
 }: IndirectlyVerifiedDetailsProps) => {
   const isMobile = useMobile();
-  return isMobile ? (
-    <Text variant="body2" color="text.dark">
-      {contractAddress ? (
-        <>
-          This contract is an instance of code ID{" "}
-          <Flex display="inline-flex" alignItems="center">
-            <Text color="secondary.main" display="inline-flex" lineHeight={0}>
-              {codeId}
-            </Text>{" "}
-            <WasmVerifyBadge
-              status={WasmVerifyStatus.INDIRECTLY_VERIFIED}
-              relatedVerifiedCodes={relatedVerifiedCodes}
-            />
-          </Flex>
-          which has the same code hash with other verified codes.
-          <br />
-          <br />
-          If you are the code owner, you can verify this code to specify the
-          GitHub repository
-        </>
-      ) : (
-        <>
-          This code has the same code hash as the following verified stored
-          codes: {RelatedVerifiedCodes({ relatedVerifiedCodes })}.
-          <br />
-          <br />
-          If you are the code owner, you can verify this code to specify the
-          GitHub repository on the desktop interface.
-        </>
-      )}
-    </Text>
-  ) : (
+  return (
     <>
       <Text variant="body2" color="text.dark">
         {contractAddress ? (
           <>
             This contract is an instance of code ID{" "}
-            <Flex display="inline-flex" alignItems="center">
-              <Text color="secondary.main" display="inline-flex" lineHeight={0}>
-                {codeId}
-              </Text>{" "}
-              <WasmVerifyBadge
-                status={WasmVerifyStatus.INDIRECTLY_VERIFIED}
-                relatedVerifiedCodes={relatedVerifiedCodes}
-              />
-            </Flex>
-            which has the same code hash with other verified codes. If you are
-            the code owner, you can verify this code to specify the GitHub
-            repository
+            <ExplorerLink
+              value={codeId.toString()}
+              type="code_id"
+              showCopyOnHover
+              rightIcon={
+                <WasmVerifyBadge
+                  status={WasmVerifyStatus.INDIRECTLY_VERIFIED}
+                  relatedVerifiedCodes={relatedVerifiedCodes}
+                />
+              }
+            />{" "}
+            which has the same code hash with other verified codes.
           </>
         ) : (
           <>
             This code has the same code hash as the following verified stored
             codes: {RelatedVerifiedCodes({ relatedVerifiedCodes })}.
-            <br /> If you are the code owner, you can verify this code to
-            specify the GitHub repository.
           </>
         )}
+        <br />
+        {isMobile && <br />}
+        If you are the code owner, you can verify this code to specify the
+        GitHub repository{isMobile && " on the desktop interface"}.
       </Text>
       <VerifyButton
         codeId={codeId}

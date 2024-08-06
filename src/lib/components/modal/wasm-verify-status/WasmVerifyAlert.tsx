@@ -33,7 +33,7 @@ export const WasmVerifyAlert = ({ errorMsg }: WasmVerifyAlertProps) => {
           <Text
             variant="body3"
             color={`${variant}.main`}
-            wordBreak="break-word"
+            wordBreak={errorMsg ? "break-all" : "break-word"}
             lineHeight="normal"
           >
             {errorMsg ||
