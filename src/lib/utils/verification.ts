@@ -9,6 +9,7 @@ export const getWasmVerifyStatus = (
   if (wasmVerifyInfo.verificationInfo === null) {
     if (wasmVerifyInfo.relatedVerifiedCodes.length === 0)
       return WasmVerifyStatus.NOT_VERIFIED;
+
     return WasmVerifyStatus.INDIRECTLY_VERIFIED;
   }
 

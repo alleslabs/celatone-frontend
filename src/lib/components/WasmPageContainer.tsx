@@ -12,7 +12,7 @@ const WasmPageContainer = ({ children, boxProps }: WasmPageContainerProps) => (
     as="main"
     align="center"
     direction="column"
-    w={540}
+    w={572}
     mx="auto"
     minH="inherit"
     pt={12}

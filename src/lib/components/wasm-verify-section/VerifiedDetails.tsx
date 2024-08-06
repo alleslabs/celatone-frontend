@@ -51,10 +51,10 @@ export const VerifiedDetails = ({
           <ExplorerLink
             type="code_id"
             value={verificationInfo.codeId.toString()}
+            rightIcon={<WasmVerifyBadge status={WasmVerifyStatus.VERIFIED} />}
             showCopyOnHover
           />
-          <WasmVerifyBadge status={WasmVerifyStatus.VERIFIED} />
-        </Flex>
+        </Flex>{" "}
         which has been verified.
       </Text>
       <WasmVerifyStatusModal

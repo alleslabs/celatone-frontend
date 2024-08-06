@@ -6,8 +6,9 @@ import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SaveOrRemoveCodeModal } from "lib/components/modal";
 import { PermissionChip } from "lib/components/PermissionChip";
-import type { CodeInfo } from "lib/types";
-import { getCw2Info } from "lib/utils";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
+import type { CodeInfo, Nullish, WasmVerifyInfo } from "lib/types";
+import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
 
 import { CodeNameCell } from "./CodeNameCell";
 
@@ -17,6 +18,7 @@ interface CodesTableRowProps {
   onRowSelect: (codeId: number) => void;
   isReadOnly: boolean;
   showCw2andContracts: boolean;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const CodesTableRow = ({
@@ -25,6 +27,7 @@ export const CodesTableRow = ({
   onRowSelect,
   isReadOnly,
   showCw2andContracts,
+  wasmVerifyInfo,
 }: CodesTableRowProps) => {
   const getAddressType = useGetAddressType();
   const cw2Info = getCw2Info(codeInfo.cw2Contract, codeInfo.cw2Version);
@@ -41,6 +44,12 @@ export const CodesTableRow = ({
         <ExplorerLink
           type="code_id"
           value={codeInfo.id.toString()}
+          rightIcon={
+            <WasmVerifyBadge
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+            />
+          }
           showCopyOnHover
         />
       </TableRow>

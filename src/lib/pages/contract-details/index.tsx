@@ -31,7 +31,7 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAccountDelegationInfos } from "lib/model/account";
 import { useBalances } from "lib/services/bank";
-import { useGetWasmVerifyInfos } from "lib/services/verification/wasm";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import type { BechAddr32 } from "lib/types";
 import { jsonPrettify, truncate } from "lib/utils";
 
@@ -76,9 +76,9 @@ const ContractDetailsBody = observer(
     const { isTotalBondedLoading, totalBonded } =
       useAccountDelegationInfos(contractAddress);
 
-    const { data: wasmVerifyInfos } = useGetWasmVerifyInfos(
-      [contractData?.contract.codeId ?? 0],
-      !!contractData
+    const { data: relatedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+      contractData?.contract.codeId,
+      contractData?.contract.codeHash
     );
     // ------------------------------------------//
     // -----------------CALLBACKS----------------//
@@ -106,7 +106,6 @@ const ContractDetailsBody = observer(
     if (contractData.contract === null) return <InvalidContract />;
 
     const { projectInfo, publicInfo, contract, contractRest } = contractData;
-    const wasmVerifyInfo = wasmVerifyInfos?.[contract.codeId];
 
     const hasTotalBonded =
       !isTotalBondedLoading &&
@@ -122,7 +121,7 @@ const ContractDetailsBody = observer(
           publicInfo={publicInfo}
           contract={contract}
           contractLocalInfo={contractLocalInfo}
-          wasmVerifyInfo={wasmVerifyInfo}
+          wasmVerifyInfo={relatedWasmVerifyInfo}
         />
         <Tabs
           index={Object.values(TabIndex).indexOf(tab)}
@@ -174,7 +173,7 @@ const ContractDetailsBody = observer(
                   <ContractVerificationSection
                     codeId={contract.codeId}
                     codeHash={contract.codeHash}
-                    wasmVerifyInfo={wasmVerifyInfo}
+                    wasmVerifyInfo={relatedWasmVerifyInfo}
                     contractAddress={contract.address}
                   />
                   <CommandSection
@@ -229,7 +228,7 @@ const ContractDetailsBody = observer(
                         contract={contract}
                         contractRest={contractRest}
                         codeLocalInfo={codeLocalInfo}
-                        wasmVerifyInfo={wasmVerifyInfo}
+                        wasmVerifyInfo={relatedWasmVerifyInfo}
                       />
                       <Button
                         size="sm"

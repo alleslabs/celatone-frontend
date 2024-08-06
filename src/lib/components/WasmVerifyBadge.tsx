@@ -1,6 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 
+import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import { WasmVerifyStatus } from "lib/types";
+import { getWasmVerifyStatus } from "lib/utils";
 
 import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
@@ -87,11 +89,13 @@ const getTextProperties = (badgeStatus: BadgeStatus) => {
 const WasmVerifyIcon = ({ badgeStatus }: { badgeStatus: BadgeStatus }) => {
   switch (badgeStatus) {
     case BadgeStatus.IN_PROGRESS:
-      return <CustomIcon name="hourglass" color="text.dark" />;
+      return <CustomIcon name="hourglass" color="text.dark" mr={0} />;
     case BadgeStatus.VERIFIED:
-      return <CustomIcon name="verification-solid" color="accent.main" />;
+      return (
+        <CustomIcon name="verification-solid" color="accent.main" mr={0} />
+      );
     case BadgeStatus.INDIRECTLY_VERIFIED:
-      return <CustomIcon name="verification" color="accent.main" />;
+      return <CustomIcon name="verification" color="accent.main" mr={0} />;
     default:
       return undefined;
   }
@@ -130,5 +134,25 @@ export const WasmVerifyBadge = ({
         )}
       </Flex>
     </Tooltip>
+  );
+};
+
+export const WasmVerifyBadgeById = ({
+  codeId,
+  hasText = false,
+  linkedCodeId,
+}: Pick<WasmVerifyBadgeProps, "hasText" | "linkedCodeId"> & {
+  codeId: number;
+}) => {
+  const { data } = useWasmVerifyInfos([codeId]);
+  const wasmVerifyInfo = data?.[codeId];
+
+  return (
+    <WasmVerifyBadge
+      status={getWasmVerifyStatus(wasmVerifyInfo)}
+      relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+      hasText={hasText}
+      linkedCodeId={linkedCodeId}
+    />
   );
 };
