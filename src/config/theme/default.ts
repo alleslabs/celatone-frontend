@@ -92,7 +92,7 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
       "https://assets.alleslabs.dev/integrations/initia/illustration/disconnected.svg",
   },
   socialMedia: {
-    website: "https://initia.xyz/",
+    website: "https://initia.xyz",
     github: "https://github.com/initia-labs",
     twitter: "https://x.com/initiaFDN",
     medium: "https://medium.com/@initiafdn",

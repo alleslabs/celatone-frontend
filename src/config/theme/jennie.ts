@@ -92,7 +92,7 @@ const JENNIE_BASE_THEME: ThemeConfig = {
       "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/disconnected.png",
   },
   socialMedia: {
-    website: "https://initia.xyz/",
+    website: "https://initia.xyz",
     github: "https://github.com/initia-labs",
     twitter: "https://x.com/initiaFDN",
     medium: "https://medium.com/@initiafdn",

@@ -17,7 +17,7 @@ interface SocialMenuType {
 
 const socialMenu: SocialMenuType[] = [
   {
-    url: "https://initia.xyz/",
+    url: "https://initia.xyz",
     icon: "website",
     slug: "website",
   },
