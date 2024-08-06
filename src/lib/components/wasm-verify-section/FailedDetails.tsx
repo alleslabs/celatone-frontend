@@ -31,10 +31,13 @@ export const FailedDetails = ({
             This contract is an instance of code ID{" "}
             <Text color="secondary.main" display="inline-flex" lineHeight={0}>
               {codeId}
-            </Text>{" "}
-            ,verification was submitted on{" "}
+            </Text>
+            , verification was submitted on{" "}
             {formatUTC(verificationInfo.submittedTimestamp)} but an error
-            occurred.
+            occurred. <br />
+            <br />
+            If you are the code owner, you can reverify this code on the desktop
+            interface.
           </Text>
         ) : (
           <>
@@ -66,8 +69,8 @@ export const FailedDetails = ({
             This contract is an instance of code ID{" "}
             <Text color="secondary.main" display="inline-flex" lineHeight={0}>
               {codeId}
-            </Text>{" "}
-            ,verification was submitted on{" "}
+            </Text>
+            , verification was submitted on{" "}
             {formatUTC(verificationInfo.submittedTimestamp)} but an error
             occurred.
           </Text>

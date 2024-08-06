@@ -19,8 +19,13 @@ export const WasmVerifyAlert = ({ errorMsg }: WasmVerifyAlertProps) => {
     >
       <CustomIcon name={icon} boxSize={4} color={`${variant}.main`} />
       <AlertDescription>
-        <Flex direction="column">
-          <Text variant="body2" color={`${variant}.main`} fontWeight={600}>
+        <Flex direction="column" gap={1}>
+          <Text
+            variant="body2"
+            color={`${variant}.main`}
+            fontWeight={600}
+            lineHeight="normal"
+          >
             {errorMsg
               ? "Verification failed"
               : "Verification is in progress and may take hours depending on code complexity."}
@@ -29,7 +34,7 @@ export const WasmVerifyAlert = ({ errorMsg }: WasmVerifyAlertProps) => {
             variant="body3"
             color={`${variant}.main`}
             wordBreak="break-word"
-            lineHeight={1.2}
+            lineHeight="normal"
           >
             {errorMsg ||
               "You can close this page and view the verification process on code details page"}

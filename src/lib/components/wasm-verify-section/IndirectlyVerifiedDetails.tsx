@@ -64,15 +64,20 @@ export const IndirectlyVerifiedDetails = ({
               relatedVerifiedCodes={relatedVerifiedCodes}
             />
           </Flex>
-          which has the same code hash with other verified codes. If you are the
-          code owner, you can verify this code to specify the GitHub repository
+          which has the same code hash with other verified codes.
+          <br />
+          <br />
+          If you are the code owner, you can verify this code to specify the
+          GitHub repository
         </>
       ) : (
         <>
           This code has the same code hash as the following verified stored
           codes: {RelatedVerifiedCodes({ relatedVerifiedCodes })}.
-          <br /> <br /> If you are the code owner, you can verify this code to
-          specify the GitHub repository on the desktop interface.
+          <br />
+          <br />
+          If you are the code owner, you can verify this code to specify the
+          GitHub repository on the desktop interface.
         </>
       )}
     </Text>

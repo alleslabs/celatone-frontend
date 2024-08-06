@@ -19,18 +19,30 @@ export const InProgressDetails = ({
   relatedVerifiedCodes,
   contractAddress,
 }: InProgressDetailsProps) => (
-  <>
+  <Flex
+    direction={{ base: "column", md: "row" }}
+    justifyContent="space-between"
+    w="full"
+    gap={{ base: 2 }}
+    alignItems={{ base: "flex-start", md: "center" }}
+  >
     {contractAddress ? (
-      <Flex alignItems="center" gap={2}>
+      <Flex
+        alignItems={{ base: "flex-start", md: "center" }}
+        direction={{ base: "column", md: "row" }}
+        gap={2}
+      >
         <CustomIcon name="hourglass" boxSize={4} ml={0} color="gray.400" />
-        <Text variant="body2" color="text.dark">
-          This contract is an instance of code ID{" "}
-          <Text color="secondary.main" display="inline-flex">
-            {codeId}
-          </Text>{" "}
-          which is currently undergoing verification. This can take several
-          hours, depending on the code complexity.
-        </Text>
+        <Flex>
+          <Text variant="body2" color="text.dark">
+            This contract is an instance of code ID{" "}
+            <Text color="secondary.main" display="inline-flex">
+              {codeId}
+            </Text>{" "}
+            which is currently undergoing verification. This can take several
+            hours, depending on the code complexity.
+          </Text>
+        </Flex>
       </Flex>
     ) : (
       <Text variant="body2" color="text.dark">
@@ -48,5 +60,5 @@ export const InProgressDetails = ({
         </Button>
       }
     />
-  </>
+  </Flex>
 );
