@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 
 import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
 import { useInternalNavigate } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectingLine } from "lib/components/ConnectingLine";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -10,7 +11,6 @@ import { CustomIcon } from "lib/components/icon";
 import { UploadSchema } from "lib/components/json-schema";
 import { Stepper } from "lib/components/stepper";
 import { TxReceiptRender } from "lib/components/tx";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useSchemaStore } from "lib/providers/store";
 import { feeFromStr } from "lib/utils";
 
@@ -25,7 +25,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const attached = Boolean(schema);
 
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       <Heading variant="h6" as="h6" color="text.dark" mb={3}>
         Deploy new contract
       </Heading>
@@ -137,6 +137,6 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
       >
         Go to my stored codes
       </Button>
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 });
