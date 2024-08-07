@@ -14,6 +14,7 @@ import {
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { ContractInputSection } from "lib/components/ContractInputSection";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
@@ -24,7 +25,6 @@ import { TextInput } from "lib/components/forms";
 import { CelatoneSeo } from "lib/components/Seo";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useTxBroadcast } from "lib/hooks";
 import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr, BechAddr32 } from "lib/types";
@@ -171,7 +171,7 @@ const UpdateAdmin = () => {
   }, [contractAddressParam, router.isReady]);
 
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       <CelatoneSeo pageName="Update Admin" />
       <Flex direction="column" alignItems="center" mb={6}>
         <Heading as="h5" variant="h5">
@@ -238,7 +238,7 @@ const UpdateAdmin = () => {
       >
         Update Admin
       </Button>
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 };
 

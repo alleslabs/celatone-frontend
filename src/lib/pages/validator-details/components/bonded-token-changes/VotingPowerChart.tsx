@@ -55,19 +55,19 @@ export const VotingPowerChart = ({
 
   const dataset = {
     data: historicalPowers.items.map((item) => item.votingPower.toNumber()),
-    borderColor: "#D8BEFC",
+    borderColor: "#4CE2F7",
     backgroundColor: (context: ScriptableContext<"line">) => {
       const { ctx } = context.chart;
 
       const gradient = ctx.createLinearGradient(0, 0, 0, 300);
 
-      gradient.addColorStop(0, "rgba(216, 190, 252, 1)");
-      gradient.addColorStop(0.8, "rgba(115, 85, 156, 0)");
+      gradient.addColorStop(0, "rgba(76, 226, 247, 1)");
+      gradient.addColorStop(0.8, "rgba(14, 49, 57, 0)");
 
       return gradient;
     },
-    pointHoverBackgroundColor: "#F4F9D9",
-    pointHoverBorderColor: "#D8BEFC",
+    pointHoverBackgroundColor: "#F5F5F5",
+    pointHoverBorderColor: "#4CE2F7",
   };
 
   const customizeTooltip = (tooltip: TooltipModel<"line">) => {
@@ -87,13 +87,13 @@ export const VotingPowerChart = ({
     return `
       <div style="padding: 8px 12px;">
         <div style="font-weight: 700;">
-          <h1 style="font-size: 12px; color: #ADADC2;">${
+          <h1 style="font-size: 12px; color: #D1D9E0;">${
             singleStakingDenom ? "Bonded Token" : "Voting Powers"
           }</h1>
-          <p style="font-size: 16px; color: #F7F2FE; white-space: nowrap;">${formattedAmount} ${currency}</p>
+          <p style="font-size: 16px; color: #4CE2F7; white-space: nowrap;">${formattedAmount} ${currency}</p>
         </div>
-        <hr style="margin-top: 8px; color: #68688A;"/>
-        <p style="margin-top: 8px; font-size: 12px; color: #F7F2FE; white-space: nowrap;">${formattedDate}</p>
+        <hr style="margin-top: 8px; color: #757C82;"/>
+        <p style="margin-top: 8px; font-size: 12px; color: #F5F5F5; white-space: nowrap;">${formattedDate}</p>
       </div>
     `;
   };

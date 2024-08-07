@@ -3,8 +3,12 @@ import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
 
 import { NetworkImage } from "../NetworkImage";
-import { CHAIN_CONFIGS } from "config/chain";
-import { useCelatoneApp, useMobile, useSelectChain } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useChainConfigs,
+  useMobile,
+  useSelectChain,
+} from "lib/app-provider";
 import type { Option } from "lib/types";
 
 import { NetworkCardCta } from "./NetworkCardCta";
@@ -51,6 +55,7 @@ export const NetworkCard = observer(
     onClose,
     isDraggable = false,
   }: NetworkCardProps) => {
+    const { chainConfigs } = useChainConfigs();
     const isMobile = useMobile();
     const { currentChainId } = useCelatoneApp();
     const selectChain = useSelectChain();
@@ -105,7 +110,7 @@ export const NetworkCard = observer(
           <NetworkImage chainId={chainId} />
           <Flex direction="column">
             <Text variant="body2" fontWeight={600}>
-              {CHAIN_CONFIGS[chainId]?.prettyName || chainId}
+              {chainConfigs[chainId]?.prettyName || chainId}
             </Text>
             <Text color="text.dark" variant="body3">
               {chainId}

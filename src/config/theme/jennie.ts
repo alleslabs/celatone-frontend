@@ -8,12 +8,11 @@ const JENNIE_BASE_THEME: ThemeConfig = {
     favicon: "https://assets.alleslabs.dev/integrations/initia/favicon.svg",
     seo: {
       appName: "Initia",
-      title: "Initia Scan powered by Celatone",
-      description:
-        "Explore Initia's layered ecosystem effortlessly, bridging Web2 to Web3, while delving into sovereign applications.",
-      image: "https://assets.alleslabs.dev/integrations/initia/cover.jpg",
+      title: "Initia Scan",
+      description: "Initia, a network for interwoven rollups",
+      image: "/scan-ogimage.jpg",
       twitter: {
-        handle: "@initiafnd",
+        handle: "@initiafdn",
         cardType: "summary_large_image",
       },
     },
@@ -93,9 +92,10 @@ const JENNIE_BASE_THEME: ThemeConfig = {
       "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/disconnected.png",
   },
   socialMedia: {
-    website: "https://initia.tech/",
+    website: "https://initia.xyz",
     github: "https://github.com/initia-labs",
-    twitter: "https://twitter.com/initiaFND",
+    twitter: "https://x.com/initiaFDN",
+    medium: "https://medium.com/@initiafdn",
   },
 };
 

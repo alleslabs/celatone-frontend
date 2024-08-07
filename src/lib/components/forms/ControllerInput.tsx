@@ -18,6 +18,7 @@ import type {
 } from "react-hook-form";
 import { useController, useWatch } from "react-hook-form";
 
+import type { RestrictedNumberInputParams } from "lib/app-provider";
 import { useRestrictedNumberInput } from "lib/app-provider";
 
 import type { FormStatus } from "./FormStatus";
@@ -33,10 +34,15 @@ export interface ControllerInputProps<T extends FieldValues>
   status?: FormStatus;
   maxLength?: number;
   helperAction?: ReactNode;
+  textAlign?: "left" | "right";
   cta?: {
     label: string;
     onClick: (changeValue?: (...event: string[]) => void) => void;
   };
+  restrictedNumberInputParams?: Pick<
+    RestrictedNumberInputParams,
+    "maxDecimalPoints" | "maxIntegerPoints"
+  >;
 }
 
 export const ControllerInput = <T extends FieldValues>({
@@ -55,7 +61,9 @@ export const ControllerInput = <T extends FieldValues>({
   autoFocus,
   cursor,
   helperAction,
+  textAlign = "left",
   cta,
+  restrictedNumberInputParams,
   ...componentProps
 }: ControllerInputProps<T>) => {
   const watcher = useWatch({
@@ -83,19 +91,22 @@ export const ControllerInput = <T extends FieldValues>({
       return "3rem";
     }
 
+    if (textAlign === "right") {
+      return "1rem";
+    }
+
     return 0;
   };
 
   const decimalHandlers = useRestrictedNumberInput({
     type: "decimal",
-    maxIntegerPoinsts: 7,
-    maxDecimalPoints: 6,
     onChange: field.onChange,
+    ...restrictedNumberInputParams,
   });
 
   const numberHandlers = useRestrictedNumberInput({
     type: "integer",
-    maxIntegerPoinsts: 7,
+    maxIntegerPoints: 7,
     maxDecimalPoints: 0,
     onChange: field.onChange,
   });
@@ -135,8 +146,13 @@ export const ControllerInput = <T extends FieldValues>({
           onChange={field.onChange}
           {...(type === "decimal" && decimalHandlers)}
           {...(type === "number" && numberHandlers)}
+          textAlign={textAlign}
         />
-        <InputRightElement h="full" pr={cta ? 3 : 0}>
+        <InputRightElement
+          h="full"
+          w={status || cta ? "2.5rem" : 0}
+          pr={cta ? 3 : 0}
+        >
           {status && getStatusIcon(status.state)}
           {cta && (
             <Text
