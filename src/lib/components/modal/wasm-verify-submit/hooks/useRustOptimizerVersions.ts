@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 
 import { useDockerImageTag } from "lib/services/docker-image";
-import { parseDate } from "lib/utils";
 
 export const useRustOptimizerVersions = () => {
   const { data: rustOptimizer } = useDockerImageTag(
@@ -19,14 +18,14 @@ export const useRustOptimizerVersions = () => {
         label: `cosmwasm/rust-optimizer:${result.name}`,
         value: `cosmwasm/rust-optimizer:${result.name}`,
         version: result.name,
-        lastUpdated: parseDate(result.lastUpdated),
+        lastUpdated: result.lastUpdated,
       })) ?? [];
     const rustOptimizerArm64Result =
       rustOptimizerArm64?.results.map((result) => ({
         label: `cosmwasm/rust-optimizer-arm64:${result.name}`,
         value: `cosmwasm/rust-optimizer-arm64:${result.name}`,
         version: result.name,
-        lastUpdated: parseDate(result.lastUpdated),
+        lastUpdated: result.lastUpdated,
       })) ?? [];
 
     const results = [...rustOptimizerResult, ...rustOptimizerArm64Result];

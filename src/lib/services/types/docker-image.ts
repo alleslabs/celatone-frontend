@@ -20,7 +20,7 @@ const zDockerImageTagResult = z.object({
       last_pushed: z.string(),
     })
   ),
-  last_updated: z.string(),
+  last_updated: z.coerce.date(),
   last_updater: z.number(),
   last_updater_username: z.string(),
   name: z.string(),

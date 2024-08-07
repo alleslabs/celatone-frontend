@@ -145,8 +145,8 @@ export const ContractSelectSection = observer(
   }: ContractSelectSectionProps) => {
     const isMobile = useMobile();
     const { getContractLocalInfo } = useContractStore();
-    const [codeId, setCodeId] = useState<Option<number>>();
-    const [codeHash, setCodeHash] = useState<Option<string>>();
+    const [codeId, setCodeId] = useState<number>();
+    const [codeHash, setCodeHash] = useState<string>();
 
     const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
