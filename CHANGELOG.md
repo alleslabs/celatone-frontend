@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1075](https://github.com/alleslabs/celatone-frontend/pull/1075) Fix custom minitia minor change
+
 ## v1.7.3
 
 ### Features
@@ -63,7 +65,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#1075](https://github.com/alleslabs/celatone-frontend/pull/1075) Fix custom minitia minor change
 - [#1063](https://github.com/alleslabs/celatone-frontend/pull/1063) Fix bug bash for add custom networks
 - [#1069](https://github.com/alleslabs/celatone-frontend/pull/1069) Fix add custom minitia network manually
 - [#1065](https://github.com/alleslabs/celatone-frontend/pull/1065) Fix zod url validation to allow only http and https in add custom minitia page
