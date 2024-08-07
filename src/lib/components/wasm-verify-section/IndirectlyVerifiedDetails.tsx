@@ -61,13 +61,13 @@ export const IndirectlyVerifiedDetails = ({
             <ExplorerLink
               value={codeId.toString()}
               type="code_id"
-              showCopyOnHover
               rightIcon={
                 <WasmVerifyBadge
                   status={WasmVerifyStatus.INDIRECTLY_VERIFIED}
                   relatedVerifiedCodes={relatedVerifiedCodes}
                 />
               }
+              showCopyOnHover
             />{" "}
             which has the same code hash with other verified codes.
           </>
