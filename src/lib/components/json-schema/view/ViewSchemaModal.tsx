@@ -24,9 +24,8 @@ import { AppLink } from "lib/components/AppLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import type { CodeSchema } from "lib/stores/schema";
-import { SchemaProperties } from "lib/stores/schema";
-import type { Option } from "lib/types";
+import { SchemaProperties } from "lib/types";
+import type { CodeSchema, Option } from "lib/types";
 
 import { ViewSchemaPanel } from "./ViewSchemaPanel";
 

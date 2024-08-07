@@ -7,15 +7,14 @@ import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { UploadSchema } from "lib/components/json-schema";
 import { EmptyState, StateImage } from "lib/components/state";
-import { useSchemaStore } from "lib/providers/store";
-import type { ExecuteSchema } from "lib/stores/schema";
-import type { BechAddr32, Option } from "lib/types";
-import { jsonPrettify, resolveInitialMsg } from "lib/utils";
+import type { BechAddr32, CodeSchema, Nullish, Option } from "lib/types";
+import { getExecuteSchema, jsonPrettify, resolveInitialMsg } from "lib/utils";
 
 import { ExecuteBox } from "./ExecuteBox";
 
 interface SchemaExecuteProps {
-  schema: Option<ExecuteSchema>;
+  verifiedSchema: Nullish<CodeSchema>;
+  localSchema: Option<CodeSchema>;
   contractAddress: BechAddr32;
   initialMsg: string;
   initialFunds: Coin[];
@@ -24,8 +23,9 @@ interface SchemaExecuteProps {
 }
 
 export const SchemaExecute = ({
+  verifiedSchema,
+  localSchema,
   contractAddress,
-  schema,
   initialMsg,
   initialFunds,
   codeId,
@@ -35,8 +35,7 @@ export const SchemaExecute = ({
   // -----------------REFERENCE----------------//
   // ------------------------------------------//
   const accordionRef = useRef<HTMLDivElement>(null);
-  const { getSchemaByCodeHash } = useSchemaStore();
-  const fullSchema = getSchemaByCodeHash(codeHash);
+
   // ------------------------------------------//
   // -------------------STATES-----------------//
   // ------------------------------------------//
@@ -46,6 +45,7 @@ export const SchemaExecute = ({
   // ------------------------------------------//
   // -------------------LOGICS-----------------//
   // ------------------------------------------//
+  const schema = getExecuteSchema(verifiedSchema ?? localSchema);
   const filteredMsgs = useMemo(() => {
     if (!keyword) return schema;
 
@@ -91,23 +91,28 @@ export const SchemaExecute = ({
         <Flex direction="column" alignItems="center">
           <StateImage imageVariant="not-found" imageWidth="128px" />
           <Text variant="body1" fontWeight={700} mt={2}>
-            Attached JSON Schema doesn’t have ExecuteMsg
+            {verifiedSchema ? "Verified" : "Attached"} JSON Schema doesn’t have
+            ExecuteMsg
           </Text>
-          <Text
-            variant="body2"
-            textColor="text.disabled"
-            fontWeight={500}
-            mt={2}
-            mb={4}
-          >
-            Please fill in Execute Message manually or change the schema
-          </Text>
-          <UploadSchema
-            attached
-            schema={fullSchema}
-            codeId={codeId}
-            codeHash={codeHash}
-          />
+          {!verifiedSchema && (
+            <>
+              <Text
+                variant="body2"
+                textColor="text.disabled"
+                fontWeight={500}
+                mt={2}
+                mb={4}
+              >
+                Please fill in Execute Message manually or change the schema
+              </Text>
+              <UploadSchema
+                attached
+                schema={localSchema}
+                codeId={codeId}
+                codeHash={codeHash}
+              />
+            </>
+          )}
         </Flex>
       </Flex>
     );
@@ -119,7 +124,7 @@ export const SchemaExecute = ({
           placeholder="Search with Execute Message"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          size={{ base: "md", md: "lg" }}
+          size="md"
           amptrackSection="execute-message-search"
         />
         <Button

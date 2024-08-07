@@ -13,9 +13,8 @@ import { capitalize } from "lodash";
 
 import { CustomTab } from "lib/components/CustomTab";
 import { EditSchemaButtons, JsonSchemaModal } from "lib/components/json-schema";
-import type { CodeSchema } from "lib/stores/schema";
-import { SchemaProperties } from "lib/stores/schema";
-import type { Option } from "lib/types";
+import { SchemaProperties } from "lib/types";
+import type { CodeSchema, Option } from "lib/types";
 
 import { SchemaPanel } from "./SchemaPanel";
 

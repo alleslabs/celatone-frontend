@@ -3,8 +3,7 @@ import type { ReactNode } from "react";
 
 import { AttachSchemaCard } from "../AttachSchemaCard";
 import { JsonSchemaModal } from "../JsonSchemaModal";
-import type { CodeSchema } from "lib/stores/schema";
-import type { Option } from "lib/types";
+import type { CodeSchema, Option } from "lib/types";
 
 interface UploadSchemaContentInterface {
   attached: boolean;

@@ -1,23 +1,23 @@
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
-import type { RJSFSchema, RJSFValidationError } from "@rjsf/utils";
+import type { RJSFValidationError } from "@rjsf/utils";
 import { capitalize } from "lodash";
 import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
 
-import { AttachSchemaCard } from "../AttachSchemaCard";
 import { JsonSchemaForm } from "../form";
 import { JsonSchemaModal } from "../JsonSchemaModal";
 import { ViewSchemaModal } from "../view/ViewSchemaModal";
 import { AmpEvent, track } from "lib/amplitude";
-import { CustomIcon } from "lib/components/icon";
-import type { CodeSchema } from "lib/stores/schema";
-import type { Option } from "lib/types";
+import type { CodeSchema, Nullish, Option } from "lib/types";
+
+import { SchemaInputNotExist } from "./SchemaInputNotExist";
 
 interface SchemaSectionProps {
   type: "migrate" | "instantiate";
   codeHash: string;
   codeId: number;
-  jsonSchema: Option<CodeSchema>;
+  verifiedSchema: Nullish<CodeSchema>;
+  localSchema: Option<CodeSchema>;
   initialFormData?: Record<string, unknown>;
   handleChange: (data: unknown, errors: RJSFValidationError[]) => void;
   onSchemaSave?: () => void;
@@ -28,13 +28,14 @@ export const SchemaInputSection = observer(
     type,
     codeHash,
     codeId,
-    jsonSchema,
+    verifiedSchema,
+    localSchema,
     initialFormData,
     handleChange,
     onSchemaSave,
   }: SchemaSectionProps) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
-    const msgSchema = jsonSchema?.[type];
+    const msgSchema = verifiedSchema?.[type] ?? localSchema?.[type];
     const prettyType = capitalize(type);
 
     const handleReattach = useCallback(() => {
@@ -54,11 +55,10 @@ export const SchemaInputSection = observer(
         >
           {msgSchema ? (
             <>
-              {/* TODO: revisit type assertion later */}
               {msgSchema.properties ? (
                 <div style={{ width: "100%" }}>
                   <JsonSchemaForm
-                    schema={jsonSchema[type] as RJSFSchema}
+                    schema={msgSchema}
                     formId={type}
                     initialFormData={initialFormData}
                     onChange={handleChange}
@@ -81,37 +81,14 @@ export const SchemaInputSection = observer(
               )}
             </>
           ) : (
-            <>
-              <Text color="text.main" fontWeight={700} variant="body1">
-                {jsonSchema ? (
-                  `Attached JSON Schema doesn’t have ${prettyType}Msg`
-                ) : (
-                  <>
-                    You haven&#39;t attached the JSON Schema for{" "}
-                    <CustomIcon name="code" mx={1} color="gray.400" />
-                    code {codeId} yet
-                  </>
-                )}
-              </Text>
-              <Text
-                color="text.disabled"
-                fontWeight={500}
-                variant="body2"
-                mt={2}
-                mb={4}
-              >
-                {jsonSchema
-                  ? `Please fill in ${prettyType} Message manually or change the schema`
-                  : "Your attached JSON schema will be stored locally on your device"}
-              </Text>
-              <AttachSchemaCard
-                attached={Boolean(jsonSchema)}
-                schema={jsonSchema}
-                codeId={codeId}
-                codeHash={codeHash}
-                openModal={onOpen}
-              />
-            </>
+            <SchemaInputNotExist
+              prettyType={prettyType}
+              verifiedSchema={verifiedSchema}
+              localSchema={localSchema}
+              codeId={codeId}
+              codeHash={codeHash}
+              openModal={onOpen}
+            />
           )}
           <JsonSchemaModal
             isOpen={isOpen}
@@ -125,10 +102,12 @@ export const SchemaInputSection = observer(
         {msgSchema && (
           <Flex align="center" justify="space-between" w="full" mb={4}>
             <Text color="text.dark" variant="body2">
-              You are using a locally attached JSON Schema
+              {verifiedSchema
+                ? "The schema is available because the code is verified"
+                : "You are using a locally attached JSON Schema"}
             </Text>
             <Flex gap={3}>
-              <ViewSchemaModal codeId={codeId} jsonSchema={jsonSchema} />
+              <ViewSchemaModal codeId={codeId} jsonSchema={localSchema} />
               <Button variant="outline-gray" size="sm" onClick={handleReattach}>
                 Reattach
               </Button>

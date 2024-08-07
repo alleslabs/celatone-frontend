@@ -1,4 +1,5 @@
 import { Box, Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import { isNull } from "lodash";
 import { observer } from "mobx-react-lite";
 
 import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
@@ -15,6 +16,7 @@ import {
   IndirectlyVerifiedAlert,
   InProgressVerifiedSection,
   OptionButton,
+  OptionButtonDisabled,
 } from "lib/components/upload";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import { useSchemaStore } from "lib/providers/store";
@@ -38,6 +40,8 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const schema = getSchemaByCodeHash(txResult.codeHash);
   const attached = Boolean(schema);
 
+  const displayOptions =
+    wasmVerifyStatus !== WasmVerifyStatus.IN_PROGRESS && !attached;
   return (
     <ActionPageContainer>
       <Heading variant="h6" as="h6" color="text.dark" mb={3}>
@@ -107,10 +111,21 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         />
       )}
       <Box h={12} />
-      {wasmVerifyStatus === WasmVerifyStatus.IN_PROGRESS && (
-        <InProgressVerifiedSection codeId={txResult.codeId} />
-      )}
-      {!attached && (
+      {!displayOptions ? (
+        <>
+          {wasmVerifyStatus === WasmVerifyStatus.IN_PROGRESS ? (
+            <InProgressVerifiedSection codeId={txResult.codeId} />
+          ) : (
+            <UploadSchema
+              attached={attached}
+              schema={schema}
+              codeId={Number(txResult.codeId)}
+              codeHash={txResult.codeHash}
+            />
+          )}
+          <Box h={12} />
+        </>
+      ) : (
         <>
           <Heading as="h6" variant="h6" fontWeight={500} mb={2}>
             Would you like to:
@@ -128,44 +143,38 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
                 />
               }
             />
-            <UploadSchema
-              attached={attached}
-              schema={schema}
-              codeId={Number(txResult.codeId)}
-              codeHash={txResult.codeHash}
-              triggerElement={
-                <OptionButton
-                  title="Attach JSON Schema"
-                  description="Your attached JSON schema will be stored locally on your device"
-                />
-              }
-            />
+            {!isNull(derivedWasmVerifyInfo?.schema) ? (
+              <OptionButtonDisabled
+                title="Attach JSON Schema"
+                description="Your attached JSON schema will be stored locally on your device"
+              />
+            ) : (
+              <UploadSchema
+                attached={attached}
+                schema={schema}
+                codeId={Number(txResult.codeId)}
+                codeHash={txResult.codeHash}
+                triggerElement={
+                  <OptionButton
+                    title="Attach JSON Schema"
+                    description="Your attached JSON schema will be stored locally on your device"
+                  />
+                }
+              />
+            )}
+          </Flex>
+          <Flex my={8} gap={4} alignItems="center" w="full">
+            <Divider borderColor="gray.600" />
+            <Text variant="body1" color="text.dark">
+              OR
+            </Text>
+            <Divider borderColor="gray.600" />
           </Flex>
         </>
-      )}
-      {attached && (
-        <Flex direction="column" w="full" gap={10} position="relative">
-          <UploadSchema
-            attached={attached}
-            schema={schema}
-            codeId={Number(txResult.codeId)}
-            codeHash={txResult.codeHash}
-          />
-        </Flex>
-      )}
-      {!attached && (
-        <Flex my={8} gap={4} alignItems="center" w="full">
-          <Divider borderColor="gray.600" />
-          <Text variant="body1" color="text.dark">
-            OR
-          </Text>
-          <Divider borderColor="gray.600" />
-        </Flex>
       )}
       <Button
         rightIcon={<CustomIcon name="chevron-right" boxSize={4} />}
         w="full"
-        mt={attached ? 8 : 0}
         mb={4}
         onClick={() => {
           navigate({
@@ -174,7 +183,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           });
         }}
       >
-        {attached
+        {!displayOptions
           ? "Proceed to instantiate"
           : "Skip and proceed to instantiate"}
       </Button>

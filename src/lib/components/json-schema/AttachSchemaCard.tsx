@@ -4,8 +4,7 @@ import { useCallback } from "react";
 import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
-import type { CodeSchema } from "lib/stores/schema";
-import type { Option } from "lib/types";
+import type { CodeSchema, Option } from "lib/types";
 
 import { ViewSchemaModal } from "./view/ViewSchemaModal";
 

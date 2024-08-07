@@ -2,8 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { ConnectingLine } from "../../ConnectingLine";
 import { CustomIcon } from "../../icon";
-import type { CodeSchema } from "lib/stores/schema";
-import type { Option } from "lib/types";
+import type { CodeSchema, Option } from "lib/types";
 
 import { UploadSchema } from "./UploadSchema";
 

@@ -28,3 +28,28 @@ export const OptionButton = ({ title, description }: OptionButtonProps) => (
     <CustomIcon name="chevron-right" color="gray.600" />
   </Flex>
 );
+
+export const OptionButtonDisabled = ({
+  title,
+  description,
+}: OptionButtonProps) => (
+  <Flex
+    bg="gray.900"
+    _hover={{ bg: "gray.900" }}
+    transition="all 0.25s ease-in-out"
+    cursor="not-allowed"
+    p={4}
+    borderRadius={8}
+    alignItems="center"
+  >
+    <Flex direction="column" gap={1}>
+      <Text color="text.disabled" variant="body1" fontWeight={500}>
+        {title}
+      </Text>
+      <Text color="text.disabled" variant="body2">
+        {description}
+      </Text>
+    </Flex>
+    <CustomIcon name="chevron-right" color="gray.600" />
+  </Flex>
+);

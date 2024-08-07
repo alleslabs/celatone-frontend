@@ -51,6 +51,7 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr, BechAddr20, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
@@ -100,7 +101,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
   const { isFullTier } = useTierConfig();
-
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
@@ -151,9 +151,19 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
 
   // ------------------------------------------//
+  // -------------------DATA-------------------//
+  // ------------------------------------------//
+  const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+    codeId.length ? Number(codeId) : undefined,
+    codeHash
+  );
+
+  // ------------------------------------------//
   // ------------------LOGICS------------------//
   // ------------------------------------------//
-  const jsonSchema = getSchemaByCodeHash(codeHash);
+  const verifiedSchema = derivedWasmVerifyInfo?.schema;
+  const localSchema = getSchemaByCodeHash(codeHash);
+
   const funds = getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect);
   const enableInstantiate = useMemo(() => {
     const generalChecks =
@@ -378,10 +388,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   ]);
 
   useEffect(() => {
-    if (jsonSchema) {
+    if (localSchema) {
       setTab(MessageTabs.YOUR_SCHEMA);
     }
-  }, [jsonSchema, setValue]);
+  }, [localSchema, setValue]);
 
   useEffect(() => {
     if (router.isReady) trackToInstantiate(!!msgQuery, !!codeIdQuery);
@@ -495,7 +505,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
                   type="instantiate"
                   codeHash={codeHash}
                   codeId={Number(codeId)}
-                  jsonSchema={jsonSchema}
+                  verifiedSchema={verifiedSchema}
+                  localSchema={localSchema}
                   initialFormData={JSON.parse(msgInput[yourSchemaInputFormKey])}
                   handleChange={handleChange}
                   onSchemaSave={resetMsgInputSchema}

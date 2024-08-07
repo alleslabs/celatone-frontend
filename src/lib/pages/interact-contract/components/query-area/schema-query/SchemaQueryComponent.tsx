@@ -27,13 +27,13 @@ import {
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractQueryLcd } from "lib/services/wasm/contract";
 import type { Activity } from "lib/stores/contract";
-import type { SchemaInfo } from "lib/stores/schema";
 import type {
   BechAddr20,
   BechAddr32,
   JsonDataType,
   Option,
   RpcQueryError,
+  SchemaInfo,
 } from "lib/types";
 import {
   encode,
