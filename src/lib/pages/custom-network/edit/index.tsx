@@ -57,18 +57,20 @@ interface NetworkConfigBodyProps {
 const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   const { getLocalChainConfig } = useLocalChainConfigStore();
   const chainConfig = getLocalChainConfig(chainId);
-  const json = useMemo(() => {
-    return omit(chainConfig, [
-      "tier",
-      "chain",
-      "graphql",
-      "extra",
-      "network_type",
-    ]);
-  }, [chainConfig]);
+  const json = JSON.stringify(
+    useMemo(() => {
+      return omit(chainConfig, [
+        "tier",
+        "chain",
+        "graphql",
+        "extra",
+        "network_type",
+      ]);
+    }, [chainConfig])
+  );
 
   const handleExportJson = () => {
-    const blob = new Blob([JSON.stringify(json)], {
+    const blob = new Blob([json], {
       type: "application/json",
     });
 
@@ -109,11 +111,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
           <Heading as="h6" variant="h6">
             Current Configuration in JSON
           </Heading>
-          <JsonReadOnly
-            text={jsonPrettify(JSON.stringify(json))}
-            canCopy
-            fullWidth
-          />
+          <JsonReadOnly text={jsonPrettify(json)} canCopy fullWidth />
           <RemoveChainConfigModal
             chainId={chainId}
             trigger={
