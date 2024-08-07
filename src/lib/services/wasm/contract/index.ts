@@ -106,9 +106,10 @@ export const useMigrationHistoriesByContractAddressLcd = (
 };
 
 export const useInstantiatedContractsByAddress = (
-  address: BechAddr,
+  address: Option<BechAddr>,
   limit: number,
-  offset: number
+  offset: number,
+  enabled = true
 ): UseQueryResult<ContractsResponse> => {
   const endpoint = useBaseApiRoute("accounts");
 
@@ -119,9 +120,24 @@ export const useInstantiatedContractsByAddress = (
       limit,
       offset,
     ],
-    async () =>
-      getInstantiatedContractsByAddress(endpoint, address, limit, offset),
-    { retry: 1, refetchOnWindowFocus: false }
+    async () => {
+      if (!address)
+        throw new Error(
+          "address not found (getInstantiatedContractsByAddress)"
+        );
+
+      return getInstantiatedContractsByAddress(
+        endpoint,
+        address,
+        limit,
+        offset
+      );
+    },
+    {
+      enabled: Boolean(address) && enabled,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };
 

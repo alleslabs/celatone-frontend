@@ -21,13 +21,17 @@ import {
 } from "lib/components/modal";
 import { TableRow } from "lib/components/table";
 import { Tooltip } from "lib/components/Tooltip";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
+import type { Nullish, WasmVerifyInfo } from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
+import { getWasmVerifyStatus } from "lib/utils";
 
 import type { PublicContractInfo } from ".";
 
 interface ContractTableRowProps {
-  publicContractInfo: PublicContractInfo;
   templateColumns: string;
+  publicContractInfo: PublicContractInfo;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 // TODO - Revisit this style (exist in multiple places)
@@ -41,8 +45,9 @@ const StyledIconButton = chakra(IconButton, {
 });
 
 export const PublicProjectContractRow = ({
-  publicContractInfo,
   templateColumns,
+  publicContractInfo,
+  wasmVerifyInfo,
 }: ContractTableRowProps) => {
   const navigate = useInternalNavigate();
   const getAddressTypeByLength = useGetAddressTypeByLength();
@@ -68,6 +73,13 @@ export const PublicProjectContractRow = ({
           type={getAddressTypeByLength(
             publicContractInfo.publicInfo.contractAddress
           )}
+          rightIcon={
+            <WasmVerifyBadge
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              linkedCodeId={publicContractInfo.publicInfo.code}
+            />
+          }
           showCopyOnHover
         />
       </TableRow>
