@@ -31,6 +31,7 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAccountDelegationInfos } from "lib/model/account";
 import { useBalances } from "lib/services/bank";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import type { BechAddr32 } from "lib/types";
 import { jsonPrettify, truncate } from "lib/utils";
 
@@ -38,6 +39,7 @@ import { CommandSection } from "./components/CommandSection";
 import { ContractDesc } from "./components/contract-description";
 import { ContractStates } from "./components/contract-states";
 import { ContractTop } from "./components/ContractTop";
+import { ContractVerificationSection } from "./components/ContractVerificationSection";
 import { InstantiateInfo } from "./components/InstantiateInfo";
 import { ContractTables } from "./components/tables";
 import { useContractDataWithLocalInfos } from "./data";
@@ -73,6 +75,11 @@ const ContractDetailsBody = observer(
 
     const { isTotalBondedLoading, totalBonded } =
       useAccountDelegationInfos(contractAddress);
+
+    const { data: relatedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+      contractData?.contract.codeId,
+      contractData?.contract.codeHash
+    );
     // ------------------------------------------//
     // -----------------CALLBACKS----------------//
     // ------------------------------------------//
@@ -114,6 +121,7 @@ const ContractDetailsBody = observer(
           publicInfo={publicInfo}
           contract={contract}
           contractLocalInfo={contractLocalInfo}
+          wasmVerifyInfo={relatedWasmVerifyInfo}
         />
         <Tabs
           index={Object.values(TabIndex).indexOf(tab)}
@@ -162,6 +170,12 @@ const ContractDetailsBody = observer(
                       contractLocalInfo={contractLocalInfo}
                     />
                   )}
+                  <ContractVerificationSection
+                    codeId={contract.codeId}
+                    codeHash={contract.codeHash}
+                    wasmVerifyInfo={relatedWasmVerifyInfo}
+                    contractAddress={contract.address}
+                  />
                   <CommandSection
                     contractAddress={contractAddress}
                     codeHash={contract.codeHash}
@@ -191,7 +205,6 @@ const ContractDetailsBody = observer(
                     </Flex>
                   )}
                 </Flex>
-
                 {/* Instantiate/Contract Info Section */}
                 <Flex direction="column" gap={6}>
                   {!isMobile && (
@@ -215,6 +228,7 @@ const ContractDetailsBody = observer(
                         contract={contract}
                         contractRest={contractRest}
                         codeLocalInfo={codeLocalInfo}
+                        wasmVerifyInfo={relatedWasmVerifyInfo}
                       />
                       <Button
                         size="sm"

@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1002](https://github.com/alleslabs/celatone-frontend/pull/1002) Add contract verification modal
+
 ### Improvements
 
 ### Bug fixes
