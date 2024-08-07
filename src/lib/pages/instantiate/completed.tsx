@@ -1,12 +1,12 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { CelatoneSeo } from "lib/components/Seo";
 import { TxReceiptRender } from "lib/components/tx";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { ContractInteractionTabs } from "lib/types";
 import type { BechAddr32 } from "lib/types";
 import { feeFromStr } from "lib/utils";
@@ -22,7 +22,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
   const navigate = useInternalNavigate();
   const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0].value;
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       <CelatoneSeo pageName="Instantiate Contract" />
       <CustomIcon name="check-circle-solid" color="success.main" boxSize={12} />
       <Heading as="h5" variant="h5" mt={3} mb={12}>
@@ -113,7 +113,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
         contractLabel={txInfo.contractLabel}
         instantiator={txInfo.instantiator}
       />
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 };
 

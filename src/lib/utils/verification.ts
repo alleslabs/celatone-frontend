@@ -36,7 +36,6 @@ export const formatRelatedVerifiedCodes = (relatedVerifiedCodes: number[]) => {
       index < displayedCodes.length - 1
     )
       res += "and ";
-    return res;
   });
   if (relatedVerifiedCodes.length > 3) res += " and more";
 

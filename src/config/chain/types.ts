@@ -23,8 +23,6 @@ type MoveConfig =
   | {
       enabled: true;
       moduleMaxFileSize: number;
-      decodeApi: string;
-      verify: string;
     }
   | { enabled: false };
 
@@ -58,7 +56,7 @@ export interface ChainConfig {
   registryChainName: string;
   prettyName: string;
   logoUrl?: string;
-  networkType: "mainnet" | "testnet";
+  networkType: "mainnet" | "testnet" | "devnet" | "local";
   lcd: string;
   rpc: string;
   indexer: string;

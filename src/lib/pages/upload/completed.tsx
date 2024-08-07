@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 
 import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
 import { useInternalNavigate } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -15,7 +16,6 @@ import {
   InProgressVerifiedSection,
   OptionButton,
 } from "lib/components/upload";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import { useSchemaStore } from "lib/providers/store";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
@@ -39,7 +39,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const attached = Boolean(schema);
 
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       <Heading variant="h6" as="h6" color="text.dark" mb={3}>
         Deploy new contract
       </Heading>
@@ -187,6 +187,6 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
       >
         Go to my stored codes
       </Button>
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 });

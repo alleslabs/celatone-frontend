@@ -1,5 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import { Flex, Heading, Stack, Tag, Text } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
 import { CustomIcon } from "./icon";
@@ -9,6 +9,8 @@ interface ButtonCardProps extends FlexProps {
   description: ReactNode;
   onClick: () => void;
   disabled?: boolean;
+  tagLabel?: string;
+  hasIcon?: boolean;
 }
 
 export const ButtonCard = ({
@@ -16,6 +18,8 @@ export const ButtonCard = ({
   description,
   onClick,
   disabled,
+  tagLabel,
+  hasIcon = true,
   ...componentProps
 }: ButtonCardProps) => (
   <Flex
@@ -37,13 +41,16 @@ export const ButtonCard = ({
     {...componentProps}
   >
     <Stack>
-      <Heading
-        as="h6"
-        variant="h6"
-        color={disabled ? "text.disabled" : "text.main"}
-      >
-        {title}
-      </Heading>
+      <Flex alignItems="center" gap={2}>
+        <Heading
+          as="h6"
+          variant="h6"
+          color={disabled ? "text.disabled" : "text.main"}
+        >
+          {title}
+        </Heading>
+        {tagLabel && <Tag size="sm">{tagLabel}</Tag>}
+      </Flex>
       {typeof description === "string" ? (
         <Text variant="body2" color={disabled ? "text.disabled" : "text.main"}>
           {description}
@@ -52,6 +59,6 @@ export const ButtonCard = ({
         description
       )}
     </Stack>
-    <CustomIcon name="chevron-right" color="gray.600" />
+    {hasIcon && <CustomIcon name="chevron-right" color="gray.600" />}
   </Flex>
 );

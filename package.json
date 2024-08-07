@@ -1,6 +1,6 @@
 {
   "name": "celatone",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "author": "Alles Labs",
   "contributors": [
     {
@@ -42,10 +42,11 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@alleslabs/shared": "1.0.0-dev2",
     "@amplitude/analytics-browser": "^2.3.3",
     "@amplitude/analytics-types": "^2.3.0",
     "@amplitude/plugin-user-agent-enrichment-browser": "^1.0.0",
-    "@chain-registry/types": "0.17.0",
+    "@chain-registry/types": "0.45.36",
     "@chakra-ui/anatomy": "^2.2.2",
     "@chakra-ui/card": "^2.2.0",
     "@chakra-ui/icons": "^2.1.1",
@@ -72,7 +73,7 @@
     "@emotion/styled": "^11.11.0",
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-typed-document-node/core": "^3.2.0",
-    "@hookform/resolvers": "^3.6.0",
+    "@hookform/resolvers": "^3.9.0",
     "@initia/initia.js": "0.2.5",
     "@initia/initia.proto": "0.2.0",
     "@initia/utils": "0.62.0",

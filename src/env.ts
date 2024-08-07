@@ -32,3 +32,9 @@ export const HASURA_ADMIN_SECRET =
 
 export const CELATONE_VERIFICATION_API =
   process.env.NEXT_PUBLIC_CELATONE_VERIFICATION_API ?? "";
+
+export const INITIA_MOVE_DECODER =
+  process.env.NEXT_PUBLIC_INITIA_MOVE_DECODER ?? "";
+
+export const INITIA_MOVE_VERIFIER =
+  process.env.NEXT_PUBLIC_INITIA_MOVE_VERIFIER ?? "";
