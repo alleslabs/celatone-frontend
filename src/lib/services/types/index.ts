@@ -12,3 +12,4 @@ export * from "./move";
 export * from "./stats";
 export * from "./nft-collection";
 export * from "./nft";
+export * from "./verification";
