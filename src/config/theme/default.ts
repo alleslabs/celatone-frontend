@@ -34,12 +34,12 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
       background: "#0E3139",
     },
     accent: {
-      lighter: "#9AF3FF",
-      light: "#71EEFF",
-      main: "#4CE2F7",
-      dark: "#00B5CE",
-      darker: "#007080",
-      background: "#0E3139",
+      lighter: "#F0D5FF",
+      light: "#E1ADFE",
+      main: "#CE89F4",
+      dark: "#A758D3",
+      darker: "#9123CE",
+      background: "#432E4F",
     },
     gray: {
       100: "#F5F5F5",
@@ -153,7 +153,7 @@ const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
   },
   tag: {
     signer: {
-      bg: "accent.darker",
+      bg: "primary.darker",
       color: "text.main",
     },
     related: {

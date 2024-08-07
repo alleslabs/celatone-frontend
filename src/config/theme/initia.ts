@@ -34,12 +34,12 @@ const INITIA_BASE_THEME: ThemeConfig = {
       background: "#0E3139",
     },
     accent: {
-      lighter: "#9AF3FF",
-      light: "#71EEFF",
-      main: "#4CE2F7",
-      dark: "#00B5CE",
-      darker: "#007080",
-      background: "#0E3139",
+      lighter: "#F0D5FF",
+      light: "#E1ADFE",
+      main: "#CE89F4",
+      dark: "#B851F0",
+      darker: "#A400FF",
+      background: "#432E4F",
     },
     gray: {
       100: "#F5F5F5",
@@ -157,7 +157,7 @@ const INITIA_COMPONENT_CONFIG: ComponentConfig = {
       color: "text.main",
     },
     related: {
-      bg: "accent.darker",
+      bg: "gray.700",
       color: "text.main",
     },
   },

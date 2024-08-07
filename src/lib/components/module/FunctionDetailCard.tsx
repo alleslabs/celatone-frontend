@@ -72,7 +72,7 @@ const FunctionButton = ({
     if ((isMobile && !isView) || disabled)
       return { variant: "outline-gray", color: "gray.500" };
     if (isView) return { variant: "outline-primary", color: "primary.dark" };
-    return { variant: "outline-accent", color: "accent.dark" };
+    return { variant: "outline-accent", color: "accent.main" };
   };
 
   return (
