@@ -37,8 +37,8 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   );
 
   const wasmVerifyStatus = getWasmVerifyStatus(derivedWasmVerifyInfo);
-  const schema = getSchemaByCodeHash(txResult.codeHash);
-  const attached = Boolean(schema);
+  const localSchema = getSchemaByCodeHash(txResult.codeHash);
+  const attached = Boolean(localSchema);
 
   const displayOptions =
     wasmVerifyStatus !== WasmVerifyStatus.IN_PROGRESS && !attached;
@@ -118,7 +118,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           ) : (
             <UploadSchema
               attached={attached}
-              schema={schema}
+              localSchema={localSchema}
               codeId={Number(txResult.codeId)}
               codeHash={txResult.codeHash}
             />
@@ -151,7 +151,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
             ) : (
               <UploadSchema
                 attached={attached}
-                schema={schema}
+                localSchema={localSchema}
                 codeId={Number(txResult.codeId)}
                 codeHash={txResult.codeHash}
                 triggerElement={

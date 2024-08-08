@@ -31,36 +31,34 @@ export const useSubmitWasmVerify = () => {
 
 export const useWasmVerifyInfos = (codeIds: number[], enabled = true) => {
   const { currentChainId } = useCelatoneApp();
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.WASM_VERIFICATION_INFOS,
       currentChainId,
       ...codeIds.sort(),
     ],
-    () => getWasmVerifyInfos(currentChainId, codeIds),
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryFn: () => getWasmVerifyInfos(currentChainId, codeIds),
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: Infinity,
+  });
 };
 
 const useWasmRelatedVerifyInfos = (hashes: string[], enabled = true) => {
   const { currentChainId } = useCelatoneApp();
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.WASM_RELATED_VERIFICATION_INFOS,
       currentChainId,
       ...hashes.sort(),
     ],
-    () => getWasmRelatedVerifyInfos(currentChainId, hashes),
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryFn: () => getWasmRelatedVerifyInfos(currentChainId, hashes),
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: Infinity,
+  });
 };
 
 export const useDerivedWasmVerifyInfo = (

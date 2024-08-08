@@ -107,7 +107,7 @@ export const SchemaExecute = ({
               </Text>
               <UploadSchema
                 attached
-                schema={localSchema}
+                localSchema={localSchema}
                 codeId={codeId}
                 codeHash={codeHash}
               />

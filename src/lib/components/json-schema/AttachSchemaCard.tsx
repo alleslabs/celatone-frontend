@@ -12,7 +12,7 @@ interface AttachSchemaCardProps {
   attached: boolean;
   codeId: number;
   codeHash: string;
-  schema: Option<CodeSchema>;
+  localSchema: Option<CodeSchema>;
   openModal: () => void;
 }
 
@@ -20,7 +20,7 @@ export const AttachSchemaCard = ({
   attached,
   codeId,
   codeHash,
-  schema,
+  localSchema,
   openModal,
 }: AttachSchemaCardProps) => {
   const handleAttach = useCallback(() => {
@@ -63,7 +63,7 @@ export const AttachSchemaCard = ({
             <Text variant="body2">JSON Schema attached</Text>
           </Flex>
           <Flex align="center" gap={2}>
-            <ViewSchemaModal codeId={codeId} jsonSchema={schema} />
+            <ViewSchemaModal codeId={codeId} localSchema={localSchema} />
             <Button variant="outline-gray" size="sm" onClick={handleReattach}>
               Reattach
             </Button>

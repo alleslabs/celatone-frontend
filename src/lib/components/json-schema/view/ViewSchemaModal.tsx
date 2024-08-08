@@ -45,7 +45,7 @@ const StyledTabPanel = chakra(TabPanel, {
 
 interface ViewSchemaModalProps {
   codeId: number;
-  jsonSchema: Option<CodeSchema>;
+  localSchema: Option<CodeSchema>;
   isIcon?: boolean;
 }
 
@@ -60,7 +60,7 @@ const ALL_TABS = ["full schema", ...SchemaMsgTabList];
 
 export const ViewSchemaModal = ({
   codeId,
-  jsonSchema,
+  localSchema,
   isIcon = false,
 }: ViewSchemaModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -138,12 +138,12 @@ export const ViewSchemaModal = ({
               </TabList>
               <TabPanels pl={6}>
                 <StyledTabPanel>
-                  <ViewSchemaPanel jsonSchema={jsonSchema} codeId={codeId} />
+                  <ViewSchemaPanel jsonSchema={localSchema} codeId={codeId} />
                 </StyledTabPanel>
                 {SchemaMsgTabList.map((schemaProperty) => (
                   <StyledTabPanel key={schemaProperty}>
                     <ViewSchemaPanel
-                      jsonSchema={jsonSchema?.[schemaProperty]}
+                      jsonSchema={localSchema?.[schemaProperty]}
                       codeId={codeId}
                     />
                   </StyledTabPanel>

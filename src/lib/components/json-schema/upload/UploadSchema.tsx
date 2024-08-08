@@ -7,7 +7,7 @@ import type { CodeSchema, Option } from "lib/types";
 
 interface UploadSchemaContentInterface {
   attached: boolean;
-  schema: Option<CodeSchema>;
+  localSchema: Option<CodeSchema>;
   codeId: number;
   codeHash: string;
   triggerElement?: ReactNode;
@@ -15,7 +15,7 @@ interface UploadSchemaContentInterface {
 
 export const UploadSchema = ({
   attached,
-  schema,
+  localSchema,
   codeId,
   codeHash,
   triggerElement,
@@ -37,7 +37,7 @@ export const UploadSchema = ({
           attached={attached}
           codeId={codeId}
           codeHash={codeHash}
-          schema={schema}
+          localSchema={localSchema}
           openModal={onOpen}
         />
       )}

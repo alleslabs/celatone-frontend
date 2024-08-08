@@ -54,7 +54,7 @@ export const SchemaInputNotExist = ({
       </Text>
       <AttachSchemaCard
         attached={Boolean(localSchema)}
-        schema={localSchema}
+        localSchema={localSchema}
         codeId={codeId}
         codeHash={codeHash}
         openModal={openModal}
