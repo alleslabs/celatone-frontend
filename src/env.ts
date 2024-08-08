@@ -11,6 +11,8 @@ export const SUPPORTED_CHAIN_IDS: string[] = (() => {
   return chainIds;
 })();
 
+export const CHAIN = process.env.NEXT_PUBLIC_CHAIN ?? "";
+
 // Remark: We've already checked that the first element is not empty on the above code
 export const FALLBACK_SUPPORTED_CHAIN_ID = SUPPORTED_CHAIN_IDS[0];
 
