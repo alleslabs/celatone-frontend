@@ -33,6 +33,7 @@ export const WasmVerifyRequestInfo = ({
 }: WasmVerifyRequestInfoProps) => {
   const wasmVerifyStatus = getWasmVerifyStatus({
     verificationInfo,
+    schema: null,
     relatedVerifiedCodes,
   });
 

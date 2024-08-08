@@ -2,7 +2,7 @@ import { Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/amino";
 import type { UseFormReturn } from "react-hook-form";
 
-import { UploadSection } from "lib/components/upload/UploadSection";
+import { UploadSection } from "lib/components/upload";
 import type { Option, SimulateStatus, UploadSectionState } from "lib/types";
 
 interface UploadNewCodeProps {

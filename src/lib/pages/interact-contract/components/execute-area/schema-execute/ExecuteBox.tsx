@@ -42,8 +42,12 @@ import { JsonSchemaForm } from "lib/components/json-schema";
 import { useTxBroadcast } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import type { Activity } from "lib/stores/contract";
-import type { SchemaInfo } from "lib/stores/schema";
-import type { BechAddr32, ComposedMsg, JsonDataType } from "lib/types";
+import type {
+  BechAddr32,
+  ComposedMsg,
+  JsonDataType,
+  SchemaInfo,
+} from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,

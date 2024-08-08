@@ -14,6 +14,8 @@ import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import { useSchemaStore } from "lib/providers/store";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr32, Coin } from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
@@ -37,6 +39,7 @@ const InteractContractBody = ({
 }: InteractContractQueryParams) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
+  const { getSchemaByCodeHash } = useSchemaStore();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -52,6 +55,10 @@ const InteractContractBody = ({
   const { data: code } = useCodeLcd(codeId ?? 0, {
     enabled: !isUndefined(codeId),
   });
+  const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+    code?.codeId,
+    code?.hash
+  );
 
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//
@@ -122,6 +129,8 @@ const InteractContractBody = ({
     }
   }, [contract, msg]);
 
+  const verifiedSchema = derivedWasmVerifyInfo?.schema;
+  const localSchema = code?.hash ? getSchemaByCodeHash(code?.hash) : undefined;
   return (
     <PageContainer>
       <CelatoneSeo pageName="Query / Execute Contract" />
@@ -152,6 +161,8 @@ const InteractContractBody = ({
         currentTab={selectedType}
         queryContent={
           <QueryArea
+            verifiedSchema={verifiedSchema}
+            localSchema={localSchema}
             contractAddress={contractAddress}
             initialMsg={initialMsg}
             codeId={codeId}
@@ -160,6 +171,8 @@ const InteractContractBody = ({
         }
         executeContent={
           <ExecuteArea
+            verifiedSchema={verifiedSchema}
+            localSchema={localSchema}
             contractAddress={contractAddress}
             initialMsg={initialMsg}
             initialFunds={initialFunds}

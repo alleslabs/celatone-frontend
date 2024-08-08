@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { zWasmVerifyInfo } from "lib/types";
+import { zRelatedWasmVerifyInfo, zWasmVerifyInfo } from "lib/types";
 
 export interface WasmVerifyRequest {
   chainId: string;
@@ -18,5 +18,5 @@ export const zWasmVerifyInfosResponse = z.record(
 
 export const zWasmRelatedVerifyInfosResponse = z.record(
   z.string(),
-  zWasmVerifyInfo.omit({ verificationInfo: true })
+  zRelatedWasmVerifyInfo
 );

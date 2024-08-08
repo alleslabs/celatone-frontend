@@ -1,8 +1,7 @@
 import { getSchemaType } from "@rjsf/utils";
 import type { RJSFSchema } from "@rjsf/utils";
 
-import type { SchemaInfo } from "lib/stores/schema";
-import type { JsonDataType } from "lib/types";
+import type { JsonDataType, SchemaInfo } from "lib/types";
 
 export const jsonValidate = (text: string) => {
   try {

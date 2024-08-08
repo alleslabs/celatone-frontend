@@ -72,6 +72,7 @@ export const FailedDetails = ({
             codeHash={codeHash}
             wasmVerifyStatus={getWasmVerifyStatus({
               verificationInfo,
+              schema: null,
               relatedVerifiedCodes,
             })}
             relatedVerifiedCodes={relatedVerifiedCodes}

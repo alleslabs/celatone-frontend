@@ -28,7 +28,9 @@ const RelatedVerifiedCodes = ({
             index < displayedCodes.length - 1 &&
             ","}
           {index < displayedCodes.length - 1 && " "}
-          {index === relatedVerifiedCodes.length - 2 && "and "}
+          {index === relatedVerifiedCodes.length - 2 &&
+            index < displayedCodes.length - 1 &&
+            "and "}
         </Fragment>
       ))}
       {relatedVerifiedCodes.length > 3 && " and more"}
@@ -59,13 +61,13 @@ export const IndirectlyVerifiedDetails = ({
             <ExplorerLink
               value={codeId.toString()}
               type="code_id"
-              showCopyOnHover
               rightIcon={
                 <WasmVerifyBadge
                   status={WasmVerifyStatus.INDIRECTLY_VERIFIED}
                   relatedVerifiedCodes={relatedVerifiedCodes}
                 />
               }
+              showCopyOnHover
             />{" "}
             which has the same code hash with other verified codes.
           </>

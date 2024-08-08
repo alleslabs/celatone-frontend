@@ -8,15 +8,18 @@ import { ControllerInput } from "../forms";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { useGetMaxLengthError } from "lib/hooks";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
+import { WasmVerifyStatus } from "lib/types";
 import type {
   BechAddr,
   Option,
   SimulateStatus,
   UploadSectionState,
 } from "lib/types";
-import { getCodeHash } from "lib/utils";
+import { getCodeHash, getWasmVerifyStatus } from "lib/utils";
 
 import { CodeHashBox } from "./CodeHashBox";
+import { IndirectlyVerifiedAlert } from "./IndirectlyVerifiedAlert";
 import { InstantiatePermissionRadio } from "./InstantiatePermissionRadio";
 import { SimulateMessageRender } from "./SimulateMessageRender";
 import { UploadCard } from "./UploadCard";
@@ -44,6 +47,10 @@ export const UploadSection = ({
   const getMaxLengthError = useGetMaxLengthError();
   const { address } = useCurrentChain();
   const [codeHash, setCodeHash] = useState<string>();
+  const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+    undefined,
+    codeHash
+  );
 
   const {
     control,
@@ -81,6 +88,7 @@ export const UploadSection = ({
     setDefaultBehavior,
   ]);
 
+  const wasmVerifyStatus = getWasmVerifyStatus(derivedWasmVerifyInfo);
   return (
     <Flex direction="column" gap={8} maxW="550px">
       {wasmFile ? (
@@ -112,6 +120,11 @@ export const UploadSection = ({
         }
         variant="fixed-floating"
       />
+      {wasmVerifyStatus === WasmVerifyStatus.INDIRECTLY_VERIFIED && (
+        <IndirectlyVerifiedAlert
+          relatedVerifiedCodes={derivedWasmVerifyInfo?.relatedVerifiedCodes}
+        />
+      )}
       <Flex direction="column">
         <Heading as="h6" variant="h6" fontWeight={600} my={2}>
           Instantiate Permission

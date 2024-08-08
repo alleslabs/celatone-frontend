@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1002](https://github.com/alleslabs/celatone-frontend/pull/1002) Add contract verification modal
+- [#1060](https://github.com/alleslabs/celatone-frontend/pull/1060) Handle wasm verify info on various pages e.g. deploy/migrate flow pages, code/contract pages
 
 ### Improvements
 
