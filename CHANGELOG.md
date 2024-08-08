@@ -45,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1075](https://github.com/alleslabs/celatone-frontend/pull/1075) Fix custom minitia minor change
+
 ## v1.7.3
 
 ### Features
