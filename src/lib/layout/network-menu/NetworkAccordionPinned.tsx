@@ -45,7 +45,7 @@ export const NetworkAccodionPinned = observer(
     setCursor,
     onClose,
   }: NetworkAccodionPinnedProps) => {
-    const { getPinnedNetworks, setPinnedNetworks } = useNetworkStore();
+    const { setPinnedNetworks } = useNetworkStore();
     const [dndActive, setDndActive] = useState<Nullable<Active>>(null);
 
     // Drag and drop feature
@@ -89,13 +89,12 @@ export const NetworkAccodionPinned = observer(
               }}
               onDragEnd={({ active, over }) => {
                 if (over && active.id !== over.id) {
-                  const pinnedChainIds = getPinnedNetworks();
-                  const activeIndex = pinnedChainIds.indexOf(
+                  const activeIndex = pinnedNetworks.indexOf(
                     active.id.toString()
                   );
-                  const overIndex = pinnedChainIds.indexOf(over.id.toString());
+                  const overIndex = pinnedNetworks.indexOf(over.id.toString());
                   setPinnedNetworks(
-                    arrayMove(pinnedChainIds, activeIndex, overIndex)
+                    arrayMove(pinnedNetworks, activeIndex, overIndex)
                   );
                 }
                 setDndActive(null);

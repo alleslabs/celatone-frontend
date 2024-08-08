@@ -10,10 +10,10 @@ import { TxBroadcastProvider } from "./tx-broadcast";
 
 export default ({ children }: { children: React.ReactNode }) => (
   <StoreProvider>
-    <AppProvider>
-      <ChakraProvider>
-        <NetworkGuard>
-          <QueryClientProvider>
+    <QueryClientProvider>
+      <AppProvider>
+        <ChakraProvider>
+          <NetworkGuard>
             <ChainProvider>
               <NavProvider>
                 <AmplitudeProvider>
@@ -21,9 +21,9 @@ export default ({ children }: { children: React.ReactNode }) => (
                 </AmplitudeProvider>
               </NavProvider>
             </ChainProvider>
-          </QueryClientProvider>
-        </NetworkGuard>
-      </ChakraProvider>
-    </AppProvider>
+          </NetworkGuard>
+        </ChakraProvider>
+      </AppProvider>
+    </QueryClientProvider>
   </StoreProvider>
 );
