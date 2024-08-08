@@ -3,6 +3,7 @@ import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
 import { useMigrationHistoriesLcd } from "lib/pages/contract-details/data";
+import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import type { BechAddr32 } from "lib/types";
 
 import { MigrationHeader } from "./MigrationHeader";
@@ -18,10 +19,12 @@ export const MigrationTableLite = ({
 }: MigrationTableLiteProps) => {
   const isMobile = useMobile();
   const { data, error, isLoading } = useMigrationHistoriesLcd(contractAddress);
+  const { data: wasmVerifyInfos, isLoading: isWasmVerifyInfosLoading } =
+    useWasmVerifyInfos(data?.map((history) => history.codeId) ?? [], !!data);
 
   const templateColumns = "90px 320px minmax(140px, 1fr)";
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isWasmVerifyInfosLoading) return <Loading />;
   if (error) return <ErrorFetching dataName="migration histories" />;
   if (!data?.length)
     return (
@@ -36,18 +39,23 @@ export const MigrationTableLite = ({
     <>
       {isMobile ? (
         <MobileTableContainer>
-          {data.map((history) => (
-            <MigrationMobileCard key={history.codeId} history={history} />
+          {data.map((history, index) => (
+            <MigrationMobileCard
+              key={`${index.toString()}-${history.codeId}`}
+              history={history}
+              wasmVerifyInfo={wasmVerifyInfos?.[history.codeId]}
+            />
           ))}
         </MobileTableContainer>
       ) : (
         <TableContainer>
           <MigrationHeader templateColumns={templateColumns} />
-          {data.map((history) => (
+          {data.map((history, index) => (
             <MigrationRow
-              key={history.codeId}
+              key={`${index.toString()}-${history.codeId}`}
               history={history}
               templateColumns={templateColumns}
+              wasmVerifyInfo={wasmVerifyInfos?.[history.codeId]}
             />
           ))}
         </TableContainer>

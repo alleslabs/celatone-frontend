@@ -235,3 +235,36 @@ export const zContractCw2InfoLcd = z
   );
 
 export type ContractCw2InfoLcd = z.infer<typeof zContractCw2InfoLcd>;
+
+const zAllAdminContractsResponseItem = z
+  .object({
+    contract_address: zBechAddr32,
+    label: z.string(),
+    code_id: z.number(),
+    instantiator: zBechAddr.nullable(),
+  })
+  .transform<ContractInfo>((val) => ({
+    contractAddress: val.contract_address,
+    label: val.label,
+    codeId: val.code_id,
+    admin: undefined,
+    instantiator: val.instantiator ?? undefined,
+    latestUpdated: undefined,
+    latestUpdater: undefined,
+    remark: undefined,
+  }));
+
+export const zAllAdminContractsResponse = z.object({
+  items: zAllAdminContractsResponseItem.array(),
+});
+
+export const zContractAdminsResponse = z
+  .object({
+    items: z
+      .object({
+        contract_address: zBechAddr32,
+        admin: zBechAddr.nullable(),
+      })
+      .array(),
+  })
+  .transform(snakeToCamel);

@@ -16,6 +16,7 @@ export interface ContractLocalInfo {
   contractAddress: BechAddr32;
   instantiator: Option<BechAddr>;
   label: string; // NOTE: if empty means no label provided
+  codeId?: number;
   name?: string;
   description?: string;
   tags?: string[];
