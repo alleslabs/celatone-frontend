@@ -37,7 +37,7 @@ export const useSubmitMoveVerify = (
   );
 };
 
-export const useGetMoveVerifyTaskInfo = (
+export const useMoveVerifyTaskInfo = (
   taskId: string
 ): UseQueryResult<MoveVerifyByTaskIdResponse> => {
   const { chainConfig } = useCelatoneApp();
