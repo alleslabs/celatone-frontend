@@ -1,6 +1,6 @@
 import type { Accept } from "react-dropzone";
 
-export type DropzoneFileType = "wasm" | "schema" | "move" | "json";
+export type DropzoneFileType = "wasm" | "schema" | "move";
 
 interface DropzoneConfig {
   accept: Accept;
@@ -30,13 +30,6 @@ export const DROPZONE_CONFIG: { [key in DropzoneFileType]: DropzoneConfig } = {
     text: {
       prettyFileType: ".mv",
       rawFileType: ".mv",
-    },
-  },
-  json: {
-    accept: { "application/json": [".json"] },
-    text: {
-      prettyFileType: "JSON",
-      rawFileType: ".json",
     },
   },
 };
