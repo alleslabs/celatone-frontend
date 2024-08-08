@@ -1,7 +1,7 @@
 import { Button, Flex, Heading, Stack } from "@chakra-ui/react";
 import { isUndefined, omit } from "lodash";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { z } from "zod";
 
 import { useAllowCustomNetworks } from "lib/app-provider";
@@ -57,19 +57,15 @@ interface NetworkConfigBodyProps {
 const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   const { getLocalChainConfig } = useLocalChainConfigStore();
   const chainConfig = getLocalChainConfig(chainId);
-  const json = JSON.stringify(
-    useMemo(() => {
-      return omit(chainConfig, [
-        "tier",
-        "chain",
-        "graphql",
-        "extra",
-        "network_type",
-      ]);
-    }, [chainConfig])
+  const json = useMemo(
+    () =>
+      JSON.stringify(
+        omit(chainConfig, ["tier", "chain", "graphql", "extra", "network_type"])
+      ),
+    [chainConfig]
   );
 
-  const handleExportJson = () => {
+  const handleExportJson = useCallback(() => {
     const blob = new Blob([json], {
       type: "application/json",
     });
@@ -82,7 +78,10 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
 
     document.body.appendChild(a);
     a.click();
-  };
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [chainId, json]);
 
   if (isUndefined(chainConfig)) return <InvalidChainId />;
 
