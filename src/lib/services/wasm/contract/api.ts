@@ -128,7 +128,7 @@ export const getAdminsByContractAddresses = async (
   contractAddresses: BechAddr32[]
 ) =>
   axios
-    .get(`${endpoint}/all-contract-admins`, {
+    .get(`${endpoint}/contract-admins`, {
       params: {
         contract_addresses: contractAddresses.join(","),
       },

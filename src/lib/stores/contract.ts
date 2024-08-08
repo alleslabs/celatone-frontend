@@ -229,8 +229,9 @@ export class ContractStore {
   updateContractLocalInfo(
     userKey: string,
     contractAddress: BechAddr32,
-    instantiator: Option<BechAddr>,
     label: string,
+    codeId: Option<number>,
+    instantiator: Option<BechAddr>,
     name?: string,
     description?: string,
     tags?: string[],
@@ -240,8 +241,9 @@ export class ContractStore {
       contractAddress
     ] ?? {
       contractAddress,
-      instantiator,
       label,
+      codeId,
+      instantiator,
     };
 
     if (name !== undefined)

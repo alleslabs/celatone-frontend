@@ -81,6 +81,7 @@ interface InstantiatePageProps {
   onComplete: (
     txResult: InstantiateResult,
     contractLabel: string,
+    codeId: number,
     instantiator: BechAddr20
   ) => void;
 }
@@ -273,7 +274,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       estimatedFee,
       onTxSucceed: (txResult, contractLabel) => {
         setProcessing(false);
-        onComplete(txResult, contractLabel, address ?? ("" as BechAddr20));
+        onComplete(
+          txResult,
+          contractLabel,
+          Number(codeId),
+          address ?? ("" as BechAddr20)
+        );
       },
       onTxFailed: () => setProcessing(false),
     });

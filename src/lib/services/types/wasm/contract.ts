@@ -36,6 +36,7 @@ const zContractsResponseItem = z
   .object({
     contract_address: zBechAddr32,
     label: z.string(),
+    code_id: z.number(),
     admin: zBechAddr.nullable(),
     instantiator: zBechAddr.nullable(),
     latest_updated: zUtcDate.nullable(),
@@ -45,6 +46,7 @@ const zContractsResponseItem = z
   .transform<ContractInfo>((val) => ({
     contractAddress: val.contract_address,
     label: val.label,
+    codeId: val.code_id,
     // TODO: change contract info optional fields to nullable fields
     admin: val.admin ?? undefined,
     instantiator: val.instantiator ?? undefined,
@@ -64,6 +66,7 @@ const zContractsResponseItemLcd = zBechAddr32.transform<ContractInfo>(
   (val) => ({
     contractAddress: val,
     label: "",
+    codeId: undefined,
     admin: undefined,
     instantiator: undefined,
     latestUpdated: undefined,
