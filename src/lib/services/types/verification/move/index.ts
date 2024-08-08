@@ -10,6 +10,14 @@ enum MoveVerifyTaskStatus {
   Running = "RUNNING",
 }
 
+export const zSubmitMoveVerifyResponse = z.object({
+  id: z.string(),
+  status: z.nativeEnum(MoveVerifyTaskStatus),
+});
+export type SubmitMoveVerifyResponse = z.infer<
+  typeof zSubmitMoveVerifyResponse
+>;
+
 export const zMoveVerifyByTaskIdResponse = z.object({
   task: z.object({
     id: z.string(),

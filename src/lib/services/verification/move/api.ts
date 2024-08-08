@@ -2,18 +2,34 @@ import axios from "axios";
 
 import { INITIA_MOVE_VERIFIER } from "env";
 import type {
+  MoveVerifyByTaskIdResponse,
   MoveVerifyInfoResponse,
   MoveVerifyInfosByModuleResponse,
+  SubmitMoveVerifyResponse,
 } from "lib/services/types";
 import {
   zMoveVerifyByTaskIdResponse,
   zMoveVerifyInfoResponse,
   zMoveVerifyInfosByModuleResponse,
+  zSubmitMoveVerifyResponse,
 } from "lib/services/types";
 import type { Addr, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-export const getMoveVerifyByTaskId = async (taskId: string) =>
+export const getSubmitMoveVerify = async (
+  formData: FormData
+): Promise<SubmitMoveVerifyResponse> =>
+  axios
+    .post(`${INITIA_MOVE_VERIFIER}/contracts/verify`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(({ data }) => parseWithError(zSubmitMoveVerifyResponse, data));
+
+export const getMoveVerifyByTaskId = async (
+  taskId: string
+): Promise<MoveVerifyByTaskIdResponse> =>
   axios
     .get(`${INITIA_MOVE_VERIFIER}/contracts/task/${encodeURI(taskId)}`)
     .then(({ data }) => parseWithError(zMoveVerifyByTaskIdResponse, data));
