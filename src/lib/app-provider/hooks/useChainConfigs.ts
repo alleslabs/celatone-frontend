@@ -1,24 +1,10 @@
 import type { AssetList, Chain } from "@chain-registry/types";
-import { assets, chains } from "chain-registry";
-import { find, isUndefined } from "lodash";
+import chainRegistry from "chain-registry";
+import { find, isUndefined, unionBy } from "lodash";
 import { useCallback, useMemo } from "react";
 
 import type { ChainConfigs } from "config/chain";
-import { CHAIN_CONFIGS } from "config/chain";
 import { SUPPORTED_CHAIN_IDS } from "env";
-import {
-  initiatestnet,
-  initiatestnetAssets,
-} from "lib/chain-registry/initiatestnet";
-import {
-  localosmosis,
-  localosmosisAsset,
-} from "lib/chain-registry/localosmosis";
-import { sei, seiAssets } from "lib/chain-registry/sei";
-import {
-  terra2testnet,
-  terra2testnetAssets,
-} from "lib/chain-registry/terra2testnet";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { useApiChainConfigs } from "lib/services/chain-config";
 import { populateChainConfig } from "lib/utils/chain-config";
@@ -84,15 +70,15 @@ export const useChainConfigs = (): {
 
   const isChainIdExist = useCallback(
     (chainId: string) =>
-      !!CHAIN_CONFIGS[chainId] || isLocalChainIdExist(chainId),
-    [isLocalChainIdExist]
+      !!api.chainConfigs[chainId] || isLocalChainIdExist(chainId),
+    [api.chainConfigs, isLocalChainIdExist]
   );
 
   const isPrettyNameExist = useCallback(
     (name: string) =>
-      !!find(CHAIN_CONFIGS, { prettyName: name }) ||
+      !!find(apiChainConfigs, { prettyName: name }) ||
       isLocalPrettyNameExist(name),
-    [isLocalPrettyNameExist]
+    [apiChainConfigs, isLocalPrettyNameExist]
   );
 
   return {
@@ -100,22 +86,18 @@ export const useChainConfigs = (): {
       ...api.chainConfigs,
       ...local.chainConfigs,
     },
-    registryChains: [
-      ...chains,
-      localosmosis,
-      sei,
-      terra2testnet,
-      ...initiatestnet,
-      ...local.registryChains,
-    ],
-    registryAssets: [
-      ...assets,
-      localosmosisAsset,
-      seiAssets,
-      terra2testnetAssets,
-      ...initiatestnetAssets,
-      ...local.registryAssets,
-    ],
+    registryChains: unionBy(
+      chainRegistry.chains,
+      api.registryChains,
+      local.registryChains,
+      "chain_id"
+    ),
+    registryAssets: unionBy(
+      chainRegistry.assets,
+      api.registryAssets,
+      local.registryAssets,
+      "chain_name"
+    ),
     supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
     isChainIdExist,
     isPrettyNameExist,

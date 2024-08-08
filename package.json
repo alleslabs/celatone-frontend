@@ -140,6 +140,9 @@
     "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },
+  "resolutions": {
+    "@chain-registry/types": "0.45.36"
+  },
   "devDependencies": {
     "@chakra-ui/storybook-addon": "^5.1.0",
     "@commitlint/config-conventional": "^18.1.0",

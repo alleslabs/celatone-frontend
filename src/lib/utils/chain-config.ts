@@ -57,6 +57,7 @@ export const populateChainConfig = (
     extra: config.extra,
   },
   registryChain: {
+    $schema: "../chain.schema.json",
     chain_name: config.registryChainName,
     status: "live",
     network_type: config.network_type,
