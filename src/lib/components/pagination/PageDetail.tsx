@@ -29,7 +29,6 @@ export const PageDetail = ({
         Items per page:
       </Text>
       <Select
-        bg="inherit"
         border="none"
         minW="70px"
         w="fit-content"

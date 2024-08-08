@@ -20,17 +20,20 @@ import {
   SaveContractDetailsModal,
 } from "lib/components/modal";
 import { TotalValue } from "lib/components/TotalValue";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type { Contract } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
-import { ContractInteractionTabs } from "lib/types";
 import type {
   BechAddr32,
   Nullable,
+  Nullish,
   Option,
   ProjectInfo,
   PublicContractInfo,
+  WasmVerifyInfo,
 } from "lib/types";
-import { truncate } from "lib/utils";
+import { ContractInteractionTabs } from "lib/types";
+import { getWasmVerifyStatus, truncate } from "lib/utils";
 
 interface ContractTopProps {
   contractAddress: BechAddr32;
@@ -38,6 +41,7 @@ interface ContractTopProps {
   publicInfo: Nullable<PublicContractInfo>;
   contract: Contract;
   contractLocalInfo: Option<ContractLocalInfo>;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const ContractTop = ({
@@ -46,6 +50,7 @@ export const ContractTop = ({
   publicInfo,
   contract,
   contractLocalInfo,
+  wasmVerifyInfo,
 }: ContractTopProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -129,12 +134,7 @@ export const ContractTop = ({
         direction={{ base: "column", md: "row" }}
         gap={{ md: 4 }}
       >
-        <Flex
-          direction="column"
-          gap={{ base: 1, md: 3 }}
-          overflow="hidden"
-          minW={{ md: "680px" }}
-        >
+        <Flex direction="column" gap={{ base: 1, md: 3 }} overflow="hidden">
           <Flex gap={1} align="start" minH="36px">
             <CustomIcon
               name="contract-address"
@@ -150,15 +150,23 @@ export const ContractTop = ({
                 height={7}
               />
             )}
-            <Heading
-              as="h5"
-              mt={{ base: 1, md: 0 }}
-              ml={{ base: 1, md: 0 }}
-              variant={{ base: "h6", md: "h5" }}
-              wordBreak="break-word"
-            >
-              {displayName}
-            </Heading>
+            <Flex alignItems="center" display="inline">
+              <Heading
+                as="h5"
+                mt={{ base: 1, md: 0 }}
+                ml={{ base: 1, md: 0 }}
+                variant={{ base: "h6", md: "h5" }}
+                wordBreak="break-word"
+                display="inline"
+              >
+                {displayName}
+              </Heading>
+              <WasmVerifyBadge
+                status={getWasmVerifyStatus(wasmVerifyInfo)}
+                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                linkedCodeId={contract.codeId}
+              />
+            </Flex>
           </Flex>
           <Flex gap={{ base: 2, md: 1 }} direction="column">
             <Flex
