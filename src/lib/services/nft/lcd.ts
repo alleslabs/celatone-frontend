@@ -1,4 +1,4 @@
-import { getMoveViewJson } from "../move/module/lcd";
+import { getMoveViewJsonLcd } from "../move/module/lcd";
 import type { Nft } from "../types";
 import { zNftInfoLcd } from "../types";
 import { zHexAddr } from "lib/types";
@@ -9,7 +9,7 @@ export const getNftHolderLcd = async (
   endpoint: string,
   nftAddress: HexAddr32
 ) =>
-  getMoveViewJson(
+  getMoveViewJsonLcd(
     endpoint,
     "0x1" as HexAddr,
     "object",
@@ -19,7 +19,7 @@ export const getNftHolderLcd = async (
   ).then((data) => parseWithError(zHexAddr, data));
 
 export const getNftInfoLcd = async (endpoint: string, nftAddress: HexAddr32) =>
-  getMoveViewJson(
+  getMoveViewJsonLcd(
     endpoint,
     "0x1" as HexAddr,
     "nft",

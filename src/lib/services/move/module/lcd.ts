@@ -4,7 +4,7 @@ import type { AccountModulesResponse } from "lib/services/types";
 import {
   zModuleResponseLcd,
   zModulesResponseLcd,
-  zMoveViewJsonResponse,
+  zMoveViewJsonResponseLcd,
 } from "lib/services/types";
 import type { Addr, HexAddr, IndexedModule, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
@@ -49,7 +49,7 @@ export const getModulesByAddressLcd = async (
   };
 };
 
-export const getMoveViewJson = async (
+export const getMoveViewJsonLcd = async (
   endpoint: string,
   vmAddress: HexAddr,
   moduleName: string,
@@ -65,4 +65,4 @@ export const getMoveViewJson = async (
       type_args: typeArgs,
       args,
     })
-    .then(({ data }) => parseWithError(zMoveViewJsonResponse, data));
+    .then(({ data }) => parseWithError(zMoveViewJsonResponseLcd, data));
