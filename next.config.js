@@ -42,6 +42,10 @@ const nextConfig = {
         source: "/amplitude",
         destination: `https://api2.amplitude.com/2/httpapi`,
       },
+      {
+        source: "/docker/image/:path*",
+        destination: `https://hub.docker.com/v2/namespaces/:path*`,
+      },
     ];
   },
   async redirects() {

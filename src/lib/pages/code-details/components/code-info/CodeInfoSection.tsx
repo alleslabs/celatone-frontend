@@ -70,7 +70,9 @@ const getMethodSpecificRender = (
     return {
       methodRender: (
         <CodeInfoLabelText label="Upload Transaction">
-          <ExplorerLink type="tx_hash" value={hash} showCopyOnHover />
+          <Flex minW="150px">
+            <ExplorerLink type="tx_hash" value={hash} showCopyOnHover />
+          </Flex>
         </CodeInfoLabelText>
       ),
       storedBlockRender:

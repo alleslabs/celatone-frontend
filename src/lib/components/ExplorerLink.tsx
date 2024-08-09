@@ -1,6 +1,7 @@
 import type { FlexProps, TextProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
+import type { ReactNode } from "react";
 
 import { trackMintScan } from "lib/amplitude";
 import type { AddressReturnType } from "lib/app-provider";
@@ -34,6 +35,7 @@ interface ExplorerLinkProps extends FlexProps {
   ampCopierSection?: string;
   openNewTab?: boolean;
   fixedHeight?: boolean;
+  rightIcon?: ReactNode;
 }
 
 export const getNavigationUrl = ({
@@ -169,6 +171,7 @@ export const ExplorerLink = ({
   ampCopierSection,
   openNewTab,
   fixedHeight = true,
+  rightIcon = null,
   ...componentProps
 }: ExplorerLinkProps) => {
   const isMobile = useMobile();
@@ -192,6 +195,7 @@ export const ExplorerLink = ({
       <Text variant="body2" color="text.disabled">
         {textValue}
       </Text>
+      {rightIcon}
     </Flex>
   ) : (
     <Flex
@@ -216,6 +220,7 @@ export const ExplorerLink = ({
         textVariant={textVariant}
         openNewTab={openNewTab}
       />
+      {rightIcon}
       <Copier
         type={type}
         value={copyValue || value}
