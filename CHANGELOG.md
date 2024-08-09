@@ -39,13 +39,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1002](https://github.com/alleslabs/celatone-frontend/pull/1002) Add contract verification modal
+
+### Improvements
+
+### Bug fixes
+
+- [#1075](https://github.com/alleslabs/celatone-frontend/pull/1075) Fix custom minitia minor change
+
+## v1.7.3
+
+### Features
+
+- [#1058](https://github.com/alleslabs/celatone-frontend/pull/1058) Show chain config JSON and remove modal
+- [#1057](https://github.com/alleslabs/celatone-frontend/pull/1057) Add local minitias to network selector
+- [#1043](https://github.com/alleslabs/celatone-frontend/pull/1043) Save custom minitias JSON form to localstorage
+- [#1059](https://github.com/alleslabs/celatone-frontend/pull/1059) Disable add custom networks on non initia deployments
+- [#1052](https://github.com/alleslabs/celatone-frontend/pull/1052) Add entry point to add custom minitias network in network selector
+- [#1038](https://github.com/alleslabs/celatone-frontend/pull/1038) Add custom networks options page to navigate between manual and upload json
+- [#1054](https://github.com/alleslabs/celatone-frontend/pull/1054) Add chain config store, useChainConfig hook, and apply it all places
+
 ### Improvements
 
 - [#1054](https://github.com/alleslabs/celatone-frontend/pull/1054) Improve main search bar to show both address and address as username
+- [#1062](https://github.com/alleslabs/celatone-frontend/pull/1062) Adjust edit minitia layout and other minor styling
+- [#1061](https://github.com/alleslabs/celatone-frontend/pull/1061) Refactor custom network routes and add support chain ids to hook
 - [#1053](https://github.com/alleslabs/celatone-frontend/pull/1053) Move move decoder and verifier links to env
 
 ### Bug fixes
 
+- [#1063](https://github.com/alleslabs/celatone-frontend/pull/1063) Fix bug bash for add custom networks
+- [#1069](https://github.com/alleslabs/celatone-frontend/pull/1069) Fix add custom minitia network manually
+- [#1065](https://github.com/alleslabs/celatone-frontend/pull/1065) Fix zod url validation to allow only http and https in add custom minitia page
+- [#1064](https://github.com/alleslabs/celatone-frontend/pull/1064) Fix cancel button in add custom minitia page
+- [#1068](https://github.com/alleslabs/celatone-frontend/pull/1068) Add fetching bech32 prefix from lcd and disable close success modal on overlay click
+- [#1067](https://github.com/alleslabs/celatone-frontend/pull/1067) Add gas fee details to support more decimal digits and add default value
+- [#1066](https://github.com/alleslabs/celatone-frontend/pull/1066) Remove add custom minitia supported feature step and add vm type in network detail
 - [#1050](https://github.com/alleslabs/celatone-frontend/pull/1050) Fix gap between network subsection
 
 ## v1.7.2
@@ -70,6 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1078](https://github.com/alleslabs/celatone-frontend/pull/1078) Add banner modal and adjust color
 - [#1040](https://github.com/alleslabs/celatone-frontend/pull/1040) Refactor networks selector
 - [#1039](https://github.com/alleslabs/celatone-frontend/pull/1039) Make NFT Txs to load more style
 - [#1036](https://github.com/alleslabs/celatone-frontend/pull/1036) Refactor home and change some component names to match the current convention

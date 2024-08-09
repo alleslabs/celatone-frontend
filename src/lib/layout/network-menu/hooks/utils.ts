@@ -1,20 +1,20 @@
-import type { ChainConfig } from "config/chain";
-import { CHAIN_CONFIGS } from "config/chain";
+import type { ChainConfig, ChainConfigs } from "config/chain";
 import type { Option } from "lib/types";
 
 export const filterChains = (
+  chainConfigs: ChainConfigs,
   chainIds: string[],
   keyword: string,
   type?: ChainConfig["networkType"]
 ) => {
   const chainIdsByType = type
-    ? chainIds.filter((chainId) => CHAIN_CONFIGS[chainId]?.networkType === type)
+    ? chainIds.filter((chainId) => chainConfigs[chainId]?.networkType === type)
     : chainIds;
 
   return chainIdsByType.filter(
     (chainId) =>
       !keyword ||
-      CHAIN_CONFIGS[chainId]?.prettyName
+      chainConfigs[chainId]?.prettyName
         .toLowerCase()
         .includes(keyword.toLowerCase()) ||
       chainId.toLowerCase().includes(keyword.toLowerCase())

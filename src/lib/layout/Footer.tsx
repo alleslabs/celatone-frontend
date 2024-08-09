@@ -2,7 +2,7 @@ import type { IconProps } from "@chakra-ui/react";
 import { Flex, Image, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
-import { AmpEvent, track, trackSocial } from "lib/amplitude";
+import { trackSocial } from "lib/amplitude";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
@@ -17,35 +17,36 @@ interface SocialMenuType {
 
 const socialMenu: SocialMenuType[] = [
   {
-    url: "https://github.com/alleslabs",
+    url: "https://initia.xyz",
+    icon: "website",
+    slug: "website",
+  },
+  {
+    url: "https://github.com/initia-labs",
     icon: "github",
     slug: "github",
   },
   {
-    url: "https://twitter.com/celatone_",
+    url: "https://twitter.com/initiaFDN",
     icon: "twitter",
     slug: "twitter",
   },
   {
-    url: "https://blog.alleslabs.com",
+    url: "https://medium.com/@initiafdn",
     icon: "medium",
     slug: "medium",
-  },
-  {
-    url: "https://t.me/celatone_announcements",
-    icon: "telegram",
-    slug: "telegram",
   },
 ];
 
 const socialSequence = {
-  github: 0,
-  discord: 1,
-  twitter: 2,
-  telegram: 3,
-  medium: 4,
-  reddit: 5,
-  linkedin: 6,
+  website: 0,
+  github: 1,
+  discord: 2,
+  twitter: 3,
+  telegram: 4,
+  medium: 5,
+  reddit: 6,
+  linkedin: 7,
 };
 
 const SocialMenuRender = ({
@@ -93,54 +94,6 @@ const SocialMenuRender = ({
   );
 };
 
-const IconLink = ({
-  href,
-  icon,
-  text1,
-  text2,
-}: {
-  href: string;
-  icon: IconKeys;
-  text1: string;
-  text2: string;
-}) => (
-  <Link
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    onClick={() => track(AmpEvent.ALLESLABS)}
-  >
-    <Flex
-      gap={1}
-      mr={{ base: 6, md: 0 }}
-      align="center"
-      _hover={{
-        "& svg": {
-          opacity: 1,
-        },
-      }}
-    >
-      <CustomIcon
-        name={icon}
-        opacity={0}
-        transition="opacity .25s ease-in-out"
-      />
-      <Text variant="body3" color="text.dark">
-        {text1}
-        <Text
-          as="span"
-          ml={1}
-          color="secondary.main"
-          transition="all 0.25s ease-in-out"
-          _hover={{ color: "secondary.light" }}
-        >
-          {text2}
-        </Text>
-      </Text>
-    </Flex>
-  </Link>
-);
-
 const Footer = () => {
   const isMobile = useMobile();
   const { theme } = useCelatoneApp();
@@ -177,32 +130,13 @@ const Footer = () => {
           {theme.footer.description}
         </Text>
       </Flex>
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        align={{ base: "center", md: "end" }}
-        justifyContent={{ base: "center", md: "flex-end" }}
-        gap={1}
-        mt={{ base: 6, md: 0 }}
-      >
-        <Flex gap={1}>
-          <IconLink
-            href="https://celat.one/"
-            icon="celatone"
-            text1="Powered by"
-            text2="Celatone"
-          />
-        </Flex>
-        <Flex gap={1}>
-          <SocialMenuRender iconSize={4} />
-        </Flex>
-      </Flex>
       {isMobile && <InformationFooter />}
     </Flex>
   ) : (
     <Flex
       as="footer"
       align="center"
-      justifyContent="space-between"
+      justifyContent="center"
       px={12}
       py={4}
       mx={1}
@@ -211,12 +145,6 @@ const Footer = () => {
       <Flex direction="row" gap={1} align="center" mb={{ base: 2, md: 0 }}>
         <SocialMenuRender iconSize={5} />
       </Flex>
-      <IconLink
-        href="https://twitter.com/alleslabs"
-        icon="alles"
-        text1="Made by"
-        text2="Alles Labs"
-      />
       {isMobile && <InformationFooter />}
     </Flex>
   );

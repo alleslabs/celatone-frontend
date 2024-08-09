@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 
-import { SUPPORTED_CHAIN_IDS } from "env";
-import { useMobile } from "lib/app-provider";
+import { useChainConfigs, useMobile } from "lib/app-provider";
 
 import { NoMobile } from "./modal";
 
@@ -11,11 +10,12 @@ interface MobileGuardProps {
 }
 export const MobileGuard = ({ children }: MobileGuardProps) => {
   const router = useRouter();
+  const { supportedChainIds } = useChainConfigs();
   const isMobile = useMobile();
 
   const pathName = router.asPath;
   const isResponsive =
-    SUPPORTED_CHAIN_IDS.includes(pathName.slice(1)) ||
+    supportedChainIds.includes(pathName.slice(1)) ||
     pathName.includes(`/accounts`) ||
     pathName.includes(`/txs`) ||
     pathName.includes(`/blocks`) ||

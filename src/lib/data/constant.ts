@@ -83,6 +83,7 @@ export enum StorageKeys {
   ProjectSidebar = "project-sidebar",
   Wallets = "wallets",
   Networks = "networks",
+  Annoucement = "annoucement",
 }
 
 export const HEX_WALLET_ADDRESS_LENGTH = 40;

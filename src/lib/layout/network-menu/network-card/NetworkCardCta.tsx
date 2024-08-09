@@ -2,10 +2,13 @@ import { Flex, useToast } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
 
-import { CHAIN_CONFIGS } from "config/chain";
-import { useMobile } from "lib/app-provider";
+import {
+  useChainConfigs,
+  useInternalNavigate,
+  useMobile,
+} from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { useNetworkStore } from "lib/providers/store";
+import { useLocalChainConfigStore, useNetworkStore } from "lib/providers/store";
 
 interface NetworkCardCtaProps {
   chainId: string;
@@ -15,7 +18,11 @@ interface NetworkCardCtaProps {
 
 export const NetworkCardCta = observer(
   ({ chainId, isSelected, isDraggable }: NetworkCardCtaProps) => {
+    const navigate = useInternalNavigate();
+    const { chainConfigs } = useChainConfigs();
+    const { isLocalChainIdExist } = useLocalChainConfigStore();
     const isMobile = useMobile();
+    const isEditable = isLocalChainIdExist(chainId);
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
     const toast = useToast({
       status: "success",
@@ -30,10 +37,10 @@ export const NetworkCardCta = observer(
         e.stopPropagation();
         pinNetwork(chainId);
         toast({
-          title: `Pinned \u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 successfully`,
+          title: `Pinned \u2018${chainConfigs[chainId]?.prettyName}\u2019 successfully`,
         });
       },
-      [pinNetwork, chainId, toast]
+      [pinNetwork, chainId, toast, chainConfigs]
     );
 
     const handleRemove = useCallback(
@@ -41,10 +48,10 @@ export const NetworkCardCta = observer(
         e.stopPropagation();
         removeNetwork(chainId);
         toast({
-          title: `\u2018${CHAIN_CONFIGS[chainId]?.prettyName}\u2019 is removed from Pinned Networks`,
+          title: `\u2018${chainConfigs[chainId]?.prettyName}\u2019 is removed from Pinned Networks`,
         });
       },
-      [removeNetwork, chainId, toast]
+      [removeNetwork, chainId, toast, chainConfigs]
     );
 
     const opacityStyle = {
@@ -83,6 +90,21 @@ export const NetworkCardCta = observer(
             onClick={handleSave}
           >
             <CustomIcon name="pin" />
+          </Flex>
+        )}
+        {isEditable && (
+          <Flex
+            {...pinIconStyles}
+            onClick={() =>
+              navigate({
+                pathname: "/custom-network/edit/[chainId]",
+                query: {
+                  chainId,
+                },
+              })
+            }
+          >
+            <CustomIcon name="settings" color="gray.600" boxSize={6} />
           </Flex>
         )}
       </Flex>
