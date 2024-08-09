@@ -14,6 +14,8 @@ import {
   ViewMore,
 } from "lib/components/table";
 import { useContractStore } from "lib/providers/store";
+import type { WasmVerifyInfosResponse } from "lib/services/types";
+import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Option, PublicContract } from "lib/types";
 
@@ -42,8 +44,10 @@ const ContractTableHeader = () => (
 
 const ContentRender = ({
   publicContracts,
+  wasmVerifyInfos,
 }: {
   publicContracts: PublicContractInfo[];
+  wasmVerifyInfos: Option<WasmVerifyInfosResponse>;
 }) => {
   const isMobile = useMobile();
   return isMobile ? (
@@ -52,6 +56,7 @@ const ContentRender = ({
         <PublicProjectContractMobileCard
           key={contract.publicInfo.contractAddress}
           publicContractInfo={contract}
+          wasmVerifyInfo={wasmVerifyInfos?.[contract.publicInfo.code]}
         />
       ))}
     </MobileTableContainer>
@@ -61,8 +66,9 @@ const ContentRender = ({
       {publicContracts.map((contract) => (
         <PublicProjectContractRow
           key={contract.publicInfo.contractAddress}
-          publicContractInfo={contract}
           templateColumns={TEMPLATE_COLUMNS}
+          publicContractInfo={contract}
+          wasmVerifyInfo={wasmVerifyInfos?.[contract.publicInfo.code]}
         />
       ))}
     </TableContainer>
@@ -73,6 +79,11 @@ export const PublicProjectContractTable = observer(
   ({ contracts = [], onViewMore }: PublicProjectContractTableProps) => {
     const [searchKeyword, setSearchKeyword] = useState("");
     const { getContractLocalInfo } = useContractStore();
+
+    const { data: wasmVerifyInfos } = useWasmVerifyInfos(
+      contracts.map((contract) => contract.code),
+      !!contracts
+    );
 
     const filteredContracts = useMemo(() => {
       return onViewMore
@@ -110,7 +121,10 @@ export const PublicProjectContractTable = observer(
           />
         )}
         {publicContracts.length ? (
-          <ContentRender publicContracts={publicContracts} />
+          <ContentRender
+            publicContracts={publicContracts}
+            wasmVerifyInfos={wasmVerifyInfos}
+          />
         ) : (
           <EmptyState
             message={

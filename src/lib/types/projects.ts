@@ -52,6 +52,7 @@ export interface PublicCode extends Omit<RawPublicCode, "contracts"> {
 
 export interface RawPublicContract {
   address: BechAddr32;
+  code: number;
   description: string;
   name: string;
   slug: string;

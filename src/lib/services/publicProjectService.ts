@@ -25,12 +25,7 @@ import { isId } from "lib/utils";
 
 const parseContract = (raw: RawPublicContract): PublicContract => ({
   contractAddress: raw.address,
-  description: raw.description,
-  name: raw.name,
-  slug: raw.slug,
-  label: raw.label,
-  instantiator: raw.instantiator,
-  admin: raw.admin,
+  ...raw,
 });
 
 const parseCode = (raw: RawPublicCode): PublicCode => ({

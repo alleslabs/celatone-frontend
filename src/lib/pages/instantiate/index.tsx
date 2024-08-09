@@ -10,6 +10,7 @@ import InstantiatePage from "./instantiate";
 
 export interface InstantiateTxInfo extends InstantiateResult {
   contractLabel: string;
+  codeId: number;
   instantiator: BechAddr20;
 }
 
@@ -25,6 +26,7 @@ const Index = () => {
     gasWanted: BigInt(0),
     gasUsed: BigInt(0),
     contractLabel: "",
+    codeId: 0,
     instantiator: "" as BechAddr20,
   });
 
@@ -39,9 +41,10 @@ const Index = () => {
       onComplete={(
         txResult: InstantiateResult,
         contractLabel: string,
+        codeId: number,
         instantiator: BechAddr20
       ) => {
-        setTxInfo({ ...txResult, contractLabel, instantiator });
+        setTxInfo({ ...txResult, contractLabel, codeId, instantiator });
         setCompleted(true);
       }}
     />

@@ -37,6 +37,7 @@ export const WasmVerifyRequestInfo = ({
     relatedVerifiedCodes,
   });
 
+  const gitUrlWithCommit = `${verificationInfo.gitUrl}/tree/${verificationInfo.commit}`;
   return (
     <>
       <Flex direction={{ base: "column", sm: "row" }} gap={{ base: 2, sm: 6 }}>
@@ -69,7 +70,7 @@ export const WasmVerifyRequestInfo = ({
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Source Code:</Text>
           <Link
-            href={verificationInfo.gitUrl}
+            href={gitUrlWithCommit}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -90,13 +91,9 @@ export const WasmVerifyRequestInfo = ({
               }}
             >
               <Text color="secondary.main" variant="body2">
-                {verificationInfo.gitUrl}
+                {gitUrlWithCommit}
               </Text>
-              <Copier
-                ml={1}
-                type="source_code"
-                value={verificationInfo.gitUrl}
-              />
+              <Copier ml={1} type="source_code" value={gitUrlWithCommit} />
             </Flex>
           </Link>
         </Flex>

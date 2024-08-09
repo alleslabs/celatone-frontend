@@ -237,6 +237,7 @@ export const ContractSelectSection = observer(
                       relatedVerifiedCodes={
                         derivedWasmVerifyInfo?.relatedVerifiedCodes
                       }
+                      linkedCodeId={codeId}
                     />
                   }
                 />

@@ -18,6 +18,7 @@ interface InstantiateOffChainFormProps {
   cta?: boolean;
   contractAddress: BechAddr32;
   contractLabel: string;
+  codeId: number;
   instantiator: BechAddr20;
 }
 
@@ -28,6 +29,7 @@ export const InstantiateOffChainForm = observer(
     cta = true,
     contractAddress,
     contractLabel,
+    codeId,
     instantiator,
   }: InstantiateOffChainFormProps) => {
     const navigate = useInternalNavigate();
@@ -70,8 +72,9 @@ export const InstantiateOffChainForm = observer(
         updateContractLocalInfo(
           userKey,
           contractAddress,
-          instantiator,
           contractLabel,
+          codeId,
+          instantiator,
           data.name,
           data.description,
           data.tags,

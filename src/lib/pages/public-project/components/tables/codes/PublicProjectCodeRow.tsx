@@ -9,18 +9,22 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SaveOrRemoveCodeModal } from "lib/components/modal";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { TableRow } from "lib/components/table";
-import { getCw2Info } from "lib/utils";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
+import type { Nullish, WasmVerifyInfo } from "lib/types";
+import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
 
 import type { PublicCodeInfo } from ".";
 
 interface CodeTableRowProps {
-  publicCodeInfo: PublicCodeInfo;
   templateColumns: string;
+  publicCodeInfo: PublicCodeInfo;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const PublicProjectCodeRow = ({
-  publicCodeInfo: { publicInfo, localInfo },
   templateColumns,
+  publicCodeInfo: { publicInfo, localInfo },
+  wasmVerifyInfo,
 }: CodeTableRowProps) => {
   const navigate = useInternalNavigate();
   const getAddressTypeByLength = useGetAddressTypeByLength();
@@ -45,6 +49,12 @@ export const PublicProjectCodeRow = ({
         <ExplorerLink
           value={publicInfo.id.toString()}
           type="code_id"
+          rightIcon={
+            <WasmVerifyBadge
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+            />
+          }
           showCopyOnHover
         />
       </TableRow>

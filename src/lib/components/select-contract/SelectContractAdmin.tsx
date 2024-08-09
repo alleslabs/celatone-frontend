@@ -15,7 +15,7 @@ import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
 import { useContractStore } from "lib/providers/store";
-import { useContractListByAdmin } from "lib/services/wasm/contract";
+import { useAllAdminContractsByAddress } from "lib/services/wasm/contract";
 import type { ContractListInfo, ContractLocalInfo } from "lib/stores/contract";
 import type { BechAddr32 } from "lib/types";
 import { getCurrentDate } from "lib/utils";
@@ -35,14 +35,16 @@ export const SelectContractAdmin = ({
   const { address } = useCurrentChain();
   const { getContractLocalInfo } = useContractStore();
 
-  const { data: contracts = [], isLoading } = useContractListByAdmin(address);
+  const { data, isLoading } = useAllAdminContractsByAddress(address);
+
   const contractList: ContractListInfo = {
     name: ADMIN_SPECIAL_SLUG,
     slug: ADMIN_SPECIAL_SLUG,
-    contracts: contracts.map<ContractLocalInfo>((contract) => ({
-      ...contract,
-      ...getContractLocalInfo(contract.contractAddress),
-    })),
+    contracts:
+      data?.items.map<ContractLocalInfo>((contract) => ({
+        ...contract,
+        ...getContractLocalInfo(contract.contractAddress),
+      })) ?? [],
     lastUpdated: getCurrentDate(),
     isInfoEditable: false,
     isContractRemovable: false,

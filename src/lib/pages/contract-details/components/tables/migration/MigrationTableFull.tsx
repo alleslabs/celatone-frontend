@@ -7,6 +7,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer } from "lib/components/table";
 import { useMigrationHistories } from "lib/pages/contract-details/data";
+import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import type { BechAddr32, Option } from "lib/types";
 
 import { MigrationHeader } from "./MigrationHeader";
@@ -48,8 +49,13 @@ export const MigrationTableFull = ({
     offset,
     pageSize
   );
+  const { data: wasmVerifyInfos, isLoading: isWasmVerifyInfosLoading } =
+    useWasmVerifyInfos(
+      data?.items.map((history) => history.codeId) ?? [],
+      !!data?.items
+    );
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isWasmVerifyInfosLoading) return <Loading />;
   if (error) return <ErrorFetching dataName="migration histories" />;
   if (!data?.items.length)
     return (
@@ -67,18 +73,23 @@ export const MigrationTableFull = ({
     <>
       {isMobile ? (
         <MobileTableContainer>
-          {data.items.map((history) => (
-            <MigrationMobileCard key={history.codeId} history={history} />
+          {data.items.map((history, index) => (
+            <MigrationMobileCard
+              key={`${index.toString()}-${history.codeId}`}
+              history={history}
+              wasmVerifyInfo={wasmVerifyInfos?.[history.codeId]}
+            />
           ))}
         </MobileTableContainer>
       ) : (
         <TableContainer>
           <MigrationHeader templateColumns={templateColumns} />
-          {data.items.map((history) => (
+          {data.items.map((history, index) => (
             <MigrationRow
-              key={history.codeId}
+              key={`${index.toString()}-${history.codeId}`}
               history={history}
               templateColumns={templateColumns}
+              wasmVerifyInfo={wasmVerifyInfos?.[history.codeId]}
             />
           ))}
         </TableContainer>

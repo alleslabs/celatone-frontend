@@ -79,8 +79,9 @@ export const ContractDetailsTemplateModal = ({
   const handleSave = useHandleContractSave({
     title: "Action Complete!",
     contractAddress: contractLocalInfo.contractAddress,
-    instantiator: contractLocalInfo.instantiator,
     label: contractLocalInfo.label,
+    codeId: contractLocalInfo.codeId,
+    instantiator: contractLocalInfo.instantiator,
     name: offchainState.name,
     description: offchainState.description,
     tags: offchainState.tags,

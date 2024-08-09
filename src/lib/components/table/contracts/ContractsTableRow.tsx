@@ -2,7 +2,14 @@ import { Grid } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { BechAddr32, ContractInfo } from "lib/types";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
+import type {
+  BechAddr32,
+  ContractInfo,
+  Nullish,
+  WasmVerifyInfo,
+} from "lib/types";
+import { getWasmVerifyStatus } from "lib/utils";
 
 import { ContractInstantiatorCell } from "./ContractInstantiatorCell";
 import { ContractNameCell } from "./ContractNameCell";
@@ -18,6 +25,7 @@ interface ContractsTableRowProps {
   showLastUpdate: boolean;
   isReadOnly: boolean;
   withCta?: CtaInfo;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const ContractsTableRow = ({
@@ -28,6 +36,7 @@ export const ContractsTableRow = ({
   showLastUpdate,
   isReadOnly,
   withCta,
+  wasmVerifyInfo,
 }: ContractsTableRowProps) => (
   <Grid
     templateColumns={templateColumns}
@@ -41,6 +50,15 @@ export const ContractsTableRow = ({
       <ExplorerLink
         value={contractInfo.contractAddress}
         type="contract_address"
+        rightIcon={
+          contractInfo.codeId ? (
+            <WasmVerifyBadge
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              linkedCodeId={contractInfo.codeId}
+            />
+          ) : undefined
+        }
         showCopyOnHover
         isReadOnly={isReadOnly}
       />

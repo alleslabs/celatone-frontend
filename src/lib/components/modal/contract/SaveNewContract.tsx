@@ -23,8 +23,9 @@ import {
 
 interface SaveNewContractDetail extends OffchainDetail {
   contractAddress: string;
-  instantiator: string;
   label: string;
+  codeId: number;
+  instantiator: string;
 }
 
 interface SaveNewContractModalProps {
@@ -44,8 +45,9 @@ export function SaveNewContractModal({
 
   const defaultValues: SaveNewContractDetail = {
     contractAddress: "",
-    instantiator: "",
     label: "",
+    codeId: 0,
+    instantiator: "",
     name: "",
     description: "",
     tags: [],
@@ -66,8 +68,9 @@ export function SaveNewContractModal({
   const [status, setStatus] = useState<FormStatus>({ state: "init" });
 
   const contractAddressState = watch("contractAddress");
-  const instantiatorState = watch("instantiator");
   const labelState = watch("label");
+  const codeIdState = watch("codeId");
+  const instantiatorState = watch("instantiator");
   const offchainState: OffchainDetail = {
     name: watch("name"),
     description: watch("description"),
@@ -94,8 +97,9 @@ export function SaveNewContractModal({
       const contractLocalInfo = getContractLocalInfo(contractAddressState);
       reset({
         contractAddress: contractAddressState,
-        instantiator: data.contract.instantiator,
         label: data.contract.label,
+        codeId: data.contract.codeId,
+        instantiator: data.contract.instantiator,
         name: contractLocalInfo?.name ?? data.contract.label,
         description: getNameAndDescriptionDefault(
           contractLocalInfo?.description
@@ -150,8 +154,9 @@ export function SaveNewContractModal({
       offchainState.name.trim().length ? offchainState.name : labelState
     }`,
     contractAddress: contractAddressState as BechAddr32,
-    instantiator: instantiatorState as BechAddr,
     label: labelState,
+    codeId: codeIdState,
+    instantiator: instantiatorState as BechAddr,
     name: offchainState.name,
     description: offchainState.description,
     tags: offchainState.tags,

@@ -7,16 +7,21 @@ import {
 import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
+import type { Nullish, WasmVerifyInfo } from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
+import { getWasmVerifyStatus } from "lib/utils";
 
 import type { PublicContractInfo } from ".";
 
 interface PublicProjectContractMobileCardProps {
   publicContractInfo: PublicContractInfo;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const PublicProjectContractMobileCard = ({
   publicContractInfo: { publicInfo },
+  wasmVerifyInfo,
 }: PublicProjectContractMobileCardProps) => {
   const navigate = useInternalNavigate();
   const getAddressTypeByLength = useGetAddressTypeByLength();
@@ -37,6 +42,13 @@ export const PublicProjectContractMobileCard = ({
             <ExplorerLink
               value={publicInfo.contractAddress}
               type="contract_address"
+              rightIcon={
+                <WasmVerifyBadge
+                  status={getWasmVerifyStatus(wasmVerifyInfo)}
+                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                  linkedCodeId={publicInfo.code}
+                />
+              }
               showCopyOnHover
             />
           </Flex>

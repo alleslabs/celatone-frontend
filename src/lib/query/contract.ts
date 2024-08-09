@@ -44,31 +44,3 @@ export const getInstantiatedCountByUserQueryDocument = graphql(`
     }
   }
 `);
-
-export const getAdminByContractAddressesQueryDocument = graphql(`
-  query getAdminByContractAddressesQueryDocument(
-    $contractAddresses: [String!]!
-  ) {
-    contracts(where: { address: { _in: $contractAddresses } }) {
-      address
-      admin: account {
-        address
-      }
-    }
-  }
-`);
-
-export const getContractListByAdmin = graphql(`
-  query getContractListByAdmin($address: String!) {
-    contracts(
-      where: { account: { address: { _eq: $address } } }
-      order_by: { transaction: { block: { timestamp: desc } } }
-    ) {
-      address
-      label
-      accountByInitBy {
-        address
-      }
-    }
-  }
-`);

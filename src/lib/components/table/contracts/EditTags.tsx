@@ -21,8 +21,9 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
   const handleSave = useHandleContractSave({
     title: "Updated tags successfully!",
     contractAddress: contractLocalInfo.contractAddress,
-    instantiator: contractLocalInfo.instantiator,
     label: contractLocalInfo.label,
+    codeId: contractLocalInfo.codeId,
+    instantiator: contractLocalInfo.instantiator,
     tags: tagResult,
     actions: () => track(AmpEvent.CONTRACT_EDIT_TAGS),
   });

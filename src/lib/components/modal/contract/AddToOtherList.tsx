@@ -22,8 +22,9 @@ export const AddToOtherListModal = observer(
     const handleSave = useHandleContractSave({
       title: "Action Complete!",
       contractAddress: contractLocalInfo.contractAddress,
-      instantiator: contractLocalInfo.instantiator,
       label: contractLocalInfo.label,
+      codeId: contractLocalInfo.codeId,
+      instantiator: contractLocalInfo.instantiator,
       lists: contractLists,
       actions: () => track(AmpEvent.CONTRACT_EDIT_LISTS),
     });

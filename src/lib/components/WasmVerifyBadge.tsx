@@ -106,6 +106,8 @@ export const WasmVerifyBadge = ({
   );
   const textProperties = getTextProperties(badgeStatus);
 
+  if (badgeStatus === BadgeStatus.NONE) return null;
+
   return (
     <Tooltip label={tooltipText}>
       <Flex as="span" gap={1} alignItems="center">
