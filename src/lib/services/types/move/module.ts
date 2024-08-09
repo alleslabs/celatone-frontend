@@ -154,7 +154,7 @@ export interface ModuleInitialPublishInfo {
   initProposalTitle: Option<string>;
 }
 
-export const zMoveViewJsonResponse = z
+export const zMoveViewJsonResponseLcd = z
   .object({
     data: z.string(),
   })
