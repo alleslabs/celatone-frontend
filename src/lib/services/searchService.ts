@@ -54,6 +54,10 @@ interface ResultMetadata {
     searchedName?: string;
   };
   initiaUsername?: string;
+  nft?: {
+    collectionAddress?: HexAddr32;
+    name: string;
+  };
 }
 
 export interface SearchResult {
@@ -297,12 +301,23 @@ export const useSearchHandler = (
     results.push({
       value: debouncedKeyword,
       type: "NFT Address",
+      metadata: {
+        nft: {
+          collectionAddress: nftData.data.collectionAddress,
+          name: nftData.data.tokenId,
+        },
+      },
     });
 
   if (nftCollectionData?.data)
     results.push({
       value: debouncedKeyword,
       type: "NFT Collection Address",
+      metadata: {
+        nft: {
+          name: nftCollectionData?.data.name,
+        },
+      },
     });
 
   if (isAddr)

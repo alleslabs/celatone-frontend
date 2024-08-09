@@ -2,6 +2,8 @@ import { z } from "zod";
 
 import { snakeToCamel } from "lib/utils";
 
+import { zAddr } from "./addrs";
+
 export const zIcnsNamesByAddress = z
   .object({
     data: z.object({
@@ -16,7 +18,7 @@ export type IcnsNamesByAddress = z.infer<typeof zIcnsNamesByAddress>;
 export const zAddressByIcnsName = z
   .object({
     data: z.object({
-      address: z.string(),
+      address: zAddr,
     }),
   })
   .transform((val) => val.data);

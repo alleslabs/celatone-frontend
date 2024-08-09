@@ -103,6 +103,8 @@ export const SearchComponent = () => {
       const getQueryValue = () => {
         if (result?.type === "Module Path")
           return splitModule(result.value) as [Addr, string];
+        if (result?.type === "NFT Address")
+          return [result.metadata?.nft?.collectionAddress ?? "", result.value];
         return result?.value || keyword;
       };
 

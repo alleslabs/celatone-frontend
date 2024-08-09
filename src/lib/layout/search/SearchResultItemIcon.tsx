@@ -24,6 +24,8 @@ const getIcon = (type: Option<SearchResultType>) => {
       return "validator" as IconKeys;
     case "Pool ID":
       return "pool" as IconKeys;
+    case "NFT Address":
+      return "group" as IconKeys;
     case "NFT Collection Address":
       return "group" as IconKeys;
     default:

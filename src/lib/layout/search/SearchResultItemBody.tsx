@@ -78,10 +78,30 @@ export const SearchResultItemBody = ({
       </Flex>
     );
 
+  if (result.type === "NFT Address" || result.type === "NFT Collection Address")
+    return (
+      <Flex direction="column">
+        <Text variant="body2">{result.metadata?.nft?.name ?? "Untitled"}</Text>
+        <Flex
+          gap={{ base: 0, md: 1 }}
+          direction={{ base: "column", md: "row" }}
+        >
+          <Text variant="body2" color="text.dark" wordBreak="break-all">
+            ({result.value})
+          </Text>
+          <Text
+            variant="body2"
+            fontWeight={{ base: "auto", md: 500 }}
+            color="text.disabled"
+          >
+            – {result.type}
+          </Text>
+        </Flex>
+      </Flex>
+    );
+
   if (
     isAccountAddress ||
-    result.type === "NFT Address" ||
-    result.type === "NFT Collection Address" ||
     result.type === "Validator Address" ||
     result.type === "Transaction Hash" ||
     result.type === "Module Path"
