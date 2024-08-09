@@ -1,7 +1,7 @@
-import { Accordion, Button, Divider, Flex } from "@chakra-ui/react";
+import { Accordion, Button, Divider, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import { useAllowCustomNetworks } from "lib/app-provider";
+import { useAllowCustomNetworks, useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
@@ -34,6 +34,8 @@ export const NetworkMenuBody = observer(
     const isAllowCustomNetworks = useAllowCustomNetworks({
       shouldRedirect: false,
     });
+
+    const isMobile = useMobile();
 
     return (
       <>
@@ -88,20 +90,34 @@ export const NetworkMenuBody = observer(
                   }
                   onClose={onClose}
                 />
-                <AppLink href="/custom-network/add">
-                  <Button
-                    variant="outline-gray"
-                    justifyContent="flex-start"
-                    leftIcon={
-                      <CustomIcon name="plus" boxSize={4} color="gray.600" />
-                    }
-                    onClick={onClose}
-                    w="full"
-                    h={12}
+                {isMobile ? (
+                  <Flex
+                    backgroundColor="gray.900"
+                    px={4}
+                    py={2}
+                    borderRadius={8}
+                    justifyContent="center"
                   >
-                    Add custom Minitia
-                  </Button>
-                </AppLink>
+                    <Text variant="body3" color="text.dark">
+                      You can add Custom Minitia on Desktop only
+                    </Text>
+                  </Flex>
+                ) : (
+                  <AppLink href="/custom-network/add">
+                    <Button
+                      variant="outline-gray"
+                      justifyContent="flex-start"
+                      leftIcon={
+                        <CustomIcon name="plus" boxSize={4} color="gray.600" />
+                      }
+                      onClick={onClose}
+                      w="full"
+                      h={12}
+                    >
+                      Add custom Minitia
+                    </Button>
+                  </AppLink>
+                )}
               </>
             )}
           </Flex>

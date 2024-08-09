@@ -41,6 +41,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#1077](https://github.com/alleslabs/celatone-frontend/pull/1077) Add download minitia custom JSON
 - [#1074](https://github.com/alleslabs/celatone-frontend/pull/1074) Add custom minitia upload JSON page
+- [#1002](https://github.com/alleslabs/celatone-frontend/pull/1002) Add contract verification modal
+
+### Improvements
+
+- [#1054](https://github.com/alleslabs/celatone-frontend/pull/1054) Improve main search bar to show both address and address as username
+
+### Bug fixes
+
+- [#1075](https://github.com/alleslabs/celatone-frontend/pull/1075) Fix custom minitia minor change
+
+## v1.7.3
+
+### Features
+
 - [#1058](https://github.com/alleslabs/celatone-frontend/pull/1058) Show chain config JSON and remove modal
 - [#1057](https://github.com/alleslabs/celatone-frontend/pull/1057) Add local minitias to network selector
 - [#1043](https://github.com/alleslabs/celatone-frontend/pull/1043) Save custom minitias JSON form to localstorage
@@ -88,6 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1078](https://github.com/alleslabs/celatone-frontend/pull/1078) Add banner modal and adjust color
 - [#1040](https://github.com/alleslabs/celatone-frontend/pull/1040) Refactor networks selector
 - [#1039](https://github.com/alleslabs/celatone-frontend/pull/1039) Make NFT Txs to load more style
 - [#1036](https://github.com/alleslabs/celatone-frontend/pull/1036) Refactor home and change some component names to match the current convention

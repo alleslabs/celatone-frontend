@@ -60,7 +60,7 @@ export const AddNetworkManual = () => {
       highGasPrice: 0.15,
       gasForCosmosSend: "",
       gasForIbc: "",
-      bech32Prefix: "init",
+      bech32Prefix: "",
       slip44: 118,
       assets: [],
     },

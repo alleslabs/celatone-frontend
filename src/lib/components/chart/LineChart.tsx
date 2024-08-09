@@ -48,7 +48,8 @@ const renderChartTooltip = (
 
   if (!tooltipEl) {
     tooltipEl = document.createElement("div");
-    tooltipEl.style.background = "rgba(41, 38, 118, 0.9)";
+    tooltipEl.style.background = "rgba(122, 132, 134, 0.4)";
+    tooltipEl.style.backdropFilter = "blur(2px)";
     tooltipEl.style.boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
     tooltipEl.style.borderRadius = "8px";
     tooltipEl.style.opacity = "1";
@@ -134,7 +135,7 @@ export const LineChart = ({
       },
       crosshair: {
         line: {
-          color: "#D8BEFC",
+          color: "#00B5CE",
           width: 1,
           dashPattern: [5, 5],
         },
@@ -170,7 +171,7 @@ export const LineChart = ({
               return "transparent";
             }
 
-            return "#343445";
+            return "#222424";
           },
         },
         ticks: {
@@ -196,7 +197,7 @@ export const LineChart = ({
               return "transparent";
             }
 
-            return "#343445";
+            return "#222424";
           },
         },
         min: 0,
