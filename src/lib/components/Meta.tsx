@@ -1,11 +1,11 @@
 import { capitalize } from "lodash";
 
-import { FALLBACK_CHAIN_CONFIG } from "config/chain";
 import { FALLBACK_THEME } from "config/theme";
+import { FALLBACK_CHAIN } from "env";
 
 const Meta = () => {
   const APP_NAME = FALLBACK_THEME.branding.seo.appName;
-  const title = `${capitalize(FALLBACK_CHAIN_CONFIG.chain)} Explorer | ${FALLBACK_THEME.branding.seo.title}`;
+  const title = `${capitalize(FALLBACK_CHAIN)} Explorer | ${FALLBACK_THEME.branding.seo.title}`;
   return (
     <>
       <meta name="application-name" content={APP_NAME} />

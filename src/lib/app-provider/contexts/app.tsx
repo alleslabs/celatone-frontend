@@ -12,8 +12,8 @@ import {
 
 import { useChainConfigs } from "../hooks/useChainConfigs";
 import { useNetworkChange } from "../hooks/useNetworkChange";
+import { DEFAULT_CHAIN_CONFIG } from "config/chain";
 import type { ChainConfig } from "config/chain";
-import { FALLBACK_CHAIN_CONFIG } from "config/chain";
 import type { ProjectConstants } from "config/project";
 import { PROJECT_CONSTANTS } from "config/project";
 import { FALLBACK_THEME, getTheme } from "config/theme";
@@ -44,8 +44,8 @@ const DEFAULT_STATES: AppContextInterface = {
   isHydrated: false,
   availableChainIds: SUPPORTED_CHAIN_IDS,
   currentChainId: FALLBACK_SUPPORTED_CHAIN_ID,
-  chainConfig: FALLBACK_CHAIN_CONFIG,
-  indexerGraphClient: new GraphQLClient(FALLBACK_CHAIN_CONFIG.indexer, {
+  chainConfig: DEFAULT_CHAIN_CONFIG,
+  indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.indexer, {
     headers: {
       "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
     },
@@ -66,7 +66,8 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   // Remark: this function is only used in useNetworkChange. Do not use in other places.
   const handleOnChainIdChange = useCallback(
     (newChainId: string) => {
-      const chainConfig = chainConfigs[newChainId] ?? FALLBACK_CHAIN_CONFIG;
+      const chainConfig = chainConfigs[newChainId];
+      if (!chainConfig) return;
 
       const theme = getTheme(chainConfig.chain);
       changeFavicon(theme.branding.favicon);
