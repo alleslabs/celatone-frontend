@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1054](https://github.com/alleslabs/celatone-frontend/pull/1054) Improve main search bar to show both address and address as username
+
 ### Bug fixes
 
 - [#1075](https://github.com/alleslabs/celatone-frontend/pull/1075) Fix custom minitia minor change
@@ -61,7 +63,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1054](https://github.com/alleslabs/celatone-frontend/pull/1054) Improve main search bar to show both address and address as username
 - [#1062](https://github.com/alleslabs/celatone-frontend/pull/1062) Adjust edit minitia layout and other minor styling
 - [#1061](https://github.com/alleslabs/celatone-frontend/pull/1061) Refactor custom network routes and add support chain ids to hook
 - [#1053](https://github.com/alleslabs/celatone-frontend/pull/1053) Move move decoder and verifier links to env
