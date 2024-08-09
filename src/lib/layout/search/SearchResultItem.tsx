@@ -44,10 +44,8 @@ export const SearchResultItem = ({
         >
           <SearchResultItemIcon
             type={result.type}
-            isInitiaUsername={
-              isAccountAddress && !!result.metadata?.initiaUsername
-            }
-            isIcns={isAccountAddress && !!result.metadata?.icns}
+            result={result}
+            isAccountAddress={isAccountAddress}
           />
           <SearchResultItemBody
             result={result}

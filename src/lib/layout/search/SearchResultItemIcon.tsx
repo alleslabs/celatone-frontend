@@ -2,7 +2,10 @@ import { Image } from "@chakra-ui/react";
 
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
-import type { SearchResultType } from "lib/services/searchService";
+import type {
+  SearchResult,
+  SearchResultType,
+} from "lib/services/searchService";
 import type { Option } from "lib/types";
 
 const getIcon = (type: Option<SearchResultType>) => {
@@ -33,16 +36,16 @@ const getIcon = (type: Option<SearchResultType>) => {
 
 interface SearchResultItemIconProps {
   type: SearchResultType;
-  isInitiaUsername: boolean;
-  isIcns: boolean;
+  result: SearchResult;
+  isAccountAddress: boolean;
 }
 
 export const SearchResultItemIcon = ({
   type,
-  isInitiaUsername,
-  isIcns,
+  result,
+  isAccountAddress,
 }: SearchResultItemIconProps) => {
-  if (isInitiaUsername)
+  if (isAccountAddress && result.metadata?.type === "initiaUsername")
     return (
       <Image
         src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
@@ -52,7 +55,7 @@ export const SearchResultItemIcon = ({
       />
     );
 
-  if (isIcns)
+  if (isAccountAddress && result.metadata?.type === "icns")
     return (
       <Image
         src="https://assets.alleslabs.dev/webapp-assets/name-services/icns.png"

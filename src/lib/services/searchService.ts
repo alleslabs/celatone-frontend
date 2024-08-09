@@ -48,13 +48,20 @@ export type SearchResultType =
   | "NFT Address"
   | "NFT Collection Address";
 
-interface ResultMetadata {
-  icns?: {
-    icnsNames: IcnsNamesByAddress;
-    searchedName?: string;
-  };
-  initiaUsername?: string;
-}
+type ResultMetadata =
+  | {
+      type: "icns";
+      icnsNames: IcnsNamesByAddress;
+      searchedName?: string;
+    }
+  | {
+      type: "initiaUsername";
+      initiaUsername: string;
+    }
+  | {
+      type: "nft";
+      collectionAddress: HexAddr32;
+    };
 
 export interface SearchResult {
   value: string;
@@ -310,15 +317,16 @@ export const useSearchHandler = (
       value: debouncedKeyword,
       // eslint-disable-next-line sonarjs/no-duplicate-string
       type: contractData ? "Contract Address" : "Account Address",
-      metadata: {
-        icns:
-          icnsNamesByKeyword && icnsNamesByKeyword.names.length > 0
+      metadata:
+        // eslint-disable-next-line no-nested-ternary
+        icnsNamesByKeyword && icnsNamesByKeyword.names.length > 0
+          ? { type: "icns", icnsNames: icnsNamesByKeyword }
+          : iuNameByKeyword?.username
             ? {
-                icnsNames: icnsNamesByKeyword,
+                type: "initiaUsername",
+                initiaUsername: iuNameByKeyword.username,
               }
             : undefined,
-        initiaUsername: iuNameByKeyword?.username ?? undefined,
-      },
     });
 
   if (icnsAddrByKeyword && icnsAddrByKeyword.address !== "")
@@ -328,17 +336,16 @@ export const useSearchHandler = (
         icnsAddrByKeyword.addressType === "contract_address"
           ? "Contract Address"
           : "Account Address",
-      metadata: {
-        icns:
-          icnsNamesByIcnsAddr && icnsNamesByIcnsAddr.names.length > 0
-            ? {
-                icnsNames: icnsNamesByIcnsAddr,
-                searchedName: debouncedKeyword.endsWith(`.${bech32Prefix}`)
-                  ? debouncedKeyword
-                  : `${debouncedKeyword}.${bech32Prefix}`,
-              }
-            : undefined,
-      },
+      metadata:
+        icnsNamesByIcnsAddr && icnsNamesByIcnsAddr.names.length > 0
+          ? {
+              type: "icns",
+              icnsNames: icnsNamesByIcnsAddr,
+              searchedName: debouncedKeyword.endsWith(`.${bech32Prefix}`)
+                ? debouncedKeyword
+                : `${debouncedKeyword}.${bech32Prefix}`,
+            }
+          : undefined,
     });
 
   if (iuAddrByKeyword && iuAddrByKeyword.address !== null)
@@ -346,6 +353,7 @@ export const useSearchHandler = (
       value: iuAddrByKeyword.address,
       type: "Account Address",
       metadata: {
+        type: "initiaUsername",
         initiaUsername: debouncedKeyword.endsWith(`.${bech32Prefix}`)
           ? debouncedKeyword
           : `${debouncedKeyword}.${bech32Prefix}`,

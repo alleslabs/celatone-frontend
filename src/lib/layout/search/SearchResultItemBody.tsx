@@ -12,7 +12,7 @@ export const SearchResultItemBody = ({
   result,
   isAccountAddress,
 }: SearchResultItemBodyProps) => {
-  if (isAccountAddress && !!result.metadata?.initiaUsername)
+  if (isAccountAddress && result.metadata?.type === "initiaUsername")
     return (
       <Flex direction="column">
         <Text variant="body2">{result.metadata.initiaUsername}</Text>
@@ -34,19 +34,17 @@ export const SearchResultItemBody = ({
       </Flex>
     );
 
-  if (isAccountAddress && !!result.metadata?.icns)
+  if (isAccountAddress && result.metadata?.type === "icns")
     return (
       <Flex direction="column">
         <Flex gap={1}>
           <Flex gap={1} align="center">
             <PrimaryNameMark />
-            <Text variant="body2">
-              {result.metadata.icns.icnsNames.primaryName}
-            </Text>
+            <Text variant="body2">{result.metadata.icnsNames.primaryName}</Text>
           </Flex>
-          {result.metadata.icns.searchedName &&
-            result.metadata.icns.searchedName !==
-              result.metadata.icns.icnsNames.primaryName && (
+          {result.metadata.searchedName &&
+            result.metadata.searchedName !==
+              result.metadata.icnsNames.primaryName && (
               <Text
                 variant="body2"
                 _before={{
@@ -56,7 +54,7 @@ export const SearchResultItemBody = ({
                   mr: 1,
                 }}
               >
-                {result.metadata.icns.searchedName}
+                {result.metadata.searchedName}
               </Text>
             )}
         </Flex>
