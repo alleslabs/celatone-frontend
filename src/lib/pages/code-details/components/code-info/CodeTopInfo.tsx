@@ -7,17 +7,25 @@ import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { GitHubLink } from "lib/components/links";
 import { PublicDescription } from "lib/components/PublicDescription";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import { useCodeStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
+import type {
+  Nullable,
+  Nullish,
+  ProjectInfo,
+  PublicCodeInfo,
+  WasmVerifyInfo,
+} from "lib/types";
 import { AccessConfigPermission } from "lib/types";
-import type { Nullable, ProjectInfo, PublicCodeInfo } from "lib/types";
-import { getCw2Info } from "lib/utils";
+import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
 
 interface CodeTopInfoProps {
   codeId: number;
   code: Code;
   projectInfo: Nullable<ProjectInfo>;
   publicInfo: Nullable<PublicCodeInfo>;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const CodeTopInfo = ({
@@ -25,6 +33,7 @@ export const CodeTopInfo = ({
   code,
   projectInfo,
   publicInfo,
+  wasmVerifyInfo,
 }: CodeTopInfoProps) => {
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
@@ -69,6 +78,10 @@ export const CodeTopInfo = ({
               <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
                 {localCodeInfo?.name ?? publicInfo?.name ?? codeId}
               </Heading>
+              <WasmVerifyBadge
+                status={getWasmVerifyStatus(wasmVerifyInfo)}
+                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              />
             </Flex>
           </Flex>
           {publicInfo && (
@@ -104,9 +117,9 @@ export const CodeTopInfo = ({
               Code Hash:
             </Text>
             <CopyLink
-              value={code.hash}
-              amptrackSection="code_hash"
               type="code_hash"
+              amptrackSection="code_hash"
+              value={code.hash.toUpperCase()}
             />
           </Flex>
           {isFullTier && (

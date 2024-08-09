@@ -2,6 +2,7 @@ import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
+import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import type { CodeInfo, Option } from "lib/types";
 
 import { CodesTableHeader } from "./CodesTableHeader";
@@ -26,6 +27,10 @@ export const CodesTable = ({
   showCw2andContracts = true,
 }: CodesTableProps) => {
   const isMobile = useMobile();
+  const { data: wasmVerifyInfos } = useWasmVerifyInfos(
+    codes?.map((code) => code.id) ?? [],
+    !!codes
+  );
 
   if (isLoading) return <Loading />;
   if (!codes) return <ErrorFetching dataName="codes" />;
@@ -40,6 +45,7 @@ export const CodesTable = ({
           key={code.id + code.uploader + code.name}
           codeInfo={code}
           showCw2andContracts={showCw2andContracts}
+          wasmVerifyInfo={wasmVerifyInfos?.[code.id]}
         />
       ))}
     </MobileTableContainer>
@@ -58,6 +64,7 @@ export const CodesTable = ({
           onRowSelect={onRowSelect}
           isReadOnly={isReadOnly}
           showCw2andContracts={showCw2andContracts}
+          wasmVerifyInfo={wasmVerifyInfos?.[code.id]}
         />
       ))}
     </TableContainer>

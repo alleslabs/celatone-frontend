@@ -194,7 +194,7 @@ export const zNftsByAccountResponseSequencer = z
     pagination: val.pagination,
   }));
 
-export const zNftInfoSequencer = z
+export const zNftInfoLcd = z
   .object({
     collection: zHexAddr32,
     description: z.string(),

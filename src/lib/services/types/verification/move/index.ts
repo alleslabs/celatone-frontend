@@ -53,13 +53,13 @@ export const zMoveVerifyInfoResponse = z
   .transform(snakeToCamel);
 export type MoveVerifyInfoResponse = z.infer<typeof zMoveVerifyInfoResponse>;
 
-export const zMoveVerifyInfosByModuleResponse = z.object({
+export const zMoveVerifyInfosByAddressResponse = z.object({
   contracts: z.array(
     zMoveVerifyInfoResponse.innerType().extend({
       id: z.string().uuid(),
     })
   ),
 });
-export type MoveVerifyInfosByModuleResponse = z.infer<
-  typeof zMoveVerifyInfosByModuleResponse
+export type MoveVerifyInfosByAddressResponse = z.infer<
+  typeof zMoveVerifyInfosByAddressResponse
 >;

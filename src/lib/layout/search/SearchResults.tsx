@@ -1,29 +1,20 @@
 import { EmptyState } from "lib/components/state";
-import type {
-  ResultMetadata,
-  SearchResultType,
-} from "lib/services/searchService";
+import type { SearchResult } from "lib/services/searchService";
 import type { Option } from "lib/types";
 
 import { SearchResultItem } from "./SearchResultItem";
 
 interface SearchResultsProps {
-  results: SearchResultType[];
-  keyword: string;
+  results: SearchResult[];
   cursor: Option<number>;
-  metadata: ResultMetadata;
   setCursor: (index: Option<number>) => void;
-  handleSelectResult: (type?: SearchResultType, isClick?: boolean) => void;
-  onClose?: () => void;
+  handleSelectResult: (result?: SearchResult, isClick?: boolean) => void;
 }
 export const SearchResults = ({
   results,
-  keyword,
   cursor,
-  metadata,
   setCursor,
   handleSelectResult,
-  onClose,
 }: SearchResultsProps) => (
   <>
     {!results.length ? (
@@ -34,17 +25,14 @@ export const SearchResults = ({
             selected the correct network."
       />
     ) : (
-      results.map((type, index) => (
+      results.map((result, index) => (
         <SearchResultItem
-          key={type}
+          key={result.type + index.toString()}
           index={index}
-          type={type}
-          value={keyword}
+          result={result}
           cursor={cursor}
-          metadata={metadata}
           setCursor={setCursor}
           handleSelectResult={handleSelectResult}
-          onClose={onClose}
         />
       ))
     )}

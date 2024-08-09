@@ -5,7 +5,7 @@ import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import type {
   MoveVerifyByTaskIdResponse,
   MoveVerifyInfoResponse,
-  MoveVerifyInfosByModuleResponse,
+  MoveVerifyInfosByAddressResponse,
   SubmitMoveVerifyResponse,
 } from "lib/services/types";
 import type { Addr, Nullable, Option } from "lib/types";
@@ -13,7 +13,7 @@ import type { Addr, Nullable, Option } from "lib/types";
 import {
   getMoveVerifyByTaskId,
   getMoveVerifyInfo,
-  getMoveVerifyInfosByModule,
+  getMoveVerifyInfosByAddress,
   getSubmitMoveVerify,
 } from "./api";
 
@@ -82,19 +82,19 @@ export const useMoveVerifyInfo = (
   );
 };
 
-export const useMoveVerifyInfosByModule = (
+export const useMoveVerifyInfosByAddress = (
   address: Option<Addr>
-): UseQueryResult<Nullable<MoveVerifyInfosByModuleResponse>> => {
+): UseQueryResult<Nullable<MoveVerifyInfosByAddressResponse>> => {
   const { chainConfig } = useCelatoneApp();
   const {
     extra: { layer },
   } = chainConfig;
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFOS_BY_MODULE, address, layer],
+    [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFOS_BY_ADDRESS, address, layer],
     () => {
       if (!address) return null;
-      return getMoveVerifyInfosByModule(address);
+      return getMoveVerifyInfosByAddress(address);
     },
     {
       enabled: layer === "1" && Boolean(address),
