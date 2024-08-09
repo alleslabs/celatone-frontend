@@ -38,7 +38,8 @@ export const useSubmitMoveVerify = (
 };
 
 export const useMoveVerifyTaskInfo = (
-  taskId: string
+  taskId: string,
+  enabled = true
 ): UseQueryResult<MoveVerifyByTaskIdResponse> => {
   const { chainConfig } = useCelatoneApp();
   const {
@@ -49,7 +50,7 @@ export const useMoveVerifyTaskInfo = (
     [CELATONE_QUERY_KEYS.MOVE_VERIFY_TASK_BY_TASK_ID, taskId, layer],
     () => getMoveVerifyByTaskId(taskId),
     {
-      enabled: layer === "1",
+      enabled: enabled && layer === "1",
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,

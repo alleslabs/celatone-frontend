@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zHexAddr } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
-enum MoveVerifyTaskStatus {
+export enum MoveVerifyTaskStatus {
   Finished = "FINISHED",
   NotFound = "NOT_FOUND",
   Pending = "PENDING",
@@ -11,7 +11,7 @@ enum MoveVerifyTaskStatus {
 }
 
 export const zSubmitMoveVerifyResponse = z.object({
-  id: z.string(),
+  id: z.string().uuid(),
   status: z.nativeEnum(MoveVerifyTaskStatus),
 });
 export type SubmitMoveVerifyResponse = z.infer<
@@ -20,19 +20,21 @@ export type SubmitMoveVerifyResponse = z.infer<
 
 export const zMoveVerifyByTaskIdResponse = z.object({
   task: z.object({
-    id: z.string(),
+    id: z.string().uuid(),
     status: z.nativeEnum(MoveVerifyTaskStatus),
   }),
-  results: z.object({
-    moduleIdentifiers: z.array(
-      z.object({
-        name: z.string(),
-        address: zHexAddr,
-      })
-    ),
-    chainId: z.string(),
-    verifiedAt: z.coerce.date(),
-  }),
+  results: z
+    .object({
+      moduleIdentifiers: z.array(
+        z.object({
+          name: z.string(),
+          address: zHexAddr,
+        })
+      ),
+      chainId: z.string(),
+      verifiedAt: z.coerce.date(),
+    })
+    .optional(),
 });
 export type MoveVerifyByTaskIdResponse = z.infer<
   typeof zMoveVerifyByTaskIdResponse
@@ -54,7 +56,7 @@ export type MoveVerifyInfoResponse = z.infer<typeof zMoveVerifyInfoResponse>;
 export const zMoveVerifyInfosByModuleResponse = z.object({
   contracts: z.array(
     zMoveVerifyInfoResponse.innerType().extend({
-      id: z.string(),
+      id: z.string().uuid(),
     })
   ),
 });
