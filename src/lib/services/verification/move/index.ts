@@ -14,7 +14,7 @@ import {
   getMoveVerifyByTaskId,
   getMoveVerifyInfo,
   getMoveVerifyInfosByAddress,
-  getSubmitMoveVerify,
+  submitMoveVerify,
 } from "./api";
 
 export const useSubmitMoveVerify = (
@@ -27,7 +27,7 @@ export const useSubmitMoveVerify = (
 
   return useQuery(
     [CELATONE_QUERY_KEYS.MOVE_VERIFY_SUBMIT, formData, layer],
-    () => getSubmitMoveVerify(formData),
+    () => submitMoveVerify(formData),
     {
       enabled: layer === "1",
       retry: 0,
