@@ -1,10 +1,9 @@
 import axios from "axios";
 
-import { INITIA_MOVE_DECODER, INITIA_MOVE_VERIFIER } from "env";
+import { INITIA_MOVE_DECODER } from "env";
 import type {
   DecodeModuleReturn,
   ModuleTableCountsResponse,
-  ModuleVerificationInternal,
 } from "lib/services/types";
 import {
   zModuleHistoriesResponse,
@@ -13,16 +12,13 @@ import {
   zModulesResponse,
   zModuleTableCountsResponse,
   zModuleTxsResponse,
-  zModuleVerificationInternal,
 } from "lib/services/types";
 import type {
   AbiFormData,
-  Addr,
   ExposedFunction,
   HexAddr,
   ModuleAbi,
   ModulePublishInfo,
-  Nullable,
 } from "lib/types";
 import {
   libDecode,
@@ -30,17 +26,6 @@ import {
   parseWithError,
   serializeAbiData,
 } from "lib/utils";
-
-export const getMoveVerifyInfo = async (
-  address: Addr,
-  moduleName: string
-): Promise<Nullable<ModuleVerificationInternal>> =>
-  axios
-    .get(
-      `${INITIA_MOVE_VERIFIER}/${encodeURI(address)}/${encodeURI(moduleName)}`
-    )
-    .then(({ data }) => parseWithError(zModuleVerificationInternal, data))
-    .catch(() => null);
 
 export const getFunctionView = async (
   baseEndpoint: string,

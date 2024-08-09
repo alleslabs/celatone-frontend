@@ -37,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- [#1081](https://github.com/alleslabs/celatone-frontend/pull/1081) Add service APIs for move verify module
+
 ### Features
 
 - [#1077](https://github.com/alleslabs/celatone-frontend/pull/1077) Add download minitia custom JSON
