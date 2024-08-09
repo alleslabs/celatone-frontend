@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1082](https://github.com/alleslabs/celatone-frontend/pull/1082) Replace CONFIG_CHAINS by fetching the chains from the API
 - [#1002](https://github.com/alleslabs/celatone-frontend/pull/1002) Add contract verification modal
 
 ### Improvements
@@ -51,7 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#1082](https://github.com/alleslabs/celatone-frontend/pull/1082) Replace CONFIG_CHAINS by fetching the chains from the API
 - [#1058](https://github.com/alleslabs/celatone-frontend/pull/1058) Show chain config JSON and remove modal
 - [#1057](https://github.com/alleslabs/celatone-frontend/pull/1057) Add local minitias to network selector
 - [#1043](https://github.com/alleslabs/celatone-frontend/pull/1043) Save custom minitias JSON form to localstorage
