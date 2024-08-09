@@ -1,5 +1,7 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import type { ChainConfig } from "@alleslabs/shared";
 import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import { useCallback, useState } from "react";
 
 import {
@@ -18,7 +20,7 @@ import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import { useLocalChainConfigStore } from "lib/providers/store";
 
-export const AddNetworkJson = () => {
+export const AddNetworkJson = observer(() => {
   const navigate = useInternalNavigate();
   const { isChainIdExist, isPrettyNameExist } = useChainConfigs();
   const { addLocalChainConfig } = useLocalChainConfigStore();
@@ -47,9 +49,9 @@ export const AddNetworkJson = () => {
     const reader = new FileReader();
 
     reader.onload = () => {
-      const data: ChainConfig = JSON.parse(reader.result as string);
-
-      const validate = zAddNetworkJsonChainConfigJson.safeParse(data);
+      const validate = zAddNetworkJsonChainConfigJson.safeParse(
+        JSON.parse(reader.result as string)
+      );
 
       if (!validate.success) {
         failedModalOnOpen();
@@ -147,4 +149,4 @@ export const AddNetworkJson = () => {
       )}
     </>
   );
-};
+});
