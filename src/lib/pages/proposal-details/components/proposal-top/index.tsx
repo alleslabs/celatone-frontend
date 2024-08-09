@@ -50,7 +50,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
               wordBreak="break-word"
               color={proposalData.title ? "text.main" : "text.disabled"}
             >
-              <span style={{ color: "var(--chakra-colors-accent-main)" }}>
+              <span style={{ color: "var(--chakra-colors-primary-main)" }}>
                 #{proposalData.id}
               </span>{" "}
               - {proposalData.title ? proposalData.title : "No title"}

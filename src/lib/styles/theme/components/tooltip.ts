@@ -12,8 +12,8 @@ export const Tooltip: ComponentStyleConfig = {
     fontWeight: 400,
     fontSize: "14px",
     maxW: "280px",
-    bg: "accent.darker",
-    [$arrowBg.variable]: "colors.accent.darker",
+    bg: "primary.darker",
+    [$arrowBg.variable]: "colors.primary.darker",
   },
   variants: {
     "primary-light": {

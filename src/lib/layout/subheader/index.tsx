@@ -20,7 +20,7 @@ import {
   getSubHeaderSequencer,
 } from "./utils";
 
-const ACTIVE_COLOR = "accent.main";
+const ACTIVE_COLOR = "primary.main";
 
 const SubHeader = () => {
   const { tier } = useTierConfig();

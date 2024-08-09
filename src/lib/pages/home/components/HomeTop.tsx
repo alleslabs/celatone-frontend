@@ -66,7 +66,7 @@ export const HomeTop = ({
           zIndex={1}
         >
           <Heading as="h4" variant={{ base: "h5", md: "h4" }}>
-            <Text as="span" color="accent.main">
+            <Text as="span" color="primary.main">
               {prettyName}
             </Text>{" "}
             Overview
