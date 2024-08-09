@@ -2,8 +2,8 @@ import { Flex, Grid, Radio, RadioGroup, Text } from "@chakra-ui/react";
 import { useController, useWatch } from "react-hook-form";
 import type { Control, FieldErrors } from "react-hook-form";
 
-import { VmType } from "../types";
-import type { AddNetworkManualForm } from "../types";
+import { VmType } from "../../types";
+import type { AddNetworkManualForm } from "../../types";
 import {
   CustomNetworkPageHeader,
   CustomNetworkSubheader,

@@ -2,19 +2,7 @@ import { Flex, useDisclosure } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { useAllowCustomNetworks, useChainConfigs } from "lib/app-provider";
-import ActionPageContainer from "lib/components/ActionPageContainer";
-import { CustomIcon } from "lib/components/icon";
-import { FooterCta } from "lib/components/layouts";
-import { CelatoneSeo } from "lib/components/Seo";
-import { useLocalChainConfigStore } from "lib/providers/store";
-
-import {
-  AddNetworkForm,
-  AddNetworkStepper,
-  SuccessAddCustomMinitiaModal,
-} from "./components";
-import { useNetworkStepper } from "./hooks/useNetworkStepper";
+import { SuccessAddCustomMinitiaModal } from "../components";
 import {
   VmType,
   zAddNetworkManualChainConfigJson,
@@ -22,8 +10,17 @@ import {
   zGasFeeDetailsForm,
   zNetworkDetailsForm,
   zWalletRegistryForm,
-} from "./types";
-import type { AddNetworkManualForm } from "./types";
+} from "../types";
+import type { AddNetworkManualForm } from "../types";
+import { useAllowCustomNetworks, useChainConfigs } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
+import { CustomIcon } from "lib/components/icon";
+import { FooterCta } from "lib/components/layouts";
+import { CelatoneSeo } from "lib/components/Seo";
+import { useLocalChainConfigStore } from "lib/providers/store";
+
+import { AddNetworkForm, AddNetworkStepper } from "./components";
+import { useNetworkStepper } from "./hooks/useNetworkStepper";
 
 export const AddNetworkManual = () => {
   useAllowCustomNetworks({ shouldRedirect: true });
