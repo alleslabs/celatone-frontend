@@ -23,16 +23,18 @@ export const zMoveVerifyByTaskIdResponse = z.object({
     id: z.string(),
     status: z.nativeEnum(MoveVerifyTaskStatus),
   }),
-  results: z.object({
-    moduleIdentifiers: z.array(
-      z.object({
-        name: z.string(),
-        address: zHexAddr,
-      })
-    ),
-    chainId: z.string(),
-    verifiedAt: z.coerce.date(),
-  }),
+  results: z
+    .object({
+      moduleIdentifiers: z.array(
+        z.object({
+          name: z.string(),
+          address: zHexAddr,
+        })
+      ),
+      chainId: z.string(),
+      verifiedAt: z.coerce.date(),
+    })
+    .optional(),
 });
 export type MoveVerifyByTaskIdResponse = z.infer<
   typeof zMoveVerifyByTaskIdResponse
@@ -51,13 +53,13 @@ export const zMoveVerifyInfoResponse = z
   .transform(snakeToCamel);
 export type MoveVerifyInfoResponse = z.infer<typeof zMoveVerifyInfoResponse>;
 
-export const zMoveVerifyInfosByModuleResponse = z.object({
+export const zMoveVerifyInfosByAddressResponse = z.object({
   contracts: z.array(
     zMoveVerifyInfoResponse.innerType().extend({
       id: z.string(),
     })
   ),
 });
-export type MoveVerifyInfosByModuleResponse = z.infer<
-  typeof zMoveVerifyInfosByModuleResponse
+export type MoveVerifyInfosByAddressResponse = z.infer<
+  typeof zMoveVerifyInfosByAddressResponse
 >;

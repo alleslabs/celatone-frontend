@@ -4,13 +4,13 @@ import { INITIA_MOVE_VERIFIER } from "env";
 import type {
   MoveVerifyByTaskIdResponse,
   MoveVerifyInfoResponse,
-  MoveVerifyInfosByModuleResponse,
+  MoveVerifyInfosByAddressResponse,
   SubmitMoveVerifyResponse,
 } from "lib/services/types";
 import {
   zMoveVerifyByTaskIdResponse,
   zMoveVerifyInfoResponse,
-  zMoveVerifyInfosByModuleResponse,
+  zMoveVerifyInfosByAddressResponse,
   zSubmitMoveVerifyResponse,
 } from "lib/services/types";
 import type { Addr, Nullable } from "lib/types";
@@ -44,9 +44,11 @@ export const getMoveVerifyInfo = async (
     )
     .then(({ data }) => parseWithError(zMoveVerifyInfoResponse, data));
 
-export const getMoveVerifyInfosByModule = async (
+export const getMoveVerifyInfosByAddress = async (
   address: Addr
-): Promise<Nullable<MoveVerifyInfosByModuleResponse>> =>
+): Promise<Nullable<MoveVerifyInfosByAddressResponse>> =>
   axios
     .get(`${INITIA_MOVE_VERIFIER}/contracts/${encodeURI(address)}`)
-    .then(({ data }) => parseWithError(zMoveVerifyInfosByModuleResponse, data));
+    .then(({ data }) =>
+      parseWithError(zMoveVerifyInfosByAddressResponse, data)
+    );
