@@ -1,4 +1,4 @@
-import { CHAIN } from "env";
+import { FALLBACK_CHAIN } from "env";
 
 import { DEFAULT_THEME } from "./default";
 import { INITIA_THEME } from "./initia";
@@ -18,4 +18,4 @@ export const getTheme = (chain: string) => {
   }
 };
 
-export const FALLBACK_THEME = getTheme(CHAIN);
+export const FALLBACK_THEME = getTheme(FALLBACK_CHAIN);
