@@ -141,9 +141,9 @@ export const ControllerInput = <T extends FieldValues>({
           maxLength={maxLength}
           autoFocus={autoFocus}
           cursor={cursor}
+          pr={inputPaddingRight()}
           onBlur={field.onBlur}
           onChange={field.onChange}
-          pr={inputPaddingRight()}
           {...(type === "decimal" && decimalHandlers)}
           {...(type === "number" && numberHandlers)}
           textAlign={textAlign}

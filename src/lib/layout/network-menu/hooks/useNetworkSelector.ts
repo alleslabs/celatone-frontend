@@ -1,21 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { isUndefined } from "lodash";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useCallback, useMemo, useState } from "react";
 
 import { useCelatoneApp, useChainConfigs } from "lib/app-provider";
-import { useNetworkStore } from "lib/providers/store";
+import { usePinnedNetworks } from "lib/hooks";
 
 import { filterChains, getNextCursor } from "./utils";
 
 export const useNetworkSelector = (onClose: () => void) => {
   const { chainConfigs } = useChainConfigs();
   const { availableChainIds } = useCelatoneApp();
-  const { getPinnedNetworks } = useNetworkStore();
+  const pinnedNetworks = usePinnedNetworks();
 
   const [keyword, setKeyword] = useState("");
   const [cursor, setCursor] = useState<number>();
 
-  const pinnedNetworks = getPinnedNetworks();
   const [
     filteredPinnedChains,
     filteredMainnetChains,
@@ -28,7 +28,7 @@ export const useNetworkSelector = (onClose: () => void) => {
       filterChains(chainConfigs, availableChainIds, keyword, "testnet"),
       filterChains(chainConfigs, availableChainIds, keyword, "local"),
     ],
-    [availableChainIds, chainConfigs, keyword, pinnedNetworks]
+    [chainConfigs, JSON.stringify(pinnedNetworks), availableChainIds, keyword]
   );
 
   const totalNetworks =

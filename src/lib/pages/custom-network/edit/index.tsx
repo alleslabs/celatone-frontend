@@ -1,11 +1,15 @@
-import { Button, Grid, Heading, Stack } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
+import { Button, Flex, Heading, Stack } from "@chakra-ui/react";
+import { isUndefined, omit } from "lodash";
 import { useRouter } from "next/router";
+import { useCallback, useMemo } from "react";
 import { z } from "zod";
 
 import { useAllowCustomNetworks } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
-import { CustomNetworkPageHeader } from "lib/components/custom-network";
+import {
+  CustomNetworkPageHeader,
+  CustomNetworkSubheader,
+} from "lib/components/custom-network";
 // import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
@@ -53,18 +57,30 @@ interface NetworkConfigBodyProps {
 const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   const { getLocalChainConfig } = useLocalChainConfigStore();
   const chainConfig = getLocalChainConfig(chainId);
+  const json = useMemo(
+    () =>
+      JSON.stringify(
+        omit(chainConfig, ["tier", "chain", "graphql", "extra", "network_type"])
+      ),
+    [chainConfig]
+  );
 
-  // const leftButtonProps = {
-  //   label: "Cancel",
-  //   action: () => {},
-  //   variant: "outline-secondary",
-  // };
+  const handleExportJson = useCallback(() => {
+    const blob = new Blob([json], {
+      type: "application/json",
+    });
 
-  // const rightButtonProps = {
-  //   label: "Update",
-  //   action: () => {},
-  //   variant: "primary",
-  // };
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${chainId}.json`;
+
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [chainId, json]);
 
   if (isUndefined(chainConfig)) return <InvalidChainId />;
 
@@ -75,30 +91,25 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
         subtitle="Your Custom Minitia"
         hasAlert={false}
       />
-      {/* TODO: switch back to templateColumns="2fr 5fr" when left panel is available */}
-      <Grid gap={6} w="full" my={8}>
-        {/* <RemoveChainConfigModal
-          chainId={chainId}
-          trigger={
-            <Button
-              variant="outline-gray"
-              mt={10}
-              size="md"
-              leftIcon={<CustomIcon name="delete" />}
-            >
-              Remove Network
-            </Button>
-          }
-        /> */}
-        <Stack>
+      <Stack gap={12} mt={8} w="full">
+        <Flex justifyContent="space-between" gap={10}>
+          <CustomNetworkSubheader
+            title="Export as JSON File"
+            subtitle="You can export this Custom Minitia configuration in JSON file to use them in other device."
+          />
+          <Button
+            minW={168}
+            leftIcon={<CustomIcon name="download" />}
+            onClick={handleExportJson}
+          >
+            Export as JSON
+          </Button>
+        </Flex>
+        <Stack gap={2}>
           <Heading as="h6" variant="h6">
             Current Configuration in JSON
           </Heading>
-          <JsonReadOnly
-            text={jsonPrettify(JSON.stringify(chainConfig))}
-            canCopy
-            fullWidth
-          />
+          <JsonReadOnly text={jsonPrettify(json)} canCopy fullWidth />
           <RemoveChainConfigModal
             chainId={chainId}
             trigger={
@@ -115,7 +126,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
             }
           />
         </Stack>
-      </Grid>
+      </Stack>
     </ActionPageContainer>
   );
 

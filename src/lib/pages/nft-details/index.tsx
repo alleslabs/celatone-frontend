@@ -30,6 +30,7 @@ import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import {
   useMetadata,
   useNftByNftAddress,
+  useNftByNftAddressLcd,
   useNftMutateEventsCount,
   useNftTransactionsCount,
 } from "lib/services/nft";
@@ -61,10 +62,10 @@ const NftDetailsBody = ({
 
   const { data: collection, isLoading: isCollectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
-  const { data: nft, isLoading: isNftLoading } = useNftByNftAddress(
-    collectionAddress,
-    nftAddress
-  );
+
+  const resApi = useNftByNftAddress(collectionAddress, nftAddress, isFullTier);
+  const resLcd = useNftByNftAddressLcd(nftAddress, !isFullTier);
+  const { data: nft, isLoading: isNftLoading } = isFullTier ? resApi : resLcd;
 
   const { data: txCount = 0 } = useNftTransactionsCount(nftAddress, isFullTier);
   const totalTxs = isFullTier ? txCount : undefined;

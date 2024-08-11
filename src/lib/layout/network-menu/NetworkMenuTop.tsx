@@ -43,7 +43,7 @@ export const NetworkMenuTop = observer(
               </Flex>
             )}
           </Flex>
-          {isAllowCustomNetworks && (
+          {isAllowCustomNetworks && !isMobile && (
             <Box>
               <Text as="span" variant="body3" color="text.dark">
                 Want to add your network?
