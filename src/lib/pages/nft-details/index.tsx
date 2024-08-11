@@ -30,6 +30,7 @@ import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import {
   useMetadata,
   useNftByNftAddress,
+  useNftByNftAddressLcd,
   useNftMutateEventsCount,
   useNftTransactionsCount,
 } from "lib/services/nft";
@@ -61,10 +62,10 @@ const NftDetailsBody = ({
 
   const { data: collection, isLoading: isCollectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
-  const { data: nft, isLoading: isNftLoading } = useNftByNftAddress(
-    collectionAddress,
-    nftAddress
-  );
+
+  const resApi = useNftByNftAddress(collectionAddress, nftAddress, isFullTier);
+  const resLcd = useNftByNftAddressLcd(nftAddress, !isFullTier);
+  const { data: nft, isLoading: isNftLoading } = isFullTier ? resApi : resLcd;
 
   const { data: txCount = 0 } = useNftTransactionsCount(nftAddress, isFullTier);
   const totalTxs = isFullTier ? txCount : undefined;
@@ -106,7 +107,12 @@ const NftDetailsBody = ({
           gap={{ base: 2, md: 8 }}
           mt={6}
         >
-          <Flex direction="column" gap={6} maxW={{ md: "360px" }}>
+          <Flex
+            direction="column"
+            gap={6}
+            minW={{ md: "360px" }}
+            maxW={{ md: "360px" }}
+          >
             {isMobile && (
               <Title
                 collectionAddress={collectionAddress}
@@ -132,9 +138,10 @@ const NftDetailsBody = ({
                   width: "100%",
                   height: "100%",
                   borderRadius: "8px",
-                  objectFit: "cover",
+                  objectFit: "contain",
                   backgroundPosition: "center",
                 }}
+                background="gray.900"
                 borderRadius="8px"
                 src={metadata?.image}
                 fallbackSrc={NFT_IMAGE_PLACEHOLDER}

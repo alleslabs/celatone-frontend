@@ -11,10 +11,12 @@ import type { BechAddr, BechAddr32, Option } from "lib/types";
 
 import { getAddressByIcnsNameLcd, getIcnsNamesByAddressLcd } from "./lcd";
 
-export const useIcnsNamesByAddressLcd = (address: Option<BechAddr>) => {
+export const useIcnsNamesByAddressLcd = (
+  address: Option<BechAddr>,
+  enabled = true
+) => {
   const endpoint = useLcdEndpoint();
-  const getAddressType = useGetAddressType();
-  const addressType = getAddressType(address);
+
   const queryFn = async () => {
     if (!address) throw new Error("address is undefined");
     const icnsNames = await getIcnsNamesByAddressLcd(endpoint, address);
@@ -33,8 +35,7 @@ export const useIcnsNamesByAddressLcd = (address: Option<BechAddr>) => {
     queryFn,
     {
       refetchOnWindowFocus: false,
-      enabled:
-        addressType === "contract_address" || addressType === "user_address",
+      enabled,
       retry: 1,
     }
   );

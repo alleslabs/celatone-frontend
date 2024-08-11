@@ -11,6 +11,8 @@ export const SUPPORTED_CHAIN_IDS: string[] = (() => {
   return chainIds;
 })();
 
+export const FALLBACK_CHAIN = process.env.NEXT_PUBLIC_FALLBACK_CHAIN ?? "";
+
 // Remark: We've already checked that the first element is not empty on the above code
 export const FALLBACK_SUPPORTED_CHAIN_ID = SUPPORTED_CHAIN_IDS[0];
 
@@ -29,3 +31,12 @@ export const CELATONE_API_OVERRIDE =
 
 export const HASURA_ADMIN_SECRET =
   process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET ?? "";
+
+export const CELATONE_VERIFICATION_API =
+  process.env.NEXT_PUBLIC_CELATONE_VERIFICATION_API ?? "";
+
+export const INITIA_MOVE_DECODER =
+  process.env.NEXT_PUBLIC_INITIA_MOVE_DECODER ?? "";
+
+export const INITIA_MOVE_VERIFIER =
+  process.env.NEXT_PUBLIC_INITIA_MOVE_VERIFIER ?? "";

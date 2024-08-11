@@ -1,9 +1,9 @@
 import axios from "axios";
 
+import { INITIA_MOVE_DECODER } from "env";
 import type {
   DecodeModuleReturn,
   ModuleTableCountsResponse,
-  ModuleVerificationInternal,
 } from "lib/services/types";
 import {
   zModuleHistoriesResponse,
@@ -12,17 +12,13 @@ import {
   zModulesResponse,
   zModuleTableCountsResponse,
   zModuleTxsResponse,
-  zModuleVerificationInternal,
-  zMoveViewJsonResponse,
 } from "lib/services/types";
 import type {
   AbiFormData,
-  Addr,
   ExposedFunction,
   HexAddr,
   ModuleAbi,
   ModulePublishInfo,
-  Nullable,
 } from "lib/types";
 import {
   libDecode,
@@ -30,16 +26,6 @@ import {
   parseWithError,
   serializeAbiData,
 } from "lib/utils";
-
-export const getModuleVerificationStatus = async (
-  endpoint: string,
-  address: Addr,
-  moduleName: string
-): Promise<Nullable<ModuleVerificationInternal>> =>
-  axios
-    .get(`${endpoint}/${encodeURI(address)}/${encodeURI(moduleName)}`)
-    .then(({ data }) => parseWithError(zModuleVerificationInternal, data))
-    .catch(() => null);
 
 export const getFunctionView = async (
   baseEndpoint: string,
@@ -55,22 +41,19 @@ export const getFunctionView = async (
   return data.data;
 };
 
-export const decodeModule = async (
-  decodeAPI: string,
-  moduleEncode: string
-): Promise<ModuleAbi> =>
+export const decodeModule = async (moduleEncode: string): Promise<ModuleAbi> =>
   axios
-    .post<DecodeModuleReturn>(decodeAPI, {
+    .post<DecodeModuleReturn>(`${INITIA_MOVE_DECODER}/decode_module`, {
       code_bytes: moduleEncode,
     })
     .then(({ data }) => parseJsonABI<ModuleAbi>(libDecode(data.abi)));
 
 export const decodeScript = async (
-  decodeAPI: string,
+  endpoint: string,
   scriptBytes: string
 ): Promise<ExposedFunction> =>
   axios
-    .post<DecodeModuleReturn>(decodeAPI, {
+    .post<DecodeModuleReturn>(endpoint, {
       code_bytes: scriptBytes,
     })
     .then(({ data }) => parseJsonABI<ExposedFunction>(libDecode(data.abi)));
@@ -181,21 +164,3 @@ export const getModuleRelatedProposals = async (
       }
     )
     .then(({ data }) => parseWithError(zModuleRelatedProposalsResponse, data));
-
-export const getMoveViewJson = async (
-  endpoint: string,
-  vmAddress: HexAddr,
-  moduleName: string,
-  functionName: string,
-  typeArgs: string[],
-  args: string[]
-) =>
-  axios
-    .post(`${endpoint}/initia/move/v1/view/json`, {
-      address: vmAddress,
-      module_name: moduleName,
-      function_name: functionName,
-      type_args: typeArgs,
-      args,
-    })
-    .then(({ data }) => parseWithError(zMoveViewJsonResponse, data));

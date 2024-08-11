@@ -16,8 +16,8 @@ import {
   useModuleByAddressLcd,
   useModulePublishInfo,
   useModuleTableCounts,
-  useVerifyModule,
 } from "lib/services/move/module";
+import { useMoveVerifyInfo } from "lib/services/verification/move";
 import { truncate } from "lib/utils";
 
 import {
@@ -64,10 +64,7 @@ const ModuleDetailsBody = ({
     isFullTier
   );
   const { data: verificationData, isLoading: verificationLoading } =
-    useVerifyModule({
-      address: vmAddress,
-      moduleName,
-    });
+    useMoveVerifyInfo(vmAddress, moduleName);
 
   const [overviewTabIndex, setOverviewTabIndex] = useState(
     ModuleTablesTabIndex.Transactions

@@ -13,6 +13,8 @@ import {
   parseWithError,
 } from "lib/utils";
 
+import { getCollectionByCollectionAddressLcd } from "./lcd";
+
 export const getCollectionByCollectionAddressSequencer = async (
   endpoint: string,
   collectionAddress: HexAddr32
@@ -23,6 +25,10 @@ export const getCollectionByCollectionAddressSequencer = async (
     )
     .then(({ data }) =>
       parseWithError(zCollectionByCollectionAddressResponseSequencer, data)
+    )
+    // Fallback to lite version if the collection is not found
+    .catch(() =>
+      getCollectionByCollectionAddressLcd(endpoint, collectionAddress)
     );
 
 export const getCollectionsByAccountSequencer = async (

@@ -18,12 +18,12 @@ import {
   useFaucetConfig,
   useValidateAddress,
 } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { AssignMe } from "lib/components/AssignMe";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useOpenTxTab } from "lib/hooks";
 import { useFaucetInfo } from "lib/services/faucetService";
 
@@ -163,7 +163,7 @@ const Faucet = () => {
   const isDisabled = status.state !== "success" || isLoading;
 
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       <Heading as="h5" variant="h5">
         {prettyName} Faucet
       </Heading>
@@ -226,7 +226,7 @@ const Faucet = () => {
           )}
         </Alert>
       )}
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 };
 

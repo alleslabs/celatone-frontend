@@ -4,7 +4,13 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@chain-registry/types': 0.45.36
+
 dependencies:
+  '@alleslabs/shared':
+    specifier: 1.0.0-dev2
+    version: 1.0.0-dev2
   '@amplitude/analytics-browser':
     specifier: ^2.3.3
     version: 2.3.8
@@ -15,8 +21,8 @@ dependencies:
     specifier: ^1.0.0
     version: 1.0.1
   '@chain-registry/types':
-    specifier: 0.17.0
-    version: 0.17.0
+    specifier: 0.45.36
+    version: 0.45.36
   '@chakra-ui/anatomy':
     specifier: ^2.2.2
     version: 2.2.2
@@ -70,10 +76,10 @@ dependencies:
     version: 2.15.0(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@interchain-ui/react@1.23.9)(@types/react-dom@18.2.18)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
   '@cosmos-kit/station':
     specifier: 2.9.0
-    version: 2.9.0(@chain-registry/types@0.17.0)(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@terra-money/terra.js@3.1.10)(axios@1.6.5)
+    version: 2.9.0(@chain-registry/types@0.45.36)(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@terra-money/terra.js@3.1.10)(axios@1.6.5)
   '@cosmos-kit/station-extension':
     specifier: 2.10.0
-    version: 2.10.0(@chain-registry/types@0.17.0)(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@terra-money/terra.js@3.1.10)(axios@1.6.5)
+    version: 2.10.0(@chain-registry/types@0.45.36)(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@terra-money/terra.js@3.1.10)(axios@1.6.5)
   '@dnd-kit/core':
     specifier: ^6.1.0
     version: 6.1.0(react-dom@18.2.0)(react@18.2.0)
@@ -95,6 +101,9 @@ dependencies:
   '@graphql-typed-document-node/core':
     specifier: ^3.2.0
     version: 3.2.0(graphql@16.8.1)
+  '@hookform/resolvers':
+    specifier: ^3.9.0
+    version: 3.9.0(react-hook-form@7.49.3)
   '@initia/initia.js':
     specifier: 0.2.5
     version: 0.2.5
@@ -220,13 +229,13 @@ dependencies:
     version: 6.3.3
   mobx:
     specifier: ^6.6.2
-    version: 6.12.0
+    version: 6.13.1
   mobx-persist-store:
     specifier: ^1.1.2
-    version: 1.1.4(mobx@6.12.0)
+    version: 1.1.5(mobx@6.13.1)
   mobx-react-lite:
     specifier: ^3.4.0
-    version: 3.4.3(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0)
+    version: 3.4.3(mobx@6.13.1)(react-dom@18.2.0)(react@18.2.0)
   monaco-editor:
     specifier: ^0.44.0
     version: 0.44.0
@@ -405,6 +414,12 @@ packages:
 
   /@adraffy/ens-normalize@1.10.1:
     resolution: {integrity: sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==}
+    dev: false
+
+  /@alleslabs/shared@1.0.0-dev2:
+    resolution: {integrity: sha512-f2zRLNVkkSdIrF1F9xd14bLLCqtr5KYChLVD4cKHUUHXgHdr0i1ZZYClBroHK7uKx2W8tAecOFrksPMrcng/0A==}
+    dependencies:
+      '@chain-registry/types': 0.45.36
     dev: false
 
   /@amplitude/analytics-browser@2.3.8:
@@ -1827,7 +1842,7 @@ packages:
   /@chain-registry/client@1.47.4:
     resolution: {integrity: sha512-7e0MEY1xVyRScXTWK2T8u0j0NZn1vXctStdWGZsp9sLee0+2eSvZbW0uYIKdH+7XvwRhx+knkbBtKU29QHKjAA==}
     dependencies:
-      '@chain-registry/types': 0.44.4
+      '@chain-registry/types': 0.45.36
       '@chain-registry/utils': 1.45.4
       bfs-path: 1.0.2
       cross-fetch: 3.1.8
@@ -1838,7 +1853,7 @@ packages:
   /@chain-registry/keplr@1.64.4:
     resolution: {integrity: sha512-8/5FhWhH36Zo2oBkFtzauNfwWFbeIAp0PuiXztqqJluRkyFUUh4E4OcgHzqeT9C4hmAhoU4c7B0Bgc0QCYr82A==}
     dependencies:
-      '@chain-registry/types': 0.41.4
+      '@chain-registry/types': 0.45.36
       '@keplr-wallet/cosmos': 0.12.28
       '@keplr-wallet/crypto': 0.12.28
       semver: 7.5.4
@@ -1847,30 +1862,20 @@ packages:
   /@chain-registry/keplr@1.67.6:
     resolution: {integrity: sha512-pnxbfv184+7zonKVsFMOzdmtY3r0vfMIVcJZSh+bTLH6WYr/cvGrcbgsliU1wSCC8Wx1cYmOcCOuK0n4nfMSaA==}
     dependencies:
-      '@chain-registry/types': 0.44.4
+      '@chain-registry/types': 0.45.36
       '@keplr-wallet/cosmos': 0.12.28
       '@keplr-wallet/crypto': 0.12.28
       semver: 7.5.4
     dev: false
 
-  /@chain-registry/types@0.17.0:
-    resolution: {integrity: sha512-lavACU4oDxioUy8lZOFZN0Vrr2qR+Dg2yEh/mkrPfOldcioavREXJou0elDyyXwq4pGLC5YQ+IISCtQ4Du0bdw==}
-    dependencies:
-      '@babel/runtime': 7.23.8
-    dev: false
-
-  /@chain-registry/types@0.41.4:
-    resolution: {integrity: sha512-LeW2nXd0dmnI+TC4L2xC3RNooUthUfou1yFcdsinSW6EP9qEwo2BwwnWWAcMG+dsPvXfM4AfmisVBrxbX2OKqw==}
-    dev: false
-
-  /@chain-registry/types@0.44.4:
-    resolution: {integrity: sha512-EHow6xgTM0pe5mfm7kp1ApbJI83Bb0vXaG+LBxLcGXC6VfqCIVcT7Ki5PsdbYfHrfekoH1urXORUJo51F4ihQA==}
+  /@chain-registry/types@0.45.36:
+    resolution: {integrity: sha512-HEKthtP24qy7hQlpcTNXidACYO6uwMNwZaV0O8Rv0fH226syrgH7nnGWofeooHGPofRFJfAfmpGJailBWuhWAQ==}
     dev: false
 
   /@chain-registry/utils@1.45.4:
     resolution: {integrity: sha512-N0702U78CkucKA2e/g19/GFn9wEEJAeFvlDuX+vZ2cMmgAUuSCNXpYLV55crPaPq/s4RTeulJL7DVBb+irQQsg==}
     dependencies:
-      '@chain-registry/types': 0.44.4
+      '@chain-registry/types': 0.45.36
       bignumber.js: 9.1.2
       sha.js: 2.4.11
     dev: false
@@ -3383,7 +3388,7 @@ packages:
     dependencies:
       '@chain-registry/client': 1.47.4
       '@chain-registry/keplr': 1.67.6
-      '@chain-registry/types': 0.41.4
+      '@chain-registry/types': 0.45.36
       '@cosmjs/amino': 0.32.3
       '@cosmjs/cosmwasm-stargate': 0.32.3
       '@cosmjs/proto-signing': 0.32.3
@@ -3578,7 +3583,7 @@ packages:
       react: ^18
       react-dom: ^18
     dependencies:
-      '@chain-registry/types': 0.41.4
+      '@chain-registry/types': 0.45.36
       '@cosmos-kit/core': 2.12.0
       '@dao-dao/cosmiframe': 0.1.0(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)
       '@types/react': 18.2.48
@@ -3616,7 +3621,7 @@ packages:
       react: ^18
       react-dom: ^18
     dependencies:
-      '@chain-registry/types': 0.41.4
+      '@chain-registry/types': 0.45.36
       '@cosmos-kit/core': 2.12.0
       '@cosmos-kit/react-lite': 2.11.0(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@types/react-dom@18.2.18)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
       '@interchain-ui/react': 1.23.9(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
@@ -3647,14 +3652,14 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@cosmos-kit/station-extension@2.10.0(@chain-registry/types@0.17.0)(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@terra-money/terra.js@3.1.10)(axios@1.6.5):
+  /@cosmos-kit/station-extension@2.10.0(@chain-registry/types@0.45.36)(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@terra-money/terra.js@3.1.10)(axios@1.6.5):
     resolution: {integrity: sha512-5UeGRb4C1MSmiWcrHJnjeIzHyyAlEszJabPeE92FqMacReCTksPplVAL0sdZeQ8CzWTV3JhEPF4NYQSB8gRhVg==}
     peerDependencies:
-      '@chain-registry/types': '>= 0.17'
+      '@chain-registry/types': 0.45.36
       '@cosmjs/amino': '>=0.32.3'
       '@cosmjs/proto-signing': '>=0.32.3'
     dependencies:
-      '@chain-registry/types': 0.17.0
+      '@chain-registry/types': 0.45.36
       '@cosmjs/amino': 0.32.3
       '@cosmjs/proto-signing': 0.32.3
       '@cosmos-kit/core': 2.12.0
@@ -3683,10 +3688,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@cosmos-kit/station@2.9.0(@chain-registry/types@0.17.0)(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@terra-money/terra.js@3.1.10)(axios@1.6.5):
+  /@cosmos-kit/station@2.9.0(@chain-registry/types@0.45.36)(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@terra-money/terra.js@3.1.10)(axios@1.6.5):
     resolution: {integrity: sha512-JkNh+14I8ZSsxbzsYTMjt0sQ2pVcwNmhMGo7jRuF/FA0x1Lf6+V55Bp3z5uM4vpOuKrM8vWo8izp0le247U2SQ==}
     dependencies:
-      '@cosmos-kit/station-extension': 2.10.0(@chain-registry/types@0.17.0)(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@terra-money/terra.js@3.1.10)(axios@1.6.5)
+      '@cosmos-kit/station-extension': 2.10.0(@chain-registry/types@0.45.36)(@cosmjs/amino@0.32.3)(@cosmjs/proto-signing@0.32.3)(@terra-money/terra.js@3.1.10)(axios@1.6.5)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -4992,6 +4997,14 @@ packages:
       graphql: 16.8.1
     dev: false
 
+  /@hookform/resolvers@3.9.0(react-hook-form@7.49.3):
+    resolution: {integrity: sha512-bU0Gr4EepJ/EQsH/IwEzYLsT/PEj5C0ynLQ4m+GSHS+xKH4TfSelhluTgOaoc4kA5s7eCsQbM4wvZLzELmWzUg==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.49.3(react@18.2.0)
+    dev: false
+
   /@humanwhocodes/config-array@0.11.14:
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
     engines: {node: '>=10.10.0'}
@@ -5511,7 +5524,7 @@ packages:
       '@keplr-wallet/types': 0.12.28
       buffer: 6.0.3
       delay: 4.4.1
-      mobx: 6.12.0
+      mobx: 6.13.1
     dev: false
 
   /@keplr-wallet/cosmos@0.12.28:
@@ -11627,7 +11640,7 @@ packages:
     resolution: {integrity: sha512-kBeQVdopECXasauhaA+HiJNSB0UpzNmxtv5AvIpJBAZc3nuM2wzPxaHAiPz1OG5ifYwMraOkvPNxwOnXd1nZzw==}
     dependencies:
       '@babel/runtime': 7.23.8
-      '@chain-registry/types': 0.17.0
+      '@chain-registry/types': 0.45.36
     dev: false
 
   /chakra-react-select@4.7.6(@chakra-ui/form-control@2.2.0)(@chakra-ui/icon@3.2.0)(@chakra-ui/layout@2.3.1)(@chakra-ui/media-query@3.3.0)(@chakra-ui/menu@2.2.1)(@chakra-ui/spinner@2.1.0)(@chakra-ui/system@2.6.2)(@emotion/react@11.11.3)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0):
@@ -17341,15 +17354,15 @@ packages:
       ufo: 1.3.2
     dev: false
 
-  /mobx-persist-store@1.1.4(mobx@6.12.0):
-    resolution: {integrity: sha512-kGdTpnpfvTC61XiqlYnAN+gvkGiYfLgGpV1nj6k8hHom8V+vrPJyYMg+V1Rc5dNi7sa+qrHlbZfCvbaJoAtpSg==}
+  /mobx-persist-store@1.1.5(mobx@6.13.1):
+    resolution: {integrity: sha512-STVTfYErC4Vw58zbAiz/Em4bmwi2sa+zXudxHwRtJvwiEejrJ6W1FcFDRskZyjrGLNOcrT0dDK2VDplV2cgQig==}
     peerDependencies:
       mobx: '*'
     dependencies:
-      mobx: 6.12.0
+      mobx: 6.13.1
     dev: false
 
-  /mobx-react-lite@3.4.3(mobx@6.12.0)(react-dom@18.2.0)(react@18.2.0):
+  /mobx-react-lite@3.4.3(mobx@6.13.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-NkJREyFTSUXR772Qaai51BnE1voWx56LOL80xG7qkZr6vo8vEaLF3sz1JNUVh+rxmUzxYaqOhfuxTfqUh0FXUg==}
     peerDependencies:
       mobx: ^6.1.0
@@ -17362,13 +17375,13 @@ packages:
       react-native:
         optional: true
     dependencies:
-      mobx: 6.12.0
+      mobx: 6.13.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /mobx@6.12.0:
-    resolution: {integrity: sha512-Mn6CN6meXEnMa0a5u6a5+RKrqRedHBhZGd15AWLk9O6uFY4KYHzImdt8JI8WODo1bjTSRnwXhJox+FCUZhCKCQ==}
+  /mobx@6.13.1:
+    resolution: {integrity: sha512-ekLRxgjWJr8hVxj9ZKuClPwM/iHckx3euIJ3Np7zLVNtqJvfbbq7l370W/98C8EabdQ1pB5Jd3BbDWxJPNnaOg==}
     dev: false
 
   /mockdate@3.0.5:

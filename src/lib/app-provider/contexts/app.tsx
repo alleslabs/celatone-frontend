@@ -1,5 +1,6 @@
 import { useModalTheme } from "@cosmos-kit/react";
 import { GraphQLClient } from "graphql-request";
+import { observer } from "mobx-react-lite";
 import type { ReactNode } from "react";
 import {
   createContext,
@@ -9,11 +10,12 @@ import {
   useState,
 } from "react";
 
+import { useChainConfigs } from "../hooks/useChainConfigs";
 import { useNetworkChange } from "../hooks/useNetworkChange";
-import { CHAIN_CONFIGS, FALLBACK_CHAIN_CONFIG } from "config/chain";
+import { DEFAULT_CHAIN_CONFIG } from "config/chain";
 import type { ChainConfig } from "config/chain";
-import { PROJECT_CONSTANTS } from "config/project";
 import type { ProjectConstants } from "config/project";
+import { PROJECT_CONSTANTS } from "config/project";
 import { FALLBACK_THEME, getTheme } from "config/theme";
 import type { ThemeConfig } from "config/theme/types";
 import {
@@ -42,8 +44,8 @@ const DEFAULT_STATES: AppContextInterface = {
   isHydrated: false,
   availableChainIds: SUPPORTED_CHAIN_IDS,
   currentChainId: FALLBACK_SUPPORTED_CHAIN_ID,
-  chainConfig: FALLBACK_CHAIN_CONFIG,
-  indexerGraphClient: new GraphQLClient(FALLBACK_CHAIN_CONFIG.indexer, {
+  chainConfig: DEFAULT_CHAIN_CONFIG,
+  indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.indexer, {
     headers: {
       "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
     },
@@ -55,34 +57,39 @@ const DEFAULT_STATES: AppContextInterface = {
 
 const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
 
-export const AppProvider = ({ children }: AppProviderProps) => {
+export const AppProvider = observer(({ children }: AppProviderProps) => {
   const { setModalTheme } = useModalTheme();
+  const { chainConfigs, supportedChainIds } = useChainConfigs();
 
   const [states, setStates] = useState<AppContextInterface>(DEFAULT_STATES);
 
-  // Remark: this function is only used in useSelectChain. Do not use in other places.
-  const handleOnChainIdChange = useCallback((newChainId: string) => {
-    const chainConfig = CHAIN_CONFIGS[newChainId] ?? FALLBACK_CHAIN_CONFIG;
+  // Remark: this function is only used in useNetworkChange. Do not use in other places.
+  const handleOnChainIdChange = useCallback(
+    (newChainId: string) => {
+      const chainConfig = chainConfigs[newChainId];
+      if (!chainConfig) return;
 
-    const theme = getTheme(chainConfig.chain);
-    changeFavicon(theme.branding.favicon);
+      const theme = getTheme(chainConfig.chain);
+      changeFavicon(theme.branding.favicon);
 
-    setStates({
-      isHydrated: true,
-      availableChainIds: SUPPORTED_CHAIN_IDS,
-      currentChainId: newChainId,
-      chainConfig,
-      indexerGraphClient: new GraphQLClient(chainConfig.indexer, {
-        headers: {
-          "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
-        },
-      }),
-      constants: PROJECT_CONSTANTS,
-      theme,
-      setTheme: (newTheme: ThemeConfig) =>
-        setStates((prev) => ({ ...prev, theme: newTheme })),
-    });
-  }, []);
+      setStates({
+        isHydrated: true,
+        availableChainIds: supportedChainIds,
+        currentChainId: newChainId,
+        chainConfig,
+        indexerGraphClient: new GraphQLClient(chainConfig.indexer, {
+          headers: {
+            "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
+          },
+        }),
+        constants: PROJECT_CONSTANTS,
+        theme,
+        setTheme: (newTheme: ThemeConfig) =>
+          setStates((prev) => ({ ...prev, theme: newTheme })),
+      });
+    },
+    [chainConfigs, supportedChainIds]
+  );
 
   // Disable "Leave page" alert
   useEffect(() => {
@@ -103,7 +110,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   useNetworkChange(handleOnChainIdChange);
 
   return <AppContext.Provider value={states}>{children}</AppContext.Provider>;
-};
+});
 
 export const useCelatoneApp = (): AppContextInterface => {
   return useContext(AppContext);

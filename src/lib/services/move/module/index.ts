@@ -22,7 +22,6 @@ import type {
   ModulesResponse,
   ModuleTableCountsResponse,
   ModuleTxsResponse,
-  ModuleVerificationInternal,
 } from "lib/services/types";
 import type {
   AbiFormData,
@@ -31,7 +30,6 @@ import type {
   HexAddr,
   IndexedModule,
   ModulePublishInfo,
-  Nullable,
   Option,
   RpcQueryError,
 } from "lib/types";
@@ -47,7 +45,6 @@ import {
   getModules,
   getModuleTableCounts,
   getModuleTxs,
-  getModuleVerificationStatus,
 } from "./api";
 import { getModuleByAddressLcd, getModulesByAddressLcd } from "./lcd";
 
@@ -96,31 +93,6 @@ export const useModulesByAddress = ({
       refetchOnWindowFocus: false,
       onSuccess,
       onError,
-    }
-  );
-};
-
-export const useVerifyModule = ({
-  address,
-  moduleName,
-}: {
-  address: Option<Addr>;
-  moduleName: Option<string>;
-}): UseQueryResult<Nullable<ModuleVerificationInternal>> => {
-  const move = useMoveConfig({ shouldRedirect: false });
-  const endpoint = move.enabled ? move.verify : "";
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.MODULE_VERIFICATION, endpoint, address, moduleName],
-    () => {
-      if (!endpoint || !address || !moduleName) return null;
-      return getModuleVerificationStatus(endpoint, address, moduleName);
-    },
-    {
-      enabled: Boolean(address && moduleName),
-      retry: 0,
-      refetchOnWindowFocus: false,
-      keepPreviousData: true,
     }
   );
 };
@@ -175,7 +147,7 @@ export const useDecodeModule = ({
 
   const queryFn = async (): Promise<DecodeModuleQueryResponse> => {
     if (!move.enabled) throw new Error("Move configuration is disabled.");
-    const abi = await decodeModule(move.decodeApi, base64EncodedFile);
+    const abi = await decodeModule(base64EncodedFile);
     const modulePath = `${truncate(abi.address)}::${abi.name}`;
 
     const currentPolicy = await getModuleByAddressLcd(

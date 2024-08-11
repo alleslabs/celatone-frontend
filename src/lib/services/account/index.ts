@@ -2,7 +2,11 @@ import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import type { AccountData, AccountTableCounts } from "../types";
+import type {
+  AccountBech32LcdResponse,
+  AccountData,
+  AccountTableCounts,
+} from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -14,7 +18,11 @@ import {
 import type { AccountType, BechAddr, Option } from "lib/types";
 
 import { getAccountData, getAccountTableCounts } from "./api";
-import { getAccountDataLcd, getAccountTypeLcd } from "./lcd";
+import {
+  getAccountBech32Lcd,
+  getAccountDataLcd,
+  getAccountTypeLcd,
+} from "./lcd";
 
 export const useAccountData = (
   address: BechAddr
@@ -83,5 +91,17 @@ export const useAccountTypeLcd = (
     }
   );
 };
+
+export const useAccountBech32 = (
+  endpoint: string
+): UseQueryResult<AccountBech32LcdResponse> =>
+  useQuery(
+    [CELATONE_QUERY_KEYS.ACCOUNT_BECH_32_LCD, endpoint],
+    async () => getAccountBech32Lcd(endpoint),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
 
 export * from "./gql";

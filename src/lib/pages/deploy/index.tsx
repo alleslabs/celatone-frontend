@@ -10,6 +10,7 @@ import {
   useInternalNavigate,
   useWasmConfig,
 } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ButtonCard } from "lib/components/ButtonCard";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { CustomIcon } from "lib/components/icon";
@@ -17,7 +18,6 @@ import { Loading } from "lib/components/Loading";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 
 const getAlertContent = (
@@ -74,7 +74,7 @@ const Deploy = () => {
     chainPrettyName
   );
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       <CelatoneSeo pageName="Deploy Contract" />
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
         DEPLOY NEW CONTRACT
@@ -117,7 +117,7 @@ const Deploy = () => {
         description="Input code ID or select from previously stored or saved codes"
         onClick={() => navigate({ pathname: "/instantiate" })}
       />
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 };
 

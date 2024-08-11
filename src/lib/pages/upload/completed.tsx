@@ -3,16 +3,18 @@ import { observer } from "mobx-react-lite";
 
 import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
 import { useInternalNavigate } from "lib/app-provider";
+import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectingLine } from "lib/components/ConnectingLine";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { UploadSchema } from "lib/components/json-schema";
+import { WasmVerifySubmitModal } from "lib/components/modal";
 import { Stepper } from "lib/components/stepper";
 import { TxReceiptRender } from "lib/components/tx";
-import WasmPageContainer from "lib/components/WasmPageContainer";
 import { useSchemaStore } from "lib/providers/store";
-import { feeFromStr } from "lib/utils";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
+import { feeFromStr, getWasmVerifyStatus } from "lib/utils";
 
 interface UploadCompleteProps {
   txResult: StoreCodeTxInternalResult;
@@ -21,11 +23,16 @@ interface UploadCompleteProps {
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
+  const { data: derviedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+    Number(txResult.codeId),
+    txResult.codeHash
+  );
+
   const schema = getSchemaByCodeHash(txResult.codeHash);
   const attached = Boolean(schema);
 
   return (
-    <WasmPageContainer>
+    <ActionPageContainer>
       <Heading variant="h6" as="h6" color="text.dark" mb={3}>
         Deploy new contract
       </Heading>
@@ -102,7 +109,15 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           codeHash={txResult.codeHash}
         />
       </Flex>
-
+      <Flex mt={10}>
+        <WasmVerifySubmitModal
+          codeId={Number(txResult.codeId)}
+          codeHash={txResult.codeHash}
+          wasmVerifyStatus={getWasmVerifyStatus(derviedWasmVerifyInfo)}
+          relatedVerifiedCodes={derviedWasmVerifyInfo?.relatedVerifiedCodes}
+          triggerElement={<Button>Verfiy Code</Button>}
+        />
+      </Flex>
       {!attached && (
         <Flex my={8} gap={4} alignItems="center" w="full">
           <Divider borderColor="gray.600" />
@@ -137,6 +152,6 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
       >
         Go to my stored codes
       </Button>
-    </WasmPageContainer>
+    </ActionPageContainer>
   );
 });

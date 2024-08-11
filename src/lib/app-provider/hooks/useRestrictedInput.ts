@@ -46,15 +46,15 @@ export function useRestrictedInput(
 export interface RestrictedNumberInputParams {
   type?: "decimal" | "integer";
   maxDecimalPoints?: number;
-  maxIntegerPoinsts?: number;
+  maxIntegerPoints?: number;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function useRestrictedNumberInput({
   type = "decimal",
-  maxDecimalPoints,
-  maxIntegerPoinsts,
+  maxDecimalPoints = 6,
+  maxIntegerPoints = 7,
   onChange: _onChange,
 }: RestrictedNumberInputParams): RestrictedInputReturn {
   const { onKeyPress: restrictCharacters } = useRestrictedInput(
@@ -65,14 +65,14 @@ export function useRestrictedNumberInput({
     (nextValue: string): boolean => {
       return (
         Number.isNaN(+nextValue) ||
-        (typeof maxIntegerPoinsts === "number" &&
-          new RegExp(`^[0-9]{${maxIntegerPoinsts + 1},}`).test(nextValue)) ||
+        (typeof maxIntegerPoints === "number" &&
+          new RegExp(`^[0-9]{${maxIntegerPoints + 1},}`).test(nextValue)) ||
         (type === "decimal" &&
           typeof maxDecimalPoints === "number" &&
           new RegExp(`\\.[0-9]{${maxDecimalPoints + 1},}$`).test(nextValue))
       );
     },
-    [maxDecimalPoints, maxIntegerPoinsts, type]
+    [maxDecimalPoints, maxIntegerPoints, type]
   );
 
   const onKeyPress = useCallback(

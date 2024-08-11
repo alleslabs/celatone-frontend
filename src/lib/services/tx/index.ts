@@ -52,6 +52,7 @@ import {
   getTxsByAccountAddressSequencer,
   getTxsByBlockHeightSequencer,
   getTxsByHashSequencer,
+  getTxsCountSequencer,
   getTxsSequencer,
 } from "./sequencer";
 
@@ -388,6 +389,17 @@ export const useTxsSequencer = (limit = 10) => {
       })
     ),
   };
+};
+
+export const useTxsCountSequencer = () => {
+  const endpoint = useLcdEndpoint();
+  const { currentChainId } = useCelatoneApp();
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.TXS_COUNT_SEQUENCER, endpoint],
+    async () => getTxsCountSequencer(endpoint, currentChainId),
+    { retry: 1, refetchOnWindowFocus: false }
+  );
 };
 
 export const useTxsByAddressSequencer = (
