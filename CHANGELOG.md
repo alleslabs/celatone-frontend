@@ -37,10 +37,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- [#1081](https://github.com/alleslabs/celatone-frontend/pull/1081) Add service APIs for move verify module
 
 ### Features
 
+- [#1081](https://github.com/alleslabs/celatone-frontend/pull/1081) Add service APIs for move verify module
 - [#1082](https://github.com/alleslabs/celatone-frontend/pull/1082) Replace CONFIG_CHAINS by fetching the chains from the API
 - [#1077](https://github.com/alleslabs/celatone-frontend/pull/1077) Add download minitia custom JSON
 - [#1074](https://github.com/alleslabs/celatone-frontend/pull/1074) Add custom minitia upload JSON page
@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1034](https://github.com/alleslabs/celatone-frontend/pull/1034) Clean up custom icon file
 - [#1054](https://github.com/alleslabs/celatone-frontend/pull/1054) Improve main search bar to show both address and address as username
 
 ### Bug fixes
@@ -105,7 +106,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1034](https://github.com/alleslabs/celatone-frontend/pull/1034) Clean up custom icon file
 - [#1078](https://github.com/alleslabs/celatone-frontend/pull/1078) Add banner modal and adjust color
 - [#1040](https://github.com/alleslabs/celatone-frontend/pull/1040) Refactor networks selector
 - [#1039](https://github.com/alleslabs/celatone-frontend/pull/1039) Make NFT Txs to load more style
