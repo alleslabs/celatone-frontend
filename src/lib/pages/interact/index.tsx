@@ -16,10 +16,8 @@ import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import { CelatoneSeo } from "lib/components/Seo";
 import { useOpenNewTab } from "lib/hooks";
-import {
-  useModuleByAddressLcd,
-  useMoveVerifyInfo,
-} from "lib/services/move/module";
+import { useModuleByAddressLcd } from "lib/services/move/module";
+import { useMoveVerifyInfo } from "lib/services/verification/move";
 import type { Addr, ExposedFunction, IndexedModule } from "lib/types";
 import { getFirstQueryParam } from "lib/utils";
 
@@ -182,10 +180,10 @@ export const Interact = () => {
     [navigate, router.query]
   );
 
-  const { data: verificationData } = useMoveVerifyInfo({
-    address: module?.address,
-    moduleName: module?.moduleName,
-  });
+  const { data: verificationData } = useMoveVerifyInfo(
+    module?.address,
+    module?.moduleName
+  );
 
   const addressParam = getFirstQueryParam(router.query.address);
   const moduleNameParam = getFirstQueryParam(router.query.moduleName);

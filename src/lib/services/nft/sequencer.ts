@@ -1,14 +1,11 @@
 import axios from "axios";
 
-import { getMoveViewJson } from "../move/module/api";
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import type { Nft, NftMintInfo, NftTransactions } from "../types";
 import {
-  zNftInfoSequencer,
   zNftsByAccountResponseSequencer,
   zNftsResponseSequencer,
 } from "../types";
-import { zHexAddr } from "lib/types";
 import type { HexAddr, HexAddr32, Nullable, Option } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
@@ -79,46 +76,6 @@ export const getNftsByAccountSequencer = async (
     total: nfts.length,
   };
 };
-
-const getNftHolder = async (endpoint: string, nftAddress: HexAddr32) =>
-  getMoveViewJson(
-    endpoint,
-    "0x1" as HexAddr,
-    "object",
-    "owner",
-    ["0x1::nft::Nft"],
-    [`"${nftAddress}"`]
-  ).then((data) => parseWithError(zHexAddr, data));
-
-const getNftInfo = async (endpoint: string, nftAddress: HexAddr32) =>
-  getMoveViewJson(
-    endpoint,
-    "0x1" as HexAddr,
-    "nft",
-    "nft_info",
-    [],
-    [`"${nftAddress}"`]
-  ).then((data) => parseWithError(zNftInfoSequencer, data));
-
-export const getNftByNftAddressSequencer = async (
-  endpoint: string,
-  nftAddress: HexAddr32
-) =>
-  Promise.all([
-    getNftHolder(endpoint, nftAddress),
-    getNftInfo(endpoint, nftAddress),
-  ]).then<{ data: Nft }>(([holder, info]) => ({
-    data: {
-      uri: info.uri,
-      tokenId: info.tokenId,
-      description: info.description,
-      isBurned: false,
-      ownerAddress: holder,
-      nftAddress,
-      collectionAddress: info.collection,
-      collectionName: null,
-    },
-  }));
 
 export const getNftMintInfoSequencer = async (
   endpoint: string,

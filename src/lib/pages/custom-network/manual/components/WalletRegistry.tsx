@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { useController, useFieldArray, useWatch } from "react-hook-form";
 import type { Control, FieldErrors } from "react-hook-form";
 
-import type { AddNetworkManualForm } from "../types";
+import type { AddNetworkManualForm } from "../../types";
 import {
   CustomNetworkPageHeader,
   CustomNetworkSubheader,
@@ -145,9 +145,16 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
   });
 
   useEffect(() => {
-    if (accountBech32?.bech32Prefix === bech32Prefix) return;
+    if (isAccountBech32Loading || accountBech32?.bech32Prefix === bech32Prefix)
+      return;
+
     onChange(accountBech32?.bech32Prefix ?? "init");
-  }, [accountBech32?.bech32Prefix, bech32Prefix, onChange]);
+  }, [
+    isAccountBech32Loading,
+    accountBech32?.bech32Prefix,
+    bech32Prefix,
+    onChange,
+  ]);
 
   const { fields, append, remove } = useFieldArray({
     control,
