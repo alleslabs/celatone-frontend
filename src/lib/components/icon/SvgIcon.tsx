@@ -1235,18 +1235,18 @@ export const ICONS = {
   },
 };
 
-export type IconKeys = keyof typeof ICONS;
+export type SvgIconKeys = keyof typeof ICONS;
 
-interface CustomIconProps extends IconProps {
-  name: IconKeys;
+export interface SvgIconProps extends IconProps {
+  name: SvgIconKeys;
 }
 
-export const CustomIcon = ({
+export const SvgIcon = ({
   color,
   boxSize = "16px",
   name,
   ...iconProps
-}: CustomIconProps) => (
+}: SvgIconProps) => (
   <Icon
     viewBox={ICONS[name].viewBox}
     color={color}

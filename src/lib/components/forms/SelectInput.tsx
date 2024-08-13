@@ -23,7 +23,7 @@ interface SelectInputProps<T extends string> {
     label: string;
     value: T;
     disabled: boolean;
-    icon?: IconKeys | "circle";
+    icon?: IconKeys;
     iconColor?: string;
     image?: JSX.Element;
   }[];
@@ -61,26 +61,6 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
     {children}
   </Flex>
 );
-
-const OptionIconProps = ({
-  name,
-  color,
-}: {
-  name: IconKeys | "circle";
-  color?: string;
-}) =>
-  name === "circle" ? (
-    <Flex
-      w="14px"
-      h="14px"
-      minW="14px"
-      minH="14px"
-      backgroundColor={color}
-      borderRadius="100%"
-    />
-  ) : (
-    <CustomIcon name={name} color={color} />
-  );
 
 export const SelectInput = <T extends string>({
   formLabel,
@@ -155,7 +135,7 @@ export const SelectInput = <T extends string>({
           )}
           {selectedOption?.icon && (
             <InputLeftElement pointerEvents="none" h="full" ml={1}>
-              <OptionIconProps
+              <CustomIcon
                 name={selectedOption.icon}
                 color={selectedOption.iconColor}
               />
@@ -205,7 +185,7 @@ export const SelectInput = <T extends string>({
           >
             <Flex alignItems="center" gap={2}>
               <Flex alignItems="center">{image}</Flex>
-              {icon && <OptionIconProps name={icon} color={iconColor} />}
+              {icon && <CustomIcon name={icon} color={iconColor} />}
               {label}
             </Flex>
           </SelectItem>
