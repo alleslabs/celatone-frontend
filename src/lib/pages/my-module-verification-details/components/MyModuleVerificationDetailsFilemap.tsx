@@ -3,10 +3,10 @@ import { Heading, Stack } from "@chakra-ui/react";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { jsonPrettify } from "lib/utils";
 
-export const MyModuleVerificationDetailsFilemap = () => (
+export const MyModuleVerificationDetailsFileMap = () => (
   <Stack>
     <Heading as="h6" variant="h6">
-      Filemap
+      File Map
     </Heading>
     <JsonReadOnly
       text={jsonPrettify(

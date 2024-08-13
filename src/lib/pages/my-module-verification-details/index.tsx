@@ -9,7 +9,7 @@ import { useMoveVerifyTaskInfo } from "lib/services/verification/move";
 
 import {
   MyModuleVerificationDetailsAlert,
-  MyModuleVerificationDetailsFilemap,
+  MyModuleVerificationDetailsFileMap,
   MyModuleVerificationDetailsInfo,
   MyModuleVerificationDetailsTable,
   MyModuleVerificationDetailsTop,
@@ -34,7 +34,7 @@ export const MyModuleVerificationDetails = () => {
             status={data.task.status}
           />
           <MyModuleVerificationDetailsAlert status={data.task.status} />
-          <MyModuleVerificationDetailsFilemap />
+          <MyModuleVerificationDetailsFileMap />
           <MyModuleVerificationDetailsTable />
         </Stack>
       </Stack>
