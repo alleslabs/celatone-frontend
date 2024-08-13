@@ -1,50 +1,20 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-import type { ChainConfig as SharedChainConfig } from "@alleslabs/shared";
 import type { AssetList, Chain } from "@chain-registry/types";
-import { wallets as compassWallets } from "@cosmos-kit/compass";
-import { wallets as initiaWallets } from "@cosmos-kit/initia";
-import { wallets as keplrWallets } from "@cosmos-kit/keplr";
-import { wallets as staionWallets } from "@cosmos-kit/station";
-import { assets, chains } from "chain-registry";
-import { find } from "lodash";
+import chainRegistry from "chain-registry";
+import { find, isUndefined, unionBy } from "lodash";
 import { useCallback, useMemo } from "react";
 
-import type { ChainConfig, ChainConfigs } from "config/chain";
-import { CHAIN_CONFIGS } from "config/chain";
+import type { ChainConfigs } from "config/chain";
 import { SUPPORTED_CHAIN_IDS } from "env";
-import {
-  initiatestnet,
-  initiatestnetAssets,
-} from "lib/chain-registry/initiatestnet";
-import {
-  localosmosis,
-  localosmosisAsset,
-} from "lib/chain-registry/localosmosis";
-import { sei, seiAssets } from "lib/chain-registry/sei";
-import {
-  terra2testnet,
-  terra2testnetAssets,
-} from "lib/chain-registry/terra2testnet";
 import { useLocalChainConfigStore } from "lib/providers/store";
+import { useApiChainConfigs } from "lib/services/chain-config";
+import { populateChainConfig } from "lib/utils/chain-config";
 
-const getWallets = (wallets: SharedChainConfig["wallets"]) =>
-  wallets.reduce(
-    (acc, wallet) => {
-      switch (wallet) {
-        case "keplr":
-          return [...acc, ...keplrWallets];
-        case "initia":
-          return [...acc, ...initiaWallets];
-        case "compass":
-          return [...acc, ...compassWallets];
-        case "station":
-          return [...acc, ...staionWallets];
-        default:
-          return acc;
-      }
-    },
-    [] as ChainConfig["wallets"]
-  );
+const defaultConfigs = {
+  chainConfigs: {} as ChainConfigs,
+  registryChains: [] as Chain[],
+  registryAssets: [] as AssetList[],
+  supportedChainIds: [] as string[],
+};
 
 export const useChainConfigs = (): {
   chainConfigs: ChainConfigs;
@@ -53,116 +23,89 @@ export const useChainConfigs = (): {
   supportedChainIds: string[];
   isChainIdExist: (chainId: string) => boolean;
   isPrettyNameExist: (name: string) => boolean;
+  isLoading: boolean;
 } => {
-  const { localChainConfigs, isLocalChainIdExist, isLocalPrettyNameExist } =
-    useLocalChainConfigStore();
+  const { data: apiChainConfigs, isLoading } =
+    useApiChainConfigs(SUPPORTED_CHAIN_IDS);
+  const {
+    localChainConfigs,
+    isLocalChainIdExist,
+    isLocalPrettyNameExist,
+    isHydrated,
+  } = useLocalChainConfigStore();
+
+  const api = useMemo(() => {
+    if (isLoading || isUndefined(apiChainConfigs)) return defaultConfigs;
+
+    return apiChainConfigs.reduce((acc, each) => {
+      const { chainConfig, registryChain, registryAssets } =
+        populateChainConfig(each);
+
+      return {
+        chainConfigs: {
+          ...acc.chainConfigs,
+          [each.chainId]: chainConfig,
+        },
+        registryChains: [...acc.registryChains, registryChain],
+        registryAssets: [...acc.registryAssets, registryAssets],
+        supportedChainIds: [...acc.supportedChainIds, each.chainId],
+      };
+    }, defaultConfigs);
+  }, [apiChainConfigs, isLoading]);
 
   const local = useMemo(
     () =>
-      Object.values(localChainConfigs).reduce(
-        (acc, each) => {
-          const localChainConfig: ChainConfig = {
-            tier: each.tier,
-            chain: each.chain,
-            registryChainName: each.registryChainName,
-            prettyName: each.prettyName,
-            logoUrl:
-              each.logo_URIs?.png ??
-              each.logo_URIs?.svg ??
-              each.logo_URIs?.jpeg,
-            networkType: each.network_type,
-            lcd: each.lcd,
-            rpc: each.rpc,
-            indexer: each.graphql || "",
-            wallets: getWallets(each.wallets),
-            features: each.features,
-            gas: {
-              gasPrice: {
-                tokenPerGas: each.fees?.fee_tokens[0]?.fixed_min_gas_price ?? 0,
-                denom: each.fees?.fee_tokens[0]?.denom ?? "",
-              },
-              gasAdjustment: each.gas.gasAdjustment,
-              maxGasLimit: each.gas.maxGasLimit,
-            },
-            extra: each.extra,
-          };
+      Object.values(localChainConfigs).reduce((acc, each) => {
+        const { chainConfig, registryChain, registryAssets } =
+          populateChainConfig(each);
 
-          const localRegistryChain: Chain = {
-            chain_name: each.registryChainName,
-            status: "live",
-            network_type: each.network_type,
-            pretty_name: each.prettyName,
-            chain_id: each.chainId,
-            bech32_prefix: each.registry?.bech32_prefix ?? "",
-            slip44: each.registry?.slip44 ?? 118,
-            fees: each.fees,
-            staking: each.registry?.staking,
-            logo_URIs: each.logo_URIs,
-          };
-
-          const localRegistryAssets: AssetList = {
-            $schema: "../assetlist.schema.json",
-            chain_name: each.registryChainName,
-            assets: each.registry?.assets ?? [],
-          };
-
-          return {
-            chainConfigs: {
-              ...acc.chainConfigs,
-              [each.chainId]: localChainConfig,
-            },
-            registryChains: [...acc.registryChains, localRegistryChain],
-            registryAssets: [...acc.registryAssets, localRegistryAssets],
-            supportedChainIds: [...acc.supportedChainIds, each.chainId],
-          };
-        },
-        {
-          chainConfigs: {} as ChainConfigs,
-          registryChains: [] as Chain[],
-          registryAssets: [] as AssetList[],
-          supportedChainIds: [] as string[],
-        }
-      ),
+        return {
+          chainConfigs: {
+            ...acc.chainConfigs,
+            [each.chainId]: chainConfig,
+          },
+          registryChains: [...acc.registryChains, registryChain],
+          registryAssets: [...acc.registryAssets, registryAssets],
+          supportedChainIds: [...acc.supportedChainIds, each.chainId],
+        };
+      }, defaultConfigs),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [JSON.stringify(localChainConfigs)]
   );
 
   const isChainIdExist = useCallback(
     (chainId: string) =>
-      !!CHAIN_CONFIGS[chainId] || isLocalChainIdExist(chainId),
-    [isLocalChainIdExist]
+      !!api.chainConfigs[chainId] || isLocalChainIdExist(chainId),
+    [api.chainConfigs, isLocalChainIdExist]
   );
 
   const isPrettyNameExist = useCallback(
     (name: string) =>
-      !!find(CHAIN_CONFIGS, { prettyName: name }) ||
+      !!find(apiChainConfigs, { prettyName: name }) ||
       isLocalPrettyNameExist(name),
-    [isLocalPrettyNameExist]
+    [apiChainConfigs, isLocalPrettyNameExist]
   );
 
   return {
     chainConfigs: {
-      ...CHAIN_CONFIGS,
+      ...api.chainConfigs,
       ...local.chainConfigs,
     },
-    registryChains: [
-      ...chains,
-      localosmosis,
-      sei,
-      terra2testnet,
-      ...initiatestnet,
-      ...local.registryChains,
-    ],
-    registryAssets: [
-      ...assets,
-      localosmosisAsset,
-      seiAssets,
-      terra2testnetAssets,
-      ...initiatestnetAssets,
-      ...local.registryAssets,
-    ],
+    registryChains: unionBy(
+      chainRegistry.chains,
+      api.registryChains,
+      local.registryChains,
+      "chain_id"
+    ),
+    registryAssets: unionBy(
+      chainRegistry.assets,
+      api.registryAssets,
+      local.registryAssets,
+      "chain_name"
+    ),
     supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
     isChainIdExist,
     isPrettyNameExist,
+    isLoading: isLoading || !isHydrated,
   };
 };

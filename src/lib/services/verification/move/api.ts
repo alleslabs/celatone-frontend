@@ -16,7 +16,7 @@ import {
 import type { Addr, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-export const getSubmitMoveVerify = async (
+export const submitMoveVerify = async (
   formData: FormData
 ): Promise<SubmitMoveVerifyResponse> =>
   axios

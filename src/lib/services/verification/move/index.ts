@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
 import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
@@ -6,7 +6,6 @@ import type {
   MoveVerifyByTaskIdResponse,
   MoveVerifyInfoResponse,
   MoveVerifyInfosByAddressResponse,
-  SubmitMoveVerifyResponse,
 } from "lib/services/types";
 import type { Addr, Nullable, Option } from "lib/types";
 
@@ -14,28 +13,13 @@ import {
   getMoveVerifyByTaskId,
   getMoveVerifyInfo,
   getMoveVerifyInfosByAddress,
-  getSubmitMoveVerify,
+  submitMoveVerify,
 } from "./api";
 
-export const useSubmitMoveVerify = (
-  formData: FormData
-): UseQueryResult<SubmitMoveVerifyResponse> => {
-  const { chainConfig } = useCelatoneApp();
-  const {
-    extra: { layer },
-  } = chainConfig;
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.MOVE_VERIFY_SUBMIT, formData, layer],
-    () => getSubmitMoveVerify(formData),
-    {
-      enabled: layer === "1",
-      retry: 0,
-      refetchOnWindowFocus: false,
-      keepPreviousData: true,
-    }
-  );
-};
+export const useSubmitMoveVerify = () =>
+  useMutation({
+    mutationFn: submitMoveVerify,
+  });
 
 export const useMoveVerifyTaskInfo = (
   taskId: string,
