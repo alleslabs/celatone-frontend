@@ -39,10 +39,11 @@ export function DropZone({
   const maxSize = (() => {
     switch (fileType) {
       case "schema":
+      case "move":
         return 10_000_000;
       case "wasm":
         return wasm.enabled ? wasm.storeCodeMaxFileSize : 0;
-      case "move":
+      case "mv":
         return move.enabled ? move.moduleMaxFileSize : 0;
       default:
         return 0;
