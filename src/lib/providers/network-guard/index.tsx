@@ -11,6 +11,7 @@ import {
   useContractStore,
   useNetworkStore,
   usePublicProjectStore,
+  useVerifyModuleStore,
 } from "lib/providers/store";
 import { formatUserKey } from "lib/utils";
 
@@ -32,6 +33,8 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
   const { setNetworkUserKey, isNetworkUserKeyExist } = useNetworkStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
+  const { setVerifyModuleUserKey, isVerifyModuleUserKeyExist } =
+    useVerifyModuleStore();
 
   useEffect(() => {
     if (isHydrated) {
@@ -40,6 +43,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
       setCodeUserKey(userKey);
       setContractUserKey(userKey);
       setProjectUserKey(userKey);
+      setVerifyModuleUserKey(userKey);
 
       setNetworkUserKey(DEFAULT_ADDRESS);
     }
@@ -51,6 +55,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     setContractUserKey,
     setNetworkUserKey,
     setProjectUserKey,
+    setVerifyModuleUserKey,
   ]);
 
   if (isHydrated && !(currentChainId in chainConfigs))
@@ -62,7 +67,8 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     !isCodeUserKeyExist() ||
     !isContractUserKeyExist() ||
     !isNetworkUserKeyExist() ||
-    !isProjectUserKeyExist()
+    !isProjectUserKeyExist() ||
+    !isVerifyModuleUserKeyExist()
   )
     return <LoadingOverlay />;
 

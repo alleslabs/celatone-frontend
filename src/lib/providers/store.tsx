@@ -69,3 +69,8 @@ export function useLocalChainConfigStore() {
   const { localChainConfigStore } = useStore();
   return localChainConfigStore;
 }
+
+export function useVerifyModuleStore() {
+  const { verifyModuleStore } = useStore();
+  return verifyModuleStore;
+}
