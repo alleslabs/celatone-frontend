@@ -70,7 +70,7 @@ export const SearchResultItemBody = ({
       </Flex>
     );
 
-  if (result.type === "NFT Address" || result.type === "NFT Collection Address")
+  if (result.type === "NFT Collection Address" || result.type === "NFT Address")
     return (
       <Flex direction="column">
         <Text

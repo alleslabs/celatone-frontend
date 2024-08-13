@@ -10,18 +10,16 @@ export const LegendText = ({
   label,
   legendColor,
   ...TextProps
-}: LegendTextProps) => {
-  return (
-    <Flex gap={3} px={1} alignItems="center">
-      <Flex
-        w="14px"
-        h="14px"
-        minW="14px"
-        minH="14px"
-        backgroundColor={legendColor}
-        borderRadius="100%"
-      />
-      {label && <Text {...TextProps}>{label}</Text>}
-    </Flex>
-  );
-};
+}: LegendTextProps) => (
+  <Flex gap={3} px={1} alignItems="center">
+    <Flex
+      w="14px"
+      h="14px"
+      minW="14px"
+      minH="14px"
+      backgroundColor={legendColor}
+      borderRadius="100%"
+    />
+    {label && <Text {...TextProps}>{label}</Text>}
+  </Flex>
+);

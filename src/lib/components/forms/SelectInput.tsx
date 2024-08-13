@@ -23,8 +23,7 @@ interface SelectInputProps<T extends string> {
     label: string;
     value: T;
     disabled: boolean;
-    icon?: IconKeys;
-    hasLegend?: boolean;
+    icon?: IconKeys | "circle";
     iconColor?: string;
     image?: JSX.Element;
   }[];
@@ -62,6 +61,26 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
     {children}
   </Flex>
 );
+
+const OptionIconProps = ({
+  name,
+  color,
+}: {
+  name: IconKeys | "circle";
+  color?: string;
+}) =>
+  name === "circle" ? (
+    <Flex
+      w="14px"
+      h="14px"
+      minW="14px"
+      minH="14px"
+      backgroundColor={color}
+      borderRadius="100%"
+    />
+  ) : (
+    <CustomIcon name={name} color={color} />
+  );
 
 export const SelectInput = <T extends string>({
   formLabel,
@@ -136,7 +155,7 @@ export const SelectInput = <T extends string>({
           )}
           {selectedOption?.icon && (
             <InputLeftElement pointerEvents="none" h="full" ml={1}>
-              <CustomIcon
+              <OptionIconProps
                 name={selectedOption.icon}
                 color={selectedOption.iconColor}
               />
@@ -174,35 +193,23 @@ export const SelectInput = <T extends string>({
         }}
         overflow="scroll"
       >
-        {options.map(
-          ({ label, value, disabled, icon, iconColor, hasLegend, image }) => (
-            <SelectItem
-              key={value}
-              onSelect={() => {
-                setSelected(label);
-                onChange(value);
-                onClose();
-              }}
-              disabled={disabled}
-            >
-              <Flex alignItems="center" gap={2}>
-                <Flex alignItems="center">{image}</Flex>
-                {icon && <CustomIcon name={icon} color={iconColor} />}
-                {hasLegend && (
-                  <Flex
-                    w="14px"
-                    h="14px"
-                    minW="14px"
-                    minH="14px"
-                    backgroundColor={iconColor}
-                    borderRadius="100%"
-                  />
-                )}
-                {label}
-              </Flex>
-            </SelectItem>
-          )
-        )}
+        {options.map(({ label, value, disabled, icon, iconColor, image }) => (
+          <SelectItem
+            key={value}
+            onSelect={() => {
+              setSelected(label);
+              onChange(value);
+              onClose();
+            }}
+            disabled={disabled}
+          >
+            <Flex alignItems="center" gap={2}>
+              <Flex alignItems="center">{image}</Flex>
+              {icon && <OptionIconProps name={icon} color={iconColor} />}
+              {label}
+            </Flex>
+          </SelectItem>
+        ))}
         {helperTextComponent && (
           <Flex
             px={4}
