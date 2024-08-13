@@ -79,9 +79,9 @@ export function DropZone({
         <Flex my={2} gap={1}>
           <Text
             variant="body1"
-            color="secondary.main"
+            color="primary.main"
             transition="all 0.25s ease-in-out"
-            _hover={{ color: "secondary.light" }}
+            _hover={{ color: "primary.light" }}
             style={{ textDecoration: "underline" }}
           >
             Click to upload

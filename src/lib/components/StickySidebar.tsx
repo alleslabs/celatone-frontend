@@ -45,17 +45,17 @@ const ToPage = ({ onClick, title }: ToPageProps) => (
     alignItems="center"
     width="fit-content"
     transition="all 0.25s ease-in-out"
-    color="secondary.main"
+    color="primary.main"
     _hover={{
-      color: "secondary.light",
-      bgColor: "secondary.background",
+      color: "primary.light",
+      bgColor: "primary.background",
     }}
     onClick={onClick}
   >
-    <Text variant="body3" color="secondary.main" fontWeight={700}>
+    <Text variant="body3" color="primary.main" fontWeight={700}>
       {title}
     </Text>
-    <CustomIcon name="chevron-right" color="secondary.main" boxSize={3} m={0} />
+    <CustomIcon name="chevron-right" color="primary.main" boxSize={3} m={0} />
   </Flex>
 );
 
@@ -72,12 +72,12 @@ export const StickySidebar = ({
     <Box flex="4" px={8} position="relative" {...boxProps}>
       <Flex position="fixed" width="full" direction="column">
         {hasForumAlert && (
-          <Alert variant="secondary" gap="2" w={96} mb={2}>
+          <Alert variant="primary" gap="2" w={96} mb={2}>
             <Box>
-              <Text variant="body2" fontWeight={600} color="secondary">
+              <Text variant="body2" fontWeight={600} color="primary">
                 Forum Posting Required for Proposals
               </Text>
-              <Text variant="body3" color="secondary" mt={1}>
+              <Text variant="body3" color="primary" mt={1}>
                 Governance proposals must be posted as a draft on
                 <Flex align="center" display="inline-flex">
                   <Link

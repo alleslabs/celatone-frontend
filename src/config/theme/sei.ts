@@ -58,13 +58,6 @@ const SEI_BASE_THEME: ThemeConfig = {
     secondary: {
       main: "#6C80B2",
       light: "#8797C0",
-      dark: "#184354",
-      darker: "#3F4F78",
-      background: "#203043",
-    },
-    accent: {
-      main: "#6C80B2",
-      light: "#8797C0",
       lighter: "#8797C0",
       dark: "#516799",
       darker: "#3F4F78",
@@ -128,10 +121,10 @@ const SEI_COMPONENT_CONFIG: ComponentConfig = {
   },
   proposalChip: {
     depositPeriod: {
-      bg: "accent.darker",
+      bg: "secondary.darker",
     },
     votingPeriod: {
-      bg: "accent.dark",
+      bg: "secondary.dark",
     },
     failed: {
       bg: "error.dark",
@@ -151,7 +144,7 @@ const SEI_COMPONENT_CONFIG: ComponentConfig = {
   },
   stepper: {
     active: {
-      bg: "accent.main",
+      bg: "secondary.main",
       color: "gray.100",
     },
     disabled: {
@@ -161,7 +154,7 @@ const SEI_COMPONENT_CONFIG: ComponentConfig = {
   },
   tag: {
     signer: {
-      bg: "accent.darker",
+      bg: "secondary.darker",
       color: "text.main",
     },
     related: {
@@ -170,8 +163,8 @@ const SEI_COMPONENT_CONFIG: ComponentConfig = {
     },
   },
   voteParticipations: {
-    voted: "accent.main",
-    votedAbstain: "accent.darker",
+    voted: "secondary.main",
+    votedAbstain: "secondary.darker",
     didNotVote: "gray.700",
   },
   recentBlocks: {

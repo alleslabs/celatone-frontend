@@ -74,10 +74,13 @@ const FunctionCardBody = ({
         <Flex gap={1} alignItems="center">
           <CustomIcon
             name="query"
-            color={isView ? "primary.main" : "accent.dark"}
+            color={isView ? "primary.main" : "secondary.dark"}
             boxSize={3}
           />
-          <Text variant="body3" color={isView ? "primary.main" : "accent.dark"}>
+          <Text
+            variant="body3"
+            color={isView ? "primary.main" : "secondary.dark"}
+          >
             {isView ? "View" : "Execute"}
           </Text>
         </Flex>

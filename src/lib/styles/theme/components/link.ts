@@ -2,7 +2,7 @@ import type { ComponentStyleConfig } from "@chakra-ui/react";
 
 export const Link: ComponentStyleConfig = {
   baseStyle: {
-    color: "secondary.main",
+    color: "primary.main",
     fontSize: "14px",
     "&.ellipsis": {
       whiteSpace: "nowrap",

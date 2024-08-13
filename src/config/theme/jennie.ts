@@ -54,13 +54,6 @@ const JENNIE_BASE_THEME: ThemeConfig = {
       background: "#651546",
     },
     secondary: {
-      main: "#FFB1E7",
-      light: "#FFD6F3",
-      dark: "#E06FB5",
-      darker: "#CA2B8D",
-      background: "#651546",
-    },
-    accent: {
       main: "#2AB9FC",
       light: "#5FC1EE",
       lighter: "#A3DBF5",
@@ -120,10 +113,10 @@ const JENNIE_COMPONENT_CONFIG: ComponentConfig = {
   },
   proposalChip: {
     depositPeriod: {
-      bg: "secondary.darker",
+      bg: "primary.darker",
     },
     votingPeriod: {
-      bg: "primary.dark",
+      bg: "secondary.dark",
     },
     failed: {
       bg: "error.dark",
@@ -157,18 +150,18 @@ const JENNIE_COMPONENT_CONFIG: ComponentConfig = {
       color: "text.main",
     },
     related: {
-      bg: "accent.darker",
+      bg: "secondary.darker",
       color: "text.main",
     },
   },
   voteParticipations: {
     voted: "primary.main",
-    votedAbstain: "primary.darker",
+    votedAbstain: "secondary.darker",
     didNotVote: "gray.700",
   },
   recentBlocks: {
-    signed: "accent.darker",
-    proposed: "accent.lighter",
+    signed: "primary.dark",
+    proposed: "secondary.light",
     missed: "error.dark",
   },
 };

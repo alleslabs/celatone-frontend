@@ -22,7 +22,7 @@ const labelStyles = {
     color: "text.disabled",
   },
   _active: {
-    color: "secondary.main",
+    color: "primary.dark",
   },
 };
 

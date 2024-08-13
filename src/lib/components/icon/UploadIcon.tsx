@@ -12,7 +12,7 @@ const getVariantStyle = (variant: UploadIconProps["variant"]) => {
       return { bgColor: "gray.700", color: "text.dark" };
     case "primary":
     default:
-      return { bgColor: "secondary.background", color: "secondary.main" };
+      return { bgColor: "primary.background", color: "primary.main" };
   }
 };
 

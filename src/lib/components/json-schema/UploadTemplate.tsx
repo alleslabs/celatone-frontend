@@ -98,7 +98,7 @@ const MethodRender = ({
     case Method.UPLOAD_FILE:
       return jsonFile ? (
         <UploadCard
-          theme="secondary"
+          theme="gray"
           file={jsonFile}
           deleteFile={() => {
             setJsonFile(undefined);

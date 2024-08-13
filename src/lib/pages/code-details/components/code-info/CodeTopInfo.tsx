@@ -65,7 +65,7 @@ export const CodeTopInfo = ({
         <Flex direction="column" gap={{ base: 2, md: 1 }}>
           <Flex justify={{ base: "space-between", md: "start" }} align="center">
             <Flex gap={1} minH="36px" align="center">
-              <CustomIcon name="code" boxSize={5} color="secondary.main" />
+              <CustomIcon name="code" boxSize={5} color="primary.main" />
               {projectInfo && (
                 <Image
                   src={projectInfo.logo}

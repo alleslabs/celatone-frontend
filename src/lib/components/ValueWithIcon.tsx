@@ -11,7 +11,7 @@ export const ValueWithIcon = ({
   value: string;
 }) => (
   <Flex alignItems="center" gap={2}>
-    <CustomIcon name={icon} boxSize={6} color="secondary.main" />
+    <CustomIcon name={icon} boxSize={6} color="primary.main" />
     <Heading as="h4" variant={{ base: "h5", md: "h4" }}>
       {value}
     </Heading>

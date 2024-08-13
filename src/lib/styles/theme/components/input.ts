@@ -13,11 +13,11 @@ export const Input: ComponentStyleConfig = {
           borderColor: "gray.600",
         },
         _focusWithin: {
-          borderColor: "secondary.main",
+          borderColor: "primary.dark",
           borderWidth: "2px",
         },
         _active: {
-          borderColor: "secondary.main",
+          borderColor: "primary.dark",
           borderWidth: "2px",
         },
         _disabled: {

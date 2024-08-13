@@ -67,12 +67,12 @@ export const Expedited = ({ isActiveExpedited }: ExpeditedProps) => {
           name="expedited"
           boxSize={4}
           ml={0}
-          color={isActiveExpedited ? "accent.main" : "gray.400"}
+          color={isActiveExpedited ? "secondary.main" : "gray.400"}
         />
         <Text
           as="span"
           variant="body3"
-          color={isActiveExpedited ? "accent.main" : "text.dark"}
+          color={isActiveExpedited ? "secondary.main" : "text.dark"}
         >
           Expedited
         </Text>

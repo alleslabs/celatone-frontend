@@ -11,17 +11,10 @@ const teal = definePartsStyle({
   },
 });
 
-const accentDark = definePartsStyle({
+const secondary = definePartsStyle({
   container: {
-    bg: "accent.dark",
+    bg: "secondary.main",
     color: "gray.900",
-  },
-});
-
-const accentDarker = definePartsStyle({
-  container: {
-    bg: "accent.darker",
-    color: "text.main",
   },
 });
 
@@ -29,6 +22,13 @@ const primaryLight = definePartsStyle({
   container: {
     bg: "primary.light",
     color: "gray.900",
+  },
+});
+
+const primaryDarker = definePartsStyle({
+  container: {
+    bg: "primary.darker",
+    color: "text.main",
   },
 });
 
@@ -69,13 +69,13 @@ export const Tag = defineMultiStyleConfig({
   },
   variants: {
     "primary-light": primaryLight,
-    "accent-dark": accentDark,
-    "accent-darker": accentDarker,
+    "primary-darker": primaryDarker,
+    secondary,
     teal,
     gray,
   },
   defaultProps: {
     size: "md",
-    variant: "accent-darker",
+    variant: "primary-darker",
   },
 });

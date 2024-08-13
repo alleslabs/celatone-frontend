@@ -79,7 +79,7 @@ export const WasmVerifyRequestInfo = ({
                 cursor: "pointer",
                 "&:hover": {
                   "> *": {
-                    color: "secondary.light",
+                    color: "primary.light",
                     textDecoration: "underline",
                     transition: "all",
                     transitionDuration: "0.25s",
@@ -88,7 +88,7 @@ export const WasmVerifyRequestInfo = ({
                 },
               }}
             >
-              <Text color="secondary.main" variant="body2">
+              <Text color="primary.main" variant="body2">
                 {verificationInfo.gitUrl}
               </Text>
               <Copier

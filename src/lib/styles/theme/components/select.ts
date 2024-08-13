@@ -14,11 +14,11 @@ export const Select: ComponentStyleConfig = {
         bg: "background.main",
         _focus: {
           borderWidth: "2px",
-          borderColor: "secondary.main",
+          borderColor: "primary.dark",
         },
         _active: {
           borderWidth: "2px",
-          borderColor: "secondary.main",
+          borderColor: "primary.dark",
         },
       },
       icon: {

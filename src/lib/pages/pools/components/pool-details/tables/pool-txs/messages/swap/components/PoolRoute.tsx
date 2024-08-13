@@ -76,12 +76,12 @@ export const PoolRoute = ({
                       }
                       color={
                         token.denom === pool.tokenOutDenom
-                          ? "accent.main"
+                          ? "primary.main"
                           : "text.main"
                       }
                     >
                       {getTokenLabel(token.denom, token.symbol)}
-                      <Text as="span" fontWeight={400} color="accent.main">
+                      <Text as="span" fontWeight={400} color="primary.main">
                         {" "}
                         /
                       </Text>

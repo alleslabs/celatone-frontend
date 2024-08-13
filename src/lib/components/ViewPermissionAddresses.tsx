@@ -35,7 +35,7 @@ export const ViewPermissionAddresses = ({
         ))}
       {permissionAddresses.length > 1 && (
         <Button
-          variant="ghost-secondary"
+          variant="ghost-primary"
           onClick={() => {
             trackUseExpand({
               action: viewAll ? "collapse" : "expand",

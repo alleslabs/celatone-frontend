@@ -38,14 +38,14 @@ export const MsgExitPoolAction = ({
       from
       <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       {msg.token_out_mins && (
-        <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
+        <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
       )}
       {(msg.token_out_mins ?? []).map((coin, index) => {
         const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
         return (
           <Flex key={token.denom} gap={1} alignItems="center">
             {index > 0 && (
-              <CustomIcon name="plus" boxSize={4} color="secondary.main" />
+              <CustomIcon name="plus" boxSize={4} color="primary.main" />
             )}
             at least
             <MsgToken

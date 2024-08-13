@@ -27,13 +27,6 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
       background: "#0E3139",
     },
     secondary: {
-      light: "#9AF3FF",
-      main: "#4CE2F7",
-      dark: "#00B5CE",
-      darker: "#007080",
-      background: "#0E3139",
-    },
-    accent: {
       lighter: "#F0D5FF",
       light: "#E1ADFE",
       main: "#CE89F4",
@@ -123,7 +116,7 @@ const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
       bg: "primary.darker",
     },
     votingPeriod: {
-      bg: "primary.dark",
+      bg: "secondary.darker",
     },
     failed: {
       bg: "error.dark",
@@ -163,12 +156,12 @@ const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
   },
   voteParticipations: {
     voted: "primary.main",
-    votedAbstain: "primary.darker",
+    votedAbstain: "secondary.dark",
     didNotVote: "gray.700",
   },
   recentBlocks: {
     signed: "primary.dark",
-    proposed: "primary.light",
+    proposed: "secondary.light",
     missed: "error.dark",
   },
 };

@@ -47,7 +47,7 @@ export const FailedAddCustomMinitiaModal = ({
         </Text>
       </ModalBody>
       <ModalFooter pb={0}>
-        <Button variant="outline-secondary" w="100%" onClick={onClose}>
+        <Button variant="outline-primary" w="100%" onClick={onClose}>
           Close
         </Button>
       </ModalFooter>

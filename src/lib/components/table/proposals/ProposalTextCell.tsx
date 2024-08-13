@@ -111,7 +111,9 @@ export const ProposalTextCell = ({
             ? types.map((msgType, index) => (
                 <span key={msgType + index.toString()}>
                   {index > 0 && (
-                    <span style={{ color: "var(--chakra-colors-accent-main)" }}>
+                    <span
+                      style={{ color: "var(--chakra-colors-primary-main)" }}
+                    >
                       {" , "}
                     </span>
                   )}
