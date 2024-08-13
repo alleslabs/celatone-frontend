@@ -29,6 +29,7 @@ export const useWasmVerifyInfos = (codeIds: number[], enabled = true) => {
     refetchOnWindowFocus: false,
     retry: false,
     staleTime: Infinity,
+    retryOnMount: false,
   });
 };
 

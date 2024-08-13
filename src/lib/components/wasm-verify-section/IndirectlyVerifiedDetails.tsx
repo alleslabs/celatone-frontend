@@ -1,5 +1,4 @@
 import { Text } from "@chakra-ui/react";
-import { Fragment } from "react";
 
 import { ExplorerLink } from "../ExplorerLink";
 import { WasmVerifyBadge } from "../WasmVerifyBadge";
@@ -7,36 +6,8 @@ import { useMobile } from "lib/app-provider";
 import type { BechAddr32 } from "lib/types";
 import { WasmVerifyStatus } from "lib/types";
 
+import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
 import { VerifyButton } from "./VerifyButton";
-
-const RelatedVerifiedCodes = ({
-  relatedVerifiedCodes,
-}: {
-  relatedVerifiedCodes: number[];
-}) => {
-  const displayedCodes = relatedVerifiedCodes.slice(0, 3);
-  return (
-    <>
-      {displayedCodes.map((code, index) => (
-        <Fragment key={code.toString()}>
-          <ExplorerLink
-            type="code_id"
-            value={code.toString()}
-            showCopyOnHover
-          />
-          {relatedVerifiedCodes.length > 2 &&
-            index < displayedCodes.length - 1 &&
-            ","}
-          {index < displayedCodes.length - 1 && " "}
-          {index === relatedVerifiedCodes.length - 2 &&
-            index < displayedCodes.length - 1 &&
-            "and "}
-        </Fragment>
-      ))}
-      {relatedVerifiedCodes.length > 3 && " and more"}
-    </>
-  );
-};
 
 interface IndirectlyVerifiedDetailsProps {
   codeId: number;
@@ -74,7 +45,11 @@ export const IndirectlyVerifiedDetails = ({
         ) : (
           <>
             This code has the same code hash as the following verified stored
-            codes: {RelatedVerifiedCodes({ relatedVerifiedCodes })}.
+            codes:{" "}
+            <RelatedVerifiedCodeLinks
+              relatedVerifiedCodes={relatedVerifiedCodes}
+            />
+            .
           </>
         )}
         <br />

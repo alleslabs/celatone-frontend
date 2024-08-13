@@ -31,7 +31,7 @@ export const ContractsTable = ({
   withCta,
 }: ContractsTableProps) => {
   const isMobile = useMobile();
-  const { data: wasmVerifyInfos, isLoading: isWasmVerifyInfosLoading } =
+  const { data: wasmVerifyInfos, isFetching: isWasmVerifyInfosFetching } =
     useWasmVerifyInfos(
       contracts?.reduce<number[]>(
         (acc, contract) => (contract.codeId ? [...acc, contract.codeId] : acc),
@@ -40,7 +40,7 @@ export const ContractsTable = ({
       !!contracts
     );
 
-  if (isLoading || isWasmVerifyInfosLoading) return <Loading />;
+  if (isLoading || isWasmVerifyInfosFetching) return <Loading />;
   if (!contracts?.length) return emptyState;
 
   let templateColumns: string;

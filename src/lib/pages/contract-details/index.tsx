@@ -76,7 +76,10 @@ const ContractDetailsBody = observer(
     const { isTotalBondedLoading, totalBonded } =
       useAccountDelegationInfos(contractAddress);
 
-    const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+    const {
+      data: derivedWasmVerifyInfo,
+      isLoading: isDerivedWasmVerifyInfoLoading,
+    } = useDerivedWasmVerifyInfo(
       contractData?.contract.codeId,
       contractData?.contract.codeHash
     );
@@ -101,7 +104,8 @@ const ContractDetailsBody = observer(
       [contractAddress, tab, navigate]
     );
 
-    if (isLoading) return <Loading withBorder />;
+    if (isLoading || isDerivedWasmVerifyInfoLoading)
+      return <Loading withBorder />;
     if (!contractData) return <ErrorFetching dataName="contract information" />;
     if (contractData.contract === null) return <InvalidContract />;
 

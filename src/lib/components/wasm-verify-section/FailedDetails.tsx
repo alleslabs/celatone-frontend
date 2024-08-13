@@ -6,6 +6,7 @@ import { WasmVerifyStatusModal } from "lib/components/modal";
 import type { BechAddr32, WasmVerifyInfoBase } from "lib/types";
 import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 
+import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
 import { VerifyButton } from "./VerifyButton";
 
 interface FailedDetailsProps {
@@ -28,22 +29,34 @@ export const FailedDetails = ({
     <>
       <Text variant="body2" color="text.dark">
         {contractAddress ? (
-          <Text variant="body2" color="text.dark">
+          <>
             This contract is an instance of code ID{" "}
             <ExplorerLink
               value={codeId.toString()}
               type="code_id"
               showCopyOnHover
             />
-            , verification was submitted on{" "}
+            , in which its verification was submitted on{" "}
             {formatUTC(verificationInfo.submittedTimestamp)} but an error
             occurred.
-          </Text>
+          </>
         ) : (
           <>
             Verification failed: Verification was submitted on{" "}
             {formatUTC(verificationInfo.submittedTimestamp)} but an error
             occurred.
+          </>
+        )}
+        {relatedVerifiedCodes.length > 0 && (
+          <>
+            <br />
+            <br />
+            Also this code has the same code hash as the following verified
+            stored codes:{" "}
+            <RelatedVerifiedCodeLinks
+              relatedVerifiedCodes={relatedVerifiedCodes}
+            />
+            .
           </>
         )}
         {isMobile && (
