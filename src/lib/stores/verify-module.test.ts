@@ -1,62 +1,62 @@
-import { VerifyModuleStore } from "./verify-module";
+import { VerifyModuleTaskStore } from "./verify-module";
 
-let verifyModuleStore: VerifyModuleStore;
+let verifyModuleTaskStore: VerifyModuleTaskStore;
 
 beforeAll(() => {
-  verifyModuleStore = new VerifyModuleStore();
+  verifyModuleTaskStore = new VerifyModuleTaskStore();
 });
 
-describe("VerifyModuleStore initialization", () => {
-  test("Correctly initialize VerifyModuleStore", () => {
-    expect(verifyModuleStore instanceof VerifyModuleStore).toBeTruthy();
+describe("VerifyModuleTaskStore initialization", () => {
+  test("Correctly initialize VerifyModuleTaskStore", () => {
+    expect(verifyModuleTaskStore instanceof VerifyModuleTaskStore).toBeTruthy();
   });
 });
 
 describe("isVerifyModuleUserKeyExist", () => {
   test("correctly check if user key exist", () => {
-    expect(verifyModuleStore.isVerifyModuleUserKeyExist()).toBeFalsy();
-    verifyModuleStore.setVerifyModuleUserKey("userKey");
-    expect(verifyModuleStore.isVerifyModuleUserKeyExist()).toBeTruthy();
+    expect(verifyModuleTaskStore.isVerifyModuleUserKeyExist()).toBeFalsy();
+    verifyModuleTaskStore.setVerifyModuleUserKey("userKey");
+    expect(verifyModuleTaskStore.isVerifyModuleUserKeyExist()).toBeTruthy();
   });
 });
 
 describe("verifyModule", () => {
   const verifyModule = {
-    requestId: "requestId",
+    taskId: "taskId",
     fileMap: { file: "map" },
     chainId: "chainId",
   };
   test("correctly get verify modules", () => {
-    expect(verifyModuleStore.getVerifyModules()).toEqual([]);
+    expect(verifyModuleTaskStore.getVerifyModules()).toEqual([]);
   });
 
   test("correctly get verify modules after adding", () => {
-    verifyModuleStore.addVerifyModule(verifyModule);
-    expect(verifyModuleStore.getVerifyModules()).toEqual([verifyModule]);
+    verifyModuleTaskStore.addVerifyModule(verifyModule);
+    expect(verifyModuleTaskStore.getVerifyModules()).toEqual([verifyModule]);
   });
   test("correctly get verify modules after adding multiple", () => {
     const verifyModule1 = {
-      requestId: "requestId1",
+      taskId: "taskId1",
       fileMap: { file: "map" },
       chainId: "chainId",
     };
     const verifyModule2 = {
-      requestId: "requestId2",
+      taskId: "taskId2",
       fileMap: { file: "map" },
       chainId: "chainId",
     };
-    verifyModuleStore.addVerifyModule(verifyModule1);
-    verifyModuleStore.addVerifyModule(verifyModule2);
-    expect(verifyModuleStore.getVerifyModules()).toEqual([
-      verifyModule,
-      verifyModule1,
+    verifyModuleTaskStore.addVerifyModule(verifyModule1);
+    verifyModuleTaskStore.addVerifyModule(verifyModule2);
+    expect(verifyModuleTaskStore.getVerifyModules()).toEqual([
       verifyModule2,
+      verifyModule1,
+      verifyModule,
     ]);
   });
   test("correctly check if module is verified", () => {
     expect(
-      verifyModuleStore.isModuleVerified(verifyModule.requestId)
+      verifyModuleTaskStore.isModuleVerified(verifyModule.taskId)
     ).toBeTruthy();
-    expect(verifyModuleStore.isModuleVerified("randomId")).toBeFalsy();
+    expect(verifyModuleTaskStore.isModuleVerified("randomId")).toBeFalsy();
   });
 });

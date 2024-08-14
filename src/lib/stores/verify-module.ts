@@ -4,13 +4,13 @@ import { isHydrated, makePersistable } from "mobx-persist-store";
 import type { Dict } from "lib/types";
 
 export interface VerifyModuleLocalInfo {
-  requestId: string;
+  taskId: string;
   requestNote?: string;
   chainId: string;
   fileMap: Record<string, string>;
 }
 
-export class VerifyModuleStore {
+export class VerifyModuleTaskStore {
   private userKey: string;
 
   modules: Dict<string, VerifyModuleLocalInfo[]>;
@@ -22,7 +22,7 @@ export class VerifyModuleStore {
     makeAutoObservable(this, {}, { autoBind: true });
 
     makePersistable(this, {
-      name: "VerifyModuleStore",
+      name: "VerifyModuleTaskStore",
       properties: ["modules"],
     });
   }
@@ -39,20 +39,22 @@ export class VerifyModuleStore {
     this.userKey = userKey;
   }
 
-  getVerifyModules(): VerifyModuleLocalInfo[] {
-    return this.modules[this.userKey] ?? [];
-  }
-
-  isModuleVerified(requestId: string): boolean {
+  isModuleVerified(taskId: string): boolean {
     return (
-      this.getVerifyModules().findIndex(
-        (item) => item.requestId === requestId
-      ) > -1
+      this.getVerifyModules().findIndex((item) => item.taskId === taskId) > -1
     );
   }
 
+  getVerifyModules(): VerifyModuleLocalInfo[] {
+    return this.modules[this.userKey]?.reverse() ?? [];
+  }
+
+  getVerifyModule(taskId: string): VerifyModuleLocalInfo | undefined {
+    return this.getVerifyModules().find((module) => module.taskId === taskId);
+  }
+
   addVerifyModule(verifyModule: VerifyModuleLocalInfo): void {
-    if (!this.isModuleVerified(verifyModule.requestId)) {
+    if (!this.isModuleVerified(verifyModule.taskId)) {
       this.modules[this.userKey] = [...this.getVerifyModules(), verifyModule];
     }
   }

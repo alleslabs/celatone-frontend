@@ -11,7 +11,7 @@ import {
   useContractStore,
   useNetworkStore,
   usePublicProjectStore,
-  useVerifyModuleStore,
+  useVerifyModuleTaskStore,
 } from "lib/providers/store";
 import { formatUserKey } from "lib/utils";
 
@@ -34,7 +34,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
   const { setNetworkUserKey, isNetworkUserKeyExist } = useNetworkStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
   const { setVerifyModuleUserKey, isVerifyModuleUserKeyExist } =
-    useVerifyModuleStore();
+    useVerifyModuleTaskStore();
 
   useEffect(() => {
     if (isHydrated) {
