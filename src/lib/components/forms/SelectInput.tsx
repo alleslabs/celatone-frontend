@@ -183,9 +183,11 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
-            <Flex alignItems="center">{image}</Flex>
-            {icon && <CustomIcon name={icon} color={iconColor} />}
-            {label}
+            <Flex alignItems="center" gap={2}>
+              <Flex alignItems="center">{image}</Flex>
+              {icon && <CustomIcon name={icon} color={iconColor} />}
+              {label}
+            </Flex>
           </SelectItem>
         ))}
         {helperTextComponent && (

@@ -18,6 +18,6 @@ export const TotalCardTop = ({
     <Text variant="body2" fontWeight={fontWeight} textColor="text.dark">
       {title}
     </Text>
-    <TooltipInfo label={message} iconVariant="solid" />
+    <TooltipInfo label={message} />
   </Flex>
 );
