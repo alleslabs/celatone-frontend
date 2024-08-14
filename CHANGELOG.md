@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1085](https://github.com/alleslabs/celatone-frontend/pull/1085) Add verify module store
 - [#1081](https://github.com/alleslabs/celatone-frontend/pull/1081) Add service APIs for move verify module
 - [#1082](https://github.com/alleslabs/celatone-frontend/pull/1082) Replace CONFIG_CHAINS by fetching the chains from the API
 - [#1077](https://github.com/alleslabs/celatone-frontend/pull/1077) Add download minitia custom JSON
