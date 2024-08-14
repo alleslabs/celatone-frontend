@@ -35,7 +35,7 @@ export const DuplicatedAddCustomMinitiaModal = ({
       <ModalHeader w="full" py={0}>
         <Stack alignItems="center" gap={4} w="100%">
           <CustomIcon
-            name="alert-circle-solid"
+            name="alert-triangle-solid"
             color="error.main"
             boxSize={14}
           />

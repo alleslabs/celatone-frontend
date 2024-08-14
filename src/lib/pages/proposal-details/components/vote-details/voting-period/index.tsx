@@ -153,7 +153,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                 {isProposalResolved && (
                   <Alert variant="primary" mb={4} alignItems="center" gap={3}>
                     <CustomIcon
-                      name="alert-circle-solid"
+                      name="alert-triangle-solid"
                       boxSize={4}
                       color="primary.main"
                     />

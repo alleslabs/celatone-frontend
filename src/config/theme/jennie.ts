@@ -10,7 +10,8 @@ const JENNIE_BASE_THEME: ThemeConfig = {
       appName: "Initia",
       title: "Initia Scan",
       description: "Initia, a network for interwoven rollups",
-      image: "/scan-ogimage.jpg",
+      image:
+        "https://assets.alleslabs.dev/celatone-brand/socials/scan-ogimage.jpg",
       twitter: {
         handle: "@initiafdn",
         cardType: "summary_large_image",

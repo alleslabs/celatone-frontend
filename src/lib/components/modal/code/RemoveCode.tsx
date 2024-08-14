@@ -60,7 +60,7 @@ export function RemoveCodeModal({
           ? `Remove \u2018${shortenName(name, 20)}\u2019?`
           : `Remove Code ID: ${codeId} ?`
       }
-      icon="delete-solid"
+      icon="delete"
       iconColor="error.light"
       mainVariant="error"
       mainBtnTitle="Yes, Remove It"

@@ -297,6 +297,17 @@ export const useSearchHandler = (
 
   const results: SearchResult[] = [];
 
+  if (nftCollectionData?.data)
+    results.push({
+      value: debouncedKeyword,
+      type: "NFT Collection Address",
+      metadata: {
+        nft: {
+          name: nftCollectionData?.data.name,
+        },
+      },
+    });
+
   if (nftData)
     results.push({
       value: debouncedKeyword,
@@ -305,17 +316,6 @@ export const useSearchHandler = (
         nft: {
           collectionAddress: nftData.data.collectionAddress,
           name: nftData.data.tokenId,
-        },
-      },
-    });
-
-  if (nftCollectionData?.data)
-    results.push({
-      value: debouncedKeyword,
-      type: "NFT Collection Address",
-      metadata: {
-        nft: {
-          name: nftCollectionData?.data.name,
         },
       },
     });

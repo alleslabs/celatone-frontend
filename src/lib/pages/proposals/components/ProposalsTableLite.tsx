@@ -71,7 +71,7 @@ export const ProposalsTableLite = () => {
       </Grid>
       {showAlert && (
         <Alert variant="info" gap={4}>
-          <CustomIcon boxSize={4} name="info-circle-solid" />
+          <CustomIcon boxSize={4} name="info-circle" />
           <Text variant="body2" color="text.dark" w="full">
             <span style={{ fontWeight: 700 }}>Deposit Failed</span> and
             <span style={{ fontWeight: 700 }}> Cancelled</span> proposals are
