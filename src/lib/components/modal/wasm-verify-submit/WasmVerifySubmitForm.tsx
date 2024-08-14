@@ -150,7 +150,7 @@ export const WasmVerifySubmitForm = ({
                   <Text>
                     (via{" "}
                     <ExplorerLink
-                      type="tx_hash"
+                      type="contract_address"
                       value={contractAddress}
                       showCopyOnHover
                     />
