@@ -63,8 +63,8 @@ export const CopyLink = ({
         }}
         _hover={{
           textDecoration: "underline",
-          textDecorationColor: "secondary.light",
-          "& > p": { color: "secondary.light" },
+          textDecorationColor: "primary.light",
+          "& > p": { color: "primary.light" },
         }}
         cursor="pointer"
         onMouseEnter={() => setIsHover(true)}
@@ -74,7 +74,7 @@ export const CopyLink = ({
         <Text
           wordBreak="break-all"
           variant="body2"
-          color="secondary.main"
+          color="primary.main"
           transition="all 0.25s ease-in-out"
           display="inline"
           fontFamily="mono"

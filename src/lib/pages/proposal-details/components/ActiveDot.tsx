@@ -23,7 +23,7 @@ export const ActiveDot = (props: BoxProps) => {
       ref={ref}
       boxSize={3}
       borderRadius="50%"
-      bgColor="accent.main"
+      bgColor="secondary.main"
       {...props}
     />
   );

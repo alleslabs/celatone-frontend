@@ -85,7 +85,7 @@ export const PoolSwap = ({
           ampCopierSection={ampCopierSection}
         />
       </div>
-      <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
+      <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
       <div>
         <Text variant="body2" textColor="gray.500" fontWeight={500}>
           To

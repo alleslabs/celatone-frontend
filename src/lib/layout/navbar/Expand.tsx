@@ -181,7 +181,7 @@ export const ExpandNavMenu = ({
             {yourAccountMenu.category}
           </Text>
           <Button
-            variant="ghost-accent"
+            variant="ghost-primary"
             size="xs"
             iconSpacing={1}
             leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}

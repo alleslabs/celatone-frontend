@@ -54,10 +54,10 @@ export const getAlert = (
   }
   if (enteredAmount.eq(minVotingDepositAmount)) {
     return {
-      variant: "accent",
+      variant: "primary",
       description:
         "The proposal will proceed to voting period immediately after created.",
-      icon: <CustomIcon name="info-circle" color="accent.main" boxSize={4} />,
+      icon: <CustomIcon name="info-circle" color="primary.main" boxSize={4} />,
     };
   }
   if (big(minVotingDepositAmount).lt(enteredAmount)) {

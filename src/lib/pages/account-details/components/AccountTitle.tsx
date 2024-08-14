@@ -64,8 +64,8 @@ export const AccountTitle = ({
       );
 
     if (accountLocalInfo?.name)
-      return <CustomIcon name="bookmark" boxSize={5} color="secondary.main" />;
-    return <CustomIcon name="wallet" boxSize={5} color="secondary.main" />;
+      return <CustomIcon name="bookmark" boxSize={5} color="primary.main" />;
+    return <CustomIcon name="wallet" boxSize={5} color="primary.main" />;
   };
 
   if (isInitiaUsernameDataLoading && isInitiaUsernameDataFetching)

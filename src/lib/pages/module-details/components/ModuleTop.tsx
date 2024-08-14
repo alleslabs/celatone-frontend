@@ -197,7 +197,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
           <CustomIcon
             name="contract-address"
             boxSize={5}
-            color="secondary.main"
+            color="primary.main"
           />
           <Heading
             as="h5"

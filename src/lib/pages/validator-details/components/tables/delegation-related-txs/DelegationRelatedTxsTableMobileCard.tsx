@@ -35,7 +35,7 @@ export const DelegationRelatedTxsTableMobileCard = ({
               showCopyOnHover
             />
             {delegationRelatedTx.messages.length > 1 && (
-              <Badge variant="secondary" ml={2}>
+              <Badge variant="primary-light" ml={2}>
                 {delegationRelatedTx.messages.length}
               </Badge>
             )}

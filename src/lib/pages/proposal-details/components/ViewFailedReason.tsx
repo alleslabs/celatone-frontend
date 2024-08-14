@@ -40,9 +40,9 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
       <Text
         as="span"
         variant="body2"
-        color="secondary.main"
+        color="primary.main"
         transition="all 0.25s ease-in-out"
-        _hover={{ color: "secondary.light", textDecoration: "underline" }}
+        _hover={{ color: "primary.light", textDecoration: "underline" }}
         cursor="pointer"
         onClick={onOpen}
       >

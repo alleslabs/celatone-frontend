@@ -158,7 +158,7 @@ export const ControllerInput = <T extends FieldValues>({
             <Text
               bg="background.main"
               variant="body2"
-              color="accent.main"
+              color="primary.main"
               onClick={() => cta.onClick(field.onChange)}
               cursor="pointer"
             >

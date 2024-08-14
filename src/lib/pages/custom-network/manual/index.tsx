@@ -169,7 +169,7 @@ export const AddNetworkManual = () => {
       <FooterCta
         cancelButton={{
           onClick: handlePrevious,
-          variant: "outline-secondary",
+          variant: "outline-primary",
           leftIcon: hasPrevious ? (
             <CustomIcon name="chevron-left" boxSize={4} />
           ) : undefined,

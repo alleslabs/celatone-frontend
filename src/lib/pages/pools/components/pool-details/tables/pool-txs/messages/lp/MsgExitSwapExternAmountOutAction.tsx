@@ -42,7 +42,7 @@ export const MsgExitSwapExternAmountOutAction = ({
       />
       to
       <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
-      <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
+      <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
       <MsgToken
         token={outToken}
         fontWeight={700}

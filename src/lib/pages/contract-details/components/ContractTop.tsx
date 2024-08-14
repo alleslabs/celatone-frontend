@@ -139,7 +139,7 @@ export const ContractTop = ({
             <CustomIcon
               name="contract-address"
               boxSize={5}
-              color="secondary.main"
+              color="primary.main"
             />
             {projectInfo && (
               <Image

@@ -38,7 +38,7 @@ export const UserDocsLink = ({
       rel="noopener noreferrer"
     >
       <Button
-        variant="ghost-secondary"
+        variant="ghost-primary"
         size="sm"
         leftIcon={<CustomIcon name="document" boxSize={3} />}
       >
@@ -70,7 +70,7 @@ export const UserDocsLink = ({
             cursor: "pointer",
             "&:hover": {
               "> *": {
-                color: "secondary.light",
+                color: "primary.light",
                 textDecoration: "underline",
                 transition: "all",
                 transitionDuration: "0.25s",
@@ -79,8 +79,8 @@ export const UserDocsLink = ({
             },
           }}
         >
-          <CustomIcon name="document" color="secondary.main" boxSize={3} />
-          <Text color="secondary.main" fontWeight={800} variant="body2">
+          <CustomIcon name="document" color="primary.main" boxSize={3} />
+          <Text color="primary.main" fontWeight={800} variant="body2">
             {cta}
           </Text>
         </Flex>

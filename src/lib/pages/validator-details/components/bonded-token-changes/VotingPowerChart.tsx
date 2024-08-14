@@ -139,7 +139,7 @@ export const VotingPowerChart = ({
         />
         {onViewMore && (
           <Button
-            variant="ghost-secondary"
+            variant="ghost-primary"
             p="unset"
             size="md"
             pl={2}

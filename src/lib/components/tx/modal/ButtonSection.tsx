@@ -72,7 +72,7 @@ export const ButtonSection = ({
     case "update-admin":
       return (
         <>
-          <Button variant="ghost-secondary" onClick={openTxExplorer}>
+          <Button variant="ghost-primary" onClick={openTxExplorer}>
             See Transaction
           </Button>
           <Button
@@ -97,7 +97,7 @@ export const ButtonSection = ({
       return (
         <>
           <Button
-            variant="ghost-secondary"
+            variant="ghost-primary"
             // TODO: Revisit this when proposal page is live
             onClick={openProposalExplorer}
           >

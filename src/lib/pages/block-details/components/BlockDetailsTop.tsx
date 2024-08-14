@@ -57,7 +57,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
           mb={{ base: 2, md: 0 }}
         >
           <Flex align="center">
-            <CustomIcon name="block" boxSize={5} color="secondary.main" />
+            <CustomIcon name="block" boxSize={5} color="primary.main" />
             <Heading
               as="h5"
               variant={{ base: "h6", md: "h5" }}

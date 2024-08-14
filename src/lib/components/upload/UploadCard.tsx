@@ -5,7 +5,7 @@ import { CustomIcon, UploadIcon } from "lib/components/icon";
 import { big } from "lib/types";
 import type { Nullable, Option } from "lib/types";
 
-type CardTheme = "primary" | "secondary";
+type CardTheme = "primary" | "gray";
 
 type Status = "error" | "info" | "init";
 
@@ -19,7 +19,7 @@ interface UploadCardProps {
 
 const getTheme = (theme: CardTheme) => {
   switch (theme) {
-    case "secondary":
+    case "gray":
       return {
         bgColor: "gray.800",
         border: "1px solid var(--chakra-colors-gray-700)",

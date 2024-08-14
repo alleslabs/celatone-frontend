@@ -52,7 +52,7 @@ export const NetworkMenuTop = observer(
                 <Text
                   as="span"
                   variant="body3"
-                  color="secondary.main"
+                  color="primary.main"
                   _hover={{ textDecoration: "underline" }}
                 >
                   Add a custom chain.
