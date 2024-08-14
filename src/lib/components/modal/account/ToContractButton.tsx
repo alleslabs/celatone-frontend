@@ -18,7 +18,7 @@ export const ToContractButton = ({
     <Text
       textAlign="right"
       mr={3}
-      color="accent.main"
+      color="primary.main"
       fontWeight={700}
       variant="body3"
       cursor="pointer"

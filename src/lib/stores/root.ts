@@ -5,6 +5,7 @@ import { ContractStore } from "./contract";
 import { NetworkStore } from "./networks";
 import { PublicProjectStore } from "./project";
 import { SchemaStore } from "./schema";
+import { VerifyModuleTaskStore } from "./verify-module";
 
 export class RootStore {
   accountStore: AccountStore;
@@ -21,6 +22,8 @@ export class RootStore {
 
   localChainConfigStore: LocalChainConfigStore;
 
+  verifyModuleTaskStore: VerifyModuleTaskStore;
+
   constructor() {
     this.accountStore = new AccountStore();
     this.codeStore = new CodeStore();
@@ -29,5 +32,6 @@ export class RootStore {
     this.schemaStore = new SchemaStore();
     this.networkStore = new NetworkStore();
     this.localChainConfigStore = new LocalChainConfigStore();
+    this.verifyModuleTaskStore = new VerifyModuleTaskStore();
   }
 }

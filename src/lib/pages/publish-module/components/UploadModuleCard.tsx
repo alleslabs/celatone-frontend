@@ -177,14 +177,14 @@ export const UploadModuleCard = ({
             <UploadCard
               file={file}
               deleteFile={removeFile}
-              theme="secondary"
+              theme="gray"
               status={status}
               statusText={text}
             />
           ) : (
             <DropZone
-              setFile={handleFileDrop}
-              fileType="move"
+              setFiles={(files: File[]) => handleFileDrop(files[0])}
+              fileType={["mv"]}
               bgColor="background.main"
               error={decodeError}
               _hover={undefined}

@@ -337,7 +337,7 @@ export const useValidatorImage = (
   const {
     chain: { chain_name: chainName },
   } = useCurrentChain();
-  const [secondaryMain] = useToken("colors", ["secondary.main"]);
+  const [primaryDark] = useToken("colors", ["primary.dark"]);
 
   return useQuery({
     queryKey: [
@@ -349,7 +349,7 @@ export const useValidatorImage = (
     ],
     queryFn: async () => {
       if (!validator) return "";
-      return resolveValIdentity(chainName, validator, secondaryMain);
+      return resolveValIdentity(chainName, validator, primaryDark);
     },
     retry: false,
     refetchOnWindowFocus: false,

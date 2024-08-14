@@ -244,7 +244,7 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
   return (
     <>
       <Button
-        variant="outline-accent"
+        variant="outline-white"
         size="md"
         ml={ml}
         gap={1}

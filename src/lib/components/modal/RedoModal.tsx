@@ -81,7 +81,7 @@ export const RedoModal = ({ message }: RedoModalProps) => {
             >
               <Button
                 cursor="pointer"
-                variant="ghost-secondary"
+                variant="ghost-primary"
                 onClick={onClose}
               >
                 Cancel

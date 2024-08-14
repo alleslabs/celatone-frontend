@@ -25,13 +25,6 @@ export type ThemeConfig = {
     secondary: {
       main: string;
       light: string;
-      dark: string;
-      darker: string;
-      background: string;
-    };
-    accent: {
-      main: string;
-      light: string;
       lighter: string;
       dark: string;
       darker: string;

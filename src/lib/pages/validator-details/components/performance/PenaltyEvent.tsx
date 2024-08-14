@@ -19,7 +19,7 @@ export const PenaltyEvent = ({ event }: PenaltyEventProps) => {
       case SlashingEvent.Unjailed:
         return { icon: "unjailed" as const, color: "success.main" };
       default:
-        return { icon: "info-circle" as const, color: "secondary.main" };
+        return { icon: "info-circle" as const, color: "primary.main" };
     }
   }, [event.type]);
 

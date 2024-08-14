@@ -28,7 +28,7 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
             mt={{ base: 1, md: 0 }}
             ml={{ base: 1, md: 0 }}
             variant={{ base: "h6", md: "h5" }}
-            color="accent.main"
+            color="primary.main"
           >
             #{info.rank}
           </Heading>

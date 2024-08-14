@@ -25,7 +25,7 @@ export const NotVerifiedDetails = ({
         {contractAddress ? (
           <>
             This contract is an instance of code ID{" "}
-            <Text as="span" color="secondary.main" display="inline-flex">
+            <Text as="span" color="primary.main" display="inline-flex">
               {codeId}
             </Text>{" "}
             which has not been verified.

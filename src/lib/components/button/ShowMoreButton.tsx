@@ -19,12 +19,12 @@ export const ShowMoreButton = ({
     rightIcon={
       <CustomIcon name={toggleShowMore ? "chevron-up" : "chevron-down"} />
     }
-    color="secondary.main"
+    color="primary.main"
     variant="none"
     w="fit-content"
     onClick={setToggleShowMore}
   >
-    <Text variant="body3" color="secondary.main" fontWeight={700}>
+    <Text variant="body3" color="primary.main" fontWeight={700}>
       {toggleShowMore ? showLessText : showMoreText}
     </Text>
   </Button>

@@ -71,7 +71,7 @@ export const TxsTableLite = ({
           />
           <Alert variant="warning" gap={3}>
             <CustomIcon
-              name="alert-circle-solid"
+              name="alert-triangle-solid"
               boxSize={4}
               color="warning.main"
             />

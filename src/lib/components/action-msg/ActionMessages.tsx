@@ -42,7 +42,7 @@ export const ActionMessages = ({ transaction }: ActionMessagesProps) => (
   <Flex gap={1} alignItems="center" flexWrap="wrap">
     <ActionMessagesBody transaction={transaction} />
     {transaction.isIbc && (
-      <Tag variant="accent-dark" size="sm">
+      <Tag variant="secondary" size="sm">
         IBC
       </Tag>
     )}

@@ -7,8 +7,8 @@ interface WasmVerifyAlertProps {
   errorMsg: Nullable<string>;
 }
 export const WasmVerifyAlert = ({ errorMsg }: WasmVerifyAlertProps) => {
-  const variant = errorMsg ? "error" : "accent";
-  const icon = errorMsg ? "alert-triangle-solid" : "info-circle-solid";
+  const variant = errorMsg ? "error" : "primary";
+  const icon = errorMsg ? "alert-triangle-solid" : "info-circle";
   return (
     <Alert
       p={2}

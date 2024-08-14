@@ -97,7 +97,7 @@ export const generateReceipts = (
               KB
               <CopyButton
                 value={details.wasm_byte_code}
-                variant="ghost-secondary"
+                variant="ghost-primary"
                 buttonText="Click to Copy"
                 hasIcon={false}
                 mt={-1}

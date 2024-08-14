@@ -78,7 +78,7 @@ export const VerifiedDetails = ({
               cursor: "pointer",
               "&:hover": {
                 "> *": {
-                  color: "secondary.light",
+                  color: "primary.light",
                   textDecoration: "underline",
                   transition: "all",
                   transitionDuration: "0.25s",
@@ -87,7 +87,7 @@ export const VerifiedDetails = ({
               },
             }}
           >
-            <Text color="secondary.main" variant="body2">
+            <Text color="primary.main" variant="body2">
               {verificationInfo.gitUrl}
             </Text>
             <Copier ml={1} type="source_code" value={verificationInfo.gitUrl} />
@@ -123,7 +123,7 @@ export const VerifiedDetails = ({
                   cursor: "pointer",
                   "&:hover": {
                     "> *": {
-                      color: "secondary.light",
+                      color: "primary.light",
                       textDecoration: "underline",
                       transition: "all",
                       transitionDuration: "0.25s",
@@ -132,7 +132,7 @@ export const VerifiedDetails = ({
                   },
                 }}
               >
-                <Text color="secondary.main" variant="body2" fontWeight={600}>
+                <Text color="primary.main" variant="body2" fontWeight={600}>
                   View Details
                 </Text>
               </Flex>

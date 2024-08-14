@@ -59,7 +59,7 @@ export const AnnouncementModal = ({
           <Button
             minW="256px"
             cursor="pointer"
-            variant="outline-secondary"
+            variant="outline-primary"
             onClick={onClose}
           >
             Close

@@ -26,7 +26,6 @@ const generateVariantStyle = (
 
   switch (variant) {
     case "primary":
-    case "secondary":
       mainColor = `${variant}.light`;
       bgColor = `${variant}.background`;
       borderColor = `${variant}.dark`;
@@ -87,9 +86,7 @@ export const Alert: ComponentStyleConfig = {
     },
   },
   variants: {
-    accent: generateVariantStyle("accent"),
     primary: generateVariantStyle("primary"),
-    secondary: generateVariantStyle("secondary"),
     success: generateVariantStyle("success"),
     warning: generateVariantStyle("warning"),
     error: generateVariantStyle("error"),

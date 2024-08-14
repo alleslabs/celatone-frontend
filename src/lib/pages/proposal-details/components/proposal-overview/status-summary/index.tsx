@@ -16,9 +16,9 @@ const getStatusSummaryBorderColor = (
 ): CSSProperties["backgroundColor"] => {
   switch (status) {
     case ProposalStatus.DEPOSIT_PERIOD:
-      return "secondary.darker";
+      return "primary.dark";
     case ProposalStatus.VOTING_PERIOD:
-      return "accent.main";
+      return "secondary.dark";
     case ProposalStatus.FAILED:
     case ProposalStatus.REJECTED:
       return "error.dark";

@@ -25,7 +25,7 @@ export const CopyButton = ({
   size = "sm",
   copyLabel,
   hasIcon = true,
-  variant = "outline-accent",
+  variant = "outline-white",
   buttonText = "Copy",
   amptrackSection,
   amptrackSubSection,

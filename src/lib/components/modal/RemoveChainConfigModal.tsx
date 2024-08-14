@@ -51,7 +51,7 @@ export function RemoveChainConfigModal({
   return (
     <ActionModal
       title={`Removed \u2018${chainConfig?.prettyName}\u2019?`}
-      icon="delete-solid"
+      icon="delete"
       iconColor="error.light"
       trigger={trigger}
       mainBtnTitle="Yes, Remove it"

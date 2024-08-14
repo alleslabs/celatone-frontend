@@ -436,8 +436,10 @@ const StoreCodeProposal = () => {
                   />
                 ) : (
                   <DropZone
-                    setFile={(file) => uploadSectionSetValue("wasmFile", file)}
-                    fileType="wasm"
+                    setFiles={(files: File[]) =>
+                      uploadSectionSetValue("wasmFile", files[0])
+                    }
+                    fileType={["wasm"]}
                   />
                 )}
 
@@ -537,7 +539,7 @@ const StoreCodeProposal = () => {
                         cursor="pointer"
                         variant="body3"
                         minW={16}
-                        color="accent.main"
+                        color="primary.main"
                         onClick={() => {
                           if (!minDeposit) return;
                           trackUseDepositFill(minDeposit.formattedAmount);

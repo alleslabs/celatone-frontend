@@ -55,7 +55,7 @@ const getResponse = (jsonState: JsonState) => {
         response: (
           <>
             <CustomIcon
-              name="alert-circle-solid"
+              name="alert-triangle-solid"
               color="error.light"
               boxSize={3}
             />
@@ -147,7 +147,7 @@ const JsonInput = ({
           top="10px"
           right="10px"
           p="4px 10px"
-          variant="outline-accent"
+          variant="outline-white"
           fontSize="12px"
           background="background.main"
           float="right"

@@ -44,7 +44,7 @@ export const PolicyChanges = ({ history }: { history: ModuleHistory }) => {
           {capitalize(previousPolicy)}
         </Text>
       </Text>
-      <CustomIcon name="arrow-right" boxSize={3} color="accent.main" mx={2} />
+      <CustomIcon name="arrow-right" boxSize={3} color="primary.main" mx={2} />
       <Text variant="body2" fontWeight={700}>
         {capitalize(history.upgradePolicy)}
       </Text>

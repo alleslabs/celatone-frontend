@@ -81,7 +81,7 @@ export const CollapseNavMenu = ({
               <Tooltip label="Expand" placement="right">
                 <IconButton
                   aria-label="overview"
-                  variant="ghost-accent"
+                  variant="ghost-primary"
                   fontSize="24px"
                   height="fit-content"
                   minW="fit-content"
