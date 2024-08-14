@@ -1,22 +1,17 @@
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
-import type { Dict } from "lib/types";
-
 export class NetworkStore {
-  private userKey: string;
-
-  networks: Dict<string, string[]>;
+  pinnedNetworks: string[];
 
   constructor() {
-    this.userKey = "";
-    this.networks = {};
+    this.pinnedNetworks = [];
 
     makeAutoObservable(this, {}, { autoBind: true });
 
     makePersistable(this, {
       name: "NetworkStore",
-      properties: ["networks"],
+      properties: ["pinnedNetworks"],
     });
   }
 
@@ -24,16 +19,8 @@ export class NetworkStore {
     return isHydrated(this);
   }
 
-  isNetworkUserKeyExist(): boolean {
-    return !!this.userKey;
-  }
-
-  setNetworkUserKey(userKey: string) {
-    this.userKey = userKey;
-  }
-
   getPinnedNetworks(): string[] {
-    return this.networks[this.userKey] ?? [];
+    return this.pinnedNetworks ?? [];
   }
 
   isNetworkPinned(chainId: string): boolean {
@@ -42,17 +29,17 @@ export class NetworkStore {
 
   pinNetwork(chainId: string): void {
     if (!this.isNetworkPinned(chainId)) {
-      this.networks[this.userKey] = [...this.getPinnedNetworks(), chainId];
+      this.pinnedNetworks = [...this.getPinnedNetworks(), chainId];
     }
   }
 
   removeNetwork(chainId: string): void {
-    this.networks[this.userKey] = this.getPinnedNetworks().filter(
+    this.pinnedNetworks = this.getPinnedNetworks().filter(
       (item) => item !== chainId
     );
   }
 
   setPinnedNetworks(chainIds: string[]): void {
-    this.networks[this.userKey] = chainIds;
+    this.pinnedNetworks = chainIds;
   }
 }
