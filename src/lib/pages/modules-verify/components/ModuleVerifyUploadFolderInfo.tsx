@@ -4,9 +4,11 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  AspectRatio,
   Stack,
   Text,
 } from "@chakra-ui/react";
+import Image from "next/image";
 
 import { UserDocsLink } from "lib/components/UserDocsLink";
 
@@ -35,6 +37,14 @@ export const ModuleVerifyUploadFolderInfo = () => (
             Please ensure that you upload the folder in the correct format,
             which should include:
           </Text>
+          <AspectRatio ratio={16 / 9}>
+            <Image
+              src="/verify-module-task-folder.png"
+              alt="Verify module uploading folder structure"
+              objectFit="contain"
+              fill
+            />
+          </AspectRatio>
           <Text color="text.dark" variant="body2">
             The folder can contain any additional files that will be used during
             verification (Optional)

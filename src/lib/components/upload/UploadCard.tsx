@@ -3,11 +3,10 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon, UploadIcon } from "lib/components/icon";
 import { big } from "lib/types";
-import type { Nullable, Option } from "lib/types";
+import type { Nullable } from "lib/types";
 
-type CardTheme = "primary" | "secondary";
-
-type Status = "error" | "info" | "init";
+import { useCardTheme } from "./hooks/useCardTheme";
+import type { CardTheme, Status } from "./types";
 
 interface UploadCardProps {
   file: File;
@@ -17,35 +16,6 @@ interface UploadCardProps {
   statusText?: Nullable<string>;
 }
 
-const getTheme = (theme: CardTheme) => {
-  switch (theme) {
-    case "secondary":
-      return {
-        bgColor: "gray.800",
-        border: "1px solid var(--chakra-colors-gray-700)",
-        buttonVariant: "outline-gray",
-      };
-    case "primary":
-    default:
-      return {
-        bgColor: "gray.900",
-        border: "none",
-        buttonVariant: "outline-primary",
-      };
-  }
-};
-
-const resolveStatusColor = (status: Option<Status>): Option<string> => {
-  switch (status) {
-    case "error":
-      return "error.main";
-    case "info":
-      return "primary.main";
-    default:
-      return undefined;
-  }
-};
-
 export const UploadCard = ({
   file,
   deleteFile,
@@ -53,8 +23,8 @@ export const UploadCard = ({
   status,
   statusText,
 }: UploadCardProps) => {
-  const themeConfig = getTheme(theme);
-  const statusColor = resolveStatusColor(status);
+  const { themeConfig, statusColor } = useCardTheme(theme, status);
+
   return (
     <>
       <Flex

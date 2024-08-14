@@ -1,20 +1,61 @@
 import { Box, Heading, Stack, Text } from "@chakra-ui/react";
+import { useMemo } from "react";
+import { useWatch } from "react-hook-form";
+import type { Control } from "react-hook-form";
 
-export const ModuleVerifyFileMap = () => (
-  <Stack gap={4}>
-    <Stack gap={2}>
-      <Heading as="h6" variant="h6">
-        Generated File Map
-      </Heading>
-      <Text variant="body2" color="text.dark">
-        You can refer to this file map to ensure that the uploaded files are in
-        the correct structure.
-      </Text>
+import type { ModuleVerifyForm } from "../types";
+import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { jsonPrettify } from "lib/utils";
+
+interface ModuleVerifyFileMapProps {
+  control: Control<ModuleVerifyForm>;
+}
+
+export const ModuleVerifyFileMap = ({ control }: ModuleVerifyFileMapProps) => {
+  const [moveFiles, tomlFile] = useWatch({
+    control,
+    name: ["moveFiles", "tomlFile"],
+  });
+
+  const fileMap: string = useMemo(() => {
+    const initializedFileMap: {
+      [key: string]: string;
+    } = {};
+
+    if (tomlFile) {
+      initializedFileMap[tomlFile.name] = tomlFile.name;
+    }
+
+    if (moveFiles.length) {
+      moveFiles.forEach((file) => {
+        initializedFileMap[file.name] = `sources/${file.name}`;
+      });
+    }
+
+    return JSON.stringify(initializedFileMap);
+  }, [tomlFile, moveFiles]);
+
+  return (
+    <Stack gap={4}>
+      <Stack gap={2}>
+        <Heading as="h6" variant="h6">
+          Generated File Map
+        </Heading>
+        <Text variant="body2" color="text.dark">
+          You can refer to this file map to ensure that the uploaded files are
+          in the correct structure.
+        </Text>
+      </Stack>
+      {!tomlFile && !moveFiles.length ? (
+        <Box p={8} textAlign="center" bg="gray.900" rounded={8}>
+          <Text variant="body2" color="text.dark">
+            The generated file map from the uploaded folder will be displayed
+            here.
+          </Text>
+        </Box>
+      ) : (
+        <JsonReadOnly text={jsonPrettify(fileMap)} canCopy fullWidth />
+      )}
     </Stack>
-    <Box p={8} textAlign="center" bg="gray.900" rounded={8}>
-      <Text variant="body2" color="text.dark">
-        The generated file map from the uploaded folder will be displayed here.
-      </Text>
-    </Box>
-  </Stack>
-);
+  );
+};

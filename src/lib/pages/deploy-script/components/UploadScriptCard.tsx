@@ -83,8 +83,8 @@ export const UploadScriptCard = ({
             <UploadCard file={file} deleteFile={removeFile} theme="secondary" />
           ) : (
             <DropZone
-              setFile={handleFileDrop}
-              fileType="mv"
+              setFiles={(files: File[]) => handleFileDrop(files[0])}
+              fileType={["mv"]}
               bgColor="background.main"
               error={decodeError}
               _hover={undefined}

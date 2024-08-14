@@ -114,8 +114,9 @@ const MethodRender = ({
         />
       ) : (
         <DropZone
-          fileType="schema"
-          setFile={async (file: File) => {
+          fileType={["schema"]}
+          setFiles={async (files: File[]) => {
+            const file = files[0];
             const reader = new FileReader();
             reader.onload = () => {
               const content = reader.result as string;

@@ -436,8 +436,10 @@ const StoreCodeProposal = () => {
                   />
                 ) : (
                   <DropZone
-                    setFile={(file) => uploadSectionSetValue("wasmFile", file)}
-                    fileType="wasm"
+                    setFiles={(files: File[]) =>
+                      uploadSectionSetValue("wasmFile", files[0])
+                    }
+                    fileType={["wasm"]}
                   />
                 )}
 

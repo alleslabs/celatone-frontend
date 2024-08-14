@@ -1,4 +1,6 @@
 import { Box, Grid } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 import { ControllerInput } from "lib/components/forms";
@@ -13,15 +15,26 @@ import {
   ModuleVerifyUploadFolder,
   ModuleVerifyUploadFolderInfo,
 } from "./components";
+import type { ModuleVerifyForm } from "./types";
+import { zModuleVerifyForm } from "./types";
 
 export const ModulesVerify = () => {
-  const { control } = useForm({
+  const router = useRouter();
+  const { control, watch, handleSubmit } = useForm<ModuleVerifyForm>({
     mode: "all",
     reValidateMode: "onChange",
+    resolver: zodResolver(zModuleVerifyForm),
     defaultValues: {
       requestNote: "",
+      moveFiles: [],
     },
   });
+
+  const handleSubmitForm = () => {
+    // TODO: Hit the API -> error / loading
+    // TODO: Success modal
+    // TODO: Save data to localstorage
+  };
 
   return (
     <>
@@ -39,13 +52,13 @@ export const ModulesVerify = () => {
               <ModuleVerifyTop />
             </Box>
             <Box gridArea="2 / 2">
-              <ModuleVerifyUploadFolder />
+              <ModuleVerifyUploadFolder control={control} />
             </Box>
-            <Box gridArea="2 / 3">
+            <Box gridArea="2 / 3" gridRowEnd="span 3">
               <ModuleVerifyUploadFolderInfo />
             </Box>
             <Box gridArea="3 / 2">
-              <ModuleVerifyFileMap />
+              <ModuleVerifyFileMap control={control} />
             </Box>
             <Box gridArea="4 / 2">
               <ControllerInput
@@ -60,14 +73,21 @@ export const ModulesVerify = () => {
           </Grid>
         </Box>
       </PageContainer>
-      <Box position="sticky" bottom={0} borderTop="1px" borderColor="gray.700">
+      <Box
+        position="sticky"
+        bottom={0}
+        borderTop="1px"
+        borderColor="gray.700"
+        zIndex={2}
+      >
         <FooterCta
           cancelButton={{
-            onClick: () => null,
+            onClick: router.back,
           }}
           cancelLabel="Cancel"
           actionButton={{
-            onClick: () => null,
+            onClick: handleSubmit(handleSubmitForm),
+            isDisabled: !zModuleVerifyForm.safeParse(watch()).success,
           }}
           actionLabel="Upload file and Submit"
           sx={{
