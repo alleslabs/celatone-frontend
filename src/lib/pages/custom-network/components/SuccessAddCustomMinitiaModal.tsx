@@ -35,7 +35,7 @@ export const SuccessAddCustomMinitiaModal = ({
 
     const timeoutId = setTimeout(() => {
       setFakeLoading((newFakeLoading) => !newFakeLoading);
-    }, 2000);
+    }, 1500);
 
     return () => clearTimeout(timeoutId);
   }, [isOpen]);

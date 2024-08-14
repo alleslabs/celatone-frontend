@@ -532,7 +532,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         {simulateError && (
           <Flex gap={2} mb={4}>
             <CustomIcon
-              name="alert-circle-solid"
+              name="alert-triangle-solid"
               boxSize={3}
               color="error.main"
             />

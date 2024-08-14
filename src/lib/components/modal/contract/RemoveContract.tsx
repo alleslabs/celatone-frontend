@@ -38,7 +38,7 @@ export function RemoveContractModal({
   return (
     <ActionModal
       title={`Remove ${displayName}?`}
-      icon="delete-solid"
+      icon="delete"
       iconColor="error.light"
       mainBtnTitle="Yes, Remove"
       mainVariant="error"

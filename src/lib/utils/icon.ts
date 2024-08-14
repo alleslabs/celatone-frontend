@@ -9,7 +9,7 @@ export const getListIcon = (listName: string): IconKeys => {
     case SAVED_LIST_NAME:
       return "bookmark-solid";
     default:
-      return "contract-list";
+      return "list";
   }
 };
 

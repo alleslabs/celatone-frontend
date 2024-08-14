@@ -2,7 +2,7 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
 import { ModuleSourceCode } from "lib/components/module";
-import type { ModuleVerificationInternal } from "lib/services/types";
+import type { MoveVerifyInfoResponse } from "lib/services/types";
 import type {
   IndexedModule,
   ModulePublishInfo,
@@ -15,7 +15,7 @@ import { ModuleInfoBody } from "./ModuleInfoBody";
 export interface ModuleInfoProps {
   indexedModule: IndexedModule;
   modulePublishInfo: Option<ModulePublishInfo>;
-  verificationData: Nullish<ModuleVerificationInternal>;
+  verificationData: Nullish<MoveVerifyInfoResponse>;
 }
 
 export const ModuleInfo = ({ verificationData, ...props }: ModuleInfoProps) => (

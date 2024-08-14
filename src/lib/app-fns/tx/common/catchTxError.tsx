@@ -56,7 +56,7 @@ export const catchTxError = (
         ...getReceiptInfo(error),
         headerIcon: (
           <CustomIcon
-            name="alert-circle-solid"
+            name="alert-triangle-solid"
             color="error.light"
             boxSize={5}
           />

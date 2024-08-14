@@ -288,3 +288,136 @@ export const zAddNetworkManualChainConfigJson = ({
       })),
     },
   }));
+
+export type AddNetworkManualChainConfigJson = z.infer<
+  ReturnType<typeof zAddNetworkManualChainConfigJson>
+>;
+
+export const zAddNetworkJsonChainConfigJson = z
+  .object({
+    chainId: z.string(),
+    registryChainName: z.string(),
+    prettyName: z.string(),
+    logo_URIs: z.object({
+      png: z.string().optional(),
+    }),
+    lcd: zHttpsUrl,
+    rpc: zHttpsUrl,
+    wallets: z.array(z.enum(["keplr", "initia", "compass", "station"])),
+    features: z.object({
+      faucet: z.union([
+        z.object({
+          enabled: z.literal(true),
+          url: z.string(),
+        }),
+        z.object({
+          enabled: z.literal(false),
+        }),
+      ]),
+      wasm: z.union([
+        z.object({
+          enabled: z.literal(true),
+          storeCodeMaxFileSize: z.number(),
+          clearAdminGas: z.number(),
+        }),
+        z.object({
+          enabled: z.literal(false),
+        }),
+      ]),
+      move: z.union([
+        z.object({
+          enabled: z.literal(true),
+          moduleMaxFileSize: z.number(),
+        }),
+        z.object({
+          enabled: z.literal(false),
+        }),
+      ]),
+      pool: z.union([
+        z.object({
+          enabled: z.literal(true),
+          url: z.string(),
+        }),
+        z.object({
+          enabled: z.literal(false),
+        }),
+      ]),
+      publicProject: z.object({
+        enabled: z.boolean(),
+      }),
+      gov: z.union([
+        z.object({
+          enabled: z.literal(true),
+          version: z.enum(["v1beta1", "v1"]),
+          hideOpenProposal: z.boolean().optional(),
+          disableWhitelistProposal: z.boolean().optional(),
+          disableStoreCodeProposal: z.boolean().optional(),
+          disableVotingPeriodTally: z.boolean().optional(),
+        }),
+        z.object({
+          enabled: z.literal(false),
+        }),
+      ]),
+      nft: z.object({
+        enabled: z.boolean(),
+      }),
+    }),
+    gas: z.object({
+      gasAdjustment: z.number(),
+      maxGasLimit: z.number(),
+    }),
+    fees: z.object({
+      fee_tokens: z.array(
+        z.object({
+          denom: z.string(),
+          fixed_min_gas_price: z.number(),
+          low_gas_price: z.number(),
+          average_gas_price: z.number(),
+          gas_costs: z.object({
+            cosmos_send: z.number(),
+            ibc_transfer: z.number(),
+          }),
+        })
+      ),
+    }),
+    registry: z.object({
+      bech32_prefix: z.string(),
+      slip44: z.number(),
+      staking: z.object({
+        staking_tokens: z.array(
+          z.object({
+            denom: z.string(),
+          })
+        ),
+      }),
+      assets: z.array(
+        z.object({
+          name: z.string(),
+          base: z.string(),
+          symbol: z.string(),
+          denom_units: z.array(
+            z.object({
+              denom: z.string(),
+              exponent: z.number(),
+            })
+          ),
+          display: z.string(),
+        })
+      ),
+    }),
+  })
+  .transform<ChainConfig>((val) => ({
+    ...val,
+    tier: "sequencer",
+    chain: "initia",
+    graphql: "",
+    extra: {
+      isValidatorExternalLink: null,
+      layer: "2",
+    },
+    network_type: "local",
+  }));
+
+export type AddNetworkJsonChainConfigJson = z.infer<
+  typeof zAddNetworkJsonChainConfigJson
+>;

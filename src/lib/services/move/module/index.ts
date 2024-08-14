@@ -9,7 +9,6 @@ import type { AxiosError } from "axios";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useCelatoneApp,
   useGovConfig,
   useInitia,
   useLcdEndpoint,
@@ -23,7 +22,6 @@ import type {
   ModulesResponse,
   ModuleTableCountsResponse,
   ModuleTxsResponse,
-  ModuleVerificationInternal,
 } from "lib/services/types";
 import type {
   AbiFormData,
@@ -32,7 +30,6 @@ import type {
   HexAddr,
   IndexedModule,
   ModulePublishInfo,
-  Nullable,
   Option,
   RpcQueryError,
 } from "lib/types";
@@ -48,7 +45,6 @@ import {
   getModules,
   getModuleTableCounts,
   getModuleTxs,
-  getMoveVerifyInfo,
 } from "./api";
 import { getModuleByAddressLcd, getModulesByAddressLcd } from "./lcd";
 
@@ -97,32 +93,6 @@ export const useModulesByAddress = ({
       refetchOnWindowFocus: false,
       onSuccess,
       onError,
-    }
-  );
-};
-
-// TODO: move to verification/move service folder
-export const useMoveVerifyInfo = ({
-  address,
-  moduleName,
-}: {
-  address: Option<Addr>;
-  moduleName: Option<string>;
-}): UseQueryResult<Nullable<ModuleVerificationInternal>> => {
-  const { currentChainId } = useCelatoneApp();
-  const isInitiation1 = currentChainId === "initiation-1";
-
-  return useQuery(
-    [CELATONE_QUERY_KEYS.MODULE_VERIFY_INFO, address, moduleName],
-    () => {
-      if (!address || !moduleName) return null;
-      return getMoveVerifyInfo(address, moduleName);
-    },
-    {
-      enabled: isInitiation1 && Boolean(address && moduleName),
-      retry: 0,
-      refetchOnWindowFocus: false,
-      keepPreviousData: true,
     }
   );
 };

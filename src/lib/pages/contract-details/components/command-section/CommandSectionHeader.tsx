@@ -66,7 +66,11 @@ export const CommandSectionHeader = observer(
             gap={1}
           >
             <Tag variant="gray" gap={1} mr={1}>
-              <CustomIcon name="check-circle" boxSize={3} color="gray.600" />
+              <CustomIcon
+                name="check-circle-solid"
+                boxSize={3}
+                color="gray.600"
+              />
               <Text variant="body3">Attached Schema to Code ID {codeId}</Text>
             </Tag>
             <ViewSchemaModal isIcon codeId={codeId} localSchema={localSchema} />

@@ -105,7 +105,7 @@ export const getSubHeaderFull = (
     base.push({
       name: "NFTs",
       slug: "/nft-collections",
-      icon: "group" as IconKeys,
+      icon: "collection" as IconKeys,
     });
 
   if (isPool)
