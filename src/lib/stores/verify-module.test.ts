@@ -12,11 +12,11 @@ describe("VerifyModuleTaskStore initialization", () => {
   });
 });
 
-describe("isVerifyModuleUserKeyExist", () => {
+describe("isVerifyModuleTaskUserKeyExist", () => {
   test("correctly check if user key exist", () => {
-    expect(verifyModuleTaskStore.isVerifyModuleUserKeyExist()).toBeFalsy();
-    verifyModuleTaskStore.setVerifyModuleUserKey("userKey");
-    expect(verifyModuleTaskStore.isVerifyModuleUserKeyExist()).toBeTruthy();
+    expect(verifyModuleTaskStore.isVerifyModuleTaskUserKeyExist()).toBeFalsy();
+    verifyModuleTaskStore.setVerifyModuleTaskUserKey("userKey");
+    expect(verifyModuleTaskStore.isVerifyModuleTaskUserKeyExist()).toBeTruthy();
   });
 });
 
@@ -27,12 +27,14 @@ describe("verifyModule", () => {
     chainId: "chainId",
   };
   test("correctly get verify modules", () => {
-    expect(verifyModuleTaskStore.getVerifyModules()).toEqual([]);
+    expect(verifyModuleTaskStore.getVerifyModuleTaskTasks()).toEqual([]);
   });
 
   test("correctly get verify modules after adding", () => {
-    verifyModuleTaskStore.addVerifyModule(verifyModule);
-    expect(verifyModuleTaskStore.getVerifyModules()).toEqual([verifyModule]);
+    verifyModuleTaskStore.addVerifyModuleTask(verifyModule);
+    expect(verifyModuleTaskStore.getVerifyModuleTaskTasks()).toEqual([
+      verifyModule,
+    ]);
   });
   test("correctly get verify modules after adding multiple", () => {
     const verifyModule1 = {
@@ -45,9 +47,9 @@ describe("verifyModule", () => {
       fileMap: { file: "map" },
       chainId: "chainId",
     };
-    verifyModuleTaskStore.addVerifyModule(verifyModule1);
-    verifyModuleTaskStore.addVerifyModule(verifyModule2);
-    expect(verifyModuleTaskStore.getVerifyModules()).toEqual([
+    verifyModuleTaskStore.addVerifyModuleTask(verifyModule1);
+    verifyModuleTaskStore.addVerifyModuleTask(verifyModule2);
+    expect(verifyModuleTaskStore.getVerifyModuleTaskTasks()).toEqual([
       verifyModule2,
       verifyModule1,
       verifyModule,
@@ -55,8 +57,10 @@ describe("verifyModule", () => {
   });
   test("correctly check if module is verified", () => {
     expect(
-      verifyModuleTaskStore.isModuleVerified(verifyModule.taskId)
+      verifyModuleTaskStore.isVerifyModuleTaskExist(verifyModule.taskId)
     ).toBeTruthy();
-    expect(verifyModuleTaskStore.isModuleVerified("randomId")).toBeFalsy();
+    expect(
+      verifyModuleTaskStore.isVerifyModuleTaskExist("randomId")
+    ).toBeFalsy();
   });
 });

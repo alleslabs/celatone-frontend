@@ -33,7 +33,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
   const { setNetworkUserKey, isNetworkUserKeyExist } = useNetworkStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
-  const { setVerifyModuleUserKey, isVerifyModuleUserKeyExist } =
+  const { setVerifyModuleTaskUserKey, isVerifyModuleTaskUserKeyExist } =
     useVerifyModuleTaskStore();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
       setCodeUserKey(userKey);
       setContractUserKey(userKey);
       setProjectUserKey(userKey);
-      setVerifyModuleUserKey(userKey);
+      setVerifyModuleTaskUserKey(userKey);
 
       setNetworkUserKey(DEFAULT_ADDRESS);
     }
@@ -55,7 +55,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     setContractUserKey,
     setNetworkUserKey,
     setProjectUserKey,
-    setVerifyModuleUserKey,
+    setVerifyModuleTaskUserKey,
   ]);
 
   if (isHydrated && !(currentChainId in chainConfigs))
@@ -68,7 +68,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     !isContractUserKeyExist() ||
     !isNetworkUserKeyExist() ||
     !isProjectUserKeyExist() ||
-    !isVerifyModuleUserKeyExist()
+    !isVerifyModuleTaskUserKeyExist()
   )
     return <LoadingOverlay />;
 

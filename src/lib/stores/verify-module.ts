@@ -31,31 +31,38 @@ export class VerifyModuleTaskStore {
     return isHydrated(this);
   }
 
-  isVerifyModuleUserKeyExist(): boolean {
+  isVerifyModuleTaskUserKeyExist(): boolean {
     return !!this.userKey;
   }
 
-  setVerifyModuleUserKey(userKey: string) {
+  setVerifyModuleTaskUserKey(userKey: string) {
     this.userKey = userKey;
   }
 
-  isModuleVerified(taskId: string): boolean {
+  isVerifyModuleTaskExist(taskId: string): boolean {
     return (
-      this.getVerifyModules().findIndex((item) => item.taskId === taskId) > -1
+      this.getVerifyModuleTaskTasks().findIndex(
+        (item) => item.taskId === taskId
+      ) > -1
     );
   }
 
-  getVerifyModules(): VerifyModuleLocalInfo[] {
+  getVerifyModuleTaskTasks(): VerifyModuleLocalInfo[] {
     return this.modules[this.userKey]?.reverse() ?? [];
   }
 
-  getVerifyModule(taskId: string): VerifyModuleLocalInfo | undefined {
-    return this.getVerifyModules().find((module) => module.taskId === taskId);
+  getVerifyModuleTask(taskId: string): VerifyModuleLocalInfo | undefined {
+    return this.getVerifyModuleTaskTasks().find(
+      (module) => module.taskId === taskId
+    );
   }
 
-  addVerifyModule(verifyModule: VerifyModuleLocalInfo): void {
-    if (!this.isModuleVerified(verifyModule.taskId)) {
-      this.modules[this.userKey] = [...this.getVerifyModules(), verifyModule];
+  addVerifyModuleTask(verifyModule: VerifyModuleLocalInfo): void {
+    if (!this.isVerifyModuleTaskExist(verifyModule.taskId)) {
+      this.modules[this.userKey] = [
+        ...this.getVerifyModuleTaskTasks(),
+        verifyModule,
+      ];
     }
   }
 }
