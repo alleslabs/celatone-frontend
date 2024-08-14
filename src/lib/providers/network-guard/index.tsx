@@ -9,7 +9,6 @@ import {
   useAccountStore,
   useCodeStore,
   useContractStore,
-  useNetworkStore,
   usePublicProjectStore,
   useVerifyModuleTaskStore,
 } from "lib/providers/store";
@@ -31,7 +30,6 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
   const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
-  const { setNetworkUserKey, isNetworkUserKeyExist } = useNetworkStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
   const { setVerifyModuleTaskUserKey, isVerifyModuleTaskUserKeyExist } =
     useVerifyModuleTaskStore();
@@ -44,8 +42,6 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
       setContractUserKey(userKey);
       setProjectUserKey(userKey);
       setVerifyModuleTaskUserKey(userKey);
-
-      setNetworkUserKey(DEFAULT_ADDRESS);
     }
   }, [
     isHydrated,
@@ -53,7 +49,6 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     setAccountUserKey,
     setCodeUserKey,
     setContractUserKey,
-    setNetworkUserKey,
     setProjectUserKey,
     setVerifyModuleTaskUserKey,
   ]);
@@ -66,7 +61,6 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     !isAccountUserKeyExist() ||
     !isCodeUserKeyExist() ||
     !isContractUserKeyExist() ||
-    !isNetworkUserKeyExist() ||
     !isProjectUserKeyExist() ||
     !isVerifyModuleTaskUserKeyExist()
   )

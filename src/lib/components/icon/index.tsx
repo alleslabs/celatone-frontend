@@ -14,10 +14,10 @@ interface CustomIconProps extends IconProps {
   color?: string;
 }
 
-export const CustomIcon = ({ name, color }: CustomIconProps) => {
+export const CustomIcon = ({ name, color, ...props }: CustomIconProps) => {
   if (name === "circle") {
     return <CircleIcon color={color} />;
   }
 
-  return <SvgIcon name={name} color={color} />;
+  return <SvgIcon name={name} color={color} {...props} />;
 };
