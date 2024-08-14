@@ -177,7 +177,7 @@ export const UploadModuleCard = ({
             <UploadCard
               file={file}
               deleteFile={removeFile}
-              theme="secondary"
+              theme="gray"
               status={status}
               statusText={text}
             />

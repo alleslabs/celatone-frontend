@@ -124,7 +124,7 @@ const LinkRender = ({
     <Text
       variant={textVariant}
       fontFamily="mono"
-      color={textValue.length ? "secondary.main" : "text.disabled"}
+      color={textValue.length ? "primary.main" : "text.disabled"}
       className={isEllipsis ? "ellipsis" : undefined}
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
@@ -206,7 +206,7 @@ export const ExplorerLink = ({
       transition="all 0.25s ease-in-out"
       _hover={{
         textDecoration: "underline",
-        textDecorationColor: "secondary.light",
+        textDecorationColor: "primary.light",
       }}
       {...componentProps}
     >

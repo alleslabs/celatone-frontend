@@ -41,7 +41,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
       >
         <Flex direction="column" gap={1}>
           <Flex gap={2}>
-            <CustomIcon name="proposal" boxSize={5} color="secondary.main" />
+            <CustomIcon name="proposal" boxSize={5} color="primary.main" />
             <Heading
               as="h5"
               mt={{ base: 1, md: 0 }}
@@ -50,7 +50,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
               wordBreak="break-word"
               color={proposalData.title ? "text.main" : "text.disabled"}
             >
-              <span style={{ color: "var(--chakra-colors-accent-main)" }}>
+              <span style={{ color: "var(--chakra-colors-primary-main)" }}>
                 #{proposalData.id}
               </span>{" "}
               - {proposalData.title ? proposalData.title : "No title"}
@@ -98,7 +98,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                       {index > 0 && (
                         <span
                           style={{
-                            color: "var(--chakra-colors-accent-main)",
+                            color: "var(--chakra-colors-primary-main)",
                             marginLeft: "4px",
                             fontWeight: 600,
                           }}

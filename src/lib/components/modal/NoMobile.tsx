@@ -17,7 +17,7 @@ export const NoMobile = () => {
 
   return (
     <Modal size="sm" isOpen isCentered onClose={() => {}}>
-      <ModalOverlay bg="background.main" />
+      <ModalOverlay />
       <ModalContent>
         <Flex
           direction="column"
@@ -26,11 +26,7 @@ export const NoMobile = () => {
           p={8}
           textAlign="center"
         >
-          <CustomIcon
-            name="info-circle-solid"
-            color="primary.light"
-            boxSize={10}
-          />
+          <CustomIcon name="info-circle" color="primary.light" boxSize={10} />
           <Heading as="h5" variant="h5" py={1}>
             Sorry, this feature is currently not supported on mobile.
           </Heading>

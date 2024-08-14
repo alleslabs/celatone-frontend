@@ -59,7 +59,7 @@ export function RemoveSavedAccountModal({
   return (
     <ActionModal
       title={`Remove account \u2018${displayName}\u2019?`}
-      icon="delete-solid"
+      icon="delete"
       iconColor="error.light"
       mainVariant="error"
       mainBtnTitle="Yes, Remove It"

@@ -35,7 +35,7 @@ export const MsgJoinPoolAction = ({
         return (
           <Flex key={coin.denom} gap={1} alignItems="center">
             {index > 0 && (
-              <CustomIcon name="plus" boxSize={4} color="secondary.main" />
+              <CustomIcon name="plus" boxSize={4} color="primary.main" />
             )}
             at most
             <MsgToken
@@ -48,7 +48,7 @@ export const MsgJoinPoolAction = ({
       })}
       to
       <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
-      <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
+      <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
       <MsgToken
         token={poolToken}
         fontWeight={700}

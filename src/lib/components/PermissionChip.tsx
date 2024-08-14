@@ -34,7 +34,7 @@ export const PermissionChip = ({
   return (
     <Tooltip label={message}>
       <Flex onClick={(e) => e.stopPropagation()} w="fit-content">
-        <Tag size={tagSize} variant={isAllowed ? "accent-darker" : "gray"}>
+        <Tag size={tagSize} variant={isAllowed ? "primary-darker" : "gray"}>
           {instantiatePermission}
         </Tag>
       </Flex>

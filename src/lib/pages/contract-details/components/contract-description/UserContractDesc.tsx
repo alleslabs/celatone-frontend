@@ -64,8 +64,7 @@ export const UserContractDesc = ({
           triggerElement={
             <Button
               size="xs"
-              color="secondary.main"
-              variant="ghost-secondary"
+              variant="ghost-primary"
               leftIcon={<CustomIcon name="edit" boxSize={3} />}
               display="none"
               _groupHover={{ display: "flex" }}

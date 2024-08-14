@@ -48,7 +48,7 @@ export const ValidatorVotesTableRow = ({
                 minW="unset"
                 size="sm"
                 disabled={!proposalVote.txHash}
-                color="secondary.main"
+                color="primary.main"
                 onClick={() =>
                   proposalVote.txHash && openTxTab(proposalVote.txHash)
                 }

@@ -97,7 +97,7 @@ export const PoolTxsMsg = ({
               />
               {transaction.messages.length > 1 && (
                 <Tooltip label="There are at least one messages within this transaction that related to this pool.">
-                  <Badge variant="secondary" ml="6px">
+                  <Badge variant="primary-light" ml="6px">
                     {transaction.messages.length}
                   </Badge>
                 </Tooltip>

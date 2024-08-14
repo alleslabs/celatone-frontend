@@ -51,7 +51,7 @@ export const FilterItem = ({
             background="gray.800"
             borderRadius="4px"
           >
-            <CustomIcon name="group" />
+            <CustomIcon name="collection" />
           </Flex>
         ) : (
           <Image

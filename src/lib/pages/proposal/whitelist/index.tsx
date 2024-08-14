@@ -275,7 +275,7 @@ const ProposalToWhitelist = () => {
                 borderRadius="8px"
               >
                 <Flex gap={2} alignItems="center">
-                  <CustomIcon name="proposal-solid" color="gray.600" />
+                  <CustomIcon name="proposal" color="gray.600" />
                   <Heading as="h6" variant="h6">
                     Fill in Proposal Details
                   </Heading>
@@ -397,7 +397,7 @@ const ProposalToWhitelist = () => {
                       cursor="pointer"
                       variant="body3"
                       minW={16}
-                      color="accent.main"
+                      color="primary.main"
                       onClick={() => {
                         if (!minDeposit) return;
                         trackUseDepositFill(minDeposit.formattedAmount);

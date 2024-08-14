@@ -206,7 +206,7 @@ execute();
     <>
       <Button
         isDisabled={isDisabled}
-        variant="outline-accent"
+        variant="outline-white"
         size="sm"
         ml={ml}
         gap={1}

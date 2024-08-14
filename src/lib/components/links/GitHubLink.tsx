@@ -27,7 +27,7 @@ export const GitHubLink = ({ github, hasMinW = false }: GitHubLinkProps) => {
         rel="noreferrer noopener"
         style={{ display: "flex" }}
       >
-        <Text color="secondary.main" variant="body2" wordBreak="break-all">
+        <Text color="primary.main" variant="body2" wordBreak="break-all">
           {org}/{repo}
         </Text>
         <CustomIcon

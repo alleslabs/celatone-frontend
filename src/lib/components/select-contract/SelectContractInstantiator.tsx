@@ -136,7 +136,7 @@ export const SelectContractInstantiator = ({
             <>
               <DrawerHeader>
                 <CustomIcon
-                  name="contract-address-solid"
+                  name="contract-address"
                   boxSize={5}
                   color="gray.600"
                 />

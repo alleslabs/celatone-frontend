@@ -35,7 +35,7 @@ export const DuplicatedAddCustomMinitiaModal = ({
       <ModalHeader w="full" py={0}>
         <Stack alignItems="center" gap={4} w="100%">
           <CustomIcon
-            name="alert-circle-solid"
+            name="alert-triangle-solid"
             color="error.main"
             boxSize={14}
           />
@@ -49,7 +49,7 @@ export const DuplicatedAddCustomMinitiaModal = ({
         </Text>
       </ModalBody>
       <ModalFooter pb={0}>
-        <Button variant="outline-secondary" w="100%" onClick={onClose}>
+        <Button variant="outline-primary" w="100%" onClick={onClose}>
           Close
         </Button>
       </ModalFooter>
