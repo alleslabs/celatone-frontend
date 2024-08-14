@@ -17,8 +17,9 @@ export const ContractNameCell = ({
   const onSave = useHandleContractSave({
     title: "Changed name successfully!",
     contractAddress: contractLocalInfo.contractAddress,
-    instantiator: contractLocalInfo.instantiator,
     label: contractLocalInfo.label,
+    codeId: contractLocalInfo.codeId,
+    instantiator: contractLocalInfo.instantiator,
     actions: () => track(AmpEvent.USE_QUICK_EDIT_CONTRACT),
   });
 

@@ -57,7 +57,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const {
     data: derivedWasmVerifyInfo,
     isLoading: isDerivedWasmVerifyInfoLoading,
-  } = useDerivedWasmVerifyInfo(codeId, data?.info.hash);
+  } = useDerivedWasmVerifyInfo(data?.info.codeId, data?.info.hash);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {

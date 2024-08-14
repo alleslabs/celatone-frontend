@@ -29,7 +29,7 @@ export const InProgressVerifiedSection = ({
       <Text color="text.dark" variant="body2">
         This process may take several hours depending on code complexity. View
         status on
-        <AppLink href={`/codes/${codeId}/schema`}>
+        <AppLink href={`/codes/${codeId}`}>
           <Text color="primary.main" display="inline-flex" mx={1}>
             code details
           </Text>

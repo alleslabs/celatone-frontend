@@ -4,17 +4,30 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useGetAddressType, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CodeNameCell, RemarkRender, TableRow } from "lib/components/table";
-import type { BechAddr, ContractMigrationHistory } from "lib/types";
-import { dateFromNow, formatUTC, getCw2Info } from "lib/utils";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
+import type {
+  BechAddr,
+  ContractMigrationHistory,
+  Nullish,
+  WasmVerifyInfo,
+} from "lib/types";
+import {
+  dateFromNow,
+  formatUTC,
+  getCw2Info,
+  getWasmVerifyStatus,
+} from "lib/utils";
 
 interface MigrationRowProps {
   templateColumns: GridProps["templateColumns"];
   history: ContractMigrationHistory;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const MigrationRow = ({
   templateColumns,
   history,
+  wasmVerifyInfo,
 }: MigrationRowProps) => {
   const { isFullTier } = useTierConfig();
   const getAddressType = useGetAddressType();
@@ -26,6 +39,12 @@ export const MigrationRow = ({
         <ExplorerLink
           type="code_id"
           value={history.codeId.toString()}
+          rightIcon={
+            <WasmVerifyBadge
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+            />
+          }
           showCopyOnHover
         />
       </TableRow>

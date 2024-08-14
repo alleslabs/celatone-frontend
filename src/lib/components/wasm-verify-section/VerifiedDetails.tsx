@@ -36,8 +36,9 @@ export const VerifiedDetails = ({
   schema,
   relatedVerifiedCodes,
   contractAddress,
-}: VerifyDetailsProps) =>
-  contractAddress ? (
+}: VerifyDetailsProps) => {
+  const gitUrlWithCommit = `${verificationInfo.gitUrl}/tree/${verificationInfo.commit}`;
+  return contractAddress ? (
     <>
       <Text variant="body2" color="text.dark">
         This contract is an instance of code ID{" "}
@@ -66,11 +67,7 @@ export const VerifiedDetails = ({
     <Flex direction="column" gap={6}>
       <Flex direction="column" gap={1}>
         <Text {...baseTextStyle}>Source Code:</Text>
-        <Link
-          href={verificationInfo.gitUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <Link href={gitUrlWithCommit} target="_blank" rel="noopener noreferrer">
           <Flex
             gap={1}
             alignItems="center"
@@ -88,9 +85,9 @@ export const VerifiedDetails = ({
             }}
           >
             <Text color="secondary.main" variant="body2">
-              {verificationInfo.gitUrl}
+              {gitUrlWithCommit}
             </Text>
-            <Copier ml={1} type="source_code" value={verificationInfo.gitUrl} />
+            <Copier ml={1} type="source_code" value={gitUrlWithCommit} />
           </Flex>
         </Link>
       </Flex>
@@ -153,3 +150,4 @@ export const VerifiedDetails = ({
       )}
     </Flex>
   );
+};

@@ -1,6 +1,7 @@
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
+import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import type { BechAddr32, ContractInfo, Option } from "lib/types";
 
 import { ContractsTableHeader } from "./ContractsTableHeader";
@@ -30,17 +31,25 @@ export const ContractsTable = ({
   withCta,
 }: ContractsTableProps) => {
   const isMobile = useMobile();
+  const { data: wasmVerifyInfos, isFetching: isWasmVerifyInfosFetching } =
+    useWasmVerifyInfos(
+      contracts?.reduce<number[]>(
+        (acc, contract) => (contract.codeId ? [...acc, contract.codeId] : acc),
+        []
+      ) ?? [],
+      !!contracts
+    );
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isWasmVerifyInfosFetching) return <Loading />;
   if (!contracts?.length) return emptyState;
 
   let templateColumns: string;
   if (isReadOnly)
-    templateColumns = `minmax(160px, 300px) minmax(300px, 3fr) minmax(200px, 2fr)${showLastUpdate ? " 1fr" : ""}`;
+    templateColumns = `minmax(180px, 300px) minmax(300px, 3fr) minmax(200px, 2fr)${showLastUpdate ? " 1fr" : ""}`;
   else if (!showTag)
-    templateColumns = `160px minmax(300px, 3fr)${showLastUpdate ? " 250px 300px" : ""} 80px`;
+    templateColumns = `180px minmax(300px, 3fr)${showLastUpdate ? " 250px 300px" : ""} 80px`;
   else
-    templateColumns = `160px minmax(300px, 3fr) minmax(200px, 2fr)${showLastUpdate ? " 150px 260px" : ""} 80px`;
+    templateColumns = `180px minmax(300px, 3fr) minmax(200px, 2fr)${showLastUpdate ? " 150px 260px" : ""} 80px`;
 
   return isMobile ? (
     <MobileTableContainer>
@@ -56,6 +65,11 @@ export const ContractsTable = ({
           contractInfo={contractInfo}
           onRowSelect={onRowSelect}
           showLastUpdate={showLastUpdate}
+          wasmVerifyInfo={
+            contractInfo.codeId
+              ? wasmVerifyInfos?.[contractInfo.codeId]
+              : undefined
+          }
         />
       ))}
     </MobileTableContainer>
@@ -84,6 +98,11 @@ export const ContractsTable = ({
           showLastUpdate={showLastUpdate}
           isReadOnly={isReadOnly}
           withCta={withCta}
+          wasmVerifyInfo={
+            contractInfo.codeId
+              ? wasmVerifyInfos?.[contractInfo.codeId]
+              : undefined
+          }
         />
       ))}
     </TableContainer>
