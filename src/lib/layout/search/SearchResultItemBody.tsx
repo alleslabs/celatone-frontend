@@ -23,11 +23,7 @@ export const SearchResultItemBody = ({
           <Text variant="body2" color="text.dark" wordBreak="break-all">
             ({result.value})
           </Text>
-          <Text
-            variant="body2"
-            fontWeight={{ base: "auto", md: 500 }}
-            color="text.disabled"
-          >
+          <Text variant="body2" color="text.disabled">
             – {result.type}
           </Text>
         </Flex>
@@ -67,21 +63,22 @@ export const SearchResultItemBody = ({
           <Text variant="body2" color="text.dark" wordBreak="break-all">
             ({result.value})
           </Text>
-          <Text
-            variant="body2"
-            fontWeight={{ base: "auto", md: 500 }}
-            color="text.disabled"
-          >
+          <Text variant="body2" color="text.disabled">
             – {result.type}
           </Text>
         </Flex>
       </Flex>
     );
 
-  if (result.type === "NFT Address" || result.type === "NFT Collection Address")
+  if (result.type === "NFT Collection Address" || result.type === "NFT Address")
     return (
       <Flex direction="column">
-        <Text variant="body2">{result.metadata?.nft?.name ?? "Untitled"}</Text>
+        <Text
+          variant="body2"
+          color={result.metadata?.nft?.name ? "text.main" : "text.dark"}
+        >
+          {result.metadata?.nft?.name || "Untitled"}
+        </Text>
         <Flex
           gap={{ base: 0, md: 1 }}
           direction={{ base: "column", md: "row" }}
@@ -89,11 +86,7 @@ export const SearchResultItemBody = ({
           <Text variant="body2" color="text.dark" wordBreak="break-all">
             ({result.value})
           </Text>
-          <Text
-            variant="body2"
-            fontWeight={{ base: "auto", md: 500 }}
-            color="text.disabled"
-          >
+          <Text variant="body2" color="text.disabled">
             – {result.type}
           </Text>
         </Flex>
@@ -111,11 +104,7 @@ export const SearchResultItemBody = ({
         <Text variant="body2" wordBreak="break-all">
           {result.value}
         </Text>
-        <Text
-          variant="body2"
-          fontWeight={{ base: "auto", md: 500 }}
-          color="text.disabled"
-        >
+        <Text variant="body2" color="text.disabled">
           – {result.type}
         </Text>
       </Flex>
@@ -126,11 +115,7 @@ export const SearchResultItemBody = ({
       <Text variant="body2" wordBreak="break-all">
         {result.value}
       </Text>
-      <Text
-        variant="body2"
-        fontWeight={{ base: "auto", md: 500 }}
-        color="text.disabled"
-      >
+      <Text variant="body2" color="text.disabled">
         – {result.type}
       </Text>
     </Flex>

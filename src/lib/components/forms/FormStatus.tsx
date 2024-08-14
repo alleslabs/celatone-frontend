@@ -26,7 +26,7 @@ export const getStatusIcon = (state: ResponseState, boxSize = "1em") => {
     case "error":
       return (
         <CustomIcon
-          name="alert-circle-solid"
+          name="alert-triangle-solid"
           color="error.light"
           boxSize={boxSize}
         />

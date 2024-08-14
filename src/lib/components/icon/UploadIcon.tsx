@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 
-import { CustomIcon } from "./CustomIcon";
+import { SvgIcon } from "./SvgIcon";
 
 interface UploadIconProps {
   variant?: "primary" | "muted";
@@ -27,7 +27,7 @@ export const UploadIcon = ({ variant = "primary" }: UploadIconProps) => {
       h="40px"
       bgColor={style.bgColor}
     >
-      <CustomIcon name="upload" boxSize="24px" color={style.color} />
+      <SvgIcon name="upload" boxSize="24px" color={style.color} />
     </Flex>
   );
 };

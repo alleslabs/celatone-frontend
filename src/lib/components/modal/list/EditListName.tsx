@@ -76,7 +76,7 @@ export function EditListNameModal({
   return (
     <ActionModal
       title="Edit list name"
-      icon="edit-solid"
+      icon="edit"
       trigger={<MenuItem {...menuItemProps} as="button" />}
       mainBtnTitle="Save"
       mainAction={() => {
