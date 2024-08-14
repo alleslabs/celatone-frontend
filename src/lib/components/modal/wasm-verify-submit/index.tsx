@@ -12,7 +12,7 @@ import type { ReactNode } from "react";
 import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import type { WasmVerifyRequest } from "lib/services/types";
 import { useSubmitWasmVerify } from "lib/services/verification/wasm";
-import type { BechAddr32, WasmVerifyStatus } from "lib/types";
+import type { BechAddr32, Option, WasmVerifyStatus } from "lib/types";
 
 import { WasmVerifySubmitCompleted } from "./WasmVerifySubmitCompleted";
 import { WasmVerifySubmitFailed } from "./WasmVerifySubmitFailed";
@@ -33,16 +33,19 @@ interface WasmVerifySubmitModalBodyProps
   isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
+  errorMsg: Option<string>;
   onClose: () => void;
 }
 
 const WasmVerifySubmitModalBody = ({
   isSuccess,
   isError,
+  errorMsg,
   onClose,
   ...props
 }: WasmVerifySubmitModalBodyProps) => {
-  if (isError) return <WasmVerifySubmitFailed onClose={onClose} />;
+  if (isError)
+    return <WasmVerifySubmitFailed errorMsg={errorMsg} onClose={onClose} />;
   if (isSuccess) return <WasmVerifySubmitCompleted />;
   return <WasmVerifySubmitForm {...props} />;
 };
@@ -57,11 +60,12 @@ export const WasmVerifySubmitModal = ({
 }: WasmVerifySubmitModalProps) => {
   const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
-  const { mutate, isLoading, isSuccess, isError } = useSubmitWasmVerify();
+  const { mutate, isLoading, isSuccess, isError, error } =
+    useSubmitWasmVerify();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const handleClose = useCallback(() => {
-    if (isSuccess)
+    if (isSuccess || isError)
       queryClient.invalidateQueries({
         queryKey: [
           CELATONE_QUERY_KEYS.WASM_VERIFICATION_INFOS,
@@ -70,7 +74,7 @@ export const WasmVerifySubmitModal = ({
         ],
       });
     onClose();
-  }, [codeId, currentChainId, isSuccess, onClose, queryClient]);
+  }, [codeId, currentChainId, isError, isSuccess, onClose, queryClient]);
 
   return (
     <>
@@ -106,6 +110,7 @@ export const WasmVerifySubmitModal = ({
             isLoading={isLoading}
             isSuccess={isSuccess}
             isError={isError}
+            errorMsg={error?.response?.data.message}
             onClose={handleClose}
           />
         </ModalContent>

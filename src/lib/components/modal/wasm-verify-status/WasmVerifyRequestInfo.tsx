@@ -12,6 +12,7 @@ import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 const baseTextStyle: TextProps = {
   color: "text.dark",
   variant: "body2",
+  whiteSpace: "nowrap",
 };
 
 const baseContainerStyle: FlexProps = {
@@ -69,33 +70,34 @@ export const WasmVerifyRequestInfo = ({
       <Flex direction="column" gap={{ base: 2, sm: 1 }}>
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Source Code:</Text>
-          <Link
-            href={gitUrlWithCommit}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Flex
-              gap={1}
-              alignItems="center"
-              sx={{
-                cursor: "pointer",
-                "&:hover": {
-                  "> *": {
-                    color: "secondary.light",
-                    textDecoration: "underline",
-                    transition: "all",
-                    transitionDuration: "0.25s",
-                    transitionTimingFunction: "ease-in-out",
-                  },
+          <Flex
+            overflow="hidden"
+            gap={1}
+            alignItems="center"
+            sx={{
+              cursor: "pointer",
+              "&:hover": {
+                "> *": {
+                  color: "secondary.light",
+                  textDecoration: "underline",
+                  transition: "all",
+                  transitionDuration: "0.25s",
+                  transitionTimingFunction: "ease-in-out",
                 },
-              }}
-            >
-              <Text color="secondary.main" variant="body2">
+              },
+            }}
+          >
+            <Text className="ellipsis" color="secondary.main" variant="body2">
+              <Link
+                href={gitUrlWithCommit}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {gitUrlWithCommit}
-              </Text>
-              <Copier ml={1} type="source_code" value={gitUrlWithCommit} />
-            </Flex>
-          </Link>
+              </Link>
+            </Text>
+            <Copier ml={1} type="source_code" value={gitUrlWithCommit} />
+          </Flex>
         </Flex>
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Package Name:</Text>

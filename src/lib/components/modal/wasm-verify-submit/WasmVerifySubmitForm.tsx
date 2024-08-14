@@ -60,11 +60,11 @@ export const WasmVerifySubmitForm = ({
           })
           .regex(
             /^https:\/\/github\.com\/.+$/,
-            "Please enter GitHub URL in format: https://github.com/yourrepositoryname"
+            "Please enter GitHub URL in format: https://github.com/username/repository"
           )
           .url({
             message:
-              "Please enter GitHub URL in format: https://github.com/yourrepositoryname",
+              "Please enter GitHub URL in format: https://github.com/username/repository",
           }),
         commit: z
           .string()
@@ -177,7 +177,7 @@ export const WasmVerifySubmitForm = ({
               label="GitHub Repository URL:"
               labelBgColor="gray.800"
               variant="fixed-floating"
-              placeholder="e.g. https://github.com/initiascan/"
+              placeholder="e.g. https://github.com/username/repository"
               isRequired
               error={errors.gitUrl?.message}
             />
