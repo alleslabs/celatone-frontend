@@ -1,11 +1,11 @@
 import { isNull } from "lodash";
 
+import { ActiveDot } from "../../../components/ActiveDot";
 import { PeriodState } from "../types";
 import { CustomIcon } from "lib/components/icon";
 import type { Nullable, Ratio } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
-import { ActiveDot } from "./ActiveDot";
 import { ProgressBadge } from "./ProgressBadge";
 
 interface VoteQuorumBadgeProps {

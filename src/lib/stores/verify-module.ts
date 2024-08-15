@@ -48,7 +48,7 @@ export class VerifyModuleTaskStore {
   }
 
   getVerifyModuleTaskTasks(): VerifyModuleLocalInfo[] {
-    return this.modules[this.userKey]?.reverse() ?? [];
+    return this.modules[this.userKey]?.slice().reverse() ?? [];
   }
 
   getVerifyModuleTask(taskId: string): VerifyModuleLocalInfo | undefined {

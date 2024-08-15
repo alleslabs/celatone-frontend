@@ -1,8 +1,8 @@
+import { ActiveDot } from "../../../components/ActiveDot";
 import { PeriodState } from "../types";
 import { CustomIcon } from "lib/components/icon";
 import { ProposalStatus } from "lib/types";
 
-import { ActiveDot } from "./ActiveDot";
 import { ProgressBadge } from "./ProgressBadge";
 
 interface VoteThresholdBadgeProps {

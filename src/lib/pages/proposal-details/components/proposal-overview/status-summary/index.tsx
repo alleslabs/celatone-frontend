@@ -2,7 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 
 import type { ProposalOverviewProps } from "..";
-import { ActiveDot } from "../../ActiveDot";
+import { ActiveDot } from "../../../../../components/ActiveDot";
 import { ResultExplanation } from "../../ResultExplanation";
 import { useGovConfig } from "lib/app-provider";
 import { StatusChip } from "lib/components/table";
