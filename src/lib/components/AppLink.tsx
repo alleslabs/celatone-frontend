@@ -28,6 +28,7 @@ export const AppLink = ({
           w={{ base: "max-content", md: "auto" }}
           color={linkProps.color}
           h="auto"
+          _hover={{ textDecoration: "underline" }}
         >
           {children}
         </Text>

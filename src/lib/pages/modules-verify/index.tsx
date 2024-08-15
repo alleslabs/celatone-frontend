@@ -1,39 +1,78 @@
-import { Box, Grid } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
+import { useCelatoneApp } from "lib/app-provider";
 import { ControllerInput } from "lib/components/forms";
 import { FooterCta } from "lib/components/layouts";
 import { NoMobile } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
+import { useVerifyModuleTaskStore } from "lib/providers/store";
+import { useSubmitMoveVerify } from "lib/services/verification/move";
 
 import {
   ModuleVerifyFileMap,
+  ModuleVerifyModalBody,
   ModuleVerifyTop,
   ModuleVerifyUploadFolder,
   ModuleVerifyUploadFolderInfo,
 } from "./components";
 import type { ModuleVerifyForm } from "./types";
 import { zModuleVerifyForm } from "./types";
+import { generateFileMap } from "./utils";
 
-export const ModulesVerify = () => {
+export const ModulesVerify = observer(() => {
   const router = useRouter();
-  const { control, watch, handleSubmit } = useForm<ModuleVerifyForm>({
+  const { currentChainId } = useCelatoneApp();
+  const { mutateAsync, isError, isLoading } = useSubmitMoveVerify();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { addVerifyModuleTask } = useVerifyModuleTaskStore();
+
+  const { control, watch, handleSubmit, setValue } = useForm<ModuleVerifyForm>({
     mode: "all",
     reValidateMode: "onChange",
     resolver: zodResolver(zModuleVerifyForm),
     defaultValues: {
-      requestNote: "",
       moveFiles: [],
     },
   });
+  const { moveFiles, tomlFile, requestNote } = watch();
 
-  const handleSubmitForm = () => {
-    // TODO: Hit the API -> error / loading
-    // TODO: Success modal
-    // TODO: Save data to localstorage
+  const handleSubmitForm = async () => {
+    onOpen();
+
+    const formData = new FormData();
+    formData.append("chainId", currentChainId);
+    formData.append("files", tomlFile);
+
+    moveFiles.forEach((file) => {
+      formData.append("files", file);
+    });
+
+    const fileMap = generateFileMap(tomlFile, moveFiles);
+    formData.append("fileMap", fileMap);
+
+    const data = await mutateAsync(formData).catch(() => null);
+
+    if (!data) return;
+
+    setValue("taskId", data.id);
+    addVerifyModuleTask({
+      taskId: data.id,
+      chainId: currentChainId,
+      requestNote,
+      fileMap: JSON.parse(fileMap),
+    });
   };
 
   return (
@@ -105,6 +144,17 @@ export const ModulesVerify = () => {
           }}
         />
       </Box>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent w="645px" bg="gray.800" maxW="100vw" py={10}>
+          <ModuleVerifyModalBody
+            isError={isError}
+            isLoading={isLoading}
+            onClose={onClose}
+            control={control}
+          />
+        </ModalContent>
+      </Modal>
     </>
   );
-};
+});
