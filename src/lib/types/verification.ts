@@ -2,6 +2,7 @@ import type { RJSFSchema as JsonSchema } from "@rjsf/utils";
 import { z } from "zod";
 
 import type { Nullable, Option } from "./common";
+import type { JsonDataType } from "./json";
 import { zUtcDate } from "./time";
 
 // ------------------------------------------//
@@ -43,6 +44,10 @@ export interface CodeSchema {
 
 export type QuerySchema = Array<[SchemaInfo, SchemaInfo]>;
 export type ExecuteSchema = Array<SchemaInfo>;
+
+export interface QueryResponse {
+  data: JsonDataType;
+}
 
 // ------------------------------------------//
 // ---------------VERIFICATION---------------//

@@ -155,7 +155,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   );
 });
 
-const CodeDetails = observer(() => {
+const CodeDetails = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const validated = zCodeDetailsQueryParams.safeParse(router.query);
@@ -175,6 +175,6 @@ const CodeDetails = observer(() => {
       )}
     </PageContainer>
   );
-});
+};
 
 export default CodeDetails;
