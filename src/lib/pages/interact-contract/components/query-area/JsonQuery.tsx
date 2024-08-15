@@ -138,17 +138,22 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
               mb={{ base: 2, md: 0 }}
             >
               <CopyButton
+                minW={{ base: "100px", md: "auto" }}
                 isDisable={!msg.length}
                 value={msg}
                 amptrackSection="query_msg"
               />
-              <WasmCodeSnippet
-                type="query"
-                contractAddress={contractAddress}
-                message={msg}
-              />
+              <Flex flex="1">
+                <WasmCodeSnippet
+                  w="full"
+                  type="query"
+                  contractAddress={contractAddress}
+                  message={msg}
+                />
+              </Flex>
               {isMobile && (
                 <Button
+                  flex="1"
                   variant="outline-white"
                   fontSize="12px"
                   size="sm"

@@ -1,4 +1,4 @@
-import type { ButtonProps } from "@chakra-ui/react";
+import type { ButtonProps, FlexProps } from "@chakra-ui/react";
 import {
   Box,
   Button,
@@ -49,6 +49,7 @@ interface WasmCodeSnippetProps {
   type: "query" | "execute";
   ml?: ButtonProps["ml"];
   funds?: Coin[];
+  w?: FlexProps["width"];
 }
 
 const WasmCodeSnippet = ({
@@ -56,6 +57,7 @@ const WasmCodeSnippet = ({
   message,
   type = "query",
   ml,
+  w,
   funds = [],
 }: WasmCodeSnippetProps) => {
   const isMobile = useMobile();
@@ -220,6 +222,7 @@ execute();
       <Button
         isDisabled={isDisabled}
         variant="outline-white"
+        w={w}
         size="sm"
         ml={ml}
         gap={1}
