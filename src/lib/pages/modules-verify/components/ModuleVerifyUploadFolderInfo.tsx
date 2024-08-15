@@ -10,8 +10,6 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 
-import { UserDocsLink } from "lib/components/UserDocsLink";
-
 export const ModuleVerifyUploadFolderInfo = () => (
   <Accordion allowToggle defaultIndex={[0]} variant="transparent" top={0}>
     <AccordionItem>
@@ -51,7 +49,8 @@ export const ModuleVerifyUploadFolderInfo = () => (
           </Text>
         </Stack>
       </AccordionPanel>
-      <UserDocsLink cta="See module verification guideline" href="#" mt={0} />
+      {/* // TODO: Open when the link is ready */}
+      {/* <UserDocsLink cta="See module verification guideline" href="#" mt={0} /> */}
     </AccordionItem>
   </Accordion>
 );
