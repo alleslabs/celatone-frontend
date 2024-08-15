@@ -153,15 +153,12 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
               </Flex>
               {isMobile && (
                 <Button
-                  flex="1"
+                  flex={1}
                   variant="outline-white"
-                  fontSize="12px"
                   size="sm"
                   background="background.main"
                   isDisabled={isButtonDisabled}
-                  onClick={() => {
-                    setMsg(jsonPrettify(msg));
-                  }}
+                  onClick={() => setMsg(jsonPrettify(msg))}
                 >
                   Format JSON
                 </Button>

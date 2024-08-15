@@ -154,9 +154,7 @@ const JsonInput = ({
             background="background.main"
             float="right"
             isDisabled={!isValidJson}
-            onClick={() => {
-              setText(jsonPrettify(text));
-            }}
+            onClick={() => setText(jsonPrettify(text))}
           >
             Format JSON
           </Button>
