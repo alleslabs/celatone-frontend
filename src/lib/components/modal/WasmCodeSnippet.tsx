@@ -2,11 +2,13 @@ import type { ButtonProps } from "@chakra-ui/react";
 import {
   Box,
   Button,
+  Flex,
   Heading,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   TabList,
@@ -16,6 +18,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
+import { useState } from "react";
 import AceEditor from "react-ace";
 
 import { CopyButton } from "../copy";
@@ -25,6 +28,7 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useLcdEndpoint,
+  useMobile,
   useRpcEndpoint,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
@@ -54,6 +58,7 @@ const WasmCodeSnippet = ({
   ml,
   funds = [],
 }: WasmCodeSnippetProps) => {
+  const isMobile = useMobile();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     chain: { chain_name: chainName, daemon_name: daemonName },
@@ -68,6 +73,9 @@ const WasmCodeSnippet = ({
     },
     theme,
   } = useCelatoneApp();
+
+  const [activeSnippet, setActiveSnippet] = useState("");
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
   const fundsFlags = funds.length ? `\n  --amount ${coinsToStr(funds)} \\` : "";
@@ -202,6 +210,11 @@ execute();
     ],
   };
 
+  const handleTabChange = (index: number) => {
+    setActiveTabIndex(index);
+    setActiveSnippet(codeSnippets[type][index].snippet);
+  };
+
   return (
     <>
       <Button
@@ -221,7 +234,7 @@ execute();
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
         <ModalOverlay />
-        <ModalContent w="840px">
+        <ModalContent w="840px" maxH="95vh">
           <ModalHeader>
             <CustomIcon name="code" boxSize={6} color="gray.600" />
             <Heading as="h5" variant="h5">
@@ -229,11 +242,16 @@ execute();
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />
-          <ModalBody px={4} maxH="640px" overflow="scroll">
-            <Tabs>
+          <ModalBody px={4} overflow="scroll">
+            <Tabs index={activeTabIndex} onChange={handleTabChange}>
               <TabList borderBottom="1px solid" borderColor="gray.700">
-                {codeSnippets[type].map((item) => (
-                  <CustomTab key={`menu-${item.name}`}>{item.name}</CustomTab>
+                {codeSnippets[type].map((item, index) => (
+                  <CustomTab
+                    key={`menu-${item.name}`}
+                    onClick={() => handleTabChange(index)}
+                  >
+                    {item.name}
+                  </CustomTab>
                 ))}
               </TabList>
               <TabPanels>
@@ -262,20 +280,35 @@ execute();
                           wrap: true,
                         }}
                       />
-                      <Box position="absolute" top={4} right={4}>
-                        <CopyButton
-                          value={item.snippet}
-                          amptrackSection="code_snippet"
-                          amptrackSubSection={item.name}
-                          amptrackInfo={type}
-                        />
-                      </Box>
+                      {!isMobile && (
+                        <Box position="absolute" top={4} right={4}>
+                          <CopyButton
+                            value={item.snippet}
+                            amptrackSection="code_snippet"
+                            amptrackSubSection={item.name}
+                            amptrackInfo={type}
+                          />
+                        </Box>
+                      )}
                     </Box>
                   </TabPanel>
                 ))}
               </TabPanels>
             </Tabs>
           </ModalBody>
+          {isMobile && (
+            <ModalFooter>
+              <Flex w="full" justifyContent="flex-end">
+                <CopyButton
+                  buttonText="Copy Code Snippet"
+                  value={activeSnippet}
+                  amptrackSection="code_snippet"
+                  amptrackSubSection={type}
+                  amptrackInfo={type}
+                />
+              </Flex>
+            </ModalFooter>
+          )}
         </ModalContent>
       </Modal>
     </>
