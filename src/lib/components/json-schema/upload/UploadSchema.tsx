@@ -25,6 +25,7 @@ export const UploadSchema = ({
     <>
       {triggerElement ? (
         <Flex
+          flex={1}
           onClick={(e) => {
             e.stopPropagation();
             onOpen();

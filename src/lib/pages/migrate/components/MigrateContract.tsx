@@ -84,7 +84,7 @@ export const MigrateContract = ({
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [isValidJsonInput, setIsValidJsonInput] = useState(false);
+  const [isValidJsonInput, setIsValidJsonInput] = useState(true);
 
   // ------------------------------------------//
   // -------------------DATA-------------------//

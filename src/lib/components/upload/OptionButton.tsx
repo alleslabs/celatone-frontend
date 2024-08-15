@@ -16,8 +16,9 @@ export const OptionButton = ({ title, description }: OptionButtonProps) => (
     p={4}
     borderRadius={8}
     alignItems="center"
+    w="full"
   >
-    <Flex direction="column" gap={1}>
+    <Flex direction="column" gap={1} w="full">
       <Text color="text.main" variant="body1" fontWeight={500}>
         {title}
       </Text>
@@ -41,8 +42,9 @@ export const OptionButtonDisabled = ({
     p={4}
     borderRadius={8}
     alignItems="center"
+    w="full"
   >
-    <Flex direction="column" gap={1}>
+    <Flex direction="column" gap={1} w="full">
       <Text color="text.disabled" variant="body1" fontWeight={500}>
         {title}
       </Text>

@@ -22,7 +22,7 @@ export const WasmVerifySubmitFailed = ({
   <>
     <ModalCloseButton color="gray.400" />
     <ModalBody overflow="overlay">
-      <Flex direction="column" gap={6} w="100%" px={6} py={8}>
+      <Flex direction="column" gap={6} w="100%" py={4}>
         <Flex direction="column" gap={4} alignItems="center">
           <CustomIcon
             name="close-circle-solid"

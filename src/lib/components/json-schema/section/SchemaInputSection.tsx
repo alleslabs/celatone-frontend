@@ -107,10 +107,19 @@ export const SchemaInputSection = observer(
                 : "You are using a locally attached JSON Schema"}
             </Text>
             <Flex gap={3}>
-              <ViewSchemaModal codeId={codeId} localSchema={localSchema} />
-              <Button variant="outline-gray" size="sm" onClick={handleReattach}>
-                Reattach
-              </Button>
+              <ViewSchemaModal
+                codeId={codeId}
+                schema={verifiedSchema ?? localSchema}
+              />
+              {!verifiedSchema && (
+                <Button
+                  variant="outline-gray"
+                  size="sm"
+                  onClick={handleReattach}
+                >
+                  Reattach
+                </Button>
+              )}
             </Flex>
           </Flex>
         )}

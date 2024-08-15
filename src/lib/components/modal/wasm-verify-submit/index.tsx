@@ -20,7 +20,7 @@ import { WasmVerifySubmitForm } from "./WasmVerifySubmitForm";
 
 interface WasmVerifySubmitModalProps {
   codeId: number;
-  codeHash: string;
+  codeHash: Option<string>;
   wasmVerifyStatus: WasmVerifyStatus;
   relatedVerifiedCodes?: number[];
   contractAddress?: BechAddr32;
@@ -46,7 +46,7 @@ const WasmVerifySubmitModalBody = ({
 }: WasmVerifySubmitModalBodyProps) => {
   if (isError)
     return <WasmVerifySubmitFailed errorMsg={errorMsg} onClose={onClose} />;
-  if (isSuccess) return <WasmVerifySubmitCompleted />;
+  if (isSuccess) return <WasmVerifySubmitCompleted onClose={onClose} />;
   return <WasmVerifySubmitForm {...props} />;
 };
 

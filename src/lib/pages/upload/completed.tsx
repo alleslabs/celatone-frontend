@@ -1,4 +1,12 @@
-import { Box, Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  SimpleGrid,
+  Text,
+} from "@chakra-ui/react";
 import { isNull } from "lodash";
 import { observer } from "mobx-react-lite";
 
@@ -37,7 +45,9 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   );
 
   const wasmVerifyStatus = getWasmVerifyStatus(derivedWasmVerifyInfo);
-  const localSchema = getSchemaByCodeHash(txResult.codeHash);
+  const localSchema = txResult.codeHash
+    ? getSchemaByCodeHash(txResult.codeHash)
+    : undefined;
   const attached = Boolean(localSchema);
 
   const displayOptions =
@@ -113,9 +123,10 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
       <Box h={12} />
       {!displayOptions ? (
         <>
-          {wasmVerifyStatus === WasmVerifyStatus.IN_PROGRESS ? (
+          {wasmVerifyStatus === WasmVerifyStatus.IN_PROGRESS && (
             <InProgressVerifiedSection codeId={txResult.codeId} />
-          ) : (
+          )}
+          {txResult.codeHash !== undefined && localSchema && (
             <UploadSchema
               attached={attached}
               localSchema={localSchema}
@@ -130,7 +141,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           <Heading as="h6" variant="h6" fontWeight={500} mb={2}>
             Would you like to:
           </Heading>
-          <Flex gap={4} mt={2}>
+          <SimpleGrid columns={txResult.codeHash ? 2 : 1} spacing={4} w="full">
             <WasmVerifySubmitModal
               codeId={Number(txResult.codeId)}
               codeHash={txResult.codeHash}
@@ -143,26 +154,30 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
                 />
               }
             />
-            {!isNull(derivedWasmVerifyInfo?.schema) ? (
-              <OptionButtonDisabled
-                title="Attach JSON Schema"
-                description="Your attached JSON schema will be stored locally on your device"
-              />
-            ) : (
-              <UploadSchema
-                attached={attached}
-                localSchema={localSchema}
-                codeId={Number(txResult.codeId)}
-                codeHash={txResult.codeHash}
-                triggerElement={
-                  <OptionButton
+            {txResult.codeHash && (
+              <>
+                {!isNull(derivedWasmVerifyInfo?.schema) ? (
+                  <OptionButtonDisabled
                     title="Attach JSON Schema"
-                    description="Your attached JSON schema will be stored locally on your device"
+                    description="JSON Schema is already available due to the code is indirectly verified"
                   />
-                }
-              />
+                ) : (
+                  <UploadSchema
+                    attached={attached}
+                    localSchema={localSchema}
+                    codeId={Number(txResult.codeId)}
+                    codeHash={txResult.codeHash}
+                    triggerElement={
+                      <OptionButton
+                        title="Attach JSON Schema"
+                        description="Your attached JSON schema will be stored locally on your device"
+                      />
+                    }
+                  />
+                )}
+              </>
             )}
-          </Flex>
+          </SimpleGrid>
           <Flex my={8} gap={4} alignItems="center" w="full">
             <Divider borderColor="gray.600" />
             <Text variant="body1" color="text.dark">

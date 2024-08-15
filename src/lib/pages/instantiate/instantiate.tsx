@@ -111,7 +111,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [isValidJsonInput, setIsValidJsonInput] = useState(false);
+  const [isValidJsonInput, setIsValidJsonInput] = useState(true);
 
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//

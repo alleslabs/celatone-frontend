@@ -19,14 +19,14 @@ import { ControllerInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type { WasmVerifyRequest } from "lib/services/types";
-import type { BechAddr32, WasmVerifyStatus } from "lib/types";
+import type { BechAddr32, Option, WasmVerifyStatus } from "lib/types";
 
-import { useRustOptimizerVersions } from "./hooks";
+import { useWasmOptimizerVersions } from "./hooks";
 import { WasmVerifySubmitFormSelect } from "./WasmVerifySubmitFormSelect";
 
 interface WasmVerifySubmitFormProps {
   codeId: number;
-  codeHash: string;
+  codeHash: Option<string>;
   wasmVerifyStatus: WasmVerifyStatus;
   relatedVerifiedCodes?: number[];
   contractAddress?: BechAddr32;
@@ -44,7 +44,7 @@ export const WasmVerifySubmitForm = ({
   isLoading,
 }: WasmVerifySubmitFormProps) => {
   const { currentChainId } = useCelatoneApp();
-  const rustOptimizerVersions = useRustOptimizerVersions();
+  const wasmOptimizerVersions = useWasmOptimizerVersions();
 
   const {
     control,
@@ -158,18 +158,20 @@ export const WasmVerifySubmitForm = ({
                   </Text>
                 )}
               </Flex>
-              <Flex gap={2} alignItems="center">
-                <Text fontWeight={500} color="text.dark" variant="body2">
-                  Code Hash:
-                </Text>
-                <CopyLink
-                  type="code_hash"
-                  amptrackSection="code_hash"
-                  value={codeHash.toUpperCase()}
-                  isTruncate
-                  showCopyOnHover
-                />
-              </Flex>
+              {codeHash && (
+                <Flex gap={2} alignItems="center">
+                  <Text fontWeight={500} color="text.dark" variant="body2">
+                    Code Hash:
+                  </Text>
+                  <CopyLink
+                    type="code_hash"
+                    amptrackSection="code_hash"
+                    value={codeHash.toUpperCase()}
+                    isTruncate
+                    showCopyOnHover
+                  />
+                </Flex>
+              )}
             </Flex>
             <ControllerInput
               name="gitUrl"
@@ -205,7 +207,7 @@ export const WasmVerifySubmitForm = ({
             <WasmVerifySubmitFormSelect
               name="compilerVersion"
               control={control}
-              options={rustOptimizerVersions}
+              options={wasmOptimizerVersions}
             />
           </Flex>
           <Button

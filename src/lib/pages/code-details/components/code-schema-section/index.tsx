@@ -50,7 +50,7 @@ export const CodeSchemaSection = ({
         borderRadius="8px"
       >
         {hasVerifiedSchema
-          ? `The schema is provided as the code has been ${wasmVerifyStatus !== WasmVerifyStatus.VERIFIED && "indirectly"} verified.`
+          ? `The schema is provided as the code has been ${wasmVerifyStatus !== WasmVerifyStatus.VERIFIED ? "indirectly" : ""} verified.`
           : "Uploaded JSON schemas are stored locally on your device."}
       </Text>
       <CodeSchemaTabs

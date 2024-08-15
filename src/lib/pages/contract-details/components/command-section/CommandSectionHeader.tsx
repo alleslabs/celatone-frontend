@@ -18,7 +18,6 @@ import {
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import { useSchemaStore } from "lib/providers/store";
 import type { Nullish, WasmVerifyInfo } from "lib/types";
-import { WasmVerifyStatus } from "lib/types";
 import { getWasmVerifyStatus } from "lib/utils";
 
 interface CommandSectionHeaderProps {
@@ -32,21 +31,22 @@ export const CommandSectionHeader = observer(
     const { getSchemaByCodeHash } = useSchemaStore();
     const { isOpen, onClose, onOpen } = useDisclosure();
 
-    const status = getWasmVerifyStatus(wasmVerifyInfo);
-    if (
-      status === WasmVerifyStatus.VERIFIED ||
-      status === WasmVerifyStatus.INDIRECTLY_VERIFIED
-    )
+    if (wasmVerifyInfo?.schema)
       return (
         <Flex gap={2} alignItems="center">
           <WasmVerifyBadge
-            status={status}
+            status={getWasmVerifyStatus(wasmVerifyInfo)}
             relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
             linkedCodeId={codeId}
           />
           <Heading as="h6" variant="h6" minW="fit-content">
             Verified command shortcuts
           </Heading>
+          <ViewSchemaModal
+            isIcon
+            codeId={codeId}
+            schema={wasmVerifyInfo?.schema}
+          />
         </Flex>
       );
 
@@ -73,7 +73,7 @@ export const CommandSectionHeader = observer(
               />
               <Text variant="body3">Attached Schema to Code ID {codeId}</Text>
             </Tag>
-            <ViewSchemaModal isIcon codeId={codeId} localSchema={localSchema} />
+            <ViewSchemaModal isIcon codeId={codeId} schema={localSchema} />
             <EditSchemaButtons
               codeId={codeId}
               codeHash={codeHash}

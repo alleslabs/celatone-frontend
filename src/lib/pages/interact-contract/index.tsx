@@ -1,5 +1,5 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { capitalize, isUndefined } from "lodash";
+import { capitalize } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 
@@ -16,7 +16,6 @@ import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
-import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr32, Coin } from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
 import { jsonPrettify, jsonValidate, libDecode } from "lib/utils";
@@ -48,16 +47,14 @@ const InteractContractBody = ({
   const [initialMsg, setInitialMsg] = useState("");
   const [initialFunds, setInitialFunds] = useState<Coin[]>([]);
   const [codeId, setCodeId] = useState<number>();
+  const [codeHash, setCodeHash] = useState<string>();
 
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
-  const { data: code } = useCodeLcd(codeId ?? 0, {
-    enabled: !isUndefined(codeId),
-  });
   const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
-    code?.codeId,
-    code?.hash
+    codeId,
+    codeHash
   );
 
   // ------------------------------------------//
@@ -130,7 +127,7 @@ const InteractContractBody = ({
   }, [contract, msg]);
 
   const verifiedSchema = derivedWasmVerifyInfo?.schema;
-  const localSchema = code?.hash ? getSchemaByCodeHash(code?.hash) : undefined;
+  const localSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
   return (
     <PageContainer>
       <CelatoneSeo pageName="Query / Execute Contract" />
@@ -144,7 +141,10 @@ const InteractContractBody = ({
         mode="all-lists"
         contractAddress={contract}
         onContractSelect={onContractSelect}
-        successCallback={(data) => setCodeId(data.contract.codeId)}
+        successCallback={(data) => {
+          setCodeId(data.contract.codeId);
+          setCodeHash(data.contract.codeHash);
+        }}
       />
       <Flex gap={4} align="center" mt={8} mb={4}>
         <Heading variant="h6" as="h6" minW={40} mr={2}>
@@ -166,7 +166,7 @@ const InteractContractBody = ({
             contractAddress={contractAddress}
             initialMsg={initialMsg}
             codeId={codeId}
-            codeHash={code?.hash}
+            codeHash={codeHash}
           />
         }
         executeContent={
@@ -177,7 +177,7 @@ const InteractContractBody = ({
             initialMsg={initialMsg}
             initialFunds={initialFunds}
             codeId={codeId}
-            codeHash={code?.hash}
+            codeHash={codeHash}
           />
         }
       />

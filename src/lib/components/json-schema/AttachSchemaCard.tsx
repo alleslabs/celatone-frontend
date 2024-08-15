@@ -63,7 +63,7 @@ export const AttachSchemaCard = ({
             <Text variant="body2">JSON Schema attached</Text>
           </Flex>
           <Flex align="center" gap={2}>
-            <ViewSchemaModal codeId={codeId} localSchema={localSchema} />
+            <ViewSchemaModal codeId={codeId} schema={localSchema} />
             <Button variant="outline-gray" size="sm" onClick={handleReattach}>
               Reattach
             </Button>

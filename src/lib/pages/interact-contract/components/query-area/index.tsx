@@ -50,10 +50,10 @@ export const QueryArea = ({
   );
 
   useEffect(() => {
-    if (!schema) setTab(MessageTabs.JSON_INPUT);
+    if (!schema || isMobile) setTab(MessageTabs.JSON_INPUT);
     else setTab(MessageTabs.YOUR_SCHEMA);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(schema)]);
+  }, [isMobile, JSON.stringify(schema)]);
 
   return (
     <>

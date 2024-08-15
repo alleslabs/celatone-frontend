@@ -1,1 +1,1 @@
-export * from "./useRustOptimizerVersions";
+export * from "./useWasmOptimizerVersions";
