@@ -4,6 +4,7 @@ import { useWatch } from "react-hook-form";
 import type { Control } from "react-hook-form";
 
 import type { ModuleVerifyForm } from "../types";
+import { generateFileMap } from "../utils";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { jsonPrettify } from "lib/utils";
 
@@ -17,23 +18,10 @@ export const ModuleVerifyFileMap = ({ control }: ModuleVerifyFileMapProps) => {
     name: ["moveFiles", "tomlFile"],
   });
 
-  const fileMap: string = useMemo(() => {
-    const initializedFileMap: {
-      [key: string]: string;
-    } = {};
-
-    if (tomlFile) {
-      initializedFileMap[tomlFile.name] = tomlFile.name;
-    }
-
-    if (moveFiles.length) {
-      moveFiles.forEach((file) => {
-        initializedFileMap[file.name] = `sources/${file.name}`;
-      });
-    }
-
-    return JSON.stringify(initializedFileMap);
-  }, [tomlFile, moveFiles]);
+  const fileMap: string = useMemo(
+    () => generateFileMap(tomlFile, moveFiles),
+    [tomlFile, moveFiles]
+  );
 
   return (
     <Stack gap={4}>
