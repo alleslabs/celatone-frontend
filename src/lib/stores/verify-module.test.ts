@@ -27,12 +27,12 @@ describe("verifyModule", () => {
     chainId: "chainId",
   };
   test("correctly get verify modules", () => {
-    expect(verifyModuleTaskStore.getVerifyModuleTaskTasks()).toEqual([]);
+    expect(verifyModuleTaskStore.getVerifyModuleTasks()).toEqual([]);
   });
 
   test("correctly get verify modules after adding", () => {
     verifyModuleTaskStore.addVerifyModuleTask(verifyModule);
-    expect(verifyModuleTaskStore.getVerifyModuleTaskTasks()).toEqual([
+    expect(verifyModuleTaskStore.getVerifyModuleTasks()).toEqual([
       verifyModule,
     ]);
   });
@@ -49,7 +49,7 @@ describe("verifyModule", () => {
     };
     verifyModuleTaskStore.addVerifyModuleTask(verifyModule1);
     verifyModuleTaskStore.addVerifyModuleTask(verifyModule2);
-    expect(verifyModuleTaskStore.getVerifyModuleTaskTasks()).toEqual([
+    expect(verifyModuleTaskStore.getVerifyModuleTasks()).toEqual([
       verifyModule2,
       verifyModule1,
       verifyModule,
