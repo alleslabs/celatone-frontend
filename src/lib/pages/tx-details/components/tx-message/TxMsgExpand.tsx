@@ -349,13 +349,13 @@ export const TxMsgExpand = ({
         <CustomIcon
           name={msgIcon}
           boxSize={4}
-          color="secondary.main"
+          color="primary.main"
           m={0}
           mt={{ base: 1, md: 0 }}
         />
         <Text wordBreak="break-all">{content}</Text>
         {!isMobile && isIbc && (
-          <Tag mx={2} variant="accent-dark" size="md" minW="hug-content">
+          <Tag mx={2} variant="secondary" size="md" minW="hug-content">
             IBC
           </Tag>
         )}
@@ -367,7 +367,7 @@ export const TxMsgExpand = ({
       </Flex>
       <Flex>
         {isMobile && isIbc && (
-          <Tag mx={2} variant="accent-dark" size="sm" minW="hug-content">
+          <Tag mx={2} variant="secondary" size="sm" minW="hug-content">
             IBC
           </Tag>
         )}

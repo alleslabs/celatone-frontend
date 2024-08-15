@@ -42,7 +42,7 @@ export const MsgJoinSwapExternAmountInAction = ({
       />
       to
       <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
-      <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
+      <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
       at least
       <MsgToken
         token={poolToken}

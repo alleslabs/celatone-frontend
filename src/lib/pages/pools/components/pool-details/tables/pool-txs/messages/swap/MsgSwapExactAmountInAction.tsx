@@ -36,7 +36,7 @@ export const MsgSwapExactAmountInAction = ({
         fontWeight={700}
         ampCopierSection={ampCopierSection}
       />
-      <CustomIcon name="arrow-right" boxSize={4} color="accent.main" />
+      <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
       at least
       <MsgToken
         token={outToken}

@@ -252,7 +252,7 @@ export const SearchComponent = () => {
               </Flex>
             </FormControl>
             <Tag
-              variant="accent-darker"
+              variant="primary-light"
               size="sm"
               position="absolute"
               right={4}

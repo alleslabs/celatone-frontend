@@ -8,17 +8,13 @@ const gray700 = "gray.700";
 const gray800 = "gray.800";
 const primaryLight = "primary.light";
 const primaryDark = "primary.dark";
+const primaryDarker = "primary.darker";
 const primaryBg = "primary.background";
-const accentBg = "accent.background";
-const accentMain = "accent.main";
-const accentDark = "accent.dark";
-const accentDarker = "accent.darker";
-const backgroundMain = "background.main";
+const secondaryBg = "secondary.background";
+const secondaryMain = "secondary.main";
+const secondaryDarker = "secondary.darker";
 const borderDefault = "1px solid";
 const errorDark = "error.dark";
-const secondaryLight = "secondary.light";
-const secondaryMain = "secondary.main";
-const secondaryBg = "secondary.background";
 const buttonOutlinePrimaryColor = "button.outlinePrimary.color";
 
 const generateStyle = ({
@@ -141,26 +137,6 @@ export const Button: ComponentStyleConfig = {
       hoverBg: "button.outlinePrimary.hoverBackground",
       activeBg: "button.outlinePrimary.activeBackground",
     }),
-    "outline-secondary": generateStyle({
-      basic: {
-        border: borderDefault,
-        borderColor: "secondary.dark",
-        color: secondaryLight,
-        "> svg": {
-          color: secondaryLight,
-        },
-      },
-      disabled: {
-        border: borderDefault,
-        borderColor: secondaryBg,
-        color: secondaryMain,
-        "> svg": {
-          color: secondaryMain,
-        },
-      },
-      hoverBg: secondaryBg,
-      activeBg: "transparent",
-    }),
     "outline-gray": generateStyle({
       basic: {
         border: borderDefault,
@@ -201,45 +177,36 @@ export const Button: ComponentStyleConfig = {
       hoverBg: gray700,
       activeBg: "transparent",
     }),
-    "outline-accent": generateStyle({
+    "outline-secondary": generateStyle({
       basic: {
         border: borderDefault,
-        borderColor: accentBg,
-        color: accentMain,
+        borderColor: secondaryBg,
+        color: secondaryMain,
         "> svg": {
-          color: accentMain,
+          color: secondaryMain,
         },
       },
       disabled: {
-        border: accentDarker,
-        color: accentDarker,
+        border: secondaryDarker,
+        color: secondaryDarker,
         "> svg": {
-          color: accentDarker,
+          color: secondaryDarker,
         },
       },
-      hoverBg: accentBg,
+      hoverBg: secondaryBg,
       activeBg: "transparent",
-    }),
-    "accent-solid": generateStyle({
-      basic: {
-        background: accentDark,
-        color: backgroundMain,
-      },
-      disabled: {},
-      hoverBg: accentMain,
-      activeBg: accentDark,
     }),
     "command-button": generateStyle({
       basic: {
         border: borderDefault,
-        borderColor: accentDarker,
+        borderColor: primaryDark,
         color: "text.main",
       },
       disabled: {
-        border: accentDarker,
-        color: accentDarker,
+        border: primaryDarker,
+        color: primaryDarker,
       },
-      hoverBg: accentBg,
+      hoverBg: primaryBg,
       activeBg: "transparent",
     }),
     "ghost-primary": generateStyle({
@@ -256,38 +223,6 @@ export const Button: ComponentStyleConfig = {
         },
       },
       hoverBg: primaryBg,
-      activeBg: "transparent",
-    }),
-    "ghost-secondary": generateStyle({
-      basic: {
-        color: secondaryMain,
-        "> svg": {
-          color: secondaryMain,
-        },
-      },
-      disabled: {
-        color: secondaryBg,
-        "> svg": {
-          color: secondaryBg,
-        },
-      },
-      hoverBg: secondaryBg,
-      activeBg: "transparent",
-    }),
-    "ghost-accent": generateStyle({
-      basic: {
-        color: accentMain,
-        "> svg": {
-          color: accentMain,
-        },
-      },
-      disabled: {
-        color: accentBg,
-        "> svg": {
-          color: accentBg,
-        },
-      },
-      hoverBg: accentBg,
       activeBg: "transparent",
     }),
     "ghost-gray": generateStyle({

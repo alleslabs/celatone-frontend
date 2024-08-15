@@ -33,19 +33,19 @@ export const SingleBondCardBodyMulti = ({
         cursor="pointer"
         _hover={{
           textDecoration: "underline",
-          textDecorationColor: "secondary.light",
-          "& > p": { color: "secondary.light" },
+          textDecorationColor: "primary.light",
+          "& > p": { color: "primary.light" },
         }}
         onClick={onOpen}
       >
         <Text
           variant="body2"
-          color="secondary.main"
+          color="primary.main"
           transition="all .25s ease-in-out"
         >
           View earned tokens
         </Text>
-        <CustomIcon name="chevron-right" boxSize={4} color="secondary.main" />
+        <CustomIcon name="chevron-right" boxSize={4} color="primary.main" />
       </Flex>
       <TotalCardModal
         title={title}

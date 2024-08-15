@@ -72,7 +72,7 @@ const FunctionButton = ({
     if ((isMobile && !isView) || disabled)
       return { variant: "outline-gray", color: "gray.500" };
     if (isView) return { variant: "outline-primary", color: "primary.dark" };
-    return { variant: "outline-accent", color: "accent.dark" };
+    return { variant: "outline-secondary", color: "secondary.main" };
   };
 
   return (
@@ -212,7 +212,7 @@ export const FunctionDetailCard = ({
   const { is_view: isView, visibility, name } = exposedFn;
   const disabled = !checkAvailability(exposedFn);
   const isMobile = useMobile();
-  const fnColor = isView ? "primary.main" : "accent.main";
+  const fnColor = isView ? "primary.main" : "secondary.main";
   const router = useRouter();
 
   return (

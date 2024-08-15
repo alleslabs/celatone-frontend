@@ -37,9 +37,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-
 ### Features
 
+- [#1085](https://github.com/alleslabs/celatone-frontend/pull/1085) Add verify module store
 - [#1081](https://github.com/alleslabs/celatone-frontend/pull/1081) Add service APIs for move verify module
 - [#1082](https://github.com/alleslabs/celatone-frontend/pull/1082) Replace CONFIG_CHAINS by fetching the chains from the API
 - [#1077](https://github.com/alleslabs/celatone-frontend/pull/1077) Add download minitia custom JSON
@@ -50,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1080](https://github.com/alleslabs/celatone-frontend/pull/1080) Adjust color and remove accent color
+- [#1088](https://github.com/alleslabs/celatone-frontend/pull/1088) Remove userKey from network store and add test for it
 - [#1034](https://github.com/alleslabs/celatone-frontend/pull/1034) Clean up custom icon file
 - [#1054](https://github.com/alleslabs/celatone-frontend/pull/1054) Improve main search bar to show both address and address as username
 

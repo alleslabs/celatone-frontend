@@ -100,7 +100,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
         </Flex>
       ))}
       <Button
-        variant="ghost-secondary"
+        variant="ghost-primary"
         w="fit-content"
         onClick={() => append({ denom: "", exponent: "" })}
         leftIcon={<CustomIcon name="plus" boxSize={3} />}
@@ -117,7 +117,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
       justifyContent="center"
     >
       <Button
-        variant="outline-secondary"
+        variant="outline-primary"
         w="fit-content"
         onClick={() => append({ denom: "", exponent: "" })}
         leftIcon={<CustomIcon name="plus" boxSize={3} />}
@@ -294,7 +294,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
               </Flex>
             ))}
             <Button
-              variant="ghost-secondary"
+              variant="ghost-primary"
               w="fit-content"
               onClick={() =>
                 append({ name: "", base: "", symbol: "", denoms: [] })
@@ -314,7 +314,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
               justifyContent="center"
             >
               <Button
-                variant="outline-secondary"
+                variant="outline-primary"
                 w="fit-content"
                 onClick={() =>
                   append({ name: "", base: "", symbol: "", denoms: [] })

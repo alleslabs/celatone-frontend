@@ -539,7 +539,7 @@ const StoreCodeProposal = () => {
                         cursor="pointer"
                         variant="body3"
                         minW={16}
-                        color="accent.main"
+                        color="primary.main"
                         onClick={() => {
                           if (!minDeposit) return;
                           trackUseDepositFill(minDeposit.formattedAmount);

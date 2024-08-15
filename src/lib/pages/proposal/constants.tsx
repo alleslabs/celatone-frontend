@@ -84,7 +84,7 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
             onClick={() =>
               trackUseRightHelperPanel(storeCodePage, "to-/deploy")
             }
-            color="secondary.main"
+            color="primary.main"
             href="/deploy"
             style={{ display: "inline-flex" }}
           >

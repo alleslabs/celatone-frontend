@@ -105,7 +105,7 @@ export const SelectInput = <T extends string>({
             "&[aria-expanded=true]": {
               "> input": {
                 border: "2px solid",
-                borderColor: "secondary.main",
+                borderColor: "primary.dark",
               },
             },
             "& .form-label": {

@@ -109,7 +109,7 @@ export const AddNetworkJson = observer(() => {
           )}
           <Flex justifyContent="space-between" w="full">
             <Button
-              variant="outline-secondary"
+              variant="outline-primary"
               onClick={() => navigate({ pathname: "/custom-network/add" })}
               w="140px"
             >

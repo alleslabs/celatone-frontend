@@ -22,7 +22,7 @@ export const AssignMe = ({
     <Text
       textAlign={textAlign}
       mr={3}
-      color={enabled ? "accent.main" : "text.disabled"}
+      color={enabled ? "primary.main" : "gray.600"}
       fontWeight={700}
       variant="body3"
       cursor={enabled ? "pointer" : "not-allowed"}

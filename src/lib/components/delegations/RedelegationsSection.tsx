@@ -29,7 +29,7 @@ export const RedelegationsSection = ({
       direction={{ base: "column", md: "row" }}
     >
       <Button
-        variant="ghost-secondary"
+        variant="ghost-primary"
         size={{ base: "xs", md: "md" }}
         p={0}
         onClick={onBack}

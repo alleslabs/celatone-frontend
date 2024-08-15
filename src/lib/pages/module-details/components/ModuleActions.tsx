@@ -46,7 +46,7 @@ export const ModuleActions = ({
     },
     {
       icon: "execute" as IconKeys,
-      iconColor: "accent.main",
+      iconColor: "secondary.main",
       name: "Execute Functions",
       count: executeFns,
       onClick: () =>

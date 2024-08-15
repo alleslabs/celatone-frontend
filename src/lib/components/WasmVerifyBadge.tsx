@@ -57,12 +57,12 @@ const getTextProperties = (badgeStatus: BadgeStatus) => {
     case BadgeStatus.VERIFIED:
       return {
         label: "Verified",
-        color: "accent.main",
+        color: "secondary.main",
       };
     case BadgeStatus.INDIRECTLY_VERIFIED:
       return {
         label: "Indirectly Verified",
-        color: "accent.main",
+        color: "secondary.main",
       };
     default:
       return null;
@@ -75,10 +75,10 @@ const WasmVerifyIcon = ({ badgeStatus }: { badgeStatus: BadgeStatus }) => {
       return <CustomIcon name="hourglass" color="text.dark" mr={0} />;
     case BadgeStatus.VERIFIED:
       return (
-        <CustomIcon name="verification-solid" color="accent.main" mr={0} />
+        <CustomIcon name="verification-solid" color="secondary.main" mr={0} />
       );
     case BadgeStatus.INDIRECTLY_VERIFIED:
-      return <CustomIcon name="verification" color="accent.main" mr={0} />;
+      return <CustomIcon name="verification" color="secondary.main" mr={0} />;
     default:
       return undefined;
   }

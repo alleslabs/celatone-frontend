@@ -78,7 +78,7 @@ export const WasmVerifyRequestInfo = ({
               cursor: "pointer",
               "&:hover": {
                 "> *": {
-                  color: "secondary.light",
+                  color: "primary.light",
                   textDecoration: "underline",
                   transition: "all",
                   transitionDuration: "0.25s",
@@ -87,7 +87,7 @@ export const WasmVerifyRequestInfo = ({
               },
             }}
           >
-            <Text className="ellipsis" color="secondary.main" variant="body2">
+            <Text className="ellipsis" color="primary.main" variant="body2">
               <Link
                 href={gitUrlWithCommit}
                 target="_blank"

@@ -33,7 +33,7 @@ export const DepositRatio = ({
             style={{
               color: isCompact
                 ? "var(--chakra-colors-text-main)"
-                : "var(--chakra-colors-accent-main)",
+                : "var(--chakra-colors-primary-main)",
             }}
           >
             {" / "}

@@ -80,7 +80,7 @@ export const UploadScriptCard = ({
       <Flex direction="column">
         <ComponentLoader isLoading={isFetching}>
           {file ? (
-            <UploadCard file={file} deleteFile={removeFile} theme="secondary" />
+            <UploadCard file={file} deleteFile={removeFile} theme="gray" />
           ) : (
             <DropZone
               setFile={handleFileDrop}

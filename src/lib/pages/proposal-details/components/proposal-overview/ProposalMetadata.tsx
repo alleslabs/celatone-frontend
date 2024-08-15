@@ -23,9 +23,9 @@ const ProposalMetadataBody = ({ metadata }: ProposalMetadataProps) => {
         transition="all 0.25s ease-in-out"
         _hover={{
           textDecoration: "underline",
-          textDecorationColor: "secondary.light",
+          textDecorationColor: "primary.light",
         }}
-        color="secondary.main"
+        color="primary.main"
         wordBreak="break-all"
       >
         <a href={metadata} target="_blank" rel="noopener noreferrer" data-peer>
