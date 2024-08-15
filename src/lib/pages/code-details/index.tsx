@@ -138,7 +138,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
             <UserDocsLink
               title="What is Code in CosmWasm?"
               cta="Read more about Code Details"
-              href="cosmwasm/code/detail-page"
+              href="cosmwasm/codes/detail-page"
             />
           </TabPanel>
           <TabPanel p={0}>

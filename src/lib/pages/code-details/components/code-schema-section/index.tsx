@@ -64,7 +64,7 @@ export const CodeSchemaSection = ({
           <UserDocsLink
             title="How to attached and use JSON Schema?"
             cta="Read more about JSON Schema"
-            href="cosmwasm/code/attach-json-schema"
+            href="cosmwasm/codes/attach-json-schema"
           />
           <JsonSchemaModal
             isOpen={isOpen}
