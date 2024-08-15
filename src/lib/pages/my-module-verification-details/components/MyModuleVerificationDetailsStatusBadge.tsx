@@ -37,7 +37,7 @@ export const MyModuleVerificationDetailsStatusBadge = ({
 
     return (
       <>
-        <ActiveDot />
+        <ActiveDot bg="primary.main" />
         <TagLabel>Verifying</TagLabel>
       </>
     );

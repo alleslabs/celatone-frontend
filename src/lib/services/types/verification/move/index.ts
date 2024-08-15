@@ -18,23 +18,26 @@ export type SubmitMoveVerifyResponse = z.infer<
   typeof zSubmitMoveVerifyResponse
 >;
 
+const zMoveVerificationModuleIdentifier = z.object({
+  name: z.string(),
+  address: zHexAddr,
+});
+export type MoveVerificationModuleIdentifier = z.infer<
+  typeof zMoveVerificationModuleIdentifier
+>;
+
 export const zMoveVerifyByTaskIdResponse = z.object({
   task: z.object({
     id: z.string().uuid(),
     status: z.nativeEnum(MoveVerifyTaskStatus),
   }),
-  results: z
+  result: z
     .object({
-      moduleIdentifiers: z.array(
-        z.object({
-          name: z.string(),
-          address: zHexAddr,
-        })
-      ),
+      moduleIdentifiers: z.array(zMoveVerificationModuleIdentifier),
       chainId: z.string(),
       verifiedAt: z.coerce.date(),
     })
-    .optional(),
+    .nullable(),
 });
 export type MoveVerifyByTaskIdResponse = z.infer<
   typeof zMoveVerifyByTaskIdResponse

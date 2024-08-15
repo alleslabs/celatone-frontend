@@ -3,13 +3,16 @@ import { Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
+import type { Option } from "lib/types";
 
 interface MyModuleVerificationDetailsTopProps {
   taskId: string;
+  requestNote: Option<string>;
 }
 
 export const MyModuleVerificationDetailsTop = ({
   taskId,
+  requestNote,
 }: MyModuleVerificationDetailsTopProps) => (
   <Stack gap={6}>
     <Breadcrumb
@@ -49,7 +52,7 @@ export const MyModuleVerificationDetailsTop = ({
         <Text variant="body2" color="text.dark">
           Request note:
         </Text>
-        <Text variant="body2">Lorem Ipsum</Text>
+        <Text variant="body2">{requestNote ?? "-"}</Text>
       </Flex>
     </Stack>
   </Stack>
