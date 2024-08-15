@@ -1,6 +1,5 @@
 import { useToast } from "@chakra-ui/react";
 
-import { useTierConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useAccountStore, useContractStore } from "lib/providers/store";
 import type { BechAddr, BechAddr32, LVPair, Option } from "lib/types";
@@ -43,7 +42,6 @@ export const useHandleContractSave = ({
 }: UseHandleContractSaveProps) => {
   const toast = useToast();
   const userKey = useUserKey();
-  const { isFullTier } = useTierConfig();
   const { updateContractLocalInfo } = useContractStore();
   // TODO: optimize to take name, description, tags, lists, actions only here
   return (inputName?: string) => {
@@ -51,7 +49,7 @@ export const useHandleContractSave = ({
       userKey,
       contractAddress,
       label,
-      isFullTier ? codeId : undefined,
+      codeId,
       instantiator,
       inputName ?? name,
       description,
