@@ -7,7 +7,6 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import { isNull } from "lodash";
 import { observer } from "mobx-react-lite";
 
 import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
@@ -50,6 +49,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
     : undefined;
   const attached = Boolean(localSchema);
 
+  // NOTE: show OptionCards if not verifying or attached any local schema
   const displayOptions =
     wasmVerifyStatus !== WasmVerifyStatus.IN_PROGRESS && !attached;
   return (
@@ -121,22 +121,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         />
       )}
       <Box h={12} />
-      {!displayOptions ? (
-        <>
-          {wasmVerifyStatus === WasmVerifyStatus.IN_PROGRESS && (
-            <InProgressVerifiedSection codeId={txResult.codeId} />
-          )}
-          {txResult.codeHash !== undefined && localSchema && (
-            <UploadSchema
-              attached={attached}
-              localSchema={localSchema}
-              codeId={Number(txResult.codeId)}
-              codeHash={txResult.codeHash}
-            />
-          )}
-          <Box h={12} />
-        </>
-      ) : (
+      {displayOptions ? (
         <>
           <Heading as="h6" variant="h6" fontWeight={500} mb={2}>
             Would you like to:
@@ -156,7 +141,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
             />
             {txResult.codeHash && (
               <>
-                {!isNull(derivedWasmVerifyInfo?.schema) ? (
+                {derivedWasmVerifyInfo?.schema ? (
                   <OptionButtonDisabled
                     title="Attach JSON Schema"
                     description="JSON Schema is already available due to the code is indirectly verified"
@@ -186,6 +171,24 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
             <Divider borderColor="gray.600" />
           </Flex>
         </>
+      ) : (
+        <>
+          {wasmVerifyStatus === WasmVerifyStatus.IN_PROGRESS ? (
+            <InProgressVerifiedSection codeId={txResult.codeId} />
+          ) : (
+            <>
+              {txResult.codeHash !== undefined && localSchema && (
+                <UploadSchema
+                  attached={attached}
+                  localSchema={localSchema}
+                  codeId={Number(txResult.codeId)}
+                  codeHash={txResult.codeHash}
+                />
+              )}
+            </>
+          )}
+          <Box h={12} />
+        </>
       )}
       <Button
         rightIcon={<CustomIcon name="chevron-right" boxSize={4} />}
@@ -198,9 +201,9 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           });
         }}
       >
-        {!displayOptions
-          ? "Proceed to instantiate"
-          : "Skip and proceed to instantiate"}
+        {displayOptions
+          ? "Skip and proceed to instantiate"
+          : "Proceed to instantiate"}
       </Button>
       <Button
         variant="outline-primary"

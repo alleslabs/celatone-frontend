@@ -124,6 +124,7 @@ export const useInstantiatedContractsByAddress = (
   return useQuery(
     [
       CELATONE_QUERY_KEYS.INSTANTIATED_CONTRACTS_BY_ADDRESS,
+      endpoint,
       address,
       limit,
       offset,
@@ -157,7 +158,13 @@ export const useAdminContractsByAddress = (
   const endpoint = useBaseApiRoute("accounts");
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.ADMIN_CONTRACTS_BY_ADDRESS, address, limit, offset],
+    [
+      CELATONE_QUERY_KEYS.ADMIN_CONTRACTS_BY_ADDRESS,
+      endpoint,
+      address,
+      limit,
+      offset,
+    ],
     async () => getAdminContractsByAddress(endpoint, address, limit, offset),
     { retry: 1, refetchOnWindowFocus: false }
   );

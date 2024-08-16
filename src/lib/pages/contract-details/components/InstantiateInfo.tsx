@@ -178,7 +178,7 @@ export const InstantiateInfo = ({
         </LabelText>
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
-        <LabelText flex="1" label="CW2 Info">
+        <LabelText flex={1} label="CW2 Info">
           {cw2 ? (
             <Text variant="body2" wordBreak="break-all">
               {cw2}

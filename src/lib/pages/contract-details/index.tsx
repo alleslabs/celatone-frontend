@@ -175,7 +175,7 @@ const ContractDetailsBody = observer(
                     />
                   )}
                   <ContractVerificationSection
-                    contractAddress={contract.address}
+                    contractAddress={contractAddress}
                     codeId={contract.codeId}
                     codeHash={contract.codeHash}
                     wasmVerifyInfo={derivedWasmVerifyInfo}
