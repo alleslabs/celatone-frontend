@@ -108,7 +108,10 @@ const InteractContractBody = ({
   useEffect(() => {
     setContractAddress(contract);
     setCodeId(undefined);
+    setCodeHash(undefined);
+  }, [contract]);
 
+  useEffect(() => {
     if (!msg) {
       setInitialMsg("");
       setInitialFunds([]);
@@ -124,7 +127,7 @@ const InteractContractBody = ({
         }
       }
     }
-  }, [contract, msg]);
+  }, [msg]);
 
   const verifiedSchema = derivedWasmVerifyInfo?.schema;
   const localSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;

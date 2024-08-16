@@ -1,4 +1,5 @@
 import { Flex, TabList, Tabs } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import { useCallback, useEffect, useState } from "react";
 
 import { trackUseTab } from "lib/amplitude";
@@ -25,105 +26,108 @@ interface QueryAreaProps {
   codeHash: Option<string>;
 }
 
-export const QueryArea = ({
-  verifiedSchema,
-  localSchema,
-  contractAddress,
-  initialMsg,
-  codeId,
-  codeHash,
-}: QueryAreaProps) => {
-  const isMobile = useMobile();
+export const QueryArea = observer(
+  ({
+    verifiedSchema,
+    localSchema,
+    contractAddress,
+    initialMsg,
+    codeId,
+    codeHash,
+  }: QueryAreaProps) => {
+    const isMobile = useMobile();
+    const [tab, setTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
 
-  const [tab, setTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
+    const schema = verifiedSchema ?? localSchema;
+    const hasSchema = Boolean(schema);
 
-  const schema = verifiedSchema ?? localSchema;
-  const attached = Boolean(codeHash && schema);
+    const handleTabChange = useCallback(
+      (nextTab: MessageTabs) => {
+        if (nextTab === tab) return;
+        trackUseTab(nextTab);
+        setTab(nextTab);
+      },
+      [tab]
+    );
 
-  const handleTabChange = useCallback(
-    (nextTab: MessageTabs) => {
-      if (nextTab === tab) return;
-      trackUseTab(nextTab);
-      setTab(nextTab);
-    },
-    [tab]
-  );
+    useEffect(() => {
+      if (!schema || isMobile) setTab(MessageTabs.JSON_INPUT);
+      else setTab(MessageTabs.YOUR_SCHEMA);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isMobile, JSON.stringify(schema)]);
 
-  useEffect(() => {
-    if (!schema || isMobile) setTab(MessageTabs.JSON_INPUT);
-    else setTab(MessageTabs.YOUR_SCHEMA);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile, JSON.stringify(schema)]);
-
-  return (
-    <>
-      {!isMobile && (
-        <Tabs
-          isLazy
-          lazyBehavior="keepMounted"
-          index={Object.values(MessageTabs).indexOf(tab)}
-        >
-          <TabList mb={8} borderBottom="1px" borderColor="gray.800">
-            <CustomTab onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}>
-              JSON Input
-            </CustomTab>
-            <CustomTab
-              onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
-              isDisabled={!contractAddress}
-            >
-              <Tooltip
-                label="Please select contract first"
-                hidden={Boolean(contractAddress)}
+    return (
+      <>
+        {!isMobile && (
+          <Tabs
+            isLazy
+            lazyBehavior="keepMounted"
+            index={Object.values(MessageTabs).indexOf(tab)}
+          >
+            <TabList mb={8} borderBottom="1px" borderColor="gray.800">
+              <CustomTab
+                onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}
               >
-                Your Schema
-              </Tooltip>
-            </CustomTab>
-          </TabList>
-        </Tabs>
-      )}
-      <MessageInputContent
-        currentTab={tab}
-        jsonContent={
-          <JsonQuery
-            contractAddress={contractAddress}
-            initialMsg={initialMsg}
-          />
-        }
-        schemaContent={
-          codeId &&
-          codeHash && (
-            <>
-              {attached ? (
-                <SchemaQuery
-                  verifiedSchema={verifiedSchema}
-                  localSchema={localSchema}
-                  contractAddress={contractAddress}
-                  initialMsg={initialMsg}
-                  codeId={codeId}
-                  codeHash={codeHash}
-                />
-              ) : (
-                <UploadSchemaSection
-                  codeId={codeId}
-                  codeHash={codeHash}
-                  title={
-                    <Flex flexDirection="column" alignItems="center">
-                      <Flex display="inline" textAlign="center">
-                        You haven&#39;t attached the JSON Schema for
-                        <CustomIcon name="code" mx={1} color="gray.400" />
-                        code {codeId}
+                JSON Input
+              </CustomTab>
+              <CustomTab
+                onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
+                isDisabled={!contractAddress}
+              >
+                <Tooltip
+                  label="Please select contract first"
+                  hidden={Boolean(contractAddress)}
+                >
+                  Your Schema
+                </Tooltip>
+              </CustomTab>
+            </TabList>
+          </Tabs>
+        )}
+        <MessageInputContent
+          currentTab={tab}
+          jsonContent={
+            <JsonQuery
+              contractAddress={contractAddress}
+              initialMsg={initialMsg}
+            />
+          }
+          schemaContent={
+            codeId &&
+            codeHash && (
+              <>
+                {hasSchema ? (
+                  <SchemaQuery
+                    verifiedSchema={verifiedSchema}
+                    localSchema={localSchema}
+                    contractAddress={contractAddress}
+                    initialMsg={initialMsg}
+                    codeId={codeId}
+                    codeHash={codeHash}
+                  />
+                ) : (
+                  <UploadSchemaSection
+                    codeId={codeId}
+                    codeHash={codeHash}
+                    title={
+                      <Flex flexDirection="column" alignItems="center">
+                        <Flex display="inline" textAlign="center">
+                          You haven&#39;t attached the JSON Schema for
+                          <CustomIcon name="code" mx={1} color="gray.400" />
+                          code {codeId}
+                        </Flex>
+                        <Flex textAlign="center">
+                          from which this contract is instantiated yet.
+                        </Flex>
                       </Flex>
-                      <Flex textAlign="center">
-                        from which this contract is instantiated yet.
-                      </Flex>
-                    </Flex>
-                  }
-                />
-              )}
-            </>
-          )
-        }
-      />
-    </>
-  );
-};
+                    }
+                  />
+                )}
+              </>
+            )
+          }
+        />
+      </>
+    );
+  }
+);
