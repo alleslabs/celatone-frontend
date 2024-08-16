@@ -1,4 +1,12 @@
-import { Box, Button, ButtonGroup, Flex, Spacer, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Flex,
+  Grid,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
 import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
@@ -127,33 +135,30 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
           <JsonInput topic="Query Msg" text={msg} setText={setMsg} />
           <Flex
             direction={{ base: "column", md: "row" }}
-            align="center"
             justify="space-between"
+            alignItems="center"
             gap={{ base: 1, md: 0 }}
           >
-            <Flex
-              gap={{ base: 1, md: 2 }}
-              justifyContent={{ base: "space-between", md: "flex-start" }}
+            <Grid
               w={{ base: "full", md: "auto" }}
+              columnGap={2}
               mb={{ base: 2, md: 0 }}
+              templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(2, 1fr)" }}
             >
               <CopyButton
-                minW={{ base: "100px", md: "auto" }}
+                w="full"
                 isDisable={!msg.length}
                 value={msg}
                 amptrackSection="query_msg"
               />
-              <Flex flex="1">
-                <WasmCodeSnippet
-                  w="full"
-                  type="query"
-                  contractAddress={contractAddress}
-                  message={msg}
-                />
-              </Flex>
+              <WasmCodeSnippet
+                w="full"
+                type="query"
+                contractAddress={contractAddress}
+                message={msg}
+              />
               {isMobile && (
                 <Button
-                  flex={1}
                   variant="outline-white"
                   size="sm"
                   background="background.main"
@@ -163,7 +168,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
                   Format JSON
                 </Button>
               )}
-            </Flex>
+            </Grid>
             <SubmitButton
               text="Query"
               isLoading={isFetching}
