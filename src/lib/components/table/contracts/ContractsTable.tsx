@@ -33,10 +33,10 @@ export const ContractsTable = ({
   const isMobile = useMobile();
   const { data: wasmVerifyInfos, isFetching: isWasmVerifyInfosFetching } =
     useWasmVerifyInfos(
-      contracts?.reduce<number[]>(
-        (acc, contract) => (contract.codeId ? [...acc, contract.codeId] : acc),
-        []
-      ) ?? [],
+      contracts?.reduce<number[]>((acc, contract) => {
+        if (contract.codeId) acc.push(contract.codeId);
+        return acc;
+      }, []) ?? [],
       !!contracts
     );
 
