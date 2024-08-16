@@ -5,12 +5,14 @@ import type {
   ContractTableCounts,
 } from "lib/services/types/";
 import {
+  zAllAdminContractsResponse,
+  zContractAdminsResponse,
   zContractData,
   zContractsResponse,
   zContractTableCounts,
   zMigrationHistoriesResponse,
 } from "lib/services/types/";
-import type { BechAddr, BechAddr32 } from "lib/types";
+import type { BechAddr, BechAddr32, Dict } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getContracts = async (
@@ -112,3 +114,33 @@ export const getContractsByCodeId = async (
       },
     })
     .then(({ data }) => parseWithError(zContractsResponse, data));
+
+export const getAllAdminContractsByAddress = async (
+  endpoint: string,
+  address: BechAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURI(address)}/wasm/all-admin-contracts`)
+    .then(({ data }) => parseWithError(zAllAdminContractsResponse, data));
+
+export const getAdminsByContractAddresses = async (
+  endpoint: string,
+  contractAddresses: BechAddr32[]
+) =>
+  axios
+    .get(`${endpoint}/contract-admins`, {
+      params: {
+        contract_addresses: contractAddresses.join(","),
+      },
+    })
+    .then(({ data }) =>
+      parseWithError(zContractAdminsResponse, data).items.reduce<
+        Dict<BechAddr32, BechAddr>
+      >(
+        (prev, item) => ({
+          ...prev,
+          [item.contractAddress]: item.admin ?? undefined,
+        }),
+        {}
+      )
+    );

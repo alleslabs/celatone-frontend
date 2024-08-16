@@ -31,7 +31,7 @@ const WasmVerifySectionBody = ({
     );
 
   if (wasmVerifyInfo.verificationInfo === null) {
-    if (wasmVerifyInfo.schema === null)
+    if (wasmVerifyInfo.relatedVerifiedCodes.length === 0)
       return (
         <NotVerifiedDetails
           codeId={codeId}

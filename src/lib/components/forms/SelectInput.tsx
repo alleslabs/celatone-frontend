@@ -127,7 +127,7 @@ export const SelectInput = <T extends string>({
             },
           }}
         >
-          <div className="form-label">{formLabel}</div>
+          {formLabel && <div className="form-label">{formLabel}</div>}
           {selectedOption?.image && (
             <InputLeftElement pointerEvents="none" h="full" ml={1}>
               {selectedOption.image}

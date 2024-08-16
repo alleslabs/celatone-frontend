@@ -36,8 +36,9 @@ export const VerifiedDetails = ({
   schema,
   relatedVerifiedCodes,
   contractAddress,
-}: VerifyDetailsProps) =>
-  contractAddress ? (
+}: VerifyDetailsProps) => {
+  const gitUrlWithCommit = `${verificationInfo.gitUrl}/tree/${verificationInfo.commit}`;
+  return contractAddress ? (
     <>
       <Text variant="body2" color="text.dark">
         This contract is an instance of code ID{" "}
@@ -63,36 +64,37 @@ export const VerifiedDetails = ({
       />
     </>
   ) : (
-    <Flex direction="column" gap={6}>
+    <Flex direction="column" gap={6} w="full">
       <Flex direction="column" gap={1}>
         <Text {...baseTextStyle}>Source Code:</Text>
-        <Link
-          href={verificationInfo.gitUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Flex
-            gap={1}
-            alignItems="center"
-            sx={{
-              cursor: "pointer",
-              "&:hover": {
-                "> *": {
-                  color: "primary.light",
-                  textDecoration: "underline",
-                  transition: "all",
-                  transitionDuration: "0.25s",
-                  transitionTimingFunction: "ease-in-out",
-                },
+        <Flex
+          overflow="hidden"
+          gap={1}
+          alignItems="center"
+          sx={{
+            cursor: "pointer",
+            "&:hover": {
+              "> *": {
+                color: "primary.light",
+                textDecoration: "underline",
+                transition: "all",
+                transitionDuration: "0.25s",
+                transitionTimingFunction: "ease-in-out",
               },
-            }}
-          >
-            <Text color="primary.main" variant="body2">
-              {verificationInfo.gitUrl}
-            </Text>
-            <Copier ml={1} type="source_code" value={verificationInfo.gitUrl} />
-          </Flex>
-        </Link>
+            },
+          }}
+        >
+          <Text color="primary.main" variant="body2" className="ellipsis">
+            <Link
+              href={gitUrlWithCommit}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {gitUrlWithCommit}
+            </Link>
+          </Text>
+          <Copier ml={1} type="source_code" value={gitUrlWithCommit} />
+        </Flex>
       </Flex>
       <Flex gap={{ base: 6, md: 12 }} direction={{ base: "column", md: "row" }}>
         <Flex direction="column" gap={1}>
@@ -143,7 +145,12 @@ export const VerifiedDetails = ({
       {isNull(schema) && (
         <StatusMessageBox
           content={
-            <Text {...baseTextStyle} color="text.main">
+            <Text
+              {...baseTextStyle}
+              color="text.main"
+              overflow="hidden"
+              overflowWrap="break-word"
+            >
               The JSON schema cannot be found in the compiled codes. Its
               contract instances will not be available for querying or executing
               through the schema.
@@ -153,3 +160,4 @@ export const VerifiedDetails = ({
       )}
     </Flex>
   );
+};

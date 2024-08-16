@@ -1,5 +1,6 @@
 import { Text } from "@chakra-ui/react";
 
+import { ExplorerLink } from "../ExplorerLink";
 import { useMobile } from "lib/app-provider";
 import { WasmVerifySubmitModal } from "lib/components/modal";
 import type { BechAddr32 } from "lib/types";
@@ -25,9 +26,11 @@ export const NotVerifiedDetails = ({
         {contractAddress ? (
           <>
             This contract is an instance of code ID{" "}
-            <Text as="span" color="primary.main" display="inline-flex">
-              {codeId}
-            </Text>{" "}
+            <ExplorerLink
+              value={codeId.toString()}
+              type="code_id"
+              showCopyOnHover
+            />{" "}
             which has not been verified.
           </>
         ) : (

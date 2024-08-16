@@ -27,12 +27,10 @@ export const CodesTable = ({
   showCw2andContracts = true,
 }: CodesTableProps) => {
   const isMobile = useMobile();
-  const { data: wasmVerifyInfos } = useWasmVerifyInfos(
-    codes?.map((code) => code.id) ?? [],
-    !!codes
-  );
+  const { data: wasmVerifyInfos, isLoading: isWasmVerifyInfosLoading } =
+    useWasmVerifyInfos(codes?.map((code) => code.id) ?? [], !!codes);
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isWasmVerifyInfosLoading) return <Loading />;
   if (!codes) return <ErrorFetching dataName="codes" />;
   if (!codes.length) return emptyState;
 

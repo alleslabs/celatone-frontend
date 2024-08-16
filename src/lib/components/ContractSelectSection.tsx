@@ -178,10 +178,10 @@ export const ContractSelectSection = observer(
       onError: () => reset(defaultValues),
     });
 
-    const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
-      codeId,
-      codeHash
-    );
+    const {
+      data: derivedWasmVerifyInfo,
+      isLoading: isDerivedWasmVerifyInfoLoading,
+    } = useDerivedWasmVerifyInfo(codeId, codeHash);
 
     useEffect(() => {
       if (!contractLocalInfo) {
@@ -201,7 +201,7 @@ export const ContractSelectSection = observer(
 
     return (
       <>
-        {isFetching && <LoadingOverlay />}
+        {(isFetching || isDerivedWasmVerifyInfoLoading) && <LoadingOverlay />}
         <Flex
           mb={style.container}
           borderWidth="thin"
@@ -237,6 +237,7 @@ export const ContractSelectSection = observer(
                       relatedVerifiedCodes={
                         derivedWasmVerifyInfo?.relatedVerifiedCodes
                       }
+                      linkedCodeId={codeId}
                     />
                   }
                 />

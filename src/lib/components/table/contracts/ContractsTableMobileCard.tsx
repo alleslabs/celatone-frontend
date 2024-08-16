@@ -3,14 +3,17 @@ import { Flex, Text } from "@chakra-ui/react";
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type {
   BechAddr32,
   ContractHistoryRemark,
   ContractInfo,
+  Nullish,
   Option,
+  WasmVerifyInfo,
 } from "lib/types";
 import { RemarkOperation } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import { dateFromNow, formatUTC, getWasmVerifyStatus } from "lib/utils";
 
 import { ContractInstantiatorCell } from "./ContractInstantiatorCell";
 
@@ -18,6 +21,7 @@ interface ContractsTableMobileCardProps {
   contractInfo: ContractInfo;
   onRowSelect: (contract: BechAddr32) => void;
   showLastUpdate: boolean;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 const InstantiatorRemark = ({
@@ -46,6 +50,7 @@ export const ContractsTableMobileCard = ({
   contractInfo,
   onRowSelect,
   showLastUpdate,
+  wasmVerifyInfo,
 }: ContractsTableMobileCardProps) => (
   <MobileCardTemplate
     onClick={() => onRowSelect(contractInfo.contractAddress)}
@@ -55,6 +60,15 @@ export const ContractsTableMobileCard = ({
         <ExplorerLink
           value={contractInfo.contractAddress}
           type="contract_address"
+          rightIcon={
+            contractInfo.codeId ? (
+              <WasmVerifyBadge
+                status={getWasmVerifyStatus(wasmVerifyInfo)}
+                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                linkedCodeId={contractInfo.codeId}
+              />
+            ) : undefined
+          }
         />
       </Flex>
     }

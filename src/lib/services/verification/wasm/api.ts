@@ -7,12 +7,19 @@ import {
 } from "lib/services/types";
 import type { WasmVerifyRequest } from "lib/services/types";
 
-export const submitWasmVerify = (wasmVerifyRequest: WasmVerifyRequest) =>
-  axios.post(`${CELATONE_VERIFICATION_API}/wasm/verify`, wasmVerifyRequest, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export const submitWasmVerify = async (
+  wasmVerifyRequest: WasmVerifyRequest
+) => {
+  await axios.post(
+    `${CELATONE_VERIFICATION_API}/wasm/verify`,
+    wasmVerifyRequest,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};
 
 export const getWasmVerifyInfos = (chainId: string, codeIds: number[]) =>
   axios

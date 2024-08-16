@@ -7,15 +7,15 @@ import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { UploadSchema } from "lib/components/json-schema";
 import { EmptyState, StateImage } from "lib/components/state";
-import { useContractStore, useSchemaStore } from "lib/providers/store";
-import type { QuerySchema } from "lib/stores/schema";
-import type { BechAddr32, Option } from "lib/types";
-import { resolveInitialMsg } from "lib/utils";
+import { useContractStore } from "lib/providers/store";
+import type { BechAddr32, CodeSchema, Nullish, Option } from "lib/types";
+import { getQuerySchema, resolveInitialMsg } from "lib/utils";
 
 import { SchemaQueryComponent } from "./SchemaQueryComponent";
 
 interface SchemaQueryProps {
-  schema: Option<QuerySchema>;
+  verifiedSchema: Nullish<CodeSchema>;
+  localSchema: Option<CodeSchema>;
   contractAddress: BechAddr32;
   initialMsg: string;
   codeId: number;
@@ -23,20 +23,21 @@ interface SchemaQueryProps {
 }
 
 export const SchemaQuery = ({
-  schema,
+  verifiedSchema,
+  localSchema,
   contractAddress,
   initialMsg,
   codeId,
   codeHash,
 }: SchemaQueryProps) => {
-  const { addActivity } = useContractStore();
   const { address } = useCurrentChain();
+  const { addActivity } = useContractStore();
 
-  const { getSchemaByCodeHash } = useSchemaStore();
-  const fullSchema = getSchemaByCodeHash(codeHash);
   const accordionRef = useRef<HTMLDivElement>(null);
   const [keyword, setKeyword] = useState("");
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
+
+  const schema = getQuerySchema(verifiedSchema ?? localSchema);
   const filteredMsgs = useMemo(
     () =>
       schema?.filter((querySchema) => querySchema[0].title?.includes(keyword)),
@@ -79,23 +80,28 @@ export const SchemaQuery = ({
         <Flex direction="column" alignItems="center">
           <StateImage imageVariant="not-found" imageWidth="128px" />
           <Text variant="body1" fontWeight={700} mt={2}>
-            Attached JSON Schema doesn’t have QueryMsg
+            {verifiedSchema ? "Verified" : "Attached"} JSON Schema doesn’t have
+            QueryMsg
           </Text>
-          <Text
-            variant="body2"
-            textColor="text.disabled"
-            fontWeight={500}
-            mt={2}
-            mb={4}
-          >
-            Please fill in Query Message manually or change the schema
-          </Text>
-          <UploadSchema
-            attached
-            schema={fullSchema}
-            codeId={codeId}
-            codeHash={codeHash}
-          />
+          {!verifiedSchema && (
+            <>
+              <Text
+                variant="body2"
+                textColor="text.disabled"
+                fontWeight={500}
+                mt={2}
+                mb={4}
+              >
+                Please fill in Query Message manually or change the schema
+              </Text>
+              <UploadSchema
+                attached
+                localSchema={localSchema}
+                codeId={codeId}
+                codeHash={codeHash}
+              />
+            </>
+          )}
         </Flex>
       </Flex>
     );
@@ -104,10 +110,10 @@ export const SchemaQuery = ({
     <>
       <Flex gap={6} mb={6}>
         <InputWithIcon
-          placeholder="Search by Command"
+          placeholder="Search by Query Message"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          size={{ base: "md", md: "lg" }}
+          size="md"
           amptrackSection="query-message-search"
         />
         <Button

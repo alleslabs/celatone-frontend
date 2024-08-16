@@ -8,7 +8,7 @@ import { useCurrentChain, useTierConfig } from "lib/app-provider";
 import { DisconnectedState, EmptyState, ZeroState } from "lib/components/state";
 import { TagSelection } from "lib/components/TagSelection";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import { useAdminByContractAddresses } from "lib/services/wasm/contract";
+import { useAdminsByContractAddresses } from "lib/services/wasm/contract";
 import type { ContractListInfo } from "lib/stores/contract";
 import type { BechAddr32, ContractInfo } from "lib/types";
 import { formatSlugName } from "lib/utils";
@@ -89,7 +89,7 @@ export const ContractListDetail = ({
   isReadOnly = false,
 }: ContractListDetailProps) => {
   const { isFullTier } = useTierConfig();
-  const dataFull = useAdminByContractAddresses(
+  const dataFull = useAdminsByContractAddresses(
     isReadOnly || !isFullTier
       ? []
       : contractListInfo.contracts.map((contract) => contract.contractAddress)

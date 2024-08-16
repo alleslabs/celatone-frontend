@@ -3,6 +3,7 @@ import { Box, chakra, Divider, Flex, Text } from "@chakra-ui/react";
 import {
   useCurrentChain,
   useGetAddressType,
+  useMobile,
   useTierConfig,
 } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
@@ -113,6 +114,7 @@ export const InstantiateInfo = ({
   wasmVerifyInfo,
 }: InstantiateInfoProps) => {
   const { isFullTier } = useTierConfig();
+  const isMobile = useMobile();
   const getAddressType = useGetAddressType();
   const {
     chain: { chain_id: chainId },
@@ -129,59 +131,54 @@ export const InstantiateInfo = ({
         <LabelText flex="1" label="Network">
           {chainId}
         </LabelText>
-        <Flex direction="column">
-          <Flex>
-            <LabelText
-              flex="1"
-              label="From Code"
-              helperText1={codeLocalInfo?.name}
-            >
-              <Flex gap={1}>
-                <ExplorerLink
-                  type="code_id"
-                  value={contract.codeId.toString()}
-                  showCopyOnHover
-                  fixedHeight
-                />
-                <WasmVerifyBadge
-                  status={wasmVerifyStatus}
-                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-                  hasText
-                  linkedCodeId={contract.codeId}
-                />
-              </Flex>
-            </LabelText>
+        <LabelText flex="1" label="From Code" helperText1={codeLocalInfo?.name}>
+          <Flex direction="column">
+            <Flex gap={1}>
+              <ExplorerLink
+                type="code_id"
+                value={contract.codeId.toString()}
+                showCopyOnHover
+                fixedHeight
+              />
+              <WasmVerifyBadge
+                status={wasmVerifyStatus}
+                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                hasText
+                linkedCodeId={contract.codeId}
+              />
+            </Flex>
+            {!isMobile &&
+              wasmVerifyStatus !== WasmVerifyStatus.VERIFIED &&
+              wasmVerifyStatus !== WasmVerifyStatus.IN_PROGRESS && (
+                <Text variant="body2" color="text.dark">
+                  Is this your code?{" "}
+                  <WasmVerifySubmitModal
+                    codeId={contract.codeId}
+                    codeHash={contract.codeHash}
+                    wasmVerifyStatus={wasmVerifyStatus}
+                    relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                    contractAddress={contract.address}
+                    triggerElement={
+                      <Text
+                        cursor="pointer"
+                        color="primary.main"
+                        transition="all 0.25s ease-in-out"
+                        _hover={{
+                          textDecoration: "underline",
+                          textDecorationColor: "primary.light",
+                        }}
+                      >
+                        Verify Code
+                      </Text>
+                    }
+                  />
+                </Text>
+              )}
           </Flex>
-          {wasmVerifyStatus !== WasmVerifyStatus.VERIFIED &&
-            wasmVerifyStatus !== WasmVerifyStatus.IN_PROGRESS && (
-              <Text variant="body2" color="text.dark">
-                Is this your code?{" "}
-                <WasmVerifySubmitModal
-                  codeId={contract.codeId}
-                  codeHash={contract.codeHash}
-                  wasmVerifyStatus={wasmVerifyStatus}
-                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-                  contractAddress={contract.address}
-                  triggerElement={
-                    <Text
-                      cursor="pointer"
-                      color="primary.main"
-                      transition="all 0.25s ease-in-out"
-                      _hover={{
-                        textDecoration: "underline",
-                        textDecorationColor: "primary.light",
-                      }}
-                    >
-                      Verify Code
-                    </Text>
-                  }
-                />
-              </Text>
-            )}
-        </Flex>
+        </LabelText>
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
-        <LabelText flex="1" label="CW2 Info">
+        <LabelText flex={1} label="CW2 Info">
           {cw2 ? (
             <Text variant="body2" wordBreak="break-all">
               {cw2}

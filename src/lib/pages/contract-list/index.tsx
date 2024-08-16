@@ -11,7 +11,7 @@ import PageContainer from "lib/components/PageContainer";
 import { AllContractLists } from "lib/components/select-contract";
 import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useInstantiatedMockInfoByMe } from "lib/model/contract";
+import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
 
 const AllContractListsPage = observer(() => {
@@ -19,7 +19,10 @@ const AllContractListsPage = observer(() => {
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { getContractLists, isHydrated } = useContractStore();
-  const contractLists = [useInstantiatedMockInfoByMe(), ...getContractLists()];
+  const contractLists = [
+    useInstantiatedByMe(true).instantiatedListInfo,
+    ...getContractLists(),
+  ];
 
   const handleListSelect = (slug: string) => {
     navigate({ pathname: "/contract-lists/[slug]", query: { slug } });

@@ -11,7 +11,7 @@ export const StatusMessageBox = ({
   borderColor = "primary.main",
   pl = 6,
 }: StatusMessageBoxProps) => (
-  <Flex borderLeft="4px solid" borderColor={borderColor} pl={pl} w="full">
+  <Flex borderLeft="4px solid" borderColor={borderColor} pl={pl}>
     {content}
   </Flex>
 );

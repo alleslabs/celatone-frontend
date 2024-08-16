@@ -28,6 +28,7 @@ import { CodeSelectSection } from "lib/components/select-code";
 import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
@@ -83,13 +84,23 @@ export const MigrateContract = ({
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [isValidJsonInput, setIsValidJsonInput] = useState(false);
+  const [isValidJsonInput, setIsValidJsonInput] = useState(true);
+
+  // ------------------------------------------//
+  // -------------------DATA-------------------//
+  // ------------------------------------------//
+  const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+    codeId.length ? Number(codeId) : undefined,
+    codeHash
+  );
 
   // ------------------------------------------//
   // ------------------LOGICS------------------//
   // ------------------------------------------//
   const currentInput = tab ? msgInput[tab] : "{}";
-  const jsonSchema = getSchemaByCodeHash(codeHash);
+  const verifiedSchema = derivedWasmVerifyInfo?.schema;
+  const localSchema = getSchemaByCodeHash(codeHash);
+
   const enableMigrate = useMemo(() => {
     const generalChecks =
       Boolean(address) && isId(codeId) && status.state === "success";
@@ -238,8 +249,8 @@ export const MigrateContract = ({
   }, [address, codeId, contractAddress, enableMigrate, currentInput]);
 
   useEffect(() => {
-    if (jsonSchema) setTab(MessageTabs.YOUR_SCHEMA);
-  }, [jsonSchema]);
+    if (localSchema) setTab(MessageTabs.YOUR_SCHEMA);
+  }, [localSchema]);
 
   return (
     <>
@@ -287,7 +298,8 @@ export const MigrateContract = ({
               type="migrate"
               codeHash={codeHash}
               codeId={Number(codeId)}
-              jsonSchema={jsonSchema}
+              verifiedSchema={verifiedSchema}
+              localSchema={localSchema}
               handleChange={handleChange}
               onSchemaSave={resetMsgInputSchema}
             />

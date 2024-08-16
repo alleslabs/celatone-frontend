@@ -10,8 +10,9 @@ import { useUserKey } from "./useUserKey";
 interface UseHandleContractSaveProps {
   title: string;
   contractAddress: BechAddr32;
-  instantiator: Option<BechAddr>;
   label: string;
+  codeId: Option<number>;
+  instantiator: Option<BechAddr>;
   name?: string;
   description?: string;
   tags?: string[];
@@ -30,8 +31,9 @@ interface UseHandleAccountSaveProps {
 export const useHandleContractSave = ({
   title,
   contractAddress,
-  instantiator,
   label,
+  codeId,
+  instantiator,
   name,
   description,
   tags,
@@ -46,8 +48,9 @@ export const useHandleContractSave = ({
     updateContractLocalInfo(
       userKey,
       contractAddress,
-      instantiator,
       label,
+      codeId,
+      instantiator,
       inputName ?? name,
       description,
       tags,

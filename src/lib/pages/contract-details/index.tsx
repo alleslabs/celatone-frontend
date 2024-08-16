@@ -35,7 +35,7 @@ import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import type { BechAddr32 } from "lib/types";
 import { jsonPrettify, truncate } from "lib/utils";
 
-import { CommandSection } from "./components/CommandSection";
+import { CommandSection } from "./components/command-section";
 import { ContractDesc } from "./components/contract-description";
 import { ContractStates } from "./components/contract-states";
 import { ContractTop } from "./components/ContractTop";
@@ -76,7 +76,10 @@ const ContractDetailsBody = observer(
     const { isTotalBondedLoading, totalBonded } =
       useAccountDelegationInfos(contractAddress);
 
-    const { data: relatedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+    const {
+      data: derivedWasmVerifyInfo,
+      isLoading: isDerivedWasmVerifyInfoLoading,
+    } = useDerivedWasmVerifyInfo(
       contractData?.contract.codeId,
       contractData?.contract.codeHash
     );
@@ -101,7 +104,8 @@ const ContractDetailsBody = observer(
       [contractAddress, tab, navigate]
     );
 
-    if (isLoading) return <Loading withBorder />;
+    if (isLoading || isDerivedWasmVerifyInfoLoading)
+      return <Loading withBorder />;
     if (!contractData) return <ErrorFetching dataName="contract information" />;
     if (contractData.contract === null) return <InvalidContract />;
 
@@ -121,7 +125,7 @@ const ContractDetailsBody = observer(
           publicInfo={publicInfo}
           contract={contract}
           contractLocalInfo={contractLocalInfo}
-          wasmVerifyInfo={relatedWasmVerifyInfo}
+          wasmVerifyInfo={derivedWasmVerifyInfo}
         />
         <Tabs
           index={Object.values(TabIndex).indexOf(tab)}
@@ -171,15 +175,16 @@ const ContractDetailsBody = observer(
                     />
                   )}
                   <ContractVerificationSection
+                    contractAddress={contractAddress}
                     codeId={contract.codeId}
                     codeHash={contract.codeHash}
-                    wasmVerifyInfo={relatedWasmVerifyInfo}
-                    contractAddress={contract.address}
+                    wasmVerifyInfo={derivedWasmVerifyInfo}
                   />
                   <CommandSection
                     contractAddress={contractAddress}
-                    codeHash={contract.codeHash}
                     codeId={contract.codeId}
+                    codeHash={contract.codeHash}
+                    wasmVerifyInfo={derivedWasmVerifyInfo}
                   />
                   <Flex
                     borderBottom={{ base: "0px", md: "1px solid" }}
@@ -228,7 +233,7 @@ const ContractDetailsBody = observer(
                         contract={contract}
                         contractRest={contractRest}
                         codeLocalInfo={codeLocalInfo}
-                        wasmVerifyInfo={relatedWasmVerifyInfo}
+                        wasmVerifyInfo={derivedWasmVerifyInfo}
                       />
                       <Button
                         size="sm"
