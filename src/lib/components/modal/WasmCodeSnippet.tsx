@@ -238,7 +238,7 @@ execute();
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
         <ModalOverlay />
-        <ModalContent w="840px" maxH="95vh">
+        <ModalContent w="840px" maxH="80vh">
           <ModalHeader>
             <CustomIcon name="code" boxSize={6} color="gray.600" />
             <Heading as="h5" variant="h5">
