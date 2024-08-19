@@ -1,10 +1,14 @@
+import { toUtf8 } from "@cosmjs/encoding";
 import type { StdFee } from "@cosmjs/stargate";
+import { MsgMigrateContract } from "cosmjs-types/cosmwasm/wasm/v1/tx";
+// import { MsgMigrateContract } from "@initia/initia.js";
 import { useCallback } from "react";
 
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { migrateContractTx } from "lib/app-fns/tx/migrate";
 import type { BechAddr32, Option } from "lib/types";
+// import { toEncodeObject } from "lib/utils";
 
 export interface MigrateStreamParams {
   contractAddress: BechAddr32;
@@ -33,11 +37,30 @@ export const useMigrateTx = () => {
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
 
+      const messages = [
+        {
+          typeUrl: "/cosmwasm.wasm.v1.MsgMigrateContract",
+          value: MsgMigrateContract.fromPartial({
+            sender: address,
+            contract: contractAddress,
+            codeId: BigInt(codeId.toString()),
+            msg: toUtf8(JSON.stringify(migrateMsg)),
+          }),
+        },
+      ];
+
+      // const messages = toEncodeObject([
+      //   new MsgMigrateContract(
+      //     address,
+      //     contractAddress,
+      //     codeId,
+      //     JSON.stringify(migrateMsg)
+      //   ),
+      // ]);
+
       return migrateContractTx({
         sender: address,
-        contractAddress,
-        codeId,
-        migrateMsg,
+        messages,
         fee: estimatedFee,
         client,
         onTxSucceed: (txHash) => {

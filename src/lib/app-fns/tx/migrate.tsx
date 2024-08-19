@@ -1,15 +1,13 @@
-import type {
-  MigrateResult,
-  SigningCosmWasmClient,
-} from "@cosmjs/cosmwasm-stargate";
-import type { StdFee } from "@cosmjs/stargate";
+import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
+import type { EncodeObject } from "@initia/utils";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { BechAddr20, BechAddr32, TxResultRendering } from "lib/types";
+import type { BechAddr20, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
@@ -19,9 +17,7 @@ import { sendingTx } from "./common/sending";
 
 interface MigrateTxParams {
   sender: BechAddr20;
-  contractAddress: BechAddr32;
-  codeId: number;
-  migrateMsg: object;
+  messages: EncodeObject[];
   fee: StdFee;
   client: SigningCosmWasmClient;
   onTxSucceed?: (txHash: string) => void;
@@ -30,9 +26,7 @@ interface MigrateTxParams {
 
 export const migrateContractTx = ({
   sender,
-  contractAddress,
-  codeId,
-  migrateMsg,
+  messages,
   fee,
   client,
   onTxSucceed,
@@ -40,16 +34,8 @@ export const migrateContractTx = ({
 }: MigrateTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
-    postTx<MigrateResult>({
-      postFn: () =>
-        client.migrate(
-          sender,
-          contractAddress,
-          codeId,
-          migrateMsg,
-          fee,
-          undefined
-        ),
+    postTx<DeliverTxResponse>({
+      postFn: () => client.signAndBroadcast(sender, messages, fee, ""),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.(txInfo.transactionHash);
