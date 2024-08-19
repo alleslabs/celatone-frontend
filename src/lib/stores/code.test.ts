@@ -3,7 +3,6 @@ import type { BechAddr20 } from "lib/types";
 import { CodeStore } from "./code";
 
 const TEST_USER_KEY = "test-default-address";
-const EMPTY_USER_KEY = "empty-user-address";
 
 test("CodeStore setting userkey", () => {
   const codeStore = new CodeStore();
@@ -53,9 +52,9 @@ describe("CodeStore", () => {
     });
 
     test("add code 1 to the saved codes list", () => {
-      expect(codeStore.lastSavedCodes(TEST_USER_KEY)).toStrictEqual([]);
+      expect(codeStore.lastSavedCodes()).toStrictEqual([]);
       codeStore.saveNewCode(1);
-      expect(codeStore.lastSavedCodes(TEST_USER_KEY)).toStrictEqual([
+      expect(codeStore.lastSavedCodes()).toStrictEqual([
         {
           id: 1,
           name: "code-name",
@@ -63,7 +62,7 @@ describe("CodeStore", () => {
         },
       ]);
       // There should be no update to another user's last saved codes list
-      expect(codeStore.lastSavedCodes(EMPTY_USER_KEY)).toStrictEqual([]);
+      expect(codeStore.lastSavedCodes()).toStrictEqual([]);
     });
 
     test("add code 2 (with no info) to the saved codes list", () => {
@@ -72,7 +71,7 @@ describe("CodeStore", () => {
       expect(codeStore.getCodeLocalInfo(2)).toBeUndefined();
 
       codeStore.saveNewCode(2);
-      expect(codeStore.lastSavedCodes(TEST_USER_KEY)).toStrictEqual([
+      expect(codeStore.lastSavedCodes()).toStrictEqual([
         {
           id: 2,
           name: undefined,
@@ -92,7 +91,7 @@ describe("CodeStore", () => {
         "celat1r02tlyyaqs6tmrfa4jf37t7ewuxr57qp8ghzly" as BechAddr20,
         ""
       );
-      expect(codeStore.lastSavedCodes(TEST_USER_KEY)).toStrictEqual([
+      expect(codeStore.lastSavedCodes()).toStrictEqual([
         {
           id: 2,
           name: undefined,
@@ -111,15 +110,15 @@ describe("CodeStore", () => {
     initCodeStore();
 
     expect(codeStore.isCodeIdSaved(1)).toBeFalsy();
-    expect(codeStore.lastSavedCodeIds(TEST_USER_KEY)).toStrictEqual([]);
+    expect(codeStore.lastSavedCodeIds()).toStrictEqual([]);
 
     codeStore.saveNewCode(2);
     codeStore.saveNewCode(1);
     codeStore.saveNewCode(3);
-    expect(codeStore.lastSavedCodeIds(TEST_USER_KEY)).toStrictEqual([3, 1, 2]);
+    expect(codeStore.lastSavedCodeIds()).toStrictEqual([3, 1, 2]);
 
     codeStore.removeSavedCode(4);
     codeStore.removeSavedCode(1);
-    expect(codeStore.lastSavedCodeIds(TEST_USER_KEY)).toStrictEqual([3, 2]);
+    expect(codeStore.lastSavedCodeIds()).toStrictEqual([3, 2]);
   });
 });

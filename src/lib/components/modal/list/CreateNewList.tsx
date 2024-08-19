@@ -9,7 +9,7 @@ import { useCelatoneApp } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-import { useGetMaxLengthError, useUserKey } from "lib/hooks";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { shortenName } from "lib/utils";
 
@@ -30,7 +30,7 @@ export function CreateNewListModal({
 }: CreateNewListModalProps) {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
-  const userKey = useUserKey();
+
   const { createNewList, isContractListExist } = useContractStore();
 
   const [listName, setListName] = useState<string>("");
@@ -51,7 +51,7 @@ export function CreateNewListModal({
         state: "error",
         message: getMaxLengthError(trimedListName.length, "list_name"),
       });
-    else if (isContractListExist(userKey, trimedListName))
+    else if (isContractListExist(trimedListName))
       setStatus({ state: "error", message: "Already existed" });
     else setStatus({ state: "success" });
   }, [
@@ -59,13 +59,12 @@ export function CreateNewListModal({
     getMaxLengthError,
     isContractListExist,
     listName,
-    userKey,
   ]);
 
   const toast = useToast();
   const handleCreate = useCallback(() => {
     // TODO: check list name and different toast status
-    createNewList(userKey, listName);
+    createNewList(listName);
     resetListName();
     onCreate?.(listName);
     onClose?.();
@@ -80,15 +79,7 @@ export function CreateNewListModal({
       position: "bottom-right",
       icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
-  }, [
-    createNewList,
-    userKey,
-    listName,
-    resetListName,
-    onCreate,
-    onClose,
-    toast,
-  ]);
+  }, [createNewList, listName, resetListName, onCreate, onClose, toast]);
 
   useEffect(() => {
     if (inputValue !== undefined) setListName(inputValue);

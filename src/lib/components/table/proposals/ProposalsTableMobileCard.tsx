@@ -64,7 +64,7 @@ export const ProposalsTableMobileCard = ({
             />
           </Flex>
           {!isFullTier && (
-            <Flex direction="column" flex="1">
+            <Flex direction="column" flex={1}>
               <MobileLabel label="Proposed by" />
               <Proposer proposer={proposal.proposer} />
             </Flex>
@@ -74,14 +74,14 @@ export const ProposalsTableMobileCard = ({
       bottomContent={
         isFullTier && (
           <>
-            <Flex direction="column" flex="1">
+            <Flex direction="column" flex={1}>
               <MobileLabel label="Resolved Block Height" />
               <ResolvedHeight
                 resolvedHeight={proposal.resolvedHeight}
                 isDepositOrVoting={isDepositOrVoting}
               />
             </Flex>
-            <Flex direction="column" flex="1">
+            <Flex direction="column" flex={1}>
               <MobileLabel label="Proposed by" />
               <Proposer proposer={proposal.proposer} />
             </Flex>

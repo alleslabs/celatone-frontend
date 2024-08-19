@@ -33,7 +33,7 @@ export const PublishedEventsTableMobileCard = ({
     }
     middleContent={
       <Flex direction="column" gap={3}>
-        <Flex direction="column" flex="1">
+        <Flex direction="column" flex={1}>
           <MobileLabel label="Block Height" />
           {history.height === 0 ? (
             <Text variant="body2" color="text.dark">
