@@ -1,8 +1,10 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-
 // TODO: refactor app-provider/app-fns
+import { useMutation, useQuery } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
+
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
+import type { WasmVerifyRequest } from "lib/services/types";
 import type { Option } from "lib/types";
 
 import {
@@ -12,42 +14,45 @@ import {
 } from "./api";
 
 export const useSubmitWasmVerify = () =>
-  useMutation({
+  useMutation<
+    void,
+    AxiosError<{ message: string; statusCode: number }>,
+    WasmVerifyRequest
+  >({
     mutationFn: submitWasmVerify,
   });
 
 export const useWasmVerifyInfos = (codeIds: number[], enabled = true) => {
   const { currentChainId } = useCelatoneApp();
-  return useQuery(
-    [
+  return useQuery({
+    queryKey: [
       CELATONE_QUERY_KEYS.WASM_VERIFICATION_INFOS,
       currentChainId,
       ...codeIds.sort(),
     ],
-    () => getWasmVerifyInfos(currentChainId, codeIds),
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryFn: () => getWasmVerifyInfos(currentChainId, codeIds),
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: Infinity,
+    retryOnMount: false,
+  });
 };
 
 const useWasmRelatedVerifyInfos = (hashes: string[], enabled = true) => {
   const { currentChainId } = useCelatoneApp();
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.WASM_VERIFICATION_INFOS,
+  return useQuery({
+    queryKey: [
+      CELATONE_QUERY_KEYS.WASM_RELATED_VERIFICATION_INFOS,
       currentChainId,
       ...hashes.sort(),
     ],
-    () => getWasmRelatedVerifyInfos(currentChainId, hashes),
-    {
-      enabled,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    queryFn: () => getWasmRelatedVerifyInfos(currentChainId, hashes),
+    enabled,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: Infinity,
+  });
 };
 
 export const useDerivedWasmVerifyInfo = (
@@ -65,7 +70,8 @@ export const useDerivedWasmVerifyInfo = (
     return { data: undefined, isLoading: true };
 
   const wasmVerifyInfo = wasmVerifyInfos?.[Number(codeId)];
-  const wasmRelatedVerifyInfo = wasmRelatedVerifyInfos?.[hash ?? ""];
+  const wasmRelatedVerifyInfo =
+    wasmRelatedVerifyInfos?.[hash?.toUpperCase() ?? ""];
   return {
     data: {
       verificationInfo: wasmVerifyInfo?.verificationInfo ?? null,

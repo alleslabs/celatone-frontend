@@ -41,18 +41,17 @@ export class VerifyModuleTaskStore {
 
   isVerifyModuleTaskExist(taskId: string): boolean {
     return (
-      this.getVerifyModuleTaskTasks().findIndex(
-        (item) => item.taskId === taskId
-      ) > -1
+      this.getVerifyModuleTasks().findIndex((item) => item.taskId === taskId) >
+      -1
     );
   }
 
-  getVerifyModuleTaskTasks(): VerifyModuleLocalInfo[] {
-    return this.modules[this.userKey]?.slice().reverse() ?? [];
+  getVerifyModuleTasks(): VerifyModuleLocalInfo[] {
+    return this.modules[this.userKey]?.reverse() ?? [];
   }
 
   getVerifyModuleTask(taskId: string): VerifyModuleLocalInfo | undefined {
-    return this.getVerifyModuleTaskTasks().find(
+    return this.getVerifyModuleTasks().find(
       (module) => module.taskId === taskId
     );
   }
@@ -60,7 +59,7 @@ export class VerifyModuleTaskStore {
   addVerifyModuleTask(verifyModule: VerifyModuleLocalInfo): void {
     if (!this.isVerifyModuleTaskExist(verifyModule.taskId)) {
       this.modules[this.userKey] = [
-        ...this.getVerifyModuleTaskTasks(),
+        ...this.getVerifyModuleTasks(),
         verifyModule,
       ];
     }

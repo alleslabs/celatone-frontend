@@ -191,7 +191,7 @@ export const ExplorerLink = ({
   const readOnly = isReadOnly || !link;
   // TODO: handle auto width
   return readOnly ? (
-    <Flex alignItems="center" {...componentProps}>
+    <Flex alignItems="center" gap={1} {...componentProps}>
       <Text variant="body2" color="text.disabled">
         {textValue}
       </Text>
@@ -208,6 +208,7 @@ export const ExplorerLink = ({
         textDecoration: "underline",
         textDecorationColor: "primary.light",
       }}
+      gap={1}
       {...componentProps}
     >
       <LinkRender
@@ -226,7 +227,7 @@ export const ExplorerLink = ({
         value={copyValue || value}
         copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
         display={showCopyOnHover && !isMobile ? "none" : "inline"}
-        ml={2}
+        ml={1}
         amptrackSection={ampCopierSection}
       />
     </Flex>

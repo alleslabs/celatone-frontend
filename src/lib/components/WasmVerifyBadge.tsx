@@ -2,7 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import { WasmVerifyStatus } from "lib/types";
-import { getWasmVerifyStatus } from "lib/utils";
+import { formatRelatedVerifiedCodes, getWasmVerifyStatus } from "lib/utils";
 
 import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
@@ -22,23 +22,6 @@ const getBadgeStatus = (
   if (status === WasmVerifyStatus.VERIFIED) return BadgeStatus.VERIFIED;
   if (relatedVerifiedCodes.length > 0) return BadgeStatus.INDIRECTLY_VERIFIED;
   return BadgeStatus.NONE;
-};
-
-const formatRelatedVerifiedCodes = (relatedVerifiedCodes: number[]) => {
-  const displayedCodes = relatedVerifiedCodes.slice(0, 3);
-
-  let res = "";
-  displayedCodes.forEach((code, index) => {
-    res += code.toString();
-    if (relatedVerifiedCodes.length > 2 && index < displayedCodes.length - 1)
-      res += ",";
-    if (index < displayedCodes.length - 1) res += " ";
-    if (index === relatedVerifiedCodes.length - 2) res += "and ";
-    return res;
-  });
-  if (relatedVerifiedCodes.length > 3) res += " and more";
-
-  return res;
 };
 
 const getTooltipText = (
@@ -89,13 +72,13 @@ const getTextProperties = (badgeStatus: BadgeStatus) => {
 const WasmVerifyIcon = ({ badgeStatus }: { badgeStatus: BadgeStatus }) => {
   switch (badgeStatus) {
     case BadgeStatus.IN_PROGRESS:
-      return <CustomIcon name="hourglass" color="text.dark" mr={0} />;
+      return <CustomIcon name="hourglass" color="text.dark" mx={0} />;
     case BadgeStatus.VERIFIED:
       return (
-        <CustomIcon name="verification-solid" color="secondary.main" mr={0} />
+        <CustomIcon name="verification-solid" color="secondary.main" mx={0} />
       );
     case BadgeStatus.INDIRECTLY_VERIFIED:
-      return <CustomIcon name="verification" color="secondary.main" mr={0} />;
+      return <CustomIcon name="verification" color="secondary.main" mx={0} />;
     default:
       return undefined;
   }
@@ -122,6 +105,8 @@ export const WasmVerifyBadge = ({
     linkedCodeId
   );
   const textProperties = getTextProperties(badgeStatus);
+
+  if (badgeStatus === BadgeStatus.NONE) return null;
 
   return (
     <Tooltip label={tooltipText}>

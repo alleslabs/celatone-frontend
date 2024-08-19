@@ -4,15 +4,19 @@ import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
-import { getCw2Info } from "lib/utils";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
+import type { Nullish, WasmVerifyInfo } from "lib/types";
+import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
 
 import type { PublicCodeInfo } from ".";
 
 interface PublicProjectCodeMobileCardProps {
   publicCodeInfo: PublicCodeInfo;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 export const PublicProjectCodeMobileCard = ({
   publicCodeInfo: { publicInfo },
+  wasmVerifyInfo,
 }: PublicProjectCodeMobileCardProps) => {
   const cw2Info = getCw2Info(publicInfo.cw2Contract, publicInfo.cw2Version);
   const navigate = useInternalNavigate();
@@ -31,6 +35,12 @@ export const PublicProjectCodeMobileCard = ({
           <ExplorerLink
             type="code_id"
             value={publicInfo.id.toString()}
+            rightIcon={
+              <WasmVerifyBadge
+                status={getWasmVerifyStatus(wasmVerifyInfo)}
+                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              />
+            }
             showCopyOnHover
           />
         </Flex>

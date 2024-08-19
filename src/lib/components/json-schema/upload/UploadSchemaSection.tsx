@@ -2,20 +2,16 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { ConnectingLine } from "../../ConnectingLine";
 import { CustomIcon } from "../../icon";
-import type { CodeSchema } from "lib/stores/schema";
-import type { Option } from "lib/types";
 
 import { UploadSchema } from "./UploadSchema";
 
 interface UploadSchemaSectionProps {
-  schema?: Option<CodeSchema>;
   codeId: number;
   codeHash: string;
   title?: string | JSX.Element;
 }
 
 export const UploadSchemaSection = ({
-  schema,
   codeId,
   codeHash,
   title = `You haven't attached the JSON Schema for code ${codeId} yet`,
@@ -66,7 +62,7 @@ export const UploadSchemaSection = ({
           />
           <UploadSchema
             attached={false}
-            schema={schema}
+            localSchema={undefined}
             codeId={codeId}
             codeHash={codeHash}
           />

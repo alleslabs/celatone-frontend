@@ -3,8 +3,7 @@ import { memo, useEffect, useState } from "react";
 
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { JsonSchemaForm, OutputMessageTabs } from "lib/components/json-schema";
-import type { SchemaInfo } from "lib/stores/schema";
-import type { Option } from "lib/types";
+import type { Option, QueryResponse, SchemaInfo } from "lib/types";
 import { dateFromNow, parseJsonStr } from "lib/utils";
 
 interface SchemaQueryResponseProps {
@@ -84,7 +83,7 @@ export const SchemaQueryResponse = ({
               <JsonSchemaForm
                 formId={`response-${msgSchema.title}`}
                 schema={resSchema.schema}
-                initialFormData={parseJsonStr(res)}
+                initialFormData={(parseJsonStr(res) as QueryResponse).data}
               />
             </Box>
           )}

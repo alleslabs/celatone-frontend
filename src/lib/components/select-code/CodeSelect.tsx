@@ -78,13 +78,15 @@ export const CodeSelect = ({
                 permissionAddresses={data?.permissionAddresses ?? []}
               />
             </Flex>
-            <WasmVerifyBadge
-              status={getWasmVerifyStatus(wasmDerivedVerifyInfos)}
-              relatedVerifiedCodes={
-                wasmDerivedVerifyInfos?.relatedVerifiedCodes
-              }
-              hasText
-            />
+            <Flex>
+              <WasmVerifyBadge
+                status={getWasmVerifyStatus(wasmDerivedVerifyInfos)}
+                relatedVerifiedCodes={
+                  wasmDerivedVerifyInfos?.relatedVerifiedCodes
+                }
+                hasText
+              />
+            </Flex>
           </Flex>
         ) : (
           <Text variant="body1" fontWeight={500}>

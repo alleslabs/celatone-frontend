@@ -28,7 +28,7 @@ import {
   CodeInfoSection,
   CodeTopInfo,
 } from "./components/code-info";
-import { CodeLocalSchemaSection } from "./components/code-local-schema";
+import { CodeSchemaSection } from "./components/code-schema-section";
 import { CodeVerificationSection } from "./components/CodeVerificationSection";
 import { useCodeDataLcd } from "./data";
 import { TabIndex, zCodeDetailsQueryParams } from "./types";
@@ -45,11 +45,11 @@ const InvalidCode = () => <InvalidState title="Code does not exist" />;
 const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
+  const { currentChainId } = useCelatoneApp();
 
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
 
-  const { currentChainId } = useCelatoneApp();
   const resApi = useCodeData(codeId, isFullTier);
   const resLcd = useCodeDataLcd(codeId, !isFullTier);
   const { data, isLoading } = isFullTier ? resApi : resLcd;
@@ -57,7 +57,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const {
     data: derivedWasmVerifyInfo,
     isLoading: isDerivedWasmVerifyInfoLoading,
-  } = useDerivedWasmVerifyInfo(codeId, data?.info.hash);
+  } = useDerivedWasmVerifyInfo(data?.info.codeId, data?.info.hash);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -81,7 +81,8 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   if (!data.info) return <InvalidCode />;
 
   const { info: code, projectInfo, publicInfo } = data;
-  const jsonSchema = getSchemaByCodeHash(code.hash);
+  const localSchema = getSchemaByCodeHash(code.hash);
+  const attached = Boolean(derivedWasmVerifyInfo?.schema ?? localSchema);
   return (
     <>
       <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code Detail"} />
@@ -122,7 +123,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
             <CodeInfoSection
               code={code}
               chainId={currentChainId}
-              attached={!!jsonSchema}
+              attached={attached}
               toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
             />
             <CodeVerificationSection
@@ -137,19 +138,15 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
             <UserDocsLink
               title="What is Code in CosmWasm?"
               cta="Read more about Code Details"
-              href="cosmwasm/code/detail-page"
+              href="cosmwasm/codes/detail-page"
             />
           </TabPanel>
           <TabPanel p={0}>
-            <CodeLocalSchemaSection
+            <CodeSchemaSection
               codeId={codeId}
               codeHash={code.hash}
-              jsonSchema={jsonSchema}
-            />
-            <UserDocsLink
-              title="How to attached and use JSON Schema?"
-              cta="Read more about JSON Schema"
-              href="cosmwasm/code/attach-json-schema"
+              localSchema={localSchema}
+              wasmVerifyInfo={derivedWasmVerifyInfo}
             />
           </TabPanel>
         </TabPanels>
@@ -158,7 +155,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   );
 });
 
-const CodeDetails = observer(() => {
+const CodeDetails = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const validated = zCodeDetailsQueryParams.safeParse(router.query);
@@ -178,6 +175,6 @@ const CodeDetails = observer(() => {
       )}
     </PageContainer>
   );
-});
+};
 
 export default CodeDetails;

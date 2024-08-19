@@ -111,6 +111,7 @@ const Completed = ({ txInfo }: CompletedProps) => {
         subtitle="Filled information below will be saved on Celatone only and able to edit later."
         contractAddress={txInfo.contractAddress as BechAddr32}
         contractLabel={txInfo.contractLabel}
+        codeId={txInfo.codeId}
         instantiator={txInfo.instantiator}
       />
     </ActionPageContainer>

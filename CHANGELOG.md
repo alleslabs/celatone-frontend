@@ -47,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#1077](https://github.com/alleslabs/celatone-frontend/pull/1077) Add download minitia custom JSON
 - [#1074](https://github.com/alleslabs/celatone-frontend/pull/1074) Add custom minitia upload JSON page
 - [#1002](https://github.com/alleslabs/celatone-frontend/pull/1002) Add contract verification modal
+- [#1060](https://github.com/alleslabs/celatone-frontend/pull/1060) Handle wasm verify info on various pages e.g. deploy/migrate flow pages, code/contract pages
+- [#1083](https://github.com/alleslabs/celatone-frontend/pull/1083) Add wasm verify badges on public pages and contract list pages
 
 ### Improvements
 
@@ -57,6 +59,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1091](https://github.com/alleslabs/celatone-frontend/pull/1091) Fix typo function name
+- [#1089](https://github.com/alleslabs/celatone-frontend/pull/1089) Fix document links for code detail
 - [#1075](https://github.com/alleslabs/celatone-frontend/pull/1075) Fix custom minitia minor change
 
 ## v1.7.3

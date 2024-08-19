@@ -1,4 +1,4 @@
-import { Button, Text } from "@chakra-ui/react";
+import { Button, Spacer, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "../ExplorerLink";
 import { CustomIcon } from "../icon";
@@ -34,6 +34,7 @@ export const InProgressDetails = ({
           which is currently undergoing verification. This can take several
           hours, depending on the code complexity.
         </Text>
+        <Spacer />
       </>
     ) : (
       <Text variant="body2" color="text.dark">

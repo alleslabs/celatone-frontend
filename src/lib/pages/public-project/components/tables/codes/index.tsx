@@ -13,6 +13,8 @@ import {
   ViewMore,
 } from "lib/components/table";
 import { useCodeStore } from "lib/providers/store";
+import type { WasmVerifyInfosResponse } from "lib/services/types";
+import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import type { CodeInfo, Option, PublicCode } from "lib/types";
 
 import { PublicProjectCodeMobileCard } from "./PublicProjectCodeMobileCard";
@@ -45,9 +47,11 @@ const CodeTableHeader = () => (
 
 const ContentRender = ({
   publicCodes,
+  wasmVerifyInfos,
   isMobile,
 }: {
   publicCodes: PublicCodeInfo[];
+  wasmVerifyInfos: Option<WasmVerifyInfosResponse>;
   isMobile: boolean;
 }) =>
   isMobile ? (
@@ -56,6 +60,7 @@ const ContentRender = ({
         <PublicProjectCodeMobileCard
           key={code.publicInfo.id}
           publicCodeInfo={code}
+          wasmVerifyInfo={wasmVerifyInfos?.[code.localInfo.id]}
         />
       ))}
     </MobileTableContainer>
@@ -67,6 +72,7 @@ const ContentRender = ({
           key={code.publicInfo.id}
           publicCodeInfo={code}
           templateColumns={TEMPLATE_COLUMNS}
+          wasmVerifyInfo={wasmVerifyInfos?.[code.localInfo.id]}
         />
       ))}
     </TableContainer>
@@ -74,8 +80,14 @@ const ContentRender = ({
 
 export const PublicProjectCodeTable = observer(
   ({ codes = [], onViewMore }: PublicProjectCodeTableProps) => {
+    const isMobile = useMobile();
     const [searchKeyword, setSearchKeyword] = useState("");
     const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
+
+    const { data: wasmVerifyInfos } = useWasmVerifyInfos(
+      codes.map((code) => code.id),
+      !!codes
+    );
 
     const filteredCodes = useMemo(() => {
       return onViewMore
@@ -85,7 +97,7 @@ export const PublicProjectCodeTable = observer(
             threshold: matchSorter.rankings.CONTAINS,
           });
     }, [codes, onViewMore, searchKeyword]);
-    const isMobile = useMobile();
+
     const publicCodes: Option<PublicCodeInfo[]> = filteredCodes?.map(
       (code) => ({
         localInfo: {
@@ -119,7 +131,11 @@ export const PublicProjectCodeTable = observer(
           />
         )}
         {publicCodes.length ? (
-          <ContentRender publicCodes={publicCodes} isMobile={isMobile} />
+          <ContentRender
+            publicCodes={publicCodes}
+            isMobile={isMobile}
+            wasmVerifyInfos={wasmVerifyInfos}
+          />
         ) : (
           <EmptyState
             message={

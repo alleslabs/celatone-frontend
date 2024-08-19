@@ -12,6 +12,7 @@ import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 const baseTextStyle: TextProps = {
   color: "text.dark",
   variant: "body2",
+  whiteSpace: "nowrap",
 };
 
 const baseContainerStyle: FlexProps = {
@@ -33,9 +34,11 @@ export const WasmVerifyRequestInfo = ({
 }: WasmVerifyRequestInfoProps) => {
   const wasmVerifyStatus = getWasmVerifyStatus({
     verificationInfo,
+    schema: null,
     relatedVerifiedCodes,
   });
 
+  const gitUrlWithCommit = `${verificationInfo.gitUrl}/tree/${verificationInfo.commit}`;
   return (
     <>
       <Flex direction={{ base: "column", sm: "row" }} gap={{ base: 2, sm: 6 }}>
@@ -67,37 +70,34 @@ export const WasmVerifyRequestInfo = ({
       <Flex direction="column" gap={{ base: 2, sm: 1 }}>
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Source Code:</Text>
-          <Link
-            href={verificationInfo.gitUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Flex
-              gap={1}
-              alignItems="center"
-              sx={{
-                cursor: "pointer",
-                "&:hover": {
-                  "> *": {
-                    color: "primary.light",
-                    textDecoration: "underline",
-                    transition: "all",
-                    transitionDuration: "0.25s",
-                    transitionTimingFunction: "ease-in-out",
-                  },
+          <Flex
+            overflow="hidden"
+            gap={1}
+            alignItems="center"
+            sx={{
+              cursor: "pointer",
+              "&:hover": {
+                "> *": {
+                  color: "primary.light",
+                  textDecoration: "underline",
+                  transition: "all",
+                  transitionDuration: "0.25s",
+                  transitionTimingFunction: "ease-in-out",
                 },
-              }}
-            >
-              <Text color="primary.main" variant="body2">
-                {verificationInfo.gitUrl}
-              </Text>
-              <Copier
-                ml={1}
-                type="source_code"
-                value={verificationInfo.gitUrl}
-              />
-            </Flex>
-          </Link>
+              },
+            }}
+          >
+            <Text className="ellipsis" color="primary.main" variant="body2">
+              <Link
+                href={gitUrlWithCommit}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {gitUrlWithCommit}
+              </Link>
+            </Text>
+            <Copier ml={1} type="source_code" value={gitUrlWithCommit} />
+          </Flex>
         </Flex>
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Package Name:</Text>
