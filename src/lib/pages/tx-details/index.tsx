@@ -10,16 +10,16 @@ import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { useTxData } from "lib/services/tx";
-import { getFirstQueryParam, truncate } from "lib/utils";
+import { truncate } from "lib/utils";
 
 import { TxHeader, TxInfo, TxInfoMobile } from "./components";
 import { MessageSection } from "./components/MessageSection";
+import { zTxDetailsQueryParams } from "./types";
 
-const TxDetails = () => {
+const TxDetailsBody = ({ txHash }: { txHash: string }) => {
   const router = useRouter();
-  const hashParam = getFirstQueryParam(router.query.txHash);
   const isMobile = useMobile();
-  const { data, isLoading } = useTxData(hashParam);
+  const { data, isLoading } = useTxData(txHash);
 
   useEffect(() => {
     if (router.isReady && !isLoading) {
@@ -35,10 +35,10 @@ const TxDetails = () => {
     }
   }, [router.isReady, data, isLoading]);
 
-  if (isLoading || !hashParam) return <Loading withBorder />;
+  if (isLoading) return <Loading withBorder />;
 
   return (
-    <PageContainer>
+    <>
       <CelatoneSeo pageName={`TxHash – ${truncate(data?.txhash)}`} />
       <Breadcrumb
         items={[
@@ -60,6 +60,25 @@ const TxDetails = () => {
           imageVariant="not-found"
           heading="Transaction does not exist"
           message="Please check your input or make sure you have selected the correct network."
+        />
+      )}
+    </>
+  );
+};
+
+const TxDetails = () => {
+  const router = useRouter();
+  const validated = zTxDetailsQueryParams.safeParse(router.query);
+
+  return (
+    <PageContainer>
+      {validated.success ? (
+        <TxDetailsBody {...validated.data} />
+      ) : (
+        <EmptyState
+          imageVariant="not-found"
+          heading="Invalid Transaction Format"
+          message="Please ensure that you have entered a valid 64-character hexadecimal string."
         />
       )}
     </PageContainer>

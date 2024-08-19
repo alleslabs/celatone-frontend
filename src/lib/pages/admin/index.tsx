@@ -22,17 +22,24 @@ import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
+import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
+import { EmptyState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxBroadcast } from "lib/hooks";
 import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr, BechAddr32 } from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg, getFirstQueryParam } from "lib/utils";
+import { composeMsg } from "lib/utils";
 
-const UpdateAdmin = () => {
-  useWasmConfig({ shouldRedirect: true });
+import { zUpdateAdminQueryParams } from "./types";
+
+const UpdateAdminBody = ({
+  contractAddress,
+}: {
+  contractAddress: BechAddr32;
+}) => {
   const router = useRouter();
   const { address } = useCurrentChain();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();
@@ -49,10 +56,6 @@ const UpdateAdmin = () => {
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState<string>();
 
-  const contractAddressParam = getFirstQueryParam(
-    router.query.contract
-  ) as BechAddr32;
-
   const onContractPathChange = useCallback(
     (contract?: BechAddr32) => {
       navigate({
@@ -66,15 +69,13 @@ const UpdateAdmin = () => {
 
   const { isFetching } = useSimulateFeeQuery({
     enabled:
-      !!address &&
-      !!contractAddressParam &&
-      adminFormStatus.state === "success",
+      !!address && !!contractAddress && adminFormStatus.state === "success",
     messages: address
       ? [
           composeMsg(MsgType.UPDATE_ADMIN, {
             sender: address,
             newAdmin: adminAddress as BechAddr,
-            contract: contractAddressParam,
+            contract: contractAddress,
           }),
         ]
       : [],
@@ -93,24 +94,18 @@ const UpdateAdmin = () => {
   const proceed = useCallback(async () => {
     track(AmpEvent.ACTION_ADMIN_UPDATE);
     const stream = await updateAdminTx({
-      contractAddress: contractAddressParam,
+      contractAddress,
       newAdmin: adminAddress as BechAddr,
       estimatedFee,
     });
 
     if (stream) broadcast(stream);
-  }, [
-    adminAddress,
-    contractAddressParam,
-    updateAdminTx,
-    broadcast,
-    estimatedFee,
-  ]);
+  }, [adminAddress, contractAddress, updateAdminTx, broadcast, estimatedFee]);
 
   /**
    * @remarks Contract admin validation
    */
-  useContractData(contractAddressParam, {
+  useContractData(contractAddress, {
     onSuccess: (data) => {
       if (data.contract.admin !== address) onContractPathChange();
     },
@@ -118,10 +113,10 @@ const UpdateAdmin = () => {
   });
 
   useEffect(() => {
-    if (contractAddressParam && validateContractAddress(contractAddressParam)) {
+    if (contractAddress && validateContractAddress(contractAddress)) {
       onContractPathChange();
     }
-  }, [contractAddressParam, onContractPathChange, validateContractAddress]);
+  }, [contractAddress, onContractPathChange, validateContractAddress]);
 
   /**
    * @remarks Reset states on update admin succeed modal close
@@ -167,8 +162,8 @@ const UpdateAdmin = () => {
   ]);
 
   useEffect(() => {
-    if (router.isReady) trackToAdminUpdate(!!contractAddressParam);
-  }, [contractAddressParam, router.isReady]);
+    if (router.isReady) trackToAdminUpdate(!!contractAddress);
+  }, [contractAddress, router.isReady]);
 
   return (
     <ActionPageContainer>
@@ -192,14 +187,14 @@ const UpdateAdmin = () => {
         full={
           <ContractSelectSection
             mode="only-admin"
-            contractAddress={contractAddressParam}
+            contractAddress={contractAddress}
             onContractSelect={(contract) => onContractPathChange(contract)}
           />
         }
         lite={
           <Box w="full" mb={12}>
             <ContractInputSection
-              contract={contractAddressParam}
+              contract={contractAddress}
               onContractSelect={(contract) => onContractPathChange(contract)}
             />
           </Box>
@@ -239,6 +234,27 @@ const UpdateAdmin = () => {
         Update Admin
       </Button>
     </ActionPageContainer>
+  );
+};
+
+const UpdateAdmin = () => {
+  useWasmConfig({ shouldRedirect: true });
+  const router = useRouter();
+  const validated = zUpdateAdminQueryParams.safeParse(router.query);
+  return (
+    <>
+      {validated.success ? (
+        <UpdateAdminBody {...validated.data} />
+      ) : (
+        <PageContainer>
+          <EmptyState
+            imageVariant="not-found"
+            heading="Invalid Contract Format"
+            message="Please ensure that you have entered a valid format."
+          />
+        </PageContainer>
+      )}
+    </>
   );
 };
 

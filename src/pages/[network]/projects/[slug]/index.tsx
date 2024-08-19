@@ -1,3 +1,3 @@
-import ProjectDetail from "lib/pages/public-project/slug";
+import ProjectDetails from "lib/pages/public-project/slug";
 
-export default ProjectDetail;
+export default ProjectDetails;

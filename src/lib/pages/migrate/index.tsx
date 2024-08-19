@@ -16,18 +16,20 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import { FooterCta } from "lib/components/layouts";
 import { Loading } from "lib/components/Loading";
+import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
+import { EmptyState } from "lib/components/state";
 import { Stepper } from "lib/components/stepper";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { useUploadCode } from "lib/hooks";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr32 } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
 
 import { MigrateContract } from "./components/MigrateContract";
 import { MigrateOptions } from "./components/MigrateOptions";
 import { UploadNewCode } from "./components/UploadNewCode";
+import { zMigrateQueryParams } from "./types";
 import type { MigratePageState } from "./types";
 
 const defaultValues: MigratePageState = {
@@ -37,7 +39,13 @@ const defaultValues: MigratePageState = {
   codeId: "",
 };
 
-const Migrate = () => {
+const MigrateBody = ({
+  contractAddress: contractAddressParam,
+  codeId: codeIdParam,
+}: {
+  contractAddress: BechAddr32;
+  codeId: string;
+}) => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
@@ -65,11 +73,6 @@ const Migrate = () => {
 
   const firstStep = migrateStep !== "migrate_contract";
   const handleBack = () => setValue("migrateStep", "migrate_options");
-
-  const contractAddressParam = getFirstQueryParam(
-    router.query.contract
-  ) as BechAddr32;
-  const codeIdParam = getFirstQueryParam(router.query["code-id"]);
 
   const onContractSelect = useCallback(
     (contract: BechAddr32) => {
@@ -217,6 +220,25 @@ const Migrate = () => {
         />
       )}
     </>
+  );
+};
+
+const Migrate = () => {
+  const router = useRouter();
+  const validated = zMigrateQueryParams.safeParse(router.query);
+
+  return (
+    <PageContainer>
+      {validated.success ? (
+        <MigrateBody {...validated.data} />
+      ) : (
+        <EmptyState
+          imageVariant="not-found"
+          heading="Invalid Contract or Code Format"
+          message="Please ensure that you have entered a valid format."
+        />
+      )}
+    </PageContainer>
   );
 };
 

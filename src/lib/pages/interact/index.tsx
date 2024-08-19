@@ -15,11 +15,11 @@ import { FunctionCard, ModuleSourceCode } from "lib/components/module";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import { CelatoneSeo } from "lib/components/Seo";
+import { EmptyState } from "lib/components/state";
 import { useOpenNewTab } from "lib/hooks";
 import { useModuleByAddressLcd } from "lib/services/move/module";
 import { useMoveVerifyInfo } from "lib/services/verification/move";
 import type { Addr, ExposedFunction, IndexedModule } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
 
 import {
   InteractionBodySection,
@@ -30,7 +30,7 @@ import {
 } from "./component";
 import { ModuleSelectDrawerMobile } from "./component/drawer/ModuleSelectDrawerMobile";
 import { SelectedFunctionCard } from "./component/SelectedFunctionCard";
-import { ModuleInteractionMobileStep } from "./types";
+import { ModuleInteractionMobileStep, zInteractQueryParams } from "./types";
 
 const FunctionSection = ({
   selectedFn,
@@ -116,9 +116,17 @@ const ZeroState = ({
   </Flex>
 );
 
-export const Interact = () => {
-  useMoveConfig({ shouldRedirect: true });
-
+const InteractBody = ({
+  address,
+  moduleName,
+  functionName,
+  functionType,
+}: {
+  address: Addr;
+  moduleName: string;
+  functionName: string;
+  functionType: string;
+}) => {
   const router = useRouter();
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -185,51 +193,47 @@ export const Interact = () => {
     module?.moduleName
   );
 
-  const addressParam = getFirstQueryParam(router.query.address);
-  const moduleNameParam = getFirstQueryParam(router.query.moduleName);
-  const functionNameParam = getFirstQueryParam(router.query.functionName);
-  const functionTypeParam = getFirstQueryParam(router.query.functionType);
   const { refetch } = useModuleByAddressLcd({
-    address: addressParam as Addr,
-    moduleName: moduleNameParam,
+    address: address as Addr,
+    moduleName,
     options: {
       refetchOnWindowFocus: false,
       enabled: false,
       retry: false,
       onSuccess: (data) => {
         setModule(data);
-        if (functionNameParam) {
+        if (functionName) {
           const fn = data.parsedAbi.exposed_functions.find(
-            (exposedFn) => exposedFn.name === functionNameParam
+            (exposedFn) => exposedFn.name === functionName
           );
           if (fn) {
             handleSetSelectedType(fn.is_view ? "view" : "execute");
             setSelectedFn(fn);
           }
-        } else if (functionTypeParam) {
-          handleSetSelectedType(functionTypeParam);
+        } else if (functionType) {
+          handleSetSelectedType(functionType);
         }
       },
     },
   });
 
   useEffect(() => {
-    if (!!addressParam && !!moduleNameParam) refetch();
+    if (!!address && !!moduleName) refetch();
     else {
       setModule(undefined);
       setSelectedType(InteractionTabs.VIEW_MODULE);
       setSelectedFn(undefined);
     }
-  }, [addressParam, moduleNameParam, refetch]);
+  }, [address, moduleName, refetch]);
 
   useEffect(() => {
     if (router.isReady)
       trackToModuleInteraction(
-        !!addressParam,
-        !!moduleNameParam,
+        !!address,
+        !!moduleName,
         !!verificationData,
-        !!functionNameParam,
-        functionTypeParam
+        !!functionName,
+        functionType
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
@@ -245,150 +249,159 @@ export const Interact = () => {
   return (
     <>
       <CelatoneSeo pageName="View / Execute Module" />
-      <PageContainer
-        overflow="hidden"
-        minH="unset"
-        display="grid"
-        gridTemplateRows="auto auto 1fr"
+      <PageHeader
+        title={isMobile ? "View Module" : "Module Interactions"}
+        docHref="move/view-execute"
+      />
+      <Flex
+        alignItems="center"
+        justifyContent="space-between"
+        bgColor="gray.900"
+        p={4}
+        borderRadius={4}
+        mb={8}
       >
-        <PageHeader
-          title={isMobile ? "View Module" : "Module Interactions"}
-          docHref="move/view-execute"
-        />
-        <Flex
-          alignItems="center"
-          justifyContent="space-between"
-          bgColor="gray.900"
-          p={4}
-          borderRadius={4}
-          mb={8}
-        >
-          {module ? (
-            <Flex
-              direction={{ base: "column", md: "row" }}
-              alignItems={{ md: "center" }}
-              justifyContent={{ md: "space-between" }}
-              w="full"
-              gap={{ base: 4, md: 0 }}
-            >
-              <Flex direction="column" gap={4}>
-                <LabelText
-                  label="Module Path"
-                  labelWeight={600}
-                  labelColor="text.main"
-                >
-                  <Flex align="center" gap={1} display="inline">
-                    <Text
-                      variant="body1"
-                      display="inline-flex"
-                      wordBreak="break-all"
-                    >
-                      {module.address}
-                    </Text>
-                    <CustomIcon
-                      name="chevron-right"
-                      color="gray.600"
-                      boxSize={3}
-                    />
-                    <Text
-                      variant="body1"
-                      fontWeight={700}
-                      display="inline-flex"
-                    >
-                      {module.moduleName}
-                    </Text>
-                  </Flex>
-                </LabelText>
-                <LabelText
-                  label="Friends"
-                  labelWeight={600}
-                  labelColor="text.main"
-                >
-                  <Text variant="body2" color="gray.400">
-                    {JSON.stringify(module.parsedAbi.friends)}
+        {module ? (
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            alignItems={{ md: "center" }}
+            justifyContent={{ md: "space-between" }}
+            w="full"
+            gap={{ base: 4, md: 0 }}
+          >
+            <Flex direction="column" gap={4}>
+              <LabelText
+                label="Module Path"
+                labelWeight={600}
+                labelColor="text.main"
+              >
+                <Flex align="center" gap={1} display="inline">
+                  <Text
+                    variant="body1"
+                    display="inline-flex"
+                    wordBreak="break-all"
+                  >
+                    {module.address}
                   </Text>
-                </LabelText>
-              </Flex>
-              <Flex direction={{ base: "row", md: "column" }} gap={2}>
-                <ModuleSelectDrawerTrigger
-                  triggerVariant="change-module"
-                  buttonText="Change Module"
-                  onOpen={() =>
-                    handleDrawerOpen(ModuleInteractionMobileStep.SelectModule)
-                  }
-                />
-                <Button
-                  variant="ghost-gray"
-                  size={{ base: "sm", md: "md" }}
-                  rightIcon={
-                    <CustomIcon name="launch" boxSize={3} color="text.dark" />
-                  }
-                  onClick={() => {
-                    track(AmpEvent.USE_SEE_MODULE_BUTTON, {
-                      isVerify: !!verificationData,
-                    });
-                    openNewTab({
-                      pathname: `/modules/${module.address.toString()}/${
-                        module.moduleName
-                      }`,
-                      query: {},
-                    });
-                  }}
-                >
-                  See Module
-                </Button>
-              </Flex>
-              {isMobile && selectedFn && (
-                <FunctionSection
-                  selectedFn={selectedFn}
-                  setSelectedFn={setSelectedFn}
-                  handleDrawerOpen={handleDrawerOpen}
-                />
-              )}
+                  <CustomIcon
+                    name="chevron-right"
+                    color="gray.600"
+                    boxSize={3}
+                  />
+                  <Text variant="body1" fontWeight={700} display="inline-flex">
+                    {module.moduleName}
+                  </Text>
+                </Flex>
+              </LabelText>
+              <LabelText
+                label="Friends"
+                labelWeight={600}
+                labelColor="text.main"
+              >
+                <Text variant="body2" color="gray.400">
+                  {JSON.stringify(module.parsedAbi.friends)}
+                </Text>
+              </LabelText>
             </Flex>
-          ) : (
-            <ZeroState onOpen={onOpen} isMobile={isMobile} />
-          )}
-          {isMobile ? (
-            <ModuleSelectDrawerMobile
-              isOpen={isOpen}
-              onClose={onClose}
-              hexAddress={module?.address}
-              handleModuleSelect={handleModuleSelect}
-              step={step}
-              setStep={setStep}
-              selectedModule={selectedModule}
-              setSelectedModule={setSelectedModule}
-            />
-          ) : (
-            <ModuleSelectDrawer
-              isOpen={isOpen}
-              onClose={onClose}
-              hexAddress={module?.address}
-              handleModuleSelect={handleModuleSelect}
-            />
-          )}
-        </Flex>
+            <Flex direction={{ base: "row", md: "column" }} gap={2}>
+              <ModuleSelectDrawerTrigger
+                triggerVariant="change-module"
+                buttonText="Change Module"
+                onOpen={() =>
+                  handleDrawerOpen(ModuleInteractionMobileStep.SelectModule)
+                }
+              />
+              <Button
+                variant="ghost-gray"
+                size={{ base: "sm", md: "md" }}
+                rightIcon={
+                  <CustomIcon name="launch" boxSize={3} color="text.dark" />
+                }
+                onClick={() => {
+                  track(AmpEvent.USE_SEE_MODULE_BUTTON, {
+                    isVerify: !!verificationData,
+                  });
+                  openNewTab({
+                    pathname: `/modules/${module.address.toString()}/${
+                      module.moduleName
+                    }`,
+                    query: {},
+                  });
+                }}
+              >
+                See Module
+              </Button>
+            </Flex>
+            {isMobile && selectedFn && (
+              <FunctionSection
+                selectedFn={selectedFn}
+                setSelectedFn={setSelectedFn}
+                handleDrawerOpen={handleDrawerOpen}
+              />
+            )}
+          </Flex>
+        ) : (
+          <ZeroState onOpen={onOpen} isMobile={isMobile} />
+        )}
         {isMobile ? (
-          <InteractionBodySectionMobile
-            module={module}
-            selectedFn={selectedFn}
-            openDrawer={onOpen}
+          <ModuleSelectDrawerMobile
+            isOpen={isOpen}
+            onClose={onClose}
+            hexAddress={module?.address}
+            handleModuleSelect={handleModuleSelect}
+            step={step}
+            setStep={setStep}
+            selectedModule={selectedModule}
+            setSelectedModule={setSelectedModule}
           />
         ) : (
-          <InteractionBodySection
-            module={module}
-            selectedType={selectedType}
-            setSelectedType={setSelectedType}
-            selectedFn={selectedFn}
-            handleFunctionSelect={handleFunctionSelect}
-            onOpen={onOpen}
+          <ModuleSelectDrawer
+            isOpen={isOpen}
+            onClose={onClose}
+            hexAddress={module?.address}
+            handleModuleSelect={handleModuleSelect}
           />
         )}
-      </PageContainer>
+      </Flex>
+      {isMobile ? (
+        <InteractionBodySectionMobile
+          module={module}
+          selectedFn={selectedFn}
+          openDrawer={onOpen}
+        />
+      ) : (
+        <InteractionBodySection
+          module={module}
+          selectedType={selectedType}
+          setSelectedType={setSelectedType}
+          selectedFn={selectedFn}
+          handleFunctionSelect={handleFunctionSelect}
+          onOpen={onOpen}
+        />
+      )}
       <Box px={{ base: "16px", md: "48px" }}>
         <ModuleSourceCode sourceCode={verificationData?.source} />
       </Box>
     </>
+  );
+};
+
+export const Interact = () => {
+  useMoveConfig({ shouldRedirect: true });
+  const router = useRouter();
+  const validated = zInteractQueryParams.safeParse(router.query);
+
+  return (
+    <PageContainer>
+      {validated.success ? (
+        <InteractBody {...validated.data} />
+      ) : (
+        <EmptyState
+          imageVariant="not-found"
+          heading="Invalid Address or Name Format"
+          message="Please ensure that you have entered a valid format."
+        />
+      )}
+    </PageContainer>
   );
 };
