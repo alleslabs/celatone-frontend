@@ -210,7 +210,7 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
           >
             {moduleData.moduleName}
           </Heading>
-          {/* TODO: Add status */}
+          {/* TODO: Add status & remove isVerified */}
           <Tooltip label="This module's verification is supported by its provided source code.">
             <MoveVerifyBadge status={MoveVerifyStatus.Verified} />
             {isVerified}
