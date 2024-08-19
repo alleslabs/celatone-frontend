@@ -14,6 +14,8 @@ import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { MoveVerifyStatus } from "lib/components/move-verify-section";
+import { MoveVerifyBadge } from "lib/components/MoveVerifyBadge";
 import { Tooltip } from "lib/components/Tooltip";
 import { UpgradePolicy } from "lib/types";
 import type { Addr, IndexedModule } from "lib/types";
@@ -208,17 +210,11 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
           >
             {moduleData.moduleName}
           </Heading>
-          {isVerified && (
-            <Tooltip label="This module's verification is supported by its provided source code.">
-              <Flex>
-                <CustomIcon
-                  name="check-circle-solid"
-                  boxSize={5}
-                  color="success.main"
-                />
-              </Flex>
-            </Tooltip>
-          )}
+          {/* TODO: Add status */}
+          <Tooltip label="This module's verification is supported by its provided source code.">
+            <MoveVerifyBadge status={MoveVerifyStatus.Verified} />
+            {isVerified}
+          </Tooltip>
         </Flex>
         {!isMobile && (
           <ModuleCta moduleData={moduleData} moduleAddress={moduleAddress} />

@@ -7,9 +7,14 @@ import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
+import {
+  MoveVerifySection,
+  MoveVerifyStatus,
+} from "lib/components/move-verify-section";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { StatusMessageBox } from "lib/components/StatusMessageBox";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
@@ -163,6 +168,24 @@ const ModuleDetailsBody = ({
         <TabPanels>
           <TabPanel p={0}>
             <Flex gap={6} flexDirection="column">
+              <StatusMessageBox
+                borderColor="gray.100"
+                content={
+                  <MoveVerifySection status={MoveVerifyStatus.Verified} />
+                }
+              />
+              <StatusMessageBox
+                borderColor="gray.100"
+                content={
+                  <MoveVerifySection status={MoveVerifyStatus.NotVerified} />
+                }
+              />
+              <StatusMessageBox
+                borderColor="gray.100"
+                content={
+                  <MoveVerifySection status={MoveVerifyStatus.Outdated} />
+                }
+              />
               <ModuleActions
                 viewFns={data.viewFunctions.length}
                 executeFns={data.executeFunctions.length}
