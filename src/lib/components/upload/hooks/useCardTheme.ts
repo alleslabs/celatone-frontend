@@ -12,7 +12,7 @@ export const useCardTheme = (theme: CardTheme, status: Option<Status>) => {
 
     return {
       bgColor: "gray.900",
-      border: "none",
+      border: "1px solid var(--chakra-colors-gray-900)",
       buttonVariant: "outline-primary",
     };
   };

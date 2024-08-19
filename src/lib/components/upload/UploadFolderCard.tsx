@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, IconButton, Text } from "@chakra-ui/react";
 
 import { CustomIcon, UploadFolderIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
@@ -38,14 +38,15 @@ export const UploadFolderCard = ({
         <Text variant="body1">{fileName}</Text>
       </Flex>
       <Flex align="center" gap={4}>
-        <CustomIcon
+        <IconButton
+          variant="ghost-gray-icon"
+          size="sm"
           onClick={() => {
             track(AmpEvent.USE_REMOVE_UPLOAD_FILE);
             deleteFile();
           }}
-          name="delete"
-          boxSize={4}
-          color="gray.600"
+          icon={<CustomIcon name="delete" boxSize={4} />}
+          aria-label="reattach schema"
         />
         {status === "error" && (
           <CustomIcon
