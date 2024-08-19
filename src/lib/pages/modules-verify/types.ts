@@ -5,7 +5,7 @@ export const zModuleVerifyForm = z.object({
   requestNote: z.string().optional(),
   moveFiles: z
     .array(z.instanceof(File).refine((file) => file.name.includes(".move")))
-    .length(1),
+    .min(1),
   tomlFile: z.instanceof(File).refine((file) => file.name.includes(".toml")),
 });
 export type ModuleVerifyForm = z.infer<typeof zModuleVerifyForm>;

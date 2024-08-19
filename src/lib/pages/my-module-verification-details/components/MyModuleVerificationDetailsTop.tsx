@@ -28,11 +28,7 @@ export const MyModuleVerificationDetailsTop = ({
     />
     <Stack gap={2}>
       <Flex alignItems="center" gap={2}>
-        <CustomIcon
-          name="contract-address"
-          boxSize={6}
-          color="secondary.main"
-        />
+        <CustomIcon name="contract-address" boxSize={6} color="primary.main" />
         <Heading as="h5" variant="h5">
           Verification Details
         </Heading>

@@ -35,11 +35,12 @@ export const ModuleVerifyUploadFolderInfo = () => (
             Please ensure that you upload the folder in the correct format,
             which should include:
           </Text>
-          <AspectRatio ratio={16 / 9}>
+          <AspectRatio ratio={16 / 9} maxH="150px">
             <Image
               src="/verify-module-task-folder.png"
               alt="Verify module uploading folder structure"
               objectFit="contain"
+              objectPosition="left"
               fill
             />
           </AspectRatio>
