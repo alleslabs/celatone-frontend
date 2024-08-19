@@ -48,11 +48,7 @@ export const MyModuleVerificationDetailsAlert = ({
     return (
       <Alert variant="error">
         <Flex gap={3} flexGrow={1}>
-          <CustomIcon
-            name="alert-circle-solid"
-            color="error.main"
-            boxSize={4}
-          />
+          <CustomIcon name="info-circle" color="error.main" boxSize={4} />
           <Stack gap={1}>
             <AlertTitle>Verification Failed</AlertTitle>
             <AlertDescription wordBreak="break-word">

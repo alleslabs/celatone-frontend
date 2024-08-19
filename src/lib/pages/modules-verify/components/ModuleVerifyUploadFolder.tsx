@@ -64,7 +64,7 @@ export const ModuleVerifyUploadFolder = ({
     if (!rootFolderName)
       return (
         <>
-          <CustomIcon boxSize={4} name="check-circle-solid" color="gray.500" />
+          <CustomIcon boxSize={4} name="check-circle-solid" color="gray.700" />
           <Text variant="body2">{`\u201C.move\u201D files are required`}</Text>
         </>
       );
@@ -93,7 +93,7 @@ export const ModuleVerifyUploadFolder = ({
     if (!rootFolderName)
       return (
         <>
-          <CustomIcon boxSize={4} name="check-circle-solid" color="gray.500" />
+          <CustomIcon boxSize={4} name="check-circle-solid" color="gray.700" />
           <Text variant="body2">{`\u201CMove.toml\u201D file are required`}</Text>
         </>
       );
@@ -129,7 +129,7 @@ export const ModuleVerifyUploadFolder = ({
         </Text>
       </Stack>
       <Alert variant="accent" gap={4} alignItems="flex-start">
-        <CustomIcon name="alert-circle-solid" color="accent.main" boxSize={4} />
+        <CustomIcon name="info-circle" color="accent.main" boxSize={4} />
         <AlertDescription>
           {`If the verification module requires calling functions from other
     modules, please ensure that the corresponding \u201C.move\u201D files are

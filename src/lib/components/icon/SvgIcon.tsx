@@ -196,15 +196,6 @@ export const ICONS = {
     ),
     viewBox: viewboxDefault,
   },
-  "alert-circle-solid": {
-    svg: (
-      <path
-        d="M8 16C3.584 16 0 12.416 0 8C0 3.584 3.584 0 8 0C12.416 0 16 3.584 16 8C16 12.416 12.416 16 8 16ZM8 4C7.56 4 7.2 4.36 7.2 4.8V8C7.2 8.44 7.56 8.8 8 8.8C8.44 8.8 8.8 8.44 8.8 8V4.8C8.8 4.36 8.44 4 8 4ZM8.8 10.4H7.2V12H8.8V10.4Z"
-        fill="currentColor"
-      />
-    ),
-    viewBox: viewboxDefault,
-  },
   block: {
     svg: (
       <path

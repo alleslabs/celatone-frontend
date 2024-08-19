@@ -22,7 +22,7 @@ export const ModuleVerifyFailedModal = ({
     <ModalHeader w="full" py={0}>
       <ModalCloseButton color="gray.600" />
       <Stack alignItems="center" gap={4} w="100%">
-        <CustomIcon name="alert-circle-solid" color="error.main" boxSize={14} />
+        <CustomIcon name="info-circle" color="error.main" boxSize={14} />
         <Heading variant="h5">Something went wrong</Heading>
       </Stack>
     </ModalHeader>
