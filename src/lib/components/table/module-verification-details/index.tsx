@@ -21,7 +21,7 @@ export const ModuleVerificationDetailsTable = ({
         <TableHeader>Module Path</TableHeader>
       </Grid>
       {moduleIdentifiers.map(({ name, address }) => (
-        <Box w="full" minW="min-content">
+        <Box w="full" minW="min-content" key={address + name}>
           <Grid
             className="copier-wrapper"
             templateColumns={templateColumns}

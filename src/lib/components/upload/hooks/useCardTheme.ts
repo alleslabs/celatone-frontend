@@ -3,21 +3,18 @@ import type { Option } from "lib/types";
 
 export const useCardTheme = (theme: CardTheme, status: Option<Status>) => {
   const getTheme = () => {
-    switch (theme) {
-      case "gray":
-        return {
-          bgColor: "gray.800",
-          border: "1px solid var(--chakra-colors-gray-700)",
-          buttonVariant: "outline-gray",
-        };
-      case "primary":
-      default:
-        return {
-          bgColor: "gray.900",
-          border: "none",
-          buttonVariant: "outline-primary",
-        };
-    }
+    if (theme === "gray")
+      return {
+        bgColor: "gray.800",
+        border: "1px solid var(--chakra-colors-gray-700)",
+        buttonVariant: "outline-gray",
+      };
+
+    return {
+      bgColor: "gray.900",
+      border: "none",
+      buttonVariant: "outline-primary",
+    };
   };
 
   const resolveStatusColor = () => {
