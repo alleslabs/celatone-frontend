@@ -223,6 +223,7 @@ execute();
         isDisabled={isDisabled}
         variant="outline-white"
         w={w}
+        minW="128px"
         size="sm"
         ml={ml}
         gap={1}
