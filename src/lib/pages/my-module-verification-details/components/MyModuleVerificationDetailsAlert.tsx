@@ -19,7 +19,7 @@ export const MyModuleVerificationDetailsAlert = ({
 }: MyModuleVerificationDetailsAlertBannerProps) => {
   if (status === MoveVerifyTaskStatus.Pending)
     return (
-      <Alert variant="info-left-accent" alignItems="center" py={0}>
+      <Alert variant="info-left-secondary" alignItems="center" py={0}>
         <AlertDescription wordBreak="break-word">
           There are{" "}
           <Text as="span" fontWeight={700}>
@@ -36,7 +36,7 @@ export const MyModuleVerificationDetailsAlert = ({
 
   if (status === MoveVerifyTaskStatus.Running)
     return (
-      <Alert variant="info-left-accent" alignItems="center" py={0}>
+      <Alert variant="info-left-secondary" alignItems="center" py={0}>
         <AlertDescription wordBreak="break-word">
           The request is now in progress with the module verification process.
         </AlertDescription>

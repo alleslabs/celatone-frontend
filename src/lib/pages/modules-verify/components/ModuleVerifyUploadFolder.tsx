@@ -128,8 +128,8 @@ export const ModuleVerifyUploadFolder = ({
           Select a folder to upload files in order to verify the modules
         </Text>
       </Stack>
-      <Alert variant="accent" gap={4} alignItems="flex-start">
-        <CustomIcon name="info-circle" color="accent.main" boxSize={4} />
+      <Alert variant="primary" gap={4} alignItems="flex-start">
+        <CustomIcon name="info-circle" color="primary.main" boxSize={4} />
         <AlertDescription>
           {`If the verification module requires calling functions from other
     modules, please ensure that the corresponding \u201C.move\u201D files are

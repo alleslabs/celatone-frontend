@@ -14,7 +14,7 @@ const generateVariantStyle = (
     | "warning"
     | "error"
     | "info"
-    | "info-left-accent"
+    | "info-left-secondary"
 ) => {
   let mainColor: ColorProps["color"];
   let bgColor: ColorProps["color"];
@@ -34,7 +34,7 @@ const generateVariantStyle = (
       bgColor = "gray.800";
       borderColor = "gray.700";
       break;
-    case "info-left-accent":
+    case "info-left-secondary":
       bgColor = "background.main";
       border = "0";
       borderLeft = "3px solid";
@@ -89,6 +89,6 @@ export const Alert: ComponentStyleConfig = {
     warning: generateVariantStyle("warning"),
     error: generateVariantStyle("error"),
     info: generateVariantStyle("info"),
-    "info-left-accent": generateVariantStyle("info-left-accent"),
+    "info-left-secondary": generateVariantStyle("info-left-secondary"),
   },
 };
