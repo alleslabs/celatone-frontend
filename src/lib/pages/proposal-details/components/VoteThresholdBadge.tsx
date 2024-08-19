@@ -1,5 +1,5 @@
-import { ActiveDot } from "../../../components/ActiveDot";
 import { PeriodState } from "../types";
+import { ActiveDot } from "lib/components/ActiveDot";
 import { CustomIcon } from "lib/components/icon";
 import { ProposalStatus } from "lib/types";
 

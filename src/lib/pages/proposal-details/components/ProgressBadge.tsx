@@ -1,7 +1,7 @@
 import { chakra, Flex, Text } from "@chakra-ui/react";
 
-import { ActiveDot } from "../../../components/ActiveDot";
 import { PeriodState } from "../types";
+import { ActiveDot } from "lib/components/ActiveDot";
 import { CustomIcon } from "lib/components/icon";
 
 const StyledCustomIcon = chakra(CustomIcon, {

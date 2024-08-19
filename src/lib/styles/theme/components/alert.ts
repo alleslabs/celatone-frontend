@@ -8,7 +8,6 @@ const dupStyleKeys = ["title", "container", "description"];
 
 const generateVariantStyle = (
   variant:
-    | "accent"
     | "primary"
     | "secondary"
     | "success"
@@ -41,7 +40,6 @@ const generateVariantStyle = (
       borderLeft = "3px solid";
       borderRadius = "0";
       break;
-    case "accent":
     case "error":
     default:
       mainColor = `${variant}.main`;

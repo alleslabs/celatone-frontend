@@ -16,9 +16,10 @@ import {
   MyModuleVerificationDetailsTable,
   MyModuleVerificationDetailsTop,
 } from "./components";
+import { zMyModuleVerificationDetailsQueryParams } from "./types";
 
 const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
-  const { data, isLoading, error } = useMoveVerifyTaskInfo(taskId, !!taskId);
+  const { data, isLoading, error } = useMoveVerifyTaskInfo(taskId);
   const { getVerifyModuleTask } = useVerifyModuleTaskStore();
   const verifyModuleTask = getVerifyModuleTask(taskId);
 
@@ -64,12 +65,23 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
 
 export const MyModuleVerificationDetails = observer(() => {
   const router = useRouter();
-  const taskId = router.query.taskId as string;
+  const validated = zMyModuleVerificationDetailsQueryParams.safeParse(
+    router.query
+  );
 
   return (
     <PageContainer>
       <CelatoneSeo pageName="My Module Verification Details" />
-      <MyModuleVerificationDetailsBody taskId={taskId} />
+      {!validated.success ? (
+        <EmptyState
+          imageVariant="not-found"
+          heading="Task ID Not Found"
+          message="Please double-check your input and make sure you have selected the correct network."
+          withBorder
+        />
+      ) : (
+        <MyModuleVerificationDetailsBody {...validated.data} />
+      )}
     </PageContainer>
   );
 });
