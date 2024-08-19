@@ -8,13 +8,10 @@ import {
 } from "@chakra-ui/react";
 
 import { CustomIcon } from "../icon";
-import { useInitia, useMobile } from "lib/app-provider";
+import { useInitia } from "lib/app-provider";
 
 export const NoMobile = () => {
-  const isMobile = useMobile();
   const isInitia = useInitia();
-
-  if (!isMobile) return null;
 
   return (
     <Modal size="sm" isOpen isCentered onClose={() => {}}>
