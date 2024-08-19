@@ -2,7 +2,6 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
-  Button,
   Flex,
   Stack,
   Text,
@@ -58,9 +57,10 @@ export const MyModuleVerificationDetailsAlert = ({
             </AlertDescription>
           </Stack>
         </Flex>
-        <Button size="sm" variant="errorDark" minW="unset">
+        {/* // TODO: Open it again when the doc is complete */}
+        {/* <Button size="sm" variant="errorDark" minW="unset">
           See Verification Guideline
-        </Button>
+        </Button> */}
       </Alert>
     );
 
