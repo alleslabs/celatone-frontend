@@ -37,7 +37,7 @@ export const instantiateContractTx = ({
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => client.signAndBroadcast(address, messages, fee),
+      postFn: () => client.signAndBroadcast(address, messages, fee, ""),
     }),
     ({ value: txInfo }) => {
       const contractAddress = findAttribute(
