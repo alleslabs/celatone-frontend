@@ -18,6 +18,7 @@ import { catchTxError, postTx, sendingTx } from "./common";
 interface ExecuteTxParams {
   address: BechAddr20;
   messages: EncodeObject[];
+  action: string;
   fee: StdFee;
   base64Message: string;
   client: SigningCosmWasmClient;
@@ -28,6 +29,7 @@ interface ExecuteTxParams {
 export const executeContractTx = ({
   address,
   messages,
+  action,
   fee,
   base64Message,
   client,
@@ -45,8 +47,6 @@ export const executeContractTx = ({
         "execute",
         "_contract_address"
       )?.value;
-
-      const action = findAttribute(txInfo.events, "wasm", "action")?.value;
 
       onTxSucceed?.({
         type: "execute",

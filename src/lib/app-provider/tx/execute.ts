@@ -50,9 +50,12 @@ export const useExecuteContractTx = () => {
 
       const base64Message = encode(JSON.stringify({ msg, funds }));
 
+      const action = Object.keys(msg)[0];
+
       return executeContractTx({
         address,
         messages,
+        action,
         fee: estimatedFee,
         base64Message,
         client,
