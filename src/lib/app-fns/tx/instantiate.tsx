@@ -44,7 +44,7 @@ export const instantiateContractTx = ({
         txInfo.events,
         "instantiate",
         "_contract_address"
-      ).value;
+      )?.value;
 
       onTxSucceed?.(txInfo, label, contractAddress as BechAddr32);
       // TODO: this is type hack

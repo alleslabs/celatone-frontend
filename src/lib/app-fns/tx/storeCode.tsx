@@ -1,4 +1,5 @@
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import { findAttribute } from "@cosmjs/cosmwasm-stargate/build/signingcosmwasmclient";
 import type { DeliverTxResponse, logs, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
@@ -68,8 +69,7 @@ export const storeCodeTx = ({
 
       const codeId = findAttr(mimicLog, "store_code", "code_id") ?? "0";
       const codeHash = findAttr(mimicLog, "store_code", "code_checksum");
-      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
-        .value;
+      const txFee = findAttribute(txInfo.events, "tx", "fee")?.value;
 
       onTxSucceed({
         codeId: parseInt(codeId, 10).toString(),

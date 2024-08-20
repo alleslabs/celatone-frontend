@@ -1,5 +1,6 @@
 import { Text } from "@chakra-ui/react";
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import { findAttribute } from "@cosmjs/cosmwasm-stargate/build/signingcosmwasmclient";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
@@ -38,8 +39,7 @@ export const resendTx = ({
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.(txInfo.transactionHash);
-      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
-        .value;
+      const txFee = findAttribute(txInfo.events, "tx", "fee")?.value;
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,

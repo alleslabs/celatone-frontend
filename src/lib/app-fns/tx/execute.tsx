@@ -44,9 +44,9 @@ export const executeContractTx = ({
         txInfo.events,
         "execute",
         "_contract_address"
-      ).value;
+      )?.value;
 
-      const action = findAttribute(txInfo.events, "wasm", "action").value;
+      const action = findAttribute(txInfo.events, "wasm", "action")?.value;
 
       onTxSucceed?.({
         type: "execute",
@@ -57,8 +57,8 @@ export const executeContractTx = ({
         timestamp: getCurrentDate(),
       });
 
-      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
-        .value;
+      const txFee = findAttribute(txInfo.events, "tx", "fee")?.value;
+
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
