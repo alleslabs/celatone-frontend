@@ -56,7 +56,7 @@ export const MyModuleVerificationsTable = observer(() => {
           result={statuses}
           setResult={setStatuses}
           placeholder="All Status"
-          isMulti={false}
+          isMulti
         />
       </Grid>
 

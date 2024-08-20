@@ -36,7 +36,7 @@ export const MyModuleVerificationsRow = ({
       cursor="pointer"
     >
       <TableRow>
-        <ExplorerLink type="task_id" value={task.taskId} />
+        <ExplorerLink type="task_id" value={task.taskId} showCopyOnHover />
       </TableRow>
       <TableRow>
         <RequestNoteCell moveVerifyTask={task} />

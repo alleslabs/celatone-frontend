@@ -3,7 +3,6 @@ import { Flex, FormControl, useOutsideClick } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { forwardRef, useMemo, useRef, useState } from "react";
 
-import { AmpEvent, trackUseFilter } from "lib/amplitude";
 import {
   DropdownContainer,
   FilterChip,
@@ -22,6 +21,13 @@ export interface MoveVerifyTaskStatusFilterProps extends InputProps {
   setResult: (option: MoveVerifyTaskStatus[]) => void;
   isMulti: boolean;
 }
+
+const OPTIONS = [
+  { label: "completed", value: MoveVerifyTaskStatus.Finished },
+  { label: "failed", value: MoveVerifyTaskStatus.NotFound },
+  { label: "pending", value: MoveVerifyTaskStatus.Pending },
+  { label: "verifying", value: MoveVerifyTaskStatus.Running },
+];
 
 export const MoveVerifyTaskStatusFilter = forwardRef<
   HTMLInputElement,
@@ -43,16 +49,15 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
     const inputRef = useRef<HTMLInputElement>(null);
     const boxRef = useRef<HTMLDivElement>(null);
 
-    const OPTIONS = Object.values(MoveVerifyTaskStatus);
-
     const dropdownValue = useMemo(
       () =>
         keyword
           ? matchSorter(OPTIONS, keyword, {
+              keys: ["label"],
               threshold: matchSorter.rankings.CONTAINS,
             })
           : OPTIONS,
-      [keyword, OPTIONS]
+      [keyword]
     );
 
     const isOptionSelected = (option: MoveVerifyTaskStatus) =>
@@ -60,12 +65,6 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
 
     const selectOption = (option: MoveVerifyTaskStatus) => {
       setKeyword("");
-
-      if (result.includes(option)) {
-        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "remove");
-      } else {
-        trackUseFilter(AmpEvent.USE_FILTER_PROPOSALS_STATUS, result, "add");
-      }
 
       if (!isMulti) {
         setIsDropdown(false);
@@ -96,11 +95,14 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
           setIsDropdown={setIsDropdown}
           chipContainerComponent={
             <Flex alignItems="center" pl={2} gap={2}>
-              {result.map((option: MoveVerifyTaskStatus) => (
+              {result.map((option) => (
                 <FilterChip
                   key={option}
                   chipComponent={
-                    <MyModuleVerificationDetailsStatusBadge status={option} />
+                    <MyModuleVerificationDetailsStatusBadge
+                      status={option}
+                      hasCloseBtn
+                    />
                   }
                   onSelect={() => setResult(toggleItem(result, option))}
                 />
@@ -116,12 +118,14 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
             {/* option selection section */}
             {dropdownValue.map((option) => (
               <FilterDropdownItem
-                key={option}
+                key={option.label}
                 filterDropdownComponent={
-                  <MyModuleVerificationDetailsStatusBadge status={option} />
+                  <MyModuleVerificationDetailsStatusBadge
+                    status={option.value}
+                  />
                 }
-                isOptionSelected={isOptionSelected(option)}
-                onSelect={() => selectOption(option)}
+                isOptionSelected={isOptionSelected(option.value)}
+                onSelect={() => selectOption(option.value)}
               />
             ))}
           </DropdownContainer>
