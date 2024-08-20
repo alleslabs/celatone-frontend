@@ -4,6 +4,7 @@ import { TableRow } from "../tableComponents";
 import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { CountBadge } from "lib/components/module";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import type { ModuleInfo } from "lib/types";
@@ -45,10 +46,19 @@ export const ModulesTableRow = ({
         }
       >
         <TableRow>
-          <ModulePathLink
-            hexAddr={moduleInfo.address}
-            moduleName={moduleInfo.moduleName}
-          />
+          <Flex align="center" gap={1}>
+            <ModulePathLink
+              hexAddr={moduleInfo.address}
+              moduleName={moduleInfo.moduleName}
+            />
+            {moduleInfo.isVerified && (
+              <CustomIcon
+                name="check-circle-solid"
+                color="success.main"
+                boxSize={3}
+              />
+            )}
+          </Flex>
         </TableRow>
         {isPublishedModules && (
           <>
