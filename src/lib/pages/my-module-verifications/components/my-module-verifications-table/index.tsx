@@ -34,7 +34,7 @@ export const MyModuleVerificationsTable = observer(() => {
         )
         .filter((task) => {
           if (statuses.length === 0) return true;
-          return statuses[0] === task.status;
+          return statuses.includes(task.status);
         }),
     [data, keyword, statuses]
   );
