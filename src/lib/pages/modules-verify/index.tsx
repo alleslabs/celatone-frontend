@@ -17,7 +17,7 @@ import { FooterCta } from "lib/components/layouts";
 import { NoMobile } from "lib/components/modal";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { useVerifyModuleTaskStore } from "lib/providers/store";
+import { useMoveVerifyTaskStore } from "lib/providers/store";
 import { useSubmitMoveVerify } from "lib/services/verification/move";
 
 import {
@@ -37,7 +37,7 @@ export const ModulesVerify = observer(() => {
   const { currentChainId } = useCelatoneApp();
   const { mutateAsync, isError, isLoading } = useSubmitMoveVerify();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { addVerifyModuleTask } = useVerifyModuleTaskStore();
+  const { addMoveVerifyTask } = useMoveVerifyTaskStore();
 
   const { control, watch, handleSubmit, setValue } = useForm<ModuleVerifyForm>({
     mode: "all",
@@ -68,7 +68,7 @@ export const ModulesVerify = observer(() => {
     if (!data) return;
 
     setValue("taskId", data.id);
-    addVerifyModuleTask({
+    addMoveVerifyTask({
       taskId: data.id,
       chainId: currentChainId,
       requestNote,

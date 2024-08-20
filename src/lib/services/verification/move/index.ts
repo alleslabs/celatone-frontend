@@ -11,6 +11,7 @@ import type { Addr, Nullable, Option } from "lib/types";
 
 import {
   getMoveVerifyByTaskId,
+  getMoveVerifyByTaskIds,
   getMoveVerifyInfo,
   getMoveVerifyInfosByAddress,
   submitMoveVerify,
@@ -20,6 +21,28 @@ export const useSubmitMoveVerify = () =>
   useMutation({
     mutationFn: submitMoveVerify,
   });
+
+export const useMoveVerifyTaskInfos = (
+  taskIds: string[],
+  onSuccess?: (data: MoveVerifyByTaskIdResponse[]) => void
+) => {
+  const { chainConfig } = useCelatoneApp();
+  const {
+    extra: { layer },
+  } = chainConfig;
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.MOVE_VERIFY_TASK_BY_TASK_IDS, taskIds],
+    () => getMoveVerifyByTaskIds(taskIds),
+    {
+      enabled: layer === "1",
+      retry: 0,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+      onSuccess,
+    }
+  );
+};
 
 export const useMoveVerifyTaskInfo = (
   taskId: string,

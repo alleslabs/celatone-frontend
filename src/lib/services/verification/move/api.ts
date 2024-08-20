@@ -34,6 +34,11 @@ export const getMoveVerifyByTaskId = async (
     .get(`${INITIA_MOVE_VERIFIER}/contracts/task/${encodeURI(taskId)}`)
     .then(({ data }) => parseWithError(zMoveVerifyByTaskIdResponse, data));
 
+export const getMoveVerifyByTaskIds = async (
+  taskIds: string[]
+): Promise<MoveVerifyByTaskIdResponse[]> =>
+  Promise.all(taskIds.map(getMoveVerifyByTaskId));
+
 export const getMoveVerifyInfo = async (
   address: Addr,
   moduleName: string
