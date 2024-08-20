@@ -87,26 +87,36 @@ export const useModulesByAddress = ({
       if (!address)
         throw new Error("address is undefined (useModulesByAddress)");
 
-      const [modules, modulesVerified] = await Promise.all([
+      return Promise.allSettled([
         getModulesByAddressLcd(endpoint, address),
         getMoveVerifyInfosByAddress(address),
-      ]);
+      ]).then(([modules, modulesVerified]) => {
+        if (modules.status === "rejected")
+          return {
+            total: 0,
+            items: [],
+          };
 
-      const modulesVerifiedMapping = modulesVerified.contracts.reduce(
-        (acc, { moduleName }) => {
-          acc.set(moduleName, true);
-          return acc;
-        },
-        new Map<string, boolean>()
-      );
+        let modulesVerifiedMapping = new Map();
 
-      return {
-        ...modules,
-        items: modules.items.map((module) => ({
-          ...module,
-          isVerified: modulesVerifiedMapping.has(module.moduleName),
-        })),
-      };
+        if (modulesVerified.status === "fulfilled") {
+          modulesVerifiedMapping = modulesVerified.value.contracts.reduce(
+            (acc, { moduleName }) => {
+              acc.set(moduleName, true);
+              return acc;
+            },
+            new Map<string, boolean>()
+          );
+        }
+
+        return {
+          ...modules.value,
+          items: modules.value.items.map((module) => ({
+            ...module,
+            isVerified: modulesVerifiedMapping.has(module.moduleName),
+          })),
+        };
+      });
     },
     {
       enabled,
