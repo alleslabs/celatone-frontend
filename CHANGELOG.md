@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1095](https://github.com/alleslabs/celatone-frontend/pull/1095) Update native broadcast helper function to generic sign and broadcast function
 - [#1080](https://github.com/alleslabs/celatone-frontend/pull/1080) Adjust color and remove accent color
 - [#1088](https://github.com/alleslabs/celatone-frontend/pull/1088) Remove userKey from network store and add test for it
 - [#1034](https://github.com/alleslabs/celatone-frontend/pull/1034) Clean up custom icon file
