@@ -3,6 +3,7 @@ import type { BechAddr20 } from "lib/types";
 import { CodeStore } from "./code";
 
 const TEST_USER_KEY = "test-default-address";
+const EMPTY_USER_KEY = "empty-default-address";
 
 test("CodeStore setting userkey", () => {
   const codeStore = new CodeStore();
@@ -62,6 +63,7 @@ describe("CodeStore", () => {
         },
       ]);
       // There should be no update to another user's last saved codes list
+      codeStore.setCodeUserKey(EMPTY_USER_KEY);
       expect(codeStore.lastSavedCodes()).toStrictEqual([]);
     });
 
