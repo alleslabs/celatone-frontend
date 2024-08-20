@@ -7,7 +7,7 @@ import type {
   MoveVerifyInfoResponse,
   MoveVerifyInfosByAddressResponse,
 } from "lib/services/types";
-import type { Addr, Nullable, Option } from "lib/types";
+import type { Addr, HexAddr, Nullable, Option } from "lib/types";
 
 import {
   getMoveVerifyByTaskId,
@@ -66,7 +66,7 @@ export const useMoveVerifyInfo = (
 };
 
 export const useMoveVerifyInfosByAddress = (
-  address: Option<Addr>
+  address: Option<HexAddr>
 ): UseQueryResult<Nullable<MoveVerifyInfosByAddressResponse>> => {
   const { chainConfig } = useCelatoneApp();
   const {

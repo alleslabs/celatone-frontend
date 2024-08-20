@@ -20,6 +20,7 @@ export interface IndexedModule {
   parsedAbi: ModuleAbi;
   viewFunctions: ExposedFunction[];
   executeFunctions: ExposedFunction[];
+  isVerified?: boolean;
 }
 
 export interface ModuleInfo

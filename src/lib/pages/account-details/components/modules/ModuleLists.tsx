@@ -5,12 +5,11 @@ import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { MobileTitle, ViewMore } from "lib/components/table";
-import type { BechAddr, IndexedModule, Option } from "lib/types";
+import type { IndexedModule, Option } from "lib/types";
 
 import { ModuleListsBody } from "./ModuleListsBody";
 
 interface ModuleListsProps {
-  address: BechAddr;
   totalCount: Option<number>;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;
@@ -18,7 +17,6 @@ interface ModuleListsProps {
 }
 
 export const ModuleLists = ({
-  address,
   totalCount,
   modules,
   isLoading,
@@ -60,7 +58,6 @@ export const ModuleLists = ({
               />
             )}
             <ModuleListsBody
-              address={address}
               keyword={keyword}
               modules={modules}
               isLoading={isLoading}

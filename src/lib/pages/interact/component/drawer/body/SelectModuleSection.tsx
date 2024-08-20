@@ -2,14 +2,12 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
 import { NoImageEmptyState } from "../../common";
-import type { SelectedAddress } from "../types";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge, ModuleCard } from "lib/components/module";
 import type { ModuleInteractionMobileStep } from "lib/pages/interact/types";
 import type { IndexedModule, Option } from "lib/types";
 
 interface SelectModuleSectionProps {
-  selectedAddress: SelectedAddress;
   modules: IndexedModule[];
   setStep?: (step: ModuleInteractionMobileStep) => void;
   selectedModule: Option<IndexedModule>;
@@ -17,7 +15,6 @@ interface SelectModuleSectionProps {
 }
 
 interface RenderModulesProps {
-  selectedAddress: SelectedAddress;
   modulesLength: number;
   filtered: IndexedModule[];
   selectedModule: Option<IndexedModule>;
@@ -26,7 +23,6 @@ interface RenderModulesProps {
 }
 
 const RenderModules = ({
-  selectedAddress,
   modulesLength,
   filtered,
   selectedModule,
@@ -40,7 +36,6 @@ const RenderModules = ({
     filtered.map((module) => (
       <ModuleCard
         key={module.moduleName}
-        selectedAddress={selectedAddress.address}
         module={module}
         selectedModule={selectedModule}
         setSelectedModule={setSelectedModule}
@@ -53,7 +48,6 @@ const RenderModules = ({
 };
 
 export const SelectModuleSection = ({
-  selectedAddress,
   modules,
   selectedModule,
   setSelectedModule,
@@ -90,7 +84,6 @@ export const SelectModuleSection = ({
         mt={2}
       >
         <RenderModules
-          selectedAddress={selectedAddress}
           modulesLength={modules.length}
           filtered={filteredModules}
           selectedModule={selectedModule}

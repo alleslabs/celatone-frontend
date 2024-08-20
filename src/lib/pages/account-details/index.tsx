@@ -103,7 +103,7 @@ const AccountDetailsBody = ({
     useAccountDelegationInfos(accountAddress);
   // move
   const { data: modulesData, isFetching: isModulesLoading } =
-    useModulesByAddress({ address: accountAddress });
+    useModulesByAddress({ address: hexAddress });
   const { data: resourcesData, isFetching: isResourceLoading } =
     useResourcesByAddressLcd(accountAddress);
   // nft
@@ -428,7 +428,6 @@ const AccountDetailsBody = ({
                   )}
                 />
                 <ModuleLists
-                  address={accountAddress}
                   totalCount={modulesData?.total}
                   modules={modulesData?.items}
                   isLoading={isModulesLoading}
@@ -554,7 +553,6 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <ModuleLists
-              address={accountAddress}
               totalCount={modulesData?.total}
               modules={modulesData?.items}
               isLoading={isModulesLoading}

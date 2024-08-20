@@ -119,7 +119,6 @@ export const ModuleSelectDrawerMobile = ({
                 />
                 {modules ? (
                   <SelectModuleSection
-                    selectedAddress={selectedAddress}
                     modules={modules}
                     selectedModule={selectedModule}
                     setSelectedModule={setSelectedModule}
@@ -172,7 +171,6 @@ export const ModuleSelectDrawerMobile = ({
                       </Button>
                     </Flex>
                     <ModuleCard
-                      selectedAddress={selectedAddress.address}
                       module={selectedModule}
                       selectedModule={selectedModule}
                       readOnly

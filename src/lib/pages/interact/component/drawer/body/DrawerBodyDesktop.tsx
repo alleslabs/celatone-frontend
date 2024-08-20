@@ -1,18 +1,13 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import type {
-  DisplayMode,
-  ModuleSelectFunction,
-  SelectedAddress,
-} from "../types";
+import type { DisplayMode, ModuleSelectFunction } from "../types";
 import type { IndexedModule } from "lib/types";
 
 import { SelectFunctionSection } from "./SelectFunctionSection";
 import { SelectModuleSection } from "./SelectModuleSection";
 
 interface ModuleSelectBodyProps {
-  selectedAddress: SelectedAddress;
   modules: IndexedModule[];
   mode: DisplayMode;
   handleModuleSelect: ModuleSelectFunction;
@@ -20,7 +15,6 @@ interface ModuleSelectBodyProps {
 }
 
 export const DrawerBodyDesktop = ({
-  selectedAddress,
   mode,
   modules,
   handleModuleSelect,
@@ -59,7 +53,6 @@ export const DrawerBodyDesktop = ({
       )}
       <GridItem area="panel" overflow="hidden">
         <SelectModuleSection
-          selectedAddress={selectedAddress}
           modules={modules}
           selectedModule={selectedModule}
           setSelectedModule={setSelectedModule}

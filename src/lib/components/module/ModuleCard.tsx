@@ -6,13 +6,11 @@ import { AppLink } from "../AppLink";
 import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import { ModuleInteractionMobileStep } from "lib/pages/interact/types";
-import { useMoveVerifyInfo } from "lib/services/verification/move";
-import type { BechAddr, IndexedModule, Option } from "lib/types";
+import type { IndexedModule, Option } from "lib/types";
 
 import { CountBadge } from "./CountBadge";
 
 interface ModuleCardProps {
-  selectedAddress: BechAddr;
   module: IndexedModule;
   selectedModule: Option<IndexedModule>;
   setSelectedModule?: (module: IndexedModule) => void;
@@ -21,18 +19,12 @@ interface ModuleCardProps {
 }
 
 export const ModuleCard = ({
-  selectedAddress,
   module,
   selectedModule,
   setSelectedModule,
   setStep,
   readOnly = false,
 }: ModuleCardProps) => {
-  const { data: isVerified } = useMoveVerifyInfo(
-    selectedAddress,
-    module.moduleName
-  );
-
   const handleModuleClick = (clickedModule: IndexedModule) => {
     track(AmpEvent.USE_MODULE_CARD, {
       viewCount: clickedModule.viewFunctions.length,
@@ -65,7 +57,7 @@ export const ModuleCard = ({
           <Text className="ellipsis" variant="body2">
             {module.moduleName}
           </Text>
-          {isVerified && (
+          {module.isVerified && (
             <CustomIcon
               name="check-circle-solid"
               color="success.main"
@@ -82,12 +74,7 @@ export const ModuleCard = ({
         </Flex>
       </Grid>
     ),
-    [
-      isVerified,
-      JSON.stringify(module),
-      selectedModule?.moduleName,
-      setSelectedModule,
-    ]
+    [JSON.stringify(module), selectedModule?.moduleName, setSelectedModule]
   );
 
   return setSelectedModule || readOnly ? (

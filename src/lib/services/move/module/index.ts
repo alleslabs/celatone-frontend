@@ -23,6 +23,7 @@ import type {
   ModuleTableCountsResponse,
   ModuleTxsResponse,
 } from "lib/services/types";
+import { getMoveVerifyInfosByAddress } from "lib/services/verification/move/api";
 import type {
   AbiFormData,
   Addr,
@@ -85,7 +86,27 @@ export const useModulesByAddress = ({
     async () => {
       if (!address)
         throw new Error("address is undefined (useModulesByAddress)");
-      return getModulesByAddressLcd(endpoint, address);
+
+      const [modules, modulesVerified] = await Promise.all([
+        getModulesByAddressLcd(endpoint, address),
+        getMoveVerifyInfosByAddress(address),
+      ]);
+
+      const modulesVerifiedMapping = modulesVerified.contracts.reduce(
+        (acc, { moduleName }) => {
+          acc.set(moduleName, true);
+          return acc;
+        },
+        new Map<string, boolean>()
+      );
+
+      return {
+        ...modules,
+        items: modules.items.map((module) => ({
+          ...module,
+          isVerified: modulesVerifiedMapping.has(module.moduleName),
+        })),
+      };
     },
     {
       enabled,

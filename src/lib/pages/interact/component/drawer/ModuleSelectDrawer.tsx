@@ -101,7 +101,6 @@ export const ModuleSelectDrawer = ({
             />
             {modules ? (
               <DrawerBodyDesktop
-                selectedAddress={selectedAddress}
                 mode={mode}
                 modules={modules}
                 handleModuleSelect={handleModuleSelect}
