@@ -1,6 +1,5 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
-import type { StdFee } from "@cosmjs/stargate";
+import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import type { RJSFValidationError } from "@rjsf/utils";
 import Long from "long";
 import { useRouter } from "next/router";
@@ -53,7 +52,7 @@ import { useSchemaStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeLcd } from "lib/services/wasm/code";
-import type { BechAddr, BechAddr20, ComposedMsg } from "lib/types";
+import type { BechAddr, BechAddr20, BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
@@ -79,8 +78,9 @@ interface InstantiatePageState {
 }
 interface InstantiatePageProps {
   onComplete: (
-    txResult: InstantiateResult,
+    txResult: DeliverTxResponse,
     contractLabel: string,
+    contractAddress: BechAddr32,
     codeId: number,
     instantiator: BechAddr20
   ) => void;
@@ -272,11 +272,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       admin: adminAddress,
       funds,
       estimatedFee,
-      onTxSucceed: (txResult, contractLabel) => {
+      onTxSucceed: (txResult, contractLabel, contractAddress) => {
         setProcessing(false);
         onComplete(
           txResult,
           contractLabel,
+          contractAddress,
           Number(codeId),
           address ?? ("" as BechAddr20)
         );

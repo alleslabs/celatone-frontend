@@ -1,7 +1,5 @@
-// import { toUtf8 } from "@cosmjs/encoding";
 import type { StdFee } from "@cosmjs/stargate";
 import { MsgMigrateContract } from "@initia/initia.js";
-// import { MsgMigrateContract } from "cosmjs-types/cosmwasm/wasm/v1/tx";
 import { useCallback } from "react";
 
 import { useCurrentChain, useGetSigningClient } from "../hooks";
@@ -36,18 +34,6 @@ export const useMigrateTx = () => {
       if (!address || !client)
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
-
-      // const messages = [
-      //   {
-      //     typeUrl: "/cosmwasm.wasm.v1.MsgMigrateContract",
-      //     value: MsgMigrateContract.fromPartial({
-      //       sender: address,
-      //       contract: contractAddress,
-      //       codeId: BigInt(codeId.toString()),
-      //       msg: toUtf8(JSON.stringify(migrateMsg)),
-      //     }),
-      //   },
-      // ];
 
       const messages = toEncodeObject([
         new MsgMigrateContract(

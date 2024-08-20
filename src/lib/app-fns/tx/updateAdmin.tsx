@@ -30,6 +30,35 @@ interface UpdateAdminTxParams {
   onTxFailed?: () => void;
 }
 
+// public async updateAdmin(
+//   senderAddress: string,
+//   contractAddress: string,
+//   newAdmin: string,
+//   fee: StdFee | "auto" | number,
+//   memo = "",
+// ): Promise<ChangeAdminResult> {
+//   const updateAdminMsg: MsgUpdateAdminEncodeObject = {
+//     typeUrl: "/cosmwasm.wasm.v1.MsgUpdateAdmin",
+//     value: MsgUpdateAdmin.fromPartial({
+//       sender: senderAddress,
+//       contract: contractAddress,
+//       newAdmin: newAdmin,
+//     }),
+//   };
+//   const result = await this.signAndBroadcast(senderAddress, [updateAdminMsg], fee, memo);
+//   if (isDeliverTxFailure(result)) {
+//     throw new Error(createDeliverTxResponseErrorMessage(result));
+//   }
+//   return {
+//     logs: logs.parseRawLog(result.rawLog),
+//     height: result.height,
+//     transactionHash: result.transactionHash,
+//     events: result.events,
+//     gasWanted: result.gasWanted,
+//     gasUsed: result.gasUsed,
+//   };
+// }
+
 export const updateAdminTx = ({
   address,
   contractAddress,
