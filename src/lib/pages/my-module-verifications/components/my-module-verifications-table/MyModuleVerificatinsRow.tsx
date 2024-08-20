@@ -1,6 +1,5 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 import type { GridProps } from "@chakra-ui/react";
-import { useMemo } from "react";
 
 import type { MoveVerifyTaskInfo } from "../../data";
 import { useInternalNavigate } from "lib/app-provider";
@@ -9,6 +8,7 @@ import { TableRow } from "lib/components/table";
 import { MyModuleVerificationDetailsStatusBadge } from "lib/pages/my-module-verification-details/components";
 import { dateFromNow, formatUTC } from "lib/utils";
 
+import { FilenameCell } from "./Filenames";
 import { RequestNoteCell } from "./RequestNoteCell";
 
 interface MyModuleVerificationsRowProps {
@@ -21,16 +21,6 @@ export const MyModuleVerificationsRow = ({
   task,
 }: MyModuleVerificationsRowProps) => {
   const navigate = useInternalNavigate();
-  const formattedFiles = useMemo(() => {
-    const files = Object.keys(task.fileMap)
-      .filter((file) => !file.includes(".toml"))
-      .map((file) => file.slice(0, -5)); // remove ".move" extension
-    const firstPart = files.slice(0, 3).join(", ");
-    const remaining = files.length - 3;
-
-    // eslint-disable-next-line sonarjs/no-nested-template-literals
-    return `${firstPart}${remaining > 0 ? `+${remaining}` : ""}`;
-  }, [task.fileMap]);
 
   return (
     <Grid
@@ -52,7 +42,7 @@ export const MyModuleVerificationsRow = ({
         <RequestNoteCell moveVerifyTask={task} />
       </TableRow>
       <TableRow>
-        <Text>{formattedFiles}</Text>
+        <FilenameCell task={task} />
       </TableRow>
       <TableRow>
         <MyModuleVerificationDetailsStatusBadge status={task.status} />

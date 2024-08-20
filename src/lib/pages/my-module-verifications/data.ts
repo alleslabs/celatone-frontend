@@ -11,9 +11,9 @@ export const useMyModuleVerifications = (): {
   isLoading: boolean;
   data: MoveVerifyTaskInfo[];
 } => {
-  const { getMoveVerifyTasks, completeMoveVerifyTask } =
+  const { latestMoveVerifyTasks, completeMoveVerifyTask } =
     useMoveVerifyTaskStore();
-  const localTasks = getMoveVerifyTasks();
+  const localTasks = latestMoveVerifyTasks();
   const { data, isLoading } = useMoveVerifyTaskInfos(
     localTasks
       .filter(({ completed }) => !completed)
@@ -36,7 +36,9 @@ export const useMyModuleVerifications = (): {
       if (task.completed) {
         return {
           ...task,
-          status: MoveVerifyTaskStatus.Finished,
+          status: task.verifiedAt
+            ? MoveVerifyTaskStatus.Finished
+            : MoveVerifyTaskStatus.NotFound,
         };
       }
 

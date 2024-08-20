@@ -27,13 +27,13 @@ describe("verifyModuleTask", () => {
     chainId: "chainId",
   };
   test("correctly get verify module tasks", () => {
-    expect(moveVerifyTaskStore.getMoveVerifyTasks()).toEqual([]);
+    expect(moveVerifyTaskStore.latestMoveVerifyTasks()).toEqual([]);
   });
 
   test("correctly get verify module tasks after adding new task", () => {
     moveVerifyTaskStore.addMoveVerifyTask(verifyModule);
     expect(
-      moveVerifyTaskStore.getMoveVerifyTasks().map((task) => ({
+      moveVerifyTaskStore.latestMoveVerifyTasks().map((task) => ({
         taskId: task.taskId,
         fileMap: task.fileMap,
         chainId: task.chainId,
@@ -67,7 +67,7 @@ describe("verifyModuleTask", () => {
     };
     moveVerifyTaskStore.addMoveVerifyTask(verifyModule1);
     moveVerifyTaskStore.addMoveVerifyTask(verifyModule2);
-    expect(moveVerifyTaskStore.getMoveVerifyTasks().length).toBe(3);
+    expect(moveVerifyTaskStore.latestMoveVerifyTasks().length).toBe(3);
 
     const actualVerifyModuleTask1 = moveVerifyTaskStore.getMoveVerifyTask(
       verifyModule1.taskId

@@ -49,7 +49,11 @@ export class MoveVerifyTaskStore {
   }
 
   getMoveVerifyTasks(): MoveVerifyTaskLocalInfo[] {
-    return this.modules[this.userKey]?.slice().reverse() ?? [];
+    return this.modules[this.userKey] ?? [];
+  }
+
+  latestMoveVerifyTasks(): MoveVerifyTaskLocalInfo[] {
+    return this.getMoveVerifyTasks()?.slice().reverse();
   }
 
   getMoveVerifyTask(taskId: string): MoveVerifyTaskLocalInfo | undefined {
@@ -80,13 +84,11 @@ export class MoveVerifyTaskStore {
   }
 
   updateRequestNote(taskId: string, newRequestNote?: string): void {
-    const modules = this.getMoveVerifyTasks()
-      .reverse()
-      .map((module) =>
-        module.taskId === taskId
-          ? { ...module, requestNote: newRequestNote }
-          : module
-      );
+    const modules = this.getMoveVerifyTasks().map((module) =>
+      module.taskId === taskId
+        ? { ...module, requestNote: newRequestNote }
+        : module
+    );
     this.modules[this.userKey] = modules;
   }
 }

@@ -44,7 +44,7 @@ export const MyModuleVerificationDetailsStatusBadge = ({
   };
 
   return (
-    <Tag size="xs" variant="gray" w="fit-content" gap={1}>
+    <Tag size="md" variant="gray" w="fit-content" gap={1}>
       {renderStatus()}
     </Tag>
   );
