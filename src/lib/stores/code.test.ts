@@ -65,6 +65,7 @@ describe("CodeStore", () => {
       // There should be no update to another user's last saved codes list
       codeStore.setCodeUserKey(EMPTY_USER_KEY);
       expect(codeStore.lastSavedCodes()).toStrictEqual([]);
+      codeStore.setCodeUserKey(TEST_USER_KEY);
     });
 
     test("add code 2 (with no info) to the saved codes list", () => {
