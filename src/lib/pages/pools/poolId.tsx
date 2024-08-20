@@ -64,8 +64,8 @@ export const PoolId = () => {
       ) : (
         <EmptyState
           imageVariant="not-found"
-          heading="Pool does not exist"
-          message="Please check your input or make sure you have selected the correct network."
+          heading="Invalid Pool ID Format"
+          message="Please ensure that you have entered a number for Pool ID."
         />
       )}
     </PageContainer>

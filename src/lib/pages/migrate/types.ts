@@ -12,7 +12,12 @@ export interface MigratePageState {
   codeId: string;
 }
 
-export const zMigrateQueryParams = z.object({
-  contractAddress: zBechAddr32,
-  codeId: z.string(),
-});
+export const zMigrateQueryParams = z
+  .object({
+    contract: zBechAddr32.optional().default("" as BechAddr32),
+    "code-id": z.string().optional().default(""),
+  })
+  .transform((val) => ({
+    contractAddress: val.contract,
+    codeId: val["code-id"],
+  }));

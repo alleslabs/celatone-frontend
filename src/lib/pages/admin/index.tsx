@@ -22,9 +22,7 @@ import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
-import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { EmptyState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxBroadcast } from "lib/hooks";
@@ -241,21 +239,7 @@ const UpdateAdmin = () => {
   useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const validated = zUpdateAdminQueryParams.safeParse(router.query);
-  return (
-    <>
-      {validated.success ? (
-        <UpdateAdminBody {...validated.data} />
-      ) : (
-        <PageContainer>
-          <EmptyState
-            imageVariant="not-found"
-            heading="Invalid Contract Format"
-            message="Please ensure that you have entered a valid format."
-          />
-        </PageContainer>
-      )}
-    </>
-  );
+  return <>{validated.success && <UpdateAdminBody {...validated.data} />}</>;
 };
 
 export default UpdateAdmin;

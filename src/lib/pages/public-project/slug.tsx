@@ -84,6 +84,15 @@ const ProjectDetailsBody = ({ tab }: { tab: TabIndex }) => {
 
   if (isLoading) return <Loading withBorder />;
 
+  if (!projectDetail)
+    return (
+      <EmptyState
+        imageVariant="not-found"
+        heading="Project does not exist"
+        message="Please check your input or make sure you have selected the correct network."
+      />
+    );
+
   return (
     <>
       <CelatoneSeo
@@ -190,17 +199,10 @@ const ProjectDetails = () => {
   const router = useRouter();
   const validated = zProjectDetailsQueryParams.safeParse(router.query);
 
+  // TODO revist the unsuccesful case
   return (
     <PageContainer>
-      {validated.success ? (
-        <ProjectDetailsBody {...validated.data} />
-      ) : (
-        <EmptyState
-          imageVariant="not-found"
-          heading="Project does not exist"
-          message="Please check your input or make sure you have selected the correct network."
-        />
-      )}
+      {validated.success && <ProjectDetailsBody {...validated.data} />}
     </PageContainer>
   );
 };

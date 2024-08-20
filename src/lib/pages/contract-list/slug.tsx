@@ -23,7 +23,6 @@ import {
 import PageContainer from "lib/components/PageContainer";
 import { ContractListDetail } from "lib/components/select-contract";
 import { CelatoneSeo } from "lib/components/Seo";
-import { EmptyState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
@@ -201,15 +200,7 @@ const ContractsByList = () => {
 
   return (
     <PageContainer>
-      {validated.success ? (
-        <ContractByListBody {...validated.data} />
-      ) : (
-        <EmptyState
-          imageVariant="not-found"
-          heading="Invalid Contract Format"
-          message="Please ensure that you have entered a valid format."
-        />
-      )}
+      {validated.success && <ContractByListBody {...validated.data} />}
     </PageContainer>
   );
 };

@@ -18,7 +18,6 @@ import { FooterCta } from "lib/components/layouts";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { EmptyState } from "lib/components/state";
 import { Stepper } from "lib/components/stepper";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { useUploadCode } from "lib/hooks";
@@ -229,15 +228,7 @@ const Migrate = () => {
 
   return (
     <PageContainer>
-      {validated.success ? (
-        <MigrateBody {...validated.data} />
-      ) : (
-        <EmptyState
-          imageVariant="not-found"
-          heading="Invalid Contract or Code Format"
-          message="Please ensure that you have entered a valid format."
-        />
-      )}
+      {validated.success && <MigrateBody {...validated.data} />}
     </PageContainer>
   );
 };
