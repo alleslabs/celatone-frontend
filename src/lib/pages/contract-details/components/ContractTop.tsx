@@ -135,7 +135,7 @@ export const ContractTop = ({
         gap={{ md: 4 }}
       >
         <Flex direction="column" gap={{ base: 1, md: 3 }} overflow="hidden">
-          <Flex gap={1} align="start" minH="36px">
+          <Flex gap={1} align="center">
             <CustomIcon
               name="contract-address"
               boxSize={5}
@@ -150,23 +150,19 @@ export const ContractTop = ({
                 height={7}
               />
             )}
-            <Flex alignItems="center" display="inline">
-              <Heading
-                as="h5"
-                mt={{ base: 1, md: 0 }}
-                ml={{ base: 1, md: 0 }}
-                variant={{ base: "h6", md: "h5" }}
-                wordBreak="break-word"
-                display="inline"
-              >
-                {displayName}
-              </Heading>
-              <WasmVerifyBadge
-                status={getWasmVerifyStatus(wasmVerifyInfo)}
-                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-                linkedCodeId={contract.codeId}
-              />
-            </Flex>
+            <Heading
+              as="h5"
+              variant={{ base: "h6", md: "h5" }}
+              wordBreak="break-word"
+              display="inline"
+            >
+              {displayName}
+            </Heading>
+            <WasmVerifyBadge
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              linkedCodeId={contract.codeId}
+            />
           </Flex>
           <Flex gap={{ base: 2, md: 1 }} direction="column">
             <Flex

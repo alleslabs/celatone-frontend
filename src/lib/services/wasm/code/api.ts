@@ -38,6 +38,14 @@ export const getCodesByAddress = async (
     })
     .then(({ data }) => zCodesResponse.parse(data));
 
+export const getAllCodesByAddress = async (
+  endpoint: string,
+  address: BechAddr
+): Promise<CodesResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/wasm/all-codes`)
+    .then(({ data }) => zCodesResponse.parse(data));
+
 export const getCodeData = async (
   endpoint: string,
   codeId: number,

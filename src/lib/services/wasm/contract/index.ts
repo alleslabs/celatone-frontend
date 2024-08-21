@@ -26,6 +26,7 @@ import {
   getAdminContractsByAddress,
   getAdminsByContractAddresses,
   getAllAdminContractsByAddress,
+  getAllInstantiatedContractsByAddress,
   getContractData,
   getContracts,
   getContractsByCodeId,
@@ -141,6 +142,34 @@ export const useInstantiatedContractsByAddress = (
         limit,
         offset
       );
+    },
+    {
+      enabled: Boolean(address) && enabled,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useAllInstantiatedContractsByAddress = (
+  address: Option<BechAddr>,
+  enabled = true
+): UseQueryResult<ContractsResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.ALL_INSTANTIATED_CONTRACTS_BY_ADDRESS,
+      endpoint,
+      address,
+    ],
+    async () => {
+      if (!address)
+        throw new Error(
+          "address not found (getInstantiatedContractsByAddress)"
+        );
+
+      return getAllInstantiatedContractsByAddress(endpoint, address);
     },
     {
       enabled: Boolean(address) && enabled,
