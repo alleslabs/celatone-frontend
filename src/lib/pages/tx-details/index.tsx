@@ -8,13 +8,15 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { EmptyState } from "lib/components/state/EmptyState";
+import { EmptyState, InvalidState } from "lib/components/state";
 import { useTxData } from "lib/services/tx";
 import { truncate } from "lib/utils";
 
 import { TxHeader, TxInfo, TxInfoMobile } from "./components";
 import { MessageSection } from "./components/MessageSection";
 import { zTxDetailsQueryParams } from "./types";
+
+const InvalidTx = () => <InvalidState title="Transaction does not exist" />;
 
 const TxDetailsBody = ({ txHash }: { txHash: string }) => {
   const router = useRouter();
@@ -36,6 +38,7 @@ const TxDetailsBody = ({ txHash }: { txHash: string }) => {
   }, [router.isReady, data, isLoading]);
 
   if (isLoading) return <Loading withBorder />;
+  if (!data) return <InvalidTx />;
 
   return (
     <>
@@ -75,11 +78,7 @@ const TxDetails = () => {
       {validated.success ? (
         <TxDetailsBody {...validated.data} />
       ) : (
-        <EmptyState
-          imageVariant="not-found"
-          heading="Invalid Transaction Format"
-          message="Please ensure that you have entered a valid 64-character hexadecimal string."
-        />
+        <InvalidTx />
       )}
     </PageContainer>
   );

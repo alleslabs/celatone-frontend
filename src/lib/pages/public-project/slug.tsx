@@ -13,7 +13,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { EmptyState } from "lib/components/state";
+import { InvalidState } from "lib/components/state";
 
 import { DetailHeader } from "./components/DetailHeader";
 import {
@@ -30,7 +30,7 @@ const ProjectDetailsBody = ({ tab }: { tab: TabIndex }) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   const navigate = useInternalNavigate();
-  // TODO: remove assertion later
+
   const {
     publicCodes,
     publicContracts,
@@ -83,15 +83,7 @@ const ProjectDetailsBody = ({ tab }: { tab: TabIndex }) => {
     (move.enabled ? publicModules.length : 0);
 
   if (isLoading) return <Loading withBorder />;
-
-  if (!projectDetail)
-    return (
-      <EmptyState
-        imageVariant="not-found"
-        heading="Project does not exist"
-        message="Please check your input or make sure you have selected the correct network."
-      />
-    );
+  if (!projectDetail) return <InvalidState title="Project does not exist" />;
 
   return (
     <>
@@ -199,7 +191,6 @@ const ProjectDetails = () => {
   const router = useRouter();
   const validated = zProjectDetailsQueryParams.safeParse(router.query);
 
-  // TODO revist the unsuccesful case
   return (
     <PageContainer>
       {validated.success && <ProjectDetailsBody {...validated.data} />}
