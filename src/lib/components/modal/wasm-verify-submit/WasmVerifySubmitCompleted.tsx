@@ -28,8 +28,9 @@ export const WasmVerifySubmitCompleted = ({
           />
           <Heading variant="h5">Submitted Verification!</Heading>
           <Text variant="body2" textAlign="center">
-            Your code verification request has been submitted. Verification
-            details will be available shortly...
+            Your code verification request has been submitted.
+            <br />
+            You can view verification status on code or contract details page.
           </Text>
         </Flex>
         <Button onClick={onClose} variant="outline-primary" w="100%">
