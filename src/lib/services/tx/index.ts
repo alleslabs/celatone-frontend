@@ -393,11 +393,10 @@ export const useTxsSequencer = (limit = 10) => {
 
 export const useTxsCountSequencer = () => {
   const endpoint = useLcdEndpoint();
-  const { currentChainId } = useCelatoneApp();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.TXS_COUNT_SEQUENCER, endpoint],
-    async () => getTxsCountSequencer(endpoint, currentChainId),
+    async () => getTxsCountSequencer(endpoint),
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
