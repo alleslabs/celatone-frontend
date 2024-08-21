@@ -13,8 +13,8 @@ import { EmptyState } from "lib/components/state";
 import { TableContainer } from "lib/components/table";
 import type { MoveVerifyTaskStatus } from "lib/services/types";
 
-import { MyModuleVerificationsRow } from "./MyModuleVerificatinsRow";
 import { MyModuleVerificationsTableHeader } from "./MyModuleVerificationsHeader";
+import { MyModuleVerificationsRow } from "./MyModuleVerificationsRow";
 
 export const MyModuleVerificationsTable = observer(() => {
   const navigate = useInternalNavigate();

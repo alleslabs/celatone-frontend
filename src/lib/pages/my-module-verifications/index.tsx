@@ -16,7 +16,7 @@ export const MyModuleVerifications = () => {
       <CelatoneSeo pageName="My Past Verification" />
       <Flex justifyContent="space-between" mb={4}>
         <Box>
-          <Heading as="h5" variant="h5" minH="36px">
+          <Heading as="h5" variant="h5">
             My Past Verification
           </Heading>
           <Text variant="body2" fontWeight={500} color="text.dark">
@@ -25,12 +25,12 @@ export const MyModuleVerifications = () => {
           </Text>
         </Box>
         <Flex gap={4}>
-          <Button
+          {/* <Button
             leftIcon={<CustomIcon name="document" />}
             variant="outline-white"
           >
             View Verification Guideline
-          </Button>
+          </Button> */}
           <Button
             onClick={() => navigate({ pathname: "/modules/verify" })}
             leftIcon={<CustomIcon name="plus" />}

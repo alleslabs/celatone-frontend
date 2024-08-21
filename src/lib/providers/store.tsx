@@ -71,6 +71,6 @@ export function useLocalChainConfigStore() {
 }
 
 export function useMoveVerifyTaskStore() {
-  const { MoveVerifyTaskStore } = useStore();
-  return MoveVerifyTaskStore;
+  const { moveVerifyTaskStore } = useStore();
+  return moveVerifyTaskStore;
 }

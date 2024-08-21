@@ -102,6 +102,7 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
                     <MyModuleVerificationDetailsStatusBadge
                       status={option}
                       hasCloseBtn
+                      isActiveOnVerifying={false}
                     />
                   }
                   onSelect={() => setResult(toggleItem(result, option))}
@@ -122,6 +123,7 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
                 filterDropdownComponent={
                   <MyModuleVerificationDetailsStatusBadge
                     status={option.value}
+                    isActiveOnVerifying={false}
                   />
                 }
                 isOptionSelected={isOptionSelected(option.value)}

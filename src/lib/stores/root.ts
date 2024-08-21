@@ -22,7 +22,7 @@ export class RootStore {
 
   localChainConfigStore: LocalChainConfigStore;
 
-  MoveVerifyTaskStore: MoveVerifyTaskStore;
+  moveVerifyTaskStore: MoveVerifyTaskStore;
 
   constructor() {
     this.accountStore = new AccountStore();
@@ -32,6 +32,6 @@ export class RootStore {
     this.schemaStore = new SchemaStore();
     this.networkStore = new NetworkStore();
     this.localChainConfigStore = new LocalChainConfigStore();
-    this.MoveVerifyTaskStore = new MoveVerifyTaskStore();
+    this.moveVerifyTaskStore = new MoveVerifyTaskStore();
   }
 }

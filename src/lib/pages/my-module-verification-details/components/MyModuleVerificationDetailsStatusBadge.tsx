@@ -7,11 +7,13 @@ import { MoveVerifyTaskStatus } from "lib/services/types";
 interface MyModuleVerificationDetailsStatusBadgeProps {
   status: MoveVerifyTaskStatus;
   hasCloseBtn?: boolean;
+  isActiveOnVerifying?: boolean;
 }
 
 export const MyModuleVerificationDetailsStatusBadge = ({
   status,
   hasCloseBtn,
+  isActiveOnVerifying = true,
 }: MyModuleVerificationDetailsStatusBadgeProps) => {
   const renderStatus = () => {
     if (status === MoveVerifyTaskStatus.Pending)
@@ -40,7 +42,7 @@ export const MyModuleVerificationDetailsStatusBadge = ({
 
     return (
       <>
-        <ActiveDot bg="primary.main" />
+        <ActiveDot bg="primary.main" isActive={isActiveOnVerifying} />
         <TagLabel>Verifying</TagLabel>
       </>
     );
