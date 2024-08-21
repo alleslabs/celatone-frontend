@@ -1,33 +1,47 @@
-import { useDisclosure } from "@chakra-ui/react";
+import { Flex, useDisclosure } from "@chakra-ui/react";
+import type { ReactNode } from "react";
 
 import { AttachSchemaCard } from "../AttachSchemaCard";
 import { JsonSchemaModal } from "../JsonSchemaModal";
-import type { CodeSchema } from "lib/stores/schema";
-import type { Option } from "lib/types";
+import type { CodeSchema, Option } from "lib/types";
 
 interface UploadSchemaContentInterface {
   attached: boolean;
-  schema: Option<CodeSchema>;
+  localSchema: Option<CodeSchema>;
   codeId: number;
   codeHash: string;
+  triggerElement?: ReactNode;
 }
 
 export const UploadSchema = ({
   attached,
-  schema,
+  localSchema,
   codeId,
   codeHash,
+  triggerElement,
 }: UploadSchemaContentInterface) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <AttachSchemaCard
-        attached={attached}
-        codeId={codeId}
-        codeHash={codeHash}
-        schema={schema}
-        openModal={onOpen}
-      />
+      {triggerElement ? (
+        <Flex
+          flex={1}
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpen();
+          }}
+        >
+          {triggerElement}
+        </Flex>
+      ) : (
+        <AttachSchemaCard
+          attached={attached}
+          codeId={codeId}
+          codeHash={codeHash}
+          localSchema={localSchema}
+          openModal={onOpen}
+        />
+      )}
       <JsonSchemaModal
         codeId={codeId}
         codeHash={codeHash}

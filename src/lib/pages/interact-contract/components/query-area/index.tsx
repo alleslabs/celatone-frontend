@@ -12,13 +12,14 @@ import {
   UploadSchemaSection,
 } from "lib/components/json-schema";
 import { Tooltip } from "lib/components/Tooltip";
-import { useSchemaStore } from "lib/providers/store";
-import type { BechAddr32, Option } from "lib/types";
+import type { BechAddr32, CodeSchema, Nullish, Option } from "lib/types";
 
 import { JsonQuery } from "./JsonQuery";
 import { SchemaQuery } from "./schema-query";
 
 interface QueryAreaProps {
+  verifiedSchema: Nullish<CodeSchema>;
+  localSchema: Option<CodeSchema>;
   contractAddress: BechAddr32;
   initialMsg: string;
   codeId: Option<number>;
@@ -26,13 +27,19 @@ interface QueryAreaProps {
 }
 
 export const QueryArea = observer(
-  ({ contractAddress, initialMsg, codeId, codeHash }: QueryAreaProps) => {
+  ({
+    verifiedSchema,
+    localSchema,
+    contractAddress,
+    initialMsg,
+    codeId,
+    codeHash,
+  }: QueryAreaProps) => {
     const isMobile = useMobile();
     const [tab, setTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
 
-    const { getQuerySchema, getSchemaByCodeHash } = useSchemaStore();
-    const attached = Boolean(codeHash && getSchemaByCodeHash(codeHash));
-    const schema = codeHash ? getQuerySchema(codeHash) : undefined;
+    const schema = verifiedSchema ?? localSchema;
+    const hasSchema = Boolean(schema);
 
     const handleTabChange = useCallback(
       (nextTab: MessageTabs) => {
@@ -44,10 +51,10 @@ export const QueryArea = observer(
     );
 
     useEffect(() => {
-      if (!schema) setTab(MessageTabs.JSON_INPUT);
+      if (!schema || isMobile) setTab(MessageTabs.JSON_INPUT);
       else setTab(MessageTabs.YOUR_SCHEMA);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [JSON.stringify(schema)]);
+    }, [isMobile, JSON.stringify(schema)]);
 
     return (
       <>
@@ -89,13 +96,14 @@ export const QueryArea = observer(
             codeId &&
             codeHash && (
               <>
-                {attached ? (
+                {hasSchema ? (
                   <SchemaQuery
-                    codeId={codeId}
-                    codeHash={codeHash}
-                    schema={schema}
+                    verifiedSchema={verifiedSchema}
+                    localSchema={localSchema}
                     contractAddress={contractAddress}
                     initialMsg={initialMsg}
+                    codeId={codeId}
+                    codeHash={codeHash}
                   />
                 ) : (
                   <UploadSchemaSection

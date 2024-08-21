@@ -4,7 +4,6 @@ import type { ChangeEvent } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { SelectInput } from "lib/components/forms";
-import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
@@ -146,42 +145,42 @@ export const ValidatorVotesTable = ({
         label: `Yes (${answers?.yes ?? 0})`,
         value: ProposalVoteType.YES,
         disabled: !answers?.yes,
-        icon: "circle" as IconKeys,
+        icon: "circle" as const,
         iconColor: "success.main",
       },
       {
         label: `No (${answers?.no ?? 0})`,
         value: ProposalVoteType.NO,
         disabled: !answers?.no,
-        icon: "circle" as IconKeys,
+        icon: "circle" as const,
         iconColor: "error.main",
       },
       {
         label: `No with veto (${answers?.noWithVeto ?? 0})`,
         value: ProposalVoteType.NO_WITH_VETO,
         disabled: !answers?.noWithVeto,
-        icon: "circle" as IconKeys,
+        icon: "circle" as const,
         iconColor: "error.dark",
       },
       {
         label: `Abstain (${answers?.abstain ?? 0})`,
         value: ProposalVoteType.ABSTAIN,
         disabled: !answers?.abstain,
-        icon: "circle" as IconKeys,
+        icon: "circle" as const,
         iconColor: "gray.600",
       },
       {
         label: `Did not vote (${answers?.didNotVote ?? 0})`,
         value: ProposalVoteType.DID_NOT_VOTE,
         disabled: !answers?.didNotVote,
-        icon: "circle" as IconKeys,
+        icon: "circle" as const,
         iconColor: "gray.600",
       },
       {
         label: `Weighted (${answers?.weighted ?? 0})`,
         value: ProposalVoteType.WEIGHTED,
         disabled: !answers?.weighted,
-        icon: "circle" as IconKeys,
+        icon: "circle" as const,
         iconColor: "primary.light",
       },
     ],

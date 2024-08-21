@@ -29,7 +29,7 @@ export const MessageSection = ({ txData }: MessageSectionProps) => {
         <Alert variant="error" mb={2} alignItems="center">
           <Flex gap={2} align="start">
             <CustomIcon
-              name="alert-circle-solid"
+              name="alert-triangle-solid"
               color="error.main"
               boxSize={4}
             />

@@ -1,6 +1,7 @@
 import type { FlexProps, TextProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
+import type { ReactNode } from "react";
 
 import { trackMintScan } from "lib/amplitude";
 import type { AddressReturnType } from "lib/app-provider";
@@ -34,6 +35,7 @@ interface ExplorerLinkProps extends FlexProps {
   ampCopierSection?: string;
   openNewTab?: boolean;
   fixedHeight?: boolean;
+  rightIcon?: ReactNode;
 }
 
 export const getNavigationUrl = ({
@@ -122,7 +124,7 @@ const LinkRender = ({
     <Text
       variant={textVariant}
       fontFamily="mono"
-      color={textValue.length ? "secondary.main" : "text.disabled"}
+      color={textValue.length ? "primary.main" : "text.disabled"}
       className={isEllipsis ? "ellipsis" : undefined}
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
@@ -169,6 +171,7 @@ export const ExplorerLink = ({
   ampCopierSection,
   openNewTab,
   fixedHeight = true,
+  rightIcon = null,
   ...componentProps
 }: ExplorerLinkProps) => {
   const isMobile = useMobile();
@@ -188,10 +191,11 @@ export const ExplorerLink = ({
   const readOnly = isReadOnly || !link;
   // TODO: handle auto width
   return readOnly ? (
-    <Flex alignItems="center" {...componentProps}>
+    <Flex alignItems="center" gap={1} {...componentProps}>
       <Text variant="body2" color="text.disabled">
         {textValue}
       </Text>
+      {rightIcon}
     </Flex>
   ) : (
     <Flex
@@ -202,8 +206,9 @@ export const ExplorerLink = ({
       transition="all 0.25s ease-in-out"
       _hover={{
         textDecoration: "underline",
-        textDecorationColor: "secondary.light",
+        textDecorationColor: "primary.light",
       }}
+      gap={1}
       {...componentProps}
     >
       <LinkRender
@@ -216,12 +221,13 @@ export const ExplorerLink = ({
         textVariant={textVariant}
         openNewTab={openNewTab}
       />
+      {rightIcon}
       <Copier
         type={type}
         value={copyValue || value}
         copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
         display={showCopyOnHover && !isMobile ? "none" : "inline"}
-        ml={2}
+        ml={1}
         amptrackSection={ampCopierSection}
       />
     </Flex>

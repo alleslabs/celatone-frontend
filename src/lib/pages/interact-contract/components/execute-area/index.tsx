@@ -13,13 +13,14 @@ import {
   UploadSchemaSection,
 } from "lib/components/json-schema";
 import { Tooltip } from "lib/components/Tooltip";
-import { useSchemaStore } from "lib/providers/store";
-import type { BechAddr32, Option } from "lib/types";
+import type { BechAddr32, CodeSchema, Nullish, Option } from "lib/types";
 
 import { JsonExecute } from "./JsonExecute";
 import { SchemaExecute } from "./schema-execute";
 
 interface ExecuteAreaProps {
+  verifiedSchema: Nullish<CodeSchema>;
+  localSchema: Option<CodeSchema>;
   contractAddress: BechAddr32;
   initialMsg: string;
   initialFunds: Coin[];
@@ -29,6 +30,8 @@ interface ExecuteAreaProps {
 
 export const ExecuteArea = observer(
   ({
+    verifiedSchema,
+    localSchema,
     contractAddress,
     initialMsg,
     initialFunds,
@@ -37,9 +40,8 @@ export const ExecuteArea = observer(
   }: ExecuteAreaProps) => {
     const [tab, setTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
 
-    const { getExecuteSchema, getSchemaByCodeHash } = useSchemaStore();
-    const attached = Boolean(codeHash && getSchemaByCodeHash(codeHash));
-    const schema = codeHash ? getExecuteSchema(codeHash) : undefined;
+    const schema = verifiedSchema ?? localSchema;
+    const hasSchema = Boolean(schema);
 
     const handleTabChange = useCallback(
       (nextTab: MessageTabs) => {
@@ -97,9 +99,10 @@ export const ExecuteArea = observer(
             codeId &&
             codeHash && (
               <>
-                {attached ? (
+                {hasSchema ? (
                   <SchemaExecute
-                    schema={schema}
+                    verifiedSchema={verifiedSchema}
+                    localSchema={localSchema}
                     contractAddress={contractAddress}
                     initialMsg={initialMsg}
                     initialFunds={initialFunds}

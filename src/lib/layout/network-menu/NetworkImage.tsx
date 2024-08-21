@@ -8,10 +8,10 @@ interface NetworkImageProps {
 
 export const NetworkImage = ({ chainId }: NetworkImageProps) => {
   const { chainConfigs } = useChainConfigs();
-  const [secondaryDarker] = useToken("colors", ["secondary.darker"]);
+  const [primaryDark] = useToken("colors", ["primary.dark"]);
 
   const image = chainConfigs[chainId]?.logoUrl;
-  const fallbackImage = `https://ui-avatars.com/api/?name=${chainConfigs[chainId]?.prettyName || chainId}&background=${secondaryDarker.replace("#", "")}&color=fff`;
+  const fallbackImage = `https://ui-avatars.com/api/?name=${chainConfigs[chainId]?.prettyName || chainId}&background=${primaryDark.replace("#", "")}&color=fff`;
 
   return (
     <Image

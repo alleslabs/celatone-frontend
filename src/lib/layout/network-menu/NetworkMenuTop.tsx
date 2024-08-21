@@ -43,7 +43,7 @@ export const NetworkMenuTop = observer(
               </Flex>
             )}
           </Flex>
-          {isAllowCustomNetworks && (
+          {isAllowCustomNetworks && !isMobile && (
             <Box>
               <Text as="span" variant="body3" color="text.dark">
                 Want to add your network?
@@ -52,7 +52,7 @@ export const NetworkMenuTop = observer(
                 <Text
                   as="span"
                   variant="body3"
-                  color="secondary.main"
+                  color="primary.main"
                   _hover={{ textDecoration: "underline" }}
                 >
                   Add a custom chain.

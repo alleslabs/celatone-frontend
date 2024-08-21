@@ -47,21 +47,6 @@ export const zAccountModulesResponse = z.object({
 });
 export type AccountModulesResponse = z.infer<typeof zAccountModulesResponse>;
 
-export const zModuleVerificationInternal = z
-  .object({
-    module_address: zHexAddr,
-    module_name: z.string(),
-    verified_at: z.string(),
-    digest: z.string(),
-    source: z.string(),
-    base64: z.string(),
-    chain_id: z.string(),
-  })
-  .transform(snakeToCamel);
-export type ModuleVerificationInternal = z.infer<
-  typeof zModuleVerificationInternal
->;
-
 export interface DecodeModuleReturn {
   abi: string;
 }
@@ -154,7 +139,7 @@ export interface ModuleInitialPublishInfo {
   initProposalTitle: Option<string>;
 }
 
-export const zMoveViewJsonResponse = z
+export const zMoveViewJsonResponseLcd = z
   .object({
     data: z.string(),
   })

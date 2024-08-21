@@ -4,8 +4,7 @@ import { useCallback } from "react";
 import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
-import type { CodeSchema } from "lib/stores/schema";
-import type { Option } from "lib/types";
+import type { CodeSchema, Option } from "lib/types";
 
 import { ViewSchemaModal } from "./view/ViewSchemaModal";
 
@@ -13,7 +12,7 @@ interface AttachSchemaCardProps {
   attached: boolean;
   codeId: number;
   codeHash: string;
-  schema: Option<CodeSchema>;
+  localSchema: Option<CodeSchema>;
   openModal: () => void;
 }
 
@@ -21,7 +20,7 @@ export const AttachSchemaCard = ({
   attached,
   codeId,
   codeHash,
-  schema,
+  localSchema,
   openModal,
 }: AttachSchemaCardProps) => {
   const handleAttach = useCallback(() => {
@@ -64,7 +63,7 @@ export const AttachSchemaCard = ({
             <Text variant="body2">JSON Schema attached</Text>
           </Flex>
           <Flex align="center" gap={2}>
-            <ViewSchemaModal codeId={codeId} jsonSchema={schema} />
+            <ViewSchemaModal codeId={codeId} schema={localSchema} />
             <Button variant="outline-gray" size="sm" onClick={handleReattach}>
               Reattach
             </Button>

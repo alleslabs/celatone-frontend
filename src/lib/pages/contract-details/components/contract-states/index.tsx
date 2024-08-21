@@ -139,10 +139,10 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           <Button
             key={namespace}
             variant={
-              namespace === selectedNamespace
-                ? "accent-solid"
-                : "outline-accent"
+              namespace === selectedNamespace ? "primary" : "outline-white"
             }
+            border="1px solid"
+            borderColor="gray.100"
             fontSize="14px"
             height="28px"
             borderRadius="16px"

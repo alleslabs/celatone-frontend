@@ -32,8 +32,7 @@ export const UserAccountDesc = observer(
           triggerElement={
             <Button
               size="xs"
-              variant="ghost-secondary"
-              color="secondary.main"
+              variant="ghost-primary"
               leftIcon={<CustomIcon name="edit" boxSize={3} />}
             >
               {description ? "Edit" : "Add Description"}

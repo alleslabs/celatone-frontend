@@ -24,9 +24,8 @@ import { AppLink } from "lib/components/AppLink";
 import { CustomTab } from "lib/components/CustomTab";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
-import type { CodeSchema } from "lib/stores/schema";
-import { SchemaProperties } from "lib/stores/schema";
-import type { Option } from "lib/types";
+import { SchemaProperties } from "lib/types";
+import type { CodeSchema, Option } from "lib/types";
 
 import { ViewSchemaPanel } from "./ViewSchemaPanel";
 
@@ -46,7 +45,7 @@ const StyledTabPanel = chakra(TabPanel, {
 
 interface ViewSchemaModalProps {
   codeId: number;
-  jsonSchema: Option<CodeSchema>;
+  schema: Option<CodeSchema>;
   isIcon?: boolean;
 }
 
@@ -61,7 +60,7 @@ const ALL_TABS = ["full schema", ...SchemaMsgTabList];
 
 export const ViewSchemaModal = ({
   codeId,
-  jsonSchema,
+  schema,
   isIcon = false,
 }: ViewSchemaModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -139,12 +138,12 @@ export const ViewSchemaModal = ({
               </TabList>
               <TabPanels pl={6}>
                 <StyledTabPanel>
-                  <ViewSchemaPanel jsonSchema={jsonSchema} codeId={codeId} />
+                  <ViewSchemaPanel jsonSchema={schema} codeId={codeId} />
                 </StyledTabPanel>
                 {SchemaMsgTabList.map((schemaProperty) => (
                   <StyledTabPanel key={schemaProperty}>
                     <ViewSchemaPanel
-                      jsonSchema={jsonSchema?.[schemaProperty]}
+                      jsonSchema={schema?.[schemaProperty]}
                       codeId={codeId}
                     />
                   </StyledTabPanel>

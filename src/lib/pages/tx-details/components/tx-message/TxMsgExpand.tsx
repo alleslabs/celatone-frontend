@@ -9,6 +9,7 @@ import { useGetAddressType, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
+import { WasmVerifyBadgeById } from "lib/components/WasmVerifyBadge";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import type { BechAddr } from "lib/types";
@@ -16,6 +17,7 @@ import type { VoteOption } from "lib/utils";
 import {
   coinToTokenWithValue,
   extractMsgType,
+  findAttr,
   formatTokenWithValue,
   getTxBadges,
   voteOption,
@@ -46,7 +48,9 @@ export const TxMsgExpand = ({
   let msgIcon: IconKeys = "file";
   let content: ReactNode;
   switch (type) {
-    case "/cosmwasm.wasm.v1.MsgStoreCode":
+    case "/cosmwasm.wasm.v1.MsgStoreCode": {
+      const codeId = findAttr(log, "store_code", "code_id") ?? "";
+
       msgIcon = "upload";
       content = (
         <Flex gap={1}>
@@ -57,10 +61,11 @@ export const TxMsgExpand = ({
               and stored as{" "}
               <ExplorerLink
                 type="code_id"
-                value={findAttribute([log], "store_code", "code_id").value}
+                value={codeId}
                 showCopyOnHover
                 fontSize="24px"
                 textVariant="body1"
+                rightIcon={<WasmVerifyBadgeById codeId={Number(codeId)} />}
                 ampCopierSection="tx_page_message_header_code"
               />
             </>
@@ -68,6 +73,7 @@ export const TxMsgExpand = ({
         </Flex>
       );
       break;
+    }
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
       msgIcon = "instantiate";
       content = (
@@ -90,6 +96,7 @@ export const TxMsgExpand = ({
             value={body.codeId as string}
             showCopyOnHover
             textVariant="body1"
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
             ampCopierSection="tx_page_message_header_code"
           />
         </Flex>
@@ -117,6 +124,7 @@ export const TxMsgExpand = ({
             value={body.codeId as string}
             showCopyOnHover
             textVariant="body1"
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
             ampCopierSection="tx_page_message_header_code"
           />
         </Flex>
@@ -341,13 +349,13 @@ export const TxMsgExpand = ({
         <CustomIcon
           name={msgIcon}
           boxSize={4}
-          color="secondary.main"
+          color="primary.main"
           m={0}
           mt={{ base: 1, md: 0 }}
         />
         <Text wordBreak="break-all">{content}</Text>
         {!isMobile && isIbc && (
-          <Tag mx={2} variant="accent-dark" size="md" minW="hug-content">
+          <Tag mx={2} variant="secondary" size="md" minW="hug-content">
             IBC
           </Tag>
         )}
@@ -359,7 +367,7 @@ export const TxMsgExpand = ({
       </Flex>
       <Flex>
         {isMobile && isIbc && (
-          <Tag mx={2} variant="accent-dark" size="sm" minW="hug-content">
+          <Tag mx={2} variant="secondary" size="sm" minW="hug-content">
             IBC
           </Tag>
         )}

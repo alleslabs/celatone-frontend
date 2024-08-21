@@ -65,6 +65,7 @@ export const useCodeContractsLcd = (codeId: number) => {
       page.contracts.map<ContractInfo>((contract) => ({
         ...contract,
         ...getContractLocalInfo(contract.contractAddress),
+        codeId,
       }))
     ),
     ...rest,

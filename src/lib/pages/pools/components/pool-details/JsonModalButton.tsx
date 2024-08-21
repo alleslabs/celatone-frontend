@@ -33,15 +33,8 @@ export const JsonModalButton = ({
         height="24px"
         p="4px"
         size="sm"
-        variant="ghost-secondary"
-        rightIcon={
-          <CustomIcon
-            name="chevron-right"
-            boxSize={3}
-            color="secondary.main"
-            m={0}
-          />
-        }
+        variant="ghost-primary"
+        rightIcon={<CustomIcon name="chevron-right" boxSize={3} m={0} />}
         onClick={() => {
           trackUseViewJSON(`pool_page_(${modalHeader})`);
           onOpen();

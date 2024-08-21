@@ -6,13 +6,13 @@ import type { Observable } from "rxjs";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { TxStreamPhase } from "lib/types";
 import type {
   BechAddr,
   ComposedMsg,
   Option,
   TxResultRendering,
 } from "lib/types";
+import { TxStreamPhase } from "lib/types";
 import { feeFromStr, findAttr } from "lib/utils";
 
 import { catchTxError } from "./common";
@@ -22,7 +22,7 @@ import { sendingTx } from "./common/sending";
 export interface StoreCodeTxInternalResult {
   codeDisplayName: string;
   codeId: string;
-  codeHash: string;
+  codeHash: Option<string>;
   txHash: string;
   txFee: Option<string>;
 }
@@ -67,7 +67,7 @@ export const storeCodeTx = ({
       };
 
       const codeId = findAttr(mimicLog, "store_code", "code_id") ?? "0";
-      const codeHash = findAttr(mimicLog, "store_code", "code_checksum") ?? "";
+      const codeHash = findAttr(mimicLog, "store_code", "code_checksum");
       const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
         .value;
 

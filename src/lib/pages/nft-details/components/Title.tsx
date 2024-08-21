@@ -34,7 +34,7 @@ export const Title = ({
       <Flex w="full" justifyContent="space-between" gap={8}>
         <Flex direction="column" overflow="hidden">
           <AppLink href={`/nft-collections/${collectionAddress}`}>
-            <Text color="secondary.main" fontSize="16px" fontWeight={700}>
+            <Text color="primary.main" fontSize="16px" fontWeight={700}>
               {displayCollectionName}
             </Text>
           </AppLink>

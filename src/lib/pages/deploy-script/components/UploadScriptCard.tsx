@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import type { FileState } from "..";
 import { ComponentLoader } from "lib/components/ComponentLoader";
 import { DropZone } from "lib/components/dropzone";
-import { UploadCard } from "lib/components/upload/UploadCard";
+import { UploadCard } from "lib/components/upload";
 import { useDecodeScript } from "lib/services/move/module";
 import type { ExposedFunction, Option } from "lib/types";
 
@@ -80,7 +80,7 @@ export const UploadScriptCard = ({
       <Flex direction="column">
         <ComponentLoader isLoading={isFetching}>
           {file ? (
-            <UploadCard file={file} deleteFile={removeFile} theme="secondary" />
+            <UploadCard file={file} deleteFile={removeFile} theme="gray" />
           ) : (
             <DropZone
               setFile={handleFileDrop}

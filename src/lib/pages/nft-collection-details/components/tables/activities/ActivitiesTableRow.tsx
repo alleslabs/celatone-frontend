@@ -42,10 +42,10 @@ const TokenIdRender = ({
   return (
     <AppLink href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}>
       <Text
-        color="secondary.main"
+        color="primary.main"
         _hover={{
           textDecoration: "underline",
-          color: "secondary.light",
+          color: "primary.light",
         }}
         wordBreak="break-word"
       >

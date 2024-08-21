@@ -27,14 +27,14 @@ export function RemoveChainConfigModal({
 
   const toast = useToast();
   const handleRemove = () => {
+    // redirect to home page
+    router.push(currentChainId === chainId ? "/" : `/${currentChainId}`);
+
     // remove chain id from chain config store
     removeLocalChainConfig(chainId);
 
     // remove chain id from pinned network
     removeNetwork(chainId);
-
-    // redirect to home page
-    router.push(currentChainId === chainId ? "/" : `/${currentChainId}`);
 
     setTimeout(() => {
       toast({
@@ -50,8 +50,8 @@ export function RemoveChainConfigModal({
 
   return (
     <ActionModal
-      title={`Removed '${chainConfig?.prettyName}'?`}
-      icon="delete-solid"
+      title={`Removed \u2018${chainConfig?.prettyName}\u2019?`}
+      icon="delete"
       iconColor="error.light"
       trigger={trigger}
       mainBtnTitle="Yes, Remove it"

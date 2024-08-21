@@ -151,11 +151,11 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                   </Button>
                 </Flex>
                 {isProposalResolved && (
-                  <Alert variant="secondary" mb={4} alignItems="center" gap={3}>
+                  <Alert variant="primary" mb={4} alignItems="center" gap={3}>
                     <CustomIcon
-                      name="alert-circle-solid"
+                      name="alert-triangle-solid"
                       boxSize={4}
-                      color="secondary.main"
+                      color="primary.main"
                     />
                     <AlertDescription>
                       Please note that the displayed ranking is in real-time and

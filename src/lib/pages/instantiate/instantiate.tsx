@@ -51,6 +51,7 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeLcd } from "lib/services/wasm/code";
 import type { BechAddr, BechAddr20, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
@@ -80,6 +81,7 @@ interface InstantiatePageProps {
   onComplete: (
     txResult: InstantiateResult,
     contractLabel: string,
+    codeId: number,
     instantiator: BechAddr20
   ) => void;
 }
@@ -100,7 +102,6 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
   const { isFullTier } = useTierConfig();
-
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
@@ -110,7 +111,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [isValidJsonInput, setIsValidJsonInput] = useState(false);
+  const [isValidJsonInput, setIsValidJsonInput] = useState(true);
 
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
@@ -151,9 +152,19 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
 
   // ------------------------------------------//
+  // -------------------DATA-------------------//
+  // ------------------------------------------//
+  const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+    codeId.length ? Number(codeId) : undefined,
+    codeHash
+  );
+
+  // ------------------------------------------//
   // ------------------LOGICS------------------//
   // ------------------------------------------//
-  const jsonSchema = getSchemaByCodeHash(codeHash);
+  const verifiedSchema = derivedWasmVerifyInfo?.schema;
+  const localSchema = getSchemaByCodeHash(codeHash);
+
   const funds = getAttachFunds(attachFundsOption, assetsJsonStr, assetsSelect);
   const enableInstantiate = useMemo(() => {
     const generalChecks =
@@ -263,7 +274,12 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       estimatedFee,
       onTxSucceed: (txResult, contractLabel) => {
         setProcessing(false);
-        onComplete(txResult, contractLabel, address ?? ("" as BechAddr20));
+        onComplete(
+          txResult,
+          contractLabel,
+          Number(codeId),
+          address ?? ("" as BechAddr20)
+        );
       },
       onTxFailed: () => setProcessing(false),
     });
@@ -378,10 +394,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   ]);
 
   useEffect(() => {
-    if (jsonSchema) {
+    if (localSchema) {
       setTab(MessageTabs.YOUR_SCHEMA);
     }
-  }, [jsonSchema, setValue]);
+  }, [localSchema, setValue]);
 
   useEffect(() => {
     if (router.isReady) trackToInstantiate(!!msgQuery, !!codeIdQuery);
@@ -495,7 +511,8 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
                   type="instantiate"
                   codeHash={codeHash}
                   codeId={Number(codeId)}
-                  jsonSchema={jsonSchema}
+                  verifiedSchema={verifiedSchema}
+                  localSchema={localSchema}
                   initialFormData={JSON.parse(msgInput[yourSchemaInputFormKey])}
                   handleChange={handleChange}
                   onSchemaSave={resetMsgInputSchema}
@@ -515,7 +532,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
         {simulateError && (
           <Flex gap={2} mb={4}>
             <CustomIcon
-              name="alert-circle-solid"
+              name="alert-triangle-solid"
               boxSize={3}
               color="error.main"
             />

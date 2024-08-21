@@ -31,9 +31,9 @@ export const ModulePathLink = ({
       >
         <Text
           variant="body2"
-          color="secondary.main"
+          color="primary.main"
           transition="all 0.25s ease-in-out"
-          _hover={{ color: "secondary.light", textDecoration: "underline" }}
+          _hover={{ color: "primary.light", textDecoration: "underline" }}
           wordBreak={{ base: "break-all", md: "inherit" }}
           cursor="pointer"
         >

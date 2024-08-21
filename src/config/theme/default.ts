@@ -10,7 +10,8 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
       appName: "Celatone",
       title: "Celatone Explorer",
       description: "All in one place.",
-      image: "/celatone-ogimg.jpg",
+      image:
+        "https://assets.alleslabs.dev/celatone-brand/socials/celatone-ogimg.jpg",
       twitter: {
         handle: "@celatone_",
         cardType: "summary_large_image",
@@ -27,19 +28,12 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
       background: "#0E3139",
     },
     secondary: {
-      light: "#9AF3FF",
-      main: "#4CE2F7",
-      dark: "#00B5CE",
-      darker: "#007080",
-      background: "#0E3139",
-    },
-    accent: {
-      lighter: "#9AF3FF",
-      light: "#71EEFF",
-      main: "#4CE2F7",
-      dark: "#00B5CE",
-      darker: "#007080",
-      background: "#0E3139",
+      lighter: "#F0D5FF",
+      light: "#E1ADFE",
+      main: "#CE89F4",
+      dark: "#A758D3",
+      darker: "#9123CE",
+      background: "#432E4F",
     },
     gray: {
       100: "#F5F5F5",
@@ -123,7 +117,7 @@ const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
       bg: "primary.darker",
     },
     votingPeriod: {
-      bg: "primary.dark",
+      bg: "secondary.darker",
     },
     failed: {
       bg: "error.dark",
@@ -153,7 +147,7 @@ const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
   },
   tag: {
     signer: {
-      bg: "accent.darker",
+      bg: "primary.darker",
       color: "text.main",
     },
     related: {
@@ -163,12 +157,12 @@ const DEFAULT_COMPONENT_CONFIG: ComponentConfig = {
   },
   voteParticipations: {
     voted: "primary.main",
-    votedAbstain: "primary.darker",
+    votedAbstain: "secondary.dark",
     didNotVote: "gray.700",
   },
   recentBlocks: {
     signed: "primary.dark",
-    proposed: "primary.light",
+    proposed: "secondary.light",
     missed: "error.dark",
   },
 };

@@ -49,10 +49,12 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
 import { Tooltip } from "lib/components/Tooltip";
-import { CodeHashBox } from "lib/components/upload/CodeHashBox";
-import { InstantiatePermissionRadio } from "lib/components/upload/InstantiatePermissionRadio";
-import { SimulateMessageRender } from "lib/components/upload/SimulateMessageRender";
-import { UploadCard } from "lib/components/upload/UploadCard";
+import {
+  CodeHashBox,
+  InstantiatePermissionRadio,
+  SimulateMessageRender,
+  UploadCard,
+} from "lib/components/upload";
 import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
 import { useGovParamsDeprecated } from "lib/model/proposal";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
@@ -537,7 +539,7 @@ const StoreCodeProposal = () => {
                         cursor="pointer"
                         variant="body3"
                         minW={16}
-                        color="accent.main"
+                        color="primary.main"
                         onClick={() => {
                           if (!minDeposit) return;
                           trackUseDepositFill(minDeposit.formattedAmount);

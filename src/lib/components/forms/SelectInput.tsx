@@ -36,6 +36,7 @@ interface SelectInputProps<T extends string> {
   popoverBgColor?: string;
   size?: string | object;
   disableMaxH?: boolean;
+  isRequired?: boolean;
 }
 
 interface SelectItemProps {
@@ -73,6 +74,7 @@ export const SelectInput = <T extends string>({
   popoverBgColor = "gray.900",
   size = "lg",
   disableMaxH = false,
+  isRequired,
 }: SelectInputProps<T>) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -103,7 +105,7 @@ export const SelectInput = <T extends string>({
             "&[aria-expanded=true]": {
               "> input": {
                 border: "2px solid",
-                borderColor: "secondary.main",
+                borderColor: "primary.dark",
               },
             },
             "& .form-label": {
@@ -116,10 +118,16 @@ export const SelectInput = <T extends string>({
               zIndex: 2,
               bg: labelBgColor,
               top: -2,
+
+              "::after": {
+                content: isRequired ? '"* (Required)"' : '""',
+                color: "error.main",
+                ml: 1,
+              },
             },
           }}
         >
-          <div className="form-label">{formLabel}</div>
+          {formLabel && <div className="form-label">{formLabel}</div>}
           {selectedOption?.image && (
             <InputLeftElement pointerEvents="none" h="full" ml={1}>
               {selectedOption.image}
@@ -175,9 +183,11 @@ export const SelectInput = <T extends string>({
             }}
             disabled={disabled}
           >
-            <Flex alignItems="center">{image}</Flex>
-            {icon && <CustomIcon name={icon} color={iconColor} />}
-            {label}
+            <Flex alignItems="center" gap={2}>
+              <Flex alignItems="center">{image}</Flex>
+              {icon && <CustomIcon name={icon} color={iconColor} />}
+              {label}
+            </Flex>
           </SelectItem>
         ))}
         {helperTextComponent && (

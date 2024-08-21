@@ -14,10 +14,18 @@ import type {
   ContractTableCounts,
   MigrationHistoriesResponse,
 } from "lib/services/types";
-import type { BechAddr, BechAddr32, JsonDataType, Option } from "lib/types";
+import type {
+  BechAddr,
+  BechAddr32,
+  Dict,
+  JsonDataType,
+  Option,
+} from "lib/types";
 
 import {
   getAdminContractsByAddress,
+  getAdminsByContractAddresses,
+  getAllAdminContractsByAddress,
   getContractData,
   getContracts,
   getContractsByCodeId,
@@ -106,22 +114,39 @@ export const useMigrationHistoriesByContractAddressLcd = (
 };
 
 export const useInstantiatedContractsByAddress = (
-  address: BechAddr,
+  address: Option<BechAddr>,
   limit: number,
-  offset: number
+  offset: number,
+  enabled = true
 ): UseQueryResult<ContractsResponse> => {
   const endpoint = useBaseApiRoute("accounts");
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.INSTANTIATED_CONTRACTS_BY_ADDRESS,
+      endpoint,
       address,
       limit,
       offset,
     ],
-    async () =>
-      getInstantiatedContractsByAddress(endpoint, address, limit, offset),
-    { retry: 1, refetchOnWindowFocus: false }
+    async () => {
+      if (!address)
+        throw new Error(
+          "address not found (getInstantiatedContractsByAddress)"
+        );
+
+      return getInstantiatedContractsByAddress(
+        endpoint,
+        address,
+        limit,
+        offset
+      );
+    },
+    {
+      enabled: Boolean(address) && enabled,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };
 
@@ -133,7 +158,13 @@ export const useAdminContractsByAddress = (
   const endpoint = useBaseApiRoute("accounts");
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACTS_BY_ADMIN, address, limit, offset],
+    [
+      CELATONE_QUERY_KEYS.ADMIN_CONTRACTS_BY_ADDRESS,
+      endpoint,
+      address,
+      limit,
+      offset,
+    ],
     async () => getAdminContractsByAddress(endpoint, address, limit, offset),
     { retry: 1, refetchOnWindowFocus: false }
   );
@@ -279,4 +310,35 @@ export const useContractCw2InfoLcd = (
   );
 };
 
-export * from "./gql";
+export const useAllAdminContractsByAddress = (
+  address: Option<BechAddr>
+): UseQueryResult<ContractsResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.ALL_ADMIN_CONTRACTS_BY_ADDRESS, endpoint, address],
+    async () => {
+      if (!address)
+        throw new Error(
+          "Admin address not found (useAllAdminContractsByAddress)"
+        );
+
+      return getAllAdminContractsByAddress(endpoint, address);
+    },
+    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useAdminsByContractAddresses = (
+  contractAddresses: BechAddr32[]
+): UseQueryResult<Dict<BechAddr32, BechAddr>> => {
+  const endpoint = useBaseApiRoute("contracts");
+  return useQuery(
+    [CELATONE_QUERY_KEYS.ADMINS_BY_CONTRACTS, endpoint, contractAddresses],
+    () => getAdminsByContractAddresses(endpoint, contractAddresses),
+    {
+      keepPreviousData: true,
+      enabled: contractAddresses.length > 0,
+    }
+  );
+};

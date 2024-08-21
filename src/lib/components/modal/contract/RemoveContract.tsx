@@ -26,8 +26,9 @@ export function RemoveContractModal({
   const handleRemove = useHandleContractSave({
     title: `Removed ${displayName} from ${contractRemovalInfo.label}`,
     contractAddress: contractLocalInfo.contractAddress,
-    instantiator: contractLocalInfo.instantiator,
     label: contractLocalInfo.label,
+    codeId: contractLocalInfo.codeId,
+    instantiator: contractLocalInfo.instantiator,
     lists: contractLocalInfo.lists?.filter(
       (item) => item.value !== contractRemovalInfo.value
     ),
@@ -37,7 +38,7 @@ export function RemoveContractModal({
   return (
     <ActionModal
       title={`Remove ${displayName}?`}
-      icon="delete-solid"
+      icon="delete"
       iconColor="error.light"
       mainBtnTitle="Yes, Remove"
       mainVariant="error"

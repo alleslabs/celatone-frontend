@@ -1,18 +1,35 @@
-import { Box, Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  SimpleGrid,
+  Text,
+} from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
 import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
 import { useInternalNavigate } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
-import { ConnectingLine } from "lib/components/ConnectingLine";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { UploadSchema } from "lib/components/json-schema";
+import { WasmVerifySubmitModal } from "lib/components/modal";
 import { Stepper } from "lib/components/stepper";
 import { TxReceiptRender } from "lib/components/tx";
+import {
+  IndirectlyVerifiedAlert,
+  InProgressVerifiedSection,
+  OptionButton,
+  OptionButtonDisabled,
+} from "lib/components/upload";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import { useSchemaStore } from "lib/providers/store";
-import { feeFromStr } from "lib/utils";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
+import { WasmVerifyStatus } from "lib/types";
+import { feeFromStr, getWasmVerifyStatus } from "lib/utils";
 
 interface UploadCompleteProps {
   txResult: StoreCodeTxInternalResult;
@@ -21,9 +38,20 @@ interface UploadCompleteProps {
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
-  const schema = getSchemaByCodeHash(txResult.codeHash);
-  const attached = Boolean(schema);
+  const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
+    Number(txResult.codeId),
+    txResult.codeHash
+  );
 
+  const wasmVerifyStatus = getWasmVerifyStatus(derivedWasmVerifyInfo);
+  const localSchema = txResult.codeHash
+    ? getSchemaByCodeHash(txResult.codeHash)
+    : undefined;
+  const attached = Boolean(localSchema);
+
+  // NOTE: show OptionCards if not verifying or attached any local schema
+  const displayOptions =
+    wasmVerifyStatus !== WasmVerifyStatus.IN_PROGRESS && !attached;
   return (
     <ActionPageContainer>
       <Heading variant="h6" as="h6" color="text.dark" mb={3}>
@@ -42,11 +70,12 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
       <Text variant="body2" color="text.dark" fontWeight={500} mb={4}>
         ‘{txResult.codeDisplayName}’ has been uploaded.
       </Text>
-      <Box
+      <Flex
+        direction="column"
         border="1px solid"
         borderColor="gray.700"
         p={4}
-        mb={12}
+        mb={4}
         w="full"
         borderRadius="4px"
       >
@@ -54,7 +83,20 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           receipts={[
             {
               title: "Code ID",
-              html: <ExplorerLink type="code_id" value={txResult.codeId} />,
+              html: (
+                <ExplorerLink
+                  type="code_id"
+                  value={txResult.codeId}
+                  rightIcon={
+                    <WasmVerifyBadge
+                      status={wasmVerifyStatus}
+                      relatedVerifiedCodes={
+                        derivedWasmVerifyInfo?.relatedVerifiedCodes
+                      }
+                    />
+                  }
+                />
+              ),
             },
             {
               title: "Tx Hash",
@@ -72,50 +114,85 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           ]}
           variant="full"
         />
-      </Box>
-      <Heading as="h6" variant="h6" fontWeight={500} mb={2}>
-        Would you like to attach JSON Schema to this code?
-      </Heading>
-      <Text color="text.disabled" variant="body2" fontWeight={500} mb={4}>
-        Your attached JSON schema will be stored locally on your device
-      </Text>
-      <Flex direction="column" w="full" gap={10} position="relative">
-        <Flex
-          bgColor="gray.800"
-          borderRadius={4}
-          p={2}
-          gap={2}
-          w="full"
-          justifyContent="center"
-        >
-          <CustomIcon name="code" color="gray.400" />
-          Code ID: {txResult.codeId}
-        </Flex>
-        <ConnectingLine
-          isFilled={attached}
-          style={{ left: "calc(50% - 6px)", top: "36px" }}
-        />
-        <UploadSchema
-          attached={attached}
-          schema={schema}
-          codeId={Number(txResult.codeId)}
-          codeHash={txResult.codeHash}
-        />
       </Flex>
-
-      {!attached && (
-        <Flex my={8} gap={4} alignItems="center" w="full">
-          <Divider borderColor="gray.600" />
-          <Text variant="body1" color="text.dark">
-            OR
-          </Text>
-          <Divider borderColor="gray.600" />
-        </Flex>
+      {wasmVerifyStatus === WasmVerifyStatus.INDIRECTLY_VERIFIED && (
+        <IndirectlyVerifiedAlert
+          relatedVerifiedCodes={derivedWasmVerifyInfo?.relatedVerifiedCodes}
+        />
+      )}
+      <Box h={12} />
+      {displayOptions ? (
+        <>
+          <Heading as="h6" variant="h6" fontWeight={500} mb={2}>
+            Would you like to:
+          </Heading>
+          <SimpleGrid columns={txResult.codeHash ? 2 : 1} spacing={4} w="full">
+            <WasmVerifySubmitModal
+              codeId={Number(txResult.codeId)}
+              codeHash={txResult.codeHash}
+              wasmVerifyStatus={getWasmVerifyStatus(derivedWasmVerifyInfo)}
+              relatedVerifiedCodes={derivedWasmVerifyInfo?.relatedVerifiedCodes}
+              triggerElement={
+                <OptionButton
+                  title="Verify Code"
+                  description="Ensures that the deployed code matches its published source code"
+                />
+              }
+            />
+            {txResult.codeHash && (
+              <>
+                {derivedWasmVerifyInfo?.schema ? (
+                  <OptionButtonDisabled
+                    title="Attach JSON Schema"
+                    description="JSON Schema is already available due to the code is indirectly verified"
+                  />
+                ) : (
+                  <UploadSchema
+                    attached={attached}
+                    localSchema={localSchema}
+                    codeId={Number(txResult.codeId)}
+                    codeHash={txResult.codeHash}
+                    triggerElement={
+                      <OptionButton
+                        title="Attach JSON Schema"
+                        description="Your attached JSON schema will be stored locally on your device"
+                      />
+                    }
+                  />
+                )}
+              </>
+            )}
+          </SimpleGrid>
+          <Flex my={8} gap={4} alignItems="center" w="full">
+            <Divider borderColor="gray.600" />
+            <Text variant="body1" color="text.dark">
+              OR
+            </Text>
+            <Divider borderColor="gray.600" />
+          </Flex>
+        </>
+      ) : (
+        <>
+          {wasmVerifyStatus === WasmVerifyStatus.IN_PROGRESS ? (
+            <InProgressVerifiedSection codeId={txResult.codeId} />
+          ) : (
+            <>
+              {txResult.codeHash !== undefined && localSchema && (
+                <UploadSchema
+                  attached={attached}
+                  localSchema={localSchema}
+                  codeId={Number(txResult.codeId)}
+                  codeHash={txResult.codeHash}
+                />
+              )}
+            </>
+          )}
+          <Box h={12} />
+        </>
       )}
       <Button
         rightIcon={<CustomIcon name="chevron-right" boxSize={4} />}
         w="full"
-        mt={attached ? 8 : 0}
         mb={4}
         onClick={() => {
           navigate({
@@ -124,9 +201,9 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           });
         }}
       >
-        {attached
-          ? "Proceed to instantiate"
-          : "Skip and proceed to instantiate"}
+        {displayOptions
+          ? "Skip and proceed to instantiate"
+          : "Proceed to instantiate"}
       </Button>
       <Button
         variant="outline-primary"

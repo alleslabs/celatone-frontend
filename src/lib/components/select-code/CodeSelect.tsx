@@ -3,13 +3,15 @@ import { Flex, Text } from "@chakra-ui/react";
 
 import { DotSeparator } from "../DotSeparator";
 import { PermissionChip } from "../PermissionChip";
+import { WasmVerifyBadge } from "../WasmVerifyBadge";
 import type { FormStatus } from "lib/components/forms";
 import { UploadIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeLcd } from "lib/services/wasm/code";
 import { AccessConfigPermission } from "lib/types";
-import { isId } from "lib/utils";
+import { getWasmVerifyStatus, isId } from "lib/utils";
 
 import { CodeSelectDrawerButton } from "./CodeSelectDrawerButton";
 
@@ -33,6 +35,11 @@ export const CodeSelect = ({
     enabled: isId(codeId),
     onSuccess: setCodeHash,
   });
+
+  const { data: wasmDerivedVerifyInfos } = useDerivedWasmVerifyInfo(
+    Number(codeId),
+    data?.hash
+  );
 
   const isError = status.state === "error";
   return (
@@ -69,6 +76,15 @@ export const CodeSelect = ({
                   data?.instantiatePermission ?? AccessConfigPermission.UNKNOWN
                 }
                 permissionAddresses={data?.permissionAddresses ?? []}
+              />
+            </Flex>
+            <Flex>
+              <WasmVerifyBadge
+                status={getWasmVerifyStatus(wasmDerivedVerifyInfos)}
+                relatedVerifiedCodes={
+                  wasmDerivedVerifyInfos?.relatedVerifiedCodes
+                }
+                hasText
               />
             </Flex>
           </Flex>

@@ -1,10 +1,18 @@
-import { Box, ButtonGroup, Flex, Spacer, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Flex,
+  Grid,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
 import type { AxiosError } from "axios";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
 import { AmpEvent, track, trackActionQuery } from "lib/amplitude";
-import { useCurrentChain } from "lib/app-provider";
+import { useCurrentChain, useMobile } from "lib/app-provider";
 import { SubmitButton } from "lib/components/button";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { CopyButton } from "lib/components/copy";
@@ -39,6 +47,7 @@ interface JsonQueryProps {
 }
 
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
+  const isMobile = useMobile();
   const { data: queryCmds = [], isFetching: isCmdsFetching } =
     useContractQueryMsgsLcd(contractAddress);
   const { addActivity } = useContractStore();
@@ -124,24 +133,48 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
       <Flex gap={4} direction={{ base: "column", md: "row" }}>
         <Box w="full">
           <JsonInput topic="Query Msg" text={msg} setText={setMsg} />
-          <Flex align="center" justify="space-between" gap={{ base: 1, md: 0 }}>
-            <Flex gap={{ base: 1, md: 2 }}>
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            justify="space-between"
+            alignItems="center"
+            gap={{ base: 1, md: 0 }}
+          >
+            <Grid
+              w={{ base: "full", md: "auto" }}
+              columnGap={2}
+              mb={{ base: 2, md: 0 }}
+              templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(2, 1fr)" }}
+            >
               <CopyButton
+                w="full"
                 isDisable={!msg.length}
                 value={msg}
                 amptrackSection="query_msg"
               />
               <WasmCodeSnippet
+                w="full"
                 type="query"
                 contractAddress={contractAddress}
                 message={msg}
               />
-            </Flex>
+              {isMobile && (
+                <Button
+                  variant="outline-white"
+                  size="sm"
+                  background="background.main"
+                  isDisabled={isButtonDisabled}
+                  onClick={() => setMsg(jsonPrettify(msg))}
+                >
+                  Format JSON
+                </Button>
+              )}
+            </Grid>
             <SubmitButton
               text="Query"
               isLoading={isFetching}
               onSubmit={handleQuery}
               isDisabled={isButtonDisabled}
+              isFullWidth={isMobile}
             />
           </Flex>
         </Box>

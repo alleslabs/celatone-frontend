@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import { useController, useFieldArray, useWatch } from "react-hook-form";
 import type { Control, FieldErrors } from "react-hook-form";
 
-import type { AddNetworkManualForm } from "../types";
+import type { AddNetworkManualForm } from "../../types";
 import {
   CustomNetworkPageHeader,
   CustomNetworkSubheader,
@@ -100,7 +100,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
         </Flex>
       ))}
       <Button
-        variant="ghost-secondary"
+        variant="ghost-primary"
         w="fit-content"
         onClick={() => append({ denom: "", exponent: "" })}
         leftIcon={<CustomIcon name="plus" boxSize={3} />}
@@ -117,7 +117,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
       justifyContent="center"
     >
       <Button
-        variant="outline-secondary"
+        variant="outline-primary"
         w="fit-content"
         onClick={() => append({ denom: "", exponent: "" })}
         leftIcon={<CustomIcon name="plus" boxSize={3} />}
@@ -145,9 +145,16 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
   });
 
   useEffect(() => {
-    if (accountBech32?.bech32Prefix === bech32Prefix) return;
+    if (isAccountBech32Loading || accountBech32?.bech32Prefix === bech32Prefix)
+      return;
+
     onChange(accountBech32?.bech32Prefix ?? "init");
-  }, [accountBech32?.bech32Prefix, bech32Prefix, onChange]);
+  }, [
+    isAccountBech32Loading,
+    accountBech32?.bech32Prefix,
+    bech32Prefix,
+    onChange,
+  ]);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -287,7 +294,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
               </Flex>
             ))}
             <Button
-              variant="ghost-secondary"
+              variant="ghost-primary"
               w="fit-content"
               onClick={() =>
                 append({ name: "", base: "", symbol: "", denoms: [] })
@@ -307,7 +314,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
               justifyContent="center"
             >
               <Button
-                variant="outline-secondary"
+                variant="outline-primary"
                 w="fit-content"
                 onClick={() =>
                   append({ name: "", base: "", symbol: "", denoms: [] })
