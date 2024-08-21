@@ -68,7 +68,7 @@ export const WasmVerifySubmitForm = ({
           }),
         commit: z
           .string()
-          .min(1, { message: "Commit hash is requried" })
+          .min(1, { message: "Commit hash is required" })
           .regex(
             /^[0-9a-fA-F]+$/,
             "Only hexadecimal digits are allowed, such as 0-9 and A-F"
