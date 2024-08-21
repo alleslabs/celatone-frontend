@@ -39,6 +39,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+- [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
+
+### Bug fixes
+
+## v1.8.0
+
+### Features
+
 - [#1085](https://github.com/alleslabs/celatone-frontend/pull/1085) Add verify module store
 - [#1081](https://github.com/alleslabs/celatone-frontend/pull/1081) Add service APIs for move verify module
 - [#1082](https://github.com/alleslabs/celatone-frontend/pull/1082) Replace CONFIG_CHAINS by fetching the chains from the API
@@ -50,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
+- [#1090](https://github.com/alleslabs/celatone-frontend/pull/1090) Change query page layout in mobile and adjust code snippet copy button
 - [#1080](https://github.com/alleslabs/celatone-frontend/pull/1080) Adjust color and remove accent color
 - [#1088](https://github.com/alleslabs/celatone-frontend/pull/1088) Remove userKey from network store and add test for it
 - [#1034](https://github.com/alleslabs/celatone-frontend/pull/1034) Clean up custom icon file
