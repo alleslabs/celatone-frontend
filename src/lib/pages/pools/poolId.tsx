@@ -2,15 +2,11 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import {
-  useInternalNavigate,
-  usePoolConfig,
-  useTierConfig,
-} from "lib/app-provider";
+import { usePoolConfig, useTierConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { EmptyState } from "lib/components/state";
+import { InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 
 import {
@@ -21,9 +17,10 @@ import {
 import { usePool } from "./data";
 import { zPoolDetailsQueryParams } from "./types";
 
+const InvalidPool = () => <InvalidState title="Pool does not exist" />;
+
 const PoolIdBody = ({ poolId }: { poolId: number }) => {
   const router = useRouter();
-  const navigate = useInternalNavigate();
   const { pool, isLoading } = usePool(poolId);
 
   useEffect(() => {
@@ -31,10 +28,7 @@ const PoolIdBody = ({ poolId }: { poolId: number }) => {
   }, [router.isReady]);
 
   if (isLoading) return <Loading />;
-  if (!pool) {
-    navigate({ pathname: `/pools` });
-    return null;
-  }
+  if (!pool) return <InvalidPool />;
 
   return (
     <>
@@ -59,15 +53,7 @@ export const PoolId = () => {
 
   return (
     <PageContainer>
-      {validated.success ? (
-        <PoolIdBody {...validated.data} />
-      ) : (
-        <EmptyState
-          imageVariant="not-found"
-          heading="Invalid Pool ID Format"
-          message="Please ensure that you have entered a number for Pool ID."
-        />
-      )}
+      {validated.success ? <PoolIdBody {...validated.data} /> : <InvalidPool />}
     </PageContainer>
   );
 };
