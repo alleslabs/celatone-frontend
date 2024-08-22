@@ -1,14 +1,19 @@
 import { Tag, TagLabel } from "@chakra-ui/react";
 
 import { ActiveDot } from "lib/components/ActiveDot";
+import { CustomIcon } from "lib/components/icon";
 import { MoveVerifyTaskStatus } from "lib/services/types";
 
 interface MyModuleVerificationDetailsStatusBadgeProps {
   status: MoveVerifyTaskStatus;
+  hasCloseBtn?: boolean;
+  isActiveOnVerifying?: boolean;
 }
 
 export const MyModuleVerificationDetailsStatusBadge = ({
   status,
+  hasCloseBtn,
+  isActiveOnVerifying = true,
 }: MyModuleVerificationDetailsStatusBadgeProps) => {
   const renderStatus = () => {
     if (status === MoveVerifyTaskStatus.Pending)
@@ -37,15 +42,16 @@ export const MyModuleVerificationDetailsStatusBadge = ({
 
     return (
       <>
-        <ActiveDot bg="primary.main" />
+        <ActiveDot bg="primary.main" isActive={isActiveOnVerifying} />
         <TagLabel>Verifying</TagLabel>
       </>
     );
   };
 
   return (
-    <Tag size="xs" variant="gray" w="fit-content" gap={1}>
+    <Tag size="md" variant="gray" w="fit-content" gap={1}>
       {renderStatus()}
+      {hasCloseBtn && <CustomIcon name="close" boxSize={3} mr={0} />}
     </Tag>
   );
 };

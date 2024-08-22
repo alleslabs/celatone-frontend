@@ -21,7 +21,8 @@ export type LinkType =
   | "code_id"
   | "block_height"
   | "proposal_id"
-  | "pool_id";
+  | "pool_id"
+  | "task_id";
 
 interface ExplorerLinkProps extends FlexProps {
   value: string;
@@ -74,6 +75,9 @@ export const getNavigationUrl = ({
       break;
     case "pool_id":
       url = "/pools";
+      break;
+    case "task_id":
+      url = "/my-module-verifications";
       break;
     case "invalid_address":
       return "";

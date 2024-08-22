@@ -6,7 +6,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state";
-import { useVerifyModuleTaskStore } from "lib/providers/store";
+import { useMoveVerifyTaskStore } from "lib/providers/store";
 import { useMoveVerifyTaskInfo } from "lib/services/verification/move";
 
 import {
@@ -19,9 +19,9 @@ import {
 import { zMyModuleVerificationDetailsQueryParams } from "./types";
 
 const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
-  const { data, isLoading, error } = useMoveVerifyTaskInfo(taskId);
-  const { getVerifyModuleTask } = useVerifyModuleTaskStore();
-  const verifyModuleTask = getVerifyModuleTask(taskId);
+  const { data, isLoading, error } = useMoveVerifyTaskInfo(taskId, !!taskId);
+  const { getMoveVerifyTask } = useMoveVerifyTaskStore();
+  const verifyModuleTask = getMoveVerifyTask(taskId);
 
   if (isLoading) return <Loading />;
   if (!data || error || !verifyModuleTask)
