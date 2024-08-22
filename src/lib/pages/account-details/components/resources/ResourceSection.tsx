@@ -10,6 +10,8 @@ interface ResourceSectionProps {
   totalCount: Option<number>;
   resourcesByOwner: Option<ResourceGroupByAccount[]>;
   isLoading: boolean;
+  selectedAccountParam: Option<string>;
+  selectedGroupNameParam: Option<string>;
 }
 
 export const ResourceSection = ({
@@ -17,6 +19,8 @@ export const ResourceSection = ({
   totalCount,
   resourcesByOwner,
   isLoading,
+  selectedAccountParam,
+  selectedGroupNameParam,
 }: ResourceSectionProps) => (
   <Flex direction="column" mt={8}>
     <TableTitle
@@ -28,6 +32,8 @@ export const ResourceSection = ({
       address={address}
       resourcesByOwner={resourcesByOwner}
       isLoading={isLoading}
+      selectedAccountParam={selectedAccountParam}
+      selectedGroupNameParam={selectedGroupNameParam}
     />
   </Flex>
 );
