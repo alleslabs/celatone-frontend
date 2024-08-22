@@ -14,24 +14,24 @@ export const useMyModuleVerifications = (): {
   const { latestMoveVerifyTasks, completeMoveVerifyTask } =
     useMoveVerifyTaskStore();
   const localTasks = latestMoveVerifyTasks();
-  const { data, isLoading } = useMoveVerifyTaskInfos(
+  const verificationInfos = useMoveVerifyTaskInfos(
     localTasks
       .filter(({ completed }) => !completed)
       .map((module) => module.taskId),
-    (tasks) => {
-      tasks?.forEach(({ task, result }) => {
-        if (
-          task.status === MoveVerifyTaskStatus.Finished ||
-          task.status === MoveVerifyTaskStatus.NotFound
-        ) {
-          completeMoveVerifyTask(task.id, result?.verifiedAt);
-        }
-      });
+    ({ task, result }) => {
+      if (
+        task.status === MoveVerifyTaskStatus.Finished ||
+        task.status === MoveVerifyTaskStatus.NotFound
+      ) {
+        completeMoveVerifyTask(task.id, result?.verifiedAt);
+      }
     }
   );
 
   return {
-    isLoading,
+    isLoading: verificationInfos.some(
+      (verificationInfo) => verificationInfo.isLoading
+    ),
     data: localTasks.map((task) => {
       if (task.completed) {
         return {
@@ -42,9 +42,9 @@ export const useMyModuleVerifications = (): {
         };
       }
 
-      const fetchedTaskInfo = data?.find(
-        (info) => info.task.id === task.taskId
-      );
+      const fetchedTaskInfo = verificationInfos
+        ?.map(({ data }) => data)
+        ?.find((verificationInfo) => verificationInfo?.task.id === task.taskId);
 
       return {
         ...task,

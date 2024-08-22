@@ -11,5 +11,6 @@ export const useApiChainConfigs = (chainIds: string[]) =>
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      staleTime: Infinity,
     }
   );

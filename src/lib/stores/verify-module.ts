@@ -53,7 +53,7 @@ export class MoveVerifyTaskStore {
   }
 
   latestMoveVerifyTasks(): MoveVerifyTaskLocalInfo[] {
-    return this.getMoveVerifyTasks()?.slice().reverse();
+    return this.getMoveVerifyTasks().slice().reverse();
   }
 
   getMoveVerifyTask(taskId: string): MoveVerifyTaskLocalInfo | undefined {
