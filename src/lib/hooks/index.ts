@@ -6,7 +6,6 @@ export * from "./useHandleSave";
 export * from "./useRedo";
 export * from "./useSingleMessageProps";
 export * from "./useToast";
-export * from "./useUserKey";
 export * from "./usePinnedNetworks";
 export * from "./useOpenTab";
 export * from "./useIsCurrentPage";

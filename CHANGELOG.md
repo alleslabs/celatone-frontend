@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
+
 ### Bug fixes
 
 ## v1.8.0
@@ -60,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1099](https://github.com/alleslabs/celatone-frontend/pull/1099) Remove dashboard API
 - [#1090](https://github.com/alleslabs/celatone-frontend/pull/1090) Change query page layout in mobile and adjust code snippet copy button
 - [#1080](https://github.com/alleslabs/celatone-frontend/pull/1080) Adjust color and remove accent color
 - [#1088](https://github.com/alleslabs/celatone-frontend/pull/1088) Remove userKey from network store and add test for it

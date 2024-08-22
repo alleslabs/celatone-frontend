@@ -47,10 +47,10 @@ export const TxInfoMobile = ({ txData, ...flexProps }: TxInfoMobileProps) => {
   return (
     <Container {...flexProps}>
       <Flex>
-        <LabelText flex="1" label="Network">
+        <LabelText flex={1} label="Network">
           {txData.chainId}
         </LabelText>
-        <LabelText flex="1" label="Block Height">
+        <LabelText flex={1} label="Block Height">
           <ExplorerLink
             value={txData.height}
             type="block_height"
@@ -60,7 +60,7 @@ export const TxInfoMobile = ({ txData, ...flexProps }: TxInfoMobileProps) => {
         </LabelText>
       </Flex>
       <Flex>
-        <LabelText flex="1" label="Transaction Fee">
+        <LabelText flex={1} label="Transaction Fee">
           {feeToken ? (
             formatTokenWithValue(feeToken)
           ) : (
@@ -69,7 +69,7 @@ export const TxInfoMobile = ({ txData, ...flexProps }: TxInfoMobileProps) => {
             </Text>
           )}
         </LabelText>
-        <LabelText flex="1" label="Gas Used/Wanted">
+        <LabelText flex={1} label="Gas Used/Wanted">
           {`${formatInteger(txData.gasUsed)}/${formatInteger(
             txData.gasWanted
           )}`}

@@ -5,7 +5,6 @@ import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import type { LVPair } from "lib/types";
 import { shortenName } from "lib/utils";
@@ -16,13 +15,12 @@ interface RemoveListModalProps {
 }
 
 export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
-  const userKey = useUserKey();
   const { removeList } = useContractStore();
   const toast = useToast();
   const navigate = useInternalNavigate();
   const handleRemove = () => {
     track(AmpEvent.LIST_REMOVE);
-    removeList(userKey, list.value);
+    removeList(list.value);
     navigate({ pathname: "/contract-lists" });
     // TODO: show toast after removed and redirect to /contract-lists
     setTimeout(() => {

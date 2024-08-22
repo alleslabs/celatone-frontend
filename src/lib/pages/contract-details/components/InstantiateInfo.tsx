@@ -128,10 +128,10 @@ export const InstantiateInfo = ({
   return (
     <Container w={{ base: "full", md: "auto" }} h="fit-content">
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
-        <LabelText flex="1" label="Network">
+        <LabelText flex={1} label="Network">
           {chainId}
         </LabelText>
-        <LabelText flex="1" label="From Code" helperText1={codeLocalInfo?.name}>
+        <LabelText flex={1} label="From Code" helperText1={codeLocalInfo?.name}>
           <Flex direction="column">
             <Flex gap={1}>
               <ExplorerLink
@@ -191,7 +191,7 @@ export const InstantiateInfo = ({
         </LabelText>
         {contract.admin ? (
           <LabelText
-            flex="1"
+            flex={1}
             label="Admin Address"
             helperText1={getAddressTypeText(adminType)}
           >
@@ -203,7 +203,7 @@ export const InstantiateInfo = ({
             />
           </LabelText>
         ) : (
-          <LabelText flex="1" label="Admin Address">
+          <LabelText flex={1} label="Admin Address">
             <Text variant="body2" color="text.dark">
               No Admin
             </Text>
@@ -212,7 +212,7 @@ export const InstantiateInfo = ({
       </Flex>
       <Divider border="1px solid" borderColor="gray.700" />
       <LabelText
-        flex="1"
+        flex={1}
         label="Instantiated Block Height"
         helperText1={
           contract.createdTimestamp
@@ -238,7 +238,7 @@ export const InstantiateInfo = ({
       </LabelText>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
         <LabelText
-          flex="1"
+          flex={1}
           label="Instantiated by"
           helperText1={getAddressTypeText(instantiatorType)}
         >
@@ -250,7 +250,7 @@ export const InstantiateInfo = ({
           />
         </LabelText>
         {isFullTier && (
-          <Flex flex="1">
+          <Flex flex={1}>
             <InitRender {...contract} />
           </Flex>
         )}
