@@ -8,7 +8,7 @@ import { TableRow } from "lib/components/table";
 import { MyModuleVerificationDetailsStatusBadge } from "lib/pages/my-module-verification-details/components";
 import { dateFromNow, formatUTC } from "lib/utils";
 
-import { FilenameCell } from "./Filenames";
+import { FileNamesCell } from "./FileNamesCell";
 import { RequestNoteCell } from "./RequestNoteCell";
 
 interface MyModuleVerificationsRowProps {
@@ -42,7 +42,7 @@ export const MyModuleVerificationsRow = ({
         <RequestNoteCell moveVerifyTask={task} />
       </TableRow>
       <TableRow>
-        <FilenameCell task={task} />
+        <FileNamesCell task={task} />
       </TableRow>
       <TableRow>
         <MyModuleVerificationDetailsStatusBadge status={task.status} />

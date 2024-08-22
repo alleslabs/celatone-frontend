@@ -3,11 +3,11 @@ import { useMemo, useState } from "react";
 
 import type { MoveVerifyTaskInfo } from "../../data";
 
-interface FilenameCellProps {
+interface FileNamesCellProps {
   task: MoveVerifyTaskInfo;
 }
 
-export const FilenameCell = ({ task }: FilenameCellProps) => {
+export const FileNamesCell = ({ task }: FileNamesCellProps) => {
   const [isHoverText, setIsHoverText] = useState(false);
 
   const formattedText = useMemo(() => {
