@@ -59,7 +59,7 @@ import { TabIndex, zAccountDetailsQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
 
-export interface AccountDetailsBodyProps {
+interface AccountDetailsBodyProps {
   accountAddressParam: Addr;
   tabParam: TabIndex;
 }

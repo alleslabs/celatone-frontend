@@ -57,17 +57,17 @@ import type { BechAddr, BechAddr20, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
-  isId,
   jsonPrettify,
   jsonValidate,
   libDecode,
   resolvePermission,
 } from "lib/utils";
 
+import { zInstantiateQueryParams } from "./types";
 import type { InstantiateRedoMsg } from "./types";
 
 interface InstantiatePageState {
-  codeId: string;
+  codeId: number;
   codeHash: string;
   label: string;
   adminAddress: string;
@@ -91,8 +91,9 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
   const router = useRouter();
-  const msgQuery = (router.query.msg as string) ?? "";
-  const codeIdQuery = (router.query["code-id"] as string) ?? "";
+  const { msg: msgQuery, codeId: codeIdQuery } = zInstantiateQueryParams.parse(
+    router.query
+  );
   const { user: exampleUserAddress } = useExampleAddresses();
   const { address } = useCurrentChain();
   const postInstantiateTx = useInstantiateTx();
@@ -124,7 +125,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   } = useForm<InstantiatePageState>({
     mode: "all",
     defaultValues: {
-      codeId: "",
+      codeId: 0,
       codeHash: "",
       label: "",
       adminAddress: "",
@@ -155,7 +156,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   // -------------------DATA-------------------//
   // ------------------------------------------//
   const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
-    codeId.length ? Number(codeId) : undefined,
+    codeId,
     codeHash
   );
 
@@ -170,7 +171,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     const generalChecks =
       Boolean(address) &&
       Boolean(label) &&
-      isId(codeId) &&
+      codeId &&
       status.state === "success";
 
     switch (tab) {
@@ -313,7 +314,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
       const decodedMsg = libDecode(msgQuery);
       try {
         const msgObject = JSON.parse(decodedMsg) as InstantiateRedoMsg;
-        setValue("codeId", msgObject.code_id.toString());
+        setValue("codeId", msgObject.code_id);
         setValue("label", msgObject.label);
         setValue("adminAddress", msgObject.admin);
         setValue(
@@ -342,10 +343,10 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   useEffect(() => {
     setValue("codeHash", "");
     setTab(MessageTabs.JSON_INPUT);
-    if (codeId.length) {
+    if (codeId) {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
-        if (isId(codeId)) refetch();
+        if (codeId) refetch();
         else setStatus({ state: "error", message: "Invalid Code ID" });
       }, 500);
       return () => clearTimeout(timer);
@@ -363,7 +364,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             composeMsg(MsgType.INSTANTIATE, {
               sender: address,
               admin: adminAddress as BechAddr,
-              codeId: Long.fromString(codeId),
+              codeId: Long.fromInt(codeId),
               label,
               msg: Buffer.from(currentInput),
               funds,
@@ -434,18 +435,18 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
             </Heading>
           )}
           <CodeSelectSection
+            codeId={codeId}
             name="codeId"
             control={control}
-            status={status}
             error={formErrors.codeId?.message}
-            onCodeSelect={(code: string) => {
+            onCodeSelect={(code: number) => {
               setValue("codeId", code);
               resetMsgInputSchema();
             }}
             setCodeHash={(data: Code) =>
               setValue("codeHash", data.hash.toLowerCase())
             }
-            codeId={codeId}
+            status={status}
           />
         </Box>
         <form style={{ width: "100%" }}>
@@ -506,7 +507,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
               />
             }
             schemaContent={
-              isId(codeId) && (
+              codeId && (
                 <SchemaInputSection
                   type="instantiate"
                   codeHash={codeHash}
