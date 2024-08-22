@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1101](https://github.com/alleslabs/celatone-frontend/pull/1101) Add get all codes and contracts APIs
+
 ### Improvements
 
 - [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number

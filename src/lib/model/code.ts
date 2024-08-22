@@ -5,21 +5,22 @@ import type { PermissionFilterValue } from "lib/hooks";
 import { useCodePermissionFilter, useCodeSearchFilter } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import {
+  useAllCodesByAddress,
   useCodeListByCodeIds,
-  useCodeListByWalletAddress,
 } from "lib/services/wasm/code";
-import type { CodeInfo } from "lib/types";
+import type { BechAddr, CodeInfo } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
 const useStoredCodes = () => {
   const { address } = useCurrentChain();
   const { getCodeLocalInfo, isCodeIdSaved, isHydrated } = useCodeStore();
 
-  const { data: rawStoredCodes, isLoading } =
-    useCodeListByWalletAddress(address);
+  const { data: rawStoredCodes, isLoading } = useAllCodesByAddress(
+    address as BechAddr
+  );
 
   const storedCodes =
-    rawStoredCodes?.map<CodeInfo>((code) => ({
+    rawStoredCodes?.items.map<CodeInfo>((code) => ({
       ...code,
       name: getCodeLocalInfo(code.id)?.name,
       isSaved: isCodeIdSaved(code.id),
