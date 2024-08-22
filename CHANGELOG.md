@@ -45,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1100](https://github.com/alleslabs/celatone-frontend/pull/1100) Fix account modules spacing
+
 ## v1.8.0
 
 ### Features
