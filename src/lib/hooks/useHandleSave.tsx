@@ -5,7 +5,6 @@ import { useAccountStore, useContractStore } from "lib/providers/store";
 import type { BechAddr, BechAddr32, LVPair, Option } from "lib/types";
 
 import { useFormatAddresses } from "./useFormatAddresses";
-import { useUserKey } from "./useUserKey";
 
 interface UseHandleContractSaveProps {
   title: string;
@@ -41,12 +40,10 @@ export const useHandleContractSave = ({
   actions,
 }: UseHandleContractSaveProps) => {
   const toast = useToast();
-  const userKey = useUserKey();
   const { updateContractLocalInfo } = useContractStore();
   // TODO: optimize to take name, description, tags, lists, actions only here
   return (inputName?: string) => {
     updateContractLocalInfo(
-      userKey,
       contractAddress,
       label,
       codeId,
