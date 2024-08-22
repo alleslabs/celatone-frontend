@@ -166,7 +166,7 @@ export const useAllInstantiatedContractsByAddress = (
     async () => {
       if (!address)
         throw new Error(
-          "address not found (getInstantiatedContractsByAddress)"
+          "address not found (getAllInstantiatedContractsByAddress)"
         );
 
       return getAllInstantiatedContractsByAddress(endpoint, address);
