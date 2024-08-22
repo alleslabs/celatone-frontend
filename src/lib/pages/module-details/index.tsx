@@ -131,11 +131,7 @@ const ModuleDetailsBody = ({
             : "Module Detail"
         }
       />
-      <ModuleTop
-        moduleData={data}
-        isVerified={Boolean(verificationData)}
-        moveVerifyStatus={moveVerifyStatus}
-      />
+      <ModuleTop moduleData={data} moveVerifyStatus={moveVerifyStatus} />
       <Tabs
         index={tabIndex.indexOf(currentTab)}
         isLazy

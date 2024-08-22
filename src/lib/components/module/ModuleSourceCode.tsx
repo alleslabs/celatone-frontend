@@ -18,8 +18,10 @@ import { AppLink } from "../AppLink";
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 import { MoveVerifyBadge } from "../MoveVerifyBadge";
+import type { MoveVerifyInfoResponse } from "lib/services/types";
 import { MoveVerifyStatus } from "lib/types";
-import type { Option } from "lib/types";
+import type { Nullish } from "lib/types";
+import { formatUTC } from "lib/utils";
 
 import { moveLanguageConfig, moveTokenProvider } from "./moveSyntax";
 
@@ -32,15 +34,16 @@ const loadMoveSyntax = (monaco: Monaco) => {
 };
 
 interface ModuleSourceCodeProps {
-  sourceCode: Option<string>;
+  verificationData: Nullish<MoveVerifyInfoResponse>;
   moveVerifyStatus: MoveVerifyStatus;
 }
 
 export const ModuleSourceCode = ({
-  sourceCode,
+  verificationData,
   moveVerifyStatus,
 }: ModuleSourceCodeProps) => {
-  if (!sourceCode) return null;
+  if (!verificationData) return null;
+
   return (
     <Accordion allowToggle w="full" defaultIndex={[0]}>
       <AccordionItem>
@@ -60,13 +63,13 @@ export const ModuleSourceCode = ({
                   color="text.dark"
                   textAlign="start"
                 >
-                  {/* TODO: Add timestamp */}
-                  This module is verifed at Oct 24, 2022, 7:58:34 PM (UTC)
+                  This module is verifed at{" "}
+                  {formatUTC(verificationData.verifiedAt)}
                 </Text>
               </Flex>
               <Flex alignItems="center" gap={2}>
                 <CopyButton
-                  value={sourceCode}
+                  value={verificationData.source}
                   variant="outline-primary"
                   w={{ base: "full", md: "auto" }}
                 />
@@ -122,7 +125,7 @@ export const ModuleSourceCode = ({
               language="move"
               theme="vs-dark"
               beforeMount={loadMoveSyntax}
-              value={sourceCode}
+              value={verificationData.source}
               options={{ readOnly: true, scrollBeyondLastLine: false }}
             />
           </Box>

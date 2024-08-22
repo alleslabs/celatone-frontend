@@ -22,7 +22,6 @@ import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
 
 interface ModuleTopProps {
   moduleData: IndexedModule;
-  isVerified: boolean;
   moveVerifyStatus: MoveVerifyStatus;
 }
 
@@ -154,11 +153,7 @@ const ModuleCta = ({
   );
 };
 
-export const ModuleTop = ({
-  moduleData,
-  isVerified,
-  moveVerifyStatus,
-}: ModuleTopProps) => {
+export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
   const isMobile = useMobile();
 
   const { convertHexWalletAddress, convertHexModuleAddress } =
@@ -214,10 +209,8 @@ export const ModuleTop = ({
           >
             {moduleData.moduleName}
           </Heading>
-          {/* TODO: Add status & remove isVerified */}
           <Tooltip label="This module's verification is supported by its provided source code.">
             <MoveVerifyBadge status={moveVerifyStatus} />
-            {isVerified}
           </Tooltip>
         </Flex>
         {!isMobile && (

@@ -30,7 +30,7 @@ export const ModuleInfo = ({
     </Heading>
     <ModuleInfoBody {...props} />
     <ModuleSourceCode
-      sourceCode={verificationData?.source}
+      verificationData={verificationData}
       moveVerifyStatus={moveVerifyStatus}
     />
   </Flex>

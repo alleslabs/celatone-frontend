@@ -393,7 +393,7 @@ export const Interact = () => {
       </PageContainer>
       <Box px={{ base: "16px", md: "48px" }}>
         <ModuleSourceCode
-          sourceCode={verificationData?.source}
+          verificationData={verificationData}
           moveVerifyStatus={moveVerifyStatus}
         />
       </Box>
