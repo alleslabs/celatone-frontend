@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { zHexAddr } from "lib/types";
+import { zHexAddr, zUtcDate } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
 export enum MoveVerifyTaskStatus {
@@ -47,7 +47,7 @@ export const zMoveVerifyInfoResponse = z
   .object({
     module_address: zHexAddr,
     module_name: z.string(),
-    verified_at: z.string(),
+    verified_at: zUtcDate,
     digest: z.string(),
     source: z.string(),
     base64: z.string(),

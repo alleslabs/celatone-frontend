@@ -14,14 +14,15 @@ import { CopyButton } from "lib/components/copy";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { MoveVerifyBadge } from "lib/components/MoveVerifyBadge";
 import { Tooltip } from "lib/components/Tooltip";
 import { UpgradePolicy } from "lib/types";
-import type { Addr, IndexedModule } from "lib/types";
+import type { Addr, IndexedModule, MoveVerifyStatus } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
 
 interface ModuleTopProps {
   moduleData: IndexedModule;
-  isVerified: boolean;
+  moveVerifyStatus: MoveVerifyStatus;
 }
 
 const baseTextStyle: TextProps = {
@@ -152,7 +153,7 @@ const ModuleCta = ({
   );
 };
 
-export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
+export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
   const isMobile = useMobile();
 
   const { convertHexWalletAddress, convertHexModuleAddress } =
@@ -208,17 +209,9 @@ export const ModuleTop = ({ moduleData, isVerified }: ModuleTopProps) => {
           >
             {moduleData.moduleName}
           </Heading>
-          {isVerified && (
-            <Tooltip label="This module's verification is supported by its provided source code.">
-              <Flex>
-                <CustomIcon
-                  name="check-circle-solid"
-                  boxSize={5}
-                  color="success.main"
-                />
-              </Flex>
-            </Tooltip>
-          )}
+          <Tooltip label="This module's verification is supported by its provided source code.">
+            <MoveVerifyBadge status={moveVerifyStatus} />
+          </Tooltip>
         </Flex>
         {!isMobile && (
           <ModuleCta moduleData={moduleData} moduleAddress={moduleAddress} />

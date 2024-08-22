@@ -47,7 +47,7 @@ const ModuleInfoBodyPublishedAndRepublished = ({
 export const ModuleInfoBody = ({
   indexedModule,
   modulePublishInfo,
-}: Omit<ModuleInfoProps, "verificationData">) => {
+}: Pick<ModuleInfoProps, "indexedModule" | "modulePublishInfo">) => {
   const { isFullTier } = useTierConfig();
   const { address, upgradePolicy } = indexedModule;
 

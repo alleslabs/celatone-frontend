@@ -25,6 +25,7 @@ export * from "./abi";
 export * from "./modules";
 export * from "./mergeRefs";
 export * from "./msgFurtherAction";
+export * from "./move";
 export * from "./number";
 export * from "./option";
 export * from "./proposal";
