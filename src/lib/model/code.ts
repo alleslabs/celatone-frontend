@@ -2,11 +2,7 @@ import { useMemo } from "react";
 
 import { useCurrentChain } from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
-import {
-  useCodePermissionFilter,
-  useCodeSearchFilter,
-  useUserKey,
-} from "lib/hooks";
+import { useCodePermissionFilter, useCodeSearchFilter } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import {
   useCodeListByCodeIds,
@@ -33,13 +29,12 @@ const useStoredCodes = () => {
 };
 
 const useSavedCodes = () => {
-  const userKey = useUserKey();
   const { lastSavedCodes, lastSavedCodeIds, isHydrated } = useCodeStore();
 
-  const savedCodeIds = lastSavedCodeIds(userKey);
+  const savedCodeIds = lastSavedCodeIds();
   const { data: rawSavedCodes, isLoading } = useCodeListByCodeIds(savedCodeIds);
 
-  const savedCodes = lastSavedCodes(userKey).map<CodeInfo>((localSavedCode) => {
+  const savedCodes = lastSavedCodes().map<CodeInfo>((localSavedCode) => {
     const rawSavedCode = rawSavedCodes?.find(
       (savedCode) => savedCode.id === localSavedCode.id
     );

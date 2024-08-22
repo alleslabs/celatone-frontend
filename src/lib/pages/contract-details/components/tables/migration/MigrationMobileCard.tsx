@@ -48,7 +48,7 @@ export const MigrationMobileCard = ({
       }
       topContent={
         <Flex w="full">
-          <Flex flex="1" gap={2} align="center">
+          <Flex flex={1} gap={2} align="center">
             <MobileLabel label="Code ID" variant="body2" />
             <ExplorerLink
               type="code_id"
@@ -101,7 +101,7 @@ export const MigrationMobileCard = ({
         <Flex w="full" direction="column" gap={3}>
           <Flex>
             {isFullTier && (
-              <Flex flex="1" direction="column">
+              <Flex flex={1} direction="column">
                 <MobileLabel label="Sender" />
                 {history.sender ? (
                   <ExplorerLink
@@ -115,7 +115,7 @@ export const MigrationMobileCard = ({
                 )}
               </Flex>
             )}
-            <Flex flex="1" direction="column">
+            <Flex flex={1} direction="column">
               <MobileLabel label="Block Height" />
               {history.height ? (
                 <ExplorerLink

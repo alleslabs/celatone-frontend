@@ -48,7 +48,7 @@ export const CodesTableMobileCard = ({
           </Flex>
         ) : (
           <Flex gap={3} w="full">
-            <Flex direction="column" flex="1">
+            <Flex direction="column" flex={1}>
               <MobileLabel variant="body2" label="Code ID" />
               <ExplorerLink
                 type="code_id"
@@ -56,7 +56,7 @@ export const CodesTableMobileCard = ({
                 showCopyOnHover
               />
             </Flex>
-            <Flex direction="column" flex="1" gap={1}>
+            <Flex direction="column" flex={1} gap={1}>
               <MobileLabel variant="body2" label="Permission" />
               <PermissionChip
                 instantiatePermission={codeInfo.instantiatePermission}
@@ -84,7 +84,7 @@ export const CodesTableMobileCard = ({
       bottomContent={
         showCw2andContracts && (
           <Flex gap={3} w="full">
-            <Flex direction="column" flex="1">
+            <Flex direction="column" flex={1}>
               <MobileLabel label="Contracts" />
               <Text
                 variant="body3"
@@ -95,7 +95,7 @@ export const CodesTableMobileCard = ({
                 {codeInfo.contractCount ?? "N/A"}
               </Text>
             </Flex>
-            <Flex direction="column" flex="1">
+            <Flex direction="column" flex={1}>
               <MobileLabel label="Permission" />
               <PermissionChip
                 instantiatePermission={codeInfo.instantiatePermission}
