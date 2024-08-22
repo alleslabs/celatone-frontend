@@ -7,7 +7,6 @@ import { useInternalNavigate } from "lib/app-provider";
 import { OffChainForm } from "lib/components/OffChainForm";
 import type { OffchainDetail } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
-import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import type { BechAddr20, BechAddr32, LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
@@ -34,7 +33,6 @@ export const InstantiateOffChainForm = observer(
   }: InstantiateOffChainFormProps) => {
     const navigate = useInternalNavigate();
     const { updateContractLocalInfo } = useContractStore();
-    const userKey = useUserKey();
     const instantiatedListSlug = formatSlugName(INSTANTIATED_LIST_NAME);
 
     const {
@@ -70,7 +68,6 @@ export const InstantiateOffChainForm = observer(
       handleSubmit((data) => {
         track(AmpEvent.CONTRACT_SAVE_AFTER_INIT);
         updateContractLocalInfo(
-          userKey,
           contractAddress,
           contractLabel,
           codeId,

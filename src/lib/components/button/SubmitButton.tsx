@@ -9,6 +9,7 @@ interface SubmitButtonProps {
   isLoading: boolean;
   onSubmit: () => void;
   isDisabled: boolean;
+  isFullWidth?: boolean;
 }
 
 export const SubmitButton = ({
@@ -16,6 +17,7 @@ export const SubmitButton = ({
   isLoading,
   onSubmit,
   isDisabled,
+  isFullWidth = false,
 }: SubmitButtonProps) => {
   const isMobile = useMobile();
   const isMac = useIsMac();
@@ -36,6 +38,7 @@ export const SubmitButton = ({
 
   return (
     <Button
+      w={isFullWidth ? "full" : "auto"}
       variant="primary"
       fontSize="14px"
       p="6px 16px"

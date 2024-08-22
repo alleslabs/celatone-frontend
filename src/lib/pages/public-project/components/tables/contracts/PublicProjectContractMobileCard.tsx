@@ -70,7 +70,7 @@ export const PublicProjectContractMobileCard = ({
       }
       middleContent={
         <Flex direction="column" gap={3}>
-          <Flex flex="1" direction="column">
+          <Flex flex={1} direction="column">
             <Flex direction="column">
               <MobileLabel label="Contract Name" />
               <Text>{publicInfo.name}</Text>
@@ -79,7 +79,7 @@ export const PublicProjectContractMobileCard = ({
               </Text>
             </Flex>
           </Flex>
-          <Flex flex="1" direction="column">
+          <Flex flex={1} direction="column">
             <Flex direction="column">
               <MobileLabel label="Instantiated By" />
               <ExplorerLink

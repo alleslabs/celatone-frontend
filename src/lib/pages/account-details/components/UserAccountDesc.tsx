@@ -57,7 +57,7 @@ export const UserAccountDesc = observer(
         borderRadius="8px"
         p={4}
         minH="full"
-        flex="1"
+        flex={1}
         role="group"
       >
         <Flex justify="space-between" align="center" h="32px">

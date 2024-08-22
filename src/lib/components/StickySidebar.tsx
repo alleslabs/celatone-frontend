@@ -69,7 +69,7 @@ export const StickySidebar = ({
     metadata;
   const hasAction = toPage;
   return (
-    <Box flex="4" px={8} position="relative" {...boxProps}>
+    <Box flex={4} px={8} position="relative" {...boxProps}>
       <Flex position="fixed" width="full" direction="column">
         {hasForumAlert && (
           <Alert variant="primary" gap="2" w={96} mb={2}>
