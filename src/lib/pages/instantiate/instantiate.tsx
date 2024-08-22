@@ -52,7 +52,13 @@ import { useSchemaStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeLcd } from "lib/services/wasm/code";
-import type { BechAddr, BechAddr20, BechAddr32, ComposedMsg } from "lib/types";
+import type {
+  BechAddr,
+  BechAddr20,
+  BechAddr32,
+  ComposedMsg,
+  Option,
+} from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
@@ -80,7 +86,7 @@ interface InstantiatePageProps {
   onComplete: (
     txResult: DeliverTxResponse,
     contractLabel: string,
-    contractAddress: BechAddr32,
+    contractAddress: Option<BechAddr32>,
     codeId: number,
     instantiator: BechAddr20
   ) => void;

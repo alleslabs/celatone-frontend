@@ -17,6 +17,7 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
   address: BechAddr20;
+  contractAddress: BechAddr32;
   messages: EncodeObject[];
   action: string;
   fee: StdFee;
@@ -28,6 +29,7 @@ interface ExecuteTxParams {
 
 export const executeContractTx = ({
   address,
+  contractAddress,
   messages,
   action,
   fee,
@@ -42,17 +44,11 @@ export const executeContractTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee, ""),
     }),
     ({ value: txInfo }) => {
-      const contractAddress = findAttribute(
-        txInfo.events,
-        "execute",
-        "_contract_address"
-      )?.value;
-
       onTxSucceed?.({
         type: "execute",
         action,
         sender: address,
-        contractAddress: contractAddress as BechAddr32,
+        contractAddress,
         msg: base64Message,
         timestamp: getCurrentDate(),
       });

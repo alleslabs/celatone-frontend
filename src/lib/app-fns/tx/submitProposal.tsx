@@ -1,6 +1,7 @@
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import { findAttribute } from "@cosmjs/cosmwasm-stargate/build/signingcosmwasmclient";
 import type { EncodeObject } from "@cosmjs/proto-signing";
-import type { logs, StdFee } from "@cosmjs/stargate";
+import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import { capitalize } from "lodash";
 import type { Observable } from "rxjs";
@@ -10,7 +11,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { BechAddr20, Nullable, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { feeFromStr, findAttr } from "lib/utils";
+import { feeFromStr } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -42,14 +43,11 @@ export const submitWhitelistProposalTx = ({
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
-      const mimicLog: logs.Log = {
-        msg_index: 0,
-        log: "",
-        events: txInfo.events,
-      };
-      const txFee = findAttr(mimicLog, "tx", "fee");
+      const txFee = findAttribute(txInfo.events, "tx", "fee")?.value;
       const proposalId =
-        findAttr(mimicLog, "submit_proposal", "proposal_id") ?? "";
+        findAttribute(txInfo.events, "submit_proposal", "proposal_id")?.value ??
+        "";
+
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
@@ -131,14 +129,11 @@ export const submitStoreCodeProposalTx = ({
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
-      const mimicLog: logs.Log = {
-        msg_index: 0,
-        log: "",
-        events: txInfo.events,
-      };
-      const txFee = findAttr(mimicLog, "tx", "fee");
+      const txFee = findAttribute(txInfo.events, "tx", "fee")?.value;
       const proposalId =
-        findAttr(mimicLog, "submit_proposal", "proposal_id") ?? "";
+        findAttribute(txInfo.events, "submit_proposal", "proposal_id")?.value ??
+        "";
+
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,

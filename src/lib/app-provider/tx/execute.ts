@@ -7,7 +7,7 @@ import { trackTxSucceed } from "lib/amplitude";
 import { executeContractTx } from "lib/app-fns/tx/execute";
 import type { Activity } from "lib/stores/contract";
 import type { BechAddr32 } from "lib/types";
-import { encode, libEncode, toEncodeObject } from "lib/utils";
+import { libEncode, toEncodeObject } from "lib/utils";
 
 export interface ExecuteStreamParams {
   onTxSucceed?: (activity: Activity) => void;
@@ -48,12 +48,13 @@ export const useExecuteContractTx = () => {
         ),
       ]);
 
-      const base64Message = encode(JSON.stringify({ msg, funds }));
+      const base64Message = libEncode(JSON.stringify({ msg, funds }));
 
       const action = Object.keys(msg)[0];
 
       return executeContractTx({
         address,
+        contractAddress,
         messages,
         action,
         fee: estimatedFee,

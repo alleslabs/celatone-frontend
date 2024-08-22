@@ -38,12 +38,12 @@ const Completed = ({ txInfo }: CompletedProps) => {
           },
           {
             title: "Contract Address",
-            html: (
+            html: txInfo.contractAddress ? (
               <ExplorerLink
                 type="contract_address"
                 value={txInfo.contractAddress}
               />
-            ),
+            ) : undefined,
           },
           {
             title: "Tx Fee",

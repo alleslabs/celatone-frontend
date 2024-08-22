@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { instantiateContractTx } from "lib/app-fns/tx/instantiate";
-import type { BechAddr32 } from "lib/types";
+import type { BechAddr32, Option } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
 
 export interface InstantiateStreamParams {
@@ -18,7 +18,7 @@ export interface InstantiateStreamParams {
   onTxSucceed?: (
     txResult: DeliverTxResponse,
     contractLabel: string,
-    contractAddress: BechAddr32
+    contractAddress: Option<BechAddr32>
   ) => void;
   onTxFailed?: () => void;
 }
