@@ -1,16 +1,13 @@
 import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { isNull } from "lodash";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
-import {
-  MoveVerifySection,
-  MoveVerifyStatus,
-} from "lib/components/move-verify-section";
+import { MoveVerifySection } from "lib/components/move-verify-section";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
@@ -23,7 +20,7 @@ import {
   useModuleTableCounts,
 } from "lib/services/move/module";
 import { useMoveVerifyInfo } from "lib/services/verification/move";
-import { truncate } from "lib/utils";
+import { resolveMoveVerifyStatus, truncate } from "lib/utils";
 
 import {
   FunctionTypeTabs,
@@ -117,6 +114,11 @@ const ModuleDetailsBody = ({
     ? Object.values(TabIndex)
     : Object.values(TabIndex).filter((t) => t !== TabIndex.TxsHistories);
 
+  const moveVerifyStatus = useMemo(
+    () => resolveMoveVerifyStatus(data, verificationData),
+    [data, verificationData]
+  );
+
   if (isModuleLoading || isPublishInfoLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="module information" />;
 
@@ -129,7 +131,11 @@ const ModuleDetailsBody = ({
             : "Module Detail"
         }
       />
-      <ModuleTop moduleData={data} isVerified={Boolean(verificationData)} />
+      <ModuleTop
+        moduleData={data}
+        isVerified={Boolean(verificationData)}
+        moveVerifyStatus={moveVerifyStatus}
+      />
       <Tabs
         index={tabIndex.indexOf(currentTab)}
         isLazy
@@ -170,21 +176,7 @@ const ModuleDetailsBody = ({
             <Flex gap={6} flexDirection="column">
               <StatusMessageBox
                 borderColor="gray.100"
-                content={
-                  <MoveVerifySection status={MoveVerifyStatus.Verified} />
-                }
-              />
-              <StatusMessageBox
-                borderColor="gray.100"
-                content={
-                  <MoveVerifySection status={MoveVerifyStatus.NotVerified} />
-                }
-              />
-              <StatusMessageBox
-                borderColor="gray.100"
-                content={
-                  <MoveVerifySection status={MoveVerifyStatus.Outdated} />
-                }
+                content={<MoveVerifySection status={moveVerifyStatus} />}
               />
               <ModuleActions
                 viewFns={data.viewFunctions.length}
@@ -210,6 +202,7 @@ const ModuleDetailsBody = ({
                 indexedModule={data}
                 modulePublishInfo={modulePublishInfo}
                 verificationData={verificationData}
+                moveVerifyStatus={moveVerifyStatus}
               />
               {isFullTier && (
                 <ModuleTables

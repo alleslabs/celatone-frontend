@@ -17,8 +17,8 @@ import MonacoEditor from "@monaco-editor/react";
 import { AppLink } from "../AppLink";
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
-import { MoveVerifyStatus } from "../move-verify-section";
 import { MoveVerifyBadge } from "../MoveVerifyBadge";
+import { MoveVerifyStatus } from "lib/types";
 import type { Option } from "lib/types";
 
 import { moveLanguageConfig, moveTokenProvider } from "./moveSyntax";
@@ -33,13 +33,12 @@ const loadMoveSyntax = (monaco: Monaco) => {
 
 interface ModuleSourceCodeProps {
   sourceCode: Option<string>;
-  status?: MoveVerifyStatus;
+  moveVerifyStatus: MoveVerifyStatus;
 }
 
 export const ModuleSourceCode = ({
   sourceCode,
-  // TODO: Add status
-  status = MoveVerifyStatus.Outdated,
+  moveVerifyStatus,
 }: ModuleSourceCodeProps) => {
   if (!sourceCode) return null;
   return (
@@ -50,7 +49,7 @@ export const ModuleSourceCode = ({
             <Flex justifyContent="space-between">
               <Flex flexDirection="column" alignItems="start">
                 <Flex align="center" gap={1}>
-                  <MoveVerifyBadge status={status} boxSize={4} />
+                  <MoveVerifyBadge status={moveVerifyStatus} boxSize={4} />
                   <Heading as="h6" variant="h7">
                     Verified Module Source Code
                   </Heading>
@@ -74,7 +73,7 @@ export const ModuleSourceCode = ({
                 <AccordionIcon color="gray.600" ml="auto" boxSize={6} />
               </Flex>
             </Flex>
-            {status === MoveVerifyStatus.Outdated && (
+            {moveVerifyStatus === MoveVerifyStatus.Outdated && (
               <Alert
                 p={2}
                 variant="warning"

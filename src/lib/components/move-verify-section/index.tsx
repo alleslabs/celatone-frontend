@@ -1,14 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 
+import { MoveVerifyStatus } from "lib/types";
+
 import { NotVerifiedDetails } from "./NotVerifiedDetails";
 import { OutdatedDetails } from "./OutdatedDetails";
 import { VerifiedDetails } from "./VerifiedDetails";
-
-export enum MoveVerifyStatus {
-  Verified = "VERIFIED",
-  NotVerified = "NOT_VERIFIED",
-  Outdated = "OUTDATED",
-}
 
 interface MoveVerifySectionProps {
   status: MoveVerifyStatus;

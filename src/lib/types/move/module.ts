@@ -38,3 +38,9 @@ export interface ModulePublishInfo {
   recentPublishBlockTimestamp: Date;
   isRepublished: boolean;
 }
+
+export enum MoveVerifyStatus {
+  Verified = "VERIFIED",
+  NotVerified = "NOT_VERIFIED",
+  Outdated = "OUTDATED",
+}

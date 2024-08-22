@@ -1,7 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 
+import { MoveVerifyStatus } from "lib/types";
+
 import { CustomIcon } from "./icon";
-import { MoveVerifyStatus } from "./move-verify-section";
 
 interface MoveVerifyBadgeProps {
   status: MoveVerifyStatus;
@@ -31,10 +32,8 @@ const MoveVerifyIcon = ({ status, boxSize = 5 }: MoveVerifyBadgeProps) => {
   return undefined;
 };
 
-export const MoveVerifyBadge = ({ status, boxSize }: MoveVerifyBadgeProps) => {
-  return (
-    <Flex as="span" gap={1} alignItems="center">
-      <MoveVerifyIcon status={status} boxSize={boxSize} />
-    </Flex>
-  );
-};
+export const MoveVerifyBadge = ({ status, boxSize }: MoveVerifyBadgeProps) => (
+  <Flex as="span" gap={1} alignItems="center">
+    <MoveVerifyIcon status={status} boxSize={boxSize} />
+  </Flex>
+);
