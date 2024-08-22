@@ -40,15 +40,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1092](https://github.com/alleslabs/celatone-frontend/pull/1092) Add module verification badge and entry points
-- [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) My past module verifications with functionalities
+- [#1096](https://github.com/alleslabs/celatone-frontend/pull/1096) My past module verifications with functionalities
 - [#1085](https://github.com/alleslabs/celatone-frontend/pull/1085) Add my module verification details
 - [#1087](https://github.com/alleslabs/celatone-frontend/pull/1087) Add modules verify page
+- [#1101](https://github.com/alleslabs/celatone-frontend/pull/1101) Add get all codes and contracts APIs
 
 ### Improvements
 
 - [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
 
 ### Bug fixes
+
+- [#1100](https://github.com/alleslabs/celatone-frontend/pull/1100) Fix account modules spacing
 
 ## v1.8.0
 
