@@ -8,7 +8,7 @@ import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms/TextInput";
 import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal/ActionModal";
-import { useGetMaxLengthError, useUserKey } from "lib/hooks";
+import { useGetMaxLengthError } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import type { LVPair } from "lib/types";
 import { formatSlugName, shortenName } from "lib/utils";
@@ -25,7 +25,6 @@ export function EditListNameModal({
 }: EditListNameModalProps) {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
-  const userKey = useUserKey();
   const { renameList, isContractListExist } = useContractStore();
   const navigate = useInternalNavigate();
   const toast = useToast();
@@ -45,7 +44,7 @@ export function EditListNameModal({
       });
     else if (
       formatSlugName(listName) !== list.value &&
-      isContractListExist(userKey, listName)
+      isContractListExist(listName)
     )
       setStatus({ state: "error", message: "Already existed" });
     else setStatus({ state: "success" });
@@ -55,13 +54,12 @@ export function EditListNameModal({
     isContractListExist,
     list.value,
     listName,
-    userKey,
   ]);
 
   const handleSave = () => {
     track(AmpEvent.LIST_EDIT);
     // TODO: check list name and different toast status
-    renameList(userKey, list.value, listName);
+    renameList(list.value, listName);
     toast({
       title: `Edit ${shortenName(list.label)} to ${shortenName(
         listName

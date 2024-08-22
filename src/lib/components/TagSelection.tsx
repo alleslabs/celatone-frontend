@@ -17,7 +17,6 @@ import { observer } from "mobx-react-lite";
 import type { CSSProperties, KeyboardEvent } from "react";
 import { forwardRef, useEffect, useRef, useState } from "react";
 
-import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { mergeRefs } from "lib/utils";
 
@@ -61,9 +60,8 @@ export const TagSelection = observer(
       // TODO: refactor to reduce complexity
       // eslint-disable-next-line sonarjs/cognitive-complexity
     ) => {
-      const userKey = useUserKey();
       const { getAllTags } = useContractStore();
-      const options = getAllTags(userKey);
+      const options = getAllTags();
 
       const [optionsCopy, setOptionsCopy] = useState<string[]>(options);
       const [partialResult, setPartialResult] = useState<string[]>([]);

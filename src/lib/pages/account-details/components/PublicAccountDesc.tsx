@@ -10,7 +10,7 @@ export const PublicAccountDesc = ({ description }: { description: string }) => (
     borderRadius="8px"
     py={4}
     px={4}
-    flex="1"
+    flex={1}
   >
     <Flex alignItems="center" gap={1} minH="32px">
       <CustomIcon name="website" ml={0} mb={2} color="gray.600" />

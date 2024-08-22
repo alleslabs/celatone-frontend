@@ -75,7 +75,7 @@ export const ValidatorsTableMobileCard = ({
       }
       middleContent={
         <Flex gap={3}>
-          <Flex direction="column" flex="1">
+          <Flex direction="column" flex={1}>
             <MobileLabel label="Voting Power" />
             <Text variant="body2" color="text.main">
               {formatPrettyPercent(
@@ -102,7 +102,7 @@ export const ValidatorsTableMobileCard = ({
               )
             </Text>
           </Flex>
-          <Flex direction="column" flex="1">
+          <Flex direction="column" flex={1}>
             {showUptime ? (
               <>
                 <MobileLabel label="Uptime" />

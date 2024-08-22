@@ -110,20 +110,20 @@ export class ContractStore {
     this.userKey = userKey;
   }
 
-  getAllTags(userKey: string): string[] {
-    return Array.from(this.allTags[userKey]?.keys() ?? []);
+  getAllTags(): string[] {
+    return Array.from(this.allTags[this.userKey]?.keys() ?? []);
   }
 
-  private getContractList(userKey: string): ContractList[] {
-    const contractList = this.contractList[userKey];
+  private getContractList(): ContractList[] {
+    const contractList = this.contractList[this.userKey];
     if (contractList) return contractList;
 
-    this.contractList[userKey] = this.defaultContractList;
+    this.contractList[this.userKey] = this.defaultContractList;
     return this.defaultContractList;
   }
 
   getContractLists(): ContractListInfo[] {
-    const contractListByUserKey = this.getContractList(this.userKey);
+    const contractListByUserKey = this.getContractList();
     const contractLocalInfoByUserKey = this.contractLocalInfo[this.userKey];
 
     return contractListByUserKey.map((contractListInfo) => ({
@@ -146,21 +146,21 @@ export class ContractStore {
     return this.contractLocalInfo[this.userKey]?.[contractAddress];
   }
 
-  isContractListExist(userKey: string, name: string): boolean {
+  isContractListExist(name: string): boolean {
     const slug = formatSlugName(name);
 
-    const foundIndex = this.getContractList(userKey).findIndex(
+    const foundIndex = this.getContractList().findIndex(
       (each) => each.slug === slug
     );
 
     return slug === formatSlugName(INSTANTIATED_LIST_NAME) || foundIndex > -1;
   }
 
-  createNewList(userKey: string, name: string) {
-    if (!this.isContractListExist(userKey, name)) {
-      const oldList = this.getContractList(userKey);
+  createNewList(name: string) {
+    if (!this.isContractListExist(name)) {
+      const oldList = this.getContractList();
 
-      this.contractList[userKey] = [
+      this.contractList[this.userKey] = [
         ...oldList,
         {
           name: name.trim(),
@@ -174,14 +174,12 @@ export class ContractStore {
     }
   }
 
-  renameList(userKey: string, slug: string, newName: string) {
-    if (!this.isContractListExist(userKey, newName)) {
-      const list = this.getContractList(userKey).find(
-        (each) => each.slug === slug
-      );
+  renameList(slug: string, newName: string) {
+    if (!this.isContractListExist(newName)) {
+      const list = this.getContractList().find((each) => each.slug === slug);
       if (!list) return;
 
-      const contracts = this.contractLocalInfo[userKey];
+      const contracts = this.contractLocalInfo[this.userKey];
 
       if (contracts) {
         list.contracts.forEach((addr) => {
@@ -202,13 +200,11 @@ export class ContractStore {
     }
   }
 
-  removeList(userKey: string, slug: string) {
-    const list = this.getContractList(userKey).find(
-      (each) => each.slug === slug
-    );
+  removeList(slug: string) {
+    const list = this.getContractList().find((each) => each.slug === slug);
     if (!list) return;
 
-    const contracts = this.contractLocalInfo[userKey];
+    const contracts = this.contractLocalInfo[this.userKey];
 
     if (contracts) {
       list.contracts.forEach((addr) => {
@@ -221,13 +217,12 @@ export class ContractStore {
       });
     }
 
-    this.contractList[userKey] = this.getContractList(userKey).filter(
+    this.contractList[this.userKey] = this.getContractList().filter(
       (each) => each.slug !== slug
     );
   }
 
   updateContractLocalInfo(
-    userKey: string,
     contractAddress: BechAddr32,
     label: string,
     codeId: Option<number>,
@@ -237,7 +232,7 @@ export class ContractStore {
     tags?: string[],
     lists?: LVPair[]
   ) {
-    const contractLocalInfo = this.contractLocalInfo[userKey]?.[
+    const contractLocalInfo = this.contractLocalInfo[this.userKey]?.[
       contractAddress
     ] ?? {
       contractAddress,
@@ -254,7 +249,6 @@ export class ContractStore {
         : undefined;
     if (tags !== undefined) {
       this.updateAllTags(
-        userKey,
         contractAddress,
         getTagsDefault(contractLocalInfo.tags),
         tags
@@ -263,7 +257,6 @@ export class ContractStore {
     }
     if (lists !== undefined) {
       this.updateContractInAllLists(
-        userKey,
         contractAddress,
         contractLocalInfo.lists ?? [],
         lists
@@ -271,19 +264,18 @@ export class ContractStore {
       contractLocalInfo.lists = lists.length ? lists : undefined;
     }
 
-    this.contractLocalInfo[userKey] = {
-      ...this.contractLocalInfo[userKey],
+    this.contractLocalInfo[this.userKey] = {
+      ...this.contractLocalInfo[this.userKey],
       [contractAddress]: contractLocalInfo,
     };
   }
 
   private updateAllTags(
-    userKey: string,
     contractAddress: string,
     oldTags: string[],
     newTags: string[]
   ) {
-    const tags = this.allTags[userKey] ?? new Map<string, Set<string>>();
+    const tags = this.allTags[this.userKey] ?? new Map<string, Set<string>>();
 
     const removedTags = oldTags.filter((oldTag) => !newTags.includes(oldTag));
     removedTags.forEach((oldTag) => {
@@ -305,11 +297,10 @@ export class ContractStore {
       }
     });
 
-    this.allTags[userKey] = tags;
+    this.allTags[this.userKey] = tags;
   }
 
   private updateContractInAllLists(
-    userKey: string,
     contractAddress: BechAddr32,
     oldLists: LVPair[],
     newLists: LVPair[]
@@ -318,39 +309,27 @@ export class ContractStore {
       newLists.every((newList) => newList.value !== oldList.value)
     );
     removedLists.forEach((slug) => {
-      this.removeContractFromList(userKey, slug.value, contractAddress);
+      this.removeContractFromList(slug.value, contractAddress);
     });
 
     const addedLists = newLists.filter((newList) =>
       oldLists.every((oldList) => oldList.value !== newList.value)
     );
     addedLists.forEach((slug) => {
-      this.addContractToList(userKey, slug.value, contractAddress);
+      this.addContractToList(slug.value, contractAddress);
     });
   }
 
-  private addContractToList(
-    userKey: string,
-    slug: string,
-    contractAddress: BechAddr32
-  ) {
-    const list = this.getContractList(userKey).find(
-      (each) => each.slug === slug
-    );
+  private addContractToList(slug: string, contractAddress: BechAddr32) {
+    const list = this.getContractList().find((each) => each.slug === slug);
     if (!list) return;
 
     list.contracts = Array.from(new Set(list.contracts).add(contractAddress));
     list.lastUpdated = getCurrentDate();
   }
 
-  private removeContractFromList(
-    userKey: string,
-    slug: string,
-    contractAddress: string
-  ) {
-    const list = this.getContractList(userKey).find(
-      (each) => each.slug === slug
-    );
+  private removeContractFromList(slug: string, contractAddress: string) {
+    const list = this.getContractList().find((each) => each.slug === slug);
     if (!list) return;
 
     list.contracts = list.contracts.filter((addr) => addr !== contractAddress);
@@ -358,18 +337,17 @@ export class ContractStore {
   }
 
   addActivity(activity: Activity) {
-    const { userKey } = this;
-    const recent = this.recentActivities[userKey];
+    const recent = this.recentActivities[this.userKey];
 
     if (recent) {
       const targetList = [activity, ...recent].slice(0, 10);
-      this.recentActivities[userKey] = targetList;
+      this.recentActivities[this.userKey] = targetList;
     } else {
-      this.recentActivities[userKey] = [activity];
+      this.recentActivities[this.userKey] = [activity];
     }
   }
 
-  getRecentActivities(userKey: string) {
-    return this.recentActivities[userKey] ?? [];
+  getRecentActivities() {
+    return this.recentActivities[this.userKey] ?? [];
   }
 }
