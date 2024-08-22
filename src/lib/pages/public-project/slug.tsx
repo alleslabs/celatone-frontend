@@ -25,11 +25,16 @@ import {
 import { usePublicData } from "./data";
 import { TabIndex, zProjectDetailsQueryParams } from "./types";
 
-const ProjectDetailsBody = ({ tab }: { tab: TabIndex }) => {
+interface ProjectDetailsBodyProps {
+  slug: string;
+  tab: TabIndex;
+}
+
+const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-  const navigate = useInternalNavigate();
 
   const {
     publicCodes,
@@ -37,9 +42,8 @@ const ProjectDetailsBody = ({ tab }: { tab: TabIndex }) => {
     publicAccounts,
     publicModules,
     projectDetail,
-    slug,
     isLoading,
-  } = usePublicData();
+  } = usePublicData(slug);
 
   const handleTabChange = (nextTab: TabIndex) => () => {
     if (nextTab === tab) return;

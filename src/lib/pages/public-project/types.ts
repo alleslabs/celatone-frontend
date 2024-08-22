@@ -9,6 +9,7 @@ export enum TabIndex {
 }
 
 export const zProjectDetailsQueryParams = z.object({
+  slug: z.string(),
   tab: z.union([
     z.nativeEnum(TabIndex),
     z
