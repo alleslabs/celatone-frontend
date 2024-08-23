@@ -36,6 +36,7 @@ export const populateChainConfig = (
   chainConfig: {
     tier: config.tier,
     chain: config.chain,
+    chainId: config.chainId,
     registryChainName: config.registryChainName,
     prettyName: config.prettyName,
     logoUrl:

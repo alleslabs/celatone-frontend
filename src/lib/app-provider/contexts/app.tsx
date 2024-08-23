@@ -67,7 +67,10 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   const handleOnChainIdChange = useCallback(
     (newChainId: string) => {
       const chainConfig = chainConfigs[newChainId];
-      if (!chainConfig) return;
+
+      if (!chainConfig) {
+        throw new Error(`Chain config not found for chain ID: ${newChainId}`);
+      }
 
       const theme = getTheme(chainConfig.chain);
       changeFavicon(theme.branding.favicon);

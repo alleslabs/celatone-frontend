@@ -53,6 +53,7 @@ type NftConfig = { enabled: boolean };
 export interface ChainConfig {
   tier: "lite" | "mesa" | "sequencer" | "full";
   chain: string;
+  chainId: string;
   registryChainName: string;
   prettyName: string;
   logoUrl?: string;
