@@ -214,8 +214,8 @@ export const Interact = () => {
   });
 
   const moveVerifyStatus = useMemo(
-    () => resolveMoveVerifyStatus(module, verificationData),
-    [module, verificationData]
+    () => resolveMoveVerifyStatus(module?.digest, verificationData?.digest),
+    [module?.digest, verificationData?.digest]
   );
 
   useEffect(() => {

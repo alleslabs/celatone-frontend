@@ -5,8 +5,11 @@ import type { Addr } from "lib/types";
  * @returns [init1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpqr5e3d,any,pack]
  */
 
-type SplitReturn = [Addr] | [Addr, string] | [Addr, string, string];
+export type ModulePaths = [Addr] | [Addr, string] | [Addr, string, string];
 
-export const splitModule = (path: string): SplitReturn => {
-  return path.split("::") as SplitReturn;
+export const splitModulePath = (path: string): ModulePaths => {
+  return path.split("::") as ModulePaths;
 };
+
+export const mergeModulePath = (...module: ModulePaths): string =>
+  module.join("::");

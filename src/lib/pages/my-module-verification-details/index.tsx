@@ -53,7 +53,7 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
           />
           <MyModuleVerificationDetailsTable
             moduleIdentifiers={data.result?.moduleIdentifiers}
-            status={data.task.status}
+            moveVerifyTaskStatus={data.task.status}
           />
         </Stack>
       </Stack>

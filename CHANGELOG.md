@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1103](https://github.com/alleslabs/celatone-frontend/pull/1103) Apply move verify badge to all places
 - [#1092](https://github.com/alleslabs/celatone-frontend/pull/1092) Add module verification badge and entry points
 - [#1096](https://github.com/alleslabs/celatone-frontend/pull/1096) My past module verifications with functionalities
 - [#1085](https://github.com/alleslabs/celatone-frontend/pull/1085) Add my module verification details

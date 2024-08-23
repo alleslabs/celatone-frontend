@@ -18,7 +18,12 @@ import { MoveVerifyBadge } from "lib/components/MoveVerifyBadge";
 import { Tooltip } from "lib/components/Tooltip";
 import { UpgradePolicy } from "lib/types";
 import type { Addr, IndexedModule, MoveVerifyStatus } from "lib/types";
-import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
+import {
+  isHexModuleAddress,
+  isHexWalletAddress,
+  mergeModulePath,
+  truncate,
+} from "lib/utils";
 
 interface ModuleTopProps {
   moduleData: IndexedModule;
@@ -227,7 +232,7 @@ export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
             Module Path:
           </Text>
           <CopyLink
-            value={`${moduleData.address}::${moduleData.moduleName}`}
+            value={mergeModulePath(moduleData.address, moduleData.moduleName)}
             amptrackSection="module_top"
             type="module_path"
           />

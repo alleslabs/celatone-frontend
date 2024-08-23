@@ -115,8 +115,8 @@ const ModuleDetailsBody = ({
     : Object.values(TabIndex).filter((t) => t !== TabIndex.TxsHistories);
 
   const moveVerifyStatus = useMemo(
-    () => resolveMoveVerifyStatus(data, verificationData),
-    [data, verificationData]
+    () => resolveMoveVerifyStatus(data?.digest, verificationData?.digest),
+    [data?.digest, verificationData?.digest]
   );
 
   if (isModuleLoading || isPublishInfoLoading) return <Loading />;

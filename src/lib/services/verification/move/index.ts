@@ -7,7 +7,7 @@ import type {
   MoveVerifyInfoResponse,
   MoveVerifyInfosByAddressResponse,
 } from "lib/services/types";
-import type { Addr, Nullable, Option } from "lib/types";
+import type { Addr, HexAddr, Nullable, Option } from "lib/types";
 
 import {
   getMoveVerifyByTaskId,
@@ -84,7 +84,7 @@ export const useMoveVerifyInfo = (
       return getMoveVerifyInfo(address, moduleName);
     },
     {
-      enabled: layer === "1" && Boolean(address && moduleName),
+      enabled: layer === "1",
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
@@ -92,9 +92,35 @@ export const useMoveVerifyInfo = (
   );
 };
 
+export const useMoveVerifyInfos = (
+  moduleInfos: { address: HexAddr; moduleName: string }[],
+  enabled = true
+) => {
+  const { chainConfig } = useCelatoneApp();
+  const {
+    extra: { layer },
+  } = chainConfig;
+
+  return useQueries({
+    queries: moduleInfos.map(({ address, moduleName }) => ({
+      queryKey: [
+        CELATONE_QUERY_KEYS.MOVE_VERIFY_INFO,
+        address,
+        moduleName,
+        layer,
+      ],
+      queryFn: () => getMoveVerifyInfo(address, moduleName),
+      enabled: enabled && layer === "1",
+      retry: 0,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    })),
+  });
+};
+
 export const useMoveVerifyInfosByAddress = (
   address: Option<Addr>
-): UseQueryResult<Nullable<MoveVerifyInfosByAddressResponse>> => {
+): UseQueryResult<MoveVerifyInfosByAddressResponse> => {
   const { chainConfig } = useCelatoneApp();
   const {
     extra: { layer },
@@ -103,11 +129,12 @@ export const useMoveVerifyInfosByAddress = (
   return useQuery(
     [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFOS_BY_ADDRESS, address, layer],
     () => {
-      if (!address) return null;
+      if (!address)
+        throw new Error("address is undefined (useMoveVerifyInfosByAddress)");
       return getMoveVerifyInfosByAddress(address);
     },
     {
-      enabled: layer === "1" && Boolean(address),
+      enabled: Boolean(address) && layer === "1",
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { zHexAddr, zUtcDate } from "lib/types";
-import { snakeToCamel } from "lib/utils";
+import { mergeModulePath, snakeToCamel } from "lib/utils";
 
 export enum MoveVerifyTaskStatus {
   Finished = "FINISHED",
@@ -56,13 +56,20 @@ export const zMoveVerifyInfoResponse = z
   .transform(snakeToCamel);
 export type MoveVerifyInfoResponse = z.infer<typeof zMoveVerifyInfoResponse>;
 
-export const zMoveVerifyInfosByAddressResponse = z.object({
-  contracts: z.array(
-    zMoveVerifyInfoResponse.innerType().extend({
-      id: z.string().uuid(),
-    })
-  ),
-});
+export const zMoveVerifyInfosByAddressResponse = z
+  .object({
+    contracts: z.array(zMoveVerifyInfoResponse),
+  })
+  .transform((val) =>
+    val.contracts.reduce<Record<string, MoveVerifyInfoResponse>>(
+      (acc, contract) => {
+        acc[mergeModulePath(contract.moduleAddress, contract.moduleName)] =
+          contract;
+        return acc;
+      },
+      {}
+    )
+  );
 export type MoveVerifyInfosByAddressResponse = z.infer<
   typeof zMoveVerifyInfosByAddressResponse
 >;

@@ -8,12 +8,12 @@ import { MoveVerifyTaskStatus } from "lib/services/types";
 import type { Option } from "lib/types";
 
 interface MyModuleVerificationDetailsTableProps {
-  status: MoveVerifyTaskStatus;
+  moveVerifyTaskStatus: MoveVerifyTaskStatus;
   moduleIdentifiers: Option<MoveVerificationModuleIdentifier[]>;
 }
 
 export const MyModuleVerificationDetailsTable = ({
-  status,
+  moveVerifyTaskStatus,
   moduleIdentifiers = [],
 }: MyModuleVerificationDetailsTableProps) => (
   <Stack gap={2}>
@@ -21,7 +21,7 @@ export const MyModuleVerificationDetailsTable = ({
     {!moduleIdentifiers.length ? (
       <EmptyState
         message={
-          status === MoveVerifyTaskStatus.NotFound
+          moveVerifyTaskStatus === MoveVerifyTaskStatus.NotFound
             ? "Due to failed verification, there are no modules verified from this request."
             : "List of verified modules will display after the modules are verified."
         }
