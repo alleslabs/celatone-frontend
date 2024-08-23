@@ -69,7 +69,12 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       const chainConfig = chainConfigs[newChainId];
 
       if (!chainConfig) {
-        throw new Error(`Chain config not found for chain ID: ${newChainId}`);
+        setStates({
+          ...DEFAULT_STATES,
+          isHydrated: true,
+        });
+
+        return;
       }
 
       const theme = getTheme(chainConfig.chain);

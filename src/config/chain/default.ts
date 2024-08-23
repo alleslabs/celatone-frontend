@@ -3,7 +3,6 @@ import type { ChainConfig } from "./types";
 export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
   tier: "lite",
   chain: "",
-  chainId: "",
   registryChainName: "",
   prettyName: "",
   networkType: "testnet",

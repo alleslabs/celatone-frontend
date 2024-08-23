@@ -16,16 +16,6 @@ export const useNetworkChange = (
   const { supportedChainIds, isLoading, chainConfigs } = useChainConfigs();
 
   useEffect(() => {
-    let fallbackChainId = FALLBACK_SUPPORTED_CHAIN_ID;
-
-    if (
-      !chainConfigs[FALLBACK_SUPPORTED_CHAIN_ID] &&
-      Object.keys(chainConfigs).length
-    ) {
-      const [chain] = Object.keys(chainConfigs);
-      fallbackChainId = chain;
-    }
-
     if (router.isReady && !isLoading) {
       const networkRoute = getFirstQueryParam(router.query.network);
 
@@ -38,14 +28,12 @@ export const useNetworkChange = (
         });
       } else if (
         router.pathname === "/[network]" &&
-        !chainConfigs[networkRoute]
+        !(networkRoute in chainConfigs)
       ) {
         // Redirect to default network 404 if `/invalid_network`
         navigate({
           pathname: "/404",
-          query: {
-            network: fallbackChainId,
-          },
+          query: { ...router.query },
         });
       } else if (networkRoute !== networkRef.current) {
         networkRef.current = networkRoute;
@@ -60,11 +48,12 @@ export const useNetworkChange = (
         query: {
           network: supportedChainIds.includes(networkRoute)
             ? networkRoute
-            : fallbackChainId,
+            : FALLBACK_SUPPORTED_CHAIN_ID,
         },
       });
     }
   }, [
+    chainConfigs,
     handleOnChainIdChange,
     isLoading,
     navigate,
@@ -73,6 +62,5 @@ export const useNetworkChange = (
     router.pathname,
     router.query,
     supportedChainIds,
-    chainConfigs,
   ]);
 };
