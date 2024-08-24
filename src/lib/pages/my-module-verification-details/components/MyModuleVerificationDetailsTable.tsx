@@ -17,7 +17,11 @@ export const MyModuleVerificationDetailsTable = ({
   moduleIdentifiers = [],
 }: MyModuleVerificationDetailsTableProps) => (
   <Stack gap={2}>
-    <TableTitle title="Verified Modules" count={0} my={0} />
+    <TableTitle
+      title="Verified Modules"
+      count={moduleIdentifiers.length}
+      my={0}
+    />
     {!moduleIdentifiers.length ? (
       <EmptyState
         message={

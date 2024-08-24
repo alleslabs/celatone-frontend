@@ -4,7 +4,6 @@ import { ModulePathLink } from "../modules/ModulePathLink";
 import { TableHeader, TableRow } from "../tableComponents";
 import { useInternalNavigate } from "lib/app-provider";
 import type { MoveVerificationModuleIdentifier } from "lib/services/types";
-import { MoveVerifyStatus } from "lib/types";
 
 interface ModuleVerificationDetailsTableProps {
   moduleIdentifiers: MoveVerificationModuleIdentifier[];
@@ -40,12 +39,7 @@ export const ModuleVerificationDetailsTable = ({
             }
           >
             <TableRow>
-              {/* TODO? */}
-              <ModulePathLink
-                hexAddr={address}
-                moduleName={name}
-                moveVerifyStatus={MoveVerifyStatus.Verified}
-              />
+              <ModulePathLink hexAddr={address} moduleName={name} />
             </TableRow>
           </Grid>
         </Box>

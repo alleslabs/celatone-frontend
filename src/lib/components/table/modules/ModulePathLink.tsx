@@ -10,7 +10,7 @@ import { mergeModulePath, truncate } from "lib/utils";
 interface ModulePathLinkProps {
   hexAddr: HexAddr;
   moduleName: string;
-  moveVerifyStatus: MoveVerifyStatus;
+  moveVerifyStatus?: MoveVerifyStatus;
 }
 
 export const ModulePathLink = ({
