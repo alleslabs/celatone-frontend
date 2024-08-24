@@ -1,10 +1,8 @@
-import type { FlexProps } from "@chakra-ui/react";
-
 import { MoveVerifyStatus } from "lib/types";
 
 import { CustomIcon } from "./icon";
 
-interface MoveVerifyBadgeProps extends FlexProps {
+interface MoveVerifyBadgeProps {
   status: MoveVerifyStatus;
 }
 

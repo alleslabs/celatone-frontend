@@ -7,7 +7,7 @@ import type {
   MoveVerifyInfoResponse,
   MoveVerifyInfosByAddressResponse,
 } from "lib/services/types";
-import type { Addr, HexAddr, Nullable, Option } from "lib/types";
+import type { Addr, HexAddr, Option } from "lib/types";
 
 import {
   getMoveVerifyByTaskId,
@@ -71,7 +71,7 @@ export const useMoveVerifyTaskInfo = (
 export const useMoveVerifyInfo = (
   address: Option<Addr>,
   moduleName: Option<string>
-): UseQueryResult<Nullable<MoveVerifyInfoResponse>> => {
+): UseQueryResult<MoveVerifyInfoResponse> => {
   const { chainConfig } = useCelatoneApp();
   const {
     extra: { layer },
@@ -80,7 +80,10 @@ export const useMoveVerifyInfo = (
   return useQuery(
     [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFO, address, moduleName, layer],
     () => {
-      if (!address || !moduleName) return null;
+      if (!address || !moduleName)
+        throw new Error(
+          "address or module name is undefined (useMoveVerifyInfo)"
+        );
       return getMoveVerifyInfo(address, moduleName);
     },
     {

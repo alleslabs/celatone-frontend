@@ -5,7 +5,7 @@ import type { Addr } from "lib/types";
  * @returns [init1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqpqr5e3d,any,pack]
  */
 
-export type ModulePaths = [Addr] | [Addr, string] | [Addr, string, string];
+type ModulePaths = [Addr] | [Addr, string] | [Addr, string, string];
 
 export const splitModulePath = (path: string): ModulePaths => {
   return path.split("::") as ModulePaths;
