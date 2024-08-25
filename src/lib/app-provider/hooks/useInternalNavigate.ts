@@ -17,7 +17,7 @@ export interface NavigationArgs {
 
 export const useInternalNavigate = () => {
   const router = useRouter();
-  const { chainConfigs } = useChainConfigs();
+  const { supportedChainIds } = useChainConfigs();
 
   return useCallback(
     ({
@@ -27,30 +27,22 @@ export const useInternalNavigate = () => {
       replace = false,
     }: NavigationArgs) => {
       const routerFn = replace ? router.replace : router.push;
-      const network = getFirstQueryParam(router.query.network);
-
-      let networkRoute = FALLBACK_SUPPORTED_CHAIN_ID;
-      if (network in chainConfigs) networkRoute = network;
-      if (
-        !(network in chainConfigs) &&
-        Object.values(chainConfigs).length > 0
-      ) {
-        const [chain] = Object.keys(chainConfigs);
-        networkRoute = chain;
-      }
-
       routerFn(
         {
           pathname: `/[network]${pathname}`,
           query: {
+            network: supportedChainIds.includes(
+              getFirstQueryParam(router.query.network)
+            )
+              ? router.query.network
+              : FALLBACK_SUPPORTED_CHAIN_ID,
             ...query,
-            network: networkRoute,
           },
         },
         undefined,
         options
       );
     },
-    [router.push, router.query.network, router.replace, chainConfigs]
+    [router.push, router.query.network, router.replace, supportedChainIds]
   );
 };

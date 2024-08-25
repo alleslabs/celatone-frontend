@@ -67,15 +67,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   const handleOnChainIdChange = useCallback(
     (newChainId: string) => {
       const chainConfig = chainConfigs[newChainId];
-
-      if (!chainConfig) {
-        setStates({
-          ...DEFAULT_STATES,
-          isHydrated: true,
-        });
-
-        return;
-      }
+      if (!chainConfig) return;
 
       const theme = getTheme(chainConfig.chain);
       changeFavicon(theme.branding.favicon);
