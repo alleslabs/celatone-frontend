@@ -3,6 +3,7 @@ import chainRegistry from "chain-registry";
 import { find, isUndefined, unionBy } from "lodash";
 import { useCallback, useMemo } from "react";
 
+import { devChainConfigs } from "config/chain";
 import type { ChainConfigs } from "config/chain";
 import { SUPPORTED_CHAIN_IDS } from "env";
 import { useLocalChainConfigStore } from "lib/providers/store";
@@ -25,8 +26,11 @@ export const useChainConfigs = (): {
   isPrettyNameExist: (name: string) => boolean;
   isLoading: boolean;
 } => {
-  const { data: apiChainConfigs, isLoading } =
-    useApiChainConfigs(SUPPORTED_CHAIN_IDS);
+  const {
+    data: apiChainConfigs,
+    isLoading,
+    isFetching,
+  } = useApiChainConfigs(SUPPORTED_CHAIN_IDS);
   const {
     localChainConfigs,
     isLocalChainIdExist,
@@ -73,6 +77,26 @@ export const useChainConfigs = (): {
     [JSON.stringify(localChainConfigs)]
   );
 
+  const dev = useMemo(
+    () =>
+      Object.values(devChainConfigs).reduce((acc, each) => {
+        const { chainConfig, registryChain, registryAssets } =
+          populateChainConfig(each);
+
+        return {
+          chainConfigs: {
+            ...acc.chainConfigs,
+            [each.chainId]: chainConfig,
+          },
+          registryChains: [...acc.registryChains, registryChain],
+          registryAssets: [...acc.registryAssets, registryAssets],
+          supportedChainIds: [...acc.supportedChainIds, each.chainId],
+        };
+      }, defaultConfigs),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(localChainConfigs)]
+  );
+
   const isChainIdExist = useCallback(
     (chainId: string) =>
       !!api.chainConfigs[chainId] || isLocalChainIdExist(chainId),
@@ -90,22 +114,25 @@ export const useChainConfigs = (): {
     chainConfigs: {
       ...api.chainConfigs,
       ...local.chainConfigs,
+      ...dev.chainConfigs,
     },
     registryChains: unionBy(
       chainRegistry.chains,
       api.registryChains,
       local.registryChains,
+      dev.registryChains,
       "chain_id"
     ),
     registryAssets: unionBy(
       chainRegistry.assets,
       api.registryAssets,
       local.registryAssets,
+      dev.registryAssets,
       "chain_name"
     ),
     supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
     isChainIdExist,
     isPrettyNameExist,
-    isLoading: isLoading || !isHydrated,
+    isLoading: (isLoading && isFetching) || !isHydrated,
   };
 };
