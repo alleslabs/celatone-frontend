@@ -4,7 +4,7 @@ import { useInitiaL1, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { UserDocsButton } from "lib/components/UserDocsLink";
+import { UserDocsButton } from "lib/components/UserDocsButton";
 
 import { MyModuleVerificationsTable } from "./components/my-module-verifications-table";
 

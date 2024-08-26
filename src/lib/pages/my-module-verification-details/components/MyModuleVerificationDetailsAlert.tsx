@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
-import { UserDocsButton } from "lib/components/UserDocsLink";
+import { UserDocsButton } from "lib/components/UserDocsButton";
 import { MoveVerifyTaskStatus } from "lib/services/types";
 
 interface MyModuleVerificationDetailsAlertBannerProps {

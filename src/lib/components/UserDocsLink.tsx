@@ -1,4 +1,3 @@
-import type { ButtonProps } from "@chakra-ui/react";
 import { Button, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
@@ -88,32 +87,3 @@ export const UserDocsLink = ({
       </Link>
     </Flex>
   );
-
-interface UserDocsButtonProps extends ButtonProps {
-  title: string;
-  href: string;
-  isDevTool: boolean;
-}
-
-export const UserDocsButton = ({
-  title,
-  href,
-  isDevTool,
-  ...props
-}: UserDocsButtonProps) => (
-  <Link
-    href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
-    onClick={(e) => {
-      trackWebsite(
-        `${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`
-      );
-      e.stopPropagation();
-    }}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <Button leftIcon={<CustomIcon name="document" boxSize={3} />} {...props}>
-      {title}
-    </Button>
-  </Link>
-);
