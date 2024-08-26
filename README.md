@@ -15,7 +15,7 @@ The Celatone frontend uses the following technologies:
 
 ### Prerequisites
 
-1. [Node.js](https://nodejs.org/en/) (version >= 18) or using node version manager [nvm](https://github.com/nvm-sh/nvm#intro) (recommended, installation guide for nvm [here](https://collabnix.com/how-to-install-and-configure-nvm-on-mac-os/)).
+1. [Node.js](https://nodejs.org/en/) (version >= 20) or using node version manager [nvm](https://github.com/nvm-sh/nvm#intro) (recommended, installation guide for nvm [here](https://collabnix.com/how-to-install-and-configure-nvm-on-mac-os/)).
 
 ### Develop
 
@@ -56,3 +56,115 @@ pnpm dev
 ```
 
 The website will then be live on [http://localhost:3000](http://localhost:3000)
+
+### Running Local
+
+1. Modify a `devChainConfigs.ts` under `src/config/chain` by adding your own chain config
+
+```ts
+{
+  tier: "lite", // lite, sequencer
+  chainId: "localosmosis",
+  chain: "localosmosis",
+  registryChainName: "localosmosis",
+  prettyName: "Local Osmosis",
+  lcd: "https://lcd.osmotest5.osmosis.zone",
+  rpc: "https://osmosis-testnet-rpc.polkachu.com:443",
+  wallets: ["keplr"], // keplr, initia, compass, station
+  features: {
+    faucet: {
+      enabled: false,
+    },
+    wasm: {
+      enabled: true,
+      storeCodeMaxFileSize: 800_000,
+      clearAdminGas: 50_000,
+    },
+    move: {
+      enabled: false,
+    },
+    pool: {
+      enabled: false,
+    },
+    publicProject: {
+      enabled: false,
+    },
+    gov: {
+      enabled: true,
+      version: "v1",
+      hideOpenProposal: true,
+    },
+    nft: {
+      enabled: false,
+    },
+  },
+  gas: {
+    gasAdjustment: 1.5,
+    maxGasLimit: 25_000_000,
+  },
+  extra: {},
+  network_type: "testnet",
+  logo_URIs: {
+    png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.png",
+    svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg",
+  },
+  fees: {
+    fee_tokens: [
+      {
+        denom: "uosmo",
+        fixed_min_gas_price: 0.0025,
+        low_gas_price: 0.0025,
+        average_gas_price: 0.025,
+        high_gas_price: 0.04,
+      },
+    ],
+  },
+  registry: {
+    bech32_prefix: "osmo",
+    slip44: 118,
+    staking: undefined,
+    assets: [
+      {
+        description: "The native token of Osmosis",
+        denom_units: [
+          {
+            denom: "uosmo",
+            exponent: 0,
+            aliases: [],
+          },
+          {
+            denom: "osmo",
+            exponent: 6,
+            aliases: [],
+          },
+        ],
+        type_asset: "sdk.coin",
+        base: "uosmo",
+        name: "Osmosis Testnet",
+        display: "osmo",
+        symbol: "OSMO",
+        logo_URIs: {
+          png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.png",
+          svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg",
+        },
+        images: [
+          {
+            png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.png",
+            svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg",
+          },
+        ],
+        coingecko_id: "osmosis",
+        keywords: ["dex", "staking"],
+      },
+    ],
+  },
+}
+```
+
+2. Update your project environment variable by adding your development `chainId` into `NEXT_PUBLIC_SUPPORTED_CHAIN_IDS`
+
+```bash
+NEXT_PUBLIC_SUPPORTED_CHAIN_IDS=osmosis-1,osmo-test-5,<chainId>
+```
+
+3. Make sure that your `registryChainName` is already registered in the Cosmos repository [cosmos/chain-registry](https://github.com/cosmos/chain-registry)
