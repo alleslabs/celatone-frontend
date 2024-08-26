@@ -40,12 +40,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1102](https://github.com/alleslabs/celatone-frontend/pull/1102) Support add local development chain lite version
+- [#1101](https://github.com/alleslabs/celatone-frontend/pull/1101) Add get all codes and contracts APIs
 
 ### Improvements
 
 - [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
 
 ### Bug fixes
+
+- [#1100](https://github.com/alleslabs/celatone-frontend/pull/1100) Fix account modules spacing
 
 ## v1.8.0
 

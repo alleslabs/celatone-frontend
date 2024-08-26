@@ -68,28 +68,20 @@ export const useChainConfigs = (): {
     [JSON.stringify(localChainConfigs)]
   );
 
-  const dev = useMemo(
-    () =>
-      devChainConfigs.reduce(
-        (acc, each) =>
-          each.chainId in SUPPORTED_CHAIN_IDS
-            ? {
-                chainConfigs: {
-                  ...acc.chainConfigs,
-                  [each.chainId]: each,
-                },
-                registryChains: [...acc.registryChains, getRegistryChain(each)],
-                registryAssets: [
-                  ...acc.registryAssets,
-                  getRegistryAssets(each),
-                ],
-                supportedChainIds: [...acc.supportedChainIds, each.chainId],
-              }
-            : acc,
-        defaultConfigs
-      ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(devChainConfigs)]
+  const dev = devChainConfigs.reduce(
+    (acc, each) =>
+      SUPPORTED_CHAIN_IDS.includes(each.chainId)
+        ? {
+            chainConfigs: {
+              ...acc.chainConfigs,
+              [each.chainId]: each,
+            },
+            registryChains: [...acc.registryChains, getRegistryChain(each)],
+            registryAssets: [...acc.registryAssets, getRegistryAssets(each)],
+            supportedChainIds: [...acc.supportedChainIds, each.chainId],
+          }
+        : acc,
+    defaultConfigs
   );
 
   const chainConfigs = useMemo(

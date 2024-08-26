@@ -2,7 +2,7 @@ import { useCurrentChain, useTierConfig } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import {
-  useInstantiatedContractsByAddress,
+  useAllInstantiatedContractsByAddress,
   useInstantiatedContractsByAddressLcd,
 } from "lib/services/wasm/contract";
 import type { ContractListInfo } from "lib/stores/contract";
@@ -18,7 +18,7 @@ export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
   const { isFullTier } = useTierConfig();
 
   const { data: dataApi, isLoading: isApiLoading } =
-    useInstantiatedContractsByAddress(address, 500, 0, enable && isFullTier);
+    useAllInstantiatedContractsByAddress(address, enable && isFullTier);
   const { data: dataLcd, isLoading: isLcdLoading } =
     useInstantiatedContractsByAddressLcd(address, enable && !isFullTier);
 

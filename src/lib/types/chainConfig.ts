@@ -88,76 +88,74 @@ const zFeeConfig = z.object({
     .array(),
 });
 
-// const zAsset = z.object({
-//   deprecated: z.boolean().optional(),
-//   description: z.string().optional(),
-//   extended_description: z.string().optional(),
-//   type_asset: z.string().optional(),
-//   address: z.string().optional(),
-//   denom_units: z
-//     .object({
-//       denom: z.string(),
-//       exponent: z.number(),
-//       aliases: z.string().array().optional(),
-//     })
-//     .array(),
-//   base: z.string(),
-//   name: z.string(),
-//   display: z.string(),
-//   symbol: z.string(),
-//   logo_URIs: z
-//     .object({
-//       image_sync: z
-//         .object({
-//           chain_name: z.string(),
-//           base_denom: z.string(),
-//         })
-//         .optional(),
-//       png: z.string().optional(),
-//       svg: z.string().optional(),
-//       jpeg: z.string().optional(),
-//       theme: z.any().optional(),
-//     })
-//     .optional(),
-//   images: z
-//     .object({
-//       image_sync: z
-//         .object({
-//           chain_name: z.string(),
-//           base_denom: z.string(),
-//         })
-//         .optional(),
-//       png: z.string().optional(),
-//       svg: z.string().optional(),
-//       jpeg: z.string().optional(),
-//       theme: z.any().optional(),
-//     })
-//     .array()
-//     .optional(),
-//   coingecko_id: z.string().optional(),
-//   keywords: z.string().array().optional(),
-// });
+const zAsset = z.object({
+  deprecated: z.boolean().optional(),
+  description: z.string().optional(),
+  extended_description: z.string().optional(),
+  type_asset: z.string().optional(),
+  address: z.string().optional(),
+  denom_units: z
+    .object({
+      denom: z.string(),
+      exponent: z.number(),
+      aliases: z.string().array().optional(),
+    })
+    .array(),
+  base: z.string(),
+  name: z.string(),
+  display: z.string(),
+  symbol: z.string(),
+  logo_URIs: z
+    .object({
+      image_sync: z
+        .object({
+          chain_name: z.string(),
+          base_denom: z.string(),
+        })
+        .optional(),
+      png: z.string().optional(),
+      svg: z.string().optional(),
+      jpeg: z.string().optional(),
+      theme: z.any().optional(),
+    })
+    .optional(),
+  images: z
+    .object({
+      image_sync: z
+        .object({
+          chain_name: z.string(),
+          base_denom: z.string(),
+        })
+        .optional(),
+      png: z.string().optional(),
+      svg: z.string().optional(),
+      jpeg: z.string().optional(),
+      theme: z.any().optional(),
+    })
+    .array()
+    .optional(),
+  coingecko_id: z.string().optional(),
+  keywords: z.string().array().optional(),
+});
 
-// const zRegistry = z.object({
-//   bech32_prefix: z.string(),
-//   slip44: z.number(),
-//   staking: z
-//     .object({
-//       staking_tokens: z
-//         .object({
-//           denom: z.string(),
-//         })
-//         .array(),
-//       lock_duration: z
-//         .object({
-//           blocks: z.number().optional(),
-//           time: z.string().optional(),
-//         })
-//         .optional(),
-//     })
-//     .optional(),
-//   assets: zAsset.array(),
-// });
+const zRegistry = z.object({
+  bech32_prefix: z.string(),
+  slip44: z.number(),
+  staking: z.object({
+    staking_tokens: z
+      .object({
+        denom: z.string(),
+      })
+      .array(),
+    lock_duration: z
+      .object({
+        blocks: z.number().optional(),
+        time: z.string().optional(),
+      })
+      .optional(),
+  }),
+  assets: zAsset.array(),
+});
 
 export const zApiChainConfig = z
   .object({
@@ -211,6 +209,7 @@ export const zApiChainConfig = z
       })
       .optional(),
     fees: zFeeConfig,
+    registry: zRegistry.optional(),
   })
   .transform<ChainConfig>((val) => val);
 
