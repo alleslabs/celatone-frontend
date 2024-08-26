@@ -89,18 +89,18 @@ export const UserDocsLink = ({
     </Flex>
   );
 
-interface UserDocButtonProps extends ButtonProps {
+interface UserDocsButtonProps extends ButtonProps {
   title: string;
   href: string;
   isDevTool: boolean;
 }
 
-export const UserDocButton = ({
+export const UserDocsButton = ({
   title,
   href,
   isDevTool,
   ...props
-}: UserDocButtonProps) => (
+}: UserDocsButtonProps) => (
   <Link
     href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
     onClick={(e) => {

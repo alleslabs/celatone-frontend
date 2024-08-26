@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
-import { UserDocButton } from "lib/components/UserDocsLink";
+import { UserDocsButton } from "lib/components/UserDocsLink";
 import { MoveVerifyTaskStatus } from "lib/services/types";
 
 interface MyModuleVerificationDetailsAlertBannerProps {
@@ -58,7 +58,7 @@ export const MyModuleVerificationDetailsAlert = ({
             </AlertDescription>
           </Stack>
         </Flex>
-        <UserDocButton
+        <UserDocsButton
           size="sm"
           variant="errorDark"
           minW="unset"

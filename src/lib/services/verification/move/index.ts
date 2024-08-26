@@ -1,7 +1,7 @@
 import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useInitiaL1 } from "lib/app-provider";
 import type {
   MoveVerifyByTaskIdResponse,
   MoveVerifyInfoResponse,
@@ -25,20 +25,17 @@ export const useMoveVerifyTaskInfos = (
   taskIds: string[],
   onSuccess?: (data: MoveVerifyByTaskIdResponse) => void
 ) => {
-  const { chainConfig } = useCelatoneApp();
-  const {
-    extra: { layer },
-  } = chainConfig;
+  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
 
   return useQueries({
     queries: taskIds.map((taskId) => ({
       queryKey: [
         CELATONE_QUERY_KEYS.MOVE_VERIFY_TASK_BY_TASK_ID,
         taskId,
-        layer,
+        isInitiaL1,
       ],
       queryFn: () => getMoveVerifyByTaskId(taskId),
-      enabled: layer === "1",
+      enabled: isInitiaL1,
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
@@ -51,16 +48,13 @@ export const useMoveVerifyTaskInfo = (
   taskId: string,
   enabled = true
 ): UseQueryResult<MoveVerifyByTaskIdResponse> => {
-  const { chainConfig } = useCelatoneApp();
-  const {
-    extra: { layer },
-  } = chainConfig;
+  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MOVE_VERIFY_TASK_BY_TASK_ID, taskId, layer],
+    [CELATONE_QUERY_KEYS.MOVE_VERIFY_TASK_BY_TASK_ID, taskId, isInitiaL1],
     () => getMoveVerifyByTaskId(taskId),
     {
-      enabled: enabled && layer === "1",
+      enabled: enabled && isInitiaL1,
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
@@ -72,13 +66,10 @@ export const useMoveVerifyInfo = (
   address: Option<Addr>,
   moduleName: Option<string>
 ): UseQueryResult<MoveVerifyInfoResponse> => {
-  const { chainConfig } = useCelatoneApp();
-  const {
-    extra: { layer },
-  } = chainConfig;
+  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFO, address, moduleName, layer],
+    [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFO, address, moduleName, isInitiaL1],
     () => {
       if (!address || !moduleName)
         throw new Error(
@@ -87,7 +78,7 @@ export const useMoveVerifyInfo = (
       return getMoveVerifyInfo(address, moduleName);
     },
     {
-      enabled: layer === "1",
+      enabled: isInitiaL1,
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
@@ -99,10 +90,7 @@ export const useMoveVerifyInfos = (
   moduleInfos: { address: HexAddr; moduleName: string }[],
   enabled = true
 ) => {
-  const { chainConfig } = useCelatoneApp();
-  const {
-    extra: { layer },
-  } = chainConfig;
+  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
 
   return useQueries({
     queries: moduleInfos.map(({ address, moduleName }) => ({
@@ -110,10 +98,10 @@ export const useMoveVerifyInfos = (
         CELATONE_QUERY_KEYS.MOVE_VERIFY_INFO,
         address,
         moduleName,
-        layer,
+        isInitiaL1,
       ],
       queryFn: () => getMoveVerifyInfo(address, moduleName),
-      enabled: enabled && layer === "1",
+      enabled: enabled && isInitiaL1,
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
@@ -124,20 +112,16 @@ export const useMoveVerifyInfos = (
 export const useMoveVerifyInfosByAddress = (
   address: Option<Addr>
 ): UseQueryResult<MoveVerifyInfosByAddressResponse> => {
-  const { chainConfig } = useCelatoneApp();
-  const {
-    extra: { layer },
-  } = chainConfig;
-
+  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
   return useQuery(
-    [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFOS_BY_ADDRESS, address, layer],
+    [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFOS_BY_ADDRESS, address, isInitiaL1],
     () => {
       if (!address)
         throw new Error("address is undefined (useMoveVerifyInfosByAddress)");
       return getMoveVerifyInfosByAddress(address);
     },
     {
-      enabled: Boolean(address) && layer === "1",
+      enabled: Boolean(address) && isInitiaL1,
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,

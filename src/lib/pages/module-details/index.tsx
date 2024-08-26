@@ -1,10 +1,15 @@
+/* eslint-disable complexity */
 import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { isNull } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate, useTierConfig } from "lib/app-provider";
+import {
+  useInitiaL1,
+  useInternalNavigate,
+  useTierConfig,
+} from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import { MoveVerifySection } from "lib/components/move-verify-section";
@@ -47,6 +52,7 @@ const ModuleDetailsBody = ({
   const router = useRouter();
   const navigate = useInternalNavigate();
   const formatAddresses = useFormatAddresses();
+  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
   const { hex: vmAddress } = formatAddresses(address);
 
   const { isFullTier } = useTierConfig();
@@ -170,10 +176,12 @@ const ModuleDetailsBody = ({
         <TabPanels>
           <TabPanel p={0}>
             <Flex gap={6} flexDirection="column">
-              <StatusMessageBox
-                borderColor="gray.100"
-                content={<MoveVerifySection status={moveVerifyStatus} />}
-              />
+              {isInitiaL1 && (
+                <StatusMessageBox
+                  borderColor="gray.100"
+                  content={<MoveVerifySection status={moveVerifyStatus} />}
+                />
+              )}
               <ModuleActions
                 viewFns={data.viewFunctions.length}
                 executeFns={data.executeFunctions.length}
