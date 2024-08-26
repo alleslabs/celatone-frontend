@@ -1,6 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 import { useCallback, useMemo } from "react";
+import type { FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 
 import { UploadIcon } from "../icon";
@@ -12,7 +13,7 @@ import type { DropzoneConfig, DropzoneFileType } from "./config";
 import { DROPZONE_CONFIG } from "./config";
 
 interface DropZoneProps extends FlexProps {
-  setFiles: (files: File[]) => void;
+  setFiles: (files: FileWithPath[]) => void;
   fileType: DropzoneFileType[];
   error?: string;
 }
@@ -26,9 +27,9 @@ export function DropZone({
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   const onDrop = useCallback(
-    (file: File[]) => {
+    (files: FileWithPath[]) => {
       track(AmpEvent.USE_UPLOAD_FILE, { fileType });
-      setFiles(file);
+      setFiles(files);
     },
     [fileType, setFiles]
   );

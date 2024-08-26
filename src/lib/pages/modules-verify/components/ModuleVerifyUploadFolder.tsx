@@ -8,6 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
+import type { FileWithPath } from "react-dropzone";
 import { useController, useWatch } from "react-hook-form";
 import type { Control } from "react-hook-form";
 
@@ -40,8 +41,13 @@ export const ModuleVerifyUploadFolder = ({
     name: ["moveFiles", "tomlFile"],
   });
 
-  const handleSetFiles = (files: File[]) => {
-    const foundRootFolderName = files[0].webkitRelativePath.split("/")[0];
+  const handleSetFiles = (files: FileWithPath[]) => {
+    const filePath = files[0].path;
+    if (!filePath) return;
+
+    const foundRootFolderName = filePath.startsWith("/")
+      ? filePath.split("/")[1]
+      : filePath.split("/")[0];
     setRootFolderName(foundRootFolderName);
 
     const currentMoveFiles = [...moveFiles];
