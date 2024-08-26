@@ -30,7 +30,9 @@ export const devChainConfigs: ChainConfig[] = [
         enabled: false,
       },
       gov: {
-        enabled: false,
+        enabled: true,
+        version: "v1",
+        hideOpenProposal: true,
       },
       nft: {
         enabled: false,

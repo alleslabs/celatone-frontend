@@ -1,1 +1,1 @@
-export * from "./chain-configs";
+export * from "./devChainConfigs";

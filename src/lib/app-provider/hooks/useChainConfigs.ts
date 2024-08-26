@@ -31,12 +31,7 @@ export const useChainConfigs = (): {
     isLoading,
     isFetching,
   } = useApiChainConfigs(SUPPORTED_CHAIN_IDS);
-  const {
-    localChainConfigs,
-    isLocalChainIdExist,
-    isLocalPrettyNameExist,
-    isHydrated,
-  } = useLocalChainConfigStore();
+  const { localChainConfigs, isHydrated } = useLocalChainConfigStore();
 
   const api = useMemo(() => {
     if (isLoading || isUndefined(apiChainConfigs)) return defaultConfigs;
@@ -76,40 +71,48 @@ export const useChainConfigs = (): {
   const dev = useMemo(
     () =>
       devChainConfigs.reduce(
-        (acc, each) => ({
-          chainConfigs: {
-            ...acc.chainConfigs,
-            [each.chainId]: each,
-          },
-          registryChains: [...acc.registryChains, getRegistryChain(each)],
-          registryAssets: [...acc.registryAssets, getRegistryAssets(each)],
-          supportedChainIds: [...acc.supportedChainIds, each.chainId],
-        }),
+        (acc, each) =>
+          each.chainId in SUPPORTED_CHAIN_IDS
+            ? {
+                chainConfigs: {
+                  ...acc.chainConfigs,
+                  [each.chainId]: each,
+                },
+                registryChains: [...acc.registryChains, getRegistryChain(each)],
+                registryAssets: [
+                  ...acc.registryAssets,
+                  getRegistryAssets(each),
+                ],
+                supportedChainIds: [...acc.supportedChainIds, each.chainId],
+              }
+            : acc,
         defaultConfigs
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [JSON.stringify(devChainConfigs)]
   );
 
-  const isChainIdExist = useCallback(
-    (chainId: string) =>
-      !!api.chainConfigs[chainId] || isLocalChainIdExist(chainId),
-    [api.chainConfigs, isLocalChainIdExist]
-  );
-
-  const isPrettyNameExist = useCallback(
-    (name: string) =>
-      !!find(apiChainConfigs, { prettyName: name }) ||
-      isLocalPrettyNameExist(name),
-    [apiChainConfigs, isLocalPrettyNameExist]
-  );
-
-  return {
-    chainConfigs: {
+  const chainConfigs = useMemo(
+    () => ({
       ...api.chainConfigs,
       ...local.chainConfigs,
       ...dev.chainConfigs,
-    },
+    }),
+    [api.chainConfigs, dev.chainConfigs, local.chainConfigs]
+  );
+
+  const isChainIdExist = useCallback(
+    (chainId: string) => !!chainConfigs[chainId],
+    [chainConfigs]
+  );
+
+  const isPrettyNameExist = useCallback(
+    (name: string) => !!find(chainConfigs, { prettyName: name }),
+    [chainConfigs]
+  );
+
+  return {
+    chainConfigs,
     registryChains: unionBy(
       chainRegistry.chains,
       api.registryChains,
