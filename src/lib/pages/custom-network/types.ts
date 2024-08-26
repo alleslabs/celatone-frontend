@@ -234,6 +234,7 @@ export const zAddNetworkManualChainConfigJson = ({
               moduleMaxFileSize: 1_048_576,
             }
           : { enabled: false },
+      evm: { enabled: false }, // TODO: fix custom network
       pool: {
         enabled: false,
       },
@@ -293,6 +294,7 @@ export type AddNetworkManualChainConfigJson = z.infer<
   ReturnType<typeof zAddNetworkManualChainConfigJson>
 >;
 
+// TODO: can we utilized the new zod chain config, and omit some fields?
 export const zAddNetworkJsonChainConfigJson = z
   .object({
     chainId: z.string(),
@@ -328,6 +330,15 @@ export const zAddNetworkJsonChainConfigJson = z
         z.object({
           enabled: z.literal(true),
           moduleMaxFileSize: z.number(),
+        }),
+        z.object({
+          enabled: z.literal(false),
+        }),
+      ]),
+      evm: z.union([
+        z.object({
+          enabled: z.literal(true),
+          jsonRpc: z.string(),
         }),
         z.object({
           enabled: z.literal(false),

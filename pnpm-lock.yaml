@@ -9,8 +9,8 @@ overrides:
 
 dependencies:
   '@alleslabs/shared':
-    specifier: 1.0.0-dev2
-    version: 1.0.0-dev2
+    specifier: 1.0.0-dev3
+    version: 1.0.0-dev3
   '@amplitude/analytics-browser':
     specifier: ^2.3.3
     version: 2.3.8
@@ -416,8 +416,8 @@ packages:
     resolution: {integrity: sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==}
     dev: false
 
-  /@alleslabs/shared@1.0.0-dev2:
-    resolution: {integrity: sha512-f2zRLNVkkSdIrF1F9xd14bLLCqtr5KYChLVD4cKHUUHXgHdr0i1ZZYClBroHK7uKx2W8tAecOFrksPMrcng/0A==}
+  /@alleslabs/shared@1.0.0-dev3:
+    resolution: {integrity: sha512-ksrkiKz4oUQc9+Q55R3b9dlUMzVTawtuFN90D6rjFb87y/ycW2yJoegu5WO+xKsTRCGQEUXtPvYlK0AgX1wYUw==}
     dependencies:
       '@chain-registry/types': 0.45.20
     dev: false

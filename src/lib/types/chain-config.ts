@@ -32,6 +32,16 @@ const zMoveConfig = z.union([
   }),
 ]);
 
+const zEvmConfig = z.union([
+  z.object({
+    enabled: z.literal(true),
+    jsonRpc: z.string(),
+  }),
+  z.object({
+    enabled: z.literal(false),
+  }),
+]);
+
 const zPoolConfig = z.union([
   z.object({
     enabled: z.literal(true),
@@ -187,6 +197,7 @@ export const zApiChainConfig = z
       faucet: zFaucetConfig,
       gov: zGovConfig,
       move: zMoveConfig,
+      evm: zEvmConfig,
       nft: zNftConfig,
       pool: zPoolConfig,
       publicProject: zPublicProjectConfig,

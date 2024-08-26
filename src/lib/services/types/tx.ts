@@ -35,7 +35,10 @@ import { zAny } from "./protobuf";
 
 const zModeInfoSingle = z.object({
   single: z.object({
-    mode: z.custom<SignMode>((val) => SignMode[val as keyof typeof SignMode]),
+    mode: z.union([
+      z.custom<SignMode>((val) => SignMode[val as keyof typeof SignMode]),
+      z.literal(9999), // minievm sign mode,
+    ]),
   }),
 });
 
