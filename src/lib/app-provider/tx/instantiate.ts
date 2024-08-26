@@ -1,11 +1,11 @@
-import type { Coin, DeliverTxResponse, StdFee } from "@cosmjs/stargate";
+import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { Coins, MsgInstantiateContract } from "@initia/initia.js";
 import { useCallback } from "react";
 
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { instantiateContractTx } from "lib/app-fns/tx/instantiate";
-import type { BechAddr32, Option } from "lib/types";
+import type { BechAddr32, Coin, Option } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
 
 export interface InstantiateStreamParams {
@@ -43,9 +43,6 @@ export const useInstantiateTx = () => {
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
 
-      const coins = new Coins();
-      funds.forEach((coin) => coins.set(coin.denom, coin.amount));
-
       const messages = toEncodeObject([
         new MsgInstantiateContract(
           address,
@@ -53,7 +50,7 @@ export const useInstantiateTx = () => {
           codeId,
           label,
           libEncode(JSON.stringify(initMsg)),
-          coins
+          Coins.fromData(funds)
         ),
       ]);
 
