@@ -1,4 +1,4 @@
-import { Grid, Text } from "@chakra-ui/react";
+import { Flex, Grid, Text } from "@chakra-ui/react";
 import type { Event } from "@cosmjs/stargate";
 import type { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 
@@ -74,7 +74,7 @@ export const PoolSwap = ({
       mb={6}
       templateColumns="minmax(250px, 1fr) 24px minmax(250px, 1fr)"
     >
-      <div>
+      <Flex direction="column">
         <Text variant="body2" textColor="gray.500" fontWeight={500}>
           From
         </Text>
@@ -84,9 +84,9 @@ export const PoolSwap = ({
           assetInfo={assetInfos?.[inAsset.denom]}
           ampCopierSection={ampCopierSection}
         />
-      </div>
+      </Flex>
       <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
-      <div>
+      <Flex direction="column">
         <Text variant="body2" textColor="gray.500" fontWeight={500}>
           To
         </Text>
@@ -96,7 +96,7 @@ export const PoolSwap = ({
           assetInfo={assetInfos?.[outAsset.denom]}
           ampCopierSection={ampCopierSection}
         />
-      </div>
+      </Flex>
     </Grid>
   );
 };

@@ -34,6 +34,7 @@ export const AssetCard = ({
       <Flex
         className="copier-wrapper"
         direction="column"
+        w="full"
         minH="100px"
         gap={2}
         p={3}

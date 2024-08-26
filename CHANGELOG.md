@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#1100](https://github.com/alleslabs/celatone-frontend/pull/1100) Fix account modules spacing
+- [#1104](https://github.com/alleslabs/celatone-frontend/pull/1104) Fix pool asset card not taking full width
 
 ## v1.8.0
 
