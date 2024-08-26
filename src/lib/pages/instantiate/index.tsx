@@ -2,7 +2,7 @@ import type { DeliverTxResponse } from "@cosmjs/cosmwasm-stargate";
 import { useEffect, useState } from "react";
 
 import { useWasmConfig } from "lib/app-provider";
-import type { BechAddr20, BechAddr32, Option } from "lib/types";
+import type { BechAddr20, BechAddr32 } from "lib/types";
 import { scrollToTop } from "lib/utils";
 
 import InstantiateCompleted from "./InstantiateCompleted";
@@ -12,7 +12,7 @@ export interface InstantiateTxInfo extends DeliverTxResponse {
   contractLabel: string;
   codeId: number;
   instantiator: BechAddr20;
-  contractAddress: Option<BechAddr32>;
+  contractAddress: BechAddr32;
 }
 
 const Instantiate = () => {
@@ -44,7 +44,7 @@ const Instantiate = () => {
       onComplete={(
         txResult: DeliverTxResponse,
         contractLabel: string,
-        contractAddress: Option<BechAddr32>,
+        contractAddress: BechAddr32,
         codeId: number,
         instantiator: BechAddr20
       ) => {

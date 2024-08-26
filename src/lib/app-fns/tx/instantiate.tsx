@@ -4,7 +4,7 @@ import type { EncodeObject } from "@initia/utils";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
-import type { BechAddr32, Option, TxResultRendering } from "lib/types";
+import type { BechAddr32, TxResultRendering } from "lib/types";
 import { findAttr } from "lib/utils";
 
 import { catchTxError } from "./common";
@@ -20,7 +20,7 @@ interface InstantiateTxParams {
   onTxSucceed?: (
     txInfo: DeliverTxResponse,
     contractLabel: string,
-    contractAddress: Option<BechAddr32>
+    contractAddress: BechAddr32
   ) => void;
   onTxFailed?: () => void;
 }
@@ -40,17 +40,10 @@ export const instantiateContractTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee, ""),
     }),
     ({ value: txInfo }) => {
-      const contractAddress = findAttr(
-        txInfo.events,
-        "instantiate",
-        "_contract_address"
-      );
+      const contractAddress =
+        findAttr(txInfo.events, "instantiate", "_contract_address") ?? "";
 
-      onTxSucceed?.(
-        txInfo,
-        label,
-        contractAddress ? (contractAddress as BechAddr32) : undefined
-      );
+      onTxSucceed?.(txInfo, label, contractAddress as BechAddr32);
       // TODO: this is type hack
       return null as unknown as TxResultRendering;
     }
