@@ -2,10 +2,12 @@ import { Stack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 
+import { useInitiaL1 } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useMoveVerifyTaskStore } from "lib/providers/store";
 import { useMoveVerifyTaskInfo } from "lib/services/verification/move";
 
@@ -22,6 +24,7 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
   const { data, isLoading, error } = useMoveVerifyTaskInfo(taskId, !!taskId);
   const { getMoveVerifyTask } = useMoveVerifyTaskStore();
   const verifyModuleTask = getMoveVerifyTask(taskId);
+  useInitiaL1({ shouldRedirect: true });
 
   if (isLoading) return <Loading />;
   if (!data || error || !verifyModuleTask)
@@ -53,12 +56,14 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
           />
           <MyModuleVerificationDetailsTable
             moduleIdentifiers={data.result?.moduleIdentifiers}
-            status={data.task.status}
+            moveVerifyTaskStatus={data.task.status}
           />
         </Stack>
       </Stack>
-      {/* // TODO: Open when the link is ready */}
-      {/* <UserDocsLink cta="Read more about Move Module Verification" href="#" /> */}
+      <UserDocsLink
+        cta="Read more about Move Module Verification"
+        href="initia/move/module-verification"
+      />
     </>
   );
 };

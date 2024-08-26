@@ -1,7 +1,9 @@
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
+import type { MoveVerifyInfoResponse } from "lib/services/types";
 import type { ModuleInfo, Option } from "lib/types";
+import { mergeModulePath } from "lib/utils";
 
 import { ModulesTableHeader } from "./ModulesTableHeader";
 import { ModulesTableMobileCard } from "./ModulesTableMobileCard";
@@ -12,6 +14,7 @@ interface ModulesTableProps {
   isLoading: boolean;
   emptyState: JSX.Element;
   isPublishedModules?: boolean;
+  moveVerifyInfos: Option<Record<string, MoveVerifyInfoResponse>>;
 }
 
 export const ModulesTable = ({
@@ -19,6 +22,7 @@ export const ModulesTable = ({
   isLoading,
   emptyState,
   isPublishedModules = false,
+  moveVerifyInfos,
 }: ModulesTableProps) => {
   const isMobile = useMobile();
 
@@ -35,6 +39,11 @@ export const ModulesTable = ({
         <ModulesTableMobileCard
           key={module.address + module.moduleName}
           moduleInfo={module}
+          moveVerifyInfo={
+            moveVerifyInfos?.[
+              mergeModulePath(module.address, module.moduleName)
+            ]
+          }
         />
       ))}
     </MobileTableContainer>
@@ -50,6 +59,11 @@ export const ModulesTable = ({
           moduleInfo={module}
           templateColumns={templateColumns}
           isPublishedModules={isPublishedModules}
+          moveVerifyInfo={
+            moveVerifyInfos?.[
+              mergeModulePath(module.address, module.moduleName)
+            ]
+          }
         />
       ))}
     </TableContainer>

@@ -1,15 +1,16 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
-import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
+import { useInitiaL1, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
+import { UserDocsButton } from "lib/components/UserDocsButton";
 
 import { MyModuleVerificationsTable } from "./components/my-module-verifications-table";
 
 export const MyModuleVerifications = () => {
   const navigate = useInternalNavigate();
-  useMoveConfig({ shouldRedirect: true });
+  useInitiaL1({ shouldRedirect: true });
 
   return (
     <PageContainer>
@@ -25,12 +26,12 @@ export const MyModuleVerifications = () => {
           </Text>
         </Box>
         <Flex gap={4}>
-          {/* <Button
-            leftIcon={<CustomIcon name="document" />}
+          <UserDocsButton
             variant="outline-white"
-          >
-            View Verification Guideline
-          </Button> */}
+            title="View Verification Guideline"
+            href="initia/move/module-verification"
+            isDevTool
+          />
           <Button
             onClick={() => navigate({ pathname: "/modules/verify" })}
             leftIcon={<CustomIcon name="plus" />}

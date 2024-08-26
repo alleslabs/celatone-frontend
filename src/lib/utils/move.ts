@@ -1,14 +1,12 @@
-import type { MoveVerifyInfoResponse } from "lib/services/types";
-import type { IndexedModule, Nullable } from "lib/types";
+import type { Option } from "lib/types";
 import { MoveVerifyStatus } from "lib/types";
 
 export const resolveMoveVerifyStatus = (
-  moduleInfo?: IndexedModule,
-  verificationData?: Nullable<MoveVerifyInfoResponse>
+  currentDigest: Option<string>,
+  verifiedDigest: Option<string>
 ): MoveVerifyStatus => {
-  if (!verificationData || !moduleInfo) return MoveVerifyStatus.NotVerified;
-  if (verificationData.base64 !== moduleInfo.rawBytes)
-    return MoveVerifyStatus.Outdated;
+  if (!currentDigest || !verifiedDigest) return MoveVerifyStatus.NotVerified;
+  if (currentDigest !== verifiedDigest) return MoveVerifyStatus.Outdated;
 
   return MoveVerifyStatus.Verified;
 };

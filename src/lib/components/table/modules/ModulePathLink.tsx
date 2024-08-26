@@ -3,17 +3,20 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { Copier } from "lib/components/copy";
-import type { HexAddr } from "lib/types";
-import { truncate } from "lib/utils";
+import { MoveVerifyBadge } from "lib/components/MoveVerifyBadge";
+import type { HexAddr, MoveVerifyStatus } from "lib/types";
+import { mergeModulePath, truncate } from "lib/utils";
 
 interface ModulePathLinkProps {
   hexAddr: HexAddr;
   moduleName: string;
+  moveVerifyStatus?: MoveVerifyStatus;
 }
 
 export const ModulePathLink = ({
   hexAddr,
   moduleName,
+  moveVerifyStatus,
 }: ModulePathLinkProps) => {
   const isMobile = useMobile();
 
@@ -23,6 +26,7 @@ export const ModulePathLink = ({
       display={{ base: "inline-flex", md: "flex" }}
       align="center"
       h={{ base: "auto", md: "24px" }}
+      gap={1}
     >
       <AppLink
         href={`/modules/${hexAddr}/${moduleName}`}
@@ -40,13 +44,14 @@ export const ModulePathLink = ({
           {`${truncate(hexAddr)} :: ${moduleName}`}
         </Text>
       </AppLink>
+      {moveVerifyStatus && <MoveVerifyBadge status={moveVerifyStatus} />}
       <Copier
         type="module_path"
-        value={`${hexAddr}::${moduleName}`}
+        value={mergeModulePath(hexAddr, moduleName)}
         copyLabel="Copied!"
         display={!isMobile ? "none" : "inline"}
-        ml={2}
         amptrackSection="module_table"
+        ml={0}
       />
     </Flex>
   );

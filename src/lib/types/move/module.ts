@@ -16,6 +16,7 @@ export interface IndexedModule {
   moduleName: string;
   abi: string;
   rawBytes: string;
+  digest: string;
   upgradePolicy: UpgradePolicy;
   parsedAbi: ModuleAbi;
   viewFunctions: ExposedFunction[];
@@ -23,7 +24,7 @@ export interface IndexedModule {
 }
 
 export interface ModuleInfo
-  extends Pick<IndexedModule, "address" | "moduleName">,
+  extends Pick<IndexedModule, "address" | "moduleName" | "digest">,
     Partial<Pick<IndexedModule, "viewFunctions" | "executeFunctions">> {
   height?: number;
   latestUpdated?: Date;

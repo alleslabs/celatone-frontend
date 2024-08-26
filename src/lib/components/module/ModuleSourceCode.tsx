@@ -52,7 +52,7 @@ export const ModuleSourceCode = ({
             <Flex justifyContent="space-between">
               <Flex flexDirection="column" alignItems="start">
                 <Flex align="center" gap={1}>
-                  <MoveVerifyBadge status={moveVerifyStatus} boxSize={4} />
+                  <MoveVerifyBadge status={moveVerifyStatus} />
                   <Heading as="h6" variant="h7">
                     Verified Module Source Code
                   </Heading>
