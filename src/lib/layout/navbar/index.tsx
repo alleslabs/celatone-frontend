@@ -18,6 +18,7 @@ import { CollapseNavMenu } from "./Collapse";
 import { ExpandNavMenu } from "./Expand";
 import type { MenuInfo } from "./types";
 import {
+  getDeviceSubmenuMove,
   getDeviceSubmenuWasm,
   getDevSubmenuMove,
   getDevSubmenuWasm,
@@ -76,6 +77,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                           slug: "/saved-accounts",
                           icon: "admin" as IconKeys,
                         },
+                        ...getDeviceSubmenuMove(move.enabled),
                         ...getDeviceSubmenuWasm(wasm.enabled),
                       ],
                     },

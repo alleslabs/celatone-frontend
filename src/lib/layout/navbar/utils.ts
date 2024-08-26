@@ -183,3 +183,14 @@ export const getDeviceSubmenuWasm = (isWasm: boolean) =>
         },
       ]
     : [];
+
+export const getDeviceSubmenuMove = (isMove: boolean) =>
+  isMove
+    ? [
+        {
+          name: "My Past Verification",
+          slug: "/my-module-verifications",
+          icon: "list" as IconKeys,
+        },
+      ]
+    : [];

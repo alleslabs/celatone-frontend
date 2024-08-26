@@ -6,6 +6,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useMoveVerifyTaskStore } from "lib/providers/store";
 import { useMoveVerifyTaskInfo } from "lib/services/verification/move";
 
@@ -57,8 +58,10 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
           />
         </Stack>
       </Stack>
-      {/* // TODO: Open when the link is ready */}
-      {/* <UserDocsLink cta="Read more about Move Module Verification" href="#" /> */}
+      <UserDocsLink
+        cta="Read more about Move Module Verification"
+        href="initia/move/module-verification"
+      />
     </>
   );
 };
