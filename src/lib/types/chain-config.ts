@@ -213,3 +213,10 @@ export const zApiChainConfig = z
     fees: zFeeConfig,
   })
   .transform<ChainConfig>((val) => val);
+
+export const TierMap: Record<ChainConfig["tier"], number> = {
+  lite: 0,
+  mesa: 1,
+  sequencer: 2,
+  full: 3,
+};

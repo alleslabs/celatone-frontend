@@ -1,3 +1,4 @@
+import type { ChainConfig } from "@alleslabs/shared";
 import { useModalTheme } from "@cosmos-kit/react";
 import { GraphQLClient } from "graphql-request";
 import { observer } from "mobx-react-lite";
@@ -12,8 +13,6 @@ import {
 
 import { useChainConfigs } from "../hooks/useChainConfigs";
 import { useNetworkChange } from "../hooks/useNetworkChange";
-import { DEFAULT_CHAIN_CONFIG } from "config/chain";
-import type { ChainConfig } from "config/chain";
 import type { ProjectConstants } from "config/project";
 import { PROJECT_CONSTANTS } from "config/project";
 import { FALLBACK_THEME, getTheme } from "config/theme";
@@ -40,12 +39,55 @@ interface AppContextInterface {
   setTheme: (newTheme: ThemeConfig) => void;
 }
 
+const DEFAULT_CHAIN_CONFIG: ChainConfig = {
+  tier: "lite",
+  chainId: "",
+  chain: "",
+  registryChainName: "",
+  prettyName: "",
+  lcd: "",
+  rpc: "",
+  wallets: [],
+  features: {
+    faucet: {
+      enabled: false,
+    },
+    wasm: {
+      enabled: false,
+    },
+    move: {
+      enabled: false,
+    },
+    pool: {
+      enabled: false,
+    },
+    gov: {
+      enabled: false,
+    },
+    nft: {
+      enabled: false,
+    },
+    publicProject: {
+      enabled: false,
+    },
+  },
+  gas: {
+    gasAdjustment: 1.0,
+    maxGasLimit: 0,
+  },
+  extra: {},
+  network_type: "testnet",
+  fees: {
+    fee_tokens: [],
+  },
+};
+
 const DEFAULT_STATES: AppContextInterface = {
   isHydrated: false,
   availableChainIds: SUPPORTED_CHAIN_IDS,
   currentChainId: FALLBACK_SUPPORTED_CHAIN_ID,
   chainConfig: DEFAULT_CHAIN_CONFIG,
-  indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.indexer, {
+  indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.graphql ?? "", {
     headers: {
       "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
     },
@@ -84,7 +126,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
         availableChainIds: supportedChainIds,
         currentChainId: newChainId,
         chainConfig,
-        indexerGraphClient: new GraphQLClient(chainConfig.indexer, {
+        indexerGraphClient: new GraphQLClient(chainConfig.graphql ?? "", {
           headers: {
             "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
           },

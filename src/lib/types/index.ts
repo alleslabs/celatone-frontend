@@ -26,3 +26,4 @@ export * from "./upload";
 export * from "./validator";
 export * from "./verification";
 export * from "./wallet";
+export * from "./chain-config";

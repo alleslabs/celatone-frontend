@@ -41,3 +41,4 @@ export * from "./validator";
 export * from "./verification";
 export * from "./window";
 export * from "./zod";
+export * from "./chain-config";

@@ -1,7 +1,6 @@
 export * from "./useAddress";
 export * from "./useDummyWallet";
 export * from "./useExampleAddresses";
-export * from "./useFabricateFee";
 export * from "./useInternalNavigate";
 export * from "./useLcdEndpoint";
 export * from "./useMediaQuery";
@@ -19,3 +18,5 @@ export * from "./useInitia";
 export * from "./useIsConnected";
 export * from "./useChainConfigs";
 export * from "./useAllowCustomNetworks";
+export * from "./useFabricateFee";
+export * from "./useGasPrice";

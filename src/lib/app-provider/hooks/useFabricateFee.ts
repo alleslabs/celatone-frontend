@@ -1,16 +1,19 @@
 import type { StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
-import { useCelatoneApp } from "../contexts/app";
+import { useCelatoneApp } from "../contexts";
 import { big } from "lib/types";
 import type { Gas } from "lib/types";
+
+import { useGasPrice } from "./useGasPrice";
 
 export const useFabricateFee = () => {
   const {
     chainConfig: {
-      gas: { gasPrice, gasAdjustment, maxGasLimit },
+      gas: { gasAdjustment, maxGasLimit },
     },
   } = useCelatoneApp();
+  const gasPrice = useGasPrice();
 
   return useCallback(
     (estimatedGas: number): StdFee => {

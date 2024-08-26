@@ -46,15 +46,17 @@ export const useCollections = (
   return useQuery<CollectionsResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTIONS,
-      chainConfig.indexer,
+      chainConfig.graphql,
       limit,
       offset,
       search,
     ],
-    async () => getCollections(chainConfig.indexer, limit, offset, search),
+    async () =>
+      getCollections(chainConfig.graphql ?? "", limit, offset, search),
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      enabled: !!chainConfig.graphql,
       ...options,
     }
   );
@@ -71,7 +73,7 @@ export const useCollectionByCollectionAddress = (
   return useQuery<CollectionByCollectionAddressResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_BY_COLLECTION_ADDRESS,
-      chainConfig.indexer,
+      chainConfig.graphql,
       lcdEndpoint,
       tier,
       collectionAddress,
@@ -82,7 +84,7 @@ export const useCollectionByCollectionAddress = (
         threshold: "sequencer",
         queryFull: () =>
           getCollectionByCollectionAddress(
-            chainConfig.indexer,
+            chainConfig.graphql ?? "",
             collectionAddress
           ),
         querySequencer: () =>
@@ -110,7 +112,7 @@ export const useCollectionCreator = (collectionAddress: HexAddr32) => {
   return useQuery<CollectionCreatorResponse>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_CREATOR,
-      chainConfig.indexer,
+      chainConfig.graphql,
       collectionAddress,
     ],
     async () =>
@@ -118,7 +120,7 @@ export const useCollectionCreator = (collectionAddress: HexAddr32) => {
         tier,
         threshold: "sequencer",
         queryFull: () =>
-          getCollectionCreator(chainConfig.indexer, collectionAddress),
+          getCollectionCreator(chainConfig.graphql ?? "", collectionAddress),
         querySequencer: () =>
           getCollectionCreatorSequencer(lcdEndpoint, prefix, collectionAddress),
       }),
@@ -139,7 +141,7 @@ export const useCollectionActivities = (
   return useQuery<Activity[]>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES,
-      chainConfig.indexer,
+      chainConfig.graphql,
       collectionAddress,
       limit,
       offset,
@@ -147,7 +149,7 @@ export const useCollectionActivities = (
     ],
     async () =>
       getCollectionActivities(
-        chainConfig.indexer,
+        chainConfig.graphql ?? "",
         collectionAddress,
         limit,
         offset,
@@ -168,11 +170,14 @@ export const useCollectionActivitiesCount = (
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_ACTIVITIES_COUNT,
-      chainConfig.indexer,
+      chainConfig.graphql,
       collectionAddress,
     ],
     async () =>
-      getCollectionActivitiesCount(chainConfig.indexer, collectionAddress),
+      getCollectionActivitiesCount(
+        chainConfig.graphql ?? "",
+        collectionAddress
+      ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -215,14 +220,14 @@ export const useCollectionMutateEvents = (
   return useQuery<MutateEvent[]>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTS,
-      chainConfig.indexer,
+      chainConfig.graphql,
       collectionAddress,
       limit,
       offset,
     ],
     async () =>
       getCollectionMutateEvents(
-        chainConfig.indexer,
+        chainConfig.graphql ?? "",
         collectionAddress,
         limit,
         offset
@@ -242,11 +247,14 @@ export const useCollectionMutateEventsCount = (
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTS_COUNT,
-      chainConfig.indexer,
+      chainConfig.graphql,
       collectionAddress,
     ],
     async () =>
-      getCollectionMutateEventsCount(chainConfig.indexer, collectionAddress),
+      getCollectionMutateEventsCount(
+        chainConfig.graphql ?? "",
+        collectionAddress
+      ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -262,11 +270,14 @@ export const useCollectionUniqueHoldersCount = (
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_UNIQUE_HOLDERS_COUNT,
-      chainConfig.indexer,
+      chainConfig.graphql,
       collectionAddress,
     ],
     async () =>
-      getCollectionUniqueHoldersCount(chainConfig.indexer, collectionAddress),
+      getCollectionUniqueHoldersCount(
+        chainConfig.graphql ?? "",
+        collectionAddress
+      ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -282,7 +293,7 @@ export const useCollectionsByAccount = (accountAddress: HexAddr) => {
   return useQuery<CollectionsByAccountResponse[]>(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTIONS_BY_ACCOUNT,
-      chainConfig.indexer,
+      chainConfig.graphql,
       lcdEndpoint,
       tier,
       accountAddress,
@@ -294,7 +305,7 @@ export const useCollectionsByAccount = (accountAddress: HexAddr) => {
         querySequencer: () =>
           getCollectionsByAccountSequencer(lcdEndpoint, accountAddress),
         queryFull: () =>
-          getCollectionsByAccount(chainConfig.indexer, accountAddress),
+          getCollectionsByAccount(chainConfig.graphql ?? "", accountAddress),
       }),
     {
       retry: 1,
