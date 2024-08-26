@@ -4,6 +4,7 @@ import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
+import { UserDocButton } from "lib/components/UserDocsLink";
 
 import { MyModuleVerificationsTable } from "./components/my-module-verifications-table";
 
@@ -25,12 +26,12 @@ export const MyModuleVerifications = () => {
           </Text>
         </Box>
         <Flex gap={4}>
-          {/* <Button
-            leftIcon={<CustomIcon name="document" />}
+          <UserDocButton
             variant="outline-white"
-          >
-            View Verification Guideline
-          </Button> */}
+            title="View Verification Guideline"
+            href="initia/move/module-verification"
+            isDevTool
+          />
           <Button
             onClick={() => navigate({ pathname: "/modules/verify" })}
             leftIcon={<CustomIcon name="plus" />}

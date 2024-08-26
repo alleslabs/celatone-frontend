@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
+import { UserDocButton } from "lib/components/UserDocsLink";
 import { MoveVerifyTaskStatus } from "lib/services/types";
 
 interface MyModuleVerificationDetailsAlertBannerProps {
@@ -57,10 +58,14 @@ export const MyModuleVerificationDetailsAlert = ({
             </AlertDescription>
           </Stack>
         </Flex>
-        {/* // TODO: Open it again when the doc is complete */}
-        {/* <Button size="sm" variant="errorDark" minW="unset">
-          See Verification Guideline
-        </Button> */}
+        <UserDocButton
+          size="sm"
+          variant="errorDark"
+          minW="unset"
+          title="View Verification Guideline"
+          href="initia/move/module-verification"
+          isDevTool
+        />
       </Alert>
     );
 
