@@ -5,6 +5,7 @@ import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
 import type { BechAddr20, Option, TxResultRendering } from "lib/types";
+import { findAttr } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -40,8 +41,7 @@ export const publishModuleTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee),
     }),
     ({ value: txInfo }) => {
-      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
-        .value;
+      const txFee = findAttr(txInfo.events, "tx", "fee");
       onTxSucceed?.({ txHash: txInfo.transactionHash, txFee });
       return null as unknown as TxResultRendering;
     }

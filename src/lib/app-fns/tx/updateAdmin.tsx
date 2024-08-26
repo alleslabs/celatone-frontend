@@ -1,29 +1,21 @@
-import type {
-  ExecuteResult,
-  SigningCosmWasmClient,
-} from "@cosmjs/cosmwasm-stargate";
-import type { StdFee } from "@cosmjs/stargate";
+import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
+import type { EncodeObject } from "@initia/utils";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type {
-  BechAddr,
-  BechAddr20,
-  BechAddr32,
-  TxResultRendering,
-} from "lib/types";
+import type { BechAddr20, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { feeFromStr } from "lib/utils";
+import { feeFromStr, findAttr } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface UpdateAdminTxParams {
   address: BechAddr20;
-  contractAddress: BechAddr32;
-  newAdmin: BechAddr;
+  messages: EncodeObject[];
   fee: StdFee;
   client: SigningCosmWasmClient;
   onTxSucceed?: () => void;
@@ -32,8 +24,7 @@ interface UpdateAdminTxParams {
 
 export const updateAdminTx = ({
   address,
-  contractAddress,
-  newAdmin,
+  messages,
   fee,
   client,
   onTxSucceed,
@@ -41,14 +32,13 @@ export const updateAdminTx = ({
 }: UpdateAdminTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
-    postTx<ExecuteResult>({
-      postFn: () =>
-        client.updateAdmin(address, contractAddress, newAdmin, fee, undefined),
+    postTx<DeliverTxResponse>({
+      postFn: () => client.signAndBroadcast(address, messages, fee, ""),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
-      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
-        .value;
+      const txFee = findAttr(txInfo.events, "tx", "fee");
+
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,

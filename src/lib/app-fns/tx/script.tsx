@@ -9,7 +9,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { BechAddr20, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { feeFromStr } from "lib/utils";
+import { feeFromStr, findAttr } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -36,8 +36,7 @@ export const deployScriptTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee),
     }),
     ({ value: txInfo }) => {
-      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
-        .value;
+      const txFee = findAttr(txInfo.events, "tx", "fee");
       onTxSucceed?.();
       return {
         value: null,

@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1095](https://github.com/alleslabs/celatone-frontend/pull/1095) Update native broadcast helper function to generic sign and broadcast function
 - [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
 
 ### Bug fixes

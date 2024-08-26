@@ -1,8 +1,6 @@
-import type {
-  ExecuteResult,
-  SigningCosmWasmClient,
-} from "@cosmjs/cosmwasm-stargate";
-import type { Coin, StdFee } from "@cosmjs/stargate";
+import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
+import type { EncodeObject } from "@initia/utils";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
@@ -12,16 +10,17 @@ import { CustomIcon } from "lib/components/icon";
 import type { Activity } from "lib/stores/contract";
 import type { BechAddr20, BechAddr32, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { encode, feeFromStr, getCurrentDate } from "lib/utils";
+import { feeFromStr, findAttr, getCurrentDate } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
   address: BechAddr20;
   contractAddress: BechAddr32;
+  messages: EncodeObject[];
+  action: string;
   fee: StdFee;
-  msg: object;
-  funds: Coin[];
+  base64Message: string;
   client: SigningCosmWasmClient;
   onTxSucceed?: (activity: Activity) => void;
   onTxFailed?: () => void;
@@ -30,35 +29,31 @@ interface ExecuteTxParams {
 export const executeContractTx = ({
   address,
   contractAddress,
+  messages,
+  action,
   fee,
-  msg,
-  funds,
+  base64Message,
   client,
   onTxSucceed,
   onTxFailed,
 }: ExecuteTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
-    postTx<ExecuteResult>({
-      postFn: () =>
-        client.execute(address, contractAddress, msg, fee, undefined, funds),
+    postTx<DeliverTxResponse>({
+      postFn: () => client.signAndBroadcast(address, messages, fee, ""),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.({
         type: "execute",
-        action: Object.keys(msg)[0],
+        action,
         sender: address,
         contractAddress,
-        msg: encode(
-          JSON.stringify({
-            msg,
-            funds,
-          })
-        ), // base64
+        msg: base64Message,
         timestamp: getCurrentDate(),
       });
-      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
-        .value;
+
+      const txFee = findAttr(txInfo.events, "tx", "fee");
+
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
