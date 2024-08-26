@@ -1,11 +1,11 @@
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { findAttribute } from "@cosmjs/cosmwasm-stargate/build/signingcosmwasmclient";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import type { EncodeObject } from "@initia/utils";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
 import type { BechAddr32, Option, TxResultRendering } from "lib/types";
+import { findAttr } from "lib/utils";
 
 import { catchTxError } from "./common";
 import { postTx } from "./common/post";
@@ -40,7 +40,7 @@ export const instantiateContractTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee, ""),
     }),
     ({ value: txInfo }) => {
-      const contractAddress = findAttribute(
+      const contractAddress = findAttr(
         txInfo.events,
         "instantiate",
         "_contract_address"
@@ -49,7 +49,7 @@ export const instantiateContractTx = ({
       onTxSucceed?.(
         txInfo,
         label,
-        contractAddress ? (contractAddress.value as BechAddr32) : undefined
+        contractAddress ? (contractAddress as BechAddr32) : undefined
       );
       // TODO: this is type hack
       return null as unknown as TxResultRendering;

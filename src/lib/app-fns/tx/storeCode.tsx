@@ -1,5 +1,4 @@
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { findAttribute } from "@cosmjs/cosmwasm-stargate/build/signingcosmwasmclient";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
@@ -14,7 +13,7 @@ import type {
   TxResultRendering,
 } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { feeFromStr } from "lib/utils";
+import { feeFromStr, findAttr } from "lib/utils";
 
 import { catchTxError } from "./common";
 import { postTx } from "./common/post";
@@ -61,14 +60,9 @@ export const storeCodeTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee, memo),
     }),
     ({ value: txInfo }) => {
-      const codeId =
-        findAttribute(txInfo.events, "store_code", "code_id")?.value ?? "0";
-      const codeHash = findAttribute(
-        txInfo.events,
-        "store_code",
-        "code_checksum"
-      )?.value;
-      const txFee = findAttribute(txInfo.events, "tx", "fee")?.value;
+      const codeId = findAttr(txInfo.events, "store_code", "code_id") ?? "0";
+      const codeHash = findAttr(txInfo.events, "store_code", "code_checksum");
+      const txFee = findAttr(txInfo.events, "tx", "fee");
 
       onTxSucceed({
         codeId: parseInt(codeId, 10).toString(),

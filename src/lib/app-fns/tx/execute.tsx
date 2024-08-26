@@ -1,5 +1,4 @@
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { findAttribute } from "@cosmjs/cosmwasm-stargate/build/signingcosmwasmclient";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import type { EncodeObject } from "@initia/utils";
 import { pipe } from "@rx-stream/pipe";
@@ -11,7 +10,7 @@ import { CustomIcon } from "lib/components/icon";
 import type { Activity } from "lib/stores/contract";
 import type { BechAddr20, BechAddr32, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { feeFromStr, getCurrentDate } from "lib/utils";
+import { feeFromStr, findAttr, getCurrentDate } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -53,7 +52,7 @@ export const executeContractTx = ({
         timestamp: getCurrentDate(),
       });
 
-      const txFee = findAttribute(txInfo.events, "tx", "fee")?.value;
+      const txFee = findAttr(txInfo.events, "tx", "fee");
 
       return {
         value: null,

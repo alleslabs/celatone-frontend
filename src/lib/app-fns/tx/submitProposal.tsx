@@ -1,5 +1,4 @@
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { findAttribute } from "@cosmjs/cosmwasm-stargate/build/signingcosmwasmclient";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
@@ -11,7 +10,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { BechAddr20, Nullable, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
-import { feeFromStr } from "lib/utils";
+import { feeFromStr, findAttr } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -43,10 +42,9 @@ export const submitWhitelistProposalTx = ({
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
-      const txFee = findAttribute(txInfo.events, "tx", "fee")?.value;
+      const txFee = findAttr(txInfo.events, "tx", "fee");
       const proposalId =
-        findAttribute(txInfo.events, "submit_proposal", "proposal_id")?.value ??
-        "";
+        findAttr(txInfo.events, "submit_proposal", "proposal_id") ?? "";
 
       return {
         value: null,
@@ -129,10 +127,9 @@ export const submitStoreCodeProposalTx = ({
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
-      const txFee = findAttribute(txInfo.events, "tx", "fee")?.value;
+      const txFee = findAttr(txInfo.events, "tx", "fee");
       const proposalId =
-        findAttribute(txInfo.events, "submit_proposal", "proposal_id")?.value ??
-        "";
+        findAttr(txInfo.events, "submit_proposal", "proposal_id") ?? "";
 
       return {
         value: null,
