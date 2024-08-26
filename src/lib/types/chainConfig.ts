@@ -130,7 +130,13 @@ const zAsset = z.object({
       png: z.string().optional(),
       svg: z.string().optional(),
       jpeg: z.string().optional(),
-      theme: z.any().optional(),
+      theme: z
+        .object({
+          primary_color_hex: z.string().optional(),
+          circle: z.boolean().optional(),
+          dark_mode: z.boolean().optional(),
+        })
+        .optional(),
     })
     .array()
     .optional(),
