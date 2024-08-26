@@ -69,20 +69,9 @@ import {
   resolvePermission,
 } from "lib/utils";
 
-import type { InstantiateRedoMsg } from "./types";
+import type { InstantiateFormState, InstantiateRedoMsg } from "./types";
 
-interface InstantiatePageState {
-  codeId: string;
-  codeHash: string;
-  label: string;
-  adminAddress: string;
-  msgInput: {
-    [jsonInputFormKey]: string;
-    [yourSchemaInputFormKey]: string;
-  };
-  simulateError: string;
-}
-interface InstantiatePageProps {
+interface InstantiateFormPageProps {
   onComplete: (
     txResult: DeliverTxResponse,
     contractLabel: string,
@@ -92,7 +81,7 @@ interface InstantiatePageProps {
   ) => void;
 }
 
-const Instantiate = ({ onComplete }: InstantiatePageProps) => {
+const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
@@ -127,7 +116,7 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
     formState: { errors: formErrors },
     setValue,
     watch,
-  } = useForm<InstantiatePageState>({
+  } = useForm<InstantiateFormState>({
     mode: "all",
     defaultValues: {
       codeId: "",
@@ -579,4 +568,4 @@ const Instantiate = ({ onComplete }: InstantiatePageProps) => {
   );
 };
 
-export default Instantiate;
+export default InstantiateFormPage;

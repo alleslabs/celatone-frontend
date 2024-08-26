@@ -14,7 +14,7 @@ export interface ExecuteStreamParams {
   onTxFailed?: () => void;
   estimatedFee: StdFee | undefined;
   contractAddress: BechAddr32;
-  msg: object;
+  msg: string | object;
   funds: Coin[];
 }
 
@@ -50,8 +50,7 @@ export const useExecuteContractTx = () => {
 
       const base64Message = libEncode(JSON.stringify({ msg, funds }));
 
-      const action = Object.keys(msg)[0];
-
+      const action = typeof msg === "string" ? msg : Object.keys(msg)[0];
       return executeContractTx({
         address,
         contractAddress,

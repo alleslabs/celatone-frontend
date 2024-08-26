@@ -5,8 +5,8 @@ import { useWasmConfig } from "lib/app-provider";
 import type { BechAddr20, BechAddr32, Option } from "lib/types";
 import { scrollToTop } from "lib/utils";
 
-import CompletedPage from "./completed";
-import InstantiatePage from "./instantiate";
+import InstantiateCompleted from "./InstantiateCompleted";
+import InstantiateFormPage from "./InstantiateFormPage";
 
 export interface InstantiateTxInfo extends DeliverTxResponse {
   contractLabel: string;
@@ -15,7 +15,7 @@ export interface InstantiateTxInfo extends DeliverTxResponse {
   contractAddress: Option<BechAddr32>;
 }
 
-const Index = () => {
+const Instantiate = () => {
   useWasmConfig({ shouldRedirect: true });
   const [completed, setCompleted] = useState(false);
   const [txInfo, setTxInfo] = useState<InstantiateTxInfo>({
@@ -38,9 +38,9 @@ const Index = () => {
   }, [completed]);
 
   return completed && txInfo ? (
-    <CompletedPage txInfo={txInfo} />
+    <InstantiateCompleted txInfo={txInfo} />
   ) : (
-    <InstantiatePage
+    <InstantiateFormPage
       onComplete={(
         txResult: DeliverTxResponse,
         contractLabel: string,
@@ -61,4 +61,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Instantiate;

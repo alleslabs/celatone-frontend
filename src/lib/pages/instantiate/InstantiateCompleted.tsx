@@ -14,11 +14,11 @@ import { feeFromStr } from "lib/utils";
 import type { InstantiateTxInfo } from ".";
 import { InstantiateOffChainForm } from "./component";
 
-interface CompletedProps {
+interface InstantiateCompletedProps {
   txInfo: InstantiateTxInfo;
 }
 
-const Completed = ({ txInfo }: CompletedProps) => {
+const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
   const navigate = useInternalNavigate();
   const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0].value;
   return (
@@ -118,4 +118,4 @@ const Completed = ({ txInfo }: CompletedProps) => {
   );
 };
 
-export default Completed;
+export default InstantiateCompleted;
