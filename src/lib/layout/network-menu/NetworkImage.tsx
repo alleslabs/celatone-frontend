@@ -13,7 +13,7 @@ export const NetworkImage = ({ chainId }: NetworkImageProps) => {
   const logoUris = chainConfigs[chainId]?.logo_URIs;
   const fallbackImage = `https://ui-avatars.com/api/?name=${chainConfigs[chainId]?.prettyName || chainId}&background=${primaryDark.replace("#", "")}&color=fff`;
   const image =
-    logoUris?.png || logoUris?.svg || logoUris?.jpeg || fallbackImage;
+    logoUris?.png ?? logoUris?.svg ?? logoUris?.jpeg ?? fallbackImage;
 
   return (
     <Image
