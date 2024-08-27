@@ -2,7 +2,7 @@ import type { ChainConfig } from "@alleslabs/shared";
 import type { AssetList, Chain } from "@chain-registry/types";
 import chainRegistry from "chain-registry";
 import { find, isUndefined, unionBy } from "lodash";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 import { devChainConfigs } from "config/chain";
 import { SUPPORTED_CHAIN_IDS } from "env";
@@ -45,7 +45,8 @@ export const useChainConfigs = (): {
       }),
       defaultConfigs
     );
-  }, [apiChainConfigs, isFetching]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(apiChainConfigs), isFetching]);
 
   const local = useMemo(
     () =>
@@ -65,60 +66,70 @@ export const useChainConfigs = (): {
     [JSON.stringify(localChainConfigs)]
   );
 
-  const dev = devChainConfigs.reduce(
-    (acc, each) =>
-      SUPPORTED_CHAIN_IDS.includes(each.chainId)
-        ? {
-            chainConfigs: {
-              ...acc.chainConfigs,
-              [each.chainId]: each,
-            },
-            registryChains: [...acc.registryChains, getRegistryChain(each)],
-            registryAssets: [...acc.registryAssets, getRegistryAssets(each)],
-            supportedChainIds: [...acc.supportedChainIds, each.chainId],
-          }
-        : acc,
-    defaultConfigs
+  const dev = useMemo(
+    () =>
+      devChainConfigs.reduce(
+        (acc, each) =>
+          SUPPORTED_CHAIN_IDS.includes(each.chainId)
+            ? {
+                chainConfigs: {
+                  ...acc.chainConfigs,
+                  [each.chainId]: each,
+                },
+                registryChains: [...acc.registryChains, getRegistryChain(each)],
+                registryAssets: [
+                  ...acc.registryAssets,
+                  getRegistryAssets(each),
+                ],
+                supportedChainIds: [...acc.supportedChainIds, each.chainId],
+              }
+            : acc,
+        defaultConfigs
+      ),
+    []
   );
 
-  const chainConfigs = useMemo(
-    () => ({
+  return useMemo(() => {
+    const chainConfigs = {
       ...api.chainConfigs,
       ...local.chainConfigs,
       ...dev.chainConfigs,
-    }),
-    [api.chainConfigs, dev.chainConfigs, local.chainConfigs]
-  );
+    };
 
-  const isChainIdExist = useCallback(
-    (chainId: string) => !!chainConfigs[chainId],
-    [chainConfigs]
-  );
-
-  const isPrettyNameExist = useCallback(
-    (name: string) => !!find(chainConfigs, { prettyName: name }),
-    [chainConfigs]
-  );
-
-  return {
-    chainConfigs,
-    registryChains: unionBy(
-      chainRegistry.chains,
-      api.registryChains,
-      local.registryChains,
-      dev.registryChains,
-      "chain_id"
-    ),
-    registryAssets: unionBy(
-      chainRegistry.assets,
-      api.registryAssets,
-      local.registryAssets,
-      dev.registryAssets,
-      "chain_name"
-    ),
-    supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
-    isChainIdExist,
-    isPrettyNameExist,
-    isLoading: isFetching || !isHydrated,
-  };
+    return {
+      chainConfigs,
+      registryChains: unionBy(
+        chainRegistry.chains,
+        api.registryChains,
+        local.registryChains,
+        dev.registryChains,
+        "chain_id"
+      ),
+      registryAssets: unionBy(
+        chainRegistry.assets,
+        api.registryAssets,
+        local.registryAssets,
+        dev.registryAssets,
+        "chain_name"
+      ),
+      supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
+      isChainIdExist: (chainId: string) => !!chainConfigs[chainId],
+      isPrettyNameExist: (name: string) =>
+        !!find(chainConfigs, { prettyName: name }),
+      isLoading: isFetching || !isHydrated,
+    };
+  }, [
+    api.chainConfigs,
+    api.registryAssets,
+    api.registryChains,
+    dev.chainConfigs,
+    dev.registryAssets,
+    dev.registryChains,
+    isFetching,
+    isHydrated,
+    local.chainConfigs,
+    local.registryAssets,
+    local.registryChains,
+    local.supportedChainIds,
+  ]);
 };
