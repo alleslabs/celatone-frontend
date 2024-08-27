@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate } from "lib/app-provider";
+import { useEvmConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
@@ -92,9 +92,8 @@ const EvmContractDetailsBody = ({
 };
 
 export const EvmContractDetails = () => {
-  // check is only evm
+  useEvmConfig({ shouldRedirect: true });
   const router = useRouter();
-  // isHexWalletAddress
 
   const validated = zEvmContractDetailsQueryParams.safeParse(router.query);
 
