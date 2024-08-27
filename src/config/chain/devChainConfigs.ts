@@ -24,6 +24,9 @@ export const devChainConfigs: ChainConfig[] = [
       move: {
         enabled: false,
       },
+      evm: {
+        enabled: false,
+      },
       pool: {
         enabled: false,
       },
