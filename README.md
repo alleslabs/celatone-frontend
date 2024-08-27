@@ -160,8 +160,14 @@ The website will then be live on [http://localhost:3000](http://localhost:3000)
 }
 ```
 
-2. Update your project environment variable by adding your development `chainId` into `NEXT_PUBLIC_SUPPORTED_CHAIN_IDS`
+2. Update your project environment variables by
+
+- adding your development `chainId` into `NEXT_PUBLIC_SUPPORTED_CHAIN_IDS`
+- (move only) setting another variable `NEXT_PUBLIC_INITIA_MOVE_DECODER`
 
 ```bash
 NEXT_PUBLIC_SUPPORTED_CHAIN_IDS=osmosis-1,osmo-test-5,<chainId>
+
+# move only
+NEXT_PUBLIC_INITIA_MOVE_DECODER=https://celatone-move-api-prod-jiod42ec2q-as.a.run.app
 ```
