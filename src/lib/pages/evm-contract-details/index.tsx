@@ -6,11 +6,16 @@ import { useCallback, useEffect } from "react";
 import { AmpEvent, trackUseTab } from "lib/amplitude";
 import { useEvmConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { InvalidState } from "lib/components/state";
+import { ErrorFetching, InvalidState } from "lib/components/state";
+import {
+  useEvmCodesByAddress,
+  useEvmContractInfoSequencer,
+} from "lib/services/evm";
 import type { HexAddr20 } from "lib/types";
-import { isHexWalletAddress, truncate } from "lib/utils";
+import { is0x, isHexWalletAddress, truncate } from "lib/utils";
 
 import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
@@ -30,6 +35,13 @@ const EvmContractDetailsBody = ({
   tab,
 }: EvmContractDetailsBodyProps) => {
   const navigate = useInternalNavigate();
+  const {
+    data: evmCodesByAddressData,
+    isLoading: isEvmCodesByAddressLoading,
+    isError: isEvmCodesByAddressError,
+  } = useEvmCodesByAddress(contractAddress);
+  const { data: evmContractInfoData, isLoading: isEvmContractInfoLoading } =
+    useEvmContractInfoSequencer(contractAddress);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -48,6 +60,14 @@ const EvmContractDetailsBody = ({
     },
     [contractAddress, tab, navigate]
   );
+
+  if (isEvmCodesByAddressLoading) return <Loading />;
+  if (
+    isEvmCodesByAddressError ||
+    !evmCodesByAddressData ||
+    is0x(evmCodesByAddressData.code)
+  )
+    return <ErrorFetching dataName="evm contract information" />;
 
   return (
     <>
@@ -78,12 +98,15 @@ const EvmContractDetailsBody = ({
             </CustomTab>
           </TabList>
           <TabPanels>
-            <TabPanel px={0}>
-              <EvmContractDetailsOverview />
+            <TabPanel p={0} pt={8}>
+              <EvmContractDetailsOverview
+                contractInfo={evmContractInfoData}
+                isContractInfoLoading={isEvmContractInfoLoading}
+              />
             </TabPanel>
-            <TabPanel px={0}>Contract</TabPanel>
-            <TabPanel px={0}>Assets</TabPanel>
-            <TabPanel px={0}>Transactions</TabPanel>
+            <TabPanel p={0}>Contract</TabPanel>
+            <TabPanel p={0}>Assets</TabPanel>
+            <TabPanel p={0}>Transactions</TabPanel>
           </TabPanels>
         </Tabs>
       </Stack>
