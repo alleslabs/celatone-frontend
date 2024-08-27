@@ -39,12 +39,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1105](https://github.com/alleslabs/celatone-frontend/pull/1105) Add base minievm branch with its sign mode and pubkey type
 - [#1102](https://github.com/alleslabs/celatone-frontend/pull/1102) Support add local development chain lite version
 - [#1101](https://github.com/alleslabs/celatone-frontend/pull/1101) Add get all codes and contracts APIs
 
 ### Improvements
 
-- [#1105](https://github.com/alleslabs/celatone-frontend/pull/1105) Add base minievm branch with its sign mode and pubkey type
 - [#1095](https://github.com/alleslabs/celatone-frontend/pull/1095) Update native broadcast helper function to generic sign and broadcast function
 - [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
 
