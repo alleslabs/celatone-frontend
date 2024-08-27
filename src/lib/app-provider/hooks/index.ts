@@ -2,6 +2,7 @@ export * from "./useAddress";
 export * from "./useDummyWallet";
 export * from "./useExampleAddresses";
 export * from "./useFabricateFee";
+export * from "./useGas";
 export * from "./useInternalNavigate";
 export * from "./useLcdEndpoint";
 export * from "./useMediaQuery";
