@@ -24,7 +24,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
-  useGasPrice,
+  useGas,
   useLcdEndpoint,
   useRpcEndpoint,
 } from "lib/app-provider";
@@ -75,7 +75,7 @@ const MoveCodeSnippet = ({
   const lcdEndpoint = useLcdEndpoint();
   const rpcEndpoint = useRpcEndpoint();
   const { currentChainId, theme } = useCelatoneApp();
-  const gasPrice = useGasPrice();
+  const gasPrice = useGas();
 
   const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
 

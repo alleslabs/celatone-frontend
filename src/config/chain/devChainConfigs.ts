@@ -2,6 +2,7 @@
 import type { ChainConfig } from "@alleslabs/shared";
 
 export const devChainConfigs: ChainConfig[] = [
+  // Write your chain config here.
   {
     tier: "lite",
     chainId: "localosmosis",

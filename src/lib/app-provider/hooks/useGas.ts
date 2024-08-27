@@ -1,19 +1,26 @@
 import { useCelatoneApp } from "../contexts";
 
-interface GasPrice {
+interface GasParams {
   denom: string;
   tokenPerGas: number;
+  gasAdjustment: number;
+  maxGasLimit: number;
 }
 
-export const useGasPrice = (): GasPrice => {
+export const useGas = (): GasParams => {
   const {
-    chainConfig: { fees },
+    chainConfig: {
+      fees,
+      gas: { gasAdjustment, maxGasLimit },
+    },
   } = useCelatoneApp();
 
-  if (!fees || !fees.fee_tokens.length)
+  if (!fees?.fee_tokens.length)
     return {
       denom: "",
       tokenPerGas: 0,
+      maxGasLimit,
+      gasAdjustment,
     };
 
   const fee = fees.fee_tokens[0];
@@ -26,5 +33,7 @@ export const useGasPrice = (): GasPrice => {
       fee.average_gas_price ??
       fee.high_gas_price ??
       0,
+    gasAdjustment,
+    maxGasLimit,
   };
 };

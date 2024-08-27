@@ -26,15 +26,12 @@ export const useChainConfigs = (): {
   isPrettyNameExist: (name: string) => boolean;
   isLoading: boolean;
 } => {
-  const {
-    data: apiChainConfigs,
-    isLoading,
-    isFetching,
-  } = useApiChainConfigs(SUPPORTED_CHAIN_IDS);
+  const { data: apiChainConfigs, isFetching } =
+    useApiChainConfigs(SUPPORTED_CHAIN_IDS);
   const { localChainConfigs, isHydrated } = useLocalChainConfigStore();
 
   const api = useMemo(() => {
-    if (isLoading || isUndefined(apiChainConfigs)) return defaultConfigs;
+    if (isFetching || isUndefined(apiChainConfigs)) return defaultConfigs;
 
     return apiChainConfigs.reduce(
       (acc, each) => ({
@@ -48,7 +45,7 @@ export const useChainConfigs = (): {
       }),
       defaultConfigs
     );
-  }, [apiChainConfigs, isLoading]);
+  }, [apiChainConfigs, isFetching]);
 
   const local = useMemo(
     () =>
@@ -122,6 +119,6 @@ export const useChainConfigs = (): {
     supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
     isChainIdExist,
     isPrettyNameExist,
-    isLoading: (isLoading && isFetching) || !isHydrated,
+    isLoading: isFetching || !isHydrated,
   };
 };

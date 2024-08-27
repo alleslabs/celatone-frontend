@@ -63,8 +63,7 @@ The website will then be live on [http://localhost:3000](http://localhost:3000)
 
 ```ts
 {
-  tier: "lite", // lite, sequencer
-  chainId: "localosmosis",
+  tier: "lite",
   chain: "localosmosis",
   registryChainName: "localosmosis",
   prettyName: "Local Osmosis",
@@ -166,5 +165,3 @@ The website will then be live on [http://localhost:3000](http://localhost:3000)
 ```bash
 NEXT_PUBLIC_SUPPORTED_CHAIN_IDS=osmosis-1,osmo-test-5,<chainId>
 ```
-
-3. Make sure that your `registryChainName` is already registered in the Cosmos repository [cosmos/chain-registry](https://github.com/cosmos/chain-registry)
