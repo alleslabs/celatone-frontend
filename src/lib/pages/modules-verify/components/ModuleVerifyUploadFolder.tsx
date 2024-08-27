@@ -50,12 +50,16 @@ export const ModuleVerifyUploadFolder = ({
       : filePath.split("/")[0];
     setRootFolderName(foundRootFolderName);
 
-    const currentMoveFiles = [...moveFiles];
+    const currentMoveFiles: File[] = [];
     let currentTomlFile = tomlFile;
 
     files.forEach((file) => {
       const ext = file.name.split(".").pop();
-      if (ext === "move") {
+      if (
+        ext === "move" &&
+        file.path &&
+        file.path.includes(`${foundRootFolderName}/sources/`)
+      ) {
         currentMoveFiles.push(file);
       } else if (ext === "toml") {
         currentTomlFile = file;
