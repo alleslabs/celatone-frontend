@@ -27,7 +27,7 @@ export const EvmContractDetailsOverview = ({
           Contract Info
         </Heading>
         <Grid
-          gridTemplateColumns="repeat(4, 1fr)"
+          gridTemplateColumns="160px 240px 1fr"
           padding={4}
           border="1px solid"
           borderColor="gray.700"
