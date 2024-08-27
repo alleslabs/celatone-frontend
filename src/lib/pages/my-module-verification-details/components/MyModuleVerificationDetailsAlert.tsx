@@ -2,13 +2,15 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
+  Button,
   Flex,
   Stack,
   Text,
 } from "@chakra-ui/react";
 
+import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import { UserDocsButton } from "lib/components/UserDocsButton";
+import { DEVELOPER_TOOL_DOCS_LINK } from "lib/data";
 import { MoveVerifyTaskStatus } from "lib/services/types";
 
 interface MyModuleVerificationDetailsAlertBannerProps {
@@ -18,6 +20,7 @@ interface MyModuleVerificationDetailsAlertBannerProps {
 export const MyModuleVerificationDetailsAlert = ({
   status,
 }: MyModuleVerificationDetailsAlertBannerProps) => {
+  const navigate = useInternalNavigate();
   if (status === MoveVerifyTaskStatus.Pending)
     return (
       <Alert variant="info-left-secondary" alignItems="center" py={0}>
@@ -53,19 +56,28 @@ export const MyModuleVerificationDetailsAlert = ({
             <AlertTitle>Verification Failed</AlertTitle>
             <AlertDescription wordBreak="break-word">
               Please ensure that you upload folder that store files in the
-              correct format and provide required information according to the
-              guideline
+              correct format and provide required information according to the{" "}
+              <a
+                href={`${DEVELOPER_TOOL_DOCS_LINK}/initia/move/module-verification`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "underline" }}
+              >
+                verification guideline.{" "}
+              </a>
             </AlertDescription>
           </Stack>
         </Flex>
-        <UserDocsButton
-          size="sm"
+        <Button
+          onClick={() =>
+            navigate({
+              pathname: "/modules/verify",
+            })
+          }
           variant="ghost-error"
-          minW="unset"
-          title="View Verification Guideline"
-          href="initia/move/module-verification"
-          isDevTool
-        />
+        >
+          Resubmit Verification
+        </Button>
       </Alert>
     );
 
