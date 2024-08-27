@@ -68,6 +68,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   const handleOnChainIdChange = useCallback(
     (newChainId: string) => {
       const chainConfig = chainConfigs[newChainId];
+      // TODO: Will handle chain config not found case in the future.
       if (!chainConfig) {
         setStates({
           ...DEFAULT_STATES,
