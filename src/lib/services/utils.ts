@@ -1,5 +1,6 @@
-import type { ChainConfig } from "config/chain";
-import { TierMap } from "config/chain";
+import type { ChainConfig } from "@alleslabs/shared";
+
+import { TierMap } from "lib/types";
 
 export const createQueryFnWithTimeout =
   <T>(queryFn: () => Promise<T>, ms: number = 6 * 1000) =>

@@ -6,6 +6,7 @@ export * from "./addrs";
 export * from "./asset";
 export * from "./big";
 export * from "./block";
+export * from "./chainConfig";
 export * from "./code";
 export * from "./common";
 export * from "./contract";

@@ -3,6 +3,7 @@ export * from "./array";
 export * from "./assetValue";
 export * from "./base64";
 export * from "./bech32";
+export * from "./chainConfig";
 export * from "./codeHash";
 export * from "./codePermission";
 export * from "./contractState";

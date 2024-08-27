@@ -1,3 +1,4 @@
+import type { ChainConfig } from "@alleslabs/shared";
 import { useModalTheme } from "@cosmos-kit/react";
 import { GraphQLClient } from "graphql-request";
 import { observer } from "mobx-react-lite";
@@ -12,8 +13,6 @@ import {
 
 import { useChainConfigs } from "../hooks/useChainConfigs";
 import { useNetworkChange } from "../hooks/useNetworkChange";
-import { DEFAULT_CHAIN_CONFIG } from "config/chain";
-import type { ChainConfig } from "config/chain";
 import type { ProjectConstants } from "config/project";
 import { PROJECT_CONSTANTS } from "config/project";
 import { FALLBACK_THEME, getTheme } from "config/theme";
@@ -24,6 +23,8 @@ import {
   SUPPORTED_CHAIN_IDS,
 } from "env";
 import { changeFavicon } from "lib/utils";
+
+import { DEFAULT_CHAIN_CONFIG } from "./default";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -45,7 +46,7 @@ const DEFAULT_STATES: AppContextInterface = {
   availableChainIds: SUPPORTED_CHAIN_IDS,
   currentChainId: FALLBACK_SUPPORTED_CHAIN_ID,
   chainConfig: DEFAULT_CHAIN_CONFIG,
-  indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.indexer, {
+  indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.graphql ?? "", {
     headers: {
       "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
     },
@@ -67,7 +68,15 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
   const handleOnChainIdChange = useCallback(
     (newChainId: string) => {
       const chainConfig = chainConfigs[newChainId];
-      if (!chainConfig) return;
+      // TODO: Will handle chain config not found case in the future.
+      if (!chainConfig) {
+        setStates({
+          ...DEFAULT_STATES,
+          isHydrated: true,
+        });
+
+        return;
+      }
 
       const theme = getTheme(chainConfig.chain);
       changeFavicon(theme.branding.favicon);
@@ -77,7 +86,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
         availableChainIds: supportedChainIds,
         currentChainId: newChainId,
         chainConfig,
-        indexerGraphClient: new GraphQLClient(chainConfig.indexer, {
+        indexerGraphClient: new GraphQLClient(chainConfig.graphql ?? "", {
           headers: {
             "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
           },

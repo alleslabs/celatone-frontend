@@ -1,14 +1,13 @@
-import type { ChainConfig } from "./types";
+import type { ChainConfig } from "@alleslabs/shared";
 
 export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
   tier: "lite",
+  chainId: "",
   chain: "",
   registryChainName: "",
   prettyName: "",
-  networkType: "testnet",
   lcd: "",
   rpc: "",
-  indexer: "",
   wallets: [],
   features: {
     faucet: {
@@ -23,23 +22,23 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     pool: {
       enabled: false,
     },
-    publicProject: {
-      enabled: false,
-    },
     gov: {
       enabled: false,
     },
     nft: {
       enabled: false,
     },
+    publicProject: {
+      enabled: false,
+    },
   },
   gas: {
-    gasPrice: {
-      tokenPerGas: 0,
-      denom: "",
-    },
     gasAdjustment: 1.0,
     maxGasLimit: 0,
   },
   extra: {},
+  network_type: "testnet",
+  fees: {
+    fee_tokens: [],
+  },
 };

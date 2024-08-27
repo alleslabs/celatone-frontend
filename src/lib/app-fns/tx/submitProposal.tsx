@@ -1,6 +1,6 @@
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { EncodeObject } from "@cosmjs/proto-signing";
-import type { logs, StdFee } from "@cosmjs/stargate";
+import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import { capitalize } from "lodash";
 import type { Observable } from "rxjs";
@@ -42,14 +42,10 @@ export const submitWhitelistProposalTx = ({
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
-      const mimicLog: logs.Log = {
-        msg_index: 0,
-        log: "",
-        events: txInfo.events,
-      };
-      const txFee = findAttr(mimicLog, "tx", "fee");
+      const txFee = findAttr(txInfo.events, "tx", "fee");
       const proposalId =
-        findAttr(mimicLog, "submit_proposal", "proposal_id") ?? "";
+        findAttr(txInfo.events, "submit_proposal", "proposal_id") ?? "";
+
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,
@@ -131,14 +127,10 @@ export const submitStoreCodeProposalTx = ({
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
-      const mimicLog: logs.Log = {
-        msg_index: 0,
-        log: "",
-        events: txInfo.events,
-      };
-      const txFee = findAttr(mimicLog, "tx", "fee");
+      const txFee = findAttr(txInfo.events, "tx", "fee");
       const proposalId =
-        findAttr(mimicLog, "submit_proposal", "proposal_id") ?? "";
+        findAttr(txInfo.events, "submit_proposal", "proposal_id") ?? "";
+
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,

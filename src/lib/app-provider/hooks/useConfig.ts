@@ -1,6 +1,7 @@
+import type { ChainConfig } from "@alleslabs/shared";
+
 import { useCelatoneApp } from "../contexts";
-import { TierMap } from "config/chain/types";
-import type { ChainConfig } from "config/chain/types";
+import { TierMap } from "lib/types";
 
 import { useInternalNavigate } from "./useInternalNavigate";
 

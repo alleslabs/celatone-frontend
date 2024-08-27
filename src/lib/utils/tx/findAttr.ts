@@ -1,15 +1,16 @@
-import { logs } from "@cosmjs/stargate";
+import { findAttribute } from "@cosmjs/cosmwasm-stargate/build/signingcosmwasmclient";
+import type { Event } from "@cosmjs/stargate";
 
 import type { Option } from "lib/types";
 
 export const findAttr = (
-  log: Option<logs.Log>,
+  events: readonly Event[] | undefined,
   eventType: string,
   attrKey: string
 ): Option<string> => {
-  if (!log) return undefined;
+  if (!events) return undefined;
   try {
-    return logs.findAttribute([log], eventType, attrKey).value;
+    return findAttribute(events, eventType, attrKey).value;
   } catch {
     return undefined;
   }

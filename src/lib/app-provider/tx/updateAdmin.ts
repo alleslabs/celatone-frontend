@@ -1,10 +1,12 @@
 import type { StdFee } from "@cosmjs/stargate";
+import { MsgUpdateAdmin } from "@initia/initia.js";
 import { useCallback } from "react";
 
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { updateAdminTx } from "lib/app-fns/tx/updateAdmin";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
+import { toEncodeObject } from "lib/utils";
 
 export interface UpdateAdminStreamParams {
   contractAddress: BechAddr32;
@@ -31,10 +33,13 @@ export const useUpdateAdminTx = () => {
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
 
+      const messages = toEncodeObject([
+        new MsgUpdateAdmin(address, newAdmin, contractAddress),
+      ]);
+
       return updateAdminTx({
         address,
-        contractAddress,
-        newAdmin,
+        messages,
         fee: estimatedFee,
         client,
         onTxSucceed: () => {

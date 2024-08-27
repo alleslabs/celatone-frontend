@@ -26,6 +26,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     currentChainId,
     chainConfig: { registryChainName },
   } = useCelatoneApp();
+
   const { chainConfigs } = useChainConfigs();
   const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
