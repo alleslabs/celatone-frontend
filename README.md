@@ -101,7 +101,9 @@ The website will then be live on [http://localhost:3000](http://localhost:3000)
       gasAdjustment: 1.5,
       maxGasLimit: 200_000_000,
     },
-    extra: {},
+    extra: {
+      layer: "1",
+    },
     network_type: "testnet",
     logo_URIs: {
       png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
