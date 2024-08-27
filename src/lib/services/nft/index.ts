@@ -52,14 +52,20 @@ export const useNfts = (
   return useQuery<Nft[]>(
     [
       CELATONE_QUERY_KEYS.NFTS,
-      chainConfig.indexer,
+      chainConfig.graphql,
       collectionAddress,
       limit,
       offset,
       search,
     ],
     async () =>
-      getNfts(chainConfig.indexer, collectionAddress, search, limit, offset),
+      getNfts(
+        chainConfig.graphql ?? "",
+        collectionAddress,
+        search,
+        limit,
+        offset
+      ),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -113,12 +119,16 @@ export const useNftByNftAddress = (
   return useQuery(
     [
       CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS,
-      chainConfig.indexer,
+      chainConfig.graphql,
       collectionAddress,
       nftAddress,
     ],
     async () =>
-      getNftByNftAddress(chainConfig.indexer, collectionAddress, nftAddress),
+      getNftByNftAddress(
+        chainConfig.graphql ?? "",
+        collectionAddress,
+        nftAddress
+      ),
     {
       enabled,
       retry: 1,
@@ -155,7 +165,7 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
   return useQuery<NftMintInfo>(
     [
       CELATONE_QUERY_KEYS.NFT_TOKEN_MINT_INFO,
-      chainConfig.indexer,
+      chainConfig.graphql,
       lcdEndpoint,
       tier,
       nftAddress,
@@ -165,7 +175,7 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
       handleQueryByTier({
         tier,
         threshold: "sequencer",
-        queryFull: () => getNftMintInfo(chainConfig.indexer, nftAddress),
+        queryFull: () => getNftMintInfo(chainConfig.graphql ?? "", nftAddress),
         querySequencer: () =>
           getNftMintInfoSequencer(lcdEndpoint, prefix, nftAddress),
       }),
@@ -198,13 +208,13 @@ export const useNftTransactions = (
   return useQuery<NftTransactions[]>(
     [
       CELATONE_QUERY_KEYS.NFT_TRANSACTIONS,
-      chainConfig.indexer,
+      chainConfig.graphql,
       nftAddress,
       limit,
       offset,
     ],
     async () =>
-      getNftTransactions(chainConfig.indexer, nftAddress, limit, offset),
+      getNftTransactions(chainConfig.graphql ?? "", nftAddress, limit, offset),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -244,10 +254,10 @@ export const useNftTransactionsCount = (
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_COUNT,
-      chainConfig.indexer,
+      chainConfig.graphql,
       nftAddress,
     ],
-    async () => getNftTransactionsCount(chainConfig.indexer, nftAddress),
+    async () => getNftTransactionsCount(chainConfig.graphql ?? "", nftAddress),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -265,13 +275,13 @@ export const useNftMutateEvents = (
   return useQuery<MutateEvent[]>(
     [
       CELATONE_QUERY_KEYS.NFT_MUTATE_EVENTS,
-      chainConfig.indexer,
+      chainConfig.graphql,
       nftAddress,
       limit,
       offset,
     ],
     async () =>
-      getNftMutateEvents(chainConfig.indexer, nftAddress, offset, limit),
+      getNftMutateEvents(chainConfig.graphql ?? "", nftAddress, offset, limit),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -287,11 +297,11 @@ export const useNftMutateEventsCount = (
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFT_MUTATE_EVENTS_COUNT,
-      chainConfig.indexer,
+      chainConfig.graphql,
       nftAddress,
       enabled,
     ],
-    async () => getNftMutateEventsCount(chainConfig.indexer, nftAddress),
+    async () => getNftMutateEventsCount(chainConfig.graphql ?? "", nftAddress),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -309,10 +319,11 @@ export const useNftsCountByAccount = (
   return useQuery<number>(
     [
       CELATONE_QUERY_KEYS.NFTS_COUNT_BY_ACCOUNT,
-      chainConfig.indexer,
+      chainConfig.graphql,
       accountAddress,
     ],
-    async () => getNftsCountByAccount(chainConfig.indexer, accountAddress),
+    async () =>
+      getNftsCountByAccount(chainConfig.graphql ?? "", accountAddress),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -337,7 +348,7 @@ export const useNftsByAccountByCollection = (
   return useQuery<NftsByAccountResponse>(
     [
       CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION,
-      chainConfig.indexer,
+      chainConfig.graphql,
       accountAddress,
       limit,
       offset,
@@ -346,7 +357,7 @@ export const useNftsByAccountByCollection = (
     ],
     async () =>
       getNftsByAccount(
-        chainConfig.indexer,
+        chainConfig.graphql ?? "",
         accountAddress,
         limit,
         offset,

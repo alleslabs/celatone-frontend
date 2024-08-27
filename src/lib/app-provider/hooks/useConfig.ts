@@ -1,6 +1,7 @@
+import type { ChainConfig } from "@alleslabs/shared";
+
 import { useCelatoneApp } from "../contexts";
-import { TierMap } from "config/chain/types";
-import type { ChainConfig } from "config/chain/types";
+import { TierMap } from "lib/types";
 
 import { useInternalNavigate } from "./useInternalNavigate";
 
@@ -77,6 +78,20 @@ export const useMoveConfig = ({
   } = useCelatoneApp();
 
   return useBaseConfig({ feature: move, shouldRedirect });
+};
+
+export const useEvmConfig = ({
+  shouldRedirect,
+}: {
+  shouldRedirect: boolean;
+}) => {
+  const {
+    chainConfig: {
+      features: { evm },
+    },
+  } = useCelatoneApp();
+
+  return useBaseConfig({ feature: evm, shouldRedirect });
 };
 
 export const useNftConfig = ({

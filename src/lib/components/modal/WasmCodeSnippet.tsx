@@ -27,6 +27,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
+  useGas,
   useLcdEndpoint,
   useMobile,
   useRpcEndpoint,
@@ -68,13 +69,8 @@ const WasmCodeSnippet = ({
   const isDisabled = !contractAddress || !message.length;
   const lcdEndpoint = useLcdEndpoint();
   const rpcEndpoint = useRpcEndpoint();
-  const {
-    currentChainId,
-    chainConfig: {
-      gas: { gasPrice },
-    },
-    theme,
-  } = useCelatoneApp();
+  const { currentChainId, theme } = useCelatoneApp();
+  const gasPrice = useGas();
 
   const [activeSnippet, setActiveSnippet] = useState("");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
