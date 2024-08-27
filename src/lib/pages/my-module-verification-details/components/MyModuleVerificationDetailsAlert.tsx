@@ -60,7 +60,7 @@ export const MyModuleVerificationDetailsAlert = ({
         </Flex>
         <UserDocsButton
           size="sm"
-          variant="errorDark"
+          variant="ghost-error"
           minW="unset"
           title="View Verification Guideline"
           href="initia/move/module-verification"

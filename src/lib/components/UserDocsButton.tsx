@@ -28,6 +28,7 @@ export const UserDocsButton = ({
     }}
     target="_blank"
     rel="noopener noreferrer"
+    style={{ textDecoration: "none" }}
   >
     <Button leftIcon={<CustomIcon name="document" boxSize={3} />} {...props}>
       {title}
