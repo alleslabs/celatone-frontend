@@ -2,7 +2,7 @@ import type { GridProps } from "@chakra-ui/react";
 import { Grid } from "@chakra-ui/react";
 
 import { TableHeader } from "../tableComponents";
-import { useMoveConfig } from "lib/app-provider";
+import { useEvmConfig, useMoveConfig } from "lib/app-provider";
 
 export const SavedAccountsTableHeader = ({
   templateColumns,
@@ -10,10 +10,13 @@ export const SavedAccountsTableHeader = ({
   templateColumns: GridProps["templateColumns"];
 }) => {
   const move = useMoveConfig({ shouldRedirect: false });
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  const hasHexAddr = move.enabled || evm.enabled;
   return (
     <Grid templateColumns={templateColumns} minW="min-content">
       <TableHeader>Account Address</TableHeader>
-      {move.enabled && <TableHeader>Hex Address</TableHeader>}
+      {hasHexAddr && <TableHeader>Hex Address</TableHeader>}
       <TableHeader>Account Name</TableHeader>
       <TableHeader>Account Description</TableHeader>
       <TableHeader />
