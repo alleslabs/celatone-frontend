@@ -27,7 +27,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     chainConfig: { registryChainName },
   } = useCelatoneApp();
 
-  const { chainConfigs } = useChainConfigs();
+  const { chainConfigs, isLoading } = useChainConfigs();
   const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
@@ -54,10 +54,8 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     setVerifyModuleTaskUserKey,
   ]);
 
-  if (isHydrated && !(currentChainId in chainConfigs))
-    return <NetworkErrorState />;
-
   if (
+    isLoading ||
     !isHydrated ||
     !isAccountUserKeyExist() ||
     !isCodeUserKeyExist() ||
@@ -66,6 +64,8 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     !isVerifyModuleTaskUserKeyExist()
   )
     return <LoadingOverlay />;
+
+  if (!(currentChainId in chainConfigs)) return <NetworkErrorState />;
 
   return <>{children}</>;
 });
