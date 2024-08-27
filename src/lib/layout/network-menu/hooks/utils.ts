@@ -1,14 +1,15 @@
-import type { ChainConfig, ChainConfigs } from "config/chain";
+import type { ChainConfig } from "@alleslabs/shared";
+
 import type { Option } from "lib/types";
 
 export const filterChains = (
-  chainConfigs: ChainConfigs,
+  chainConfigs: { [chainId: string]: ChainConfig },
   chainIds: string[],
   keyword: string,
-  type?: ChainConfig["networkType"]
+  type?: ChainConfig["network_type"]
 ) => {
   const chainIdsByType = type
-    ? chainIds.filter((chainId) => chainConfigs[chainId]?.networkType === type)
+    ? chainIds.filter((chainId) => chainConfigs[chainId]?.network_type === type)
     : chainIds;
 
   return chainIdsByType.filter(
