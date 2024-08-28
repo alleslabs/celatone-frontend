@@ -2,14 +2,15 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 
 import { LabelText } from "lib/components/LabelText";
 import type { MoveVerifyTaskStatus } from "lib/services/types";
+import type { Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { MyModuleVerificationDetailsStatusBadge } from "./MyModuleVerificationDetailsStatusBadge";
 
 interface MyModuleVerificationDetailsInfoProps {
-  chainId: string;
+  chainId: Option<string>;
   status: MoveVerifyTaskStatus;
-  verifiedAt: Date;
+  verifiedAt: Option<Date>;
 }
 
 export const MyModuleVerificationDetailsInfo = ({
@@ -24,7 +25,7 @@ export const MyModuleVerificationDetailsInfo = ({
     rounded={8}
     p={4}
   >
-    <LabelText label="Network">{chainId}</LabelText>
+    {chainId && <LabelText label="Network">{chainId}</LabelText>}
     <LabelText label="Status">
       <MyModuleVerificationDetailsStatusBadge status={status} />
     </LabelText>

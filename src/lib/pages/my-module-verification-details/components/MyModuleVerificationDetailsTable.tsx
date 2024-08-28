@@ -5,10 +5,11 @@ import { TableTitle } from "lib/components/table";
 import { ModuleVerificationDetailsTable } from "lib/components/table/module-verification-details";
 import type { MoveVerificationModuleIdentifier } from "lib/services/types";
 import { MoveVerifyTaskStatus } from "lib/services/types";
+import type { Option } from "lib/types";
 
 interface MyModuleVerificationDetailsTableProps {
   moveVerifyTaskStatus: MoveVerifyTaskStatus;
-  moduleIdentifiers: MoveVerificationModuleIdentifier[];
+  moduleIdentifiers: Option<MoveVerificationModuleIdentifier[]>;
 }
 
 export const MyModuleVerificationDetailsTable = ({

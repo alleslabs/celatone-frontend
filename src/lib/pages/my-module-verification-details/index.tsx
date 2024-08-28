@@ -9,7 +9,6 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useMoveVerifyTaskStore } from "lib/providers/store";
-import { MoveVerifyTaskStatus } from "lib/services/types";
 import { useMoveVerifyTaskInfo } from "lib/services/verification/move";
 
 import {
@@ -28,7 +27,7 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
   useInitiaL1({ shouldRedirect: true });
 
   if (isLoading) return <Loading />;
-  if (!data?.result || error)
+  if (!data || error)
     return (
       <EmptyState
         imageVariant="not-found"
@@ -47,21 +46,18 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
         />
         <Stack gap={10}>
           <MyModuleVerificationDetailsInfo
-            chainId={data.result.chainId}
+            chainId={data.result?.chainId}
             status={data.task.status}
-            verifiedAt={data.result.verifiedAt}
+            verifiedAt={data.result?.verifiedAt}
           />
-          {/* <MyModuleVerificationDetailsAlert status={data.task.status} /> */}
-          <MyModuleVerificationDetailsAlert
-            status={MoveVerifyTaskStatus.NotFound}
-          />
+          <MyModuleVerificationDetailsAlert status={data.task.status} />
           {verifyModuleTask && (
             <MyModuleVerificationDetailsFileMap
               fileMap={verifyModuleTask.fileMap}
             />
           )}
           <MyModuleVerificationDetailsTable
-            moduleIdentifiers={data.result.moduleIdentifiers}
+            moduleIdentifiers={data.result?.moduleIdentifiers}
             moveVerifyTaskStatus={data.task.status}
           />
         </Stack>
