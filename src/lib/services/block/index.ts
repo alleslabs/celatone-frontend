@@ -5,6 +5,7 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCurrentChain,
+  useEvmConfig,
   useLcdEndpoint,
 } from "lib/app-provider";
 import type { BlocksResponse } from "lib/services/types";
@@ -15,6 +16,7 @@ import {
 } from "lib/utils";
 
 import { getBlockData, getBlocks } from "./api";
+import { getBlockDataJsonRpc } from "./jsonRpc";
 import { getBlockDataLcd, getLatestBlockLcd } from "./lcd";
 import {
   getBlockDataSequencer,
@@ -138,6 +140,28 @@ export const useBlockDataSequencer = (height: number) => {
     {
       retry: false,
       refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useBlockDataJsonRpc = (height: number) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.BLOCK_DATA_JSON_RPC,
+      evm.enabled && evm.jsonRpc,
+      height,
+    ],
+    async () => {
+      if (!evm.enabled) throw new Error("EVM is not enabled");
+
+      return getBlockDataJsonRpc(evm.jsonRpc, height);
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      enabled: evm.enabled && !!evm.jsonRpc,
     }
   );
 };
