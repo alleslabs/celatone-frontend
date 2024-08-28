@@ -17,6 +17,7 @@ import {
 import type { HexAddr20 } from "lib/types";
 import { is0x, isHexWalletAddress, truncate } from "lib/utils";
 
+import { EvmContractDetailsBytecode } from "./components/EvmContractDetailsBytecode";
 import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { TabIndex, zEvmContractDetailsQueryParams } from "./types";
@@ -104,7 +105,9 @@ const EvmContractDetailsBody = ({
                 isContractInfoLoading={isEvmContractInfoLoading}
               />
             </TabPanel>
-            <TabPanel p={0}>Contract</TabPanel>
+            <TabPanel p={0} pt={8}>
+              <EvmContractDetailsBytecode code={evmCodesByAddressData.code} />
+            </TabPanel>
             <TabPanel p={0}>Assets</TabPanel>
             <TabPanel p={0}>Transactions</TabPanel>
           </TabPanels>
