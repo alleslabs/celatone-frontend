@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { useMobile, useTierConfig } from "lib/app-provider";
+import { useEvmConfig, useMobile } from "lib/app-provider";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import {
@@ -16,7 +16,7 @@ import type { TxsTableProps } from "./types";
 
 export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
   const isMobile = useMobile();
-  const { isFullTier } = useTierConfig();
+  const evm = useEvmConfig({ shouldRedirect: false });
 
   const {
     data,
@@ -31,20 +31,21 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
     onViewMore ? 5 : 10
   );
 
+  const title = evm.enabled ? "Cosmos Transactions" : "Transactions";
   const isMobileOverview = isMobile && !!onViewMore;
 
   return (
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
         <MobileTitle
-          title="Transactions"
+          title={title}
           count={undefined}
           onViewMore={onViewMore}
           showCount={false}
         />
       ) : (
         <Flex direction="column" gap={6}>
-          <TableTitle title="Transactions" mb={0} showCount={isFullTier} />
+          <TableTitle title={title} mb={0} showCount={false} />
           {!isMobileOverview && (
             <TransactionsTable
               transactions={data}
