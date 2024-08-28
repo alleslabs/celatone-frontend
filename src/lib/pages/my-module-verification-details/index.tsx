@@ -1,4 +1,4 @@
-import { Stack } from "@chakra-ui/react";
+import { Box, ListItem, Stack, Text, UnorderedList } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 
@@ -9,6 +9,7 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useMoveVerifyTaskStore } from "lib/providers/store";
+import { MoveVerifyTaskStatus } from "lib/services/types";
 import { useMoveVerifyTaskInfo } from "lib/services/verification/move";
 
 import {
@@ -35,6 +36,30 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
         message="Please double-check your input and make sure you have selected the correct network."
         withBorder
       />
+    );
+
+  if (data.task.status === MoveVerifyTaskStatus.NotFound && !verifyModuleTask)
+    return (
+      <EmptyState
+        imageVariant="not-found"
+        heading="Verification Details is Unavailable"
+        withBorder
+        message=""
+      >
+        <Box>
+          <Text color="text.dark">
+            We’re unable to access the page you requested due to one of the
+            following possibilities:
+          </Text>
+          <UnorderedList color="text.dark">
+            <ListItem ml={4}>The task ID does not existed</ListItem>
+            <ListItem ml={4}>The wrong network was selected</ListItem>
+            <ListItem ml={4}>
+              This request has been submitted through another devices
+            </ListItem>
+          </UnorderedList>
+        </Box>
+      </EmptyState>
     );
 
   return (
