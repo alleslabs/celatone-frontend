@@ -154,7 +154,8 @@ export const useBlockDataJsonRpc = (height: number) => {
       height,
     ],
     async () => {
-      if (!evm.enabled) throw new Error("EVM is not enabled");
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useBlockDataJsonRpc)");
 
       return getBlockDataJsonRpc(evm.jsonRpc, height);
     },
