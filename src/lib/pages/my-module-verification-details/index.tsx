@@ -9,6 +9,7 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useMoveVerifyTaskStore } from "lib/providers/store";
+import { MoveVerifyTaskStatus } from "lib/services/types";
 import { useMoveVerifyTaskInfo } from "lib/services/verification/move";
 
 import {
@@ -50,7 +51,10 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
             status={data.task.status}
             verifiedAt={data.result.verifiedAt}
           />
-          <MyModuleVerificationDetailsAlert status={data.task.status} />
+          {/* <MyModuleVerificationDetailsAlert status={data.task.status} /> */}
+          <MyModuleVerificationDetailsAlert
+            status={MoveVerifyTaskStatus.NotFound}
+          />
           {verifyModuleTask && (
             <MyModuleVerificationDetailsFileMap
               fileMap={verifyModuleTask.fileMap}
