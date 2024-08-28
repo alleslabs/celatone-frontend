@@ -12,7 +12,7 @@ interface EvmMethodChipProps {
 }
 
 export const EvmMethodChip = ({ txInput, width }: EvmMethodChipProps) => (
-  <Tag width={width} height="17px" bgColor="gray.700">
+  <Tag width={width} height="17px" variant="gray" justifyContent="center">
     {mapMethod(txInput)}
   </Tag>
 );
