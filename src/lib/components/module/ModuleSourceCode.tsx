@@ -45,7 +45,7 @@ export const ModuleSourceCode = ({
   if (!verificationData) return null;
 
   return (
-    <Accordion allowToggle w="full" defaultIndex={[0]}>
+    <Accordion allowToggle w="full">
       <AccordionItem>
         <AccordionButton p={4}>
           <Flex direction="column" w="full">
@@ -53,7 +53,7 @@ export const ModuleSourceCode = ({
               <Flex flexDirection="column" alignItems="start">
                 <Flex align="center" gap={1}>
                   <MoveVerifyBadge status={moveVerifyStatus} />
-                  <Heading as="h6" variant="h7">
+                  <Heading as="h6" variant="h7" textAlign="left">
                     Verified Module Source Code
                   </Heading>
                 </Flex>

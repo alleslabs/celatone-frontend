@@ -2,7 +2,6 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 
 import { LabelText } from "lib/components/LabelText";
 import type { MoveVerifyTaskStatus } from "lib/services/types";
-import type { Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { MyModuleVerificationDetailsStatusBadge } from "./MyModuleVerificationDetailsStatusBadge";
@@ -10,7 +9,7 @@ import { MyModuleVerificationDetailsStatusBadge } from "./MyModuleVerificationDe
 interface MyModuleVerificationDetailsInfoProps {
   chainId: string;
   status: MoveVerifyTaskStatus;
-  verifiedAt: Option<Date>;
+  verifiedAt: Date;
 }
 
 export const MyModuleVerificationDetailsInfo = ({

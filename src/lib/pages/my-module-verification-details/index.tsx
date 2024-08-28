@@ -27,7 +27,7 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
   useInitiaL1({ shouldRedirect: true });
 
   if (isLoading) return <Loading />;
-  if (!data || error || !verifyModuleTask)
+  if (!data?.result || error)
     return (
       <EmptyState
         imageVariant="not-found"
@@ -42,20 +42,22 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
       <Stack gap={8}>
         <MyModuleVerificationDetailsTop
           taskId={taskId}
-          requestNote={verifyModuleTask.requestNote}
+          requestNote={verifyModuleTask?.requestNote}
         />
         <Stack gap={10}>
           <MyModuleVerificationDetailsInfo
-            chainId={verifyModuleTask.chainId}
+            chainId={data.result.chainId}
             status={data.task.status}
-            verifiedAt={data.result?.verifiedAt}
+            verifiedAt={data.result.verifiedAt}
           />
           <MyModuleVerificationDetailsAlert status={data.task.status} />
-          <MyModuleVerificationDetailsFileMap
-            fileMap={verifyModuleTask.fileMap}
-          />
+          {verifyModuleTask && (
+            <MyModuleVerificationDetailsFileMap
+              fileMap={verifyModuleTask.fileMap}
+            />
+          )}
           <MyModuleVerificationDetailsTable
-            moduleIdentifiers={data.result?.moduleIdentifiers}
+            moduleIdentifiers={data.result.moduleIdentifiers}
             moveVerifyTaskStatus={data.task.status}
           />
         </Stack>
