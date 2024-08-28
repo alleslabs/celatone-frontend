@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1115](https://github.com/alleslabs/celatone-frontend/pull/1115) Fix move reverify button
 - [#1108](https://github.com/alleslabs/celatone-frontend/pull/1108) Fix example dev config to initialocal
 - [#1107](https://github.com/alleslabs/celatone-frontend/pull/1107) Fix network states config
 - [#1100](https://github.com/alleslabs/celatone-frontend/pull/1100) Fix account modules spacing

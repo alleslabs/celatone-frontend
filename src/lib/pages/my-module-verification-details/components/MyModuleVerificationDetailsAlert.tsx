@@ -69,12 +69,16 @@ export const MyModuleVerificationDetailsAlert = ({
           </Stack>
         </Flex>
         <Button
+          variant="ghost-error"
+          minW="fit-content"
+          _hover={{
+            backdropFilter: "brightness(130%)",
+          }}
           onClick={() =>
             navigate({
               pathname: "/modules/verify",
             })
           }
-          variant="ghost-error"
         >
           Resubmit Verification
         </Button>
