@@ -1,11 +1,7 @@
 import { Grid, IconButton, Text } from "@chakra-ui/react";
 
 import { TableRow } from "../tableComponents";
-import {
-  useEvmConfig,
-  useInternalNavigate,
-  useMoveConfig,
-} from "lib/app-provider";
+import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -21,15 +17,15 @@ import { AccountNameCell } from "./AccountNameCell";
 interface SavedAccountsTableRowProps {
   accountInfo: AccountLocalInfo;
   templateColumns: string;
+  hasHexAddr: boolean;
 }
 
 export const SavedAccountsTableRow = ({
   accountInfo,
   templateColumns,
+  hasHexAddr,
 }: SavedAccountsTableRowProps) => {
   const navigate = useInternalNavigate();
-  const move = useMoveConfig({ shouldRedirect: false });
-  const evm = useEvmConfig({ shouldRedirect: false });
 
   const onRowSelect = (address: BechAddr) =>
     navigate({
@@ -37,7 +33,6 @@ export const SavedAccountsTableRow = ({
       query: { accountAddress: address },
     });
 
-  const hasHexAddr = move.enabled || evm.enabled;
   return (
     <Grid
       templateColumns={templateColumns}
