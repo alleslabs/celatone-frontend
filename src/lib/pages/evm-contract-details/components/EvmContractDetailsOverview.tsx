@@ -1,24 +1,29 @@
 import { Grid, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
 
 import { useCelatoneApp } from "lib/app-provider";
+import { AssetsSection } from "lib/components/asset";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import type { BechAddr, Option } from "lib/types";
+import type { BechAddr, BechAddr20, Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface EvmContractDetailsOverviewProps {
+  contractAddress: BechAddr20;
   hash: Option<string>;
   sender: Option<BechAddr>;
   created: Option<Date>;
   isContractInfoLoading: boolean;
+  onViewMoreAssets: () => void;
 }
 
 export const EvmContractDetailsOverview = ({
+  contractAddress,
   hash,
   sender,
   created,
   isContractInfoLoading,
+  onViewMoreAssets,
 }: EvmContractDetailsOverviewProps) => {
   const { currentChainId } = useCelatoneApp();
   const formatAddresses = useFormatAddresses();
@@ -75,12 +80,7 @@ export const EvmContractDetailsOverview = ({
           </LabelText>
         </Grid>
       </Stack>
-      <Stack gap={4}>
-        <Heading as="h6" variant="h6">
-          Assets
-        </Heading>
-        <Text>Assets</Text>
-      </Stack>
+      <AssetsSection address={contractAddress} onViewMore={onViewMoreAssets} />
       <Stack gap={4}>
         <Heading as="h6" variant="h6">
           Transactions

@@ -4,12 +4,18 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
 import { AmpEvent, trackUseTab } from "lib/amplitude";
-import { useEvmConfig, useInternalNavigate } from "lib/app-provider";
+import {
+  useConvertHexAddress,
+  useEvmConfig,
+  useInternalNavigate,
+} from "lib/app-provider";
+import { AssetsSection } from "lib/components/asset";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { useBalanceInfos } from "lib/services/bank";
 import {
   useEvmCodesByAddress,
   useEvmContractInfoSequencer,
@@ -36,6 +42,9 @@ const EvmContractDetailsBody = ({
   tab,
 }: EvmContractDetailsBodyProps) => {
   const navigate = useInternalNavigate();
+  const { convertHexWalletAddress } = useConvertHexAddress();
+  const contractAddressBechAddr = convertHexWalletAddress(contractAddress);
+
   const {
     data: evmCodesByAddressData,
     isLoading: isEvmCodesByAddressLoading,
@@ -43,6 +52,10 @@ const EvmContractDetailsBody = ({
   } = useEvmCodesByAddress(contractAddress);
   const { data: evmContractInfoData, isLoading: isEvmContractInfoLoading } =
     useEvmContractInfoSequencer(contractAddress);
+
+  const { totalData: totalAssets = 0 } = useBalanceInfos(
+    contractAddressBechAddr
+  );
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -91,7 +104,10 @@ const EvmContractDetailsBody = ({
             <CustomTab onClick={handleTabChange(TabIndex.Contract)}>
               Contract
             </CustomTab>
-            <CustomTab onClick={handleTabChange(TabIndex.Assets)}>
+            <CustomTab
+              onClick={handleTabChange(TabIndex.Assets)}
+              count={totalAssets}
+            >
               Assets
             </CustomTab>
             <CustomTab onClick={handleTabChange(TabIndex.Transactions)}>
@@ -101,16 +117,20 @@ const EvmContractDetailsBody = ({
           <TabPanels>
             <TabPanel p={0} pt={8}>
               <EvmContractDetailsOverview
+                contractAddress={contractAddressBechAddr}
                 hash={evmContractInfoData?.hash}
                 sender={evmContractInfoData?.sender}
                 created={evmContractInfoData?.created}
                 isContractInfoLoading={isEvmContractInfoLoading}
+                onViewMoreAssets={handleTabChange(TabIndex.Assets)}
               />
             </TabPanel>
             <TabPanel p={0} pt={8}>
               <EvmContractDetailsBytecode code={evmCodesByAddressData.code} />
             </TabPanel>
-            <TabPanel p={0}>Assets</TabPanel>
+            <TabPanel p={0}>
+              <AssetsSection address={contractAddressBechAddr} />
+            </TabPanel>
             <TabPanel p={0}>Transactions</TabPanel>
           </TabPanels>
         </Tabs>
