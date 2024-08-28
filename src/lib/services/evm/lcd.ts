@@ -36,6 +36,7 @@ export const getEvmContractInfoSequencer = async (
   const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
 
   return {
+    hash: tx.hash,
     sender,
     created: tx.created,
   };
