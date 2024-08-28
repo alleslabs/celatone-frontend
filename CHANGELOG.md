@@ -40,17 +40,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1117](https://github.com/alleslabs/celatone-frontend/pull/1117) Add JSON RPC request and get block data from JSON RPC
+- [#1105](https://github.com/alleslabs/celatone-frontend/pull/1105) Add base minievm branch with its sign mode and pubkey type
 - [#1102](https://github.com/alleslabs/celatone-frontend/pull/1102) Support add local development chain lite version
 - [#1101](https://github.com/alleslabs/celatone-frontend/pull/1101) Add get all codes and contracts APIs
 
 ### Improvements
 
-- [#1105](https://github.com/alleslabs/celatone-frontend/pull/1105) Add base minievm branch with its sign mode and pubkey type
 - [#1095](https://github.com/alleslabs/celatone-frontend/pull/1095) Update native broadcast helper function to generic sign and broadcast function
 - [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
 
 ### Bug fixes
 
+- [#1108](https://github.com/alleslabs/celatone-frontend/pull/1108) Fix example dev config to initialocal
 - [#1107](https://github.com/alleslabs/celatone-frontend/pull/1107) Fix network states config
 - [#1100](https://github.com/alleslabs/celatone-frontend/pull/1100) Fix account modules spacing
 - [#1104](https://github.com/alleslabs/celatone-frontend/pull/1104) Fix pool asset card not taking full width

@@ -5,24 +5,23 @@ export const devChainConfigs: ChainConfig[] = [
   // Write your chain config here.
   {
     tier: "lite",
-    chainId: "localosmosis",
-    chain: "localosmosis",
-    registryChainName: "localosmosis",
-    prettyName: "Local Osmosis",
-    lcd: "https://lcd.osmotest5.osmosis.zone",
-    rpc: "https://osmosis-testnet-rpc.polkachu.com:443",
-    wallets: ["keplr"],
+    chainId: "localinitia",
+    chain: "localinitia",
+    registryChainName: "localinitia",
+    prettyName: "Local Initia",
+    lcd: "http://localhost:1317",
+    rpc: "http://localhost:26657",
+    wallets: ["initia"],
     features: {
       faucet: {
         enabled: false,
       },
       wasm: {
-        enabled: true,
-        storeCodeMaxFileSize: 800_000,
-        clearAdminGas: 50_000,
+        enabled: false,
       },
       move: {
-        enabled: false,
+        enabled: true,
+        moduleMaxFileSize: 1_048_576,
       },
       evm: {
         enabled: false,
@@ -44,61 +43,64 @@ export const devChainConfigs: ChainConfig[] = [
     },
     gas: {
       gasAdjustment: 1.5,
-      maxGasLimit: 25_000_000,
+      maxGasLimit: 200_000_000,
     },
-    extra: {},
+    extra: {
+      layer: "1",
+    },
     network_type: "testnet",
     logo_URIs: {
-      png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.png",
-      svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg",
+      png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
+      svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
     },
     fees: {
       fee_tokens: [
         {
-          denom: "uosmo",
-          fixed_min_gas_price: 0.0025,
-          low_gas_price: 0.0025,
-          average_gas_price: 0.025,
-          high_gas_price: 0.04,
+          denom: "uinit",
+          fixed_min_gas_price: 0.15,
+          low_gas_price: 0.15,
+          average_gas_price: 0.15,
+          high_gas_price: 0.4,
         },
       ],
     },
     registry: {
-      bech32_prefix: "osmo",
+      bech32_prefix: "init",
       slip44: 118,
-      staking: undefined,
+      staking: {
+        staking_tokens: [
+          {
+            denom: "uinit",
+          },
+        ],
+      },
       assets: [
         {
-          description: "The native token of Osmosis",
+          description: "The native token of Initia",
           denom_units: [
             {
-              denom: "uosmo",
+              denom: "uinit",
               exponent: 0,
-              aliases: [],
             },
             {
-              denom: "osmo",
+              denom: "INIT",
               exponent: 6,
-              aliases: [],
             },
           ],
-          type_asset: "sdk.coin",
-          base: "uosmo",
-          name: "Osmosis Testnet",
-          display: "osmo",
-          symbol: "OSMO",
-          logo_URIs: {
-            png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.png",
-            svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg",
-          },
+          base: "uinit",
+          display: "INIT",
+          name: "Initia Native Token",
+          symbol: "INIT",
           images: [
             {
-              png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.png",
-              svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg",
+              png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
+              svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
             },
           ],
-          coingecko_id: "osmosis",
-          keywords: ["dex", "staking"],
+          logo_URIs: {
+            png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
+            svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
+          },
         },
       ],
     },
