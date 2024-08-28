@@ -1,7 +1,6 @@
 /* eslint-disable complexity */
 import { Flex, Tag, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
-import { findAttribute } from "@cosmjs/stargate/build/logs";
 import type { ReactNode } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
@@ -49,7 +48,7 @@ export const TxMsgExpand = ({
   let content: ReactNode;
   switch (type) {
     case "/cosmwasm.wasm.v1.MsgStoreCode": {
-      const codeId = findAttr(log, "store_code", "code_id") ?? "";
+      const codeId = findAttr(log?.events, "store_code", "code_id") ?? "";
 
       msgIcon = "upload";
       content = (
@@ -83,7 +82,7 @@ export const TxMsgExpand = ({
             <ExplorerLink
               type="contract_address"
               value={
-                findAttribute([log], "instantiate", "_contract_address").value
+                findAttr(log.events, "instantiate", "_contract_address") ?? ""
               }
               showCopyOnHover
               textVariant="body1"
@@ -111,7 +110,7 @@ export const TxMsgExpand = ({
             <ExplorerLink
               type="contract_address"
               value={
-                findAttribute([log], "instantiate", "_contract_address").value
+                findAttr(log.events, "instantiate", "_contract_address") ?? ""
               }
               showCopyOnHover
               textVariant="body1"
@@ -251,7 +250,7 @@ export const TxMsgExpand = ({
               <ExplorerLink
                 type="proposal_id"
                 value={
-                  findAttribute([log], "submit_proposal", "proposal_id").value
+                  findAttr(log.events, "submit_proposal", "proposal_id") ?? ""
                 }
                 showCopyOnHover
                 textVariant="body1"

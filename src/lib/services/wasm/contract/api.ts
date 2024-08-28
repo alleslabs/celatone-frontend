@@ -44,6 +44,14 @@ export const getInstantiatedContractsByAddress = async (
     })
     .then(({ data }) => parseWithError(zContractsResponse, data));
 
+export const getAllInstantiatedContractsByAddress = async (
+  endpoint: string,
+  address: BechAddr
+) =>
+  axios
+    .get(`${endpoint}/${encodeURI(address)}/wasm/all-instantiated-contracts`)
+    .then(({ data }) => parseWithError(zContractsResponse, data));
+
 export const getAdminContractsByAddress = async (
   endpoint: string,
   address: BechAddr,

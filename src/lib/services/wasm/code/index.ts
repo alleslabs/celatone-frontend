@@ -10,7 +10,12 @@ import {
 import type { Code, CodeData, CodesResponse } from "lib/services/types";
 import type { BechAddr, BechAddr20, Option } from "lib/types";
 
-import { getCodeData, getCodes, getCodesByAddress } from "./api";
+import {
+  getAllCodesByAddress,
+  getCodeData,
+  getCodes,
+  getCodesByAddress,
+} from "./api";
 import { getCodeLcd, getCodesLcd, getUploadAccessParamsLcd } from "./lcd";
 
 export const useUploadAccessParamsLcd = () => {
@@ -94,6 +99,21 @@ export const useCodesByAddress = (
     [CELATONE_QUERY_KEYS.CODES_BY_ADDRESS, endpoint, address, limit, offset],
     async () => getCodesByAddress(endpoint, address, limit, offset),
     { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useAllCodesByAddress = (
+  address: BechAddr
+): UseQueryResult<CodesResponse> => {
+  const endpoint = useBaseApiRoute("accounts");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.ALL_CODES_BY_ADDRESS, endpoint, address],
+    async () => getAllCodesByAddress(endpoint, address),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };
 

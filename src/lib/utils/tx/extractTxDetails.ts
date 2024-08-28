@@ -36,21 +36,29 @@ export const extractTxDetails = <T extends TypeUrl>(
       return {
         type,
         ...msgBody,
-        code_id: findAttr(log, "store_code", "code_id"),
+        code_id: findAttr(log?.events, "store_code", "code_id"),
       } as MsgReturnType<T>;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
       return {
         type,
         ...msgBody,
-        contract_address: findAttr(log, "instantiate", "_contract_address"),
+        contract_address: findAttr(
+          log?.events,
+          "instantiate",
+          "_contract_address"
+        ),
       } as MsgReturnType<T>;
     case "/cosmos.gov.v1beta1.MsgSubmitProposal":
       return {
         type,
         ...msgBody,
-        proposal_id: findAttr(log, "submit_proposal", "proposal_id"),
-        proposal_type: findAttr(log, "submit_proposal", "proposal_type"),
+        proposal_id: findAttr(log?.events, "submit_proposal", "proposal_id"),
+        proposal_type: findAttr(
+          log?.events,
+          "submit_proposal",
+          "proposal_type"
+        ),
       } as MsgReturnType<T>;
     default:
       return { type, ...msgBody } as MsgReturnType<T>;

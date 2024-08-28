@@ -87,7 +87,7 @@ export const ContractListCard = ({
           >
             <CustomIcon name="more" color="gray.600" />
           </MenuButton>
-          <MenuList onClick={(e) => e.stopPropagation()}>
+          <MenuList zIndex={10} onClick={(e) => e.stopPropagation()}>
             <EditListNameModal
               list={{ label: item.name, value: item.slug }}
               menuItemProps={{

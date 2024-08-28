@@ -16,7 +16,6 @@ import { matchSorter } from "match-sorter";
 import type { CSSProperties } from "react";
 import { forwardRef, useRef, useState } from "react";
 
-import { useUserKey } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import type { LVPair } from "lib/types";
 import { formatSlugName, mergeRefs } from "lib/utils";
@@ -52,7 +51,6 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
     ref
     // eslint-disable-next-line sonarjs/cognitive-complexity
   ) => {
-    const userKey = useUserKey();
     const { getContractLists, isContractListExist } = useContractStore();
     const options = getContractLists().map((item) => ({
       label: item.name,
@@ -113,7 +111,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
       }
     };
 
-    const canCreateOption = !isContractListExist(userKey, inputValue);
+    const canCreateOption = !isContractListExist(inputValue);
 
     useOutsideClick({
       enabled: enableOutside,

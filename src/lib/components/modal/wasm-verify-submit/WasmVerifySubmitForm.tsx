@@ -59,7 +59,7 @@ export const WasmVerifySubmitForm = ({
             message: "Please provide the source code’s GitHub commit URL",
           })
           .regex(
-            /^https:\/\/github\.com\/.+$/,
+            /^https:\/\/github\.com\/[^/]+\/[^/]+$/,
             "Please enter GitHub URL in format: https://github.com/username/repository"
           )
           .url({

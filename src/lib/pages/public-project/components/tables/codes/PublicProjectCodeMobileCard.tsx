@@ -65,7 +65,7 @@ export const PublicProjectCodeMobileCard = ({
       }
       bottomContent={
         <Flex gap={3} w="full">
-          <Flex direction="column" flex="1">
+          <Flex direction="column" flex={1}>
             <MobileLabel label="Contracts" />
             <Text
               variant="body3"
@@ -76,7 +76,7 @@ export const PublicProjectCodeMobileCard = ({
               {publicInfo.contractCount ?? "N/A"}
             </Text>
           </Flex>
-          <Flex direction="column" flex="1">
+          <Flex direction="column" flex={1}>
             <MobileLabel label="Permission" />
             <PermissionChip
               instantiatePermission={publicInfo.instantiatePermission}

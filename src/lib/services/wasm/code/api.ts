@@ -36,7 +36,15 @@ export const getCodesByAddress = async (
         offset,
       },
     })
-    .then(({ data }) => zCodesResponse.parse(data));
+    .then(({ data }) => parseWithError(zCodesResponse, data));
+
+export const getAllCodesByAddress = async (
+  endpoint: string,
+  address: BechAddr
+): Promise<CodesResponse> =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/wasm/all-codes`)
+    .then(({ data }) => parseWithError(zCodesResponse, data));
 
 export const getCodeData = async (
   endpoint: string,

@@ -49,12 +49,12 @@ export class CodeStore {
     return this.savedCodeIds[this.userKey]?.includes(id) ?? false;
   }
 
-  lastSavedCodeIds(userKey: string): number[] {
-    return this.savedCodeIds[userKey]?.slice().reverse() ?? [];
+  lastSavedCodeIds(): number[] {
+    return this.savedCodeIds[this.userKey]?.slice().reverse() ?? [];
   }
 
-  lastSavedCodes(userKey: string): CodeLocalInfo[] {
-    const savedCodeIdsByUserKey = this.savedCodeIds[userKey];
+  lastSavedCodes(): CodeLocalInfo[] {
+    const savedCodeIdsByUserKey = this.savedCodeIds[this.userKey];
 
     if (!savedCodeIdsByUserKey) return [];
 
@@ -62,8 +62,9 @@ export class CodeStore {
       .map((codeId) => ({
         id: codeId,
         uploader:
-          this.codeInfo[userKey]?.[codeId]?.uploader ?? ("N/A" as BechAddr),
-        name: this.codeInfo[userKey]?.[codeId]?.name,
+          this.codeInfo[this.userKey]?.[codeId]?.uploader ??
+          ("N/A" as BechAddr),
+        name: this.codeInfo[this.userKey]?.[codeId]?.name,
       }))
       .reverse();
   }

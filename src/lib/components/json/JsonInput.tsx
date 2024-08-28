@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState } from "react";
 
 import { CustomIcon } from "../icon";
+import { useMobile } from "lib/app-provider";
 import type { Nullable } from "lib/types";
 import { jsonLineCount, jsonPrettify, jsonValidate } from "lib/utils";
 
@@ -80,8 +81,8 @@ const JsonInput = ({
   setText,
   validateFn = jsonValidate,
 }: JsonInputProps) => {
+  const isMobile = useMobile();
   const [jsonState, setJsonState] = useState<JsonState>({ state: "empty" });
-
   const handleChange = (value: string) => {
     setJsonState({ state: "loading" });
     setText(value);
@@ -142,22 +143,22 @@ const JsonInput = ({
             {topic}
           </Text>
         )}
-        <Button
-          position="absolute"
-          top="10px"
-          right="10px"
-          p="4px 10px"
-          variant="outline-white"
-          fontSize="12px"
-          background="background.main"
-          float="right"
-          isDisabled={!isValidJson}
-          onClick={() => {
-            setText(jsonPrettify(text));
-          }}
-        >
-          Format JSON
-        </Button>
+        {!isMobile && (
+          <Button
+            position="absolute"
+            top="10px"
+            right="10px"
+            p="4px 10px"
+            variant="outline-white"
+            fontSize="12px"
+            background="background.main"
+            float="right"
+            isDisabled={!isValidJson}
+            onClick={() => setText(jsonPrettify(text))}
+          >
+            Format JSON
+          </Button>
+        )}
       </Box>
       <Flex
         my={response ? "16px" : undefined}

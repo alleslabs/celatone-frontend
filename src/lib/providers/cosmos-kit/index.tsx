@@ -2,6 +2,7 @@ import type { EndpointOptions } from "@cosmos-kit/core";
 import { ChainProvider as Provider } from "@cosmos-kit/react";
 
 import { useCelatoneApp, useChainConfigs } from "lib/app-provider";
+import { getWallets } from "lib/utils";
 
 import { getCustomedSigningCosmwasm } from "./options";
 
@@ -29,7 +30,7 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
     <Provider
       chains={registryChains}
       assetLists={registryAssets}
-      wallets={wallets}
+      wallets={getWallets(wallets)}
       // TODO
       walletConnectOptions={{
         signClient: {
