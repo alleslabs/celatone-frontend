@@ -100,7 +100,9 @@ const EvmContractDetailsBody = ({
           <TabPanels>
             <TabPanel p={0} pt={8}>
               <EvmContractDetailsOverview
-                contractInfo={evmContractInfoData}
+                hash={evmContractInfoData?.hash}
+                sender={evmContractInfoData?.sender}
+                created={evmContractInfoData?.created}
                 isContractInfoLoading={isEvmContractInfoLoading}
               />
             </TabPanel>

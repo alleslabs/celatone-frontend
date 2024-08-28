@@ -4,17 +4,20 @@ import { useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import type { EvmContractInfoResponseSequencer } from "lib/services/types";
-import type { Option } from "lib/types";
+import type { BechAddr, Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface EvmContractDetailsOverviewProps {
-  contractInfo: Option<EvmContractInfoResponseSequencer>;
+  hash: Option<string>;
+  sender: Option<BechAddr>;
+  created: Option<Date>;
   isContractInfoLoading: boolean;
 }
 
 export const EvmContractDetailsOverview = ({
-  contractInfo,
+  hash,
+  sender,
+  created,
   isContractInfoLoading,
 }: EvmContractDetailsOverviewProps) => {
   const { currentChainId } = useCelatoneApp();
@@ -40,10 +43,10 @@ export const EvmContractDetailsOverview = ({
               <Spinner boxSize={4} />
             ) : (
               <>
-                {contractInfo?.sender ? (
+                {sender ? (
                   <ExplorerLink
-                    value={formatAddresses(contractInfo.sender).hex}
-                    type="contract_address"
+                    value={formatAddresses(sender).hex}
+                    type="user_address"
                   />
                 ) : (
                   "-"
@@ -56,18 +59,14 @@ export const EvmContractDetailsOverview = ({
               <Spinner boxSize={4} />
             ) : (
               <Stack gap={1}>
-                {/* // TODO: Change this to code */}
-                <ExplorerLink
-                  value={formatAddresses(contractInfo?.sender ?? "").hex}
-                  type="contract_address"
-                />
-                {contractInfo && (
+                {hash ? <ExplorerLink value={hash} type="tx_hash" /> : "-"}
+                {created && (
                   <>
                     <Text variant="body2" color="text.dark">
-                      {formatUTC(contractInfo.created)}
+                      {formatUTC(created)}
                     </Text>
                     <Text variant="body3" color="text.disabled">
-                      ({dateFromNow(contractInfo.created)})
+                      ({dateFromNow(created)})
                     </Text>
                   </>
                 )}
