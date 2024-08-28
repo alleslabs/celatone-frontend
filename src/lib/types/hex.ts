@@ -8,8 +8,7 @@ export const zHex = z.string().regex(/^0x[0-9a-fA-F]*$/, {
 });
 
 export const zHexBig = zHex.transform((hex) => big(BigInt(hex).toString()));
-export type HexBig = z.infer<typeof zHexBig>;
 
-export const zHexDate = zHex.transform(
+export const zHexUtcDate = zHex.transform(
   (hex) => new Date(parseInt(hex, 16) * 1000)
 );

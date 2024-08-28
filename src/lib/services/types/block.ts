@@ -12,7 +12,7 @@ import {
   MsgFurtherAction,
   zHexAddr20,
   zHexBig,
-  zHexDate,
+  zHexUtcDate,
   zPagination,
   zUtcDate,
   zValidatorAddr,
@@ -230,7 +230,7 @@ export const zBlockJsonRpc = z.object({
   sha3Uncles: z.string(),
   size: z.string(),
   stateRoot: z.string(),
-  timestamp: zHexDate,
+  timestamp: zHexUtcDate,
   transactions: z.array(zTxJsonRpc),
   transactionsRoot: z.string(),
 });
