@@ -375,6 +375,12 @@ export const zBlockTxsResponseSequencer = z.object({
 });
 
 // ---------------- JSON RPC ----------------
+export const zEvmTxHashByCosmosTxHashJsonRpc = z.string().transform((val) =>
+  val !== "0x0000000000000000000000000000000000000000000000000000000000000000" // if no related evm tx
+    ? val
+    : null
+);
+
 export const zTxJsonRpc = z.object({
   blockHash: z.string(),
   blockNumber: zHexBig,
@@ -386,7 +392,7 @@ export const zTxJsonRpc = z.object({
   hash: z.string(),
   input: z.string(),
   nonce: zHexBig,
-  to: zHexAddr20,
+  to: zHexAddr20.nullable(),
   transactionIndex: zHexBig,
   value: zHexBig,
   type: z.string(), // TODO: convert to enum later
