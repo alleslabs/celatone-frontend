@@ -34,7 +34,7 @@ export const ModuleVerifyModalBody = ({
 
   if (isError) return <ModuleVerifyFailedModal onClose={onClose} />;
 
-  return fakeLoading ? (
+  return isLoading || fakeLoading ? (
     <ModuleVerifyLoadingModal />
   ) : (
     <ModuleVerifySuccessModal onClose={onClose} control={control} />
