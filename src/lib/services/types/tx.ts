@@ -12,6 +12,8 @@ import {
   MsgFurtherAction,
   zBechAddr,
   zCoin,
+  zHexAddr20,
+  zHexBig,
   zMessageResponse,
   zPagination,
   zPubkeyMulti,
@@ -370,4 +372,27 @@ export const zTxsCountResponse = z
 export const zBlockTxsResponseSequencer = z.object({
   txs: z.array(zTxsResponseItemFromLcd),
   pagination: zPagination,
+});
+
+// ---------------- JSON RPC ----------------
+export const zTxJsonRpc = z.object({
+  blockHash: z.string(),
+  blockNumber: zHexBig,
+  from: z.string(),
+  gas: zHexBig,
+  gasPrice: zHexBig,
+  maxFeePerGas: zHexBig,
+  maxPriorityFeePerGas: zHexBig,
+  hash: z.string(),
+  input: z.string(),
+  nonce: zHexBig,
+  to: zHexAddr20,
+  transactionIndex: zHexBig,
+  value: zHexBig,
+  type: z.string(), // TODO: convert to enum later
+  chainId: zHexBig,
+  v: z.string(),
+  r: z.string(),
+  s: z.string(),
+  yParity: z.string(),
 });

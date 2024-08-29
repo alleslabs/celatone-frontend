@@ -13,6 +13,7 @@ export * from "./contract";
 export * from "./contractState";
 export * from "./converter";
 export * from "./delegation";
+export * from "./hex";
 export * from "./json";
 export * from "./LVPair";
 export * from "./message";
