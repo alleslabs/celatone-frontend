@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-
 import { Tooltip } from "lib/components/Tooltip";
 import { MoveVerifyStatus } from "lib/types";
 
@@ -31,23 +29,21 @@ const MoveVerifyBadgeIcon = ({
   return undefined;
 };
 
+const getMoveVerifyBadgeLabel = (status: MoveVerifyStatus) => {
+  if (status === MoveVerifyStatus.Outdated) {
+    return "This module was republished after verification.";
+  }
+  if (status === MoveVerifyStatus.Verified) {
+    return "This module has been verified.";
+  }
+  return undefined;
+};
+
 export const MoveVerifyBadge = ({
   status,
   hasTooltip = false,
-}: MoveVerifyBadgeProps) => {
-  const label = useMemo(() => {
-    if (status === MoveVerifyStatus.Outdated) {
-      return "This module was republished after verification.";
-    }
-    if (status === MoveVerifyStatus.Verified) {
-      return "This module has been verified.";
-    }
-    return undefined;
-  }, [status]);
-
-  return (
-    <Tooltip hidden={!hasTooltip} label={label}>
-      <MoveVerifyBadgeIcon status={status} />
-    </Tooltip>
-  );
-};
+}: MoveVerifyBadgeProps) => (
+  <Tooltip hidden={!hasTooltip} label={getMoveVerifyBadgeLabel(status)}>
+    <MoveVerifyBadgeIcon status={status} />
+  </Tooltip>
+);
