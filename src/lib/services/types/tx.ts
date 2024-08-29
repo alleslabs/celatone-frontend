@@ -12,6 +12,7 @@ import {
   MsgFurtherAction,
   zBechAddr,
   zCoin,
+  zHex,
   zHexAddr20,
   zHexBig,
   zMessageResponse,
@@ -389,7 +390,7 @@ export const zEvmTxHashByCosmosTxHashJsonRpc = z.string().transform((val) =>
 export const zTxJsonRpc = z.object({
   blockHash: z.string(),
   blockNumber: zHexBig,
-  from: z.string(),
+  from: zHexAddr20,
   gas: zHexBig,
   gasPrice: zHexBig,
   maxFeePerGas: zHexBig,
@@ -406,4 +407,21 @@ export const zTxJsonRpc = z.object({
   r: z.string(),
   s: z.string(),
   yParity: z.string(),
+});
+
+export const zTxReceiptJsonRpc = z.object({
+  blockHash: z.string(),
+  blockNumber: zHexBig,
+  contractAddress: z.string().nullable(),
+  cumulativeGasUsed: zHexBig,
+  effectiveGasPrice: zHexBig,
+  from: zHexAddr20,
+  gasUsed: zHexBig,
+  logs: z.object({}).passthrough().array(),
+  logsBloom: zHex,
+  status: zHexBig,
+  to: zHexAddr20.nullable(),
+  transactionHash: z.string(),
+  transactionIndex: zHexBig,
+  type: z.string(), // TODO: convert to enum later
 });

@@ -1,5 +1,11 @@
-import { requestJsonRpc } from "../evm/jsonRpc";
-import { zEvmTxHashByCosmosTxHashJsonRpc, zTxJsonRpc } from "../types";
+import { z } from "zod";
+
+import { requestBatchJsonRpc, requestJsonRpc } from "../evm/jsonRpc";
+import {
+  zEvmTxHashByCosmosTxHashJsonRpc,
+  zTxJsonRpc,
+  zTxReceiptJsonRpc,
+} from "../types";
 import { parseWithError } from "lib/utils";
 
 export const getEvmTxHashByCosmosTxHash = (
@@ -11,6 +17,15 @@ export const getEvmTxHashByCosmosTxHash = (
   );
 
 export const getTxDataJsonRpc = (endpoint: string, evmTxHash: string) =>
-  requestJsonRpc(endpoint, "eth_getTransactionByHash", [evmTxHash]).then(
-    ({ result }) => parseWithError(zTxJsonRpc, result)
+  requestBatchJsonRpc(endpoint, [
+    {
+      method: "eth_getTransactionByHash",
+      params: [evmTxHash],
+    },
+    {
+      method: "eth_getTransactionReceipt",
+      params: [evmTxHash],
+    },
+  ]).then((results) =>
+    parseWithError(z.tuple([zTxJsonRpc, zTxReceiptJsonRpc]), results)
   );

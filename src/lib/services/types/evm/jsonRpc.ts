@@ -4,7 +4,7 @@ import { zJsonDataType } from "lib/types";
 
 export const zJsonRpcResponse = z.object({
   jsonrpc: z.literal("2.0"),
-  id: z.string(),
+  id: z.union([z.string(), z.number()]).nullable(),
   result: zJsonDataType.optional(),
   error: z
     .object({
@@ -14,3 +14,16 @@ export const zJsonRpcResponse = z.object({
     .optional(),
 });
 export type JsonRpcResponse = z.infer<typeof zJsonRpcResponse>;
+
+export const zBatchJsonRpcResponse = z.union([
+  z.array(zJsonRpcResponse),
+  z.object({
+    jsonrpc: z.literal("2.0"),
+    error: z.object({
+      code: z.number(),
+      message: z.string(),
+    }),
+    id: z.null(),
+  }),
+]);
+export type BatchJsonRpcResponse = z.infer<typeof zBatchJsonRpcResponse>;
