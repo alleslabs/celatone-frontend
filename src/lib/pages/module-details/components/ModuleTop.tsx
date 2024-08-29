@@ -214,9 +214,7 @@ export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
           >
             {moduleData.moduleName}
           </Heading>
-          <Tooltip label="This module's verification is supported by its provided source code.">
-            <MoveVerifyBadge status={moveVerifyStatus} />
-          </Tooltip>
+          <MoveVerifyBadge status={moveVerifyStatus} hasTooltip />
         </Flex>
         {!isMobile && (
           <ModuleCta moduleData={moduleData} moduleAddress={moduleAddress} />

@@ -11,7 +11,7 @@ export const useMyModuleVerifications = (): {
   isLoading: boolean;
   data: MoveVerifyTaskInfo[];
 } => {
-  const { latestMoveVerifyTasks, completeMoveVerifyTask } =
+  const { latestMoveVerifyTasks, completeMoveVerifyTask, getMoveVerifyTask } =
     useMoveVerifyTaskStore();
   const localTasks = latestMoveVerifyTasks();
   const verificationInfos = useMoveVerifyTaskInfos(
@@ -19,10 +19,14 @@ export const useMyModuleVerifications = (): {
       .filter(({ completed }) => !completed)
       .map((module) => module.taskId),
     ({ task, result }) => {
-      if (
-        task.status === MoveVerifyTaskStatus.Finished ||
-        task.status === MoveVerifyTaskStatus.NotFound
-      ) {
+      // set as completed if the task is finished or the task is still not found and older than 10s
+      const confirmationTime = 10 * 1000; // 10s
+      const localTask = getMoveVerifyTask(task.id);
+      const isOutdatedTask =
+        task.status === MoveVerifyTaskStatus.NotFound &&
+        localTask &&
+        Date.now() - localTask.created.getTime() > confirmationTime;
+      if (task.status === MoveVerifyTaskStatus.Finished || isOutdatedTask) {
         completeMoveVerifyTask(task.id, result?.verifiedAt);
       }
     }
