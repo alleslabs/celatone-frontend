@@ -4,6 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 
 import {
   useCurrentChain,
+  useEvmConfig,
   useMoveConfig,
   usePublicProjectConfig,
   useTierConfig,
@@ -34,13 +35,14 @@ interface NavbarProps {
 }
 
 const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
+  const { address } = useCurrentChain();
+  const { isFullTier, isSequencerTier } = useTierConfig();
+  const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
+  const evm = useEvmConfig({ shouldRedirect: false });
   const { getSavedPublicProjects } = usePublicProjectStore();
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
   const isCurrentPage = useIsCurrentPage();
-  const wasm = useWasmConfig({ shouldRedirect: false });
-  const move = useMoveConfig({ shouldRedirect: false });
-  const { isFullTier, isSequencerTier } = useTierConfig();
-  const { address } = useCurrentChain();
 
   const navMenu: MenuInfo[] =
     isFullTier || isSequencerTier
@@ -56,7 +58,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                 getSavedPublicProjects()
               )
             : []),
-          ...(move.enabled || wasm.enabled
+          ...(wasm.enabled || move.enabled || evm.enabled
             ? [
                 {
                   category: "Developer Tools",

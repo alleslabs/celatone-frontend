@@ -8,6 +8,7 @@ import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useCurrentChain,
   useGovConfig,
+  useInitia,
   useInternalNavigate,
   useMoveConfig,
   useNftConfig,
@@ -77,15 +78,17 @@ const AccountDetailsBody = ({
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
-  const formatAddresses = useFormatAddresses();
+  const navigate = useInternalNavigate();
+  const { isFullTier, isSequencerTier } = useTierConfig();
   const gov = useGovConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   const nft = useNftConfig({ shouldRedirect: false });
-  const navigate = useInternalNavigate();
+  const isInitia = useInitia();
+
+  const formatAddresses = useFormatAddresses();
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
-  const { isFullTier, isSequencerTier } = useTierConfig();
 
   // ------------------------------------------//
   // ------------------QUERIES-----------------//
@@ -150,7 +153,7 @@ const AccountDetailsBody = ({
     data: initiaUsernameData,
     isLoading: isInitiaUsernameDataLoading,
     isFetching: isInitiaUsernameDataFetching,
-  } = useInitiaUsernameByAddress(hexAddress, move.enabled);
+  } = useInitiaUsernameByAddress(hexAddress, isInitia);
 
   const nftEnabled = nft.enabled && (isFullTier || isSequencerTier);
 
