@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1116](https://github.com/alleslabs/celatone-frontend/pull/1116) Add EVM contract details assets
+- [#1112](https://github.com/alleslabs/celatone-frontend/pull/1112) Add EVM contract details bytecodes
+- [#1109](https://github.com/alleslabs/celatone-frontend/pull/1109) Add EVM contract details overview
 - [#1106](https://github.com/alleslabs/celatone-frontend/pull/1106) Add EVM contract details HTML skeleton layout
 - [#1118](https://github.com/alleslabs/celatone-frontend/pull/1118) Implement base evm method chip
 - [#1117](https://github.com/alleslabs/celatone-frontend/pull/1117) Add JSON RPC request and get block data from JSON RPC

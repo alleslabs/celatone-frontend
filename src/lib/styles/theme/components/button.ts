@@ -161,6 +161,7 @@ export const Button: ComponentStyleConfig = {
       basic: {
         border: borderDefault,
         borderColor: gray400,
+        background: "background.main",
         color: "text.main",
         "> svg": {
           color: "text.main",
