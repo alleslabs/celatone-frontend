@@ -167,15 +167,16 @@ export const zTxsResponseItemFromLcd =
       type: msg["@type"],
     }));
 
-    const { isIbc, isOpinit } = messages.reduce(
+    const { isIbc, isOpinit, isEvm } = messages.reduce(
       (acc, msg, idx) => {
         const current = getTxBadges(msg.type, logs[idx]);
         return {
           isIbc: acc.isIbc || current.isIbc,
           isOpinit: acc.isOpinit || current.isOpinit,
+          isEvm: acc.isEvm || current.isEvm,
         };
       },
-      { isIbc: false, isOpinit: false }
+      { isIbc: false, isOpinit: false, isEvm: false }
     );
 
     return {
@@ -188,6 +189,7 @@ export const zTxsResponseItemFromLcd =
       success: val.code === 0,
       isIbc,
       isOpinit,
+      isEvm,
       events: val.events,
       // TODO: implement below later
       actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
@@ -260,6 +262,7 @@ const zBaseTxsResponseItem = z.object({
   is_send: z.boolean(),
   // initia
   is_opinit: z.boolean().optional(),
+  is_evm: z.boolean().optional(),
   // wasm
   is_clear_admin: z.boolean().optional(),
   is_execute: z.boolean().optional(),
@@ -296,6 +299,7 @@ export const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>(
     furtherAction: MsgFurtherAction.NONE,
     isIbc: val.is_ibc,
     isOpinit: val.is_opinit ?? false,
+    isEvm: val.is_evm ?? false,
     isInstantiate: val.is_instantiate ?? false,
   })
 );
@@ -349,6 +353,7 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
     ),
     isIbc: val.is_ibc,
     isOpinit: val.is_opinit ?? false,
+    isEvm: val.is_evm ?? false,
     isInstantiate: val.is_instantiate ?? false,
   }));
 
