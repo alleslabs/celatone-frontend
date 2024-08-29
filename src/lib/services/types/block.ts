@@ -10,6 +10,9 @@ import type {
 import {
   ActionMsgType,
   MsgFurtherAction,
+  zHexAddr20,
+  zHexBig,
+  zHexUtcDate,
   zPagination,
   zUtcDate,
   zValidatorAddr,
@@ -21,7 +24,7 @@ import {
   snakeToCamel,
 } from "lib/utils";
 
-import { zTx } from "./tx";
+import { zTx, zTxJsonRpc } from "./tx";
 
 const zNullableValidator = z.nullable(
   z
@@ -210,3 +213,26 @@ export const zBlockDataResponseSequencer = zBlockSequencer.transform<BlockData>(
     proposer: val.proposer,
   })
 );
+
+// ---------------- JSON RPC ----------------
+export const zBlockJsonRpc = z.object({
+  baseFeePerGas: zHexBig,
+  difficulty: zHexBig,
+  extraData: z.string(),
+  gasLimit: zHexBig,
+  gasUsed: zHexBig,
+  hash: z.string(),
+  logsBloom: z.string(),
+  miner: zHexAddr20,
+  mixHash: z.string(),
+  nonce: zHexBig,
+  number: zHexBig,
+  parentHash: z.string(),
+  receiptsRoot: z.string(),
+  sha3Uncles: z.string(),
+  size: z.string(),
+  stateRoot: z.string(),
+  timestamp: zHexUtcDate,
+  transactions: z.array(zTxJsonRpc),
+  transactionsRoot: z.string(),
+});

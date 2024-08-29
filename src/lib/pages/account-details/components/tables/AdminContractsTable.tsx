@@ -91,7 +91,7 @@ export const AdminContractsTable = observer(
               emptyState={
                 !contracts ? (
                   <ErrorFetching
-                    dataName="contracts"
+                    dataName="admin contracts"
                     withBorder
                     my={2}
                     hasBorderTop={false}

@@ -3,3 +3,5 @@ export const isPositiveInt = (str: string): boolean =>
 
 export const isNumeric = (str: string): boolean =>
   /^-?\d+(?:\.\d+)?$/.test(str);
+
+export const numberToHex = (num: number): string => `0x${num.toString(16)}`;
