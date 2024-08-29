@@ -8,7 +8,7 @@ import { dateFromNow, formatUTC } from "lib/utils";
 import { MyModuleVerificationDetailsStatusBadge } from "./MyModuleVerificationDetailsStatusBadge";
 
 interface MyModuleVerificationDetailsInfoProps {
-  chainId: string;
+  chainId: Option<string>;
   status: MoveVerifyTaskStatus;
   verifiedAt: Option<Date>;
 }
@@ -25,7 +25,7 @@ export const MyModuleVerificationDetailsInfo = ({
     rounded={8}
     p={4}
   >
-    <LabelText label="Network">{chainId}</LabelText>
+    {chainId && <LabelText label="Network">{chainId}</LabelText>}
     <LabelText label="Status">
       <MyModuleVerificationDetailsStatusBadge status={status} />
     </LabelText>

@@ -1,11 +1,17 @@
 import { Button, Text } from "@chakra-ui/react";
 
 import { AppLink } from "../AppLink";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 
 export const NotVerifiedDetails = () => {
   const navigate = useInternalNavigate();
-  return (
+  const isMobile = useMobile();
+
+  return isMobile ? (
+    <Text variant="body2" color="text.dark" whiteSpace="pre-line">
+      {`This module has not been verified. If you are the owner, you can submit for verification with the new files.\n\nVerification is only currently supported on desktop.`}
+    </Text>
+  ) : (
     <>
       <Text variant="body2" color="text.dark">
         This module has not been verified. If you are the owner, you can{" "}

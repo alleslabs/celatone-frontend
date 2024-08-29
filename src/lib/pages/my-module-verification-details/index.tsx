@@ -1,4 +1,4 @@
-import { Stack } from "@chakra-ui/react";
+import { Box, ListItem, Stack, Text, UnorderedList } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 
@@ -9,6 +9,7 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useMoveVerifyTaskStore } from "lib/providers/store";
+import { MoveVerifyTaskStatus } from "lib/services/types";
 import { useMoveVerifyTaskInfo } from "lib/services/verification/move";
 
 import {
@@ -27,7 +28,7 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
   useInitiaL1({ shouldRedirect: true });
 
   if (isLoading) return <Loading />;
-  if (!data || error || !verifyModuleTask)
+  if (!data || error)
     return (
       <EmptyState
         imageVariant="not-found"
@@ -37,23 +38,49 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
       />
     );
 
+  if (data.task.status === MoveVerifyTaskStatus.NotFound && !verifyModuleTask)
+    return (
+      <EmptyState
+        imageVariant="not-found"
+        heading="Verification Details is Unavailable"
+        withBorder
+        message=""
+      >
+        <Box>
+          <Text color="text.dark">
+            We’re unable to access the page you requested due to one of the
+            following possibilities:
+          </Text>
+          <UnorderedList color="text.dark">
+            <ListItem ml={4}>The task ID does not existed</ListItem>
+            <ListItem ml={4}>The wrong network was selected</ListItem>
+            <ListItem ml={4}>
+              This request has been submitted through another devices
+            </ListItem>
+          </UnorderedList>
+        </Box>
+      </EmptyState>
+    );
+
   return (
     <>
       <Stack gap={8}>
         <MyModuleVerificationDetailsTop
           taskId={taskId}
-          requestNote={verifyModuleTask.requestNote}
+          requestNote={verifyModuleTask?.requestNote}
         />
         <Stack gap={10}>
           <MyModuleVerificationDetailsInfo
-            chainId={verifyModuleTask.chainId}
+            chainId={verifyModuleTask?.chainId ?? data.result?.chainId}
             status={data.task.status}
-            verifiedAt={data.result?.verifiedAt}
+            verifiedAt={verifyModuleTask?.verifiedAt ?? data.result?.verifiedAt}
           />
           <MyModuleVerificationDetailsAlert status={data.task.status} />
-          <MyModuleVerificationDetailsFileMap
-            fileMap={verifyModuleTask.fileMap}
-          />
+          {verifyModuleTask && (
+            <MyModuleVerificationDetailsFileMap
+              fileMap={verifyModuleTask.fileMap}
+            />
+          )}
           <MyModuleVerificationDetailsTable
             moduleIdentifiers={data.result?.moduleIdentifiers}
             moveVerifyTaskStatus={data.task.status}

@@ -4,8 +4,10 @@ import {
   AlertTitle,
   Button,
   Flex,
+  ListItem,
   Stack,
   Text,
+  UnorderedList,
 } from "@chakra-ui/react";
 
 import { useInternalNavigate } from "lib/app-provider";
@@ -54,9 +56,24 @@ export const MyModuleVerificationDetailsAlert = ({
           <CustomIcon name="info-circle" color="error.main" boxSize={4} />
           <Stack gap={1}>
             <AlertTitle>Verification Failed</AlertTitle>
-            <AlertDescription wordBreak="break-word">
-              Please ensure that you upload folder that store files in the
-              correct format and provide required information according to the{" "}
+            <AlertDescription wordBreak="break-word" whiteSpace="pre-line">
+              There are common problems that lead to verification failures,
+              including:
+              <UnorderedList>
+                <ListItem ml={4}>
+                  {`Files structured in the wrong format, such as .move files not placed in the \u2018sources\u2019 folder or nested in other folders.`}
+                </ListItem>
+                <ListItem ml={4}>
+                  Uploaded .move files that call functions from other .move
+                  files which were not uploaded.
+                </ListItem>
+                <ListItem ml={4}>
+                  Verifying modules that are not published or have unmatched
+                  codes.
+                </ListItem>
+              </UnorderedList>
+              For more details to ensure the correctness of the process, please
+              refer to the{" "}
               <a
                 href={`${DEVELOPER_TOOL_DOCS_LINK}/initia/move/module-verification`}
                 target="_blank"

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import type { Control } from "react-hook-form";
 
 import type { ModuleVerifyForm } from "../types";
@@ -19,8 +20,23 @@ export const ModuleVerifyModalBody = ({
   onClose,
   control,
 }: ModuleVerifyModalBodyProps) => {
-  if (isLoading) return <ModuleVerifyLoadingModal />;
+  const [fakeLoading, setFakeLoading] = useState(false);
+
+  useEffect(() => {
+    setFakeLoading(true);
+
+    const timeoutId = setTimeout(() => {
+      setFakeLoading((newFakeLoading) => !newFakeLoading);
+    }, 1500);
+
+    return () => clearTimeout(timeoutId);
+  }, [isLoading]);
+
   if (isError) return <ModuleVerifyFailedModal onClose={onClose} />;
 
-  return <ModuleVerifySuccessModal onClose={onClose} control={control} />;
+  return isLoading || fakeLoading ? (
+    <ModuleVerifyLoadingModal />
+  ) : (
+    <ModuleVerifySuccessModal onClose={onClose} control={control} />
+  );
 };
