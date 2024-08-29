@@ -9,6 +9,7 @@ import {
 } from "lib/components/state";
 import { ModulesTable } from "lib/components/table";
 import { useModulesByAddress } from "lib/services/move/module";
+import { useMoveVerifyInfosByAddress } from "lib/services/verification/move";
 import type { ModuleInfo, Option } from "lib/types";
 
 export const MyPublishedModulesTable = () => {
@@ -20,6 +21,8 @@ export const MyPublishedModulesTable = () => {
     isFetching: isModulesLoading,
     error,
   } = useModulesByAddress({ address });
+
+  const { data: moveVerifyInfos } = useMoveVerifyInfosByAddress(address);
 
   const filteredPublishedModules: Option<ModuleInfo[]> = useMemo(() => {
     if (!keyword) return data?.items;
@@ -63,6 +66,7 @@ export const MyPublishedModulesTable = () => {
           modules={filteredPublishedModules}
           isLoading={isModulesLoading}
           emptyState={emptyState()}
+          moveVerifyInfos={moveVerifyInfos}
           isPublishedModules
         />
       ) : (

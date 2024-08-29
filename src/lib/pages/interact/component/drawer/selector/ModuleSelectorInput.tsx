@@ -14,7 +14,7 @@ import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useSearchModules } from "lib/pages/interact/data";
 import { useValidateModuleInput } from "lib/pages/interact/hooks/useValidateModuleInput";
 import type { IndexedModule, Option } from "lib/types";
-import { splitModule } from "lib/utils";
+import { splitModulePath } from "lib/utils";
 
 export interface ModuleSelectorInputProps {
   selectedAddress: SelectedAddress;
@@ -36,7 +36,7 @@ export const ModuleSelectorInput = ({
   const [keyword, setKeyword] = useState(selectedAddress.hex as string);
   const [error, setError] = useState("");
   const [addr, moduleName, functionName] = useMemo(
-    () => splitModule(keyword),
+    () => splitModulePath(keyword),
     [keyword]
   );
 

@@ -183,8 +183,8 @@ export const UploadModuleCard = ({
             />
           ) : (
             <DropZone
-              setFile={handleFileDrop}
-              fileType="move"
+              setFiles={(files: File[]) => handleFileDrop(files[0])}
+              fileType={["mv"]}
               bgColor="background.main"
               error={decodeError}
               _hover={undefined}
