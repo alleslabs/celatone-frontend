@@ -44,7 +44,9 @@ export const ModulePathLink = ({
           {`${truncate(hexAddr)} :: ${moduleName}`}
         </Text>
       </AppLink>
-      {moveVerifyStatus && <MoveVerifyBadge status={moveVerifyStatus} />}
+      {moveVerifyStatus && (
+        <MoveVerifyBadge status={moveVerifyStatus} hasTooltip />
+      )}
       <Copier
         type="module_path"
         value={mergeModulePath(hexAddr, moduleName)}

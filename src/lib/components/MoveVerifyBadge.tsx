@@ -1,12 +1,16 @@
+import { Tooltip } from "lib/components/Tooltip";
 import { MoveVerifyStatus } from "lib/types";
 
 import { CustomIcon } from "./icon";
 
 interface MoveVerifyBadgeProps {
   status: MoveVerifyStatus;
+  hasTooltip?: boolean;
 }
 
-export const MoveVerifyBadge = ({ status }: MoveVerifyBadgeProps) => {
+const MoveVerifyBadgeIcon = ({
+  status,
+}: Pick<MoveVerifyBadgeProps, "status">) => {
   if (status === MoveVerifyStatus.Outdated) {
     return (
       <CustomIcon
@@ -24,3 +28,22 @@ export const MoveVerifyBadge = ({ status }: MoveVerifyBadgeProps) => {
   }
   return undefined;
 };
+
+const getMoveVerifyBadgeLabel = (status: MoveVerifyStatus) => {
+  if (status === MoveVerifyStatus.Outdated) {
+    return "This module was republished after verification.";
+  }
+  if (status === MoveVerifyStatus.Verified) {
+    return "This module has been verified.";
+  }
+  return undefined;
+};
+
+export const MoveVerifyBadge = ({
+  status,
+  hasTooltip = false,
+}: MoveVerifyBadgeProps) => (
+  <Tooltip hidden={!hasTooltip} label={getMoveVerifyBadgeLabel(status)}>
+    <MoveVerifyBadgeIcon status={status} />
+  </Tooltip>
+);
