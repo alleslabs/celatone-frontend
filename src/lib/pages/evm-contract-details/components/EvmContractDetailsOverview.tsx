@@ -8,6 +8,8 @@ import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import type { BechAddr, BechAddr20, Option } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
+import { EvmContractDetailsTxs } from "./EvmContractDetailsTxs";
+
 interface EvmContractDetailsOverviewProps {
   contractAddress: BechAddr20;
   hash: Option<string>;
@@ -15,6 +17,7 @@ interface EvmContractDetailsOverviewProps {
   created: Option<Date>;
   isContractInfoLoading: boolean;
   onViewMoreAssets: () => void;
+  onViewMoreTxs: () => void;
 }
 
 export const EvmContractDetailsOverview = ({
@@ -24,6 +27,7 @@ export const EvmContractDetailsOverview = ({
   created,
   isContractInfoLoading,
   onViewMoreAssets,
+  onViewMoreTxs,
 }: EvmContractDetailsOverviewProps) => {
   const { currentChainId } = useCelatoneApp();
   const formatAddresses = useFormatAddresses();
@@ -81,12 +85,10 @@ export const EvmContractDetailsOverview = ({
         </Grid>
       </Stack>
       <AssetsSection address={contractAddress} onViewMore={onViewMoreAssets} />
-      <Stack gap={4}>
-        <Heading as="h6" variant="h6">
-          Transactions
-        </Heading>
-        <Text>Txs</Text>
-      </Stack>
+      <EvmContractDetailsTxs
+        address={contractAddress}
+        onViewMore={onViewMoreTxs}
+      />
     </Stack>
   );
 };
