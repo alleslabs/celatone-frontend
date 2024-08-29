@@ -1,8 +1,8 @@
 import axios from "axios";
 import * as uuid from "uuid";
 
+import type { JsonRpcResponse } from "../types/evm";
 import { zBatchJsonRpcResponse, zJsonRpcResponse } from "../types/evm";
-import type { JsonDataType } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 type JsonRpcParams = string | boolean;
@@ -64,7 +64,9 @@ export const requestBatchJsonRpc = (
         throw new Error(parsed.error.message);
       }
 
-      const parsedResults = new Array<JsonDataType>(requests.length);
+      const parsedResults = new Array<JsonRpcResponse["result"]>(
+        requests.length
+      );
       parsed.forEach((result) => {
         if (result.id !== null && typeof result.id === "number")
           parsedResults[result.id] = result.result;
