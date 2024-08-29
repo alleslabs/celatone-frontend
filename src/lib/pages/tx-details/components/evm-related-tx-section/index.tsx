@@ -41,7 +41,6 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
       <EvmRelatedField label="Method">
         <EvmMethodChip txInput={data.input} width={36} />
       </EvmRelatedField>
-
       <EvmRelatedField label="Sender">
         <ExplorerLink type="user_address" value={data.from} showCopyOnHover />
       </EvmRelatedField>
