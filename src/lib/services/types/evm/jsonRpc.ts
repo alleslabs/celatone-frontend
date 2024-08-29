@@ -4,7 +4,7 @@ import { zJsonDataType } from "lib/types";
 
 export const zJsonRpcResponse = z.object({
   jsonrpc: z.literal("2.0"),
-  id: z.union([z.string(), z.number()]).nullable(),
+  id: z.union([z.string(), z.number()]),
   result: zJsonDataType.optional(),
   error: z
     .object({

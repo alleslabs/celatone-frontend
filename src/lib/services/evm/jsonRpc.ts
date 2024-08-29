@@ -68,7 +68,7 @@ export const requestBatchJsonRpc = (
         requests.length
       );
       parsed.forEach((result) => {
-        if (result.id !== null && typeof result.id === "number")
+        if (typeof result.id === "number")
           parsedResults[result.id] = result.result;
       });
 
