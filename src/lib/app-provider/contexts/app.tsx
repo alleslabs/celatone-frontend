@@ -72,6 +72,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       if (!chainConfig) {
         setStates({
           ...DEFAULT_STATES,
+          currentChainId: newChainId,
           isHydrated: true,
         });
 
