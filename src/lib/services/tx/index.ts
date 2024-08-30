@@ -499,34 +499,18 @@ export const useTxsByBlockHeightSequencer = (height: number) => {
     chain: { bech32_prefix: prefix },
   } = useCurrentChain();
 
-  const { data, ...rest } = useInfiniteQuery(
+  return useQuery(
     [CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER, endpoint, height],
-    async ({ pageParam }) => {
-      const { txs, pagination } = await getTxsByBlockHeightSequencer(
-        endpoint,
-        height,
-        pageParam
-      );
+    async () => {
+      const txs = await getTxsByBlockHeightSequencer(endpoint, height);
 
-      return {
-        txs: txs.map<Transaction>((tx) => ({
-          ...tx,
-          sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
-        })),
-        pagination,
-      };
+      return txs.map<Transaction>((tx) => ({
+        ...tx,
+        sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+      }));
     },
-    {
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
-      refetchOnWindowFocus: false,
-      keepPreviousData: true,
-    }
+    { retry: 1, refetchOnWindowFocus: false }
   );
-
-  return {
-    data: data?.pages.flatMap((page) => page.txs),
-    ...rest,
-  };
 };
 
 export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: string) => {

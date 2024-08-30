@@ -11,6 +11,7 @@ export * from "./countMessages";
 export * from "./cw2";
 export * from "./date";
 export * from "./descriptionAndName";
+export * from "./evm";
 export * from "./executeTags";
 export * from "./extractActionValue";
 export * from "./extractMsgType";

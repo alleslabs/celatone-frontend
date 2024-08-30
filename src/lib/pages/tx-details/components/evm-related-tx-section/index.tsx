@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
@@ -62,7 +62,9 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
             showCopyOnHover
           />
         ) : (
-          "-"
+          <Text variant="body2" color="text.dark">
+            -
+          </Text>
         )}
       </EvmRelatedField>
     </>

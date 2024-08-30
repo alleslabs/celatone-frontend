@@ -1,4 +1,3 @@
-import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
 import { TableTitle, TransactionsTable } from "lib/components/table";
 import { useTxsByBlockHeightSequencer } from "lib/services/tx";
@@ -8,12 +7,11 @@ interface BlockTxsTableProps {
 }
 
 export const BlockTxsTableSequencer = ({ height }: BlockTxsTableProps) => {
-  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
-    useTxsByBlockHeightSequencer(height);
+  const { data, isLoading } = useTxsByBlockHeightSequencer(height);
 
   return (
     <>
-      <TableTitle title="Transactions" showCount={false} />
+      <TableTitle title="Transactions" count={data?.length} />
       <TransactionsTable
         transactions={data}
         isLoading={isLoading}
@@ -28,13 +26,6 @@ export const BlockTxsTableSequencer = ({ height }: BlockTxsTableProps) => {
         showRelations={false}
         showTimestamp={false}
       />
-      {hasNextPage && (
-        <LoadNext
-          text="Load more 10 blocks"
-          fetchNextPage={fetchNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-        />
-      )}
     </>
   );
 };
