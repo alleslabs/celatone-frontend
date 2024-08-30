@@ -30,9 +30,9 @@ export const useBaseApiRoute = (
     currentChainId,
   } = useCelatoneApp();
 
-  if (!chain || !currentChainId || !api)
+  if (!chain || !currentChainId)
     throw new Error(
-      "Error retrieving chain, api, or currentChainId from chain config."
+      "Error retrieving chain, or currentChainId from chain config."
     );
 
   switch (type) {

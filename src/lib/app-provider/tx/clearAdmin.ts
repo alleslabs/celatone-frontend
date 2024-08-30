@@ -1,3 +1,4 @@
+import { MsgClearAdmin } from "@initia/initia.js";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
@@ -11,6 +12,7 @@ import {
 import { trackTxSucceed } from "lib/amplitude";
 import { clearAdminTx } from "lib/app-fns/tx/clearAdmin";
 import type { BechAddr32 } from "lib/types";
+import { toEncodeObject } from "lib/utils";
 
 export interface ClearAdminStreamParams {
   onTxSucceed?: () => void;
@@ -36,9 +38,13 @@ export const useClearAdminTx = (contractAddress: BechAddr32) => {
 
       const clearAdminFee = fabricateFee(wasm.clearAdminGas);
 
+      const messages = toEncodeObject([
+        new MsgClearAdmin(address, contractAddress),
+      ]);
+
       return clearAdminTx({
         address,
-        contractAddress,
+        messages,
         fee: clearAdminFee,
         client,
         onTxSucceed: () => {

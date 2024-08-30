@@ -1,8 +1,13 @@
+import { useMemo } from "react";
+
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ModulesTable } from "lib/components/table";
 import { useModules } from "lib/services/move/module";
+import type { MoveVerifyInfoResponse } from "lib/services/types";
+import { useMoveVerifyInfos } from "lib/services/verification/move";
+import { mergeModulePath } from "lib/utils";
 
 export const RecentModulesTable = () => {
   const {
@@ -24,10 +29,32 @@ export const RecentModulesTable = () => {
     onSuccess: ({ total }) => setTotalData(total),
   });
 
+  const results = useMoveVerifyInfos(
+    data?.items.map((module) => ({
+      address: module.address,
+      moduleName: module.moduleName,
+    })) ?? [],
+    !!data
+  );
+
+  const moveVerifyInfos = useMemo(() => {
+    return results.reduce<Record<string, MoveVerifyInfoResponse>>(
+      (acc, result) => {
+        if (result.data)
+          acc[
+            mergeModulePath(result.data.moduleAddress, result.data.moduleName)
+          ] = result.data;
+        return acc;
+      },
+      {}
+    );
+  }, [results]);
+
   return (
     <>
       <ModulesTable
         modules={data?.items}
+        moveVerifyInfos={moveVerifyInfos}
         isLoading={isLoading}
         emptyState={
           error ? (

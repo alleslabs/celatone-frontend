@@ -15,6 +15,7 @@ export interface EmptyStateProps {
   alignItems?: FlexProps["alignItems"];
   textVariant?: TextProps["variant"];
   hasBorderTop?: boolean;
+  children?: React.ReactNode;
 }
 
 export const EmptyState = ({
@@ -28,6 +29,7 @@ export const EmptyState = ({
   alignItems = "center",
   textVariant = "body1",
   hasBorderTop = true,
+  children,
 }: EmptyStateProps) => (
   <Flex
     alignItems={alignItems}
@@ -57,5 +59,6 @@ export const EmptyState = ({
     >
       {message}
     </Text>
+    {children}
   </Flex>
 );

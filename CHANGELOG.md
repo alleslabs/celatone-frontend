@@ -35,13 +35,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v1.8.1
 
 ### Features
 
+- [#1103](https://github.com/alleslabs/celatone-frontend/pull/1103) Apply move verify badge to all places
+- [#1092](https://github.com/alleslabs/celatone-frontend/pull/1092) Add module verification badge and entry points
+- [#1096](https://github.com/alleslabs/celatone-frontend/pull/1096) My past module verifications with functionalities
+- [#1085](https://github.com/alleslabs/celatone-frontend/pull/1085) Add my module verification details
+- [#1087](https://github.com/alleslabs/celatone-frontend/pull/1087) Add modules verify page
+- [#1102](https://github.com/alleslabs/celatone-frontend/pull/1102) Support add local development chain lite version
+- [#1101](https://github.com/alleslabs/celatone-frontend/pull/1101) Add get all codes and contracts APIs
+
 ### Improvements
 
+- [#1095](https://github.com/alleslabs/celatone-frontend/pull/1095) Update native broadcast helper function to generic sign and broadcast function
+- [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
+
 ### Bug fixes
+
+- [#1119](https://github.com/alleslabs/celatone-frontend/pull/1119) Fix move verification bug bash
+- [#1115](https://github.com/alleslabs/celatone-frontend/pull/1115) Fix move reverify button
+- [#1108](https://github.com/alleslabs/celatone-frontend/pull/1108) Fix example dev config to initialocal
+- [#1107](https://github.com/alleslabs/celatone-frontend/pull/1107) Fix network states config
+- [#1100](https://github.com/alleslabs/celatone-frontend/pull/1100) Fix account modules spacing
+- [#1104](https://github.com/alleslabs/celatone-frontend/pull/1104) Fix pool asset card not taking full width
 
 ## v1.8.0
 
@@ -58,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1099](https://github.com/alleslabs/celatone-frontend/pull/1099) Remove dashboard API
 - [#1090](https://github.com/alleslabs/celatone-frontend/pull/1090) Change query page layout in mobile and adjust code snippet copy button
 - [#1080](https://github.com/alleslabs/celatone-frontend/pull/1080) Adjust color and remove accent color
 - [#1088](https://github.com/alleslabs/celatone-frontend/pull/1088) Remove userKey from network store and add test for it

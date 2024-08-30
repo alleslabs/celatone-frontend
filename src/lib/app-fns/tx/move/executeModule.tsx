@@ -12,7 +12,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
 import type { BechAddr20, TxResultRendering } from "lib/types";
-import { feeFromStr } from "lib/utils";
+import { feeFromStr, findAttr } from "lib/utils";
 
 interface ExecuteModuleTxParams {
   address: BechAddr20;
@@ -38,8 +38,7 @@ export const executeModuleTx = ({
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
-      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
-        .value;
+      const txFee = findAttr(txInfo.events, "tx", "fee");
       return {
         value: null,
         phase: TxStreamPhase.SUCCEED,

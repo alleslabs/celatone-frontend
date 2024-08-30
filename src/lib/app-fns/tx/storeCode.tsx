@@ -1,5 +1,5 @@
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import type { DeliverTxResponse, logs, StdFee } from "@cosmjs/stargate";
+import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
@@ -60,16 +60,9 @@ export const storeCodeTx = ({
       postFn: () => client.signAndBroadcast(address, messages, fee, memo),
     }),
     ({ value: txInfo }) => {
-      const mimicLog: logs.Log = {
-        msg_index: 0,
-        log: "",
-        events: txInfo.events,
-      };
-
-      const codeId = findAttr(mimicLog, "store_code", "code_id") ?? "0";
-      const codeHash = findAttr(mimicLog, "store_code", "code_checksum");
-      const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0]
-        .value;
+      const codeId = findAttr(txInfo.events, "store_code", "code_id") ?? "0";
+      const codeHash = findAttr(txInfo.events, "store_code", "code_checksum");
+      const txFee = findAttr(txInfo.events, "tx", "fee");
 
       onTxSucceed({
         codeId: parseInt(codeId, 10).toString(),

@@ -1,10 +1,12 @@
-import type { InstantiateResult } from "@cosmjs/cosmwasm-stargate";
-import type { Coin, StdFee } from "@cosmjs/stargate";
+import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
+import { Coins, MsgInstantiateContract } from "@initia/initia.js";
 import { useCallback } from "react";
 
 import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { instantiateContractTx } from "lib/app-fns/tx/instantiate";
+import type { BechAddr32, Coin } from "lib/types";
+import { libEncode, toEncodeObject } from "lib/utils";
 
 export interface InstantiateStreamParams {
   estimatedFee: StdFee | undefined;
@@ -13,7 +15,11 @@ export interface InstantiateStreamParams {
   label: string;
   admin: string;
   funds: Coin[];
-  onTxSucceed?: (txResult: InstantiateResult, contractLabel: string) => void;
+  onTxSucceed?: (
+    txResult: DeliverTxResponse,
+    contractLabel: string,
+    contractAddress: BechAddr32
+  ) => void;
   onTxFailed?: () => void;
 }
 
@@ -37,18 +43,26 @@ export const useInstantiateTx = () => {
         throw new Error("Please check your wallet connection.");
       if (!estimatedFee) return null;
 
+      const messages = toEncodeObject([
+        new MsgInstantiateContract(
+          address,
+          admin,
+          codeId,
+          label,
+          libEncode(JSON.stringify(initMsg)),
+          Coins.fromData(funds)
+        ),
+      ]);
+
       return instantiateContractTx({
         address,
-        codeId,
-        initMsg,
+        messages,
         label,
         fee: estimatedFee,
-        admin,
-        funds,
         client,
-        onTxSucceed: (txResult, contractLabel) => {
+        onTxSucceed: (txResult, contractLabel, contractAddress) => {
           trackTxSucceed();
-          onTxSucceed?.(txResult, contractLabel);
+          onTxSucceed?.(txResult, contractLabel, contractAddress);
         },
         onTxFailed,
       });

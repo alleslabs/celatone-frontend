@@ -44,7 +44,7 @@ export const UserContractDesc = ({
       maxW="100%"
       borderRadius="8px"
       p={4}
-      flex="1"
+      flex={1}
       role="group"
     >
       <Flex justify="space-between" align="center" h="32px">

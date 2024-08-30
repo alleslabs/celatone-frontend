@@ -27,6 +27,7 @@ export const ModuleLists = ({
   const [keyword, setKeyword] = useState("");
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
+
   return (
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
@@ -46,8 +47,6 @@ export const ModuleLists = ({
             direction="column"
             borderBottom={modules?.length ? "1px solid" : "0px"}
             borderBottomColor="gray.700"
-            mb={modules?.length ?? 12}
-            pb={modules?.length ?? 6}
           >
             {!onViewMore && (
               <InputWithIcon

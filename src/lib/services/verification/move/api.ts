@@ -46,7 +46,7 @@ export const getMoveVerifyInfo = async (
 
 export const getMoveVerifyInfosByAddress = async (
   address: Addr
-): Promise<Nullable<MoveVerifyInfosByAddressResponse>> =>
+): Promise<MoveVerifyInfosByAddressResponse> =>
   axios
     .get(`${INITIA_MOVE_VERIFIER}/contracts/${encodeURI(address)}`)
     .then(({ data }) =>

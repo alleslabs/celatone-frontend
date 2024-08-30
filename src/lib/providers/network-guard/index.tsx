@@ -9,8 +9,8 @@ import {
   useAccountStore,
   useCodeStore,
   useContractStore,
+  useMoveVerifyTaskStore,
   usePublicProjectStore,
-  useVerifyModuleTaskStore,
 } from "lib/providers/store";
 import { formatUserKey } from "lib/utils";
 
@@ -26,13 +26,14 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     currentChainId,
     chainConfig: { registryChainName },
   } = useCelatoneApp();
-  const { chainConfigs } = useChainConfigs();
+
+  const { chainConfigs, isLoading } = useChainConfigs();
   const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
   const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
   const { setContractUserKey, isContractUserKeyExist } = useContractStore();
   const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
-  const { setVerifyModuleTaskUserKey, isVerifyModuleTaskUserKeyExist } =
-    useVerifyModuleTaskStore();
+  const { setMoveVerifyTaskUserKey, isMoveVerifyTaskUserKeyExist } =
+    useMoveVerifyTaskStore();
 
   useEffect(() => {
     if (isHydrated) {
@@ -41,7 +42,7 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
       setCodeUserKey(userKey);
       setContractUserKey(userKey);
       setProjectUserKey(userKey);
-      setVerifyModuleTaskUserKey(userKey);
+      setMoveVerifyTaskUserKey(userKey);
     }
   }, [
     isHydrated,
@@ -50,21 +51,21 @@ export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
     setCodeUserKey,
     setContractUserKey,
     setProjectUserKey,
-    setVerifyModuleTaskUserKey,
+    setMoveVerifyTaskUserKey,
   ]);
 
-  if (isHydrated && !(currentChainId in chainConfigs))
-    return <NetworkErrorState />;
-
   if (
+    isLoading ||
     !isHydrated ||
     !isAccountUserKeyExist() ||
     !isCodeUserKeyExist() ||
     !isContractUserKeyExist() ||
     !isProjectUserKeyExist() ||
-    !isVerifyModuleTaskUserKeyExist()
+    !isMoveVerifyTaskUserKeyExist()
   )
     return <LoadingOverlay />;
+
+  if (!(currentChainId in chainConfigs)) return <NetworkErrorState />;
 
   return <>{children}</>;
 });

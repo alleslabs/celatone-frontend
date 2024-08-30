@@ -10,4 +10,7 @@ export interface ProjectConstants {
   maxContractNameLength: number;
   maxContractDescriptionLength: number;
   maxCodeNameLength: number;
+
+  // move verify task
+  maxMoveVerifyTaskRequestNoteLength: number;
 }
