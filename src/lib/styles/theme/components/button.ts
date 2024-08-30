@@ -260,7 +260,7 @@ export const Button: ComponentStyleConfig = {
     "ghost-error": generateStyle({
       basic: { color: "error.main" },
       disabled: { color: "error.light" },
-      hoverBg: errorDark,
+      hoverBg: "error.background",
       activeBg: "transparent",
     }),
     unstyled: {

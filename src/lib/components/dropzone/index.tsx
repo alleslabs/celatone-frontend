@@ -1,6 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
+import type { FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 
 import { UploadIcon } from "../icon";
@@ -8,17 +9,17 @@ import { AmpEvent, track } from "lib/amplitude";
 import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { big } from "lib/types";
 
-import type { DropzoneFileType } from "./config";
+import type { DropzoneConfig, DropzoneFileType } from "./config";
 import { DROPZONE_CONFIG } from "./config";
 
 interface DropZoneProps extends FlexProps {
-  setFile: (file: File) => void;
-  fileType: DropzoneFileType;
+  setFiles: (files: FileWithPath[]) => void;
+  fileType: DropzoneFileType[];
   error?: string;
 }
 
 export function DropZone({
-  setFile,
+  setFiles,
   fileType,
   error,
   ...componentProps
@@ -26,37 +27,62 @@ export function DropZone({
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   const onDrop = useCallback(
-    (file: File[]) => {
+    (files: FileWithPath[]) => {
       track(AmpEvent.USE_UPLOAD_FILE, { fileType });
-      setFile(file[0]);
+      setFiles(files);
     },
-    [fileType, setFile]
+    [fileType, setFiles]
   );
 
-  const config = DROPZONE_CONFIG[fileType];
+  const { accept, maxSize, selectedConfigs } = useMemo(() => {
+    const initialAccept: { [key: string]: string[] } = {
+      "application/octet-stream": [],
+      "application/json": [],
+    };
 
-  // Throwing error when wasm is disabled will cause the page to not redirect, so default value is assigned instead
-  const maxSize = (() => {
-    switch (fileType) {
-      case "schema":
-        return 10_000_000;
-      case "wasm":
-        return wasm.enabled ? wasm.storeCodeMaxFileSize : 0;
-      case "move":
-        return move.enabled ? move.moduleMaxFileSize : 0;
-      default:
-        return 0;
-    }
-  })();
+    const sizes: {
+      [key in DropzoneFileType]: number;
+    } = {
+      schema: 10_000_000,
+      move: 10_000_000,
+      wasm: wasm.enabled ? wasm.storeCodeMaxFileSize : 0,
+      mv: move.enabled ? move.moduleMaxFileSize : 0,
+      toml: 1_000_000,
+    };
+
+    const selectedSizes: number[] = [];
+
+    const selectedKeyConfigs: DropzoneConfig[] = [];
+
+    fileType.forEach((type) => {
+      const config = DROPZONE_CONFIG[type];
+      const { accept: typeAccept } = config;
+      const [acceptKey, acceptValue] = Object.entries(typeAccept)[0];
+
+      initialAccept[acceptKey] = [...initialAccept[acceptKey], ...acceptValue];
+
+      selectedSizes.push(sizes[type]);
+
+      selectedKeyConfigs.push(config);
+    });
+
+    return {
+      accept: initialAccept,
+      maxSize: Math.max(...selectedSizes),
+      selectedConfigs: selectedKeyConfigs,
+    };
+  }, [fileType, move, wasm]);
 
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     onDrop,
-    multiple: false,
-    accept: config.accept,
+    multiple: true,
+    accept,
     maxSize,
+    useFsAccessApi: false,
   });
 
-  const isError = Boolean(error || fileRejections.length > 0);
+  const isError =
+    Boolean(error || fileRejections.length > 0) && fileType.length === 1;
 
   return (
     <Flex direction="column">
@@ -74,7 +100,12 @@ export function DropZone({
         {...getRootProps()}
         {...componentProps}
       >
-        <input {...getInputProps()} />
+        <input
+          {...getInputProps({
+            dir: fileType.length > 1 ? "" : undefined,
+            webkitdirectory: fileType.length > 1 ? "true" : undefined,
+          })}
+        />
         <UploadIcon />
         <Flex my={2} gap={1}>
           <Text
@@ -87,16 +118,24 @@ export function DropZone({
             Click to upload
           </Text>
           <Text variant="body1">
-            or drag {config.text.prettyFileType} file here
+            {fileType.length > 1
+              ? "or drag folder here"
+              : `or drag ${selectedConfigs[0].text.prettyFileType} file here`}
           </Text>
         </Flex>
-        <Text variant="body2" color="text.dark">
-          {config.text.rawFileType} (max.{" "}
-          {fileType === "wasm"
-            ? `${maxSize / 1000}KB`
-            : `${big(maxSize).div(1_000_000).toPrecision(3)}MB`}
-          )
-        </Text>
+        {fileType.length > 1 ? (
+          <Text variant="body2" color="text.dark">
+            (max. {big(maxSize).div(1_000_000).toPrecision(3)}MB)
+          </Text>
+        ) : (
+          <Text variant="body2" color="text.dark">
+            {selectedConfigs[0].text.rawFileType} (max.{" "}
+            {selectedConfigs[0].text.rawFileType === ".wasm"
+              ? `${maxSize / 1000}KB`
+              : `${big(maxSize).div(1_000_000).toPrecision(3)}MB`}
+            )
+          </Text>
+        )}
       </Flex>
       {isError && (
         <Text variant="body3" color="error.main" mt={1}>

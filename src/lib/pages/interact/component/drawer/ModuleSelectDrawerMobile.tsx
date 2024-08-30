@@ -18,8 +18,9 @@ import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ModuleCard } from "lib/components/module";
 import { useModulesByAddress } from "lib/services/move/module";
+import { useMoveVerifyInfosByAddress } from "lib/services/verification/move";
 import type { BechAddr, HexAddr, IndexedModule, Option } from "lib/types";
-import { isHexWalletAddress } from "lib/utils";
+import { isHexWalletAddress, mergeModulePath } from "lib/utils";
 
 import { SelectFunctionSection, SelectModuleSection } from "./body";
 import { ModuleSelector } from "./selector";
@@ -52,6 +53,7 @@ export const ModuleSelectDrawerMobile = ({
 }: ModuleSelectDrawerMobileProps) => {
   const { convertHexWalletAddress, convertHexModuleAddress } =
     useConvertHexAddress();
+  const { data: moveVerifyInfos } = useMoveVerifyInfosByAddress(hexAddress);
 
   const [mode, setMode] = useState<DisplayMode>("input");
   const [selectedAddress, setSelectedAddress] = useState<SelectedAddress>({
@@ -172,9 +174,16 @@ export const ModuleSelectDrawerMobile = ({
                       </Button>
                     </Flex>
                     <ModuleCard
-                      selectedAddress={selectedAddress.address}
                       module={selectedModule}
                       selectedModule={selectedModule}
+                      moveVerifyInfo={
+                        moveVerifyInfos?.[
+                          mergeModulePath(
+                            selectedModule.address,
+                            selectedModule.moduleName
+                          )
+                        ]
+                      }
                       readOnly
                     />
                   </>

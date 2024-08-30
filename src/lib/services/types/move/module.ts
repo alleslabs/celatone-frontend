@@ -17,7 +17,12 @@ import {
   zRemark,
   zUtcDate,
 } from "lib/types";
-import { indexModuleAbi, parseTxHash, snakeToCamel } from "lib/utils";
+import {
+  indexModuleAbi,
+  parseTxHash,
+  sha256Hex,
+  snakeToCamel,
+} from "lib/utils";
 
 const zBaseModuleLcd = z.object({
   address: zHexAddr,
@@ -30,6 +35,7 @@ const zBaseModuleLcd = z.object({
 const zIndexedModuleLcd = zBaseModuleLcd.transform<IndexedModule>((val) => ({
   ...snakeToCamel(val),
   ...indexModuleAbi(val.abi),
+  digest: sha256Hex(Buffer.from(val.raw_bytes, "utf-8")),
 }));
 
 export const zModuleResponseLcd = z.object({
@@ -59,6 +65,7 @@ const zModulesResponseItem = z
     latest_updated: zUtcDate,
     is_republished: z.boolean(),
     is_verified: z.boolean(),
+    digest: z.string(),
   })
   .transform<ModuleInfo>(snakeToCamel);
 

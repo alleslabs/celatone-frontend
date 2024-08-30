@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import type { Dispatch, SetStateAction } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { AmpEvent, track, trackToModuleInteraction } from "lib/amplitude";
 import {
@@ -20,6 +20,7 @@ import { useOpenNewTab } from "lib/hooks";
 import { useModuleByAddressLcd } from "lib/services/move/module";
 import { useMoveVerifyInfo } from "lib/services/verification/move";
 import type { Addr, ExposedFunction, IndexedModule } from "lib/types";
+import { resolveMoveVerifyStatus } from "lib/utils";
 
 import {
   InteractionBodySection,
@@ -217,6 +218,11 @@ const InteractBody = ({
     },
   });
 
+  const moveVerifyStatus = useMemo(
+    () => resolveMoveVerifyStatus(module?.digest, verificationData?.digest),
+    [module?.digest, verificationData?.digest]
+  );
+
   useEffect(() => {
     if (!!address && !!moduleName) refetch();
     else {
@@ -380,7 +386,10 @@ const InteractBody = ({
         />
       )}
       <Box px={{ base: "16px", md: "48px" }}>
-        <ModuleSourceCode sourceCode={verificationData?.source} />
+        <ModuleSourceCode
+          verificationData={verificationData}
+          moveVerifyStatus={moveVerifyStatus}
+        />
       </Box>
     </>
   );

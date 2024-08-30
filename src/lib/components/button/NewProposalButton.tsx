@@ -31,7 +31,7 @@ export const NewProposalButton = () => {
       >
         Create New Proposal
       </MenuButton>
-      <MenuList>
+      <MenuList flexDirection="column">
         <Tooltip label="Coming soon!" hidden={!disableStoreCode}>
           <MenuItem
             isDisabled={disableStoreCode}

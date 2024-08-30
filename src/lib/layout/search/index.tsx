@@ -33,7 +33,7 @@ import { useEaster } from "lib/hooks";
 import type { SearchResult } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
 import type { Addr } from "lib/types";
-import { splitModule } from "lib/utils";
+import { splitModulePath } from "lib/utils";
 
 import { SearchResults } from "./SearchResults";
 import { SearchZeroState } from "./SearchZeroState";
@@ -102,7 +102,7 @@ export const SearchComponent = () => {
     (result?: SearchResult, isClick = false) => {
       const getQueryValue = () => {
         if (result?.type === "Module Path")
-          return splitModule(result.value) as [Addr, string];
+          return splitModulePath(result.value) as [Addr, string];
         if (result?.type === "NFT Address")
           return [result.metadata?.nft?.collectionAddress ?? "", result.value];
         return result?.value || keyword;

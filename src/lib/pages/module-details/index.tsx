@@ -1,15 +1,22 @@
+/* eslint-disable complexity */
 import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { isNull } from "lodash";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
-import { useInternalNavigate, useTierConfig } from "lib/app-provider";
+import {
+  useInitiaL1,
+  useInternalNavigate,
+  useTierConfig,
+} from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
+import { MoveVerifySection } from "lib/components/move-verify-section";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import { StatusMessageBox } from "lib/components/StatusMessageBox";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
@@ -18,7 +25,7 @@ import {
   useModuleTableCounts,
 } from "lib/services/move/module";
 import { useMoveVerifyInfo } from "lib/services/verification/move";
-import { truncate } from "lib/utils";
+import { resolveMoveVerifyStatus, truncate } from "lib/utils";
 
 import {
   ModuleActions,
@@ -49,6 +56,7 @@ const ModuleDetailsBody = ({
   const router = useRouter();
   const navigate = useInternalNavigate();
   const formatAddresses = useFormatAddresses();
+  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
   const { hex: vmAddress } = formatAddresses(address);
 
   const { isFullTier } = useTierConfig();
@@ -116,6 +124,11 @@ const ModuleDetailsBody = ({
     ? Object.values(TabIndex)
     : Object.values(TabIndex).filter((t) => t !== TabIndex.TxsHistories);
 
+  const moveVerifyStatus = useMemo(
+    () => resolveMoveVerifyStatus(data?.digest, verificationData?.digest),
+    [data?.digest, verificationData?.digest]
+  );
+
   if (isModuleLoading || isPublishInfoLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="module information" />;
 
@@ -128,7 +141,7 @@ const ModuleDetailsBody = ({
             : "Module Detail"
         }
       />
-      <ModuleTop moduleData={data} isVerified={Boolean(verificationData)} />
+      <ModuleTop moduleData={data} moveVerifyStatus={moveVerifyStatus} />
       <Tabs
         index={tabIndex.indexOf(currentTab)}
         isLazy
@@ -170,6 +183,12 @@ const ModuleDetailsBody = ({
         <TabPanels>
           <TabPanel p={0}>
             <Flex gap={6} flexDirection="column">
+              {isInitiaL1 && (
+                <StatusMessageBox
+                  borderColor="gray.100"
+                  content={<MoveVerifySection status={moveVerifyStatus} />}
+                />
+              )}
               <ModuleActions
                 viewFns={data.viewFunctions.length}
                 executeFns={data.executeFunctions.length}
@@ -194,6 +213,7 @@ const ModuleDetailsBody = ({
                 indexedModule={data}
                 modulePublishInfo={modulePublishInfo}
                 verificationData={verificationData}
+                moveVerifyStatus={moveVerifyStatus}
               />
               {isFullTier && (
                 <ModuleTables

@@ -5,7 +5,9 @@ import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
 import { EmptyState, ErrorFetching } from "lib/components/state";
+import { useMoveVerifyInfosByAddress } from "lib/services/verification/move";
 import type { BechAddr, IndexedModule, Option } from "lib/types";
+import { mergeModulePath } from "lib/utils";
 
 interface ModuleListsBodyProps {
   address: BechAddr;
@@ -22,6 +24,7 @@ export const ModuleListsBody = ({
   isLoading,
   onViewMore,
 }: ModuleListsBodyProps) => {
+  const { data: moveVerifyInfos } = useMoveVerifyInfosByAddress(address);
   const filteredModules = useMemo(() => {
     if (!keyword) return modules;
 
@@ -60,9 +63,11 @@ export const ModuleListsBody = ({
         (item) => (
           <ModuleCard
             key={item.moduleName}
-            selectedAddress={address}
             module={item}
             selectedModule={undefined}
+            moveVerifyInfo={
+              moveVerifyInfos?.[mergeModulePath(item.address, item.moduleName)]
+            }
           />
         )
       )}
