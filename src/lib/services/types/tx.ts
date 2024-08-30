@@ -12,8 +12,10 @@ import {
   MsgFurtherAction,
   zBechAddr,
   zCoin,
+  zHex,
   zHexAddr20,
   zHexBig,
+  zHexBool,
   zMessageResponse,
   zPagination,
   zPubkeyMulti,
@@ -389,7 +391,7 @@ export const zEvmTxHashByCosmosTxHashJsonRpc = z.string().transform((val) =>
 export const zTxJsonRpc = z.object({
   blockHash: z.string(),
   blockNumber: zHexBig,
-  from: z.string(),
+  from: zHexAddr20,
   gas: zHexBig,
   gasPrice: zHexBig,
   maxFeePerGas: zHexBig,
@@ -407,3 +409,25 @@ export const zTxJsonRpc = z.object({
   s: z.string(),
   yParity: z.string(),
 });
+
+export const zTxReceiptJsonRpc = z.object({
+  blockHash: z.string(),
+  blockNumber: zHexBig,
+  contractAddress: zHexAddr20.nullable(),
+  cumulativeGasUsed: zHexBig,
+  effectiveGasPrice: zHexBig,
+  from: zHexAddr20,
+  gasUsed: zHexBig,
+  logs: z.object({}).passthrough().array(),
+  logsBloom: zHex,
+  status: zHexBool,
+  to: zHexAddr20.nullable(),
+  transactionHash: z.string(),
+  transactionIndex: zHexBig,
+  type: z.string(), // TODO: convert to enum later
+});
+
+export const zTxDataJsonRpc = z
+  .tuple([zTxJsonRpc, zTxReceiptJsonRpc])
+  .transform(([tx, txReceipt]) => ({ tx, txReceipt }));
+export type TxDataJsonRpc = z.infer<typeof zTxDataJsonRpc>;
