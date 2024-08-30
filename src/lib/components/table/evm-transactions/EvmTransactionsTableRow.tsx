@@ -4,9 +4,10 @@ import { isUndefined } from "lodash";
 import { TableRow } from "../tableComponents";
 import { useInternalNavigate } from "lib/app-provider";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
+import { EvmToCell } from "lib/components/EvmToCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { TxDataJsonRpc } from "lib/services/types";
+import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 import type { AssetInfos, Option } from "lib/types";
 import {
   coinToTokenWithValue,
@@ -18,7 +19,7 @@ import {
 
 interface EvmTransactionsTableRowProps {
   templateColumns: string;
-  evmTransaction: TxDataJsonRpc;
+  evmTransaction: TxDataWithTimeStampJsonRpc;
   evmDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
 }
@@ -80,17 +81,10 @@ export const EvmTransactionsTableRow = ({
         <CustomIcon name="arrow-right" boxSize={5} color="gray.600" />
       </TableRow>
       <TableRow>
-        {evmTransaction.tx.to ? (
-          <ExplorerLink
-            value={evmTransaction.tx.to}
-            type="user_address"
-            showCopyOnHover
-          />
-        ) : (
-          <Text variant="body2" color="text.dark">
-            -
-          </Text>
-        )}
+        <EvmToCell
+          to={evmTransaction.tx.to}
+          contractAddress={evmTransaction.txReceipt.contractAddress}
+        />
       </TableRow>
       <TableRow flexDirection="column" alignItems="start">
         <Text variant="body2">

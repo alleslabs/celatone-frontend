@@ -3,7 +3,7 @@ import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
-import type { TxDataJsonRpc } from "lib/services/types";
+import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 import type { Option } from "lib/types";
 
 import { EvmTransactionsTableHeader } from "./EvmTransactionsTableHeader";
@@ -11,7 +11,7 @@ import { EvmTransactionsTableMobileCard } from "./EvmTransactionsTableMobileCard
 import { EvmTransactionsTableRow } from "./EvmTransactionsTableRow";
 
 interface EvmTransactionsTableProps {
-  evmTransactions: Option<TxDataJsonRpc[]>;
+  evmTransactions: Option<TxDataWithTimeStampJsonRpc[]>;
   isLoading: boolean;
   emptyState: JSX.Element;
 }
@@ -37,7 +37,7 @@ export const EvmTransactionsTable = ({
     "minmax(140px, 1fr)",
     "minmax(160px, 2fr)",
     "48px",
-    "minmax(160px, 2fr)",
+    "minmax(180px, 2fr)",
     "minmax(250px, 1fr)",
   ];
   const templateColumns: string = columns.join(" ");

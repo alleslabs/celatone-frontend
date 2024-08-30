@@ -15,6 +15,7 @@ export const EvmRelatedField = ({ label, children }: EvmRelatedFieldProps) => {
       direction={{ base: "row", xl: "column" }}
       align={{ base: "center", xl: "start" }}
       flex={1}
+      height="full"
     >
       <Text
         variant="body2"
@@ -24,7 +25,9 @@ export const EvmRelatedField = ({ label, children }: EvmRelatedFieldProps) => {
       >
         {label}
       </Text>
-      {children}
+      <Flex height="full" align="center">
+        {children}
+      </Flex>
     </Flex>
   );
 };

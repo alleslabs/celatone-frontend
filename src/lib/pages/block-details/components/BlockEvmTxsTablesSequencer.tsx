@@ -13,7 +13,7 @@ import { EmptyState } from "lib/components/state";
 import { EvmTransactionsTable, TransactionsTable } from "lib/components/table";
 import { useBlockDataJsonRpc } from "lib/services/block";
 import { useTxsByBlockHeightSequencer } from "lib/services/tx";
-import type { TxDataJsonRpc } from "lib/services/types";
+import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 
 const tableHeaderId = "blockTxsTables";
 
@@ -30,12 +30,21 @@ export const BlockEvmTxsTablesSequencer = ({
     useBlockDataJsonRpc(height);
 
   const evmTxs = useMemo(() => {
-    const txs: TxDataJsonRpc[] = [];
+    const txs: TxDataWithTimeStampJsonRpc[] = [];
+    // TODO: double check if order matches
     evmBlockData?.block.transactions.forEach((tx, index) => {
-      txs.push({ tx, txReceipt: evmBlockData?.blockReceipts[index] });
+      txs.push({
+        tx,
+        txReceipt: evmBlockData.blockReceipts[index],
+        timestamp: evmBlockData.block.timestamp,
+      });
     });
     return txs;
-  }, [evmBlockData?.block.transactions, evmBlockData?.blockReceipts]);
+  }, [
+    evmBlockData?.block.timestamp,
+    evmBlockData?.block.transactions,
+    evmBlockData?.blockReceipts,
+  ]);
 
   return (
     <Flex

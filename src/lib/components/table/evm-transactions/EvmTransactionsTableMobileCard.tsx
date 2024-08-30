@@ -5,9 +5,10 @@ import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
+import { EvmToCell } from "lib/components/EvmToCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { TxDataJsonRpc } from "lib/services/types";
+import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 import type { AssetInfos, Option } from "lib/types";
 import {
   coinToTokenWithValue,
@@ -18,7 +19,7 @@ import {
 } from "lib/utils";
 
 interface EvmTransactionsTableMobileCardProps {
-  evmTransaction: TxDataJsonRpc;
+  evmTransaction: TxDataWithTimeStampJsonRpc;
   evmDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
 }
@@ -76,17 +77,10 @@ export const EvmTransactionsTableMobileCard = ({
             </Flex>
             <Flex direction="column" flex={1}>
               <MobileLabel label="To" />
-              {evmTransaction.tx.to ? (
-                <ExplorerLink
-                  value={evmTransaction.tx.to}
-                  type="user_address"
-                  showCopyOnHover
-                />
-              ) : (
-                <Text variant="body2" color="text.dark">
-                  -
-                </Text>
-              )}
+              <EvmToCell
+                to={evmTransaction.tx.to}
+                contractAddress={evmTransaction.txReceipt.contractAddress}
+              />
             </Flex>
           </Flex>
           <Flex direction="column" mt={3}>
