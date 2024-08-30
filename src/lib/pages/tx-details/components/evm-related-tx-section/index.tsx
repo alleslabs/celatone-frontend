@@ -72,7 +72,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
 export const EvmRelatedTxSection = ({
   evmTxHash,
 }: EvmRelatedTxSectionProps) => (
-  <Flex direction="column" gap={4} mb={8} minW="330px">
+  <Flex direction="column" gap={4} mb={8} minW="fit-content">
     <Heading as="h6" variant="h6">
       Related EVM Transaction
     </Heading>
