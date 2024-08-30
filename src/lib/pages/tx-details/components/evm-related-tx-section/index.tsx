@@ -39,12 +39,12 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         />
       </EvmRelatedField>
       <EvmRelatedField label="Method">
-        <EvmMethodChip txInput={data[0].input} width={36} />
+        <EvmMethodChip txInput={data.tx.input} width={36} />
       </EvmRelatedField>
       <EvmRelatedField label="Sender">
         <ExplorerLink
           type="user_address"
-          value={data[0].from}
+          value={data.tx.from}
           showCopyOnHover
         />
       </EvmRelatedField>
@@ -55,10 +55,10 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         display={{ base: "none", xl: "block" }}
       />
       <EvmRelatedField label="To">
-        {data[0].to ? (
+        {data.tx.to ? (
           <ExplorerLink
             type="user_address"
-            value={data[0].to}
+            value={data.tx.to}
             showCopyOnHover
           />
         ) : (

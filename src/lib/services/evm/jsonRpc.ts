@@ -60,9 +60,6 @@ export const requestBatchJsonRpc = (
     )
     .then(({ data }) => {
       const parsed = parseWithError(zBatchJsonRpcResponse, data);
-      if (!Array.isArray(parsed)) {
-        throw new Error(parsed.error.message);
-      }
 
       const parsedResults = new Array<JsonRpcResponse["result"]>(
         requests.length

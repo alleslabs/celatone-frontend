@@ -15,15 +15,5 @@ export const zJsonRpcResponse = z.object({
 });
 export type JsonRpcResponse = z.infer<typeof zJsonRpcResponse>;
 
-export const zBatchJsonRpcResponse = z.union([
-  z.array(zJsonRpcResponse),
-  z.object({
-    jsonrpc: z.literal("2.0"),
-    error: z.object({
-      code: z.number(),
-      message: z.string(),
-    }),
-    id: z.null(),
-  }),
-]);
+export const zBatchJsonRpcResponse = z.array(zJsonRpcResponse);
 export type BatchJsonRpcResponse = z.infer<typeof zBatchJsonRpcResponse>;

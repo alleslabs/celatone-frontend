@@ -413,7 +413,7 @@ export const zTxJsonRpc = z.object({
 export const zTxReceiptJsonRpc = z.object({
   blockHash: z.string(),
   blockNumber: zHexBig,
-  contractAddress: z.string().nullable(),
+  contractAddress: zHexAddr20.nullable(),
   cumulativeGasUsed: zHexBig,
   effectiveGasPrice: zHexBig,
   from: zHexAddr20,
@@ -426,3 +426,8 @@ export const zTxReceiptJsonRpc = z.object({
   transactionIndex: zHexBig,
   type: z.string(), // TODO: convert to enum later
 });
+
+export const zTxDataJsonRpc = z
+  .tuple([zTxJsonRpc, zTxReceiptJsonRpc])
+  .transform(([tx, txReceipt]) => ({ tx, txReceipt }));
+export type TxDataJsonRpc = z.infer<typeof zTxDataJsonRpc>;
