@@ -17,11 +17,7 @@ import type { ProjectConstants } from "config/project";
 import { PROJECT_CONSTANTS } from "config/project";
 import { FALLBACK_THEME, getTheme } from "config/theme";
 import type { ThemeConfig } from "config/theme/types";
-import {
-  FALLBACK_SUPPORTED_CHAIN_ID,
-  HASURA_ADMIN_SECRET,
-  SUPPORTED_CHAIN_IDS,
-} from "env";
+import { HASURA_ADMIN_SECRET, SUPPORTED_CHAIN_IDS } from "env";
 import { changeFavicon } from "lib/utils";
 
 import { DEFAULT_CHAIN_CONFIG } from "./default";
@@ -44,7 +40,7 @@ interface AppContextInterface {
 const DEFAULT_STATES: AppContextInterface = {
   isHydrated: false,
   availableChainIds: SUPPORTED_CHAIN_IDS,
-  currentChainId: FALLBACK_SUPPORTED_CHAIN_ID,
+  currentChainId: "",
   chainConfig: DEFAULT_CHAIN_CONFIG,
   indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.graphql ?? "", {
     headers: {
