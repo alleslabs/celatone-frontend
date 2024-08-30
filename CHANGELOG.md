@@ -46,6 +46,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#1118](https://github.com/alleslabs/celatone-frontend/pull/1118) Implement base evm method chip
 - [#1117](https://github.com/alleslabs/celatone-frontend/pull/1117) Add JSON RPC request and get block data from JSON RPC
 - [#1105](https://github.com/alleslabs/celatone-frontend/pull/1105) Add base minievm branch with its sign mode and pubkey type
+
+### Improvements
+
+### Bug fixes
+
+## v1.8.1
+
+### Features
+
+- [#1103](https://github.com/alleslabs/celatone-frontend/pull/1103) Apply move verify badge to all places
+- [#1092](https://github.com/alleslabs/celatone-frontend/pull/1092) Add module verification badge and entry points
+- [#1096](https://github.com/alleslabs/celatone-frontend/pull/1096) My past module verifications with functionalities
+- [#1085](https://github.com/alleslabs/celatone-frontend/pull/1085) Add my module verification details
+- [#1087](https://github.com/alleslabs/celatone-frontend/pull/1087) Add modules verify page
 - [#1102](https://github.com/alleslabs/celatone-frontend/pull/1102) Support add local development chain lite version
 - [#1101](https://github.com/alleslabs/celatone-frontend/pull/1101) Add get all codes and contracts APIs
 
@@ -56,6 +70,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1119](https://github.com/alleslabs/celatone-frontend/pull/1119) Fix move verification bug bash
+- [#1115](https://github.com/alleslabs/celatone-frontend/pull/1115) Fix move reverify button
 - [#1108](https://github.com/alleslabs/celatone-frontend/pull/1108) Fix example dev config to initialocal
 - [#1107](https://github.com/alleslabs/celatone-frontend/pull/1107) Fix network states config
 - [#1100](https://github.com/alleslabs/celatone-frontend/pull/1100) Fix account modules spacing

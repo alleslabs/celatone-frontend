@@ -70,7 +70,7 @@ export function useLocalChainConfigStore() {
   return localChainConfigStore;
 }
 
-export function useVerifyModuleTaskStore() {
-  const { verifyModuleTaskStore } = useStore();
-  return verifyModuleTaskStore;
+export function useMoveVerifyTaskStore() {
+  const { moveVerifyTaskStore } = useStore();
+  return moveVerifyTaskStore;
 }

@@ -1,13 +1,27 @@
-import type { ColorProps, ComponentStyleConfig } from "@chakra-ui/react";
+import type {
+  BorderProps,
+  ColorProps,
+  ComponentStyleConfig,
+} from "@chakra-ui/react";
 
 const dupStyleKeys = ["title", "container", "description"];
 
 const generateVariantStyle = (
-  variant: "primary" | "success" | "warning" | "error" | "info"
+  variant:
+    | "primary"
+    | "secondary"
+    | "success"
+    | "warning"
+    | "error"
+    | "info"
+    | "info-left-secondary"
 ) => {
   let mainColor: ColorProps["color"];
   let bgColor: ColorProps["color"];
   let borderColor: ColorProps["color"];
+  let border: BorderProps["border"];
+  let borderLeft: BorderProps["borderLeft"];
+  let borderRadius: BorderProps["borderRadius"];
 
   switch (variant) {
     case "primary":
@@ -19,6 +33,12 @@ const generateVariantStyle = (
       mainColor = "gray.400";
       bgColor = "gray.800";
       borderColor = "gray.700";
+      break;
+    case "info-left-secondary":
+      bgColor = "background.main";
+      border = "0";
+      borderLeft = "3px solid";
+      borderRadius = "0";
       break;
     case "error":
     default:
@@ -32,9 +52,12 @@ const generateVariantStyle = (
       key,
       {
         color: mainColor,
+        border,
+        borderRadius,
         ...(key === "container" && {
           bg: bgColor,
           borderColor: borderColor || mainColor,
+          borderLeft,
         }),
       },
     ])
@@ -66,5 +89,6 @@ export const Alert: ComponentStyleConfig = {
     warning: generateVariantStyle("warning"),
     error: generateVariantStyle("error"),
     info: generateVariantStyle("info"),
+    "info-left-secondary": generateVariantStyle("info-left-secondary"),
   },
 };

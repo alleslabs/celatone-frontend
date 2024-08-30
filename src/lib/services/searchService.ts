@@ -16,7 +16,7 @@ import {
   isHexWalletAddress,
   isId,
   isPosDecimal,
-  splitModule,
+  splitModulePath,
 } from "lib/utils";
 
 import { useBlockData } from "./block";
@@ -154,7 +154,7 @@ export const useSearchHandler = (
   //                       Move
   /// /////////////////////////////////////////////////////
 
-  const [addr, moduleName, functionName] = splitModule(debouncedKeyword);
+  const [addr, moduleName, functionName] = splitModulePath(debouncedKeyword);
 
   const enableModuleFetching = useMemo(
     () =>

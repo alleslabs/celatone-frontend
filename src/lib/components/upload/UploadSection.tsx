@@ -101,8 +101,8 @@ export const UploadSection = ({
         />
       ) : (
         <DropZone
-          setFile={(file) => setValue("wasmFile", file)}
-          fileType="wasm"
+          setFiles={(files) => setValue("wasmFile", files[0])}
+          fileType={["wasm"]}
         />
       )}
       <CodeHashBox codeHash={codeHash} />
