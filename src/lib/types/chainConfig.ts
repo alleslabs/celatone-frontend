@@ -1,6 +1,19 @@
 import type { ChainConfig } from "@alleslabs/shared";
 import { z } from "zod";
 
+export const zHttpsUrl = z
+  .string()
+  .regex(/^(http|https):\/\/[^\s$.?#].[^\s]*$/, {
+    message: "Please enter a valid URL",
+  });
+
+export const zNumberInput = z.preprocess(
+  (val) => (val === "" ? null : Number(val)),
+  z.number({
+    invalid_type_error: " ",
+  })
+);
+
 const zFaucetConfig = z.union([
   z.object({
     enabled: z.literal(true),
@@ -70,37 +83,37 @@ const zExtraConfig = z.object({
   layer: z.union([z.literal("1"), z.literal("2")]).optional(),
 });
 
-const zFeeConfig = z.object({
-  fee_tokens: z
-    .object({
-      denom: z.string(),
-      fixed_min_gas_price: z.number().optional(),
-      low_gas_price: z.number().optional(),
-      average_gas_price: z.number().optional(),
-      high_gas_price: z.number().optional(),
-      gas_costs: z
-        .object({
-          cosmos_send: z.number().optional(),
-          ibc_transfer: z.number().optional(),
-        })
-        .optional(),
-    })
-    .array(),
+export const zGasCosts = z.object({
+  cosmos_send: z.number().optional(),
+  ibc_transfer: z.number().optional(),
 });
 
-const zAsset = z.object({
+export const zFeeToken = z.object({
+  denom: z.string(),
+  fixed_min_gas_price: z.number().optional(),
+  low_gas_price: z.number().optional(),
+  average_gas_price: z.number().optional(),
+  high_gas_price: z.number().optional(),
+  gas_costs: zGasCosts.optional(),
+});
+
+const zFeeConfig = z.object({
+  fee_tokens: zFeeToken.array(),
+});
+
+export const zDenomUnit = z.object({
+  denom: z.string(),
+  exponent: zNumberInput,
+  aliases: z.string().array().optional(),
+});
+
+export const zAsset = z.object({
   deprecated: z.boolean().optional(),
   description: z.string().optional(),
   extended_description: z.string().optional(),
   type_asset: z.string().optional(),
   address: z.string().optional(),
-  denom_units: z
-    .object({
-      denom: z.string(),
-      exponent: z.number(),
-      aliases: z.string().array().optional(),
-    })
-    .array(),
+  denom_units: zDenomUnit.array(),
   base: z.string(),
   name: z.string(),
   display: z.string(),
@@ -144,7 +157,7 @@ const zAsset = z.object({
   keywords: z.string().array().optional(),
 });
 
-const zRegistry = z.object({
+export const zRegistry = z.object({
   bech32_prefix: z.string(),
   slip44: z.number(),
   staking: z.object({
@@ -163,6 +176,11 @@ const zRegistry = z.object({
   assets: zAsset.array(),
 });
 
+export const zGas = z.object({
+  gasAdjustment: zNumberInput,
+  maxGasLimit: zNumberInput,
+});
+
 export const zApiChainConfig = z
   .object({
     tier: z.union([
@@ -175,10 +193,10 @@ export const zApiChainConfig = z
     chain: z.string(),
     registryChainName: z.string(),
     prettyName: z.string(),
-    rpc: z.string(),
-    lcd: z.string(),
-    mesa: z.string().optional(),
-    graphql: z.string().optional(),
+    rpc: zHttpsUrl,
+    lcd: zHttpsUrl,
+    mesa: zHttpsUrl.optional(),
+    graphql: zHttpsUrl.optional(),
     wallets: z.array(
       z.union([
         z.literal("keplr"),
@@ -196,10 +214,7 @@ export const zApiChainConfig = z
       publicProject: zPublicProjectConfig,
       wasm: zWasmConfig,
     }),
-    gas: z.object({
-      gasAdjustment: z.number(),
-      maxGasLimit: z.number(),
-    }),
+    gas: zGas,
     extra: zExtraConfig,
     network_type: z.union([
       z.literal("mainnet"),

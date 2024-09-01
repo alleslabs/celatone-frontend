@@ -64,7 +64,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           subtitle="Enter the Minitia’s general information and gather data touch points"
         />
         <ControllerInput
-          name="networkName"
+          name="prettyName"
           control={control}
           label="Minitia Name"
           variant="fixed-floating"
@@ -73,10 +73,10 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           rules={{
             required: "",
           }}
-          error={errors.networkName?.message}
+          error={errors.prettyName?.message}
         />
         <ControllerInput
-          name="lcdUrl"
+          name="lcd"
           control={control}
           label="Minitia LCD URL"
           variant="fixed-floating"
@@ -85,10 +85,10 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           rules={{
             required: "",
           }}
-          error={errors.lcdUrl?.message}
+          error={errors.lcd?.message}
         />
         <ControllerInput
-          name="rpcUrl"
+          name="rpc"
           control={control}
           label="Minitia RPC URL"
           variant="fixed-floating"
@@ -97,7 +97,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           rules={{
             required: "",
           }}
-          error={errors.rpcUrl?.message}
+          error={errors.rpc?.message}
         />
         <Flex gap={6}>
           <ControllerInput
