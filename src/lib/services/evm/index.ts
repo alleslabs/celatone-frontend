@@ -33,7 +33,7 @@ export const useEvmCodesByAddress = (address: HexAddr20) => {
   const lcdEndpoint = useLcdEndpoint();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.EVM_CODES_BY_ADDRESS, lcdEndpoint],
+    [CELATONE_QUERY_KEYS.EVM_CODES_BY_ADDRESS_LCD, lcdEndpoint],
     async () => getEvmCodesByAddress(lcdEndpoint, address),
     {
       retry: 1,

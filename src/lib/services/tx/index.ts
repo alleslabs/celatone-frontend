@@ -513,7 +513,7 @@ export const useTxsByBlockHeightSequencer = (height: number) => {
   );
 };
 
-export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: string) => {
+export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
   return useQuery(
@@ -525,13 +525,17 @@ export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: string) => {
     async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useEvmTxHashByCosmosTxHash)");
+      if (!cosmosTxHash)
+        throw new Error(
+          "cosmosTxHash is undefined (useEvmTxHashByCosmosTxHash)"
+        );
 
       return getEvmTxHashByCosmosTxHash(evm.jsonRpc, cosmosTxHash);
     },
     {
       retry: false,
       refetchOnWindowFocus: false,
-      enabled: evm.enabled && !!evm.jsonRpc,
+      enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHash,
     }
   );
 };

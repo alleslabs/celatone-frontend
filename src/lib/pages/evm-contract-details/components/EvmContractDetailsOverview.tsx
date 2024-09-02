@@ -1,18 +1,19 @@
-import { Grid, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
+import { Flex, Grid, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
 
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { AssetsSection } from "lib/components/asset";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import type { BechAddr, BechAddr20, Option } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import type { BechAddr, BechAddr20, Nullish, Option } from "lib/types";
+import { dateFromNow, formatEvmTxHash, formatUTC } from "lib/utils";
 
 import { EvmContractDetailsTxs } from "./EvmContractDetailsTxs";
 
 interface EvmContractDetailsOverviewProps {
   contractAddress: BechAddr20;
   hash: Option<string>;
+  evmHash: Nullish<string>;
   sender: Option<BechAddr>;
   created: Option<Date>;
   isContractInfoLoading: boolean;
@@ -23,6 +24,7 @@ interface EvmContractDetailsOverviewProps {
 export const EvmContractDetailsOverview = ({
   contractAddress,
   hash,
+  evmHash,
   sender,
   created,
   isContractInfoLoading,
@@ -40,7 +42,10 @@ export const EvmContractDetailsOverview = ({
           Contract Info
         </Heading>
         <Grid
-          gridTemplateColumns={{ base: "1fr", md: "160px 240px 1fr" }}
+          gridTemplateColumns={{
+            base: "1fr",
+            md: "minmax(0, 160px) repeat(3, minmax(0, 240px))",
+          }}
           padding={4}
           border="1px solid"
           borderColor="gray.700"
@@ -63,7 +68,9 @@ export const EvmContractDetailsOverview = ({
                     type="user_address"
                   />
                 ) : (
-                  "-"
+                  <Text variant="body2" color="text.disabled">
+                    -
+                  </Text>
                 )}
               </>
             )}
@@ -72,9 +79,43 @@ export const EvmContractDetailsOverview = ({
             {isContractInfoLoading ? (
               <Spinner boxSize={4} />
             ) : (
-              <Stack gap={1}>
-                {hash ? <ExplorerLink value={hash} type="tx_hash" /> : "-"}
-                {created && (
+              <Stack gap={0}>
+                <Flex gap={1} alignItems="center">
+                  <Text variant="body2" color="text.dark">
+                    Cosmos:
+                  </Text>
+                  {hash ? (
+                    <ExplorerLink value={hash} type="tx_hash" />
+                  ) : (
+                    <Text variant="body2" color="text.disabled">
+                      -
+                    </Text>
+                  )}
+                </Flex>
+                <Flex gap={1} alignItems="center">
+                  <Text variant="body2" color="text.dark">
+                    EVM:
+                  </Text>
+                  {evmHash ? (
+                    <ExplorerLink
+                      value={formatEvmTxHash(evmHash)}
+                      type="tx_hash"
+                    />
+                  ) : (
+                    <Text variant="body2" color="text.disabled">
+                      -
+                    </Text>
+                  )}
+                </Flex>
+              </Stack>
+            )}
+          </LabelText>
+          <LabelText label="Created Time">
+            {isContractInfoLoading ? (
+              <Spinner boxSize={4} />
+            ) : (
+              <>
+                {created ? (
                   <>
                     <Text variant="body2" color="text.dark">
                       {formatUTC(created)}
@@ -83,8 +124,12 @@ export const EvmContractDetailsOverview = ({
                       ({dateFromNow(created)})
                     </Text>
                   </>
+                ) : (
+                  <Text variant="body2" color="text.disabled">
+                    -
+                  </Text>
                 )}
-              </Stack>
+              </>
             )}
           </LabelText>
         </Grid>
