@@ -16,7 +16,11 @@ export const EvmContractDetailsTop = ({
   const { convertHexWalletAddress } = useConvertHexAddress();
 
   return (
-    <Flex justifyContent="space-between">
+    <Flex
+      flexDirection={{ md: "row", base: "column" }}
+      justifyContent="space-between"
+      gap={4}
+    >
       <Stack gap={4}>
         <Flex gap={2} align="center">
           <CustomIcon
@@ -28,7 +32,7 @@ export const EvmContractDetailsTop = ({
             Contract Details
           </Heading>
         </Flex>
-        <Flex gap={2}>
+        <Flex columnGap={2} flexDirection={{ md: "row", base: "column" }}>
           <Text variant="body2" fontWeight={500} color="text.dark">
             Contract Address:
           </Text>
