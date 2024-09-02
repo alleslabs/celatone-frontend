@@ -28,6 +28,7 @@ import {
   useEvmCodesByAddress,
   useEvmContractInfoSequencer,
 } from "lib/services/evm";
+import { useEvmTxHashByCosmosTxHash } from "lib/services/tx";
 import type { HexAddr20 } from "lib/types";
 import { is0x, isHexWalletAddress, truncate } from "lib/utils";
 
@@ -53,13 +54,13 @@ const EvmContractDetailsBody = ({
   const { convertHexWalletAddress } = useConvertHexAddress();
   const contractAddressBechAddr = convertHexWalletAddress(contractAddress);
 
-  const {
-    data: evmCodesByAddressData,
-    isLoading: isEvmCodesByAddressLoading,
-    isError: isEvmCodesByAddressError,
-  } = useEvmCodesByAddress(contractAddress);
+  const { data: evmCodesByAddressData, isLoading: isEvmCodesByAddressLoading } =
+    useEvmCodesByAddress(contractAddress);
   const { data: evmContractInfoData, isLoading: isEvmContractInfoLoading } =
     useEvmContractInfoSequencer(contractAddress);
+  const { data: evmHash } = useEvmTxHashByCosmosTxHash(
+    evmContractInfoData?.hash
+  );
 
   const { totalData: totalAssets = 0 } = useBalanceInfos(
     contractAddressBechAddr
@@ -84,12 +85,9 @@ const EvmContractDetailsBody = ({
   );
 
   if (isEvmCodesByAddressLoading) return <Loading />;
-  if (
-    isEvmCodesByAddressError ||
-    !evmCodesByAddressData ||
-    is0x(evmCodesByAddressData.code)
-  )
+  if (!evmCodesByAddressData)
     return <ErrorFetching dataName="evm contract information" />;
+  if (is0x(evmCodesByAddressData.code)) return <InvalidContract />;
 
   return (
     <>
@@ -128,6 +126,7 @@ const EvmContractDetailsBody = ({
               <EvmContractDetailsOverview
                 contractAddress={contractAddressBechAddr}
                 hash={evmContractInfoData?.hash}
+                evmHash={evmHash}
                 sender={evmContractInfoData?.sender}
                 created={evmContractInfoData?.created}
                 isContractInfoLoading={isEvmContractInfoLoading}
@@ -164,7 +163,7 @@ export const EvmContractDetails = () => {
 
   useEffect(() => {
     if (router.isReady && validated.success)
-      track(AmpEvent.TO_CONTRACT_DETAILS, { tab: validated.data.tab });
+      track(AmpEvent.TO_EVM_CONTRACT_DETAILS, { tab: validated.data.tab });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 

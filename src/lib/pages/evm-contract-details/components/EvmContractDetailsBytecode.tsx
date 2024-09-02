@@ -33,7 +33,7 @@ export const EvmContractDetailsBytecode = ({
   return isMobile ? (
     <Stack gap={4}>
       <Heading as="h6" variant="h6">
-        Bytecodes
+        Bytecode
       </Heading>
       <TextReadOnly text={code} canCopy />
     </Stack>
