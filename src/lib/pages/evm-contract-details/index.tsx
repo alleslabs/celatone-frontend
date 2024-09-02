@@ -1,12 +1,5 @@
 import { track } from "@amplitude/analytics-browser";
-import {
-  Divider,
-  Stack,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/react";
+import { Stack, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 
@@ -22,7 +15,6 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
-import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useBalanceInfos } from "lib/services/bank";
 import {
   useEvmCodesByAddress,
@@ -137,15 +129,7 @@ const EvmContractDetailsBody = ({
               <EvmContractDetailsBytecode code={evmCodesByAddressData.code} />
             </TabPanel>
             <TabPanel p={0}>
-              <Stack>
-                <AssetsSection address={contractAddressBechAddr} />
-                <Divider />
-                <UserDocsLink
-                  title="What is Assets?"
-                  cta="Read more about Assets"
-                  href="cosmwasm/contracts/detail-page#assets"
-                />
-              </Stack>
+              <AssetsSection address={contractAddressBechAddr} />
             </TabPanel>
             <TabPanel p={0}>Transactions</TabPanel>
           </TabPanels>
