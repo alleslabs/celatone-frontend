@@ -62,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1126](https://github.com/alleslabs/celatone-frontend/pull/1126) Fix tx message detail alignment in small screen
 - [#1119](https://github.com/alleslabs/celatone-frontend/pull/1119) Fix move verification bug bash
 - [#1115](https://github.com/alleslabs/celatone-frontend/pull/1115) Fix move reverify button
 - [#1108](https://github.com/alleslabs/celatone-frontend/pull/1108) Fix example dev config to initialocal
