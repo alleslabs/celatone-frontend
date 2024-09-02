@@ -19,6 +19,9 @@ export enum VmType {
   WASM = "wasm",
 }
 
+const isAlphabetNumberAndSpecialCharacters = (str: string) =>
+  /^[a-z0-9/:._-]+$/.test(str);
+
 const mustBeAlphabetNumberAndSpecialCharacters =
   "Must be alphabet (a-z), numbers (0-9), or these special characters: “/”, “:”, “.”, “_”, “-”";
 
@@ -125,7 +128,7 @@ const gasFeeDetailsFormValidator = (val: GasFeeDetails, ctx: RefinementCtx) => {
     gasPrice,
   } = val;
 
-  if (!/^[a-z0-9/:._-]+$/.test(denom))
+  if (!isAlphabetNumberAndSpecialCharacters(denom))
     ctx.addIssue({
       code: ZodIssueCode.custom,
       message: mustBeAlphabetNumberAndSpecialCharacters,
@@ -182,7 +185,7 @@ const zWalletRegistryAssetDenom = zDenomUnit
   .superRefine((val, ctx) => {
     const { denom, exponent } = val;
 
-    if (!/^[a-z0-9/:._-]+$/.test(denom))
+    if (!isAlphabetNumberAndSpecialCharacters(denom))
       ctx.addIssue({
         code: ZodIssueCode.custom,
         message: mustBeAlphabetNumberAndSpecialCharacters,
@@ -218,7 +221,7 @@ const zWalletRegistryAsset = zAsset
         path: ["name"],
       });
 
-    if (!/^[a-z0-9/:._-]+$/.test(base))
+    if (!isAlphabetNumberAndSpecialCharacters(base))
       ctx.addIssue({
         code: ZodIssueCode.custom,
         message: mustBeAlphabetNumberAndSpecialCharacters,
