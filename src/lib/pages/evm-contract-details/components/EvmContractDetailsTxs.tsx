@@ -15,6 +15,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
 import { TransactionsTable, ViewMore } from "lib/components/table";
+import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxsByAddressSequencer } from "lib/services/tx";
 import type { BechAddr20 } from "lib/types";
 
@@ -101,6 +102,12 @@ export const EvmContractDetailsTxs = ({
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <UserDocsLink
+        mt={0}
+        title="What is transactions related to the contract?"
+        cta="Read more about Transactions"
+        href="cosmwasm/contracts/detail-page#transactions-and-histories"
+      />
     </Stack>
   );
 };
