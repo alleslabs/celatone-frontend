@@ -375,6 +375,7 @@ export const zAddNetworkManualChainConfigJson = ({
                 moduleMaxFileSize: 1_048_576,
               }
             : { enabled: false },
+        evm: { enabled: false },
         pool: {
           enabled: false,
         },

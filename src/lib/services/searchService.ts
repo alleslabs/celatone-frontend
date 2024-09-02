@@ -84,8 +84,9 @@ export const useSearchHandler = (
       features: {
         gov: { enabled: isGov },
         wasm: { enabled: isWasm },
-        pool: { enabled: isPool },
         move: { enabled: isMove },
+        evm: { enabled: isEvm },
+        pool: { enabled: isPool },
         nft: { enabled: isNft },
       },
     },
@@ -106,12 +107,16 @@ export const useSearchHandler = (
   //                      Account
   /// /////////////////////////////////////////////////////
   const addressType = getAddressType(debouncedKeyword);
+  const isMoveHexAddr =
+    isMove &&
+    (isHexWalletAddress(debouncedKeyword) ||
+      isHexModuleAddress(debouncedKeyword));
+  const isEvmHexAddr = isEvm && isHexWalletAddress(debouncedKeyword);
   const isAddr =
     addressType === "user_address" ||
     addressType === "contract_address" ||
-    (isMove &&
-      (isHexWalletAddress(debouncedKeyword) ||
-        isHexModuleAddress(debouncedKeyword)));
+    isMoveHexAddr ||
+    isEvmHexAddr;
 
   // ICNS
   const { data: icnsAddrByKeyword, isFetching: icnsAddrByKeywordFetching } =

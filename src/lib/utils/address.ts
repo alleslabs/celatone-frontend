@@ -1,4 +1,4 @@
-import { Ripemd160, sha256 } from "@cosmjs/crypto";
+import { keccak256, Ripemd160, Secp256k1, sha256 } from "@cosmjs/crypto";
 import {
   fromBase64,
   fromBech32,
@@ -66,6 +66,15 @@ export const convertAccountPubkeyToAccountAddress = (
   if (firstAccountPubkey["@type"] === "/cosmos.crypto.secp256k1.PubKey") {
     const pubkey = fromBase64(firstAccountPubkey.key);
     const data = new Ripemd160().update(sha256(pubkey)).digest();
+    return zBechAddr20.parse(toBech32(prefix, data));
+  }
+
+  if (
+    firstAccountPubkey["@type"] === "/initia.crypto.v1beta1.ethsecp256k1.PubKey"
+  ) {
+    const pubkey = fromBase64(firstAccountPubkey.key);
+    const uncompressedPubkey = Secp256k1.uncompressPubkey(pubkey);
+    const data = keccak256(uncompressedPubkey.slice(1)).slice(12);
     return zBechAddr20.parse(toBech32(prefix, data));
   }
 

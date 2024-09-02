@@ -39,6 +39,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1123](https://github.com/alleslabs/celatone-frontend/pull/1123) Implement block EVM tx list
+- [#1122](https://github.com/alleslabs/celatone-frontend/pull/1122) Support batch json rpc requests
+- [#1113](https://github.com/alleslabs/celatone-frontend/pull/1113) Add message EVM tag to transaction lists and details
+- [#1121](https://github.com/alleslabs/celatone-frontend/pull/1121) Add EVM related tx section on the cosmos tx details page
+- [#1111](https://github.com/alleslabs/celatone-frontend/pull/1111) Support basic EVM account details and saved account
+- [#1118](https://github.com/alleslabs/celatone-frontend/pull/1118) Implement base evm method chip
+- [#1117](https://github.com/alleslabs/celatone-frontend/pull/1117) Add JSON RPC request and get block data from JSON RPC
+- [#1105](https://github.com/alleslabs/celatone-frontend/pull/1105) Add base minievm branch with its sign mode and pubkey type
+
+### Improvements
+
+### Bug fixes
+
+## v1.8.1
+
+### Features
+
 - [#1103](https://github.com/alleslabs/celatone-frontend/pull/1103) Apply move verify badge to all places
 - [#1092](https://github.com/alleslabs/celatone-frontend/pull/1092) Add module verification badge and entry points
 - [#1096](https://github.com/alleslabs/celatone-frontend/pull/1096) My past module verifications with functionalities

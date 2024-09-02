@@ -17,6 +17,7 @@ interface NetworkMenuBodyProps {
   filteredPinnedChains: string[];
   filteredMainnetChains: string[];
   filteredTestnetChains: string[];
+  filteredDevnetChains: string[];
   filteredLocalChains: string[];
   onClose: () => void;
 }
@@ -28,6 +29,7 @@ export const NetworkMenuBody = observer(
     filteredPinnedChains,
     filteredMainnetChains,
     filteredTestnetChains,
+    filteredDevnetChains,
     filteredLocalChains,
     onClose,
   }: NetworkMenuBodyProps) => {
@@ -76,6 +78,21 @@ export const NetworkMenuBody = observer(
               }
               onClose={onClose}
             />
+            {!!filteredDevnetChains.length && (
+              <Divider borderColor="gray.700" />
+            )}
+            <NetworkAccordion
+              title="Devnet"
+              networks={filteredDevnetChains}
+              cursor={cursor}
+              setCursor={setCursor}
+              startIndex={
+                filteredPinnedChains.length +
+                filteredMainnetChains.length +
+                filteredTestnetChains.length
+              }
+              onClose={onClose}
+            />
             {isAllowCustomNetworks && (
               <>
                 <Divider borderColor="gray.700" />
@@ -86,7 +103,8 @@ export const NetworkMenuBody = observer(
                   startIndex={
                     filteredPinnedChains.length +
                     filteredMainnetChains.length +
-                    filteredTestnetChains.length
+                    filteredTestnetChains.length +
+                    filteredDevnetChains.length
                   }
                   onClose={onClose}
                 />

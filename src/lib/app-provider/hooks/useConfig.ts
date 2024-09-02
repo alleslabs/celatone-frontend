@@ -80,6 +80,20 @@ export const useMoveConfig = ({
   return useBaseConfig({ feature: move, shouldRedirect });
 };
 
+export const useEvmConfig = ({
+  shouldRedirect,
+}: {
+  shouldRedirect: boolean;
+}) => {
+  const {
+    chainConfig: {
+      features: { evm },
+    },
+  } = useCelatoneApp();
+
+  return useBaseConfig({ feature: evm, shouldRedirect });
+};
+
 export const useNftConfig = ({
   shouldRedirect,
 }: {
