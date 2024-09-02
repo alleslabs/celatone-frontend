@@ -54,6 +54,13 @@ const networkDetailsFormValidator = (
   const { prettyName, chainId, registryChainName } = val;
   const { isChainIdExist, isPrettyNameExist } = validateExistingChain;
 
+  if (prettyName === "")
+    ctx.addIssue({
+      code: ZodIssueCode.custom,
+      message: " ",
+      path: ["prettyName"],
+    });
+
   if (prettyName.length > 50)
     ctx.addIssue({
       code: ZodIssueCode.custom,
@@ -66,6 +73,13 @@ const networkDetailsFormValidator = (
       code: ZodIssueCode.custom,
       message: "This name is already used. Please specify other name.",
       path: ["prettyName"],
+    });
+
+  if (chainId === "")
+    ctx.addIssue({
+      code: ZodIssueCode.custom,
+      message: " ",
+      path: ["chainId"],
     });
 
   if (isChainIdExist(chainId))
@@ -132,6 +146,7 @@ const gasFeeDetailsFormValidator = (val: GasFeeDetails, ctx: RefinementCtx) => {
     ctx.addIssue({
       code: ZodIssueCode.custom,
       message: mustBeAlphabetNumberAndSpecialCharacters,
+      path: ["denom"],
     });
 
   if (gasConfig === "custom") {

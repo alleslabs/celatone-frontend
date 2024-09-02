@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const zHttpsUrl = z
   .string()
+  .trim()
   .regex(/^(http|https):\/\/[^\s$.?#].[^\s]*$/, {
     message: "Please enter a valid URL",
   });
@@ -89,7 +90,7 @@ export const zGasCosts = z.object({
 });
 
 export const zFeeToken = z.object({
-  denom: z.string(),
+  denom: z.string().trim(),
   fixed_min_gas_price: z.number().optional(),
   low_gas_price: z.number().optional(),
   average_gas_price: z.number().optional(),
@@ -102,7 +103,7 @@ const zFeeConfig = z.object({
 });
 
 export const zDenomUnit = z.object({
-  denom: z.string(),
+  denom: z.string().trim(),
   exponent: zNumberInput,
   aliases: z.string().array().optional(),
 });
@@ -114,10 +115,10 @@ export const zAsset = z.object({
   type_asset: z.string().optional(),
   address: z.string().optional(),
   denom_units: zDenomUnit.array(),
-  base: z.string(),
-  name: z.string(),
+  base: z.string().trim(),
+  name: z.string().trim(),
   display: z.string(),
-  symbol: z.string(),
+  symbol: z.string().trim(),
   logo_URIs: z
     .object({
       image_sync: z
@@ -189,10 +190,10 @@ export const zChainConfig = z
       z.literal("mesa"),
       z.literal("lite"),
     ]),
-    chainId: z.string(),
+    chainId: z.string().trim(),
     chain: z.string(),
-    registryChainName: z.string(),
-    prettyName: z.string(),
+    registryChainName: z.string().trim(),
+    prettyName: z.string().trim(),
     rpc: zHttpsUrl,
     lcd: zHttpsUrl,
     mesa: zHttpsUrl.optional(),
