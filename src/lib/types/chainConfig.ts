@@ -181,7 +181,7 @@ export const zGas = z.object({
   maxGasLimit: zNumberInput,
 });
 
-export const zApiChainConfig = z
+export const zChainConfig = z
   .object({
     tier: z.union([
       z.literal("full"),

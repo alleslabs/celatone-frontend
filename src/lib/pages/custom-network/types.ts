@@ -3,8 +3,8 @@ import type { RefinementCtx } from "zod";
 import { z, ZodIssueCode } from "zod";
 
 import {
-  zApiChainConfig,
   zAsset,
+  zChainConfig,
   zDenomUnit,
   zFeeToken,
   zGas,
@@ -27,7 +27,8 @@ interface ValidateExistingChain {
   isPrettyNameExist: (name: string) => boolean;
 }
 
-const zNetworkDetails = zApiChainConfig
+// MARK: Network Details Form
+const zNetworkDetails = zChainConfig
   .innerType()
   .pick({
     prettyName: true,
@@ -91,6 +92,7 @@ export type NetworkDetailsForm = z.infer<
   ReturnType<typeof zNetworkDetailsForm>
 >;
 
+// MARK: Gas Details Form
 const zGasFeeDetails = zGas
   .pick({
     gasAdjustment: true,
@@ -174,6 +176,7 @@ export const zGasFeeDetailsForm = zGasFeeDetails.superRefine((val, ctx) =>
 );
 export type GasFeeDetailsForm = z.infer<typeof zGasFeeDetailsForm>;
 
+// MARK: WalletRegistryForm
 const zWalletRegistryAssetDenom = zDenomUnit
   .pick({ denom: true, exponent: true })
   .superRefine((val, ctx) => {
@@ -277,6 +280,7 @@ export const zWalletRegistryForm = zWalletRegistry.superRefine((val, ctx) =>
 );
 export type WalletRegistryForm = z.infer<typeof zWalletRegistryForm>;
 
+// MARK: AddNetworkManualForm
 export const zAddNetworkManualForm = (
   validateExistingChain: ValidateExistingChain
 ) =>
@@ -294,6 +298,7 @@ export type AddNetworkManualForm = z.infer<
   ReturnType<typeof zAddNetworkManualForm>
 >;
 
+// MARK: AddNetworkManualChainConfigJson
 export const zAddNetworkManualChainConfigJson = ({
   isChainIdExist,
   isPrettyNameExist,
@@ -412,7 +417,8 @@ export type AddNetworkManualChainConfigJson = z.infer<
   ReturnType<typeof zAddNetworkManualChainConfigJson>
 >;
 
-export const zAddNetworkJsonChainConfigJson = zApiChainConfig
+// MARK: AddNetworkJsonChainConfigJson
+export const zAddNetworkJsonChainConfigJson = zChainConfig
   .innerType()
   .pick({
     chainId: true,
