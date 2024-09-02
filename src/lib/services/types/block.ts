@@ -24,7 +24,7 @@ import {
   snakeToCamel,
 } from "lib/utils";
 
-import { zTx, zTxJsonRpc } from "./tx";
+import { zTx, zTxJsonRpc, zTxReceiptJsonRpc } from "./tx";
 
 const zNullableValidator = z.nullable(
   z
@@ -236,3 +236,9 @@ export const zBlockJsonRpc = z.object({
   transactions: z.array(zTxJsonRpc),
   transactionsRoot: z.string(),
 });
+
+const zBlockReceiptsJsonRpc = z.array(zTxReceiptJsonRpc);
+
+export const zBlockDataJsonRpc = z
+  .tuple([zBlockJsonRpc, zBlockReceiptsJsonRpc])
+  .transform(([block, blockReceipts]) => ({ block, blockReceipts }));

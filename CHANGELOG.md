@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1123](https://github.com/alleslabs/celatone-frontend/pull/1123) Implement block EVM tx list
 - [#1122](https://github.com/alleslabs/celatone-frontend/pull/1122) Support batch json rpc requests
 - [#1113](https://github.com/alleslabs/celatone-frontend/pull/1113) Add message EVM tag to transaction lists and details
 - [#1121](https://github.com/alleslabs/celatone-frontend/pull/1121) Add EVM related tx section on the cosmos tx details page

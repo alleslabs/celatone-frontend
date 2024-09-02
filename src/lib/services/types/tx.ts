@@ -431,3 +431,5 @@ export const zTxDataJsonRpc = z
   .tuple([zTxJsonRpc, zTxReceiptJsonRpc])
   .transform(([tx, txReceipt]) => ({ tx, txReceipt }));
 export type TxDataJsonRpc = z.infer<typeof zTxDataJsonRpc>;
+
+export type TxDataWithTimeStampJsonRpc = TxDataJsonRpc & { timestamp: Date };
