@@ -14,7 +14,11 @@ import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
-import { TransactionsTable, ViewMore } from "lib/components/table";
+import {
+  EvmTransactionsTable,
+  TransactionsTable,
+  ViewMore,
+} from "lib/components/table";
 import { useTxsByAddressSequencer } from "lib/services/tx";
 import type { BechAddr20 } from "lib/types";
 
@@ -97,7 +101,17 @@ export const EvmContractDetailsTxs = ({
             )}
           </TabPanel>
           <TabPanel p={0} pt={6}>
-            EVM
+            <EvmTransactionsTable
+              evmTransactions={[]}
+              isLoading={false}
+              emptyState={
+                <EmptyState
+                  withBorder
+                  imageVariant="empty"
+                  message="There are no EVM transactions on this contract."
+                />
+              }
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
