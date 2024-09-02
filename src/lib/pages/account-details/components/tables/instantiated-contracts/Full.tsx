@@ -1,11 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
+import { AccountDetailsEmptyState } from "../../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../../AccountSectionWrapper";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { EmptyState, ErrorFetching } from "lib/components/state";
+import { ErrorFetching } from "lib/components/state";
 import { ContractsTable, MobileTitle, ViewMore } from "lib/components/table";
 import { useAccountContracts } from "lib/pages/account-details/data";
 import type { BechAddr32 } from "lib/types";
@@ -81,12 +82,14 @@ export const InstantiatedContractsTableFull = ({
             isLoading={isLoading}
             emptyState={
               !contracts ? (
-                <ErrorFetching dataName="contracts" />
-              ) : (
-                <EmptyState
-                  message="No contracts have been instantiated by this account before."
+                <ErrorFetching
+                  dataName="instantiated contracts"
                   withBorder
+                  my={2}
+                  hasBorderTop={false}
                 />
+              ) : (
+                <AccountDetailsEmptyState message="No contracts have been instantiated by this account before." />
               )
             }
             onRowSelect={onRowSelect}

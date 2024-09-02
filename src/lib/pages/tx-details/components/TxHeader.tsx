@@ -2,7 +2,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
 import { trackUseViewJSON } from "lib/amplitude";
-import { useMobile } from "lib/app-provider";
+import { useEvmConfig, useMobile } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
@@ -18,15 +18,16 @@ const DotSeparator = () => (
 );
 
 export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
-  const openLcdTab = useOpenTxTab("lcd");
   const isMobile = useMobile();
+  const evm = useEvmConfig({ shouldRedirect: false });
+  const openLcdTab = useOpenTxTab("lcd");
 
   return (
     <Flex direction="column" gap={2} {...flexProps}>
       <Flex justify="space-between" align="center">
         <Flex gap={2} mt={{ base: 2, md: 4 }} mb={{ base: 2, md: 0 }}>
           <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
-            Transaction Details
+            {evm.enabled ? "Cosmos " : ""}Transaction Details
           </Heading>
           {isMobile && (
             <Flex

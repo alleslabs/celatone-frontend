@@ -1,10 +1,7 @@
 import { Tag } from "@chakra-ui/react";
 import type { TagProps } from "@chakra-ui/react";
 
-const mapMethod = (txInput: string) => {
-  if (txInput === "0x") return "transfer";
-  return txInput.slice(0, 10);
-};
+import { getEvmMethod } from "lib/utils";
 
 interface EvmMethodChipProps {
   txInput: string;
@@ -13,6 +10,6 @@ interface EvmMethodChipProps {
 
 export const EvmMethodChip = ({ txInput, width }: EvmMethodChipProps) => (
   <Tag width={width} height="17px" variant="gray" justifyContent="center">
-    {mapMethod(txInput)}
+    {getEvmMethod(txInput)}
   </Tag>
 );

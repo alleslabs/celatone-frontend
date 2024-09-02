@@ -85,7 +85,15 @@ export const AssetsSection = ({
 
   const hasNoAsset = !supportedAssets.length && !unsupportedAssets.length;
   if (isLoading) return <Loading />;
-  if (error) return <ErrorFetching dataName="balances" />;
+  if (error)
+    return (
+      <ErrorFetching
+        dataName="balances"
+        withBorder
+        my={2}
+        hasBorderTop={false}
+      />
+    );
 
   return (
     <Flex

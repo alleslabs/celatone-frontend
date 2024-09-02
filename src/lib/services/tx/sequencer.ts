@@ -5,7 +5,12 @@ import {
   zTxsByHashResponseSequencer,
   zTxsResponseSequencer,
 } from "../types";
-import type { Addr, Option } from "lib/types";
+import type {
+  Addr,
+  Nullable,
+  Option,
+  TransactionWithSignerPubkey,
+} from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getTxsCountSequencer = async (endpoint: string) =>
@@ -65,18 +70,27 @@ export const getTxsByHashSequencer = async (endpoint: string, txHash: string) =>
 
 export const getTxsByBlockHeightSequencer = async (
   endpoint: string,
-  height: number,
-  paginationKey: Option<string>
-) =>
-  axios
-    .get(
-      `${endpoint}/indexer/tx/v1/txs/by_height/${encodeURIComponent(height)}`,
-      {
-        params: {
-          "pagination.offset": 0,
-          "pagination.limit": 10,
-          "pagination.key": paginationKey,
-        },
-      }
-    )
-    .then(({ data }) => parseWithError(zBlockTxsResponseSequencer, data));
+  height: number
+): Promise<TransactionWithSignerPubkey[]> => {
+  const result: TransactionWithSignerPubkey[] = [];
+
+  const fetchFn = async (paginationKey: Nullable<string>) => {
+    const res = await axios
+      .get(
+        `${endpoint}/indexer/tx/v1/txs/by_height/${encodeURIComponent(height)}`,
+        {
+          params: {
+            "pagination.key": paginationKey,
+            "pagination.limit": "500",
+          },
+        }
+      )
+      .then(({ data }) => parseWithError(zBlockTxsResponseSequencer, data));
+    result.push(...res.txs);
+    if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
+  };
+
+  await fetchFn(null);
+
+  return result;
+};

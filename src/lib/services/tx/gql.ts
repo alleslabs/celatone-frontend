@@ -47,6 +47,7 @@ export const useTxsByPoolIdPagination = (
           isIbc: transaction.transaction.is_ibc,
           isInstantiate: false,
           isOpinit: false,
+          isEvm: false,
         }))
       );
   }, [expression, indexerGraphClient, offset, pageSize]);

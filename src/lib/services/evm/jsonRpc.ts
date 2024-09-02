@@ -1,7 +1,8 @@
 import axios from "axios";
 import * as uuid from "uuid";
 
-import { zJsonRpcResponse } from "../types/evm";
+import type { JsonRpcResponse } from "../types/evm";
+import { zBatchJsonRpcResponse, zJsonRpcResponse } from "../types/evm";
 import { parseWithError } from "lib/utils";
 
 type JsonRpcParams = string | boolean;
@@ -33,4 +34,40 @@ export const requestJsonRpc = (
       }
 
       return parsed;
+    });
+
+export const requestBatchJsonRpc = (
+  endpoint: string,
+  requests: {
+    method: string;
+    params: JsonRpcParams[];
+  }[]
+) =>
+  axios
+    .post(
+      endpoint,
+      requests.map(({ method, params }, index) => ({
+        jsonrpc: "2.0",
+        id: index,
+        method,
+        params,
+      })),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then(({ data }) => {
+      const parsed = parseWithError(zBatchJsonRpcResponse, data);
+
+      const parsedResults = new Array<JsonRpcResponse["result"]>(
+        requests.length
+      );
+      parsed.forEach((result) => {
+        if (typeof result.id === "number")
+          parsedResults[result.id] = result.result;
+      });
+
+      return parsedResults;
     });

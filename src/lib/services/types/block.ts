@@ -24,7 +24,7 @@ import {
   snakeToCamel,
 } from "lib/utils";
 
-import { zTx, zTxJsonRpc } from "./tx";
+import { zTx, zTxJsonRpc, zTxReceiptJsonRpc } from "./tx";
 
 const zNullableValidator = z.nullable(
   z
@@ -123,15 +123,16 @@ export const zBlockDataResponseLcd = zBlockLcd
         type: msg["@type"],
       }));
 
-      const { isIbc, isOpinit } = messages.reduce(
+      const { isIbc, isOpinit, isEvm } = messages.reduce(
         (acc, msg) => {
           const current = getTxBadges(msg.type, undefined);
           return {
             isIbc: acc.isIbc || current.isIbc,
             isOpinit: acc.isOpinit || current.isOpinit,
+            isEvm: acc.isEvm || current.isEvm,
           };
         },
-        { isIbc: false, isOpinit: false }
+        { isIbc: false, isOpinit: false, isEvm: false }
       );
 
       return {
@@ -144,6 +145,7 @@ export const zBlockDataResponseLcd = zBlockLcd
         success: false, // NOTE: Hidden in Lite Tier,
         isIbc,
         isOpinit,
+        isEvm,
         // TODO: implement below later
         actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
         furtherAction: MsgFurtherAction.NONE,
@@ -234,3 +236,9 @@ export const zBlockJsonRpc = z.object({
   transactions: z.array(zTxJsonRpc),
   transactionsRoot: z.string(),
 });
+
+const zBlockReceiptsJsonRpc = z.array(zTxReceiptJsonRpc);
+
+export const zBlockDataJsonRpc = z
+  .tuple([zBlockJsonRpc, zBlockReceiptsJsonRpc])
+  .transform(([block, blockReceipts]) => ({ block, blockReceipts }));

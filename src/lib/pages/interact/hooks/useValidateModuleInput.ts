@@ -9,7 +9,7 @@ import type { Nullable } from "lib/types";
 import {
   isHexModuleAddress,
   isHexWalletAddress,
-  splitModule,
+  splitModulePath,
   truncate,
 } from "lib/utils";
 
@@ -27,7 +27,7 @@ export const useValidateModuleInput = () => {
 
   return useCallback(
     (input: string): Nullable<string> => {
-      const inputArr = splitModule(input);
+      const inputArr = splitModulePath(input);
       // Allow only module path for now
       if (inputArr.length > 3) return errText;
       const [address, module, functionName] = inputArr;
