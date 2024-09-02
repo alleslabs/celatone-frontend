@@ -50,7 +50,7 @@ export const EvmTransactionsTableMobileCard = ({
           ) : (
             <CustomIcon name="close" color="error.main" />
           )}
-          <Flex direction="column" flex={1}>
+          <Flex direction="column" flex={3}>
             <MobileLabel label="Transaction Hash" />
             <ExplorerLink
               value={formatEvmTxHash(evmTransaction.tx.hash)}
@@ -58,7 +58,7 @@ export const EvmTransactionsTableMobileCard = ({
               showCopyOnHover
             />
           </Flex>
-          <Flex direction="column" flex={1}>
+          <Flex direction="column" flex={2}>
             <MobileLabel label="Method" />
             <EvmMethodChip txInput={evmTransaction.tx.input} width="120px" />
           </Flex>
