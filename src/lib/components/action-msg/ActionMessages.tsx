@@ -51,5 +51,10 @@ export const ActionMessages = ({ transaction }: ActionMessagesProps) => (
         OPInit
       </Tag>
     )}
+    {transaction.isEvm && (
+      <Tag variant="primary-light" size="sm">
+        EVM
+      </Tag>
+    )}
   </Flex>
 );

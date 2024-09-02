@@ -6,8 +6,9 @@ import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CountBadge } from "lib/components/module";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import type { ModuleInfo } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
+import type { MoveVerifyInfoResponse } from "lib/services/types";
+import type { ModuleInfo, Option } from "lib/types";
+import { dateFromNow, formatUTC, resolveMoveVerifyStatus } from "lib/utils";
 
 import { ModulePathLink } from "./ModulePathLink";
 
@@ -15,16 +16,23 @@ interface ModulesTableRowProps {
   moduleInfo: ModuleInfo;
   templateColumns: string;
   isPublishedModules: boolean;
+  moveVerifyInfo: Option<MoveVerifyInfoResponse>;
 }
 
 export const ModulesTableRow = ({
   moduleInfo,
   templateColumns,
   isPublishedModules,
+  moveVerifyInfo,
 }: ModulesTableRowProps) => {
   const navigate = useInternalNavigate();
   const formatAddresses = useFormatAddresses();
   const { address: creator } = formatAddresses(moduleInfo.address);
+
+  const moveVerifyStatus = resolveMoveVerifyStatus(
+    moduleInfo.digest,
+    moveVerifyInfo?.digest
+  );
 
   return (
     <Box w="full" minW="min-content">
@@ -48,6 +56,7 @@ export const ModulesTableRow = ({
           <ModulePathLink
             hexAddr={moduleInfo.address}
             moduleName={moduleInfo.moduleName}
+            moveVerifyStatus={moveVerifyStatus}
           />
         </TableRow>
         {isPublishedModules && (

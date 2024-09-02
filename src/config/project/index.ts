@@ -10,4 +10,5 @@ export const PROJECT_CONSTANTS: ProjectConstants = {
   maxContractNameLength: 50,
   maxContractDescriptionLength: 250,
   maxListNameLength: 50,
+  maxMoveVerifyTaskRequestNoteLength: 50,
 };

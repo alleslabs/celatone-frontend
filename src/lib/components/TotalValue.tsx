@@ -22,6 +22,7 @@ export const TotalValue = ({
       border="1px solid"
       borderColor="gray.700"
       borderRadius={8}
+      minW="200px"
     >
       <Text variant="body2" fontWeight={500} color="text.dark">
         {label}

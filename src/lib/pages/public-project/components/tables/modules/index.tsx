@@ -13,6 +13,7 @@ import {
   ViewMore,
 } from "lib/components/table";
 import type { PublicModule } from "lib/types";
+import { mergeModulePath } from "lib/utils";
 
 import { PublicProjectModuleMobileCard } from "./PublicProjectModuleMobileCard";
 import { PublicProjectModuleRow } from "./PublicProjectModuleRow";
@@ -44,7 +45,7 @@ const ContentRender = ({
     <MobileTableContainer>
       {filteredModules.map((module) => (
         <PublicProjectModuleMobileCard
-          key={`sm-${module.address}::${module.name}`}
+          key={`sm-${mergeModulePath(module.address, module.name)}`}
           module={module}
         />
       ))}
@@ -54,7 +55,7 @@ const ContentRender = ({
       <ModuleTableHeader />
       {filteredModules.map((module) => (
         <PublicProjectModuleRow
-          key={`${module.address}::${module.name}`}
+          key={mergeModulePath(module.address, module.name)}
           module={module}
           templateColumns={TEMPLATE_COLUMNS}
         />

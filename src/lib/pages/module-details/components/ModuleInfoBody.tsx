@@ -19,7 +19,7 @@ const ModuleInfoBodyPublishedAndRepublished = ({
       <LabelText label={`${labelPrefix} Transaction`}>
         <ExplorerLink
           type="tx_hash"
-          value={modulePublishInfo.recentPublishTransaction}
+          value={modulePublishInfo.recentPublishTransaction.toUpperCase()}
           showCopyOnHover
         />
       </LabelText>
@@ -47,7 +47,7 @@ const ModuleInfoBodyPublishedAndRepublished = ({
 export const ModuleInfoBody = ({
   indexedModule,
   modulePublishInfo,
-}: Omit<ModuleInfoProps, "verificationData">) => {
+}: Pick<ModuleInfoProps, "indexedModule" | "modulePublishInfo">) => {
   const { isFullTier } = useTierConfig();
   const { address, upgradePolicy } = indexedModule;
 

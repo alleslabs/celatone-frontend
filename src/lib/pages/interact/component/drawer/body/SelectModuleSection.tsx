@@ -6,7 +6,9 @@ import type { SelectedAddress } from "../types";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge, ModuleCard } from "lib/components/module";
 import type { ModuleInteractionMobileStep } from "lib/pages/interact/types";
+import { useMoveVerifyInfosByAddress } from "lib/services/verification/move";
 import type { IndexedModule, Option } from "lib/types";
+import { mergeModulePath } from "lib/utils";
 
 interface SelectModuleSectionProps {
   selectedAddress: SelectedAddress;
@@ -33,6 +35,10 @@ const RenderModules = ({
   setSelectedModule,
   setStep,
 }: RenderModulesProps) => {
+  const { data: moveVerifyInfos } = useMoveVerifyInfosByAddress(
+    selectedAddress.hex
+  );
+
   if (!modulesLength)
     return <NoImageEmptyState desc="This address does not have any modules." />;
 
@@ -40,11 +46,13 @@ const RenderModules = ({
     filtered.map((module) => (
       <ModuleCard
         key={module.moduleName}
-        selectedAddress={selectedAddress.address}
         module={module}
         selectedModule={selectedModule}
         setSelectedModule={setSelectedModule}
         setStep={setStep}
+        moveVerifyInfo={
+          moveVerifyInfos?.[mergeModulePath(module.address, module.moduleName)]
+        }
       />
     ))
   ) : (

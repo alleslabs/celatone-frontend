@@ -1,6 +1,6 @@
 import { Grid, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { AssetsSection } from "lib/components/asset";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
@@ -31,6 +31,7 @@ export const EvmContractDetailsOverview = ({
 }: EvmContractDetailsOverviewProps) => {
   const { currentChainId } = useCelatoneApp();
   const formatAddresses = useFormatAddresses();
+  const isMobile = useMobile();
 
   return (
     <Stack gap={8}>
@@ -39,15 +40,19 @@ export const EvmContractDetailsOverview = ({
           Contract Info
         </Heading>
         <Grid
-          gridTemplateColumns="160px 240px 1fr"
+          gridTemplateColumns={{ base: "1fr", md: "160px 240px 1fr" }}
           padding={4}
           border="1px solid"
           borderColor="gray.700"
           borderRadius={8}
-          gap={6}
+          columnGap={6}
+          rowGap={4}
         >
           <LabelText label="Network">{currentChainId}</LabelText>
-          <LabelText label="Creator Address">
+          <LabelText
+            label="Creator Address"
+            helperText1={isMobile ? "(Wallet Address)" : undefined}
+          >
             {isContractInfoLoading ? (
               <Spinner boxSize={4} />
             ) : (

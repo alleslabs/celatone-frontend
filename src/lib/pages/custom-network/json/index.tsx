@@ -105,7 +105,10 @@ export const AddNetworkJson = observer(() => {
           {file ? (
             <UploadCard file={file} deleteFile={() => setFile(null)} />
           ) : (
-            <DropZone setFile={setFile} fileType="schema" />
+            <DropZone
+              setFiles={(files: File[]) => setFile(files[0])}
+              fileType={["schema"]}
+            />
           )}
           <Flex justifyContent="space-between" w="full">
             <Button

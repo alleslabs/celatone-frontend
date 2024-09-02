@@ -13,6 +13,7 @@ import {
   useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
+  useEvmConfig,
   useInitia,
   useLcdEndpoint,
   useMoveConfig,
@@ -42,6 +43,7 @@ import {
   getTxsByBlockHeight,
   getTxsCountByAddress,
 } from "./api";
+import { getEvmTxHashByCosmosTxHash, getTxDataJsonRpc } from "./jsonRpc";
 import {
   getTxDataLcd,
   getTxsByAccountAddressLcd,
@@ -497,34 +499,64 @@ export const useTxsByBlockHeightSequencer = (height: number) => {
     chain: { bech32_prefix: prefix },
   } = useCurrentChain();
 
-  const { data, ...rest } = useInfiniteQuery(
+  return useQuery(
     [CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER, endpoint, height],
-    async ({ pageParam }) => {
-      const { txs, pagination } = await getTxsByBlockHeightSequencer(
-        endpoint,
-        height,
-        pageParam
-      );
+    async () => {
+      const txs = await getTxsByBlockHeightSequencer(endpoint, height);
 
-      return {
-        txs: txs.map<Transaction>((tx) => ({
-          ...tx,
-          sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
-        })),
-        pagination,
-      };
+      return txs.map<Transaction>((tx) => ({
+        ...tx,
+        sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+      }));
+    },
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: string) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.EVM_TX_HASH_BY_COSMOS_TX_HASH,
+      evm.enabled && evm.jsonRpc,
+      cosmosTxHash,
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useEvmTxHashByCosmosTxHash)");
+
+      return getEvmTxHashByCosmosTxHash(evm.jsonRpc, cosmosTxHash);
     },
     {
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      retry: false,
       refetchOnWindowFocus: false,
-      keepPreviousData: true,
+      enabled: evm.enabled && !!evm.jsonRpc,
     }
   );
+};
 
-  return {
-    data: data?.pages.flatMap((page) => page.txs),
-    ...rest,
-  };
+export const useTxDataJsonRpc = (evmTxHash: string) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TX_DATA_JSON_RPC,
+      evm.enabled && evm.jsonRpc,
+      evmTxHash,
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useTxDataJsonRpc)");
+
+      return getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      enabled: evm.enabled && !!evm.jsonRpc,
+    }
+  );
 };
 
 export * from "./gql";

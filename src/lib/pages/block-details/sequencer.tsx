@@ -1,3 +1,4 @@
+import { useEvmConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -8,9 +9,11 @@ import {
   BlockInfo,
   BlockTxsTableSequencer,
 } from "./components";
+import { BlockEvmTxsTablesSequencer } from "./components/BlockEvmTxsTablesSequencer";
 import { InvalidBlock } from "./components/InvalidBlock";
 
 export const BlockDetailsSequencer = ({ height }: { height: number }) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
   const { data: blockData, isLoading } = useBlockDataSequencer(height);
 
   if (isLoading) return <Loading withBorder />;
@@ -25,7 +28,11 @@ export const BlockDetailsSequencer = ({ height }: { height: number }) => {
       />
       <BlockDetailsTop blockData={blockData} />
       <BlockInfo blockData={blockData} />
-      <BlockTxsTableSequencer height={height} />
+      {evm.enabled ? (
+        <BlockEvmTxsTablesSequencer height={height} />
+      ) : (
+        <BlockTxsTableSequencer height={height} />
+      )}
       <UserDocsLink
         title="What is a block?"
         cta="Read more about Block"
