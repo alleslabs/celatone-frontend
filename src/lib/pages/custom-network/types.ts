@@ -14,11 +14,6 @@ import {
   zRegistry,
 } from "lib/types";
 
-export enum VmType {
-  MOVE = "move",
-  WASM = "wasm",
-}
-
 const isAlphabetNumberAndSpecialCharacters = (str: string) =>
   /^[a-z0-9/:._-]+$/.test(str);
 
@@ -29,6 +24,28 @@ interface ValidateExistingChain {
   isChainIdExist: (chainId: string) => boolean;
   isPrettyNameExist: (name: string) => boolean;
 }
+
+export enum VmType {
+  MOVE = "move",
+  WASM = "wasm",
+  EVM = "evm",
+}
+
+const zMoveVmRadio = z.object({
+  type: z.literal(VmType.MOVE),
+});
+
+const zWasmVmRadio = z.object({
+  type: z.literal(VmType.WASM),
+});
+
+const zEvmVmRadio = z.object({
+  type: z.literal(VmType.EVM),
+  jsonRpc: zHttpsUrl,
+});
+export type EvmVmRadio = z.infer<typeof zEvmVmRadio>;
+
+const zVmTypeRadio = z.union([zMoveVmRadio, zWasmVmRadio, zEvmVmRadio]);
 
 // MARK: Network Details Form
 const zNetworkDetails = zChainConfig
@@ -41,7 +58,7 @@ const zNetworkDetails = zChainConfig
     registryChainName: true,
   })
   .extend({
-    vmType: z.nativeEnum(VmType),
+    vm: zVmTypeRadio,
     logoUri: z.union([zHttpsUrl, z.literal("")]),
   });
 type NetworkDetails = z.infer<typeof zNetworkDetails>;
@@ -332,7 +349,7 @@ export const zAddNetworkManualChainConfigJson = ({
       logoUri,
       lcd,
       rpc,
-      vmType,
+      vm,
       gasAdjustment,
       maxGasLimit,
       denom,
@@ -361,7 +378,7 @@ export const zAddNetworkManualChainConfigJson = ({
           enabled: false,
         },
         wasm:
-          vmType === VmType.WASM
+          vm.type === "wasm"
             ? {
                 enabled: true,
                 storeCodeMaxFileSize: 1024 * 1024 * 2,
@@ -369,13 +386,19 @@ export const zAddNetworkManualChainConfigJson = ({
               }
             : { enabled: false },
         move:
-          vmType === VmType.MOVE
+          vm.type === "move"
             ? {
                 enabled: true,
                 moduleMaxFileSize: 1_048_576,
               }
             : { enabled: false },
-        evm: { enabled: false },
+        evm:
+          vm.type === "evm"
+            ? {
+                enabled: true,
+                jsonRpc: vm.jsonRpc,
+              }
+            : { enabled: false },
         pool: {
           enabled: false,
         },
@@ -386,7 +409,7 @@ export const zAddNetworkManualChainConfigJson = ({
           enabled: false,
         },
         nft: {
-          enabled: vmType === VmType.MOVE,
+          enabled: vm.type === "move",
         },
       },
       gas: {

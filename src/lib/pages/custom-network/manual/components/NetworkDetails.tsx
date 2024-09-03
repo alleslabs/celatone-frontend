@@ -16,14 +16,14 @@ interface NetworkDetailsProps {
 }
 
 export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
-  const vmType = useWatch({
+  const vm = useWatch({
     control,
-    name: "vmType",
+    name: "vm",
   });
 
   const { field: vmTypeField } = useController({
     control,
-    name: "vmType",
+    name: "vm.type",
   });
 
   return (
@@ -36,9 +36,14 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
         />
         <RadioGroup
           onChange={(nextVal) => vmTypeField.onChange(nextVal)}
-          value={vmType}
+          value={vm.type}
         >
-          <Grid gridTemplateColumns="repeat(2, 1fr)" gap={6} maxW={640}>
+          <Grid
+            gridTemplateColumns="repeat(3, 1fr)"
+            gap={4}
+            maxW={640}
+            height={16}
+          >
             <Radio
               variant="gray-card"
               width="fit-content"
@@ -55,8 +60,32 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
             >
               Wasm
             </Radio>
+            <Radio
+              variant="gray-card"
+              width="fit-content"
+              value={VmType.EVM}
+              w="full"
+            >
+              EVM
+            </Radio>
           </Grid>
         </RadioGroup>
+        {vm.type === VmType.EVM && (
+          <ControllerInput
+            name="vm.jsonRpc"
+            control={control}
+            label="JSON RPC"
+            variant="fixed-floating"
+            w="full"
+            placeholder="https://"
+            rules={{
+              required: "",
+            }}
+            error={
+              (errors.vm as { jsonRpc?: { message: string } })?.jsonRpc?.message
+            }
+          />
+        )}
       </Flex>
       <Flex w="full" direction="column" gap={6} mt={8}>
         <CustomNetworkSubheader
