@@ -37,7 +37,9 @@ export const EvmTxCreateContract = ({
               />
             </Flex>
           ) : (
-            <Text>-</Text>
+            <Text variant="body2" color="text.disabled">
+              -
+            </Text>
           )}
         </Flex>
       }
@@ -65,7 +67,9 @@ export const EvmTxCreateContract = ({
               />
             </Flex>
           ) : (
-            <Text>-</Text>
+            <Text variant="body2" color="text.disabled">
+              -
+            </Text>
           )
         }
       />

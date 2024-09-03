@@ -55,7 +55,9 @@ export const EvmTxTransfer = ({
               textVariant="body1"
             />
           ) : (
-            <Text>-</Text>
+            <Text variant="body2" color="text.disabled">
+              -
+            </Text>
           )}
         </Box>
       }
@@ -72,7 +74,9 @@ export const EvmTxTransfer = ({
           to ? (
             <ExplorerLink type="user_address" value={to} showCopyOnHover />
           ) : (
-            <Text>-</Text>
+            <Text variant="body2" color="text.disabled">
+              -
+            </Text>
           )
         }
       />

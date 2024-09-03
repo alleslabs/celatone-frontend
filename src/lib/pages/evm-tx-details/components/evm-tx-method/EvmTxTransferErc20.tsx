@@ -61,7 +61,9 @@ export const EvmTxTransferErc20 = ({
               textVariant="body1"
             />
           ) : (
-            <Text>-</Text>
+            <Text variant="body2" color="text.disabled">
+              -
+            </Text>
           )}
         </Box>
       }
@@ -78,7 +80,9 @@ export const EvmTxTransferErc20 = ({
           to ? (
             <ExplorerLink type="user_address" value={to} showCopyOnHover />
           ) : (
-            <Text>-</Text>
+            <Text variant="body2" color="text.disabled">
+              -
+            </Text>
           )
         }
       />

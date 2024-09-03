@@ -75,7 +75,7 @@ export const EvmTxHeader = ({
               if (jsonWindow) {
                 // Modify styling later
                 jsonWindow.document.write(
-                  `<html><head><title>Module Structs</title>`
+                  `<html><head><title>Evm Transaction Details</title>`
                 );
 
                 // Add styling

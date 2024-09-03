@@ -65,7 +65,9 @@ export const EvmTxDetailBody = ({ evmTxData, evmDenom }: EvmTxDetailProps) => {
                 showCopyOnHover
               />
             ) : (
-              <Text>-</Text>
+              <Text variant="body2" color="text.disabled">
+                -
+              </Text>
             )}
           </Grid>
         </>

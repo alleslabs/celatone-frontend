@@ -29,7 +29,12 @@ const TokenIdRender = ({
   nftAddress: Activity["nftAddress"];
   collectionAddress: HexAddr32;
 }) => {
-  if (!tokenId) return <Text>-</Text>;
+  if (!tokenId)
+    return (
+      <Text variant="body2" color="text.disabled">
+        -
+      </Text>
+    );
 
   if (!nftAddress) {
     return (
