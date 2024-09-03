@@ -1,5 +1,6 @@
 import { Flex, Grid, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
 
+import type { TxsTabIndex } from "../types";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { AssetsSection } from "lib/components/asset";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -18,7 +19,9 @@ interface EvmContractDetailsOverviewProps {
   created: Option<Date>;
   isContractInfoLoading: boolean;
   onViewMoreAssets: () => void;
-  onViewMoreTxs: () => void;
+  onViewMoreTxs: (tabIndex: TxsTabIndex) => void;
+  tab: TxsTabIndex;
+  setTab: (tab: TxsTabIndex) => void;
 }
 
 export const EvmContractDetailsOverview = ({
@@ -30,6 +33,8 @@ export const EvmContractDetailsOverview = ({
   isContractInfoLoading,
   onViewMoreAssets,
   onViewMoreTxs,
+  tab,
+  setTab,
 }: EvmContractDetailsOverviewProps) => {
   const { currentChainId } = useCelatoneApp();
   const formatAddresses = useFormatAddresses();
@@ -138,6 +143,8 @@ export const EvmContractDetailsOverview = ({
       <EvmContractDetailsTxs
         address={contractAddress}
         onViewMore={onViewMoreTxs}
+        tab={tab}
+        setTab={setTab}
       />
     </Stack>
   );

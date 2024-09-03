@@ -4,11 +4,9 @@ import {
   useEvmTxHashesByCosmosTxHashes,
   useTxsDataJsonRpc,
 } from "lib/services/tx";
-import type { Option, TransactionWithSignerPubkey } from "lib/types";
+import type { Option, Transaction } from "lib/types";
 
-export const useContractDetailsEvmTxs = (
-  txsData: Option<TransactionWithSignerPubkey[]>
-) => {
+export const useContractDetailsEvmTxs = (txsData: Option<Transaction[]>) => {
   const [data, setData] = useState(new Map());
 
   const { data: evmTxHashes, isFetching: isEvmHashesFetching } =

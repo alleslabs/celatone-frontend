@@ -1,40 +1,36 @@
 import {
   Heading,
-  Spinner,
   Stack,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import { useContractDetailsEvmTxs } from "../data";
 import { TxsTabIndex } from "../types";
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
-import { LoadNext } from "lib/components/LoadNext";
-import { EmptyState } from "lib/components/state";
-import {
-  EvmTransactionsTable,
-  TransactionsTable,
-  ViewMore,
-} from "lib/components/table";
 import { useTxsByAddressSequencer } from "lib/services/tx";
 import type { BechAddr20 } from "lib/types";
 
+import { EvmContractDetailsCosmosTxs } from "./EvmContractDetailsCosmosTxs";
+import { EvmContractDetailsEvmTxs } from "./EvmContractDetailsEvmTxs";
+
 interface EvmContractDetailsTxsProps {
   address: BechAddr20;
-  onViewMore?: () => void;
+  onViewMore?: (tabIndex: TxsTabIndex) => void;
+  tab: TxsTabIndex;
+  setTab: (tab: TxsTabIndex) => void;
 }
 
 export const EvmContractDetailsTxs = ({
   address,
   onViewMore,
+  tab,
+  setTab,
 }: EvmContractDetailsTxsProps) => {
-  const [tab, setTab] = useState<TxsTabIndex>(TxsTabIndex.Cosmos);
-
   const {
     data: txsData,
     fetchNextPage,
@@ -74,86 +70,27 @@ export const EvmContractDetailsTxs = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={6}>
-            <TransactionsTable
-              transactions={!onViewMore ? txsData : txsData?.slice(0, 5)}
-              isLoading={isTxsLoading}
-              emptyState={
-                <EmptyState
-                  imageVariant="empty"
-                  message="There are no transactions on this contract."
-                />
-              }
-              showRelations={false}
+            <EvmContractDetailsCosmosTxs
+              onViewMore={onViewMore}
+              txsData={txsData}
+              isTxsLoading={isTxsLoading}
+              hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isFetchingNextPage}
             />
-            {!onViewMore && (
-              <Text variant="body2" color="text.dark" mt={2}>
-                {txsData?.length ?? 0} Cosmos transactions found
-              </Text>
-            )}
-            {hasNextPage && (
-              <>
-                {onViewMore ? (
-                  <ViewMore
-                    onClick={() => {
-                      onViewMore();
-                      handleTabChange(TxsTabIndex.Cosmos);
-                    }}
-                  />
-                ) : (
-                  <LoadNext
-                    text="Load more 10 transactions"
-                    fetchNextPage={fetchNextPage}
-                    isFetchingNextPage={isFetchingNextPage}
-                  />
-                )}
-              </>
-            )}
           </TabPanel>
           <TabPanel p={0} pt={6}>
-            <EvmTransactionsTable
-              evmTransactions={
-                !onViewMore ? evmTxsData : evmTxsData.slice(0, 5)
-              }
-              isLoading={isEvmTxsDataLoading}
-              emptyState={
-                <EmptyState
-                  imageVariant="empty"
-                  message="There are no EVM transactions on this contract."
-                />
-              }
+            <EvmContractDetailsEvmTxs
+              onViewMore={onViewMore}
+              evmTxsData={evmTxsData}
+              isEvmTxsDataLoading={isEvmTxsDataLoading}
+              txsData={txsData}
+              hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+              isTxsFetching={isTxsFetching}
+              isEvmTxsDataFetching={isEvmTxsDataFetching}
             />
-            {evmTxsData && (
-              <>
-                {!onViewMore && (
-                  <Text variant="body2" color="text.dark" mt={2}>
-                    {isTxsFetching || isEvmTxsDataFetching ? (
-                      <Spinner as="span" size="xs" mr={1} />
-                    ) : (
-                      evmTxsData.length
-                    )}{" "}
-                    EVM Txs found from {txsData?.length ?? 0} Cosmos Txs
-                  </Text>
-                )}
-                {hasNextPage && (
-                  <>
-                    {onViewMore ? (
-                      <ViewMore
-                        onClick={() => {
-                          onViewMore();
-                          handleTabChange(TxsTabIndex.Evm);
-                        }}
-                      />
-                    ) : (
-                      <LoadNext
-                        text="Load more transactions"
-                        fetchNextPage={fetchNextPage}
-                        isFetchingNextPage={isFetchingNextPage}
-                      />
-                    )}
-                  </>
-                )}
-              </>
-            )}
           </TabPanel>
         </TabPanels>
       </Tabs>
