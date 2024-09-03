@@ -538,6 +538,7 @@ export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
     [
       CELATONE_QUERY_KEYS.EVM_TX_HASH_BY_COSMOS_TX_HASH,
       evm.enabled && evm.jsonRpc,
+      cosmosTxHash ?? "",
     ],
     async () => {
       if (!evm.enabled)
@@ -558,7 +559,7 @@ export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
 };
 
 export const useEvmTxHashesByCosmosTxHashes = (
-  cosmosTxHashes: Option<string[]> = []
+  cosmosTxHashes: Option<string[]>
 ) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
@@ -566,7 +567,7 @@ export const useEvmTxHashesByCosmosTxHashes = (
     [
       CELATONE_QUERY_KEYS.EVM_TX_HASHES_BY_COSMOS_TX_HASHES,
       evm.enabled && evm.jsonRpc,
-      cosmosTxHashes,
+      cosmosTxHashes ?? [],
     ],
     async () => {
       if (!evm.enabled)
@@ -613,14 +614,14 @@ export const useTxDataJsonRpc = (evmTxHash: string) => {
   );
 };
 
-export const useTxsDataJsonRpc = (evmTxHashes: Option<string[]> = []) => {
+export const useTxsDataJsonRpc = (evmTxHashes: Option<string[]>) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.TXS_DATA_JSON_RPC,
       evm.enabled && evm.jsonRpc,
-      evmTxHashes,
+      evmTxHashes ?? [],
     ],
     async () => {
       if (!evm.enabled)
