@@ -1,5 +1,6 @@
 import {
   Heading,
+  Spinner,
   Stack,
   TabList,
   TabPanel,
@@ -9,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 
+import { useContractDetailsEvmTxs } from "../data";
 import { TxsTabIndex } from "../types";
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
@@ -38,8 +40,16 @@ export const EvmContractDetailsTxs = ({
     fetchNextPage,
     hasNextPage,
     isLoading: isTxsLoading,
+    isFetching: isTxsFetching,
     isFetchingNextPage,
+    latestFetchedData,
   } = useTxsByAddressSequencer(address, undefined);
+
+  const {
+    data: evmTxsData,
+    isLoading: isEvmTxsDataLoading,
+    isFetching: isEvmTxsDataFetching,
+  } = useContractDetailsEvmTxs(latestFetchedData);
 
   const handleTabChange = useCallback(
     (nextTab: TxsTabIndex) => () => {
@@ -102,8 +112,8 @@ export const EvmContractDetailsTxs = ({
           </TabPanel>
           <TabPanel p={0} pt={6}>
             <EvmTransactionsTable
-              evmTransactions={[]}
-              isLoading={false}
+              evmTransactions={evmTxsData}
+              isLoading={isEvmTxsDataLoading && !evmTxsData.length}
               emptyState={
                 <EmptyState
                   withBorder
@@ -112,6 +122,38 @@ export const EvmContractDetailsTxs = ({
                 />
               }
             />
+            {evmTxsData && (
+              <>
+                {!onViewMore && (
+                  <Text variant="body2" color="text.dark" mt={2}>
+                    {isTxsFetching || isEvmTxsDataFetching ? (
+                      <Spinner size="xs" mr={1} />
+                    ) : (
+                      evmTxsData.length
+                    )}{" "}
+                    EVM Txs found from {txsData?.length ?? 0} Cosmos Txs
+                  </Text>
+                )}
+                {hasNextPage && (
+                  <>
+                    {onViewMore ? (
+                      <ViewMore
+                        onClick={() => {
+                          onViewMore();
+                          handleTabChange(TxsTabIndex.Evm);
+                        }}
+                      />
+                    ) : (
+                      <LoadNext
+                        text="Load more transactions"
+                        fetchNextPage={fetchNextPage}
+                        isFetchingNextPage={isFetchingNextPage}
+                      />
+                    )}
+                  </>
+                )}
+              </>
+            )}
           </TabPanel>
         </TabPanels>
       </Tabs>

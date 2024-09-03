@@ -12,8 +12,10 @@ import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 import type { AssetInfos, Option } from "lib/types";
 import {
   coinToTokenWithValue,
+  dateFromNow,
   formatEvmTxHash,
   formatPrice,
+  formatUTC,
   formatUTokenWithPrecision,
   getTokenLabel,
 } from "lib/utils";
@@ -45,20 +47,22 @@ export const EvmTransactionsTableMobileCard = ({
       }
       topContent={
         <Flex align="center" gap={2} w="full">
-          {evmTransaction.txReceipt.status ? (
-            <CustomIcon name="check" color="success.main" />
-          ) : (
-            <CustomIcon name="close" color="error.main" />
-          )}
-          <Flex direction="column" flex={1}>
+          <Flex direction="column" flex={1} gap={1}>
             <MobileLabel label="Transaction Hash" />
-            <ExplorerLink
-              value={formatEvmTxHash(evmTransaction.tx.hash)}
-              type="tx_hash"
-              showCopyOnHover
-            />
+            <Flex gap={1} alignItems="center">
+              {evmTransaction.txReceipt.status ? (
+                <CustomIcon name="check" color="success.main" />
+              ) : (
+                <CustomIcon name="close" color="error.main" />
+              )}
+              <ExplorerLink
+                value={formatEvmTxHash(evmTransaction.tx.hash)}
+                type="tx_hash"
+                showCopyOnHover
+              />
+            </Flex>
           </Flex>
-          <Flex direction="column" flex={1}>
+          <Flex direction="column" flex={1} gap={1}>
             <MobileLabel label="Method" />
             <EvmMethodChip txInput={evmTransaction.tx.input} width="120px" />
           </Flex>
@@ -67,7 +71,7 @@ export const EvmTransactionsTableMobileCard = ({
       middleContent={
         <>
           <Flex>
-            <Flex direction="column" flex={1}>
+            <Flex direction="column" flex={1} gap={1}>
               <MobileLabel label="sender" />
               <ExplorerLink
                 value={evmTransaction.tx.from}
@@ -75,7 +79,7 @@ export const EvmTransactionsTableMobileCard = ({
                 showCopyOnHover
               />
             </Flex>
-            <Flex direction="column" flex={1}>
+            <Flex direction="column" flex={1} gap={1}>
               <MobileLabel label="To" />
               <EvmToCell
                 to={evmTransaction.tx.to}
@@ -104,6 +108,18 @@ export const EvmTransactionsTableMobileCard = ({
             </Flex>
           </Flex>
         </>
+      }
+      bottomContent={
+        evmTransaction.timestamp && (
+          <Flex direction="column">
+            <Text variant="body2" color="text.dark">
+              {formatUTC(evmTransaction.timestamp)}
+            </Text>
+            <Text variant="body3" color="text.disabled">
+              ({dateFromNow(evmTransaction.timestamp)})
+            </Text>
+          </Flex>
+        )
       }
     />
   );

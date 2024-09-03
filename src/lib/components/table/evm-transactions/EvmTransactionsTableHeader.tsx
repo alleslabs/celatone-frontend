@@ -17,5 +17,6 @@ export const EvmTransactionsTableHeader = ({
     <TableHeader />
     <TableHeader>To</TableHeader>
     <TableHeader>Amount</TableHeader>
+    <TableHeader>Timestamp</TableHeader>
   </Grid>
 );

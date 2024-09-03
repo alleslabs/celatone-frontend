@@ -27,6 +27,7 @@ import type {
   BechAddr32,
   Option,
   Transaction,
+  TransactionWithSignerPubkey,
   TxFilters,
 } from "lib/types";
 import {
@@ -43,7 +44,12 @@ import {
   getTxsByBlockHeight,
   getTxsCountByAddress,
 } from "./api";
-import { getEvmTxHashByCosmosTxHash, getTxDataJsonRpc } from "./jsonRpc";
+import {
+  getEvmTxHashByCosmosTxHash,
+  getEvmTxHashesByCosmosTxHashes,
+  getTxDataJsonRpc,
+  getTxsDataJsonRpc,
+} from "./jsonRpc";
 import {
   getTxDataLcd,
   getTxsByAccountAddressLcd,
@@ -403,6 +409,24 @@ export const useTxsCountSequencer = () => {
   );
 };
 
+const mapTxsByAddressSequencerItems = (
+  prefix: string,
+  address: Option<BechAddr20>,
+  items: Option<TransactionWithSignerPubkey[]>
+) =>
+  items?.map((item) => {
+    const sender = convertAccountPubkeyToAccountAddress(
+      item.signerPubkey,
+      prefix
+    );
+
+    return {
+      ...item,
+      sender,
+      isSigner: sender === address,
+    };
+  }) ?? [];
+
 export const useTxsByAddressSequencer = (
   address: Option<BechAddr20>,
   search: Option<string>,
@@ -477,18 +501,12 @@ export const useTxsByAddressSequencer = (
   return {
     ...rest,
     data: data?.pages.flatMap((page) =>
-      page.items.map((item) => {
-        const sender = convertAccountPubkeyToAccountAddress(
-          item.signerPubkey,
-          prefix
-        );
-
-        return {
-          ...item,
-          sender,
-          isSigner: sender === address,
-        };
-      })
+      mapTxsByAddressSequencerItems(prefix, address, page.items)
+    ),
+    latestFetchedData: mapTxsByAddressSequencerItems(
+      prefix,
+      address,
+      data?.pages[data.pages.length - 1].items
     ),
   };
 };
@@ -520,7 +538,6 @@ export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
     [
       CELATONE_QUERY_KEYS.EVM_TX_HASH_BY_COSMOS_TX_HASH,
       evm.enabled && evm.jsonRpc,
-      cosmosTxHash,
     ],
     async () => {
       if (!evm.enabled)
@@ -536,6 +553,39 @@ export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
       retry: false,
       refetchOnWindowFocus: false,
       enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHash,
+    }
+  );
+};
+
+export const useEvmTxHashesByCosmosTxHashes = (
+  cosmosTxHashes: Option<string[]> = []
+) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.EVM_TX_HASHES_BY_COSMOS_TX_HASHES,
+      evm.enabled && evm.jsonRpc,
+      cosmosTxHashes,
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useEvmTxHashesByCosmosTxHashes)");
+      if (!cosmosTxHashes)
+        throw new Error(
+          "cosmosTxHashes is undefined (useEvmTxHashesByCosmosTxHashes)"
+        );
+
+      return getEvmTxHashesByCosmosTxHashes(evm.jsonRpc, cosmosTxHashes);
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      enabled:
+        evm.enabled &&
+        !!evm.jsonRpc &&
+        !!cosmosTxHashes &&
+        !!cosmosTxHashes.length,
     }
   );
 };
@@ -559,6 +609,32 @@ export const useTxDataJsonRpc = (evmTxHash: string) => {
       retry: false,
       refetchOnWindowFocus: false,
       enabled: evm.enabled && !!evm.jsonRpc,
+    }
+  );
+};
+
+export const useTxsDataJsonRpc = (evmTxHashes: Option<string[]> = []) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TXS_DATA_JSON_RPC,
+      evm.enabled && evm.jsonRpc,
+      evmTxHashes,
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useTxsDataJsonRpc)");
+      if (!evmTxHashes)
+        throw new Error("evmTxHashes is undefined (useTxsDataJsonRpc)");
+
+      return getTxsDataJsonRpc(evm.jsonRpc, evmTxHashes);
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      enabled:
+        evm.enabled && !!evm.jsonRpc && !!evmTxHashes && !!evmTxHashes.length,
     }
   );
 };

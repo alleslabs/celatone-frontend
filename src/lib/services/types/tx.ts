@@ -388,6 +388,16 @@ export const zEvmTxHashByCosmosTxHashJsonRpc = z.string().transform((val) =>
     : null
 );
 
+export const zEvmTxHashesByCosmosTxHashesJsonRpc = z
+  .array(z.string())
+  .transform((val) =>
+    val.filter(
+      (hash) =>
+        hash !==
+        "0x0000000000000000000000000000000000000000000000000000000000000000"
+    )
+  );
+
 export const zTxJsonRpc = z.object({
   blockHash: z.string(),
   blockNumber: zHexBig,
@@ -431,5 +441,8 @@ export const zTxDataJsonRpc = z
   .tuple([zTxJsonRpc, zTxReceiptJsonRpc])
   .transform(([tx, txReceipt]) => ({ tx, txReceipt }));
 export type TxDataJsonRpc = z.infer<typeof zTxDataJsonRpc>;
+
+export const zTxsDataJsonRpc = z.array(zTxDataJsonRpc);
+export type TxsDataJsonRpc = z.infer<typeof zTxsDataJsonRpc>;
 
 export type TxDataWithTimeStampJsonRpc = TxDataJsonRpc & { timestamp: Date };

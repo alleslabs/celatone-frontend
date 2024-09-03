@@ -39,6 +39,7 @@ export const EvmTransactionsTable = ({
     "48px",
     "minmax(180px, 2fr)",
     "minmax(250px, 1fr)",
+    "minmax(247px, 1fr)",
   ];
   const templateColumns: string = columns.join(" ");
 
