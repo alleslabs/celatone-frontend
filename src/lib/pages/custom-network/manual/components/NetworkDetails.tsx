@@ -48,6 +48,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
               variant="gray-card"
               width="fit-content"
               value={VmType.MOVE}
+              overflow="hidden"
               w="full"
             >
               Move
@@ -56,6 +57,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
               variant="gray-card"
               width="fit-content"
               value={VmType.WASM}
+              overflow="hidden"
               w="full"
             >
               Wasm
@@ -64,6 +66,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
               variant="gray-card"
               width="fit-content"
               value={VmType.EVM}
+              overflow="hidden"
               w="full"
             >
               EVM
