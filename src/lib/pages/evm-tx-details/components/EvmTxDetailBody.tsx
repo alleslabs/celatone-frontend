@@ -30,7 +30,11 @@ export const EvmTxDetailBody = ({ evmTxData }: EvmTxDetailProps) => {
             <Text fontWeight={500} variant="body2">
               From:
             </Text>
-            <ExplorerLink type="user_address" value={evmTxData.tx.from} />
+            <ExplorerLink
+              type="user_address"
+              value={evmTxData.tx.from}
+              showCopyOnHover
+            />
           </Grid>
           <Grid templateColumns="180px 3fr">
             <Text fontWeight={500} variant="body2">
@@ -40,6 +44,7 @@ export const EvmTxDetailBody = ({ evmTxData }: EvmTxDetailProps) => {
               <ExplorerLink
                 type="user_address"
                 value={evmTxData.txReceipt.to}
+                showCopyOnHover
               />
             ) : (
               <Text>-</Text>
