@@ -13,10 +13,10 @@ export const InfoLabelValue = ({ label, value }: InfoLabelValueProps) => (
       mb={{ base: 1, md: 0 }}
       whiteSpace="nowrap"
       w="full"
-      maxWidth="180px"
+      flex={1}
     >
       {label}
     </Text>
-    {value}
+    <Flex flex={3}>{value}</Flex>
   </Flex>
 );

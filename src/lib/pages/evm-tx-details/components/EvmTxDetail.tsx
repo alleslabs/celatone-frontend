@@ -20,7 +20,7 @@ export const EvmTxDetail = ({
 }: EvmTxDetailProps) => (
   <Flex direction="column" flex={1} gap={4} w="full">
     {cosmosTxData.isTxFailed && (
-      <Alert variant="error" mb={2} alignItems="center">
+      <Alert variant="error" mb={2} alignItems="center" overflow="unset">
         <Flex gap={2} align="start">
           <CustomIcon
             name="alert-triangle-solid"

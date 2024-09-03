@@ -6,7 +6,11 @@ import type { TxDataJsonRpc } from "lib/services/types";
 import type { Option } from "lib/types";
 import { getEvmMethod } from "lib/utils";
 
-import { EvmTxTransfer, EvmTxTransferErc20 } from "./evm-tx-method";
+import {
+  EvmTxCreateContract,
+  EvmTxTransfer,
+  EvmTxTransferErc20,
+} from "./evm-tx-method";
 
 interface EvmTxDetailProps {
   evmTxData: TxDataJsonRpc;
@@ -32,8 +36,8 @@ export const EvmTxDetailBody = ({ evmTxData, evmDenom }: EvmTxDetailProps) => {
       return (
         <EvmTxTransferErc20 evmTxData={evmTxData} assetInfos={assetInfos} />
       );
-    // case "create":
-    //   return <EvmTxCreateContract evmTxData={evmTxData} />;
+    case "create":
+      return <EvmTxCreateContract evmTxData={evmTxData} />;
     default:
       return (
         <>

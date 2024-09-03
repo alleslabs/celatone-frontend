@@ -1,8 +1,8 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TokenCard } from "lib/components/token";
+import { TokenCard, UnsupportedToken } from "lib/components/token";
 import { useEvmDenomByAddressLcd } from "lib/services/evm";
 import type { TxDataJsonRpc } from "lib/services/types";
 import type { AssetInfos, HexAddr20, Option } from "lib/types";
@@ -10,6 +10,7 @@ import {
   coinToTokenWithValue,
   formatTokenWithValue,
   hexToBig,
+  isSupportedToken,
 } from "lib/utils";
 
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
@@ -42,7 +43,7 @@ export const EvmTxTransferErc20 = ({
     <EvmTxMethodAccordion
       msgIcon="send"
       content={
-        <Flex gap={1} display="inline">
+        <Box display="inline">
           <ExplorerLink
             type="user_address"
             value={from}
@@ -62,7 +63,7 @@ export const EvmTxTransferErc20 = ({
           ) : (
             <Text>-</Text>
           )}
-        </Flex>
+        </Box>
       }
     >
       <InfoLabelValue
@@ -83,7 +84,16 @@ export const EvmTxTransferErc20 = ({
       />
       <InfoLabelValue
         label="Transferred Token"
-        value={<TokenCard token={amount} />}
+        value={
+          isSupportedToken(amount) ? (
+            <TokenCard token={amount} minW={{ base: "full", md: "50%" }} />
+          ) : (
+            <UnsupportedToken
+              token={amount}
+              minW={{ base: "full", md: "50%" }}
+            />
+          )
+        }
       />
     </EvmTxMethodAccordion>
   );

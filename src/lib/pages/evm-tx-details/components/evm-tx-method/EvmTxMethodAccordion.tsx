@@ -68,7 +68,7 @@ export const EvmTxMethodAccordion = ({
         </Flex>
       </Flex>
       <Flex
-        height={expand ? "full" : 0}
+        height={expand ? "auto" : 0}
         overflow="hidden"
         direction="column"
         gap={4}

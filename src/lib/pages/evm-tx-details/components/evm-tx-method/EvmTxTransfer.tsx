@@ -1,11 +1,15 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TokenCard } from "lib/components/token";
+import { TokenCard, UnsupportedToken } from "lib/components/token";
 import type { TxDataJsonRpc } from "lib/services/types";
 import type { AssetInfos, Option } from "lib/types";
-import { coinToTokenWithValue, formatTokenWithValue } from "lib/utils";
+import {
+  coinToTokenWithValue,
+  formatTokenWithValue,
+  isSupportedToken,
+} from "lib/utils";
 
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
 import { InfoLabelValue } from "./InformationRow";
@@ -24,7 +28,7 @@ export const EvmTxTransfer = ({
   const { from, to, input } = evmTxData.tx;
 
   const amount = coinToTokenWithValue(
-    evmDenom ?? "",
+    evmDenom ?? "EVM ",
     evmTxData.tx.value.toString(),
     assetInfos
   );
@@ -33,7 +37,7 @@ export const EvmTxTransfer = ({
     <EvmTxMethodAccordion
       msgIcon="send"
       content={
-        <Flex gap={1} display="inline">
+        <Box display="inline">
           <ExplorerLink
             type="user_address"
             value={from}
@@ -53,7 +57,7 @@ export const EvmTxTransfer = ({
           ) : (
             <Text>-</Text>
           )}
-        </Flex>
+        </Box>
       }
     >
       <InfoLabelValue
@@ -74,7 +78,13 @@ export const EvmTxTransfer = ({
       />
       <InfoLabelValue
         label="Transferred Token"
-        value={<TokenCard token={amount} />}
+        value={
+          isSupportedToken(amount) ? (
+            <TokenCard token={amount} minW={{ base: "full", md: "50%" }} />
+          ) : (
+            <UnsupportedToken token={amount} />
+          )
+        }
       />
     </EvmTxMethodAccordion>
   );
