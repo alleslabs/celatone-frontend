@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import { zEvmCodesByAddressResponseLcd, zEvmParams } from "../types/evm";
-import type { HexAddr20 } from "lib/types";
+import type { Addr20, HexAddr20 } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
   parseWithError,
@@ -13,7 +13,7 @@ export const getEvmParams = (endpoint: string) =>
     .get(`${endpoint}/minievm/evm/v1/params`)
     .then(({ data }) => parseWithError(zEvmParams, data));
 
-export const getEvmCodesByAddress = (endpoint: string, address: HexAddr20) =>
+export const getEvmCodesByAddress = (endpoint: string, address: Addr20) =>
   axios
     .get(`${endpoint}/minievm/evm/v1/codes/${encodeURI(address)}`)
     .then(({ data }) => parseWithError(zEvmCodesByAddressResponseLcd, data));
