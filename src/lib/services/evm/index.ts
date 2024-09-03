@@ -5,7 +5,7 @@ import {
   useCurrentChain,
   useLcdEndpoint,
 } from "lib/app-provider";
-import type { Addr20, HexAddr20 } from "lib/types";
+import type { HexAddr20 } from "lib/types";
 import { isHexWalletAddress } from "lib/utils";
 
 import {
@@ -29,7 +29,7 @@ export const useEvmParams = () => {
   );
 };
 
-export const useEvmCodesByAddress = (address: Addr20, enabled = true) => {
+export const useEvmCodesByAddress = (address: HexAddr20, enabled = true) => {
   const lcdEndpoint = useLcdEndpoint();
 
   return useQuery(
