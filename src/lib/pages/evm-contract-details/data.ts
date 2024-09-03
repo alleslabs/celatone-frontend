@@ -14,11 +14,8 @@ export const useContractDetailsEvmTxs = (
   const { data: evmTxHashes, isFetching: isEvmHashesFetching } =
     useEvmTxHashesByCosmosTxHashes(txsData?.map((tx) => tx.hash));
 
-  const {
-    data: evmTxsData,
-    isFetching: isEvmTxsDataFetching,
-    isLoading,
-  } = useTxsDataJsonRpc(evmTxHashes);
+  const { data: evmTxsData, isFetching: isEvmTxsDataFetching } =
+    useTxsDataJsonRpc(evmTxHashes);
 
   useEffect(() => {
     if (!evmTxsData || !txsData) return;
@@ -31,11 +28,12 @@ export const useContractDetailsEvmTxs = (
       });
     });
     setData(newData);
-  }, [evmTxsData, data, txsData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [evmTxsData]);
 
   return {
     data: Array.from(data.values()),
-    isLoading,
+    isLoading: isEvmTxsDataFetching,
     isFetching: isEvmTxsDataFetching || isEvmHashesFetching,
   };
 };

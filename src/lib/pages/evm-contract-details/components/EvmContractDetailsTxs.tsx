@@ -75,11 +75,10 @@ export const EvmContractDetailsTxs = ({
         <TabPanels>
           <TabPanel p={0} pt={6}>
             <TransactionsTable
-              transactions={txsData}
+              transactions={!onViewMore ? txsData : txsData?.slice(0, 5)}
               isLoading={isTxsLoading}
               emptyState={
                 <EmptyState
-                  withBorder
                   imageVariant="empty"
                   message="There are no transactions on this contract."
                 />
@@ -112,11 +111,12 @@ export const EvmContractDetailsTxs = ({
           </TabPanel>
           <TabPanel p={0} pt={6}>
             <EvmTransactionsTable
-              evmTransactions={evmTxsData}
-              isLoading={isEvmTxsDataLoading && !evmTxsData.length}
+              evmTransactions={
+                !onViewMore ? evmTxsData : evmTxsData.slice(0, 5)
+              }
+              isLoading={isEvmTxsDataLoading}
               emptyState={
                 <EmptyState
-                  withBorder
                   imageVariant="empty"
                   message="There are no EVM transactions on this contract."
                 />
@@ -127,7 +127,7 @@ export const EvmContractDetailsTxs = ({
                 {!onViewMore && (
                   <Text variant="body2" color="text.dark" mt={2}>
                     {isTxsFetching || isEvmTxsDataFetching ? (
-                      <Spinner size="xs" mr={1} />
+                      <Spinner as="span" size="xs" mr={1} />
                     ) : (
                       evmTxsData.length
                     )}{" "}
