@@ -19,7 +19,7 @@ export const EvmTxCreateContract = ({
 
   return (
     <EvmTxMethodAccordion
-      msgIcon="send"
+      msgIcon="instantiate"
       content={
         <Flex gap={1}>
           Create{" "}
