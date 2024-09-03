@@ -33,7 +33,7 @@ export const useEvmCodesByAddress = (address: Addr20, enabled = true) => {
   const lcdEndpoint = useLcdEndpoint();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.EVM_CODES_BY_ADDRESS_LCD, lcdEndpoint],
+    [CELATONE_QUERY_KEYS.EVM_CODES_BY_ADDRESS_LCD, lcdEndpoint, address],
     async () => getEvmCodesByAddress(lcdEndpoint, address),
     {
       retry: 1,
@@ -50,7 +50,12 @@ export const useEvmContractInfoSequencer = (address: HexAddr20) => {
   } = useCurrentChain();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.EVM_CONTRACT_INFO_SEQUENCER, lcdEndpoint, prefix],
+    [
+      CELATONE_QUERY_KEYS.EVM_CONTRACT_INFO_SEQUENCER,
+      lcdEndpoint,
+      prefix,
+      address,
+    ],
     async () => getEvmContractInfoSequencer(lcdEndpoint, prefix, address),
     {
       retry: 1,
