@@ -44,7 +44,7 @@ export const NetworkMenuBody = observer(
         <Accordion
           variant="transparent"
           allowMultiple
-          defaultIndex={[0, 1, 2, 3]}
+          defaultIndex={[0, 1, 2, 3, 4]}
           p={0}
         >
           <Flex direction="column" gap={4}>
