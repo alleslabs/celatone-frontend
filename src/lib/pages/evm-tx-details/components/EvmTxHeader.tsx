@@ -6,7 +6,6 @@ import { useMobile } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { CustomIcon } from "lib/components/icon";
-import { useOpenTxTab } from "lib/hooks";
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
 import { dateFromNow, formatEvmTxHash, formatUTC } from "lib/utils";
 
@@ -20,7 +19,6 @@ export const EvmTxHeader = ({
   cosmosTxData,
   ...flexProps
 }: EvmTxHeaderProps) => {
-  const openLcdTab = useOpenTxTab("lcd");
   const isMobile = useMobile();
 
   const isTxFailed = !evmTxData.txReceipt.status;
@@ -72,7 +70,23 @@ export const EvmTxHeader = ({
             rightIcon={<CustomIcon name="launch" boxSize={3} m={0} />}
             onClick={() => {
               trackUseViewJSON("tx_page_transaction_hash");
-              openLcdTab(evmTxData.tx.hash);
+              const jsonString = JSON.stringify(evmTxData, null, 2);
+              const jsonWindow = window.open();
+              if (jsonWindow) {
+                // Modify styling later
+                jsonWindow.document.write(
+                  `<html><head><title>Module Structs</title>`
+                );
+
+                // Add styling
+                jsonWindow.document.write(
+                  "<style>body { background-color: #f0f0f0; color: #333; }</style>"
+                );
+
+                jsonWindow.document.write(
+                  `</head><body><pre>${jsonString}</pre></body></html>`
+                );
+              }
             }}
           >
             View in JSON

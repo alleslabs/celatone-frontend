@@ -1,25 +1,39 @@
 import { Grid, Heading, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { useAssetInfos } from "lib/services/assetService";
 import type { TxDataJsonRpc } from "lib/services/types";
+import type { Option } from "lib/types";
 import { getEvmMethod } from "lib/utils";
+
+import { EvmTxTransfer, EvmTxTransferErc20 } from "./evm-tx-method";
 
 interface EvmTxDetailProps {
   evmTxData: TxDataJsonRpc;
+  evmDenom: Option<string>;
 }
 
-export const EvmTxDetailBody = ({ evmTxData }: EvmTxDetailProps) => {
+export const EvmTxDetailBody = ({ evmTxData, evmDenom }: EvmTxDetailProps) => {
   const method = getEvmMethod(evmTxData.tx.input);
+  const { data: assetInfos } = useAssetInfos({
+    withPrices: true,
+  });
 
-  // eslint-disable-next-line sonarjs/no-small-switch
   switch (method) {
-    // TODO: Implement the following cases in the next PR
-    // case "transfer":
-    //   return <Text>Transfer</Text>;
-    // case "transfer ERC20":
-    //   return <Text>Transfer ERC20</Text>;
+    case "transfer":
+      return (
+        <EvmTxTransfer
+          evmTxData={evmTxData}
+          evmDenom={evmDenom}
+          assetInfos={assetInfos}
+        />
+      );
+    case "transfer ERC20":
+      return (
+        <EvmTxTransferErc20 evmTxData={evmTxData} assetInfos={assetInfos} />
+      );
     // case "create":
-    //   return <Text>Create</Text>;
+    //   return <EvmTxCreateContract evmTxData={evmTxData} />;
     default:
       return (
         <>

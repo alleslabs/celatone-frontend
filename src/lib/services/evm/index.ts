@@ -11,6 +11,7 @@ import { isHexWalletAddress } from "lib/utils";
 import {
   getEvmCodesByAddress,
   getEvmContractInfoSequencer,
+  getEvmDenomByAddressLcd,
   getEvmParams,
 } from "./lcd";
 
@@ -52,6 +53,20 @@ export const useEvmContractInfoSequencer = (address: HexAddr20) => {
   return useQuery(
     [CELATONE_QUERY_KEYS.EVM_CONTRACT_INFO_SEQUENCER, lcdEndpoint, prefix],
     async () => getEvmContractInfoSequencer(lcdEndpoint, prefix, address),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      enabled: address && isHexWalletAddress(address),
+    }
+  );
+};
+
+export const useEvmDenomByAddressLcd = (address: HexAddr20) => {
+  const lcdEndpoint = useLcdEndpoint();
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.EVM_DENOM_BY_ADDRESS_LCD, lcdEndpoint, address],
+    async () => getEvmDenomByAddressLcd(lcdEndpoint, address),
     {
       retry: 1,
       refetchOnWindowFocus: false,

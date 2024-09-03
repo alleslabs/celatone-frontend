@@ -76,7 +76,11 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
                 evmDenom={evmParams?.params.fee_denom}
               />
             )}
-            <EvmTxDetail evmTxData={evmTxData} cosmosTxData={cosmosTxData} />
+            <EvmTxDetail
+              evmTxData={evmTxData}
+              cosmosTxData={cosmosTxData}
+              evmDenom={evmParams?.params.fee_denom}
+            />
           </Flex>
         </>
       ) : (
