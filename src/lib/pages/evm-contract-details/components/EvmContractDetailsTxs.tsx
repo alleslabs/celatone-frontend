@@ -8,11 +8,10 @@ import {
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { useContractDetailsEvmTxs } from "../data";
+import { useContractDetailsTxs } from "../data";
 import { TxsTabIndex } from "../types";
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
-import { useTxsByAddressSequencer } from "lib/services/tx";
 import type { BechAddr20 } from "lib/types";
 
 import { EvmContractDetailsCosmosTxs } from "./EvmContractDetailsCosmosTxs";
@@ -32,20 +31,15 @@ export const EvmContractDetailsTxs = ({
   setTab,
 }: EvmContractDetailsTxsProps) => {
   const {
-    data: txsData,
+    cosmosTxs,
+    evmTxs,
+    isCosmosTxsLoading,
+    isCosmosTxsFetchingNextpage,
+    isEvmTxsLoading,
+    isEvmTxsFetchingNextpage,
     fetchNextPage,
     hasNextPage,
-    isLoading: isTxsLoading,
-    isFetching: isTxsFetching,
-    isFetchingNextPage,
-    latestFetchedData,
-  } = useTxsByAddressSequencer(address, undefined);
-
-  const {
-    data: evmTxsData,
-    isLoading: isEvmTxsDataLoading,
-    isFetching: isEvmTxsDataFetching,
-  } = useContractDetailsEvmTxs(latestFetchedData);
+  } = useContractDetailsTxs(address);
 
   const handleTabChange = useCallback(
     (nextTab: TxsTabIndex) => () => {
@@ -61,7 +55,11 @@ export const EvmContractDetailsTxs = ({
       <Heading as="h6" variant="h6">
         Transactions
       </Heading>
-      <Tabs index={Object.values(TxsTabIndex).indexOf(tab)}>
+      <Tabs
+        index={Object.values(TxsTabIndex).indexOf(tab)}
+        isLazy
+        lazyBehavior="keepMounted"
+      >
         <TabList>
           <CustomTab onClick={handleTabChange(TxsTabIndex.Cosmos)}>
             Cosmos
@@ -72,24 +70,22 @@ export const EvmContractDetailsTxs = ({
           <TabPanel p={0} pt={6}>
             <EvmContractDetailsCosmosTxs
               onViewMore={onViewMore}
-              txsData={txsData}
-              isTxsLoading={isTxsLoading}
+              cosmosTxs={cosmosTxs}
+              isCosmosTxsLoading={isCosmosTxsLoading}
               hasNextPage={hasNextPage}
               fetchNextPage={fetchNextPage}
-              isFetchingNextPage={isFetchingNextPage}
+              isFetchingNextPage={isCosmosTxsFetchingNextpage}
             />
           </TabPanel>
           <TabPanel p={0} pt={6}>
             <EvmContractDetailsEvmTxs
               onViewMore={onViewMore}
-              evmTxsData={evmTxsData}
-              isEvmTxsDataLoading={isEvmTxsDataLoading}
-              txsData={txsData}
+              evmTxs={evmTxs}
+              isEvmTxsLoading={isEvmTxsLoading}
+              cosmosTxsCount={cosmosTxs?.length}
               hasNextPage={hasNextPage}
               fetchNextPage={fetchNextPage}
-              isFetchingNextPage={isFetchingNextPage}
-              isTxsFetching={isTxsFetching}
-              isEvmTxsDataFetching={isEvmTxsDataFetching}
+              isFetchingNextPage={isEvmTxsFetchingNextpage}
             />
           </TabPanel>
         </TabPanels>

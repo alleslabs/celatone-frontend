@@ -7,8 +7,8 @@ import type { Option, Transaction } from "lib/types";
 
 interface EvmContractDetailsCosmosTxsProps {
   onViewMore?: () => void;
-  txsData: Option<Transaction[]>;
-  isTxsLoading: boolean;
+  cosmosTxs: Option<Transaction[]>;
+  isCosmosTxsLoading: boolean;
   hasNextPage: Option<boolean>;
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;
@@ -16,16 +16,16 @@ interface EvmContractDetailsCosmosTxsProps {
 
 export const EvmContractDetailsCosmosTxs = ({
   onViewMore,
-  txsData,
-  isTxsLoading,
+  cosmosTxs,
+  isCosmosTxsLoading,
   hasNextPage,
   fetchNextPage,
   isFetchingNextPage,
 }: EvmContractDetailsCosmosTxsProps) => (
   <>
     <TransactionsTable
-      transactions={!onViewMore ? txsData : txsData?.slice(0, 5)}
-      isLoading={isTxsLoading}
+      transactions={!onViewMore ? cosmosTxs : cosmosTxs?.slice(0, 5)}
+      isLoading={isCosmosTxsLoading}
       emptyState={
         <EmptyState
           imageVariant="empty"
@@ -34,11 +34,11 @@ export const EvmContractDetailsCosmosTxs = ({
       }
       showRelations={false}
     />
-    {txsData && (
+    {cosmosTxs && (
       <>
         {!onViewMore && (
           <Text variant="body2" color="text.dark" mt={2}>
-            {txsData?.length ?? 0} Cosmos transactions found
+            {cosmosTxs?.length ?? 0} Cosmos transactions found
           </Text>
         )}
         {hasNextPage && (

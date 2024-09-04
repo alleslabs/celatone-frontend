@@ -2,50 +2,73 @@ import { useEffect, useMemo, useState } from "react";
 
 import {
   useEvmTxHashesByCosmosTxHashes,
+  useTxsByAddressSequencer,
   useTxsDataJsonRpc,
 } from "lib/services/tx";
 import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
-import type { Option, Transaction } from "lib/types";
+import type { BechAddr20 } from "lib/types";
 
-export const useContractDetailsEvmTxs = (txsData: Option<Transaction[]>) => {
-  const [data, setData] = useState<TxDataWithTimeStampJsonRpc[]>([]);
-  const txHashes = useMemo(() => txsData?.map((tx) => tx.hash), [txsData]);
-  const [isLoading, setIsLoading] = useState(true);
+export const useContractDetailsTxs = (address: BechAddr20) => {
+  const [evmTxs, setEvmTxs] = useState<TxDataWithTimeStampJsonRpc[]>();
+  const [isEvmTxsLoading, setIsEvmTxsLoading] = useState(true);
+  const [isEvmTxsFetching, setIsEvmTxsFetching] = useState(false);
 
-  const { data: evmTxHashes, isFetching: isEvmHashesFetching } =
-    useEvmTxHashesByCosmosTxHashes(txHashes);
-
-  const filteredEvmTxHashes = useMemo(
-    () => evmTxHashes?.filter((tx): tx is string => tx !== null),
-    [evmTxHashes]
+  const cosmosTxHashToEvmTx = useMemo(
+    () => new Map<string, TxDataWithTimeStampJsonRpc>(),
+    []
   );
 
+  const {
+    data: cosmosTxs,
+    fetchNextPage,
+    hasNextPage,
+    isFetching: isCosmosTxsLoading,
+    isFetchingNextPage: isCosmosTxsFetchingNextpage,
+    latestFetchedData: newCosmosTxs,
+  } = useTxsByAddressSequencer(address, undefined);
+
+  const { data: newEvmTxHashes, isFetching: isEvmHashesFetching } =
+    useEvmTxHashesByCosmosTxHashes(newCosmosTxs?.map((tx) => tx.hash));
   const { data: evmTxsData, isFetching: isEvmTxsDataFetching } =
-    useTxsDataJsonRpc(filteredEvmTxHashes);
+    useTxsDataJsonRpc(newEvmTxHashes?.filter((tx) => tx !== null) as string[]);
 
   useEffect(() => {
-    if (!evmTxHashes || !txsData || !evmTxsData) return;
+    setIsEvmTxsFetching(true);
+    if (!newCosmosTxs || !newEvmTxHashes || !evmTxsData) return;
 
-    const newData: TxDataWithTimeStampJsonRpc[] = [];
-
-    evmTxHashes.forEach((tx, index) => {
-      if (tx !== null) {
-        newData.push({
-          ...evmTxsData[newData.length],
-          timestamp: txsData[index].created,
+    let evmTxsDataIndex = 0;
+    newEvmTxHashes.forEach((txHash, index) => {
+      if (txHash !== null) {
+        cosmosTxHashToEvmTx.set(newCosmosTxs[index].hash, {
+          ...evmTxsData[evmTxsDataIndex],
+          timestamp: newCosmosTxs[index].created,
         });
+        evmTxsDataIndex += 1;
       }
     });
 
-    setData((prev) => prev.concat(...newData));
-
-    setIsLoading(false);
+    setEvmTxs(
+      cosmosTxs
+        ?.map(({ hash }) => cosmosTxHashToEvmTx.get(hash))
+        .filter((tx) => tx !== undefined) as TxDataWithTimeStampJsonRpc[]
+    );
+    setIsEvmTxsLoading(false);
+    setIsEvmTxsFetching(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [evmTxsData]);
 
   return {
-    data,
-    isLoading,
-    isFetching: isEvmTxsDataFetching || isEvmHashesFetching,
+    cosmosTxs,
+    evmTxs,
+    isCosmosTxsLoading,
+    isCosmosTxsFetchingNextpage,
+    isEvmTxsLoading,
+    isEvmTxsFetchingNextpage:
+      isCosmosTxsFetchingNextpage ||
+      isEvmHashesFetching ||
+      isEvmTxsDataFetching ||
+      isEvmTxsFetching,
+    fetchNextPage,
+    hasNextPage,
   };
 };

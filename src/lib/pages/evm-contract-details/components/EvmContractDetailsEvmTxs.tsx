@@ -4,35 +4,31 @@ import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
 import { EvmTransactionsTable, ViewMore } from "lib/components/table";
 import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
-import type { Option, Transaction } from "lib/types";
+import type { Option } from "lib/types";
 
 interface EvmContractDetailsEvmTxsProps {
   onViewMore?: () => void;
-  evmTxsData: Option<TxDataWithTimeStampJsonRpc[]>;
-  isEvmTxsDataLoading: boolean;
-  txsData: Option<Transaction[]>;
+  evmTxs: Option<TxDataWithTimeStampJsonRpc[]>;
+  isEvmTxsLoading: boolean;
+  cosmosTxsCount: Option<number>;
   hasNextPage: Option<boolean>;
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;
-  isTxsFetching: boolean;
-  isEvmTxsDataFetching: boolean;
 }
 
 export const EvmContractDetailsEvmTxs = ({
   onViewMore,
-  evmTxsData,
-  isEvmTxsDataLoading,
-  txsData,
+  evmTxs,
+  isEvmTxsLoading,
+  cosmosTxsCount,
   hasNextPage,
   fetchNextPage,
   isFetchingNextPage,
-  isTxsFetching,
-  isEvmTxsDataFetching,
 }: EvmContractDetailsEvmTxsProps) => (
   <>
     <EvmTransactionsTable
-      evmTransactions={!onViewMore ? evmTxsData : evmTxsData?.slice(0, 5)}
-      isLoading={isEvmTxsDataLoading}
+      evmTransactions={!onViewMore ? evmTxs : evmTxs?.slice(0, 5)}
+      isLoading={isEvmTxsLoading}
       emptyState={
         <EmptyState
           imageVariant="empty"
@@ -41,16 +37,16 @@ export const EvmContractDetailsEvmTxs = ({
       }
       showTimestamp
     />
-    {evmTxsData && (
+    {evmTxs && (
       <>
         {!onViewMore && (
           <Text variant="body2" color="text.dark" mt={2}>
-            {isTxsFetching || isEvmTxsDataFetching ? (
+            {isFetchingNextPage ? (
               <Spinner as="span" size="xs" mr={1} />
             ) : (
-              evmTxsData.length
+              evmTxs.length
             )}{" "}
-            EVM Txs found from {txsData?.length ?? 0} Cosmos Txs
+            EVM Txs found from {cosmosTxsCount ?? 0} Cosmos Txs
           </Text>
         )}
         {hasNextPage && (

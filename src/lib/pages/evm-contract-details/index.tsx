@@ -95,7 +95,11 @@ const EvmContractDetailsBody = ({
       <CelatoneSeo pageName={`EVM Contract – ${truncate(contractAddress)}`} />
       <Stack gap={6}>
         <EvmContractDetailsTop contractAddress={contractAddress} />
-        <Tabs index={Object.values(TabIndex).indexOf(tab)}>
+        <Tabs
+          index={Object.values(TabIndex).indexOf(tab)}
+          isLazy
+          lazyBehavior="keepMounted"
+        >
           <TabList
             borderBottom="1px solid"
             borderColor="gray.700"
