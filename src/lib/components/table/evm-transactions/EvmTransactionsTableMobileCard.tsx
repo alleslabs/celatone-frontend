@@ -112,8 +112,7 @@ export const EvmTransactionsTableMobileCard = ({
         </>
       }
       bottomContent={
-        showTimestamp &&
-        evmTransaction.timestamp && (
+        showTimestamp && (
           <Flex direction="column">
             <Text variant="body2" color="text.dark">
               {formatUTC(evmTransaction.timestamp)}
