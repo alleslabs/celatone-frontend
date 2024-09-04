@@ -69,7 +69,7 @@ export const EvmTxHeader = ({
             variant="ghost-gray"
             rightIcon={<CustomIcon name="launch" boxSize={3} m={0} />}
             onClick={() => {
-              trackUseViewJSON("tx_page_transaction_hash");
+              trackUseViewJSON("evm_tx_page_transaction_hash");
               const jsonString = JSON.stringify(evmTxData, null, 2);
               const jsonWindow = window.open();
               if (jsonWindow) {
@@ -142,30 +142,24 @@ export const EvmTxHeader = ({
             )}
           </Flex>
         )}
-        {cosmosTxData.timestamp ? (
-          <>
-            <Flex gap={1} alignItems="center">
-              <CustomIcon name="history" boxSize={3} color="gray.600" />
-              <Text
-                variant={{ base: "body3", md: "body2" }}
-                color="text.dark"
-                display="inline"
-              >
-                {dateFromNow(cosmosTxData.timestamp)}
-              </Text>
-            </Flex>
-            <DotSeparator />
-            <Text
-              variant={{ base: "body3", md: "body2" }}
-              color="text.dark"
-              display="inline"
-            >
-              {formatUTC(cosmosTxData.timestamp)}
-            </Text>
-          </>
-        ) : (
-          <p>N/A</p>
-        )}
+        <Flex gap={1} alignItems="center">
+          <CustomIcon name="history" boxSize={3} color="gray.600" />
+          <Text
+            variant={{ base: "body3", md: "body2" }}
+            color="text.dark"
+            display="inline"
+          >
+            {dateFromNow(cosmosTxData.timestamp)}
+          </Text>
+        </Flex>
+        <DotSeparator />
+        <Text
+          variant={{ base: "body3", md: "body2" }}
+          color="text.dark"
+          display="inline"
+        >
+          {formatUTC(cosmosTxData.timestamp)}
+        </Text>
       </Flex>
     </Flex>
   );

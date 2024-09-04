@@ -9,15 +9,16 @@ import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state/EmptyState";
 import { useEvmParams } from "lib/services/evm";
-import { useCosmosTxDataByEvmTxHash, useTxDataJsonRpc } from "lib/services/tx";
+import { useTxDataJsonRpc } from "lib/services/tx";
 import { truncate } from "lib/utils";
 
 import {
-  EvmTxDetail,
   EvmTxHeader,
   EvmTxInfo,
   EvmTxInfoMobile,
+  EvmTxMsgDetails,
 } from "./components";
+import { useCosmosTxDataByEvmTxHash } from "./data";
 import { zEvmTxDetailsQueryParams } from "./types";
 
 interface EvmTxDetailsBodyProps {
@@ -76,7 +77,7 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
                 evmDenom={evmParams?.params.fee_denom}
               />
             )}
-            <EvmTxDetail
+            <EvmTxMsgDetails
               evmTxData={evmTxData}
               cosmosTxData={cosmosTxData}
               evmDenom={evmParams?.params.fee_denom}

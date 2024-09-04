@@ -5,19 +5,19 @@ import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
 import type { Option } from "lib/types";
 
-import { EvmTxDetailBody } from "./EvmTxDetailBody";
+import { EvmTxMsgDetailsBody } from "./EvmTxMsgDetailsBody";
 
-interface EvmTxDetailProps {
+interface EvmTxMsgDetailsProps {
   evmTxData: TxDataJsonRpc;
   cosmosTxData: TxData;
   evmDenom: Option<string>;
 }
 
-export const EvmTxDetail = ({
+export const EvmTxMsgDetails = ({
   evmTxData,
   cosmosTxData,
   evmDenom,
-}: EvmTxDetailProps) => (
+}: EvmTxMsgDetailsProps) => (
   <Flex direction="column" flex={1} gap={4} w="full">
     {cosmosTxData.isTxFailed && (
       <Alert variant="error" mb={2} alignItems="center" overflow="unset">
@@ -33,7 +33,7 @@ export const EvmTxDetail = ({
         </Flex>
       </Alert>
     )}
-    <EvmTxDetailBody evmTxData={evmTxData} evmDenom={evmDenom} />
+    <EvmTxMsgDetailsBody evmTxData={evmTxData} evmDenom={evmDenom} />
     <Heading as="h6" variant="h6">
       Input Data
     </Heading>

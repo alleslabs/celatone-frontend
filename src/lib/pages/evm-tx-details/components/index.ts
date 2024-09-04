@@ -1,4 +1,4 @@
 export * from "./EvmTxHeader";
 export * from "./EvmTxInfo";
-export * from "./EvmTxDetail";
+export * from "./EvmTxMsgDetails";
 export * from "./EvmTxInfoMobile";

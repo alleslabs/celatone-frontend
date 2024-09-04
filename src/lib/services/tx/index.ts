@@ -161,7 +161,7 @@ export const useTxsByAddress = (
       isMove,
     ],
     async () => {
-      if (!address) throw new Error("addess is undefined (useTxsByAddress)");
+      if (!address) throw new Error("address is undefined (useTxsByAddress)");
       return getTxsByAddress(
         endpoint,
         address,
@@ -588,12 +588,6 @@ export const useCosmosTxHashByEvmTxHash = (evmTxHash: string) => {
       enabled: evm.enabled && !!evm.jsonRpc,
     }
   );
-};
-
-export const useCosmosTxDataByEvmTxHash = (evmTxHash: string) => {
-  const { data: cosmosTxHash } = useCosmosTxHashByEvmTxHash(evmTxHash);
-
-  return useTxData(cosmosTxHash, Boolean(cosmosTxHash));
 };
 
 export * from "./gql";

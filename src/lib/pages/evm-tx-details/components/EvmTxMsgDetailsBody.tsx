@@ -12,12 +12,15 @@ import {
   EvmTxTransferErc20,
 } from "./evm-tx-method";
 
-interface EvmTxDetailProps {
+interface EvmTxMsgDetailsBodyProps {
   evmTxData: TxDataJsonRpc;
   evmDenom: Option<string>;
 }
 
-export const EvmTxDetailBody = ({ evmTxData, evmDenom }: EvmTxDetailProps) => {
+export const EvmTxMsgDetailsBody = ({
+  evmTxData,
+  evmDenom,
+}: EvmTxMsgDetailsBodyProps) => {
   const method = getEvmMethod(evmTxData.tx.input);
   const { data: assetInfos } = useAssetInfos({
     withPrices: true,
