@@ -41,6 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#1127](https://github.com/alleslabs/celatone-frontend/pull/1127) Add EVM contract details EVM transactions
 - [#1120](https://github.com/alleslabs/celatone-frontend/pull/1120) Add EVM contract details Cosmos transactions
+- [#1130](https://github.com/alleslabs/celatone-frontend/pull/1130) Support EVM contract and transaction hash in the main search
+- [#1128](https://github.com/alleslabs/celatone-frontend/pull/1128) Implement EVM tx details
+- [#1129](https://github.com/alleslabs/celatone-frontend/pull/1129) Support custom evm minitia
 - [#1116](https://github.com/alleslabs/celatone-frontend/pull/1116) Add EVM contract details assets
 - [#1112](https://github.com/alleslabs/celatone-frontend/pull/1112) Add EVM contract details bytecodes
 - [#1109](https://github.com/alleslabs/celatone-frontend/pull/1109) Add EVM contract details overview
@@ -72,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1125](https://github.com/alleslabs/celatone-frontend/pull/1125) Refactor custom minitia chain config type
 - [#1095](https://github.com/alleslabs/celatone-frontend/pull/1095) Update native broadcast helper function to generic sign and broadcast function
 - [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
 

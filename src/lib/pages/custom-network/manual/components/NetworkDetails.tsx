@@ -16,14 +16,14 @@ interface NetworkDetailsProps {
 }
 
 export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
-  const vmType = useWatch({
+  const vm = useWatch({
     control,
-    name: "vmType",
+    name: "vm",
   });
 
   const { field: vmTypeField } = useController({
     control,
-    name: "vmType",
+    name: "vm.type",
   });
 
   return (
@@ -36,13 +36,19 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
         />
         <RadioGroup
           onChange={(nextVal) => vmTypeField.onChange(nextVal)}
-          value={vmType}
+          value={vm.type}
         >
-          <Grid gridTemplateColumns="repeat(2, 1fr)" gap={6} maxW={640}>
+          <Grid
+            gridTemplateColumns="repeat(3, 1fr)"
+            gap={4}
+            maxW={640}
+            height={16}
+          >
             <Radio
               variant="gray-card"
               width="fit-content"
               value={VmType.MOVE}
+              overflow="hidden"
               w="full"
             >
               Move
@@ -51,12 +57,38 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
               variant="gray-card"
               width="fit-content"
               value={VmType.WASM}
+              overflow="hidden"
               w="full"
             >
               Wasm
             </Radio>
+            <Radio
+              variant="gray-card"
+              width="fit-content"
+              value={VmType.EVM}
+              overflow="hidden"
+              w="full"
+            >
+              EVM
+            </Radio>
           </Grid>
         </RadioGroup>
+        {vm.type === VmType.EVM && (
+          <ControllerInput
+            name="vm.jsonRpc"
+            control={control}
+            label="JSON RPC"
+            variant="fixed-floating"
+            w="full"
+            placeholder="https://"
+            rules={{
+              required: "",
+            }}
+            error={
+              (errors.vm as { jsonRpc?: { message: string } })?.jsonRpc?.message
+            }
+          />
+        )}
       </Flex>
       <Flex w="full" direction="column" gap={6} mt={8}>
         <CustomNetworkSubheader
@@ -64,7 +96,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           subtitle="Enter the Minitia’s general information and gather data touch points"
         />
         <ControllerInput
-          name="networkName"
+          name="prettyName"
           control={control}
           label="Minitia Name"
           variant="fixed-floating"
@@ -73,10 +105,10 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           rules={{
             required: "",
           }}
-          error={errors.networkName?.message}
+          error={errors.prettyName?.message}
         />
         <ControllerInput
-          name="lcdUrl"
+          name="lcd"
           control={control}
           label="Minitia LCD URL"
           variant="fixed-floating"
@@ -85,10 +117,10 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           rules={{
             required: "",
           }}
-          error={errors.lcdUrl?.message}
+          error={errors.lcd?.message}
         />
         <ControllerInput
-          name="rpcUrl"
+          name="rpc"
           control={control}
           label="Minitia RPC URL"
           variant="fixed-floating"
@@ -97,7 +129,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           rules={{
             required: "",
           }}
-          error={errors.rpcUrl?.message}
+          error={errors.rpc?.message}
         />
         <Flex gap={6}>
           <ControllerInput

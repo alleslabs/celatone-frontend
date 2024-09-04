@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 import type { JsonRpcParams } from "../evm/jsonRpc";
 import { requestBatchJsonRpc, requestJsonRpc } from "../evm/jsonRpc";
 import {
@@ -74,3 +76,10 @@ export const getTxsDataJsonRpc = async (
     return parseWithError(zTxsDataJsonRpc, parsedResults);
   });
 };
+export const getCosmosTxHashByEvmTxHash = (
+  endpoint: string,
+  evmTxHash: string
+) =>
+  requestJsonRpc(endpoint, "cosmos_cosmosTxHashByTxHash", [evmTxHash]).then(
+    ({ result }) => parseWithError(z.string(), result)
+  );

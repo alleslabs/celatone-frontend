@@ -49,7 +49,7 @@ export const EvmTransactionsTableMobileCard = ({
       }
       topContent={
         <Flex align="center" gap={2} w="full">
-          <Flex direction="column" flex={1} gap={1}>
+          <Flex direction="column" flex={3} gap={1}>
             <MobileLabel label="Transaction Hash" />
             <Flex gap={1} alignItems="center">
               {evmTransaction.txReceipt.status ? (
@@ -64,7 +64,7 @@ export const EvmTransactionsTableMobileCard = ({
               />
             </Flex>
           </Flex>
-          <Flex direction="column" flex={1} gap={1}>
+          <Flex direction="column" flex={2} gap={1}>
             <MobileLabel label="Method" />
             <EvmMethodChip txInput={evmTransaction.tx.input} width="120px" />
           </Flex>
