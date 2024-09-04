@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1128](https://github.com/alleslabs/celatone-frontend/pull/1128) Implement EVM tx details
 - [#1129](https://github.com/alleslabs/celatone-frontend/pull/1129) Support custom evm minitia
 - [#1116](https://github.com/alleslabs/celatone-frontend/pull/1116) Add EVM contract details assets
 - [#1112](https://github.com/alleslabs/celatone-frontend/pull/1112) Add EVM contract details bytecodes
