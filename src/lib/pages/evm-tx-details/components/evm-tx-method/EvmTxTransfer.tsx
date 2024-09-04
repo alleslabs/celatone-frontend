@@ -28,7 +28,7 @@ export const EvmTxTransfer = ({
   const { from, to, input } = evmTxData.tx;
 
   const amount = coinToTokenWithValue(
-    evmDenom ?? "EVM ",
+    evmDenom ?? "",
     evmTxData.tx.value.toString(),
     assetInfos
   );
