@@ -27,6 +27,7 @@ import { is0x, isHexWalletAddress, truncate } from "lib/utils";
 import { EvmContractDetailsBytecode } from "./components/EvmContractDetailsBytecode";
 import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
+import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
 import { TabIndex, zEvmContractDetailsQueryParams } from "./types";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
@@ -123,6 +124,7 @@ const EvmContractDetailsBody = ({
                 created={evmContractInfoData?.created}
                 isContractInfoLoading={isEvmContractInfoLoading}
                 onViewMoreAssets={handleTabChange(TabIndex.Assets)}
+                onViewMoreTxs={handleTabChange(TabIndex.Transactions)}
               />
             </TabPanel>
             <TabPanel p={0} pt={8}>
@@ -131,7 +133,9 @@ const EvmContractDetailsBody = ({
             <TabPanel p={0}>
               <AssetsSection address={contractAddressBechAddr} />
             </TabPanel>
-            <TabPanel p={0}>Transactions</TabPanel>
+            <TabPanel p={0} pt={8}>
+              <EvmContractDetailsTxs address={contractAddressBechAddr} />
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </Stack>
