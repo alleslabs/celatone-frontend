@@ -8,7 +8,7 @@ import {
 } from "../types";
 import { parseWithError } from "lib/utils";
 
-export const getEvmTxHashByCosmosTxHash = (
+export const getEvmTxHashByCosmosTxHash = async (
   endpoint: string,
   cosmosTxHash: string
 ) =>
@@ -16,7 +16,7 @@ export const getEvmTxHashByCosmosTxHash = (
     ({ result }) => parseWithError(zEvmTxHashByCosmosTxHashJsonRpc, result)
   );
 
-export const getEvmTxHashesByCosmosTxHashes = (
+export const getEvmTxHashesByCosmosTxHashes = async (
   endpoint: string,
   cosmosTxHashes: string[]
 ) =>
@@ -30,7 +30,7 @@ export const getEvmTxHashesByCosmosTxHashes = (
     parseWithError(zEvmTxHashesByCosmosTxHashesJsonRpc, results)
   );
 
-export const getTxDataJsonRpc = (endpoint: string, evmTxHash: string) =>
+export const getTxDataJsonRpc = async (endpoint: string, evmTxHash: string) =>
   requestBatchJsonRpc(endpoint, [
     {
       method: "eth_getTransactionByHash",
@@ -42,7 +42,10 @@ export const getTxDataJsonRpc = (endpoint: string, evmTxHash: string) =>
     },
   ]).then((results) => parseWithError(zTxDataJsonRpc, results));
 
-export const getTxsDataJsonRpc = (endpoint: string, evmTxHashes: string[]) => {
+export const getTxsDataJsonRpc = async (
+  endpoint: string,
+  evmTxHashes: string[]
+) => {
   const requests: {
     method: string;
     params: JsonRpcParams[];

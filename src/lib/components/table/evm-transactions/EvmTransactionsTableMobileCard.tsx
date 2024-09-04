@@ -24,11 +24,13 @@ interface EvmTransactionsTableMobileCardProps {
   evmTransaction: TxDataWithTimeStampJsonRpc;
   evmDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  showTimestamp: boolean;
 }
 export const EvmTransactionsTableMobileCard = ({
   evmTransaction,
   evmDenom,
   assetInfos,
+  showTimestamp,
 }: EvmTransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
 
@@ -110,6 +112,7 @@ export const EvmTransactionsTableMobileCard = ({
         </>
       }
       bottomContent={
+        showTimestamp &&
         evmTransaction.timestamp && (
           <Flex direction="column">
             <Text variant="body2" color="text.dark">

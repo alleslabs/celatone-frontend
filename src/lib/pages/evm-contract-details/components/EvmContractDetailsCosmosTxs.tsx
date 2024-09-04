@@ -1,13 +1,12 @@
 import { Text } from "@chakra-ui/react";
 
-import { TxsTabIndex } from "../types";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
 import { TransactionsTable, ViewMore } from "lib/components/table";
 import type { Option, Transaction } from "lib/types";
 
 interface EvmContractDetailsCosmosTxsProps {
-  onViewMore?: (tabIndex: TxsTabIndex) => void;
+  onViewMore?: () => void;
   txsData: Option<Transaction[]>;
   isTxsLoading: boolean;
   hasNextPage: Option<boolean>;
@@ -45,7 +44,7 @@ export const EvmContractDetailsCosmosTxs = ({
         {hasNextPage && (
           <>
             {onViewMore ? (
-              <ViewMore onClick={() => onViewMore(TxsTabIndex.Cosmos)} />
+              <ViewMore onClick={onViewMore} />
             ) : (
               <LoadNext
                 text="Load more 10 transactions"

@@ -388,15 +388,9 @@ export const zEvmTxHashByCosmosTxHashJsonRpc = z.string().transform((val) =>
     : null
 );
 
-export const zEvmTxHashesByCosmosTxHashesJsonRpc = z
-  .array(z.string())
-  .transform((val) =>
-    val.filter(
-      (hash) =>
-        hash !==
-        "0x0000000000000000000000000000000000000000000000000000000000000000"
-    )
-  );
+export const zEvmTxHashesByCosmosTxHashesJsonRpc = z.array(
+  zEvmTxHashByCosmosTxHashJsonRpc
+);
 
 export const zTxJsonRpc = z.object({
   blockHash: z.string(),

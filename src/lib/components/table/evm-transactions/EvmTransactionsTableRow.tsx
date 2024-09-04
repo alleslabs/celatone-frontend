@@ -24,6 +24,7 @@ interface EvmTransactionsTableRowProps {
   evmTransaction: TxDataWithTimeStampJsonRpc;
   evmDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  showTimestamp: boolean;
 }
 
 export const EvmTransactionsTableRow = ({
@@ -31,6 +32,7 @@ export const EvmTransactionsTableRow = ({
   evmTransaction,
   evmDenom,
   assetInfos,
+  showTimestamp,
 }: EvmTransactionsTableRowProps) => {
   const navigate = useInternalNavigate();
 
@@ -103,22 +105,24 @@ export const EvmTransactionsTableRow = ({
           {!isUndefined(token.value) ? `(${formatPrice(token.value)})` : "N/A"}
         </Text>
       </TableRow>
-      <TableRow>
-        {evmTransaction.timestamp ? (
-          <Flex direction="column">
-            <Text variant="body2" color="text.dark">
-              {formatUTC(evmTransaction.timestamp)}
+      {showTimestamp && (
+        <TableRow>
+          {evmTransaction.timestamp ? (
+            <Flex direction="column">
+              <Text variant="body2" color="text.dark">
+                {formatUTC(evmTransaction.timestamp)}
+              </Text>
+              <Text variant="body3" color="text.disabled">
+                ({dateFromNow(evmTransaction.timestamp)})
+              </Text>
+            </Flex>
+          ) : (
+            <Text variant="body2" color="text.disabled">
+              -
             </Text>
-            <Text variant="body3" color="text.disabled">
-              ({dateFromNow(evmTransaction.timestamp)})
-            </Text>
-          </Flex>
-        ) : (
-          <Text variant="body2" color="text.disabled">
-            -
-          </Text>
-        )}
-      </TableRow>
+          )}
+        </TableRow>
+      )}
     </Grid>
   );
 };

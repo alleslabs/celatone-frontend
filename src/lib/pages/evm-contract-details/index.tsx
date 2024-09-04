@@ -44,7 +44,6 @@ const EvmContractDetailsBody = ({
   tab,
 }: EvmContractDetailsBodyProps) => {
   const navigate = useInternalNavigate();
-  const [txsTab, setTxsTab] = useState(TxsTabIndex.Cosmos);
   const { convertHexWalletAddress } = useConvertHexAddress();
   const contractAddressBechAddr = convertHexWalletAddress(contractAddress);
 
@@ -59,6 +58,9 @@ const EvmContractDetailsBody = ({
   const { totalData: totalAssets = 0 } = useBalanceInfos(
     contractAddressBechAddr
   );
+
+  const [overviewTabIndex, setOverviewTabIndex] = useState(TxsTabIndex.Cosmos);
+  const [tableTabIndex, setTableTabIndex] = useState(TxsTabIndex.Cosmos);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
@@ -78,13 +80,10 @@ const EvmContractDetailsBody = ({
     [contractAddress, tab, navigate]
   );
 
-  const handleOnViewMoreTxs = useCallback(
-    (tabIndex: TxsTabIndex) => {
-      setTxsTab(tabIndex);
-      handleTabChange(TabIndex.Transactions)();
-    },
-    [handleTabChange]
-  );
+  const handleOnViewMoreTxs = useCallback(() => {
+    setTableTabIndex(overviewTabIndex);
+    handleTabChange(TabIndex.Transactions)();
+  }, [handleTabChange, overviewTabIndex]);
 
   if (isEvmCodesByAddressLoading) return <Loading />;
   if (!evmCodesByAddressData)
@@ -135,8 +134,8 @@ const EvmContractDetailsBody = ({
                 isContractInfoLoading={isEvmContractInfoLoading}
                 onViewMoreAssets={handleTabChange(TabIndex.Assets)}
                 onViewMoreTxs={handleOnViewMoreTxs}
-                tab={txsTab}
-                setTab={setTxsTab}
+                tab={overviewTabIndex}
+                setTab={setOverviewTabIndex}
               />
             </TabPanel>
             <TabPanel p={0} pt={8}>
@@ -148,8 +147,8 @@ const EvmContractDetailsBody = ({
             <TabPanel p={0} pt={8}>
               <EvmContractDetailsTxs
                 address={contractAddressBechAddr}
-                tab={txsTab}
-                setTab={setTxsTab}
+                tab={tableTabIndex}
+                setTab={setTableTabIndex}
               />
             </TabPanel>
           </TabPanels>

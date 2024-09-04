@@ -20,7 +20,7 @@ import { EvmContractDetailsEvmTxs } from "./EvmContractDetailsEvmTxs";
 
 interface EvmContractDetailsTxsProps {
   address: BechAddr20;
-  onViewMore?: (tabIndex: TxsTabIndex) => void;
+  onViewMore?: () => void;
   tab: TxsTabIndex;
   setTab: (tab: TxsTabIndex) => void;
 }

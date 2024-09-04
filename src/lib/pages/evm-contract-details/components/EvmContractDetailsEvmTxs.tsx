@@ -1,6 +1,5 @@
 import { Spinner, Text } from "@chakra-ui/react";
 
-import { TxsTabIndex } from "../types";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
 import { EvmTransactionsTable, ViewMore } from "lib/components/table";
@@ -8,7 +7,7 @@ import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 import type { Option, Transaction } from "lib/types";
 
 interface EvmContractDetailsEvmTxsProps {
-  onViewMore?: (tabIndex: TxsTabIndex) => void;
+  onViewMore?: () => void;
   evmTxsData: Option<TxDataWithTimeStampJsonRpc[]>;
   isEvmTxsDataLoading: boolean;
   txsData: Option<Transaction[]>;
@@ -40,6 +39,7 @@ export const EvmContractDetailsEvmTxs = ({
           message="There are no EVM transactions on this contract."
         />
       }
+      showTimestamp
     />
     {evmTxsData && (
       <>
@@ -56,7 +56,7 @@ export const EvmContractDetailsEvmTxs = ({
         {hasNextPage && (
           <>
             {onViewMore ? (
-              <ViewMore onClick={() => onViewMore(TxsTabIndex.Evm)} />
+              <ViewMore onClick={onViewMore} />
             ) : (
               <LoadNext
                 text="Load more transactions"

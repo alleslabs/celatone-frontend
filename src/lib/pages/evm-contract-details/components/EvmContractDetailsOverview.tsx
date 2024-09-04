@@ -19,7 +19,7 @@ interface EvmContractDetailsOverviewProps {
   created: Option<Date>;
   isContractInfoLoading: boolean;
   onViewMoreAssets: () => void;
-  onViewMoreTxs: (tabIndex: TxsTabIndex) => void;
+  onViewMoreTxs: () => void;
   tab: TxsTabIndex;
   setTab: (tab: TxsTabIndex) => void;
 }
@@ -104,7 +104,7 @@ export const EvmContractDetailsOverview = ({
                   {evmHash ? (
                     <ExplorerLink
                       value={formatEvmTxHash(evmHash)}
-                      type="tx_hash"
+                      type="evm_tx_hash"
                     />
                   ) : (
                     <Text variant="body2" color="text.disabled">
