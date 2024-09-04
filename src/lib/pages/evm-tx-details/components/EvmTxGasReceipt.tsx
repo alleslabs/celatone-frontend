@@ -28,32 +28,37 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
       {gasInfo.isEIP1559 && (
         <Box>
           <MotionBox
-            display="flex"
-            flexDirection="column"
             border="1px solid"
             backgroundColor={expand ? "gray.900" : "transparent"}
             borderRadius="8px"
-            gap={6}
-            minHeight="0"
+            borderColor="gray.800"
+            variants={{
+              expanded: {
+                opacity: 1,
+                height: "auto",
+                marginBottom: "16px",
+              },
+              collapsed: { opacity: 0, height: 0, marginBottom: 0 },
+            }}
             overflow="hidden"
-            animate={{
-              height: expand ? "auto" : 0,
-              padding: expand ? "var(--chakra-space-4)" : 0,
-              borderColor: expand
-                ? "var(--chakra-colors-gray-700)"
-                : "transparent",
-              marginBottom: expand ? "var(--chakra-space-6)" : 0,
+            initial="collapsed"
+            animate={expand ? "expanded" : "collapsed"}
+            transition={{
+              duration: "0.25",
+              ease: "easeInOut",
             }}
           >
-            <LabelText label="Base Fee">
-              {formatTokenWithValue(gasInfo.baseFee)}
-            </LabelText>
-            <LabelText label="Max Priority">
-              {formatTokenWithValue(gasInfo.maxPriorityFee)}
-            </LabelText>
-            <LabelText label="Max Possible Gas Fee">
-              {formatTokenWithValue(gasInfo.maxFee)}
-            </LabelText>
+            <Flex direction="column" gap={6} m={4}>
+              <LabelText label="Base Fee">
+                {formatTokenWithValue(gasInfo.baseFee)}
+              </LabelText>
+              <LabelText label="Max Priority">
+                {formatTokenWithValue(gasInfo.maxPriorityFee)}
+              </LabelText>
+              <LabelText label="Max Possible Gas Fee">
+                {formatTokenWithValue(gasInfo.maxFee)}
+              </LabelText>
+            </Flex>
           </MotionBox>
           <Button
             variant="ghost-primary"
