@@ -41,9 +41,9 @@ export const EvmTransactionsTable = ({
     "48px",
     "minmax(180px, 2fr)",
     "minmax(250px, 1fr)",
-    showTimestamp ? "minmax(247px, 1fr)" : "",
+    ...(showTimestamp ? ["minmax(247px, 1fr)"] : []),
   ];
-  const templateColumns: string = columns.join(" ").trim();
+  const templateColumns: string = columns.join(" ");
 
   return isMobile ? (
     <MobileTableContainer>

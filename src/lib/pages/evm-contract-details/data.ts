@@ -10,6 +10,7 @@ import type { Option, Transaction } from "lib/types";
 export const useContractDetailsEvmTxs = (txsData: Option<Transaction[]>) => {
   const [data, setData] = useState<TxDataWithTimeStampJsonRpc[]>([]);
   const txHashes = useMemo(() => txsData?.map((tx) => tx.hash), [txsData]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { data: evmTxHashes, isFetching: isEvmHashesFetching } =
     useEvmTxHashesByCosmosTxHashes(txHashes);
@@ -37,12 +38,14 @@ export const useContractDetailsEvmTxs = (txsData: Option<Transaction[]>) => {
     });
 
     setData((prev) => prev.concat(...newData));
+
+    setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [evmTxsData]);
 
   return {
     data,
-    isLoading: isEvmTxsDataFetching,
+    isLoading,
     isFetching: isEvmTxsDataFetching || isEvmHashesFetching,
   };
 };
