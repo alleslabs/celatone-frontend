@@ -9,7 +9,7 @@ import {
   useLcdEndpoint,
 } from "lib/app-provider";
 import type { BlocksResponse } from "lib/services/types";
-import type { BlockData, ConsensusAddr, Transaction } from "lib/types";
+import type { BlockData, ConsensusAddr, Option, Transaction } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
   convertRawConsensusAddrToConsensusAddr,
@@ -144,7 +144,7 @@ export const useBlockDataSequencer = (height: number) => {
   );
 };
 
-export const useBlockDataJsonRpc = (height: number) => {
+export const useBlockDataJsonRpc = (height: Option<number>, enabled = true) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
   return useQuery(
@@ -157,12 +157,15 @@ export const useBlockDataJsonRpc = (height: number) => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useBlockDataJsonRpc)");
 
+      if (!height)
+        throw new Error("Height is not provided (useBlockDataJsonRpc)");
+
       return getBlockDataJsonRpc(evm.jsonRpc, height);
     },
     {
       retry: false,
       refetchOnWindowFocus: false,
-      enabled: evm.enabled && !!evm.jsonRpc,
+      enabled: enabled && evm.enabled && !!evm.jsonRpc,
     }
   );
 };
