@@ -11,8 +11,8 @@ import {
   isSupportedToken,
 } from "lib/utils";
 
+import { EvmInfoLableValue } from "./EvmInfoLableValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
-import { InfoLabelValue } from "./InformationRow";
 
 interface EvmTxTransferProps {
   evmTxData: TxDataJsonRpc;
@@ -62,13 +62,13 @@ export const EvmTxTransfer = ({
         </Box>
       }
     >
-      <InfoLabelValue
+      <EvmInfoLableValue
         label="From"
         value={
           <ExplorerLink type="user_address" value={from} showCopyOnHover />
         }
       />
-      <InfoLabelValue
+      <EvmInfoLableValue
         label="To"
         value={
           to ? (
@@ -80,7 +80,7 @@ export const EvmTxTransfer = ({
           )
         }
       />
-      <InfoLabelValue
+      <EvmInfoLableValue
         label="Transferred Token"
         value={
           isSupportedToken(amount) ? (

@@ -4,8 +4,8 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { TxDataJsonRpc } from "lib/services/types";
 
+import { EvmInfoLableValue } from "./EvmInfoLableValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
-import { InfoLabelValue } from "./InformationRow";
 
 interface EvmTxCreateContractProps {
   evmTxData: TxDataJsonRpc;
@@ -44,13 +44,13 @@ export const EvmTxCreateContract = ({
         </Flex>
       }
     >
-      <InfoLabelValue
+      <EvmInfoLableValue
         label="Creator"
         value={
           <ExplorerLink type="user_address" value={from} showCopyOnHover />
         }
       />
-      <InfoLabelValue
+      <EvmInfoLableValue
         label="Created Contract"
         value={
           contractAddress ? (
