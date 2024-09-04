@@ -2,7 +2,8 @@ import type { SearchResultType } from "lib/services/searchService";
 import type { Nullable, Option } from "lib/types";
 
 export const getRouteOptions = (
-  type: Option<SearchResultType>
+  type: Option<SearchResultType>,
+  isEvm: boolean
 ): Nullable<{ pathname: string; query: string[] }> => {
   switch (type) {
     case "Account Address":
@@ -12,11 +13,15 @@ export const getRouteOptions = (
       };
     case "Transaction Hash":
       return { pathname: "/txs/[txHash]", query: ["txHash"] };
+    case "EVM Transaction Hash":
+      return { pathname: "/evm-txs/[txHash]", query: ["txHash"] };
     case "Code ID":
       return { pathname: "/codes/[codeId]", query: ["codeId"] };
     case "Contract Address":
       return {
-        pathname: "/contracts/[contractAddress]",
+        pathname: isEvm
+          ? "/evm-contracts/[contractAddress]"
+          : "/contracts/[contractAddress]",
         query: ["contractAddress"],
       };
     case "Block":

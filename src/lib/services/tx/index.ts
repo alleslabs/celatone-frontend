@@ -43,7 +43,11 @@ import {
   getTxsByBlockHeight,
   getTxsCountByAddress,
 } from "./api";
-import { getEvmTxHashByCosmosTxHash, getTxDataJsonRpc } from "./jsonRpc";
+import {
+  getCosmosTxHashByEvmTxHash,
+  getEvmTxHashByCosmosTxHash,
+  getTxDataJsonRpc,
+} from "./jsonRpc";
 import {
   getTxDataLcd,
   getTxsByAccountAddressLcd,
@@ -71,7 +75,7 @@ export const useTxData = (
 
   const queryFn = useCallback(
     async (hash: Option<string>) => {
-      if (!hash) throw new Error("CELATONE_QUERY_KEYS.TX_DATA is undefined");
+      if (!hash) throw new Error("hash is undefined (useTxData)");
 
       const txData = isFullTier
         ? await getTxData(endpoint, hash)
@@ -157,7 +161,7 @@ export const useTxsByAddress = (
       isMove,
     ],
     async () => {
-      if (!address) throw new Error("No user address");
+      if (!address) throw new Error("address is undefined (useTxsByAddress)");
       return getTxsByAddress(
         endpoint,
         address,
@@ -540,7 +544,7 @@ export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
   );
 };
 
-export const useTxDataJsonRpc = (evmTxHash: string) => {
+export const useTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
   return useQuery(
@@ -554,6 +558,29 @@ export const useTxDataJsonRpc = (evmTxHash: string) => {
         throw new Error("EVM is not enabled (useTxDataJsonRpc)");
 
       return getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      enabled: enabled && evm.enabled && !!evm.jsonRpc,
+    }
+  );
+};
+
+export const useCosmosTxHashByEvmTxHash = (evmTxHash: string) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.COSMOS_TX_HASH_BY_EVM_TX_HASH,
+      evm.enabled && evm.jsonRpc,
+      evmTxHash,
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useCosmosTxHashByEvmTxHash)");
+
+      return getCosmosTxHashByEvmTxHash(evm.jsonRpc, evmTxHash);
     },
     {
       retry: false,

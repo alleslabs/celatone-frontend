@@ -97,6 +97,7 @@ export const SearchResultItemBody = ({
     isAccountAddress ||
     result.type === "Validator Address" ||
     result.type === "Transaction Hash" ||
+    result.type === "EVM Transaction Hash" ||
     result.type === "Module Path"
   )
     return (

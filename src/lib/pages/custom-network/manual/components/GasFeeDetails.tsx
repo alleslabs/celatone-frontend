@@ -77,13 +77,13 @@ const GasOptionCustom = ({
         </Text>
       </Box>
       <ControllerInput
-        name="fixedMinimumGasPrice"
+        name="fixed_min_gas_price"
         control={control}
         variant="fixed-floating"
         type="decimal"
         w="256px"
         placeholder="0.00"
-        error={errors.fixedMinimumGasPrice?.message}
+        error={errors.fixed_min_gas_price?.message}
         textAlign="right"
         restrictedNumberInputParams={restrictedNumberInputParams}
       />
@@ -98,13 +98,13 @@ const GasOptionCustom = ({
         </Text>
       </Box>
       <ControllerInput
-        name="lowGasPrice"
+        name="low_gas_price"
         control={control}
         variant="fixed-floating"
         type="decimal"
         w="256px"
         placeholder="0.00"
-        error={errors.lowGasPrice?.message}
+        error={errors.low_gas_price?.message}
         textAlign="right"
         restrictedNumberInputParams={restrictedNumberInputParams}
       />
@@ -119,13 +119,13 @@ const GasOptionCustom = ({
         </Text>
       </Box>
       <ControllerInput
-        name="averageGasPrice"
+        name="average_gas_price"
         control={control}
         variant="fixed-floating"
         type="decimal"
         w="256px"
         placeholder="0.00"
-        error={errors.averageGasPrice?.message}
+        error={errors.average_gas_price?.message}
         textAlign="right"
         restrictedNumberInputParams={restrictedNumberInputParams}
       />
@@ -140,13 +140,13 @@ const GasOptionCustom = ({
         </Text>
       </Box>
       <ControllerInput
-        name="highGasPrice"
+        name="high_gas_price"
         control={control}
         variant="fixed-floating"
         type="decimal"
         w="256px"
         placeholder="0.00"
-        error={errors.highGasPrice?.message}
+        error={errors.high_gas_price?.message}
         textAlign="right"
         restrictedNumberInputParams={restrictedNumberInputParams}
       />
@@ -163,10 +163,10 @@ const GasFeeDetails = ({
   const {
     gasPrice,
     gasConfig,
-    fixedMinimumGasPrice,
-    lowGasPrice,
-    averageGasPrice,
-    highGasPrice,
+    fixed_min_gas_price: fixedMinGasPrice,
+    low_gas_price: lowGasPrice,
+    average_gas_price: averageGasPrice,
+    high_gas_price: highGasPrice,
   } = useWatch({ control });
 
   useEffect(() => {
@@ -174,21 +174,21 @@ const GasFeeDetails = ({
 
     if (gasConfig === GasPriceConfiguration.CUSTOM) {
       const isCustomValueEqual =
-        fixedMinimumGasPrice === lowGasPrice &&
+        fixedMinGasPrice === lowGasPrice &&
         lowGasPrice === averageGasPrice &&
         averageGasPrice === highGasPrice;
 
-      setValue("gasPrice", isCustomValueEqual ? fixedMinimumGasPrice : "");
+      setValue("gasPrice", isCustomValueEqual ? fixedMinGasPrice : undefined);
       trigger();
 
       return;
     }
 
     if (gasConfig === GasPriceConfiguration.STANDARD) {
-      setValue("fixedMinimumGasPrice", gasPrice);
-      setValue("lowGasPrice", gasPrice);
-      setValue("averageGasPrice", gasPrice);
-      setValue("highGasPrice", gasPrice);
+      setValue("fixed_min_gas_price", gasPrice);
+      setValue("low_gas_price", gasPrice);
+      setValue("average_gas_price", gasPrice);
+      setValue("high_gas_price", gasPrice);
       trigger();
     }
   }, [
@@ -196,7 +196,7 @@ const GasFeeDetails = ({
     setValue,
     gasPrice,
     trigger,
-    fixedMinimumGasPrice,
+    fixedMinGasPrice,
     lowGasPrice,
     averageGasPrice,
     highGasPrice,
@@ -235,14 +235,14 @@ const GasFeeDetails = ({
             />
           </Flex>
           <ControllerInput
-            name="feeTokenDenom"
+            name="denom"
             control={control}
             label="Fee Tokens Denom"
             variant="fixed-floating"
             w="full"
             placeholder="ex. uinit"
             rules={{ required: "" }}
-            error={errors.feeTokenDenom?.message}
+            error={errors.denom?.message}
           />
         </Flex>
         <Flex direction="column" gap={6}>
@@ -295,26 +295,26 @@ const GasFeeDetails = ({
               <Flex gap={6} mt={2}>
                 <ControllerInput
                   labelBgColor="gray.900"
-                  name="gasForCosmosSend"
+                  name="cosmos_send"
                   control={control}
                   label="Gas Cost for Cosmos Send"
                   variant="fixed-floating"
                   type="decimal"
                   w="full"
                   placeholder="0.00"
-                  error={errors.gasForCosmosSend?.message}
+                  error={errors.cosmos_send?.message}
                   restrictedNumberInputParams={restrictedNumberInputParams}
                 />
                 <ControllerInput
                   labelBgColor="gray.900"
-                  name="gasForIbc"
+                  name="ibc_transfer"
                   control={control}
                   label="Gas Cost for IBC"
                   variant="fixed-floating"
                   type="decimal"
                   w="full"
                   placeholder="0.00"
-                  error={errors.gasForIbc?.message}
+                  error={errors.ibc_transfer?.message}
                   restrictedNumberInputParams={restrictedNumberInputParams}
                 />
               </Flex>
