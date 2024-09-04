@@ -51,6 +51,7 @@ export const SearchComponent = () => {
         gov: { enabled: isGov },
         wasm: { enabled: isWasm },
         move: { enabled: isMove },
+        evm: { enabled: isEvm },
         pool: { enabled: isPool },
         nft: { enabled: isNft },
       },
@@ -109,7 +110,7 @@ export const SearchComponent = () => {
       };
 
       trackUseMainSearch(isClick, result?.type);
-      const routeOptions = getRouteOptions(result?.type);
+      const routeOptions = getRouteOptions(result?.type, isEvm);
       if (routeOptions) {
         const queryValues = getQueryValue();
         navigate({
@@ -119,7 +120,7 @@ export const SearchComponent = () => {
         onCloseWithClear();
       }
     },
-    [keyword, navigate, onCloseWithClear]
+    [isEvm, keyword, navigate, onCloseWithClear]
   );
 
   const handleOnKeyDown = useCallback(
@@ -306,9 +307,10 @@ export const SearchComponent = () => {
             ) : (
               <Flex justifyContent="center">
                 <SearchZeroState
-                  isWasm={isWasm}
                   isPool={isPool}
+                  isWasm={isWasm}
                   isMove={isMove}
+                  isEvm={isEvm}
                   isGov={isGov}
                   isNft={isNft}
                   isFullTier={isFullTier}
