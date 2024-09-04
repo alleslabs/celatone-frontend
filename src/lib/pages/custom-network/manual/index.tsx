@@ -48,7 +48,9 @@ export const AddNetworkManual = () => {
       chainId: "",
       registryChainName: "",
       logoUri: "",
-      vmType: VmType.MOVE,
+      vm: {
+        type: VmType.MOVE,
+      },
       gasAdjustment: 1.5,
       maxGasLimit: 25000000,
       denom: "umin",
@@ -65,7 +67,7 @@ export const AddNetworkManual = () => {
   });
 
   const {
-    vmType,
+    vm,
     prettyName,
     lcd,
     rpc,
@@ -109,7 +111,7 @@ export const AddNetworkManual = () => {
         isChainIdExist,
         isPrettyNameExist,
       }).safeParse({
-        vmType,
+        vm,
         prettyName,
         lcd,
         rpc,

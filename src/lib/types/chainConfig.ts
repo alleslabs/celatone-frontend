@@ -4,7 +4,7 @@ import { z } from "zod";
 export const zHttpsUrl = z
   .string()
   .trim()
-  .regex(/^(http|https):\/\/[^\s$.?#].[^\s]*$/, {
+  .regex(/^(http|https):\/\/[^\s/$.?#][^\s]*[^\s.?#]$/, {
     message: "Please enter a valid URL",
   });
 
@@ -49,7 +49,7 @@ const zMoveConfig = z.union([
 const zEvmConfig = z.union([
   z.object({
     enabled: z.literal(true),
-    jsonRpc: z.string(),
+    jsonRpc: zHttpsUrl,
   }),
   z.object({
     enabled: z.literal(false),
@@ -59,7 +59,7 @@ const zEvmConfig = z.union([
 const zPoolConfig = z.union([
   z.object({
     enabled: z.literal(true),
-    url: z.string(),
+    url: zHttpsUrl,
   }),
   z.object({
     enabled: z.literal(false),
