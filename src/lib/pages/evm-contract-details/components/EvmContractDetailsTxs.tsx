@@ -65,7 +65,6 @@ export const EvmContractDetailsTxs = ({
               isLoading={isTxsLoading}
               emptyState={
                 <EmptyState
-                  withBorder
                   imageVariant="empty"
                   message="There are no transactions on this contract."
                 />
