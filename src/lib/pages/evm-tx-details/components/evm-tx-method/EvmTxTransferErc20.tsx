@@ -71,14 +71,35 @@ export const EvmTxTransferErc20 = ({
       <EvmInfoLableValue
         label="From"
         value={
-          <ExplorerLink type="user_address" value={from} showCopyOnHover />
+          <ExplorerLink
+            type="user_address"
+            value={from}
+            showCopyOnHover
+            textFormat="normal"
+          />
         }
       />
       <EvmInfoLableValue
         label="To"
         value={
-          to ? (
-            <ExplorerLink type="user_address" value={to} showCopyOnHover />
+          <ExplorerLink
+            type="user_address"
+            value={to}
+            showCopyOnHover
+            textFormat="normal"
+          />
+        }
+      />
+      <EvmInfoLableValue
+        label="ERC-20 Contract"
+        value={
+          erc20Contract ? (
+            <ExplorerLink
+              type="user_address"
+              value={erc20Contract}
+              showCopyOnHover
+              textFormat="normal"
+            />
           ) : (
             <Text variant="body2" color="text.disabled">
               -

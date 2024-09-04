@@ -47,7 +47,12 @@ export const EvmTxCreateContract = ({
       <EvmInfoLableValue
         label="Creator"
         value={
-          <ExplorerLink type="user_address" value={from} showCopyOnHover />
+          <ExplorerLink
+            type="user_address"
+            value={from}
+            showCopyOnHover
+            textFormat="normal"
+          />
         }
       />
       <EvmInfoLableValue
@@ -64,6 +69,7 @@ export const EvmTxCreateContract = ({
                 value={contractAddress}
                 type="evm_contract_address"
                 showCopyOnHover
+                textFormat="normal"
               />
             </Flex>
           ) : (
