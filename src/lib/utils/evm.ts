@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import type { TxDataJsonRpc } from "lib/services/types";
-import type { HexAddr20, Option } from "lib/types";
+import type { Coin, HexAddr20, Option } from "lib/types";
 
 import { hexToBig } from "./number";
 
@@ -64,10 +64,7 @@ export const getEvmToAddress = (
 export const getEvmAmount = (
   evmTxData: TxDataJsonRpc,
   evmDenom: Option<string>
-): {
-  amount: string;
-  denom: string;
-} => {
+): Coin => {
   const method = getEvmMethod(evmTxData.tx.input);
 
   if (method === "transfer ERC20") {
