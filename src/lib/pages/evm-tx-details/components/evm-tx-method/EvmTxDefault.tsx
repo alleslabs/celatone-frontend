@@ -32,7 +32,7 @@ export const EvmTxDefault = ({ evmTxData }: EvmTxDefaultProps) => (
         value={
           evmTxData.txReceipt.to ? (
             <ExplorerLink
-              type="user_address"
+              type="evm_contract_address"
               value={evmTxData.txReceipt.to}
               showCopyOnHover
               textFormat="normal"
