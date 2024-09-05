@@ -1,7 +1,8 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
+import { EvmToCell } from "lib/components/EvmToCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -57,17 +58,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         display={{ base: "none", xl: "block" }}
       />
       <EvmRelatedField label="To">
-        {toAddress ? (
-          <ExplorerLink
-            type={toAddress.type}
-            value={toAddress.address}
-            showCopyOnHover
-          />
-        ) : (
-          <Text variant="body2" color="text.disabled">
-            -
-          </Text>
-        )}
+        <EvmToCell toAddress={toAddress} />
       </EvmRelatedField>
     </>
   );
