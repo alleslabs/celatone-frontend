@@ -165,7 +165,7 @@ export const useBlockDataJsonRpc = (height: Option<number>, enabled = true) => {
     {
       retry: false,
       refetchOnWindowFocus: false,
-      enabled: enabled && evm.enabled && !!evm.jsonRpc,
+      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!height,
     }
   );
 };

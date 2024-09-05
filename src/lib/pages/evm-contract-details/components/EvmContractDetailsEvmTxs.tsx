@@ -1,7 +1,7 @@
 import { Spinner, Text } from "@chakra-ui/react";
 
 import { LoadNext } from "lib/components/LoadNext";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { EvmTransactionsTable, ViewMore } from "lib/components/table";
 import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 import type { Option } from "lib/types";
@@ -30,10 +30,14 @@ export const EvmContractDetailsEvmTxs = ({
       evmTransactions={!onViewMore ? evmTxs : evmTxs?.slice(0, 5)}
       isLoading={isEvmTxsLoading}
       emptyState={
-        <EmptyState
-          imageVariant="empty"
-          message="There are no EVM transactions on this contract."
-        />
+        evmTxs === undefined ? (
+          <ErrorFetching dataName="evm transactions" />
+        ) : (
+          <EmptyState
+            imageVariant="empty"
+            message="There are no EVM transactions on this contract."
+          />
+        )
       }
       showTimestamp
     />

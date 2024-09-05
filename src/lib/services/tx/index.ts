@@ -1,5 +1,5 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import type {
@@ -426,7 +426,7 @@ const mapTxsByAddressSequencerItems = (
       sender,
       isSigner: sender === address,
     };
-  }) ?? [];
+  });
 
 export const useTxsByAddressSequencer = (
   address: Option<BechAddr20>,
@@ -501,8 +501,8 @@ export const useTxsByAddressSequencer = (
 
   return {
     ...rest,
-    data: data?.pages.flatMap((page) =>
-      mapTxsByAddressSequencerItems(prefix, address, page.items)
+    data: data?.pages.flatMap(
+      (page) => mapTxsByAddressSequencerItems(prefix, address, page.items) ?? []
     ),
     latestFetchedData: mapTxsByAddressSequencerItems(
       prefix,
@@ -578,16 +578,13 @@ export const useEvmTxHashesByCosmosTxHashes = (
           "cosmosTxHashes is undefined (useEvmTxHashesByCosmosTxHashes)"
         );
 
+      if (!cosmosTxHashes.length) return [];
       return getEvmTxHashesByCosmosTxHashes(evm.jsonRpc, cosmosTxHashes);
     },
     {
       retry: false,
       refetchOnWindowFocus: false,
-      enabled:
-        evm.enabled &&
-        !!evm.jsonRpc &&
-        !!cosmosTxHashes &&
-        !!cosmosTxHashes.length,
+      enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHashes,
     }
   );
 };
@@ -653,13 +650,13 @@ export const useTxsDataJsonRpc = (evmTxHashes: Option<string[]>) => {
       if (!evmTxHashes)
         throw new Error("evmTxHashes is undefined (useTxsDataJsonRpc)");
 
+      if (!evmTxHashes.length) return [];
       return getTxsDataJsonRpc(evm.jsonRpc, evmTxHashes);
     },
     {
       retry: false,
       refetchOnWindowFocus: false,
-      enabled:
-        evm.enabled && !!evm.jsonRpc && !!evmTxHashes && !!evmTxHashes.length,
+      enabled: evm.enabled && !!evm.jsonRpc && !!evmTxHashes,
     }
   );
 };
