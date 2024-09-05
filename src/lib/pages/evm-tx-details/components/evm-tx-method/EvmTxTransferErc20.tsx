@@ -1,7 +1,8 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { TokenCard, UnsupportedToken } from "lib/components/token";
 import { useEvmDenomByAddressLcd } from "lib/services/evm";
 import type { TxDataJsonRpc } from "lib/services/types";
@@ -94,12 +95,19 @@ export const EvmTxTransferErc20 = ({
         label="ERC-20 Contract"
         value={
           erc20Contract ? (
-            <ExplorerLink
-              type="user_address"
-              value={erc20Contract}
-              showCopyOnHover
-              textFormat="normal"
-            />
+            <Flex gap={1} align="center">
+              <CustomIcon
+                name="contract-address"
+                boxSize={3}
+                color="primary.main"
+              />
+              <ExplorerLink
+                value={erc20Contract}
+                type="evm_contract_address"
+                showCopyOnHover
+                textFormat="normal"
+              />
+            </Flex>
           ) : (
             <Text variant="body2" color="text.disabled">
               -

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
+import { MotionBox } from "lib/components/MotionBox";
 
 interface EvmTxMethodAccordionProps {
   msgIcon: IconKeys;
@@ -67,15 +68,21 @@ export const EvmTxMethodAccordion = ({
           />
         </Flex>
       </Flex>
-      <Flex
-        height={expand ? "auto" : 0}
+      <MotionBox
+        display="flex"
         overflow="hidden"
-        direction="column"
+        flexDirection="column"
         gap={4}
-        transition="all 0.25s ease-in-out"
+        animate={{
+          height: expand ? "auto" : 0,
+        }}
+        transition={{
+          duration: "0.25",
+          ease: "easeInOut",
+        }}
       >
         {children}
-      </Flex>
+      </MotionBox>
     </>
   );
 };
