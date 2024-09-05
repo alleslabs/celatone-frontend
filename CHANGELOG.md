@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1127](https://github.com/alleslabs/celatone-frontend/pull/1127) Add EVM contract details EVM transactions
+- [#1131](https://github.com/alleslabs/celatone-frontend/pull/1131) Support EIP-1559 gas information on EVM Tx details page
 - [#1120](https://github.com/alleslabs/celatone-frontend/pull/1120) Add EVM contract details Cosmos transactions
 - [#1130](https://github.com/alleslabs/celatone-frontend/pull/1130) Support EVM contract and transaction hash in the main search
 - [#1128](https://github.com/alleslabs/celatone-frontend/pull/1128) Implement EVM tx details

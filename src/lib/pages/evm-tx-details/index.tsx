@@ -8,8 +8,6 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state/EmptyState";
-import { useEvmParams } from "lib/services/evm";
-import { useTxDataJsonRpc } from "lib/services/tx";
 import { truncate } from "lib/utils";
 
 import {
@@ -18,7 +16,7 @@ import {
   EvmTxInfoMobile,
   EvmTxMsgDetails,
 } from "./components";
-import { useCosmosTxDataByEvmTxHash } from "./data";
+import { useEvmTxDetailsData } from "./data";
 import { zEvmTxDetailsQueryParams } from "./types";
 
 interface EvmTxDetailsBodyProps {
@@ -29,14 +27,8 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
   useEvmConfig({ shouldRedirect: true });
   const router = useRouter();
   const isMobile = useMobile();
-  const { data: evmParams, isLoading: isEvmParamsLoading } = useEvmParams();
-  const { data: evmTxData, isLoading: isLoadingEvmTxData } =
-    useTxDataJsonRpc(evmTxHash);
-  const { data: cosmosTxData, isLoading: isLoadingCosmosTxData } =
-    useCosmosTxDataByEvmTxHash(evmTxHash);
-
-  const isLoading =
-    isLoadingEvmTxData || isLoadingCosmosTxData || isEvmParamsLoading;
+  const { evmTxData, cosmosTxData, evmDenom, gasInfo, isLoading } =
+    useEvmTxDetailsData(evmTxHash);
 
   useEffect(() => {
     if (router.isReady && !isLoading) {
@@ -52,21 +44,21 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
           ],
       });
     }
-  }, [router.isReady, evmTxData, isLoading]);
+  }, [router.isReady, isLoading, evmTxData?.txReceipt.status]);
 
   if (isLoading || !evmTxHash) return <Loading withBorder />;
 
   return (
     <>
       <CelatoneSeo pageName={`EVM TxHash – ${truncate(evmTxData?.tx.hash)}`} />
-      {evmTxData && cosmosTxData ? (
+      {evmTxData && cosmosTxData && gasInfo ? (
         <>
           <EvmTxHeader evmTxData={evmTxData} cosmosTxData={cosmosTxData} />
           {isMobile && (
             <EvmTxInfoMobile
               evmTxData={evmTxData}
               cosmosTxData={cosmosTxData}
-              evmDenom={evmParams?.params.fee_denom}
+              gasInfo={gasInfo}
             />
           )}
           <Flex my={{ base: 0, md: 12 }} gap={4} justify="space-between">
@@ -74,13 +66,13 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
               <EvmTxInfo
                 evmTxData={evmTxData}
                 cosmosTxData={cosmosTxData}
-                evmDenom={evmParams?.params.fee_denom}
+                gasInfo={gasInfo}
               />
             )}
             <EvmTxMsgDetails
               evmTxData={evmTxData}
               cosmosTxData={cosmosTxData}
-              evmDenom={evmParams?.params.fee_denom}
+              evmDenom={evmDenom}
             />
           </Flex>
         </>

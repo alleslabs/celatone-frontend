@@ -1,22 +1,18 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { chakra, Flex } from "@chakra-ui/react";
 
+import type { GasInfo } from "../data";
 import { useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import { useAssetInfos } from "lib/services/assetService";
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import type { Option } from "lib/types";
-import {
-  coinToTokenWithValue,
-  formatInteger,
-  formatTokenWithValue,
-} from "lib/utils";
+
+import { EvmTxGasReceipt } from "./EvmTxGasReceipt";
 
 interface EvmTxInfoMobileProps extends FlexProps {
   evmTxData: TxDataJsonRpc;
   cosmosTxData: TxData;
-  evmDenom: Option<string>;
+  gasInfo: GasInfo;
 }
 
 const Container = chakra(Flex, {
@@ -33,29 +29,11 @@ const Container = chakra(Flex, {
 export const EvmTxInfoMobile = ({
   evmTxData,
   cosmosTxData,
-  evmDenom,
+  gasInfo,
   ...flexProps
 }: EvmTxInfoMobileProps) => {
   const { currentChainId } = useCelatoneApp();
-  const { data: assetInfos } = useAssetInfos({
-    withPrices: true,
-  });
 
-  const feeToken = coinToTokenWithValue(
-    evmDenom ?? "",
-    evmTxData.txReceipt.gasUsed
-      .mul(evmTxData.txReceipt.effectiveGasPrice)
-      .toString(),
-    assetInfos
-  );
-
-  const gasPrice = coinToTokenWithValue(
-    evmDenom ?? "",
-    evmTxData.txReceipt.effectiveGasPrice.toString(),
-    assetInfos
-  );
-
-  // TODO: support tx type id 2 (EIP-1559) later
   return (
     <Container {...flexProps}>
       <Flex>
@@ -71,15 +49,7 @@ export const EvmTxInfoMobile = ({
           />
         </LabelText>
       </Flex>
-      <LabelText flex={1} label="Transaction Fee">
-        {formatTokenWithValue(feeToken)}
-      </LabelText>
-      <LabelText flex={1} label="Gas Price">
-        {formatTokenWithValue(gasPrice)}
-      </LabelText>
-      <LabelText flex={1} label="Usage by Tx & Gas Limit">
-        {`${formatInteger(evmTxData.txReceipt.gasUsed.toNumber())}/${formatInteger(evmTxData.tx.gas.toNumber())}`}
-      </LabelText>
+      <EvmTxGasReceipt gasInfo={gasInfo} />
     </Container>
   );
 };
