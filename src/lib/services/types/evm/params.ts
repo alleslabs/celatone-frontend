@@ -6,6 +6,6 @@ export const zEvmParams = z.object({
     allowed_publishers: z.string().array(),
     allow_custom_erc20: z.boolean(),
     allowed_custom_erc20s: z.string().array(),
-    fee_denom: z.string(),
+    fee_denom: z.string().toLowerCase(),
   }),
 });

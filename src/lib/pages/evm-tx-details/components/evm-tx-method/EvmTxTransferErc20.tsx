@@ -4,12 +4,13 @@ import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TokenCard, UnsupportedToken } from "lib/components/token";
-import { useEvmDenomByAddressLcd } from "lib/services/evm";
 import type { TxDataJsonRpc } from "lib/services/types";
-import type { AssetInfos, HexAddr20, Option } from "lib/types";
+import type { AssetInfos, Option } from "lib/types";
 import {
   coinToTokenWithValue,
+  convertToEvmDenom,
   formatTokenWithValue,
+  getEvmToAddress,
   hexToBig,
   isSupportedToken,
 } from "lib/utils";
@@ -27,15 +28,12 @@ export const EvmTxTransferErc20 = ({
   assetInfos,
 }: EvmTxTransferErc20Props) => {
   const { from, input, to: erc20Contract } = evmTxData.tx;
-  const { data: evmDenom } = useEvmDenomByAddressLcd(
-    erc20Contract as HexAddr20
-  );
 
-  const to = `0x${evmTxData.tx.input.slice(34, 74)}`;
+  const toAddress = getEvmToAddress(evmTxData);
   const amountBig = hexToBig(evmTxData.tx.input.slice(74, 138));
 
   const amount = coinToTokenWithValue(
-    evmDenom ?? "",
+    erc20Contract ? convertToEvmDenom(erc20Contract) : "",
     amountBig.toString(),
     assetInfos
   );
@@ -54,10 +52,10 @@ export const EvmTxTransferErc20 = ({
           />{" "}
           <EvmMethodChip txInput={input} width="110px" />{" "}
           {formatTokenWithValue(amount)} to{" "}
-          {to ? (
+          {toAddress?.address ? (
             <ExplorerLink
-              type="user_address"
-              value={to}
+              type={toAddress.type}
+              value={toAddress.address}
               showCopyOnHover
               textVariant="body1"
             />
@@ -83,12 +81,18 @@ export const EvmTxTransferErc20 = ({
       <EvmInfoLableValue
         label="To"
         value={
-          <ExplorerLink
-            type="user_address"
-            value={to}
-            showCopyOnHover
-            textFormat="normal"
-          />
+          toAddress ? (
+            <ExplorerLink
+              type={toAddress.type}
+              value={toAddress.address}
+              showCopyOnHover
+              textFormat="normal"
+            />
+          ) : (
+            <Text variant="body2" color="text.disabled">
+              -
+            </Text>
+          )
         }
       />
       <EvmInfoLableValue

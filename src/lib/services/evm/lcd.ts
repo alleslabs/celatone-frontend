@@ -1,5 +1,4 @@
 import axios from "axios";
-import { z } from "zod";
 
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import { zEvmCodesByAddressResponseLcd, zEvmParams } from "../types/evm";
@@ -42,11 +41,3 @@ export const getEvmContractInfoSequencer = async (
     created: tx.created,
   };
 };
-
-export const getEvmDenomByAddressLcd = async (
-  endpoint: string,
-  address: HexAddr20
-) =>
-  axios
-    .get(`${endpoint}/minievm/evm/v1/denoms/${encodeURI(address)}`)
-    .then(({ data }) => parseWithError(z.string(), data.denom));
