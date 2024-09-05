@@ -65,7 +65,7 @@ export const BlockEvmTxsTablesSequencer = ({
           id={tableHeaderId}
         >
           <CustomTab count={cosmosTxs?.length}>Cosmos</CustomTab>
-          <CustomTab count={evmTxs?.length}>Evm</CustomTab>
+          <CustomTab count={evmTxs?.length}>EVM</CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={{ base: 0, md: 6 }}>
