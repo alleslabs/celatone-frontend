@@ -45,9 +45,8 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
     cosmosTxHash,
     Boolean(cosmosTxHash)
   );
-  const { data: blockData } = useBlockDataJsonRpc(
-    evmTxData?.tx.blockNumber.toNumber()
-  );
+  const { data: blockData, isLoading: isLoadingBlockData } =
+    useBlockDataJsonRpc(evmTxData?.tx.blockNumber.toNumber());
 
   const evmDenom = evmParams?.params.fee_denom;
 
@@ -99,7 +98,10 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
 
   return {
     isLoading:
-      isLoadingEvmTxData || isLoadingCosmosTxData || isEvmParamsLoading,
+      isLoadingEvmTxData ||
+      isLoadingCosmosTxData ||
+      isEvmParamsLoading ||
+      isLoadingBlockData,
     cosmosTxData,
     evmTxData,
     evmDenom,
