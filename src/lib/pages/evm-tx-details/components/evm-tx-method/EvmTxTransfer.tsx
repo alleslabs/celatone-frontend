@@ -96,7 +96,10 @@ export const EvmTxTransfer = ({
           isSupportedToken(amount) ? (
             <TokenCard token={amount} minW={{ base: "full", md: "50%" }} />
           ) : (
-            <UnsupportedToken token={amount} />
+            <UnsupportedToken
+              token={amount}
+              minW={{ base: "full", md: "50%" }}
+            />
           )
         }
       />
