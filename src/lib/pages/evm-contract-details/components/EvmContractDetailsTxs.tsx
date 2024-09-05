@@ -5,37 +5,41 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
+import { useContractDetailsTxs } from "../data";
 import { TxsTabIndex } from "../types";
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
-import { LoadNext } from "lib/components/LoadNext";
-import { EmptyState } from "lib/components/state";
-import { TransactionsTable, ViewMore } from "lib/components/table";
-import { useTxsByAddressSequencer } from "lib/services/tx";
 import type { BechAddr20 } from "lib/types";
+
+import { EvmContractDetailsCosmosTxs } from "./EvmContractDetailsCosmosTxs";
+import { EvmContractDetailsEvmTxs } from "./EvmContractDetailsEvmTxs";
 
 interface EvmContractDetailsTxsProps {
   address: BechAddr20;
   onViewMore?: () => void;
+  tab: TxsTabIndex;
+  setTab: (tab: TxsTabIndex) => void;
 }
 
 export const EvmContractDetailsTxs = ({
   address,
   onViewMore,
+  tab,
+  setTab,
 }: EvmContractDetailsTxsProps) => {
-  const [tab, setTab] = useState<TxsTabIndex>(TxsTabIndex.Cosmos);
-
   const {
-    data: txsData,
+    cosmosTxs,
+    evmTxs,
+    isCosmosTxsLoading,
+    isCosmosTxsFetchingNextpage,
+    isEvmTxsLoading,
+    isEvmTxsFetchingNextpage,
     fetchNextPage,
     hasNextPage,
-    isLoading: isTxsLoading,
-    isFetchingNextPage,
-  } = useTxsByAddressSequencer(address, undefined);
+  } = useContractDetailsTxs(address);
 
   const handleTabChange = useCallback(
     (nextTab: TxsTabIndex) => () => {
@@ -51,7 +55,11 @@ export const EvmContractDetailsTxs = ({
       <Heading as="h6" variant="h6">
         Transactions
       </Heading>
-      <Tabs index={Object.values(TxsTabIndex).indexOf(tab)}>
+      <Tabs
+        index={Object.values(TxsTabIndex).indexOf(tab)}
+        isLazy
+        lazyBehavior="keepMounted"
+      >
         <TabList>
           <CustomTab onClick={handleTabChange(TxsTabIndex.Cosmos)}>
             Cosmos
@@ -60,43 +68,25 @@ export const EvmContractDetailsTxs = ({
         </TabList>
         <TabPanels>
           <TabPanel p={0} pt={6}>
-            <TransactionsTable
-              transactions={txsData}
-              isLoading={isTxsLoading}
-              emptyState={
-                <EmptyState
-                  imageVariant="empty"
-                  message="There are no transactions on this contract."
-                />
-              }
-              showRelations={false}
+            <EvmContractDetailsCosmosTxs
+              onViewMore={onViewMore}
+              cosmosTxs={cosmosTxs}
+              isCosmosTxsLoading={isCosmosTxsLoading}
+              hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isCosmosTxsFetchingNextpage}
             />
-            {!onViewMore && (
-              <Text variant="body2" color="text.dark" mt={2}>
-                {txsData?.length ?? 0} Cosmos transactions found
-              </Text>
-            )}
-            {hasNextPage && (
-              <>
-                {onViewMore ? (
-                  <ViewMore
-                    onClick={() => {
-                      onViewMore();
-                      handleTabChange(TxsTabIndex.Cosmos);
-                    }}
-                  />
-                ) : (
-                  <LoadNext
-                    text="Load more 10 transactions"
-                    fetchNextPage={fetchNextPage}
-                    isFetchingNextPage={isFetchingNextPage}
-                  />
-                )}
-              </>
-            )}
           </TabPanel>
           <TabPanel p={0} pt={6}>
-            EVM
+            <EvmContractDetailsEvmTxs
+              onViewMore={onViewMore}
+              evmTxs={evmTxs}
+              isEvmTxsLoading={isEvmTxsLoading}
+              cosmosTxsCount={cosmosTxs?.length}
+              hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
+              isFetchingNextPage={isEvmTxsFetchingNextpage}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

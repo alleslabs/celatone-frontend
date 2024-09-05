@@ -14,12 +14,14 @@ interface EvmTransactionsTableProps {
   evmTransactions: Option<TxDataWithTimeStampJsonRpc[]>;
   isLoading: boolean;
   emptyState: JSX.Element;
+  showTimestamp?: boolean;
 }
 
 export const EvmTransactionsTable = ({
   evmTransactions,
   isLoading,
   emptyState,
+  showTimestamp = false,
 }: EvmTransactionsTableProps) => {
   const isMobile = useMobile();
   const { data: evmParams, isLoading: isEvmParamsLoading } = useEvmParams();
@@ -39,6 +41,7 @@ export const EvmTransactionsTable = ({
     "48px",
     "minmax(180px, 2fr)",
     "minmax(250px, 1fr)",
+    ...(showTimestamp ? ["minmax(247px, 1fr)"] : []),
   ];
   const templateColumns: string = columns.join(" ");
 
@@ -50,12 +53,16 @@ export const EvmTransactionsTable = ({
           evmTransaction={evmTransaction}
           evmDenom={evmParams?.params.fee_denom}
           assetInfos={assetInfos}
+          showTimestamp={showTimestamp}
         />
       ))}
     </MobileTableContainer>
   ) : (
     <TableContainer>
-      <EvmTransactionsTableHeader templateColumns={templateColumns} />
+      <EvmTransactionsTableHeader
+        templateColumns={templateColumns}
+        showTimestamp={showTimestamp}
+      />
       {evmTransactions.map((evmTransaction) => (
         <EvmTransactionsTableRow
           key={evmTransaction.tx.hash}
@@ -63,6 +70,7 @@ export const EvmTransactionsTable = ({
           evmTransaction={evmTransaction}
           evmDenom={evmParams?.params.fee_denom}
           assetInfos={assetInfos}
+          showTimestamp={showTimestamp}
         />
       ))}
     </TableContainer>

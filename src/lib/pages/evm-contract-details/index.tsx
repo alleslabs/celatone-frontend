@@ -1,7 +1,7 @@
 import { track } from "@amplitude/analytics-browser";
 import { Stack, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { AmpEvent, trackUseTab } from "lib/amplitude";
 import {
@@ -28,7 +28,7 @@ import { EvmContractDetailsBytecode } from "./components/EvmContractDetailsBytec
 import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
-import { TabIndex, zEvmContractDetailsQueryParams } from "./types";
+import { TabIndex, TxsTabIndex, zEvmContractDetailsQueryParams } from "./types";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
@@ -59,6 +59,9 @@ const EvmContractDetailsBody = ({
     contractAddressBechAddr
   );
 
+  const [overviewTabIndex, setOverviewTabIndex] = useState(TxsTabIndex.Cosmos);
+  const [tableTabIndex, setTableTabIndex] = useState(TxsTabIndex.Cosmos);
+
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
@@ -76,6 +79,11 @@ const EvmContractDetailsBody = ({
     },
     [contractAddress, tab, navigate]
   );
+
+  const handleOnViewMoreTxs = useCallback(() => {
+    setTableTabIndex(overviewTabIndex);
+    handleTabChange(TabIndex.Transactions)();
+  }, [handleTabChange, overviewTabIndex]);
 
   if (isEvmCodesByAddressLoading) return <Loading />;
   if (!evmCodesByAddressData)
@@ -95,6 +103,7 @@ const EvmContractDetailsBody = ({
           <TabList
             borderBottom="1px solid"
             borderColor="gray.700"
+            overflowX="scroll"
             id={tableHeaderId}
           >
             <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
@@ -124,7 +133,9 @@ const EvmContractDetailsBody = ({
                 created={evmContractInfoData?.created}
                 isContractInfoLoading={isEvmContractInfoLoading}
                 onViewMoreAssets={handleTabChange(TabIndex.Assets)}
-                onViewMoreTxs={handleTabChange(TabIndex.Transactions)}
+                onViewMoreTxs={handleOnViewMoreTxs}
+                tab={overviewTabIndex}
+                setTab={setOverviewTabIndex}
               />
             </TabPanel>
             <TabPanel p={0} pt={8}>
@@ -134,7 +145,11 @@ const EvmContractDetailsBody = ({
               <AssetsSection address={contractAddressBechAddr} />
             </TabPanel>
             <TabPanel p={0} pt={8}>
-              <EvmContractDetailsTxs address={contractAddressBechAddr} />
+              <EvmContractDetailsTxs
+                address={contractAddressBechAddr}
+                tab={tableTabIndex}
+                setTab={setTableTabIndex}
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>
