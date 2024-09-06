@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/react";
 
 import { LoadNext } from "lib/components/LoadNext";
-import { EmptyState } from "lib/components/state";
+import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable, ViewMore } from "lib/components/table";
 import type { Option, Transaction } from "lib/types";
 
@@ -27,10 +27,14 @@ export const EvmContractDetailsCosmosTxs = ({
       transactions={!onViewMore ? cosmosTxs : cosmosTxs?.slice(0, 5)}
       isLoading={isCosmosTxsLoading}
       emptyState={
-        <EmptyState
-          imageVariant="empty"
-          message="There are no transactions on this contract."
-        />
+        cosmosTxs === undefined ? (
+          <ErrorFetching dataName="cosmos transactions" />
+        ) : (
+          <EmptyState
+            imageVariant="empty"
+            message="There are no transactions on this contract."
+          />
+        )
       }
       showRelations={false}
     />

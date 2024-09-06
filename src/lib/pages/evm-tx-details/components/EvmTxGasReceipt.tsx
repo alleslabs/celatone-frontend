@@ -16,9 +16,6 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
 
   return (
     <Flex direction="column" gap={6}>
-      <LabelText label="Transaction Fee">
-        {formatTokenWithValue(gasInfo.txFee)}
-      </LabelText>
       <LabelText label="Gas Price">
         {formatTokenWithValue(gasInfo.gasPrice)}
       </LabelText>

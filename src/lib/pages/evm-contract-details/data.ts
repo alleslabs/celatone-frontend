@@ -25,12 +25,21 @@ export const useContractDetailsTxs = (address: BechAddr20) => {
     isFetching: isCosmosTxsLoading,
     isFetchingNextPage: isCosmosTxsFetchingNextpage,
     latestFetchedData: newCosmosTxs,
+    isError: isCosmosTxsError,
   } = useTxsByAddressSequencer(address, undefined);
 
-  const { data: newEvmTxHashes, isFetching: isEvmHashesFetching } =
-    useEvmTxHashesByCosmosTxHashes(newCosmosTxs?.map((tx) => tx.hash));
-  const { data: evmTxsData, isFetching: isEvmTxsDataFetching } =
-    useTxsDataJsonRpc(newEvmTxHashes?.filter((tx) => tx !== null) as string[]);
+  const {
+    data: newEvmTxHashes,
+    isFetching: isEvmHashesFetching,
+    isError: isEvmHashesError,
+  } = useEvmTxHashesByCosmosTxHashes(newCosmosTxs?.map((tx) => tx.hash));
+  const {
+    data: evmTxsData,
+    isFetching: isEvmTxsDataFetching,
+    isError: isEvmTxsDataError,
+  } = useTxsDataJsonRpc(
+    newEvmTxHashes?.filter((tx) => tx !== null) as string[]
+  );
 
   useEffect(() => {
     setIsEvmTxsFetching(true);
@@ -57,17 +66,19 @@ export const useContractDetailsTxs = (address: BechAddr20) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [evmTxsData]);
 
+  const isError = isCosmosTxsError || isEvmHashesError || isEvmTxsDataError;
   return {
     cosmosTxs,
     evmTxs,
     isCosmosTxsLoading,
     isCosmosTxsFetchingNextpage,
-    isEvmTxsLoading,
+    isEvmTxsLoading: isEvmTxsLoading && !isError,
     isEvmTxsFetchingNextpage:
-      isCosmosTxsFetchingNextpage ||
-      isEvmHashesFetching ||
-      isEvmTxsDataFetching ||
-      isEvmTxsFetching,
+      (isCosmosTxsFetchingNextpage ||
+        isEvmHashesFetching ||
+        isEvmTxsDataFetching ||
+        isEvmTxsFetching) &&
+      !isError,
     fetchNextPage,
     hasNextPage,
   };

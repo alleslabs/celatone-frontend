@@ -4,7 +4,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { TxDataJsonRpc } from "lib/services/types";
 
-import { EvmInfoLableValue } from "./EvmInfoLableValue";
+import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
 
 interface EvmTxCreateContractProps {
@@ -44,7 +44,7 @@ export const EvmTxCreateContract = ({
         </Flex>
       }
     >
-      <EvmInfoLableValue
+      <EvmInfoLabelValue
         label="Creator"
         value={
           <ExplorerLink
@@ -52,10 +52,11 @@ export const EvmTxCreateContract = ({
             value={from}
             showCopyOnHover
             textFormat="normal"
+            fixedHeight={false}
           />
         }
       />
-      <EvmInfoLableValue
+      <EvmInfoLabelValue
         label="Created Contract"
         value={
           contractAddress ? (
@@ -70,6 +71,7 @@ export const EvmTxCreateContract = ({
                 type="evm_contract_address"
                 showCopyOnHover
                 textFormat="normal"
+                fixedHeight={false}
               />
             </Flex>
           ) : (
