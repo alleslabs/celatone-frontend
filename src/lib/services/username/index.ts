@@ -14,10 +14,10 @@ export const useInitiaUsernameByAddress = (
   address: Nullish<Addr>,
   enabled = true
 ) => {
+  const isInitia = useInitia();
   const { isSomeValidAddress } = useValidateAddress();
   const formatAddress = useFormatAddresses();
 
-  const isInitia = useInitia();
   const queryFn = async () => {
     if (!address)
       throw new Error("address is undefined (useInitiaUsernameByAddress)");
