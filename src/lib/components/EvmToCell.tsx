@@ -1,12 +1,13 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import type { getEvmToAddress } from "lib/utils";
+import type { Option } from "lib/types";
+import type { EvmToAddress } from "lib/utils";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { CustomIcon } from "./icon";
 
 interface EvmToCellProps {
-  toAddress: ReturnType<typeof getEvmToAddress>;
+  toAddress: Option<EvmToAddress>;
 }
 
 export const EvmToCell = ({ toAddress }: EvmToCellProps) => {

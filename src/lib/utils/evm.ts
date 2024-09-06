@@ -1,4 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
+import { toChecksumAddress } from "web3-utils";
+
 import type { TxDataJsonRpc } from "lib/services/types";
 import type { Coin, HexAddr20, Option } from "lib/types";
 
@@ -18,15 +20,17 @@ export const getEvmMethod = (txInput: string) => {
 };
 
 export const convertToEvmDenom = (contractAddress: HexAddr20) =>
-  contractAddress.toLowerCase().replace("0x", "evm/");
+  toChecksumAddress(contractAddress).replace("0x", "evm/");
 
-export const getEvmToAddress = (
-  evmTxData: Option<TxDataJsonRpc>
-): Option<{
+export interface EvmToAddress {
   address: HexAddr20;
   type: "user_address" | "evm_contract_address";
   isCreatedContract: boolean;
-}> => {
+}
+
+export const getEvmToAddress = (
+  evmTxData: Option<TxDataJsonRpc>
+): Option<EvmToAddress> => {
   if (!evmTxData) return undefined;
 
   const { to, input } = evmTxData.tx;
