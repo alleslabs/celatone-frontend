@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1132](https://github.com/alleslabs/celatone-frontend/pull/1132) Update txs to get data from API instead of GraphQL
+
 ### Bug fixes
 
 - [#1126](https://github.com/alleslabs/celatone-frontend/pull/1126) Fix tx message detail alignment in small screen
@@ -86,7 +88,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1132](https://github.com/alleslabs/celatone-frontend/pull/1132) Update txs to get data from API instead of GraphQL
 - [#1099](https://github.com/alleslabs/celatone-frontend/pull/1099) Remove dashboard API
 - [#1090](https://github.com/alleslabs/celatone-frontend/pull/1090) Change query page layout in mobile and adjust code snippet copy button
 - [#1080](https://github.com/alleslabs/celatone-frontend/pull/1080) Adjust color and remove accent color
