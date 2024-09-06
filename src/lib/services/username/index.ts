@@ -33,8 +33,7 @@ export const useInitiaUsernameByAddress = (
     queryFn,
     {
       refetchOnWindowFocus: false,
-      enabled:
-        !!enabled && !!isInitia && !!address && isSomeValidAddress(address),
+      enabled: enabled && isInitia && !!address && isSomeValidAddress(address),
       retry: 1,
     }
   );
@@ -56,7 +55,7 @@ export const useAddressByInitiaUsername = (
     queryFn,
     {
       refetchOnWindowFocus: false,
-      enabled: !!enabled && !!isInitia,
+      enabled: enabled && isInitia,
       retry: 1,
     }
   );
