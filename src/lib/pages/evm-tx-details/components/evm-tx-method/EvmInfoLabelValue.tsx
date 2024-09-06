@@ -1,12 +1,12 @@
 import { Flex, Text } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
-interface EvmInfoLableValueProps {
+interface EvmInfoLabelValueProps {
   label: string;
   value: ReactNode;
 }
 
-export const EvmInfoLableValue = ({ label, value }: EvmInfoLableValueProps) => (
+export const EvmInfoLabelValue = ({ label, value }: EvmInfoLabelValueProps) => (
   <Flex w="full" direction={{ base: "column", md: "row" }} gap={1}>
     <Text
       variant="body2"

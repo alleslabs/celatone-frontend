@@ -15,7 +15,7 @@ import {
   isSupportedToken,
 } from "lib/utils";
 
-import { EvmInfoLableValue } from "./EvmInfoLableValue";
+import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
 
 interface EvmTxTransferErc20Props {
@@ -67,7 +67,7 @@ export const EvmTxTransferErc20 = ({
         </Box>
       }
     >
-      <EvmInfoLableValue
+      <EvmInfoLabelValue
         label="From"
         value={
           <ExplorerLink
@@ -75,10 +75,11 @@ export const EvmTxTransferErc20 = ({
             value={from}
             showCopyOnHover
             textFormat="normal"
+            fixedHeight={false}
           />
         }
       />
-      <EvmInfoLableValue
+      <EvmInfoLabelValue
         label="To"
         value={
           toAddress ? (
@@ -87,6 +88,7 @@ export const EvmTxTransferErc20 = ({
               value={toAddress.address}
               showCopyOnHover
               textFormat="normal"
+              fixedHeight={false}
             />
           ) : (
             <Text variant="body2" color="text.disabled">
@@ -95,7 +97,7 @@ export const EvmTxTransferErc20 = ({
           )
         }
       />
-      <EvmInfoLableValue
+      <EvmInfoLabelValue
         label="ERC-20 Contract"
         value={
           erc20Contract ? (
@@ -110,6 +112,7 @@ export const EvmTxTransferErc20 = ({
                 type="evm_contract_address"
                 showCopyOnHover
                 textFormat="normal"
+                fixedHeight={false}
               />
             </Flex>
           ) : (
@@ -119,7 +122,7 @@ export const EvmTxTransferErc20 = ({
           )
         }
       />
-      <EvmInfoLableValue
+      <EvmInfoLabelValue
         label="Transferred Token"
         value={
           isSupportedToken(amount) ? (

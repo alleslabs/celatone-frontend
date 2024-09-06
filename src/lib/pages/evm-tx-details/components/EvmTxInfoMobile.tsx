@@ -1,11 +1,12 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { chakra, Flex } from "@chakra-ui/react";
+import { chakra, Divider, Flex } from "@chakra-ui/react";
 
 import type { GasInfo } from "../data";
 import { useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
+import { formatTokenWithValue } from "lib/utils";
 
 import { EvmTxGasReceipt } from "./EvmTxGasReceipt";
 
@@ -36,7 +37,7 @@ export const EvmTxInfoMobile = ({
 
   return (
     <Container {...flexProps}>
-      <Flex>
+      <Flex gap={1}>
         <LabelText flex={1} label="Network">
           {currentChainId}
         </LabelText>
@@ -49,6 +50,20 @@ export const EvmTxInfoMobile = ({
           />
         </LabelText>
       </Flex>
+      <Flex gap={1}>
+        <LabelText flex={1} label="Transaction Fee">
+          {formatTokenWithValue(gasInfo.txFee)}
+        </LabelText>
+        <LabelText flex={1} label="Cosmos Tx">
+          <ExplorerLink
+            value={cosmosTxData.txhash.toUpperCase()}
+            type="tx_hash"
+            showCopyOnHover
+            fixedHeight={false}
+          />
+        </LabelText>
+      </Flex>
+      <Divider />
       <EvmTxGasReceipt gasInfo={gasInfo} />
     </Container>
   );

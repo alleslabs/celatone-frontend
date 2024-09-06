@@ -11,7 +11,7 @@ import {
   isSupportedToken,
 } from "lib/utils";
 
-import { EvmInfoLableValue } from "./EvmInfoLableValue";
+import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
 
 interface EvmTxTransferProps {
@@ -62,7 +62,7 @@ export const EvmTxTransfer = ({
         </Box>
       }
     >
-      <EvmInfoLableValue
+      <EvmInfoLabelValue
         label="From"
         value={
           <ExplorerLink
@@ -70,10 +70,11 @@ export const EvmTxTransfer = ({
             value={from}
             showCopyOnHover
             textFormat="normal"
+            fixedHeight={false}
           />
         }
       />
-      <EvmInfoLableValue
+      <EvmInfoLabelValue
         label="To"
         value={
           to ? (
@@ -82,6 +83,7 @@ export const EvmTxTransfer = ({
               value={to}
               showCopyOnHover
               textFormat="normal"
+              fixedHeight={false}
             />
           ) : (
             <Text variant="body2" color="text.disabled">
@@ -90,7 +92,7 @@ export const EvmTxTransfer = ({
           )
         }
       />
-      <EvmInfoLableValue
+      <EvmInfoLabelValue
         label="Transferred Token"
         value={
           isSupportedToken(amount) ? (

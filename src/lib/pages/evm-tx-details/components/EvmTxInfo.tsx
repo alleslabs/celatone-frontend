@@ -6,6 +6,7 @@ import { useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
+import { formatTokenWithValue } from "lib/utils";
 
 import { EvmTxGasReceipt } from "./EvmTxGasReceipt";
 
@@ -49,6 +50,9 @@ export const EvmTxInfo = ({
           type="tx_hash"
           showCopyOnHover
         />
+      </LabelText>
+      <LabelText label="Transaction Fee">
+        {formatTokenWithValue(gasInfo.txFee)}
       </LabelText>
       <EvmTxGasReceipt gasInfo={gasInfo} />
     </Container>
