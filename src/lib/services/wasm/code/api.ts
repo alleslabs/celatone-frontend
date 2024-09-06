@@ -1,6 +1,10 @@
 import axios from "axios";
 
-import { zCodeData, zCodesResponse } from "lib/services/types";
+import {
+  zCodeData,
+  zCodeListResponse,
+  zCodesResponse,
+} from "lib/services/types";
 import type { CodeData, CodesResponse } from "lib/services/types";
 import type { BechAddr, BechAddr20, Option } from "lib/types";
 import { parseWithError } from "lib/utils";
@@ -58,3 +62,20 @@ export const getCodeData = async (
       },
     })
     .then(({ data }) => parseWithError(zCodeData, data));
+
+export const getCodeList = async (endpoint: string, codeIds: number[]) =>
+  axios
+    .get(`${endpoint}/list`, {
+      params: {
+        code_id: codeIds,
+      },
+      paramsSerializer: (params) =>
+        Object.entries(params)
+          .map(([key, value]) =>
+            value
+              .map((v: number) => `${key}=${encodeURIComponent(v)}`)
+              .join("&")
+          )
+          .join("&"),
+    })
+    .then(({ data }) => parseWithError(zCodeListResponse, data));

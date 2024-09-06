@@ -163,3 +163,7 @@ export const zCodeInfoResponseLcd = z
       uploader: creator,
     })
   );
+
+export const zCodeListResponse = z.object({
+  items: z.array(zCodesResponseItem),
+});
