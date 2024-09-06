@@ -75,8 +75,6 @@ export const DEFAULT_TX_FILTERS: TxFilters = {
   ...DEFAULT_INITIA_TX_FILTERS,
 };
 
-export const UPPERBOUND_COUNT = 10000;
-
 export enum StorageKeys {
   NavSidebar = "nav-sidebar",
   DevSidebar = "dev-sidebar",

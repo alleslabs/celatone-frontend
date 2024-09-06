@@ -4,7 +4,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
-import { useTxsByPoolIdPagination } from "lib/services/tx";
+import { useTxsByPoolId } from "lib/services/tx";
 import type { PoolDetail, PoolTxFilter } from "lib/types";
 
 import { PoolTxsTable } from "./PoolTxsTable";
@@ -45,8 +45,8 @@ export const PoolRelatedTxsTable = ({
   const {
     data: txs,
     isLoading,
-    error,
-  } = useTxsByPoolIdPagination(pool.id, type, offset, pageSize);
+    isError,
+  } = useTxsByPoolId(pool.id, type, pageSize, offset);
 
   const onPageChange = (nextPage: number) => {
     setCurrentPage(nextPage);
@@ -58,12 +58,13 @@ export const PoolRelatedTxsTable = ({
     setCurrentPage(1);
   };
 
-  if (error) return <ErrorFetching dataName="transactions" />;
+  if (isError) return <ErrorFetching dataName="transactions" />;
+
   return (
     <>
       <PoolTxsTable
         pool={pool}
-        transactions={txs}
+        transactions={txs?.items}
         assetInfos={assetInfos}
         isLoading={isLoadingAssetInfos || isLoading}
         emptyState={

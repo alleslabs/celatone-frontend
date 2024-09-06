@@ -25,6 +25,7 @@ import type {
   BechAddr20,
   BechAddr32,
   Option,
+  PoolTxFilter,
   Transaction,
   TxFilters,
 } from "lib/types";
@@ -40,6 +41,8 @@ import {
   getTxs,
   getTxsByAddress,
   getTxsByBlockHeight,
+  getTxsByPoolId,
+  getTxsByPoolIdTableCounts,
   getTxsCountByAddress,
 } from "./api";
 import {
@@ -124,6 +127,52 @@ export const useTxs = (
     async () =>
       getTxs(endpoint, limit, offset, wasmEnable, moveEnable, isInitia),
     { ...options, retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useTxsByPoolId = (
+  poolId: number,
+  type: PoolTxFilter,
+  limit: number,
+  offset: number
+) => {
+  const endpoint = useBaseApiRoute("txs");
+  const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID,
+      endpoint,
+      poolId,
+      type,
+      limit,
+      offset,
+      wasmEnable,
+    ],
+    async () => getTxsByPoolId(endpoint, poolId, type, limit, offset),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useTxsByPoolIdTableCounts = (poolId: number) => {
+  const endpoint = useBaseApiRoute("txs");
+  const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID_COUNT,
+      endpoint,
+      poolId,
+      wasmEnable,
+    ],
+    async () => getTxsByPoolIdTableCounts(endpoint, poolId),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };
 
@@ -526,5 +575,3 @@ export const useTxsByBlockHeightSequencer = (height: number) => {
     ...rest,
   };
 };
-
-export * from "./gql";

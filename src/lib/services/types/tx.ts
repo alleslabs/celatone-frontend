@@ -368,3 +368,52 @@ export const zBlockTxsResponseSequencer = z.object({
   txs: z.array(zTxsResponseItemFromLcd),
   pagination: zPagination,
 });
+
+const zTxByPoolIdResponse = z
+  .object({
+    block: z.object({
+      height: z.number().nonnegative(),
+      timestamp: zUtcDate,
+    }),
+    transaction: z.object({
+      account: z.object({
+        address: zBechAddr,
+      }),
+      hash: z.string(),
+      is_ibc: z.boolean(),
+      messages: z.any().array(),
+      success: z.boolean(),
+    }),
+  })
+  .transform<Transaction>(({ transaction, block }) => ({
+    hash: parseTxHash(transaction.hash),
+    messages: snakeToCamel(transaction.messages) as Message[],
+    sender: transaction.account.address,
+    isSigner: true,
+    height: block.height,
+    created: block.timestamp,
+    success: transaction.success,
+    actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+    furtherAction: MsgFurtherAction.NONE,
+    isIbc: transaction.is_ibc,
+    isInstantiate: false,
+    isOpinit: false,
+  }));
+
+export const zTxsByPoolIdResponse = z.object({
+  items: z.array(zTxByPoolIdResponse),
+  total: z.number().nonnegative(),
+});
+
+export const zTxsByPoolIdTxsCountResponse = z
+  .object({
+    all: z.number(),
+    total_swap: z.number(),
+    total_lp: z.number(),
+    total_bond: z.number(),
+    total_superfluid: z.number(),
+    total_clp: z.number(),
+    total_collect: z.number(),
+    total_migrate: z.number(),
+  })
+  .transform(snakeToCamel);
