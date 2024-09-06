@@ -1,17 +1,17 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import type { HexAddr20, Nullable } from "lib/types";
+import type { Option } from "lib/types";
+import type { EvmToAddress } from "lib/utils";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { CustomIcon } from "./icon";
 
 interface EvmToCellProps {
-  to: Nullable<HexAddr20>;
-  contractAddress: Nullable<HexAddr20>;
+  toAddress: Option<EvmToAddress>;
 }
 
-export const EvmToCell = ({ to, contractAddress }: EvmToCellProps) => {
-  if (contractAddress)
+export const EvmToCell = ({ toAddress }: EvmToCellProps) => {
+  if (toAddress?.isCreatedContract)
     return (
       <Flex direction="column">
         <Text variant="body3" color="text.disabled">
@@ -24,16 +24,22 @@ export const EvmToCell = ({ to, contractAddress }: EvmToCellProps) => {
             color="primary.main"
           />
           <ExplorerLink
-            value={contractAddress}
-            type="evm_contract_address"
+            value={toAddress.address}
+            type={toAddress.type}
             showCopyOnHover
           />
         </Flex>
       </Flex>
     );
 
-  if (to)
-    return <ExplorerLink value={to} type="user_address" showCopyOnHover />;
+  if (toAddress)
+    return (
+      <ExplorerLink
+        value={toAddress.address}
+        type={toAddress.type}
+        showCopyOnHover
+      />
+    );
 
   return (
     <Text variant="body2" color="text.dark">

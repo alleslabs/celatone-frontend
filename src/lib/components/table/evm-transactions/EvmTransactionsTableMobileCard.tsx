@@ -17,6 +17,8 @@ import {
   formatPrice,
   formatUTC,
   formatUTokenWithPrecision,
+  getEvmAmount,
+  getEvmToAddress,
   getTokenLabel,
 } from "lib/utils";
 
@@ -33,12 +35,10 @@ export const EvmTransactionsTableMobileCard = ({
   showTimestamp,
 }: EvmTransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
+  const toAddress = getEvmToAddress(evmTransaction);
+  const { amount, denom } = getEvmAmount(evmTransaction, evmDenom);
 
-  const token = coinToTokenWithValue(
-    evmDenom ?? "",
-    evmTransaction.tx.value.toString(),
-    assetInfos
-  );
+  const token = coinToTokenWithValue(denom, amount, assetInfos);
   return (
     <MobileCardTemplate
       onClick={() =>
@@ -83,10 +83,7 @@ export const EvmTransactionsTableMobileCard = ({
             </Flex>
             <Flex direction="column" flex={1} gap={1}>
               <MobileLabel label="To" />
-              <EvmToCell
-                to={evmTransaction.tx.to}
-                contractAddress={evmTransaction.txReceipt.contractAddress}
-              />
+              <EvmToCell toAddress={toAddress} />
             </Flex>
           </Flex>
           <Flex direction="column" mt={3}>

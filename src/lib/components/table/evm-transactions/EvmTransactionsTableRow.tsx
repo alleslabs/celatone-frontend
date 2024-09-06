@@ -16,6 +16,8 @@ import {
   formatPrice,
   formatUTC,
   formatUTokenWithPrecision,
+  getEvmAmount,
+  getEvmToAddress,
   getTokenLabel,
 } from "lib/utils";
 
@@ -35,6 +37,8 @@ export const EvmTransactionsTableRow = ({
   showTimestamp,
 }: EvmTransactionsTableRowProps) => {
   const navigate = useInternalNavigate();
+  const toAddress = getEvmToAddress(evmTransaction);
+  const { amount, denom } = getEvmAmount(evmTransaction, evmDenom);
 
   const onRowSelect = (txHash: string) =>
     navigate({
@@ -42,11 +46,7 @@ export const EvmTransactionsTableRow = ({
       query: { txHash },
     });
 
-  const token = coinToTokenWithValue(
-    evmDenom ?? "",
-    evmTransaction.tx.value.toString(),
-    assetInfos
-  );
+  const token = coinToTokenWithValue(denom, amount, assetInfos);
   return (
     <Grid
       className="copier-wrapper"
@@ -85,10 +85,7 @@ export const EvmTransactionsTableRow = ({
         <CustomIcon name="arrow-right" boxSize={5} color="gray.600" />
       </TableRow>
       <TableRow>
-        <EvmToCell
-          to={evmTransaction.tx.to}
-          contractAddress={evmTransaction.txReceipt.contractAddress}
-        />
+        <EvmToCell toAddress={toAddress} />
       </TableRow>
       <TableRow flexDirection="column" alignItems="start">
         <Text variant="body2">

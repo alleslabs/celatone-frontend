@@ -8,7 +8,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { useTxDataJsonRpc } from "lib/services/tx";
-import { formatEvmTxHash } from "lib/utils";
+import { formatEvmTxHash, getEvmToAddress } from "lib/utils";
 
 import { EvmRelatedField } from "./EvmRelatedField";
 
@@ -29,6 +29,8 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         py={0}
       />
     );
+
+  const toAddress = getEvmToAddress(data);
 
   return (
     <>
@@ -53,14 +55,10 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         name="arrow-right"
         boxSize={5}
         color="gray.600"
-        mt={2}
         display={{ base: "none", xl: "block" }}
       />
       <EvmRelatedField label="To">
-        <EvmToCell
-          to={data.tx.to}
-          contractAddress={data.txReceipt.contractAddress}
-        />
+        <EvmToCell toAddress={toAddress} />
       </EvmRelatedField>
     </>
   );
@@ -69,13 +67,13 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
 export const EvmRelatedTxSection = ({
   evmTxHash,
 }: EvmRelatedTxSectionProps) => (
-  <Flex direction="column" gap={4} mb={8} minW="fit-content">
+  <Flex direction="column" gap={4} mb={8} minW="330px">
     <Heading as="h6" variant="h6">
       Related EVM Transaction
     </Heading>
     <Flex
       direction={{ base: "column", xl: "row" }}
-      alignItems={{ base: "start", xl: "center" }}
+      alignItems={{ base: "start", xl: "end" }}
       gap={4}
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="8px"
