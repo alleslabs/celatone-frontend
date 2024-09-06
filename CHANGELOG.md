@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1132](https://github.com/alleslabs/celatone-frontend/pull/1132) Update account type to get data from API instead of GraphQL
+
 ### Bug fixes
 
 - [#1126](https://github.com/alleslabs/celatone-frontend/pull/1126) Fix tx message detail alignment in small screen
@@ -59,7 +61,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1132](https://github.com/alleslabs/celatone-frontend/pull/1132) Update account type to get data from API instead of GraphQL
 - [#1095](https://github.com/alleslabs/celatone-frontend/pull/1095) Update native broadcast helper function to generic sign and broadcast function
 - [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
 
