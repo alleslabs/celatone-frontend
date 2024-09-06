@@ -5,6 +5,7 @@ import {
   useInitia,
   useValidateAddress,
 } from "lib/app-provider";
+import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import type { Addr, Nullish } from "lib/types";
 
 import { getAddressByInitiaUsername, getInitiaUsernameByAddress } from "./lcd";
@@ -14,12 +15,16 @@ export const useInitiaUsernameByAddress = (
   enabled = true
 ) => {
   const { isSomeValidAddress } = useValidateAddress();
+  const formatAddress = useFormatAddresses();
+
   const isInitia = useInitia();
   const queryFn = async () => {
     if (!address)
       throw new Error("address is undefined (useInitiaUsernameByAddress)");
 
-    const username = await getInitiaUsernameByAddress(address);
+    const username = await getInitiaUsernameByAddress(
+      formatAddress(address).hex
+    );
     return { username };
   };
 
@@ -40,9 +45,11 @@ export const useAddressByInitiaUsername = (
   enabled = true
 ) => {
   const isInitia = useInitia();
+  const formatAddress = useFormatAddresses();
+
   const queryFn = async () => {
     const address = await getAddressByInitiaUsername(username);
-    return { address };
+    return { address: address ? formatAddress(address).address : null };
   };
   return useQuery(
     [CELATONE_QUERY_KEYS.ADDRESS_BY_INITIA_USERNAME, username],
