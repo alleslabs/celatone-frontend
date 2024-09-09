@@ -20,18 +20,17 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
   const isMobile = useMobile();
   const { data, isLoading } = useTxDataJsonRpc(evmTxHash);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading my={0} py={0} />;
   if (!data)
     return (
       <EmptyState
         message="Error fetching data from Json RPC. Please try again later."
-        my={0}
-        py={0}
+        my={3}
+        py={1}
       />
     );
 
   const toAddress = getEvmToAddress(data);
-
   return (
     <>
       <EvmRelatedField label={isMobile ? "Tx Hash" : "Transaction Hash"}>
