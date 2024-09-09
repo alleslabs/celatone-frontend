@@ -10,12 +10,15 @@ enum EvmMethod {
   transfer = "0x",
   transferErc20 = "0xa9059cbb",
   create = "0x60806040",
+  callErc20Factory = "0x06ef1a86",
 }
 
 export const getEvmMethod = (txInput: string) => {
   if (txInput === EvmMethod.transfer) return "transfer";
   if (txInput.startsWith(EvmMethod.transferErc20)) return "transfer ERC20";
   if (txInput.startsWith(EvmMethod.create)) return "create";
+  if (txInput.startsWith(EvmMethod.callErc20Factory))
+    return "call ERC20 factory";
   return txInput.slice(0, 10);
 };
 
@@ -49,6 +52,17 @@ export const getEvmToAddress = (
     if (!contractAddress) return undefined;
     return {
       address: contractAddress,
+      type: "evm_contract_address",
+      isCreatedContract: true,
+    };
+  }
+
+  if (method === "call ERC20 factory") {
+    const { logs } = evmTxData.txReceipt;
+    const contractAddress = logs[0]?.address;
+    if (!contractAddress) return undefined;
+    return {
+      address: contractAddress as HexAddr20,
       type: "evm_contract_address",
       isCreatedContract: true,
     };

@@ -66,7 +66,7 @@ export const EvmTransactionsTableMobileCard = ({
           </Flex>
           <Flex direction="column" flex={2} gap={1}>
             <MobileLabel label="Method" />
-            <EvmMethodChip txInput={evmTransaction.tx.input} width="120px" />
+            <EvmMethodChip txInput={evmTransaction.tx.input} />
           </Flex>
         </Flex>
       }

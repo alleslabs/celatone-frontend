@@ -36,7 +36,7 @@ export const EvmTransactionsTable = ({
     "32px",
     "160px",
     "48px",
-    "minmax(140px, 1fr)",
+    "minmax(180px, 1fr)",
     "minmax(160px, 2fr)",
     "48px",
     "minmax(180px, 2fr)",

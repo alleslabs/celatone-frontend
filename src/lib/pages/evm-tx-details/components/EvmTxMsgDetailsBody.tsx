@@ -4,6 +4,7 @@ import type { Option } from "lib/types";
 import { getEvmMethod } from "lib/utils";
 
 import {
+  EvmTxCallErc20Factory,
   EvmTxCreateContract,
   EvmTxDefault,
   EvmTxTransfer,
@@ -39,6 +40,8 @@ export const EvmTxMsgDetailsBody = ({
       );
     case "create":
       return <EvmTxCreateContract evmTxData={evmTxData} />;
+    case "call ERC20 factory":
+      return <EvmTxCallErc20Factory evmTxData={evmTxData} />;
     default:
       return <EvmTxDefault evmTxData={evmTxData} />;
   }
