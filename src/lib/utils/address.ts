@@ -89,11 +89,14 @@ export const toChecksumAddress = (address: HexAddr): string => {
   const hash = `0x${uint8ArrayToHexString(
     keccak256(utf8ToBytes(lowerCaseAddress))
   )}`;
+
+  // EIP-1052, keccak was given empty data
+  // if hash is equal to c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470
   if (
     hash ===
     "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
   )
-    return ""; // // EIP-1052 if hash is equal to c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470, keccak was given empty data
+    return "";
 
   let checksumAddress = "0x";
   const addressHash = hash.replace(/^0x/i, "");
