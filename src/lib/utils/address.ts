@@ -8,9 +8,11 @@ import {
 } from "@cosmjs/encoding";
 
 import type { AddressReturnType } from "lib/app-provider";
-import { zBechAddr20 } from "lib/types";
 import type { BechAddr, HexAddr, Option, Pubkey } from "lib/types";
+import { zBechAddr20 } from "lib/types";
 
+import { utf8ToBytes } from "./base64";
+import { uint8ArrayToHexString } from "./hex";
 import { sha256Hex } from "./sha256";
 
 export const hashAddress = (address: Option<string>): Option<string> => {
@@ -79,4 +81,33 @@ export const convertAccountPubkeyToAccountAddress = (
   }
 
   return zBechAddr20.parse("");
+};
+
+export const toChecksumAddress = (address: HexAddr): string => {
+  const lowerCaseAddress = address.toLowerCase().replace(/^0x/i, "");
+
+  const hash = `0x${uint8ArrayToHexString(
+    keccak256(utf8ToBytes(lowerCaseAddress))
+  )}`;
+
+  // EIP-1052, keccak was given empty data
+  // if hash is equal to c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470
+  if (
+    hash ===
+    "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+  )
+    return "";
+
+  let checksumAddress = "0x";
+  const addressHash = hash.replace(/^0x/i, "");
+
+  for (let i = 0; i < lowerCaseAddress.length; i += 1) {
+    // If ith character is 8 to f then make it uppercase
+    if (parseInt(addressHash[i], 16) > 7) {
+      checksumAddress += lowerCaseAddress[i].toUpperCase();
+    } else {
+      checksumAddress += lowerCaseAddress[i];
+    }
+  }
+  return checksumAddress;
 };

@@ -1,9 +1,9 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import { toChecksumAddress } from "web3-utils";
 
 import type { TxDataJsonRpc } from "lib/services/types";
 import type { Coin, HexAddr20, Option } from "lib/types";
 
+import { toChecksumAddress } from "./address";
 import { hexToBig } from "./number";
 
 enum EvmMethod {

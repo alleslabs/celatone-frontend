@@ -22,7 +22,7 @@ import {
 } from "lib/services/evm";
 import { useEvmTxHashByCosmosTxHash } from "lib/services/tx";
 import type { HexAddr20 } from "lib/types";
-import { is0x, isHexWalletAddress, truncate } from "lib/utils";
+import { isHexWalletAddress, truncate } from "lib/utils";
 
 import { EvmContractDetailsBytecode } from "./components/EvmContractDetailsBytecode";
 import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
@@ -88,7 +88,7 @@ const EvmContractDetailsBody = ({
   if (isEvmCodesByAddressLoading) return <Loading />;
   if (!evmCodesByAddressData)
     return <ErrorFetching dataName="evm contract information" />;
-  if (is0x(evmCodesByAddressData.code)) return <InvalidContract />;
+  if (!evmCodesByAddressData.code) return <InvalidContract />;
 
   return (
     <>

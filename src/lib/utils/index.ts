@@ -20,6 +20,7 @@ export * from "./fee";
 export * from "./format";
 export * from "./formatter";
 export * from "./funds";
+export * from "./hex";
 export * from "./icon";
 export * from "./json";
 export * from "./math";
