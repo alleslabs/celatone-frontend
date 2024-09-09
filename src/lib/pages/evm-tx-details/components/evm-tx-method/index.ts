@@ -1,3 +1,4 @@
+export * from "./EvmTxCallErc20Factory";
 export * from "./EvmTxCreateContract";
 export * from "./EvmTxDefault";
 export * from "./EvmTxTransfer";

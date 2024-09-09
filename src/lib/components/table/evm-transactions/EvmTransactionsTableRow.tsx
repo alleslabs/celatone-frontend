@@ -72,7 +72,7 @@ export const EvmTransactionsTableRow = ({
         )}
       </TableRow>
       <TableRow>
-        <EvmMethodChip txInput={evmTransaction.tx.input} width="120px" />
+        <EvmMethodChip txInput={evmTransaction.tx.input} />
       </TableRow>
       <TableRow>
         <ExplorerLink
