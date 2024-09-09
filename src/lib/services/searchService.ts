@@ -348,8 +348,9 @@ export const useSearchHandler = (
   if (isAddr)
     results.push({
       value: debouncedKeyword,
-      // eslint-disable-next-line sonarjs/no-duplicate-string
-      type: contractData || evmCodes ? "Contract Address" : "Account Address",
+      type:
+        // eslint-disable-next-line sonarjs/no-duplicate-string
+        contractData || evmCodes?.code ? "Contract Address" : "Account Address",
       metadata: {
         icns:
           icnsNamesByKeyword && icnsNamesByKeyword.names.length > 0
