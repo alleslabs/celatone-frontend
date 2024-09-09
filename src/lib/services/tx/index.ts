@@ -16,6 +16,7 @@ import {
   useInitia,
   useLcdEndpoint,
   useMoveConfig,
+  usePoolConfig,
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
@@ -137,7 +138,7 @@ export const useTxsByPoolId = (
   offset: number
 ) => {
   const endpoint = useBaseApiRoute("txs");
-  const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
+  const { enabled: poolEnable } = usePoolConfig({ shouldRedirect: false });
 
   return useQuery(
     [
@@ -147,9 +148,13 @@ export const useTxsByPoolId = (
       type,
       limit,
       offset,
-      wasmEnable,
+      poolEnable,
     ],
-    async () => getTxsByPoolId(endpoint, poolId, type, limit, offset),
+    async () => {
+      if (!poolEnable) throw new Error("Pool is not enabled (useTxsByPoolId)");
+
+      return getTxsByPoolId(endpoint, poolId, type, limit, offset);
+    },
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -159,16 +164,21 @@ export const useTxsByPoolId = (
 
 export const useTxsByPoolIdTableCounts = (poolId: number) => {
   const endpoint = useBaseApiRoute("txs");
-  const { enabled: wasmEnable } = useWasmConfig({ shouldRedirect: false });
+  const { enabled: poolEnable } = usePoolConfig({ shouldRedirect: false });
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID_COUNT,
       endpoint,
       poolId,
-      wasmEnable,
+      poolEnable,
     ],
-    async () => getTxsByPoolIdTableCounts(endpoint, poolId),
+    async () => {
+      if (!poolEnable)
+        throw new Error("Pool is not enabled (useTxsByPoolIdTableCounts)");
+
+      return getTxsByPoolIdTableCounts(endpoint, poolId);
+    },
     {
       retry: 1,
       refetchOnWindowFocus: false,
