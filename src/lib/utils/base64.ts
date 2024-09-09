@@ -8,3 +8,6 @@ export const decode = (str: string): string =>
 
 export const encode = (str: string): string =>
   Buffer.from(str, "binary").toString("base64");
+
+export const utf8ToBytes = (str: string): Uint8Array =>
+  Buffer.from(str, "utf-8");
