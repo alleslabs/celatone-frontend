@@ -26,7 +26,6 @@ import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
-  useCurrentChain,
   useGas,
   useLcdEndpoint,
   useMobile,
@@ -37,9 +36,9 @@ import type { BechAddr32 } from "lib/types";
 import { coinsToStr, jsonPrettify } from "lib/utils";
 
 import "ace-builds/src-noconflict/ace";
-import "ace-builds/src-noconflict/mode-sh";
-import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-sh";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/theme-one_dark";
 import "ace-builds/src-noconflict/theme-pastel_on_dark";
@@ -63,18 +62,20 @@ const WasmCodeSnippet = ({
 }: WasmCodeSnippetProps) => {
   const isMobile = useMobile();
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const {
-    chain: { chain_name: chainName, daemon_name: daemonName },
-  } = useCurrentChain();
   const isDisabled = !contractAddress || !message.length;
   const lcdEndpoint = useLcdEndpoint();
   const rpcEndpoint = useRpcEndpoint();
-  const { currentChainId, theme } = useCelatoneApp();
+  const {
+    currentChainId,
+    chainConfig: { chain, registryChainName },
+    theme,
+  } = useCelatoneApp();
   const gasPrice = useGas();
 
   const [activeSnippet, setActiveSnippet] = useState("");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
+  const daemonName = `${chain}d`;
   const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
   const fundsFlags = funds.length ? `\n  --amount ${coinsToStr(funds)} \\` : "";
 
@@ -170,7 +171,7 @@ const { chains } = require("chain-registry");
 // TODO: Replace with your mnemonic (not recommended for production use)
 const mnemonic =
   "<MNEMONIC>";
-const chain = chains.find(({ chain_name }) => chain_name === '${chainName}');
+const chain = chains.find(({ chain_name }) => chain_name === '${registryChainName}');
 const contractAddress =
   '${contractAddress}';
 const msg = ${message};
