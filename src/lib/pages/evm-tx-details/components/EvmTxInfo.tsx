@@ -5,14 +5,16 @@ import type { GasInfo } from "../data";
 import { useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
+import { TokenImageWithAmount } from "lib/components/token";
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import { formatTokenWithValue } from "lib/utils";
+import type { TokenWithValue } from "lib/types";
 
 import { EvmTxGasReceipt } from "./EvmTxGasReceipt";
 
 interface EvmTxInfoProps extends FlexProps {
   evmTxData: TxDataJsonRpc;
   cosmosTxData: TxData;
+  evmTxValue: TokenWithValue;
   gasInfo: GasInfo;
 }
 
@@ -28,6 +30,7 @@ const Container = chakra(Flex, {
 export const EvmTxInfo = ({
   evmTxData,
   cosmosTxData,
+  evmTxValue,
   gasInfo,
   ...flexProps
 }: EvmTxInfoProps) => {
@@ -51,8 +54,8 @@ export const EvmTxInfo = ({
           showCopyOnHover
         />
       </LabelText>
-      <LabelText label="Transaction Fee">
-        {formatTokenWithValue(gasInfo.txFee)}
+      <LabelText label="Amount">
+        <TokenImageWithAmount token={evmTxValue} />
       </LabelText>
       <EvmTxGasReceipt gasInfo={gasInfo} />
     </Container>

@@ -1,10 +1,11 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
 import type { GasInfo } from "../data";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { MotionBox } from "lib/components/MotionBox";
+import { TokenImageWithAmount } from "lib/components/token";
 import { formatInteger, formatTokenWithValue } from "lib/utils";
 
 interface EvmTxGasReceiptProps {
@@ -15,7 +16,11 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
   const [expand, setExpand] = useState(false);
 
   return (
-    <Flex direction="column" gap={6}>
+    <>
+      <Divider />
+      <LabelText flex={1} label="Transaction Fee">
+        <TokenImageWithAmount token={gasInfo.txFee} />
+      </LabelText>
       <LabelText label="Gas Price">
         {formatTokenWithValue(gasInfo.gasPrice)}
       </LabelText>
@@ -73,6 +78,6 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
           </Button>
         </Box>
       )}
-    </Flex>
+    </>
   );
 };
