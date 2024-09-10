@@ -67,7 +67,7 @@ const WasmCodeSnippet = ({
   const rpcEndpoint = useRpcEndpoint();
   const {
     currentChainId,
-    chainConfig: { chain, registryChainName },
+    chainConfig: { chain },
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();
@@ -171,7 +171,7 @@ const { chains } = require("chain-registry");
 // TODO: Replace with your mnemonic (not recommended for production use)
 const mnemonic =
   "<MNEMONIC>";
-const chain = chains.find(({ chain_name }) => chain_name === '${registryChainName}');
+const chain = chains.find(({ chain_id }) => chain_id === '${currentChainId}');
 const contractAddress =
   '${contractAddress}';
 const msg = ${message};
