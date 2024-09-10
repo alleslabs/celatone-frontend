@@ -35,15 +35,13 @@ export const getNftByNftAddressLcd = async (
   Promise.all([
     getNftHolderLcd(endpoint, nftAddress),
     getNftInfoLcd(endpoint, nftAddress),
-  ]).then<{ data: Nft }>(([holder, info]) => ({
-    data: {
-      uri: info.uri,
-      tokenId: info.tokenId,
-      description: info.description,
-      isBurned: false,
-      ownerAddress: holder,
-      nftAddress,
-      collectionAddress: info.collection,
-      collectionName: null,
-    },
+  ]).then<Nft>(([holder, info]) => ({
+    uri: info.uri,
+    tokenId: info.tokenId,
+    description: info.description,
+    isBurned: false,
+    ownerAddress: holder,
+    nftAddress,
+    collectionAddress: info.collection,
+    collectionName: null,
   }));

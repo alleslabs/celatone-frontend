@@ -314,8 +314,8 @@ export const useSearchHandler = (
       type: "NFT Address",
       metadata: {
         nft: {
-          collectionAddress: nftData.data.collectionAddress,
-          name: nftData.data.tokenId,
+          collectionAddress: nftData.collectionAddress,
+          name: nftData.tokenId,
         },
       },
     });

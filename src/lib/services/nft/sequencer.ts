@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
-import type { Nft, NftMintInfo, NftTransactions } from "../types";
+import type { Nft, NftMintInfo, NftTxResponse } from "../types";
 import {
   zNftsByAccountResponseSequencer,
   zNftsResponseSequencer,
@@ -64,7 +64,7 @@ export const getNftsByAccountSequencer = async (
         parseWithError(zNftsByAccountResponseSequencer, data)
       );
 
-    nfts.push(...res.nfts);
+    nfts.push(...res.items);
 
     if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
   };
@@ -72,7 +72,7 @@ export const getNftsByAccountSequencer = async (
   await fetchFn(null);
 
   return {
-    nfts,
+    items: nfts,
     total: nfts.length,
   };
 };
@@ -116,7 +116,7 @@ export const getNftTransactionsSequencer = async (
     limit: 10,
   });
 
-  const nftsTxs: NftTransactions[] = [];
+  const nftsTxs: NftTxResponse[] = [];
 
   txsByNftAddress.items.forEach((tx) => {
     const { events, hash, created } = tx;

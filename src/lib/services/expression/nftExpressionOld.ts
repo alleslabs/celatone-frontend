@@ -1,4 +1,4 @@
-import type { HexAddr, HexAddr32 } from "lib/types";
+import type { HexAddr32 } from "lib/types";
 import { isHexModuleAddress, isTxHash } from "lib/utils";
 
 export const getCollectionsExpressionOld = (search = "") => {
@@ -37,57 +37,5 @@ export const getCollectionActivitiesExpressionOld = (
   return {
     collection: { vm_address: { vm_address: { _eq: collectionAddress } } },
     ...(search ? { _and: searchOption } : {}),
-  };
-};
-
-export const getNftsExpressionOld = (
-  collectionAddress: HexAddr32,
-  search = ""
-) => {
-  const orExpression = {
-    _or: [
-      { token_id: { _iregex: search } },
-      ...(isHexModuleAddress(search)
-        ? [{ vm_address: { vm_address: { _eq: search.toLowerCase() } } }]
-        : []),
-    ],
-  };
-
-  return {
-    collectionByCollection: {
-      vm_address: { vm_address: { _eq: collectionAddress } },
-    },
-    is_burned: { _eq: false },
-    ...(search.trim().length > 0 ? orExpression : {}),
-  };
-};
-
-export const getNftsByAccountExpressionOld = (
-  accountAddress: HexAddr,
-  collectionAddress?: HexAddr32,
-  search = ""
-) => {
-  const orExpression = {
-    _or: [
-      { token_id: { _iregex: search } },
-      ...(isHexModuleAddress(search)
-        ? [{ vm_address: { vm_address: { _eq: search.toLowerCase() } } }]
-        : []),
-    ],
-  };
-
-  return {
-    vmAddressByOwner: { vm_address: { _eq: accountAddress } },
-    is_burned: { _eq: false },
-    ...(collectionAddress
-      ? {
-          collectionByCollection: {
-            vm_address: {
-              vm_address: { _eq: collectionAddress.toLowerCase() },
-            },
-          },
-        }
-      : {}),
-    ...(search.trim().length > 0 ? orExpression : {}),
   };
 };

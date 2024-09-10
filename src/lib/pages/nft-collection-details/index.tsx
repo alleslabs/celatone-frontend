@@ -28,7 +28,7 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useNfts, useNftsSequencer } from "lib/services/nft";
+import { useNfts } from "lib/services/nft";
 import {
   useCollectionActivitiesCount,
   useCollectionByCollectionAddress,
@@ -58,22 +58,17 @@ const CollectionDetailsBody = ({
 }: CollectionDetailQueryParams) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
-  const { isFullTier, isSequencerTier } = useTierConfig();
+  const { isFullTier } = useTierConfig();
 
   const { data: collection, isLoading: isCollectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
 
-  const dataNftsFull = useNfts(collectionAddress, 6, 0, undefined, isFullTier);
-  const dataNftsSequencer = useNftsSequencer(
+  const { data: nfts, isLoading: isNftsLoading } = useNfts(
     collectionAddress,
     6,
     0,
-    undefined,
-    isSequencerTier
+    undefined
   );
-  const { data: nfts, isLoading: isNftsLoading } = isFullTier
-    ? dataNftsFull
-    : dataNftsSequencer;
 
   const { collectionInfos, isLoading: isCollectionInfosLoading } =
     useCollectionInfos(collectionAddress);

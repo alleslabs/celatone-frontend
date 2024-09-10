@@ -1,37 +1,34 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useCallback } from "react";
 
 import type {
   Metadata,
-  Nft,
   NftMintInfo,
-  NftsByAccountResponse,
-  NftTransactions,
+  NftMutateEventsResponse,
+  NftsByAccountAddressResponse,
+  NftTxsResponse,
 } from "../types";
 import { handleQueryByTier } from "../utils";
 import {
   CELATONE_QUERY_KEYS,
-  useCelatoneApp,
+  useBaseApiRoute,
   useCurrentChain,
   useLcdEndpoint,
   useNftConfig,
   useTierConfig,
 } from "lib/app-provider";
-import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
+import type { HexAddr, HexAddr32 } from "lib/types";
 
 import {
   getMetadata,
   getNftByNftAddress,
   getNftMintInfo,
   getNftMutateEvents,
-  getNftMutateEventsCount,
-  getNfts,
-  getNftsByAccount,
-  getNftsCountByAccount,
-  getNftTransactions,
-  getNftTransactionsCount,
-} from "./gql";
+  getNftsByAccountAddress,
+  getNftsByCollectionAddress,
+  getNftTxs,
+} from "./api";
 import { getNftByNftAddressLcd } from "./lcd";
 import {
   getNftMintInfoSequencer,
@@ -47,66 +44,53 @@ export const useNfts = (
   search = "",
   enabled = true
 ) => {
-  const { chainConfig } = useCelatoneApp();
-
-  return useQuery<Nft[]>(
-    [
-      CELATONE_QUERY_KEYS.NFTS,
-      chainConfig.graphql,
-      collectionAddress,
-      limit,
-      offset,
-      search,
-    ],
-    async () =>
-      getNfts(
-        chainConfig.graphql ?? "",
-        collectionAddress,
-        search,
-        limit,
-        offset
-      ),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      enabled,
-    }
-  );
-};
-
-export const useNftsSequencer = (
-  collectionAddress: HexAddr32,
-  limit: number,
-  offset: number,
-  search = "",
-  enabled = true
-) => {
+  const { tier } = useTierConfig();
+  const apiEndpoint = useBaseApiRoute("nfts");
   const lcdEndpoint = useLcdEndpoint();
 
-  const { data, ...rest } = useQuery<Nft[]>(
-    [CELATONE_QUERY_KEYS.NFTS_SEQUENCER, lcdEndpoint, collectionAddress],
-    async () => getNftsSequencer(lcdEndpoint, collectionAddress),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      enabled,
-    }
-  );
+  const querySequencer = useCallback(async () => {
+    const nfts = await getNftsSequencer(lcdEndpoint, collectionAddress);
 
-  const computedData = useMemo(() => {
-    if (!data) return data;
-    const filteredData = data.filter(
+    const filteredData = nfts.filter(
       (val) =>
         val.tokenId.toLowerCase().includes(search.toLowerCase()) ||
         val.nftAddress.toLowerCase() === search.toLowerCase()
     );
-    return limit ? filteredData?.slice(offset, limit + offset) : filteredData;
-  }, [data, limit, offset, search]);
 
-  return {
-    data: computedData,
-    ...rest,
-  };
+    return limit ? filteredData?.slice(offset, limit + offset) : filteredData;
+  }, [collectionAddress, lcdEndpoint, limit, offset, search]);
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.NFTS,
+      collectionAddress,
+      limit,
+      offset,
+      search,
+      tier,
+      apiEndpoint,
+      lcdEndpoint,
+    ],
+    async () =>
+      handleQueryByTier({
+        tier,
+        threshold: "sequencer",
+        queryFull: () =>
+          getNftsByCollectionAddress(
+            apiEndpoint,
+            collectionAddress,
+            search,
+            limit,
+            offset
+          ),
+        querySequencer,
+      }),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
+    }
+  );
 };
 
 export const useNftByNftAddress = (
@@ -114,21 +98,27 @@ export const useNftByNftAddress = (
   nftAddress: HexAddr32,
   enabled = true
 ) => {
-  const { chainConfig } = useCelatoneApp();
+  const { tier } = useTierConfig();
+  const apiEndpoint = useBaseApiRoute("nfts");
+  const lcdEndpoint = useLcdEndpoint();
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS,
-      chainConfig.graphql,
       collectionAddress,
       nftAddress,
+      tier,
+      apiEndpoint,
+      lcdEndpoint,
     ],
     async () =>
-      getNftByNftAddress(
-        chainConfig.graphql ?? "",
-        collectionAddress,
-        nftAddress
-      ),
+      handleQueryByTier({
+        tier,
+        threshold: "sequencer",
+        queryFull: () =>
+          getNftByNftAddress(apiEndpoint, collectionAddress, nftAddress),
+        querySequencer: () => getNftByNftAddressLcd(lcdEndpoint, nftAddress),
+      }),
     {
       enabled,
       retry: 1,
@@ -144,7 +134,7 @@ export const useNftByNftAddressLcd = (
   const lcdEndpoint = useLcdEndpoint();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS_LCD, lcdEndpoint, nftAddress],
+    [CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS_LCD, nftAddress, lcdEndpoint],
     async () => getNftByNftAddressLcd(lcdEndpoint, nftAddress),
     {
       enabled,
@@ -155,17 +145,17 @@ export const useNftByNftAddressLcd = (
 };
 
 export const useNftMintInfo = (nftAddress: HexAddr32) => {
-  const { chainConfig } = useCelatoneApp();
   const {
     chain: { bech32_prefix: prefix },
   } = useCurrentChain();
   const { tier } = useTierConfig();
+  const apiEndpoint = useBaseApiRoute("nfts");
   const lcdEndpoint = useLcdEndpoint();
 
   return useQuery<NftMintInfo>(
     [
       CELATONE_QUERY_KEYS.NFT_TOKEN_MINT_INFO,
-      chainConfig.graphql,
+      apiEndpoint,
       lcdEndpoint,
       tier,
       nftAddress,
@@ -175,7 +165,7 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
       handleQueryByTier({
         tier,
         threshold: "sequencer",
-        queryFull: () => getNftMintInfo(chainConfig.graphql ?? "", nftAddress),
+        queryFull: () => getNftMintInfo(apiEndpoint, nftAddress),
         querySequencer: () =>
           getNftMintInfoSequencer(lcdEndpoint, prefix, nftAddress),
       }),
@@ -201,23 +191,18 @@ export const useMetadata = (uri: string) => {
 export const useNftTransactions = (
   limit: number,
   offset: number,
-  nftAddress: HexAddr32
+  nftAddress: HexAddr32,
+  options: Pick<UseQueryOptions<NftTxsResponse>, "onSuccess" | "enabled"> = {}
 ) => {
-  const { chainConfig } = useCelatoneApp();
+  const apiEndpoint = useBaseApiRoute("nfts");
 
-  return useQuery<NftTransactions[]>(
-    [
-      CELATONE_QUERY_KEYS.NFT_TRANSACTIONS,
-      chainConfig.graphql,
-      nftAddress,
-      limit,
-      offset,
-    ],
-    async () =>
-      getNftTransactions(chainConfig.graphql ?? "", nftAddress, limit, offset),
+  return useQuery(
+    [CELATONE_QUERY_KEYS.NFT_TRANSACTIONS, nftAddress, limit, offset],
+    async () => getNftTxs(apiEndpoint, nftAddress, limit, offset),
     {
       retry: 1,
       refetchOnWindowFocus: false,
+      ...options,
     }
   );
 };
@@ -246,118 +231,62 @@ export const useNftTransactionsSequencer = (
   };
 };
 
-export const useNftTransactionsCount = (
-  nftAddress: HexAddr32,
-  enabled = true
-) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<number>(
-    [
-      CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_COUNT,
-      chainConfig.graphql,
-      nftAddress,
-    ],
-    async () => getNftTransactionsCount(chainConfig.graphql ?? "", nftAddress),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      enabled,
-    }
-  );
-};
-
 export const useNftMutateEvents = (
-  limit: number,
-  offset: number,
-  nftAddress: HexAddr32
-) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<MutateEvent[]>(
-    [
-      CELATONE_QUERY_KEYS.NFT_MUTATE_EVENTS,
-      chainConfig.graphql,
-      nftAddress,
-      limit,
-      offset,
-    ],
-    async () =>
-      getNftMutateEvents(chainConfig.graphql ?? "", nftAddress, offset, limit),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    }
-  );
-};
-
-export const useNftMutateEventsCount = (
   nftAddress: HexAddr32,
-  enabled = true
-) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<number>(
-    [
-      CELATONE_QUERY_KEYS.NFT_MUTATE_EVENTS_COUNT,
-      chainConfig.graphql,
-      nftAddress,
-      enabled,
-    ],
-    async () => getNftMutateEventsCount(chainConfig.graphql ?? "", nftAddress),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      enabled,
-    }
-  );
-};
-
-export const useNftsCountByAccount = (
-  accountAddress: HexAddr,
-  enabled = true
-) => {
-  const { chainConfig } = useCelatoneApp();
-  const { enabled: nftConfigEnabled } = useNftConfig({ shouldRedirect: false });
-  return useQuery<number>(
-    [
-      CELATONE_QUERY_KEYS.NFTS_COUNT_BY_ACCOUNT,
-      chainConfig.graphql,
-      accountAddress,
-    ],
-    async () =>
-      getNftsCountByAccount(chainConfig.graphql ?? "", accountAddress),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      enabled: enabled && nftConfigEnabled,
-    }
-  );
-};
-
-export const useNftsByAccountByCollection = (
-  accountAddress: HexAddr,
   limit: number,
   offset: number,
-  search = "",
-  collectionAddress?: HexAddr32,
   options: Pick<
-    UseQueryOptions<NftsByAccountResponse>,
+    UseQueryOptions<NftMutateEventsResponse>,
     "onSuccess" | "enabled"
   > = {}
 ) => {
-  const { chainConfig } = useCelatoneApp();
+  const apiEndpoint = useBaseApiRoute("nfts");
 
-  return useQuery<NftsByAccountResponse>(
+  return useQuery(
     [
-      CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION,
-      chainConfig.graphql,
-      accountAddress,
+      CELATONE_QUERY_KEYS.NFT_MUTATE_EVENTS,
+      nftAddress,
       limit,
       offset,
-      collectionAddress,
+      apiEndpoint,
+    ],
+    async () => getNftMutateEvents(apiEndpoint, nftAddress, limit, offset),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      ...options,
+    }
+  );
+};
+
+export const useNftsByAccountAddress = (
+  accountAddress: HexAddr,
+  limit: number,
+  offset: number,
+  collectionAddress?: HexAddr32,
+  search = "",
+  options: Pick<
+    UseQueryOptions<NftsByAccountAddressResponse>,
+    "onSuccess" | "enabled"
+  > = {}
+) => {
+  const apiEndpoint = useBaseApiRoute("nfts");
+  const { enabled: nftConfigEnabled } = useNftConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION,
+      accountAddress,
+      apiEndpoint,
+      nftConfigEnabled,
+      limit,
+      offset,
+      collectionAddress ?? "",
       search,
     ],
     async () =>
-      getNftsByAccount(
-        chainConfig.graphql ?? "",
+      getNftsByAccountAddress(
+        apiEndpoint,
         accountAddress,
         limit,
         offset,
@@ -368,6 +297,7 @@ export const useNftsByAccountByCollection = (
       retry: 1,
       refetchOnWindowFocus: false,
       ...options,
+      enabled: options.enabled && nftConfigEnabled,
     }
   );
 };
@@ -380,7 +310,7 @@ export const useNftsByAccountByCollectionSequencer = (
 ) => {
   const lcdEndpoint = useLcdEndpoint();
 
-  return useQuery<NftsByAccountResponse>(
+  return useQuery<NftsByAccountAddressResponse>(
     [
       CELATONE_QUERY_KEYS.NFTS_BY_ACCOUNT_BY_COLLECTION_SEQUENCER,
       lcdEndpoint,

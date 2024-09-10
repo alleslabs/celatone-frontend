@@ -1,14 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { useMobile, useTierConfig } from "lib/app-provider";
+import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
-import { useNfts, useNftsSequencer } from "lib/services/nft";
+import { useNfts } from "lib/services/nft";
 import type { HexAddr32 } from "lib/types";
 
 interface CollectionSuppliesProps {
@@ -21,7 +21,6 @@ export const CollectionSupplies = ({
   totalSupply,
 }: CollectionSuppliesProps) => {
   const isMobile = useMobile();
-  const { isFullTier, isSequencerTier } = useTierConfig();
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
 
@@ -39,21 +38,12 @@ export const CollectionSupplies = ({
       isDisabled: false,
     },
   });
-  const nftsFull = useNfts(
+  const { data: nfts, isLoading } = useNfts(
     collectionAddress,
     pageSize,
     offset,
-    debouncedSearch,
-    isFullTier
+    debouncedSearch
   );
-  const nftsSequencer = useNftsSequencer(
-    collectionAddress,
-    pageSize,
-    offset,
-    debouncedSearch,
-    isSequencerTier
-  );
-  const { data: nfts, isLoading } = isFullTier ? nftsFull : nftsSequencer;
 
   useEffect(() => setCurrentPage(1), [debouncedSearch, setCurrentPage]);
 

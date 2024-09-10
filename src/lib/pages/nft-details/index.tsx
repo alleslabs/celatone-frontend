@@ -30,9 +30,8 @@ import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import {
   useMetadata,
   useNftByNftAddress,
-  useNftByNftAddressLcd,
-  useNftMutateEventsCount,
-  useNftTransactionsCount,
+  useNftMutateEvents,
+  useNftTransactions,
 } from "lib/services/nft";
 import { useCollectionByCollectionAddress } from "lib/services/nft-collection";
 
@@ -63,25 +62,28 @@ const NftDetailsBody = ({
   const { data: collection, isLoading: isCollectionLoading } =
     useCollectionByCollectionAddress(collectionAddress);
 
-  const resApi = useNftByNftAddress(collectionAddress, nftAddress, isFullTier);
-  const resLcd = useNftByNftAddressLcd(nftAddress, !isFullTier);
-  const { data: nft, isLoading: isNftLoading } = isFullTier ? resApi : resLcd;
-
-  const { data: txCount = 0 } = useNftTransactionsCount(nftAddress, isFullTier);
-  const totalTxs = isFullTier ? txCount : undefined;
-
-  const { data: mutateEventsCount = 0 } = useNftMutateEventsCount(
-    nftAddress,
-    isFullTier
+  const { data: nft, isLoading: isNftLoading } = useNftByNftAddress(
+    collectionAddress,
+    nftAddress
   );
-  const { data: metadata } = useMetadata(nft?.data?.uri ?? "");
+
+  const { data: transactions } = useNftTransactions(1, 0, nftAddress, {
+    enabled: isFullTier,
+  });
+
+  const totalTxs = isFullTier && transactions ? transactions?.total : undefined;
+
+  const { data: mutateEvents } = useNftMutateEvents(nftAddress, 1, 0, {
+    enabled: isFullTier,
+  });
+  const { data: metadata } = useMetadata(nft?.uri ?? "");
 
   if (isCollectionLoading || isNftLoading) return <Loading />;
   if (!collection || !nft) return <ErrorFetching dataName="NFT information" />;
-  if (!collection.data || !nft.data) return <InvalidNft />;
+  if (!collection.data || !nft) return <InvalidNft />;
 
   const { name: collectionName, description: collectionDesc } = collection.data;
-  const { tokenId, description, uri, ownerAddress, isBurned } = nft.data;
+  const { tokenId, description, uri, ownerAddress, isBurned } = nft;
 
   const displayCollectionName =
     collectionName.length > 20
@@ -267,8 +269,8 @@ const NftDetailsBody = ({
             <CustomTab count={totalTxs}>Transactions</CustomTab>
             {isFullTier && (
               <CustomTab
-                count={mutateEventsCount}
-                isDisabled={!mutateEventsCount}
+                count={mutateEvents?.total}
+                isDisabled={!mutateEvents?.total}
               >
                 Mutate Events
               </CustomTab>
@@ -277,16 +279,13 @@ const NftDetailsBody = ({
           <TabPanels>
             <TabPanel p={0}>
               <TierSwitcher
-                full={<TxsFull nftAddress={nftAddress} totalData={txCount} />}
+                full={<TxsFull nftAddress={nftAddress} />}
                 sequencer={<TxsSequencer nftAddress={nftAddress} />}
               />
             </TabPanel>
             {isFullTier && (
               <TabPanel p={0}>
-                <NftMutateEvents
-                  nftAddress={nftAddress}
-                  totalData={mutateEventsCount}
-                />
+                <NftMutateEvents nftAddress={nftAddress} />
               </TabPanel>
             )}
           </TabPanels>

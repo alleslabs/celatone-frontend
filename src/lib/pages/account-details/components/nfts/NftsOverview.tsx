@@ -6,7 +6,7 @@ import { useMobile, useTierConfig } from "lib/app-provider";
 import { NftList } from "lib/components/nft";
 import { MobileTitle, ViewMore } from "lib/components/table";
 import {
-  useNftsByAccountByCollection,
+  useNftsByAccountAddress,
   useNftsByAccountByCollectionSequencer,
 } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
@@ -25,7 +25,7 @@ export const NftsOverview = ({
   const isMobile = useMobile();
   const { isFullTier, isSequencerTier } = useTierConfig();
   const limit = 5;
-  const accountNftsFull = useNftsByAccountByCollection(
+  const accountNftsFull = useNftsByAccountAddress(
     userAddress,
     limit,
     0,
@@ -54,13 +54,13 @@ export const NftsOverview = ({
         <AccountSectionWrapper title="NFTs" totalData={totalCount}>
           <Flex
             direction="column"
-            borderBottom={data?.nfts?.length ? "1px solid" : "0px"}
+            borderBottom={data?.items?.length ? "1px solid" : "0px"}
             borderBottomColor="gray.700"
-            mb={data?.nfts?.length ?? 12}
-            pb={data?.nfts?.length ?? 8}
+            mb={data?.items?.length ?? 12}
+            pb={data?.items?.length ?? 8}
           >
             <NftList
-              nfts={data?.nfts.slice(0, limit)}
+              nfts={data?.items.slice(0, limit)}
               isLoading={isFetching}
               emptyState={
                 <AccountDetailsEmptyState message="No NFTs are held by this account." />
