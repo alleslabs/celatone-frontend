@@ -19,196 +19,68 @@ const zCollection = z
     creator: zHexAddr32,
   })
   .transform((val) => ({
-    description: val.description,
-    uri: val.uri,
-    name: val.name,
+    ...val,
     collectionAddress: val.id,
-    creator: val.creator,
   }));
 export type Collection = z.infer<typeof zCollection>;
 
-const zCollectionOld = z
+export const zNftCollectionsResponse = z.object({
+  items: z.array(zCollection),
+  total: z.number().nonnegative(),
+});
+export type NftCollectionsResponse = z.infer<typeof zNftCollectionsResponse>;
+
+export const zCollectionByCollectionAddressResponse = z
   .object({
     name: z.string(),
-    vm_address: z.object({ vm_address: zHexAddr32 }),
-    uri: z.string(),
     description: z.string(),
-    vmAddressByCreator: z.object({ vm_address: zHexAddr32 }),
+    uri: z.string(),
+    created_height: z.number().nullable(),
+    creator_address: zHexAddr,
   })
-  .transform<Collection>((val) => ({
-    description: val.description,
-    uri: val.uri,
-    name: val.name,
-    collectionAddress: val.vm_address.vm_address,
-    creator: val.vmAddressByCreator.vm_address,
-  }));
-
-export const zCollectionsResponse = z
-  .object({
-    collections: z.union([zCollection, zCollectionOld]).array(),
-    collections_aggregate: z.object({
-      aggregate: z.object({
-        count: z.number(),
-      }),
-    }),
-  })
-  .transform((val) => ({
-    items: val.collections,
-    total: val.collections_aggregate.aggregate.count,
-  }));
-export type CollectionsResponse = z.infer<typeof zCollectionsResponse>;
-
-export const zCollectionByCollectionAddressResponse = z.object({
-  data: z
-    .object({
-      name: z.string(),
-      description: z.string(),
-      uri: z.string(),
-      vmAddressByCreator: z.object({
-        collectionsByCreator: z
-          .object({
-            block_height: z.number(),
-            name: z.string(),
-            vmAddressByCreator: z.object({ vm_address: zHexAddr }),
-          })
-          .array(),
-      }),
-    })
-    .transform((val) => ({
-      description: val.description,
-      name: val.name,
-      uri: val.uri,
-      createdHeight: val.vmAddressByCreator.collectionsByCreator.length
-        ? val.vmAddressByCreator.collectionsByCreator[0].block_height
-        : null,
-      creatorAddress: val.vmAddressByCreator.collectionsByCreator.length
-        ? val.vmAddressByCreator.collectionsByCreator[0].vmAddressByCreator
-            .vm_address
-        : null,
-    }))
-    .optional(),
-});
+  .transform(snakeToCamel)
+  .optional();
 export type CollectionByCollectionAddressResponse = z.infer<
   typeof zCollectionByCollectionAddressResponse
 >;
 
 export const zCollectionCreatorResponse = z
   .object({
-    collection_transactions: z
-      .object({
-        block: z.object({ height: z.number(), timestamp: zUtcDate }),
-        transaction: z.object({ hash: z.string() }),
-        collection: z.object({ creator: zHexAddr }),
-      })
-      .array(),
+    creator_address: zHexAddr,
+    height: z.number(),
+    timestamp: zUtcDate,
+    tx_hash: z.string(),
   })
   .transform((val) => ({
-    creatorAddress: val.collection_transactions[0].collection.creator,
-    height: val.collection_transactions[0].block.height,
-    timestamp: val.collection_transactions[0].block.timestamp,
-    txhash: parseTxHash(val.collection_transactions[0].transaction.hash),
-  }));
+    creatorAddress: val.creator_address,
+    height: val.height,
+    timestamp: val.timestamp,
+    txhash: parseTxHash(val.tx_hash),
+  }))
+  .optional();
 export type CollectionCreatorResponse = z.infer<
   typeof zCollectionCreatorResponse
 >;
 
-export const zCollectionCreatorResponseOld = z
-  .object({
-    collections: z
-      .object({
-        collection_transactions: z
-          .object({
-            transaction: z.object({
-              block: z.object({ height: z.number(), timestamp: zUtcDate }),
-              hash: z.string(),
-            }),
-          })
-          .array(),
-        vmAddressByCreator: z.object({ vm_address: zHexAddr }),
-      })
-      .array(),
-  })
-  .transform<CollectionCreatorResponse>((val) => ({
-    creatorAddress: val.collections[0].vmAddressByCreator.vm_address,
-    height:
-      val.collections[0].collection_transactions[0].transaction.block.height,
-    timestamp:
-      val.collections[0].collection_transactions[0].transaction.block.timestamp,
-    txhash:
-      val.collections[0].collection_transactions[0].transaction.hash.replace(
-        "\\x",
-        ""
-      ),
-  }));
-
 export const zActivity = z
   .object({
-    transaction: z.object({
-      block: z.object({ timestamp: zUtcDate }),
-      hash: z.string().transform(parseTxHash),
-    }),
+    timestamp: zUtcDate,
+    txhash: z.string().transform(parseTxHash),
     is_nft_burn: z.boolean(),
     is_nft_mint: z.boolean(),
     is_nft_transfer: z.boolean(),
-    nft_id: zHexAddr.optional().nullable(),
-    nft: z
-      .object({
-        token_id: z.string(),
-      })
-      .optional()
-      .nullable(),
+    token_id: z.string().optional().nullable(),
+    nft_address: zHexAddr.optional().nullable(),
     is_collection_create: z.boolean(),
   })
-  .transform((data) => ({
-    timestamp: data.transaction.block.timestamp,
-    txhash: data.transaction.hash,
-    isNftBurn: data.is_nft_burn,
-    isNftMint: data.is_nft_mint,
-    isNftTransfer: data.is_nft_transfer,
-    tokenId: data.nft?.token_id,
-    nftAddress: data.nft_id,
-    isCollectionCreate: data.is_collection_create,
-  }));
+  .transform(snakeToCamel);
 export type Activity = z.infer<typeof zActivity>;
 
-export const zActivityOld = z
-  .object({
-    transaction: z.object({
-      block: z.object({ timestamp: zUtcDate }),
-      hash: z.string().transform(parseTxHash),
-    }),
-    is_nft_burn: z.boolean(),
-    is_nft_mint: z.boolean(),
-    is_nft_transfer: z.boolean(),
-    nft: z
-      .object({
-        token_id: z.string(),
-        vm_address: z.object({ vm_address: zHexAddr }),
-      })
-      .optional()
-      .nullable(),
-    is_collection_create: z.boolean(),
-  })
-  .transform<Activity>((data) => ({
-    timestamp: data.transaction.block.timestamp,
-    txhash: data.transaction.hash,
-    isNftBurn: data.is_nft_burn,
-    isNftMint: data.is_nft_mint,
-    isNftTransfer: data.is_nft_transfer,
-    tokenId: data.nft?.token_id,
-    nftAddress: data.nft?.vm_address.vm_address,
-    isCollectionCreate: data.is_collection_create,
-  }));
-
-export const zActivitiesCountResponse = z
-  .object({
-    collection_transactions_aggregate: z.object({
-      aggregate: z.object({ count: z.number() }),
-    }),
-  })
-  .transform<number>(
-    (val) => val.collection_transactions_aggregate.aggregate.count
-  );
+export const zActivitiesResponse = z.object({
+  items: z.array(zActivity),
+  total: z.number().nonnegative(),
+});
+export type ActivitiesResponse = z.infer<typeof zActivitiesResponse>;
 
 export const zCollectionMutateEventsResponse = z
   .object({
@@ -317,11 +189,9 @@ export const zCollectionByCollectionAddressResponseSequencer = z
     collection: zCollectionResponseSequencer,
   })
   .transform<CollectionByCollectionAddressResponse>((val) => ({
-    data: {
-      description: val.collection.collection.description,
-      name: val.collection.collection.name,
-      uri: val.collection.collection.uri,
-      createdHeight: null,
-      creatorAddress: val.collection.collection.creator,
-    },
+    description: val.collection.collection.description,
+    name: val.collection.collection.name,
+    uri: val.collection.collection.uri,
+    createdHeight: null,
+    creatorAddress: val.collection.collection.creator,
   }));

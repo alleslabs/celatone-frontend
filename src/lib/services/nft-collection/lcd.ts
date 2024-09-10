@@ -46,12 +46,10 @@ export const getCollectionByCollectionAddressLcd = async (
     ).then((name) => parseWithError(zHexAddr, name)),
   ]).then<CollectionByCollectionAddressResponse>(
     ([name, description, uri, creatorAddress]) => ({
-      data: {
-        name,
-        description,
-        uri,
-        createdHeight: null,
-        creatorAddress,
-      },
+      name,
+      description,
+      uri,
+      createdHeight: null,
+      creatorAddress,
     })
   );

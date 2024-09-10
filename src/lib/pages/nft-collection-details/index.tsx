@@ -30,7 +30,7 @@ import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useNfts } from "lib/services/nft";
 import {
-  useCollectionActivitiesCount,
+  useCollectionActivities,
   useCollectionByCollectionAddress,
   useCollectionMutateEventsCount,
 } from "lib/services/nft-collection";
@@ -73,9 +73,12 @@ const CollectionDetailsBody = ({
   const { collectionInfos, isLoading: isCollectionInfosLoading } =
     useCollectionInfos(collectionAddress);
 
-  const { data: activitiesCount } = useCollectionActivitiesCount(
+  const { data: activities } = useCollectionActivities(
     collectionAddress,
-    isFullTier
+    1,
+    0,
+    undefined,
+    { enabled: isFullTier }
   );
   const { data: mutateEventsCount } = useCollectionMutateEventsCount(
     collectionAddress,
@@ -104,9 +107,9 @@ const CollectionDetailsBody = ({
     return <Loading withBorder />;
   if (!collection || !collectionInfos)
     return <ErrorFetching dataName="collection information" />;
-  if (!collection.data) return <InvalidCollection />;
+  if (!collection) return <InvalidCollection />;
 
-  const { name, description, uri } = collection.data;
+  const { name, description, uri } = collection;
   const {
     supplies: { maxSupply, totalMinted, currentSupply },
     isUnlimited,
@@ -236,9 +239,9 @@ const CollectionDetailsBody = ({
             Supplies
           </CustomTab>
           <CustomTab
-            count={activitiesCount}
+            count={activities?.total}
             onClick={handleTabChange(TabIndex.Activities)}
-            isDisabled={activitiesCount === 0}
+            isDisabled={!activities?.total}
           >
             Activities
           </CustomTab>
@@ -272,7 +275,7 @@ const CollectionDetailsBody = ({
                 collectionName={name}
                 desc={description}
                 uri={uri}
-                activities={activitiesCount}
+                activities={activities?.total}
                 mutateEventes={mutateEventsCount}
                 royalty={royalty}
                 onClickActivities={handleTabChange(TabIndex.Activities)}
@@ -293,12 +296,7 @@ const CollectionDetailsBody = ({
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <TierSwitcher
-              full={
-                <ActivitiesFull
-                  collectionAddress={collectionAddress}
-                  totalCount={activitiesCount ?? 0}
-                />
-              }
+              full={<ActivitiesFull collectionAddress={collectionAddress} />}
               sequencer={
                 <ActivitiesSequencer collectionAddress={collectionAddress} />
               }

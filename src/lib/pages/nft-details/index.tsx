@@ -80,9 +80,9 @@ const NftDetailsBody = ({
 
   if (isCollectionLoading || isNftLoading) return <Loading />;
   if (!collection || !nft) return <ErrorFetching dataName="NFT information" />;
-  if (!collection.data || !nft) return <InvalidNft />;
+  if (!collection || !nft) return <InvalidNft />;
 
-  const { name: collectionName, description: collectionDesc } = collection.data;
+  const { name: collectionName, description: collectionDesc } = collection;
   const { tokenId, description, uri, ownerAddress, isBurned } = nft;
 
   const displayCollectionName =

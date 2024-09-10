@@ -13,13 +13,9 @@ import { ActivitiesTable } from "./ActivitiesTable";
 
 interface ActivitiesFullProps {
   collectionAddress: HexAddr32;
-  totalCount: number;
 }
 
-export const ActivitiesFull = ({
-  collectionAddress,
-  totalCount,
-}: ActivitiesFullProps) => {
+export const ActivitiesFull = ({ collectionAddress }: ActivitiesFullProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
 
@@ -30,6 +26,7 @@ export const ActivitiesFull = ({
     pageSize,
     setPageSize,
     offset,
+    setTotalData,
   } = usePaginator({
     initialState: {
       pageSize: 10,
@@ -41,7 +38,10 @@ export const ActivitiesFull = ({
     collectionAddress,
     pageSize,
     offset,
-    debouncedSearch
+    debouncedSearch,
+    {
+      onSuccess: ({ total }) => setTotalData(total),
+    }
   );
 
   return (
@@ -62,7 +62,7 @@ export const ActivitiesFull = ({
       />
       <ActivitiesTable
         collectionAddress={collectionAddress}
-        activities={activities}
+        activities={activities?.items}
         isLoading={isLoading}
         emptyState={
           <EmptyState
@@ -72,12 +72,12 @@ export const ActivitiesFull = ({
           />
         }
       />
-      {totalCount > 10 && !searchKeyword && (
+      {activities && activities.total > 10 && !searchKeyword && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalCount}
+          totalData={activities.total}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
