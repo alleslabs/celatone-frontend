@@ -495,6 +495,7 @@ export const useTxsByAddressSequencer = (
     ({ pageParam }) => queryfn(pageParam),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      retry: false,
       refetchOnWindowFocus: false,
     }
   );
@@ -510,6 +511,37 @@ export const useTxsByAddressSequencer = (
       data?.pages[data.pages.length - 1].items
     ),
   };
+};
+
+export const useTxsByAddressPaginationSequencer = (
+  address: BechAddr20,
+  paginationKey: Option<string>,
+  limit = 10,
+  enabled = true
+) => {
+  const endpoint = useLcdEndpoint();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_PAGINATION_SEQUENCER,
+      endpoint,
+      address,
+      paginationKey,
+      limit,
+    ],
+    () =>
+      getTxsByAccountAddressSequencer({
+        endpoint,
+        address,
+        paginationKey,
+        limit,
+      }),
+    {
+      enabled,
+      retry: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useTxsByBlockHeightSequencer = (height: number) => {
@@ -560,7 +592,8 @@ export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
 };
 
 export const useEvmTxHashesByCosmosTxHashes = (
-  cosmosTxHashes: Option<string[]>
+  cosmosTxHashes: Option<string[]>,
+  enabled = true
 ) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
@@ -584,7 +617,7 @@ export const useEvmTxHashesByCosmosTxHashes = (
     {
       retry: false,
       refetchOnWindowFocus: false,
-      enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHashes,
+      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!cosmosTxHashes,
     }
   );
 };
@@ -635,7 +668,10 @@ export const useCosmosTxHashByEvmTxHash = (evmTxHash: string) => {
   );
 };
 
-export const useTxsDataJsonRpc = (evmTxHashes: Option<string[]>) => {
+export const useTxsDataJsonRpc = (
+  evmTxHashes: Option<string[]>,
+  enabled = true
+) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
   return useQuery(
@@ -656,7 +692,7 @@ export const useTxsDataJsonRpc = (evmTxHashes: Option<string[]>) => {
     {
       retry: false,
       refetchOnWindowFocus: false,
-      enabled: evm.enabled && !!evm.jsonRpc && !!evmTxHashes,
+      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!evmTxHashes,
     }
   );
 };

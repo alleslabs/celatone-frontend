@@ -98,7 +98,7 @@ export const EvmTxTransferErc20 = ({
         }
       />
       <EvmInfoLabelValue
-        label="ERC-20 Contract"
+        label="ERC20 Contract"
         value={
           erc20Contract ? (
             <Flex gap={1} align="center">

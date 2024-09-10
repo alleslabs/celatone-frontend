@@ -1,85 +1,75 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   useEvmTxHashesByCosmosTxHashes,
-  useTxsByAddressSequencer,
+  useTxsByAddressPaginationSequencer,
   useTxsDataJsonRpc,
 } from "lib/services/tx";
 import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
-import type { BechAddr20 } from "lib/types";
+import type { BechAddr20, Nullish } from "lib/types";
 
-export const useContractDetailsTxs = (address: BechAddr20) => {
+export const useContractDetailsEvmTxs = (address: BechAddr20) => {
   const [evmTxs, setEvmTxs] = useState<TxDataWithTimeStampJsonRpc[]>();
-  const [isEvmTxsLoading, setIsEvmTxsLoading] = useState(true);
-  const [isEvmTxsFetching, setIsEvmTxsFetching] = useState(false);
-
-  const cosmosTxHashToEvmTx = useMemo(
-    () => new Map<string, TxDataWithTimeStampJsonRpc>(),
-    []
-  );
+  const [paginationKey, setPaginationKey] = useState<Nullish<string>>();
+  const [cosmosTxsCount, setCosmosTxsCount] = useState(0);
 
   const {
     data: cosmosTxs,
-    fetchNextPage,
-    hasNextPage,
-    isFetching: isCosmosTxsLoading,
-    isFetchingNextPage: isCosmosTxsFetchingNextpage,
-    latestFetchedData: newCosmosTxs,
+    isFetching: isCosmosTxsFetching,
     isError: isCosmosTxsError,
-  } = useTxsByAddressSequencer(address, undefined);
-
+    refetch,
+  } = useTxsByAddressPaginationSequencer(
+    address,
+    paginationKey ?? undefined,
+    10,
+    evmTxs === undefined
+  );
   const {
     data: newEvmTxHashes,
-    isFetching: isEvmHashesFetching,
-    isError: isEvmHashesError,
-  } = useEvmTxHashesByCosmosTxHashes(newCosmosTxs?.map((tx) => tx.hash));
+    isFetching: isNewEvmHashesFetching,
+    isError: isNewEvmHashesError,
+  } = useEvmTxHashesByCosmosTxHashes(
+    cosmosTxs?.items.map((tx) => tx.hash),
+    !isCosmosTxsFetching
+  );
   const {
-    data: evmTxsData,
-    isFetching: isEvmTxsDataFetching,
-    isError: isEvmTxsDataError,
+    data: newEvmTxsData,
+    isFetching: isNewEvmTxsDataFetching,
+    isError: isNewEvmTxsDataError,
   } = useTxsDataJsonRpc(
-    newEvmTxHashes?.filter((tx) => tx !== null) as string[]
+    newEvmTxHashes?.filter((tx) => tx !== null) as string[],
+    !isCosmosTxsFetching && !isNewEvmHashesFetching
   );
 
   useEffect(() => {
-    setIsEvmTxsFetching(true);
-    if (!newCosmosTxs || !newEvmTxHashes || !evmTxsData) return;
+    if (!cosmosTxs || !newEvmTxHashes || !newEvmTxsData) return;
 
-    let evmTxsDataIndex = 0;
-    newEvmTxHashes.forEach((txHash, index) => {
-      if (txHash !== null) {
-        cosmosTxHashToEvmTx.set(newCosmosTxs[index].hash, {
-          ...evmTxsData[evmTxsDataIndex],
-          timestamp: newCosmosTxs[index].created,
+    const newEvmTxs: TxDataWithTimeStampJsonRpc[] = [];
+    newEvmTxHashes.forEach((evmTxHash, index) => {
+      if (evmTxHash !== null)
+        newEvmTxs.push({
+          ...newEvmTxsData[newEvmTxs.length],
+          timestamp: cosmosTxs.items[index].created,
         });
-        evmTxsDataIndex += 1;
-      }
     });
 
-    setEvmTxs(
-      cosmosTxs
-        ?.map(({ hash }) => cosmosTxHashToEvmTx.get(hash))
-        .filter((tx) => tx !== undefined) as TxDataWithTimeStampJsonRpc[]
-    );
-    setIsEvmTxsLoading(false);
-    setIsEvmTxsFetching(false);
+    setEvmTxs((prev) => (prev ?? []).concat(newEvmTxs));
+    setPaginationKey(cosmosTxs.pagination.nextKey);
+    setCosmosTxsCount((prev) => prev + cosmosTxs.items.length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [evmTxsData]);
+  }, [newEvmTxsData]);
 
-  const isError = isCosmosTxsError || isEvmHashesError || isEvmTxsDataError;
+  const isFetching =
+    isCosmosTxsFetching || isNewEvmHashesFetching || isNewEvmTxsDataFetching;
   return {
-    cosmosTxs,
-    evmTxs,
-    isCosmosTxsLoading,
-    isCosmosTxsFetchingNextpage,
-    isEvmTxsLoading: isEvmTxsLoading && !isError,
-    isEvmTxsFetchingNextpage:
-      (isCosmosTxsFetchingNextpage ||
-        isEvmHashesFetching ||
-        isEvmTxsDataFetching ||
-        isEvmTxsFetching) &&
-      !isError,
-    fetchNextPage,
-    hasNextPage,
+    data: evmTxs,
+    isLoading: evmTxs === undefined && isFetching,
+    isError: isCosmosTxsError || isNewEvmHashesError || isNewEvmTxsDataError,
+    fetchNextPage: () => {
+      refetch({ cancelRefetch: true });
+    },
+    isFetchingNextPage: isFetching,
+    hasNextPage: paginationKey !== null,
+    cosmosTxsCount,
   };
 };

@@ -61,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1141](https://github.com/alleslabs/celatone-frontend/pull/1141) Separate loading logic for evm contract cosmos and evm txs for more reasonably state logic
 - [#1133](https://github.com/alleslabs/celatone-frontend/pull/1133) Refactor evm denom and amount for each method
 
 ### Bug fixes
