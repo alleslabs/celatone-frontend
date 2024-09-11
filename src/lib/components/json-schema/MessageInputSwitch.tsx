@@ -96,7 +96,7 @@ export const MessageInputSwitch = <
             h="22px"
             position="absolute"
             borderRadius="2px"
-            backgroundColor="primary.dark"
+            backgroundColor="primary.darker"
             animate={{
               left: activeIndex === 0 ? "4px" : "100px",
             }}

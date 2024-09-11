@@ -64,7 +64,7 @@ export const EvmDataFormatSwitch = ({
           w="calc(33% - 4px)"
           position="absolute"
           borderRadius="2px"
-          backgroundColor="primary.dark"
+          backgroundColor="primary.darker"
           animate={{
             left: `${activeIndex * 96 + 4}px`,
           }}
