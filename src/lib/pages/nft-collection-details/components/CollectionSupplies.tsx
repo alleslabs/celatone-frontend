@@ -58,7 +58,7 @@ export const CollectionSupplies = ({
         amptrackSection="collection-supplies-tokenId-search"
       />
       <NftList
-        nfts={nfts}
+        nfts={nfts?.items}
         isLoading={isLoading}
         emptyState={
           <EmptyState
@@ -69,12 +69,12 @@ export const CollectionSupplies = ({
         }
         showCollection={false}
       />
-      {!isLoading && nfts && nfts.length !== 0 && (
+      {!isLoading && nfts && nfts.items.length !== 0 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={searchKeyword ? nfts.length : totalSupply}
+          totalData={searchKeyword ? nfts.items.length : totalSupply}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {

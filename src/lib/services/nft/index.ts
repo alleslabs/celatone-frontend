@@ -7,6 +7,7 @@ import type {
   NftMintInfo,
   NftMutateEventsResponse,
   NftsByAccountAddressResponse,
+  NftsResponse,
   NftTxsResponse,
 } from "../types";
 import { handleQueryByTier } from "../utils";
@@ -57,10 +58,12 @@ export const useNfts = (
         val.nftAddress.toLowerCase() === search.toLowerCase()
     );
 
-    return limit ? filteredData?.slice(offset, limit + offset) : filteredData;
+    return {
+      items: limit ? filteredData?.slice(offset, limit + offset) : filteredData,
+    };
   }, [collectionAddress, lcdEndpoint, limit, offset, search]);
 
-  return useQuery(
+  return useQuery<NftsResponse>(
     [
       CELATONE_QUERY_KEYS.NFTS,
       collectionAddress,

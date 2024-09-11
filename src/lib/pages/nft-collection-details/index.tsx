@@ -263,7 +263,7 @@ const CollectionDetailsBody = ({
               />
               <CollectionSuppliesOverview
                 totalCount={currentSupply}
-                nfts={nfts}
+                nfts={nfts?.items}
                 isLoading={isNftsLoading}
                 onViewMore={handleTabChange(TabIndex.Supplies)}
               />

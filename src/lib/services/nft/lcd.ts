@@ -43,5 +43,5 @@ export const getNftByNftAddressLcd = async (
     ownerAddress: holder,
     nftAddress,
     collectionAddress: info.collection,
-    collectionName: null,
+    collectionName: undefined,
   }));
