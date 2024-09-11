@@ -53,15 +53,7 @@ const zCodesResponseItem = z
     instantiate_permission: z.nativeEnum(AccessConfigPermission),
     permission_addresses: z.array(zBechAddr),
   })
-  .transform<CodeInfo>((val) => ({
-    id: val.id,
-    cw2Contract: val.cw2_contract,
-    cw2Version: val.cw2_version,
-    uploader: val.uploader,
-    contractCount: val.contract_count,
-    instantiatePermission: val.instantiate_permission,
-    permissionAddresses: val.permission_addresses,
-  }));
+  .transform<CodeInfo>(snakeToCamel);
 
 export const zCodesResponse = z.object({
   items: z.array(zCodesResponseItem),
