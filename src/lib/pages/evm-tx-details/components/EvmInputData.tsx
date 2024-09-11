@@ -2,7 +2,6 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
-import { hexToString } from "lib/utils";
 
 import { EvmDataFormatSwitch, EvmDataFormatTabs } from "./EvmDataFormatSwitch";
 
@@ -35,7 +34,7 @@ export const EvmInputData = ({ inputData }: EvmInputDataProps) => {
         return formattedData.join("\n");
       }
       case EvmDataFormatTabs.UTF8:
-        return hexToString(inputData.slice(2));
+        return Buffer.from(inputData.slice(2), "hex").toString("binary");
       case EvmDataFormatTabs.Raw:
       default:
         return inputData;
