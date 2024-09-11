@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1147](https://github.com/alleslabs/celatone-frontend/pull/1147) Support Evm Tx Input data decoder
 - [#1139](https://github.com/alleslabs/celatone-frontend/pull/1139) Support EVM method call erc20 factory
 - [#1127](https://github.com/alleslabs/celatone-frontend/pull/1127) Add EVM contract details EVM transactions
 - [#1131](https://github.com/alleslabs/celatone-frontend/pull/1131) Support EIP-1559 gas information on EVM Tx details page
@@ -61,11 +62,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1141](https://github.com/alleslabs/celatone-frontend/pull/1141) Separate loading logic for evm contract cosmos and evm txs for more reasonably state logic
+- [#1146](https://github.com/alleslabs/celatone-frontend/pull/1146) Bump pnpm to version 9
 - [#1133](https://github.com/alleslabs/celatone-frontend/pull/1133) Refactor evm denom and amount for each method
 
 ### Bug fixes
 
 - [#1145](https://github.com/alleslabs/celatone-frontend/pull/1145) Shorten value in evm txs table amount and render amount in evm txs details
+- [#1142](https://github.com/alleslabs/celatone-frontend/pull/1142) Fix minievm bugbash (wording, spacing, and alignment)
+- [#1143](https://github.com/alleslabs/celatone-frontend/pull/1143) Fix missing daemon name and block time info
 - [#1134](https://github.com/alleslabs/celatone-frontend/pull/1134) Fix evm contract evm txs loading state and evm tx details ui
 - [#1137](https://github.com/alleslabs/celatone-frontend/pull/1137) Bump axios and remove initia js client usage
 - [#1126](https://github.com/alleslabs/celatone-frontend/pull/1126) Fix tx message detail alignment in small screen

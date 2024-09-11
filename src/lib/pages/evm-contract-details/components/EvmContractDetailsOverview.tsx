@@ -71,6 +71,7 @@ export const EvmContractDetailsOverview = ({
                   <ExplorerLink
                     value={formatAddresses(sender).hex}
                     type="user_address"
+                    showCopyOnHover
                   />
                 ) : (
                   <Text variant="body2" color="text.disabled">
@@ -90,7 +91,7 @@ export const EvmContractDetailsOverview = ({
                     Cosmos:
                   </Text>
                   {hash ? (
-                    <ExplorerLink value={hash} type="tx_hash" />
+                    <ExplorerLink value={hash} type="tx_hash" showCopyOnHover />
                   ) : (
                     <Text variant="body2" color="text.disabled">
                       -
@@ -105,6 +106,7 @@ export const EvmContractDetailsOverview = ({
                     <ExplorerLink
                       value={formatEvmTxHash(evmHash)}
                       type="evm_tx_hash"
+                      showCopyOnHover
                     />
                   ) : (
                     <Text variant="body2" color="text.disabled">

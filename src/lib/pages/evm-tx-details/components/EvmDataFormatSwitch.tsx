@@ -1,41 +1,32 @@
 import { Flex } from "@chakra-ui/react";
-import { useCallback } from "react";
-import type { CSSProperties } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 import { MotionBox } from "lib/components/MotionBox";
-import { ContractInteractionTabs } from "lib/types";
-import type { Option } from "lib/types";
 
-interface InteractionTypeSwitchProps<
-  T extends Option<ContractInteractionTabs>,
-> {
-  currentTab: T;
-  disabled?: boolean;
-  ml?: CSSProperties["marginLeft"];
-  onTabChange: (newType: T) => void;
+export enum EvmDataFormatTabs {
+  Formatted = "Formatted",
+  Raw = "Raw",
+  UTF8 = "UTF-8",
 }
 
-export const InteractionTypeSwitch = <
-  T extends Option<ContractInteractionTabs>,
->({
+interface EvmDataFormatSwitchProps {
+  currentTab: EvmDataFormatTabs;
+  disabled?: boolean;
+  onTabChange: Dispatch<SetStateAction<EvmDataFormatTabs>>;
+}
+
+const tabs = Object.values(EvmDataFormatTabs);
+
+export const EvmDataFormatSwitch = ({
   currentTab,
   disabled = false,
-  ml,
-  onTabChange: onTabChangeProps,
-}: InteractionTypeSwitchProps<T>) => {
-  const tabs: T[] = Object.values(ContractInteractionTabs) as T[];
+  onTabChange,
+}: EvmDataFormatSwitchProps) => {
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
-
-  const onTabChange = useCallback(
-    (tab: T) => {
-      onTabChangeProps(tab);
-    },
-    [onTabChangeProps]
-  );
 
   // TODO: current implementation of sliding box dimensions and position is hardcoded due to issues with ref, improve this later
   return (
-    <div style={{ marginLeft: ml }}>
+    <div>
       <Flex
         border="1px solid var(--chakra-colors-gray-700)"
         borderRadius="4px"
@@ -61,22 +52,21 @@ export const InteractionTypeSwitch = <
             }}
             initial="inactive"
             animate={currentTab === tab ? "active" : "inactive"}
-            onClick={() => onTabChange(tab as T)}
+            onClick={() => onTabChange(tab)}
             zIndex={1}
             textAlign="center"
-            textTransform="capitalize"
           >
             {tab}
           </MotionBox>
         ))}
         <MotionBox
-          w="96px"
-          h="22px"
+          h="calc(100% - 8px)"
+          w="calc(33% - 4px)"
           position="absolute"
           borderRadius="2px"
           backgroundColor="primary.darker"
           animate={{
-            left: activeIndex === 0 ? "4px" : "100px",
+            left: `${activeIndex * 96 + 4}px`,
           }}
           transition={{
             type: "spring",

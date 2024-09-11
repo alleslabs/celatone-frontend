@@ -369,7 +369,7 @@ export const TxMsgExpand = ({
           </Tag>
         )}
       </Flex>
-      <Flex>
+      <Flex align="center">
         {isMobile && isIbc && (
           <Tag mx={2} variant="secondary" size="sm" minW="hug-content">
             IBC

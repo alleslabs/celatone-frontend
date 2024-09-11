@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { useContractDetailsTxs } from "../data";
 import { TxsTabIndex } from "../types";
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
@@ -30,17 +29,6 @@ export const EvmContractDetailsTxs = ({
   tab,
   setTab,
 }: EvmContractDetailsTxsProps) => {
-  const {
-    cosmosTxs,
-    evmTxs,
-    isCosmosTxsLoading,
-    isCosmosTxsFetchingNextpage,
-    isEvmTxsLoading,
-    isEvmTxsFetchingNextpage,
-    fetchNextPage,
-    hasNextPage,
-  } = useContractDetailsTxs(address);
-
   const handleTabChange = useCallback(
     (nextTab: TxsTabIndex) => () => {
       if (nextTab === tab) return;
@@ -69,23 +57,14 @@ export const EvmContractDetailsTxs = ({
         <TabPanels>
           <TabPanel p={0} pt={6}>
             <EvmContractDetailsCosmosTxs
+              address={address}
               onViewMore={onViewMore}
-              cosmosTxs={cosmosTxs}
-              isCosmosTxsLoading={isCosmosTxsLoading}
-              hasNextPage={hasNextPage}
-              fetchNextPage={fetchNextPage}
-              isFetchingNextPage={isCosmosTxsFetchingNextpage}
             />
           </TabPanel>
           <TabPanel p={0} pt={6}>
             <EvmContractDetailsEvmTxs
+              address={address}
               onViewMore={onViewMore}
-              evmTxs={evmTxs}
-              isEvmTxsLoading={isEvmTxsLoading}
-              cosmosTxsCount={cosmosTxs?.length}
-              hasNextPage={hasNextPage}
-              fetchNextPage={fetchNextPage}
-              isFetchingNextPage={isEvmTxsFetchingNextpage}
             />
           </TabPanel>
         </TabPanels>

@@ -22,3 +22,7 @@ div[data-floating-ui-portal] {
 .text-editor .ace_toggle_wrap {
   display: none;
 }
+
+.text-editor .ace_invalid {
+  background-color: unset;
+}
