@@ -14,6 +14,7 @@ export const EvmRelatedField = ({ label, children }: EvmRelatedFieldProps) => {
     <Flex
       direction={{ base: "row", xl: "column" }}
       align={{ base: "center", xl: "start" }}
+      maxW={{ base: "full", xl: "240px" }}
       flex={1}
       height="full"
     >

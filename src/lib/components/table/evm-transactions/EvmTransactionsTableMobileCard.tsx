@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Stack, Text } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 
 import { MobileCardTemplate } from "../MobileCardTemplate";
@@ -71,23 +71,21 @@ export const EvmTransactionsTableMobileCard = ({
         </Flex>
       }
       middleContent={
-        <>
-          <Flex>
-            <Flex direction="column" flex={1} gap={1}>
-              <MobileLabel label="sender" />
-              <ExplorerLink
-                value={evmTransaction.tx.from}
-                type="user_address"
-                showCopyOnHover
-              />
-            </Flex>
-            <Flex direction="column" flex={1} gap={1}>
-              <MobileLabel label="To" />
-              <EvmToCell toAddress={toAddress} />
-            </Flex>
+        <Stack gap={3}>
+          <Flex direction="column" gap={1}>
+            <MobileLabel label="sender" variant="body2" />
+            <ExplorerLink
+              value={evmTransaction.tx.from}
+              type="user_address"
+              showCopyOnHover
+            />
           </Flex>
-          <Flex direction="column" mt={3}>
-            <MobileLabel label="Amount" />
+          <Flex direction="column" gap={1}>
+            <MobileLabel label="To" variant="body2" />
+            <EvmToCell toAddress={toAddress} />
+          </Flex>
+          <Flex direction="column">
+            <MobileLabel label="Amount" variant="body2" />
             <Flex gap={2} align="center">
               <Text variant="body2">
                 <Text as="span" fontWeight={700} mr={1}>
@@ -106,7 +104,7 @@ export const EvmTransactionsTableMobileCard = ({
               </Text>
             </Flex>
           </Flex>
-        </>
+        </Stack>
       }
       bottomContent={
         showTimestamp && (
