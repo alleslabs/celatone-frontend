@@ -371,31 +371,21 @@ export const zBlockTxsResponseSequencer = z.object({
 
 const zTxByPoolIdResponse = z
   .object({
-    block: z.object({
-      height: z.number().nonnegative(),
-      timestamp: zUtcDate,
-    }),
-    transaction: z.object({
-      account: z.object({
-        address: zBechAddr,
-      }),
-      hash: z.string(),
-      is_ibc: z.boolean(),
-      messages: z.any().array(),
-      success: z.boolean(),
-    }),
+    created: zUtcDate,
+    hash: z.string(),
+    height: z.number().nonnegative(),
+    is_ibc: z.boolean(),
+    messages: z.any().array(),
+    sender: zBechAddr,
+    success: z.boolean(),
   })
-  .transform<Transaction>(({ transaction, block }) => ({
-    hash: parseTxHash(transaction.hash),
-    messages: snakeToCamel(transaction.messages) as Message[],
-    sender: transaction.account.address,
+  .transform<Transaction>((val) => ({
+    ...snakeToCamel(val),
+    hash: parseTxHash(val.hash),
+    messages: snakeToCamel(val.messages) as Message[],
     isSigner: true,
-    height: block.height,
-    created: block.timestamp,
-    success: transaction.success,
     actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
     furtherAction: MsgFurtherAction.NONE,
-    isIbc: transaction.is_ibc,
     isInstantiate: false,
     isOpinit: false,
   }));
