@@ -35,7 +35,7 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
   const isMobileOverview = isMobile && !!onViewMore;
 
   return (
-    <Box mt={{ base: 4, md: 8 }}>
+    <Box mt={8}>
       {isMobileOverview ? (
         <MobileTitle
           title={title}
@@ -44,7 +44,7 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
           showCount={false}
         />
       ) : (
-        <Flex direction="column" gap={6}>
+        <Flex direction="column">
           <TableTitle title={title} mb={0} showCount={false} />
           {!isMobileOverview && (
             <TransactionsTable
