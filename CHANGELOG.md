@@ -66,7 +66,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+<<<<<<< fix/bugbash-minievm-peach
+- [#1142](https://github.com/alleslabs/celatone-frontend/pull/1142) Fix minievm bugbash (wording, spacing, and alignment)
+=======
 - [#1143](https://github.com/alleslabs/celatone-frontend/pull/1143) Fix missing daemon name and block time info
+>>>>>>> feat/minievm
 - [#1134](https://github.com/alleslabs/celatone-frontend/pull/1134) Fix evm contract evm txs loading state and evm tx details ui
 - [#1137](https://github.com/alleslabs/celatone-frontend/pull/1137) Bump axios and remove initia js client usage
 - [#1126](https://github.com/alleslabs/celatone-frontend/pull/1126) Fix tx message detail alignment in small screen

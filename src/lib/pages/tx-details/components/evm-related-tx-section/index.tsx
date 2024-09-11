@@ -55,6 +55,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         boxSize={5}
         color="gray.600"
         display={{ base: "none", xl: "block" }}
+        flex={0.3}
       />
       <EvmRelatedField label="To">
         <EvmToCell toAddress={toAddress} />
@@ -72,11 +73,12 @@ export const EvmRelatedTxSection = ({
     </Heading>
     <Flex
       direction={{ base: "column", xl: "row" }}
-      alignItems={{ base: "start", xl: "end" }}
+      alignItems={{ base: "start", xl: "center" }}
       gap={4}
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="8px"
       p={4}
+      sx={{ "& > div:last-child": { flex: 2, maxW: "unset" } }}
     >
       <EvmRelatedTxSectionBody evmTxHash={evmTxHash} />
     </Flex>

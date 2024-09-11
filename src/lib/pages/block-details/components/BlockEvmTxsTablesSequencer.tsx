@@ -90,7 +90,7 @@ export const BlockEvmTxsTablesSequencer = ({
               emptyState={
                 <EmptyState
                   imageVariant="empty"
-                  message="There are no submitted evm transactions in this block"
+                  message="There are no submitted EVM transactions in this block"
                 />
               }
             />
