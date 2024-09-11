@@ -30,6 +30,7 @@ interface EvmTxDetailsData {
   cosmosTxData: Option<TxData>;
   evmTxData: Option<TxDataJsonRpc>;
   evmDenom: Option<string>;
+  evmTxValue: Option<TokenWithValue>;
   gasInfo: Option<GasInfo>;
 }
 
@@ -49,6 +50,15 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
     useBlockDataJsonRpc(evmTxData?.tx.blockNumber.toNumber());
 
   const evmDenom = evmParams?.params.fee_denom;
+
+  const evmTxValue = useMemo<Option<TokenWithValue>>(() => {
+    if (!evmTxData) return undefined;
+    return coinToTokenWithValue(
+      evmDenom ?? "",
+      evmTxData.tx.value.toString(),
+      assetInfos
+    );
+  }, [assetInfos, evmDenom, evmTxData]);
 
   const gasInfo = useMemo<Option<GasInfo>>(() => {
     if (!evmTxData || !blockData) return undefined;
@@ -105,6 +115,7 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
     cosmosTxData,
     evmTxData,
     evmDenom,
+    evmTxValue,
     gasInfo,
   };
 };

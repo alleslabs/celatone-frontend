@@ -27,7 +27,7 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
   useEvmConfig({ shouldRedirect: true });
   const router = useRouter();
   const isMobile = useMobile();
-  const { evmTxData, cosmosTxData, evmDenom, gasInfo, isLoading } =
+  const { evmTxData, cosmosTxData, evmDenom, evmTxValue, gasInfo, isLoading } =
     useEvmTxDetailsData(evmTxHash);
 
   useEffect(() => {
@@ -51,13 +51,14 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
   return (
     <>
       <CelatoneSeo pageName={`EVM TxHash – ${truncate(evmTxData?.tx.hash)}`} />
-      {evmTxData && cosmosTxData && gasInfo ? (
+      {evmTxData && cosmosTxData && evmTxValue && gasInfo ? (
         <>
           <EvmTxHeader evmTxData={evmTxData} cosmosTxData={cosmosTxData} />
           {isMobile && (
             <EvmTxInfoMobile
               evmTxData={evmTxData}
               cosmosTxData={cosmosTxData}
+              evmTxValue={evmTxValue}
               gasInfo={gasInfo}
             />
           )}
@@ -66,6 +67,7 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
               <EvmTxInfo
                 evmTxData={evmTxData}
                 cosmosTxData={cosmosTxData}
+                evmTxValue={evmTxValue}
                 gasInfo={gasInfo}
               />
             )}

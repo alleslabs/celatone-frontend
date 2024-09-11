@@ -68,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1145](https://github.com/alleslabs/celatone-frontend/pull/1145) Shorten value in evm txs table amount and render amount in evm txs details
 - [#1142](https://github.com/alleslabs/celatone-frontend/pull/1142) Fix minievm bugbash (wording, spacing, and alignment)
 - [#1143](https://github.com/alleslabs/celatone-frontend/pull/1143) Fix missing daemon name and block time info
 - [#1134](https://github.com/alleslabs/celatone-frontend/pull/1134) Fix evm contract evm txs loading state and evm tx details ui

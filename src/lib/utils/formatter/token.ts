@@ -5,6 +5,7 @@ import type { Token, U, USD } from "lib/types";
 
 const INVALID = "N/A";
 
+const T = 1_000_000_000_000;
 const B = 1_000_000_000;
 const M = 1_000_000;
 const K = 1_000;
@@ -73,6 +74,7 @@ export const formatUTokenWithPrecision = (
   const token = toToken(amount, precision);
 
   if (isSuffix) {
+    if (token.gte(T)) return token.toExponential(2);
     if (token.gte(B)) return `${d2Formatter(token.div(B), "0.00")}B`;
     if (token.gte(M)) return `${d2Formatter(token.div(M), "0.00")}M`;
     if (token.gte(K)) return `${d2Formatter(token, "0.00")}`;

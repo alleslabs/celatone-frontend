@@ -92,7 +92,8 @@ export const EvmTransactionsTableMobileCard = ({
                   {formatUTokenWithPrecision(
                     token.amount,
                     token.precision ?? 0,
-                    true
+                    true,
+                    token.precision ? 6 : 0
                   )}
                 </Text>
                 {getTokenLabel(token.denom, token.symbol)}
