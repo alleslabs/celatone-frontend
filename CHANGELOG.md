@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+[#1148](https://github.com/alleslabs/celatone-frontend/pull/1148) Update NFT collections to get data from API instead of GraphQL
 [#1140](https://github.com/alleslabs/celatone-frontend/pull/1140) Update NFTs to get data from API instead of GraphQL
 
 ### Bug fixes
