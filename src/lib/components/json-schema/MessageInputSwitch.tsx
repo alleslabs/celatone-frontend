@@ -55,9 +55,7 @@ export const MessageInputSwitch = <
     [onTabChangeProps]
   );
 
-  /**
-   * @todos current implementation of sliding box dimensions and position is hardcoded due to issues with ref, improve this later
-   */
+  // TODO: current implementation of sliding box dimensions and position is hardcoded due to issues with ref, improve this later
   return (
     <Tooltip label={tooltipLabel} hidden={!disabled}>
       <div style={{ marginLeft: ml }}>

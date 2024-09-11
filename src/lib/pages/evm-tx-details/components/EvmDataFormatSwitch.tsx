@@ -24,9 +24,7 @@ export const EvmDataFormatSwitch = ({
 }: EvmDataFormatSwitchProps) => {
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
 
-  /**
-   * @todos current implementation of sliding box dimensions and position is hardcoded due to issues with ref, improve this later
-   */
+  // TODO: current implementation of sliding box dimensions and position is hardcoded due to issues with ref, improve this later
   return (
     <div>
       <Flex
