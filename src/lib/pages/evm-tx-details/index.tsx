@@ -8,6 +8,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state/EmptyState";
+import type { Option } from "lib/types";
 import { truncate } from "lib/utils";
 
 import {
@@ -18,6 +19,17 @@ import {
 } from "./components";
 import { useEvmTxDetailsData } from "./data";
 import { zEvmTxDetailsQueryParams } from "./types";
+
+const mapEvmTxStatus = (status: Option<boolean>) => {
+  switch (status) {
+    case true:
+      return "success";
+    case false:
+      return "failed";
+    default:
+      return "not-found";
+  }
+};
 
 interface EvmTxDetailsBodyProps {
   evmTxHash: string;
@@ -31,19 +43,10 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
     useEvmTxDetailsData(evmTxHash);
 
   useEffect(() => {
-    if (router.isReady && !isLoading) {
-      const mapTxFailed = {
-        true: "success",
-        false: "fail",
-        undefined: "not_found",
-      };
+    if (router.isReady && !isLoading)
       track(AmpEvent.TO_EVM_TRANSACTION_DETAILS, {
-        tx_status:
-          mapTxFailed[
-            String(evmTxData?.txReceipt.status) as keyof typeof mapTxFailed
-          ],
+        tx_status: mapEvmTxStatus(evmTxData?.txReceipt.status),
       });
-    }
   }, [router.isReady, isLoading, evmTxData?.txReceipt.status]);
 
   if (isLoading || !evmTxHash) return <Loading withBorder />;
