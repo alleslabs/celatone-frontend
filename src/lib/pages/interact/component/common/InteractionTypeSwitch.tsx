@@ -72,7 +72,7 @@ export const InteractionTypeSwitch = ({
         w="calc(50% - 4px)"
         position="absolute"
         borderRadius="2px"
-        backgroundColor="primary.dark"
+        backgroundColor="primary.darker"
         animate={{ left: activeIndex === 0 ? "4px" : "50%" }}
         transition={{
           type: "spring",

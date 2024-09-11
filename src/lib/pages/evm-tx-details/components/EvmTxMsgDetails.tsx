@@ -1,10 +1,10 @@
-import { Alert, AlertDescription, Flex, Heading } from "@chakra-ui/react";
+import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 
 import { CustomIcon } from "lib/components/icon";
-import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
 import type { Option } from "lib/types";
 
+import { EvmInputData } from "./EvmInputData";
 import { EvmTxMsgDetailsBody } from "./EvmTxMsgDetailsBody";
 
 interface EvmTxMsgDetailsProps {
@@ -34,9 +34,6 @@ export const EvmTxMsgDetails = ({
       </Alert>
     )}
     <EvmTxMsgDetailsBody evmTxData={evmTxData} evmDenom={evmDenom} />
-    <Heading as="h6" variant="h6">
-      Input Data
-    </Heading>
-    <TextReadOnly text={evmTxData.tx.input} canCopy />
+    <EvmInputData inputData={evmTxData.tx.input} />
   </Flex>
 );
