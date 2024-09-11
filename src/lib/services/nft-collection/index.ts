@@ -4,32 +4,27 @@ import type { UseQueryOptions } from "@tanstack/react-query";
 import type {
   ActivitiesResponse,
   CollectionCreatorResponse,
-  CollectionsByAccountResponse,
+  CollectionMutateEventsResponse,
   NftCollectionsResponse,
 } from "../types";
 import { handleQueryByTier } from "../utils";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useCelatoneApp,
   useCurrentChain,
   useLcdEndpoint,
   useTierConfig,
 } from "lib/app-provider";
-import type { HexAddr, HexAddr32, MutateEvent } from "lib/types";
+import type { HexAddr, HexAddr32 } from "lib/types";
 
 import {
   getNftCollectionActivitiesByCollectionAddress,
   getNftCollectionByCollectionAddress,
   getNftCollectionCreatorByCollectionAddress,
+  getNftCollectionMutateEventsByCollectionAddress,
   getNftCollections,
+  getNftCollectionsByAccountAddress,
 } from "./api";
-import {
-  getCollectionMutateEvents,
-  getCollectionMutateEventsCount,
-  getCollectionsByAccount,
-  getCollectionUniqueHoldersCount,
-} from "./gql";
 import {
   getCollectionActivitiesSequencer,
   getCollectionByCollectionAddressSequencer,
@@ -193,20 +188,25 @@ export const useCollectionActivitiesSequencer = (
 export const useCollectionMutateEvents = (
   collectionAddress: HexAddr32,
   limit: number,
-  offset: number
+  offset: number,
+  options?: Pick<
+    UseQueryOptions<CollectionMutateEventsResponse>,
+    "onSuccess" | "enabled"
+  >
 ) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<MutateEvent[]>(
+  const apiEndpoint = useBaseApiRoute("nft_collections");
+
+  return useQuery(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTS,
-      chainConfig.graphql,
       collectionAddress,
       limit,
       offset,
+      apiEndpoint,
     ],
     async () =>
-      getCollectionMutateEvents(
-        chainConfig.graphql ?? "",
+      getNftCollectionMutateEventsByCollectionAddress(
+        apiEndpoint,
         collectionAddress,
         limit,
         offset
@@ -214,65 +214,20 @@ export const useCollectionMutateEvents = (
     {
       retry: 1,
       refetchOnWindowFocus: false,
-    }
-  );
-};
-
-export const useCollectionMutateEventsCount = (
-  collectionAddress: HexAddr32,
-  enabled = true
-) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<number>(
-    [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_MUTATE_EVENTS_COUNT,
-      chainConfig.graphql,
-      collectionAddress,
-    ],
-    async () =>
-      getCollectionMutateEventsCount(
-        chainConfig.graphql ?? "",
-        collectionAddress
-      ),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      enabled,
-    }
-  );
-};
-
-export const useCollectionUniqueHoldersCount = (
-  collectionAddress: HexAddr32
-) => {
-  const { chainConfig } = useCelatoneApp();
-  return useQuery<number>(
-    [
-      CELATONE_QUERY_KEYS.NFT_COLLECTION_UNIQUE_HOLDERS_COUNT,
-      chainConfig.graphql,
-      collectionAddress,
-    ],
-    async () =>
-      getCollectionUniqueHoldersCount(
-        chainConfig.graphql ?? "",
-        collectionAddress
-      ),
-    {
-      retry: 1,
-      refetchOnWindowFocus: false,
+      ...options,
     }
   );
 };
 
 export const useCollectionsByAccount = (accountAddress: HexAddr) => {
-  const { chainConfig } = useCelatoneApp();
+  const apiEndpoint = useBaseApiRoute("nft_collections");
   const lcdEndpoint = useLcdEndpoint();
   const { tier } = useTierConfig();
 
-  return useQuery<CollectionsByAccountResponse[]>(
+  return useQuery(
     [
       CELATONE_QUERY_KEYS.NFT_COLLECTIONS_BY_ACCOUNT,
-      chainConfig.graphql,
+      apiEndpoint,
       lcdEndpoint,
       tier,
       accountAddress,
@@ -281,10 +236,10 @@ export const useCollectionsByAccount = (accountAddress: HexAddr) => {
       handleQueryByTier({
         tier,
         threshold: "sequencer",
+        queryFull: () =>
+          getNftCollectionsByAccountAddress(apiEndpoint, accountAddress),
         querySequencer: () =>
           getCollectionsByAccountSequencer(lcdEndpoint, accountAddress),
-        queryFull: () =>
-          getCollectionsByAccount(chainConfig.graphql ?? "", accountAddress),
       }),
     {
       retry: 1,

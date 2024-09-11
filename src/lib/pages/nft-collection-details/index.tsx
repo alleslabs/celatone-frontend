@@ -32,7 +32,7 @@ import { useNfts } from "lib/services/nft";
 import {
   useCollectionActivities,
   useCollectionByCollectionAddress,
-  useCollectionMutateEventsCount,
+  useCollectionMutateEvents,
 } from "lib/services/nft-collection";
 import { isHexModuleAddress } from "lib/utils";
 
@@ -80,9 +80,11 @@ const CollectionDetailsBody = ({
     undefined,
     { enabled: isFullTier }
   );
-  const { data: mutateEventsCount } = useCollectionMutateEventsCount(
+  const { data: mutateEvents } = useCollectionMutateEvents(
     collectionAddress,
-    isFullTier
+    1,
+    0,
+    { enabled: isFullTier }
   );
 
   const handleTabChange = useCallback(
@@ -247,9 +249,9 @@ const CollectionDetailsBody = ({
           </CustomTab>
           {isFullTier && (
             <CustomTab
-              count={mutateEventsCount}
+              count={mutateEvents?.total}
               onClick={handleTabChange(TabIndex.MutateEvents)}
-              isDisabled={mutateEventsCount === 0}
+              isDisabled={!mutateEvents?.total}
             >
               Mutate Events
             </CustomTab>
@@ -276,7 +278,7 @@ const CollectionDetailsBody = ({
                 desc={description}
                 uri={uri}
                 activities={activities?.total}
-                mutateEventes={mutateEventsCount}
+                mutateEventes={mutateEvents?.total}
                 royalty={royalty}
                 onClickActivities={handleTabChange(TabIndex.Activities)}
                 onClickMutateEvents={handleTabChange(TabIndex.MutateEvents)}
@@ -304,10 +306,7 @@ const CollectionDetailsBody = ({
           </TabPanel>
           {isFullTier && (
             <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-              <CollectionMutateEvents
-                collectionAddress={collectionAddress}
-                totalCount={mutateEventsCount ?? 0}
-              />
+              <CollectionMutateEvents collectionAddress={collectionAddress} />
             </TabPanel>
           )}
         </TabPanels>

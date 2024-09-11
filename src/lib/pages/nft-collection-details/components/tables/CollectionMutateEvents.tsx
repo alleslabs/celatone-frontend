@@ -7,12 +7,10 @@ import type { HexAddr32 } from "lib/types";
 
 interface CollectionMutateEventsProps {
   collectionAddress: HexAddr32;
-  totalCount: number;
 }
 
 export const CollectionMutateEvents = ({
   collectionAddress,
-  totalCount,
 }: CollectionMutateEventsProps) => {
   const {
     pagesQuantity,
@@ -21,8 +19,8 @@ export const CollectionMutateEvents = ({
     pageSize,
     setPageSize,
     offset,
+    setTotalData,
   } = usePaginator({
-    total: totalCount,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -33,13 +31,14 @@ export const CollectionMutateEvents = ({
   const { data: mutateEvents, isLoading } = useCollectionMutateEvents(
     collectionAddress,
     pageSize,
-    offset
+    offset,
+    { onSuccess: ({ total }) => setTotalData(total) }
   );
 
   return (
     <>
       <MutateEventsTable
-        mutateEvents={mutateEvents}
+        mutateEvents={mutateEvents?.items}
         isLoading={isLoading}
         emptyState={
           <EmptyState
@@ -48,12 +47,12 @@ export const CollectionMutateEvents = ({
           />
         }
       />
-      {totalCount > 10 && (
+      {mutateEvents && mutateEvents.total > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalCount}
+          totalData={mutateEvents.total}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {

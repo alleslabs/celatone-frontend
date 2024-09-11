@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import type { MutateEvent } from "lib/types";
 import {
   zHexAddr,
   zHexAddr32,
@@ -82,70 +81,43 @@ export const zActivitiesResponse = z.object({
 });
 export type ActivitiesResponse = z.infer<typeof zActivitiesResponse>;
 
-export const zCollectionMutateEventsResponse = z
+const zCollectionMutateEventItemResponse = z
   .object({
     old_value: z.string(),
     new_value: z.string(),
     mutated_field_name: z.string(),
     remark: zRemark,
-    block: z.object({ timestamp: zUtcDate }),
+    timestamp: zUtcDate,
   })
-  .transform<MutateEvent>((val) => ({
-    oldValue: val.old_value,
-    newValue: val.new_value,
-    mutatedFieldName: val.mutated_field_name,
-    remark: val.remark,
-    timestamp: val.block.timestamp,
-  }));
+  .transform(snakeToCamel);
 
-export const zMutationEventsCountResponseItem = z
-  .object({
-    collection_mutation_events_aggregate: z.object({
-      aggregate: z.object({ count: z.number() }),
-    }),
-  })
-  .transform<number>(
-    (val) => val.collection_mutation_events_aggregate.aggregate.count
-  );
-
-export const zUniqueHoldersCountResponseItem = z
-  .object({
-    nfts_aggregate: z.object({
-      aggregate: z.object({ count: z.number() }),
-    }),
-  })
-  .transform<number>((val) => val.nfts_aggregate.aggregate.count);
-
-export const zCollectionsByAccountResponse = z
-  .object({
-    name: z.string(),
-    id: zHexAddr32,
-    uri: z.string(),
-    nfts_aggregate: z.object({ aggregate: z.object({ count: z.number() }) }),
-  })
-  .transform((val) => ({
-    collectionName: val.name,
-    collectionAddress: val.id,
-    uri: val.uri,
-    hold: val.nfts_aggregate.aggregate.count,
-  }));
-export type CollectionsByAccountResponse = z.infer<
-  typeof zCollectionsByAccountResponse
+export const zCollectionMutateEventsResponse = z.object({
+  items: z.array(zCollectionMutateEventItemResponse),
+  total: z.number().nonnegative(),
+});
+export type CollectionMutateEventsResponse = z.infer<
+  typeof zCollectionMutateEventsResponse
 >;
 
-export const zCollectionsByAccountResponseOld = z
+const zCollectionByAccountItemResponse = z
   .object({
-    name: z.string(),
-    vm_address: z.object({ vm_address: zHexAddr32 }),
+    collection_name: z.string(),
+    collection_address: zHexAddr32,
     uri: z.string(),
-    nfts_aggregate: z.object({ aggregate: z.object({ count: z.number() }) }),
+    hold: z.number(),
   })
-  .transform<CollectionsByAccountResponse>((val) => ({
-    collectionName: val.name,
-    collectionAddress: val.vm_address.vm_address,
-    uri: val.uri,
-    hold: val.nfts_aggregate.aggregate.count,
+  .transform(snakeToCamel);
+
+export const zCollectionsByAccountAddressResponse = z
+  .object({
+    items: z.array(zCollectionByAccountItemResponse),
+  })
+  .transform(({ items }) => ({
+    items: items.filter((item) => item.hold > 0),
   }));
+export type CollectionsByAccountAddressResponse = z.infer<
+  typeof zCollectionsByAccountAddressResponse
+>;
 
 const zCollectionNftsSequencer = z.object({
   handle: zHexAddr32,
@@ -172,14 +144,14 @@ export const zCollectionsByAccountResponseSequencer = z
     collections: z.array(zCollectionResponseSequencer),
     pagination: zPagination,
   })
-  .transform<CollectionsByAccountResponse[]>(({ collections }) =>
-    collections.map((collection) => ({
+  .transform<CollectionsByAccountAddressResponse>(({ collections }) => ({
+    items: collections.map((collection) => ({
       collectionName: collection.collection.name,
       collectionAddress: collection.objectAddr,
       uri: collection.collection.uri,
       hold: collection.collection.nfts.length,
-    }))
-  );
+    })),
+  }));
 export type CollectionsByAccountResponseSequencer = z.infer<
   typeof zCollectionsByAccountResponseSequencer
 >;

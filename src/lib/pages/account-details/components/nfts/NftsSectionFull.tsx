@@ -32,7 +32,7 @@ export const NftsSectionFull = ({
 
   if (isLoading) return <Loading />;
   if (!collections) return <ErrorFetching dataName="collections" />;
-  if (!collections.length)
+  if (!collections.items.length)
     return (
       <EmptyState
         imageVariant="empty"
@@ -62,7 +62,7 @@ export const NftsSectionFull = ({
             count={totalData}
             isDefault
           />
-          {collections.map((item) => (
+          {collections.items.map((item) => (
             <FilterItem
               key={item.collectionAddress}
               collectionName={item.collectionName}
