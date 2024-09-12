@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1149](https://github.com/alleslabs/celatone-frontend/pull/1149) Refactor component react select input
+
 ### Bug fixes
 
 - [#1137](https://github.com/alleslabs/celatone-frontend/pull/1137) Bump axios and remove initia js client usage
