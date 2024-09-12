@@ -1,11 +1,15 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
 import { useController, useWatch } from "react-hook-form";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
+import { SelectInput } from "lib/components/forms";
+
 import { WasmVerifySubmitFormSelectNoOptionsMessage } from "./WasmVerifySubmitFormSelectNoOptionsMessage";
-import type { WasmVerifySubmitFormOption } from "./WasmVerifySubmitFormSelectOption";
+import type {
+  WasmVerifySubmitFormOption,
+  WasmVerifySubmitFormOptionValue,
+} from "./WasmVerifySubmitFormSelectOption";
 import { WasmVerifySubmitFormSelectOption } from "./WasmVerifySubmitFormSelectOption";
 
 interface WasmVerifySubmitFormSelectProps<T extends FieldValues> {
@@ -13,29 +17,6 @@ interface WasmVerifySubmitFormSelectProps<T extends FieldValues> {
   control: Control<T>;
   options: WasmVerifySubmitFormOption[];
 }
-
-const dropdownStyles = {
-  container: (provided: SystemStyleObject) => ({
-    ...provided,
-    width: "100%",
-  }),
-  valueContainer: (provided: SystemStyleObject) => ({
-    ...provided,
-    pl: 3,
-    pr: 0,
-  }),
-  dropdownIndicator: (provided: SystemStyleObject) => ({
-    ...provided,
-    px: 2,
-    color: "gray.600",
-  }),
-  placeholder: (provided: SystemStyleObject) => ({
-    ...provided,
-    color: "gray.600",
-    fontSize: "16px",
-    whiteSpace: "nowrap",
-  }),
-};
 
 export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
   name,
@@ -76,30 +57,41 @@ export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
       }}
     >
       <Text className="form-label">Compiler Version</Text>
-      <Select
-        size="lg"
+      <SelectInput<WasmVerifySubmitFormOptionValue>
         placeholder="Select or input the compiler version"
         options={options}
+        menuPortalTarget={undefined}
         onChange={(newValue) => {
           const val = newValue as { label: string; value: string };
           return field.onChange(val.value);
         }}
-        chakraStyles={dropdownStyles}
-        filterOption={(
-          candidate: { label: string; value: string },
-          input: string
-        ) => {
-          if (input) {
-            return candidate.label.toLowerCase().includes(input.toLowerCase());
-          }
-
-          return true;
-        }}
+        value={options.find((option) => option.value === watcher)}
         components={{
           NoOptionsMessage: WasmVerifySubmitFormSelectNoOptionsMessage,
           Option: WasmVerifySubmitFormSelectOption,
         }}
-        value={options.find((option) => option.value === watcher) || null}
+        chakraStyles={{
+          container: (provided: SystemStyleObject) => ({
+            ...provided,
+            width: "100%",
+          }),
+          valueContainer: (provided: SystemStyleObject) => ({
+            ...provided,
+            pl: 3,
+            pr: 0,
+          }),
+          dropdownIndicator: (provided: SystemStyleObject) => ({
+            ...provided,
+            px: 2,
+            color: "gray.600",
+          }),
+          placeholder: (provided: SystemStyleObject) => ({
+            ...provided,
+            color: "gray.600",
+            fontSize: "16px",
+            whiteSpace: "nowrap",
+          }),
+        }}
       />
     </Box>
   );

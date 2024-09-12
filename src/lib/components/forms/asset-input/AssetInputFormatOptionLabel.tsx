@@ -1,21 +1,23 @@
 import { Flex, Text } from "@chakra-ui/react";
 
+import type { SelectInputOption } from "../SelectInput";
 import { TokenImageRenderWithCache } from "lib/components/token";
-import type { AssetOption } from "lib/types";
+import type { AssetOptionValue } from "lib/types";
 import { getTokenLabel } from "lib/utils";
 
 export const AssetInputFormatOptionLabel = ({
-  logo,
   label,
-  id,
-}: AssetOption) => (
+  value,
+}: SelectInputOption<AssetOptionValue>) => (
   <Flex gap={2} alignItems="center">
-    <TokenImageRenderWithCache
-      src={String(logo)}
-      alt={getTokenLabel(String(id), label)}
-      width={24}
-      height={24}
-    />
+    {!!value.logo && (
+      <TokenImageRenderWithCache
+        src={value.logo}
+        alt={getTokenLabel(value.id, label)}
+        width={24}
+        height={24}
+      />
+    )}
     <Text variant="body2" color="text.main">
       {label}
     </Text>

@@ -1,9 +1,9 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
 import { isUndefined } from "lodash";
 import { useMemo } from "react";
 
 import { AmpEvent, trackUseFilter } from "lib/amplitude";
+import { SelectInput } from "lib/components/forms";
 import type { Option } from "lib/types";
 
 interface ActiveFilterProps {
@@ -47,36 +47,13 @@ export const ActiveFilter = ({
       <Text variant="body3" color="text.dark" pl={{ base: 1, md: 3 }}>
         Show only
       </Text>
-      <Select
-        size="lg"
+      <SelectInput
         options={activeOptions}
+        menuPortalTarget={document.body}
         value={activeOptions.find(({ value }) => value === isActive)}
         onChange={(selectedOption) =>
           selectedOption && handleOnChange(selectedOption.value)
         }
-        chakraStyles={{
-          valueContainer: (provided) => ({
-            ...provided,
-            pl: 3,
-            pr: 0,
-          }),
-          dropdownIndicator: (provided) => ({
-            ...provided,
-            px: 2,
-          }),
-          option: (provided) => ({
-            ...provided,
-            color: "text.main",
-            fontSize: "16px",
-            _hover: {
-              bg: "gray.700",
-            },
-            _selected: {
-              bg: "gray.800",
-            },
-          }),
-        }}
-        isSearchable={false}
       />
     </Flex>
   );
