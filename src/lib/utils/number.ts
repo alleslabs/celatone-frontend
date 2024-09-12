@@ -8,5 +8,9 @@ export const isNumeric = (str: string): boolean =>
 
 export const numberToHex = (num: number): string => `0x${num.toString(16)}`;
 
-export const hexToBig = (hex: string) =>
-  big(BigInt(hex.replace(/^0x/, "")).toString());
+export const hexToBig = (hex: string) => {
+  if (!hex.startsWith("0x")) {
+    return big(BigInt(`0x${hex}`).toString());
+  }
+  return big(BigInt(hex).toString());
+};
