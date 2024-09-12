@@ -34,7 +34,6 @@ import {
   convertAccountPubkeyToAccountAddress,
   extractTxLogs,
   isTxHash,
-  snakeToCamel,
 } from "lib/utils";
 
 import {
@@ -88,10 +87,8 @@ export const useTxData = (
 
       const logs = extractTxLogs(txResponse);
 
-      const payload = snakeToCamel(txResponse);
-
       return {
-        ...payload,
+        ...txResponse,
         logs,
         chainId: currentChainId,
         isTxFailed: Boolean(txResponse.code),
