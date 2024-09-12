@@ -24,5 +24,6 @@ div[data-floating-ui-portal] {
 }
 
 .text-editor .ace_invalid {
+  visibility: hidden;
   background-color: unset;
 }
