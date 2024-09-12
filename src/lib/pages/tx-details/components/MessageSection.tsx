@@ -6,16 +6,25 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
+import { useEvmConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { TxData } from "lib/services/types";
+import type { Nullish } from "lib/types";
 
+import { EvmRelatedTxSection } from "./evm-related-tx-section";
 import { TxMessage } from "./tx-message";
 
 interface MessageSectionProps {
   txData: TxData;
+  relatedEvmTxHash: Nullish<string>;
 }
 
-export const MessageSection = ({ txData }: MessageSectionProps) => {
+export const MessageSection = ({
+  txData,
+  relatedEvmTxHash,
+}: MessageSectionProps) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
   const {
     tx: {
       body: { messages },
@@ -39,9 +48,10 @@ export const MessageSection = ({ txData }: MessageSectionProps) => {
           </Flex>
         </Alert>
       )}
+      {relatedEvmTxHash && <EvmRelatedTxSection evmTxHash={relatedEvmTxHash} />}
       <Flex align="center" gap={2}>
         <Heading as="h6" variant="h6">
-          Messages
+          {evm.enabled ? "Cosmos " : ""}Messages
         </Heading>
         <Badge>{messages.length}</Badge>
       </Flex>

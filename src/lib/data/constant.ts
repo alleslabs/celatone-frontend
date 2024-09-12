@@ -7,9 +7,7 @@ import type {
   WasmTxFilters,
 } from "lib/types";
 import { MsgType } from "lib/types";
-/**
- * @todos Revisit utils import later
- */
+// TODO: Revisit utils import later
 import { formatSlugName } from "lib/utils/format";
 
 export const USER_GUIDE_DOCS_LINK = "https://docs.alleslabs.com/user-guide";

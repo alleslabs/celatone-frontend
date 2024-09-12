@@ -42,50 +42,50 @@ export const AddNetworkManual = () => {
     mode: "all",
     reValidateMode: "onChange",
     defaultValues: {
-      networkName: "",
-      lcdUrl: "",
-      rpcUrl: "",
+      prettyName: "",
+      lcd: "",
+      rpc: "",
       chainId: "",
       registryChainName: "",
       logoUri: "",
-      vmType: VmType.MOVE,
+      vm: {
+        type: VmType.MOVE,
+      },
       gasAdjustment: 1.5,
       maxGasLimit: 25000000,
-      feeTokenDenom: "umin",
+      denom: "umin",
       gasConfig: "standard",
       gasPrice: 0.15,
-      fixedMinimumGasPrice: 0.15,
-      lowGasPrice: 0.15,
-      averageGasPrice: 0.15,
-      highGasPrice: 0.15,
-      gasForCosmosSend: "",
-      gasForIbc: "",
-      bech32Prefix: "",
+      fixed_min_gas_price: 0.15,
+      low_gas_price: 0.15,
+      average_gas_price: 0.15,
+      high_gas_price: 0.15,
+      bech32_prefix: "",
       slip44: 118,
       assets: [],
     },
   });
 
   const {
-    vmType,
-    networkName,
-    lcdUrl,
-    rpcUrl,
+    vm,
+    prettyName,
+    lcd,
+    rpc,
     chainId,
     registryChainName,
     logoUri,
     gasAdjustment,
     maxGasLimit,
-    feeTokenDenom,
+    denom,
     gasConfig,
     gasPrice,
-    fixedMinimumGasPrice,
-    lowGasPrice,
-    averageGasPrice,
-    highGasPrice,
-    gasForCosmosSend,
-    gasForIbc,
-    bech32Prefix,
+    fixed_min_gas_price: fixedMinGasPrice,
+    low_gas_price: lowGasPrice,
+    average_gas_price: averageGasPrice,
+    high_gas_price: highGasPrice,
+    cosmos_send: cosmosSend,
+    ibc_transfer: ibcTransfer,
+    bech32_prefix: bech32Prefix,
     slip44,
     assets,
   } = watch();
@@ -111,10 +111,10 @@ export const AddNetworkManual = () => {
         isChainIdExist,
         isPrettyNameExist,
       }).safeParse({
-        vmType,
-        networkName,
-        lcdUrl,
-        rpcUrl,
+        vm,
+        prettyName,
+        lcd,
+        rpc,
         chainId,
         registryChainName,
         logoUri,
@@ -124,20 +124,20 @@ export const AddNetworkManual = () => {
       return !zGasFeeDetailsForm.safeParse({
         gasAdjustment,
         maxGasLimit,
-        feeTokenDenom,
+        denom,
         gasConfig,
         gasPrice,
-        fixedMinimumGasPrice,
-        lowGasPrice,
-        averageGasPrice,
-        highGasPrice,
-        gasForCosmosSend,
-        gasForIbc,
+        fixed_min_gas_price: fixedMinGasPrice,
+        low_gas_price: lowGasPrice,
+        average_gas_price: averageGasPrice,
+        high_gas_price: highGasPrice,
+        cosmos_send: cosmosSend,
+        ibc_transfer: ibcTransfer,
       }).success;
 
     if (currentStepIndex === 2)
       return !zWalletRegistryForm.safeParse({
-        bech32Prefix,
+        bech32_prefix: bech32Prefix,
         slip44,
         assets,
       }).success;
@@ -192,7 +192,7 @@ export const AddNetworkManual = () => {
       <SuccessAddCustomMinitiaModal
         isOpen={isOpen}
         onClose={onClose}
-        prettyName={networkName}
+        prettyName={prettyName}
         chainId={chainId}
       />
     </>

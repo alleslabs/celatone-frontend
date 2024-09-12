@@ -42,7 +42,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@alleslabs/shared": "1.0.0-dev2",
+    "@alleslabs/shared": "1.0.0-dev3",
     "@amplitude/analytics-browser": "^2.3.3",
     "@amplitude/analytics-types": "^2.3.0",
     "@amplitude/plugin-user-agent-enrichment-browser": "^1.0.0",
@@ -177,5 +177,5 @@
     "ts-jest": "^29.0.5",
     "typescript": "^5.1.6"
   },
-  "packageManager": "pnpm@8.14.1"
+  "packageManager": "pnpm@9.10.0"
 }

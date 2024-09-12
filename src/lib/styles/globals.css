@@ -18,3 +18,11 @@ div[data-floating-ui-portal] {
 #voting-power-chart-container > canvas {
   width: 100% !important;
 }
+
+.text-editor .ace_toggle_wrap {
+  display: none;
+}
+
+.text-editor .ace_invalid {
+  background-color: unset;
+}

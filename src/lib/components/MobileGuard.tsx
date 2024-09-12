@@ -18,6 +18,7 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
     supportedChainIds.includes(pathName.slice(1)) ||
     pathName.includes(`/accounts`) ||
     pathName.includes(`/txs`) ||
+    pathName.includes(`/evm-txs`) ||
     pathName.includes(`/blocks`) ||
     pathName.includes(`/projects`) ||
     pathName.includes(`/interact-contract`) ||
@@ -31,7 +32,9 @@ export const MobileGuard = ({ children }: MobileGuardProps) => {
     pathName.includes(`/modules`) ||
     pathName.includes(`/interact`) ||
     // validators
-    pathName.includes(`/validators`);
+    pathName.includes(`/validators`) ||
+    // evm
+    pathName.includes(`/evm-contracts`);
 
   if (!isResponsive && isMobile) return <NoMobile />;
   return <>{children}</>;

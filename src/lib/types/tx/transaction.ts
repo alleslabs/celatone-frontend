@@ -38,8 +38,9 @@ export interface Transaction {
   actionMsgType: ActionMsgType;
   furtherAction: MsgFurtherAction;
   isIbc: boolean;
-  isInstantiate: boolean;
   isOpinit: boolean;
+  isEvm: boolean;
+  isInstantiate: boolean;
   events?: Event[];
 }
 
