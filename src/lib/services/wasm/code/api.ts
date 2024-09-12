@@ -67,15 +67,7 @@ export const getCodeList = async (endpoint: string, codeIds: number[]) =>
   axios
     .get(`${endpoint}/list`, {
       params: {
-        code_id: codeIds,
+        code_id: codeIds.join(","),
       },
-      paramsSerializer: (params) =>
-        Object.entries(params)
-          .map(([key, value]) =>
-            value
-              .map((v: number) => `${key}=${encodeURIComponent(v)}`)
-              .join("&")
-          )
-          .join("&"),
     })
     .then(({ data }) => parseWithError(zCodeListResponse, data));
