@@ -17,7 +17,9 @@ import { Copier } from "./copy";
 
 export type LinkType =
   | AddressReturnType
+  | "evm_contract_address"
   | "tx_hash"
+  | "evm_tx_hash"
   | "code_id"
   | "block_height"
   | "proposal_id"
@@ -53,8 +55,14 @@ export const getNavigationUrl = ({
     case "tx_hash":
       url = "/txs";
       break;
+    case "evm_tx_hash":
+      url = "/evm-txs";
+      break;
     case "contract_address":
       url = wasmEnabled ? "/contracts" : "/accounts";
+      break;
+    case "evm_contract_address":
+      url = "/evm-contracts";
       break;
     case "user_address":
       url = "/accounts";

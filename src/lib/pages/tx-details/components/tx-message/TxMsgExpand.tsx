@@ -42,7 +42,7 @@ export const TxMsgExpand = ({
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
 
   const { "@type": type, ...body } = msgBody;
-  const { isIbc, isOpinit } = getTxBadges(type, log);
+  const { isIbc, isOpinit, isEvm } = getTxBadges(type, log);
 
   let msgIcon: IconKeys = "file";
   let content: ReactNode;
@@ -52,7 +52,7 @@ export const TxMsgExpand = ({
 
       msgIcon = "upload";
       content = (
-        <Flex gap={1}>
+        <Flex gap={1} display="inline">
           Upload Wasm{" "}
           {log && (
             <>
@@ -76,7 +76,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
       msgIcon = "instantiate";
       content = (
-        <Flex gap={1}>
+        <Flex gap={1} display="inline">
           Instantiate{" "}
           {log && (
             <ExplorerLink
@@ -104,7 +104,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
       msgIcon = "instantiate";
       content = (
-        <Flex gap={1}>
+        <Flex gap={1} display="inline">
           Instantiate2{" "}
           {log && (
             <ExplorerLink
@@ -132,7 +132,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgExecuteContract":
       msgIcon = "execute";
       content = (
-        <Flex gap={1}>
+        <Flex gap={1} display="inline">
           Execute{" "}
           <span style={{ fontWeight: 700 }}>
             {Object.keys(body.msg as Record<string, unknown>)[0]}
@@ -151,7 +151,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgMigrateContract":
       msgIcon = "migrate";
       content = (
-        <Flex gap={1}>
+        <Flex gap={1} display="inline">
           Migrate{" "}
           <ExplorerLink
             type="contract_address"
@@ -174,7 +174,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgUpdateAdmin":
       msgIcon = "admin-edit";
       content = (
-        <Flex gap={1}>
+        <Flex gap={1} display="inline">
           Update admin on{" "}
           <ExplorerLink
             type="contract_address"
@@ -197,7 +197,7 @@ export const TxMsgExpand = ({
     case "/cosmwasm.wasm.v1.MsgClearAdmin":
       msgIcon = "admin-clear";
       content = (
-        <Flex gap={1}>
+        <Flex gap={1} display="inline">
           Clear admin on{" "}
           <ExplorerLink
             type="contract_address"
@@ -225,7 +225,7 @@ export const TxMsgExpand = ({
             : formatTokenWithValue(singleToken);
         msgIcon = "send";
         content = (
-          <Flex gap={1}>
+          <Flex gap={1} display="inline">
             Send {assetText} to{" "}
             <ExplorerLink
               type={getAddressType(toAddress)}
@@ -242,7 +242,7 @@ export const TxMsgExpand = ({
     case "/cosmos.gov.v1.MsgSubmitProposal":
       msgIcon = "submit-proposal";
       content = (
-        <Flex gap={1}>
+        <Flex gap={1} display="inline">
           Submit Proposal {(body.isExpedited as boolean) && " Expedited "}
           {log && (
             <>
@@ -264,7 +264,7 @@ export const TxMsgExpand = ({
     case "/cosmos.gov.v1beta1.MsgVote":
       msgIcon = "vote";
       content = (
-        <Flex gap={1}>
+        <Flex gap={1} display="inline">
           Vote{" "}
           <span style={{ fontWeight: 700 }}>
             {voteOption[body.option as VoteOption]}
@@ -283,7 +283,7 @@ export const TxMsgExpand = ({
     case "/cosmos.staking.v1beta1.MsgDelegate":
       msgIcon = "delegate";
       content = (
-        <Flex gap={1}>
+        <Flex gap={1} display="inline">
           Delegate by{" "}
           <ExplorerLink
             type={getAddressType(body.delegatorAddress as string)}
@@ -363,8 +363,13 @@ export const TxMsgExpand = ({
             OPInit
           </Tag>
         )}
+        {!isMobile && isEvm && (
+          <Tag mx={2} variant="primary-light" size="md" minW="hug-content">
+            EVM
+          </Tag>
+        )}
       </Flex>
-      <Flex>
+      <Flex align="center">
         {isMobile && isIbc && (
           <Tag mx={2} variant="secondary" size="sm" minW="hug-content">
             IBC
@@ -373,6 +378,11 @@ export const TxMsgExpand = ({
         {isMobile && isOpinit && (
           <Tag mx={2} variant="teal" size="md" minW="hug-content">
             OPInit
+          </Tag>
+        )}
+        {isMobile && isEvm && (
+          <Tag mx={2} variant="primary-light" size="md" minW="hug-content">
+            EVM
           </Tag>
         )}
         <CustomIcon

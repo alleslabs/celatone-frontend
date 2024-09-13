@@ -19,6 +19,9 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
     move: {
       enabled: false,
     },
+    evm: {
+      enabled: false,
+    },
     pool: {
       enabled: false,
     },
