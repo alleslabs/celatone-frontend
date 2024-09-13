@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import type { Option } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
-import { useMoveConfig } from "./useConfig";
+import { useEvmConfig, useMoveConfig } from "./useConfig";
 import { useCurrentChain } from "./useCurrentChain";
 import { useExampleAddresses } from "./useExampleAddresses";
 
@@ -104,6 +104,9 @@ export const useValidateAddress = () => {
   } = useCurrentChain();
   const getAddressTypeByLength = useGetAddressTypeByLength();
   const move = useMoveConfig({ shouldRedirect: false });
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  const hasHexAddr = move.enabled || evm.enabled;
 
   const validateContractAddress = useCallback(
     (address: string) =>
@@ -147,11 +150,9 @@ export const useValidateAddress = () => {
         const isHex20 = isHexWalletAddress(address);
         const isHex32 = isHexModuleAddress(address);
 
-        return (
-          !errUser || !errContract || (move.enabled && (isHex20 || isHex32))
-        );
+        return !errUser || !errContract || (hasHexAddr && (isHex20 || isHex32));
       },
-      [move.enabled, validateContractAddress, validateUserAddress]
+      [hasHexAddr, validateContractAddress, validateUserAddress]
     ),
   };
 };

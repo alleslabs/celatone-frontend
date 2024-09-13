@@ -2,6 +2,7 @@ export * from "./account";
 export * from "./bank";
 export * from "./block";
 export * from "./distribution";
+export * from "./evm";
 export * from "./move";
 export * from "./nft-collection";
 export * from "./nft";

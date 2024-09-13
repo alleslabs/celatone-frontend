@@ -66,9 +66,7 @@ export const InstantiateButton = ({
     permissionAddresses
   );
 
-  /**
-   * @todos use isDisabled when proposal flow is done
-   */
+  // TODO: use isDisabled when proposal flow is done
   // const isDisabled =
   //   instantiatePermission === AccessConfigPermission.UNKNOWN ||
   //   !isWalletConnected;

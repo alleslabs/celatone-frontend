@@ -8,6 +8,7 @@ import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useCurrentChain,
   useGovConfig,
+  useInitia,
   useInternalNavigate,
   useMoveConfig,
   useNftConfig,
@@ -18,6 +19,7 @@ import {
 import { AssetsSection } from "lib/components/asset";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
@@ -55,6 +57,7 @@ import {
 } from "./components/tables";
 import { UserAccountDesc } from "./components/UserAccountDesc";
 import { useAccountDetailsTableCounts } from "./data";
+import { useAccountRedirect } from "./hooks";
 import { TabIndex, zAccountDetailsQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
@@ -77,15 +80,22 @@ const AccountDetailsBody = ({
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
-  const formatAddresses = useFormatAddresses();
+  const navigate = useInternalNavigate();
+  const { isFullTier, isSequencerTier } = useTierConfig();
   const gov = useGovConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   const nft = useNftConfig({ shouldRedirect: false });
-  const navigate = useInternalNavigate();
+  const isInitia = useInitia();
+
+  const formatAddresses = useFormatAddresses();
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
-  const { isFullTier, isSequencerTier } = useTierConfig();
+
+  // ------------------------------------------//
+  // -----------------REDIRECTS----------------//
+  // ------------------------------------------//
+  const isCheckingRedirect = useAccountRedirect(accountAddress, hexAddress);
 
   // ------------------------------------------//
   // ------------------QUERIES-----------------//
@@ -150,7 +160,7 @@ const AccountDetailsBody = ({
     data: initiaUsernameData,
     isLoading: isInitiaUsernameDataLoading,
     isFetching: isInitiaUsernameDataFetching,
-  } = useInitiaUsernameByAddress(hexAddress, move.enabled);
+  } = useInitiaUsernameByAddress(hexAddress, isInitia);
 
   const nftEnabled = nft.enabled && (isFullTier || isSequencerTier);
 
@@ -176,6 +186,7 @@ const AccountDetailsBody = ({
     move.enabled,
   ]);
 
+  if (isCheckingRedirect) return <Loading withBorder />;
   return (
     <>
       <CelatoneSeo pageName={pageTitle} />

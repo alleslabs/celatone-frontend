@@ -10,6 +10,9 @@ import type {
 import {
   ActionMsgType,
   MsgFurtherAction,
+  zHexAddr20,
+  zHexBig,
+  zHexUtcDate,
   zPagination,
   zUtcDate,
   zValidatorAddr,
@@ -21,7 +24,7 @@ import {
   snakeToCamel,
 } from "lib/utils";
 
-import { zTx } from "./tx";
+import { zTx, zTxJsonRpc, zTxReceiptJsonRpc } from "./tx";
 
 const zNullableValidator = z.nullable(
   z
@@ -120,15 +123,16 @@ export const zBlockDataResponseLcd = zBlockLcd
         type: msg["@type"],
       }));
 
-      const { isIbc, isOpinit } = messages.reduce(
+      const { isIbc, isOpinit, isEvm } = messages.reduce(
         (acc, msg) => {
           const current = getTxBadges(msg.type, undefined);
           return {
             isIbc: acc.isIbc || current.isIbc,
             isOpinit: acc.isOpinit || current.isOpinit,
+            isEvm: acc.isEvm || current.isEvm,
           };
         },
-        { isIbc: false, isOpinit: false }
+        { isIbc: false, isOpinit: false, isEvm: false }
       );
 
       return {
@@ -141,6 +145,7 @@ export const zBlockDataResponseLcd = zBlockLcd
         success: false, // NOTE: Hidden in Lite Tier,
         isIbc,
         isOpinit,
+        isEvm,
         // TODO: implement below later
         actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
         furtherAction: MsgFurtherAction.NONE,
@@ -208,3 +213,32 @@ export const zBlockDataResponseSequencer = zBlockSequencer.transform<BlockData>(
     proposer: val.proposer,
   })
 );
+
+// ---------------- JSON RPC ----------------
+export const zBlockJsonRpc = z.object({
+  baseFeePerGas: zHexBig,
+  difficulty: zHexBig,
+  extraData: z.string(),
+  gasLimit: zHexBig,
+  gasUsed: zHexBig,
+  hash: z.string(),
+  logsBloom: z.string(),
+  miner: zHexAddr20,
+  mixHash: z.string(),
+  nonce: zHexBig,
+  number: zHexBig,
+  parentHash: z.string(),
+  receiptsRoot: z.string(),
+  sha3Uncles: z.string(),
+  size: z.string(),
+  stateRoot: z.string(),
+  timestamp: zHexUtcDate,
+  transactions: z.array(zTxJsonRpc),
+  transactionsRoot: z.string(),
+});
+
+const zBlockReceiptsJsonRpc = z.array(zTxReceiptJsonRpc);
+
+export const zBlockDataJsonRpc = z
+  .tuple([zBlockJsonRpc, zBlockReceiptsJsonRpc])
+  .transform(([block, blockReceipts]) => ({ block, blockReceipts }));

@@ -9,17 +9,22 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state/EmptyState";
-import { useTxData } from "lib/services/tx";
+import { useEvmTxHashByCosmosTxHash, useTxData } from "lib/services/tx";
 import { getFirstQueryParam, truncate } from "lib/utils";
 
 import { TxHeader, TxInfo, TxInfoMobile } from "./components";
 import { MessageSection } from "./components/MessageSection";
+import { useTxRedirect } from "./hooks";
 
 const TxDetails = () => {
-  const router = useRouter();
-  const hashParam = getFirstQueryParam(router.query.txHash);
   const isMobile = useMobile();
+  const router = useRouter();
+
+  const hashParam = getFirstQueryParam(router.query.txHash);
+  const isCheckingRedirect = useTxRedirect(hashParam);
   const { data, isLoading } = useTxData(hashParam);
+  const { data: relatedEvmTxHash, isFetching: isRelatedEvmTxFetching } =
+    useEvmTxHashByCosmosTxHash(hashParam);
 
   useEffect(() => {
     if (router.isReady && !isLoading) {
@@ -35,7 +40,8 @@ const TxDetails = () => {
     }
   }, [router.isReady, data, isLoading]);
 
-  if (isLoading || !hashParam) return <Loading withBorder />;
+  if (isCheckingRedirect || !hashParam || isLoading || isRelatedEvmTxFetching)
+    return <Loading withBorder />;
 
   return (
     <PageContainer>
@@ -50,9 +56,9 @@ const TxDetails = () => {
         <>
           <TxHeader mt={2} txData={data} />
           {isMobile && <TxInfoMobile txData={data} />}
-          <Flex my={{ base: 0, md: 12 }} justify="space-between">
+          <Flex my={{ base: 0, md: 12 }} gap={4} justify="space-between">
             {!isMobile && <TxInfo txData={data} />}
-            <MessageSection txData={data} />
+            <MessageSection txData={data} relatedEvmTxHash={relatedEvmTxHash} />
           </Flex>
         </>
       ) : (

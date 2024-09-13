@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 
+import { useEvmConfig } from "lib/app-provider";
 import type { SearchResult } from "lib/services/searchService";
 import type { Option } from "lib/types";
 
@@ -22,7 +23,8 @@ export const SearchResultItem = ({
   setCursor,
   handleSelectResult,
 }: ResultItemProps) => {
-  const route = getRouteOptions(result.type)?.pathname;
+  const evm = useEvmConfig({ shouldRedirect: false });
+  const route = getRouteOptions(result.type, evm.enabled)?.pathname;
   const isAccountAddress =
     result.type === "Account Address" || result.type === "Contract Address";
 

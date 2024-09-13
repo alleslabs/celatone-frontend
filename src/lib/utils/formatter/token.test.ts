@@ -216,10 +216,15 @@ describe("formatUTokenWithPrecision", () => {
     ).toEqual("12,345,678,901,234.56789000");
   });
   describe("with suffix", () => {
-    test(">= B", () => {
+    test(">= T", () => {
       expect(
         formatUTokenWithPrecision("12345678901234567890" as U<Token>, 6)
-      ).toEqual("12,345.67B");
+      ).toEqual("1.23e+13");
+    });
+    test(">= B", () => {
+      expect(
+        formatUTokenWithPrecision("12345678901234567" as U<Token>, 6, true)
+      ).toEqual("12.34B");
     });
     test(">= M", () => {
       expect(

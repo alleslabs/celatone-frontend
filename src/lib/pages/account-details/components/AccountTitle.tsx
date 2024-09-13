@@ -1,6 +1,6 @@
 import { Flex, Heading, Image, Skeleton } from "@chakra-ui/react";
 
-import { useMoveConfig } from "lib/app-provider";
+import { useInitia } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { AccountData } from "lib/services/types";
 import type { AccountLocalInfo } from "lib/stores/account";
@@ -25,13 +25,13 @@ export const AccountTitle = ({
   isInitiaUsernameDataLoading,
   isInitiaUsernameDataFetching,
 }: AccountTitleProps) => {
-  const move = useMoveConfig({ shouldRedirect: false });
+  const isInitia = useInitia();
 
   const handleDisplayName = () => {
     if (accountLocalInfo?.name) return accountLocalInfo.name;
     if (accountData?.publicInfo?.name) return accountData?.publicInfo?.name;
     if (accountData?.icns?.primaryName) return accountData?.icns?.primaryName;
-    if (move.enabled && initiaUsernameData?.username)
+    if (isInitia && initiaUsernameData?.username)
       return initiaUsernameData?.username;
     return "Account Details";
   };
@@ -51,7 +51,7 @@ export const AccountTitle = ({
         />
       );
 
-    if (move.enabled && initiaUsernameData?.username && !accountLocalInfo?.name)
+    if (isInitia && initiaUsernameData?.username && !accountLocalInfo?.name)
       return (
         <Image
           src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"

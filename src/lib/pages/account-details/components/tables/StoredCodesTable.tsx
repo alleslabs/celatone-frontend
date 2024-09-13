@@ -7,6 +7,7 @@ import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
+import { ErrorFetching } from "lib/components/state";
 import { CodesTable, MobileTitle, ViewMore } from "lib/components/table";
 import { useAccountCodes } from "lib/pages/account-details/data";
 import type { BechAddr, Option } from "lib/types";
@@ -88,7 +89,16 @@ export const StoredCodesTable = observer(
               codes={codes}
               isLoading={isLoading}
               emptyState={
-                <AccountDetailsEmptyState message="No codes have been stored by this account before." />
+                !codes ? (
+                  <ErrorFetching
+                    dataName="codes"
+                    withBorder
+                    my={2}
+                    hasBorderTop={false}
+                  />
+                ) : (
+                  <AccountDetailsEmptyState message="No codes have been stored by this account before." />
+                )
               }
               onRowSelect={onRowSelect}
             />
