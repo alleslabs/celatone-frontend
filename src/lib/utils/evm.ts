@@ -1,24 +1,17 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-
 import type { TxDataJsonRpc } from "lib/services/types";
+import { EvmMethodId, EvmMethodName } from "lib/types";
 import type { Coin, HexAddr20, Option } from "lib/types";
 
 import { toChecksumAddress } from "./address";
 import { hexToBig } from "./number";
 
-enum EvmMethod {
-  transfer = "0x",
-  transferErc20 = "0xa9059cbb",
-  create = "0x60806040",
-  callErc20Factory = "0x06ef1a86",
-}
-
 export const getEvmMethod = (txInput: string) => {
-  if (txInput === EvmMethod.transfer) return "transfer";
-  if (txInput.startsWith(EvmMethod.transferErc20)) return "transfer ERC20";
-  if (txInput.startsWith(EvmMethod.create)) return "create";
-  if (txInput.startsWith(EvmMethod.callErc20Factory))
-    return "call ERC20 factory";
+  if (txInput === EvmMethodId.Transfer) return EvmMethodName.Transfer;
+  if (txInput.startsWith(EvmMethodId.TransferErc20))
+    return EvmMethodName.TransferErc20;
+  if (txInput.startsWith(EvmMethodId.Create)) return EvmMethodName.Create;
+  if (txInput.startsWith(EvmMethodId.CallErc20Factory))
+    return EvmMethodName.CallErc20Factory;
   return txInput.slice(0, 10);
 };
 
@@ -39,7 +32,7 @@ export const getEvmToAddress = (
   const { to, input } = evmTxData.tx;
   const method = getEvmMethod(input);
 
-  if (method === "transfer ERC20") {
+  if (method === EvmMethodName.TransferErc20) {
     return {
       address: `0x${input.slice(34, 74)}` as HexAddr20,
       type: "user_address",
@@ -47,7 +40,7 @@ export const getEvmToAddress = (
     };
   }
 
-  if (method === "create") {
+  if (method === EvmMethodName.Create) {
     const { contractAddress } = evmTxData.txReceipt;
     if (!contractAddress) return undefined;
     return {
@@ -57,7 +50,7 @@ export const getEvmToAddress = (
     };
   }
 
-  if (method === "call ERC20 factory") {
+  if (method === EvmMethodName.CallErc20Factory) {
     const { logs } = evmTxData.txReceipt;
     const contractAddress = logs[0]?.address;
     if (!contractAddress) return undefined;
@@ -85,7 +78,7 @@ export const getEvmAmount = (
 ): Coin => {
   const method = getEvmMethod(evmTxData.tx.input);
 
-  if (method === "transfer ERC20") {
+  if (method === EvmMethodName.TransferErc20) {
     return {
       amount: hexToBig(evmTxData.tx.input.slice(74, 138)).toString(),
       denom: evmTxData.tx.to ? convertToEvmDenom(evmTxData.tx.to) : "",

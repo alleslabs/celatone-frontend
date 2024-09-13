@@ -87,7 +87,11 @@ export const EvmTransactionsTableRow = ({
       <TableRow>
         <EvmToCell toAddress={toAddress} />
       </TableRow>
-      <TableRow flexDirection="column" alignItems="start">
+      <TableRow
+        flexDirection="column"
+        alignItems="start"
+        justifyContent="center"
+      >
         <Text variant="body2">
           <Text as="span" fontWeight={700} mr={1}>
             {formatUTokenWithPrecision(
@@ -99,9 +103,11 @@ export const EvmTransactionsTableRow = ({
           </Text>
           {getTokenLabel(token.denom, token.symbol)}
         </Text>
-        <Text variant="body3" color="text.dark">
-          {!isUndefined(token.value) ? `(${formatPrice(token.value)})` : "N/A"}
-        </Text>
+        {!isUndefined(token.value) && (
+          <Text variant="body3" color="text.dark">
+            ({formatPrice(token.value)})
+          </Text>
+        )}
       </TableRow>
       {showTimestamp && (
         <TableRow>

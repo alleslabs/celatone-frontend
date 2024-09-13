@@ -9,6 +9,8 @@ import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 import type { BechAddr20, Nullish } from "lib/types";
 
 export const useContractDetailsEvmTxs = (address: BechAddr20) => {
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+
   const [evmTxs, setEvmTxs] = useState<TxDataWithTimeStampJsonRpc[]>();
   const [paginationKey, setPaginationKey] = useState<Nullish<string>>();
   const [cosmosTxsCount, setCosmosTxsCount] = useState(0);
@@ -53,21 +55,23 @@ export const useContractDetailsEvmTxs = (address: BechAddr20) => {
         });
     });
 
-    setEvmTxs((prev) => (prev ?? []).concat(newEvmTxs));
+    setIsInitialLoading(false);
+
+    setEvmTxs((evmTxs ?? []).concat(newEvmTxs));
     setPaginationKey(cosmosTxs.pagination.nextKey);
-    setCosmosTxsCount((prev) => prev + cosmosTxs.items.length);
+    setCosmosTxsCount(cosmosTxsCount + cosmosTxs.items.length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newEvmTxsData]);
 
   const isFetching =
     isCosmosTxsFetching || isNewEvmHashesFetching || isNewEvmTxsDataFetching;
+  const isError =
+    isCosmosTxsError || isNewEvmHashesError || isNewEvmTxsDataError;
   return {
     data: evmTxs,
-    isLoading: evmTxs === undefined && isFetching,
-    isError: isCosmosTxsError || isNewEvmHashesError || isNewEvmTxsDataError,
-    fetchNextPage: () => {
-      refetch({ cancelRefetch: true });
-    },
+    isLoading: isInitialLoading && !isError,
+    isError,
+    fetchNextPage: refetch,
     isFetchingNextPage: isFetching,
     hasNextPage: paginationKey !== null,
     cosmosTxsCount,

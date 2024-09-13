@@ -2,6 +2,8 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
+import { EvmMethodName } from "lib/types";
+import { getEvmMethod } from "lib/utils";
 
 import { EvmDataFormatSwitch, EvmDataFormatTabs } from "./EvmDataFormatSwitch";
 
@@ -10,8 +12,11 @@ interface EvmInputDataProps {
 }
 
 export const EvmInputData = ({ inputData }: EvmInputDataProps) => {
+  const evmMethod = getEvmMethod(inputData);
+  const showFormatOption =
+    evmMethod !== EvmMethodName.Transfer && evmMethod !== EvmMethodName.Create;
   const [tab, setTab] = useState<EvmDataFormatTabs>(
-    EvmDataFormatTabs.Formatted
+    showFormatOption ? EvmDataFormatTabs.Formatted : EvmDataFormatTabs.Raw
   );
 
   const parsedInputData = useMemo(() => {
@@ -51,7 +56,9 @@ export const EvmInputData = ({ inputData }: EvmInputDataProps) => {
         <Heading as="h6" variant="h6">
           Input Data
         </Heading>
-        <EvmDataFormatSwitch currentTab={tab} onTabChange={setTab} />
+        {showFormatOption && (
+          <EvmDataFormatSwitch currentTab={tab} onTabChange={setTab} />
+        )}
       </Flex>
       <TextReadOnly text={parsedInputData} canCopy />
     </>
