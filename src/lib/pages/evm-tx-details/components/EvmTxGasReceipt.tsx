@@ -19,10 +19,10 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
     <>
       <Divider />
       <LabelText flex={1} label="Transaction Fee">
-        <TokenImageWithAmount token={gasInfo.txFee} />
+        <TokenImageWithAmount token={gasInfo.txFee} hasTrailingZeros={false} />
       </LabelText>
       <LabelText label="Gas Price">
-        {formatTokenWithValue(gasInfo.gasPrice)}
+        {formatTokenWithValue(gasInfo.gasPrice, undefined, false)}
       </LabelText>
       <LabelText label="Usage by Tx & Gas Limit">
         {`${formatInteger(gasInfo.gasUsed)}/${formatInteger(gasInfo.gasLimit)}`}
@@ -52,13 +52,13 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
           >
             <Flex direction="column" gap={6} m={4}>
               <LabelText label="Base Fee">
-                {formatTokenWithValue(gasInfo.baseFee)}
+                {formatTokenWithValue(gasInfo.baseFee, undefined, false)}
               </LabelText>
               <LabelText label="Max Priority">
-                {formatTokenWithValue(gasInfo.maxPriorityFee)}
+                {formatTokenWithValue(gasInfo.maxPriorityFee, undefined, false)}
               </LabelText>
               <LabelText label="Max Possible Gas Fee">
-                {formatTokenWithValue(gasInfo.maxFee)}
+                {formatTokenWithValue(gasInfo.maxFee, undefined, false)}
               </LabelText>
             </Flex>
           </MotionBox>

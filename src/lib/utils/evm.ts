@@ -71,7 +71,7 @@ export const getEvmToAddress = (
   if (to) {
     return {
       address: to,
-      type: method === "transfer" ? "user_address" : "evm_contract_address",
+      type: "user_address",
       isCreatedContract: false,
     };
   }
