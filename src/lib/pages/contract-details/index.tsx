@@ -104,7 +104,8 @@ const ContractDetailsBody = observer(
       [contractAddress, tab, navigate]
     );
 
-    if (isLoading || isDerivedWasmVerifyInfoLoading) return <Loading />;
+    if (isLoading || isDerivedWasmVerifyInfoLoading)
+      return <Loading withBorder />;
     if (!contractData) return <ErrorFetching dataName="contract information" />;
 
     const { projectInfo, publicInfo, contract, contractRest } = contractData;

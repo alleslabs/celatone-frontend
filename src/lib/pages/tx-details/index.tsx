@@ -14,11 +14,14 @@ import { getFirstQueryParam, truncate } from "lib/utils";
 
 import { TxHeader, TxInfo, TxInfoMobile } from "./components";
 import { MessageSection } from "./components/MessageSection";
+import { useTxRedirect } from "./hooks";
 
 const TxDetails = () => {
-  const router = useRouter();
-  const hashParam = getFirstQueryParam(router.query.txHash);
   const isMobile = useMobile();
+  const router = useRouter();
+
+  const hashParam = getFirstQueryParam(router.query.txHash);
+  const isCheckingRedirect = useTxRedirect(hashParam);
   const { data, isLoading } = useTxData(hashParam);
   const { data: relatedEvmTxHash, isFetching: isRelatedEvmTxFetching } =
     useEvmTxHashByCosmosTxHash(hashParam);
@@ -37,7 +40,7 @@ const TxDetails = () => {
     }
   }, [router.isReady, data, isLoading]);
 
-  if (!hashParam || isLoading || isRelatedEvmTxFetching)
+  if (isCheckingRedirect || !hashParam || isLoading || isRelatedEvmTxFetching)
     return <Loading withBorder />;
 
   return (

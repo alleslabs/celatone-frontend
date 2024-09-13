@@ -95,7 +95,7 @@ const AccountDetailsBody = ({
   // ------------------------------------------//
   // -----------------REDIRECTS----------------//
   // ------------------------------------------//
-  const isCheckingRedirects = useAccountRedirect(accountAddress, hexAddress);
+  const isCheckingRedirect = useAccountRedirect(accountAddress, hexAddress);
 
   // ------------------------------------------//
   // ------------------QUERIES-----------------//
@@ -186,7 +186,7 @@ const AccountDetailsBody = ({
     move.enabled,
   ]);
 
-  if (isCheckingRedirects) return <Loading />;
+  if (isCheckingRedirect) return <Loading withBorder />;
   return (
     <>
       <CelatoneSeo pageName={pageTitle} />
