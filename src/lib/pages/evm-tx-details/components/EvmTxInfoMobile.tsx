@@ -63,7 +63,7 @@ export const EvmTxInfoMobile = ({
           />
         </LabelText>
         <LabelText flex={1} label="Amount">
-          <TokenImageWithAmount token={evmTxValue} />
+          <TokenImageWithAmount token={evmTxValue} hasTrailingZeros={false} />
         </LabelText>
       </Flex>
       <EvmTxGasReceipt gasInfo={gasInfo} />
