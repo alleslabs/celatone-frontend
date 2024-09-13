@@ -98,11 +98,11 @@ export const EvmTransactionsTableMobileCard = ({
                 </Text>
                 {getTokenLabel(token.denom, token.symbol)}
               </Text>
-              <Text variant="body3" color="text.dark">
-                {!isUndefined(token.value)
-                  ? `(${formatPrice(token.value)})`
-                  : "N/A"}
-              </Text>
+              {!isUndefined(token.value) && (
+                <Text variant="body3" color="text.dark">
+                  ({formatPrice(token.value)})
+                </Text>
+              )}
             </Flex>
           </Flex>
         </Stack>
