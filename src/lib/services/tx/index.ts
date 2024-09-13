@@ -162,7 +162,10 @@ export const useTxsByPoolId = (
   );
 };
 
-export const useTxsByPoolIdTableCounts = (poolId: number) => {
+export const useTxsByPoolIdTableCounts = (
+  poolId: number,
+  type: PoolTxFilter
+) => {
   const endpoint = useBaseApiRoute("txs");
   const { enabled: poolEnable } = usePoolConfig({ shouldRedirect: false });
 
@@ -171,13 +174,14 @@ export const useTxsByPoolIdTableCounts = (poolId: number) => {
       CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID_COUNT,
       endpoint,
       poolId,
+      type,
       poolEnable,
     ],
     async () => {
       if (!poolEnable)
         throw new Error("Pool is not enabled (useTxsByPoolIdTableCounts)");
 
-      return getTxsByPoolIdTableCounts(endpoint, poolId);
+      return getTxsByPoolIdTableCounts(endpoint, poolId, type);
     },
     {
       retry: 1,

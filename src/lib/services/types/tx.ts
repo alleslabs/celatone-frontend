@@ -397,13 +397,6 @@ export const zTxsByPoolIdResponse = z.object({
 
 export const zTxsByPoolIdTxsCountResponse = z
   .object({
-    all: z.number(),
-    total_swap: z.number(),
-    total_lp: z.number(),
-    total_bond: z.number(),
-    total_superfluid: z.number(),
-    total_clp: z.number(),
-    total_collect: z.number(),
-    total_migrate: z.number(),
+    total: z.number(),
   })
-  .transform(snakeToCamel);
+  .transform((val) => val.total ?? 0);

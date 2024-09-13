@@ -129,8 +129,13 @@ export const getTxsByPoolId = async (
 
 export const getTxsByPoolIdTableCounts = async (
   endpoint: string,
-  poolId: number
+  poolId: number,
+  type: PoolTxFilter
 ) =>
   axios
-    .get(`${endpoint}/pool/${encodeURIComponent(poolId)}/txs-count`)
+    .get(`${endpoint}/pool/${encodeURIComponent(poolId)}/txs-count`, {
+      params: {
+        type,
+      },
+    })
     .then(({ data }) => parseWithError(zTxsByPoolIdTxsCountResponse, data));
