@@ -1,5 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-
 import type { TxDataJsonRpc } from "lib/services/types";
 import { EvmMethodId, EvmMethodName } from "lib/types";
 import type { Coin, HexAddr20, Option } from "lib/types";
