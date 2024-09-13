@@ -2,6 +2,7 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
+import { EvmMethodName } from "lib/types";
 import { getEvmMethod } from "lib/utils";
 
 import { EvmDataFormatSwitch, EvmDataFormatTabs } from "./EvmDataFormatSwitch";
@@ -12,7 +13,8 @@ interface EvmInputDataProps {
 
 export const EvmInputData = ({ inputData }: EvmInputDataProps) => {
   const evmMethod = getEvmMethod(inputData);
-  const showFormatOption = evmMethod !== "create";
+  const showFormatOption =
+    evmMethod !== EvmMethodName.Transfer && evmMethod !== EvmMethodName.Create;
   const [tab, setTab] = useState<EvmDataFormatTabs>(
     showFormatOption ? EvmDataFormatTabs.Formatted : EvmDataFormatTabs.Raw
   );
