@@ -39,6 +39,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+## v1.9.0
+
+### Features
+
 - [#1147](https://github.com/alleslabs/celatone-frontend/pull/1147) Support Evm Tx Input data decoder
 - [#1139](https://github.com/alleslabs/celatone-frontend/pull/1139) Support EVM method call erc20 factory
 - [#1127](https://github.com/alleslabs/celatone-frontend/pull/1127) Add EVM contract details EVM transactions
