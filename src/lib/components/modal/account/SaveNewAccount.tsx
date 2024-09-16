@@ -9,7 +9,6 @@ import {
   useCelatoneApp,
   useExampleAddresses,
   useMoveConfig,
-  useTierConfig,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
@@ -18,7 +17,7 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
-import { useAccountType, useAccountTypeLcd } from "lib/services/account";
+import { useAccountType } from "lib/services/account";
 import type { BechAddr } from "lib/types";
 import { AccountType } from "lib/types";
 
@@ -49,7 +48,6 @@ export function SaveNewAccountModal({
   publicDescription,
 }: SaveNewAccountModalProps) {
   const { constants } = useCelatoneApp();
-  const { isFullTier } = useTierConfig();
   const { user: exampleUserAddress } = useExampleAddresses();
   const { isSomeValidAddress } = useValidateAddress();
   const formatAddresses = useFormatAddresses();
@@ -109,19 +107,11 @@ export function SaveNewAccountModal({
     setErrorStatus(err.message);
   };
 
-  const { refetch: refetchLite } = useAccountTypeLcd(addressState, {
+  const { refetch } = useAccountType(addressState, {
     enabled: false,
     onSuccess,
     onError,
   });
-
-  const { refetch: refetchFull } = useAccountType(addressState, {
-    enabled: false,
-    onSuccess,
-    onError,
-  });
-
-  const refetch = isFullTier ? refetchFull : refetchLite;
 
   useEffect(() => {
     if (addressState.trim().length === 0) {

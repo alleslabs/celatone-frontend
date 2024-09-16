@@ -41,10 +41,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-[#1136](https://github.com/alleslabs/celatone-frontend/pull/1136) Update code to get data from API instead of GraphQL
+- [#1136](https://github.com/alleslabs/celatone-frontend/pull/1136) Update code to get data from API instead of GraphQL
+- [#1132](https://github.com/alleslabs/celatone-frontend/pull/1132) Update account type to get data from API instead of GraphQL
 
 ### Bug fixes
 
+- [#1137](https://github.com/alleslabs/celatone-frontend/pull/1137) Bump axios and remove initia js client usage
 - [#1126](https://github.com/alleslabs/celatone-frontend/pull/1126) Fix tx message detail alignment in small screen
 
 ## v1.8.1

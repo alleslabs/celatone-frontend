@@ -1,6 +1,6 @@
 import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
-import type { EncodeObject } from "@initia/utils";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
