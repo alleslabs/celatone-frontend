@@ -1,6 +1,10 @@
 import axios from "axios";
 
-import { zAccountData, zAccountTableCounts } from "../types";
+import {
+  zAccountData,
+  zAccountTableCounts,
+  zAccountTypeResponse,
+} from "../types";
 import type { AccountData, AccountTableCounts } from "../types";
 import type { BechAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
@@ -27,3 +31,8 @@ export const getAccountTableCounts = async (
       },
     })
     .then(({ data }) => parseWithError(zAccountTableCounts, data));
+
+export const getAccountType = async (endpoint: string, address: BechAddr) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(address)}/type`)
+    .then(({ data }) => parseWithError(zAccountTypeResponse, data));
