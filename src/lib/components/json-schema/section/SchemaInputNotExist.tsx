@@ -24,7 +24,7 @@ export const SchemaInputNotExist = ({
   if (verifiedSchema)
     return (
       <Text color="text.main" fontWeight={700} variant="body1">
-        `Verified JSON Schema doesn’t have ${prettyType}Msg`
+        Verified JSON Schema doesn’t have {prettyType}Msg
       </Text>
     );
 

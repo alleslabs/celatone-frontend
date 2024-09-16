@@ -7,7 +7,6 @@ import {
   GridItem,
   Heading,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { trackUseExpandAll } from "lib/amplitude";
@@ -18,7 +17,6 @@ import { Loading } from "lib/components/Loading";
 import { ResourceDetailCard } from "lib/components/resource";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import type { BechAddr, Option, ResourceGroupByAccount } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
 
 import { ResourceLeftPanel } from "./ResourceLeftPanel";
 
@@ -26,30 +24,28 @@ interface ResourceSectionBodyProps {
   address: BechAddr;
   resourcesByOwner: Option<ResourceGroupByAccount[]>;
   isLoading: boolean;
+  selectedAccountParam: Option<string>;
+  selectedGroupNameParam: Option<string>;
 }
 
 export const ResourceSectionBody = ({
   address,
   resourcesByOwner,
   isLoading,
+  selectedAccountParam,
+  selectedGroupNameParam,
 }: ResourceSectionBodyProps) => {
-  const router = useRouter();
   const isMobile = useMobile();
 
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
-  const selectedAccountParam = getFirstQueryParam(
-    router.query.account,
-    resourcesByOwner?.[0]?.owner
-  );
-  const selectedNameParam = getFirstQueryParam(
-    router.query.selected,
-    resourcesByOwner?.[0]?.resources[0]?.group
-  );
+  const selectedAccount = selectedAccountParam ?? resourcesByOwner?.[0]?.owner;
+  const selectedGroupName =
+    selectedGroupNameParam ?? resourcesByOwner?.[0]?.resources[0]?.group;
 
   const selectedResource = resourcesByOwner
-    ?.find((resource) => resource.owner === selectedAccountParam)
-    ?.resources?.find((resource) => resource.group === selectedNameParam);
+    ?.find((resource) => resource.owner === selectedAccount)
+    ?.resources?.find((resource) => resource.group === selectedGroupName);
 
   useEffect(() => {
     setExpandedIndexes(selectedResource?.items.length === 1 ? [0] : []);
@@ -65,6 +61,8 @@ export const ResourceSectionBody = ({
         <ResourceLeftPanel
           address={address}
           resourcesByOwner={resourcesByOwner}
+          selectedAccount={selectedAccount}
+          selectedGroupName={selectedGroupName}
         />
       </GridItem>
       {selectedResource && (

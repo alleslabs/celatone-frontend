@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1094](https://github.com/alleslabs/celatone-frontend/pull/1094) Replace getFirstQueryParam with zod validation
+
 ### Bug fixes
 
 - [#1150](https://github.com/alleslabs/celatone-frontend/pull/1150) Fix camel case on message

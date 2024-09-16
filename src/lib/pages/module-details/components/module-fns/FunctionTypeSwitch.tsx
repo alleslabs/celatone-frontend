@@ -1,23 +1,18 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Heading } from "@chakra-ui/react";
 
+import { FunctionTypeTabIndex } from "../../types";
 import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
 
-export enum FunctionTypeTabs {
-  ALL = "All",
-  VIEW = "View",
-  EXECUTE = "Execute",
-}
-
 interface FunctionTypeSwitchProps extends FlexProps {
-  currentTab: FunctionTypeTabs;
+  currentTab: FunctionTypeTabIndex;
   disabled?: boolean;
   counts: [Option<number>, Option<number>, Option<number>];
-  onTabChange: (newTab: FunctionTypeTabs) => void;
+  onTabChange: (newTab: FunctionTypeTabIndex) => void;
 }
 
-const tabs = Object.values(FunctionTypeTabs);
+const tabs = Object.values(FunctionTypeTabIndex);
 
 export const FunctionTypeSwitch = ({
   currentTab,
@@ -26,7 +21,7 @@ export const FunctionTypeSwitch = ({
   onTabChange,
   ...flexProps
 }: FunctionTypeSwitchProps) => {
-  const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
+  const activeIndex = tabs.indexOf(currentTab);
   return (
     <Flex
       border="1px solid var(--chakra-colors-gray-700)"

@@ -62,9 +62,11 @@ import { TabIndex, zAccountDetailsQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
 
-export interface AccountDetailsBodyProps {
+interface AccountDetailsBodyProps {
   accountAddressParam: Addr;
   tabParam: TabIndex;
+  resourceSelectedAccountParam: Option<string>;
+  resourceSelectedGroupNameParam: Option<string>;
 }
 
 const getAddressOnPath = (hexAddress: HexAddr, accountAddress: BechAddr) =>
@@ -75,6 +77,8 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 const AccountDetailsBody = ({
   accountAddressParam,
   tabParam,
+  resourceSelectedAccountParam,
+  resourceSelectedGroupNameParam,
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }: AccountDetailsBodyProps) => {
   // ------------------------------------------//
@@ -556,6 +560,8 @@ const AccountDetailsBody = ({
               totalCount={resourcesData?.totalCount}
               resourcesByOwner={resourcesData?.groupedByOwner}
               isLoading={isResourceLoading}
+              selectedAccountParam={resourceSelectedAccountParam}
+              selectedGroupNameParam={resourceSelectedGroupNameParam}
             />
             <UserDocsLink
               title="What is resources?"
@@ -616,6 +622,8 @@ const AccountDetails = () => {
         <AccountDetailsBody
           accountAddressParam={validated.data.accountAddress}
           tabParam={validated.data.tab}
+          resourceSelectedAccountParam={validated.data.account}
+          resourceSelectedGroupNameParam={validated.data.selected}
         />
       )}
     </PageContainer>
