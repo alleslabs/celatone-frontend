@@ -45,7 +45,7 @@ const PoolIdBody = ({ poolId }: { poolId: number }) => {
   );
 };
 
-export const PoolId = () => {
+const PoolId = () => {
   useTierConfig({ minTier: "full" });
   usePoolConfig({ shouldRedirect: true });
   const router = useRouter();
@@ -57,3 +57,5 @@ export const PoolId = () => {
     </PageContainer>
   );
 };
+
+export default PoolId;

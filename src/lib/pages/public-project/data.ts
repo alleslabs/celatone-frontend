@@ -17,7 +17,6 @@ interface PublicDataState {
   isLoading: boolean;
 }
 
-// TODO - Revisit: handle when data is underfined
 export const usePublicData = (slug: string): PublicDataState => {
   const { data: projectInfo, isLoading } = usePublicProjectBySlug(slug);
 

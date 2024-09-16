@@ -31,6 +31,7 @@ import {
 } from "./component";
 import { ModuleSelectDrawerMobile } from "./component/drawer/ModuleSelectDrawerMobile";
 import { SelectedFunctionCard } from "./component/SelectedFunctionCard";
+import type { InteractQueryParams } from "./types";
 import { ModuleInteractionMobileStep, zInteractQueryParams } from "./types";
 
 const FunctionSection = ({
@@ -122,12 +123,7 @@ const InteractBody = ({
   moduleName,
   functionName,
   functionType,
-}: {
-  address: Addr;
-  moduleName: string;
-  functionName: string;
-  functionType: string;
-}) => {
+}: InteractQueryParams) => {
   const router = useRouter();
   const isMobile = useMobile();
   const navigate = useInternalNavigate();

@@ -31,13 +31,10 @@ import type { BechAddr, BechAddr32 } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";
 
+import type { UpdateAdminQueryParams } from "./types";
 import { zUpdateAdminQueryParams } from "./types";
 
-const UpdateAdminBody = ({
-  contractAddress,
-}: {
-  contractAddress: BechAddr32;
-}) => {
+const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
   const router = useRouter();
   const { address } = useCurrentChain();
   const { validateContractAddress, validateUserAddress } = useValidateAddress();

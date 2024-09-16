@@ -10,3 +10,4 @@ export const zUpdateAdminQueryParams = z
   .transform((val) => ({
     contractAddress: val.contract,
   }));
+export type UpdateAdminQueryParams = z.infer<typeof zUpdateAdminQueryParams>;
