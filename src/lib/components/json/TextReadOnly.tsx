@@ -54,7 +54,6 @@ export const TextReadOnly = ({ text, canCopy }: TextReadOnlyProps) => {
           showGutter: false,
           printMargin: false,
           indentedSoftWrap: false,
-          showInvisibles: true,
           maxLines: Infinity,
         }}
         value={text}

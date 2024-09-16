@@ -537,6 +537,7 @@ export const useTxsByAddressPaginationSequencer = (
       enabled,
       retry: false,
       refetchOnWindowFocus: false,
+      refetchOnMount: false,
     }
   );
 };
@@ -612,9 +613,10 @@ export const useEvmTxHashesByCosmosTxHashes = (
       return getEvmTxHashesByCosmosTxHashes(evm.jsonRpc, cosmosTxHashes);
     },
     {
+      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!cosmosTxHashes,
       retry: false,
       refetchOnWindowFocus: false,
-      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!cosmosTxHashes,
+      refetchOnMount: false,
     }
   );
 };
@@ -687,9 +689,10 @@ export const useTxsDataJsonRpc = (
       return getTxsDataJsonRpc(evm.jsonRpc, evmTxHashes);
     },
     {
+      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!evmTxHashes,
       retry: false,
       refetchOnWindowFocus: false,
-      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!evmTxHashes,
+      refetchOnMount: false,
     }
   );
 };

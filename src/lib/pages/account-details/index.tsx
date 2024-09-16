@@ -19,6 +19,7 @@ import {
 import { AssetsSection } from "lib/components/asset";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomTab } from "lib/components/CustomTab";
+import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
@@ -56,6 +57,7 @@ import {
 } from "./components/tables";
 import { UserAccountDesc } from "./components/UserAccountDesc";
 import { useAccountDetailsTableCounts } from "./data";
+import { useAccountRedirect } from "./hooks";
 import { TabIndex, zAccountDetailsQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
@@ -89,6 +91,11 @@ const AccountDetailsBody = ({
   const formatAddresses = useFormatAddresses();
   const { address: accountAddress, hex: hexAddress } =
     formatAddresses(accountAddressParam);
+
+  // ------------------------------------------//
+  // -----------------REDIRECTS----------------//
+  // ------------------------------------------//
+  const isCheckingRedirect = useAccountRedirect(accountAddress, hexAddress);
 
   // ------------------------------------------//
   // ------------------QUERIES-----------------//
@@ -179,6 +186,7 @@ const AccountDetailsBody = ({
     move.enabled,
   ]);
 
+  if (isCheckingRedirect) return <Loading withBorder />;
   return (
     <>
       <CelatoneSeo pageName={pageTitle} />

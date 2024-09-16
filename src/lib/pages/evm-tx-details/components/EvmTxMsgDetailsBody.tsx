@@ -1,5 +1,6 @@
 import { useAssetInfos } from "lib/services/assetService";
 import type { TxDataJsonRpc } from "lib/services/types";
+import { EvmMethodName } from "lib/types";
 import type { Option } from "lib/types";
 import { getEvmMethod } from "lib/utils";
 
@@ -26,7 +27,7 @@ export const EvmTxMsgDetailsBody = ({
   });
 
   switch (method) {
-    case "transfer":
+    case EvmMethodName.Transfer:
       return (
         <EvmTxTransfer
           evmTxData={evmTxData}
@@ -34,13 +35,13 @@ export const EvmTxMsgDetailsBody = ({
           assetInfos={assetInfos}
         />
       );
-    case "transfer ERC20":
+    case EvmMethodName.TransferErc20:
       return (
         <EvmTxTransferErc20 evmTxData={evmTxData} assetInfos={assetInfos} />
       );
-    case "create":
+    case EvmMethodName.Create:
       return <EvmTxCreateContract evmTxData={evmTxData} />;
-    case "call ERC20 factory":
+    case EvmMethodName.CallErc20Factory:
       return <EvmTxCallErc20Factory evmTxData={evmTxData} />;
     default:
       return <EvmTxDefault evmTxData={evmTxData} />;

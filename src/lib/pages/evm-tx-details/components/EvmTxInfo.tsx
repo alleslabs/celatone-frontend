@@ -55,7 +55,7 @@ export const EvmTxInfo = ({
         />
       </LabelText>
       <LabelText label="Amount">
-        <TokenImageWithAmount token={evmTxValue} />
+        <TokenImageWithAmount token={evmTxValue} hasTrailingZeros={false} />
       </LabelText>
       <EvmTxGasReceipt gasInfo={gasInfo} />
     </Container>

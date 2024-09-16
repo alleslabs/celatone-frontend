@@ -39,6 +39,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+- [#1150](https://github.com/alleslabs/celatone-frontend/pull/1150) Fix camel case on message
+
+## v1.9.0
+
+### Features
+
 - [#1147](https://github.com/alleslabs/celatone-frontend/pull/1147) Support Evm Tx Input data decoder
 - [#1139](https://github.com/alleslabs/celatone-frontend/pull/1139) Support EVM method call erc20 factory
 - [#1127](https://github.com/alleslabs/celatone-frontend/pull/1127) Add EVM contract details EVM transactions
@@ -62,13 +72,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1151](https://github.com/alleslabs/celatone-frontend/pull/1151) Add redirect logics for /address path to /accounts and /accounts to either /contracts or /evm-contracts
 - [#1141](https://github.com/alleslabs/celatone-frontend/pull/1141) Separate loading logic for evm contract cosmos and evm txs for more reasonably state logic
 - [#1146](https://github.com/alleslabs/celatone-frontend/pull/1146) Bump pnpm to version 9
 - [#1133](https://github.com/alleslabs/celatone-frontend/pull/1133) Refactor evm denom and amount for each method
 
 ### Bug fixes
 
-- [#1149](https://github.com/alleslabs/celatone-frontend/pull/1149) Fix camel case on message
+- [#1152](https://github.com/alleslabs/celatone-frontend/pull/1152) Fix duplicate contract evm txs due to refetch on mount + cached data
 - [#1145](https://github.com/alleslabs/celatone-frontend/pull/1145) Shorten value in evm txs table amount and render amount in evm txs details
 - [#1142](https://github.com/alleslabs/celatone-frontend/pull/1142) Fix minievm bugbash (wording, spacing, and alignment)
 - [#1143](https://github.com/alleslabs/celatone-frontend/pull/1143) Fix missing daemon name and block time info
