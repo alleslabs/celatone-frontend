@@ -67,7 +67,7 @@ export const getCodeList = async (endpoint: string, codeIds: number[]) =>
   axios
     .get(`${endpoint}/list`, {
       params: {
-        code_id: codeIds.join(","),
+        code_ids: codeIds.join(","),
       },
     })
     .then(({ data }) => parseWithError(zCodeListResponse, data));
