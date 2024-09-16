@@ -99,7 +99,10 @@ const zTxBody = z
     extension_options: zAny.array(),
     non_critical_extension_options: zAny.array(),
   })
-  .transform(snakeToCamel);
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    messages: val.messages,
+  }));
 export type TxBody = z.infer<typeof zTxBody>;
 
 export const zTx = z
@@ -108,7 +111,10 @@ export const zTx = z
     auth_info: zAuthInfo,
     signatures: z.array(z.string()),
   })
-  .transform(snakeToCamel);
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    body: val.body,
+  }));
 export type Tx = z.infer<typeof zTx>;
 
 const zEventAttribute = z.object({
@@ -149,6 +155,7 @@ const zTxResponse = z
   })
   .transform((val) => ({
     ...snakeToCamel(val),
+    tx: val.tx,
     logs: val.logs,
   }));
 export type TxResponse = z.infer<typeof zTxResponse>;
