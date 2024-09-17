@@ -50,7 +50,7 @@ export const TxInfoMobile = ({ txData, ...flexProps }: TxInfoMobileProps) => {
         <LabelText flex={1} label="Network">
           {txData.chainId}
         </LabelText>
-        <LabelText flex={1} label="Block Height">
+        <LabelText flex={1} label="Block">
           <ExplorerLink
             value={txData.height}
             type="block_height"

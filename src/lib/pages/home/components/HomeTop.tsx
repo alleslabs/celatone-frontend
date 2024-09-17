@@ -21,7 +21,7 @@ const blockInfo = {
 
 const blockTimeInfo = {
   title: "Block Time",
-  tooltip: "Median time to finality of the last 100 indexed blocks.",
+  tooltip: "Average time to finality of the last 100 indexed blocks.",
 };
 
 interface HomeTopProps {

@@ -42,9 +42,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#1149](https://github.com/alleslabs/celatone-frontend/pull/1149) Refactor component react select input
+- [#1094](https://github.com/alleslabs/celatone-frontend/pull/1094) Replace getFirstQueryParam with zod validation
 
 ### Bug fixes
 
+- [#1150](https://github.com/alleslabs/celatone-frontend/pull/1150) Fix camel case on message
+
+## v1.9.0
+
+### Features
+
+- [#1147](https://github.com/alleslabs/celatone-frontend/pull/1147) Support Evm Tx Input data decoder
+- [#1139](https://github.com/alleslabs/celatone-frontend/pull/1139) Support EVM method call erc20 factory
+- [#1127](https://github.com/alleslabs/celatone-frontend/pull/1127) Add EVM contract details EVM transactions
+- [#1131](https://github.com/alleslabs/celatone-frontend/pull/1131) Support EIP-1559 gas information on EVM Tx details page
+- [#1120](https://github.com/alleslabs/celatone-frontend/pull/1120) Add EVM contract details Cosmos transactions
+- [#1130](https://github.com/alleslabs/celatone-frontend/pull/1130) Support EVM contract and transaction hash in the main search
+- [#1128](https://github.com/alleslabs/celatone-frontend/pull/1128) Implement EVM tx details
+- [#1129](https://github.com/alleslabs/celatone-frontend/pull/1129) Support custom evm minitia
+- [#1116](https://github.com/alleslabs/celatone-frontend/pull/1116) Add EVM contract details assets
+- [#1112](https://github.com/alleslabs/celatone-frontend/pull/1112) Add EVM contract details bytecodes
+- [#1109](https://github.com/alleslabs/celatone-frontend/pull/1109) Add EVM contract details overview
+- [#1106](https://github.com/alleslabs/celatone-frontend/pull/1106) Add EVM contract details HTML skeleton layout
+- [#1123](https://github.com/alleslabs/celatone-frontend/pull/1123) Implement block EVM tx list
+- [#1122](https://github.com/alleslabs/celatone-frontend/pull/1122) Support batch json rpc requests
+- [#1113](https://github.com/alleslabs/celatone-frontend/pull/1113) Add message EVM tag to transaction lists and details
+- [#1121](https://github.com/alleslabs/celatone-frontend/pull/1121) Add EVM related tx section on the cosmos tx details page
+- [#1111](https://github.com/alleslabs/celatone-frontend/pull/1111) Support basic EVM account details and saved account
+- [#1118](https://github.com/alleslabs/celatone-frontend/pull/1118) Implement base evm method chip
+- [#1117](https://github.com/alleslabs/celatone-frontend/pull/1117) Add JSON RPC request and get block data from JSON RPC
+- [#1105](https://github.com/alleslabs/celatone-frontend/pull/1105) Add base minievm branch with its sign mode and pubkey type
+
+### Improvements
+
+- [#1151](https://github.com/alleslabs/celatone-frontend/pull/1151) Add redirect logics for /address path to /accounts and /accounts to either /contracts or /evm-contracts
+- [#1141](https://github.com/alleslabs/celatone-frontend/pull/1141) Separate loading logic for evm contract cosmos and evm txs for more reasonably state logic
+- [#1146](https://github.com/alleslabs/celatone-frontend/pull/1146) Bump pnpm to version 9
+- [#1133](https://github.com/alleslabs/celatone-frontend/pull/1133) Refactor evm denom and amount for each method
+
+### Bug fixes
+
+- [#1152](https://github.com/alleslabs/celatone-frontend/pull/1152) Fix duplicate contract evm txs due to refetch on mount + cached data
+- [#1145](https://github.com/alleslabs/celatone-frontend/pull/1145) Shorten value in evm txs table amount and render amount in evm txs details
+- [#1142](https://github.com/alleslabs/celatone-frontend/pull/1142) Fix minievm bugbash (wording, spacing, and alignment)
+- [#1143](https://github.com/alleslabs/celatone-frontend/pull/1143) Fix missing daemon name and block time info
+- [#1134](https://github.com/alleslabs/celatone-frontend/pull/1134) Fix evm contract evm txs loading state and evm tx details ui
 - [#1137](https://github.com/alleslabs/celatone-frontend/pull/1137) Bump axios and remove initia js client usage
 - [#1126](https://github.com/alleslabs/celatone-frontend/pull/1126) Fix tx message detail alignment in small screen
 
@@ -62,6 +104,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1125](https://github.com/alleslabs/celatone-frontend/pull/1125) Refactor custom minitia chain config type
 - [#1095](https://github.com/alleslabs/celatone-frontend/pull/1095) Update native broadcast helper function to generic sign and broadcast function
 - [#1093](https://github.com/alleslabs/celatone-frontend/pull/1093) Remove unused userkeys and adjust flex from string to number
 

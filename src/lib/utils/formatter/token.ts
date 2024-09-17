@@ -5,6 +5,7 @@ import type { Token, U, USD } from "lib/types";
 
 const INVALID = "N/A";
 
+const T = 1_000_000_000_000;
 const B = 1_000_000_000;
 const M = 1_000_000;
 const K = 1_000;
@@ -13,9 +14,11 @@ export const formatDecimal =
   ({
     decimalPoints,
     delimiter,
+    hasTrailingZeros = true,
   }: {
     decimalPoints: number;
     delimiter: boolean;
+    hasTrailingZeros?: boolean;
   }) =>
   (n: BigSource, fallbackValue: string): string => {
     try {
@@ -28,7 +31,7 @@ export const formatDecimal =
           .split(".")[0]
       )
         .div(10 ** decimalPoints)
-        .toFixed(decimalPoints);
+        .toFixed(hasTrailingZeros ? decimalPoints : undefined);
 
       const [i, d] = num.split(".");
       const thousands = /\B(?=(\d{3})+(?!\d))/g;
@@ -68,11 +71,13 @@ export const formatUTokenWithPrecision = (
   amount: U<Token<BigSource>>,
   precision: number,
   isSuffix = true,
-  decimalPoints?: number
+  decimalPoints?: number,
+  hasTrailingZeros?: boolean
 ): string => {
   const token = toToken(amount, precision);
 
   if (isSuffix) {
+    if (token.gte(T)) return token.toExponential(2);
     if (token.gte(B)) return `${d2Formatter(token.div(B), "0.00")}B`;
     if (token.gte(M)) return `${d2Formatter(token.div(M), "0.00")}M`;
     if (token.gte(K)) return `${d2Formatter(token, "0.00")}`;
@@ -87,6 +92,7 @@ export const formatUTokenWithPrecision = (
   return formatDecimal({
     decimalPoints: decimalPoints ?? precision,
     delimiter: true,
+    hasTrailingZeros,
   })(token, INVALID);
 };
 

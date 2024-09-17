@@ -7,7 +7,6 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 
 import { AmpEvent, track, trackUseExpand } from "lib/amplitude";
@@ -16,40 +15,34 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { ResourceCard } from "lib/components/resource";
 import type {
   BechAddr,
+  Option,
   ResourceGroup,
   ResourceGroupByAccount,
 } from "lib/types";
-import { getFirstQueryParam, truncate } from "lib/utils";
+import { truncate } from "lib/utils";
 
 interface ResourceSectionBodyProps {
   address: BechAddr;
   resourcesByOwner: ResourceGroupByAccount[];
+  selectedAccount: Option<string>;
+  selectedGroupName: Option<string>;
 }
 
 export const ResourceLeftPanel = ({
   address,
   resourcesByOwner,
+  selectedAccount,
+  selectedGroupName,
 }: ResourceSectionBodyProps) => {
-  const router = useRouter();
   const navigate = useInternalNavigate();
   const [keyword, setKeyword] = useState("");
-
-  const selectedAccountParam = getFirstQueryParam(
-    router.query.account,
-    resourcesByOwner?.[0]?.owner
-  );
-  const selectedNameParam = getFirstQueryParam(
-    router.query.selected,
-    resourcesByOwner?.[0]?.resources[0]?.group
-  );
 
   const handleSelectResource = useCallback(
     (
       account: ResourceGroupByAccount["owner"],
       resource: ResourceGroup["group"]
     ) => {
-      if (account === selectedAccountParam && resource === selectedNameParam)
-        return;
+      if (account === selectedAccount && resource === selectedGroupName) return;
       navigate({
         pathname: `/accounts/[accountAddress]/[tab]`,
         query: {
@@ -64,7 +57,7 @@ export const ResourceLeftPanel = ({
         },
       });
     },
-    [selectedNameParam, selectedAccountParam, address, navigate]
+    [selectedGroupName, selectedAccount, address, navigate]
   );
 
   const filteredResourcesByOwner = useMemo(() => {
@@ -81,11 +74,11 @@ export const ResourceLeftPanel = ({
   }, [keyword, resourcesByOwner]);
 
   const selectedIndex = filteredResourcesByOwner.findIndex(
-    (item) => item.owner === selectedAccountParam
+    (item) => item.owner === selectedAccount
   );
   const selectedGroup = filteredResourcesByOwner[selectedIndex];
   const selectedResources = selectedGroup?.resources.find(
-    (item) => item.group === selectedNameParam
+    (item) => item.group === selectedGroupName
   );
 
   return (

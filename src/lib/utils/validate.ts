@@ -52,3 +52,5 @@ export const isHexWalletAddress = (address: string) =>
 
 export const isHexModuleAddress = (address: string) =>
   isHexAddress(address, HEX_MODULE_ADDRESS_LENGTH);
+
+export const is0x = (address: string): boolean => address === "0x";

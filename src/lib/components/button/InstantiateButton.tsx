@@ -58,7 +58,7 @@ export const InstantiateButton = ({
   const { address, isWalletConnected } = useCurrentChain();
   const navigate = useInternalNavigate();
   const goToInstantiate = () =>
-    navigate({ pathname: "/instantiate", query: { "code-id": codeId } });
+    navigate({ pathname: "/instantiate", query: { codeId } });
 
   const isAllowed = resolvePermission(
     address,
@@ -66,9 +66,7 @@ export const InstantiateButton = ({
     permissionAddresses
   );
 
-  /**
-   * @todos use isDisabled when proposal flow is done
-   */
+  // TODO: use isDisabled when proposal flow is done
   // const isDisabled =
   //   instantiatePermission === AccessConfigPermission.UNKNOWN ||
   //   !isWalletConnected;

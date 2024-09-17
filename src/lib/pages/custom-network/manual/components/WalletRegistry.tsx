@@ -102,7 +102,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
       <Button
         variant="ghost-primary"
         w="fit-content"
-        onClick={() => append({ denom: "", exponent: "" })}
+        onClick={() => append({ denom: "", exponent: 0 })}
         leftIcon={<CustomIcon name="plus" boxSize={3} />}
       >
         Add more Denom Unit
@@ -119,7 +119,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
       <Button
         variant="outline-primary"
         w="fit-content"
-        onClick={() => append({ denom: "", exponent: "" })}
+        onClick={() => append({ denom: "", exponent: 0 })}
         leftIcon={<CustomIcon name="plus" boxSize={3} />}
       >
         Add Denom Unit
@@ -129,18 +129,18 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
 };
 
 export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
-  const [lcdUrl, bech32Prefix] = useWatch({
+  const [lcd, bech32Prefix] = useWatch({
     control,
-    name: ["lcdUrl", "bech32Prefix"],
+    name: ["lcd", "bech32_prefix"],
   });
 
   const { data: accountBech32, isLoading: isAccountBech32Loading } =
-    useAccountBech32(lcdUrl);
+    useAccountBech32(lcd);
 
   const {
     field: { onChange },
   } = useController({
-    name: "bech32Prefix",
+    name: "bech32_prefix",
     control,
   });
 

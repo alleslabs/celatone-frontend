@@ -1,7 +1,7 @@
 import { Accordion, Button, Flex, Heading } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
 
+import { FunctionTypeTabIndex } from "../../types";
 import {
   AmpEvent,
   track,
@@ -11,12 +11,11 @@ import {
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { FunctionDetailCard } from "lib/components/module/FunctionDetailCard";
 import { EmptyState } from "lib/components/state";
 import type { ExposedFunction, IndexedModule } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
 
-import { FunctionTypeSwitch, FunctionTypeTabs } from "./FunctionTypeSwitch";
+import { FunctionDetailCard } from "./FunctionDetailCard";
+import { FunctionTypeSwitch } from "./FunctionTypeSwitch";
 
 interface ModuleFunctionsProps {
   address: IndexedModule["address"];
@@ -24,25 +23,26 @@ interface ModuleFunctionsProps {
   fns: IndexedModule["parsedAbi"]["exposed_functions"];
   viewFns: IndexedModule["viewFunctions"];
   executeFns: IndexedModule["executeFunctions"];
+  typeTab: FunctionTypeTabIndex;
 }
 
 const FunctionAccordions = ({
+  fnType,
   address,
   moduleName,
-  type,
   fns,
   expandedIndexes,
   updateExpandedIndexes,
 }: {
+  fnType: FunctionTypeTabIndex;
   address: IndexedModule["address"];
   moduleName: IndexedModule["moduleName"];
-  type: FunctionTypeTabs;
   fns: ExposedFunction[];
   expandedIndexes: number[];
   updateExpandedIndexes: (indexes: number[]) => void;
 }) => (
   <Accordion
-    id={type}
+    id={fnType}
     display="none"
     allowMultiple
     index={expandedIndexes}
@@ -52,8 +52,9 @@ const FunctionAccordions = ({
       <Flex direction="column" gap={{ base: 2, md: 4 }}>
         {fns.map((fn) => (
           <FunctionDetailCard
-            exposedFn={fn}
             key={fn.name}
+            fnType={fnType}
+            exposedFn={fn}
             address={address}
             moduleName={moduleName}
           />
@@ -76,11 +77,10 @@ export const ModuleFunctions = ({
   fns,
   viewFns,
   executeFns,
+  typeTab,
 }: ModuleFunctionsProps) => {
-  const router = useRouter();
   const navigate = useInternalNavigate();
 
-  const tab = getFirstQueryParam(router.query.type) as FunctionTypeTabs;
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
   const [keyword, setKeyword] = useState("");
 
@@ -101,8 +101,8 @@ export const ModuleFunctions = ({
     setExpandedIndexes(indexes);
 
   const handleTabChange = useCallback(
-    (nextTab: FunctionTypeTabs) => {
-      if (nextTab === tab) return;
+    (nextTab: FunctionTypeTabIndex) => {
+      if (nextTab === typeTab) return;
       track(AmpEvent.USE_SUBTAB, { currentTab: nextTab });
       navigate({
         pathname: `/modules/[address]/[moduleName]/[tab]`,
@@ -117,14 +117,14 @@ export const ModuleFunctions = ({
         },
       });
     },
-    [address, moduleName, navigate, tab]
+    [address, moduleName, navigate, typeTab]
   );
 
   return (
     <Flex
       direction="column"
       gap={4}
-      sx={{ [`& #${tab}`]: { display: "block" } }}
+      sx={{ [`& #${typeTab}`]: { display: "block" } }}
     >
       <Heading as="h6" variant="h6" fontWeight={600} minH="24px">
         Exposed Functions
@@ -142,7 +142,7 @@ export const ModuleFunctions = ({
         direction={{ base: "column", md: "row" }}
       >
         <FunctionTypeSwitch
-          currentTab={tab}
+          currentTab={typeTab}
           onTabChange={handleTabChange}
           my={3}
           counts={[
@@ -211,7 +211,7 @@ export const ModuleFunctions = ({
       </Flex>
       {/* rendering all tabs at once and use css selector to avoid lagginess when changing tab */}
       <FunctionAccordions
-        type={FunctionTypeTabs.ALL}
+        fnType={FunctionTypeTabIndex.ALL}
         fns={filteredFns}
         expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
@@ -219,7 +219,7 @@ export const ModuleFunctions = ({
         moduleName={moduleName}
       />
       <FunctionAccordions
-        type={FunctionTypeTabs.VIEW}
+        fnType={FunctionTypeTabIndex.VIEW}
         fns={filteredViewFns}
         expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
@@ -227,7 +227,7 @@ export const ModuleFunctions = ({
         moduleName={moduleName}
       />
       <FunctionAccordions
-        type={FunctionTypeTabs.EXECUTE}
+        fnType={FunctionTypeTabIndex.EXECUTE}
         fns={filteredExecuteFns}
         expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}

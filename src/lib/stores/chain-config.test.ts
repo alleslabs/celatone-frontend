@@ -15,6 +15,7 @@ const MOCK_CONFIG: ChainConfig = {
     faucet: { enabled: false },
     wasm: { enabled: false },
     move: { enabled: false },
+    evm: { enabled: false },
     pool: { enabled: false },
     gov: { enabled: false },
     nft: { enabled: false },
