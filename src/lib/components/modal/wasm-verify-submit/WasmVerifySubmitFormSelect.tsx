@@ -71,20 +71,6 @@ export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
           Option: WasmVerifySubmitFormSelectOption,
         }}
         chakraStyles={{
-          container: (provided: SystemStyleObject) => ({
-            ...provided,
-            width: "100%",
-          }),
-          valueContainer: (provided: SystemStyleObject) => ({
-            ...provided,
-            pl: 3,
-            pr: 0,
-          }),
-          dropdownIndicator: (provided: SystemStyleObject) => ({
-            ...provided,
-            px: 2,
-            color: "gray.600",
-          }),
           placeholder: (provided: SystemStyleObject) => ({
             ...provided,
             color: "gray.600",
