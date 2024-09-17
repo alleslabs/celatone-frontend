@@ -34,8 +34,6 @@ export const zCollectionByCollectionAddressResponse = z
     name: z.string(),
     description: z.string(),
     uri: z.string(),
-    created_height: z.number().nullable(),
-    creator_address: zHexAddr,
   })
   .transform(snakeToCamel)
   .optional();
