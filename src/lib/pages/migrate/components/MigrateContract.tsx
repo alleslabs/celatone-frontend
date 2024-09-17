@@ -30,13 +30,13 @@ import { useSchemaStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeLcd } from "lib/services/wasm/code";
-import type { BechAddr32, ComposedMsg } from "lib/types";
+import type { BechAddr32, ComposedMsg, Option } from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg, isId, jsonValidate, resolvePermission } from "lib/utils";
+import { composeMsg, jsonValidate, resolvePermission } from "lib/utils";
 
 interface MigrateContractProps {
   contractAddress: BechAddr32;
-  codeIdParam: string;
+  codeIdParam: Option<number>;
   handleBack: () => void;
 }
 
@@ -64,7 +64,7 @@ export const MigrateContract = ({
     formState: { errors: formErrors },
   } = useForm({
     defaultValues: {
-      codeId: codeIdParam,
+      codeId: codeIdParam ?? 0,
       codeHash: "",
       msgInput: {
         [jsonInputFormKey]: "{}",
@@ -90,7 +90,7 @@ export const MigrateContract = ({
   // -------------------DATA-------------------//
   // ------------------------------------------//
   const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
-    codeId.length ? Number(codeId) : undefined,
+    codeId,
     codeHash
   );
 
@@ -103,7 +103,7 @@ export const MigrateContract = ({
 
   const enableMigrate = useMemo(() => {
     const generalChecks =
-      Boolean(address) && isId(codeId) && status.state === "success";
+      Boolean(address) && codeId && status.state === "success";
 
     switch (tab) {
       case MessageTabs.JSON_INPUT:
@@ -131,7 +131,7 @@ export const MigrateContract = ({
     },
   });
 
-  const { refetch } = useCodeLcd(Number(codeId), {
+  const { refetch } = useCodeLcd(codeId, {
     enabled: false,
     retry: false,
     cacheTime: 0,
@@ -182,7 +182,7 @@ export const MigrateContract = ({
     );
     const stream = await migrateTx({
       contractAddress,
-      codeId: Number(codeId),
+      codeId,
       migrateMsg: JSON.parse(currentInput),
       estimatedFee,
       onTxSucceed: () => setProcessing(false),
@@ -210,10 +210,10 @@ export const MigrateContract = ({
   useEffect(() => {
     setValue("codeHash", "");
     setTab(MessageTabs.JSON_INPUT);
-    if (codeId.length) {
+    if (codeId) {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
-        if (isId(codeId)) refetch();
+        if (codeId) refetch();
         else setStatus({ state: "error", message: "Invalid Code ID" });
       }, 500);
       return () => clearTimeout(timer);
@@ -231,7 +231,7 @@ export const MigrateContract = ({
             composeMsg(MsgType.MIGRATE, {
               sender: address,
               contract: contractAddress,
-              codeId: Long.fromString(codeId),
+              codeId: Long.fromInt(codeId),
               msg: Buffer.from(currentInput),
             }),
           ]
@@ -262,7 +262,7 @@ export const MigrateContract = ({
         control={control}
         status={status}
         error={formErrors.codeId?.message}
-        onCodeSelect={(code: string) => {
+        onCodeSelect={(code: number) => {
           setValue("codeId", code);
           resetMsgInputSchema();
         }}
@@ -293,11 +293,11 @@ export const MigrateContract = ({
           />
         }
         schemaContent={
-          isId(codeId) && (
+          codeId && (
             <SchemaInputSection
               type="migrate"
               codeHash={codeHash}
-              codeId={Number(codeId)}
+              codeId={codeId}
               verifiedSchema={verifiedSchema}
               localSchema={localSchema}
               handleChange={handleChange}

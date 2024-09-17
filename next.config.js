@@ -98,6 +98,18 @@ const nextConfig = {
       permanent: false,
     });
 
+    rules.push({
+      source: "/address/:accountAddress",
+      destination: "/accounts/:accountAddress",
+      permanent: false,
+    });
+
+    rules.push({
+      source: "/:network/address/:accountAddress",
+      destination: "/:network/accounts/:accountAddress",
+      permanent: false,
+    });
+
     return rules;
   },
 };

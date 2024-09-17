@@ -13,7 +13,7 @@ import { CustomTab } from "lib/components/CustomTab";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { getFirstQueryParam } from "lib/utils";
+import { InvalidState } from "lib/components/state";
 
 import { DetailHeader } from "./components/DetailHeader";
 import {
@@ -23,31 +23,27 @@ import {
   PublicProjectModuleTable,
 } from "./components/tables";
 import { usePublicData } from "./data";
+import { TabIndex, zProjectDetailsQueryParams } from "./types";
 
-enum TabIndex {
-  Overview = "overview",
-  Codes = "codes",
-  Contracts = "contracts",
-  Accounts = "accounts",
-  Modules = "modules",
+interface ProjectDetailsBodyProps {
+  slug: string;
+  tab: TabIndex;
 }
 
-const ProjectDetail = () => {
+const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
   const router = useRouter();
+  const navigate = useInternalNavigate();
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
-  const navigate = useInternalNavigate();
-  // TODO: remove assertion later
-  const tab = getFirstQueryParam(router.query.tab) as TabIndex;
+
   const {
     publicCodes,
     publicContracts,
     publicAccounts,
     publicModules,
     projectDetail,
-    slug,
     isLoading,
-  } = usePublicData();
+  } = usePublicData(slug);
 
   const handleTabChange = (nextTab: TabIndex) => () => {
     if (nextTab === tab) return;
@@ -91,8 +87,10 @@ const ProjectDetail = () => {
     (move.enabled ? publicModules.length : 0);
 
   if (isLoading) return <Loading withBorder />;
+  if (!projectDetail) return <InvalidState title="Project does not exist" />;
+
   return (
-    <PageContainer>
+    <>
       <CelatoneSeo
         pageName={
           projectDetail?.name
@@ -189,8 +187,19 @@ const ProjectDetail = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+    </>
+  );
+};
+
+const ProjectDetails = () => {
+  const router = useRouter();
+  const validated = zProjectDetailsQueryParams.safeParse(router.query);
+
+  return (
+    <PageContainer>
+      {validated.success && <ProjectDetailsBody {...validated.data} />}
     </PageContainer>
   );
 };
 
-export default ProjectDetail;
+export default ProjectDetails;

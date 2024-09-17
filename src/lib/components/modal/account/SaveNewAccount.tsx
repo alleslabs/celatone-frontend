@@ -7,6 +7,7 @@ import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
+  useEvmConfig,
   useExampleAddresses,
   useMoveConfig,
   useValidateAddress,
@@ -51,11 +52,14 @@ export function SaveNewAccountModal({
   const { user: exampleUserAddress } = useExampleAddresses();
   const { isSomeValidAddress } = useValidateAddress();
   const formatAddresses = useFormatAddresses();
-  const move = useMoveConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
+  const evm = useEvmConfig({ shouldRedirect: false });
 
   const getMaxLengthError = useGetMaxLengthError();
   const { isAccountSaved } = useAccountStore();
+
+  const hasHexAddr = move.enabled || evm.enabled;
 
   const defaultAddress = accountAddress ?? ("" as BechAddr);
   const defaultValues: SaveAccountDetail = useMemo(() => {
@@ -131,8 +135,7 @@ export function SaveNewAccountModal({
 
         if (
           isAccountSaved(addressState) ||
-          (move.enabled &&
-            isAccountSaved(formatAddresses(addressState).address))
+          (hasHexAddr && isAccountSaved(formatAddresses(addressState).address))
         ) {
           setErrorStatus("You already saved this address");
           return;
@@ -147,9 +150,9 @@ export function SaveNewAccountModal({
   }, [
     addressState,
     formatAddresses,
+    hasHexAddr,
     isAccountSaved,
     isSomeValidAddress,
-    move.enabled,
     refetch,
     wasm.enabled,
   ]);

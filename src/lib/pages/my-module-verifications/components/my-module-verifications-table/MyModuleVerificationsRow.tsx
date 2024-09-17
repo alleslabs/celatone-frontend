@@ -58,7 +58,9 @@ export const MyModuleVerificationsRow = ({
             </Text>
           </Flex>
         ) : (
-          <Text>-</Text>
+          <Text variant="body2" color="text.disabled">
+            -
+          </Text>
         )}
       </TableRow>
     </Grid>

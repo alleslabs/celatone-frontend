@@ -20,12 +20,14 @@ export const useNetworkSelector = (onClose: () => void) => {
     filteredPinnedChains,
     filteredMainnetChains,
     filteredTestnetChains,
+    filteredDevnetChains,
     filteredLocalChains,
   ] = useMemo(
     () => [
       filterChains(chainConfigs, pinnedNetworks, keyword),
       filterChains(chainConfigs, availableChainIds, keyword, "mainnet"),
       filterChains(chainConfigs, availableChainIds, keyword, "testnet"),
+      filterChains(chainConfigs, availableChainIds, keyword, "devnet"),
       filterChains(chainConfigs, availableChainIds, keyword, "local"),
     ],
     [chainConfigs, JSON.stringify(pinnedNetworks), availableChainIds, keyword]
@@ -35,6 +37,7 @@ export const useNetworkSelector = (onClose: () => void) => {
     filteredPinnedChains.length +
     filteredMainnetChains.length +
     filteredTestnetChains.length +
+    filteredDevnetChains.length +
     filteredLocalChains.length;
 
   const handleOnKeyDown = useCallback(
@@ -74,6 +77,7 @@ export const useNetworkSelector = (onClose: () => void) => {
     filteredPinnedChains,
     filteredMainnetChains,
     filteredTestnetChains,
+    filteredDevnetChains,
     filteredLocalChains,
   };
 };

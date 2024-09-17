@@ -1,26 +1,29 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 interface SearchZeroStateProps {
-  isWasm: boolean;
   isPool: boolean;
+  isWasm: boolean;
   isMove: boolean;
+  isEvm: boolean;
   isGov: boolean;
   isNft: boolean;
   isFullTier: boolean;
 }
 
 export const SearchZeroState = ({
-  isWasm,
   isPool,
+  isWasm,
   isMove,
+  isEvm,
   isGov,
   isNft,
   isFullTier,
 }: SearchZeroStateProps) => {
-  const base = ["Account Address", "TX Hash", "Block Height"];
+  const base = ["Account Address", "Block Height", "TX Hash"];
   const govText = isGov ? ["Validator Address", "Proposal ID"] : [];
   const wasmText = isWasm ? ["Code ID", "Contract Address"] : [];
   const moveText = isMove ? ["Module Path"] : [];
+  const evmText = isEvm ? ["EVM TX Hash", "Contract Address"] : [];
   const poolText = isPool && isFullTier ? ["Pool ID"] : [];
   const nftCollectionText = isNft
     ? ["NFT Collection Address", "NFT Address"]
@@ -30,6 +33,7 @@ export const SearchZeroState = ({
     govText,
     wasmText,
     moveText,
+    evmText,
     poolText,
     nftCollectionText
   );

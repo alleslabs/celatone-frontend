@@ -23,6 +23,9 @@ export const devChainConfigs: ChainConfig[] = [
         enabled: true,
         moduleMaxFileSize: 1_048_576,
       },
+      evm: {
+        enabled: false,
+      },
       pool: {
         enabled: false,
       },

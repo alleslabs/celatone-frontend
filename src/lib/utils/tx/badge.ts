@@ -8,5 +8,6 @@ export const getTxBadges = (type: string, log: Option<Log>) => {
       Boolean(log?.events.find((event) => event.type === "send_packet")) ||
       type.startsWith("/ibc"),
     isOpinit: Boolean(type.startsWith("/opinit")),
+    isEvm: Boolean(type.startsWith("/minievm")),
   };
 };

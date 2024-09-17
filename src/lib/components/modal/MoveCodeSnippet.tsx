@@ -23,7 +23,6 @@ import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
-  useCurrentChain,
   useGas,
   useLcdEndpoint,
   useRpcEndpoint,
@@ -33,9 +32,9 @@ import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 import { getArgType, serializeAbiData } from "lib/utils";
 
 import "ace-builds/src-noconflict/ace";
-import "ace-builds/src-noconflict/mode-sh";
-import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-sh";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/theme-one_dark";
 import "ace-builds/src-noconflict/theme-pastel_on_dark";
@@ -69,14 +68,16 @@ const MoveCodeSnippet = ({
   ml,
 }: MoveCodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const {
-    chain: { daemon_name: daemonName },
-  } = useCurrentChain();
   const lcdEndpoint = useLcdEndpoint();
   const rpcEndpoint = useRpcEndpoint();
-  const { currentChainId, theme } = useCelatoneApp();
+  const {
+    currentChainId,
+    chainConfig: { chain },
+    theme,
+  } = useCelatoneApp();
   const gasPrice = useGas();
 
+  const daemonName = `${chain}d`;
   const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
 
   const {
