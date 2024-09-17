@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1136](https://github.com/alleslabs/celatone-frontend/pull/1136) Update code to get data from API instead of GraphQL
 - [#1132](https://github.com/alleslabs/celatone-frontend/pull/1132) Update account type to get data from API instead of GraphQL
 
 ### Bug fixes
