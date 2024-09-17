@@ -2,7 +2,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import type { Control, UseFormSetValue } from "react-hook-form";
 import { useWatch } from "react-hook-form";
 
-import { SelectInput } from "lib/components/forms";
+import { SelectInputBase } from "lib/components/forms";
 
 import { ASSETS_JSON_STR, ASSETS_SELECT, ATTACH_FUNDS_OPTION } from "./data";
 import { JsonFund } from "./JsonFund";
@@ -76,7 +76,7 @@ export const AttachFund = ({
 }: AttachFundProps) => (
   <>
     <Flex mb={5}>
-      <SelectInput
+      <SelectInputBase
         formLabel={showLabel ? "Attach Funds" : undefined}
         options={attachFundsOptions}
         onChange={(value: AttachFundsType) =>

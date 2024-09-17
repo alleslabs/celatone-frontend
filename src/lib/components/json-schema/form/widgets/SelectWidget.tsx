@@ -13,9 +13,9 @@ import {
   enumOptionsValueForIndex,
   getTemplate,
 } from "@rjsf/utils";
-import type { OptionsOrGroups } from "chakra-react-select";
-import { Select } from "chakra-react-select";
 import type React from "react";
+
+import { SelectInput } from "lib/components/forms";
 
 /**
  * chakra-react-select option base.
@@ -98,9 +98,7 @@ const SelectWidget = <
     );
 
   const valueLabelMap: any = {};
-  const displayEnumOptions: OptionsOrGroups<any, any> = Array.isArray(
-    enumOptions
-  )
+  const displayEnumOptions = Array.isArray(enumOptions)
     ? enumOptions.map((option: EnumOptionsType<S>, index: number) => {
         const { value: optionValue, label: optionLabel } = option;
         valueLabelMap[index] = optionLabel || String(optionValue);
@@ -152,44 +150,22 @@ const SelectWidget = <
           registry={registry}
         />
       )}
-      <Select
+      <SelectInput
         inputId={id}
         name={id}
         isMulti={isMultiple}
+        closeMenuOnSelect={!isMultiple}
+        onBlur={handleOnBlur}
+        onFocus={handleOnFocus}
+        autoFocus={autofocus}
         options={displayEnumOptions}
         placeholder={
           placeholder.length > 0 || readonly ? placeholder : "Select option"
         }
-        closeMenuOnSelect={!isMultiple}
-        onBlur={handleOnBlur}
+        size="md"
         onChange={isMultiple ? handleOnMultiChange : handleOnChange}
-        onFocus={handleOnFocus}
-        autoFocus={autofocus}
         value={selectedIndex === undefined ? undefined : formValue}
-        menuPosition="fixed"
         menuPortalTarget={document.body}
-        chakraStyles={{
-          control: (provided) => ({
-            ...provided,
-            _disabled: {
-              color: "text.main",
-            },
-          }),
-          dropdownIndicator: (provided, state) => ({
-            ...provided,
-            color: state.isDisabled ? "gray.700" : undefined,
-          }),
-          option: (provided) => ({
-            ...provided,
-            color: "text.main",
-            _hover: {
-              bg: "gray.700",
-            },
-            _selected: {
-              bg: "gray.800",
-            },
-          }),
-        }}
       />
     </FormControl>
   );

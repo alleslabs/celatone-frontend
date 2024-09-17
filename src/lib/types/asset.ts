@@ -1,6 +1,7 @@
 import type Big from "big.js";
 import { z } from "zod";
 
+import type { SelectInputOption } from "lib/components/forms";
 import type { Option, PoolInfo, Token, U, USD } from "lib/types";
 
 export const zCoin = z.object({
@@ -46,9 +47,11 @@ export type TokenWithValue = BaseTokenWithValue &
       }
   );
 
-export interface AssetOption {
-  label: string;
-  value: string;
-  isDisabled: boolean;
-  [key: string]: string | boolean;
+export interface AssetOptionValue {
+  id: string;
+  logo: string;
+  formatted?: string;
+  price?: string;
 }
+
+export type AssetOption = SelectInputOption<AssetOptionValue>;
