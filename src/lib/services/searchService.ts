@@ -297,13 +297,13 @@ export const useSearchHandler = (
 
   const results: SearchResult[] = [];
 
-  if (nftCollectionData?.data)
+  if (nftCollectionData)
     results.push({
       value: debouncedKeyword,
       type: "NFT Collection Address",
       metadata: {
         nft: {
-          name: nftCollectionData?.data.name,
+          name: nftCollectionData.name,
         },
       },
     });
