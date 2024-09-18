@@ -17,6 +17,7 @@ import {
   useInitia,
   useLcdEndpoint,
   useMoveConfig,
+  usePoolConfig,
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
@@ -26,6 +27,7 @@ import type {
   BechAddr20,
   BechAddr32,
   Option,
+  PoolTxFilter,
   Transaction,
   TransactionWithSignerPubkey,
   TxFilters,
@@ -41,6 +43,8 @@ import {
   getTxs,
   getTxsByAddress,
   getTxsByBlockHeight,
+  getTxsByPoolId,
+  getTxsByPoolIdTableCounts,
   getTxsCountByAddress,
 } from "./api";
 import {
@@ -130,6 +134,65 @@ export const useTxs = (
     async () =>
       getTxs(endpoint, limit, offset, wasmEnable, moveEnable, isInitia),
     { ...options, retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useTxsByPoolId = (
+  poolId: number,
+  type: PoolTxFilter,
+  limit: number,
+  offset: number
+) => {
+  const endpoint = useBaseApiRoute("txs");
+  const { enabled: poolEnable } = usePoolConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID,
+      endpoint,
+      poolId,
+      type,
+      limit,
+      offset,
+      poolEnable,
+    ],
+    async () => {
+      if (!poolEnable) throw new Error("Pool is not enabled (useTxsByPoolId)");
+
+      return getTxsByPoolId(endpoint, poolId, type, limit, offset);
+    },
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export const useTxsByPoolIdTableCounts = (
+  poolId: number,
+  type: PoolTxFilter
+) => {
+  const endpoint = useBaseApiRoute("txs");
+  const { enabled: poolEnable } = usePoolConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.POOL_TRANSACTION_BY_ID_COUNT,
+      endpoint,
+      poolId,
+      type,
+      poolEnable,
+    ],
+    async () => {
+      if (!poolEnable)
+        throw new Error("Pool is not enabled (useTxsByPoolIdTableCounts)");
+
+      return getTxsByPoolIdTableCounts(endpoint, poolId, type);
+    },
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
   );
 };
 
@@ -696,5 +759,3 @@ export const useTxsDataJsonRpc = (
     }
   );
 };
-
-export * from "./gql";
