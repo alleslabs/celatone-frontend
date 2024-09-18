@@ -412,7 +412,6 @@ const zTxByPoolIdResponse = z
 
 export const zTxsByPoolIdResponse = z.object({
   items: z.array(zTxByPoolIdResponse),
-  total: z.number().nonnegative(),
 });
 
 export const zTxsByPoolIdTxsCountResponse = z.object({
