@@ -30,9 +30,9 @@ import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useNfts } from "lib/services/nft";
 import {
-  useCollectionActivities,
-  useCollectionByCollectionAddress,
-  useCollectionMutateEvents,
+  useNftCollectionActivities,
+  useNftCollectionByCollectionAddress,
+  useNftCollectionMutateEvents,
 } from "lib/services/nft-collection";
 import { isHexModuleAddress } from "lib/utils";
 
@@ -61,7 +61,7 @@ const CollectionDetailsBody = ({
   const { isFullTier } = useTierConfig();
 
   const { data: collection, isLoading: isCollectionLoading } =
-    useCollectionByCollectionAddress(collectionAddress);
+    useNftCollectionByCollectionAddress(collectionAddress);
 
   const { data: nfts, isLoading: isNftsLoading } = useNfts(
     collectionAddress,
@@ -73,14 +73,14 @@ const CollectionDetailsBody = ({
   const { collectionInfos, isLoading: isCollectionInfosLoading } =
     useCollectionInfos(collectionAddress);
 
-  const { data: activities } = useCollectionActivities(
+  const { data: activities } = useNftCollectionActivities(
     collectionAddress,
     10,
     0,
     undefined,
     { enabled: isFullTier }
   );
-  const { data: mutateEvents } = useCollectionMutateEvents(
+  const { data: mutateEvents } = useNftCollectionMutateEvents(
     collectionAddress,
     10,
     0,

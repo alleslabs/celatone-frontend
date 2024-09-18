@@ -25,7 +25,7 @@ import { useEvmCodesByAddress } from "./evm";
 import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
 import { useNftByNftAddressLcd } from "./nft";
-import { useCollectionByCollectionAddress } from "./nft-collection";
+import { useNftCollectionByCollectionAddress } from "./nft-collection";
 import { usePoolData } from "./pools";
 import { useProposalData, useProposalDataLcd } from "./proposal";
 import { useTxData, useTxDataJsonRpc } from "./tx";
@@ -148,7 +148,7 @@ export const useSearchHandler = (
   );
 
   const { data: nftCollectionData, isFetching: nftCollectionFetching } =
-    useCollectionByCollectionAddress(
+    useNftCollectionByCollectionAddress(
       debouncedKeyword as HexAddr32,
       isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
     );

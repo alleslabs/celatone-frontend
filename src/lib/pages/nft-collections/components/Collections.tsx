@@ -7,7 +7,7 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useDebounce } from "lib/hooks";
-import { useCollections } from "lib/services/nft-collection";
+import { useNftCollections } from "lib/services/nft-collection";
 
 import { CollectionList } from "./CollectionList";
 
@@ -30,7 +30,7 @@ export const Collections = () => {
       isDisabled: false,
     },
   });
-  const { data: collections, isLoading } = useCollections(
+  const { data: collections, isLoading } = useNftCollections(
     pageSize,
     offset,
     debouncedSearch,

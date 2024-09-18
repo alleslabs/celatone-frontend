@@ -32,7 +32,7 @@ import {
   getNftCollectionsByAccountAddressSequencer,
 } from "./sequencer";
 
-export const useCollections = (
+export const useNftCollections = (
   limit: number,
   offset: number,
   search?: string,
@@ -54,7 +54,7 @@ export const useCollections = (
   );
 };
 
-export const useCollectionByCollectionAddress = (
+export const useNftCollectionByCollectionAddress = (
   collectionAddress: HexAddr32,
   enabled = true
 ) => {
@@ -90,7 +90,7 @@ export const useCollectionByCollectionAddress = (
   );
 };
 
-export const useCollectionCreator = (collectionAddress: HexAddr32) => {
+export const useNftCollectionCreator = (collectionAddress: HexAddr32) => {
   const {
     chain: { bech32_prefix: prefix },
   } = useCurrentChain();
@@ -130,7 +130,7 @@ export const useCollectionCreator = (collectionAddress: HexAddr32) => {
   );
 };
 
-export const useCollectionActivities = (
+export const useNftCollectionActivities = (
   collectionAddress: HexAddr32,
   limit: number,
   offset: number,
@@ -164,7 +164,7 @@ export const useCollectionActivities = (
   );
 };
 
-export const useCollectionActivitiesSequencer = (
+export const useNftCollectionActivitiesSequencer = (
   collectionAddress: HexAddr32
 ) => {
   const lcdEndpoint = useLcdEndpoint();
@@ -189,7 +189,7 @@ export const useCollectionActivitiesSequencer = (
   };
 };
 
-export const useCollectionMutateEvents = (
+export const useNftCollectionMutateEvents = (
   collectionAddress: HexAddr32,
   limit: number,
   offset: number,
@@ -223,7 +223,7 @@ export const useCollectionMutateEvents = (
   );
 };
 
-export const useCollectionsByAccountAddress = (accountAddress: HexAddr) => {
+export const useNftCollectionsByAccountAddress = (accountAddress: HexAddr) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");
   const lcdEndpoint = useLcdEndpoint();
   const { tier } = useTierConfig();
