@@ -10,10 +10,9 @@ import { TxsTable } from "./TxsTable";
 
 interface TxsFullProps {
   nftAddress: HexAddr32;
-  totalData: number;
 }
 
-export const TxsFull = ({ nftAddress, totalData }: TxsFullProps) => {
+export const TxsFull = ({ nftAddress }: TxsFullProps) => {
   const {
     pagesQuantity,
     currentPage,
@@ -21,8 +20,8 @@ export const TxsFull = ({ nftAddress, totalData }: TxsFullProps) => {
     pageSize,
     setPageSize,
     offset,
+    setTotalData,
   } = usePaginator({
-    total: totalData,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -33,24 +32,25 @@ export const TxsFull = ({ nftAddress, totalData }: TxsFullProps) => {
   const { data: transactions, isLoading } = useNftTransactions(
     pageSize,
     offset,
-    nftAddress
+    nftAddress,
+    { onSuccess: ({ total }) => setTotalData(total) }
   );
 
   return (
     <Box>
       <TxsTable
-        txs={transactions}
+        txs={transactions?.items}
         isLoading={isLoading}
         emptyState={
           <EmptyState imageVariant="empty" message="Transactions not found." />
         }
       />
-      {totalData > 10 && (
+      {transactions && transactions?.total > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
+          totalData={transactions.total}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {

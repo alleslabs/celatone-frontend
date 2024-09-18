@@ -32,8 +32,8 @@ import { useAccountData } from "lib/services/account";
 import { useModulesByAddress } from "lib/services/move/module";
 import { useResourcesByAddressLcd } from "lib/services/move/resource";
 import {
+  useNftsByAccountAddress,
   useNftsByAccountByCollectionSequencer,
-  useNftsCountByAccount,
 } from "lib/services/nft";
 import { useInitiaUsernameByAddress } from "lib/services/username";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
@@ -121,8 +121,10 @@ const AccountDetailsBody = ({
   const { data: resourcesData, isFetching: isResourceLoading } =
     useResourcesByAddressLcd(accountAddress);
   // nft
-  const { data: nftsCount, isFetching: isNftsCountLoading } =
-    useNftsCountByAccount(hexAddress, isFullTier && nft.enabled);
+  const { data: nfts, isFetching: isNftsCountLoading } =
+    useNftsByAccountAddress(hexAddress, 10, 0, undefined, "", {
+      enabled: isFullTier && nft.enabled,
+    });
 
   const { data: accountNfts } = useNftsByAccountByCollectionSequencer(
     hexAddress,
@@ -131,7 +133,7 @@ const AccountDetailsBody = ({
     isSequencerTier
   );
 
-  const totalNfts = nftsCount ?? accountNfts?.total;
+  const totalNfts = nfts?.total ?? accountNfts?.total;
 
   const hasTotalBonded =
     !isTotalBondedLoading &&
@@ -247,7 +249,7 @@ const AccountDetailsBody = ({
           </CustomTab>
           <CustomTab
             count={totalNfts}
-            isDisabled={nftsCount === 0}
+            isDisabled={nfts?.total === 0}
             onClick={handleTabChange(TabIndex.Nfts, totalNfts)}
             isLoading={isNftsCountLoading}
             hidden={!nftEnabled}

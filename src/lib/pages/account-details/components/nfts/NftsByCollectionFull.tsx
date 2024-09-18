@@ -8,7 +8,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
-import { useNftsByAccountByCollection } from "lib/services/nft";
+import { useNftsByAccountAddress } from "lib/services/nft";
 import type { HexAddr, HexAddr32 } from "lib/types";
 
 interface NftsByCollectionFullProps {
@@ -39,12 +39,12 @@ export const NftsByCollectionFull = ({
       isDisabled: false,
     },
   });
-  const { data, isLoading } = useNftsByAccountByCollection(
+  const { data, isLoading } = useNftsByAccountAddress(
     accountAddress,
     pageSize,
     offset,
-    debouncedSearch,
     collectionAddress,
+    debouncedSearch,
     {
       onSuccess: ({ total }) => setTotalData(total),
     }
@@ -69,7 +69,7 @@ export const NftsByCollectionFull = ({
         amptrackSection="nft-account-detail-tokenid-search"
       />
       <NftList
-        nfts={data?.nfts}
+        nfts={data?.items}
         isLoading={isLoading}
         emptyState={
           <EmptyState

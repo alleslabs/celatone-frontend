@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import { useCollectionsByAccount } from "lib/services/nft-collection";
+import { useNftCollectionsByAccountAddress } from "lib/services/nft-collection";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 
 import { FilterItem } from "./FilterItem";
@@ -25,14 +25,15 @@ export const NftsSectionFull = ({
   totalData = 0,
 }: NftsSectionFullProps) => {
   const isMobile = useMobile();
-  const { data: collections, isLoading } = useCollectionsByAccount(address);
+  const { data: collections, isLoading } =
+    useNftCollectionsByAccountAddress(address);
 
   const [selectedCollection, setSelectedCollection] =
     useState<SelectedCollection>();
 
   if (isLoading) return <Loading />;
   if (!collections) return <ErrorFetching dataName="collections" />;
-  if (!collections.length)
+  if (!collections.items.length)
     return (
       <EmptyState
         imageVariant="empty"
@@ -62,7 +63,7 @@ export const NftsSectionFull = ({
             count={totalData}
             isDefault
           />
-          {collections.map((item) => (
+          {collections.items.map((item) => (
             <FilterItem
               key={item.collectionAddress}
               collectionName={item.collectionName}

@@ -29,7 +29,7 @@ export const NftsSectionSequencer = ({
   const { data: accountNfts, isLoading } =
     useNftsByAccountByCollectionSequencer(address, undefined, undefined);
 
-  const collections = groupBy(accountNfts?.nfts, "collectionAddress");
+  const collections = groupBy(accountNfts?.items, "collectionAddress");
 
   const [selectedCollection, setSelectedCollection] =
     useState<SelectedCollection>();

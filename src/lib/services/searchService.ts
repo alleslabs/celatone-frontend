@@ -25,7 +25,7 @@ import { useEvmCodesByAddress } from "./evm";
 import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
 import { useNftByNftAddressLcd } from "./nft";
-import { useCollectionByCollectionAddress } from "./nft-collection";
+import { useNftCollectionByCollectionAddress } from "./nft-collection";
 import { usePoolByPoolId } from "./poolService";
 import { useProposalData, useProposalDataLcd } from "./proposal";
 import { useTxData, useTxDataJsonRpc } from "./tx";
@@ -148,7 +148,7 @@ export const useSearchHandler = (
   );
 
   const { data: nftCollectionData, isFetching: nftCollectionFetching } =
-    useCollectionByCollectionAddress(
+    useNftCollectionByCollectionAddress(
       debouncedKeyword as HexAddr32,
       isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
     );
@@ -322,13 +322,13 @@ export const useSearchHandler = (
 
   const results: SearchResult[] = [];
 
-  if (nftCollectionData?.data)
+  if (nftCollectionData)
     results.push({
       value: debouncedKeyword,
       type: "NFT Collection Address",
       metadata: {
         nft: {
-          name: nftCollectionData?.data.name,
+          name: nftCollectionData.name,
         },
       },
     });
@@ -339,8 +339,8 @@ export const useSearchHandler = (
       type: "NFT Address",
       metadata: {
         nft: {
-          collectionAddress: nftData.data.collectionAddress,
-          name: nftData.data.tokenId,
+          collectionAddress: nftData.collectionAddress,
+          name: nftData.tokenId,
         },
       },
     });
