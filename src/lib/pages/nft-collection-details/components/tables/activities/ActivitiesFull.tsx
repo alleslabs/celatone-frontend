@@ -6,7 +6,7 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
-import { useCollectionActivities } from "lib/services/nft-collection";
+import { useNftCollectionActivities } from "lib/services/nft-collection";
 import type { HexAddr32 } from "lib/types";
 
 import { ActivitiesTable } from "./ActivitiesTable";
@@ -34,7 +34,7 @@ export const ActivitiesFull = ({ collectionAddress }: ActivitiesFullProps) => {
       isDisabled: false,
     },
   });
-  const { data: activities, isLoading } = useCollectionActivities(
+  const { data: activities, isLoading } = useNftCollectionActivities(
     collectionAddress,
     pageSize,
     offset,

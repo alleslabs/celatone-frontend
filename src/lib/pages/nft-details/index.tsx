@@ -33,7 +33,7 @@ import {
   useNftMutateEvents,
   useNftTransactions,
 } from "lib/services/nft";
-import { useCollectionByCollectionAddress } from "lib/services/nft-collection";
+import { useNftCollectionByCollectionAddress } from "lib/services/nft-collection";
 
 import {
   Attributes,
@@ -60,7 +60,7 @@ const NftDetailsBody = ({
   const { isFullTier } = useTierConfig();
 
   const { data: collection, isLoading: isCollectionLoading } =
-    useCollectionByCollectionAddress(collectionAddress);
+    useNftCollectionByCollectionAddress(collectionAddress);
 
   const { data: nft, isLoading: isNftLoading } = useNftByNftAddress(
     collectionAddress,
