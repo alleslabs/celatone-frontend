@@ -415,11 +415,9 @@ export const zTxsByPoolIdResponse = z.object({
   total: z.number().nonnegative(),
 });
 
-export const zTxsByPoolIdTxsCountResponse = z
-  .object({
-    total: z.number(),
-  })
-  .transform((val) => val.total ?? 0);
+export const zTxsByPoolIdTxsCountResponse = z.object({
+  total: z.number().nullable(),
+});
 // ---------------- JSON RPC ----------------
 export const zEvmTxHashByCosmosTxHashJsonRpc = z.string().transform((val) =>
   val !== "0x0000000000000000000000000000000000000000000000000000000000000000" // if no related evm tx

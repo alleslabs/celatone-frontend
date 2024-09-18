@@ -10,14 +10,16 @@ import {
 import type { Nullish } from "lib/types";
 
 interface CustomTabProps extends TabProps {
-  count?: Nullish<number | string>;
+  count?: Nullish<number>;
   isLoading?: boolean;
+  fallbackValue?: string;
 }
 
 export const CustomTab = ({
   count,
   isLoading,
   isDisabled,
+  fallbackValue = "N/A",
   ...restProps
 }: CustomTabProps) => {
   const tabProps = useTab({ ...restProps });
@@ -64,7 +66,7 @@ export const CustomTab = ({
       ) : (
         count !== undefined && (
           <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
-            {count === null ? "N/A" : count}
+            {count === null ? fallbackValue : count}
           </Badge>
         )
       )}

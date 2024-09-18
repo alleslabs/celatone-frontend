@@ -12,6 +12,7 @@ import { useCallback, useState } from "react";
 import { PoolRelatedTxsTable } from "../tables/pool-txs";
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
+import { UPPERBOUND_COUNT } from "lib/data";
 import type { PoolDetail } from "lib/types";
 import { PoolType } from "lib/types";
 
@@ -31,25 +32,27 @@ interface PoolRelatedTxsProps {
   pool: PoolDetail;
 }
 
+const FALLBACK_COUNT = `${UPPERBOUND_COUNT}+`;
+
 export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
   const [tab, setTab] = useState(TabIndex.All);
 
   const {
-    totalAllData = 0,
+    totalAllData,
     isTotalAllLoading,
-    totalSwapData = 0,
+    totalSwapData,
     isTotalSwapLoading,
-    totalClpData = 0,
+    totalClpData,
     isTotalClpLoading,
-    totalLpData = 0,
+    totalLpData,
     isTotalLpLoading,
-    totalBondingData = 0,
+    totalBondingData,
     isTotalBondingLoading,
-    totalSuperfluidData = 0,
+    totalSuperfluidData,
     isTotalSuperfluidLoading,
-    totalCollectData = 0,
+    totalCollectData,
     isTotalCollectLoading,
-    totalMigrateData = 0,
+    totalMigrateData,
     isTotalMigrateLoading,
   } = usePoolTxsTableCounts(pool.id);
 
@@ -78,73 +81,81 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           borderColor="gray.800"
         >
           <CustomTab
-            count={totalAllData}
+            count={totalAllData?.total}
             isLoading={isTotalAllLoading}
             onClick={() => handleTabChange(TabIndex.All)}
+            fallbackValue={FALLBACK_COUNT}
           >
             All
           </CustomTab>
           <CustomTab
-            count={totalSwapData}
-            isDisabled={!totalSwapData}
+            count={totalSwapData?.total}
+            isDisabled={totalSwapData?.total === 0}
             isLoading={isTotalSwapLoading}
             onClick={() => handleTabChange(TabIndex.Swap)}
+            fallbackValue={FALLBACK_COUNT}
           >
             Swap
           </CustomTab>
           {pool.type === PoolType.CL ? (
             <CustomTab
-              count={totalClpData}
-              isDisabled={!totalClpData}
+              count={totalClpData?.total}
+              isDisabled={totalClpData?.total === 0}
               isLoading={isTotalClpLoading}
               onClick={() => handleTabChange(TabIndex.CLP)}
+              fallbackValue={FALLBACK_COUNT}
             >
               CLP
             </CustomTab>
           ) : (
             <CustomTab
-              count={totalLpData}
-              isDisabled={!totalLpData}
+              count={totalLpData?.total}
+              isDisabled={totalLpData?.total === 0}
               isLoading={isTotalLpLoading}
               onClick={() => handleTabChange(TabIndex.LP)}
+              fallbackValue={FALLBACK_COUNT}
             >
               LP
             </CustomTab>
           )}
           <CustomTab
-            count={totalBondingData}
-            isDisabled={!totalBondingData}
+            count={totalBondingData?.total}
+            isDisabled={totalBondingData?.total === 0}
             isLoading={isTotalBondingLoading}
             onClick={() => handleTabChange(TabIndex.Bonding)}
+            fallbackValue={FALLBACK_COUNT}
           >
             Bonding
           </CustomTab>
           {pool.isSuperfluid && (
             <CustomTab
-              count={totalSuperfluidData}
-              isDisabled={!totalSuperfluidData}
+              count={totalSuperfluidData?.total}
+              isDisabled={totalSuperfluidData?.total === 0}
               isLoading={isTotalSuperfluidLoading}
               onClick={() => handleTabChange(TabIndex.Superfluid)}
+              fallbackValue={FALLBACK_COUNT}
             >
               Superfluid
             </CustomTab>
           )}
           {pool.type === PoolType.CL && (
             <CustomTab
-              count={totalCollectData}
-              isDisabled={!totalCollectData}
+              count={totalCollectData?.total}
+              isDisabled={totalCollectData?.total === 0}
               isLoading={isTotalCollectLoading}
               onClick={() => handleTabChange(TabIndex.Collect)}
+              fallbackValue={FALLBACK_COUNT}
             >
               Collect
             </CustomTab>
           )}
           {(pool.type === PoolType.CL || pool.type === PoolType.BALANCER) && (
             <CustomTab
-              count={totalMigrateData}
-              isDisabled={!totalMigrateData}
+              count={totalMigrateData?.total}
+              isDisabled={totalMigrateData?.total === 0}
               isLoading={isTotalMigrateLoading}
               onClick={() => trackUseTab("Migrate")}
+              fallbackValue={FALLBACK_COUNT}
             >
               Migrate
             </CustomTab>
