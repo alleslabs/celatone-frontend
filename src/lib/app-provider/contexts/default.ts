@@ -10,9 +10,6 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
   rpc: "",
   wallets: [],
   features: {
-    faucet: {
-      enabled: false,
-    },
     wasm: {
       enabled: false,
     },

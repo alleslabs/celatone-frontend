@@ -1,35 +1,26 @@
 import { Button } from "@chakra-ui/react";
-import type { MouseEventHandler } from "react";
 
 import { CustomIcon } from "../icon";
-import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 
-export const FaucetBtn = () => {
-  const navigate = useInternalNavigate();
-  const {
-    chainConfig: {
-      features: {
-        faucet: { enabled },
-      },
-    },
-  } = useCelatoneApp();
+interface FaucetButtonProps {
+  faucetUrl: string;
+}
 
-  const onClick: MouseEventHandler = async (e) => {
-    e.preventDefault();
-    navigate({
-      pathname: "/faucet",
-    });
-  };
-
-  return enabled ? (
+export const FaucetButton = ({ faucetUrl }: FaucetButtonProps) => (
+  <a
+    href={faucetUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    data-peer
+    style={{ overflow: "hidden" }}
+  >
     <Button
       variant="ghost-gray"
       leftIcon={<CustomIcon name="faucet" />}
-      onClick={onClick}
       h="full"
       borderRadius={0}
     >
       Faucet
     </Button>
-  ) : null;
-};
+  </a>
+);

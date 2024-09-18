@@ -1,9 +1,9 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS, useFaucetConfig } from "lib/app-provider";
-import { big } from "lib/types";
+import { CELATONE_QUERY_KEYS } from "lib/app-provider";
 import type { Token, U } from "lib/types";
+import { big } from "lib/types";
 import { deexponentify, getTokenLabel } from "lib/utils";
 
 import { useAssetInfos } from "./assetService";
@@ -16,7 +16,11 @@ interface FaucetInfo extends FaucetResponse {
 }
 
 export const useFaucetInfo = (): UseQueryResult<FaucetInfo> => {
-  const faucet = useFaucetConfig({ shouldRedirect: false });
+  // NOTE: hacked to disable
+  const faucet = { enabled: false, url: "" };
+
+  // ------------------------------------------//
+
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const queryFn = async (): Promise<FaucetInfo> => {
     const faucetInfo = await queryFaucetInfo(faucet.enabled ? faucet.url : "");

@@ -13,9 +13,6 @@ export const devChainConfigs: ChainConfig[] = [
     rpc: "http://localhost:26657",
     wallets: ["initia"],
     features: {
-      faucet: {
-        enabled: false,
-      },
       wasm: {
         enabled: false,
       },

@@ -108,20 +108,6 @@ export const useNftConfig = ({
   return useBaseConfig({ feature: nft, shouldRedirect });
 };
 
-export const useFaucetConfig = ({
-  shouldRedirect,
-}: {
-  shouldRedirect: boolean;
-}) => {
-  const {
-    chainConfig: {
-      features: { faucet },
-    },
-  } = useCelatoneApp();
-
-  return useBaseConfig({ feature: faucet, shouldRedirect });
-};
-
 export const usePoolConfig = ({
   shouldRedirect,
 }: {
