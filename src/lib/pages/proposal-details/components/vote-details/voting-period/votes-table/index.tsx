@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 
 import { useMobile } from "lib/app-provider";
-import { SelectInput } from "lib/components/forms";
+import { SelectInputBase } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Loading } from "lib/components/Loading";
@@ -190,7 +190,7 @@ export const ProposalVotesTable = ({
           templateColumns={{ base: "1fr", md: "240px auto" }}
         >
           <GridItem>
-            <SelectInput<ProposalVoteType>
+            <SelectInputBase<ProposalVoteType>
               formLabel="Filter by Answer"
               options={answerOptions}
               onChange={handleOnAnswerFilterChange}

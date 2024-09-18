@@ -3,7 +3,7 @@ import { Grid } from "@chakra-ui/react";
 import type { IconKeys } from "../icon";
 import type { PermissionFilterValue } from "lib/hooks";
 
-import { SelectInput } from "./SelectInput";
+import { SelectInputBase } from "./SelectInputBase";
 
 interface PermissionOption {
   label: string;
@@ -51,7 +51,7 @@ export const FilterByPermission = ({
   maxWidth = "360px",
 }: FilterByPermissionProps) => (
   <Grid columnGap={4} w="full" maxW={{ md: maxWidth }}>
-    <SelectInput<PermissionFilterValue>
+    <SelectInputBase<PermissionFilterValue>
       formLabel="Filter by Instantiate Permission"
       options={options}
       onChange={setPermissionValue}
