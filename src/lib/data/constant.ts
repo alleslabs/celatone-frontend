@@ -84,3 +84,5 @@ export enum StorageKeys {
 
 export const HEX_WALLET_ADDRESS_LENGTH = 40;
 export const HEX_MODULE_ADDRESS_LENGTH = 64;
+
+export const UPPERBOUND_COUNT = 10000;

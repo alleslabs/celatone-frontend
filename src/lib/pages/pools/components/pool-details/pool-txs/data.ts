@@ -1,4 +1,10 @@
+import { UPPERBOUND_COUNT } from "lib/data";
 import { useTxsByPoolIdTableCounts } from "lib/services/tx";
+
+const handleUpperBound = (data: number | undefined) =>
+  data !== undefined && data <= UPPERBOUND_COUNT
+    ? data
+    : `${UPPERBOUND_COUNT}+`;
 
 export const usePoolTxsTableCounts = (poolId: number) => {
   const { data: totalAllData, isLoading: isTotalAllLoading } =
@@ -26,21 +32,21 @@ export const usePoolTxsTableCounts = (poolId: number) => {
     useTxsByPoolIdTableCounts(poolId, "is_migrate");
 
   return {
-    totalAllData,
+    totalAllData: handleUpperBound(totalAllData),
     isTotalAllLoading,
-    totalSwapData,
+    totalSwapData: handleUpperBound(totalSwapData),
     isTotalSwapLoading,
-    totalClpData,
+    totalClpData: handleUpperBound(totalClpData),
     isTotalClpLoading,
-    totalLpData,
+    totalLpData: handleUpperBound(totalLpData),
     isTotalLpLoading,
-    totalBondingData,
+    totalBondingData: handleUpperBound(totalBondingData),
     isTotalBondingLoading,
-    totalSuperfluidData,
+    totalSuperfluidData: handleUpperBound(totalSuperfluidData),
     isTotalSuperfluidLoading,
-    totalCollectData,
+    totalCollectData: handleUpperBound(totalCollectData),
     isTotalCollectLoading,
-    totalMigrateData,
+    totalMigrateData: handleUpperBound(totalMigrateData),
     isTotalMigrateLoading,
   };
 };

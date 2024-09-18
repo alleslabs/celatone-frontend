@@ -58,8 +58,6 @@ export const PoolRelatedTxsTable = ({
     setCurrentPage(1);
   };
 
-  if (isError) return <ErrorFetching dataName="transactions" />;
-
   return (
     <>
       <PoolTxsTable
@@ -68,11 +66,15 @@ export const PoolRelatedTxsTable = ({
         assetInfos={assetInfos}
         isLoading={isLoadingAssetInfos || isLoading}
         emptyState={
-          <EmptyState
-            imageVariant="empty"
-            message="There are no transactions in this network."
-            withBorder
-          />
+          isError ? (
+            <ErrorFetching dataName="transactions" />
+          ) : (
+            <EmptyState
+              imageVariant="empty"
+              message="There are no transactions in this network."
+              withBorder
+            />
+          )
         }
       />
       {countTxs > 0 && (

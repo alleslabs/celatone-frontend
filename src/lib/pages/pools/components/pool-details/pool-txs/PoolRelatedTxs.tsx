@@ -154,7 +154,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           <TabPanel p={0}>
             <PoolRelatedTxsTable
               pool={pool}
-              countTxs={totalAllData}
+              countTxs={Number(totalAllData)}
               type="is_all"
               scrollComponentId={tableHeaderId}
             />
@@ -162,7 +162,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           <TabPanel p={0}>
             <PoolRelatedTxsTable
               pool={pool}
-              countTxs={totalSwapData}
+              countTxs={Number(totalSwapData)}
               type="is_swap"
               scrollComponentId={tableHeaderId}
             />
@@ -171,7 +171,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
             <TabPanel p={0}>
               <PoolRelatedTxsTable
                 pool={pool}
-                countTxs={totalClpData}
+                countTxs={Number(totalClpData)}
                 type="is_clp"
                 scrollComponentId={tableHeaderId}
               />
@@ -180,7 +180,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
             <TabPanel p={0}>
               <PoolRelatedTxsTable
                 pool={pool}
-                countTxs={totalLpData}
+                countTxs={Number(totalLpData)}
                 type="is_lp"
                 scrollComponentId={tableHeaderId}
               />
@@ -189,7 +189,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           <TabPanel p={0}>
             <PoolRelatedTxsTable
               pool={pool}
-              countTxs={totalBondingData}
+              countTxs={Number(totalBondingData)}
               type="is_bond"
               scrollComponentId={tableHeaderId}
             />
@@ -198,7 +198,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
             <TabPanel p={0}>
               <PoolRelatedTxsTable
                 pool={pool}
-                countTxs={totalSuperfluidData}
+                countTxs={Number(totalSuperfluidData)}
                 type="is_superfluid"
                 scrollComponentId={tableHeaderId}
               />
@@ -208,7 +208,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
             <TabPanel p={0}>
               <PoolRelatedTxsTable
                 pool={pool}
-                countTxs={totalCollectData}
+                countTxs={Number(totalCollectData)}
                 type="is_collect"
                 scrollComponentId={tableHeaderId}
               />
@@ -218,7 +218,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
             <TabPanel p={0}>
               <PoolRelatedTxsTable
                 pool={pool}
-                countTxs={totalMigrateData}
+                countTxs={Number(totalMigrateData)}
                 type="is_migrate"
                 scrollComponentId={tableHeaderId}
               />
