@@ -6,20 +6,19 @@ import {
   CosmWasmPoolIcon,
   StableSwapIcon,
 } from "lib/icon";
-import type { PoolDetail } from "lib/types/pool";
+import type { PoolData } from "lib/types/pool";
 import { PoolType } from "lib/types/pool";
 import { getTokenLabel } from "lib/utils";
 
 import { PoolLogo } from "./PoolLogo";
 import { SuperfluidLabel } from "./SuperfluidLabel";
 
-interface PoolHeaderProps
-  extends Pick<PoolDetail, "isSuperfluid" | "poolLiquidity"> {
-  poolId: PoolDetail["id"];
-  poolType: PoolDetail["type"];
+interface PoolHeaderProps extends Pick<PoolData, "isSuperfluid" | "liquidity"> {
+  poolId: PoolData["id"];
+  poolType: PoolData["type"];
 }
 
-const poolTypeRender = (type: PoolDetail["type"]) => {
+const poolTypeRender = (type: PoolData["type"]) => {
   switch (type) {
     case PoolType.BALANCER:
       return {
@@ -50,19 +49,19 @@ export const PoolHeader = ({
   poolId,
   isSuperfluid,
   poolType,
-  poolLiquidity,
+  liquidity,
 }: PoolHeaderProps) => {
   const poolValue = poolTypeRender(poolType);
   return (
     <Flex justifyContent="space-between" w="full">
       <Flex alignItems="center" gap={4}>
-        <PoolLogo tokens={poolLiquidity} />
+        <PoolLogo tokens={liquidity} />
         <div>
           <Flex gap={1} flexWrap="wrap">
             <Heading as="h6" fontWeight="600" variant="h6">
-              {getTokenLabel(poolLiquidity[0].denom, poolLiquidity[0].symbol)}
+              {getTokenLabel(liquidity[0].denom, liquidity[0].symbol)}
             </Heading>
-            {poolLiquidity.slice(1, 3).map((item) => (
+            {liquidity.slice(1, 3).map((item) => (
               <Flex key={item.denom} gap={1}>
                 <Heading
                   as="h6"
@@ -78,7 +77,7 @@ export const PoolHeader = ({
                 </Heading>
               </Flex>
             ))}
-            {poolLiquidity.length >= 4 && (
+            {liquidity.length >= 4 && (
               <Flex gap={1}>
                 <Heading
                   as="h6"
@@ -89,12 +88,9 @@ export const PoolHeader = ({
                   /
                 </Heading>
                 <Heading as="h6" fontWeight="600" variant="h6">
-                  {poolLiquidity.length === 4
-                    ? getTokenLabel(
-                        poolLiquidity[3].denom,
-                        poolLiquidity[3].symbol
-                      )
-                    : `+${poolLiquidity.length - 3}`}
+                  {liquidity.length === 4
+                    ? getTokenLabel(liquidity[3].denom, liquidity[3].symbol)
+                    : `+${liquidity.length - 3}`}
                 </Heading>
               </Flex>
             )}

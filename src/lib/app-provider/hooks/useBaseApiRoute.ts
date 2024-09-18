@@ -19,6 +19,7 @@ export const useBaseApiRoute = (
     | "nfts"
     | "nft_collections"
     | "overviews"
+    | "pools"
     | "projects"
     | "proposals"
     | "public_codes"
@@ -68,6 +69,8 @@ export const useBaseApiRoute = (
       return `${api}/v1/${chain}/${currentChainId}/nft-collections`;
     case "overviews":
       return `${api}/v1/${chain}/${currentChainId}/overviews`;
+    case "pools":
+      return `${api}/v1/${chain}/${currentChainId}/pools`;
     case "projects":
       return `${api}/projects/${chain}/${currentChainId}`;
     case "proposals":

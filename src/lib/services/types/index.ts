@@ -6,6 +6,7 @@ export * from "./evm";
 export * from "./move";
 export * from "./nft-collection";
 export * from "./nft";
+export * from "./pool";
 export * from "./proposal";
 export * from "./protobuf";
 export * from "./staking";

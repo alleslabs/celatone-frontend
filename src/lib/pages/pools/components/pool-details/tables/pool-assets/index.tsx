@@ -2,13 +2,13 @@ import type Big from "big.js";
 
 import { TableContainer } from "lib/components/table";
 import { PoolType } from "lib/types";
-import type { PoolDetail, USD } from "lib/types";
+import type { PoolData, USD } from "lib/types";
 
 import { PoolAssetsTableHeader } from "./PoolAssetsTableHeader";
 import { PoolAssetsTableRow } from "./PoolAssetsTableRow";
 
 interface PoolAssetsTableProps {
-  pool: PoolDetail;
+  pool: PoolData;
   totalLiquidity: USD<Big>;
 }
 
@@ -24,7 +24,7 @@ export const PoolAssetsTable = ({
         poolType={pool.type}
         isSupported={pool.isSupported}
       />
-      {pool.poolLiquidity.map((token, idx) => (
+      {pool.liquidity.map((token, idx) => (
         <PoolAssetsTableRow
           key={`${token.denom}-token-row`}
           templateColumns={templateColumns}

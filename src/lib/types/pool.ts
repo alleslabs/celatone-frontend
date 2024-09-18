@@ -1,4 +1,3 @@
-import type { Coin } from "@cosmjs/stargate";
 import type Big from "big.js";
 
 import type {
@@ -22,35 +21,29 @@ export enum PoolType {
 
 export type PoolTypeFilter = PoolType;
 
-export interface PoolWeight<T extends string | Big = Big> {
+export interface PoolWeight {
   denom: string;
-  weight: T;
+  weight: Big;
   percentWeight: Nullable<string>;
 }
 
-export interface Pool<
-  TLiquidity extends Coin | TokenWithValue = TokenWithValue,
-> {
+export interface Pool {
   id: number;
   type: PoolType;
   isSuperfluid: boolean;
-  poolLiquidity: TLiquidity[];
-  // NOTE: not used any more
+  liquidity: TokenWithValue[];
   contractAddress: Nullish<BechAddr32>;
 }
 
-export interface PoolDetail<
-  TWeight extends string | Big = Big,
-  TLiquidity extends Coin | TokenWithValue = TokenWithValue,
-> extends Pool<TLiquidity> {
+export interface PoolData extends Pool {
   isSupported: boolean;
-  blockHeight: Option<number>;
+  createdHeight: Option<number>;
   creator: Option<BechAddr>;
-  poolAddress: BechAddr32;
+  address: BechAddr32;
   swapFee: string;
   exitFee: string;
   futurePoolGovernor: string;
-  weight: Nullable<PoolWeight<TWeight>[]>;
+  weight: Nullable<PoolWeight[]>;
   smoothWeightChangeParams: Nullable<object>;
   scalingFactors: Nullable<string[]>;
   scalingFactorController: Nullable<string>;
@@ -59,6 +52,7 @@ export interface PoolDetail<
   contractAddress: Nullish<BechAddr32>;
 }
 
+// MARK: move
 export interface PoolInfo {
   coinA: {
     amount: U<Token<Big>>;

@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/react";
 import type { Log } from "@cosmjs/stargate/build/logs";
 
-import type { AssetInfos, Message, Option, PoolDetail } from "lib/types";
+import type { AssetInfos, Message, Option, PoolData } from "lib/types";
 import { extractTxDetails } from "lib/utils";
 
 import { MsgLockTokensAction, MsgLockTokensDetail } from "./lockup";
@@ -37,7 +37,7 @@ export const PoolMsgAction = ({
   ampCopierSection,
 }: {
   msg: Message;
-  pool: PoolDetail;
+  pool: PoolData;
   assetInfos: Option<AssetInfos>;
   ampCopierSection?: string;
 }) => {
@@ -179,7 +179,7 @@ export const PoolMsgDetail = ({
   blockHeight: number;
   msgIndex: number;
   msg: Message;
-  pool: PoolDetail;
+  pool: PoolData;
   assetInfos: Option<AssetInfos>;
   isOpened: boolean;
   ampCopierSection?: string;

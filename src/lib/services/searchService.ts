@@ -26,7 +26,7 @@ import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
 import { useNftByNftAddressLcd } from "./nft";
 import { useCollectionByCollectionAddress } from "./nft-collection";
-import { usePoolByPoolId } from "./poolService";
+import { usePoolData } from "./pools";
 import { useProposalData, useProposalDataLcd } from "./proposal";
 import { useTxData, useTxDataJsonRpc } from "./tx";
 import {
@@ -283,7 +283,7 @@ export const useSearchHandler = (
   //                     Osmosis Pool
   /// /////////////////////////////////////////////////////
 
-  const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
+  const { data: poolData, isFetching: poolFetching } = usePoolData(
     Number(debouncedKeyword),
     isPool && isId(debouncedKeyword) && isFullTier
   );

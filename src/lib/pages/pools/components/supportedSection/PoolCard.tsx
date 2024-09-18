@@ -27,12 +27,12 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
   // Remark: the empty string has never been used when poolConfig is disabled
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
-  const liquidity = item.poolLiquidity.reduce(
+  const liquidity = item.liquidity.reduce(
     (total, asset) => total.add(asset.value ?? big(0)) as USD<Big>,
     big(0) as USD<Big>
   );
 
-  const is4Assets = item.poolLiquidity.length === 4;
+  const is4Assets = item.liquidity.length === 4;
 
   return (
     <Flex
@@ -62,7 +62,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
           poolId={item.id}
           isSuperfluid={item.isSuperfluid}
           poolType={item.type}
-          poolLiquidity={item.poolLiquidity}
+          liquidity={item.liquidity}
         />
         <Tooltip label="See in osmosis.zone">
           <Link
@@ -92,13 +92,13 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
         />
 
         <Text variant="body2" color="text.main">
-          {item.poolLiquidity.some((coin) => !coin.amount)
+          {item.liquidity.some((coin) => !coin.amount)
             ? "N/A"
             : formatPrice(liquidity)}
         </Text>
       </Flex>
       <SimpleGrid columns={4} gap={2}>
-        {item.poolLiquidity.slice(0, 3).map((asset) => (
+        {item.liquidity.slice(0, 3).map((asset) => (
           <AllocationBadge
             key={asset.denom}
             denom={asset.denom}
@@ -111,24 +111,22 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
             mode={mode}
           />
         ))}
-        {item.poolLiquidity.length >= 4 && (
+        {item.liquidity.length >= 4 && (
           <AllocationBadge
             key="OTHERS"
-            denom={is4Assets ? item.poolLiquidity[3].denom : undefined}
-            logo={
-              is4Assets ? (item.poolLiquidity[3].logo as string) : undefined
-            }
-            symbol={is4Assets ? item.poolLiquidity[3].symbol : undefined}
-            precision={is4Assets ? item.poolLiquidity[3].precision : undefined}
+            denom={is4Assets ? item.liquidity[3].denom : undefined}
+            logo={is4Assets ? (item.liquidity[3].logo as string) : undefined}
+            symbol={is4Assets ? item.liquidity[3].symbol : undefined}
+            precision={is4Assets ? item.liquidity[3].precision : undefined}
             amount={
-              item.poolLiquidity
+              item.liquidity
                 .slice(3)
                 .reduce((prev, asset) => prev.add(asset.amount), big(0)) as U<
                 Token<Big>
               >
             }
             value={
-              item.poolLiquidity
+              item.liquidity
                 .slice(3)
                 .reduce(
                   (prev, asset) => prev.add(asset.value ?? big(0)),

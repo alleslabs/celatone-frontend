@@ -3,13 +3,13 @@ import { Flex } from "@chakra-ui/react";
 import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
-import type { AssetInfos, Option, PoolDetail } from "lib/types";
+import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue, formatDuration } from "lib/utils";
 import type { MsgLockTokensDetails } from "lib/utils/tx/types";
 
 interface MsgLockTokensActionProps {
   msg: MsgLockTokensDetails;
-  pool: PoolDetail;
+  pool: PoolData;
   assetInfos: Option<AssetInfos>;
   ampCopierSection?: string;
 }

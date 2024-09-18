@@ -143,7 +143,7 @@ export const useTxsByPoolId = (
   limit: number,
   offset: number
 ) => {
-  const endpoint = useBaseApiRoute("txs");
+  const endpoint = useBaseApiRoute("pools");
   const { enabled: poolEnable } = usePoolConfig({ shouldRedirect: false });
 
   return useQuery(
@@ -172,7 +172,7 @@ export const useTxsByPoolIdTableCounts = (
   poolId: number,
   type: PoolTxFilter
 ) => {
-  const endpoint = useBaseApiRoute("txs");
+  const endpoint = useBaseApiRoute("pools");
   const { enabled: poolEnable } = usePoolConfig({ shouldRedirect: false });
 
   return useQuery(
