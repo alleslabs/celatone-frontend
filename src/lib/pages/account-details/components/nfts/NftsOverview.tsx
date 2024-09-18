@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Divider, Flex } from "@chakra-ui/react";
 
 import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
@@ -52,24 +52,22 @@ export const NftsOverview = ({
         <MobileTitle title="NFTs" count={totalCount} onViewMore={onViewMore} />
       ) : (
         <AccountSectionWrapper title="NFTs" totalData={totalCount}>
-          <Flex
-            direction="column"
-            borderBottom={data?.items?.length ? "1px solid" : "0px"}
-            borderBottomColor="gray.700"
-            mb={data?.items?.length ?? 12}
-            pb={data?.items?.length ?? 8}
-          >
+          <Flex direction="column">
             <NftList
               nfts={data?.items.slice(0, limit)}
               isLoading={isFetching}
               emptyState={
-                <AccountDetailsEmptyState message="No NFTs are held by this account." />
+                <AccountDetailsEmptyState
+                  message="No NFTs are held by this account."
+                  borderBottom={0}
+                />
               }
               showCollection
             />
             {onViewMore && !!totalCount && totalCount > 5 && (
               <ViewMore onClick={onViewMore} />
             )}
+            <Divider bg="gray.700" />
           </Flex>
         </AccountSectionWrapper>
       )}

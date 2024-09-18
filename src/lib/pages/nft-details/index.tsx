@@ -22,7 +22,7 @@ import { JsonLink } from "lib/components/JsonLink";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { ErrorFetching, InvalidState } from "lib/components/state";
+import { InvalidState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
@@ -67,19 +67,18 @@ const NftDetailsBody = ({
     nftAddress
   );
 
-  const { data: transactions } = useNftTransactions(1, 0, nftAddress, {
+  const { data: transactions } = useNftTransactions(10, 0, nftAddress, {
     enabled: isFullTier,
   });
 
   const totalTxs = isFullTier && transactions ? transactions?.total : undefined;
 
-  const { data: mutateEvents } = useNftMutateEvents(nftAddress, 1, 0, {
+  const { data: mutateEvents } = useNftMutateEvents(nftAddress, 10, 0, {
     enabled: isFullTier,
   });
   const { data: metadata } = useMetadata(nft?.uri ?? "");
 
   if (isCollectionLoading || isNftLoading) return <Loading />;
-  if (!collection || !nft) return <ErrorFetching dataName="NFT information" />;
   if (!collection || !nft) return <InvalidNft />;
 
   const { name: collectionName, description: collectionDesc } = collection;

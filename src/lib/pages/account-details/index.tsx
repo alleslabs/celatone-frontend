@@ -122,7 +122,7 @@ const AccountDetailsBody = ({
     useResourcesByAddressLcd(accountAddress);
   // nft
   const { data: nfts, isFetching: isNftsCountLoading } =
-    useNftsByAccountAddress(hexAddress, 1, 0, undefined, "", {
+    useNftsByAccountAddress(hexAddress, 10, 0, undefined, "", {
       enabled: isFullTier && nft.enabled,
     });
 

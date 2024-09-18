@@ -66,8 +66,8 @@ export const zActivity = z
     is_nft_burn: z.boolean(),
     is_nft_mint: z.boolean(),
     is_nft_transfer: z.boolean(),
-    token_id: z.string().optional().nullable(),
-    nft_address: zHexAddr.optional().nullable(),
+    token_id: z.string().nullish(),
+    nft_address: zHexAddr.nullish(),
     is_collection_create: z.boolean(),
   })
   .transform(snakeToCamel);
@@ -137,7 +137,7 @@ export const zCollectionResponseSequencer = z
   })
   .transform(snakeToCamel);
 
-export const zCollectionsByAccountResponseSequencer = z
+export const zCollectionsByAccountAddressResponseSequencer = z
   .object({
     collections: z.array(zCollectionResponseSequencer),
     pagination: zPagination,
@@ -150,8 +150,8 @@ export const zCollectionsByAccountResponseSequencer = z
       hold: collection.collection.nfts.length,
     })),
   }));
-export type CollectionsByAccountResponseSequencer = z.infer<
-  typeof zCollectionsByAccountResponseSequencer
+export type CollectionsByAccountAddressResponseSequencer = z.infer<
+  typeof zCollectionsByAccountAddressResponseSequencer
 >;
 
 export const zCollectionByCollectionAddressResponseSequencer = z

@@ -75,14 +75,14 @@ const CollectionDetailsBody = ({
 
   const { data: activities } = useCollectionActivities(
     collectionAddress,
-    1,
+    10,
     0,
     undefined,
     { enabled: isFullTier }
   );
   const { data: mutateEvents } = useCollectionMutateEvents(
     collectionAddress,
-    1,
+    10,
     0,
     { enabled: isFullTier }
   );

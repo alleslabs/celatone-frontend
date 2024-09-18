@@ -21,10 +21,7 @@ export const NftList = ({
   showCollection,
 }: NftListProps) => {
   if (isLoading) return <Loading />;
-  if (!nfts)
-    return (
-      <ErrorFetching dataName="NFTs" withBorder my={2} hasBorderTop={false} />
-    );
+  if (!nfts) return <ErrorFetching dataName="NFTs" />;
   if (!nfts.length) return emptyState;
 
   return (

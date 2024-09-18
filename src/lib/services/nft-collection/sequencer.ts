@@ -4,7 +4,7 @@ import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import type { Activity, CollectionCreatorResponse } from "../types";
 import {
   zCollectionByCollectionAddressResponseSequencer,
-  zCollectionsByAccountResponseSequencer,
+  zCollectionsByAccountAddressResponseSequencer,
 } from "../types";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 import {
@@ -15,7 +15,7 @@ import {
 
 import { getCollectionByCollectionAddressLcd } from "./lcd";
 
-export const getCollectionByCollectionAddressSequencer = async (
+export const getNftCollectionByCollectionAddressSequencer = async (
   endpoint: string,
   collectionAddress: HexAddr32
 ) =>
@@ -31,7 +31,7 @@ export const getCollectionByCollectionAddressSequencer = async (
       getCollectionByCollectionAddressLcd(endpoint, collectionAddress)
     );
 
-export const getCollectionsByAccountSequencer = async (
+export const getNftCollectionsByAccountAddressSequencer = async (
   endpoint: string,
   accountAddress: HexAddr
 ) =>
@@ -46,10 +46,10 @@ export const getCollectionsByAccountSequencer = async (
       }
     )
     .then(({ data }) =>
-      parseWithError(zCollectionsByAccountResponseSequencer, data)
+      parseWithError(zCollectionsByAccountAddressResponseSequencer, data)
     );
 
-export const getCollectionCreatorSequencer = async (
+export const getNftCollectionCreatorSequencer = async (
   endpoint: string,
   prefix: string,
   collectionAddress: HexAddr32
@@ -78,7 +78,7 @@ export const getCollectionCreatorSequencer = async (
   };
 };
 
-export const getCollectionActivitiesSequencer = async (
+export const getNftCollectionActivitiesSequencer = async (
   endpoint: string,
   paginationKey: Option<string>,
   collectionAddress: HexAddr32
