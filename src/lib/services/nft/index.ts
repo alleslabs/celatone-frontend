@@ -1,6 +1,5 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { useCallback } from "react";
 
 import type {
   Metadata,
@@ -49,20 +48,6 @@ export const useNfts = (
   const apiEndpoint = useBaseApiRoute("nfts");
   const lcdEndpoint = useLcdEndpoint();
 
-  const querySequencer = useCallback(async () => {
-    const nfts = await getNftsSequencer(lcdEndpoint, collectionAddress);
-
-    const filteredData = nfts.filter(
-      (val) =>
-        val.tokenId.toLowerCase().includes(search.toLowerCase()) ||
-        val.nftAddress.toLowerCase() === search.toLowerCase()
-    );
-
-    return {
-      items: limit ? filteredData?.slice(offset, limit + offset) : filteredData,
-    };
-  }, [collectionAddress, lcdEndpoint, limit, offset, search]);
-
   return useQuery<NftsResponse>(
     [
       CELATONE_QUERY_KEYS.NFTS,
@@ -86,7 +71,20 @@ export const useNfts = (
             limit,
             offset
           ),
-        querySequencer,
+        querySequencer: () =>
+          getNftsSequencer(lcdEndpoint, collectionAddress).then((nfts) => {
+            const filteredData = nfts.filter(
+              (val) =>
+                val.tokenId.toLowerCase().includes(search.toLowerCase()) ||
+                val.nftAddress.toLowerCase() === search.toLowerCase()
+            );
+
+            return {
+              items: limit
+                ? filteredData?.slice(offset, limit + offset)
+                : filteredData,
+            };
+          }),
       }),
     {
       retry: 1,
