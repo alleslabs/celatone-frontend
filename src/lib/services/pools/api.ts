@@ -44,7 +44,7 @@ export const getPoolsLiquidityByPoolIds = async (
   axios
     .get(`${endpoint}/liquidity`, {
       params: {
-        ids: ids.join(","),
+        pool_ids: ids.join(","),
       },
     })
     .then(({ data }) => parseWithError(zPoolsLiquidityResponse, data));
