@@ -1,7 +1,9 @@
-import { Flex, Tag, Text, Tooltip } from "@chakra-ui/react";
+import type { FlexProps } from "@chakra-ui/react";
+import { Flex, Tag, Text } from "@chakra-ui/react";
 
 import { Copier } from "../copy";
 import { CustomIcon } from "../icon";
+import { Tooltip } from "../Tooltip";
 import type { AddressReturnType } from "lib/app-provider";
 import { useGetAddressType, useMobile } from "lib/app-provider";
 import type { TokenWithValue } from "lib/types";
@@ -16,7 +18,14 @@ const getTokenTypeWithAddress = (addrType: AddressReturnType) =>
     ? getTokenType("cw20")
     : getTokenType("native");
 
-export const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
+interface UnsupportedTokenProps extends FlexProps {
+  token: TokenWithValue;
+}
+
+export const UnsupportedToken = ({
+  token,
+  ...props
+}: UnsupportedTokenProps) => {
   const isMobile = useMobile();
   const getAddressType = useGetAddressType();
   const tokenType = !token.denom.includes("/")
@@ -37,6 +46,7 @@ export const UnsupportedToken = ({ token }: { token: TokenWithValue }) => {
           display: "flex",
         },
       }}
+      {...props}
     >
       <Flex
         direction={{ base: "column", md: "row" }}

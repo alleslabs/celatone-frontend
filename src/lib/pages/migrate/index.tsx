@@ -16,30 +16,38 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { CustomIcon } from "lib/components/icon";
 import { FooterCta } from "lib/components/layouts";
 import { Loading } from "lib/components/Loading";
+import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { useUploadCode } from "lib/hooks";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import { useContractData } from "lib/services/wasm/contract";
-import type { BechAddr32 } from "lib/types";
-import { getFirstQueryParam } from "lib/utils";
+import type { BechAddr32, Option } from "lib/types";
 
 import { MigrateContract } from "./components/MigrateContract";
 import { MigrateOptions } from "./components/MigrateOptions";
 import { UploadNewCode } from "./components/UploadNewCode";
+import { zMigrateQueryParams } from "./types";
 import type { MigratePageState } from "./types";
 
 const defaultValues: MigratePageState = {
   migrateStep: "migrate_options",
   contractAddress: "" as BechAddr32,
   admin: undefined,
-  codeId: "",
+  codeId: undefined,
 };
 
-const Migrate = () => {
+interface MigrateBodyProps {
+  contractAddress: BechAddr32;
+  codeId: Option<number>;
+}
+
+const MigrateBody = ({
+  contractAddress: contractAddressParam,
+  codeId: codeIdParam,
+}: MigrateBodyProps) => {
   useWasmConfig({ shouldRedirect: true });
-  const router = useRouter();
   const navigate = useInternalNavigate();
   const { data: uploadAccessParams, isFetching } = useUploadAccessParamsLcd();
   const {
@@ -66,23 +74,18 @@ const Migrate = () => {
   const firstStep = migrateStep !== "migrate_contract";
   const handleBack = () => setValue("migrateStep", "migrate_options");
 
-  const contractAddressParam = getFirstQueryParam(
-    router.query.contract
-  ) as BechAddr32;
-  const codeIdParam = getFirstQueryParam(router.query["code-id"]);
-
   const onContractSelect = useCallback(
     (contract: BechAddr32) => {
       navigate({
         pathname: "/migrate",
         query: {
-          ...(!firstStep && { "code-id": codeIdParam }),
           contract,
+          ...(!firstStep && { codeId }),
         },
         options: { shallow: true },
       });
     },
-    [codeIdParam, firstStep, navigate]
+    [codeId, firstStep, navigate]
   );
 
   useContractData(contractAddress, {
@@ -106,10 +109,6 @@ const Migrate = () => {
     if (contractAddressParam && codeIdParam)
       setValue("migrateStep", "migrate_contract");
   }, [codeIdParam, contractAddressParam, setValue]);
-
-  useEffect(() => {
-    if (router.isReady) trackToMigrate(!!contractAddressParam, !!codeIdParam);
-  }, [router.isReady, codeIdParam, contractAddressParam]);
 
   const renderBody = () => {
     switch (migrateStep) {
@@ -217,6 +216,28 @@ const Migrate = () => {
         />
       )}
     </>
+  );
+};
+
+const Migrate = () => {
+  const router = useRouter();
+  const validated = zMigrateQueryParams.safeParse(router.query);
+
+  useEffect(() => {
+    if (router.isReady && validated.success)
+      trackToMigrate(!!validated.data.contract, !!validated.data.codeId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
+  return (
+    <PageContainer>
+      {validated.success && (
+        <MigrateBody
+          contractAddress={validated.data.contract}
+          codeId={validated.data.codeId}
+        />
+      )}
+    </PageContainer>
   );
 };
 

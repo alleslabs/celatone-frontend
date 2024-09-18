@@ -9,9 +9,10 @@ import {
   useValidateAddress,
 } from "lib/app-provider";
 import type { Addr, BechAddr, HexAddr32 } from "lib/types";
-import { zBechAddr32, zValidatorAddr } from "lib/types";
+import { zBechAddr32, zHexAddr20, zValidatorAddr } from "lib/types";
 import type { IcnsNamesByAddress } from "lib/types/name";
 import {
+  isHex,
   isHexModuleAddress,
   isHexWalletAddress,
   isId,
@@ -20,13 +21,14 @@ import {
 } from "lib/utils";
 
 import { useBlockData } from "./block";
+import { useEvmCodesByAddress } from "./evm";
 import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
 import { useNftByNftAddressLcd } from "./nft";
 import { useCollectionByCollectionAddress } from "./nft-collection";
 import { usePoolByPoolId } from "./poolService";
 import { useProposalData, useProposalDataLcd } from "./proposal";
-import { useTxData } from "./tx";
+import { useTxData, useTxDataJsonRpc } from "./tx";
 import {
   useAddressByInitiaUsername,
   useInitiaUsernameByAddress,
@@ -46,7 +48,8 @@ export type SearchResultType =
   | "Validator Address"
   | "Module Path"
   | "NFT Address"
-  | "NFT Collection Address";
+  | "NFT Collection Address"
+  | "EVM Transaction Hash";
 
 interface ResultMetadata {
   icns?: {
@@ -84,8 +87,9 @@ export const useSearchHandler = (
       features: {
         gov: { enabled: isGov },
         wasm: { enabled: isWasm },
-        pool: { enabled: isPool },
         move: { enabled: isMove },
+        evm: { enabled: isEvm },
+        pool: { enabled: isPool },
         nft: { enabled: isNft },
       },
     },
@@ -106,12 +110,16 @@ export const useSearchHandler = (
   //                      Account
   /// /////////////////////////////////////////////////////
   const addressType = getAddressType(debouncedKeyword);
+  const isMoveHexAddr =
+    isMove &&
+    (isHexWalletAddress(debouncedKeyword) ||
+      isHexModuleAddress(debouncedKeyword));
+  const isEvmHexAddr = isEvm && isHexWalletAddress(debouncedKeyword);
   const isAddr =
     addressType === "user_address" ||
     addressType === "contract_address" ||
-    (isMove &&
-      (isHexWalletAddress(debouncedKeyword) ||
-        isHexModuleAddress(debouncedKeyword)));
+    isMoveHexAddr ||
+    isEvmHexAddr;
 
   // ICNS
   const { data: icnsAddrByKeyword, isFetching: icnsAddrByKeywordFetching } =
@@ -193,6 +201,21 @@ export const useSearchHandler = (
       refetchOnWindowFocus: false,
       retry: false,
     }
+  );
+
+  /// /////////////////////////////////////////////////////
+  //                       EVM
+  /// /////////////////////////////////////////////////////
+  const { data: evmCodes, isFetching: evmCodesFetching } = useEvmCodesByAddress(
+    zHexAddr20.parse(debouncedKeyword),
+    isHexWalletAddress(debouncedKeyword)
+  );
+
+  const { data: evmTxData, isFetching: evmTxFetching } = useTxDataJsonRpc(
+    debouncedKeyword,
+    debouncedKeyword.startsWith("0x") &&
+      debouncedKeyword.length === 66 &&
+      isHex(debouncedKeyword.slice(2))
   );
 
   /// /////////////////////////////////////////////////////
@@ -284,6 +307,8 @@ export const useSearchHandler = (
     moduleFetching ||
     codeFetching ||
     contractFetching ||
+    evmCodesFetching ||
+    evmTxFetching ||
     txFetching ||
     blockFetching ||
     proposalFetching ||
@@ -323,8 +348,9 @@ export const useSearchHandler = (
   if (isAddr)
     results.push({
       value: debouncedKeyword,
-      // eslint-disable-next-line sonarjs/no-duplicate-string
-      type: contractData ? "Contract Address" : "Account Address",
+      type:
+        // eslint-disable-next-line sonarjs/no-duplicate-string
+        contractData || evmCodes?.code ? "Contract Address" : "Account Address",
       metadata: {
         icns:
           icnsNamesByKeyword && icnsNamesByKeyword.names.length > 0
@@ -383,6 +409,12 @@ export const useSearchHandler = (
     results.push({
       value: debouncedKeyword,
       type: "Transaction Hash",
+    });
+
+  if (evmTxData)
+    results.push({
+      value: debouncedKeyword,
+      type: "EVM Transaction Hash",
     });
 
   if (foundBlock)

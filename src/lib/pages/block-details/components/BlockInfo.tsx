@@ -25,7 +25,7 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
           gap={{ base: 4, md: 12 }}
           direction={{ base: "column", md: "row" }}
         >
-          <Flex direction="row" flex={1} maxW={{ md: "400px" }}>
+          <Flex direction="row" gap={1} flex={1} maxW={{ md: "400px" }}>
             <LabelText flex={1} label="Network">
               {currentChainId}
             </LabelText>

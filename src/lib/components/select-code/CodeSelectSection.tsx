@@ -12,11 +12,11 @@ import type { Option } from "lib/types";
 import { CodeSelect } from "./CodeSelect";
 
 interface CodeSelectSectionProps<T extends FieldValues> {
-  codeId: string;
+  codeId: number;
   name: FieldPath<T>;
   control: Control<T>;
   error: Option<string>;
-  onCodeSelect: (codeId: string) => void;
+  onCodeSelect: (codeId: number) => void;
   setCodeHash: (data: Code) => void;
   status: FormStatus;
 }
@@ -61,9 +61,9 @@ export const CodeSelectSection = <T extends FieldValues>({
           <CodeSelect
             mt={4}
             mb={8}
+            codeId={codeId}
             onCodeSelect={onCodeSelect}
             setCodeHash={setCodeHash}
-            codeId={codeId}
             status={status}
           />
         ) : (

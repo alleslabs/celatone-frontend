@@ -59,7 +59,7 @@ export const ButtonSection = ({
             const codeId = receipts.find((r) => r.title === "Code ID")?.value;
             navigate({
               pathname: "/migrate",
-              query: { contract: router.query.contract, "code-id": codeId },
+              query: { contract: router.query.contract, codeId },
             });
             onClose?.();
           }}

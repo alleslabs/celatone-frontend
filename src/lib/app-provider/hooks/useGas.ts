@@ -15,6 +15,7 @@ export const useGas = (): GasParams => {
     },
   } = useCelatoneApp();
 
+  // Check if fees or fee_tokens is undefined or empty
   if (!fees?.fee_tokens.length)
     return {
       denom: "",
@@ -23,8 +24,8 @@ export const useGas = (): GasParams => {
       gasAdjustment,
     };
 
+  // Use the first fee token for gas parameters
   const fee = fees.fee_tokens[0];
-
   return {
     denom: fee.denom,
     tokenPerGas:

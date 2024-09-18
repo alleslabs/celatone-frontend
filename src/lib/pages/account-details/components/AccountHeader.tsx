@@ -1,7 +1,7 @@
 import { Flex, IconButton, Image, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import { useMobile, useMoveConfig } from "lib/app-provider";
+import { useEvmConfig, useMobile, useMoveConfig } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -36,13 +36,15 @@ export const AccountHeader = observer(
     isInitiaUsernameDataLoading,
     isInitiaUsernameDataFetching,
   }: AccounHeaderProps) => {
-    const move = useMoveConfig({ shouldRedirect: false });
     const isMobile = useMobile();
+    const move = useMoveConfig({ shouldRedirect: false });
+    const evm = useEvmConfig({ shouldRedirect: false });
 
     const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
     const isSaved = isAccountSaved(accountAddress);
     const accountLocalInfo = getAccountLocalInfo(accountAddress);
 
+    const showHexAddr = move.enabled || evm.enabled;
     return (
       <Flex
         justifyContent="space-between"
@@ -123,7 +125,7 @@ export const AccountHeader = observer(
                 type="user_address"
               />
             </Flex>
-            {move.enabled && (
+            {showHexAddr && (
               <Flex
                 gap={{ base: 0, md: 2 }}
                 mt={{ base: 1, md: 0 }}

@@ -28,7 +28,6 @@ import { useMoveVerifyInfo } from "lib/services/verification/move";
 import { resolveMoveVerifyStatus, truncate } from "lib/utils";
 
 import {
-  FunctionTypeTabs,
   ModuleActions,
   ModuleFunctions,
   ModuleInfo,
@@ -38,7 +37,11 @@ import {
   ModuleTop,
 } from "./components";
 import type { ModuleDetailsQueryParams } from "./types";
-import { TabIndex, zModuleDetailsQueryParams } from "./types";
+import {
+  FunctionTypeTabIndex,
+  TabIndex,
+  zModuleDetailsQueryParams,
+} from "./types";
 
 const mainTabHeaderId = "main-table-header";
 
@@ -48,6 +51,7 @@ const ModuleDetailsBody = ({
   address,
   moduleName,
   tab,
+  type,
 }: ModuleDetailsQueryParams) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
@@ -82,7 +86,7 @@ const ModuleDetailsBody = ({
   );
 
   const handleTabChange = useCallback(
-    (nextTab: TabIndex, fnType?: FunctionTypeTabs) => () => {
+    (nextTab: TabIndex, fnType?: FunctionTypeTabIndex) => () => {
       if (nextTab === currentTab) return;
       trackUseTab(nextTab);
       navigate({
@@ -155,7 +159,10 @@ const ModuleDetailsBody = ({
           </CustomTab>
           <CustomTab
             count={data.parsedAbi.exposed_functions.length}
-            onClick={handleTabChange(TabIndex.Function, FunctionTypeTabs.ALL)}
+            onClick={handleTabChange(
+              TabIndex.Function,
+              FunctionTypeTabIndex.ALL
+            )}
             isDisabled={!data.parsedAbi.exposed_functions.length}
           >
             Functions
@@ -194,7 +201,7 @@ const ModuleDetailsBody = ({
                 }
                 onSelectAction={(
                   nextTab: TabIndex,
-                  fnType?: FunctionTypeTabs
+                  fnType?: FunctionTypeTabIndex
                 ) => {
                   track(AmpEvent.USE_NAVIGATING_BUTTON, {
                     label: fnType ?? "History",
@@ -239,6 +246,7 @@ const ModuleDetailsBody = ({
               fns={data.parsedAbi.exposed_functions}
               viewFns={data.viewFunctions}
               executeFns={data.executeFunctions}
+              typeTab={type}
             />
             <UserDocsLink
               title="What is Module functions?"

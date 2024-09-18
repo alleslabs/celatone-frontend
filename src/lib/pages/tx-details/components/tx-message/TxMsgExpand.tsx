@@ -42,7 +42,7 @@ export const TxMsgExpand = ({
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
 
   const { "@type": type, ...body } = msgBody;
-  const { isIbc, isOpinit } = getTxBadges(type, log);
+  const { isIbc, isOpinit, isEvm } = getTxBadges(type, log);
 
   let msgIcon: IconKeys = "file";
   let content: ReactNode;
@@ -363,8 +363,13 @@ export const TxMsgExpand = ({
             OPInit
           </Tag>
         )}
+        {!isMobile && isEvm && (
+          <Tag mx={2} variant="primary-light" size="md" minW="hug-content">
+            EVM
+          </Tag>
+        )}
       </Flex>
-      <Flex>
+      <Flex align="center">
         {isMobile && isIbc && (
           <Tag mx={2} variant="secondary" size="sm" minW="hug-content">
             IBC
@@ -373,6 +378,11 @@ export const TxMsgExpand = ({
         {isMobile && isOpinit && (
           <Tag mx={2} variant="teal" size="md" minW="hug-content">
             OPInit
+          </Tag>
+        )}
+        {isMobile && isEvm && (
+          <Tag mx={2} variant="primary-light" size="md" minW="hug-content">
+            EVM
           </Tag>
         )}
         <CustomIcon

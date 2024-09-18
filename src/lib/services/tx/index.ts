@@ -1,5 +1,5 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import type {
@@ -13,6 +13,7 @@ import {
   useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
+  useEvmConfig,
   useInitia,
   useLcdEndpoint,
   useMoveConfig,
@@ -26,13 +27,13 @@ import type {
   BechAddr32,
   Option,
   Transaction,
+  TransactionWithSignerPubkey,
   TxFilters,
 } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
   extractTxLogs,
   isTxHash,
-  snakeToCamel,
 } from "lib/utils";
 
 import {
@@ -42,6 +43,13 @@ import {
   getTxsByBlockHeight,
   getTxsCountByAddress,
 } from "./api";
+import {
+  getCosmosTxHashByEvmTxHash,
+  getEvmTxHashByCosmosTxHash,
+  getEvmTxHashesByCosmosTxHashes,
+  getTxDataJsonRpc,
+  getTxsDataJsonRpc,
+} from "./jsonRpc";
 import {
   getTxDataLcd,
   getTxsByAccountAddressLcd,
@@ -69,7 +77,7 @@ export const useTxData = (
 
   const queryFn = useCallback(
     async (hash: Option<string>) => {
-      if (!hash) throw new Error("CELATONE_QUERY_KEYS.TX_DATA is undefined");
+      if (!hash) throw new Error("hash is undefined (useTxData)");
 
       const txData = isFullTier
         ? await getTxData(endpoint, hash)
@@ -79,10 +87,8 @@ export const useTxData = (
 
       const logs = extractTxLogs(txResponse);
 
-      const payload = snakeToCamel(txResponse);
-
       return {
-        ...payload,
+        ...txResponse,
         logs,
         chainId: currentChainId,
         isTxFailed: Boolean(txResponse.code),
@@ -155,7 +161,7 @@ export const useTxsByAddress = (
       isMove,
     ],
     async () => {
-      if (!address) throw new Error("No user address");
+      if (!address) throw new Error("address is undefined (useTxsByAddress)");
       return getTxsByAddress(
         endpoint,
         address,
@@ -401,6 +407,24 @@ export const useTxsCountSequencer = () => {
   );
 };
 
+const mapTxsByAddressSequencerItems = (
+  prefix: string,
+  address: Option<BechAddr20>,
+  items: Option<TransactionWithSignerPubkey[]>
+) =>
+  items?.map((item) => {
+    const sender = convertAccountPubkeyToAccountAddress(
+      item.signerPubkey,
+      prefix
+    );
+
+    return {
+      ...item,
+      sender,
+      isSigner: sender === address,
+    };
+  });
+
 export const useTxsByAddressSequencer = (
   address: Option<BechAddr20>,
   search: Option<string>,
@@ -468,27 +492,54 @@ export const useTxsByAddressSequencer = (
     ({ pageParam }) => queryfn(pageParam),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      retry: false,
       refetchOnWindowFocus: false,
     }
   );
 
   return {
     ...rest,
-    data: data?.pages.flatMap((page) =>
-      page.items.map((item) => {
-        const sender = convertAccountPubkeyToAccountAddress(
-          item.signerPubkey,
-          prefix
-        );
-
-        return {
-          ...item,
-          sender,
-          isSigner: sender === address,
-        };
-      })
+    data: data?.pages.flatMap(
+      (page) => mapTxsByAddressSequencerItems(prefix, address, page.items) ?? []
+    ),
+    latestFetchedData: mapTxsByAddressSequencerItems(
+      prefix,
+      address,
+      data?.pages[data.pages.length - 1].items
     ),
   };
+};
+
+export const useTxsByAddressPaginationSequencer = (
+  address: BechAddr20,
+  paginationKey: Option<string>,
+  limit = 10,
+  enabled = true
+) => {
+  const endpoint = useLcdEndpoint();
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_PAGINATION_SEQUENCER,
+      endpoint,
+      address,
+      paginationKey,
+      limit,
+    ],
+    () =>
+      getTxsByAccountAddressSequencer({
+        endpoint,
+        address,
+        paginationKey,
+        limit,
+      }),
+    {
+      enabled,
+      retry: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
 };
 
 export const useTxsByBlockHeightSequencer = (height: number) => {
@@ -497,34 +548,153 @@ export const useTxsByBlockHeightSequencer = (height: number) => {
     chain: { bech32_prefix: prefix },
   } = useCurrentChain();
 
-  const { data, ...rest } = useInfiniteQuery(
+  return useQuery(
     [CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER, endpoint, height],
-    async ({ pageParam }) => {
-      const { txs, pagination } = await getTxsByBlockHeightSequencer(
-        endpoint,
-        height,
-        pageParam
-      );
+    async () => {
+      const txs = await getTxsByBlockHeightSequencer(endpoint, height);
 
-      return {
-        txs: txs.map<Transaction>((tx) => ({
-          ...tx,
-          sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
-        })),
-        pagination,
-      };
+      return txs.map<Transaction>((tx) => ({
+        ...tx,
+        sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+      }));
+    },
+    { retry: 1, refetchOnWindowFocus: false }
+  );
+};
+
+export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.EVM_TX_HASH_BY_COSMOS_TX_HASH,
+      evm.enabled && evm.jsonRpc,
+      cosmosTxHash ?? "",
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useEvmTxHashByCosmosTxHash)");
+      if (!cosmosTxHash)
+        throw new Error(
+          "cosmosTxHash is undefined (useEvmTxHashByCosmosTxHash)"
+        );
+
+      return getEvmTxHashByCosmosTxHash(evm.jsonRpc, cosmosTxHash);
     },
     {
-      getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
+      retry: false,
       refetchOnWindowFocus: false,
-      keepPreviousData: true,
+      enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHash,
     }
   );
+};
 
-  return {
-    data: data?.pages.flatMap((page) => page.txs),
-    ...rest,
-  };
+export const useEvmTxHashesByCosmosTxHashes = (
+  cosmosTxHashes: Option<string[]>,
+  enabled = true
+) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.EVM_TX_HASHES_BY_COSMOS_TX_HASHES,
+      evm.enabled && evm.jsonRpc,
+      cosmosTxHashes ?? [],
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useEvmTxHashesByCosmosTxHashes)");
+      if (!cosmosTxHashes)
+        throw new Error(
+          "cosmosTxHashes is undefined (useEvmTxHashesByCosmosTxHashes)"
+        );
+
+      if (!cosmosTxHashes.length) return [];
+      return getEvmTxHashesByCosmosTxHashes(evm.jsonRpc, cosmosTxHashes);
+    },
+    {
+      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!cosmosTxHashes,
+      retry: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
+};
+
+export const useTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TX_DATA_JSON_RPC,
+      evm.enabled && evm.jsonRpc,
+      evmTxHash,
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useTxDataJsonRpc)");
+
+      return getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      enabled: enabled && evm.enabled && !!evm.jsonRpc,
+    }
+  );
+};
+
+export const useCosmosTxHashByEvmTxHash = (evmTxHash: string) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.COSMOS_TX_HASH_BY_EVM_TX_HASH,
+      evm.enabled && evm.jsonRpc,
+      evmTxHash,
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useCosmosTxHashByEvmTxHash)");
+
+      return getCosmosTxHashByEvmTxHash(evm.jsonRpc, evmTxHash);
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      enabled: evm.enabled && !!evm.jsonRpc,
+    }
+  );
+};
+
+export const useTxsDataJsonRpc = (
+  evmTxHashes: Option<string[]>,
+  enabled = true
+) => {
+  const evm = useEvmConfig({ shouldRedirect: false });
+
+  return useQuery(
+    [
+      CELATONE_QUERY_KEYS.TXS_DATA_JSON_RPC,
+      evm.enabled && evm.jsonRpc,
+      evmTxHashes ?? [],
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useTxsDataJsonRpc)");
+      if (!evmTxHashes)
+        throw new Error("evmTxHashes is undefined (useTxsDataJsonRpc)");
+
+      if (!evmTxHashes.length) return [];
+      return getTxsDataJsonRpc(evm.jsonRpc, evmTxHashes);
+    },
+    {
+      enabled: enabled && evm.enabled && !!evm.jsonRpc && !!evmTxHashes,
+      retry: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    }
+  );
 };
 
 export * from "./gql";
