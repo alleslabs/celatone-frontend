@@ -28,27 +28,26 @@ import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
 import type { BechAddr32 } from "lib/types";
-import { formatSlugName, getFirstQueryParam } from "lib/utils";
+import { formatSlugName } from "lib/utils";
+
+import { zContractByListQueryParams } from "./types";
 
 // TODO: revisit again
 // eslint-disable-next-line sonarjs/cognitive-complexity
-const ContractsByList = observer(() => {
-  useWasmConfig({ shouldRedirect: true });
+const ContractByListBody = observer(({ slug }: { slug: string }) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
-  const listSlug = getFirstQueryParam(router.query.slug);
 
   const { getContractLists, isHydrated } = useContractStore();
-  const isInstantiatedByMe =
-    listSlug === formatSlugName(INSTANTIATED_LIST_NAME);
-  const isSavedContract = listSlug === formatSlugName(SAVED_LIST_NAME);
+  const isInstantiatedByMe = slug === formatSlugName(INSTANTIATED_LIST_NAME);
+  const isSavedContract = slug === formatSlugName(SAVED_LIST_NAME);
 
   const { instantiatedListInfo, isLoading } =
     useInstantiatedByMe(isInstantiatedByMe);
 
   const contractListInfo = isInstantiatedByMe
     ? instantiatedListInfo
-    : getContractLists().find((item) => item.slug === listSlug);
+    : getContractLists().find((item) => item.slug === slug);
 
   const onContractSelect = (contract: BechAddr32) =>
     navigate({
@@ -68,7 +67,7 @@ const ContractsByList = observer(() => {
   useEffect(() => {
     if (router.isReady && isHydrated) {
       const event = (() => {
-        switch (listSlug) {
+        switch (slug) {
           case formatSlugName(INSTANTIATED_LIST_NAME):
             return AmpEvent.TO_INSTANTIATED_BY_ME;
           case formatSlugName(SAVED_LIST_NAME):
@@ -82,12 +81,12 @@ const ContractsByList = observer(() => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady, listSlug, isHydrated]);
+  }, [router.isReady, slug, isHydrated]);
 
   if (!contractListInfo) return null;
 
   return (
-    <PageContainer>
+    <>
       <CelatoneSeo
         pageName={
           contractListInfo.name
@@ -133,7 +132,7 @@ const ContractsByList = observer(() => {
             </Button>
           ) : (
             <SaveNewContractModal
-              key={listSlug}
+              key={slug}
               list={{
                 label: contractListInfo.name,
                 value: contractListInfo.slug,
@@ -190,8 +189,20 @@ const ContractsByList = observer(() => {
           href="cosmwasm/contracts/organize#saving-contract-for-later-use"
         />
       )}
-    </PageContainer>
+    </>
   );
 });
+
+const ContractsByList = () => {
+  useWasmConfig({ shouldRedirect: true });
+  const router = useRouter();
+  const validated = zContractByListQueryParams.safeParse(router.query);
+
+  return (
+    <PageContainer>
+      {validated.success && <ContractByListBody {...validated.data} />}
+    </PageContainer>
+  );
+};
 
 export default ContractsByList;

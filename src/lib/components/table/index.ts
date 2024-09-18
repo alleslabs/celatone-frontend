@@ -3,6 +3,7 @@ export * from "./accounts";
 export * from "./bonded";
 export * from "./codes";
 export * from "./contracts";
+export * from "./evm-transactions";
 export * from "./mutate-events";
 export * from "./transactions";
 export * from "./modules";

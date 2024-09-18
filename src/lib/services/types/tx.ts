@@ -12,6 +12,10 @@ import {
   MsgFurtherAction,
   zBechAddr,
   zCoin,
+  zHex,
+  zHexAddr20,
+  zHexBig,
+  zHexBool,
   zMessageResponse,
   zPagination,
   zPubkeyMulti,
@@ -35,7 +39,10 @@ import { zAny } from "./protobuf";
 
 const zModeInfoSingle = z.object({
   single: z.object({
-    mode: z.custom<SignMode>((val) => SignMode[val as keyof typeof SignMode]),
+    mode: z.union([
+      z.custom<SignMode>((val) => SignMode[val as keyof typeof SignMode]),
+      z.literal(9999), // minievm sign mode,
+    ]),
   }),
 });
 
@@ -92,7 +99,10 @@ const zTxBody = z
     extension_options: zAny.array(),
     non_critical_extension_options: zAny.array(),
   })
-  .transform(snakeToCamel);
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    messages: val.messages,
+  }));
 export type TxBody = z.infer<typeof zTxBody>;
 
 export const zTx = z
@@ -101,7 +111,10 @@ export const zTx = z
     auth_info: zAuthInfo,
     signatures: z.array(z.string()),
   })
-  .transform(snakeToCamel);
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    body: val.body,
+  }));
 export type Tx = z.infer<typeof zTx>;
 
 const zEventAttribute = z.object({
@@ -142,6 +155,7 @@ const zTxResponse = z
   })
   .transform((val) => ({
     ...snakeToCamel(val),
+    tx: val.tx,
     logs: val.logs,
   }));
 export type TxResponse = z.infer<typeof zTxResponse>;
@@ -162,15 +176,16 @@ export const zTxsResponseItemFromLcd =
       type: msg["@type"],
     }));
 
-    const { isIbc, isOpinit } = messages.reduce(
+    const { isIbc, isOpinit, isEvm } = messages.reduce(
       (acc, msg, idx) => {
         const current = getTxBadges(msg.type, logs[idx]);
         return {
           isIbc: acc.isIbc || current.isIbc,
           isOpinit: acc.isOpinit || current.isOpinit,
+          isEvm: acc.isEvm || current.isEvm,
         };
       },
-      { isIbc: false, isOpinit: false }
+      { isIbc: false, isOpinit: false, isEvm: false }
     );
 
     return {
@@ -183,6 +198,7 @@ export const zTxsResponseItemFromLcd =
       success: val.code === 0,
       isIbc,
       isOpinit,
+      isEvm,
       events: val.events,
       // TODO: implement below later
       actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
@@ -255,6 +271,7 @@ const zBaseTxsResponseItem = z.object({
   is_send: z.boolean(),
   // initia
   is_opinit: z.boolean().optional(),
+  is_evm: z.boolean().optional(),
   // wasm
   is_clear_admin: z.boolean().optional(),
   is_execute: z.boolean().optional(),
@@ -291,6 +308,7 @@ export const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>(
     furtherAction: MsgFurtherAction.NONE,
     isIbc: val.is_ibc,
     isOpinit: val.is_opinit ?? false,
+    isEvm: val.is_evm ?? false,
     isInstantiate: val.is_instantiate ?? false,
   })
 );
@@ -344,6 +362,7 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
     ),
     isIbc: val.is_ibc,
     isOpinit: val.is_opinit ?? false,
+    isEvm: val.is_evm ?? false,
     isInstantiate: val.is_instantiate ?? false,
   }));
 
@@ -388,6 +407,7 @@ const zTxByPoolIdResponse = z
     furtherAction: MsgFurtherAction.NONE,
     isInstantiate: false,
     isOpinit: false,
+    isEvm: false,
   }));
 
 export const zTxsByPoolIdResponse = z.object({
@@ -400,3 +420,62 @@ export const zTxsByPoolIdTxsCountResponse = z
     total: z.number(),
   })
   .transform((val) => val.total ?? 0);
+// ---------------- JSON RPC ----------------
+export const zEvmTxHashByCosmosTxHashJsonRpc = z.string().transform((val) =>
+  val !== "0x0000000000000000000000000000000000000000000000000000000000000000" // if no related evm tx
+    ? val
+    : null
+);
+
+export const zEvmTxHashesByCosmosTxHashesJsonRpc = z.array(
+  zEvmTxHashByCosmosTxHashJsonRpc
+);
+
+export const zTxJsonRpc = z.object({
+  blockHash: z.string(),
+  blockNumber: zHexBig,
+  from: zHexAddr20,
+  gas: zHexBig,
+  gasPrice: zHexBig,
+  maxFeePerGas: zHexBig,
+  maxPriorityFeePerGas: zHexBig,
+  hash: z.string(),
+  input: z.string(),
+  nonce: zHexBig,
+  to: zHexAddr20.nullable(),
+  transactionIndex: zHexBig,
+  value: zHexBig,
+  type: z.string(), // TODO: convert to enum later
+  chainId: zHexBig,
+  v: z.string(),
+  r: z.string(),
+  s: z.string(),
+  yParity: z.string(),
+});
+
+export const zTxReceiptJsonRpc = z.object({
+  blockHash: z.string(),
+  blockNumber: zHexBig,
+  contractAddress: zHexAddr20.nullable(),
+  cumulativeGasUsed: zHexBig,
+  effectiveGasPrice: zHexBig,
+  from: zHexAddr20,
+  gasUsed: zHexBig,
+  logs: z.object({}).passthrough().array(),
+  logsBloom: zHex,
+  status: zHexBool,
+  to: zHexAddr20.nullable(),
+  transactionHash: z.string(),
+  transactionIndex: zHexBig,
+  type: z.string(), // TODO: convert to enum later
+});
+
+export const zTxDataJsonRpc = z
+  .tuple([zTxJsonRpc, zTxReceiptJsonRpc])
+  .transform(([tx, txReceipt]) => ({ tx, txReceipt }));
+export type TxDataJsonRpc = z.infer<typeof zTxDataJsonRpc>;
+
+export const zTxsDataJsonRpc = z.array(zTxDataJsonRpc);
+export type TxsDataJsonRpc = z.infer<typeof zTxsDataJsonRpc>;
+
+export type TxDataWithTimeStampJsonRpc = TxDataJsonRpc & { timestamp: Date };

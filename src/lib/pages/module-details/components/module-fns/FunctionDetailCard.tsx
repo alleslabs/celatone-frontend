@@ -8,22 +8,19 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 
-import { DotSeparator } from "../DotSeparator";
-import { CustomIcon } from "../icon";
-import { LabelText } from "../LabelText";
-import { Tooltip } from "../Tooltip";
 import { AmpEvent, track, trackUseExpand } from "lib/amplitude";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
+import { DotSeparator } from "lib/components/DotSeparator";
+import { CustomIcon } from "lib/components/icon";
+import { LabelText } from "lib/components/LabelText";
+import { Tooltip } from "lib/components/Tooltip";
+import type { FunctionTypeTabIndex } from "lib/pages/module-details/types";
 import type { ExposedFunction, IndexedModule, Visibility } from "lib/types";
-import {
-  checkAvailability,
-  getFirstQueryParam,
-  getVisibilityIcon,
-} from "lib/utils";
+import { checkAvailability, getVisibilityIcon } from "lib/utils";
 
 interface FunctionDetailCardProps {
+  fnType: FunctionTypeTabIndex;
   exposedFn: ExposedFunction;
   address: IndexedModule["address"];
   moduleName: IndexedModule["moduleName"];
@@ -52,21 +49,22 @@ const VisibilityLabel = ({ visibility }: { visibility: Visibility }) => (
 );
 
 const FunctionButton = ({
+  fnType,
   isView,
   disabled,
   address,
   moduleName,
   exposedFn,
 }: {
+  fnType: FunctionTypeTabIndex;
   isView: boolean;
   disabled: boolean;
   address: string;
   moduleName: string;
   exposedFn: ExposedFunction;
 }) => {
-  const navigate = useInternalNavigate();
   const isMobile = useMobile();
-  const router = useRouter();
+  const navigate = useInternalNavigate();
 
   const getButtonStyle = () => {
     if ((isMobile && !isView) || disabled)
@@ -97,7 +95,7 @@ const FunctionButton = ({
             moduleName,
             functionType: isView ? "view" : "execute",
             functionName: exposedFn.name,
-            section: getFirstQueryParam(router.query.type),
+            section: fnType,
           });
           navigate({
             pathname: "/interact",
@@ -205,6 +203,7 @@ const FunctionDetail = ({ exposedFn }: { exposedFn: ExposedFunction }) => (
 );
 
 export const FunctionDetailCard = ({
+  fnType,
   exposedFn,
   address,
   moduleName,
@@ -213,7 +212,6 @@ export const FunctionDetailCard = ({
   const disabled = !checkAvailability(exposedFn);
   const isMobile = useMobile();
   const fnColor = isView ? "primary.main" : "secondary.main";
-  const router = useRouter();
 
   return (
     <AccordionItem
@@ -236,7 +234,7 @@ export const FunctionDetailCard = ({
                 action: !isExpanded ? "expand" : "collapse",
                 component: "module_function_accordion",
                 info: { functionType: isView ? "view" : "execute" },
-                section: getFirstQueryParam(router.query.type),
+                section: fnType,
               })
             }
           >
@@ -272,6 +270,7 @@ export const FunctionDetailCard = ({
               <Flex alignItems="center" gap={{ base: 0, md: 4 }}>
                 {!isMobile && <VisibilityLabel visibility={visibility} />}
                 <FunctionButton
+                  fnType={fnType}
                   isView={isView}
                   disabled={disabled}
                   address={address}

@@ -5,13 +5,15 @@ import { getTokenLabel } from "./tokenType";
 
 export const formatTokenWithValue = (
   token: TokenWithValue,
-  decimalPoints?: number
+  decimalPoints?: number,
+  hasTrailingZeros?: boolean
 ) =>
   `${formatUTokenWithPrecision(
     token.amount,
     token.precision ?? 0,
     false,
-    decimalPoints
+    decimalPoints,
+    hasTrailingZeros
   )} ${getTokenLabel(token.denom, token.symbol)}`;
 
 export const formatTokenWithValueList = (tokens: TokenWithValue[]) => {

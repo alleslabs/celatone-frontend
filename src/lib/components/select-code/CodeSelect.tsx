@@ -11,33 +11,33 @@ import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeLcd } from "lib/services/wasm/code";
 import { AccessConfigPermission } from "lib/types";
-import { getWasmVerifyStatus, isId } from "lib/utils";
+import { getWasmVerifyStatus } from "lib/utils";
 
 import { CodeSelectDrawerButton } from "./CodeSelectDrawerButton";
 
 interface CodeSelectProps extends Omit<FlexProps, "onSelect"> {
-  onCodeSelect: (code: string) => void;
+  codeId: number;
+  onCodeSelect: (code: number) => void;
   setCodeHash: (data: Code) => void;
-  codeId: string;
   status: FormStatus;
 }
 
 export const CodeSelect = ({
+  codeId,
   onCodeSelect,
   setCodeHash,
-  codeId,
   status,
   ...componentProps
 }: CodeSelectProps) => {
   const { getCodeLocalInfo } = useCodeStore();
-  const name = getCodeLocalInfo(Number(codeId))?.name;
-  const { data } = useCodeLcd(Number(codeId), {
-    enabled: isId(codeId),
+  const name = getCodeLocalInfo(codeId)?.name;
+  const { data } = useCodeLcd(codeId, {
+    enabled: !!codeId,
     onSuccess: setCodeHash,
   });
 
   const { data: wasmDerivedVerifyInfos } = useDerivedWasmVerifyInfo(
-    Number(codeId),
+    codeId,
     data?.hash
   );
 

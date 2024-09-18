@@ -7,9 +7,9 @@ import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
+  useEvmConfig,
   useExampleAddresses,
   useMoveConfig,
-  useTierConfig,
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
@@ -18,7 +18,7 @@ import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
-import { useAccountType, useAccountTypeLcd } from "lib/services/account";
+import { useAccountType } from "lib/services/account";
 import type { BechAddr } from "lib/types";
 import { AccountType } from "lib/types";
 
@@ -49,15 +49,17 @@ export function SaveNewAccountModal({
   publicDescription,
 }: SaveNewAccountModalProps) {
   const { constants } = useCelatoneApp();
-  const { isFullTier } = useTierConfig();
   const { user: exampleUserAddress } = useExampleAddresses();
   const { isSomeValidAddress } = useValidateAddress();
   const formatAddresses = useFormatAddresses();
-  const move = useMoveConfig({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
+  const move = useMoveConfig({ shouldRedirect: false });
+  const evm = useEvmConfig({ shouldRedirect: false });
 
   const getMaxLengthError = useGetMaxLengthError();
   const { isAccountSaved } = useAccountStore();
+
+  const hasHexAddr = move.enabled || evm.enabled;
 
   const defaultAddress = accountAddress ?? ("" as BechAddr);
   const defaultValues: SaveAccountDetail = useMemo(() => {
@@ -109,19 +111,11 @@ export function SaveNewAccountModal({
     setErrorStatus(err.message);
   };
 
-  const { refetch: refetchLite } = useAccountTypeLcd(addressState, {
+  const { refetch } = useAccountType(addressState, {
     enabled: false,
     onSuccess,
     onError,
   });
-
-  const { refetch: refetchFull } = useAccountType(addressState, {
-    enabled: false,
-    onSuccess,
-    onError,
-  });
-
-  const refetch = isFullTier ? refetchFull : refetchLite;
 
   useEffect(() => {
     if (addressState.trim().length === 0) {
@@ -141,8 +135,7 @@ export function SaveNewAccountModal({
 
         if (
           isAccountSaved(addressState) ||
-          (move.enabled &&
-            isAccountSaved(formatAddresses(addressState).address))
+          (hasHexAddr && isAccountSaved(formatAddresses(addressState).address))
         ) {
           setErrorStatus("You already saved this address");
           return;
@@ -157,9 +150,9 @@ export function SaveNewAccountModal({
   }, [
     addressState,
     formatAddresses,
+    hasHexAddr,
     isAccountSaved,
     isSomeValidAddress,
-    move.enabled,
     refetch,
     wasm.enabled,
   ]);

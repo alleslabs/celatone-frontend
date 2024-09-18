@@ -4,10 +4,7 @@ import { useCurrentChain } from "lib/app-provider";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useCodePermissionFilter, useCodeSearchFilter } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import {
-  useAllCodesByAddress,
-  useCodeListByCodeIds,
-} from "lib/services/wasm/code";
+import { useAllCodesByAddress, useCodeList } from "lib/services/wasm/code";
 import type { BechAddr, CodeInfo } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 
@@ -33,10 +30,10 @@ const useSavedCodes = () => {
   const { lastSavedCodes, lastSavedCodeIds, isHydrated } = useCodeStore();
 
   const savedCodeIds = lastSavedCodeIds();
-  const { data: rawSavedCodes, isLoading } = useCodeListByCodeIds(savedCodeIds);
+  const { data: rawSavedCodes, isLoading } = useCodeList(savedCodeIds);
 
   const savedCodes = lastSavedCodes().map<CodeInfo>((localSavedCode) => {
-    const rawSavedCode = rawSavedCodes?.find(
+    const rawSavedCode = rawSavedCodes?.items.find(
       (savedCode) => savedCode.id === localSavedCode.id
     );
     return {

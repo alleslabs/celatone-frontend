@@ -82,6 +82,7 @@ export const usePublicProjectBySlug = (
     queryFn,
     {
       enabled: Boolean(slug) && projectConfig.enabled,
+      retry: false,
     }
   );
 };

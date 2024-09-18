@@ -9,6 +9,12 @@ export enum TabIndex {
   Structs = "structs",
 }
 
+export enum FunctionTypeTabIndex {
+  ALL = "All",
+  VIEW = "View",
+  EXECUTE = "Execute",
+}
+
 export const zModuleDetailsQueryParams = z.object({
   address: zAddr,
   moduleName: z.string(),
@@ -18,6 +24,13 @@ export const zModuleDetailsQueryParams = z.object({
       .string()
       .optional()
       .transform(() => TabIndex.Overview),
+  ]),
+  type: z.union([
+    z.nativeEnum(FunctionTypeTabIndex),
+    z
+      .string()
+      .optional()
+      .transform(() => FunctionTypeTabIndex.ALL),
   ]),
 });
 
