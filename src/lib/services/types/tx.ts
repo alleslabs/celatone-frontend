@@ -388,6 +388,35 @@ export const zBlockTxsResponseSequencer = z.object({
   pagination: zPagination,
 });
 
+const zTxByPoolIdResponse = z
+  .object({
+    created: zUtcDate,
+    hash: z.string(),
+    height: z.number().nonnegative(),
+    is_ibc: z.boolean(),
+    messages: z.any().array(),
+    sender: zBechAddr,
+    success: z.boolean(),
+  })
+  .transform<Transaction>((val) => ({
+    ...snakeToCamel(val),
+    hash: parseTxHash(val.hash),
+    messages: snakeToCamel(val.messages) as Message[],
+    isSigner: true,
+    actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+    furtherAction: MsgFurtherAction.NONE,
+    isInstantiate: false,
+    isOpinit: false,
+    isEvm: false,
+  }));
+
+export const zTxsByPoolIdResponse = z.object({
+  items: z.array(zTxByPoolIdResponse),
+});
+
+export const zTxsByPoolIdTxsCountResponse = z.object({
+  total: z.number().nullable(),
+});
 // ---------------- JSON RPC ----------------
 export const zEvmTxHashByCosmosTxHashJsonRpc = z.string().transform((val) =>
   val !== "0x0000000000000000000000000000000000000000000000000000000000000000" // if no related evm tx

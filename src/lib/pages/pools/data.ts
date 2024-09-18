@@ -1,16 +1,13 @@
 import type Big from "big.js";
 
-import { UPPERBOUND_COUNT } from "lib/data";
 import type { Order_By } from "lib/gql/graphql";
 import { useAssetInfos } from "lib/services/assetService";
 import { usePoolByPoolId, usePoolListQuery } from "lib/services/poolService";
-import { useTxsByPoolIdPagination, useTxsCountByPoolId } from "lib/services/tx";
 import { big } from "lib/types";
 import type {
   Option,
   Pool,
   PoolDetail,
-  PoolTxFilter,
   PoolTypeFilter,
   PoolWeight,
   Ratio,
@@ -113,29 +110,5 @@ export const usePool = (
       contractAddress: pool.contractAddress,
     },
     isLoading: false,
-  };
-};
-
-// TODO - Revisit pool counts
-export const usePoolTxsCount = (
-  poolId: number,
-  type: PoolTxFilter
-): { count: number; countDisplay: string; isLoading: boolean } => {
-  const { data, isLoading, error } = useTxsCountByPoolId(poolId, type);
-  const { data: txs, isLoading: txsIsLoading } = useTxsByPoolIdPagination(
-    poolId,
-    type,
-    0,
-    1
-  );
-
-  const loading = isLoading || txsIsLoading;
-  if (error && txs?.length === 0)
-    return { count: 0, countDisplay: "0", isLoading: loading };
-  const showActualCount = data !== undefined && data <= UPPERBOUND_COUNT;
-  return {
-    count: showActualCount ? data : UPPERBOUND_COUNT,
-    countDisplay: showActualCount ? data.toString() : `${UPPERBOUND_COUNT}+`,
-    isLoading: loading,
   };
 };

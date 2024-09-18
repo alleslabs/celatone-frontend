@@ -1,11 +1,12 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import type { MenuListProps } from "chakra-react-select";
 import { components } from "chakra-react-select";
-import type { GroupBase, MenuListProps } from "chakra-react-select";
 
-import type { AssetOption } from "lib/types";
+import type { SelectInputOption } from "../SelectInput";
+import type { AssetOptionValue } from "lib/types";
 
 export const AssetInputMenuList = (
-  props: MenuListProps<AssetOption, boolean, GroupBase<AssetOption>>
+  props: MenuListProps<SelectInputOption<AssetOptionValue>>
 ) => {
   const { children } = props;
 

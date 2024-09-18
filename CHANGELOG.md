@@ -44,8 +44,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#1148](https://github.com/alleslabs/celatone-frontend/pull/1148) Update NFT collections to get data from API instead of GraphQL
 [#1140](https://github.com/alleslabs/celatone-frontend/pull/1140) Update NFTs to get data from API instead of GraphQL
 
+- [#1135](https://github.com/alleslabs/celatone-frontend/pull/1135) Update txs to get data from API instead of GraphQL
 - [#1136](https://github.com/alleslabs/celatone-frontend/pull/1136) Update code to get data from API instead of GraphQL
 - [#1132](https://github.com/alleslabs/celatone-frontend/pull/1132) Update account type to get data from API instead of GraphQL
+- [#1149](https://github.com/alleslabs/celatone-frontend/pull/1149) Refactor component react select input
 - [#1094](https://github.com/alleslabs/celatone-frontend/pull/1094) Replace getFirstQueryParam with zod validation
 
 ### Bug fixes

@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 
 import type { Option } from "lib/types";
 
-import { SelectInput } from "./forms";
+import { SelectInputBase } from "./forms";
 
 enum RelationType {
   ALL = "ALL",
@@ -55,7 +55,7 @@ export const TxRelationSelection = ({
 
   return (
     <Box {...props}>
-      <SelectInput
+      <SelectInputBase
         formLabel="Filter by Relation"
         size={size}
         options={relationOptions}

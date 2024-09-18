@@ -91,17 +91,21 @@ export const SelectFund = ({
       if (balanceMap?.has(asset.id)) {
         assetInfosInBalance.push({
           label: asset.symbol,
-          value: asset.id,
-          formatted,
-          price,
-          logo: asset.logo,
+          value: {
+            id: asset.id,
+            logo: asset.logo,
+            formatted,
+            price,
+          },
           isDisabled: selectedAssets.includes(asset.id),
         });
       } else {
         assetInfosNotInBalance.push({
           label: asset.symbol,
-          value: asset.id,
-          logo: asset.logo,
+          value: {
+            id: asset.id,
+            logo: asset.logo,
+          },
           isDisabled: true,
         });
       }
@@ -159,7 +163,7 @@ export const SelectFund = ({
             setValue(`${ASSETS_SELECT}.${idx}.denom`, newVal)
           }
           assetOptions={assetOptions}
-          initialSelected={field.denom}
+          value={assetOptions.find((option) => option.value.id === field.denom)}
           amountInput={
             <ControllerInput
               {...handleControllerInputProps(idx)}
