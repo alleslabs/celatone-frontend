@@ -1,6 +1,5 @@
 import type { ChainConfig } from "@alleslabs/shared";
 import { useModalTheme } from "@cosmos-kit/react";
-import { GraphQLClient } from "graphql-request";
 import { observer } from "mobx-react-lite";
 import type { ReactNode } from "react";
 import {
@@ -17,7 +16,7 @@ import type { ProjectConstants } from "config/project";
 import { PROJECT_CONSTANTS } from "config/project";
 import { FALLBACK_THEME, getTheme } from "config/theme";
 import type { ThemeConfig } from "config/theme/types";
-import { HASURA_ADMIN_SECRET, SUPPORTED_CHAIN_IDS } from "env";
+import { SUPPORTED_CHAIN_IDS } from "env";
 import { changeFavicon } from "lib/utils";
 
 import { DEFAULT_CHAIN_CONFIG } from "./default";
@@ -31,7 +30,6 @@ interface AppContextInterface {
   availableChainIds: string[];
   currentChainId: string;
   chainConfig: ChainConfig;
-  indexerGraphClient: GraphQLClient;
   constants: ProjectConstants;
   theme: ThemeConfig;
   setTheme: (newTheme: ThemeConfig) => void;
@@ -42,11 +40,6 @@ const DEFAULT_STATES: AppContextInterface = {
   availableChainIds: SUPPORTED_CHAIN_IDS,
   currentChainId: "",
   chainConfig: DEFAULT_CHAIN_CONFIG,
-  indexerGraphClient: new GraphQLClient(DEFAULT_CHAIN_CONFIG.graphql ?? "", {
-    headers: {
-      "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
-    },
-  }),
   constants: PROJECT_CONSTANTS,
   theme: FALLBACK_THEME,
   setTheme: () => {},
@@ -83,11 +76,6 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
         availableChainIds: supportedChainIds,
         currentChainId: newChainId,
         chainConfig,
-        indexerGraphClient: new GraphQLClient(chainConfig.graphql ?? "", {
-          headers: {
-            "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
-          },
-        }),
         constants: PROJECT_CONSTANTS,
         theme,
         setTheme: (newTheme: ThemeConfig) =>

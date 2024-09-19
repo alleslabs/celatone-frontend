@@ -12,7 +12,6 @@ const MOCK_CONFIG: ChainConfig = {
   lcd: "https://rpc.testonly.com",
   wallets: ["keplr", "initia", "compass", "station"],
   features: {
-    faucet: { enabled: false },
     wasm: { enabled: false },
     move: { enabled: false },
     evm: { enabled: false },
