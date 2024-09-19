@@ -13,7 +13,7 @@ import { PoolRelatedTxsTable } from "../tables/pool-txs";
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
 import { UPPERBOUND_COUNT } from "lib/data";
-import type { PoolDetail } from "lib/types";
+import type { PoolData } from "lib/types";
 import { PoolType } from "lib/types";
 
 import { usePoolTxsTableCounts } from "./data";
@@ -29,7 +29,7 @@ enum TabIndex {
 }
 
 interface PoolRelatedTxsProps {
-  pool: PoolDetail;
+  pool: PoolData;
 }
 
 const FALLBACK_COUNT = `${UPPERBOUND_COUNT}+`;
@@ -73,7 +73,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           Related Transactions
         </Heading>
       </Flex>
-      <Tabs>
+      <Tabs isLazy lazyBehavior="keepMounted">
         <TabList
           id={tableHeaderId}
           mt={4}

@@ -13,7 +13,7 @@ import type { ChangeEvent } from "react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { usePools } from "../../data";
+import { useDerivedPools } from "../../data";
 import type { PoolFilterState } from "../../types";
 import { FilterByPoolType } from "../FilterByPoolType";
 import { SuperfluidLabel } from "../SuperfluidLabel";
@@ -23,10 +23,8 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ToggleWithName } from "lib/components/ToggleWithName";
-import { Order_By } from "lib/gql/graphql";
 import { useDebounce } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
-import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
 import { PoolType } from "lib/types";
 import { isPositiveInt } from "lib/utils";
@@ -66,34 +64,27 @@ export const SupportedSection = ({
     () =>
       !debouncedKeyword || isPositiveInt(debouncedKeyword) || !assetInfos
         ? debouncedKeyword
-        : `{${matchSorter(Object.values(assetInfos), debouncedKeyword, {
+        : `${matchSorter(Object.values(assetInfos), debouncedKeyword, {
             keys: ["id", "symbol"],
             threshold: matchSorter.rankings.CONTAINS,
           })
-            .map((assetInfo) => `"${assetInfo.id}"`)
-            .join(",")}}`,
+            .map((assetInfo) => assetInfo.id)
+            .join(",")}`,
     [assetInfos, debouncedKeyword]
   );
-
-  const { data: totalData = 0, refetch: refetchCount } = usePoolListCountQuery({
-    isSupported: true,
-    poolType: poolTypeValue,
-    isSuperfluidOnly,
-    search,
-  });
 
   const [showNewest, setShowNewest] = useState(true);
   const [toggle, setToggle] = useState("percent-value");
 
   const {
     pagesQuantity,
+    setTotalData,
     currentPage,
     setCurrentPage,
     pageSize,
     setPageSize,
     offset,
   } = usePaginator({
-    total: totalData,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -101,26 +92,15 @@ export const SupportedSection = ({
     },
   });
 
-  const onPageChange = (nextPage: number) => {
-    refetchCount();
-    setCurrentPage(nextPage);
-  };
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetchCount();
-    setPageSize(size);
-    setCurrentPage(1);
-  };
-
-  const { pools, isLoading } = usePools(
+  const { pools, totalCount, isLoading } = useDerivedPools(
+    pageSize,
+    offset,
     true,
     poolTypeValue,
     isSuperfluidOnly,
     search,
-    showNewest ? Order_By.Desc : Order_By.Asc,
-    offset,
-    pageSize
+    showNewest,
+    ({ total }) => setTotalData(total)
   );
 
   return (
@@ -172,9 +152,11 @@ export const SupportedSection = ({
           <Heading as="h6" variant="h6">
             Pools
           </Heading>
-          <Badge variant="gray" color="text.main" textColor="text.main">
-            {totalData}
-          </Badge>
+          {totalCount && (
+            <Badge variant="gray" color="text.main" textColor="text.main">
+              {totalCount}
+            </Badge>
+          )}
         </Flex>
         <Flex gap={4}>
           <Flex gap={2} alignItems="center">
@@ -214,16 +196,20 @@ export const SupportedSection = ({
         </Flex>
       </Flex>
       <SupportedPoolList pools={pools} isLoading={isLoading} mode={toggle} />
-      {totalData > 10 && (
+      {totalCount && totalCount > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
+          totalData={totalCount}
           scrollComponentId={scrollComponentId}
           pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={(e) => {
+            const size = Number(e.target.value);
+            setPageSize(size);
+            setCurrentPage(1);
+          }}
         />
       )}
     </>

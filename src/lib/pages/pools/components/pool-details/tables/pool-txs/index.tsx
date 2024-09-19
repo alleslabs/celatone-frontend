@@ -5,12 +5,12 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
 import { useTxsByPoolId } from "lib/services/tx";
-import type { PoolDetail, PoolTxFilter } from "lib/types";
+import type { PoolData, PoolTxFilter } from "lib/types";
 
 import { PoolTxsTable } from "./PoolTxsTable";
 
 interface PoolRelatedTxsTableProps {
-  pool: PoolDetail;
+  pool: PoolData;
   countTxs: number;
   type: PoolTxFilter;
   scrollComponentId: string;

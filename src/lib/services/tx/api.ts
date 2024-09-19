@@ -118,7 +118,7 @@ export const getTxsByPoolId = async (
   offset: number
 ) =>
   axios
-    .get(`${endpoint}/pool/${encodeURIComponent(poolId)}`, {
+    .get(`${endpoint}/${encodeURIComponent(poolId)}/txs`, {
       params: {
         type,
         limit,
@@ -133,7 +133,7 @@ export const getTxsByPoolIdTableCounts = async (
   type: PoolTxFilter
 ) =>
   axios
-    .get(`${endpoint}/pool/${encodeURIComponent(poolId)}/txs-count`, {
+    .get(`${endpoint}/${encodeURIComponent(poolId)}/txs-count`, {
       params: {
         type,
       },
