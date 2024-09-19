@@ -17,11 +17,11 @@ import { CustomTab } from "lib/components/CustomTab";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
+import { usePools } from "lib/services/pools";
 import { PoolType } from "lib/types";
 
 import { SupportedSection } from "./components/supportedSection";
 import { UnsupportedSection } from "./components/unsupportedSection";
-import { useDerivedPools } from "./data";
 
 enum TabIndex {
   Supported = "supported",
@@ -34,10 +34,10 @@ export const PoolIndex = () => {
   const router = useRouter();
   const [tabIndex, setTabIndex] = useState(TabIndex.Supported);
 
-  const { totalCount: supportedPoolCount, isLoading: isLoadingSupported } =
-    useDerivedPools(10, 0, true, PoolType.ALL, false, "", true);
-  const { totalCount: unsupportedPoolCount, isLoading: isLoadingUnsupported } =
-    useDerivedPools(10, 0, false, PoolType.ALL, false, "", true);
+  const { data: supportedPoolsData, isLoading: isLoadingSupportedPools } =
+    usePools(10, 0, true, PoolType.ALL, false, "", true);
+  const { data: unsupportedPoolsData, isLoading: isLoadingUnsupportedPools } =
+    usePools(10, 0, false, PoolType.ALL, false, "", true);
 
   const handleTabChange = useCallback(
     (nextTab: TabIndex) => {
@@ -56,14 +56,14 @@ export const PoolIndex = () => {
 
   useEffect(() => {
     if (
-      !isUndefined(supportedPoolCount) &&
-      !isUndefined(unsupportedPoolCount) &&
-      supportedPoolCount === 0 &&
-      unsupportedPoolCount > 0
+      !isUndefined(supportedPoolsData?.total) &&
+      !isUndefined(unsupportedPoolsData?.total) &&
+      supportedPoolsData.total === 0 &&
+      unsupportedPoolsData.total > 0
     ) {
       handleTabChange(TabIndex.Unsupported);
     }
-  }, [handleTabChange, supportedPoolCount, unsupportedPoolCount]);
+  }, [handleTabChange, supportedPoolsData?.total, unsupportedPoolsData?.total]);
 
   return (
     <PageContainer>
@@ -86,18 +86,18 @@ export const PoolIndex = () => {
       >
         <TabList my={8} borderBottom="1px" borderColor="gray.800">
           <CustomTab
-            count={supportedPoolCount}
+            count={supportedPoolsData?.total}
             onClick={() => handleTabChange(TabIndex.Supported)}
-            isLoading={isLoadingSupported}
-            isDisabled={!supportedPoolCount}
+            isLoading={isLoadingSupportedPools}
+            isDisabled={!supportedPoolsData}
           >
             Pools
           </CustomTab>
           <CustomTab
-            count={unsupportedPoolCount}
+            count={unsupportedPoolsData?.total}
             onClick={() => handleTabChange(TabIndex.Unsupported)}
-            isLoading={isLoadingUnsupported}
-            isDisabled={!unsupportedPoolCount}
+            isLoading={isLoadingUnsupportedPools}
+            isDisabled={!unsupportedPoolsData}
           >
             Pools with unsupported tokens
           </CustomTab>

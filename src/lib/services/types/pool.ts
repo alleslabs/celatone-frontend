@@ -4,7 +4,7 @@ import { PoolType, zBechAddr, zBechAddr32, zCoin } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
 const zPoolBase = z.object({
-  id: z.number(),
+  id: z.number().positive(),
   type: z.nativeEnum(PoolType),
   is_superfluid: z.boolean(),
   liquidity: zCoin.array(),

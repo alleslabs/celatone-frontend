@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import type { PoolsResponse } from "../types";
 import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
-import type { Coin, PoolTypeFilter } from "lib/types";
+import type { PoolTypeFilter } from "lib/types";
 
 import { getPoolData, getPools, getPoolsLiquidityByPoolIds } from "./api";
 
@@ -72,15 +72,15 @@ export const usePoolsLiquidityByPoolIds = (
         items.reduce<Record<number, string[]>>(
           (prev, item) => ({
             ...prev,
-            [item.id]: (item.liquidity as Coin[]).map(
-              (liquidity) => liquidity.denom
-            ),
+            [item.id]: item.liquidity.map((liquidity) => liquidity.denom),
           }),
           {}
         )
       ),
     {
       enabled,
+      retry: false,
+      refetchOnWindowFocus: false,
     }
   );
 };
