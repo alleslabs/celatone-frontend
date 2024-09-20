@@ -92,10 +92,10 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             type="code_id"
-            value={body.codeId as string}
+            value={body.code_id as string}
             showCopyOnHover
             textVariant="body1"
-            rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
             ampCopierSection="tx_page_message_header_code"
           />
         </Flex>
@@ -120,10 +120,10 @@ export const TxMsgExpand = ({
           from{" "}
           <ExplorerLink
             type="code_id"
-            value={body.codeId as string}
+            value={body.code_id as string}
             showCopyOnHover
             textVariant="body1"
-            rightIcon={<WasmVerifyBadgeById codeId={Number(body.codeId)} />}
+            rightIcon={<WasmVerifyBadgeById codeId={Number(body.code_id)} />}
             ampCopierSection="tx_page_message_header_code"
           />
         </Flex>
@@ -163,7 +163,7 @@ export const TxMsgExpand = ({
           to Code ID{" "}
           <ExplorerLink
             type="code_id"
-            value={body.codeId as string}
+            value={body.code_id as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_code"
@@ -185,8 +185,8 @@ export const TxMsgExpand = ({
           />{" "}
           to{" "}
           <ExplorerLink
-            type={getAddressType(body.newAdmin as string)}
-            value={body.newAdmin as string}
+            type={getAddressType(body.new_admin as string)}
+            value={body.new_admin as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_admin"
@@ -211,7 +211,7 @@ export const TxMsgExpand = ({
       break;
     case "/cosmos.bank.v1beta1.MsgSend":
       {
-        const toAddress = body.toAddress as BechAddr;
+        const toAddress = body.to_address as BechAddr;
         const singleCoin = (body.amount as Coin[])[0];
         const singleToken = coinToTokenWithValue(
           singleCoin.denom,
@@ -243,7 +243,7 @@ export const TxMsgExpand = ({
       msgIcon = "submit-proposal";
       content = (
         <Flex gap={1} display="inline">
-          Submit Proposal {(body.isExpedited as boolean) && " Expedited "}
+          Submit Proposal {(body.is_expedited as boolean) && " Expedited "}
           {log && (
             <>
               ID{" "}
@@ -272,7 +272,7 @@ export const TxMsgExpand = ({
           on proposal ID{" "}
           <ExplorerLink
             type="proposal_id"
-            value={body.proposalId as string}
+            value={body.proposal_id as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_proposal"
@@ -286,16 +286,16 @@ export const TxMsgExpand = ({
         <Flex gap={1} display="inline">
           Delegate by{" "}
           <ExplorerLink
-            type={getAddressType(body.delegatorAddress as string)}
-            value={body.delegatorAddress as string}
+            type={getAddressType(body.delegator_address as string)}
+            value={body.delegator_address as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_delegator"
           />{" "}
           to{" "}
           <ExplorerLink
-            type={getAddressType(body.validatorAddress as string)}
-            value={body.validatorAddress as string}
+            type={getAddressType(body.validator_address as string)}
+            value={body.validator_address as string}
             showCopyOnHover
             textVariant="body1"
             ampCopierSection="tx_page_message_header_validator"
