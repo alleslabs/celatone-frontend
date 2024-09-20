@@ -38,7 +38,7 @@ export const zPoolDataResponse = z
           .array()
           .nullable(),
         smooth_weight_change_params: z.object({}).passthrough().nullable(),
-        scaling_factors: z.string().array().nullable(),
+        scaling_factors: z.number().array().nullable(),
         scaling_factor_controller: z.string().nullable(),
         spread_factor: z.string().nullable(),
         tick_spacing: z.number().nullable(),

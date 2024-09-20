@@ -45,7 +45,7 @@ export interface PoolData extends Pool {
   futurePoolGovernor: string;
   weight: Nullable<PoolWeight[]>;
   smoothWeightChangeParams: Nullable<object>;
-  scalingFactors: Nullable<string[]>;
+  scalingFactors: Nullable<number[]>;
   scalingFactorController: Nullable<string>;
   spreadFactor: Nullable<string>;
   tickSpacing: Nullable<number>;
