@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#1159](https://github.com/alleslabs/celatone-frontend/pull/1159) Fix search showing invalid proposal and pool id
+- [#1158](https://github.com/alleslabs/celatone-frontend/pull/1158) Fix incorrect msg detail extraction, total deposits is null in proposal
 - [#1150](https://github.com/alleslabs/celatone-frontend/pull/1150) Fix camel case on message
 
 ## v1.9.0
