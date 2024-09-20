@@ -42,7 +42,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@alleslabs/shared": "1.0.0-dev3",
+    "@alleslabs/shared": "1.0.0-dev5",
     "@amplitude/analytics-browser": "^2.3.3",
     "@amplitude/analytics-types": "^2.3.0",
     "@amplitude/plugin-user-agent-enrichment-browser": "^1.0.0",
@@ -71,8 +71,6 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@graphql-codegen/cli": "^5.0.0",
-    "@graphql-typed-document-node/core": "^3.2.0",
     "@hookform/resolvers": "^3.9.0",
     "@initia/initia.js": "0.2.5",
     "@initia/initia.proto": "0.2.0",
@@ -106,8 +104,6 @@
     "dayjs": "^1.11.6",
     "file-saver": "^2.0.5",
     "framer-motion": "^11.0.3",
-    "graphql": "^16.6.0",
-    "graphql-request": "^5.0.0",
     "js-base64": "^3.7.4",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",

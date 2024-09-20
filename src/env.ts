@@ -29,9 +29,6 @@ export const DUMMY_MNEMONIC = (() => {
 export const CELATONE_API_OVERRIDE =
   process.env.NEXT_PUBLIC_CELATONE_API_OVERRIDE;
 
-export const HASURA_ADMIN_SECRET =
-  process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET ?? "";
-
 export const CELATONE_VERIFICATION_API =
   process.env.NEXT_PUBLIC_CELATONE_VERIFICATION_API ?? "";
 

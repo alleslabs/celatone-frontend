@@ -9,10 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { usePools } from "../../data";
+import { useDerivedPools } from "../../data";
 import type { PoolFilterState } from "../../types";
 import { FilterByPoolType } from "../FilterByPoolType";
 import { SuperfluidLabel } from "../SuperfluidLabel";
@@ -21,12 +21,9 @@ import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
-import { Order_By } from "lib/gql/graphql";
 import { useDebounce } from "lib/hooks";
-import { usePoolListCountQuery } from "lib/services/poolService";
 import type { PoolTypeFilter } from "lib/types";
 import { PoolType } from "lib/types";
-import { isPositiveInt } from "lib/utils";
 
 import { UnsupportedPoolList } from "./UnsupportedPoolList";
 
@@ -44,21 +41,9 @@ export const UnsupportedSection = ({
     },
   });
   const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
-  const search = useMemo(
-    () => (!keyword || isPositiveInt(keyword) ? keyword : `{"${keyword}"}`),
-    [keyword]
-  );
-  const debouncedSearch = useDebounce(search);
-
-  const { data: totalData = 0, refetch: refetchCount } = usePoolListCountQuery({
-    isSupported: false,
-    poolType: poolTypeValue,
-    isSuperfluidOnly,
-    search: debouncedSearch,
-  });
+  const search = useDebounce(keyword);
 
   const [showNewest, setShowNewest] = useState(true);
-
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
 
   const updateExpandedIndexes = (indexes: number[]) =>
@@ -66,13 +51,13 @@ export const UnsupportedSection = ({
 
   const {
     pagesQuantity,
+    setTotalData,
     currentPage,
     setCurrentPage,
     pageSize,
     setPageSize,
     offset,
   } = usePaginator({
-    total: totalData,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -80,28 +65,15 @@ export const UnsupportedSection = ({
     },
   });
 
-  const onPageChange = (nextPage: number) => {
-    refetchCount();
-    setCurrentPage(nextPage);
-    updateExpandedIndexes([]);
-  };
-
-  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const size = Number(e.target.value);
-    refetchCount();
-    setPageSize(size);
-    setCurrentPage(1);
-    setExpandedIndexes([]);
-  };
-
-  const { pools, isLoading } = usePools(
+  const { pools, totalCount, isLoading } = useDerivedPools(
+    pageSize,
+    offset,
     false,
     poolTypeValue,
     isSuperfluidOnly,
-    debouncedSearch,
-    showNewest ? Order_By.Desc : Order_By.Asc,
-    offset,
-    pageSize
+    search,
+    showNewest,
+    ({ total }) => setTotalData(total)
   );
 
   return (
@@ -152,9 +124,11 @@ export const UnsupportedSection = ({
           <Heading as="h6" variant="h6">
             Pools with unsupported tokens
           </Heading>
-          <Badge variant="gray" color="text.main" textColor="text.main">
-            {totalData}
-          </Badge>
+          {totalCount && (
+            <Badge variant="gray" color="text.main" textColor="text.main">
+              {totalCount}
+            </Badge>
+          )}
         </Flex>
         <Flex gap={4}>
           <Flex gap={2} alignItems="center">
@@ -208,16 +182,24 @@ export const UnsupportedSection = ({
         expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
       />
-      {totalData > 10 && (
+      {totalCount && totalCount > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
+          totalData={totalCount}
           scrollComponentId={scrollComponentId}
           pageSize={pageSize}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
+          onPageChange={(nextPage) => {
+            setCurrentPage(nextPage);
+            updateExpandedIndexes([]);
+          }}
+          onPageSizeChange={(e) => {
+            const size = Number(e.target.value);
+            setPageSize(size);
+            setCurrentPage(1);
+            setExpandedIndexes([]);
+          }}
         />
       )}
     </>

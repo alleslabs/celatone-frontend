@@ -5,18 +5,18 @@ import Link from "next/link";
 import { trackWebsite } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
-import type { PoolDetail, USD } from "lib/types";
+import type { PoolData, USD } from "lib/types";
 import { big, PoolType } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 import { PoolAssetsTable } from "./tables/pool-assets";
 
 interface PoolAssetsProps {
-  pool: PoolDetail;
+  pool: PoolData;
 }
 
 export const PoolAssets = ({ pool }: PoolAssetsProps) => {
-  const totalLiquidity = pool.poolLiquidity.reduce(
+  const totalLiquidity = pool.liquidity.reduce(
     (totalVal, token) => totalVal.add(token.value ?? 0),
     big(0)
   ) as USD<Big>;
@@ -29,14 +29,14 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
             Pool Assets
           </Heading>
           <Badge variant="gray" color="text.main" textColor="text.main">
-            {pool.poolLiquidity.length}
+            {pool.liquidity.length}
           </Badge>
         </Flex>
         {pool.isSupported && (
           <Text variant="body2" color="text.dark" fontWeight={500}>
             Total Liquidity:
             <Text as="span" fontWeight={700} color="text.main" ml={2}>
-              {pool.poolLiquidity ? formatPrice(totalLiquidity) : "N/A"}
+              {pool.liquidity ? formatPrice(totalLiquidity) : "N/A"}
             </Text>
           </Text>
         )}

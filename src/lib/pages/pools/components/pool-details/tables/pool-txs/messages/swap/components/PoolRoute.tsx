@@ -5,7 +5,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
-import { usePoolAssetsbyPoolIds } from "lib/services/poolService";
+import { usePoolsLiquidityByPoolIds } from "lib/services/pools";
 import type { AssetInfos, Option, TokenWithValue } from "lib/types";
 import { coinToTokenWithValue, getTokenLabel } from "lib/utils";
 import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
@@ -23,7 +23,7 @@ export const PoolRoute = ({
   isOpened,
   ampCopierSection,
 }: PoolRouteProps) => {
-  const { data: poolAssets, isLoading } = usePoolAssetsbyPoolIds(
+  const { data: poolAssets, isLoading } = usePoolsLiquidityByPoolIds(
     routes.map((pool) => pool.poolId),
     isOpened
   );

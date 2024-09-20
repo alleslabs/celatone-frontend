@@ -11,7 +11,7 @@ import { Loading } from "lib/components/Loading";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { useTxData } from "lib/services/tx";
 import { useValidatorDataLcd } from "lib/services/validator";
-import type { AssetInfos, Option, PoolDetail } from "lib/types";
+import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue, extractMsgType } from "lib/utils";
 import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
 
@@ -20,7 +20,7 @@ interface MsgLockAndSuperfluidDelegateDetailProps {
   blockHeight: number;
   msgIndex: number;
   msg: MsgLockAndSuperfluidDelegateDetails;
-  pool: PoolDetail;
+  pool: PoolData;
   assetInfos: Option<AssetInfos>;
   isOpened: boolean;
   ampCopierSection?: string;

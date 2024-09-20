@@ -46,7 +46,13 @@ export const CollectionSuppliesOverviewBody = ({
       <SimpleGrid gap={6} columns={{ base: 2, lg: 4, xl: 5, "2xl": 6 }} my={8}>
         {nftsInfo.map((nft) => (
           <GridItem key={nft.tokenId + nft.uri}>
-            <NftCard {...nft} />
+            <NftCard
+              uri={nft.uri}
+              tokenId={nft.tokenId}
+              collectionName={nft.collectionName}
+              collectionAddress={nft.collectionAddress}
+              nftAddress={nft.nftAddress}
+            />
           </GridItem>
         ))}
       </SimpleGrid>

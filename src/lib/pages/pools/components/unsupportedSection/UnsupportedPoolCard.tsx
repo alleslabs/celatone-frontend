@@ -19,7 +19,6 @@ import { CustomIcon } from "lib/components/icon";
 import { TokenImageRender } from "lib/components/token";
 import { Tooltip } from "lib/components/Tooltip";
 import type { Pool } from "lib/types";
-import { PoolType } from "lib/types";
 import {
   formatUTokenWithPrecision,
   getTokenLabel,
@@ -46,17 +45,8 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
   const navigate = useInternalNavigate();
-  const handleOnClick = () => {
-    // First version, navigate to contract details page if pool type is CosmWasm
-    if (item?.type === PoolType.COSMWASM && item.contractAddress)
-      navigate({
-        pathname: `/contracts/[contractAddress]`,
-        query: { contractAddress: item.contractAddress },
-      });
-    else {
-      navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
-    }
-  };
+  const handleOnClick = () =>
+    navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } });
 
   return (
     <AccordionItem
@@ -84,7 +74,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                   poolId={item.id}
                   isSuperfluid={item.isSuperfluid}
                   poolType={item.type}
-                  poolLiquidity={item.poolLiquidity}
+                  liquidity={item.liquidity}
                 />
                 <Flex>
                   <Tooltip label="See in osmosis.zone">
@@ -133,7 +123,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
               </Text>
               <Flex gap={4} flexDirection="column">
                 <Flex gap={2} flexDirection="column">
-                  {item.poolLiquidity.map((asset) => (
+                  {item.liquidity.map((asset) => (
                     <Flex
                       className="copier-wrapper"
                       key={asset.denom}

@@ -60,7 +60,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   const json = useMemo(
     () =>
       JSON.stringify(
-        omit(chainConfig, ["tier", "chain", "graphql", "extra", "network_type"])
+        omit(chainConfig, ["tier", "chain", "extra", "network_type"])
       ),
     [chainConfig]
   );

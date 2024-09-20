@@ -7,7 +7,7 @@ import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { useTxData } from "lib/services/tx";
-import type { AssetInfos, Option, PoolDetail } from "lib/types";
+import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue, extractMsgType } from "lib/utils";
 import type { MsgLockTokensDetails } from "lib/utils/tx/types";
 
@@ -16,7 +16,7 @@ interface MsgLockTokensDetailProps {
   blockHeight: number;
   msgIndex: number;
   msg: MsgLockTokensDetails;
-  pool: PoolDetail;
+  pool: PoolData;
   assetInfos: Option<AssetInfos>;
   isOpened: boolean;
   ampCopierSection?: string;

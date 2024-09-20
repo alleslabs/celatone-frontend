@@ -15,15 +15,15 @@ import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
   useCurrentChain,
-  useFaucetConfig,
+  useInternalNavigate,
   useValidateAddress,
 } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { AssignMe } from "lib/components/AssignMe";
 import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
-import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
+import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
 import { useFaucetInfo } from "lib/services/faucetService";
 
@@ -42,6 +42,13 @@ const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
 };
 
 const Faucet = () => {
+  // NOTE: hacked to disable
+  const navigate = useInternalNavigate();
+  navigate({ pathname: "/", replace: true });
+  const faucet = { enabled: false, url: "" };
+
+  // ------------------------------------------//
+
   const { address: walletAddress = "" } = useCurrentChain();
   const [address, setAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +62,7 @@ const Faucet = () => {
   const {
     chainConfig: { prettyName },
   } = useCelatoneApp();
-  const faucet = useFaucetConfig({ shouldRedirect: true });
+
   const { data: faucetInfo } = useFaucetInfo();
 
   const { faucetUrl, faucetDenom, faucetAmount } = useMemo(() => {

@@ -4,7 +4,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
-import { usePoolAssetsbyPoolIds } from "lib/services/poolService";
+import { usePoolsLiquidityByPoolIds } from "lib/services/pools";
 import type { AssetInfos, Option, TokenWithValue } from "lib/types";
 import {
   coinToTokenWithValue,
@@ -31,7 +31,7 @@ export const PoolAssetCard = ({
   isOpened,
   ampCopierSection,
 }: PoolAssetCardProps) => {
-  const { data: poolAssets, isLoading } = usePoolAssetsbyPoolIds(
+  const { data: poolAssets, isLoading } = usePoolsLiquidityByPoolIds(
     [poolId],
     isOpened
   );

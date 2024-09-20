@@ -5,12 +5,12 @@ import { useGetAddressType } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
-import type { PoolDetail, Ratio } from "lib/types";
+import type { PoolData, Ratio } from "lib/types";
 import { PoolType } from "lib/types";
 import { formatRatio } from "lib/utils";
 
 interface PoolInfoProps {
-  pool: PoolDetail;
+  pool: PoolData;
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -43,9 +43,9 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       <LabelText label="Created Height">
         <ExplorerLink
           type="block_height"
-          value={(pool.blockHeight ?? "N/A").toString()}
+          value={(pool.createdHeight ?? "N/A").toString()}
           showCopyOnHover
-          isReadOnly={!pool.blockHeight}
+          isReadOnly={!pool.createdHeight}
           ampCopierSection="pool_info"
         />
       </LabelText>

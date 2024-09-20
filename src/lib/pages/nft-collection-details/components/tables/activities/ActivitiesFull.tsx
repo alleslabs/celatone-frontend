@@ -6,20 +6,16 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
-import { useCollectionActivities } from "lib/services/nft-collection";
+import { useNftCollectionActivities } from "lib/services/nft-collection";
 import type { HexAddr32 } from "lib/types";
 
 import { ActivitiesTable } from "./ActivitiesTable";
 
 interface ActivitiesFullProps {
   collectionAddress: HexAddr32;
-  totalCount: number;
 }
 
-export const ActivitiesFull = ({
-  collectionAddress,
-  totalCount,
-}: ActivitiesFullProps) => {
+export const ActivitiesFull = ({ collectionAddress }: ActivitiesFullProps) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearch = useDebounce(searchKeyword);
 
@@ -30,6 +26,7 @@ export const ActivitiesFull = ({
     pageSize,
     setPageSize,
     offset,
+    setTotalData,
   } = usePaginator({
     initialState: {
       pageSize: 10,
@@ -37,11 +34,14 @@ export const ActivitiesFull = ({
       isDisabled: false,
     },
   });
-  const { data: activities, isLoading } = useCollectionActivities(
+  const { data: activities, isLoading } = useNftCollectionActivities(
     collectionAddress,
     pageSize,
     offset,
-    debouncedSearch
+    debouncedSearch,
+    {
+      onSuccess: ({ total }) => setTotalData(total),
+    }
   );
 
   return (
@@ -62,7 +62,7 @@ export const ActivitiesFull = ({
       />
       <ActivitiesTable
         collectionAddress={collectionAddress}
-        activities={activities}
+        activities={activities?.items}
         isLoading={isLoading}
         emptyState={
           <EmptyState
@@ -72,12 +72,12 @@ export const ActivitiesFull = ({
           />
         }
       />
-      {totalCount > 10 && !searchKeyword && (
+      {activities && activities.total > 10 && !searchKeyword && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalCount}
+          totalData={activities.total}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {

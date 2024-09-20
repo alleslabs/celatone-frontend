@@ -2,17 +2,15 @@ import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { MutateEventsTable } from "lib/components/table";
-import { useCollectionMutateEvents } from "lib/services/nft-collection";
+import { useNftCollectionMutateEvents } from "lib/services/nft-collection";
 import type { HexAddr32 } from "lib/types";
 
 interface CollectionMutateEventsProps {
   collectionAddress: HexAddr32;
-  totalCount: number;
 }
 
 export const CollectionMutateEvents = ({
   collectionAddress,
-  totalCount,
 }: CollectionMutateEventsProps) => {
   const {
     pagesQuantity,
@@ -21,8 +19,8 @@ export const CollectionMutateEvents = ({
     pageSize,
     setPageSize,
     offset,
+    setTotalData,
   } = usePaginator({
-    total: totalCount,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -30,16 +28,17 @@ export const CollectionMutateEvents = ({
     },
   });
 
-  const { data: mutateEvents, isLoading } = useCollectionMutateEvents(
+  const { data: mutateEvents, isLoading } = useNftCollectionMutateEvents(
     collectionAddress,
     pageSize,
-    offset
+    offset,
+    { onSuccess: ({ total }) => setTotalData(total) }
   );
 
   return (
     <>
       <MutateEventsTable
-        mutateEvents={mutateEvents}
+        mutateEvents={mutateEvents?.items}
         isLoading={isLoading}
         emptyState={
           <EmptyState
@@ -48,12 +47,12 @@ export const CollectionMutateEvents = ({
           />
         }
       />
-      {totalCount > 10 && (
+      {mutateEvents && mutateEvents.total > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalCount}
+          totalData={mutateEvents.total}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {

@@ -4,10 +4,12 @@ import {
   zAccountTxsResponse,
   zBlockTxsResponse,
   zTxByHashResponseLcd,
+  zTxsByPoolIdResponse,
+  zTxsByPoolIdTxsCountResponse,
   zTxsCountResponse,
   zTxsResponse,
 } from "../types";
-import type { BechAddr, Option, TxFilters } from "lib/types";
+import type { BechAddr, Option, PoolTxFilter, TxFilters } from "lib/types";
 import { camelToSnake, parseWithError } from "lib/utils";
 
 export const getTxData = async (txsApiRoute: string, txHash: string) =>
@@ -107,3 +109,33 @@ export const getTxsCountByAddress = async (
     })
     .then(({ data }) => parseWithError(zTxsCountResponse, data));
 };
+
+export const getTxsByPoolId = async (
+  endpoint: string,
+  poolId: number,
+  type: PoolTxFilter,
+  limit: number,
+  offset: number
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(poolId)}/txs`, {
+      params: {
+        type,
+        limit,
+        offset,
+      },
+    })
+    .then(({ data }) => parseWithError(zTxsByPoolIdResponse, data));
+
+export const getTxsByPoolIdTableCounts = async (
+  endpoint: string,
+  poolId: number,
+  type: PoolTxFilter
+) =>
+  axios
+    .get(`${endpoint}/${encodeURIComponent(poolId)}/txs-count`, {
+      params: {
+        type,
+      },
+    })
+    .then(({ data }) => parseWithError(zTxsByPoolIdTxsCountResponse, data));

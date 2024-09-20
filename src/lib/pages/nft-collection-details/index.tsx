@@ -28,11 +28,11 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { Tooltip } from "lib/components/Tooltip";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useNfts, useNftsSequencer } from "lib/services/nft";
+import { useNfts } from "lib/services/nft";
 import {
-  useCollectionActivitiesCount,
-  useCollectionByCollectionAddress,
-  useCollectionMutateEventsCount,
+  useNftCollectionActivities,
+  useNftCollectionByCollectionAddress,
+  useNftCollectionMutateEvents,
 } from "lib/services/nft-collection";
 import { isHexModuleAddress } from "lib/utils";
 
@@ -58,33 +58,33 @@ const CollectionDetailsBody = ({
 }: CollectionDetailQueryParams) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
-  const { isFullTier, isSequencerTier } = useTierConfig();
+  const { isFullTier } = useTierConfig();
 
   const { data: collection, isLoading: isCollectionLoading } =
-    useCollectionByCollectionAddress(collectionAddress);
+    useNftCollectionByCollectionAddress(collectionAddress);
 
-  const dataNftsFull = useNfts(collectionAddress, 6, 0, undefined, isFullTier);
-  const dataNftsSequencer = useNftsSequencer(
+  const { data: nfts, isLoading: isNftsLoading } = useNfts(
     collectionAddress,
     6,
     0,
-    undefined,
-    isSequencerTier
+    undefined
   );
-  const { data: nfts, isLoading: isNftsLoading } = isFullTier
-    ? dataNftsFull
-    : dataNftsSequencer;
 
   const { collectionInfos, isLoading: isCollectionInfosLoading } =
     useCollectionInfos(collectionAddress);
 
-  const { data: activitiesCount } = useCollectionActivitiesCount(
+  const { data: activities } = useNftCollectionActivities(
     collectionAddress,
-    isFullTier
+    10,
+    0,
+    undefined,
+    { enabled: isFullTier }
   );
-  const { data: mutateEventsCount } = useCollectionMutateEventsCount(
+  const { data: mutateEvents } = useNftCollectionMutateEvents(
     collectionAddress,
-    isFullTier
+    10,
+    0,
+    { enabled: isFullTier }
   );
 
   const handleTabChange = useCallback(
@@ -109,9 +109,9 @@ const CollectionDetailsBody = ({
     return <Loading withBorder />;
   if (!collection || !collectionInfos)
     return <ErrorFetching dataName="collection information" />;
-  if (!collection.data) return <InvalidCollection />;
+  if (!collection) return <InvalidCollection />;
 
-  const { name, description, uri } = collection.data;
+  const { name, description, uri } = collection;
   const {
     supplies: { maxSupply, totalMinted, currentSupply },
     isUnlimited,
@@ -241,17 +241,17 @@ const CollectionDetailsBody = ({
             Supplies
           </CustomTab>
           <CustomTab
-            count={activitiesCount}
+            count={activities?.total}
             onClick={handleTabChange(TabIndex.Activities)}
-            isDisabled={activitiesCount === 0}
+            isDisabled={!activities?.total}
           >
             Activities
           </CustomTab>
           {isFullTier && (
             <CustomTab
-              count={mutateEventsCount}
+              count={mutateEvents?.total}
               onClick={handleTabChange(TabIndex.MutateEvents)}
-              isDisabled={mutateEventsCount === 0}
+              isDisabled={!mutateEvents?.total}
             >
               Mutate Events
             </CustomTab>
@@ -268,7 +268,7 @@ const CollectionDetailsBody = ({
               />
               <CollectionSuppliesOverview
                 totalCount={currentSupply}
-                nfts={nfts}
+                nfts={nfts?.items}
                 isLoading={isNftsLoading}
                 onViewMore={handleTabChange(TabIndex.Supplies)}
               />
@@ -277,8 +277,8 @@ const CollectionDetailsBody = ({
                 collectionName={name}
                 desc={description}
                 uri={uri}
-                activities={activitiesCount}
-                mutateEventes={mutateEventsCount}
+                activities={activities?.total}
+                mutateEventes={mutateEvents?.total}
                 royalty={royalty}
                 onClickActivities={handleTabChange(TabIndex.Activities)}
                 onClickMutateEvents={handleTabChange(TabIndex.MutateEvents)}
@@ -298,12 +298,7 @@ const CollectionDetailsBody = ({
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <TierSwitcher
-              full={
-                <ActivitiesFull
-                  collectionAddress={collectionAddress}
-                  totalCount={activitiesCount ?? 0}
-                />
-              }
+              full={<ActivitiesFull collectionAddress={collectionAddress} />}
               sequencer={
                 <ActivitiesSequencer collectionAddress={collectionAddress} />
               }
@@ -311,10 +306,7 @@ const CollectionDetailsBody = ({
           </TabPanel>
           {isFullTier && (
             <TabPanel p={0} pt={{ base: 4, md: 0 }}>
-              <CollectionMutateEvents
-                collectionAddress={collectionAddress}
-                totalCount={mutateEventsCount ?? 0}
-              />
+              <CollectionMutateEvents collectionAddress={collectionAddress} />
             </TabPanel>
           )}
         </TabPanels>

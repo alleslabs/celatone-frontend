@@ -4,7 +4,7 @@ import { useMobile, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { Loading } from "lib/components/Loading";
-import { useCollectionCreator } from "lib/services/nft-collection";
+import { useNftCollectionCreator } from "lib/services/nft-collection";
 import type { HexAddr32 } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -36,7 +36,7 @@ export const CollectionInfoSection = ({
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
   const { data: collectionCreator, isLoading } =
-    useCollectionCreator(collectionAddress);
+    useNftCollectionCreator(collectionAddress);
 
   if (isLoading) return <Loading />;
   if (!collectionCreator) return null;

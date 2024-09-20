@@ -1,7 +1,7 @@
 import { TableContainer } from "@chakra-ui/react";
 
 import { Loading } from "lib/components/Loading";
-import type { AssetInfos, Option, PoolDetail, Transaction } from "lib/types";
+import type { AssetInfos, Option, PoolData, Transaction } from "lib/types";
 
 import { PoolTxsTableHeader } from "./PoolTxsTableHeader";
 import { PoolTxsTableRow } from "./PoolTxsTableRow";
@@ -10,7 +10,7 @@ const TEMPLATE_COLUMNS =
   "24px max(200px) 50px minmax(360px, 1fr) max(160px) max(220px)";
 
 interface PoolTxsTableProps {
-  pool: PoolDetail;
+  pool: PoolData;
   transactions: Option<Transaction[]>;
   assetInfos: Option<AssetInfos>;
   isLoading: boolean;
