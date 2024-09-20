@@ -20,7 +20,7 @@ import {
   splitModulePath,
 } from "lib/utils";
 
-import { useBlockData } from "./block";
+import { useBlockData, useBlockDataLcd } from "./block";
 import { useEvmCodesByAddress } from "./evm";
 import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
@@ -232,11 +232,13 @@ export const useSearchHandler = (
     Number(debouncedKeyword),
     isPosDecimal(debouncedKeyword) && isFullTier
   );
-  const { foundBlock, isFetching: blockFetching } = useMemo(() => {
-    if (isPosDecimal(debouncedKeyword) && !isFullTier)
-      return { foundBlock: true, isFetching: false };
-    return { foundBlock: blockApi.data, isFetching: blockApi.isFetching };
-  }, [blockApi.data, blockApi.isFetching, debouncedKeyword, isFullTier]);
+  const blockLcd = useBlockDataLcd(
+    Number(debouncedKeyword),
+    isPosDecimal(debouncedKeyword) && !isFullTier
+  );
+  const { data: blockData, isFetching: blockFetching } = isFullTier
+    ? blockApi
+    : blockLcd;
 
   /// /////////////////////////////////////////////////////
   //                         Proposal
@@ -417,13 +419,13 @@ export const useSearchHandler = (
       type: "EVM Transaction Hash",
     });
 
-  if (foundBlock)
+  if (blockData)
     results.push({
       value: debouncedKeyword,
       type: "Block",
     });
 
-  if (proposalData)
+  if (proposalData?.info)
     results.push({
       value: debouncedKeyword,
       type: "Proposal ID",
@@ -435,7 +437,7 @@ export const useSearchHandler = (
       type: "Validator Address",
     });
 
-  if (poolData)
+  if (poolData?.info)
     results.push({
       value: debouncedKeyword,
       type: "Pool ID",
