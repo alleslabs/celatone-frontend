@@ -12,7 +12,7 @@ export const FaucetButton = ({ faucetUrl }: FaucetButtonProps) => (
     target="_blank"
     rel="noopener noreferrer"
     data-peer
-    style={{ overflow: "hidden" }}
+    style={{ overflow: "hidden", height: "100%" }}
   >
     <Button
       variant="ghost-gray"
