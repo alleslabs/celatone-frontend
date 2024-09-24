@@ -145,7 +145,7 @@ export MODULE_ADDRESS='${moduleAddress}'\n
 export MODULE_NAME='${moduleName}'\n
 export MODULE_FN='${fn.name}'\n
 export RPC_URL='${rpcEndpoint}'\n
-${daemonName} query move execute $MODULE_ADDRESS \\
+${daemonName} query move view $MODULE_ADDRESS \\
     $MODULE_NAME \\
     $MODULE_FN \\${typeArgsFlags}${argsFlags}
     --chain-id $CHAIN_ID \\
