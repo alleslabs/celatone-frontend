@@ -1,7 +1,8 @@
-import type { ChainConfig } from "@alleslabs/shared";
 import axios from "axios";
 
 import { CELATONE_API_OVERRIDE } from "env";
+import { zChainConfig } from "lib/types";
+import { parseWithError } from "lib/utils";
 
 export const getApiChainConfigs = async (chainIds: string[]) =>
   axios
@@ -10,4 +11,4 @@ export const getApiChainConfigs = async (chainIds: string[]) =>
         ids: chainIds.join(","),
       },
     })
-    .then<ChainConfig[]>((res) => res.data);
+    .then(({ data }) => parseWithError(zChainConfig.array(), data));

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { HexAddr32, MutateEvent } from "lib/types";
+import type { MutateEvent } from "lib/types";
 import {
   zBechAddr,
   zHexAddr,
@@ -17,71 +17,35 @@ export const zNft = z
     token_id: z.string(),
     description: z.string().optional(),
     is_burned: z.boolean(),
-    owner: zHexAddr,
-    id: zHexAddr32,
-    collection: zHexAddr32,
-    collectionByCollection: z.object({
-      name: z.string().nullable(),
-    }),
+    owner_address: zHexAddr,
+    nft_address: zHexAddr32,
+    collection_address: zHexAddr32,
+    collection_name: z.string().optional(),
   })
-  .transform((val) => ({
-    uri: val.uri,
-    tokenId: val.token_id,
-    description: val.description,
-    isBurned: val.is_burned,
-    ownerAddress: val.owner,
-    nftAddress: val.id,
-    collectionAddress: val.collection,
-    collectionName: val.collectionByCollection.name,
-  }));
+  .transform(snakeToCamel);
 export type Nft = z.infer<typeof zNft>;
 
-export const zNftOld = z
-  .object({
-    uri: z.string(),
-    token_id: z.string(),
-    description: z.string().optional(),
-    is_burned: z.boolean(),
-    vmAddressByOwner: z.object({ vm_address: zHexAddr }),
-    vm_address: z.object({ vm_address: zHexAddr32 }).optional(),
-    collectionByCollection: z.object({
-      vm_address: z.object({ vm_address: zHexAddr32 }),
-      name: z.string(),
-    }),
-  })
-  .transform<Nft>((val) => ({
-    uri: val.uri,
-    tokenId: val.token_id,
-    description: val.description,
-    isBurned: val.is_burned,
-    ownerAddress: val.vmAddressByOwner?.vm_address,
-    nftAddress: val.vm_address?.vm_address || ("" as HexAddr32),
-    collectionAddress: val.collectionByCollection.vm_address.vm_address,
-    collectionName: val.collectionByCollection.name,
-  }));
-
-export const zNftByNftAddressResponse = z.object({
-  data: z.union([zNft, zNftOld]).optional(),
+export const zNftsResponse = z.object({
+  items: z.array(zNft),
 });
-export type NftByNftAddressResponse = z.infer<typeof zNftByNftAddressResponse>;
+export type NftsResponse = z.infer<typeof zNftsResponse>;
+
+export const zNftsByAccountAddressResponse = z.object({
+  items: z.array(zNft),
+  total: z.number(),
+});
+export type NftsByAccountAddressResponse = z.infer<
+  typeof zNftsByAccountAddressResponse
+>;
 
 export const zNftMintInfoResponse = z
   .object({
-    account: z.object({
-      address: zBechAddr,
-    }),
-    block: z.object({
-      timestamp: zUtcDate,
-      height: z.number(),
-    }),
-    hash: z.string().transform(parseTxHash),
+    minter: zBechAddr,
+    txhash: z.string().transform(parseTxHash),
+    height: z.number(),
+    timestamp: zUtcDate,
   })
-  .transform((val) => ({
-    minter: val.account.address,
-    txhash: val.hash,
-    height: val.block.height,
-    timestamp: val.block.timestamp,
-  }));
+  .optional();
 export type NftMintInfo = z.infer<typeof zNftMintInfoResponse>;
 
 export const zMetadata = z
@@ -102,55 +66,38 @@ export const zMetadata = z
   .transform(snakeToCamel);
 export type Metadata = z.infer<typeof zMetadata>;
 
-export const zNftTransactionsResponse = z
+export const zNftTxResponse = z
   .object({
-    transaction: z.object({
-      hash: z.string().transform(parseTxHash),
-      block: z.object({ timestamp: zUtcDate, height: z.number() }),
-    }),
+    txhash: z.string().transform(parseTxHash),
+    timestamp: zUtcDate,
     is_nft_burn: z.boolean(),
     is_nft_mint: z.boolean(),
     is_nft_transfer: z.boolean(),
   })
-  .transform((val) => ({
-    txhash: val.transaction.hash,
-    timestamp: val.transaction.block.timestamp,
-    isNftBurn: val.is_nft_burn,
-    isNftMint: val.is_nft_mint,
-    isNftTransfer: val.is_nft_transfer,
-  }));
-export type NftTransactions = z.infer<typeof zNftTransactionsResponse>;
+  .transform(snakeToCamel);
+export type NftTxResponse = z.infer<typeof zNftTxResponse>;
 
-export const zNftMutateEventsResponseItem = z
+export const zNftTxsResponse = z.object({
+  items: z.array(zNftTxResponse),
+  total: z.number().nonnegative(),
+});
+export type NftTxsResponse = z.infer<typeof zNftTxsResponse>;
+
+const zNftMutateEventsResponseItem = z
   .object({
     old_value: z.string(),
     new_value: z.string(),
     mutated_field_name: z.string(),
     remark: zRemark,
-    block: z.object({ timestamp: zUtcDate }),
+    timestamp: zUtcDate,
   })
-  .transform<MutateEvent>((val) => ({
-    oldValue: val.old_value,
-    newValue: val.new_value,
-    mutatedFieldName: val.mutated_field_name,
-    remark: val.remark,
-    timestamp: val.block.timestamp,
-  }));
+  .transform<MutateEvent>(snakeToCamel);
 
-export const zNftsByAccountResponse = z
-  .object({
-    nfts: z.union([zNft, zNftOld]).array(),
-    nfts_aggregate: z.object({
-      aggregate: z.object({
-        count: z.number(),
-      }),
-    }),
-  })
-  .transform((val) => ({
-    nfts: val.nfts,
-    total: val.nfts_aggregate.aggregate.count,
-  }));
-export type NftsByAccountResponse = z.infer<typeof zNftsByAccountResponse>;
+export const zNftMutateEventsResponse = z.object({
+  items: z.array(zNftMutateEventsResponseItem),
+  total: z.number().nonnegative(),
+});
+export type NftMutateEventsResponse = z.infer<typeof zNftMutateEventsResponse>;
 
 const zNftSequencer = z
   .object({
@@ -190,7 +137,7 @@ export const zNftsByAccountResponseSequencer = z
     pagination: zPagination,
   })
   .transform((val) => ({
-    nfts: val.tokens,
+    items: val.tokens,
     pagination: val.pagination,
   }));
 

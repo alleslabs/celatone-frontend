@@ -47,7 +47,7 @@ export const EmptyState = ({
       <StateImage imageVariant={imageVariant} imageWidth={imageWidth} />
     )}
     {heading && (
-      <Heading as="h5" variant="h5">
+      <Heading as="h5" variant="h5" textAlign="center">
         {heading}
       </Heading>
     )}

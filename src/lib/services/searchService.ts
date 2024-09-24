@@ -20,13 +20,13 @@ import {
   splitModulePath,
 } from "lib/utils";
 
-import { useBlockData } from "./block";
+import { useBlockData, useBlockDataLcd } from "./block";
 import { useEvmCodesByAddress } from "./evm";
 import { useModuleByAddressLcd } from "./move/module";
 import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
 import { useNftByNftAddressLcd } from "./nft";
-import { useCollectionByCollectionAddress } from "./nft-collection";
-import { usePoolByPoolId } from "./poolService";
+import { useNftCollectionByCollectionAddress } from "./nft-collection";
+import { usePoolData } from "./pools";
 import { useProposalData, useProposalDataLcd } from "./proposal";
 import { useTxData, useTxDataJsonRpc } from "./tx";
 import {
@@ -148,7 +148,7 @@ export const useSearchHandler = (
   );
 
   const { data: nftCollectionData, isFetching: nftCollectionFetching } =
-    useCollectionByCollectionAddress(
+    useNftCollectionByCollectionAddress(
       debouncedKeyword as HexAddr32,
       isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
     );
@@ -232,11 +232,13 @@ export const useSearchHandler = (
     Number(debouncedKeyword),
     isPosDecimal(debouncedKeyword) && isFullTier
   );
-  const { foundBlock, isFetching: blockFetching } = useMemo(() => {
-    if (isPosDecimal(debouncedKeyword) && !isFullTier)
-      return { foundBlock: true, isFetching: false };
-    return { foundBlock: blockApi.data, isFetching: blockApi.isFetching };
-  }, [blockApi.data, blockApi.isFetching, debouncedKeyword, isFullTier]);
+  const blockLcd = useBlockDataLcd(
+    Number(debouncedKeyword),
+    isPosDecimal(debouncedKeyword) && !isFullTier
+  );
+  const { data: blockData, isFetching: blockFetching } = isFullTier
+    ? blockApi
+    : blockLcd;
 
   /// /////////////////////////////////////////////////////
   //                         Proposal
@@ -283,7 +285,7 @@ export const useSearchHandler = (
   //                     Osmosis Pool
   /// /////////////////////////////////////////////////////
 
-  const { data: poolData, isFetching: poolFetching } = usePoolByPoolId(
+  const { data: poolData, isFetching: poolFetching } = usePoolData(
     Number(debouncedKeyword),
     isPool && isId(debouncedKeyword) && isFullTier
   );
@@ -322,13 +324,13 @@ export const useSearchHandler = (
 
   const results: SearchResult[] = [];
 
-  if (nftCollectionData?.data)
+  if (nftCollectionData)
     results.push({
       value: debouncedKeyword,
       type: "NFT Collection Address",
       metadata: {
         nft: {
-          name: nftCollectionData?.data.name,
+          name: nftCollectionData.name,
         },
       },
     });
@@ -339,8 +341,8 @@ export const useSearchHandler = (
       type: "NFT Address",
       metadata: {
         nft: {
-          collectionAddress: nftData.data.collectionAddress,
-          name: nftData.data.tokenId,
+          collectionAddress: nftData.collectionAddress,
+          name: nftData.tokenId,
         },
       },
     });
@@ -417,13 +419,13 @@ export const useSearchHandler = (
       type: "EVM Transaction Hash",
     });
 
-  if (foundBlock)
+  if (blockData)
     results.push({
       value: debouncedKeyword,
       type: "Block",
     });
 
-  if (proposalData)
+  if (proposalData?.info)
     results.push({
       value: debouncedKeyword,
       type: "Proposal ID",
@@ -435,7 +437,7 @@ export const useSearchHandler = (
       type: "Validator Address",
     });
 
-  if (poolData)
+  if (poolData?.info)
     results.push({
       value: debouncedKeyword,
       type: "Pool ID",

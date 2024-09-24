@@ -15,16 +15,6 @@ export const zNumberInput = z.preprocess(
   })
 );
 
-const zFaucetConfig = z.union([
-  z.object({
-    enabled: z.literal(true),
-    url: z.string(),
-  }),
-  z.object({
-    enabled: z.literal(false),
-  }),
-]);
-
 const zWasmConfig = z.union([
   z.object({
     enabled: z.literal(true),
@@ -89,6 +79,7 @@ const zNftConfig = z.object({
 });
 
 const zExtraConfig = z.object({
+  faucetUrl: z.string().optional(),
   disableAnyOfAddresses: z.boolean().optional(),
   isValidatorExternalLink: z.string().nullish(),
   layer: z.union([z.literal("1"), z.literal("2")]).optional(),
@@ -171,19 +162,22 @@ export const zAsset = z.object({
 export const zRegistry = z.object({
   bech32_prefix: z.string(),
   slip44: z.number(),
-  staking: z.object({
-    staking_tokens: z
-      .object({
-        denom: z.string(),
-      })
-      .array(),
-    lock_duration: z
-      .object({
-        blocks: z.number().optional(),
-        time: z.string().optional(),
-      })
-      .optional(),
-  }),
+  staking: z.union([
+    z.undefined(),
+    z.object({
+      staking_tokens: z
+        .object({
+          denom: z.string(),
+        })
+        .array(),
+      lock_duration: z
+        .object({
+          blocks: z.number().optional(),
+          time: z.string().optional(),
+        })
+        .optional(),
+    }),
+  ]),
   assets: zAsset.array(),
 });
 
@@ -207,7 +201,6 @@ export const zChainConfig = z
     rpc: zHttpsUrl,
     lcd: zHttpsUrl,
     mesa: zHttpsUrl.optional(),
-    graphql: zHttpsUrl.optional(),
     wallets: z.array(
       z.union([
         z.literal("keplr"),
@@ -217,14 +210,13 @@ export const zChainConfig = z
       ])
     ),
     features: z.object({
-      faucet: zFaucetConfig,
-      gov: zGovConfig,
+      wasm: zWasmConfig,
       move: zMoveConfig,
       evm: zEvmConfig,
-      nft: zNftConfig,
       pool: zPoolConfig,
+      nft: zNftConfig,
+      gov: zGovConfig,
       publicProject: zPublicProjectConfig,
-      wasm: zWasmConfig,
     }),
     gas: zGas,
     extra: zExtraConfig,

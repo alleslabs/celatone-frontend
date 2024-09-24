@@ -180,6 +180,7 @@ class MultiSchemaField<
     const {
       name,
       disabled = false,
+      readonly,
       errorSchema = {},
       formContext,
       onBlur,
@@ -302,6 +303,7 @@ class MultiSchemaField<
             onBlur={onBlur}
             onFocus={onFocus}
             disabled={disabled || isEmpty(enumOptions)}
+            readonly={readonly}
             multiple={false}
             rawErrors={rawErrors}
             errorSchema={fieldErrorSchema}

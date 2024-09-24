@@ -32,8 +32,8 @@ import { useAccountData } from "lib/services/account";
 import { useModulesByAddress } from "lib/services/move/module";
 import { useResourcesByAddressLcd } from "lib/services/move/resource";
 import {
+  useNftsByAccountAddress,
   useNftsByAccountByCollectionSequencer,
-  useNftsCountByAccount,
 } from "lib/services/nft";
 import { useInitiaUsernameByAddress } from "lib/services/username";
 import type { Addr, BechAddr, HexAddr, Option } from "lib/types";
@@ -62,9 +62,11 @@ import { TabIndex, zAccountDetailsQueryParams } from "./types";
 
 const tableHeaderId = "accountDetailsTab";
 
-export interface AccountDetailsBodyProps {
+interface AccountDetailsBodyProps {
   accountAddressParam: Addr;
   tabParam: TabIndex;
+  resourceSelectedAccountParam: Option<string>;
+  resourceSelectedGroupNameParam: Option<string>;
 }
 
 const getAddressOnPath = (hexAddress: HexAddr, accountAddress: BechAddr) =>
@@ -75,6 +77,8 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 const AccountDetailsBody = ({
   accountAddressParam,
   tabParam,
+  resourceSelectedAccountParam,
+  resourceSelectedGroupNameParam,
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }: AccountDetailsBodyProps) => {
   // ------------------------------------------//
@@ -117,8 +121,10 @@ const AccountDetailsBody = ({
   const { data: resourcesData, isFetching: isResourceLoading } =
     useResourcesByAddressLcd(accountAddress);
   // nft
-  const { data: nftsCount, isFetching: isNftsCountLoading } =
-    useNftsCountByAccount(hexAddress, isFullTier && nft.enabled);
+  const { data: nfts, isFetching: isNftsCountLoading } =
+    useNftsByAccountAddress(hexAddress, 10, 0, undefined, "", {
+      enabled: isFullTier && nft.enabled,
+    });
 
   const { data: accountNfts } = useNftsByAccountByCollectionSequencer(
     hexAddress,
@@ -127,7 +133,7 @@ const AccountDetailsBody = ({
     isSequencerTier
   );
 
-  const totalNfts = nftsCount ?? accountNfts?.total;
+  const totalNfts = nfts?.total ?? accountNfts?.total;
 
   const hasTotalBonded =
     !isTotalBondedLoading &&
@@ -243,7 +249,7 @@ const AccountDetailsBody = ({
           </CustomTab>
           <CustomTab
             count={totalNfts}
-            isDisabled={nftsCount === 0}
+            isDisabled={nfts?.total === 0}
             onClick={handleTabChange(TabIndex.Nfts, totalNfts)}
             isLoading={isNftsCountLoading}
             hidden={!nftEnabled}
@@ -556,6 +562,8 @@ const AccountDetailsBody = ({
               totalCount={resourcesData?.totalCount}
               resourcesByOwner={resourcesData?.groupedByOwner}
               isLoading={isResourceLoading}
+              selectedAccountParam={resourceSelectedAccountParam}
+              selectedGroupNameParam={resourceSelectedGroupNameParam}
             />
             <UserDocsLink
               title="What is resources?"
@@ -616,6 +624,8 @@ const AccountDetails = () => {
         <AccountDetailsBody
           accountAddressParam={validated.data.accountAddress}
           tabParam={validated.data.tab}
+          resourceSelectedAccountParam={validated.data.account}
+          resourceSelectedGroupNameParam={validated.data.selected}
         />
       )}
     </PageContainer>

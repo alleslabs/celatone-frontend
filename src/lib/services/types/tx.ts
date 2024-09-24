@@ -99,7 +99,10 @@ const zTxBody = z
     extension_options: zAny.array(),
     non_critical_extension_options: zAny.array(),
   })
-  .transform(snakeToCamel);
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    messages: val.messages,
+  }));
 export type TxBody = z.infer<typeof zTxBody>;
 
 export const zTx = z
@@ -108,7 +111,10 @@ export const zTx = z
     auth_info: zAuthInfo,
     signatures: z.array(z.string()),
   })
-  .transform(snakeToCamel);
+  .transform((val) => ({
+    ...snakeToCamel(val),
+    body: val.body,
+  }));
 export type Tx = z.infer<typeof zTx>;
 
 const zEventAttribute = z.object({
@@ -149,6 +155,7 @@ const zTxResponse = z
   })
   .transform((val) => ({
     ...snakeToCamel(val),
+    tx: val.tx,
     logs: val.logs,
   }));
 export type TxResponse = z.infer<typeof zTxResponse>;
@@ -381,6 +388,35 @@ export const zBlockTxsResponseSequencer = z.object({
   pagination: zPagination,
 });
 
+const zTxByPoolIdResponse = z
+  .object({
+    created: zUtcDate,
+    hash: z.string(),
+    height: z.number().nonnegative(),
+    is_ibc: z.boolean(),
+    messages: z.any().array(),
+    sender: zBechAddr,
+    success: z.boolean(),
+  })
+  .transform<Transaction>((val) => ({
+    ...snakeToCamel(val),
+    hash: parseTxHash(val.hash),
+    messages: snakeToCamel(val.messages) as Message[],
+    isSigner: true,
+    actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+    furtherAction: MsgFurtherAction.NONE,
+    isInstantiate: false,
+    isOpinit: false,
+    isEvm: false,
+  }));
+
+export const zTxsByPoolIdResponse = z.object({
+  items: z.array(zTxByPoolIdResponse),
+});
+
+export const zTxsByPoolIdTxsCountResponse = z.object({
+  total: z.number().nullable(),
+});
 // ---------------- JSON RPC ----------------
 export const zEvmTxHashByCosmosTxHashJsonRpc = z.string().transform((val) =>
   val !== "0x0000000000000000000000000000000000000000000000000000000000000000" // if no related evm tx

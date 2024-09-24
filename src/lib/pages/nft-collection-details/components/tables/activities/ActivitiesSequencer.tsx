@@ -2,7 +2,7 @@ import { Heading, Stack } from "@chakra-ui/react";
 
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
-import { useCollectionActivitiesSequencer } from "lib/services/nft-collection";
+import { useNftCollectionActivitiesSequencer } from "lib/services/nft-collection";
 import type { HexAddr32 } from "lib/types";
 
 import { ActivitiesTable } from "./ActivitiesTable";
@@ -15,7 +15,7 @@ export const ActivitiesSequencer = ({
   collectionAddress,
 }: ActivitiesSequencerProps) => {
   const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
-    useCollectionActivitiesSequencer(collectionAddress);
+    useNftCollectionActivitiesSequencer(collectionAddress);
 
   return (
     <Stack spacing="32px" mt="32px">

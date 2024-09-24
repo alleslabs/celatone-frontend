@@ -4,13 +4,13 @@ import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { CustomIcon } from "lib/components/icon";
-import type { AssetInfos, Option, PoolDetail } from "lib/types";
+import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
 import type { MsgExitSwapShareAmountInDetails } from "lib/utils/tx/types";
 
 interface MsgExitSwapShareAmountInActionProps {
   msg: MsgExitSwapShareAmountInDetails;
-  pool: PoolDetail;
+  pool: PoolData;
   assetInfos: Option<AssetInfos>;
   ampCopierSection?: string;
 }

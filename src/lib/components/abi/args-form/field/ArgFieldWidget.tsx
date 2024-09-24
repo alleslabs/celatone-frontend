@@ -1,8 +1,8 @@
 import { Input, Textarea } from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
 import type { ControllerRenderProps } from "react-hook-form";
 
 import { useCurrentChain, useExampleAddresses } from "lib/app-provider";
+import { SelectInput } from "lib/components/forms";
 import type { BechAddr20, Nullable } from "lib/types";
 
 import {
@@ -86,39 +86,16 @@ export const ArgFieldWidget = ({
 
   if (type === "bool")
     return (
-      <Select
+      <SelectInput
         classNamePrefix="chakra-react-select"
         size="md"
         options={boolOptions}
-        placeholder={" "}
+        placeholder=""
         value={boolOptions.find(
           ({ value: optionValue }) => optionValue === value
         )}
-        onChange={(e) => onChange(e?.value)}
-        menuPosition="fixed"
+        onChange={(newValue) => onChange(newValue?.value)}
         menuPortalTarget={document.body}
-        chakraStyles={{
-          control: (provided) => ({
-            ...provided,
-            _disabled: {
-              color: "text.main",
-            },
-          }),
-          dropdownIndicator: (provided, state) => ({
-            ...provided,
-            color: state.isDisabled ? "gray.700" : undefined,
-          }),
-          option: (provided) => ({
-            ...provided,
-            color: "text.main",
-            _hover: {
-              bg: "gray.700",
-            },
-            _selected: {
-              bg: "gray.800",
-            },
-          }),
-        }}
       />
     );
 

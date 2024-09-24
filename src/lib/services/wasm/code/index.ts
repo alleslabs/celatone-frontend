@@ -13,6 +13,7 @@ import type { BechAddr, BechAddr20, Option } from "lib/types";
 import {
   getAllCodesByAddress,
   getCodeData,
+  getCodeList,
   getCodes,
   getCodesByAddress,
 } from "./api";
@@ -117,5 +118,17 @@ export const useAllCodesByAddress = (
   );
 };
 
-export * from "./gql";
+export const useCodeList = (codeIds: number[]) => {
+  const endpoint = useBaseApiRoute("codes");
+
+  return useQuery(
+    [CELATONE_QUERY_KEYS.CODE_LIST, endpoint, codeIds],
+    async () => getCodeList(endpoint, codeIds),
+    {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
 export * from "./lcd";

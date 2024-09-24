@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 import { AmpEvent, trackUseFilter, trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
-import { SelectInput } from "lib/components/forms";
+import { SelectInputBase } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
@@ -165,7 +165,7 @@ export const VotedProposalsTable = ({
           </Alert>
           <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
             <GridItem>
-              <SelectInput<ProposalVoteType>
+              <SelectInputBase<ProposalVoteType>
                 formLabel="Filter by vote answer"
                 options={answerOptions}
                 onChange={handleOnAnswerFilterChange}

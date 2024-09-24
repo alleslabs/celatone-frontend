@@ -479,7 +479,6 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
     ...val,
     tier: "sequencer",
     chain: "initia",
-    graphql: "",
     extra: {
       isValidatorExternalLink: null,
       layer: "2",

@@ -5,13 +5,13 @@ import { trackUseViewJSON, trackWebsite } from "lib/amplitude";
 import { useBaseApiRoute, usePoolConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomIcon } from "lib/components/icon";
-import type { PoolDetail } from "lib/types";
+import type { PoolData } from "lib/types";
 import { openNewTab } from "lib/utils";
 
 import { PoolInfo } from "./PoolInfo";
 
 interface PoolTopSectionProps {
-  pool: PoolDetail;
+  pool: PoolData;
 }
 
 export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
@@ -41,7 +41,7 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
           poolId={pool.id}
           isSuperfluid={pool.isSuperfluid}
           poolType={pool.type}
-          poolLiquidity={pool.poolLiquidity}
+          liquidity={pool.liquidity}
         />
         <Flex align="center" gap={2}>
           <Button

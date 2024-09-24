@@ -1,13 +1,11 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
-import { TabIndex } from "../types";
+import { FunctionTypeTabIndex, TabIndex } from "../types";
 import { useTierConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 import type { Option } from "lib/types";
-
-import { FunctionTypeTabs } from "./module-fns";
 
 interface ActionInfo {
   icon: IconKeys;
@@ -23,7 +21,7 @@ interface ModuleActionsProps {
   viewFns: number;
   executeFns: number;
   allTxsCount: Option<number>;
-  onSelectAction: (nextTab: TabIndex, fnType?: FunctionTypeTabs) => void;
+  onSelectAction: (nextTab: TabIndex, fnType?: FunctionTypeTabIndex) => void;
 }
 
 export const ModuleActions = ({
@@ -40,7 +38,8 @@ export const ModuleActions = ({
       iconColor: "primary.main",
       name: "View Functions",
       count: viewFns,
-      onClick: () => onSelectAction(TabIndex.Function, FunctionTypeTabs.VIEW),
+      onClick: () =>
+        onSelectAction(TabIndex.Function, FunctionTypeTabIndex.VIEW),
       disabled: viewFns === 0,
       hidden: false,
     },
@@ -50,7 +49,7 @@ export const ModuleActions = ({
       name: "Execute Functions",
       count: executeFns,
       onClick: () =>
-        onSelectAction(TabIndex.Function, FunctionTypeTabs.EXECUTE),
+        onSelectAction(TabIndex.Function, FunctionTypeTabIndex.EXECUTE),
       disabled: executeFns === 0,
       hidden: false,
     },

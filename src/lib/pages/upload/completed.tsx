@@ -197,7 +197,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         onClick={() => {
           navigate({
             pathname: "/instantiate",
-            query: { "code-id": txResult.codeId },
+            query: { codeId: txResult.codeId },
           });
         }}
       >

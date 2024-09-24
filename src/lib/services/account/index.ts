@@ -17,7 +17,7 @@ import {
 } from "lib/app-provider";
 import type { AccountType, BechAddr, Option } from "lib/types";
 
-import { getAccountData, getAccountTableCounts } from "./api";
+import { getAccountData, getAccountTableCounts, getAccountType } from "./api";
 import {
   getAccountBech32Lcd,
   getAccountDataLcd,
@@ -63,13 +63,15 @@ export const useAccountTableCounts = (
   );
 };
 
-export const useAccountTypeLcd = (
+export const useAccountType = (
   address: Option<BechAddr>,
   options: Pick<
     UseQueryOptions<AccountType, Error>,
     "enabled" | "onSuccess" | "onError"
   > = {}
 ): UseQueryResult<AccountType> => {
+  const { isFullTier } = useTierConfig();
+  const apiEndpoint = useBaseApiRoute("accounts");
   const lcdEndpoint = useLcdEndpoint();
 
   const queryFn = useCallback(async () => {
@@ -78,11 +80,13 @@ export const useAccountTypeLcd = (
         "Fetching account type: failed to retrieve address. (useAccountTypeLcd)"
       );
 
+    if (isFullTier) return getAccountType(apiEndpoint, address);
+
     return getAccountTypeLcd(lcdEndpoint, address);
-  }, [lcdEndpoint, address]);
+  }, [lcdEndpoint, address, apiEndpoint, isFullTier]);
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_TYPE_LCD, lcdEndpoint, address],
+    [CELATONE_QUERY_KEYS.ACCOUNT_TYPE, apiEndpoint, lcdEndpoint, address],
     queryFn,
     {
       ...options,
@@ -103,5 +107,3 @@ export const useAccountBech32 = (
       refetchOnWindowFocus: false,
     }
   );
-
-export * from "./gql";

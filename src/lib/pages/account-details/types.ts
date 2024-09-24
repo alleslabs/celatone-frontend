@@ -25,4 +25,7 @@ export const zAccountDetailsQueryParams = z.object({
       .optional()
       .transform(() => TabIndex.Overview),
   ]),
+  // for resource tab
+  account: z.string().optional(),
+  selected: z.string().optional(),
 });

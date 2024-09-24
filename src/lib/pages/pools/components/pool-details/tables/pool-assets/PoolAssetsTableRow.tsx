@@ -7,7 +7,7 @@ import { TableRow } from "lib/components/table";
 import { TokenImageRender } from "lib/components/token";
 import { TooltipInfo } from "lib/components/Tooltip";
 import { getUndefinedTokenIcon } from "lib/pages/pools/utils";
-import type { PoolDetail, Ratio, TokenWithValue, USD } from "lib/types";
+import type { PoolData, Ratio, TokenWithValue, USD } from "lib/types";
 import { PoolType } from "lib/types";
 import {
   divWithDefault,
@@ -19,7 +19,7 @@ import {
 } from "lib/utils";
 
 interface PoolAssetsTableRowProps {
-  pool: PoolDetail;
+  pool: PoolData;
   token: TokenWithValue;
   templateColumns: GridProps["templateColumns"];
   totalLiquidity: USD<Big>;

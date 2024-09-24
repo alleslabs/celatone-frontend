@@ -21,10 +21,7 @@ export const NftList = ({
   showCollection,
 }: NftListProps) => {
   if (isLoading) return <Loading />;
-  if (!nfts)
-    return (
-      <ErrorFetching dataName="NFTs" withBorder my={2} hasBorderTop={false} />
-    );
+  if (!nfts) return <ErrorFetching dataName="NFTs" />;
   if (!nfts.length) return emptyState;
 
   return (
@@ -32,8 +29,12 @@ export const NftList = ({
       {nfts.map((nft) => (
         <NftCard
           key={nft.tokenId + nft.uri}
-          {...nft}
           showCollection={showCollection}
+          uri={nft.uri}
+          tokenId={nft.tokenId}
+          collectionName={nft.collectionName}
+          collectionAddress={nft.collectionAddress}
+          nftAddress={nft.nftAddress}
         />
       ))}
     </SimpleGrid>

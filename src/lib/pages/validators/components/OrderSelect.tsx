@@ -1,10 +1,18 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
 
 import { ValidatorOrder } from "../types";
 import { trackUseSort } from "lib/amplitude";
+import type { SelectInputOption } from "lib/components/forms";
+import { SelectInput } from "lib/components/forms";
 
-const ORDER_OPTIONS = [
+interface OrderOptionValue {
+  order: ValidatorOrder;
+  isDesc: boolean;
+}
+
+type OrderOption = SelectInputOption<OrderOptionValue>;
+
+const ORDER_OPTIONS: OrderOption[] = [
   {
     label: "Validator Name (A to Z)",
     value: { order: ValidatorOrder.Moniker, isDesc: false },
@@ -58,8 +66,8 @@ export const OrderSelect = ({
     <Text variant="body3" color="text.dark" pl={1}>
       Sorted by
     </Text>
-    <Select
-      size="lg"
+    <SelectInput<OrderOptionValue>
+      menuPortalTarget={document.body}
       options={
         allowUptime
           ? ORDER_OPTIONS
@@ -80,29 +88,6 @@ export const OrderSelect = ({
           setIsDesc(selectedOption.value.isDesc);
         }
       }}
-      chakraStyles={{
-        valueContainer: (provided) => ({
-          ...provided,
-          pl: 3,
-          pr: 0,
-        }),
-        dropdownIndicator: (provided) => ({
-          ...provided,
-          px: 2,
-        }),
-        option: (provided) => ({
-          ...provided,
-          color: "text.main",
-          fontSize: "16px",
-          _hover: {
-            bg: "gray.700",
-          },
-          _selected: {
-            bg: "gray.800",
-          },
-        }),
-      }}
-      isSearchable={false}
     />
   </Flex>
 );

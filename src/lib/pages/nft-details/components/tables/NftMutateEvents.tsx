@@ -7,13 +7,9 @@ import type { HexAddr32 } from "lib/types";
 
 interface NftMutateEventsProps {
   nftAddress: HexAddr32;
-  totalData: number;
 }
 
-export const NftMutateEvents = ({
-  nftAddress,
-  totalData,
-}: NftMutateEventsProps) => {
+export const NftMutateEvents = ({ nftAddress }: NftMutateEventsProps) => {
   const {
     pagesQuantity,
     currentPage,
@@ -21,8 +17,8 @@ export const NftMutateEvents = ({
     pageSize,
     setPageSize,
     offset,
+    setTotalData,
   } = usePaginator({
-    total: totalData,
     initialState: {
       pageSize: 10,
       currentPage: 1,
@@ -31,26 +27,27 @@ export const NftMutateEvents = ({
   });
 
   const { data: mutateEvents, isLoading } = useNftMutateEvents(
+    nftAddress,
     pageSize,
     offset,
-    nftAddress
+    { onSuccess: ({ total }) => setTotalData(total) }
   );
 
   return (
     <>
       <MutateEventsTable
-        mutateEvents={mutateEvents}
+        mutateEvents={mutateEvents?.items}
         isLoading={isLoading}
         emptyState={
           <EmptyState imageVariant="empty" message="Mutate events not found." />
         }
       />
-      {totalData > 10 && (
+      {mutateEvents && mutateEvents?.total > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
+          totalData={mutateEvents.total}
           pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {

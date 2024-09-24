@@ -9,7 +9,7 @@ import type {
   AssetInfos,
   Message,
   Option,
-  PoolDetail,
+  PoolData,
   Transaction,
 } from "lib/types";
 import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
@@ -22,7 +22,7 @@ interface PoolTxsMsgProps {
   msgIndex: number;
   message: Option<Message>;
   otherMsgs: { [key: string]: number };
-  pool: PoolDetail;
+  pool: PoolData;
   transaction: Transaction;
   assetInfos: Option<AssetInfos>;
   templateColumns: string;
