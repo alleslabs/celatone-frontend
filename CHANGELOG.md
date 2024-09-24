@@ -41,6 +41,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+### Bug fixes
+
+## v1.9.1
+
+### Improvements
+
 - [#1157](https://github.com/alleslabs/celatone-frontend/pull/1157) Remove graphql and change faucet button
 - [#1156](https://github.com/alleslabs/celatone-frontend/pull/1156) Update osmosis pools to get data from API instead of GraphQL
 - [#1148](https://github.com/alleslabs/celatone-frontend/pull/1148) Update NFT collections to get data from API instead of GraphQL
