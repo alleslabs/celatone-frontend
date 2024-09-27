@@ -1,7 +1,7 @@
-import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS, useInitiaL1 } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import type {
   MoveVerifyByTaskIdResponse,
   MoveVerifyInfoResponse,
@@ -25,17 +25,16 @@ export const useMoveVerifyTaskInfos = (
   taskIds: string[],
   onSuccess?: (data: MoveVerifyByTaskIdResponse) => void
 ) => {
-  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
+  const { currentChainId } = useCelatoneApp();
 
   return useQueries({
     queries: taskIds.map((taskId) => ({
       queryKey: [
         CELATONE_QUERY_KEYS.MOVE_VERIFY_TASK_BY_TASK_ID,
+        currentChainId,
         taskId,
-        isInitiaL1,
       ],
-      queryFn: () => getMoveVerifyByTaskId(taskId),
-      enabled: isInitiaL1,
+      queryFn: () => getMoveVerifyByTaskId(currentChainId, taskId),
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
@@ -48,13 +47,13 @@ export const useMoveVerifyTaskInfo = (
   taskId: string,
   enabled = true
 ): UseQueryResult<MoveVerifyByTaskIdResponse> => {
-  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
+  const { currentChainId } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MOVE_VERIFY_TASK_BY_TASK_ID, taskId, isInitiaL1],
-    () => getMoveVerifyByTaskId(taskId),
+    [CELATONE_QUERY_KEYS.MOVE_VERIFY_TASK_BY_TASK_ID, currentChainId, taskId],
+    () => getMoveVerifyByTaskId(currentChainId, taskId),
     {
-      enabled: enabled && isInitiaL1,
+      enabled,
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
@@ -66,19 +65,18 @@ export const useMoveVerifyInfo = (
   address: Option<Addr>,
   moduleName: Option<string>
 ): UseQueryResult<MoveVerifyInfoResponse> => {
-  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
+  const { currentChainId } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFO, address, moduleName, isInitiaL1],
+    [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFO, currentChainId, address, moduleName],
     () => {
       if (!address || !moduleName)
         throw new Error(
           "address or module name is undefined (useMoveVerifyInfo)"
         );
-      return getMoveVerifyInfo(address, moduleName);
+      return getMoveVerifyInfo(currentChainId, address, moduleName);
     },
     {
-      enabled: isInitiaL1,
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
@@ -90,18 +88,18 @@ export const useMoveVerifyInfos = (
   moduleInfos: { address: HexAddr; moduleName: string }[],
   enabled = true
 ) => {
-  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
+  const { currentChainId } = useCelatoneApp();
 
   return useQueries({
     queries: moduleInfos.map(({ address, moduleName }) => ({
       queryKey: [
         CELATONE_QUERY_KEYS.MOVE_VERIFY_INFO,
+        currentChainId,
         address,
         moduleName,
-        isInitiaL1,
       ],
-      queryFn: () => getMoveVerifyInfo(address, moduleName),
-      enabled: enabled && isInitiaL1,
+      queryFn: () => getMoveVerifyInfo(currentChainId, address, moduleName),
+      enabled,
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
@@ -112,16 +110,17 @@ export const useMoveVerifyInfos = (
 export const useMoveVerifyInfosByAddress = (
   address: Option<Addr>
 ): UseQueryResult<MoveVerifyInfosByAddressResponse> => {
-  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
+  const { currentChainId } = useCelatoneApp();
+
   return useQuery(
-    [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFOS_BY_ADDRESS, address, isInitiaL1],
+    [CELATONE_QUERY_KEYS.MOVE_VERIFY_INFOS_BY_ADDRESS, currentChainId, address],
     () => {
       if (!address)
         throw new Error("address is undefined (useMoveVerifyInfosByAddress)");
-      return getMoveVerifyInfosByAddress(address);
+      return getMoveVerifyInfosByAddress(currentChainId, address);
     },
     {
-      enabled: Boolean(address) && isInitiaL1,
+      enabled: Boolean(address),
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
