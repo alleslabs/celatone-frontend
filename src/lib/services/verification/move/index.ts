@@ -77,6 +77,7 @@ export const useMoveVerifyInfo = (
       return getMoveVerifyInfo(currentChainId, address, moduleName);
     },
     {
+      enabled: Boolean(address && moduleName),
       retry: 0,
       refetchOnWindowFocus: false,
       keepPreviousData: true,
