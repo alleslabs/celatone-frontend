@@ -169,7 +169,7 @@ The website will then be live on [http://localhost:3000](http://localhost:3000)
 - (move only) setting another variable `NEXT_PUBLIC_INITIA_MOVE_DECODER`
 
 ```bash
-NEXT_PUBLIC_SUPPORTED_CHAIN_IDS=initiation-1,<chainId>
+NEXT_PUBLIC_SUPPORTED_CHAIN_IDS=initiation-2,<chainId>
 
 # move only
 NEXT_PUBLIC_INITIA_MOVE_DECODER=https://celatone-move-api-prod-jiod42ec2q-as.a.run.app
