@@ -3,13 +3,13 @@ import type { HexAddr, HexAddr32 } from "lib/types";
 import { zHexAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-const INITIATION_1_LCD = "https://lcd.initiation-1.initia.xyz";
+const INITIATION_2_LCD = "https://rest.initiation-2.initia.xyz";
 const USERNAME_MODULE_ADDRESS =
   "0x42cd8467b1c86e59bf319e5664a09b6b5840bb3fac64f5ce690b5041c530565a" as HexAddr32;
 
 export const getInitiaUsernameByAddress = async (address: HexAddr) =>
   getMoveViewJsonLcd(
-    INITIATION_1_LCD,
+    INITIATION_2_LCD,
     USERNAME_MODULE_ADDRESS,
     "usernames",
     "get_name_from_address",
@@ -19,7 +19,7 @@ export const getInitiaUsernameByAddress = async (address: HexAddr) =>
 
 export const getAddressByInitiaUsername = async (username: string) =>
   getMoveViewJsonLcd(
-    INITIATION_1_LCD,
+    INITIATION_2_LCD,
     USERNAME_MODULE_ADDRESS,
     "usernames",
     "get_address_from_name",
