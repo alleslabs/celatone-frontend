@@ -11,8 +11,8 @@ import { SearchComponent } from "./search";
 import { SectionWrapper } from "./SectionWrapper";
 
 const Header = () => {
-  const { theme } = useCelatoneApp();
   const {
+    theme,
     chainConfig: {
       extra: { faucetUrl },
     },
