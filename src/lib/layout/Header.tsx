@@ -2,6 +2,7 @@ import { Flex, Image } from "@chakra-ui/react";
 
 import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import { FaucetButton } from "lib/components/button";
 import { WalletSection } from "lib/components/Wallet";
 
 import { AppMenu } from "./AppMenu";
@@ -10,7 +11,12 @@ import { SearchComponent } from "./search";
 import { SectionWrapper } from "./SectionWrapper";
 
 const Header = () => {
-  const { theme } = useCelatoneApp();
+  const {
+    theme,
+    chainConfig: {
+      extra: { faucetUrl },
+    },
+  } = useCelatoneApp();
   const isInitia = useInitia();
   return (
     <Flex
@@ -45,6 +51,11 @@ const Header = () => {
         <SearchComponent />
       </SectionWrapper>
       <Flex h="full">
+        {faucetUrl && (
+          <SectionWrapper>
+            <FaucetButton faucetUrl={faucetUrl} />
+          </SectionWrapper>
+        )}
         <SectionWrapper>
           <NetworkMenu />
         </SectionWrapper>

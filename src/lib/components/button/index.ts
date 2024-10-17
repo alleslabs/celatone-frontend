@@ -1,6 +1,7 @@
 export * from "./AdminButton";
 export * from "./BackButton";
 export * from "./ConnectWallet";
+export * from "./FaucetButton";
 export * from "./InstantiateButton";
 export * from "./RedoButton";
 export * from "./ResendButton";
