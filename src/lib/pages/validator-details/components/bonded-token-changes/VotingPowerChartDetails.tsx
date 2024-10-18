@@ -38,8 +38,9 @@ export const VotingPowerChartDetails = ({
 
   const currentPrice = isHistoricalPowersContainsData
     ? formatUTokenWithPrecision(
-        historicalPowers.items[historicalPowers.items.length - 1]
-          .votingPower as U<Token<Big>>,
+        historicalPowers.items[
+          historicalPowers.items.length - 1
+        ].votingPower.div(singleStakingDenom ? 1 : 1e6) as U<Token<Big>>,
         assetInfo?.precision ?? 0,
         true,
         2
@@ -47,9 +48,11 @@ export const VotingPowerChartDetails = ({
     : "";
 
   const compareVotingPower = isHistoricalPowersContainsData
-    ? historicalPowers.items[
-        historicalPowers.items.length - 1
-      ].votingPower.minus(historicalPowers.items[0].votingPower)
+    ? historicalPowers.items[historicalPowers.items.length - 1].votingPower
+        .minus(
+          historicalPowers.items[historicalPowers.items.length - 25].votingPower
+        )
+        .div(singleStakingDenom ? 1 : 1e6)
     : big(0);
 
   const formattedVotingPower = `${formatArithmetic(compareVotingPower)}${formatUTokenWithPrecision(

@@ -54,7 +54,11 @@ export const VotingPowerChart = ({
   });
 
   const dataset = {
-    data: historicalPowers.items.map((item) => item.votingPower.toNumber()),
+    data: historicalPowers.items.map((item) =>
+      singleStakingDenom
+        ? item.votingPower.toNumber()
+        : item.votingPower.div(1e6).toNumber()
+    ),
     borderColor: "#4CE2F7",
     backgroundColor: (context: ScriptableContext<"line">) => {
       const { ctx } = context.chart;
