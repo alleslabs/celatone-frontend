@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1167](https://github.com/alleslabs/celatone-frontend/pull/1167) Normalize voting power for Initia
 - [#1165](https://github.com/alleslabs/celatone-frontend/pull/1165) Remove Miniswap from App menu
 - [#1157](https://github.com/alleslabs/celatone-frontend/pull/1157) Remove graphql and change faucet button
 - [#1156](https://github.com/alleslabs/celatone-frontend/pull/1156) Update osmosis pools to get data from API instead of GraphQL

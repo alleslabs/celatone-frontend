@@ -35,11 +35,23 @@ export const VotingPowerChart = ({
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
 
-  const { data: historicalPowers, isLoading } =
+  const { data: rawHistoricalPowers, isLoading } =
     useValidatorHistoricalPowers(validatorAddress);
 
   if (isLoading) return <Loading />;
-  if (!historicalPowers) return <ErrorFetching dataName="historical powers" />;
+  if (!rawHistoricalPowers)
+    return <ErrorFetching dataName="historical powers" />;
+
+  // NOTE: Divided by 1e6 in case of initial case
+  const historicalPowers = {
+    ...rawHistoricalPowers,
+    items: rawHistoricalPowers.items.map((item) => ({
+      ...item,
+      votingPower: singleStakingDenom
+        ? item.votingPower
+        : item.votingPower.div(1e6), // Initia case
+    })),
+  };
 
   const assetInfo = singleStakingDenom
     ? assetInfos?.[singleStakingDenom]
@@ -54,11 +66,7 @@ export const VotingPowerChart = ({
   });
 
   const dataset = {
-    data: historicalPowers.items.map((item) =>
-      singleStakingDenom
-        ? item.votingPower.toNumber()
-        : item.votingPower.div(1e6).toNumber()
-    ),
+    data: historicalPowers.items.map((item) => item.votingPower.toNumber()),
     borderColor: "#4CE2F7",
     backgroundColor: (context: ScriptableContext<"line">) => {
       const { ctx } = context.chart;

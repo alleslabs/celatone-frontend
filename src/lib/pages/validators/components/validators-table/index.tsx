@@ -71,16 +71,29 @@ export const ValidatorsTable = ({
     : undefined;
 
   const templateColumns = `${isActive ? "64px " : ""}3fr 2fr ${showUptime ? "110px" : ""} 110px`;
+
+  // NOTE: Divided by 1e6 in case of initia case
+  const totalVotingPower = stakingParams?.bondDenom
+    ? data.metadata.totalVotingPower
+    : data.metadata.totalVotingPower.div(1e6);
+
+  const validators = data.items.map((validator) => ({
+    ...validator,
+    votingPower: stakingParams?.bondDenom
+      ? validator.votingPower
+      : validator.votingPower.div(1e6),
+  }));
+
   return (
     <>
       {isMobile ? (
         <MobileTableContainer>
-          {data.items.map((validator) => (
+          {validators.map((validator) => (
             <ValidatorsTableMobileCard
               key={validator.validatorAddress}
               isActive={isActive}
               validator={validator}
-              totalVotingPower={data.metadata.totalVotingPower}
+              totalVotingPower={totalVotingPower}
               minCommissionRate={data.metadata.minCommissionRate}
               denomToken={denomToken}
               showUptime={showUptime}
@@ -99,13 +112,13 @@ export const ValidatorsTable = ({
             setIsDesc={setIsDesc}
             showUptime={showUptime}
           />
-          {data.items.map((validator) => (
+          {validators.map((validator) => (
             <Fragment key={validator.validatorAddress}>
               <ValidatorsTableRow
                 templateColumns={templateColumns}
                 isActive={isActive}
                 validator={validator}
-                totalVotingPower={data.metadata.totalVotingPower}
+                totalVotingPower={totalVotingPower}
                 minCommissionRate={data.metadata.minCommissionRate}
                 denomToken={denomToken}
                 showUptime={showUptime}

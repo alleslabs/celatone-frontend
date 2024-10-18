@@ -63,6 +63,10 @@ export const ValidatorDetailsBodyLite = ({
   if (!data) return <ErrorFetching dataName="validator information" />;
   if (!foundValidator) return <InvalidState title="Validator does not exist" />;
 
+  const selfVotingPower = delegations?.length
+    ? big(delegations[0].balance.amount)
+    : big(0);
+
   return (
     <>
       <PageHeaderContainer bgColor="transparent">
@@ -90,10 +94,21 @@ export const ValidatorDetailsBodyLite = ({
           details={foundValidator.details}
           singleStakingDenom={stakingParams?.bondDenom}
           assetInfos={assetInfos}
-          votingPower={foundValidator.votingPower}
-          totalVotingPower={totalVotingPower}
+          //  NOTE: Divided by 1e6 in case of initial case
+          votingPower={
+            stakingParams?.bondDenom
+              ? foundValidator.votingPower
+              : foundValidator.votingPower.div(1e6)
+          }
+          totalVotingPower={
+            stakingParams?.bondDenom
+              ? totalVotingPower
+              : totalVotingPower.div(1e6)
+          }
           selfVotingPower={
-            delegations?.length ? big(delegations[0].balance.amount) : big(0)
+            stakingParams?.bondDenom
+              ? selfVotingPower
+              : selfVotingPower.div(1e6)
           }
         />
         <UserDocsLink

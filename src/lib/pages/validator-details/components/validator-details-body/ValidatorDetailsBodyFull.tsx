@@ -122,9 +122,22 @@ export const ValidatorDetailsBodyFull = ({
                 details={data.info.details}
                 singleStakingDenom={stakingParams?.bondDenom}
                 assetInfos={assetInfos}
-                votingPower={data.info.votingPower}
-                totalVotingPower={data.totalVotingPower}
-                selfVotingPower={data.selfVotingPower}
+                // NOTE: Divided by 1e6 for initia case
+                votingPower={
+                  stakingParams?.bondDenom
+                    ? data.info.votingPower
+                    : data.info.votingPower.div(1e6)
+                }
+                totalVotingPower={
+                  stakingParams?.bondDenom
+                    ? data.totalVotingPower
+                    : data.totalVotingPower.div(1e6)
+                }
+                selfVotingPower={
+                  stakingParams?.bondDenom
+                    ? data.selfVotingPower
+                    : data.selfVotingPower.div(1e6)
+                }
               />
             </TabPanel>
             <TabPanel p={0} pt={6}>

@@ -1,5 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
+import { useMemo } from "react";
 
 import type { HistoricalPowersResponse } from "lib/services/types";
 import { big } from "lib/types";
@@ -36,24 +37,31 @@ export const VotingPowerChartDetails = ({
   const isHistoricalPowersContainsData =
     historicalPowers && historicalPowers.items.length > 0;
 
-  const currentPrice = isHistoricalPowersContainsData
+  const currentVotingPower = isHistoricalPowersContainsData
     ? formatUTokenWithPrecision(
-        historicalPowers.items[
-          historicalPowers.items.length - 1
-        ].votingPower.div(singleStakingDenom ? 1 : 1e6) as U<Token<Big>>,
+        historicalPowers.items[historicalPowers.items.length - 1]
+          .votingPower as U<Token<Big>>,
         assetInfo?.precision ?? 0,
         true,
         2
       )
     : "";
 
-  const compareVotingPower = isHistoricalPowersContainsData
-    ? historicalPowers.items[historicalPowers.items.length - 1].votingPower
-        .minus(
-          historicalPowers.items[historicalPowers.items.length - 25].votingPower
-        )
-        .div(singleStakingDenom ? 1 : 1e6)
-    : big(0);
+  // NOTE: compute 24 hrs voting power change
+  const compareVotingPower = useMemo(() => {
+    try {
+      return isHistoricalPowersContainsData
+        ? historicalPowers.items[
+            historicalPowers.items.length - 1
+          ].votingPower.minus(
+            historicalPowers.items[historicalPowers.items.length - 25]
+              .votingPower
+          )
+        : big(0);
+    } catch {
+      return big(0);
+    }
+  }, [historicalPowers.items, isHistoricalPowersContainsData]);
 
   const formattedVotingPower = `${formatArithmetic(compareVotingPower)}${formatUTokenWithPrecision(
     compareVotingPower.abs() as U<Token<Big>>,
@@ -68,7 +76,7 @@ export const VotingPowerChartDetails = ({
         {singleStakingDenom ? "Current Bonded Token" : "Current Voting Powers"}
       </Heading>
       <Heading variant="h5" fontWeight={600}>
-        {currentPrice} {currency}
+        {currentVotingPower} {currency}
       </Heading>
       <Text variant="body1">
         <Text
