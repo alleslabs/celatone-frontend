@@ -5,10 +5,10 @@ import { useInternalNavigate } from "lib/app-provider";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type {
+  AssetInfo,
   Option,
   Ratio,
   Token,
-  TokenWithValue,
   U,
   ValidatorData,
 } from "lib/types";
@@ -24,7 +24,7 @@ interface ValidatorsTableMobileCardProps {
   isActive: boolean;
   totalVotingPower: Big;
   minCommissionRate: number;
-  denomToken: Option<TokenWithValue>;
+  assetInfo: Option<AssetInfo>;
   showUptime: boolean;
 }
 export const ValidatorsTableMobileCard = ({
@@ -32,7 +32,7 @@ export const ValidatorsTableMobileCard = ({
   isActive,
   totalVotingPower,
   minCommissionRate,
-  denomToken,
+  assetInfo,
   showUptime,
 }: ValidatorsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
@@ -92,12 +92,12 @@ export const ValidatorsTableMobileCard = ({
               (
               {formatUTokenWithPrecision(
                 validator.votingPower as U<Token<Big>>,
-                denomToken?.precision ?? 0,
+                assetInfo?.precision ?? 0,
                 false,
                 2
               )}
-              {denomToken
-                ? ` ${getTokenLabel(denomToken.denom, denomToken.symbol)}`
+              {assetInfo?.id
+                ? ` ${getTokenLabel(assetInfo.id, assetInfo.symbol)}`
                 : undefined}
               )
             </Text>
