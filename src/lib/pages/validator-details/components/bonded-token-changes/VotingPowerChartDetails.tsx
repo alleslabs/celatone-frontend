@@ -49,14 +49,15 @@ export const VotingPowerChartDetails = ({
 
   // NOTE: compute 24 hrs voting power change
   const compareVotingPower = useMemo(() => {
-    return isHistoricalPowersContainsData
-      ? historicalPowers.items[
-          historicalPowers.items.length - 1
-        ].votingPower.minus(
-          historicalPowers.items[historicalPowers.items.length - 25]
-            ?.votingPower ?? big(0)
-        )
-      : big(0);
+    if (isHistoricalPowersContainsData) {
+      const presentVotingPower =
+        historicalPowers.items[historicalPowers.items.length - 1].votingPower;
+      const yesterdayVotingPower =
+        historicalPowers.items[historicalPowers.items.length - 25]
+          ?.votingPower ?? big(0);
+      return presentVotingPower.minus(yesterdayVotingPower);
+    }
+    return big(0);
   }, [historicalPowers.items, isHistoricalPowersContainsData]);
 
   const formattedVotingPower = `${formatArithmetic(compareVotingPower)}${formatUTokenWithPrecision(
