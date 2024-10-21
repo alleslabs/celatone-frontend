@@ -11,7 +11,7 @@ import { useAssetInfos } from "lib/services/assetService";
 import { useStakingParamsLcd } from "lib/services/staking";
 import type { ValidatorsResponse } from "lib/services/types";
 import type { Option } from "lib/types";
-import { coinToTokenWithValue } from "lib/utils";
+import { getStakingAssetInfo } from "lib/utils";
 
 import { ValidatorsPercentDivider } from "./ValidatorsPercentDivider";
 import { ValidatorsTableHeader } from "./ValidatorsTableHeader";
@@ -66,9 +66,7 @@ export const ValidatorsTable = ({
     );
 
   const displayDividers = order === ValidatorOrder.VotingPower && isDesc;
-  const denomToken = stakingParams?.bondDenom
-    ? coinToTokenWithValue(stakingParams.bondDenom, "0", assetInfos)
-    : undefined;
+  const assetInfo = getStakingAssetInfo(stakingParams?.bondDenom, assetInfos);
 
   const templateColumns = `${isActive ? "64px " : ""}3fr 2fr ${showUptime ? "110px" : ""} 110px`;
   return (
@@ -82,7 +80,7 @@ export const ValidatorsTable = ({
               validator={validator}
               totalVotingPower={data.metadata.totalVotingPower}
               minCommissionRate={data.metadata.minCommissionRate}
-              denomToken={denomToken}
+              assetInfo={assetInfo}
               showUptime={showUptime}
             />
           ))}
@@ -107,7 +105,7 @@ export const ValidatorsTable = ({
                 validator={validator}
                 totalVotingPower={data.metadata.totalVotingPower}
                 minCommissionRate={data.metadata.minCommissionRate}
-                denomToken={denomToken}
+                assetInfo={assetInfo}
                 showUptime={showUptime}
               />
               {displayDividers &&
