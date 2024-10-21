@@ -115,8 +115,8 @@ export const SelectFunctionSection = ({
           />
           <Flex
             gap={6}
-            h={{ base: "auto", md: maxHeight }}
-            minH={{ base: 40, md: "auto" }}
+            h={{ base: "calc(100% - 125px)", md: maxHeight }}
+            minH={{ md: "auto" }}
           >
             <Flex
               flex={{ base: 1, md: 0.5 }}
@@ -137,7 +137,7 @@ export const SelectFunctionSection = ({
                   />
                 </Flex>
               )}
-              <Flex direction="column" gap={3} overflow="scroll">
+              <Flex direction="column" gap={3} overflow="scroll" pb={4}>
                 <RenderFunctions
                   exposedFnsLength={module.viewFunctions.length}
                   filtered={filteredView}

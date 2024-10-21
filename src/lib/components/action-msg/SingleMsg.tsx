@@ -48,7 +48,7 @@ export const SingleMsg = ({
             token={token}
             // TODO: add `ampCopierSection` later
           />
-          {tokens.length > 1 && (
+          {tokens.length > 1 && index < tokens.length - 1 && (
             <>
               {index < tokens.length - 2 ? (
                 <Text>,</Text>
@@ -59,7 +59,7 @@ export const SingleMsg = ({
           )}
         </Flex>
       ))}
-      {/* Tags  */}
+      {/* Tags */}
       {tags?.map((tag, index: number) => (
         <Tag
           variant="gray"
