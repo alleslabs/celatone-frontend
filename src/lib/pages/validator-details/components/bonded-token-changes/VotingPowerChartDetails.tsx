@@ -1,5 +1,6 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
+import { useMemo } from "react";
 
 import type { HistoricalPowersResponse } from "lib/services/types";
 import { big } from "lib/types";
@@ -36,7 +37,7 @@ export const VotingPowerChartDetails = ({
   const isHistoricalPowersContainsData =
     historicalPowers && historicalPowers.items.length > 0;
 
-  const currentPrice = isHistoricalPowersContainsData
+  const currentVotingPower = isHistoricalPowersContainsData
     ? formatUTokenWithPrecision(
         historicalPowers.items[historicalPowers.items.length - 1]
           .votingPower as U<Token<Big>>,
@@ -46,11 +47,18 @@ export const VotingPowerChartDetails = ({
       )
     : "";
 
-  const compareVotingPower = isHistoricalPowersContainsData
-    ? historicalPowers.items[
-        historicalPowers.items.length - 1
-      ].votingPower.minus(historicalPowers.items[0].votingPower)
-    : big(0);
+  // NOTE: compute 24 hrs voting power change
+  const compareVotingPower = useMemo(() => {
+    if (isHistoricalPowersContainsData) {
+      const presentVotingPower =
+        historicalPowers.items[historicalPowers.items.length - 1].votingPower;
+      const yesterdayVotingPower =
+        historicalPowers.items[historicalPowers.items.length - 25]
+          ?.votingPower ?? big(0);
+      return presentVotingPower.minus(yesterdayVotingPower);
+    }
+    return big(0);
+  }, [historicalPowers.items, isHistoricalPowersContainsData]);
 
   const formattedVotingPower = `${formatArithmetic(compareVotingPower)}${formatUTokenWithPrecision(
     compareVotingPower.abs() as U<Token<Big>>,
@@ -65,7 +73,7 @@ export const VotingPowerChartDetails = ({
         {singleStakingDenom ? "Current Bonded Token" : "Current Voting Powers"}
       </Heading>
       <Heading variant="h5" fontWeight={600}>
-        {currentPrice} {currency}
+        {currentVotingPower} {currency}
       </Heading>
       <Text variant="body1">
         <Text

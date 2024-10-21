@@ -14,6 +14,7 @@ import {
   formatMMMDD,
   formatUTC,
   formatUTokenWithPrecision,
+  getStakingAssetInfo,
   getTokenLabel,
 } from "lib/utils";
 
@@ -41,9 +42,7 @@ export const VotingPowerChart = ({
   if (isLoading) return <Loading />;
   if (!historicalPowers) return <ErrorFetching dataName="historical powers" />;
 
-  const assetInfo = singleStakingDenom
-    ? assetInfos?.[singleStakingDenom]
-    : undefined;
+  const assetInfo = getStakingAssetInfo(singleStakingDenom, assetInfos);
 
   const currency = singleStakingDenom
     ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`
