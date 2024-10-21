@@ -7,14 +7,19 @@ export const calBonded = (
 ) => {
   if (!totalDelegations || !totalUnbondings) return undefined;
 
-  return Object.keys(totalDelegations).reduce<Record<string, TokenWithValue>>(
-    (total, denom) => ({
+  const totalBonded = Object.entries(totalDelegations).reduce<
+    Record<string, TokenWithValue>
+  >(
+    (total, [denom, token]) => ({
       ...total,
-      [denom]: addTokenWithValue(
-        totalUnbondings[denom],
-        totalDelegations[denom]
-      ),
+      [denom]: addTokenWithValue(totalUnbondings[denom], token),
     }),
     {}
   );
+
+  Object.entries(totalUnbondings).forEach(([denom, token]) => {
+    if (!totalBonded[denom]) totalBonded[denom] = token;
+  });
+
+  return totalBonded;
 };
