@@ -19,6 +19,7 @@ import {
   formatPrettyPercent,
   formatPrice,
   formatUTokenWithPrecision,
+  getStakingAssetInfo,
   getTokenLabel,
   toToken,
 } from "lib/utils";
@@ -98,9 +99,7 @@ export const VotingPowerOverview = ({
 }: VotingPowerOverviewProps) => {
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
-  const assetInfo = singleStakingDenom
-    ? assetInfos?.[singleStakingDenom]
-    : undefined;
+  const assetInfo = getStakingAssetInfo(singleStakingDenom, assetInfos);
 
   const votingPowerPercent = formatPrettyPercent(
     divWithDefault(

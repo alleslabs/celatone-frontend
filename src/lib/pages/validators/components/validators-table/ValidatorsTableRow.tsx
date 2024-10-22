@@ -6,10 +6,10 @@ import { useInternalNavigate } from "lib/app-provider";
 import { TableRow } from "lib/components/table";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type {
+  AssetInfo,
   Option,
   Ratio,
   Token,
-  TokenWithValue,
   U,
   ValidatorAddr,
   ValidatorData,
@@ -27,7 +27,7 @@ interface ValidatorsTableRowProps {
   validator: ValidatorData;
   totalVotingPower: Big;
   minCommissionRate: number;
-  denomToken: Option<TokenWithValue>;
+  assetInfo: Option<AssetInfo>;
   showUptime: boolean;
 }
 
@@ -37,7 +37,7 @@ export const ValidatorsTableRow = ({
   validator,
   totalVotingPower,
   minCommissionRate,
-  denomToken,
+  assetInfo,
   showUptime,
 }: ValidatorsTableRowProps) => {
   const navigate = useInternalNavigate();
@@ -93,12 +93,12 @@ export const ValidatorsTableRow = ({
             (
             {formatUTokenWithPrecision(
               validator.votingPower as U<Token<Big>>,
-              denomToken?.precision ?? 0,
+              assetInfo?.precision ?? 0,
               false,
               2
             )}
-            {denomToken
-              ? ` ${getTokenLabel(denomToken.denom, denomToken.symbol)}`
+            {assetInfo?.id
+              ? ` ${getTokenLabel(assetInfo.id, assetInfo.symbol)}`
               : undefined}
             )
           </Text>
