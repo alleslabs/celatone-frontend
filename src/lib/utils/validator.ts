@@ -1,7 +1,7 @@
 import { Ripemd160, sha256 } from "@cosmjs/crypto";
 import { fromBase64, fromHex, toBech32, toHex } from "@cosmjs/encoding";
 
-import type { ConsensusPubkey } from "lib/types";
+import type { AssetInfo, AssetInfos, ConsensusPubkey, Option } from "lib/types";
 import { zConsensusAddr } from "lib/types";
 
 export const convertRawConsensusAddrToConsensusAddr = (
@@ -29,4 +29,24 @@ export const convertConsensusPubkeyToConsensusAddr = (
   }
 
   return zConsensusAddr.parse("");
+};
+
+export const getStakingAssetInfo = (
+  singleStakingDenom: Option<string>,
+  assetInfos: Option<AssetInfos>
+): Option<AssetInfo> => {
+  if (singleStakingDenom) return assetInfos?.[singleStakingDenom];
+  //  NOTE: divided by 1e6 for initia case
+  return {
+    coingecko: "",
+    description: "",
+    id: "",
+    logo: "",
+    name: "",
+    precision: 6,
+    price: 0,
+    slugs: [],
+    symbol: "",
+    type: "",
+  };
 };
