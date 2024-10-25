@@ -240,11 +240,14 @@ const InteractBody = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
+  // For ModuleSelectDrawerMobile
   useEffect(() => {
     if (!module || !isMobile || !router.isReady) return;
 
     setSelectedModule(module);
-    handleDrawerOpen(ModuleInteractionMobileStep.SelectFunction);
+
+    if (!selectedFn)
+      handleDrawerOpen(ModuleInteractionMobileStep.SelectFunction);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady, module]);
 

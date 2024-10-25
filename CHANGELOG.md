@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1172](https://github.com/alleslabs/celatone-frontend/pull/1172) Fix auto popup for module drawer in mobile
+
 ## v1.9.2
 
 ### Improvements
