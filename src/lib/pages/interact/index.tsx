@@ -381,7 +381,7 @@ const InteractBody = ({
           onOpen={onOpen}
         />
       )}
-      <Box px={{ base: "16px", md: "48px" }}>
+      <Box pt="32px">
         <ModuleSourceCode
           verificationData={verificationData}
           moveVerifyStatus={moveVerifyStatus}

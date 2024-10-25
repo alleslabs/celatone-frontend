@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { INITIA_MOVE_VERIFIER } from "env";
+import { CELATONE_VERIFICATION_API } from "env";
 import type {
   MoveVerifyByTaskIdResponse,
   MoveVerifyInfoResponse,
@@ -20,7 +20,7 @@ export const submitMoveVerify = async (
   formData: FormData
 ): Promise<SubmitMoveVerifyResponse> =>
   axios
-    .post(`${INITIA_MOVE_VERIFIER}/contracts/verify`, formData, {
+    .post(`${CELATONE_VERIFICATION_API}/move/initia-verify`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -28,27 +28,43 @@ export const submitMoveVerify = async (
     .then(({ data }) => parseWithError(zSubmitMoveVerifyResponse, data));
 
 export const getMoveVerifyByTaskId = async (
+  chainId: string,
   taskId: string
 ): Promise<MoveVerifyByTaskIdResponse> =>
   axios
-    .get(`${INITIA_MOVE_VERIFIER}/contracts/task/${encodeURI(taskId)}`)
+    .get(
+      `${CELATONE_VERIFICATION_API}/move/initia-task-info/${encodeURI(taskId)}`,
+      {
+        params: { chainId },
+      }
+    )
     .then(({ data }) => parseWithError(zMoveVerifyByTaskIdResponse, data));
 
 export const getMoveVerifyInfo = async (
+  chainId: string,
   address: Addr,
   moduleName: string
 ): Promise<Nullable<MoveVerifyInfoResponse>> =>
   axios
     .get(
-      `${INITIA_MOVE_VERIFIER}/contracts/verify/${encodeURI(address)}/${encodeURI(moduleName)}`
+      `${CELATONE_VERIFICATION_API}/move/initia-verify-infos/${encodeURI(address)}/${encodeURI(moduleName)}`,
+      {
+        params: { chainId },
+      }
     )
     .then(({ data }) => parseWithError(zMoveVerifyInfoResponse, data));
 
 export const getMoveVerifyInfosByAddress = async (
+  chainId: string,
   address: Addr
 ): Promise<MoveVerifyInfosByAddressResponse> =>
   axios
-    .get(`${INITIA_MOVE_VERIFIER}/contracts/${encodeURI(address)}`)
+    .get(
+      `${CELATONE_VERIFICATION_API}/move/initia-verify-infos/${encodeURI(address)}`,
+      {
+        params: { chainId },
+      }
+    )
     .then(({ data }) =>
       parseWithError(zMoveVerifyInfosByAddressResponse, data)
     );
