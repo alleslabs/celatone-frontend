@@ -447,7 +447,7 @@ export const zTxJsonRpc = z.object({
   v: z.string(),
   r: z.string(),
   s: z.string(),
-  yParity: z.string(),
+  yParity: z.string().optional(),
 });
 
 export const zTxReceiptJsonRpc = z.object({
