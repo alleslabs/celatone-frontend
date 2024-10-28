@@ -1,7 +1,9 @@
 import type { ChainConfig } from "@alleslabs/shared";
+import { capitalize } from "lodash";
 import type { RefinementCtx } from "zod";
 import { z, ZodIssueCode } from "zod";
 
+import { getAccountBech32Lcd } from "lib/services/account/lcd";
 import {
   zAsset,
   zChainConfig,
@@ -13,6 +15,19 @@ import {
   zNumberInput,
   zRegistry,
 } from "lib/types";
+
+import {
+  DEFAULT_BECH32_PREFIX,
+  DEFAULT_CUSTOM_MINITIA_NETWORK,
+  DEFAULT_GAS,
+  DEFAULT_GOV_CONFIG,
+  DEFAULT_MOVE_CONFIG,
+  DEFAULT_POOL_CONFIG,
+  DEFAULT_PUBLIC_PROJECT_CONFIG,
+  DEFAULT_SLIP44,
+  DEFAULT_WALLET_CONFIG,
+  DEFAULT_WASM_CONFIG,
+} from "./constant";
 
 const isAlphabetNumberAndSpecialCharacters = (str: string) =>
   /^[a-z0-9/:._-]+$/.test(str);
@@ -362,9 +377,9 @@ export const zAddNetworkManualChainConfigJson = ({
       slip44,
       assets,
     }: AddNetworkManualForm) => ({
-      tier: "sequencer",
+      ...DEFAULT_CUSTOM_MINITIA_NETWORK,
+      wallets: DEFAULT_WALLET_CONFIG,
       chainId,
-      chain: "initia",
       registryChainName,
       prettyName,
       logo_URIs: {
@@ -372,26 +387,9 @@ export const zAddNetworkManualChainConfigJson = ({
       },
       lcd,
       rpc,
-      wallets: ["initia", "keplr"],
       features: {
-        faucet: {
-          enabled: false,
-        },
-        wasm:
-          vm.type === "wasm"
-            ? {
-                enabled: true,
-                storeCodeMaxFileSize: 1024 * 1024 * 2,
-                clearAdminGas: 1000000,
-              }
-            : { enabled: false },
-        move:
-          vm.type === "move"
-            ? {
-                enabled: true,
-                moduleMaxFileSize: 1_048_576,
-              }
-            : { enabled: false },
+        wasm: vm.type === "wasm" ? DEFAULT_WASM_CONFIG : { enabled: false },
+        move: vm.type === "move" ? DEFAULT_MOVE_CONFIG : { enabled: false },
         evm:
           vm.type === "evm"
             ? {
@@ -399,15 +397,9 @@ export const zAddNetworkManualChainConfigJson = ({
                 jsonRpc: vm.jsonRpc,
               }
             : { enabled: false },
-        pool: {
-          enabled: false,
-        },
-        publicProject: {
-          enabled: true,
-        },
-        gov: {
-          enabled: false,
-        },
+        pool: DEFAULT_POOL_CONFIG,
+        publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
+        gov: DEFAULT_GOV_CONFIG,
         nft: {
           enabled: vm.type === "move",
         },
@@ -416,11 +408,6 @@ export const zAddNetworkManualChainConfigJson = ({
         gasAdjustment,
         maxGasLimit,
       },
-      extra: {
-        isValidatorExternalLink: null,
-        layer: "2",
-      },
-      network_type: "local",
       fees: {
         fee_tokens: [
           {
@@ -477,15 +464,86 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
   })
   .transform<ChainConfig>((val) => ({
     ...val,
-    tier: "sequencer",
-    chain: "initia",
-    extra: {
-      isValidatorExternalLink: null,
-      layer: "2",
-    },
-    network_type: "local",
+    ...DEFAULT_CUSTOM_MINITIA_NETWORK,
   }));
 
 export type AddNetworkJsonChainConfigJson = z.infer<
   typeof zAddNetworkJsonChainConfigJson
 >;
+
+export const zAddNetworkLinkChainConfigJson = z
+  .object({
+    chainId: z.string(),
+    lcd: zHttpsUrl,
+    rpc: zHttpsUrl,
+    jsonRpc: zHttpsUrl.optional(),
+    vm: z.nativeEnum(VmType),
+    minGasPrice: z.number(),
+    denom: z.string(),
+  })
+  .superRefine((val, ctx) => {
+    if (val.vm === VmType.EVM && !val.jsonRpc) {
+      ctx.addIssue({
+        code: ZodIssueCode.custom,
+        message: "jsonRpc is required when vm is evm",
+        path: ["jsonRpc"],
+      });
+    }
+  })
+  .transform<ChainConfig>(async (val) => {
+    const bech32Prefix = await getAccountBech32Lcd(val.lcd)
+      .then((res) => res.bech32Prefix)
+      .catch(() => DEFAULT_BECH32_PREFIX);
+
+    const registryChainName = val.chainId.split("-")[0];
+    const prettyName = capitalize(registryChainName);
+
+    return {
+      ...DEFAULT_CUSTOM_MINITIA_NETWORK,
+      chainId: val.chainId,
+      registryChainName,
+      prettyName,
+      logo_URIs: {
+        png: "",
+      },
+      wallets: DEFAULT_WALLET_CONFIG,
+      lcd: val.lcd,
+      rpc: val.rpc,
+      features: {
+        wasm: val.vm === VmType.WASM ? DEFAULT_WASM_CONFIG : { enabled: false },
+        move: val.vm === VmType.MOVE ? DEFAULT_MOVE_CONFIG : { enabled: false },
+        evm:
+          val.vm === VmType.EVM
+            ? { enabled: true, jsonRpc: val.jsonRpc! } // jsonRpc is required when vm is evm
+            : { enabled: false },
+        pool: DEFAULT_POOL_CONFIG,
+        publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
+        gov: DEFAULT_GOV_CONFIG,
+        nft: {
+          enabled: val.vm === VmType.MOVE,
+        },
+      },
+      gas: {
+        gasAdjustment: DEFAULT_GAS.gasAdjustment,
+        maxGasLimit: DEFAULT_GAS.maxGasLimit,
+      },
+      fees: {
+        fee_tokens: [
+          {
+            denom: val.denom,
+            fixed_min_gas_price: val.minGasPrice,
+            low_gas_price: val.minGasPrice,
+            average_gas_price: val.minGasPrice,
+          },
+        ],
+      },
+      registry: {
+        bech32_prefix: bech32Prefix,
+        slip44: DEFAULT_SLIP44,
+        staking: {
+          staking_tokens: [],
+        },
+        assets: [],
+      },
+    };
+  });
