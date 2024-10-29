@@ -35,7 +35,7 @@ export const AddNetworkLink = observer(() => {
           await zAddNetworkLinkChainConfigJson.safeParseAsync(decodedConfig);
 
         if (!validated.success) {
-          throw new Error("Invalid config");
+          throw new Error(validated.error.message);
         }
 
         const { data: validatedData } = validated;
@@ -57,12 +57,8 @@ export const AddNetworkLink = observer(() => {
     };
 
     validateAndAddConfig();
-  }, [
-    addLocalChainConfig,
-    isChainIdExist,
-    isPrettyNameExist,
-    router.query.config,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.config]);
 
   useEffect(() => {
     if (!json) return;
@@ -81,7 +77,9 @@ export const AddNetworkLink = observer(() => {
         alignItems="center"
         px={10}
       >
-        <Text>{error}</Text>
+        <Text variant="body1" color="text.dark">
+          {error}
+        </Text>
       </Flex>
     );
 

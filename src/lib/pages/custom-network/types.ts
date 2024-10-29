@@ -503,9 +503,6 @@ export const zAddNetworkLinkChainConfigJson = z
       chainId: val.chainId,
       registryChainName,
       prettyName,
-      logo_URIs: {
-        png: "",
-      },
       wallets: DEFAULT_WALLET_CONFIG,
       lcd: val.lcd,
       rpc: val.rpc,
