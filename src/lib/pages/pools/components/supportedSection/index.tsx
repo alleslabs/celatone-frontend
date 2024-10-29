@@ -196,7 +196,7 @@ export const SupportedSection = ({
         </Flex>
       </Flex>
       <SupportedPoolList pools={pools} isLoading={isLoading} mode={toggle} />
-      {totalCount && totalCount > 10 && (
+      {!!totalCount && totalCount > 10 && (
         <Pagination
           currentPage={currentPage}
           pagesQuantity={pagesQuantity}

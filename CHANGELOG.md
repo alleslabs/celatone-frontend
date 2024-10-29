@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1175](https://github.com/alleslabs/celatone-frontend/pull/1175) Fix tooltip bg color
+
 ## v1.9.2
 
 ### Improvements
