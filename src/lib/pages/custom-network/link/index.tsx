@@ -1,20 +1,40 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import type { ChainConfig } from "@alleslabs/shared";
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { zAddNetworkLinkChainConfigJson } from "../types";
 import { useChainConfigs } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
+import { CustomIcon } from "lib/components/icon";
+import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import { EmptyState } from "lib/components/state";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { libDecode } from "lib/utils";
+
+type AddCustomNetworkError =
+  | {
+      type: "no_config";
+    }
+  | {
+      type: "invalid_config";
+      message: string;
+    }
+  | {
+      type: "chain_exists";
+    }
+  | { type: "no_error" };
 
 export const AddNetworkLink = observer(() => {
   const router = useRouter();
   const [json, setJson] = useState<ChainConfig | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<AddCustomNetworkError>({
+    type: "no_error",
+  });
   const { isChainIdExist, isPrettyNameExist } = useChainConfigs();
   const { addLocalChainConfig, getLocalChainConfig } =
     useLocalChainConfigStore();
@@ -22,7 +42,7 @@ export const AddNetworkLink = observer(() => {
   // Automatically populate, validate and add config if query param is present
   useEffect(() => {
     if (!router.query.config) {
-      setError("No config provided");
+      setError({ type: "no_config" });
       return;
     }
 
@@ -35,7 +55,11 @@ export const AddNetworkLink = observer(() => {
           await zAddNetworkLinkChainConfigJson.safeParseAsync(decodedConfig);
 
         if (!validated.success) {
-          throw new Error(validated.error.message);
+          setError({
+            type: "invalid_config",
+            message: validated.error.message,
+          });
+          return;
         }
 
         const { data: validatedData } = validated;
@@ -43,16 +67,18 @@ export const AddNetworkLink = observer(() => {
           isChainIdExist(validatedData.chainId) ||
           isPrettyNameExist(validatedData.prettyName)
         ) {
-          throw new Error("Chain already exists");
+          setJson(validatedData);
+          setError({ type: "chain_exists" });
+          return;
         }
+
         addLocalChainConfig(validatedData.chainId, validatedData);
         setJson(validatedData);
       } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("An unknown error occurred");
-        }
+        setError({
+          type: "invalid_config",
+          message: "An unknown error occurred",
+        });
       }
     };
 
@@ -60,16 +86,17 @@ export const AddNetworkLink = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.config]);
 
+  // Automatically redirect to the added chain
   useEffect(() => {
     if (!json) return;
-    const addedChain = getLocalChainConfig(json?.chainId);
+    const addedChain = getLocalChainConfig(json.chainId);
 
-    if (addedChain) {
-      window.location.href = `/${json.chainId}`;
+    if (addedChain && error.type === "no_error") {
+      window.location.href = `/${addedChain.chainId}`;
     }
-  }, [getLocalChainConfig, json]);
+  }, [getLocalChainConfig, json, error.type, router]);
 
-  if (error)
+  if (error.type !== "no_error")
     return (
       <Flex
         style={{ height: "calc(100vh - 140px)" }}
@@ -77,9 +104,51 @@ export const AddNetworkLink = observer(() => {
         alignItems="center"
         px={10}
       >
-        <Text variant="body1" color="text.dark">
-          {error}
-        </Text>
+        {error.type === "no_config" && (
+          <EmptyState
+            imageVariant="error"
+            heading="No config provided"
+            message="There are no network config provided with the link."
+          />
+        )}
+        {error.type === "chain_exists" && (
+          <EmptyState
+            imageVariant="error"
+            heading={`${json?.chainId} is already added`}
+            py={0}
+          >
+            <Text color="text.dark" variant="body2">
+              You can access {json?.chainId} in InitiaScan through
+              <Link href={`/${json?.chainId}`}>
+                <Text color="primary.main" display="inline-flex" mx={1}>
+                  this link
+                </Text>
+              </Link>
+            </Text>
+          </EmptyState>
+        )}
+        {error.type === "invalid_config" && (
+          <EmptyState
+            imageVariant="error"
+            heading={`There is an error adding ${json?.chainId ?? "custom network"} to InitiaScan`}
+            message="The provided configuration is invalid. Here is the error log"
+            py={0}
+          >
+            <Box minW="40%" maxW="70%">
+              <TextReadOnly text={error.message} canCopy />
+            </Box>
+            <Text mt={6}>You can add this custom Minitia manually</Text>
+            <AppLink href="/custom-network/add">
+              <Button
+                variant="outline-gray"
+                leftIcon={<CustomIcon name="plus" />}
+                mt={2}
+              >
+                Add custom minitia
+              </Button>
+            </AppLink>
+          </EmptyState>
+        )}
       </Flex>
     );
 
