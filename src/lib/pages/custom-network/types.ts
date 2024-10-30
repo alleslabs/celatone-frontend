@@ -473,7 +473,7 @@ export type AddNetworkJsonChainConfigJson = z.infer<
 
 export const zAddNetworkLinkChainConfigJson = z
   .object({
-    chainId: z.string(),
+    chainId: z.string().min(1, "Chain ID cannot be empty"),
     lcd: zHttpsUrl,
     rpc: zHttpsUrl,
     jsonRpc: zHttpsUrl.optional(),
