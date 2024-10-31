@@ -75,7 +75,6 @@ const FunctionButton = ({
 
   return (
     <Tooltip
-      bg="primary.dark"
       label={
         isMobile && !isView
           ? "You can currently execute functions on a desktop device only"
