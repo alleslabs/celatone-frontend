@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@alleslabs/shared':
-        specifier: 1.0.0-dev5
-        version: 1.0.0-dev5
+        specifier: 1.0.0-dev6
+        version: 1.0.0-dev6
       '@amplitude/analytics-browser':
         specifier: ^2.3.3
         version: 2.3.8
@@ -397,8 +397,8 @@ packages:
   '@adobe/css-tools@4.3.2':
     resolution: {integrity: sha512-DA5a1C0gD/pLOvhv33YMrbf2FK3oUzwNl9oOJqE4XVjuEtt6XIakRcsd7eLiOSPkp1kTRQGICTA8cKra/vFbjw==}
 
-  '@alleslabs/shared@1.0.0-dev5':
-    resolution: {integrity: sha512-pk4eIxQbI0EQzlVuYtM6LKn22pR0QzyiSyXB/tBjpTdet6SeMlaRoXH9MfneRA1yIaQDAGvwynDQKuu9l/1JNQ==}
+  '@alleslabs/shared@1.0.0-dev6':
+    resolution: {integrity: sha512-JFkD+EhzUYLlnxplNBFgjzPh5zaZlpZ4Gg3sWzVdwrX3RAJgdvLJ0Xz2pUazEbzgr4Kszso0SRsmIod7O2/NsQ==}
 
   '@amplitude/analytics-browser@2.3.8':
     resolution: {integrity: sha512-K+12aAVJPzAtWIi8Ok5Q5dvg7v7IF4G0cI8PW0COWo3uTyY103r45OcpgrpRVpVAr+41d1eiMo36jqOke89uPA==}
@@ -10122,7 +10122,7 @@ snapshots:
 
   '@adobe/css-tools@4.3.2': {}
 
-  '@alleslabs/shared@1.0.0-dev5':
+  '@alleslabs/shared@1.0.0-dev6':
     dependencies:
       '@chain-registry/types': 0.45.20
 

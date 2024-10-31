@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1174](https://github.com/alleslabs/celatone-frontend/pull/1174) Add custom network by url with query param
+
 ### Improvements
 
 ### Bug fixes
