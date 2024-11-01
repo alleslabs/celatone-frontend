@@ -37,7 +37,6 @@ const mustBeAlphabetNumberAndSpecialCharacters =
 
 interface ValidateExistingChain {
   isChainIdExist: (chainId: string) => boolean;
-  isPrettyNameExist: (name: string) => boolean;
 }
 
 export enum VmType {
@@ -84,7 +83,7 @@ const networkDetailsFormValidator = (
   validateExistingChain: ValidateExistingChain
 ) => {
   const { prettyName, chainId, registryChainName } = val;
-  const { isChainIdExist, isPrettyNameExist } = validateExistingChain;
+  const { isChainIdExist } = validateExistingChain;
 
   if (prettyName === "")
     ctx.addIssue({
@@ -97,13 +96,6 @@ const networkDetailsFormValidator = (
     ctx.addIssue({
       code: ZodIssueCode.custom,
       message: `Minitia Name is too long. (${prettyName.length}/50)`,
-      path: ["prettyName"],
-    });
-
-  if (isPrettyNameExist(prettyName))
-    ctx.addIssue({
-      code: ZodIssueCode.custom,
-      message: "This name is already used. Please specify other name.",
       path: ["prettyName"],
     });
 
@@ -351,11 +343,9 @@ export type AddNetworkManualForm = z.infer<
 // MARK: AddNetworkManualChainConfigJson
 export const zAddNetworkManualChainConfigJson = ({
   isChainIdExist,
-  isPrettyNameExist,
 }: ValidateExistingChain) =>
   zAddNetworkManualForm({
     isChainIdExist,
-    isPrettyNameExist,
   }).transform<ChainConfig>(
     ({
       chainId,

@@ -27,7 +27,7 @@ export const AddNetworkManual = () => {
   useAllowCustomNetworks({ shouldRedirect: true });
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { addLocalChainConfig } = useLocalChainConfigStore();
-  const { isChainIdExist, isPrettyNameExist } = useChainConfigs();
+  const { isChainIdExist } = useChainConfigs();
 
   const {
     control,
@@ -37,9 +37,7 @@ export const AddNetworkManual = () => {
     setValue,
     trigger,
   } = useForm<AddNetworkManualForm>({
-    resolver: zodResolver(
-      zAddNetworkManualForm({ isChainIdExist, isPrettyNameExist })
-    ),
+    resolver: zodResolver(zAddNetworkManualForm({ isChainIdExist })),
     mode: "all",
     reValidateMode: "onChange",
     defaultValues: {
@@ -90,7 +88,6 @@ export const AddNetworkManual = () => {
       data.chainId,
       zAddNetworkManualChainConfigJson({
         isChainIdExist,
-        isPrettyNameExist,
       }).parse(data)
     );
 
@@ -104,7 +101,6 @@ export const AddNetworkManual = () => {
     if (currentStepIndex === 0)
       return !zNetworkDetailsForm({
         isChainIdExist,
-        isPrettyNameExist,
       }).safeParse({
         vm,
         prettyName,

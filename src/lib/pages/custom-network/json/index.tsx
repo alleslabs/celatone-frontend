@@ -22,7 +22,7 @@ import { useLocalChainConfigStore } from "lib/providers/store";
 
 export const AddNetworkJson = observer(() => {
   const navigate = useInternalNavigate();
-  const { isChainIdExist, isPrettyNameExist } = useChainConfigs();
+  const { isChainIdExist } = useChainConfigs();
   const { addLocalChainConfig } = useLocalChainConfigStore();
   const [file, setFile] = useState<File | null>(null);
   const [json, setJson] = useState<ChainConfig | null>(null);
@@ -63,10 +63,7 @@ export const AddNetworkJson = observer(() => {
 
       setJson(validatedData);
 
-      if (
-        isChainIdExist(validatedData.chainId) ||
-        isPrettyNameExist(validatedData.prettyName)
-      ) {
+      if (isChainIdExist(validatedData.chainId)) {
         duplicatedModalOnOpen();
 
         return;
@@ -84,10 +81,8 @@ export const AddNetworkJson = observer(() => {
 
     if (isChainIdExist(json.chainId)) return json.chainId;
 
-    if (isPrettyNameExist(json.prettyName)) return json.prettyName;
-
     return "";
-  }, [isChainIdExist, isPrettyNameExist, json]);
+  }, [isChainIdExist, json]);
 
   return (
     <>
