@@ -495,12 +495,13 @@ export const zAddNetworkLinkChainConfigJson = z
       .then((res) => res.bech32Prefix)
       .catch(() => DEFAULT_BECH32_PREFIX);
 
-    const prettyName = capitalize(val.chainId);
+    const registryChainName = val.chainId.split("-")[0];
+    const prettyName = capitalize(registryChainName);
 
     return {
       ...DEFAULT_CUSTOM_MINITIA_NETWORK,
       chainId: val.chainId,
-      registryChainName: val.chainId,
+      registryChainName,
       prettyName,
       wallets: DEFAULT_WALLET_CONFIG,
       lcd: val.lcd,
