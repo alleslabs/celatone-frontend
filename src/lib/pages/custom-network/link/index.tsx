@@ -35,13 +35,17 @@ export const AddNetworkLink = observer(() => {
   const [error, setError] = useState<AddCustomNetworkError>({
     type: "no_error",
   });
-  const { isChainIdExist, isPrettyNameExist } = useChainConfigs();
+  const { isChainIdExist } = useChainConfigs();
   const { addLocalChainConfig, getLocalChainConfig } =
     useLocalChainConfigStore();
 
   // Automatically populate, validate and add config if query param is present
   useEffect(() => {
-    if (!router.query.config) {
+    if (
+      !router.query.config ||
+      typeof router.query.config !== "string" ||
+      !router.query.config.trim().length
+    ) {
       setError({ type: "no_config" });
       return;
     }
@@ -63,10 +67,7 @@ export const AddNetworkLink = observer(() => {
         }
 
         const { data: validatedData } = validated;
-        if (
-          isChainIdExist(validatedData.chainId) ||
-          isPrettyNameExist(validatedData.prettyName)
-        ) {
+        if (isChainIdExist(validatedData.chainId)) {
           setJson(validatedData);
           setError({ type: "chain_exists" });
           return;
@@ -75,6 +76,8 @@ export const AddNetworkLink = observer(() => {
         addLocalChainConfig(validatedData.chainId, validatedData);
         setJson(validatedData);
       } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err);
         setError({
           type: "invalid_config",
           message: "An unknown error occurred",
