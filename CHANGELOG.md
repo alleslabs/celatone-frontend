@@ -35,6 +35,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Features
+
+### Improvements
+
+### Bug fixes
+
+## v1.9.3
+
+### Features
+
+- [#1174](https://github.com/alleslabs/celatone-frontend/pull/1174) Add custom network by url with query param
+
+### Bug fixes
+
+- [#1176](https://github.com/alleslabs/celatone-frontend/pull/1176) Improve adding custom network by url with query param
+- [#1175](https://github.com/alleslabs/celatone-frontend/pull/1175) Fix tooltip bg color
+- [#1172](https://github.com/alleslabs/celatone-frontend/pull/1172) Fix auto popup for module drawer in mobile
+
 ## v1.9.2
 
 ### Improvements

@@ -1,7 +1,7 @@
 import type { ChainConfig } from "@alleslabs/shared";
 import type { AssetList, Chain } from "@chain-registry/types";
 import chainRegistry from "chain-registry";
-import { find, isUndefined, unionBy } from "lodash";
+import { isUndefined, unionBy } from "lodash";
 import { useMemo } from "react";
 
 import { devChainConfigs } from "config/chain";
@@ -23,7 +23,6 @@ export const useChainConfigs = (): {
   registryAssets: AssetList[];
   supportedChainIds: string[];
   isChainIdExist: (chainId: string) => boolean;
-  isPrettyNameExist: (name: string) => boolean;
   isLoading: boolean;
 } => {
   const { data: apiChainConfigs, isFetching } =
@@ -114,8 +113,6 @@ export const useChainConfigs = (): {
       ),
       supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
       isChainIdExist: (chainId: string) => !!chainConfigs[chainId],
-      isPrettyNameExist: (name: string) =>
-        !!find(chainConfigs, { prettyName: name }),
       isLoading: isFetching || !isHydrated,
     };
   }, [

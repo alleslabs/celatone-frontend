@@ -87,10 +87,7 @@ const FunctionCardBody = ({
         <Flex alignItems="center" gap={2}>
           {!isView && (
             <>
-              <Tooltip
-                bg="primary.dark"
-                label={`is_entry: ${exposedFn.is_entry}`}
-              >
+              <Tooltip label={`is_entry: ${exposedFn.is_entry}`}>
                 <Flex pointerEvents="auto" onClick={(e) => e.stopPropagation()}>
                   {disabled ? (
                     <CustomIcon name="close" color="gray.600" boxSize={3} />
@@ -140,7 +137,6 @@ export const FunctionCard = ({
     />
   ) : (
     <Tooltip
-      bg="primary.dark"
       label="Only functions with “is_entry: true” are able to interacted through Celatone’s module interactions."
       hidden={!disabled}
     >

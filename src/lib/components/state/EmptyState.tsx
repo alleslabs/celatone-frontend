@@ -7,7 +7,7 @@ import { StateImage } from "./StateImage";
 export interface EmptyStateProps {
   imageVariant?: ImageVariant;
   imageWidth?: ImageProps["width"];
-  message: string;
+  message?: string;
   heading?: string;
   withBorder?: boolean;
   my?: FlexProps["my"];
@@ -51,14 +51,16 @@ export const EmptyState = ({
         {heading}
       </Heading>
     )}
-    <Text
-      color="text.dark"
-      textAlign="center"
-      whiteSpace="pre-wrap"
-      variant={textVariant}
-    >
-      {message}
-    </Text>
+    {message && (
+      <Text
+        color="text.dark"
+        textAlign="center"
+        whiteSpace="pre-wrap"
+        variant={textVariant}
+      >
+        {message}
+      </Text>
+    )}
     {children}
   </Flex>
 );

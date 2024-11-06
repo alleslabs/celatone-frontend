@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { SuccessAddCustomMinitiaModal } from "../components";
+import { DEFAULT_DENOM, DEFAULT_GAS, DEFAULT_SLIP44 } from "../constant";
 import {
   VmType,
   zAddNetworkManualChainConfigJson,
@@ -26,7 +27,7 @@ export const AddNetworkManual = () => {
   useAllowCustomNetworks({ shouldRedirect: true });
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { addLocalChainConfig } = useLocalChainConfigStore();
-  const { isChainIdExist, isPrettyNameExist } = useChainConfigs();
+  const { isChainIdExist } = useChainConfigs();
 
   const {
     control,
@@ -36,12 +37,11 @@ export const AddNetworkManual = () => {
     setValue,
     trigger,
   } = useForm<AddNetworkManualForm>({
-    resolver: zodResolver(
-      zAddNetworkManualForm({ isChainIdExist, isPrettyNameExist })
-    ),
+    resolver: zodResolver(zAddNetworkManualForm({ isChainIdExist })),
     mode: "all",
     reValidateMode: "onChange",
     defaultValues: {
+      ...DEFAULT_GAS,
       prettyName: "",
       lcd: "",
       rpc: "",
@@ -51,17 +51,10 @@ export const AddNetworkManual = () => {
       vm: {
         type: VmType.MOVE,
       },
-      gasAdjustment: 1.5,
-      maxGasLimit: 25000000,
-      denom: "umin",
+      denom: DEFAULT_DENOM,
       gasConfig: "standard",
-      gasPrice: 0.15,
-      fixed_min_gas_price: 0.15,
-      low_gas_price: 0.15,
-      average_gas_price: 0.15,
-      high_gas_price: 0.15,
       bech32_prefix: "",
-      slip44: 118,
+      slip44: DEFAULT_SLIP44,
       assets: [],
     },
   });
@@ -95,7 +88,6 @@ export const AddNetworkManual = () => {
       data.chainId,
       zAddNetworkManualChainConfigJson({
         isChainIdExist,
-        isPrettyNameExist,
       }).parse(data)
     );
 
@@ -109,7 +101,6 @@ export const AddNetworkManual = () => {
     if (currentStepIndex === 0)
       return !zNetworkDetailsForm({
         isChainIdExist,
-        isPrettyNameExist,
       }).safeParse({
         vm,
         prettyName,
