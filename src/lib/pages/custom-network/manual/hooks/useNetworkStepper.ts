@@ -12,7 +12,7 @@ export const useNetworkStepper = (limit: number, handleSubmit: () => void) => {
   useEffect(() => {
     if (Number(currentStep) === 1) return;
 
-    router.push(
+    router.replace(
       {
         query: {
           network: currentChainId,
