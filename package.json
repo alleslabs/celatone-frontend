@@ -168,6 +168,7 @@
     "lint-staged": "^13.3.0",
     "mockdate": "^3.0.5",
     "next-sitemap": "^3.1.25",
+    "pnpm": "^9.12.3",
     "prettier": "^3.0.3",
     "storybook": "^7.6.9",
     "ts-jest": "^29.0.5",
