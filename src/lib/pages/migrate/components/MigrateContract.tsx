@@ -11,7 +11,7 @@ import {
   useFabricateFee,
   useSimulateFeeQuery,
 } from "lib/app-provider";
-import { useMigrateTx } from "lib/app-provider/tx/migrate";
+import { useMigrateContractTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
@@ -50,7 +50,7 @@ export const MigrateContract = ({
   // ------------------------------------------//
   const { address } = useCurrentChain();
   const { broadcast } = useTxBroadcast();
-  const migrateTx = useMigrateTx();
+  const migrateTx = useMigrateContractTx();
   const fabricateFee = useFabricateFee();
   const { getSchemaByCodeHash } = useSchemaStore();
 

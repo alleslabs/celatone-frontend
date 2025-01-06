@@ -57,9 +57,7 @@ export const TxsTableFull = ({
   refetchCount,
   onViewMore,
 }: TxsTableProps) => {
-  const {
-    chain: { chain_id: chainId },
-  } = useCurrentChain();
+  const { chainId } = useCurrentChain();
   const [isSigner, setIsSigner] = useState<Option<boolean>>();
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
   const isMobile = useMobile();

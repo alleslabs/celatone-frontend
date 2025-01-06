@@ -16,7 +16,7 @@ import {
   useCurrentChain,
   useExampleAddresses,
   useFabricateFee,
-  useInstantiateTx,
+  useInstantiateContractTx,
   useSimulateFeeQuery,
   useTierConfig,
   useValidateAddress,
@@ -85,7 +85,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   );
   const { user: exampleUserAddress } = useExampleAddresses();
   const { address } = useCurrentChain();
-  const postInstantiateTx = useInstantiateTx();
+  const postInstantiateTx = useInstantiateContractTx();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();

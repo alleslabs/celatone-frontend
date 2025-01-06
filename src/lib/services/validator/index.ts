@@ -85,9 +85,7 @@ export const useValidators = (
 
 export const useValidatorsLcd = (enabled = true) => {
   const endpoint = useLcdEndpoint();
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
 
   return useQuery<ValidatorData[]>(
     [CELATONE_QUERY_KEYS.VALIDATORS_LCD, endpoint],
@@ -97,7 +95,7 @@ export const useValidatorsLcd = (enabled = true) => {
         ...val,
         consensusAddress: convertConsensusPubkeyToConsensusAddr(
           val.consensusPubkey,
-          prefix
+          bech32Prefix
         ),
       }));
     },
@@ -131,9 +129,7 @@ export const useValidatorDataLcd = (
   enabled = true
 ) => {
   const endpoint = useLcdEndpoint();
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
 
   return useQuery<ValidatorData>(
     [CELATONE_QUERY_KEYS.VALIDATOR_DATA_LCD, endpoint, validatorAddr],
@@ -143,7 +139,7 @@ export const useValidatorDataLcd = (
         ...res,
         consensusAddress: convertConsensusPubkeyToConsensusAddr(
           res.consensusPubkey,
-          prefix
+          bech32Prefix
         ),
       };
     },
@@ -334,9 +330,7 @@ export const useValidatorDelegationRelatedTxs = (
 export const useValidatorImage = (
   validator: Nullable<Validator>
 ): UseQueryResult<string> => {
-  const {
-    chain: { chain_name: chainName },
-  } = useCurrentChain();
+  const { chainName } = useCurrentChain();
   const [primaryDark] = useToken("colors", ["primary.dark"]);
 
   return useQuery({

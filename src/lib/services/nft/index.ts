@@ -146,9 +146,7 @@ export const useNftByNftAddressLcd = (
 };
 
 export const useNftMintInfo = (nftAddress: HexAddr32) => {
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
   const { tier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("nfts");
   const lcdEndpoint = useLcdEndpoint();
@@ -160,7 +158,7 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
       lcdEndpoint,
       tier,
       nftAddress,
-      prefix,
+      bech32Prefix,
     ],
     async () =>
       handleQueryByTier({
@@ -168,7 +166,7 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
         threshold: "sequencer",
         queryFull: () => getNftMintInfo(apiEndpoint, nftAddress),
         querySequencer: () =>
-          getNftMintInfoSequencer(lcdEndpoint, prefix, nftAddress),
+          getNftMintInfoSequencer(lcdEndpoint, bech32Prefix, nftAddress),
       }),
     {
       retry: 1,

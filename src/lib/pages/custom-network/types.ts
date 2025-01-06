@@ -9,8 +9,8 @@ import {
   zChainConfig,
   zDenomUnit,
   zFeeToken,
-  zGas,
-  zGasCosts,
+  zGasConfig,
+  zGasConfigCosts,
   zHttpsUrl,
   zNumberInput,
   zRegistry,
@@ -134,7 +134,7 @@ export type NetworkDetailsForm = z.infer<
 >;
 
 // MARK: Gas Details Form
-const zGasFeeDetails = zGas
+const zGasConfigFeeDetails = zGasConfig
   .pick({
     gasAdjustment: true,
     maxGasLimit: true,
@@ -148,12 +148,12 @@ const zGasFeeDetails = zGas
       high_gas_price: true,
     })
   )
-  .merge(zGasCosts.pick({ cosmos_send: true, ibc_transfer: true }))
+  .merge(zGasConfigCosts.pick({ cosmos_send: true, ibc_transfer: true }))
   .extend({
     gasConfig: z.enum(["standard", "custom"]),
     gasPrice: zNumberInput.optional(),
   });
-type GasFeeDetails = z.infer<typeof zGasFeeDetails>;
+type GasFeeDetails = z.infer<typeof zGasConfigFeeDetails>;
 
 const gasFeeDetailsFormValidator = (val: GasFeeDetails, ctx: RefinementCtx) => {
   const {
@@ -213,10 +213,10 @@ const gasFeeDetailsFormValidator = (val: GasFeeDetails, ctx: RefinementCtx) => {
   return true;
 };
 
-export const zGasFeeDetailsForm = zGasFeeDetails.superRefine((val, ctx) =>
-  gasFeeDetailsFormValidator(val, ctx)
+export const zGasConfigFeeDetailsForm = zGasConfigFeeDetails.superRefine(
+  (val, ctx) => gasFeeDetailsFormValidator(val, ctx)
 );
-export type GasFeeDetailsForm = z.infer<typeof zGasFeeDetailsForm>;
+export type GasFeeDetailsForm = z.infer<typeof zGasConfigFeeDetailsForm>;
 
 // MARK: WalletRegistryForm
 const zWalletRegistryAssetDenom = zDenomUnit
@@ -327,7 +327,7 @@ export const zAddNetworkManualForm = (
   validateExistingChain: ValidateExistingChain
 ) =>
   zNetworkDetails
-    .merge(zGasFeeDetails)
+    .merge(zGasConfigFeeDetails)
     .merge(zWalletRegistry)
     .superRefine((val, ctx) => {
       networkDetailsFormValidator(val, ctx, validateExistingChain);

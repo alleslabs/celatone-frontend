@@ -24,13 +24,7 @@ import AceEditor from "react-ace";
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
-import {
-  useCelatoneApp,
-  useGas,
-  useLcdEndpoint,
-  useMobile,
-  useRpcEndpoint,
-} from "lib/app-provider";
+import { useCelatoneApp, useGas, useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { BechAddr32 } from "lib/types";
 import { coinsToStr, jsonPrettify } from "lib/utils";
@@ -63,11 +57,9 @@ const WasmCodeSnippet = ({
   const isMobile = useMobile();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const isDisabled = !contractAddress || !message.length;
-  const lcdEndpoint = useLcdEndpoint();
-  const rpcEndpoint = useRpcEndpoint();
   const {
     currentChainId,
-    chainConfig: { chain },
+    chainConfig: { chain, lcd: lcdEndpoint, rpc: rpcEndpoint },
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();

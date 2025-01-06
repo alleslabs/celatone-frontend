@@ -53,9 +53,7 @@ export const useBlockData = (height: number, enabled = true) => {
 
 export const useBlockDataLcd = (height: number, enabled = true) => {
   const endpoint = useLcdEndpoint();
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
 
   return useQuery<{
     block: BlockData;
@@ -70,11 +68,14 @@ export const useBlockDataLcd = (height: number, enabled = true) => {
         ...rest,
         proposerConsensusAddress: convertRawConsensusAddrToConsensusAddr(
           rawProposerConsensusAddress,
-          prefix
+          bech32Prefix
         ),
         transactions: transactions.map<Transaction>((tx) => ({
           ...tx,
-          sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+          sender: convertAccountPubkeyToAccountAddress(
+            tx.signerPubkey,
+            bech32Prefix
+          ),
         })),
       };
     },

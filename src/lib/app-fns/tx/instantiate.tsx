@@ -1,10 +1,10 @@
-import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
-import type { BechAddr32, TxResultRendering } from "lib/types";
+import type { SignAndBroadcast } from "lib/app-provider/hooks";
+import type { BechAddr20, BechAddr32, TxResultRendering } from "lib/types";
 import { findAttr } from "lib/utils";
 
 import { catchTxError } from "./common";
@@ -12,11 +12,11 @@ import { postTx } from "./common/post";
 import { sendingTx } from "./common/sending";
 
 interface InstantiateTxParams {
-  address: string;
+  address: BechAddr20;
   messages: EncodeObject[];
   label: string;
   fee: StdFee;
-  client: SigningCosmWasmClient;
+  signAndBroadcast: SignAndBroadcast;
   onTxSucceed?: (
     txInfo: DeliverTxResponse,
     contractLabel: string,
@@ -30,14 +30,14 @@ export const instantiateContractTx = ({
   messages,
   label,
   fee,
-  client,
+  signAndBroadcast,
   onTxSucceed,
   onTxFailed,
 }: InstantiateTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => client.signAndBroadcast(address, messages, fee, ""),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       const contractAddress =

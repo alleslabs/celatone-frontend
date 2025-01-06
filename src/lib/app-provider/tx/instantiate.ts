@@ -2,7 +2,7 @@ import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { Coins, MsgInstantiateContract } from "@initia/initia.js";
 import { useCallback } from "react";
 
-import { useCurrentChain, useGetSigningClient } from "../hooks";
+import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { instantiateContractTx } from "lib/app-fns/tx/instantiate";
 import type { BechAddr32, Coin } from "lib/types";
@@ -23,9 +23,9 @@ export interface InstantiateStreamParams {
   onTxFailed?: () => void;
 }
 
-export const useInstantiateTx = () => {
+export const useInstantiateContractTx = () => {
   const { address } = useCurrentChain();
-  const getSigningClient = useGetSigningClient();
+  const signAndBroadcast = useSignAndBroadcast();
 
   return useCallback(
     async ({
@@ -38,9 +38,8 @@ export const useInstantiateTx = () => {
       onTxSucceed,
       onTxFailed,
     }: InstantiateStreamParams) => {
-      const client = await getSigningClient();
-      if (!address || !client)
-        throw new Error("Please check your wallet connection.");
+      if (!address)
+        throw new Error("No address provided (useInstantiatetContractTx)");
       if (!estimatedFee) return null;
 
       const messages = toEncodeObject([
@@ -59,7 +58,7 @@ export const useInstantiateTx = () => {
         messages,
         label,
         fee: estimatedFee,
-        client,
+        signAndBroadcast,
         onTxSucceed: (txResult, contractLabel, contractAddress) => {
           trackTxSucceed();
           onTxSucceed?.(txResult, contractLabel, contractAddress);
@@ -67,6 +66,6 @@ export const useInstantiateTx = () => {
         onTxFailed,
       });
     },
-    [address, getSigningClient]
+    [address, signAndBroadcast]
   );
 };

@@ -259,7 +259,7 @@ export const ExecuteBox = ({
             composeMsg(MsgType.EXECUTE, {
               sender: address,
               contract: contractAddress,
-              msg: Buffer.from(msg),
+              msg: Uint8Array.from(Buffer.from(msg)),
               funds,
             }),
           ]

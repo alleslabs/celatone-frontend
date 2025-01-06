@@ -72,7 +72,7 @@ export const ExecuteArea = ({
   );
 
   const { isFetching } = useSimulateFeeQuery({
-    enabled: composedTxMsgs.length > 0,
+    enabled: enableExecute,
     messages: composedTxMsgs,
     onSuccess: (gasRes) => {
       setSimulateFeeError(undefined);
@@ -131,6 +131,9 @@ export const ExecuteArea = ({
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
+
+    // Reset when the user disconnects
+    setFee(undefined);
     return () => {};
   }, [address, data, enableExecute, executeFn, moduleAddress, moduleName]);
 

@@ -6,17 +6,14 @@ import { useCurrentChain } from "lib/app-provider";
 import { truncate } from "lib/utils";
 
 import {
-  Connected,
-  Connecting,
-  Disconnected,
+  ConnectWalletButton,
   Others,
   WalletConnectComponent,
-} from "./wallet/index";
+} from "./WalletConnect";
 
 export const WalletSection = () => {
-  const { address, connect, openView, status } = useCurrentChain();
+  const { address, connect, view, walletProvider } = useCurrentChain();
 
-  // Events
   const onClickConnect: MouseEventHandler = async (e) => {
     track(AmpEvent.USE_CLICK_WALLET);
     e.preventDefault();
@@ -26,24 +23,46 @@ export const WalletSection = () => {
   const onClickOpenView: MouseEventHandler = (e) => {
     track(AmpEvent.USE_CLICK_WALLET);
     e.preventDefault();
-    openView();
+    view(e);
   };
+
+  if (walletProvider.type === "initia-widget") {
+    if (address) {
+      return (
+        <ConnectWalletButton
+          buttonText={truncate(address)}
+          icon="wallet-solid"
+          onClick={onClickOpenView}
+          variant="ghost-primary"
+        />
+      );
+    }
+
+    return (
+      <ConnectWalletButton
+        buttonText="Connect Wallet"
+        onClick={onClickConnect}
+        iconColor="text.main"
+        icon="wallet"
+      />
+    );
+  }
 
   return (
     <Flex px={0}>
       <WalletConnectComponent
-        walletStatus={status}
+        walletStatus={walletProvider.context.status}
         disconnect={
-          <Disconnected
+          <ConnectWalletButton
             buttonText="Connect Wallet"
             onClick={onClickConnect}
             iconColor="text.main"
             icon="wallet"
           />
         }
-        connecting={<Connecting />}
+        connecting={<ConnectWalletButton isLoading />}
         connected={
-          <Connected
+          <ConnectWalletButton
             buttonText={truncate(address)}
             icon="wallet-solid"
             onClick={onClickOpenView}

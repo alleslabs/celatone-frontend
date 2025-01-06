@@ -91,9 +91,7 @@ export const useNftCollectionByCollectionAddress = (
 };
 
 export const useNftCollectionCreator = (collectionAddress: HexAddr32) => {
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
   const { tier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("nft_collections");
   const lcdEndpoint = useLcdEndpoint();
@@ -104,7 +102,7 @@ export const useNftCollectionCreator = (collectionAddress: HexAddr32) => {
       apiEndpoint,
       lcdEndpoint,
       tier,
-      prefix,
+      bech32Prefix,
       collectionAddress,
     ],
     async () =>
@@ -119,7 +117,7 @@ export const useNftCollectionCreator = (collectionAddress: HexAddr32) => {
         querySequencer: () =>
           getNftCollectionCreatorSequencer(
             lcdEndpoint,
-            prefix,
+            bech32Prefix,
             collectionAddress
           ),
       }),

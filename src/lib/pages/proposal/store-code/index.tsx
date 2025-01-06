@@ -290,8 +290,8 @@ const StoreCodeProposal = () => {
           title,
           description: proposalDesc,
           runAs,
-          wasmByteCode: await gzip(
-            new Uint8Array(await wasmFile.arrayBuffer())
+          wasmByteCode: Uint8Array.from(
+            await gzip(await wasmFile.arrayBuffer())
           ),
           permission,
           addresses: addresses.map((addr) => addr.address),

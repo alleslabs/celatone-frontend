@@ -4,7 +4,7 @@ import { useCallback } from "react";
 
 import { trackTxSucceed } from "lib/amplitude";
 import { executeModuleTx } from "lib/app-fns/tx/move/executeModule";
-import { useCurrentChain, useGetSigningClient } from "lib/app-provider/hooks";
+import { useCurrentChain, useSignAndBroadcast } from "lib/app-provider/hooks";
 import type { HexAddr } from "lib/types";
 import { toEncodeObject } from "lib/utils";
 
@@ -21,7 +21,7 @@ export interface ExecuteModuleStreamParams {
 
 export const useExecuteModuleTx = () => {
   const { address } = useCurrentChain();
-  const getSigningClient = useGetSigningClient();
+  const signAndBroadcast = useSignAndBroadcast();
 
   return useCallback(
     async ({
@@ -34,9 +34,7 @@ export const useExecuteModuleTx = () => {
       onTxSucceed,
       onTxFailed,
     }: ExecuteModuleStreamParams) => {
-      const client = await getSigningClient();
-      if (!address || !client)
-        throw new Error("Please check your wallet connection.");
+      if (!address) throw new Error("No address provided (useExecuteModuleTx)");
 
       const messages = toEncodeObject([
         new MsgExecuteModule(
@@ -54,7 +52,7 @@ export const useExecuteModuleTx = () => {
         address,
         messages,
         fee: estimatedFee,
-        client,
+        signAndBroadcast,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
@@ -62,6 +60,6 @@ export const useExecuteModuleTx = () => {
         onTxFailed,
       });
     },
-    [address, getSigningClient]
+    [address, signAndBroadcast]
   );
 };

@@ -74,6 +74,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@initia/initia.js": "0.2.5",
     "@initia/initia.proto": "0.2.0",
+    "@initia/react-wallet-widget": "^0.185.0",
     "@interchain-ui/react": "1.23.9",
     "@monaco-editor/react": "^4.6.0",
     "@rjsf/chakra-ui": "v5.18.1",

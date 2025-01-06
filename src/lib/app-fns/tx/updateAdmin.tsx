@@ -1,9 +1,9 @@
-import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import type { SignAndBroadcast } from "lib/app-provider/hooks";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -17,7 +17,7 @@ interface UpdateAdminTxParams {
   address: BechAddr20;
   messages: EncodeObject[];
   fee: StdFee;
-  client: SigningCosmWasmClient;
+  signAndBroadcast: SignAndBroadcast;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
@@ -26,14 +26,14 @@ export const updateAdminTx = ({
   address,
   messages,
   fee,
-  client,
+  signAndBroadcast,
   onTxSucceed,
   onTxFailed,
 }: UpdateAdminTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => client.signAndBroadcast(address, messages, fee, ""),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();

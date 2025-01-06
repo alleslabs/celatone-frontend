@@ -4,9 +4,7 @@ import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 
 export const NoVotingPeriodTallyExplanation = () => {
-  const {
-    chain: { chain_id: chainId },
-  } = useCurrentChain();
+  const { chainId } = useCurrentChain();
   return (
     <>
       The proposal tally information during voting period is unavailable in{" "}

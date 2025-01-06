@@ -12,7 +12,7 @@ interface RedoButtonProps {
 
 export const RedoButton = ({ message }: RedoButtonProps) => {
   const onClickRedo = useRedo();
-  const { chain } = useCurrentChain();
+  const { chainName } = useCurrentChain();
   return (
     <Button
       variant="outline-gray"
@@ -22,7 +22,7 @@ export const RedoButton = ({ message }: RedoButtonProps) => {
           e,
           extractMsgType(message.type),
           message.detail as Msg,
-          chain.chain_name
+          chainName
         )
       }
     >

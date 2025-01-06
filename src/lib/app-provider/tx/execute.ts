@@ -2,7 +2,7 @@ import type { Coin, StdFee } from "@cosmjs/stargate";
 import { Coins, MsgExecuteContract } from "@initia/initia.js";
 import { useCallback } from "react";
 
-import { useCurrentChain, useGetSigningClient } from "../hooks";
+import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { executeContractTx } from "lib/app-fns/tx/execute";
 import type { Activity } from "lib/stores/contract";
@@ -10,17 +10,17 @@ import type { BechAddr32 } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
 
 export interface ExecuteStreamParams {
-  onTxSucceed?: (activity: Activity) => void;
-  onTxFailed?: () => void;
   estimatedFee: StdFee | undefined;
   contractAddress: BechAddr32;
   msg: string | object;
   funds: Coin[];
+  onTxSucceed?: (activity: Activity) => void;
+  onTxFailed?: () => void;
 }
 
 export const useExecuteContractTx = () => {
   const { address } = useCurrentChain();
-  const getSigningClient = useGetSigningClient();
+  const signAndBroadcast = useSignAndBroadcast();
 
   return useCallback(
     async ({
@@ -31,9 +31,8 @@ export const useExecuteContractTx = () => {
       msg,
       funds,
     }: ExecuteStreamParams) => {
-      const client = await getSigningClient();
-      if (!address || !client)
-        throw new Error("Please check your wallet connection.");
+      if (!address)
+        throw new Error("No address provided (useExecuteContractTx)");
       if (!estimatedFee) return null;
 
       const coins = new Coins();
@@ -58,7 +57,7 @@ export const useExecuteContractTx = () => {
         action,
         fee: estimatedFee,
         base64Message,
-        client,
+        signAndBroadcast,
         onTxSucceed: (activity) => {
           trackTxSucceed();
           onTxSucceed?.(activity);
@@ -66,6 +65,6 @@ export const useExecuteContractTx = () => {
         onTxFailed,
       });
     },
-    [address, getSigningClient]
+    [address, signAndBroadcast]
   );
 };

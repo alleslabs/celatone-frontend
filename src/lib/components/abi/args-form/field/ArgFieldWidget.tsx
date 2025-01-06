@@ -62,9 +62,7 @@ export const ArgFieldWidget = ({
   value,
   onChange,
 }: ArgFieldWidgetProps) => {
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
   const { user: exampleAddress } = useExampleAddresses();
 
   if (
@@ -78,7 +76,7 @@ export const ArgFieldWidget = ({
     return (
       <Input
         size="md"
-        placeholder={getInputPlaceholder(type, value === null, prefix)}
+        placeholder={getInputPlaceholder(type, value === null, bech32Prefix)}
         value={value ?? ""}
         onChange={onChange}
       />

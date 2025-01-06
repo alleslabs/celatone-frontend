@@ -3,7 +3,7 @@ import { Flex, Image } from "@chakra-ui/react";
 import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { FaucetButton } from "lib/components/button";
-import { WalletSection } from "lib/components/Wallet";
+import { WalletSection } from "lib/components/wallet-section";
 
 import { AppMenu } from "./AppMenu";
 import { NetworkMenu } from "./network-menu";

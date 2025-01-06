@@ -44,9 +44,7 @@ export const useIcnsNamesByAddressLcd = (
 export const useAddressByIcnsNameLcd = (name: string, enabled = true) => {
   const lcdEndpoint = useLcdEndpoint();
   const getAddressType = useGetAddressType();
-  const {
-    chain: { bech32_prefix: bech32Prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
   const queryFn = async () => {
     // Strip bech32 prefix to allow searching with .prefix (e.g. example.osmo)
     const [stripPrefixName] = name.split(`.${bech32Prefix}`);

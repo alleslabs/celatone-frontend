@@ -323,9 +323,7 @@ export const useTxsByContractAddressLcd = (
   options: UseQueryOptions<TxsResponse> = {}
 ) => {
   const endpoint = useLcdEndpoint();
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
 
   const queryfn = useCallback(
     () =>
@@ -335,13 +333,13 @@ export const useTxsByContractAddressLcd = (
             ...tx,
             sender: convertAccountPubkeyToAccountAddress(
               tx.signerPubkey,
-              prefix
+              bech32Prefix
             ),
           })),
           total: txs.total,
         })
       ),
-    [address, endpoint, limit, offset, prefix]
+    [address, endpoint, limit, offset, bech32Prefix]
   );
 
   return useQuery<TxsResponse>(
@@ -365,9 +363,7 @@ export const useTxsByAddressLcd = (
   options: UseQueryOptions<TxsResponse> = {}
 ) => {
   const endpoint = useLcdEndpoint();
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
 
   // eslint-disable-next-line sonarjs/cognitive-complexity
   const queryfn = useCallback(async () => {
@@ -381,7 +377,7 @@ export const useTxsByAddressLcd = (
         const tx = txsByHash.items[0];
         const sender = convertAccountPubkeyToAccountAddress(
           tx.signerPubkey,
-          prefix
+          bech32Prefix
         );
 
         if (address === sender) return txsByHash;
@@ -400,11 +396,14 @@ export const useTxsByAddressLcd = (
     return {
       items: txs.items.map<Transaction>((tx) => ({
         ...tx,
-        sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+        sender: convertAccountPubkeyToAccountAddress(
+          tx.signerPubkey,
+          bech32Prefix
+        ),
       })),
       total: txs.total,
     };
-  }, [address, endpoint, limit, offset, prefix, search]);
+  }, [address, endpoint, limit, offset, bech32Prefix, search]);
 
   return useQuery<TxsResponse>(
     [
@@ -422,9 +421,7 @@ export const useTxsByAddressLcd = (
 
 export const useTxsSequencer = (limit = 10) => {
   const endpoint = useLcdEndpoint();
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
 
   const queryfn = useCallback(
     async (pageParam: Option<string>) => {
@@ -448,7 +445,7 @@ export const useTxsSequencer = (limit = 10) => {
       page.items.map((item) => {
         const sender = convertAccountPubkeyToAccountAddress(
           item.signerPubkey,
-          prefix
+          bech32Prefix
         );
 
         return {
@@ -494,9 +491,7 @@ export const useTxsByAddressSequencer = (
   limit = 10
 ) => {
   const endpoint = useLcdEndpoint();
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
 
   const queryfn = useCallback(
     // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -511,7 +506,7 @@ export const useTxsByAddressSequencer = (
           const tx = txsByHash.items[0];
           const sender = convertAccountPubkeyToAccountAddress(
             tx.signerPubkey,
-            prefix
+            bech32Prefix
           );
 
           if (address === sender) return txsByHash;
@@ -541,7 +536,7 @@ export const useTxsByAddressSequencer = (
         });
       })();
     },
-    [address, endpoint, prefix, search, limit]
+    [address, endpoint, bech32Prefix, search, limit]
   );
 
   const { data, ...rest } = useInfiniteQuery(
@@ -563,10 +558,11 @@ export const useTxsByAddressSequencer = (
   return {
     ...rest,
     data: data?.pages.flatMap(
-      (page) => mapTxsByAddressSequencerItems(prefix, address, page.items) ?? []
+      (page) =>
+        mapTxsByAddressSequencerItems(bech32Prefix, address, page.items) ?? []
     ),
     latestFetchedData: mapTxsByAddressSequencerItems(
-      prefix,
+      bech32Prefix,
       address,
       data?.pages[data.pages.length - 1].items
     ),
@@ -607,18 +603,24 @@ export const useTxsByAddressPaginationSequencer = (
 
 export const useTxsByBlockHeightSequencer = (height: number) => {
   const endpoint = useLcdEndpoint();
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER, endpoint, height],
+    [
+      CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER,
+      endpoint,
+      height,
+      bech32Prefix,
+    ],
     async () => {
       const txs = await getTxsByBlockHeightSequencer(endpoint, height);
 
       return txs.map<Transaction>((tx) => ({
         ...tx,
-        sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+        sender: convertAccountPubkeyToAccountAddress(
+          tx.signerPubkey,
+          bech32Prefix
+        ),
       }));
     },
     { retry: 1, refetchOnWindowFocus: false }

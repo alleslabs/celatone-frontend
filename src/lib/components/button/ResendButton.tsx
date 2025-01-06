@@ -41,7 +41,7 @@ export const ResendButton = ({ messages }: ResendButtonProps) => {
   const composedMsgs = formatMsgs(messages);
 
   const proceed = useCallback(
-    async (estimatedGasUsed: Option<Gas<number>>) => {
+    async (estimatedGasUsed: Option<Gas>) => {
       track(AmpEvent.ACTION_RESEND);
       const stream = await resendTx({
         onTxSucceed: () => setIsProcessing(false),
