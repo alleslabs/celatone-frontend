@@ -59,7 +59,7 @@ export const useGetSigningClient = () => {
     }
 
     if (walletProvider.type === "cosmos-kit") {
-      return await walletProvider.context.getSigningCosmWasmClient();
+      return walletProvider.context.getSigningCosmWasmClient();
     }
 
     throw new Error("Unsupported wallet provider type for getSigningClient");

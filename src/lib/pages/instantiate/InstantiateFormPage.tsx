@@ -85,7 +85,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   );
   const { user: exampleUserAddress } = useExampleAddresses();
   const { address } = useCurrentChain();
-  const postInstantiateTx = useInstantiateContractTx();
+  const instantiateTx = useInstantiateContractTx();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
@@ -255,7 +255,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
       attachFundsOption,
       tab === MessageTabs.YOUR_SCHEMA ? "schema" : "json-input"
     );
-    const stream = await postInstantiateTx({
+    const stream = await instantiateTx({
       codeId: Number(codeId),
       initMsg: JSON.parse(currentInput),
       label,
@@ -290,7 +290,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
     funds,
     label,
     onComplete,
-    postInstantiateTx,
+    instantiateTx,
     tab,
   ]);
 
