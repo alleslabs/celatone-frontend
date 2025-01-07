@@ -5,35 +5,35 @@ import { StateImage } from "lib/components/state";
 
 interface ModuleEmptyStateProps {
   description: string;
-  imageWidth?: string;
-  hasImage?: boolean;
-  noBorder?: boolean;
   h?: FlexProps["h"];
+  hasImage?: boolean;
+  imageWidth?: string;
+  noBorder?: boolean;
   p?: FlexProps["p"];
 }
 
 export const ModuleEmptyState = ({
   description,
-  imageWidth = "160px",
-  hasImage = false,
-  noBorder = false,
   h = "full",
+  hasImage = false,
+  imageWidth = "160px",
+  noBorder = false,
   p,
 }: ModuleEmptyStateProps) => (
   <Flex
+    alignItems="center"
+    gap={4}
     h={h}
     p={p}
     w="full"
-    justifyContent="center"
-    alignItems="center"
     border={noBorder ? "none" : "1px solid"}
-    borderRadius="8px"
     borderColor="gray.700"
+    borderRadius="8px"
     direction="column"
-    gap={4}
+    justifyContent="center"
   >
-    {hasImage && <StateImage imageVariant="empty" imageWidth={imageWidth} />}
-    <Text variant="body2" color="text.dark" textAlign="center">
+    {hasImage && <StateImage imageWidth={imageWidth} imageVariant="empty" />}
+    <Text textAlign="center" variant="body2" color="text.dark">
       {description}
     </Text>
   </Flex>

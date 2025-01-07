@@ -11,27 +11,27 @@ import { dateFromNow, formatUTC } from "lib/utils";
 import { InfoCard } from "./InfoCard";
 
 interface CollectionInfoSectionProps {
+  activities?: number;
   collectionAddress: HexAddr32;
   collectionName: string;
   desc: string;
-  uri: string;
-  activities?: number;
   mutateEventes?: number;
-  royalty: number;
   onClickActivities: () => void;
   onClickMutateEvents: () => void;
+  royalty: number;
+  uri: string;
 }
 
 export const CollectionInfoSection = ({
+  activities,
   collectionAddress,
   collectionName,
   desc,
-  uri,
-  activities,
   mutateEventes,
-  royalty,
   onClickActivities,
   onClickMutateEvents,
+  royalty,
+  uri,
 }: CollectionInfoSectionProps) => {
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
@@ -41,134 +41,134 @@ export const CollectionInfoSection = ({
   if (isLoading) return <Loading />;
   if (!collectionCreator) return null;
 
-  const { height, txhash, timestamp, creatorAddress } = collectionCreator;
+  const { creatorAddress, height, timestamp, txhash } = collectionCreator;
   const infoDirection = isMobile ? "column" : "row";
   const infoGap = isMobile ? 1 : 4;
   return (
     <Flex direction="column">
-      <Heading as="h6" variant="h6" fontWeight={600} mb={6}>
+      <Heading as="h6" mb={6} variant="h6" fontWeight={600}>
         Collection Information
       </Heading>
-      <Flex direction={{ base: "column", md: "row" }} mb={{ base: 4, md: 10 }}>
+      <Flex mb={{ base: 4, md: 10 }} direction={{ base: "column", md: "row" }}>
         <Flex
-          direction="column"
-          justify="space-between"
           gap={6}
-          minW={60}
+          justify="space-between"
           mb={{ base: 4, md: 0 }}
+          minW={60}
+          direction="column"
         >
           <LabelText
-            label="Created Block Height"
             helperText1={formatUTC(timestamp)}
             helperText2={dateFromNow(timestamp)}
+            label="Created Block Height"
           >
             <ExplorerLink
-              value={String(height)}
-              type="block_height"
-              showCopyOnHover
               fixedHeight
+              type="block_height"
+              value={String(height)}
               ampCopierSection="collection-creation-information"
+              showCopyOnHover
             />
           </LabelText>
-          <LabelText label="Created by" helperText1="(VM Address)">
+          <LabelText helperText1="(VM Address)" label="Created by">
             <ExplorerLink
-              value={creatorAddress}
-              type="user_address"
-              showCopyOnHover
               fixedHeight
+              type="user_address"
+              value={creatorAddress}
               ampCopierSection="collection-creation-information"
+              showCopyOnHover
             />
           </LabelText>
           <LabelText label="Created Transaction">
             <ExplorerLink
-              value={txhash.toUpperCase()}
               type="tx_hash"
-              showCopyOnHover
+              value={txhash.toUpperCase()}
               ampCopierSection="collection-creation-information"
+              showCopyOnHover
             />
           </LabelText>
         </Flex>
         <Flex
-          direction="column"
+          bg="gray.900"
           gap={4}
           p={{ base: 4, md: 6 }}
-          bg="gray.900"
-          borderRadius="8px"
           w="full"
+          borderRadius="8px"
+          direction="column"
         >
-          <Flex gap={infoGap} flexDir={infoDirection}>
-            <Text fontWeight={600} minW={24} variant="body2">
+          <Flex flexDir={infoDirection} gap={infoGap}>
+            <Text minW={24} variant="body2" fontWeight={600}>
               Collection
             </Text>
             <ExplorerLink
-              value={collectionAddress}
-              type="user_address"
-              textFormat="normal"
               maxWidth="full"
-              showCopyOnHover
-              ampCopierSection="collection-information"
               fixedHeight={false}
+              type="user_address"
+              value={collectionAddress}
+              ampCopierSection="collection-information"
+              showCopyOnHover
+              textFormat="normal"
             />
           </Flex>
-          <Flex gap={infoGap} flexDir={infoDirection}>
-            <Text fontWeight={600} minW={24} variant="body2">
+          <Flex flexDir={infoDirection} gap={infoGap}>
+            <Text minW={24} variant="body2" fontWeight={600}>
               Name
             </Text>
             <Text
-              textOverflow="ellipsis"
               variant="body2"
-              wordBreak="break-word"
               color={collectionName.length ? "text.main" : "text.disabled"}
               fontWeight={collectionName.length ? "600" : "300"}
+              textOverflow="ellipsis"
+              wordBreak="break-word"
             >
               {collectionName || "Untitled Collection"}
             </Text>
           </Flex>
-          <Flex gap={infoGap} flexDir={infoDirection}>
-            <Text fontWeight={600} minW={24} variant="body2">
+          <Flex flexDir={infoDirection} gap={infoGap}>
+            <Text minW={24} variant="body2" fontWeight={600}>
               Description
             </Text>
-            <Text color="text.dark" variant="body2" wordBreak="break-word">
+            <Text variant="body2" color="text.dark" wordBreak="break-word">
               {desc || "No description was provided by the creator."}
             </Text>
           </Flex>
-          <Flex gap={infoGap} flexDir={infoDirection}>
-            <Text fontWeight={600} minW={24} variant="body2">
+          <Flex flexDir={infoDirection} gap={infoGap}>
+            <Text minW={24} variant="body2" fontWeight={600}>
               Uri
             </Text>
             <Link
-              href={uri}
               target="_blank"
               variant="body2"
               wordBreak="break-all"
+              href={uri}
             >
               {uri}
             </Link>
           </Flex>
 
-          <Flex gap={infoGap} flexDir={infoDirection}>
-            <Text fontWeight={600} minW={24} variant="body2">
+          <Flex flexDir={infoDirection} gap={infoGap}>
+            <Text minW={24} variant="body2" fontWeight={600}>
               Royalty
             </Text>
             <Text variant="body2">{royalty}%</Text>
           </Flex>
         </Flex>
       </Flex>
-      <Flex gap={{ base: 4, md: 8 }} flexDir={infoDirection}>
+      <Flex flexDir={infoDirection} gap={{ base: 4, md: 8 }}>
         <InfoCard
-          title="Activities"
-          icon="list"
-          content={activities}
-          onClick={onClickActivities}
           isDisabled={activities === 0}
+          title="Activities"
+          content={activities}
+          icon="list"
+          onClick={onClickActivities}
         />
         {isFullTier && (
           <InfoCard
-            title="Mutate Events"
-            icon="migrate"
-            content={mutateEventes}
-            onClick={onClickMutateEvents}
             isDisabled={mutateEventes === 0}
+            title="Mutate Events"
+            content={mutateEventes}
+            icon="migrate"
+            onClick={onClickMutateEvents}
           />
         )}
       </Flex>

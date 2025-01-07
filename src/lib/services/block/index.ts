@@ -33,7 +33,7 @@ export const useBlocks = (
   return useQuery<BlocksResponse>(
     [CELATONE_QUERY_KEYS.BLOCKS, endpoint, limit, offset],
     async () => getBlocks(endpoint, limit, offset),
-    { ...options, retry: 1, refetchOnWindowFocus: false }
+    { ...options, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -45,8 +45,8 @@ export const useBlockData = (height: number, enabled = true) => {
     async () => getBlockData(endpoint, height),
     {
       enabled,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -80,9 +80,9 @@ export const useBlockDataLcd = (height: number, enabled = true) => {
       };
     },
     {
-      retry: false,
-      refetchOnWindowFocus: false,
       enabled,
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -94,9 +94,9 @@ export const useLatestBlockLcd = () => {
     [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_LCD, endpoint],
     async () => getLatestBlockLcd(endpoint),
     {
-      retry: false,
-      refetchOnWindowFocus: false,
       cacheTime: 0,
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -126,8 +126,8 @@ export const useBlockTimeAverageSequencer = () => {
     [CELATONE_QUERY_KEYS.BLOCK_TIME_AVERAGE_SEQUENCER, endpoint],
     async () => getBlockTimeAverageSequencer(endpoint),
     {
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -139,8 +139,8 @@ export const useBlockDataSequencer = (height: number) => {
     [CELATONE_QUERY_KEYS.BLOCK_DATA_SEQUENCER, endpoint, height],
     async () => getBlockDataSequencer(endpoint, height),
     {
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -164,9 +164,9 @@ export const useBlockDataJsonRpc = (height: Option<number>, enabled = true) => {
       return getBlockDataJsonRpc(evm.jsonRpc, height);
     },
     {
-      retry: false,
-      refetchOnWindowFocus: false,
       enabled: enabled && evm.enabled && !!evm.jsonRpc && !!height,
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };

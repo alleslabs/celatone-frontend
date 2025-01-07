@@ -40,9 +40,8 @@ export const useClearAdminTx = (contractAddress: BechAddr32) => {
 
       return clearAdminTx({
         address,
-        messages,
         fee: clearAdminFee,
-        signAndBroadcast,
+        messages,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
@@ -55,6 +54,7 @@ export const useClearAdminTx = (contractAddress: BechAddr32) => {
             }),
           ]);
         },
+        signAndBroadcast,
       });
     },
     [

@@ -39,22 +39,22 @@ const getStepIconState = (step: number, proposalData: ProposalData) => {
   return PeriodState.COMPLETE;
 };
 
-export const StepIcon = ({ step, proposalData }: ProposalStepperProps) => {
+export const StepIcon = ({ proposalData, step }: ProposalStepperProps) => {
   const state = getStepIconState(step, proposalData);
   const isGray = state === PeriodState.WAITING || state === PeriodState.FAILED;
   return (
     <Flex
-      boxSize={6}
-      borderRadius="50%"
       alignItems="center"
-      justifyContent="center"
       background={isGray ? "stepper.disabled.bg" : "stepper.active.bg"}
+      borderRadius="50%"
+      boxSize={6}
+      justifyContent="center"
     >
       {state !== PeriodState.COMPLETE ? (
         <Text
           variant="body3"
-          fontWeight={700}
           color={isGray ? "stepper.disabled.color" : "stepper.active.color"}
+          fontWeight={700}
         >
           {step}
         </Text>

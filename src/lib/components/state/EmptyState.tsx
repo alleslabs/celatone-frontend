@@ -5,58 +5,58 @@ import type { ImageVariant } from "./StateImage";
 import { StateImage } from "./StateImage";
 
 export interface EmptyStateProps {
+  alignItems?: FlexProps["alignItems"];
+  children?: React.ReactNode;
+  hasBorderTop?: boolean;
+  heading?: string;
   imageVariant?: ImageVariant;
   imageWidth?: ImageProps["width"];
   message?: string;
-  heading?: string;
-  withBorder?: boolean;
   my?: FlexProps["my"];
   py?: FlexProps["py"];
-  alignItems?: FlexProps["alignItems"];
   textVariant?: TextProps["variant"];
-  hasBorderTop?: boolean;
-  children?: React.ReactNode;
+  withBorder?: boolean;
 }
 
 export const EmptyState = ({
-  message,
+  alignItems = "center",
+  children,
+  hasBorderTop = true,
+  heading,
   imageVariant,
   imageWidth,
-  heading,
-  withBorder = false,
+  message,
   my = 12,
   py = 8,
-  alignItems = "center",
   textVariant = "body1",
-  hasBorderTop = true,
-  children,
+  withBorder = false,
 }: EmptyStateProps) => (
   <Flex
+    width="full"
     alignItems={alignItems}
     flexDir="column"
     gap={4}
-    width="full"
-    py={py}
     my={my}
-    direction="column"
-    borderY={withBorder ? "1px solid" : undefined}
+    py={py}
     borderColor="gray.700"
     borderTopColor={hasBorderTop ? "gray.700" : "transparent"}
+    borderY={withBorder ? "1px solid" : undefined}
+    direction="column"
   >
     {imageVariant && (
-      <StateImage imageVariant={imageVariant} imageWidth={imageWidth} />
+      <StateImage imageWidth={imageWidth} imageVariant={imageVariant} />
     )}
     {heading && (
-      <Heading as="h5" variant="h5" textAlign="center">
+      <Heading as="h5" textAlign="center" variant="h5">
         {heading}
       </Heading>
     )}
     {message && (
       <Text
-        color="text.dark"
         textAlign="center"
-        whiteSpace="pre-wrap"
         variant={textVariant}
+        whiteSpace="pre-wrap"
+        color="text.dark"
       >
         {message}
       </Text>

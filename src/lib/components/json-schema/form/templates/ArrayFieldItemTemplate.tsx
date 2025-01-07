@@ -20,11 +20,11 @@ export default function ArrayFieldItemTemplate<
     children,
     className,
     disabled,
-    hasToolbar,
+    hasCopy,
     hasMoveDown,
     hasMoveUp,
     hasRemove,
-    hasCopy,
+    hasToolbar,
     index,
     onCopyIndexClick,
     onDropIndexClick,
@@ -39,10 +39,10 @@ export default function ArrayFieldItemTemplate<
   return (
     <HStack className={className} alignItems="center" gap={2}>
       <Box
+        p={4}
         w="100%"
         border="1px solid var(--chakra-colors-gray-600)"
         borderRadius="8px"
-        p={4}
       >
         {children}
       </Box>
@@ -51,33 +51,33 @@ export default function ArrayFieldItemTemplate<
           {(hasMoveUp || hasMoveDown) && (
             <MoveUpButton
               disabled={disabled || readonly || !hasMoveUp}
-              onClick={onReorderClick(index, index - 1)}
-              uiSchema={uiSchema}
               registry={registry}
+              uiSchema={uiSchema}
+              onClick={onReorderClick(index, index - 1)}
             />
           )}
           {(hasMoveUp || hasMoveDown) && (
             <MoveDownButton
               disabled={disabled || readonly || !hasMoveDown}
-              onClick={onReorderClick(index, index + 1)}
-              uiSchema={uiSchema}
               registry={registry}
+              uiSchema={uiSchema}
+              onClick={onReorderClick(index, index + 1)}
             />
           )}
           {hasCopy && (
             <CopyButton
               disabled={disabled || readonly}
-              onClick={onCopyIndexClick(index)}
-              uiSchema={uiSchema}
               registry={registry}
+              uiSchema={uiSchema}
+              onClick={onCopyIndexClick(index)}
             />
           )}
           {hasRemove && (
             <RemoveButton
               disabled={disabled || readonly}
-              onClick={onDropIndexClick(index)}
-              uiSchema={uiSchema}
               registry={registry}
+              uiSchema={uiSchema}
+              onClick={onDropIndexClick(index)}
             />
           )}
         </ButtonGroup>

@@ -5,34 +5,34 @@ import type { Option } from "lib/types";
 import { SearchResultItem } from "./SearchResultItem";
 
 interface SearchResultsProps {
-  results: SearchResult[];
   cursor: Option<number>;
-  setCursor: (index: Option<number>) => void;
   handleSelectResult: (result?: SearchResult, isClick?: boolean) => void;
+  results: SearchResult[];
+  setCursor: (index: Option<number>) => void;
 }
 export const SearchResults = ({
-  results,
   cursor,
-  setCursor,
   handleSelectResult,
+  results,
+  setCursor,
 }: SearchResultsProps) => (
   <>
     {!results.length ? (
       <EmptyState
         imageVariant="not-found"
-        textVariant="body2"
         message="Matches not found. Please check your spelling or make sure you have
             selected the correct network."
+        textVariant="body2"
       />
     ) : (
       results.map((result, index) => (
         <SearchResultItem
           key={result.type + index.toString()}
+          handleSelectResult={handleSelectResult}
           index={index}
           result={result}
           cursor={cursor}
           setCursor={setCursor}
-          handleSelectResult={handleSelectResult}
         />
       ))
     )}

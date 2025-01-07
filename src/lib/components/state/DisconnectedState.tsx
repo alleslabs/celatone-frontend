@@ -5,37 +5,37 @@ import { ConnectWalletBtn } from "../button/ConnectWallet";
 import { StateImage } from "./StateImage";
 
 interface DisconnectedStateProps {
-  text: string;
   helperText?: string;
+  text: string;
 }
 
 export const DisconnectedState = ({
-  text,
   helperText,
+  text,
 }: DisconnectedStateProps) => (
   <Flex
-    direction="column"
     alignItems="center"
     gap={4}
-    borderY="1px solid"
-    borderColor="gray.700"
     py={12}
+    borderColor="gray.700"
+    borderY="1px solid"
+    direction="column"
   >
     <StateImage imageVariant="disconnected" />
     <Flex align="center" justify="center">
       <ConnectWalletBtn />
-      <Text variant="body1" color="text.dark" ml={2}>
+      <Text ml={2} variant="body1" color="text.dark">
         {text}
       </Text>
     </Flex>
     {helperText && (
       <Text
+        alignSelf="center"
+        maxW="520px"
+        mt={4}
+        textAlign="center"
         variant="body1"
         color="text.dark"
-        textAlign="center"
-        mt={4}
-        maxW="520px"
-        alignSelf="center"
       >
         {helperText}
       </Text>

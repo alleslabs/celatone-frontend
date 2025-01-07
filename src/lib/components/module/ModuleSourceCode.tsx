@@ -34,34 +34,34 @@ const loadMoveSyntax = (monaco: Monaco) => {
 };
 
 interface ModuleSourceCodeProps {
-  verificationData: Nullish<MoveVerifyInfoResponse>;
   moveVerifyStatus: MoveVerifyStatus;
+  verificationData: Nullish<MoveVerifyInfoResponse>;
 }
 
 export const ModuleSourceCode = ({
-  verificationData,
   moveVerifyStatus,
+  verificationData,
 }: ModuleSourceCodeProps) => {
   if (!verificationData) return null;
 
   return (
-    <Accordion allowToggle w="full">
+    <Accordion w="full" allowToggle>
       <AccordionItem>
         <AccordionButton p={4}>
-          <Flex direction="column" w="full">
+          <Flex w="full" direction="column">
             <Flex justifyContent="space-between">
-              <Flex flexDirection="column" alignItems="start">
+              <Flex alignItems="start" flexDirection="column">
                 <Flex align="center" gap={1}>
                   <MoveVerifyBadge status={moveVerifyStatus} />
-                  <Heading as="h6" variant="h7" textAlign="left">
+                  <Heading as="h6" textAlign="left" variant="h7">
                     Verified Module Source Code
                   </Heading>
                 </Flex>
                 <Text
-                  fontWeight={600}
+                  textAlign="start"
                   variant="body2"
                   color="text.dark"
-                  textAlign="start"
+                  fontWeight={600}
                 >
                   This module is verifed at{" "}
                   {formatUTC(verificationData.verifiedAt)}
@@ -73,20 +73,20 @@ export const ModuleSourceCode = ({
                   variant="outline-primary"
                   w={{ base: "full", md: "auto" }}
                 />
-                <AccordionIcon color="gray.600" ml="auto" boxSize={6} />
+                <AccordionIcon ml="auto" boxSize={6} color="gray.600" />
               </Flex>
             </Flex>
             {moveVerifyStatus === MoveVerifyStatus.Outdated && (
               <Alert
-                p={2}
-                variant="warning"
+                alignItems="flex-start"
                 gap={2}
                 mt={2}
-                alignItems="flex-start"
+                p={2}
+                variant="warning"
               >
                 <CustomIcon name="alert-triangle-solid" boxSize={4} />
                 <AlertDescription>
-                  <Text variant="body2" color="warning.main" textAlign="left">
+                  <Text textAlign="left" variant="body2" color="warning.main">
                     The displayed source code is an <b>older version</b> since
                     the module was republished after verification. If you are
                     the owner, you can{" "}
@@ -95,13 +95,13 @@ export const ModuleSourceCode = ({
                         display="inline-flex"
                         gap={1}
                         size="sm"
-                        color="warning.main"
-                        textDecoration="underline"
-                        transition="all 0.25s ease-in-out"
                         _hover={{
                           color: "warning.light",
                           textDecorationColor: "warning.light",
                         }}
+                        color="warning.main"
+                        textDecoration="underline"
+                        transition="all 0.25s ease-in-out"
                       >
                         resubmit for verification
                       </Text>
@@ -113,7 +113,7 @@ export const ModuleSourceCode = ({
             )}
           </Flex>
         </AccordionButton>
-        <AccordionPanel pt={0} pb={4}>
+        <AccordionPanel pb={4} pt={0}>
           <Box
             p="16px 12px"
             border="1px solid"
@@ -124,8 +124,8 @@ export const ModuleSourceCode = ({
               height={400}
               language="move"
               theme="vs-dark"
-              beforeMount={loadMoveSyntax}
               value={verificationData.source}
+              beforeMount={loadMoveSyntax}
               options={{ readOnly: true, scrollBeyondLastLine: false }}
             />
           </Box>

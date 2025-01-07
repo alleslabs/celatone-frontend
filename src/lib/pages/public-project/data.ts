@@ -9,23 +9,23 @@ import type {
 } from "lib/types";
 
 interface PublicDataState {
+  isLoading: boolean;
+  projectDetail: Option<PublicDetail>;
+  publicAccounts: PublicAccount[];
   publicCodes: PublicCode[];
   publicContracts: PublicContract[];
-  publicAccounts: PublicAccount[];
   publicModules: PublicModule[];
-  projectDetail: Option<PublicDetail>;
-  isLoading: boolean;
 }
 
 export const usePublicData = (slug: string): PublicDataState => {
   const { data: projectInfo, isLoading } = usePublicProjectBySlug(slug);
 
   return {
+    isLoading,
+    projectDetail: projectInfo?.details,
+    publicAccounts: projectInfo?.accounts || [],
     publicCodes: projectInfo?.codes || [],
     publicContracts: projectInfo?.contracts || [],
-    publicAccounts: projectInfo?.accounts || [],
     publicModules: projectInfo?.modules || [],
-    projectDetail: projectInfo?.details,
-    isLoading,
   };
 };

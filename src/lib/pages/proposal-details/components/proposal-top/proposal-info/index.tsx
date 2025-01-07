@@ -13,13 +13,13 @@ interface ProposalStatusProps {
 
 export const ProposalInfo = ({ data }: ProposalStatusProps) => (
   <Flex
-    direction={{ base: "column", lg: "row" }}
     gap={{ base: 3, lg: 8 }}
+    mb={6}
     px={4}
     py={3}
-    mb={6}
-    borderRadius="8px"
     background="gray.900"
+    borderRadius="8px"
+    direction={{ base: "column", lg: "row" }}
   >
     <InfoItem label="Proposal Status">
       <Flex minW="110px">
@@ -30,8 +30,8 @@ export const ProposalInfo = ({ data }: ProposalStatusProps) => (
       {data.createdTxHash && (
         <InfoItem label="Created Tx" minW={36}>
           <ExplorerLink
-            value={data.createdTxHash.toUpperCase()}
             type="tx_hash"
+            value={data.createdTxHash.toUpperCase()}
             showCopyOnHover
           />
         </InfoItem>
@@ -39,18 +39,18 @@ export const ProposalInfo = ({ data }: ProposalStatusProps) => (
       {data.proposer && (
         <InfoItem label="Proposer" minW={36}>
           <ExplorerLink
-            value={data.proposer}
             type="user_address"
+            value={data.proposer}
             showCopyOnHover
           />
         </InfoItem>
       )}
     </Flex>
     <Divider
-      orientation="vertical"
-      color="gray.700"
-      minH="48px"
       display={{ base: "none", lg: "flex" }}
+      minH="48px"
+      color="gray.700"
+      orientation="vertical"
     />
     <TimeInfoItem data={data} />
   </Flex>

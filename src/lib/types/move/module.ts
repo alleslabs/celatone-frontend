@@ -4,44 +4,44 @@ import type { Proposal } from "../proposal";
 
 import type { ExposedFunction, ModuleAbi } from "./abi";
 
+export enum MoveVerifyStatus {
+  NotVerified = "NOT_VERIFIED",
+  Outdated = "OUTDATED",
+  Verified = "VERIFIED",
+}
+
 export enum UpgradePolicy {
-  UNSPECIFIED = "UNSPECIFIED",
   COMPATIBLE = "COMPATIBLE",
   IMMUTABLE = "IMMUTABLE",
+  UNSPECIFIED = "UNSPECIFIED",
 }
 
 export interface IndexedModule {
+  abi: string;
   // NOTE: can also be an ica or a contract
   address: HexAddr;
-  moduleName: string;
-  abi: string;
-  rawBytes: string;
   digest: string;
-  upgradePolicy: UpgradePolicy;
-  parsedAbi: ModuleAbi;
-  viewFunctions: ExposedFunction[];
   executeFunctions: ExposedFunction[];
+  moduleName: string;
+  parsedAbi: ModuleAbi;
+  rawBytes: string;
+  upgradePolicy: UpgradePolicy;
+  viewFunctions: ExposedFunction[];
 }
 
 export interface ModuleInfo
-  extends Pick<IndexedModule, "address" | "moduleName" | "digest">,
-    Partial<Pick<IndexedModule, "viewFunctions" | "executeFunctions">> {
+  extends Partial<Pick<IndexedModule, "executeFunctions" | "viewFunctions">>,
+    Pick<IndexedModule, "address" | "digest" | "moduleName"> {
   height?: number;
-  latestUpdated?: Date;
   isRepublished?: boolean;
   isVerified?: boolean;
+  latestUpdated?: Date;
 }
 
 export interface ModulePublishInfo {
-  recentPublishTransaction: Nullable<string>;
-  recentPublishProposal?: Nullable<Pick<Proposal, "id" | "title">>;
+  isRepublished: boolean;
   recentPublishBlockHeight: number;
   recentPublishBlockTimestamp: Date;
-  isRepublished: boolean;
-}
-
-export enum MoveVerifyStatus {
-  Verified = "VERIFIED",
-  NotVerified = "NOT_VERIFIED",
-  Outdated = "OUTDATED",
+  recentPublishProposal?: Nullable<Pick<Proposal, "id" | "title">>;
+  recentPublishTransaction: Nullable<string>;
 }

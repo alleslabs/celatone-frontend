@@ -1,9 +1,9 @@
 import type { ChainConfig } from "@alleslabs/shared";
 
 export const DEFAULT_WASM_CONFIG: ChainConfig["features"]["wasm"] = {
+  clearAdminGas: 1000000,
   enabled: true,
   storeCodeMaxFileSize: 1024 * 1024 * 2,
-  clearAdminGas: 1000000,
 };
 
 export const DEFAULT_MOVE_CONFIG: ChainConfig["features"]["move"] = {
@@ -32,12 +32,12 @@ export const DEFAULT_WALLET_CONFIG: ChainConfig["wallets"] = [
 export const DEFAULT_BECH32_PREFIX = "init";
 
 export const DEFAULT_GAS = {
-  gasPrice: 0.15,
-  fixed_min_gas_price: 0.15,
-  low_gas_price: 0.15,
   average_gas_price: 0.15,
-  high_gas_price: 0.15,
+  fixed_min_gas_price: 0.15,
   gasAdjustment: 1.5,
+  gasPrice: 0.15,
+  high_gas_price: 0.15,
+  low_gas_price: 0.15,
   maxGasLimit: 25000000,
 };
 
@@ -47,13 +47,13 @@ export const DEFAULT_DENOM = "umin";
 
 export const DEFAULT_CUSTOM_MINITIA_NETWORK: Pick<
   ChainConfig,
-  "tier" | "chain" | "network_type" | "extra"
+  "chain" | "extra" | "network_type" | "tier"
 > = {
-  tier: "sequencer",
   chain: "initia",
-  network_type: "local",
   extra: {
     isValidatorExternalLink: null,
     layer: "2",
   },
+  network_type: "local",
+  tier: "sequencer",
 };

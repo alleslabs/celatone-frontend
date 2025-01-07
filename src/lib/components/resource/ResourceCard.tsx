@@ -1,35 +1,35 @@
 import { Badge, Flex, Text } from "@chakra-ui/react";
 
 interface ResourceCardProps {
-  name: string;
   amount: number;
   hasBorder?: boolean;
   isSelected?: boolean;
+  name: string;
   onClick: () => void;
 }
 
 export const ResourceCard = ({
-  name,
   amount,
   hasBorder = false,
   isSelected = false,
+  name,
   onClick,
 }: ResourceCardProps) => (
   <Flex
-    w="full"
-    border={hasBorder ? "1px solid" : "none"}
-    _hover={{ background: "gray.800" }}
-    transition="all .25s ease-in-out"
-    cursor="pointer"
-    borderColor="gray.700"
-    bgColor={isSelected ? "gray.800" : "gray.900"}
-    borderRadius={8}
-    p={3}
     alignItems="center"
+    p={3}
+    w="full"
+    _hover={{ background: "gray.800" }}
+    bgColor={isSelected ? "gray.800" : "gray.900"}
+    border={hasBorder ? "1px solid" : "none"}
+    borderColor="gray.700"
+    borderRadius={8}
+    cursor="pointer"
     onClick={onClick}
+    transition="all .25s ease-in-out"
   >
     <Text className="ellipsis">{name}</Text>
-    <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
+    <Badge ml={2} variant={isSelected ? "primary" : "gray"}>
       {amount}
     </Badge>
   </Flex>

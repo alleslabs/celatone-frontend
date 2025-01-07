@@ -14,15 +14,15 @@ const FOOTER_BUTTONS = [
   {
     href: `${USER_GUIDE_DOCS_LINK}/introduction/overview`,
     icon: "document" as IconKeys,
-    text: "View Doc",
     onClick: () =>
       trackWebsite(`${USER_GUIDE_DOCS_LINK}/introduction/overview`),
+    text: "View Doc",
   },
   {
     href: "https://feedback.alleslabs.com",
     icon: "feedback" as IconKeys,
-    text: "Feedback",
     onClick: () => track(AmpEvent.FEEDBACK),
+    text: "Feedback",
   },
 ];
 
@@ -37,20 +37,20 @@ export const InformationFooter = () => {
 
   return (
     <Flex
-      direction="column"
-      mt={8}
-      mb={2}
       alignItems={{ base: "center", md: "start" }}
+      mb={2}
+      mt={8}
+      direction="column"
     >
-      <Flex gap={1} py={1} px={2} align="center">
-        <CustomIcon name="block" color="gray.600" boxSize={3} />
+      <Flex align="center" gap={1} px={2} py={1}>
+        <CustomIcon name="block" boxSize={3} color="gray.600" />
         {isLoading ? (
           <Skeleton
             h={4}
             w={24}
             borderRadius={8}
-            startColor="gray.500"
             endColor="gray.700"
+            startColor="gray.500"
           />
         ) : (
           <>
@@ -59,42 +59,42 @@ export const InformationFooter = () => {
             </Text>
             {latest && (
               <Flex
-                w={2}
                 h={2}
-                bgColor="success.main"
-                borderRadius="16px"
                 sx={{
-                  animation: `pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
                   "@keyframes pulse": {
                     "0%, 100%": { opacity: 1 },
                     "50%": { opacity: 0.5 },
                   },
+                  animation: `pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
                 }}
+                w={2}
+                bgColor="success.main"
+                borderRadius="16px"
               />
             )}
           </>
         )}
       </Flex>
       <Flex>
-        {FOOTER_BUTTONS.map(({ href, icon, text, onClick }) => (
+        {FOOTER_BUTTONS.map(({ href, icon, onClick, text }) => (
           <Link
             key={text}
-            href={href}
-            target="_blank"
             rel="noopener noreferrer"
+            target="_blank"
             onClick={onClick}
+            href={href}
           >
             <Flex
-              gap={1}
-              py={1}
-              px={2}
-              borderRadius={4}
               align="center"
-              cursor="pointer"
+              gap={1}
+              px={2}
+              py={1}
               _hover={{ background: "gray.800" }}
+              borderRadius={4}
+              cursor="pointer"
               transition="all 0.25s ease-in-out"
             >
-              <CustomIcon name={icon} color="gray.600" boxSize={3} />
+              <CustomIcon name={icon} boxSize={3} color="gray.600" />
               <Text variant="body3" color="text.dark">
                 {text}
               </Text>

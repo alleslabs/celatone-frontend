@@ -21,11 +21,11 @@ export const Voter = ({ proposalVote }: VoterProps) => {
         moreInfo={
           isMobile ? (
             <Answer
-              isVoteWeighted={proposalVote.isVoteWeighted}
+              abstain={proposalVote.abstain}
               yes={proposalVote.yes}
+              isVoteWeighted={proposalVote.isVoteWeighted}
               no={proposalVote.no}
               noWithVeto={proposalVote.noWithVeto}
-              abstain={proposalVote.abstain}
             />
           ) : undefined
         }
@@ -34,7 +34,7 @@ export const Voter = ({ proposalVote }: VoterProps) => {
 
   if (proposalVote.voter)
     return (
-      <VStack spacing={1} alignItems="flex-start">
+      <VStack alignItems="flex-start" spacing={1}>
         <ExplorerLink
           type="user_address"
           value={proposalVote.voter}
@@ -42,11 +42,11 @@ export const Voter = ({ proposalVote }: VoterProps) => {
         />
         {isMobile && (
           <Answer
-            isVoteWeighted={proposalVote.isVoteWeighted}
+            abstain={proposalVote.abstain}
             yes={proposalVote.yes}
+            isVoteWeighted={proposalVote.isVoteWeighted}
             no={proposalVote.no}
             noWithVeto={proposalVote.noWithVeto}
-            abstain={proposalVote.abstain}
           />
         )}
       </VStack>

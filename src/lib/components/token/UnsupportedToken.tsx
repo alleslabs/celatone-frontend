@@ -35,52 +35,52 @@ export const UnsupportedToken = ({
   return (
     <Flex
       className="copier-wrapper"
-      borderRadius="8px"
       bg="gray.900"
-      direction="column"
       px={4}
       py={3}
-      role="group"
       _hover={{
         "& .info": {
           display: "flex",
         },
       }}
+      borderRadius="8px"
+      direction="column"
+      role="group"
       {...props}
     >
       <Flex
+        alignItems={{ base: "flex-start", md: "center" }}
         direction={{ base: "column", md: "row" }}
         justifyContent="space-between"
-        alignItems={{ base: "flex-start", md: "center" }}
       >
         {isMobile && (
-          <Tag variant="gray" size="xs" my={{ base: 1, md: 0 }}>
+          <Tag my={{ base: 1, md: 0 }} size="xs" variant="gray">
             {`${tokenType} Token`}
           </Tag>
         )}
         <Flex
           alignItems="center"
-          justifyContent="center"
           gap={1}
           minH={6}
           my={{ base: 1, md: 0 }}
+          justifyContent="center"
         >
           <Text
-            variant="body2"
             className={isMobile ? "" : "ellipsis"}
-            wordBreak="break-word"
+            variant="body2"
             color="text.dark"
+            wordBreak="break-word"
           >
             {getTokenLabel(token.denom, token.symbol, !isMobile)}
           </Text>
           {!isMobile && (
             <Tooltip label={`Token ID: ${token.denom}`} maxW="500px">
               <Flex
-                cursor="pointer"
                 className="info"
+                alignItems="center"
                 display={{ base: "flex", md: "none" }}
                 h={6}
-                alignItems="center"
+                cursor="pointer"
               >
                 <CustomIcon name="info-circle" boxSize={3} color="gray.600" />
               </Flex>
@@ -88,11 +88,11 @@ export const UnsupportedToken = ({
           )}
           <Copier
             display={{ base: "flex", md: "none" }}
+            ml={{ base: 1, md: 0 }}
             type="unsupported_asset"
             value={token.denom}
-            copyLabel="Token ID Copied!"
-            ml={{ base: 1, md: 0 }}
             amptrackSection="unsupported_token_copy"
+            copyLabel="Token ID Copied!"
           />
         </Flex>
       </Flex>
@@ -102,10 +102,10 @@ export const UnsupportedToken = ({
         </Text>
         {!isMobile && (
           <Text
-            variant="body3"
-            color="text.dark"
             minW="fit-content"
             my={{ base: 1, md: 0 }}
+            variant="body3"
+            color="text.dark"
           >
             {`${tokenType} Token`}
           </Text>

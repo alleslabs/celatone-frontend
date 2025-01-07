@@ -6,18 +6,18 @@ import type { TokenWithValue } from "lib/types";
 import { formatTokenWithValue, isSupportedToken } from "lib/utils";
 
 interface MsgTokenProps {
-  token: TokenWithValue;
-  fontWeight?: number;
   ampCopierSection?: string;
+  fontWeight?: number;
+  token: TokenWithValue;
 }
 
 export const MsgToken = ({
-  token,
-  fontWeight = 600,
   ampCopierSection,
+  fontWeight = 600,
+  token,
 }: MsgTokenProps) => (
-  <Flex role="group" align="center" gap={1}>
-    <Text fontWeight={fontWeight} variant="body2">
+  <Flex align="center" gap={1} role="group">
+    <Text variant="body2" fontWeight={fontWeight}>
       {formatTokenWithValue(token)}
     </Text>
     <TooltipInfo
@@ -26,12 +26,12 @@ export const MsgToken = ({
       textAlign="center"
     />
     <Copier
-      type={isSupportedToken(token) ? "supported_asset" : "unsupported_asset"}
-      value={token.denom}
-      copyLabel="Token ID Copied!"
       display="none"
       ml={1}
+      type={isSupportedToken(token) ? "supported_asset" : "unsupported_asset"}
+      value={token.denom}
       amptrackSection={ampCopierSection}
+      copyLabel="Token ID Copied!"
     />
   </Flex>
 );

@@ -34,38 +34,38 @@ import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/theme-one_dark";
 import "ace-builds/src-noconflict/theme-pastel_on_dark";
 
-interface MoveCodeSnippetProps {
-  moduleAddress: HexAddr;
-  moduleName: string;
-  fn: ExposedFunction;
-  abiData: AbiFormData;
-  type: "view" | "execute";
-  ml?: ButtonProps["ml"];
+interface FormatedData {
+  argsFlags: string;
+  formatedAbiData: string;
+  formatedArgs: string;
+  formatedTypeArgs: string;
+  isHiddenCLI: boolean;
+  showArgs: boolean;
+  showTypeArgs: boolean;
+  typeArgsFlags: string;
 }
 
-interface FormatedData {
-  showTypeArgs: boolean;
-  showArgs: boolean;
-  formatedTypeArgs: string;
-  formatedArgs: string;
-  formatedAbiData: string;
-  typeArgsFlags: string;
-  argsFlags: string;
-  isHiddenCLI: boolean;
+interface MoveCodeSnippetProps {
+  abiData: AbiFormData;
+  fn: ExposedFunction;
+  ml?: ButtonProps["ml"];
+  moduleAddress: HexAddr;
+  moduleName: string;
+  type: "execute" | "view";
 }
 
 const MoveCodeSnippet = ({
+  abiData,
+  fn,
+  ml,
   moduleAddress,
   moduleName,
-  fn,
-  abiData,
   type = "view",
-  ml,
 }: MoveCodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
-    currentChainId,
     chainConfig: { chain, lcd: lcdEndpoint, rpc: rpcEndpoint },
+    currentChainId,
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();
@@ -74,14 +74,14 @@ const MoveCodeSnippet = ({
   const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
 
   const {
-    showTypeArgs,
-    showArgs,
+    argsFlags,
     formatedAbiData,
     formatedArgs,
     formatedTypeArgs,
-    typeArgsFlags,
-    argsFlags,
     isHiddenCLI,
+    showArgs,
+    showTypeArgs,
+    typeArgsFlags,
   } = useMemo<FormatedData>(() => {
     const serializedAbiData = serializeAbiData(fn, abiData);
     const displayTypeArgs = serializedAbiData.typeArgs.length > 0;
@@ -94,17 +94,12 @@ const MoveCodeSnippet = ({
     });
 
     return {
-      showTypeArgs: displayTypeArgs,
-      showArgs: displayArgs,
-      formatedTypeArgs: JSON.stringify(serializedAbiData.typeArgs),
-      formatedArgs: JSON.stringify(serializedAbiData.args),
-      formatedAbiData: JSON.stringify(serializedAbiData),
-      typeArgsFlags: displayTypeArgs
-        ? `\n\t--type-args '${serializedAbiData.typeArgs.join(" ")}' \\`
-        : "",
       argsFlags: displayArgs
         ? `\n\t--args '${argsWithTypes.join(" ")}' \\`
         : "",
+      formatedAbiData: JSON.stringify(serializedAbiData),
+      formatedArgs: JSON.stringify(serializedAbiData.args),
+      formatedTypeArgs: JSON.stringify(serializedAbiData.typeArgs),
       isHiddenCLI: argTypes.some(
         (argType) =>
           argType === "vector" ||
@@ -115,67 +110,22 @@ const MoveCodeSnippet = ({
           argType === "decimal128" ||
           argType === "decimal256"
       ),
+      showArgs: displayArgs,
+      showTypeArgs: displayTypeArgs,
+      typeArgsFlags: displayTypeArgs
+        ? `\n\t--type-args '${serializedAbiData.typeArgs.join(" ")}' \\`
+        : "",
     };
   }, [abiData, fn]);
 
   const codeSnippets: Record<
     string,
-    { name: string; mode: string; snippet: string; isHidden?: boolean }[]
+    { isHidden?: boolean; mode: string; name: string; snippet: string }[]
   > = {
-    view: [
-      {
-        name: "Curl",
-        mode: "sh",
-        snippet: `\n\ncurl '${lcdEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
---data-raw '${formatedAbiData}'`,
-      },
-      {
-        name: "CLI",
-        mode: "sh",
-        isHidden: isHiddenCLI,
-        snippet: `export CHAIN_ID='${currentChainId}'\n
-export MODULE_ADDRESS='${moduleAddress}'\n
-export MODULE_NAME='${moduleName}'\n
-export MODULE_FN='${fn.name}'\n
-export RPC_URL='${rpcEndpoint}'\n
-${daemonName} query move view $MODULE_ADDRESS \\
-    $MODULE_NAME \\
-    $MODULE_FN \\${typeArgsFlags}${argsFlags}
-    --chain-id $CHAIN_ID \\
-    --node $RPC_URL`,
-      },
-      {
-        name: "InitiaJS",
-        mode: "javascript",
-        snippet: `import { LCDClient } from '@initia/initia.js'
-
-const lcd = new LCDClient('${lcdEndpoint}', {
-    chainId: '${currentChainId}',
-});
-const moduleAddress =
-"${moduleAddress}";
-const moduleName = "${moduleName}";
-const fnName = "${fn.name}";
-const viewModule = async (moduleAddress, moduleName, fnName) => {
-    const viewResult = await lcd.move.viewFunction(
-        moduleAddress,
-        moduleName,
-        fnName${showTypeArgs ? ",\n\t\t".concat(formatedTypeArgs) : ""}${
-          showArgs
-            ? (!showTypeArgs ? ",\n\t\tundefined" : "") +
-              ",\n\t\t".concat(formatedArgs)
-            : ""
-        }
-    )
-    console.log(viewResult);
-};\n
-viewModule(moduleAddress, moduleName, fnName);`,
-      },
-    ],
     execute: [
       {
-        name: "InitiaJS",
         mode: "javascript",
+        name: "InitiaJS",
         snippet: `import { LCDClient, Wallet, MnemonicKey, MsgExecute } from '@initia/initia.js';
 
 const lcd = new LCDClient('${lcdEndpoint}', {
@@ -209,9 +159,9 @@ const execute = async () => {
 execute();`,
       },
       {
-        name: "CLI",
-        mode: "sh",
         isHidden: isHiddenCLI,
+        mode: "sh",
+        name: "CLI",
         snippet: `${daemonName} keys add --recover celatone\n
 export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
@@ -229,15 +179,65 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
     --gas-adjustment 1.5`,
       },
     ],
+    view: [
+      {
+        mode: "sh",
+        name: "Curl",
+        snippet: `\n\ncurl '${lcdEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
+--data-raw '${formatedAbiData}'`,
+      },
+      {
+        isHidden: isHiddenCLI,
+        mode: "sh",
+        name: "CLI",
+        snippet: `export CHAIN_ID='${currentChainId}'\n
+export MODULE_ADDRESS='${moduleAddress}'\n
+export MODULE_NAME='${moduleName}'\n
+export MODULE_FN='${fn.name}'\n
+export RPC_URL='${rpcEndpoint}'\n
+${daemonName} query move view $MODULE_ADDRESS \\
+    $MODULE_NAME \\
+    $MODULE_FN \\${typeArgsFlags}${argsFlags}
+    --chain-id $CHAIN_ID \\
+    --node $RPC_URL`,
+      },
+      {
+        mode: "javascript",
+        name: "InitiaJS",
+        snippet: `import { LCDClient } from '@initia/initia.js'
+
+const lcd = new LCDClient('${lcdEndpoint}', {
+    chainId: '${currentChainId}',
+});
+const moduleAddress =
+"${moduleAddress}";
+const moduleName = "${moduleName}";
+const fnName = "${fn.name}";
+const viewModule = async (moduleAddress, moduleName, fnName) => {
+    const viewResult = await lcd.move.viewFunction(
+        moduleAddress,
+        moduleName,
+        fnName${showTypeArgs ? ",\n\t\t".concat(formatedTypeArgs) : ""}${
+          showArgs
+            ? (!showTypeArgs ? ",\n\t\tundefined" : "") +
+              ",\n\t\t".concat(formatedArgs)
+            : ""
+        }
+    )
+    console.log(viewResult);
+};\n
+viewModule(moduleAddress, moduleName, fnName);`,
+      },
+    ],
   };
 
   return (
     <>
       <Button
-        variant="outline-white"
-        size="md"
-        ml={ml}
         gap={1}
+        ml={ml}
+        size="md"
+        variant="outline-white"
         onClick={() => {
           track(AmpEvent.USE_CONTRACT_SNIPPET, {
             functionType: fn.is_view ? "view" : "Execute",
@@ -249,7 +249,7 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
         Code Snippet
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
+      <Modal isCentered isOpen={isOpen} size="4xl" onClose={onClose}>
         <ModalOverlay />
         <ModalContent w="840px">
           <ModalHeader>
@@ -259,7 +259,7 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />
-          <ModalBody px={4} maxH="640px" overflow="scroll">
+          <ModalBody maxH="640px" px={4} overflow="scroll">
             <Tabs>
               <TabList borderBottom="1px solid" borderColor="gray.700">
                 {codeSnippets[type].map((item) => (
@@ -272,34 +272,34 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
                 {codeSnippets[type].map((item) => (
                   <TabPanel key={item.name} px={2} py={4}>
                     <Box
-                      bgColor="background.main"
                       p={4}
+                      bgColor="background.main"
                       borderRadius="8px"
                       position="relative"
                     >
                       <AceEditor
-                        readOnly
-                        mode={item.mode}
-                        theme={theme.jsonTheme}
-                        fontSize="14px"
                         style={{
-                          width: "100%",
                           background: "transparent",
+                          width: "100%",
                         }}
+                        readOnly
+                        theme={theme.jsonTheme}
                         value={item.snippet}
+                        fontSize="14px"
+                        mode={item.mode}
                         setOptions={{
+                          printMargin: false,
                           showGutter: false,
                           useWorker: false,
-                          printMargin: false,
                           wrap: true,
                         }}
                       />
-                      <Box position="absolute" top={4} right={4}>
+                      <Box right={4} position="absolute" top={4}>
                         <CopyButton
                           value={item.snippet}
+                          amptrackInfo={fn.is_view ? "view" : "Execute"}
                           amptrackSection="code_snippet"
                           amptrackSubSection={item.name}
-                          amptrackInfo={fn.is_view ? "view" : "Execute"}
                         />
                       </Box>
                     </Box>

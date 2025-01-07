@@ -25,18 +25,18 @@ export const NftsByCollectionFull = ({
   const debouncedSearch = useDebounce(searchKeyword);
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
   const { data, isLoading } = useNftsByAccountAddress(
@@ -61,42 +61,42 @@ export const NftsByCollectionFull = ({
   return (
     <Stack spacing="24px" w="full">
       <InputWithIcon
-        placeholder="Search with Token ID or NFT VM Address"
+        size={{ base: "md", md: "lg" }}
         value={searchKeyword}
+        amptrackSection="nft-account-detail-tokenid-search"
         autoFocus={!isMobile}
         onChange={(e) => setSearchKeyword(e.target.value)}
-        size={{ base: "md", md: "lg" }}
-        amptrackSection="nft-account-detail-tokenid-search"
+        placeholder="Search with Token ID or NFT VM Address"
       />
       <NftList
-        nfts={data?.items}
-        isLoading={isLoading}
         emptyState={
           <EmptyState
+            imageVariant="empty"
             message={
               searchKeyword
                 ? "There are no NFTs matches your keyword."
                 : "There are currently no NFTs held by this account."
             }
-            imageVariant="empty"
             withBorder
           />
         }
+        nfts={data?.items}
+        isLoading={isLoading}
         showCollection
       />
       {data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
+          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={data.total}
-          pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
           }}
+          totalData={data.total}
         />
       )}
     </Stack>

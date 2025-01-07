@@ -17,12 +17,12 @@ export const EvmContractDetailsTop = ({
 
   return (
     <Flex
-      flexDirection={{ md: "row", base: "column" }}
-      justifyContent="space-between"
       gap={4}
+      flexDirection={{ base: "column", md: "row" }}
+      justifyContent="space-between"
     >
       <Stack gap={4}>
-        <Flex gap={2} align="center">
+        <Flex align="center" gap={2}>
           <CustomIcon
             name="contract-address"
             boxSize={5}
@@ -32,14 +32,14 @@ export const EvmContractDetailsTop = ({
             Contract Details
           </Heading>
         </Flex>
-        <Flex columnGap={2} flexDirection={{ md: "row", base: "column" }}>
-          <Text variant="body2" fontWeight={500} color="text.dark">
+        <Flex columnGap={2} flexDirection={{ base: "column", md: "row" }}>
+          <Text variant="body2" color="text.dark" fontWeight={500}>
             Contract Address:
           </Text>
           <CopyLink
+            type="contract_address"
             value={contractAddress}
             amptrackSection="contract_top"
-            type="contract_address"
           />
         </Flex>
       </Stack>

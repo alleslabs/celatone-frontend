@@ -4,53 +4,48 @@ import type { Nullable } from "../common";
 
 export enum TxStreamPhase {
   BROADCAST = "BROADCAST",
-  SUCCEED = "SUCCEED",
   FAILED = "FAILED",
-}
-
-export interface TxErrorRendering {
-  errorId?: string;
-  error: unknown;
-}
-
-export interface TxReceipt {
-  title: string;
-  value?: Nullable<string | number>;
-  html?: ReactNode;
-}
-
-export interface ReceiptInfo {
-  header: string;
-  headerIcon?: ReactNode;
-  description?: ReactNode;
-  errorMsg?: string;
+  SUCCEED = "SUCCEED",
 }
 
 export type ActionVariant =
-  | "sending"
-  | "upload-migrate"
+  | "failed"
   | "migrate"
+  | "proposal"
   | "rejected"
   | "resend"
+  | "sending"
   | "update-admin"
-  | "proposal"
-  | "failed";
+  | "upload-migrate";
+
+export interface ReceiptInfo {
+  description?: ReactNode;
+  errorMsg?: string;
+  header: string;
+  headerIcon?: ReactNode;
+}
+
+export interface TxErrorRendering {
+  error: unknown;
+  errorId?: string;
+}
+
+export interface TxReceipt {
+  html?: ReactNode;
+  title: string;
+  value?: Nullable<number | string>;
+}
 
 export interface TxResultRendering<T = unknown> {
-  /**
-   * @internal
-   * pass to next unary function
-   * this property not affect to rendering
-   */
-  value: T;
-
-  phase: TxStreamPhase;
+  actionVariant?: ActionVariant;
 
   /**
    * if this is exists,
    * - the tx is failed
    */
   failedReason?: TxErrorRendering;
+
+  phase: TxStreamPhase;
 
   /**
    * if this is exists,
@@ -59,12 +54,17 @@ export interface TxResultRendering<T = unknown> {
    */
   receiptErrors?: TxErrorRendering[];
 
+  receiptInfo: ReceiptInfo;
+
   /**
    * tx receipts
    */
   receipts: TxReceipt[];
 
-  receiptInfo: ReceiptInfo;
-
-  actionVariant?: ActionVariant;
+  /**
+   * @internal
+   * pass to next unary function
+   * this property not affect to rendering
+   */
+  value: T;
 }

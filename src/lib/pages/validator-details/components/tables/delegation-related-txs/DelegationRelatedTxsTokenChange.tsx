@@ -21,17 +21,17 @@ import {
 } from "lib/utils";
 
 interface DelegationRelatedTxsTokenChangeProps {
-  txHash: string;
-  coin: Coin;
   assetInfos: Option<AssetInfos>;
+  coin: Coin;
   movePoolInfos: Option<MovePoolInfos>;
+  txHash: string;
 }
 
 export const DelegationRelatedTxsTokenChange = ({
-  txHash,
-  coin,
   assetInfos,
+  coin,
   movePoolInfos,
+  txHash,
 }: DelegationRelatedTxsTokenChangeProps) => {
   const token = coinToTokenWithValue(
     coin.denom,
@@ -44,17 +44,17 @@ export const DelegationRelatedTxsTokenChange = ({
 
   return (
     <Flex
-      gap={2}
       key={`${txHash}-${token.denom}`}
+      alignItems="center"
+      gap={2}
       w="100%"
       justifyContent={{ base: "start", md: "end" }}
-      alignItems="center"
     >
       <Box textAlign={{ base: "left", md: "right" }}>
         <Flex alignItems="center" gap={1}>
           <Text
-            fontWeight={700}
             color={isPositiveAmount ? "success.main" : "error.main"}
+            fontWeight={700}
           >
             {formattedAmount}
           </Text>

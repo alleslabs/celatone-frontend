@@ -10,23 +10,23 @@ import type { Option, Ratio, ValidatorAddr } from "lib/types";
 import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
 const StatWithLabel = ({
-  label,
-  value,
   isLoading,
+  label,
   tooltipLabel,
+  value,
 }: {
-  label: string;
-  value: Option<string>;
   isLoading: boolean;
+  label: string;
   tooltipLabel?: string;
+  value: Option<string>;
 }) => (
   <Flex
-    gap={{ md: 2 }}
     align={{ md: "center" }}
+    gap={{ md: 2 }}
     direction={{ base: "column", md: "row" }}
     flexGrow={{ base: 1, md: 0 }}
   >
-    <Text variant="body2" fontWeight={600} color="text.dark">
+    <Text variant="body2" color="text.dark" fontWeight={600}>
       {label} {tooltipLabel && <TooltipInfo label={tooltipLabel} />}
     </Text>
     {isLoading ? (
@@ -34,8 +34,8 @@ const StatWithLabel = ({
     ) : (
       <Text
         variant="body2"
-        fontWeight={600}
         color={value ? "text.main" : "text.dark"}
+        fontWeight={600}
       >
         {value ?? "N/A"}
       </Text>
@@ -44,17 +44,17 @@ const StatWithLabel = ({
 );
 
 interface ValidatorStatsProps {
-  validatorAddress: ValidatorAddr;
   commissionRate: Ratio<number>;
-  totalVotingPower: Big;
   singleStakingDenom: Option<string>;
+  totalVotingPower: Big;
+  validatorAddress: ValidatorAddr;
 }
 
 export const ValidatorStats = ({
-  validatorAddress,
   commissionRate,
-  totalVotingPower,
   singleStakingDenom,
+  totalVotingPower,
+  validatorAddress,
 }: ValidatorStatsProps) => {
   const { data: stakingProvisions, isLoading: isStakingProvisionsLoading } =
     useValidatorStakingProvisions(!!singleStakingDenom);
@@ -79,13 +79,13 @@ export const ValidatorStats = ({
     <Flex
       alignItems="center"
       gap={2}
+      mb={{ base: 0, md: 1 }}
+      mt={{ base: 2, md: 1 }}
+      px={{ base: 3, md: 0 }}
+      py={{ base: 1, md: 0 }}
       border={{ base: "1px solid", md: "0px" }}
       borderColor="gray.700"
       borderRadius={4}
-      mt={{ base: 2, md: 1 }}
-      mb={{ base: 0, md: 1 }}
-      px={{ base: 3, md: 0 }}
-      py={{ base: 1, md: 0 }}
     >
       <StatWithLabel
         label="Commission"

@@ -3,26 +3,26 @@ import { Flex, Text } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 
 interface OptionButtonProps {
-  title: string;
   description: string;
+  title: string;
 }
 
-export const OptionButton = ({ title, description }: OptionButtonProps) => (
+export const OptionButton = ({ description, title }: OptionButtonProps) => (
   <Flex
     alignItems="center"
-    w="full"
     bg="gray.800"
     p={4}
-    borderRadius={8}
-    transition="all 0.25s ease-in-out"
-    cursor="pointer"
+    w="full"
     _hover={{ bg: "gray.700" }}
+    borderRadius={8}
+    cursor="pointer"
+    transition="all 0.25s ease-in-out"
   >
-    <Flex direction="column" gap={1} w="full">
-      <Text color="text.main" variant="body1" fontWeight={500}>
+    <Flex gap={1} w="full" direction="column">
+      <Text variant="body1" color="text.main" fontWeight={500}>
         {title}
       </Text>
-      <Text color="text.dark" variant="body2">
+      <Text variant="body2" color="text.dark">
         {description}
       </Text>
     </Flex>
@@ -31,24 +31,24 @@ export const OptionButton = ({ title, description }: OptionButtonProps) => (
 );
 
 export const OptionButtonDisabled = ({
-  title,
   description,
+  title,
 }: OptionButtonProps) => (
   <Flex
     alignItems="center"
-    w="full"
     bg="gray.900"
     p={4}
-    borderRadius={8}
-    transition="all 0.25s ease-in-out"
-    cursor="not-allowed"
+    w="full"
     _hover={{ bg: "gray.900" }}
+    borderRadius={8}
+    cursor="not-allowed"
+    transition="all 0.25s ease-in-out"
   >
-    <Flex direction="column" gap={1} w="full">
-      <Text color="text.disabled" variant="body1" fontWeight={500}>
+    <Flex gap={1} w="full" direction="column">
+      <Text variant="body1" color="text.disabled" fontWeight={500}>
         {title}
       </Text>
-      <Text color="text.disabled" variant="body2">
+      <Text variant="body2" color="text.disabled">
         {description}
       </Text>
     </Flex>

@@ -27,13 +27,13 @@ export const ClearAdminModal = ({
 
   return (
     <ActionModal
+      mainBtnTitle="Yes, clear it"
+      mainVariant="error"
       title="You'll no longer have admin access"
+      trigger={triggerElement}
       icon="delete"
       iconColor="error.light"
-      trigger={triggerElement}
-      mainBtnTitle="Yes, clear it"
       mainAction={proceed}
-      mainVariant="error"
       otherBtnTitle="No, keep it"
       otherVariant="outline-primary"
     >

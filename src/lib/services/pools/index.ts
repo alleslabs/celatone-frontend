@@ -42,8 +42,8 @@ export const usePools = (
         isDesc
       ),
     {
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
       ...options,
     }
   );
@@ -55,7 +55,7 @@ export const usePoolData = (id: number, enabled = true) => {
   return useQuery(
     [CELATONE_QUERY_KEYS.POOL_DATA, endpoint, id],
     async () => getPoolData(endpoint, id),
-    { enabled, retry: false, refetchOnWindowFocus: false }
+    { enabled, refetchOnWindowFocus: false, retry: false }
   );
 };
 
@@ -79,8 +79,8 @@ export const usePoolsLiquidityByPoolIds = (
       ),
     {
       enabled,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };

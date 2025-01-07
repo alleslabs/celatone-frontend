@@ -53,10 +53,10 @@ export default function ObjectFieldTemplate<
       {description && (
         <DescriptionFieldTemplate
           id={descriptionId<T>(idSchema)}
-          description={description}
+          registry={registry}
           schema={schema}
           uiSchema={uiSchema}
-          registry={registry}
+          description={description}
         />
       )}
       <Grid gap={4} my={2}>
@@ -78,13 +78,13 @@ export default function ObjectFieldTemplate<
           )
         ) : (
           <Text
-            variant="body3"
-            fontWeight={700}
-            textColor="text.disabled"
-            textAlign="center"
             p={4}
+            textAlign="center"
+            variant="body3"
             bgColor="gray.700"
             borderRadius="8px"
+            fontWeight={700}
+            textColor="text.disabled"
           >
             object with no properties
           </Text>
@@ -93,10 +93,10 @@ export default function ObjectFieldTemplate<
           <GridItem justifySelf="flex-end">
             <AddButton
               className="object-property-expand"
-              onClick={onAddClick(schema)}
               disabled={disabled || readonly}
-              uiSchema={uiSchema}
               registry={registry}
+              uiSchema={uiSchema}
+              onClick={onAddClick(schema)}
             />
           </GridItem>
         )}

@@ -5,30 +5,30 @@ import { CustomIcon } from "../icon";
 
 const listItemProps: CSSProperties = {
   borderRadius: "8px",
+  cursor: "pointer",
   margin: "4px 0px",
   padding: "8px",
-  cursor: "pointer",
 };
 
 interface FilterDropdownItemProps {
-  isOptionSelected: boolean;
   filterDropdownComponent: ReactNode;
+  isOptionSelected: boolean;
   onSelect: () => void;
 }
 
 export const FilterDropdownItem = ({
-  isOptionSelected,
   filterDropdownComponent,
+  isOptionSelected,
   onSelect,
 }: FilterDropdownItemProps) => (
   <ListItem
     style={listItemProps}
     _hover={{ bg: "gray.800" }}
-    transition="all 0.25s ease-in-out"
     onClick={onSelect}
+    transition="all 0.25s ease-in-out"
   >
     <Flex alignItems="center" justifyContent="space-between">
-      <Text wordBreak="break-all" lineHeight="1.2">
+      <Text lineHeight="1.2" wordBreak="break-all">
         {filterDropdownComponent}
       </Text>
       {isOptionSelected && <CustomIcon name="check" color="gray.600" />}

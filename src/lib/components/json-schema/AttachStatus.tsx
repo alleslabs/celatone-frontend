@@ -11,39 +11,39 @@ export const AttachStatus = ({
   codeId,
   isReattach = false,
 }: AttachStatusProps) => (
-  <Flex position="relative" gap={10} mb={6}>
+  <Flex gap={10} mb={6} position="relative">
     <Flex
+      gap={2}
+      p={2}
+      w="full"
       bgColor="gray.800"
       borderRadius={4}
-      p={2}
-      gap={2}
-      w="full"
       justifyContent="center"
     >
       <CustomIcon name="code" color="gray.400" />
       Code ID: {codeId}
     </Flex>
     <ConnectingLine
+      style={{
+        left: "calc(50% - 24px)",
+        top: "calc(50% - 6px)",
+        width: "full",
+      }}
       alignment="horizontal"
       isFilled={isReattach}
-      style={{
-        width: "full",
-        top: "calc(50% - 6px)",
-        left: "calc(50% - 24px)",
-      }}
     />
     <Flex
+      gap={2}
+      p={2}
+      w="full"
       bgColor={isReattach ? "gray.800" : "transparent"}
-      borderRadius={4}
       border={
         isReattach
           ? "1px solid var(--chakra-colors-gray-600)"
           : "1px dashed var(--chakra-colors-primary-light)"
       }
-      p={2}
-      gap={2}
+      borderRadius={4}
       justifyContent="center"
-      w="full"
     >
       <CustomIcon
         name={isReattach ? "edit" : "upload"}

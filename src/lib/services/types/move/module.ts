@@ -25,9 +25,9 @@ import {
 } from "lib/utils";
 
 const zBaseModuleLcd = z.object({
+  abi: z.string(),
   address: zHexAddr,
   module_name: z.string(),
-  abi: z.string(),
   raw_bytes: z.string(),
   upgrade_policy: z.nativeEnum(UpgradePolicy),
 });
@@ -60,12 +60,12 @@ export interface DecodeModuleReturn {
 const zModulesResponseItem = z
   .object({
     address: zHexAddr,
-    module_name: z.string(),
+    digest: z.string(),
     height: z.number(),
-    latest_updated: zUtcDate,
     is_republished: z.boolean(),
     is_verified: z.boolean(),
-    digest: z.string(),
+    latest_updated: zUtcDate,
+    module_name: z.string(),
   })
   .transform<ModuleInfo>(snakeToCamel);
 
@@ -77,13 +77,13 @@ export type ModulesResponse = z.infer<typeof zModulesResponse>;
 
 export const zModulePublishInfoResponse = z
   .object({
-    recent_publish_transaction: z.string().nullable(),
+    is_republished: z.boolean(),
+    recent_publish_block_height: z.number().nonnegative(),
+    recent_publish_block_timestamp: zUtcDate,
     recent_publish_proposal: zProposal
       .pick({ id: true, title: true })
       .nullish(),
-    recent_publish_block_height: z.number().nonnegative(),
-    recent_publish_block_timestamp: zUtcDate,
-    is_republished: z.boolean(),
+    recent_publish_transaction: z.string().nullable(),
   })
   .transform<ModulePublishInfo>((val) => ({
     ...snakeToCamel(val),
@@ -93,9 +93,9 @@ export const zModulePublishInfoResponse = z
   }));
 
 export const zModuleTableCountsResponse = z.object({
-  txs: z.number().nonnegative().nullable(),
   histories: z.number().nonnegative().nullable(),
   proposals: z.number().nonnegative().nullish(),
+  txs: z.number().nonnegative().nullable(),
 });
 export type ModuleTableCountsResponse = z.infer<
   typeof zModuleTableCountsResponse
@@ -108,11 +108,11 @@ export type ModuleTxsResponse = z.infer<typeof zModuleTxsResponse>;
 
 const zModuleHistory = z
   .object({
-    remark: zRemark,
-    upgrade_policy: z.nativeEnum(UpgradePolicy),
     height: z.number().nonnegative(),
-    timestamp: zUtcDate,
     previous_policy: z.nativeEnum(UpgradePolicy).nullable(),
+    remark: zRemark,
+    timestamp: zUtcDate,
+    upgrade_policy: z.nativeEnum(UpgradePolicy),
   })
   .transform(snakeToCamel);
 export type ModuleHistory = z.infer<typeof zModuleHistory>;
@@ -127,24 +127,24 @@ export const zModuleRelatedProposalsResponse = z.object({
   items: z.array(zProposalsResponseItem),
   total: z.number().nonnegative(),
 });
-export type ModuleRelatedProposalsResponse = z.infer<
-  typeof zModuleRelatedProposalsResponse
->;
-
 export interface DecodeModuleQueryResponse {
   abi: ModuleAbi;
-  modulePath: string;
   currentPolicy: Option<UpgradePolicy>;
+  modulePath: string;
 }
 
 export interface ModuleInitialPublishInfo {
-  publisherVmAddress: HexAddr;
   createdHeight: Option<number>;
   createdTime: Option<Date>;
-  initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
+  initTxHash: Option<string>;
+  publisherVmAddress: HexAddr;
 }
+
+export type ModuleRelatedProposalsResponse = z.infer<
+  typeof zModuleRelatedProposalsResponse
+>;
 
 export const zMoveViewJsonResponseLcd = z
   .object({

@@ -39,28 +39,28 @@ export const useUploadCode = (
   } = useCelatoneApp();
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateStatus, setSimulateStatus] = useState<SimulateStatus>({
-    status: "default",
     message: "",
+    status: "default",
   });
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const fabricateFee = useFabricateFee();
 
   const setDefaultBehavior = useCallback(() => {
-    setSimulateStatus({ status: "default", message: "" });
+    setSimulateStatus({ message: "", status: "default" });
     setEstimatedFee(undefined);
   }, [setEstimatedFee]);
 
   const formData = useForm<UploadSectionState>({
     defaultValues: {
-      wasmFile: undefined,
+      addresses: [{ address: "" as BechAddr }],
       codeName: "",
       permission: AccessType.ACCESS_TYPE_EVERYBODY,
-      addresses: [{ address: "" as BechAddr }],
+      wasmFile: undefined,
     },
     mode: "all",
   });
 
-  const { wasmFile, codeName, permission, addresses } = formData.watch();
+  const { addresses, codeName, permission, wasmFile } = formData.watch();
 
   // Should not simulate when permission is any of addresses and address input is not filled, invalid, or empty
   const shouldNotSimulate = useMemo(() => {
@@ -89,13 +89,19 @@ export const useUploadCode = (
   ]);
 
   const { isFetching: isSimulating } = useSimulateFeeForStoreCode({
-    enabled: Boolean(wasmFile && address && !shouldNotSimulate),
-    wasmFile,
-    permission,
     // Remarks: disableAnyOfAddresses is only used for Cosmos SDK 0.26
     addresses: disableAnyOfAddresses
       ? undefined
       : addresses.map((addr) => addr.address),
+    enabled: Boolean(wasmFile && address && !shouldNotSimulate),
+    onError: (e) => {
+      if (shouldNotSimulate) {
+        setDefaultBehavior();
+      } else {
+        setSimulateStatus({ message: e.message, status: "failed" });
+        setEstimatedFee(undefined);
+      }
+    },
     onSuccess: (fee) => {
       if (wasmFile && address) {
         if (shouldNotSimulate) {
@@ -103,34 +109,25 @@ export const useUploadCode = (
         }
         if (fee) {
           setSimulateStatus({
-            status: "succeeded",
             message: "Valid Wasm file and instantiate permission",
+            status: "succeeded",
           });
           setEstimatedFee(fabricateFee(fee));
         }
       }
     },
-    onError: (e) => {
-      if (shouldNotSimulate) {
-        setDefaultBehavior();
-      } else {
-        setSimulateStatus({ status: "failed", message: e.message });
-        setEstimatedFee(undefined);
-      }
-    },
+    permission,
+    wasmFile,
   });
 
   const proceed = useCallback(async () => {
     if (address) {
       track(AmpEvent.ACTION_UPLOAD);
       const stream = await storeCodeTx({
-        wasmFileName: wasmFile?.name,
-        wasmCode: wasmFile?.arrayBuffer(),
         // Remarks: disableAnyOfAddresses is only used for Cosmos SDK 0.26
         addresses: disableAnyOfAddresses
           ? undefined
           : addresses.map((addr) => addr.address),
-        permission,
         codeName,
         estimatedFee,
         onTxSucceed: (txResult) => {
@@ -141,6 +138,9 @@ export const useUploadCode = (
             codeName || `${wasmFile?.name}(${txResult.codeId})`
           );
         },
+        permission,
+        wasmCode: wasmFile?.arrayBuffer(),
+        wasmFileName: wasmFile?.name,
       });
 
       if (stream) broadcast(stream);
@@ -162,17 +162,17 @@ export const useUploadCode = (
   ]);
 
   return {
-    proceed,
-    formData,
     estimatedFee,
-    setEstimatedFee,
-    shouldNotSimulate,
-    setDefaultBehavior,
-    simulateStatus,
-    isSimulating,
+    formData,
     isDisabledProcess:
       isSimulating ||
       shouldNotSimulate ||
       simulateStatus.status !== "succeeded",
+    isSimulating,
+    proceed,
+    setDefaultBehavior,
+    setEstimatedFee,
+    shouldNotSimulate,
+    simulateStatus,
   };
 };

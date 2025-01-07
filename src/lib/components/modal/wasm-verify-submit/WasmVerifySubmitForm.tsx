@@ -25,34 +25,52 @@ import { useWasmOptimizerVersions } from "./hooks";
 import { WasmVerifySubmitFormSelect } from "./WasmVerifySubmitFormSelect";
 
 interface WasmVerifySubmitFormProps {
-  codeId: number;
   codeHash: Option<string>;
-  wasmVerifyStatus: WasmVerifyStatus;
-  relatedVerifiedCodes?: number[];
+  codeId: number;
   contractAddress?: BechAddr32;
-  onSubmit: (wasmVerifyRequest: WasmVerifyRequest) => void;
   isLoading: boolean;
+  onSubmit: (wasmVerifyRequest: WasmVerifyRequest) => void;
+  relatedVerifiedCodes?: number[];
+  wasmVerifyStatus: WasmVerifyStatus;
 }
 
 export const WasmVerifySubmitForm = ({
-  codeId,
   codeHash,
-  wasmVerifyStatus,
-  relatedVerifiedCodes,
+  codeId,
   contractAddress,
-  onSubmit,
   isLoading,
+  onSubmit,
+  relatedVerifiedCodes,
+  wasmVerifyStatus,
 }: WasmVerifySubmitFormProps) => {
   const { currentChainId } = useCelatoneApp();
   const wasmOptimizerVersions = useWasmOptimizerVersions();
 
   const {
     control,
-    handleSubmit,
     formState: { errors, isValid },
+    handleSubmit,
   } = useForm({
+    defaultValues: {
+      commit: "",
+      compilerVersion: "",
+      gitUrl: "",
+      packageName: "",
+    },
+    mode: "all",
     resolver: zodResolver(
       z.object({
+        commit: z
+          .string()
+          .min(1, { message: "Commit hash is required" })
+          .regex(
+            /^[0-9a-fA-F]+$/,
+            "Only hexadecimal digits are allowed, such as 0-9 and A-F"
+          )
+          .max(40, {
+            message: "The commit hash length must be 40 characters or fewer",
+          }),
+        compilerVersion: z.string().min(1),
         gitUrl: z
           .string()
           .min(1, {
@@ -66,16 +84,6 @@ export const WasmVerifySubmitForm = ({
             message:
               "Please enter GitHub URL in format: https://github.com/username/repository",
           }),
-        commit: z
-          .string()
-          .min(1, { message: "Commit hash is required" })
-          .regex(
-            /^[0-9a-fA-F]+$/,
-            "Only hexadecimal digits are allowed, such as 0-9 and A-F"
-          )
-          .max(40, {
-            message: "The commit hash length must be 40 characters or fewer",
-          }),
         packageName: z
           .string()
           .min(1, { message: "Wasm file name is required" })
@@ -83,44 +91,36 @@ export const WasmVerifySubmitForm = ({
             /^[^\\/:*?"<>|]+$/,
             'Filename cannot contain any of the following characters: \\ / : * ? " < > |'
           ),
-        compilerVersion: z.string().min(1),
       })
     ),
-    mode: "all",
     reValidateMode: "onChange",
-    defaultValues: {
-      gitUrl: "",
-      commit: "",
-      packageName: "",
-      compilerVersion: "",
-    },
   });
 
   return (
     <>
       <ModalHeader pb={0}>
-        <Flex w="full" direction="row" alignItems="center" gap={2}>
+        <Flex alignItems="center" gap={2} w="full" direction="row">
           <CustomIcon name="verification-solid" boxSize={6} color="gray.600" />
-          <Heading variant="h5" as="h5">
+          <Heading as="h5" variant="h5">
             Verify & Publish Source Code
           </Heading>
         </Flex>
       </ModalHeader>
       <ModalCloseButton color="gray.400" />
       <ModalBody>
-        <Flex direction="column" gap={4}>
-          <Flex direction="column" gap={1}>
+        <Flex gap={4} direction="column">
+          <Flex gap={1} direction="column">
             <Text variant="body2">
               Verifying your code offers enhanced credibility with a verified
               badge. Once verified, users will able to...
             </Text>
-            <Flex gap={0.5} alignItems="center">
+            <Flex alignItems="center" gap={0.5}>
               <CustomIcon name="check" color="success.main" />
               <Text variant="body2">
                 Access its source code via provided GitHub repository
               </Text>
             </Flex>
-            <Flex gap={0.5} alignItems="center">
+            <Flex alignItems="center" gap={0.5}>
               <CustomIcon name="check" color="success.main" />
               <Text variant="body2">
                 Execute it through Celatone&apos;s system-generated schema
@@ -128,10 +128,10 @@ export const WasmVerifySubmitForm = ({
             </Flex>
           </Flex>
           <Divider borderColor="gray.700" />
-          <Flex direction="column" gap={6}>
+          <Flex gap={6} direction="column">
             <Flex gap={6}>
-              <Flex gap={2} alignItems="center">
-                <Text fontWeight={500} color="text.dark" variant="body2">
+              <Flex alignItems="center" gap={2}>
+                <Text variant="body2" color="text.dark" fontWeight={500}>
                   Code ID:
                 </Text>
                 <ExplorerLink
@@ -140,8 +140,8 @@ export const WasmVerifySubmitForm = ({
                   rightIcon={
                     <WasmVerifyBadge
                       status={wasmVerifyStatus}
-                      relatedVerifiedCodes={relatedVerifiedCodes}
                       linkedCodeId={contractAddress ? codeId : undefined}
+                      relatedVerifiedCodes={relatedVerifiedCodes}
                     />
                   }
                   showCopyOnHover
@@ -159,50 +159,50 @@ export const WasmVerifySubmitForm = ({
                 )}
               </Flex>
               {codeHash && (
-                <Flex gap={2} alignItems="center">
-                  <Text fontWeight={500} color="text.dark" variant="body2">
+                <Flex alignItems="center" gap={2}>
+                  <Text variant="body2" color="text.dark" fontWeight={500}>
                     Code Hash:
                   </Text>
                   <CopyLink
-                    type="code_hash"
-                    amptrackSection="code_hash"
-                    value={codeHash.toUpperCase()}
                     isTruncate
+                    type="code_hash"
+                    value={codeHash.toUpperCase()}
+                    amptrackSection="code_hash"
                     showCopyOnHover
                   />
                 </Flex>
               )}
             </Flex>
             <ControllerInput
-              name="gitUrl"
-              control={control}
+              isRequired
               label="GitHub Repository URL:"
-              labelBgColor="gray.800"
+              name="gitUrl"
               variant="fixed-floating"
-              placeholder="e.g. https://github.com/username/repository"
-              isRequired
+              control={control}
               error={errors.gitUrl?.message}
+              labelBgColor="gray.800"
+              placeholder="e.g. https://github.com/username/repository"
             />
             <ControllerInput
-              name="commit"
-              control={control}
-              label="Commit Hash:"
-              labelBgColor="gray.800"
-              variant="fixed-floating"
-              placeholder="e.g. a1b2c3d4e5f67890abcdef1234567890abcdef12"
               isRequired
+              label="Commit Hash:"
+              name="commit"
+              variant="fixed-floating"
+              control={control}
               error={errors.commit?.message}
+              labelBgColor="gray.800"
+              placeholder="e.g. a1b2c3d4e5f67890abcdef1234567890abcdef12"
             />
             <ControllerInput
-              name="packageName"
-              control={control}
-              label="Packages Name:"
-              labelBgColor="gray.800"
-              variant="fixed-floating"
-              placeholder="e.g. contract-name"
               helperText="This should be the same name that is specified in Cargo.toml"
               isRequired
+              label="Packages Name:"
+              name="packageName"
+              variant="fixed-floating"
+              control={control}
               error={errors.packageName?.message}
+              labelBgColor="gray.800"
+              placeholder="e.g. contract-name"
             />
             <WasmVerifySubmitFormSelect
               name="compilerVersion"
@@ -211,8 +211,8 @@ export const WasmVerifySubmitForm = ({
             />
           </Flex>
           <Button
-            variant="primary"
             isDisabled={!isValid}
+            variant="primary"
             isLoading={isLoading}
             onClick={handleSubmit((data) => {
               onSubmit({
@@ -224,7 +224,7 @@ export const WasmVerifySubmitForm = ({
           >
             Verify & Publish
           </Button>
-          <Text variant="body2" color="text.dark" textAlign="center">
+          <Text textAlign="center" variant="body2" color="text.dark">
             The verification process could take several hours depending on code
             complexity. Please ensure your input is accurate to prevent failure.
           </Text>

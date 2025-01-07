@@ -10,19 +10,19 @@ interface InputWithIconProps extends InputProps {
 }
 
 const InputWithIcon = ({
+  amptrackSection,
   my,
   size = "md",
-  amptrackSection,
   ...inputProps
 }: InputWithIconProps) => (
   <InputGroup my={my}>
-    <InputLeftElement h="full" alignItems="center">
+    <InputLeftElement alignItems="center" h="full">
       <CustomIcon name="search" color="gray.600" />
     </InputLeftElement>
     <Input
       {...inputProps}
-      size={size}
       paddingLeft="36px !important"
+      size={size}
       onClick={
         amptrackSection
           ? () =>

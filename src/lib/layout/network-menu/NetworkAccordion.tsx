@@ -14,22 +14,22 @@ import type { Option } from "lib/types";
 import { NetworkAccordionSubsection } from "./NetworkAccordionSubsection";
 
 interface NetworkAccordionProps {
-  title: string;
-  networks: string[];
   cursor: Option<number>;
+  networks: string[];
+  onClose: () => void;
   setCursor: (index: Option<number>) => void;
   startIndex: number;
-  onClose: () => void;
+  title: string;
 }
 
 export const NetworkAccordion = observer(
   ({
-    title,
-    networks,
     cursor,
+    networks,
+    onClose,
     setCursor,
     startIndex,
-    onClose,
+    title,
   }: NetworkAccordionProps) => {
     const { chainConfigs } = useChainConfigs();
     const nonInitiaNetworks = networks.filter(
@@ -44,9 +44,9 @@ export const NetworkAccordion = observer(
 
     return (
       <AccordionItem hidden={networks.length === 0}>
-        <Flex direction="column" gap={4}>
+        <Flex gap={4} direction="column">
           <AccordionButton p={0}>
-            <Flex justifyContent="space-between" w="full">
+            <Flex w="full" justifyContent="space-between">
               <Heading as="h6" variant="h6">
                 {title}
               </Heading>
@@ -54,36 +54,36 @@ export const NetworkAccordion = observer(
             </Flex>
           </AccordionButton>
           <AccordionPanel p={0}>
-            <Flex direction="column" gap={4}>
+            <Flex gap={4} direction="column">
               {nonInitiaNetworks.length > 0 && (
                 <NetworkAccordionSubsection
-                  networks={nonInitiaNetworks}
                   cursor={cursor}
+                  networks={nonInitiaNetworks}
+                  onClose={onClose}
                   setCursor={setCursor}
                   subsectionStartIndex={startIndex}
-                  onClose={onClose}
                 />
               )}
               {l1Networks.length > 0 && (
                 <NetworkAccordionSubsection
                   title="Initia (Layer 1)"
-                  networks={l1Networks}
                   cursor={cursor}
+                  networks={l1Networks}
+                  onClose={onClose}
                   setCursor={setCursor}
                   subsectionStartIndex={startIndex + nonInitiaNetworks.length}
-                  onClose={onClose}
                 />
               )}
               {l2Networks.length > 0 && (
                 <NetworkAccordionSubsection
                   title="Minitia (Layer 2)"
-                  networks={l2Networks}
                   cursor={cursor}
+                  networks={l2Networks}
+                  onClose={onClose}
                   setCursor={setCursor}
                   subsectionStartIndex={
                     startIndex + nonInitiaNetworks.length + l1Networks.length
                   }
-                  onClose={onClose}
                 />
               )}
             </Flex>

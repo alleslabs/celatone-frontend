@@ -13,25 +13,25 @@ import { NetworkAccodionPinned } from "./NetworkAccordionPinned";
 
 interface NetworkMenuBodyProps {
   cursor: Option<number>;
-  setCursor: (cursor: Option<number>) => void;
-  filteredPinnedChains: string[];
-  filteredMainnetChains: string[];
-  filteredTestnetChains: string[];
   filteredDevnetChains: string[];
   filteredLocalChains: string[];
+  filteredMainnetChains: string[];
+  filteredPinnedChains: string[];
+  filteredTestnetChains: string[];
   onClose: () => void;
+  setCursor: (cursor: Option<number>) => void;
 }
 
 export const NetworkMenuBody = observer(
   ({
     cursor,
-    setCursor,
-    filteredPinnedChains,
-    filteredMainnetChains,
-    filteredTestnetChains,
     filteredDevnetChains,
     filteredLocalChains,
+    filteredMainnetChains,
+    filteredPinnedChains,
+    filteredTestnetChains,
     onClose,
+    setCursor,
   }: NetworkMenuBodyProps) => {
     const isAllowCustomNetworks = useAllowCustomNetworks({
       shouldRedirect: false,
@@ -42,77 +42,77 @@ export const NetworkMenuBody = observer(
     return (
       <>
         <Accordion
-          variant="transparent"
-          allowMultiple
           defaultIndex={[0, 1, 2, 3, 4]}
           p={0}
+          variant="transparent"
+          allowMultiple
         >
-          <Flex direction="column" gap={4}>
+          <Flex gap={4} direction="column">
             <NetworkAccodionPinned
-              pinnedNetworks={filteredPinnedChains}
               cursor={cursor}
-              setCursor={setCursor}
               onClose={onClose}
+              pinnedNetworks={filteredPinnedChains}
+              setCursor={setCursor}
             />
             {!!filteredPinnedChains.length && (
               <Divider borderColor="gray.700" />
             )}
             <NetworkAccordion
-              title="Mainnet"
-              networks={filteredMainnetChains}
-              cursor={cursor}
-              setCursor={setCursor}
               startIndex={filteredPinnedChains.length}
+              title="Mainnet"
+              cursor={cursor}
+              networks={filteredMainnetChains}
               onClose={onClose}
+              setCursor={setCursor}
             />
             {!!filteredMainnetChains.length && (
               <Divider borderColor="gray.700" />
             )}
             <NetworkAccordion
-              title="Testnet"
-              networks={filteredTestnetChains}
-              cursor={cursor}
-              setCursor={setCursor}
               startIndex={
                 filteredPinnedChains.length + filteredMainnetChains.length
               }
+              title="Testnet"
+              cursor={cursor}
+              networks={filteredTestnetChains}
               onClose={onClose}
+              setCursor={setCursor}
             />
             {!!filteredDevnetChains.length && (
               <Divider borderColor="gray.700" />
             )}
             <NetworkAccordion
-              title="Devnet"
-              networks={filteredDevnetChains}
-              cursor={cursor}
-              setCursor={setCursor}
               startIndex={
                 filteredPinnedChains.length +
                 filteredMainnetChains.length +
                 filteredTestnetChains.length
               }
+              title="Devnet"
+              cursor={cursor}
+              networks={filteredDevnetChains}
               onClose={onClose}
+              setCursor={setCursor}
             />
             {isAllowCustomNetworks && (
               <>
                 <Divider borderColor="gray.700" />
                 <NetworkAccordionLocal
-                  networks={filteredLocalChains}
-                  cursor={cursor}
-                  setCursor={setCursor}
                   startIndex={
                     filteredPinnedChains.length +
                     filteredMainnetChains.length +
                     filteredTestnetChains.length +
                     filteredDevnetChains.length
                   }
+                  cursor={cursor}
+                  networks={filteredLocalChains}
                   onClose={onClose}
+                  setCursor={setCursor}
                 />
                 {isMobile ? (
                   <Flex
-                    backgroundColor="gray.900"
                     px={4}
                     py={2}
+                    backgroundColor="gray.900"
                     borderRadius={8}
                     justifyContent="center"
                   >
@@ -123,14 +123,14 @@ export const NetworkMenuBody = observer(
                 ) : (
                   <AppLink href="/custom-network/add">
                     <Button
+                      h={12}
                       variant="outline-gray"
+                      w="full"
                       justifyContent="flex-start"
                       leftIcon={
                         <CustomIcon name="plus" boxSize={4} color="gray.600" />
                       }
                       onClick={onClose}
-                      w="full"
-                      h={12}
                     >
                       Add custom Minitia
                     </Button>
@@ -146,12 +146,12 @@ export const NetworkMenuBody = observer(
           filteredLocalChains.length ===
           0 && (
           <EmptyState
-            my={0}
-            imageVariant="empty"
             imageWidth={40}
-            textVariant="body2"
+            imageVariant="empty"
             message="No matched result found.
 Please check your keyword."
+            my={0}
+            textVariant="body2"
           />
         )}
       </>

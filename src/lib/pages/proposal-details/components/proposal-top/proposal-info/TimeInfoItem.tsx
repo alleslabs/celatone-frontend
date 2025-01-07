@@ -12,22 +12,22 @@ interface TimeInfoItemProps {
 }
 
 const ResolvedTimeInfoItems = ({
-  resolvedHeightLabel,
-  resolvedTimestampLabel,
   resolvedHeight,
+  resolvedHeightLabel,
   resolvedTimestamp,
+  resolvedTimestampLabel,
 }: {
-  resolvedHeightLabel: string;
-  resolvedTimestampLabel: string;
   resolvedHeight: ProposalData["resolvedHeight"];
+  resolvedHeightLabel: string;
   resolvedTimestamp: ProposalData["resolvedTimestamp"];
+  resolvedTimestampLabel: string;
 }) => (
   <Flex gap={{ base: 2, xl: 8 }} direction={{ base: "column", xl: "row" }}>
     <InfoItem label={resolvedHeightLabel}>
       {resolvedHeight ? (
         <ExplorerLink
-          value={resolvedHeight.toString()}
           type="block_height"
+          value={resolvedHeight.toString()}
           showCopyOnHover
         />
       ) : (
@@ -46,6 +46,24 @@ const ResolvedTimeInfoItems = ({
 
 export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
   switch (data.status) {
+    case ProposalStatus.CANCELLED:
+      return (
+        <ResolvedTimeInfoItems
+          resolvedHeight={data.resolvedHeight}
+          resolvedHeightLabel="Cancelled at block"
+          resolvedTimestamp={data.resolvedTimestamp}
+          resolvedTimestampLabel="Cancelled at"
+        />
+      );
+    case ProposalStatus.DEPOSIT_FAILED:
+      return (
+        <ResolvedTimeInfoItems
+          resolvedHeight={data.resolvedHeight}
+          resolvedHeightLabel="Failed at block"
+          resolvedTimestamp={data.resolvedTimestamp}
+          resolvedTimestampLabel="Failed at"
+        />
+      );
     case ProposalStatus.DEPOSIT_PERIOD:
       return (
         <>
@@ -61,13 +79,15 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
           </InfoItem>
         </>
       );
-    case ProposalStatus.DEPOSIT_FAILED:
+    case ProposalStatus.FAILED:
+    case ProposalStatus.PASSED:
+    case ProposalStatus.REJECTED:
       return (
         <ResolvedTimeInfoItems
-          resolvedHeightLabel="Failed at block"
-          resolvedTimestampLabel="Failed at"
           resolvedHeight={data.resolvedHeight}
+          resolvedHeightLabel="Resolved Block Height"
           resolvedTimestamp={data.resolvedTimestamp}
+          resolvedTimestampLabel="Resolved at"
         />
       );
     case ProposalStatus.VOTING_PERIOD:
@@ -84,26 +104,6 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
             </Text>
           </InfoItem>
         </>
-      );
-    case ProposalStatus.PASSED:
-    case ProposalStatus.FAILED:
-    case ProposalStatus.REJECTED:
-      return (
-        <ResolvedTimeInfoItems
-          resolvedHeightLabel="Resolved Block Height"
-          resolvedTimestampLabel="Resolved at"
-          resolvedHeight={data.resolvedHeight}
-          resolvedTimestamp={data.resolvedTimestamp}
-        />
-      );
-    case ProposalStatus.CANCELLED:
-      return (
-        <ResolvedTimeInfoItems
-          resolvedHeightLabel="Cancelled at block"
-          resolvedTimestampLabel="Cancelled at"
-          resolvedHeight={data.resolvedHeight}
-          resolvedTimestamp={data.resolvedTimestamp}
-        />
       );
     default:
       return (

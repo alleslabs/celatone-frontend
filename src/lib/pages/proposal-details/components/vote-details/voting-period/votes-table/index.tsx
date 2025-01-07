@@ -20,17 +20,17 @@ import { ProposalVotesTableHeader } from "./ProposalVotesTableHeader";
 import { ProposalVotesTableRow } from "./ProposalVotesTableRow";
 
 interface ProposalVotesTableBodyProps {
-  proposalVotes: Option<ProposalVote[]>;
   fullVersion: boolean;
   isLoading: boolean;
   isSearching: boolean;
+  proposalVotes: Option<ProposalVote[]>;
 }
 
 export const ProposalVotesTableBody = ({
-  proposalVotes,
   fullVersion,
   isLoading,
   isSearching,
+  proposalVotes,
 }: ProposalVotesTableBodyProps) => {
   const isMobile = useMobile();
   const templateColumns =
@@ -53,8 +53,8 @@ export const ProposalVotesTableBody = ({
   return (
     <TableContainer>
       <ProposalVotesTableHeader
-        templateColumns={templateColumns}
         fullVersion={fullVersion}
+        templateColumns={templateColumns}
       />
       {proposalVotes.map((each, idx) => (
         <ProposalVotesTableRow
@@ -64,8 +64,8 @@ export const ProposalVotesTableBody = ({
             (each.txHash ?? "null") +
             idx.toString()
           }
-          proposalVote={each}
           fullVersion={fullVersion}
+          proposalVote={each}
           templateColumns={templateColumns}
         />
       ))}
@@ -74,21 +74,21 @@ export const ProposalVotesTableBody = ({
 };
 
 interface ProposalVotesTableProps {
-  id: number;
   answers: Option<ProposalAnswerCountsResponse["all"]>;
-  fullVersion: boolean;
-  onViewMore?: () => void;
   enabled?: boolean;
+  fullVersion: boolean;
+  id: number;
+  onViewMore?: () => void;
 }
 
 const tableHeaderId = "proposalVotesTable";
 
 export const ProposalVotesTable = ({
-  id,
   answers,
-  fullVersion,
-  onViewMore,
   enabled,
+  fullVersion,
+  id,
+  onViewMore,
 }: ProposalVotesTableProps) => {
   const [answerFilter, setAnswerFilter] = useState<ProposalVoteType>(
     ProposalVoteType.ALL
@@ -97,18 +97,18 @@ export const ProposalVotesTable = ({
   const debouncedSearch = useDebounce(search);
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
@@ -127,44 +127,44 @@ export const ProposalVotesTable = ({
   const answerOptions = useMemo(
     () => [
       {
+        disabled: !answers?.total,
         label: `All votes (${answers?.total ?? 0})`,
         value: ProposalVoteType.ALL,
-        disabled: !answers?.total,
       },
       {
-        label: `Yes (${answers?.yes ?? 0})`,
-        value: ProposalVoteType.YES,
         disabled: !answers?.yes,
         icon: "circle" as const,
         iconColor: "success.main",
+        label: `Yes (${answers?.yes ?? 0})`,
+        value: ProposalVoteType.YES,
       },
       {
-        label: `No (${answers?.no ?? 0})`,
-        value: ProposalVoteType.NO,
         disabled: !answers?.no,
         icon: "circle" as const,
         iconColor: "error.main",
+        label: `No (${answers?.no ?? 0})`,
+        value: ProposalVoteType.NO,
       },
       {
-        label: `No with veto (${answers?.noWithVeto ?? 0})`,
-        value: ProposalVoteType.NO_WITH_VETO,
         disabled: !answers?.noWithVeto,
         icon: "circle" as const,
         iconColor: "error.dark",
+        label: `No with veto (${answers?.noWithVeto ?? 0})`,
+        value: ProposalVoteType.NO_WITH_VETO,
       },
       {
-        label: `Abstain (${answers?.abstain ?? 0})`,
-        value: ProposalVoteType.ABSTAIN,
         disabled: !answers?.abstain,
         icon: "circle" as const,
         iconColor: "gray.600",
+        label: `Abstain (${answers?.abstain ?? 0})`,
+        value: ProposalVoteType.ABSTAIN,
       },
       {
-        label: `Weighted (${answers?.weighted ?? 0})`,
-        value: ProposalVoteType.WEIGHTED,
         disabled: !answers?.weighted,
         icon: "circle" as const,
         iconColor: "primary.light",
+        label: `Weighted (${answers?.weighted ?? 0})`,
+        value: ProposalVoteType.WEIGHTED,
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -191,39 +191,39 @@ export const ProposalVotesTable = ({
         >
           <GridItem>
             <SelectInputBase<ProposalVoteType>
-              formLabel="Filter by Answer"
-              options={answerOptions}
-              onChange={handleOnAnswerFilterChange}
-              labelBgColor="gray.900"
-              initialSelected={answerFilter}
-              popoverBgColor="gray.800"
               disableMaxH
+              initialSelected={answerFilter}
+              formLabel="Filter by Answer"
+              labelBgColor="gray.900"
+              onChange={handleOnAnswerFilterChange}
+              options={answerOptions}
+              popoverBgColor="gray.800"
             />
           </GridItem>
           <GridItem>
             <InputWithIcon
-              placeholder="Search with address or validator moniker..."
+              size="lg"
               value={search}
               onChange={handleOnSearchChange}
-              size="lg"
+              placeholder="Search with address or validator moniker..."
             />
           </GridItem>
         </Grid>
       )}
       <ProposalVotesTableBody
-        proposalVotes={data?.items}
-        isLoading={isLoading}
-        fullVersion={fullVersion}
         isSearching={isSearching}
+        fullVersion={fullVersion}
+        isLoading={isLoading}
+        proposalVotes={data?.items}
       />
       {data &&
         data.total > 10 &&
         (onViewMore ? (
-          <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
+          <Flex mt={4} textAlign="center" w="full" justifyContent="center">
             <Button
-              w="full"
-              variant="ghost-primary"
               gap={2}
+              variant="ghost-primary"
+              w="full"
               onClick={onViewMore}
             >
               View all votes
@@ -234,17 +234,17 @@ export const ProposalVotesTable = ({
           fullVersion && (
             <Pagination
               currentPage={currentPage}
-              pagesQuantity={pagesQuantity}
-              scrollComponentId={tableHeaderId}
-              offset={offset}
-              totalData={data?.total ?? 0}
               pageSize={pageSize}
+              pagesQuantity={pagesQuantity}
+              offset={offset}
               onPageChange={setCurrentPage}
               onPageSizeChange={(e) => {
                 const size = Number(e.target.value);
                 setPageSize(size);
                 setCurrentPage(1);
               }}
+              scrollComponentId={tableHeaderId}
+              totalData={data?.total ?? 0}
             />
           )
         ))}

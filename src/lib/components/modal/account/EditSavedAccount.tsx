@@ -26,8 +26,8 @@ export const EditSavedAccountModal = ({
   const defaultValues = useMemo(() => {
     return {
       address: accountLocalInfo.address,
-      name: accountLocalInfo.name ?? "",
       description: accountLocalInfo.description ?? "",
+      name: accountLocalInfo.name ?? "",
     };
   }, [
     accountLocalInfo.address,
@@ -37,9 +37,9 @@ export const EditSavedAccountModal = ({
 
   const {
     control,
-    watch,
-    reset,
     formState: { errors },
+    reset,
+    watch,
   } = useForm<SaveAccountDetail>({
     defaultValues,
     mode: "all",
@@ -59,61 +59,61 @@ export const EditSavedAccountModal = ({
   }, [resetForm]);
 
   const handleSave = useHandleAccountSave({
-    title: `Updated Saved Account!`,
-    address: addressState,
-    name: nameState,
-    description: descriptionState,
     actions: () => {},
+    address: addressState,
+    description: descriptionState,
+    name: nameState,
+    title: `Updated Saved Account!`,
   });
 
   return (
     <ActionModal
+      disabledMain={!!errors.name || !!errors.description}
+      mainBtnTitle="Save"
       title="Edit account"
-      icon="edit"
+      trigger={triggerElement}
+      closeOnOverlayClick={false}
       headerContent={
         <SavedAccountModalHeader address={accountLocalInfo.address} />
       }
-      trigger={triggerElement}
-      mainBtnTitle="Save"
+      icon="edit"
       mainAction={() => {
         track(AmpEvent.ACCOUNT_EDIT);
         handleSave();
       }}
-      disabledMain={!!errors.name || !!errors.description}
-      otherBtnTitle="Cancel"
       otherAction={resetForm}
-      closeOnOverlayClick={false}
+      otherBtnTitle="Cancel"
     >
-      <Flex direction="column" gap={6}>
+      <Flex gap={6} direction="column">
         <ControllerInput
-          name="name"
-          control={control}
           label="Account Name"
-          variant="fixed-floating"
-          placeholder="ex. Celatone Account 1"
-          labelBgColor="gray.900"
+          name="name"
           rules={{
             maxLength: constants.maxAccountNameLength,
           }}
+          variant="fixed-floating"
+          autoFocus
+          control={control}
           error={
             errors.name && getMaxLengthError(nameState.length, "account_name")
           }
-          autoFocus
+          labelBgColor="gray.900"
+          placeholder="ex. Celatone Account 1"
         />
         <ControllerTextarea
-          name="description"
-          control={control}
           label="Account Description"
-          placeholder="Help understanding what this account does ..."
-          variant="fixed-floating"
-          labelBgColor="gray.900"
+          name="description"
           rules={{
             maxLength: constants.maxAccountDescriptionLength,
           }}
+          variant="fixed-floating"
+          control={control}
           error={
             errors.description &&
             getMaxLengthError(descriptionState.length, "account_desc")
           }
+          labelBgColor="gray.900"
+          placeholder="Help understanding what this account does ..."
         />
       </Flex>
     </ActionModal>

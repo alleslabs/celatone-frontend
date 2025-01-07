@@ -24,15 +24,15 @@ export const NewProposalButton = () => {
   return (
     <Menu>
       <MenuButton
-        onClick={() => track(AmpEvent.USE_CREATE_NEW_PROPOSAL)}
-        variant="primary"
         as={Button}
+        variant="primary"
+        onClick={() => track(AmpEvent.USE_CREATE_NEW_PROPOSAL)}
         rightIcon={<CustomIcon name="chevron-down" />}
       >
         Create New Proposal
       </MenuButton>
       <MenuList flexDirection="column">
-        <Tooltip label="Coming soon!" hidden={!disableStoreCode}>
+        <Tooltip hidden={!disableStoreCode} label="Coming soon!">
           <MenuItem
             isDisabled={disableStoreCode}
             icon={<CustomIcon name="code" color="gray.600" />}
@@ -62,7 +62,7 @@ export const NewProposalButton = () => {
               : undefined
           }
         > */}
-        <Tooltip label="Coming soon!" hidden={!disableWhitelist}>
+        <Tooltip hidden={!disableWhitelist} label="Coming soon!">
           <MenuItem
             isDisabled={disableWhitelist}
             icon={<CustomIcon name="admin" color="gray.600" />}

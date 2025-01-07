@@ -4,8 +4,8 @@ import { MoveVerifyStatus } from "lib/types";
 import { CustomIcon } from "./icon";
 
 interface MoveVerifyBadgeProps {
-  status: MoveVerifyStatus;
   hasTooltip?: boolean;
+  status: MoveVerifyStatus;
 }
 
 const MoveVerifyBadgeIcon = ({
@@ -14,16 +14,16 @@ const MoveVerifyBadgeIcon = ({
   if (status === MoveVerifyStatus.Outdated) {
     return (
       <CustomIcon
-        name="verification-solid"
-        opacity={0.5}
-        color="secondary.main"
         mx={0}
+        name="verification-solid"
+        color="secondary.main"
+        opacity={0.5}
       />
     );
   }
   if (status === MoveVerifyStatus.Verified) {
     return (
-      <CustomIcon name="verification-solid" color="secondary.main" mx={0} />
+      <CustomIcon mx={0} name="verification-solid" color="secondary.main" />
     );
   }
   return undefined;
@@ -40,8 +40,8 @@ const getMoveVerifyBadgeLabel = (status: MoveVerifyStatus) => {
 };
 
 export const MoveVerifyBadge = ({
-  status,
   hasTooltip = false,
+  status,
 }: MoveVerifyBadgeProps) => (
   <Tooltip hidden={!hasTooltip} label={getMoveVerifyBadgeLabel(status)}>
     <MoveVerifyBadgeIcon status={status} />

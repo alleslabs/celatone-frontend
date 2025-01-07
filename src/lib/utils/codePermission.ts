@@ -18,14 +18,14 @@ export const getPermissionHelper = (
 ) => {
   const getMessage = () => {
     switch (instantiatePermission) {
-      case AccessConfigPermission.EVERYBODY:
-        return "Everyone can instantiate contract with this code";
-      case AccessConfigPermission.NOBODY:
-        return "You can instantiate contract with this code through proposal only";
       case AccessConfigPermission.ANY_OF_ADDRESSES:
         return address && permissionAddresses.includes(address)
           ? "You are included in designated addresses to instantiate"
           : "This code can be instantiate by designated addresses";
+      case AccessConfigPermission.EVERYBODY:
+        return "Everyone can instantiate contract with this code";
+      case AccessConfigPermission.NOBODY:
+        return "You can instantiate contract with this code through proposal only";
       case AccessConfigPermission.ONLY_ADDRESS:
         return address && permissionAddresses.includes(address)
           ? "You are designated to instantiate contract from this code"

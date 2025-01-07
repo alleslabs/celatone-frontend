@@ -13,7 +13,7 @@ export const useNetworkChange = (
   const router = useRouter();
   const networkRef = useRef<string>();
   const navigate = useInternalNavigate();
-  const { supportedChainIds, isLoading } = useChainConfigs();
+  const { isLoading, supportedChainIds } = useChainConfigs();
 
   useEffect(() => {
     if (router.isReady && !isLoading) {

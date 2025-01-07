@@ -9,18 +9,18 @@ import type { ModuleHistory } from "lib/services/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface PublishedEventsTableRowProps {
-  templateColumns: GridProps["templateColumns"];
   history: ModuleHistory;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const PolicyChanges = ({ history }: { history: ModuleHistory }) => {
-  const { upgradePolicy, previousPolicy } = history;
+  const { previousPolicy, upgradePolicy } = history;
 
   if (!previousPolicy)
     return (
       <Text variant="body2" color="text.dark">
         Set as{" "}
-        <Text as="span" fontWeight={700} color="text.main">
+        <Text as="span" color="text.main" fontWeight={700}>
           {capitalize(history.upgradePolicy)}
         </Text>
       </Text>
@@ -44,7 +44,7 @@ export const PolicyChanges = ({ history }: { history: ModuleHistory }) => {
           {capitalize(previousPolicy)}
         </Text>
       </Text>
-      <CustomIcon name="arrow-right" boxSize={3} color="primary.main" mx={2} />
+      <CustomIcon mx={2} name="arrow-right" boxSize={3} color="primary.main" />
       <Text variant="body2" fontWeight={700}>
         {capitalize(history.upgradePolicy)}
       </Text>
@@ -53,8 +53,8 @@ export const PolicyChanges = ({ history }: { history: ModuleHistory }) => {
 };
 
 export const PublishedEventsTableRow = ({
-  templateColumns,
   history,
+  templateColumns,
 }: PublishedEventsTableRowProps) => (
   <Grid templateColumns={templateColumns}>
     <TableRow />
@@ -71,8 +71,8 @@ export const PublishedEventsTableRow = ({
         </Text>
       ) : (
         <ExplorerLink
-          value={history.height.toString()}
           type="block_height"
+          value={history.height.toString()}
           showCopyOnHover
         />
       )}
@@ -80,7 +80,7 @@ export const PublishedEventsTableRow = ({
     <TableRow>
       <Flex direction="column">
         <Text variant="body3">{formatUTC(history.timestamp)}</Text>
-        <Text variant="body3" color="text.dark" mt="2px">
+        <Text mt="2px" variant="body3" color="text.dark">
           ({dateFromNow(history.timestamp)})
         </Text>
       </Flex>

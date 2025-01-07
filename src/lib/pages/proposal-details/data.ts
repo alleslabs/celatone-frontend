@@ -20,8 +20,8 @@ interface DerivedProposalDataResponse {
   data: Option<{
     info: Nullable<ProposalData>;
   }>;
-  isLoading: boolean;
   isDepositsLoading: boolean;
+  isLoading: boolean;
 }
 
 export const useDerivedProposalData = (
@@ -63,16 +63,16 @@ export const useDerivedProposalData = (
   if (isLoading || isAssetInfosLoading || isMovePoolInfosLoading)
     return {
       data: undefined,
-      isLoading: isLoading || isAssetInfosLoading || isMovePoolInfosLoading,
       isDepositsLoading:
         isDepositsLoading || isAssetInfosLoading || isMovePoolInfosLoading,
+      isLoading: isLoading || isAssetInfosLoading || isMovePoolInfosLoading,
     };
 
   if (!data)
     return {
       data: undefined,
-      isLoading: false,
       isDepositsLoading: false,
+      isLoading: false,
     };
 
   if (!data.info)
@@ -80,8 +80,8 @@ export const useDerivedProposalData = (
       data: {
         info: null,
       },
-      isLoading: false,
       isDepositsLoading: false,
+      isLoading: false,
     };
 
   return {
@@ -110,8 +110,8 @@ export const useDerivedProposalData = (
           ) ?? null,
       },
     },
-    isLoading: false,
     isDepositsLoading,
+    isLoading: false,
   };
 };
 

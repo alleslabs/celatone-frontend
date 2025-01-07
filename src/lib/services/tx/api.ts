@@ -28,11 +28,11 @@ export const getTxs = async (
   axios
     .get(`${endpoint}`, {
       params: {
+        is_initia: isInitia,
+        is_move: isMove,
+        is_wasm: isWasm,
         limit,
         offset,
-        is_wasm: isWasm,
-        is_move: isMove,
-        is_initia: isInitia,
       },
     })
     .then(({ data }) => parseWithError(zTxsResponse, data));
@@ -54,11 +54,11 @@ export const getTxsByAddress = async (
   return axios
     .get(`${endpoint}/${encodeURIComponent(address)}/txs`, {
       params: {
+        is_initia: isInitia,
+        is_move: isMove,
+        is_wasm: isWasm,
         limit,
         offset,
-        is_wasm: isWasm,
-        is_move: isMove,
-        is_initia: isInitia,
         ...filterParams,
         ...(isSigner !== undefined && { is_signer: isSigner }),
         ...(search !== undefined && { search }),
@@ -79,11 +79,11 @@ export const getTxsByBlockHeight = async (
   axios
     .get(`${endpoint}/${height}/txs`, {
       params: {
+        is_initia: isInitia,
+        is_move: isMove,
+        is_wasm: isWasm,
         limit,
         offset,
-        is_wasm: isWasm,
-        is_move: isMove,
-        is_initia: isInitia,
       },
     })
     .then(({ data }) => parseWithError(zBlockTxsResponse, data));
@@ -120,9 +120,9 @@ export const getTxsByPoolId = async (
   axios
     .get(`${endpoint}/${encodeURIComponent(poolId)}/txs`, {
       params: {
-        type,
         limit,
         offset,
+        type,
       },
     })
     .then(({ data }) => parseWithError(zTxsByPoolIdResponse, data));

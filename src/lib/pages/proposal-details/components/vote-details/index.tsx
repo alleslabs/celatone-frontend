@@ -28,11 +28,11 @@ const trackPeriodSubtab = (index: number) =>
   });
 
 export interface VoteDetailsProps {
+  isDepositsLoading: boolean;
+  isLoading: boolean;
+  params: Option<ProposalParams>;
   proposalData: ProposalData;
   votesInfo: Option<ProposalVotesInfo>;
-  params: Option<ProposalParams>;
-  isLoading: boolean;
-  isDepositsLoading: boolean;
 }
 
 export const VoteDetails = ({ proposalData, ...props }: VoteDetailsProps) => {
@@ -48,10 +48,10 @@ export const VoteDetails = ({ proposalData, ...props }: VoteDetailsProps) => {
 
   return isMobile ? (
     <Accordion
-      allowToggle
-      w="full"
-      variant="transparent"
       defaultIndex={[subtabIndex]}
+      variant="transparent"
+      w="full"
+      allowToggle
       onChange={(expandedIndex: number) => {
         if (expandedIndex === -1) return;
         trackPeriodSubtab(expandedIndex);
@@ -61,36 +61,36 @@ export const VoteDetails = ({ proposalData, ...props }: VoteDetailsProps) => {
         <DepositPeriodSection proposalData={proposalData} {...props} />
       </VoteDetailsAccordionItem>
       <VoteDetailsAccordionItem
+        isDisabled={isDepositOnly}
         step={2}
         proposalData={proposalData}
-        isDisabled={isDepositOnly}
       >
         <VotingPeriod proposalData={proposalData} {...props} />
       </VoteDetailsAccordionItem>
     </Accordion>
   ) : (
     <Tabs
+      defaultIndex={subtabIndex}
       isLazy
-      lazyBehavior="keepMounted"
       mt={6}
       w="full"
-      defaultIndex={subtabIndex}
+      lazyBehavior="keepMounted"
       onChange={(index) => trackPeriodSubtab(index)}
     >
-      <TabList borderBottom="0px solid" gap={2}>
+      <TabList gap={2} borderBottom="0px solid">
         <VoteDetailsTab step={1} proposalData={proposalData} />
         <VoteDetailsTab
+          isDisabled={isDepositOnly}
           step={2}
           proposalData={proposalData}
-          isDisabled={isDepositOnly}
         />
       </TabList>
       <TabPanels
         background="gray.800"
         border="1px solid"
         borderColor="gray.700"
-        borderTopColor="transparent"
         borderRadius="0px 0px 8px 8px"
+        borderTopColor="transparent"
       >
         <TabPanel>
           <DepositPeriodSection proposalData={proposalData} {...props} />

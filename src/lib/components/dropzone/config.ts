@@ -1,7 +1,5 @@
 import type { Accept } from "react-dropzone";
 
-export type DropzoneFileType = "wasm" | "schema" | "mv" | "move" | "toml";
-
 export interface DropzoneConfig {
   accept: Accept;
   text: {
@@ -10,19 +8,14 @@ export interface DropzoneConfig {
   };
 }
 
+export type DropzoneFileType = "move" | "mv" | "schema" | "toml" | "wasm";
+
 export const DROPZONE_CONFIG: { [key in DropzoneFileType]: DropzoneConfig } = {
-  wasm: {
-    accept: { "application/octet-stream": [".wasm"] },
+  move: {
+    accept: { "application/octet-stream": [".move"] },
     text: {
-      prettyFileType: "Wasm",
-      rawFileType: ".wasm",
-    },
-  },
-  schema: {
-    accept: { "application/json": [".json"] },
-    text: {
-      prettyFileType: "JSON Schema",
-      rawFileType: ".json",
+      prettyFileType: ".move",
+      rawFileType: ".move",
     },
   },
   mv: {
@@ -32,11 +25,11 @@ export const DROPZONE_CONFIG: { [key in DropzoneFileType]: DropzoneConfig } = {
       rawFileType: ".mv",
     },
   },
-  move: {
-    accept: { "application/octet-stream": [".move"] },
+  schema: {
+    accept: { "application/json": [".json"] },
     text: {
-      prettyFileType: ".move",
-      rawFileType: ".move",
+      prettyFileType: "JSON Schema",
+      rawFileType: ".json",
     },
   },
   toml: {
@@ -44,6 +37,13 @@ export const DROPZONE_CONFIG: { [key in DropzoneFileType]: DropzoneConfig } = {
     text: {
       prettyFileType: ".toml",
       rawFileType: ".toml",
+    },
+  },
+  wasm: {
+    accept: { "application/octet-stream": [".wasm"] },
+    text: {
+      prettyFileType: "Wasm",
+      rawFileType: ".wasm",
     },
   },
 };

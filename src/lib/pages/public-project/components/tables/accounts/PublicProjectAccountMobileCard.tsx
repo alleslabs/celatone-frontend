@@ -20,33 +20,33 @@ export const PublicProjectAccountMobileCard = ({
 
   return (
     <MobileCardTemplate
+      middleContent={
+        <Flex gap={3} direction="column">
+          <Flex direction="column">
+            <MobileLabel label="Address" variant="body2" />
+            <Text variant="body2">{accountInfo.name}</Text>
+          </Flex>
+          <Flex direction="column">
+            <MobileLabel label="Description" variant="body2" />
+            <Text variant="body2" whiteSpace="break-spaces" color="text.dark">
+              {accountInfo.description || "N/A"}
+            </Text>
+          </Flex>
+        </Flex>
+      }
       onClick={goToDetail}
       topContent={
-        <Flex gap={2} align="center">
-          <MobileLabel variant="body2" label="Address" />
+        <Flex align="center" gap={2}>
+          <MobileLabel label="Address" variant="body2" />
           <ExplorerLink
-            value={accountInfo.address.toString()}
             type={
               accountInfo.type === "account"
                 ? "user_address"
                 : "contract_address"
             }
+            value={accountInfo.address.toString()}
             showCopyOnHover
           />
-        </Flex>
-      }
-      middleContent={
-        <Flex direction="column" gap={3}>
-          <Flex direction="column">
-            <MobileLabel variant="body2" label="Address" />
-            <Text variant="body2">{accountInfo.name}</Text>
-          </Flex>
-          <Flex direction="column">
-            <MobileLabel variant="body2" label="Description" />
-            <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
-              {accountInfo.description || "N/A"}
-            </Text>
-          </Flex>
         </Flex>
       }
     />

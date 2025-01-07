@@ -8,24 +8,24 @@ import { EvmInputData } from "./EvmInputData";
 import { EvmTxMsgDetailsBody } from "./EvmTxMsgDetailsBody";
 
 interface EvmTxMsgDetailsProps {
-  evmTxData: TxDataJsonRpc;
   cosmosTxData: TxData;
   evmDenom: Option<string>;
+  evmTxData: TxDataJsonRpc;
 }
 
 export const EvmTxMsgDetails = ({
-  evmTxData,
   cosmosTxData,
   evmDenom,
+  evmTxData,
 }: EvmTxMsgDetailsProps) => (
-  <Flex direction="column" flex={1} gap={4} w="full">
+  <Flex flex={1} gap={4} w="full" direction="column">
     {cosmosTxData.isTxFailed && (
-      <Alert variant="error" mb={2} alignItems="center" overflow="unset">
-        <Flex gap={2} align="start">
+      <Alert alignItems="center" mb={2} variant="error" overflow="unset">
+        <Flex align="start" gap={2}>
           <CustomIcon
             name="alert-triangle-solid"
-            color="error.main"
             boxSize={4}
+            color="error.main"
           />
           <AlertDescription wordBreak="break-word">
             {cosmosTxData.rawLog}

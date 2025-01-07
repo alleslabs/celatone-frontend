@@ -17,36 +17,36 @@ import { useController, useWatch } from "react-hook-form";
 import type { TextareaProps } from "./TextareaInput";
 
 interface ControllerTextareaProps<T extends FieldValues>
-  extends Omit<TextareaProps, "value" | "setInputState"> {
-  name: FieldPath<T>;
+  extends Omit<TextareaProps, "setInputState" | "value"> {
   control: Control<T>;
+  name: FieldPath<T>;
   rules?: UseControllerProps["rules"];
 }
 
 export const ControllerTextarea = <T extends FieldValues>({
-  name,
   control,
-  label,
-  labelBgColor = "background.main",
-  helperText,
-  placeholder = " ",
   error,
   height = "112px",
+  helperText,
+  label,
+  labelBgColor = "background.main",
+  name,
+  placeholder = " ",
   rules = {},
   ...componentProps
 }: ControllerTextareaProps<T>) => {
   const watcher = useWatch({
-    name,
     control,
+    name,
   });
-  const { field } = useController<T>({ name, control, rules });
+  const { field } = useController<T>({ control, name, rules });
   const isError = Boolean(error);
   const isRequired = "required" in rules;
   return (
     <FormControl
-      size="md"
       isInvalid={isError}
       isRequired={isRequired}
+      size="md"
       sx={{ "> div": { marginTop: "1 !important" } }}
       {...componentProps}
       {...field}
@@ -57,11 +57,11 @@ export const ControllerTextarea = <T extends FieldValues>({
         </FormLabel>
       )}
       <Textarea
-        resize="none"
         height={height}
-        placeholder={placeholder}
+        resize="none"
         value={watcher}
         onChange={field.onChange}
+        placeholder={placeholder}
       />
       {isError ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>

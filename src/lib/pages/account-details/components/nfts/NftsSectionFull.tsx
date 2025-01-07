@@ -10,14 +10,14 @@ import type { HexAddr, HexAddr32, Option } from "lib/types";
 import { FilterItem } from "./FilterItem";
 import { NftsByCollectionFull } from "./NftsByCollectionFull";
 
-interface SelectedCollection {
-  collectionAddress: HexAddr32;
-  nftsCount: number;
-}
-
 interface NftsSectionFullProps {
   address: HexAddr;
   totalData: Option<number>;
+}
+
+interface SelectedCollection {
+  collectionAddress: HexAddr32;
+  nftsCount: number;
 }
 
 export const NftsSectionFull = ({
@@ -46,38 +46,38 @@ export const NftsSectionFull = ({
 
   return (
     <Box mt={{ base: 4, md: 8 }}>
-      <Flex gap="8px" align="center">
+      <Flex align="center" gap="8px">
         <Heading variant="h6">NFTs</Heading>
         <Badge>{totalData}</Badge>
       </Flex>
-      <Flex gap="40px" mt="32px" flexDir={isMobile ? "column" : "row"}>
+      <Flex flexDir={isMobile ? "column" : "row"} gap="40px" mt="32px">
         <Stack
-          w={{ base: "100%", md: "35%", lg: "25%" }}
           minW={64}
           spacing="8px"
+          w={{ base: "100%", lg: "25%", md: "35%" }}
         >
           <FilterItem
-            collectionName="All Collections"
-            onClick={() => handleOnClick(undefined)}
             isActive={selectedCollection === undefined}
-            count={totalData}
             isDefault
+            collectionName="All Collections"
+            count={totalData}
+            onClick={() => handleOnClick(undefined)}
           />
           {collections.items.map((item) => (
             <FilterItem
               key={item.collectionAddress}
+              isActive={
+                selectedCollection?.collectionAddress === item.collectionAddress
+              }
+              uri={item.uri}
               collectionName={item.collectionName}
+              count={item.hold}
               onClick={() =>
                 handleOnClick({
                   collectionAddress: item.collectionAddress,
                   nftsCount: item.hold,
                 })
               }
-              uri={item.uri}
-              isActive={
-                selectedCollection?.collectionAddress === item.collectionAddress
-              }
-              count={item.hold}
             />
           ))}
         </Stack>

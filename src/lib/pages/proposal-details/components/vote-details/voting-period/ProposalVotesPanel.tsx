@@ -16,43 +16,43 @@ interface ProposalVotesPanelProps {
 }
 
 export const ProposalVotesPanel = ({
-  isOpen,
-  onBack,
   answers,
   id,
+  isOpen,
+  onBack,
 }: ProposalVotesPanelProps) => {
   const isMobile = useMobile();
 
   return (
     <Flex
-      w="full"
-      position={isOpen ? "relative" : "absolute"}
-      opacity={isOpen ? 1 : 0}
+      gap={4}
       left={isOpen ? "0" : "100%"}
-      top={0}
-      bottom={0}
-      overflowY="auto"
-      transition="all 0.25s ease-in-out"
-      direction="column"
+      p={isMobile ? 0 : 6}
+      w="full"
       background={isMobile ? "transparent" : "gray.900"}
       border="1px solid"
       borderColor={isMobile ? "transparent" : "gray.700"}
-      pointerEvents={isOpen ? "auto" : "none"}
       borderRadius="8px"
-      p={isMobile ? 0 : 6}
-      gap={4}
+      bottom={0}
+      direction="column"
+      opacity={isOpen ? 1 : 0}
+      overflowY="auto"
+      pointerEvents={isOpen ? "auto" : "none"}
+      position={isOpen ? "relative" : "absolute"}
+      top={0}
+      transition="all 0.25s ease-in-out"
     >
       <Flex gap={2}>
-        <Button variant="ghost-gray" size="sm" p={0} onClick={onBack}>
+        <Button p={0} size="sm" variant="ghost-gray" onClick={onBack}>
           <CustomIcon name="chevron-left" boxSize={4} />
         </Button>
-        <TableTitle title="All Votes" count={answers?.total} mb={0} />
+        <TableTitle mb={0} title="All Votes" count={answers?.total} />
       </Flex>
       <ProposalVotesTable
         id={id}
         answers={answers}
-        fullVersion
         enabled={isOpen}
+        fullVersion
       />
     </Flex>
   );

@@ -90,15 +90,15 @@ const ModuleDetailsBody = ({
       if (nextTab === currentTab) return;
       trackUseTab(nextTab);
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
           address: vmAddress,
           moduleName,
           tab: nextTab,
           ...(fnType && { type: fnType }),
-        },
-        options: {
-          shallow: true,
         },
       });
     },
@@ -148,22 +148,22 @@ const ModuleDetailsBody = ({
         lazyBehavior="keepMounted"
       >
         <TabList
+          id={mainTabHeaderId}
           my={8}
           borderBottom="1px solid"
           borderColor="gray.700"
           overflowX="scroll"
-          id={mainTabHeaderId}
         >
           <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
             Overview
           </CustomTab>
           <CustomTab
+            isDisabled={!data.parsedAbi.exposed_functions.length}
             count={data.parsedAbi.exposed_functions.length}
             onClick={handleTabChange(
               TabIndex.Function,
               FunctionTypeTabIndex.ALL
             )}
-            isDisabled={!data.parsedAbi.exposed_functions.length}
           >
             Functions
           </CustomTab>
@@ -173,9 +173,9 @@ const ModuleDetailsBody = ({
             </CustomTab>
           )}
           <CustomTab
+            isDisabled={!data.parsedAbi.structs.length}
             count={data.parsedAbi.structs.length}
             onClick={handleTabChange(TabIndex.Structs)}
-            isDisabled={!data.parsedAbi.structs.length}
           >
             Structs
           </CustomTab>
@@ -190,8 +190,8 @@ const ModuleDetailsBody = ({
                 />
               )}
               <ModuleActions
-                viewFns={data.viewFunctions.length}
                 executeFns={data.executeFunctions.length}
+                viewFns={data.viewFunctions.length}
                 allTxsCount={
                   moduleTableCounts &&
                   !isNull(moduleTableCounts.txs) &&
@@ -212,64 +212,64 @@ const ModuleDetailsBody = ({
               <ModuleInfo
                 indexedModule={data}
                 modulePublishInfo={modulePublishInfo}
-                verificationData={verificationData}
                 moveVerifyStatus={moveVerifyStatus}
+                verificationData={verificationData}
               />
               {isFullTier && (
                 <ModuleTables
-                  vmAddress={data.address}
-                  moduleName={data.moduleName}
-                  txsCount={moduleTableCounts?.txs ?? undefined}
-                  historiesCount={moduleTableCounts?.histories ?? undefined}
-                  relatedProposalsCount={
-                    moduleTableCounts?.proposals ?? undefined
-                  }
-                  tab={overviewTabIndex}
                   setTab={setOverviewTabIndex}
+                  tab={overviewTabIndex}
+                  vmAddress={data.address}
+                  historiesCount={moduleTableCounts?.histories ?? undefined}
+                  moduleName={data.moduleName}
                   onViewMore={(nextTab: ModuleTablesTabIndex) => {
                     handleTabChange(TabIndex.TxsHistories)();
                     setTableTabIndex(nextTab);
                   }}
+                  relatedProposalsCount={
+                    moduleTableCounts?.proposals ?? undefined
+                  }
+                  txsCount={moduleTableCounts?.txs ?? undefined}
                 />
               )}
             </Flex>
             <UserDocsLink
-              title="What is a move module?"
               cta="Read more about Module"
+              title="What is a move module?"
               href="move/modules/detail-page"
             />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleFunctions
               address={data.address}
-              moduleName={data.moduleName}
-              fns={data.parsedAbi.exposed_functions}
-              viewFns={data.viewFunctions}
               executeFns={data.executeFunctions}
+              fns={data.parsedAbi.exposed_functions}
               typeTab={type}
+              viewFns={data.viewFunctions}
+              moduleName={data.moduleName}
             />
             <UserDocsLink
-              title="What is Module functions?"
               cta="Read more about View and Execute Functions"
+              title="What is Module functions?"
               href="move/modules/detail-page#functions"
             />
           </TabPanel>
           {isFullTier && (
             <TabPanel p={0}>
               <ModuleTables
+                setTab={setTableTabIndex}
+                tab={tableTabIndex}
                 vmAddress={data.address}
-                moduleName={data.moduleName}
-                txsCount={moduleTableCounts?.txs ?? undefined}
                 historiesCount={moduleTableCounts?.histories ?? undefined}
+                moduleName={data.moduleName}
                 relatedProposalsCount={
                   moduleTableCounts?.proposals ?? undefined
                 }
-                tab={tableTabIndex}
-                setTab={setTableTabIndex}
+                txsCount={moduleTableCounts?.txs ?? undefined}
               />
               <UserDocsLink
-                title="What is Module Transaction?"
                 cta="Read more about transaction in module"
+                title="What is Module Transaction?"
                 href="move/modules/detail-page#transactions-histories"
               />
             </TabPanel>
@@ -277,8 +277,8 @@ const ModuleDetailsBody = ({
           <TabPanel p={0}>
             <ModuleStructs structs={data.parsedAbi.structs} />
             <UserDocsLink
-              title="What is Module Struct?"
               cta="Read more about struct in module"
+              title="What is Module Struct?"
               href="move/modules/detail-page#structs"
             />
           </TabPanel>

@@ -19,9 +19,9 @@ export const InvalidState = ({ title }: InvalidStateProps) => {
   return (
     <EmptyState
       heading={title}
+      imageVariant="not-found"
       message="Please double-check your input and make sure you have selected the
     correct network."
-      imageVariant="not-found"
       textVariant="body2"
       withBorder
     />

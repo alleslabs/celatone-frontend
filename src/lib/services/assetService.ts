@@ -14,14 +14,14 @@ export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
       getAssetInfos(assetsApiRoute, withPrices).then((assets) =>
         assets.reduce((acc, asset) => ({ ...acc, [asset.id]: asset }), {})
       ),
-    { enabled: Boolean(assetsApiRoute), retry: 1, refetchOnWindowFocus: false }
+    { enabled: Boolean(assetsApiRoute), refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
 export const useAssetInfosByType = ({
   assetType,
 }: {
-  assetType: "all" | "native" | "cw20";
+  assetType: "all" | "cw20" | "native";
 }) => {
   const { data, ...rest } = useAssetInfos({ withPrices: true });
 

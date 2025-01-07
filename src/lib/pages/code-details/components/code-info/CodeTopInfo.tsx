@@ -22,8 +22,8 @@ import { AccessConfigPermission } from "lib/types";
 import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
 
 interface CodeTopInfoProps {
-  codeId: number;
   code: Code;
+  codeId: number;
   projectInfo: Nullable<ProjectInfo>;
   publicInfo: Nullable<PublicCodeInfo>;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
@@ -31,8 +31,8 @@ interface CodeTopInfoProps {
 
 export const CodeTopInfo = observer(
   ({
-    codeId,
     code,
+    codeId,
     projectInfo,
     publicInfo,
     wasmVerifyInfo,
@@ -49,12 +49,12 @@ export const CodeTopInfo = observer(
         <Breadcrumb
           items={[
             {
-              text: projectInfo?.name ? "Public Projects" : "Codes",
               href: projectInfo?.name ? "/projects" : "/codes",
+              text: projectInfo?.name ? "Public Projects" : "Codes",
             },
             {
-              text: projectInfo?.name,
               href: `/projects/${publicInfo?.slug}`,
+              text: projectInfo?.name,
             },
             { text: codeId.toString() },
           ]}
@@ -64,20 +64,20 @@ export const CodeTopInfo = observer(
           my={{ base: 3, md: 6 }}
           direction={{ base: "column", md: "row" }}
         >
-          <Flex direction="column" gap={{ base: 2, md: 1 }}>
+          <Flex gap={{ base: 2, md: 1 }} direction="column">
             <Flex
-              justify={{ base: "space-between", md: "start" }}
               align="center"
+              justify={{ base: "space-between", md: "start" }}
             >
-              <Flex gap={1} minH="36px" align="center">
+              <Flex align="center" gap={1} minH="36px">
                 <CustomIcon name="code" boxSize={5} color="primary.main" />
                 {projectInfo && (
                   <Image
+                    width={7}
+                    alt={projectInfo.name}
+                    height={7}
                     src={projectInfo.logo}
                     borderRadius="full"
-                    alt={projectInfo.name}
-                    width={7}
-                    height={7}
                   />
                 )}
                 <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
@@ -91,11 +91,11 @@ export const CodeTopInfo = observer(
             </Flex>
             {publicInfo && (
               <Flex
-                mt={{ base: 2, md: 0 }}
                 gap={{ base: 0, md: 2 }}
+                mt={{ base: 2, md: 0 }}
                 direction={{ base: "column", md: "row" }}
               >
-                <Text fontWeight={500} color="text.dark" variant="body2">
+                <Text variant="body2" color="text.dark" fontWeight={500}>
                   Public Code Name:
                 </Text>
                 <Text variant="body2">{publicInfo.name}</Text>
@@ -105,26 +105,26 @@ export const CodeTopInfo = observer(
               gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
             >
-              <Text fontWeight={500} color="text.dark" variant="body2">
+              <Text variant="body2" color="text.dark" fontWeight={500}>
                 Code ID:
               </Text>
               <CopyLink
+                type="code_id"
                 value={codeId.toString()}
                 amptrackSection="code_top"
-                type="code_id"
               />
             </Flex>
             <Flex
               gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
             >
-              <Text fontWeight={500} color="text.dark" variant="body2">
+              <Text variant="body2" color="text.dark" fontWeight={500}>
                 Code Hash:
               </Text>
               <CopyLink
                 type="code_hash"
-                amptrackSection="code_hash"
                 value={code.hash.toUpperCase()}
+                amptrackSection="code_hash"
               />
             </Flex>
             {isFullTier && (
@@ -132,12 +132,12 @@ export const CodeTopInfo = observer(
                 gap={{ base: 0, md: 2 }}
                 direction={{ base: "column", md: "row" }}
               >
-                <Text fontWeight={500} color="text.dark" variant="body2">
+                <Text variant="body2" color="text.dark" fontWeight={500}>
                   CW2 Info:
                 </Text>
                 <Text
-                  color={cw2Info ? "text.main" : "text.disabled"}
                   variant="body2"
+                  color={cw2Info ? "text.main" : "text.disabled"}
                   wordBreak="break-all"
                 >
                   {cw2Info ?? "N/A"}
@@ -146,29 +146,29 @@ export const CodeTopInfo = observer(
             )}
             {publicInfo && <GitHubLink github={publicInfo.github} />}
           </Flex>
-          <Flex direction="column" gap={1}>
+          <Flex gap={1} direction="column">
             {!isMobile && (
               <CtaSection
                 id={codeId}
-                uploader={localCodeInfo?.uploader ?? code.uploader}
                 name={localCodeInfo?.name}
+                contractCount={undefined}
+                cw2Contract={undefined}
+                cw2Version={undefined}
                 instantiatePermission={
                   code.instantiatePermission ?? AccessConfigPermission.UNKNOWN
                 }
                 permissionAddresses={code.permissionAddresses ?? []}
-                contractCount={undefined}
-                cw2Contract={undefined}
-                cw2Version={undefined}
+                uploader={localCodeInfo?.uploader ?? code.uploader}
               />
             )}
           </Flex>
         </Flex>
         {publicInfo && (
           <PublicDescription
+            textLine={2}
             title="Public Code Description"
             description={publicInfo.description}
-            textLine={2}
-            icon={<CustomIcon name="public-project" ml={0} color="gray.600" />}
+            icon={<CustomIcon ml={0} name="public-project" color="gray.600" />}
           />
         )}
       </>

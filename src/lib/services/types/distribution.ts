@@ -7,8 +7,8 @@ export const zDelegationRewardsResponseLcd = z
   .object({
     rewards: z.array(
       z.object({
-        validator_address: zValidatorAddr,
         reward: z.array(zCoin),
+        validator_address: zValidatorAddr,
       })
     ),
     total: z.array(zCoin),

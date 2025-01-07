@@ -22,12 +22,12 @@ export const ProposalMessageCard = ({
     {({ isExpanded }) => (
       <>
         <AccordionButton
+          alignItems="center"
+          px={4}
+          _hover={{ background: "gray.900" }}
           background="gray.900"
           borderRadius={8}
-          px={4}
           justifyContent="space-between"
-          alignItems="center"
-          _hover={{ background: "gray.900" }}
           onClick={() =>
             trackUseExpand({
               action: !isExpanded ? "expand" : "collapse",
@@ -37,17 +37,17 @@ export const ProposalMessageCard = ({
           }
         >
           <Text
+            textAlign="start"
             variant="body1"
             fontWeight={600}
             wordBreak="break-all"
-            textAlign="start"
           >
             {header}
           </Text>
           <AccordionIcon color="gray.600" />
         </AccordionButton>
         <AccordionPanel p={0} pt={4}>
-          <JsonReadOnly text={jsonString} canCopy isExpandable />
+          <JsonReadOnly isExpandable text={jsonString} canCopy />
         </AccordionPanel>
       </>
     )}

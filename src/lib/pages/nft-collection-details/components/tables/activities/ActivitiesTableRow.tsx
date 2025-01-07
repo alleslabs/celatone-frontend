@@ -21,13 +21,13 @@ export const getEventMessage = (
 };
 
 const TokenIdRender = ({
-  tokenId,
-  nftAddress,
   collectionAddress,
+  nftAddress,
+  tokenId,
 }: {
-  tokenId: Activity["tokenId"];
-  nftAddress: Activity["nftAddress"];
   collectionAddress: HexAddr32;
+  nftAddress: Activity["nftAddress"];
+  tokenId: Activity["tokenId"];
 }) => {
   if (!tokenId)
     return (
@@ -47,11 +47,11 @@ const TokenIdRender = ({
   return (
     <AppLink href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}>
       <Text
-        color="primary.main"
         _hover={{
-          textDecoration: "underline",
           color: "primary.light",
+          textDecoration: "underline",
         }}
+        color="primary.main"
         wordBreak="break-word"
       >
         {tokenId}
@@ -62,47 +62,47 @@ const TokenIdRender = ({
 
 interface ActivitiesTableRowProps {
   activity: Activity;
-  templateColumns: string;
   collectionAddress: HexAddr32;
+  templateColumns: string;
 }
 
 export const ActivitiesTableRow = ({
   activity,
-  templateColumns,
   collectionAddress,
+  templateColumns,
 }: ActivitiesTableRowProps) => {
   const {
-    txhash,
-    timestamp,
+    isCollectionCreate,
     isNftBurn,
     isNftMint,
     isNftTransfer,
-    isCollectionCreate,
-    tokenId,
     nftAddress,
+    timestamp,
+    tokenId,
+    txhash,
   } = activity;
 
   return (
-    <Box w="full" minW="min-content">
+    <Box minW="min-content" w="full">
       <Grid
         className="copier-wrapper"
-        templateColumns={templateColumns}
         _hover={{ background: "gray.900" }}
+        templateColumns={templateColumns}
         transition="all 0.25s ease-in-out"
       >
         <TableRow pr={1}>
           <ExplorerLink
-            value={txhash.toUpperCase()}
             type="tx_hash"
-            showCopyOnHover
+            value={txhash.toUpperCase()}
             ampCopierSection="nft-collection-activities-table"
+            showCopyOnHover
           />
         </TableRow>
         <TableRow>
           <TokenIdRender
-            tokenId={tokenId}
             nftAddress={nftAddress}
             collectionAddress={collectionAddress}
+            tokenId={tokenId}
           />
         </TableRow>
         <TableRow>
@@ -116,7 +116,7 @@ export const ActivitiesTableRow = ({
           </Text>
         </TableRow>
         <TableRow>
-          <Flex direction="column" gap={1}>
+          <Flex gap={1} direction="column">
             <Text variant="body3">{formatUTC(timestamp)}</Text>
             <Text variant="body3" color="text.dark">
               {`(${dateFromNow(timestamp)})`}

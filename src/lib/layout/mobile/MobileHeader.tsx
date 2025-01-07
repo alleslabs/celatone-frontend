@@ -13,10 +13,10 @@ const MobileHeader = () => {
   const isInitia = useInitia();
   return (
     <Flex
-      as="header"
       width="100vw"
-      height="full"
       align="center"
+      as="header"
+      height="full"
       justifyContent="space-between"
     >
       {isInitia && (
@@ -27,21 +27,21 @@ const MobileHeader = () => {
       <SectionWrapper minW="64px" w="full" justifyContent="start">
         <AppLink href="/">
           <Image
+            maxWidth="128px"
+            minWidth={isInitia ? "auto" : "128px"}
+            width={isInitia ? "auto" : "128px"}
             alt="Celatone"
+            maxHeight={isInitia ? "24px" : "auto"}
+            mx={4}
             src={
               isInitia
                 ? "https://assets.alleslabs.dev/integrations/initia/logo_mobile.png"
                 : theme.branding.logo
             }
-            maxHeight={isInitia ? "24px" : "auto"}
-            minWidth={isInitia ? "auto" : "128px"}
-            width={isInitia ? "auto" : "128px"}
-            maxWidth="128px"
-            mx={4}
-            objectFit="contain"
-            backgroundPosition="left"
-            transition="all 0.25s ease-in-out"
             _hover={{ cursor: "pointer", opacity: 0.85 }}
+            backgroundPosition="left"
+            objectFit="contain"
+            transition="all 0.25s ease-in-out"
           />
         </AppLink>
       </SectionWrapper>

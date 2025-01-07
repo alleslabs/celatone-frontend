@@ -23,18 +23,18 @@ export const CodeContractsTableFull = observer(
       });
 
     const {
-      pagesQuantity,
-      setTotalData,
       currentPage,
-      setCurrentPage,
-      pageSize,
-      setPageSize,
       offset,
+      pageSize,
+      pagesQuantity,
+      setCurrentPage,
+      setPageSize,
+      setTotalData,
     } = usePaginator({
       initialState: {
-        pageSize: 10,
         currentPage: 1,
         isDisabled: false,
+        pageSize: 10,
       },
     });
 
@@ -47,30 +47,30 @@ export const CodeContractsTableFull = observer(
     return (
       <>
         <TableTitle
+          id={tableHeaderId}
           title="Contract Instances"
           count={data?.total ?? 0}
-          id={tableHeaderId}
         />
         <ContractsTable
+          emptyState={<NoContracts />}
           contracts={data.items}
           isLoading={isLoading}
-          emptyState={<NoContracts />}
           onRowSelect={onRowSelect}
         />
         {!!data?.total && data.total > 10 && (
           <Pagination
             currentPage={currentPage}
+            pageSize={pageSize}
             pagesQuantity={pagesQuantity}
             offset={offset}
-            totalData={data.total}
-            scrollComponentId={tableHeaderId}
-            pageSize={pageSize}
             onPageChange={setCurrentPage}
             onPageSizeChange={(e) => {
               const size = Number(e.target.value);
               setPageSize(size);
               setCurrentPage(1);
             }}
+            scrollComponentId={tableHeaderId}
+            totalData={data.total}
           />
         )}
       </>

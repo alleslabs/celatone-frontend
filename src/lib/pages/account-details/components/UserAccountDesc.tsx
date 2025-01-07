@@ -10,25 +10,24 @@ import { EditSavedAccountModal } from "lib/components/modal";
 import type { AccountLocalInfo } from "lib/stores/account";
 
 interface UserAccountDescProps {
-  publicAccount?: boolean;
   accountLocalInfo: AccountLocalInfo;
+  publicAccount?: boolean;
 }
 
 export const UserAccountDesc = observer(
   ({ accountLocalInfo, publicAccount = false }: UserAccountDescProps) => {
     const [showMore, setShowMore] = useState(false);
     const description = accountLocalInfo?.description;
-    const [ref, { noClamp, clampedText, key }] = useClampText({
-      text: description || "No Contract description",
+    const [ref, { clampedText, key, noClamp }] = useClampText({
       ellipsis: "...",
       lines: publicAccount ? 4 : 2,
+      text: description || "No Contract description",
     });
 
     const renderEditAccountButton = () => {
       if (!accountLocalInfo) return null;
       return (
         <EditSavedAccountModal
-          accountLocalInfo={accountLocalInfo}
           triggerElement={
             <Button
               size="xs"
@@ -38,6 +37,7 @@ export const UserAccountDesc = observer(
               {description ? "Edit" : "Add Description"}
             </Button>
           }
+          accountLocalInfo={accountLocalInfo}
         />
       );
     };
@@ -51,17 +51,17 @@ export const UserAccountDesc = observer(
 
     return (
       <Flex
-        direction="column"
         bg="gray.900"
-        maxW="100%"
-        borderRadius="8px"
-        p={4}
-        minH="full"
         flex={1}
+        maxW="100%"
+        minH="full"
+        p={4}
+        borderRadius="8px"
+        direction="column"
         role="group"
       >
-        <Flex justify="space-between" align="center" h="32px">
-          <Text variant="body2" fontWeight={500} color="text.dark">
+        <Flex align="center" h="32px" justify="space-between">
+          <Text variant="body2" color="text.dark" fontWeight={500}>
             Your Account Description
           </Text>
           <Box display="none" _groupHover={{ display: "flex" }}>
@@ -69,20 +69,20 @@ export const UserAccountDesc = observer(
           </Box>
         </Flex>
         <Text
+          key={key}
           variant="body2"
           whiteSpace="pre-wrap"
           ref={ref as React.MutableRefObject<HTMLParagraphElement>}
-          key={key}
         >
           <Linkify>{displayDescription}</Linkify>
         </Text>
 
         {!noClamp && description && (
           <ShowMoreButton
-            showMoreText="View Full Description"
-            showLessText="View Less Description"
-            toggleShowMore={showMore}
             setToggleShowMore={() => setShowMore(!showMore)}
+            showLessText="View Less Description"
+            showMoreText="View Full Description"
+            toggleShowMore={showMore}
           />
         )}
       </Flex>

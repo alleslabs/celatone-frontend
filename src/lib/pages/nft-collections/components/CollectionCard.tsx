@@ -12,103 +12,103 @@ interface CollectionCardProps {
 
 export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
   const isMobile = useMobile();
-  const { uri, description, name } = collectionInfo;
+  const { description, name, uri } = collectionInfo;
   const { data: metadata } = useMetadata(uri);
 
   return (
     <Box
-      p={{ base: 3, md: 6 }}
-      h="full"
       bg="gray.900"
-      borderRadius="8px"
-      transition="all .25s ease-in-out"
+      h="full"
+      p={{ base: 3, md: 6 }}
       _hover={{
         bg: "gray.800",
       }}
+      borderRadius="8px"
+      transition="all .25s ease-in-out"
     >
       <Flex gap={{ base: 4, md: 6 }} maxW="full" w="full" overflow="hidden">
         <Image
-          minW={{ base: 28, md: 40 }}
-          w={{ base: 28, md: 40 }}
+          fallbackSrc={NFT_IMAGE_PLACEHOLDER}
+          fallbackStrategy="beforeLoadOrError"
           h={{ base: 28, md: 40 }}
-          objectFit="contain"
+          minW={{ base: 28, md: 40 }}
+          src={metadata?.image}
+          w={{ base: 28, md: 40 }}
           background="gray.900"
           backgroundPosition="center"
           borderRadius="8px"
-          src={metadata?.image}
-          fallbackSrc={NFT_IMAGE_PLACEHOLDER}
-          fallbackStrategy="beforeLoadOrError"
+          objectFit="contain"
         />
         <Flex
-          direction="column"
-          gap={2}
-          overflow="hidden"
-          w="full"
           alignSelf="center"
+          gap={2}
+          w="full"
+          direction="column"
+          overflow="hidden"
         >
           <Flex
-            direction="column"
             gap={1}
+            pb={{ base: 3, md: 4 }}
             borderBottom="1px solid"
             borderBottomColor="gray.700"
-            pb={{ base: 3, md: 4 }}
+            direction="column"
           >
             <Heading
               as="h6"
-              variant="h6"
-              overflow="hidden"
-              fontWeight={name.length ? 600 : 300}
               sx={{
                 display: "-webkit-box",
-                WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 2,
               }}
+              variant="h6"
               color={name.length ? "text.primary" : "text.disabled"}
+              fontWeight={name.length ? 600 : 300}
+              overflow="hidden"
             >
               {name.length ? name : "Untitled Collection"}
             </Heading>
             {description && (
               <Text
-                color="text.dark"
-                variant={{ base: "body3", md: "body2" }}
-                fontWeight={400}
-                overflow="hidden"
-                wordBreak="break-word"
-                textOverflow="ellipsis"
                 lineHeight="125%"
                 sx={{
                   display: "-webkit-box",
-                  WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3,
                 }}
+                variant={{ base: "body3", md: "body2" }}
+                color="text.dark"
+                fontWeight={400}
+                overflow="hidden"
+                textOverflow="ellipsis"
+                wordBreak="break-word"
               >
                 {description}
               </Text>
             )}
           </Flex>
           <Flex flexWrap="wrap" mt={{ md: 2 }}>
-            <Flex direction="column" flex={1} minW="fit-content">
+            <Flex flex={1} minW="fit-content" direction="column">
               <Text variant="body2" color="text.dark">
                 Created by
               </Text>
               <ExplorerLink
-                value={collectionInfo.creator}
-                type="user_address"
-                showCopyOnHover={!isMobile}
                 minW={36}
+                type="user_address"
+                value={collectionInfo.creator}
                 ampCopierSection="collection-list"
+                showCopyOnHover={!isMobile}
               />
             </Flex>
-            <Flex direction="column" flex={1} minW="fit-content">
-              <Text color="text.dark" variant="body2">
+            <Flex flex={1} minW="fit-content" direction="column">
+              <Text variant="body2" color="text.dark">
                 Collection Address
               </Text>
               <ExplorerLink
-                value={collectionInfo.collectionAddress}
-                type="contract_address"
-                showCopyOnHover={!isMobile}
                 minW={36}
+                type="contract_address"
+                value={collectionInfo.collectionAddress}
                 ampCopierSection="collection-list"
+                showCopyOnHover={!isMobile}
               />
             </Flex>
           </Flex>

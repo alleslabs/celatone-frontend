@@ -18,14 +18,14 @@ import type {
 import { dateFromNow, formatPrettyPercent, formatUTC } from "lib/utils";
 
 interface VotingOverviewQuorumProps {
-  proposalData: ProposalData;
   params: ProposalParams;
+  proposalData: ProposalData;
   votesInfo: ProposalVotesInfo;
 }
 
 export const VotingOverviewQuorum = ({
-  proposalData,
   params,
+  proposalData,
   votesInfo,
 }: VotingOverviewQuorumProps) => {
   const { quorum } = extractParams(params, proposalData.isExpedited);
@@ -34,13 +34,13 @@ export const VotingOverviewQuorum = ({
 
   const endTime = proposalData.resolvedTimestamp ?? proposalData.votingEndTime;
   return (
-    <Flex direction="column" gap={4}>
-      <Flex gap={2} alignItems="center">
+    <Flex gap={4} direction="column">
+      <Flex alignItems="center" gap={2}>
         <VoteQuorumBadge
           status={proposalData.status}
+          isCompact
           quorum={quorum}
           totalRatio={totalRatio}
-          isCompact
         />
         <Text variant="body1" color="text.main">
           Quorum
@@ -49,6 +49,7 @@ export const VotingOverviewQuorum = ({
       <Divider borderColor="gray.700" />
       <Flex gap={4}>
         <Tooltip
+          hidden={isNull(nonAbstainRatio) || isNull(abstainRatio)}
           label={
             <div>
               <LegendText
@@ -64,23 +65,22 @@ export const VotingOverviewQuorum = ({
             </div>
           }
           bgColor="gray.700"
-          hidden={isNull(nonAbstainRatio) || isNull(abstainRatio)}
         >
           <Box h="fit-content">
             <VoteQuorumCircle
-              quorum={quorum}
-              nonAbstainRatio={nonAbstainRatio}
-              totalRatio={totalRatio}
               isCompact
+              nonAbstainRatio={nonAbstainRatio}
+              quorum={quorum}
+              totalRatio={totalRatio}
             />
           </Box>
         </Tooltip>
-        <Flex direction="column" gap={2}>
+        <Flex gap={2} direction="column">
           <VoteQuorumText
             status={proposalData.status}
+            isCompact
             quorum={quorum}
             totalRatio={totalRatio}
-            isCompact
           />
           <div>
             <Text variant="body3" color="text.dark">

@@ -9,9 +9,9 @@ import { SchemaPanel } from "./SchemaPanel";
 
 const StyledCustomTab = chakra(CustomTab, {
   baseStyle: {
+    _selected: { bgColor: "gray.800" },
     border: "unset",
     borderRadius: "4px",
-    _selected: { bgColor: "gray.800" },
   },
 });
 
@@ -29,22 +29,22 @@ const SchemaMsgTabList = [
 ];
 
 interface CodeSchemaTabsProps {
-  codeId: number;
   codeHash: string;
-  verifiedSchema: Nullish<CodeSchema>;
+  codeId: number;
   localSchema: Option<CodeSchema>;
+  verifiedSchema: Nullish<CodeSchema>;
 }
 
 export const CodeSchemaTabs = ({
-  codeId,
   codeHash,
-  verifiedSchema,
+  codeId,
   localSchema,
+  verifiedSchema,
 }: CodeSchemaTabsProps) => {
   const schema = verifiedSchema ?? localSchema;
   const hasSchema = Boolean(schema);
   return (
-    <Tabs variant="unstyled" orientation="vertical" mt={6}>
+    <Tabs mt={6} variant="unstyled" orientation="vertical">
       <TabList>
         <StyledCustomTab>Full Schema</StyledCustomTab>
         {SchemaMsgTabList.map((schemaProperty) => (
@@ -56,19 +56,19 @@ export const CodeSchemaTabs = ({
       <TabPanels pl={6}>
         <StyledTabPanel>
           <SchemaPanel
-            codeId={codeId}
-            codeHash={codeHash}
-            jsonSchema={schema}
             hasSchema={hasSchema}
+            codeHash={codeHash}
+            codeId={codeId}
+            jsonSchema={schema}
           />
         </StyledTabPanel>
         {SchemaMsgTabList.map((schemaProperty) => (
           <StyledTabPanel key={schemaProperty}>
             <SchemaPanel
-              codeId={codeId}
-              codeHash={codeHash}
-              jsonSchema={schema?.[schemaProperty]}
               hasSchema={hasSchema}
+              codeHash={codeHash}
+              codeId={codeId}
+              jsonSchema={schema?.[schemaProperty]}
               schemaProperty={schemaProperty}
             />
           </StyledTabPanel>

@@ -4,30 +4,30 @@ import { Flex } from "@chakra-ui/react";
 import { CustomIcon } from "./icon";
 
 interface DropdownChevronProps {
+  bg?: FlexProps["bg"];
+  height?: FlexProps["height"];
   isOpen: boolean;
   onClick: FlexProps["onClick"];
-  height?: FlexProps["height"];
-  bg?: FlexProps["bg"];
 }
 
 export const DropdownChevron = ({
-  isOpen,
-  height = "full",
   bg = "background.main",
+  height = "full",
+  isOpen,
   onClick,
 }: DropdownChevronProps) => (
   <Flex
-    h={height}
-    bg={bg}
-    onClick={onClick}
-    position="absolute"
-    pr={2}
-    pl={1}
-    right={0}
-    align="center"
     borderWidth="1px 1px 1px 0"
+    align="center"
+    bg={bg}
+    h={height}
+    pl={1}
+    pr={2}
+    right={0}
     borderColor="gray.700"
     borderRadius="0 8px 8px 0"
+    onClick={onClick}
+    position="absolute"
   >
     <CustomIcon
       name="chevron-down"

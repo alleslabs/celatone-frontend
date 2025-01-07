@@ -34,7 +34,7 @@ interface PublicProjectContractTableProps {
 const TEMPLATE_COLUMNS = "max(160px) minmax(300px, 1fr) max(200px) max(300px) ";
 
 const ContractTableHeader = () => (
-  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
+  <Grid minW="min-content" templateColumns={TEMPLATE_COLUMNS}>
     <TableHeader>Contract Address</TableHeader>
     <TableHeader>Contract Name</TableHeader>
     <TableHeader>Instantiated By</TableHeader>
@@ -66,8 +66,8 @@ const ContentRender = ({
       {publicContracts.map((contract) => (
         <PublicProjectContractRow
           key={contract.publicInfo.contractAddress}
-          templateColumns={TEMPLATE_COLUMNS}
           publicContractInfo={contract}
+          templateColumns={TEMPLATE_COLUMNS}
           wasmVerifyInfo={wasmVerifyInfos?.[contract.publicInfo.code]}
         />
       ))}
@@ -108,16 +108,16 @@ export const PublicProjectContractTable = observer(
       }));
 
     return (
-      <Box mt={{ base: 8, md: 12 }} mb={4}>
+      <Box mb={4} mt={{ base: 8, md: 12 }}>
         <TableTitle title="Contracts" count={contracts.length} />
         {!onViewMore && (
           <InputWithIcon
-            placeholder="Search with Contract Address or Contract Name"
-            value={searchKeyword}
-            onChange={(e) => setSearchKeyword(e.target.value)}
-            size={{ base: "md", md: "lg" }}
             my={2}
+            size={{ base: "md", md: "lg" }}
+            value={searchKeyword}
             amptrackSection="public-project-contract-search"
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            placeholder="Search with Contract Address or Contract Name"
           />
         )}
         {publicContracts.length ? (
@@ -127,12 +127,12 @@ export const PublicProjectContractTable = observer(
           />
         ) : (
           <EmptyState
+            imageVariant={contracts.length ? "not-found" : "empty"}
             message={
               contracts.length
                 ? "No matching contracts found for this project. Make sure you are searching with Contract Address or Contract Name"
                 : "There are currently no contracts related to this project."
             }
-            imageVariant={contracts.length ? "not-found" : "empty"}
             withBorder
           />
         )}

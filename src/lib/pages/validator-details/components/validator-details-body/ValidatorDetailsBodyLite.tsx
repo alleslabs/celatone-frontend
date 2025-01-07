@@ -75,30 +75,30 @@ export const ValidatorDetailsBodyLite = ({
         />
         <ValidatorTop
           info={foundValidator}
-          totalVotingPower={totalVotingPower}
           singleStakingDenom={stakingParams?.bondDenom}
+          totalVotingPower={totalVotingPower}
         />
       </PageHeaderContainer>
       <PageContainer>
         <ValidatorOverview
           validatorAddress={validatorAddress}
-          onSelectVotes={undefined}
-          onSelectPerformance={undefined}
-          onSelectBondedTokenChanges={undefined}
+          details={foundValidator.details}
           isActive={foundValidator.isActive}
           isJailed={foundValidator.isJailed}
-          details={foundValidator.details}
-          singleStakingDenom={stakingParams?.bondDenom}
           assetInfos={assetInfos}
-          votingPower={foundValidator.votingPower}
-          totalVotingPower={totalVotingPower}
+          onSelectBondedTokenChanges={undefined}
+          onSelectPerformance={undefined}
+          onSelectVotes={undefined}
           selfVotingPower={
             delegations?.length ? big(delegations[0].balance.amount) : big(0)
           }
+          singleStakingDenom={stakingParams?.bondDenom}
+          totalVotingPower={totalVotingPower}
+          votingPower={foundValidator.votingPower}
         />
         <UserDocsLink
-          title="What is a Validator?"
           cta="Read more about Validator Details"
+          title="What is a Validator?"
           href="general/validators/detail-page"
         />
       </PageContainer>

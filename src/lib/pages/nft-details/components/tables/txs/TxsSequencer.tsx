@@ -14,24 +14,24 @@ export const TxsSequencer = ({ nftAddress }: TxsSequencerProps) => {
     data: transactions,
     fetchNextPage,
     hasNextPage,
-    isLoading,
     isFetchingNextPage,
+    isLoading,
   } = useNftTransactionsSequencer(nftAddress);
 
   return (
     <>
       <TxsTable
-        txs={transactions}
-        isLoading={isLoading}
         emptyState={
           <EmptyState imageVariant="empty" message="Transactions not found." />
         }
+        txs={transactions}
+        isLoading={isLoading}
       />
       {hasNextPage && (
         <LoadNext
-          text="Load more transactions"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          text="Load more transactions"
         />
       )}
     </>

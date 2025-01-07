@@ -13,13 +13,13 @@ import {
 } from "./evm-tx-method";
 
 interface EvmTxMsgDetailsBodyProps {
-  evmTxData: TxDataJsonRpc;
   evmDenom: Option<string>;
+  evmTxData: TxDataJsonRpc;
 }
 
 export const EvmTxMsgDetailsBody = ({
-  evmTxData,
   evmDenom,
+  evmTxData,
 }: EvmTxMsgDetailsBodyProps) => {
   const method = getEvmMethod(evmTxData.tx.input);
   const { data: assetInfos } = useAssetInfos({
@@ -27,22 +27,22 @@ export const EvmTxMsgDetailsBody = ({
   });
 
   switch (method) {
+    case EvmMethodName.CallErc20Factory:
+      return <EvmTxCallErc20Factory evmTxData={evmTxData} />;
+    case EvmMethodName.Create:
+      return <EvmTxCreateContract evmTxData={evmTxData} />;
     case EvmMethodName.Transfer:
       return (
         <EvmTxTransfer
           evmTxData={evmTxData}
-          evmDenom={evmDenom}
           assetInfos={assetInfos}
+          evmDenom={evmDenom}
         />
       );
     case EvmMethodName.TransferErc20:
       return (
         <EvmTxTransferErc20 evmTxData={evmTxData} assetInfos={assetInfos} />
       );
-    case EvmMethodName.Create:
-      return <EvmTxCreateContract evmTxData={evmTxData} />;
-    case EvmMethodName.CallErc20Factory:
-      return <EvmTxCallErc20Factory evmTxData={evmTxData} />;
     default:
       return <EvmTxDefault evmTxData={evmTxData} />;
   }

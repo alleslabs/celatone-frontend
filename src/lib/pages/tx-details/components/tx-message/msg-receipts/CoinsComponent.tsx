@@ -35,14 +35,14 @@ export const CoinsComponent = ({ coins }: CoinsComponentProps) => {
   const hasSupportedTokens = supportedTokens.length > 0;
 
   return (
-    <Flex direction="column" w="full">
+    <Flex w="full" direction="column">
       {hasSupportedTokens && (
         <Grid gridGap={4} gridTemplateColumns={isMobile ? "1fr" : "1fr 1fr"}>
           {supportedTokens.slice(0, showMore ? undefined : 2).map((token) => (
             <TokenCard
               key={token.denom}
-              token={token}
               amptrackSection="tx_msg_receipts_assets"
+              token={token}
             />
           ))}
         </Grid>
@@ -50,9 +50,6 @@ export const CoinsComponent = ({ coins }: CoinsComponentProps) => {
       <Flex gap={2} mt={hasSupportedTokens ? 2 : 0}>
         {supportedTokens.length > 2 && (
           <ShowMoreButton
-            showMoreText="View All Assets"
-            showLessText="View Less Assets"
-            toggleShowMore={showMore}
             setToggleShowMore={() => {
               trackUseExpand({
                 action: showMore ? "collapse" : "expand",
@@ -61,12 +58,15 @@ export const CoinsComponent = ({ coins }: CoinsComponentProps) => {
               });
               setShowMore(!showMore);
             }}
+            showLessText="View Less Assets"
+            showMoreText="View All Assets"
+            toggleShowMore={showMore}
           />
         )}
         <UnsupportedTokensModal
-          unsupportedAssets={unsupportedTokens}
-          buttonProps={{ fontSize: "12px", mb: 0 }}
           amptrackSection="tx_msg_receipts_unsupported_assets"
+          buttonProps={{ fontSize: "12px", mb: 0 }}
+          unsupportedAssets={unsupportedTokens}
         />
       </Flex>
     </Flex>

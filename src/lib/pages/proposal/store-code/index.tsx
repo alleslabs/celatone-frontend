@@ -67,32 +67,32 @@ import {
 } from "lib/utils";
 
 interface StoreCodeProposalState {
-  title: string;
+  builder: string;
+  codeHash: string;
+  initialDeposit: Coin;
   proposalDesc: string;
   runAs: BechAddr;
-  initialDeposit: Coin;
-  unpinCode: boolean;
-  builder: string;
   source: string;
-  codeHash: string;
+  title: string;
+  unpinCode: boolean;
 }
 
 const defaultValues: StoreCodeProposalState = {
-  title: "",
+  builder: "",
+  codeHash: "",
+  initialDeposit: { amount: "", denom: "" } as Coin,
   proposalDesc: "",
   runAs: "" as BechAddr,
-  initialDeposit: { denom: "", amount: "" } as Coin,
-  unpinCode: false,
-  builder: "",
   source: "",
-  codeHash: "",
+  title: "",
+  unpinCode: false,
 };
 
 const StoreCodeProposal = () => {
   useWasmConfig({ shouldRedirect: true });
   const {
-    constants,
     chainConfig: { prettyName },
+    constants,
   } = useCelatoneApp();
   const { user: exampleUserAddress } = useExampleAddresses();
   const getMaxLengthError = useGetMaxLengthError();
@@ -102,7 +102,7 @@ const StoreCodeProposal = () => {
   const { data: uploadAccessParams } = useUploadAccessParamsLcd();
   const minDeposit = govParams?.depositParams.minDeposit;
 
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const submitStoreCodeProposalTx = useSubmitStoreCodeProposalTx();
   const { broadcast } = useTxBroadcast();
 
@@ -110,46 +110,46 @@ const StoreCodeProposal = () => {
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [processing, setProcessing] = useState(false);
   const [simulateStatus, setSimulateStatus] = useState<SimulateStatus>({
-    status: "default",
     message: "",
+    status: "default",
   });
   const {
     control,
-    watch,
-    setValue,
-    reset,
     formState: { errors },
+    reset,
+    setValue,
     trigger,
+    watch,
   } = useForm<StoreCodeProposalState>({
     defaultValues,
     mode: "all",
   });
   const {
     control: uploadSectionControl,
-    watch: uploadSectionWatch,
+    formState: { errors: uploadSectionErrors },
     setValue: uploadSectionSetValue,
     trigger: uploadSectionTrigger,
-    formState: { errors: uploadSectionErrors },
+    watch: uploadSectionWatch,
   } = useForm<UploadSectionState>({
     defaultValues: {
-      wasmFile: undefined,
+      addresses: [{ address: "" as BechAddr }],
       codeName: "",
       permission: AccessType.ACCESS_TYPE_EVERYBODY,
-      addresses: [{ address: "" as BechAddr }],
+      wasmFile: undefined,
     },
     mode: "all",
   });
   const {
-    title,
+    builder,
+    codeHash,
+    initialDeposit,
     proposalDesc,
     runAs,
-    initialDeposit,
-    unpinCode,
-    builder,
     source,
-    codeHash,
+    title,
+    unpinCode,
   } = watch();
-  const { wasmFile, permission, addresses } = uploadSectionWatch();
+  const { addresses, permission, wasmFile } = uploadSectionWatch();
 
   // Amp
   const router = useRouter();
@@ -157,7 +157,7 @@ const StoreCodeProposal = () => {
     if (router.isReady) track(AmpEvent.TO_PROPOSAL_TO_STORE_CODE);
   }, [router.isReady]);
 
-  const { variant, description, icon } = getAlert(
+  const { description, icon, variant } = getAlert(
     initialDeposit.amount,
     govParams?.depositParams.minInitialDeposit,
     minDeposit?.formattedAmount,
@@ -222,14 +222,14 @@ const StoreCodeProposal = () => {
 
   // Reset simulation status to default when some of the input is not filled
   useEffect(() => {
-    if (!enabledTx) setSimulateStatus({ status: "default", message: "" });
+    if (!enabledTx) setSimulateStatus({ message: "", status: "default" });
   }, [enabledTx]);
 
   useEffect(() => {
     if (minDeposit)
       reset({
         ...defaultValues,
-        initialDeposit: { denom: minDeposit.denom, amount: "" },
+        initialDeposit: { amount: "", denom: minDeposit.denom },
       });
   }, [minDeposit, reset]);
 
@@ -243,42 +243,42 @@ const StoreCodeProposal = () => {
   }, [setHashValue]);
 
   const { isFetching: isSimulating } = useSimulateFeeForProposalStoreCode({
-    enabled: Boolean(walletAddress && enabledTx),
-    title,
-    description: proposalDesc,
-    runAs,
-    initialDeposit,
-    unpinCode,
-    builder,
-    source,
-    codeHash,
-    wasmFile,
-    permission,
     addresses: addresses.map((addr) => addr.address),
-    precision: minDeposit?.precision,
+    builder,
+    codeHash,
+    description: proposalDesc,
+    enabled: Boolean(walletAddress && enabledTx),
+    initialDeposit,
+    onError: (e) => {
+      setSimulateStatus({ message: e.message, status: "failed" });
+      setEstimatedFee(undefined);
+    },
     onSuccess: (fee) => {
       if (wasmFile && walletAddress && fee) {
         setSimulateStatus({
-          status: "succeeded",
           message: "Valid Wasm file and submitting proposal conditions",
+          status: "succeeded",
         });
         setEstimatedFee(fabricateFee(fee));
       }
     },
-    onError: (e) => {
-      setSimulateStatus({ status: "failed", message: e.message });
-      setEstimatedFee(undefined);
-    },
+    permission,
+    precision: minDeposit?.precision,
+    runAs,
+    source,
+    title,
+    unpinCode,
+    wasmFile,
   });
 
   const proceed = useCallback(async () => {
     if (!wasmFile) return null;
 
     trackUseSubmitProposal({
-      initialDeposit: initialDeposit.amount,
-      assetDenom: initialDeposit.denom,
-      minDeposit: minDeposit?.formattedAmount,
       addressesCount: addresses.length,
+      assetDenom: initialDeposit.denom,
+      initialDeposit: initialDeposit.amount,
+      minDeposit: minDeposit?.formattedAmount,
       permission: AccessType[permission],
     });
 
@@ -286,33 +286,33 @@ const StoreCodeProposal = () => {
       if (!walletAddress) return [];
       return [
         composeStoreCodeProposalMsg({
-          proposer: walletAddress,
-          title,
+          addresses: addresses.map((addr) => addr.address),
+          builder,
+          codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
           description: proposalDesc,
+          initialDeposit,
+          permission,
+          precision: minDeposit?.precision,
+          proposer: walletAddress,
           runAs,
+          source,
+          title,
+          unpinCode,
           wasmByteCode: await gzip(
             new Uint8Array(await wasmFile.arrayBuffer())
           ),
-          permission,
-          addresses: addresses.map((addr) => addr.address),
-          unpinCode,
-          source,
-          builder,
-          codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
-          initialDeposit,
-          precision: minDeposit?.precision,
         }),
       ];
     };
     const craftMsg = await submitStoreCodeProposalMsg();
 
     const stream = await submitStoreCodeProposalTx({
+      amountToVote: getAmountToVote(initialDeposit, minDeposit),
       estimatedFee,
       messages: craftMsg,
-      wasmFileName: wasmFile.name,
-      amountToVote: getAmountToVote(initialDeposit, minDeposit),
-      onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
+      onTxSucceed: () => setProcessing(false),
+      wasmFileName: wasmFile.name,
     });
     if (stream) {
       setProcessing(true);
@@ -351,66 +351,65 @@ const StoreCodeProposal = () => {
             <Heading as="h5" variant="h5">
               {PROPOSAL_STORE_CODE_TEXT.header}
             </Heading>
-            <Text color="text.dark" pt={4}>
+            <Text pt={4} color="text.dark">
               {PROPOSAL_STORE_CODE_TEXT.description}
             </Text>
             <ConnectWalletAlert
-              subtitle={PROPOSAL_STORE_CODE_TEXT.connectWallet}
               mt={12}
+              subtitle={PROPOSAL_STORE_CODE_TEXT.connectWallet}
             />
             <form>
-              <Flex my="48px" gap={6} direction="column">
-                <Heading as="h6" variant="h6" mb={6}>
+              <Flex gap={6} my="48px" direction="column">
+                <Heading as="h6" mb={6} variant="h6">
                   {PROPOSAL_STORE_CODE_TEXT.header}
                 </Heading>
 
                 {/* Title  */}
                 <ControllerInput
-                  name="title"
-                  control={control}
-                  placeholder={PROPOSAL_STORE_CODE_TEXT.titlePlaceholder}
                   label={PROPOSAL_STORE_CODE_TEXT.titleLabel}
-                  labelBgColor="background.main"
-                  variant="fixed-floating"
+                  name="title"
                   rules={{
-                    required: PROPOSAL_STORE_CODE_TEXT.titleRequired,
                     maxLength: constants.maxProposalTitleLength,
+                    required: PROPOSAL_STORE_CODE_TEXT.titleRequired,
                   }}
+                  variant="fixed-floating"
+                  control={control}
                   error={
                     title.length > constants.maxProposalTitleLength
                       ? getMaxLengthError(title.length, "proposal_title")
                       : errors.title?.message
                   }
+                  labelBgColor="background.main"
+                  placeholder={PROPOSAL_STORE_CODE_TEXT.titlePlaceholder}
                 />
 
                 {/* Description  */}
                 <ControllerTextarea
-                  name="proposalDesc"
-                  control={control}
                   height="160px"
                   label={PROPOSAL_STORE_CODE_TEXT.descriptionLabel}
-                  placeholder={PROPOSAL_STORE_CODE_TEXT.descriptionPlaceholder}
-                  variant="fixed-floating"
-                  labelBgColor="background.main"
+                  name="proposalDesc"
                   rules={{
                     required: PROPOSAL_STORE_CODE_TEXT.descriptionRequired,
                   }}
+                  variant="fixed-floating"
+                  control={control}
                   error={errors.proposalDesc?.message}
+                  labelBgColor="background.main"
+                  placeholder={PROPOSAL_STORE_CODE_TEXT.descriptionPlaceholder}
                 />
 
                 {/* Run as  */}
                 <AddressInput
-                  name="runAs"
-                  control={control}
-                  label={PROPOSAL_STORE_CODE_TEXT.runAsLabel}
-                  labelBgColor="background.main"
-                  placeholder={`ex. ${exampleUserAddress}`}
-                  variant="fixed-floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.runAsHelperText}
+                  label={PROPOSAL_STORE_CODE_TEXT.runAsLabel}
+                  name="runAs"
                   requiredText={PROPOSAL_STORE_CODE_TEXT.runAsRequired}
+                  variant="fixed-floating"
+                  control={control}
                   error={errors.runAs?.message}
                   helperAction={
                     <AssignMe
+                      isDisable={runAs === walletAddress}
                       onClick={
                         walletAddress
                           ? () => {
@@ -420,35 +419,36 @@ const StoreCodeProposal = () => {
                             }
                           : undefined
                       }
-                      isDisable={runAs === walletAddress}
                     />
                   }
+                  labelBgColor="background.main"
+                  placeholder={`ex. ${exampleUserAddress}`}
                 />
 
                 {/* Upload file  */}
-                <Heading as="h6" variant="h6" pt={12} pb={6}>
+                <Heading as="h6" pb={6} pt={12} variant="h6">
                   {PROPOSAL_STORE_CODE_TEXT.uploadHeader}
                 </Heading>
                 {wasmFile ? (
                   <UploadCard
-                    file={wasmFile}
                     deleteFile={() => {
                       uploadSectionSetValue("wasmFile", undefined);
                     }}
+                    file={wasmFile}
                   />
                 ) : (
                   <DropZone
+                    fileType={["wasm"]}
                     setFiles={(files: File[]) =>
                       uploadSectionSetValue("wasmFile", files[0])
                     }
-                    fileType={["wasm"]}
                   />
                 )}
 
                 {/* Code hash  */}
                 <CodeHashBox codeHash={codeHash} />
                 {/* Unpin code  */}
-                <Flex direction="row" alignItems="center" gap={1}>
+                <Flex alignItems="center" gap={1} direction="row">
                   <Checkbox
                     onChange={(e) => {
                       trackUseUnpin(e.target.checked);
@@ -467,39 +467,37 @@ const StoreCodeProposal = () => {
 
                 {/* Builder  */}
                 <ControllerInput
-                  name="builder"
-                  control={control}
-                  placeholder={PROPOSAL_STORE_CODE_TEXT.builderPlaceholder}
-                  label={PROPOSAL_STORE_CODE_TEXT.builderLabel}
-                  labelBgColor="background.main"
-                  variant="fixed-floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.builderHelperText}
+                  label={PROPOSAL_STORE_CODE_TEXT.builderLabel}
+                  name="builder"
                   // Builder is a docker image, can be tagged, digested, or both
                   rules={{
-                    required: PROPOSAL_STORE_CODE_TEXT.builderRequired,
                     pattern: PROPOSAL_STORE_CODE_TEXT.builderPattern,
+                    required: PROPOSAL_STORE_CODE_TEXT.builderRequired,
                   }}
+                  variant="fixed-floating"
+                  control={control}
                   error={
                     builder &&
                     !builder.match(PROPOSAL_STORE_CODE_TEXT.builderPattern)
                       ? PROPOSAL_STORE_CODE_TEXT.builderError
                       : errors.builder?.message
                   }
+                  labelBgColor="background.main"
+                  placeholder={PROPOSAL_STORE_CODE_TEXT.builderPlaceholder}
                 />
 
                 {/* Source  */}
                 <ControllerInput
-                  name="source"
-                  control={control}
-                  placeholder={PROPOSAL_STORE_CODE_TEXT.sourcePlaceholder}
-                  label={PROPOSAL_STORE_CODE_TEXT.sourceLabel}
-                  labelBgColor="background.main"
-                  variant="fixed-floating"
                   helperText={PROPOSAL_STORE_CODE_TEXT.sourceHelperText}
+                  label={PROPOSAL_STORE_CODE_TEXT.sourceLabel}
+                  name="source"
                   rules={{
-                    required: PROPOSAL_STORE_CODE_TEXT.sourceRequired,
                     pattern: PROPOSAL_STORE_CODE_TEXT.sourcePattern,
+                    required: PROPOSAL_STORE_CODE_TEXT.sourceRequired,
                   }}
+                  variant="fixed-floating"
+                  control={control}
                   error={
                     // Source should be absolute url or absolute path
                     source &&
@@ -507,19 +505,21 @@ const StoreCodeProposal = () => {
                       ? PROPOSAL_STORE_CODE_TEXT.sourceHelperText
                       : errors.source?.message
                   }
+                  labelBgColor="background.main"
+                  placeholder={PROPOSAL_STORE_CODE_TEXT.sourcePlaceholder}
                 />
                 {/* Instantiate permission  */}
-                <Flex direction="column" pt={12}>
-                  <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+                <Flex pt={12} direction="column">
+                  <Heading as="h6" my={2} variant="h6" fontWeight={600}>
                     {PROPOSAL_STORE_CODE_TEXT.permissionTitle}
                   </Heading>
-                  <Text color="text.dark" variant="body2" mb={4}>
+                  <Text mb={4} variant="body2" color="text.dark">
                     {PROPOSAL_STORE_CODE_TEXT.permissionDescription}
                   </Text>
                   <InstantiatePermissionRadio
-                    control={uploadSectionControl}
                     setValue={uploadSectionSetValue}
                     trigger={uploadSectionTrigger}
+                    control={uploadSectionControl}
                   />
                 </Flex>
                 {/* Deposit  */}
@@ -527,21 +527,20 @@ const StoreCodeProposal = () => {
                 <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
                   <AssetBox baseDenom={initialDeposit.denom} />
                   <ControllerInput
-                    name="initialDeposit.amount"
-                    control={control}
                     label="Amount"
-                    placeholder="0.00"
-                    variant="fixed-floating"
+                    name="initialDeposit.amount"
                     type="decimal"
+                    variant="fixed-floating"
+                    control={control}
                     helperAction={
                       <Text
-                        textAlign="right"
-                        mr={3}
-                        fontWeight="600"
-                        cursor="pointer"
-                        variant="body3"
                         minW={16}
+                        mr={3}
+                        textAlign="right"
+                        variant="body3"
                         color="primary.main"
+                        cursor="pointer"
+                        fontWeight="600"
                         onClick={() => {
                           if (!minDeposit) return;
                           trackUseDepositFill(minDeposit.formattedAmount);
@@ -554,11 +553,12 @@ const StoreCodeProposal = () => {
                         Fill {minDeposit?.formattedToken}
                       </Text>
                     }
+                    placeholder="0.00"
                   />
                 </Grid>
 
                 {/* Alert  */}
-                <Alert variant={variant} gap="2" w="inherit">
+                <Alert gap="2" variant={variant} w="inherit">
                   {icon}
                   <AlertDescription>{description}</AlertDescription>
                 </Alert>
@@ -566,23 +566,23 @@ const StoreCodeProposal = () => {
                   {/* Transaction fee  */}
                   {(simulateStatus.status !== "default" || isSimulating) && (
                     <SimulateMessageRender
+                      isSuccess={simulateStatus.status === "succeeded"}
+                      mb={2}
                       value={
                         isSimulating
                           ? "Checking Wasm file and proposal conditions validity"
                           : simulateStatus.message
                       }
                       isLoading={isSimulating}
-                      mb={2}
-                      isSuccess={simulateStatus.status === "succeeded"}
                     />
                   )}
                   <Flex
-                    fontSize="14px"
-                    color="text.dark"
-                    alignSelf="flex-start"
                     alignItems="center"
+                    alignSelf="flex-start"
                     display="flex"
                     gap={1}
+                    color="text.dark"
+                    fontSize="14px"
                   >
                     Transaction Fee:{" "}
                     <EstimatedFeeRender
@@ -598,14 +598,14 @@ const StoreCodeProposal = () => {
           {/* Sticky Sidebar  */}
           <GridItem area="sidebar">
             <StickySidebar
-              hasForumAlert
-              marginTop="128px"
               metadata={SIDEBAR_STORE_CODE_DETAILS(
                 prettyName,
                 uploadAccessParams?.isPermissionedNetwork
                   ? "permissioned"
                   : "permissionless"
               )}
+              hasForumAlert
+              marginTop="128px"
             />
           </GridItem>
         </Grid>
@@ -613,8 +613,8 @@ const StoreCodeProposal = () => {
 
       <Footer
         isDisabled={isSimulating || !estimatedFee || !enabledTx}
-        onSubmit={proceed}
         isLoading={processing}
+        onSubmit={proceed}
       />
     </>
   );

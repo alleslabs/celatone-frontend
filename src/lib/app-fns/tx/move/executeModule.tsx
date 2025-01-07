@@ -16,36 +16,43 @@ import { feeFromStr, findAttr } from "lib/utils";
 
 interface ExecuteModuleTxParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   fee: StdFee;
-  signAndBroadcast: SignAndBroadcast;
-  onTxSucceed?: () => void;
+  messages: EncodeObject[];
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const executeModuleTx = ({
   address,
-  messages,
   fee,
-  signAndBroadcast,
-  onTxSucceed,
+  messages,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcast,
 }: ExecuteModuleTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
       const txFee = findAttr(txInfo.events, "tx", "fee");
       return {
-        value: null,
         phase: TxStreamPhase.SUCCEED,
+        receiptInfo: {
+          header: "Transaction Complete!",
+          headerIcon: (
+            <CustomIcon
+              name="check-circle-solid"
+              boxSize={5}
+              color="success.main"
+            />
+          ),
+        },
         receipts: [
           {
-            title: "Tx Hash",
-            value: txInfo.transactionHash,
             html: (
               <ExplorerLink
                 type="tx_hash"
@@ -53,27 +60,20 @@ export const executeModuleTx = ({
                 openNewTab
               />
             ),
+            title: "Tx Hash",
+            value: txInfo.transactionHash,
           },
           {
-            title: "Tx Fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
+            title: "Tx Fee",
           },
         ],
-        receiptInfo: {
-          header: "Transaction Complete!",
-          headerIcon: (
-            <CustomIcon
-              name="check-circle-solid"
-              color="success.main"
-              boxSize={5}
-            />
-          ),
-        },
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

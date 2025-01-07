@@ -13,17 +13,17 @@ import { dateFromNow, formatUTC, resolveMoveVerifyStatus } from "lib/utils";
 import { ModulePathLink } from "./ModulePathLink";
 
 interface ModulesTableRowProps {
-  moduleInfo: ModuleInfo;
-  templateColumns: string;
   isPublishedModules: boolean;
+  moduleInfo: ModuleInfo;
   moveVerifyInfo: Option<MoveVerifyInfoResponse>;
+  templateColumns: string;
 }
 
 export const ModulesTableRow = ({
-  moduleInfo,
-  templateColumns,
   isPublishedModules,
+  moduleInfo,
   moveVerifyInfo,
+  templateColumns,
 }: ModulesTableRowProps) => {
   const navigate = useInternalNavigate();
   const formatAddresses = useFormatAddresses();
@@ -35,13 +35,11 @@ export const ModulesTableRow = ({
   );
 
   return (
-    <Box w="full" minW="min-content">
+    <Box minW="min-content" w="full">
       <Grid
         className="copier-wrapper"
-        templateColumns={templateColumns}
-        cursor="pointer"
         _hover={{ background: "gray.900" }}
-        transition="all 0.25s ease-in-out"
+        cursor="pointer"
         onClick={() =>
           navigate({
             pathname: "/modules/[address]/[moduleName]",
@@ -51,6 +49,8 @@ export const ModulesTableRow = ({
             },
           })
         }
+        templateColumns={templateColumns}
+        transition="all 0.25s ease-in-out"
       >
         <TableRow>
           <ModulePathLink
@@ -65,21 +65,21 @@ export const ModulesTableRow = ({
               <Text>{moduleInfo.moduleName}</Text>
             </TableRow>
             <TableRow>
-              <Flex gap={1} justifyContent="center" w="full">
+              <Flex gap={1} w="full" justifyContent="center">
                 <CountBadge
-                  count={moduleInfo.viewFunctions?.length}
                   variant="view"
+                  count={moduleInfo.viewFunctions?.length}
                 />
                 <CountBadge
-                  count={moduleInfo.executeFunctions?.length}
                   variant="execute"
+                  count={moduleInfo.executeFunctions?.length}
                 />
               </Flex>
             </TableRow>
           </>
         )}
         <TableRow>
-          <ExplorerLink value={creator} type="user_address" showCopyOnHover />
+          <ExplorerLink type="user_address" value={creator} showCopyOnHover />
         </TableRow>
         {!isPublishedModules && (
           <>
@@ -91,7 +91,7 @@ export const ModulesTableRow = ({
               </Tag>
             </TableRow>
             <TableRow>
-              <Flex direction="column" gap={1}>
+              <Flex gap={1} direction="column">
                 {moduleInfo.latestUpdated ? (
                   <>
                     <Text variant="body3">
@@ -111,8 +111,8 @@ export const ModulesTableRow = ({
         <TableRow>
           <Flex gap="8px" w="full" justifyContent="end">
             <Button
-              variant="outline-white"
               size="sm"
+              variant="outline-white"
               onClick={(e) => {
                 track(AmpEvent.USE_MODULE_TABLE_CTA, { label: "view" });
                 e.stopPropagation();
@@ -120,8 +120,8 @@ export const ModulesTableRow = ({
                   pathname: "/interact",
                   query: {
                     address: moduleInfo.address,
-                    moduleName: moduleInfo.moduleName,
                     functionType: "view",
+                    moduleName: moduleInfo.moduleName,
                   },
                 });
               }}
@@ -129,8 +129,8 @@ export const ModulesTableRow = ({
               View
             </Button>
             <Button
-              variant="outline-white"
               size="sm"
+              variant="outline-white"
               onClick={(e) => {
                 track(AmpEvent.USE_MODULE_TABLE_CTA, { label: "execute" });
                 e.stopPropagation();
@@ -138,8 +138,8 @@ export const ModulesTableRow = ({
                   pathname: "/interact",
                   query: {
                     address: moduleInfo.address,
-                    moduleName: moduleInfo.moduleName,
                     functionType: "execute",
+                    moduleName: moduleInfo.moduleName,
                   },
                 });
               }}
@@ -148,8 +148,8 @@ export const ModulesTableRow = ({
             </Button>
             {isPublishedModules && (
               <Button
-                variant="outline-white"
                 size="sm"
+                variant="outline-white"
                 onClick={(e) => {
                   track(AmpEvent.USE_MODULE_TABLE_CTA, { label: "republish" });
                   e.stopPropagation();

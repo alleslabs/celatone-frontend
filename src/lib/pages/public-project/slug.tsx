@@ -37,24 +37,24 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
   const move = useMoveConfig({ shouldRedirect: false });
 
   const {
+    isLoading,
+    projectDetail,
+    publicAccounts,
     publicCodes,
     publicContracts,
-    publicAccounts,
     publicModules,
-    projectDetail,
-    isLoading,
   } = usePublicData(slug);
 
   const handleTabChange = (nextTab: TabIndex) => () => {
     if (nextTab === tab) return;
     navigate({
+      options: {
+        shallow: true,
+      },
       pathname: "/projects/[slug]/[tab]",
       query: {
         slug,
         tab: nextTab,
-      },
-      options: {
-        shallow: true,
       },
     });
   };
@@ -67,15 +67,15 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
 
       if (!tab || !Object.values(TabIndex).includes(tab)) {
         navigate({
-          replace: true,
+          options: {
+            shallow: true,
+          },
           pathname: "/projects/[slug]/[tab]",
           query: {
             slug,
             tab: TabIndex.Overview,
           },
-          options: {
-            shallow: true,
-          },
+          replace: true,
         });
       }
     }
@@ -117,33 +117,33 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
             Overview
           </CustomTab>
           <CustomTab
-            count={publicCodes.length}
-            isDisabled={!publicCodes.length}
-            onClick={handleTabChange(TabIndex.Codes)}
             hidden={!wasm.enabled}
+            isDisabled={!publicCodes.length}
+            count={publicCodes.length}
+            onClick={handleTabChange(TabIndex.Codes)}
           >
             Codes
           </CustomTab>
           <CustomTab
-            count={publicContracts.length}
-            isDisabled={!publicContracts.length}
-            onClick={handleTabChange(TabIndex.Contracts)}
             hidden={!wasm.enabled}
+            isDisabled={!publicContracts.length}
+            count={publicContracts.length}
+            onClick={handleTabChange(TabIndex.Contracts)}
           >
             Contracts
           </CustomTab>
           <CustomTab
-            count={publicAccounts.length}
             isDisabled={!publicAccounts.length}
+            count={publicAccounts.length}
             onClick={handleTabChange(TabIndex.Accounts)}
           >
             Accounts
           </CustomTab>
           <CustomTab
-            count={publicModules.length}
-            isDisabled={!publicModules.length}
-            onClick={handleTabChange(TabIndex.Modules)}
             hidden={!move.enabled}
+            isDisabled={!publicModules.length}
+            count={publicModules.length}
+            onClick={handleTabChange(TabIndex.Modules)}
           >
             Modules
           </CustomTab>

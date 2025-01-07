@@ -12,10 +12,10 @@ interface StatusTimeProps {
 
 const getResolvedPrefix = (status: ProposalStatus) => {
   switch (status) {
-    case ProposalStatus.DEPOSIT_FAILED:
-      return "Failed";
     case ProposalStatus.CANCELLED:
       return "Cancelled";
+    case ProposalStatus.DEPOSIT_FAILED:
+      return "Failed";
     default:
       return "Voting ended";
   }

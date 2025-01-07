@@ -8,7 +8,7 @@ export const MutateEventsTableHeader = ({
 }: {
   templateColumns: GridProps["templateColumns"];
 }) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Field Name</TableHeader>
     <TableHeader>Old Value</TableHeader>
     <TableHeader />

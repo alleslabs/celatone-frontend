@@ -22,7 +22,7 @@ import {
 import { zMyModuleVerificationDetailsQueryParams } from "./types";
 
 const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
-  const { data, isLoading, error } = useMoveVerifyTaskInfo(taskId, !!taskId);
+  const { data, error, isLoading } = useMoveVerifyTaskInfo(taskId, !!taskId);
   const { getMoveVerifyTask } = useMoveVerifyTaskStore();
   const verifyModuleTask = getMoveVerifyTask(taskId);
   useInitiaL1({ shouldRedirect: true });
@@ -31,8 +31,8 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
   if (!data || error)
     return (
       <EmptyState
-        imageVariant="not-found"
         heading="Task ID Not Found"
+        imageVariant="not-found"
         message="Please double-check your input and make sure you have selected the correct network."
         withBorder
       />
@@ -41,10 +41,10 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
   if (data.task.status === MoveVerifyTaskStatus.NotFound && !verifyModuleTask)
     return (
       <EmptyState
-        imageVariant="not-found"
         heading="Verification Details is Unavailable"
-        withBorder
+        imageVariant="not-found"
         message=""
+        withBorder
       >
         <Box>
           <Text color="text.dark">
@@ -106,8 +106,8 @@ export const MyModuleVerificationDetails = observer(() => {
       <CelatoneSeo pageName="My Module Verification Details" />
       {!validated.success ? (
         <EmptyState
-          imageVariant="not-found"
           heading="Task ID Not Found"
+          imageVariant="not-found"
           message="Please double-check your input and make sure you have selected the correct network."
           withBorder
         />

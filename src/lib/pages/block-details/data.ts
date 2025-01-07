@@ -25,9 +25,9 @@ export const useBlockDataWithValidatorLcd = (
 
     return found
       ? {
-          validatorAddress: found.validatorAddress,
-          moniker: found.moniker,
           identity: found.identity,
+          moniker: found.moniker,
+          validatorAddress: found.validatorAddress,
         }
       : null;
   }, [blockData, validators]);

@@ -16,14 +16,14 @@ import type {
 // ------------------------------------------//
 
 const getResponseSchema = (responseSchema: JsonSchema): SchemaInfo => {
-  const { title, description, ...resSchema } = responseSchema;
+  const { description, title, ...resSchema } = responseSchema;
   return {
-    title,
     description,
     schema: {
       ...resSchema,
       readOnly: true,
     },
+    title,
   };
 };
 
@@ -45,20 +45,20 @@ export const getQuerySchema = (
   return querySchema.oneOf?.reduce<Array<[SchemaInfo, SchemaInfo]>>(
     (acc, msg) => {
       const eachQuerySchema = msg as JsonSchema;
-      const { type, enum: enumOptions, required } = eachQuerySchema;
+      const { enum: enumOptions, required, type } = eachQuerySchema;
       if (type === "string" && enumOptions) {
         return [
           ...acc,
           ...enumOptions.map<[SchemaInfo, SchemaInfo]>((enumOption) => [
             {
-              title: enumOption as string,
               description: eachQuerySchema.description,
+              inputRequired: false,
               schema: {
                 $schema: querySchema.$schema,
-                type,
                 enum: [enumOption],
+                type,
               },
-              inputRequired: false,
+              title: enumOption as string,
             },
             getResponseSchema(responsesSchema[enumOption as string]),
           ]),
@@ -76,14 +76,14 @@ export const getQuerySchema = (
           ...acc,
           [
             {
-              title,
               description,
+              inputRequired: !noInputRequired,
               schema: {
                 ...msgSchema,
                 $schema: querySchema.$schema,
                 definitions: querySchema.definitions,
               },
-              inputRequired: !noInputRequired,
+              title,
             },
             getResponseSchema(responsesSchema[required[0]]),
           ],
@@ -105,33 +105,33 @@ export const getExecuteSchema = (
 
   return executeSchema.oneOf?.reduce<Array<SchemaInfo>>((acc, msg) => {
     const eachExecuteSchema = msg as JsonSchema;
-    const { type, required, enum: enumOptions } = eachExecuteSchema;
+    const { enum: enumOptions, required, type } = eachExecuteSchema;
     const { description, ...msgSchema } = eachExecuteSchema;
 
     if (type === "string" && enumOptions) {
       return [
         ...acc,
         ...enumOptions.map<SchemaInfo>((enumOption) => ({
-          title: enumOption as string,
           description: eachExecuteSchema.description,
           schema: {
             $schema: eachExecuteSchema.$schema,
-            type,
             enum: [enumOption],
+            type,
           },
+          title: enumOption as string,
         })),
       ];
     }
     return [
       ...acc,
       {
-        title: required?.[0],
         description,
         schema: {
           ...msgSchema,
           $schema: executeSchema.$schema,
           definitions: executeSchema.definitions,
         },
+        title: required?.[0],
       },
     ];
   }, []);

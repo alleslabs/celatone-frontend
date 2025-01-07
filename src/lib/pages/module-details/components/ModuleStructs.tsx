@@ -27,32 +27,26 @@ export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
     setExpandedIndexes(indexes);
 
   return (
-    <Flex direction="column" gap={4}>
+    <Flex gap={4} direction="column">
       <Flex
-        maxH={{ md: "24px" }}
-        justifyContent="space-between"
         alignItems={{ base: "flex-start", md: "center" }}
-        direction={{ base: "column", md: "row" }}
         gap={{ base: 4, md: 0 }}
+        maxH={{ md: "24px" }}
+        direction={{ base: "column", md: "row" }}
+        justifyContent="space-between"
       >
         <Heading as="h6" variant="h6" fontWeight={600}>
           Structs
         </Heading>
         <Flex
-          gap={{ base: 2, md: 4 }}
           alignItems="center"
+          gap={{ base: 2, md: 4 }}
           w={{ base: "full", md: "auto" }}
         >
           <Button
+            size="sm"
             variant="outline-primary"
             w="full"
-            size="sm"
-            rightIcon={
-              <CustomIcon
-                name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
-                boxSize={3}
-              />
-            }
             onClick={() => {
               trackUseExpandAll(
                 expandedIndexes.length ? "collapse" : "expand",
@@ -62,14 +56,19 @@ export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
                 !prev.length ? Array.from(Array(structs.length).keys()) : []
               );
             }}
+            rightIcon={
+              <CustomIcon
+                name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+                boxSize={3}
+              />
+            }
           >
             {expandedIndexes.length ? "Collapse All" : "Expand All"}
           </Button>
           <Button
+            size="sm"
             variant="outline-primary"
             w="full"
-            size="sm"
-            rightIcon={<CustomIcon name="launch" />}
             onClick={() => {
               trackUseViewJSON("Module Struct");
               const jsonString = JSON.stringify(structs, null, 2);
@@ -90,35 +89,36 @@ export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
                 );
               }
             }}
+            rightIcon={<CustomIcon name="launch" />}
           >
             View in JSON
           </Button>
         </Flex>
       </Flex>
       <InputWithIcon
-        placeholder="Search with Struct Name"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}
+        value={keyword}
         amptrackSection="module-struct-search"
+        onChange={(e) => setKeyword(e.target.value)}
+        placeholder="Search with Struct Name"
       />
       <Accordion
+        index={expandedIndexes}
         mt={4}
         allowMultiple
-        index={expandedIndexes}
         onChange={updateExpandedIndexes}
       >
         {filteredStructs.length ? (
-          <Flex direction="column" gap={4}>
+          <Flex gap={4} direction="column">
             {filteredStructs.map((item) => (
-              <StructCard struct={item} key={item.name} />
+              <StructCard key={item.name} struct={item} />
             ))}
           </Flex>
         ) : (
           <EmptyState
-            my={0}
             imageVariant="not-found"
             message="No structs match your search keyword."
+            my={0}
             withBorder
           />
         )}

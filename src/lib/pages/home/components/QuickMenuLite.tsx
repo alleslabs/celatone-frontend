@@ -10,12 +10,12 @@ import type { IconKeys } from "lib/components/icon";
 import { USER_GUIDE_DOCS_LINK } from "lib/data";
 
 const baseCardProps: SystemStyleObject = {
-  width: "full",
-  height: "full",
-  padding: "16px",
-  borderRadius: "8px",
-  justifyContent: "space-between",
   alignItems: "center",
+  borderRadius: "8px",
+  height: "full",
+  justifyContent: "space-between",
+  padding: "16px",
+  width: "full",
 };
 
 const cardProps = {
@@ -29,12 +29,12 @@ const highlightCardProps = {
 };
 
 interface ShortcutMetadata {
-  title: string;
-  subtitle: string;
-  slug: string;
   icon: IconKeys;
-  isHighlight: boolean;
   isDocument: boolean;
+  isHighlight: boolean;
+  slug: string;
+  subtitle: string;
+  title: string;
 }
 
 const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
@@ -46,10 +46,10 @@ const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
     >
       <Flex
         gap={3}
-        direction="column"
-        justifyContent="space-between"
         h="full"
         w="full"
+        direction="column"
+        justifyContent="space-between"
       >
         <CustomIcon
           name={item.icon ?? "add-new"}
@@ -61,7 +61,7 @@ const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
             <Heading as="h6" variant="h6">
               {item.title}
             </Heading>
-            <Text textDecoration="none" variant="body2">
+            <Text variant="body2" textDecoration="none">
               {item.subtitle}
             </Text>
           </Flex>
@@ -77,11 +77,11 @@ const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
 );
 
 const ContentCard = ({
-  item,
   isDocument,
+  item,
 }: {
-  item: ShortcutMetadata;
   isDocument: boolean;
+  item: ShortcutMetadata;
 }) => (
   <Flex
     sx={cardProps}
@@ -90,20 +90,20 @@ const ContentCard = ({
   >
     <Flex
       gap={6}
-      direction="column"
-      justifyContent="space-between"
       h="full"
       w="full"
+      direction="column"
+      justifyContent="space-between"
     >
       <CustomIcon
         name={item.icon}
         boxSize={{ base: 5, md: 6 }}
         color="gray.600"
       />
-      <Flex justifyContent="space-between" alignItems="flex-end">
+      <Flex alignItems="flex-end" justifyContent="space-between">
         <Flex direction="column">
           <Heading variant="h6">{item.title}</Heading>
-          <Text textDecoration="none" variant="body2" color="text.dark">
+          <Text variant="body2" color="text.dark" textDecoration="none">
             {item.subtitle}
           </Text>
         </Flex>
@@ -127,80 +127,80 @@ export const QuickMenuLite = () => {
     if (wasm.enabled)
       base.push(
         {
-          title: "Deploy a new contract",
-          subtitle: "Upload a new wasm code or instantiate a new contract",
-          slug: "deploy",
           icon: "instantiate" as const,
+          isDocument: false,
           isHighlight: true,
-          isDocument: false,
+          slug: "deploy",
+          subtitle: "Upload a new wasm code or instantiate a new contract",
+          title: "Deploy a new contract",
         },
         {
-          title: "Query",
-          subtitle: "Query and get contract state data",
-          slug: "interact-contract",
           icon: "query" as const,
-          isHighlight: false,
           isDocument: false,
+          isHighlight: false,
+          slug: "interact-contract",
+          subtitle: "Query and get contract state data",
+          title: "Query",
         },
         {
-          title: "Execute",
-          subtitle: "Send transactions to contracts",
-          slug: "interact-contract?selectedType=execute",
           icon: "execute" as const,
-          isHighlight: false,
           isDocument: false,
+          isHighlight: false,
+          slug: "interact-contract?selectedType=execute",
+          subtitle: "Send transactions to contracts",
+          title: "Execute",
         },
         {
-          title: "Migrate",
-          subtitle: "Migrate contract to new code ID",
-          slug: "migrate",
           icon: "migrate" as const,
-          isHighlight: false,
           isDocument: false,
+          isHighlight: false,
+          slug: "migrate",
+          subtitle: "Migrate contract to new code ID",
+          title: "Migrate",
         },
         {
-          title: "User Guide",
-          subtitle: "View Celatone documents",
-          slug: "wasm-user-guide",
           icon: "document" as const,
-          isHighlight: false,
           isDocument: true,
+          isHighlight: false,
+          slug: "wasm-user-guide",
+          subtitle: "View Celatone documents",
+          title: "User Guide",
         }
       );
 
     if (move.enabled)
       base.push(
         {
-          title: "Publish / Republish",
-          subtitle: "Upload .mv files to publish new module",
-          slug: "publish-module",
           icon: "add-new" as const,
+          isDocument: false,
           isHighlight: true,
-          isDocument: false,
+          slug: "publish-module",
+          subtitle: "Upload .mv files to publish new module",
+          title: "Publish / Republish",
         },
         {
-          title: "View / Execute",
-          subtitle: "Interact with module's functions",
-          slug: "interact",
           icon: "execute" as const,
-          isHighlight: false,
           isDocument: false,
+          isHighlight: false,
+          slug: "interact",
+          subtitle: "Interact with module's functions",
+          title: "View / Execute",
         },
         {
-          title: "Deploy Script",
-          subtitle: "Deploy one-time use Script",
-          slug: "deploy-script",
           icon: "code" as const,
-          isHighlight: false,
           isDocument: false,
+          isHighlight: false,
+          slug: "deploy-script",
+          subtitle: "Deploy one-time use Script",
+          title: "Deploy Script",
         },
         {
-          title: "User Guide",
-          subtitle: "View Celatone documents",
           icon: "document" as const,
-          slug: "move-user-guide",
-          isHighlight: false,
           isDocument: true,
+          isHighlight: false,
+          slug: "move-user-guide",
+          subtitle: "View Celatone documents",
+          title: "User Guide",
         }
       );
 
@@ -208,30 +208,30 @@ export const QuickMenuLite = () => {
   }, [wasm.enabled, move.enabled]);
 
   return (
-    <Grid templateColumns="1fr 2fr" gap={4}>
+    <Grid gap={4} templateColumns="1fr 2fr">
       <HighlightCard
         item={quickMenu.find((x) => x.isHighlight) ?? quickMenu[0]}
       />
-      <Grid templateRows="repeat(2, 1fr)" templateColumns="1fr 1fr" gap={4}>
+      <Grid gap={4} templateColumns="1fr 1fr" templateRows="repeat(2, 1fr)">
         {quickMenu
           .filter((item) => !item.isHighlight)
           .map((item, index) => (
             <Flex
               key={item.slug}
-              width={move.enabled && index === 0 ? "100%" : "auto"}
               gridColumn={move.enabled && index === 0 ? "1 / -1" : "auto"}
+              width={move.enabled && index === 0 ? "100%" : "auto"}
               direction="column"
             >
               {item.isDocument ? (
                 <Link
-                  href={USER_GUIDE_DOCS_LINK}
                   style={{ height: "100%" }}
                   target="_blank"
+                  href={USER_GUIDE_DOCS_LINK}
                 >
                   <ContentCard item={item} isDocument={item.isDocument} />
                 </Link>
               ) : (
-                <AppLink href={`/${item.slug}`} style={{ height: "100%" }}>
+                <AppLink style={{ height: "100%" }} href={`/${item.slug}`}>
                   <ContentCard item={item} isDocument={item.isDocument} />
                 </AppLink>
               )}

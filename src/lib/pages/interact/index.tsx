@@ -35,34 +35,34 @@ import type { InteractQueryParams } from "./types";
 import { ModuleInteractionMobileStep, zInteractQueryParams } from "./types";
 
 const FunctionSection = ({
+  handleDrawerOpen,
+  isZeroState,
   selectedFn,
   setSelectedFn,
-  isZeroState,
-  handleDrawerOpen,
 }: {
+  handleDrawerOpen?: (step: ModuleInteractionMobileStep) => void;
+  isZeroState?: boolean;
   selectedFn?: ExposedFunction;
   setSelectedFn?: Dispatch<SetStateAction<ExposedFunction | undefined>>;
-  isZeroState?: boolean;
-  handleDrawerOpen?: (step: ModuleInteractionMobileStep) => void;
 }) => (
   <Flex
+    gap={4}
+    mt={2}
+    pt={4}
     borderTop="1px solid"
     borderTopColor="gray.700"
-    pt={4}
-    mt={2}
     direction="column"
-    gap={4}
   >
-    <Flex direction="column" gap={2}>
-      <Flex gap={2} alignItems="center">
+    <Flex gap={2} direction="column">
+      <Flex alignItems="center" gap={2}>
         <Text as="h6" variant="h6" fontWeight={600}>
           Selected Function
         </Text>
         <Button
+          px={1}
           size="sm"
           variant={isZeroState ? "ghost-gray" : "ghost-primary"}
           leftIcon={<CustomIcon name="swap" boxSize={3} />}
-          px={1}
           onClick={() =>
             handleDrawerOpen?.(ModuleInteractionMobileStep.SelectFunction)
           }
@@ -72,9 +72,9 @@ const FunctionSection = ({
       </Flex>
       {selectedFn && setSelectedFn && (
         <FunctionCard
+          isReadOnly
           variant="readonly"
           exposedFn={selectedFn}
-          isReadOnly
           onFunctionSelect={() => {
             setSelectedFn(selectedFn);
           }}
@@ -85,12 +85,12 @@ const FunctionSection = ({
       <SelectedFunctionCard fn={selectedFn} />
     ) : (
       <Flex
+        alignItems="center"
+        bg="background.main"
         p={4}
         borderRadius={8}
-        alignItems="center"
-        justifyContent="center"
-        bg="background.main"
         color="text.dark"
+        justifyContent="center"
       >
         Please select module first
       </Flex>
@@ -99,18 +99,18 @@ const FunctionSection = ({
 );
 
 const ZeroState = ({
-  onOpen,
   isMobile,
+  onOpen,
 }: {
-  onOpen: () => void;
   isMobile: boolean;
+  onOpen: () => void;
 }) => (
   <Flex
-    direction={{ base: "column", md: "row" }}
     alignItems={{ md: "center" }}
-    justifyContent={{ md: "space-between" }}
-    w="full"
     gap={4}
+    w="full"
+    direction={{ base: "column", md: "row" }}
+    justifyContent={{ md: "space-between" }}
   >
     <p>Select a module to interact with ...</p>
     <ModuleSelectDrawerTrigger triggerVariant="select-module" onOpen={onOpen} />
@@ -120,9 +120,9 @@ const ZeroState = ({
 
 const InteractBody = ({
   address,
-  moduleName,
   functionName,
   functionType,
+  moduleName,
 }: InteractQueryParams) => {
   const router = useRouter();
   const isMobile = useMobile();
@@ -158,13 +158,13 @@ const InteractBody = ({
       handleSetSelectedType(fn?.is_view ?? true ? "view" : "execute");
 
       navigate({
+        options: { shallow: true },
         pathname: "/interact",
         query: {
           address: selectedModuleInput.address,
           moduleName: selectedModuleInput.moduleName,
           ...(fn && { functionName: fn.name }),
         },
-        options: { shallow: true },
       });
     },
     [navigate]
@@ -174,12 +174,12 @@ const InteractBody = ({
     (fn: ExposedFunction) => {
       setSelectedFn(fn);
       navigate({
+        options: { shallow: true },
         pathname: "/interact",
         query: {
           ...router.query,
           functionName: fn.name,
         },
-        options: { shallow: true },
       });
     },
     [navigate, router.query]
@@ -194,9 +194,7 @@ const InteractBody = ({
     address: address as Addr,
     moduleName,
     options: {
-      refetchOnWindowFocus: false,
       enabled: false,
-      retry: false,
       onSuccess: (data) => {
         setModule(data);
         if (functionName) {
@@ -211,6 +209,8 @@ const InteractBody = ({
           handleSetSelectedType(functionType);
         }
       },
+      refetchOnWindowFocus: false,
+      retry: false,
     },
   });
 
@@ -260,40 +260,40 @@ const InteractBody = ({
       />
       <Flex
         alignItems="center"
-        justifyContent="space-between"
-        bgColor="gray.900"
-        p={4}
-        borderRadius={4}
         mb={8}
+        p={4}
+        bgColor="gray.900"
+        borderRadius={4}
+        justifyContent="space-between"
       >
         {module ? (
           <Flex
-            direction={{ base: "column", md: "row" }}
             alignItems={{ md: "center" }}
-            justifyContent={{ md: "space-between" }}
-            w="full"
             gap={{ base: 4, md: 0 }}
+            w="full"
+            direction={{ base: "column", md: "row" }}
+            justifyContent={{ md: "space-between" }}
           >
-            <Flex direction="column" gap={4}>
+            <Flex gap={4} direction="column">
               <LabelText
                 label="Module Path"
                 labelWeight={600}
                 labelColor="text.main"
               >
-                <Flex align="center" gap={1} display="inline">
+                <Flex align="center" display="inline" gap={1}>
                   <Text
-                    variant="body1"
                     display="inline-flex"
+                    variant="body1"
                     wordBreak="break-all"
                   >
                     {module.address}
                   </Text>
                   <CustomIcon
                     name="chevron-right"
-                    color="gray.600"
                     boxSize={3}
+                    color="gray.600"
                   />
-                  <Text variant="body1" fontWeight={700} display="inline-flex">
+                  <Text display="inline-flex" variant="body1" fontWeight={700}>
                     {module.moduleName}
                   </Text>
                 </Flex>
@@ -308,7 +308,7 @@ const InteractBody = ({
                 </Text>
               </LabelText>
             </Flex>
-            <Flex direction={{ base: "row", md: "column" }} gap={2}>
+            <Flex gap={2} direction={{ base: "row", md: "column" }}>
               <ModuleSelectDrawerTrigger
                 triggerVariant="change-module"
                 buttonText="Change Module"
@@ -317,11 +317,8 @@ const InteractBody = ({
                 }
               />
               <Button
-                variant="ghost-gray"
                 size={{ base: "sm", md: "md" }}
-                rightIcon={
-                  <CustomIcon name="launch" boxSize={3} color="text.dark" />
-                }
+                variant="ghost-gray"
                 onClick={() => {
                   track(AmpEvent.USE_SEE_MODULE_BUTTON, {
                     isVerify: !!verificationData,
@@ -333,61 +330,64 @@ const InteractBody = ({
                     query: {},
                   });
                 }}
+                rightIcon={
+                  <CustomIcon name="launch" boxSize={3} color="text.dark" />
+                }
               >
                 See Module
               </Button>
             </Flex>
             {isMobile && selectedFn && (
               <FunctionSection
+                handleDrawerOpen={handleDrawerOpen}
                 selectedFn={selectedFn}
                 setSelectedFn={setSelectedFn}
-                handleDrawerOpen={handleDrawerOpen}
               />
             )}
           </Flex>
         ) : (
-          <ZeroState onOpen={onOpen} isMobile={isMobile} />
+          <ZeroState isMobile={isMobile} onOpen={onOpen} />
         )}
         {isMobile ? (
           <ModuleSelectDrawerMobile
-            isOpen={isOpen}
-            onClose={onClose}
             hexAddress={module?.address}
-            handleModuleSelect={handleModuleSelect}
-            step={step}
+            isOpen={isOpen}
             setStep={setStep}
+            step={step}
+            handleModuleSelect={handleModuleSelect}
+            onClose={onClose}
             selectedModule={selectedModule}
             setSelectedModule={setSelectedModule}
           />
         ) : (
           <ModuleSelectDrawer
-            isOpen={isOpen}
-            onClose={onClose}
             hexAddress={module?.address}
+            isOpen={isOpen}
             handleModuleSelect={handleModuleSelect}
+            onClose={onClose}
           />
         )}
       </Flex>
       {isMobile ? (
         <InteractionBodySectionMobile
-          module={module}
           selectedFn={selectedFn}
+          module={module}
           openDrawer={onOpen}
         />
       ) : (
         <InteractionBodySection
-          module={module}
+          selectedFn={selectedFn}
           selectedType={selectedType}
           setSelectedType={setSelectedType}
-          selectedFn={selectedFn}
           handleFunctionSelect={handleFunctionSelect}
+          module={module}
           onOpen={onOpen}
         />
       )}
       <Box pt="32px">
         <ModuleSourceCode
-          verificationData={verificationData}
           moveVerifyStatus={moveVerifyStatus}
+          verificationData={verificationData}
         />
       </Box>
     </>
@@ -405,8 +405,8 @@ export const Interact = () => {
         <InteractBody {...validated.data} />
       ) : (
         <EmptyState
-          imageVariant="not-found"
           heading="Invalid Address or Name Format"
+          imageVariant="not-found"
           message="Please ensure that you have entered a valid format."
         />
       )}

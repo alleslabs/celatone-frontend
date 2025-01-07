@@ -3,9 +3,9 @@ import { z } from "zod";
 import { zHexAddr20 } from "lib/types";
 
 export enum TabIndex {
-  Overview = "overview",
-  Contract = "contract",
   Assets = "assets",
+  Contract = "contract",
+  Overview = "overview",
   Transactions = "transactions",
 }
 

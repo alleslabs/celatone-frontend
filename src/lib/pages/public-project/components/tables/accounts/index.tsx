@@ -25,7 +25,7 @@ interface PublicProjectAccountTableProps {
 const TEMPLATE_COLUMNS = "160px 320px minmax(250px, 1fr)";
 
 const AccountTableHeader = () => (
-  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
+  <Grid minW="min-content" templateColumns={TEMPLATE_COLUMNS}>
     <TableHeader>Address</TableHeader>
     <TableHeader>Account Name</TableHeader>
     <TableHeader>Description</TableHeader>
@@ -78,16 +78,16 @@ export const PublicProjectAccountTable = ({
   }, [accounts, onViewMore, searchKeyword]);
 
   return (
-    <Box mt={{ base: 8, md: 12 }} mb={4}>
+    <Box mb={4} mt={{ base: 8, md: 12 }}>
       <TableTitle title="Accounts" count={accounts.length} />
       {!onViewMore && (
         <InputWithIcon
-          placeholder="Search with Account Address, Name, or Description"
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
-          size={{ base: "md", md: "lg" }}
           my={2}
+          size={{ base: "md", md: "lg" }}
+          value={searchKeyword}
           amptrackSection="public-project-account-search"
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          placeholder="Search with Account Address, Name, or Description"
         />
       )}
       {filteredAccounts.length ? (
@@ -97,12 +97,12 @@ export const PublicProjectAccountTable = ({
         />
       ) : (
         <EmptyState
+          imageVariant={accounts.length ? "not-found" : "empty"}
           message={
             accounts.length
               ? "No matching accounts found for this project. Make sure you are searching with Account Address or Account Name"
               : "There are currently no accounts related to this project."
           }
-          imageVariant={accounts.length ? "not-found" : "empty"}
           withBorder
         />
       )}

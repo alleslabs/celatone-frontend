@@ -8,8 +8,8 @@ import type { AbiFormData, Nullable } from "lib/types";
 import { ArgFieldTemplate } from "./field";
 
 interface ArgsFormProps {
-  params: string[];
   initialData: AbiFormData["args"];
+  params: string[];
   propsOnChange?: (data: AbiFormData["args"]) => void;
   propsOnErrors?: (errors: [string, string][]) => void;
 }
@@ -23,21 +23,21 @@ const formatErrors = (
   ]);
 
 export const ArgsForm = ({
-  params,
   initialData,
+  params,
   propsOnChange,
   propsOnErrors,
 }: ArgsFormProps) => {
   const {
-    trigger,
-    control,
-    getValues,
     clearErrors,
+    control,
     formState: { errors, isValid },
+    getValues,
+    trigger,
   } = useForm<Record<string, Nullable<string>>>({
     defaultValues: initialData,
-    mode: "all",
     delayError: 500,
+    mode: "all",
   });
 
   useEffect(() => {
@@ -56,19 +56,19 @@ export const ArgsForm = ({
   );
 
   return (
-    <Flex direction="column" gap={4}>
-      <Heading variant="h6" as="h6" color="text.main">
+    <Flex gap={4} direction="column">
+      <Heading as="h6" variant="h6" color="text.main">
         args
       </Heading>
       {!params.length ? (
         <Flex
-          direction="column"
           alignItems="center"
           gap={4}
           p="24px 8px"
           border="1px solid"
           borderColor="gray.700"
           borderRadius="8px"
+          direction="column"
         >
           <Text variant="body2" color="text.dark">
             This function does not require any inputs.

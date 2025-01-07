@@ -7,25 +7,25 @@ import { useCardTheme } from "./hooks/useCardTheme";
 import type { CardTheme, Status } from "./types";
 
 interface UploadFolderCardProps {
-  fileName: string;
   deleteFile: () => void;
-  theme?: CardTheme;
+  fileName: string;
   status?: Status;
+  theme?: CardTheme;
 }
 
 export const UploadFolderCard = ({
-  fileName,
   deleteFile,
-  theme = "primary",
+  fileName,
   status,
+  theme = "primary",
 }: UploadFolderCardProps) => {
-  const { themeConfig, statusColor } = useCardTheme(theme, status);
+  const { statusColor, themeConfig } = useCardTheme(theme, status);
 
   return (
     <Flex
       align="center"
-      p="16px"
       gap="16px"
+      p="16px"
       w="full"
       bgColor={themeConfig.bgColor}
       border={themeConfig.border}
@@ -33,26 +33,26 @@ export const UploadFolderCard = ({
       borderRadius="8px"
       justifyContent="space-between"
     >
-      <Flex gap={5} alignItems="center">
+      <Flex alignItems="center" gap={5}>
         <UploadFolderIcon />
         <Text variant="body1">{fileName}</Text>
       </Flex>
       <Flex align="center" gap={4}>
         <IconButton
-          variant="ghost-gray-icon"
+          aria-label="reattach schema"
           size="sm"
+          variant="ghost-gray-icon"
+          icon={<CustomIcon name="delete" boxSize={4} />}
           onClick={() => {
             track(AmpEvent.USE_REMOVE_UPLOAD_FILE);
             deleteFile();
           }}
-          icon={<CustomIcon name="delete" boxSize={4} />}
-          aria-label="reattach schema"
         />
         {status === "error" && (
           <CustomIcon
             name="alert-triangle-solid"
-            color="error.main"
             boxSize={4}
+            color="error.main"
           />
         )}
       </Flex>

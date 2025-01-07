@@ -40,47 +40,23 @@ export const MigrationMobileCard = ({
   const navigate = useInternalNavigate();
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/codes/[codeId]",
-          query: { codeId: history.codeId.toString() },
-        })
-      }
-      topContent={
-        <Flex w="full">
-          <Flex flex={1} gap={2} align="center">
-            <MobileLabel label="Code ID" variant="body2" />
-            <ExplorerLink
-              type="code_id"
-              value={history.codeId.toString()}
-              rightIcon={
-                <WasmVerifyBadge
-                  status={getWasmVerifyStatus(wasmVerifyInfo)}
-                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-                />
-              }
-              showCopyOnHover
-            />
-          </Flex>
-        </Flex>
-      }
       middleContent={
-        <Flex direction="column" gap={3}>
+        <Flex gap={3} direction="column">
           <Flex direction="column">
-            <MobileLabel variant="body3" label="Code Name" />
+            <MobileLabel label="Code Name" variant="body3" />
             <CodeNameCell
               code={{
                 id: history.codeId,
+                name: history.codeName,
                 // TODO: fix by handle uploader undefined
                 uploader: history.uploader ?? ("" as BechAddr),
-                name: history.codeName,
               }}
             />
           </Flex>
           {isFullTier && (
             <>
               <Flex direction="column">
-                <MobileLabel variant="body3" label="CW2 Info" />
+                <MobileLabel label="CW2 Info" variant="body3" />
                 <Text
                   variant="body2"
                   color={cw2Info ? "text.main" : "text.disabled"}
@@ -90,7 +66,7 @@ export const MigrationMobileCard = ({
                 </Text>
               </Flex>
               <Flex direction="column">
-                <MobileLabel variant="body3" label="Remark" />
+                <MobileLabel label="Remark" variant="body3" />
                 {history.remark ? <RemarkRender {...history.remark} /> : "N/A"}
               </Flex>
             </>
@@ -98,7 +74,7 @@ export const MigrationMobileCard = ({
         </Flex>
       }
       bottomContent={
-        <Flex w="full" direction="column" gap={3}>
+        <Flex gap={3} w="full" direction="column">
           <Flex>
             {isFullTier && (
               <Flex flex={1} direction="column">
@@ -107,8 +83,8 @@ export const MigrationMobileCard = ({
                   <ExplorerLink
                     type={getAddressType(history.sender)}
                     value={history.sender}
-                    textFormat="truncate"
                     showCopyOnHover
+                    textFormat="truncate"
                   />
                 ) : (
                   "N/A"
@@ -119,8 +95,8 @@ export const MigrationMobileCard = ({
               <MobileLabel label="Block Height" />
               {history.height ? (
                 <ExplorerLink
-                  value={history.height.toString()}
                   type="block_height"
+                  value={history.height.toString()}
                   showCopyOnHover
                 />
               ) : (
@@ -136,6 +112,30 @@ export const MigrationMobileCard = ({
               </Text>
             </Flex>
           )}
+        </Flex>
+      }
+      onClick={() =>
+        navigate({
+          pathname: "/codes/[codeId]",
+          query: { codeId: history.codeId.toString() },
+        })
+      }
+      topContent={
+        <Flex w="full">
+          <Flex align="center" flex={1} gap={2}>
+            <MobileLabel label="Code ID" variant="body2" />
+            <ExplorerLink
+              type="code_id"
+              value={history.codeId.toString()}
+              rightIcon={
+                <WasmVerifyBadge
+                  status={getWasmVerifyStatus(wasmVerifyInfo)}
+                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                />
+              }
+              showCopyOnHover
+            />
+          </Flex>
         </Flex>
       }
     />

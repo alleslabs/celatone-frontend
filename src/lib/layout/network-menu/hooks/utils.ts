@@ -28,12 +28,12 @@ export const getNextCursor = (
   lastIndex: number
 ) => {
   switch (key) {
-    case "ArrowUp":
-      if (current === undefined) return lastIndex;
-      return current <= 0 ? lastIndex : current - 1;
     case "ArrowDown":
       if (current === undefined) return 0;
       return current >= lastIndex ? 0 : current + 1;
+    case "ArrowUp":
+      if (current === undefined) return lastIndex;
+      return current <= 0 ? lastIndex : current - 1;
     default:
       return undefined;
   }

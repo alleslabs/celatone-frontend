@@ -9,11 +9,11 @@ interface DelegationRelatedTxsTableHeaderProps {
 export const DelegationRelatedTxsTableHeader = ({
   templateColumns,
 }: DelegationRelatedTxsTableHeaderProps) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Transaction Hash</TableHeader>
     <TableHeader>Sender</TableHeader>
     <TableHeader>Action</TableHeader>
-    <TableHeader w="100%" textAlign="end">
+    <TableHeader textAlign="end" w="100%">
       Bonded Token Changes
     </TableHeader>
     <TableHeader>Timestamp</TableHeader>

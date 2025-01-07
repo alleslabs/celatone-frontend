@@ -7,20 +7,20 @@ import type { CodeSchema, Option } from "lib/types";
 
 interface UploadSchemaContentInterface {
   attached: boolean;
-  localSchema: Option<CodeSchema>;
-  codeId: number;
   codeHash: string;
+  codeId: number;
+  localSchema: Option<CodeSchema>;
   triggerElement?: ReactNode;
 }
 
 export const UploadSchema = ({
   attached,
-  localSchema,
-  codeId,
   codeHash,
+  codeId,
+  localSchema,
   triggerElement,
 }: UploadSchemaContentInterface) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <>
       {triggerElement ? (
@@ -36,17 +36,17 @@ export const UploadSchema = ({
       ) : (
         <AttachSchemaCard
           attached={attached}
-          codeId={codeId}
           codeHash={codeHash}
+          codeId={codeId}
           localSchema={localSchema}
           openModal={onOpen}
         />
       )}
       <JsonSchemaModal
-        codeId={codeId}
-        codeHash={codeHash}
-        isReattach={attached}
         isOpen={isOpen}
+        isReattach={attached}
+        codeHash={codeHash}
+        codeId={codeId}
         onClose={onClose}
       />
     </>

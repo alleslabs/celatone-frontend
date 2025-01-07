@@ -14,25 +14,25 @@ import { getResponseMsg } from "./FormStatus";
 
 // TODO: remove
 export interface TextareaProps extends FormControlProps {
-  value: string;
-  setInputState: Dispatch<SetStateAction<string>> | ((newVal: string) => void);
+  error?: string;
+  helperText?: string;
   label?: string;
   labelBgColor?: string;
-  helperText?: string;
   placeholder?: string;
-  error?: string;
+  setInputState: ((newVal: string) => void) | Dispatch<SetStateAction<string>>;
   status?: FormStatus;
+  value: string;
 }
 
 export const TextareaInput = ({
-  value,
-  setInputState,
+  error,
+  helperText,
   label,
   labelBgColor = "background.main",
-  helperText,
   placeholder = " ",
-  error,
+  setInputState,
   status,
+  value,
   ...componentProps
 }: TextareaProps) => (
   <FormControl
@@ -47,9 +47,9 @@ export const TextareaInput = ({
     )}
     <Textarea
       resize="none"
-      placeholder={placeholder}
       value={value}
       onChange={(e) => setInputState(e.target.value)}
+      placeholder={placeholder}
     />
     {error ? (
       <FormErrorMessage className="error-text">{error}</FormErrorMessage>

@@ -13,38 +13,38 @@ export const NetworkErrorState = () => {
   const router = useRouter();
   return (
     <Flex
-      flexDir="column"
       align="center"
-      justifyContent="center"
+      bg="background.main"
+      flexDir="column"
       gap="48px"
       h="100vh"
-      bg="background.main"
+      justifyContent="center"
     >
-      <Image src={FALLBACK_THEME.branding.logo} alt="Celatone" width="300px" />
+      <Image width="300px" alt="Celatone" src={FALLBACK_THEME.branding.logo} />
       <Flex
-        flexDir="column"
         align="center"
+        flexDir="column"
         sx={{ "& > p": { lineHeight: "22px" } }}
       >
         <Image
-          src={FALLBACK_THEME.illustration.searchNotFound}
-          alt="config_not_found"
           width="152px"
+          alt="config_not_found"
+          src={FALLBACK_THEME.illustration.searchNotFound}
         />
-        <Heading as="h5" variant="h5" mt={6} mb={1} color="text.dark">
+        <Heading as="h5" mb={1} mt={6} variant="h5" color="text.dark">
           Network Error
         </Heading>
-        <Text fontWeight={500} color="text.dark" variant="body2">
+        <Text variant="body2" color="text.dark" fontWeight={500}>
           The network you chose is currently unavailable. Here are a few
           possibilities:
         </Text>
         {bullets.map((bullet) => (
           <Text
             key={bullet}
-            fontWeight={500}
-            color="text.dark"
-            variant="body2"
             alignSelf="start"
+            variant="body2"
+            color="text.dark"
+            fontWeight={500}
           >
             <Text as="span" mx={2} color="text.dark">
               &#x2022;

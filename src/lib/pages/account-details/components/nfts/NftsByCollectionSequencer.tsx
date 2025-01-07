@@ -31,26 +31,26 @@ export const NftsByCollectionSequencer = ({
   return (
     <Stack spacing="24px" w="full">
       <InputWithIcon
-        placeholder="Search with Token ID"
+        size={{ base: "md", md: "lg" }}
         value={searchKeyword}
+        amptrackSection="nft-account-detail-tokenid-search"
         autoFocus={!isMobile}
         onChange={(e) => setSearchKeyword(e.target.value)}
-        size={{ base: "md", md: "lg" }}
-        amptrackSection="nft-account-detail-tokenid-search"
+        placeholder="Search with Token ID"
       />
       <NftList
-        nfts={nftsFiltered}
         emptyState={
           <EmptyState
+            imageVariant="empty"
             message={
               searchKeyword
                 ? "There are no NFTs matches your keyword."
                 : "There are currently no NFTs held by this account."
             }
-            imageVariant="empty"
             withBorder
           />
         }
+        nfts={nftsFiltered}
         showCollection
       />
     </Stack>

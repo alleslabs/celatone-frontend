@@ -67,13 +67,13 @@ const EvmContractDetailsBody = ({
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: "/evm-contracts/[contractAddress]/[tab]",
         query: {
           contractAddress,
           tab: nextTab,
-        },
-        options: {
-          shallow: true,
         },
       });
     },
@@ -101,10 +101,10 @@ const EvmContractDetailsBody = ({
           lazyBehavior="keepMounted"
         >
           <TabList
+            id={tableHeaderId}
             borderBottom="1px solid"
             borderColor="gray.700"
             overflowX="scroll"
-            id={tableHeaderId}
           >
             <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
               Overview
@@ -113,9 +113,9 @@ const EvmContractDetailsBody = ({
               Contract
             </CustomTab>
             <CustomTab
-              onClick={handleTabChange(TabIndex.Assets)}
-              count={totalAssets}
               isDisabled={!totalAssets}
+              count={totalAssets}
+              onClick={handleTabChange(TabIndex.Assets)}
             >
               Assets
             </CustomTab>
@@ -126,16 +126,16 @@ const EvmContractDetailsBody = ({
           <TabPanels>
             <TabPanel p={0} pt={8}>
               <EvmContractDetailsOverview
-                contractAddress={contractAddressBechAddr}
-                hash={evmContractInfoData?.hash}
-                evmHash={evmHash}
-                sender={evmContractInfoData?.sender}
                 created={evmContractInfoData?.created}
+                evmHash={evmHash}
+                hash={evmContractInfoData?.hash}
+                sender={evmContractInfoData?.sender}
+                setTab={setOverviewTabIndex}
+                tab={overviewTabIndex}
+                contractAddress={contractAddressBechAddr}
                 isContractInfoLoading={isEvmContractInfoLoading}
                 onViewMoreAssets={handleTabChange(TabIndex.Assets)}
                 onViewMoreTxs={handleOnViewMoreTxs}
-                tab={overviewTabIndex}
-                setTab={setOverviewTabIndex}
               />
             </TabPanel>
             <TabPanel p={0} pt={8}>
@@ -147,8 +147,8 @@ const EvmContractDetailsBody = ({
             <TabPanel p={0} pt={8}>
               <EvmContractDetailsTxs
                 address={contractAddressBechAddr}
-                tab={tableTabIndex}
                 setTab={setTableTabIndex}
+                tab={tableTabIndex}
               />
             </TabPanel>
           </TabPanels>

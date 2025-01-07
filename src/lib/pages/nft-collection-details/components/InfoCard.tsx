@@ -6,35 +6,35 @@ import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 
 interface InfoCardProps {
-  title: string;
-  icon: IconKeys;
   content?: number;
-  onClick: () => void;
+  icon: IconKeys;
   isDisabled: boolean;
+  onClick: () => void;
+  title: string;
 }
 
 export const InfoCard = ({
-  title,
-  icon,
   content,
-  onClick,
+  icon,
   isDisabled,
+  onClick,
+  title,
 }: InfoCardProps) => (
   <Flex
-    p={4}
-    transition="all .25s ease-in-out"
-    borderRadius={8}
-    w="full"
     alignItems="center"
+    p={4}
+    w="full"
+    borderRadius={8}
     justifyContent="space-between"
+    transition="all .25s ease-in-out"
     {...(isDisabled
       ? {
           bg: "gray.900",
           cursor: "not-allowed",
         }
       : {
-          bg: "gray.800",
           _hover: { bg: "gray.700" },
+          bg: "gray.800",
           cursor: "pointer",
           onClick: () => {
             track(AmpEvent.USE_NFT_COLLECTION_INFO_CARD, { label: title });
@@ -42,7 +42,7 @@ export const InfoCard = ({
           },
         })}
   >
-    <Flex gap={3} alignItems="center">
+    <Flex alignItems="center" gap={3}>
       <CustomIcon name={icon} boxSize={6} color="gray.600" />
       <Flex flexDirection="column">
         <Text variant="body1" color="text.dark" fontWeight={600}>

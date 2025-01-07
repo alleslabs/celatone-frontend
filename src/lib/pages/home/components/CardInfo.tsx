@@ -6,37 +6,37 @@ import { TooltipInfo } from "lib/components/Tooltip";
 import type { Option } from "lib/types";
 
 const cardProps: SystemStyleObject = {
-  width: "100%",
+  alignItems: "center",
+  borderRadius: "8px",
+  cursor: "pointer",
+  justifyContent: "space-between",
   minH: "100%",
   padding: "16px",
-  borderRadius: "8px",
-  justifyContent: "space-between",
-  alignItems: "center",
-  cursor: "pointer",
+  width: "100%",
 };
 
 interface CardInfoProps {
+  isLoading: boolean;
+  navigate: () => void;
   title: string;
   tooltip: string;
   value: Option<string>;
-  isLoading: boolean;
-  navigate: () => void;
 }
 
 export const CardInfo = ({
+  isLoading,
+  navigate,
   title,
   tooltip,
   value,
-  isLoading,
-  navigate,
 }: CardInfoProps) => (
   <Flex
+    bg="gray.800"
     sx={cardProps}
     _hover={{ bg: "gray.700" }}
-    transition="all 0.25s ease-in-out"
-    bg="gray.800"
-    onClick={navigate}
     cursor="pointer"
+    onClick={navigate}
+    transition="all 0.25s ease-in-out"
   >
     <Box>
       <Flex alignItems="center" gap={1} mb={2}>

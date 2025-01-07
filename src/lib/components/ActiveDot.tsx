@@ -26,10 +26,10 @@ export const ActiveDot = ({ isActive = true, ...props }: ActiveDotProps) => {
 
   return (
     <Box
-      ref={ref}
-      boxSize={3}
-      borderRadius="50%"
       bgColor="secondary.main"
+      borderRadius="50%"
+      boxSize={3}
+      ref={ref}
       {...props}
     />
   );

@@ -5,29 +5,29 @@ import type { Option } from "lib/types";
 import { NetworkCard } from "./network-card";
 
 interface NetworkAccordionSubsectionProps {
-  title?: string;
-  networks: string[];
   cursor: Option<number>;
+  networks: string[];
+  onClose: () => void;
   setCursor: (index: Option<number>) => void;
   subsectionStartIndex: number;
-  onClose: () => void;
+  title?: string;
 }
 
 export const NetworkAccordionSubsection = ({
-  title,
-  networks,
   cursor,
+  networks,
+  onClose,
   setCursor,
   subsectionStartIndex,
-  onClose,
+  title,
 }: NetworkAccordionSubsectionProps) => (
-  <Flex direction="column" gap={2}>
+  <Flex gap={2} direction="column">
     {title !== undefined && (
       <Flex alignItems="center">
-        <Text color="text.dark" fontWeight={600} variant="body2">
+        <Text variant="body2" color="text.dark" fontWeight={600}>
           {title}
         </Text>
-        <Badge variant="gray" ml={2}>
+        <Badge ml={2} variant="gray">
           {networks.length}
         </Badge>
       </Flex>
@@ -38,8 +38,8 @@ export const NetworkAccordionSubsection = ({
         chainId={chainId}
         index={subsectionStartIndex + index}
         cursor={cursor}
-        setCursor={setCursor}
         onClose={onClose}
+        setCursor={setCursor}
       />
     ))}
   </Flex>

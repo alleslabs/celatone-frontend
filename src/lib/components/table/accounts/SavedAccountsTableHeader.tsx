@@ -4,13 +4,13 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "../tableComponents";
 
 export const SavedAccountsTableHeader = ({
-  templateColumns,
   hasHexAddr,
+  templateColumns,
 }: {
-  templateColumns: GridProps["templateColumns"];
   hasHexAddr: boolean;
+  templateColumns: GridProps["templateColumns"];
 }) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Account Address</TableHeader>
     {hasHexAddr && <TableHeader>Hex Address</TableHeader>}
     <TableHeader>Account Name</TableHeader>

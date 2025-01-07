@@ -80,7 +80,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
   const router = useRouter();
-  const { msg: msgQuery, codeId: codeIdQuery } = zInstantiateQueryParams.parse(
+  const { codeId: codeIdQuery, msg: msgQuery } = zInstantiateQueryParams.parse(
     router.query
   );
   const { user: exampleUserAddress } = useExampleAddresses();
@@ -88,7 +88,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   const instantiateTx = useInstantiateContractTx();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
   const { isFullTier } = useTierConfig();
@@ -112,19 +112,19 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
     setValue,
     watch,
   } = useForm<InstantiateFormState>({
-    mode: "all",
     defaultValues: {
-      codeId: 0,
-      codeHash: "",
-      label: "",
       adminAddress: "",
+      codeHash: "",
+      codeId: 0,
+      label: "",
       msgInput: {
         [jsonInputFormKey]: "{}",
         [yourSchemaInputFormKey]: "{}",
       },
     },
+    mode: "all",
   });
-  const { codeId, codeHash, label, adminAddress, msgInput } = watch();
+  const { adminAddress, codeHash, codeId, label, msgInput } = watch();
   const currentInput = tab ? msgInput[tab] : "{}";
 
   const {
@@ -132,14 +132,14 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
     setValue: setAssets,
     watch: watchAssets,
   } = useForm<AttachFundsState>({
-    mode: "all",
     defaultValues: {
-      assetsSelect: defaultAsset,
       assetsJsonStr: defaultAssetJsonStr,
+      assetsSelect: defaultAsset,
       attachFundsOption: AttachFundsType.ATTACH_FUNDS_NULL,
     },
+    mode: "all",
   });
-  const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
+  const { assetsJsonStr, assetsSelect, attachFundsOption } = watchAssets();
 
   // ------------------------------------------//
   // -------------------DATA-------------------//
@@ -187,20 +187,23 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
-    onSuccess: (gasRes) => {
-      if (gasRes) setEstimatedFee(fabricateFee(gasRes));
-      else setEstimatedFee(undefined);
-    },
     onError: (e) => {
       setSimulateError(e.message);
       setEstimatedFee(undefined);
     },
+    onSuccess: (gasRes) => {
+      if (gasRes) setEstimatedFee(fabricateFee(gasRes));
+      else setEstimatedFee(undefined);
+    },
   });
 
   const { refetch } = useCodeLcd(Number(codeId), {
-    enabled: false,
-    retry: false,
     cacheTime: 0,
+    enabled: false,
+    onError: () => {
+      setStatus({ message: "This code ID does not exist", state: "error" });
+      setSimulateError("");
+    },
     onSuccess: (data) => {
       setValue("codeHash", data.hash.toLowerCase());
       if (
@@ -213,16 +216,13 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
         setStatus({ state: "success" });
       else {
         setStatus({
-          state: "error",
           message:
             "This wallet does not have permission to instantiate to this code",
+          state: "error",
         });
       }
     },
-    onError: () => {
-      setStatus({ state: "error", message: "This code ID does not exist" });
-      setSimulateError("");
-    },
+    retry: false,
   });
 
   // ------------------------------------------//
@@ -256,12 +256,13 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
       tab === MessageTabs.YOUR_SCHEMA ? "schema" : "json-input"
     );
     const stream = await instantiateTx({
+      admin: adminAddress,
       codeId: Number(codeId),
+      estimatedFee,
+      funds,
       initMsg: JSON.parse(currentInput),
       label,
-      admin: adminAddress,
-      funds,
-      estimatedFee,
+      onTxFailed: () => setProcessing(false),
       onTxSucceed: (txResult, contractLabel, contractAddress) => {
         setProcessing(false);
         onComplete(
@@ -272,7 +273,6 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
           address ?? ("" as BechAddr20)
         );
       },
-      onTxFailed: () => setProcessing(false),
     });
 
     if (stream) {
@@ -337,7 +337,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
         if (codeId) refetch();
-        else setStatus({ state: "error", message: "Invalid Code ID" });
+        else setStatus({ message: "Invalid Code ID", state: "error" });
       }, 500);
       return () => clearTimeout(timer);
     }
@@ -352,12 +352,12 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
       const composedMsg = address
         ? [
             composeMsg(MsgType.INSTANTIATE, {
-              sender: address,
               admin: adminAddress as BechAddr,
               codeId: Long.fromInt(codeId),
+              funds,
               label,
               msg: Buffer.from(currentInput),
-              funds,
+              sender: address,
             }),
           ]
         : [];
@@ -399,34 +399,35 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
     <>
       <ActionPageContainer>
         <CelatoneSeo pageName="Instantiate Contract" />
-        <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
+        <Text mb={3} variant="body1" color="text.dark" fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>
-        <Stepper mode="deploy" currentStep={2} />
-        <Flex direction="column" alignItems="center" my={12}>
+        <Stepper currentStep={2} mode="deploy" />
+        <Flex alignItems="center" my={12} direction="column">
           <Heading as="h5" variant="h5">
             Instantiate new contract
           </Heading>
           <UserDocsLink
-            isDevTool
-            mt={2}
             cta="View Instantiate Guideline"
+            mt={2}
+            isDevTool
             href="cosmwasm/upload-instantiate#instantiate-contract-from-code"
           />
         </Flex>
         <ConnectWalletAlert
-          subtitle="You need to connect your wallet to perform this action"
           mb={6}
+          subtitle="You need to connect your wallet to perform this action"
         />
         <Box w="100%">
           {!isFullTier && (
-            <Heading variant="h6" as="h6" mt={4} mb={6} alignSelf="flex-start">
+            <Heading alignSelf="flex-start" as="h6" mb={6} mt={4} variant="h6">
               Code ID
             </Heading>
           )}
           <CodeSelectSection
-            codeId={codeId}
             name="codeId"
+            status={status}
+            codeId={codeId}
             control={control}
             error={formErrors.codeId?.message}
             onCodeSelect={(code: number) => {
@@ -436,88 +437,87 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
             setCodeHash={(data: Code) =>
               setValue("codeHash", data.hash.toLowerCase())
             }
-            status={status}
           />
         </Box>
         <form style={{ width: "100%" }}>
-          <Heading variant="h6" as="h6" mt={4} mb={6} alignSelf="flex-start">
+          <Heading alignSelf="flex-start" as="h6" mb={6} mt={4} variant="h6">
             Label
           </Heading>
           <ControllerInput
+            helperText="The contract's label help briefly describe the contract and what it does."
+            label="Label"
+            mb={12}
             name="label"
+            rules={{ required: "Label is required" }}
+            variant="fixed-floating"
             control={control}
             error={formErrors.label?.message}
             placeholder="ex. Token Factory"
-            label="Label"
-            helperText="The contract's label help briefly describe the contract and what it does."
-            variant="fixed-floating"
-            mb={12}
-            rules={{ required: "Label is required" }}
           />
-          <Heading variant="h6" as="h6" my={6} alignSelf="flex-start">
+          <Heading alignSelf="flex-start" as="h6" my={6} variant="h6">
             Admin Address
           </Heading>
           <ControllerInput
-            name="adminAddress"
-            control={control}
-            label="Admin Address (optional)"
-            placeholder={`ex. ${exampleUserAddress}`}
             helperText="The contract's admin will be able to migrate and update future admins."
+            label="Admin Address (optional)"
+            name="adminAddress"
             variant="fixed-floating"
+            control={control}
             error={validateAdmin(adminAddress)}
             helperAction={
               <AssignMe
+                isDisable={adminAddress === address}
                 onClick={() => {
                   track(AmpEvent.USE_ASSIGN_ME);
                   setValue("adminAddress", address ?? "");
                 }}
-                isDisable={adminAddress === address}
               />
             }
+            placeholder={`ex. ${exampleUserAddress}`}
           />
-          <Flex align="center" justify="space-between" mt={12} mb={4}>
-            <Heading variant="h6" as="h6" alignSelf="flex-start">
+          <Flex align="center" justify="space-between" mb={4} mt={12}>
+            <Heading alignSelf="flex-start" as="h6" variant="h6">
               Instantiate Message
             </Heading>
             <MessageInputSwitch
               currentTab={tab}
-              onTabChange={setTab}
               disabled={!codeHash}
+              onTabChange={setTab}
             />
           </Flex>
           <MessageInputContent
             currentTab={tab}
             jsonContent={
               <JsonInput
-                text={msgInput[jsonInputFormKey]}
+                minLines={10}
                 setText={(newVal: string) =>
                   setValue(`msgInput.${jsonInputFormKey}`, newVal)
                 }
-                minLines={10}
+                text={msgInput[jsonInputFormKey]}
               />
             }
             schemaContent={
               codeId && (
                 <SchemaInputSection
+                  handleChange={handleChange}
                   type="instantiate"
+                  verifiedSchema={verifiedSchema}
                   codeHash={codeHash}
                   codeId={Number(codeId)}
-                  verifiedSchema={verifiedSchema}
-                  localSchema={localSchema}
                   initialFormData={JSON.parse(msgInput[yourSchemaInputFormKey])}
-                  handleChange={handleChange}
+                  localSchema={localSchema}
                   onSchemaSave={resetMsgInputSchema}
                 />
               )
             }
           />
-          <Heading variant="h6" as="h6" mt={12} mb={6} alignSelf="flex-start">
+          <Heading alignSelf="flex-start" as="h6" mb={6} mt={12} variant="h6">
             Send asset to contract
           </Heading>
           <AttachFund
-            control={assetsControl}
             setValue={setAssets}
             attachFundsOption={attachFundsOption}
+            control={assetsControl}
           />
         </form>
         {simulateError && (
@@ -533,12 +533,12 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
           </Flex>
         )}
         <Flex
-          fontSize="14px"
-          color="text.dark"
-          alignSelf="flex-start"
           alignItems="center"
+          alignSelf="flex-start"
           display="flex"
           gap={1}
+          color="text.dark"
+          fontSize="14px"
         >
           <p>Transaction Fee:</p>
           <EstimatedFeeRender
@@ -548,16 +548,16 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
         </Flex>
       </ActionPageContainer>
       <FooterCta
-        loading={processing}
-        cancelButton={{
-          onClick: router.back,
-          leftIcon: <CustomIcon name="chevron-left" />,
-        }}
         actionButton={{
           isDisabled: !enableInstantiate || !estimatedFee || isSimulating,
           onClick: proceed,
         }}
         actionLabel="Instantiate"
+        cancelButton={{
+          leftIcon: <CustomIcon name="chevron-left" />,
+          onClick: router.back,
+        }}
+        loading={processing}
       />
     </>
   );

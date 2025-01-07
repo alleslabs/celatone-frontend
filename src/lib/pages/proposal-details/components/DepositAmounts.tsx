@@ -11,14 +11,14 @@ interface DepositAmountsProps {
 export const DepositAmounts = ({ deposit }: DepositAmountsProps) => (
   <div>
     {deposit.amount.length === 0 ? (
-      <Text variant="body2" color="text.dark" px={4}>
+      <Text px={4} variant="body2" color="text.dark">
         -
       </Text>
     ) : (
       deposit.amount.map((token) => (
         <Flex key={token.denom} alignItems="center" gap={2}>
           <Text variant="body2">
-            <Text as="span" fontWeight={700} mr={1}>
+            <Text as="span" mr={1} fontWeight={700}>
               {formatUTokenWithPrecision(
                 token.amount,
                 token.precision ?? 0,

@@ -6,13 +6,13 @@ import { ProposalStatus } from "lib/types";
 import { ProgressBadge } from "./ProgressBadge";
 
 interface VoteThresholdBadgeProps {
-  status: ProposalStatus;
   isCompact: boolean;
+  status: ProposalStatus;
 }
 
 export const VoteThresholdBadge = ({
-  status,
   isCompact,
+  status,
 }: VoteThresholdBadgeProps) => {
   if (status === ProposalStatus.VOTING_PERIOD)
     return isCompact ? (

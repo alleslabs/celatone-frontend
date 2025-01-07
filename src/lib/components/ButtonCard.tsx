@@ -5,39 +5,39 @@ import type { ReactNode } from "react";
 import { CustomIcon } from "./icon";
 
 interface ButtonCardProps extends FlexProps {
-  title: string;
   description: ReactNode;
-  onClick: () => void;
   disabled?: boolean;
-  tagLabel?: string;
   hasIcon?: boolean;
+  onClick: () => void;
+  tagLabel?: string;
+  title: string;
 }
 
 export const ButtonCard = ({
-  title,
   description,
-  onClick,
   disabled,
-  tagLabel,
   hasIcon = true,
+  onClick,
+  tagLabel,
+  title,
   ...componentProps
 }: ButtonCardProps) => (
   <Flex
-    aria-disabled={disabled}
-    p={6}
-    align="center"
-    justify="space-between"
-    onClick={!disabled ? onClick : undefined}
-    bgColor="gray.800"
-    borderRadius="8px"
-    w="100%"
-    cursor="pointer"
-    _hover={{ bgColor: "gray.700" }}
-    transition="all 0.25s ease-in-out"
     _disabled={{
       bgColor: "gray.900",
       cursor: "not-allowed",
     }}
+    align="center"
+    aria-disabled={disabled}
+    justify="space-between"
+    p={6}
+    w="100%"
+    _hover={{ bgColor: "gray.700" }}
+    bgColor="gray.800"
+    borderRadius="8px"
+    cursor="pointer"
+    onClick={!disabled ? onClick : undefined}
+    transition="all 0.25s ease-in-out"
     {...componentProps}
   >
     <Stack>

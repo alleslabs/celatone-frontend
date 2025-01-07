@@ -11,15 +11,15 @@ interface PenaltySectionProps {
 
 export const PenaltySection = ({ penaltyEvents }: PenaltySectionProps) => (
   <Flex
-    direction="column"
     gap={4}
-    backgroundColor="gray.900"
     p={{ base: 4, md: 6 }}
-    rounded={8}
     w="100%"
+    backgroundColor="gray.900"
+    direction="column"
+    rounded={8}
   >
     <Flex alignItems="center" gap={2}>
-      <Heading variant="h6" as="h6" color="text.main">
+      <Heading as="h6" variant="h6" color="text.main">
         Jailed/Slashed
       </Heading>
       <Text variant="body2" color="text.dark">
@@ -27,18 +27,18 @@ export const PenaltySection = ({ penaltyEvents }: PenaltySectionProps) => (
       </Text>
     </Flex>
     {penaltyEvents.length === 0 ? (
-      <Flex gap={2} alignItems="center">
+      <Flex alignItems="center" gap={2}>
         <CustomIcon
           name="check-circle-solid"
-          color="success.main"
           boxSize={5}
+          color="success.main"
         />
         <Text variant="body2" color="text.dark">
           This validator never had any slash or jailed history within 90 days.
         </Text>
       </Flex>
     ) : (
-      <VStack gap={2} alignItems="flex-start">
+      <VStack alignItems="flex-start" gap={2}>
         {penaltyEvents.map((event) => (
           <PenaltyEvent key={event.height} event={event} />
         ))}

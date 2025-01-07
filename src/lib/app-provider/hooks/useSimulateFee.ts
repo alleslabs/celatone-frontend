@@ -11,8 +11,8 @@ import { useGetSigningClient } from "./useGetSigningClient";
 
 interface SimulateFeeParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   isDummyUser?: boolean;
+  messages: EncodeObject[];
 }
 
 export const useSimulateFee = () => {
@@ -23,8 +23,8 @@ export const useSimulateFee = () => {
   return useCallback(
     async ({
       address,
-      messages,
       isDummyUser = false,
+      messages,
     }: SimulateFeeParams): Promise<Gas> => {
       if (isDummyUser) {
         const dummyClient = await getDummyClient();

@@ -17,8 +17,8 @@ export const getTxsCountSequencer = async (endpoint: string) =>
   axios
     .get(`${endpoint}/indexer/tx/v1/txs`, {
       params: {
-        "pagination.limit": 1,
         "pagination.count_total": true,
+        "pagination.limit": 1,
       },
     })
     .then(
@@ -33,32 +33,32 @@ export const getTxsSequencer = async (
   axios
     .get(`${endpoint}/indexer/tx/v1/txs`, {
       params: {
+        "pagination.key": paginationKey,
         "pagination.limit": limit,
         "pagination.reverse": true,
-        "pagination.key": paginationKey,
       },
     })
     .then(({ data }) => parseWithError(zTxsResponseSequencer, data));
 
 export const getTxsByAccountAddressSequencer = async ({
-  endpoint,
   address,
-  paginationKey,
+  endpoint,
   limit,
+  paginationKey,
   reverse = true,
 }: {
-  endpoint: string;
   address: Addr;
-  paginationKey?: string;
+  endpoint: string;
   limit?: number;
+  paginationKey?: string;
   reverse?: boolean;
 }) =>
   axios
     .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {
       params: {
+        "pagination.key": paginationKey,
         "pagination.limit": limit,
         "pagination.reverse": reverse,
-        "pagination.key": paginationKey,
       },
     })
     .then(({ data }) => parseWithError(zTxsResponseSequencer, data));

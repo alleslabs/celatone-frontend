@@ -19,34 +19,20 @@ export const ActivitiesTableMobileCard = ({
 }) => {
   const navigate = useInternalNavigate();
   const {
-    txhash,
-    timestamp,
+    isCollectionCreate,
     isNftBurn,
     isNftMint,
     isNftTransfer,
-    isCollectionCreate,
-    tokenId,
     nftAddress,
+    timestamp,
+    tokenId,
+    txhash,
   } = activity;
 
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/txs/[txHash]",
-          query: { txHash: txhash.toUpperCase() },
-        })
-      }
-      topContent={
-        <ExplorerLink
-          value={txhash.toUpperCase()}
-          type="tx_hash"
-          showCopyOnHover
-          ampCopierSection="nft-collection-activities-table"
-        />
-      }
       middleContent={
-        <Flex direction="column" gap={3}>
+        <Flex gap={3} direction="column">
           <Flex direction="column">
             <MobileLabel label="Token ID" />
             <AppLink
@@ -71,12 +57,26 @@ export const ActivitiesTableMobileCard = ({
         </Flex>
       }
       bottomContent={
-        <Flex direction="column" gap={1}>
+        <Flex gap={1} direction="column">
           <Text variant="body3">{formatUTC(timestamp)}</Text>
           <Text variant="body3" color="text.dark">
             {`(${dateFromNow(timestamp)})`}
           </Text>
         </Flex>
+      }
+      onClick={() =>
+        navigate({
+          pathname: "/txs/[txHash]",
+          query: { txHash: txhash.toUpperCase() },
+        })
+      }
+      topContent={
+        <ExplorerLink
+          type="tx_hash"
+          value={txhash.toUpperCase()}
+          ampCopierSection="nft-collection-activities-table"
+          showCopyOnHover
+        />
       }
     />
   );

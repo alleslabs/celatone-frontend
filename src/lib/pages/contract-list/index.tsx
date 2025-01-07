@@ -37,29 +37,29 @@ const AllContractListsPage = observer(() => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Contract Lists" />
-      <Flex direction="column" alignItems="center" gap={8}>
-        <Flex justifyContent="space-between" w="full" alignItems="center">
+      <Flex alignItems="center" gap={8} direction="column">
+        <Flex alignItems="center" w="full" justifyContent="space-between">
           <Heading as="h5" variant="h5">
             Contract lists
           </Heading>
           <CreateNewListModal
             buttonProps={{
-              variant: "outline-primary",
-              leftIcon: <CustomIcon name="plus" boxSize={3} />,
               children: "Create new list",
+              leftIcon: <CustomIcon name="plus" boxSize={3} />,
+              variant: "outline-primary",
             }}
           />
         </Flex>
         <AllContractLists
-          contractLists={contractLists}
           handleListSelect={handleListSelect}
           isReadOnly={false}
+          contractLists={contractLists}
         />
       </Flex>
       <UserDocsLink
-        isDevTool
-        title="How to use contract list?"
         cta="Read more about Contract Lists"
+        title="How to use contract list?"
+        isDevTool
         href="cosmwasm/contracts/organize#contract-list"
       />
     </PageContainer>

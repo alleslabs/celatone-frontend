@@ -12,16 +12,16 @@ import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
-// TODO: We'll use only DeliverTxResponse later.
-type TxResult =
-  | UploadResult
-  | InstantiateResult
-  | ExecuteResult
-  | DeliverTxResponse;
-
 interface PostTxParams<T extends TxResult> {
   postFn: () => Promise<T>;
 }
+
+// TODO: We'll use only DeliverTxResponse later.
+type TxResult =
+  | DeliverTxResponse
+  | ExecuteResult
+  | InstantiateResult
+  | UploadResult;
 
 // TODO: remove later. We'll throw an error with transactionHash.
 function createDeliverTxResponseErrorMessage(
@@ -43,11 +43,13 @@ export const postTx = <T extends TxResult>({ postFn }: PostTxParams<T>) => {
           ?.attributes[0].value;
 
         return {
-          value: txResult,
+          actionVariant: "sending",
           phase: TxStreamPhase.BROADCAST,
+          receiptInfo: {
+            header: "Sending Transaction",
+          },
           receipts: [
             {
-              title: "Tx Hash",
               html: (
                 <ExplorerLink
                   type="tx_hash"
@@ -55,9 +57,9 @@ export const postTx = <T extends TxResult>({ postFn }: PostTxParams<T>) => {
                   openNewTab
                 />
               ),
+              title: "Tx Hash",
             },
             {
-              title: "Tx Fee",
               // TODO: Implement event/rawlog attribute picker
               html: (
                 <EstimatedFeeRender
@@ -65,12 +67,10 @@ export const postTx = <T extends TxResult>({ postFn }: PostTxParams<T>) => {
                   loading={false}
                 />
               ),
+              title: "Tx Fee",
             },
           ],
-          receiptInfo: {
-            header: "Sending Transaction",
-          },
-          actionVariant: "sending",
+          value: txResult,
         } as TxResultRendering<T>;
       }
     );

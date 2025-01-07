@@ -7,39 +7,39 @@ import { DEVELOPER_TOOL_DOCS_LINK, USER_GUIDE_DOCS_LINK } from "lib/data";
 import { CustomIcon } from "./icon";
 
 interface UserDocsLinkProps {
-  href?: string;
-  title?: string;
   cta?: string;
+  href?: string;
   isButton?: boolean;
-  isInline?: boolean;
   isDevTool?: boolean;
+  isInline?: boolean;
   mt?: number;
+  title?: string;
 }
 
 export const UserDocsLink = ({
-  title,
   cta,
   href,
   isButton = false,
-  isInline = false,
   isDevTool = false,
+  isInline = false,
   mt = 8,
+  title,
 }: UserDocsLinkProps) =>
   isButton ? (
     <Link
-      href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
+      rel="noopener noreferrer"
+      target="_blank"
       onClick={(e) => {
         trackWebsite(
           `${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`
         );
         e.stopPropagation();
       }}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
     >
       <Button
-        variant="ghost-primary"
         size="sm"
+        variant="ghost-primary"
         leftIcon={<CustomIcon name="document" boxSize={3} />}
       >
         View Doc
@@ -47,27 +47,26 @@ export const UserDocsLink = ({
     </Link>
   ) : (
     <Flex
-      gap={{ base: 1, md: 2 }}
       alignItems="center"
+      display={isInline ? "inline-flex" : "flex"}
+      gap={{ base: 1, md: 2 }}
       mt={mt}
       direction={{ base: "column", md: "row" }}
-      display={isInline ? "inline-flex" : "flex"}
     >
       {title && (
-        <Text color="text.main" variant="body2">
+        <Text variant="body2" color="text.main">
           {title}
         </Text>
       )}
       <Link
-        href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
-        target="_blank"
         rel="noopener noreferrer"
+        target="_blank"
+        href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
       >
         <Flex
-          gap={1}
           alignItems="center"
+          gap={1}
           sx={{
-            cursor: "pointer",
             "&:hover": {
               "> *": {
                 color: "primary.light",
@@ -77,10 +76,11 @@ export const UserDocsLink = ({
                 transitionTimingFunction: "ease-in-out",
               },
             },
+            cursor: "pointer",
           }}
         >
-          <CustomIcon name="document" color="primary.main" boxSize={3} />
-          <Text color="primary.main" fontWeight={800} variant="body2">
+          <CustomIcon name="document" boxSize={3} color="primary.main" />
+          <Text variant="body2" color="primary.main" fontWeight={800}>
             {cta}
           </Text>
         </Flex>

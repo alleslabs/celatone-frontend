@@ -15,13 +15,13 @@ import { useDebounce } from "lib/hooks";
 import { useTxsByAddressLcd } from "lib/services/tx";
 
 interface PastTxsLiteTransactionsTableWithWalletEmptyStateProps {
-  search: string;
   error: unknown;
+  search: string;
 }
 
 const PastTxsLiteTransactionsTableWithWalletEmptyState = ({
-  search,
   error,
+  search,
 }: PastTxsLiteTransactionsTableWithWalletEmptyStateProps) => {
   if (search.trim().length > 0)
     return (
@@ -50,22 +50,22 @@ export const PastTxsLite = () => {
   const debouncedSearch = useDebounce(search);
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
-  const { data, isLoading, error } = useTxsByAddressLcd(
+  const { data, error, isLoading } = useTxsByAddressLcd(
     address,
     debouncedSearch,
     pageSize,
@@ -91,13 +91,13 @@ export const PastTxsLite = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Past Transactions" />
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex alignItems="center" justifyContent="space-between">
         <Heading
-          variant="h5"
-          as="h5"
-          minH="36px"
-          display="flex"
           alignItems="center"
+          as="h5"
+          display="flex"
+          minH="36px"
+          variant="h5"
         >
           Past Transactions
         </Heading>
@@ -105,38 +105,38 @@ export const PastTxsLite = () => {
       </Flex>
       <Flex my={8}>
         <InputWithIcon
-          placeholder="Search with Transaction Hash"
-          value={search}
-          onChange={handleOnSearchChange}
           size={{ base: "md", md: "lg" }}
+          value={search}
           amptrackSection="past-txs-search"
+          onChange={handleOnSearchChange}
+          placeholder="Search with Transaction Hash"
         />
       </Flex>
       <TransactionsTableWithWallet
-        transactions={data?.items}
-        isLoading={isLoading}
         emptyState={
           <PastTxsLiteTransactionsTableWithWalletEmptyState
             search={search}
             error={error}
           />
         }
+        isLoading={isLoading}
         showActions={false}
         showRelations={false}
+        transactions={data?.items}
       />
       {!!data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
+          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={data.total}
-          pageSize={pageSize}
           onPageChange={(nextPage) => setCurrentPage(nextPage)}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
           }}
+          totalData={data.total}
         />
       )}
     </PageContainer>

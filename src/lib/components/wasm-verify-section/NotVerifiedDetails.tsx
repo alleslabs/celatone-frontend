@@ -9,14 +9,14 @@ import { WasmVerifyStatus } from "lib/types";
 import { VerifyButton } from "./VerifyButton";
 
 interface NotVerifiedDetailsProps {
-  codeId: number;
   codeHash: string;
+  codeId: number;
   contractAddress?: BechAddr32;
 }
 
 export const NotVerifiedDetails = ({
-  codeId,
   codeHash,
+  codeId,
   contractAddress,
 }: NotVerifiedDetailsProps) => {
   const isMobile = useMobile();
@@ -27,8 +27,8 @@ export const NotVerifiedDetails = ({
           <>
             This contract is an instance of code ID{" "}
             <ExplorerLink
-              value={codeId.toString()}
               type="code_id"
+              value={codeId.toString()}
               showCopyOnHover
             />{" "}
             which has not been verified.
@@ -41,24 +41,24 @@ export const NotVerifiedDetails = ({
           <>verify it</>
         ) : (
           <WasmVerifySubmitModal
-            codeId={codeId}
-            codeHash={codeHash}
-            wasmVerifyStatus={WasmVerifyStatus.NOT_VERIFIED}
-            contractAddress={contractAddress}
             triggerElement={
               <Text
                 as="span"
-                cursor="pointer"
-                color="primary.main"
-                transition="all 0.25s ease-in-out"
                 _hover={{
                   textDecoration: "underline",
                   textDecorationColor: "primary.light",
                 }}
+                color="primary.main"
+                cursor="pointer"
+                transition="all 0.25s ease-in-out"
               >
                 verify it
               </Text>
             }
+            wasmVerifyStatus={WasmVerifyStatus.NOT_VERIFIED}
+            codeHash={codeHash}
+            codeId={codeId}
+            contractAddress={contractAddress}
           />
         )}{" "}
         to allow other users to view the GitHub repository and use the
@@ -70,9 +70,9 @@ export const NotVerifiedDetails = ({
         </Text>
       ) : (
         <VerifyButton
-          codeId={codeId}
-          codeHash={codeHash}
           wasmVerifyStatus={WasmVerifyStatus.NOT_VERIFIED}
+          codeHash={codeHash}
+          codeId={codeId}
         />
       )}
     </>

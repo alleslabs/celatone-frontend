@@ -18,25 +18,25 @@ import { PoolMsgAction, PoolMsgDetail } from "./messages";
 import { PoolOtherMsgs } from "./messages/PoolOtherMsgs";
 
 interface PoolTxsMsgProps {
+  assetInfos: Option<AssetInfos>;
   isFirstSubRow: boolean;
-  msgIndex: number;
   message: Option<Message>;
+  msgIndex: number;
   otherMsgs: { [key: string]: number };
   pool: PoolData;
-  transaction: Transaction;
-  assetInfos: Option<AssetInfos>;
   templateColumns: string;
+  transaction: Transaction;
 }
 
 export const PoolTxsMsg = ({
+  assetInfos,
   isFirstSubRow,
-  msgIndex,
   message,
+  msgIndex,
   otherMsgs,
   pool,
-  transaction,
-  assetInfos,
   templateColumns,
+  transaction,
 }: PoolTxsMsgProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const msgDetailTemplateColumns = templateColumns
@@ -48,20 +48,18 @@ export const PoolTxsMsg = ({
   return (
     <Box
       className="copier-wrapper"
-      w="full"
       minW="min-content"
-      borderBottom="1px solid"
-      borderColor="gray.700"
-      _hover={{ background: "gray.900" }}
       sx={{
         "&:hover .pool-msg-detail-container": {
           borderColor: "gray.700",
         },
       }}
+      w="full"
+      _hover={{ background: "gray.900" }}
+      borderBottom="1px solid"
+      borderColor="gray.700"
     >
       <Grid
-        templateColumns={templateColumns}
-        transition="all 0.25s ease-in-out"
         cursor="pointer"
         onClick={() => {
           if (message) {
@@ -74,15 +72,17 @@ export const PoolTxsMsg = ({
           }
           onToggle();
         }}
+        templateColumns={templateColumns}
+        transition="all 0.25s ease-in-out"
       >
         <TableNoBorderRow p="0 0 0 8px">
           {hasMsgDetails && (
             <CustomIcon
+              m={0}
               name="chevron-down"
+              color="gray.600"
               transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
               transition="all 0.25s ease-in-out"
-              color="gray.600"
-              m={0}
             />
           )}
         </TableNoBorderRow>
@@ -90,14 +90,14 @@ export const PoolTxsMsg = ({
           {isFirstSubRow && (
             <>
               <ExplorerLink
-                value={transaction.hash.toLocaleUpperCase()}
                 type="tx_hash"
-                showCopyOnHover
+                value={transaction.hash.toLocaleUpperCase()}
                 ampCopierSection={`pool_txs-${transaction.messages.length}-tx_hash`}
+                showCopyOnHover
               />
               {transaction.messages.length > 1 && (
                 <Tooltip label="There are at least one messages within this transaction that related to this pool.">
-                  <Badge variant="primary-light" ml="6px">
+                  <Badge ml="6px" variant="primary-light">
                     {transaction.messages.length}
                   </Badge>
                 </Tooltip>
@@ -117,27 +117,27 @@ export const PoolTxsMsg = ({
           {message ? (
             <PoolMsgAction
               msg={message}
-              pool={pool}
-              assetInfos={assetInfos}
               ampCopierSection={`pool_txs-${extractMsgType(message.type)}-row`}
+              assetInfos={assetInfos}
+              pool={pool}
             />
           ) : (
-            <PoolOtherMsgs otherMsgs={otherMsgs} isIbc={transaction.isIbc} />
+            <PoolOtherMsgs isIbc={transaction.isIbc} otherMsgs={otherMsgs} />
           )}
         </TableNoBorderRow>
 
         <TableNoBorderRow>
           <ExplorerLink
-            value={transaction.sender}
             type="user_address"
-            showCopyOnHover
+            value={transaction.sender}
             ampCopierSection={`pool_txs-${transaction.messages.length}-sender`}
+            showCopyOnHover
           />
         </TableNoBorderRow>
 
         <TableNoBorderRow>
           {isFirstSubRow && (
-            <Flex direction="column" gap={1}>
+            <Flex gap={1} direction="column">
               <Text variant="body3">{formatUTC(transaction.created)}</Text>
               <Text variant="body3" color="text.dark">
                 {`(${dateFromNow(transaction.created)})`}
@@ -148,23 +148,23 @@ export const PoolTxsMsg = ({
       </Grid>
       {hasMsgDetails && (
         <Grid
-          w="full"
-          py={4}
           hidden={!isOpen}
+          py={4}
+          w="full"
           templateColumns={msgDetailTemplateColumns}
         >
           <TableNoBorderRow gridArea="1 / 4" py={0}>
             <PoolMsgDetail
-              txHash={transaction.hash}
-              blockHeight={transaction.height}
-              msgIndex={msgIndex}
-              msg={message}
-              pool={pool}
-              assetInfos={assetInfos}
               isOpened={isOpen}
+              msg={message}
+              msgIndex={msgIndex}
+              txHash={transaction.hash}
               ampCopierSection={`pool_txs-${extractMsgType(
                 message.type
               )}-detail`}
+              assetInfos={assetInfos}
+              blockHeight={transaction.height}
+              pool={pool}
             />
           </TableNoBorderRow>
         </Grid>

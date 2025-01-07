@@ -17,45 +17,45 @@ export const BondedTableMobileCard = ({
   isSingleBondDenom,
 }: BondedTableMobileCardProps) => (
   <Flex
-    borderRadius="8px"
-    background="gray.900"
-    p={3}
-    direction="column"
     gap={3}
-    w="full"
     minW={0}
+    p={3}
+    w="full"
+    background="gray.900"
     border="1px solid"
     borderColor="gray.700"
+    borderRadius="8px"
+    direction="column"
   >
     <ValidatorBadge validator={bondedInfo.validator} />
     <Flex
-      direction="column"
       gap={3}
+      pt={3}
       borderTop="1px solid"
       borderTopColor="gray.700"
-      pt={3}
+      direction="column"
     >
-      <Flex direction="column" gap={1}>
+      <Flex gap={1} direction="column">
         <MobileLabel label="Amount" />
         <TokensCell
-          tokens={bondedInfo.balances}
           isSingleBondDenom={isSingleBondDenom}
+          tokens={bondedInfo.balances}
         />
       </Flex>
 
       {bondedInfo.rewards && (
-        <Flex direction="column" gap={1}>
+        <Flex gap={1} direction="column">
           <MobileLabel label="Reward" />
           <TokensCell
-            tokens={bondedInfo.rewards}
             isSingleBondDenom={isSingleBondDenom}
+            tokens={bondedInfo.rewards}
           />
         </Flex>
       )}
       {bondedInfo.completionTime && (
         <Flex direction="column">
           <MobileLabel label="Unbond Completed By" />
-          <Text variant="body2" color="text.dark" mt={1}>
+          <Text mt={1} variant="body2" color="text.dark">
             {formatUTC(bondedInfo.completionTime)}
           </Text>
           <Text variant="body3" color="text.disabled">

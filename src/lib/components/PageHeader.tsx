@@ -5,27 +5,27 @@ import { useMobile } from "lib/app-provider";
 import { UserDocsLink } from "./UserDocsLink";
 
 interface PageHeaderProps {
-  title: string;
-  subtitle?: string;
   docHref: string;
+  subtitle?: string;
+  title: string;
 }
 
-export const PageHeader = ({ title, subtitle, docHref }: PageHeaderProps) => {
+export const PageHeader = ({ docHref, subtitle, title }: PageHeaderProps) => {
   const isMobile = useMobile();
   return (
-    <Flex justifyContent="space-between" alignItems="center" mb={8} w="full">
+    <Flex alignItems="center" mb={8} w="full" justifyContent="space-between">
       <div style={{ width: "100%" }}>
         <Flex justifyContent="space-between">
           <Heading
             as="h5"
+            minH="36px"
             variant="h5"
             color="text.main"
             fontWeight={600}
-            minH="36px"
           >
             {title}
           </Heading>
-          {isMobile && <UserDocsLink href={docHref} isButton />}
+          {isMobile && <UserDocsLink isButton href={docHref} />}
         </Flex>
         {subtitle && (
           <Text variant="body2" color="text.dark" fontWeight={500}>
@@ -33,7 +33,7 @@ export const PageHeader = ({ title, subtitle, docHref }: PageHeaderProps) => {
           </Text>
         )}
       </div>
-      {!isMobile && <UserDocsLink href={docHref} isButton />}
+      {!isMobile && <UserDocsLink isButton href={docHref} />}
     </Flex>
   );
 };

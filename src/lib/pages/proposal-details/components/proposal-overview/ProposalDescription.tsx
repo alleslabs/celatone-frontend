@@ -10,7 +10,7 @@ interface ProposalDescriptionProps {
 export const ProposalDescription = ({
   description,
 }: ProposalDescriptionProps) => (
-  <Flex direction="column" gap={4}>
+  <Flex gap={4} direction="column">
     <Heading as="h6" variant="h6">
       Proposal Description
     </Heading>

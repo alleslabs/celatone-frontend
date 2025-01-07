@@ -16,12 +16,12 @@ export const RequestNoteCell = observer(
 
     return (
       <EditableCell
-        initialValue={moveVerifyTask.requestNote}
         defaultValue={
           moveVerifyTask.requestNote && moveVerifyTask.requestNote.length > 0
             ? moveVerifyTask.requestNote
             : "-"
         }
+        initialValue={moveVerifyTask.requestNote}
         maxLength={constants.maxMoveVerifyTaskRequestNoteLength}
         onSave={(value) => updateRequestNote(moveVerifyTask.taskId, value)}
       />

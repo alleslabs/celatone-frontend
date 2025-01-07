@@ -1,4 +1,12 @@
 {
+  "extends": [
+    "plugin:perfectionist/recommended-natural-legacy",
+    "sznm/react",
+    "plugin:react/jsx-runtime",
+    "plugin:@next/next/recommended",
+    "plugin:storybook/recommended"
+  ],
+  "plugins": ["perfectionist"],
   "rules": {
     "react/jsx-no-useless-fragment": [
       "error",
@@ -7,17 +15,31 @@
       }
     ],
     "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
-    "sort-imports": [
+    "perfectionist/sort-imports": ["off"],
+    "perfectionist/sort-classes": ["off"],
+    "perfectionist/sort-jsx-props": [
       "error",
-      { "ignoreCase": true, "ignoreDeclarationSort": true }
+      {
+        "groups": [
+          "key",
+          "id",
+          "classname",
+          "style",
+          "unknown",
+          "callback",
+          "ref"
+        ],
+        "customGroups": {
+          "key": "key",
+          "id": "id",
+          "ref": "ref",
+          "classname": "className",
+          "style": "style",
+          "callback": "on*"
+        }
+      }
     ]
   },
-  "extends": [
-    "sznm/react",
-    "plugin:react/jsx-runtime",
-    "plugin:@next/next/recommended",
-    "plugin:storybook/recommended"
-  ],
   "parserOptions": {
     "project": ["./tsconfig.json"]
   }

@@ -9,40 +9,40 @@ import { findAttr } from "lib/utils";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
-export interface PublishTxInternalResult {
-  txHash: string;
-  txFee: Option<string>;
-}
-
 export type PublishSucceedCallback = (
   txResult: PublishTxInternalResult
 ) => void;
+
+export interface PublishTxInternalResult {
+  txFee: Option<string>;
+  txHash: string;
+}
 
 interface PublishModuleTxParams {
   address: BechAddr20;
   fee: StdFee;
   messages: EncodeObject[];
-  signAndBroadcast: SignAndBroadcast;
-  onTxSucceed?: PublishSucceedCallback;
   onTxFailed?: () => void;
+  onTxSucceed?: PublishSucceedCallback;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const publishModuleTx = ({
   address,
   fee,
   messages,
-  signAndBroadcast,
-  onTxSucceed,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcast,
 }: PublishModuleTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       const txFee = findAttr(txInfo.events, "tx", "fee");
-      onTxSucceed?.({ txHash: txInfo.transactionHash, txFee });
+      onTxSucceed?.({ txFee, txHash: txInfo.transactionHash });
       return null as unknown as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

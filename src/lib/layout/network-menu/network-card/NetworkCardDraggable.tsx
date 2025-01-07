@@ -8,25 +8,25 @@ import { NetworkCard } from "./NetworkCard";
 
 interface NetworkCardDraggableProps {
   chainId: string;
-  index?: number;
   cursor: Option<number>;
-  setCursor: (index: Option<number>) => void;
+  index?: number;
   onClose: () => void;
+  setCursor: (index: Option<number>) => void;
 }
 export const NetworkCardDraggable = ({
   chainId,
-  index,
   cursor,
-  setCursor,
+  index,
   onClose,
+  setCursor,
 }: NetworkCardDraggableProps) => {
   const {
     attributes,
+    isDragging,
     listeners,
     setNodeRef,
     transform,
     transition,
-    isDragging,
   } = useSortable({
     id: chainId,
   });
@@ -39,8 +39,8 @@ export const NetworkCardDraggable = ({
 
   return (
     <Box
-      ref={setNodeRef}
       style={style}
+      ref={setNodeRef}
       {...attributes}
       {...listeners}
       cursor={index === undefined ? "grabbing" : "grab"}
@@ -48,10 +48,10 @@ export const NetworkCardDraggable = ({
       <NetworkCard
         chainId={chainId}
         index={index}
-        cursor={cursor}
-        setCursor={setCursor}
-        onClose={onClose}
         isDraggable
+        cursor={cursor}
+        onClose={onClose}
+        setCursor={setCursor}
       />
     </Box>
   );

@@ -8,32 +8,32 @@ import { Tooltip } from "../Tooltip";
 import { useMobile } from "lib/app-provider";
 
 interface EditableCellProps {
-  initialValue?: string;
   defaultValue: string;
-  maxLength: number;
-  tooltip?: string;
+  initialValue?: string;
   isReadOnly?: boolean;
+  maxLength: number;
   onSave?: (value?: string) => void;
+  tooltip?: string;
 }
 
 const getInputValueTextProps = (
   isShowInputValue: boolean,
   inputValue: string,
   defaultValue: string
-): Pick<TextProps, "fontWeight" | "color" | "children"> => {
+): Pick<TextProps, "children" | "color" | "fontWeight"> => {
   if (isShowInputValue) {
-    return { fontWeight: 600, color: "text.main", children: inputValue };
+    return { children: inputValue, color: "text.main", fontWeight: 600 };
   }
-  return { fontWeight: 400, color: "text.dark", children: defaultValue };
+  return { children: defaultValue, color: "text.dark", fontWeight: 400 };
 };
 
 export const EditableCell = ({
-  initialValue = "",
   defaultValue,
-  maxLength,
-  tooltip,
+  initialValue = "",
   isReadOnly,
+  maxLength,
   onSave,
+  tooltip,
 }: EditableCellProps) => {
   const [inputValue, setInputValue] = useState(initialValue);
   const [isHover, setIsHover] = useState(false);
@@ -43,10 +43,10 @@ export const EditableCell = ({
   const textRef = useRef<HTMLParagraphElement>(null);
   const [isEditCellOpen, setIsEditCellOpen] = useState(false);
   useOutsideClick({
-    ref: editCellRef,
     handler: () => {
       setIsEditCellOpen(false);
     },
+    ref: editCellRef,
   });
 
   const handleMouseEnter = () => {
@@ -91,80 +91,80 @@ export const EditableCell = ({
     <>
       {isEditCellOpen && (
         <Flex
-          position="absolute"
-          left={0}
-          top={0}
-          bg="transparent"
           width="full"
+          bg="transparent"
           height="full"
+          left={0}
+          zIndex={1}
           onClick={(e) => {
             e.stopPropagation();
             setIsEditCellOpen(false);
           }}
-          zIndex={1}
+          position="absolute"
+          top={0}
         />
       )}
       <Flex
         gap={1}
-        onMouseOver={handleMouseEnter}
-        onMouseOut={handleMouseOut}
-        position="relative"
         w="full"
+        onMouseOut={handleMouseOut}
+        onMouseOver={handleMouseEnter}
+        position="relative"
       >
         {isEditCellOpen ? (
           <Flex
-            direction="column"
-            position="absolute"
-            zIndex="sticky"
-            top="-32px"
-            left="-16px"
             bg="gray.800"
+            left="-16px"
             p={3}
+            zIndex="sticky"
             borderRadius="8px"
+            direction="column"
             onClick={(e) => e.stopPropagation()}
+            position="absolute"
+            top="-32px"
             ref={editCellRef}
           >
             <Flex alignItems="center" gap={1}>
               <Input
+                width="full"
+                maxLength={maxLength}
+                minH="40px"
+                minW="472px"
                 size="sm"
                 value={inputValue}
-                onChange={handleChange}
-                width="full"
-                minW="472px"
-                minH="40px"
-                maxLength={maxLength}
                 autoFocus
+                onChange={handleChange}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleSave();
                   else if (e.key === "Escape") handleCancel();
                 }}
               />
-              <Button size="sm" onClick={handleSave} variant="ghost">
+              <Button size="sm" variant="ghost" onClick={handleSave}>
                 <CustomIcon name="check" color="success.main" />
               </Button>
-              <Button onClick={handleCancel} size="sm" variant="ghost">
+              <Button size="sm" variant="ghost" onClick={handleCancel}>
                 <CustomIcon name="close" color="error.light" />
               </Button>
             </Flex>
-            <Text fontSize="body3" color="text.dark" ml={4} mt={2}>
+            <Text ml={4} mt={2} color="text.dark" fontSize="body3">
               Your input will be stored in this device only.
             </Text>
           </Flex>
         ) : (
           <Flex
-            position="relative"
-            w="fit-content"
-            maxW="full"
             align="center"
             gap={2}
+            maxW="full"
+            w="fit-content"
             onClick={(e) => {
               if (!isReadOnly) e.stopPropagation();
             }}
+            position="relative"
           >
             <Text
-              variant="body2"
               className="ellipsis"
               maxW="full"
+              variant="body2"
               onClick={(e) => e.stopPropagation()}
               onMouseOver={handleMouseEnterText}
               ref={textRef}
@@ -176,16 +176,16 @@ export const EditableCell = ({
             />
             {showName && (
               <Text
-                variant="body2"
-                top="-16px"
-                left="-16px"
-                borderRadius="8px"
                 bg={isReadOnly ? "gray.700" : "gray.800"}
-                whiteSpace="nowrap"
+                left="-16px"
                 p={4}
-                position="absolute"
+                variant="body2"
+                whiteSpace="nowrap"
                 zIndex="1"
+                borderRadius="8px"
                 onMouseOut={handleMouseOutText}
+                position="absolute"
+                top="-16px"
               >
                 {inputValue}
               </Text>
@@ -204,10 +204,10 @@ export const EditableCell = ({
             {!!onSave && !isReadOnly && (
               <Flex
                 cursor="pointer"
-                opacity={isHover ? 1 : 0}
                 onClick={handleEdit}
+                opacity={isHover ? 1 : 0}
               >
-                <CustomIcon name="edit" color="gray.600" boxSize={3} />
+                <CustomIcon name="edit" boxSize={3} color="gray.600" />
               </Flex>
             )}
           </Flex>

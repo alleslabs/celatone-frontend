@@ -9,54 +9,54 @@ import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
 import { PoolRoute, PoolSwap } from "./components";
 
 interface MsgSwapExactAmountInDetailProps {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: MsgSwapExactAmountInDetails;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: MsgSwapExactAmountInDetails;
+  msgIndex: number;
+  txHash: string;
 }
 
 export const MsgSwapExactAmountInDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  txHash,
 }: MsgSwapExactAmountInDetailProps) => (
-  <Flex w="full" direction="column" alignItems="start" gap={6}>
+  <Flex alignItems="start" gap={6} w="full" direction="column">
     <Flex gap={12}>
       <PoolInfoText title="Block height">
         <ExplorerLink
-          value={blockHeight.toString()}
           type="block_height"
-          showCopyOnHover
+          value={blockHeight.toString()}
           ampCopierSection={ampCopierSection}
+          showCopyOnHover
         />
       </PoolInfoText>
       <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
     </Flex>
     <Box w="full">
       <PoolSwap
-        txHash={txHash}
         exactInput={{
-          isExactIn: true,
           amount: msg.token_in,
           expectedDenom: msg.routes[msg.routes.length - 1].tokenOutDenom,
+          isExactIn: true,
         }}
-        msgIndex={msgIndex}
-        assetInfos={assetInfos}
         isOpened={isOpened}
+        msgIndex={msgIndex}
+        txHash={txHash}
         ampCopierSection={ampCopierSection}
+        assetInfos={assetInfos}
       />
       <PoolRoute
-        routes={msg.routes}
-        assetInfos={assetInfos}
         isOpened={isOpened}
         ampCopierSection={ampCopierSection}
+        assetInfos={assetInfos}
+        routes={msg.routes}
       />
     </Box>
   </Flex>

@@ -8,92 +8,92 @@ import type { IconKeys } from "lib/components/icon";
 import type { Option } from "lib/types";
 
 interface ActionInfo {
+  count: Option<number>;
+  disabled: boolean;
+  hidden: Option<boolean>;
   icon: IconKeys;
   iconColor: string;
   name: string;
-  count: Option<number>;
   onClick: MouseEventHandler<HTMLDivElement>;
-  disabled: boolean;
-  hidden: Option<boolean>;
 }
 
 interface ModuleActionsProps {
-  viewFns: number;
-  executeFns: number;
   allTxsCount: Option<number>;
+  executeFns: number;
   onSelectAction: (nextTab: TabIndex, fnType?: FunctionTypeTabIndex) => void;
+  viewFns: number;
 }
 
 export const ModuleActions = ({
-  viewFns,
-  executeFns,
   allTxsCount,
+  executeFns,
   onSelectAction,
+  viewFns,
 }: ModuleActionsProps) => {
   const { isFullTier } = useTierConfig();
 
   const actionList: ActionInfo[] = [
     {
+      count: viewFns,
+      disabled: viewFns === 0,
+      hidden: false,
       icon: "query" as IconKeys,
       iconColor: "primary.main",
       name: "View Functions",
-      count: viewFns,
       onClick: () =>
         onSelectAction(TabIndex.Function, FunctionTypeTabIndex.VIEW),
-      disabled: viewFns === 0,
-      hidden: false,
     },
     {
+      count: executeFns,
+      disabled: executeFns === 0,
+      hidden: false,
       icon: "execute" as IconKeys,
       iconColor: "secondary.main",
       name: "Execute Functions",
-      count: executeFns,
       onClick: () =>
         onSelectAction(TabIndex.Function, FunctionTypeTabIndex.EXECUTE),
-      disabled: executeFns === 0,
-      hidden: false,
     },
     {
+      count: allTxsCount,
+      disabled: allTxsCount === 0,
+      hidden: !isFullTier,
       icon: "list" as IconKeys,
       iconColor: "gray.600",
       name: "Transactions",
-      count: allTxsCount,
       onClick: () => onSelectAction(TabIndex.TxsHistories),
-      disabled: allTxsCount === 0,
-      hidden: !isFullTier,
     },
   ];
 
   return (
     <Flex
-      justifyContent="space-between"
-      direction={{ base: "column", md: "row" }}
       gap={{ base: 2, md: 6 }}
       mb={{ base: 2, md: 6 }}
+      direction={{ base: "column", md: "row" }}
+      justifyContent="space-between"
     >
       {actionList.map((item) => (
         <Flex
           key={item.name}
-          p={4}
-          transition="all .25s ease-in-out"
-          borderRadius={8}
-          w="full"
           alignItems="center"
-          justifyContent="space-between"
           display={item.hidden ? "none" : "flex"}
+          p={4}
+          w="full"
+          borderRadius={8}
+          justifyContent="space-between"
+          transition="all .25s ease-in-out"
           {...(item.disabled
             ? {
                 bg: "gray.900",
                 cursor: "not-allowed",
               }
             : {
-                bg: "gray.800",
                 _hover: { bg: "gray.700" },
+                bg: "gray.800",
                 cursor: "pointer",
                 onClick: item.onClick,
               })}
         >
-          <Flex gap={3} alignItems="center">
+          <Flex alignItems="center" gap={3}>
             <CustomIcon name={item.icon} boxSize={6} color={item.iconColor} />
             <Flex flexDirection="column">
               <Text variant="body1" color="text.dark" fontWeight={600}>

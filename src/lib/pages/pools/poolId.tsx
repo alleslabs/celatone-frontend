@@ -21,7 +21,7 @@ const InvalidPool = () => <InvalidState title="Pool does not exist" />;
 
 const PoolIdBody = ({ poolId }: { poolId: number }) => {
   const router = useRouter();
-  const { pool, isLoading } = useDerivedPoolData(poolId);
+  const { isLoading, pool } = useDerivedPoolData(poolId);
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_POOL_DETAILS);
@@ -38,8 +38,8 @@ const PoolIdBody = ({ poolId }: { poolId: number }) => {
       <PoolAssets pool={pool} />
       <PoolRelatedTxs pool={pool} />
       <UserDocsLink
-        title="What is Osmosis liquidity pools?"
         cta="Read more about Osmosis Pool Details"
+        title="What is Osmosis liquidity pools?"
         href="osmosis/pool-detail"
       />
     </>

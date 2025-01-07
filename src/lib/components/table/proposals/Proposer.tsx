@@ -5,23 +5,23 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { BechAddr, Option } from "lib/types";
 
 export const Proposer = ({
-  proposer,
   amptrackSection,
+  proposer,
 }: {
-  proposer: Option<BechAddr>;
   amptrackSection?: string;
+  proposer: Option<BechAddr>;
 }) => {
   const getAddressType = useGetAddressType();
   return proposer ? (
     <ExplorerLink
+      textVariant="body2"
       type={getAddressType(proposer)}
       value={proposer}
-      showCopyOnHover
       ampCopierSection={amptrackSection}
-      textVariant="body2"
+      showCopyOnHover
     />
   ) : (
-    <Text color="text.dark" variant="body2">
+    <Text variant="body2" color="text.dark">
       N/A
     </Text>
   );

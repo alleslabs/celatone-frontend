@@ -26,15 +26,15 @@ export const Upload = ({
   const navigate = useInternalNavigate();
   const { data, isLoading } = useUploadAccessParamsLcd();
   const {
-    proceed,
-    formData,
     estimatedFee,
+    formData,
+    isDisabledProcess,
+    isSimulating,
+    proceed,
+    setDefaultBehavior,
     setEstimatedFee,
     shouldNotSimulate,
-    setDefaultBehavior,
     simulateStatus,
-    isSimulating,
-    isDisabledProcess,
   } = useUploadCode(onComplete, false);
 
   const enableUpload =
@@ -52,45 +52,45 @@ export const Upload = ({
     <>
       <ActionPageContainer>
         <CelatoneSeo pageName="Upload Wasm File" />
-        <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
+        <Text mb={3} variant="body1" color="text.dark" fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>
-        <Stepper mode="deploy" currentStep={1} />
-        <Flex direction="column" alignItems="center" my={12}>
+        <Stepper currentStep={1} mode="deploy" />
+        <Flex alignItems="center" my={12} direction="column">
           <Heading as="h5" variant="h5">
             Upload Wasm file
           </Heading>
           <UserDocsLink
-            isDevTool
-            mt={2}
             cta="View Upload Guideline"
+            mt={2}
+            isDevTool
             href="cosmwasm/upload-instantiate#upload-wasm-to-store-code"
           />
         </Flex>
         <ConnectWalletAlert
-          subtitle="You need to connect your wallet first"
           mb={12}
+          subtitle="You need to connect your wallet first"
         />
         <UploadSection
-          formData={formData}
           estimatedFee={estimatedFee}
-          setEstimatedFee={setEstimatedFee}
-          shouldNotSimulate={shouldNotSimulate}
-          setDefaultBehavior={setDefaultBehavior}
-          simulateStatus={simulateStatus}
           isSimulating={isSimulating}
+          setEstimatedFee={setEstimatedFee}
+          simulateStatus={simulateStatus}
+          formData={formData}
+          setDefaultBehavior={setDefaultBehavior}
+          shouldNotSimulate={shouldNotSimulate}
         />
       </ActionPageContainer>
       <FooterCta
-        cancelButton={{
-          leftIcon: <CustomIcon name="chevron-left" />,
-          onClick: router.back,
-        }}
         actionButton={{
           isDisabled: isDisabledProcess,
           onClick: proceed,
         }}
         actionLabel="Upload"
+        cancelButton={{
+          leftIcon: <CustomIcon name="chevron-left" />,
+          onClick: router.back,
+        }}
       />
     </>
   );

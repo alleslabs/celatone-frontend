@@ -3,11 +3,11 @@ import { z } from "zod";
 import { zBechAddr32 } from "lib/types";
 
 export enum TabIndex {
-  Overview = "overview",
   Assets = "assets",
   Delegations = "delegations",
-  TxsHistories = "txs-histories",
+  Overview = "overview",
   States = "states",
+  TxsHistories = "txs-histories",
 }
 
 export const zContractDetailsQueryParams = z.object({

@@ -13,31 +13,31 @@ import { sendingTx } from "./common/sending";
 
 interface InstantiateTxParams {
   address: BechAddr20;
-  messages: EncodeObject[];
-  label: string;
   fee: StdFee;
-  signAndBroadcast: SignAndBroadcast;
+  label: string;
+  messages: EncodeObject[];
+  onTxFailed?: () => void;
   onTxSucceed?: (
     txInfo: DeliverTxResponse,
     contractLabel: string,
     contractAddress: BechAddr32
   ) => void;
-  onTxFailed?: () => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const instantiateContractTx = ({
   address,
-  messages,
-  label,
   fee,
-  signAndBroadcast,
-  onTxSucceed,
+  label,
+  messages,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcast,
 }: InstantiateTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       const contractAddress =

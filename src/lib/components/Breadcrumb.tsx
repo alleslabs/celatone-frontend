@@ -11,8 +11,8 @@ import { AppLink } from "./AppLink";
 import { CustomIcon } from "./icon";
 
 type BreadcrumbItemProps = {
-  text: Option<string>;
   href?: string;
+  text: Option<string>;
 };
 
 type BreadcrumbProps = {
@@ -22,37 +22,37 @@ type BreadcrumbProps = {
 
 export const Breadcrumb = ({ items, mb = 0 }: BreadcrumbProps) => (
   <ChakraBreadcrumb
-    w="full"
-    spacing="4px"
     mb={mb}
+    spacing="4px"
+    w="full"
     separator={
-      <CustomIcon name="chevron-right" boxSize={3} color="gray.600" mb="6px" />
+      <CustomIcon mb="6px" name="chevron-right" boxSize={3} color="gray.600" />
     }
   >
     {items.map((item) =>
       item.href ? (
         item.text && (
           <ChakraBreadcrumbItem
+            key={`bc-${item.href}`}
             _hover={{ opacity: 0.8 }}
             transition="all 0.25s ease-in-out"
-            key={`bc-${item.href}`}
           >
             <AppLink
               color="text.dark"
-              href={item.href}
               onClick={() => track(AmpEvent.USE_BREADCRUMB)}
+              href={item.href}
             >
               {item.text}
             </AppLink>
           </ChakraBreadcrumbItem>
         )
       ) : (
-        <ChakraBreadcrumbItem isCurrentPage key={`bc-${item.text}`}>
+        <ChakraBreadcrumbItem key={`bc-${item.text}`} isCurrentPage>
           <Text
-            variant={{ base: "body3", md: "body2" }}
             className="ellipsis"
-            fontWeight={600}
+            variant={{ base: "body3", md: "body2" }}
             color="text.main"
+            fontWeight={600}
           >
             {item.text}
           </Text>

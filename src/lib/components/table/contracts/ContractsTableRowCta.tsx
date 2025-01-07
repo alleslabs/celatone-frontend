@@ -33,10 +33,10 @@ import { dateFromNow, formatUTC } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "36px",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 
@@ -46,14 +46,14 @@ export interface CtaInfo {
 
 interface ContractsTableRowCtaProps {
   contractInfo: ContractInfo;
-  withCta?: CtaInfo;
   showLastUpdate?: boolean;
+  withCta?: CtaInfo;
 }
 
 export const ContractsTableRowCta = ({
   contractInfo,
-  withCta,
   showLastUpdate = true,
+  withCta,
 }: ContractsTableRowCtaProps) => {
   const { address } = useCurrentChain();
   const { isFullTier } = useTierConfig();
@@ -71,20 +71,20 @@ export const ContractsTableRowCta = ({
           <AppLink
             href={`/interact-contract?selectedType=${ContractInteractionTabs.Execute}&contract=${contractInfo.contractAddress}`}
           >
-            <Button variant="outline-gray" size="sm">
+            <Button size="sm" variant="outline-gray">
               Execute
             </Button>
           </AppLink>
           <AppLink
             href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${contractInfo.contractAddress}`}
           >
-            <Button variant="outline-gray" size="sm">
+            <Button size="sm" variant="outline-gray">
               Query
             </Button>
           </AppLink>
           {isFullTier && (
             <AppLink href={`/migrate?contract=${contractInfo.contractAddress}`}>
-              <Button variant="outline-gray" size="sm" isDisabled={!isAdmin}>
+              <Button isDisabled={!isAdmin} size="sm" variant="outline-gray">
                 Migrate
               </Button>
             </AppLink>
@@ -94,16 +94,15 @@ export const ContractsTableRowCta = ({
       <TableRow>
         <Menu>
           <MenuButton
+            as={Button}
             size="sm"
             variant="ghost-gray"
-            as={Button}
             onClick={(e) => e.stopPropagation()}
           >
             <CustomIcon name="more" boxSize="16px" color="gray.600" />
           </MenuButton>
           <MenuList onClick={(e) => e.stopPropagation()}>
             <EditContractDetailsModal
-              contractLocalInfo={contractInfo}
               triggerElement={
                 <MenuItem
                   icon={
@@ -113,9 +112,9 @@ export const ContractsTableRowCta = ({
                   Edit details
                 </MenuItem>
               }
+              contractLocalInfo={contractInfo}
             />
             <AddToOtherListModal
-              contractLocalInfo={contractInfo}
               triggerElement={
                 <MenuItem
                   icon={
@@ -129,10 +128,12 @@ export const ContractsTableRowCta = ({
                   Add or remove from lists
                 </MenuItem>
               }
+              contractLocalInfo={contractInfo}
             />
             {isFullTier && (
               <>
                 <MenuItem
+                  isDisabled={!isAdmin}
                   icon={
                     <CustomIcon name="admin" boxSize="16px" color="gray.600" />
                   }
@@ -142,14 +143,13 @@ export const ContractsTableRowCta = ({
                       query: { contract: contractInfo.contractAddress },
                     });
                   }}
-                  isDisabled={!isAdmin}
                 >
                   Update Admin
                 </MenuItem>
                 <ClearAdminModal
-                  contractAddress={contractInfo.contractAddress}
                   triggerElement={
                     <MenuItem
+                      isDisabled={!isAdmin}
                       icon={
                         <CustomIcon
                           name="admin-clear"
@@ -157,11 +157,11 @@ export const ContractsTableRowCta = ({
                           color="gray.600"
                         />
                       }
-                      isDisabled={!isAdmin}
                     >
                       Clear Admin
                     </MenuItem>
                   }
+                  contractAddress={contractInfo.contractAddress}
                 />
               </>
             )}
@@ -172,8 +172,8 @@ export const ContractsTableRowCta = ({
                   contractLocalInfo={contractInfo}
                   contractRemovalInfo={withCta.removingContractList}
                   menuItemProps={{
-                    icon: <CustomIcon name="delete" color="error.light" />,
                     children: "Remove from this list",
+                    icon: <CustomIcon name="delete" color="error.light" />,
                   }}
                 />
               </>
@@ -187,10 +187,10 @@ export const ContractsTableRowCta = ({
       {showLastUpdate && (
         <TableRow>
           <Flex
-            direction="column"
             gap={1}
-            onClick={(e) => e.stopPropagation()}
             cursor="text"
+            direction="column"
+            onClick={(e) => e.stopPropagation()}
           >
             {contractInfo.latestUpdated ? (
               <>
@@ -213,25 +213,25 @@ export const ContractsTableRowCta = ({
         <Box onClick={(e) => e.stopPropagation()}>
           {contractInfo.lists ? (
             <AddToOtherListModal
-              contractLocalInfo={contractInfo}
               triggerElement={
                 <StyledIconButton
                   aria-label="button"
-                  icon={<CustomIcon name="bookmark-solid" />}
                   variant="ghost-primary"
+                  icon={<CustomIcon name="bookmark-solid" />}
                 />
               }
+              contractLocalInfo={contractInfo}
             />
           ) : (
             <SaveContractDetailsModal
-              contractLocalInfo={contractInfo}
               triggerElement={
                 <StyledIconButton
                   aria-label="button"
-                  icon={<CustomIcon name="bookmark" />}
                   variant="ghost-gray"
+                  icon={<CustomIcon name="bookmark" />}
                 />
               }
+              contractLocalInfo={contractInfo}
             />
           )}
         </Box>

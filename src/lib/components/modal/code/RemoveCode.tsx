@@ -9,10 +9,10 @@ import { getNameAndDescriptionDefault, shortenName } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "36px",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 
@@ -28,8 +28,8 @@ export function RemoveCodeModal({
   trigger = (
     <StyledIconButton
       aria-label="button"
-      icon={<CustomIcon name="delete" />}
       variant="ghost-gray"
+      icon={<CustomIcon name="delete" />}
     />
   ),
 }: RemoveCodeModalProps) {
@@ -42,31 +42,31 @@ export function RemoveCodeModal({
     removeSavedCode(codeId);
 
     toast({
+      duration: 5000,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      isClosable: false,
+      position: "bottom-right",
+      status: "success",
       title: `Removed \u2018${
         shortenName(getNameAndDescriptionDefault(name), 20) || codeId
       }\u2019 from Saved Codes`,
-      status: "success",
-      duration: 5000,
-      isClosable: false,
-      position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   }, [codeId, name, removeSavedCode, toast]);
 
   return (
     <ActionModal
+      mainBtnTitle="Yes, Remove It"
+      mainVariant="error"
       title={
         name
           ? `Remove \u2018${shortenName(name, 20)}\u2019?`
           : `Remove Code ID: ${codeId} ?`
       }
+      trigger={trigger}
       icon="delete"
       iconColor="error.light"
-      mainVariant="error"
-      mainBtnTitle="Yes, Remove It"
       mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
-      trigger={trigger}
     >
       <Text>
         You can save this code again later, but you will need to add its new

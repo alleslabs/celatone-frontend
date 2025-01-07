@@ -17,36 +17,40 @@ import { sendingTx } from "./common/sending";
 
 interface MigrateTxParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   fee: StdFee;
-  signAndBroadcast: SignAndBroadcast;
-  onTxSucceed?: (txHash: string) => void;
+  messages: EncodeObject[];
   onTxFailed?: () => void;
+  onTxSucceed?: (txHash: string) => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const migrateContractTx = ({
   address,
-  messages,
   fee,
-  signAndBroadcast,
-  onTxSucceed,
+  messages,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcast,
 }: MigrateTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.(txInfo.transactionHash);
       const txFee = findAttr(txInfo.events, "tx", "fee");
       return {
-        value: null,
+        actionVariant: "migrate",
         phase: TxStreamPhase.SUCCEED,
+        receiptInfo: {
+          header: "Migration Complete!",
+          headerIcon: (
+            <CustomIcon name="check-circle-solid" color="success.main" />
+          ),
+        },
         receipts: [
           {
-            title: "Tx Hash",
-            value: txInfo.transactionHash,
             html: (
               <ExplorerLink
                 type="tx_hash"
@@ -54,24 +58,20 @@ export const migrateContractTx = ({
                 openNewTab
               />
             ),
+            title: "Tx Hash",
+            value: txInfo.transactionHash,
           },
           {
-            title: "Tx Fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
+            title: "Tx Fee",
           },
         ],
-        receiptInfo: {
-          header: "Migration Complete!",
-          headerIcon: (
-            <CustomIcon name="check-circle-solid" color="success.main" />
-          ),
-        },
-        actionVariant: "migrate",
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

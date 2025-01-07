@@ -25,7 +25,7 @@ export function EditListNameModal({
 }: EditListNameModalProps) {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
-  const { renameList, isContractListExist } = useContractStore();
+  const { isContractListExist, renameList } = useContractStore();
   const navigate = useInternalNavigate();
   const toast = useToast();
 
@@ -39,14 +39,14 @@ export function EditListNameModal({
       setStatus({ state: "init" });
     } else if (trimedListName.length > constants.maxListNameLength)
       setStatus({
-        state: "error",
         message: getMaxLengthError(trimedListName.length, "list_name"),
+        state: "error",
       });
     else if (
       formatSlugName(listName) !== list.value &&
       isContractListExist(listName)
     )
-      setStatus({ state: "error", message: "Already existed" });
+      setStatus({ message: "Already existed", state: "error" });
     else setStatus({ state: "success" });
   }, [
     constants.maxListNameLength,
@@ -61,22 +61,23 @@ export function EditListNameModal({
     // TODO: check list name and different toast status
     renameList(list.value, listName);
     toast({
+      duration: 5000,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      isClosable: false,
+      position: "bottom-right",
+      status: "success",
       title: `Edit ${shortenName(list.label)} to ${shortenName(
         listName
       )} successfully`,
-      status: "success",
-      duration: 5000,
-      isClosable: false,
-      position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   };
   return (
     <ActionModal
-      title="Edit list name"
-      icon="edit"
-      trigger={<MenuItem {...menuItemProps} as="button" />}
+      disabledMain={status.state !== "success"}
       mainBtnTitle="Save"
+      title="Edit list name"
+      trigger={<MenuItem {...menuItemProps} as="button" />}
+      icon="edit"
       mainAction={() => {
         handleSave();
         if (reroute)
@@ -86,16 +87,15 @@ export function EditListNameModal({
             replace: true,
           });
       }}
-      disabledMain={status.state !== "success"}
       otherAction={() => setListName(list.label)}
     >
       <TextInput
-        variant="fixed-floating"
-        value={listName}
-        setInputState={setListName}
-        labelBgColor="gray.900"
-        status={status}
         label="List Name"
+        setInputState={setListName}
+        status={status}
+        value={listName}
+        variant="fixed-floating"
+        labelBgColor="gray.900"
       />
     </ActionModal>
   );

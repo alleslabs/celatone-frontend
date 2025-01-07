@@ -23,10 +23,10 @@ import type { ProposalType } from "lib/types";
 import { ProposalTypeCosmos } from "lib/types";
 
 export interface ProposalTypeFilterProps extends InputProps {
-  result: ProposalType[];
-  minW?: string;
   label?: string;
+  minW?: string;
   placeholder?: string;
+  result: ProposalType[];
   setResult: Dispatch<SetStateAction<ProposalType[]>>;
 }
 
@@ -38,11 +38,11 @@ export const ProposalTypeFilter = forwardRef<
 >(
   (
     {
-      result,
-      minW = "50%",
-      setResult,
-      placeholder,
       label,
+      minW = "50%",
+      placeholder,
+      result,
+      setResult,
     }: ProposalTypeFilterProps,
     ref
   ) => {
@@ -53,8 +53,8 @@ export const ProposalTypeFilter = forwardRef<
     const boxRef = useRef<HTMLDivElement>(null);
 
     useOutsideClick({
-      ref: boxRef,
       handler: () => setIsDropdown(false),
+      ref: boxRef,
     });
 
     const dropdownValue = useMemo(() => {
@@ -93,26 +93,21 @@ export const ProposalTypeFilter = forwardRef<
     );
 
     return (
-      <FormControl w="full" h={8} ref={boxRef} minW={minW}>
+      <FormControl h={8} minW={minW} w="full" ref={boxRef}>
         <FilterInput
           keyword={keyword}
-          placeholder={placeholder}
-          result={result}
-          label={label}
           inputRef={inputRef}
-          ref={ref}
-          isDropdown={isDropdown}
-          setKeyword={setKeyword}
-          setIsDropdown={setIsDropdown}
+          label={label}
+          result={result}
           chipContainerComponent={
-            <Flex alignItems="center" pl={2} gap={2}>
+            <Flex alignItems="center" gap={2} pl={2}>
               {result.map((option) => (
                 <FilterChip
                   key={option}
                   chipComponent={
                     <Tag>
                       {option}
-                      <CustomIcon name="close" boxSize={3} mr={0} />
+                      <CustomIcon mr={0} name="close" boxSize={3} />
                     </Tag>
                   }
                   onSelect={() => selectOption(option)}
@@ -120,6 +115,11 @@ export const ProposalTypeFilter = forwardRef<
               ))}
             </Flex>
           }
+          isDropdown={isDropdown}
+          placeholder={placeholder}
+          setIsDropdown={setIsDropdown}
+          setKeyword={setKeyword}
+          ref={ref}
         />
         {isDropdown && (
           <DropdownContainer maxH="450px">

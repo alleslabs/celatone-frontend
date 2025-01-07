@@ -26,11 +26,11 @@ export const FileNamesCell = ({ task }: FileNamesCellProps) => {
 
   return (
     <Flex
-      borderRadius="8px"
-      bgColor={isHoverText ? "gray.800" : "undefined"}
-      onMouseOver={() => setIsHoverText(true)}
-      onMouseOut={() => setIsHoverText(false)}
       flexWrap="wrap"
+      bgColor={isHoverText ? "gray.800" : "undefined"}
+      borderRadius="8px"
+      onMouseOut={() => setIsHoverText(false)}
+      onMouseOver={() => setIsHoverText(true)}
       wordBreak="break-word"
     >
       <Text>{formattedText}</Text>

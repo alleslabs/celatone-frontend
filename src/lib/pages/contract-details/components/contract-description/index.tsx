@@ -10,36 +10,36 @@ import type { Nullable, Option, PublicContractInfo } from "lib/types";
 import { UserContractDesc } from "./UserContractDesc";
 
 interface ContractDescProps {
-  publicInfo: Nullable<PublicContractInfo>;
   contract: Contract;
   contractLocalInfo: Option<ContractLocalInfo>;
+  publicInfo: Nullable<PublicContractInfo>;
 }
 export const ContractDesc = ({
-  publicInfo,
   contract,
   contractLocalInfo,
+  publicInfo,
 }: ContractDescProps) => {
   const isMobile = useMobile();
 
   return (
     <Flex
-      direction={{ base: "column", md: "row" }}
       gap={{ base: 4, md: 6 }}
       mb={{ base: 0, md: 4 }}
+      direction={{ base: "column", md: "row" }}
     >
       {publicInfo?.description && (
         <PublicDescription
+          textLine={contractLocalInfo?.description ? 4 : 2}
           title="Public Contract Description"
           description={publicInfo.description}
-          textLine={contractLocalInfo?.description ? 4 : 2}
           icon={<CustomIcon name="public-project" color="gray.600" />}
         />
       )}
       {!isMobile && contractLocalInfo && (
         <UserContractDesc
-          publicInfo={publicInfo}
           contract={contract}
           contractLocalInfo={contractLocalInfo}
+          publicInfo={publicInfo}
         />
       )}
     </Flex>

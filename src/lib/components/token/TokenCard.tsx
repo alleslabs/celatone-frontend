@@ -15,56 +15,56 @@ import {
 import { TokenImageRender } from "./TokenImageRender";
 
 interface TokenCardProps extends FlexProps {
-  token: TokenWithValue;
   amptrackSection?: string;
+  token: TokenWithValue;
 }
 
 export const TokenCard = ({
-  token,
   amptrackSection,
+  token,
   ...cardProps
 }: TokenCardProps) => (
   <Tooltip label={`Token ID: ${token.denom}`} textAlign="center">
     <Flex
       className="copier-wrapper"
-      direction="column"
-      minH="101px"
       gap={2}
+      minH="101px"
       p={3}
       background="gray.900"
       borderRadius="8px"
+      direction="column"
       {...cardProps}
     >
-      <Flex gap={1} alignItems="center">
+      <Flex alignItems="center" gap={1}>
         <TokenImageRender
-          logo={token.logo}
           alt={getTokenLabel(token.denom, token.symbol)}
           boxSize={6}
+          logo={token.logo}
         />
-        <Text variant="body2" className="ellipsis" maxW="91" fontWeight="bold">
+        <Text className="ellipsis" maxW="91" variant="body2" fontWeight="bold">
           {token.symbol}
         </Text>
-        <Badge variant="gray" ml={2}>
+        <Badge ml={2} variant="gray">
           {!isUndefined(token.price) ? formatPrice(token.price) : "N/A"}
         </Badge>
         <Copier
+          display={{ base: "flex", md: "none" }}
+          ml={1}
           type={
             isSupportedToken(token) ? "supported_asset" : "unsupported_asset"
           }
           value={token.denom}
-          copyLabel="Token ID Copied!"
-          display={{ base: "flex", md: "none" }}
-          ml={1}
           amptrackSection={amptrackSection}
+          copyLabel="Token ID Copied!"
         />
       </Flex>
       <Flex
-        direction="column"
+        pt={2}
         borderTop="1px solid"
         borderTopColor="gray.700"
-        pt={2}
+        direction="column"
       >
-        <Text fontWeight={700} variant="body2">
+        <Text variant="body2" fontWeight={700}>
           {formatUTokenWithPrecision(token.amount, token.precision ?? 0, false)}
         </Text>
         <Text variant="body3" color="text.dark">

@@ -13,27 +13,27 @@ const JsonEditor = dynamic(() => import("lib/components/json/JsonEditor"), {
 });
 
 interface JsonReadOnlyProps {
-  topic?: string;
-  labelBgColor?: string;
-  text: string;
-  canCopy?: boolean;
-  isExpandable?: boolean;
-  showLines?: number;
-  fullWidth?: boolean;
   amptrackSection?: string;
+  canCopy?: boolean;
+  fullWidth?: boolean;
+  isExpandable?: boolean;
+  labelBgColor?: string;
+  showLines?: number;
+  text: string;
+  topic?: string;
 }
 
 const THRESHOLD_LINES = 16;
 
 const JsonReadOnly = ({
-  topic,
-  labelBgColor = "background.main",
-  text,
-  canCopy,
-  isExpandable,
-  showLines,
-  fullWidth,
   amptrackSection,
+  canCopy,
+  fullWidth,
+  isExpandable,
+  labelBgColor = "background.main",
+  showLines,
+  text,
+  topic,
 }: JsonReadOnlyProps) => {
   const [viewFull, setViewFull] = useState(false);
 
@@ -57,41 +57,42 @@ const JsonReadOnly = ({
 
   return (
     <Box
+      borderWidth="thin"
       minH={{ base: "360px", md: "auto" }}
       p="16px 12px"
-      position="relative"
-      borderWidth="thin"
+      w={fullWidth ? "full" : undefined}
+      _hover={{
+        "& .copy-button-box": { display: "block" },
+        borderColor: isJsonValid && "gray.600",
+      }}
       borderColor={!isJsonValid ? "error.main" : "gray.700"}
       borderRadius="8px"
+      position="relative"
       transition="all 0.25s ease-in-out"
-      _hover={{
-        borderColor: isJsonValid && "gray.600",
-        "& .copy-button-box": { display: "block" },
-      }}
-      w={fullWidth ? "full" : undefined}
     >
       <Box p="16px 12px">
         <JsonEditor
-          value={text}
-          readOnly
           isValid={isJsonValid}
+          readOnly
+          value={text}
           showLines={actualShowLines}
         />
       </Box>
       {!!topic && (
         <Text
-          top="-10px"
           w="fit-content"
           background={labelBgColor}
           color={!isJsonValid ? "error.main" : "text.dark"}
           fontSize="12px"
           position="absolute"
+          top="-10px"
         >
           {topic}
         </Text>
       )}
       {showExpandButton && (
         <ViewFullMsgButton
+          viewFull={viewFull}
           onClick={() => {
             trackUseExpand({
               action: viewFull ? "collapse" : "expand",
@@ -100,16 +101,15 @@ const JsonReadOnly = ({
             });
             setViewFull((prev) => !prev);
           }}
-          viewFull={viewFull}
         />
       )}
       {canCopy && (
         <Box
-          position="absolute"
-          top="10px"
-          right="10px"
           className="copy-button-box"
           display="none"
+          right="10px"
+          position="absolute"
+          top="10px"
         >
           <CopyButton value={text} amptrackSection={amptrackSection} />
         </Box>

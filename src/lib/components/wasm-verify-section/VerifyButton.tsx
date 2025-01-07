@@ -4,34 +4,34 @@ import { WasmVerifySubmitModal } from "lib/components/modal";
 import type { BechAddr32, WasmVerifyStatus } from "lib/types";
 
 interface VerifyButtonProps {
-  codeId: number;
   codeHash: string;
-  wasmVerifyStatus: WasmVerifyStatus;
-  relatedVerifiedCodes?: number[];
+  codeId: number;
   contractAddress?: BechAddr32;
   label?: string;
   minW?: string;
+  relatedVerifiedCodes?: number[];
+  wasmVerifyStatus: WasmVerifyStatus;
 }
 
 export const VerifyButton = ({
-  codeId,
   codeHash,
-  wasmVerifyStatus,
-  relatedVerifiedCodes,
+  codeId,
   contractAddress,
   label = "Verify code",
   minW = "96px",
+  relatedVerifiedCodes,
+  wasmVerifyStatus,
 }: VerifyButtonProps) => (
   <WasmVerifySubmitModal
-    codeId={codeId}
-    codeHash={codeHash}
-    wasmVerifyStatus={wasmVerifyStatus}
-    relatedVerifiedCodes={relatedVerifiedCodes}
-    contractAddress={contractAddress}
     triggerElement={
-      <Button variant="ghost-primary" size="sm" minW={minW}>
+      <Button minW={minW} size="sm" variant="ghost-primary">
         {label}
       </Button>
     }
+    wasmVerifyStatus={wasmVerifyStatus}
+    codeHash={codeHash}
+    codeId={codeId}
+    contractAddress={contractAddress}
+    relatedVerifiedCodes={relatedVerifiedCodes}
   />
 );

@@ -12,21 +12,21 @@ export const AddNetwork = () => {
   return (
     <ActionPageContainer>
       <CelatoneSeo pageName="Add Minitias" />
-      <Flex direction="column" gap={12}>
-        <Flex direction="column" gap={4} textAlign="center">
+      <Flex gap={12} direction="column">
+        <Flex gap={4} textAlign="center" direction="column">
           <Heading as="h4" variant="h4">
             Add Custom Minitia
           </Heading>
           <Alert my={4} p={3} variant="info">
             <AlertDescription>
-              <Text color="text.dark" textAlign="center" lineHeight="normal">
+              <Text lineHeight="normal" textAlign="center" color="text.dark">
                 Please note that the custom Minitia you add on our website will
                 only be stored locally on your device.
               </Text>
             </AlertDescription>
           </Alert>
         </Flex>
-        <Flex direction="column" gap={4}>
+        <Flex gap={4} direction="column">
           <ButtonCard
             title="Fill in Network Details Manually"
             description="Add new Minitia through fill in each configuration manually"

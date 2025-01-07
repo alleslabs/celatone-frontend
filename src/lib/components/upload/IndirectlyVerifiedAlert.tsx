@@ -11,7 +11,7 @@ interface IndirectlyVerifiedAlertProps {
 export const IndirectlyVerifiedAlert = ({
   relatedVerifiedCodes = [],
 }: IndirectlyVerifiedAlertProps) => (
-  <Alert variant="secondary" alignItems="center">
+  <Alert alignItems="center" variant="secondary">
     <Flex gap={2}>
       <CustomIcon name="info-circle" boxSize={4} />
       <AlertDescription wordBreak="break-word">

@@ -21,35 +21,35 @@ const zContractCreated = z.object({
 const zContractRest = z.object({
   address: zBechAddr32,
   contract_info: z.object({
-    code_id: z.string(),
-    creator: zBechAddr,
     admin: z.string(),
-    label: z.string(),
+    code_id: z.string(),
     created: zContractCreated.nullable(),
-    ibc_port_id: z.string(),
+    creator: zBechAddr,
     extension: z.string().nullable(),
+    ibc_port_id: z.string(),
+    label: z.string(),
   }),
 });
 export type ContractRest = z.infer<typeof zContractRest>;
 
 const zContractsResponseItem = z
   .object({
-    contract_address: zBechAddr32,
-    label: z.string(),
-    code_id: z.number(),
     admin: zBechAddr.nullable(),
+    code_id: z.number(),
+    contract_address: zBechAddr32,
     instantiator: zBechAddr.nullable(),
+    label: z.string(),
     latest_updated: zUtcDate.nullable(),
     latest_updater: zBechAddr.optional(),
     remark: zContractHistoryRemark.optional(),
   })
   .transform<ContractInfo>((val) => ({
-    contractAddress: val.contract_address,
-    label: val.label,
-    codeId: val.code_id,
     // TODO: change contract info optional fields to nullable fields
     admin: val.admin ?? undefined,
+    codeId: val.code_id,
+    contractAddress: val.contract_address,
     instantiator: val.instantiator ?? undefined,
+    label: val.label,
     latestUpdated: val.latest_updated ?? undefined,
     latestUpdater: val.latest_updater,
     remark: val.remark,
@@ -64,11 +64,11 @@ export type ContractsResponse = z.infer<typeof zContractsResponse>;
 
 const zContractsResponseItemLcd = zBechAddr32.transform<ContractInfo>(
   (val) => ({
-    contractAddress: val,
-    label: "",
-    codeId: undefined,
     admin: undefined,
+    codeId: undefined,
+    contractAddress: val,
     instantiator: undefined,
+    label: "",
     latestUpdated: undefined,
     latestUpdater: undefined,
     remark: undefined,
@@ -77,8 +77,8 @@ const zContractsResponseItemLcd = zBechAddr32.transform<ContractInfo>(
 
 export const zContractsResponseLcd = z
   .object({
-    contracts: z.array(zContractsResponseItemLcd).default([]), // by code id case
     contract_addresses: z.array(zContractsResponseItemLcd).optional(),
+    contracts: z.array(zContractsResponseItemLcd).default([]), // by code id case
     pagination: zPagination,
   })
   .transform((val) => ({
@@ -90,8 +90,8 @@ export const zContract = z
   .object({
     address: zBechAddr32,
     admin: zBechAddr.nullable(),
-    code_id: z.number().positive(),
     code_hash: z.string().transform(parseTxHash),
+    code_id: z.number().positive(),
     created_height: z.number().nullable(),
     created_timestamp: zUtcDate.nullable(),
     cw2_contract: z.string().nullable(),
@@ -125,8 +125,8 @@ export const zContractLcd = zContractRest.transform<ContractData>((val) => ({
     admin: val.contract_info.admin.length
       ? zBechAddr.parse(val.contract_info.admin)
       : null,
-    codeId: Number(val.contract_info.code_id),
     codeHash: "",
+    codeId: Number(val.contract_info.code_id),
     createdHeight: val.contract_info.created
       ? Number(val.contract_info.created.block_height)
       : null,
@@ -147,9 +147,9 @@ export const zContractLcd = zContractRest.transform<ContractData>((val) => ({
 
 export const zContractTableCounts = z
   .object({
-    tx: z.number().nullish(),
     migration: z.number().nullish(),
     related_proposal: z.number().nullish(),
+    tx: z.number().nullish(),
   })
   .transform(snakeToCamel);
 export type ContractTableCounts = z.infer<typeof zContractTableCounts>;
@@ -185,25 +185,25 @@ export const zContractQueryMsgs = z
 
 export const zMigrationHistoriesResponseItemLcd = z
   .object({
-    operation: zRemarkOperation,
     code_id: z.coerce.number().positive(),
-    updated: zContractCreated,
     msg: z.object({}).passthrough(),
+    operation: zRemarkOperation,
+    updated: zContractCreated,
   })
   .transform<ContractMigrationHistory>((val) => ({
     codeId: val.code_id,
     codeName: undefined,
+    cw2Contract: null,
+    cw2Version: null,
     height: Number(val.updated.block_height),
-    timestamp: null,
-    uploader: null,
+    msg: JSON.stringify(val.msg),
     remark: {
       operation: val.operation,
       type: null,
     },
     sender: null,
-    cw2Contract: null,
-    cw2Version: null,
-    msg: JSON.stringify(val.msg),
+    timestamp: null,
+    uploader: null,
   }));
 export type MigrationHistoriesResponseItemLcd = z.infer<
   typeof zMigrationHistoriesResponseItemLcd
@@ -241,17 +241,17 @@ export type ContractCw2InfoLcd = z.infer<typeof zContractCw2InfoLcd>;
 
 const zAllAdminContractsResponseItem = z
   .object({
-    contract_address: zBechAddr32,
-    label: z.string(),
     code_id: z.number(),
+    contract_address: zBechAddr32,
     instantiator: zBechAddr.nullable(),
+    label: z.string(),
   })
   .transform<ContractInfo>((val) => ({
-    contractAddress: val.contract_address,
-    label: val.label,
-    codeId: val.code_id,
     admin: undefined,
+    codeId: val.code_id,
+    contractAddress: val.contract_address,
     instantiator: val.instantiator ?? undefined,
+    label: val.label,
     latestUpdated: undefined,
     latestUpdater: undefined,
     remark: undefined,
@@ -265,8 +265,8 @@ export const zContractAdminsResponse = z
   .object({
     items: z
       .object({
-        contract_address: zBechAddr32,
         admin: zBechAddr.nullable(),
+        contract_address: zBechAddr32,
       })
       .array(),
   })

@@ -22,9 +22,9 @@ import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 import { CodeInfoLabelText } from "./CodeInfoLabelText";
 
 interface CodeInfoSectionProps {
-  code: Code;
-  chainId: string;
   attached: boolean;
+  chainId: string;
+  code: Code;
   toJsonSchemaTab: () => void;
 }
 
@@ -33,7 +33,7 @@ const getMethodSpecificRender = (
   transaction: Option<Code["transaction"]>
 ): { methodRender: JSX.Element; storedBlockRender: JSX.Element } => {
   if (proposal) {
-    const { id, height, created } = proposal;
+    const { created, height, id } = proposal;
     return {
       methodRender: (
         <CodeInfoLabelText label="Proposal ID">
@@ -66,7 +66,7 @@ const getMethodSpecificRender = (
   }
 
   if (transaction) {
-    const { hash, height, created } = transaction;
+    const { created, hash, height } = transaction;
     return {
       methodRender: (
         <CodeInfoLabelText label="Upload Transaction">
@@ -108,9 +108,9 @@ const getMethodSpecificRender = (
 };
 
 export const CodeInfoSection = ({
-  code,
-  chainId,
   attached,
+  chainId,
+  code,
   toJsonSchemaTab,
 }: CodeInfoSectionProps) => {
   const { isFullTier } = useTierConfig();
@@ -119,12 +119,12 @@ export const CodeInfoSection = ({
   const getAddressType = useGetAddressType();
   const {
     codeId,
-    proposal,
-    uploader,
+    hash,
     instantiatePermission,
     permissionAddresses,
+    proposal,
     transaction,
-    hash,
+    uploader,
   } = code;
 
   const { methodRender, storedBlockRender } = getMethodSpecificRender(
@@ -146,7 +146,7 @@ export const CodeInfoSection = ({
 
   return (
     <Box my={8}>
-      <Heading as="h6" variant="h6" mb={6}>
+      <Heading as="h6" mb={6} variant="h6">
         Code Info
       </Heading>
       <Flex
@@ -156,7 +156,7 @@ export const CodeInfoSection = ({
       >
         <CodeInfoLabelText label="Network">{chainId}</CodeInfoLabelText>
         <CodeInfoLabelText label="Uploaded by">
-          <Flex direction="column" gap={1} w="150px">
+          <Flex gap={1} w="150px" direction="column">
             <ExplorerLink
               type={uploaderType}
               value={uploader}
@@ -169,23 +169,23 @@ export const CodeInfoSection = ({
         </CodeInfoLabelText>
         {isFullTier && methodRender}
         <CodeInfoLabelText label="Instantiate Permission">
-          <Flex direction="column" gap={1}>
+          <Flex gap={1} direction="column">
             <PermissionChip
               instantiatePermission={instantiatePermission}
               permissionAddresses={permissionAddresses}
             />
             <ViewPermissionAddresses
-              permissionAddresses={permissionAddresses}
               amptrackSection="code_details"
+              permissionAddresses={permissionAddresses}
             />
           </Flex>
         </CodeInfoLabelText>
         {isFullTier && (
           <CodeInfoLabelText
-            label="Stored on block"
             gridColumn={{ base: "1 / span 2", md: "5 / span 1" }}
+            label="Stored on block"
           >
-            <Flex direction="column" gap={1}>
+            <Flex gap={1} direction="column">
               {storedBlockRender}
             </Flex>
           </CodeInfoLabelText>
@@ -193,13 +193,13 @@ export const CodeInfoSection = ({
         {!isMobile && (
           <CodeInfoLabelText
             label="JSON Schema"
-            w={{ base: "full" }}
             maxW={{ md: "fit-content" }}
+            w={{ base: "full" }}
           >
             <div>
               <Button
-                variant="outline-primary"
                 p="8px 6px"
+                variant="outline-primary"
                 leftIcon={
                   attached ? undefined : (
                     <CustomIcon name="upload" boxSize={4} />
@@ -211,9 +211,9 @@ export const CodeInfoSection = ({
               </Button>
               <JsonSchemaModal
                 isOpen={isOpen}
-                onClose={onClose}
-                codeId={codeId}
                 codeHash={hash}
+                codeId={codeId}
+                onClose={onClose}
               />
             </div>
           </CodeInfoLabelText>

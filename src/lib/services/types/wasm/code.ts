@@ -13,8 +13,8 @@ import { parseTxHash, snakeToCamel } from "lib/utils";
 
 const zUploadAccessParams = z
   .object({
-    permission: z.nativeEnum(AccessConfigPermission),
     addresses: zBechAddr.array(),
+    permission: z.nativeEnum(AccessConfigPermission),
   })
   .transform((val) => ({
     isPermissionedNetwork: val.permission !== AccessConfigPermission.EVERYBODY,
@@ -33,8 +33,8 @@ export const zUploadAccessParamsLcd = z
 export const zUploadAccessParamsSubspaceLcd = z
   .object({
     params: z.object({
-      subspace: z.literal("wasm"),
       key: z.literal("uploadAccess"),
+      subspace: z.literal("wasm"),
       value: z
         .string()
         .transform((val) => JSON.parse(val))
@@ -45,13 +45,13 @@ export const zUploadAccessParamsSubspaceLcd = z
 
 const zCodesResponseItem = z
   .object({
-    id: z.number().nonnegative(),
+    contract_count: z.number().nonnegative(),
     cw2_contract: z.string().nullable(),
     cw2_version: z.string().nullable(),
-    uploader: zBechAddr,
-    contract_count: z.number().nonnegative(),
+    id: z.number().nonnegative(),
     instantiate_permission: z.nativeEnum(AccessConfigPermission),
     permission_addresses: z.array(zBechAddr),
+    uploader: zBechAddr,
   })
   .transform<CodeInfo>(snakeToCamel);
 
@@ -66,18 +66,18 @@ const zCodesResponseItemLcd = z
     code_id: z.coerce.number(),
     creator: zBechAddr,
     instantiate_permission: z.object({
-      permission: z.nativeEnum(AccessConfigPermission),
       addresses: z.array(zBechAddr),
+      permission: z.nativeEnum(AccessConfigPermission),
     }),
   })
   .transform<CodeInfo>((val) => ({
-    id: val.code_id,
+    contractCount: undefined,
     cw2Contract: undefined,
     cw2Version: undefined,
-    uploader: val.creator,
-    contractCount: undefined,
+    id: val.code_id,
     instantiatePermission: val.instantiate_permission.permission,
     permissionAddresses: val.instantiate_permission.addresses,
+    uploader: val.creator,
   }));
 
 export const zCodesResponseLcd = z.object({
@@ -95,16 +95,16 @@ const zCode = z
     permission_addresses: z.array(zBechAddr),
     proposal: z
       .object({
-        id: z.number().positive(),
-        height: z.number().positive(),
         created: zUtcDate,
+        height: z.number().positive(),
+        id: z.number().positive(),
       })
       .nullable(),
     transaction: z
       .object({
-        height: z.number(),
-        hash: z.string().transform((val) => parseTxHash(val).toUpperCase()),
         created: zUtcDate,
+        hash: z.string().transform((val) => parseTxHash(val).toUpperCase()),
+        height: z.number(),
       })
       .nullable(),
     uploader: zBechAddr,
@@ -131,9 +131,9 @@ export const zCodeInfoResponseLcd = z
       creator: zBechAddr,
       data_hash: z.string(),
       instantiate_permission: z.object({
-        permission: z.nativeEnum(AccessConfigPermission),
         address: zBechAddr.optional(),
         addresses: z.array(zBechAddr).default([]),
+        permission: z.nativeEnum(AccessConfigPermission),
       }),
     }),
   })

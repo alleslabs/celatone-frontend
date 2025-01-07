@@ -13,26 +13,26 @@ import type { CodeSchema, Nullish, Option } from "lib/types";
 import { SchemaInputNotExist } from "./SchemaInputNotExist";
 
 interface SchemaSectionProps {
-  type: "migrate" | "instantiate";
   codeHash: string;
   codeId: number;
-  verifiedSchema: Nullish<CodeSchema>;
-  localSchema: Option<CodeSchema>;
-  initialFormData?: Record<string, unknown>;
   handleChange: (data: unknown, errors: RJSFValidationError[]) => void;
+  initialFormData?: Record<string, unknown>;
+  localSchema: Option<CodeSchema>;
   onSchemaSave?: () => void;
+  type: "instantiate" | "migrate";
+  verifiedSchema: Nullish<CodeSchema>;
 }
 
 export const SchemaInputSection = observer(
   ({
-    type,
     codeHash,
     codeId,
-    verifiedSchema,
-    localSchema,
-    initialFormData,
     handleChange,
+    initialFormData,
+    localSchema,
     onSchemaSave,
+    type,
+    verifiedSchema,
   }: SchemaSectionProps) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     const msgSchema = verifiedSchema?.[type] ?? localSchema?.[type];
@@ -46,12 +46,12 @@ export const SchemaInputSection = observer(
     return (
       <>
         <Flex
-          direction="column"
+          align={msgSchema ? "flex-start" : "center"}
+          mb={4}
+          p="24px 16px"
           backgroundColor="gray.900"
           borderRadius="8px"
-          p="24px 16px"
-          mb={4}
-          align={msgSchema ? "flex-start" : "center"}
+          direction="column"
         >
           {msgSchema ? (
             <>
@@ -66,15 +66,15 @@ export const SchemaInputSection = observer(
                 </div>
               ) : (
                 <Text
-                  variant="body2"
-                  textColor="text.disabled"
-                  fontWeight={500}
-                  bgColor="gray.800"
-                  w="full"
                   py={4}
+                  textAlign="center"
+                  variant="body2"
+                  w="full"
+                  bgColor="gray.800"
                   border="1px solid var(--chakra-colors-gray-700)"
                   borderRadius="4px"
-                  textAlign="center"
+                  fontWeight={500}
+                  textColor="text.disabled"
                 >
                   {`${prettyType}Msg in attached JSON Schema takes no input`}
                 </Text>
@@ -84,37 +84,37 @@ export const SchemaInputSection = observer(
             <SchemaInputNotExist
               prettyType={prettyType}
               verifiedSchema={verifiedSchema}
-              localSchema={localSchema}
-              codeId={codeId}
               codeHash={codeHash}
+              codeId={codeId}
+              localSchema={localSchema}
               openModal={onOpen}
             />
           )}
           <JsonSchemaModal
             isOpen={isOpen}
-            onClose={onClose}
+            isReattach={Boolean(msgSchema)}
             codeHash={codeHash}
             codeId={codeId}
+            onClose={onClose}
             onSchemaSave={onSchemaSave}
-            isReattach={Boolean(msgSchema)}
           />
         </Flex>
         {msgSchema && (
-          <Flex align="center" justify="space-between" w="full" mb={4}>
-            <Text color="text.dark" variant="body2">
+          <Flex align="center" justify="space-between" mb={4} w="full">
+            <Text variant="body2" color="text.dark">
               {verifiedSchema
                 ? "The schema is available because the code is verified"
                 : "You are using a locally attached JSON Schema"}
             </Text>
             <Flex gap={3}>
               <ViewSchemaModal
-                codeId={codeId}
                 schema={verifiedSchema ?? localSchema}
+                codeId={codeId}
               />
               {!verifiedSchema && (
                 <Button
-                  variant="outline-gray"
                   size="sm"
+                  variant="outline-gray"
                   onClick={handleReattach}
                 >
                   Reattach

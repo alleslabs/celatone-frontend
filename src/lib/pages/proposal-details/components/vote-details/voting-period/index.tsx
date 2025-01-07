@@ -27,7 +27,7 @@ import { ProposalVotesTable } from "./votes-table";
 import { VotingQuorum } from "./VotingQuorum";
 import { VotingThreshold } from "./VotingThreshold";
 
-type VoterVariant = "validator" | "all";
+type VoterVariant = "all" | "validator";
 
 const ContentContainer = ({
   children,
@@ -37,13 +37,13 @@ const ContentContainer = ({
   transparent?: boolean;
 }) => (
   <Flex
-    direction="column"
+    gap={4}
+    p={{ base: 4, md: 6 }}
     background={transparent ? "transparent" : "gray.900"}
     border="1px solid"
     borderColor={transparent ? "transparent" : "gray.700"}
     borderRadius="8px"
-    p={{ base: 4, md: 6 }}
-    gap={4}
+    direction="column"
   >
     {children}
   </Flex>
@@ -92,28 +92,28 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
   return (
     <Flex
       id={scrollComponentId}
-      position="relative"
-      overflowX="hidden"
       width="full"
+      overflowX="hidden"
+      position="relative"
     >
       <Flex
-        direction="column"
-        w="full"
-        position={
-          validatorVoteDisclosure.isOpen || allVoteDisclosure.isOpen
-            ? "absolute"
-            : "relative"
-        }
-        opacity={
-          validatorVoteDisclosure.isOpen || allVoteDisclosure.isOpen ? 0 : 1
-        }
+        gap={4}
         left={
           validatorVoteDisclosure.isOpen || allVoteDisclosure.isOpen
             ? "-100%"
             : "0"
         }
+        w="full"
+        direction="column"
+        opacity={
+          validatorVoteDisclosure.isOpen || allVoteDisclosure.isOpen ? 0 : 1
+        }
+        position={
+          validatorVoteDisclosure.isOpen || allVoteDisclosure.isOpen
+            ? "absolute"
+            : "relative"
+        }
         transition="all 0.25s ease-in-out"
-        gap={4}
       >
         {proposalData.status === ProposalStatus.VOTING_PERIOD &&
         disableVotingPeriodTally ? (
@@ -131,27 +131,27 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
           </>
         )}
         {isFullTier && (
-          <Grid gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"} gridGap={4}>
+          <Grid gridGap={4} gridTemplateColumns={isMobile ? "1fr " : "1fr 1fr"}>
             {/* Validator Votes */}
             <GridItem>
               <ContentContainer>
                 <Flex alignItems="center" justifyContent="space-between">
                   <TableTitle
-                    title="Validator Votes"
                     mb={0}
+                    title="Validator Votes"
                     count={answers?.validator.totalValidators}
                   />
                   <Button
+                    isDisabled={!answers?.validator.totalValidators}
                     variant="ghost-primary"
                     onClick={() => toggleDisclosure("validator")}
                     rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
-                    isDisabled={!answers?.validator.totalValidators}
                   >
                     {isMobile ? "View" : "View Details"}
                   </Button>
                 </Flex>
                 {isProposalResolved && (
-                  <Alert variant="primary" mb={4} alignItems="center" gap={3}>
+                  <Alert alignItems="center" gap={3} mb={4} variant="primary">
                     <CustomIcon
                       name="alert-triangle-solid"
                       boxSize={4}
@@ -180,15 +180,15 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
               <ContentContainer>
                 <Flex alignItems="center" justifyContent="space-between">
                   <TableTitle
-                    title="Recent Votes"
                     mb={0}
+                    title="Recent Votes"
                     count={answers?.all.total}
                   />
                   <Button
+                    isDisabled={!answers?.all.total}
                     variant="ghost-primary"
                     onClick={() => toggleDisclosure("all")}
                     rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
-                    isDisabled={!answers?.all.total}
                   >
                     {isMobile ? "View" : "View Details"}
                   </Button>
@@ -207,16 +207,16 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
         )}
       </Flex>
       <ValidatorVotesPanel
+        id={proposalData.id}
         answers={answers?.validator}
         isOpen={validatorVoteDisclosure.isOpen}
-        id={proposalData.id}
-        onBack={validatorVoteDisclosure.onClose}
         isProposalResolved={isProposalResolved}
+        onBack={validatorVoteDisclosure.onClose}
       />
       <ProposalVotesPanel
+        id={proposalData.id}
         answers={answers?.all}
         isOpen={allVoteDisclosure.isOpen}
-        id={proposalData.id}
         onBack={allVoteDisclosure.onClose}
       />
     </Flex>

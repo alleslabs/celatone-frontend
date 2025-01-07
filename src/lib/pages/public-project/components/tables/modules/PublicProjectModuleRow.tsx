@@ -18,67 +18,67 @@ export const PublicProjectModuleRow = ({
   const navigate = useInternalNavigate();
   const goToDetail = () => {
     navigate({
-      replace: true,
+      options: {
+        shallow: true,
+      },
       pathname: "/modules/[address]/[moduleName]/[tab]",
       query: {
         address: module.address,
         moduleName: module.name,
         tab: "overview",
       },
-      options: {
-        shallow: true,
-      },
+      replace: true,
     });
   };
 
   return (
     <Grid
-      templateColumns={templateColumns}
-      onClick={goToDetail}
-      _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
-      cursor="pointer"
       minW="min-content"
+      _hover={{ bg: "gray.900" }}
+      cursor="pointer"
+      onClick={goToDetail}
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
     >
       <TableRow>
         <Text
-          onClick={goToDetail}
-          color="primary.main"
-          transition="all 0.25s ease-in-out"
-          cursor="pointer"
           _hover={{
+            "& > p": { color: "primary.light" },
             textDecoration: "underline",
             textDecorationColor: "primary.light",
-            "& > p": { color: "primary.light" },
           }}
+          color="primary.main"
+          cursor="pointer"
+          onClick={goToDetail}
+          transition="all 0.25s ease-in-out"
         >
           {truncate(module.address)}::{module.name}
         </Text>
       </TableRow>
       <TableRow>
         <ExplorerLink
-          value={module.address}
           type="user_address"
+          value={module.address}
           showCopyOnHover
         />
       </TableRow>
       <TableRow>
-        <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
+        <Text variant="body2" whiteSpace="break-spaces" color="text.dark">
           {module.description || "N/A"}
         </Text>
       </TableRow>
       <TableRow>
         <Flex gap={2} onClick={(e) => e.stopPropagation()}>
           <Button
-            variant="outline-white"
             size="sm"
+            variant="outline-white"
             onClick={() =>
               navigate({
                 pathname: "/interact",
                 query: {
                   address: module.address,
-                  moduleName: module.name,
                   functionType: "view",
+                  moduleName: module.name,
                 },
               })
             }
@@ -86,15 +86,15 @@ export const PublicProjectModuleRow = ({
             View
           </Button>
           <Button
-            variant="outline-white"
             size="sm"
+            variant="outline-white"
             onClick={() =>
               navigate({
                 pathname: "/interact",
                 query: {
                   address: module.address,
-                  moduleName: module.name,
                   functionType: "execute",
+                  moduleName: module.name,
                 },
               })
             }

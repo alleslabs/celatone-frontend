@@ -63,13 +63,13 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: "/codes/[codeId]/[tab]",
         query: {
           codeId,
           tab: nextTab,
-        },
-        options: {
-          shallow: true,
         },
       });
     },
@@ -88,27 +88,27 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
       <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code Detail"} />
       <CodeTopInfo
         code={code}
+        codeId={codeId}
         projectInfo={projectInfo}
         publicInfo={publicInfo}
-        codeId={codeId}
         wasmVerifyInfo={derivedWasmVerifyInfo}
       />
       <Tabs
         index={Object.values(TabIndex).indexOf(tab)}
         isLazy
-        lazyBehavior="keepMounted"
         my={8}
         borderTop={{
           base: "1px solid var(--chakra-colors-gray-700)",
           md: "none",
         }}
+        lazyBehavior="keepMounted"
       >
         {!isMobile && (
           <TabList
+            id={codeTabId}
             borderBottom="1px solid"
             borderColor="gray.700"
             overflowX="scroll"
-            id={codeTabId}
           >
             <CustomTab onClick={handleTabChange(TabIndex.CodeInfo)}>
               Code Information
@@ -121,14 +121,14 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         <TabPanels>
           <TabPanel p={0}>
             <CodeInfoSection
-              code={code}
-              chainId={currentChainId}
               attached={attached}
+              chainId={currentChainId}
+              code={code}
               toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
             />
             <CodeVerificationSection
-              codeId={codeId}
               codeHash={code.hash}
+              codeId={codeId}
               wasmVerifyInfo={derivedWasmVerifyInfo}
             />
             <TierSwitcher
@@ -136,15 +136,15 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
               lite={<CodeContractsTableLite codeId={codeId} />}
             />
             <UserDocsLink
-              title="What is Code in CosmWasm?"
               cta="Read more about Code Details"
+              title="What is Code in CosmWasm?"
               href="cosmwasm/codes/detail-page"
             />
           </TabPanel>
           <TabPanel p={0}>
             <CodeSchemaSection
-              codeId={codeId}
               codeHash={code.hash}
+              codeId={codeId}
               localSchema={localSchema}
               wasmVerifyInfo={derivedWasmVerifyInfo}
             />

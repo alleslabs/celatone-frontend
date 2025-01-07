@@ -23,16 +23,16 @@ export const NetworkMenu = observer(() => {
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
 
   const {
-    keyword,
-    setKeyword,
-    handleOnKeyDown,
     cursor,
-    setCursor,
-    filteredPinnedChains,
-    filteredMainnetChains,
-    filteredTestnetChains,
     filteredDevnetChains,
     filteredLocalChains,
+    filteredMainnetChains,
+    filteredPinnedChains,
+    filteredTestnetChains,
+    handleOnKeyDown,
+    keyword,
+    setCursor,
+    setKeyword,
   } = useNetworkSelector(onClose);
 
   useNetworkShortCut(onToggle);
@@ -48,36 +48,36 @@ export const NetworkMenu = observer(() => {
       />
       <Drawer
         isOpen={isOpen}
-        onClose={onClose}
         placement="right"
         autoFocus={false}
+        onClose={onClose}
       >
         <DrawerOverlay />
         <DrawerContent
-          h="100%"
-          background="background.main"
-          minW="343px"
           gap={6}
+          h="100%"
+          minW="343px"
+          background="background.main"
         >
-          <DrawerHeader px={4} pt={6} pb={0}>
+          <DrawerHeader pb={0} pt={6} px={4}>
             <NetworkMenuTop
               keyword={keyword}
-              setKeyword={setKeyword}
               handleOnKeyDown={handleOnKeyDown}
               onClose={onClose}
+              setKeyword={setKeyword}
             />
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
-          <DrawerBody px={4} pt={0} pb={6}>
+          <DrawerBody pb={6} pt={0} px={4}>
             <NetworkMenuBody
-              cursor={cursor}
-              setCursor={setCursor}
-              filteredPinnedChains={filteredPinnedChains}
-              filteredMainnetChains={filteredMainnetChains}
-              filteredTestnetChains={filteredTestnetChains}
               filteredDevnetChains={filteredDevnetChains}
+              filteredMainnetChains={filteredMainnetChains}
+              filteredPinnedChains={filteredPinnedChains}
+              filteredTestnetChains={filteredTestnetChains}
+              cursor={cursor}
               filteredLocalChains={filteredLocalChains}
               onClose={onClose}
+              setCursor={setCursor}
             />
           </DrawerBody>
         </DrawerContent>

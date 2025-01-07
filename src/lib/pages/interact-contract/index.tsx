@@ -32,9 +32,9 @@ import { zInteractContractQueryParams } from "./types";
 const INTERACT_CONTRACT_PATH_NAME = "/interact-contract";
 
 const InteractContractBody = ({
-  selectedType,
   contract,
   msg,
+  selectedType,
 }: InteractContractQueryParams) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -63,13 +63,13 @@ const InteractContractBody = ({
   const handleSetSelectedType = useCallback(
     (newType: ContractInteractionTabs) =>
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: INTERACT_CONTRACT_PATH_NAME,
         query: {
           selectedType: newType,
           ...(contract && { contract }),
-        },
-        options: {
-          shallow: true,
         },
       }),
     [contract, navigate]
@@ -78,12 +78,12 @@ const InteractContractBody = ({
   const onContractSelect = useCallback(
     (newContract: BechAddr32) => {
       navigate({
+        options: { shallow: true },
         pathname: INTERACT_CONTRACT_PATH_NAME,
         query: {
-          selectedType,
           contract: newContract,
+          selectedType,
         },
-        options: { shallow: true },
       });
     },
     [navigate, selectedType]
@@ -95,12 +95,12 @@ const InteractContractBody = ({
   useEffect(() => {
     if (isMobile && selectedType === ContractInteractionTabs.Execute)
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: INTERACT_CONTRACT_PATH_NAME,
         query: {
           ...(contract && { contract }),
-        },
-        options: {
-          shallow: true,
         },
       });
   }, [contract, isMobile, navigate, selectedType]);
@@ -134,23 +134,23 @@ const InteractContractBody = ({
   return (
     <PageContainer>
       <CelatoneSeo pageName="Query / Execute Contract" />
-      <Flex align="center" justify="space-between" w="full" mt={1} mb={8}>
-        <Heading variant="h5" as="h5" alignSelf="flex-start">
+      <Flex align="center" justify="space-between" mb={8} mt={1} w="full">
+        <Heading alignSelf="flex-start" as="h5" variant="h5">
           {isMobile ? "Query" : "Contract Interactions"}
         </Heading>
         <UserDocsLink isButton isDevTool href="cosmwasm/query-execute" />
       </Flex>
       <ContractSelectSection
-        mode="all-lists"
-        contractAddress={contract}
-        onContractSelect={onContractSelect}
         successCallback={(data) => {
           setCodeId(data.contract.codeId);
           setCodeHash(data.contract.codeHash);
         }}
+        contractAddress={contract}
+        mode="all-lists"
+        onContractSelect={onContractSelect}
       />
-      <Flex gap={4} align="center" mt={8} mb={4}>
-        <Heading variant="h6" as="h6" minW={40} mr={2}>
+      <Flex align="center" gap={4} mb={4} mt={8}>
+        <Heading as="h6" minW={40} mr={2} variant="h6">
           {capitalize(selectedType)} Message
         </Heading>
         {!isMobile && (
@@ -162,25 +162,25 @@ const InteractContractBody = ({
       </Flex>
       <InteractionWrapper
         currentTab={selectedType}
-        queryContent={
-          <QueryArea
-            verifiedSchema={verifiedSchema}
-            localSchema={localSchema}
-            contractAddress={contractAddress}
-            initialMsg={initialMsg}
-            codeId={codeId}
-            codeHash={codeHash}
-          />
-        }
         executeContent={
           <ExecuteArea
-            verifiedSchema={verifiedSchema}
-            localSchema={localSchema}
-            contractAddress={contractAddress}
-            initialMsg={initialMsg}
             initialFunds={initialFunds}
-            codeId={codeId}
+            initialMsg={initialMsg}
+            verifiedSchema={verifiedSchema}
             codeHash={codeHash}
+            codeId={codeId}
+            contractAddress={contractAddress}
+            localSchema={localSchema}
+          />
+        }
+        queryContent={
+          <QueryArea
+            initialMsg={initialMsg}
+            verifiedSchema={verifiedSchema}
+            codeHash={codeHash}
+            codeId={codeId}
+            contractAddress={contractAddress}
+            localSchema={localSchema}
           />
         }
       />
@@ -196,7 +196,7 @@ const InteractContract = () => {
 
   useEffect(() => {
     if (router.isReady && validated.success) {
-      const { selectedType, contract, msg } = validated.data;
+      const { contract, msg, selectedType } = validated.data;
       if (selectedType === ContractInteractionTabs.Query)
         trackToQuery(!!contract, !!msg);
       else trackToExecute(!!contract, !!msg);

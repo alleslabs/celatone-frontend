@@ -7,15 +7,15 @@ interface EvmInfoLabelValueProps {
 }
 
 export const EvmInfoLabelValue = ({ label, value }: EvmInfoLabelValueProps) => (
-  <Flex w="full" direction={{ base: "column", md: "row" }} gap={1}>
+  <Flex gap={1} w="full" direction={{ base: "column", md: "row" }}>
     <Text
-      variant="body2"
-      mb={{ base: 1, md: 0 }}
-      whiteSpace="nowrap"
-      w="full"
-      fontWeight={500}
       flex={1}
+      mb={{ base: 1, md: 0 }}
+      variant="body2"
+      w="full"
+      whiteSpace="nowrap"
       color="text.dark"
+      fontWeight={500}
     >
       {label}
     </Text>

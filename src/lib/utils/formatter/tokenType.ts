@@ -5,9 +5,9 @@ import type { Option } from "lib/types";
 
 export const getTokenType = (type: string) => {
   switch (type.toLowerCase()) {
-    case "ibc":
     case "cw20":
     case "evm":
+    case "ibc":
       return type.toUpperCase();
     default:
       return capitalize(type);

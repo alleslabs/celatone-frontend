@@ -21,31 +21,31 @@ import type { Nullish, WasmVerifyInfo } from "lib/types";
 import { getWasmVerifyStatus } from "lib/utils";
 
 interface CommandSectionHeaderProps {
-  codeId: number;
   codeHash: string;
+  codeId: number;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const CommandSectionHeader = observer(
-  ({ codeId, codeHash, wasmVerifyInfo }: CommandSectionHeaderProps) => {
+  ({ codeHash, codeId, wasmVerifyInfo }: CommandSectionHeaderProps) => {
     const { getSchemaByCodeHash } = useSchemaStore();
     const { isOpen, onClose, onOpen } = useDisclosure();
 
     if (wasmVerifyInfo?.schema)
       return (
-        <Flex gap={2} alignItems="center">
+        <Flex alignItems="center" gap={2}>
           <WasmVerifyBadge
             status={getWasmVerifyStatus(wasmVerifyInfo)}
-            relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
             linkedCodeId={codeId}
+            relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
           />
-          <Heading as="h6" variant="h6" minW="fit-content">
+          <Heading as="h6" minW="fit-content" variant="h6">
             Verified command shortcuts
           </Heading>
           <ViewSchemaModal
-            isIcon
-            codeId={codeId}
             schema={wasmVerifyInfo?.schema}
+            codeId={codeId}
+            isIcon
           />
         </Flex>
       );
@@ -53,19 +53,19 @@ export const CommandSectionHeader = observer(
     const localSchema = getSchemaByCodeHash(codeHash);
     const attached = Boolean(localSchema);
     return (
-      <Flex gap={4} alignItems="center">
-        <Heading as="h6" variant="h6" minW="fit-content">
+      <Flex alignItems="center" gap={4}>
+        <Heading as="h6" minW="fit-content" variant="h6">
           Available command shortcuts
         </Heading>
         {localSchema ? (
           <Flex
-            display={{ base: "none", md: "flex" }}
             alignItems="center"
+            display={{ base: "none", md: "flex" }}
+            gap={1}
             justify="flex-start"
             w="full"
-            gap={1}
           >
-            <Tag variant="gray" gap={1} mr={1}>
+            <Tag gap={1} mr={1} variant="gray">
               <CustomIcon
                 name="check-circle-solid"
                 boxSize={3}
@@ -73,10 +73,10 @@ export const CommandSectionHeader = observer(
               />
               <Text variant="body3">Attached Schema to Code ID {codeId}</Text>
             </Tag>
-            <ViewSchemaModal isIcon codeId={codeId} schema={localSchema} />
+            <ViewSchemaModal schema={localSchema} codeId={codeId} isIcon />
             <EditSchemaButtons
-              codeId={codeId}
               codeHash={codeHash}
+              codeId={codeId}
               openModal={onOpen}
             />
           </Flex>
@@ -87,20 +87,20 @@ export const CommandSectionHeader = observer(
             textAlign="center"
           >
             <Button
-              variant="outline-gray"
-              size="sm"
-              onClick={onOpen}
               display={{ base: "none", md: "flex" }}
+              size="sm"
+              variant="outline-gray"
+              onClick={onOpen}
             >
               Attach JSON Schema
             </Button>
           </Tooltip>
         )}
         <JsonSchemaModal
-          codeId={codeId}
-          codeHash={codeHash}
           isOpen={isOpen}
           isReattach={attached}
+          codeHash={codeHash}
+          codeId={codeId}
           onClose={onClose}
         />
       </Flex>

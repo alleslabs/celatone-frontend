@@ -17,21 +17,21 @@ import type { IndexedModule, Option } from "lib/types";
 import { splitModulePath } from "lib/utils";
 
 export interface ModuleSelectorInputProps {
-  selectedAddress: SelectedAddress;
-  setSelectedAddress: Dispatch<SetStateAction<SelectedAddress>>;
-  handleModuleSelect: ModuleSelectFunction;
-  setModules: Dispatch<SetStateAction<Option<IndexedModule[]>>>;
-  setMode: Dispatch<SetStateAction<DisplayMode>>;
   closeModal: () => void;
+  handleModuleSelect: ModuleSelectFunction;
+  selectedAddress: SelectedAddress;
+  setMode: Dispatch<SetStateAction<DisplayMode>>;
+  setModules: Dispatch<SetStateAction<Option<IndexedModule[]>>>;
+  setSelectedAddress: Dispatch<SetStateAction<SelectedAddress>>;
 }
 
 export const ModuleSelectorInput = ({
-  selectedAddress,
-  setSelectedAddress,
-  handleModuleSelect,
-  setModules,
-  setMode,
   closeModal,
+  handleModuleSelect,
+  selectedAddress,
+  setMode,
+  setModules,
+  setSelectedAddress,
 }: ModuleSelectorInputProps) => {
   const [keyword, setKeyword] = useState(selectedAddress.hex as string);
   const [error, setError] = useState("");
@@ -47,9 +47,14 @@ export const ModuleSelectorInput = ({
     setMode("display");
   }, [addr, formatAddresses, setMode, setSelectedAddress]);
 
-  const { refetch, isFetching } = useSearchModules({
+  const { isFetching, refetch } = useSearchModules({
     address: addr,
     moduleName,
+    onError: (err) => setError((err as Error).message),
+    onModulesSuccess: (data) => {
+      setModules(data);
+      onSuccessCallback();
+    },
     onModuleSuccess: (data) => {
       const searchedFn = functionName
         ? data.parsedAbi.exposed_functions.find(
@@ -60,11 +65,6 @@ export const ModuleSelectorInput = ({
       onSuccessCallback();
       closeModal();
     },
-    onModulesSuccess: (data) => {
-      setModules(data);
-      onSuccessCallback();
-    },
-    onError: (err) => setError((err as Error).message),
   });
 
   const validateModuleInput = useValidateModuleInput();
@@ -102,41 +102,41 @@ export const ModuleSelectorInput = ({
   return (
     <Flex
       className="selector-input"
-      justifyContent="space-between"
-      bgColor="gray.800"
-      p={4}
-      mb={6}
       gap={{ base: 2, md: 4 }}
+      mb={6}
+      p={4}
+      bgColor="gray.800"
       borderRadius={8}
       direction={{ base: "column", md: "row" }}
+      justifyContent="space-between"
     >
       <TextInput
-        value={keyword}
-        setInputState={setKeyword}
-        isDisabled={isFetching}
-        error={error}
-        size="md"
         helperText={`ex. “${user}”, “${user}::module_name”, or “${user}::module_name::function_name”`}
+        isDisabled={isFetching}
         label="Fill in address or module path"
+        setInputState={setKeyword}
+        size="md"
+        value={keyword}
         variant="fixed-floating"
+        error={error}
         labelBgColor="gray.800"
         onKeyDown={handleKeydown}
       />
-      <Flex gap={2} w={{ base: "full", md: "auto" }} mt={{ base: 1, md: 0 }}>
+      <Flex gap={2} mt={{ base: 1, md: 0 }} w={{ base: "full", md: "auto" }}>
         <Button
+          isDisabled={!keyword.length || isFetching}
+          size={{ base: "sm", md: "md" }}
           variant="primary"
           w={{ base: "full", md: "auto" }}
-          size={{ base: "sm", md: "md" }}
-          onClick={handleSubmit}
-          isDisabled={!keyword.length || isFetching}
           isLoading={isFetching}
+          onClick={handleSubmit}
         >
           Submit
         </Button>
         <Button
+          size={{ base: "sm", md: "md" }}
           variant="outline-white"
           w={{ base: "full", md: "auto" }}
-          size={{ base: "sm", md: "md" }}
           onClick={() =>
             selectedAddress.address ? setMode("display") : closeModal()
           }

@@ -22,9 +22,9 @@ export const getNftsByCollectionAddress = async (
   axios
     .get(`${endpoint}/${encodeURI(collectionAddress)}`, {
       params: {
-        search,
         limit,
         offset,
+        search,
       },
     })
     .then(({ data }) => parseWithError(zNftsResponse, data));
@@ -51,9 +51,9 @@ export const getNftsByAccountAddress = async (
   axios
     .get(`${endpoint}/account/${encodeURI(accountAddress)}`, {
       params: {
+        collection_address: collectionAddress,
         limit,
         offset,
-        collection_address: collectionAddress,
         search,
       },
     })

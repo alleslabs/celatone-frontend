@@ -12,53 +12,53 @@ import { FurtherActionButton } from "./FurtherActionButton";
 import { RelationChip } from "./RelationChip";
 
 interface TransactionsTableRowProps {
-  transaction: Transaction;
-  templateColumns: string;
-  showSuccess: boolean;
-  showRelations: boolean;
-  showTimestamp: boolean;
   showAction: boolean;
+  showRelations: boolean;
+  showSuccess: boolean;
+  showTimestamp: boolean;
+  templateColumns: string;
+  transaction: Transaction;
 }
 
 export const TransactionsTableRow = ({
-  transaction,
-  templateColumns,
-  showSuccess,
-  showRelations,
-  showTimestamp,
   showAction,
+  showRelations,
+  showSuccess,
+  showTimestamp,
+  templateColumns,
+  transaction,
 }: TransactionsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;
   return (
-    <Box w="full" minW="min-content">
+    <Box minW="min-content" w="full">
       <Grid
         className="copier-wrapper"
-        templateColumns={templateColumns}
-        onClick={isAccordion ? onToggle : undefined}
         _hover={{ background: "gray.900" }}
-        transition="all 0.25s ease-in-out"
         cursor={isAccordion ? "pointer" : "default"}
+        onClick={isAccordion ? onToggle : undefined}
+        templateColumns={templateColumns}
+        transition="all 0.25s ease-in-out"
       >
         <TableRow pl={2}>
           {isAccordion && (
             <CustomIcon
               name="chevron-down"
+              color="gray.600"
               transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
               transition="all 0.25s ease-in-out"
-              color="gray.600"
             />
           )}
         </TableRow>
         <TableRow pr={1}>
           <>
             <ExplorerLink
-              value={transaction.hash.toLocaleUpperCase()}
               type="tx_hash"
+              value={transaction.hash.toLocaleUpperCase()}
               showCopyOnHover
             />
             {transaction.messages.length > 1 && (
-              <Badge variant="primary-light" ml={2}>
+              <Badge ml={2} variant="primary-light">
                 {transaction.messages.length}
               </Badge>
             )}
@@ -83,8 +83,8 @@ export const TransactionsTableRow = ({
         )}
         <TableRow>
           <ExplorerLink
-            value={transaction.sender}
             type="user_address"
+            value={transaction.sender}
             showCopyOnHover
           />
         </TableRow>
@@ -92,7 +92,7 @@ export const TransactionsTableRow = ({
           <>
             {transaction.created ? (
               <TableRow>
-                <Flex direction="column" gap={1}>
+                <Flex gap={1} direction="column">
                   <Text variant="body3">{formatUTC(transaction.created)}</Text>
                   <Text variant="body3" color="text.dark">
                     {`(${dateFromNow(transaction.created)})`}
@@ -111,14 +111,14 @@ export const TransactionsTableRow = ({
         )}
       </Grid>
       {isAccordion && (
-        <Grid w="full" py={4} hidden={!isOpen}>
+        <Grid hidden={!isOpen} py={4} w="full">
           {transaction.messages.map((msg, index) => (
             <AccordionTx
-              isSigner={transaction.isSigner}
               key={index.toString() + msg.type}
+              isSigner={transaction.isSigner}
               message={msg}
-              txHash={transaction.hash}
               msgIndex={index}
+              txHash={transaction.hash}
               allowFurtherAction={showAction}
             />
           ))}

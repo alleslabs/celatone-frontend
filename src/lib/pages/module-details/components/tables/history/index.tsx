@@ -11,43 +11,43 @@ import type { HexAddr, Option } from "lib/types";
 import { PublishedEventsTable } from "./PublishedEventsTable";
 
 interface ModuleHistoryTableProps {
-  vmAddress: HexAddr;
-  moduleName: string;
   historyCount: Option<number>;
-  scrollComponentId?: string;
+  moduleName: string;
   onViewMore?: () => void;
+  scrollComponentId?: string;
+  vmAddress: HexAddr;
 }
 
 export const ModuleHistoryTable = ({
-  vmAddress,
-  moduleName,
   historyCount,
-  scrollComponentId,
+  moduleName,
   onViewMore,
+  scrollComponentId,
+  vmAddress,
 }: ModuleHistoryTableProps) => {
   const { currentChainId } = useCelatoneApp();
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
     setTotalData,
   } = usePaginator({
-    total: historyCount,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: historyCount,
   });
 
   const {
     data: moduleHistories,
-    isLoading,
     error,
+    isLoading,
   } = useModuleHistories(
     vmAddress,
     moduleName,
@@ -66,8 +66,6 @@ export const ModuleHistoryTable = ({
   return (
     <>
       <PublishedEventsTable
-        moduleHistories={moduleHistories?.items}
-        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="module published events history" />
@@ -79,6 +77,8 @@ export const ModuleHistoryTable = ({
             />
           )
         }
+        isLoading={isLoading}
+        moduleHistories={moduleHistories?.items}
       />
       {!!historyCount &&
         (onViewMore
@@ -86,10 +86,9 @@ export const ModuleHistoryTable = ({
           : historyCount > 10 && (
               <Pagination
                 currentPage={currentPage}
+                pageSize={pageSize}
                 pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={historyCount}
-                pageSize={pageSize}
                 onPageChange={setCurrentPage}
                 onPageSizeChange={(e) => {
                   const size = Number(e.target.value);
@@ -97,6 +96,7 @@ export const ModuleHistoryTable = ({
                   setCurrentPage(1);
                 }}
                 scrollComponentId={scrollComponentId}
+                totalData={historyCount}
               />
             ))}
     </>

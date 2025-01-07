@@ -4,17 +4,17 @@ import { extractPoolMsgs } from "./messages/utils";
 import { PoolTxsMsg } from "./PoolTxsMsg";
 
 interface PoolTxsTableRowProps {
-  pool: PoolData;
-  transaction: Transaction;
   assetInfos: Option<AssetInfos>;
+  pool: PoolData;
   templateColumns: string;
+  transaction: Transaction;
 }
 
 export const PoolTxsTableRow = ({
-  pool,
-  transaction,
   assetInfos,
+  pool,
   templateColumns,
+  transaction,
 }: PoolTxsTableRowProps) => {
   const { msgs: filteredMsgs, others } = extractPoolMsgs(
     transaction.messages,
@@ -26,27 +26,27 @@ export const PoolTxsTableRow = ({
       {hasOtherMsgs && (
         <PoolTxsMsg
           key={`${transaction.hash}0`}
-          isFirstSubRow
-          msgIndex={-1}
-          otherMsgs={others}
           message={undefined}
-          pool={pool}
-          transaction={transaction}
+          msgIndex={-1}
           assetInfos={assetInfos}
+          isFirstSubRow
+          otherMsgs={others}
+          pool={pool}
           templateColumns={templateColumns}
+          transaction={transaction}
         />
       )}
       {filteredMsgs.map((message, index) => (
         <PoolTxsMsg
           key={transaction.hash + Number(hasOtherMsgs) + index.toString()}
-          isFirstSubRow={!hasOtherMsgs && index === 0}
-          msgIndex={message.index}
-          otherMsgs={others}
           message={message.msg}
-          pool={pool}
-          transaction={transaction}
+          msgIndex={message.index}
           assetInfos={assetInfos}
+          isFirstSubRow={!hasOtherMsgs && index === 0}
+          otherMsgs={others}
+          pool={pool}
           templateColumns={templateColumns}
+          transaction={transaction}
         />
       ))}
     </>

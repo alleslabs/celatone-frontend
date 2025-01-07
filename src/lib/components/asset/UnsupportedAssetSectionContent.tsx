@@ -4,24 +4,24 @@ import { UnsupportedToken } from "../token";
 import type { TokenWithValue } from "lib/types";
 
 interface UnsupportedAssetSectionContentProps {
-  unsupportedAssets: TokenWithValue[];
   isAccount?: boolean;
   onViewMore?: () => void;
+  unsupportedAssets: TokenWithValue[];
 }
 
 export const UnsupportedAssetSectionContent = ({
-  unsupportedAssets,
-  onViewMore,
   isAccount = false,
+  onViewMore,
+  unsupportedAssets,
 }: UnsupportedAssetSectionContentProps) => {
   if (!unsupportedAssets.length)
     return (
       <Flex
-        w="full"
         alignItems="center"
-        justifyContent={{ base: "flex-start", md: "center" }}
         h="calc(100% - 45px)"
         minH={20}
+        w="full"
+        justifyContent={{ base: "flex-start", md: "center" }}
       >
         <Text variant="body2" color="text.dark">
           This {isAccount ? "address" : "contract"} does not hold any
@@ -31,7 +31,7 @@ export const UnsupportedAssetSectionContent = ({
     );
 
   return (
-    <Flex direction="column" gap={5} py={4}>
+    <Flex gap={5} py={4} direction="column">
       <Grid
         gridGap={4}
         gridTemplateColumns={{

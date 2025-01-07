@@ -13,23 +13,23 @@ import { getExecuteSchema, jsonPrettify, resolveInitialMsg } from "lib/utils";
 import { ExecuteBox } from "./ExecuteBox";
 
 interface SchemaExecuteProps {
-  verifiedSchema: Nullish<CodeSchema>;
-  localSchema: Option<CodeSchema>;
-  contractAddress: BechAddr32;
-  initialMsg: string;
-  initialFunds: Coin[];
-  codeId: number;
   codeHash: string;
+  codeId: number;
+  contractAddress: BechAddr32;
+  initialFunds: Coin[];
+  initialMsg: string;
+  localSchema: Option<CodeSchema>;
+  verifiedSchema: Nullish<CodeSchema>;
 }
 
 export const SchemaExecute = ({
-  verifiedSchema,
-  localSchema,
-  contractAddress,
-  initialMsg,
-  initialFunds,
-  codeId,
   codeHash,
+  codeId,
+  contractAddress,
+  initialFunds,
+  initialMsg,
+  localSchema,
+  verifiedSchema,
 }: SchemaExecuteProps) => {
   // ------------------------------------------//
   // -----------------REFERENCE----------------//
@@ -82,34 +82,34 @@ export const SchemaExecute = ({
   if (!schema)
     return (
       <Flex
-        p="24px 16px"
-        direction="column"
         alignItems="center"
+        p="24px 16px"
         bgColor="gray.900"
         borderRadius="8px"
+        direction="column"
       >
-        <Flex direction="column" alignItems="center">
-          <StateImage imageVariant="not-found" imageWidth="128px" />
-          <Text variant="body1" fontWeight={700} mt={2}>
+        <Flex alignItems="center" direction="column">
+          <StateImage imageWidth="128px" imageVariant="not-found" />
+          <Text mt={2} variant="body1" fontWeight={700}>
             {verifiedSchema ? "Verified" : "Attached"} JSON Schema doesn’t have
             ExecuteMsg
           </Text>
           {!verifiedSchema && (
             <>
               <Text
-                variant="body2"
-                textColor="text.disabled"
-                fontWeight={500}
-                mt={2}
                 mb={4}
+                mt={2}
+                variant="body2"
+                fontWeight={500}
+                textColor="text.disabled"
               >
                 Please fill in Execute Message manually or change the schema
               </Text>
               <UploadSchema
                 attached
-                localSchema={localSchema}
-                codeId={codeId}
                 codeHash={codeHash}
+                codeId={codeId}
+                localSchema={localSchema}
               />
             </>
           )}
@@ -121,55 +121,55 @@ export const SchemaExecute = ({
     <>
       <Flex gap={6} mb={6}>
         <InputWithIcon
-          placeholder="Search by Execute Message"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
           size="md"
+          value={keyword}
           amptrackSection="execute-message-search"
+          onChange={(e) => setKeyword(e.target.value)}
+          placeholder="Search by Execute Message"
         />
         <Button
-          variant="outline-gray"
-          rightIcon={
-            <CustomIcon
-              name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
-              boxSize={3}
-            />
-          }
           minH="40px"
+          variant="outline-gray"
           onClick={() => {
             trackUseExpandAll(expandedIndexes.length ? "collapse" : "expand");
             setExpandedIndexes((prev) =>
               !prev.length ? Array.from(Array(schema.length).keys()) : []
             );
           }}
+          rightIcon={
+            <CustomIcon
+              name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+              boxSize={3}
+            />
+          }
         >
           {expandedIndexes.length ? "Collapse All" : "Expand All"}
         </Button>
       </Flex>
       {filteredMsgs?.length ? (
         <Accordion
-          ref={accordionRef}
-          allowMultiple
-          rowGap={4}
           display="flex"
           flexDir="column"
           index={expandedIndexes}
-          onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
           sx={{ ".chakra-accordion__icon": { color: "gray.600" } }}
+          allowMultiple
+          onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
+          rowGap={4}
+          ref={accordionRef}
         >
           {filteredMsgs.map((msgSchema, idx) => {
             const parsed = resolveInitialMsg(initialMsg, msgSchema);
             return (
               <ExecuteBox
                 key={msgSchema.title}
-                msgSchema={msgSchema}
-                contractAddress={contractAddress}
-                initialMsg={parsed}
                 initialFunds={
                   jsonPrettify(JSON.stringify(parsed)) === initialMsg
                     ? initialFunds
                     : []
                 }
+                initialMsg={parsed}
+                msgSchema={msgSchema}
+                contractAddress={contractAddress}
                 opened={expandedIndexes.includes(idx)}
               />
             );

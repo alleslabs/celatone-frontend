@@ -44,15 +44,15 @@ const RenderFunctions = ({
 };
 
 interface ModuleFunctionBodyProps extends GridItemProps {
-  module: Option<IndexedModule>;
-  handleModuleSelect: ModuleSelectFunction;
   closeModal: () => void;
+  handleModuleSelect: ModuleSelectFunction;
+  module: Option<IndexedModule>;
 }
 
 export const SelectFunctionSection = ({
-  module,
-  handleModuleSelect,
   closeModal,
+  handleModuleSelect,
+  module,
   ...gridItemProps
 }: ModuleFunctionBodyProps) => {
   const isMobile = useMobile();
@@ -97,7 +97,7 @@ export const SelectFunctionSection = ({
       {module ? (
         <>
           {isMobile ? (
-            <Heading as="h6" variant="h6" fontWeight={600} mt={6}>
+            <Heading as="h6" mt={6} variant="h6" fontWeight={600}>
               Select View Function
             </Heading>
           ) : (
@@ -106,12 +106,12 @@ export const SelectFunctionSection = ({
             </Heading>
           )}
           <InputWithIcon
+            my={4}
+            size="md"
             value={keyword}
+            amptrackSection="module-select-drawer-function-search"
             onChange={(e) => setKeyword(e.target.value)}
             placeholder="Search with Function Name"
-            size="md"
-            my={4}
-            amptrackSection="module-select-drawer-function-search"
           />
           <Flex
             gap={6}
@@ -120,27 +120,27 @@ export const SelectFunctionSection = ({
           >
             <Flex
               flex={{ base: 1, md: 0.5 }}
+              gap={3}
               p={{ base: 0, md: 4 }}
               border={{ base: 0, md: "1px solid" }}
               borderColor={{ base: "transparent", md: "gray.700" }}
-              gap={3}
               {...functionGridBaseStyle}
             >
               {!isMobile && (
                 <Flex alignItems="center" gap={1}>
-                  <Text variant="body2" fontWeight={600} color="text.dark">
+                  <Text variant="body2" color="text.dark" fontWeight={600}>
                     View Functions
                   </Text>
                   <CountBadge
-                    count={module.viewFunctions.length}
                     variant="view"
+                    count={module.viewFunctions.length}
                   />
                 </Flex>
               )}
-              <Flex direction="column" gap={3} overflow="scroll" pb={4}>
+              <Flex gap={3} pb={4} direction="column" overflow="scroll">
                 <RenderFunctions
-                  exposedFnsLength={module.viewFunctions.length}
                   filtered={filteredView}
+                  exposedFnsLength={module.viewFunctions.length}
                   onFunctionSelect={onFunctionSelect}
                 />
               </Flex>
@@ -155,18 +155,18 @@ export const SelectFunctionSection = ({
                 {...functionGridBaseStyle}
               >
                 <Flex alignItems="center" gap={1}>
-                  <Text variant="body2" fontWeight={600} color="text.dark">
+                  <Text variant="body2" color="text.dark" fontWeight={600}>
                     Execute Functions
                   </Text>
                   <CountBadge
-                    count={module.executeFunctions.length}
                     variant="execute"
+                    count={module.executeFunctions.length}
                   />
                 </Flex>
-                <Flex direction="column" gap={3} overflow="scroll">
+                <Flex gap={3} direction="column" overflow="scroll">
                   <RenderFunctions
-                    exposedFnsLength={module.executeFunctions.length}
                     filtered={filteredExecute}
+                    exposedFnsLength={module.executeFunctions.length}
                     onFunctionSelect={onFunctionSelect}
                   />
                 </Flex>
@@ -176,10 +176,10 @@ export const SelectFunctionSection = ({
         </>
       ) : (
         <ModuleEmptyState
-          description="Choose a module to see its functions."
           imageWidth="80px"
-          noBorder
           hasImage
+          description="Choose a module to see its functions."
+          noBorder
         />
       )}
     </GridItem>

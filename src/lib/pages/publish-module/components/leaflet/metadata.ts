@@ -4,7 +4,6 @@ const indent = "\t";
 
 // Render by row
 export const metadata = {
-  header: ["Example", "Published module", "Able to do", "Unable to do"],
   fields: [
     [
       structToString({
@@ -33,24 +32,6 @@ export const metadata = {
       }),
     ],
   ],
-  visibility: [
-    ["’public’ or ’script’", "same as current value", "change to new value"],
-    [
-      "’friend’",
-      "Can be changed to ‘public’ or maintain as ‘friend’",
-      "Change to script",
-    ],
-    ["’private’", "Can be changed to any value", "-"],
-  ],
-  is_entry: [
-    ["’true’", "must remain ’true’", "Change to ’false’"],
-    [
-      "’false’",
-      "Can be changed to ’true’ or maintain as ’false’",
-      "Can be changed to ’true’ or maintain as ’false’",
-    ],
-  ],
-  parameter: ["Ensure the old parameters remain unchanged"],
   generic_type_params: [
     [
       "Abilities can be retained or removed, but adding new ones is not allowed. Example below.",
@@ -69,5 +50,24 @@ export const metadata = {
         `<p>public fun example_function&lt;T0: store + drop&gt;(...): ... {\n${indent}... <span style='color: #B7B7B7;'>// T1 cannot be removed</span>\n}</p>`,
       ],
     ],
+  ],
+  header: ["Example", "Published module", "Able to do", "Unable to do"],
+  is_entry: [
+    ["’true’", "must remain ’true’", "Change to ’false’"],
+    [
+      "’false’",
+      "Can be changed to ’true’ or maintain as ’false’",
+      "Can be changed to ’true’ or maintain as ’false’",
+    ],
+  ],
+  parameter: ["Ensure the old parameters remain unchanged"],
+  visibility: [
+    ["’public’ or ’script’", "same as current value", "change to new value"],
+    [
+      "’friend’",
+      "Can be changed to ‘public’ or maintain as ‘friend’",
+      "Change to script",
+    ],
+    ["’private’", "Can be changed to any value", "-"],
   ],
 };

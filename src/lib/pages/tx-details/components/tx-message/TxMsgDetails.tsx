@@ -22,26 +22,26 @@ export const TxMsgDetails = ({ isExpand, ...txMsgData }: TxMsgDetailsProps) => {
 
   return (
     <Flex
-      direction="column"
       gap={4}
-      pl={8}
       height={isExpand ? "full" : 0}
+      pl={8}
+      direction="column"
       overflow="hidden"
       transition="all 0.25s ease-in-out"
     >
       <TxReceiptRender
-        variant="tx-page"
-        receipts={receipts}
         gap={{ base: 4, md: 3 }}
         pt={4}
+        receipts={receipts}
+        variant="tx-page"
       />
       {txMsgData.log && (
         <>
           <DividerWithArrow />
-          <Text variant="body2" fontWeight={500} color="text.dark">
+          <Text variant="body2" color="text.dark" fontWeight={500}>
             {plur("Event Log", txMsgData.log.events.length)}
           </Text>
-          <Flex direction="column" gap={3} w="full">
+          <Flex gap={3} w="full" direction="column">
             {txMsgData.log.events.map((event, idx) => (
               <EventBox
                 key={

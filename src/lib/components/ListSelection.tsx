@@ -24,28 +24,28 @@ import { CustomIcon } from "./icon";
 import { CreateNewListModal } from "./modal/list";
 
 export interface ListSelectionProps extends InputProps {
+  helperText?: string;
+  labelBgColor?: string;
   placeholder?: string;
   result: LVPair[];
   setResult: (options: LVPair[]) => void;
-  helperText?: string;
-  labelBgColor?: string;
 }
 
 const listItemProps: CSSProperties = {
   borderRadius: "8px",
+  cursor: "pointer",
   margin: "4px 0px",
   padding: "8px",
-  cursor: "pointer",
 };
 
 export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
   (
     {
-      result,
-      setResult,
-      placeholder,
       helperText,
       labelBgColor = "gray.900",
+      placeholder,
+      result,
+      setResult,
       ...rest
     }: ListSelectionProps,
     ref
@@ -115,36 +115,36 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
 
     useOutsideClick({
       enabled: enableOutside,
-      ref: boxRef,
       handler: () => setDisplayOptions(false),
+      ref: boxRef,
     });
     return (
-      <Box ref={boxRef} w="full">
+      <Box w="full" ref={boxRef}>
         <FormControl>
           <Flex
             alignItems="center"
-            color="text.main"
+            maxW="100%"
+            background="none"
             border="1px solid"
             borderColor="gray.700"
-            background="none"
             borderRadius="8px"
-            maxW="100%"
+            color="text.main"
             overflowX="scroll"
           >
             {result.length > 0 && (
               <Flex alignItems="center" pl={2}>
                 {[...result].map((option) => (
                   <Flex
+                    key={option.value}
                     display="inline-block"
                     onClick={() => selectOption(option)}
-                    key={option.value}
                   >
                     <Tag
-                      cursor="pointer"
-                      whiteSpace="nowrap"
-                      variant="primary-light"
                       gap={1}
                       mr={1}
+                      variant="primary-light"
+                      whiteSpace="nowrap"
+                      cursor="pointer"
                     >
                       {option.label}
                       <CustomIcon name="close" boxSize={3} />
@@ -154,10 +154,10 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               </Flex>
             )}
             <Input
-              w="100%"
+              style={{ border: "0" }}
               minW="200px"
               size="lg"
-              placeholder={result.length ? undefined : placeholder}
+              w="100%"
               onChange={(e) => filterOptions(e.currentTarget.value)}
               onFocus={() => {
                 if (!inputValue) {
@@ -165,43 +165,43 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                 }
                 setDisplayOptions(true);
               }}
+              placeholder={result.length ? undefined : placeholder}
               ref={mergeRefs([inputRef, ref])}
-              style={{ border: "0" }}
               {...rest}
             />
             <FormLabel
+              left={0}
+              lineHeight="1.2"
+              my={2}
+              px={1}
+              bgColor={labelBgColor}
+              color="text.dark"
+              fontWeight={400}
+              pointerEvents="none"
               position="absolute"
               top={0}
-              left={0}
-              fontWeight={400}
-              color="text.dark"
-              bgColor={labelBgColor}
-              pointerEvents="none"
-              px={1}
-              my={2}
-              lineHeight="1.2"
               transform="scale(0.75) translateY(-24px)"
             >
               Listed on
             </FormLabel>
           </Flex>
-          <FormHelperText ml={3} mt={1} fontSize="12px" color="text.dark">
+          <FormHelperText ml={3} mt={1} color="text.dark" fontSize="12px">
             {helperText}
           </FormHelperText>
 
           {displayOptions && (
             <List
-              borderRadius="8px"
               bg="gray.800"
+              maxH="195px"
+              mt={0}
               px={2}
               py={1}
-              mt={0}
-              position="absolute"
-              zIndex="2"
               w="full"
-              top="60px"
-              maxH="195px"
+              zIndex="2"
+              borderRadius="8px"
               overflow="scroll"
+              position="absolute"
+              top="60px"
             >
               {/* option selection section */}
               {partialResult.map((option) => (
@@ -209,8 +209,8 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                   key={option.value}
                   style={listItemProps}
                   _hover={{ bg: "gray.700" }}
-                  transition="all 0.25s ease-in-out"
                   onClick={() => selectOptionFromList(option)}
+                  transition="all 0.25s ease-in-out"
                 >
                   <Flex alignItems="center" justifyContent="space-between">
                     <Text variant="body2">{option.label}</Text>
@@ -219,8 +219,8 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                         data-label={option.label}
                         mr={2}
                         name="check"
-                        color="gray.600"
                         boxSize={3}
+                        color="gray.600"
                       />
                     )}
                   </Flex>
@@ -229,24 +229,24 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
               {/* creation section */}
               {canCreateOption && (
                 <CreateNewListModal
+                  inputValue={inputValue}
                   trigger={
                     <ListItem
-                      w="full"
-                      style={listItemProps}
-                      _hover={{ bg: "gray.700" }}
-                      transition="all 0.25s ease-in-out"
                       data-testid="create-option"
+                      style={listItemProps}
+                      w="full"
+                      _hover={{ bg: "gray.700" }}
                       onClick={() => setEnableOutside(false)}
+                      transition="all 0.25s ease-in-out"
                     >
                       <Flex alignItems="center" gap={2}>
-                        <CustomIcon name="plus" color="text.dark" boxSize={3} />
+                        <CustomIcon name="plus" boxSize={3} color="text.dark" />
                         <Text variant="body2">Create New List </Text>
                       </Flex>
                     </ListItem>
                   }
-                  onCreate={createOption}
                   onClose={() => setEnableOutside(true)}
-                  inputValue={inputValue}
+                  onCreate={createOption}
                 />
               )}
             </List>

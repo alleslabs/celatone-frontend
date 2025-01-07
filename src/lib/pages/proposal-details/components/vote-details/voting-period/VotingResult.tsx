@@ -26,7 +26,7 @@ export const VotingResult = ({
   );
 
   return (
-    <Flex gap={2} alignItems="center">
+    <Flex alignItems="center" gap={2}>
       <Text variant="body1" color="text.main" fontWeight={700}>
         {status === ProposalStatus.VOTING_PERIOD ? "Current" : "Final"} voting
         result:
@@ -36,10 +36,10 @@ export const VotingResult = ({
       ) : (
         <LegendText
           label={result}
-          legendColor={resultColor}
           variant="body2"
           color="text.main"
           fontWeight={700}
+          legendColor={resultColor}
         />
       )}
     </Flex>

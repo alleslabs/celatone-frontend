@@ -18,28 +18,28 @@ import { TxsTop } from "./TxsTop";
 import type { TxsTableProps } from "./types";
 
 const getEmptyState = ({
-  transactions,
   selectedFilters,
+  transactions,
 }: {
-  transactions: Option<Transaction[]>;
   selectedFilters: string[];
+  transactions: Option<Transaction[]>;
 }) => {
   if (!transactions) {
     return (
       <ErrorFetching
         dataName="transactions"
-        withBorder
         my={2}
         hasBorderTop={false}
+        withBorder
       />
     );
   }
   if (selectedFilters.length)
     return (
       <EmptyState
-        withBorder
         imageVariant="not-found"
         message="No past transaction matches found with your input."
+        withBorder
       />
     );
 
@@ -53,9 +53,9 @@ const getEmptyState = ({
 
 export const TxsTableFull = ({
   address,
-  scrollComponentId,
-  refetchCount,
   onViewMore,
+  refetchCount,
+  scrollComponentId,
 }: TxsTableProps) => {
   const { chainId } = useCurrentChain();
   const [isSigner, setIsSigner] = useState<Option<boolean>>();
@@ -71,19 +71,19 @@ export const TxsTableFull = ({
   const isTxsCountTimeout = rawTxCount === null;
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: txsCount,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: txsCount,
   });
 
   const { data: transactions, isLoading } = useTxsByAddress(
@@ -137,37 +137,37 @@ export const TxsTableFull = ({
       ) : (
         <>
           <TxsTop
-            txsCount={txsCount}
             onViewMore={onViewMore}
             relationSelection={
               <TxRelationSelection
-                value={isSigner}
                 setValue={handleOnIsSignerChange}
-                w={{ base: "full", md: "200px" }}
                 size="lg"
+                value={isSigner}
+                w={{ base: "full", md: "200px" }}
               />
             }
+            txsCount={txsCount}
             txTypeSelection={
               <TxFilterSelection
+                boxWidth={{ base: "full", md: "285px" }}
                 result={selectedFilters}
                 setResult={handleOnFiltersChange}
-                boxWidth={{ base: "full", md: "285px" }}
-                placeholder="All"
                 size="lg"
                 tagSize={{ base: "sm", md: "md" }}
+                placeholder="All"
               />
             }
           />
           {isTxsCountTimeout && <TxsAlert />}
           {!isMobileOverview && (
             <TransactionsTable
-              transactions={transactions?.items}
-              isLoading={isLoading || isTxCountLoading}
               emptyState={getEmptyState({
-                transactions: transactions?.items,
                 selectedFilters,
+                transactions: transactions?.items,
               })}
+              isLoading={isLoading || isTxCountLoading}
               showRelations
+              transactions={transactions?.items}
             />
           )}
           {Boolean(transactions?.items?.length) &&
@@ -179,11 +179,9 @@ export const TxsTableFull = ({
                 txsCount > 10 && (
                   <Pagination
                     currentPage={currentPage}
+                    pageSize={pageSize}
                     pagesQuantity={pagesQuantity}
                     offset={offset}
-                    totalData={txsCount}
-                    scrollComponentId={scrollComponentId}
-                    pageSize={pageSize}
                     onPageChange={(nextPage) => {
                       setCurrentPage(nextPage);
                       refetchTxsCount();
@@ -196,6 +194,8 @@ export const TxsTableFull = ({
                       refetchTxsCount();
                       refetchCount();
                     }}
+                    scrollComponentId={scrollComponentId}
+                    totalData={txsCount}
                   />
                 ))}
         </>

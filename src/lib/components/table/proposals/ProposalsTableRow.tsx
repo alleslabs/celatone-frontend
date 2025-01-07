@@ -15,15 +15,15 @@ import { StatusChip } from "./StatusChip";
 import { VotingEndTime } from "./VotingEndTime";
 
 export interface ProposalsTableRowProps {
+  boxShadow: DividerProps["boxShadow"];
   proposal: Proposal;
   templateColumns: GridProps["templateColumns"];
-  boxShadow: DividerProps["boxShadow"];
 }
 
 export const ProposalsTableRow = ({
+  boxShadow,
   proposal,
   templateColumns,
-  boxShadow,
 }: ProposalsTableRowProps) => {
   const { isFullTier } = useTierConfig();
   const navigate = useInternalNavigate();
@@ -42,10 +42,7 @@ export const ProposalsTableRow = ({
   return (
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(proposal.id)}
       minW="min-content"
-      cursor="pointer"
       _hover={{
         "> div": {
           bgColor:
@@ -54,13 +51,16 @@ export const ProposalsTableRow = ({
               : "gray.900",
         },
       }}
+      cursor="pointer"
+      onClick={() => onRowSelect(proposal.id)}
+      templateColumns={templateColumns}
     >
       <TableRowFreeze left="0">
         <ExplorerLink
           type="proposal_id"
           value={proposal.id.toString()}
-          showCopyOnHover
           ampCopierSection="proposal-list"
+          showCopyOnHover
         />
       </TableRowFreeze>
       <TableRowFreeze
@@ -69,9 +69,9 @@ export const ProposalsTableRow = ({
         color="gray.800"
       >
         <ProposalTextCell
+          isExpedited={proposal.isExpedited}
           title={proposal.title}
           types={proposal.types}
-          isExpedited={proposal.isExpedited}
           isDepositOrVoting={isDepositOrVoting}
         />
       </TableRowFreeze>
@@ -82,26 +82,26 @@ export const ProposalsTableRow = ({
       </TableRow>
       <TableRow>
         <VotingEndTime
-          votingEndTime={proposal.votingEndTime}
-          depositEndTime={proposal.depositEndTime}
           status={proposal.status}
+          depositEndTime={proposal.depositEndTime}
+          votingEndTime={proposal.votingEndTime}
         />
       </TableRow>
       {isFullTier && (
         <TableRow>
           <StopPropagationBox>
             <ResolvedHeight
-              resolvedHeight={proposal.resolvedHeight}
-              isDepositOrVoting={isDepositOrVoting}
               amptrackSection="proposal-list"
+              isDepositOrVoting={isDepositOrVoting}
+              resolvedHeight={proposal.resolvedHeight}
             />
           </StopPropagationBox>
         </TableRow>
       )}
       <TableRow>
         <Proposer
-          proposer={proposal.proposer}
           amptrackSection="proposal-list"
+          proposer={proposal.proposer}
         />
       </TableRow>
     </Grid>

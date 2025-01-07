@@ -16,33 +16,33 @@ import type {
 import { VotingPowerChart } from "./VotingPowerChart";
 
 interface BondedTokenChangesProps {
-  validatorAddress: ValidatorAddr;
-  singleStakingDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
   movePoolInfos: Option<MovePoolInfos>;
+  singleStakingDenom: Option<string>;
+  validatorAddress: ValidatorAddr;
 }
 
 export const BondedTokenChanges = ({
-  validatorAddress,
-  singleStakingDenom,
   assetInfos,
   movePoolInfos,
+  singleStakingDenom,
+  validatorAddress,
 }: BondedTokenChangesProps) => {
   const isMobile = useMobile();
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
@@ -58,41 +58,41 @@ export const BondedTokenChanges = ({
   const tableHeaderId = "relatedTransactionTableHeader";
 
   return (
-    <Flex direction="column" gap={{ base: 4, md: 8 }} pt={6}>
+    <Flex gap={{ base: 4, md: 8 }} pt={6} direction="column">
       <VotingPowerChart
         validatorAddress={validatorAddress}
-        singleStakingDenom={singleStakingDenom}
         assetInfos={assetInfos}
+        singleStakingDenom={singleStakingDenom}
       />
       <Box>
         {!isMobile && (
           <TableTitle
-            title="Delegation-Related Transactions"
-            count={data?.total ?? 0}
             id={tableHeaderId}
             helperText="Shows transactions relevant to changes in delegated tokens, excluding any token reduction due to slashing."
+            title="Delegation-Related Transactions"
+            count={data?.total ?? 0}
           />
         )}
         <DelegationRelatedTxsTable
+          assetInfos={assetInfos}
           delegationRelatedTxs={data?.items}
           isLoading={isLoading}
-          assetInfos={assetInfos}
           movePoolInfos={movePoolInfos}
         />
         {!!data?.total && data.total > 10 && (
           <Pagination
             currentPage={currentPage}
+            pageSize={pageSize}
             pagesQuantity={pagesQuantity}
             offset={offset}
-            totalData={data.total}
-            scrollComponentId={tableHeaderId}
-            pageSize={pageSize}
             onPageChange={setCurrentPage}
             onPageSizeChange={(e) => {
               const size = Number(e.target.value);
               setPageSize(size);
               setCurrentPage(1);
             }}
+            scrollComponentId={tableHeaderId}
+            totalData={data.total}
           />
         )}
       </Box>

@@ -12,21 +12,35 @@ const JsonEditor = dynamic(() => import("./JsonEditor"), {
 });
 
 interface JsonInputProps {
-  topic?: string;
-  text?: string;
-  minLines?: number;
   maxLines?: number;
+  minLines?: number;
   setText: (value: string) => void;
+  text?: string;
+  topic?: string;
   validateFn?: (value: string) => Nullable<string>;
 }
 
 interface JsonState {
-  state: "empty" | "loading" | "success" | "error";
   errMsg?: string;
+  state: "empty" | "error" | "loading" | "success";
 }
 
 const getResponse = (jsonState: JsonState) => {
   switch (jsonState.state) {
+    case "error":
+      return {
+        color: "error.main",
+        response: (
+          <>
+            <CustomIcon
+              name="alert-triangle-solid"
+              boxSize={3}
+              color="error.light"
+            />
+            {jsonState.errMsg}
+          </>
+        ),
+      };
     case "loading":
       return {
         color: "text.dark",
@@ -43,24 +57,10 @@ const getResponse = (jsonState: JsonState) => {
           <>
             <CustomIcon
               name="check-circle-solid"
-              color="success.main"
               boxSize={3}
+              color="success.main"
             />
             Valid JSON Format
-          </>
-        ),
-      };
-    case "error":
-      return {
-        color: "error.main",
-        response: (
-          <>
-            <CustomIcon
-              name="alert-triangle-solid"
-              color="error.light"
-              boxSize={3}
-            />
-            {jsonState.errMsg}
           </>
         ),
       };
@@ -74,11 +74,11 @@ const getResponse = (jsonState: JsonState) => {
 };
 
 const JsonInput = ({
-  topic,
-  text = "",
-  minLines = 16,
   maxLines = 100,
+  minLines = 16,
   setText,
+  text = "",
+  topic,
   validateFn = jsonValidate,
 }: JsonInputProps) => {
   const isMobile = useMobile();
@@ -93,7 +93,7 @@ const JsonInput = ({
       const error = validateFn(text);
 
       if (text.trim().length === 0) setJsonState({ state: "empty" });
-      else if (error) setJsonState({ state: "error", errMsg: error });
+      else if (error) setJsonState({ errMsg: error, state: "error" });
       else setJsonState({ state: "success" });
     }, 400);
 
@@ -113,60 +113,60 @@ const JsonInput = ({
   return (
     <Flex direction="column" flexGrow={1}>
       <Box
-        p="16px 12px"
         borderWidth="thin"
-        borderColor="gray.700"
-        borderRadius="8px"
-        position="relative"
+        height="100%"
         minH={32}
-        transition="all 0.25s ease-in-out"
+        p="16px 12px"
         _hover={{
           borderColor: "gray.600",
         }}
-        height="100%"
+        borderColor="gray.700"
+        borderRadius="8px"
+        position="relative"
+        transition="all 0.25s ease-in-out"
       >
         <JsonEditor
-          value={text}
-          setValue={handleChange}
           isValid={isValidJson}
+          setValue={handleChange}
+          value={text}
           showLines={showLines}
         />
         {topic && (
           <Text
-            top="-10px"
             w="fit-content"
             background="background.main"
             color="text.dark"
             fontSize="12px"
             position="absolute"
+            top="-10px"
           >
             {topic}
           </Text>
         )}
         {!isMobile && (
           <Button
-            position="absolute"
-            top="10px"
-            right="10px"
+            isDisabled={!isValidJson}
             p="4px 10px"
+            right="10px"
             variant="outline-white"
-            fontSize="12px"
             background="background.main"
             float="right"
-            isDisabled={!isValidJson}
+            fontSize="12px"
             onClick={() => setText(jsonPrettify(text))}
+            position="absolute"
+            top="10px"
           >
             Format JSON
           </Button>
         )}
       </Box>
       <Flex
-        my={response ? "16px" : undefined}
-        minHeight="16px"
-        fontSize="12px"
-        textColor={color}
         alignItems="center"
         gap={2}
+        minHeight="16px"
+        my={response ? "16px" : undefined}
+        fontSize="12px"
+        textColor={color}
       >
         {response}
       </Flex>

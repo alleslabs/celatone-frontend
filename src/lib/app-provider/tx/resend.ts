@@ -7,10 +7,10 @@ import { trackTxSucceed } from "lib/amplitude";
 import { resendTx } from "lib/app-fns/tx/resend";
 
 export interface ResendStreamParams {
-  onTxSucceed?: (txHash: string) => void;
-  onTxFailed?: () => void;
   estimatedFee?: StdFee;
   messages: EncodeObject[];
+  onTxFailed?: () => void;
+  onTxSucceed?: (txHash: string) => void;
 }
 
 export const useResendTx = () => {
@@ -19,10 +19,10 @@ export const useResendTx = () => {
 
   return useCallback(
     async ({
-      onTxSucceed,
-      onTxFailed,
       estimatedFee,
       messages,
+      onTxFailed,
+      onTxSucceed,
     }: ResendStreamParams) => {
       if (!address) throw new Error("No address provided (useResendTx)");
       if (!estimatedFee) return null;
@@ -30,12 +30,12 @@ export const useResendTx = () => {
         address,
         fee: estimatedFee,
         messages,
-        signAndBroadcast,
+        onTxFailed,
         onTxSucceed: (txHash) => {
           trackTxSucceed();
           onTxSucceed?.(txHash);
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

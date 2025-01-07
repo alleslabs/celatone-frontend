@@ -15,31 +15,31 @@ import type { IconKeys } from "lib/components/icon";
 import { USER_GUIDE_DOCS_LINK } from "lib/data";
 
 const actionCardProps: SystemStyleObject = {
-  width: "full",
-  height: "full",
-  padding: "16px",
-  borderRadius: "8px",
-  justifyContent: "space-between",
   alignItems: "center",
   bg: "gray.800",
+  borderRadius: "8px",
+  height: "full",
+  justifyContent: "space-between",
+  padding: "16px",
+  width: "full",
 };
 
 const cardProps: SystemStyleObject = {
-  width: "full",
-  height: "full",
-  padding: "16px",
-  borderRadius: "8px",
-  justifyContent: "space-between",
   alignItems: "center",
   bg: "gray.800",
+  borderRadius: "8px",
+  height: "full",
+  justifyContent: "space-between",
+  padding: "16px",
+  width: "full",
 };
 
 interface CardProps {
-  title: string;
-  subtitle?: string;
-  slug?: string;
   icon: IconKeys;
   isDocument: boolean;
+  slug?: string;
+  subtitle?: string;
+  title: string;
 }
 
 const QuickActionCard = ({ item }: { item: CardProps }) => (
@@ -52,9 +52,9 @@ const QuickActionCard = ({ item }: { item: CardProps }) => (
       >
         <Flex
           gap={6}
+          h="full"
           direction="column"
           justifyContent="space-between"
-          h="full"
         >
           <CustomIcon
             name={item.icon}
@@ -64,10 +64,10 @@ const QuickActionCard = ({ item }: { item: CardProps }) => (
           <Box>
             <Heading variant="h6">{item.title}</Heading>
             <Text
-              textDecoration="none"
+              mt={1}
               variant="body2"
               color="text.dark"
-              mt={1}
+              textDecoration="none"
             >
               {item.subtitle}
             </Text>
@@ -85,10 +85,10 @@ const QuickActionCard = ({ item }: { item: CardProps }) => (
 
 const ListPageCard = ({ item }: { item: CardProps }) => (
   <Flex
-    sx={cardProps}
     alignItems="center"
-    justifyContent="space-between"
     h="full"
+    sx={cardProps}
+    justifyContent="space-between"
   >
     <Flex alignItems="center" gap={2}>
       <CustomIcon
@@ -118,49 +118,49 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
     if (gov.enabled)
       base.push(
         {
-          title: "Validators",
-          slug: "validators",
           icon: "admin" as const,
           isDocument: false,
+          slug: "validators",
+          title: "Validators",
         },
         {
-          title: "Proposals",
-          slug: "proposals",
           icon: "proposal" as const,
           isDocument: false,
+          slug: "proposals",
+          title: "Proposals",
         }
       );
 
     if (wasm.enabled)
       base.push({
-        title: "Codes",
-        slug: "codes",
         icon: "code" as const,
         isDocument: false,
+        slug: "codes",
+        title: "Codes",
       });
 
     if (move.enabled)
       base.push({
-        title: "0x1 Page",
-        slug: "/accounts/0x1",
         icon: "0x1" as IconKeys,
         isDocument: false,
+        slug: "/accounts/0x1",
+        title: "0x1 Page",
       });
 
     if (publicProject.enabled)
       base.push({
-        title: "Public Projects",
-        slug: "projects",
         icon: "public-project" as const,
         isDocument: false,
+        slug: "projects",
+        title: "Public Projects",
       });
 
     // default
     base.push({
-      title: "User Guide",
-      subtitle: "View Celatone documents",
       icon: "document" as const,
       isDocument: true,
+      subtitle: "View Celatone documents",
+      title: "User Guide",
     });
 
     return base;
@@ -173,26 +173,26 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
           <Heading variant="h6">Quick Action</Heading>
           <QuickActionCard
             item={{
-              title: "Query",
-              subtitle: "Query and get contract state data",
-              slug: "interact-contract",
               icon: "query" as const,
               isDocument: false,
+              slug: "interact-contract",
+              subtitle: "Query and get contract state data",
+              title: "Query",
             }}
           />
         </>
       )}
-      <Heading variant="h6" mt={6}>
+      <Heading mt={6} variant="h6">
         Explore {prettyName}
       </Heading>
       <Grid gap={4}>
         {quickMenu.map((item) =>
           item.isDocument ? (
-            <Link href={USER_GUIDE_DOCS_LINK} key={item.slug} target="_blank">
+            <Link key={item.slug} target="_blank" href={USER_GUIDE_DOCS_LINK}>
               <ListPageCard item={item} />
             </Link>
           ) : (
-            <AppLink href={`/${item.slug}`} key={item.slug}>
+            <AppLink key={item.slug} href={`/${item.slug}`}>
               <ListPageCard item={item} />
             </AppLink>
           )

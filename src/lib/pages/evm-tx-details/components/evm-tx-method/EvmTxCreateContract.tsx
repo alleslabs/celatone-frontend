@@ -19,20 +19,19 @@ export const EvmTxCreateContract = ({
 
   return (
     <EvmTxMethodAccordion
-      msgIcon="instantiate"
       content={
         <Flex gap={1}>
           Create{" "}
           {contractAddress ? (
-            <Flex gap={1} align="center">
+            <Flex align="center" gap={1}>
               <CustomIcon
                 name="contract-address"
                 boxSize={3}
                 color="primary.main"
               />
               <ExplorerLink
-                value={contractAddress}
                 type="evm_contract_address"
+                value={contractAddress}
                 showCopyOnHover
               />
             </Flex>
@@ -43,16 +42,17 @@ export const EvmTxCreateContract = ({
           )}
         </Flex>
       }
+      msgIcon="instantiate"
     >
       <EvmInfoLabelValue
         label="Creator"
         value={
           <ExplorerLink
+            fixedHeight={false}
             type="user_address"
             value={from}
             showCopyOnHover
             textFormat="normal"
-            fixedHeight={false}
           />
         }
       />
@@ -60,18 +60,18 @@ export const EvmTxCreateContract = ({
         label="Created Contract"
         value={
           contractAddress ? (
-            <Flex gap={1} align="center">
+            <Flex align="center" gap={1}>
               <CustomIcon
                 name="contract-address"
                 boxSize={3}
                 color="primary.main"
               />
               <ExplorerLink
-                value={contractAddress}
+                fixedHeight={false}
                 type="evm_contract_address"
+                value={contractAddress}
                 showCopyOnHover
                 textFormat="normal"
-                fixedHeight={false}
               />
             </Flex>
           ) : (

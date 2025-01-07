@@ -15,7 +15,7 @@ export const Next = ({ children, pageSize, ...buttonProps }: NextProps) => {
   const { actions, state } = useContext(PaginatorContext);
 
   const { changePage } = actions;
-  const { currentPage, pagesQuantity, isDisabled } = state;
+  const { currentPage, isDisabled, pagesQuantity } = state;
   const isLast = pagesQuantity ? currentPage > pagesQuantity - 1 : true;
 
   const handleNextClick = () => {
@@ -28,8 +28,8 @@ export const Next = ({ children, pageSize, ...buttonProps }: NextProps) => {
     <Button
       aria-label="Next page"
       isDisabled={isLast || isDisabled}
-      pointerEvents={isDisabled ? "none" : "auto"}
       onClick={handleNextClick}
+      pointerEvents={isDisabled ? "none" : "auto"}
       {...(isLast || isDisabled ? { "aria-disabled": true } : {})}
       {...buttonProps}
     >

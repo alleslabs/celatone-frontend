@@ -9,17 +9,17 @@ import type { Option } from "lib/types";
 import { resolvePermission } from "lib/utils";
 
 interface MigrateOptionsProps {
+  existHandler: () => void;
   isAdmin: boolean;
   uploadAccessParams: Option<UploadAccessParams>;
   uploadHandler: () => void;
-  existHandler: () => void;
 }
 
 export const MigrateOptions = ({
+  existHandler,
   isAdmin,
   uploadAccessParams,
   uploadHandler,
-  existHandler,
 }: MigrateOptionsProps) => {
   const { address } = useCurrentChain();
   const {
@@ -34,26 +34,27 @@ export const MigrateOptions = ({
     );
   return (
     <>
-      <Flex direction="column" alignItems="center" gap={4} mb={6}>
-        <Heading as="h5" variant="h5" textAlign="center">
+      <Flex alignItems="center" gap={4} mb={6} direction="column">
+        <Heading as="h5" textAlign="center" variant="h5">
           Migrate Options
         </Heading>
         <UserDocsLink
-          isDevTool
-          mt={0}
           cta="Read more about Migrate Contract"
+          mt={0}
+          isDevTool
           href="cosmwasm/contracts/admin-actions#migrating-a-contract"
         />
       </Flex>
 
       {address && !isAllowed && (
-        <Alert variant="primary" mb={4} alignItems="flex-start" gap={2}>
-          <CustomIcon name="info-circle" color="primary.light" boxSize={4} />
+        <Alert alignItems="flex-start" gap={2} mb={4} variant="primary">
+          <CustomIcon name="info-circle" boxSize={4} color="primary.light" />
           <AlertDescription>{`${chainPrettyName} is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.`}</AlertDescription>
         </Alert>
       )}
       <ButtonCard
         disabled={!isAdmin || !isAllowed}
+        mb={4}
         title="Upload new WASM File"
         description={
           uploadAccessParams?.isPermissionedNetwork
@@ -61,7 +62,6 @@ export const MigrateOptions = ({
             : "Deploy contract by uploading new Wasm file"
         }
         onClick={uploadHandler}
-        mb={4}
       />
       <ButtonCard
         disabled={!isAdmin}

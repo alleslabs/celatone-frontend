@@ -21,46 +21,46 @@ import { Tooltip } from "lib/components/Tooltip";
 import type { MenuInfo, NavMenuProps, SubmenuInfo } from "./types";
 
 interface NavInfoProps {
-  submenu: SubmenuInfo;
   isCurrentPage: (slug: string) => boolean;
+  submenu: SubmenuInfo;
 }
-const NavInfo = ({ submenu, isCurrentPage }: NavInfoProps) => (
+const NavInfo = ({ isCurrentPage, submenu }: NavInfoProps) => (
   <Flex
+    alignItems="center"
     gap={2}
+    my="1px"
     p={2}
-    cursor={submenu.isDisable ? undefined : "pointer"}
     _hover={
       submenu.isDisable ? undefined : { bg: "gray.700", borderRadius: "4px" }
     }
-    my="1px"
-    transition="all 0.25s ease-in-out"
-    alignItems="center"
-    position="relative"
     bgColor={isCurrentPage(submenu.slug) ? "gray.800" : "transparent"}
     borderRadius={isCurrentPage(submenu.slug) ? "4px" : "0px"}
+    cursor={submenu.isDisable ? undefined : "pointer"}
+    position="relative"
+    transition="all 0.25s ease-in-out"
   >
     <Box
-      opacity={isCurrentPage(submenu.slug) ? 1 : 0}
       width="3px"
       height="20px"
+      left="0px"
       bgColor="primary.light"
+      borderRadius="2px"
+      opacity={isCurrentPage(submenu.slug) ? 1 : 0}
       position="absolute"
       top="10px"
-      borderRadius="2px"
-      left="0px"
     />
     {submenu.icon && <CustomIcon name={submenu.icon} color="gray.600" />}
     {submenu.logo && (
       <Image
+        alt={submenu.slug}
         src={submenu.logo}
         borderRadius="full"
-        alt={submenu.slug}
         boxSize={5}
       />
     )}
     <Text
-      variant="body2"
       className="ellipsis"
+      variant="body2"
       color={submenu.isDisable ? "text.disabled" : "text.main"}
     >
       {submenu.name}
@@ -69,27 +69,27 @@ const NavInfo = ({ submenu, isCurrentPage }: NavInfoProps) => (
 );
 
 interface SubMenuProps {
-  submenu: SubmenuInfo[];
   isCurrentPage: (slug: string) => boolean;
+  submenu: SubmenuInfo[];
 }
 
-const SubMenuRender = ({ submenu, isCurrentPage }: SubMenuProps) => (
+const SubMenuRender = ({ isCurrentPage, submenu }: SubMenuProps) => (
   <>
     {submenu.map((subitem) =>
       subitem.isDisable ? (
         <Tooltip key={subitem.slug} label={subitem.tooltipText} maxW="240px">
-          <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
+          <NavInfo isCurrentPage={isCurrentPage} submenu={subitem} />
         </Tooltip>
       ) : (
         <AppLink
-          href={subitem.slug}
           key={subitem.slug}
           onClick={() => {
             track(AmpEvent.USE_SIDEBAR);
             subitem.trackEvent?.();
           }}
+          href={subitem.slug}
         >
-          <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
+          <NavInfo isCurrentPage={isCurrentPage} submenu={subitem} />
         </AppLink>
       )
     )}
@@ -97,11 +97,11 @@ const SubMenuRender = ({ submenu, isCurrentPage }: SubMenuProps) => (
 );
 
 interface NavbarRenderProps {
-  menuInfo: MenuInfo;
   isCurrentPage: (slug: string) => boolean;
+  menuInfo: MenuInfo;
 }
 
-const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
+const NavbarRender = ({ isCurrentPage, menuInfo }: NavbarRenderProps) => {
   // Add slug to StorageKeys and NavContext
   const { submenus } = useNavContext();
   const [isExpand, setIsExpand] = submenus[menuInfo.slug];
@@ -113,42 +113,42 @@ const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
 
   return (
     <Accordion
-      pt={2}
-      allowMultiple
+      key={menuInfo.slug}
       defaultIndex={defaultIndex}
       mt={2}
-      key={menuInfo.slug}
-      borderTop="1px solid"
-      borderColor="gray.700"
+      pt={2}
       sx={{
         "&:first-of-type": {
           borderTop: "none",
-          paddingTop: "0px",
           marginTop: "0px",
+          paddingTop: "0px",
         },
       }}
+      allowMultiple
+      borderColor="gray.700"
+      borderTop="1px solid"
       onChange={handleChange}
     >
       <AccordionItem bg="transparent">
-        <AccordionButton justifyContent="space-between" alignItems="center">
+        <AccordionButton alignItems="center" justifyContent="space-between">
           <Text py={2} variant="body3" fontWeight={700}>
             {menuInfo.category}
           </Text>
-          <AccordionIcon color="gray.600" ml="auto" />
+          <AccordionIcon ml="auto" color="gray.600" />
         </AccordionButton>
         <AccordionPanel p={0}>
           <SubMenuRender
-            submenu={menuInfo.submenu}
             isCurrentPage={isCurrentPage}
+            submenu={menuInfo.submenu}
           />
           {menuInfo.subSection?.map((subitem) => (
             <div key={subitem.category}>
-              <Text py={2} variant="small" fontWeight={700} color="text.dark">
+              <Text py={2} variant="small" color="text.dark" fontWeight={700}>
                 {subitem.category}
               </Text>
               <SubMenuRender
-                submenu={subitem.submenu}
                 isCurrentPage={isCurrentPage}
+                submenu={subitem.submenu}
               />
             </div>
           ))}
@@ -159,8 +159,8 @@ const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
 };
 
 export const ExpandNavMenu = ({
-  navMenu,
   isCurrentPage,
+  navMenu,
   setIsExpand,
 }: NavMenuProps) => {
   const yourAccountMenu = navMenu[0];
@@ -168,21 +168,21 @@ export const ExpandNavMenu = ({
 
   return (
     <Flex
-      direction="column"
       h="full"
-      justifyContent="space-between"
       px={4}
       py={2}
+      direction="column"
+      justifyContent="space-between"
       overflowY="auto"
     >
       <div>
-        <Flex justifyContent="space-between" alignItems="center">
+        <Flex alignItems="center" justifyContent="space-between">
           <Text py={2} variant="body3" fontWeight={700}>
             {yourAccountMenu.category}
           </Text>
           <Button
-            variant="ghost-primary"
             size="xs"
+            variant="ghost-primary"
             iconSpacing={1}
             leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
             onClick={() => setIsExpand(false)}
@@ -191,14 +191,14 @@ export const ExpandNavMenu = ({
           </Button>
         </Flex>
         <SubMenuRender
-          submenu={yourAccountMenu.submenu}
           isCurrentPage={isCurrentPage}
+          submenu={yourAccountMenu.submenu}
         />
         {restNavMenu.map((item) => (
           <NavbarRender
-            menuInfo={item}
             key={item.slug}
             isCurrentPage={isCurrentPage}
+            menuInfo={item}
           />
         ))}
       </div>

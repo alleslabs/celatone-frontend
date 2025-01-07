@@ -6,20 +6,20 @@ import { CustomIcon } from "lib/components/icon";
 import type { Option } from "lib/types";
 
 interface MyModuleVerificationDetailsTopProps {
-  taskId: string;
   requestNote: Option<string>;
+  taskId: string;
 }
 
 export const MyModuleVerificationDetailsTop = ({
-  taskId,
   requestNote,
+  taskId,
 }: MyModuleVerificationDetailsTopProps) => (
   <Stack gap={6}>
     <Breadcrumb
       items={[
         {
-          text: "My Past Verification",
           href: "/my-module-verifications",
+          text: "My Past Verification",
         },
         {
           text: taskId,
@@ -38,9 +38,9 @@ export const MyModuleVerificationDetailsTop = ({
           Request ID:
         </Text>
         <CopyLink
+          type="my_module_verification_details_path"
           value={taskId}
           amptrackSection="my_module_verification_details_top"
-          type="my_module_verification_details_path"
           showCopyOnHover
         />
       </Flex>

@@ -18,17 +18,17 @@ import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "./icon";
 
 export interface SidebarMetadata {
+  description: React.ReactElement;
   page: string;
   title: string;
-  description: React.ReactElement;
+  toPage?: boolean;
   toPagePath?: string;
   toPageTitle?: string;
-  toPage?: boolean;
 }
 
 interface StickySidebarProps extends BoxProps {
-  metadata: SidebarMetadata;
   hasForumAlert?: boolean;
+  metadata: SidebarMetadata;
 }
 
 interface ToPageProps {
@@ -37,53 +37,53 @@ interface ToPageProps {
 }
 const ToPage = ({ onClick, title }: ToPageProps) => (
   <Flex
-    align="center"
-    cursor="pointer"
-    borderRadius={4}
-    p={1}
-    gap={1}
-    alignItems="center"
     width="fit-content"
-    transition="all 0.25s ease-in-out"
-    color="primary.main"
+    align="center"
+    alignItems="center"
+    gap={1}
+    p={1}
     _hover={{
-      color: "primary.light",
       bgColor: "primary.background",
+      color: "primary.light",
     }}
+    borderRadius={4}
+    color="primary.main"
+    cursor="pointer"
     onClick={onClick}
+    transition="all 0.25s ease-in-out"
   >
     <Text variant="body3" color="primary.main" fontWeight={700}>
       {title}
     </Text>
-    <CustomIcon name="chevron-right" color="primary.main" boxSize={3} m={0} />
+    <CustomIcon m={0} name="chevron-right" boxSize={3} color="primary.main" />
   </Flex>
 );
 
 export const StickySidebar = ({
-  metadata,
   hasForumAlert = false,
+  metadata,
   ...boxProps
 }: StickySidebarProps) => {
   const navigate = useInternalNavigate();
-  const { title, description, toPagePath, toPageTitle, toPage, page } =
+  const { description, page, title, toPage, toPagePath, toPageTitle } =
     metadata;
   const hasAction = toPage;
   return (
     <Box flex={4} px={8} position="relative" {...boxProps}>
-      <Flex position="fixed" width="full" direction="column">
+      <Flex width="full" direction="column" position="fixed">
         {hasForumAlert && (
-          <Alert variant="primary" gap="2" w={96} mb={2}>
+          <Alert gap="2" mb={2} variant="primary" w={96}>
             <Box>
-              <Text variant="body2" fontWeight={600} color="primary">
+              <Text variant="body2" color="primary" fontWeight={600}>
                 Forum Posting Required for Proposals
               </Text>
-              <Text variant="body3" color="primary" mt={1}>
+              <Text mt={1} variant="body3" color="primary">
                 Governance proposals must be posted as a draft on
                 <Flex align="center" display="inline-flex">
                   <Link
-                    href="https://forum.osmosis.zone"
-                    target="_blank"
                     rel="noopener noreferrer"
+                    target="_blank"
+                    href="https://forum.osmosis.zone"
                   >
                     https://forum.osmosis.zone
                     <CustomIcon name="launch" boxSize={2} />
@@ -97,46 +97,46 @@ export const StickySidebar = ({
           </Alert>
         )}
         <Accordion
-          allowToggle
           width={96}
           defaultIndex={[0]}
           variant="transparent"
+          allowToggle
         >
-          <AccordionItem borderTop="none" borderColor="gray.700">
-            <AccordionButton py={3} px={0}>
+          <AccordionItem borderColor="gray.700" borderTop="none">
+            <AccordionButton px={0} py={3}>
               <Text
-                variant="body2"
-                fontWeight={700}
-                color="text.main"
                 textAlign="start"
+                variant="body2"
+                color="text.main"
+                fontWeight={700}
               >
                 {title}
               </Text>
-              <AccordionIcon color="gray.600" ml="auto" />
+              <AccordionIcon ml="auto" color="gray.600" />
             </AccordionButton>
             <AccordionPanel
               bg="transparent"
-              py={3}
               px={0}
-              borderTop="1px solid"
+              py={3}
               borderColor="gray.700"
+              borderTop="1px solid"
             >
               <Text
+                mb={hasAction ? 3 : 0}
+                p={1}
+                pb={2}
                 variant="body2"
                 color="text.dark"
-                mb={hasAction ? 3 : 0}
-                pb={2}
-                p={1}
               >
                 {description}
               </Text>
               {toPage && toPagePath && toPageTitle && (
                 <ToPage
+                  title={toPageTitle}
                   onClick={() => {
                     trackUseRightHelperPanel(page, `to-${toPagePath}`);
                     navigate({ pathname: toPagePath });
                   }}
-                  title={toPageTitle}
                 />
               )}
             </AccordionPanel>

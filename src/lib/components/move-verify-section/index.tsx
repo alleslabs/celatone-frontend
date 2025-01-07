@@ -25,11 +25,11 @@ const MoveVerifySectionBody = ({ status }: MoveVerifySectionProps) => {
 
 export const MoveVerifySection = (props: MoveVerifySectionProps) => (
   <Flex
-    direction={{ base: "column", md: "row" }}
     alignItems={{ base: "start", md: "center" }}
-    justifyContent="space-between"
-    w="full"
     gap={2}
+    w="full"
+    direction={{ base: "column", md: "row" }}
+    justifyContent="space-between"
   >
     <MoveVerifySectionBody {...props} />
   </Flex>

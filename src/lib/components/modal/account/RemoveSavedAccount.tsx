@@ -16,10 +16,10 @@ import { truncate } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "36px",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 
@@ -33,8 +33,8 @@ export function RemoveSavedAccountModal({
   trigger = (
     <StyledIconButton
       aria-label="button"
-      icon={<CustomIcon name="delete" />}
       variant="ghost-gray"
+      icon={<CustomIcon name="delete" />}
     />
   ),
 }: RemoveSavedAccountModalProps) {
@@ -47,33 +47,33 @@ export function RemoveSavedAccountModal({
     removeSavedAccount(accountLocalInfo.address);
 
     toast({
-      title: `Removed \u2018${displayName}\u2019 from Saved Accounts`,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      status: "success",
+      title: `Removed \u2018${displayName}\u2019 from Saved Accounts`,
     });
   }, [accountLocalInfo.address, displayName, removeSavedAccount, toast]);
 
   return (
     <ActionModal
+      mainBtnTitle="Yes, Remove It"
+      mainVariant="error"
       title={`Remove account \u2018${displayName}\u2019?`}
+      trigger={trigger}
       icon="delete"
       iconColor="error.light"
-      mainVariant="error"
-      mainBtnTitle="Yes, Remove It"
       mainAction={() => {
         track(AmpEvent.ACCOUNT_REMOVE);
         handleRemove();
       }}
       otherBtnTitle="No, Keep It"
-      trigger={trigger}
     >
       <Text>
         <Highlight
+          styles={{ color: "inherit", fontWeight: "bold" }}
           query={[displayName, "Saved Accounts"]}
-          styles={{ fontWeight: "bold", color: "inherit" }}
         >
           {`This action will remove \u2018${displayName}\u2019 from Saved Accounts. 
           You can save this address again later, but you will need to add its new account name and description.`}

@@ -11,66 +11,66 @@ import {
 import type { PoolTypeFilter } from "lib/types";
 import { PoolType } from "lib/types";
 
-interface PoolTypeOption {
-  label: string;
-  value: PoolTypeFilter;
-  image?: JSX.Element;
-  disabled: boolean;
-}
-
 interface FilterByPoolTypeProps {
-  setPoolTypeValue: (newVal: PoolTypeFilter) => void;
   initialSelected: string;
   labelBgColor?: string;
+  setPoolTypeValue: (newVal: PoolTypeFilter) => void;
+}
+
+interface PoolTypeOption {
+  disabled: boolean;
+  image?: JSX.Element;
+  label: string;
+  value: PoolTypeFilter;
 }
 
 const options: PoolTypeOption[] = [
   {
+    disabled: false,
     label: "All Pools",
     value: PoolType.ALL,
-    disabled: false,
   },
   {
+    disabled: false,
+    image: <BalancerPoolIcon boxSize={5} />,
     label: "Balancer Pools",
     value: PoolType.BALANCER,
-    image: <BalancerPoolIcon boxSize={5} />,
-    disabled: false,
   },
   {
+    disabled: false,
+    image: <StableSwapIcon boxSize={5} />,
     label: "StableSwap Pools",
     value: PoolType.STABLESWAP,
-    image: <StableSwapIcon boxSize={5} />,
-    disabled: false,
   },
   {
+    disabled: false,
+    image: <ClpIcon boxSize={5} />,
     label: "Concentrated Liquidity Pools",
     value: PoolType.CL,
-    image: <ClpIcon boxSize={5} />,
-    disabled: false,
   },
   {
+    disabled: false,
+    image: <CosmWasmPoolIcon boxSize={5} />,
     label: "CosmWasm Pools",
     value: PoolType.COSMWASM,
-    image: <CosmWasmPoolIcon boxSize={5} />,
-    disabled: false,
   },
 ];
 
 export const FilterByPoolType = ({
-  setPoolTypeValue,
   initialSelected,
   labelBgColor = "background.main",
+  setPoolTypeValue,
 }: FilterByPoolTypeProps) => (
-  <Grid columnGap="16px" w="full" maxW="360px">
+  <Grid maxW="360px" w="full" columnGap="16px">
     <SelectInputBase<PoolTypeFilter>
+      initialSelected={initialSelected}
       formLabel="Filter by Pool Type"
-      options={options}
+      labelBgColor={labelBgColor}
       onChange={(newVal) => {
         trackUseFilter(AmpEvent.USE_FILTER_POOL_TYPE, [newVal], newVal);
         setPoolTypeValue(newVal);
       }}
-      initialSelected={initialSelected}
-      labelBgColor={labelBgColor}
+      options={options}
     />
   </Grid>
 );

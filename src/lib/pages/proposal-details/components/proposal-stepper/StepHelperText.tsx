@@ -8,13 +8,13 @@ import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
 
 interface StepperHelperTextProps {
-  step: number;
   proposalData: ProposalData;
+  step: number;
 }
 
 const StepperHelperTextBody = ({
-  step,
   proposalData,
+  step,
 }: StepperHelperTextProps) => {
   // Deposit Period
   if (step === 1) {
@@ -64,7 +64,7 @@ const StepperHelperTextBody = ({
 };
 
 export const StepperHelperText = (props: StepperHelperTextProps) => (
-  <Text variant="body3" color="text.dark" ml={8} textAlign="start">
+  <Text ml={8} textAlign="start" variant="body3" color="text.dark">
     <StepperHelperTextBody {...props} />
   </Text>
 );

@@ -9,23 +9,23 @@ import { NotVerifiedDetails } from "./NotVerifiedDetails";
 import { VerifiedDetails } from "./VerifiedDetails";
 
 interface WasmVerifySectionProps {
-  codeId: number;
   codeHash: string;
-  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
+  codeId: number;
   contractAddress?: BechAddr32;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 const WasmVerifySectionBody = ({
-  codeId,
   codeHash,
-  wasmVerifyInfo,
+  codeId,
   contractAddress,
+  wasmVerifyInfo,
 }: WasmVerifySectionProps) => {
   if (!wasmVerifyInfo)
     return (
       <NotVerifiedDetails
-        codeId={codeId}
         codeHash={codeHash}
+        codeId={codeId}
         contractAddress={contractAddress}
       />
     );
@@ -34,18 +34,18 @@ const WasmVerifySectionBody = ({
     if (wasmVerifyInfo.relatedVerifiedCodes.length === 0)
       return (
         <NotVerifiedDetails
-          codeId={codeId}
           codeHash={codeHash}
+          codeId={codeId}
           contractAddress={contractAddress}
         />
       );
 
     return (
       <IndirectlyVerifiedDetails
-        codeId={codeId}
         codeHash={codeHash}
-        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+        codeId={codeId}
         contractAddress={contractAddress}
+        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
       />
     );
   }
@@ -53,43 +53,43 @@ const WasmVerifySectionBody = ({
   if (wasmVerifyInfo.verificationInfo.errorMessage)
     return (
       <FailedDetails
-        codeId={codeId}
         codeHash={codeHash}
-        verificationInfo={wasmVerifyInfo.verificationInfo}
-        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+        codeId={codeId}
         contractAddress={contractAddress}
+        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+        verificationInfo={wasmVerifyInfo.verificationInfo}
       />
     );
 
   if (wasmVerifyInfo.verificationInfo.comparedTimestamp === null)
     return (
       <InProgressDetails
-        codeId={codeId}
         codeHash={codeHash}
-        verificationInfo={wasmVerifyInfo.verificationInfo}
-        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+        codeId={codeId}
         contractAddress={contractAddress}
+        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+        verificationInfo={wasmVerifyInfo.verificationInfo}
       />
     );
 
   return (
     <VerifiedDetails
-      codeHash={codeHash}
-      verificationInfo={wasmVerifyInfo.verificationInfo}
       schema={wasmVerifyInfo.schema}
-      relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+      codeHash={codeHash}
       contractAddress={contractAddress}
+      relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+      verificationInfo={wasmVerifyInfo.verificationInfo}
     />
   );
 };
 
 export const WasmVerifySection = (props: WasmVerifySectionProps) => (
   <Flex
-    direction={{ base: "column", md: "row" }}
     alignItems={{ base: "start", md: "center" }}
-    justifyContent="space-between"
-    w="full"
     gap={2}
+    w="full"
+    direction={{ base: "column", md: "row" }}
+    justifyContent="space-between"
   >
     <WasmVerifySectionBody {...props} />
   </Flex>

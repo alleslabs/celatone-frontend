@@ -11,8 +11,6 @@ export const SIDEBAR_WHITELIST_DETAILS: (
 ) => SidebarMetadata = (chainName, permission) =>
   ({
     permissioned: {
-      page: whitelistPage,
-      title: "What is whitelisted address?",
       description: (
         <span>
           {chainName} is a permissioned chain, which means you will need to
@@ -27,14 +25,13 @@ export const SIDEBAR_WHITELIST_DETAILS: (
           the network without having to submit a proposal every time.
         </span>
       ),
+      page: whitelistPage,
+      title: "What is whitelisted address?",
       toPage: true,
       toPagePath: "/proposals/store-code",
       toPageTitle: "Submit Proposal To Store Code",
     },
     permissionless: {
-      page: whitelistPage,
-      title:
-        "Do I need to open proposal to whitelisting in permissionless network?",
       description: (
         <span>
           {chainName} does not require whitelisting permission. Nonetheless, if
@@ -47,6 +44,9 @@ export const SIDEBAR_WHITELIST_DETAILS: (
           to an allowed list.
         </span>
       ),
+      page: whitelistPage,
+      title:
+        "Do I need to open proposal to whitelisting in permissionless network?",
     },
   })[permission];
 
@@ -57,8 +57,6 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
 ) => SidebarMetadata = (chainName, permission) =>
   ({
     permissioned: {
-      page: storeCodePage,
-      title: "Why do I need to submit proposal?",
       description: (
         <span>
           {chainName} is permissioned chain, which means you will need to submit
@@ -72,21 +70,21 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
           You still can upload your Wasm to see how your code works on Testnet.
         </span>
       ),
+      page: storeCodePage,
+      title: "Why do I need to submit proposal?",
     },
     permissionless: {
-      page: storeCodePage,
-      title: `Do I need to submit Proposal to store code on ${chainName}?`,
       description: (
         <span>
           On {chainName}, you can store code without submitting a proposal by
           using{" "}
           <AppLink
+            style={{ display: "inline-flex" }}
+            color="primary.main"
             onClick={() =>
               trackUseRightHelperPanel(storeCodePage, "to-/deploy")
             }
-            color="primary.main"
             href="/deploy"
-            style={{ display: "inline-flex" }}
           >
             Deploy Contract
           </AppLink>
@@ -100,6 +98,8 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
           code.
         </span>
       ),
+      page: storeCodePage,
+      title: `Do I need to submit Proposal to store code on ${chainName}?`,
       toPage: true,
       toPagePath: "/deploy",
       toPageTitle: "Go To Deploy Contract",
@@ -107,39 +107,39 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
   })[permission];
 
 export const PROPOSAL_STORE_CODE_TEXT = {
-  header: "Create Proposal to Store Code",
+  builderError:
+    "Builder should contain only alphanumerics and special characters",
+  builderHelperText:
+    "Builder is the docker image used to build the code deterministically for smart contract verification. Can be tagged, digested, or combination of both.",
+  builderLabel: "Builder",
+  builderPattern: /^[a-zA-Z0-9!@#$:;/%\\^&*)(+=._-]*$/,
+  builderPlaceholder: "ex. cosmwasm/lorem-optimizer:0.1.1",
+  builderRequired: "Builder is required",
+  connectWallet: "You need to connect wallet to proceed this action",
   description:
     "To store your contract code, you need to submit a `StoreCodeProposal`. After the proposal passes, the code will be stored on-chain and can then be instantiated.",
-  connectWallet: "You need to connect wallet to proceed this action",
-  titlePlaceholder: "ex. Store code for ...",
-  titleLabel: "Proposal Title",
-  titleRequired: "Proposal Title is required",
+  descriptionLabel: "Proposal Description",
   descriptionPlaceholder:
     "Usually details information such as the team behind the contract, what the contract does, the benefits the contract will have to the chain/ecosystem, and the compiled code checksum or commit hash for the code on GitHub etc.",
-  descriptionLabel: "Proposal Description",
   descriptionRequired: "Proposal Description is required",
-  runAsLabel: "Run as",
+  header: "Create Proposal to Store Code",
+  permissionDescription:
+    "If the proposal is passed, the stored code can be instantiated to a contract by your selected option",
+  permissionTitle: "Instantiate Permission",
   runAsHelperText: "This address will be stored as code creator.",
+  runAsLabel: "Run as",
   runAsRequired: "Creator is required",
-  uploadHeader: "Upload Wasm File",
+  sourceHelperText:
+    "Please provide absolute or path-absolute URL (ex. https://github.com/example/url/)",
+  sourceLabel: "Source",
+  sourcePattern: /^(?!:)[a-zA-Z0-9+.-]+:/,
+  sourcePlaceholder: "URL to the code",
+  sourceRequired: "Source is required",
+  titleLabel: "Proposal Title",
+  titlePlaceholder: "ex. Store code for ...",
+  titleRequired: "Proposal Title is required",
   unpinLabel: "Unpin code",
   unpinTooltip:
     "Unpin removes the guarantee of a contract to be pinned. After calling this, the code may or may not remain in memory depending on the implementor's choice. Unpin is idempotent.",
-  builderPlaceholder: "ex. cosmwasm/lorem-optimizer:0.1.1",
-  builderLabel: "Builder",
-  builderRequired: "Builder is required",
-  builderHelperText:
-    "Builder is the docker image used to build the code deterministically for smart contract verification. Can be tagged, digested, or combination of both.",
-  builderPattern: /^[a-zA-Z0-9!@#$:;/%\\^&*)(+=._-]*$/,
-  builderError:
-    "Builder should contain only alphanumerics and special characters",
-  sourcePlaceholder: "URL to the code",
-  sourceLabel: "Source",
-  sourceRequired: "Source is required",
-  sourceHelperText:
-    "Please provide absolute or path-absolute URL (ex. https://github.com/example/url/)",
-  sourcePattern: /^(?!:)[a-zA-Z0-9+.-]+:/,
-  permissionTitle: "Instantiate Permission",
-  permissionDescription:
-    "If the proposal is passed, the stored code can be instantiated to a contract by your selected option",
+  uploadHeader: "Upload Wasm File",
 };

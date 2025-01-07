@@ -13,28 +13,28 @@ import { EvmContractDetailsTxs } from "./EvmContractDetailsTxs";
 
 interface EvmContractDetailsOverviewProps {
   contractAddress: BechAddr20;
-  hash: Option<string>;
-  evmHash: Nullish<string>;
-  sender: Option<BechAddr>;
   created: Option<Date>;
+  evmHash: Nullish<string>;
+  hash: Option<string>;
   isContractInfoLoading: boolean;
   onViewMoreAssets: () => void;
   onViewMoreTxs: () => void;
-  tab: TxsTabIndex;
+  sender: Option<BechAddr>;
   setTab: (tab: TxsTabIndex) => void;
+  tab: TxsTabIndex;
 }
 
 export const EvmContractDetailsOverview = ({
   contractAddress,
-  hash,
-  evmHash,
-  sender,
   created,
+  evmHash,
+  hash,
   isContractInfoLoading,
   onViewMoreAssets,
   onViewMoreTxs,
-  tab,
+  sender,
   setTab,
+  tab,
 }: EvmContractDetailsOverviewProps) => {
   const { currentChainId } = useCelatoneApp();
   const formatAddresses = useFormatAddresses();
@@ -60,8 +60,8 @@ export const EvmContractDetailsOverview = ({
         >
           <LabelText label="Network">{currentChainId}</LabelText>
           <LabelText
-            label="Creator Address"
             helperText1={isMobile ? "(Wallet Address)" : undefined}
+            label="Creator Address"
           >
             {isContractInfoLoading ? (
               <Spinner boxSize={4} />
@@ -69,8 +69,8 @@ export const EvmContractDetailsOverview = ({
               <>
                 {sender ? (
                   <ExplorerLink
-                    value={formatAddresses(sender).hex}
                     type="user_address"
+                    value={formatAddresses(sender).hex}
                     showCopyOnHover
                   />
                 ) : (
@@ -86,26 +86,26 @@ export const EvmContractDetailsOverview = ({
               <Spinner boxSize={4} />
             ) : (
               <Stack gap={0}>
-                <Flex gap={1} alignItems="center">
+                <Flex alignItems="center" gap={1}>
                   <Text variant="body2" color="text.dark">
                     Cosmos:
                   </Text>
                   {hash ? (
-                    <ExplorerLink value={hash} type="tx_hash" showCopyOnHover />
+                    <ExplorerLink type="tx_hash" value={hash} showCopyOnHover />
                   ) : (
                     <Text variant="body2" color="text.disabled">
                       -
                     </Text>
                   )}
                 </Flex>
-                <Flex gap={1} alignItems="center">
+                <Flex alignItems="center" gap={1}>
                   <Text variant="body2" color="text.dark">
                     EVM:
                   </Text>
                   {evmHash ? (
                     <ExplorerLink
-                      value={formatEvmTxHash(evmHash)}
                       type="evm_tx_hash"
+                      value={formatEvmTxHash(evmHash)}
                       showCopyOnHover
                     />
                   ) : (
@@ -144,9 +144,9 @@ export const EvmContractDetailsOverview = ({
       <AssetsSection address={contractAddress} onViewMore={onViewMoreAssets} />
       <EvmContractDetailsTxs
         address={contractAddress}
-        onViewMore={onViewMoreTxs}
-        tab={tab}
         setTab={setTab}
+        tab={tab}
+        onViewMore={onViewMoreTxs}
       />
     </Stack>
   );

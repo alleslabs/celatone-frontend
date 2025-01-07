@@ -19,17 +19,17 @@ export const SupportedAssetTitle = ({
     !totalSupportedAssetsValue || totalSupportedAssetsValue.eq(0);
 
   return (
-    <Flex w="full" py={1} gap={2} align="center" justifyContent="space-between">
+    <Flex align="center" gap={2} py={1} w="full" justifyContent="space-between">
       <TableTitle
+        isSmall
+        mb={0}
         title="Supported Assets"
         count={supportedAssets.length}
-        mb={0}
-        isSmall
       />
       {!isMobile && (
         <Heading
-          mt={1}
           as="h6"
+          mt={1}
           variant="h7"
           color={isZeroValue ? "text.dark" : "text.main"}
         >

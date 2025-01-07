@@ -31,37 +31,18 @@ export const ModulesTableMobileCard = ({
 
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/modules/[address]/[moduleName]",
-          query: {
-            address: moduleInfo.address,
-            moduleName: moduleInfo.moduleName,
-          },
-        })
-      }
-      topContent={
-        <Flex direction="column">
-          <MobileLabel label="Module Path" />
-          <ModulePathLink
-            hexAddr={moduleInfo.address}
-            moduleName={moduleInfo.moduleName}
-            moveVerifyStatus={moveVerifyStatus}
-          />
-        </Flex>
-      }
       middleContent={
-        <Flex direction="column" gap={3}>
+        <Flex gap={3} direction="column">
           <Grid templateColumns="repeat(2, 1fr)">
             <Flex direction="column">
               <MobileLabel label="creator" />
               <ExplorerLink
-                value={creator}
                 type="user_address"
+                value={creator}
                 showCopyOnHover
               />
             </Flex>
-            <Flex direction="column" gap={1}>
+            <Flex gap={1} direction="column">
               <MobileLabel label="Action" />
               <Tag
                 width="fit-content"
@@ -79,6 +60,25 @@ export const ModulesTableMobileCard = ({
               </Text>
             </Flex>
           )}
+        </Flex>
+      }
+      onClick={() =>
+        navigate({
+          pathname: "/modules/[address]/[moduleName]",
+          query: {
+            address: moduleInfo.address,
+            moduleName: moduleInfo.moduleName,
+          },
+        })
+      }
+      topContent={
+        <Flex direction="column">
+          <MobileLabel label="Module Path" />
+          <ModulePathLink
+            hexAddr={moduleInfo.address}
+            moduleName={moduleInfo.moduleName}
+            moveVerifyStatus={moveVerifyStatus}
+          />
         </Flex>
       }
     />

@@ -18,33 +18,33 @@ import { ModuleRelatedProposalsTable } from "./ModuleRelatedProposalsTable";
 import { ModuleTxsTable } from "./ModuleTxsTable";
 
 export enum ModuleTablesTabIndex {
-  Transactions = "transactions",
   PublishedEvents = "published-events",
   RelatedProposals = "related-proposals",
+  Transactions = "transactions",
 }
 
 interface ModuleTablesProps {
-  vmAddress: HexAddr;
-  moduleName: string;
-  txsCount: Option<number>;
   historiesCount: Option<number>;
-  relatedProposalsCount: Option<number>;
-  tab: ModuleTablesTabIndex;
-  setTab: (nextTab: ModuleTablesTabIndex) => void;
+  moduleName: string;
   onViewMore?: (nextTab: ModuleTablesTabIndex) => void;
+  relatedProposalsCount: Option<number>;
+  setTab: (nextTab: ModuleTablesTabIndex) => void;
+  tab: ModuleTablesTabIndex;
+  txsCount: Option<number>;
+  vmAddress: HexAddr;
 }
 
 const tableHeaderId = "moduleDetailsTableHeader";
 
 export const ModuleTables = ({
-  vmAddress,
-  moduleName,
-  txsCount,
   historiesCount,
-  relatedProposalsCount,
-  tab,
-  setTab,
+  moduleName,
   onViewMore,
+  relatedProposalsCount,
+  setTab,
+  tab,
+  txsCount,
+  vmAddress,
 }: ModuleTablesProps) => {
   const gov = useGovConfig({ shouldRedirect: false });
 
@@ -73,8 +73,8 @@ export const ModuleTables = ({
   );
 
   return (
-    <Flex flexDirection="column" mt={6}>
-      <Heading as="h6" variant="h6" mb={6} fontWeight={600} id={tableHeaderId}>
+    <Flex mt={6} flexDirection="column">
+      <Heading id={tableHeaderId} as="h6" mb={6} variant="h6" fontWeight={600}>
         Transactions & Histories
       </Heading>
       <Tabs
@@ -88,24 +88,24 @@ export const ModuleTables = ({
           overflowX={{ base: "scroll", md: "auto" }}
         >
           <CustomTab
+            isDisabled={txsCount === 0}
             count={txsCount}
             onClick={handleTabChange(ModuleTablesTabIndex.Transactions)}
-            isDisabled={txsCount === 0}
           >
             Transactions
           </CustomTab>
           <CustomTab
+            isDisabled={historiesCount === 0}
             count={historiesCount}
             onClick={handleTabChange(ModuleTablesTabIndex.PublishedEvents)}
-            isDisabled={historiesCount === 0}
           >
             Published Events
           </CustomTab>
           <CustomTab
+            hidden={!gov.enabled}
+            isDisabled={relatedProposalsCount === 0}
             count={relatedProposalsCount}
             onClick={handleTabChange(ModuleTablesTabIndex.RelatedProposals)}
-            isDisabled={relatedProposalsCount === 0}
-            hidden={!gov.enabled}
           >
             Related Proposals
           </CustomTab>
@@ -115,31 +115,31 @@ export const ModuleTables = ({
             <ModuleTxsTable
               vmAddress={vmAddress}
               moduleName={moduleName}
-              txCount={txsCount}
-              scrollComponentId={tableHeaderId}
               onViewMore={handleOnViewMore(ModuleTablesTabIndex.Transactions)}
+              scrollComponentId={tableHeaderId}
+              txCount={txsCount}
             />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleHistoryTable
               vmAddress={vmAddress}
-              moduleName={moduleName}
               historyCount={historiesCount}
-              scrollComponentId={tableHeaderId}
+              moduleName={moduleName}
               onViewMore={handleOnViewMore(
                 ModuleTablesTabIndex.PublishedEvents
               )}
+              scrollComponentId={tableHeaderId}
             />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleRelatedProposalsTable
               vmAddress={vmAddress}
               moduleName={moduleName}
-              relatedProposalsCount={relatedProposalsCount}
-              scrollComponentId={tableHeaderId}
               onViewMore={handleOnViewMore(
                 ModuleTablesTabIndex.RelatedProposals
               )}
+              relatedProposalsCount={relatedProposalsCount}
+              scrollComponentId={tableHeaderId}
             />
           </TabPanel>
         </TabPanels>

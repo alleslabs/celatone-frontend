@@ -15,20 +15,20 @@ function ChakraIconButton<
   F extends FormContextType = any,
 >(props: IconButtonProps<T, S, F>) {
   const {
-    iconType = "default",
-    icon,
     className,
-    uiSchema,
+    icon,
+    iconType = "default",
     registry,
     title,
+    uiSchema,
     ...otherProps
   } = props;
   return (
     <IconButton
+      aria-label={`${iconType}-${title}`}
       as="button"
       variant="outline-primary"
       boxSize={9}
-      aria-label={`${iconType}-${title}`}
       {...otherProps}
       icon={icon as ChakraIconButtonProps["icon"]}
     />

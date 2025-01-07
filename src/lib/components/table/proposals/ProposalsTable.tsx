@@ -8,15 +8,15 @@ import { ProposalsTableMobileCard } from "./ProposalsTableMobileCard";
 import { ProposalsTableRow } from "./ProposalsTableRow";
 
 interface ProposalsTableProps {
-  proposals: Option<Proposal[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
+  proposals: Option<Proposal[]>;
 }
 
 export const ProposalsTable = ({
-  proposals,
-  isLoading,
   emptyState,
+  isLoading,
+  proposals,
 }: ProposalsTableProps) => {
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
@@ -38,15 +38,15 @@ export const ProposalsTable = ({
   ) : (
     <TableContainer>
       <ProposalsTableHeader
-        templateColumns={templateColumns}
         boxShadow={boxShadow}
+        templateColumns={templateColumns}
       />
       {proposals.map((proposal) => (
         <ProposalsTableRow
           key={proposal.id}
+          boxShadow={boxShadow}
           proposal={proposal}
           templateColumns={templateColumns}
-          boxShadow={boxShadow}
         />
       ))}
     </TableContainer>

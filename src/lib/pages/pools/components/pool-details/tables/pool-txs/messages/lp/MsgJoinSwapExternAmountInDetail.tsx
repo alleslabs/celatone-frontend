@@ -10,54 +10,54 @@ import type { MsgJoinSwapExternAmountInDetails } from "lib/utils/tx/types";
 import { PoolAssetsGrid, PoolLPCard } from "./components";
 
 interface MsgJoinSwapExternAmountInDetailProps {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: MsgJoinSwapExternAmountInDetails;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: MsgJoinSwapExternAmountInDetails;
+  msgIndex: number;
+  txHash: string;
 }
 
 export const MsgJoinSwapExternAmountInDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  txHash,
 }: MsgJoinSwapExternAmountInDetailProps) => (
-  <Flex w="full" direction="column" alignItems="start" gap={6}>
+  <Flex alignItems="start" gap={6} w="full" direction="column">
     <Flex gap={12}>
       <PoolInfoText title="Block height">
         <ExplorerLink
-          value={blockHeight.toString()}
           type="block_height"
-          showCopyOnHover
+          value={blockHeight.toString()}
           ampCopierSection={ampCopierSection}
+          showCopyOnHover
         />
       </PoolInfoText>
       <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
     </Flex>
     <Box w="full">
       <PoolAssetsGrid
-        msgIndex={msgIndex}
-        msgAssets={[msg.token_in]}
-        isJoin
-        assetInfos={assetInfos}
         isOpened={isOpened}
+        msgAssets={[msg.token_in]}
+        msgIndex={msgIndex}
         ampCopierSection={ampCopierSection}
+        assetInfos={assetInfos}
+        isJoin
       />
       <DividerWithArrow />
       <PoolLPCard
-        txHash={txHash}
+        isOpened={isOpened}
         msgIndex={msgIndex}
-        poolId={msg.pool_id}
+        txHash={txHash}
+        ampCopierSection={ampCopierSection}
         assetInfos={assetInfos}
         isJoin
-        isOpened={isOpened}
-        ampCopierSection={ampCopierSection}
+        poolId={msg.pool_id}
       />
     </Box>
   </Flex>
