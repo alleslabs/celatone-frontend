@@ -2,7 +2,8 @@ import { Flex } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useCurrentChain } from "lib/app-provider";
+import { useCurrentChain, useInitia } from "lib/app-provider";
+import { useIcnsNamesByAddressLcd } from "lib/services/name";
 import { useInitiaUsernameByAddress } from "lib/services/username";
 import { truncate } from "lib/utils";
 
@@ -14,7 +15,12 @@ import {
 
 export const WalletSection = () => {
   const { address, connect, view, walletProvider } = useCurrentChain();
-  const { data: initiaUsername } = useInitiaUsernameByAddress(address);
+  const isInitia = useInitia();
+  const { data: initiaUsername } = useInitiaUsernameByAddress(
+    address,
+    isInitia
+  );
+  const { data: icnsNames } = useIcnsNamesByAddressLcd(address, !isInitia);
 
   const onClickConnect: MouseEventHandler = async (e) => {
     track(AmpEvent.USE_CLICK_WALLET);
@@ -65,7 +71,7 @@ export const WalletSection = () => {
         connecting={<ConnectWalletButton isLoading />}
         connected={
           <ConnectWalletButton
-            buttonText={truncate(walletProvider.context.username ?? address)}
+            buttonText={truncate(icnsNames?.primaryName ?? address)}
             icon="wallet-solid"
             onClick={onClickOpenView}
             variant="ghost-primary"
