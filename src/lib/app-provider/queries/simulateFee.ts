@@ -14,6 +14,7 @@ interface SimulateQueryParams {
   messages: ComposedMsg[];
   isDummyUser?: boolean;
   retry?: UseQueryOptions["retry"];
+  extraQueryKey?: UseQueryOptions["queryKey"];
   onSuccess?: (gas: Option<Gas>) => void;
   onError?: (err: Error) => void;
 }
@@ -23,6 +24,7 @@ export const useSimulateFeeQuery = ({
   messages,
   isDummyUser,
   retry = 2,
+  extraQueryKey = [],
   onSuccess,
   onError,
 }: SimulateQueryParams) => {
@@ -48,6 +50,7 @@ export const useSimulateFeeQuery = ({
       messages,
       userAddress,
       isDummyUser,
+      ...extraQueryKey,
     ],
     queryFn: simulateFn,
     enabled,
