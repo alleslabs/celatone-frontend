@@ -38,7 +38,9 @@ export const useStoreCodeTx = (isMigrate: boolean) => {
 
       const message = composeStoreCodeMsg({
         sender: address,
-        wasmByteCode: Uint8Array.from(await gzip(await wasmCode)),
+        wasmByteCode: new Uint8Array(
+          await gzip(new Uint8Array(await wasmCode))
+        ),
         permission,
         addresses,
       });

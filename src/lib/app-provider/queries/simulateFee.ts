@@ -91,9 +91,7 @@ export const useSimulateFeeForStoreCode = ({
     const submitStoreCodeMsg = async () => {
       return composeStoreCodeMsg({
         sender: address,
-        wasmByteCode: await gzip(await wasmFile.arrayBuffer()).then(
-          Uint8Array.from
-        ),
+        wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
         permission,
         addresses,
       });
@@ -173,7 +171,7 @@ export const useSimulateFeeForProposalStoreCode = ({
         title,
         description,
         runAs,
-        wasmByteCode: Uint8Array.from(await gzip(await wasmFile.arrayBuffer())),
+        wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
         permission,
         addresses,
         unpinCode,
