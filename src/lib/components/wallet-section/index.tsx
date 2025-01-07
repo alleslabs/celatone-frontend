@@ -3,6 +3,7 @@ import type { MouseEventHandler } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
+import { useInitiaUsernameByAddress } from "lib/services/username";
 import { truncate } from "lib/utils";
 
 import {
@@ -13,6 +14,7 @@ import {
 
 export const WalletSection = () => {
   const { address, connect, view, walletProvider } = useCurrentChain();
+  const { data: initiaUsername } = useInitiaUsernameByAddress(address);
 
   const onClickConnect: MouseEventHandler = async (e) => {
     track(AmpEvent.USE_CLICK_WALLET);
@@ -30,7 +32,7 @@ export const WalletSection = () => {
     if (address) {
       return (
         <ConnectWalletButton
-          buttonText={truncate(address)}
+          buttonText={truncate(initiaUsername?.username ?? address)}
           icon="wallet-solid"
           onClick={onClickOpenView}
           variant="ghost-primary"
@@ -63,7 +65,7 @@ export const WalletSection = () => {
         connecting={<ConnectWalletButton isLoading />}
         connected={
           <ConnectWalletButton
-            buttonText={truncate(address)}
+            buttonText={truncate(walletProvider.context.username ?? address)}
             icon="wallet-solid"
             onClick={onClickOpenView}
             variant="ghost-primary"
