@@ -34,7 +34,6 @@ import {
   useCurrentChain,
   useExampleAddresses,
   useFabricateFee,
-  useSimulateFeeForProposalStoreCode,
   useSubmitStoreCodeProposalTx,
   useValidateAddress,
   useWasmConfig,
@@ -57,6 +56,7 @@ import {
 } from "lib/components/upload";
 import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
 import { useGovParamsDeprecated } from "lib/model/proposal";
+import { useSimulateFeeForProposalStoreCode } from "lib/services/tx";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import type { BechAddr, SimulateStatus, UploadSectionState } from "lib/types";
 import { AccessType } from "lib/types";

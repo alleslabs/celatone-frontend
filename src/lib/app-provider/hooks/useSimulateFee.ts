@@ -6,7 +6,7 @@ import type { BechAddr20, Gas } from "lib/types";
 import { zGas } from "lib/types";
 
 import { useCurrentChain } from "./useCurrentChain";
-import { useDummyWallet } from "./useDummyWallet";
+import { useGetDummyClient } from "./useDummy";
 import { useGetSigningClient } from "./useGetSigningClient";
 
 interface SimulateFeeParams {
@@ -16,12 +16,8 @@ interface SimulateFeeParams {
 }
 
 export const useSimulateFee = () => {
-  const {
-    address: connectedAddress,
-    chainId,
-    walletProvider,
-  } = useCurrentChain();
-  const { dummyClient } = useDummyWallet();
+  const { chainId, walletProvider } = useCurrentChain();
+  const getDummyClient = useGetDummyClient();
   const getSigningClient = useGetSigningClient();
 
   return useCallback(
@@ -30,10 +26,8 @@ export const useSimulateFee = () => {
       messages,
       isDummyUser = false,
     }: SimulateFeeParams): Promise<Gas> => {
-      // Remark: If the user is not connected, use the dummy client
-      const shouldUseDummyClient = isDummyUser || !connectedAddress;
-
-      if (shouldUseDummyClient) {
+      if (isDummyUser) {
+        const dummyClient = await getDummyClient();
         if (!dummyClient) {
           throw new Error("Dummy client is not initialized (useSimulateFee)");
         }
@@ -56,11 +50,10 @@ export const useSimulateFee = () => {
         .then(zGas(z.number()).parse);
     },
     [
-      connectedAddress,
       walletProvider.type,
       walletProvider.context,
-      dummyClient,
       getSigningClient,
+      getDummyClient,
       chainId,
     ]
   );

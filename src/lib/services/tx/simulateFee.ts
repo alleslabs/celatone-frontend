@@ -3,9 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { gzip } from "node-gzip";
 
-import { useCelatoneApp } from "../contexts";
-import { CELATONE_QUERY_KEYS } from "../env";
-import { useCurrentChain, useDummyWallet, useSimulateFee } from "../hooks";
+import { useCelatoneApp } from "../../app-provider/contexts";
+import { CELATONE_QUERY_KEYS } from "../../app-provider/env";
+import {
+  useCurrentChain,
+  useDummyWallet,
+  useSimulateFee,
+} from "../../app-provider/hooks";
 import type { AccessType, BechAddr, ComposedMsg, Gas, Option } from "lib/types";
 import { composeStoreCodeMsg, composeStoreCodeProposalMsg } from "lib/utils";
 
@@ -35,9 +39,8 @@ export const useSimulateFeeQuery = ({
   const { dummyAddress } = useDummyWallet();
   const simulateFee = useSimulateFee();
 
-  const userAddress = isDummyUser ? dummyAddress : address || dummyAddress;
-
   const simulateFn = async () => {
+    const userAddress = isDummyUser ? dummyAddress : address;
     if (!userAddress)
       throw new Error("No address provided (useSimulateFeeQuery)");
     return simulateFee({ address: userAddress, messages, isDummyUser });
@@ -48,7 +51,7 @@ export const useSimulateFeeQuery = ({
       CELATONE_QUERY_KEYS.SIMULATE_FEE,
       rpcEndpoint,
       messages,
-      userAddress,
+      address,
       isDummyUser,
       ...extraQueryKey,
     ],

@@ -11,7 +11,6 @@ import {
   useFabricateFee,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
-import { useSimulateFeeQuery } from "lib/app-provider/queries";
 import { SubmitButton } from "lib/components/button";
 import { CopyButton } from "lib/components/copy";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
@@ -29,6 +28,7 @@ import JsonInput from "lib/components/json/JsonInput";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { useExecuteCmds, useTxBroadcast } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import type { Activity } from "lib/stores/contract";
 import type { BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";

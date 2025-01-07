@@ -761,3 +761,5 @@ export const useTxsDataJsonRpc = (
     }
   );
 };
+
+export * from "./simulateFee";

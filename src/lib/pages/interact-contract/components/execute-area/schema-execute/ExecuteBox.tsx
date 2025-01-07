@@ -23,7 +23,6 @@ import {
   useCurrentChain,
   useExecuteContractTx,
   useFabricateFee,
-  useSimulateFeeQuery,
 } from "lib/app-provider";
 import { useAttachFunds } from "lib/app-provider/hooks/useAttachFunds";
 import { CopyButton } from "lib/components/copy";
@@ -41,6 +40,7 @@ import { CustomIcon } from "lib/components/icon";
 import { JsonSchemaForm } from "lib/components/json-schema";
 import { useTxBroadcast } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import type { Activity } from "lib/stores/contract";
 import type {
   BechAddr32,

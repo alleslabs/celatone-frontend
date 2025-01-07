@@ -29,7 +29,6 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useFabricateFee,
-  useSimulateFeeQuery,
   useSubmitWhitelistProposalTx,
   useWasmConfig,
 } from "lib/app-provider";
@@ -44,6 +43,7 @@ import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
 import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
 import { useGovParamsDeprecated } from "lib/model/proposal";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import type { BechAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";

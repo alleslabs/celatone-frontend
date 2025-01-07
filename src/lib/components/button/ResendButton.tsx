@@ -3,12 +3,9 @@ import type { EncodeObject } from "@cosmjs/proto-signing";
 import { useCallback, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import {
-  useFabricateFee,
-  useResendTx,
-  useSimulateFeeQuery,
-} from "lib/app-provider";
+import { useFabricateFee, useResendTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/hooks";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import type { Gas, Message, Msg, Option } from "lib/types";
 import { camelToSnake, encode } from "lib/utils";
 

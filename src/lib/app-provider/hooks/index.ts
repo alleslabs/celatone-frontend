@@ -1,5 +1,5 @@
 export * from "./useAddress";
-export * from "./useDummyWallet";
+export * from "./useDummy";
 export * from "./useExampleAddresses";
 export * from "./useFabricateFee";
 export * from "./useGas";

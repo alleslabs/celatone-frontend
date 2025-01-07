@@ -6,11 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { AmpEvent, trackAction } from "lib/amplitude";
-import {
-  useCurrentChain,
-  useFabricateFee,
-  useSimulateFeeQuery,
-} from "lib/app-provider";
+import { useCurrentChain, useFabricateFee } from "lib/app-provider";
 import { useMigrateContractTx } from "lib/app-provider/tx/migrate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { FormStatus } from "lib/components/forms";
@@ -27,6 +23,7 @@ import {
 import { CodeSelectSection } from "lib/components/select-code";
 import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeLcd } from "lib/services/wasm/code";
