@@ -13,20 +13,20 @@ export const ViewFullMsgButton = ({
 }: ViewFullMsgButtonProps) => (
   <Flex
     align="center"
-    bg="background.main"
     justify="center"
-    p={3}
     w="full"
-    zIndex="docked"
-    _hover={{ bg: "gray.900" }}
-    borderRadius="0 0 8px 8px"
+    p={3}
     borderTop="1px solid"
     borderTopColor="gray.700"
+    bg="background.main"
+    borderRadius="0 0 8px 8px"
     cursor="pointer"
-    onClick={onClick}
+    _hover={{ bg: "gray.900" }}
     transition="all 0.25s ease-in-out"
+    onClick={onClick}
+    zIndex="docked"
   >
-    <Text variant="body3" color="text.dark" fontWeight={700}>
+    <Text variant="body3" fontWeight={700} color="text.dark">
       {viewFull ? "View Less" : "View Full Message"}
     </Text>
     <CustomIcon

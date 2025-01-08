@@ -12,27 +12,27 @@ import type {
 } from "lib/types";
 import { formatSlugName, getCurrentDate, getTagsDefault } from "lib/utils";
 
-export interface ContractListInfo extends Omit<ContractList, "contracts"> {
-  contracts: ContractLocalInfo[];
-}
 export interface ContractLocalInfo {
-  codeId?: number;
   contractAddress: BechAddr32;
-  description?: string;
   instantiator: Option<BechAddr>;
   label: string; // NOTE: if empty means no label provided
-  lists?: LVPair[];
+  codeId?: number;
   name?: string;
+  description?: string;
   tags?: string[];
+  lists?: LVPair[];
 }
-
 interface ContractList {
-  contracts: BechAddr32[];
-  isContractRemovable: boolean;
-  isInfoEditable: boolean;
-  lastUpdated: Date;
   name: string;
   slug: string;
+  contracts: BechAddr32[];
+  lastUpdated: Date;
+  isInfoEditable: boolean;
+  isContractRemovable: boolean;
+}
+
+export interface ContractListInfo extends Omit<ContractList, "contracts"> {
+  contracts: ContractLocalInfo[];
 }
 
 export const cmpContractListInfo = (
@@ -45,16 +45,27 @@ export const cmpContractListInfo = (
 };
 
 export interface Activity {
+  type: "query" | "execute";
   action: string;
+  sender: Option<BechAddr20>;
   contractAddress: BechAddr32;
   msg: string; // base64
-  sender: Option<BechAddr20>;
   timestamp: Date;
-  type: "execute" | "query";
 }
 
 export class ContractStore {
-  allTags: Dict<string, Map<string, Set<string>>>;
+  private userKey: string;
+
+  private defaultContractList: ContractList[] = [
+    {
+      name: SAVED_LIST_NAME,
+      slug: formatSlugName(SAVED_LIST_NAME),
+      contracts: [],
+      lastUpdated: getCurrentDate(),
+      isInfoEditable: false,
+      isContractRemovable: true,
+    },
+  ];
 
   contractList: Dict<string, ContractList[]>; // user key
 
@@ -63,24 +74,9 @@ export class ContractStore {
     Record<string, ContractLocalInfo> // contract address
   >;
 
+  allTags: Dict<string, Map<string, Set<string>>>;
+
   recentActivities: Dict<string, Activity[]>;
-
-  get isHydrated(): boolean {
-    return isHydrated(this);
-  }
-
-  private defaultContractList: ContractList[] = [
-    {
-      contracts: [],
-      isContractRemovable: true,
-      isInfoEditable: false,
-      lastUpdated: getCurrentDate(),
-      name: SAVED_LIST_NAME,
-      slug: formatSlugName(SAVED_LIST_NAME),
-    },
-  ];
-
-  private userKey: string;
 
   constructor() {
     this.contractList = {};
@@ -102,37 +98,28 @@ export class ContractStore {
     });
   }
 
-  addActivity(activity: Activity) {
-    const recent = this.recentActivities[this.userKey];
-
-    if (recent) {
-      const targetList = [activity, ...recent].slice(0, 10);
-      this.recentActivities[this.userKey] = targetList;
-    } else {
-      this.recentActivities[this.userKey] = [activity];
-    }
+  get isHydrated(): boolean {
+    return isHydrated(this);
   }
 
-  createNewList(name: string) {
-    if (!this.isContractListExist(name)) {
-      const oldList = this.getContractList();
+  isContractUserKeyExist(): boolean {
+    return !!this.userKey;
+  }
 
-      this.contractList[this.userKey] = [
-        ...oldList,
-        {
-          contracts: [],
-          isContractRemovable: true,
-          isInfoEditable: true,
-          lastUpdated: getCurrentDate(),
-          name: name.trim(),
-          slug: formatSlugName(name),
-        },
-      ];
-    }
+  setContractUserKey(userKey: string) {
+    this.userKey = userKey;
   }
 
   getAllTags(): string[] {
     return Array.from(this.allTags[this.userKey]?.keys() ?? []);
+  }
+
+  private getContractList(): ContractList[] {
+    const contractList = this.contractList[this.userKey];
+    if (contractList) return contractList;
+
+    this.contractList[this.userKey] = this.defaultContractList;
+    return this.defaultContractList;
   }
 
   getContractLists(): ContractListInfo[] {
@@ -159,10 +146,6 @@ export class ContractStore {
     return this.contractLocalInfo[this.userKey]?.[contractAddress];
   }
 
-  getRecentActivities() {
-    return this.recentActivities[this.userKey] ?? [];
-  }
-
   isContractListExist(name: string): boolean {
     const slug = formatSlugName(name);
 
@@ -173,30 +156,22 @@ export class ContractStore {
     return slug === formatSlugName(INSTANTIATED_LIST_NAME) || foundIndex > -1;
   }
 
-  isContractUserKeyExist(): boolean {
-    return !!this.userKey;
-  }
+  createNewList(name: string) {
+    if (!this.isContractListExist(name)) {
+      const oldList = this.getContractList();
 
-  removeList(slug: string) {
-    const list = this.getContractList().find((each) => each.slug === slug);
-    if (!list) return;
-
-    const contracts = this.contractLocalInfo[this.userKey];
-
-    if (contracts) {
-      list.contracts.forEach((addr) => {
-        const oldLists = contracts[addr].lists;
-        if (oldLists) {
-          contracts[addr].lists = oldLists.filter(
-            (item) => item.value !== slug
-          );
-        }
-      });
+      this.contractList[this.userKey] = [
+        ...oldList,
+        {
+          name: name.trim(),
+          slug: formatSlugName(name),
+          contracts: [],
+          lastUpdated: getCurrentDate(),
+          isInfoEditable: true,
+          isContractRemovable: true,
+        },
+      ];
     }
-
-    this.contractList[this.userKey] = this.getContractList().filter(
-      (each) => each.slug !== slug
-    );
   }
 
   renameList(slug: string, newName: string) {
@@ -225,8 +200,26 @@ export class ContractStore {
     }
   }
 
-  setContractUserKey(userKey: string) {
-    this.userKey = userKey;
+  removeList(slug: string) {
+    const list = this.getContractList().find((each) => each.slug === slug);
+    if (!list) return;
+
+    const contracts = this.contractLocalInfo[this.userKey];
+
+    if (contracts) {
+      list.contracts.forEach((addr) => {
+        const oldLists = contracts[addr].lists;
+        if (oldLists) {
+          contracts[addr].lists = oldLists.filter(
+            (item) => item.value !== slug
+          );
+        }
+      });
+    }
+
+    this.contractList[this.userKey] = this.getContractList().filter(
+      (each) => each.slug !== slug
+    );
   }
 
   updateContractLocalInfo(
@@ -242,10 +235,10 @@ export class ContractStore {
     const contractLocalInfo = this.contractLocalInfo[this.userKey]?.[
       contractAddress
     ] ?? {
-      codeId,
       contractAddress,
-      instantiator,
       label,
+      codeId,
+      instantiator,
     };
 
     if (name !== undefined)
@@ -275,30 +268,6 @@ export class ContractStore {
       ...this.contractLocalInfo[this.userKey],
       [contractAddress]: contractLocalInfo,
     };
-  }
-
-  private addContractToList(slug: string, contractAddress: BechAddr32) {
-    const list = this.getContractList().find((each) => each.slug === slug);
-    if (!list) return;
-
-    list.contracts = Array.from(new Set(list.contracts).add(contractAddress));
-    list.lastUpdated = getCurrentDate();
-  }
-
-  private getContractList(): ContractList[] {
-    const contractList = this.contractList[this.userKey];
-    if (contractList) return contractList;
-
-    this.contractList[this.userKey] = this.defaultContractList;
-    return this.defaultContractList;
-  }
-
-  private removeContractFromList(slug: string, contractAddress: string) {
-    const list = this.getContractList().find((each) => each.slug === slug);
-    if (!list) return;
-
-    list.contracts = list.contracts.filter((addr) => addr !== contractAddress);
-    list.lastUpdated = getCurrentDate();
   }
 
   private updateAllTags(
@@ -349,5 +318,36 @@ export class ContractStore {
     addedLists.forEach((slug) => {
       this.addContractToList(slug.value, contractAddress);
     });
+  }
+
+  private addContractToList(slug: string, contractAddress: BechAddr32) {
+    const list = this.getContractList().find((each) => each.slug === slug);
+    if (!list) return;
+
+    list.contracts = Array.from(new Set(list.contracts).add(contractAddress));
+    list.lastUpdated = getCurrentDate();
+  }
+
+  private removeContractFromList(slug: string, contractAddress: string) {
+    const list = this.getContractList().find((each) => each.slug === slug);
+    if (!list) return;
+
+    list.contracts = list.contracts.filter((addr) => addr !== contractAddress);
+    list.lastUpdated = getCurrentDate();
+  }
+
+  addActivity(activity: Activity) {
+    const recent = this.recentActivities[this.userKey];
+
+    if (recent) {
+      const targetList = [activity, ...recent].slice(0, 10);
+      this.recentActivities[this.userKey] = targetList;
+    } else {
+      this.recentActivities[this.userKey] = [activity];
+    }
+  }
+
+  getRecentActivities() {
+    return this.recentActivities[this.userKey] ?? [];
   }
 }

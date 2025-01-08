@@ -18,10 +18,10 @@ export default function AddButton<
   } = props;
   return (
     <Button
-      width="75px"
-      height="30px"
       title={translateString(TranslatableString.AddButton)}
       variant="outline-primary"
+      width="75px"
+      height="30px"
       fontSize="12px"
       {...props}
     >

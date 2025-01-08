@@ -17,8 +17,8 @@ import { truncate } from "lib/utils";
 import { getAccountResourcesLcd } from "./lcd";
 
 export interface ResourcesByAddressReturn {
-  groupedByName: ResourceGroup[];
   groupedByOwner: ResourceGroupByAccount[];
+  groupedByName: ResourceGroup[];
   totalCount: number;
 }
 
@@ -43,9 +43,9 @@ export const useResourcesByAddressLcd = (
         );
         if (groupResourcesIndex === -1)
           ownerResources.push({
+            group: groupName,
             account: ownerName as HexAddr,
             displayName: `${truncate(ownerName)}::${groupName}`,
-            group: groupName,
             items: [resource],
           });
         else ownerResources[groupResourcesIndex].items.push(resource);
@@ -72,8 +72,8 @@ export const useResourcesByAddressLcd = (
         return {
           ...acc,
           [resourceKey]: {
-            account: accountName as HexAddr,
             displayName: `${truncate(accountName)}::${groupName}`,
+            account: accountName as HexAddr,
             group: groupName,
             items,
           },
@@ -81,9 +81,9 @@ export const useResourcesByAddressLcd = (
       }, {});
 
       return {
-        groupedByName: Object.values(groupedByName),
-        groupedByOwner: Object.values(groupedByOwner),
         totalCount: resources.total,
+        groupedByOwner: Object.values(groupedByOwner),
+        groupedByName: Object.values(groupedByName),
       };
     });
   return useQuery(

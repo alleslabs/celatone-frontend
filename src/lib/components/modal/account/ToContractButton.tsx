@@ -16,13 +16,13 @@ export const ToContractButton = ({
 
   return (
     <Text
-      minW={16}
-      mr={3}
       textAlign="right"
-      variant="body3"
+      mr={3}
       color="primary.main"
-      cursor="pointer"
       fontWeight={700}
+      variant="body3"
+      cursor="pointer"
+      minW={16}
       onClick={() => {
         track(AmpEvent.ACCOUNT_TO_CONTRACT_BUTTON);
         navigate(

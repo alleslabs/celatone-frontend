@@ -1,4 +1,3 @@
-/* eslint-disable perfectionist/sort-modules */
 import { createContext, useContext } from "react";
 import type { ReactNode } from "react";
 
@@ -51,21 +50,6 @@ export function useContractStore() {
   return contractStore;
 }
 
-export function useLocalChainConfigStore() {
-  const { localChainConfigStore } = useStore();
-  return localChainConfigStore;
-}
-
-export function useMoveVerifyTaskStore() {
-  const { moveVerifyTaskStore } = useStore();
-  return moveVerifyTaskStore;
-}
-
-export function useNetworkStore() {
-  const { networkStore } = useStore();
-  return networkStore;
-}
-
 export function usePublicProjectStore() {
   const { publicProjectStore } = useStore();
   return publicProjectStore;
@@ -74,4 +58,19 @@ export function usePublicProjectStore() {
 export function useSchemaStore() {
   const { schemaStore } = useStore();
   return schemaStore;
+}
+
+export function useNetworkStore() {
+  const { networkStore } = useStore();
+  return networkStore;
+}
+
+export function useLocalChainConfigStore() {
+  const { localChainConfigStore } = useStore();
+  return localChainConfigStore;
+}
+
+export function useMoveVerifyTaskStore() {
+  const { moveVerifyTaskStore } = useStore();
+  return moveVerifyTaskStore;
 }

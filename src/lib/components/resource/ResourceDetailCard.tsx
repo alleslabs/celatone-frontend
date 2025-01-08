@@ -28,14 +28,14 @@ export const ResourceDetailCard = ({
   // TODO: revisit later
   if (parsedMoveResource === "")
     return (
-      <Flex alignItems="center" bg="gray.900" p={4} borderRadius={8}>
+      <Flex bg="gray.900" p={4} borderRadius={8} alignItems="center">
         <CustomIcon
-          mr={3}
           name="alert-triangle-solid"
-          boxSize={4}
           color="gray.600"
+          boxSize={4}
+          mr={3}
         />
-        <Text textAlign="center" color="text.dark">
+        <Text color="text.dark" textAlign="center">
           Invalid Data, resource and module provided are incompatible or contain
           invalid data within the module.
         </Text>
@@ -43,8 +43,8 @@ export const ResourceDetailCard = ({
     );
 
   const moveResourceObject = parsedMoveResource as {
-    data: Record<string, unknown>;
     type: string;
+    data: Record<string, unknown>;
   };
 
   const formattedArray: { key: string; value: unknown }[] = Object.entries(
@@ -68,37 +68,37 @@ export const ResourceDetailCard = ({
             }
           >
             <Flex
-              className="copier-wrapper"
-              align="center"
               p={4}
-              w="full"
               justifyContent="space-between"
+              w="full"
+              align="center"
+              className="copier-wrapper"
             >
               <Flex alignItems="center">
                 <Text
-                  textAlign="left"
                   variant="body1"
                   fontWeight={600}
+                  textAlign="left"
                   wordBreak="break-word"
                 >
                   {resourceData.structTag}
                 </Text>
                 <Copier
-                  display={!isMobile ? "none" : "inline"}
                   type="resource"
+                  display={!isMobile ? "none" : "inline"}
                   value={resourceData.structTag}
                   copyLabel="Copied!"
                 />
               </Flex>
               <Flex alignItems="center" gap={2}>
                 <CopyButton
-                  display={{ base: "none", md: "flex" }}
-                  gap={1}
-                  px={2}
-                  size="xs"
                   value={resourceData.moveResource}
                   variant="outline-gray"
+                  size="xs"
+                  gap={1}
+                  px={2}
                   buttonText="Copy JSON"
+                  display={{ base: "none", md: "flex" }}
                 />
                 <AccordionIcon color="gray.600" />
               </Flex>
@@ -106,11 +106,11 @@ export const ResourceDetailCard = ({
           </AccordionButton>
           <AccordionPanel
             p={4}
-            borderColor="gray.700"
             borderTop="1px solid"
+            borderColor="gray.700"
             borderTopRadius={0}
           >
-            <Flex gap={3} direction="column">
+            <Flex direction="column" gap={3}>
               {formattedArray.map((item) => (
                 <Flex
                   key={item.key}
@@ -118,10 +118,10 @@ export const ResourceDetailCard = ({
                   direction={{ base: "column", md: "row" }}
                 >
                   <Text
-                    minW={40}
                     variant="body2"
                     color="text.dark"
                     fontWeight="600"
+                    minW={40}
                   >
                     {item.key}
                   </Text>

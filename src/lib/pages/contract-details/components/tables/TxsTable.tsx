@@ -9,34 +9,34 @@ import type { BechAddr32, Option } from "lib/types";
 
 interface TxsTableProps {
   contractAddress: BechAddr32;
-  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
+  refetchCount: () => void;
 }
 
 export const TxsTable = ({
   contractAddress,
-  refetchCount,
   scrollComponentId,
   totalData,
+  refetchCount,
 }: TxsTableProps) => {
   const { isFullTier } = useTierConfig();
 
   const {
-    currentPage,
-    offset,
-    pageSize,
-    pagesQuantity,
-    setCurrentPage,
-    setPageSize,
     setTotalData,
+    pagesQuantity,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    offset,
   } = usePaginator({
+    total: totalData,
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
-    total: totalData,
   });
 
   const resApi = useTxsByAddress(
@@ -53,36 +53,38 @@ export const TxsTable = ({
     onSuccess: ({ total }) => setTotalData(total),
   });
 
-  const { data, error, isLoading } = isFullTier ? resApi : resLcd;
+  const { data, isLoading, error } = isFullTier ? resApi : resLcd;
 
   return (
     <>
       <TransactionsTable
+        transactions={data?.items}
+        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="transactions" />
           ) : (
             <EmptyState
+              withBorder
               imageVariant="empty"
               message={
                 isFullTier
                   ? "This contract does not have any transactions."
                   : "This contract does not have any transactions, or they are too old and have been pruned from the LCD."
               }
-              withBorder
             />
           )
         }
-        isLoading={isLoading}
         showRelations={false}
-        transactions={data?.items}
       />
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={totalData}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
           onPageChange={(nextPage) => {
             setCurrentPage(nextPage);
             refetchCount();
@@ -93,8 +95,6 @@ export const TxsTable = ({
             setCurrentPage(1);
             refetchCount();
           }}
-          scrollComponentId={scrollComponentId}
-          totalData={totalData}
         />
       )}
     </>

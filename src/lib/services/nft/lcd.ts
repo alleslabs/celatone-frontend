@@ -36,12 +36,12 @@ export const getNftByNftAddressLcd = async (
     getNftHolderLcd(endpoint, nftAddress),
     getNftInfoLcd(endpoint, nftAddress),
   ]).then<Nft>(([holder, info]) => ({
-    collectionAddress: info.collection,
-    collectionName: undefined,
+    uri: info.uri,
+    tokenId: info.tokenId,
     description: info.description,
     isBurned: false,
-    nftAddress,
     ownerAddress: holder,
-    tokenId: info.tokenId,
-    uri: info.uri,
+    nftAddress,
+    collectionAddress: info.collection,
+    collectionName: undefined,
   }));

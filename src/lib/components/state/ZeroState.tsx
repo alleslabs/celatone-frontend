@@ -9,17 +9,17 @@ import { formatSlugName } from "lib/utils";
 
 import { StateImage } from "./StateImage";
 
-interface ActionSectionProps {
-  handleAction?: () => void;
-  list: LVPair;
-}
-
 interface ZeroStateProps {
-  isReadOnly?: boolean;
   list: LVPair;
+  isReadOnly?: boolean;
 }
 
-const ActionSection = ({ handleAction, list }: ActionSectionProps) =>
+interface ActionSectionProps {
+  list: LVPair;
+  handleAction?: () => void;
+}
+
+const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
   list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? (
     <Button
       leftIcon={<CustomIcon name="add-new" boxSize={4} />}
@@ -35,10 +35,10 @@ const ActionSection = ({ handleAction, list }: ActionSectionProps) =>
           key={list.value}
           list={list}
           buttonProps={{
-            children: "Save Contract",
-            leftIcon: <CustomIcon name="bookmark" />,
-            ml: 2,
             variant: "outline-primary",
+            leftIcon: <CustomIcon name="bookmark" />,
+            children: "Save Contract",
+            ml: 2,
           }}
         />
       </Flex>
@@ -48,10 +48,10 @@ const ActionSection = ({ handleAction, list }: ActionSectionProps) =>
 
 const renderText = (listSlug: string) => {
   switch (listSlug) {
-    case ADMIN_SPECIAL_SLUG:
-      return "You don’t have any admin access to any contracts.";
     case formatSlugName(INSTANTIATED_LIST_NAME):
       return "Your deployed contract through this address will display here.";
+    case ADMIN_SPECIAL_SLUG:
+      return "You don’t have any admin access to any contracts.";
     default:
       return "You don’t have any saved contracts.";
   }
@@ -62,17 +62,17 @@ const renderText = (listSlug: string) => {
  * @todo Will be refactored in the next PR
  */
 
-export const ZeroState = ({ isReadOnly, list }: ZeroStateProps) => {
+export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
   const navigate = useInternalNavigate();
   return (
     <Flex
       width="full"
-      alignItems="center"
-      gap={4}
       py={12}
-      borderColor="gray.700"
-      borderY="1px solid"
+      gap={4}
       direction="column"
+      alignItems="center"
+      borderY="1px solid"
+      borderColor="gray.700"
     >
       <StateImage imageVariant="empty" />
       <Text color="text.dark">{renderText(list.value)}</Text>
@@ -89,14 +89,14 @@ export const ZeroState = ({ isReadOnly, list }: ZeroStateProps) => {
 export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
   <Flex
     width="full"
-    alignItems="center"
+    py={12}
     gap={4}
     my={8}
-    py={12}
-    borderColor="gray.700"
+    direction="column"
+    alignItems="center"
     borderY="1px solid"
     color="text.dark"
-    direction="column"
+    borderColor="gray.700"
   >
     <StateImage imageVariant="empty" />
     <Flex align="center">You don’t have any saved accounts.</Flex>
@@ -113,14 +113,14 @@ export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
 export const SavedCodeZeroState = ({ button }: { button: JSX.Element }) => (
   <Flex
     width="full"
-    alignItems="center"
+    py={12}
     gap={4}
     my={8}
-    py={12}
-    borderColor="gray.700"
-    borderY="1px solid"
-    color="text.dark"
     direction="column"
+    alignItems="center"
+    borderY="1px solid"
+    borderColor="gray.700"
+    color="text.dark"
   >
     <StateImage imageVariant="empty" />
     <Flex align="center">You don’t have any saved codes.</Flex>

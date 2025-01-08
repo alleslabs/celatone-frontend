@@ -11,11 +11,11 @@ import { parseTxHash, snakeToCamel } from "lib/utils";
 
 const zCollection = z
   .object({
-    creator: zHexAddr32,
-    description: z.string(),
-    id: zHexAddr32,
     name: z.string(),
+    id: zHexAddr32,
     uri: z.string(),
+    description: z.string(),
+    creator: zHexAddr32,
   })
   .transform((val) => ({
     ...val,
@@ -31,8 +31,8 @@ export type NftCollectionsResponse = z.infer<typeof zNftCollectionsResponse>;
 
 export const zCollectionByCollectionAddressResponse = z
   .object({
-    description: z.string(),
     name: z.string(),
+    description: z.string(),
     uri: z.string(),
   })
   .transform(snakeToCamel)
@@ -61,14 +61,14 @@ export type CollectionCreatorResponse = z.infer<
 
 export const zActivity = z
   .object({
-    is_collection_create: z.boolean(),
+    timestamp: zUtcDate,
+    txhash: z.string().transform(parseTxHash),
     is_nft_burn: z.boolean(),
     is_nft_mint: z.boolean(),
     is_nft_transfer: z.boolean(),
-    nft_address: zHexAddr.nullish(),
-    timestamp: zUtcDate,
     token_id: z.string().nullish(),
-    txhash: z.string().transform(parseTxHash),
+    nft_address: zHexAddr.nullish(),
+    is_collection_create: z.boolean(),
   })
   .transform(snakeToCamel);
 export type Activity = z.infer<typeof zActivity>;
@@ -81,9 +81,9 @@ export type ActivitiesResponse = z.infer<typeof zActivitiesResponse>;
 
 const zCollectionMutateEventItemResponse = z
   .object({
-    mutated_field_name: z.string(),
-    new_value: z.string(),
     old_value: z.string(),
+    new_value: z.string(),
+    mutated_field_name: z.string(),
     remark: zRemark,
     timestamp: zUtcDate,
   })
@@ -99,10 +99,10 @@ export type CollectionMutateEventsResponse = z.infer<
 
 const zCollectionByAccountItemResponse = z
   .object({
-    collection_address: zHexAddr32,
     collection_name: z.string(),
-    hold: z.number(),
+    collection_address: zHexAddr32,
     uri: z.string(),
+    hold: z.number(),
   })
   .transform(snakeToCamel);
 
@@ -126,14 +126,14 @@ const zCollectionSequencer = z.object({
   creator: zHexAddr32,
   description: z.string(),
   name: z.string(),
-  nfts: zCollectionNftsSequencer,
   uri: z.string(),
+  nfts: zCollectionNftsSequencer,
 });
 
 export const zCollectionResponseSequencer = z
   .object({
-    collection: zCollectionSequencer,
     object_addr: zHexAddr32,
+    collection: zCollectionSequencer,
   })
   .transform(snakeToCamel);
 
@@ -144,10 +144,10 @@ export const zCollectionsByAccountAddressResponseSequencer = z
   })
   .transform<CollectionsByAccountAddressResponse>(({ collections }) => ({
     items: collections.map((collection) => ({
-      collectionAddress: collection.objectAddr,
       collectionName: collection.collection.name,
-      hold: collection.collection.nfts.length,
+      collectionAddress: collection.objectAddr,
       uri: collection.collection.uri,
+      hold: collection.collection.nfts.length,
     })),
   }));
 export type CollectionsByAccountAddressResponseSequencer = z.infer<
@@ -159,9 +159,9 @@ export const zCollectionByCollectionAddressResponseSequencer = z
     collection: zCollectionResponseSequencer,
   })
   .transform<CollectionByCollectionAddressResponse>((val) => ({
-    createdHeight: null,
-    creatorAddress: val.collection.collection.creator,
     description: val.collection.collection.description,
     name: val.collection.collection.name,
     uri: val.collection.collection.uri,
+    createdHeight: null,
+    creatorAddress: val.collection.collection.creator,
   }));

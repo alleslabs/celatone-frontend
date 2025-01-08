@@ -25,27 +25,27 @@ const Meta = () => {
       />
 
       {/* Open Graph / Facebook */}
-      <meta content="website" property="og:type" />
-      <meta content={title} property="og:title" />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={title} />
       <meta
-        content={FALLBACK_THEME.branding.seo.description}
         property="og:description"
+        content={FALLBACK_THEME.branding.seo.description}
       />
-      <meta content={FALLBACK_THEME.branding.seo.image} property="og:image" />
+      <meta property="og:image" content={FALLBACK_THEME.branding.seo.image} />
 
       {/* Twitter */}
       <meta
-        content={FALLBACK_THEME.branding.seo.twitter.cardType}
         property="twitter:card"
+        content={FALLBACK_THEME.branding.seo.twitter.cardType}
       />
-      <meta content={title} property="twitter:title" />
+      <meta property="twitter:title" content={title} />
       <meta
-        content={FALLBACK_THEME.branding.seo.description}
         property="twitter:description"
+        content={FALLBACK_THEME.branding.seo.description}
       />
       <meta
-        content={FALLBACK_THEME.branding.seo.image}
         property="twitter:image"
+        content={FALLBACK_THEME.branding.seo.image}
       />
     </>
   );

@@ -65,24 +65,24 @@ const WasmCodeSnippet = dynamic(
 );
 
 interface ExecuteBoxProps {
-  contractAddress: BechAddr32;
-  initialFunds: Coin[];
-  initialMsg: JsonDataType;
   msgSchema: SchemaInfo;
+  contractAddress: BechAddr32;
+  initialMsg: JsonDataType;
+  initialFunds: Coin[];
   opened: boolean;
 }
 
 const assetDefault = {
-  assetsJsonStr: defaultAssetJsonStr,
   assetsSelect: defaultAsset,
+  assetsJsonStr: defaultAssetJsonStr,
   attachFundsOption: AttachFundsType.ATTACH_FUNDS_NULL,
 };
 
 export const ExecuteBox = ({
-  contractAddress,
-  initialFunds,
-  initialMsg,
   msgSchema,
+  contractAddress,
+  initialMsg,
+  initialFunds,
   opened,
 }: ExecuteBoxProps) => {
   // ------------------------------------------//
@@ -108,9 +108,9 @@ export const ExecuteBox = ({
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
-  const { control, reset, setValue, watch } = useForm<AttachFundsState>({
-    defaultValues: assetDefault,
+  const { control, setValue, watch, reset } = useForm<AttachFundsState>({
     mode: "all",
+    defaultValues: assetDefault,
   });
   const { errors: attachFundErrors } = useFormState({ control });
   const { assetsJsonStr, assetsSelect, attachFundsOption } = watch();
@@ -132,10 +132,10 @@ export const ExecuteBox = ({
         isValidForm
     );
     switch (attachFundsOption) {
-      case AttachFundsType.ATTACH_FUNDS_JSON:
-        return generalCheck && isValidAssetsJsonStr;
       case AttachFundsType.ATTACH_FUNDS_SELECT:
         return generalCheck && isValidAssetsSelect;
+      case AttachFundsType.ATTACH_FUNDS_JSON:
+        return generalCheck && isValidAssetsJsonStr;
       default:
         return generalCheck;
     }
@@ -164,14 +164,14 @@ export const ExecuteBox = ({
   const { isFetching } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
-    onError: (e) => {
-      setSimulateFeeError(e.message);
-      setFee(undefined);
-    },
     onSuccess: (gasRes) => {
       setSimulateFeeError(undefined);
       if (gasRes) setFee(fabricateFee(gasRes));
       else setFee(undefined);
+    },
+    onError: (e) => {
+      setSimulateFeeError(e.message);
+      setFee(undefined);
     },
   });
 
@@ -198,15 +198,15 @@ export const ExecuteBox = ({
       "schema"
     );
     const stream = await executeTx({
-      contractAddress,
-      estimatedFee: fee,
-      funds,
-      msg: JSON.parse(msg),
-      onTxFailed: () => setProcessing(false),
       onTxSucceed: (activity: Activity) => {
         addActivity(activity);
         setProcessing(false);
       },
+      onTxFailed: () => setProcessing(false),
+      estimatedFee: fee,
+      contractAddress,
+      msg: JSON.parse(msg),
+      funds,
     });
     if (stream) {
       setProcessing(true);
@@ -257,10 +257,10 @@ export const ExecuteBox = ({
       const composedMsg = address
         ? [
             composeMsg(MsgType.EXECUTE, {
-              contract: contractAddress,
-              funds,
-              msg: Uint8Array.from(Buffer.from(msg)),
               sender: address,
+              contract: contractAddress,
+              msg: Uint8Array.from(Buffer.from(msg)),
+              funds,
             }),
           ]
         : [];
@@ -282,7 +282,7 @@ export const ExecuteBox = ({
     <AccordionItem className={`execute_msg_${msgSchema.schema.required?.[0]}`}>
       <h6>
         <AccordionButton p={4}>
-          <Box textAlign="start" w="full">
+          <Box w="full" textAlign="start">
             <Text variant="body1" fontWeight={700}>
               {msgSchema.title}
             </Text>
@@ -294,19 +294,19 @@ export const ExecuteBox = ({
         </AccordionButton>
       </h6>
       <AccordionPanel mx={2}>
-        <Grid columnGap={6} templateColumns="1fr 1fr" templateRows="auto auto">
+        <Grid templateColumns="1fr 1fr" templateRows="auto auto" columnGap={6}>
           <GridItem>
             <Text variant="body2" color="text.dark" fontWeight={700}>
               Execute Input
             </Text>
             <JsonSchemaForm
-              schema={msgSchema.schema}
               formId={`execute-${msgSchema.title}`}
+              schema={msgSchema.schema}
               initialFormData={initialMsg}
               onChange={handleChange}
             />
             {simulateFeeError && (
-              <Alert alignItems="center" mb={3} variant="error">
+              <Alert variant="error" mb={3} alignItems="center">
                 <AlertDescription wordBreak="break-word">
                   {simulateFeeError}
                 </AlertDescription>
@@ -314,13 +314,13 @@ export const ExecuteBox = ({
             )}
           </GridItem>
           <GridItem>
-            <Text pb={3} variant="body2" color="text.dark" fontWeight={700}>
+            <Text variant="body2" color="text.dark" fontWeight={700} pb={3}>
               Attach Funds
             </Text>
             <AttachFund
+              control={control}
               setValue={setValue}
               attachFundsOption={attachFundsOption}
-              control={control}
               showLabel={false}
             />
           </GridItem>
@@ -333,33 +333,33 @@ export const ExecuteBox = ({
                 buttonText="Copy JSON"
               />
               <WasmCodeSnippet
-                funds={funds}
-                message={msg}
                 type="execute"
                 contractAddress={contractAddress}
+                message={msg}
+                funds={funds}
               />
             </Flex>
           </GridItem>
           <GridItem>
             <Flex
+              direction="row"
               align="center"
               gap={2}
-              direction="row"
               justifyContent="space-between"
             >
-              <Flex alignItems="center" color="text.dark" fontSize="14px">
+              <Flex fontSize="14px" color="text.dark" alignItems="center">
                 Transaction Fee:{" "}
                 <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
               </Flex>
               <Button
-                isDisabled={!enableExecute || !fee || isFetching}
-                p="6px 16px"
-                sx={{ pointerEvents: processing && "none" }}
                 variant="primary"
                 fontSize="14px"
-                isLoading={processing}
-                leftIcon={<CustomIcon name="execute" />}
+                p="6px 16px"
                 onClick={proceed}
+                isDisabled={!enableExecute || !fee || isFetching}
+                leftIcon={<CustomIcon name="execute" />}
+                isLoading={processing}
+                sx={{ pointerEvents: processing && "none" }}
               >
                 Execute
               </Button>

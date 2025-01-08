@@ -4,11 +4,11 @@ import { CustomIcon } from "lib/components/icon";
 
 export const getStepStyles = (index: number, currentStep: number) => {
   const baseStyles = {
-    alignItems: "center",
     borderRadius: "50%",
-    height: "24px",
-    justifyContent: "center",
     width: "24px",
+    height: "24px",
+    alignItems: "center",
+    justifyContent: "center",
   };
 
   switch (true) {
@@ -16,17 +16,18 @@ export const getStepStyles = (index: number, currentStep: number) => {
       return {
         bgColor: "gray.900",
         borderColor: "text.main",
+        textColor: "text.main",
         content: (
           <Flex {...baseStyles} bg="text.main">
-            <CustomIcon name="check" boxSize="12px" color="gray.900" />
+            <CustomIcon name="check" color="gray.900" boxSize="12px" />
           </Flex>
         ),
-        textColor: "text.main",
       };
     case index === currentStep:
       return {
         bgColor: "gray.800",
         borderColor: "text.main",
+        textColor: "text.main",
         content: (
           <Flex {...baseStyles} bg="text.main">
             <Text variant="body3" color="gray.900">
@@ -34,12 +35,12 @@ export const getStepStyles = (index: number, currentStep: number) => {
             </Text>
           </Flex>
         ),
-        textColor: "text.main",
       };
     default:
       return {
         bgColor: "gray.900",
         borderColor: "gray.800",
+        textColor: "text.dark",
         content: (
           <Flex {...baseStyles} border="1px solid" borderColor="gray.500">
             <Text variant="body3" color="gray.500">
@@ -47,7 +48,6 @@ export const getStepStyles = (index: number, currentStep: number) => {
             </Text>
           </Flex>
         ),
-        textColor: "text.dark",
       };
   }
 };

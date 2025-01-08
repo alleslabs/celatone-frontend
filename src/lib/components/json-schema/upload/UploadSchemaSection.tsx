@@ -6,14 +6,14 @@ import { CustomIcon } from "../../icon";
 import { UploadSchema } from "./UploadSchema";
 
 interface UploadSchemaSectionProps {
-  codeHash: string;
   codeId: number;
-  title?: JSX.Element | string;
+  codeHash: string;
+  title?: string | JSX.Element;
 }
 
 export const UploadSchemaSection = ({
-  codeHash,
   codeId,
+  codeHash,
   title = `You haven't attached the JSON Schema for code ${codeId} yet`,
 }: UploadSchemaSectionProps) => {
   const sectionHeader =
@@ -27,44 +27,44 @@ export const UploadSchemaSection = ({
 
   return (
     <Flex
-      alignItems="center"
       p="24px 16px"
+      direction="column"
+      alignItems="center"
       bgColor="gray.900"
       borderRadius="8px"
-      direction="column"
     >
-      <Flex alignItems="center" direction="column">
+      <Flex direction="column" alignItems="center">
         {sectionHeader}
         <Text
-          mb={4}
-          mt={2}
           variant="body2"
-          fontWeight={500}
           textColor="text.disabled"
+          fontWeight={500}
+          mt={2}
+          mb={4}
         >
           Your attached JSON schema will be stored locally on your device
         </Text>
-        <Flex gap={10} w="full" direction="column" position="relative">
+        <Flex direction="column" w="full" gap={10} position="relative">
           <Flex
-            gap={2}
-            p={2}
-            w="full"
             bgColor="gray.800"
             borderRadius={4}
+            p={2}
+            gap={2}
+            w="full"
             justifyContent="center"
           >
             <CustomIcon name="code" color="gray.400" />
             Code ID: {codeId}
           </Flex>
           <ConnectingLine
-            style={{ left: "calc(50% - 6px)", top: "36px" }}
             isFilled={false}
+            style={{ left: "calc(50% - 6px)", top: "36px" }}
           />
           <UploadSchema
             attached={false}
-            codeHash={codeHash}
-            codeId={codeId}
             localSchema={undefined}
+            codeId={codeId}
+            codeHash={codeHash}
           />
         </Flex>
       </Flex>

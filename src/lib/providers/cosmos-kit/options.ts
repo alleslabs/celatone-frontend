@@ -22,7 +22,7 @@ export const getCustomedSigningCosmwasm = (): SigningCosmWasmClientOptions => {
   };
 
   return {
-    aminoTypes: new AminoTypes(aminoTypes),
     registry: new Registry(registry),
+    aminoTypes: new AminoTypes(aminoTypes),
   };
 };

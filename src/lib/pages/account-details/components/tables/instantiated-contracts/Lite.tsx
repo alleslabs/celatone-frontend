@@ -35,26 +35,26 @@ export const InstantiatedContractsTableLite = ({
         />
       ) : (
         <AccountSectionWrapper
-          hasHelperText={!!contracts?.length}
-          helperText="This account instantiated the following contracts"
-          title="Contract Instances"
           totalData={contractsCount}
+          title="Contract Instances"
+          helperText="This account instantiated the following contracts"
+          hasHelperText={!!contracts?.length}
         >
           <ContractsTable
+            contracts={onViewMore ? contracts?.slice(0, 5) : contracts}
+            isLoading={isLoading}
             emptyState={
               !contracts ? (
                 <ErrorFetching
                   dataName="instantiated contracts"
+                  withBorder
                   my={2}
                   hasBorderTop={false}
-                  withBorder
                 />
               ) : (
                 <AccountDetailsEmptyState message="No contracts have been instantiated by this account before." />
               )
             }
-            contracts={onViewMore ? contracts?.slice(0, 5) : contracts}
-            isLoading={isLoading}
             onRowSelect={onRowSelect}
             showLastUpdate={false}
           />

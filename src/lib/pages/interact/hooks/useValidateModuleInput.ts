@@ -14,7 +14,7 @@ import {
 } from "lib/utils";
 
 export const useValidateModuleInput = () => {
-  const { validateContractAddress, validateUserAddress } = useValidateAddress();
+  const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const { bech32Prefix } = useCurrentChain();
 
   const { user } = useExampleAddresses();

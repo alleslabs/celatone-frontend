@@ -15,7 +15,7 @@ export const ConnectWalletBtn = () => {
   };
 
   return (
-    <Button gap={2} variant="outline-primary" onClick={onClickConnect}>
+    <Button variant="outline-primary" gap={2} onClick={onClickConnect}>
       Connect Wallet
       <CustomIcon name="connect" />
     </Button>

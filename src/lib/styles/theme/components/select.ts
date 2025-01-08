@@ -1,33 +1,33 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
 
 export const Select: ComponentStyleConfig = {
-  defaultProps: {
-    variant: "custom-select",
-  },
   variants: {
     "custom-select": {
       field: {
-        _active: {
-          borderColor: "primary.dark",
-          borderWidth: "2px",
-        },
-        _focus: {
-          borderColor: "primary.dark",
-          borderWidth: "2px",
-        },
-        bg: "background.main",
+        color: "text.main",
+        borderRadius: "8px",
         border: "1px solid",
         borderColor: "gray.700",
-        borderRadius: "8px",
-        color: "text.main",
         fontSize: "16px",
-        height: "56px",
         letterSpacing: "0.15px",
+        height: "56px",
+        bg: "background.main",
+        _focus: {
+          borderWidth: "2px",
+          borderColor: "primary.dark",
+        },
+        _active: {
+          borderWidth: "2px",
+          borderColor: "primary.dark",
+        },
       },
       icon: {
         color: "text.dark",
         fontSize: "24px",
       },
     },
+  },
+  defaultProps: {
+    variant: "custom-select",
   },
 };

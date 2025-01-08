@@ -14,41 +14,41 @@ import { ValidatorDescription } from "./ValidatorDescription";
 import { VotingPowerOverview } from "./VotingPowerOverview";
 
 interface ValidatorOverviewProps {
-  assetInfos: Option<AssetInfos>;
-  details: string;
+  onSelectVotes: Option<() => void>;
+  onSelectPerformance: Option<() => void>;
+  onSelectBondedTokenChanges: Option<() => void>;
   isActive: boolean;
   isJailed: boolean;
-  onSelectBondedTokenChanges: Option<() => void>;
-  onSelectPerformance: Option<() => void>;
-  onSelectVotes: Option<() => void>;
-  selfVotingPower: Big;
-  singleStakingDenom: Option<string>;
-  totalVotingPower: Big;
+  details: string;
   validatorAddress: ValidatorAddr;
+  singleStakingDenom: Option<string>;
+  assetInfos: Option<AssetInfos>;
   votingPower: Big;
+  totalVotingPower: Big;
+  selfVotingPower: Big;
 }
 
 export const ValidatorOverview = ({
-  assetInfos,
-  details,
+  onSelectVotes,
+  onSelectPerformance,
+  onSelectBondedTokenChanges,
   isActive,
   isJailed,
-  onSelectBondedTokenChanges,
-  onSelectPerformance,
-  onSelectVotes,
-  selfVotingPower,
-  singleStakingDenom,
-  totalVotingPower,
+  details,
   validatorAddress,
+  singleStakingDenom,
+  assetInfos,
   votingPower,
+  totalVotingPower,
+  selfVotingPower,
 }: ValidatorOverviewProps) => {
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
 
   return (
-    <Flex gap={{ base: 4, md: 6 }} pt={6} direction="column">
+    <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
       {(!isActive || isJailed) && (
-        <Alert gap={2} my={6} variant="error">
+        <Alert variant="error" gap={2} my={6}>
           <CustomIcon
             name="alert-triangle-solid"
             boxSize={4}
@@ -68,11 +68,11 @@ export const ValidatorOverview = ({
             direction={{ base: "column", md: "row" }}
           >
             <VotingPowerOverview
-              assetInfos={assetInfos}
-              selfVotingPower={selfVotingPower}
               singleStakingDenom={singleStakingDenom}
-              totalVotingPower={totalVotingPower}
+              assetInfos={assetInfos}
               votingPower={votingPower}
+              totalVotingPower={totalVotingPower}
+              selfVotingPower={selfVotingPower}
             />
             <Performance
               validatorAddress={validatorAddress}
@@ -80,15 +80,15 @@ export const ValidatorOverview = ({
             />
           </Flex>
           {!isMobile && (
-            <Flex p={6} w="100%" backgroundColor="gray.900" rounded={8}>
+            <Flex backgroundColor="gray.900" p={6} rounded={8} w="100%">
               <RecentBlocksSection validatorAddress={validatorAddress} />
             </Flex>
           )}
           <VotingPowerChart
             validatorAddress={validatorAddress}
+            singleStakingDenom={singleStakingDenom}
             assetInfos={assetInfos}
             onViewMore={onSelectBondedTokenChanges}
-            singleStakingDenom={singleStakingDenom}
           />
           <ProposedBlocksTable
             validatorAddress={validatorAddress}
@@ -101,11 +101,11 @@ export const ValidatorOverview = ({
         </>
       ) : (
         <VotingPowerOverview
-          assetInfos={assetInfos}
-          selfVotingPower={selfVotingPower}
           singleStakingDenom={singleStakingDenom}
-          totalVotingPower={totalVotingPower}
+          assetInfos={assetInfos}
           votingPower={votingPower}
+          totalVotingPower={totalVotingPower}
+          selfVotingPower={selfVotingPower}
         />
       )}
     </Flex>

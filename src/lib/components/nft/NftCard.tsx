@@ -7,49 +7,49 @@ import { useMetadata } from "lib/services/nft";
 import type { HexAddr32, Nullable, Option } from "lib/types";
 
 interface NftCardProps {
-  collectionAddress: HexAddr32;
+  uri: string;
+  tokenId: string;
   collectionName: Option<string>;
+  collectionAddress: HexAddr32;
   nftAddress: Nullable<HexAddr32>;
   showCollection?: boolean;
-  tokenId: string;
-  uri: string;
 }
 
 export const NftCard = ({
-  collectionAddress,
-  collectionName,
-  nftAddress,
-  showCollection = false,
-  tokenId,
   uri,
+  tokenId,
+  nftAddress,
+  collectionName,
+  collectionAddress,
+  showCollection = false,
 }: NftCardProps) => {
   const { data: metadata } = useMetadata(uri);
 
   return (
-    <Flex minW="full" direction="column">
+    <Flex direction="column" minW="full">
       <AppLink
-        onClick={() => track(AmpEvent.USE_NFT_CARD, { showCollection })}
         href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
+        onClick={() => track(AmpEvent.USE_NFT_CARD, { showCollection })}
       >
-        <Box width="100%" mb={2} paddingBottom="100%" position="relative">
+        <Box position="relative" width="100%" paddingBottom="100%" mb={2}>
           <Image
-            width="100%"
-            fallbackSrc={NFT_IMAGE_PLACEHOLDER}
-            fallbackStrategy="beforeLoadOrError"
-            height="100%"
+            position="absolute"
+            top={0}
             left={0}
-            src={metadata?.image}
+            width="100%"
+            height="100%"
+            objectFit="contain"
             background="gray.900"
             backgroundPosition="center"
             borderRadius="8px"
-            objectFit="contain"
-            position="absolute"
-            top={0}
+            src={metadata?.image}
+            fallbackSrc={NFT_IMAGE_PLACEHOLDER}
+            fallbackStrategy="beforeLoadOrError"
           />
         </Box>
         <Box>
           {showCollection && (
-            <Text color="primary.main" fontSize="14px" fontWeight={600}>
+            <Text fontSize="14px" color="primary.main" fontWeight={600}>
               {collectionName}
             </Text>
           )}

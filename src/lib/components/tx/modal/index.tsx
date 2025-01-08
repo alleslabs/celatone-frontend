@@ -19,11 +19,11 @@ import { TxStreamPhase } from "lib/types";
 import { ButtonSection } from "./ButtonSection";
 
 interface TxModalProps {
-  onClose: () => void;
   result: TxResultRendering;
+  onClose: () => void;
 }
 
-export const TxModal = ({ onClose, result }: TxModalProps) => {
+export const TxModal = ({ result, onClose }: TxModalProps) => {
   const navigate = useInternalNavigate();
 
   const isUpdateAdminSucceed =
@@ -41,10 +41,10 @@ export const TxModal = ({ onClose, result }: TxModalProps) => {
 
   return (
     <Modal
-      isCentered
       isOpen
-      closeOnOverlayClick={false}
       onClose={handleModalClose}
+      isCentered
+      closeOnOverlayClick={false}
     >
       <ModalOverlay />
       <ModalContent w="600px">
@@ -55,7 +55,7 @@ export const TxModal = ({ onClose, result }: TxModalProps) => {
         {showCloseButton && <ModalCloseButton color="gray.600" />}
         <ModalBody>
           {result.receiptInfo.description && (
-            <Text mb={4} variant="body1">
+            <Text variant="body1" mb={4}>
               {result.receiptInfo.description}
             </Text>
           )}
@@ -65,10 +65,10 @@ export const TxModal = ({ onClose, result }: TxModalProps) => {
           {result.receiptInfo.errorMsg && (
             <Box
               bg="background.main"
-              maxH="240px"
-              mt={4}
-              p={2}
               borderRadius="8px"
+              p={2}
+              mt={4}
+              maxH="240px"
               overflowY="scroll"
             >
               <Text>{result.receiptInfo.errorMsg}</Text>
@@ -77,10 +77,10 @@ export const TxModal = ({ onClose, result }: TxModalProps) => {
         </ModalBody>
         <ModalFooter gap={2}>
           <ButtonSection
-            receipts={result.receipts}
             actionVariant={result.actionVariant}
-            errorMsg={result.receiptInfo.errorMsg}
             onClose={onClose}
+            receipts={result.receipts}
+            errorMsg={result.receiptInfo.errorMsg}
           />
         </ModalFooter>
       </ModalContent>

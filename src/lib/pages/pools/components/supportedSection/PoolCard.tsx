@@ -36,50 +36,50 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
 
   return (
     <Flex
-      bg="gray.900"
+      justifyContent="space-between"
       gap={4}
+      flexDirection="column"
+      onClick={() =>
+        navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } })
+      }
+      bg="gray.900"
+      borderRadius="8px"
       p={4}
+      transition="all 0.25s ease-in-out"
+      cursor="pointer"
       sx={{
         _hover: {
           "> div:last-child > div": {
-            backgroundColor: hoverBgColor,
             borderColor: "gray.600",
+            backgroundColor: hoverBgColor,
           },
           backgroundColor: "gray.800",
         },
       }}
-      borderRadius="8px"
-      cursor="pointer"
-      flexDirection="column"
-      justifyContent="space-between"
-      onClick={() =>
-        navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } })
-      }
-      transition="all 0.25s ease-in-out"
     >
       <Flex>
         <PoolHeader
-          isSuperfluid={item.isSuperfluid}
-          liquidity={item.liquidity}
           poolId={item.id}
+          isSuperfluid={item.isSuperfluid}
           poolType={item.type}
+          liquidity={item.liquidity}
         />
         <Tooltip label="See in osmosis.zone">
           <Link
-            rel="noopener noreferrer"
-            target="_blank"
+            href={`${poolUrl}/${item.id}`}
             onClick={(e) => {
               trackWebsite(`${poolUrl}/${item.id}`);
               e.stopPropagation();
             }}
-            href={`${poolUrl}/${item.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <IconButton
-              aria-label="external"
+              fontSize="24px"
               variant="none"
+              aria-label="external"
               _hover={{ backgroundColor: hoverBgColor }}
               color="gray.600"
-              fontSize="24px"
               icon={<CustomIcon name="launch" />}
             />
           </Link>
@@ -97,24 +97,34 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
             : formatPrice(liquidity)}
         </Text>
       </Flex>
-      <SimpleGrid gap={2} columns={4}>
+      <SimpleGrid columns={4} gap={2}>
         {item.liquidity.slice(0, 3).map((asset) => (
           <AllocationBadge
             key={asset.denom}
-            liquidity={liquidity}
-            value={asset.value}
-            amount={asset.amount}
             denom={asset.denom}
             logo={asset.logo as string}
-            mode={mode}
-            precision={asset.precision}
             symbol={asset.symbol}
+            precision={asset.precision}
+            amount={asset.amount}
+            value={asset.value}
+            liquidity={liquidity}
+            mode={mode}
           />
         ))}
         {item.liquidity.length >= 4 && (
           <AllocationBadge
             key="OTHERS"
-            liquidity={liquidity}
+            denom={is4Assets ? item.liquidity[3].denom : undefined}
+            logo={is4Assets ? (item.liquidity[3].logo as string) : undefined}
+            symbol={is4Assets ? item.liquidity[3].symbol : undefined}
+            precision={is4Assets ? item.liquidity[3].precision : undefined}
+            amount={
+              item.liquidity
+                .slice(3)
+                .reduce((prev, asset) => prev.add(asset.amount), big(0)) as U<
+                Token<Big>
+              >
+            }
             value={
               item.liquidity
                 .slice(3)
@@ -123,18 +133,8 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
                   big(0)
                 ) as USD<Big>
             }
-            amount={
-              item.liquidity
-                .slice(3)
-                .reduce((prev, asset) => prev.add(asset.amount), big(0)) as U<
-                Token<Big>
-              >
-            }
-            denom={is4Assets ? item.liquidity[3].denom : undefined}
-            logo={is4Assets ? (item.liquidity[3].logo as string) : undefined}
+            liquidity={liquidity}
             mode={mode}
-            precision={is4Assets ? item.liquidity[3].precision : undefined}
-            symbol={is4Assets ? item.liquidity[3].symbol : undefined}
           />
         )}
       </SimpleGrid>

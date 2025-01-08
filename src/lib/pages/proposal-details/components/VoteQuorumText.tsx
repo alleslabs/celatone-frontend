@@ -6,10 +6,10 @@ import { ProposalStatus } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
 interface VoteQuorumTextProps {
-  isCompact: boolean;
-  quorum: Ratio<number>;
   status: ProposalStatus;
+  quorum: Ratio<number>;
   totalRatio: Nullable<Ratio<number>>;
+  isCompact: boolean;
 }
 
 const Established = () => (
@@ -24,10 +24,10 @@ const Established = () => (
 );
 
 export const VoteQuorumText = ({
-  isCompact,
-  quorum,
   status,
+  quorum,
   totalRatio,
+  isCompact,
 }: VoteQuorumTextProps) => {
   const fontVariant = isCompact ? "body2" : "body1";
   if (isNull(totalRatio))

@@ -22,9 +22,9 @@ describe("isMoveVerifyTaskUserKeyExist", () => {
 
 describe("verifyModuleTask", () => {
   const verifyModule = {
-    chainId: "chainId",
-    fileMap: { "coin.move": "sources/coin.move", "Move.toml": "Move.toml" },
     taskId: "taskId",
+    fileMap: { "coin.move": "sources/coin.move", "Move.toml": "Move.toml" },
+    chainId: "chainId",
   };
   test("correctly get verify module tasks", () => {
     expect(moveVerifyTaskStore.latestMoveVerifyTasks()).toEqual([]);
@@ -34,36 +34,36 @@ describe("verifyModuleTask", () => {
     moveVerifyTaskStore.addMoveVerifyTask(verifyModule);
     expect(
       moveVerifyTaskStore.latestMoveVerifyTasks().map((task) => ({
+        taskId: task.taskId,
+        fileMap: task.fileMap,
         chainId: task.chainId,
         completed: task.completed,
-        fileMap: task.fileMap,
-        taskId: task.taskId,
       }))
     ).toEqual([
       {
+        taskId: verifyModule.taskId,
+        fileMap: verifyModule.fileMap,
         chainId: verifyModule.chainId,
         completed: false,
-        fileMap: verifyModule.fileMap,
-        taskId: verifyModule.taskId,
       },
     ]);
   });
   test("correctly get verify module tasks after adding multiple", () => {
     const verifyModule1 = {
-      chainId: "chainId",
+      taskId: "taskId1",
       fileMap: {
         "common.move": "sources/common.move",
         "Move.toml": "Move.toml",
       },
-      taskId: "taskId1",
+      chainId: "chainId",
     };
     const verifyModule2 = {
-      chainId: "chainId",
-      fileMap: {
-        "Move.toml": "Move.toml",
-        "simple.move": "sources/simple.move",
-      },
       taskId: "taskId2",
+      fileMap: {
+        "simple.move": "sources/simple.move",
+        "Move.toml": "Move.toml",
+      },
+      chainId: "chainId",
     };
     moveVerifyTaskStore.addMoveVerifyTask(verifyModule1);
     moveVerifyTaskStore.addMoveVerifyTask(verifyModule2);

@@ -54,9 +54,9 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
   const onContractPathChange = useCallback(
     (contract?: BechAddr32) => {
       navigate({
-        options: { shallow: true },
         pathname: "/admin",
         query: { ...(contract && { contract }) },
+        options: { shallow: true },
       });
     },
     [navigate]
@@ -68,21 +68,21 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
     messages: address
       ? [
           composeMsg(MsgType.UPDATE_ADMIN, {
-            contract: contractAddress,
-            newAdmin: adminAddress as BechAddr,
             sender: address,
+            newAdmin: adminAddress as BechAddr,
+            contract: contractAddress,
           }),
         ]
       : [],
-    onError: (e) => {
-      setSimulateError(e.message);
-      setEstimatedFee(undefined);
-    },
     onSuccess: (fee) => {
       if (fee) {
         setSimulateError(undefined);
         setEstimatedFee(fabricateFee(fee));
       } else setEstimatedFee(undefined);
+    },
+    onError: (e) => {
+      setSimulateError(e.message);
+      setEstimatedFee(undefined);
     },
   });
 
@@ -90,8 +90,8 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
     track(AmpEvent.ACTION_ADMIN_UPDATE);
     const stream = await updateAdminTx({
       contractAddress,
-      estimatedFee,
       newAdmin: adminAddress as BechAddr,
+      estimatedFee,
     });
 
     if (stream) broadcast(stream);
@@ -101,10 +101,10 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
    * @remarks Contract admin validation
    */
   useContractData(contractAddress, {
-    onError: () => onContractPathChange(),
     onSuccess: (data) => {
       if (data.contract.admin !== address) onContractPathChange();
     },
+    onError: () => onContractPathChange(),
   });
 
   useEffect(() => {
@@ -134,8 +134,8 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
       const addressType = getAddressType(adminAddress);
       if (addressType === "invalid_address") {
         setAdminFormStatus({
-          message: "Invalid address length",
           state: "error",
+          message: "Invalid address length",
         });
       } else {
         const validateResult =
@@ -143,7 +143,7 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
             ? validateUserAddress(adminAddress)
             : validateContractAddress(adminAddress);
         if (validateResult) {
-          setAdminFormStatus({ message: validateResult, state: "error" });
+          setAdminFormStatus({ state: "error", message: validateResult });
         } else {
           setAdminFormStatus({ state: "success" });
         }
@@ -163,14 +163,14 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
   return (
     <ActionPageContainer>
       <CelatoneSeo pageName="Update Admin" />
-      <Flex alignItems="center" mb={6} direction="column">
+      <Flex direction="column" alignItems="center" mb={6}>
         <Heading as="h5" variant="h5">
           Update Admin
         </Heading>
         <UserDocsLink
-          cta="View Update Admin Guideline"
-          mt={2}
           isDevTool
+          mt={2}
+          cta="View Update Admin Guideline"
           href="cosmwasm/contracts/admin-actions#update-new-admin-to-the-contract"
         />
       </Flex>
@@ -181,13 +181,13 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
       <TierSwitcher
         full={
           <ContractSelectSection
-            contractAddress={contractAddress}
             mode="only-admin"
+            contractAddress={contractAddress}
             onContractSelect={(contract) => onContractPathChange(contract)}
           />
         }
         lite={
-          <Box mb={12} w="full">
+          <Box w="full" mb={12}>
             <ContractInputSection
               contract={contractAddress}
               onContractSelect={(contract) => onContractPathChange(contract)}
@@ -196,35 +196,35 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
         }
       />
       <TextInput
-        helperText="This address will be an admin for the deployed smart contract."
+        variant="fixed-floating"
         label="New Admin Address"
+        helperText="This address will be an admin for the deployed smart contract."
+        value={adminAddress}
         setInputState={setAdminAddress}
         status={adminFormStatus}
-        value={adminAddress}
-        variant="fixed-floating"
       />
       <Flex
+        fontSize="14px"
+        color="text.dark"
         alignItems="center"
         alignSelf="flex-start"
         gap={1}
         mt={12}
-        color="text.dark"
-        fontSize="14px"
       >
         <p>Transaction Fee:</p>
         <EstimatedFeeRender estimatedFee={estimatedFee} loading={isFetching} />
       </Flex>
       {simulateError && (
         <ErrorMessageRender
-          alignSelf="flex-start"
-          mt={4}
           error={simulateError}
+          mt={4}
+          alignSelf="flex-start"
         />
       )}
       <Button
         isDisabled={!estimatedFee || isFetching}
-        mt={12}
         onClick={proceed}
+        mt={12}
       >
         Update Admin
       </Button>

@@ -3,33 +3,33 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Copier } from "./copy";
 
 interface JsonLinkProps {
-  type: string;
   uri: string;
+  type: string;
 }
 
-export const JsonLink = ({ type, uri }: JsonLinkProps) => (
+export const JsonLink = ({ uri, type }: JsonLinkProps) => (
   <Flex display="inline">
-    <a data-peer rel="noopener noreferrer" target="_blank" href={uri}>
+    <a href={uri} target="_blank" rel="noopener noreferrer" data-peer>
       <Text
         display="inline"
-        variant="body2"
-        _hover={{
-          "& > p": { color: "primary.light" },
-          textDecoration: "underline",
-          textDecorationColor: "primary.light",
-        }}
         color="primary.main"
+        variant="body2"
         fontWeight={500}
         wordBreak="break-all"
+        _hover={{
+          textDecoration: "underline",
+          textDecorationColor: "primary.light",
+          "& > p": { color: "primary.light" },
+        }}
       >
         {uri}
       </Text>
     </a>
     <Copier
-      ml={{ base: 1, md: 2 }}
       type={type}
       value={uri}
       copyLabel="Copied!"
+      ml={{ base: 1, md: 2 }}
     />
   </Flex>
 );

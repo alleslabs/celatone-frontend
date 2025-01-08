@@ -9,43 +9,43 @@ import { Tooltip } from "lib/components/Tooltip";
 import type { NavMenuProps, SubmenuInfo } from "./types";
 
 interface CollapseNavInfoProps {
-  isCurrentPage: (slug: string) => boolean;
   submenu: SubmenuInfo;
+  isCurrentPage: (slug: string) => boolean;
 }
-const CollapseNavInfo = ({ isCurrentPage, submenu }: CollapseNavInfoProps) => (
+const CollapseNavInfo = ({ submenu, isCurrentPage }: CollapseNavInfoProps) => (
   <Tooltip
     label={submenu.isDisable ? submenu.tooltipText : submenu.name}
     placement="right"
   >
     <Flex
-      alignItems="center"
-      m={2}
+      cursor={submenu.isDisable ? undefined : "pointer"}
       p={1}
+      m={2}
       _hover={
         submenu.isDisable ? undefined : { bg: "gray.700", borderRadius: "8px" }
       }
+      transition="all 0.25s ease-in-out"
+      alignItems="center"
+      position="relative"
       bgColor={isCurrentPage(submenu.slug) ? "gray.800" : "transparent"}
       borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
-      cursor={submenu.isDisable ? undefined : "pointer"}
-      position="relative"
-      transition="all 0.25s ease-in-out"
     >
       <Flex
+        opacity={isCurrentPage(submenu.slug) ? 1 : 0}
         width="3px"
         height="16px"
-        left="0px"
         bgColor="primary.light"
-        borderRadius="2px"
-        opacity={isCurrentPage(submenu.slug) ? 1 : 0}
         position="absolute"
         top="8px"
+        borderRadius="2px"
+        left="0px"
       />
       {submenu.icon && <CustomIcon name={submenu.icon} color="gray.600" />}
       {submenu.logo && (
         <Image
-          alt={submenu.slug}
           src={submenu.logo}
           borderRadius="full"
+          alt={submenu.slug}
           boxSize={6}
         />
       )}
@@ -54,40 +54,40 @@ const CollapseNavInfo = ({ isCurrentPage, submenu }: CollapseNavInfoProps) => (
 );
 
 export const CollapseNavMenu = ({
-  isCurrentPage,
   navMenu,
+  isCurrentPage,
   setIsExpand,
 }: NavMenuProps) => {
   const isMobile = useMobile();
 
   return (
-    <Box overflowX="hidden" overflowY="auto">
+    <Box overflowY="auto" overflowX="hidden">
       {navMenu.map((item) => (
         <Box
-          key={item.category}
           minW="fit-content"
+          key={item.category}
+          borderBottom="1px solid"
+          borderColor="gray.700"
           sx={{
             "&:last-of-type": {
               borderBottom: "none",
-              marginBottom: "0px",
               paddingBottom: "0px",
+              marginBottom: "0px",
             },
           }}
-          borderBottom="1px solid"
-          borderColor="gray.700"
         >
-          <Flex alignItems="center" justifyContent="space-between">
+          <Flex justifyContent="space-between" alignItems="center">
             {!isMobile && item.category === "Your Account" && (
               <Tooltip label="Expand" placement="right">
                 <IconButton
                   aria-label="overview"
-                  height="fit-content"
-                  minW="fit-content"
-                  mt={2}
-                  mx={2}
-                  p={1}
                   variant="ghost-primary"
                   fontSize="24px"
+                  height="fit-content"
+                  minW="fit-content"
+                  p={1}
+                  mt={2}
+                  mx={2}
                   icon={<CustomIcon name="double-chevron-right" />}
                   onClick={() => setIsExpand(true)}
                 />
@@ -98,18 +98,18 @@ export const CollapseNavMenu = ({
             submenu.isDisable ? (
               <CollapseNavInfo
                 key={submenu.slug}
-                isCurrentPage={isCurrentPage}
                 submenu={submenu}
+                isCurrentPage={isCurrentPage}
               />
             ) : (
               <AppLink
+                href={submenu.slug}
                 key={submenu.slug}
                 onClick={() => track(AmpEvent.USE_SIDEBAR)}
-                href={submenu.slug}
               >
                 <CollapseNavInfo
-                  isCurrentPage={isCurrentPage}
                   submenu={submenu}
+                  isCurrentPage={isCurrentPage}
                 />
               </AppLink>
             )
@@ -121,18 +121,18 @@ export const CollapseNavMenu = ({
                   subitem.isDisable ? (
                     <CollapseNavInfo
                       key={subitem.slug}
-                      isCurrentPage={isCurrentPage}
                       submenu={subitem}
+                      isCurrentPage={isCurrentPage}
                     />
                   ) : (
                     <AppLink
+                      href={subitem.slug}
                       key={subitem.slug}
                       onClick={() => track(AmpEvent.USE_SIDEBAR)}
-                      href={subitem.slug}
                     >
                       <CollapseNavInfo
-                        isCurrentPage={isCurrentPage}
                         submenu={subitem}
+                        isCurrentPage={isCurrentPage}
                       />
                     </AppLink>
                   )

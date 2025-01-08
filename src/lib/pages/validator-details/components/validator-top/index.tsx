@@ -14,81 +14,81 @@ import { WebsiteButton } from "./WebsiteButton";
 
 interface ValidatorTopProps {
   info: ValidatorData;
-  singleStakingDenom: Option<string>;
   totalVotingPower: Big;
+  singleStakingDenom: Option<string>;
 }
 
 export const ValidatorTop = ({
   info,
-  singleStakingDenom,
   totalVotingPower,
+  singleStakingDenom,
 }: ValidatorTopProps) => (
   <>
     <Breadcrumb
       items={[
         {
-          href: "/validators",
           text: "Validators",
+          href: "/validators",
         },
         { text: info.moniker || truncate(info.validatorAddress) },
       ]}
     />
-    <Flex alignItems={{ base: "start", md: "center" }} gap={4}>
+    <Flex gap={4} alignItems={{ base: "start", md: "center" }}>
       <Flex display={{ base: "none", md: "flex" }}>
         <ValidatorImage validator={info} boxSize={32} />
       </Flex>
-      <Flex gap={{ base: 2, md: 1 }} w="full" direction="column">
+      <Flex direction="column" w="full" gap={{ base: 2, md: 1 }}>
         <ValidatorTitle info={info} />
         <ValidatorStats
           validatorAddress={info.validatorAddress}
           commissionRate={info.commissionRate}
-          singleStakingDenom={singleStakingDenom}
           totalVotingPower={totalVotingPower}
+          singleStakingDenom={singleStakingDenom}
         />
         <Flex
-          alignItems={{ md: "center" }}
-          gap={{ base: 0, md: 2 }}
           mt={{ base: 1, md: 0 }}
+          gap={{ base: 0, md: 2 }}
           direction={{ base: "column", md: "row" }}
+          alignItems={{ md: "center" }}
         >
           <Text
+            color="text.dark"
             minW={32}
             variant="body2"
-            whiteSpace="nowrap"
-            color="text.dark"
             fontWeight={500}
+            whiteSpace="nowrap"
           >
             Validator Address:
           </Text>
-          <CopyLink type="validator_address" value={info.validatorAddress} />
+          <CopyLink value={info.validatorAddress} type="validator_address" />
         </Flex>
         <Flex
-          alignItems={{ md: "center" }}
-          gap={{ base: 0, md: 2 }}
           mt={{ base: 1, md: 0 }}
+          gap={{ base: 0, md: 2 }}
           direction={{ base: "column", md: "row" }}
+          alignItems={{ md: "center" }}
         >
           <Text
+            color="text.dark"
             minW={32}
             variant="body2"
-            whiteSpace="nowrap"
-            color="text.dark"
             fontWeight={500}
+            whiteSpace="nowrap"
           >
             Account Address:
           </Text>
           <ExplorerLink
-            maxWidth="full"
-            fixedHeight={false}
             type="user_address"
             value={info.accountAddress}
             textFormat="normal"
+            maxWidth="full"
+            fixedHeight={false}
           />
         </Flex>
         <WebsiteButton
-          display={{ base: "flex", md: "none" }}
-          my={2}
           href={info.website}
+          my={2}
+          display={{ base: "flex", md: "none" }}
         />
       </Flex>
     </Flex>

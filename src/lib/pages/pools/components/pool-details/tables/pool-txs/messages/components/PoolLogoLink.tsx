@@ -5,18 +5,18 @@ import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
 import type { PoolData } from "lib/types";
 
 interface PoolLogoLinkProps {
-  ampCopierSection?: string;
   pool: PoolData;
+  ampCopierSection?: string;
 }
 
-export const PoolLogoLink = ({ ampCopierSection, pool }: PoolLogoLinkProps) => (
+export const PoolLogoLink = ({ pool, ampCopierSection }: PoolLogoLinkProps) => (
   <Flex gap={1}>
-    <PoolLogo marginLeft={-4} minW={0} logoSize={5} tokens={pool.liquidity} />
+    <PoolLogo tokens={pool.liquidity} logoSize={5} marginLeft={-4} minW={0} />
     <ExplorerLink
       type="pool_id"
       value={pool.id.toString()}
-      ampCopierSection={ampCopierSection}
       showCopyOnHover
+      ampCopierSection={ampCopierSection}
     />
   </Flex>
 );

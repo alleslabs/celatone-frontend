@@ -51,6 +51,7 @@ export const indexValidatorsLcd = (data: Option<ValidatorData[]>) => {
     big(0)
   );
   const metadata: Omit<ValidatorsResponse["metadata"], "minCommissionRate"> = {
+    totalVotingPower,
     activeCount: active.length,
     inactiveCount: inactive.length,
     percent33Rank: active.reduce(
@@ -58,22 +59,21 @@ export const indexValidatorsLcd = (data: Option<ValidatorData[]>) => {
         divWithDefault(prev.accVp, totalVotingPower, 0).gte(0.33)
           ? prev
           : {
-              accVp: prev.accVp.add(validator.votingPower),
               rank: validator.rank,
+              accVp: prev.accVp.add(validator.votingPower),
             },
-      { accVp: big(0), rank: 0 }
+      { rank: 0, accVp: big(0) }
     ).rank,
     percent66Rank: active.reduce(
       (prev, validator) =>
         divWithDefault(prev.accVp, totalVotingPower, 0).gte(0.66)
           ? prev
           : {
-              accVp: prev.accVp.add(validator.votingPower),
               rank: validator.rank,
+              accVp: prev.accVp.add(validator.votingPower),
             },
-      { accVp: big(0), rank: 0 }
+      { rank: 0, accVp: big(0) }
     ).rank,
-    totalVotingPower,
   };
 
   return {

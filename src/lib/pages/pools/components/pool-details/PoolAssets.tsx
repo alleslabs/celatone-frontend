@@ -23,8 +23,8 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
 
   return (
     <>
-      <Flex align="center" mb={4} mt={12} justifyContent="space-between">
-        <Flex align="center" gap={2}>
+      <Flex mt={12} mb={4} justifyContent="space-between" align="center">
+        <Flex gap={2} align="center">
           <Heading as="h6" variant="h6">
             Pool Assets
           </Heading>
@@ -35,7 +35,7 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
         {pool.isSupported && (
           <Text variant="body2" color="text.dark" fontWeight={500}>
             Total Liquidity:
-            <Text as="span" ml={2} color="text.main" fontWeight={700}>
+            <Text as="span" fontWeight={700} color="text.main" ml={2}>
               {pool.liquidity ? formatPrice(totalLiquidity) : "N/A"}
             </Text>
           </Text>
@@ -43,8 +43,8 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
       </Flex>
       {pool.type === PoolType.CL ? (
         <EmptyState
-          heading="Coming soon!"
           imageVariant="empty"
+          heading="Coming soon!"
           message={
             "Asset allocation and liquidity information for \n concentrated liquidity pool are under construction."
           }
@@ -52,26 +52,26 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
         />
       ) : (
         <>
-          <PoolAssetsTable totalLiquidity={totalLiquidity} pool={pool} />
-          <Flex alignItems="center" gap={2} mt={4}>
+          <PoolAssetsTable pool={pool} totalLiquidity={totalLiquidity} />
+          <Flex gap={2} alignItems="center" mt={4}>
             <Text variant="body2" color="text.dark">
               What is asset weight and allocation?
             </Text>
             <Link
-              rel="noopener noreferrer"
+              href="https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
               target="_blank"
+              rel="noopener noreferrer"
               onClick={() =>
                 trackWebsite(
                   "https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
                 )
               }
-              href="https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
             >
-              <Flex alignItems="center" gap="2px">
-                <Text variant="body2" color="primary.main">
+              <Flex gap="2px" alignItems="center">
+                <Text color="primary.main" variant="body2">
                   View more
                 </Text>
-                <CustomIcon name="launch" boxSize={3} color="primary.main" />
+                <CustomIcon name="launch" color="primary.main" boxSize={3} />
               </Flex>
             </Link>
           </Flex>

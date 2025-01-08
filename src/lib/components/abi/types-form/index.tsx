@@ -22,8 +22,8 @@ export const TypesForm = ({
   });
 
   return (
-    <Flex gap={4} direction="column">
-      <Heading as="h6" variant="h6" color="text.main">
+    <Flex direction="column" gap={4}>
+      <Heading variant="h6" as="h6" color="text.main">
         type_args
       </Heading>
       {genericTypeParams.map(({ constraints }, index) => {

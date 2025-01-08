@@ -11,13 +11,13 @@ interface WebsiteButtonProps extends ButtonProps {
 
 const RenderWebsiteButton = ({ href, ...props }: WebsiteButtonProps) => (
   <Button
-    width={{ base: "full", md: "auto" }}
-    isDisabled={!href}
+    leftIcon={<CustomIcon name="website" boxSize={3} />}
+    rightIcon={<CustomIcon name="launch" boxSize={3} />}
     size="sm"
     variant="outline-primary"
-    leftIcon={<CustomIcon name="website" boxSize={3} />}
+    width={{ base: "full", md: "auto" }}
+    isDisabled={!href}
     onClick={() => trackWebsite(href)}
-    rightIcon={<CustomIcon name="launch" boxSize={3} />}
     {...props}
   >
     Website
@@ -26,7 +26,7 @@ const RenderWebsiteButton = ({ href, ...props }: WebsiteButtonProps) => (
 
 export const WebsiteButton = ({ href, ...props }: WebsiteButtonProps) =>
   href ? (
-    <Link isExternal _hover={{ textDecoration: "none" }} href={href}>
+    <Link href={href} isExternal _hover={{ textDecoration: "none" }}>
       <RenderWebsiteButton href={href} {...props} />
     </Link>
   ) : (

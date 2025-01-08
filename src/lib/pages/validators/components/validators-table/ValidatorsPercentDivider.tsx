@@ -3,33 +3,33 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Tooltip } from "lib/components/Tooltip";
 
 interface ValidatorsPercentDividerProps {
-  label: string;
   rank: number;
+  label: string;
 }
 
 export const ValidatorsPercentDivider = ({
-  label,
   rank,
+  label,
 }: ValidatorsPercentDividerProps) => (
-  <Flex h={1} bgColor="gray.700" position="relative">
+  <Flex position="relative" h={1} bgColor="gray.700">
     <div style={{ position: "absolute", top: "-300%" }}>
       <Tooltip
+        placement="right"
         label={
           <Text variant="body2">
             Cumulative voting power from 1-{rank} ranked validators is {">"}
             {label}
           </Text>
         }
-        placement="right"
       >
         <Text
-          h="fit-content"
-          textAlign="center"
           variant="body3"
-          w={12}
-          bgColor="gray.700"
-          borderRadius="4px"
           color="text.dark"
+          textAlign="center"
+          w={12}
+          h="fit-content"
+          borderRadius="4px"
+          bgColor="gray.700"
           cursor="default"
         >
           {">"}

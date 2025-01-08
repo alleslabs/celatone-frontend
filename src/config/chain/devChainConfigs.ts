@@ -4,25 +4,23 @@ import type { ChainConfig } from "@alleslabs/shared";
 export const devChainConfigs: ChainConfig[] = [
   // Write your chain config here.
   {
-    chain: "localinitia",
+    tier: "lite",
     chainId: "localinitia",
-    extra: {
-      layer: "1",
-    },
+    chain: "localinitia",
+    registryChainName: "localinitia",
+    prettyName: "Local Initia",
+    lcd: "http://localhost:1317",
+    rpc: "http://localhost:26657",
+    wallets: ["initia"],
     features: {
-      evm: {
+      wasm: {
         enabled: false,
-      },
-      gov: {
-        enabled: true,
-        hideOpenProposal: true,
-        version: "v1",
       },
       move: {
         enabled: true,
         moduleMaxFileSize: 1_048_576,
       },
-      nft: {
+      evm: {
         enabled: false,
       },
       pool: {
@@ -31,36 +29,51 @@ export const devChainConfigs: ChainConfig[] = [
       publicProject: {
         enabled: false,
       },
-      wasm: {
+      gov: {
+        enabled: true,
+        version: "v1",
+        hideOpenProposal: true,
+      },
+      nft: {
         enabled: false,
       },
-    },
-    fees: {
-      fee_tokens: [
-        {
-          average_gas_price: 0.15,
-          denom: "uinit",
-          fixed_min_gas_price: 0.15,
-          high_gas_price: 0.4,
-          low_gas_price: 0.15,
-        },
-      ],
     },
     gas: {
       gasAdjustment: 1.5,
       maxGasLimit: 200_000_000,
     },
-    lcd: "http://localhost:1317",
+    extra: {
+      layer: "1",
+    },
+    network_type: "testnet",
     logo_URIs: {
       png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
       svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
     },
-    network_type: "testnet",
-    prettyName: "Local Initia",
+    fees: {
+      fee_tokens: [
+        {
+          denom: "uinit",
+          fixed_min_gas_price: 0.15,
+          low_gas_price: 0.15,
+          average_gas_price: 0.15,
+          high_gas_price: 0.4,
+        },
+      ],
+    },
     registry: {
+      bech32_prefix: "init",
+      slip44: 118,
+      staking: {
+        staking_tokens: [
+          {
+            denom: "uinit",
+          },
+        ],
+      },
       assets: [
         {
-          base: "uinit",
+          description: "The native token of Initia",
           denom_units: [
             {
               denom: "uinit",
@@ -71,8 +84,10 @@ export const devChainConfigs: ChainConfig[] = [
               exponent: 6,
             },
           ],
-          description: "The native token of Initia",
+          base: "uinit",
           display: "INIT",
+          name: "Initia Native Token",
+          symbol: "INIT",
           images: [
             {
               png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
@@ -83,23 +98,8 @@ export const devChainConfigs: ChainConfig[] = [
             png: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.png",
             svg: "https://raw.githubusercontent.com/initia-labs/initia-registry/main/testnets/initia/images/INIT.svg",
           },
-          name: "Initia Native Token",
-          symbol: "INIT",
         },
       ],
-      bech32_prefix: "init",
-      slip44: 118,
-      staking: {
-        staking_tokens: [
-          {
-            denom: "uinit",
-          },
-        ],
-      },
     },
-    registryChainName: "localinitia",
-    rpc: "http://localhost:26657",
-    tier: "lite",
-    wallets: ["initia"],
   },
 ];

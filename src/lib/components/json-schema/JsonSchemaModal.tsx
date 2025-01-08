@@ -14,8 +14,8 @@ import { AttachStatus } from "./AttachStatus";
 import { UploadTemplate } from "./UploadTemplate";
 
 interface JsonSchemaModalProps {
-  codeHash: string;
   codeId: number;
+  codeHash: string;
   isOpen: boolean;
   isReattach?: boolean;
   onClose: () => void;
@@ -23,22 +23,22 @@ interface JsonSchemaModalProps {
 }
 
 export const JsonSchemaModal = ({
-  codeHash,
   codeId,
+  codeHash,
   isOpen,
   isReattach = false,
   onClose,
   onSchemaSave,
 }: JsonSchemaModalProps) => (
   <Modal
-    isCentered
     isOpen={isOpen}
-    size="4xl"
     onClose={onClose}
+    isCentered
+    size="4xl"
     scrollBehavior="inside"
   >
     <ModalOverlay />
-    <ModalContent h="680px" w="840px">
+    <ModalContent w="840px" h="680px">
       <ModalHeader>
         <CustomIcon name="code" boxSize={6} color="gray.600" />
         <Heading as="h5" variant="h5">
@@ -46,13 +46,13 @@ export const JsonSchemaModal = ({
         </Heading>
       </ModalHeader>
       <ModalCloseButton color="gray.600" />
-      <ModalBody maxH="640px" px={4} py={1} overflow="scroll">
-        <AttachStatus isReattach={isReattach} codeId={codeId} />
+      <ModalBody px={4} maxH="640px" overflow="scroll" py={1}>
+        <AttachStatus codeId={codeId} isReattach={isReattach} />
         <UploadTemplate
-          isReattach={isReattach}
-          closeDrawer={onClose}
           codeHash={codeHash}
           codeId={codeId}
+          isReattach={isReattach}
+          closeDrawer={onClose}
           onSchemaSave={onSchemaSave}
         />
       </ModalBody>

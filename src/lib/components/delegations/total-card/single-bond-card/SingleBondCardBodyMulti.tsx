@@ -8,34 +8,34 @@ import type { BechAddr, TokenWithValue, USD } from "lib/types";
 import { formatPrice, totalValueTokenWithValue } from "lib/utils";
 
 interface SingleBondCardBodyMultiProps {
-  address: BechAddr;
-  message: string;
   title: string;
+  message: string;
+  address: BechAddr;
   tokens: Record<string, TokenWithValue>;
 }
 
 export const SingleBondCardBodyMulti = ({
-  address,
-  message,
   title,
+  message,
+  address,
   tokens,
 }: SingleBondCardBodyMultiProps) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Heading as="h6" variant="h6">
+      <Heading variant="h6" as="h6">
         {formatPrice(totalValueTokenWithValue(tokens, big(0) as USD<Big>))}
       </Heading>
       <Flex
-        align="center"
         gap={1}
+        align="center"
+        cursor="pointer"
         _hover={{
-          "& > p": { color: "primary.light" },
           textDecoration: "underline",
           textDecorationColor: "primary.light",
+          "& > p": { color: "primary.light" },
         }}
-        cursor="pointer"
         onClick={onOpen}
       >
         <Text
@@ -48,12 +48,12 @@ export const SingleBondCardBodyMulti = ({
         <CustomIcon name="chevron-right" boxSize={4} color="primary.main" />
       </Flex>
       <TotalCardModal
-        address={address}
-        isOpen={isOpen}
-        message={message}
         title={title}
-        onClose={onClose}
+        message={message}
+        address={address}
         tokens={tokens}
+        isOpen={isOpen}
+        onClose={onClose}
       />
     </>
   );

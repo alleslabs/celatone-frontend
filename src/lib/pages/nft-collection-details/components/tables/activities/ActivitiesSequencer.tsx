@@ -14,31 +14,31 @@ interface ActivitiesSequencerProps {
 export const ActivitiesSequencer = ({
   collectionAddress,
 }: ActivitiesSequencerProps) => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
     useNftCollectionActivitiesSequencer(collectionAddress);
 
   return (
-    <Stack mt="32px" spacing="32px">
+    <Stack spacing="32px" mt="32px">
       <Heading as="h6" variant="h6" fontWeight={600}>
         Activities in this collection
       </Heading>
       <ActivitiesTable
+        collectionAddress={collectionAddress}
         activities={data}
+        isLoading={isLoading}
         emptyState={
           <EmptyState
-            imageVariant="not-found"
             message="There are no activities matches your keyword."
+            imageVariant="not-found"
             withBorder
           />
         }
-        collectionAddress={collectionAddress}
-        isLoading={isLoading}
       />
       {hasNextPage && (
         <LoadNext
+          text="Load more activities"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          text="Load more activities"
         />
       )}
     </Stack>

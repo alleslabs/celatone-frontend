@@ -7,14 +7,14 @@ import { Tooltip } from "../Tooltip";
 import { AmpEvent, track } from "lib/amplitude";
 
 interface EditSchemaButtonsProps {
-  codeHash: string;
   codeId: number;
+  codeHash: string;
   openModal: () => void;
 }
 
 export const EditSchemaButtons = ({
-  codeHash,
   codeId,
+  codeHash,
   openModal,
 }: EditSchemaButtonsProps) => {
   const handleReattach = useCallback(() => {
@@ -26,26 +26,26 @@ export const EditSchemaButtons = ({
     <Flex gap={1}>
       <Tooltip label="Reattach JSON schema">
         <IconButton
-          aria-label="reattach schema"
-          size="sm"
           variant="ghost-gray-icon"
-          icon={<CustomIcon name="edit" boxSize={4} />}
+          size="sm"
           onClick={handleReattach}
+          icon={<CustomIcon name="edit" boxSize={4} />}
+          aria-label="reattach schema"
         />
       </Tooltip>
       <RemoveSchemaModal
+        codeId={codeId}
+        codeHash={codeHash}
         trigger={
           <Tooltip label="Delete your attached schema">
             <IconButton
-              aria-label="delete schema"
-              size="sm"
               variant="ghost-gray-icon"
+              size="sm"
               icon={<CustomIcon name="delete" boxSize={4} />}
+              aria-label="delete schema"
             />
           </Tooltip>
         }
-        codeHash={codeHash}
-        codeId={codeId}
       />
     </Flex>
   );

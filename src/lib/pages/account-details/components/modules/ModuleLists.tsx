@@ -11,18 +11,18 @@ import { ModuleListsBody } from "./ModuleListsBody";
 
 interface ModuleListsProps {
   address: BechAddr;
-  isLoading: boolean;
-  modules: Option<IndexedModule[]>;
-  onViewMore?: () => void;
   totalCount: Option<number>;
+  modules: Option<IndexedModule[]>;
+  isLoading: boolean;
+  onViewMore?: () => void;
 }
 
 export const ModuleLists = ({
   address,
-  isLoading,
-  modules,
-  onViewMore,
   totalCount,
+  modules,
+  isLoading,
+  onViewMore,
 }: ModuleListsProps) => {
   const [keyword, setKeyword] = useState("");
   const isMobile = useMobile();
@@ -38,31 +38,31 @@ export const ModuleLists = ({
         />
       ) : (
         <AccountSectionWrapper
-          hasHelperText={!!modules?.length}
-          helperText="This account deployed the following modules"
           title="Module Instances"
           showCount={false}
+          helperText="This account deployed the following modules"
+          hasHelperText={!!modules?.length}
         >
           <Flex
+            direction="column"
             borderBottom={modules?.length ? "1px solid" : "0px"}
             borderBottomColor="gray.700"
-            direction="column"
           >
             {!onViewMore && (
               <InputWithIcon
-                my={4}
-                size={{ base: "md", md: "lg" }}
-                value={keyword}
-                amptrackSection="account-detail-module-name-search"
-                onChange={(e) => setKeyword(e.target.value)}
                 placeholder="Search with Module Name"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                size={{ base: "md", md: "lg" }}
+                my={4}
+                amptrackSection="account-detail-module-name-search"
               />
             )}
             <ModuleListsBody
-              keyword={keyword}
               address={address}
-              isLoading={isLoading}
+              keyword={keyword}
               modules={modules}
+              isLoading={isLoading}
               onViewMore={onViewMore}
             />
             {onViewMore && !!totalCount && totalCount > 9 && (

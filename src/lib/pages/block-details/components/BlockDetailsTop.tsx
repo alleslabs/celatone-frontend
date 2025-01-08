@@ -18,8 +18,8 @@ import { dateFromNow, formatUTC, openNewTab } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    alignItems: "center",
     display: "flex",
+    alignItems: "center",
     padding: 0,
   },
 });
@@ -44,52 +44,52 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   const disablePrevious = block <= 1;
   return (
     <Flex
-      borderBottomWidth="1px"
       justify="space-between"
       mb={8}
       pb={8}
       borderBottomColor="gray.700"
+      borderBottomWidth="1px"
     >
-      <Flex gap={1} w="full" direction="column">
+      <Flex direction="column" gap={1} w="full">
         <Flex
-          width="full"
-          align="center"
           justify="space-between"
-          mb={{ base: 2, md: 0 }}
+          align="center"
+          width="full"
           mt={{ base: 2, md: 5 }}
+          mb={{ base: 2, md: 0 }}
         >
           <Flex align="center">
             <CustomIcon name="block" boxSize={5} color="primary.main" />
             <Heading
-              className="ellipsis"
               as="h5"
               variant={{ base: "h6", md: "h5" }}
+              className="ellipsis"
             >
               {blockData.height}
             </Heading>
           </Flex>
-          <Flex align="center" gap={{ base: 1, md: 2 }}>
+          <Flex gap={{ base: 1, md: 2 }} align="center">
             {!disablePrevious && (
               <AppLink href={`/blocks/${block - 1}`}>
                 <StyledIconButton
                   aria-label="button"
-                  variant="ghost-gray"
                   icon={<CustomIcon name="chevron-left" />}
+                  variant="ghost-gray"
                 />
               </AppLink>
             )}
             <AppLink href={`/blocks/${block + 1}`}>
               <StyledIconButton
                 aria-label="button"
-                variant="ghost-gray"
                 icon={<CustomIcon name="chevron-right" />}
+                variant="ghost-gray"
               />
             </AppLink>
             <Button
-              size={{ base: "sm", md: "md" }}
               variant="ghost-gray"
-              onClick={openLcdPage}
+              size={{ base: "sm", md: "md" }}
               rightIcon={<CustomIcon name="launch" boxSize={3} />}
+              onClick={openLcdPage}
             >
               View in JSON
             </Button>
@@ -100,21 +100,21 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
           direction={{ base: "column", md: "row" }}
         >
           <Text
-            display="inline"
             variant="body2"
-            color="text.dark"
             fontWeight={500}
+            color="text.dark"
+            display="inline"
           >
             Block Hash:
           </Text>
           <CopyLink
-            type="block_hash"
             value={blockData.hash.toUpperCase()}
             amptrackSection="block_details_top"
+            type="block_hash"
           />
         </Flex>
-        <Flex alignItems="center" gap={2} mt={1}>
-          <Flex alignItems="center" gap={1}>
+        <Flex gap={2} mt={1} alignItems="center">
+          <Flex gap={1} alignItems="center">
             <CustomIcon name="history" boxSize={3} color="gray.600" />
             <Text variant={{ base: "body3", md: "body2" }} color="text.dark">
               {dateFromNow(blockData.timestamp)}

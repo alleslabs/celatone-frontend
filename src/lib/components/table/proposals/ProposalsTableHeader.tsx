@@ -5,13 +5,13 @@ import { TableHeader, TableHeaderFreeze } from "../tableComponents";
 import { useTierConfig } from "lib/app-provider";
 
 interface ProposalsTableHeaderProps {
-  boxShadow: DividerProps["boxShadow"];
   templateColumns: GridProps["templateColumns"];
+  boxShadow: DividerProps["boxShadow"];
 }
 
 export const ProposalsTableHeader = ({
-  boxShadow,
   templateColumns,
+  boxShadow,
 }: ProposalsTableHeaderProps) => {
   const { isFullTier } = useTierConfig();
 
@@ -19,14 +19,14 @@ export const ProposalsTableHeader = ({
   const columnsWidth = templateColumns?.toString().split(" ");
 
   return (
-    <Grid minW="min-content" templateColumns={templateColumns}>
+    <Grid templateColumns={templateColumns} minW="min-content">
       <TableHeaderFreeze left="0">Proposal ID</TableHeaderFreeze>
       <TableHeaderFreeze
         left={columnsWidth && columnsWidth[0]}
         boxShadow={boxShadow}
         color="gray.800"
       >
-        <Text px={4} color="text.main">
+        <Text color="text.main" px={4}>
           Proposal Title/Types
         </Text>
       </TableHeaderFreeze>

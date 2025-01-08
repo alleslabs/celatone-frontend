@@ -9,12 +9,12 @@ import type { BechAddr32, Option } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
 
 export interface MigrateStreamParams {
-  codeId: number;
   contractAddress: BechAddr32;
-  estimatedFee: Option<StdFee>;
+  codeId: number;
   migrateMsg: object;
-  onTxFailed?: () => void;
+  estimatedFee: Option<StdFee>;
   onTxSucceed?: (txHash: string) => void;
+  onTxFailed?: () => void;
 }
 
 export const useMigrateContractTx = () => {
@@ -23,12 +23,12 @@ export const useMigrateContractTx = () => {
 
   return useCallback(
     async ({
-      codeId,
       contractAddress,
-      estimatedFee,
+      codeId,
       migrateMsg,
-      onTxFailed,
+      estimatedFee,
       onTxSucceed,
+      onTxFailed,
     }: MigrateStreamParams) => {
       if (!address)
         throw new Error("No address provided (useMigrateContractTx)");
@@ -45,14 +45,14 @@ export const useMigrateContractTx = () => {
 
       return migrateContractTx({
         address,
-        fee: estimatedFee,
         messages,
-        onTxFailed,
+        fee: estimatedFee,
+        signAndBroadcast,
         onTxSucceed: (txHash) => {
           trackTxSucceed();
           onTxSucceed?.(txHash);
         },
-        signAndBroadcast,
+        onTxFailed,
       });
     },
     [address, signAndBroadcast]

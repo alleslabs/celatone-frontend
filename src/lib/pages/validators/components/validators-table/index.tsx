@@ -20,28 +20,28 @@ import { ValidatorsTableRow } from "./ValidatorsTableRow";
 
 interface ValidatorsTableProps {
   data: Option<ValidatorsResponse>;
-  isActive: boolean;
-  isDesc: boolean;
   isLoading: boolean;
-  isSearching?: boolean;
+  isActive: boolean;
   order: ValidatorOrder;
-  scrollComponentId: string;
-  setIsDesc: (value: boolean) => void;
   setOrder: (value: ValidatorOrder) => void;
+  isDesc: boolean;
+  setIsDesc: (value: boolean) => void;
+  scrollComponentId: string;
   showUptime?: boolean;
+  isSearching?: boolean;
 }
 
 export const ValidatorsTable = ({
   data,
-  isActive,
-  isDesc,
   isLoading,
-  isSearching = false,
+  isActive,
   order,
-  scrollComponentId,
-  setIsDesc,
   setOrder,
+  isDesc,
+  setIsDesc,
+  scrollComponentId,
   showUptime = true,
+  isSearching = false,
 }: ValidatorsTableProps) => {
   const isMobile = useMobile();
   const isInitia = useInitia();
@@ -76,48 +76,48 @@ export const ValidatorsTable = ({
           {data.items.map((validator) => (
             <ValidatorsTableMobileCard
               key={validator.validatorAddress}
-              validator={validator}
               isActive={isActive}
-              assetInfo={assetInfo}
-              minCommissionRate={data.metadata.minCommissionRate}
-              showUptime={showUptime}
+              validator={validator}
               totalVotingPower={data.metadata.totalVotingPower}
+              minCommissionRate={data.metadata.minCommissionRate}
+              assetInfo={assetInfo}
+              showUptime={showUptime}
             />
           ))}
         </MobileTableContainer>
       ) : (
         <TableContainer>
           <ValidatorsTableHeader
+            templateColumns={templateColumns}
+            scrollComponentId={scrollComponentId}
             isActive={isActive}
+            order={order}
+            setOrder={setOrder}
             isDesc={isDesc}
             setIsDesc={setIsDesc}
-            setOrder={setOrder}
-            order={order}
-            scrollComponentId={scrollComponentId}
             showUptime={showUptime}
-            templateColumns={templateColumns}
           />
           {data.items.map((validator) => (
             <Fragment key={validator.validatorAddress}>
               <ValidatorsTableRow
-                validator={validator}
-                isActive={isActive}
-                assetInfo={assetInfo}
-                minCommissionRate={data.metadata.minCommissionRate}
-                showUptime={showUptime}
                 templateColumns={templateColumns}
+                isActive={isActive}
+                validator={validator}
                 totalVotingPower={data.metadata.totalVotingPower}
+                minCommissionRate={data.metadata.minCommissionRate}
+                assetInfo={assetInfo}
+                showUptime={showUptime}
               />
               {displayDividers &&
                 (validator.rank === data.metadata.percent33Rank ||
                   validator.rank === data.metadata.percent66Rank) && (
                   <ValidatorsPercentDivider
+                    rank={validator.rank}
                     label={
                       validator.rank === data.metadata.percent66Rank
                         ? "66%"
                         : "33%"
                     }
-                    rank={validator.rank}
                   />
                 )}
             </Fragment>

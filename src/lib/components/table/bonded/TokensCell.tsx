@@ -4,21 +4,21 @@ import { TokenCell } from "../TokenCell";
 import type { TokenWithValue } from "lib/types";
 
 interface TokensCellProps {
+  tokens: TokenWithValue[];
   isSingleBondDenom: boolean;
   isUnbonding?: boolean;
-  tokens: TokenWithValue[];
 }
 
 const EmptyTokenCell = () => (
-  <Text h="full" variant="body2" textColor="text.dark">
+  <Text variant="body2" textColor="text.dark" h="full">
     -
   </Text>
 );
 
 export const TokensCell = ({
+  tokens,
   isSingleBondDenom,
   isUnbonding,
-  tokens,
 }: TokensCellProps) => {
   if (isSingleBondDenom)
     return !tokens.length ? (
@@ -29,13 +29,13 @@ export const TokensCell = ({
 
   return (
     <Flex
-      gap={2}
-      p={3}
-      py={isUnbonding ? 0 : undefined}
-      w="full"
-      bgColor={isUnbonding ? undefined : "gray.800"}
-      borderRadius="8px"
       direction="column"
+      p={3}
+      bgColor={isUnbonding ? undefined : "gray.800"}
+      py={isUnbonding ? 0 : undefined}
+      borderRadius="8px"
+      gap={2}
+      w="full"
     >
       {!tokens.length ? (
         <EmptyTokenCell />

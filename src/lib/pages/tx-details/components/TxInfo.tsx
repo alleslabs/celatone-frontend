@@ -21,8 +21,8 @@ const Container = chakra(Flex, {
   baseStyle: {
     flexDir: "column",
     gap: 6,
-    minW: "180px",
     w: "250px",
+    minW: "180px",
   },
 });
 
@@ -48,10 +48,10 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
       <LabelText label="Network">{txData.chainId}</LabelText>
       <LabelText label="Block Height">
         <ExplorerLink
-          type="block_height"
           value={txData.height}
-          ampCopierSection="tx_page_block_height"
+          type="block_height"
           showCopyOnHover
+          ampCopierSection="tx_page_block_height"
         />
       </LabelText>
       <LabelText label="Transaction Fee">
@@ -75,8 +75,8 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
       </LabelText>
       <UserDocsLink
         cta="Read more about Txs"
-        mt={0}
         href="general/transactions/detail-page"
+        mt={0}
       />
     </Container>
   );

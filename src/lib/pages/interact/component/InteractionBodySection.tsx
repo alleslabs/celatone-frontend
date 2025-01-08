@@ -8,33 +8,33 @@ import { FunctionSelectBody } from "./FunctionSelectBody";
 import { FunctionSelectPanel } from "./FunctionSelectPanel";
 
 interface InteractionBodySectionProps {
-  handleFunctionSelect: (fn: ExposedFunction) => void;
   module: Option<IndexedModule>;
-  onOpen: () => void;
-  selectedFn: Option<ExposedFunction>;
   selectedType: InteractionTabs;
+  selectedFn: Option<ExposedFunction>;
   setSelectedType: Dispatch<SetStateAction<InteractionTabs>>;
+  handleFunctionSelect: (fn: ExposedFunction) => void;
+  onOpen: () => void;
 }
 
 export const InteractionBodySection = ({
-  handleFunctionSelect,
   module,
-  onOpen,
-  selectedFn,
   selectedType,
   setSelectedType,
+  selectedFn,
+  handleFunctionSelect,
+  onOpen,
 }: InteractionBodySectionProps) => (
-  <Grid gap={8} overflow="hidden" templateColumns="minmax(300px, 20%) 1fr">
+  <Grid gap={8} templateColumns="minmax(300px, 20%) 1fr" overflow="hidden">
     <FunctionSelectPanel
+      module={module}
+      tab={selectedType}
+      setTab={setSelectedType}
       selectedFn={selectedFn}
       setSelectedFn={handleFunctionSelect}
-      setTab={setSelectedType}
-      tab={selectedType}
-      module={module}
     />
     <FunctionSelectBody
-      selectedFn={selectedFn}
       module={module}
+      selectedFn={selectedFn}
       openDrawer={onOpen}
     />
   </Grid>

@@ -9,19 +9,19 @@ import { SearchResultItemIcon } from "./SearchResultItemIcon";
 import { getRouteOptions } from "./utils";
 
 interface ResultItemProps {
-  cursor: Option<number>;
-  handleSelectResult: (result?: SearchResult, isClick?: boolean) => void;
   index: number;
   result: SearchResult;
+  cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
+  handleSelectResult: (result?: SearchResult, isClick?: boolean) => void;
 }
 
 export const SearchResultItem = ({
-  cursor,
-  handleSelectResult,
   index,
   result,
+  cursor,
   setCursor,
+  handleSelectResult,
 }: ResultItemProps) => {
   const evm = useEvmConfig({ shouldRedirect: false });
   const route = getRouteOptions(result.type, evm.enabled)?.pathname;
@@ -32,24 +32,24 @@ export const SearchResultItem = ({
     <Flex id={`item-${index}`}>
       {route && (
         <Flex
-          alignItems="center"
-          bg={index === cursor ? "gray.700" : undefined}
-          gap={2}
           p={2}
           w="full"
-          _hover={{ bg: "gray.700", cursor: "pointer" }}
+          gap={2}
+          alignItems="center"
           borderRadius="8px"
+          _hover={{ bg: "gray.700", cursor: "pointer" }}
           cursor="pointer"
-          onClick={() => handleSelectResult(result, true)}
-          onMouseMove={() => index !== cursor && setCursor(index)}
           transition="all 0.25s ease-in-out"
+          bg={index === cursor ? "gray.700" : undefined}
+          onMouseMove={() => index !== cursor && setCursor(index)}
+          onClick={() => handleSelectResult(result, true)}
         >
           <SearchResultItemIcon
-            isIcns={isAccountAddress && !!result.metadata?.icns}
+            type={result.type}
             isInitiaUsername={
               isAccountAddress && !!result.metadata?.initiaUsername
             }
-            type={result.type}
+            isIcns={isAccountAddress && !!result.metadata?.icns}
           />
           <SearchResultItemBody
             result={result}

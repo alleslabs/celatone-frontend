@@ -27,20 +27,6 @@ const v8Validator = customizeValidator({
   ajvOptionsOverrides: { validateFormats: false },
 });
 
-export interface JsonSchemaFormProps
-  extends Pick<
-    Partial<FormProps>,
-    "fields" | "templates" | "uiSchema" | "widgets"
-  > {
-  formContext?: Record<string, unknown>;
-  formId: string;
-  initialFormData?: JsonDataType;
-  /** Onchange callback is with BROKEN data */
-  onChange?: (data: JsonDataType, errors: RJSFValidationError[]) => void;
-  onSubmit?: (data: JsonDataType) => void;
-  schema: RJSFSchema;
-}
-
 function fixSchema(schema: RJSFSchema) {
   if (schema.type === "object" && isUndefined(schema.properties))
     schema.properties = {};
@@ -50,17 +36,31 @@ function fixSchema(schema: RJSFSchema) {
   });
 }
 
+export interface JsonSchemaFormProps
+  extends Pick<
+    Partial<FormProps>,
+    "widgets" | "fields" | "templates" | "uiSchema"
+  > {
+  schema: RJSFSchema;
+  formId: string;
+  initialFormData?: JsonDataType;
+  onSubmit?: (data: JsonDataType) => void;
+  /** Onchange callback is with BROKEN data */
+  onChange?: (data: JsonDataType, errors: RJSFValidationError[]) => void;
+  formContext?: Record<string, unknown>;
+}
+
 export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
-  fields,
-  formContext,
   formId,
-  initialFormData = "",
-  onChange: propsOnChange,
-  onSubmit: propsOnSubmit,
   schema,
+  initialFormData = "",
+  onSubmit: propsOnSubmit,
+  onChange: propsOnChange,
+  widgets,
+  fields,
   templates,
   uiSchema,
-  widgets,
+  formContext,
 }) => {
   const fixedSchema = useMemo(() => {
     fixSchema(schema);
@@ -79,9 +79,15 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   return (
     <Form
       id={formId}
-      liveValidate={!schema.readOnly}
-      noValidate
-      validator={v8Validator}
+      formContext={formContext}
+      formData={formData}
+      schema={fixedSchema}
+      uiSchema={{
+        "ui:submitButtonOptions": {
+          norender: true,
+        },
+        ...uiSchema,
+      }}
       widgets={{
         ...DefaultWidgets,
         ...Widgets,
@@ -91,26 +97,16 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
         ...Fields,
         ...fields,
       }}
-      schema={fixedSchema}
       templates={{
         ...DefaultTemplates,
         ...Templates,
         ...templates,
       }}
-      uiSchema={{
-        "ui:submitButtonOptions": {
-          norender: true,
-        },
-        ...uiSchema,
-      }}
-      // onError={() => console.error("errors")}
-      experimental_defaultFormStateBehavior={{
-        // Assign value to formData when only default is set
-        emptyObjectFields: "skipEmptyDefaults",
-      }}
-      formContext={formContext}
-      formData={formData}
-      onChange={({ errors, formData: values }) => {
+      validator={v8Validator}
+      liveValidate={!schema.readOnly}
+      noValidate
+      showErrorList={false}
+      onChange={({ formData: values, errors }) => {
         setFormData(values);
         propsOnChange?.(values, errors);
       }}
@@ -118,7 +114,11 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
         // console.log("onSubmit", values);
         propsOnSubmit?.(values);
       }}
-      showErrorList={false}
+      // onError={() => console.error("errors")}
+      experimental_defaultFormStateBehavior={{
+        // Assign value to formData when only default is set
+        emptyObjectFields: "skipEmptyDefaults",
+      }}
     />
   );
 };

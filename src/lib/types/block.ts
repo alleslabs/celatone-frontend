@@ -4,12 +4,12 @@ import type { Validator } from "./validator";
 export interface Block {
   hash: string;
   height: number;
-  proposer: Nullable<Validator>;
   timestamp: Date;
   txCount: number;
+  proposer: Nullable<Validator>;
 }
 
 export interface BlockData extends Omit<Block, "txCount"> {
-  gasLimit: Nullish<number>;
   gasUsed: Nullish<number>;
+  gasLimit: Nullish<number>;
 }

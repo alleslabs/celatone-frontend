@@ -8,7 +8,7 @@ export const ActivitiesTableHeader = ({
 }: {
   templateColumns: GridProps["templateColumns"];
 }) => (
-  <Grid minW="min-content" templateColumns={templateColumns}>
+  <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Tx Hash</TableHeader>
     <TableHeader>Token Id</TableHeader>
     <TableHeader>Event</TableHeader>

@@ -3,12 +3,12 @@ import type { ProjectConstants } from "./types";
 export * from "./types";
 
 export const PROJECT_CONSTANTS: ProjectConstants = {
-  maxAccountDescriptionLength: 250,
   maxAccountNameLength: 50,
+  maxAccountDescriptionLength: 250,
+  maxProposalTitleLength: 255,
   maxCodeNameLength: 50,
-  maxContractDescriptionLength: 250,
   maxContractNameLength: 50,
+  maxContractDescriptionLength: 250,
   maxListNameLength: 50,
   maxMoveVerifyTaskRequestNoteLength: 50,
-  maxProposalTitleLength: 255,
 };

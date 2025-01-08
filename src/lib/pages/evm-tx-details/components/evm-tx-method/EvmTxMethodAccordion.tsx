@@ -7,40 +7,40 @@ import { CustomIcon } from "lib/components/icon";
 import { MotionBox } from "lib/components/MotionBox";
 
 interface EvmTxMethodAccordionProps {
-  children: ReactNode;
-  content: ReactNode;
   msgIcon: IconKeys;
+  content: ReactNode;
+  children: ReactNode;
 }
 
 export const EvmTxMethodAccordion = ({
-  children,
-  content,
   msgIcon,
+  content,
+  children,
 }: EvmTxMethodAccordionProps) => {
   const [expand, setExpand] = useState(true);
 
   return (
     <>
       <Flex
-        _after={{
-          bg: "gray.700",
-          bottom: 0,
-          content: '""',
-          h: "1px",
-          left: "50%",
-          position: "absolute",
-          transform: "translateX(-50%)",
-          w: "99%",
-        }}
+        position="relative"
+        p="16px 8px"
         align="center"
         justify="space-between"
-        p="16px 8px"
-        _hover={{ backgroundColor: "gray.800" }}
         borderRadius="8px"
+        transition="all 0.25s ease-in-out"
         cursor="pointer"
         onClick={() => setExpand((prev) => !prev)}
-        position="relative"
-        transition="all 0.25s ease-in-out"
+        _hover={{ backgroundColor: "gray.800" }}
+        _after={{
+          content: '""',
+          position: "absolute",
+          bottom: 0,
+          left: "50%",
+          transform: "translateX(-50%)",
+          h: "1px",
+          w: "99%",
+          bg: "gray.700",
+        }}
       >
         <Flex
           align={{ base: "start", md: "center" }}
@@ -49,33 +49,33 @@ export const EvmTxMethodAccordion = ({
           fontWeight={500}
         >
           <CustomIcon
-            m={0}
-            mt={{ base: 1, md: 0 }}
             name={msgIcon}
             boxSize={4}
             color="primary.main"
+            m={0}
+            mt={{ base: 1, md: 0 }}
           />
           {content}
         </Flex>
         <Flex>
           <CustomIcon
-            m={0}
             name="chevron-down"
-            boxSize={4}
             color="gray.600"
+            boxSize={4}
             transform={expand ? "rotate(180deg)" : "rotate(0)"}
             transition="all 0.25s ease-in-out"
+            m={0}
           />
         </Flex>
       </Flex>
       <MotionBox
+        display="flex"
+        overflow="hidden"
+        flexDirection="column"
+        gap={4}
         animate={{
           height: expand ? "auto" : 0,
         }}
-        display="flex"
-        gap={4}
-        flexDirection="column"
-        overflow="hidden"
         transition={{
           duration: "0.25",
           ease: "easeInOut",

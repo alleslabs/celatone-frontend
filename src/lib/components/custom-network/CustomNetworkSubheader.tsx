@@ -1,16 +1,16 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 
 interface CustomNetworkSubheaderProps {
-  subtitle?: string;
   title: string;
+  subtitle?: string;
 }
 
 export const CustomNetworkSubheader = ({
-  subtitle,
   title,
+  subtitle,
 }: CustomNetworkSubheaderProps) => {
   return (
-    <Flex gap={1} direction="column">
+    <Flex direction="column" gap={1}>
       <Heading as="h6" variant="h6">
         {title}
       </Heading>

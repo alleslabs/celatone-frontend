@@ -19,77 +19,77 @@ import { TagsCell } from "./TagsCell";
 
 interface ContractsTableRowProps {
   contractInfo: ContractInfo;
-  isReadOnly: boolean;
-  onRowSelect: (contract: BechAddr32) => void;
-  showLastUpdate: boolean;
-  showTag: boolean;
   templateColumns: string;
-  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
+  onRowSelect: (contract: BechAddr32) => void;
+  showTag: boolean;
+  showLastUpdate: boolean;
+  isReadOnly: boolean;
   withCta?: CtaInfo;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const ContractsTableRow = ({
   contractInfo,
-  isReadOnly,
-  onRowSelect,
-  showLastUpdate,
-  showTag,
   templateColumns,
-  wasmVerifyInfo,
+  onRowSelect,
+  showTag,
+  showLastUpdate,
+  isReadOnly,
   withCta,
+  wasmVerifyInfo,
 }: ContractsTableRowProps) => (
   <Grid
-    minW="min-content"
-    _hover={{ bg: "gray.900" }}
-    cursor="pointer"
-    onClick={() => onRowSelect(contractInfo.contractAddress)}
     templateColumns={templateColumns}
+    onClick={() => onRowSelect(contractInfo.contractAddress)}
+    _hover={{ bg: "gray.900" }}
     transition="all 0.25s ease-in-out"
+    cursor="pointer"
+    minW="min-content"
   >
     <TableRow>
       <ExplorerLink
-        isReadOnly={isReadOnly}
-        type="contract_address"
         value={contractInfo.contractAddress}
+        type="contract_address"
         rightIcon={
           contractInfo.codeId ? (
             <WasmVerifyBadge
               status={getWasmVerifyStatus(wasmVerifyInfo)}
-              linkedCodeId={contractInfo.codeId}
               relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              linkedCodeId={contractInfo.codeId}
             />
           ) : undefined
         }
         showCopyOnHover
+        isReadOnly={isReadOnly}
       />
     </TableRow>
 
     <TableRow>
       <ContractNameCell
-        isReadOnly={isReadOnly}
         contractLocalInfo={contractInfo}
+        isReadOnly={isReadOnly}
       />
     </TableRow>
 
     {showTag && (
       <TableRow>
-        <TagsCell isReadOnly={isReadOnly} contractLocalInfo={contractInfo} />
+        <TagsCell contractLocalInfo={contractInfo} isReadOnly={isReadOnly} />
       </TableRow>
     )}
 
     {showLastUpdate && (
       <TableRow>
         <ContractInstantiatorCell
-          isReadOnly={isReadOnly}
           contractInfo={contractInfo}
+          isReadOnly={isReadOnly}
         />
       </TableRow>
     )}
 
     {!isReadOnly && (
       <ContractsTableRowCta
-        withCta={withCta}
         contractInfo={contractInfo}
+        withCta={withCta}
         showLastUpdate={showLastUpdate}
       />
     )}

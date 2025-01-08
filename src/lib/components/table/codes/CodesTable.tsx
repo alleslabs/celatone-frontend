@@ -11,19 +11,19 @@ import { CodesTableRow } from "./CodesTableRow";
 
 interface CodesTableProps {
   codes: Option<CodeInfo[]>;
-  emptyState: JSX.Element;
   isLoading: boolean;
-  isReadOnly?: boolean;
+  emptyState: JSX.Element;
   onRowSelect: (codeId: number) => void;
+  isReadOnly?: boolean;
   showCw2andContracts?: boolean;
 }
 
 export const CodesTable = ({
   codes,
-  emptyState,
   isLoading,
-  isReadOnly = false,
+  emptyState,
   onRowSelect,
+  isReadOnly = false,
   showCw2andContracts = true,
 }: CodesTableProps) => {
   const isMobile = useMobile();
@@ -50,18 +50,18 @@ export const CodesTable = ({
   ) : (
     <TableContainer pb={6}>
       <CodesTableHeader
+        templateColumns={templateColumns}
         isReadOnly={isReadOnly}
         showCw2andContracts={showCw2andContracts}
-        templateColumns={templateColumns}
       />
       {codes.map((code) => (
         <CodesTableRow
           key={code.id + code.uploader + code.name}
-          isReadOnly={isReadOnly}
           codeInfo={code}
-          onRowSelect={onRowSelect}
-          showCw2andContracts={showCw2andContracts}
           templateColumns={templateColumns}
+          onRowSelect={onRowSelect}
+          isReadOnly={isReadOnly}
+          showCw2andContracts={showCw2andContracts}
           wasmVerifyInfo={wasmVerifyInfos?.[code.id]}
         />
       ))}

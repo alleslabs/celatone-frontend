@@ -4,39 +4,39 @@ import type { ChangeEvent } from "react";
 import { AmpEvent, track } from "lib/amplitude";
 
 interface PageDetailProps {
-  lastDataInPage: number;
-  offsetData: number;
-  onPageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   pageSize: number;
+  offsetData: number;
+  lastDataInPage: number;
   totalData: number;
+  onPageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export const PageDetail = ({
-  lastDataInPage,
-  offsetData,
-  onPageSizeChange,
   pageSize,
+  offsetData,
+  lastDataInPage,
   totalData,
+  onPageSizeChange,
 }: PageDetailProps) => (
   <Flex
     align="center"
-    gap={2}
     justify="center"
     direction={{ base: "column", md: "row" }}
+    gap={2}
   >
     <Flex align="center" justify="center">
-      <Text minW="fit-content" variant="body3" color="text.dark">
+      <Text variant="body3" color="text.dark" minW="fit-content">
         Items per page:
       </Text>
       <Select
-        h="fit-content"
-        minW="70px"
-        value={pageSize}
-        w="fit-content"
         border="none"
-        cursor="pointer"
-        focusBorderColor="none"
+        minW="70px"
+        w="fit-content"
+        h="fit-content"
         fontSize="12px"
+        focusBorderColor="none"
+        cursor="pointer"
+        value={pageSize}
         onChange={(e) => {
           track(AmpEvent.USE_PAGINATION_PAGE_SIZE, {
             pageSize: e.target.value,
@@ -50,7 +50,7 @@ export const PageDetail = ({
         <option value="100">100</option>
       </Select>
     </Flex>
-    <Text minW="fit-content" ml={7} variant="body3">
+    <Text variant="body3" minW="fit-content" ml={7}>
       {`${offsetData.toLocaleString()} - ${lastDataInPage.toLocaleString()} of ${totalData.toLocaleString()} items`}
     </Text>
   </Flex>

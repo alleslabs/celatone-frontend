@@ -8,7 +8,7 @@ export const NonRedelegatableTableHeader = ({
 }: {
   templateColumns: GridProps["templateColumns"];
 }) => (
-  <Grid minW="min-content" templateColumns={templateColumns}>
+  <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Cannot Redelegate From</TableHeader>
     <TableHeader>Cannot Redelegate Until</TableHeader>
   </Grid>

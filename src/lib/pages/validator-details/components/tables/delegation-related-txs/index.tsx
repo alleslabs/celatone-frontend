@@ -10,16 +10,16 @@ import { DelegationRelatedTxsTableMobileCard } from "./DelegationRelatedTxsTable
 import { DelegationRelatedTxsTableRow } from "./DelegationRelatedTxsTableRow";
 
 interface DelegationRelatedTxsTableProps {
-  assetInfos: Option<AssetInfos>;
   delegationRelatedTxs: Option<ValidatorDelegationRelatedTxsResponseItem[]>;
   isLoading: boolean;
+  assetInfos: Option<AssetInfos>;
   movePoolInfos: Option<MovePoolInfos>;
 }
 
 export const DelegationRelatedTxsTable = ({
-  assetInfos,
   delegationRelatedTxs,
   isLoading,
+  assetInfos,
   movePoolInfos,
 }: DelegationRelatedTxsTableProps) => {
   const isMobile = useMobile();
@@ -49,8 +49,8 @@ export const DelegationRelatedTxsTable = ({
       {delegationRelatedTxs.map((delegationRelatedTx) => (
         <DelegationRelatedTxsTableMobileCard
           key={delegationRelatedTx.txHash}
-          assetInfos={assetInfos}
           delegationRelatedTx={delegationRelatedTx}
+          assetInfos={assetInfos}
           movePoolInfos={movePoolInfos}
           onRowSelect={onRowSelect}
         />
@@ -62,11 +62,11 @@ export const DelegationRelatedTxsTable = ({
       {delegationRelatedTxs.map((delegationRelatedTx) => (
         <DelegationRelatedTxsTableRow
           key={delegationRelatedTx.txHash}
-          assetInfos={assetInfos}
+          templateColumns={templateColumns}
           delegationRelatedTx={delegationRelatedTx}
+          assetInfos={assetInfos}
           movePoolInfos={movePoolInfos}
           onRowSelect={onRowSelect}
-          templateColumns={templateColumns}
         />
       ))}
     </TableContainer>

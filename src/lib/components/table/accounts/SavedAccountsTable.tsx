@@ -10,14 +10,14 @@ import { SavedAccountsTableRow } from "./SavedAccountsTableRow";
 
 interface SavedAccountsTableProps {
   accounts: Option<AccountLocalInfo[]>;
-  emptyState: JSX.Element;
   isLoading: boolean;
+  emptyState: JSX.Element;
 }
 
 export const SavedAccountsTable = ({
   accounts,
-  emptyState,
   isLoading,
+  emptyState,
 }: SavedAccountsTableProps) => {
   const move = useMoveConfig({ shouldRedirect: false });
   const evm = useEvmConfig({ shouldRedirect: false });
@@ -33,15 +33,15 @@ export const SavedAccountsTable = ({
   return (
     <TableContainer py={6}>
       <SavedAccountsTableHeader
-        hasHexAddr={hasHexAddr}
         templateColumns={templateColumns}
+        hasHexAddr={hasHexAddr}
       />
       {accounts.map((account) => (
         <SavedAccountsTableRow
           key={account.address}
-          hasHexAddr={hasHexAddr}
           accountInfo={account}
           templateColumns={templateColumns}
+          hasHexAddr={hasHexAddr}
         />
       ))}
     </TableContainer>

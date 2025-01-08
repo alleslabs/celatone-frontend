@@ -5,14 +5,14 @@ import type {
   IndexedModule,
 } from "lib/types";
 
-export type DisplayMode = "display" | "input";
+export interface SelectedAddress {
+  address: BechAddr;
+  hex: HexAddr;
+}
+
+export type DisplayMode = "input" | "display";
 
 export type ModuleSelectFunction = (
   selectedModule: IndexedModule,
   fn?: ExposedFunction
 ) => void;
-
-export interface SelectedAddress {
-  address: BechAddr;
-  hex: HexAddr;
-}

@@ -20,18 +20,18 @@ export const PoolAssetsTable = ({
   return (
     <TableContainer>
       <PoolAssetsTableHeader
-        isSupported={pool.isSupported}
-        poolType={pool.type}
         templateColumns={templateColumns}
+        poolType={pool.type}
+        isSupported={pool.isSupported}
       />
       {pool.liquidity.map((token, idx) => (
         <PoolAssetsTableRow
           key={`${token.denom}-token-row`}
-          liquidityIndex={idx}
-          totalLiquidity={totalLiquidity}
-          pool={pool}
           templateColumns={templateColumns}
           token={token}
+          pool={pool}
+          totalLiquidity={totalLiquidity}
+          liquidityIndex={idx}
         />
       ))}
     </TableContainer>

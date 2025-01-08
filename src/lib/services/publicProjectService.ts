@@ -54,8 +54,8 @@ export const usePublicProjects = (): UseQueryResult<PublicProjectInfo[]> => {
     queryFn,
     {
       enabled: projectConfig.enabled,
-      refetchOnWindowFocus: false,
       retry: false,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -108,8 +108,8 @@ export const usePublicProjectByCodeId = (
     queryFn,
     {
       enabled: isId(codeId) && projectConfig.enabled && wasmConfig.enabled,
-      refetchOnWindowFocus: false,
       retry: false,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -138,8 +138,8 @@ export const usePublicProjectByAccountAddress = (
     queryFn,
     {
       enabled: Boolean(accountAddress) && projectConfig.enabled,
-      refetchOnWindowFocus: false,
       retry: false,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -172,8 +172,8 @@ export const usePublicProjectByModulePath = (
     queryFn,
     {
       enabled: Boolean(address) && projectConfig.enabled && moveConfig.enabled,
-      refetchOnWindowFocus: false,
       retry: false,
+      refetchOnWindowFocus: false,
     }
   );
 };

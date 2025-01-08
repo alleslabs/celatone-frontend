@@ -29,8 +29,8 @@ const ModuleInfoBodyPublishedAndRepublished = ({
   if (modulePublishInfo?.recentPublishProposal) {
     return (
       <LabelText
-        helperText1={modulePublishInfo.recentPublishProposal.title}
         label={`${labelPrefix} Proposal ID`}
+        helperText1={modulePublishInfo.recentPublishProposal.title}
       >
         <ExplorerLink
           type="proposal_id"
@@ -54,14 +54,14 @@ export const ModuleInfoBody = ({
   return (
     <Grid
       gridTemplateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
-      gap={6}
       padding={4}
       border="1px solid"
       borderColor="gray.700"
       borderRadius={8}
+      gap={6}
     >
       <LabelText label="Upgrade Policy">{upgradePolicy}</LabelText>
-      <LabelText helperText1="(Wallet Address)" label="Published by">
+      <LabelText label="Published by" helperText1="(Wallet Address)">
         {address ? (
           <ExplorerLink type="user_address" value={address} showCopyOnHover />
         ) : (
@@ -72,13 +72,13 @@ export const ModuleInfoBody = ({
         <>
           {modulePublishInfo?.recentPublishBlockTimestamp && (
             <LabelText
+              label="Published Block Height"
               helperText1={formatUTC(
                 modulePublishInfo.recentPublishBlockTimestamp
               )}
               helperText2={dateFromNow(
                 modulePublishInfo.recentPublishBlockTimestamp
               )}
-              label="Published Block Height"
             >
               {modulePublishInfo?.recentPublishBlockHeight ? (
                 <ExplorerLink

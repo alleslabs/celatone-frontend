@@ -31,37 +31,6 @@ export const ModulesTableMobileCard = ({
 
   return (
     <MobileCardTemplate
-      middleContent={
-        <Flex gap={3} direction="column">
-          <Grid templateColumns="repeat(2, 1fr)">
-            <Flex direction="column">
-              <MobileLabel label="creator" />
-              <ExplorerLink
-                type="user_address"
-                value={creator}
-                showCopyOnHover
-              />
-            </Flex>
-            <Flex gap={1} direction="column">
-              <MobileLabel label="Action" />
-              <Tag
-                width="fit-content"
-                variant={moduleInfo.isRepublished ? "primary-light" : "gray"}
-              >
-                {moduleInfo.isRepublished ? "Republish" : "Publish"}
-              </Tag>
-            </Flex>
-          </Grid>
-          {moduleInfo.latestUpdated && (
-            <Flex direction="column">
-              <Text variant="body3">{formatUTC(moduleInfo.latestUpdated)}</Text>
-              <Text variant="body3" color="text.dark">
-                {`(${dateFromNow(moduleInfo.latestUpdated)})`}
-              </Text>
-            </Flex>
-          )}
-        </Flex>
-      }
       onClick={() =>
         navigate({
           pathname: "/modules/[address]/[moduleName]",
@@ -79,6 +48,37 @@ export const ModulesTableMobileCard = ({
             moduleName={moduleInfo.moduleName}
             moveVerifyStatus={moveVerifyStatus}
           />
+        </Flex>
+      }
+      middleContent={
+        <Flex direction="column" gap={3}>
+          <Grid templateColumns="repeat(2, 1fr)">
+            <Flex direction="column">
+              <MobileLabel label="creator" />
+              <ExplorerLink
+                value={creator}
+                type="user_address"
+                showCopyOnHover
+              />
+            </Flex>
+            <Flex direction="column" gap={1}>
+              <MobileLabel label="Action" />
+              <Tag
+                width="fit-content"
+                variant={moduleInfo.isRepublished ? "primary-light" : "gray"}
+              >
+                {moduleInfo.isRepublished ? "Republish" : "Publish"}
+              </Tag>
+            </Flex>
+          </Grid>
+          {moduleInfo.latestUpdated && (
+            <Flex direction="column">
+              <Text variant="body3">{formatUTC(moduleInfo.latestUpdated)}</Text>
+              <Text variant="body3" color="text.dark">
+                {`(${dateFromNow(moduleInfo.latestUpdated)})`}
+              </Text>
+            </Flex>
+          )}
         </Flex>
       }
     />

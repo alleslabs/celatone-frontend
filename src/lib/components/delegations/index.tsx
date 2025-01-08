@@ -25,27 +25,27 @@ export const DelegationsSection = ({
   onViewMore,
 }: DelegationsSectionProps) => {
   const router = useRouter();
-  const { isOpen, onClose, onToggle } = useDisclosure();
+  const { isOpen, onToggle, onClose } = useDisclosure();
 
   const {
-    delegations,
-    isCommissionsLoading,
-    isDelegationsLoading,
     isLoading,
-    isRedelegationsLoading,
-    isRewardsLoading,
-    isTotalBondedLoading,
-    isUnbondingsLoading,
-    isValidator,
-    redelegations,
-    rewards,
     stakingParams,
+    isValidator,
+    isTotalBondedLoading,
     totalBonded,
-    totalCommissions,
+    isDelegationsLoading,
     totalDelegations,
-    totalRewards,
+    delegations,
+    isUnbondingsLoading,
     totalUnbondings,
     unbondings,
+    isRewardsLoading,
+    totalRewards,
+    rewards,
+    isRedelegationsLoading,
+    redelegations,
+    isCommissionsLoading,
+    totalCommissions,
   } = useAccountDelegationInfos(address);
 
   useEffect(() => {
@@ -56,12 +56,12 @@ export const DelegationsSection = ({
   if (!stakingParams)
     return (
       <Flex direction="column">
-        <TableTitle mb={2} title="Delegations" showCount={false} />
+        <TableTitle title="Delegations" mb={2} showCount={false} />
         <ErrorFetching
           dataName="delegation data"
+          withBorder
           my={2}
           hasBorderTop={false}
-          withBorder
         />
       </Flex>
     );
@@ -70,62 +70,25 @@ export const DelegationsSection = ({
 
   return (
     <Flex
-      width="full"
       mb={{ base: 0, md: 8 }}
-      overflow="hidden"
       position="relative"
+      overflow="hidden"
+      width="full"
     >
       <Flex
-        gap={8}
-        left={isOpen ? "-100%" : "0"}
-        w="full"
         direction="column"
-        opacity={isOpen ? 0 : 1}
+        gap={8}
+        w="full"
         position={isOpen ? "absolute" : "relative"}
+        opacity={isOpen ? 0 : 1}
+        left={isOpen ? "-100%" : "0"}
         transition="all 0.25s ease-in-out"
       >
         <DelegationInfo
           hasTotalBonded={totalBonded && Object.keys(totalBonded).length > 0}
-          onClickToggle={() => {
-            track(AmpEvent.USE_SEE_REDELEGATIONS);
-            onToggle();
-          }}
-          onViewMore={onViewMore}
-          otherInfoCards={
-            <>
-              <TotalCard
-                address={address}
-                message={`Total rewards earned from delegated ${
-                  stakingParams.bondDenoms.length === 1
-                    ? getTokenLabel(
-                        stakingParams.bondDenoms[0].denom,
-                        stakingParams.bondDenoms[0].symbol
-                      )
-                    : "tokens"
-                } across all validators`}
-                title="Reward"
-                bondDenoms={stakingParams.bondDenoms}
-                isLoading={isRewardsLoading}
-                isViewMore={Boolean(onViewMore)}
-                tokens={totalRewards}
-              />
-              {isValidator && (
-                <TotalCard
-                  address={address}
-                  message="Total commission reward earned by validator"
-                  title="Commission"
-                  bondDenoms={stakingParams.bondDenoms}
-                  isLoading={isCommissionsLoading}
-                  isViewMore={Boolean(onViewMore)}
-                  tokens={totalCommissions}
-                />
-              )}
-            </>
-          }
-          redelegationCount={redelegationCount}
           totalBondedCard={
             <TotalCard
-              address={address}
+              title="Total Bonded"
               message={`Total delegated and unbonding ${
                 stakingParams.bondDenoms.length === 1
                   ? getTokenLabel(
@@ -134,36 +97,73 @@ export const DelegationsSection = ({
                     )
                   : "tokens"
               }, including those delegated through vesting`}
-              title="Total Bonded"
+              address={address}
               bondDenoms={stakingParams.bondDenoms}
+              tokens={totalBonded}
               isLoading={isTotalBondedLoading}
               isViewMore={Boolean(onViewMore)}
-              tokens={totalBonded}
             />
           }
+          otherInfoCards={
+            <>
+              <TotalCard
+                title="Reward"
+                message={`Total rewards earned from delegated ${
+                  stakingParams.bondDenoms.length === 1
+                    ? getTokenLabel(
+                        stakingParams.bondDenoms[0].denom,
+                        stakingParams.bondDenoms[0].symbol
+                      )
+                    : "tokens"
+                } across all validators`}
+                address={address}
+                bondDenoms={stakingParams.bondDenoms}
+                tokens={totalRewards}
+                isLoading={isRewardsLoading}
+                isViewMore={Boolean(onViewMore)}
+              />
+              {isValidator && (
+                <TotalCard
+                  title="Commission"
+                  message="Total commission reward earned by validator"
+                  address={address}
+                  bondDenoms={stakingParams.bondDenoms}
+                  tokens={totalCommissions}
+                  isLoading={isCommissionsLoading}
+                  isViewMore={Boolean(onViewMore)}
+                />
+              )}
+            </>
+          }
+          redelegationCount={redelegationCount}
+          onClickToggle={() => {
+            track(AmpEvent.USE_SEE_REDELEGATIONS);
+            onToggle();
+          }}
+          onViewMore={onViewMore}
         />
         {!onViewMore && (
           <DelegationsBody
-            rewards={rewards}
-            bondDenoms={stakingParams.bondDenoms}
-            delegations={delegations}
-            isDelegationsLoading={isDelegationsLoading || isRewardsLoading}
-            isUnbondingsLoading={isUnbondingsLoading}
             totalDelegations={totalDelegations}
+            delegations={delegations}
             totalUnbondings={totalUnbondings}
             unbondings={unbondings}
+            rewards={rewards}
+            isDelegationsLoading={isDelegationsLoading || isRewardsLoading}
+            isUnbondingsLoading={isUnbondingsLoading}
+            bondDenoms={stakingParams.bondDenoms}
           />
         )}
       </Flex>
       <RedelegationsSection
-        left={isOpen ? "0" : "100%"}
         stakingParams={stakingParams}
-        w="full"
+        redelegations={redelegations ?? []}
         isLoading={isRedelegationsLoading}
         onBack={onToggle}
-        opacity={isOpen ? 1 : 0}
+        w="full"
         position={isOpen ? "relative" : "absolute"}
-        redelegations={redelegations ?? []}
+        opacity={isOpen ? 1 : 0}
+        left={isOpen ? "0" : "100%"}
         transition="all 0.25s ease-in-out"
       />
     </Flex>

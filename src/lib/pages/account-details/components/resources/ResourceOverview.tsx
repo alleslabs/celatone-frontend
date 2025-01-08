@@ -9,18 +9,18 @@ import { ResourceOverviewBody } from "./ResourceOverviewBody";
 
 interface ResourceOverviewProps {
   address: BechAddr;
+  totalCount: Option<number>;
+  resourcesByName: Option<ResourceGroup[]>;
   isLoading: boolean;
   onViewMore: () => void;
-  resourcesByName: Option<ResourceGroup[]>;
-  totalCount: Option<number>;
 }
 
 export const ResourceOverview = ({
   address,
+  totalCount,
+  resourcesByName,
   isLoading,
   onViewMore,
-  resourcesByName,
-  totalCount,
 }: ResourceOverviewProps) => {
   const isMobile = useMobile();
 
@@ -34,16 +34,16 @@ export const ResourceOverview = ({
         />
       ) : (
         <AccountSectionWrapper
-          hasHelperText={!!resourcesByName?.length}
-          helperText="This account stored the following resources"
           title="Resources"
           showCount={false}
+          helperText="This account stored the following resources"
+          hasHelperText={!!resourcesByName?.length}
         >
           <ResourceOverviewBody
             address={address}
+            resourcesByName={resourcesByName}
             isLoading={isLoading}
             onViewMore={onViewMore}
-            resourcesByName={resourcesByName}
           />
         </AccountSectionWrapper>
       )}

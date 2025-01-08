@@ -17,37 +17,37 @@ export const AssetInputOption = (
   return (
     <Box
       sx={{
+        position: "relative",
         "> div": {
+          background: isSelected ? "gray.800" : "gray.900",
           "&:hover": {
             background:
               data.isDisabled && !isSelected ? "gray.900" : "gray.800",
           },
-          background: isSelected ? "gray.800" : "gray.900",
         },
-        position: "relative",
       }}
     >
       <components.Option {...props}>
         {isSelected && (
           <Grid
-            left={0}
-            placeItems="center"
-            bottom={0}
             position="absolute"
             top={0}
+            left={0}
+            bottom={0}
+            placeItems="center"
           >
-            <Box height={8} w={1} background="primary.main" borderRadius={8} />
+            <Box w={1} height={8} background="primary.main" borderRadius={8} />
           </Grid>
         )}
-        <Flex alignItems="center" justifyContent="space-between">
-          <Flex alignItems="center" gap={2}>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Flex gap={2} alignItems="center">
             {!!data.value.logo && (
               <Box opacity={data.isDisabled && !isSelected ? 0.6 : 1}>
                 <TokenImageRenderWithCache
-                  width={24}
-                  alt={getTokenLabel(data.value.id, data.label)}
-                  height={24}
                   src={data.value.logo}
+                  alt={getTokenLabel(data.value.id, data.label)}
+                  width={24}
+                  height={24}
                 />
               </Box>
             )}
@@ -55,7 +55,7 @@ export const AssetInputOption = (
               {data.label}
             </Text>
           </Flex>
-          <Flex alignItems="flex-end" direction="column">
+          <Flex direction="column" alignItems="flex-end">
             <Text variant="body2" color={textMainColor}>
               {data.value.formatted || "0.000000"}
             </Text>

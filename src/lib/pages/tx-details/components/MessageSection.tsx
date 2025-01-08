@@ -15,32 +15,32 @@ import { EvmRelatedTxSection } from "./evm-related-tx-section";
 import { TxMessage } from "./tx-message";
 
 interface MessageSectionProps {
-  relatedEvmTxHash: Nullish<string>;
   txData: TxData;
+  relatedEvmTxHash: Nullish<string>;
 }
 
 export const MessageSection = ({
-  relatedEvmTxHash,
   txData,
+  relatedEvmTxHash,
 }: MessageSectionProps) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
   const {
-    logs,
     tx: {
       body: { messages },
     },
+    logs,
   } = txData;
 
   return (
-    <Flex flex={1} gap={4} w="full" direction="column">
+    <Flex direction="column" flex={1} gap={4} w="full">
       {txData.isTxFailed && (
-        <Alert alignItems="center" mb={2} variant="error">
-          <Flex align="start" gap={2}>
+        <Alert variant="error" mb={2} alignItems="center">
+          <Flex gap={2} align="start">
             <CustomIcon
               name="alert-triangle-solid"
-              boxSize={4}
               color="error.main"
+              boxSize={4}
             />
             <AlertDescription wordBreak="break-word">
               {txData.rawLog}
@@ -58,9 +58,9 @@ export const MessageSection = ({
       {messages.map((msg, idx) => (
         <TxMessage
           key={JSON.stringify(msg) + idx.toString()}
-          isSingleMsg={messages.length === 1}
-          log={logs[idx]}
           msgBody={msg}
+          log={logs[idx]}
+          isSingleMsg={messages.length === 1}
         />
       ))}
     </Flex>

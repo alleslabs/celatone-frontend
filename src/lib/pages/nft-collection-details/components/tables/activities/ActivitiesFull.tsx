@@ -20,18 +20,18 @@ export const ActivitiesFull = ({ collectionAddress }: ActivitiesFullProps) => {
   const debouncedSearch = useDebounce(searchKeyword);
 
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
+    currentPage,
     setCurrentPage,
+    pageSize,
     setPageSize,
+    offset,
     setTotalData,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
   const { data: activities, isLoading } = useNftCollectionActivities(
@@ -45,46 +45,46 @@ export const ActivitiesFull = ({ collectionAddress }: ActivitiesFullProps) => {
   );
 
   return (
-    <Stack mt="32px" spacing="32px">
+    <Stack spacing="32px" mt="32px">
       <Heading as="h6" variant="h6" fontWeight={600}>
         Activities in this collection
       </Heading>
       <InputWithIcon
-        size={{ base: "md", md: "lg" }}
+        placeholder="Search by Tx Hash / Token Id / NFT Address"
         value={searchKeyword}
-        amptrackSection="activities-in-this-collection-search"
         autoFocus
         onChange={(e) => {
           setSearchKeyword(e.target.value);
           setCurrentPage(1);
         }}
-        placeholder="Search by Tx Hash / Token Id / NFT Address"
+        size={{ base: "md", md: "lg" }}
+        amptrackSection="activities-in-this-collection-search"
       />
       <ActivitiesTable
+        collectionAddress={collectionAddress}
         activities={activities?.items}
+        isLoading={isLoading}
         emptyState={
           <EmptyState
-            imageVariant="not-found"
             message="There are no activities matches your keyword."
+            imageVariant="not-found"
             withBorder
           />
         }
-        collectionAddress={collectionAddress}
-        isLoading={isLoading}
       />
       {activities && activities.total > 10 && !searchKeyword && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={activities.total}
+          pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
           }}
-          totalData={activities.total}
         />
       )}
     </Stack>

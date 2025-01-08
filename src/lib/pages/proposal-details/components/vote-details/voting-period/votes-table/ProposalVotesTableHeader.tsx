@@ -5,26 +5,26 @@ import { useMobile } from "lib/app-provider";
 import { TableHeader } from "lib/components/table";
 
 interface ProposalVotesTableHeaderProps {
-  fullVersion: boolean;
   templateColumns: GridProps["templateColumns"];
+  fullVersion: boolean;
 }
 
 export const ProposalVotesTableHeader = ({
-  fullVersion,
   templateColumns,
+  fullVersion,
 }: ProposalVotesTableHeaderProps) => {
   const isMobile = useMobile();
 
   if (isMobile)
     return (
-      <Grid minW="min-content" templateColumns={templateColumns}>
+      <Grid templateColumns={templateColumns} minW="min-content">
         <TableHeader pl={0}>Address (Vote Answer)</TableHeader>
         <TableHeader />
       </Grid>
     );
 
   return (
-    <Grid minW="min-content" templateColumns={templateColumns}>
+    <Grid templateColumns={templateColumns} minW="min-content">
       <TableHeader>Voters</TableHeader>
       <TableHeader>Answer</TableHeader>
       {fullVersion && (

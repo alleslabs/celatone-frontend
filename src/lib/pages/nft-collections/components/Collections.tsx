@@ -16,18 +16,18 @@ export const Collections = () => {
   const debouncedSearch = useDebounce(searchKeyword);
 
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
+    currentPage,
     setCurrentPage,
-    setPageSize,
+    pageSize,
     setTotalData,
+    setPageSize,
+    offset,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
   const { data: collections, isLoading } = useNftCollections(
@@ -50,12 +50,12 @@ export const Collections = () => {
     <>
       <Stack spacing={8}>
         <InputWithIcon
-          size={{ base: "md", md: "lg" }}
+          placeholder="Search with Collection Name or Collection VM Address"
           value={searchKeyword}
-          amptrackSection="nft-collections-list-search"
           autoFocus
           onChange={(e) => setSearchKeyword(e.target.value)}
-          placeholder="Search with Collection Name or Collection VM Address"
+          size={{ base: "md", md: "lg" }}
+          amptrackSection="nft-collections-list-search"
         />
         <CollectionList
           collections={collections?.items}
@@ -65,16 +65,16 @@ export const Collections = () => {
       {!isLoading && collections && collections.total > 0 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={collections?.total}
+          pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
           }}
-          totalData={collections?.total}
         />
       )}
     </>

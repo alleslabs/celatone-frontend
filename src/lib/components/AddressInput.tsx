@@ -14,37 +14,37 @@ import { ControllerInput } from "lib/components/forms";
 import type { Option } from "lib/types";
 
 interface AddressInputProps<T extends FieldValues>
-  extends Omit<TextInputProps, "setInputState" | "value"> {
-  control: Control<T>;
-  helperAction?: ReactNode;
-  maxLength?: number;
+  extends Omit<TextInputProps, "value" | "setInputState"> {
   name: FieldPath<T>;
-  requiredText?: string;
+  control: Control<T>;
   validation?: RegisterOptions["validate"];
+  maxLength?: number;
+  helperAction?: ReactNode;
+  requiredText?: string;
 }
 
 const getAddressStatus = (input: string, error: Option<string>): FormStatus => {
-  if (error) return { message: error, state: "error" };
+  if (error) return { state: "error", message: error };
   if (!input) return { state: "init" };
-  return { message: "Valid Address", state: "success" };
+  return { state: "success", message: "Valid Address" };
 };
 
 export const AddressInput = <T extends FieldValues>({
+  name,
   control,
-  error,
-  helperAction,
-  helperText,
   label,
   labelBgColor = "background.main",
-  maxLength,
-  name,
+  helperText,
   placeholder,
-  requiredText = "Address is empty",
+  error,
   size = "lg",
   validation = {},
+  maxLength,
+  helperAction,
+  requiredText = "Address is empty",
 }: AddressInputProps<T>) => {
   const { user: exampleUserAddress } = useExampleAddresses();
-  const { validateContractAddress, validateUserAddress } = useValidateAddress();
+  const { validateUserAddress, validateContractAddress } = useValidateAddress();
   const validateAddress = useCallback(
     (input: string) =>
       input && !!validateContractAddress(input) && !!validateUserAddress(input)
@@ -54,29 +54,29 @@ export const AddressInput = <T extends FieldValues>({
   );
 
   const watcher = useWatch({
-    control,
     name,
+    control,
   });
 
   const status = getAddressStatus(watcher, error ?? validateAddress(watcher));
 
   return (
     <ControllerInput
-      helperText={helperText}
-      label={label}
-      maxLength={maxLength}
       name={name}
+      control={control}
+      label={label}
+      placeholder={placeholder ?? exampleUserAddress}
+      variant="fixed-floating"
+      status={status}
+      labelBgColor={labelBgColor}
+      helperText={helperText}
+      size={size}
       rules={{
         required: requiredText,
         validate: { validateAddress, ...validation },
       }}
-      size={size}
-      status={status}
-      variant="fixed-floating"
-      control={control}
+      maxLength={maxLength}
       helperAction={helperAction}
-      labelBgColor={labelBgColor}
-      placeholder={placeholder ?? exampleUserAddress}
     />
   );
 };

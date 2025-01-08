@@ -2,17 +2,17 @@ import { Flex, Spinner, Text } from "@chakra-ui/react";
 
 export const LoadingOverlay = () => (
   <Flex
-    align="center"
-    gap={3}
+    w="100vw"
     h="100vh"
     justify="center"
-    left={0}
-    w="100vw"
-    zIndex="overlay"
-    bgColor="background.overlay"
+    align="center"
     direction="column"
+    gap={3}
+    bgColor="background.overlay"
     position="fixed"
     top={0}
+    left={0}
+    zIndex="overlay"
   >
     <Spinner size="xl" />
     <Text variant="body1">Loading ...</Text>

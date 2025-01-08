@@ -16,17 +16,17 @@ import { useEffect, useState } from "react";
 import { CustomIcon } from "lib/components/icon";
 
 interface SuccessAddCustomMinitiaModalProps {
-  chainId: string;
   isOpen: boolean;
   onClose: () => void;
   prettyName: string;
+  chainId: string;
 }
 
 export const SuccessAddCustomMinitiaModal = ({
-  chainId,
   isOpen,
   onClose,
   prettyName,
+  chainId,
 }: SuccessAddCustomMinitiaModalProps) => {
   const [fakeLoading, setFakeLoading] = useState(false);
 
@@ -42,23 +42,23 @@ export const SuccessAddCustomMinitiaModal = ({
 
   return (
     <Modal
-      isCentered
       isOpen={isOpen}
-      closeOnOverlayClick={false}
       onClose={onClose}
+      isCentered
+      closeOnOverlayClick={false}
     >
       <ModalOverlay />
-      <ModalContent bg="gray.800" maxW="100vw" py={10} w="645px">
+      <ModalContent w="645px" bg="gray.800" maxW="100vw" py={10}>
         {fakeLoading ? (
           <>
             <ModalHeader w="full">
               <Stack alignItems="center" gap={4} w="100%">
-                <Spinner h={16} thickness="4px" w={16} />
+                <Spinner w={16} h={16} thickness="4px" />
                 <Heading variant="h5">Adding Custom Minitia...</Heading>
               </Stack>
             </ModalHeader>
             <ModalBody maxH="400px" overflow="overlay">
-              <Text textAlign="center" variant="body2" color="text.dark">
+              <Text variant="body2" color="text.dark" textAlign="center">
                 Your minitia’s information is being processed, and the scan’s
                 for minitia will be ready shortly. Please do not close the
                 browser during this process.
@@ -71,14 +71,14 @@ export const SuccessAddCustomMinitiaModal = ({
               <Stack alignItems="center" gap={4} w="100%">
                 <CustomIcon
                   name="check-circle-solid"
-                  boxSize={14}
                   color="success.main"
+                  boxSize={14}
                 />
                 <Heading variant="h5">“{prettyName}” is added!</Heading>
               </Stack>
             </ModalHeader>
             <ModalBody maxH="400px" overflow="overlay">
-              <Text textAlign="center" variant="body2" color="text.dark">
+              <Text variant="body2" color="text.dark" textAlign="center">
                 Your custom minitia is added to the InitiaScan locally on your
                 device. You also can download the configuration in to JSON file
                 to import them in other devices.
@@ -88,10 +88,10 @@ export const SuccessAddCustomMinitiaModal = ({
               <Button
                 variant="primary"
                 w="100%"
+                rightIcon={<CustomIcon name="chevron-right" boxSize={4} />}
                 onClick={() => {
                   window.location.href = `/${chainId}`;
                 }}
-                rightIcon={<CustomIcon name="chevron-right" boxSize={4} />}
               >
                 Explore new Minitia
               </Button>

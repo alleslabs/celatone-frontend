@@ -20,13 +20,13 @@ export const AddToOtherListModal = observer(
     const [contractLists, setContractLists] = useState<LVPair[]>([]);
 
     const handleSave = useHandleContractSave({
-      actions: () => track(AmpEvent.CONTRACT_EDIT_LISTS),
-      codeId: contractLocalInfo.codeId,
-      contractAddress: contractLocalInfo.contractAddress,
-      instantiator: contractLocalInfo.instantiator,
-      label: contractLocalInfo.label,
-      lists: contractLists,
       title: "Action Complete!",
+      contractAddress: contractLocalInfo.contractAddress,
+      label: contractLocalInfo.label,
+      codeId: contractLocalInfo.codeId,
+      instantiator: contractLocalInfo.instantiator,
+      lists: contractLists,
+      actions: () => track(AmpEvent.CONTRACT_EDIT_LISTS),
     });
 
     useEffect(() => {
@@ -37,44 +37,44 @@ export const AddToOtherListModal = observer(
 
     return (
       <ActionModal
-        mainBtnTitle="Save"
         title="Add or remove from lists"
-        trigger={triggerElement}
+        icon="bookmark-solid"
         headerContent={
-          <Flex gap={9} pt={6}>
-            <Flex gap={2} direction="column">
-              <Text variant="body2" color="text.dark" fontWeight={500}>
+          <Flex pt={6} gap={9}>
+            <Flex direction="column" gap={2}>
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Contract Name
               </Text>
-              <Text variant="body2" color="text.dark" fontWeight={500}>
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Contract Address
               </Text>
             </Flex>
 
-            <Flex gap={2} direction="column">
+            <Flex direction="column" gap={2}>
               <Text variant="body2">
                 {contractLocalInfo.name ?? contractLocalInfo.label}
               </Text>
               <ExplorerLink
                 fixedHeight
-                type="contract_address"
                 value={contractLocalInfo.contractAddress}
+                type="contract_address"
               />
             </Flex>
           </Flex>
         }
-        icon="bookmark-solid"
+        trigger={triggerElement}
+        mainBtnTitle="Save"
         mainAction={handleSave}
         otherBtnTitle="Cancel"
       >
         <Box my={4}>
           <ListSelection
+            result={contractLists}
+            placeholder="Not listed"
             helperText="Grouping your contracts by adding to your existing list or create
               a new list"
-            result={contractLists}
             setResult={setContractLists}
             labelBgColor="gray.900"
-            placeholder="Not listed"
           />
         </Box>
       </ActionModal>

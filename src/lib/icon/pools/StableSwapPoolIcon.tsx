@@ -3,7 +3,7 @@ import type { IconProps } from "@chakra-ui/react";
 
 export const StableSwapIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...props}>
-    <circle cx="12" cy="12" fill="url(#paint0_linear_786_150411)" r="12" />
+    <circle cx="12" cy="12" r="12" fill="url(#paint0_linear_786_150411)" />
     <path
       d="M5.58449 15.8542V9.48757H6.39538L6.40781 9.81991H4L4.50236 8.5H6.92926V15.8542H5.58449Z"
       fill="#111117"
@@ -19,11 +19,11 @@ export const StableSwapIcon = (props: IconProps) => (
     <defs>
       <linearGradient
         id="paint0_linear_786_150411"
-        gradientUnits="userSpaceOnUse"
         x1="2.07573e-07"
-        x2="24"
         y1="13"
+        x2="24"
         y2="13"
+        gradientUnits="userSpaceOnUse"
       >
         <stop stopColor="#82A4F9" />
         <stop offset="1" stopColor="#31EFB6" />

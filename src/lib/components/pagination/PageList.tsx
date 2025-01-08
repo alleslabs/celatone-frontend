@@ -9,23 +9,23 @@ import { PageButton } from "./PageButton";
 import { Previous } from "./Previous";
 
 interface PageListProps {
+  pageSize: number;
   currentPage: number;
   lastPage: number;
   onPageChange: (pageNumber: number) => void;
-  pageSize: number;
 }
 
 export const PageList = ({
+  pageSize,
   currentPage,
   lastPage,
   onPageChange,
-  pageSize,
 }: PageListProps) => {
   const handlePageChange = useCallback(
     (pageNumber: number) => {
       track(AmpEvent.USE_PAGINATION_PAGE_BUTTON, {
-        lastPage,
         page: pageNumber,
+        lastPage,
         pageSize,
       });
       onPageChange(pageNumber);
@@ -35,14 +35,14 @@ export const PageList = ({
 
   return (
     <Flex align="center" gap={1} justifyContent="center">
-      <Previous display="flex" pageSize={pageSize} variant="unstyled">
+      <Previous pageSize={pageSize} variant="unstyled" display="flex">
         <CustomIcon name="chevron-left" color="text.dark" />
       </Previous>
       {currentPage > 1 && (
         <>
           <PageButton
-            currentPage={currentPage}
             pageNumber={1}
+            currentPage={currentPage}
             onPageChange={handlePageChange}
           />
           {currentPage > 2 && (
@@ -53,8 +53,8 @@ export const PageList = ({
                 </Text>
               )}
               <PageButton
-                currentPage={currentPage}
                 pageNumber={currentPage - 1}
+                currentPage={currentPage}
                 onPageChange={handlePageChange}
               />
             </>
@@ -62,8 +62,8 @@ export const PageList = ({
         </>
       )}
       <PageButton
-        currentPage={currentPage}
         pageNumber={currentPage}
+        currentPage={currentPage}
         onPageChange={handlePageChange}
       />
       {currentPage < lastPage && (
@@ -71,8 +71,8 @@ export const PageList = ({
           {currentPage < lastPage - 1 && (
             <>
               <PageButton
-                currentPage={currentPage}
                 pageNumber={currentPage + 1}
+                currentPage={currentPage}
                 onPageChange={handlePageChange}
               />
               {currentPage < lastPage - 2 && (
@@ -83,13 +83,13 @@ export const PageList = ({
             </>
           )}
           <PageButton
-            currentPage={currentPage}
             pageNumber={lastPage}
+            currentPage={currentPage}
             onPageChange={handlePageChange}
           />
         </>
       )}
-      <Next display="flex" pageSize={pageSize} variant="unstyled">
+      <Next pageSize={pageSize} variant="unstyled" display="flex">
         <CustomIcon name="chevron-right" color="text.dark" />
       </Next>
     </Flex>

@@ -34,51 +34,9 @@ export const ProposalsTableMobileCard = ({
     proposal.status === ProposalStatus.VOTING_PERIOD;
   return (
     <MobileCardTemplate
-      middleContent={
-        <Flex gap={3} direction="column">
-          <ProposalTextCell
-            isExpedited={proposal.isExpedited}
-            title={proposal.title}
-            types={proposal.types}
-            isDepositOrVoting={isDepositOrVoting}
-          />
-          <Flex gap={1} direction="column">
-            <MobileLabel label="Voting Ends" />
-            <VotingEndTime
-              status={proposal.status}
-              depositEndTime={proposal.depositEndTime}
-              votingEndTime={proposal.votingEndTime}
-            />
-          </Flex>
-          {!isFullTier && (
-            <Flex flex={1} direction="column">
-              <MobileLabel label="Proposed by" />
-              <Proposer proposer={proposal.proposer} />
-            </Flex>
-          )}
-        </Flex>
-      }
-      bottomContent={
-        isFullTier && (
-          <>
-            <Flex flex={1} direction="column">
-              <MobileLabel label="Resolved Block Height" />
-              <ResolvedHeight
-                isDepositOrVoting={isDepositOrVoting}
-                resolvedHeight={proposal.resolvedHeight}
-              />
-            </Flex>
-            <Flex flex={1} direction="column">
-              <MobileLabel label="Proposed by" />
-              <Proposer proposer={proposal.proposer} />
-            </Flex>
-          </>
-        )
-      }
-      onClick={() => onCardSelect(proposal.id)}
       topContent={
         <>
-          <Flex align="center" gap={2}>
+          <Flex gap={2} align="center">
             <MobileLabel label="Proposal ID" variant="body2" />
             <ExplorerLink
               type="proposal_id"
@@ -89,6 +47,48 @@ export const ProposalsTableMobileCard = ({
           <StatusChip status={proposal.status} />
         </>
       }
+      middleContent={
+        <Flex direction="column" gap={3}>
+          <ProposalTextCell
+            title={proposal.title}
+            types={proposal.types}
+            isExpedited={proposal.isExpedited}
+            isDepositOrVoting={isDepositOrVoting}
+          />
+          <Flex direction="column" gap={1}>
+            <MobileLabel label="Voting Ends" />
+            <VotingEndTime
+              votingEndTime={proposal.votingEndTime}
+              depositEndTime={proposal.depositEndTime}
+              status={proposal.status}
+            />
+          </Flex>
+          {!isFullTier && (
+            <Flex direction="column" flex={1}>
+              <MobileLabel label="Proposed by" />
+              <Proposer proposer={proposal.proposer} />
+            </Flex>
+          )}
+        </Flex>
+      }
+      bottomContent={
+        isFullTier && (
+          <>
+            <Flex direction="column" flex={1}>
+              <MobileLabel label="Resolved Block Height" />
+              <ResolvedHeight
+                resolvedHeight={proposal.resolvedHeight}
+                isDepositOrVoting={isDepositOrVoting}
+              />
+            </Flex>
+            <Flex direction="column" flex={1}>
+              <MobileLabel label="Proposed by" />
+              <Proposer proposer={proposal.proposer} />
+            </Flex>
+          </>
+        )
+      }
+      onClick={() => onCardSelect(proposal.id)}
     />
   );
 };

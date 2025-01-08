@@ -9,35 +9,35 @@ import { d0Formatter, formatPrettyPercent } from "lib/utils";
 import { VpPercentCard } from "./VpPercentCard";
 
 interface VpPercentThresholdProps {
-  isCompact: boolean;
   votesInfo: ProposalVotesInfo;
+  isCompact: boolean;
 }
 
 export const VpPercentThreshold = ({
-  isCompact,
   votesInfo,
+  isCompact,
 }: VpPercentThresholdProps) => {
-  const { noNonRatio, noWithVetoNonRatio, yesNonRatio } =
+  const { yesNonRatio, noNonRatio, noWithVetoNonRatio } =
     normalizeVotesInfo(votesInfo);
 
   const options = [
     {
-      color: "success.main",
       option: "Yes",
       ratio: yesNonRatio,
       votingPower: votesInfo.yes,
+      color: "success.main",
     },
     {
-      color: "error.main",
       option: "No",
       ratio: noNonRatio,
       votingPower: votesInfo.no,
+      color: "error.main",
     },
     {
-      color: "error.dark",
       option: "No with veto",
       ratio: noWithVetoNonRatio,
       votingPower: votesInfo.noWithVeto,
+      color: "error.dark",
     },
   ];
 
@@ -51,22 +51,22 @@ export const VpPercentThreshold = ({
           % (Voting Power)
         </Text>
       </Flex>
-      {options.map(({ color, option, ratio, votingPower }) => (
+      {options.map(({ option, ratio, votingPower, color }) => (
         <Flex
           key={option}
-          py={2}
+          justifyContent="space-between"
           borderBottom="1px solid"
           borderBottomColor="gray.700"
-          justifyContent="space-between"
+          py={2}
         >
           <LegendText
             label={option}
+            legendColor={color}
             variant="body2"
             color="text.main"
             fontWeight={700}
-            legendColor={color}
           />
-          <Flex align="end" direction="column">
+          <Flex direction="column" align="end">
             <Text variant="body2" color="text.main">
               {formatPrettyPercent(ratio, 2, true)}
             </Text>
@@ -78,22 +78,22 @@ export const VpPercentThreshold = ({
       ))}
     </div>
   ) : (
-    <Flex gap={6} direction="row">
-      {options.map(({ color, option, ratio, votingPower }, idx) => (
+    <Flex direction="row" gap={6}>
+      {options.map(({ option, ratio, votingPower, color }, idx) => (
         <Fragment key={option}>
           <VpPercentCard
             name={option}
+            ratio={ratio}
+            power={votingPower}
             color={color}
             isCompact={false}
-            power={votingPower}
-            ratio={ratio}
           />
           {idx === 0 && (
             <Divider
-              display={{ base: "none", lg: "flex" }}
+              orientation="vertical"
               h="auto"
               color="gray.700"
-              orientation="vertical"
+              display={{ base: "none", lg: "flex" }}
             />
           )}
         </Fragment>

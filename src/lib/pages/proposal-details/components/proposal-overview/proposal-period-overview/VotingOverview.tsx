@@ -14,10 +14,10 @@ import { VotingOverviewQuorum } from "./VotingOverviewQuorum";
 import { VotingOverviewThreshold } from "./VotingOverviewThreshold";
 
 const VotingOverviewBody = ({
-  isLoading,
-  params,
   proposalData,
+  params,
   votesInfo,
+  isLoading,
 }: ProposalOverviewProps) => {
   const navigate = useInternalNavigate();
 
@@ -60,30 +60,30 @@ const VotingOverviewBody = ({
   return (
     <>
       <VotingOverviewQuorum
-        params={params}
         proposalData={proposalData}
+        params={params}
         votesInfo={votesInfo}
       />
       <VotingOverviewThreshold
-        params={params}
         proposalData={proposalData}
+        params={params}
         votesInfo={votesInfo}
       />
       <Button
         variant="ghost-primary"
+        rightIcon={<CustomIcon name="chevron-right" />}
         onClick={() =>
           navigate({
-            options: {
-              shallow: true,
-            },
             pathname: "/proposals/[proposalId]/[tab]",
             query: {
               proposalId: proposalData.id,
               tab: TabIndex.Vote,
             },
+            options: {
+              shallow: true,
+            },
           })
         }
-        rightIcon={<CustomIcon name="chevron-right" />}
       >
         View Full Voting Details
       </Button>
@@ -92,7 +92,7 @@ const VotingOverviewBody = ({
 };
 
 export const VotingOverview = (props: ProposalOverviewProps) => (
-  <Flex gap={6} ml={3} px={5} py={4} direction="column">
+  <Flex direction="column" gap={6} ml={3} px={5} py={4}>
     <VotingOverviewBody {...props} />
   </Flex>
 );

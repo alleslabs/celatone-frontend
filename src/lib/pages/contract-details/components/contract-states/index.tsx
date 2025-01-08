@@ -89,36 +89,36 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
   };
 
   return (
-    <Flex gap={8} direction="column">
-      <Flex gap={6} direction="column">
+    <Flex direction="column" gap={8}>
+      <Flex direction="column" gap={6}>
         <Heading as="h6" variant="h6">
           Contract States
         </Heading>
         <StateLoader
-          isCompleted={!hasNextPage}
-          isLoading={isFetching || isFetchingNextPage}
           numStatesToLoad={limit}
-          onDownload={() => {
-            trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_DOWNLOAD, {
-              currentStates: totalData,
-              namespaces,
-              namespacesCount: namespaces.length,
-            });
-            handleDownload();
-          }}
+          isLoading={isFetching || isFetchingNextPage}
+          totalData={totalData}
+          isCompleted={!hasNextPage}
           onLoadMore={() => {
             trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_LOAD_MORE, {
               currentStates: totalData,
-              namespaces,
               namespacesCount: namespaces.length,
+              namespaces,
             });
             fetchNextPage();
           }}
-          totalData={totalData}
+          onDownload={() => {
+            trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_DOWNLOAD, {
+              currentStates: totalData,
+              namespacesCount: namespaces.length,
+              namespaces,
+            });
+            handleDownload();
+          }}
         />
       </Flex>
       {!!error && (
-        <Alert alignItems="center" variant="error">
+        <Alert variant="error" alignItems="center">
           <AlertDescription wordBreak="break-word">
             Error fetching data from LCD. Please refresh to try again.
           </AlertDescription>
@@ -127,25 +127,25 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
       {/* Namespace filter */}
       <ButtonGroup
         flexWrap="wrap"
+        rowGap={2}
         sx={{
           "> button": {
-            marginInlineEnd: "1",
             marginInlineStart: "0 !important",
+            marginInlineEnd: "1",
           },
         }}
-        rowGap={2}
       >
         {namespaces.map((namespace) => (
           <Button
             key={namespace}
-            height="28px"
             variant={
               namespace === selectedNamespace ? "primary" : "outline-white"
             }
             border="1px solid"
             borderColor="gray.100"
-            borderRadius="16px"
             fontSize="14px"
+            height="28px"
+            borderRadius="16px"
             fontWeight={400}
             onClick={() => {
               track(AmpEvent.USE_NAMESPACE_TAB, { namespace });
@@ -159,22 +159,22 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
 
       {/* Searchbar */}
       <InputWithIcon
-        size={{ base: "md", md: "lg" }}
+        placeholder="Search by Key"
         value={keyword}
-        amptrackSection="contract-states-search"
         onChange={(e) => {
           const newVal = e.target.value;
           setKeyword(newVal);
         }}
-        placeholder="Search by Key"
+        size={{ base: "md", md: "lg" }}
+        amptrackSection="contract-states-search"
       />
 
       {/* State List */}
       <StateList
-        isSearching={keyword.trim().length !== 0}
         states={states}
-        isLoading={isFetching}
         totalData={totalDataByNamespace}
+        isLoading={isFetching}
+        isSearching={keyword.trim().length !== 0}
       />
     </Flex>
   );

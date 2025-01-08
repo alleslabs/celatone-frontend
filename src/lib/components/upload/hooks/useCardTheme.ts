@@ -29,7 +29,7 @@ export const useCardTheme = (theme: CardTheme, status: Option<Status>) => {
   };
 
   return {
-    statusColor: resolveStatusColor(),
     themeConfig: getTheme(),
+    statusColor: resolveStatusColor(),
   };
 };

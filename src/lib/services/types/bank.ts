@@ -11,10 +11,10 @@ export const zBalancesReponseLcd = z.object({
 });
 
 export interface BalanceInfos {
-  error: Error;
-  isLoading: boolean;
   supportedAssets: TokenWithValue[];
-  totalData: Option<number>;
   totalSupportedAssetsValue: Option<USD<Big>>;
   unsupportedAssets: TokenWithValue[];
+  isLoading: boolean;
+  totalData: Option<number>;
+  error: Error;
 }

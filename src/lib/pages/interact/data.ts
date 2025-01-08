@@ -9,34 +9,34 @@ import type { Addr, IndexedModule, Option } from "lib/types";
 export const useSearchModules = ({
   address,
   moduleName,
-  onError,
-  onModulesSuccess,
   onModuleSuccess,
+  onModulesSuccess,
+  onError,
 }: {
   address: Addr;
   moduleName: Option<string>;
-  onError: (err: unknown) => void;
-  onModulesSuccess: (modules: IndexedModule[]) => void;
   onModuleSuccess: (modules: IndexedModule) => void;
+  onModulesSuccess: (modules: IndexedModule[]) => void;
+  onError: (err: unknown) => void;
 }) => {
-  const { isFetching: isModuleFetching, refetch: refetchModule } =
+  const { refetch: refetchModule, isFetching: isModuleFetching } =
     useModuleByAddressLcd({
       address,
       moduleName: moduleName ?? "",
       options: {
-        enabled: false,
-        onError,
-        onSuccess: onModuleSuccess,
         refetchOnWindowFocus: false,
+        enabled: false,
         retry: false,
+        onSuccess: onModuleSuccess,
+        onError,
       },
     });
-  const { isFetching: isModulesFetching, refetch: refetchModules } =
+  const { refetch: refetchModules, isFetching: isModulesFetching } =
     useModulesByAddress({
       address,
       enabled: false,
-      onError,
       onSuccess: ({ items }) => onModulesSuccess(items),
+      onError,
     });
 
   const refetch = useMemo(
@@ -45,7 +45,7 @@ export const useSearchModules = ({
   );
 
   return {
-    isFetching: isModuleFetching || isModulesFetching,
     refetch,
+    isFetching: isModuleFetching || isModulesFetching,
   };
 };

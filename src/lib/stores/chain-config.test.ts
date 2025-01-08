@@ -3,18 +3,29 @@ import type { ChainConfig } from "@alleslabs/shared";
 import { LocalChainConfigStore } from "./chain-config";
 
 const MOCK_CONFIG: ChainConfig = {
-  chain: "test",
+  tier: "sequencer",
   chainId: "test-1",
-  extra: {},
+  chain: "test",
+  registryChainName: "testonly",
+  prettyName: "Test Only",
+  rpc: "https://rpc.testonly.com",
+  lcd: "https://rpc.testonly.com",
+  wallets: ["keplr", "initia", "compass", "station"],
   features: {
-    evm: { enabled: false },
-    gov: { enabled: false },
-    move: { enabled: false },
-    nft: { enabled: false },
-    pool: { enabled: false },
-    publicProject: { enabled: false },
     wasm: { enabled: false },
+    move: { enabled: false },
+    evm: { enabled: false },
+    pool: { enabled: false },
+    gov: { enabled: false },
+    nft: { enabled: false },
+    publicProject: { enabled: false },
   },
+  gas: {
+    gasAdjustment: 1.5,
+    maxGasLimit: 100,
+  },
+  extra: {},
+  network_type: "local",
   fees: {
     fee_tokens: [
       {
@@ -24,25 +35,14 @@ const MOCK_CONFIG: ChainConfig = {
       },
     ],
   },
-  gas: {
-    gasAdjustment: 1.5,
-    maxGasLimit: 100,
-  },
-  lcd: "https://rpc.testonly.com",
-  network_type: "local",
-  prettyName: "Test Only",
   registry: {
-    assets: [],
     bech32_prefix: "test",
     slip44: 118,
     staking: {
       staking_tokens: [],
     },
+    assets: [],
   },
-  registryChainName: "testonly",
-  rpc: "https://rpc.testonly.com",
-  tier: "sequencer",
-  wallets: ["keplr", "initia", "compass", "station"],
 };
 
 describe("chain config management", () => {

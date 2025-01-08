@@ -6,20 +6,20 @@ import { CodesTable } from "./CodesTable";
 
 interface CodesTableWithWalletProps {
   codes: CodeInfo[];
-  disconnectedMessage: string;
-  emptyState: JSX.Element;
   isLoading: boolean;
-  isReadOnly?: boolean;
+  emptyState: JSX.Element;
   onRowSelect: (codeId: number) => void;
+  disconnectedMessage: string;
+  isReadOnly?: boolean;
 }
 
 export const CodesTableWithWallet = ({
   codes,
-  disconnectedMessage,
-  emptyState,
   isLoading,
-  isReadOnly = false,
+  emptyState,
   onRowSelect,
+  disconnectedMessage,
+  isReadOnly = false,
 }: CodesTableWithWalletProps) => {
   const { address } = useCurrentChain();
 
@@ -27,11 +27,11 @@ export const CodesTableWithWallet = ({
     <DisconnectedState text={disconnectedMessage} />
   ) : (
     <CodesTable
-      emptyState={emptyState}
-      isReadOnly={isReadOnly}
       codes={codes}
       isLoading={isLoading}
       onRowSelect={onRowSelect}
+      emptyState={emptyState}
+      isReadOnly={isReadOnly}
     />
   );
 };

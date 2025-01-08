@@ -7,11 +7,11 @@ import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import type { BechAddr, BechAddr32, Nullable } from "lib/types";
 
 interface AdminButtonProps {
-  admin: Nullable<BechAddr>;
   contractAddress: BechAddr32;
+  admin: Nullable<BechAddr>;
 }
 
-export const AdminButton = ({ admin, contractAddress }: AdminButtonProps) => {
+export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
   const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
 
@@ -19,14 +19,14 @@ export const AdminButton = ({ admin, contractAddress }: AdminButtonProps) => {
   return (
     <Menu>
       <Tooltip
-        hidden={isAdmin}
         label="You don't have admin access to this contract."
+        hidden={isAdmin}
       >
         <MenuButton
+          variant="outline-gray"
+          size={{ base: "sm", md: "md" }}
           as={Button}
           isDisabled={!isAdmin}
-          size={{ base: "sm", md: "md" }}
-          variant="outline-gray"
           rightIcon={<CustomIcon name="chevron-down" />}
         >
           Admin
@@ -56,12 +56,12 @@ export const AdminButton = ({ admin, contractAddress }: AdminButtonProps) => {
           Update Admin
         </MenuItem>
         <ClearAdminModal
+          contractAddress={contractAddress}
           triggerElement={
             <MenuItem icon={<CustomIcon name="admin-clear" color="gray.600" />}>
               Clear Admin
             </MenuItem>
           }
-          contractAddress={contractAddress}
         />
       </MenuList>
     </Menu>

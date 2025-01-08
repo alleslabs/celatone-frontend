@@ -13,20 +13,20 @@ interface ModulePublishCardProps {
 
 export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
   const openNewTab = useOpenNewTab();
-  const { decodeRes, file } = module;
+  const { file, decodeRes } = module;
   return (
     <Flex
       bg="gray.900"
-      gap={4}
-      p={4}
       border="1px solid"
       borderColor="gray.700"
       borderRadius="8px"
+      p={4}
       direction="column"
+      gap={4}
     >
       <Flex align="center" gap={2}>
         <CustomIcon name="contract-address" color="primary.main" />
-        <Heading as="h6" variant="h6">
+        <Heading variant="h6" as="h6">
           {decodeRes?.abi.name}
         </Heading>
         <Flex align="center" gap={1}>
@@ -47,7 +47,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           />
         </Flex>
       </Flex>
-      <Flex gap={2} direction="column">
+      <Flex direction="column" gap={2}>
         {[
           {
             title: "Uploaded file",
@@ -75,8 +75,9 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           </Flex>
         ))}
       </Flex>
-      <Grid columnGap={4} templateColumns="1fr 1fr 1fr">
+      <Grid templateColumns="1fr 1fr 1fr" columnGap={4}>
         <Button
+          rightIcon={<CustomIcon name="launch" boxSize={3} />}
           variant="primary"
           onClick={() => {
             track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {
@@ -87,13 +88,12 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
               query: {},
             });
           }}
-          rightIcon={<CustomIcon name="launch" boxSize={3} />}
         >
           See Module
         </Button>
         <Button
-          variant="outline-white"
           leftIcon={<CustomIcon name="query" boxSize={3} color="text.main" />}
+          variant="outline-white"
           onClick={() => {
             track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {
               label: "View",
@@ -106,8 +106,8 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,
-                functionType: "view",
                 moduleName: decodeRes?.abi.name,
+                functionType: "view",
               },
             });
           }}
@@ -115,22 +115,22 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           View
         </Button>
         <Button
-          variant="outline-white"
           leftIcon={<CustomIcon name="execute" boxSize={3} color="text.main" />}
+          variant="outline-white"
           onClick={() => {
             track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {
+              label: "Execute",
               executeCount:
                 module.decodeRes?.abi.exposed_functions.filter(
                   (fn) => !fn.is_view
                 ).length ?? 0,
-              label: "Execute",
             });
             openNewTab({
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,
-                functionType: "execute",
                 moduleName: decodeRes?.abi.name,
+                functionType: "execute",
               },
             });
           }}

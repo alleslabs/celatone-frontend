@@ -20,26 +20,26 @@ export const ModuleSelectorDisplay = ({
   return (
     <Flex
       className="selector-display"
-      alignItems="center"
-      mb={6}
-      px={4}
-      py={3}
+      justifyContent="space-between"
       w="full"
       bgColor="gray.800"
+      px={4}
+      py={3}
+      mb={6}
       borderRadius={8}
-      justifyContent="space-between"
+      alignItems="center"
     >
       {isMobile ? (
         <>
-          <Flex gap={1} direction="column">
+          <Flex direction="column" gap={1}>
             <Flex alignItems="center" gap={2}>
               <Text variant="body2" color="text.dark">
                 VM Address:
               </Text>
               <CopyLink
-                isTruncate
-                type="user_address"
                 value={selectedAddress.address}
+                type="user_address"
+                isTruncate
               />
             </Flex>
             <Flex alignItems="center" gap={2}>
@@ -47,17 +47,17 @@ export const ModuleSelectorDisplay = ({
                 HEX Address:
               </Text>
               <CopyLink
-                isTruncate
-                type="user_address"
                 value={selectedAddress.hex}
+                type="user_address"
+                isTruncate
               />
             </Flex>
           </Flex>
           <IconButton
-            aria-label="reattach schema"
             variant="outline-white"
-            icon={<CustomIcon name="swap" boxSize={3} />}
             onClick={() => setMode("input")}
+            icon={<CustomIcon name="swap" boxSize={3} />}
+            aria-label="reattach schema"
           />
         </>
       ) : (
@@ -65,8 +65,8 @@ export const ModuleSelectorDisplay = ({
           <Flex flex={1}>
             <LabelText label="Viewing Address">
               <CopyLink
-                type="user_address"
                 value={selectedAddress.address}
+                type="user_address"
                 showCopyOnHover
               />
             </LabelText>
@@ -74,15 +74,15 @@ export const ModuleSelectorDisplay = ({
           <Flex flex={1}>
             <LabelText label="Hex">
               <CopyLink
-                type="user_address"
                 value={selectedAddress.hex}
+                type="user_address"
                 showCopyOnHover
               />
             </LabelText>
           </Flex>
           <Button
-            size="sm"
             variant="outline-white"
+            size="sm"
             leftIcon={<CustomIcon name="swap" boxSize={3} />}
             onClick={() => setMode("input")}
           >

@@ -23,9 +23,9 @@ export const useRedo = () => {
           pathname: "/interact-contract",
           query: {
             chainName,
+            selectedType: ContractInteractionTabs.Execute,
             contract: msg.contract,
             msg: encodeMsg,
-            selectedType: ContractInteractionTabs.Execute,
           },
         });
       } else if (

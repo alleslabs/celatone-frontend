@@ -18,30 +18,30 @@ export const WasmVerifyProcess = ({
   const steps = getProcessSteps(verificationInfo);
   return (
     <Flex direction="column">
-      <Text variant="body1" fontWeight={600}>
+      <Text fontWeight={600} variant="body1">
         Verification Process
       </Text>
-      <Flex mt={4} direction="column">
+      <Flex direction="column" mt={4}>
         {steps.map((step, index) => (
           <Flex key={step.label} justifyContent="space-between">
-            <Flex alignItems="center" gap={2}>
-              <Flex alignItems="center" height="full" direction="column">
+            <Flex gap={2} alignItems="center">
+              <Flex direction="column" alignItems="center" height="full">
                 <WasmVerifyProcessStepIcon state={step.state} />
                 {index < steps.length - 1 && (
                   <Box
-                    height="full"
                     left="50%"
-                    borderColor="gray.400"
+                    height="full"
                     borderLeft="1px solid"
+                    borderColor="gray.400"
                   />
                 )}
               </Flex>
               <Flex direction="column">
-                <Text mt="2px" variant="body2" fontWeight={600}>
+                <Text variant="body2" fontWeight={600} mt="2px">
                   {step.label}
                 </Text>
                 {isMobile && step.timestamp && (
-                  <Text variant="body2" color="gray.500">
+                  <Text color="gray.500" variant="body2">
                     {formatUTC(step.timestamp)}
                   </Text>
                 )}
@@ -55,7 +55,7 @@ export const WasmVerifyProcess = ({
             </Flex>
             <Flex>
               {!isMobile && step.timestamp && (
-                <Text variant="body2" color="gray.500">
+                <Text color="gray.500" variant="body2">
                   {formatUTC(step.timestamp)}
                 </Text>
               )}

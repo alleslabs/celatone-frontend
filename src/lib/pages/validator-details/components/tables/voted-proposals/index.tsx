@@ -23,13 +23,13 @@ import { VotedProposalsTableBody } from "./VotedProposalsTableBody";
 const scrollComponentId = "voted-proposals-table-header";
 
 interface VotedProposalsTableProps {
-  onViewMore?: () => void;
   validatorAddress: ValidatorAddr;
+  onViewMore?: () => void;
 }
 
 export const VotedProposalsTable = ({
-  onViewMore,
   validatorAddress,
+  onViewMore,
 }: VotedProposalsTableProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
@@ -40,18 +40,18 @@ export const VotedProposalsTable = ({
   const debouncedSearch = useDebounce(search);
 
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
-    setCurrentPage,
-    setPageSize,
     setTotalData,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    offset,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
 
@@ -69,51 +69,51 @@ export const VotedProposalsTable = ({
   const answerOptions = useMemo(
     () => [
       {
-        disabled: !answers?.all,
         label: `All proposals (${answers?.all ?? 0})`,
         value: ProposalVoteType.ALL,
+        disabled: !answers?.all,
       },
       {
+        label: `Yes (${answers?.yes ?? 0})`,
+        value: ProposalVoteType.YES,
         disabled: !answers?.yes,
         hasLegend: true,
         iconColor: "success.main",
-        label: `Yes (${answers?.yes ?? 0})`,
-        value: ProposalVoteType.YES,
       },
       {
+        label: `No (${answers?.no ?? 0})`,
+        value: ProposalVoteType.NO,
         disabled: !answers?.no,
         hasLegend: true,
         iconColor: "error.main",
-        label: `No (${answers?.no ?? 0})`,
-        value: ProposalVoteType.NO,
       },
       {
+        label: `No with veto (${answers?.noWithVeto ?? 0})`,
+        value: ProposalVoteType.NO_WITH_VETO,
         disabled: !answers?.noWithVeto,
         hasLegend: true,
         iconColor: "error.dark",
-        label: `No with veto (${answers?.noWithVeto ?? 0})`,
-        value: ProposalVoteType.NO_WITH_VETO,
       },
       {
+        label: `Abstain (${answers?.abstain ?? 0})`,
+        value: ProposalVoteType.ABSTAIN,
         disabled: !answers?.abstain,
         hasLegend: true,
         iconColor: "gray.600",
-        label: `Abstain (${answers?.abstain ?? 0})`,
-        value: ProposalVoteType.ABSTAIN,
       },
       {
+        label: `Did not vote (${answers?.didNotVote ?? 0})`,
+        value: ProposalVoteType.DID_NOT_VOTE,
         disabled: !answers?.didNotVote,
         hasLegend: true,
         iconColor: "gray.600",
-        label: `Did not vote (${answers?.didNotVote ?? 0})`,
-        value: ProposalVoteType.DID_NOT_VOTE,
       },
       {
+        label: `Weighted (${answers?.weighted ?? 0})`,
+        value: ProposalVoteType.WEIGHTED,
         disabled: !answers?.weighted,
         hasLegend: true,
         iconColor: "primary.light",
-        label: `Weighted (${answers?.weighted ?? 0})`,
-        value: ProposalVoteType.WEIGHTED,
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -137,27 +137,27 @@ export const VotedProposalsTable = ({
 
   return isMobileOverview ? (
     <Flex
-      alignItems="center"
-      p={4}
-      w="100%"
       backgroundColor="gray.900"
+      p={4}
+      rounded={8}
+      w="100%"
       justifyContent="space-between"
+      alignItems="center"
       onClick={() => {
         trackUseViewMore();
         onViewMore();
       }}
-      rounded={8}
     >
-      <TableTitle mb={0} title="Voted Proposals" count={answers?.all ?? 0} />
-      <CustomIcon m={0} name="chevron-right" boxSize={6} color="gray.600" />
+      <TableTitle title="Voted Proposals" count={answers?.all ?? 0} mb={0} />
+      <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
     </Flex>
   ) : (
-    <Flex gap={6} direction="column">
-      <TableTitle mb={0} title="Voted Proposals" count={answers?.all ?? 0} />
+    <Flex direction="column" gap={6}>
+      <TableTitle title="Voted Proposals" count={answers?.all ?? 0} mb={0} />
       {!onViewMore && (
         <>
-          <Alert display={{ base: "none", md: "flex" }} gap={4} variant="info">
-            <CustomIcon name="info-circle" boxSize={4} />
+          <Alert variant="info" gap={4} display={{ base: "none", md: "flex" }}>
+            <CustomIcon boxSize={4} name="info-circle" />
             <Text variant="body2" color="text.dark">
               Kindly note that the validator may not have voted on the proposal
               due to ineligibility, such as being recently added to the network.
@@ -166,22 +166,22 @@ export const VotedProposalsTable = ({
           <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
             <GridItem>
               <SelectInputBase<ProposalVoteType>
-                disableMaxH
-                initialSelected={answerFilter}
                 formLabel="Filter by vote answer"
-                labelBgColor="background.main"
-                onChange={handleOnAnswerFilterChange}
                 options={answerOptions}
+                onChange={handleOnAnswerFilterChange}
+                labelBgColor="background.main"
+                initialSelected={answerFilter}
                 popoverBgColor="gray.800"
+                disableMaxH
               />
             </GridItem>
             <GridItem>
               <InputWithIcon
-                size="lg"
-                value={search}
-                amptrackSection="voted-proposals-search"
-                onChange={handleOnSearchChange}
                 placeholder="Search with proposal ID or proposal title..."
+                value={search}
+                onChange={handleOnSearchChange}
+                size="lg"
+                amptrackSection="voted-proposals-search"
               />
             </GridItem>
           </Grid>
@@ -189,9 +189,9 @@ export const VotedProposalsTable = ({
       )}
       <VotedProposalsTableBody
         data={data}
-        search={search}
         isLoading={isLoading}
         onViewMore={onViewMore}
+        search={search}
       />
       {data &&
         (onViewMore
@@ -204,17 +204,17 @@ export const VotedProposalsTable = ({
           : data.total > 10 && (
               <Pagination
                 currentPage={currentPage}
-                pageSize={pageSize}
                 pagesQuantity={pagesQuantity}
                 offset={offset}
+                totalData={data.total}
+                scrollComponentId={scrollComponentId}
+                pageSize={pageSize}
                 onPageChange={setCurrentPage}
                 onPageSizeChange={(e) => {
                   const size = Number(e.target.value);
                   setPageSize(size);
                   setCurrentPage(1);
                 }}
-                scrollComponentId={scrollComponentId}
-                totalData={data.total}
               />
             ))}
     </Flex>

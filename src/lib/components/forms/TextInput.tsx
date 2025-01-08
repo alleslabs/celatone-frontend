@@ -21,34 +21,34 @@ import type { FormStatus } from "./FormStatus";
 import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 export interface TextInputProps extends FormControlProps {
-  autoFocus?: boolean;
-  error?: string;
-  helperAction?: ReactNode;
-  helperText?: string;
+  value: string;
+  setInputState: Dispatch<SetStateAction<string>> | ((value: string) => void);
   label?: string;
   labelBgColor?: string;
-  maxLength?: number;
+  helperText?: string;
   placeholder?: string;
-  setInputState: ((value: string) => void) | Dispatch<SetStateAction<string>>;
-  status?: FormStatus;
+  error?: string;
   type?: HTMLInputTypeAttribute;
-  value: string;
+  status?: FormStatus;
+  maxLength?: number;
+  helperAction?: ReactNode;
+  autoFocus?: boolean;
 }
 
 export const TextInput = ({
-  autoFocus = false,
-  error,
-  helperAction,
-  helperText,
+  value,
+  setInputState,
   label = "",
   labelBgColor = "background.main",
-  maxLength,
+  helperText,
   placeholder = " ",
-  setInputState,
+  error,
   size = "lg",
-  status,
   type = "text",
-  value,
+  status,
+  maxLength,
+  helperAction,
+  autoFocus = false,
   ...componentProps
 }: TextInputProps) => (
   // Design system size: md = 40px, lg = 56px
@@ -65,20 +65,20 @@ export const TextInput = ({
 
     <InputGroup>
       <Input
-        maxLength={maxLength}
-        pr={status && "36px"}
+        autoFocus={autoFocus}
         size={size}
+        placeholder={placeholder}
         type={type}
         value={value}
-        autoFocus={autoFocus}
+        pr={status && "36px"}
         onChange={(e) => setInputState(e.target.value)}
-        placeholder={placeholder}
+        maxLength={maxLength}
       />
       <InputRightElement h="full">
         {status && getStatusIcon(status.state, "16px")}
       </InputRightElement>
     </InputGroup>
-    <Flex alignItems="center" flexDir="row" gap={1} mt={1}>
+    <Flex gap={1} alignItems="center" mt={1} flexDir="row">
       {error ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (
@@ -86,7 +86,7 @@ export const TextInput = ({
           {status?.message ? (
             getResponseMsg(status, helperText)
           ) : (
-            <Text variant="body3" color="text.dark" wordBreak="break-word">
+            <Text color="text.dark" variant="body3" wordBreak="break-word">
               {helperText}
             </Text>
           )}

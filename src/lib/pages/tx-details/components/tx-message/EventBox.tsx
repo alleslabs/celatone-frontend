@@ -31,13 +31,13 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
       case addrType !== "invalid_address":
         valueComponent = (
           <ExplorerLink
-            maxWidth="full"
-            fixedHeight={false}
             type={addrType}
             value={value}
-            ampCopierSection="tx_page_event_logs"
+            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
+            maxWidth="full"
+            ampCopierSection="tx_page_event_logs"
           />
         );
         break;
@@ -45,26 +45,26 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
       case key === "proposal_id":
         valueComponent = (
           <ExplorerLink
-            maxWidth="full"
-            fixedHeight={false}
             type={key as LinkType}
             value={value}
-            ampCopierSection="tx_page_event_logs"
             showCopyOnHover
             textFormat="normal"
+            fixedHeight={false}
+            maxWidth="full"
+            ampCopierSection="tx_page_event_logs"
           />
         );
         break;
       case key === "_contract_address":
         valueComponent = (
           <ExplorerLink
-            maxWidth="full"
-            fixedHeight={false}
             type="contract_address"
             value={value}
-            ampCopierSection="tx_page_event_logs"
             showCopyOnHover
             textFormat="normal"
+            fixedHeight={false}
+            maxWidth="full"
+            ampCopierSection="tx_page_event_logs"
           />
         );
         break;
@@ -72,11 +72,11 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
         if (typeof JSON.parse(value) === "object")
           valueComponent = (
             <JsonReadOnly
+              text={jsonPrettify(value)}
+              canCopy
               fullWidth
               isExpandable
-              text={jsonPrettify(value)}
               amptrackSection="tx_page_event_logs"
-              canCopy
             />
           );
         else valueComponent = value;
@@ -97,16 +97,15 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
 
   return (
     <Flex
-      _hover={{ backgroundColor: "gray.800" }}
-      backgroundColor="gray.900"
-      borderRadius="8px"
-      direction="column"
       position="relative"
+      direction="column"
+      borderRadius="8px"
+      backgroundColor="gray.900"
+      _hover={{ backgroundColor: "gray.800" }}
     >
       <Flex
         align="center"
         justify="space-between"
-        p={4}
         cursor="pointer"
         onClick={() => {
           trackUseExpand({
@@ -116,42 +115,43 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           });
           setExpand((prev) => !prev);
         }}
+        p={4}
       >
-        <Flex align="center" gap={2} fontSize="14px" fontWeight={500}>
-          <CustomIcon m={0} name="list" boxSize={4} color="gray.600" />
+        <Flex fontSize="14px" gap={2} fontWeight={500} align="center">
+          <CustomIcon name="list" boxSize={4} color="gray.600" m={0} />
           {`[${msgIndex}] ${event.type}`}
         </Flex>
         <CustomIcon
-          m={0}
           name="chevron-down"
-          boxSize={4}
           color="gray.600"
+          boxSize={4}
           transform={expand ? "rotate(180deg)" : "rotate(0)"}
           transition="all 0.25s ease-in-out"
+          m={0}
         />
       </Flex>
       <MotionBox
-        animate={expand ? "expanded" : "collapsed"}
         display="flex"
         flexDir="column"
-        initial="collapsed"
         variants={{
-          collapsed: { height: 0, opacity: 0 },
-          expanded: { height: "auto", opacity: 1 },
+          expanded: { opacity: 1, height: "auto" },
+          collapsed: { opacity: 0, height: 0 },
         }}
         overflow="hidden"
+        initial="collapsed"
+        animate={expand ? "expanded" : "collapsed"}
         transition={{
           duration: "0.25",
           ease: "easeInOut",
         }}
       >
-        <Box mx={4} borderTop="1px solid var(--chakra-colors-gray-700)" />
+        <Box borderTop="1px solid var(--chakra-colors-gray-700)" mx={4} />
         <TxReceiptRender
           keyPrefix={msgIndex.toString() + event.type}
+          variant="tx-page"
+          receipts={receipts}
           gap={3}
           p={4}
-          receipts={receipts}
-          variant="tx-page"
         />
       </MotionBox>
     </Flex>

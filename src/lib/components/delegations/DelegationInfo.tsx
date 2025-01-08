@@ -8,21 +8,21 @@ import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 
 interface DelegationInfoProps {
-  hasTotalBonded?: boolean;
-  onClickToggle?: MouseEventHandler<HTMLButtonElement> | undefined;
-  onViewMore?: () => void;
+  totalBondedCard: JSX.Element;
   otherInfoCards: JSX.Element;
   redelegationCount: number;
-  totalBondedCard: JSX.Element;
+  onClickToggle?: MouseEventHandler<HTMLButtonElement> | undefined;
+  onViewMore?: () => void;
+  hasTotalBonded?: boolean;
 }
 
 export const DelegationInfo = ({
-  hasTotalBonded = true,
-  onClickToggle,
-  onViewMore,
+  totalBondedCard,
   otherInfoCards,
   redelegationCount,
-  totalBondedCard,
+  onClickToggle,
+  onViewMore,
+  hasTotalBonded = true,
 }: DelegationInfoProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
@@ -30,18 +30,18 @@ export const DelegationInfo = ({
     <>
       {isMobileOverview ? (
         <Flex
-          bg="gray.900"
           justify="space-between"
-          p={4}
           w="full"
+          bg="gray.900"
           borderRadius="8px"
+          p={4}
           onClick={() => {
             trackUseViewMore();
             onViewMore();
           }}
         >
-          <Flex gap={2} direction="column">
-            <Heading as="h6" variant="h6">
+          <Flex direction="column" gap={2}>
+            <Heading variant="h6" as="h6">
               Delegation Details
             </Heading>
             {totalBondedCard}
@@ -49,49 +49,49 @@ export const DelegationInfo = ({
           <CustomIcon name="chevron-right" color="gray.600" />
         </Flex>
       ) : (
-        <Flex gap={4} mt={{ base: 4, md: 0 }} direction="column">
-          <TableTitle mb={0} title="Delegations" showCount={false} />
+        <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
+          <TableTitle title="Delegations" mb={0} showCount={false} />
           {hasTotalBonded ? (
             <Flex
+              direction={{ base: "column", md: "row" }}
               alignItems={{ base: "start", md: "center" }}
               justify="space-between"
-              direction={{ base: "column", md: "row" }}
               overflowX="scroll"
               overflowY="hidden"
             >
               <Flex
                 gap={{ base: 4, md: 8 }}
-                w="full"
                 direction={{ base: "column", md: "row" }}
+                w="full"
               >
                 {totalBondedCard}
                 {otherInfoCards}
               </Flex>
               {onViewMore ? (
                 <Button
-                  minW="fit-content"
                   variant="ghost-gray"
+                  minW="fit-content"
+                  rightIcon={<CustomIcon name="chevron-right" />}
                   onClick={() => {
                     trackUseViewMore();
                     onViewMore();
                   }}
-                  rightIcon={<CustomIcon name="chevron-right" />}
                 >
                   View Delegation Info
                 </Button>
               ) : (
                 <Flex
+                  w={{ base: "full", md: "auto" }}
                   justify={{ base: "center", md: "inherit" }}
                   mt={{ base: 6, md: 0 }}
-                  w={{ base: "full", md: "auto" }}
                 >
                   <Button
-                    isDisabled={!redelegationCount}
-                    minW="fit-content"
                     variant="ghost-gray"
+                    minW="fit-content"
                     leftIcon={<CustomIcon name="history" />}
-                    onClick={onClickToggle}
                     rightIcon={<CustomIcon name="chevron-right" />}
+                    isDisabled={!redelegationCount}
+                    onClick={onClickToggle}
                   >
                     See Active Redelegations ({redelegationCount})
                   </Button>

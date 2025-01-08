@@ -9,41 +9,23 @@ import { getEventMessage } from "./TxsTableRow";
 
 interface TxsTableMobileCardProps {
   hash: string;
+  timestamp: Date;
   isNftBurn: boolean;
   isNftMint: boolean;
   isNftTransfer: boolean;
-  timestamp: Date;
 }
 
 export const TxsTableMobileCard = ({
+  timestamp,
   hash,
   isNftBurn,
   isNftMint,
   isNftTransfer,
-  timestamp,
 }: TxsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
 
   return (
     <MobileCardTemplate
-      middleContent={
-        <Flex direction="column">
-          <MobileLabel label="Event" />
-          <Text variant="body2">
-            {getEventMessage(isNftBurn, isNftMint, isNftTransfer)}
-          </Text>
-        </Flex>
-      }
-      bottomContent={
-        <Flex gap={0} direction="column">
-          <Text color="gray.400" fontSize="12px">
-            {formatUTC(timestamp)}
-          </Text>
-          <Text color="gray.500" fontSize="12px">
-            ({dateFromNow(timestamp)})
-          </Text>
-        </Flex>
-      }
       onClick={() =>
         navigate({
           pathname: "/txs/[txHash]",
@@ -53,10 +35,28 @@ export const TxsTableMobileCard = ({
       topContent={
         <Flex align="center" gap={2}>
           <ExplorerLink
-            type="tx_hash"
             value={hash.toLocaleUpperCase()}
+            type="tx_hash"
             showCopyOnHover
           />
+        </Flex>
+      }
+      middleContent={
+        <Flex direction="column">
+          <MobileLabel label="Event" />
+          <Text variant="body2">
+            {getEventMessage(isNftBurn, isNftMint, isNftTransfer)}
+          </Text>
+        </Flex>
+      }
+      bottomContent={
+        <Flex direction="column" gap={0}>
+          <Text fontSize="12px" color="gray.400">
+            {formatUTC(timestamp)}
+          </Text>
+          <Text fontSize="12px" color="gray.500">
+            ({dateFromNow(timestamp)})
+          </Text>
         </Flex>
       }
     />

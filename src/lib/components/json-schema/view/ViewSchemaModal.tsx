@@ -31,9 +31,9 @@ import { ViewSchemaPanel } from "./ViewSchemaPanel";
 
 const StyledCustomTab = chakra(CustomTab, {
   baseStyle: {
-    _selected: { bgColor: "gray.800" },
     border: "unset",
     borderRadius: "4px",
+    _selected: { bgColor: "gray.800" },
   },
 });
 
@@ -45,8 +45,8 @@ const StyledTabPanel = chakra(TabPanel, {
 
 interface ViewSchemaModalProps {
   codeId: number;
-  isIcon?: boolean;
   schema: Option<CodeSchema>;
+  isIcon?: boolean;
 }
 
 const SchemaMsgTabList = [
@@ -60,8 +60,8 @@ const ALL_TABS = ["full schema", ...SchemaMsgTabList];
 
 export const ViewSchemaModal = ({
   codeId,
-  isIcon = false,
   schema,
+  isIcon = false,
 }: ViewSchemaModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -81,29 +81,29 @@ export const ViewSchemaModal = ({
       {isIcon ? (
         <Tooltip label="View attached JSON schema">
           <IconButton
-            aria-label="view schema"
-            size="sm"
             variant="ghost-gray"
+            size="sm"
+            onClick={handleView}
             color="gray.600"
             icon={<CustomIcon name="view" boxSize={5} />}
-            onClick={handleView}
+            aria-label="view schema"
           />
         </Tooltip>
       ) : (
-        <Button size="sm" variant="outline-gray" onClick={handleView}>
+        <Button variant="outline-gray" size="sm" onClick={handleView}>
           View Schema
         </Button>
       )}
       <Modal
-        isCentered
         isOpen={isOpen}
-        size="4xl"
         onClose={onClose}
+        isCentered
+        size="4xl"
         scrollBehavior="inside"
       >
         <ModalOverlay />
-        <ModalContent h="680px" w="960px">
-          <ModalHeader alignItems="center" justifyContent="space-between">
+        <ModalContent w="960px" h="680px">
+          <ModalHeader justifyContent="space-between" alignItems="center">
             <Flex alignItems="center" gap={2}>
               <CustomIcon name="view" boxSize={6} color="gray.600" />
               <Heading as="h5" variant="h5">
@@ -111,10 +111,10 @@ export const ViewSchemaModal = ({
               </Heading>
             </Flex>
             <AppLink
-              onClick={() => trackUseViewJSON("code_details_schema")}
               href={`/codes/${codeId}/schema`}
+              onClick={() => trackUseViewJSON("code_details_schema")}
             >
-              <Button gap={1} mr={8} size="sm" variant="outline-gray">
+              <Button mr={8} gap={1} size="sm" variant="outline-gray">
                 <CustomIcon name="view" />
                 View in code detail
               </Button>
@@ -125,8 +125,8 @@ export const ViewSchemaModal = ({
             {/* Remark: It's identical to code detail */}
             <Tabs
               variant="unstyled"
-              onChange={trackTabOnChange}
               orientation="vertical"
+              onChange={trackTabOnChange}
             >
               <TabList>
                 <StyledCustomTab>Full Schema</StyledCustomTab>
@@ -138,13 +138,13 @@ export const ViewSchemaModal = ({
               </TabList>
               <TabPanels pl={6}>
                 <StyledTabPanel>
-                  <ViewSchemaPanel codeId={codeId} jsonSchema={schema} />
+                  <ViewSchemaPanel jsonSchema={schema} codeId={codeId} />
                 </StyledTabPanel>
                 {SchemaMsgTabList.map((schemaProperty) => (
                   <StyledTabPanel key={schemaProperty}>
                     <ViewSchemaPanel
-                      codeId={codeId}
                       jsonSchema={schema?.[schemaProperty]}
+                      codeId={codeId}
                     />
                   </StyledTabPanel>
                 ))}

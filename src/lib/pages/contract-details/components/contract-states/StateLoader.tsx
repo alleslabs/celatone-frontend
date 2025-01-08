@@ -4,54 +4,54 @@ import plur from "plur";
 import { CustomIcon } from "lib/components/icon";
 
 interface StateLoaderProps {
-  isCompleted: boolean;
-  isLoading: boolean;
   numStatesToLoad: number;
-  onDownload: () => void;
-  onLoadMore: () => void;
+  isLoading: boolean;
+  isCompleted: boolean;
   totalData: number;
+  onLoadMore: () => void;
+  onDownload: () => void;
 }
 export const StateLoader = ({
-  isCompleted,
-  isLoading,
   numStatesToLoad,
-  onDownload,
-  onLoadMore,
+  isLoading,
+  isCompleted,
   totalData,
+  onLoadMore,
+  onDownload,
 }: StateLoaderProps) => {
   const stateAmountText = `${totalData} ${plur("State", totalData)}`;
 
   return (
     <Flex
-      alignItems={{ base: "flex-start", md: "center" }}
-      p={3}
-      bgColor="gray.900"
       borderRadius={8}
-      direction={{ base: "column", md: "row" }}
+      bgColor="gray.900"
+      p={3}
+      alignItems={{ base: "flex-start", md: "center" }}
       justifyContent="space-between"
+      direction={{ base: "column", md: "row" }}
     >
       {isLoading ? (
-        <Flex alignItems="center" gap={4}>
+        <Flex gap={4} alignItems="center">
           <Spinner size="sm" />
-          <Text variant="body2" color="text.dark" fontWeight={600}>
+          <Text variant="body2" fontWeight={600} color="text.dark">
             Loading {numStatesToLoad} states...
           </Text>
-          <Button isDisabled size="sm" variant="outline-primary">
+          <Button size="sm" variant="outline-primary" isDisabled>
             Load More
           </Button>
         </Flex>
       ) : (
-        <Flex alignItems="center" gap={4}>
+        <Flex gap={4} alignItems="center">
           <CustomIcon name="check" color="success.main" />
-          <Text variant="body2" color="text.dark" fontWeight={600}>
+          <Text variant="body2" fontWeight={600} color="text.dark">
             {isCompleted
               ? `All States Loaded (${stateAmountText})`
               : `${stateAmountText} Loaded`}
           </Text>
           <Button
-            isDisabled={isCompleted}
             size="sm"
             variant="outline-primary"
+            isDisabled={isCompleted}
             onClick={onLoadMore}
           >
             Load More
@@ -59,11 +59,11 @@ export const StateLoader = ({
         </Flex>
       )}
       <Button
-        isDisabled={isLoading}
-        mt={{ base: 3, md: 0 }}
         size="sm"
-        variant="outline-primary"
+        mt={{ base: 3, md: 0 }}
         w={{ base: "full", md: "auto" }}
+        variant="outline-primary"
+        isDisabled={isLoading}
         onClick={onDownload}
       >
         <CustomIcon name="download" />

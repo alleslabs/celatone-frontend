@@ -16,8 +16,8 @@ export const useBaseApiRoute = (
     | "modules"
     | "move"
     | "move_modules"
-    | "nft_collections"
     | "nfts"
+    | "nft_collections"
     | "overviews"
     | "pools"
     | "projects"
@@ -63,10 +63,10 @@ export const useBaseApiRoute = (
       return `${api}/v1/${chain}/${currentChainId}/move`;
     case "move_modules":
       return `${api}/${chain}/${currentChainId}/move_modules`;
-    case "nft_collections":
-      return `${api}/v1/${chain}/${currentChainId}/nft-collections`;
     case "nfts":
       return `${api}/v1/${chain}/${currentChainId}/nfts`;
+    case "nft_collections":
+      return `${api}/v1/${chain}/${currentChainId}/nft-collections`;
     case "overviews":
       return `${api}/v1/${chain}/${currentChainId}/overviews`;
     case "pools":

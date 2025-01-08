@@ -8,47 +8,47 @@ import { INITIAL_VALUES } from "./paginationData";
 import { PaginatorProvider } from "./PaginatorProvider";
 
 export type PaginatorProps = {
-  activeStyles?: ButtonProps;
   children?: React.ReactNode;
-  currentPage?: number;
-  hoverIconLeft?: IconKeys;
-  hoverIconRight?: IconKeys;
-  innerLimit?: number;
-  isDisabled?: boolean;
-  normalStyles?: ButtonProps;
-  onPageChange: (page: number) => void;
-  outerLimit?: number;
   pagesQuantity?: number;
-  separatorIcon?: IconKeys;
+  normalStyles?: ButtonProps;
+  activeStyles?: ButtonProps;
   separatorStyles?: ButtonProps;
+  currentPage?: number;
+  innerLimit?: number;
+  outerLimit?: number;
+  separatorIcon?: IconKeys;
+  hoverIconRight?: IconKeys;
+  hoverIconLeft?: IconKeys;
+  isDisabled?: boolean;
+  onPageChange: (page: number) => void;
 };
 
 export const Paginator: FC<PaginatorProps> = ({
-  activeStyles = INITIAL_VALUES.activeStyles,
   children,
-  currentPage = INITIAL_VALUES.currentPage,
+  pagesQuantity = INITIAL_VALUES.pagesQuantity,
+  normalStyles = INITIAL_VALUES.normalStyles,
+  activeStyles = INITIAL_VALUES.activeStyles,
+  separatorStyles = INITIAL_VALUES.separatorStyles,
+  isDisabled = INITIAL_VALUES.isDisabled,
+  innerLimit = INITIAL_VALUES.innerLimit,
+  separatorIcon = INITIAL_VALUES.separatorIcon,
+  outerLimit = INITIAL_VALUES.outerLimit,
   hoverIconLeft = INITIAL_VALUES.hoverIconLeft,
   hoverIconRight = INITIAL_VALUES.hoverIconRight,
-  innerLimit = INITIAL_VALUES.innerLimit,
-  isDisabled = INITIAL_VALUES.isDisabled,
-  normalStyles = INITIAL_VALUES.normalStyles,
+  currentPage = INITIAL_VALUES.currentPage,
   onPageChange,
-  outerLimit = INITIAL_VALUES.outerLimit,
-  pagesQuantity = INITIAL_VALUES.pagesQuantity,
-  separatorIcon = INITIAL_VALUES.separatorIcon,
-  separatorStyles = INITIAL_VALUES.separatorStyles,
 }) => (
   <PaginatorProvider
     activeStyles={activeStyles}
     currentPage={currentPage}
-    innerLimit={innerLimit}
-    isDisabled={isDisabled}
-    pagesQuantity={pagesQuantity}
     hoverIconLeft={hoverIconLeft}
     hoverIconRight={hoverIconRight}
+    innerLimit={innerLimit}
+    isDisabled={isDisabled}
     normalStyles={normalStyles}
     onPageChange={onPageChange}
     outerLimit={outerLimit}
+    pagesQuantity={pagesQuantity}
     separatorIcon={separatorIcon}
     separatorStyles={separatorStyles}
   >

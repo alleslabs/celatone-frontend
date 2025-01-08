@@ -13,13 +13,13 @@ import { RecentBlocksSection } from "./RecentBlocksSection";
 import { UptimeSection } from "./UptimeSection";
 
 interface PerformanceProps {
-  onViewMore?: () => void;
   validatorAddress: ValidatorAddr;
+  onViewMore?: () => void;
 }
 
 export const Performance = ({
-  onViewMore,
   validatorAddress,
+  onViewMore,
 }: PerformanceProps) => {
   const [uptimeBlock, setUptimeBlock] = useState(100);
   const { data: uptimeData, isLoading } = useValidatorUptime(
@@ -36,20 +36,20 @@ export const Performance = ({
       <UptimeSection
         validatorAddress={validatorAddress}
         uptimeData={uptimeData}
-        onViewMore={onViewMore}
         uptimeBlock={uptimeBlock}
+        onViewMore={onViewMore}
       />
     );
 
   return (
-    <Flex gap={{ base: 4, md: 6 }} pt={6} direction="column">
+    <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
       <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
         <Flex flex={{ md: "2" }}>
           <UptimeSection
             validatorAddress={validatorAddress}
             uptimeData={uptimeData}
-            setUptimeBlock={(block) => setUptimeBlock(block)}
             uptimeBlock={uptimeBlock}
+            setUptimeBlock={(block) => setUptimeBlock(block)}
           />
         </Flex>
         <Flex flex={{ md: "1" }}>
@@ -57,10 +57,10 @@ export const Performance = ({
         </Flex>
       </Flex>
       <Flex
-        p={{ base: 4, md: 6 }}
-        w="100%"
         backgroundColor="gray.900"
+        p={{ base: 4, md: 6 }}
         rounded={8}
+        w="100%"
       >
         <RecentBlocksSection validatorAddress={validatorAddress} />
       </Flex>

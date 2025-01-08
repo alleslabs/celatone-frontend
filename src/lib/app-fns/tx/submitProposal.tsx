@@ -16,29 +16,29 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface SubmitWhitelistProposalTxParams {
   address: BechAddr20;
-  amountToVote: Nullable<string>;
   fee: StdFee;
   messages: EncodeObject[];
-  onTxFailed?: () => void;
-  onTxSucceed?: () => void;
-  signAndBroadcast: SignAndBroadcast;
   whitelistNumber: number;
+  amountToVote: Nullable<string>;
+  signAndBroadcast: SignAndBroadcast;
+  onTxSucceed?: () => void;
+  onTxFailed?: () => void;
 }
 
 export const submitWhitelistProposalTx = ({
   address,
-  amountToVote,
   fee,
   messages,
-  onTxFailed,
-  onTxSucceed,
-  signAndBroadcast,
   whitelistNumber,
+  amountToVote,
+  signAndBroadcast,
+  onTxSucceed,
+  onTxFailed,
 }: SubmitWhitelistProposalTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx({
-      postFn: () => signAndBroadcast({ address, fee, messages }),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
@@ -47,30 +47,19 @@ export const submitWhitelistProposalTx = ({
         findAttr(txInfo.events, "submit_proposal", "proposal_id") ?? "";
 
       return {
-        actionVariant: "proposal",
+        value: null,
         phase: TxStreamPhase.SUCCEED,
-        receiptInfo: {
-          description: `Proposed ${whitelistNumber} ${
-            whitelistNumber > 1 ? "addresses" : "address"
-          } to whitelisting${
-            amountToVote
-              ? ` and pending minimum deposit of ${amountToVote} to trigger voting period.`
-              : "."
-          }`,
-          header: "Proposal Submitted",
-          headerIcon: (
-            <CustomIcon name="submit-proposal" boxSize={5} color="gray.600" />
-          ),
-        },
         receipts: [
           {
+            title: "Proposal ID",
+            value: proposalId,
             html: (
               <ExplorerLink type="proposal_id" value={proposalId} openNewTab />
             ),
-            title: "Proposal ID",
-            value: proposalId,
           },
           {
+            title: "Tx Hash",
+            value: txInfo.transactionHash,
             html: (
               <ExplorerLink
                 type="tx_hash"
@@ -78,20 +67,31 @@ export const submitWhitelistProposalTx = ({
                 openNewTab
               />
             ),
-            title: "Tx Hash",
-            value: txInfo.transactionHash,
           },
           {
+            title: "Tx Fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
-            title: "Tx Fee",
           },
         ],
-        value: null,
+        receiptInfo: {
+          header: "Proposal Submitted",
+          description: `Proposed ${whitelistNumber} ${
+            whitelistNumber > 1 ? "addresses" : "address"
+          } to whitelisting${
+            amountToVote
+              ? ` and pending minimum deposit of ${amountToVote} to trigger voting period.`
+              : "."
+          }`,
+          headerIcon: (
+            <CustomIcon name="submit-proposal" color="gray.600" boxSize={5} />
+          ),
+        },
+        actionVariant: "proposal",
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));
@@ -99,31 +99,31 @@ export const submitWhitelistProposalTx = ({
 
 interface SubmitStoreCodeProposalTxParams {
   address: BechAddr20;
-  amountToVote: Nullable<string>;
-  chainName: string;
   fee: StdFee;
-  messages: EncodeObject[];
-  onTxFailed?: () => void;
-  onTxSucceed?: () => void;
-  signAndBroadcast: SignAndBroadcast;
+  chainName: string;
   wasmFileName: string;
+  messages: EncodeObject[];
+  amountToVote: Nullable<string>;
+  signAndBroadcast: SignAndBroadcast;
+  onTxSucceed?: () => void;
+  onTxFailed?: () => void;
 }
 
 export const submitStoreCodeProposalTx = ({
   address,
-  amountToVote,
-  chainName,
   fee,
-  messages,
-  onTxFailed,
-  onTxSucceed,
-  signAndBroadcast,
+  chainName,
   wasmFileName,
+  messages,
+  amountToVote,
+  signAndBroadcast,
+  onTxSucceed,
+  onTxFailed,
 }: SubmitStoreCodeProposalTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx({
-      postFn: () => signAndBroadcast({ address, fee, messages }),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
@@ -132,43 +132,43 @@ export const submitStoreCodeProposalTx = ({
         findAttr(txInfo.events, "submit_proposal", "proposal_id") ?? "";
 
       return {
-        actionVariant: "proposal",
+        value: null,
         phase: TxStreamPhase.SUCCEED,
-        receiptInfo: {
-          description: `${wasmFileName} is uploaded and pending ${
-            amountToVote
-              ? ` minimum deposit of ${amountToVote} to trigger voting period.`
-              : ` ${capitalize(chainName)} governance voting.`
-          }`,
-          header: "Proposal Submitted",
-          headerIcon: (
-            <CustomIcon name="submit-proposal" boxSize="5" color="gray.600" />
-          ),
-        },
         receipts: [
           {
-            html: <ExplorerLink type="proposal_id" value={proposalId} />,
             title: "Proposal ID",
             value: proposalId,
+            html: <ExplorerLink type="proposal_id" value={proposalId} />,
           },
           {
+            title: "Tx Hash",
+            value: txInfo.transactionHash,
             html: (
               <ExplorerLink type="tx_hash" value={txInfo.transactionHash} />
             ),
-            title: "Tx Hash",
-            value: txInfo.transactionHash,
           },
           {
+            title: "Tx Fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
-            title: "Tx Fee",
           },
         ],
-        value: null,
+        receiptInfo: {
+          header: "Proposal Submitted",
+          description: `${wasmFileName} is uploaded and pending ${
+            amountToVote
+              ? ` minimum deposit of ${amountToVote} to trigger voting period.`
+              : ` ${capitalize(chainName)} governance voting.`
+          }`,
+          headerIcon: (
+            <CustomIcon name="submit-proposal" color="gray.600" boxSize="5" />
+          ),
+        },
+        actionVariant: "proposal",
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

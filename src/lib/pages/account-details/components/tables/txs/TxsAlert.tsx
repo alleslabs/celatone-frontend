@@ -4,7 +4,7 @@ import { CustomIcon } from "lib/components/icon";
 
 export const TxsAlert = () => {
   return (
-    <Alert gap={4} my={6} variant="error">
+    <Alert my={6} variant="error" gap={4}>
       <CustomIcon name="alert-triangle-solid" boxSize={4} color="error.main" />
       <AlertDescription>
         This account has a high volume of transactions. Kindly note that{" "}

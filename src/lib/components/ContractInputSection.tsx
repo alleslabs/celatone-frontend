@@ -47,18 +47,18 @@ export const ContractInputSection = ({
 
     if (!data)
       return {
-        message: "Invalid contract address",
         state: "error",
+        message: "Invalid contract address",
       };
     if (isPermissionAllowed)
       return {
-        message: "You have admin access to this contract",
         state: "success",
+        message: "You have admin access to this contract",
       };
     if (!isPermissionAllowed)
       return {
-        message: "Your wallet does not have admin access to this contract",
         state: "error",
+        message: "Your wallet does not have admin access to this contract",
       };
 
     return undefined;
@@ -71,23 +71,23 @@ export const ContractInputSection = ({
   }, [contract, setValue]);
 
   return isChangeContract || !contract ? (
-    <Flex gap={2} w="full">
+    <Flex w="full" gap={2}>
       <ControllerInput
-        helperText="Input must be the contract that you have admin access"
-        label="Contract Address"
         name="contractAddress"
+        control={control}
+        label="Contract Address"
+        placeholder={`ex. ${truncate(contractExample)}`}
+        helperText="Input must be the contract that you have admin access"
+        variant="fixed-floating"
         size="md"
         status={debouncedKeyword ? handleInputStatus : undefined}
-        variant="fixed-floating"
-        control={control}
-        placeholder={`ex. ${truncate(contractExample)}`}
       />
       <Button
-        isDisabled={!isPermissionAllowed}
         onClick={() => {
           onContractSelect(debouncedKeyword as BechAddr32);
           setIsChangeContract(false);
         }}
+        isDisabled={!isPermissionAllowed}
       >
         Submit
       </Button>
@@ -106,20 +106,20 @@ export const ContractInputSection = ({
   ) : (
     <Flex
       borderWidth="thin"
+      borderColor="gray.800"
+      p={4}
+      borderRadius="8px"
       width="full"
       align="center"
       gap={4}
-      p={4}
-      borderColor="gray.800"
-      borderRadius="8px"
     >
       <Grid gridTemplateColumns="1fr 1fr" gap={6} flexGrow={1}>
         <GridItem>
           <LabelText label="Contract Address">
             {!isFetching ? (
               <ExplorerLink
-                type="contract_address"
                 value={debouncedKeyword}
+                type="contract_address"
                 showCopyOnHover
               />
             ) : (

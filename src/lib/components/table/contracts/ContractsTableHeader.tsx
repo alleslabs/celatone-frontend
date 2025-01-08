@@ -6,19 +6,19 @@ import { TableHeader } from "../tableComponents";
 import type { CtaInfo } from "./ContractsTableRowCta";
 
 export const ContractsTableHeader = ({
-  isReadOnly,
-  showLastUpdate,
-  showTag,
   templateColumns,
+  showTag,
+  showLastUpdate,
+  isReadOnly,
   withCta,
 }: {
-  isReadOnly: boolean;
-  showLastUpdate: boolean;
-  showTag: boolean;
   templateColumns: GridProps["templateColumns"];
+  showTag: boolean;
+  showLastUpdate: boolean;
+  isReadOnly: boolean;
   withCta?: CtaInfo;
 }) => (
-  <Grid minW="min-content" templateColumns={templateColumns}>
+  <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Contract Address</TableHeader>
     <TableHeader>Contract Name</TableHeader>
     {showTag && <TableHeader>Tags</TableHeader>}

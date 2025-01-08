@@ -3,26 +3,26 @@ import { Flex, Text } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 
 interface OptionButtonProps {
-  description: string;
   title: string;
+  description: string;
 }
 
-export const OptionButton = ({ description, title }: OptionButtonProps) => (
+export const OptionButton = ({ title, description }: OptionButtonProps) => (
   <Flex
     alignItems="center"
+    w="full"
     bg="gray.800"
     p={4}
-    w="full"
-    _hover={{ bg: "gray.700" }}
     borderRadius={8}
-    cursor="pointer"
     transition="all 0.25s ease-in-out"
+    cursor="pointer"
+    _hover={{ bg: "gray.700" }}
   >
-    <Flex gap={1} w="full" direction="column">
-      <Text variant="body1" color="text.main" fontWeight={500}>
+    <Flex direction="column" gap={1} w="full">
+      <Text color="text.main" variant="body1" fontWeight={500}>
         {title}
       </Text>
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         {description}
       </Text>
     </Flex>
@@ -31,24 +31,24 @@ export const OptionButton = ({ description, title }: OptionButtonProps) => (
 );
 
 export const OptionButtonDisabled = ({
-  description,
   title,
+  description,
 }: OptionButtonProps) => (
   <Flex
     alignItems="center"
+    w="full"
     bg="gray.900"
     p={4}
-    w="full"
-    _hover={{ bg: "gray.900" }}
     borderRadius={8}
-    cursor="not-allowed"
     transition="all 0.25s ease-in-out"
+    cursor="not-allowed"
+    _hover={{ bg: "gray.900" }}
   >
-    <Flex gap={1} w="full" direction="column">
-      <Text variant="body1" color="text.disabled" fontWeight={500}>
+    <Flex direction="column" gap={1} w="full">
+      <Text color="text.disabled" variant="body1" fontWeight={500}>
         {title}
       </Text>
-      <Text variant="body2" color="text.disabled">
+      <Text color="text.disabled" variant="body2">
         {description}
       </Text>
     </Flex>

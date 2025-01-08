@@ -7,14 +7,14 @@ import type { Nullable } from "lib/types";
 import type { AmpEvent } from "./types";
 
 interface MandatoryProperties {
-  chain: Nullable<string>;
-  devSidebar: Nullable<boolean>;
-  mobile: Nullable<boolean>;
-  navSidebar: Nullable<boolean>;
   page: Nullable<string>;
   prevPathname: Nullable<string>;
-  projectSidebar: Nullable<boolean>;
   rawAddressHash: Nullable<string>;
+  chain: Nullable<string>;
+  mobile: Nullable<boolean>;
+  navSidebar: Nullable<boolean>;
+  devSidebar: Nullable<boolean>;
+  projectSidebar: Nullable<boolean>;
 }
 
 class Amplitude {
@@ -29,10 +29,10 @@ class Amplitude {
       this.client = createInstance();
       this.client.add(
         userAgentEnrichmentPlugin({
-          deviceManufacturer: true,
-          deviceModel: true,
           osName: true,
           osVersion: true,
+          deviceManufacturer: true,
+          deviceModel: true,
         })
       );
 
@@ -44,42 +44,30 @@ class Amplitude {
           pageViews: false,
           sessions: true,
         },
-        serverUrl: "/amplitude",
         trackingOptions: {
           ipAddress: false,
           language: true,
           platform: true,
         },
+        serverUrl: "/amplitude",
       });
     }
 
     this.mandatoryProperties = {
-      chain: null,
-      devSidebar: null,
-      mobile: null,
-      navSidebar: null,
       page: null,
       prevPathname: null,
-      projectSidebar: null,
       rawAddressHash: null,
+      chain: null,
+      mobile: null,
+      navSidebar: null,
+      devSidebar: null,
+      projectSidebar: null,
     };
   }
 
   public static getInstance() {
     if (!Amplitude.amplitude) Amplitude.amplitude = new Amplitude();
     return Amplitude.amplitude;
-  }
-
-  public setMandatoryProperties(
-    properties: Omit<MandatoryProperties, "prevPathname">
-  ) {
-    const { page, ...rest } = properties;
-    const prevPathname = this.mandatoryProperties.page;
-    this.mandatoryProperties = {
-      page,
-      prevPathname,
-      ...rest,
-    };
   }
 
   public setUserIdentity(
@@ -100,6 +88,18 @@ class Amplitude {
     identifyEvent.set("Project Sidebar", projectSidebar);
 
     this.client?.identify(identifyEvent);
+  }
+
+  public setMandatoryProperties(
+    properties: Omit<MandatoryProperties, "prevPathname">
+  ) {
+    const { page, ...rest } = properties;
+    const prevPathname = this.mandatoryProperties.page;
+    this.mandatoryProperties = {
+      page,
+      prevPathname,
+      ...rest,
+    };
   }
 
   public track(event: AmpEvent, properties?: Record<string, unknown>) {

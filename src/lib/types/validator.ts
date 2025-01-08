@@ -11,31 +11,31 @@ import { zRatio } from "./currency";
 
 export const zValidator = z
   .object({
+    validator_address: zValidatorAddr,
     identity: z.string().nullable(),
     moniker: z.string().nullable(),
-    validator_address: zValidatorAddr,
   })
   .transform((val) => ({
+    validatorAddress: val.validator_address,
     identity: val.identity ?? undefined,
     moniker: val.moniker ?? undefined,
-    validatorAddress: val.validator_address,
   }));
 export type Validator = z.infer<typeof zValidator>;
 
 export const zValidatorData = z
   .object({
-    account_address: zBechAddr20,
-    commission_rate: zRatio(z.coerce.number()),
-    consensus_address: zConsensusAddr,
-    details: z.string(),
-    identity: z.string(),
-    is_active: z.boolean(),
-    is_jailed: z.boolean(),
-    moniker: z.string(),
     rank: z.number().nullable(),
-    uptime: z.number().optional(),
     validator_address: zValidatorAddr,
+    account_address: zBechAddr20,
+    consensus_address: zConsensusAddr,
+    identity: z.string(),
+    moniker: z.string(),
+    details: z.string(),
+    commission_rate: zRatio(z.coerce.number()),
+    is_jailed: z.boolean(),
+    is_active: z.boolean(),
     voting_power: zBig,
+    uptime: z.number().optional(),
     website: z.string(),
   })
   .transform(({ website, ...val }) => ({
@@ -45,26 +45,26 @@ export const zValidatorData = z
 export type ValidatorData = z.infer<typeof zValidatorData>;
 
 export const zConsensusPubkey = zPubkeySingle;
+export type ConsensusPubkey = z.infer<typeof zConsensusPubkey>;
+
 export enum BlockVote {
-  ABSTAIN = "ABSTAIN",
   PROPOSE = "PROPOSE",
   VOTE = "VOTE",
-}
-
-export enum SlashingEvent {
-  Jailed = "Jailed",
-  Slashed = "Slashed",
-  Unjailed = "Unjailed",
+  ABSTAIN = "ABSTAIN",
 }
 
 export type ComputedUptime = {
-  missed: number;
-  missedRatio: Ratio<number>;
-  proposed: number;
-  proposedRatio: Ratio<number>;
   signed: number;
+  proposed: number;
+  missed: number;
   signedRatio: Ratio<number>;
+  proposedRatio: Ratio<number>;
+  missedRatio: Ratio<number>;
   uptimeRatio: Ratio<number>;
 };
 
-export type ConsensusPubkey = z.infer<typeof zConsensusPubkey>;
+export enum SlashingEvent {
+  Unjailed = "Unjailed",
+  Jailed = "Jailed",
+  Slashed = "Slashed",
+}

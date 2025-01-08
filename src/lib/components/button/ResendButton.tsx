@@ -11,8 +11,8 @@ import { camelToSnake, encode } from "lib/utils";
 
 interface ResendButtonProps {
   messages: Message[];
-  msgIndex?: number;
   txHash: string;
+  msgIndex?: number;
 }
 
 const formatMsgs = (messages: Message[]) =>
@@ -33,8 +33,8 @@ const formatMsgs = (messages: Message[]) =>
 
 export const ResendButton = ({
   messages,
-  msgIndex = 0,
   txHash,
+  msgIndex = 0,
 }: ResendButtonProps) => {
   const fabricateFee = useFabricateFee();
   const resendTx = useResendTx();
@@ -51,8 +51,8 @@ export const ResendButton = ({
           ? fabricateFee(estimatedGasUsed)
           : undefined,
         messages: composedMsgs,
-        onTxFailed: () => setIsProcessing(false),
         onTxSucceed: () => setIsProcessing(false),
+        onTxFailed: () => setIsProcessing(false),
       });
       if (stream) broadcast(stream);
     },
@@ -61,23 +61,23 @@ export const ResendButton = ({
 
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: isProcessing,
-    extraQueryKey: [txHash, msgIndex],
     messages: composedMsgs,
-    onError: () => setIsProcessing(false),
+    extraQueryKey: [txHash, msgIndex],
     onSuccess: proceed,
+    onError: () => setIsProcessing(false),
   });
 
   return (
     <Button
-      isDisabled={isProcessing}
-      size="sm"
       variant="outline-gray"
       iconSpacing="0"
-      isLoading={isSimulating}
+      size="sm"
       onClick={(e) => {
         e.stopPropagation();
         setIsProcessing(true);
       }}
+      isLoading={isSimulating}
+      isDisabled={isProcessing}
     >
       Resend
     </Button>

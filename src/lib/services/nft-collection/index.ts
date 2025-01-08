@@ -38,7 +38,7 @@ export const useNftCollections = (
   search?: string,
   options?: Pick<
     UseQueryOptions<NftCollectionsResponse>,
-    "enabled" | "onSuccess"
+    "onSuccess" | "enabled"
   >
 ) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");
@@ -47,8 +47,8 @@ export const useNftCollections = (
     [CELATONE_QUERY_KEYS.NFT_COLLECTIONS, apiEndpoint, limit, offset, search],
     async () => getNftCollections(apiEndpoint, limit, offset, search),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
       ...options,
     }
   );
@@ -74,6 +74,8 @@ export const useNftCollectionByCollectionAddress = (
     ],
     async () =>
       handleQueryByTier({
+        tier,
+        threshold: "sequencer",
         queryFull: () =>
           getNftCollectionByCollectionAddress(apiEndpoint, collectionAddress),
         querySequencer: () =>
@@ -81,13 +83,11 @@ export const useNftCollectionByCollectionAddress = (
             lcdEndpoint,
             collectionAddress
           ),
-        threshold: "sequencer",
-        tier,
       }),
     {
-      enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
@@ -111,6 +111,8 @@ export const useNftCollectionCreator = (collectionAddress: HexAddr32) => {
     ],
     async () =>
       handleQueryByTier({
+        tier,
+        threshold: "sequencer",
         queryFull: () =>
           getNftCollectionCreatorByCollectionAddress(
             apiEndpoint,
@@ -122,12 +124,10 @@ export const useNftCollectionCreator = (collectionAddress: HexAddr32) => {
             bech32Prefix,
             collectionAddress
           ),
-        threshold: "sequencer",
-        tier,
       }),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -137,7 +137,7 @@ export const useNftCollectionActivities = (
   limit: number,
   offset: number,
   search = "",
-  options?: Pick<UseQueryOptions<ActivitiesResponse>, "enabled" | "onSuccess">
+  options?: Pick<UseQueryOptions<ActivitiesResponse>, "onSuccess" | "enabled">
 ) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");
 
@@ -159,8 +159,8 @@ export const useNftCollectionActivities = (
         search
       ),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
       ...options,
     }
   );
@@ -199,7 +199,7 @@ export const useNftCollectionMutateEvents = (
   offset: number,
   options?: Pick<
     UseQueryOptions<CollectionMutateEventsResponse>,
-    "enabled" | "onSuccess"
+    "onSuccess" | "enabled"
   >
 ) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");
@@ -220,8 +220,8 @@ export const useNftCollectionMutateEvents = (
         offset
       ),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
       ...options,
     }
   );
@@ -244,6 +244,8 @@ export const useNftCollectionsByAccountAddress = (accountAddress: HexAddr) => {
     ],
     async () =>
       handleQueryByTier({
+        tier,
+        threshold: "sequencer",
         queryFull: () =>
           getNftCollectionsByAccountAddress(apiEndpoint, accountAddress),
         querySequencer: () =>
@@ -251,12 +253,10 @@ export const useNftCollectionsByAccountAddress = (accountAddress: HexAddr) => {
             lcdEndpoint,
             accountAddress
           ),
-        threshold: "sequencer",
-        tier,
       }),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };

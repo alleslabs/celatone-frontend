@@ -4,15 +4,15 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "lib/components/table";
 
 interface DepositorsTableHeaderProps {
-  showTransaction: boolean;
   templateColumns: GridProps["templateColumns"];
+  showTransaction: boolean;
 }
 
 export const DepositorsTableHeader = ({
-  showTransaction,
   templateColumns,
+  showTransaction,
 }: DepositorsTableHeaderProps) => (
-  <Grid minW="min-content" templateColumns={templateColumns}>
+  <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Depositor</TableHeader>
     {showTransaction && (
       <>

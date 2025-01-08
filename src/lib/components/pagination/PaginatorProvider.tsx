@@ -14,78 +14,78 @@ import type { IconKeys } from "../icon";
 import { INITIAL_VALUES } from "./paginationData";
 
 export type PaginatorContextValues = {
+  state: {
+    currentPage: number;
+    pagesQuantity?: number;
+    outerLimit: number;
+    activeStyles: ButtonProps;
+    hoverIconRight?: IconKeys;
+    hoverIconLeft?: IconKeys;
+    separatorStyles: ButtonProps;
+    normalStyles: ButtonProps;
+    innerLimit: number;
+    separatorIcon?: IconKeys;
+    isDisabled: boolean;
+  };
   actions: {
-    changePage: (page: number) => void;
     setCurrentPage: Dispatch<SetStateAction<number>>;
     setIsDisabled: Dispatch<SetStateAction<boolean>>;
-  };
-  state: {
-    activeStyles: ButtonProps;
-    currentPage: number;
-    hoverIconLeft?: IconKeys;
-    hoverIconRight?: IconKeys;
-    innerLimit: number;
-    isDisabled: boolean;
-    normalStyles: ButtonProps;
-    outerLimit: number;
-    pagesQuantity?: number;
-    separatorIcon?: IconKeys;
-    separatorStyles: ButtonProps;
+    changePage: (page: number) => void;
   };
 };
 
 export const PaginatorContext = createContext<PaginatorContextValues>({
-  actions: {
-    changePage: () => null,
-    setCurrentPage: () => null,
-    setIsDisabled: () => null,
-  },
   state: {
-    activeStyles: INITIAL_VALUES.activeStyles,
     currentPage: INITIAL_VALUES.currentPage,
-    hoverIconLeft: INITIAL_VALUES.hoverIconLeft,
-    hoverIconRight: INITIAL_VALUES.hoverIconRight,
-    innerLimit: INITIAL_VALUES.innerLimit,
-    isDisabled: INITIAL_VALUES.isDisabled,
+    activeStyles: INITIAL_VALUES.activeStyles,
     normalStyles: INITIAL_VALUES.normalStyles,
+    separatorStyles: INITIAL_VALUES.separatorStyles,
+    hoverIconRight: INITIAL_VALUES.hoverIconRight,
+    hoverIconLeft: INITIAL_VALUES.hoverIconLeft,
+    innerLimit: INITIAL_VALUES.innerLimit,
     outerLimit: INITIAL_VALUES.outerLimit,
     pagesQuantity: INITIAL_VALUES.pagesQuantity,
     separatorIcon: INITIAL_VALUES.separatorIcon,
-    separatorStyles: INITIAL_VALUES.separatorStyles,
+    isDisabled: INITIAL_VALUES.isDisabled,
+  },
+  actions: {
+    setCurrentPage: () => null,
+    setIsDisabled: () => null,
+    changePage: () => null,
   },
 });
 
 type PaginatorProviderProps = {
-  activeStyles: ButtonProps;
-
   children?: React.ReactNode;
-  currentPage: number;
-  hoverIconLeft?: IconKeys;
-  hoverIconRight?: IconKeys;
-  innerLimit: number;
-  isDisabled: boolean;
-  normalStyles: ButtonProps;
-  onPageChange: (page: number) => void;
-  outerLimit: number;
+
   pagesQuantity?: number;
-  separatorIcon?: IconKeys;
+  normalStyles: ButtonProps;
+  activeStyles: ButtonProps;
+  hoverIconRight?: IconKeys;
   separatorStyles: ButtonProps;
+  hoverIconLeft?: IconKeys;
+  innerLimit: number;
+  currentPage: number;
+  outerLimit: number;
+  separatorIcon?: IconKeys;
+  onPageChange: (page: number) => void;
+  isDisabled: boolean;
 };
 
 export const PaginatorProvider: FC<PaginatorProviderProps> = ({
-  activeStyles: activeStylesProp,
   children,
-  currentPage: currentPageProp,
-  hoverIconLeft: hoverIconLeftProp,
-  hoverIconRight: hoverIconRightProp,
-  innerLimit: innerLimitProp,
-  isDisabled: isDisabledProp,
-  normalStyles: normalStylesProp,
-  onPageChange,
-  outerLimit: outerLimitProp,
   pagesQuantity: pagesQuantityProp,
-  separatorIcon: separatorIconProp,
+  currentPage: currentPageProp,
+  innerLimit: innerLimitProp,
+  outerLimit: outerLimitProp,
   separatorStyles: separatorStylesProp,
+  normalStyles: normalStylesProp,
+  activeStyles: activeStylesProp,
+  separatorIcon: separatorIconProp,
+  hoverIconRight: hoverIconRightProp,
+  hoverIconLeft: hoverIconLeftProp,
+  onPageChange,
+  isDisabled: isDisabledProp,
 }) => {
   // react hooks
   const [currentPage, setCurrentPage] = useState<number>(
@@ -162,17 +162,17 @@ export const PaginatorProvider: FC<PaginatorProviderProps> = ({
 
   const state = useMemo(() => {
     return {
-      activeStyles,
-      currentPage,
       hoverIconLeft,
       hoverIconRight,
-      innerLimit,
-      isDisabled,
-      normalStyles,
-      outerLimit,
+      currentPage,
       pagesQuantity,
       separatorIcon,
+      normalStyles,
+      activeStyles,
+      isDisabled,
+      innerLimit,
       separatorStyles,
+      outerLimit,
     };
   }, [
     activeStyles,
@@ -190,9 +190,9 @@ export const PaginatorProvider: FC<PaginatorProviderProps> = ({
 
   const actions = useMemo(() => {
     return {
-      changePage,
       setCurrentPage,
       setIsDisabled,
+      changePage,
     };
   }, [changePage]);
 
@@ -200,8 +200,8 @@ export const PaginatorProvider: FC<PaginatorProviderProps> = ({
     <PaginatorContext.Provider
       value={useMemo(() => {
         return {
-          actions,
           state,
+          actions,
         };
       }, [actions, state])}
     >

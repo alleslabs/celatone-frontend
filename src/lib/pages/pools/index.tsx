@@ -68,36 +68,36 @@ export const PoolIndex = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Pools" />
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex justifyContent="space-between" alignItems="center">
         <Flex direction="column">
-          <Heading as="h5" minH="36px" variant="h5">
+          <Heading variant="h5" as="h5" minH="36px">
             Osmosis Pools
           </Heading>
           <Text variant="body2" color="text.dark" fontWeight="500">
             This page displays liquidity pools on this network sorted by recency
           </Text>
         </Flex>
-        <UserDocsLink isButton href="osmosis/pool-list" />
+        <UserDocsLink href="osmosis/pool-list" isButton />
       </Flex>
       <Tabs
         index={Object.values(TabIndex).indexOf(tabIndex)}
-        isLazy
         lazyBehavior="keepMounted"
+        isLazy
       >
         <TabList my={8} borderBottom="1px" borderColor="gray.800">
           <CustomTab
-            isDisabled={!supportedPoolsData}
             count={supportedPoolsData?.total}
-            isLoading={isLoadingSupportedPools}
             onClick={() => handleTabChange(TabIndex.Supported)}
+            isLoading={isLoadingSupportedPools}
+            isDisabled={!supportedPoolsData}
           >
             Pools
           </CustomTab>
           <CustomTab
-            isDisabled={!unsupportedPoolsData}
             count={unsupportedPoolsData?.total}
-            isLoading={isLoadingUnsupportedPools}
             onClick={() => handleTabChange(TabIndex.Unsupported)}
+            isLoading={isLoadingUnsupportedPools}
+            isDisabled={!unsupportedPoolsData}
           >
             Pools with unsupported tokens
           </CustomTab>

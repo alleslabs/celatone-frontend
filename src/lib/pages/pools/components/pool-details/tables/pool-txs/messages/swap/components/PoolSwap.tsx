@@ -10,18 +10,18 @@ import type { AssetInfos, Option } from "lib/types";
 import { coinsFromStr } from "lib/utils";
 
 interface ExactInput {
+  isExactIn: boolean;
   amount: Coin;
   expectedDenom: string;
-  isExactIn: boolean;
 }
 
 interface PoolSwapInterface {
-  ampCopierSection?: string;
-  assetInfos: Option<AssetInfos>;
-  exactInput: ExactInput;
-  isOpened: boolean;
-  msgIndex: number;
   txHash: string;
+  exactInput: ExactInput;
+  msgIndex: number;
+  assetInfos: Option<AssetInfos>;
+  isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 const getAssets = (
@@ -51,12 +51,12 @@ const getAssets = (
 };
 
 export const PoolSwap = ({
-  ampCopierSection,
-  assetInfos,
-  exactInput,
-  isOpened,
-  msgIndex,
   txHash,
+  exactInput,
+  msgIndex,
+  assetInfos,
+  isOpened,
+  ampCopierSection,
 }: PoolSwapInterface) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (isLoading) return <Loading withBorder={false} />;
@@ -69,32 +69,32 @@ export const PoolSwap = ({
   const { inAsset, outAsset } = getAssets(exactInput, msgEvents);
   return (
     <Grid
-      alignItems="center"
       gap={4}
+      alignItems="center"
       mb={6}
       templateColumns="minmax(250px, 1fr) 24px minmax(250px, 1fr)"
     >
       <Flex direction="column">
-        <Text variant="body2" fontWeight={500} textColor="gray.500">
+        <Text variant="body2" textColor="gray.500" fontWeight={500}>
           From
         </Text>
         <AssetCard
           amount={inAsset.amount}
-          ampCopierSection={ampCopierSection}
-          assetInfo={assetInfos?.[inAsset.denom]}
           denom={inAsset.denom}
+          assetInfo={assetInfos?.[inAsset.denom]}
+          ampCopierSection={ampCopierSection}
         />
       </Flex>
       <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
       <Flex direction="column">
-        <Text variant="body2" fontWeight={500} textColor="gray.500">
+        <Text variant="body2" textColor="gray.500" fontWeight={500}>
           To
         </Text>
         <AssetCard
           amount={outAsset.amount}
-          ampCopierSection={ampCopierSection}
-          assetInfo={assetInfos?.[outAsset.denom]}
           denom={outAsset.denom}
+          assetInfo={assetInfos?.[outAsset.denom]}
+          ampCopierSection={ampCopierSection}
         />
       </Flex>
     </Grid>

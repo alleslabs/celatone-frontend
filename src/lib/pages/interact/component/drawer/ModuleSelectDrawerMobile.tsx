@@ -31,27 +31,27 @@ import type {
 } from "./types";
 
 interface ModuleSelectDrawerMobileProps {
-  handleModuleSelect: ModuleSelectFunction;
-  hexAddress: Option<HexAddr>;
   isOpen: boolean;
   onClose: () => void;
+  hexAddress: Option<HexAddr>;
+  handleModuleSelect: ModuleSelectFunction;
+  step: ModuleInteractionMobileStep;
+  setStep: (step: ModuleInteractionMobileStep) => void;
   selectedModule: Option<IndexedModule>;
   setSelectedModule: (module: IndexedModule) => void;
-  setStep: (step: ModuleInteractionMobileStep) => void;
-  step: ModuleInteractionMobileStep;
 }
 
 export const ModuleSelectDrawerMobile = ({
-  handleModuleSelect,
-  hexAddress,
   isOpen,
   onClose,
+  hexAddress,
+  handleModuleSelect,
+  step,
+  setStep,
   selectedModule,
   setSelectedModule,
-  setStep,
-  step,
 }: ModuleSelectDrawerMobileProps) => {
-  const { convertHexModuleAddress, convertHexWalletAddress } =
+  const { convertHexWalletAddress, convertHexModuleAddress } =
     useConvertHexAddress();
   const { data: moveVerifyInfos } = useMoveVerifyInfosByAddress(hexAddress);
 
@@ -92,7 +92,7 @@ export const ModuleSelectDrawerMobile = ({
   }, [isOpen, refetch, selectedAddress.hex]);
 
   return (
-    <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
+    <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
       <DrawerOverlay />
       <DrawerContent h="90%">
         {step === ModuleInteractionMobileStep.SelectModule ? (
@@ -111,26 +111,26 @@ export const ModuleSelectDrawerMobile = ({
             <DrawerBody p={6}>
               <Flex h="full" direction="column">
                 <ModuleSelector
+                  mode={mode}
                   selectedAddress={selectedAddress}
                   setSelectedAddress={setSelectedAddress}
-                  closeModal={onClose}
-                  handleModuleSelect={handleModuleSelect}
-                  mode={mode}
-                  setMode={setMode}
                   setModules={setModules}
+                  setMode={setMode}
+                  handleModuleSelect={handleModuleSelect}
+                  closeModal={onClose}
                 />
                 {modules ? (
                   <SelectModuleSection
                     selectedAddress={selectedAddress}
-                    setStep={setStep}
                     modules={modules}
                     selectedModule={selectedModule}
                     setSelectedModule={setSelectedModule}
+                    setStep={setStep}
                   />
                 ) : (
                   <ModuleEmptyState
-                    hasImage
                     description="Available functions for selected modules will display here"
+                    hasImage
                   />
                 )}
               </Flex>
@@ -158,24 +158,24 @@ export const ModuleSelectDrawerMobile = ({
                 {selectedModule && (
                   <>
                     <Flex alignItems="center" gap={2} mb={2}>
-                      <Text variant="body2" color="text.dark" fontWeight={600}>
+                      <Text variant="body2" fontWeight={600} color="text.dark">
                         Selected Module
                       </Text>
                       <Button
-                        px={1}
-                        size="sm"
-                        variant="ghost-primary"
-                        leftIcon={<CustomIcon name="swap" boxSize={3} />}
                         onClick={() =>
                           setStep(ModuleInteractionMobileStep.SelectModule)
                         }
+                        size="sm"
+                        px={1}
+                        variant="ghost-primary"
+                        leftIcon={<CustomIcon name="swap" boxSize={3} />}
                       >
                         Change Module
                       </Button>
                     </Flex>
                     <ModuleCard
-                      readOnly
                       module={selectedModule}
+                      selectedModule={selectedModule}
                       moveVerifyInfo={
                         moveVerifyInfos?.[
                           mergeModulePath(
@@ -184,15 +184,15 @@ export const ModuleSelectDrawerMobile = ({
                           )
                         ]
                       }
-                      selectedModule={selectedModule}
+                      readOnly
                     />
                   </>
                 )}
                 <SelectFunctionSection
                   area="main"
-                  closeModal={onClose}
-                  handleModuleSelect={handleModuleSelect}
                   module={selectedModule}
+                  handleModuleSelect={handleModuleSelect}
+                  closeModal={onClose}
                 />
               </Flex>
             </DrawerBody>

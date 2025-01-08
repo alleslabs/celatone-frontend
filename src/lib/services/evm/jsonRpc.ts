@@ -5,7 +5,7 @@ import type { JsonRpcResponse } from "../types/evm";
 import { zBatchJsonRpcResponse, zJsonRpcResponse } from "../types/evm";
 import { parseWithError } from "lib/utils";
 
-export type JsonRpcParams = boolean | string;
+export type JsonRpcParams = string | boolean;
 
 export const requestJsonRpc = (
   endpoint: string,
@@ -16,8 +16,8 @@ export const requestJsonRpc = (
     .post(
       endpoint,
       {
-        id: uuid.v4(),
         jsonrpc: "2.0",
+        id: uuid.v4(),
         method,
         params,
       },
@@ -47,8 +47,8 @@ export const requestBatchJsonRpc = (
     .post(
       endpoint,
       requests.map(({ method, params }, index) => ({
-        id: index,
         jsonrpc: "2.0",
+        id: index,
         method,
         params,
       })),

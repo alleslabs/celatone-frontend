@@ -28,8 +28,8 @@ export const useRecentCodes = (
     data: {
       items: codes.items.map<CodeInfo>((code) => ({
         ...code,
-        isSaved: isCodeIdSaved(code.id),
         name: getCodeLocalInfo(code.id)?.name,
+        isSaved: isCodeIdSaved(code.id),
       })),
       total: codes.total,
     },
@@ -45,8 +45,8 @@ export const useRecentCodesLcd = () => {
     data: data?.pages.flatMap((page) =>
       page.code_infos.map<CodeInfo>((code) => ({
         ...code,
-        isSaved: isCodeIdSaved(code.id),
         name: getCodeLocalInfo(code.id)?.name,
+        isSaved: isCodeIdSaved(code.id),
       }))
     ),
     ...rest,

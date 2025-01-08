@@ -2,12 +2,12 @@ import type { ComponentStyleConfig } from "@chakra-ui/react";
 
 export const Text: ComponentStyleConfig = {
   baseStyle: {
+    color: "text.main",
     "&.ellipsis": {
+      whiteSpace: "nowrap",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
     },
-    color: "text.main",
   },
   variants: {
     body1: {

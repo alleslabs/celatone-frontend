@@ -26,8 +26,8 @@ const sortByAvailability = (a: ExposedFunction, b: ExposedFunction) => {
 
 const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
   const functionMap = functions.reduce<{
-    execute: ExposedFunction[];
     view: ExposedFunction[];
+    execute: ExposedFunction[];
   }>(
     (acc, fn) => {
       if (fn.is_view) acc.view.push(fn);
@@ -38,8 +38,8 @@ const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
       return acc;
     },
     {
-      execute: [],
       view: [],
+      execute: [],
     }
   );
 
@@ -51,13 +51,13 @@ const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
 
 export const indexModuleAbi = (abi: string) => {
   const parsedAbi = parseJsonABI<ModuleAbi>(abi);
-  const { execute, view } = splitViewExecuteFunctions(
+  const { view, execute } = splitViewExecuteFunctions(
     parsedAbi.exposed_functions
   );
   return {
-    executeFunctions: execute,
     parsedAbi,
     viewFunctions: view,
+    executeFunctions: execute,
   };
 };
 
@@ -135,7 +135,7 @@ export const serializeAbiData = (fn: ExposedFunction, abiData: AbiFormData) => {
   );
 
   return {
-    args: serializedArgs,
     typeArgs: fn.generic_type_params.map((_, index) => abiData.typeArgs[index]),
+    args: serializedArgs,
   };
 };

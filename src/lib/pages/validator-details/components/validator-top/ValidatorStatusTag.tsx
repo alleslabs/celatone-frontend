@@ -10,14 +10,14 @@ export const ValidatorStatusTag = ({ info }: ValidatorStatusProps) => {
   if (info.isActive) {
     return (
       <Flex
-        alignItems="center"
-        gap={2}
-        px={2}
-        py={1}
         background="gray.900"
         borderRadius={8}
+        py={1}
+        px={2}
+        alignItems="center"
+        gap={2}
       >
-        <Flex h={3} w={3} background="success.main" borderRadius="full" />
+        <Flex h={3} w={3} borderRadius="full" background="success.main" />
         <Text variant="body3" color="text.main">
           Active
         </Text>
@@ -28,22 +28,22 @@ export const ValidatorStatusTag = ({ info }: ValidatorStatusProps) => {
   if (info.isJailed) {
     return (
       <Flex
-        alignItems="center"
-        gap={2}
-        px={2}
-        py={1}
         background="gray.900"
         borderRadius={8}
+        py={1}
+        px={2}
+        alignItems="center"
+        gap={2}
       >
         <Flex
-          display="grid"
           h={3}
-          placeItems="center"
           w={3}
-          background="error.main"
           borderRadius="full"
+          background="error.main"
+          display="grid"
+          placeItems="center"
         >
-          <CustomIcon margin={0} name="close" boxSize={1.5} color="black" />
+          <CustomIcon name="close" color="black" boxSize={1.5} margin={0} />
         </Flex>
         <Text variant="body3" color="text.main">
           Jailed
@@ -54,14 +54,14 @@ export const ValidatorStatusTag = ({ info }: ValidatorStatusProps) => {
 
   return (
     <Flex
-      alignItems="center"
-      gap={2}
-      px={2}
-      py={1}
       background="gray.900"
       borderRadius={8}
+      py={1}
+      px={2}
+      alignItems="center"
+      gap={2}
     >
-      <Flex h={3} w={3} background="gray.600" borderRadius="full" />
+      <Flex h={3} w={3} borderRadius="full" background="gray.600" />
       <Text variant="body3" color="text.main">
         Inactive
       </Text>

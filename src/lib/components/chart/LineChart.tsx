@@ -31,10 +31,10 @@ ChartJS.register(
 );
 
 interface LineChartProps {
-  customizeTooltip?: (tooltip: TooltipModel<"line">) => string;
-  customizeYAxisTicks?: (value: number | string) => string;
-  dataset: ChartDataset<"line", number[]>;
   labels: string[];
+  dataset: ChartDataset<"line", number[]>;
+  customizeTooltip?: (tooltip: TooltipModel<"line">) => string;
+  customizeYAxisTicks?: (value: string | number) => string;
 }
 
 const renderChartTooltip = (
@@ -104,10 +104,10 @@ const renderChartTooltip = (
 };
 
 export const LineChart = ({
+  labels,
+  dataset,
   customizeTooltip,
   customizeYAxisTicks,
-  dataset,
-  labels,
 }: LineChartProps) => {
   const isMobile = useMobile();
 
@@ -117,10 +117,10 @@ export const LineChart = ({
   const lineChartDataConfig = {
     borderWidth: 1,
     fill: true,
-    pointHitRadius: 30,
-    pointHoverBorderWidth: 1.5,
-    pointHoverRadius: 3,
     pointRadius: 0,
+    pointHoverRadius: 3,
+    pointHoverBorderWidth: 1.5,
+    pointHitRadius: 30,
     tension: 0.5,
   };
 
@@ -129,14 +129,15 @@ export const LineChart = ({
       crosshair: CrosshairOptions;
     };
   } = {
-    animation: false,
-    maintainAspectRatio: false,
     plugins: {
+      legend: {
+        display: false,
+      },
       crosshair: {
         line: {
           color: "#00B5CE",
-          dashPattern: [5, 5],
           width: 1,
+          dashPattern: [5, 5],
         },
         sync: {
           enabled: false,
@@ -145,16 +146,13 @@ export const LineChart = ({
           enabled: false,
         },
       },
-      legend: {
-        display: false,
-      },
       tooltip: customizeTooltip
         ? {
             enabled: false,
+            position: "nearest",
+            intersect: false,
             external: (context) =>
               renderChartTooltip(context, customizeTooltip, isMobile),
-            intersect: false,
-            position: "nearest",
           }
         : {
             enabled: true,
@@ -164,6 +162,8 @@ export const LineChart = ({
     scales: {
       x: {
         grid: {
+          display: true,
+          drawTicks: false,
           color: (ctx: ScriptableScaleContext) => {
             const { index } = ctx;
 
@@ -173,23 +173,23 @@ export const LineChart = ({
 
             return "#222424";
           },
-          display: true,
-          drawTicks: false,
         },
         ticks: {
-          callback: (_value: number | string, index: number) => {
+          padding: isMobile ? 16 : 10,
+          maxTicksLimit: isMobile ? 8 : 32,
+          callback: (_value: string | number, index: number) => {
             if (index === 0) {
               return "";
             }
 
             return labels[index];
           },
-          maxTicksLimit: isMobile ? 8 : 32,
-          padding: isMobile ? 16 : 10,
         },
       },
       y: {
         grid: {
+          display: true,
+          drawTicks: false,
           color: (ctx: ScriptableScaleContext) => {
             const { index } = ctx;
 
@@ -199,37 +199,37 @@ export const LineChart = ({
 
             return "#222424";
           },
-          display: true,
-          drawTicks: false,
         },
-        max: maxYValue + yPadding,
         min: 0,
+        max: maxYValue + yPadding,
         ticks: {
-          align: isMobile ? "start" : "center",
           autoSkip: true,
-          callback: (value: number | string) => {
-            return customizeYAxisTicks ? customizeYAxisTicks(value) : value;
-          },
-          labelOffset: isMobile ? 5 : 0,
           maxTicksLimit: 10,
           padding: 10,
+          callback: (value: string | number) => {
+            return customizeYAxisTicks ? customizeYAxisTicks(value) : value;
+          },
+          align: isMobile ? "start" : "center",
+          labelOffset: isMobile ? 5 : 0,
         },
       },
     },
+    maintainAspectRatio: false,
+    animation: false,
   };
 
   return (
     <Line
+      options={options}
       data={{
+        labels,
         datasets: [
           {
             ...dataset,
             ...lineChartDataConfig,
           },
         ],
-        labels,
       }}
-      options={options}
     />
   );
 };

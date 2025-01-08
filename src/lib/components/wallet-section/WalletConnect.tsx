@@ -7,22 +7,22 @@ import type { ConnectWalletType } from "lib/types";
 
 export const ConnectWalletButton = ({
   buttonText,
-  icon,
-  isDisabled,
   isLoading,
+  isDisabled,
   onClick,
   variant,
+  icon,
 }: ConnectWalletType) => (
   <Button
-    gap={1}
-    isDisabled={isDisabled}
-    minH="64px"
-    variant={variant}
     w="170px"
-    alignContent="center"
-    borderRadius={0}
     isLoading={isLoading}
+    isDisabled={isDisabled}
     onClick={onClick}
+    variant={variant}
+    gap={1}
+    alignContent="center"
+    minH="64px"
+    borderRadius={0}
   >
     <CustomIcon name={icon ?? "wallet"} />
     {buttonText || "Connect"}
@@ -38,42 +38,42 @@ export const Others = ({
   onClick: MouseEventHandler<HTMLButtonElement>;
 }) => (
   <ConnectWalletButton
-    isDisabled={false}
     buttonText={buttonText}
+    isDisabled={false}
     onClick={onClick}
   />
 );
 
 export const WalletConnectComponent = ({
-  connected,
-  connecting,
+  walletStatus,
   disconnect,
+  connecting,
+  connected,
+  rejected,
   error,
   notExist,
-  rejected,
-  walletStatus,
 }: {
-  connected: ReactNode;
-  connecting: ReactNode;
+  walletStatus: WalletStatus;
   disconnect: ReactNode;
+  connecting: ReactNode;
+  connected: ReactNode;
+  rejected: ReactNode;
   error: ReactNode;
   notExist: ReactNode;
-  rejected: ReactNode;
-  walletStatus: WalletStatus;
 }) => {
   switch (walletStatus) {
-    case WalletStatus.Connected:
-      return <>{connected}</>;
-    case WalletStatus.Connecting:
-      return <>{connecting}</>;
     case WalletStatus.Disconnected:
       return <>{disconnect}</>;
+    case WalletStatus.Connecting:
+      return <>{connecting}</>;
+    case WalletStatus.Connected:
+      return <>{connected}</>;
+    case WalletStatus.Rejected:
+      return <>{rejected}</>;
     case WalletStatus.Error:
       return <>{error}</>;
     case WalletStatus.NotExist:
       return <>{notExist}</>;
-    case WalletStatus.Rejected:
-      return <>{rejected}</>;
     default:
       return <>{disconnect}</>;
   }

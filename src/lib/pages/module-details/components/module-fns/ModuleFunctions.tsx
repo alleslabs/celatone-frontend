@@ -19,52 +19,52 @@ import { FunctionTypeSwitch } from "./FunctionTypeSwitch";
 
 interface ModuleFunctionsProps {
   address: IndexedModule["address"];
-  executeFns: IndexedModule["executeFunctions"];
-  fns: IndexedModule["parsedAbi"]["exposed_functions"];
   moduleName: IndexedModule["moduleName"];
-  typeTab: FunctionTypeTabIndex;
+  fns: IndexedModule["parsedAbi"]["exposed_functions"];
   viewFns: IndexedModule["viewFunctions"];
+  executeFns: IndexedModule["executeFunctions"];
+  typeTab: FunctionTypeTabIndex;
 }
 
 const FunctionAccordions = ({
-  address,
-  expandedIndexes,
-  fns,
   fnType,
+  address,
   moduleName,
+  fns,
+  expandedIndexes,
   updateExpandedIndexes,
 }: {
-  address: IndexedModule["address"];
-  expandedIndexes: number[];
-  fns: ExposedFunction[];
   fnType: FunctionTypeTabIndex;
+  address: IndexedModule["address"];
   moduleName: IndexedModule["moduleName"];
+  fns: ExposedFunction[];
+  expandedIndexes: number[];
   updateExpandedIndexes: (indexes: number[]) => void;
 }) => (
   <Accordion
     id={fnType}
     display="none"
-    index={expandedIndexes}
     allowMultiple
+    index={expandedIndexes}
     onChange={updateExpandedIndexes}
   >
     {fns.length ? (
-      <Flex gap={{ base: 2, md: 4 }} direction="column">
+      <Flex direction="column" gap={{ base: 2, md: 4 }}>
         {fns.map((fn) => (
           <FunctionDetailCard
             key={fn.name}
-            address={address}
             fnType={fnType}
             exposedFn={fn}
+            address={address}
             moduleName={moduleName}
           />
         ))}
       </Flex>
     ) : (
       <EmptyState
+        my={0}
         imageVariant="not-found"
         message="No functions match your search keyword."
-        my={0}
         withBorder
       />
     )}
@@ -73,11 +73,11 @@ const FunctionAccordions = ({
 
 export const ModuleFunctions = ({
   address,
-  executeFns,
-  fns,
   moduleName,
-  typeTab,
+  fns,
   viewFns,
+  executeFns,
+  typeTab,
 }: ModuleFunctionsProps) => {
   const navigate = useInternalNavigate();
 
@@ -105,15 +105,15 @@ export const ModuleFunctions = ({
       if (nextTab === typeTab) return;
       track(AmpEvent.USE_SUBTAB, { currentTab: nextTab });
       navigate({
-        options: {
-          shallow: true,
-        },
         pathname: `/modules/[address]/[moduleName]/[tab]`,
         query: {
           address,
           moduleName,
           tab: "function",
           type: nextTab,
+        },
+        options: {
+          shallow: true,
         },
       });
     },
@@ -122,45 +122,51 @@ export const ModuleFunctions = ({
 
   return (
     <Flex
+      direction="column"
       gap={4}
       sx={{ [`& #${typeTab}`]: { display: "block" } }}
-      direction="column"
     >
-      <Heading as="h6" minH="24px" variant="h6" fontWeight={600}>
+      <Heading as="h6" variant="h6" fontWeight={600} minH="24px">
         Exposed Functions
       </Heading>
       <InputWithIcon
-        size={{ base: "md", md: "lg" }}
-        value={keyword}
-        amptrackSection="exposed-function-search"
-        onChange={(e) => setKeyword(e.target.value)}
         placeholder="Search with Function Name"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        size={{ base: "md", md: "lg" }}
+        amptrackSection="exposed-function-search"
       />
       <Flex
+        justifyContent="space-between"
         alignItems="center"
         direction={{ base: "column", md: "row" }}
-        justifyContent="space-between"
       >
         <FunctionTypeSwitch
           currentTab={typeTab}
+          onTabChange={handleTabChange}
           my={3}
           counts={[
             filteredFns.length,
             filteredViewFns.length,
             filteredExecuteFns.length,
           ]}
-          onTabChange={handleTabChange}
         />
         <Flex
-          alignItems="center"
           gap={{ base: 2, md: 4 }}
           my={{ base: 1, md: 0 }}
+          alignItems="center"
           w={{ base: "full", md: "auto" }}
         >
           <Button
-            size="sm"
             variant="outline-primary"
             w={{ base: "full", md: "auto" }}
+            size="sm"
+            rightIcon={
+              <CustomIcon
+                name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+                boxSize={3}
+              />
+            }
             onClick={() => {
               trackUseExpandAll(
                 expandedIndexes.length ? "collapse" : "expand",
@@ -170,19 +176,14 @@ export const ModuleFunctions = ({
                 !prev.length ? Array.from(Array(fns.length).keys()) : []
               );
             }}
-            rightIcon={
-              <CustomIcon
-                name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
-                boxSize={3}
-              />
-            }
           >
             {expandedIndexes.length ? "Collapse All" : "Expand All"}
           </Button>
           <Button
-            size="sm"
             variant="outline-primary"
             w={{ base: "full", md: "auto" }}
+            size="sm"
+            rightIcon={<CustomIcon name="launch" boxSize={3} />}
             onClick={() => {
               trackUseViewJSON("Module Functions");
               const jsonString = JSON.stringify(fns, null, 2);
@@ -203,7 +204,6 @@ export const ModuleFunctions = ({
                 );
               }
             }}
-            rightIcon={<CustomIcon name="launch" boxSize={3} />}
           >
             View in JSON
           </Button>
@@ -211,27 +211,27 @@ export const ModuleFunctions = ({
       </Flex>
       {/* rendering all tabs at once and use css selector to avoid lagginess when changing tab */}
       <FunctionAccordions
-        address={address}
-        expandedIndexes={expandedIndexes}
-        fns={filteredFns}
         fnType={FunctionTypeTabIndex.ALL}
+        fns={filteredFns}
+        expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
+        address={address}
         moduleName={moduleName}
       />
       <FunctionAccordions
-        address={address}
-        expandedIndexes={expandedIndexes}
-        fns={filteredViewFns}
         fnType={FunctionTypeTabIndex.VIEW}
+        fns={filteredViewFns}
+        expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
+        address={address}
         moduleName={moduleName}
       />
       <FunctionAccordions
-        address={address}
-        expandedIndexes={expandedIndexes}
-        fns={filteredExecuteFns}
         fnType={FunctionTypeTabIndex.EXECUTE}
+        fns={filteredExecuteFns}
+        expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
+        address={address}
         moduleName={moduleName}
       />
     </Flex>

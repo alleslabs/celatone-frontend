@@ -14,23 +14,23 @@ import { TxStreamPhase } from "lib/types";
 
 const getReceiptInfo = (
   error: Error
-): Pick<ReceiptInfo, "errorMsg" | "header"> =>
+): Pick<ReceiptInfo, "header" | "errorMsg"> =>
   error.message === "Request rejected"
     ? {
         header: "Rejected by user",
       }
     : {
-        errorMsg: error.message,
         header: "Transaction Failed",
+        errorMsg: error.message,
       };
 
 const getTxHashReceipts = (txHash?: string): TxReceipt[] =>
   txHash
     ? [
         {
-          html: <ExplorerLink type="tx_hash" value={txHash} openNewTab />,
           title: "Tx Hash",
           value: txHash,
+          html: <ExplorerLink type="tx_hash" value={txHash} openNewTab />,
         },
       ]
     : [];
@@ -50,20 +50,20 @@ export const catchTxError = (
     }
     onTxFailed?.();
     return Promise.resolve<TxResultRendering>({
-      actionVariant: getActionVariant(!txHash),
+      value: null,
       phase: TxStreamPhase.FAILED,
       receiptInfo: {
         ...getReceiptInfo(error),
         headerIcon: (
           <CustomIcon
             name="alert-triangle-solid"
-            boxSize={5}
             color="error.light"
+            boxSize={5}
           />
         ),
       },
       receipts: getTxHashReceipts(txHash),
-      value: null,
+      actionVariant: getActionVariant(!txHash),
     });
   });
 };

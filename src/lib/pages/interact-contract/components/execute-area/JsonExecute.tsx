@@ -38,8 +38,8 @@ import { MsgSuggestion } from "./MsgSuggestion";
 
 interface JsonExecuteProps {
   contractAddress: BechAddr32;
-  initialFunds: Coin[];
   initialMsg: string;
+  initialFunds: Coin[];
 }
 
 const WasmCodeSnippet = dynamic(
@@ -50,8 +50,8 @@ const WasmCodeSnippet = dynamic(
 );
 
 const assetDefault = {
-  assetsJsonStr: defaultAssetJsonStr,
   assetsSelect: defaultAsset,
+  assetsJsonStr: defaultAssetJsonStr,
   attachFundsOption: AttachFundsType.ATTACH_FUNDS_NULL,
 };
 
@@ -82,9 +82,9 @@ export const JsonExecute = ({
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
-  const { control, reset, setValue, watch } = useForm<AttachFundsState>({
-    defaultValues: assetDefault,
+  const { control, setValue, watch, reset } = useForm<AttachFundsState>({
     mode: "all",
+    defaultValues: assetDefault,
   });
   const { errors } = useFormState({ control });
   const { assetsJsonStr, assetsSelect, attachFundsOption } = watch();
@@ -104,10 +104,10 @@ export const JsonExecute = ({
       contractAddress
     );
     switch (attachFundsOption) {
-      case AttachFundsType.ATTACH_FUNDS_JSON:
-        return generalCheck && isValidAssetsJsonStr;
       case AttachFundsType.ATTACH_FUNDS_SELECT:
         return generalCheck && isValidAssetsSelect;
+      case AttachFundsType.ATTACH_FUNDS_JSON:
+        return generalCheck && isValidAssetsJsonStr;
       default:
         return generalCheck;
     }
@@ -131,19 +131,19 @@ export const JsonExecute = ({
   // ------------------------------------------//
   // -----------------REACT QUERY--------------//
   // ------------------------------------------//
-  const { execCmds, isFetching: cmdsFetching } =
+  const { isFetching: cmdsFetching, execCmds } =
     useExecuteCmds(contractAddress);
   const { isFetching } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
-    onError: (e) => {
-      setError(e.message);
-      setFee(undefined);
-    },
     onSuccess: (gasRes) => {
       setError(undefined);
       if (gasRes) setFee(fabricateFee(gasRes));
       else setFee(undefined);
+    },
+    onError: (e) => {
+      setError(e.message);
+      setFee(undefined);
     },
   });
 
@@ -159,15 +159,15 @@ export const JsonExecute = ({
       "json-input"
     );
     const stream = await executeTx({
-      contractAddress,
-      estimatedFee: fee,
-      funds,
-      msg: JSON.parse(msg),
-      onTxFailed: () => setProcessing(false),
       onTxSucceed: (activity: Activity) => {
         addActivity(activity);
         setProcessing(false);
       },
+      onTxFailed: () => setProcessing(false),
+      estimatedFee: fee,
+      contractAddress,
+      msg: JSON.parse(msg),
+      funds,
     });
     if (stream) {
       setProcessing(true);
@@ -211,10 +211,10 @@ export const JsonExecute = ({
       const composedMsg = address
         ? [
             composeMsg(MsgType.EXECUTE, {
-              contract: contractAddress,
-              funds,
-              msg: Buffer.from(msg),
               sender: address,
+              contract: contractAddress,
+              msg: Buffer.from(msg),
+              funds,
             }),
           ]
         : [];
@@ -232,21 +232,21 @@ export const JsonExecute = ({
     <>
       {cmdsFetching && <LoadingOverlay />}
       <MsgSuggestion
+        contractAddress={contractAddress}
         cmds={execCmds}
         setMsg={setMsg}
-        contractAddress={contractAddress}
       />
-      <Flex gap={10} direction="column">
-        <Flex gap={8} direction={{ lg: "row", sm: "column" }}>
-          <Flex w={{ lg: "50%", sm: "full" }} direction="column">
-            <JsonInput setText={setMsg} text={msg} topic="Execute Msg" />
-            {error && <ErrorMessageRender mb={4} error={error} />}
+      <Flex direction="column" gap={10}>
+        <Flex gap={8} direction={{ sm: "column", lg: "row" }}>
+          <Flex direction="column" w={{ sm: "full", lg: "50%" }}>
+            <JsonInput topic="Execute Msg" text={msg} setText={setMsg} />
+            {error && <ErrorMessageRender error={error} mb={4} />}
           </Flex>
-          <Box w={{ lg: "50%", sm: "full" }}>
+          <Box w={{ sm: "full", lg: "50%" }}>
             <AttachFund
+              control={control}
               setValue={setValue}
               attachFundsOption={attachFundsOption}
-              control={control}
             />
           </Box>
         </Flex>
@@ -258,22 +258,22 @@ export const JsonExecute = ({
               amptrackSection="execute_msg"
             />
             <WasmCodeSnippet
-              funds={funds}
-              message={msg}
               type="execute"
               contractAddress={contractAddress}
+              message={msg}
+              funds={funds}
             />
           </Flex>
-          <Flex align="center" gap={2} direction="row">
-            <Flex alignItems="center" color="text.dark" fontSize="14px">
+          <Flex direction="row" align="center" gap={2}>
+            <Flex fontSize="14px" color="text.dark" alignItems="center">
               Transaction Fee:{" "}
               <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
             </Flex>
             <SubmitButton
-              isDisabled={isButtonDisabled}
               text="Execute"
               isLoading={processing}
               onSubmit={proceed}
+              isDisabled={isButtonDisabled}
             />
           </Flex>
         </Flex>

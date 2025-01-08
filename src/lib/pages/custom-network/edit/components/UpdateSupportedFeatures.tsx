@@ -4,10 +4,10 @@ import { CustomNetworkSubheader } from "lib/components/custom-network";
 
 export const UpdateSupportedFeatures = () => {
   return (
-    <Flex gap={6} direction="column">
+    <Flex direction="column" gap={6}>
       <CustomNetworkSubheader
-        subtitle="Choose supported features for your custom Minitia"
         title="Feature Lists"
+        subtitle="Choose supported features for your custom Minitia"
       />
       <Flex bg="teal">form goes here</Flex>
     </Flex>

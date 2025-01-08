@@ -5,22 +5,18 @@ import type { BechAddr, Dict } from "lib/types";
 
 export interface AccountLocalInfo {
   address: BechAddr;
-  description?: string;
   name?: string;
+  description?: string;
 }
 export class AccountStore {
+  private userKey: string;
+
+  savedAccounts: Dict<string, BechAddr[]>;
+
   accountLocalInfo: Dict<
     string, // user key
     Record<string, AccountLocalInfo>
   >;
-
-  savedAccounts: Dict<string, BechAddr[]>;
-
-  get isHydrated(): boolean {
-    return isHydrated(this);
-  }
-
-  private userKey: string;
 
   constructor() {
     this.savedAccounts = {};
@@ -35,38 +31,20 @@ export class AccountStore {
     });
   }
 
-  getAccountLocalInfo(address: BechAddr): AccountLocalInfo | undefined {
-    return this.accountLocalInfo[this.userKey]?.[address];
-  }
-
-  getSavedAccounts(): AccountLocalInfo[] {
-    const savedAccountsByUserKey = this.savedAccounts[this.userKey] ?? [];
-    return savedAccountsByUserKey
-      .map((address) => ({
-        address,
-        description: this.getAccountLocalInfo(address)?.description,
-        name: this.getAccountLocalInfo(address)?.name,
-      }))
-      .reverse();
-  }
-
-  isAccountSaved(address: BechAddr): boolean {
-    return this.savedAccounts[this.userKey]?.includes(address) ?? false;
+  get isHydrated(): boolean {
+    return isHydrated(this);
   }
 
   isAccountUserKeyExist(): boolean {
     return !!this.userKey;
   }
 
-  removeSavedAccount(address: BechAddr): void {
-    this.savedAccounts[this.userKey] = this.savedAccounts[this.userKey]?.filter(
-      (each) => each !== address
-    );
-    delete this.accountLocalInfo[this.userKey]?.[address];
-  }
-
   setAccountUserKey(userKey: string) {
     this.userKey = userKey;
+  }
+
+  getAccountLocalInfo(address: BechAddr): AccountLocalInfo | undefined {
+    return this.accountLocalInfo[this.userKey]?.[address];
   }
 
   updateAccountLocalInfo(
@@ -80,8 +58,8 @@ export class AccountStore {
 
     const accountLocalInfo = this.accountLocalInfo[this.userKey]?.[address] ?? {
       address,
-      description,
       name,
+      description,
     };
 
     if (name !== undefined)
@@ -96,5 +74,27 @@ export class AccountStore {
       ...this.accountLocalInfo[this.userKey],
       [address]: accountLocalInfo,
     };
+  }
+
+  isAccountSaved(address: BechAddr): boolean {
+    return this.savedAccounts[this.userKey]?.includes(address) ?? false;
+  }
+
+  removeSavedAccount(address: BechAddr): void {
+    this.savedAccounts[this.userKey] = this.savedAccounts[this.userKey]?.filter(
+      (each) => each !== address
+    );
+    delete this.accountLocalInfo[this.userKey]?.[address];
+  }
+
+  getSavedAccounts(): AccountLocalInfo[] {
+    const savedAccountsByUserKey = this.savedAccounts[this.userKey] ?? [];
+    return savedAccountsByUserKey
+      .map((address) => ({
+        address,
+        name: this.getAccountLocalInfo(address)?.name,
+        description: this.getAccountLocalInfo(address)?.description,
+      }))
+      .reverse();
   }
 }

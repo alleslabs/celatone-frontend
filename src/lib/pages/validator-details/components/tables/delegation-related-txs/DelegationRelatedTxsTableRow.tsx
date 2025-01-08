@@ -9,45 +9,45 @@ import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 import { DelegationRelatedTxsTokenChange } from "./DelegationRelatedTxsTokenChange";
 
 interface DelegationRelatedTxsTableRowProps {
-  assetInfos: Option<AssetInfos>;
   delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
+  templateColumns: string;
+  assetInfos: Option<AssetInfos>;
   movePoolInfos: Option<MovePoolInfos>;
   onRowSelect: (txHash: string) => void;
-  templateColumns: string;
 }
 
 export const DelegationRelatedTxsTableRow = ({
-  assetInfos,
   delegationRelatedTx,
-  movePoolInfos,
-  onRowSelect,
   templateColumns,
+  onRowSelect,
+  movePoolInfos,
+  assetInfos,
 }: DelegationRelatedTxsTableRowProps) => (
   <Grid
     className="copier-wrapper"
-    minW="min-content"
-    _hover={{ bg: "gray.900" }}
-    cursor="pointer"
-    onClick={() => onRowSelect(delegationRelatedTx.txHash)}
     templateColumns={templateColumns}
+    _hover={{ bg: "gray.900" }}
     transition="all 0.25s ease-in-out"
+    cursor="pointer"
+    minW="min-content"
+    onClick={() => onRowSelect(delegationRelatedTx.txHash)}
   >
     <TableRow>
       <ExplorerLink
-        type="tx_hash"
         value={delegationRelatedTx.txHash.toLocaleUpperCase()}
+        type="tx_hash"
         showCopyOnHover
       />
       {delegationRelatedTx.messages.length > 1 && (
-        <Badge ml={2} variant="primary-light">
+        <Badge variant="primary-light" ml={2}>
           {delegationRelatedTx.messages.length}
         </Badge>
       )}
     </TableRow>
     <TableRow>
       <ExplorerLink
-        type="user_address"
         value={delegationRelatedTx.sender}
+        type="user_address"
         showCopyOnHover
       />
     </TableRow>
@@ -63,8 +63,8 @@ export const DelegationRelatedTxsTableRow = ({
         <DelegationRelatedTxsTokenChange
           key={delegationRelatedTx.txHash + coin.amount + coin.denom}
           txHash={delegationRelatedTx.txHash}
-          assetInfos={assetInfos}
           coin={coin}
+          assetInfos={assetInfos}
           movePoolInfos={movePoolInfos}
         />
       ))}

@@ -19,24 +19,24 @@ import { JsonExecute } from "./JsonExecute";
 import { SchemaExecute } from "./schema-execute";
 
 interface ExecuteAreaProps {
-  codeHash: Option<string>;
-  codeId: Option<number>;
-  contractAddress: BechAddr32;
-  initialFunds: Coin[];
-  initialMsg: string;
-  localSchema: Option<CodeSchema>;
   verifiedSchema: Nullish<CodeSchema>;
+  localSchema: Option<CodeSchema>;
+  contractAddress: BechAddr32;
+  initialMsg: string;
+  initialFunds: Coin[];
+  codeId: Option<number>;
+  codeHash: Option<string>;
 }
 
 export const ExecuteArea = observer(
   ({
+    verifiedSchema,
+    localSchema,
+    contractAddress,
+    initialMsg,
+    initialFunds,
     codeHash,
     codeId,
-    contractAddress,
-    initialFunds,
-    initialMsg,
-    localSchema,
-    verifiedSchema,
   }: ExecuteAreaProps) => {
     const [tab, setTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
 
@@ -61,25 +61,25 @@ export const ExecuteArea = observer(
     return (
       <>
         <ConnectWalletAlert
-          mb={4}
           subtitle="You need to connect your wallet to perform this action"
+          mb={4}
         />
         <Tabs
-          index={Object.values(MessageTabs).indexOf(tab)}
           isLazy
           lazyBehavior="keepMounted"
+          index={Object.values(MessageTabs).indexOf(tab)}
         >
           <TabList mb={8} borderBottom="1px" borderColor="gray.800">
             <CustomTab onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}>
               JSON Input
             </CustomTab>
             <CustomTab
-              isDisabled={!contractAddress}
               onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
+              isDisabled={!contractAddress}
             >
               <Tooltip
-                hidden={Boolean(contractAddress)}
                 label="Please select contract first"
+                hidden={Boolean(contractAddress)}
               >
                 Your Schema
               </Tooltip>
@@ -90,9 +90,9 @@ export const ExecuteArea = observer(
           currentTab={tab}
           jsonContent={
             <JsonExecute
+              contractAddress={contractAddress}
               initialFunds={initialFunds}
               initialMsg={initialMsg}
-              contractAddress={contractAddress}
             />
           }
           schemaContent={
@@ -101,21 +101,23 @@ export const ExecuteArea = observer(
               <>
                 {hasSchema ? (
                   <SchemaExecute
-                    initialFunds={initialFunds}
-                    initialMsg={initialMsg}
                     verifiedSchema={verifiedSchema}
-                    codeHash={codeHash}
-                    codeId={codeId}
-                    contractAddress={contractAddress}
                     localSchema={localSchema}
+                    contractAddress={contractAddress}
+                    initialMsg={initialMsg}
+                    initialFunds={initialFunds}
+                    codeId={codeId}
+                    codeHash={codeHash}
                   />
                 ) : (
                   <UploadSchemaSection
+                    codeId={codeId}
+                    codeHash={codeHash}
                     title={
-                      <Flex alignItems="center" flexDirection="column">
+                      <Flex flexDirection="column" alignItems="center">
                         <Flex display="inline" textAlign="center">
                           You haven&#39;t attached the JSON Schema for
-                          <CustomIcon mx={1} name="code" color="gray.400" />
+                          <CustomIcon name="code" mx={1} color="gray.400" />
                           code {codeId}
                         </Flex>
                         <Flex textAlign="center">
@@ -123,8 +125,6 @@ export const ExecuteArea = observer(
                         </Flex>
                       </Flex>
                     }
-                    codeHash={codeHash}
-                    codeId={codeId}
                   />
                 )}
               </>

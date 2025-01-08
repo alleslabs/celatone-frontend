@@ -22,6 +22,13 @@ import {
 } from "./select-contract";
 import { WasmVerifyBadge } from "./WasmVerifyBadge";
 
+interface DisplayNameProps {
+  notSelected: boolean;
+  isValid: boolean;
+  name?: string;
+  label: string;
+}
+
 interface ContractDetailsButtonProps {
   contractAddress: BechAddr32;
   contractLocalInfo: Option<ContractLocalInfo>;
@@ -30,17 +37,10 @@ interface ContractDetailsButtonProps {
 }
 
 interface ContractSelectSectionProps {
-  contractAddress: BechAddr32;
   mode: "all-lists" | "only-admin";
+  contractAddress: BechAddr32;
   onContractSelect: (contract: BechAddr32) => void;
   successCallback?: (data: ContractData) => void;
-}
-
-interface DisplayNameProps {
-  isValid: boolean;
-  label: string;
-  name?: string;
-  notSelected: boolean;
 }
 
 const modeStyle = (mode: string) => {
@@ -70,10 +70,10 @@ const modeStyle = (mode: string) => {
 };
 
 const DisplayName = ({
-  isValid,
-  label,
-  name,
   notSelected,
+  isValid,
+  name,
+  label,
 }: DisplayNameProps) => {
   const displayName = useMemo(() => {
     if (notSelected) return "Not Selected";
@@ -83,8 +83,8 @@ const DisplayName = ({
 
   return (
     <Text
-      variant="body2"
       textColor={notSelected ? "text.disabled" : "text.dark"}
+      variant="body2"
     >
       {displayName}
     </Text>
@@ -102,44 +102,44 @@ const ContractDetailsButton = ({
   if (isMobile) return null;
   return isExist ? (
     <EditContractDetailsModal
+      contractLocalInfo={contractLocalInfo}
       triggerElement={
         <Button
-          size="sm"
           variant="ghost-gray"
           float="right"
+          size="sm"
           leftIcon={<CustomIcon name="edit" />}
         >
           Edit
         </Button>
       }
-      contractLocalInfo={contractLocalInfo}
     />
   ) : (
     <SaveContractDetailsModal
-      triggerElement={
-        <Button
-          size="sm"
-          variant="outline-gray"
-          float="right"
-          leftIcon={<CustomIcon name="bookmark" boxSize="12px" />}
-        >
-          Add To List
-        </Button>
-      }
       contractLocalInfo={{
         contractAddress,
         instantiator,
         label,
         ...contractLocalInfo,
       }}
+      triggerElement={
+        <Button
+          variant="outline-gray"
+          float="right"
+          size="sm"
+          leftIcon={<CustomIcon name="bookmark" boxSize="12px" />}
+        >
+          Add To List
+        </Button>
+      }
     />
   );
 };
 
 export const ContractSelectSection = observer(
   ({
-    contractAddress,
     mode,
+    contractAddress,
     onContractSelect,
     successCallback,
   }: ContractSelectSectionProps) => {
@@ -150,32 +150,32 @@ export const ContractSelectSection = observer(
 
     const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
-      formState: { defaultValues },
-      reset,
       watch,
+      reset,
+      formState: { defaultValues },
     } = useForm({
       defaultValues: {
-        instantiator: "",
         isValid: false,
+        instantiator: "",
         label: "",
       },
       mode: "all",
     });
 
-    const { isFetching, refetch } = useContractData(contractAddress, {
+    const { refetch, isFetching } = useContractData(contractAddress, {
       enabled: !!contractAddress,
-      onError: () => reset(defaultValues),
       onSuccess: (data) => {
         successCallback?.(data);
         reset({
-          instantiator: data.contract.instantiator,
           isValid: true,
+          instantiator: data.contract.instantiator,
           label: data.contract.label,
         });
 
         setCodeId(data.contract.codeId);
         setCodeHash(data.contract.codeHash);
       },
+      onError: () => reset(defaultValues),
     });
 
     const {
@@ -188,8 +188,8 @@ export const ContractSelectSection = observer(
         if (contractAddress) refetch();
       } else {
         reset({
-          instantiator: contractLocalInfo.instantiator,
           isValid: true,
+          instantiator: contractLocalInfo.instantiator,
           label: contractLocalInfo.label,
         });
       }
@@ -203,69 +203,69 @@ export const ContractSelectSection = observer(
       <>
         {(isFetching || isDerivedWasmVerifyInfoLoading) && <LoadingOverlay />}
         <Flex
-          borderWidth="thin"
-          width="full"
-          align="center"
-          justify="space-between"
           mb={style.container}
-          p={4}
+          borderWidth="thin"
           borderColor="gray.800"
+          p={4}
           borderRadius="8px"
           fontSize="12px"
+          justify="space-between"
+          align="center"
+          width="full"
         >
-          <Flex width="100%" gap={4} direction={{ base: "column", md: "row" }}>
+          <Flex gap={4} width="100%" direction={{ base: "column", md: "row" }}>
             <Flex
-              width={{ base: "auto", md: style.contractAddrContainer }}
               direction="column"
+              width={{ base: "auto", md: style.contractAddrContainer }}
             >
               Contract Address
               {!notSelected ? (
                 <ExplorerLink
-                  maxWidth="none"
-                  minWidth={style.contractAddrW}
-                  type="contract_address"
                   value={contractAddress}
-                  rightIcon={
-                    <WasmVerifyBadge
-                      status={getWasmVerifyStatus(derivedWasmVerifyInfo)}
-                      linkedCodeId={codeId}
-                      relatedVerifiedCodes={
-                        derivedWasmVerifyInfo?.relatedVerifiedCodes
-                      }
-                    />
-                  }
+                  type="contract_address"
                   showCopyOnHover
                   // TODO - Revisit not necessary if disable UI for mobile is implemented
                   textFormat={
                     isMobile || mode === "only-admin" ? "truncate" : "normal"
                   }
+                  maxWidth="none"
+                  minWidth={style.contractAddrW}
                   wordBreak="break-all"
+                  rightIcon={
+                    <WasmVerifyBadge
+                      status={getWasmVerifyStatus(derivedWasmVerifyInfo)}
+                      relatedVerifiedCodes={
+                        derivedWasmVerifyInfo?.relatedVerifiedCodes
+                      }
+                      linkedCodeId={codeId}
+                    />
+                  }
                 />
               ) : (
-                <Text variant="body2" color="text.disabled">
+                <Text color="text.disabled" variant="body2">
                   Not Selected
                 </Text>
               )}
             </Flex>
             <Flex
-              width={{ base: "auto", md: style.contractNameContainer }}
               direction="column"
+              width={{ base: "auto", md: style.contractNameContainer }}
             >
               Contract Name
               <DisplayName
-                isValid={contractState.isValid}
-                label={contractState.label}
-                name={contractLocalInfo?.name}
                 notSelected={notSelected}
+                isValid={contractState.isValid}
+                name={contractLocalInfo?.name}
+                label={contractState.label}
               />
             </Flex>
-            <Flex alignItems="center" gap={2}>
+            <Flex gap={2} alignItems="center">
               {mode === "all-lists" && contractState.isValid && (
                 <ContractDetailsButton
-                  label={contractState.label}
                   contractAddress={contractAddress}
                   contractLocalInfo={contractLocalInfo}
                   instantiator={contractState.instantiator as BechAddr}
+                  label={contractState.label}
                 />
               )}
               {mode === "all-lists" ? (

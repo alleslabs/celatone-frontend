@@ -18,17 +18,17 @@ const ProposalMetadataBody = ({ metadata }: ProposalMetadataProps) => {
   if (isUrl(metadata)) {
     return (
       <Box
-        alignItems="center"
         display="inline-flex"
+        alignItems="center"
+        transition="all 0.25s ease-in-out"
         _hover={{
           textDecoration: "underline",
           textDecorationColor: "primary.light",
         }}
         color="primary.main"
-        transition="all 0.25s ease-in-out"
         wordBreak="break-all"
       >
-        <a data-peer rel="noopener noreferrer" target="_blank" href={metadata}>
+        <a href={metadata} target="_blank" rel="noopener noreferrer" data-peer>
           {metadata}
         </a>
       </Box>
@@ -43,7 +43,7 @@ const ProposalMetadataBody = ({ metadata }: ProposalMetadataProps) => {
 };
 
 export const ProposalMetadata = ({ metadata }: ProposalMetadataProps) => (
-  <Flex gap={4} direction="column">
+  <Flex direction="column" gap={4}>
     <Heading as="h6" variant="h6">
       Metadata
     </Heading>

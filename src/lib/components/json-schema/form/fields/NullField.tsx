@@ -20,13 +20,13 @@ function NullField<
   const { idSchema } = props;
   return idSchema.$id === "root" ? (
     <Text
-      p={4}
-      textAlign="center"
       variant="body3"
-      bgColor="gray.700"
-      borderRadius="8px"
       fontWeight={700}
       textColor="text.disabled"
+      textAlign="center"
+      p={4}
+      bgColor="gray.700"
+      borderRadius="8px"
     >
       NULL
     </Text>

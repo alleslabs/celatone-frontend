@@ -8,19 +8,19 @@ import { dateFromNow, formatUTC } from "lib/utils";
 
 interface DepositorsTableRowProps {
   proposalDeposit: ProposalDeposit;
-  showTransaction: boolean;
   templateColumns: string;
+  showTransaction: boolean;
 }
 
 export const DepositorsTableRow = ({
   proposalDeposit,
-  showTransaction,
   templateColumns,
+  showTransaction,
 }: DepositorsTableRowProps) => (
   <Grid
     className="copier-wrapper"
-    minW="min-content"
     templateColumns={templateColumns}
+    minW="min-content"
   >
     <TableRow>
       <ExplorerLink
@@ -50,7 +50,7 @@ export const DepositorsTableRow = ({
               <Text variant="body3">
                 {formatUTC(proposalDeposit.timestamp)}
               </Text>
-              <Text mt="2px" variant="body3" color="text.dark">
+              <Text variant="body3" color="text.dark" mt="2px">
                 ({dateFromNow(proposalDeposit.timestamp)})
               </Text>
             </Flex>

@@ -15,7 +15,7 @@ export const BlockDetailsFull = ({ height }: { height: number }) => {
     <>
       <Breadcrumb
         items={[
-          { href: "/blocks", text: "Blocks" },
+          { text: "Blocks", href: "/blocks" },
           { text: blockData.height.toString() },
         ]}
       />
@@ -23,8 +23,8 @@ export const BlockDetailsFull = ({ height }: { height: number }) => {
       <BlockInfo blockData={blockData} />
       <BlockTxsTableFull height={height} />
       <UserDocsLink
-        cta="Read more about Block"
         title="What is a block?"
+        cta="Read more about Block"
         href="general/blocks/detail-page"
       />
     </>

@@ -2,27 +2,27 @@ import { chakra, Flex, GridItem, SimpleGrid } from "@chakra-ui/react";
 
 export const TableContainer = chakra(Flex, {
   baseStyle: {
-    flexDir: "column",
-    overflowX: "scroll",
     overflowY: "hidden",
-    pb: 0,
+    overflowX: "scroll",
+    flexDir: "column",
     w: "full",
+    pb: 0,
   },
 });
 
 const stickyBaseStyle = {
-  background: "background.main",
   position: "sticky",
+  background: "background.main",
 };
 
 const tableHeaderBaseStyle = {
-  borderBottom: "1px solid",
-  borderColor: "gray.700",
   color: "text.main",
   fontSize: "12px",
   fontWeight: 700,
-  px: 4,
   py: 6,
+  px: 4,
+  borderBottom: "1px solid",
+  borderColor: "gray.700",
 };
 
 export const TableHeader = chakra(GridItem, {
@@ -37,16 +37,16 @@ export const TableHeaderFreeze = chakra(GridItem, {
 });
 
 const tableRowBaseStyle = {
+  color: "text.main",
+  fontSize: "14px",
+  fontWeight: 400,
+  p: 4,
+  minW: 0,
+  minH: "75px",
+  display: "flex",
   alignItems: "center",
   borderBottom: "1px solid",
   borderColor: "gray.700",
-  color: "text.main",
-  display: "flex",
-  fontSize: "14px",
-  fontWeight: 400,
-  minH: "75px",
-  minW: 0,
-  p: 4,
 };
 
 export const TableRow = chakra(GridItem, {
@@ -73,7 +73,7 @@ export const MobileTableContainer = chakra(SimpleGrid, {
   baseStyle: {
     columns: 1,
     gap: 4,
-    my: 4,
     w: "full",
+    my: 4,
   },
 });

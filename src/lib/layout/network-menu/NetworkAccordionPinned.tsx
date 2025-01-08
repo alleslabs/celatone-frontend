@@ -32,18 +32,18 @@ import type { Nullable, Option } from "lib/types";
 import { NetworkCardDraggable } from "./network-card";
 
 interface NetworkAccodionPinnedProps {
-  cursor: Option<number>;
-  onClose: () => void;
   pinnedNetworks: string[];
+  cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
+  onClose: () => void;
 }
 
 export const NetworkAccodionPinned = observer(
   ({
-    cursor,
-    onClose,
     pinnedNetworks,
+    cursor,
     setCursor,
+    onClose,
   }: NetworkAccodionPinnedProps) => {
     const { setPinnedNetworks } = useNetworkStore();
     const [dndActive, setDndActive] = useState<Nullable<Active>>(null);
@@ -71,20 +71,21 @@ export const NetworkAccodionPinned = observer(
 
     return (
       <AccordionItem hidden={pinnedNetworks.length === 0}>
-        <Flex gap={4} direction="column">
+        <Flex direction="column" gap={4}>
           <AccordionButton p={0}>
-            <Flex w="full" justifyContent="space-between">
+            <Flex justifyContent="space-between" w="full">
               <Heading as="h6" variant="h6">
                 Pinned Network
               </Heading>
               <AccordionIcon color="gray.600" />
             </Flex>
           </AccordionButton>
-          <AccordionPanel mb={2} p={0}>
+          <AccordionPanel p={0} mb={2}>
             <DndContext
+              sensors={sensors}
               collisionDetection={closestCenter}
-              onDragCancel={() => {
-                setDndActive(null);
+              onDragStart={({ active }) => {
+                setDndActive(active);
               }}
               onDragEnd={({ active, over }) => {
                 if (over && active.id !== over.id) {
@@ -98,10 +99,9 @@ export const NetworkAccodionPinned = observer(
                 }
                 setDndActive(null);
               }}
-              onDragStart={({ active }) => {
-                setDndActive(active);
+              onDragCancel={() => {
+                setDndActive(null);
               }}
-              sensors={sensors}
             >
               <SortableContext
                 items={pinnedNetworks}
@@ -113,14 +113,13 @@ export const NetworkAccodionPinned = observer(
                     chainId={item}
                     index={index}
                     cursor={cursor}
-                    onClose={onClose}
                     setCursor={setCursor}
+                    onClose={onClose}
                   />
                 ))}
               </SortableContext>
               {createPortal(
                 <DragOverlay
-                  zIndex={2000}
                   dropAnimation={{
                     sideEffects: defaultDropAnimationSideEffects({
                       styles: {
@@ -130,14 +129,15 @@ export const NetworkAccodionPinned = observer(
                       },
                     }),
                   }}
+                  zIndex={2000}
                 >
                   {activeItem ? (
                     <NetworkCardDraggable
                       key={activeItem}
                       chainId={activeItem}
                       cursor={cursor}
-                      onClose={onClose}
                       setCursor={setCursor}
+                      onClose={onClose}
                     />
                   ) : null}
                 </DragOverlay>,

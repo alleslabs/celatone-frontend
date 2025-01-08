@@ -12,8 +12,8 @@ export const UploadButton = ({ isAllowed }: UploadButtonProps) => {
 
   return (
     <Tooltip
-      hidden={isAllowed}
       label="Only allowed address can upload Wasm file without opening proposal"
+      hidden={isAllowed}
     >
       <Button
         isDisabled={!isAllowed}

@@ -7,40 +7,40 @@ import { OverviewCard } from "./OverviewCard";
 import { SingleBondCard } from "./single-bond-card";
 
 export interface TotalCardProps {
+  title: string;
+  message: string;
   address: BechAddr;
   bondDenoms: TokenWithValue[];
+  tokens: Option<Record<string, TokenWithValue>>;
   isLoading: boolean;
   isViewMore: boolean;
-  message: string;
-  title: string;
-  tokens: Option<Record<string, TokenWithValue>>;
 }
 
 export const TotalCard = ({
+  title,
+  message,
   address,
   bondDenoms,
+  tokens,
   isLoading,
   isViewMore,
-  message,
-  title,
-  tokens,
 }: TotalCardProps) => {
   if (isLoading)
     return (
       <Box minW={48}>
-        <Spinner alignSelf="center" mt={2} size="xl" />
+        <Spinner mt={2} alignSelf="center" size="xl" />
       </Box>
     );
 
   if (isViewMore)
-    return <OverviewCard message={message} title={title} tokens={tokens} />;
+    return <OverviewCard title={title} message={message} tokens={tokens} />;
 
   if (bondDenoms.length === 1)
     return (
       <SingleBondCard
-        address={address}
-        message={message}
         title={title}
+        message={message}
+        address={address}
         bondDenom={bondDenoms[0]}
         tokens={tokens}
       />
@@ -48,9 +48,9 @@ export const TotalCard = ({
 
   return (
     <MultiBondsCard
-      address={address}
-      message={message}
       title={title}
+      message={message}
+      address={address}
       tokens={tokens}
     />
   );

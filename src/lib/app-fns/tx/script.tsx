@@ -17,42 +17,35 @@ interface DeployScriptTxParams {
   address: BechAddr20;
   fee: StdFee;
   messages: EncodeObject[];
-  onTxFailed?: () => void;
-  onTxSucceed?: () => void;
   signAndBroadcast: SignAndBroadcast;
+  onTxSucceed?: () => void;
+  onTxFailed?: () => void;
 }
 
 export const deployScriptTx = ({
   address,
   fee,
   messages,
-  onTxFailed,
-  onTxSucceed,
   signAndBroadcast,
+  onTxSucceed,
+  onTxFailed,
 }: DeployScriptTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx({
-      postFn: () => signAndBroadcast({ address, fee, messages }),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       const txFee = findAttr(txInfo.events, "tx", "fee");
 
       onTxSucceed?.();
       return {
+        value: null,
         phase: TxStreamPhase.SUCCEED,
-        receiptInfo: {
-          header: "Script Deployed!",
-          headerIcon: (
-            <CustomIcon
-              name="check-circle-solid"
-              boxSize={5}
-              color="success.main"
-            />
-          ),
-        },
         receipts: [
           {
+            title: "Tx Hash",
+            value: txInfo.transactionHash,
             html: (
               <ExplorerLink
                 type="tx_hash"
@@ -60,20 +53,27 @@ export const deployScriptTx = ({
                 openNewTab
               />
             ),
-            title: "Tx Hash",
-            value: txInfo.transactionHash,
           },
           {
+            title: "Tx Fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
-            title: "Tx Fee",
           },
         ],
-        value: null,
+        receiptInfo: {
+          header: "Script Deployed!",
+          headerIcon: (
+            <CustomIcon
+              name="check-circle-solid"
+              color="success.main"
+              boxSize={5}
+            />
+          ),
+        },
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

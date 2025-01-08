@@ -43,8 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1183](https://github.com/alleslabs/celatone-frontend/pull/1183) Add Perfectionist eslint
-
 ### Bug fixes
 
 ## v1.9.3

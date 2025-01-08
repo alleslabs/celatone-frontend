@@ -22,23 +22,23 @@ const poolTypeRender = (type: PoolData["type"]) => {
   switch (type) {
     case PoolType.BALANCER:
       return {
-        icon: <BalancerPoolIcon boxSize={4} />,
         text: "Balancer Pool",
-      };
-    case PoolType.CL:
-      return {
-        icon: <ClpIcon boxSize={4} />,
-        text: "Concentrated Liquidity Pool",
-      };
-    case PoolType.COSMWASM:
-      return {
-        icon: <CosmWasmPoolIcon boxSize={4} />,
-        text: "CosmWasm Pool",
+        icon: <BalancerPoolIcon boxSize={4} />,
       };
     case PoolType.STABLESWAP:
       return {
-        icon: <StableSwapIcon boxSize={4} />,
         text: "StableSwap Pool",
+        icon: <StableSwapIcon boxSize={4} />,
+      };
+    case PoolType.COSMWASM:
+      return {
+        text: "CosmWasm Pool",
+        icon: <CosmWasmPoolIcon boxSize={4} />,
+      };
+    case PoolType.CL:
+      return {
+        text: "Concentrated Liquidity Pool",
+        icon: <ClpIcon boxSize={4} />,
       };
     default:
       return {};
@@ -46,33 +46,33 @@ const poolTypeRender = (type: PoolData["type"]) => {
 };
 
 export const PoolHeader = ({
-  isSuperfluid,
-  liquidity,
   poolId,
+  isSuperfluid,
   poolType,
+  liquidity,
 }: PoolHeaderProps) => {
   const poolValue = poolTypeRender(poolType);
   return (
-    <Flex w="full" justifyContent="space-between">
+    <Flex justifyContent="space-between" w="full">
       <Flex alignItems="center" gap={4}>
         <PoolLogo tokens={liquidity} />
         <div>
-          <Flex flexWrap="wrap" gap={1}>
-            <Heading as="h6" variant="h6" fontWeight="600">
+          <Flex gap={1} flexWrap="wrap">
+            <Heading as="h6" fontWeight="600" variant="h6">
               {getTokenLabel(liquidity[0].denom, liquidity[0].symbol)}
             </Heading>
             {liquidity.slice(1, 3).map((item) => (
               <Flex key={item.denom} gap={1}>
                 <Heading
-                  id="separator"
                   as="h6"
+                  id="separator"
+                  fontWeight="600"
                   variant="h6"
                   color="primary.main"
-                  fontWeight="600"
                 >
                   /
                 </Heading>
-                <Heading as="h6" variant="h6" fontWeight="600">
+                <Heading as="h6" fontWeight="600" variant="h6">
                   {getTokenLabel(item.denom, item.symbol)}
                 </Heading>
               </Flex>
@@ -81,13 +81,13 @@ export const PoolHeader = ({
               <Flex gap={1}>
                 <Heading
                   as="h6"
+                  fontWeight="600"
                   variant="h6"
                   color="primary.main"
-                  fontWeight="600"
                 >
                   /
                 </Heading>
-                <Heading as="h6" variant="h6" fontWeight="600">
+                <Heading as="h6" fontWeight="600" variant="h6">
                   {liquidity.length === 4
                     ? getTokenLabel(liquidity[3].denom, liquidity[3].symbol)
                     : `+${liquidity.length - 3}`}
@@ -95,21 +95,21 @@ export const PoolHeader = ({
               </Flex>
             )}
           </Flex>
-          <Flex alignItems="center" flexWrap="wrap" mt={1} columnGap={2}>
+          <Flex alignItems="center" columnGap={2} flexWrap="wrap" mt={1}>
             <Text variant="body2" color="primary.main">
               #{poolId}
             </Text>
             {poolType && (
               <Flex alignItems="center" gap={1}>
                 <Flex
-                  h="6px"
-                  w="6px"
                   backgroundColor="gray.600"
                   borderRadius="full"
+                  w="6px"
+                  h="6px"
                 />
                 <Flex alignItems="center">
                   {poolValue.icon}
-                  <Text ml={1} variant="body2" color="text.dark">
+                  <Text variant="body2" color="text.dark" ml={1}>
                     {poolValue.text}
                   </Text>
                 </Flex>
@@ -118,10 +118,10 @@ export const PoolHeader = ({
             {isSuperfluid && (
               <Flex alignItems="center" gap={2}>
                 <Flex
-                  h="6px"
-                  w="6px"
                   backgroundColor="gray.600"
                   borderRadius="full"
+                  w="6px"
+                  h="6px"
                 />
                 <SuperfluidLabel />
               </Flex>

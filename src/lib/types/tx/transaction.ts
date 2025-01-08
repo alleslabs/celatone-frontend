@@ -5,25 +5,15 @@ import type { Event } from "lib/services/types";
 import type { BechAddr, Option, Pubkey } from "lib/types";
 
 export enum ActionMsgType {
+  SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
   MULTIPLE_ACTION_MSG = "MULTIPLE_ACTION_MSG",
   OTHER_ACTION_MSG = "OTHER_ACTION_MSG",
-  SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",
 }
 
 export enum MsgFurtherAction {
-  NONE = "NONE",
   REDO = "REDO",
   RESEND = "RESEND",
-}
-
-export interface BaseTxFilters {
-  isIbc: boolean;
-  isSend: boolean;
-}
-
-/* Filter for INITIA */
-export interface InitiaTxFilters {
-  isOpinit: boolean;
+  NONE = "NONE",
 }
 
 export interface Message {
@@ -32,62 +22,72 @@ export interface Message {
   type: string;
 }
 
-export interface MoveTxFilters {
-  isMoveExecute: boolean;
-  isMovePublish: boolean;
-  isMoveScript: boolean;
-  isMoveUpgrade: boolean;
-}
-
 export interface Msg {
-  contract: string;
   msg: object[];
+  contract: string;
 }
 
-export type PoolTxFilter =
-  | "is_all"
-  | "is_bond"
-  | "is_clp"
-  | "is_collect"
-  | "is_lp"
-  | "is_migrate"
-  | "is_superfluid"
-  | "is_swap";
 export interface Transaction {
-  actionMsgType: ActionMsgType;
-  created: Date;
-  events?: Event[];
-  furtherAction: MsgFurtherAction;
   hash: string;
-  height: number;
-  isEvm: boolean;
-  isIbc: boolean;
-  isInstantiate: boolean;
-  isOpinit: boolean;
-  isSigner: boolean;
   messages: Message[];
   sender: BechAddr;
+  isSigner: boolean;
+  height: number;
+  created: Date;
   success: boolean;
+  actionMsgType: ActionMsgType;
+  furtherAction: MsgFurtherAction;
+  isIbc: boolean;
+  isOpinit: boolean;
+  isEvm: boolean;
+  isInstantiate: boolean;
+  events?: Event[];
 }
 
 export type TransactionWithSignerPubkey = Omit<Transaction, "sender"> & {
   signerPubkey: Pubkey;
 };
 
+/* Filter for INITIA */
+export interface InitiaTxFilters {
+  isOpinit: boolean;
+}
+
+export interface BaseTxFilters {
+  isSend: boolean;
+  isIbc: boolean;
+}
+export interface WasmTxFilters {
+  isStoreCode: boolean;
+  isInstantiate: boolean;
+  isExecute: boolean;
+  isMigrate: boolean;
+  isUpdateAdmin: boolean;
+  isClearAdmin: boolean;
+}
+
+export interface MoveTxFilters {
+  isMovePublish: boolean;
+  isMoveUpgrade: boolean;
+  isMoveExecute: boolean;
+  isMoveScript: boolean;
+}
+
 export interface TxFilters
   extends BaseTxFilters,
-    InitiaTxFilters,
+    WasmTxFilters,
     MoveTxFilters,
-    WasmTxFilters {}
+    InitiaTxFilters {}
 
-export interface WasmTxFilters {
-  isClearAdmin: boolean;
-  isExecute: boolean;
-  isInstantiate: boolean;
-  isMigrate: boolean;
-  isStoreCode: boolean;
-  isUpdateAdmin: boolean;
-}
+export type PoolTxFilter =
+  | "is_all"
+  | "is_swap"
+  | "is_lp"
+  | "is_bond"
+  | "is_superfluid"
+  | "is_clp"
+  | "is_collect"
+  | "is_migrate";
 
 export const zRemarkType = z.enum(["genesis", "governance", "transaction"]);
 export type RemarkType = z.infer<typeof zRemarkType>;

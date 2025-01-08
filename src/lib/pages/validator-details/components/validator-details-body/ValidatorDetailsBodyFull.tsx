@@ -23,8 +23,8 @@ import { useStakingParamsLcd } from "lib/services/staking";
 import { useValidatorData } from "lib/services/validator";
 
 export const ValidatorDetailsBodyFull = ({
-  tab,
   validatorAddress,
+  tab,
 }: ValidatorDetailsQueryParams) => {
   const navigate = useInternalNavigate();
   const isInitia = useInitia();
@@ -45,13 +45,13 @@ export const ValidatorDetailsBodyFull = ({
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
-        options: {
-          shallow: true,
-        },
         pathname: "/validators/[validatorAddress]/[tab]",
         query: {
-          tab: nextTab,
           validatorAddress,
+          tab: nextTab,
+        },
+        options: {
+          shallow: true,
         },
       });
     },
@@ -80,8 +80,8 @@ export const ValidatorDetailsBodyFull = ({
       <PageHeaderContainer bgColor="transparent">
         <ValidatorTop
           info={data.info}
-          singleStakingDenom={stakingParams?.bondDenom}
           totalVotingPower={data.totalVotingPower}
+          singleStakingDenom={stakingParams?.bondDenom}
         />
       </PageHeaderContainer>
       <PageContainer>
@@ -112,19 +112,19 @@ export const ValidatorDetailsBodyFull = ({
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               <ValidatorOverview
                 validatorAddress={validatorAddress}
-                details={data.info.details}
-                isActive={data.info.isActive}
-                isJailed={data.info.isJailed}
-                assetInfos={assetInfos}
+                onSelectVotes={handleTabChange(TabIndex.Votes)}
+                onSelectPerformance={handleTabChange(TabIndex.Performance)}
                 onSelectBondedTokenChanges={handleTabChange(
                   TabIndex.BondedTokenChanges
                 )}
-                onSelectPerformance={handleTabChange(TabIndex.Performance)}
-                onSelectVotes={handleTabChange(TabIndex.Votes)}
-                selfVotingPower={data.selfVotingPower}
+                isActive={data.info.isActive}
+                isJailed={data.info.isJailed}
+                details={data.info.details}
                 singleStakingDenom={stakingParams?.bondDenom}
-                totalVotingPower={data.totalVotingPower}
+                assetInfos={assetInfos}
                 votingPower={data.info.votingPower}
+                totalVotingPower={data.totalVotingPower}
+                selfVotingPower={data.selfVotingPower}
               />
             </TabPanel>
             <TabPanel p={0} pt={6}>
@@ -136,16 +136,16 @@ export const ValidatorDetailsBodyFull = ({
             <TabPanel p={0} pt={{ base: 2, md: 0 }}>
               <BondedTokenChanges
                 validatorAddress={validatorAddress}
+                singleStakingDenom={stakingParams?.bondDenom}
                 assetInfos={assetInfos}
                 movePoolInfos={movePoolInfos}
-                singleStakingDenom={stakingParams?.bondDenom}
               />
             </TabPanel>
           </TabPanels>
         </Tabs>
         <UserDocsLink
-          cta="Read more about Validator Details"
           title="What is a Validator?"
+          cta="Read more about Validator Details"
           href="general/validators/detail-page"
         />
       </PageContainer>

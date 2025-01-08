@@ -30,35 +30,35 @@ export const MintInfo = ({ nftAddress }: MintInfoProps) => {
         borderRadius="8px"
       >
         <SimpleGrid
-          spacing="24px"
           templateColumns={isMobile ? "1fr" : "1fr 1fr 1fr"}
+          spacing="24px"
         >
           <LabelText
+            label="Minted Block Height"
             helperText1={formatUTC(mintInfo.timestamp)}
             helperText2={dateFromNow(mintInfo.timestamp)}
-            label="Minted Block Height"
           >
             <ExplorerLink
-              type="block_height"
               value={String(mintInfo.height)}
-              ampCopierSection="nft-detail-mint-information"
+              type="block_height"
               showCopyOnHover
+              ampCopierSection="nft-detail-mint-information"
             />
           </LabelText>
-          <LabelText helperText1="(VM Address)" label="Minted by">
+          <LabelText label="Minted by" helperText1="(VM Address)">
             <ExplorerLink
-              type="user_address"
               value={bech32AddressToHex(mintInfo.minter)}
-              ampCopierSection="nft-detail-mint-information"
+              type="user_address"
               showCopyOnHover
+              ampCopierSection="nft-detail-mint-information"
             />
           </LabelText>
           <LabelText label="Minted Transaction">
             <ExplorerLink
-              type="tx_hash"
               value={mintInfo.txhash.toUpperCase()}
-              ampCopierSection="nft-detail-mint-information"
+              type="tx_hash"
               showCopyOnHover
+              ampCopierSection="nft-detail-mint-information"
             />
           </LabelText>
         </SimpleGrid>

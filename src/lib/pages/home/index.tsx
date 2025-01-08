@@ -43,8 +43,8 @@ const Home = () => {
       )}
       <TierSwitcher
         full={<HomeFull />}
-        lite={<HomeLite />}
         sequencer={<HomeSequencer />}
+        lite={<HomeLite />}
       />
     </>
   );

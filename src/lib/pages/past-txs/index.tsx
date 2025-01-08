@@ -18,8 +18,8 @@ const PastTxs = () => {
   return (
     <TierSwitcher
       full={<PastTxsFull />}
-      lite={<PastTxsLite />}
       sequencer={<PastTxsSequencer />}
+      lite={<PastTxsLite />}
     />
   );
 };

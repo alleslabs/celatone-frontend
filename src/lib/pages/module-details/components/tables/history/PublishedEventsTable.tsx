@@ -11,15 +11,15 @@ import { PublishedEventsTableMobileCard } from "./PublishedEventsTableMobileCard
 import { PublishedEventsTableRow } from "./PublishedEventsTableRow";
 
 interface PublishedEventsTableProps {
-  emptyState: JSX.Element;
-  isLoading: boolean;
   moduleHistories: Option<ModuleHistory[]>;
+  isLoading: boolean;
+  emptyState: JSX.Element;
 }
 
 export const PublishedEventsTable = ({
-  emptyState,
-  isLoading,
   moduleHistories,
+  isLoading,
+  emptyState,
 }: PublishedEventsTableProps) => {
   const isMobile = useMobile();
 
@@ -43,8 +43,8 @@ export const PublishedEventsTable = ({
       {moduleHistories.map((history) => (
         <PublishedEventsTableRow
           key={JSON.stringify(history)}
-          history={history}
           templateColumns={templateColumns}
+          history={history}
         />
       ))}
     </TableContainer>

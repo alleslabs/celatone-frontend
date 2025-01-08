@@ -34,34 +34,34 @@ const loadMoveSyntax = (monaco: Monaco) => {
 };
 
 interface ModuleSourceCodeProps {
-  moveVerifyStatus: MoveVerifyStatus;
   verificationData: Nullish<MoveVerifyInfoResponse>;
+  moveVerifyStatus: MoveVerifyStatus;
 }
 
 export const ModuleSourceCode = ({
-  moveVerifyStatus,
   verificationData,
+  moveVerifyStatus,
 }: ModuleSourceCodeProps) => {
   if (!verificationData) return null;
 
   return (
-    <Accordion w="full" allowToggle>
+    <Accordion allowToggle w="full">
       <AccordionItem>
         <AccordionButton p={4}>
-          <Flex w="full" direction="column">
+          <Flex direction="column" w="full">
             <Flex justifyContent="space-between">
-              <Flex alignItems="start" flexDirection="column">
+              <Flex flexDirection="column" alignItems="start">
                 <Flex align="center" gap={1}>
                   <MoveVerifyBadge status={moveVerifyStatus} />
-                  <Heading as="h6" textAlign="left" variant="h7">
+                  <Heading as="h6" variant="h7" textAlign="left">
                     Verified Module Source Code
                   </Heading>
                 </Flex>
                 <Text
-                  textAlign="start"
+                  fontWeight={600}
                   variant="body2"
                   color="text.dark"
-                  fontWeight={600}
+                  textAlign="start"
                 >
                   This module is verifed at{" "}
                   {formatUTC(verificationData.verifiedAt)}
@@ -73,20 +73,20 @@ export const ModuleSourceCode = ({
                   variant="outline-primary"
                   w={{ base: "full", md: "auto" }}
                 />
-                <AccordionIcon ml="auto" boxSize={6} color="gray.600" />
+                <AccordionIcon color="gray.600" ml="auto" boxSize={6} />
               </Flex>
             </Flex>
             {moveVerifyStatus === MoveVerifyStatus.Outdated && (
               <Alert
-                alignItems="flex-start"
-                gap={2}
-                mt={2}
                 p={2}
                 variant="warning"
+                gap={2}
+                mt={2}
+                alignItems="flex-start"
               >
                 <CustomIcon name="alert-triangle-solid" boxSize={4} />
                 <AlertDescription>
-                  <Text textAlign="left" variant="body2" color="warning.main">
+                  <Text variant="body2" color="warning.main" textAlign="left">
                     The displayed source code is an <b>older version</b> since
                     the module was republished after verification. If you are
                     the owner, you can{" "}
@@ -95,13 +95,13 @@ export const ModuleSourceCode = ({
                         display="inline-flex"
                         gap={1}
                         size="sm"
+                        color="warning.main"
+                        textDecoration="underline"
+                        transition="all 0.25s ease-in-out"
                         _hover={{
                           color: "warning.light",
                           textDecorationColor: "warning.light",
                         }}
-                        color="warning.main"
-                        textDecoration="underline"
-                        transition="all 0.25s ease-in-out"
                       >
                         resubmit for verification
                       </Text>
@@ -113,7 +113,7 @@ export const ModuleSourceCode = ({
             )}
           </Flex>
         </AccordionButton>
-        <AccordionPanel pb={4} pt={0}>
+        <AccordionPanel pt={0} pb={4}>
           <Box
             p="16px 12px"
             border="1px solid"
@@ -124,8 +124,8 @@ export const ModuleSourceCode = ({
               height={400}
               language="move"
               theme="vs-dark"
-              value={verificationData.source}
               beforeMount={loadMoveSyntax}
+              value={verificationData.source}
               options={{ readOnly: true, scrollBeyondLastLine: false }}
             />
           </Box>

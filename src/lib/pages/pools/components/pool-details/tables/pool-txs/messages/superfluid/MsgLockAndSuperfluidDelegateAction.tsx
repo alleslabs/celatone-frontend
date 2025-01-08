@@ -8,17 +8,17 @@ import { coinToTokenWithValue } from "lib/utils";
 import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
 
 interface MsgLockAndSuperfluidDelegateActionProps {
-  ampCopierSection?: string;
-  assetInfos: Option<AssetInfos>;
   msg: MsgLockAndSuperfluidDelegateDetails;
   pool: PoolData;
+  assetInfos: Option<AssetInfos>;
+  ampCopierSection?: string;
 }
 
 export const MsgLockAndSuperfluidDelegateAction = ({
-  ampCopierSection,
-  assetInfos,
   msg,
   pool,
+  assetInfos,
+  ampCopierSection,
 }: MsgLockAndSuperfluidDelegateActionProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {
@@ -31,15 +31,15 @@ export const MsgLockAndSuperfluidDelegateAction = ({
     assetInfos
   );
   return (
-    <Flex alignItems="center" flexWrap="wrap" gap={1}>
+    <Flex gap={1} alignItems="center" flexWrap="wrap">
       Bonded and locked
       <MsgToken
-        ampCopierSection={ampCopierSection}
-        fontWeight={700}
         token={poolToken}
+        fontWeight={700}
+        ampCopierSection={ampCopierSection}
       />
       to
-      <PoolLogoLink ampCopierSection={ampCopierSection} pool={pool} />
+      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       with
       <span style={{ fontWeight: 700 }}>14</span>
       days unbonding

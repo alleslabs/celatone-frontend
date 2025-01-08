@@ -8,53 +8,53 @@ import { ProgressBar } from "./ProgressBar";
 
 interface DepositBarProps {
   deposit: ProposalData["totalDeposit"];
-  isCompact: boolean;
-  isDepositOrVoting: boolean;
   minDeposit: TokenWithValue[];
+  isDepositOrVoting: boolean;
+  isCompact: boolean;
 }
 
 export const DepositBar = ({
   deposit,
-  isCompact,
-  isDepositOrVoting,
   minDeposit,
+  isDepositOrVoting,
+  isCompact,
 }: DepositBarProps) => {
   const pairDeposit = mapDeposit(deposit, minDeposit);
   return (
-    <Flex gap="2px" ml={isCompact ? 0 : 2} w="full" direction="column">
+    <Flex direction="column" ml={isCompact ? 0 : 2} gap="2px" w="full">
       {pairDeposit.map(({ current, min }) => (
         <Flex
           key={min.denom}
-          align="center"
-          gap={isCompact ? 0 : 2}
-          w="full"
           direction={isCompact ? "column" : "row"}
+          align="center"
+          w="full"
+          gap={isCompact ? 0 : 2}
         >
           {isDepositOrVoting && (
             <ProgressBar
-              max={min.amount}
               value={current.amount}
+              max={min.amount}
               isCompact={isCompact}
             />
           )}
           {isCompact ? (
-            <Flex align="center" justify="space-between" w="full">
-              <Text variant="body2" fontWeight={500} textColor="text.dark">
+            <Flex align="center" w="full" justify="space-between">
+              <Text variant="body2" textColor="text.dark" fontWeight={500}>
                 Deposited
               </Text>
               <DepositRatio
                 current={current}
                 min={min}
-                isCompact
                 isDepositOrVoting={isDepositOrVoting}
+                isCompact
               />
             </Flex>
           ) : (
             <DepositRatio
               current={current}
               min={min}
-              isCompact={false}
               isDepositOrVoting={isDepositOrVoting}
+              isCompact={false}
             />
           )}
         </Flex>

@@ -13,18 +13,18 @@ const MAX_UNSUPPORTED_ASSETS_SHOW = 3;
 
 interface AssetSectionOverviewProps {
   isAccount: boolean;
-  onViewMore: () => void;
   supportedAssets: TokenWithValue[];
   totalSupportedAssetsValue: Option<USD<Big>>;
   unsupportedAssets: TokenWithValue[];
+  onViewMore: () => void;
 }
 
 export const AssetSectionOverview = ({
   isAccount,
-  onViewMore,
   supportedAssets,
   totalSupportedAssetsValue,
   unsupportedAssets,
+  onViewMore,
 }: AssetSectionOverviewProps) => {
   if (!supportedAssets.length && !unsupportedAssets.length)
     return (
@@ -34,9 +34,9 @@ export const AssetSectionOverview = ({
     );
 
   return (
-    <Grid gridGap={12} gridTemplateColumns={{ base: "1fr", xl: "1fr 1fr" }}>
+    <Grid gridTemplateColumns={{ base: "1fr", xl: "1fr 1fr" }} gridGap={12}>
       <GridItem>
-        <Flex h="full" direction="column" justifyContent="space-between">
+        <Flex direction="column" justifyContent="space-between" h="full">
           <Flex direction="column">
             <SupportedAssetTitle
               supportedAssets={supportedAssets}
@@ -45,15 +45,15 @@ export const AssetSectionOverview = ({
             <Divider borderColor="gray.700" />
             <SupportedAssetSectionContent
               isAccount={isAccount}
-              onViewMore={onViewMore}
               supportedAssets={supportedAssets.slice(
                 0,
                 MAX_SUPPORTED_ASSETS_SHOW
               )}
+              onViewMore={onViewMore}
             />
           </Flex>
           {onViewMore && supportedAssets.length > MAX_SUPPORTED_ASSETS_SHOW && (
-            <ViewMore minH="48px" borderRadius="8px" onClick={onViewMore} />
+            <ViewMore onClick={onViewMore} borderRadius="8px" minH="48px" />
           )}
         </Flex>
       </GridItem>
@@ -62,15 +62,15 @@ export const AssetSectionOverview = ({
         <Divider borderColor="gray.700" />
         <UnsupportedAssetSectionContent
           isAccount={isAccount}
-          onViewMore={onViewMore}
           unsupportedAssets={unsupportedAssets.slice(
             0,
             MAX_UNSUPPORTED_ASSETS_SHOW
           )}
+          onViewMore={onViewMore}
         />
         {onViewMore &&
           unsupportedAssets.length > MAX_UNSUPPORTED_ASSETS_SHOW && (
-            <ViewMore minH="48px" borderRadius="8px" onClick={onViewMore} />
+            <ViewMore onClick={onViewMore} borderRadius="8px" minH="48px" />
           )}
       </GridItem>
     </Grid>

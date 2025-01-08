@@ -10,27 +10,27 @@ export const InProgressVerifiedSection = ({
   codeId,
 }: InProgressVerifiedSectionProps) => (
   <Flex
-    align="center"
-    bg="gray.800"
-    gap={2}
-    justify="space-between"
-    minW="480px"
-    p={4}
-    w="full"
     border="1px solid"
     borderColor="gray.700"
+    bg="gray.800"
+    justify="space-between"
+    align="center"
+    p={4}
+    w="full"
+    minW="480px"
     borderRadius="4px"
+    gap={2}
   >
-    <CustomIcon name="hourglass" boxSize={6} color="gray.600" />
+    <CustomIcon name="hourglass" color="gray.600" boxSize={6} />
     <Flex direction="column">
-      <Text variant="body1" color="text.main">
+      <Text color="text.main" variant="body1">
         Code verification is in progress
       </Text>
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         This process may take several hours depending on code complexity. View
         status on
         <AppLink href={`/codes/${codeId}`}>
-          <Text display="inline-flex" mx={1} color="primary.main">
+          <Text color="primary.main" display="inline-flex" mx={1}>
             code details
           </Text>
         </AppLink>

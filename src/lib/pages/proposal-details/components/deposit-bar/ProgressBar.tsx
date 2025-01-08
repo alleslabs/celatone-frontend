@@ -5,30 +5,30 @@ import type { Ratio } from "lib/types";
 import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
 interface ProgressBarProps {
-  isCompact: boolean;
-  max: Big;
   value: Big;
+  max: Big;
+  isCompact: boolean;
 }
 
-export const ProgressBar = ({ isCompact, max, value }: ProgressBarProps) => {
+export const ProgressBar = ({ value, max, isCompact }: ProgressBarProps) => {
   const ratio = divWithDefault(value, max, 0).toNumber() as Ratio<number>;
   const percent = formatPrettyPercent(ratio);
 
   return (
-    <Box h={isCompact ? "28px" : "30px"} py={1} w="full">
+    <Box py={1} h={isCompact ? "28px" : "30px"} w="full">
       <Flex
-        align="center"
         h="full"
         w="full"
         bgColor="gray.700"
         borderRadius={10}
+        align="center"
         overflow="hidden"
       >
         <Flex
-          align="center"
           h="full"
-          w={percent}
           bgColor="primary.main"
+          w={percent}
+          align="center"
           justifyContent="end"
         >
           {!isCompact && ratio >= 0.5 && (

@@ -31,33 +31,33 @@ export const AllContractLists = ({
   return (
     <Box minH="xs" w="100%">
       <InputWithIcon
-        my={isReadOnly ? 4 : 0}
-        size={{ base: "md", md: "lg" }}
-        value={searchKeyword}
-        amptrackSection="contract-list-search"
-        onChange={(e) => setSearchKeyword(e.target.value)}
         placeholder="Search with List Name"
+        value={searchKeyword}
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        size={{ base: "md", md: "lg" }}
+        my={isReadOnly ? 4 : 0}
+        amptrackSection="contract-list-search"
       />
       {filteredContractLists.length === 0 ? (
         <EmptyState
-          imageVariant="not-found"
           message="No matching lists found.
         Make sure you are searching with list name."
+          imageVariant="not-found"
           withBorder
         />
       ) : (
         <SimpleGrid
-          pt={12}
+          columns={{ sm: 1, md: 2, lg: 3 }}
           spacing={4}
           w="full"
-          columns={{ lg: 3, md: 2, sm: 1 }}
+          pt={12}
         >
           {filteredContractLists.map((item) => (
             <ContractListCard
               key={item.slug}
+              item={item}
               handleListSelect={handleListSelect}
               isReadOnly={isReadOnly}
-              item={item}
             />
           ))}
         </SimpleGrid>

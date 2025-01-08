@@ -9,13 +9,13 @@ export const ContractCmdButton = ({
   onClickCmd,
 }: ContractCmdButtonProps) => (
   <Button
-    height="24px"
     variant="command-button"
-    borderRadius="16px"
-    color={cmd ? "text.main" : "text.disabled"}
     fontSize="12px"
+    height="24px"
+    borderRadius="16px"
     fontWeight={400}
     onClick={onClickCmd}
+    color={cmd ? "text.main" : "text.disabled"}
   >
     {cmd || "undefined"}
   </Button>

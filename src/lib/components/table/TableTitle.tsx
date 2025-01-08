@@ -2,24 +2,24 @@ import type { BoxProps } from "@chakra-ui/react";
 import { Badge, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 interface TableTitleProps extends BoxProps {
+  title: string;
   count?: number;
+  showCount?: boolean;
   helperText?: string;
   isSmall?: boolean;
-  showCount?: boolean;
-  title: string;
 }
 
 export const TableTitle = ({
-  count,
-  helperText,
-  isSmall = false,
-  mb = 6,
-  showCount = true,
   title,
+  count,
+  showCount = true,
+  helperText,
+  mb = 6,
+  isSmall = false,
   ...props
 }: TableTitleProps) => (
   <Box mb={mb} {...props}>
-    <Flex alignItems="center" gap={2} h="29px">
+    <Flex gap={2} h="29px" alignItems="center">
       {isSmall ? (
         <Text variant="body2" color="text.dark" fontWeight={700}>
           {title}
@@ -36,7 +36,7 @@ export const TableTitle = ({
       )}
     </Flex>
     {helperText?.length && (
-      <Text variant="body2" fontWeight={600} textColor="text.dark">
+      <Text variant="body2" textColor="text.dark" fontWeight={600}>
         {helperText}
       </Text>
     )}

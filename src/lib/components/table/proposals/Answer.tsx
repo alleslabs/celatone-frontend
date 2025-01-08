@@ -5,19 +5,19 @@ import type { Ratio } from "lib/types";
 import { formatRatio } from "lib/utils";
 
 interface AnswerProps {
-  abstain: number;
   isVoteWeighted: boolean;
+  yes: number;
   no: number;
   noWithVeto: number;
-  yes: number;
+  abstain: number;
 }
 
 const resolveVote = ({
-  abstain,
   isVoteWeighted,
+  yes,
   no,
   noWithVeto,
-  yes,
+  abstain,
 }: AnswerProps): [string, string] => {
   if (isVoteWeighted) {
     return ["primary.light", "Weighted"];
@@ -38,27 +38,27 @@ const resolveVote = ({
 };
 
 export const Answer = ({
-  abstain,
   isVoteWeighted,
+  yes,
   no,
   noWithVeto,
-  yes,
+  abstain,
 }: AnswerProps) => {
   const [color, text] = resolveVote({
-    abstain,
     isVoteWeighted,
+    yes,
     no,
     noWithVeto,
-    yes,
+    abstain,
   });
 
   return (
     <HStack spacing={2}>
       <Box
-        minW="12px"
-        backgroundColor={color}
-        borderRadius="50%"
         boxSize="12px"
+        minW="12px"
+        borderRadius="50%"
+        backgroundColor={color}
       />
       <Text fontWeight={700}>{text}</Text>
       {isVoteWeighted && (
@@ -69,7 +69,7 @@ export const Answer = ({
             ["No With Veto", noWithVeto],
             ["Abstain", abstain],
           ].map(([label, value]) => (
-            <Flex key={label} gap={1}>
+            <Flex gap={1} key={label}>
               <Text>{label}:</Text>
               <Text fontWeight={700}>
                 {formatRatio(value as Ratio<number>)}

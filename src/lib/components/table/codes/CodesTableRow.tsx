@@ -14,31 +14,31 @@ import { CodeNameCell } from "./CodeNameCell";
 
 interface CodesTableRowProps {
   codeInfo: CodeInfo;
-  isReadOnly: boolean;
-  onRowSelect: (codeId: number) => void;
-  showCw2andContracts: boolean;
   templateColumns: string;
+  onRowSelect: (codeId: number) => void;
+  isReadOnly: boolean;
+  showCw2andContracts: boolean;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const CodesTableRow = ({
   codeInfo,
-  isReadOnly,
-  onRowSelect,
-  showCw2andContracts,
   templateColumns,
+  onRowSelect,
+  isReadOnly,
+  showCw2andContracts,
   wasmVerifyInfo,
 }: CodesTableRowProps) => {
   const getAddressType = useGetAddressType();
   const cw2Info = getCw2Info(codeInfo.cw2Contract, codeInfo.cw2Version);
   return (
     <Grid
-      minW="min-content"
-      _hover={{ bg: "gray.900" }}
-      cursor="pointer"
-      onClick={() => onRowSelect(codeInfo.id)}
       templateColumns={templateColumns}
+      onClick={() => onRowSelect(codeInfo.id)}
+      _hover={{ bg: "gray.900" }}
       transition="all 0.25s ease-in-out"
+      cursor="pointer"
+      minW="min-content"
     >
       <TableRow>
         <ExplorerLink
@@ -54,7 +54,7 @@ export const CodesTableRow = ({
         />
       </TableRow>
       <TableRow>
-        <CodeNameCell isReadOnly={isReadOnly} code={codeInfo} />
+        <CodeNameCell code={codeInfo} isReadOnly={isReadOnly} />
       </TableRow>
       {showCw2andContracts && (
         <>
@@ -69,9 +69,9 @@ export const CodesTableRow = ({
           <TableRow justifyContent="center">
             <Text
               variant="body2"
-              color={codeInfo.contractCount ? "text.main" : "text.disabled"}
-              cursor="text"
               onClick={(e) => e.stopPropagation()}
+              cursor="text"
+              color={codeInfo.contractCount ? "text.main" : "text.disabled"}
             >
               {codeInfo.contractCount ?? "N/A"}
             </Text>
@@ -80,10 +80,10 @@ export const CodesTableRow = ({
       )}
       <TableRow>
         <ExplorerLink
-          isReadOnly={isReadOnly}
-          type={getAddressType(codeInfo.uploader)}
           value={codeInfo.uploader}
+          type={getAddressType(codeInfo.uploader)}
           showCopyOnHover
+          isReadOnly={isReadOnly}
         />
       </TableRow>
       <TableRow>
@@ -96,9 +96,9 @@ export const CodesTableRow = ({
         <TableRow px={0}>
           <HStack onClick={(e) => e.stopPropagation()}>
             <InstantiateButton
-              codeId={codeInfo.id}
               instantiatePermission={codeInfo.instantiatePermission}
               permissionAddresses={codeInfo.permissionAddresses}
+              codeId={codeInfo.id}
             />
             <SaveOrRemoveCodeModal codeInfo={codeInfo} />
           </HStack>

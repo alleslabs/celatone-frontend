@@ -19,12 +19,12 @@ interface InstantiatePermissionRadioProps {
 
 interface PermissionRadioProps {
   isSelected: boolean;
-  text: string;
   value: AccessType;
+  text: string;
 }
 
-const PermissionRadio = ({ isSelected, text, value }: PermissionRadioProps) => (
-  <Radio width="100%" py={2} value={value.toString()}>
+const PermissionRadio = ({ isSelected, value, text }: PermissionRadioProps) => (
+  <Radio value={value.toString()} py={2} width="100%">
     <Text fontWeight={isSelected ? "600" : "400"}>{text} </Text>
   </Radio>
 );
@@ -41,7 +41,7 @@ export const InstantiatePermissionRadio = ({
     },
   } = useCelatoneApp();
 
-  const { append, fields, remove } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "addresses",
   });
@@ -74,22 +74,22 @@ export const InstantiatePermissionRadio = ({
   return (
     <RadioGroup
       name="instantiatePermission"
-      value={permission.toString()}
       onChange={(nextValue: string) => {
         const value = parseInt(nextValue, 10);
         setValue("permission", value);
       }}
+      value={permission.toString()}
     >
       <Box>
         <PermissionRadio
           isSelected={permission === AccessType.ACCESS_TYPE_EVERYBODY}
-          text="Anyone can instantiate (Everybody)"
           value={AccessType.ACCESS_TYPE_EVERYBODY}
+          text="Anyone can instantiate (Everybody)"
         />
         <PermissionRadio
           isSelected={permission === AccessType.ACCESS_TYPE_NOBODY}
-          text="Instantiate through governance only (Nobody)"
           value={AccessType.ACCESS_TYPE_NOBODY}
+          text="Instantiate through governance only (Nobody)"
         />
         {!disableAnyOfAddresses && (
           <Box>
@@ -97,18 +97,18 @@ export const InstantiatePermissionRadio = ({
               isSelected={
                 permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES
               }
-              text="Only a set of addresses can instantiate (AnyOfAddresses)"
               value={AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES}
+              text="Only a set of addresses can instantiate (AnyOfAddresses)"
             />
             {permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES && (
               <Box>
                 {fields.map((field, idx) => (
-                  <Flex key={field.id} gap={2} my={6}>
+                  <Flex gap={2} my={6} key={field.id}>
                     <AddressInput
-                      label="Address"
                       name={`addresses.${idx}.address`}
-                      variant="fixed-floating"
                       control={control}
+                      label="Address"
+                      variant="fixed-floating"
                       error={
                         (addresses[idx]?.address &&
                           addresses.find(
@@ -120,11 +120,6 @@ export const InstantiatePermissionRadio = ({
                       }
                       helperAction={
                         <AssignMe
-                          isDisable={
-                            addresses.findIndex(
-                              (x) => x.address === walletAddress
-                            ) > -1
-                          }
                           onClick={() => {
                             track(AmpEvent.USE_ASSIGN_ME);
                             setValue(
@@ -133,15 +128,20 @@ export const InstantiatePermissionRadio = ({
                             );
                             trigger(`addresses.${idx}.address`);
                           }}
+                          isDisable={
+                            addresses.findIndex(
+                              (x) => x.address === walletAddress
+                            ) > -1
+                          }
                         />
                       }
                     />
                     <Button
-                      h="56px"
-                      isDisabled={fields.length <= 1}
-                      size="lg"
-                      variant="outline-gray"
                       w="56px"
+                      h="56px"
+                      variant="outline-gray"
+                      size="lg"
+                      isDisabled={fields.length <= 1}
                       onClick={() => {
                         remove(idx);
                       }}
@@ -154,11 +154,11 @@ export const InstantiatePermissionRadio = ({
                   </Flex>
                 ))}
                 <Button
+                  variant="outline-primary"
                   mt={3}
                   mx="auto"
-                  variant="outline-primary"
-                  leftIcon={<CustomIcon name="plus" color="primary.light" />}
                   onClick={() => append({ address: "" as BechAddr })}
+                  leftIcon={<CustomIcon name="plus" color="primary.light" />}
                 >
                   Add More Address
                 </Button>

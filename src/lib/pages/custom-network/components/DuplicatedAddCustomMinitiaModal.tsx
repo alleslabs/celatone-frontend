@@ -15,34 +15,34 @@ import { CustomIcon } from "lib/components/icon";
 
 interface DuplicatedAddCustomMinitiaModalProps {
   isOpen: boolean;
-  label: string;
   onClose: () => void;
+  label: string;
 }
 
 export const DuplicatedAddCustomMinitiaModal = ({
   isOpen,
-  label,
   onClose,
+  label,
 }: DuplicatedAddCustomMinitiaModalProps) => (
   <Modal
-    isCentered
     isOpen={isOpen}
-    closeOnOverlayClick={false}
     onClose={onClose}
+    isCentered
+    closeOnOverlayClick={false}
   >
     <ModalOverlay />
-    <ModalContent bg="gray.800" py={10} textAlign="center" w="541px">
-      <ModalHeader py={0} w="full">
+    <ModalContent bg="gray.800" py={10} w="541px" textAlign="center">
+      <ModalHeader w="full" py={0}>
         <Stack alignItems="center" gap={4} w="100%">
           <CustomIcon
             name="alert-triangle-solid"
-            boxSize={14}
             color="error.main"
+            boxSize={14}
           />
           <Heading variant="h5">{label} is already existed</Heading>
         </Stack>
       </ModalHeader>
-      <ModalBody pt={2} overflow="overlay">
+      <ModalBody overflow="overlay" pt={2}>
         <Text variant="body2" color="text.dark">
           Your JSON file contains the configuration for the added network “
           {label}” which is already existed.

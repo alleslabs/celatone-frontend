@@ -4,28 +4,28 @@ import { Flex, Text } from "@chakra-ui/react";
 import { TooltipInfo } from "./Tooltip";
 
 export interface LabelTextProps extends FlexProps {
-  children?: JSX.Element | string;
+  label: string;
+  labelWeight?: number;
+  labelColor?: string;
+  isSmall?: boolean;
+  tooltipText?: string;
+  children?: string | JSX.Element;
   helperText1?: string;
   helperText2?: string;
-  isSmall?: boolean;
-  label: string;
-  labelColor?: string;
-  labelWeight?: number;
-  tooltipText?: string;
 }
 
 export const LabelText = ({
+  label,
+  labelWeight = 500,
+  isSmall = false,
+  labelColor = "text.dark",
+  tooltipText,
   children,
   helperText1,
   helperText2,
-  isSmall = false,
-  label,
-  labelColor = "text.dark",
-  labelWeight = 500,
-  tooltipText,
   ...flexProps
 }: LabelTextProps) => (
-  <Flex gap={1} direction="column" {...flexProps}>
+  <Flex direction="column" gap={1} {...flexProps}>
     <Flex align="center" gap={1}>
       <Text
         variant={isSmall ? "body3" : "body2"}

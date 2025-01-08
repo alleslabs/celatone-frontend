@@ -65,7 +65,7 @@ export const useProposalParams = () => {
   return useQuery<ProposalParams<Coin>>(
     [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
     async () => queryFn(endpoint),
-    { refetchOnWindowFocus: false, retry: 1 }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -74,7 +74,7 @@ export const useProposalTypes = () => {
   return useQuery<ProposalType[]>(
     [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, endpoint],
     async () => getProposalTypes(endpoint),
-    { refetchOnWindowFocus: false, retry: 1 }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -110,12 +110,12 @@ export const useProposals = (
         types,
         trimmedSearch
       ),
-    { refetchOnWindowFocus: false, retry: 1 }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
 export const useProposalsLcd = (
-  status?: Omit<ProposalStatus, "CANCELLED" | "DEPOSIT_FAILED">
+  status?: Omit<ProposalStatus, "DEPOSIT_FAILED" | "CANCELLED">
 ) => {
   const {
     chainConfig: { lcd: lcdEndpoint },
@@ -152,7 +152,7 @@ export const useProposalsByAddress = (
       offset,
     ],
     async () => getProposalsByAddress(endpoint, address, limit, offset),
-    { refetchOnWindowFocus: false, retry: 1 }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -179,8 +179,8 @@ export const useRelatedProposalsByContractAddress = (
         offset
       ),
     {
-      keepPreviousData: true,
       retry: 1,
+      keepPreviousData: true,
     }
   );
 };
@@ -191,7 +191,7 @@ export const useProposalData = (id: number, enabled = true) => {
   return useQuery<ProposalDataResponse>(
     [CELATONE_QUERY_KEYS.PROPOSAL_DATA, endpoint, id],
     async () => getProposalData(endpoint, id),
-    { enabled, retry: 1 }
+    { retry: 1, enabled }
   );
 };
 
@@ -204,9 +204,9 @@ export const useProposalDataLcd = (id: number, enabled = true) => {
     [CELATONE_QUERY_KEYS.PROPOSAL_DATA_LCD, lcdEndpoint, id],
     async () => getProposalDataLcd(lcdEndpoint, id),
     {
-      enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
@@ -220,9 +220,9 @@ export const useProposalDepositsLcd = (id: number, enabled = true) => {
     [CELATONE_QUERY_KEYS.PROPOSAL_DEPOSITS_LCD, lcdEndpoint, id],
     async () => getProposalDepositsLcd(lcdEndpoint, id),
     {
-      enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
@@ -241,7 +241,7 @@ export const useProposalVotesInfo = (id: number, enabled: boolean) => {
   return useQuery<ProposalVotesInfo>(
     [CELATONE_QUERY_KEYS.PROPOSAL_VOTES_INFO, endpoint, id],
     async () => queryFn(endpoint, id),
-    { enabled, refetchOnWindowFocus: false, retry: 1 }
+    { retry: 1, refetchOnWindowFocus: false, enabled }
   );
 };
 
@@ -266,7 +266,7 @@ export const useProposalVotes = (
       answer,
     ],
     async () => getProposalVotes(endpoint, id, limit, offset, answer, search),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
@@ -295,7 +295,7 @@ export const useProposalValidatorVotes = (
     ],
     async () =>
       getProposalValidatorVotes(endpoint, id, limit, offset, answer, search),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
@@ -308,6 +308,6 @@ export const useProposalAnswerCounts = (
   return useQuery(
     [CELATONE_QUERY_KEYS.PROPOSAL_ANSWER_COUNTS, endpoint, id],
     async () => getProposalAnswerCounts(endpoint, id),
-    { enabled, refetchOnWindowFocus: false, retry: 1 }
+    { retry: 1, refetchOnWindowFocus: false, enabled }
   );
 };

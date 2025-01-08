@@ -17,14 +17,14 @@ const Proposals = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Proposals" />
-      <Flex alignItems="center" justify="space-between">
+      <Flex justify="space-between" alignItems="center">
         <Heading as="h5" variant="h5">
           Proposals
         </Heading>
-        <Flex align="center" gap={4}>
+        <Flex gap={4} align="center">
           <UserDocsLink
-            isButton
             href="introduction/overview#recent-proposals"
+            isButton
           />
           {!isMobile && <NewProposalButton />}
         </Flex>

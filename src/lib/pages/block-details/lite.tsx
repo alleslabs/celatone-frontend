@@ -18,8 +18,8 @@ export const BlockDetailsLite = ({ height }: { height: number }) => {
     return (
       <EmptyState
         heading={`Block ${height} is too old and has been pruned from LCD`}
-        imageVariant="not-found"
         message="Due to the LCD pruning the old blocks, this block's information cannot be retrieved."
+        imageVariant="not-found"
         textVariant="body2"
         withBorder
       />
@@ -29,7 +29,7 @@ export const BlockDetailsLite = ({ height }: { height: number }) => {
     <>
       <Breadcrumb
         items={[
-          { href: "/blocks", text: "Blocks" },
+          { text: "Blocks", href: "/blocks" },
           { text: data.height.toString() },
         ]}
       />
@@ -37,8 +37,8 @@ export const BlockDetailsLite = ({ height }: { height: number }) => {
       <BlockInfo blockData={data} />
       <BlockTxsTableLite height={height} />
       <UserDocsLink
-        cta="Read more about Block"
         title="What is a block?"
+        cta="Read more about Block"
         href="general/blocks/detail-page"
       />
     </>

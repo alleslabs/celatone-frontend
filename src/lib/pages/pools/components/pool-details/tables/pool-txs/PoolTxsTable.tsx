@@ -10,19 +10,19 @@ const TEMPLATE_COLUMNS =
   "24px max(200px) 50px minmax(360px, 1fr) max(160px) max(220px)";
 
 interface PoolTxsTableProps {
-  assetInfos: Option<AssetInfos>;
-  emptyState: JSX.Element;
-  isLoading: boolean;
   pool: PoolData;
   transactions: Option<Transaction[]>;
+  assetInfos: Option<AssetInfos>;
+  isLoading: boolean;
+  emptyState: JSX.Element;
 }
 
 export const PoolTxsTable = ({
-  assetInfos,
-  emptyState,
-  isLoading,
   pool,
   transactions,
+  assetInfos,
+  isLoading,
+  emptyState,
 }: PoolTxsTableProps) => {
   if (isLoading) return <Loading />;
   if (!transactions?.length) return emptyState;
@@ -33,10 +33,10 @@ export const PoolTxsTable = ({
       {transactions.map((transaction) => (
         <PoolTxsTableRow
           key={transaction.hash}
-          assetInfos={assetInfos}
           pool={pool}
-          templateColumns={TEMPLATE_COLUMNS}
           transaction={transaction}
+          assetInfos={assetInfos}
+          templateColumns={TEMPLATE_COLUMNS}
         />
       ))}
     </TableContainer>

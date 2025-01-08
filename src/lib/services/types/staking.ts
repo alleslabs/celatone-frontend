@@ -14,12 +14,12 @@ import { formatSeconds, snakeToCamel } from "lib/utils";
 export const zStakingParamsResponseLcd = z
   .object({
     params: z.object({
-      bond_denom: z.string(),
-      historical_entries: z.number(),
-      max_entries: z.number(),
-      max_validators: z.number(),
-      min_commission_rate: z.string(),
       unbonding_time: z.string().transform((val) => formatSeconds(val)), // e.g. "1209600s"
+      max_validators: z.number(),
+      max_entries: z.number(),
+      historical_entries: z.number(),
+      bond_denom: z.string(),
+      min_commission_rate: z.string(),
     }),
   })
   .transform(snakeToCamel);
@@ -27,9 +27,9 @@ export const zStakingParamsResponseLcd = z
 export const zDistributionParamsResponseLcd = z
   .object({
     params: z.object({
+      community_tax: zBig,
       base_proposer_reward: zBig,
       bonus_proposer_reward: zBig,
-      community_tax: zBig,
       withdraw_addr_enabled: z.boolean(),
     }),
   })
@@ -44,24 +44,24 @@ export const zAnnualProvisionsResponseLcd = z
 export const zMintParamsResponseLcd = z
   .object({
     params: z.object({
-      distribution_proportions: z.object({
-        community_pool: zBig,
-        developer_rewards: zBig,
-        pool_incentives: zBig,
-        staking: zBig,
-      }),
-      epoch_identifier: z.string(),
-      genesis_epoch_provisions: zBig,
       mint_denom: z.string(),
-      minting_rewards_distribution_start_epoch: zBig,
-      reduction_factor: zBig,
+      genesis_epoch_provisions: zBig,
+      epoch_identifier: z.string(),
       reduction_period_in_epochs: zBig,
+      reduction_factor: zBig,
+      distribution_proportions: z.object({
+        staking: zBig,
+        pool_incentives: zBig,
+        developer_rewards: zBig,
+        community_pool: zBig,
+      }),
       weighted_developer_rewards_receivers: z.array(
         z.object({
           address: zBechAddr,
           weight: zBig,
         })
       ),
+      minting_rewards_distribution_start_epoch: zBig,
     }),
   })
   .transform(snakeToCamel);
@@ -76,12 +76,12 @@ export const zDelegationsResponseLcd = z
   .object({
     delegation_responses: z.array(
       z.object({
-        balance: zCoin,
         delegation: z.object({
           delegator_address: zAddr,
-          shares: z.string(),
           validator_address: zValidatorAddr,
+          shares: z.string(),
         }),
+        balance: zCoin,
       })
     ),
   })
@@ -92,15 +92,15 @@ export const zUnbondingsResponseLcd = z
     unbonding_responses: z.array(
       z.object({
         delegator_address: zAddr,
+        validator_address: zValidatorAddr,
         entries: z.array(
           z.object({
-            balance: z.string(), // after slashed during unbonding
-            completion_time: zUtcDate,
             creation_height: z.coerce.number(),
+            completion_time: zUtcDate,
             initial_balance: z.string(),
+            balance: z.string(), // after slashed during unbonding
           })
         ),
-        validator_address: zValidatorAddr,
       })
     ),
   })
@@ -110,22 +110,22 @@ export const zRedelegationsResponseLcd = z
   .object({
     redelegation_responses: z.array(
       z.object({
+        redelegation: z.object({
+          delegator_address: zAddr,
+          validator_src_address: zValidatorAddr,
+          validator_dst_address: zValidatorAddr,
+        }),
         entries: z.array(
           z.object({
-            balance: z.string(),
             redelegation_entry: z.object({
-              completion_time: zUtcDate,
               creation_height: z.coerce.number(),
+              completion_time: zUtcDate,
               initial_balance: z.string(),
               shares_dst: z.string(),
             }),
+            balance: z.string(),
           })
         ),
-        redelegation: z.object({
-          delegator_address: zAddr,
-          validator_dst_address: zValidatorAddr,
-          validator_src_address: zValidatorAddr,
-        }),
       })
     ),
   })
@@ -133,7 +133,19 @@ export const zRedelegationsResponseLcd = z
 
 export const zDelegationData = z
   .object({
+    is_validator: z.boolean(),
     commissions: z.array(zCoin),
+    staking_params: z.object({
+      bond_denoms: z.array(z.string()),
+      max_entries: z.number(),
+      unbonding_time: z.string().transform((val) => formatSeconds(val)),
+    }),
+    delegations: z.array(
+      z.object({
+        balance: z.array(zCoin),
+        validator: zValidator,
+      })
+    ),
     delegation_rewards: z.object({
       rewards: z.array(
         z.object({
@@ -143,13 +155,17 @@ export const zDelegationData = z
       ),
       total: z.array(zCoin),
     }),
-    delegations: z.array(
+    unbondings: z.array(
       z.object({
-        balance: z.array(zCoin),
+        entries: z.array(
+          z.object({
+            balance: z.array(zCoin),
+            completion_time: zUtcDate,
+          })
+        ),
         validator: zValidator,
       })
     ),
-    is_validator: z.boolean(),
     redelegations: z.array(
       z.object({
         entries: z.array(
@@ -164,41 +180,25 @@ export const zDelegationData = z
         validator_src: zValidator,
       })
     ),
-    staking_params: z.object({
-      bond_denoms: z.array(z.string()),
-      max_entries: z.number(),
-      unbonding_time: z.string().transform((val) => formatSeconds(val)),
-    }),
-    unbondings: z.array(
-      z.object({
-        entries: z.array(
-          z.object({
-            balance: z.array(zCoin),
-            completion_time: zUtcDate,
-          })
-        ),
-        validator: zValidator,
-      })
-    ),
   })
   .transform((val) => ({
     ...snakeToCamel(val),
+    unbondings: val.unbondings
+      .flatMap((unbonding) =>
+        unbonding.entries.map((entry) => ({
+          validator: unbonding.validator,
+          balance: entry.balance,
+          completionTime: entry.completion_time,
+        }))
+      )
+      .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime()),
     redelegations: val.redelegations
       .flatMap((redelegation) =>
         redelegation.entries.map((entry) => ({
           balance: entry.balance,
           completionTime: entry.redelegation_entry.completion_time,
-          dstValidator: redelegation.validator_dst,
           srcValidator: redelegation.validator_src,
-        }))
-      )
-      .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime()),
-    unbondings: val.unbondings
-      .flatMap((unbonding) =>
-        unbonding.entries.map((entry) => ({
-          balance: entry.balance,
-          completionTime: entry.completion_time,
-          validator: unbonding.validator,
+          dstValidator: redelegation.validator_dst,
         }))
       )
       .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime()),

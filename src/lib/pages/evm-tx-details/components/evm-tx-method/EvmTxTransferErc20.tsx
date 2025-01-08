@@ -19,13 +19,13 @@ import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
 
 interface EvmTxTransferErc20Props {
-  assetInfos: Option<AssetInfos>;
   evmTxData: TxDataJsonRpc;
+  assetInfos: Option<AssetInfos>;
 }
 
 export const EvmTxTransferErc20 = ({
-  assetInfos,
   evmTxData,
+  assetInfos,
 }: EvmTxTransferErc20Props) => {
   const { from, input, to: erc20Contract } = evmTxData.tx;
 
@@ -40,23 +40,24 @@ export const EvmTxTransferErc20 = ({
 
   return (
     <EvmTxMethodAccordion
+      msgIcon="send"
       content={
         <Box display="inline">
           <ExplorerLink
-            textVariant="body1"
             type="user_address"
             value={from}
-            ampCopierSection="tx_page_message_header_send_address"
             showCopyOnHover
+            textVariant="body1"
+            ampCopierSection="tx_page_message_header_send_address"
           />{" "}
-          <EvmMethodChip width="110px" txInput={input} />{" "}
+          <EvmMethodChip txInput={input} width="110px" />{" "}
           {formatTokenWithValue(amount)} to{" "}
           {toAddress?.address ? (
             <ExplorerLink
-              textVariant="body1"
               type={toAddress.type}
               value={toAddress.address}
               showCopyOnHover
+              textVariant="body1"
             />
           ) : (
             <Text variant="body2" color="text.disabled">
@@ -65,17 +66,16 @@ export const EvmTxTransferErc20 = ({
           )}
         </Box>
       }
-      msgIcon="send"
     >
       <EvmInfoLabelValue
         label="From"
         value={
           <ExplorerLink
-            fixedHeight={false}
             type="user_address"
             value={from}
             showCopyOnHover
             textFormat="normal"
+            fixedHeight={false}
           />
         }
       />
@@ -84,11 +84,11 @@ export const EvmTxTransferErc20 = ({
         value={
           toAddress ? (
             <ExplorerLink
-              fixedHeight={false}
               type={toAddress.type}
               value={toAddress.address}
               showCopyOnHover
               textFormat="normal"
+              fixedHeight={false}
             />
           ) : (
             <Text variant="body2" color="text.disabled">
@@ -101,18 +101,18 @@ export const EvmTxTransferErc20 = ({
         label="ERC20 Contract"
         value={
           erc20Contract ? (
-            <Flex align="center" gap={1}>
+            <Flex gap={1} align="center">
               <CustomIcon
                 name="contract-address"
                 boxSize={3}
                 color="primary.main"
               />
               <ExplorerLink
-                fixedHeight={false}
-                type="evm_contract_address"
                 value={erc20Contract}
+                type="evm_contract_address"
                 showCopyOnHover
                 textFormat="normal"
+                fixedHeight={false}
               />
             </Flex>
           ) : (
@@ -126,11 +126,11 @@ export const EvmTxTransferErc20 = ({
         label="Transferred Token"
         value={
           isSupportedToken(amount) ? (
-            <TokenCard minW={{ base: "full", md: "50%" }} token={amount} />
+            <TokenCard token={amount} minW={{ base: "full", md: "50%" }} />
           ) : (
             <UnsupportedToken
-              minW={{ base: "full", md: "50%" }}
               token={amount}
+              minW={{ base: "full", md: "50%" }}
             />
           )
         }

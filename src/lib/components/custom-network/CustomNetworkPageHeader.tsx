@@ -1,18 +1,18 @@
 import { Alert, AlertDescription, Flex, Heading, Text } from "@chakra-ui/react";
 
 interface CustomNetworkPageHeaderProps {
-  hasAlert?: boolean;
-  subtitle?: string;
   title: string;
+  subtitle?: string;
+  hasAlert?: boolean;
 }
 
 export const CustomNetworkPageHeader = ({
-  hasAlert = true,
-  subtitle = "Add Custom Minitia",
   title,
+  subtitle = "Add Custom Minitia",
+  hasAlert = true,
 }: CustomNetworkPageHeaderProps) => (
   <>
-    <Flex alignItems="center" gap={2} direction="column">
+    <Flex direction="column" gap={2} alignItems="center">
       <Heading as="h6" variant="h6" color="text.dark">
         {subtitle}
       </Heading>
@@ -23,7 +23,7 @@ export const CustomNetworkPageHeader = ({
     {hasAlert && (
       <Alert my={4} p={3} variant="info">
         <AlertDescription>
-          <Text lineHeight="normal" textAlign="center" color="text.dark">
+          <Text color="text.dark" textAlign="center" lineHeight="normal">
             Please note that the custom Minitia you add on our website will only
             be stored locally on your device.
           </Text>

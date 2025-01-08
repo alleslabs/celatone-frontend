@@ -20,17 +20,17 @@ export const MyModuleVerificationDetailsInfo = ({
 }: MyModuleVerificationDetailsInfoProps) => (
   <Grid
     gridTemplateColumns="repeat(4, 160px)"
-    p={4}
     border="1px"
     borderColor="gray.700"
     rounded={8}
+    p={4}
   >
     {chainId && <LabelText label="Network">{chainId}</LabelText>}
     <LabelText label="Status">
       <MyModuleVerificationDetailsStatusBadge status={status} />
     </LabelText>
     {verifiedAt && (
-      <LabelText gridColumn="span 2" label="Verified at">
+      <LabelText label="Verified at" gridColumn="span 2">
         <Flex direction="column">
           <Text variant="body2" color="text.dark">
             {formatUTC(verifiedAt)}

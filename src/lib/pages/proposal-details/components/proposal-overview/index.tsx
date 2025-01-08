@@ -14,11 +14,11 @@ import { ProposalMetadata } from "./ProposalMetadata";
 import { StatusSummary } from "./status-summary";
 
 export interface ProposalOverviewProps {
-  isDepositsLoading: boolean;
-  isLoading: boolean;
-  params: Option<ProposalParams>;
   proposalData: ProposalData;
   votesInfo: Option<ProposalVotesInfo>;
+  params: Option<ProposalParams>;
+  isLoading: boolean;
+  isDepositsLoading: boolean;
 }
 
 export const ProposalOverview = ({
@@ -26,12 +26,12 @@ export const ProposalOverview = ({
   ...props
 }: ProposalOverviewProps) => (
   <Grid
-    gridGap={16}
     gridTemplateColumns={{ base: "1fr", xl: "2fr minmax(360px, 1fr)" }}
+    gridGap={16}
     mt={8}
   >
     <GridItem>
-      <Flex gap={8} direction="column">
+      <Flex direction="column" gap={8}>
         <StatusSummary proposalData={proposalData} {...props} />
         <ProposalDescription description={proposalData.description} />
         <ProposalMetadata metadata={proposalData.metadata} />

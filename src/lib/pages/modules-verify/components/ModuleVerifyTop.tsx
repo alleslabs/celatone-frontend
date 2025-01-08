@@ -7,8 +7,8 @@ export const ModuleVerifyTop = () => (
     <Breadcrumb
       items={[
         {
-          href: "/my-module-verifications",
           text: "Modules",
+          href: "/my-module-verifications",
         },
         {
           text: "Verify Modules",

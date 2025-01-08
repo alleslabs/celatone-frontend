@@ -5,48 +5,48 @@ import { coinsFromStr, coinsToStr, sortDenoms } from "./funds";
 describe("sortDenoms", () => {
   const sortedCoins = [
     {
-      amount: "10",
       denom: "#denom",
+      amount: "10",
     },
     {
-      amount: "10",
       denom: "1denom",
+      amount: "10",
     },
     {
-      amount: "10",
       denom: "Adenom",
+      amount: "10",
     },
     {
-      amount: "10",
       denom: "adenom",
+      amount: "10",
     },
     {
-      amount: "10",
       denom: "bdenom",
+      amount: "10",
     },
   ] as Coin[];
 
   test("sort coins that are already in correct alphabetical order", () => {
     const coins = [
       {
-        amount: "10",
         denom: "#denom",
+        amount: "10",
       },
       {
-        amount: "10",
         denom: "1denom",
+        amount: "10",
       },
       {
-        amount: "10",
         denom: "Adenom",
+        amount: "10",
       },
       {
-        amount: "10",
         denom: "adenom",
+        amount: "10",
       },
       {
-        amount: "10",
         denom: "bdenom",
+        amount: "10",
       },
     ] as Coin[];
     expect(sortDenoms(coins)).toEqual(sortedCoins);
@@ -55,24 +55,24 @@ describe("sortDenoms", () => {
   test("sort coins that are not in an alphabetical order", () => {
     const coins = [
       {
-        amount: "10",
         denom: "Adenom",
+        amount: "10",
       },
       {
-        amount: "10",
         denom: "bdenom",
+        amount: "10",
       },
       {
-        amount: "10",
         denom: "#denom",
+        amount: "10",
       },
       {
-        amount: "10",
         denom: "adenom",
+        amount: "10",
       },
       {
-        amount: "10",
         denom: "1denom",
+        amount: "10",
       },
     ] as Coin[];
     expect(sortDenoms(coins)).toEqual(sortedCoins);
@@ -86,14 +86,14 @@ describe("sortDenoms", () => {
     expect(
       sortDenoms([
         {
-          amount: "10",
           denom: "adenom",
+          amount: "10",
         },
       ])
     ).toEqual([
       {
-        amount: "10",
         denom: "adenom",
+        amount: "10",
       },
     ]);
   });
@@ -104,10 +104,10 @@ describe("sortDenoms", () => {
 
   test("parse Coins from string", () => {
     expect(coinsFromStr("1000adenom, 1ibc/bdenom")).toEqual([
-      { amount: "1000", denom: "adenom" },
+      { denom: "adenom", amount: "1000" },
       {
-        amount: "1",
         denom: "ibc/bdenom",
+        amount: "1",
       },
     ]);
   });
@@ -120,10 +120,10 @@ describe("sortDenoms", () => {
     expect(
       coinsToStr([
         {
-          amount: "1",
           denom: "ibc/bdenom",
+          amount: "1",
         },
-        { amount: "1000", denom: "adenom" },
+        { denom: "adenom", amount: "1000" },
       ])
     ).toEqual("1ibc/bdenom,1000adenom");
   });

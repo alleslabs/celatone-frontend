@@ -20,19 +20,19 @@ import { ValidatorVotesTableHeader } from "./ValidatorVotesTableHeader";
 import { ValidatorVotesTableRow } from "./ValidatorVotesTableRow";
 
 interface ValidatorVotesTableBodyProps {
+  validatorVotes: Option<ProposalValidatorVote[]>;
   fullVersion: boolean;
   isLoading: boolean;
-  isProposalResolved: boolean;
   isSearching: boolean;
-  validatorVotes: Option<ProposalValidatorVote[]>;
+  isProposalResolved: boolean;
 }
 
 export const ValidatorVotesTableBody = ({
+  validatorVotes,
   fullVersion,
   isLoading,
-  isProposalResolved,
   isSearching,
-  validatorVotes,
+  isProposalResolved,
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }: ValidatorVotesTableBodyProps) => {
   const isMobile = useMobile();
@@ -59,9 +59,9 @@ export const ValidatorVotesTableBody = ({
   return (
     <TableContainer>
       <ValidatorVotesTableHeader
+        templateColumns={templateColumns}
         fullVersion={fullVersion}
         isProposalResolved={isProposalResolved}
-        templateColumns={templateColumns}
       />
       {validatorVotes.map((each, idx) => (
         <ValidatorVotesTableRow
@@ -71,10 +71,10 @@ export const ValidatorVotesTableBody = ({
             (each.txHash ?? "null") +
             idx.toString()
           }
-          fullVersion={fullVersion}
-          isProposalResolved={isProposalResolved}
           proposalVote={each}
+          fullVersion={fullVersion}
           templateColumns={templateColumns}
+          isProposalResolved={isProposalResolved}
         />
       ))}
     </TableContainer>
@@ -82,23 +82,23 @@ export const ValidatorVotesTableBody = ({
 };
 
 interface ValidatorVotesTableProps {
-  answers: Option<ProposalAnswerCountsResponse["validator"]>;
-  enabled?: boolean;
-  fullVersion: boolean;
   id: number;
+  answers: Option<ProposalAnswerCountsResponse["validator"]>;
+  fullVersion: boolean;
   isProposalResolved: boolean;
   onViewMore?: () => void;
+  enabled?: boolean;
 }
 
 const tableHeaderId = "validatorVotesTable";
 
 export const ValidatorVotesTable = ({
-  answers,
-  enabled,
-  fullVersion,
   id,
+  answers,
+  fullVersion,
   isProposalResolved,
   onViewMore,
+  enabled,
 }: ValidatorVotesTableProps) => {
   const [answerFilter, setAnswerFilter] = useState<ProposalVoteType>(
     ProposalVoteType.ALL
@@ -107,18 +107,18 @@ export const ValidatorVotesTable = ({
   const debouncedSearch = useDebounce(search);
 
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
-    setCurrentPage,
-    setPageSize,
     setTotalData,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    offset,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
 
@@ -137,51 +137,51 @@ export const ValidatorVotesTable = ({
   const answerOptions = useMemo(
     () => [
       {
-        disabled: !answers?.totalValidators,
         label: `All votes (${answers?.totalValidators ?? 0})`,
         value: ProposalVoteType.ALL,
+        disabled: !answers?.totalValidators,
       },
       {
+        label: `Yes (${answers?.yes ?? 0})`,
+        value: ProposalVoteType.YES,
         disabled: !answers?.yes,
         icon: "circle" as const,
         iconColor: "success.main",
-        label: `Yes (${answers?.yes ?? 0})`,
-        value: ProposalVoteType.YES,
       },
       {
+        label: `No (${answers?.no ?? 0})`,
+        value: ProposalVoteType.NO,
         disabled: !answers?.no,
         icon: "circle" as const,
         iconColor: "error.main",
-        label: `No (${answers?.no ?? 0})`,
-        value: ProposalVoteType.NO,
       },
       {
+        label: `No with veto (${answers?.noWithVeto ?? 0})`,
+        value: ProposalVoteType.NO_WITH_VETO,
         disabled: !answers?.noWithVeto,
         icon: "circle" as const,
         iconColor: "error.dark",
-        label: `No with veto (${answers?.noWithVeto ?? 0})`,
-        value: ProposalVoteType.NO_WITH_VETO,
       },
       {
+        label: `Abstain (${answers?.abstain ?? 0})`,
+        value: ProposalVoteType.ABSTAIN,
         disabled: !answers?.abstain,
         icon: "circle" as const,
         iconColor: "gray.600",
-        label: `Abstain (${answers?.abstain ?? 0})`,
-        value: ProposalVoteType.ABSTAIN,
       },
       {
+        label: `Did not vote (${answers?.didNotVote ?? 0})`,
+        value: ProposalVoteType.DID_NOT_VOTE,
         disabled: !answers?.didNotVote,
         icon: "circle" as const,
         iconColor: "gray.600",
-        label: `Did not vote (${answers?.didNotVote ?? 0})`,
-        value: ProposalVoteType.DID_NOT_VOTE,
       },
       {
+        label: `Weighted (${answers?.weighted ?? 0})`,
+        value: ProposalVoteType.WEIGHTED,
         disabled: !answers?.weighted,
         icon: "circle" as const,
         iconColor: "primary.light",
-        label: `Weighted (${answers?.weighted ?? 0})`,
-        value: ProposalVoteType.WEIGHTED,
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -208,40 +208,40 @@ export const ValidatorVotesTable = ({
         >
           <GridItem>
             <SelectInputBase<ProposalVoteType>
-              disableMaxH
-              initialSelected={answerFilter}
               formLabel="Filter by Answer"
-              labelBgColor="gray.900"
-              onChange={handleOnAnswerFilterChange}
               options={answerOptions}
+              onChange={handleOnAnswerFilterChange}
+              labelBgColor="gray.900"
+              initialSelected={answerFilter}
               popoverBgColor="gray.800"
+              disableMaxH
             />
           </GridItem>
           <GridItem>
             <InputWithIcon
-              size="lg"
+              placeholder="Search with address or validator moniker..."
               value={search}
               onChange={handleOnSearchChange}
-              placeholder="Search with address or validator moniker..."
+              size="lg"
             />
           </GridItem>
         </Grid>
       )}
       <ValidatorVotesTableBody
         validatorVotes={data?.items}
-        isSearching={isSearching}
-        fullVersion={fullVersion}
         isLoading={isLoading}
+        fullVersion={fullVersion}
+        isSearching={isSearching}
         isProposalResolved={isProposalResolved}
       />
       {data &&
         data.total > 10 &&
         (onViewMore ? (
-          <Flex mt={4} textAlign="center" w="full" justifyContent="center">
+          <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
             <Button
-              gap={2}
-              variant="ghost-primary"
               w="full"
+              variant="ghost-primary"
+              gap={2}
               onClick={onViewMore}
             >
               View all validator votes
@@ -252,17 +252,17 @@ export const ValidatorVotesTable = ({
           fullVersion && (
             <Pagination
               currentPage={currentPage}
-              pageSize={pageSize}
               pagesQuantity={pagesQuantity}
+              scrollComponentId={tableHeaderId}
               offset={offset}
+              totalData={data?.total ?? 0}
+              pageSize={pageSize}
               onPageChange={setCurrentPage}
               onPageSizeChange={(e) => {
                 const size = Number(e.target.value);
                 setPageSize(size);
                 setCurrentPage(1);
               }}
-              scrollComponentId={tableHeaderId}
-              totalData={data?.total ?? 0}
             />
           )
         ))}

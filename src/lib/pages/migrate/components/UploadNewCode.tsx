@@ -6,18 +6,18 @@ import { UploadSection } from "lib/components/upload";
 import type { Option, SimulateStatus, UploadSectionState } from "lib/types";
 
 interface UploadNewCodeProps {
-  estimatedFee: Option<StdFee>;
   formData: UseFormReturn<UploadSectionState>;
-  isSimulating: boolean;
-  setDefaultBehavior: () => void;
+  estimatedFee: Option<StdFee>;
   setEstimatedFee: (fee: StdFee | undefined) => void;
+  setDefaultBehavior: () => void;
   shouldNotSimulate: boolean;
   simulateStatus: SimulateStatus;
+  isSimulating: boolean;
 }
 
 export const UploadNewCode = (props: UploadNewCodeProps) => (
   <>
-    <Heading as="h6" mb={6} variant="h6">
+    <Heading as="h6" variant="h6" mb={6}>
       Migrate to new code
     </Heading>
     <UploadSection {...props} />

@@ -10,23 +10,23 @@ interface PenaltyEventProps {
   event: ValidatorUptimeResponse["events"][0];
 }
 export const PenaltyEvent = ({ event }: PenaltyEventProps) => {
-  const { color, icon } = useMemo(() => {
+  const { icon, color } = useMemo(() => {
     switch (event.type) {
-      case SlashingEvent.Jailed:
-        return { color: "error.main", icon: "jailed" as const };
       case SlashingEvent.Slashed:
-        return { color: "error.main", icon: "slashed" as const };
+        return { icon: "slashed" as const, color: "error.main" };
+      case SlashingEvent.Jailed:
+        return { icon: "jailed" as const, color: "error.main" };
       case SlashingEvent.Unjailed:
-        return { color: "success.main", icon: "unjailed" as const };
+        return { icon: "unjailed" as const, color: "success.main" };
       default:
-        return { color: "primary.main", icon: "info-circle" as const };
+        return { icon: "info-circle" as const, color: "primary.main" };
     }
   }, [event.type]);
 
   return (
     <Flex alignItems="center" gap={2}>
       <Flex alignItems="center" gap={1}>
-        <CustomIcon name={icon} boxSize={5} color={color} />
+        <CustomIcon name={icon} color={color} boxSize={5} />
         <Text variant="body2" color="text.main">
           <span style={{ fontWeight: 700 }}>{event.type}</span> at block height
         </Text>

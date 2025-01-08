@@ -32,33 +32,33 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
     <>
       <Breadcrumb
         items={[
-          { href: "/pools", text: "Pools" },
+          { text: "Pools", href: "/pools" },
           { text: `#${pool.id.toString()}` },
         ]}
       />
-      <Flex align="center" mt={4} w="full" justifyContent="space-between">
+      <Flex justifyContent="space-between" align="center" w="full" mt={4}>
         <PoolHeader
-          isSuperfluid={pool.isSuperfluid}
-          liquidity={pool.liquidity}
           poolId={pool.id}
+          isSuperfluid={pool.isSuperfluid}
           poolType={pool.type}
+          liquidity={pool.liquidity}
         />
         <Flex align="center" gap={2}>
           <Button
             variant="ghost-gray"
-            onClick={openPoolLcd}
             rightIcon={
               <CustomIcon name="launch" boxSize={3} color="gray.400" />
             }
+            onClick={openPoolLcd}
           >
             View in JSON
           </Button>
           <Button
             variant="outline-primary"
-            onClick={openOsmosisPool}
             rightIcon={
               <CustomIcon name="launch" boxSize={3} color="primary.light" />
             }
+            onClick={openOsmosisPool}
           >
             View in Osmosis
           </Button>

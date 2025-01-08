@@ -21,13 +21,13 @@ import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 
 interface ModuleVerifySuccessModalProps {
-  control: Control<ModuleVerifyForm>;
   onClose: () => void;
+  control: Control<ModuleVerifyForm>;
 }
 
 export const ModuleVerifySuccessModal = ({
-  control,
   onClose,
+  control,
 }: ModuleVerifySuccessModalProps) => {
   const navigate = useInternalNavigate();
   const { currentChainId } = useCelatoneApp();
@@ -44,21 +44,21 @@ export const ModuleVerifySuccessModal = ({
         <Stack alignItems="center" gap={4} w="100%">
           <CustomIcon
             name="check-circle-solid"
-            boxSize={14}
             color="success.main"
+            boxSize={14}
           />
           <Heading variant="h5">Submitted Verification!</Heading>
         </Stack>
       </ModalHeader>
       <ModalBody overflow="overlay">
         <Stack gap={4}>
-          <Stack p={4} border="1px" borderColor="gray.700" rounded={8}>
+          <Stack rounded={8} border="1px" borderColor="gray.700" p={4}>
             <Grid gridTemplateColumns="160px 1fr" rowGap={2}>
-              <Text variant="body2" color="text.dark" fontWeight={500}>
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Network
               </Text>
               <Text variant="body2">{currentChainId}</Text>
-              <Text variant="body2" color="text.dark" fontWeight={500}>
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Request ID
               </Text>
               <AppLink
@@ -67,15 +67,15 @@ export const ModuleVerifySuccessModal = ({
               >
                 {taskId}
               </AppLink>
-              <Text variant="body2" color="text.dark" fontWeight={500}>
+              <Text variant="body2" fontWeight={500} color="text.dark">
                 Request Note
               </Text>
               <Text variant="body2">{requestNote ?? "-"}</Text>
             </Grid>
             <Divider />
             <Stack gap={1}>
-              <Flex alignItems="center" gap={1}>
-                <Text variant="body2" color="text.dark" fontWeight={500}>
+              <Flex gap={1} alignItems="center">
+                <Text variant="body2" fontWeight={500} color="text.dark">
                   Uploading .move files
                 </Text>
                 <Badge>{moveFiles.length}</Badge>
@@ -85,19 +85,19 @@ export const ModuleVerifySuccessModal = ({
               </Text>
             </Stack>
           </Stack>
-          <Text textAlign="center" variant="body2" color="text.dark">
+          <Text variant="body2" color="text.dark" textAlign="center">
             Your verification request will be stored locally on your device.{" "}
           </Text>
         </Stack>
       </ModalBody>
-      <ModalFooter gap={4} pb={0}>
-        <Button variant="outline-primary" w="full" onClick={onClose}>
+      <ModalFooter pb={0} gap={4}>
+        <Button variant="outline-primary" onClick={onClose} w="full">
           Close
         </Button>
         <Button
           variant="primary"
-          w="full"
           onClick={() => navigate({ pathname: "/my-module-verifications" })}
+          w="full"
         >
           See My Past Verifications
         </Button>

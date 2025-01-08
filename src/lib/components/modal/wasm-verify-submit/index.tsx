@@ -18,29 +18,29 @@ import { WasmVerifySubmitCompleted } from "./WasmVerifySubmitCompleted";
 import { WasmVerifySubmitFailed } from "./WasmVerifySubmitFailed";
 import { WasmVerifySubmitForm } from "./WasmVerifySubmitForm";
 
-interface WasmVerifySubmitModalBodyProps
-  extends Omit<WasmVerifySubmitModalProps, "triggerElement"> {
-  errorMsg: Option<string>;
-  isError: boolean;
-  isLoading: boolean;
-  isSuccess: boolean;
-  onClose: () => void;
-  onSubmit: (wasmVerifyRequest: WasmVerifyRequest) => void;
+interface WasmVerifySubmitModalProps {
+  codeId: number;
+  codeHash: Option<string>;
+  wasmVerifyStatus: WasmVerifyStatus;
+  relatedVerifiedCodes?: number[];
+  contractAddress?: BechAddr32;
+  triggerElement: ReactNode;
 }
 
-interface WasmVerifySubmitModalProps {
-  codeHash: Option<string>;
-  codeId: number;
-  contractAddress?: BechAddr32;
-  relatedVerifiedCodes?: number[];
-  triggerElement: ReactNode;
-  wasmVerifyStatus: WasmVerifyStatus;
+interface WasmVerifySubmitModalBodyProps
+  extends Omit<WasmVerifySubmitModalProps, "triggerElement"> {
+  onSubmit: (wasmVerifyRequest: WasmVerifyRequest) => void;
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  errorMsg: Option<string>;
+  onClose: () => void;
 }
 
 const WasmVerifySubmitModalBody = ({
-  errorMsg,
-  isError,
   isSuccess,
+  isError,
+  errorMsg,
   onClose,
   ...props
 }: WasmVerifySubmitModalBodyProps) => {
@@ -51,16 +51,16 @@ const WasmVerifySubmitModalBody = ({
 };
 
 export const WasmVerifySubmitModal = ({
-  codeHash,
   codeId,
-  contractAddress,
-  relatedVerifiedCodes,
-  triggerElement,
+  codeHash,
   wasmVerifyStatus,
+  relatedVerifiedCodes,
+  contractAddress,
+  triggerElement,
 }: WasmVerifySubmitModalProps) => {
   const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
-  const { error, isError, isLoading, isSuccess, mutate } =
+  const { mutate, isLoading, isSuccess, isError, error } =
     useSubmitWasmVerify();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -89,29 +89,29 @@ export const WasmVerifySubmitModal = ({
         {triggerElement}
       </Flex>
       <Modal
-        isCentered
         isOpen={isOpen}
         onClose={handleClose}
+        isCentered
         returnFocusOnClose={false}
       >
         <ModalOverlay />
         <ModalContent
+          w={{ base: "full", md: "645px" }}
           bg="gray.800"
           maxW="100vw"
-          w={{ base: "full", md: "645px" }}
         >
           <WasmVerifySubmitModalBody
-            isSuccess={isSuccess}
-            wasmVerifyStatus={wasmVerifyStatus}
-            codeHash={codeHash}
             codeId={codeId}
-            contractAddress={contractAddress}
-            errorMsg={error?.response?.data.message}
-            isError={isError}
-            isLoading={isLoading}
-            onClose={handleClose}
-            onSubmit={mutate}
+            codeHash={codeHash}
+            wasmVerifyStatus={wasmVerifyStatus}
             relatedVerifiedCodes={relatedVerifiedCodes}
+            contractAddress={contractAddress}
+            onSubmit={mutate}
+            isLoading={isLoading}
+            isSuccess={isSuccess}
+            isError={isError}
+            errorMsg={error?.response?.data.message}
+            onClose={handleClose}
           />
         </ModalContent>
       </Modal>

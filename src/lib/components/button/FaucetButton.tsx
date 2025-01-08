@@ -8,17 +8,17 @@ interface FaucetButtonProps {
 
 export const FaucetButton = ({ faucetUrl }: FaucetButtonProps) => (
   <a
-    style={{ height: "100%", overflow: "hidden" }}
-    data-peer
-    rel="noopener noreferrer"
-    target="_blank"
     href={faucetUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    data-peer
+    style={{ overflow: "hidden", height: "100%" }}
   >
     <Button
-      h="full"
       variant="ghost-gray"
-      borderRadius={0}
       leftIcon={<CustomIcon name="faucet" />}
+      h="full"
+      borderRadius={0}
     >
       Faucet
     </Button>

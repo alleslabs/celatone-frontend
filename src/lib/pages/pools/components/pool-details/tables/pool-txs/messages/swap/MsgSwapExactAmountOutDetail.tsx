@@ -9,23 +9,23 @@ import type { MsgSwapExactAmountOutDetails } from "lib/utils/tx/types";
 import { PoolRoute, PoolSwap } from "./components";
 
 interface MsgSwapExactAmountOutDetailProps {
-  ampCopierSection?: string;
-  assetInfos: Option<AssetInfos>;
-  blockHeight: number;
-  isOpened: boolean;
-  msg: MsgSwapExactAmountOutDetails;
-  msgIndex: number;
   txHash: string;
+  blockHeight: number;
+  msgIndex: number;
+  msg: MsgSwapExactAmountOutDetails;
+  assetInfos: Option<AssetInfos>;
+  isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const MsgSwapExactAmountOutDetail = ({
-  ampCopierSection,
-  assetInfos,
-  blockHeight,
-  isOpened,
-  msg,
-  msgIndex,
   txHash,
+  blockHeight,
+  msgIndex,
+  msg,
+  assetInfos,
+  isOpened,
+  ampCopierSection,
 }: MsgSwapExactAmountOutDetailProps) => {
   const outDenoms = msg.routes
     .map((route) => route.tokenInDenom)
@@ -36,36 +36,36 @@ export const MsgSwapExactAmountOutDetail = ({
   }));
 
   return (
-    <Flex alignItems="start" gap={6} w="full" direction="column">
+    <Flex w="full" direction="column" alignItems="start" gap={6}>
       <Flex gap={12}>
         <PoolInfoText title="Block height">
           <ExplorerLink
-            type="block_height"
             value={blockHeight.toString()}
-            ampCopierSection={ampCopierSection}
+            type="block_height"
             showCopyOnHover
+            ampCopierSection={ampCopierSection}
           />
         </PoolInfoText>
         <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
       </Flex>
       <Box w="full">
         <PoolSwap
+          txHash={txHash}
           exactInput={{
+            isExactIn: false,
             amount: msg.token_out,
             expectedDenom: msg.routes[0].tokenInDenom,
-            isExactIn: false,
           }}
-          isOpened={isOpened}
           msgIndex={msgIndex}
-          txHash={txHash}
-          ampCopierSection={ampCopierSection}
           assetInfos={assetInfos}
+          isOpened={isOpened}
+          ampCopierSection={ampCopierSection}
         />
         <PoolRoute
+          routes={routes}
+          assetInfos={assetInfos}
           isOpened={isOpened}
           ampCopierSection={ampCopierSection}
-          assetInfos={assetInfos}
-          routes={routes}
         />
       </Box>
     </Flex>

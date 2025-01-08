@@ -10,17 +10,17 @@ import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
 import { VerifyButton } from "./VerifyButton";
 
 interface IndirectlyVerifiedDetailsProps {
-  codeHash: string;
   codeId: number;
-  contractAddress?: BechAddr32;
+  codeHash: string;
   relatedVerifiedCodes: number[];
+  contractAddress?: BechAddr32;
 }
 
 export const IndirectlyVerifiedDetails = ({
-  codeHash,
   codeId,
-  contractAddress,
+  codeHash,
   relatedVerifiedCodes,
+  contractAddress,
 }: IndirectlyVerifiedDetailsProps) => {
   const isMobile = useMobile();
   return (
@@ -30,8 +30,8 @@ export const IndirectlyVerifiedDetails = ({
           <>
             This contract is an instance of code ID{" "}
             <ExplorerLink
-              type="code_id"
               value={codeId.toString()}
+              type="code_id"
               rightIcon={
                 <WasmVerifyBadge
                   status={WasmVerifyStatus.INDIRECTLY_VERIFIED}
@@ -58,11 +58,11 @@ export const IndirectlyVerifiedDetails = ({
         GitHub repository{isMobile && " on the desktop interface"}.
       </Text>
       <VerifyButton
-        wasmVerifyStatus={WasmVerifyStatus.INDIRECTLY_VERIFIED}
-        codeHash={codeHash}
         codeId={codeId}
-        contractAddress={contractAddress}
+        codeHash={codeHash}
+        wasmVerifyStatus={WasmVerifyStatus.INDIRECTLY_VERIFIED}
         relatedVerifiedCodes={relatedVerifiedCodes}
+        contractAddress={contractAddress}
       />
     </>
   );

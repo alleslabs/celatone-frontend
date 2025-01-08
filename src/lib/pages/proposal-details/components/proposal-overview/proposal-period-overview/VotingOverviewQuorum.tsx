@@ -18,14 +18,14 @@ import type {
 import { dateFromNow, formatPrettyPercent, formatUTC } from "lib/utils";
 
 interface VotingOverviewQuorumProps {
-  params: ProposalParams;
   proposalData: ProposalData;
+  params: ProposalParams;
   votesInfo: ProposalVotesInfo;
 }
 
 export const VotingOverviewQuorum = ({
-  params,
   proposalData,
+  params,
   votesInfo,
 }: VotingOverviewQuorumProps) => {
   const { quorum } = extractParams(params, proposalData.isExpedited);
@@ -34,13 +34,13 @@ export const VotingOverviewQuorum = ({
 
   const endTime = proposalData.resolvedTimestamp ?? proposalData.votingEndTime;
   return (
-    <Flex gap={4} direction="column">
-      <Flex alignItems="center" gap={2}>
+    <Flex direction="column" gap={4}>
+      <Flex gap={2} alignItems="center">
         <VoteQuorumBadge
           status={proposalData.status}
-          isCompact
           quorum={quorum}
           totalRatio={totalRatio}
+          isCompact
         />
         <Text variant="body1" color="text.main">
           Quorum
@@ -49,7 +49,6 @@ export const VotingOverviewQuorum = ({
       <Divider borderColor="gray.700" />
       <Flex gap={4}>
         <Tooltip
-          hidden={isNull(nonAbstainRatio) || isNull(abstainRatio)}
           label={
             <div>
               <LegendText
@@ -65,22 +64,23 @@ export const VotingOverviewQuorum = ({
             </div>
           }
           bgColor="gray.700"
+          hidden={isNull(nonAbstainRatio) || isNull(abstainRatio)}
         >
           <Box h="fit-content">
             <VoteQuorumCircle
-              isCompact
-              nonAbstainRatio={nonAbstainRatio}
               quorum={quorum}
+              nonAbstainRatio={nonAbstainRatio}
               totalRatio={totalRatio}
+              isCompact
             />
           </Box>
         </Tooltip>
-        <Flex gap={2} direction="column">
+        <Flex direction="column" gap={2}>
           <VoteQuorumText
             status={proposalData.status}
-            isCompact
             quorum={quorum}
             totalRatio={totalRatio}
+            isCompact
           />
           <div>
             <Text variant="body3" color="text.dark">

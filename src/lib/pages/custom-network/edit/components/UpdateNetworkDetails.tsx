@@ -4,10 +4,10 @@ import { CustomNetworkSubheader } from "lib/components/custom-network";
 
 export const UpdateNetworkDetails = () => {
   return (
-    <Flex gap={6} direction="column">
+    <Flex direction="column" gap={6}>
       <CustomNetworkSubheader
-        subtitle="Enter the Minitia’s general information and gather data touch points"
         title="Network Details"
+        subtitle="Enter the Minitia’s general information and gather data touch points"
       />
       <Flex bg="teal">form goes here</Flex>
     </Flex>

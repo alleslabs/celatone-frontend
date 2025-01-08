@@ -11,49 +11,49 @@ import { TotalCardModal } from "./TotalCardModal";
 import { TotalCardTop } from "./TotalCardTop";
 
 interface MultiBondsCardProps {
-  address: BechAddr;
-  message: string;
   title: string;
+  message: string;
+  address: BechAddr;
   tokens: Option<Record<string, TokenWithValue>>;
 }
 
 export const MultiBondsCard = ({
-  address,
-  message,
   title,
+  message,
+  address,
   tokens,
 }: MultiBondsCardProps) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const isDisabled = !tokens;
   const numTokens = tokens ? Object.entries(tokens).length : 0;
   return (
     <Flex
+      aria-disabled={isDisabled}
+      minW="233px"
+      p={4}
+      align="center"
+      justify="space-between"
+      bgColor="gray.900"
+      borderRadius="8px"
+      cursor="pointer"
+      _hover={{ bgColor: "gray.700" }}
+      transition="all .25s ease-in-out"
       _disabled={{
         bgColor: "gray.900",
         cursor: "not-allowed",
       }}
-      align="center"
-      aria-disabled={isDisabled}
-      justify="space-between"
-      minW="233px"
-      p={4}
-      _hover={{ bgColor: "gray.700" }}
-      bgColor="gray.900"
-      borderRadius="8px"
-      cursor="pointer"
       onClick={!isDisabled ? onOpen : undefined}
-      transition="all .25s ease-in-out"
     >
-      <Flex gap={1} direction="column">
-        <TotalCardTop message={message} title={title} fontWeight={600} />
+      <Flex direction="column" gap={1}>
+        <TotalCardTop title={title} message={message} fontWeight={600} />
         {!tokens ? (
-          <Heading as="h6" variant="h6">
+          <Heading variant="h6" as="h6">
             N/A
           </Heading>
         ) : (
           <>
-            <Heading as="h6" variant="h6">
+            <Heading variant="h6" as="h6">
               {formatPrice(
                 totalValueTokenWithValue(tokens, big(0) as USD<Big>)
               )}
@@ -62,12 +62,12 @@ export const MultiBondsCard = ({
               ({`${numTokens} ${plur("token", numTokens)}`})
             </Text>
             <TotalCardModal
-              address={address}
-              isOpen={isOpen}
-              message={message}
               title={title}
-              onClose={onClose}
+              message={message}
+              address={address}
               tokens={tokens}
+              isOpen={isOpen}
+              onClose={onClose}
             />
           </>
         )}

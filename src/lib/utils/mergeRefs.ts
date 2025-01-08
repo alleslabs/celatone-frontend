@@ -4,7 +4,7 @@ import type * as React from "react";
 import type { Nullable } from "lib/types";
 
 export const mergeRefs = <T = unknown>(
-  refs: Array<React.LegacyRef<T> | React.MutableRefObject<T>>
+  refs: Array<React.MutableRefObject<T> | React.LegacyRef<T>>
 ): React.RefCallback<T> => {
   return (value) => {
     refs.forEach((ref) => {

@@ -4,18 +4,18 @@ import { SingleBondCardBodyMulti } from "./SingleBondCardBodyMulti";
 import { SingleBondCardBodySingle } from "./SingleBondCardBodySingle";
 
 interface SingleBondCardBodyProps {
+  title: string;
+  message: string;
   address: BechAddr;
   bondDenom: TokenWithValue;
-  message: string;
-  title: string;
   tokens: Record<string, TokenWithValue>;
 }
 
 export const SingleBondCardBody = ({
+  title,
+  message,
   address,
   bondDenom,
-  message,
-  title,
   tokens,
 }: SingleBondCardBodyProps) => {
   const denoms = Object.keys(tokens);
@@ -29,9 +29,9 @@ export const SingleBondCardBody = ({
 
   return (
     <SingleBondCardBodyMulti
-      address={address}
-      message={message}
       title={title}
+      message={message}
+      address={address}
       tokens={tokens}
     />
   );

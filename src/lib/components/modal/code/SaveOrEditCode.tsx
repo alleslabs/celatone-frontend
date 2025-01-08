@@ -8,37 +8,37 @@ import { EditCodeDetailsModal } from "./EditCodeDetails";
 import { SaveCodeDetailsModal } from "./SaveCodeDetails";
 
 interface SaveOrEditCodeModalProps {
+  mode: "save" | "edit";
   codeInfo: CodeInfo;
-  mode: "edit" | "save";
 }
 
 export const SaveOrEditCodeModal = observer(
-  ({ codeInfo, mode }: SaveOrEditCodeModalProps) =>
+  ({ mode, codeInfo }: SaveOrEditCodeModalProps) =>
     mode === "save" ? (
       <SaveCodeDetailsModal
+        codeInfo={codeInfo}
         triggerElement={
           <Button
-            size={{ base: "sm", md: "md" }}
             variant="outline-gray"
+            size={{ base: "sm", md: "md" }}
             leftIcon={<CustomIcon name="bookmark" />}
           >
             Save Code
           </Button>
         }
-        codeInfo={codeInfo}
       />
     ) : (
       <EditCodeDetailsModal
+        codeInfo={codeInfo}
         triggerElement={
           <Button
-            size={{ base: "sm", md: "md" }}
             variant="ghost-gray"
+            size={{ base: "sm", md: "md" }}
             leftIcon={<CustomIcon name="edit" />}
           >
             Edit
           </Button>
         }
-        codeInfo={codeInfo}
       />
     )
 );

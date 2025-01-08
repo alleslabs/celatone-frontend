@@ -5,14 +5,14 @@ import type { MouseEventHandler } from "react";
 import { useCurrentChain } from "lib/app-provider";
 
 interface AssignMeProps {
-  isDisable?: boolean;
   onClick?: MouseEventHandler<HTMLParagraphElement>;
+  isDisable?: boolean;
   textAlign?: TextProps["textAlign"];
 }
 
 export const AssignMe = ({
-  isDisable = false,
   onClick,
+  isDisable = false,
   textAlign = "right",
 }: AssignMeProps) => {
   const { address: walletAddress } = useCurrentChain();
@@ -20,13 +20,13 @@ export const AssignMe = ({
 
   return (
     <Text
-      minW={16}
-      mr={3}
       textAlign={textAlign}
-      variant="body3"
+      mr={3}
       color={enabled ? "primary.main" : "gray.600"}
-      cursor={enabled ? "pointer" : "not-allowed"}
       fontWeight={700}
+      variant="body3"
+      cursor={enabled ? "pointer" : "not-allowed"}
+      minW={16}
       onClick={enabled ? onClick : undefined}
     >
       Assign me

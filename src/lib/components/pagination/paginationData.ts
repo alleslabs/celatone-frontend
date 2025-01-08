@@ -1,15 +1,15 @@
 export const INITIAL_VALUES = {
-  activeStyles: {},
+  pagesQuantity: undefined,
   currentPage: 1,
+  normalStyles: {},
+  separatorStyles: {},
+  activeStyles: {},
+  isDisabled: false,
+  innerLimit: 0,
+  separatorIcon: undefined,
+  outerLimit: 0,
   hoverIconLeft: undefined,
   hoverIconRight: undefined,
-  innerLimit: 0,
-  isDisabled: false,
-  normalStyles: {},
-  outerLimit: 0,
-  pagesQuantity: undefined,
-  separatorIcon: undefined,
-  separatorStyles: {},
 };
 
 export const SEPARATORS = {

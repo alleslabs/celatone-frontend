@@ -22,14 +22,14 @@ export const NormalChip: Story = {
 
 export const TransparentChip: Story = {
   args: {
-    isTransparent: true,
     status: ProposalStatus.DEPOSIT_PERIOD,
+    isTransparent: true,
   },
 };
 
 export const FilterChip: Story = {
   args: {
-    hasCloseBtn: true,
     status: ProposalStatus.DEPOSIT_PERIOD,
+    hasCloseBtn: true,
   },
 };

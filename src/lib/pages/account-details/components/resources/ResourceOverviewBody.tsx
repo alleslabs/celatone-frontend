@@ -12,31 +12,31 @@ import { scrollToTop } from "lib/utils";
 
 interface ResourceOverviewBodyProps {
   address: BechAddr;
+  resourcesByName: Option<ResourceGroup[]>;
   isLoading: boolean;
   onViewMore: () => void;
-  resourcesByName: Option<ResourceGroup[]>;
 }
 
 export const ResourceOverviewBody = ({
   address,
+  resourcesByName,
   isLoading,
   onViewMore,
-  resourcesByName,
 }: ResourceOverviewBodyProps) => {
   const navigate = useInternalNavigate();
 
   const handleSelectResource = useCallback(
     (resource: ResourceGroup) => {
       navigate({
-        options: {
-          shallow: true,
-        },
         pathname: `/accounts/[accountAddress]/[tab]`,
         query: {
-          account: resource.account,
           accountAddress: address,
-          selected: resource.group,
           tab: "resources",
+          account: resource.account,
+          selected: resource.group,
+        },
+        options: {
+          shallow: true,
         },
       });
     },
@@ -48,9 +48,9 @@ export const ResourceOverviewBody = ({
     return (
       <ErrorFetching
         dataName="resources"
+        withBorder
         my={2}
         hasBorderTop={false}
-        withBorder
       />
     );
   if (!resourcesByName.length)
@@ -60,14 +60,14 @@ export const ResourceOverviewBody = ({
 
   return (
     <Flex
-      mb={12}
-      mt={6}
-      pb={6}
+      direction="column"
       borderBottom="1px solid"
       borderBottomColor="gray.700"
-      direction="column"
+      mb={12}
+      pb={6}
+      mt={6}
     >
-      <SimpleGrid mb={6} spacing={4} columns={{ lg: 4, md: 2, sm: 1 }}>
+      <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} spacing={4} mb={6}>
         {resourcesByName.slice(0, 8).map((item) => (
           <ResourceCard
             key={item.displayName}

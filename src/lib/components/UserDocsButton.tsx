@@ -7,28 +7,28 @@ import { DEVELOPER_TOOL_DOCS_LINK, USER_GUIDE_DOCS_LINK } from "lib/data";
 import { CustomIcon } from "./icon";
 
 interface UserDocsButtonProps extends ButtonProps {
+  title: string;
   href: string;
   isDevTool: boolean;
-  title: string;
 }
 
 export const UserDocsButton = ({
+  title,
   href,
   isDevTool,
-  title,
   ...props
 }: UserDocsButtonProps) => (
   <Link
-    style={{ textDecoration: "none" }}
-    rel="noopener noreferrer"
-    target="_blank"
+    href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
     onClick={(e) => {
       trackWebsite(
         `${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`
       );
       e.stopPropagation();
     }}
-    href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ textDecoration: "none" }}
   >
     <Button leftIcon={<CustomIcon name="document" boxSize={3} />} {...props}>
       {title}

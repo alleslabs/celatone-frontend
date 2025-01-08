@@ -16,35 +16,35 @@ import { MigrationRow } from "./MigrationRow";
 
 interface MigrationTableFullProps {
   contractAddress: BechAddr32;
-  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
+  refetchCount: () => void;
 }
 
 export const MigrationTableFull = ({
   contractAddress,
-  refetchCount,
   scrollComponentId,
   totalData,
+  refetchCount,
 }: MigrationTableFullProps) => {
   const isMobile = useMobile();
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
+    currentPage,
     setCurrentPage,
+    pageSize,
     setPageSize,
+    offset,
   } = usePaginator({
+    total: totalData,
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
-    total: totalData,
   });
 
-  const { data, error, isLoading } = useMigrationHistories(
+  const { data, isLoading, error } = useMigrationHistories(
     contractAddress,
     offset,
     pageSize
@@ -98,9 +98,11 @@ export const MigrationTableFull = ({
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={totalData}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
           onPageChange={(nextPage) => {
             setCurrentPage(nextPage);
             refetchCount();
@@ -111,8 +113,6 @@ export const MigrationTableFull = ({
             setPageSize(size);
             setCurrentPage(1);
           }}
-          scrollComponentId={scrollComponentId}
-          totalData={totalData}
         />
       )}
     </>

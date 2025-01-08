@@ -87,15 +87,15 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   return (
     <ActionPageContainer width={900}>
       <CustomNetworkPageHeader
-        hasAlert={false}
-        subtitle="Your Custom Minitia"
         title={chainConfig.prettyName}
+        subtitle="Your Custom Minitia"
+        hasAlert={false}
       />
       <Stack gap={12} mt={8} w="full">
-        <Flex gap={10} justifyContent="space-between">
+        <Flex justifyContent="space-between" gap={10}>
           <CustomNetworkSubheader
-            subtitle="You can export this Custom Minitia configuration in JSON file to use them in other device."
             title="Export as JSON File"
+            subtitle="You can export this Custom Minitia configuration in JSON file to use them in other device."
           />
           <Button
             minW={168}
@@ -109,14 +109,14 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
           <Heading as="h6" variant="h6">
             Current Configuration in JSON
           </Heading>
-          <JsonReadOnly fullWidth text={jsonPrettify(json)} canCopy />
+          <JsonReadOnly text={jsonPrettify(json)} canCopy fullWidth />
           <RemoveChainConfigModal
             chainId={chainId}
             trigger={
               <Button
+                variant="ghost-error"
                 mt={10}
                 size="md"
-                variant="ghost-error"
                 border="1px solid"
                 borderColor="error.main"
                 leftIcon={<CustomIcon name="delete" />}

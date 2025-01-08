@@ -7,13 +7,13 @@ interface LoadingProps extends FlexProps {
 
 export const Loading = ({ withBorder = false, ...flexProps }: LoadingProps) => (
   <Flex
-    width="full"
-    alignItems="center"
-    my={12}
-    py={15}
-    borderColor="gray.700"
     borderY={withBorder ? "1px solid" : undefined}
+    borderColor="gray.700"
+    width="full"
+    py={15}
+    my={12}
     flexDirection="column"
+    alignItems="center"
     {...flexProps}
   >
     <Spinner size="xl" />

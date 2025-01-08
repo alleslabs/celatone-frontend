@@ -15,18 +15,18 @@ import { shortenName } from "lib/utils";
 
 interface CreateNewListModalProps {
   buttonProps?: ButtonProps;
-  inputValue?: string;
-  onClose?: () => void;
-  onCreate?: (listName: string) => void;
   trigger?: ReactNode;
+  onCreate?: (listName: string) => void;
+  onClose?: () => void;
+  inputValue?: string;
 }
 
 export function CreateNewListModal({
   buttonProps,
-  inputValue,
-  onClose,
-  onCreate,
   trigger,
+  inputValue,
+  onCreate,
+  onClose,
 }: CreateNewListModalProps) {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
@@ -48,11 +48,11 @@ export function CreateNewListModal({
       setStatus({ state: "init" });
     } else if (trimedListName.length > constants.maxListNameLength)
       setStatus({
-        message: getMaxLengthError(trimedListName.length, "list_name"),
         state: "error",
+        message: getMaxLengthError(trimedListName.length, "list_name"),
       });
     else if (isContractListExist(trimedListName))
-      setStatus({ message: "Already existed", state: "error" });
+      setStatus({ state: "error", message: "Already existed" });
     else setStatus({ state: "success" });
   }, [
     constants.maxListNameLength,
@@ -72,12 +72,12 @@ export function CreateNewListModal({
     track(AmpEvent.LIST_CREATE);
 
     toast({
+      title: `Create ${shortenName(listName)} successfully`,
+      status: "success",
       duration: 5000,
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       isClosable: false,
       position: "bottom-right",
-      status: "success",
-      title: `Create ${shortenName(listName)} successfully`,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   }, [createNewList, listName, resetListName, onCreate, onClose, toast]);
 
@@ -87,23 +87,23 @@ export function CreateNewListModal({
 
   return (
     <ActionModal
-      disabledMain={status.state !== "success"}
-      mainBtnTitle="Create"
       title="Create a New List"
-      trigger={trigger || <Button {...buttonProps} as="button" />}
       icon="add-new"
+      trigger={trigger || <Button {...buttonProps} as="button" />}
+      mainBtnTitle="Create"
       mainAction={handleCreate}
-      otherAction={resetListName}
+      disabledMain={status.state !== "success"}
       otherBtnTitle="Cancel"
+      otherAction={resetListName}
     >
       <Box py={4}>
         <TextInput
-          label="List Name"
-          setInputState={setListName}
-          status={status}
-          value={listName}
           variant="fixed-floating"
+          value={listName}
+          setInputState={setListName}
           labelBgColor="gray.900"
+          status={status}
+          label="List Name"
         />
       </Box>
     </ActionModal>

@@ -8,7 +8,7 @@ import type { TxsTableProps } from "./types";
 export const TxsTable = (props: TxsTableProps) => (
   <TierSwitcher
     full={<TxsTableFull {...props} />}
-    lite={<TxsTableLite {...props} />}
     sequencer={<TxsTableSequencer {...props} />}
+    lite={<TxsTableLite {...props} />}
   />
 );

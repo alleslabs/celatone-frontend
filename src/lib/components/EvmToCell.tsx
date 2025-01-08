@@ -17,15 +17,15 @@ export const EvmToCell = ({ toAddress }: EvmToCellProps) => {
         <Text variant="body3" color="text.disabled">
           Created Contract
         </Text>
-        <Flex align="center" gap={1}>
+        <Flex gap={1} align="center">
           <CustomIcon
             name="contract-address"
             boxSize={3}
             color="primary.main"
           />
           <ExplorerLink
-            type={toAddress.type}
             value={toAddress.address}
+            type={toAddress.type}
             showCopyOnHover
           />
         </Flex>
@@ -35,8 +35,8 @@ export const EvmToCell = ({ toAddress }: EvmToCellProps) => {
   if (toAddress)
     return (
       <ExplorerLink
-        type={toAddress.type}
         value={toAddress.address}
+        type={toAddress.type}
         showCopyOnHover
       />
     );

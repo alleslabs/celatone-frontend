@@ -19,15 +19,15 @@ const useStoredCodes = () => {
   const storedCodes =
     rawStoredCodes?.items.map<CodeInfo>((code) => ({
       ...code,
-      isSaved: isCodeIdSaved(code.id),
       name: getCodeLocalInfo(code.id)?.name,
+      isSaved: isCodeIdSaved(code.id),
     })) ?? [];
 
-  return { isLoading: isLoading && isHydrated, storedCodes };
+  return { storedCodes, isLoading: isLoading && isHydrated };
 };
 
 const useSavedCodes = () => {
-  const { isHydrated, lastSavedCodeIds, lastSavedCodes } = useCodeStore();
+  const { lastSavedCodes, lastSavedCodeIds, isHydrated } = useCodeStore();
 
   const savedCodeIds = lastSavedCodeIds();
   const { data: rawSavedCodes, isLoading } = useCodeList(savedCodeIds);
@@ -39,26 +39,26 @@ const useSavedCodes = () => {
     return {
       ...localSavedCode,
       contractCount: rawSavedCode?.contractCount,
-      cw2Contract: rawSavedCode?.cw2Contract,
-      cw2Version: rawSavedCode?.cw2Version,
       instantiatePermission:
         rawSavedCode?.instantiatePermission ?? AccessConfigPermission.UNKNOWN,
-      isSaved: true,
       permissionAddresses: rawSavedCode?.permissionAddresses ?? [],
+      cw2Contract: rawSavedCode?.cw2Contract,
+      cw2Version: rawSavedCode?.cw2Version,
+      isSaved: true,
     };
   });
 
-  return { isLoading: isLoading && isHydrated, savedCodes };
+  return { savedCodes, isLoading: isLoading && isHydrated };
 };
 
 interface MyCodesData {
-  allCodesCount: number;
-  isSavedCodesLoading: boolean;
-  isStoredCodesLoading: boolean;
   savedCodes: CodeInfo[];
-  savedCodesCount: number;
   storedCodes: CodeInfo[];
+  savedCodesCount: number;
   storedCodesCount: number;
+  allCodesCount: number;
+  isStoredCodesLoading: boolean;
+  isSavedCodesLoading: boolean;
 }
 
 export const useMyCodesData = (
@@ -68,8 +68,8 @@ export const useMyCodesData = (
   const permissionFilterFn = useCodePermissionFilter(permissionValue);
   const searchFilterFn = useCodeSearchFilter(keyword);
 
-  const { isLoading: isStoredCodesLoading, storedCodes } = useStoredCodes();
-  const { isLoading: isSavedCodesLoading, savedCodes } = useSavedCodes();
+  const { storedCodes, isLoading: isStoredCodesLoading } = useStoredCodes();
+  const { savedCodes, isLoading: isSavedCodesLoading } = useSavedCodes();
 
   const [filteredSavedCodes, filteredStoredCodes] = useMemo(
     () => [
@@ -83,12 +83,12 @@ export const useMyCodesData = (
   const savedCodesCount = savedCodes.length;
 
   return {
-    allCodesCount: storedCodesCount + savedCodesCount,
-    isSavedCodesLoading,
-    isStoredCodesLoading,
-    savedCodes: filteredSavedCodes,
-    savedCodesCount,
     storedCodes: filteredStoredCodes,
+    savedCodes: filteredSavedCodes,
     storedCodesCount,
+    savedCodesCount,
+    allCodesCount: storedCodesCount + savedCodesCount,
+    isStoredCodesLoading,
+    isSavedCodesLoading,
   };
 };

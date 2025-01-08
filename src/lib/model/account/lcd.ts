@@ -82,24 +82,24 @@ export const useAccountDelegationInfosLcd = (
     isAssetInfosLoading ||
     isMovePoolInfosLoading;
   const data: DelegationInfos = {
-    delegations: undefined,
-    isCommissionsLoading,
-    isDelegationsLoading,
     isLoading,
-    isRedelegationsLoading,
-    isRewardsLoading,
-    isTotalBondedLoading: isDelegationsLoading || isUnbondingsLoading,
-    isUnbondingsLoading,
-    isValidator: undefined,
-    redelegations: undefined,
-    rewards: undefined,
     stakingParams: undefined,
+    isValidator: undefined,
+    isTotalBondedLoading: isDelegationsLoading || isUnbondingsLoading,
     totalBonded: undefined,
-    totalCommissions: undefined,
+    isDelegationsLoading,
     totalDelegations: undefined,
-    totalRewards: undefined,
+    delegations: undefined,
+    isUnbondingsLoading,
     totalUnbondings: undefined,
     unbondings: undefined,
+    isRewardsLoading,
+    totalRewards: undefined,
+    rewards: undefined,
+    isRedelegationsLoading,
+    redelegations: undefined,
+    isCommissionsLoading,
+    totalCommissions: undefined,
   };
 
   if (stakingParams && assetInfos && validators) {
@@ -118,7 +118,12 @@ export const useAccountDelegationInfosLcd = (
     data.isValidator = valAddr ? validatorsMap?.[valAddr] !== undefined : false;
 
     data.delegations = delegations?.map<Delegation>(
-      ({ balance, delegation }) => ({
+      ({ delegation, balance }) => ({
+        validator: {
+          validatorAddress: delegation.validatorAddress,
+          identity: validatorsMap?.[delegation.validatorAddress]?.identity,
+          moniker: validatorsMap?.[delegation.validatorAddress]?.moniker,
+        },
         balances: [
           coinToTokenWithValue(
             balance.denom,
@@ -127,11 +132,6 @@ export const useAccountDelegationInfosLcd = (
             movePoolInfos
           ),
         ],
-        validator: {
-          identity: validatorsMap?.[delegation.validatorAddress]?.identity,
-          moniker: validatorsMap?.[delegation.validatorAddress]?.moniker,
-          validatorAddress: delegation.validatorAddress,
-        },
       })
     );
     data.totalDelegations = data.delegations?.reduce<
@@ -149,6 +149,12 @@ export const useAccountDelegationInfosLcd = (
     );
 
     data.unbondings = unbondings?.map<Unbonding>((unbonding) => ({
+      validator: {
+        validatorAddress: unbonding.validatorAddress,
+        moniker: validatorsMap?.[unbonding.validatorAddress]?.moniker,
+        identity: validatorsMap?.[unbonding.validatorAddress]?.identity,
+      },
+      completionTime: unbonding.completionTime,
       balances: [
         coinToTokenWithValue(
           stakingParams.bondDenom,
@@ -157,12 +163,6 @@ export const useAccountDelegationInfosLcd = (
           movePoolInfos
         ),
       ],
-      completionTime: unbonding.completionTime,
-      validator: {
-        identity: validatorsMap?.[unbonding.validatorAddress]?.identity,
-        moniker: validatorsMap?.[unbonding.validatorAddress]?.moniker,
-        validatorAddress: unbonding.validatorAddress,
-      },
     }));
     data.totalUnbondings = data.unbondings?.reduce<
       Record<string, TokenWithValue>
@@ -179,6 +179,17 @@ export const useAccountDelegationInfosLcd = (
     );
 
     data.redelegations = redelegations?.map<Redelegation>((redelegation) => ({
+      srcValidator: {
+        validatorAddress: redelegation.validatorSrcAddress,
+        moniker: validatorsMap?.[redelegation.validatorSrcAddress]?.moniker,
+        identity: validatorsMap?.[redelegation.validatorSrcAddress]?.identity,
+      },
+      dstValidator: {
+        validatorAddress: redelegation.validatorDstAddress,
+        moniker: validatorsMap?.[redelegation.validatorDstAddress]?.moniker,
+        identity: validatorsMap?.[redelegation.validatorDstAddress]?.identity,
+      },
+      completionTime: redelegation.completionTime,
       balances: [
         coinToTokenWithValue(
           stakingParams.bondDenom,
@@ -187,17 +198,6 @@ export const useAccountDelegationInfosLcd = (
           movePoolInfos
         ),
       ],
-      completionTime: redelegation.completionTime,
-      dstValidator: {
-        identity: validatorsMap?.[redelegation.validatorDstAddress]?.identity,
-        moniker: validatorsMap?.[redelegation.validatorDstAddress]?.moniker,
-        validatorAddress: redelegation.validatorDstAddress,
-      },
-      srcValidator: {
-        identity: validatorsMap?.[redelegation.validatorSrcAddress]?.identity,
-        moniker: validatorsMap?.[redelegation.validatorSrcAddress]?.moniker,
-        validatorAddress: redelegation.validatorSrcAddress,
-      },
     }));
 
     data.rewards = rewards?.rewards.reduce<Record<string, TokenWithValue[]>>(

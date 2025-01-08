@@ -15,9 +15,9 @@ interface AddNetworkStepperProps {
 export const AddNetworkStepper = ({
   currentStepIndex,
 }: AddNetworkStepperProps) => (
-  <Flex mb={8} w="full" justifyContent="space-between">
+  <Flex justifyContent="space-between" mb={8} w="full">
     {steps.map((step, index) => {
-      const { bgColor, borderColor, content, textColor } = getStepStyles(
+      const { bgColor, textColor, borderColor, content } = getStepStyles(
         index,
         currentStepIndex
       );
@@ -26,11 +26,11 @@ export const AddNetworkStepper = ({
         <Flex
           key={step.label}
           alignItems="center"
-          bg={bgColor}
-          gap={2}
+          w="full"
           px={4}
           py={3}
-          w="full"
+          gap={2}
+          bg={bgColor}
           borderBottom="4px solid"
           borderColor={borderColor}
         >

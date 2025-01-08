@@ -1,12 +1,12 @@
 import axios from "axios";
 
 export interface FaucetResponse {
-  Amount: number;
   ChainID: string;
-  Denom: string;
-  GasPrices: string;
   NodeURI: string;
+  GasPrices: string;
   Port: string;
+  Amount: number;
+  Denom: string;
   RateLimit: boolean;
 }
 

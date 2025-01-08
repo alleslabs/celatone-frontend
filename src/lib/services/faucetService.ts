@@ -36,10 +36,10 @@ export const useFaucetInfo = (): UseQueryResult<FaucetInfo> => {
   };
 
   return useQuery({
-    enabled: faucet.enabled,
-    queryFn,
     queryKey: [CELATONE_QUERY_KEYS.FAUCET_INFO, faucet, assetInfos],
-    refetchOnWindowFocus: false,
+    queryFn,
+    enabled: faucet.enabled,
     retry: 2,
+    refetchOnWindowFocus: false,
   });
 };

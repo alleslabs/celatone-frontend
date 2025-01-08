@@ -19,15 +19,15 @@ export const ModuleVerifyFailedModal = ({
   onClose,
 }: ModuleVerifyFailedModalProps) => (
   <>
-    <ModalHeader py={0} w="full">
+    <ModalHeader w="full" py={0}>
       <ModalCloseButton color="gray.600" />
       <Stack alignItems="center" gap={4} w="100%">
-        <CustomIcon name="info-circle" boxSize={14} color="error.main" />
+        <CustomIcon name="info-circle" color="error.main" boxSize={14} />
         <Heading variant="h5">Something went wrong</Heading>
       </Stack>
     </ModalHeader>
-    <ModalBody mx="auto" pt={2} w="334px" overflow="overlay">
-      <Text textAlign="center" variant="body2" color="text.dark">
+    <ModalBody overflow="overlay" pt={2} w="334px" mx="auto">
+      <Text variant="body2" color="text.dark" textAlign="center">
         There is something wrong with uploading your folder. Please upload
         again.
       </Text>

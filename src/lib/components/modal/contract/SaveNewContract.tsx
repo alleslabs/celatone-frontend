@@ -22,19 +22,19 @@ import {
 } from "lib/utils";
 
 interface SaveNewContractDetail extends OffchainDetail {
-  codeId: number;
   contractAddress: string;
-  instantiator: string;
   label: string;
+  codeId: number;
+  instantiator: string;
 }
 
 interface SaveNewContractModalProps {
-  buttonProps: ButtonProps;
   list: LVPair;
+  buttonProps: ButtonProps;
 }
 export function SaveNewContractModal({
-  buttonProps,
   list,
+  buttonProps,
 }: SaveNewContractModalProps) {
   const { getContractLocalInfo } = useContractStore();
   const { validateContractAddress } = useValidateAddress();
@@ -44,22 +44,22 @@ export function SaveNewContractModal({
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
 
   const defaultValues: SaveNewContractDetail = {
-    codeId: 0,
     contractAddress: "",
-    description: "",
-    instantiator: "",
     label: "",
-    lists: initialList,
+    codeId: 0,
+    instantiator: "",
     name: "",
+    description: "",
     tags: [],
+    lists: initialList,
   };
 
   const {
     control,
-    formState: { errors },
-    reset,
     setValue,
     watch,
+    reset,
+    formState: { errors },
   } = useForm<SaveNewContractDetail>({
     defaultValues,
     mode: "all",
@@ -72,10 +72,10 @@ export function SaveNewContractModal({
   const codeIdState = watch("codeId");
   const instantiatorState = watch("instantiator");
   const offchainState: OffchainDetail = {
-    description: watch("description"),
-    lists: watch("lists"),
     name: watch("name"),
+    description: watch("description"),
     tags: watch("tags"),
+    lists: watch("lists"),
   };
   const setTagsValue = (selecteTags: string[]) => {
     setValue("tags", selecteTags);
@@ -93,35 +93,35 @@ export function SaveNewContractModal({
 
   const { refetch } = useContractData(contractAddressState as BechAddr32, {
     enabled: false,
-    onError: (err) => {
-      resetForm(false);
-      setStatus({
-        message: (err as Error).message,
-        state: "error",
-      });
-    },
     onSuccess: (data) => {
       const contractLocalInfo = getContractLocalInfo(contractAddressState);
       reset({
-        codeId: data.contract.codeId,
         contractAddress: contractAddressState,
+        label: data.contract.label,
+        codeId: data.contract.codeId,
+        instantiator: data.contract.instantiator,
+        name: contractLocalInfo?.name ?? data.contract.label,
         description: getNameAndDescriptionDefault(
           contractLocalInfo?.description
         ),
-        instantiator: data.contract.instantiator,
-        label: data.contract.label,
+        tags: getTagsDefault(contractLocalInfo?.tags),
         lists: [
           ...initialList,
           ...(contractLocalInfo?.lists ?? []).filter(
             (item) => item.value !== list.value
           ),
         ],
-        name: contractLocalInfo?.name ?? data.contract.label,
-        tags: getTagsDefault(contractLocalInfo?.tags),
       });
       setStatus({
-        message: "Valid Contract Address",
         state: "success",
+        message: "Valid Contract Address",
+      });
+    },
+    onError: (err) => {
+      resetForm(false);
+      setStatus({
+        state: "error",
+        message: (err as Error).message,
       });
     },
   });
@@ -139,8 +139,8 @@ export function SaveNewContractModal({
         const err = validateContractAddress(contractAddressState);
         if (err !== null)
           setStatus({
-            message: err,
             state: "error",
+            message: err,
           });
         else refetch();
       }, 1000);
@@ -150,63 +150,63 @@ export function SaveNewContractModal({
   }, [contractAddressState, refetch, validateContractAddress]);
 
   const handleSave = useHandleContractSave({
+    title: `Saved ${
+      offchainState.name.trim().length ? offchainState.name : labelState
+    }`,
+    contractAddress: contractAddressState as BechAddr32,
+    label: labelState,
+    codeId: codeIdState,
+    instantiator: instantiatorState as BechAddr,
+    name: offchainState.name,
+    description: offchainState.description,
+    tags: offchainState.tags,
+    lists: offchainState.lists,
     actions: () => {
       track(AmpEvent.CONTRACT_SAVE);
       resetForm();
     },
-    codeId: codeIdState,
-    contractAddress: contractAddressState as BechAddr32,
-    description: offchainState.description,
-    instantiator: instantiatorState as BechAddr,
-    label: labelState,
-    lists: offchainState.lists,
-    name: offchainState.name,
-    tags: offchainState.tags,
-    title: `Saved ${
-      offchainState.name.trim().length ? offchainState.name : labelState
-    }`,
   });
 
   return (
     <ActionModal
+      title="Save New Contract"
+      icon="bookmark-solid"
+      trigger={<Button as="button" {...buttonProps} />}
+      mainBtnTitle="Save"
+      mainAction={handleSave}
       disabledMain={
         status.state !== "success" || !!errors.name || !!errors.description
       }
-      mainBtnTitle="Save"
-      title="Save New Contract"
-      trigger={<Button as="button" {...buttonProps} />}
-      icon="bookmark-solid"
-      mainAction={handleSave}
-      otherAction={resetForm}
       otherBtnTitle="Cancel"
+      otherAction={resetForm}
     >
       <VStack gap={4}>
         <ControllerInput
-          label="Contract Address"
           name="contractAddress"
-          status={status}
-          variant="fixed-floating"
           control={control}
-          labelBgColor="gray.900"
+          label="Contract Address"
+          variant="fixed-floating"
           placeholder={`ex. ${exampleContractAddress}`}
+          status={status}
+          labelBgColor="gray.900"
         />
         <ControllerInput
-          isDisabled
-          label="Instantiated by"
           name="instantiator"
-          variant="fixed-floating"
           control={control}
+          label="Instantiated by"
+          variant="fixed-floating"
+          isDisabled
           labelBgColor="gray.900"
         />
 
         <OffChainForm<SaveNewContractDetail>
-          setTagsValue={setTagsValue}
           state={offchainState}
           contractLabel={labelState}
           control={control}
+          setTagsValue={setTagsValue}
+          setContractListsValue={setContractListsValue}
           errors={errors}
           labelBgColor="gray.900"
-          setContractListsValue={setContractListsValue}
         />
       </VStack>
     </ActionModal>

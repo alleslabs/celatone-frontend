@@ -8,23 +8,23 @@ import { TransactionsTableMobileCard } from "./TransactionsTableMobileCard";
 import { TransactionsTableRow } from "./TransactionsTableRow";
 
 interface TransactionsTableProps {
-  emptyState: JSX.Element;
-  isLoading: boolean;
-  showAction?: boolean;
-  showRelations: boolean;
-  showSuccess?: boolean;
-  showTimestamp?: boolean;
   transactions: Option<Transaction[]>;
+  isLoading: boolean;
+  emptyState: JSX.Element;
+  showSuccess?: boolean;
+  showRelations: boolean;
+  showTimestamp?: boolean;
+  showAction?: boolean;
 }
 
 export const TransactionsTable = ({
-  emptyState,
-  isLoading,
-  showAction = false,
-  showRelations,
-  showSuccess = true,
-  showTimestamp = true,
   transactions,
+  isLoading,
+  emptyState,
+  showSuccess = true,
+  showRelations,
+  showTimestamp = true,
+  showAction = false,
 }: TransactionsTableProps) => {
   const isMobile = useMobile();
 
@@ -48,31 +48,31 @@ export const TransactionsTable = ({
       {transactions.map((transaction) => (
         <TransactionsTableMobileCard
           key={transaction.hash}
-          showRelations={showRelations}
-          showSuccess={showSuccess}
-          showTimestamp={showTimestamp}
           transaction={transaction}
+          showSuccess={showSuccess}
+          showRelations={showRelations}
+          showTimestamp={showTimestamp}
         />
       ))}
     </MobileTableContainer>
   ) : (
     <TableContainer>
       <TransactionsTableHeader
-        showAction={showAction}
-        showRelations={showRelations}
-        showSuccess={showSuccess}
-        showTimestamp={showTimestamp}
         templateColumns={templateColumns}
+        showSuccess={showSuccess}
+        showRelations={showRelations}
+        showTimestamp={showTimestamp}
+        showAction={showAction}
       />
       {transactions.map((transaction) => (
         <TransactionsTableRow
           key={transaction.hash}
-          showAction={showAction}
-          showRelations={showRelations}
-          showSuccess={showSuccess}
-          showTimestamp={showTimestamp}
-          templateColumns={templateColumns}
           transaction={transaction}
+          templateColumns={templateColumns}
+          showSuccess={showSuccess}
+          showRelations={showRelations}
+          showTimestamp={showTimestamp}
+          showAction={showAction}
         />
       ))}
     </TableContainer>

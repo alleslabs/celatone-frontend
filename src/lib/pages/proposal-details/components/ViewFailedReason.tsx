@@ -19,16 +19,16 @@ interface ViewFailedReasonProps {
 }
 
 export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   if (text.length === 0)
     return (
       <Tooltip label="This proposal failed before the &lsquo;failed_reason&rsquo; field is added to the network.">
         <Text
           as="span"
           variant="body2"
-          whiteSpace="nowrap"
           color="text.disabled"
           cursor="not-allowed"
+          whiteSpace="nowrap"
         >
           View Failed Reason
         </Text>
@@ -40,19 +40,19 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
       <Text
         as="span"
         variant="body2"
-        _hover={{ color: "primary.light", textDecoration: "underline" }}
         color="primary.main"
+        transition="all 0.25s ease-in-out"
+        _hover={{ color: "primary.light", textDecoration: "underline" }}
         cursor="pointer"
         onClick={onOpen}
-        transition="all 0.25s ease-in-out"
       >
         View Failed Reason
       </Text>
 
       <Modal
-        isCentered
         isOpen={isOpen}
         onClose={onClose}
+        isCentered
         returnFocusOnClose={false}
       >
         <ModalOverlay />
@@ -62,10 +62,10 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
           <ModalBody>
             <Box
               bg="background.main"
-              maxH="240px"
-              mt={4}
-              p={2}
               borderRadius="8px"
+              p={2}
+              mt={4}
+              maxH="240px"
               overflowY="scroll"
             >
               <Text>{text}</Text>
@@ -73,7 +73,7 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="outline-primary" w="120px" onClick={onClose}>
+            <Button variant="outline-primary" onClick={onClose} w="120px">
               Close
             </Button>
           </ModalFooter>

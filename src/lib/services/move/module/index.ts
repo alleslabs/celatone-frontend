@@ -77,13 +77,13 @@ export const useModuleByAddressLcd = ({
 export const useModulesByAddress = ({
   address,
   enabled = true,
-  onError,
   onSuccess,
+  onError,
 }: {
   address: Option<Addr>;
   enabled?: boolean;
-  onError?: (err: AxiosError<RpcQueryError>) => void;
   onSuccess?: (data: AccountModulesResponse) => void;
+  onError?: (err: AxiosError<RpcQueryError>) => void;
 }) => {
   const {
     chainConfig: { lcd: lcdEndpoint },
@@ -98,28 +98,28 @@ export const useModulesByAddress = ({
     },
     {
       enabled,
-      onError,
-      onSuccess,
-      refetchOnWindowFocus: false,
       retry: 0,
+      refetchOnWindowFocus: false,
+      onSuccess,
+      onError,
     }
   );
 };
 
 export const useFunctionView = ({
-  abiData,
-  fn,
   moduleAddress,
   moduleName,
-  onError,
+  fn,
+  abiData,
   onSuccess,
+  onError,
 }: {
-  abiData: AbiFormData;
-  fn: ExposedFunction;
   moduleAddress: HexAddr;
   moduleName: string;
-  onError?: (err: AxiosError<RpcQueryError>) => void;
+  fn: ExposedFunction;
+  abiData: AbiFormData;
   onSuccess?: (data: string) => void;
+  onError?: (err: AxiosError<RpcQueryError>) => void;
 }): UseQueryResult<string> => {
   const {
     chainConfig: { lcd: lcdEndpoint },
@@ -138,10 +138,10 @@ export const useFunctionView = ({
     queryFn,
     {
       enabled: false,
-      keepPreviousData: true,
-      onError,
-      onSuccess,
       retry: 0,
+      keepPreviousData: true,
+      onSuccess,
+      onError,
     }
   );
 };
@@ -170,7 +170,7 @@ export const useDecodeModule = ({
     )
       .then((data) => data.upgradePolicy)
       .catch(() => undefined);
-    return { abi, currentPolicy, modulePath };
+    return { abi, modulePath, currentPolicy };
   };
 
   return useQuery(
@@ -227,7 +227,7 @@ export const useModules = (
   return useQuery<ModulesResponse>(
     [CELATONE_QUERY_KEYS.MODULES, endpoint, limit, offset],
     async () => getModules(endpoint, limit, offset),
-    { ...options, refetchOnWindowFocus: false, retry: 1 }
+    { ...options, retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -250,9 +250,9 @@ export const useModulePublishInfo = (
     async () =>
       getModulePublishInfo(endpoint, vmAddress, moduleName, govConfig.enabled),
     {
-      enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
@@ -276,9 +276,9 @@ export const useModuleTableCounts = (
     async () =>
       getModuleTableCounts(endpoint, vmAddress, moduleName, govConfig.enabled),
     {
-      enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
@@ -304,7 +304,7 @@ export const useModuleTxs = (
     ],
     async () =>
       getModuleTxs(endpoint, vmAddress, moduleName, limit, offset, isInitia),
-    { refetchOnWindowFocus: false, retry: 1 }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -328,7 +328,7 @@ export const useModuleHistories = (
     ],
     async () =>
       getModuleHistories(endpoint, vmAddress, moduleName, limit, offset),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
@@ -355,6 +355,6 @@ export const useModuleRelatedProposals = (
     ],
     async () =>
       getModuleRelatedProposals(endpoint, vmAddress, moduleName, limit, offset),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };

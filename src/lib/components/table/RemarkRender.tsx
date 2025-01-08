@@ -19,14 +19,14 @@ export const RemarkRender = ({ operation, type, value }: RemarkRenderProps) => {
   const textFormat = isGovernance ? "normal" : "truncate";
   return (
     <Flex
-      mb={{ base: 0, md: "2px" }}
+      direction="column"
       sx={{
         "& > p:first-of-type": {
           color: "text.dark",
           fontSize: "12px",
         },
       }}
-      direction="column"
+      mb={{ base: 0, md: "2px" }}
     >
       <p>{isGovernance ? `${prefix} Proposal ID` : `${prefix} Tx`}</p>
       <ExplorerLink

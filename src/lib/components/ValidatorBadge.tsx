@@ -10,19 +10,19 @@ import { MobileLabel } from "./table/MobileLabel";
 import { ValidatorImage } from "./ValidatorImage";
 
 interface ValidatorBadgeProps {
-  ampCopierSection?: string;
+  validator: Nullable<Validator>;
   badgeSize?: ImageProps["boxSize"];
+  ampCopierSection?: string;
   hasLabel?: boolean;
   moreInfo?: JSX.Element;
-  validator: Nullable<Validator>;
 }
 
 export const ValidatorBadge = ({
-  ampCopierSection,
+  validator,
   badgeSize = 10,
+  ampCopierSection,
   hasLabel = true,
   moreInfo,
-  validator,
 }: ValidatorBadgeProps) => {
   const isMobile = useMobile();
   const {
@@ -35,22 +35,22 @@ export const ValidatorBadge = ({
     <Flex alignItems="center" gap={2} w="full">
       <ValidatorImage validator={validator} boxSize={badgeSize} />
       {validator ? (
-        <Flex minW={0} w="full" direction="column">
+        <Flex direction="column" w="full" minW={0}>
           {isMobile && hasLabel && <MobileLabel label="Validator" />}
           <ExplorerLink
+            type="validator_address"
+            value={validator.moniker ?? validator.validatorAddress}
+            copyValue={validator.validatorAddress}
             externalLink={
               isValidatorExternalLink
                 ? `${isValidatorExternalLink}/${validator.validatorAddress}`
                 : undefined
             }
-            fixedHeight
             isReadOnly={isNull(isValidatorExternalLink)}
-            type="validator_address"
-            value={validator.moniker ?? validator.validatorAddress}
-            ampCopierSection={ampCopierSection}
-            copyValue={validator.validatorAddress}
             showCopyOnHover
             textFormat="ellipsis"
+            ampCopierSection={ampCopierSection}
+            fixedHeight
           />
           {moreInfo}
         </Flex>

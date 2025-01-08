@@ -43,7 +43,7 @@ export const useCodes = (
   return useQuery<CodesResponse>(
     [CELATONE_QUERY_KEYS.CODES, endpoint, limit, offset, address, permission],
     async () => getCodes(endpoint, limit, offset, address, permission),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
@@ -70,9 +70,9 @@ export const useCodeData = (codeId: number, enabled = true) => {
     [CELATONE_QUERY_KEYS.CODE_DATA, endpoint, codeId, isGov],
     async () => getCodeData(endpoint, codeId, isGov),
     {
-      enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
@@ -89,8 +89,8 @@ export const useCodeLcd = (
     [CELATONE_QUERY_KEYS.CODE_DATA_LCD, lcdEndpoint, codeId],
     async () => getCodeLcd(lcdEndpoint, codeId),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
       ...options,
     }
   );
@@ -106,7 +106,7 @@ export const useCodesByAddress = (
   return useQuery(
     [CELATONE_QUERY_KEYS.CODES_BY_ADDRESS, endpoint, address, limit, offset],
     async () => getCodesByAddress(endpoint, address, limit, offset),
-    { refetchOnWindowFocus: false, retry: 1 }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -119,8 +119,8 @@ export const useAllCodesByAddress = (
     [CELATONE_QUERY_KEYS.ALL_CODES_BY_ADDRESS, endpoint, address],
     async () => getAllCodesByAddress(endpoint, address),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -132,8 +132,8 @@ export const useCodeList = (codeIds: number[]) => {
     [CELATONE_QUERY_KEYS.CODE_LIST, endpoint, codeIds],
     async () => getCodeList(endpoint, codeIds),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };

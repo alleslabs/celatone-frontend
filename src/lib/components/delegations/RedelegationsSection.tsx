@@ -9,38 +9,38 @@ import type { Redelegation, StakingParams } from "lib/types";
 import { NonRedelegatableSection } from "./NonRedelegatableSection";
 
 interface RedelegationsSectionProps extends FlexProps {
+  stakingParams: StakingParams;
+  redelegations: Redelegation[];
   isLoading: boolean;
   onBack: () => void;
-  redelegations: Redelegation[];
-  stakingParams: StakingParams;
 }
 
 export const RedelegationsSection = ({
+  stakingParams,
+  redelegations,
   isLoading,
   onBack,
-  redelegations,
-  stakingParams,
   ...props
 }: RedelegationsSectionProps) => (
-  <Flex gap={4} direction="column" {...props}>
+  <Flex direction="column" gap={4} {...props}>
     <Flex
-      alignItems={{ base: "start", md: "center" }}
       gap={3}
+      alignItems={{ base: "start", md: "center" }}
       direction={{ base: "column", md: "row" }}
     >
       <Button
-        p={0}
-        size={{ base: "xs", md: "md" }}
         variant="ghost-primary"
+        size={{ base: "xs", md: "md" }}
+        p={0}
         onClick={onBack}
       >
         <CustomIcon name="chevron-left" boxSize={6} />
       </Button>
       <TableTitle
-        helperText={`Each wallet can redelegate up to ${stakingParams.maxEntries} entries between same pair of validators within last ${stakingParams.unbondingTime} timeframe`}
-        mb={0}
         title="Active Redelegations"
         count={redelegations.length}
+        helperText={`Each wallet can redelegate up to ${stakingParams.maxEntries} entries between same pair of validators within last ${stakingParams.unbondingTime} timeframe`}
+        mb={0}
       />
     </Flex>
     {isLoading ? (

@@ -18,63 +18,63 @@ import { CustomIcon } from "../icon";
 const ITEM_HEIGHT = 56;
 
 interface SelectInputProps<T extends string> {
-  disableMaxH?: boolean;
   formLabel?: string;
-  hasDivider?: boolean;
-  helperTextComponent?: ReactNode;
-  initialSelected?: string;
-  isRequired?: boolean;
-  labelBgColor?: string;
-  onChange: (newVal: T) => void;
   options: {
+    label: string;
+    value: T;
     disabled: boolean;
     icon?: IconKeys;
     iconColor?: string;
     image?: JSX.Element;
-    label: string;
-    value: T;
   }[];
+  onChange: (newVal: T) => void;
   placeholder?: string;
+  initialSelected?: string;
+  hasDivider?: boolean;
+  helperTextComponent?: ReactNode;
+  labelBgColor?: string;
   popoverBgColor?: string;
-  size?: object | string;
+  size?: string | object;
+  disableMaxH?: boolean;
+  isRequired?: boolean;
 }
 
 interface SelectItemProps {
   children: NonNullable<ReactNode>;
-  disabled: boolean;
   onSelect?: () => void;
+  disabled: boolean;
 }
 
-const SelectItem = ({ children, disabled, onSelect }: SelectItemProps) => (
+const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
   <Flex
-    _disabled={{ opacity: 0.4, pointerEvents: "none" }}
-    aria-disabled={disabled}
-    gap={2}
     px={4}
     py={2}
-    _hover={{ bg: "gray.800" }}
+    onClick={onSelect}
     color="text.main"
     cursor="pointer"
-    onClick={onSelect}
+    gap={2}
+    aria-disabled={disabled}
+    _hover={{ bg: "gray.800" }}
     transition="all 0.25s ease-in-out"
+    _disabled={{ opacity: 0.4, pointerEvents: "none" }}
   >
     {children}
   </Flex>
 );
 
 export const SelectInputBase = <T extends string>({
-  disableMaxH = false,
   formLabel,
+  options,
+  onChange,
+  placeholder = "",
+  initialSelected,
   hasDivider = false,
   helperTextComponent,
-  initialSelected,
-  isRequired,
   labelBgColor = "background.main",
-  onChange,
-  options,
-  placeholder = "",
   popoverBgColor = "gray.900",
   size = "lg",
+  disableMaxH = false,
+  isRequired,
 }: SelectInputProps<T>) => {
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -92,49 +92,49 @@ export const SelectInputBase = <T extends string>({
 
   return (
     <Popover
-      isOpen={isOpen}
       placement="bottom-start"
       strategy="fixed"
-      onClose={onClose}
+      isOpen={isOpen}
       onOpen={onOpen}
+      onClose={onClose}
       returnFocusOnClose={false}
     >
       <PopoverTrigger>
         <InputGroup
           sx={{
-            "& .form-label": {
-              "::after": {
-                color: "error.main",
-                content: isRequired ? '"* (Required)"' : '""',
-                ml: 1,
-              },
-              bg: labelBgColor,
-              color: "text.dark",
-              fontSize: "12px",
-              letterSpacing: "0.15px",
-              ml: 3,
-              position: "absolute",
-              px: 1,
-              top: -2,
-
-              zIndex: 2,
-            },
             "&[aria-expanded=true]": {
               "> input": {
                 border: "2px solid",
                 borderColor: "primary.dark",
               },
             },
+            "& .form-label": {
+              fontSize: "12px",
+              color: "text.dark",
+              letterSpacing: "0.15px",
+              position: "absolute",
+              ml: 3,
+              px: 1,
+              zIndex: 2,
+              bg: labelBgColor,
+              top: -2,
+
+              "::after": {
+                content: isRequired ? '"* (Required)"' : '""',
+                color: "error.main",
+                ml: 1,
+              },
+            },
           }}
         >
           {formLabel && <div className="form-label">{formLabel}</div>}
           {selectedOption?.image && (
-            <InputLeftElement h="full" ml={1} pointerEvents="none">
+            <InputLeftElement pointerEvents="none" h="full" ml={1}>
               {selectedOption.image}
             </InputLeftElement>
           )}
           {selectedOption?.icon && (
-            <InputLeftElement h="full" ml={1} pointerEvents="none">
+            <InputLeftElement pointerEvents="none" h="full" ml={1}>
               <CustomIcon
                 name={selectedOption.icon}
                 color={selectedOption.iconColor}
@@ -142,46 +142,46 @@ export const SelectInputBase = <T extends string>({
             </InputLeftElement>
           )}
           <Input
-            pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
+            ref={inputRef}
             size={size}
             textAlign="start"
             type="button"
             value={selected || placeholder}
-            color={selected ? "text.main" : "text.dark"}
             fontSize="14px"
-            ref={inputRef}
+            color={selected ? "text.main" : "text.dark"}
+            pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
           />
-          <InputRightElement h="full" pointerEvents="none">
+          <InputRightElement pointerEvents="none" h="full">
             <CustomIcon name="chevron-down" color="gray.600" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
       <PopoverContent
+        border="unset"
         bg={popoverBgColor}
+        w={inputRef.current?.clientWidth}
         maxH={disableMaxH ? undefined : `${ITEM_HEIGHT * 4}px`}
+        borderRadius="8px"
+        _focusVisible={{
+          outline: "none",
+        }}
         sx={{
           "> div:not(:last-of-type)": {
             borderBottom: hasDivider && "1px solid",
             borderBottomColor: hasDivider && "gray.700",
           },
         }}
-        w={inputRef.current?.clientWidth}
-        _focusVisible={{
-          outline: "none",
-        }}
-        border="unset"
-        borderRadius="8px"
         overflow="scroll"
       >
-        {options.map(({ disabled, icon, iconColor, image, label, value }) => (
+        {options.map(({ label, value, disabled, icon, iconColor, image }) => (
           <SelectItem
             key={value}
-            disabled={disabled}
             onSelect={() => {
               setSelected(label);
               onChange(value);
               onClose();
             }}
+            disabled={disabled}
           >
             <Flex alignItems="center" gap={2}>
               <Flex alignItems="center">{image}</Flex>
@@ -192,9 +192,9 @@ export const SelectInputBase = <T extends string>({
         ))}
         {helperTextComponent && (
           <Flex
-            align="center"
-            h={`${ITEM_HEIGHT}px`}
             px={4}
+            h={`${ITEM_HEIGHT}px`}
+            align="center"
             borderTop={!hasDivider ? "1px solid" : "none"}
             borderTopColor="gray.700"
           >

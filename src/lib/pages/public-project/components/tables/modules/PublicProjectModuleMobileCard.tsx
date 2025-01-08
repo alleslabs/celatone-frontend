@@ -26,35 +26,35 @@ export const PublicProjectModuleMobileCard = ({
   };
   return (
     <MobileCardTemplate
-      middleContent={
-        <Flex gap={3} direction="column">
+      onClick={goToModuleDetails}
+      topContent={
+        <Flex gap={2} align="center">
           <Flex direction="column">
-            <MobileLabel label="Owner" variant="body2" />
-            <ExplorerLink
-              type="user_address"
-              value={module.address.toString()}
-              showCopyOnHover
-            />
-          </Flex>
-          <Flex direction="column">
-            <MobileLabel label="Module Description" variant="body2" />
-            <Text variant="body2" whiteSpace="break-spaces" color="text.dark">
-              {module.description || "N/A"}
+            <MobileLabel variant="body2" label="Module Path" />
+            <Text
+              variant="body2"
+              onClick={goToModuleDetails}
+              color="primary.main"
+            >
+              {truncate(module.address)}::{module.name}
             </Text>
           </Flex>
         </Flex>
       }
-      onClick={goToModuleDetails}
-      topContent={
-        <Flex align="center" gap={2}>
+      middleContent={
+        <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel label="Module Path" variant="body2" />
-            <Text
-              variant="body2"
-              color="primary.main"
-              onClick={goToModuleDetails}
-            >
-              {truncate(module.address)}::{module.name}
+            <MobileLabel variant="body2" label="Owner" />
+            <ExplorerLink
+              value={module.address.toString()}
+              type="user_address"
+              showCopyOnHover
+            />
+          </Flex>
+          <Flex direction="column">
+            <MobileLabel variant="body2" label="Module Description" />
+            <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
+              {module.description || "N/A"}
             </Text>
           </Flex>
         </Flex>

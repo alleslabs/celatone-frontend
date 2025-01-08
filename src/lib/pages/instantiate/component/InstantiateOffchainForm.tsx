@@ -12,24 +12,24 @@ import type { BechAddr20, BechAddr32, LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 interface InstantiateOffChainFormProps {
-  codeId: number;
+  title?: string;
+  subtitle?: string;
+  cta?: boolean;
   contractAddress: BechAddr32;
   contractLabel: string;
-  cta?: boolean;
+  codeId: number;
   instantiator: BechAddr20;
-  subtitle?: string;
-  title?: string;
 }
 
 export const InstantiateOffChainForm = observer(
   ({
-    codeId,
+    title,
+    subtitle,
+    cta = true,
     contractAddress,
     contractLabel,
-    cta = true,
+    codeId,
     instantiator,
-    subtitle,
-    title,
   }: InstantiateOffChainFormProps) => {
     const navigate = useInternalNavigate();
     const { updateContractLocalInfo } = useContractStore();
@@ -37,25 +37,25 @@ export const InstantiateOffChainForm = observer(
 
     const {
       control,
-      formState: { errors },
-      handleSubmit,
       setValue,
       watch,
+      handleSubmit,
+      formState: { errors },
     } = useForm<OffchainDetail>({
       defaultValues: {
-        description: "",
-        lists: [],
         name: "",
+        description: "",
         tags: [],
+        lists: [],
       },
       mode: "all",
     });
 
     const offchainState: OffchainDetail = {
-      description: watch("description"),
-      lists: watch("lists"),
       name: watch("name"),
+      description: watch("description"),
       tags: watch("tags"),
+      lists: watch("lists"),
     };
     const setTagsValue = (selectedTags: string[]) => {
       setValue("tags", selectedTags);
@@ -85,37 +85,37 @@ export const InstantiateOffChainForm = observer(
     };
 
     return (
-      <Flex width="full" gap={8} direction="column">
+      <Flex direction="column" gap={8} width="full">
         {title && subtitle && (
-          <Flex gap={1} direction="column">
+          <Flex direction="column" gap={1}>
             <Heading as="h6" variant="h6">
               {title}
             </Heading>
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               {subtitle}
             </Text>
           </Flex>
         )}
         <OffChainForm<OffchainDetail>
-          setTagsValue={setTagsValue}
           state={offchainState}
           contractLabel={contractLabel}
           control={control}
-          errors={errors}
+          setTagsValue={setTagsValue}
           setContractListsValue={setContractListsValue}
+          errors={errors}
         />
         {cta && (
-          <Flex gap={6} mt={4} w="full" justifyContent="center">
+          <Flex gap={6} w="full" mt={4} justifyContent="center">
             <Button
-              isDisabled={!!Object.keys(errors).length}
               w="128px"
               onClick={saveContract}
+              isDisabled={!!Object.keys(errors).length}
             >
               Save
             </Button>
             <Button
-              variant="outline-gray"
               w="128px"
+              variant="outline-gray"
               onClick={() =>
                 navigate({
                   pathname: "/contract-lists/[slug]",

@@ -35,20 +35,20 @@ export const ModulesVerify = observer(() => {
   const router = useRouter();
   const isMobile = useMobile();
   const { currentChainId } = useCelatoneApp();
-  const { isError, isLoading, mutateAsync } = useSubmitMoveVerify();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { mutateAsync, isError, isLoading } = useSubmitMoveVerify();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { addMoveVerifyTask } = useMoveVerifyTaskStore();
   useInitiaL1({ shouldRedirect: true });
 
-  const { control, handleSubmit, setValue, watch } = useForm<ModuleVerifyForm>({
+  const { control, watch, handleSubmit, setValue } = useForm<ModuleVerifyForm>({
+    mode: "all",
+    reValidateMode: "onChange",
+    resolver: zodResolver(zModuleVerifyForm),
     defaultValues: {
       moveFiles: [],
     },
-    mode: "all",
-    resolver: zodResolver(zModuleVerifyForm),
-    reValidateMode: "onChange",
   });
-  const { moveFiles, requestNote, tomlFile } = watch();
+  const { moveFiles, tomlFile, requestNote } = watch();
 
   const handleSubmitForm = async () => {
     onOpen();
@@ -70,10 +70,10 @@ export const ModulesVerify = observer(() => {
 
     setValue("taskId", data.id);
     addMoveVerifyTask({
-      chainId: currentChainId,
-      fileMap: JSON.parse(fileMap),
-      requestNote,
       taskId: data.id,
+      chainId: currentChainId,
+      requestNote,
+      fileMap: JSON.parse(fileMap),
     });
   };
 
@@ -85,12 +85,12 @@ export const ModulesVerify = observer(() => {
       ) : (
         <>
           <PageContainer p={0}>
-            <Box maxW="1440px" minH="inherit" mx="auto">
+            <Box minH="inherit" maxW="1440px" mx="auto">
               <Grid
                 gridTemplateColumns="1fr 6fr 4fr 1fr"
-                p={12}
-                columnGap={8}
                 rowGap={10}
+                columnGap={8}
+                p={12}
               >
                 <Box gridArea="1 / 2">
                   <ModuleVerifyTop />
@@ -106,57 +106,57 @@ export const ModulesVerify = observer(() => {
                 </Box>
                 <Box gridArea="4 / 2">
                   <ControllerInput
-                    helperText="A short description for this verification request, stored locally on your device."
-                    label="Request Note (Optional)"
                     name="requestNote"
-                    variant="fixed-floating"
                     control={control}
+                    label="Request Note (Optional)"
+                    variant="fixed-floating"
                     placeholder="ex. My first lending modules"
+                    helperText="A short description for this verification request, stored locally on your device."
                   />
                 </Box>
               </Grid>
             </Box>
           </PageContainer>
           <Box
-            zIndex={2}
-            borderColor="gray.700"
-            borderTop="1px"
-            bottom={0}
             position="sticky"
+            bottom={0}
+            borderTop="1px"
+            borderColor="gray.700"
+            zIndex={2}
           >
             <FooterCta
+              cancelButton={{
+                onClick: router.back,
+              }}
               cancelLabel="Cancel"
+              actionButton={{
+                onClick: handleSubmit(handleSubmitForm),
+                isDisabled: !zModuleVerifyForm.safeParse(watch()).success,
+              }}
+              actionLabel="Upload file and Submit"
               sx={{
-                "> div": {
-                  gridArea: "1 / 2",
-                  width: "100%",
-                },
                 backgroundColor: "background.main",
                 columnGap: "32px",
+                px: "48px",
                 display: "grid",
                 gridTemplateColumns: "1fr 6fr 4fr 1fr",
                 maxWidth: "1440px",
                 mx: "auto",
-                px: "48px",
-              }}
-              actionButton={{
-                isDisabled: !zModuleVerifyForm.safeParse(watch()).success,
-                onClick: handleSubmit(handleSubmitForm),
-              }}
-              actionLabel="Upload file and Submit"
-              cancelButton={{
-                onClick: router.back,
+                "> div": {
+                  width: "100%",
+                  gridArea: "1 / 2",
+                },
               }}
             />
           </Box>
-          <Modal isCentered isOpen={isOpen} onClose={onClose}>
+          <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
-            <ModalContent bg="gray.800" maxW="100vw" py={10} w="645px">
+            <ModalContent w="645px" bg="gray.800" maxW="100vw" py={10}>
               <ModuleVerifyModalBody
-                control={control}
                 isError={isError}
                 isLoading={isLoading}
                 onClose={onClose}
+                control={control}
               />
             </ModalContent>
           </Modal>

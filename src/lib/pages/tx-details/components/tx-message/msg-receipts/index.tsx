@@ -34,103 +34,301 @@ import {
 } from "./renderUtils";
 
 export const generateReceipts = (
-  { log, msgBody }: Omit<TxMsgData, "assetInfos">,
+  { msgBody, log }: Omit<TxMsgData, "assetInfos">,
   getAddressType: (address: string) => AddressReturnType
   // eslint-disable-next-line sonarjs/cognitive-complexity
-): Option<false | null | TxReceipt>[] => {
+): Option<TxReceipt | null | false>[] => {
   const { "@type": type, ...body } = msgBody;
 
   switch (type) {
-    case "/cosmos.authz.v1beta1.MsgExec": {
+    // cosmwasm/wasm
+    case "/cosmwasm.wasm.v1.MsgStoreCode": {
       const details = extractTxDetails(type, body, log);
       return [
-        {
+        log && {
+          title: "Stored Code ID",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.grantee),
             type: "explorer",
-            value: details.grantee,
+            value: details.code_id,
+            linkType: "code_id",
           }),
-          title: "Grantee",
         },
         {
+          title: "Uploader",
           html: getCommonReceiptHtml({
-            type: "json",
-            value: details.msgs,
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Msgs",
+        },
+        details.instantiate_permission && {
+          title: "Instantiate Permission",
+          html: (
+            <Flex direction="column" gap={1}>
+              <PermissionChip
+                instantiatePermission={
+                  details.instantiate_permission.permission
+                }
+                permissionAddresses={
+                  details.instantiate_permission.address
+                    ? [details.instantiate_permission.address]
+                    : details.instantiate_permission.addresses ?? []
+                }
+              />
+              <ViewPermissionAddresses
+                permissionAddresses={
+                  details.instantiate_permission.address
+                    ? [details.instantiate_permission.address]
+                    : details.instantiate_permission.addresses ?? []
+                }
+                amptrackSection="tx_msg_receipts"
+              />
+            </Flex>
+          ),
+        },
+        {
+          title: "Wasm Byte Code",
+          html: (
+            <Flex gap={3} align="flex-start">
+              Size:{" "}
+              {big(Buffer.from(details.wasm_byte_code).byteLength)
+                .div(1024)
+                .toFixed(1)}{" "}
+              KB
+              <CopyButton
+                value={details.wasm_byte_code}
+                variant="ghost-primary"
+                buttonText="Click to Copy"
+                hasIcon={false}
+                mt={-1}
+                amptrackSection="tx_msg_receipts_wasm_byte_code"
+              />
+            </Flex>
+          ),
         },
       ];
     }
-    // x/authz
-    case "/cosmos.authz.v1beta1.MsgGrant": {
+    case "/cosmwasm.wasm.v1.MsgInstantiateContract": {
       const details = extractTxDetails(type, body, log);
       return [
-        {
+        log && {
+          title: "Contract Instance",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.granter),
             type: "explorer",
-            value: details.granter,
+            value: details.contract_address,
+            linkType: "contract_address",
           }),
-          title: "Granter",
+        },
+
+        {
+          title: "From Code ID",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.code_id,
+            linkType: "code_id",
+          }),
         },
         {
+          title: "Instantiated by",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.grantee),
             type: "explorer",
-            value: details.grantee,
+            value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Grantee",
         },
         {
+          title: "Contract Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+            fallback: "No Admin",
+          }),
+        },
+        {
+          title: "Label",
+          value: details.label,
+        },
+        attachFundsReceipt(details.funds),
+        {
+          title: "Instantiate Message",
           html: getCommonReceiptHtml({
             type: "json",
-            value: details.grant,
+            value: details.msg,
           }),
-          title: "Grant",
         },
       ];
     }
-    case "/cosmos.authz.v1beta1.MsgRevoke": {
+    case "/cosmwasm.wasm.v1.MsgInstantiateContract2": {
       const details = extractTxDetails(type, body, log);
       return [
-        {
+        log && {
+          title: "Contract Instance",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.granter),
             type: "explorer",
-            value: details.granter,
+            value: details.contract_address,
+            linkType: "contract_address",
           }),
-          title: "Granter",
         },
         {
+          title: "From Code ID",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.grantee),
             type: "explorer",
-            value: details.grantee,
+            value: details.code_id,
+            linkType: "code_id",
           }),
-          title: "Grantee",
         },
         {
-          title: "Msg Type Url",
-          value: details.msg_type_url,
+          title: "Instantiated by",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
+          }),
+        },
+        {
+          title: "Contract Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+            fallback: "No Admin",
+          }),
+        },
+        {
+          title: "Label",
+          value: details.label,
+        },
+        attachFundsReceipt(details.funds),
+        {
+          title: "Instantiate Message",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.msg,
+          }),
+        },
+        {
+          title: "Salt",
+          html: details.salt,
+        },
+        {
+          title: "Fix Msg",
+          value: String(details.fix_msg),
         },
       ];
     }
-    case "/cosmos.bank.v1beta1.MsgMultiSend": {
+    case "/cosmwasm.wasm.v1.MsgExecuteContract": {
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            type: "json",
-            value: details.inputs,
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Inputs",
         },
         {
+          title: "Contract",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.contract,
+            linkType: "contract_address",
+          }),
+        },
+        attachFundsReceipt(details.funds),
+        {
+          title: "Execute Message",
           html: getCommonReceiptHtml({
             type: "json",
-            value: details.outputs,
+            value: details.msg,
           }),
-          title: "Outputs",
+        },
+      ];
+    }
+    case "/cosmwasm.wasm.v1.MsgMigrateContract": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Sender",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
+          }),
+        },
+        {
+          title: "Contract",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.contract,
+            linkType: "contract_address",
+          }),
+        },
+        {
+          title: "Code ID",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.code_id,
+            linkType: "code_id",
+          }),
+        },
+        {
+          title: "Msg",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.msg,
+          }),
+        },
+      ];
+    }
+    case "/cosmwasm.wasm.v1.MsgUpdateAdmin": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Sender",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
+          }),
+        },
+        {
+          title: "New Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.new_admin,
+            linkType: getAddressType(details.new_admin),
+          }),
+        },
+        {
+          title: "Contract",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.contract,
+            linkType: "contract_address",
+          }),
+        },
+      ];
+    }
+    case "/cosmwasm.wasm.v1.MsgClearAdmin": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Sender",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
+          }),
+        },
+        {
+          title: "Contract",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.contract,
+            linkType: "contract_address",
+          }),
         },
       ];
     }
@@ -139,24 +337,117 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "From Address",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.from_address),
             type: "explorer",
             value: details.from_address,
+            linkType: getAddressType(details.from_address),
           }),
-          title: "From Address",
         },
         {
+          title: "To Address",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.to_address),
             type: "explorer",
             value: details.to_address,
+            linkType: getAddressType(details.to_address),
           }),
-          title: "To Address",
         },
         {
-          html: <CoinsComponent coins={details.amount} />,
           title: "Amount",
+          html: <CoinsComponent coins={details.amount} />,
+        },
+      ];
+    }
+    case "/cosmos.bank.v1beta1.MsgMultiSend": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Inputs",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.inputs,
+          }),
+        },
+        {
+          title: "Outputs",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.outputs,
+          }),
+        },
+      ];
+    }
+    // x/authz
+    case "/cosmos.authz.v1beta1.MsgGrant": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Granter",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.granter,
+            linkType: getAddressType(details.granter),
+          }),
+        },
+        {
+          title: "Grantee",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.grantee,
+            linkType: getAddressType(details.grantee),
+          }),
+        },
+        {
+          title: "Grant",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.grant,
+          }),
+        },
+      ];
+    }
+    case "/cosmos.authz.v1beta1.MsgRevoke": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Granter",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.granter,
+            linkType: getAddressType(details.granter),
+          }),
+        },
+        {
+          title: "Grantee",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.grantee,
+            linkType: getAddressType(details.grantee),
+          }),
+        },
+        {
+          title: "Msg Type Url",
+          value: details.msg_type_url,
+        },
+      ];
+    }
+    case "/cosmos.authz.v1beta1.MsgExec": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Grantee",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.grantee,
+            linkType: getAddressType(details.grantee),
+          }),
+        },
+        {
+          title: "Msgs",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.msgs,
+          }),
         },
       ];
     }
@@ -165,35 +456,18 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
           title: "Invariant Module Name",
           value: details.invariant_module_name,
         },
         { title: "Invariant Route", value: details.invariant_route },
-      ];
-    }
-    case "/cosmos.distribution.v1beta1.MsgFundCommunityPool": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: <CoinsComponent coins={details.amount} />,
-          title: "Amount",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.depositor),
-            type: "explorer",
-            value: details.depositor,
-          }),
-          title: "Depositor",
-        },
       ];
     }
     // x/distribution
@@ -205,12 +479,12 @@ export const generateReceipts = (
           getAddressType(details.delegator_address)
         ),
         {
+          title: "Withdraw Address",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.withdraw_address),
             type: "explorer",
             value: details.withdraw_address,
+            linkType: getAddressType(details.withdraw_address),
           }),
-          title: "Withdraw Address",
         },
       ];
     }
@@ -228,24 +502,41 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [validatorAddrReceipt(details.validator_address)];
     }
+    case "/cosmos.distribution.v1beta1.MsgFundCommunityPool": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Amount",
+          html: <CoinsComponent coins={details.amount} />,
+        },
+        {
+          title: "Depositor",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.depositor,
+            linkType: getAddressType(details.depositor),
+          }),
+        },
+      ];
+    }
     // x/evidence
     case "/cosmos.evidence.v1beta1.MsgSubmitEvidence": {
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Submitter",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.submitter),
             type: "explorer",
             value: details.submitter,
+            linkType: getAddressType(details.submitter),
           }),
-          title: "Submitter",
         },
         {
+          title: "Evidence",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.evidence,
           }),
-          title: "Evidence",
         },
       ];
     }
@@ -254,27 +545,27 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Granter",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.granter),
             type: "explorer",
             value: details.granter,
+            linkType: getAddressType(details.granter),
           }),
-          title: "Granter",
         },
         {
+          title: "Grantee",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.grantee),
             type: "explorer",
             value: details.grantee,
+            linkType: getAddressType(details.grantee),
           }),
-          title: "Grantee",
         },
         {
+          title: "Allowance",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.allowance,
           }),
-          title: "Allowance",
         },
       ];
     }
@@ -282,38 +573,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Granter",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.granter),
             type: "explorer",
             value: details.granter,
+            linkType: getAddressType(details.granter),
           }),
-          title: "Granter",
         },
         {
+          title: "Grantee",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.grantee),
             type: "explorer",
             value: details.grantee,
+            linkType: getAddressType(details.grantee),
           }),
-          title: "Grantee",
-        },
-      ];
-    }
-    case "/cosmos.gov.v1beta1.MsgDeposit": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        proposalIdReceipt(details.proposal_id),
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.depositor),
-            type: "explorer",
-            value: details.depositor,
-          }),
-          title: "Depositor",
-        },
-        {
-          html: <CoinsComponent coins={details.amount} />,
-          title: "Amount",
         },
       ];
     }
@@ -322,16 +595,16 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          html: <CoinsComponent coins={details.initial_deposit} />,
           title: "Initial Deposit",
+          html: <CoinsComponent coins={details.initial_deposit} />,
         },
         {
+          title: "Proposer",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.proposer),
             type: "explorer",
             value: details.proposer,
+            linkType: getAddressType(details.proposer),
           }),
-          title: "Proposer",
         },
         log && proposalIdReceipt(details.proposal_id),
         log && {
@@ -345,8 +618,8 @@ export const generateReceipts = (
         },
         { title: "Title", value: details.content.title },
         {
-          html: getCommonReceiptHtml({ type: "json", value: details.content }),
           title: "Content",
+          html: getCommonReceiptHtml({ type: "json", value: details.content }),
         },
       ];
     }
@@ -355,12 +628,12 @@ export const generateReceipts = (
       return [
         proposalIdReceipt(details.proposal_id),
         {
+          title: "Voter",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.voter),
             type: "explorer",
             value: details.voter,
+            linkType: getAddressType(details.voter),
           }),
-          title: "Voter",
         },
         {
           title: "Option",
@@ -373,19 +646,37 @@ export const generateReceipts = (
       return [
         proposalIdReceipt(details.proposal_id),
         {
+          title: "Voter",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.voter),
             type: "explorer",
             value: details.voter,
+            linkType: getAddressType(details.voter),
           }),
-          title: "Voter",
         },
         {
+          title: "Options",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.options,
           }),
-          title: "Options",
+        },
+      ];
+    }
+    case "/cosmos.gov.v1beta1.MsgDeposit": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        proposalIdReceipt(details.proposal_id),
+        {
+          title: "Depositor",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.depositor,
+            linkType: getAddressType(details.depositor),
+          }),
+        },
+        {
+          title: "Amount",
+          html: <CoinsComponent coins={details.amount} />,
         },
       ];
     }
@@ -394,52 +685,23 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [validatorAddrReceipt(details.validator_addr)];
     }
-    case "/cosmos.staking.v1beta1.MsgBeginRedelegate": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        delegatorAddrReceipt(
-          details.delegator_address,
-          getAddressType(details.delegator_address)
-        ),
-        {
-          html: getCommonReceiptHtml({
-            linkType: "validator_address",
-            type: "explorer",
-            value: details.validator_src_address,
-          }),
-          title: "Source Validator Address",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: "validator_address",
-            type: "explorer",
-            value: details.validator_dst_address,
-          }),
-          title: "Destination Validator Address",
-        },
-        {
-          html: <CoinsComponent coins={[details.amount]} />,
-          title: "Amount",
-        },
-      ];
-    }
     // x/staking
     case "/cosmos.staking.v1beta1.MsgCreateValidator": {
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Description",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.description,
           }),
-          title: "Description",
         },
         {
+          title: "Commission",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.commission,
           }),
-          title: "Commission",
         },
         {
           title: "Min Self Delegation",
@@ -451,15 +713,36 @@ export const generateReceipts = (
         ),
         validatorAddrReceipt(details.validator_address),
         {
+          title: "Public Key",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.pubkey,
           }),
-          title: "Public Key",
         },
         {
-          html: <CoinsComponent coins={[details.value]} />,
           title: "Value",
+          html: <CoinsComponent coins={[details.value]} />,
+        },
+      ];
+    }
+    case "/cosmos.staking.v1beta1.MsgEditValidator": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Description",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.description,
+          }),
+        },
+        validatorAddrReceipt(details.validator_address),
+        {
+          title: "Commission Rate",
+          value: details.commission_rate,
+        },
+        {
+          title: "Min Self Delegation",
+          value: details.min_self_delegation,
         },
       ];
     }
@@ -473,320 +756,37 @@ export const generateReceipts = (
         ),
         validatorAddrReceipt(details.validator_address),
         {
-          html: <CoinsComponent coins={[details.amount]} />,
           title: "Amount",
+          html: <CoinsComponent coins={[details.amount]} />,
         },
       ];
     }
-    case "/cosmos.staking.v1beta1.MsgEditValidator": {
+    case "/cosmos.staking.v1beta1.MsgBeginRedelegate": {
       const details = extractTxDetails(type, body, log);
       return [
+        delegatorAddrReceipt(
+          details.delegator_address,
+          getAddressType(details.delegator_address)
+        ),
         {
+          title: "Source Validator Address",
           html: getCommonReceiptHtml({
-            type: "json",
-            value: details.description,
-          }),
-          title: "Description",
-        },
-        validatorAddrReceipt(details.validator_address),
-        {
-          title: "Commission Rate",
-          value: details.commission_rate,
-        },
-        {
-          title: "Min Self Delegation",
-          value: details.min_self_delegation,
-        },
-      ];
-    }
-    case "/cosmwasm.wasm.v1.MsgClearAdmin": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
-            value: details.sender,
+            value: details.validator_src_address,
+            linkType: "validator_address",
           }),
-          title: "Sender",
         },
         {
+          title: "Destination Validator Address",
           html: getCommonReceiptHtml({
-            linkType: "contract_address",
             type: "explorer",
-            value: details.contract,
+            value: details.validator_dst_address,
+            linkType: "validator_address",
           }),
-          title: "Contract",
-        },
-      ];
-    }
-    case "/cosmwasm.wasm.v1.MsgExecuteContract": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
-            type: "explorer",
-            value: details.sender,
-          }),
-          title: "Sender",
         },
         {
-          html: getCommonReceiptHtml({
-            linkType: "contract_address",
-            type: "explorer",
-            value: details.contract,
-          }),
-          title: "Contract",
-        },
-        attachFundsReceipt(details.funds),
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.msg,
-          }),
-          title: "Execute Message",
-        },
-      ];
-    }
-    case "/cosmwasm.wasm.v1.MsgInstantiateContract": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        log && {
-          html: getCommonReceiptHtml({
-            linkType: "contract_address",
-            type: "explorer",
-            value: details.contract_address,
-          }),
-          title: "Contract Instance",
-        },
-
-        {
-          html: getCommonReceiptHtml({
-            linkType: "code_id",
-            type: "explorer",
-            value: details.code_id,
-          }),
-          title: "From Code ID",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
-            type: "explorer",
-            value: details.sender,
-          }),
-          title: "Instantiated by",
-        },
-        {
-          html: getCommonReceiptHtml({
-            fallback: "No Admin",
-            linkType: getAddressType(details.admin),
-            type: "explorer",
-            value: details.admin,
-          }),
-          title: "Contract Admin",
-        },
-        {
-          title: "Label",
-          value: details.label,
-        },
-        attachFundsReceipt(details.funds),
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.msg,
-          }),
-          title: "Instantiate Message",
-        },
-      ];
-    }
-    case "/cosmwasm.wasm.v1.MsgInstantiateContract2": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        log && {
-          html: getCommonReceiptHtml({
-            linkType: "contract_address",
-            type: "explorer",
-            value: details.contract_address,
-          }),
-          title: "Contract Instance",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: "code_id",
-            type: "explorer",
-            value: details.code_id,
-          }),
-          title: "From Code ID",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
-            type: "explorer",
-            value: details.sender,
-          }),
-          title: "Instantiated by",
-        },
-        {
-          html: getCommonReceiptHtml({
-            fallback: "No Admin",
-            linkType: getAddressType(details.admin),
-            type: "explorer",
-            value: details.admin,
-          }),
-          title: "Contract Admin",
-        },
-        {
-          title: "Label",
-          value: details.label,
-        },
-        attachFundsReceipt(details.funds),
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.msg,
-          }),
-          title: "Instantiate Message",
-        },
-        {
-          html: details.salt,
-          title: "Salt",
-        },
-        {
-          title: "Fix Msg",
-          value: String(details.fix_msg),
-        },
-      ];
-    }
-    case "/cosmwasm.wasm.v1.MsgMigrateContract": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
-            type: "explorer",
-            value: details.sender,
-          }),
-          title: "Sender",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: "contract_address",
-            type: "explorer",
-            value: details.contract,
-          }),
-          title: "Contract",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: "code_id",
-            type: "explorer",
-            value: details.code_id,
-          }),
-          title: "Code ID",
-        },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.msg,
-          }),
-          title: "Msg",
-        },
-      ];
-    }
-    // cosmwasm/wasm
-    case "/cosmwasm.wasm.v1.MsgStoreCode": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        log && {
-          html: getCommonReceiptHtml({
-            linkType: "code_id",
-            type: "explorer",
-            value: details.code_id,
-          }),
-          title: "Stored Code ID",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
-            type: "explorer",
-            value: details.sender,
-          }),
-          title: "Uploader",
-        },
-        details.instantiate_permission && {
-          html: (
-            <Flex gap={1} direction="column">
-              <PermissionChip
-                instantiatePermission={
-                  details.instantiate_permission.permission
-                }
-                permissionAddresses={
-                  details.instantiate_permission.address
-                    ? [details.instantiate_permission.address]
-                    : details.instantiate_permission.addresses ?? []
-                }
-              />
-              <ViewPermissionAddresses
-                amptrackSection="tx_msg_receipts"
-                permissionAddresses={
-                  details.instantiate_permission.address
-                    ? [details.instantiate_permission.address]
-                    : details.instantiate_permission.addresses ?? []
-                }
-              />
-            </Flex>
-          ),
-          title: "Instantiate Permission",
-        },
-        {
-          html: (
-            <Flex align="flex-start" gap={3}>
-              Size:{" "}
-              {big(Buffer.from(details.wasm_byte_code).byteLength)
-                .div(1024)
-                .toFixed(1)}{" "}
-              KB
-              <CopyButton
-                mt={-1}
-                value={details.wasm_byte_code}
-                variant="ghost-primary"
-                amptrackSection="tx_msg_receipts_wasm_byte_code"
-                buttonText="Click to Copy"
-                hasIcon={false}
-              />
-            </Flex>
-          ),
-          title: "Wasm Byte Code",
-        },
-      ];
-    }
-    case "/cosmwasm.wasm.v1.MsgUpdateAdmin": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
-            type: "explorer",
-            value: details.sender,
-          }),
-          title: "Sender",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.new_admin),
-            type: "explorer",
-            value: details.new_admin,
-          }),
-          title: "New Admin",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: "contract_address",
-            type: "explorer",
-            value: details.contract,
-          }),
-          title: "Contract",
+          title: "Amount",
+          html: <CoinsComponent coins={[details.amount]} />,
         },
       ];
     }
@@ -803,31 +803,31 @@ export const generateReceipts = (
           value: details.source_channel,
         },
         {
-          html: <CoinsComponent coins={[details.token]} />,
           title: "Token",
+          html: <CoinsComponent coins={[details.token]} />,
         },
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
+          title: "Receiver",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.receiver),
             type: "explorer",
             value: details.receiver,
+            linkType: getAddressType(details.receiver),
           }),
-          title: "Receiver",
         },
         details.timeout_height && {
+          title: "Timeout Height",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.timeout_height,
           }),
-          title: "Timeout Height",
         },
         !!details.timeout_timestamp && {
           title: "Timeout Timestamp",
@@ -839,70 +839,336 @@ export const generateReceipts = (
         },
       ];
     }
-    case "/ibc.core.channel.v1.MsgAcknowledgement": {
+    // ibc/core
+    case "/ibc.core.client.v1.MsgCreateClient": {
       const details = extractTxDetails(type, body, log);
       return [
+        clientStateReceipt(details.client_state),
         {
+          title: "Consensus State",
           html: getCommonReceiptHtml({
             type: "json",
-            value: details.packet,
+            value: details.consensus_state,
           }),
-          title: "Packet",
         },
         {
-          title: "Acknowledgement",
-          value: details.acknowledgement,
-        },
-        {
-          title: "Proof Acked",
-          value: details.proof_acked,
-        },
-        proofHeightReceipt(details.proof_height),
-        {
+          title: "Signer",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
+            linkType: getAddressType(details.signer),
           }),
-          title: "Signer",
         },
       ];
     }
-    case "/ibc.core.channel.v1.MsgChannelCloseConfirm": {
+    case "/ibc.core.client.v1.MsgUpdateClient": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Client ID",
+          value: details.client_id,
+        },
+        // newer version
+        details.client_message && {
+          title: "Client Message",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.client_message,
+          }),
+        },
+        // older version
+        details.header && {
+          title: "Header",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.header,
+          }),
+        },
+        {
+          title: "Signer",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.signer,
+            linkType: getAddressType(details.signer),
+          }),
+        },
+      ];
+    }
+    case "/ibc.core.client.v1.MsgUpgradeClient": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Client ID",
+          value: details.client_id,
+        },
+        clientStateReceipt(details.client_state),
+        {
+          title: "Consensus State",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.consensus_state,
+          }),
+        },
+        {
+          title: "Proof Upgrade Client",
+          value: details.proof_upgrade_client,
+        },
+        {
+          title: "Proof Upgrade Consensus State",
+          value: details.proof_upgrade_consensus_state,
+        },
+        {
+          title: "Signer",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.signer,
+            linkType: getAddressType(details.signer),
+          }),
+        },
+      ];
+    }
+    case "/ibc.core.client.v1.MsgSubmitMisbehaviour": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Client ID",
+          value: details.client_id,
+        },
+        {
+          title: "Misbehaviour",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.misbehaviour,
+          }),
+        },
+        {
+          title: "Signer",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.signer,
+            linkType: getAddressType(details.signer),
+          }),
+        },
+      ];
+    }
+    case "/ibc.core.connection.v1.MsgConnectionOpenInit": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Client ID",
+          value: details.client_id,
+        },
+        {
+          title: "Counterparty",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.counterparty,
+          }),
+        },
+        {
+          title: "Version",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.version,
+          }),
+        },
+        {
+          title: "Delay Period",
+          value: details.delay_period,
+        },
+        {
+          title: "Signer",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.signer,
+            linkType: getAddressType(details.signer),
+          }),
+        },
+      ];
+    }
+    case "/ibc.core.connection.v1.MsgConnectionOpenTry": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Client ID",
+          value: details.client_id,
+        },
+        {
+          title: "Previous Connection ID",
+          value: details.previous_connection_id,
+        },
+        clientStateReceipt(details.client_state),
+        {
+          title: "Counterparty",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.counterparty,
+          }),
+        },
+        {
+          title: "Delay Period",
+          value: details.delay_period,
+        },
+        {
+          title: "Counterparty Versions",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.counterparty_versions,
+          }),
+        },
+        proofHeightReceipt(details.proof_height),
+        proofInitReceipt(details.proof_init),
+        {
+          title: "Proof Client",
+          value: details.proof_client,
+        },
+        {
+          title: "Proof Consensus",
+          value: details.proof_consensus,
+        },
+        {
+          title: "Consensus Height",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.consensus_height,
+          }),
+        },
+        {
+          title: "Signer",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.signer,
+            linkType: getAddressType(details.signer),
+          }),
+        },
+      ];
+    }
+    case "/ibc.core.connection.v1.MsgConnectionOpenAck": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Connection ID",
+          value: details.connection_id,
+        },
+        {
+          title: "Counterparty Connection ID",
+          value: details.counterparty_connection_id,
+        },
+        {
+          title: "Version",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.version,
+          }),
+        },
+        clientStateReceipt(details.client_state),
+        proofHeightReceipt(details.proof_height),
+        {
+          title: "Proof Try",
+          value: details.proof_try,
+        },
+        {
+          title: "Proof Client",
+          value: details.proof_client,
+        },
+        {
+          title: "Proof Consensus",
+          value: details.proof_consensus,
+        },
+        {
+          title: "Consensus Height",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.consensus_height,
+          }),
+        },
+        {
+          title: "Signer",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.signer,
+            linkType: getAddressType(details.signer),
+          }),
+        },
+      ];
+    }
+    case "/ibc.core.connection.v1.MsgConnectionOpenConfirm": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Connection ID",
+          value: details.connection_id,
+        },
+        {
+          title: "Proof Ack",
+          value: details.proof_ack,
+        },
+        proofHeightReceipt(details.proof_height),
+        {
+          title: "Signer",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.signer,
+            linkType: getAddressType(details.signer),
+          }),
+        },
+      ];
+    }
+    case "/ibc.core.channel.v1.MsgChannelOpenInit": {
       const details = extractTxDetails(type, body, log);
       return [
         {
           title: "Port ID",
           value: details.port_id,
         },
-        channelIdReceipt(details.channel_id),
+        {
+          title: "Channel",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.channel,
+          }),
+        },
+        {
+          title: "Signer",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.signer,
+            linkType: getAddressType(details.signer),
+          }),
+        },
+      ];
+    }
+    case "/ibc.core.channel.v1.MsgChannelOpenTry": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Port ID",
+          value: details.port_id,
+        },
+        {
+          title: "Previous Channel ID",
+          value: details.previous_channel_id,
+        },
+        {
+          title: "Channel",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.channel,
+          }),
+        },
+        {
+          title: "Counterparty Version",
+          value: details.counterparty_version,
+        },
         proofInitReceipt(details.proof_init),
         proofHeightReceipt(details.proof_height),
         {
+          title: "Signer",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-          }),
-          title: "Signer",
-        },
-      ];
-    }
-    case "/ibc.core.channel.v1.MsgChannelCloseInit": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          title: "Port ID",
-          value: details.port_id,
-        },
-        channelIdReceipt(details.channel_id),
-        {
-          html: getCommonReceiptHtml({
             linkType: getAddressType(details.signer),
-            type: "explorer",
-            value: details.signer,
           }),
-          title: "Signer",
         },
       ];
     }
@@ -928,12 +1194,12 @@ export const generateReceipts = (
         },
         proofHeightReceipt(details.proof_height),
         {
+          title: "Signer",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
+            linkType: getAddressType(details.signer),
           }),
-          title: "Signer",
         },
       ];
     }
@@ -951,70 +1217,50 @@ export const generateReceipts = (
         },
         proofHeightReceipt(details.proof_height),
         {
+          title: "Signer",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
+            linkType: getAddressType(details.signer),
           }),
-          title: "Signer",
         },
       ];
     }
-    case "/ibc.core.channel.v1.MsgChannelOpenInit": {
+    case "/ibc.core.channel.v1.MsgChannelCloseInit": {
       const details = extractTxDetails(type, body, log);
       return [
         {
           title: "Port ID",
           value: details.port_id,
         },
+        channelIdReceipt(details.channel_id),
         {
+          title: "Signer",
           html: getCommonReceiptHtml({
-            type: "json",
-            value: details.channel,
-          }),
-          title: "Channel",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
+            linkType: getAddressType(details.signer),
           }),
-          title: "Signer",
         },
       ];
     }
-    case "/ibc.core.channel.v1.MsgChannelOpenTry": {
+    case "/ibc.core.channel.v1.MsgChannelCloseConfirm": {
       const details = extractTxDetails(type, body, log);
       return [
         {
           title: "Port ID",
           value: details.port_id,
         },
-        {
-          title: "Previous Channel ID",
-          value: details.previous_channel_id,
-        },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.channel,
-          }),
-          title: "Channel",
-        },
-        {
-          title: "Counterparty Version",
-          value: details.counterparty_version,
-        },
+        channelIdReceipt(details.channel_id),
         proofInitReceipt(details.proof_init),
         proofHeightReceipt(details.proof_height),
         {
+          title: "Signer",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
+            linkType: getAddressType(details.signer),
           }),
-          title: "Signer",
         },
       ];
     }
@@ -1022,11 +1268,11 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Packet",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.packet,
           }),
-          title: "Packet",
         },
         {
           title: "Proof Commitment",
@@ -1034,12 +1280,12 @@ export const generateReceipts = (
         },
         proofHeightReceipt(details.proof_height),
         {
+          title: "Signer",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
+            linkType: getAddressType(details.signer),
           }),
-          title: "Signer",
         },
       ];
     }
@@ -1047,11 +1293,11 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Packet",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.packet,
           }),
-          title: "Packet",
         },
         {
           title: "Proof Unreceived",
@@ -1063,12 +1309,12 @@ export const generateReceipts = (
           value: details.next_sequence_recv,
         },
         {
+          title: "Signer",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
+            linkType: getAddressType(details.signer),
           }),
-          title: "Signer",
         },
       ];
     }
@@ -1076,11 +1322,11 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Packet",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.packet,
           }),
-          title: "Packet",
         },
         {
           title: "Proof Unreceived",
@@ -1096,287 +1342,41 @@ export const generateReceipts = (
           value: details.next_sequence_recv,
         },
         {
+          title: "Signer",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
+            linkType: getAddressType(details.signer),
           }),
-          title: "Signer",
         },
       ];
     }
-    // ibc/core
-    case "/ibc.core.client.v1.MsgCreateClient": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        clientStateReceipt(details.client_state),
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.consensus_state,
-          }),
-          title: "Consensus State",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
-            type: "explorer",
-            value: details.signer,
-          }),
-          title: "Signer",
-        },
-      ];
-    }
-    case "/ibc.core.client.v1.MsgSubmitMisbehaviour": {
+    case "/ibc.core.channel.v1.MsgAcknowledgement": {
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Client ID",
-          value: details.client_id,
-        },
-        {
+          title: "Packet",
           html: getCommonReceiptHtml({
             type: "json",
-            value: details.misbehaviour,
+            value: details.packet,
           }),
-          title: "Misbehaviour",
         },
         {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
-            type: "explorer",
-            value: details.signer,
-          }),
-          title: "Signer",
-        },
-      ];
-    }
-    case "/ibc.core.client.v1.MsgUpdateClient": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          title: "Client ID",
-          value: details.client_id,
-        },
-        // newer version
-        details.client_message && {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.client_message,
-          }),
-          title: "Client Message",
-        },
-        // older version
-        details.header && {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.header,
-          }),
-          title: "Header",
+          title: "Acknowledgement",
+          value: details.acknowledgement,
         },
         {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
-            type: "explorer",
-            value: details.signer,
-          }),
-          title: "Signer",
-        },
-      ];
-    }
-    case "/ibc.core.client.v1.MsgUpgradeClient": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          title: "Client ID",
-          value: details.client_id,
-        },
-        clientStateReceipt(details.client_state),
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.consensus_state,
-          }),
-          title: "Consensus State",
-        },
-        {
-          title: "Proof Upgrade Client",
-          value: details.proof_upgrade_client,
-        },
-        {
-          title: "Proof Upgrade Consensus State",
-          value: details.proof_upgrade_consensus_state,
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
-            type: "explorer",
-            value: details.signer,
-          }),
-          title: "Signer",
-        },
-      ];
-    }
-    case "/ibc.core.connection.v1.MsgConnectionOpenAck": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          title: "Connection ID",
-          value: details.connection_id,
-        },
-        {
-          title: "Counterparty Connection ID",
-          value: details.counterparty_connection_id,
-        },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.version,
-          }),
-          title: "Version",
-        },
-        clientStateReceipt(details.client_state),
-        proofHeightReceipt(details.proof_height),
-        {
-          title: "Proof Try",
-          value: details.proof_try,
-        },
-        {
-          title: "Proof Client",
-          value: details.proof_client,
-        },
-        {
-          title: "Proof Consensus",
-          value: details.proof_consensus,
-        },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.consensus_height,
-          }),
-          title: "Consensus Height",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
-            type: "explorer",
-            value: details.signer,
-          }),
-          title: "Signer",
-        },
-      ];
-    }
-    case "/ibc.core.connection.v1.MsgConnectionOpenConfirm": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          title: "Connection ID",
-          value: details.connection_id,
-        },
-        {
-          title: "Proof Ack",
-          value: details.proof_ack,
+          title: "Proof Acked",
+          value: details.proof_acked,
         },
         proofHeightReceipt(details.proof_height),
         {
+          title: "Signer",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-          }),
-          title: "Signer",
-        },
-      ];
-    }
-    case "/ibc.core.connection.v1.MsgConnectionOpenInit": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          title: "Client ID",
-          value: details.client_id,
-        },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.counterparty,
-          }),
-          title: "Counterparty",
-        },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.version,
-          }),
-          title: "Version",
-        },
-        {
-          title: "Delay Period",
-          value: details.delay_period,
-        },
-        {
-          html: getCommonReceiptHtml({
             linkType: getAddressType(details.signer),
-            type: "explorer",
-            value: details.signer,
           }),
-          title: "Signer",
-        },
-      ];
-    }
-    case "/ibc.core.connection.v1.MsgConnectionOpenTry": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          title: "Client ID",
-          value: details.client_id,
-        },
-        {
-          title: "Previous Connection ID",
-          value: details.previous_connection_id,
-        },
-        clientStateReceipt(details.client_state),
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.counterparty,
-          }),
-          title: "Counterparty",
-        },
-        {
-          title: "Delay Period",
-          value: details.delay_period,
-        },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.counterparty_versions,
-          }),
-          title: "Counterparty Versions",
-        },
-        proofHeightReceipt(details.proof_height),
-        proofInitReceipt(details.proof_init),
-        {
-          title: "Proof Client",
-          value: details.proof_client,
-        },
-        {
-          title: "Proof Consensus",
-          value: details.proof_consensus,
-        },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.consensus_height,
-          }),
-          title: "Consensus Height",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.signer),
-            type: "explorer",
-            value: details.signer,
-          }),
-          title: "Signer",
         },
       ];
     }
@@ -1385,26 +1385,26 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
+          title: "Pool Params",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.pool_params,
           }),
-          title: "Pool Params",
         },
         {
+          title: "Pool Assets",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.pool_assets,
           }),
-          title: "Pool Assets",
         },
         {
           title: "Future Pool Governor",
@@ -1416,30 +1416,30 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
+          title: "Pool Params",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.pool_params,
           }),
-          title: "Pool Params",
         },
         {
-          html: <CoinsComponent coins={details.initial_pool_liquidity} />,
           title: "Initial Pool Liquidity",
+          html: <CoinsComponent coins={details.initial_pool_liquidity} />,
         },
         {
+          title: "Scaling Factors",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.scaling_factors,
           }),
-          title: "Scaling Factors",
         },
         {
           title: "Future Pool Governor",
@@ -1455,102 +1455,23 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
           title: "Pool ID",
           value: details.pool_id,
         },
         {
+          title: "Scaling Factors",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.scaling_factors,
           }),
-          title: "Scaling Factors",
-        },
-      ];
-    }
-    case "/osmosis.gamm.v1beta1.MsgExitPool": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
-            type: "explorer",
-            value: details.sender,
-          }),
-          title: "Sender",
-        },
-        {
-          title: "Pool ID",
-          value: details.pool_id,
-        },
-        {
-          title: "Share In Amount",
-          value: details.share_in_amount,
-        },
-        {
-          html: <CoinsComponent coins={details.token_out_mins ?? []} />,
-          title: "Token Out Mins",
-        },
-      ];
-    }
-    case "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
-            type: "explorer",
-            value: details.sender,
-          }),
-          title: "Sender",
-        },
-        {
-          title: "Pool ID",
-          value: details.pool_id,
-        },
-        {
-          html: <CoinsComponent coins={[details.token_out]} />,
-          title: "Token Out",
-        },
-        {
-          title: "Share In Max Amount",
-          value: details.share_in_max_amount,
-        },
-      ];
-    }
-    case "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
-            type: "explorer",
-            value: details.sender,
-          }),
-          title: "Sender",
-        },
-        {
-          title: "Pool ID",
-          value: details.pool_id,
-        },
-        {
-          title: "Token Out Denom",
-          value: details.token_out_denom,
-        },
-        {
-          title: "Share In Amount",
-          value: details.share_in_amount,
-        },
-        {
-          title: "Token Out Min Amount",
-          value: details.token_out_min_amount,
         },
       ];
     }
@@ -1558,12 +1479,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
           title: "Pool ID",
@@ -1574,8 +1495,91 @@ export const generateReceipts = (
           value: details.share_out_amount,
         },
         {
-          html: <CoinsComponent coins={details.token_in_maxs ?? []} />,
           title: "Token In Maxs",
+          html: <CoinsComponent coins={details.token_in_maxs ?? []} />,
+        },
+      ];
+    }
+    case "/osmosis.gamm.v1beta1.MsgExitPool": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Sender",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
+          }),
+        },
+        {
+          title: "Pool ID",
+          value: details.pool_id,
+        },
+        {
+          title: "Share In Amount",
+          value: details.share_in_amount,
+        },
+        {
+          title: "Token Out Mins",
+          html: <CoinsComponent coins={details.token_out_mins ?? []} />,
+        },
+      ];
+    }
+    case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Sender",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
+          }),
+        },
+        {
+          title: "Routes",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.routes,
+          }),
+        },
+        {
+          title: "Token In",
+          html: <CoinsComponent coins={[details.token_in]} />,
+        },
+        {
+          title: "Token Out Min Amount",
+          value: details.token_out_min_amount,
+        },
+      ];
+    }
+    case "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut":
+    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Sender",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
+          }),
+        },
+        {
+          title: "Routes",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.routes,
+          }),
+        },
+        {
+          title: "Token In Max Amount",
+          value: details.token_in_max_amount,
+        },
+        {
+          title: "Token Out",
+          html: <CoinsComponent coins={[details.token_out]} />,
         },
       ];
     }
@@ -1583,20 +1587,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
           title: "Pool ID",
           value: details.pool_id,
         },
         {
-          html: <CoinsComponent coins={[details.token_in]} />,
           title: "Token In",
+          html: <CoinsComponent coins={[details.token_in]} />,
         },
         {
           title: "Share Out Min Amount",
@@ -1608,12 +1612,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
           title: "Pool ID",
@@ -1633,28 +1637,28 @@ export const generateReceipts = (
         },
       ];
     }
-    case "/osmosis.gamm.v1beta1.MsgSwapExactAmountIn":
-    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountIn": {
+    case "/osmosis.gamm.v1beta1.MsgExitSwapShareAmountIn": {
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.routes,
-          }),
-          title: "Routes",
+          title: "Pool ID",
+          value: details.pool_id,
         },
         {
-          html: <CoinsComponent coins={[details.token_in]} />,
-          title: "Token In",
+          title: "Token Out Denom",
+          value: details.token_out_denom,
+        },
+        {
+          title: "Share In Amount",
+          value: details.share_in_amount,
         },
         {
           title: "Token Out Min Amount",
@@ -1662,53 +1666,28 @@ export const generateReceipts = (
         },
       ];
     }
-    case "/osmosis.gamm.v1beta1.MsgSwapExactAmountOut":
-    case "/osmosis.poolmanager.v1beta1.MsgSwapExactAmountOut": {
+    case "/osmosis.gamm.v1beta1.MsgExitSwapExternAmountOut": {
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.routes,
-          }),
-          title: "Routes",
+          title: "Pool ID",
+          value: details.pool_id,
         },
         {
-          title: "Token In Max Amount",
-          value: details.token_in_max_amount,
-        },
-        {
-          html: <CoinsComponent coins={[details.token_out]} />,
           title: "Token Out",
-        },
-      ];
-    }
-    case "/osmosis.incentives.MsgAddToGauge": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.owner),
-            type: "explorer",
-            value: details.owner,
-          }),
-          title: "Owner",
+          html: <CoinsComponent coins={[details.token_out]} />,
         },
         {
-          title: "Gauge ID",
-          value: details.gauge_id,
-        },
-        {
-          html: <CoinsComponent coins={details.rewards} />,
-          title: "Rewards",
+          title: "Share In Max Amount",
+          value: details.share_in_max_amount,
         },
       ];
     }
@@ -1721,23 +1700,23 @@ export const generateReceipts = (
           value: String(details.is_perpetual),
         },
         {
+          title: "Owner",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.owner),
             type: "explorer",
             value: details.owner,
+            linkType: getAddressType(details.owner),
           }),
-          title: "Owner",
         },
         {
+          title: "Distribute To",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.distribute_to,
           }),
-          title: "Distribute To",
         },
         {
-          html: <CoinsComponent coins={details.coins} />,
           title: "Coins",
+          html: <CoinsComponent coins={details.coins} />,
         },
         {
           title: "Start Time",
@@ -1749,60 +1728,24 @@ export const generateReceipts = (
         },
       ];
     }
-    case "/osmosis.lockup.MsgBeginUnlocking":
-    case "/osmosis.lockup.MsgForceUnlock": {
+    case "/osmosis.incentives.MsgAddToGauge": {
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Owner",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.owner),
             type: "explorer",
             value: details.owner,
-          }),
-          title: "Owner",
-        },
-        {
-          title: "ID",
-          value: details.ID,
-        },
-        details.coins && {
-          html: <CoinsComponent coins={details.coins} />,
-          title: "Coins",
-        },
-      ];
-    }
-    case "/osmosis.lockup.MsgBeginUnlockingAll": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
             linkType: getAddressType(details.owner),
-            type: "explorer",
-            value: details.owner,
           }),
-          title: "Owner",
-        },
-      ];
-    }
-    // ** No example
-    case "/osmosis.lockup.MsgExtendLockup": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.owner),
-            type: "explorer",
-            value: details.owner,
-          }),
-          title: "Owner",
         },
         {
-          title: "ID",
-          value: details.ID,
+          title: "Gauge ID",
+          value: details.gauge_id,
         },
         {
-          title: "Duration",
-          value: details.duration,
+          title: "Rewards",
+          html: <CoinsComponent coins={details.rewards} />,
         },
       ];
     }
@@ -1811,155 +1754,78 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Owner",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.owner),
             type: "explorer",
             value: details.owner,
+            linkType: getAddressType(details.owner),
           }),
-          title: "Owner",
         },
         {
           title: "Duration",
           value: details.duration,
         },
         {
-          html: <CoinsComponent coins={details.coins} />,
           title: "Coin",
-        },
-      ];
-    }
-    case "/osmosis.protorev.v1beta1.MsgSetBaseDenoms": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.admin),
-            type: "explorer",
-            value: details.admin,
-          }),
-          title: "Admin",
-        },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.base_denoms,
-          }),
-          title: "Hot Routes",
-        },
-      ];
-    }
-    case "/osmosis.protorev.v1beta1.MsgSetDeveloperAccount": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.admin),
-            type: "explorer",
-            value: details.admin,
-          }),
-          title: "Admin",
-        },
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.developer_account),
-            type: "explorer",
-            value: details.developer_account,
-          }),
-          title: "Developer Account",
-        },
-      ];
-    }
-    // osmosis/protorev
-    case "/osmosis.protorev.v1beta1.MsgSetHotRoutes": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.admin),
-            type: "explorer",
-            value: details.admin,
-          }),
-          title: "Admin",
-        },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.hot_routes,
-          }),
-          title: "Hot Routes",
-        },
-      ];
-    }
-    case "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerBlock": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.admin),
-            type: "explorer",
-            value: details.admin,
-          }),
-          title: "Admin",
-        },
-        {
-          title: "Max Pool Points Per Block",
-          value: details.max_pool_points_per_block,
-        },
-      ];
-    }
-    case "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerTx": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.admin),
-            type: "explorer",
-            value: details.admin,
-          }),
-          title: "Admin",
-        },
-        {
-          title: "Max Pool Points Per Tx",
-          value: details.max_pool_points_per_tx,
-        },
-      ];
-    }
-    case "/osmosis.protorev.v1beta1.MsgSetPoolWeights": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.admin),
-            type: "explorer",
-            value: details.admin,
-          }),
-          title: "Admin",
-        },
-        {
-          html: getCommonReceiptHtml({
-            type: "json",
-            value: details.pool_weights,
-          }),
-          title: "Pool Weights",
-        },
-      ];
-    }
-    case "/osmosis.superfluid.MsgLockAndSuperfluidDelegate": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
-            type: "explorer",
-            value: details.sender,
-          }),
-          title: "Sender",
-        },
-        {
           html: <CoinsComponent coins={details.coins} />,
-          title: "Coins",
         },
-        validatorAddrReceipt(details.val_addr),
+      ];
+    }
+    case "/osmosis.lockup.MsgBeginUnlockingAll": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Owner",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.owner,
+            linkType: getAddressType(details.owner),
+          }),
+        },
+      ];
+    }
+    case "/osmosis.lockup.MsgBeginUnlocking":
+    case "/osmosis.lockup.MsgForceUnlock": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Owner",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.owner,
+            linkType: getAddressType(details.owner),
+          }),
+        },
+        {
+          title: "ID",
+          value: details.ID,
+        },
+        details.coins && {
+          title: "Coins",
+          html: <CoinsComponent coins={details.coins} />,
+        },
+      ];
+    }
+    // ** No example
+    case "/osmosis.lockup.MsgExtendLockup": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Owner",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.owner,
+            linkType: getAddressType(details.owner),
+          }),
+        },
+        {
+          title: "ID",
+          value: details.ID,
+        },
+        {
+          title: "Duration",
+          value: details.duration,
+        },
       ];
     }
     // osmosis/superfluid
@@ -1967,12 +1833,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
           title: "Lock ID",
@@ -1981,17 +1847,17 @@ export const generateReceipts = (
         validatorAddrReceipt(details.val_addr),
       ];
     }
-    case "/osmosis.superfluid.MsgSuperfluidUnbondLock":
-    case "/osmosis.superfluid.MsgSuperfluidUndelegate": {
+    case "/osmosis.superfluid.MsgSuperfluidUndelegate":
+    case "/osmosis.superfluid.MsgSuperfluidUnbondLock": {
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
           title: "Lock ID",
@@ -1999,37 +1865,34 @@ export const generateReceipts = (
         },
       ];
     }
-    case "/osmosis.superfluid.MsgSuperfluidUndelegateAndUnbondLock": {
+    case "/osmosis.superfluid.MsgLockAndSuperfluidDelegate": {
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
-          title: "Lock ID",
-          value: details.lock_id,
+          title: "Coins",
+          html: <CoinsComponent coins={details.coins} />,
         },
-        {
-          html: <CoinsComponent coins={[details.coin]} />,
-          title: "Coin",
-        },
+        validatorAddrReceipt(details.val_addr),
       ];
     }
     case "/osmosis.superfluid.MsgUnPoolWhitelistedPool": {
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
           title: "Pool ID",
@@ -2037,46 +1900,24 @@ export const generateReceipts = (
         },
       ];
     }
-    case "/osmosis.tokenfactory.v1beta1.MsgBurn":
-    case "/osmosis.tokenfactory.v1beta1.MsgMint": {
+    case "/osmosis.superfluid.MsgSuperfluidUndelegateAndUnbondLock": {
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-          }),
-          title: "Sender",
-        },
-        {
-          html: <CoinsComponent coins={[details.amount]} />,
-          title: "Amount",
-        },
-      ];
-    }
-    case "/osmosis.tokenfactory.v1beta1.MsgChangeAdmin": {
-      const details = extractTxDetails(type, body, log);
-      return [
-        {
-          html: getCommonReceiptHtml({
             linkType: getAddressType(details.sender),
-            type: "explorer",
-            value: details.sender,
           }),
-          title: "Sender",
         },
         {
-          title: "Denom",
-          value: details.denom,
+          title: "Lock ID",
+          value: details.lock_id,
         },
         {
-          html: getCommonReceiptHtml({
-            linkType: getAddressType(details.new_admin),
-            type: "explorer",
-            value: details.new_admin,
-          }),
-          title: "New Admin",
+          title: "Coin",
+          html: <CoinsComponent coins={[details.coin]} />,
         },
       ];
     }
@@ -2085,16 +1926,59 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
           title: "Subdenom",
           value: details.subdenom,
+        },
+      ];
+    }
+    case "/osmosis.tokenfactory.v1beta1.MsgMint":
+    case "/osmosis.tokenfactory.v1beta1.MsgBurn": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Sender",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
+          }),
+        },
+        {
+          title: "Amount",
+          html: <CoinsComponent coins={[details.amount]} />,
+        },
+      ];
+    }
+    case "/osmosis.tokenfactory.v1beta1.MsgChangeAdmin": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Sender",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.sender,
+            linkType: getAddressType(details.sender),
+          }),
+        },
+        {
+          title: "Denom",
+          value: details.denom,
+        },
+        {
+          title: "New Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.new_admin,
+            linkType: getAddressType(details.new_admin),
+          }),
         },
       ];
     }
@@ -2103,36 +1987,135 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Sender",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
+            linkType: getAddressType(details.sender),
           }),
-          title: "Sender",
         },
         {
+          title: "Metadata",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.metadata,
           }),
-          title: "Metadata",
         },
       ];
     }
-    case "/osmosis.valsetpref.v1beta1.MsgDelegateBondedTokens": {
+    // osmosis/protorev
+    case "/osmosis.protorev.v1beta1.MsgSetHotRoutes": {
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Admin",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.delegator),
             type: "explorer",
-            value: details.delegator,
+            value: details.admin,
+            linkType: getAddressType(details.admin),
           }),
-          title: "Delegator",
         },
         {
-          title: "Lock ID",
-          value: details.lockID,
+          title: "Hot Routes",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.hot_routes,
+          }),
+        },
+      ];
+    }
+    case "/osmosis.protorev.v1beta1.MsgSetBaseDenoms": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+          }),
+        },
+        {
+          title: "Hot Routes",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.base_denoms,
+          }),
+        },
+      ];
+    }
+    case "/osmosis.protorev.v1beta1.MsgSetDeveloperAccount": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+          }),
+        },
+        {
+          title: "Developer Account",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.developer_account,
+            linkType: getAddressType(details.developer_account),
+          }),
+        },
+      ];
+    }
+    case "/osmosis.protorev.v1beta1.MsgSetPoolWeights": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+          }),
+        },
+        {
+          title: "Pool Weights",
+          html: getCommonReceiptHtml({
+            type: "json",
+            value: details.pool_weights,
+          }),
+        },
+      ];
+    }
+    case "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerTx": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+          }),
+        },
+        {
+          title: "Max Pool Points Per Tx",
+          value: details.max_pool_points_per_tx,
+        },
+      ];
+    }
+    case "/osmosis.protorev.v1beta1.MsgSetMaxPoolPointsPerBlock": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
+          title: "Admin",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.admin,
+            linkType: getAddressType(details.admin),
+          }),
+        },
+        {
+          title: "Max Pool Points Per Block",
+          value: details.max_pool_points_per_block,
         },
       ];
     }
@@ -2142,16 +2125,16 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Delegator",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.delegator),
             type: "explorer",
             value: details.delegator,
+            linkType: getAddressType(details.delegator),
           }),
-          title: "Delegator",
         },
         {
-          html: <CoinsComponent coins={[details.coin]} />,
           title: "Coin",
+          html: <CoinsComponent coins={[details.coin]} />,
         },
       ];
     }
@@ -2160,19 +2143,19 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Delegator",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.delegator),
             type: "explorer",
             value: details.delegator,
+            linkType: getAddressType(details.delegator),
           }),
-          title: "Delegator",
         },
         {
+          title: "Preferences",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.preferences,
           }),
-          title: "Preferences",
         },
       ];
     }
@@ -2180,12 +2163,29 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
+          title: "Delegator",
           html: getCommonReceiptHtml({
-            linkType: getAddressType(details.delegator),
             type: "explorer",
             value: details.delegator,
+            linkType: getAddressType(details.delegator),
           }),
+        },
+      ];
+    }
+    case "/osmosis.valsetpref.v1beta1.MsgDelegateBondedTokens": {
+      const details = extractTxDetails(type, body, log);
+      return [
+        {
           title: "Delegator",
+          html: getCommonReceiptHtml({
+            type: "explorer",
+            value: details.delegator,
+            linkType: getAddressType(details.delegator),
+          }),
+        },
+        {
+          title: "Lock ID",
+          value: details.lockID,
         },
       ];
     }

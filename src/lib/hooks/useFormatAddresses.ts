@@ -10,7 +10,7 @@ import {
 } from "lib/utils";
 
 export const useFormatAddresses = () => {
-  const { convertHexModuleAddress, convertHexWalletAddress } =
+  const { convertHexWalletAddress, convertHexModuleAddress } =
     useConvertHexAddress();
 
   return useCallback(

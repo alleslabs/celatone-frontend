@@ -28,8 +28,8 @@ import {
 import { ControllerInput } from "lib/components/forms";
 
 export enum GasPriceConfiguration {
-  CUSTOM = "custom",
   STANDARD = "standard",
+  CUSTOM = "custom",
 }
 
 interface GasFeeDetailsProps {
@@ -40,8 +40,8 @@ interface GasFeeDetailsProps {
 }
 
 const restrictedNumberInputParams = {
-  maxDecimalPoints: 20,
   maxIntegerPoints: 20,
+  maxDecimalPoints: 20,
 };
 
 const GasOptionStandard = ({
@@ -49,16 +49,16 @@ const GasOptionStandard = ({
   errors,
 }: Omit<GasFeeDetailsProps, "setValue" | "trigger">) => (
   <ControllerInput
-    label="Gas Price"
     name="gasPrice"
-    restrictedNumberInputParams={restrictedNumberInputParams}
-    rules={{ required: "" }}
-    type="decimal"
-    variant="fixed-floating"
-    w="full"
     control={control}
-    error={errors.gasPrice?.message}
+    label="Gas Price"
+    variant="fixed-floating"
+    type="decimal"
+    w="full"
     placeholder="0.00"
+    error={errors.gasPrice?.message}
+    rules={{ required: "" }}
+    restrictedNumberInputParams={restrictedNumberInputParams}
   />
 );
 
@@ -67,7 +67,7 @@ const GasOptionCustom = ({
   errors,
 }: Omit<GasFeeDetailsProps, "setValue" | "trigger">) => (
   <>
-    <Flex alignItems="center" justifyContent="space-between">
+    <Flex justifyContent="space-between" alignItems="center">
       <Box>
         <Text variant="body1" color="gray.500">
           Fixed Minimum Gas Price
@@ -78,17 +78,17 @@ const GasOptionCustom = ({
       </Box>
       <ControllerInput
         name="fixed_min_gas_price"
-        restrictedNumberInputParams={restrictedNumberInputParams}
-        textAlign="right"
-        type="decimal"
-        variant="fixed-floating"
-        w="256px"
         control={control}
-        error={errors.fixed_min_gas_price?.message}
+        variant="fixed-floating"
+        type="decimal"
+        w="256px"
         placeholder="0.00"
+        error={errors.fixed_min_gas_price?.message}
+        textAlign="right"
+        restrictedNumberInputParams={restrictedNumberInputParams}
       />
     </Flex>
-    <Flex alignItems="center" justifyContent="space-between">
+    <Flex justifyContent="space-between" alignItems="center">
       <Box>
         <Text variant="body1" color="gray.500">
           Low Gas Price
@@ -99,17 +99,17 @@ const GasOptionCustom = ({
       </Box>
       <ControllerInput
         name="low_gas_price"
-        restrictedNumberInputParams={restrictedNumberInputParams}
-        textAlign="right"
-        type="decimal"
-        variant="fixed-floating"
-        w="256px"
         control={control}
-        error={errors.low_gas_price?.message}
+        variant="fixed-floating"
+        type="decimal"
+        w="256px"
         placeholder="0.00"
+        error={errors.low_gas_price?.message}
+        textAlign="right"
+        restrictedNumberInputParams={restrictedNumberInputParams}
       />
     </Flex>
-    <Flex alignItems="center" justifyContent="space-between">
+    <Flex justifyContent="space-between" alignItems="center">
       <Box>
         <Text variant="body1" color="gray.500">
           Average Gas Price
@@ -120,17 +120,17 @@ const GasOptionCustom = ({
       </Box>
       <ControllerInput
         name="average_gas_price"
-        restrictedNumberInputParams={restrictedNumberInputParams}
-        textAlign="right"
-        type="decimal"
-        variant="fixed-floating"
-        w="256px"
         control={control}
-        error={errors.average_gas_price?.message}
+        variant="fixed-floating"
+        type="decimal"
+        w="256px"
         placeholder="0.00"
+        error={errors.average_gas_price?.message}
+        textAlign="right"
+        restrictedNumberInputParams={restrictedNumberInputParams}
       />
     </Flex>
-    <Flex alignItems="center" justifyContent="space-between">
+    <Flex justifyContent="space-between" alignItems="center">
       <Box>
         <Text variant="body1" color="gray.500">
           High Gas Price
@@ -141,14 +141,14 @@ const GasOptionCustom = ({
       </Box>
       <ControllerInput
         name="high_gas_price"
-        restrictedNumberInputParams={restrictedNumberInputParams}
-        textAlign="right"
-        type="decimal"
-        variant="fixed-floating"
-        w="256px"
         control={control}
-        error={errors.high_gas_price?.message}
+        variant="fixed-floating"
+        type="decimal"
+        w="256px"
         placeholder="0.00"
+        error={errors.high_gas_price?.message}
+        textAlign="right"
+        restrictedNumberInputParams={restrictedNumberInputParams}
       />
     </Flex>
   </>
@@ -161,12 +161,12 @@ const GasFeeDetails = ({
   trigger,
 }: GasFeeDetailsProps) => {
   const {
-    average_gas_price: averageGasPrice,
-    fixed_min_gas_price: fixedMinGasPrice,
-    gasConfig,
     gasPrice,
-    high_gas_price: highGasPrice,
+    gasConfig,
+    fixed_min_gas_price: fixedMinGasPrice,
     low_gas_price: lowGasPrice,
+    average_gas_price: averageGasPrice,
+    high_gas_price: highGasPrice,
   } = useWatch({ control });
 
   useEffect(() => {
@@ -203,61 +203,61 @@ const GasFeeDetails = ({
   ]);
 
   return (
-    <Flex alignItems="center" gap={2} direction="column">
+    <Flex direction="column" gap={2} alignItems="center">
       <CustomNetworkPageHeader title="Add Gas & Fee Details" />
-      <Flex gap={8} mt={8} w="full" direction="column">
-        <Flex gap={6} direction="column">
+      <Flex w="full" direction="column" gap={8} mt={8}>
+        <Flex direction="column" gap={6}>
           <CustomNetworkSubheader title="Gas & Fee Details" />
           <Flex gap={6}>
             <ControllerInput
-              label="Gas Adjustment"
               name="gasAdjustment"
-              restrictedNumberInputParams={restrictedNumberInputParams}
-              rules={{ required: "" }}
-              type="decimal"
-              variant="fixed-floating"
-              w="full"
               control={control}
-              error={errors.gasAdjustment?.message}
+              label="Gas Adjustment"
+              variant="fixed-floating"
+              type="decimal"
+              w="full"
               placeholder="0.00"
+              rules={{ required: "" }}
+              error={errors.gasAdjustment?.message}
+              restrictedNumberInputParams={restrictedNumberInputParams}
             />
             <ControllerInput
-              label="Max Gas Limit"
               name="maxGasLimit"
-              restrictedNumberInputParams={restrictedNumberInputParams}
-              rules={{ required: "" }}
-              type="decimal"
-              variant="fixed-floating"
-              w="full"
               control={control}
-              error={errors.maxGasLimit?.message}
+              label="Max Gas Limit"
+              variant="fixed-floating"
+              type="decimal"
+              w="full"
               placeholder="0.00"
+              rules={{ required: "" }}
+              error={errors.maxGasLimit?.message}
+              restrictedNumberInputParams={restrictedNumberInputParams}
             />
           </Flex>
           <ControllerInput
-            label="Fee Tokens Denom"
             name="denom"
-            rules={{ required: "" }}
+            control={control}
+            label="Fee Tokens Denom"
             variant="fixed-floating"
             w="full"
-            control={control}
-            error={errors.denom?.message}
             placeholder="ex. uinit"
+            rules={{ required: "" }}
+            error={errors.denom?.message}
           />
         </Flex>
-        <Flex gap={6} direction="column">
+        <Flex direction="column" gap={6}>
           <CustomNetworkSubheader title="Gas Price Configuration" />
           <RadioGroup
-            value={gasConfig}
             onChange={(nextVal) =>
               setValue("gasConfig", nextVal as GasPriceConfiguration)
             }
+            value={gasConfig}
           >
             <Grid gridTemplateColumns="repeat(2, 1fr)" gap={6} maxW={640}>
               <Radio
+                variant="gray-card"
                 width="fit-content"
                 value={GasPriceConfiguration.STANDARD}
-                variant="gray-card"
               >
                 Standard Gas Price
                 <Text variant="body3">
@@ -266,9 +266,9 @@ const GasFeeDetails = ({
                 </Text>
               </Radio>
               <Radio
+                variant="gray-card"
                 width="fit-content"
                 value={GasPriceConfiguration.CUSTOM}
-                variant="gray-card"
               >
                 Custom Gas Prices
                 <Text variant="body3">
@@ -285,37 +285,37 @@ const GasFeeDetails = ({
             <GasOptionCustom control={control} errors={errors} />
           )}
         </Flex>
-        <Accordion w="full" allowToggle>
+        <Accordion allowToggle w="full">
           <AccordionItem>
             <AccordionButton p={4}>
               <Text>Advanced Options</Text>
-              <AccordionIcon ml="auto" boxSize={6} color="gray.600" />
+              <AccordionIcon color="gray.600" ml="auto" boxSize={6} />
             </AccordionButton>
-            <AccordionPanel pb={4} pt={0}>
+            <AccordionPanel pt={0} pb={4}>
               <Flex gap={6} mt={2}>
                 <ControllerInput
-                  label="Gas Cost for Cosmos Send"
-                  name="cosmos_send"
-                  restrictedNumberInputParams={restrictedNumberInputParams}
-                  type="decimal"
-                  variant="fixed-floating"
-                  w="full"
-                  control={control}
-                  error={errors.cosmos_send?.message}
                   labelBgColor="gray.900"
+                  name="cosmos_send"
+                  control={control}
+                  label="Gas Cost for Cosmos Send"
+                  variant="fixed-floating"
+                  type="decimal"
+                  w="full"
                   placeholder="0.00"
+                  error={errors.cosmos_send?.message}
+                  restrictedNumberInputParams={restrictedNumberInputParams}
                 />
                 <ControllerInput
-                  label="Gas Cost for IBC"
-                  name="ibc_transfer"
-                  restrictedNumberInputParams={restrictedNumberInputParams}
-                  type="decimal"
-                  variant="fixed-floating"
-                  w="full"
-                  control={control}
-                  error={errors.ibc_transfer?.message}
                   labelBgColor="gray.900"
+                  name="ibc_transfer"
+                  control={control}
+                  label="Gas Cost for IBC"
+                  variant="fixed-floating"
+                  type="decimal"
+                  w="full"
                   placeholder="0.00"
+                  error={errors.ibc_transfer?.message}
+                  restrictedNumberInputParams={restrictedNumberInputParams}
                 />
               </Flex>
             </AccordionPanel>

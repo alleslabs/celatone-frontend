@@ -9,14 +9,14 @@ import type { Module } from "./formConstants";
 import { PublishModule } from "./publish";
 
 const DEFAULT_STATE: PublishCompleteState = {
-  modules: [],
-  txFee: undefined,
   txHash: "",
+  txFee: undefined,
   upgradePolicy: UpgradePolicy.UNSPECIFIED,
+  modules: [],
 };
 export interface PublishCompleteState extends PublishTxInternalResult {
-  modules: Module[];
   upgradePolicy: UpgradePolicy;
+  modules: Module[];
 }
 
 export const PublishIndex = () => {
@@ -30,11 +30,11 @@ export const PublishIndex = () => {
 
   return completed ? (
     <PublishCompleted
+      publishTxInfo={publishTxInfo}
       resetState={() => {
         setPublishTxInfo(DEFAULT_STATE);
         setCompleted(false);
       }}
-      publishTxInfo={publishTxInfo}
     />
   ) : (
     <PublishModule

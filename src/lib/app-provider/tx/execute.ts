@@ -10,12 +10,12 @@ import type { BechAddr32 } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
 
 export interface ExecuteStreamParams {
-  contractAddress: BechAddr32;
   estimatedFee: StdFee | undefined;
+  contractAddress: BechAddr32;
+  msg: string | object;
   funds: Coin[];
-  msg: object | string;
-  onTxFailed?: () => void;
   onTxSucceed?: (activity: Activity) => void;
+  onTxFailed?: () => void;
 }
 
 export const useExecuteContractTx = () => {
@@ -24,12 +24,12 @@ export const useExecuteContractTx = () => {
 
   return useCallback(
     async ({
-      contractAddress,
-      estimatedFee,
-      funds,
-      msg,
-      onTxFailed,
       onTxSucceed,
+      onTxFailed,
+      estimatedFee,
+      contractAddress,
+      msg,
+      funds,
     }: ExecuteStreamParams) => {
       if (!address)
         throw new Error("No address provided (useExecuteContractTx)");
@@ -47,22 +47,22 @@ export const useExecuteContractTx = () => {
         ),
       ]);
 
-      const base64Message = libEncode(JSON.stringify({ funds, msg }));
+      const base64Message = libEncode(JSON.stringify({ msg, funds }));
 
       const action = typeof msg === "string" ? msg : Object.keys(msg)[0];
       return executeContractTx({
-        action,
         address,
-        base64Message,
         contractAddress,
-        fee: estimatedFee,
         messages,
-        onTxFailed,
+        action,
+        fee: estimatedFee,
+        base64Message,
+        signAndBroadcast,
         onTxSucceed: (activity) => {
           trackTxSucceed();
           onTxSucceed?.(activity);
         },
-        signAndBroadcast,
+        onTxFailed,
       });
     },
     [address, signAndBroadcast]

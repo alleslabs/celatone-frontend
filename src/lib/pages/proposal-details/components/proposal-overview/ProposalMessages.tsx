@@ -23,22 +23,28 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
 
   return (
     <Flex
+      direction="column"
       gap={4}
-      pb={hasMsgs ? 0 : 8}
       pt={2}
+      pb={hasMsgs ? 0 : 8}
       borderBottom={{ base: hasMsgs ? "0px" : "1px solid", md: "0px" }}
       borderColor="gray.700"
-      direction="column"
     >
-      <Flex alignItems="center" w="full" justifyContent="space-between">
+      <Flex w="full" alignItems="center" justifyContent="space-between">
         <Heading as="h6" variant="h6">
           Proposal Messages
         </Heading>
         {hasMsgs && (
           <Button
+            variant="ghost-primary"
             minW={{ base: "auto", md: 32 }}
             size="sm"
-            variant="ghost-primary"
+            rightIcon={
+              <CustomIcon
+                name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+                boxSize={3}
+              />
+            }
             onClick={() => {
               trackUseExpandAll(
                 expandedIndexes.length ? "collapse" : "expand",
@@ -48,12 +54,6 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
                 !prev.length ? Array.from(Array(messages.length).keys()) : []
               );
             }}
-            rightIcon={
-              <CustomIcon
-                name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
-                boxSize={3}
-              />
-            }
           >
             {expandedIndexes.length ? "Collapse All" : "Expand All"}
           </Button>
@@ -61,10 +61,10 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
       </Flex>
       {hasMsgs ? (
         <Accordion
-          width="full"
-          index={expandedIndexes}
-          variant="transparent"
           allowMultiple
+          width="full"
+          variant="transparent"
+          index={expandedIndexes}
           onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
         >
           {messages.map((item, i) => (

@@ -5,20 +5,16 @@ import type { BechAddr, Dict } from "lib/types";
 
 export interface CodeLocalInfo {
   id: number;
-  name?: string;
   uploader: BechAddr;
+  name?: string;
 }
 
 export class CodeStore {
-  codeInfo: Dict<string, Record<number, CodeLocalInfo>>;
+  private userKey: string;
 
   savedCodeIds: Dict<string, number[]>;
 
-  get isHydrated(): boolean {
-    return isHydrated(this);
-  }
-
-  private userKey: string;
+  codeInfo: Dict<string, Record<number, CodeLocalInfo>>;
 
   constructor() {
     this.savedCodeIds = {};
@@ -33,16 +29,24 @@ export class CodeStore {
     });
   }
 
+  get isHydrated(): boolean {
+    return isHydrated(this);
+  }
+
+  isCodeUserKeyExist(): boolean {
+    return !!this.userKey;
+  }
+
+  setCodeUserKey(userKey: string) {
+    this.userKey = userKey;
+  }
+
   getCodeLocalInfo(id: number): CodeLocalInfo | undefined {
     return this.codeInfo[this.userKey]?.[id];
   }
 
   isCodeIdSaved(id: number): boolean {
     return this.savedCodeIds[this.userKey]?.includes(id) ?? false;
-  }
-
-  isCodeUserKeyExist(): boolean {
-    return !!this.userKey;
   }
 
   lastSavedCodeIds(): number[] {
@@ -57,18 +61,12 @@ export class CodeStore {
     return savedCodeIdsByUserKey
       .map((codeId) => ({
         id: codeId,
-        name: this.codeInfo[this.userKey]?.[codeId]?.name,
         uploader:
           this.codeInfo[this.userKey]?.[codeId]?.uploader ??
           ("N/A" as BechAddr),
+        name: this.codeInfo[this.userKey]?.[codeId]?.name,
       }))
       .reverse();
-  }
-
-  removeSavedCode(id: number): void {
-    this.savedCodeIds[this.userKey] = this.savedCodeIds[this.userKey]?.filter(
-      (each) => each !== id
-    );
   }
 
   saveNewCode(id: number): void {
@@ -79,8 +77,10 @@ export class CodeStore {
     }
   }
 
-  setCodeUserKey(userKey: string) {
-    this.userKey = userKey;
+  removeSavedCode(id: number): void {
+    this.savedCodeIds[this.userKey] = this.savedCodeIds[this.userKey]?.filter(
+      (each) => each !== id
+    );
   }
 
   updateCodeInfo(id: number, uploader: BechAddr, name?: string): void {

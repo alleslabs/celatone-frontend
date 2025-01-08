@@ -15,37 +15,37 @@ export const RedelegationTableMobileCard = ({
   redelegation,
 }: RedelegationTableMobileCardProps) => (
   <Flex
-    gap={3}
-    p={3}
-    w="full"
     background="gray.900"
     borderRadius="8px"
+    p={3}
     direction="column"
+    gap={3}
+    w="full"
   >
     <Grid
-      alignItems="center"
-      pb={3}
       borderBottom="1px solid"
+      pb={3}
       borderBottomColor="gray.700"
       templateColumns="1fr 32px 1fr"
+      alignItems="center"
     >
-      <Flex gap={1} minW={0} direction="column">
+      <Flex direction="column" gap={1} minW={0}>
         <MobileLabel label="From validator" />
         <ValidatorBadge validator={redelegation.srcValidator} />
       </Flex>
       <CustomIcon name="arrow-right" boxSize={3} color="gray.600" />
-      <Flex gap={1} minW={0} direction="column">
+      <Flex direction="column" gap={1} minW={0}>
         <MobileLabel label="To validator" />
         <ValidatorBadge validator={redelegation.dstValidator} />
       </Flex>
     </Grid>
-    <Flex gap={1} direction="column">
+    <Flex direction="column" gap={1}>
       <MobileLabel label="Amount" />
       {redelegation.balances.map((balance) => (
         <TokenCell key={balance.denom} token={balance} />
       ))}
     </Flex>
-    <Flex gap={1} direction="column">
+    <Flex direction="column" gap={1}>
       <MobileLabel label="Completed by" />
       <Flex direction="column">
         <Text variant="body2">{formatUTC(redelegation.completionTime)}</Text>

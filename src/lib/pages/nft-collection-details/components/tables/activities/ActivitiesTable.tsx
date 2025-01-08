@@ -9,17 +9,17 @@ import { ActivitiesTableMobileCard } from "./ActivitiesTableMobileCard";
 import { ActivitiesTableRow } from "./ActivitiesTableRow";
 
 interface ActivitiesTableProps {
-  activities: Option<Activity[]>;
   collectionAddress: HexAddr32;
-  emptyState: JSX.Element;
+  activities: Option<Activity[]>;
   isLoading: boolean;
+  emptyState: JSX.Element;
 }
 
 export const ActivitiesTable = ({
-  activities,
   collectionAddress,
-  emptyState,
+  activities,
   isLoading,
+  emptyState,
 }: ActivitiesTableProps) => {
   const isMobile = useMobile();
 
@@ -33,8 +33,8 @@ export const ActivitiesTable = ({
       {activities.map((activity, index) => (
         <ActivitiesTableMobileCard
           key={activity.txhash + index.toString()}
-          activity={activity}
           collectionAddress={collectionAddress}
+          activity={activity}
         />
       ))}
     </MobileTableContainer>
@@ -44,8 +44,8 @@ export const ActivitiesTable = ({
       {activities.map((activity, index) => (
         <ActivitiesTableRow
           key={activity.txhash + index.toString()}
-          activity={activity}
           collectionAddress={collectionAddress}
+          activity={activity}
           templateColumns={templateColumns}
         />
       ))}

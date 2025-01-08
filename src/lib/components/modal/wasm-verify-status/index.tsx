@@ -22,15 +22,15 @@ import { WasmVerifyRequestInfo } from "./WasmVerifyRequestInfo";
 
 interface WasmVerifyStatusModalProps {
   codeHash: string;
+  verificationInfo: WasmVerifyInfoBase;
   relatedVerifiedCodes: number[];
   triggerElement: ReactNode;
-  verificationInfo: WasmVerifyInfoBase;
 }
 export const WasmVerifyStatusModal = ({
   codeHash,
+  verificationInfo,
   relatedVerifiedCodes,
   triggerElement,
-  verificationInfo,
 }: WasmVerifyStatusModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   return (
@@ -44,25 +44,25 @@ export const WasmVerifyStatusModal = ({
         {triggerElement}
       </Flex>
       <Modal
-        isCentered
         isOpen={isOpen}
         onClose={onClose}
+        isCentered
         returnFocusOnClose={false}
       >
         <ModalOverlay />
         <ModalContent
+          w={{ base: "full", md: "645px" }}
           bg="gray.800"
           maxW="100vw"
-          w={{ base: "full", md: "645px" }}
         >
           <ModalHeader pb={0}>
-            <Flex alignItems="center" gap={2} w="full" direction="row">
+            <Flex w="full" direction="row" alignItems="center" gap={2}>
               <CustomIcon
                 name="verification-solid"
                 boxSize={6}
                 color="gray.600"
               />
-              <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
+              <Heading variant={{ base: "h6", md: "h5" }} as="h5">
                 Code Verification Status
               </Heading>
             </Flex>
@@ -72,15 +72,15 @@ export const WasmVerifyStatusModal = ({
             {!verificationInfo.comparedTimestamp && (
               <WasmVerifyAlert errorMsg={verificationInfo.errorMessage} />
             )}
-            <Flex gap={4} direction="column">
+            <Flex direction="column" gap={4}>
               <WasmVerifyRequestInfo
                 codeHash={codeHash}
-                relatedVerifiedCodes={relatedVerifiedCodes}
                 verificationInfo={verificationInfo}
+                relatedVerifiedCodes={relatedVerifiedCodes}
               />
               <Divider borderColor="gray.700" />
               <WasmVerifyProcess verificationInfo={verificationInfo} />
-              <Button mt={2} variant="outline-primary" onClick={onClose}>
+              <Button onClick={onClose} variant="outline-primary" mt={2}>
                 Close
               </Button>
             </Flex>

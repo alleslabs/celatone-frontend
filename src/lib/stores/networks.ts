@@ -4,10 +4,6 @@ import { isHydrated, makePersistable } from "mobx-persist-store";
 export class NetworkStore {
   pinnedNetworks: string[];
 
-  get isHydrated(): boolean {
-    return isHydrated(this);
-  }
-
   constructor() {
     this.pinnedNetworks = [];
 
@@ -17,6 +13,10 @@ export class NetworkStore {
       name: "NetworkStore",
       properties: ["pinnedNetworks"],
     });
+  }
+
+  get isHydrated(): boolean {
+    return isHydrated(this);
   }
 
   getPinnedNetworks(): string[] {

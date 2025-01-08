@@ -1,16 +1,16 @@
 export interface ProjectConstants {
-  maxAccountDescriptionLength: number;
   maxAccountNameLength: number;
-
-  maxCodeNameLength: number;
-
-  maxContractDescriptionLength: number;
-  maxContractNameLength: number;
-  // wasm
-  maxListNameLength: number;
-  // move verify task
-  maxMoveVerifyTaskRequestNoteLength: number;
+  maxAccountDescriptionLength: number;
 
   // proposal
   maxProposalTitleLength: number;
+
+  // wasm
+  maxListNameLength: number;
+  maxContractNameLength: number;
+  maxContractDescriptionLength: number;
+  maxCodeNameLength: number;
+
+  // move verify task
+  maxMoveVerifyTaskRequestNoteLength: number;
 }

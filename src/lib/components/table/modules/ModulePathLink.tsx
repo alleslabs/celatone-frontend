@@ -23,23 +23,23 @@ export const ModulePathLink = ({
   return (
     <Flex
       className="copier-wrapper"
-      align="center"
       display={{ base: "inline-flex", md: "flex" }}
-      gap={1}
+      align="center"
       h={{ base: "auto", md: "24px" }}
+      gap={1}
     >
       <AppLink
-        onClick={(e) => e.stopPropagation()}
         href={`/modules/${hexAddr}/${moduleName}`}
         passHref
+        onClick={(e) => e.stopPropagation()}
       >
         <Text
           variant="body2"
-          _hover={{ color: "primary.light", textDecoration: "underline" }}
           color="primary.main"
-          cursor="pointer"
           transition="all 0.25s ease-in-out"
+          _hover={{ color: "primary.light", textDecoration: "underline" }}
           wordBreak={{ base: "break-all", md: "inherit" }}
+          cursor="pointer"
         >
           {`${truncate(hexAddr)} :: ${moduleName}`}
         </Text>
@@ -48,12 +48,12 @@ export const ModulePathLink = ({
         <MoveVerifyBadge status={moveVerifyStatus} hasTooltip />
       )}
       <Copier
-        display={!isMobile ? "none" : "inline"}
-        ml={0}
         type="module_path"
         value={mergeModulePath(hexAddr, moduleName)}
-        amptrackSection="module_table"
         copyLabel="Copied!"
+        display={!isMobile ? "none" : "inline"}
+        amptrackSection="module_table"
+        ml={0}
       />
     </Flex>
   );

@@ -8,19 +8,19 @@ export const trackMintScan = (
   section?: string
 ) =>
   amp.track(AmpEvent.MINTSCAN, {
+    type,
     properties,
     section,
-    type,
   });
 
 export const trackWebsite = (url: string, section?: string) =>
   amp.track(AmpEvent.WEBSITE, {
-    section,
     url,
+    section,
   });
 
 export const trackSocial = (url: string, section?: string) =>
   amp.track(AmpEvent.SOCIAL, {
-    section,
     url,
+    section,
   });

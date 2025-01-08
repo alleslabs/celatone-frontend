@@ -11,61 +11,61 @@ import { CopyButton } from "../copy";
 import { useCelatoneApp } from "lib/app-provider";
 
 interface TextReadOnlyProps {
-  canCopy?: boolean;
   text: string;
+  canCopy?: boolean;
 }
 
-export const TextReadOnly = ({ canCopy, text }: TextReadOnlyProps) => {
+export const TextReadOnly = ({ text, canCopy }: TextReadOnlyProps) => {
   const editorRef = useRef<AceEditor>(null);
   const { theme } = useCelatoneApp();
 
   return (
     <Box
-      borderWidth="thin"
       minH={{ base: "360px", md: "auto" }}
       px={3}
       py={4}
-      _hover={{
-        "& .copy-button-box": { display: "block" },
-        borderColor: "gray.600",
-      }}
+      position="relative"
+      borderWidth="thin"
       borderColor="gray.700"
       borderRadius="8px"
-      position="relative"
       transition="all 0.25s ease-in-out"
+      _hover={{
+        borderColor: "gray.600",
+        "& .copy-button-box": { display: "block" },
+      }}
     >
       <AceEditor
-        className="text-editor"
+        ref={editorRef}
+        mode="text"
+        theme={theme.jsonTheme}
+        fontSize="14px"
+        readOnly
         style={{
+          width: "100%",
           background: "transparent",
           color: "text.main",
           offset: 0,
-          width: "100%",
         }}
-        readOnly
-        theme={theme.jsonTheme}
-        value={text}
+        className="text-editor"
         wrapEnabled
-        editorProps={{ $blockScrolling: true }}
-        fontSize="14px"
-        mode="text"
         setOptions={{
-          indentedSoftWrap: false,
-          maxLines: Infinity,
-          printMargin: false,
-          showGutter: false,
           tabSize: 2,
           useWorker: false,
+          showGutter: false,
+          printMargin: false,
+          indentedSoftWrap: false,
+          maxLines: Infinity,
         }}
-        ref={editorRef}
+        value={text}
+        editorProps={{ $blockScrolling: true }}
       />
       {canCopy && (
         <Box
-          className="copy-button-box"
-          display="none"
-          right="10px"
           position="absolute"
           top="10px"
+          right="10px"
+          className="copy-button-box"
+          display="none"
         >
           <CopyButton value={text} />
         </Box>

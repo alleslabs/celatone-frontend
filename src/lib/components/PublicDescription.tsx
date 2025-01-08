@@ -8,54 +8,54 @@ import { ShowMoreButton } from "./button";
 
 interface PublicDescriptionProps {
   description: string;
-  icon?: ReactNode;
-  textLine: number;
   title: string;
+  textLine: number;
+  icon?: ReactNode;
 }
 
 export const PublicDescription = ({
   description,
-  icon,
-  textLine,
   title,
+  textLine,
+  icon,
 }: PublicDescriptionProps) => {
   const [showMore, setShowMore] = useState(false);
 
-  const [ref, { clampedText, key, noClamp }] = useClampText({
+  const [ref, { noClamp, clampedText, key }] = useClampText({
+    text: description,
     ellipsis: "...",
     lines: textLine,
-    text: description,
   });
 
   return (
     <Flex
-      bg="gray.900"
-      flex={1}
-      maxW="100%"
-      p={4}
-      borderRadius="8px"
       direction="column"
+      bg="gray.900"
+      maxW="100%"
+      borderRadius="8px"
+      p={4}
+      flex={1}
     >
       <Flex align="center" gap={1} h="32px">
         {icon}
-        <Text variant="body2" color="text.dark" fontWeight={500}>
+        <Text variant="body2" fontWeight={500} color="text.dark">
           {title}
         </Text>
       </Flex>
       <Text
-        key={key}
         variant="body2"
         whiteSpace="pre-wrap"
+        key={key}
         ref={ref as React.MutableRefObject<HTMLParagraphElement>}
       >
         <Linkify>{showMore ? description : clampedText}</Linkify>
       </Text>
       {!noClamp && (
         <ShowMoreButton
-          setToggleShowMore={() => setShowMore(!showMore)}
-          showLessText="View Less Description"
           showMoreText="View Full Description"
+          showLessText="View Less Description"
           toggleShowMore={showMore}
+          setToggleShowMore={() => setShowMore(!showMore)}
         />
       )}
     </Flex>

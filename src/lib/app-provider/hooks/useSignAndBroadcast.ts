@@ -35,14 +35,14 @@ const getTxResponse = async (rpcEndpoint: string, txHash: string) => {
     return result
       ? {
           code: result.code,
-          events: result.events,
-          gasUsed: result.gasUsed,
-          gasWanted: result.gasWanted,
           height: result.height,
-          msgResponses: result.msgResponses,
+          txIndex: result.txIndex,
           rawLog: result.rawLog,
           transactionHash: _txHash,
-          txIndex: result.txIndex,
+          events: result.events,
+          msgResponses: result.msgResponses,
+          gasUsed: result.gasUsed,
+          gasWanted: result.gasWanted,
         }
       : pollForTx(_txHash);
   };
@@ -61,18 +61,18 @@ const getTxResponse = async (rpcEndpoint: string, txHash: string) => {
   });
 };
 
+interface SignAndBroadcastParams {
+  address: BechAddr20;
+  messages: EncodeObject[];
+  fee: StdFee;
+}
+
 export type SignAndBroadcast = (
   params: SignAndBroadcastParams
 ) => Promise<DeliverTxResponse>;
 
-interface SignAndBroadcastParams {
-  address: BechAddr20;
-  fee: StdFee;
-  messages: EncodeObject[];
-}
-
 export const useSignAndBroadcast = () => {
-  const { chainId, walletProvider } = useCurrentChain();
+  const { walletProvider, chainId } = useCurrentChain();
   const {
     chainConfig: { rpc: rpcEndpoint },
   } = useCelatoneApp();
@@ -81,8 +81,8 @@ export const useSignAndBroadcast = () => {
   return useCallback(
     async ({
       address,
-      fee,
       messages,
+      fee,
     }: SignAndBroadcastParams): Promise<DeliverTxResponse> => {
       if (walletProvider.type === "initia-widget") {
         const { requestTx } = walletProvider.context;

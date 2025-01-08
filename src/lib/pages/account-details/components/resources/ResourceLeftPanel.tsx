@@ -44,17 +44,17 @@ export const ResourceLeftPanel = ({
     ) => {
       if (account === selectedAccount && resource === selectedGroupName) return;
       navigate({
+        pathname: `/accounts/[accountAddress]/[tab]`,
+        query: {
+          accountAddress: address,
+          tab: "resources",
+          account,
+          selected: resource,
+        },
+        replace: true,
         options: {
           shallow: true,
         },
-        pathname: `/accounts/[accountAddress]/[tab]`,
-        query: {
-          account,
-          accountAddress: address,
-          selected: resource,
-          tab: "resources",
-        },
-        replace: true,
       });
     },
     [selectedGroupName, selectedAccount, address, navigate]
@@ -83,27 +83,27 @@ export const ResourceLeftPanel = ({
 
   return (
     <Flex
-      mb={{ base: 4, md: 0 }}
+      direction="column"
       pb={{ base: 4, md: 0 }}
+      mb={{ base: 4, md: 0 }}
       borderBottom={{ base: "1px solid", md: "none" }}
       borderColor={{ base: "gray.700", md: "transparent" }}
-      direction="column"
     >
       <InputWithIcon
-        size="md"
-        value={keyword}
-        amptrackSection="resource-search-with-module-name"
-        onChange={(e) => setKeyword(e.target.value)}
         placeholder="Search with Module Name"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        size="md"
+        amptrackSection="resource-search-with-module-name"
       />
       <Accordion
-        width="full"
-        defaultIndex={Array.from(Array(filteredResourcesByOwner.length).keys())}
-        mt={4}
         allowMultiple
+        defaultIndex={Array.from(Array(filteredResourcesByOwner.length).keys())}
+        width="full"
+        mt={4}
       >
         {filteredResourcesByOwner.map((item) => (
-          <AccordionItem key={item.owner} mb={4}>
+          <AccordionItem mb={4} key={item.owner}>
             {({ isExpanded }) => (
               <>
                 <AccordionButton
@@ -116,7 +116,7 @@ export const ResourceLeftPanel = ({
                     });
                   }}
                 >
-                  <Flex p={4} w="full" justifyContent="space-between">
+                  <Flex p={4} justifyContent="space-between" w="full">
                     <Text variant="body1" fontWeight={600}>
                       {truncate(item.owner)}
                     </Text>
@@ -125,35 +125,35 @@ export const ResourceLeftPanel = ({
                 </AccordionButton>
                 <AccordionPanel>
                   {item.resources.length ? (
-                    <Flex gap={3} direction="column">
+                    <Flex direction="column" gap={3}>
                       {Object.values(item.resources).map((subitem) => (
                         <ResourceCard
                           key={subitem.displayName}
+                          name={subitem.group}
+                          amount={subitem.items.length}
                           isSelected={
                             selectedResources?.account === subitem.account &&
                             selectedResources?.group === subitem.group
                           }
-                          name={subitem.group}
-                          amount={subitem.items.length}
-                          hasBorder
                           onClick={() => {
                             track(AmpEvent.USE_SELECT_RESOURCE_GROUP, {
                               resourcesByModuleCount: subitem.items.length,
                             });
                             handleSelectResource(item.owner, subitem.group);
                           }}
+                          hasBorder
                         />
                       ))}
                     </Flex>
                   ) : (
                     <Text
-                      p={4}
-                      textAlign="center"
                       variant="body2"
-                      border="1px solid"
-                      borderColor="gray.700"
-                      borderRadius="8px"
                       color="text.dark"
+                      textAlign="center"
+                      p={4}
+                      border="1px solid"
+                      borderRadius="8px"
+                      borderColor="gray.700"
                     >
                       No matching resource found
                     </Text>

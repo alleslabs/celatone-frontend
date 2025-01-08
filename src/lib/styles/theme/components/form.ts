@@ -8,85 +8,67 @@ const { defineMultiStyleConfig } = createMultiStyleConfigHelpers(
 const errorMain = "error.main";
 
 const labelStyles = {
-  _active: {
-    color: "primary.dark",
-  },
+  top: 0,
+  left: 0,
+  zIndex: 1,
+  position: "absolute",
+  pointerEvents: "none",
+  mx: 3,
+  px: 1,
+  transformOrigin: "left top",
+  color: "text.dark",
+  fontWeight: "400",
   _disabled: {
     color: "text.disabled",
   },
-  color: "text.dark",
-  fontWeight: "400",
-  left: 0,
-  mx: 3,
-  pointerEvents: "none",
-  position: "absolute",
-  px: 1,
-  top: 0,
-  transformOrigin: "left top",
-  zIndex: 1,
+  _active: {
+    color: "primary.dark",
+  },
 };
 
 const labelTransform = {
-  lg: "scale(0.75) translateY(-28px)",
   md: "scale(0.75) translateY(-20px)",
+  lg: "scale(0.75) translateY(-28px)",
 };
 
-const getActiveLabelStyles = (size: "lg" | "md") => ({
+const getActiveLabelStyles = (size: "md" | "lg") => ({
   _focusWithin: {
     label: {
-      lineHeight: "1.2",
       transform: labelTransform[size],
+      lineHeight: "1.2",
     },
   },
   "input:not(:placeholder-shown) ~ label, .chakra-select__wrapper ~ label, textarea:not(:placeholder-shown) ~ label, .chakra-react-select--has-value ~ label":
     {
-      lineHeight: "1.2",
       transform: labelTransform[size],
+      lineHeight: "1.2",
     },
 });
 
 const subtextStyles = {
-  "&.chakra-form__error-message": {
-    color: errorMain,
-  },
+  ml: 3,
+  mt: 0,
+  fontSize: "12px",
+  color: "text.dark",
   _disabled: {
     color: "text.disabled",
   },
-  color: "text.dark",
-  fontSize: "12px",
-  ml: 3,
-  mt: 0,
+  "&.chakra-form__error-message": {
+    color: errorMain,
+  },
 };
 
 export const Form = defineMultiStyleConfig({
   baseStyle: {
     container: {
-      ".error-text": {
-        "&.chakra-form__error-message": {
-          color: errorMain,
-        },
-        fontSize: "12px",
-        mt: 1,
-      },
       label: {
         _invalid: { color: errorMain },
       },
-    },
-  },
-  sizes: {
-    lg: {
-      container: {
-        label: {
-          my: 2,
-          py: 2,
-        },
-      },
-    },
-    md: {
-      container: {
-        label: {
-          my: 1,
-          py: 1,
+      ".error-text": {
+        fontSize: "12px",
+        mt: 1,
+        "&.chakra-form__error-message": {
+          color: errorMain,
         },
       },
     },
@@ -94,25 +76,43 @@ export const Form = defineMultiStyleConfig({
   variants: {
     "fixed-floating": {
       container: {
-        "div.helper-text, .error-text": { ...subtextStyles },
         label: {
           ...labelStyles,
-          "&.lg-label": {
-            transform: labelTransform.lg,
-          },
+          lineHeight: "1.2",
           "&.md-label, &.textarea-label": {
             transform: labelTransform.md,
           },
-          lineHeight: "1.2",
+          "&.lg-label": {
+            transform: labelTransform.lg,
+          },
         },
+        "div.helper-text, .error-text": { ...subtextStyles },
       },
     },
     floating: {
       container: {
-        "&.lg-form": getActiveLabelStyles("lg"),
         "&.md-form, &.textarea-form": getActiveLabelStyles("md"),
-        "div.helper-text, .error-text": { ...subtextStyles },
+        "&.lg-form": getActiveLabelStyles("lg"),
         label: { ...labelStyles },
+        "div.helper-text, .error-text": { ...subtextStyles },
+      },
+    },
+  },
+  sizes: {
+    md: {
+      container: {
+        label: {
+          py: 1,
+          my: 1,
+        },
+      },
+    },
+    lg: {
+      container: {
+        label: {
+          py: 2,
+          my: 2,
+        },
       },
     },
   },

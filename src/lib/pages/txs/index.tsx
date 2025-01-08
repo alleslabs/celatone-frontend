@@ -24,8 +24,8 @@ const Txs = () => {
     <PageContainer>
       <CelatoneSeo pageName="Transactions" />
       <PageHeader
-        subtitle={`This page displays all ${evm.enabled ? "cosmos" : ""} transactions on this network sorted by recency`}
         title="Transactions"
+        subtitle={`This page displays all ${evm.enabled ? "cosmos" : ""} transactions on this network sorted by recency`}
         docHref="introduction/overview#recent-transactions"
       />
       <TierSwitcher

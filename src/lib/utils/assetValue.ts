@@ -51,30 +51,9 @@ export const coinToTokenWithValue = (
 
   return movePoolInfo
     ? {
-        amount: tokenAmount,
-        denom,
         isLPToken: true,
-        logo: movePoolInfo.logo,
-        poolInfo: {
-          coinA: {
-            amount: tokenAmount.times(movePoolInfo.coinA.amountAPerShare) as U<
-              Token<Big>
-            >,
-            denom: movePoolInfo.coinA.denom,
-            precision: movePoolInfo.coinA.precision,
-            symbol: movePoolInfo.coinA.symbol,
-          },
-          coinB: {
-            amount: tokenAmount.times(movePoolInfo.coinB.amountBPerShare) as U<
-              Token<Big>
-            >,
-            denom: movePoolInfo.coinB.denom,
-            precision: movePoolInfo.coinB.precision,
-            symbol: movePoolInfo.coinB.symbol,
-          },
-        },
-        precision: movePoolInfo.precision,
-        price: movePoolInfo.lpPricePerPShare,
+        denom,
+        amount: tokenAmount,
         symbol: `${getTokenLabel(
           movePoolInfo.coinA.denom,
           movePoolInfo.coinA.symbol
@@ -82,21 +61,42 @@ export const coinToTokenWithValue = (
           movePoolInfo.coinB.denom,
           movePoolInfo.coinB.symbol
         )}`,
+        logo: movePoolInfo.logo,
+        precision: movePoolInfo.precision,
+        price: movePoolInfo.lpPricePerPShare,
         value: movePoolInfo.lpPricePerPShare
           ? calculateAssetValue(
               toToken(tokenAmount, movePoolInfo.precision),
               movePoolInfo.lpPricePerPShare
             )
           : undefined,
+        poolInfo: {
+          coinA: {
+            amount: tokenAmount.times(movePoolInfo.coinA.amountAPerShare) as U<
+              Token<Big>
+            >,
+            precision: movePoolInfo.coinA.precision,
+            denom: movePoolInfo.coinA.denom,
+            symbol: movePoolInfo.coinA.symbol,
+          },
+          coinB: {
+            amount: tokenAmount.times(movePoolInfo.coinB.amountBPerShare) as U<
+              Token<Big>
+            >,
+            precision: movePoolInfo.coinB.precision,
+            denom: movePoolInfo.coinB.denom,
+            symbol: movePoolInfo.coinB.symbol,
+          },
+        },
       }
     : {
-        amount: tokenAmount,
-        denom,
         isLPToken: false,
+        denom,
+        amount: tokenAmount,
+        symbol: assetInfo?.symbol,
         logo: assetInfo?.logo as string,
         precision: assetInfo?.precision,
         price: assetInfo ? (big(assetInfo.price) as USD<Big>) : undefined,
-        symbol: assetInfo?.symbol,
         value: assetInfo
           ? calculateAssetValue(
               toToken(tokenAmount, assetInfo.precision),
@@ -118,13 +118,13 @@ export const addTokenWithValue = (
         value: oldToken.value?.add(token.value ?? 0) as USD<Big>,
       }
     : {
-        amount: big(0) as U<Token<Big>>,
-        denom: "",
         isLPToken: false,
+        denom: "",
+        amount: big(0) as U<Token<Big>>,
+        symbol: undefined,
         logo: undefined,
         precision: undefined,
         price: big(0) as USD<Big>,
-        symbol: undefined,
         value: big(0) as USD<Big>,
       };
 };

@@ -3,25 +3,25 @@ import { Flex } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
 type ActionPageContainerProps = {
-  boxProps?: BoxProps;
   children: ReactNode;
+  boxProps?: BoxProps;
   width?: number;
 };
 
 const ActionPageContainer = ({
-  boxProps,
   children,
+  boxProps,
   width = 572,
 }: ActionPageContainerProps) => (
   <Flex
-    align="center"
     as="main"
-    minH="inherit"
-    mx="auto"
-    pb={36}
-    pt={12}
-    w={width}
+    align="center"
     direction="column"
+    w={width}
+    mx="auto"
+    minH="inherit"
+    pt={12}
+    pb={36}
     {...boxProps}
   >
     {children}

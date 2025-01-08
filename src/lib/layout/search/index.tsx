@@ -45,17 +45,17 @@ export const SearchComponent = () => {
   const { isFullTier } = useTierConfig();
   const navigate = useInternalNavigate();
   const {
+    currentChainId,
     chainConfig: {
       features: {
-        evm: { enabled: isEvm },
         gov: { enabled: isGov },
-        move: { enabled: isMove },
-        nft: { enabled: isNft },
-        pool: { enabled: isPool },
         wasm: { enabled: isWasm },
+        move: { enabled: isMove },
+        evm: { enabled: isEvm },
+        pool: { enabled: isPool },
+        nft: { enabled: isNft },
       },
     },
-    currentChainId,
   } = useCelatoneApp();
 
   const boxRef = useRef<HTMLDivElement>(null);
@@ -64,7 +64,7 @@ export const SearchComponent = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [cursor, setCursor] = useState<number>();
 
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const onCloseWithClear = useCallback(() => {
     setKeyword("");
     onClose();
@@ -88,7 +88,7 @@ export const SearchComponent = () => {
     };
   }, [isMac, isOpen, onCloseWithClear, onOpen]);
 
-  const { isLoading, results } = useSearchHandler(keyword, () =>
+  const { results, isLoading } = useSearchHandler(keyword, () =>
     setIsTyping(false)
   );
 
@@ -126,8 +126,8 @@ export const SearchComponent = () => {
   const handleOnKeyDown = useCallback(
     (e: ReactKeyboardEvent<HTMLInputElement>) => {
       switch (e.key) {
-        case "ArrowDown":
-        case "ArrowUp": {
+        case "ArrowUp":
+        case "ArrowDown": {
           const lastIndex = results.length - 1;
           const nextCursor = getNextCursor(e.key, cursor, lastIndex);
           const listItem = document.getElementById(`item-${nextCursor}`);
@@ -154,8 +154,8 @@ export const SearchComponent = () => {
   );
 
   useOutsideClick({
-    handler: onCloseWithClear,
     ref: boxRef,
+    handler: onCloseWithClear,
   });
 
   useEaster(keyword);
@@ -164,31 +164,31 @@ export const SearchComponent = () => {
     <>
       {isMobile ? (
         <Button
-          minH="60px"
-          minW="60px"
-          size="sm"
           variant="ghost-gray"
-          borderRadius={0}
+          size="sm"
           onClick={onOpen}
+          minW="60px"
+          minH="60px"
+          borderRadius={0}
         >
           <CustomIcon name="search" boxSize={3} />
         </Button>
       ) : (
         <Flex
-          alignItems="center"
+          onClick={onOpen}
+          w="full"
           h="full"
           p={4}
-          w="full"
+          alignItems="center"
+          justifyContent="space-between"
+          cursor="pointer"
+          transition="all 0.25s ease-in-out"
           _hover={{
             background: "gray.800",
           }}
-          cursor="pointer"
-          justifyContent="space-between"
-          onClick={onOpen}
-          transition="all 0.25s ease-in-out"
         >
           <Flex gap={1}>
-            <CustomIcon name="search" boxSize={4} color="gray.600" />
+            <CustomIcon color="gray.600" name="search" boxSize={4} />
             <Text variant="body1" color="text.disabled">
               Search on {currentChainId}
             </Text>
@@ -201,87 +201,87 @@ export const SearchComponent = () => {
         </Flex>
       )}
       <Modal
-        isCentered
         isOpen={isOpen}
         onClose={onCloseWithClear}
+        isCentered
         returnFocusOnClose={false}
       >
         <ModalOverlay />
         <ModalContent
-          bg="gray.800"
-          h={{ base: "100%", md: "auto" }}
-          maxW="100vw"
           w={{ base: "100%", md: "800px" }}
+          h={{ base: "100%", md: "auto" }}
+          bg="gray.800"
+          maxW="100vw"
         >
           <ModalHeader
+            position="relative"
             p={0}
             borderBottom="1px solid"
             borderBottomColor="gray.700"
-            position="relative"
           >
-            <FormControl zIndex={3} ref={boxRef}>
+            <FormControl ref={boxRef} zIndex={3}>
               <Flex alignItems="center">
                 {isMobile && (
                   <Flex
-                    ml={3}
                     p={1}
-                    bgColor="gray.700"
                     borderRadius={8}
-                    cursor="pointer"
+                    bgColor="gray.700"
+                    ml={3}
                     onClick={onCloseWithClear}
+                    cursor="pointer"
                   >
                     <CustomIcon
                       name="chevron-left"
-                      boxSize={4}
                       color="text.dark"
+                      boxSize={4}
                     />
                   </Flex>
                 )}
                 <InputWithIcon
-                  style={{ border: "none", maxHeight: "54px" }}
-                  minW="200px"
-                  pl={10}
-                  pr={40}
-                  size="lg"
-                  value={keyword}
                   w="100%"
-                  autoComplete="off"
+                  minW="200px"
+                  size="lg"
+                  placeholder="Enter your keyword..."
+                  style={{ maxHeight: "54px", border: "none" }}
+                  pr={40}
+                  pl={10}
+                  value={keyword}
                   onChange={handleSearchChange}
                   onKeyDown={handleOnKeyDown}
-                  placeholder="Enter your keyword..."
+                  autoComplete="off"
                 />
               </Flex>
             </FormControl>
             <Tag
-              right={4}
-              size="sm"
               variant="primary-light"
+              size="sm"
               position="absolute"
+              right={4}
             >
               {currentChainId}
             </Tag>
           </ModalHeader>
           <ModalBody
-            alignItems="center"
-            minH={{ base: "80vh", md: "460px" }}
             px={3}
+            minH={{ base: "80vh", md: "460px" }}
             justifyContent="center"
+            alignItems="center"
           >
             {keyword.length > 0 ? (
               <>
                 {isLoading || isTyping ? (
                   <Flex
-                    alignItems="center"
-                    gap={3}
-                    minH="360px"
                     py={5}
+                    gap={3}
                     direction="column"
                     justifyContent="center"
+                    alignItems="center"
+                    minH="360px"
                   >
-                    <Spinner size="sm" color="gray.600" />
+                    <Spinner color="gray.600" size="sm" />
                     <Text
-                      variant="body2"
                       color="text.disabled"
+                      variant="body2"
                       fontWeight={500}
                     >
                       Looking for results ...
@@ -290,16 +290,16 @@ export const SearchComponent = () => {
                 ) : (
                   <List>
                     {results.length > 0 && (
-                      <Text mb={3} variant="body2" color="text.dark">
+                      <Text variant="body2" color="text.dark" mb={3}>
                         {results.length} Matched{" "}
                         {plur("result", results.length)}...
                       </Text>
                     )}
                     <SearchResults
-                      handleSelectResult={handleSelectResult}
                       results={results}
                       cursor={cursor}
                       setCursor={setCursor}
+                      handleSelectResult={handleSelectResult}
                     />
                   </List>
                 )}
@@ -307,13 +307,13 @@ export const SearchComponent = () => {
             ) : (
               <Flex justifyContent="center">
                 <SearchZeroState
-                  isEvm={isEvm}
-                  isFullTier={isFullTier}
-                  isNft={isNft}
-                  isWasm={isWasm}
-                  isGov={isGov}
-                  isMove={isMove}
                   isPool={isPool}
+                  isWasm={isWasm}
+                  isMove={isMove}
+                  isEvm={isEvm}
+                  isGov={isGov}
+                  isNft={isNft}
+                  isFullTier={isFullTier}
                 />
               </Flex>
             )}

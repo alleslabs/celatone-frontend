@@ -19,19 +19,19 @@ import {
 } from "lib/utils";
 
 interface PoolAssetsTableRowProps {
-  liquidityIndex: number;
   pool: PoolData;
-  templateColumns: GridProps["templateColumns"];
   token: TokenWithValue;
+  templateColumns: GridProps["templateColumns"];
   totalLiquidity: USD<Big>;
+  liquidityIndex: number;
 }
 
 export const PoolAssetsTableRow = ({
-  liquidityIndex,
-  pool: { isSupported, scalingFactors, type: poolType, weight },
-  templateColumns,
+  pool: { type: poolType, weight, scalingFactors, isSupported },
   token,
+  templateColumns,
   totalLiquidity,
+  liquidityIndex,
 }: PoolAssetsTableRowProps) => {
   const allocation = token.value
     ? formatRatio(divWithDefault(token.value, totalLiquidity, 0) as Ratio<Big>)
@@ -58,20 +58,20 @@ export const PoolAssetsTableRow = ({
           />
           <Flex flexDirection="column">
             <Flex align="center" gap={1}>
-              <Text variant="body2" color="text.main" fontWeight={600}>
+              <Text variant="body2" fontWeight={600} color="text.main">
                 {getTokenLabel(token.denom, token.symbol)}
               </Text>
-              <Flex className="widget" align="center" display="none" gap={1}>
+              <Flex className="widget" display="none" align="center" gap={1}>
                 <TooltipInfo
-                  className="copier"
                   label={`Token ID: ${token.denom}`}
+                  className="copier"
                 />
                 <Copier
-                  ml={0}
                   type="token_denom"
                   value={token.denom}
-                  amptrackSection="pool_assets"
                   copyLabel="Token ID Copied!"
+                  ml={0}
+                  amptrackSection="pool_assets"
                 />
               </Flex>
             </Flex>
@@ -92,8 +92,8 @@ export const PoolAssetsTableRow = ({
         {isSupported && allocation}
       </TableRow>
       <TableRow justifyContent="flex-end">
-        <Flex textAlign="end" direction="column">
-          <Text variant="body2" color="text.main" fontWeight={700}>
+        <Flex direction="column" textAlign="end">
+          <Text variant="body2" fontWeight={700} color="text.main">
             {formatUTokenWithPrecision(
               token.amount,
               token.precision ?? 0,

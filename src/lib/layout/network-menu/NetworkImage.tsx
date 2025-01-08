@@ -17,13 +17,13 @@ export const NetworkImage = ({ chainId }: NetworkImageProps) => {
 
   return (
     <Image
+      objectFit="cover"
+      w={6}
+      h={6}
+      borderRadius="full"
+      src={image}
       fallbackSrc={fallbackImage}
       fallbackStrategy="onError"
-      h={6}
-      src={image}
-      w={6}
-      borderRadius="full"
-      objectFit="cover"
     />
   );
 };

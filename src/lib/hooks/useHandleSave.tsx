@@ -6,38 +6,38 @@ import type { BechAddr, BechAddr32, LVPair, Option } from "lib/types";
 
 import { useFormatAddresses } from "./useFormatAddresses";
 
-interface UseHandleAccountSaveProps {
-  actions?: () => void;
-  address: BechAddr;
-  description?: string;
-  name: string;
+interface UseHandleContractSaveProps {
   title: string;
+  contractAddress: BechAddr32;
+  label: string;
+  codeId: Option<number>;
+  instantiator: Option<BechAddr>;
+  name?: string;
+  description?: string;
+  tags?: string[];
+  lists?: LVPair[];
+  actions?: () => void;
 }
 
-interface UseHandleContractSaveProps {
-  actions?: () => void;
-  codeId: Option<number>;
-  contractAddress: BechAddr32;
-  description?: string;
-  instantiator: Option<BechAddr>;
-  label: string;
-  lists?: LVPair[];
-  name?: string;
-  tags?: string[];
+interface UseHandleAccountSaveProps {
   title: string;
+  address: BechAddr;
+  name: string;
+  description?: string;
+  actions?: () => void;
 }
 
 export const useHandleContractSave = ({
-  actions,
-  codeId,
-  contractAddress,
-  description,
-  instantiator,
-  label,
-  lists,
-  name,
-  tags,
   title,
+  contractAddress,
+  label,
+  codeId,
+  instantiator,
+  name,
+  description,
+  tags,
+  lists,
+  actions,
 }: UseHandleContractSaveProps) => {
   const toast = useToast();
   const { updateContractLocalInfo } = useContractStore();
@@ -57,22 +57,22 @@ export const useHandleContractSave = ({
     actions?.();
 
     toast({
+      title,
+      status: "success",
       duration: 5000,
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       isClosable: false,
       position: "bottom-right",
-      status: "success",
-      title,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   };
 };
 
 export const useHandleAccountSave = ({
-  actions,
-  address,
-  description,
-  name,
   title,
+  address,
+  name,
+  description,
+  actions,
 }: UseHandleAccountSaveProps) => {
   const toast = useToast();
   const { updateAccountLocalInfo } = useAccountStore();
@@ -85,12 +85,12 @@ export const useHandleAccountSave = ({
     actions?.();
 
     toast({
+      title,
+      status: "success",
       duration: 5000,
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       isClosable: false,
       position: "bottom-right",
-      status: "success",
-      title,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   };
 };

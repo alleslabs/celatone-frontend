@@ -42,8 +42,8 @@ const SubHeader = () => {
           nftConfig.enabled,
           poolConfig.enabled
         );
-      case "mesa":
       case "sequencer":
+      case "mesa":
         return getSubHeaderSequencer(govConfig.enabled, wasmConfig.enabled);
       case "lite":
       default:
@@ -59,19 +59,24 @@ const SubHeader = () => {
   ]);
 
   return (
-    <Flex h="full" px={6}>
+    <Flex px={6} h="full">
       {subHeaderMenu.map((item) => (
         <AppLink
+          href={item.slug}
           key={item.slug}
           onClick={() => track(AmpEvent.USE_TOPBAR, { tab: item.name })}
-          href={item.slug}
         >
           <Flex
-            borderBottomWidth={2}
             alignItems="center"
+            px={4}
             gap={2}
             h="full"
-            px={4}
+            borderBottomWidth={2}
+            borderColor={
+              isCurrentPage(item.slug) ? ACTIVE_COLOR : "transparent"
+            }
+            transition="all 0.25s ease-in-out"
+            _hover={{ borderColor: ACTIVE_COLOR }}
             sx={{
               _hover: {
                 "> svg, > p": {
@@ -82,21 +87,16 @@ const SubHeader = () => {
                 borderColor: ACTIVE_COLOR,
               },
             }}
-            _hover={{ borderColor: ACTIVE_COLOR }}
-            borderColor={
-              isCurrentPage(item.slug) ? ACTIVE_COLOR : "transparent"
-            }
-            transition="all 0.25s ease-in-out"
           >
             <CustomIcon
-              name={item.icon}
               boxSize={3}
+              name={item.icon}
               color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "gray.600"}
             />
             <Text
               variant="body2"
-              color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "text.dark"}
               fontWeight={700}
+              color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "text.dark"}
             >
               {item.name}
             </Text>

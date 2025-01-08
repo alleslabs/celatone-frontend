@@ -51,14 +51,14 @@ export const SupportedSection = ({
 }: SupportedSectionProp) => {
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
 
-  const { setValue, watch } = useForm<PoolFilterState>({
+  const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
-      isSuperfluidOnly: false,
-      keyword: "",
       poolTypeValue: PoolType.ALL,
+      keyword: "",
+      isSuperfluidOnly: false,
     },
   });
-  const { isSuperfluidOnly, keyword, poolTypeValue } = watch();
+  const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
   const debouncedKeyword = useDebounce(keyword);
   const search = useMemo(
     () =>
@@ -77,22 +77,22 @@ export const SupportedSection = ({
   const [toggle, setToggle] = useState("percent-value");
 
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
-    setCurrentPage,
-    setPageSize,
     setTotalData,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    offset,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
 
-  const { isLoading, pools, totalCount } = useDerivedPools(
+  const { pools, totalCount, isLoading } = useDerivedPools(
     pageSize,
     offset,
     true,
@@ -106,16 +106,16 @@ export const SupportedSection = ({
   return (
     <>
       <Flex alignItems="center" mb={12}>
-        <Flex gap={4} grow={2}>
+        <Flex grow={2} gap={4}>
           <InputWithIcon
-            size={{ base: "md", md: "lg" }}
+            placeholder="Search with Pool ID, Symbol or Token ID"
             value={keyword}
-            amptrackSection="supported-pool-list-search"
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setCurrentPage(1);
               setValue("keyword", e.target.value);
             }}
-            placeholder="Search with Pool ID, Symbol or Token ID"
+            size={{ base: "md", md: "lg" }}
+            amptrackSection="supported-pool-list-search"
           />
           <FilterByPoolType
             initialSelected="All"
@@ -126,10 +126,10 @@ export const SupportedSection = ({
             }}
           />
           <Flex minW="250px">
-            <FormControl alignItems="center" display="flex" gap={2}>
+            <FormControl display="flex" alignItems="center" gap={2}>
               <Switch
-                defaultChecked={isSuperfluidOnly}
                 size="md"
+                defaultChecked={isSuperfluidOnly}
                 onChange={(e) => {
                   const isChecked = e.target.checked;
                   setCurrentPage(1);
@@ -138,7 +138,7 @@ export const SupportedSection = ({
                 }}
               />
               <FormLabel mb={0} cursor="pointer">
-                <Text alignItems="center" display="flex" gap={2}>
+                <Text display="flex" gap={2} alignItems="center">
                   Show only
                   <SuperfluidLabel />
                 </Text>
@@ -148,7 +148,7 @@ export const SupportedSection = ({
         </Flex>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
-        <Flex alignItems="center" gap={2}>
+        <Flex gap={2} alignItems="center">
           <Heading as="h6" variant="h6">
             Pools
           </Heading>
@@ -159,14 +159,14 @@ export const SupportedSection = ({
           )}
         </Flex>
         <Flex gap={4}>
-          <Flex alignItems="center" gap={2}>
+          <Flex gap={2} alignItems="center">
             <Text variant="body2" color="text.dark">
               Sort Pool ID:
             </Text>
             <Button
-              pr={1}
-              size="sm"
               variant="outline-gray"
+              size="sm"
+              pr={1}
               onClick={() => {
                 const isDesc = !showNewest;
                 trackUseSort("newest", isDesc ? "descending" : "ascending");
@@ -180,7 +180,7 @@ export const SupportedSection = ({
               />
             </Button>
           </Flex>
-          <Flex alignItems="center" gap={2}>
+          <Flex gap={2} alignItems="center">
             <Text variant="body2" color="text.dark">
               View asset allocation in:
             </Text>
@@ -195,21 +195,21 @@ export const SupportedSection = ({
           </Flex>
         </Flex>
       </Flex>
-      <SupportedPoolList isLoading={isLoading} mode={toggle} pools={pools} />
+      <SupportedPoolList pools={pools} isLoading={isLoading} mode={toggle} />
       {!!totalCount && totalCount > 10 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={totalCount}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
           }}
-          scrollComponentId={scrollComponentId}
-          totalData={totalCount}
         />
       )}
     </>

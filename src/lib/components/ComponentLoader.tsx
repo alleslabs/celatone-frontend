@@ -2,9 +2,9 @@ import { Spinner } from "@chakra-ui/react";
 import type { PropsWithChildren } from "react";
 
 export const ComponentLoader = ({
-  children,
   isLoading,
+  children,
 }: PropsWithChildren<{ isLoading: boolean }>) => {
-  if (isLoading) return <Spinner mx="auto" size="lg" />;
+  if (isLoading) return <Spinner size="lg" mx="auto" />;
   return <>{children}</>;
 };

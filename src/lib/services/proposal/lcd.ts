@@ -31,14 +31,14 @@ export const getProposalParamsLcd = (lcdEndpoint: string) =>
 export const getProposalsLcd = async (
   endpoint: string,
   paginationKey: Option<string>,
-  status?: Omit<ProposalStatus, "CANCELLED" | "DEPOSIT_FAILED">
+  status?: Omit<ProposalStatus, "DEPOSIT_FAILED" | "CANCELLED">
 ): Promise<ProposalsResponseLcd> =>
   axios
     .get(`${endpoint}/cosmos/gov/v1/proposals`, {
       params: {
-        "pagination.key": paginationKey,
         "pagination.limit": 10,
         "pagination.reverse": true,
+        "pagination.key": paginationKey,
         ...(status && {
           proposal_status: `PROPOSAL_STATUS_${status.replace(/([a-z])([A-Z]+)/g, "$1_$2").toUpperCase()}`,
         }),

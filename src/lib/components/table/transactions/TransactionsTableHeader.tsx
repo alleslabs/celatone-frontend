@@ -4,19 +4,19 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "../tableComponents";
 
 export const TransactionsTableHeader = ({
-  showAction,
-  showRelations,
-  showSuccess,
-  showTimestamp,
   templateColumns,
+  showSuccess,
+  showRelations,
+  showTimestamp,
+  showAction,
 }: {
-  showAction: boolean;
-  showRelations: boolean;
-  showSuccess: boolean;
-  showTimestamp: boolean;
   templateColumns: GridProps["templateColumns"];
+  showSuccess: boolean;
+  showRelations: boolean;
+  showTimestamp: boolean;
+  showAction: boolean;
 }) => (
-  <Grid minW="min-content" templateColumns={templateColumns}>
+  <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader />
     <TableHeader>Transaction Hash</TableHeader>
     {showSuccess && <TableHeader />}

@@ -10,24 +10,24 @@ import { ValidatorsTable } from "./validators-table";
 
 interface ValidatorsBodyLiteProps {
   isActive: boolean;
-  isDesc: boolean;
-  order: ValidatorOrder;
-  scrollComponentId: string;
-  search: string;
   setCounts: (counts: Option<ValidatorCounts>) => void;
-  setIsDesc: (newIsDesc: boolean) => void;
+  order: ValidatorOrder;
   setOrder: (newOrder: ValidatorOrder) => void;
+  isDesc: boolean;
+  setIsDesc: (newIsDesc: boolean) => void;
+  search: string;
+  scrollComponentId: string;
 }
 
 export const ValidatorsBodyLite = ({
   isActive,
-  isDesc,
-  order,
-  scrollComponentId,
-  search,
   setCounts,
-  setIsDesc,
+  order,
   setOrder,
+  isDesc,
+  setIsDesc,
+  search,
+  scrollComponentId,
 }: ValidatorsBodyLiteProps) => {
   const { data, isFetching: isLoading } = useValidatorsLcd();
   const indexedData = useMemo(() => indexValidatorsLcd(data), [data]);
@@ -44,13 +44,13 @@ export const ValidatorsBodyLite = ({
       .sort(compareValidator(order, isDesc));
     return {
       items: filteredList,
+      total: filteredList.length,
       metadata: {
         ...indexedData.metadata,
         minCommissionRate: isActive
           ? indexedData.minActiveCommissionRate
           : indexedData.minInactiveCommissionRate,
       },
-      total: filteredList.length,
     };
   }, [indexedData, isActive, isDesc, order, search]);
 
@@ -68,15 +68,15 @@ export const ValidatorsBodyLite = ({
   return (
     <ValidatorsTable
       data={filteredData}
-      isActive={isActive}
-      isDesc={isDesc}
-      isSearching={!!search}
-      setIsDesc={setIsDesc}
-      setOrder={setOrder}
       isLoading={isLoading}
+      isActive={isActive}
       order={order}
+      setOrder={setOrder}
+      isDesc={isDesc}
+      setIsDesc={setIsDesc}
       scrollComponentId={scrollComponentId}
       showUptime={false}
+      isSearching={!!search}
     />
   );
 };

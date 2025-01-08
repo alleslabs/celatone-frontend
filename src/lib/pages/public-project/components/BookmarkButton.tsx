@@ -11,47 +11,47 @@ import type { Option, PublicDetail } from "lib/types";
 
 interface BookmarkButtonProps {
   details: Option<PublicDetail>;
-  hasText?: boolean;
   slug: string;
+  hasText?: boolean;
 }
 
 const buttonTextProps: CSSProperties = {
-  borderRadius: "8px",
-  height: "auto",
   minWidth: "auto",
+  height: "auto",
+  borderRadius: "8px",
 };
 
 const buttonIconProps: CSSProperties = {
-  borderRadius: "full",
-  height: "fit-content",
-  minWidth: "fit-content",
   padding: "2px",
+  minWidth: "fit-content",
+  height: "fit-content",
+  borderRadius: "full",
 };
 
 const toastIcon = <CustomIcon name="check-circle-solid" color="success.main" />;
 
 interface StyledButtonProps {
-  action: (e: MouseEvent<HTMLButtonElement>) => void;
-  actionText: string;
   hasText: boolean;
+  actionText: string;
   icon: IconKeys;
+  action: (e: MouseEvent<HTMLButtonElement>) => void;
   variant: string;
 }
 
 const StyledButton = ({
-  action,
-  actionText,
   hasText,
+  actionText,
   icon,
+  action,
   variant,
 }: StyledButtonProps) => (
   <Button
+    variant={hasText ? variant : "ghost-gray"}
     style={hasText ? buttonTextProps : buttonIconProps}
     gap={2}
+    onClick={action}
     padding={{ base: "4px", md: "6px 16px" }}
     size={{ base: "xs", md: "md" }}
-    variant={hasText ? variant : "ghost-gray"}
-    onClick={action}
   >
     <CustomIcon
       name={icon}
@@ -66,23 +66,23 @@ const StyledButton = ({
 );
 
 export const BookmarkButton = observer(
-  ({ details, hasText = true, slug }: BookmarkButtonProps) => {
-    const { isPublicProjectSaved, removePublicProject, savePublicProject } =
+  ({ details, slug, hasText = true }: BookmarkButtonProps) => {
+    const { isPublicProjectSaved, savePublicProject, removePublicProject } =
       usePublicProjectStore();
     const toast = useToast({
+      status: "success",
       duration: 5000,
-      icon: toastIcon,
       isClosable: false,
       position: "bottom-right",
-      status: "success",
+      icon: toastIcon,
     });
 
     const handleSave = useCallback(() => {
       track(AmpEvent.PUBLIC_SAVE);
       savePublicProject({
-        logo: details?.logo || "",
         name: details?.name || "",
         slug,
+        logo: details?.logo || "",
       });
       toast({
         title: `Bookmarked \u2018${details?.name}\u2019 successfully`,
@@ -101,27 +101,27 @@ export const BookmarkButton = observer(
       <Flex alignItems="center">
         {isPublicProjectSaved(slug) ? (
           <StyledButton
-            hasText={hasText}
             variant="outline-primary"
+            hasText={hasText}
+            icon="bookmark-solid"
+            actionText="Bookmarked"
             action={(e) => {
               e.stopPropagation();
               handleRemove();
             }}
-            actionText="Bookmarked"
-            icon="bookmark-solid"
           />
         ) : (
           <StyledButton
-            hasText={hasText}
             variant="outline-gray"
+            hasText={hasText}
+            icon="bookmark"
+            actionText="Bookmark Project"
             action={(e) => {
               if (details) {
                 e.stopPropagation();
                 handleSave();
               }
             }}
-            actionText="Bookmark Project"
-            icon="bookmark"
           />
         )}
       </Flex>

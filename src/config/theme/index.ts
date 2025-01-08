@@ -6,10 +6,10 @@ import { SEI_THEME } from "./sei";
 
 export const getTheme = (chain: string) => {
   switch (chain) {
-    case "initia":
-      return INITIA_THEME;
     case "sei":
       return SEI_THEME;
+    case "initia":
+      return INITIA_THEME;
     default:
       return DEFAULT_THEME;
   }

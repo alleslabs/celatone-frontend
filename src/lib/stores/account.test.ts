@@ -25,8 +25,8 @@ describe("accountStore", () => {
 
     expect(accountStore.getAccountLocalInfo(address)).toEqual({
       address: "address",
-      description: "description",
       name: "name",
+      description: "description",
     });
   });
 
@@ -41,8 +41,8 @@ describe("accountStore", () => {
     expect(accountStore.getSavedAccounts()).toEqual([
       {
         address: "address",
-        description: "description",
         name: "name",
+        description: "description",
       },
     ]);
   });

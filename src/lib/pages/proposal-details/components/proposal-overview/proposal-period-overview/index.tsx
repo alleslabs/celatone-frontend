@@ -11,12 +11,12 @@ export const ProposalPeriodOverview = ({
   ...props
 }: ProposalOverviewProps) => (
   <div>
-    <Heading as="h6" mb={4} variant="h6">
+    <Heading as="h6" variant="h6" mb={4}>
       Proposal Period
     </Heading>
-    <ProposalStepper isOverview step={1} proposalData={proposalData} />
+    <ProposalStepper step={1} proposalData={proposalData} isOverview />
     <DepositOverview proposalData={proposalData} {...props} />
-    <ProposalStepper isOverview step={2} proposalData={proposalData} />
+    <ProposalStepper step={2} proposalData={proposalData} isOverview />
     <VotingOverview proposalData={proposalData} {...props} />
   </div>
 );

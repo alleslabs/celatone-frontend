@@ -14,9 +14,9 @@ import { TextReadOnly } from "lib/components/json/TextReadOnly";
 
 const StyledCustomTab = chakra(CustomTab, {
   baseStyle: {
-    _selected: { bgColor: "gray.800", color: "white" },
     border: "unset",
     borderRadius: "4px",
+    _selected: { bgColor: "gray.800", color: "white" },
     width: "256px",
   },
 });
@@ -39,11 +39,11 @@ export const EvmContractDetailsBytecode = ({
     </Stack>
   ) : (
     <Tabs
+      variant="unstyled"
+      orientation="vertical"
       index={0}
       isLazy
-      variant="unstyled"
       lazyBehavior="keepMounted"
-      orientation="vertical"
     >
       <TabList id="1">
         <StyledCustomTab>Bytecode</StyledCustomTab>

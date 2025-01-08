@@ -12,12 +12,12 @@ import { useLocalChainConfigStore, useNetworkStore } from "lib/providers/store";
 
 interface NetworkCardCtaProps {
   chainId: string;
-  isDraggable?: boolean;
   isSelected: boolean;
+  isDraggable?: boolean;
 }
 
 export const NetworkCardCta = observer(
-  ({ chainId, isDraggable, isSelected }: NetworkCardCtaProps) => {
+  ({ chainId, isSelected, isDraggable }: NetworkCardCtaProps) => {
     const navigate = useInternalNavigate();
     const { chainConfigs } = useChainConfigs();
     const { isLocalChainIdExist } = useLocalChainConfigStore();
@@ -25,11 +25,11 @@ export const NetworkCardCta = observer(
     const isEditable = isLocalChainIdExist(chainId);
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
     const toast = useToast({
+      status: "success",
       duration: 5000,
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       isClosable: false,
       position: "bottom-right",
-      status: "success",
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
 
     const handleSave = useCallback(
@@ -59,22 +59,22 @@ export const NetworkCardCta = observer(
     };
 
     const pinIconStyles = {
+      cursor: "pointer",
+      className: "icon-container",
+      align: "center",
+      padding: 1,
       _hover: isMobile
         ? undefined
         : {
             background: isSelected ? "gray.800" : "gray.900",
             borderRadius: 4,
           },
-      align: "center",
-      className: "icon-container",
-      cursor: "pointer",
-      padding: 1,
     };
 
     return (
       <Flex className="icon-wrapper" gap={2} zIndex={1}>
         {isDraggable && (
-          <Flex className="icon-container" align="center" {...opacityStyle}>
+          <Flex align="center" className="icon-container" {...opacityStyle}>
             <CustomIcon name="drag" color="gray.600" />
           </Flex>
         )}
@@ -86,8 +86,8 @@ export const NetworkCardCta = observer(
           <Flex
             {...pinIconStyles}
             {...opacityStyle}
-            onClick={handleSave}
             transition="opacity 0.25s ease-in-out"
+            onClick={handleSave}
           >
             <CustomIcon name="pin" />
           </Flex>
@@ -104,7 +104,7 @@ export const NetworkCardCta = observer(
               })
             }
           >
-            <CustomIcon name="settings" boxSize={6} color="gray.600" />
+            <CustomIcon name="settings" color="gray.600" boxSize={6} />
           </Flex>
         )}
       </Flex>

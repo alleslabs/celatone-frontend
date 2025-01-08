@@ -34,7 +34,7 @@ const TEMPLATE_COLUMNS =
   "max(100px) minmax(250px, 1fr) minmax(200px, 1fr) max(100px) max(160px) 150px 180px";
 
 const CodeTableHeader = () => (
-  <Grid minW="min-content" templateColumns={TEMPLATE_COLUMNS}>
+  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
     <TableHeader>Code ID</TableHeader>
     <TableHeader>Code Name</TableHeader>
     <TableHeader>CW2 Info</TableHeader>
@@ -46,13 +46,13 @@ const CodeTableHeader = () => (
 );
 
 const ContentRender = ({
-  isMobile,
   publicCodes,
   wasmVerifyInfos,
+  isMobile,
 }: {
-  isMobile: boolean;
   publicCodes: PublicCodeInfo[];
   wasmVerifyInfos: Option<WasmVerifyInfosResponse>;
+  isMobile: boolean;
 }) =>
   isMobile ? (
     <MobileTableContainer>
@@ -102,13 +102,13 @@ export const PublicProjectCodeTable = observer(
       (code) => ({
         localInfo: {
           contractCount: code.contractCount,
+          instantiatePermission: code.instantiatePermission,
+          permissionAddresses: code.permissionAddresses,
+          id: code.id,
+          uploader: code.uploader,
           cw2Contract: code.cw2Contract,
           cw2Version: code.cw2Version,
-          id: code.id,
-          instantiatePermission: code.instantiatePermission,
           isSaved: isCodeIdSaved(code.id),
-          permissionAddresses: code.permissionAddresses,
-          uploader: code.uploader,
           ...getCodeLocalInfo(code.id),
         },
         publicInfo: {
@@ -118,32 +118,32 @@ export const PublicProjectCodeTable = observer(
     );
 
     return (
-      <Box mb={4} mt={{ base: 8, md: 12 }}>
+      <Box mt={{ base: 8, md: 12 }} mb={4}>
         <TableTitle title="Codes" count={codes.length} />
         {!onViewMore && (
           <InputWithIcon
-            my={2}
-            size={{ base: "md", md: "lg" }}
-            value={searchKeyword}
-            amptrackSection="public-project-code-search"
-            onChange={(e) => setSearchKeyword(e.target.value)}
             placeholder="Search with Code ID or Code Name"
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            size={{ base: "md", md: "lg" }}
+            my={2}
+            amptrackSection="public-project-code-search"
           />
         )}
         {publicCodes.length ? (
           <ContentRender
-            isMobile={isMobile}
             publicCodes={publicCodes}
+            isMobile={isMobile}
             wasmVerifyInfos={wasmVerifyInfos}
           />
         ) : (
           <EmptyState
-            imageVariant={codes.length ? "not-found" : "empty"}
             message={
               codes.length
                 ? "No matching codes found for this project. Make sure you are searching with Code ID or Code Name"
                 : "There are currently no codes related to this project."
             }
+            imageVariant={codes.length ? "not-found" : "empty"}
             withBorder
           />
         )}

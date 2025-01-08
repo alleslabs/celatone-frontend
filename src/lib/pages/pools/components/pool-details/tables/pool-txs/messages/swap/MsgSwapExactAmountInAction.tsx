@@ -7,15 +7,15 @@ import { coinToTokenWithValue } from "lib/utils";
 import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
 
 interface MsgSwapExactAmountInActionProps {
-  ampCopierSection?: string;
-  assetInfos: Option<AssetInfos>;
   msg: MsgSwapExactAmountInDetails;
+  assetInfos: Option<AssetInfos>;
+  ampCopierSection?: string;
 }
 
 export const MsgSwapExactAmountInAction = ({
-  ampCopierSection,
-  assetInfos,
   msg,
+  assetInfos,
+  ampCopierSection,
 }: MsgSwapExactAmountInActionProps) => {
   const tokenOutDenom = msg.routes[msg.routes.length - 1]?.tokenOutDenom ?? "";
   const inToken = coinToTokenWithValue(
@@ -29,19 +29,19 @@ export const MsgSwapExactAmountInAction = ({
     assetInfos
   );
   return (
-    <Flex alignItems="center" flexWrap="wrap" gap={1}>
+    <Flex gap={1} alignItems="center" flexWrap="wrap">
       Swap
       <MsgToken
-        ampCopierSection={ampCopierSection}
-        fontWeight={700}
         token={inToken}
+        fontWeight={700}
+        ampCopierSection={ampCopierSection}
       />
       <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
       at least
       <MsgToken
-        ampCopierSection={ampCopierSection}
-        fontWeight={400}
         token={outToken}
+        fontWeight={400}
+        ampCopierSection={ampCopierSection}
       />
     </Flex>
   );

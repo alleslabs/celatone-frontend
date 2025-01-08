@@ -8,25 +8,25 @@ import type { AssetInfos, Option } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
 
 interface PoolLPCardProps {
-  ampCopierSection?: string;
+  txHash?: string;
+  msgIndex: number;
+  poolId: string;
+  msgShareAmount?: string;
   assetInfos: Option<AssetInfos>;
   isJoin: boolean;
   isOpened: boolean;
-  msgIndex: number;
-  msgShareAmount?: string;
-  poolId: string;
-  txHash?: string;
+  ampCopierSection?: string;
 }
 
 export const PoolLPCard = ({
-  ampCopierSection,
+  txHash,
+  msgIndex,
+  poolId,
+  msgShareAmount,
   assetInfos,
   isJoin,
   isOpened,
-  msgIndex,
-  msgShareAmount,
-  poolId,
-  txHash,
+  ampCopierSection,
 }: PoolLPCardProps) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (txHash && isLoading) return <Loading withBorder={false} />;
@@ -52,22 +52,22 @@ export const PoolLPCard = ({
   return (
     <Flex
       className="pool-msg-detail-container"
+      direction="column"
       gap={2}
       p={4}
-      bgColor="gray.900"
       border="1px solid"
       borderColor="transparent"
       borderRadius="8px"
-      direction="column"
+      bgColor="gray.900"
     >
       <PoolAssetCard
+        poolId={Number(poolId)}
+        description={isJoin ? "Provided to" : "Removed from"}
         assetText={isJoin ? "Received" : "Burn"}
+        poolToken={poolToken}
+        assetInfos={assetInfos}
         isOpened={isOpened}
         ampCopierSection={ampCopierSection}
-        assetInfos={assetInfos}
-        description={isJoin ? "Provided to" : "Removed from"}
-        poolId={Number(poolId)}
-        poolToken={poolToken}
       />
     </Flex>
   );

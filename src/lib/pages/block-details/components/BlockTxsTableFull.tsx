@@ -12,18 +12,18 @@ interface BlockTxsTableProps {
 
 export const BlockTxsTableFull = ({ height }: BlockTxsTableProps) => {
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
-    setCurrentPage,
-    setPageSize,
     setTotalData,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    offset,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
   const { data, isLoading } = useTxsByBlockHeight(height, pageSize, offset, {
@@ -34,6 +34,8 @@ export const BlockTxsTableFull = ({ height }: BlockTxsTableProps) => {
     <>
       <TableTitle title="Transactions" count={data?.total} />
       <TransactionsTable
+        transactions={data?.items}
+        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant="empty"
@@ -41,26 +43,24 @@ export const BlockTxsTableFull = ({ height }: BlockTxsTableProps) => {
             withBorder
           />
         }
-        isLoading={isLoading}
-        showRelations={false}
         showSuccess
+        showRelations={false}
         showTimestamp={false}
-        transactions={data?.items}
       />
       {data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={data.total}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
           }}
-          scrollComponentId={scrollComponentId}
-          totalData={data.total}
         />
       )}
     </>

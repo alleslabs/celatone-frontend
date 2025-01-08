@@ -38,133 +38,133 @@ export const composeMsg = (msgType: MsgType, msg: TxMessage): ComposedMsg => {
 };
 
 interface StoreCodeMsgArgs {
-  addresses?: BechAddr[];
-  permission: AccessType;
   sender: BechAddr20;
   wasmByteCode: Uint8Array;
+  permission: AccessType;
+  addresses?: BechAddr[];
 }
 
 export const composeStoreCodeMsg = ({
-  addresses,
-  permission,
   sender,
   wasmByteCode,
+  permission,
+  addresses,
 }: StoreCodeMsgArgs) =>
   composeMsg(MsgType.STORE_CODE, {
-    instantiatePermission: {
-      address: "" as BechAddr,
-      addresses,
-      permission,
-    },
     sender,
     wasmByteCode,
+    instantiatePermission: {
+      permission,
+      addresses,
+      address: "" as BechAddr,
+    },
   });
 
 interface WhitelistProposalMsgArgs {
-  changesValue: string;
-  description: string;
-  initialDeposit: Coin;
-  precision: Option<number>;
-  proposer: BechAddr20;
   title: string;
+  description: string;
+  changesValue: string;
+  initialDeposit: Coin;
+  proposer: BechAddr20;
+  precision: Option<number>;
 }
 
 export const composeSubmitWhitelistProposalMsg = ({
-  changesValue,
-  description,
-  initialDeposit,
-  precision,
-  proposer,
   title,
+  description,
+  changesValue,
+  initialDeposit,
+  proposer,
+  precision,
 }: WhitelistProposalMsgArgs): ComposedMsg =>
   composeMsg(MsgType.SUBMIT_PROPOSAL, {
     content: {
       typeUrl: "/cosmos.params.v1beta1.ParameterChangeProposal",
       value: Uint8Array.from(
         ParameterChangeProposal.encode({
+          title,
+          description,
           changes: [
             {
-              key: "uploadAccess",
               subspace: "wasm",
+              key: "uploadAccess",
               value: changesValue,
             },
           ],
-          description,
-          title,
         }).finish()
       ),
     },
     initialDeposit: [
       {
+        denom: initialDeposit.denom,
         amount: exponentify(
           (initialDeposit.amount || 0) as Token,
           precision
         ).toFixed(0),
-        denom: initialDeposit.denom,
       },
     ],
     proposer,
   });
 
 interface StoreCodeProposalMsgArgs {
+  proposer: BechAddr20;
+  title: string;
+  description: string;
+  runAs: BechAddr;
+  wasmByteCode: Uint8Array;
+  permission: AccessType;
   addresses: BechAddr[];
+  unpinCode: boolean;
+  source: string;
   builder: string;
   codeHash: Uint8Array;
-  description: string;
   initialDeposit: Coin;
-  permission: AccessType;
   precision: Option<number>;
-  proposer: BechAddr20;
-  runAs: BechAddr;
-  source: string;
-  title: string;
-  unpinCode: boolean;
-  wasmByteCode: Uint8Array;
 }
 
 export const composeStoreCodeProposalMsg = ({
+  proposer,
+  title,
+  description,
+  runAs,
+  wasmByteCode,
+  permission,
   addresses,
+  unpinCode,
+  source,
   builder,
   codeHash,
-  description,
   initialDeposit,
-  permission,
   precision,
-  proposer,
-  runAs,
-  source,
-  title,
-  unpinCode,
-  wasmByteCode,
 }: StoreCodeProposalMsgArgs): ComposedMsg =>
   composeMsg(MsgType.SUBMIT_PROPOSAL, {
     content: {
       typeUrl: "/cosmwasm.wasm.v1.StoreCodeProposal",
       value: Uint8Array.from(
         StoreCodeProposal.encode({
+          title: title.trim(),
+          description: description.trim(),
+          runAs,
+          wasmByteCode,
+          instantiatePermission: {
+            permission,
+            addresses,
+            address: "" as BechAddr,
+          },
+          unpinCode,
+          source,
           builder,
           codeHash,
-          description: description.trim(),
-          instantiatePermission: {
-            address: "" as BechAddr,
-            addresses,
-            permission,
-          },
-          runAs,
-          source,
-          title: title.trim(),
-          unpinCode,
-          wasmByteCode,
         }).finish()
       ),
     },
     initialDeposit: [
       {
+        denom: initialDeposit.denom,
         amount: exponentify(
           (initialDeposit.amount || 0) as Token,
           precision
         ).toFixed(0),
-        denom: initialDeposit.denom,
       },
     ],
     proposer,
@@ -194,6 +194,6 @@ export const composeScriptMsg = (
   data: AbiFormData
 ) => {
   if (!address || !fn) return [];
-  const { args, typeArgs } = serializeAbiData(fn, data);
+  const { typeArgs, args } = serializeAbiData(fn, data);
   return toEncodeObject([new MsgScript(address, scriptBytes, typeArgs, args)]);
 };

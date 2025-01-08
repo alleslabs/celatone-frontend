@@ -1,3 +1,3 @@
-export * from "./DuplicatedAddCustomMinitiaModal";
-export * from "./FailedAddCustomMinitiaModal";
 export * from "./SuccessAddCustomMinitiaModal";
+export * from "./FailedAddCustomMinitiaModal";
+export * from "./DuplicatedAddCustomMinitiaModal";

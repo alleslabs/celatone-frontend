@@ -18,12 +18,12 @@ interface TxInfoMobileProps extends FlexProps {
 
 const Container = chakra(Flex, {
   baseStyle: {
+    flexDir: "column",
     background: "gray.900",
     borderRadius: 2,
-    flexDir: "column",
+    padding: 3,
     gap: 6,
     marginY: 6,
-    padding: 3,
   },
 });
 
@@ -52,10 +52,10 @@ export const TxInfoMobile = ({ txData, ...flexProps }: TxInfoMobileProps) => {
         </LabelText>
         <LabelText flex={1} label="Block">
           <ExplorerLink
-            type="block_height"
             value={txData.height}
-            ampCopierSection="tx_page_block_height"
+            type="block_height"
             showCopyOnHover
+            ampCopierSection="tx_page_block_height"
           />
         </LabelText>
       </Flex>

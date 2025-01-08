@@ -15,25 +15,25 @@ import { CountBadge } from "./CountBadge";
 
 interface ModuleCardProps {
   module: IndexedModule;
-  moveVerifyInfo: Option<MoveVerifyInfoResponse>;
-  readOnly?: boolean;
   selectedModule: Option<IndexedModule>;
+  moveVerifyInfo: Option<MoveVerifyInfoResponse>;
   setSelectedModule?: (module: IndexedModule) => void;
   setStep?: (step: ModuleInteractionMobileStep) => void;
+  readOnly?: boolean;
 }
 
 export const ModuleCard = ({
   module,
   moveVerifyInfo,
-  readOnly = false,
   selectedModule,
   setSelectedModule,
   setStep,
+  readOnly = false,
 }: ModuleCardProps) => {
   const handleModuleClick = (clickedModule: IndexedModule) => {
     track(AmpEvent.USE_MODULE_CARD, {
-      executeCount: clickedModule.executeFunctions.length,
       viewCount: clickedModule.viewFunctions.length,
+      executeCount: clickedModule.executeFunctions.length,
     });
     setSelectedModule?.(clickedModule);
     setStep?.(ModuleInteractionMobileStep.SelectFunction);
@@ -42,23 +42,23 @@ export const ModuleCard = ({
   const card = useMemo(
     () => (
       <Grid
-        alignItems="center"
-        gap={1}
-        p={4}
-        _hover={{ bg: readOnly ? "unset" : "gray.700" }}
+        borderRadius={8}
         bgColor={
           module.moduleName === selectedModule?.moduleName
             ? "gray.700"
             : "gray.800"
         }
-        borderRadius={8}
+        p={4}
+        alignItems="center"
         cursor={readOnly ? "default" : "pointer"}
-        onClick={() => (readOnly ? null : handleModuleClick(module))}
+        gap={1}
         templateColumns="20px 1fr auto"
+        onClick={() => (readOnly ? null : handleModuleClick(module))}
+        _hover={{ bg: readOnly ? "unset" : "gray.700" }}
         transition=".25s all ease-out"
       >
-        <CustomIcon name="contract-address" boxSize={3} color="primary.main" />
-        <Flex align="center" gap={1} overflow="hidden">
+        <CustomIcon name="contract-address" color="primary.main" boxSize={3} />
+        <Flex align="center" overflow="hidden" gap={1}>
           <Text className="ellipsis" variant="body2">
             {module.moduleName}
           </Text>
@@ -70,10 +70,10 @@ export const ModuleCard = ({
           />
         </Flex>
         <Flex gap={1} ml="auto">
-          <CountBadge variant="view" count={module.viewFunctions.length} />
+          <CountBadge count={module.viewFunctions.length} variant="view" />
           <CountBadge
-            variant="execute"
             count={module.executeFunctions.length}
+            variant="execute"
           />
         </Flex>
       </Grid>

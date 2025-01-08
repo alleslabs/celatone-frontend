@@ -25,24 +25,24 @@ export const JsonModalButton = ({
   jsonString,
   modalHeader,
 }: JsonModalButtonProps) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Button
+        w="fit-content"
         height="24px"
         p="4px"
         size="sm"
         variant="ghost-primary"
-        w="fit-content"
+        rightIcon={<CustomIcon name="chevron-right" boxSize={3} m={0} />}
         onClick={() => {
           trackUseViewJSON(`pool_page_(${modalHeader})`);
           onOpen();
         }}
-        rightIcon={<CustomIcon m={0} name="chevron-right" boxSize={3} />}
       >
         View JSON
       </Button>
-      <Modal isCentered isOpen={isOpen} size="4xl" onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
         <ModalOverlay />
         <ModalContent w="840px">
           <ModalHeader>
@@ -52,7 +52,7 @@ export const JsonModalButton = ({
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />
-          <ModalBody maxH="640px" p={4} overflow="scroll">
+          <ModalBody p={4} maxH="640px" overflow="scroll">
             <Box
               bgColor="background.main"
               borderRadius="8px"

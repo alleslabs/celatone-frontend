@@ -36,18 +36,18 @@ const StoredCodes = observer(() => {
   const govConfig = useGovConfig({ shouldRedirect: false });
 
   // TODO refactor to useState
-  const { setValue, watch } = useForm<CodeFilterState>({
+  const { watch, setValue } = useForm<CodeFilterState>({
     defaultValues: {
-      keyword: "",
       permissionValue: "all",
+      keyword: "",
     },
   });
   const { keyword, permissionValue } = watch();
 
   const {
-    isStoredCodesLoading,
-    storedCodes: stored,
     storedCodesCount,
+    storedCodes: stored,
+    isStoredCodesLoading,
   } = useMyCodesData(keyword, permissionValue);
   const { data, isFetching: isUploadAccessFetching } =
     useUploadAccessParamsLcd();
@@ -67,32 +67,32 @@ const StoredCodes = observer(() => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="My Stored Codes" />
-      <Flex alignItems="center" mb={4} justifyContent="space-between">
+      <Flex alignItems="center" justifyContent="space-between" mb={4}>
         <Flex align="center">
           <Heading
-            alignItems="center"
-            as="h5"
-            display="flex"
-            minH="36px"
             variant="h5"
+            as="h5"
+            minH="36px"
+            display="flex"
+            alignItems="center"
           >
             My Stored Codes
           </Heading>
-          <Badge ml={2} variant="primary">
+          <Badge variant="primary" ml={2}>
             {storedCodesCount}
           </Badge>
         </Flex>
-        <Flex align="center" gap={4}>
+        <Flex gap={4} align="center">
           <UserDocsLink
-            isButton
             isDevTool
             href="cosmwasm/codes/organize#viewing-my-stored-codes"
+            isButton
           />
           <Skeleton
+            isLoaded={!isUploadAccessFetching}
             display="flex"
             gap={2}
             borderRadius={8}
-            isLoaded={!isUploadAccessFetching}
           >
             {data?.isPermissionedNetwork ? (
               <>
@@ -111,13 +111,13 @@ const StoredCodes = observer(() => {
       </Flex>
       <Flex gap={3} my={8}>
         <InputWithIcon
-          size="lg"
+          placeholder="Search with Code ID or Code Name"
           value={keyword}
-          amptrackSection="stored-code-search"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setValue("keyword", e.target.value)
           }
-          placeholder="Search with Code ID or Code Name"
+          size="lg"
+          amptrackSection="stored-code-search"
         />
         <FilterByPermission
           initialSelected="all"
@@ -128,12 +128,12 @@ const StoredCodes = observer(() => {
         />
       </Flex>
       <MyStoredCodesTable
-        emptyMessage="Your uploaded Wasm files will display as My Stored Codes."
         codes={stored}
-        disconnectedMessage="to see your previously uploaded and stored codes."
+        totalData={storedCodesCount}
         isLoading={isStoredCodesLoading}
         onRowSelect={onRowSelect}
-        totalData={storedCodesCount}
+        emptyMessage="Your uploaded Wasm files will display as My Stored Codes."
+        disconnectedMessage="to see your previously uploaded and stored codes."
       />
     </PageContainer>
   );

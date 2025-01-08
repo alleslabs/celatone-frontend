@@ -13,15 +13,15 @@ import { BondedTableRow } from "./BondedTableRow";
 import { TEMPLATE_COLUMNS } from "./constants";
 
 interface UnbondingsTableProps {
+  unbondings: Option<Unbonding[]>;
   isLoading: boolean;
   isSingleBondDenom: boolean;
-  unbondings: Option<Unbonding[]>;
 }
 
 const UnbondingsTableBody = ({
+  unbondings,
   isLoading,
   isSingleBondDenom,
-  unbondings,
 }: UnbondingsTableProps) => {
   const isMobile = useMobile();
 
@@ -48,9 +48,9 @@ const UnbondingsTableBody = ({
             unbonding.completionTime
           }
           bondedInfo={{
+            validator: unbonding.validator,
             balances: unbonding.balances,
             completionTime: unbonding.completionTime,
-            validator: unbonding.validator,
           }}
           isSingleBondDenom={isSingleBondDenom}
         />
@@ -59,8 +59,8 @@ const UnbondingsTableBody = ({
   ) : (
     <TableContainer>
       <BondedTableHeader
-        isDelegation={false}
         templateColumns={TEMPLATE_COLUMNS}
+        isDelegation={false}
       />
       {unbondings.map((unbonding) => (
         <BondedTableRow
@@ -73,13 +73,13 @@ const UnbondingsTableBody = ({
             unbonding.completionTime
           }
           bondedInfo={{
+            validator: unbonding.validator,
             balances: unbonding.balances,
             completionTime: unbonding.completionTime,
-            validator: unbonding.validator,
           }}
           isSingleBondDenom={isSingleBondDenom}
-          isUnbonding
           templateColumns={TEMPLATE_COLUMNS}
+          isUnbonding
         />
       ))}
     </TableContainer>
@@ -87,16 +87,16 @@ const UnbondingsTableBody = ({
 };
 
 export const UnbondingsTable = ({
+  unbondings,
   isLoading,
   isSingleBondDenom,
-  unbondings,
 }: UnbondingsTableProps) => (
   <Box width="100%">
-    <TableTitle mb={2} title="Unbonding" count={unbondings?.length ?? 0} />
+    <TableTitle title="Unbonding" count={unbondings?.length ?? 0} mb={2} />
     <UnbondingsTableBody
+      unbondings={unbondings}
       isLoading={isLoading}
       isSingleBondDenom={isSingleBondDenom}
-      unbondings={unbondings}
     />
   </Box>
 );

@@ -32,44 +32,44 @@ import { zMigrateQueryParams } from "./types";
 import type { MigratePageState } from "./types";
 
 const defaultValues: MigratePageState = {
+  migrateStep: "migrate_options",
+  contractAddress: "" as BechAddr32,
   admin: undefined,
   codeId: undefined,
-  contractAddress: "" as BechAddr32,
-  migrateStep: "migrate_options",
 };
 
 interface MigrateBodyProps {
-  codeId: Option<number>;
   contractAddress: BechAddr32;
+  codeId: Option<number>;
 }
 
 const MigrateBody = ({
-  codeId: codeIdParam,
   contractAddress: contractAddressParam,
+  codeId: codeIdParam,
 }: MigrateBodyProps) => {
   useWasmConfig({ shouldRedirect: true });
   const navigate = useInternalNavigate();
   const { data: uploadAccessParams, isFetching } = useUploadAccessParamsLcd();
   const {
-    estimatedFee,
-    formData,
-    isDisabledProcess,
-    isSimulating,
     proceed,
-    setDefaultBehavior,
+    formData,
+    estimatedFee,
     setEstimatedFee,
     shouldNotSimulate,
+    setDefaultBehavior,
     simulateStatus,
+    isSimulating,
+    isDisabledProcess,
   } = useUploadCode(undefined, true);
 
   const { address = "" } = useCurrentChain();
 
   const { setValue, watch } = useForm<MigratePageState>({
-    defaultValues,
     mode: "all",
+    defaultValues,
   });
 
-  const { admin, codeId, contractAddress, migrateStep } = watch();
+  const { migrateStep, contractAddress, admin, codeId } = watch();
 
   const firstStep = migrateStep !== "migrate_contract";
   const handleBack = () => setValue("migrateStep", "migrate_options");
@@ -77,22 +77,18 @@ const MigrateBody = ({
   const onContractSelect = useCallback(
     (contract: BechAddr32) => {
       navigate({
-        options: { shallow: true },
         pathname: "/migrate",
         query: {
           contract,
           ...(!firstStep && { codeId }),
         },
+        options: { shallow: true },
       });
     },
     [codeId, firstStep, navigate]
   );
 
   useContractData(contractAddress, {
-    onError: () => {
-      setValue("admin", defaultValues.admin);
-      setValue("contractAddress", defaultValues.contractAddress);
-    },
     onSuccess: (data) => {
       if (data.contract.admin === address) {
         setValue("admin", data.contract.admin);
@@ -100,6 +96,10 @@ const MigrateBody = ({
         setValue("admin", defaultValues.admin);
         setValue("contractAddress", defaultValues.contractAddress);
       }
+    },
+    onError: () => {
+      setValue("admin", defaultValues.admin);
+      setValue("contractAddress", defaultValues.contractAddress);
     },
   });
 
@@ -115,34 +115,34 @@ const MigrateBody = ({
       case "migrate_contract":
         return (
           <MigrateContract
-            handleBack={handleBack}
-            codeIdParam={codeId}
             contractAddress={contractAddress}
+            codeIdParam={codeId}
+            handleBack={handleBack}
           />
         );
       case "upload_new_code":
         return (
           <UploadNewCode
-            estimatedFee={estimatedFee}
-            isSimulating={isSimulating}
-            setEstimatedFee={setEstimatedFee}
-            simulateStatus={simulateStatus}
             formData={formData}
-            setDefaultBehavior={setDefaultBehavior}
+            estimatedFee={estimatedFee}
+            setEstimatedFee={setEstimatedFee}
             shouldNotSimulate={shouldNotSimulate}
+            setDefaultBehavior={setDefaultBehavior}
+            simulateStatus={simulateStatus}
+            isSimulating={isSimulating}
           />
         );
       case "migrate_options":
       default:
         return (
           <MigrateOptions
-            existHandler={() => {
-              setValue("migrateStep", "migrate_contract");
-            }}
             isAdmin={admin === address}
             uploadAccessParams={uploadAccessParams}
             uploadHandler={() => {
               setValue("migrateStep", "upload_new_code");
+            }}
+            existHandler={() => {
+              setValue("migrateStep", "migrate_contract");
             }}
           />
         );
@@ -155,27 +155,27 @@ const MigrateBody = ({
       <CelatoneSeo pageName="Migrate Contract" />
       <ActionPageContainer>
         {firstStep ? (
-          <Box mb={6} w="full">
+          <Box w="full" mb={6}>
             <Text
-              mb={3}
-              textAlign="center"
               variant="body1"
               color="text.dark"
+              textAlign="center"
+              mb={3}
               fontWeight={700}
             >
               MIGRATE CONTRACT
             </Text>
-            <Stepper currentStep={1} mode="migrate" />
-            <Heading as="h5" mt={12} textAlign="center" variant="h5">
+            <Stepper mode="migrate" currentStep={1} />
+            <Heading as="h5" variant="h5" textAlign="center" mt={12}>
               Migrate Contract
             </Heading>
           </Box>
         ) : (
-          <Box mb={12} w="full">
-            <Heading as="h5" my={3} textAlign="center" variant="h5">
+          <Box w="full" mb={12}>
+            <Heading as="h5" variant="h5" textAlign="center" my={3}>
               Migrate Contract
             </Heading>
-            <Stepper currentStep={2} mode="migrate" />
+            <Stepper mode="migrate" currentStep={2} />
           </Box>
         )}
         <ConnectWalletAlert
@@ -186,8 +186,8 @@ const MigrateBody = ({
         <TierSwitcher
           full={
             <ContractSelectSection
-              contractAddress={contractAddress}
               mode="only-admin"
+              contractAddress={contractAddress}
               onContractSelect={onContractSelect}
             />
           }
@@ -204,15 +204,15 @@ const MigrateBody = ({
       </ActionPageContainer>
       {migrateStep === "upload_new_code" && (
         <FooterCta
+          cancelButton={{
+            leftIcon: <CustomIcon name="chevron-left" />,
+            onClick: handleBack,
+          }}
           actionButton={{
             isDisabled: isDisabledProcess,
             onClick: proceed,
           }}
           actionLabel="Upload"
-          cancelButton={{
-            leftIcon: <CustomIcon name="chevron-left" />,
-            onClick: handleBack,
-          }}
         />
       )}
     </>
@@ -233,8 +233,8 @@ const Migrate = () => {
     <PageContainer>
       {validated.success && (
         <MigrateBody
-          codeId={validated.data.codeId}
           contractAddress={validated.data.contract}
+          codeId={validated.data.codeId}
         />
       )}
     </PageContainer>

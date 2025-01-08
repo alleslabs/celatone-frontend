@@ -15,15 +15,15 @@ import type { ContractListInfo } from "lib/stores/contract";
 import { dateFromNow, formatSlugName, getListIcon } from "lib/utils";
 
 interface ContractListCardProps {
+  item: ContractListInfo;
   handleListSelect: (value: string) => void;
   isReadOnly: boolean;
-  item: ContractListInfo;
 }
 
 export const ContractListCard = ({
+  item,
   handleListSelect,
   isReadOnly,
-  item,
 }: ContractListCardProps) => {
   const isInstantiatedByMe =
     item.slug === formatSlugName(INSTANTIATED_LIST_NAME);
@@ -32,15 +32,15 @@ export const ContractListCard = ({
 
   return (
     <Flex
-      alignItems="center"
       as={Button}
-      gap={4}
-      h="75px"
-      isDisabled={isDisabled}
       variant="gray-solid"
-      w="full"
-      justifyContent="flex-start"
+      h="75px"
       onClick={() => handleListSelect(item.slug)}
+      isDisabled={isDisabled}
+      gap={4}
+      w="full"
+      alignItems="center"
+      justifyContent="flex-start"
     >
       <CustomIcon
         name={getListIcon(item.name)}
@@ -48,19 +48,19 @@ export const ContractListCard = ({
         color="gray.600"
       />
       <Flex
+        flexDirection="column"
         alignItems="start"
         gap={1}
-        maxW="calc(100% - 108px)"
         w="full"
-        flexDirection="column"
+        maxW="calc(100% - 108px)"
       >
         <Flex alignItems="center" gap={2} w="full">
           <Text
             variant="body1"
-            fontWeight={700}
-            overflow="hidden"
             textColor={isDisabled ? "text.disabled" : "text.main"}
+            fontWeight={700}
             textOverflow="ellipsis"
+            overflow="hidden"
           >
             {item.name}
           </Text>
@@ -78,11 +78,11 @@ export const ContractListCard = ({
       {!isReadOnly && item.isInfoEditable && (
         <Menu>
           <MenuButton
-            as={Button}
-            h="full"
             m={0}
             size="sm"
+            h="full"
             variant="ghost-gray"
+            as={Button}
             onClick={(e) => e.stopPropagation()}
           >
             <CustomIcon name="more" color="gray.600" />
@@ -91,15 +91,15 @@ export const ContractListCard = ({
             <EditListNameModal
               list={{ label: item.name, value: item.slug }}
               menuItemProps={{
-                children: "Edit list name",
                 icon: <CustomIcon name="edit" color="gray.600" />,
+                children: "Edit list name",
               }}
             />
             <RemoveListModal
               list={{ label: item.name, value: item.slug }}
               menuItemProps={{
-                children: "Remove list",
                 icon: <CustomIcon name="delete" color="error.light" />,
+                children: "Remove list",
               }}
             />
           </MenuList>

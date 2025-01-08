@@ -96,30 +96,30 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
       />
       <Breadcrumb
         items={[
-          { href: "/contract-lists", text: "Contract Lists" },
+          { text: "Contract Lists", href: "/contract-lists" },
           { text: contractListInfo.name },
         ]}
       />
       <Flex
-        alignItems="center"
-        gap={5}
-        mt={2}
-        w="full"
         justifyContent="space-between"
+        alignItems="center"
+        w="full"
+        mt={2}
+        gap={5}
       >
         <Flex align="center">
           <Heading as="h5" variant="h5">
             {contractListInfo.name}
           </Heading>
-          <Badge ml={2} variant="primary">
+          <Badge variant="primary" ml={2}>
             {contractListInfo.contracts.length}
           </Badge>
         </Flex>
-        <Flex align="center" gap={isInstantiatedByMe ? 4 : 2}>
+        <Flex gap={isInstantiatedByMe ? 4 : 2} align="center">
           {isInstantiatedByMe && (
             <UserDocsLink
-              isButton
               isDevTool
+              isButton
               href="cosmwasm/contracts/organize#saving-contract-for-later-use"
             />
           )}
@@ -138,15 +138,15 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
                 value: contractListInfo.slug,
               }}
               buttonProps={{
-                children: "Save Contract",
-                leftIcon: <CustomIcon name="bookmark" boxSize={3} />,
                 variant: "outline-primary",
+                leftIcon: <CustomIcon name="bookmark" boxSize={3} />,
+                children: "Save Contract",
               }}
             />
           )}
           {contractListInfo.isInfoEditable && (
             <Menu>
-              <MenuButton as={Button} h="full" variant="ghost-gray">
+              <MenuButton h="full" variant="ghost-gray" as={Button}>
                 <CustomIcon name="more" color="gray.600" />
               </MenuButton>
               <MenuList>
@@ -156,8 +156,8 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
                     value: contractListInfo.slug,
                   }}
                   menuItemProps={{
-                    children: "Edit list name",
                     icon: <CustomIcon name="edit" color="gray.600" />,
+                    children: "Edit list name",
                   }}
                   reroute
                 />
@@ -167,8 +167,8 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
                     value: contractListInfo.slug,
                   }}
                   menuItemProps={{
-                    children: "Remove list",
                     icon: <CustomIcon name="delete" color="error.light" />,
+                    children: "Remove list",
                   }}
                 />
               </MenuList>
@@ -183,9 +183,9 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
       />
       {!isInstantiatedByMe && (
         <UserDocsLink
-          cta="Read more about Saved Contracts"
-          title="How to organize and save contracts?"
           isDevTool
+          title="How to organize and save contracts?"
+          cta="Read more about Saved Contracts"
           href="cosmwasm/contracts/organize#saving-contract-for-later-use"
         />
       )}

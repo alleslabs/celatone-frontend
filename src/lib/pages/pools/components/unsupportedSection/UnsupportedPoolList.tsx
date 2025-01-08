@@ -7,16 +7,16 @@ import type { Option, Pool } from "lib/types";
 import { UnsupportedPoolCard } from "./UnsupportedPoolCard";
 
 interface UnsupportedPoolListProps {
-  expandedIndexes: number[];
-  isLoading: boolean;
   pools: Option<Pool[]>;
+  isLoading: boolean;
+  expandedIndexes: number[];
   updateExpandedIndexes: (index: number[]) => void;
 }
 
 export const UnsupportedPoolList = ({
-  expandedIndexes,
-  isLoading,
   pools,
+  isLoading,
+  expandedIndexes,
   updateExpandedIndexes,
 }: UnsupportedPoolListProps) => {
   if (isLoading) return <Loading />;
@@ -30,10 +30,10 @@ export const UnsupportedPoolList = ({
     );
 
   return (
-    <SimpleGrid spacing={4} w="full" columns={1}>
+    <SimpleGrid columns={1} spacing={4} w="full">
       <Accordion
-        index={expandedIndexes}
         allowMultiple
+        index={expandedIndexes}
         onChange={updateExpandedIndexes}
       >
         {pools.map((item) => (

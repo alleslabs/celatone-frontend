@@ -11,15 +11,15 @@ import type { Nullish } from "lib/types";
 
 interface CustomTabProps extends TabProps {
   count?: Nullish<number>;
-  fallbackValue?: string;
   isLoading?: boolean;
+  fallbackValue?: string;
 }
 
 export const CustomTab = ({
   count,
-  fallbackValue = "N/A",
-  isDisabled,
   isLoading,
+  isDisabled,
+  fallbackValue = "N/A",
   ...restProps
 }: CustomTabProps) => {
   const tabProps = useTab({ ...restProps });
@@ -29,43 +29,43 @@ export const CustomTab = ({
   return (
     <Button
       __css={styles.tab}
-      _active={{
-        bg: "unset",
-      }}
-      alignItems="center"
       display="flex"
-      isDisabled={isDisabled}
-      letterSpacing="0.4px"
+      alignItems="center"
+      fontSize="14px"
+      fontWeight={700}
       lineHeight="24px"
-      mb={0}
+      letterSpacing="0.4px"
+      variant="ghost-gray"
       minW="fit-content"
+      mb={0}
       sx={{
-        "&[aria-selected=false]": {
-          color: "gray.500",
-        },
         "&[aria-selected=true]": {
           color: "primary.light",
         },
+        "&[aria-selected=false]": {
+          color: "gray.500",
+        },
       }}
-      variant="ghost-gray"
-      fontSize="14px"
-      fontWeight={700}
+      isDisabled={isDisabled}
+      _active={{
+        bg: "unset",
+      }}
       {...tabProps}
     >
       {tabProps.children}
 
       {isLoading ? (
         <Skeleton
-          h={4}
           ml={2}
+          h={4}
           w={8}
           borderRadius={8}
-          endColor="gray.700"
           startColor="gray.500"
+          endColor="gray.700"
         />
       ) : (
         count !== undefined && (
-          <Badge ml={2} variant={isSelected ? "primary" : "gray"}>
+          <Badge variant={isSelected ? "primary" : "gray"} ml={2}>
             {count === null ? fallbackValue : count}
           </Badge>
         )

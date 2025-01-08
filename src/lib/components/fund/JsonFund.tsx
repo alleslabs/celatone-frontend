@@ -1,10 +1,10 @@
 import JsonInput from "lib/components/json/JsonInput";
 
 interface JsonFundProps {
-  assetsJson: string;
-
   setValue: (value: string) => void;
+
+  assetsJson: string;
 }
-export const JsonFund = ({ assetsJson, setValue }: JsonFundProps) => (
-  <JsonInput minLines={12} setText={setValue} text={assetsJson} />
+export const JsonFund = ({ setValue, assetsJson }: JsonFundProps) => (
+  <JsonInput text={assetsJson} setText={setValue} minLines={12} />
 );

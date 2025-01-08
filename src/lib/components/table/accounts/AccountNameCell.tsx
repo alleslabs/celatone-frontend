@@ -9,16 +9,16 @@ interface AccountNameCellProps {
 export const AccountNameCell = ({ accountLocalInfo }: AccountNameCellProps) => {
   const { constants } = useCelatoneApp();
   const onSave = useHandleAccountSave({
-    actions: () => {},
-    address: accountLocalInfo.address,
-    description: accountLocalInfo.description,
-    name: accountLocalInfo.name ?? "",
     title: "Changed name successfully!",
+    address: accountLocalInfo.address,
+    name: accountLocalInfo.name ?? "",
+    description: accountLocalInfo.description,
+    actions: () => {},
   });
   return (
     <EditableCell
-      defaultValue="Untitled Name"
       initialValue={accountLocalInfo.name}
+      defaultValue="Untitled Name"
       maxLength={constants.maxAccountNameLength}
       onSave={onSave}
     />

@@ -24,21 +24,21 @@ export const CodeNameCell = ({
     track(AmpEvent.USE_QUICK_EDIT_CODE);
     updateCodeInfo(code.id, code.uploader, inputValue);
     toast({
+      title: "New Code Name Saved",
+      status: "success",
       duration: 5000,
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       isClosable: false,
       position: "bottom-right",
-      status: "success",
-      title: "New Code Name Saved",
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   };
   return (
     <EditableCell
-      defaultValue="Untitled Name"
       initialValue={code.name}
-      isReadOnly={isReadOnly}
+      defaultValue="Untitled Name"
       maxLength={constants.maxCodeNameLength}
       onSave={onSave}
+      isReadOnly={isReadOnly}
     />
   );
 };

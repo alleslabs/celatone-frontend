@@ -20,10 +20,10 @@ interface StructCardProps {
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    alignItems: "center",
-    color: "gray.600",
     display: "flex",
+    alignItems: "center",
     fontSize: "24px",
+    color: "gray.600",
   },
 });
 
@@ -32,20 +32,20 @@ const STRUCT_ABILITIES = ["copy", "drop", "key", "store"];
 export const StructCard = ({ struct }: StructCardProps) => (
   <AccordionItem
     bg="gray.800"
-    gap={1}
-    px={4}
-    py={3}
     _hover={{ bg: "gray.700" }}
     borderRadius={8}
-    flexDirection="column"
+    px={4}
+    py={3}
     transition="all .25s ease-in-out"
+    flexDirection="column"
+    gap={1}
   >
     {({ isExpanded }) => (
       <>
         <AccordionButton
+          flexDirection="column"
           alignItems="flex-start"
           _hover={{ bg: "transparent" }}
-          flexDirection="column"
           onClick={() =>
             trackUseExpand({
               action: !isExpanded ? "expand" : "collapse",
@@ -55,16 +55,16 @@ export const StructCard = ({ struct }: StructCardProps) => (
           }
         >
           <Flex
-            alignItems={{ base: "flex-start", md: "center" }}
-            w="full"
-            direction={{ base: "column", md: "row" }}
             justifyContent="space-between"
+            w="full"
+            alignItems={{ base: "flex-start", md: "center" }}
+            direction={{ base: "column", md: "row" }}
           >
             <Text variant="body2">{struct.name}</Text>
             <Flex
               align="center"
-              w={{ base: "full", md: "auto" }}
               justifyContent="space-between"
+              w={{ base: "full", md: "auto" }}
             >
               <Flex gap={1}>
                 {STRUCT_ABILITIES.map((item) => (
@@ -79,8 +79,8 @@ export const StructCard = ({ struct }: StructCardProps) => (
                 ))}
               </Flex>
               <StyledIconButton
-                aria-label="external"
                 variant="none"
+                aria-label="external"
                 _hover={{ backgroundColor: "gray.700" }}
                 icon={
                   <CustomIcon
@@ -93,7 +93,7 @@ export const StructCard = ({ struct }: StructCardProps) => (
             </Flex>
           </Flex>
         </AccordionButton>
-        <AccordionPanel bg="gray.900" mt={2} px={4} py={3} borderRadius={8}>
+        <AccordionPanel bg="gray.900" borderRadius={8} mt={2} py={3} px={4}>
           <Flex gap={3} direction="column">
             <Flex gap={8}>
               <LabelText

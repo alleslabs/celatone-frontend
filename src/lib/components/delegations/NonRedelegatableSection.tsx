@@ -21,8 +21,8 @@ export const NonRedelegatableSection = ({
       )
         return prev;
       return prev.concat({
-        completionTime: redelegation.completionTime,
         dstValidator: redelegation.dstValidator,
+        completionTime: redelegation.completionTime,
       });
     }, [])
     .reverse();

@@ -7,12 +7,12 @@ import type { Option, PublicDetail } from "lib/types";
 
 export const renderSocial = (name: string): IconKeys => {
   switch (name) {
-    case "discord":
-      return "discord";
-    case "telegram":
-      return "telegram";
     case "twitter":
       return "twitter";
+    case "telegram":
+      return "telegram";
+    case "discord":
+      return "discord";
     default:
       return "info-circle";
   }
@@ -26,21 +26,21 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
   return (
     <Flex
       alignItems="center"
-      minHeight="32px"
       onClick={(e) => e.stopPropagation()}
+      minHeight="32px"
     >
       {details.website && (
         <CustomIconButton
+          href={details.website}
           icon="website"
           onClick={() => trackWebsite(details.website)}
-          href={details.website}
         />
       )}
       {details.github && (
         <CustomIconButton
+          href={details.github}
           icon="github"
           onClick={() => trackSocial(details.github)}
-          href={details.github}
         />
       )}
       {details.socials.length &&
@@ -49,9 +49,9 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
             social.url !== "" && (
               <CustomIconButton
                 key={social.name}
+                href={social.url}
                 icon={renderSocial(social.name)}
                 onClick={() => trackSocial(social.url)}
-                href={social.url}
               />
             )
         )}

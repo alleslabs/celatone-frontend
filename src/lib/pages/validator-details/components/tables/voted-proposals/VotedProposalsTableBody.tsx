@@ -57,15 +57,15 @@ export const VotedProposalsTableBody = ({
   ) : (
     <TableContainer>
       <VotedProposalsTableHeader
-        boxShadow={boxShadow}
         templateColumns={templateColumns}
+        boxShadow={boxShadow}
       />
       {data.items.map((votedProposal) => (
         <VotedProposalsTableRow
           key={votedProposal.proposalId}
-          boxShadow={boxShadow}
-          templateColumns={templateColumns}
           votedProposal={votedProposal}
+          templateColumns={templateColumns}
+          boxShadow={boxShadow}
         />
       ))}
     </TableContainer>

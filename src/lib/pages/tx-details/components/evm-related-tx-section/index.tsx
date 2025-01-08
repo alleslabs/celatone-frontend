@@ -41,7 +41,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         />
       </EvmRelatedField>
       <EvmRelatedField label="Method">
-        <EvmMethodChip width={36} txInput={data.tx.input} />
+        <EvmMethodChip txInput={data.tx.input} width={36} />
       </EvmRelatedField>
       <EvmRelatedField label="Sender">
         <ExplorerLink
@@ -51,11 +51,11 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         />
       </EvmRelatedField>
       <CustomIcon
-        display={{ base: "none", xl: "block" }}
-        flex={0.3}
         name="arrow-right"
         boxSize={5}
         color="gray.600"
+        display={{ base: "none", xl: "block" }}
+        flex={0.3}
       />
       <EvmRelatedField label="To">
         <EvmToCell toAddress={toAddress} />
@@ -67,18 +67,18 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
 export const EvmRelatedTxSection = ({
   evmTxHash,
 }: EvmRelatedTxSectionProps) => (
-  <Flex gap={4} mb={8} minW="330px" direction="column">
+  <Flex direction="column" gap={4} mb={8} minW="330px">
     <Heading as="h6" variant="h6">
       Related EVM Transaction
     </Heading>
     <Flex
+      direction={{ base: "column", xl: "row" }}
       alignItems={{ base: "start", xl: "center" }}
       gap={4}
-      p={4}
-      sx={{ "& > div:last-child": { flex: 2, maxW: "unset" } }}
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="8px"
-      direction={{ base: "column", xl: "row" }}
+      p={4}
+      sx={{ "& > div:last-child": { flex: 2, maxW: "unset" } }}
     >
       <EvmRelatedTxSectionBody evmTxHash={evmTxHash} />
     </Flex>

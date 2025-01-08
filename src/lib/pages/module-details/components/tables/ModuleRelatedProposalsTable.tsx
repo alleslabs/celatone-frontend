@@ -6,41 +6,41 @@ import { useModuleRelatedProposals } from "lib/services/move/module";
 import type { HexAddr, Option } from "lib/types";
 
 interface ModuleRelatedProposalsTableProps {
-  moduleName: string;
-  onViewMore?: () => void;
-  relatedProposalsCount: Option<number>;
-  scrollComponentId: string;
   vmAddress: HexAddr;
+  moduleName: string;
+  scrollComponentId: string;
+  relatedProposalsCount: Option<number>;
+  onViewMore?: () => void;
 }
 
 export const ModuleRelatedProposalsTable = ({
-  moduleName,
-  onViewMore,
-  relatedProposalsCount,
-  scrollComponentId,
   vmAddress,
+  moduleName,
+  scrollComponentId,
+  relatedProposalsCount,
+  onViewMore,
 }: ModuleRelatedProposalsTableProps) => {
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
+    currentPage,
     setCurrentPage,
+    pageSize,
     setPageSize,
+    offset,
     setTotalData,
   } = usePaginator({
+    total: relatedProposalsCount,
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
-    total: relatedProposalsCount,
   });
 
   const {
     data: relatedProposals,
-    error,
     isLoading,
+    error,
   } = useModuleRelatedProposals(
     vmAddress,
     moduleName,
@@ -54,6 +54,8 @@ export const ModuleRelatedProposalsTable = ({
   return (
     <>
       <ProposalsTable
+        proposals={relatedProposals?.items}
+        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="related proposals" />
@@ -64,8 +66,6 @@ export const ModuleRelatedProposalsTable = ({
             />
           )
         }
-        isLoading={isLoading}
-        proposals={relatedProposals?.items}
       />
       {!!relatedProposalsCount &&
         (onViewMore
@@ -73,17 +73,17 @@ export const ModuleRelatedProposalsTable = ({
           : relatedProposalsCount > 10 && (
               <Pagination
                 currentPage={currentPage}
-                pageSize={pageSize}
                 pagesQuantity={pagesQuantity}
                 offset={offset}
+                totalData={relatedProposalsCount}
+                scrollComponentId={scrollComponentId}
+                pageSize={pageSize}
                 onPageChange={setCurrentPage}
                 onPageSizeChange={(e) => {
                   const size = Number(e.target.value);
                   setPageSize(size);
                   setCurrentPage(1);
                 }}
-                scrollComponentId={scrollComponentId}
-                totalData={relatedProposalsCount}
               />
             ))}
     </>

@@ -7,10 +7,10 @@ import { trackTxSucceed } from "lib/amplitude";
 import { deployScriptTx } from "lib/app-fns/tx/script";
 
 export interface DeployScriptStreamParams {
+  onTxSucceed?: () => void;
+  onTxFailed?: () => void;
   estimatedFee?: StdFee;
   messages: EncodeObject[];
-  onTxFailed?: () => void;
-  onTxSucceed?: () => void;
 }
 
 export const useDeployScriptTx = () => {
@@ -19,10 +19,10 @@ export const useDeployScriptTx = () => {
 
   return useCallback(
     async ({
+      onTxSucceed,
+      onTxFailed,
       estimatedFee,
       messages,
-      onTxFailed,
-      onTxSucceed,
     }: DeployScriptStreamParams) => {
       if (!address) throw new Error("No address provided (useDeployScriptTx)");
 
@@ -31,12 +31,12 @@ export const useDeployScriptTx = () => {
         address,
         fee: estimatedFee,
         messages,
-        onTxFailed,
+        signAndBroadcast,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
-        signAndBroadcast,
+        onTxFailed,
       });
     },
     [address, signAndBroadcast]

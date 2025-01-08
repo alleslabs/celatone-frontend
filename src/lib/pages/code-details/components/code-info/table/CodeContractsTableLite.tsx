@@ -21,8 +21,8 @@ export const CodeContractsTableLite = observer(
       error,
       fetchNextPage,
       hasNextPage,
-      isFetchingNextPage,
       isLoading,
+      isFetchingNextPage,
     } = useCodeContractsLcd(codeId);
 
     const onRowSelect = (contract: BechAddr32) =>
@@ -36,17 +36,17 @@ export const CodeContractsTableLite = observer(
         {data && !!error && <AlertPaginationLcd />}
         <TableTitle title="Contract Instances" showCount={false} />
         <ContractsTable
-          emptyState={<NoContracts />}
           contracts={data}
           isLoading={isLoading}
+          emptyState={<NoContracts />}
           onRowSelect={onRowSelect}
           showLastUpdate={false}
         />
         {hasNextPage && (
           <LoadNext
+            text="Load more 10 contracts"
             fetchNextPage={fetchNextPage}
             isFetchingNextPage={isFetchingNextPage}
-            text="Load more 10 contracts"
           />
         )}
       </>

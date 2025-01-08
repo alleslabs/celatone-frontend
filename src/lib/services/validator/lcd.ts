@@ -103,8 +103,8 @@ export const getValidatorDelegatorsLcd = async (
   return axios
     .get(`${endpoint}/${route}/${encodeURI(validatorAddress)}/delegations`, {
       params: {
-        "pagination.count_total": "true",
         "pagination.limit": "1",
+        "pagination.count_total": "true",
       },
     })
     .then(({ data }) =>

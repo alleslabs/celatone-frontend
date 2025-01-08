@@ -11,17 +11,17 @@ import { mergeModulePath } from "lib/utils";
 
 interface ModuleListsBodyProps {
   address: BechAddr;
-  isLoading: boolean;
   keyword: string;
   modules: Option<IndexedModule[]>;
+  isLoading: boolean;
   onViewMore?: () => void;
 }
 
 export const ModuleListsBody = ({
   address,
-  isLoading,
   keyword,
   modules,
+  isLoading,
   onViewMore,
 }: ModuleListsBodyProps) => {
   const { data: moveVerifyInfos } = useMoveVerifyInfosByAddress(address);
@@ -39,9 +39,9 @@ export const ModuleListsBody = ({
     return (
       <ErrorFetching
         dataName="modules"
+        withBorder
         my={2}
         hasBorderTop={false}
-        withBorder
       />
     );
   if (!modules.length)
@@ -58,16 +58,16 @@ export const ModuleListsBody = ({
       />
     );
   return (
-    <SimpleGrid my={4} spacing={4} columns={{ lg: 3, md: 2, sm: 1 }}>
+    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} my={4} spacing={4}>
       {(onViewMore ? filteredModules.slice(0, 9) : filteredModules).map(
         (item) => (
           <ModuleCard
             key={item.moduleName}
             module={item}
+            selectedModule={undefined}
             moveVerifyInfo={
               moveVerifyInfos?.[mergeModulePath(item.address, item.moduleName)]
             }
-            selectedModule={undefined}
           />
         )
       )}

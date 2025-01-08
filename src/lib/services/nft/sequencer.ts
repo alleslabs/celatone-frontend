@@ -24,8 +24,8 @@ export const getNftsSequencer = async (
         `${endpoint}/indexer/nft/v1/tokens/by_collection/${collectionAddress}`,
         {
           params: {
-            "pagination.key": paginationKey,
             "pagination.reverse": true,
+            "pagination.key": paginationKey,
           },
         }
       )
@@ -54,9 +54,9 @@ export const getNftsByAccountSequencer = async (
         `${endpoint}/indexer/nft/v1/tokens/by_account/${encodeURI(accountAddress)}`,
         {
           params: {
-            collection_addr: collectionAddress,
-            "pagination.key": paginationKey,
             "pagination.reverse": true,
+            "pagination.key": paginationKey,
+            collection_addr: collectionAddress,
           },
         }
       )
@@ -83,8 +83,8 @@ export const getNftMintInfoSequencer = async (
   nftAddress: HexAddr32
 ): Promise<NftMintInfo> => {
   const txsByNftAddress = await getTxsByAccountAddressSequencer({
-    address: nftAddress,
     endpoint,
+    address: nftAddress,
     limit: 1,
     reverse: false,
   });
@@ -97,10 +97,10 @@ export const getNftMintInfoSequencer = async (
   const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
 
   return {
-    height: tx.height,
     minter: sender,
-    timestamp: tx.created,
     txhash: tx.hash,
+    height: tx.height,
+    timestamp: tx.created,
   };
 };
 
@@ -110,16 +110,16 @@ export const getNftTransactionsSequencer = async (
   nftAddress: HexAddr32
 ) => {
   const txsByNftAddress = await getTxsByAccountAddressSequencer({
-    address: nftAddress,
     endpoint,
-    limit: 10,
+    address: nftAddress,
     paginationKey,
+    limit: 10,
   });
 
   const nftsTxs: NftTxResponse[] = [];
 
   txsByNftAddress.items.forEach((tx) => {
-    const { created, events, hash } = tx;
+    const { events, hash, created } = tx;
 
     events?.reverse()?.forEach((event) => {
       if (!event.attributes[0].value.includes("0x1::object::")) return;
@@ -127,11 +127,11 @@ export const getNftTransactionsSequencer = async (
       const eventValue = event.attributes[0].value.split("::")[2];
 
       nftsTxs.push({
+        txhash: hash,
+        timestamp: created,
         isNftBurn: false,
         isNftMint: eventValue === "CreateEvent",
         isNftTransfer: eventValue === "TransferEvent",
-        timestamp: created,
-        txhash: hash,
       });
     });
   });

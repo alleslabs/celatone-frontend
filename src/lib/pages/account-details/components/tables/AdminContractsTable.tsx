@@ -14,19 +14,19 @@ import type { BechAddr, BechAddr32, Option } from "lib/types";
 
 interface AdminContractsTableProps {
   address: BechAddr;
-  onViewMore?: () => void;
-  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
+  refetchCount: () => void;
+  onViewMore?: () => void;
 }
 
 export const AdminContractsTable = observer(
   ({
     address,
-    onViewMore,
-    refetchCount,
     scrollComponentId,
     totalData,
+    refetchCount,
+    onViewMore,
   }: AdminContractsTableProps) => {
     const isMobile = useMobile();
     const navigate = useInternalNavigate();
@@ -37,19 +37,19 @@ export const AdminContractsTable = observer(
       });
 
     const {
-      currentPage,
-      offset,
-      pageSize,
       pagesQuantity,
+      currentPage,
       setCurrentPage,
+      pageSize,
       setPageSize,
+      offset,
     } = usePaginator({
+      total: totalData,
       initialState: {
+        pageSize: 10,
         currentPage: 1,
         isDisabled: false,
-        pageSize: 10,
       },
-      total: totalData,
     });
     const { contracts, isLoading } = useAccountAdminContracts(
       address,
@@ -80,26 +80,26 @@ export const AdminContractsTable = observer(
           />
         ) : (
           <AccountSectionWrapper
-            hasHelperText={!!contracts?.length}
-            helperText="This account is the admin for following contracts"
             title="Contract Admins"
             totalData={totalData}
+            helperText="This account is the admin for following contracts"
+            hasHelperText={!!contracts?.length}
           >
             <ContractsTable
+              contracts={contracts}
+              isLoading={isLoading}
               emptyState={
                 !contracts ? (
                   <ErrorFetching
                     dataName="admin contracts"
+                    withBorder
                     my={2}
                     hasBorderTop={false}
-                    withBorder
                   />
                 ) : (
                   <AccountDetailsEmptyState message="This account does not have any admin access for any contracts." />
                 )
               }
-              contracts={contracts}
-              isLoading={isLoading}
               onRowSelect={onRowSelect}
             />
           </AccountSectionWrapper>
@@ -110,13 +110,13 @@ export const AdminContractsTable = observer(
             : totalData > 10 && (
                 <Pagination
                   currentPage={currentPage}
-                  pageSize={pageSize}
                   pagesQuantity={pagesQuantity}
                   offset={offset}
+                  totalData={totalData}
+                  scrollComponentId={scrollComponentId}
+                  pageSize={pageSize}
                   onPageChange={onPageChange}
                   onPageSizeChange={onPageSizeChange}
-                  scrollComponentId={scrollComponentId}
-                  totalData={totalData}
                 />
               ))}
       </Box>

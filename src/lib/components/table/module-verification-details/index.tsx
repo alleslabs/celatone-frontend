@@ -17,15 +17,17 @@ export const ModuleVerificationDetailsTable = ({
 
   return (
     <TableContainer>
-      <Grid minW="min-content" templateColumns={templateColumns}>
+      <Grid templateColumns={templateColumns} minW="min-content">
         <TableHeader>Module Path</TableHeader>
       </Grid>
-      {moduleIdentifiers.map(({ address, name }) => (
-        <Box key={address + name} minW="min-content" w="full">
+      {moduleIdentifiers.map(({ name, address }) => (
+        <Box w="full" minW="min-content" key={address + name}>
           <Grid
             className="copier-wrapper"
-            _hover={{ background: "gray.900" }}
+            templateColumns={templateColumns}
             cursor="pointer"
+            _hover={{ background: "gray.900" }}
+            transition="all 0.25s ease-in-out"
             onClick={() =>
               navigate({
                 pathname: "/modules/[address]/[moduleName]",
@@ -35,8 +37,6 @@ export const ModuleVerificationDetailsTable = ({
                 },
               })
             }
-            templateColumns={templateColumns}
-            transition="all 0.25s ease-in-out"
           >
             <TableRow>
               <ModulePathLink hexAddr={address} moduleName={name} />

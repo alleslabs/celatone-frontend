@@ -11,18 +11,18 @@ import type { BechAddr32 } from "lib/types";
 export const RecentContractsTable = observer(() => {
   const navigate = useInternalNavigate();
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
-    setCurrentPage,
-    setPageSize,
     setTotalData,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    offset,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
   const { data, isLoading } = useRecentContracts(
@@ -40,6 +40,8 @@ export const RecentContractsTable = observer(() => {
   return (
     <>
       <ContractsTable
+        contracts={data?.items}
+        isLoading={isLoading}
         emptyState={
           data ? (
             <EmptyState
@@ -51,24 +53,22 @@ export const RecentContractsTable = observer(() => {
             <ErrorFetching dataName="contracts" />
           )
         }
-        contracts={data?.items}
-        isLoading={isLoading}
         onRowSelect={onRowSelect}
         showTag={false}
       />
       {data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={data.total}
+          pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
           }}
-          totalData={data.total}
         />
       )}
     </>

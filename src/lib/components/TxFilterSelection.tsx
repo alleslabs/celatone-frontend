@@ -29,23 +29,23 @@ import { displayActionValue, mergeRefs } from "lib/utils";
 import { DropdownChevron } from "./DropdownChevron";
 
 export interface TxFilterSelectionProps extends InputProps {
-  boxHeight?: LayoutProps["height"];
-  boxWidth?: LayoutProps["width"];
-  helperText?: string;
-  label?: string;
-  labelBgColor?: string;
   placeholder?: string;
   result: string[];
   setResult: (option: string, bool: boolean) => void;
-  size?: object | string;
-  tagSize?: object | string;
+  helperText?: string;
+  labelBgColor?: string;
+  label?: string;
+  boxWidth?: LayoutProps["width"];
+  boxHeight?: LayoutProps["height"];
+  size?: string | object;
+  tagSize?: string | object;
 }
 
 const listItemProps: CSSProperties = {
   borderRadius: "8px",
-  cursor: "pointer",
   margin: "4px 0px",
   padding: "8px",
+  cursor: "pointer",
 };
 
 const BASE_OPTIONS = Object.keys(DEFAULT_BASE_TX_FILTERS);
@@ -60,14 +60,14 @@ export const TxFilterSelection = forwardRef<
 >(
   (
     {
-      boxHeight = "56px",
-      boxWidth = "full",
-      helperText,
-      label = "Filter by Action",
-      labelBgColor = "background.main",
-      placeholder,
       result,
       setResult,
+      placeholder,
+      helperText,
+      labelBgColor = "background.main",
+      label = "Filter by Action",
+      boxWidth = "full",
+      boxHeight = "56px",
       size = "lg",
       tagSize = "md",
       ...rest
@@ -120,40 +120,40 @@ export const TxFilterSelection = forwardRef<
     };
 
     useOutsideClick({
-      handler: () => setDisplayOptions(false),
       ref: boxRef,
+      handler: () => setDisplayOptions(false),
     });
 
     return (
-      <Box h={boxHeight} w={boxWidth} ref={boxRef}>
-        <FormControl h={boxHeight} w={boxWidth}>
+      <Box ref={boxRef} w={boxWidth} h={boxHeight}>
+        <FormControl w={boxWidth} h={boxHeight}>
           <Flex
             alignItems="center"
-            maxW="100%"
+            color="text.main"
             background="none"
+            borderRadius="8px"
             border="1px solid"
             borderColor="gray.700"
-            borderRadius="8px"
-            color="text.main"
+            maxW="100%"
             overflowX="scroll"
           >
             {result.length > 0 && (
               <Flex alignItems="center" pl={2}>
                 {[...result].reverse().map((option) => (
                   <Flex
-                    key={option}
                     display="inline-block"
                     onClick={() => selectOption(option)}
+                    key={option}
                   >
                     <Tag
-                      mr={1}
-                      size={tagSize}
                       variant="primary-light"
+                      mr={1}
                       whiteSpace="nowrap"
                       cursor="pointer"
+                      size={tagSize}
                     >
                       {displayActionValue(option)}
-                      <CustomIcon mr={2} name="close" boxSize={2} />
+                      <CustomIcon name="close" boxSize={2} mr={2} />
                     </Tag>
                   </Flex>
                 ))}
@@ -161,19 +161,19 @@ export const TxFilterSelection = forwardRef<
             )}
 
             <Input
-              style={{ border: 0, maxHeight: "54px" }}
-              maxLength={36}
+              autoComplete="off"
+              w="100%"
               minW="200px"
               size={size}
-              w="100%"
-              autoComplete="off"
-              onChange={(e) => setKeyword(e.currentTarget.value)}
+              placeholder={result.length ? "" : placeholder}
               onClick={() => setDisplayOptions(true)}
+              onChange={(e) => setKeyword(e.currentTarget.value)}
               onFocus={() => {
                 setDisplayOptions(true);
               }}
-              placeholder={result.length ? "" : placeholder}
               ref={mergeRefs([inputRef, ref])}
+              maxLength={36}
+              style={{ border: 0, maxHeight: "54px" }}
               {...rest}
             />
             <DropdownChevron
@@ -181,35 +181,35 @@ export const TxFilterSelection = forwardRef<
               onClick={() => setDisplayOptions((prev) => !prev)}
             />
             <FormLabel
-              left={0}
-              lineHeight="1.2"
-              my={2}
-              px={1}
-              bgColor={labelBgColor}
-              color="text.dark"
-              fontWeight={400}
-              pointerEvents="none"
               position="absolute"
               top={0}
+              left={0}
+              fontWeight={400}
+              color="text.dark"
+              bgColor={labelBgColor}
+              pointerEvents="none"
+              px={1}
+              my={2}
+              lineHeight="1.2"
               transform="scale(0.75) translateY(-24px) translateX(0px)"
             >
               {label}
             </FormLabel>
           </Flex>
-          <FormHelperText ml={3} mt={1} color="text.dark" fontSize="12px">
+          <FormHelperText ml={3} mt={1} fontSize="12px" color="text.dark">
             {helperText}
           </FormHelperText>
 
           {displayOptions && (
             <List
+              borderRadius="8px"
               bg="gray.900"
-              mt={0}
               px={2}
               py={1}
-              w="full"
-              zIndex="2"
-              borderRadius="8px"
+              mt={0}
               position="absolute"
+              zIndex="2"
+              w="full"
               top="60px"
             >
               {/* option selection section */}
@@ -218,15 +218,15 @@ export const TxFilterSelection = forwardRef<
                   key={option}
                   style={listItemProps}
                   _hover={{ bg: "gray.800" }}
-                  onClick={() => selectOption(option)}
                   transition="all 0.25s ease-in-out"
+                  onClick={() => selectOption(option)}
                 >
                   <Flex alignItems="center" justifyContent="space-between">
                     <Text>{displayActionValue(option)}</Text>
                     {isOptionSelected(option) && (
                       <CustomIcon
-                        data-label={option}
                         name="check"
+                        data-label={option}
                         color="gray.600"
                       />
                     )}

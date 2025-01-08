@@ -22,27 +22,27 @@ import { ASSETS_SELECT } from "./data";
 import type { AttachFundsState } from "./types";
 
 interface SelectFundProps {
-  assetsSelect: Coin[];
   control: Control<AttachFundsState>;
-  labelBgColor?: string;
   setValue: UseFormSetValue<AttachFundsState>;
+  assetsSelect: Coin[];
+  labelBgColor?: string;
 }
 
 /**
  * @remarks amount in assetsSelect is an amount before multiplying precision, the multiplication will be done before sending transaction
  */
 export const SelectFund = ({
-  assetsSelect,
   control,
-  labelBgColor,
   setValue,
+  assetsSelect,
+  labelBgColor,
 }: SelectFundProps) => {
   const { address } = useCurrentChain();
   const { data: balances } = useBalances(address, !!address);
   const { data: assetInfos } = useAssetInfosByType({
     assetType: "native",
   });
-  const { append, fields, remove } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: ASSETS_SELECT,
   });
@@ -74,7 +74,7 @@ export const SelectFund = ({
 
       const price = formatPrice(token.value as USD<BigSource>);
 
-      return { formatted, price, raw };
+      return { raw, formatted, price };
     },
     [assetInfos]
   );
@@ -90,23 +90,23 @@ export const SelectFund = ({
 
       if (balanceMap?.has(asset.id)) {
         assetInfosInBalance.push({
-          isDisabled: selectedAssets.includes(asset.id),
           label: asset.symbol,
           value: {
-            formatted,
             id: asset.id,
             logo: asset.logo,
+            formatted,
             price,
           },
+          isDisabled: selectedAssets.includes(asset.id),
         });
       } else {
         assetInfosNotInBalance.push({
-          isDisabled: true,
           label: asset.symbol,
           value: {
             id: asset.id,
             logo: asset.logo,
           },
+          isDisabled: true,
         });
       }
     });
@@ -126,6 +126,11 @@ export const SelectFund = ({
       const overBalance = Number(assetsSelect[idx].amount) > raw;
 
       return {
+        helperText: isSelected && (
+          <Text variant="body3" color="text.dark" w="100%">
+            Balance: {formatted}
+          </Text>
+        ),
         cta: isSelected && {
           label: "MAX",
           onClick: (changeValue: (value: string) => void) => {
@@ -136,11 +141,6 @@ export const SelectFund = ({
           isSelected && overBalance
             ? `Not enough ${assetInfos?.[selectedAssets[idx]]?.symbol} in your wallet`
             : undefined,
-        helperText: isSelected && (
-          <Text variant="body3" w="100%" color="text.dark">
-            Balance: {formatted}
-          </Text>
-        ),
       };
     },
     [
@@ -158,33 +158,33 @@ export const SelectFund = ({
         <AssetInput
           key={field.id}
           disableDelete={fields.length <= 1}
+          onDelete={() => remove(idx)}
           setCurrencyValue={(newVal: string) =>
             setValue(`${ASSETS_SELECT}.${idx}.denom`, newVal)
           }
+          assetOptions={assetOptions}
           value={assetOptions.find((option) => option.value.id === field.denom)}
           amountInput={
             <ControllerInput
               {...handleControllerInputProps(idx)}
-              label="Amount"
               name={`${ASSETS_SELECT}.${idx}.amount`}
-              type="decimal"
-              variant="fixed-floating"
               control={control}
+              label="Amount"
+              variant="fixed-floating"
+              type="decimal"
               labelBgColor={labelBgColor}
               placeholder="0.00"
             />
           }
-          assetOptions={assetOptions}
-          onDelete={() => remove(idx)}
         />
       ))}
       <Button
-        isDisabled={assetOptions.length === selectedAssets.length}
-        mb={5}
-        mt={8}
-        mx="auto"
         variant="outline-primary"
-        onClick={() => append({ amount: "", denom: "" })}
+        mt={8}
+        mb={5}
+        mx="auto"
+        onClick={() => append({ denom: "", amount: "" })}
+        isDisabled={assetOptions.length === selectedAssets.length}
       >
         Add More Asset
       </Button>

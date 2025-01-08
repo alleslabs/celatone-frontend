@@ -11,41 +11,41 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 
 export const UploadAccordion = () => (
   <Accordion
+    allowToggle
     defaultIndex={[0]}
     variant="transparent"
-    allowToggle
     position="sticky"
     top={0}
   >
     <AccordionItem>
       <AccordionButton>
         <Text
-          textAlign="start"
           variant="body2"
-          color="text.main"
           fontWeight={700}
+          color="text.main"
+          textAlign="start"
         >
           What should I provide in my .mv files?
         </Text>
-        <AccordionIcon ml="auto" color="gray.600" />
+        <AccordionIcon color="gray.600" ml="auto" />
       </AccordionButton>
       <AccordionPanel
         bg="transparent"
-        px={0}
         py={3}
+        px={0}
+        borderTop="1px solid"
         borderBottom="1px solid"
         borderColor="gray.700"
-        borderTop="1px solid"
       >
-        <Text p={1} variant="body2" color="text.dark">
+        <Text variant="body2" color="text.dark" p={1}>
           Your .mv files should consist of module name, available functions and
           their properties, module mechanics, friends.
         </Text>
       </AccordionPanel>
       <UserDocsLink
-        cta="Read more about publish"
-        mt={3}
         isDevTool
+        mt={3}
+        cta="Read more about publish"
         href="initia/move/publish-module"
       />
     </AccordionItem>
@@ -54,32 +54,32 @@ export const UploadAccordion = () => (
 
 export const PolicyAccordion = ({ chainName }: { chainName: string }) => (
   <Accordion
+    allowToggle
     defaultIndex={[0]}
     variant="transparent"
-    allowToggle
     position="sticky"
     top={0}
   >
     <AccordionItem>
       <AccordionButton>
         <Text
-          textAlign="start"
           variant="body2"
-          color="text.main"
           fontWeight={700}
+          color="text.main"
+          textAlign="start"
         >
           What is republishing module?
         </Text>
-        <AccordionIcon ml="auto" color="gray.600" />
+        <AccordionIcon color="gray.600" ml="auto" />
       </AccordionButton>
       <AccordionPanel
         bg="transparent"
-        px={0}
         py={3}
-        borderColor="gray.700"
+        px={0}
         borderY="1px solid"
+        borderColor="gray.700"
       >
-        <Text p={1} variant="body2" color="text.dark">
+        <Text variant="body2" color="text.dark" p={1}>
           In {chainName}, You can republish the module which serve the purpose
           to migrate or upgrade the published module by uploading new .mv file
           with similar configurations.
@@ -94,9 +94,9 @@ export const PolicyAccordion = ({ chainName }: { chainName: string }) => (
         </Text>
       </AccordionPanel>
       <UserDocsLink
-        cta="Read more about republish"
-        mt={3}
         isDevTool
+        mt={3}
+        cta="Read more about republish"
         href="initia/move/publish-module#republishing-modules"
       />
     </AccordionItem>

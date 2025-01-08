@@ -19,27 +19,27 @@ import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 /** TODO: refactor later */
 export interface NumberInputProps extends FormControlProps {
-  error?: string;
-  helperText?: string;
+  value: string;
+  onInputChange: (nextValue: string) => void;
   label: string;
   labelBgColor?: string;
-  onInputChange: (nextValue: string) => void;
+  helperText?: string;
   placeholder?: string;
-  status?: FormStatus;
+  error?: string;
   type?: HTMLInputTypeAttribute;
-  value: string;
+  status?: FormStatus;
 }
 
 export const NumberInput = ({
-  error,
-  helperText,
+  value,
   label,
   labelBgColor = "background.main",
-  onInputChange,
+  helperText,
   placeholder = " ",
+  error,
   size = "lg",
   status,
-  value,
+  onInputChange,
   ...componentProps
 }: NumberInputProps) => {
   const inputOnChange = useCallback(
@@ -50,10 +50,10 @@ export const NumberInput = ({
   );
 
   const handlers = useRestrictedNumberInput({
-    maxDecimalPoints: 0,
-    maxIntegerPoints: 7,
-    onChange: inputOnChange,
     type: "integer",
+    maxIntegerPoints: 7,
+    maxDecimalPoints: 0,
+    onChange: inputOnChange,
   });
 
   // Design system size: md = 40px, lg = 56px
@@ -68,10 +68,10 @@ export const NumberInput = ({
       </FormLabel>
       <InputGroup>
         <Input
-          pr={status && "36px"}
           size={size}
-          value={value}
           placeholder={placeholder}
+          value={value}
+          pr={status && "36px"}
           {...handlers}
         />
         {status && (

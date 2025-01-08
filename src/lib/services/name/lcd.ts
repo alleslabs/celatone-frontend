@@ -32,7 +32,7 @@ export const getAddressByIcnsNameLcd = async (
   bech32Prefix: string
 ) => {
   const encoded = encode(
-    JSON.stringify({ address: { bech32_prefix: bech32Prefix, name } })
+    JSON.stringify({ address: { name, bech32_prefix: bech32Prefix } })
   );
 
   return axios

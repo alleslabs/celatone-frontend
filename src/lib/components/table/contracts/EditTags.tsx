@@ -19,57 +19,57 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
     getTagsDefault(contractLocalInfo.tags)
   );
   const handleSave = useHandleContractSave({
-    actions: () => track(AmpEvent.CONTRACT_EDIT_TAGS),
-    codeId: contractLocalInfo.codeId,
-    contractAddress: contractLocalInfo.contractAddress,
-    instantiator: contractLocalInfo.instantiator,
-    label: contractLocalInfo.label,
-    tags: tagResult,
     title: "Updated tags successfully!",
+    contractAddress: contractLocalInfo.contractAddress,
+    label: contractLocalInfo.label,
+    codeId: contractLocalInfo.codeId,
+    instantiator: contractLocalInfo.instantiator,
+    tags: tagResult,
+    actions: () => track(AmpEvent.CONTRACT_EDIT_TAGS),
   });
 
   return (
     <ActionModal
-      mainBtnTitle="Save"
       title="Edit Tags"
       trigger={
-        <CustomIcon name="edit" boxSize={3} color="gray.600" cursor="pointer" />
+        <CustomIcon cursor="pointer" name="edit" color="gray.600" boxSize={3} />
       }
       headerContent={
-        <Flex gap={9} pt={6}>
-          <Flex gap={2} direction="column">
-            <Text variant="body2" color="text.dark" fontWeight={500}>
+        <Flex pt={6} gap={9}>
+          <Flex direction="column" gap={2}>
+            <Text variant="body2" fontWeight={500} color="text.dark">
               Contract Name
             </Text>
-            <Text variant="body2" color="text.dark" fontWeight={500}>
+            <Text variant="body2" fontWeight={500} color="text.dark">
               Contract Address
             </Text>
           </Flex>
 
-          <Flex gap={2} direction="column">
+          <Flex direction="column" gap={2}>
             <Text variant="body2">
               {contractLocalInfo.name ?? contractLocalInfo.label}
             </Text>
             <ExplorerLink
-              type="contract_address"
               value={contractLocalInfo.contractAddress}
+              type="contract_address"
             />
           </Flex>
         </Flex>
       }
+      mainBtnTitle="Save"
       mainAction={handleSave}
       otherBtnTitle="Cancel"
     >
       <FormControl>
         <Box my={6}>
           <TagSelection
-            helperText="Add tag to organize and manage your contracts"
             result={tagResult}
+            placeholder="Tags"
+            helperText="Add tag to organize and manage your contracts"
             setResult={(selectedOptions: string[]) => {
               setTagResult(selectedOptions);
             }}
             labelBgColor="gray.900"
-            placeholder="Tags"
           />
         </Box>
       </FormControl>

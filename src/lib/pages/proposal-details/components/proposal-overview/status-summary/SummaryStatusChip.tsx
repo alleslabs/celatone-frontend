@@ -10,13 +10,13 @@ import {
 import { ProposalStatus } from "lib/types";
 
 export const SummaryStatusChip = ({
-  isLoading,
-  params,
   proposalData,
+  params,
   votesInfo,
+  isLoading,
 }: ProposalOverviewProps) => {
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
-    return <StatusChip isTransparent status={ProposalStatus.DEPOSIT_FAILED} />;
+    return <StatusChip status={ProposalStatus.DEPOSIT_FAILED} isTransparent />;
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD) {
     if (isLoading) return <Skeleton h={5} w={12} borderRadius={90} />;
@@ -25,13 +25,12 @@ export const SummaryStatusChip = ({
         params,
         proposalData.isExpedited
       );
-      const { noWithVetoTotalRatio, totalRatio, yesNonRatio } =
+      const { totalRatio, yesNonRatio, noWithVetoTotalRatio } =
         normalizeVotesInfo(votesInfo);
 
       if (!isNull(totalRatio))
         return (
           <StatusChip
-            isTransparent
             status={
               totalRatio >= quorum &&
               noWithVetoTotalRatio < vetoThreshold &&
@@ -39,6 +38,7 @@ export const SummaryStatusChip = ({
                 ? ProposalStatus.PASSED
                 : ProposalStatus.REJECTED
             }
+            isTransparent
           />
         );
     }

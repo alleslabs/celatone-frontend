@@ -74,9 +74,9 @@ export const useValidators = (
     async () =>
       getValidators(endpoint, limit, offset, isActive, sortBy, isDesc, search),
     {
+      retry: 1,
       keepPreviousData: true,
       refetchOnWindowFocus: false,
-      retry: 1,
       ...options,
     }
   );
@@ -102,9 +102,9 @@ export const useValidatorsLcd = (enabled = true) => {
     },
     {
       enabled,
+      retry: 1,
       keepPreviousData: true,
       refetchOnWindowFocus: false,
-      retry: 1,
     }
   );
 };
@@ -119,8 +119,8 @@ export const useValidatorData = (
     [CELATONE_QUERY_KEYS.VALIDATOR_DATA, endpoint, validatorAddress],
     async () => getValidatorData(endpoint, validatorAddress),
     {
-      enabled,
       retry: 1,
+      enabled,
     }
   );
 };
@@ -148,8 +148,8 @@ export const useValidatorDataLcd = (
     },
     {
       enabled: enabled && Boolean(validatorAddr),
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -263,8 +263,8 @@ export const useValidatorUptime = (
     [CELATONE_QUERY_KEYS.VALIDATOR_UPTIME, endpoint, validatorAddress, blocks],
     async () => getValidatorUptime(endpoint, validatorAddress, blocks),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -298,8 +298,8 @@ export const useValidatorHistoricalPowers = (validatorAddr: ValidatorAddr) => {
     [CELATONE_QUERY_KEYS.VALIDATOR_HISTORICAL_POWERS, endpoint, validatorAddr],
     async () => getHistoricalPowers(endpoint, validatorAddr),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -341,11 +341,6 @@ export const useValidatorImage = (
   const [primaryDark] = useToken("colors", ["primary.dark"]);
 
   return useQuery({
-    enabled: Boolean(validator),
-    queryFn: async () => {
-      if (!validator) return "";
-      return resolveValIdentity(chainName, validator, primaryDark);
-    },
     queryKey: [
       CELATONE_QUERY_KEYS.VALIDATOR_IDENTITY,
       chainName,
@@ -353,7 +348,12 @@ export const useValidatorImage = (
       validator?.identity,
       validator?.moniker,
     ],
-    refetchOnWindowFocus: false,
+    queryFn: async () => {
+      if (!validator) return "";
+      return resolveValIdentity(chainName, validator, primaryDark);
+    },
     retry: false,
+    refetchOnWindowFocus: false,
+    enabled: Boolean(validator),
   });
 };

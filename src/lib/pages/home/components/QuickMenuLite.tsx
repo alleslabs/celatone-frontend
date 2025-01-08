@@ -10,12 +10,12 @@ import type { IconKeys } from "lib/components/icon";
 import { USER_GUIDE_DOCS_LINK } from "lib/data";
 
 const baseCardProps: SystemStyleObject = {
-  alignItems: "center",
-  borderRadius: "8px",
-  height: "full",
-  justifyContent: "space-between",
-  padding: "16px",
   width: "full",
+  height: "full",
+  padding: "16px",
+  borderRadius: "8px",
+  justifyContent: "space-between",
+  alignItems: "center",
 };
 
 const cardProps = {
@@ -29,12 +29,12 @@ const highlightCardProps = {
 };
 
 interface ShortcutMetadata {
-  icon: IconKeys;
-  isDocument: boolean;
-  isHighlight: boolean;
-  slug: string;
-  subtitle: string;
   title: string;
+  subtitle: string;
+  slug: string;
+  icon: IconKeys;
+  isHighlight: boolean;
+  isDocument: boolean;
 }
 
 const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
@@ -46,10 +46,10 @@ const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
     >
       <Flex
         gap={3}
-        h="full"
-        w="full"
         direction="column"
         justifyContent="space-between"
+        h="full"
+        w="full"
       >
         <CustomIcon
           name={item.icon ?? "add-new"}
@@ -61,7 +61,7 @@ const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
             <Heading as="h6" variant="h6">
               {item.title}
             </Heading>
-            <Text variant="body2" textDecoration="none">
+            <Text textDecoration="none" variant="body2">
               {item.subtitle}
             </Text>
           </Flex>
@@ -77,11 +77,11 @@ const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
 );
 
 const ContentCard = ({
-  isDocument,
   item,
+  isDocument,
 }: {
-  isDocument: boolean;
   item: ShortcutMetadata;
+  isDocument: boolean;
 }) => (
   <Flex
     sx={cardProps}
@@ -90,20 +90,20 @@ const ContentCard = ({
   >
     <Flex
       gap={6}
-      h="full"
-      w="full"
       direction="column"
       justifyContent="space-between"
+      h="full"
+      w="full"
     >
       <CustomIcon
         name={item.icon}
         boxSize={{ base: 5, md: 6 }}
         color="gray.600"
       />
-      <Flex alignItems="flex-end" justifyContent="space-between">
+      <Flex justifyContent="space-between" alignItems="flex-end">
         <Flex direction="column">
           <Heading variant="h6">{item.title}</Heading>
-          <Text variant="body2" color="text.dark" textDecoration="none">
+          <Text textDecoration="none" variant="body2" color="text.dark">
             {item.subtitle}
           </Text>
         </Flex>
@@ -127,80 +127,80 @@ export const QuickMenuLite = () => {
     if (wasm.enabled)
       base.push(
         {
-          icon: "instantiate" as const,
-          isDocument: false,
-          isHighlight: true,
-          slug: "deploy",
-          subtitle: "Upload a new wasm code or instantiate a new contract",
           title: "Deploy a new contract",
+          subtitle: "Upload a new wasm code or instantiate a new contract",
+          slug: "deploy",
+          icon: "instantiate" as const,
+          isHighlight: true,
+          isDocument: false,
         },
         {
-          icon: "query" as const,
-          isDocument: false,
-          isHighlight: false,
-          slug: "interact-contract",
-          subtitle: "Query and get contract state data",
           title: "Query",
+          subtitle: "Query and get contract state data",
+          slug: "interact-contract",
+          icon: "query" as const,
+          isHighlight: false,
+          isDocument: false,
         },
         {
-          icon: "execute" as const,
-          isDocument: false,
-          isHighlight: false,
-          slug: "interact-contract?selectedType=execute",
-          subtitle: "Send transactions to contracts",
           title: "Execute",
-        },
-        {
-          icon: "migrate" as const,
+          subtitle: "Send transactions to contracts",
+          slug: "interact-contract?selectedType=execute",
+          icon: "execute" as const,
+          isHighlight: false,
           isDocument: false,
-          isHighlight: false,
-          slug: "migrate",
-          subtitle: "Migrate contract to new code ID",
-          title: "Migrate",
         },
         {
-          icon: "document" as const,
-          isDocument: true,
+          title: "Migrate",
+          subtitle: "Migrate contract to new code ID",
+          slug: "migrate",
+          icon: "migrate" as const,
           isHighlight: false,
-          slug: "wasm-user-guide",
-          subtitle: "View Celatone documents",
+          isDocument: false,
+        },
+        {
           title: "User Guide",
+          subtitle: "View Celatone documents",
+          slug: "wasm-user-guide",
+          icon: "document" as const,
+          isHighlight: false,
+          isDocument: true,
         }
       );
 
     if (move.enabled)
       base.push(
         {
-          icon: "add-new" as const,
-          isDocument: false,
-          isHighlight: true,
-          slug: "publish-module",
-          subtitle: "Upload .mv files to publish new module",
           title: "Publish / Republish",
+          subtitle: "Upload .mv files to publish new module",
+          slug: "publish-module",
+          icon: "add-new" as const,
+          isHighlight: true,
+          isDocument: false,
         },
         {
-          icon: "execute" as const,
-          isDocument: false,
-          isHighlight: false,
-          slug: "interact",
-          subtitle: "Interact with module's functions",
           title: "View / Execute",
-        },
-        {
-          icon: "code" as const,
+          subtitle: "Interact with module's functions",
+          slug: "interact",
+          icon: "execute" as const,
+          isHighlight: false,
           isDocument: false,
-          isHighlight: false,
-          slug: "deploy-script",
-          subtitle: "Deploy one-time use Script",
-          title: "Deploy Script",
         },
         {
-          icon: "document" as const,
-          isDocument: true,
+          title: "Deploy Script",
+          subtitle: "Deploy one-time use Script",
+          slug: "deploy-script",
+          icon: "code" as const,
           isHighlight: false,
-          slug: "move-user-guide",
-          subtitle: "View Celatone documents",
+          isDocument: false,
+        },
+        {
           title: "User Guide",
+          subtitle: "View Celatone documents",
+          icon: "document" as const,
+          slug: "move-user-guide",
+          isHighlight: false,
+          isDocument: true,
         }
       );
 
@@ -208,30 +208,30 @@ export const QuickMenuLite = () => {
   }, [wasm.enabled, move.enabled]);
 
   return (
-    <Grid gap={4} templateColumns="1fr 2fr">
+    <Grid templateColumns="1fr 2fr" gap={4}>
       <HighlightCard
         item={quickMenu.find((x) => x.isHighlight) ?? quickMenu[0]}
       />
-      <Grid gap={4} templateColumns="1fr 1fr" templateRows="repeat(2, 1fr)">
+      <Grid templateRows="repeat(2, 1fr)" templateColumns="1fr 1fr" gap={4}>
         {quickMenu
           .filter((item) => !item.isHighlight)
           .map((item, index) => (
             <Flex
               key={item.slug}
-              gridColumn={move.enabled && index === 0 ? "1 / -1" : "auto"}
               width={move.enabled && index === 0 ? "100%" : "auto"}
+              gridColumn={move.enabled && index === 0 ? "1 / -1" : "auto"}
               direction="column"
             >
               {item.isDocument ? (
                 <Link
+                  href={USER_GUIDE_DOCS_LINK}
                   style={{ height: "100%" }}
                   target="_blank"
-                  href={USER_GUIDE_DOCS_LINK}
                 >
                   <ContentCard item={item} isDocument={item.isDocument} />
                 </Link>
               ) : (
-                <AppLink style={{ height: "100%" }} href={`/${item.slug}`}>
+                <AppLink href={`/${item.slug}`} style={{ height: "100%" }}>
                   <ContentCard item={item} isDocument={item.isDocument} />
                 </AppLink>
               )}

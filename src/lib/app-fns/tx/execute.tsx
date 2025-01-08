@@ -15,59 +15,52 @@ import { feeFromStr, findAttr, getCurrentDate } from "lib/utils";
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
-  action: string;
   address: BechAddr20;
-  base64Message: string;
   contractAddress: BechAddr32;
-  fee: StdFee;
   messages: EncodeObject[];
-  onTxFailed?: () => void;
-  onTxSucceed?: (activity: Activity) => void;
+  action: string;
+  fee: StdFee;
+  base64Message: string;
   signAndBroadcast: SignAndBroadcast;
+  onTxSucceed?: (activity: Activity) => void;
+  onTxFailed?: () => void;
 }
 
 export const executeContractTx = ({
-  action,
   address,
-  base64Message,
   contractAddress,
-  fee,
   messages,
-  onTxFailed,
-  onTxSucceed,
+  action,
+  fee,
+  base64Message,
   signAndBroadcast,
+  onTxSucceed,
+  onTxFailed,
 }: ExecuteTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, fee, messages }),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.({
+        type: "execute",
         action,
+        sender: address,
         contractAddress,
         msg: base64Message,
-        sender: address,
         timestamp: getCurrentDate(),
-        type: "execute",
       });
 
       const txFee = findAttr(txInfo.events, "tx", "fee");
 
       return {
+        value: null,
         phase: TxStreamPhase.SUCCEED,
-        receiptInfo: {
-          header: "Transaction Complete!",
-          headerIcon: (
-            <CustomIcon
-              name="check-circle-solid"
-              boxSize={5}
-              color="success.main"
-            />
-          ),
-        },
         receipts: [
           {
+            title: "Tx Hash",
+            value: txInfo.transactionHash,
             html: (
               <ExplorerLink
                 type="tx_hash"
@@ -75,20 +68,27 @@ export const executeContractTx = ({
                 openNewTab
               />
             ),
-            title: "Tx Hash",
-            value: txInfo.transactionHash,
           },
           {
+            title: "Tx Fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
-            title: "Tx Fee",
           },
         ],
-        value: null,
+        receiptInfo: {
+          header: "Transaction Complete!",
+          headerIcon: (
+            <CustomIcon
+              name="check-circle-solid"
+              color="success.main"
+              boxSize={5}
+            />
+          ),
+        },
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

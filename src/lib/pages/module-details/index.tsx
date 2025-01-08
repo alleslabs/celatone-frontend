@@ -90,15 +90,15 @@ const ModuleDetailsBody = ({
       if (nextTab === currentTab) return;
       trackUseTab(nextTab);
       navigate({
-        options: {
-          shallow: true,
-        },
         pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
           address: vmAddress,
           moduleName,
           tab: nextTab,
           ...(fnType && { type: fnType }),
+        },
+        options: {
+          shallow: true,
         },
       });
     },
@@ -148,22 +148,22 @@ const ModuleDetailsBody = ({
         lazyBehavior="keepMounted"
       >
         <TabList
-          id={mainTabHeaderId}
           my={8}
           borderBottom="1px solid"
           borderColor="gray.700"
           overflowX="scroll"
+          id={mainTabHeaderId}
         >
           <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
             Overview
           </CustomTab>
           <CustomTab
-            isDisabled={!data.parsedAbi.exposed_functions.length}
             count={data.parsedAbi.exposed_functions.length}
             onClick={handleTabChange(
               TabIndex.Function,
               FunctionTypeTabIndex.ALL
             )}
+            isDisabled={!data.parsedAbi.exposed_functions.length}
           >
             Functions
           </CustomTab>
@@ -173,9 +173,9 @@ const ModuleDetailsBody = ({
             </CustomTab>
           )}
           <CustomTab
-            isDisabled={!data.parsedAbi.structs.length}
             count={data.parsedAbi.structs.length}
             onClick={handleTabChange(TabIndex.Structs)}
+            isDisabled={!data.parsedAbi.structs.length}
           >
             Structs
           </CustomTab>
@@ -190,8 +190,8 @@ const ModuleDetailsBody = ({
                 />
               )}
               <ModuleActions
-                executeFns={data.executeFunctions.length}
                 viewFns={data.viewFunctions.length}
+                executeFns={data.executeFunctions.length}
                 allTxsCount={
                   moduleTableCounts &&
                   !isNull(moduleTableCounts.txs) &&
@@ -212,64 +212,64 @@ const ModuleDetailsBody = ({
               <ModuleInfo
                 indexedModule={data}
                 modulePublishInfo={modulePublishInfo}
-                moveVerifyStatus={moveVerifyStatus}
                 verificationData={verificationData}
+                moveVerifyStatus={moveVerifyStatus}
               />
               {isFullTier && (
                 <ModuleTables
-                  setTab={setOverviewTabIndex}
-                  tab={overviewTabIndex}
                   vmAddress={data.address}
-                  historiesCount={moduleTableCounts?.histories ?? undefined}
                   moduleName={data.moduleName}
+                  txsCount={moduleTableCounts?.txs ?? undefined}
+                  historiesCount={moduleTableCounts?.histories ?? undefined}
+                  relatedProposalsCount={
+                    moduleTableCounts?.proposals ?? undefined
+                  }
+                  tab={overviewTabIndex}
+                  setTab={setOverviewTabIndex}
                   onViewMore={(nextTab: ModuleTablesTabIndex) => {
                     handleTabChange(TabIndex.TxsHistories)();
                     setTableTabIndex(nextTab);
                   }}
-                  relatedProposalsCount={
-                    moduleTableCounts?.proposals ?? undefined
-                  }
-                  txsCount={moduleTableCounts?.txs ?? undefined}
                 />
               )}
             </Flex>
             <UserDocsLink
-              cta="Read more about Module"
               title="What is a move module?"
+              cta="Read more about Module"
               href="move/modules/detail-page"
             />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleFunctions
               address={data.address}
-              executeFns={data.executeFunctions}
-              fns={data.parsedAbi.exposed_functions}
-              typeTab={type}
-              viewFns={data.viewFunctions}
               moduleName={data.moduleName}
+              fns={data.parsedAbi.exposed_functions}
+              viewFns={data.viewFunctions}
+              executeFns={data.executeFunctions}
+              typeTab={type}
             />
             <UserDocsLink
-              cta="Read more about View and Execute Functions"
               title="What is Module functions?"
+              cta="Read more about View and Execute Functions"
               href="move/modules/detail-page#functions"
             />
           </TabPanel>
           {isFullTier && (
             <TabPanel p={0}>
               <ModuleTables
-                setTab={setTableTabIndex}
-                tab={tableTabIndex}
                 vmAddress={data.address}
-                historiesCount={moduleTableCounts?.histories ?? undefined}
                 moduleName={data.moduleName}
+                txsCount={moduleTableCounts?.txs ?? undefined}
+                historiesCount={moduleTableCounts?.histories ?? undefined}
                 relatedProposalsCount={
                   moduleTableCounts?.proposals ?? undefined
                 }
-                txsCount={moduleTableCounts?.txs ?? undefined}
+                tab={tableTabIndex}
+                setTab={setTableTabIndex}
               />
               <UserDocsLink
-                cta="Read more about transaction in module"
                 title="What is Module Transaction?"
+                cta="Read more about transaction in module"
                 href="move/modules/detail-page#transactions-histories"
               />
             </TabPanel>
@@ -277,8 +277,8 @@ const ModuleDetailsBody = ({
           <TabPanel p={0}>
             <ModuleStructs structs={data.parsedAbi.structs} />
             <UserDocsLink
-              cta="Read more about struct in module"
               title="What is Module Struct?"
+              cta="Read more about struct in module"
               href="move/modules/detail-page#structs"
             />
           </TabPanel>

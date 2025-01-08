@@ -6,34 +6,34 @@ import { formatPrice } from "lib/utils";
 
 interface TotalValueProps {
   address: BechAddr;
-  isCompact?: boolean;
   label?: string;
+  isCompact?: boolean;
 }
 export const TotalValue = ({
   address,
-  isCompact = false,
   label = "Total Account Value",
+  isCompact = false,
 }: TotalValueProps) => {
-  const { isLoading, totalAccountValue } = useAccountTotalValue(address);
+  const { totalAccountValue, isLoading } = useAccountTotalValue(address);
   return (
     <Flex
-      minW="200px"
       p={isCompact ? 3 : 4}
+      direction="column"
       border="1px solid"
       borderColor="gray.700"
       borderRadius={8}
-      direction="column"
+      minW="200px"
     >
-      <Text variant="body2" color="text.dark" fontWeight={500}>
+      <Text variant="body2" fontWeight={500} color="text.dark">
         {label}
       </Text>
       {isLoading ? (
         <Skeleton
-          h={5}
           mt={1}
+          h={5}
           borderRadius={2}
-          endColor="gray.700"
           startColor="gray.500"
+          endColor="gray.700"
         />
       ) : (
         <Heading

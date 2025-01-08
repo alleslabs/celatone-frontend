@@ -13,6 +13,8 @@ export const BlockTxsTableSequencer = ({ height }: BlockTxsTableProps) => {
     <>
       <TableTitle title="Transactions" count={data?.length} />
       <TransactionsTable
+        transactions={data}
+        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant="empty"
@@ -20,11 +22,9 @@ export const BlockTxsTableSequencer = ({ height }: BlockTxsTableProps) => {
             withBorder
           />
         }
-        isLoading={isLoading}
-        showRelations={false}
         showSuccess
+        showRelations={false}
         showTimestamp={false}
-        transactions={data}
       />
     </>
   );

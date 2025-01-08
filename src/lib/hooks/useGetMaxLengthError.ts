@@ -3,36 +3,36 @@ import { useCallback } from "react";
 import { useCelatoneApp } from "lib/app-provider";
 
 type MaxLengthType =
-  | "account_desc"
   | "account_name"
+  | "account_desc"
+  | "proposal_title"
   | "code_name"
-  | "contract_desc"
   | "contract_name"
-  | "list_name"
-  | "proposal_title";
+  | "contract_desc"
+  | "list_name";
 
 export const useGetMaxLengthError = () => {
   const { constants } = useCelatoneApp();
   return useCallback(
     (currentLength: number, type: MaxLengthType) => {
       const maxLengthMap: Record<MaxLengthType, number> = {
-        account_desc: constants.maxAccountDescriptionLength,
         account_name: constants.maxAccountNameLength,
-        code_name: constants.maxCodeNameLength,
-        contract_desc: constants.maxContractDescriptionLength,
-        contract_name: constants.maxContractNameLength,
-        list_name: constants.maxListNameLength,
+        account_desc: constants.maxAccountDescriptionLength,
         proposal_title: constants.maxProposalTitleLength,
+        code_name: constants.maxCodeNameLength,
+        contract_name: constants.maxContractNameLength,
+        contract_desc: constants.maxContractDescriptionLength,
+        list_name: constants.maxListNameLength,
       };
 
       const fieldMap: Record<MaxLengthType, string> = {
-        account_desc: "Account Description",
         account_name: "Account Name",
-        code_name: "Code name",
-        contract_desc: "Contract description",
-        contract_name: "Contract name",
-        list_name: "List name",
+        account_desc: "Account Description",
         proposal_title: "Proposal title",
+        code_name: "Code name",
+        contract_name: "Contract name",
+        contract_desc: "Contract description",
+        list_name: "List name",
       };
 
       const maxLength = maxLengthMap[type] ?? 0;

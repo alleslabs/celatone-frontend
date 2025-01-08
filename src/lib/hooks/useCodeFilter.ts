@@ -6,8 +6,8 @@ import { resolvePermission } from "lib/utils";
 
 export type PermissionFilterValue =
   | "all"
-  | "with-proposal"
-  | "without-proposal";
+  | "without-proposal"
+  | "with-proposal";
 
 export const useCodePermissionFilter = (filterValue: PermissionFilterValue) => {
   const { address } = useCurrentChain();

@@ -35,17 +35,17 @@ const MoveCodeSnippet = dynamic(
 );
 
 export const ViewArea = ({
-  fn,
   moduleAddress,
   moduleName,
+  fn,
 }: {
-  fn: ExposedFunction;
   moduleAddress: HexAddr;
   moduleName: string;
+  fn: ExposedFunction;
 }) => {
   const [abiData, setAbiData] = useState<AbiFormData>({
-    args: getAbiInitialData(fn.params.length),
     typeArgs: getAbiInitialData(fn.generic_type_params.length),
+    args: getAbiInitialData(fn.params.length),
   });
   const [abiErrors, setAbiErrors] = useState<[string, string][]>([
     ["form", "initial"],
@@ -54,16 +54,16 @@ export const ViewArea = ({
   const [error, setError] = useState<Option<string>>(undefined);
 
   const {
+    refetch,
     isFetching: queryFetching,
     isRefetching: queryRefetching,
-    refetch,
   } = useFunctionView({
-    abiData,
-    fn,
     moduleAddress,
     moduleName,
-    onError: (err) => setError(err.response?.data.message || DEFAULT_RPC_ERROR),
+    fn,
+    abiData,
     onSuccess: (data) => setRes(JSON.parse(data)),
+    onError: (err) => setError(err.response?.data.message || DEFAULT_RPC_ERROR),
   });
 
   const handleQuery = () => {
@@ -76,7 +76,7 @@ export const ViewArea = ({
     Object.values(abiData.typeArgs).some((v) => !v.length) || !!abiErrors.length
   );
   return (
-    <Grid gap={6} w="full" templateColumns={{ base: "1fr", md: "1fr 1fr" }}>
+    <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={6} w="full">
       <GridItem>
         <AbiForm
           fn={fn}
@@ -86,34 +86,34 @@ export const ViewArea = ({
         />
         <Flex align="center" justify="space-between" mt={4}>
           <MoveCodeSnippet
-            abiData={abiData}
-            fn={fn}
-            type="view"
             moduleAddress={moduleAddress}
             moduleName={moduleName}
+            fn={fn}
+            abiData={abiData}
+            type="view"
           />
           <SubmitButton
-            isDisabled={isButtonDisabled}
             text="View"
             isLoading={isLoading}
             onSubmit={() => {
               track(AmpEvent.ACTION_MOVE_VIEW);
               handleQuery();
             }}
+            isDisabled={isButtonDisabled}
           />
         </Flex>
       </GridItem>
       <GridItem>
-        <Flex gap={4} direction="column">
-          <Heading as="h6" variant="h6" color="text.main">
+        <Flex direction="column" gap={4}>
+          <Heading variant="h6" as="h6" color="text.main">
             Return
           </Heading>
           {error && (
-            <Alert alignItems="center" gap={4} variant="error">
+            <Alert variant="error" alignItems="center" gap={4}>
               <CustomIcon
                 name="alert-triangle-solid"
-                boxSize={4}
                 color="error.main"
+                boxSize={4}
               />
               <AlertDescription wordBreak="break-word">
                 {error}
@@ -122,12 +122,12 @@ export const ViewArea = ({
           )}
           {res === undefined ? (
             <Flex
+              direction="column"
               alignItems="center"
-              bg="gray.900"
               gap={4}
               p="24px 8px"
               borderRadius="8px"
-              direction="column"
+              bg="gray.900"
             >
               {isLoading && <Spinner size="xl" />}
               <Text variant="body2" color="text.dark">
@@ -138,8 +138,8 @@ export const ViewArea = ({
             </Flex>
           ) : (
             <JsonReadOnly
-              text={jsonPrettify(JSON.stringify(res))}
               amptrackSection="Module View Result"
+              text={jsonPrettify(JSON.stringify(res))}
               canCopy
             />
           )}

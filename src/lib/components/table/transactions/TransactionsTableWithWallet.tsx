@@ -5,33 +5,33 @@ import type { Option, Transaction } from "lib/types";
 import { TransactionsTable } from "./TransactionsTable";
 
 interface TransactionsTableWithWalletProps {
-  emptyState: JSX.Element;
+  transactions: Option<Transaction[]>;
   isLoading: boolean;
+  emptyState: JSX.Element;
   showActions: boolean;
   showRelations: boolean;
-  transactions: Option<Transaction[]>;
 }
 
 export const TransactionsTableWithWallet = ({
-  emptyState,
+  transactions,
   isLoading,
+  emptyState,
   showActions,
   showRelations,
-  transactions,
 }: TransactionsTableWithWalletProps) => {
   const { address } = useCurrentChain();
   return !address ? (
     <DisconnectedState
-      helperText="Past transactions will display here."
       text="to see your past transactions."
+      helperText="Past transactions will display here."
     />
   ) : (
     <TransactionsTable
-      emptyState={emptyState}
+      transactions={transactions}
       isLoading={isLoading}
+      emptyState={emptyState}
       showAction={showActions}
       showRelations={showRelations}
-      transactions={transactions}
     />
   );
 };

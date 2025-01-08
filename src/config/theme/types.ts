@@ -1,96 +1,34 @@
-export type ComponentConfig = {
-  button: {
-    outlinePrimary: {
-      activeBackground: string;
-      borderColor: string;
-      color: string;
-      disabledBorderColor: string;
-      disabledColor: string;
-      hoverBackground: string;
-    };
-    primary: {
-      activeBackground: string;
-      background: string;
-      color: string;
-      disabledBackground: string;
-      disabledColor: string;
-      hoverBackground: string;
-    };
-  };
-  proposalChip: {
-    cancelled: {
-      bg: string;
-    };
-    depositFailed: {
-      bg: string;
-    };
-    depositPeriod: {
-      bg: string;
-    };
-    failed: {
-      bg: string;
-    };
-    passed: {
-      bg: string;
-    };
-    rejected: {
-      bg: string;
-    };
-    votingPeriod: {
-      bg: string;
-    };
-  };
-  recentBlocks: {
-    missed: string;
-    proposed: string;
-    signed: string;
-  };
-  stepper: {
-    active: { bg: string; color: string };
-    disabled: { bg: string; color: string };
-  };
-  tag: {
-    related: {
-      bg: string;
-      color: string;
-    };
-    signer: {
-      bg: string;
-      color: string;
-    };
-  };
-  voteParticipations: {
-    didNotVote: string;
-    voted: string;
-    votedAbstain: string;
-  };
-};
-
 export type ThemeConfig = {
   branding: {
-    favicon: string;
     logo: string;
+    favicon: string;
     seo: {
       appName: string;
+      title: string;
       description: string;
       image: string;
-      title: string;
       twitter: {
-        cardType: string;
         handle: string;
+        cardType: string;
       };
     };
   };
   colors: {
-    background: {
+    primary: {
       main: string;
-      overlay: string;
-    };
-    error: {
-      background: string;
-      dark: string;
       light: string;
+      lighter: string;
+      dark: string;
+      darker: string;
+      background: string;
+    };
+    secondary: {
       main: string;
+      light: string;
+      lighter: string;
+      dark: string;
+      darker: string;
+      background: string;
     };
     gray: {
       100: string;
@@ -101,61 +39,123 @@ export type ThemeConfig = {
       800: string;
       900: string;
     };
-    primary: {
-      background: string;
-      dark: string;
-      darker: string;
-      light: string;
-      lighter: string;
-      main: string;
-    };
-    secondary: {
-      background: string;
-      dark: string;
-      darker: string;
-      light: string;
-      lighter: string;
-      main: string;
-    };
-    success: {
-      background: string;
-      dark: string;
-      light: string;
-      main: string;
-    };
     text: {
+      main: string;
       dark: string;
       disabled: string;
+    };
+    background: {
       main: string;
+      overlay: string;
+    };
+    success: {
+      main: string;
+      light: string;
+      dark: string;
+      background: string;
+    };
+    error: {
+      main: string;
+      light: string;
+      dark: string;
+      background: string;
     };
     warning: {
-      background: string;
-      dark: string;
-      light: string;
       main: string;
+      light: string;
+      dark: string;
+      background: string;
     };
-  };
-  footer?: {
-    description: string;
-    iconStyle: "regular" | "rounded";
-    logo: string;
   };
   illustration: {
     "404": string;
-    disconnected: string;
     error: string;
-    searchEmpty: string;
     searchNotFound: string;
+    searchEmpty: string;
+    disconnected: string;
   };
   jsonTheme: "monokai" | "one_dark" | "pastel_on_dark";
+  footer?: {
+    logo: string;
+    description: string;
+    iconStyle: "rounded" | "regular";
+  };
   socialMedia?: {
-    discord?: string;
-    github?: string;
-    linkedin?: string;
-    medium?: string;
-    reddit?: string;
-    telegram?: string;
-    twitter?: string;
     website?: string;
+    github?: string;
+    discord?: string;
+    twitter?: string;
+    medium?: string;
+    telegram?: string;
+    reddit?: string;
+    linkedin?: string;
+  };
+};
+
+export type ComponentConfig = {
+  button: {
+    primary: {
+      background: string;
+      color: string;
+      disabledBackground: string;
+      disabledColor: string;
+      hoverBackground: string;
+      activeBackground: string;
+    };
+    outlinePrimary: {
+      borderColor: string;
+      color: string;
+      disabledBorderColor: string;
+      disabledColor: string;
+      hoverBackground: string;
+      activeBackground: string;
+    };
+  };
+  proposalChip: {
+    depositPeriod: {
+      bg: string;
+    };
+    votingPeriod: {
+      bg: string;
+    };
+    failed: {
+      bg: string;
+    };
+    rejected: {
+      bg: string;
+    };
+    passed: {
+      bg: string;
+    };
+    cancelled: {
+      bg: string;
+    };
+    depositFailed: {
+      bg: string;
+    };
+  };
+  stepper: {
+    active: { bg: string; color: string };
+    disabled: { bg: string; color: string };
+  };
+  tag: {
+    signer: {
+      bg: string;
+      color: string;
+    };
+    related: {
+      bg: string;
+      color: string;
+    };
+  };
+  voteParticipations: {
+    voted: string;
+    votedAbstain: string;
+    didNotVote: string;
+  };
+  recentBlocks: {
+    signed: string;
+    proposed: string;
+    missed: string;
   };
 };

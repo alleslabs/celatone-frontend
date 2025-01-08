@@ -15,23 +15,23 @@ import type { Nft } from "lib/services/types";
 import type { Option } from "lib/types";
 
 interface CollectionSuppliesOverviewProps {
-  isLoading: boolean;
-  nfts: Option<Nft[]>;
-  onViewMore: () => void;
   totalCount: number;
+  nfts: Option<Nft[]>;
+  isLoading: boolean;
+  onViewMore: () => void;
 }
 
 export const CollectionSuppliesOverviewBody = ({
-  isLoading,
-  nfts,
-  onViewMore,
   totalCount,
+  nfts,
+  isLoading,
+  onViewMore,
 }: CollectionSuppliesOverviewProps) => {
   const displayedNftCount =
     useBreakpointValue({
       "2xl": 6,
-      sm: 4,
       xl: 5,
+      sm: 4,
     }) ?? 4;
 
   const nftsInfo = nfts?.slice(0, displayedNftCount);
@@ -43,15 +43,15 @@ export const CollectionSuppliesOverviewBody = ({
     );
   return (
     <>
-      <SimpleGrid gap={6} my={8} columns={{ "2xl": 6, base: 2, lg: 4, xl: 5 }}>
+      <SimpleGrid gap={6} columns={{ base: 2, lg: 4, xl: 5, "2xl": 6 }} my={8}>
         {nftsInfo.map((nft) => (
           <GridItem key={nft.tokenId + nft.uri}>
             <NftCard
-              nftAddress={nft.nftAddress}
               uri={nft.uri}
-              collectionAddress={nft.collectionAddress}
-              collectionName={nft.collectionName}
               tokenId={nft.tokenId}
+              collectionName={nft.collectionName}
+              collectionAddress={nft.collectionAddress}
+              nftAddress={nft.nftAddress}
             />
           </GridItem>
         ))}
@@ -62,10 +62,10 @@ export const CollectionSuppliesOverviewBody = ({
 };
 
 export const CollectionSuppliesOverview = ({
-  isLoading,
-  nfts,
-  onViewMore,
   totalCount,
+  nfts,
+  isLoading,
+  onViewMore,
 }: CollectionSuppliesOverviewProps) => (
   <Flex direction="column">
     <Flex align="center" gap={2}>
@@ -75,10 +75,10 @@ export const CollectionSuppliesOverview = ({
       <Badge>{totalCount}</Badge>
     </Flex>
     <CollectionSuppliesOverviewBody
+      totalCount={totalCount}
       nfts={nfts}
       isLoading={isLoading}
       onViewMore={onViewMore}
-      totalCount={totalCount}
     />
   </Flex>
 );

@@ -56,7 +56,7 @@ const TxDetailsBody = ({ txHash }: { txHash: string }) => {
       <CelatoneSeo pageName={`TxHash – ${truncate(data?.txhash)}`} />
       <Breadcrumb
         items={[
-          { href: "/txs", text: "Transactions" },
+          { text: "Transactions", href: "/txs" },
           { text: truncate(data?.txhash) },
         ]}
       />
@@ -64,15 +64,15 @@ const TxDetailsBody = ({ txHash }: { txHash: string }) => {
         <>
           <TxHeader mt={2} txData={data} />
           {isMobile && <TxInfoMobile txData={data} />}
-          <Flex gap={4} justify="space-between" my={{ base: 0, md: 12 }}>
+          <Flex my={{ base: 0, md: 12 }} gap={4} justify="space-between">
             {!isMobile && <TxInfo txData={data} />}
-            <MessageSection relatedEvmTxHash={relatedEvmTxHash} txData={data} />
+            <MessageSection txData={data} relatedEvmTxHash={relatedEvmTxHash} />
           </Flex>
         </>
       ) : (
         <EmptyState
-          heading="Transaction does not exist"
           imageVariant="not-found"
+          heading="Transaction does not exist"
           message="Please check your input or make sure you have selected the correct network."
         />
       )}

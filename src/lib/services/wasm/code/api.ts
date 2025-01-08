@@ -19,9 +19,9 @@ export const getCodes = async (
   axios
     .get(`${endpoint}`, {
       params: {
-        address,
         limit,
         offset,
+        address,
         permission,
       },
     })

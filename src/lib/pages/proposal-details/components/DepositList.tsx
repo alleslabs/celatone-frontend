@@ -8,13 +8,13 @@ import type { ProposalDeposit } from "lib/types";
 import { DepositAmounts } from "./DepositAmounts";
 
 interface DepositListProps {
-  isDepositsLoading: boolean;
   proposalDeposits: ProposalDeposit[];
+  isDepositsLoading: boolean;
 }
 
 export const DepositList = ({
-  isDepositsLoading,
   proposalDeposits,
+  isDepositsLoading,
 }: DepositListProps) => {
   const isMobile = useMobile();
 
@@ -29,8 +29,8 @@ export const DepositList = ({
           borderY="1px solid var(--chakra-colors-gray-700)"
         >
           <ExplorerLink
-            type="user_address"
             value={deposit.depositor}
+            type="user_address"
             showCopyOnHover={!isMobile}
           />
           <DepositAmounts deposit={deposit} />

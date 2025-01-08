@@ -6,19 +6,19 @@ import type { PoolData } from "lib/types";
 import { PoolType } from "lib/types";
 
 interface PoolHeaderProps {
-  isSupported: PoolData["isSupported"];
   poolType: PoolData["type"];
+  isSupported: PoolData["isSupported"];
   templateColumns: GridProps["templateColumns"];
 }
 
 export const PoolAssetsTableHeader = ({
-  isSupported,
   poolType,
+  isSupported,
   templateColumns,
 }: PoolHeaderProps) => (
   <Grid
-    sx={{ "> div": { color: "text.dark" } }}
     templateColumns={templateColumns}
+    sx={{ "> div": { color: "text.dark" } }}
   >
     <TableHeader>Asset</TableHeader>
     {poolType !== PoolType.COSMWASM && (

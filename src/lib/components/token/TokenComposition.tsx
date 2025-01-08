@@ -31,7 +31,7 @@ export const TokenComposition = ({
             token.poolInfo.coinA.symbol
           )}
         </Text>
-        <Text mx={1} variant="body2">
+        <Text variant="body2" mx={1}>
           +
         </Text>
         <Text variant="body2">
@@ -49,7 +49,7 @@ export const TokenComposition = ({
       </Flex>
     ) : (
       <Text variant="body2">
-        <Text as="span" mr={1} fontWeight={700}>
+        <Text as="span" fontWeight={700} mr={1}>
           {formatUTokenWithPrecision(token.amount, token.precision ?? 0)}
         </Text>
         {getTokenLabel(token.denom, token.symbol)}

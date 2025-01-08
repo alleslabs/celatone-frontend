@@ -13,23 +13,23 @@ import { useCodeStore } from "lib/providers/store";
 import type { CodeInfo } from "lib/types";
 
 interface CodeDetailsTemplateModalProps {
-  codeInfo: CodeInfo;
-  helperText?: string;
-  icon?: IconKeys;
-  isNewCode: boolean;
-  mainBtnTitle: string;
   title: string;
+  helperText?: string;
+  mainBtnTitle: string;
+  isNewCode: boolean;
+  codeInfo: CodeInfo;
   triggerElement: JSX.Element;
+  icon?: IconKeys;
 }
 
 export const CodeDetailsTemplateModal = ({
-  codeInfo,
-  helperText,
-  icon = "bookmark-solid",
-  isNewCode,
-  mainBtnTitle,
   title,
+  helperText,
+  mainBtnTitle,
+  isNewCode,
+  codeInfo,
   triggerElement,
+  icon = "bookmark-solid",
 }: CodeDetailsTemplateModalProps) => {
   const { constants } = useCelatoneApp();
   const { saveNewCode, updateCodeInfo } = useCodeStore();
@@ -52,12 +52,12 @@ export const CodeDetailsTemplateModal = ({
 
     // TODO: abstract toast to template later
     toast({
+      title,
+      status: "success",
       duration: 5000,
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       isClosable: false,
       position: "bottom-right",
-      status: "success",
-      title,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   }, [
     codeInfo.id,
@@ -77,31 +77,33 @@ export const CodeDetailsTemplateModal = ({
 
   return (
     <ActionModal
-      mainBtnTitle={mainBtnTitle}
       title={title}
       trigger={triggerElement}
+      icon={icon}
+      mainBtnTitle={mainBtnTitle}
       closeOnOverlayClick={false}
+      mainAction={handleAction}
       headerContent={
-        <Flex gap={2} direction="column">
+        <Flex direction="column" gap={2}>
           {helperText && (
-            <Text mt={6} variant="body1">
+            <Text variant="body1" mt={6}>
               {helperText}
             </Text>
           )}
           <Flex align="center" mt={4}>
-            <Text variant="body2" w="30%" fontWeight={700}>
+            <Text variant="body2" fontWeight={700} w="30%">
               Code ID
             </Text>
             <ExplorerLink type="code_id" value={codeInfo.id.toString()} />
           </Flex>
           <Flex align="center">
-            <Text variant="body2" w="30%" fontWeight={700}>
+            <Text variant="body2" fontWeight={700} w="30%">
               Uploader
             </Text>
             <ExplorerLink type={uploaderType} value={codeInfo.uploader} />
           </Flex>
           <Flex align="center">
-            <Text variant="body2" w="30%" fontWeight={700}>
+            <Text variant="body2" fontWeight={700} w="30%">
               Instantiate Permission
             </Text>
             <PermissionChip
@@ -111,18 +113,16 @@ export const CodeDetailsTemplateModal = ({
           </Flex>
         </Flex>
       }
-      icon={icon}
-      mainAction={handleAction}
     >
       <TextInput
-        helperText="Fill in code name to define its use as a reminder"
-        label="Code Name"
-        maxLength={constants.maxCodeNameLength}
+        variant="fixed-floating"
+        value={name}
         setInputState={setName}
         size="lg"
-        value={name}
-        variant="fixed-floating"
+        helperText="Fill in code name to define its use as a reminder"
+        label="Code Name"
         labelBgColor="gray.900"
+        maxLength={constants.maxCodeNameLength}
       />
     </ActionModal>
   );

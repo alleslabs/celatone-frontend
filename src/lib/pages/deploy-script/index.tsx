@@ -22,15 +22,15 @@ import { ScriptInput } from "./components/ScriptInput";
 import { UploadScriptCard } from "./components/UploadScriptCard";
 
 export interface FileState {
+  file: Option<File>;
   base64File: string;
   decodeRes: Option<ExposedFunction>;
-  file: Option<File>;
 }
 
 const DEFAULT_FILE_STATE: FileState = {
+  file: undefined,
   base64File: "",
   decodeRes: undefined,
-  file: undefined,
 };
 
 export const DeployScript = () => {
@@ -48,8 +48,8 @@ export const DeployScript = () => {
   const [processing, setProcessing] = useState(false);
   // Form State
   const [inputData, setInputData] = useState<AbiFormData>({
-    args: {},
     typeArgs: {},
+    args: {},
   });
   const [abiErrors, setAbiErrors] = useState<[string, string][]>([
     ["form", "initial"],
@@ -77,7 +77,7 @@ export const DeployScript = () => {
     setFileState(DEFAULT_FILE_STATE);
     setEstimatedFee(undefined);
     setSimulateError("");
-    setInputData({ args: {}, typeArgs: {} });
+    setInputData({ typeArgs: {}, args: {} });
     setAbiErrors([["form", "initial"]]);
   }, []);
 
@@ -89,20 +89,22 @@ export const DeployScript = () => {
       fileState.decodeRes,
       inputData
     ),
-    onError: (e) => {
-      setSimulateError(e.message);
-      setEstimatedFee(undefined);
-    },
     onSuccess: (gasRes) => {
       if (gasRes) {
         setEstimatedFee(fabricateFee(gasRes));
         setSimulateError("");
       } else setEstimatedFee(undefined);
     },
+    onError: (e) => {
+      setSimulateError(e.message);
+      setEstimatedFee(undefined);
+    },
   });
 
   const proceed = useCallback(async () => {
     const stream = await deployScriptTx({
+      onTxSucceed: () => setProcessing(false),
+      onTxFailed: () => setProcessing(false),
       estimatedFee,
       messages: composeScriptMsg(
         address,
@@ -110,8 +112,6 @@ export const DeployScript = () => {
         fileState.decodeRes,
         inputData
       ),
-      onTxFailed: () => setProcessing(false),
-      onTxSucceed: () => setProcessing(false),
     });
     if (stream) {
       setProcessing(true);
@@ -140,48 +140,48 @@ export const DeployScript = () => {
         </Heading>
         <div
           style={{
-            color: "var(--chakra-colors-text-dark)",
-            marginBottom: "48px",
             marginTop: "16px",
+            marginBottom: "48px",
             textAlign: "center",
+            color: "var(--chakra-colors-text-dark)",
           }}
         >
           Upload a .mv file to deploy one-time use Script which execute
           messages.{" "}
           <UserDocsLink
-            cta="Read more about Deploy Script"
-            isInline
-            mt={0}
             isDevTool
+            mt={0}
+            cta="Read more about Deploy Script"
             href="initia/move/deploy-script"
+            isInline
           />
         </div>
         <ConnectWalletAlert
-          mb={12}
           subtitle="You need to connect your wallet to perform this action"
+          mb={12}
         />
-        <Heading alignSelf="start" as="h6" mb={6} variant="h6">
+        <Heading as="h6" variant="h6" mb={6} alignSelf="start">
           Upload .mv file
         </Heading>
         <UploadScriptCard
           fileState={fileState}
+          removeFile={resetState}
           setFile={(
             file: Option<File>,
             base64File: string,
             decodeRes: Option<ExposedFunction>
           ) => {
-            setFileState({ base64File, decodeRes, file });
+            setFileState({ file, base64File, decodeRes });
             if (decodeRes)
               setInputData({
-                args: getAbiInitialData(decodeRes.params.length),
                 typeArgs: getAbiInitialData(
                   decodeRes.generic_type_params.length
                 ),
+                args: getAbiInitialData(decodeRes.params.length),
               });
           }}
-          removeFile={resetState}
         />
-        <Heading alignSelf="start" as="h6" mb={4} mt={8} variant="h6">
+        <Heading as="h6" variant="h6" mt={8} mb={4} alignSelf="start">
           Script input
         </Heading>
         <ScriptInput
@@ -191,12 +191,12 @@ export const DeployScript = () => {
           propsOnErrors={setAbiErrors}
         />
         <Flex
-          alignItems="center"
-          alignSelf="flex-start"
-          gap={1}
           mt={8}
-          color="text.dark"
           fontSize="14px"
+          color="text.dark"
+          alignSelf="flex-start"
+          alignItems="center"
+          gap={1}
         >
           <p>Transaction Fee:</p>
           <EstimatedFeeRender
@@ -206,19 +206,19 @@ export const DeployScript = () => {
         </Flex>
         {simulateError && (
           <ErrorMessageRender
-            alignSelf="flex-start"
-            mt={2}
             error={simulateError}
+            mt={2}
+            alignSelf="flex-start"
           />
         )}
       </ActionPageContainer>
       <Footer
+        isLoading={processing}
         disabled={!enableDeploy || Boolean(simulateError) || isSimulating}
         executeScript={() => {
           track(AmpEvent.ACTION_EXECUTE_SCRIPT);
           proceed();
         }}
-        isLoading={processing}
       />
     </>
   );

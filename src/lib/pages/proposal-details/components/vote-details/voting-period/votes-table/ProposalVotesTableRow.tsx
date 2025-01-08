@@ -9,15 +9,15 @@ import type { ProposalVote } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 interface ProposalVotesTableRowProps {
-  fullVersion: boolean;
   proposalVote: ProposalVote;
   templateColumns: string;
+  fullVersion: boolean;
 }
 
 export const ProposalVotesTableRow = ({
-  fullVersion,
   proposalVote,
   templateColumns,
+  fullVersion,
 }: ProposalVotesTableRowProps) => {
   const isMobile = useMobile();
   const openTxTab = useOpenTxTab("tx-page");
@@ -26,14 +26,14 @@ export const ProposalVotesTableRow = ({
     return (
       <Grid
         className="copier-wrapper"
-        minW="min-content"
         templateColumns={templateColumns}
+        minW="min-content"
       >
         <TableRow pl={0}>
           <Voter proposalVote={proposalVote} />
         </TableRow>
-        <TableRow pr={0} justifyContent="flex-end">
-          <Flex alignItems="flex-end" direction="column">
+        <TableRow justifyContent="flex-end" pr={0}>
+          <Flex direction="column" alignItems="flex-end">
             {proposalVote.timestamp ? (
               <Text variant="body3" color="gray.500" textColor="text.dark">
                 {dateFromNow(proposalVote.timestamp)}
@@ -43,10 +43,10 @@ export const ProposalVotesTableRow = ({
             )}
             {proposalVote.txHash ? (
               <Button
-                disabled={!proposalVote.txHash}
+                variant="unstyled"
                 minW="unset"
                 size="sm"
-                variant="unstyled"
+                disabled={!proposalVote.txHash}
                 color="primary.main"
                 onClick={() =>
                   proposalVote.txHash && openTxTab(proposalVote.txHash)
@@ -63,17 +63,17 @@ export const ProposalVotesTableRow = ({
     );
 
   return (
-    <Grid minW="min-content" templateColumns={templateColumns}>
+    <Grid templateColumns={templateColumns} minW="min-content">
       <TableRow>
         <Voter proposalVote={proposalVote} />
       </TableRow>
       <TableRow>
         <Answer
-          abstain={proposalVote.abstain}
-          yes={proposalVote.yes}
           isVoteWeighted={proposalVote.isVoteWeighted}
+          yes={proposalVote.yes}
           no={proposalVote.no}
           noWithVeto={proposalVote.noWithVeto}
+          abstain={proposalVote.abstain}
         />
       </TableRow>
       {fullVersion && (
@@ -82,7 +82,7 @@ export const ProposalVotesTableRow = ({
             {proposalVote.timestamp ? (
               <Flex direction="column">
                 <Text variant="body3">{formatUTC(proposalVote.timestamp)}</Text>
-                <Text mt="2px" variant="body3" color="text.dark">
+                <Text variant="body3" color="text.dark" mt="2px">
                   ({dateFromNow(proposalVote.timestamp)})
                 </Text>
               </Flex>

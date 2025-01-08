@@ -14,8 +14,8 @@ const zResourcesResponseItem = z
 export type ResourceResponseItem = z.infer<typeof zResourcesResponseItem>;
 
 export const zResourcesResponseLcd = z.object({
-  pagination: zPagination,
   resources: z.array(zResourcesResponseItem),
+  pagination: zPagination,
 });
 
 export const zResourcesResponse = z.object({

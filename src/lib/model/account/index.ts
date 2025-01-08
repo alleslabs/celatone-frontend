@@ -26,24 +26,24 @@ export const useAccountTotalValue = (address: BechAddr) => {
 
   const gov = useGovConfig({ shouldRedirect: false });
   const {
-    isLoading: isLoadingTotalSupportedAssetsValue,
     totalSupportedAssetsValue = defaultValue,
+    isLoading: isLoadingTotalSupportedAssetsValue,
   } = useBalanceInfos(address);
   const {
-    isCommissionsLoading,
     isLoading,
-    isRewardsLoading,
-    isTotalBondedLoading,
     stakingParams,
+    isTotalBondedLoading,
     totalBonded,
-    totalCommissions,
+    isRewardsLoading,
     totalRewards,
+    isCommissionsLoading,
+    totalCommissions,
   } = useAccountDelegationInfos(address);
 
   if (!gov.enabled)
     return {
-      isLoading: false,
       totalAccountValue: totalSupportedAssetsValue,
+      isLoading: false,
     };
 
   if (
@@ -53,18 +53,18 @@ export const useAccountTotalValue = (address: BechAddr) => {
     isCommissionsLoading ||
     isLoadingTotalSupportedAssetsValue
   )
-    return { isLoading: true, totalAccountValue: undefined };
+    return { totalAccountValue: undefined, isLoading: true };
 
   if (!stakingParams || !totalBonded || !totalRewards || !totalCommissions)
-    return { isLoading: false, totalAccountValue: undefined };
+    return { totalAccountValue: undefined, isLoading: false };
 
   return {
-    isLoading: false,
     totalAccountValue: totalSupportedAssetsValue
       .add(totalValueTokenWithValue(totalBonded, defaultValue))
       .add(totalValueTokenWithValue(totalRewards, defaultValue))
       .add(
         totalValueTokenWithValue(totalCommissions, defaultValue)
       ) as USD<Big>,
+    isLoading: false,
   };
 };

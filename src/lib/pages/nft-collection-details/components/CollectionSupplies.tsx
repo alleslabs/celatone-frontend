@@ -25,17 +25,17 @@ export const CollectionSupplies = ({
   const debouncedSearch = useDebounce(searchKeyword);
 
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
+    currentPage,
     setCurrentPage,
+    pageSize,
     setPageSize,
+    offset,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
   const { data: nfts, isLoading } = useNfts(
@@ -48,16 +48,18 @@ export const CollectionSupplies = ({
   useEffect(() => setCurrentPage(1), [debouncedSearch, setCurrentPage]);
 
   return (
-    <Box gap="40px" mt="32px">
+    <Box mt="32px" gap="40px">
       <InputWithIcon
-        size={{ base: "md", md: "lg" }}
+        placeholder="Search with Token ID or NFT VM Address"
         value={searchKeyword}
-        amptrackSection="collection-supplies-tokenId-search"
         autoFocus={!isMobile}
         onChange={(e) => setSearchKeyword(e.target.value)}
-        placeholder="Search with Token ID or NFT VM Address"
+        size={{ base: "md", md: "lg" }}
+        amptrackSection="collection-supplies-tokenId-search"
       />
       <NftList
+        nfts={nfts?.items}
+        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant="not-found"
@@ -65,23 +67,21 @@ export const CollectionSupplies = ({
             withBorder
           />
         }
-        nfts={nfts?.items}
-        isLoading={isLoading}
         showCollection={false}
       />
       {nfts && nfts.items.length !== 0 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={searchKeyword ? nfts.items.length : totalSupply}
+          pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
           }}
-          totalData={searchKeyword ? nfts.items.length : totalSupply}
         />
       )}
     </Box>

@@ -12,19 +12,19 @@ import { SelectFunctionSection } from "./SelectFunctionSection";
 import { SelectModuleSection } from "./SelectModuleSection";
 
 interface ModuleSelectBodyProps {
-  closeModal: () => void;
-  handleModuleSelect: ModuleSelectFunction;
-  mode: DisplayMode;
-  modules: IndexedModule[];
   selectedAddress: SelectedAddress;
+  modules: IndexedModule[];
+  mode: DisplayMode;
+  handleModuleSelect: ModuleSelectFunction;
+  closeModal: () => void;
 }
 
 export const DrawerBodyDesktop = ({
-  closeModal,
-  handleModuleSelect,
+  selectedAddress,
   mode,
   modules,
-  selectedAddress,
+  handleModuleSelect,
+  closeModal,
 }: ModuleSelectBodyProps) => {
   const [selectedModule, setSelectedModule] = useState<IndexedModule>();
 
@@ -39,22 +39,22 @@ export const DrawerBodyDesktop = ({
     <Grid
       templateAreas={`"panel main""button button"`}
       columnGap={4}
-      overflow="hidden"
-      pointerEvents={mode === "input" ? "none" : undefined}
-      position="relative"
       rowGap={6}
       templateColumns="minmax(300px, 20%) 1fr"
       templateRows="1fr auto"
+      position="relative"
+      overflow="hidden"
+      pointerEvents={mode === "input" ? "none" : undefined}
     >
       {mode === "input" && (
         <Box
-          h="full"
-          w="full"
-          zIndex="overlay"
+          position="absolute"
+          pointerEvents="none"
           bgColor="background.overlay"
           opacity={0.8}
-          pointerEvents="none"
-          position="absolute"
+          w="full"
+          h="full"
+          zIndex="overlay"
         />
       )}
       <GridItem area="panel" overflow="hidden">
@@ -67,9 +67,9 @@ export const DrawerBodyDesktop = ({
       </GridItem>
       <SelectFunctionSection
         area="main"
-        closeModal={closeModal}
-        handleModuleSelect={handleModuleSelect}
         module={selectedModule}
+        handleModuleSelect={handleModuleSelect}
+        closeModal={closeModal}
       />
     </Grid>
   );

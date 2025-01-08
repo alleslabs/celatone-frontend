@@ -17,32 +17,32 @@ export const HomeLite = () => {
   const { data: latestHeight, isLoading } = useLatestBlockLcd();
 
   return (
-    <PageContainer alignItems="center" display="flex">
+    <PageContainer display="flex" alignItems="center">
       <Flex
         alignItems="center"
-        px={{ base: 4, md: 6, xl: 16 }}
+        justifyContent="center"
         w="full"
         direction="column"
-        justifyContent="center"
+        px={{ base: 4, md: 6, xl: 16 }}
       >
         <Flex
-          alignItems={{ base: "start", md: "center" }}
-          gap={{ base: 4, md: 0 }}
-          pb={6}
+          justifyContent="space-between"
           w="full"
+          pb={6}
           zIndex={1}
+          alignItems={{ base: "start", md: "center" }}
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: 4, md: 0 }}
           borderBottom={{ base: "1px solid", md: "0px" }}
           borderColor="gray.700"
-          direction={{ base: "column", md: "row" }}
-          justifyContent="space-between"
         >
           <Heading as="h4" variant="h4" color="primary.main">
             {prettyName}
           </Heading>
           <Flex
             alignItems={{ base: "start", md: "end" }}
-            gap={1}
             direction="column"
+            gap={1}
           >
             <Text variant="body2" color="text.dark">
               Latest Block Height
@@ -50,20 +50,20 @@ export const HomeLite = () => {
             {isLoading ? (
               <Spinner size="md" />
             ) : (
-              <Flex alignItems="center" gap={2} justifyContent="center">
+              <Flex gap={2} alignItems="center" justifyContent="center">
                 {latestHeight && (
                   <Flex
+                    w={2}
                     h={2}
+                    bgColor="success.main"
+                    borderRadius="16px"
                     sx={{
+                      animation: `pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
                       "@keyframes pulse": {
                         "0%, 100%": { opacity: 1 },
                         "50%": { opacity: 0.5 },
                       },
-                      animation: `pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
                     }}
-                    w={2}
-                    bgColor="success.main"
-                    borderRadius="16px"
                   />
                 )}
                 <Heading as="h5" variant="h5">
@@ -77,8 +77,8 @@ export const HomeLite = () => {
           <Flex gap={4} direction="column">
             {!isMobile && (
               <ConnectWalletAlert
-                subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."
                 title={`Connect wallet to start using ${theme.branding.seo.appName}`}
+                subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."
               />
             )}
             {isMobile ? (

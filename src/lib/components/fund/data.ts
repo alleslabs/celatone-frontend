@@ -12,5 +12,5 @@ export const ATTACH_FUNDS_OPTION = "attachFundsOption";
 /**
  * @remarks Default value for assets
  */
-export const defaultAsset = [{ amount: "", denom: "" }] as Coin[];
+export const defaultAsset = [{ denom: "", amount: "" }] as Coin[];
 export const defaultAssetJsonStr = jsonPrettify(JSON.stringify(defaultAsset));

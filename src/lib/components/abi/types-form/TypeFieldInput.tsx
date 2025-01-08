@@ -7,15 +7,15 @@ import type { Control } from "react-hook-form";
 import type { AbiFormData } from "lib/types";
 
 interface TypeFieldInputProps {
+  index: number;
   constraints: string[];
   control: Control<AbiFormData["typeArgs"]>;
-  index: number;
 }
 
 export const TypeFieldInput = ({
+  index,
   constraints,
   control,
-  index,
 }: TypeFieldInputProps) => {
   const [isEditted, setIsEditted] = useState(false);
 
@@ -26,11 +26,11 @@ export const TypeFieldInput = ({
     : "No ability";
 
   const {
-    field: { onChange, value, ...fieldProps },
-    fieldState: { error, isTouched },
+    field: { value, onChange, ...fieldProps },
+    fieldState: { isTouched, error },
   } = useController({
-    control,
     name: `${index}`,
+    control,
     rules: {
       required: true,
     },
@@ -40,23 +40,23 @@ export const TypeFieldInput = ({
   return (
     <FormControl isInvalid={isError} {...fieldProps}>
       <Flex
-        alignItems="center"
-        gap={2}
-        p="8px 16px"
         bgColor="gray.900"
         borderRadius="8px"
+        p="8px 16px"
+        gap={2}
+        alignItems="center"
       >
-        <Text variant="body1" w={7} fontWeight={700}>
+        <Text variant="body1" fontWeight={700} w={7}>
           {`T${index}:`}
         </Text>
         <Input
+          placeholder={placeholder}
           value={value}
           onChange={(e) => {
             const newValue = e.target.value;
             setIsEditted(true);
             onChange(newValue);
           }}
-          placeholder={placeholder}
         />
       </Flex>
     </FormControl>

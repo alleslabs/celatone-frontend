@@ -11,30 +11,30 @@ export const WasmVerifyAlert = ({ errorMsg }: WasmVerifyAlertProps) => {
   const icon = errorMsg ? "alert-triangle-solid" : "info-circle";
   return (
     <Alert
-      alignItems="flex-start"
-      gap={{ base: 2, md: 4 }}
-      mb={{ base: 4, md: 6 }}
       p={2}
       variant={variant}
+      gap={{ base: 2, md: 4 }}
+      mb={{ base: 4, md: 6 }}
+      alignItems="flex-start"
     >
       <CustomIcon name={icon} boxSize={4} color={`${variant}.main`} />
       <AlertDescription>
-        <Flex gap={1} direction="column">
+        <Flex direction="column" gap={1}>
           <Text
-            lineHeight="normal"
             variant="body2"
             color={`${variant}.main`}
             fontWeight={600}
+            lineHeight="normal"
           >
             {errorMsg
               ? "Verification failed"
               : "Verification is in progress and may take hours depending on code complexity."}
           </Text>
           <Text
-            lineHeight="normal"
             variant="body3"
             color={`${variant}.main`}
             wordBreak={errorMsg ? "break-all" : "break-word"}
+            lineHeight="normal"
           >
             {errorMsg ||
               "You can close this page and view the verification process on code details page"}

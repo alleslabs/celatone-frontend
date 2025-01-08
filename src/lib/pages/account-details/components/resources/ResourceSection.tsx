@@ -7,22 +7,22 @@ import { ResourceSectionBody } from "./ResourceSectionBody";
 
 interface ResourceSectionProps {
   address: BechAddr;
-  isLoading: boolean;
+  totalCount: Option<number>;
   resourcesByOwner: Option<ResourceGroupByAccount[]>;
+  isLoading: boolean;
   selectedAccountParam: Option<string>;
   selectedGroupNameParam: Option<string>;
-  totalCount: Option<number>;
 }
 
 export const ResourceSection = ({
   address,
-  isLoading,
+  totalCount,
   resourcesByOwner,
+  isLoading,
   selectedAccountParam,
   selectedGroupNameParam,
-  totalCount,
 }: ResourceSectionProps) => (
-  <Flex mt={8} direction="column">
+  <Flex direction="column" mt={8}>
     <TableTitle
       helperText="Resources stored in this account"
       title="Resources"
@@ -30,8 +30,8 @@ export const ResourceSection = ({
     />
     <ResourceSectionBody
       address={address}
-      isLoading={isLoading}
       resourcesByOwner={resourcesByOwner}
+      isLoading={isLoading}
       selectedAccountParam={selectedAccountParam}
       selectedGroupNameParam={selectedGroupNameParam}
     />

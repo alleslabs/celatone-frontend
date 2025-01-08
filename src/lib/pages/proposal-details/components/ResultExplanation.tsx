@@ -62,18 +62,18 @@ const QuorumRejected = () => (
 );
 
 export interface ResultExplanationProps {
-  isLoading: boolean;
-  params: Option<ProposalParams>;
   proposalData: ProposalData;
   votesInfo: Option<ProposalVotesInfo>;
+  params: Option<ProposalParams>;
+  isLoading: boolean;
 }
 
 // eslint-disable-next-line complexity
 export const ResultExplanation = ({
-  isLoading,
-  params,
   proposalData,
+  params,
   votesInfo,
+  isLoading,
 }: ResultExplanationProps) => {
   const gov = useGovConfig({ shouldRedirect: false });
   if (
@@ -104,14 +104,14 @@ export const ResultExplanation = ({
     );
 
   if (isLoading)
-    return <SkeletonText mt={1} spacing={4} noOfLines={3} skeletonHeight={2} />;
+    return <SkeletonText mt={1} noOfLines={3} spacing={4} skeletonHeight={2} />;
   if (!params || !votesInfo) return <ErrorFetchingProposalInfos />;
 
   const { minDeposit, quorum, threshold, vetoThreshold } = extractParams(
     params,
     proposalData.isExpedited
   );
-  const { noWithVetoTotalRatio, totalRatio, yesNonRatio } =
+  const { totalRatio, yesNonRatio, noWithVetoTotalRatio } =
     normalizeVotesInfo(votesInfo);
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD) {

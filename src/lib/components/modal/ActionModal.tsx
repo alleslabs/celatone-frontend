@@ -21,44 +21,44 @@ import { CustomIcon } from "../icon";
 import { trackUseOtherModal } from "lib/amplitude";
 
 export interface ActionModalProps {
-  buttonRemark?: string;
-  children?: ReactNode;
-  closeOnOverlayClick?: boolean;
-  disabledMain?: boolean;
-  headerContent?: ReactNode;
   icon?: IconKeys;
   iconColor?: string;
-  mainAction: () => void;
-  mainBtnTitle?: string;
-  mainVariant?: string;
-  noCloseButton?: boolean;
-  otherAction?: () => void;
-  otherBtnTitle?: string;
-  otherVariant?: string;
-  subtitle?: string;
   title: string;
+  subtitle?: string;
+  headerContent?: ReactNode;
   trigger?: ReactNode;
+  children?: ReactNode;
+  mainBtnTitle?: string;
+  mainAction: () => void;
+  mainVariant?: string;
+  disabledMain?: boolean;
+  otherBtnTitle?: string;
+  otherAction?: () => void;
+  otherVariant?: string;
+  noCloseButton?: boolean;
+  closeOnOverlayClick?: boolean;
+  buttonRemark?: string;
 }
 export function ActionModal({
-  buttonRemark,
-  children,
-  closeOnOverlayClick = true,
-  disabledMain = false,
-  headerContent,
   icon = "edit",
   iconColor = "gray.600",
-  mainAction,
-  mainBtnTitle = "Proceed",
-  mainVariant = "primary",
-  noCloseButton = false,
-  otherAction,
-  otherBtnTitle = "Cancel",
-  otherVariant = "outline-primary",
-  subtitle,
   title,
+  subtitle,
   trigger,
+  headerContent,
+  children,
+  mainBtnTitle = "Proceed",
+  mainAction,
+  mainVariant = "primary",
+  disabledMain = false,
+  otherBtnTitle = "Cancel",
+  otherAction,
+  otherVariant = "outline-primary",
+  noCloseButton = false,
+  closeOnOverlayClick = true,
+  buttonRemark,
 }: ActionModalProps) {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleOnMain = useCallback(() => {
     mainAction();
@@ -81,17 +81,17 @@ export function ActionModal({
         {trigger || <Button>Open {title} Modal</Button>}
       </Flex>
       <Modal
-        isCentered
         isOpen={isOpen}
-        closeOnOverlayClick={closeOnOverlayClick}
         onClose={handleOnOther}
+        closeOnOverlayClick={closeOnOverlayClick}
+        isCentered
       >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
             <Box w="full">
               <Flex alignItems="center" gap={3}>
-                <CustomIcon name={icon} boxSize={5} color={iconColor} />
+                <CustomIcon name={icon} color={iconColor} boxSize={5} />
                 <Heading
                   as="h5"
                   variant={{ base: "h6", md: "h5" }}
@@ -101,7 +101,7 @@ export function ActionModal({
                 </Heading>
               </Flex>
               {subtitle && (
-                <Text pt={2} variant="body3" color="text.dark">
+                <Text variant="body3" color="text.dark" pt={2}>
                   {subtitle}
                 </Text>
               )}
@@ -113,23 +113,23 @@ export function ActionModal({
           <ModalFooter>
             <Flex
               alignItems="center"
-              gap={4}
               w="full"
-              direction="column"
               justifyContent="center"
+              direction="column"
+              gap={4}
             >
               <Flex gap={2}>
                 <Button
-                  isDisabled={disabledMain}
-                  variant={mainVariant}
                   w="200px"
                   onClick={handleOnMain}
+                  variant={mainVariant}
+                  isDisabled={disabledMain}
                 >
                   {mainBtnTitle}
                 </Button>
                 <Button
-                  variant={otherVariant}
                   w="200px"
+                  variant={otherVariant}
                   onClick={handleOnOther}
                 >
                   {otherBtnTitle}

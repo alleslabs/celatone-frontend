@@ -22,16 +22,16 @@ import { ResourceLeftPanel } from "./ResourceLeftPanel";
 
 interface ResourceSectionBodyProps {
   address: BechAddr;
-  isLoading: boolean;
   resourcesByOwner: Option<ResourceGroupByAccount[]>;
+  isLoading: boolean;
   selectedAccountParam: Option<string>;
   selectedGroupNameParam: Option<string>;
 }
 
 export const ResourceSectionBody = ({
   address,
-  isLoading,
   resourcesByOwner,
+  isLoading,
   selectedAccountParam,
   selectedGroupNameParam,
 }: ResourceSectionBodyProps) => {
@@ -68,17 +68,17 @@ export const ResourceSectionBody = ({
       {selectedResource && (
         <GridItem>
           <Flex
-            alignItems={{ base: "start", md: "center" }}
-            gap={4}
-            pb={{ base: 4, md: 6 }}
-            direction={{ base: "column", md: "row" }}
             justifyContent="space-between"
+            alignItems={{ base: "start", md: "center" }}
+            direction={{ base: "column", md: "row" }}
+            pb={{ base: 4, md: 6 }}
+            gap={4}
           >
-            <Flex className="copier-wrapper" alignItems="center" w="full">
+            <Flex alignItems="center" w="full" className="copier-wrapper">
               <Heading as="h6" variant="h6" wordBreak="break-word">
                 {selectedResource.account}::{selectedResource.group}
               </Heading>
-              <Badge ml={2} variant="primary">
+              <Badge variant="primary" ml={2}>
                 {selectedResource.items.length}
               </Badge>
               <Copier
@@ -89,9 +89,15 @@ export const ResourceSectionBody = ({
               />
             </Flex>
             <Button
+              variant={{ base: "ghost-primary", md: "outline-primary" }}
               minW={{ base: "auto", md: 32 }}
               size="sm"
-              variant={{ base: "ghost-primary", md: "outline-primary" }}
+              rightIcon={
+                <CustomIcon
+                  name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+                  boxSize={3}
+                />
+              }
               onClick={() => {
                 trackUseExpandAll(
                   expandedIndexes.length ? "collapse" : "expand",
@@ -103,20 +109,14 @@ export const ResourceSectionBody = ({
                     : []
                 );
               }}
-              rightIcon={
-                <CustomIcon
-                  name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
-                  boxSize={3}
-                />
-              }
             >
               {expandedIndexes.length ? "Collapse All" : "Expand All"}
             </Button>
           </Flex>
           <Accordion
+            allowMultiple
             width="full"
             index={expandedIndexes}
-            allowMultiple
             onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
           >
             {selectedResource.items.map((item) => (

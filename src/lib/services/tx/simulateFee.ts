@@ -1,6 +1,6 @@
 import type { Coin } from "@cosmjs/stargate";
-import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
+import type { UseQueryOptions } from "@tanstack/react-query";
 import { gzip } from "node-gzip";
 
 import { useCelatoneApp } from "lib/app-provider/contexts";
@@ -15,22 +15,22 @@ import { composeStoreCodeMsg, composeStoreCodeProposalMsg } from "lib/utils";
 
 interface SimulateQueryParams {
   enabled: boolean;
-  extraQueryKey?: UseQueryOptions["queryKey"];
-  isDummyUser?: boolean;
   messages: ComposedMsg[];
-  onError?: (err: Error) => void;
-  onSuccess?: (gas: Option<Gas>) => void;
+  isDummyUser?: boolean;
   retry?: UseQueryOptions["retry"];
+  extraQueryKey?: UseQueryOptions["queryKey"];
+  onSuccess?: (gas: Option<Gas>) => void;
+  onError?: (err: Error) => void;
 }
 
 export const useSimulateFeeQuery = ({
   enabled,
-  extraQueryKey = [],
-  isDummyUser,
   messages,
-  onError,
-  onSuccess,
+  isDummyUser,
   retry = 2,
+  extraQueryKey = [],
+  onSuccess,
+  onError,
 }: SimulateQueryParams) => {
   const {
     chainConfig: { rpc: rpcEndpoint },
@@ -43,14 +43,10 @@ export const useSimulateFeeQuery = ({
     const userAddress = isDummyUser ? dummyAddress : address;
     if (!userAddress)
       throw new Error("No address provided (useSimulateFeeQuery)");
-    return simulateFee({ address: userAddress, isDummyUser, messages });
+    return simulateFee({ address: userAddress, messages, isDummyUser });
   };
 
   return useQuery({
-    enabled,
-    onError,
-    onSuccess,
-    queryFn: simulateFn,
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE,
       rpcEndpoint,
@@ -59,28 +55,32 @@ export const useSimulateFeeQuery = ({
       isDummyUser,
       ...extraQueryKey,
     ],
+    queryFn: simulateFn,
+    enabled,
+    retry,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    retry,
+    onSuccess,
+    onError,
   });
 };
 
 interface SimulateQueryParamsForStoreCode {
-  addresses?: BechAddr[];
   enabled: boolean;
-  onError?: (err: Error) => void;
-  onSuccess?: (gas: Option<Gas>) => void;
-  permission: AccessType;
   wasmFile: Option<File>;
+  permission: AccessType;
+  addresses?: BechAddr[];
+  onSuccess?: (gas: Option<Gas>) => void;
+  onError?: (err: Error) => void;
 }
 
 export const useSimulateFeeForStoreCode = ({
-  addresses,
   enabled,
-  onError,
-  onSuccess,
-  permission,
   wasmFile,
+  permission,
+  addresses,
+  onSuccess,
+  onError,
 }: SimulateQueryParamsForStoreCode) => {
   const { address, chainId } = useCurrentChain();
   const simulateFee = useSimulateFee();
@@ -93,20 +93,16 @@ export const useSimulateFeeForStoreCode = ({
 
     const submitStoreCodeMsg = async () => {
       return composeStoreCodeMsg({
-        addresses,
-        permission,
         sender: address,
         wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
+        permission,
+        addresses,
       });
     };
     const craftMsg = await submitStoreCodeMsg();
     return simulateFee({ address, messages: [craftMsg] });
   };
   return useQuery({
-    enabled,
-    onError,
-    onSuccess,
-    queryFn: simulateFn,
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE,
       chainId,
@@ -114,46 +110,50 @@ export const useSimulateFeeForStoreCode = ({
       permission,
       addresses,
     ],
+    queryFn: simulateFn,
+    enabled,
+    retry: 2,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    retry: 2,
+    onSuccess,
+    onError,
   });
 };
 
 interface SimulateQueryParamsForProposalStoreCode {
-  addresses: BechAddr[];
-  builder: string;
-  codeHash: string;
-  description: string;
   enabled: boolean;
-  initialDeposit: Coin;
-  onError?: (err: Error) => void;
-  onSuccess?: (gas: Option<Gas>) => void;
-  permission: AccessType;
-  precision: Option<number>;
-  runAs: BechAddr;
-  source: string;
   title: string;
+  description: string;
+  runAs: BechAddr;
+  initialDeposit: Coin;
   unpinCode: boolean;
+  builder: string;
+  source: string;
+  codeHash: string;
   wasmFile: Option<File>;
+  permission: AccessType;
+  addresses: BechAddr[];
+  precision: Option<number>;
+  onSuccess?: (gas: Option<Gas>) => void;
+  onError?: (err: Error) => void;
 }
 
 export const useSimulateFeeForProposalStoreCode = ({
-  addresses,
-  builder,
-  codeHash,
-  description,
   enabled,
-  initialDeposit,
-  onError,
-  onSuccess,
-  permission,
-  precision,
-  runAs,
-  source,
   title,
+  description,
+  runAs,
+  initialDeposit,
   unpinCode,
+  builder,
+  source,
+  codeHash,
   wasmFile,
+  permission,
+  addresses,
+  precision,
+  onSuccess,
+  onError,
 }: SimulateQueryParamsForProposalStoreCode) => {
   const { address, chainId } = useCurrentChain();
   const simulateFee = useSimulateFee();
@@ -170,19 +170,19 @@ export const useSimulateFeeForProposalStoreCode = ({
 
     const submitStoreCodeProposalMsg = async () => {
       return composeStoreCodeProposalMsg({
+        proposer: address,
+        title,
+        description,
+        runAs,
+        wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
+        permission,
         addresses,
+        unpinCode,
+        source,
         builder,
         codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
-        description,
         initialDeposit,
-        permission,
         precision,
-        proposer: address,
-        runAs,
-        source,
-        title,
-        unpinCode,
-        wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
       });
     };
 
@@ -191,10 +191,6 @@ export const useSimulateFeeForProposalStoreCode = ({
   };
 
   return useQuery({
-    enabled,
-    onError,
-    onSuccess,
-    queryFn: simulateFn,
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE_PROPOSAL,
       chainId,
@@ -209,8 +205,12 @@ export const useSimulateFeeForProposalStoreCode = ({
       addresses,
       enabled,
     ],
+    queryFn: simulateFn,
+    enabled,
+    retry: 2,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    retry: 2,
+    onSuccess,
+    onError,
   });
 };

@@ -4,9 +4,9 @@ import { Flex, Text } from "@chakra-ui/react";
 import type { TxReceipt } from "lib/types";
 
 interface TxReceiptRenderProps extends FlexProps {
-  keyPrefix?: string;
   receipts: TxReceipt[];
   variant?: "full" | "packed" | "tx-page";
+  keyPrefix?: string;
 }
 
 const variantStyle: Record<
@@ -14,55 +14,55 @@ const variantStyle: Record<
   SystemStyleObject
 > = {
   full: {
+    w: "full",
     "> div": {
-      alignItems: "center",
       justifyContent: "space-between",
+      alignItems: "center",
     },
     "> div > p:first-of-type": {
       fontWeight: 600,
     },
-    w: "full",
   },
   packed: {
+    w: "60%",
     "> div": {
       alignItems: "center",
     },
     "> div > p:first-of-type": {
-      fontWeight: 700,
       w: "140px",
+      fontWeight: 700,
     },
-    w: "60%",
   },
   "tx-page": {
+    w: "full",
     "> div": {
       alignItems: "flex-start",
     },
     "> div > p:first-of-type": {
+      minW: "180px",
+      w: "180px",
+      mr: 4,
       color: "text.dark",
       fontWeight: 500,
-      minW: "180px",
-      mr: 4,
-      w: "180px",
     },
-    w: "full",
   },
 };
 
-const ReceiptRow = ({ html, title, value }: TxReceipt) => (
+const ReceiptRow = ({ title, value, html }: TxReceipt) => (
   <Flex
-    gap={4}
+    fontSize="14px"
     w="full"
     direction={{ base: "column", md: "row" }}
-    fontSize="14px"
+    gap={4}
   >
-    <Text mb={{ base: 1, md: 0 }} variant="body2" whiteSpace="nowrap">
+    <Text variant="body2" mb={{ base: 1, md: 0 }} whiteSpace="nowrap">
       {title}
     </Text>
     {html || (
       <Text
         variant="body2"
-        color={value === null ? "gray.600" : "text.main"}
         wordBreak="break-word"
+        color={value === null ? "gray.600" : "text.main"}
       >
         {String(value)}
       </Text>
@@ -71,16 +71,16 @@ const ReceiptRow = ({ html, title, value }: TxReceipt) => (
 );
 
 export const TxReceiptRender = ({
-  gap = 2,
-  keyPrefix = "",
   receipts,
   variant = "packed",
+  gap = 2,
+  keyPrefix = "",
   ...containerProps
 }: TxReceiptRenderProps) => (
   <Flex
+    direction="column"
     gap={gap}
     sx={variantStyle[variant]}
-    direction="column"
     {...containerProps}
   >
     {receipts.map((receipt, idx) => (

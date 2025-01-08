@@ -18,29 +18,29 @@ import type { TxsTableProps } from "./types";
 
 export const TxsTableLite = ({
   address,
-  onViewMore,
   scrollComponentId,
+  onViewMore,
 }: TxsTableProps) => {
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
 
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
-    setCurrentPage,
-    setPageSize,
     setTotalData,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    offset,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
 
-  const { data, error, isLoading } = useTxsByAddressLcd(
+  const { data, isLoading, error } = useTxsByAddressLcd(
     address as BechAddr20,
     undefined,
     onViewMore ? 5 : pageSize,
@@ -62,14 +62,14 @@ export const TxsTableLite = ({
           showCount={isFullTier}
         />
       ) : (
-        <Flex gap={6} direction="column">
+        <Flex direction="column" gap={6}>
           <TableTitle
-            mb={0}
             title="Transactions"
             count={txsCount}
+            mb={0}
             showCount={isFullTier}
           />
-          <Alert gap={3} variant="warning">
+          <Alert variant="warning" gap={3}>
             <CustomIcon
               name="alert-triangle-solid"
               boxSize={4}
@@ -82,20 +82,20 @@ export const TxsTableLite = ({
           </Alert>
           {!isMobileOverview && (
             <TransactionsTable
+              transactions={data?.items}
+              isLoading={isLoading}
               emptyState={
                 error ? (
                   <ErrorFetching dataName="transactions" />
                 ) : (
                   <EmptyState
+                    withBorder
                     imageVariant="empty"
                     message="There are no transactions on this account, or they have been pruned from the LCD."
-                    withBorder
                   />
                 )
               }
-              isLoading={isLoading}
               showRelations={false}
-              transactions={data?.items}
             />
           )}
           {Boolean(data?.items?.length) &&
@@ -107,17 +107,17 @@ export const TxsTableLite = ({
                 txsCount > 10 && (
                   <Pagination
                     currentPage={currentPage}
-                    pageSize={pageSize}
                     pagesQuantity={pagesQuantity}
                     offset={offset}
+                    totalData={txsCount}
+                    scrollComponentId={scrollComponentId}
+                    pageSize={pageSize}
                     onPageChange={(nextPage) => setCurrentPage(nextPage)}
                     onPageSizeChange={(e) => {
                       const size = Number(e.target.value);
                       setPageSize(size);
                       setCurrentPage(1);
                     }}
-                    scrollComponentId={scrollComponentId}
-                    totalData={txsCount}
                   />
                 ))}
         </Flex>

@@ -7,8 +7,8 @@ import { config } from "./config";
 import { fonts } from "./fonts";
 
 export default extendTheme({
-  colors: DEFAULT_THEME.colors,
-  components,
-  config,
   fonts,
+  config,
+  components,
+  colors: DEFAULT_THEME.colors,
 });

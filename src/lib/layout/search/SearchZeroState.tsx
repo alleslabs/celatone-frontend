@@ -1,23 +1,23 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 interface SearchZeroStateProps {
-  isEvm: boolean;
-  isFullTier: boolean;
-  isGov: boolean;
-  isMove: boolean;
-  isNft: boolean;
   isPool: boolean;
   isWasm: boolean;
+  isMove: boolean;
+  isEvm: boolean;
+  isGov: boolean;
+  isNft: boolean;
+  isFullTier: boolean;
 }
 
 export const SearchZeroState = ({
-  isEvm,
-  isFullTier,
-  isGov,
-  isMove,
-  isNft,
   isPool,
   isWasm,
+  isMove,
+  isEvm,
+  isGov,
+  isNft,
+  isFullTier,
 }: SearchZeroStateProps) => {
   const base = ["Account Address", "Block Height", "TX Hash"];
   const govText = isGov ? ["Validator Address", "Proposal ID"] : [];
@@ -39,19 +39,19 @@ export const SearchZeroState = ({
   );
 
   return (
-    <Flex gap={4} py={8} direction="column">
+    <Flex direction="column" gap={4} py={8}>
       <Text color="text.dark"> Please enter keyword, You can search with:</Text>
       <Flex
+        direction="column"
         px={4}
         py={2}
         border="1px solid"
         borderColor="gray.700"
         borderRadius={8}
-        direction="column"
       >
         {supportedItemsType.map((item) => (
-          <Flex key={item} alignItems="center" gap={3}>
-            <Flex h={1} w={1} bgColor="primary.darker" borderRadius="full" />
+          <Flex alignItems="center" gap={3} key={item}>
+            <Flex w={1} h={1} borderRadius="full" bgColor="primary.darker" />
             <Text color="text.dark">{item}</Text>
           </Flex>
         ))}

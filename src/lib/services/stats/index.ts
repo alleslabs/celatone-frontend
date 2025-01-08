@@ -21,8 +21,8 @@ export const useOverviewsStats = (
     [CELATONE_QUERY_KEYS.OVERVIEWS_STATS, endpoint],
     async () => getOverviewsStats(endpoint),
     {
-      enabled,
       refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };

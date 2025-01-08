@@ -13,13 +13,13 @@ import { useDebounce } from "lib/hooks";
 import { useTxsByAddressSequencer } from "lib/services/tx";
 
 interface PastTxsSequencerTransactionsTableWithWalletEmptyStateProps {
-  error: unknown;
   search: string;
+  error: unknown;
 }
 
 const PastTxsSequencerTransactionsTableWithWalletEmptyState = ({
-  error,
   search,
+  error,
 }: PastTxsSequencerTransactionsTableWithWalletEmptyStateProps) => {
   if (search.trim().length > 0)
     return (
@@ -52,8 +52,8 @@ export const PastTxsSequencer = () => {
     error,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
     isLoading,
+    isFetchingNextPage,
   } = useTxsByAddressSequencer(address, debouncedSearch);
 
   useEffect(() => {
@@ -63,13 +63,13 @@ export const PastTxsSequencer = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Past Transactions" />
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex justifyContent="space-between" alignItems="center">
         <Heading
-          alignItems="center"
-          as="h5"
-          display="flex"
-          minH="36px"
           variant="h5"
+          as="h5"
+          minH="36px"
+          display="flex"
+          alignItems="center"
         >
           Past Transactions
         </Heading>
@@ -77,30 +77,30 @@ export const PastTxsSequencer = () => {
       </Flex>
       <Flex my={8}>
         <InputWithIcon
-          size={{ base: "md", md: "lg" }}
-          value={search}
-          amptrackSection="past-txs-search"
-          onChange={(e) => setSearch(e.target.value)}
           placeholder="Search with Transaction Hash"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          size={{ base: "md", md: "lg" }}
+          amptrackSection="past-txs-search"
         />
       </Flex>
       <TransactionsTableWithWallet
+        transactions={data}
+        isLoading={isLoading}
         emptyState={
           <PastTxsSequencerTransactionsTableWithWalletEmptyState
             search={search}
             error={error}
           />
         }
-        isLoading={isLoading}
         showActions={false}
         showRelations
-        transactions={data}
       />
       {hasNextPage && (
         <LoadNext
+          text="Load more 10 transactions"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          text="Load more 10 transactions"
         />
       )}
     </PageContainer>

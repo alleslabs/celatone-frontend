@@ -9,44 +9,33 @@ import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 import { DelegationRelatedTxsTokenChange } from "./DelegationRelatedTxsTokenChange";
 
 interface DelegationRelatedTxsTableMobileCardProps {
-  assetInfos: Option<AssetInfos>;
   delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
+  assetInfos: Option<AssetInfos>;
   movePoolInfos: Option<MovePoolInfos>;
   onRowSelect: (txHash: string) => void;
 }
 
 export const DelegationRelatedTxsTableMobileCard = ({
-  assetInfos,
   delegationRelatedTx,
+  assetInfos,
   movePoolInfos,
   onRowSelect,
 }: DelegationRelatedTxsTableMobileCardProps) => (
   <MobileCardTemplate
-    bottomContent={
-      <Box>
-        <Text variant="body2" color="text.dark">
-          {formatUTC(delegationRelatedTx.timestamp)}
-        </Text>
-        <Text variant="body3" color="text.disabled">
-          {`(${dateFromNow(delegationRelatedTx.timestamp)})`}
-        </Text>
-      </Box>
-    }
-    onClick={() => onRowSelect(delegationRelatedTx.txHash)}
     topContent={
-      <Flex gap={2} w="100%" flexDirection="column">
-        <Grid gap={2} templateColumns="1fr 1fr">
+      <Flex w="100%" flexDirection="column" gap={2}>
+        <Grid templateColumns="1fr 1fr" gap={2}>
           <GridItem>
             <Text variant="body3" color="text.dark" fontWeight={600}>
               Transaction Hash
             </Text>
             <ExplorerLink
-              type="tx_hash"
               value={delegationRelatedTx.txHash.toLocaleUpperCase()}
+              type="tx_hash"
               showCopyOnHover
             />
             {delegationRelatedTx.messages.length > 1 && (
-              <Badge ml={2} variant="primary-light">
+              <Badge variant="primary-light" ml={2}>
                 {delegationRelatedTx.messages.length}
               </Badge>
             )}
@@ -56,8 +45,8 @@ export const DelegationRelatedTxsTableMobileCard = ({
               Sender
             </Text>
             <ExplorerLink
-              type="user_address"
               value={delegationRelatedTx.sender}
+              type="user_address"
               showCopyOnHover
             />
           </GridItem>
@@ -80,13 +69,24 @@ export const DelegationRelatedTxsTableMobileCard = ({
             <DelegationRelatedTxsTokenChange
               key={delegationRelatedTx.txHash + coin.amount + coin.denom}
               txHash={delegationRelatedTx.txHash}
-              assetInfos={assetInfos}
               coin={coin}
+              assetInfos={assetInfos}
               movePoolInfos={movePoolInfos}
             />
           ))}
         </Box>
       </Flex>
     }
+    bottomContent={
+      <Box>
+        <Text variant="body2" color="text.dark">
+          {formatUTC(delegationRelatedTx.timestamp)}
+        </Text>
+        <Text variant="body3" color="text.disabled">
+          {`(${dateFromNow(delegationRelatedTx.timestamp)})`}
+        </Text>
+      </Box>
+    }
+    onClick={() => onRowSelect(delegationRelatedTx.txHash)}
   />
 );

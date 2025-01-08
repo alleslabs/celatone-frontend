@@ -9,17 +9,17 @@ import { coinToTokenWithValue } from "lib/utils";
 import type { MsgJoinSwapShareAmountOutDetails } from "lib/utils/tx/types";
 
 interface MsgJoinSwapShareAmountOutActionProps {
-  ampCopierSection?: string;
-  assetInfos: Option<AssetInfos>;
   msg: MsgJoinSwapShareAmountOutDetails;
   pool: PoolData;
+  assetInfos: Option<AssetInfos>;
+  ampCopierSection?: string;
 }
 
 export const MsgJoinSwapShareAmountOutAction = ({
-  ampCopierSection,
-  assetInfos,
   msg,
   pool,
+  assetInfos,
+  ampCopierSection,
 }: MsgJoinSwapShareAmountOutActionProps) => {
   const poolDenom = getPoolDenom(msg.pool_id);
   const inToken = coinToTokenWithValue(
@@ -33,20 +33,20 @@ export const MsgJoinSwapShareAmountOutAction = ({
     assetInfos
   );
   return (
-    <Flex alignItems="center" flexWrap="wrap" gap={1}>
+    <Flex gap={1} alignItems="center" flexWrap="wrap">
       Provided at most
       <MsgToken
-        ampCopierSection={ampCopierSection}
-        fontWeight={400}
         token={inToken}
+        fontWeight={400}
+        ampCopierSection={ampCopierSection}
       />
       to
-      <PoolLogoLink ampCopierSection={ampCopierSection} pool={pool} />
+      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
       <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
       <MsgToken
-        ampCopierSection={ampCopierSection}
-        fontWeight={700}
         token={poolToken}
+        fontWeight={700}
+        ampCopierSection={ampCopierSection}
       />
     </Flex>
   );

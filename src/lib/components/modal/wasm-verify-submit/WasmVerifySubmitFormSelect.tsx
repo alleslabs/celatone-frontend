@@ -13,51 +13,63 @@ import type {
 import { WasmVerifySubmitFormSelectOption } from "./WasmVerifySubmitFormSelectOption";
 
 interface WasmVerifySubmitFormSelectProps<T extends FieldValues> {
-  control: Control<T>;
   name: FieldPath<T>;
+  control: Control<T>;
   options: WasmVerifySubmitFormOption[];
 }
 
 export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
-  control,
   name,
+  control,
   options,
 }: WasmVerifySubmitFormSelectProps<T>) => {
   const watcher = useWatch({
-    control,
     name,
+    control,
   });
 
   const { field } = useController<T>({
-    control,
     name,
+    control,
   });
 
   return (
     <Box
+      position="relative"
       sx={{
         "& .form-label": {
-          "::after": {
-            color: "error.main",
-            content: '"* (Required)"',
-            ml: 1,
-          },
-          backgroundColor: "gray.800",
-          color: "text.dark",
           fontSize: "12px",
+          color: "text.dark",
+          backgroundColor: "gray.800",
           letterSpacing: "0.15px",
-          ml: 3,
           position: "absolute",
+          ml: 3,
           px: 1,
           top: -2,
-
           zIndex: 1,
+
+          "::after": {
+            content: '"* (Required)"',
+            color: "error.main",
+            ml: 1,
+          },
         },
       }}
-      position="relative"
     >
       <Text className="form-label">Compiler Version</Text>
       <SelectInput<WasmVerifySubmitFormOptionValue>
+        placeholder="Select or input the compiler version"
+        options={options}
+        menuPortalTarget={undefined}
+        onChange={(newValue) => {
+          const val = newValue as { label: string; value: string };
+          return field.onChange(val.value);
+        }}
+        value={options.find((option) => option.value === watcher)}
+        components={{
+          NoOptionsMessage: WasmVerifySubmitFormSelectNoOptionsMessage,
+          Option: WasmVerifySubmitFormSelectOption,
+        }}
         chakraStyles={{
           placeholder: (provided: SystemStyleObject) => ({
             ...provided,
@@ -66,18 +78,6 @@ export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
             whiteSpace: "nowrap",
           }),
         }}
-        value={options.find((option) => option.value === watcher)}
-        components={{
-          NoOptionsMessage: WasmVerifySubmitFormSelectNoOptionsMessage,
-          Option: WasmVerifySubmitFormSelectOption,
-        }}
-        menuPortalTarget={undefined}
-        onChange={(newValue) => {
-          const val = newValue as { label: string; value: string };
-          return field.onChange(val.value);
-        }}
-        options={options}
-        placeholder="Select or input the compiler version"
       />
     </Box>
   );

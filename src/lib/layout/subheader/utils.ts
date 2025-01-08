@@ -5,25 +5,25 @@ import type { SubHeaderMenuInfo } from "./types";
 
 export const getSubHeaderLite = (isGov: boolean, isWasm: boolean) => {
   const base: SubHeaderMenuInfo[] = [
-    { icon: "home", name: "Overview", slug: "/" },
+    { name: "Overview", slug: "/", icon: "home" },
   ];
 
   if (isGov) {
     base.push(
       {
-        icon: "validator" as IconKeys,
         name: "Validators",
         slug: "/validators",
+        icon: "validator" as IconKeys,
       },
-      { icon: "proposal" as IconKeys, name: "Proposals", slug: "/proposals" }
+      { name: "Proposals", slug: "/proposals", icon: "proposal" as IconKeys }
     );
   }
 
   if (isWasm) {
     base.push({
-      icon: "code" as IconKeys,
       name: "Codes",
       slug: "/codes",
+      icon: "code" as IconKeys,
     });
   }
 
@@ -32,27 +32,27 @@ export const getSubHeaderLite = (isGov: boolean, isWasm: boolean) => {
 
 export const getSubHeaderSequencer = (isGov: boolean, isWasm: boolean) => {
   const base: SubHeaderMenuInfo[] = [
-    { icon: "home", name: "Overview", slug: "/" },
-    { icon: "file", name: "Transactions", slug: "/txs" },
-    { icon: "block", name: "Blocks", slug: "/blocks" },
+    { name: "Overview", slug: "/", icon: "home" },
+    { name: "Transactions", slug: "/txs", icon: "file" },
+    { name: "Blocks", slug: "/blocks", icon: "block" },
   ];
 
   if (isGov)
     base.push(
       {
-        icon: "validator" as IconKeys,
         name: "Validators",
         slug: "/validators",
+        icon: "validator" as IconKeys,
       },
       {
-        icon: "proposal" as IconKeys,
         name: "Proposals",
         slug: "/proposals",
+        icon: "proposal" as IconKeys,
       }
     );
 
   if (isWasm)
-    base.push({ icon: "code" as IconKeys, name: "Codes", slug: "/codes" });
+    base.push({ name: "Codes", slug: "/codes", icon: "code" as IconKeys });
 
   return base;
 };
@@ -65,54 +65,54 @@ export const getSubHeaderFull = (
   isPool: boolean
 ) => {
   const base: SubHeaderMenuInfo[] = [
-    { icon: "home", name: "Overview", slug: "/" },
-    { icon: "file", name: "Transactions", slug: "/txs" },
-    { icon: "block", name: "Blocks", slug: "/blocks" },
+    { name: "Overview", slug: "/", icon: "home" },
+    { name: "Transactions", slug: "/txs", icon: "file" },
+    { name: "Blocks", slug: "/blocks", icon: "block" },
   ];
 
   if (isGov)
     base.push(
       {
-        icon: "validator" as IconKeys,
         name: "Validators",
         slug: "/validators",
+        icon: "validator" as IconKeys,
       },
       {
-        icon: "proposal" as IconKeys,
         name: "Proposals",
         slug: "/proposals",
+        icon: "proposal" as IconKeys,
       }
     );
 
   if (isWasm)
     base.push(
-      { icon: "code" as IconKeys, name: "Codes", slug: "/codes" },
+      { name: "Codes", slug: "/codes", icon: "code" as IconKeys },
       {
-        icon: "contract-address" as IconKeys,
         name: "Contracts",
         slug: "/contracts",
+        icon: "contract-address" as IconKeys,
       }
     );
 
   if (isMove)
     base.push({
-      icon: "contract-address" as IconKeys,
       name: "Modules",
       slug: "/modules",
+      icon: "contract-address" as IconKeys,
     });
 
   if (isNft)
     base.push({
-      icon: "collection" as IconKeys,
       name: "NFTs",
       slug: "/nft-collections",
+      icon: "collection" as IconKeys,
     });
 
   if (isPool)
     base.push({
-      icon: "pool" as IconKeys,
       name: "Osmosis Pools",
       slug: "/pools",
+      icon: "pool" as IconKeys,
     });
 
   return base;

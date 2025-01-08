@@ -26,27 +26,27 @@ import { ToContractButton } from "./ToContractButton";
 
 export interface SaveAccountDetail {
   address: BechAddr;
-  description: string;
   name: string;
+  description: string;
 }
 
 const statusSuccess: FormStatus = {
-  message: "Valid Address",
   state: "success",
+  message: "Valid Address",
 };
 
 interface SaveNewAccountModalProps {
-  accountAddress?: BechAddr;
   buttonProps: ButtonProps;
-  publicDescription?: string;
+  accountAddress?: BechAddr;
   publicName?: string;
+  publicDescription?: string;
 }
 
 export function SaveNewAccountModal({
-  accountAddress,
   buttonProps,
-  publicDescription,
+  accountAddress,
   publicName,
+  publicDescription,
 }: SaveNewAccountModalProps) {
   const { constants } = useCelatoneApp();
   const { user: exampleUserAddress } = useExampleAddresses();
@@ -65,16 +65,16 @@ export function SaveNewAccountModal({
   const defaultValues: SaveAccountDetail = useMemo(() => {
     return {
       address: defaultAddress,
-      description: publicDescription ?? "",
       name: publicName ?? "",
+      description: publicDescription ?? "",
     };
   }, [defaultAddress, publicDescription, publicName]);
 
   const {
     control,
-    formState: { errors },
-    reset,
     watch,
+    reset,
+    formState: { errors },
   } = useForm<SaveAccountDetail>({
     defaultValues,
     mode: "all",
@@ -95,7 +95,7 @@ export function SaveNewAccountModal({
 
   const setErrorStatus = (message: string) => {
     track(AmpEvent.ACCOUNT_FILLED_ERROR, { message });
-    setStatus({ message, state: "error" });
+    setStatus({ state: "error", message });
   };
 
   const onSuccess = (type: AccountType) => {
@@ -113,8 +113,8 @@ export function SaveNewAccountModal({
 
   const { refetch } = useAccountType(addressState, {
     enabled: false,
-    onError,
     onSuccess,
+    onError,
   });
 
   useEffect(() => {
@@ -158,78 +158,78 @@ export function SaveNewAccountModal({
   ]);
 
   const handleSave = useHandleAccountSave({
+    title: `Saved ${nameState}`,
+    address: addressState,
+    name: nameState,
+    description: descriptionState,
     actions: () => {
       track(AmpEvent.ACCOUNT_SAVE, { isPrefilled: !!accountAddress });
       resetForm();
     },
-    address: addressState,
-    description: descriptionState,
-    name: nameState,
-    title: `Saved ${nameState}`,
   });
 
   return (
     <ActionModal
+      title="Save New Account"
+      icon="bookmark-solid"
+      trigger={<Button as="button" {...buttonProps} />}
+      mainBtnTitle="Save New Account"
+      mainAction={handleSave}
+      otherAction={resetForm}
       disabledMain={
         status.state !== "success" || !!errors.name || !!errors.description
       }
-      mainBtnTitle="Save New Account"
-      title="Save New Account"
-      trigger={<Button as="button" {...buttonProps} />}
-      buttonRemark="Saved accounts are stored locally on your device."
-      icon="bookmark-solid"
-      mainAction={handleSave}
-      otherAction={resetForm}
       otherBtnTitle="Cancel"
+      buttonRemark="Saved accounts are stored locally on your device."
     >
-      <Flex gap={6} direction="column">
+      <Flex direction="column" gap={6}>
         <ControllerInput
-          isReadOnly={!!accountAddress}
-          isRequired
-          label="Account Address"
           name="address"
-          status={status}
-          variant="fixed-floating"
-          autoFocus={!accountAddress}
           control={control}
+          label="Account Address"
+          variant="fixed-floating"
+          placeholder={`ex. ${exampleUserAddress}`}
+          status={status}
+          labelBgColor="gray.900"
+          isRequired
+          autoFocus={!accountAddress}
+          isReadOnly={!!accountAddress}
           cursor={accountAddress ? "not-allowed" : "pointer"}
           helperAction={
             isContract && (
               <ToContractButton isAccountPrefilled={!accountAddress} />
             )
           }
-          labelBgColor="gray.900"
-          placeholder={`ex. ${exampleUserAddress}`}
         />
         <ControllerInput
-          label="Account Name"
           name="name"
+          control={control}
+          label="Account Name"
+          variant="fixed-floating"
+          placeholder="ex. Celatone Account 1"
+          labelBgColor="gray.900"
           rules={{
             maxLength: constants.maxAccountNameLength,
           }}
-          variant="fixed-floating"
-          autoFocus={!!accountAddress}
-          control={control}
           error={
             errors.name && getMaxLengthError(nameState.length, "account_name")
           }
-          labelBgColor="gray.900"
-          placeholder="ex. Celatone Account 1"
+          autoFocus={!!accountAddress}
         />
         <ControllerTextarea
-          label="Account Description"
           name="description"
+          control={control}
+          label="Account Description"
+          placeholder="Help understanding what this account does ..."
+          variant="fixed-floating"
+          labelBgColor="gray.900"
           rules={{
             maxLength: constants.maxAccountDescriptionLength,
           }}
-          variant="fixed-floating"
-          control={control}
           error={
             errors.description &&
             getMaxLengthError(descriptionState.length, "account_desc")
           }
-          labelBgColor="gray.900"
-          placeholder="Help understanding what this account does ..."
         />
       </Flex>
     </ActionModal>

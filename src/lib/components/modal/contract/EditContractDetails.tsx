@@ -11,9 +11,9 @@ export const EditContractDetailsModal = ({
   triggerElement,
 }: EditContractDetailsModalProps) => (
   <ContractDetailsTemplateModal
-    subtitle="Filled information below will be saved on Celatone only and able to edit later."
     title="Edit Contract Details"
-    triggerElement={triggerElement}
+    subtitle="Filled information below will be saved on Celatone only and able to edit later."
     contractLocalInfo={contractLocalInfo}
+    triggerElement={triggerElement}
   />
 );

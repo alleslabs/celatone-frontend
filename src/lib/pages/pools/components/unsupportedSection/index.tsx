@@ -33,14 +33,14 @@ interface UnsupportedSectionProp {
 export const UnsupportedSection = ({
   scrollComponentId,
 }: UnsupportedSectionProp) => {
-  const { setValue, watch } = useForm<PoolFilterState>({
+  const { watch, setValue } = useForm<PoolFilterState>({
     defaultValues: {
-      isSuperfluidOnly: false,
-      keyword: "",
       poolTypeValue: PoolType.ALL,
+      keyword: "",
+      isSuperfluidOnly: false,
     },
   });
-  const { isSuperfluidOnly, keyword, poolTypeValue } = watch();
+  const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
   const search = useDebounce(keyword);
 
   const [showNewest, setShowNewest] = useState(true);
@@ -50,22 +50,22 @@ export const UnsupportedSection = ({
     setExpandedIndexes(indexes);
 
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
-    setCurrentPage,
-    setPageSize,
     setTotalData,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    offset,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
 
-  const { isLoading, pools, totalCount } = useDerivedPools(
+  const { pools, totalCount, isLoading } = useDerivedPools(
     pageSize,
     offset,
     false,
@@ -79,16 +79,16 @@ export const UnsupportedSection = ({
   return (
     <>
       <Flex alignItems="center" mb={12}>
-        <Flex gap={4} grow={2}>
+        <Flex grow={2} gap={4}>
           <InputWithIcon
-            size={{ base: "md", md: "lg" }}
+            placeholder="Search with Pool ID or Token ID"
             value={keyword}
-            amptrackSection="unsupported-pool-list-search"
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setCurrentPage(1);
               setValue("keyword", e.target.value);
             }}
-            placeholder="Search with Pool ID or Token ID"
+            size={{ base: "md", md: "lg" }}
+            amptrackSection="unsupported-pool-list-search"
           />
           <FilterByPoolType
             initialSelected="All"
@@ -98,10 +98,10 @@ export const UnsupportedSection = ({
             }}
           />
           <Flex minW="250px">
-            <FormControl alignItems="center" display="flex" gap={2}>
+            <FormControl display="flex" alignItems="center" gap={2}>
               <Switch
-                defaultChecked={isSuperfluidOnly}
                 size="md"
+                defaultChecked={isSuperfluidOnly}
                 onChange={(e) => {
                   const isChecked = e.target.checked;
                   setCurrentPage(1);
@@ -110,7 +110,7 @@ export const UnsupportedSection = ({
                 }}
               />
               <FormLabel mb={0} cursor="pointer">
-                <Text alignItems="center" display="flex" gap={2}>
+                <Text display="flex" gap={2} alignItems="center">
                   Show only
                   <SuperfluidLabel />
                 </Text>
@@ -119,8 +119,8 @@ export const UnsupportedSection = ({
           </Flex>
         </Flex>
       </Flex>
-      <Flex alignItems="center" h="32px" justifyContent="space-between">
-        <Flex alignItems="center" gap={2}>
+      <Flex alignItems="center" justifyContent="space-between" h="32px">
+        <Flex gap={2} alignItems="center">
           <Heading as="h6" variant="h6">
             Pools with unsupported tokens
           </Heading>
@@ -131,14 +131,14 @@ export const UnsupportedSection = ({
           )}
         </Flex>
         <Flex gap={4}>
-          <Flex alignItems="center" gap={2}>
+          <Flex gap={2} alignItems="center">
             <Text variant="body2" color="text.dark">
               Sort Pool ID:
             </Text>
             <Button
-              pr={1}
-              size="sm"
               variant="outline-gray"
+              size="sm"
+              pr={1}
               onClick={() => {
                 const isDesc = !showNewest;
                 trackUseSort("newest", isDesc ? "descending" : "ascending");
@@ -152,10 +152,16 @@ export const UnsupportedSection = ({
               />
             </Button>
           </Flex>
-          <Flex alignItems="center" gap={2}>
+          <Flex gap={2} alignItems="center">
             <Button
-              size="sm"
               variant="outline-gray"
+              size="sm"
+              rightIcon={
+                <CustomIcon
+                  name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+                  boxSize={3}
+                />
+              }
               onClick={() => {
                 trackUseExpandAll(
                   expandedIndexes.length ? "collapse" : "expand"
@@ -164,12 +170,6 @@ export const UnsupportedSection = ({
                   !prev.length ? Array.from(Array(pageSize).keys()) : []
                 );
               }}
-              rightIcon={
-                <CustomIcon
-                  name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
-                  boxSize={3}
-                />
-              }
             >
               {expandedIndexes.length ? "Collapse All" : "Expand All"}
             </Button>
@@ -177,17 +177,19 @@ export const UnsupportedSection = ({
         </Flex>
       </Flex>
       <UnsupportedPoolList
+        pools={pools}
+        isLoading={isLoading}
         expandedIndexes={expandedIndexes}
         updateExpandedIndexes={updateExpandedIndexes}
-        isLoading={isLoading}
-        pools={pools}
       />
       {totalCount && totalCount > 10 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={totalCount}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
           onPageChange={(nextPage) => {
             setCurrentPage(nextPage);
             updateExpandedIndexes([]);
@@ -198,8 +200,6 @@ export const UnsupportedSection = ({
             setCurrentPage(1);
             setExpandedIndexes([]);
           }}
-          scrollComponentId={scrollComponentId}
-          totalData={totalCount}
         />
       )}
     </>

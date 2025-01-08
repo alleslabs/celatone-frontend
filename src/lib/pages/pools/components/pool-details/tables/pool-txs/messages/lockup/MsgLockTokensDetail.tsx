@@ -12,25 +12,25 @@ import { coinToTokenWithValue, extractMsgType } from "lib/utils";
 import type { MsgLockTokensDetails } from "lib/utils/tx/types";
 
 interface MsgLockTokensDetailProps {
-  ampCopierSection?: string;
-  assetInfos: Option<AssetInfos>;
-  blockHeight: number;
-  isOpened: boolean;
-  msg: MsgLockTokensDetails;
-  msgIndex: number;
-  pool: PoolData;
   txHash: string;
+  blockHeight: number;
+  msgIndex: number;
+  msg: MsgLockTokensDetails;
+  pool: PoolData;
+  assetInfos: Option<AssetInfos>;
+  isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const MsgLockTokensDetail = ({
-  ampCopierSection,
-  assetInfos,
-  blockHeight,
-  isOpened,
-  msg,
-  msgIndex,
-  pool,
   txHash,
+  blockHeight,
+  msgIndex,
+  msg,
+  pool,
+  assetInfos,
+  isOpened,
+  ampCopierSection,
 }: MsgLockTokensDetailProps) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (isLoading) return <Loading withBorder={false} />;
@@ -55,22 +55,22 @@ export const MsgLockTokensDetail = ({
     ?.attributes.find((attr) => attr.key === "period_lock_id")?.value;
 
   return (
-    <Flex gap={6} w="full" direction="column">
+    <Flex w="full" direction="column" gap={6}>
       <Flex gap={12}>
         <PoolInfoText title="Block height">
           <ExplorerLink
-            type="block_height"
             value={blockHeight.toString()}
-            ampCopierSection={ampCopierSection}
+            type="block_height"
             showCopyOnHover
+            ampCopierSection={ampCopierSection}
           />
         </PoolInfoText>
         <PoolInfoText title="LockID">{lockId}</PoolInfoText>
         <PoolInfoText title="Bonded LP">
           <MsgToken
-            ampCopierSection={ampCopierSection}
-            fontWeight={700}
             token={poolToken}
+            fontWeight={700}
+            ampCopierSection={ampCopierSection}
           />
         </PoolInfoText>
 
@@ -78,13 +78,13 @@ export const MsgLockTokensDetail = ({
       </Flex>
       <Box w="full">
         <PoolAssetCard
+          poolId={pool.id}
+          description="Bonded to"
           assetText="Bonded"
+          poolToken={poolToken}
+          assetInfos={assetInfos}
           isOpened={isOpened}
           ampCopierSection={ampCopierSection}
-          assetInfos={assetInfos}
-          description="Bonded to"
-          poolId={pool.id}
-          poolToken={poolToken}
         />
       </Box>
     </Flex>

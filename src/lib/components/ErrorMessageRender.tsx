@@ -12,7 +12,7 @@ export const ErrorMessageRender = ({
   ...restProps
 }: ErrorMessageRenderProps) => (
   <Flex gap={2} {...restProps}>
-    <CustomIcon name="alert-triangle-solid" boxSize={3} color="error.main" />
+    <CustomIcon name="alert-triangle-solid" color="error.main" boxSize={3} />
     <Text variant="body3" color="error.main">
       {error}
     </Text>

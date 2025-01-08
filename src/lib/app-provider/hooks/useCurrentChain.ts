@@ -10,26 +10,26 @@ import type { BechAddr20, Option } from "lib/types";
 import { useInitia } from "./useInitia";
 
 interface CurrentChain {
-  address: Option<BechAddr20>;
   bech32Prefix: string;
   chainId: string;
   chainName: string;
+  address: Option<BechAddr20>;
   connect: () => Promise<void>;
   view(event: React.MouseEvent): void;
   walletProvider:
     | {
-        context: CosmosKitChainContext;
         type: "cosmos-kit";
+        context: CosmosKitChainContext;
       }
     | {
-        context: InitiaWidget;
         type: "initia-widget";
+        context: InitiaWidget;
       };
 }
 
 export const useCurrentChain = (): CurrentChain => {
   const {
-    chainConfig: { chain, chainId, registryChainName },
+    chainConfig: { registryChainName, chainId, chain },
   } = useCelatoneApp();
   const isInitia = useInitia();
   const cosmosKit = useChain(registryChainName);
@@ -37,17 +37,17 @@ export const useCurrentChain = (): CurrentChain => {
 
   if (isInitia) {
     return {
-      address: zBechAddr20
-        .optional()
-        .parse(initiaWidget.account?.address ?? undefined),
       bech32Prefix: "init",
       chainId,
       chainName: chain,
+      address: zBechAddr20
+        .optional()
+        .parse(initiaWidget.account?.address ?? undefined),
       connect: async () => initiaWidget.onboard(),
       view: (event) => initiaWidget.view(event),
       walletProvider: {
-        context: initiaWidget,
         type: "initia-widget",
+        context: initiaWidget,
       },
     };
   }
@@ -60,8 +60,8 @@ export const useCurrentChain = (): CurrentChain => {
     connect: async () => cosmosKit.connect(),
     view: () => cosmosKit.openView(),
     walletProvider: {
-      context: cosmosKit,
       type: "cosmos-kit",
+      context: cosmosKit,
     },
   };
 };

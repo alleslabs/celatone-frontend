@@ -18,8 +18,8 @@ const ActionMessagesBody = ({ transaction }: ActionMessagesProps) => {
     return (
       <SingleActionMsg
         messages={transaction.messages}
-        success={transaction.success}
         type={extractMsgType(transaction.messages[0].type)}
+        success={transaction.success}
       />
     );
   }
@@ -28,31 +28,31 @@ const ActionMessagesBody = ({ transaction }: ActionMessagesProps) => {
   }
   return (
     <SingleMsg
+      type={plur("Message", transaction.messages.length)}
       tags={
         transaction.messages.length === 1
           ? [extractMsgType(transaction.messages[0].type).substring(3)]
           : [transaction.messages.length.toString()]
       }
-      type={plur("Message", transaction.messages.length)}
     />
   );
 };
 
 export const ActionMessages = ({ transaction }: ActionMessagesProps) => (
-  <Flex alignItems="center" flexWrap="wrap" gap={1}>
+  <Flex gap={1} alignItems="center" flexWrap="wrap">
     <ActionMessagesBody transaction={transaction} />
     {transaction.isIbc && (
-      <Tag size="sm" variant="secondary">
+      <Tag variant="secondary" size="sm">
         IBC
       </Tag>
     )}
     {transaction.isOpinit && (
-      <Tag size="sm" variant="teal">
+      <Tag variant="teal" size="sm">
         OPInit
       </Tag>
     )}
     {transaction.isEvm && (
-      <Tag size="sm" variant="primary-light">
+      <Tag variant="primary-light" size="sm">
         EVM
       </Tag>
     )}

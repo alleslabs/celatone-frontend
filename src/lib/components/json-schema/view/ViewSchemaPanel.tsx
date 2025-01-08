@@ -6,34 +6,34 @@ import type { Nullable, Option } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
 interface ViewSchemaPanelProps {
-  codeId: number;
   jsonSchema: Option<Nullable<object>>;
+  codeId: number;
 }
 
 export const ViewSchemaPanel = ({
-  codeId,
   jsonSchema,
+  codeId,
 }: ViewSchemaPanelProps) => (
   <>
     {jsonSchema === undefined ? (
       <Flex
-        alignItems="center"
         p="24px 16px"
+        direction="column"
+        alignItems="center"
         bgColor="gray.900"
         borderRadius="8px"
-        direction="column"
       >
         <Text variant="body1" fontWeight={700}>
           You haven&#39;t attached the JSON Schema for{" "}
-          <CustomIcon mx={1} name="code" color="gray.400" />
+          <CustomIcon name="code" mx={1} color="gray.400" />
           code {codeId} yet
         </Text>
         <Text
-          mb={4}
-          mt={2}
           variant="body2"
-          fontWeight={500}
           textColor="text.disabled"
+          fontWeight={500}
+          mt={2}
+          mb={4}
         >
           Please attach schema in Code Detail page
         </Text>

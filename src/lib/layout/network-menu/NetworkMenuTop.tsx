@@ -7,14 +7,14 @@ import { AppLink } from "lib/components/AppLink";
 import InputWithIcon from "lib/components/InputWithIcon";
 
 interface NetworkMenuTopProps {
-  handleOnKeyDown: (e: ReactKeyboardEvent<HTMLDivElement>) => void;
   keyword: string;
-  onClose: () => void;
   setKeyword: (value: string) => void;
+  handleOnKeyDown: (e: ReactKeyboardEvent<HTMLDivElement>) => void;
+  onClose: () => void;
 }
 
 export const NetworkMenuTop = observer(
-  ({ handleOnKeyDown, keyword, onClose, setKeyword }: NetworkMenuTopProps) => {
+  ({ keyword, setKeyword, handleOnKeyDown, onClose }: NetworkMenuTopProps) => {
     const isMobile = useMobile();
     const isMac = useIsMac();
     const isAllowCustomNetworks = useAllowCustomNetworks({
@@ -22,8 +22,8 @@ export const NetworkMenuTop = observer(
     });
 
     return (
-      <Flex width="100%" gap={4} direction="column">
-        <Flex gap={1} direction="column">
+      <Flex direction="column" gap={4} width="100%">
+        <Flex direction="column" gap={1}>
           <Flex alignItems="center" gap={2}>
             <Heading as="h6" variant="h6">
               Select Network
@@ -31,12 +31,12 @@ export const NetworkMenuTop = observer(
             {!isMobile && (
               <Flex gap={1}>
                 <Kbd size="sm">
-                  <Text gap={1} variant="body3">
+                  <Text variant="body3" gap={1}>
                     {isMac ? "⌘" : "Ctrl"}
                   </Text>
                 </Kbd>
                 <Kbd>
-                  <Text gap={1} variant="body3">
+                  <Text variant="body3" gap={1}>
                     /
                   </Text>
                 </Kbd>
@@ -48,12 +48,12 @@ export const NetworkMenuTop = observer(
               <Text as="span" variant="body3" color="text.dark">
                 Want to add your network?
               </Text>{" "}
-              <AppLink onClick={onClose} href="/custom-network/add">
+              <AppLink href="/custom-network/add" onClick={onClose}>
                 <Text
                   as="span"
                   variant="body3"
-                  _hover={{ textDecoration: "underline" }}
                   color="primary.main"
+                  _hover={{ textDecoration: "underline" }}
                 >
                   Add a custom chain.
                 </Text>
@@ -62,13 +62,13 @@ export const NetworkMenuTop = observer(
           )}
         </Flex>
         <InputWithIcon
+          placeholder="Search by Name or Chain ID"
           size="md"
           value={keyword}
-          amptrackSection="network-search"
           autoFocus={!isMobile}
           onChange={(e) => setKeyword(e.target.value)}
           onKeyDown={handleOnKeyDown}
-          placeholder="Search by Name or Chain ID"
+          amptrackSection="network-search"
         />
       </Flex>
     );

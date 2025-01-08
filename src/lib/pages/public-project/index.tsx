@@ -20,14 +20,14 @@ export const AllPublicProjectsPage = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Public Projects" />
-      <Flex alignItems="center" gap={8} direction="column">
-        <Flex alignItems="center" w="full" justifyContent="space-between">
+      <Flex direction="column" alignItems="center" gap={8}>
+        <Flex justifyContent="space-between" w="full" alignItems="center">
           <Heading
-            alignItems="center"
             as="h5"
-            display="flex"
-            minH="36px"
             variant="h5"
+            minH="36px"
+            display="flex"
+            alignItems="center"
           >
             Public Projects
           </Heading>

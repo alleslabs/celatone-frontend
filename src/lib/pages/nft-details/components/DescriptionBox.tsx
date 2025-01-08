@@ -7,7 +7,7 @@ interface DescriptionBoxProps {
 }
 
 export const DescriptionBox = ({ description }: DescriptionBoxProps) => (
-  <Box p="16px" backgroundColor="gray.900" borderRadius="8px" fontSize="14px">
+  <Box fontSize="14px" p="16px" borderRadius="8px" backgroundColor="gray.900">
     <Text mb="8px" fontWeight={700}>
       Description
     </Text>

@@ -35,14 +35,14 @@ export const ModuleVerifyFileMap = ({ control }: ModuleVerifyFileMapProps) => {
         </Text>
       </Stack>
       {!tomlFile && !moveFiles.length ? (
-        <Box bg="gray.900" p={8} textAlign="center" rounded={8}>
+        <Box p={8} textAlign="center" bg="gray.900" rounded={8}>
           <Text variant="body2" color="text.dark">
             The generated file map from the uploaded folder will be displayed
             here.
           </Text>
         </Box>
       ) : (
-        <JsonReadOnly fullWidth text={jsonPrettify(fileMap)} canCopy />
+        <JsonReadOnly text={jsonPrettify(fileMap)} canCopy fullWidth />
       )}
     </Stack>
   );

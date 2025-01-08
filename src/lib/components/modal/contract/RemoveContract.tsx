@@ -24,32 +24,32 @@ export function RemoveContractModal({
     : truncate(contractLocalInfo.contractAddress);
 
   const handleRemove = useHandleContractSave({
-    actions: () => track(AmpEvent.CONTRACT_REMOVE),
-    codeId: contractLocalInfo.codeId,
+    title: `Removed ${displayName} from ${contractRemovalInfo.label}`,
     contractAddress: contractLocalInfo.contractAddress,
-    instantiator: contractLocalInfo.instantiator,
     label: contractLocalInfo.label,
+    codeId: contractLocalInfo.codeId,
+    instantiator: contractLocalInfo.instantiator,
     lists: contractLocalInfo.lists?.filter(
       (item) => item.value !== contractRemovalInfo.value
     ),
-    title: `Removed ${displayName} from ${contractRemovalInfo.label}`,
+    actions: () => track(AmpEvent.CONTRACT_REMOVE),
   });
 
   return (
     <ActionModal
-      mainBtnTitle="Yes, Remove"
-      mainVariant="error"
       title={`Remove ${displayName}?`}
-      trigger={<MenuItem {...menuItemProps} as="button" />}
       icon="delete"
       iconColor="error.light"
+      mainBtnTitle="Yes, Remove"
+      mainVariant="error"
       mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
+      trigger={<MenuItem {...menuItemProps} as="button" />}
     >
       <Text>
         <Highlight
-          styles={{ color: "inherit", fontWeight: "bold" }}
           query={[displayName, contractRemovalInfo.label]}
+          styles={{ fontWeight: "bold", color: "inherit" }}
         >
           {`This action will remove ${displayName} from ${contractRemovalInfo.label}. 
         The contract’s off-chain detail will be preserved in other lists or when you save this contract again.`}

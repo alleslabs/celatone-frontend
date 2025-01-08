@@ -5,8 +5,8 @@ import type { SelectInputOption } from "lib/components/forms";
 import type { Option, PoolInfo, Token, U, USD } from "lib/types";
 
 export const zCoin = z.object({
-  amount: z.string(),
   denom: z.string(),
+  amount: z.string(),
 });
 export type Coin = z.infer<typeof zCoin>;
 
@@ -25,13 +25,13 @@ export const zAssetInfo = z.object({
 export type AssetInfo = z.infer<typeof zAssetInfo>;
 export type AssetInfos = Record<string, AssetInfo>;
 
-export type AssetOption = SelectInputOption<AssetOptionValue>;
-
-export interface AssetOptionValue {
-  formatted?: string;
-  id: string;
-  logo: string;
-  price?: string;
+interface BaseTokenWithValue {
+  denom: string;
+  amount: U<Token<Big>>;
+  symbol: Option<string>;
+  precision: Option<number>;
+  price: Option<USD<Big>>;
+  value: Option<USD<Big>>;
 }
 
 export type TokenWithValue = BaseTokenWithValue &
@@ -47,11 +47,11 @@ export type TokenWithValue = BaseTokenWithValue &
       }
   );
 
-interface BaseTokenWithValue {
-  amount: U<Token<Big>>;
-  denom: string;
-  precision: Option<number>;
-  price: Option<USD<Big>>;
-  symbol: Option<string>;
-  value: Option<USD<Big>>;
+export interface AssetOptionValue {
+  id: string;
+  logo: string;
+  formatted?: string;
+  price?: string;
 }
+
+export type AssetOption = SelectInputOption<AssetOptionValue>;

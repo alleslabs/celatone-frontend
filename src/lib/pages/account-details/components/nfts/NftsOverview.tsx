@@ -12,15 +12,15 @@ import {
 import type { HexAddr } from "lib/types";
 
 interface NftsOverviewProps {
-  onViewMore?: () => void;
-  totalCount?: number;
   userAddress: HexAddr;
+  totalCount?: number;
+  onViewMore?: () => void;
 }
 
 export const NftsOverview = ({
-  onViewMore,
-  totalCount,
   userAddress,
+  totalCount,
+  onViewMore,
 }: NftsOverviewProps) => {
   const isMobile = useMobile();
   const { isFullTier, isSequencerTier } = useTierConfig();
@@ -47,21 +47,21 @@ export const NftsOverview = ({
     : accountNftsSequencer;
 
   return (
-    <Box mb={{ base: 0, md: 8 }} mt={{ base: 4, md: 8 }}>
+    <Box mt={{ base: 4, md: 8 }} mb={{ base: 0, md: 8 }}>
       {isMobile ? (
         <MobileTitle title="NFTs" count={totalCount} onViewMore={onViewMore} />
       ) : (
         <AccountSectionWrapper title="NFTs" totalData={totalCount}>
           <Flex direction="column">
             <NftList
+              nfts={data?.items.slice(0, limit)}
+              isLoading={isFetching}
               emptyState={
                 <AccountDetailsEmptyState
                   message="No NFTs are held by this account."
                   borderBottom={0}
                 />
               }
-              nfts={data?.items.slice(0, limit)}
-              isLoading={isFetching}
               showCollection
             />
             {onViewMore && !!totalCount && totalCount > 5 && (

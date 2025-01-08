@@ -8,14 +8,14 @@ export const ValidatorDescription = ({
   details,
 }: ValidatorDescriptionProps) => (
   <Flex
-    gap={2}
-    p={4}
-    w="100%"
-    backgroundColor="gray.900"
     direction="column"
+    gap={2}
+    backgroundColor="gray.900"
+    p={4}
     rounded={8}
+    w="100%"
   >
-    <Text as="h6" variant="body2" color="text.dark" fontWeight={500}>
+    <Text variant="body2" fontWeight={500} as="h6" color="text.dark">
       Validator Description
     </Text>
     {!details ? (

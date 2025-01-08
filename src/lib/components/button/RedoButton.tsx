@@ -15,8 +15,8 @@ export const RedoButton = ({ message }: RedoButtonProps) => {
   const { chainName } = useCurrentChain();
   return (
     <Button
-      size="sm"
       variant="outline-gray"
+      size="sm"
       onClick={(e) =>
         onClickRedo(
           e,

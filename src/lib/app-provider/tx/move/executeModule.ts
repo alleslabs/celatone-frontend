@@ -9,14 +9,14 @@ import type { HexAddr } from "lib/types";
 import { toEncodeObject } from "lib/utils";
 
 export interface ExecuteModuleStreamParams {
-  args: string[];
-  estimatedFee?: StdFee;
-  functionName: string;
   moduleAddress: HexAddr;
   moduleName: string;
-  onTxFailed?: () => void;
-  onTxSucceed?: () => void;
+  functionName: string;
   typeArgs: string[];
+  args: string[];
+  estimatedFee?: StdFee;
+  onTxSucceed?: () => void;
+  onTxFailed?: () => void;
 }
 
 export const useExecuteModuleTx = () => {
@@ -25,14 +25,14 @@ export const useExecuteModuleTx = () => {
 
   return useCallback(
     async ({
-      args,
-      estimatedFee,
-      functionName,
       moduleAddress,
       moduleName,
-      onTxFailed,
-      onTxSucceed,
+      functionName,
       typeArgs,
+      args,
+      estimatedFee,
+      onTxSucceed,
+      onTxFailed,
     }: ExecuteModuleStreamParams) => {
       if (!address) throw new Error("No address provided (useExecuteModuleTx)");
 
@@ -50,14 +50,14 @@ export const useExecuteModuleTx = () => {
       if (!estimatedFee) return null;
       return executeModuleTx({
         address,
-        fee: estimatedFee,
         messages,
-        onTxFailed,
+        fee: estimatedFee,
+        signAndBroadcast,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
-        signAndBroadcast,
+        onTxFailed,
       });
     },
     [address, signAndBroadcast]

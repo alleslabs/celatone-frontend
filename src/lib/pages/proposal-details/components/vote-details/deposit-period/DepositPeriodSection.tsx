@@ -14,10 +14,10 @@ import { ProposalStatus } from "lib/types";
 import { DepositorsTable } from "./depositors-table";
 
 export const DepositPeriodSection = ({
-  isDepositsLoading,
-  isLoading,
-  params,
   proposalData,
+  params,
+  isLoading,
+  isDepositsLoading,
 }: ProposalOverviewProps) => {
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
@@ -31,66 +31,66 @@ export const DepositPeriodSection = ({
     proposalData.status === ProposalStatus.VOTING_PERIOD;
   return (
     <Flex
-      gap={4}
-      p={isMobile ? 0 : 6}
+      direction="column"
       background={isMobile ? "transparent" : "gray.900"}
       border={isMobile ? undefined : "1px solid var(--chakra-colors-gray-700)"}
       borderRadius="8px"
-      direction="column"
+      p={isMobile ? 0 : 6}
+      gap={4}
     >
       {isMobile ? (
         <>
           <DepositBar
             deposit={proposalData.totalDeposit}
-            isCompact
-            isDepositOrVoting={isDepositOrVoting}
             minDeposit={minDeposit}
+            isDepositOrVoting={isDepositOrVoting}
+            isCompact
           />
           <DepositList
-            isDepositsLoading={isDepositsLoading}
             proposalDeposits={proposalData.proposalDeposits}
+            isDepositsLoading={isDepositsLoading}
           />
         </>
       ) : (
         <>
           <Grid templateColumns="2fr minmax(300px, 3fr)">
             <TableTitle
-              mb={0}
               title="Depositors"
+              mb={0}
               count={proposalData.proposalDeposits.length}
               showCount={isFullTier || isDepositOrVoting}
             />
             <Flex
-              align="center"
               gap={1}
+              align="center"
               marginLeft={isDepositOrVoting ? 0 : "auto"}
             >
               <Text
-                lineHeight={1.8}
                 variant="body2"
-                whiteSpace="nowrap"
                 color="text.dark"
                 fontWeight={500}
+                whiteSpace="nowrap"
+                lineHeight={1.8}
               >
                 Total Deposited
               </Text>
               <TooltipInfo
-                h="full"
                 label="After reaching the total deposit amount, the proposal proceeds to the voting period."
+                h="full"
               />
               <DepositBar
                 deposit={proposalData.totalDeposit}
-                isCompact={false}
-                isDepositOrVoting={isDepositOrVoting}
                 minDeposit={minDeposit}
+                isDepositOrVoting={isDepositOrVoting}
+                isCompact={false}
               />
             </Flex>
           </Grid>
           <DepositorsTable
-            isPruned={!isFullTier && !isDepositOrVoting}
             depositors={proposalData.proposalDeposits}
             isDepositsLoading={isDepositsLoading}
             showTransaction={isFullTier}
+            isPruned={!isFullTier && !isDepositOrVoting}
           />
         </>
       )}

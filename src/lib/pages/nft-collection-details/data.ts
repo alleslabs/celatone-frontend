@@ -2,10 +2,10 @@ import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useResourcesByAddressLcd } from "lib/services/move/resource";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 
-interface CollectionInfos {
-  isUnlimited: boolean;
-  royalty: number;
-  supplies: { currentSupply: number; maxSupply?: number; totalMinted: number };
+interface SupplyData {
+  current_supply: string;
+  total_minted: string;
+  max_supply?: string;
 }
 
 interface RoyaltyData {
@@ -13,10 +13,10 @@ interface RoyaltyData {
   royalty: string;
 }
 
-interface SupplyData {
-  current_supply: string;
-  max_supply?: string;
-  total_minted: string;
+interface CollectionInfos {
+  isUnlimited: boolean;
+  supplies: { currentSupply: number; totalMinted: number; maxSupply?: number };
+  royalty: number;
 }
 
 export const useCollectionInfos = (
@@ -52,14 +52,14 @@ export const useCollectionInfos = (
   return {
     collectionInfos: {
       isUnlimited,
-      royalty: Number(royaltyData?.royalty ?? 0) * 100,
       supplies: {
         currentSupply: Number(supplyData?.current_supply ?? 0),
+        totalMinted: Number(supplyData?.total_minted ?? 0),
         maxSupply: supplyData?.max_supply
           ? Number(supplyData.max_supply)
           : undefined,
-        totalMinted: Number(supplyData?.total_minted ?? 0),
       },
+      royalty: Number(royaltyData?.royalty ?? 0) * 100,
     },
     isLoading: isFetching,
   };

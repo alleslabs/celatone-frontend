@@ -6,10 +6,10 @@ export interface CircleIconProps {
 
 export const CircleIcon = ({ color }: CircleIconProps) => (
   <Flex
-    h="14px"
-    minH="14px"
-    minW="14px"
     w="14px"
+    h="14px"
+    minW="14px"
+    minH="14px"
     backgroundColor={color}
     borderRadius="100%"
   />

@@ -14,18 +14,18 @@ interface TxsFullProps {
 
 export const TxsFull = ({ nftAddress }: TxsFullProps) => {
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
+    currentPage,
     setCurrentPage,
+    pageSize,
     setPageSize,
+    offset,
     setTotalData,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
 
@@ -39,25 +39,25 @@ export const TxsFull = ({ nftAddress }: TxsFullProps) => {
   return (
     <Box>
       <TxsTable
+        txs={transactions?.items}
+        isLoading={isLoading}
         emptyState={
           <EmptyState imageVariant="empty" message="Transactions not found." />
         }
-        txs={transactions?.items}
-        isLoading={isLoading}
       />
       {transactions && transactions?.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={transactions.total}
+          pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
           }}
-          totalData={transactions.total}
         />
       )}
     </Box>

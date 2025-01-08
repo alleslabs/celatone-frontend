@@ -22,7 +22,7 @@ export const BlockDetailsSequencer = ({ height }: { height: number }) => {
     <>
       <Breadcrumb
         items={[
-          { href: "/blocks", text: "Blocks" },
+          { text: "Blocks", href: "/blocks" },
           { text: blockData.height.toString() },
         ]}
       />
@@ -34,8 +34,8 @@ export const BlockDetailsSequencer = ({ height }: { height: number }) => {
         <BlockTxsTableSequencer height={height} />
       )}
       <UserDocsLink
-        cta="Read more about Block"
         title="What is a block?"
+        cta="Read more about Block"
         href="general/blocks/detail-page"
       />
     </>

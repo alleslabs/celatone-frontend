@@ -15,41 +15,41 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
   <>
     <Breadcrumb
       items={[
-        { href: "/projects", text: "Public Projects" },
+        { text: "Public Projects", href: "/projects" },
         { text: details?.name },
       ]}
     />
     <Flex
-      alignItems="flex-start"
-      gap={5}
-      mt={6}
-      w="full"
-      direction={{ base: "column", md: "row" }}
       justifyContent="space-between"
+      alignItems="flex-start"
+      w="full"
+      mt={6}
+      gap={5}
+      direction={{ base: "column", md: "row" }}
     >
       <Box>
-        <Flex align="center" gap={1} minH="36px">
+        <Flex gap={1} align="center" minH="36px">
           {details?.logo && (
             <Image
-              width={7}
-              alt="Celatone"
-              height={7}
               src={details?.logo}
               borderRadius="full"
+              alt="Celatone"
+              width={7}
+              height={7}
             />
           )}
-          <Heading className="ellipsis" as="h5" variant="h5">
+          <Heading as="h5" variant="h5" className="ellipsis">
             {getNameAndDescriptionDefault(details?.name)}
           </Heading>
         </Flex>
-        <Text mt={2} variant="body2" color="text.dark">
+        <Text variant="body2" color="text.dark" mt={2}>
           {getNameAndDescriptionDefault(details?.description)}
         </Text>
       </Box>
       <Flex
         alignItems="center"
-        gap={4}
         justify="space-between"
+        gap={4}
         w={{ base: "full", md: "auto" }}
       >
         <SocialMedia details={details} />

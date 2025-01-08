@@ -44,8 +44,8 @@ export const useNetworkSelector = (onClose: () => void) => {
     (e: ReactKeyboardEvent<HTMLDivElement>) => {
       if (!totalNetworks) return;
       switch (e.key) {
-        case "ArrowDown":
-        case "ArrowUp": {
+        case "ArrowUp":
+        case "ArrowDown": {
           e.preventDefault();
           const nextCursor = getNextCursor(e.key, cursor, totalNetworks - 1);
           const element = document.getElementById(`item-${nextCursor}`);
@@ -69,15 +69,15 @@ export const useNetworkSelector = (onClose: () => void) => {
   );
 
   return {
+    keyword,
+    setKeyword,
+    handleOnKeyDown,
     cursor,
+    setCursor,
+    filteredPinnedChains,
+    filteredMainnetChains,
+    filteredTestnetChains,
     filteredDevnetChains,
     filteredLocalChains,
-    filteredMainnetChains,
-    filteredPinnedChains,
-    filteredTestnetChains,
-    handleOnKeyDown,
-    keyword,
-    setCursor,
-    setKeyword,
   };
 };

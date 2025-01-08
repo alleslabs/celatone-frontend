@@ -21,26 +21,26 @@ export const AnnouncementModal = ({
   isOpen,
   onClose,
 }: AnnouncementModalProps) => (
-  <Modal isCentered isOpen={isOpen} onClose={() => {}}>
+  <Modal isOpen={isOpen} isCentered onClose={() => {}}>
     <ModalOverlay />
     <ModalContent w="640px">
       <ModalHeader py={2}>
-        <Flex alignItems="center" pt={4} w="full" justifyContent="center">
+        <Flex w="full" justifyContent="center" alignItems="center" pt={4}>
           <Image
-            width={{ base: 280, md: 320 }}
-            alt=""
             src="/allesinitialogo.svg"
+            alt=""
+            width={{ base: 280, md: 320 }}
           />
         </Flex>
       </ModalHeader>
       <ModalBody maxH="400px" overflow="overlay">
-        <Divider mb={6} color="gray.700" />
-        <Flex alignItems="center" gap={3} textAlign="center" direction="column">
+        <Divider color="gray.700" mb={6} />
+        <Flex direction="column" gap={3} alignItems="center" textAlign="center">
           <Heading as="h5" variant="h5">
             Alles Labs is joining{" "}
             <span style={{ display: "inline-flex" }}>Initia Labs</span>
           </Heading>
-          <Text textAlign="center" variant="body1" color="text.dark">
+          <Text variant="body1" textAlign="center" color="text.dark">
             Alles Labs, the team behind Celatone, is joining Initia Labs to
             enhance the user and developer experience within the Initia
             ecosystem. The Celatone explorer on existing chains will continue to
@@ -50,16 +50,16 @@ export const AnnouncementModal = ({
       </ModalBody>
       <ModalFooter>
         <Flex
-          align="center"
-          gap={4}
           w="full"
           direction="row"
+          align="center"
           justifyContent="center"
+          gap={4}
         >
           <Button
             minW="256px"
-            variant="outline-primary"
             cursor="pointer"
+            variant="outline-primary"
             onClick={onClose}
           >
             Close

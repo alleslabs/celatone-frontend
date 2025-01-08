@@ -8,17 +8,17 @@ export type MoveVerifyTaskInfo = MoveVerifyTaskLocalInfo & {
 };
 
 export const useMyModuleVerifications = (): {
-  data: MoveVerifyTaskInfo[];
   isLoading: boolean;
+  data: MoveVerifyTaskInfo[];
 } => {
-  const { completeMoveVerifyTask, getMoveVerifyTask, latestMoveVerifyTasks } =
+  const { latestMoveVerifyTasks, completeMoveVerifyTask, getMoveVerifyTask } =
     useMoveVerifyTaskStore();
   const localTasks = latestMoveVerifyTasks();
   const verificationInfos = useMoveVerifyTaskInfos(
     localTasks
       .filter(({ completed }) => !completed)
       .map((module) => module.taskId),
-    ({ result, task }) => {
+    ({ task, result }) => {
       // set as completed if the task is finished or the task is still not found and older than 10s
       const confirmationTime = 10 * 1000; // 10s
       const localTask = getMoveVerifyTask(task.id);
@@ -33,6 +33,9 @@ export const useMyModuleVerifications = (): {
   );
 
   return {
+    isLoading: verificationInfos.some(
+      (verificationInfo) => verificationInfo.isLoading
+    ),
     data: localTasks.map((task) => {
       if (task.completed) {
         return {
@@ -52,8 +55,5 @@ export const useMyModuleVerifications = (): {
         status: fetchedTaskInfo?.task.status ?? MoveVerifyTaskStatus.NotFound,
       };
     }),
-    isLoading: verificationInfos.some(
-      (verificationInfo) => verificationInfo.isLoading
-    ),
   };
 };

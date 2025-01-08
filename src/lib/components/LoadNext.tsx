@@ -3,25 +3,25 @@ import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { CustomIcon } from "./icon";
 
 interface LoadNextProps {
+  text: string;
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;
-  text: string;
 }
 
 export const LoadNext = ({
+  text,
   fetchNextPage,
   isFetchingNextPage,
-  text,
 }: LoadNextProps) => (
-  <Flex align="center" h="64px" w="full" justifyContent="center">
+  <Flex w="full" justifyContent="center" align="center" h="64px">
     {isFetchingNextPage ? (
       <Spinner />
     ) : (
       <Button
-        gap={2}
+        w="full"
         h="full"
         variant="ghost-gray"
-        w="full"
+        gap={2}
         onClick={fetchNextPage}
       >
         {text}

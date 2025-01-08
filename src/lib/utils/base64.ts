@@ -1,4 +1,4 @@
-export { decode as libDecode, encode as libEncode } from "js-base64";
+export { encode as libEncode, decode as libDecode } from "js-base64";
 
 // TODO: Change the whole project encode/decode function to use from lib
 export const decode = (str: string): string =>

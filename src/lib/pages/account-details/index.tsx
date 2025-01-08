@@ -64,9 +64,9 @@ const tableHeaderId = "accountDetailsTab";
 
 interface AccountDetailsBodyProps {
   accountAddressParam: Addr;
+  tabParam: TabIndex;
   resourceSelectedAccountParam: Option<string>;
   resourceSelectedGroupNameParam: Option<string>;
-  tabParam: TabIndex;
 }
 
 const getAddressOnPath = (hexAddress: HexAddr, accountAddress: BechAddr) =>
@@ -76,9 +76,9 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({
   accountAddressParam,
+  tabParam,
   resourceSelectedAccountParam,
   resourceSelectedGroupNameParam,
-  tabParam,
   // eslint-disable-next-line sonarjs/cognitive-complexity
 }: AccountDetailsBodyProps) => {
   // ------------------------------------------//
@@ -108,9 +108,9 @@ const AccountDetailsBody = ({
   const { getAccountLocalInfo } = useAccountStore();
   const accountLocalInfo = getAccountLocalInfo(accountAddress);
   const {
-    isLoading: isLoadingAccountTableCounts,
-    refetchCounts,
     tableCounts,
+    refetchCounts,
+    isLoading: isLoadingAccountTableCounts,
   } = useAccountDetailsTableCounts(accountAddress);
   // gov
   const { isTotalBondedLoading, totalBonded } =
@@ -148,13 +148,13 @@ const AccountDetailsBody = ({
       if (nextTab === tabParam) return;
       trackUseTab(nextTab, undefined, total?.toString());
       navigate({
-        options: {
-          shallow: true,
-        },
         pathname: "/accounts/[accountAddress]/[tab]",
         query: {
           accountAddress: getAddressOnPath(hexAddress, accountAddress),
           tab: nextTab,
+        },
+        options: {
+          shallow: true,
         },
       });
     },
@@ -164,8 +164,8 @@ const AccountDetailsBody = ({
   const { address } = useCurrentChain();
   const {
     data: initiaUsernameData,
-    isFetching: isInitiaUsernameDataFetching,
     isLoading: isInitiaUsernameDataLoading,
+    isFetching: isInitiaUsernameDataFetching,
   } = useInitiaUsernameByAddress(hexAddress, isInitia);
 
   const nftEnabled = nft.enabled && (isFullTier || isSequencerTier);
@@ -196,14 +196,14 @@ const AccountDetailsBody = ({
   return (
     <>
       <CelatoneSeo pageName={pageTitle} />
-      <Flex mb={6} direction="column">
+      <Flex direction="column" mb={6}>
         {accountData?.projectInfo && accountData?.publicInfo && (
           <Breadcrumb
             items={[
-              { href: "/projects", text: "Public Projects" },
+              { text: "Public Projects", href: "/projects" },
               {
-                href: `/projects/${accountData.publicInfo.slug}`,
                 text: accountData.projectInfo.name,
+                href: `/projects/${accountData.publicInfo.slug}`,
               },
               { text: truncate(accountAddress) },
             ]}
@@ -211,12 +211,12 @@ const AccountDetailsBody = ({
           />
         )}
         <AccountHeader
+          accountData={accountData}
+          accountAddress={accountAddress}
           hexAddress={hexAddress}
           initiaUsernameData={initiaUsernameData}
-          isInitiaUsernameDataFetching={isInitiaUsernameDataFetching}
-          accountAddress={accountAddress}
-          accountData={accountData}
           isInitiaUsernameDataLoading={isInitiaUsernameDataLoading}
+          isInitiaUsernameDataFetching={isInitiaUsernameDataFetching}
         />
       </Flex>
       <Tabs
@@ -225,114 +225,114 @@ const AccountDetailsBody = ({
         lazyBehavior="keepMounted"
       >
         <TabList
-          id={tableHeaderId}
           borderBottom="1px solid"
           borderColor="gray.700"
           overflowX="scroll"
+          id={tableHeaderId}
         >
           <CustomTab onClick={handleTabChange(TabIndex.Overview, undefined)}>
             Overview
           </CustomTab>
           <CustomTab
-            isDisabled={tableCounts.assetsCount === 0}
             count={tableCounts.assetsCount}
+            isDisabled={tableCounts.assetsCount === 0}
             onClick={handleTabChange(TabIndex.Assets, undefined)}
           >
             Assets
           </CustomTab>
           <CustomTab
+            onClick={handleTabChange(TabIndex.Delegations, undefined)}
             hidden={!gov.enabled}
             isDisabled={hasTotalBonded}
-            onClick={handleTabChange(TabIndex.Delegations, undefined)}
           >
             Delegations
           </CustomTab>
           <CustomTab
-            hidden={!nftEnabled}
-            isDisabled={nfts?.total === 0}
             count={totalNfts}
-            isLoading={isNftsCountLoading}
+            isDisabled={nfts?.total === 0}
             onClick={handleTabChange(TabIndex.Nfts, totalNfts)}
+            isLoading={isNftsCountLoading}
+            hidden={!nftEnabled}
           >
             NFTs
           </CustomTab>
           <CustomTab
-            isDisabled={tableCounts.txsCount === 0}
             count={isFullTier ? tableCounts.txsCount : undefined}
-            isLoading={isLoadingAccountTableCounts}
+            isDisabled={tableCounts.txsCount === 0}
             onClick={handleTabChange(
               TabIndex.Txs,
               tableCounts.txsCount ?? undefined
             )}
+            isLoading={isLoadingAccountTableCounts}
           >
             Transactions
           </CustomTab>
           <CustomTab
-            hidden={!wasm.enabled || !isFullTier}
-            isDisabled={tableCounts.codesCount === 0}
             count={tableCounts.codesCount}
-            isLoading={isLoadingAccountTableCounts}
+            isDisabled={tableCounts.codesCount === 0}
             onClick={handleTabChange(
               TabIndex.Codes,
               tableCounts.codesCount ?? undefined
             )}
+            isLoading={isLoadingAccountTableCounts}
+            hidden={!wasm.enabled || !isFullTier}
           >
             Codes
           </CustomTab>
           <CustomTab
-            hidden={!wasm.enabled}
-            isDisabled={tableCounts.contractsCount === 0}
             count={tableCounts.contractsCount}
-            isLoading={isLoadingAccountTableCounts}
+            isDisabled={tableCounts.contractsCount === 0}
             onClick={handleTabChange(
               TabIndex.Contracts,
               tableCounts.contractsCount ?? undefined
             )}
+            isLoading={isLoadingAccountTableCounts}
+            hidden={!wasm.enabled}
           >
             Contracts
           </CustomTab>
           <CustomTab
-            hidden={!wasm.enabled || !isFullTier}
-            isDisabled={tableCounts.contractsAdminCount === 0}
             count={tableCounts.contractsAdminCount}
-            isLoading={isLoadingAccountTableCounts}
+            isDisabled={tableCounts.contractsAdminCount === 0}
             onClick={handleTabChange(
               TabIndex.Admins,
               tableCounts.contractsAdminCount ?? undefined
             )}
+            isLoading={isLoadingAccountTableCounts}
+            hidden={!wasm.enabled || !isFullTier}
           >
             Admins
           </CustomTab>
           <CustomTab
-            hidden={!move.enabled}
-            isDisabled={resourcesData?.totalCount === 0}
             count={resourcesData?.totalCount}
-            isLoading={isResourceLoading}
+            isDisabled={resourcesData?.totalCount === 0}
             onClick={handleTabChange(
               TabIndex.Resources,
               resourcesData?.groupedByOwner.length
             )}
+            isLoading={isResourceLoading}
+            hidden={!move.enabled}
           >
             Resources
           </CustomTab>
           <CustomTab
-            hidden={!move.enabled}
-            isDisabled={modulesData?.total === 0}
             count={modulesData?.total}
-            isLoading={isModulesLoading}
+            isDisabled={modulesData?.total === 0}
             onClick={handleTabChange(TabIndex.Modules, undefined)}
+            isLoading={isModulesLoading}
+            hidden={!move.enabled}
           >
             Modules
           </CustomTab>
           <CustomTab
-            hidden={!gov.enabled || !isFullTier}
-            isDisabled={tableCounts.proposalsCount === 0}
             count={tableCounts.proposalsCount}
-            isLoading={isLoadingAccountTableCounts}
+            isDisabled={tableCounts.proposalsCount === 0}
             onClick={handleTabChange(
               TabIndex.Proposals,
               tableCounts.proposalsCount ?? undefined
             )}
+            isLoading={isLoadingAccountTableCounts}
+            hidden={!gov.enabled || !isFullTier}
           >
             Proposals
           </CustomTab>
@@ -341,9 +341,9 @@ const AccountDetailsBody = ({
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             {(accountData?.publicInfo || accountLocalInfo) && (
               <Flex
+                direction={{ base: "column", md: "row" }}
                 gap={{ base: 4, md: 6 }}
                 mt={{ base: 0, md: 8 }}
-                direction={{ base: "column", md: "row" }}
               >
                 {accountData?.publicInfo?.description && (
                   <PublicAccountDesc
@@ -361,8 +361,8 @@ const AccountDetailsBody = ({
               borderBottomColor={{ base: "transparent", md: "gray.700" }}
             >
               <AssetsSection
-                address={accountAddress}
                 isAccount
+                address={accountAddress}
                 onViewMore={handleTabChange(TabIndex.Assets, undefined)}
               />
             </Flex>
@@ -380,54 +380,54 @@ const AccountDetailsBody = ({
             )}
             {nftEnabled && (
               <NftsOverview
+                totalCount={totalNfts}
                 userAddress={hexAddress}
                 onViewMore={handleTabChange(TabIndex.Nfts, totalNfts)}
-                totalCount={totalNfts}
               />
             )}
             <TxsTable
               address={accountAddress}
+              scrollComponentId={tableHeaderId}
+              refetchCount={refetchCounts}
               onViewMore={handleTabChange(
                 TabIndex.Txs,
                 tableCounts.txsCount ?? undefined
               )}
-              scrollComponentId={tableHeaderId}
-              refetchCount={refetchCounts}
             />
             {wasm.enabled && (
               <>
                 {isFullTier && (
                   <StoredCodesTable
                     address={accountAddress}
+                    scrollComponentId={tableHeaderId}
+                    totalData={tableCounts.codesCount ?? undefined}
+                    refetchCount={refetchCounts}
                     onViewMore={handleTabChange(
                       TabIndex.Codes,
                       tableCounts.codesCount ?? undefined
                     )}
-                    scrollComponentId={tableHeaderId}
-                    totalData={tableCounts.codesCount ?? undefined}
-                    refetchCount={refetchCounts}
                   />
                 )}
                 <InstantiatedContractsTable
                   address={accountAddress}
+                  scrollComponentId={tableHeaderId}
+                  totalData={tableCounts.contractsCount ?? undefined}
+                  refetchCount={refetchCounts}
                   onViewMore={handleTabChange(
                     TabIndex.Contracts,
                     tableCounts.contractsCount ?? undefined
                   )}
-                  scrollComponentId={tableHeaderId}
-                  totalData={tableCounts.contractsCount ?? undefined}
-                  refetchCount={refetchCounts}
                 />
                 {isFullTier && (
                   <AdminContractsTable
                     address={accountAddress}
+                    scrollComponentId={tableHeaderId}
+                    totalData={tableCounts.contractsAdminCount ?? undefined}
+                    refetchCount={refetchCounts}
                     onViewMore={handleTabChange(
                       TabIndex.Admins,
                       tableCounts.contractsAdminCount ?? undefined
                     )}
-                    scrollComponentId={tableHeaderId}
-                    totalData={tableCounts.contractsAdminCount ?? undefined}
-                    refetchCount={refetchCounts}
                   />
                 )}
               </>
@@ -436,54 +436,54 @@ const AccountDetailsBody = ({
               <>
                 <ResourceOverview
                   address={accountAddress}
+                  totalCount={resourcesData?.totalCount}
+                  resourcesByName={resourcesData?.groupedByName}
                   isLoading={isResourceLoading}
                   onViewMore={handleTabChange(
                     TabIndex.Resources,
                     resourcesData?.groupedByOwner.length
                   )}
-                  resourcesByName={resourcesData?.groupedByName}
-                  totalCount={resourcesData?.totalCount}
                 />
                 <ModuleLists
                   address={accountAddress}
-                  isLoading={isModulesLoading}
-                  modules={modulesData?.items}
-                  onViewMore={handleTabChange(TabIndex.Modules, undefined)}
                   totalCount={modulesData?.total}
+                  modules={modulesData?.items}
+                  isLoading={isModulesLoading}
+                  onViewMore={handleTabChange(TabIndex.Modules, undefined)}
                 />
               </>
             )}
             {gov.enabled && isFullTier && (
               <OpenedProposalsTable
                 address={accountAddress}
+                scrollComponentId={tableHeaderId}
+                totalData={tableCounts.proposalsCount ?? undefined}
+                refetchCount={refetchCounts}
                 onViewMore={handleTabChange(
                   TabIndex.Proposals,
                   tableCounts.proposalsCount ?? undefined
                 )}
-                scrollComponentId={tableHeaderId}
-                totalData={tableCounts.proposalsCount ?? undefined}
-                refetchCount={refetchCounts}
               />
             )}
             <UserDocsLink
-              cta="Read more about Account"
               title="What is an Account?"
+              cta="Read more about Account"
               href="general/accounts/detail-page"
             />
           </TabPanel>
-          <TabPanel mt={{ base: 0, md: 8 }} p={0}>
-            <AssetsSection address={accountAddress} isAccount />
+          <TabPanel p={0} mt={{ base: 0, md: 8 }}>
+            <AssetsSection isAccount address={accountAddress} />
             <UserDocsLink
-              cta="Read more about Assets"
               title="What is Supported and Unsupported Assets?"
+              cta="Read more about Assets"
               href="general/accounts/detail-page#assets"
             />
           </TabPanel>
-          <TabPanel mt={{ base: 0, md: 8 }} p={0}>
+          <TabPanel p={0} mt={{ base: 0, md: 8 }}>
             <DelegationsSection address={accountAddress} />
             <UserDocsLink
-              cta="Read more about Delegations"
               title="What is Delegations, Total Bonded, Rewards?"
+              cta="Read more about Delegations"
               href="general/accounts/detail-page#staking"
             />
           </TabPanel>
@@ -500,8 +500,8 @@ const AccountDetailsBody = ({
               }
             />
             <UserDocsLink
-              cta="Read more about NFTs in Account"
               title="What is NFTs in the account?"
+              cta="Read more about NFTs in Account"
               href="general/accounts/detail-page#nfts"
             />
           </TabPanel>
@@ -512,8 +512,8 @@ const AccountDetailsBody = ({
               refetchCount={refetchCounts}
             />
             <UserDocsLink
-              cta="Read more about Account Transactions"
               title="What is transactions related to the account?"
+              cta="Read more about Account Transactions"
               href="general/accounts/detail-page#transactions"
             />
           </TabPanel>
@@ -525,8 +525,8 @@ const AccountDetailsBody = ({
               refetchCount={refetchCounts}
             />
             <UserDocsLink
-              cta="Read more about Stored Codes in Account"
               title="What is Stored Codes in the account?"
+              cta="Read more about Stored Codes in Account"
               href="general/accounts/detail-page#codes"
             />
           </TabPanel>
@@ -538,8 +538,8 @@ const AccountDetailsBody = ({
               refetchCount={refetchCounts}
             />
             <UserDocsLink
-              cta="Read more about Contracts in Account"
               title="What is contract instances in the account?"
+              cta="Read more about Contracts in Account"
               href="general/accounts/detail-page#contracts"
             />
           </TabPanel>
@@ -551,36 +551,36 @@ const AccountDetailsBody = ({
               refetchCount={refetchCounts}
             />
             <UserDocsLink
-              cta="Read more about Account Contract Admins"
               title="What is contract admins in the account?"
+              cta="Read more about Account Contract Admins"
               href="general/accounts/detail-page#contracts-admin"
             />
           </TabPanel>
           <TabPanel p={0}>
             <ResourceSection
               address={accountAddress}
-              isLoading={isResourceLoading}
+              totalCount={resourcesData?.totalCount}
               resourcesByOwner={resourcesData?.groupedByOwner}
+              isLoading={isResourceLoading}
               selectedAccountParam={resourceSelectedAccountParam}
               selectedGroupNameParam={resourceSelectedGroupNameParam}
-              totalCount={resourcesData?.totalCount}
             />
             <UserDocsLink
-              cta="Read more about Resources in Account"
               title="What is resources?"
+              cta="Read more about Resources in Account"
               href="general/accounts/detail-page#resources"
             />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleLists
               address={accountAddress}
-              isLoading={isModulesLoading}
-              modules={modulesData?.items}
               totalCount={modulesData?.total}
+              modules={modulesData?.items}
+              isLoading={isModulesLoading}
             />
             <UserDocsLink
-              cta="Read more about Modules in Account"
               title="What is modules?"
+              cta="Read more about Modules in Account"
               href="general/accounts/detail-page#modules"
             />
           </TabPanel>
@@ -592,8 +592,8 @@ const AccountDetailsBody = ({
               refetchCount={refetchCounts}
             />
             <UserDocsLink
-              cta="Read more about Opened Proposals"
               title="What is Opened Proposals in the account?"
+              cta="Read more about Opened Proposals"
               href="general/accounts/detail-page#proposals"
             />
           </TabPanel>
@@ -622,8 +622,8 @@ const AccountDetails = () => {
         <InvalidAccount />
       ) : (
         <AccountDetailsBody
-          tabParam={validated.data.tab}
           accountAddressParam={validated.data.accountAddress}
+          tabParam={validated.data.tab}
           resourceSelectedAccountParam={validated.data.account}
           resourceSelectedGroupNameParam={validated.data.selected}
         />

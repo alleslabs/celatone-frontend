@@ -10,16 +10,16 @@ import { ViewSchemaModal } from "./view/ViewSchemaModal";
 
 interface AttachSchemaCardProps {
   attached: boolean;
-  codeHash: string;
   codeId: number;
+  codeHash: string;
   localSchema: Option<CodeSchema>;
   openModal: () => void;
 }
 
 export const AttachSchemaCard = ({
   attached,
-  codeHash,
   codeId,
+  codeHash,
   localSchema,
   openModal,
 }: AttachSchemaCardProps) => {
@@ -35,14 +35,14 @@ export const AttachSchemaCard = ({
 
   return (
     <Flex
-      align="center"
-      bg={!attached ? "gray.900" : "gray.800"}
-      justify="space-between"
-      minW="480px"
-      p={4}
-      w="full"
       border={!attached ? "1px dashed" : "1px solid"}
       borderColor="gray.700"
+      bg={!attached ? "gray.900" : "gray.800"}
+      justify="space-between"
+      align="center"
+      p={4}
+      w="full"
+      minW="480px"
       borderRadius="4px"
     >
       {!attached ? (
@@ -57,28 +57,28 @@ export const AttachSchemaCard = ({
           <Flex align="center" gap={1}>
             <CustomIcon
               name="check-circle-solid"
-              boxSize={6}
               color="success.main"
+              boxSize={6}
             />
             <Text variant="body2">JSON Schema attached</Text>
           </Flex>
           <Flex align="center" gap={2}>
-            <ViewSchemaModal schema={localSchema} codeId={codeId} />
-            <Button size="sm" variant="outline-gray" onClick={handleReattach}>
+            <ViewSchemaModal codeId={codeId} schema={localSchema} />
+            <Button variant="outline-gray" size="sm" onClick={handleReattach}>
               Reattach
             </Button>
             <RemoveSchemaModal
+              codeId={codeId}
+              codeHash={codeHash}
               trigger={
                 <IconButton
-                  aria-label="delete schema"
-                  size="sm"
                   variant="ghost-gray"
+                  size="sm"
                   color="gray.600"
                   icon={<CustomIcon name="delete" boxSize={4} />}
+                  aria-label="delete schema"
                 />
               }
-              codeHash={codeHash}
-              codeId={codeId}
             />
           </Flex>
         </>

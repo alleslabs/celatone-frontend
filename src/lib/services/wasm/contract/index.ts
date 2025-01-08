@@ -109,9 +109,9 @@ export const useMigrationHistoriesByContractAddressLcd = (
     async () =>
       getMigrationHistoriesByContractAddressLcd(lcdEndpoint, contractAddress),
     {
-      enabled,
-      keepPreviousData: true,
       retry: 1,
+      keepPreviousData: true,
+      enabled,
     }
   );
 };
@@ -147,8 +147,8 @@ export const useInstantiatedContractsByAddress = (
     },
     {
       enabled: Boolean(address) && enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -175,8 +175,8 @@ export const useAllInstantiatedContractsByAddress = (
     },
     {
       enabled: Boolean(address) && enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -197,7 +197,7 @@ export const useAdminContractsByAddress = (
       offset,
     ],
     async () => getAdminContractsByAddress(endpoint, address, limit, offset),
-    { refetchOnWindowFocus: false, retry: 1 }
+    { retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -219,7 +219,7 @@ export const useContractData = (
       isFullTier
         ? getContractData(endpoint, contractAddress, isGov)
         : getContractLcd(endpoint, contractAddress),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
@@ -238,7 +238,7 @@ export const useContractTableCounts = (
       isGov,
     ],
     async () => getContractTableCounts(endpoint, contractAddress, isGov),
-    { refetchOnWindowFocus: false, retry: 1, ...options }
+    { retry: 1, refetchOnWindowFocus: false, ...options }
   );
 };
 
@@ -251,10 +251,10 @@ export const useContractQueryMsgsLcd = (contractAddress: BechAddr32) => {
     [CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS, lcdEndpoint, contractAddress],
     async () => getContractQueryMsgsLcd(lcdEndpoint, contractAddress),
     {
-      cacheTime: 0,
       enabled: !!contractAddress,
-      refetchOnWindowFocus: false,
       retry: false,
+      cacheTime: 0,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -271,8 +271,8 @@ export const useContractsByCodeId = (
     [CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID, endpoint, codeId, limit, offset],
     async () => getContractsByCodeId(endpoint, codeId, limit, offset),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
       ...options,
     }
   );
@@ -306,8 +306,8 @@ export const useContractQueryLcd = (
     [CELATONE_QUERY_KEYS.CONTRACT_QUERY_LCD, lcdEndpoint, contractAddress, msg],
     async () => getContractQueryLcd(lcdEndpoint, contractAddress, msg),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
       ...options,
     }
   );
@@ -349,7 +349,7 @@ export const useContractCw2InfoLcd = (
   return useQuery(
     [CELATONE_QUERY_KEYS.CONTRACT_CW2_INFO_LCD, lcdEndpoint, contractAddress],
     async () => getContractCw2InfoLcd(lcdEndpoint, contractAddress),
-    { enabled, refetchOnWindowFocus: false, retry: 1 }
+    { retry: 1, refetchOnWindowFocus: false, enabled }
   );
 };
 
@@ -368,7 +368,7 @@ export const useAllAdminContractsByAddress = (
 
       return getAllAdminContractsByAddress(endpoint, address);
     },
-    { enabled: !!address, refetchOnWindowFocus: false, retry: 1 }
+    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
 };
 
@@ -380,8 +380,8 @@ export const useAdminsByContractAddresses = (
     [CELATONE_QUERY_KEYS.ADMINS_BY_CONTRACTS, endpoint, contractAddresses],
     () => getAdminsByContractAddresses(endpoint, contractAddresses),
     {
-      enabled: contractAddresses.length > 0,
       keepPreviousData: true,
+      enabled: contractAddresses.length > 0,
     }
   );
 };

@@ -7,49 +7,52 @@ import { AmpEvent, track } from "lib/amplitude";
 import { CopyTemplate } from "./CopyTemplate";
 
 interface CopyButtonProps extends ButtonProps {
-  amptrackInfo?: string;
-  amptrackSection?: string;
-  amptrackSubSection?: string;
-  buttonText?: string;
-  copyLabel?: string;
-  hasIcon?: boolean;
-  iconGap?: number;
   isDisable?: boolean;
   value: string;
+  copyLabel?: string;
+  hasIcon?: boolean;
+  buttonText?: string;
+  amptrackSection?: string;
+  amptrackSubSection?: string;
+  amptrackInfo?: string;
+  iconGap?: number;
   w?: BoxProps["width"];
 }
 
 export const CopyButton = ({
-  amptrackInfo,
-  amptrackSection,
-  amptrackSubSection,
-  buttonText = "Copy",
+  isDisable,
+  value,
+  size = "sm",
   copyLabel,
   hasIcon = true,
-  iconGap,
-  isDisable,
-  ml,
-  size = "sm",
-  value,
   variant = "outline-white",
+  buttonText = "Copy",
+  amptrackSection,
+  amptrackSubSection,
+  amptrackInfo,
+  ml,
   w,
+  iconGap,
   ...buttonProps
 }: CopyButtonProps) => (
   <CopyTemplate
+    value={value}
+    copyLabel={copyLabel}
     isDisabled={isDisable}
     ml={ml}
+    w={w}
     triggerElement={
       <Button
-        isDisabled={isDisable}
-        size={size}
-        variant={variant}
         w={w}
+        isDisabled={isDisable}
+        variant={variant}
+        size={size}
         float="right"
         onClick={() =>
           track(AmpEvent.USE_COPY_BUTTON, {
-            info: amptrackInfo,
             section: amptrackSection,
             subSection: amptrackSubSection,
+            info: amptrackInfo,
           })
         }
         {...buttonProps}
@@ -57,16 +60,13 @@ export const CopyButton = ({
       >
         {hasIcon && (
           <CustomIcon
-            mr={iconGap}
             name="copy"
             boxSize={size === "xs" ? 3 : 4}
+            mr={iconGap}
           />
         )}
         {buttonText}
       </Button>
     }
-    value={value}
-    w={w}
-    copyLabel={copyLabel}
   />
 );

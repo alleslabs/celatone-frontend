@@ -25,8 +25,8 @@ export const useEvmParams = () => {
     {
       refetchOnWindowFocus: false,
       retry: false,
-      retryOnMount: false,
       staleTime: Infinity,
+      retryOnMount: false,
     }
   );
 };
@@ -40,9 +40,9 @@ export const useEvmCodesByAddress = (address: HexAddr20, enabled = true) => {
     [CELATONE_QUERY_KEYS.EVM_CODES_BY_ADDRESS_LCD, lcdEndpoint, address],
     async () => getEvmCodesByAddress(lcdEndpoint, address),
     {
-      enabled: enabled && address && isHexWalletAddress(address),
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
+      enabled: enabled && address && isHexWalletAddress(address),
     }
   );
 };
@@ -62,9 +62,9 @@ export const useEvmContractInfoSequencer = (address: HexAddr20) => {
     ],
     async () => getEvmContractInfoSequencer(lcdEndpoint, bech32Prefix, address),
     {
-      enabled: address && isHexWalletAddress(address),
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
+      enabled: address && isHexWalletAddress(address),
     }
   );
 };

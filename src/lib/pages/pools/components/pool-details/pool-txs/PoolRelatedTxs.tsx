@@ -20,12 +20,12 @@ import { usePoolTxsTableCounts } from "./data";
 
 enum TabIndex {
   All = "all",
-  Bonding = "bonding",
-  CLP = "clp",
-  Collect = "collect",
-  LP = "lp",
-  Superfluid = "superfluid",
   Swap = "swap",
+  CLP = "clp",
+  LP = "lp",
+  Bonding = "bonding",
+  Superfluid = "superfluid",
+  Collect = "collect",
 }
 
 interface PoolRelatedTxsProps {
@@ -38,22 +38,22 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
   const [tab, setTab] = useState(TabIndex.All);
 
   const {
-    isTotalAllLoading,
-    isTotalBondingLoading,
-    isTotalClpLoading,
-    isTotalCollectLoading,
-    isTotalLpLoading,
-    isTotalMigrateLoading,
-    isTotalSuperfluidLoading,
-    isTotalSwapLoading,
     totalAllData,
-    totalBondingData,
-    totalClpData,
-    totalCollectData,
-    totalLpData,
-    totalMigrateData,
-    totalSuperfluidData,
+    isTotalAllLoading,
     totalSwapData,
+    isTotalSwapLoading,
+    totalClpData,
+    isTotalClpLoading,
+    totalLpData,
+    isTotalLpLoading,
+    totalBondingData,
+    isTotalBondingLoading,
+    totalSuperfluidData,
+    isTotalSuperfluidLoading,
+    totalCollectData,
+    isTotalCollectLoading,
+    totalMigrateData,
+    isTotalMigrateLoading,
   } = usePoolTxsTableCounts(pool.id);
 
   const handleTabChange = useCallback(
@@ -68,7 +68,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
   const tableHeaderId = "poolTableHeader";
   return (
     <Box>
-      <Flex alignItems="center" gap={2} mt={12}>
+      <Flex mt={12} gap={2} alignItems="center">
         <Heading as="h6" variant="h6">
           Related Transactions
         </Heading>
@@ -81,81 +81,81 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           borderColor="gray.800"
         >
           <CustomTab
-            fallbackValue={FALLBACK_COUNT}
             count={totalAllData?.total}
             isLoading={isTotalAllLoading}
             onClick={() => handleTabChange(TabIndex.All)}
+            fallbackValue={FALLBACK_COUNT}
           >
             All
           </CustomTab>
           <CustomTab
-            fallbackValue={FALLBACK_COUNT}
-            isDisabled={totalSwapData?.total === 0}
             count={totalSwapData?.total}
+            isDisabled={totalSwapData?.total === 0}
             isLoading={isTotalSwapLoading}
             onClick={() => handleTabChange(TabIndex.Swap)}
+            fallbackValue={FALLBACK_COUNT}
           >
             Swap
           </CustomTab>
           {pool.type === PoolType.CL ? (
             <CustomTab
-              fallbackValue={FALLBACK_COUNT}
-              isDisabled={totalClpData?.total === 0}
               count={totalClpData?.total}
+              isDisabled={totalClpData?.total === 0}
               isLoading={isTotalClpLoading}
               onClick={() => handleTabChange(TabIndex.CLP)}
+              fallbackValue={FALLBACK_COUNT}
             >
               CLP
             </CustomTab>
           ) : (
             <CustomTab
-              fallbackValue={FALLBACK_COUNT}
-              isDisabled={totalLpData?.total === 0}
               count={totalLpData?.total}
+              isDisabled={totalLpData?.total === 0}
               isLoading={isTotalLpLoading}
               onClick={() => handleTabChange(TabIndex.LP)}
+              fallbackValue={FALLBACK_COUNT}
             >
               LP
             </CustomTab>
           )}
           <CustomTab
-            fallbackValue={FALLBACK_COUNT}
-            isDisabled={totalBondingData?.total === 0}
             count={totalBondingData?.total}
+            isDisabled={totalBondingData?.total === 0}
             isLoading={isTotalBondingLoading}
             onClick={() => handleTabChange(TabIndex.Bonding)}
+            fallbackValue={FALLBACK_COUNT}
           >
             Bonding
           </CustomTab>
           {pool.isSuperfluid && (
             <CustomTab
-              fallbackValue={FALLBACK_COUNT}
-              isDisabled={totalSuperfluidData?.total === 0}
               count={totalSuperfluidData?.total}
+              isDisabled={totalSuperfluidData?.total === 0}
               isLoading={isTotalSuperfluidLoading}
               onClick={() => handleTabChange(TabIndex.Superfluid)}
+              fallbackValue={FALLBACK_COUNT}
             >
               Superfluid
             </CustomTab>
           )}
           {pool.type === PoolType.CL && (
             <CustomTab
-              fallbackValue={FALLBACK_COUNT}
-              isDisabled={totalCollectData?.total === 0}
               count={totalCollectData?.total}
+              isDisabled={totalCollectData?.total === 0}
               isLoading={isTotalCollectLoading}
               onClick={() => handleTabChange(TabIndex.Collect)}
+              fallbackValue={FALLBACK_COUNT}
             >
               Collect
             </CustomTab>
           )}
           {(pool.type === PoolType.CL || pool.type === PoolType.BALANCER) && (
             <CustomTab
-              fallbackValue={FALLBACK_COUNT}
-              isDisabled={totalMigrateData?.total === 0}
               count={totalMigrateData?.total}
+              isDisabled={totalMigrateData?.total === 0}
               isLoading={isTotalMigrateLoading}
               onClick={() => trackUseTab("Migrate")}
+              fallbackValue={FALLBACK_COUNT}
             >
               Migrate
             </CustomTab>
@@ -164,53 +164,53 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
         <TabPanels>
           <TabPanel p={0}>
             <PoolRelatedTxsTable
-              type="is_all"
-              countTxs={totalAllData?.total ?? 0}
               pool={pool}
+              countTxs={totalAllData?.total ?? 0}
+              type="is_all"
               scrollComponentId={tableHeaderId}
             />
           </TabPanel>
           <TabPanel p={0}>
             <PoolRelatedTxsTable
-              type="is_swap"
-              countTxs={totalSwapData?.total ?? 0}
               pool={pool}
+              countTxs={totalSwapData?.total ?? 0}
+              type="is_swap"
               scrollComponentId={tableHeaderId}
             />
           </TabPanel>
           {pool.type === PoolType.CL ? (
             <TabPanel p={0}>
               <PoolRelatedTxsTable
-                type="is_clp"
-                countTxs={totalClpData?.total ?? 0}
                 pool={pool}
+                countTxs={totalClpData?.total ?? 0}
+                type="is_clp"
                 scrollComponentId={tableHeaderId}
               />
             </TabPanel>
           ) : (
             <TabPanel p={0}>
               <PoolRelatedTxsTable
-                type="is_lp"
-                countTxs={totalLpData?.total ?? 0}
                 pool={pool}
+                countTxs={totalLpData?.total ?? 0}
+                type="is_lp"
                 scrollComponentId={tableHeaderId}
               />
             </TabPanel>
           )}
           <TabPanel p={0}>
             <PoolRelatedTxsTable
-              type="is_bond"
-              countTxs={totalBondingData?.total ?? 0}
               pool={pool}
+              countTxs={totalBondingData?.total ?? 0}
+              type="is_bond"
               scrollComponentId={tableHeaderId}
             />
           </TabPanel>
           {pool.isSuperfluid && (
             <TabPanel p={0}>
               <PoolRelatedTxsTable
-                type="is_superfluid"
-                countTxs={totalSuperfluidData?.total ?? 0}
                 pool={pool}
+                countTxs={totalSuperfluidData?.total ?? 0}
+                type="is_superfluid"
                 scrollComponentId={tableHeaderId}
               />
             </TabPanel>
@@ -218,9 +218,9 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {pool.type === PoolType.CL && (
             <TabPanel p={0}>
               <PoolRelatedTxsTable
-                type="is_collect"
-                countTxs={totalCollectData?.total ?? 0}
                 pool={pool}
+                countTxs={totalCollectData?.total ?? 0}
+                type="is_collect"
                 scrollComponentId={tableHeaderId}
               />
             </TabPanel>
@@ -228,9 +228,9 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
           {(pool.type === PoolType.CL || pool.type === PoolType.BALANCER) && (
             <TabPanel p={0}>
               <PoolRelatedTxsTable
-                type="is_migrate"
-                countTxs={totalMigrateData?.total ?? 0}
                 pool={pool}
+                countTxs={totalMigrateData?.total ?? 0}
+                type="is_migrate"
                 scrollComponentId={tableHeaderId}
               />
             </TabPanel>

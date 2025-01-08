@@ -13,26 +13,26 @@ import type { CodeSchema, Nullish, Option } from "lib/types";
 import { SchemaInputNotExist } from "./SchemaInputNotExist";
 
 interface SchemaSectionProps {
+  type: "migrate" | "instantiate";
   codeHash: string;
   codeId: number;
-  handleChange: (data: unknown, errors: RJSFValidationError[]) => void;
-  initialFormData?: Record<string, unknown>;
-  localSchema: Option<CodeSchema>;
-  onSchemaSave?: () => void;
-  type: "instantiate" | "migrate";
   verifiedSchema: Nullish<CodeSchema>;
+  localSchema: Option<CodeSchema>;
+  initialFormData?: Record<string, unknown>;
+  handleChange: (data: unknown, errors: RJSFValidationError[]) => void;
+  onSchemaSave?: () => void;
 }
 
 export const SchemaInputSection = observer(
   ({
+    type,
     codeHash,
     codeId,
-    handleChange,
-    initialFormData,
-    localSchema,
-    onSchemaSave,
-    type,
     verifiedSchema,
+    localSchema,
+    initialFormData,
+    handleChange,
+    onSchemaSave,
   }: SchemaSectionProps) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     const msgSchema = verifiedSchema?.[type] ?? localSchema?.[type];
@@ -46,12 +46,12 @@ export const SchemaInputSection = observer(
     return (
       <>
         <Flex
-          align={msgSchema ? "flex-start" : "center"}
-          mb={4}
-          p="24px 16px"
+          direction="column"
           backgroundColor="gray.900"
           borderRadius="8px"
-          direction="column"
+          p="24px 16px"
+          mb={4}
+          align={msgSchema ? "flex-start" : "center"}
         >
           {msgSchema ? (
             <>
@@ -66,15 +66,15 @@ export const SchemaInputSection = observer(
                 </div>
               ) : (
                 <Text
-                  py={4}
-                  textAlign="center"
                   variant="body2"
-                  w="full"
+                  textColor="text.disabled"
+                  fontWeight={500}
                   bgColor="gray.800"
+                  w="full"
+                  py={4}
                   border="1px solid var(--chakra-colors-gray-700)"
                   borderRadius="4px"
-                  fontWeight={500}
-                  textColor="text.disabled"
+                  textAlign="center"
                 >
                   {`${prettyType}Msg in attached JSON Schema takes no input`}
                 </Text>
@@ -84,37 +84,37 @@ export const SchemaInputSection = observer(
             <SchemaInputNotExist
               prettyType={prettyType}
               verifiedSchema={verifiedSchema}
-              codeHash={codeHash}
-              codeId={codeId}
               localSchema={localSchema}
+              codeId={codeId}
+              codeHash={codeHash}
               openModal={onOpen}
             />
           )}
           <JsonSchemaModal
             isOpen={isOpen}
-            isReattach={Boolean(msgSchema)}
+            onClose={onClose}
             codeHash={codeHash}
             codeId={codeId}
-            onClose={onClose}
             onSchemaSave={onSchemaSave}
+            isReattach={Boolean(msgSchema)}
           />
         </Flex>
         {msgSchema && (
-          <Flex align="center" justify="space-between" mb={4} w="full">
-            <Text variant="body2" color="text.dark">
+          <Flex align="center" justify="space-between" w="full" mb={4}>
+            <Text color="text.dark" variant="body2">
               {verifiedSchema
                 ? "The schema is available because the code is verified"
                 : "You are using a locally attached JSON Schema"}
             </Text>
             <Flex gap={3}>
               <ViewSchemaModal
-                schema={verifiedSchema ?? localSchema}
                 codeId={codeId}
+                schema={verifiedSchema ?? localSchema}
               />
               {!verifiedSchema && (
                 <Button
-                  size="sm"
                   variant="outline-gray"
+                  size="sm"
                   onClick={handleReattach}
                 >
                   Reattach

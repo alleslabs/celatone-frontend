@@ -13,15 +13,15 @@ import { formatSlugName, getListIcon } from "lib/utils";
 
 export const getYourAccountSubmenu = (address: Option<BechAddr20>) => [
   {
-    icon: "history" as IconKeys,
     name: "Past Transactions",
     slug: "/past-txs",
+    icon: "history" as IconKeys,
   },
   {
-    icon: "admin" as IconKeys,
-    isDisable: !address,
     name: "Your Account Details",
     slug: `/accounts/${address}`,
+    icon: "admin" as IconKeys,
+    isDisable: !address,
     tooltipText: "You need to connect wallet to view your account details.",
     trackEvent: () => track(AmpEvent.USE_TO_YOUR_ACCOUNT),
   },
@@ -31,18 +31,18 @@ export const getYourAccountSubmenuLite = (isWasm: boolean, isMove: boolean) => [
   ...(isWasm
     ? [
         {
-          icon: getListIcon(INSTANTIATED_LIST_NAME),
           name: INSTANTIATED_LIST_NAME,
           slug: `/contract-lists/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
+          icon: getListIcon(INSTANTIATED_LIST_NAME),
         },
       ]
     : []),
   ...(isMove
     ? [
         {
-          icon: "contract-address" as IconKeys,
           name: "My Published Modules",
           slug: "/my-published-modules",
+          icon: "contract-address" as IconKeys,
         },
       ]
     : []),
@@ -59,14 +59,14 @@ export const getPublicProjectsSubmenu = (
           slug: StorageKeys.ProjectSidebar,
           submenu: [
             ...projects.map((list) => ({
-              logo: list.logo || UNDEFINED_ICON_LIST[0],
               name: list.name,
               slug: `/projects/${list.slug}`,
+              logo: list.logo || UNDEFINED_ICON_LIST[0],
             })),
             {
-              icon: "public-project" as IconKeys,
               name: "View All Projects",
               slug: "/projects",
+              icon: "public-project" as IconKeys,
             },
           ],
         },
@@ -77,25 +77,25 @@ export const getDevSubmenuMove = (isMove: boolean) =>
   isMove
     ? [
         {
-          icon: "0x1" as IconKeys,
           name: "0x1 Page",
           slug: "/accounts/0x1",
+          icon: "0x1" as IconKeys,
           trackEvent: () => track(AmpEvent.USE_TO_0X1_PAGE),
         },
         {
-          icon: "add-new" as IconKeys,
           name: "Publish / Republish",
           slug: "/publish-module",
+          icon: "add-new" as IconKeys,
         },
         {
-          icon: "execute" as IconKeys,
           name: "View / Execute",
           slug: "/interact",
+          icon: "execute" as IconKeys,
         },
         {
-          icon: "code" as IconKeys,
           name: "Deploy Script",
           slug: "/deploy-script",
+          icon: "code" as IconKeys,
         },
       ]
     : [];
@@ -104,19 +104,19 @@ export const getDevSubmenuWasm = (isWasm: boolean) =>
   isWasm
     ? [
         {
-          icon: "add-new" as IconKeys,
           name: "Deploy Contract",
           slug: "/deploy",
+          icon: "add-new" as IconKeys,
         },
         {
-          icon: "query" as IconKeys,
           name: "Query / Execute",
           slug: "/interact-contract",
+          icon: "query" as IconKeys,
         },
         {
-          icon: "migrate" as IconKeys,
           name: "Migrate",
           slug: "/migrate",
+          icon: "migrate" as IconKeys,
         },
         // {
         //   name: "Recent Activities",
@@ -133,9 +133,9 @@ export const getWalletSubSectionMove = (isMove: boolean) =>
           category: "This Wallet",
           submenu: [
             {
-              icon: "contract-address" as IconKeys,
               name: "My Published Modules",
               slug: "/my-published-modules",
+              icon: "contract-address" as IconKeys,
             },
           ],
         },
@@ -149,14 +149,14 @@ export const getWalletSubSectionWasm = (isWasm: boolean) =>
           category: "This Wallet",
           submenu: [
             {
-              icon: "code" as IconKeys,
               name: "My Stored Codes",
               slug: "/stored-codes",
+              icon: "code" as IconKeys,
             },
             {
-              icon: getListIcon(INSTANTIATED_LIST_NAME),
               name: INSTANTIATED_LIST_NAME,
               slug: `/contract-lists/${formatSlugName(INSTANTIATED_LIST_NAME)}`,
+              icon: getListIcon(INSTANTIATED_LIST_NAME),
             },
           ],
         },
@@ -167,19 +167,19 @@ export const getDeviceSubmenuWasm = (isWasm: boolean) =>
   isWasm
     ? [
         {
-          icon: "code" as IconKeys,
           name: "Saved Codes",
           slug: "/saved-codes",
+          icon: "code" as IconKeys,
         },
         {
-          icon: "contract-address" as IconKeys,
           name: SAVED_LIST_NAME,
           slug: `/contract-lists/${formatSlugName(SAVED_LIST_NAME)}`,
+          icon: "contract-address" as IconKeys,
         },
         {
-          icon: "more" as IconKeys,
           name: "View All Contract List",
           slug: "/contract-lists",
+          icon: "more" as IconKeys,
         },
       ]
     : [];
@@ -188,9 +188,9 @@ export const getDeviceSubmenuMove = (isInitiaL1: boolean) =>
   isInitiaL1
     ? [
         {
-          icon: "list" as IconKeys,
           name: "My Past Verification",
           slug: "/my-module-verifications",
+          icon: "list" as IconKeys,
         },
       ]
     : [];

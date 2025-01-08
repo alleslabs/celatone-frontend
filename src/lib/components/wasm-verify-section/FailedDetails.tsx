@@ -10,19 +10,19 @@ import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
 import { VerifyButton } from "./VerifyButton";
 
 interface FailedDetailsProps {
-  codeHash: string;
   codeId: number;
-  contractAddress?: BechAddr32;
-  relatedVerifiedCodes: number[];
+  codeHash: string;
   verificationInfo: WasmVerifyInfoBase;
+  relatedVerifiedCodes: number[];
+  contractAddress?: BechAddr32;
 }
 
 export const FailedDetails = ({
-  codeHash,
   codeId,
-  contractAddress,
-  relatedVerifiedCodes,
+  codeHash,
   verificationInfo,
+  relatedVerifiedCodes,
+  contractAddress,
 }: FailedDetailsProps) => {
   const isMobile = useMobile();
   return (
@@ -32,8 +32,8 @@ export const FailedDetails = ({
           <>
             This contract is an instance of code ID{" "}
             <ExplorerLink
-              type="code_id"
               value={codeId.toString()}
+              type="code_id"
               showCopyOnHover
             />
             , in which its verification was submitted on{" "}
@@ -70,26 +70,26 @@ export const FailedDetails = ({
       </Text>
       <Flex gap={2}>
         <WasmVerifyStatusModal
+          codeHash={codeHash}
+          verificationInfo={verificationInfo}
+          relatedVerifiedCodes={relatedVerifiedCodes}
           triggerElement={
-            <Button size="sm" variant="ghost-primary">
+            <Button variant="ghost-primary" size="sm">
               View Details
             </Button>
           }
-          codeHash={codeHash}
-          relatedVerifiedCodes={relatedVerifiedCodes}
-          verificationInfo={verificationInfo}
         />
         {!isMobile && (
           <VerifyButton
-            label="Reverify Code"
-            wasmVerifyStatus={getWasmVerifyStatus({
-              relatedVerifiedCodes,
-              schema: null,
-              verificationInfo,
-            })}
-            codeHash={codeHash}
             codeId={codeId}
+            codeHash={codeHash}
+            wasmVerifyStatus={getWasmVerifyStatus({
+              verificationInfo,
+              schema: null,
+              relatedVerifiedCodes,
+            })}
             relatedVerifiedCodes={relatedVerifiedCodes}
+            label="Reverify Code"
           />
         )}
       </Flex>

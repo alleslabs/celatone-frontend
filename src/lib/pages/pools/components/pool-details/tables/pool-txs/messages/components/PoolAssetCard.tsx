@@ -13,23 +13,23 @@ import {
 } from "lib/utils";
 
 interface PoolAssetCardProps {
-  ampCopierSection?: string;
-  assetInfos: Option<AssetInfos>;
-  assetText: string;
-  description: string;
-  isOpened: boolean;
   poolId: number;
+  description: string;
+  assetText: string;
   poolToken: TokenWithValue;
+  assetInfos: Option<AssetInfos>;
+  isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const PoolAssetCard = ({
-  ampCopierSection,
-  assetInfos,
-  assetText,
-  description,
-  isOpened,
   poolId,
+  description,
+  assetText,
   poolToken,
+  assetInfos,
+  isOpened,
+  ampCopierSection,
 }: PoolAssetCardProps) => {
   const { data: poolAssets, isLoading } = usePoolsLiquidityByPoolIds(
     [poolId],
@@ -63,34 +63,34 @@ export const PoolAssetCard = ({
         gap={3}
         px={3}
         py={2}
-        background="gray.800"
         borderRadius="8px"
+        background="gray.800"
       >
         <PoolLogo
+          tokens={tokens}
+          logoSize={5}
           marginLeft={-4}
           minW="fit-content"
           textVariant="small"
-          logoSize={5}
-          tokens={tokens}
         />
         <div>
           <Flex
+            gap={1}
             css={{
               "p:last-of-type > span": {
                 display: "none",
               },
             }}
-            gap={1}
           >
             {tokens.map((token) => (
               <Text
                 key={token.denom}
                 variant="body2"
-                color="text.main"
                 fontWeight={400}
+                color="text.main"
               >
                 {getTokenLabel(token.denom, token.symbol)}
-                <Text as="span" color="primary.main" fontWeight={400}>
+                <Text as="span" fontWeight={400} color="primary.main">
                   {" "}
                   /
                 </Text>
@@ -100,8 +100,8 @@ export const PoolAssetCard = ({
           <ExplorerLink
             type="pool_id"
             value={poolId.toString()}
-            ampCopierSection={ampCopierSection}
             showCopyOnHover
+            ampCopierSection={ampCopierSection}
           />
         </div>
       </Flex>

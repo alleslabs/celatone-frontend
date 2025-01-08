@@ -15,43 +15,43 @@ import type { DecodeModuleQueryResponse } from "lib/services/types";
 import type { Option, UpgradePolicy } from "lib/types";
 
 const DEFAULT_TEMP_FILE = {
-  base64: "",
   file: undefined,
+  base64: "",
 };
 
 interface UploadModuleCardProps {
-  fileState: Module;
   index: number;
+  fileState: Module;
   modules: Module[];
-  moveEntry: (from: number, to: number) => void;
   policy: UpgradePolicy;
-  removeEntry: () => void;
-  removeFile: () => void;
   setFile: (
     file: Option<File>,
     base64File: string,
     decodeRes: DecodeModuleQueryResponse,
     publishStatus: PublishStatus
   ) => void;
+  removeFile: () => void;
+  removeEntry: () => void;
+  moveEntry: (from: number, to: number) => void;
 }
 
 export const UploadModuleCard = ({
+  index,
   fileState: {
-    decodeRes,
     file,
+    decodeRes,
     publishStatus: { status, text },
   },
-  index,
   modules,
-  moveEntry,
   policy,
-  removeEntry,
-  removeFile,
   setFile,
+  removeFile,
+  removeEntry,
+  moveEntry,
 }: UploadModuleCardProps) => {
   const [tempFile, setTempFile] = useState<{
-    base64: string;
     file: Option<File>;
+    base64: string;
   }>(DEFAULT_TEMP_FILE);
   const [decodeError, setDecodeError] = useState("");
   const { address } = useCurrentChain();
@@ -60,30 +60,30 @@ export const UploadModuleCard = ({
     base64EncodedFile: tempFile.base64,
     options: {
       enabled: Boolean(tempFile.base64),
-      onError: () => {
-        setDecodeError(
-          "Failed to decode .mv file. Please make sure the file is a module."
-        );
-        setTempFile(DEFAULT_TEMP_FILE);
-      },
+      retry: 0,
+      refetchOnWindowFocus: false,
       onSuccess: (data) => {
         setFile(
           tempFile.file,
           tempFile.base64,
           data,
           statusResolver({
-            address,
             data,
-            index,
             modules,
+            index,
             policy,
+            address,
           })
         );
         setDecodeError("");
         setTempFile(DEFAULT_TEMP_FILE);
       },
-      refetchOnWindowFocus: false,
-      retry: 0,
+      onError: () => {
+        setDecodeError(
+          "Failed to decode .mv file. Please make sure the file is a module."
+        );
+        setTempFile(DEFAULT_TEMP_FILE);
+      },
     },
   });
 
@@ -94,7 +94,7 @@ export const UploadModuleCard = ({
       const dataUrl = reader.result as string;
       // strip "data:application/octet-stream;base64,oRzrCw..."
       const base64String = dataUrl.replace(/^data:.*;base64,/, "");
-      setTempFile({ base64: base64String, file: target });
+      setTempFile({ file: target, base64: base64String });
     };
     reader.readAsDataURL(target);
   }, []);
@@ -102,14 +102,14 @@ export const UploadModuleCard = ({
   return (
     <Flex
       bg="gray.900"
-      gap={4}
-      p={4}
       border="1px solid"
       borderColor="gray.700"
       borderRadius={8}
+      p={4}
+      gap={4}
       flexDirection="column"
     >
-      <Flex alignItems="center" w="full" justifyContent="space-between">
+      <Flex justifyContent="space-between" w="full" alignItems="center">
         <Heading as="h6" variant="h6" color="text.dark" fontWeight={600}>
           Module {index + 1}
         </Heading>
@@ -120,79 +120,79 @@ export const UploadModuleCard = ({
         >
           <Tooltip label="Move up" variant="primary-light">
             <IconButton
-              aria-label="move-up"
-              disabled={index === 0}
-              size="sm"
-              variant="ghost"
               onClick={() => {
                 track(AmpEvent.USE_UPLOAD_CARD_MOVE_UP, {
-                  currentBoxAmount: modules.length,
                   currentPosition: index + 1,
                   newPosition: index,
+                  currentBoxAmount: modules.length,
                 });
                 moveEntry(index, index - 1);
               }}
+              aria-label="move-up"
+              variant="ghost"
+              size="sm"
+              disabled={index === 0}
             >
               <CustomIcon name="arrow-up" color="gray.600" />
             </IconButton>
           </Tooltip>
           <Tooltip label="Move down" variant="primary-light">
             <IconButton
-              aria-label="move-down"
-              disabled={index === modules.length - 1}
-              size="sm"
-              variant="ghost"
               onClick={() => {
                 track(AmpEvent.USE_UPLOAD_CARD_MOVE_DOWN, {
-                  currentBoxAmount: modules.length,
                   currentPosition: index + 1,
                   newPosition: index + 2,
+                  currentBoxAmount: modules.length,
                 });
                 moveEntry(index, index + 1);
               }}
+              aria-label="move-down"
+              variant="ghost"
+              size="sm"
+              disabled={index === modules.length - 1}
             >
               <CustomIcon name="arrow-down" color="gray.600" />
             </IconButton>
           </Tooltip>
           <Tooltip label="Remove item" variant="primary-light">
             <IconButton
-              aria-label="remove"
-              size="sm"
-              variant="ghost"
               onClick={() => {
                 track(AmpEvent.USE_REMOVE_MODULE_UPLOAD_BOX, {
                   currentBoxAmount: modules.length - 1,
                 });
                 removeEntry();
               }}
+              aria-label="remove"
+              variant="ghost"
+              size="sm"
             >
               <CustomIcon name="close" color="gray.600" />
             </IconButton>
           </Tooltip>
         </Flex>
       </Flex>
-      <Flex w="full" direction="column">
+      <Flex direction="column" w="full">
         <ComponentLoader isLoading={isFetching}>
           {file ? (
             <UploadCard
-              deleteFile={removeFile}
               file={file}
+              deleteFile={removeFile}
+              theme="gray"
               status={status}
               statusText={text}
-              theme="gray"
             />
           ) : (
             <DropZone
-              fileType={["mv"]}
               setFiles={(files: File[]) => handleFileDrop(files[0])}
-              _hover={undefined}
+              fileType={["mv"]}
               bgColor="background.main"
               error={decodeError}
+              _hover={undefined}
             />
           )}
         </ComponentLoader>
       </Flex>
-      <Flex w="full" justifyContent="space-between">
+      <Flex justifyContent="space-between" w="full">
         <Text variant="body2" color="text.dark" fontWeight={600}>
           Module Path
         </Text>

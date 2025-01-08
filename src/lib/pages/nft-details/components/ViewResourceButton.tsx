@@ -13,11 +13,11 @@ export const ViewResourceButton = ({ nftAddress }: ViewResourceButtonProps) => {
 
   return (
     <Button
-      mb={{ base: 4, md: 0 }}
-      minW="140px !important"
-      size={{ base: "sm", md: "md" }}
       variant="outline-primary"
       w={{ base: "full", md: "auto" }}
+      minW="140px !important"
+      size={{ base: "sm", md: "md" }}
+      mb={{ base: 4, md: 0 }}
       onClick={() => {
         track(AmpEvent.USE_NFT_VIEW_RESOURCE_CTA, {
           amptrackSection: "nft-details",

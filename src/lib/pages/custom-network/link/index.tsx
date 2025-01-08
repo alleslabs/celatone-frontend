@@ -18,14 +18,14 @@ import { libDecode } from "lib/utils";
 
 type AddCustomNetworkError =
   | {
-      message: string;
+      type: "no_config";
+    }
+  | {
       type: "invalid_config";
+      message: string;
     }
   | {
       type: "chain_exists";
-    }
-  | {
-      type: "no_config";
     }
   | { type: "no_error" };
 
@@ -60,8 +60,8 @@ export const AddNetworkLink = observer(() => {
 
         if (!validated.success) {
           setError({
-            message: validated.error.message,
             type: "invalid_config",
+            message: validated.error.message,
           });
           return;
         }
@@ -79,8 +79,8 @@ export const AddNetworkLink = observer(() => {
         // eslint-disable-next-line no-console
         console.error(err);
         setError({
-          message: "An unknown error occurred",
           type: "invalid_config",
+          message: "An unknown error occurred",
         });
       }
     };
@@ -103,27 +103,27 @@ export const AddNetworkLink = observer(() => {
     return (
       <Flex
         style={{ height: "calc(100vh - 140px)" }}
+        justifyContent="center"
         alignItems="center"
         px={10}
-        justifyContent="center"
       >
         {error.type === "no_config" && (
           <EmptyState
-            heading="No config provided"
             imageVariant="error"
+            heading="No config provided"
             message="There are no network config provided with the link."
           />
         )}
         {error.type === "chain_exists" && (
           <EmptyState
-            heading={`${json?.chainId} is already added`}
             imageVariant="error"
+            heading={`${json?.chainId} is already added`}
             py={0}
           >
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               You can access {json?.chainId} in InitiaScan through
               <Link href={`/${json?.chainId}`}>
-                <Text display="inline-flex" mx={1} color="primary.main">
+                <Text color="primary.main" display="inline-flex" mx={1}>
                   this link
                 </Text>
               </Link>
@@ -132,20 +132,20 @@ export const AddNetworkLink = observer(() => {
         )}
         {error.type === "invalid_config" && (
           <EmptyState
-            heading={`There is an error adding ${json?.chainId ?? "custom network"} to InitiaScan`}
             imageVariant="error"
+            heading={`There is an error adding ${json?.chainId ?? "custom network"} to InitiaScan`}
             message="The provided configuration is invalid. Here is the error log"
             py={0}
           >
-            <Box maxW="70%" minW="40%">
+            <Box minW="40%" maxW="70%">
               <TextReadOnly text={error.message} canCopy />
             </Box>
             <Text mt={6}>You can add this custom Minitia manually</Text>
             <AppLink href="/custom-network/add">
               <Button
-                mt={2}
                 variant="outline-gray"
                 leftIcon={<CustomIcon name="plus" />}
+                mt={2}
               >
                 Add custom minitia
               </Button>

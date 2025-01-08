@@ -9,17 +9,17 @@ import { ProposalStatus } from "lib/types";
 import { ProgressBadge } from "./ProgressBadge";
 
 interface VoteQuorumBadgeProps {
-  isCompact: boolean;
-  quorum: number;
   status: ProposalStatus;
+  quorum: number;
   totalRatio: Nullable<Ratio<number>>;
+  isCompact: boolean;
 }
 
 export const VoteQuorumBadge = ({
-  isCompact,
-  quorum,
   status,
+  quorum,
   totalRatio,
+  isCompact,
 }: VoteQuorumBadgeProps) => {
   if (isNull(totalRatio)) return null;
 

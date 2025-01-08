@@ -1,8 +1,8 @@
 export enum ValidatorOrder {
-  Commission = "commission",
   Moniker = "moniker",
-  Uptime = "uptime",
   VotingPower = "voting_power",
+  Uptime = "uptime",
+  Commission = "commission",
 }
 
 export interface ValidatorCounts {

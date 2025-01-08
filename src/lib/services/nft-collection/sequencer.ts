@@ -55,8 +55,8 @@ export const getNftCollectionCreatorSequencer = async (
   collectionAddress: HexAddr32
 ): Promise<CollectionCreatorResponse> => {
   const txByCollectionAddress = await getTxsByAccountAddressSequencer({
-    address: collectionAddress,
     endpoint,
+    address: collectionAddress,
     limit: 1,
     reverse: false,
   });
@@ -72,9 +72,9 @@ export const getNftCollectionCreatorSequencer = async (
 
   return {
     creatorAddress: sender,
+    txhash: tx.hash,
     height: tx.height,
     timestamp: tx.created,
-    txhash: tx.hash,
   };
 };
 
@@ -84,16 +84,16 @@ export const getNftCollectionActivitiesSequencer = async (
   collectionAddress: HexAddr32
 ) => {
   const txsByCollectionAddress = await getTxsByAccountAddressSequencer({
-    address: collectionAddress,
     endpoint,
-    limit: 10,
+    address: collectionAddress,
     paginationKey,
+    limit: 10,
   });
 
   const collectionActivities: Activity[] = [];
 
   txsByCollectionAddress.items.forEach((tx) => {
-    const { created, events, hash } = tx;
+    const { events, hash, created } = tx;
 
     events?.reverse()?.forEach((event) => {
       if (
@@ -113,14 +113,14 @@ export const getNftCollectionActivitiesSequencer = async (
       }
 
       collectionActivities.push({
-        isCollectionCreate: eventValue === "CreateCollectionEvent",
+        txhash: hash,
+        timestamp: created,
         isNftBurn: eventValue === "BurnEvent",
         isNftMint: eventValue === "MintEvent",
         isNftTransfer: eventValue === "TransferEvent",
-        nftAddress: null,
-        timestamp: created,
         tokenId,
-        txhash: hash,
+        nftAddress: null,
+        isCollectionCreate: eventValue === "CreateCollectionEvent",
       });
     });
   });

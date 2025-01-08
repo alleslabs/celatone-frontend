@@ -17,7 +17,7 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
   const isMobile = useMobile();
   const [expand, setExpand] = useState(false);
   return (
-    <Flex bg="gray.900" borderRadius="8px" direction="column">
+    <Flex direction="column" bg="gray.900" borderRadius="8px">
       <Flex
         align="center"
         justify="space-between"
@@ -30,16 +30,16 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
               <LabelText label="Selected function" labelWeight={700}>
                 {fn.name}
               </LabelText>
-              <Divider borderColor="gray.700" orientation="vertical" />
+              <Divider orientation="vertical" borderColor="gray.700" />
             </>
           )}
           <LabelText label="Visibility" labelWeight={700}>
             <Flex
               align="center"
               gap={1}
-              lineHeight={0}
-              color="text.dark"
               fontSize="14px"
+              color="text.dark"
+              lineHeight={0}
               textTransform="capitalize"
             >
               <CustomIcon
@@ -54,14 +54,14 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
             <Flex
               align="center"
               gap={1}
-              lineHeight={0}
-              color="text.dark"
               fontSize="14px"
+              color="text.dark"
+              lineHeight={0}
             >
               <CustomIcon
-                name={fn.is_entry ? "check" : "close"}
                 boxSize={3}
                 color={fn.is_entry ? "success.main" : "gray.600"}
+                name={fn.is_entry ? "check" : "close"}
               />
               {String(fn.is_entry)}
             </Flex>
@@ -70,13 +70,6 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
         <Button
           size="sm"
           variant="ghost-gray"
-          onClick={() => {
-            trackUseExpand({
-              action: expand ? "collapse" : "expand",
-              component: "module_interaction_selected_function_card",
-            });
-            setExpand((prev) => !prev);
-          }}
           rightIcon={
             <CustomIcon
               name="chevron-down"
@@ -85,27 +78,34 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
               transform={expand ? "rotate(180deg)" : "rotate(0)"}
             />
           }
+          onClick={() => {
+            trackUseExpand({
+              action: expand ? "collapse" : "expand",
+              component: "module_interaction_selected_function_card",
+            });
+            setExpand((prev) => !prev);
+          }}
         >
           {expand ? "View Less" : "View More"}
         </Button>
       </Flex>
       <MotionBox
-        animate={expand ? "expanded" : "collapsed"}
         display="flex"
         flexDir="column"
-        gap={3}
-        initial="collapsed"
-        mt={{ base: 3, md: 0 }}
-        p={{ base: 0, md: `0 16px ${expand ? "16px" : 0}` }}
         variants={{
-          collapsed: { height: 0, opacity: 0 },
-          expanded: { height: "auto", opacity: 1 },
+          expanded: { opacity: 1, height: "auto" },
+          collapsed: { opacity: 0, height: 0 },
         }}
         overflow="hidden"
+        initial="collapsed"
+        animate={expand ? "expanded" : "collapsed"}
         transition={{
           duration: "0.25",
           ease: "easeInOut",
         }}
+        p={{ base: 0, md: `0 16px ${expand ? "16px" : 0}` }}
+        mt={{ base: 3, md: 0 }}
+        gap={3}
       >
         <LabelText label="generic_type_params" labelWeight={700}>
           {JSON.stringify(fn.generic_type_params)}

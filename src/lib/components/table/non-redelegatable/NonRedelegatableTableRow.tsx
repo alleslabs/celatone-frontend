@@ -15,16 +15,16 @@ export const NonRedelegatableTableRow = ({
   templateColumns,
 }: NonRedelegatableTableRowProps) => (
   <Grid
-    minW="min-content"
     templateColumns={templateColumns}
     transition="all 0.25s ease-in-out"
+    minW="min-content"
   >
     <TableRow>
       <ValidatorBadge validator={nonRedelegatable.dstValidator} />
     </TableRow>
 
     <TableRow>
-      <Flex gap={1} color="text.dark" direction="column">
+      <Flex direction="column" gap={1} color="text.dark">
         <Text variant="body2" color="text.dark">
           {formatUTC(nonRedelegatable.completionTime)}
         </Text>

@@ -19,20 +19,20 @@ export default function FieldTemplate<
   F extends FormContextType = any,
 >(props: FieldTemplateProps<T, S, F>) {
   const {
+    id,
     children,
     classNames,
     disabled,
-    // errors,
-    help,
     hidden,
-    id,
     label,
     onDropPropertyClick,
     onKeyChange,
-    rawErrors = [],
     readonly,
     registry,
     required,
+    rawErrors = [],
+    // errors,
+    help,
     schema,
     uiSchema,
   } = props;
@@ -48,21 +48,21 @@ export default function FieldTemplate<
   }
   return (
     <WrapIfAdditionalTemplate
-      id={id}
       classNames={classNames}
       disabled={disabled}
+      id={id}
       label={label}
-      registry={registry}
-      required={required}
-      schema={schema}
-      uiSchema={uiSchema}
       onDropPropertyClick={onDropPropertyClick}
       onKeyChange={onKeyChange}
       readonly={readonly}
+      required={required}
+      schema={schema}
+      uiSchema={uiSchema}
+      registry={registry}
     >
       <FormControl
-        isInvalid={rawErrors && rawErrors.length > 0}
         isRequired={required && !readonly}
+        isInvalid={rawErrors && rawErrors.length > 0}
       >
         {children}
         {/* {errors} */}

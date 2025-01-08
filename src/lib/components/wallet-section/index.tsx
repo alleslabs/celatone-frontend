@@ -38,10 +38,10 @@ export const WalletSection = () => {
     if (address) {
       return (
         <ConnectWalletButton
-          variant="ghost-primary"
           buttonText={truncate(initiaUsername?.username ?? address)}
           icon="wallet-solid"
           onClick={onClickOpenView}
+          variant="ghost-primary"
         />
       );
     }
@@ -49,9 +49,9 @@ export const WalletSection = () => {
     return (
       <ConnectWalletButton
         buttonText="Connect Wallet"
-        icon="wallet"
-        iconColor="text.main"
         onClick={onClickConnect}
+        iconColor="text.main"
+        icon="wallet"
       />
     );
   }
@@ -59,25 +59,25 @@ export const WalletSection = () => {
   return (
     <Flex px={0}>
       <WalletConnectComponent
-        rejected={<Others buttonText="Reconnect" onClick={onClickConnect} />}
         walletStatus={walletProvider.context.status}
-        connected={
-          <ConnectWalletButton
-            variant="ghost-primary"
-            buttonText={truncate(icnsNames?.primaryName ?? address)}
-            icon="wallet-solid"
-            onClick={onClickOpenView}
-          />
-        }
-        connecting={<ConnectWalletButton isLoading />}
         disconnect={
           <ConnectWalletButton
             buttonText="Connect Wallet"
-            icon="wallet"
-            iconColor="text.main"
             onClick={onClickConnect}
+            iconColor="text.main"
+            icon="wallet"
           />
         }
+        connecting={<ConnectWalletButton isLoading />}
+        connected={
+          <ConnectWalletButton
+            buttonText={truncate(icnsNames?.primaryName ?? address)}
+            icon="wallet-solid"
+            onClick={onClickOpenView}
+            variant="ghost-primary"
+          />
+        }
+        rejected={<Others buttonText="Reconnect" onClick={onClickConnect} />}
         error={<Others buttonText="Change Wallet" onClick={onClickOpenView} />}
         notExist={
           <Others buttonText="Install Wallet" onClick={onClickOpenView} />

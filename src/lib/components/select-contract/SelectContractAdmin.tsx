@@ -31,23 +31,23 @@ export const SelectContractAdmin = ({
   notSelected,
   onContractSelect,
 }: SelectContractAdminProps) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useCurrentChain();
   const { getContractLocalInfo } = useContractStore();
 
   const { data, isLoading } = useAllAdminContractsByAddress(address);
 
   const contractList: ContractListInfo = {
+    name: ADMIN_SPECIAL_SLUG,
+    slug: ADMIN_SPECIAL_SLUG,
     contracts:
       data?.items.map<ContractLocalInfo>((contract) => ({
         ...contract,
         ...getContractLocalInfo(contract.contractAddress),
       })) ?? [],
-    isContractRemovable: false,
-    isInfoEditable: false,
     lastUpdated: getCurrentDate(),
-    name: ADMIN_SPECIAL_SLUG,
-    slug: ADMIN_SPECIAL_SLUG,
+    isInfoEditable: false,
+    isContractRemovable: false,
   };
 
   const onSelectThenClose = (contract: BechAddr32) => {
@@ -58,23 +58,23 @@ export const SelectContractAdmin = ({
   return (
     <>
       <Button
-        isDisabled={!address}
-        px={4}
-        py={1}
-        size="sm"
         variant={notSelected ? "primary" : "outline-primary"}
-        leftIcon={
-          !notSelected ? <CustomIcon name="swap" boxSize="12px" /> : undefined
-        }
+        py={1}
+        px={4}
+        size="sm"
         onClick={() => {
           track(AmpEvent.USE_CONTRACT_MODAL);
           onOpen();
         }}
+        leftIcon={
+          !notSelected ? <CustomIcon name="swap" boxSize="12px" /> : undefined
+        }
+        isDisabled={!address}
       >
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
 
-      <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
         <DrawerOverlay />
         <DrawerContent h="80%">
           <DrawerHeader>
@@ -84,11 +84,11 @@ export const SelectContractAdmin = ({
             </Heading>
           </DrawerHeader>
           <DrawerCloseButton />
-          <DrawerBody py={4} overflowY="scroll">
+          <DrawerBody overflowY="scroll" py={4}>
             <ContractListDetail
-              isReadOnly
               contractListInfo={contractList}
               isLoading={isLoading}
+              isReadOnly
               onContractSelect={onSelectThenClose}
             />
           </DrawerBody>

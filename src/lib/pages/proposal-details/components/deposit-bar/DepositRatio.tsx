@@ -6,18 +6,18 @@ import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";
 
 interface DepositRatioProps {
   current: TokenWithValue;
-  isCompact: boolean;
-  isDepositOrVoting: boolean;
   min: TokenWithValue;
+  isDepositOrVoting: boolean;
+  isCompact: boolean;
 }
 
 export const DepositRatio = ({
   current,
-  isCompact,
-  isDepositOrVoting,
   min,
+  isDepositOrVoting,
+  isCompact,
 }: DepositRatioProps) => (
-  <Flex align="center" gap={1} minW="fit-content">
+  <Flex gap={1} align="center" minW="fit-content">
     <Text variant={isCompact ? "body2" : "body1"}>
       <span style={{ fontWeight: 500 }}>
         {formatUTokenWithPrecision(
@@ -50,9 +50,9 @@ export const DepositRatio = ({
     </Text>
     {!isCompact && (
       <TokenImageRender
+        logo={min.logo}
         alt={getTokenLabel(min.denom, min.symbol)}
         boxSize={4}
-        logo={min.logo}
       />
     )}
   </Flex>

@@ -16,14 +16,14 @@ import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
 import type { PublicCodeInfo } from ".";
 
 interface CodeTableRowProps {
-  publicCodeInfo: PublicCodeInfo;
   templateColumns: string;
+  publicCodeInfo: PublicCodeInfo;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const PublicProjectCodeRow = ({
-  publicCodeInfo: { localInfo, publicInfo },
   templateColumns,
+  publicCodeInfo: { publicInfo, localInfo },
   wasmVerifyInfo,
 }: CodeTableRowProps) => {
   const navigate = useInternalNavigate();
@@ -38,17 +38,17 @@ export const PublicProjectCodeRow = ({
 
   return (
     <Grid
-      minW="min-content"
-      _hover={{ bg: "gray.900" }}
-      cursor="pointer"
-      onClick={goToCodeDetails}
       templateColumns={templateColumns}
+      onClick={goToCodeDetails}
+      _hover={{ bg: "gray.900" }}
       transition="all 0.25s ease-in-out"
+      cursor="pointer"
+      minW="min-content"
     >
       <TableRow>
         <ExplorerLink
-          type="code_id"
           value={publicInfo.id.toString()}
+          type="code_id"
           rightIcon={
             <WasmVerifyBadge
               status={getWasmVerifyStatus(wasmVerifyInfo)}
@@ -63,9 +63,9 @@ export const PublicProjectCodeRow = ({
       </TableRow>
       <TableRow>
         <Text
-          whiteSpace="pre-wrap"
           color={cw2Info ? "text.main" : "text.disabled"}
           wordBreak="break-all"
+          whiteSpace="pre-wrap"
         >
           {cw2Info ?? "N/A"}
         </Text>
@@ -75,8 +75,8 @@ export const PublicProjectCodeRow = ({
       </TableRow>
       <TableRow>
         <ExplorerLink
-          type={getAddressTypeByLength(publicInfo.uploader)}
           value={publicInfo.uploader}
+          type={getAddressTypeByLength(publicInfo.uploader)}
           showCopyOnHover
         />
       </TableRow>
@@ -89,9 +89,9 @@ export const PublicProjectCodeRow = ({
       <TableRow px={0}>
         <HStack onClick={(e) => e.stopPropagation()}>
           <InstantiateButton
-            codeId={publicInfo.id}
             instantiatePermission={publicInfo.instantiatePermission}
             permissionAddresses={publicInfo.permissionAddresses}
+            codeId={publicInfo.id}
           />
           <SaveOrRemoveCodeModal codeInfo={localInfo} />
         </HStack>

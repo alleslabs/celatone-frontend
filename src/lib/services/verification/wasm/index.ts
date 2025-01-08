@@ -25,30 +25,30 @@ export const useSubmitWasmVerify = () =>
 export const useWasmVerifyInfos = (codeIds: number[], enabled = true) => {
   const { currentChainId } = useCelatoneApp();
   return useQuery({
-    enabled,
-    queryFn: () => getWasmVerifyInfos(currentChainId, codeIds),
     queryKey: [
       CELATONE_QUERY_KEYS.WASM_VERIFICATION_INFOS,
       currentChainId,
       ...codeIds.sort(),
     ],
+    queryFn: () => getWasmVerifyInfos(currentChainId, codeIds),
+    enabled,
     refetchOnWindowFocus: false,
     retry: false,
-    retryOnMount: false,
     staleTime: Infinity,
+    retryOnMount: false,
   });
 };
 
 const useWasmRelatedVerifyInfos = (hashes: string[], enabled = true) => {
   const { currentChainId } = useCelatoneApp();
   return useQuery({
-    enabled,
-    queryFn: () => getWasmRelatedVerifyInfos(currentChainId, hashes),
     queryKey: [
       CELATONE_QUERY_KEYS.WASM_RELATED_VERIFICATION_INFOS,
       currentChainId,
       ...hashes.sort(),
     ],
+    queryFn: () => getWasmRelatedVerifyInfos(currentChainId, hashes),
+    enabled,
     refetchOnWindowFocus: false,
     retry: false,
     staleTime: Infinity,
@@ -74,12 +74,12 @@ export const useDerivedWasmVerifyInfo = (
     wasmRelatedVerifyInfos?.[hash?.toUpperCase() ?? ""];
   return {
     data: {
+      verificationInfo: wasmVerifyInfo?.verificationInfo ?? null,
+      schema: wasmRelatedVerifyInfo?.schema ?? wasmVerifyInfo?.schema ?? null,
       relatedVerifiedCodes:
         wasmRelatedVerifyInfo?.relatedVerifiedCodes ??
         wasmVerifyInfo?.relatedVerifiedCodes ??
         [],
-      schema: wasmRelatedVerifyInfo?.schema ?? wasmVerifyInfo?.schema ?? null,
-      verificationInfo: wasmVerifyInfo?.verificationInfo ?? null,
     },
     isLoading: false,
   };

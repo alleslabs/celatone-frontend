@@ -12,16 +12,16 @@ import { NetworkDetails } from "./NetworkDetails";
 import { WalletRegistry } from "./WalletRegistry";
 
 interface AddNetworkFormProps {
-  control: Control<AddNetworkManualForm>;
   currentStepIndex: number;
+  control: Control<AddNetworkManualForm>;
   errors: FieldErrors<AddNetworkManualForm>;
   setValue: UseFormSetValue<AddNetworkManualForm>;
   trigger: UseFormTrigger<AddNetworkManualForm>;
 }
 
 export const AddNetworkForm = ({
-  control,
   currentStepIndex,
+  control,
   errors,
   setValue,
   trigger,
@@ -32,10 +32,10 @@ export const AddNetworkForm = ({
   if (currentStepIndex === 1)
     return (
       <GasFeeDetails
-        setValue={setValue}
-        trigger={trigger}
         control={control}
         errors={errors}
+        setValue={setValue}
+        trigger={trigger}
       />
     );
 

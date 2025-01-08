@@ -24,8 +24,8 @@ const RecentCodes = observer(() => {
     <PageContainer>
       <CelatoneSeo pageName="Codes" />
       <PageHeader
-        subtitle="This page displays all codes on this network sorted by recency"
         title="Codes"
+        subtitle="This page displays all codes on this network sorted by recency"
         docHref="introduction/overview#recent-codes"
       />
       <TierSwitcher

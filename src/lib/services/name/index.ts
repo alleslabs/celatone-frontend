@@ -36,8 +36,8 @@ export const useIcnsNamesByAddressLcd = (
     [CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS_LCD, lcdEndpoint, address],
     queryFn,
     {
-      enabled,
       refetchOnWindowFocus: false,
+      enabled,
       retry: 1,
     }
   );
@@ -72,15 +72,15 @@ export const useAddressByIcnsNameLcd = (name: string, enabled = true) => {
   };
 
   return useQuery({
-    enabled: enabled && Boolean(name),
-    queryFn,
     queryKey: [
       CELATONE_QUERY_KEYS.ADDRESS_BY_ICNS_NAME_LCD,
       lcdEndpoint,
       name,
       bech32Prefix,
     ],
+    queryFn,
     refetchOnWindowFocus: false,
+    enabled: enabled && Boolean(name),
     retry: 1,
   });
 };

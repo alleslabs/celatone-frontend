@@ -11,23 +11,23 @@ import type { CtaInfo } from "./ContractsTableRowCta";
 
 interface ContractsTableProps {
   contracts: Option<ContractInfo[]>;
-  emptyState: JSX.Element;
   isLoading: boolean;
-  isReadOnly?: boolean;
+  emptyState: JSX.Element;
   onRowSelect: (contract: BechAddr32) => void;
-  showLastUpdate?: boolean;
   showTag?: boolean;
+  showLastUpdate?: boolean;
+  isReadOnly?: boolean;
   withCta?: CtaInfo;
 }
 
 export const ContractsTable = ({
   contracts,
-  emptyState,
   isLoading,
-  isReadOnly = false,
+  emptyState,
   onRowSelect,
-  showLastUpdate = true,
   showTag = true,
+  showLastUpdate = true,
+  isReadOnly = false,
   withCta,
 }: ContractsTableProps) => {
   const isMobile = useMobile();
@@ -76,11 +76,11 @@ export const ContractsTable = ({
   ) : (
     <TableContainer pb={6}>
       <ContractsTableHeader
+        templateColumns={templateColumns}
+        showTag={showTag}
+        showLastUpdate={showLastUpdate}
         isReadOnly={isReadOnly}
         withCta={withCta}
-        showLastUpdate={showLastUpdate}
-        showTag={showTag}
-        templateColumns={templateColumns}
       />
       {contracts.map((contractInfo) => (
         <ContractsTableRow
@@ -91,13 +91,13 @@ export const ContractsTable = ({
             contractInfo.tags +
             contractInfo.lists
           }
+          contractInfo={contractInfo}
+          templateColumns={templateColumns}
+          onRowSelect={onRowSelect}
+          showTag={showTag}
+          showLastUpdate={showLastUpdate}
           isReadOnly={isReadOnly}
           withCta={withCta}
-          contractInfo={contractInfo}
-          onRowSelect={onRowSelect}
-          showLastUpdate={showLastUpdate}
-          showTag={showTag}
-          templateColumns={templateColumns}
           wasmVerifyInfo={
             contractInfo.codeId
               ? wasmVerifyInfos?.[contractInfo.codeId]

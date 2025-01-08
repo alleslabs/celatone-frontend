@@ -32,21 +32,21 @@ interface CodeFilterState {
 }
 
 interface CodeSelectDrawerButtonProps {
-  buttonText: string;
   onCodeSelect: (code: number) => void;
+  buttonText: string;
 }
 
 export const CodeSelectDrawerButton = ({
-  buttonText,
   onCodeSelect,
+  buttonText,
 }: CodeSelectDrawerButtonProps) => {
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
-  const { setValue, watch } = useForm<CodeFilterState>({
+  const { watch, setValue } = useForm<CodeFilterState>({
     defaultValues: {
-      keyword: "",
       permissionValue: "all",
+      keyword: "",
     },
   });
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -56,12 +56,12 @@ export const CodeSelectDrawerButton = ({
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
   const {
-    isSavedCodesLoading,
-    isStoredCodesLoading,
-    savedCodes: saved,
-    savedCodesCount,
-    storedCodes: stored,
     storedCodesCount,
+    storedCodes: stored,
+    savedCodesCount,
+    savedCodes: saved,
+    isStoredCodesLoading,
+    isSavedCodesLoading,
   } = useMyCodesData(keyword, permissionValue);
 
   const handleSelect = (codeId: number) => {
@@ -72,8 +72,8 @@ export const CodeSelectDrawerButton = ({
   return (
     <>
       <Button
-        ml="auto"
         variant="outline-primary"
+        ml="auto"
         w="120px"
         onClick={() => {
           track(AmpEvent.USE_CODE_MODAL);
@@ -83,7 +83,7 @@ export const CodeSelectDrawerButton = ({
         {buttonText}
       </Button>
 
-      <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
         <DrawerOverlay />
         <DrawerContent h="80%">
           <DrawerHeader>
@@ -93,25 +93,25 @@ export const CodeSelectDrawerButton = ({
             </Heading>
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
-          <DrawerBody px={0} py={4} overflow="scroll">
-            <Flex gap={4} mb={4} px={6} py={2}>
+          <DrawerBody px={0} overflow="scroll" py={4}>
+            <Flex gap={4} px={6} py={2} mb={4}>
               <InputWithIcon
-                size={{ base: "md", md: "lg" }}
+                placeholder="Search with Code ID or Code Name"
                 value={keyword}
-                amptrackSection="code-drawer-search"
                 autoFocus
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValue("keyword", e.target.value)
                 }
-                placeholder="Search with Code ID or Code Name"
+                size={{ base: "md", md: "lg" }}
+                amptrackSection="code-drawer-search"
               />
               <FilterByPermission
                 initialSelected="all"
-                labelBgColor="gray.900"
                 setPermissionValue={(newVal: PermissionFilterValue) => {
                   if (newVal === permissionValue) return;
                   setValue("permissionValue", newVal);
                 }}
+                labelBgColor="gray.900"
               />
             </Flex>
             <Tabs px={6}>
@@ -122,22 +122,22 @@ export const CodeSelectDrawerButton = ({
               <TabPanels>
                 <TabPanel p={0}>
                   <MyStoredCodesTable
-                    emptyMessage="You don’t have any stored codes in this device."
-                    isReadOnly
                     codes={stored}
-                    disconnectedMessage="to see your stored code."
+                    totalData={storedCodesCount}
                     isLoading={isStoredCodesLoading}
                     onRowSelect={handleSelect}
-                    totalData={storedCodesCount}
+                    emptyMessage="You don’t have any stored codes in this device."
+                    disconnectedMessage="to see your stored code."
+                    isReadOnly
                   />
                 </TabPanel>
                 <TabPanel p={0}>
                   <MySavedCodesTable
-                    isReadOnly
                     codes={saved}
+                    totalData={savedCodesCount}
                     isLoading={isSavedCodesLoading}
                     onRowSelect={handleSelect}
-                    totalData={savedCodesCount}
+                    isReadOnly
                   />
                 </TabPanel>
               </TabPanels>

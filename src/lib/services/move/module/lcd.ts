@@ -60,9 +60,9 @@ export const getMoveViewJsonLcd = async (
   axios
     .post(`${endpoint}/initia/move/v1/view/json`, {
       address: vmAddress,
-      args,
-      function_name: functionName,
       module_name: moduleName,
+      function_name: functionName,
       type_args: typeArgs,
+      args,
     })
     .then(({ data }) => parseWithError(zMoveViewJsonResponseLcd, data));

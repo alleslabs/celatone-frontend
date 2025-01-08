@@ -49,8 +49,8 @@ const zModeInfoSingle = z.object({
 const zModeInfoMulti = z.object({
   multi: z.object({
     bitarray: z.object({
-      elems: z.string(), // base64 encoded of Uint8Array
       extra_bits_stored: z.number(),
+      elems: z.string(), // base64 encoded of Uint8Array
     }),
     // assuming one nesting level for now as multisig pubkey is also one level
     mode_infos: z.array(zModeInfoSingle),
@@ -77,13 +77,13 @@ const zSignerInfo = z
 
 const zAuthInfo = z
   .object({
+    signer_infos: z.array(zSignerInfo),
     fee: z.object({
       amount: z.array(zCoin),
       gas_limit: z.string(),
-      granter: z.string(),
       payer: z.string(),
+      granter: z.string(),
     }),
-    signer_infos: z.array(zSignerInfo),
   })
   .transform(snakeToCamel);
 export type AuthInfo = z.infer<typeof zAuthInfo>;
@@ -93,11 +93,11 @@ export type AuthInfo = z.infer<typeof zAuthInfo>;
 // ----------------------------------------
 const zTxBody = z
   .object({
-    extension_options: zAny.array(),
-    memo: z.string(),
     messages: z.array(zMessageResponse),
-    non_critical_extension_options: zAny.array(),
+    memo: z.string(),
     timeout_height: z.string(),
+    extension_options: zAny.array(),
+    non_critical_extension_options: zAny.array(),
   })
   .transform((val) => ({
     ...snakeToCamel(val),
@@ -107,8 +107,8 @@ export type TxBody = z.infer<typeof zTxBody>;
 
 export const zTx = z
   .object({
-    auth_info: zAuthInfo,
     body: zTxBody,
+    auth_info: zAuthInfo,
     signatures: z.array(z.string()),
   })
   .transform((val) => ({
@@ -118,52 +118,52 @@ export const zTx = z
 export type Tx = z.infer<typeof zTx>;
 
 const zEventAttribute = z.object({
-  index: z.boolean().optional(),
   key: z.string(),
   value: z.union([z.string(), z.null().transform(() => "")]),
+  index: z.boolean().optional(),
 });
 
 const zEvent = z.object({
-  attributes: z.array(zEventAttribute),
   type: z.string(),
+  attributes: z.array(zEventAttribute),
 });
 export type Event = z.infer<typeof zEvent>;
 
 const zLog = z
   .object({
-    events: z.array(zEvent),
-    log: z.string(),
     msg_index: z.number(),
+    log: z.string(),
+    events: z.array(zEvent),
   })
   .transform<Log>((val) => val);
 
 const zTxResponse = z
   .object({
-    code: z.number(),
-    codespace: z.string(),
-    data: z.string(),
-    events: z.array(zEvent),
-    gas_used: z.string(),
-    gas_wanted: z.string(),
     height: z.string(),
-    info: z.string(),
-    logs: z.array(zLog),
-    raw_log: z.string(),
-    timestamp: zUtcDate,
-    tx: zTx,
     txhash: z.string(),
+    codespace: z.string(),
+    code: z.number(),
+    data: z.string(),
+    raw_log: z.string(),
+    logs: z.array(zLog),
+    info: z.string(),
+    gas_wanted: z.string(),
+    gas_used: z.string(),
+    tx: zTx,
+    timestamp: zUtcDate,
+    events: z.array(zEvent),
   })
   .transform((val) => ({
     ...snakeToCamel(val),
-    logs: val.logs,
     tx: val.tx,
+    logs: val.logs,
   }));
+export type TxResponse = z.infer<typeof zTxResponse>;
+
 export interface TxData extends TxResponse {
   chainId: string;
   isTxFailed: boolean;
 }
-
-export type TxResponse = z.infer<typeof zTxResponse>;
 
 export const zTxsResponseItemFromLcd =
   zTxResponse.transform<TransactionWithSignerPubkey>((val) => {
@@ -176,41 +176,41 @@ export const zTxsResponseItemFromLcd =
       type: msg["@type"],
     }));
 
-    const { isEvm, isIbc, isOpinit } = messages.reduce(
+    const { isIbc, isOpinit, isEvm } = messages.reduce(
       (acc, msg, idx) => {
         const current = getTxBadges(msg.type, logs[idx]);
         return {
-          isEvm: acc.isEvm || current.isEvm,
           isIbc: acc.isIbc || current.isIbc,
           isOpinit: acc.isOpinit || current.isOpinit,
+          isEvm: acc.isEvm || current.isEvm,
         };
       },
-      { isEvm: false, isIbc: false, isOpinit: false }
+      { isIbc: false, isOpinit: false, isEvm: false }
     );
 
     return {
-      // TODO: implement below later
-      actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
-      created: val.timestamp,
-      events: val.events,
-      furtherAction: MsgFurtherAction.NONE,
       hash: val.txhash,
-      height: Number(val.height),
-      isEvm,
-      isIbc,
-      isInstantiate: false,
-      isOpinit,
-      isSigner: true,
       messages,
       signerPubkey: val.tx.authInfo.signerInfos[0].publicKey,
+      isSigner: true,
+      height: Number(val.height),
+      created: val.timestamp,
       success: val.code === 0,
+      isIbc,
+      isOpinit,
+      isEvm,
+      events: val.events,
+      // TODO: implement below later
+      actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+      furtherAction: MsgFurtherAction.NONE,
+      isInstantiate: false,
     };
   });
 
 export const zTxsByAddressResponseLcd = z
   .object({
-    total: z.coerce.number(),
     tx_responses: z.array(zTxsResponseItemFromLcd),
+    total: z.coerce.number(),
   })
   .transform((val) => ({
     items: val.tx_responses,
@@ -220,8 +220,8 @@ export type TxsByAddressResponseLcd = z.infer<typeof zTxsByAddressResponseLcd>;
 
 export const zTxsResponseSequencer = z
   .object({
-    pagination: zPagination,
     txs: z.array(zTxsResponseItemFromLcd),
+    pagination: zPagination,
   })
   .transform((val) => ({
     items: val.txs,
@@ -244,8 +244,8 @@ export const zTxsByHashResponseSequencer = z
   .transform((val) => ({
     items: [val.tx],
     pagination: {
-      nextKey: null,
       total: val.tx ? 1 : 0,
+      nextKey: null,
     },
   }));
 export type TxsByHashResponseSequencer = z.infer<
@@ -261,33 +261,40 @@ export const zTxByHashResponseLcd = z
   }));
 
 const zBaseTxsResponseItem = z.object({
+  height: z.number().nonnegative(),
   created: zUtcDate,
   hash: z.string(),
-  height: z.number().nonnegative(),
+  messages: z.any().array(),
+  sender: zBechAddr,
+  success: z.boolean(),
+  is_ibc: z.boolean(),
+  is_send: z.boolean(),
+  // initia
+  is_opinit: z.boolean().optional(),
+  is_evm: z.boolean().optional(),
   // wasm
   is_clear_admin: z.boolean().optional(),
-  is_evm: z.boolean().optional(),
   is_execute: z.boolean().optional(),
-  is_ibc: z.boolean(),
   is_instantiate: z.boolean().optional(),
   is_migrate: z.boolean().optional(),
+  is_store_code: z.boolean().optional(),
+  is_update_admin: z.boolean().optional(),
   // move
   is_move_execute: z.boolean().optional(),
   is_move_publish: z.boolean().optional(),
   is_move_script: z.boolean().optional(),
   is_move_upgrade: z.boolean().optional(),
-  // initia
-  is_opinit: z.boolean().optional(),
-  is_send: z.boolean(),
-  is_store_code: z.boolean().optional(),
-  is_update_admin: z.boolean().optional(),
-  messages: z.any().array(),
-  sender: zBechAddr,
-  success: z.boolean(),
 });
 
 export const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>(
   (val) => ({
+    hash: parseTxHash(val.hash),
+    messages: snakeToCamel(val.messages),
+    sender: val.sender,
+    isSigner: false,
+    height: val.height,
+    created: val.created,
+    success: val.success,
     actionMsgType: getActionMsgType([
       val.is_send,
       val.is_execute,
@@ -298,18 +305,11 @@ export const zTxsResponseItem = zBaseTxsResponseItem.transform<Transaction>(
       val.is_clear_admin,
       // TODO: implement Move msg type
     ]),
-    created: val.created,
     furtherAction: MsgFurtherAction.NONE,
-    hash: parseTxHash(val.hash),
-    height: val.height,
-    isEvm: val.is_evm ?? false,
     isIbc: val.is_ibc,
-    isInstantiate: val.is_instantiate ?? false,
     isOpinit: val.is_opinit ?? false,
-    isSigner: false,
-    messages: snakeToCamel(val.messages),
-    sender: val.sender,
-    success: val.success,
+    isEvm: val.is_evm ?? false,
+    isInstantiate: val.is_instantiate ?? false,
   })
 );
 
@@ -324,6 +324,13 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
     is_signer: z.boolean(),
   })
   .transform<Transaction>((val) => ({
+    hash: parseTxHash(val.hash),
+    messages: snakeToCamel(val.messages),
+    sender: val.sender,
+    isSigner: val.is_signer,
+    height: val.height,
+    created: val.created,
+    success: val.success,
     actionMsgType: getActionMsgType([
       val.is_send,
       val.is_execute,
@@ -334,36 +341,29 @@ const zAccountTxsResponseItem = zBaseTxsResponseItem
       val.is_clear_admin,
       // TODO: implement Move msg type
     ]),
-    created: val.created,
     furtherAction: getMsgFurtherAction(
       val.messages.length,
       {
-        isClearAdmin: val.is_clear_admin,
-        isExecute: val.is_execute,
-        isIbc: val.is_ibc,
-        isInstantiate: val.is_instantiate,
-        isMigrate: val.is_migrate,
-        isMoveExecute: val.is_move_execute,
-        isMovePublish: val.is_move_publish,
-        isMoveScript: val.is_move_script,
-        isMoveUpgrade: val.is_move_upgrade,
         isSend: val.is_send,
+        isIbc: val.is_ibc,
+        isExecute: val.is_execute,
+        isInstantiate: val.is_instantiate,
         isStoreCode: val.is_store_code,
+        isMigrate: val.is_migrate,
         isUpdateAdmin: val.is_update_admin,
+        isClearAdmin: val.is_clear_admin,
+        isMovePublish: val.is_move_publish,
+        isMoveUpgrade: val.is_move_upgrade,
+        isMoveExecute: val.is_move_execute,
+        isMoveScript: val.is_move_script,
       },
       val.success,
       val.is_signer
     ),
-    hash: parseTxHash(val.hash),
-    height: val.height,
-    isEvm: val.is_evm ?? false,
     isIbc: val.is_ibc,
-    isInstantiate: val.is_instantiate ?? false,
     isOpinit: val.is_opinit ?? false,
-    isSigner: val.is_signer,
-    messages: snakeToCamel(val.messages),
-    sender: val.sender,
-    success: val.success,
+    isEvm: val.is_evm ?? false,
+    isInstantiate: val.is_instantiate ?? false,
   }));
 
 export const zAccountTxsResponse = z.object({
@@ -384,8 +384,8 @@ export const zTxsCountResponse = z
   .transform((val) => val.count);
 
 export const zBlockTxsResponseSequencer = z.object({
-  pagination: zPagination,
   txs: z.array(zTxsResponseItemFromLcd),
+  pagination: zPagination,
 });
 
 const zTxByPoolIdResponse = z
@@ -400,14 +400,14 @@ const zTxByPoolIdResponse = z
   })
   .transform<Transaction>((val) => ({
     ...snakeToCamel(val),
+    hash: parseTxHash(val.hash),
+    messages: snakeToCamel(val.messages) as Message[],
+    isSigner: true,
     actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
     furtherAction: MsgFurtherAction.NONE,
-    hash: parseTxHash(val.hash),
-    isEvm: false,
     isInstantiate: false,
     isOpinit: false,
-    isSigner: true,
-    messages: snakeToCamel(val.messages) as Message[],
+    isEvm: false,
   }));
 
 export const zTxsByPoolIdResponse = z.object({
@@ -431,22 +431,22 @@ export const zEvmTxHashesByCosmosTxHashesJsonRpc = z.array(
 export const zTxJsonRpc = z.object({
   blockHash: z.string(),
   blockNumber: zHexBig,
-  chainId: zHexBig,
   from: zHexAddr20,
   gas: zHexBig,
   gasPrice: zHexBig,
-  hash: z.string(),
-  input: z.string(),
   maxFeePerGas: zHexBig,
   maxPriorityFeePerGas: zHexBig,
+  hash: z.string(),
+  input: z.string(),
   nonce: zHexBig,
-  r: z.string(),
-  s: z.string(),
   to: zHexAddr20.nullable(),
   transactionIndex: zHexBig,
-  type: z.string(), // TODO: convert to enum later
-  v: z.string(),
   value: zHexBig,
+  type: z.string(), // TODO: convert to enum later
+  chainId: zHexBig,
+  v: z.string(),
+  r: z.string(),
+  s: z.string(),
   yParity: z.string().optional(),
 });
 
@@ -473,6 +473,6 @@ export const zTxDataJsonRpc = z
 export type TxDataJsonRpc = z.infer<typeof zTxDataJsonRpc>;
 
 export const zTxsDataJsonRpc = z.array(zTxDataJsonRpc);
-export type TxDataWithTimeStampJsonRpc = TxDataJsonRpc & { timestamp: Date };
-
 export type TxsDataJsonRpc = z.infer<typeof zTxsDataJsonRpc>;
+
+export type TxDataWithTimeStampJsonRpc = TxDataJsonRpc & { timestamp: Date };

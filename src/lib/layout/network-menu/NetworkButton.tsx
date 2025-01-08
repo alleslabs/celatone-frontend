@@ -13,25 +13,25 @@ export const NetworkButton = ({ isMobile, onClick }: NetworkButtonProps) => {
   const width = isMobile ? "220px" : "170px";
   return (
     <Flex
-      borderWidth={isMobile ? "1px" : 0}
       alignItems="center"
-      h="full"
+      justifyContent="space-between"
       px={4}
       py={2}
-      w={width}
+      h="full"
       _hover={{ bg: "gray.900", cursor: "pointer" }}
-      borderColor={isMobile ? "gray.700" : "transparent"}
-      borderRadius={isMobile ? "8px" : 0}
-      justifyContent="space-between"
-      onClick={onClick}
       transition="all 0.25s ease-in-out"
+      w={width}
+      borderRadius={isMobile ? "8px" : 0}
+      borderWidth={isMobile ? "1px" : 0}
+      borderColor={isMobile ? "gray.700" : "transparent"}
+      onClick={onClick}
     >
       <Text
-        maxW={width}
-        variant="body2"
-        whiteSpace="nowrap"
-        overflow="hidden"
         textOverflow="ellipsis"
+        variant="body2"
+        overflow="hidden"
+        whiteSpace="nowrap"
+        maxW={width}
       >
         {currentChainId}
       </Text>

@@ -14,15 +14,15 @@ export class RootStore {
 
   contractStore: ContractStore;
 
-  localChainConfigStore: LocalChainConfigStore;
-
-  moveVerifyTaskStore: MoveVerifyTaskStore;
-
-  networkStore: NetworkStore;
-
   publicProjectStore: PublicProjectStore;
 
   schemaStore: SchemaStore;
+
+  networkStore: NetworkStore;
+
+  localChainConfigStore: LocalChainConfigStore;
+
+  moveVerifyTaskStore: MoveVerifyTaskStore;
 
   constructor() {
     this.accountStore = new AccountStore();

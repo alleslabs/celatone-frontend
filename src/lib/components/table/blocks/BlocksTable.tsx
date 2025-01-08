@@ -10,15 +10,15 @@ import { BlocksTableRow } from "./BlocksTableRow";
 
 interface BlocksTableProps {
   blocks: Option<Block[]>;
-  emptyState: JSX.Element;
   isLoading: boolean;
+  emptyState: JSX.Element;
   showProposer?: boolean;
 }
 
 export const BlocksTable = ({
   blocks,
-  emptyState,
   isLoading,
+  emptyState,
   showProposer = true,
 }: BlocksTableProps) => {
   const isMobile = useMobile();
@@ -44,15 +44,15 @@ export const BlocksTable = ({
   ) : (
     <TableContainer>
       <BlocksTableHeader
-        showProposer={showProposer}
         templateColumns={templateColumns}
+        showProposer={showProposer}
       />
       {blocks.map((block) => (
         <BlocksTableRow
           key={block.hash}
+          templateColumns={templateColumns}
           blockData={block}
           showProposer={showProposer}
-          templateColumns={templateColumns}
         />
       ))}
     </TableContainer>

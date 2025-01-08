@@ -15,26 +15,26 @@ export const MyModuleVerifications = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="My Past Verification" />
-      <Flex mb={4} justifyContent="space-between">
+      <Flex justifyContent="space-between" mb={4}>
         <Box>
           <Heading as="h5" variant="h5">
             My Past Verification
           </Heading>
-          <Text variant="body2" color="text.dark" fontWeight={500}>
+          <Text variant="body2" fontWeight={500} color="text.dark">
             Display the request queue for module verifications through
             InitiaScan
           </Text>
         </Box>
         <Flex gap={4}>
           <UserDocsButton
-            title="View Verification Guideline"
             variant="outline-white"
-            isDevTool
+            title="View Verification Guideline"
             href="initia/move/module-verification"
+            isDevTool
           />
           <Button
-            leftIcon={<CustomIcon name="plus" />}
             onClick={() => navigate({ pathname: "/modules/verify" })}
+            leftIcon={<CustomIcon name="plus" />}
           >
             Submit Verification
           </Button>

@@ -12,8 +12,8 @@ const NftCollections = () => {
     <PageContainer>
       <CelatoneSeo pageName="NFT Collections" />
       <PageHeader
-        subtitle="These are the most recently NFT collections created on this network"
         title="NFT Collections"
+        subtitle="These are the most recently NFT collections created on this network"
         docHref="move/nfts/collection-list"
       />
       <Collections />

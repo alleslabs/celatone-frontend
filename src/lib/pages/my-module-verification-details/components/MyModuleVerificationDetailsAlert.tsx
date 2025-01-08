@@ -25,7 +25,7 @@ export const MyModuleVerificationDetailsAlert = ({
   const navigate = useInternalNavigate();
   if (status === MoveVerifyTaskStatus.Pending)
     return (
-      <Alert alignItems="center" py={0} variant="info-left-secondary">
+      <Alert variant="info-left-secondary" alignItems="center" py={0}>
         <AlertDescription wordBreak="break-word">
           There are{" "}
           <Text as="span" fontWeight={700}>
@@ -42,7 +42,7 @@ export const MyModuleVerificationDetailsAlert = ({
 
   if (status === MoveVerifyTaskStatus.Running)
     return (
-      <Alert alignItems="center" py={0} variant="info-left-secondary">
+      <Alert variant="info-left-secondary" alignItems="center" py={0}>
         <AlertDescription wordBreak="break-word">
           The request is now in progress with the module verification process.
         </AlertDescription>
@@ -53,10 +53,10 @@ export const MyModuleVerificationDetailsAlert = ({
     return (
       <Alert variant="error">
         <Flex gap={3} flexGrow={1}>
-          <CustomIcon name="info-circle" boxSize={4} color="error.main" />
+          <CustomIcon name="info-circle" color="error.main" boxSize={4} />
           <Stack gap={1}>
             <AlertTitle>Verification Failed</AlertTitle>
-            <AlertDescription whiteSpace="pre-line" wordBreak="break-word">
+            <AlertDescription wordBreak="break-word" whiteSpace="pre-line">
               There are common problems that lead to verification failures,
               including:
               <UnorderedList>
@@ -75,10 +75,10 @@ export const MyModuleVerificationDetailsAlert = ({
               For more details to ensure the correctness of the process, please
               refer to the{" "}
               <a
-                style={{ textDecoration: "underline" }}
-                rel="noopener noreferrer"
-                target="_blank"
                 href={`${DEVELOPER_TOOL_DOCS_LINK}/initia/move/module-verification`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "underline" }}
               >
                 verification guideline.{" "}
               </a>
@@ -86,8 +86,8 @@ export const MyModuleVerificationDetailsAlert = ({
           </Stack>
         </Flex>
         <Button
-          minW="fit-content"
           variant="ghost-error"
+          minW="fit-content"
           _hover={{
             backdropFilter: "brightness(130%)",
           }}

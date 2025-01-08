@@ -8,18 +8,18 @@ import type { MsgInstantiateContract } from "lib/types";
 import { isId } from "lib/utils";
 
 export const zInstantiateQueryParams = z.object({
+  msg: z.string().optional(),
   codeId: z
     .string()
     .transform((val) => (isId(val) ? Number(val) : undefined))
     .optional(),
-  msg: z.string().optional(),
 });
 
 export interface InstantiateFormState {
-  adminAddress: string;
-  codeHash: string;
   codeId: number;
+  codeHash: string;
   label: string;
+  adminAddress: string;
   msgInput: {
     [jsonInputFormKey]: string;
     [yourSchemaInputFormKey]: string;

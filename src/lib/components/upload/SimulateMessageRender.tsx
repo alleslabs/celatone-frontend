@@ -5,27 +5,27 @@ import { CustomIcon } from "../icon";
 import type { Option } from "lib/types";
 
 interface SimulateMessageRenderProps extends FlexProps {
+  value: Option<string>;
   isLoading: boolean;
   isSuccess: boolean;
-  value: Option<string>;
 }
 
 const item = {
+  success: {
+    color: "success.main",
+    icon: (
+      <CustomIcon name="check-circle-solid" color="success.main" boxSize="3" />
+    ),
+  },
   fail: {
     color: "error.main",
     icon: (
-      <CustomIcon name="alert-triangle-solid" boxSize="3" color="error.main" />
+      <CustomIcon name="alert-triangle-solid" color="error.main" boxSize="3" />
     ),
   },
   loading: {
     color: "gray.500",
-    icon: <Spinner mx={1} size="sm" color="gray.600" />,
-  },
-  success: {
-    color: "success.main",
-    icon: (
-      <CustomIcon name="check-circle-solid" boxSize="3" color="success.main" />
-    ),
+    icon: <Spinner color="gray.600" size="sm" mx={1} />,
   },
 };
 
@@ -36,14 +36,14 @@ const getStatus = (isLoading: boolean, isSuccess: boolean) => {
 };
 
 export const SimulateMessageRender = ({
+  value,
   isLoading,
   isSuccess,
-  value,
   ...restProps
 }: SimulateMessageRenderProps) => {
   const status = getStatus(isLoading, isSuccess);
   return (
-    <Flex align="center" gap={2} {...restProps}>
+    <Flex gap={2} align="center" {...restProps}>
       {item[status].icon}
       <Text variant="body3" color={item[status].color}>
         {value}

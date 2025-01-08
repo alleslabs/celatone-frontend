@@ -3,11 +3,11 @@ import type { AmpEvent } from "../types";
 
 export const trackContractStatesLoad = (
   event:
-    | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD
-    | AmpEvent.USE_CONTRACT_STATES_LOAD_MORE,
+    | AmpEvent.USE_CONTRACT_STATES_LOAD_MORE
+    | AmpEvent.USE_CONTRACT_STATES_DOWNLOAD,
   properties: {
     currentStates: number;
-    namespaces: string[];
     namespacesCount: number;
+    namespaces: string[];
   }
 ) => amp.track(event, properties);

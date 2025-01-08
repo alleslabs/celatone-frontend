@@ -5,10 +5,10 @@ import { zRelatedWasmVerifyInfo, zWasmVerifyInfo } from "lib/types";
 export interface WasmVerifyRequest {
   chainId: string;
   codeId: number;
-  commit: string;
-  compilerVersion: string;
   gitUrl: string;
+  commit: string;
   packageName: string;
+  compilerVersion: string;
 }
 
 export const zWasmVerifyInfosResponse = z.record(

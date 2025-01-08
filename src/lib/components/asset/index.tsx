@@ -21,41 +21,41 @@ import { UserAssetInfoCard } from "./UserAssetInfoCard";
 
 interface AssetsSectionProps {
   address: BechAddr;
-  isAccount?: boolean;
   onViewMore?: () => void;
+  isAccount?: boolean;
 }
 
 const MobileOverview = ({
-  hasNoAsset,
-  onViewMore,
   supportedAssets,
   totalSupportedAssetsValue,
   unsupportedAssets,
+  hasNoAsset,
+  onViewMore,
 }: {
-  hasNoAsset: boolean;
-  onViewMore: () => void;
   supportedAssets: TokenWithValue[];
   totalSupportedAssetsValue: Option<USD<Big>>;
   unsupportedAssets: TokenWithValue[];
+  hasNoAsset: boolean;
+  onViewMore: () => void;
 }) => (
   <Flex
-    bg="gray.900"
     justify="space-between"
-    p={4}
     w="full"
+    bg="gray.900"
     borderRadius="8px"
-    onClick={hasNoAsset ? undefined : onViewMore}
+    p={4}
     opacity={hasNoAsset ? 0.5 : 1}
+    onClick={hasNoAsset ? undefined : onViewMore}
   >
-    <Flex gap={2} direction="column">
+    <Flex direction="column" gap={2}>
       <TableTitle
-        mb={0}
         title="Assets"
         count={supportedAssets.length + unsupportedAssets.length}
+        mb={0}
       />
       <UserAssetInfoCard
-        helperText="Total Asset Value"
         totalSupportedAssetsValue={totalSupportedAssetsValue}
+        helperText="Total Asset Value"
       />
     </Flex>
     <CustomIcon name="chevron-right" color="gray.600" />
@@ -64,20 +64,20 @@ const MobileOverview = ({
 
 export const AssetsSection = ({
   address,
-  isAccount = false,
   onViewMore,
+  isAccount = false,
 }: AssetsSectionProps) => {
   const isMobile = useMobile();
   const openAssetTab = useOpenAssetTab();
   const isMobileOverview = isMobile && !!onViewMore;
 
   const {
-    error,
-    isLoading,
     supportedAssets,
-    totalData = 0,
     totalSupportedAssetsValue,
     unsupportedAssets,
+    totalData = 0,
+    isLoading,
+    error,
   } = useBalanceInfos(address);
 
   const isZeroValue =
@@ -89,43 +89,43 @@ export const AssetsSection = ({
     return (
       <ErrorFetching
         dataName="balances"
+        withBorder
         my={2}
         hasBorderTop={false}
-        withBorder
       />
     );
 
   return (
     <Flex
-      width="full"
-      gap={4}
-      mb={{ base: 0, md: 8 }}
-      mt={{ base: isMobileOverview ? 0 : 8, md: 4 }}
       direction="column"
+      gap={4}
+      mt={{ base: isMobileOverview ? 0 : 8, md: 4 }}
+      mb={{ base: 0, md: 8 }}
+      width="full"
     >
       {isMobileOverview ? (
         <MobileOverview
-          hasNoAsset={hasNoAsset}
-          onViewMore={onViewMore}
           supportedAssets={supportedAssets}
           totalSupportedAssetsValue={totalSupportedAssetsValue}
           unsupportedAssets={unsupportedAssets}
+          hasNoAsset={hasNoAsset}
+          onViewMore={onViewMore}
         />
       ) : (
         <>
           <Flex w="full" justifyContent="space-between">
-            <TableTitle mb={0} title="Assets" count={totalData} />
+            <TableTitle title="Assets" count={totalData} mb={0} />
             <Button
               isDisabled={hasNoAsset}
-              size="sm"
               variant="ghost-gray"
+              size="sm"
+              rightIcon={
+                <CustomIcon name="launch" boxSize={3} color="text.dark" />
+              }
               onClick={() => {
                 trackUseViewJSON("account_details_page_assets");
                 openAssetTab(address);
               }}
-              rightIcon={
-                <CustomIcon name="launch" boxSize={3} color="text.dark" />
-              }
             >
               View all assets in JSON
             </Button>
@@ -133,10 +133,10 @@ export const AssetsSection = ({
           {onViewMore ? (
             <AssetSectionOverview
               isAccount={isAccount}
-              onViewMore={onViewMore}
               supportedAssets={supportedAssets}
               totalSupportedAssetsValue={totalSupportedAssetsValue}
               unsupportedAssets={unsupportedAssets}
+              onViewMore={onViewMore}
             />
           ) : (
             <>
@@ -168,7 +168,7 @@ export const AssetsSection = ({
                 />
                 {!supportedAssets.length && <Divider borderColor="gray.700" />}
               </Flex>
-              <Flex mt={2} direction="column">
+              <Flex direction="column" mt={2}>
                 <UnsupportedAssetTitle unsupportedAssets={unsupportedAssets} />
                 <Divider borderColor="gray.700" />
                 <UnsupportedAssetSectionContent

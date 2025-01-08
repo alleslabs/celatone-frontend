@@ -16,7 +16,7 @@ export default function TitleField<
   S extends StrictRJSFSchema = RJSFSchema,
   F extends FormContextType = any,
 >(props: TitleFieldProps<T, S, F>) {
-  const { id, required, title } = props;
+  const { id, title, required } = props;
   return (
     <Text id={id} variant="body3" fontWeight={700}>
       {title}
@@ -24,8 +24,8 @@ export default function TitleField<
         <span
           className="required"
           style={{
-            color: "var(--chakra-colors-error-light)",
             marginLeft: "4px",
+            color: "var(--chakra-colors-error-light)",
           }}
         >
           *

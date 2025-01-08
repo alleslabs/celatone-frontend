@@ -14,16 +14,16 @@ import { TEMPLATE_COLUMNS } from "./constants";
 
 interface DelegationsTableProps {
   delegations: Option<Delegation[]>;
+  rewards: Option<Record<string, TokenWithValue[]>>;
   isLoading: boolean;
   isSingleBondDenom: boolean;
-  rewards: Option<Record<string, TokenWithValue[]>>;
 }
 
 const DelegationsTableBody = ({
   delegations,
+  rewards,
   isLoading,
   isSingleBondDenom,
-  rewards,
 }: DelegationsTableProps) => {
   const isMobile = useMobile();
 
@@ -49,9 +49,9 @@ const DelegationsTableBody = ({
             )
           }
           bondedInfo={{
+            validator: delegation.validator,
             balances: delegation.balances,
             rewards: rewards[delegation.validator.validatorAddress] ?? [],
-            validator: delegation.validator,
           }}
           isSingleBondDenom={isSingleBondDenom}
         />
@@ -59,7 +59,7 @@ const DelegationsTableBody = ({
     </MobileTableContainer>
   ) : (
     <TableContainer>
-      <BondedTableHeader isDelegation templateColumns={TEMPLATE_COLUMNS} />
+      <BondedTableHeader templateColumns={TEMPLATE_COLUMNS} isDelegation />
       {delegations.map((delegation) => (
         <BondedTableRow
           key={
@@ -70,9 +70,9 @@ const DelegationsTableBody = ({
             )
           }
           bondedInfo={{
+            validator: delegation.validator,
             balances: delegation.balances,
             rewards: rewards[delegation.validator.validatorAddress] ?? [],
-            validator: delegation.validator,
           }}
           isSingleBondDenom={isSingleBondDenom}
           templateColumns={TEMPLATE_COLUMNS}
@@ -84,15 +84,15 @@ const DelegationsTableBody = ({
 
 export const DelegationsTable = ({
   delegations,
+  rewards,
   isLoading,
   isSingleBondDenom,
-  rewards,
 }: DelegationsTableProps) => (
   <Box width="100%">
-    <TableTitle mb={2} title="Delegated to" count={delegations?.length ?? 0} />
+    <TableTitle title="Delegated to" count={delegations?.length ?? 0} mb={2} />
     <DelegationsTableBody
-      rewards={rewards}
       delegations={delegations}
+      rewards={rewards}
       isLoading={isLoading}
       isSingleBondDenom={isSingleBondDenom}
     />

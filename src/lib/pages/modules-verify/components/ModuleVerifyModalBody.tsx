@@ -8,17 +8,17 @@ import { ModuleVerifyLoadingModal } from "./ModuleVerifyLoadingModal";
 import { ModuleVerifySuccessModal } from "./ModuleVerifySuccessModal";
 
 interface ModuleVerifyModalBodyProps {
-  control: Control<ModuleVerifyForm>;
   isError: boolean;
   isLoading: boolean;
   onClose: () => void;
+  control: Control<ModuleVerifyForm>;
 }
 
 export const ModuleVerifyModalBody = ({
-  control,
   isError,
   isLoading,
   onClose,
+  control,
 }: ModuleVerifyModalBodyProps) => {
   const [fakeLoading, setFakeLoading] = useState(false);
 
@@ -37,6 +37,6 @@ export const ModuleVerifyModalBody = ({
   return isLoading || fakeLoading ? (
     <ModuleVerifyLoadingModal />
   ) : (
-    <ModuleVerifySuccessModal control={control} onClose={onClose} />
+    <ModuleVerifySuccessModal onClose={onClose} control={control} />
   );
 };

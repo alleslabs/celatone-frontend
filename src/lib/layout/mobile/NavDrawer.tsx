@@ -46,7 +46,7 @@ export const NavDrawer = () => {
 
   const isCurrentPage = useIsCurrentPage();
   const { getSavedPublicProjects } = usePublicProjectStore();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const navMenu = useMemo(() => {
     let navMenuTmp = [];
@@ -59,15 +59,15 @@ export const NavDrawer = () => {
           nftConfig.enabled
         );
         break;
-      case "lite":
-        navMenuTmp = getNavDrawerLite(
+      case "sequencer":
+        navMenuTmp = getNavDrawerSequencer(
           govConfig.enabled,
           wasmConfig.enabled,
           moveConfig.enabled
         );
         break;
-      case "sequencer":
-        navMenuTmp = getNavDrawerSequencer(
+      case "lite":
+        navMenuTmp = getNavDrawerLite(
           govConfig.enabled,
           wasmConfig.enabled,
           moveConfig.enabled
@@ -83,14 +83,14 @@ export const NavDrawer = () => {
         slug: "public-projects",
         submenu: [
           ...getSavedPublicProjects().map((list) => ({
-            logo: list.logo,
             name: list.name,
             slug: `/projects/${list.slug}`,
+            logo: list.logo,
           })),
           {
-            icon: "public-project" as IconKeys,
             name: "View All Projects",
             slug: "/projects",
+            icon: "public-project" as IconKeys,
           },
         ],
       });
@@ -109,94 +109,94 @@ export const NavDrawer = () => {
   return (
     <>
       <Button
-        gap={1}
-        h="full"
         variant="ghost-gray"
+        h="full"
         borderRadius={0}
+        gap={1}
         onClick={onOpen}
       >
         <CustomIcon name="menu" boxSize={3} />
         Menu
       </Button>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="right">
         <DrawerOverlay />
         <DrawerContent w="90%">
           <DrawerHeader alignItems="center" px={4}>
             <Flex align="center" justify="space-between" w="full">
               <NetworkMenu />
               <IconButton
-                aria-label="close"
                 variant="gray"
+                aria-label="close"
+                onClick={() => onClose()}
                 color="gray.600"
                 icon={<CustomIcon name="close" />}
-                onClick={() => onClose()}
               />
             </Flex>
           </DrawerHeader>
-          <DrawerBody px={4} overflowY="scroll">
+          <DrawerBody overflowY="scroll" px={4}>
             {navMenu.map((item) => (
               <Box
-                key={item.category}
-                mb={4}
                 pb={4}
+                mb={4}
+                key={item.category}
+                borderBottom="1px solid"
+                borderColor="gray.700"
                 sx={{
                   "&:last-of-type": {
                     borderBottom: "none",
-                    marginBottom: "0px",
                     paddingBottom: "0px",
+                    marginBottom: "0px",
                   },
                 }}
-                borderBottom="1px solid"
-                borderColor="gray.700"
               >
                 <Text py={2} variant="body3" fontWeight={700}>
                   {item.category}
                 </Text>
                 {item.submenu.map((submenu) => (
                   <AppLink
+                    href={submenu.slug}
                     key={submenu.slug}
                     onClick={() => {
                       track(AmpEvent.USE_SIDEBAR);
                       onClose();
                     }}
-                    href={submenu.slug}
                   >
                     <Flex
-                      alignItems="center"
                       gap={2}
-                      my="1px"
                       p={2}
+                      cursor="pointer"
                       _hover={{ bg: "gray.700", borderRadius: "8px" }}
+                      my="1px"
+                      transition="all 0.25s ease-in-out"
+                      alignItems="center"
+                      position="relative"
                       bgColor={
                         isCurrentPage(submenu.slug) ? "gray.800" : "transparent"
                       }
                       borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
-                      cursor="pointer"
-                      position="relative"
-                      transition="all 0.25s ease-in-out"
                     >
                       <Flex
+                        opacity={isCurrentPage(submenu.slug) ? 1 : 0}
                         width="3px"
                         height="20px"
-                        left="0px"
                         bgColor="primary.light"
-                        borderRadius="2px"
-                        opacity={isCurrentPage(submenu.slug) ? 1 : 0}
                         position="absolute"
                         top="10px"
+                        borderRadius="2px"
+                        left="0px"
                       />
                       {submenu.icon && (
                         <CustomIcon name={submenu.icon} color="gray.600" />
                       )}
                       {submenu.logo && (
                         <Image
-                          alt={submenu.slug}
                           src={submenu.logo}
                           borderRadius="full"
+                          alt={submenu.slug}
                           boxSize={5}
                         />
                       )}
-                      <Text className="ellipsis" variant="body2">
+                      <Text variant="body2" className="ellipsis">
                         {submenu.name}
                       </Text>
                     </Flex>

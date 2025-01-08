@@ -44,8 +44,8 @@ export const trackToModuleInteraction = (
 ) =>
   amp.track(AmpEvent.TO_MODULE_INTERACTION, {
     address,
+    moduleName,
+    isVerify,
     functionName,
     functionType,
-    isVerify,
-    moduleName,
   });

@@ -14,7 +14,7 @@ interface TxHeaderProps extends FlexProps {
 }
 
 const DotSeparator = () => (
-  <Box bg="primary.darker" h={1} w={1} borderRadius="50%" />
+  <Box bg="primary.darker" borderRadius="50%" w={1} h={1} />
 );
 
 export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
@@ -23,9 +23,9 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
   const openLcdTab = useOpenTxTab("lcd");
 
   return (
-    <Flex gap={2} direction="column" {...flexProps}>
-      <Flex align="center" justify="space-between">
-        <Flex gap={2} mb={{ base: 2, md: 0 }} mt={{ base: 2, md: 4 }}>
+    <Flex direction="column" gap={2} {...flexProps}>
+      <Flex justify="space-between" align="center">
+        <Flex gap={2} mt={{ base: 2, md: 4 }} mb={{ base: 2, md: 0 }}>
           <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
             {evm.enabled ? "Cosmos " : ""}Transaction Details
           </Heading>
@@ -38,9 +38,9 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
               {txData.isTxFailed ? (
                 <>
                   <CustomIcon
-                    m={0}
                     name="close-circle-solid"
                     boxSize={3}
+                    m={0}
                     color="error.main"
                   />
                   <Text variant="body2" color="error.main">
@@ -50,9 +50,9 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
               ) : (
                 <>
                   <CustomIcon
-                    m={0}
                     name="check-circle-solid"
                     boxSize={3}
+                    m={0}
                     color="success.main"
                   />
                   <Text variant="body2" color="success.main">
@@ -66,11 +66,11 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
         {!isMobile && (
           <Button
             variant="ghost-gray"
+            rightIcon={<CustomIcon name="launch" boxSize={3} m={0} />}
             onClick={() => {
               trackUseViewJSON("tx_page_transaction_hash");
               openLcdTab(txData.txhash);
             }}
-            rightIcon={<CustomIcon m={0} name="launch" boxSize={3} />}
           >
             View in JSON
           </Button>
@@ -78,20 +78,20 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
       </Flex>
       <Flex
         gap={{ base: 1, md: 2 }}
+        fontSize="14px"
         w="full"
         direction={{ base: "column", md: "row" }}
-        fontSize="14px"
       >
-        <Text variant="body2" color="text.dark" fontWeight={500}>
+        <Text variant="body2" fontWeight={500} color="text.dark">
           Transaction Hash:
         </Text>
         <CopyLink
-          type="tx_hash"
           value={txData.txhash}
           amptrackSection="tx_header"
+          type="tx_hash"
         />
       </Flex>
-      <Flex align="center" gap={2} color="text.dark" fontSize="14px">
+      <Flex gap={2} fontSize="14px" color="text.dark" align="center">
         {!isMobile && (
           <>
             <Flex
@@ -102,9 +102,9 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
               {txData.isTxFailed ? (
                 <>
                   <CustomIcon
-                    m={0}
                     name="close-circle-solid"
                     boxSize={3}
+                    m={0}
                     color="error.main"
                   />
                   <Text variant="body2" color="error.main">
@@ -114,9 +114,9 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
               ) : (
                 <>
                   <CustomIcon
-                    m={0}
                     name="check-circle-solid"
                     boxSize={3}
+                    m={0}
                     color="success.main"
                   />
                   <Text variant="body2" color="success.main">
@@ -130,21 +130,21 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
         )}
         {txData.timestamp ? (
           <>
-            <Flex alignItems="center" gap={1}>
+            <Flex gap={1} alignItems="center">
               <CustomIcon name="history" boxSize={3} color="gray.600" />
               <Text
-                display="inline"
                 variant={{ base: "body3", md: "body2" }}
                 color="text.dark"
+                display="inline"
               >
                 {dateFromNow(txData.timestamp)}
               </Text>
             </Flex>
             <DotSeparator />
             <Text
-              display="inline"
               variant={{ base: "body3", md: "body2" }}
               color="text.dark"
+              display="inline"
             >
               {formatUTC(txData.timestamp)}
             </Text>

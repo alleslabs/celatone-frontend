@@ -16,25 +16,25 @@ import { coinToTokenWithValue, extractMsgType } from "lib/utils";
 import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
 
 interface MsgLockAndSuperfluidDelegateDetailProps {
-  ampCopierSection?: string;
-  assetInfos: Option<AssetInfos>;
-  blockHeight: number;
-  isOpened: boolean;
-  msg: MsgLockAndSuperfluidDelegateDetails;
-  msgIndex: number;
-  pool: PoolData;
   txHash: string;
+  blockHeight: number;
+  msgIndex: number;
+  msg: MsgLockAndSuperfluidDelegateDetails;
+  pool: PoolData;
+  assetInfos: Option<AssetInfos>;
+  isOpened: boolean;
+  ampCopierSection?: string;
 }
 
 export const MsgLockAndSuperfluidDelegateDetail = ({
-  ampCopierSection,
-  assetInfos,
-  blockHeight,
-  isOpened,
-  msg,
-  msgIndex,
-  pool,
   txHash,
+  blockHeight,
+  msgIndex,
+  msg,
+  pool,
+  assetInfos,
+  isOpened,
+  ampCopierSection,
 }: MsgLockAndSuperfluidDelegateDetailProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {
@@ -67,23 +67,23 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
     ?.attributes.find((attr) => attr.key === "period_lock_id")?.value;
 
   return (
-    <Flex gap={6} w="full" direction="column">
+    <Flex w="full" direction="column" gap={6}>
       <Flex gap={12}>
         <PoolInfoText title="Block height">
           <ExplorerLink
-            type="block_height"
             value={blockHeight.toString()}
-            ampCopierSection={ampCopierSection}
+            type="block_height"
             showCopyOnHover
+            ampCopierSection={ampCopierSection}
           />
         </PoolInfoText>
         <PoolInfoText title="LockID">{lockId}</PoolInfoText>
         <PoolInfoText title="To Validator">
           <ValidatorBadge
             validator={{
-              identity: undefined,
-              moniker: validator?.moniker,
               validatorAddress: msg.val_addr,
+              moniker: validator?.moniker,
+              identity: undefined,
             }}
             badgeSize={6}
             ampCopierSection={ampCopierSection}
@@ -93,13 +93,13 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
       </Flex>
       <Box w="full">
         <PoolAssetCard
+          poolId={pool.id}
+          description="Bonded to"
           assetText="Bonded"
+          poolToken={poolToken}
+          assetInfos={assetInfos}
           isOpened={isOpened}
           ampCopierSection={ampCopierSection}
-          assetInfos={assetInfos}
-          description="Bonded to"
-          poolId={pool.id}
-          poolToken={poolToken}
         />
       </Box>
     </Flex>

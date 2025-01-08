@@ -8,35 +8,35 @@ import { useCodeStore } from "lib/providers/store";
 import type { CodeInfo } from "lib/types";
 
 export const CtaSection = observer((codeInfo: CodeInfo) => {
-  const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
+  const { isCodeIdSaved, getCodeLocalInfo } = useCodeStore();
   const isSaved = isCodeIdSaved(codeInfo.id);
   return (
-    <Flex gap={{ base: 2, md: 4 }} justify="center" my={{ base: 8, md: 0 }}>
+    <Flex gap={{ base: 2, md: 4 }} my={{ base: 8, md: 0 }} justify="center">
       {(getCodeLocalInfo(codeInfo.id)?.name || isSaved) && (
-        <SaveOrEditCodeModal codeInfo={codeInfo} mode="edit" />
+        <SaveOrEditCodeModal mode="edit" codeInfo={codeInfo} />
       )}
       <InstantiateButton
-        size={{ base: "sm", md: "md" }}
-        codeId={codeInfo.id}
         instantiatePermission={codeInfo.instantiatePermission}
         permissionAddresses={codeInfo.permissionAddresses}
+        codeId={codeInfo.id}
+        size={{ base: "sm", md: "md" }}
       />
       {isSaved ? (
         <RemoveCodeModal
+          codeId={codeInfo.id}
           name={codeInfo.name}
           trigger={
             <Button
-              size={{ base: "sm", md: "md" }}
               variant="outline-gray"
+              size={{ base: "sm", md: "md" }}
               leftIcon={<CustomIcon name="check" />}
             >
               Saved
             </Button>
           }
-          codeId={codeInfo.id}
         />
       ) : (
-        <SaveOrEditCodeModal codeInfo={codeInfo} mode="save" />
+        <SaveOrEditCodeModal mode="save" codeInfo={codeInfo} />
       )}
     </Flex>
   );

@@ -19,28 +19,28 @@ const NotFoundPage = () => {
     <PageContainer>
       <BackButton />
       <Flex
-        align="center"
-        gap={2}
-        justify="center"
-        mt={6}
-        py={12}
-        borderColor="gray.700"
         borderY="1px solid"
+        borderColor="gray.700"
+        justify="center"
+        align="center"
         direction="column"
+        gap={2}
+        py={12}
+        mt={6}
       >
         <Image
-          width="404px"
-          alt="page not found"
           src={theme.illustration["404"]}
+          alt="page not found"
+          width="404px"
         />
-        <Heading as="h5" mt={8} variant="h5" color="text.main">
+        <Heading variant="h5" as="h5" color="text.main" mt={8}>
           This page is not found
         </Heading>
         <Text
-          lineHeight="24px"
-          textAlign="center"
-          variant="body2"
           color="text.dark"
+          variant="body2"
+          textAlign="center"
+          lineHeight="24px"
         >
           Sorry, we couldn’t find the page you are looking for.
           <br />

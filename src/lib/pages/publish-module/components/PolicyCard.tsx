@@ -14,14 +14,14 @@ interface RadioCardProps extends FlexProps {
 
 const RadioCard = ({ checked, children, ...props }: RadioCardProps) => (
   <Grid
-    alignItems="center"
-    p="12px 16px"
-    bgColor={checked ? "gray.700" : "gray.900"}
-    border="2px solid"
-    borderColor={checked ? "text.main" : "gray.700"}
-    borderRadius="12px"
-    cursor="pointer"
     templateColumns="32px 1fr"
+    p="12px 16px"
+    border="2px solid"
+    borderRadius="12px"
+    borderColor={checked ? "text.main" : "gray.700"}
+    bgColor={checked ? "gray.700" : "gray.900"}
+    alignItems="center"
+    cursor="pointer"
     {...props}
   >
     {checked ? (
@@ -34,32 +34,32 @@ const RadioCard = ({ checked, children, ...props }: RadioCardProps) => (
 );
 
 interface PolicyCardProps {
+  value: UpgradePolicy;
+  selected: UpgradePolicy;
   description: string;
   hasCondition?: boolean;
   onSelect: () => void;
-  selected: UpgradePolicy;
-  value: UpgradePolicy;
 }
 
 export const PolicyCard = ({
+  value,
+  selected,
   description,
   hasCondition = false,
   onSelect,
-  selected,
-  value,
 }: PolicyCardProps) => {
   const isChecked = value === selected;
   return (
     <RadioCard
-      checked={isChecked}
       onClick={() => {
         track(AmpEvent.USE_PUBLISH_POLICY_SELECTION, { upgradePolicy: value });
         onSelect();
       }}
+      checked={isChecked}
     >
       <Flex flexDirection="column">
         <Text variant="body1">{capitalize(value)}</Text>
-        <Text variant="body2" fontWeight={600} textColor="text.dark">
+        <Text variant="body2" textColor="text.dark" fontWeight={600}>
           {description}
           {hasCondition && <Leaflet />}
         </Text>

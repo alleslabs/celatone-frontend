@@ -15,7 +15,7 @@ export const NAToken = (props: IconProps) => (
     </g>
     <defs>
       <clipPath id="clip0_45_8268">
-        <rect width="100%" fill="white" height="100%" />
+        <rect width="100%" height="100%" fill="white" />
       </clipPath>
     </defs>
   </Icon>

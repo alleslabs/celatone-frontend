@@ -6,31 +6,31 @@ import type { Nullish, WasmVerifyInfo } from "lib/types";
 import { getWasmVerifyStatus } from "lib/utils";
 
 interface CodeVerificationSectionProps {
-  codeHash: string;
   codeId: number;
+  codeHash: string;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const CodeVerificationSection = ({
-  codeHash,
   codeId,
+  codeHash,
   wasmVerifyInfo,
 }: CodeVerificationSectionProps) => (
-  <Flex gap={4} my={8} direction="column">
-    <Flex alignItems="center" gap={2}>
+  <Flex direction="column" my={8} gap={4}>
+    <Flex gap={2} alignItems="center">
       <Heading as="h6" variant="h6">
         Verification Info
       </Heading>
       <WasmVerifyBadge
-        hasText
         status={getWasmVerifyStatus(wasmVerifyInfo)}
         relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+        hasText
       />
     </Flex>
-    <Flex px={6} py={4} background="gray.900" borderRadius={8}>
+    <Flex background="gray.900" borderRadius={8} px={6} py={4}>
       <WasmVerifySection
-        codeHash={codeHash}
         codeId={codeId}
+        codeHash={codeHash}
         wasmVerifyInfo={wasmVerifyInfo}
       />
     </Flex>

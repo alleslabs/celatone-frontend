@@ -7,47 +7,47 @@ import { SelectInputBase } from "./forms";
 
 enum RelationType {
   ALL = "ALL",
-  RELATED = "RELATED",
   SIGNING = "SIGNING",
+  RELATED = "RELATED",
 }
 
 const relationOptions = [
   {
-    disabled: false,
     label: "All",
     value: RelationType.ALL,
+    disabled: false,
   },
   {
-    disabled: false,
     label: "Signing Address",
     value: RelationType.SIGNING,
+    disabled: false,
   },
   {
-    disabled: false,
     label: "Related Address",
     value: RelationType.RELATED,
+    disabled: false,
   },
 ];
 
 interface TxRelationSelectionProps extends BoxProps {
-  setValue: (value: Option<boolean>) => void;
-  size?: object | string;
   value: Option<boolean>;
+  setValue: (value: Option<boolean>) => void;
+  size?: string | object;
 }
 
 export const TxRelationSelection = ({
+  value,
   setValue,
   size = "lg",
-  value,
   ...props
 }: TxRelationSelectionProps) => {
   let initialValue;
   switch (value) {
-    case true:
-      initialValue = RelationType.SIGNING;
-      break;
     case undefined:
       initialValue = RelationType.ALL;
+      break;
+    case true:
+      initialValue = RelationType.SIGNING;
       break;
     default:
       initialValue = RelationType.RELATED;
@@ -56,9 +56,9 @@ export const TxRelationSelection = ({
   return (
     <Box {...props}>
       <SelectInputBase
-        initialSelected={initialValue}
-        size={size}
         formLabel="Filter by Relation"
+        size={size}
+        options={relationOptions}
         onChange={(newValue: RelationType) =>
           setValue(
             newValue === RelationType.ALL
@@ -66,7 +66,7 @@ export const TxRelationSelection = ({
               : newValue === RelationType.SIGNING
           )
         }
-        options={relationOptions}
+        initialSelected={initialValue}
       />
     </Box>
   );

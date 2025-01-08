@@ -5,15 +5,15 @@ import { CustomIcon } from "lib/components/icon";
 import { MoveVerifyTaskStatus } from "lib/services/types";
 
 interface MyModuleVerificationDetailsStatusBadgeProps {
+  status: MoveVerifyTaskStatus;
   hasCloseBtn?: boolean;
   isActiveOnVerifying?: boolean;
-  status: MoveVerifyTaskStatus;
 }
 
 export const MyModuleVerificationDetailsStatusBadge = ({
+  status,
   hasCloseBtn,
   isActiveOnVerifying = true,
-  status,
 }: MyModuleVerificationDetailsStatusBadgeProps) => {
   const renderStatus = () => {
     if (status === MoveVerifyTaskStatus.Pending)
@@ -49,9 +49,9 @@ export const MyModuleVerificationDetailsStatusBadge = ({
   };
 
   return (
-    <Tag gap={1} size="md" variant="gray" w="fit-content">
+    <Tag size="md" variant="gray" w="fit-content" gap={1}>
       {renderStatus()}
-      {hasCloseBtn && <CustomIcon mr={0} name="close" boxSize={3} />}
+      {hasCloseBtn && <CustomIcon name="close" boxSize={3} mr={0} />}
     </Tag>
   );
 };

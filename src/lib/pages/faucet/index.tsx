@@ -27,17 +27,17 @@ import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
 import { useFaucetInfo } from "lib/services/faucetService";
 
+type ResultStatus = "success" | "error" | "warning";
+
 interface Result {
-  message?: string;
   status?: ResultStatus;
   txHash?: string;
+  message?: string;
 }
 
-type ResultStatus = "error" | "success" | "warning";
-
 const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
-  error: "alert-triangle-solid",
   success: "check-circle-solid",
+  error: "alert-triangle-solid",
   warning: "alert-triangle-solid",
 };
 
@@ -65,19 +65,19 @@ const Faucet = () => {
 
   const { data: faucetInfo } = useFaucetInfo();
 
-  const { faucetAmount, faucetDenom, faucetUrl } = useMemo(() => {
+  const { faucetUrl, faucetDenom, faucetAmount } = useMemo(() => {
     if (!faucet.enabled)
       // Remark: this shouldn't be used as the faucet is disabled
       return {
-        faucetAmount: "",
-        faucetDenom: "",
         faucetUrl: "",
+        faucetDenom: "",
+        faucetAmount: "",
       };
 
     return {
-      faucetAmount: faucetInfo?.formattedAmount,
-      faucetDenom: faucetInfo?.formattedDenom ?? "token",
       faucetUrl: faucet.url,
+      faucetDenom: faucetInfo?.formattedDenom ?? "token",
+      faucetAmount: faucetInfo?.formattedAmount,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [faucet.enabled, faucetInfo?.formattedAmount, faucetInfo?.formattedDenom]);
@@ -90,7 +90,7 @@ const Faucet = () => {
     if (address) {
       const errorMsg = validateUserAddress(address);
       if (errorMsg) {
-        setStatus({ message: errorMsg, state: "error" });
+        setStatus({ state: "error", message: errorMsg });
       } else {
         setStatus({ state: "success" });
       }
@@ -102,7 +102,7 @@ const Faucet = () => {
     track(AmpEvent.ACTION_FAUCET);
 
     if (!faucetUrl) {
-      setResult({ message: "Faucet URL not set", status: "error" });
+      setResult({ status: "error", message: "Faucet URL not set" });
       setIsLoading(false);
       return;
     }
@@ -113,52 +113,52 @@ const Faucet = () => {
       })
       .then(({ data: { txHash } }) => {
         toast({
+          title: `${faucetAmount} Testnet ${faucetDenom} sent from the faucet`,
+          status: "success",
           duration: 5000,
-          icon: (
-            <CustomIcon
-              alignItems="center"
-              display="flex"
-              name="check-circle-solid"
-              boxSize={4}
-              color="success.main"
-            />
-          ),
           isClosable: false,
           position: "bottom-right",
-          status: "success",
-          title: `${faucetAmount} Testnet ${faucetDenom} sent from the faucet`,
+          icon: (
+            <CustomIcon
+              name="check-circle-solid"
+              color="success.main"
+              boxSize={4}
+              display="flex"
+              alignItems="center"
+            />
+          ),
         });
 
         track(AmpEvent.TX_SUCCEED);
         setIsLoading(false);
         setResult({
+          status: "success",
           message: `Sent ${faucetAmount} testnet ${faucetDenom} from the faucet. ${
             faucetInfo?.RateLimit
               ? "You will need to wait for another hour to request again."
               : ""
           }`,
-          status: "success",
           txHash,
         });
       })
-      .catch((err: AxiosError | Error) => {
+      .catch((err: Error | AxiosError) => {
         if (axios.isAxiosError(err)) {
           if (err.response?.status === 429) {
             setResult({
+              status: "warning",
               message:
                 "There is a limit of one request per hour for each receiving address and IP address. Please try again later.",
-              status: "warning",
             });
           } else {
             setResult({
-              message: err.response?.data?.error?.message || err.message,
               status: "error",
+              message: err.response?.data?.error?.message || err.message,
             });
           }
         } else {
           setResult({
-            message: err.message,
             status: "error",
+            message: err.message,
           });
         }
 
@@ -174,58 +174,58 @@ const Faucet = () => {
       <Heading as="h5" variant="h5">
         {prettyName} Faucet
       </Heading>
-      <Text mb={8} pt={4} textAlign="center" variant="body2" color="text.dark">
+      <Text variant="body2" color="text.dark" pt={4} textAlign="center" mb={8}>
         The faucet provides {faucetAmount} testnet {faucetDenom} per request.{" "}
         {faucetInfo?.RateLimit &&
           "Requests are limited to once per hour for each receiving address and IP address."}
       </Text>
       <TextInput
-        label="Receiving Address"
+        variant="fixed-floating"
+        placeholder="Enter your address"
+        value={address}
         setInputState={setAddress}
         status={status}
-        value={address}
-        variant="fixed-floating"
+        label="Receiving Address"
         helperAction={
           <AssignMe
-            isDisable={address === walletAddress}
-            textAlign="left"
             onClick={() => {
               track(AmpEvent.USE_ASSIGN_ME);
               setAddress(walletAddress);
             }}
+            isDisable={address === walletAddress}
+            textAlign="left"
           />
         }
-        placeholder="Enter your address"
       />
       <Button
-        isDisabled={isDisabled}
         mt={8}
         w="full"
-        isLoading={isLoading}
         onClick={onSubmit}
+        isLoading={isLoading}
+        isDisabled={isDisabled}
       >
         Request {faucetAmount} testnet {faucetDenom}
       </Button>
       {result.status && (
         <Alert mt={8} variant={result.status}>
           <CustomIcon
-            alignItems="center"
-            display="flex"
             name={STATUS_ICONS[result.status]}
-            boxSize={6}
             color={`${result.status}.main`}
+            boxSize={6}
+            display="flex"
+            alignItems="center"
           />
           <AlertDescription mx={4}>
             {result.message || "Something went wrong"}
           </AlertDescription>
           {result.txHash && (
             <Button
-              style={{ padding: "4px 12px" }}
-              minW="unset"
-              ml="auto"
-              size="sm"
               variant="unstyled"
+              minW="unset"
+              size="sm"
+              ml="auto"
               _hover={{ background: "success.dark" }}
+              style={{ padding: "4px 12px" }}
               onClick={() => openTxTab(result.txHash)}
             >
               View Transaction

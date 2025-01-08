@@ -6,44 +6,44 @@ import { CustomIcon } from "../icon";
 import JsonReadOnly from "./JsonReadOnly";
 
 interface JsonInfoProps {
-  defaultExpand?: boolean;
   header: string;
   jsonString: string;
+  defaultExpand?: boolean;
 }
 
 export const JsonInfo = ({
-  defaultExpand = false,
   header,
   jsonString,
+  defaultExpand = false,
 }: JsonInfoProps) => {
   const [expand, setExpand] = useState(defaultExpand);
 
   return (
     <>
       <Flex
-        align="center"
         justify="space-between"
+        align="center"
         p="12px 16px"
-        _hover={{ backgroundColor: "gray.800" }}
-        background="gray.900"
         borderRadius="8px"
+        background="gray.900"
+        _hover={{ backgroundColor: "gray.800" }}
+        transition="all 0.25s ease-in-out"
         cursor="pointer"
         onClick={() => setExpand((prev) => !prev)}
-        transition="all 0.25s ease-in-out"
       >
         <Text variant="body1" fontWeight={600} wordBreak="break-word">
           {header}
         </Text>
         <CustomIcon
+          transition="all 0.25s ease-in-out"
           name={expand ? "chevron-up" : "chevron-down"}
           color="gray.600"
-          transition="all 0.25s ease-in-out"
         />
       </Flex>
       <div
-        style={expand ? { display: "block" } : { display: "none", height: 0 }}
+        style={expand ? { display: "block" } : { height: 0, display: "none" }}
       >
-        <JsonReadOnly isExpandable text={jsonString} canCopy />
+        <JsonReadOnly text={jsonString} canCopy isExpandable />
       </div>
     </>
   );

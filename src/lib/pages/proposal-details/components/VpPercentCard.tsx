@@ -7,36 +7,36 @@ import type { Nullable, Ratio } from "lib/types";
 import { d0Formatter, formatPrettyPercent } from "lib/utils";
 
 interface VpPercentCardProps {
+  name: string;
+  ratio: Nullable<Ratio<number>>;
+  power: Nullable<Big>;
   color: FlexProps["bgColor"];
   isCompact: boolean;
-  name: string;
-  power: Nullable<Big>;
-  ratio: Nullable<Ratio<number>>;
 }
 
 export const VpPercentCard = ({
+  name,
+  ratio,
+  power,
   color,
   isCompact,
-  name,
-  power,
-  ratio,
 }: VpPercentCardProps) => (
   <Flex
-    gap={2}
-    w="full"
     direction={isCompact ? "row-reverse" : "column"}
     justifyContent="flex-end"
+    gap={2}
+    w="full"
   >
-    <Flex align="start" gap={isCompact ? 1 : 2} direction="column">
+    <Flex direction="column" gap={isCompact ? 1 : 2} align="start">
       <Text variant="body2" color="text.main">
         {name}
       </Text>
-      <Flex gap={isCompact ? 2 : 0} direction={isCompact ? "row" : "column"}>
+      <Flex direction={isCompact ? "row" : "column"} gap={isCompact ? 2 : 0}>
         <Heading
           as="h6"
           variant="h6"
-          color={ratio ? "text.main" : "text.dark"}
           fontWeight={600}
+          color={ratio ? "text.main" : "text.dark"}
         >
           {!isNull(ratio) ? formatPrettyPercent(ratio) : "N/A"}
         </Heading>
@@ -48,7 +48,7 @@ export const VpPercentCard = ({
     <Flex
       bgColor={color}
       borderRadius={10}
-      {...(isCompact ? { h: "full", w: 1 } : { h: 1, w: "full" })}
+      {...(isCompact ? { w: 1, h: "full" } : { w: "full", h: 1 })}
     />
   </Flex>
 );

@@ -74,7 +74,7 @@ export const ModuleVerifyUploadFolder = ({
     if (!rootFolderName)
       return (
         <>
-          <CustomIcon name="check-circle-solid" boxSize={4} color="gray.700" />
+          <CustomIcon boxSize={4} name="check-circle-solid" color="gray.700" />
           <Text variant="body2">{`\u201C.move\u201D files are required`}</Text>
         </>
       );
@@ -83,8 +83,8 @@ export const ModuleVerifyUploadFolder = ({
       return (
         <>
           <CustomIcon
-            name="check-circle-solid"
             boxSize={4}
+            name="check-circle-solid"
             color="success.main"
           />
           <Text variant="body2">{`Found ${moveFiles.length} \u201C.move\u201D files`}</Text>
@@ -93,7 +93,7 @@ export const ModuleVerifyUploadFolder = ({
 
     return (
       <>
-        <CustomIcon name="close-circle-solid" boxSize={4} color="error.main" />
+        <CustomIcon boxSize={4} name="close-circle-solid" color="error.main" />
         <Text variant="body2">{`\u201C.move\u201D is not found`}</Text>
       </>
     );
@@ -103,7 +103,7 @@ export const ModuleVerifyUploadFolder = ({
     if (!rootFolderName)
       return (
         <>
-          <CustomIcon name="check-circle-solid" boxSize={4} color="gray.700" />
+          <CustomIcon boxSize={4} name="check-circle-solid" color="gray.700" />
           <Text variant="body2">{`\u201CMove.toml\u201D file are required`}</Text>
         </>
       );
@@ -112,8 +112,8 @@ export const ModuleVerifyUploadFolder = ({
       return (
         <>
           <CustomIcon
-            name="check-circle-solid"
             boxSize={4}
+            name="check-circle-solid"
             color="success.main"
           />
           <Text variant="body2">{`Found \u201CMove.toml\u201D file`}</Text>
@@ -122,7 +122,7 @@ export const ModuleVerifyUploadFolder = ({
 
     return (
       <>
-        <CustomIcon name="close-circle-solid" boxSize={4} color="error.main" />
+        <CustomIcon boxSize={4} name="close-circle-solid" color="error.main" />
         <Text variant="body2">{`\u201CMove.toml\u201D is not found`}</Text>
       </>
     );
@@ -138,8 +138,8 @@ export const ModuleVerifyUploadFolder = ({
           Select a folder to upload files in order to verify the modules
         </Text>
       </Stack>
-      <Alert alignItems="flex-start" gap={4} variant="primary">
-        <CustomIcon name="info-circle" boxSize={4} color="primary.main" />
+      <Alert variant="primary" gap={4} alignItems="flex-start">
+        <CustomIcon name="info-circle" color="primary.main" boxSize={4} />
         <AlertDescription>
           {`If the verification module requires calling functions from other
     modules, please ensure that the corresponding \u201C.move\u201D files are
@@ -151,12 +151,12 @@ export const ModuleVerifyUploadFolder = ({
           <DropZone fileType={["move", "toml"]} setFiles={handleSetFiles} />
         ) : (
           <UploadFolderCard
+            fileName={rootFolderName}
             deleteFile={() => {
               moveFilesController.field.onChange([]);
               tomlFileController.field.onChange(null);
               setRootFolderName("");
             }}
-            fileName={rootFolderName}
             status={moveFiles.length > 0 && tomlFile ? undefined : "error"}
           />
         )}

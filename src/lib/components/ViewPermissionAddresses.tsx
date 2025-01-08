@@ -9,11 +9,11 @@ import { ExplorerLink } from "./ExplorerLink";
 import { CustomIcon } from "./icon";
 
 export const ViewPermissionAddresses = ({
-  amptrackSection,
   permissionAddresses,
+  amptrackSection,
 }: {
-  amptrackSection: string;
   permissionAddresses: PermissionAddresses;
+  amptrackSection: string;
 }) => {
   const [viewAll, setViewAll] = useState(false);
   const getAddressType = useGetAddressType();
@@ -35,10 +35,7 @@ export const ViewPermissionAddresses = ({
         ))}
       {permissionAddresses.length > 1 && (
         <Button
-          px="2 !important"
-          size="sm"
           variant="ghost-primary"
-          w="fit-content"
           onClick={() => {
             trackUseExpand({
               action: viewAll ? "collapse" : "expand",
@@ -47,6 +44,9 @@ export const ViewPermissionAddresses = ({
             });
             setViewAll((prev) => !prev);
           }}
+          size="sm"
+          px="2 !important"
+          w="fit-content"
           rightIcon={
             <CustomIcon
               name={viewAll ? "chevron-up" : "chevron-down"}

@@ -5,59 +5,59 @@ import type { PermissionFilterValue } from "lib/hooks";
 
 import { SelectInputBase } from "./SelectInputBase";
 
-interface FilterByPermissionProps {
-  initialSelected: string;
-  labelBgColor?: string;
-  maxWidth?: string;
-  setPermissionValue: (newVal: PermissionFilterValue) => void;
-}
-
 interface PermissionOption {
+  label: string;
+  value: PermissionFilterValue;
   disabled: boolean;
   icon: IconKeys;
   iconColor: string;
-  label: string;
-  value: PermissionFilterValue;
+}
+
+interface FilterByPermissionProps {
+  setPermissionValue: (newVal: PermissionFilterValue) => void;
+  initialSelected: string;
+  labelBgColor?: string;
+  maxWidth?: string;
 }
 
 const options: PermissionOption[] = [
   {
+    label: "All",
+    value: "all",
     disabled: false,
     icon: "check",
     iconColor: "gray.600",
-    label: "All",
-    value: "all",
   },
   {
+    label: "Can Instantiate without proposal",
+    value: "without-proposal",
     disabled: false,
     icon: "instantiate",
     iconColor: "gray.600",
-    label: "Can Instantiate without proposal",
-    value: "without-proposal",
   },
   {
+    label: "Instantiate through proposal only",
+    value: "with-proposal",
     disabled: false,
     icon: "vote",
     iconColor: "gray.600",
-    label: "Instantiate through proposal only",
-    value: "with-proposal",
   },
 ];
 
 export const FilterByPermission = ({
+  setPermissionValue,
   initialSelected,
   labelBgColor = "background.main",
   maxWidth = "360px",
-  setPermissionValue,
 }: FilterByPermissionProps) => (
-  <Grid maxW={{ md: maxWidth }} w="full" columnGap={4}>
+  <Grid columnGap={4} w="full" maxW={{ md: maxWidth }}>
     <SelectInputBase<PermissionFilterValue>
-      initialSelected={initialSelected}
       formLabel="Filter by Instantiate Permission"
-      labelBgColor={labelBgColor}
-      onChange={setPermissionValue}
       options={options}
+      onChange={setPermissionValue}
       placeholder="Select"
+      initialSelected={initialSelected}
+      labelBgColor={labelBgColor}
     />
   </Grid>
 );

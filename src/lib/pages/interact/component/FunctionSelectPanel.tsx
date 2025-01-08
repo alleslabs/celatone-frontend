@@ -34,14 +34,14 @@ interface FunctionStates {
 }
 
 const RenderFunctions = ({
+  states,
   selectedFn,
   setSelectedFn,
-  states,
   tab,
 }: {
+  states: FunctionStates;
   selectedFn: Option<ExposedFunction>;
   setSelectedFn: (fn: ExposedFunction) => void;
-  states: FunctionStates;
   tab: InteractionTabs;
 }) => {
   if (!states.filteredFunctions)
@@ -54,25 +54,25 @@ const RenderFunctions = ({
   return (
     <Accordion defaultIndex={[0]} allowMultiple>
       <FunctionAccordion
-        amptrackTab={tab}
+        triggerText="Available functions"
+        isEmpty={states.noAvailableFns}
         filteredFns={states.filteredFunctions.filter((fn) =>
           checkAvailability(fn)
         )}
-        isEmpty={states.noAvailableFns}
         selectedFn={selectedFn}
         setSelectedFn={setSelectedFn}
-        triggerText="Available functions"
+        amptrackTab={tab}
       />
       {tab === InteractionTabs.EXECUTE_MODULE && (
         <FunctionAccordion
-          amptrackTab={tab}
+          triggerText="Other functions"
+          isEmpty={states.noOtherFns}
           filteredFns={states.filteredFunctions.filter(
             (fn) => !checkAvailability(fn)
           )}
-          isEmpty={states.noOtherFns}
           selectedFn={selectedFn}
           setSelectedFn={setSelectedFn}
-          triggerText="Other functions"
+          amptrackTab={tab}
         />
       )}
     </Accordion>
@@ -81,18 +81,18 @@ const RenderFunctions = ({
 
 interface FunctionSelectPanelProps {
   module: Option<IndexedModule>;
+  tab: InteractionTabs;
+  setTab: Dispatch<SetStateAction<InteractionTabs>>;
   selectedFn: Option<ExposedFunction>;
   setSelectedFn: (fn: ExposedFunction) => void;
-  setTab: Dispatch<SetStateAction<InteractionTabs>>;
-  tab: InteractionTabs;
 }
 
 export const FunctionSelectPanel = ({
   module,
+  tab,
+  setTab,
   selectedFn,
   setSelectedFn,
-  setTab,
-  tab,
 }: FunctionSelectPanelProps) => {
   const [keyword, setKeyword] = useState("");
 
@@ -116,24 +116,24 @@ export const FunctionSelectPanel = ({
   return (
     <div>
       <InputWithIcon
-        size="md"
         value={keyword}
-        amptrackSection="function-select-panel-search"
         onChange={(e) => setKeyword(e.target.value)}
         placeholder="Search with Function Name"
+        size="md"
+        amptrackSection="function-select-panel-search"
       />
       <InteractionTypeSwitch
         currentTab={tab}
+        onTabChange={setTab}
         my={3}
         counts={[module?.viewFunctions.length, module?.executeFunctions.length]}
-        onTabChange={setTab}
       />
       {/* TODO: find a better way to handle height */}
-      <Flex maxH="calc(100vh - 400px)" direction="column" overflow="scroll">
+      <Flex direction="column" maxH="calc(100vh - 400px)" overflow="scroll">
         <RenderFunctions
+          states={functionStates}
           selectedFn={selectedFn}
           setSelectedFn={setSelectedFn}
-          states={functionStates}
           tab={tab}
         />
       </Flex>

@@ -14,6 +14,8 @@ export const BlockTxsTableLite = ({ height }: BlockTxsTableProps) => {
     <>
       <TableTitle title="Transactions" count={total} />
       <TransactionsTable
+        transactions={data?.transactions}
+        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant="empty"
@@ -21,11 +23,9 @@ export const BlockTxsTableLite = ({ height }: BlockTxsTableProps) => {
             withBorder
           />
         }
-        isLoading={isLoading}
-        showRelations={false}
         showSuccess={false}
+        showRelations={false}
         showTimestamp={false}
-        transactions={data?.transactions}
       />
     </>
   );

@@ -4,19 +4,19 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "../tableComponents";
 
 interface ModulesTableHeaderProps {
-  isPublishedModules: boolean;
   templateColumns: GridProps["templateColumns"];
+  isPublishedModules: boolean;
 }
 export const ModulesTableHeader = ({
-  isPublishedModules,
   templateColumns,
+  isPublishedModules,
 }: ModulesTableHeaderProps) => (
-  <Grid minW="min-content" templateColumns={templateColumns}>
+  <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Module Path</TableHeader>
     {isPublishedModules && (
       <>
         <TableHeader>Module Name</TableHeader>
-        <TableHeader textAlign="center" w="full">
+        <TableHeader w="full" textAlign="center">
           View/Execute Functions
         </TableHeader>
       </>

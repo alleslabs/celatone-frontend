@@ -19,110 +19,110 @@ import type { InitiaUsernameDataResponse } from "./AccountTitle";
 import { AccountTitle } from "./AccountTitle";
 
 interface AccounHeaderProps {
-  accountAddress: BechAddr;
   accountData: Option<AccountData>;
+  accountAddress: BechAddr;
   hexAddress: HexAddr;
   initiaUsernameData: Option<InitiaUsernameDataResponse>;
-  isInitiaUsernameDataFetching: boolean;
   isInitiaUsernameDataLoading: boolean;
+  isInitiaUsernameDataFetching: boolean;
 }
 
 export const AccountHeader = observer(
   ({
-    accountAddress,
     accountData,
+    accountAddress,
     hexAddress,
     initiaUsernameData,
-    isInitiaUsernameDataFetching,
     isInitiaUsernameDataLoading,
+    isInitiaUsernameDataFetching,
   }: AccounHeaderProps) => {
     const isMobile = useMobile();
     const move = useMoveConfig({ shouldRedirect: false });
     const evm = useEvmConfig({ shouldRedirect: false });
 
-    const { getAccountLocalInfo, isAccountSaved } = useAccountStore();
+    const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
     const isSaved = isAccountSaved(accountAddress);
     const accountLocalInfo = getAccountLocalInfo(accountAddress);
 
     const showHexAddr = move.enabled || evm.enabled;
     return (
       <Flex
+        justifyContent="space-between"
         alignItems="center"
         flexDirection={{ base: "column", lg: "row" }}
-        justifyContent="space-between"
       >
-        <Flex gap={2} w={{ base: "full", lg: "auto" }} direction="column">
-          <Flex align="center" gap={4} minH="36px">
+        <Flex direction="column" gap={2} w={{ base: "full", lg: "auto" }}>
+          <Flex gap={4} align="center" minH="36px">
             <AccountTitle
-              initiaUsernameData={initiaUsernameData}
-              isInitiaUsernameDataFetching={isInitiaUsernameDataFetching}
               accountData={accountData}
               accountLocalInfo={accountLocalInfo}
+              initiaUsernameData={initiaUsernameData}
               isInitiaUsernameDataLoading={isInitiaUsernameDataLoading}
+              isInitiaUsernameDataFetching={isInitiaUsernameDataFetching}
             />
             {!isMobile && (
               <>
                 {isSaved && accountLocalInfo ? (
                   <Flex gap={2}>
                     <EditSavedAccountModal
+                      accountLocalInfo={accountLocalInfo}
                       triggerElement={
                         <IconButton
-                          aria-label="edit account"
-                          size="sm"
                           variant="ghost-gray-icon"
+                          size="sm"
                           icon={<CustomIcon name="edit" boxSize={4} />}
+                          aria-label="edit account"
                         />
                       }
-                      accountLocalInfo={accountLocalInfo}
                     />
                     <RemoveSavedAccountModal
+                      accountLocalInfo={accountLocalInfo}
                       trigger={
                         <IconButton
-                          aria-label="remove account"
-                          size="sm"
                           variant="ghost-gray-icon"
+                          size="sm"
                           icon={
                             <CustomIcon name="bookmark-solid" boxSize={4} />
                           }
+                          aria-label="remove account"
                         />
                       }
-                      accountLocalInfo={accountLocalInfo}
                     />
                   </Flex>
                 ) : (
                   <SaveNewAccountModal
+                    accountAddress={accountAddress}
                     publicName={
                       accountData?.publicInfo?.name ??
                       accountData?.icns?.primaryName
                     }
-                    accountAddress={accountAddress}
+                    publicDescription={accountData?.publicInfo?.description}
                     buttonProps={{
-                      children: "Save Account",
-                      leftIcon: (
-                        <CustomIcon mr={0} name="bookmark" boxSize={3} />
-                      ),
                       size: "sm",
                       variant: "outline-gray",
+                      leftIcon: (
+                        <CustomIcon name="bookmark" boxSize={3} mr={0} />
+                      ),
+                      children: "Save Account",
                     }}
-                    publicDescription={accountData?.publicInfo?.description}
                   />
                 )}
               </>
             )}
           </Flex>
-          <Flex gap={1} direction="column">
+          <Flex direction="column" gap={1}>
             <Flex
               gap={{ base: 0, md: 2 }}
               mt={{ base: 1, md: 0 }}
               direction={{ base: "column", md: "row" }}
             >
-              <Text variant="body2" color="text.dark" fontWeight={500}>
+              <Text fontWeight={500} color="text.dark" variant="body2">
                 Account Address:
               </Text>
               <CopyLink
-                type="user_address"
                 value={accountAddress}
                 amptrackSection="account_top"
+                type="user_address"
               />
             </Flex>
             {showHexAddr && (
@@ -131,41 +131,43 @@ export const AccountHeader = observer(
                 mt={{ base: 1, md: 0 }}
                 direction={{ base: "column", md: "row" }}
               >
-                <Text variant="body2" color="text.dark" fontWeight={500}>
+                <Text fontWeight={500} color="text.dark" variant="body2">
                   HEX:
                 </Text>
                 <CopyLink
-                  type="user_address"
                   value={hexAddress}
                   amptrackSection="account_top"
+                  type="user_address"
                 />
               </Flex>
             )}
             {accountLocalInfo?.name && initiaUsernameData?.username && (
-              <Flex alignItems="center" mt={{ base: 1, md: 0 }}>
-                <Text mr={2} variant="body2" color="text.dark" fontWeight={500}>
+              <Flex mt={{ base: 1, md: 0 }} alignItems="center">
+                <Text fontWeight={500} color="text.dark" variant="body2" mr={2}>
                   Initia Username:
                 </Text>
                 <Image
+                  src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
+                  borderRadius="full"
                   width={4}
                   height={4}
                   mr={1}
-                  src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
-                  borderRadius="full"
                 />
                 <Text variant="body2">{initiaUsernameData.username}</Text>
               </Flex>
             )}
           </Flex>
           {accountData?.icns && (
-            <Flex align="center" gap={2}>
-              <Text variant="body2" color="text.dark" fontWeight={500}>
+            <Flex gap={2} align="center">
+              <Text fontWeight={500} color="text.dark" variant="body2">
                 Registered ICNS names:
               </Text>
-              <Flex align="center" gap={1}>
+              <Flex gap={1} align="center">
                 {accountData.icns.names.map((name) => (
                   <Flex
                     key={name}
+                    align="center"
+                    direction="row"
                     _after={{
                       content: '"/"',
                       fontSize: "14px",
@@ -175,14 +177,12 @@ export const AccountHeader = observer(
                         display: "none",
                       },
                     }}
-                    align="center"
                     gap={1}
-                    direction="row"
                   >
                     {name === accountData.icns?.primaryName && (
                       <PrimaryNameMark />
                     )}
-                    <CopyLink type="icns_names" value={name} withoutIcon />
+                    <CopyLink value={name} type="icns_names" withoutIcon />
                   </Flex>
                 ))}
               </Flex>

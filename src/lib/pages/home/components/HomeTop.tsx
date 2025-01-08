@@ -25,25 +25,25 @@ const blockTimeInfo = {
 };
 
 interface HomeTopProps {
-  blockTime: Nullish<number>;
-  isBlockTimeLoading: boolean;
-  isLatestBlockLoading: boolean;
+  totalTxs: Nullish<number>;
   isTotalTxsLoading: boolean;
   latestBlock: Nullish<number>;
-  toBlocks: () => void;
-  totalTxs: Nullish<number>;
+  isLatestBlockLoading: boolean;
+  blockTime: Nullish<number>;
+  isBlockTimeLoading: boolean;
   toTxs: () => void;
+  toBlocks: () => void;
 }
 
 export const HomeTop = ({
-  blockTime,
-  isBlockTimeLoading,
-  isLatestBlockLoading,
+  totalTxs,
   isTotalTxsLoading,
   latestBlock,
-  toBlocks,
-  totalTxs,
+  isLatestBlockLoading,
+  blockTime,
+  isBlockTimeLoading,
   toTxs,
+  toBlocks,
 }: HomeTopProps) => {
   const isMobile = useMobile();
   const {
@@ -53,17 +53,17 @@ export const HomeTop = ({
   return (
     <>
       <Flex
-        mb={12}
-        sx={{ "& > div": { zIndex: 1 } }}
         direction="column"
-        overflow="hidden"
+        mb={12}
         position="relative"
+        overflow="hidden"
+        sx={{ "& > div": { zIndex: 1 } }}
       >
         <Flex
+          justifyContent="space-between"
           alignItems="center"
           mb={5}
           zIndex={1}
-          justifyContent="space-between"
         >
           <Heading as="h4" variant={{ base: "h5", md: "h4" }}>
             <Text as="span" color="primary.main">
@@ -75,25 +75,25 @@ export const HomeTop = ({
         </Flex>
         <Flex gap={4} direction={{ base: "column", md: "row" }}>
           <CardInfo
-            navigate={toTxs}
             title={txInfo.title}
+            tooltip={txInfo.tooltip}
             value={totalTxs ? d0Formatter(totalTxs, "0") : undefined}
             isLoading={isTotalTxsLoading}
-            tooltip={txInfo.tooltip}
+            navigate={toTxs}
           />
           <CardInfo
-            navigate={toBlocks}
             title={blockInfo.title}
+            tooltip={blockInfo.tooltip}
             value={latestBlock ? d0Formatter(latestBlock, "0") : undefined}
             isLoading={isLatestBlockLoading}
-            tooltip={blockInfo.tooltip}
+            navigate={toBlocks}
           />
           <CardInfo
-            navigate={toBlocks}
             title={blockTimeInfo.title}
+            tooltip={blockTimeInfo.tooltip}
             value={blockTime?.toFixed(3).concat("s")}
             isLoading={isBlockTimeLoading}
-            tooltip={blockTimeInfo.tooltip}
+            navigate={toBlocks}
           />
         </Flex>
       </Flex>

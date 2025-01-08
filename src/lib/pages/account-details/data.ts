@@ -21,16 +21,16 @@ import type {
 // ------------------------------------------//
 
 interface AccountDetailsTableCounts {
-  isLoading: boolean;
-  refetchCounts: () => void;
   tableCounts: {
-    assetsCount: Option<number>;
     codesCount: Nullish<number>;
     contractsAdminCount: Nullish<number>;
     contractsCount: Nullish<number>;
-    proposalsCount: Nullish<number>;
     txsCount: Nullish<number>;
+    proposalsCount: Nullish<number>;
+    assetsCount: Option<number>;
   };
+  isLoading: boolean;
+  refetchCounts: () => void;
 }
 
 export const useAccountDetailsTableCounts = (
@@ -39,37 +39,37 @@ export const useAccountDetailsTableCounts = (
   const { isFullTier } = useTierConfig();
   const {
     data,
-    isLoading: isLoadingAccountTableCounts,
     refetch,
+    isLoading: isLoadingAccountTableCounts,
   } = useAccountTableCounts(address, { enabled: isFullTier });
   const { data: balances, isLoading: isBalancesLoading } = useBalances(address);
 
   if (!isFullTier) {
     return {
-      isLoading: isBalancesLoading,
-      refetchCounts: refetch,
       tableCounts: {
-        assetsCount: balances?.length,
         codesCount: undefined,
         contractsAdminCount: undefined,
         contractsCount: undefined,
-        proposalsCount: undefined,
         txsCount: undefined,
+        proposalsCount: undefined,
+        assetsCount: balances?.length,
       },
+      isLoading: isBalancesLoading,
+      refetchCounts: refetch,
     };
   }
 
   return {
-    isLoading: isLoadingAccountTableCounts || isBalancesLoading,
-    refetchCounts: refetch,
     tableCounts: {
-      assetsCount: balances?.length,
       codesCount: data?.code,
       contractsAdminCount: data?.contractByAdmin,
       contractsCount: data?.instantiated,
-      proposalsCount: data?.proposal,
       txsCount: data?.tx,
+      proposalsCount: data?.proposal,
+      assetsCount: balances?.length,
     },
+    isLoading: isLoadingAccountTableCounts || isBalancesLoading,
+    refetchCounts: refetch,
   };
 };
 
@@ -98,10 +98,10 @@ export const useAccountContracts = (
 
     return {
       ...contract,
-      description: localInfo?.description,
-      lists: localInfo?.lists,
       name: localInfo?.name,
+      description: localInfo?.description,
       tags: localInfo?.tags,
+      lists: localInfo?.lists,
     };
   });
   return {
@@ -121,14 +121,14 @@ export const useAccountContractsLcd = (address: BechAddr): AccountContracts => {
 
     return {
       ...contract,
-      admin: undefined,
+      name: localInfo?.name,
       description: localInfo?.description,
+      tags: localInfo?.tags,
+      lists: localInfo?.lists,
+      admin: undefined,
       latestUpdated: undefined,
       latestUpdater: undefined,
-      lists: localInfo?.lists,
-      name: localInfo?.name,
       remark: undefined,
-      tags: localInfo?.tags,
     };
   });
   return {
@@ -154,10 +154,10 @@ export const useAccountAdminContracts = (
 
     return {
       ...contractAdmin,
-      description: localInfo?.description,
-      lists: localInfo?.lists,
       name: localInfo?.name,
+      description: localInfo?.description,
       tags: localInfo?.tags,
+      lists: localInfo?.lists,
     };
   });
 
@@ -187,8 +187,8 @@ export const useAccountCodes = (
 
   const data = codes?.items?.map<CodeInfo>((code) => ({
     ...code,
-    isSaved: isCodeIdSaved(code.id),
     name: getCodeLocalInfo(code.id)?.name,
+    isSaved: isCodeIdSaved(code.id),
   }));
 
   return {

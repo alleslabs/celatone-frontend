@@ -15,23 +15,23 @@ import { ModuleInfoBody } from "./ModuleInfoBody";
 export interface ModuleInfoProps {
   indexedModule: IndexedModule;
   modulePublishInfo: Option<ModulePublishInfo>;
-  moveVerifyStatus: MoveVerifyStatus;
   verificationData: Nullish<MoveVerifyInfoResponse>;
+  moveVerifyStatus: MoveVerifyStatus;
 }
 
 export const ModuleInfo = ({
-  moveVerifyStatus,
   verificationData,
+  moveVerifyStatus,
   ...props
 }: ModuleInfoProps) => (
-  <Flex gap={4} flexDirection="column">
+  <Flex flexDirection="column" gap={4}>
     <Heading as="h6" variant="h6" fontWeight={600}>
       Module Information
     </Heading>
     <ModuleInfoBody {...props} />
     <ModuleSourceCode
-      moveVerifyStatus={moveVerifyStatus}
       verificationData={verificationData}
+      moveVerifyStatus={moveVerifyStatus}
     />
   </Flex>
 );

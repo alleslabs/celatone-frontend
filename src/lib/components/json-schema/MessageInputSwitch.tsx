@@ -25,10 +25,10 @@ interface MessageInputSwitchProps<
 > {
   currentTab: T;
   disabled?: boolean;
-  isOutput?: boolean;
-  ml?: CSSProperties["marginLeft"];
-  onTabChange: Dispatch<SetStateAction<T>>;
   tooltipLabel?: string;
+  ml?: CSSProperties["marginLeft"];
+  isOutput?: boolean;
+  onTabChange: Dispatch<SetStateAction<T>>;
 }
 
 export const MessageInputSwitch = <
@@ -36,10 +36,10 @@ export const MessageInputSwitch = <
 >({
   currentTab,
   disabled = false,
-  isOutput = false,
-  ml,
-  onTabChange: onTabChangeProps,
   tooltipLabel = "Select or fill code id first",
+  ml,
+  isOutput = false,
+  onTabChange: onTabChangeProps,
 }: MessageInputSwitchProps<T>) => {
   const tabs = useMemo<T[]>(
     () => Object.values(isOutput ? OutputMessageTabs : MessageTabs),
@@ -57,53 +57,53 @@ export const MessageInputSwitch = <
 
   // TODO: current implementation of sliding box dimensions and position is hardcoded due to issues with ref, improve this later
   return (
-    <Tooltip hidden={!disabled} label={tooltipLabel}>
+    <Tooltip label={tooltipLabel} hidden={!disabled}>
       <div style={{ marginLeft: ml }}>
         <Flex
-          align="center"
-          p={1}
-          sx={{ ...(disabled ? { opacity: 0.3, pointerEvents: "none" } : {}) }}
           border="1px solid var(--chakra-colors-gray-700)"
           borderRadius="4px"
+          p={1}
           direction="row"
+          align="center"
           position="relative"
+          sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
         >
           {tabs.map((tab) => (
             <MotionBox
               key={tab}
-              animate={currentTab === tab ? "active" : "inactive"}
-              initial="inactive"
+              cursor="pointer"
               p="2px 10px"
-              textAlign="center"
+              w="96px"
+              fontSize="12px"
+              fontWeight={700}
               variants={{
                 active: { color: "var(--chakra-colors-text-main)" },
                 inactive: {
                   color: "var(--chakra-colors-primary-light)",
                 },
               }}
-              w="96px"
-              zIndex={1}
-              cursor="pointer"
-              fontSize="12px"
-              fontWeight={700}
+              initial="inactive"
+              animate={currentTab === tab ? "active" : "inactive"}
               onClick={() => onTabChange(tab)}
+              zIndex={1}
+              textAlign="center"
             >
               {tab}
             </MotionBox>
           ))}
           <MotionBox
+            w="96px"
+            h="22px"
+            position="absolute"
+            borderRadius="2px"
+            backgroundColor="primary.darker"
             animate={{
               left: activeIndex === 0 ? "4px" : "100px",
             }}
-            h="22px"
-            w="96px"
-            backgroundColor="primary.darker"
-            borderRadius="2px"
-            position="absolute"
             transition={{
-              damping: "30",
-              stiffness: "250",
               type: "spring",
+              stiffness: "250",
+              damping: "30",
             }}
           />
         </Flex>

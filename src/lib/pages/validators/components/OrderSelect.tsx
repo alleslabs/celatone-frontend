@@ -5,72 +5,79 @@ import { trackUseSort } from "lib/amplitude";
 import type { SelectInputOption } from "lib/components/forms";
 import { SelectInput } from "lib/components/forms";
 
-type OrderOption = SelectInputOption<OrderOptionValue>;
-
 interface OrderOptionValue {
-  isDesc: boolean;
   order: ValidatorOrder;
+  isDesc: boolean;
 }
+
+type OrderOption = SelectInputOption<OrderOptionValue>;
 
 const ORDER_OPTIONS: OrderOption[] = [
   {
     label: "Validator Name (A to Z)",
-    value: { isDesc: false, order: ValidatorOrder.Moniker },
+    value: { order: ValidatorOrder.Moniker, isDesc: false },
   },
   {
     label: "Validator Name (Z to A)",
-    value: { isDesc: true, order: ValidatorOrder.Moniker },
+    value: { order: ValidatorOrder.Moniker, isDesc: true },
   },
   {
     label: "Voting Power (High to Low)",
-    value: { isDesc: true, order: ValidatorOrder.VotingPower },
+    value: { order: ValidatorOrder.VotingPower, isDesc: true },
   },
   {
     label: "Voting Power (Low to High)",
-    value: { isDesc: false, order: ValidatorOrder.VotingPower },
+    value: { order: ValidatorOrder.VotingPower, isDesc: false },
   },
   {
     label: "Uptime (High to Low)",
-    value: { isDesc: true, order: ValidatorOrder.Uptime },
+    value: { order: ValidatorOrder.Uptime, isDesc: true },
   },
   {
     label: "Uptime (Low to High)",
-    value: { isDesc: false, order: ValidatorOrder.Uptime },
+    value: { order: ValidatorOrder.Uptime, isDesc: false },
   },
   {
     label: "Commission (High to Low)",
-    value: { isDesc: true, order: ValidatorOrder.Commission },
+    value: { order: ValidatorOrder.Commission, isDesc: true },
   },
   {
     label: "Commission (Low to High)",
-    value: { isDesc: false, order: ValidatorOrder.Commission },
+    value: { order: ValidatorOrder.Commission, isDesc: false },
   },
 ];
 
 interface OrderSelectProps {
-  allowUptime: boolean;
-  isDesc: boolean;
   order: ValidatorOrder;
-  setIsDesc: (value: boolean) => void;
   setOrder: (value: ValidatorOrder) => void;
+  isDesc: boolean;
+  setIsDesc: (value: boolean) => void;
+  allowUptime: boolean;
 }
 
 export const OrderSelect = ({
-  allowUptime,
-  isDesc,
   order,
-  setIsDesc,
   setOrder,
+  isDesc,
+  setIsDesc,
+  allowUptime,
 }: OrderSelectProps) => (
-  <Flex gap={1} minW="full" direction="column">
-    <Text pl={1} variant="body3" color="text.dark">
+  <Flex direction="column" gap={1} minW="full">
+    <Text variant="body3" color="text.dark" pl={1}>
       Sorted by
     </Text>
     <SelectInput<OrderOptionValue>
+      menuPortalTarget={document.body}
+      options={
+        allowUptime
+          ? ORDER_OPTIONS
+          : ORDER_OPTIONS.filter(
+              (val) => val.value.order !== ValidatorOrder.Uptime
+            )
+      }
       value={ORDER_OPTIONS.find(
         ({ value }) => value.order === order && value.isDesc === isDesc
       )}
-      menuPortalTarget={document.body}
       onChange={(selectedOption) => {
         if (selectedOption) {
           trackUseSort(
@@ -81,13 +88,6 @@ export const OrderSelect = ({
           setIsDesc(selectedOption.value.isDesc);
         }
       }}
-      options={
-        allowUptime
-          ? ORDER_OPTIONS
-          : ORDER_OPTIONS.filter(
-              (val) => val.value.order !== ValidatorOrder.Uptime
-            )
-      }
     />
   </Flex>
 );

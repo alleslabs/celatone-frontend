@@ -13,27 +13,27 @@ export const GitHubLink = ({ github, hasMinW = false }: GitHubLinkProps) => {
   return (
     <Flex gap={{ base: 0, md: 2 }} direction={{ base: "column", md: "row" }}>
       <Text
-        minW={hasMinW ? 32 : "auto"}
-        variant="body2"
-        color="text.dark"
         fontWeight={500}
+        color="text.dark"
+        variant="body2"
+        minW={hasMinW ? 32 : "auto"}
       >
         GitHub{!hasMinW && ":"}
       </Text>
       <a
-        style={{ display: "flex" }}
-        rel="noreferrer noopener"
-        target="_blank"
-        onClick={() => trackSocial(github)}
         href={github}
+        onClick={() => trackSocial(github)}
+        target="_blank"
+        rel="noreferrer noopener"
+        style={{ display: "flex" }}
       >
-        <Text variant="body2" color="primary.main" wordBreak="break-all">
+        <Text color="primary.main" variant="body2" wordBreak="break-all">
           {org}/{repo}
         </Text>
         <CustomIcon
-          marginLeft="8px"
           name="launch"
           boxSize="12px"
+          marginLeft="8px"
           color="gray.600"
         />
       </a>

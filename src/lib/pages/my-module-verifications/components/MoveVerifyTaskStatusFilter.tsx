@@ -14,12 +14,12 @@ import { MoveVerifyTaskStatus } from "lib/services/types";
 import { toggleItem } from "lib/utils";
 
 export interface MoveVerifyTaskStatusFilterProps extends InputProps {
-  isMulti: boolean;
-  label?: string;
-  minW?: string;
-  placeholder?: string;
   result: MoveVerifyTaskStatus[];
+  minW?: string;
+  label?: string;
+  placeholder?: string;
   setResult: (option: MoveVerifyTaskStatus[]) => void;
+  isMulti: boolean;
 }
 
 const OPTIONS = [
@@ -35,12 +35,12 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
 >(
   (
     {
-      isMulti,
-      label,
-      minW = "50%",
-      placeholder,
       result,
+      minW = "50%",
       setResult,
+      placeholder,
+      label,
+      isMulti,
     }: MoveVerifyTaskStatusFilterProps,
     ref
   ) => {
@@ -77,27 +77,32 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
     };
 
     useOutsideClick({
-      handler: () => setIsDropdown(false),
       ref: boxRef,
+      handler: () => setIsDropdown(false),
     });
 
     return (
-      <FormControl h={8} maxW="full" minW={minW} ref={boxRef}>
+      <FormControl ref={boxRef} minW={minW} maxW="full" h={8}>
         <FilterInput
           keyword={keyword}
-          inputRef={inputRef}
-          label={label}
+          placeholder={placeholder}
           result={result}
+          label={label}
+          inputRef={inputRef}
+          ref={ref}
+          isDropdown={isDropdown}
+          setKeyword={setKeyword}
+          setIsDropdown={setIsDropdown}
           chipContainerComponent={
-            <Flex alignItems="center" gap={2} pl={2}>
+            <Flex alignItems="center" pl={2} gap={2}>
               {result.map((option) => (
                 <FilterChip
                   key={option}
                   chipComponent={
                     <MyModuleVerificationDetailsStatusBadge
-                      isActiveOnVerifying={false}
                       status={option}
                       hasCloseBtn
+                      isActiveOnVerifying={false}
                     />
                   }
                   onSelect={() => setResult(toggleItem(result, option))}
@@ -105,11 +110,6 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
               ))}
             </Flex>
           }
-          isDropdown={isDropdown}
-          placeholder={placeholder}
-          setIsDropdown={setIsDropdown}
-          setKeyword={setKeyword}
-          ref={ref}
         />
 
         {isDropdown && (
@@ -122,8 +122,8 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
                 key={option.label}
                 filterDropdownComponent={
                   <MyModuleVerificationDetailsStatusBadge
-                    isActiveOnVerifying={false}
                     status={option.value}
+                    isActiveOnVerifying={false}
                   />
                 }
                 isOptionSelected={isOptionSelected(option.value)}

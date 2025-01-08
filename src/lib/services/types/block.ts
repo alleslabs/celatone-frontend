@@ -29,15 +29,15 @@ import { zTx, zTxJsonRpc, zTxReceiptJsonRpc } from "./tx";
 const zNullableValidator = z.nullable(
   z
     .object({
-      identity: z.string(),
-      moniker: z.string(),
       operator_address: zValidatorAddr.nullish(),
+      moniker: z.string(),
+      identity: z.string(),
     })
     .transform<Validator>((val) => ({
-      identity: val.identity,
-      moniker: val.moniker,
       // nullable operator address for ICS chain
       validatorAddress: val.operator_address ?? zValidatorAddr.parse(""),
+      moniker: val.moniker,
+      identity: val.identity,
     }))
 );
 
@@ -53,9 +53,9 @@ const zBlocksResponseItem = z
   .transform<Block>((val) => ({
     hash: val.hash,
     height: val.height,
-    proposer: val.validator,
     timestamp: val.timestamp,
     txCount: val.transaction_count,
+    proposer: val.validator,
   }));
 
 export const zBlocksResponse = z.object({
@@ -66,33 +66,33 @@ export type BlocksResponse = z.infer<typeof zBlocksResponse>;
 
 export const zBlockDataResponse = z
   .object({
-    gas_limit: z.number().nullable(),
-    gas_used: z.number().nullable(),
     hash: z.string().transform(parseTxHash),
     height: z.number().nonnegative(),
     timestamp: zUtcDate,
     validator: zNullableValidator,
+    gas_used: z.number().nullable(),
+    gas_limit: z.number().nullable(),
   })
   .transform<BlockData>((val) => ({
-    gasLimit: val.gas_limit,
-    gasUsed: val.gas_used,
     hash: val.hash,
     height: val.height,
-    proposer: val.validator,
     timestamp: val.timestamp,
+    proposer: val.validator,
+    gasUsed: val.gas_used,
+    gasLimit: val.gas_limit,
   }));
 
 // ---------------- LCD ----------------
 export const zBlockLcd = z.object({
   block: z.object({
-    data: z.object({
-      txs: z.array(z.string()),
-    }),
     header: z.object({
       chain_id: z.string(),
       height: z.coerce.number(),
-      proposer_address: z.string(),
       time: zUtcDate,
+      proposer_address: z.string(),
+    }),
+    data: z.object({
+      txs: z.array(z.string()),
     }),
   }),
   block_id: z.object({
@@ -102,8 +102,8 @@ export const zBlockLcd = z.object({
 
 export const zBlockDataResponseLcd = zBlockLcd
   .extend({
-    pagination: zPagination,
     txs: z.array(zTx),
+    pagination: zPagination,
   })
   .transform(snakeToCamel)
   .transform<{
@@ -123,44 +123,44 @@ export const zBlockDataResponseLcd = zBlockLcd
         type: msg["@type"],
       }));
 
-      const { isEvm, isIbc, isOpinit } = messages.reduce(
+      const { isIbc, isOpinit, isEvm } = messages.reduce(
         (acc, msg) => {
           const current = getTxBadges(msg.type, undefined);
           return {
-            isEvm: acc.isEvm || current.isEvm,
             isIbc: acc.isIbc || current.isIbc,
             isOpinit: acc.isOpinit || current.isOpinit,
+            isEvm: acc.isEvm || current.isEvm,
           };
         },
-        { isEvm: false, isIbc: false, isOpinit: false }
+        { isIbc: false, isOpinit: false, isEvm: false }
       );
 
       return {
-        // TODO: implement below later
-        actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
-        created: val.block.header.time,
-        furtherAction: MsgFurtherAction.NONE,
         hash: txHashes[idx],
-        height: val.block.header.height,
-        isEvm,
-        isIbc,
-        isInstantiate: false,
-        isOpinit,
-        isSigner: true,
         messages,
         signerPubkey: tx.authInfo.signerInfos[0].publicKey,
+        isSigner: true,
+        height: val.block.header.height,
+        created: val.block.header.time,
         success: false, // NOTE: Hidden in Lite Tier,
+        isIbc,
+        isOpinit,
+        isEvm,
+        // TODO: implement below later
+        actionMsgType: ActionMsgType.OTHER_ACTION_MSG,
+        furtherAction: MsgFurtherAction.NONE,
+        isInstantiate: false,
       };
     });
 
     // 3. Create Block Data
     const block: BlockData = {
-      gasLimit: undefined,
-      gasUsed: undefined,
       hash: Buffer.from(val.blockId.hash, "base64").toString("hex"),
       height: val.block.header.height,
-      proposer: null, // NOTE: Will be filled in the next step
       timestamp: val.block.header.time,
+      proposer: null, // NOTE: Will be filled in the next step
+      gasLimit: undefined,
+      gasUsed: undefined,
     };
 
     return {
@@ -172,22 +172,22 @@ export const zBlockDataResponseLcd = zBlockLcd
 
 // ---------------- Sequencer ----------------
 const zBlockSequencer = z.object({
-  gas_used: z.coerce.number(),
-  gas_wanted: z.coerce.number(),
   hash: z.string(),
   height: z.coerce.number(),
-  proposer: zNullableValidator,
   timestamp: zUtcDate,
+  gas_used: z.coerce.number(),
+  gas_wanted: z.coerce.number(),
   tx_count: z.coerce.number(),
+  proposer: zNullableValidator,
 });
 
 const zBlocksResponseItemSequencer = zBlockSequencer.transform<Block>(
   (val) => ({
     hash: val.hash,
     height: val.height,
-    proposer: val.proposer,
     timestamp: val.timestamp,
     txCount: val.tx_count,
+    proposer: val.proposer,
   })
 );
 
@@ -204,13 +204,13 @@ export const zBlockTimeAverageSequencer = z
 
 export const zBlockDataResponseSequencer = zBlockSequencer.transform<BlockData>(
   (val) => ({
-    gasLimit: val.gas_wanted,
-    gasUsed: val.gas_used,
     hash: val.hash,
     height: val.height,
-    proposer: val.proposer,
     timestamp: val.timestamp,
     txCount: val.tx_count,
+    gasUsed: val.gas_used,
+    gasLimit: val.gas_wanted,
+    proposer: val.proposer,
   })
 );
 

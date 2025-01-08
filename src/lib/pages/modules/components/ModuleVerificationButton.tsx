@@ -8,11 +8,11 @@ export const ModuleVerificationButton = () => {
   return (
     <Menu placement="top-end">
       <MenuButton
-        as={Button}
         mb={8}
-        minW={52}
         variant="primary"
+        as={Button}
         rightIcon={<CustomIcon name="chevron-down" />}
+        minW={52}
       >
         Module Verification
       </MenuButton>

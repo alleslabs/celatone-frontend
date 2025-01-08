@@ -10,42 +10,42 @@ import type { PoolData, PoolTxFilter } from "lib/types";
 import { PoolTxsTable } from "./PoolTxsTable";
 
 interface PoolRelatedTxsTableProps {
-  countTxs: number;
   pool: PoolData;
-  scrollComponentId: string;
+  countTxs: number;
   type: PoolTxFilter;
+  scrollComponentId: string;
 }
 
 export const PoolRelatedTxsTable = ({
-  countTxs,
   pool,
-  scrollComponentId,
+  countTxs,
   type,
+  scrollComponentId,
 }: PoolRelatedTxsTableProps) => {
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
 
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
+    currentPage,
     setCurrentPage,
+    pageSize,
     setPageSize,
+    offset,
   } = usePaginator({
+    total: countTxs,
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
-    total: countTxs,
   });
 
   const {
     data: txs,
-    isError,
     isLoading,
+    isError,
   } = useTxsByPoolId(pool.id, type, pageSize, offset);
 
   const onPageChange = (nextPage: number) => {
@@ -61,6 +61,10 @@ export const PoolRelatedTxsTable = ({
   return (
     <>
       <PoolTxsTable
+        pool={pool}
+        transactions={txs?.items}
+        assetInfos={assetInfos}
+        isLoading={isLoadingAssetInfos || isLoading}
         emptyState={
           isError ? (
             <ErrorFetching dataName="transactions" />
@@ -72,21 +76,17 @@ export const PoolRelatedTxsTable = ({
             />
           )
         }
-        assetInfos={assetInfos}
-        isLoading={isLoadingAssetInfos || isLoading}
-        pool={pool}
-        transactions={txs?.items}
       />
       {countTxs > 0 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={countTxs}
+          pageSize={pageSize}
+          scrollComponentId={scrollComponentId}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
-          scrollComponentId={scrollComponentId}
-          totalData={countTxs}
         />
       )}
     </>

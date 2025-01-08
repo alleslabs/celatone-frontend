@@ -31,56 +31,56 @@ export const AddNetworkManual = () => {
 
   const {
     control,
-    formState: { errors },
     handleSubmit,
+    formState: { errors },
+    watch,
     setValue,
     trigger,
-    watch,
   } = useForm<AddNetworkManualForm>({
+    resolver: zodResolver(zAddNetworkManualForm({ isChainIdExist })),
+    mode: "all",
+    reValidateMode: "onChange",
     defaultValues: {
       ...DEFAULT_GAS,
-      assets: [],
-      bech32_prefix: "",
-      chainId: "",
-      denom: DEFAULT_DENOM,
-      gasConfig: "standard",
-      lcd: "",
-      logoUri: "",
       prettyName: "",
-      registryChainName: "",
+      lcd: "",
       rpc: "",
-      slip44: DEFAULT_SLIP44,
+      chainId: "",
+      registryChainName: "",
+      logoUri: "",
       vm: {
         type: VmType.MOVE,
       },
+      denom: DEFAULT_DENOM,
+      gasConfig: "standard",
+      bech32_prefix: "",
+      slip44: DEFAULT_SLIP44,
+      assets: [],
     },
-    mode: "all",
-    resolver: zodResolver(zAddNetworkManualForm({ isChainIdExist })),
-    reValidateMode: "onChange",
   });
 
   const {
-    assets,
-    average_gas_price: averageGasPrice,
-    bech32_prefix: bech32Prefix,
+    vm,
+    prettyName,
+    lcd,
+    rpc,
     chainId,
-    cosmos_send: cosmosSend,
-    denom,
-    fixed_min_gas_price: fixedMinGasPrice,
+    registryChainName,
+    logoUri,
     gasAdjustment,
+    maxGasLimit,
+    denom,
     gasConfig,
     gasPrice,
-    high_gas_price: highGasPrice,
-    ibc_transfer: ibcTransfer,
-    lcd,
-    logoUri,
+    fixed_min_gas_price: fixedMinGasPrice,
     low_gas_price: lowGasPrice,
-    maxGasLimit,
-    prettyName,
-    registryChainName,
-    rpc,
+    average_gas_price: averageGasPrice,
+    high_gas_price: highGasPrice,
+    cosmos_send: cosmosSend,
+    ibc_transfer: ibcTransfer,
+    bech32_prefix: bech32Prefix,
     slip44,
-    vm,
+    assets,
   } = watch();
 
   const handleSubmitForm = (data: AddNetworkManualForm) => {
@@ -102,35 +102,35 @@ export const AddNetworkManual = () => {
       return !zNetworkDetailsForm({
         isChainIdExist,
       }).safeParse({
-        chainId,
-        lcd,
-        logoUri,
-        prettyName,
-        registryChainName,
-        rpc,
         vm,
+        prettyName,
+        lcd,
+        rpc,
+        chainId,
+        registryChainName,
+        logoUri,
       }).success;
 
     if (currentStepIndex === 1)
       return !zGasConfigFeeDetailsForm.safeParse({
-        average_gas_price: averageGasPrice,
-        cosmos_send: cosmosSend,
-        denom,
-        fixed_min_gas_price: fixedMinGasPrice,
         gasAdjustment,
+        maxGasLimit,
+        denom,
         gasConfig,
         gasPrice,
-        high_gas_price: highGasPrice,
-        ibc_transfer: ibcTransfer,
+        fixed_min_gas_price: fixedMinGasPrice,
         low_gas_price: lowGasPrice,
-        maxGasLimit,
+        average_gas_price: averageGasPrice,
+        high_gas_price: highGasPrice,
+        cosmos_send: cosmosSend,
+        ibc_transfer: ibcTransfer,
       }).success;
 
     if (currentStepIndex === 2)
       return !zWalletRegistryForm.safeParse({
-        assets,
         bech32_prefix: bech32Prefix,
         slip44,
+        assets,
       }).success;
 
     return false;
@@ -145,46 +145,46 @@ export const AddNetworkManual = () => {
   return (
     <>
       <CelatoneSeo pageName="Add Minitias" />
-      <Flex left={0} w="full" zIndex={2} position="sticky" top={0}>
+      <Flex position="sticky" top={0} left={0} w="full" zIndex={2}>
         <AddNetworkStepper currentStepIndex={currentStepIndex} />
       </Flex>
       <ActionPageContainer width={640}>
         <AddNetworkForm
           currentStepIndex={currentStepIndex}
-          setValue={setValue}
-          trigger={trigger}
           control={control}
           errors={errors}
+          setValue={setValue}
+          trigger={trigger}
         />
       </ActionPageContainer>
       <FooterCta
-        cancelLabel={hasPrevious ? "Previous" : "Cancel"}
-        helperText="The added custom Minitia on Initiascan will be stored locally on your device."
-        sx={{
-          backgroundColor: "background.main",
-          borderColor: "gray.700",
+        cancelButton={{
+          onClick: handlePrevious,
+          variant: "outline-primary",
+          leftIcon: hasPrevious ? (
+            <CustomIcon name="chevron-left" boxSize={4} />
+          ) : undefined,
         }}
+        cancelLabel={hasPrevious ? "Previous" : "Cancel"}
         actionButton={{
-          isDisabled: isFormDisabled(),
           onClick: handleNext,
+          isDisabled: isFormDisabled(),
           rightIcon: hasNext ? (
             <CustomIcon name="chevron-right" boxSize={4} />
           ) : undefined,
         }}
         actionLabel={handleActionLabel()}
-        cancelButton={{
-          leftIcon: hasPrevious ? (
-            <CustomIcon name="chevron-left" boxSize={4} />
-          ) : undefined,
-          onClick: handlePrevious,
-          variant: "outline-primary",
+        helperText="The added custom Minitia on Initiascan will be stored locally on your device."
+        sx={{
+          backgroundColor: "background.main",
+          borderColor: "gray.700",
         }}
       />
       <SuccessAddCustomMinitiaModal
-        chainId={chainId}
         isOpen={isOpen}
-        prettyName={prettyName}
         onClose={onClose}
+        prettyName={prettyName}
+        chainId={chainId}
       />
     </>
   );

@@ -88,41 +88,41 @@ export const AddNetworkJson = observer(() => {
     <>
       <ActionPageContainer>
         <CustomNetworkPageHeader
-          hasAlert={false}
-          subtitle="Import JSON"
           title="Add Custom Minitia"
+          subtitle="Import JSON"
+          hasAlert={false}
         />
-        <Flex gap={6} mt={12} w="full" direction="column">
+        <Flex direction="column" mt={12} gap={6} w="full">
           <CustomNetworkSubheader
-            subtitle="The uploading JSON file must be in the supported format for InitiaScan only"
             title="Upload your .JSON File"
+            subtitle="The uploading JSON file must be in the supported format for InitiaScan only"
           />
           {file ? (
-            <UploadCard deleteFile={() => setFile(null)} file={file} />
+            <UploadCard file={file} deleteFile={() => setFile(null)} />
           ) : (
             <DropZone
-              fileType={["schema"]}
               setFiles={(files: File[]) => setFile(files[0])}
+              fileType={["schema"]}
             />
           )}
-          <Flex w="full" justifyContent="space-between">
+          <Flex justifyContent="space-between" w="full">
             <Button
               variant="outline-primary"
-              w="140px"
               onClick={() => navigate({ pathname: "/custom-network/add" })}
+              w="140px"
             >
               Cancel
             </Button>
             <Button
               isDisabled={!file}
               variant="primary"
-              w="220px"
               onClick={handleSubmit}
+              w="220px"
             >
               Import new Minitia
             </Button>
           </Flex>
-          <Text textAlign="center" variant="body2">
+          <Text variant="body2" textAlign="center">
             The added custom Minitia on Initiascan will be stored locally on
             your device.
           </Text>
@@ -134,15 +134,15 @@ export const AddNetworkJson = observer(() => {
       />
       <DuplicatedAddCustomMinitiaModal
         isOpen={isDuplicatedModalOpen}
-        label={duplicatedLabel()}
         onClose={duplicatedModalOnClose}
+        label={duplicatedLabel()}
       />
       {json && (
         <SuccessAddCustomMinitiaModal
-          chainId={json.chainId}
           isOpen={isSuccessModalOpen}
-          prettyName={json.prettyName}
           onClose={successModalOnClose}
+          prettyName={json.prettyName}
+          chainId={json.chainId}
         />
       )}
     </>

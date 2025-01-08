@@ -2,17 +2,17 @@ import { z } from "zod";
 
 import { zAddr } from "lib/types";
 
-export enum FunctionTypeTabIndex {
-  ALL = "All",
-  EXECUTE = "Execute",
-  VIEW = "View",
+export enum TabIndex {
+  Overview = "overview",
+  Function = "function",
+  TxsHistories = "txs-histories",
+  Structs = "structs",
 }
 
-export enum TabIndex {
-  Function = "function",
-  Overview = "overview",
-  Structs = "structs",
-  TxsHistories = "txs-histories",
+export enum FunctionTypeTabIndex {
+  ALL = "All",
+  VIEW = "View",
+  EXECUTE = "Execute",
 }
 
 export const zModuleDetailsQueryParams = z.object({

@@ -5,19 +5,19 @@ import type { Nullable, Ratio } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
 interface VoteQuorumCircleProps {
-  isBgGray?: boolean;
-  isCompact: boolean;
-  nonAbstainRatio: Nullable<Ratio<number>>;
   quorum: Ratio<number>;
+  nonAbstainRatio: Nullable<Ratio<number>>;
   totalRatio: Nullable<Ratio<number>>;
+  isCompact: boolean;
+  isBgGray?: boolean;
 }
 
 export const VoteQuorumCircle = ({
-  isBgGray,
-  isCompact,
-  nonAbstainRatio,
   quorum,
+  nonAbstainRatio,
   totalRatio,
+  isCompact,
+  isBgGray,
 }: VoteQuorumCircleProps) => {
   const nonAbstainAngle = (nonAbstainRatio ?? 0) * 360;
   const totalAngle = (totalRatio ?? 0) * 360;
@@ -26,20 +26,20 @@ export const VoteQuorumCircle = ({
 
   return (
     <Circle
-      bgGradient={`conic(voteParticipations.voted ${nonAbstainAngle}deg, voteParticipations.votedAbstain ${nonAbstainAngle}deg ${totalAngle}deg, voteParticipations.didNotVote ${totalAngle}deg)`}
       size={isCompact ? "64px" : "160px"}
       position="relative"
+      bgGradient={`conic(voteParticipations.voted ${nonAbstainAngle}deg, voteParticipations.votedAbstain ${nonAbstainAngle}deg ${totalAngle}deg, voteParticipations.didNotVote ${totalAngle}deg)`}
     >
       <Circle
-        bgGradient="conic(white 2deg, transparent 2deg 358deg, white 358deg)"
         size={isCompact ? "64px" : "160px"}
+        bgGradient="conic(white 2deg, transparent 2deg 358deg, white 358deg)"
         transform={`rotate(${quorumAngle}deg)`}
       >
         {!isCompact && (
           <Text
-            textAlign="left"
-            variant="body3"
             transform={`translate(0, -${500 + (90 - Math.abs(90 - (quorumAngle % 180))) / (3 - quorumPercent.length / 3)}%) rotate(${-quorumAngle}deg)`}
+            variant="body3"
+            textAlign="left"
           >
             {quorumPercent}
           </Text>
@@ -47,23 +47,23 @@ export const VoteQuorumCircle = ({
       </Circle>
       <Circle
         size={isCompact ? "52px" : "134px"}
-        bgColor={isBgGray ? "gray.900" : "background.main"}
         position="absolute"
+        bgColor={isBgGray ? "gray.900" : "background.main"}
       >
         {!isCompact && (
           <Text
-            variant="body3"
-            color="text.dark"
             position="absolute"
             top="22.5%"
+            variant="body3"
+            color="text.dark"
           >
             Voted
           </Text>
         )}
         <Heading
           variant={isCompact ? "h7" : "h4"}
-          color={totalRatio ? "text.main" : "text.dark"}
           fontWeight={600}
+          color={totalRatio ? "text.main" : "text.dark"}
         >
           {!isNull(totalRatio) ? formatPrettyPercent(totalRatio, 1) : "N/A"}
         </Heading>

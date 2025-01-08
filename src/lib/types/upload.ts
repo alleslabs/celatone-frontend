@@ -2,21 +2,21 @@ import type { AccessType, BechAddr } from "lib/types";
 
 export type SimulateStatus =
   | {
-      message: string;
-      status: "default";
-    }
-  | {
-      message: string;
-      status: "failed";
-    }
-  | {
-      message: string;
       status: "succeeded";
+      message: string;
+    }
+  | {
+      status: "failed";
+      message: string;
+    }
+  | {
+      status: "default";
+      message: string;
     };
 
 export interface UploadSectionState {
-  addresses: Record<"address", BechAddr>[];
+  wasmFile?: File;
   codeName: string;
   permission: AccessType;
-  wasmFile?: File;
+  addresses: Record<"address", BechAddr>[];
 }

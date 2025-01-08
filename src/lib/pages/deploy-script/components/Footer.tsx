@@ -3,34 +3,34 @@ import { useRouter } from "next/router";
 
 interface FooterProps {
   disabled: boolean;
-  executeScript: () => void;
   isLoading: boolean;
+  executeScript: () => void;
 }
 
 export const Footer = ({
+  isLoading = false,
   disabled,
   executeScript,
-  isLoading = false,
 }: FooterProps) => {
   const router = useRouter();
   return (
     <Flex
-      alignItems="center"
+      w="full"
       bg="gray.900"
       h="70px"
-      w="full"
-      zIndex={2}
       bottom={0}
-      justifyContent="center"
       position="sticky"
+      zIndex={2}
+      justifyContent="center"
+      alignItems="center"
     >
       <Flex justify="space-between" w="540px">
         <Button variant="outline-primary" onClick={router.back}>
           Cancel
         </Button>
         <Button
-          isDisabled={isLoading || disabled}
           variant="primary"
+          isDisabled={isLoading || disabled}
           onClick={executeScript}
         >
           {isLoading ? <Spinner size="md" variant="light" /> : "Execute Script"}

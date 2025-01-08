@@ -119,9 +119,9 @@ export const getModuleTxs = async (
       `${endpoint}/modules/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/txs`,
       {
         params: {
-          is_initia: isInitia,
           limit,
           offset,
+          is_initia: isInitia,
         },
       }
     )

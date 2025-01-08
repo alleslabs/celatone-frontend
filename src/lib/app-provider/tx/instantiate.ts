@@ -9,18 +9,18 @@ import type { BechAddr32, Coin } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
 
 export interface InstantiateStreamParams {
-  admin: string;
-  codeId: number;
   estimatedFee: StdFee | undefined;
-  funds: Coin[];
+  codeId: number;
   initMsg: object;
   label: string;
-  onTxFailed?: () => void;
+  admin: string;
+  funds: Coin[];
   onTxSucceed?: (
     txResult: DeliverTxResponse,
     contractLabel: string,
     contractAddress: BechAddr32
   ) => void;
+  onTxFailed?: () => void;
 }
 
 export const useInstantiateContractTx = () => {
@@ -29,14 +29,14 @@ export const useInstantiateContractTx = () => {
 
   return useCallback(
     async ({
-      admin,
-      codeId,
       estimatedFee,
-      funds,
+      codeId,
       initMsg,
       label,
-      onTxFailed,
+      admin,
+      funds,
       onTxSucceed,
+      onTxFailed,
     }: InstantiateStreamParams) => {
       if (!address)
         throw new Error("No address provided (useInstantiatetContractTx)");
@@ -55,15 +55,15 @@ export const useInstantiateContractTx = () => {
 
       return instantiateContractTx({
         address,
-        fee: estimatedFee,
-        label,
         messages,
-        onTxFailed,
+        label,
+        fee: estimatedFee,
+        signAndBroadcast,
         onTxSucceed: (txResult, contractLabel, contractAddress) => {
           trackTxSucceed();
           onTxSucceed?.(txResult, contractLabel, contractAddress);
         },
-        signAndBroadcast,
+        onTxFailed,
       });
     },
     [address, signAndBroadcast]

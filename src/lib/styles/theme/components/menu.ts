@@ -1,29 +1,29 @@
 import { menuAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 
-const { defineMultiStyleConfig, definePartsStyle } =
+const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(menuAnatomy.keys);
 
 const baseStyle = definePartsStyle({
-  divider: {
-    borderColor: "gray.700",
+  list: {
+    py: "2",
+    borderRadius: "8px",
+    border: "none",
+    bg: "gray.900",
   },
   item: {
-    _focus: {
-      bg: "gray.800",
-    },
+    color: "text.main",
+    bg: "gray.900",
     _hover: {
       bg: "gray.800",
     },
-    bg: "gray.900",
-    color: "text.main",
+    _focus: {
+      bg: "gray.800",
+    },
     fontSize: "14px",
   },
-  list: {
-    bg: "gray.900",
-    border: "none",
-    borderRadius: "8px",
-    py: "2",
+  divider: {
+    borderColor: "gray.700",
   },
 });
 

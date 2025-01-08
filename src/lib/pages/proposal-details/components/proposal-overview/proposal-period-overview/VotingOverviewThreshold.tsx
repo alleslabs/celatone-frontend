@@ -20,14 +20,14 @@ import type {
 import { formatPrettyPercent } from "lib/utils";
 
 interface VotingOverviewThresholdProps {
-  params: ProposalParams;
   proposalData: ProposalData;
+  params: ProposalParams;
   votesInfo: ProposalVotesInfo;
 }
 
 export const VotingOverviewThreshold = ({
-  params,
   proposalData,
+  params,
   votesInfo,
 }: VotingOverviewThresholdProps) => {
   const { threshold, vetoThreshold } = extractParams(
@@ -45,20 +45,20 @@ export const VotingOverviewThreshold = ({
   return (
     <>
       <Flex
+        direction="column"
         gap={4}
         pt={4}
         borderTop="1px solid"
         borderTopColor="gray.700"
-        direction="column"
       >
-        <Flex alignItems="center" gap={2}>
+        <Flex gap={2} alignItems="center">
           <VoteThresholdBadge status={proposalData.status} isCompact />
           {proposalData.status === ProposalStatus.VOTING_PERIOD ? (
             <Text variant="body1" color="text.main">
               Current Voting Result
             </Text>
           ) : (
-            <Flex alignItems="center" gap={2}>
+            <Flex gap={2} alignItems="center">
               <Text variant="body1" color="text.main">
                 Final Vote Result:
               </Text>
@@ -67,34 +67,34 @@ export const VotingOverviewThreshold = ({
               ) : (
                 <LegendText
                   label={result}
+                  legendColor={resultColor}
                   variant="body2"
                   color="text.main"
                   fontWeight={700}
-                  legendColor={resultColor}
                 />
               )}
             </Flex>
           )}
         </Flex>
         <VoteThresholdBar
-          isCompact
           threshold={threshold}
           votesInfo={votesInfo}
+          isCompact
         />
-        <VpPercentThreshold isCompact votesInfo={votesInfo} />
+        <VpPercentThreshold votesInfo={votesInfo} isCompact />
       </Flex>
       {noWithVetoTotalRatio >= vetoThreshold && (
         <Flex
-          alignItems="center"
           gap={3}
           p="12px 16px"
           bgColor="warning.background"
           border="1px solid var(--chakra-colors-warning-dark)"
           borderRadius="8px"
+          alignItems="center"
         >
           <CustomIcon
-            name="alert-triangle-solid"
             boxSize={4}
+            name="alert-triangle-solid"
             color="warning.main"
           />
           <Text variant="body2" color="warning.main">

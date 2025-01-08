@@ -20,11 +20,11 @@ export const AbiForm = ({
   propsOnChange,
   propsOnErrors,
 }: AbiFormProps) => {
-  const { getValues, reset, setValue, watch } = useForm<AbiFormData>({
+  const { setValue, watch, getValues, reset } = useForm<AbiFormData>({
     defaultValues: initialData,
     mode: "all",
   });
-  const { args, typeArgs } = watch();
+  const { typeArgs, args } = watch();
 
   useEffect(() => {
     reset(initialData);
@@ -32,7 +32,7 @@ export const AbiForm = ({
   }, [JSON.stringify(initialData), reset]);
 
   return (
-    <Flex gap={4} w="full" direction="column">
+    <Flex direction="column" gap={4} w="full">
       {Object.keys(typeArgs).length > 0 && (
         <TypesForm
           genericTypeParams={fn.generic_type_params}
@@ -44,8 +44,8 @@ export const AbiForm = ({
         />
       )}
       <ArgsForm
-        initialData={args}
         params={fn.params}
+        initialData={args}
         propsOnChange={(value) => {
           setValue("args", value);
           propsOnChange?.(getValues());

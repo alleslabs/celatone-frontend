@@ -9,15 +9,15 @@ import { getWasmVerifyStatus } from "lib/utils";
 import { CodeSchemaTabs } from "./CodeSchemaTabs";
 
 interface CodeSchemaSectionProps {
-  codeHash: string;
   codeId: number;
+  codeHash: string;
   localSchema: Option<CodeSchema>;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const CodeSchemaSection = ({
-  codeHash,
   codeId,
+  codeHash,
   localSchema,
   wasmVerifyInfo,
 }: CodeSchemaSectionProps) => {
@@ -28,50 +28,50 @@ export const CodeSchemaSection = ({
   const attachedLocalSchema = Boolean(localSchema);
   return (
     <>
-      <Flex alignItems="center" gap={2} mb={3} mt={8}>
+      <Flex mt={8} mb={3} alignItems="center" gap={2}>
         <Heading as="h6" variant="h6">
           JSON Schema
         </Heading>
         {!hasVerifiedSchema && attachedLocalSchema && (
           <EditSchemaButtons
-            codeHash={codeHash}
             codeId={codeId}
+            codeHash={codeHash}
             openModal={onOpen}
           />
         )}
       </Flex>
       <Text
+        variant="body2"
         px={4}
         py={3}
-        variant="body2"
+        textColor="text.dark"
         bgColor="gray.800"
         border="1px solid var(--chakra-colors-gray-700)"
         borderRadius="8px"
-        textColor="text.dark"
       >
         {hasVerifiedSchema
           ? `The schema is provided as the code has been ${wasmVerifyStatus !== WasmVerifyStatus.VERIFIED ? "indirectly" : ""} verified.`
           : "Uploaded JSON schemas are stored locally on your device."}
       </Text>
       <CodeSchemaTabs
-        verifiedSchema={wasmVerifyInfo?.schema}
-        codeHash={codeHash}
         codeId={codeId}
+        codeHash={codeHash}
+        verifiedSchema={wasmVerifyInfo?.schema}
         localSchema={localSchema}
       />
       {!hasVerifiedSchema && (
         <>
           <UserDocsLink
-            cta="Read more about JSON Schema"
             title="How to attached and use JSON Schema?"
+            cta="Read more about JSON Schema"
             href="cosmwasm/codes/attach-json-schema"
           />
           <JsonSchemaModal
             isOpen={isOpen}
-            isReattach={attachedLocalSchema}
-            codeHash={codeHash}
-            codeId={codeId}
             onClose={onClose}
+            codeId={codeId}
+            codeHash={codeHash}
+            isReattach={attachedLocalSchema}
           />
         </>
       )}

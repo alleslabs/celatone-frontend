@@ -12,18 +12,18 @@ import { SectionWrapper } from "./SectionWrapper";
 
 const Header = () => {
   const {
+    theme,
     chainConfig: {
       extra: { faucetUrl },
     },
-    theme,
   } = useCelatoneApp();
   const isInitia = useInitia();
   return (
     <Flex
-      width="100vw"
-      align="center"
       as="header"
+      width="100vw"
       height="full"
+      align="center"
       justifyContent="space-between"
     >
       <Flex h="full">
@@ -35,14 +35,14 @@ const Header = () => {
         <SectionWrapper minW={isInitia ? "auto" : "234px"}>
           <AppLink href="/">
             <Image
-              maxWidth="139px"
+              src={theme.branding.logo}
+              alt="Celatone"
               minWidth="139px"
               width="139px"
-              alt="Celatone"
-              mx={4}
-              src={theme.branding.logo}
-              _hover={{ cursor: "pointer", opacity: 0.85 }}
+              maxWidth="139px"
               transition="all 0.25s ease-in-out"
+              _hover={{ cursor: "pointer", opacity: 0.85 }}
+              mx={4}
             />
           </AppLink>
         </SectionWrapper>

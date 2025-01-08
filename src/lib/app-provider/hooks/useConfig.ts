@@ -23,22 +23,22 @@ export const useTierConfig = (
     navigate({ pathname: "/", replace: true });
 
   return {
+    tier,
     isFullTier: tier === "full",
     isLiteTier: tier === "lite",
     isMesaTier: tier === "mesa",
     isSequencerTier: tier === "sequencer",
-    tier,
   };
 };
+
+type Features = ChainConfig["features"];
+
+type FeatureVariant = Features[keyof Features];
 
 interface BaseConfigArgs<Feature> {
   feature: Feature;
   shouldRedirect: boolean;
 }
-
-type Features = ChainConfig["features"];
-
-type FeatureVariant = Features[keyof Features];
 
 const useBaseConfig = <Feature extends FeatureVariant>({
   feature,

@@ -10,17 +10,48 @@ import { zUtcDate } from "./time";
 // ------------------------------------------//
 
 export enum SchemaProperties {
-  ATTACHED_CODE_ID = "attached_code_id",
   CONTRACT_NAME = "contract_name",
   CONTRACT_VERSION = "contract_version",
-  EXECUTE = "execute",
   IDL_VERSION = "idl_version",
   INSTANTIATE = "instantiate",
-  MIGRATE = "migrate",
+  EXECUTE = "execute",
   QUERY = "query",
-  RESPONSES = "responses",
+  MIGRATE = "migrate",
   SUDO = "sudo",
+  RESPONSES = "responses",
+  ATTACHED_CODE_ID = "attached_code_id",
 }
+
+export interface SchemaInfo {
+  title: Option<string>;
+  description: Option<string>;
+  schema: JsonSchema;
+  inputRequired?: boolean;
+}
+
+export interface CodeSchema {
+  [SchemaProperties.CONTRACT_NAME]: string;
+  [SchemaProperties.CONTRACT_VERSION]: string;
+  [SchemaProperties.IDL_VERSION]: string;
+  [SchemaProperties.INSTANTIATE]: JsonSchema;
+  [SchemaProperties.EXECUTE]: Nullable<JsonSchema>;
+  [SchemaProperties.QUERY]: Nullable<JsonSchema>;
+  [SchemaProperties.MIGRATE]: Nullable<JsonSchema>;
+  [SchemaProperties.SUDO]: Nullable<JsonSchema>;
+  [SchemaProperties.RESPONSES]: { [key: string]: JsonSchema };
+  [SchemaProperties.ATTACHED_CODE_ID]: string;
+}
+
+export type QuerySchema = Array<[SchemaInfo, SchemaInfo]>;
+export type ExecuteSchema = Array<SchemaInfo>;
+
+export interface QueryResponse {
+  data: JsonDataType;
+}
+
+// ------------------------------------------//
+// ---------------VERIFICATION---------------//
+// ------------------------------------------//
 
 export enum WasmVerifyStatus {
   NOT_VERIFIED,
@@ -30,71 +61,40 @@ export enum WasmVerifyStatus {
   FAILED,
 }
 
-export interface CodeSchema {
-  [SchemaProperties.ATTACHED_CODE_ID]: string;
-  [SchemaProperties.CONTRACT_NAME]: string;
-  [SchemaProperties.CONTRACT_VERSION]: string;
-  [SchemaProperties.EXECUTE]: Nullable<JsonSchema>;
-  [SchemaProperties.IDL_VERSION]: string;
-  [SchemaProperties.INSTANTIATE]: JsonSchema;
-  [SchemaProperties.MIGRATE]: Nullable<JsonSchema>;
-  [SchemaProperties.QUERY]: Nullable<JsonSchema>;
-  [SchemaProperties.RESPONSES]: { [key: string]: JsonSchema };
-  [SchemaProperties.SUDO]: Nullable<JsonSchema>;
-}
-
-export type ExecuteSchema = Array<SchemaInfo>;
-export interface QueryResponse {
-  data: JsonDataType;
-}
-
-export type QuerySchema = Array<[SchemaInfo, SchemaInfo]>;
-
-// ------------------------------------------//
-// ---------------VERIFICATION---------------//
-// ------------------------------------------//
-
-export interface SchemaInfo {
-  description: Option<string>;
-  inputRequired?: boolean;
-  schema: JsonSchema;
-  title: Option<string>;
-}
-
 const zWasmVerifyInfoBase = z.object({
   chainId: z.string(),
   codeId: z.number(),
-  commit: z.string(),
-  comparedTimestamp: zUtcDate.nullable(),
-  compiledTimestamp: zUtcDate.nullable(),
-  compilerVersion: z.string(),
-  downloadedTimestamp: zUtcDate.nullable(),
-  errorMessage: z.string().nullable(),
   gitUrl: z.string(),
+  commit: z.string(),
   packageName: z.string(),
+  compilerVersion: z.string(),
   submittedTimestamp: zUtcDate,
+  downloadedTimestamp: zUtcDate.nullable(),
+  compiledTimestamp: zUtcDate.nullable(),
+  comparedTimestamp: zUtcDate.nullable(),
+  errorMessage: z.string().nullable(),
 });
 export type WasmVerifyInfoBase = z.infer<typeof zWasmVerifyInfoBase>;
 
 export const zWasmVerifyInfo = z
   .object({
-    relatedVerifiedCodes: z.number().array(),
-    schema: z.unknown().nullable(),
     verificationInfo: zWasmVerifyInfoBase.nullable(),
+    schema: z.unknown().nullable(),
+    relatedVerifiedCodes: z.number().array(),
   })
-  .transform(({ relatedVerifiedCodes, schema, verificationInfo }) => ({
-    relatedVerifiedCodes,
-    schema: schema !== null ? (schema as CodeSchema) : null,
+  .transform(({ verificationInfo, schema, relatedVerifiedCodes }) => ({
     verificationInfo,
+    schema: schema !== null ? (schema as CodeSchema) : null,
+    relatedVerifiedCodes,
   }));
 export type WasmVerifyInfo = z.infer<typeof zWasmVerifyInfo>;
 
 export const zRelatedWasmVerifyInfo = z
   .object({
-    relatedVerifiedCodes: z.number().array(),
     schema: z.unknown().nullable(),
+    relatedVerifiedCodes: z.number().array(),
   })
-  .transform(({ relatedVerifiedCodes, schema }) => ({
-    relatedVerifiedCodes,
+  .transform(({ schema, relatedVerifiedCodes }) => ({
     schema: schema !== null ? (schema as CodeSchema) : null,
+    relatedVerifiedCodes,
   }));

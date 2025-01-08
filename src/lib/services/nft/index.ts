@@ -63,6 +63,8 @@ export const useNfts = (
     ],
     async () =>
       handleQueryByTier({
+        tier,
+        threshold: "sequencer",
         queryFull: () =>
           getNftsByCollectionAddress(
             apiEndpoint,
@@ -85,13 +87,11 @@ export const useNfts = (
                 : filteredData,
             };
           }),
-        threshold: "sequencer",
-        tier,
       }),
     {
-      enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };
@@ -118,16 +118,16 @@ export const useNftByNftAddress = (
     ],
     async () =>
       handleQueryByTier({
+        tier,
+        threshold: "sequencer",
         queryFull: () =>
           getNftByNftAddress(apiEndpoint, collectionAddress, nftAddress),
         querySequencer: () => getNftByNftAddressLcd(lcdEndpoint, nftAddress),
-        threshold: "sequencer",
-        tier,
       }),
     {
       enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -145,8 +145,8 @@ export const useNftByNftAddressLcd = (
     async () => getNftByNftAddressLcd(lcdEndpoint, nftAddress),
     {
       enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -170,15 +170,15 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
     ],
     async () =>
       handleQueryByTier({
+        tier,
+        threshold: "sequencer",
         queryFull: () => getNftMintInfo(apiEndpoint, nftAddress),
         querySequencer: () =>
           getNftMintInfoSequencer(lcdEndpoint, bech32Prefix, nftAddress),
-        threshold: "sequencer",
-        tier,
       }),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -189,8 +189,8 @@ export const useMetadata = (uri: string) => {
     async () => getMetadata(uri),
     {
       enabled: !!uri,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
     }
   );
 };
@@ -199,7 +199,7 @@ export const useNftTransactions = (
   limit: number,
   offset: number,
   nftAddress: HexAddr32,
-  options: Pick<UseQueryOptions<NftTxsResponse>, "enabled" | "onSuccess"> = {}
+  options: Pick<UseQueryOptions<NftTxsResponse>, "onSuccess" | "enabled"> = {}
 ) => {
   const apiEndpoint = useBaseApiRoute("nfts");
 
@@ -207,8 +207,8 @@ export const useNftTransactions = (
     [CELATONE_QUERY_KEYS.NFT_TRANSACTIONS, nftAddress, limit, offset],
     async () => getNftTxs(apiEndpoint, nftAddress, limit, offset),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
       ...options,
     }
   );
@@ -227,9 +227,9 @@ export const useNftTransactionsSequencer = (
     async ({ pageParam }) =>
       getNftTransactionsSequencer(lcdEndpoint, pageParam, nftAddress),
     {
-      enabled,
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,
+      enabled,
       retry: 1,
     }
   );
@@ -246,7 +246,7 @@ export const useNftMutateEvents = (
   offset: number,
   options: Pick<
     UseQueryOptions<NftMutateEventsResponse>,
-    "enabled" | "onSuccess"
+    "onSuccess" | "enabled"
   > = {}
 ) => {
   const apiEndpoint = useBaseApiRoute("nfts");
@@ -261,8 +261,8 @@ export const useNftMutateEvents = (
     ],
     async () => getNftMutateEvents(apiEndpoint, nftAddress, limit, offset),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
       ...options,
     }
   );
@@ -276,7 +276,7 @@ export const useNftsByAccountAddress = (
   search = "",
   options: Pick<
     UseQueryOptions<NftsByAccountAddressResponse>,
-    "enabled" | "onSuccess"
+    "onSuccess" | "enabled"
   > = {}
 ) => {
   const apiEndpoint = useBaseApiRoute("nfts");
@@ -303,8 +303,8 @@ export const useNftsByAccountAddress = (
         search
       ),
     {
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
       ...options,
       enabled: options.enabled && nftConfigEnabled,
     }
@@ -332,9 +332,9 @@ export const useNftsByAccountByCollectionSequencer = (
     async () =>
       getNftsByAccountSequencer(lcdEndpoint, accountAddress, collectionAddress),
     {
-      enabled,
-      refetchOnWindowFocus: false,
       retry: 1,
+      refetchOnWindowFocus: false,
+      enabled,
     }
   );
 };

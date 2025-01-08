@@ -40,15 +40,15 @@ const Block = forwardRef<HTMLDivElement, BlockProps>(
           />
           {ref && (
             <Box
+              ref={ref}
+              position="absolute"
+              bottom="-16px"
+              left="1px"
               width="0"
               height="0"
-              left="1px"
               borderBottom="6px solid var(--chakra-colors-text-dark)"
               borderLeft="5px solid transparent"
               borderRight="5px solid transparent"
-              bottom="-16px"
-              position="absolute"
-              ref={ref}
             />
           )}
         </Box>
@@ -64,7 +64,7 @@ interface RecentBlocksSectionProps {
 export const RecentBlocksSection = ({
   validatorAddress,
 }: RecentBlocksSectionProps) => {
-  const { data, dataUpdatedAt, isLoading } = useValidatorUptime(
+  const { data, isLoading, dataUpdatedAt } = useValidatorUptime(
     validatorAddress,
     100
   );
@@ -112,18 +112,18 @@ export const RecentBlocksSection = ({
 
   return (
     <Flex
-      gap={4}
-      pb={10}
-      w="full"
       direction="column"
-      position="relative"
+      w="full"
+      gap={4}
       ref={parentRef}
+      position="relative"
+      pb={10}
     >
       <Flex
-        align={{ base: "start", md: "center" }}
-        justify="space-between"
-        w="full"
         direction={{ base: "column", md: "row" }}
+        justify="space-between"
+        align={{ base: "start", md: "center" }}
+        w="full"
       >
         <Heading as="h6" variant="h6" color="text.main">
           Most Recent 100 Blocks
@@ -133,9 +133,9 @@ export const RecentBlocksSection = ({
         </Text>
       </Flex>
       <Grid
-        width="full"
-        gap={1}
         templateColumns="repeat(auto-fit, minmax(12px, 1fr))"
+        gap={1}
+        width="full"
       >
         {data.recent100Blocks
           .map((block, index) => (
@@ -149,9 +149,9 @@ export const RecentBlocksSection = ({
       </Grid>
       <Text
         variant="body2"
-        bottom="0"
         color="text.dark"
         position="absolute"
+        bottom="0"
         ref={hoverTextRef}
       >
         Most Recent Block: {data.recent100Blocks[0]?.height ?? "N/A"}

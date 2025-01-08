@@ -10,19 +10,19 @@ import { extractMsgType } from "lib/utils";
 
 import { TableRow } from "./tableComponents";
 
-interface AccordionTxProps extends RenderButtonProps {
-  accordionSpacing?: GridItemProps["pl"];
-  allowFurtherAction: boolean;
-  isSigner?: boolean;
-}
-
 interface RenderButtonProps {
   message: Message;
-  msgIndex?: number;
   txHash: string;
+  msgIndex?: number;
 }
 
-const RenderButton = ({ message, msgIndex, txHash }: RenderButtonProps) => {
+interface AccordionTxProps extends RenderButtonProps {
+  allowFurtherAction: boolean;
+  isSigner?: boolean;
+  accordionSpacing?: GridItemProps["pl"];
+}
+
+const RenderButton = ({ message, txHash, msgIndex }: RenderButtonProps) => {
   if (
     extractMsgType(message.type) === "MsgExecuteContract" ||
     extractMsgType(message.type) === "MsgInstantiateContract"
@@ -31,48 +31,48 @@ const RenderButton = ({ message, msgIndex, txHash }: RenderButtonProps) => {
 
   if (extractMsgType(message.type) === "MsgSend")
     return (
-      <ResendButton messages={[message]} msgIndex={msgIndex} txHash={txHash} />
+      <ResendButton messages={[message]} txHash={txHash} msgIndex={msgIndex} />
     );
 
   return null;
 };
 
 export const AccordionTx = ({
-  accordionSpacing = "260px",
+  message,
+  txHash,
+  msgIndex,
   allowFurtherAction,
   isSigner = false,
-  message,
-  msgIndex,
-  txHash,
+  accordionSpacing = "260px",
 }: AccordionTxProps) => {
   const [showButton, setShowButton] = useState(false);
   return (
     <TableRow
       className="accordion-stepper-wrapper"
-      gap={3}
-      h="40px"
       minH={0}
-      pl={accordionSpacing}
-      _hover={{ background: "gray.800" }}
+      h="40px"
       borderBottom="none"
+      pl={accordionSpacing}
+      gap={3}
+      _hover={{ background: "gray.800" }}
+      transition="all 0.25s ease-in-out"
       onMouseEnter={() => setShowButton(true)}
       onMouseLeave={() => setShowButton(false)}
-      transition="all 0.25s ease-in-out"
     >
       <AccordionStepperItem />
-      <Flex alignItems="center" gap={1}>
+      <Flex gap={1} alignItems="center">
         <SingleActionMsg
           messages={[message]}
-          singleMsg
-          success
           type={extractMsgType(message.type)}
+          success
+          singleMsg
         />
         {allowFurtherAction && isSigner && (
           <SlideFade in={showButton} offsetY="20px">
             <RenderButton
               message={message}
-              msgIndex={msgIndex}
               txHash={txHash}
+              msgIndex={msgIndex}
             />
           </SlideFade>
         )}

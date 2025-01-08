@@ -8,10 +8,10 @@ import { fonts } from "lib/styles/theme/fonts";
 export const ChakraProvider = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useCelatoneApp();
   const customTheme = extendTheme({
-    colors: theme.colors,
-    components,
-    config,
     fonts,
+    config,
+    components,
+    colors: theme.colors,
   });
   return <Provider theme={customTheme}>{children}</Provider>;
 };

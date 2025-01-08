@@ -15,41 +15,37 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface UpdateAdminTxParams {
   address: BechAddr20;
-  fee: StdFee;
   messages: EncodeObject[];
-  onTxFailed?: () => void;
-  onTxSucceed?: () => void;
+  fee: StdFee;
   signAndBroadcast: SignAndBroadcast;
+  onTxSucceed?: () => void;
+  onTxFailed?: () => void;
 }
 
 export const updateAdminTx = ({
   address,
-  fee,
   messages,
-  onTxFailed,
-  onTxSucceed,
+  fee,
   signAndBroadcast,
+  onTxSucceed,
+  onTxFailed,
 }: UpdateAdminTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, fee, messages }),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
       const txFee = findAttr(txInfo.events, "tx", "fee");
 
       return {
-        actionVariant: "update-admin",
+        value: null,
         phase: TxStreamPhase.SUCCEED,
-        receiptInfo: {
-          header: "Update Admin Complete!",
-          headerIcon: (
-            <CustomIcon name="check-circle-solid" color="success.main" />
-          ),
-        },
         receipts: [
           {
+            title: "Tx Hash",
+            value: txInfo.transactionHash,
             html: (
               <ExplorerLink
                 type="tx_hash"
@@ -57,20 +53,24 @@ export const updateAdminTx = ({
                 openNewTab
               />
             ),
-            title: "Tx Hash",
-            value: txInfo.transactionHash,
           },
           {
+            title: "Tx Fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
-            title: "Tx Fee",
           },
         ],
-        value: null,
+        receiptInfo: {
+          header: "Update Admin Complete!",
+          headerIcon: (
+            <CustomIcon name="check-circle-solid" color="success.main" />
+          ),
+        },
+        actionVariant: "update-admin",
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

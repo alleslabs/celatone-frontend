@@ -9,42 +9,42 @@ import { useModuleTxs } from "lib/services/move/module";
 import type { HexAddr, Option } from "lib/types";
 
 interface ModuleTxsTableProps {
+  vmAddress: HexAddr;
   moduleName: string;
+  txCount: Option<number>;
   onViewMore?: () => void;
   scrollComponentId?: string;
-  txCount: Option<number>;
-  vmAddress: HexAddr;
 }
 
 export const ModuleTxsTable = ({
+  vmAddress,
   moduleName,
+  txCount,
   onViewMore,
   scrollComponentId,
-  txCount,
-  vmAddress,
 }: ModuleTxsTableProps) => {
   const { currentChainId } = useCelatoneApp();
 
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
+    currentPage,
     setCurrentPage,
+    pageSize,
     setPageSize,
+    offset,
   } = usePaginator({
+    total: txCount,
     initialState: {
+      pageSize: onViewMore ? 5 : 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: onViewMore ? 5 : 10,
     },
-    total: txCount,
   });
 
   const {
     data: moduleTxs,
-    error,
     isLoading,
+    error,
   } = useModuleTxs(vmAddress, moduleName, pageSize, offset);
 
   useEffect(() => {
@@ -55,21 +55,21 @@ export const ModuleTxsTable = ({
   return (
     <>
       <TransactionsTable
+        transactions={moduleTxs?.items}
+        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="transactions" />
           ) : (
             <EmptyState
+              withBorder
               imageVariant="empty"
               message="There are no transactions on this module."
-              withBorder
             />
           )
         }
-        isLoading={isLoading}
         showAction={false}
         showRelations={false}
-        transactions={moduleTxs?.items}
       />
       {!!txCount &&
         (onViewMore
@@ -77,9 +77,10 @@ export const ModuleTxsTable = ({
           : txCount > 10 && (
               <Pagination
                 currentPage={currentPage}
-                pageSize={pageSize}
                 pagesQuantity={pagesQuantity}
                 offset={offset}
+                totalData={txCount}
+                pageSize={pageSize}
                 onPageChange={setCurrentPage}
                 onPageSizeChange={(e) => {
                   const size = Number(e.target.value);
@@ -87,7 +88,6 @@ export const ModuleTxsTable = ({
                   setCurrentPage(1);
                 }}
                 scrollComponentId={scrollComponentId}
-                totalData={txCount}
               />
             ))}
     </>

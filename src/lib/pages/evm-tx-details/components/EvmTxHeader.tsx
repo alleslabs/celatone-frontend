@@ -10,13 +10,13 @@ import type { TxData, TxDataJsonRpc } from "lib/services/types";
 import { dateFromNow, formatEvmTxHash, formatUTC } from "lib/utils";
 
 interface EvmTxHeaderProps extends FlexProps {
-  cosmosTxData: TxData;
   evmTxData: TxDataJsonRpc;
+  cosmosTxData: TxData;
 }
 
 export const EvmTxHeader = ({
-  cosmosTxData,
   evmTxData,
+  cosmosTxData,
   ...flexProps
 }: EvmTxHeaderProps) => {
   const isMobile = useMobile();
@@ -24,8 +24,8 @@ export const EvmTxHeader = ({
   const isTxFailed = !evmTxData.txReceipt.status;
 
   return (
-    <Flex gap={2} direction="column" {...flexProps}>
-      <Flex align="center" justify="space-between">
+    <Flex direction="column" gap={2} {...flexProps}>
+      <Flex justify="space-between" align="center">
         <Flex gap={2} mb={{ base: 2, md: 0 }}>
           <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
             EVM Transaction Details
@@ -39,9 +39,9 @@ export const EvmTxHeader = ({
               {isTxFailed ? (
                 <>
                   <CustomIcon
-                    m={0}
                     name="close-circle-solid"
                     boxSize={3}
+                    m={0}
                     color="error.main"
                   />
                   <Text variant="body2" color="error.main">
@@ -51,9 +51,9 @@ export const EvmTxHeader = ({
               ) : (
                 <>
                   <CustomIcon
-                    m={0}
                     name="check-circle-solid"
                     boxSize={3}
+                    m={0}
                     color="success.main"
                   />
                   <Text variant="body2" color="success.main">
@@ -67,6 +67,7 @@ export const EvmTxHeader = ({
         {!isMobile && (
           <Button
             variant="ghost-gray"
+            rightIcon={<CustomIcon name="launch" boxSize={3} m={0} />}
             onClick={() => {
               trackUseViewJSON("evm_tx_page_transaction_hash");
               const jsonString = JSON.stringify(evmTxData, null, 2);
@@ -87,7 +88,6 @@ export const EvmTxHeader = ({
                 );
               }
             }}
-            rightIcon={<CustomIcon m={0} name="launch" boxSize={3} />}
           >
             View in JSON
           </Button>
@@ -95,20 +95,20 @@ export const EvmTxHeader = ({
       </Flex>
       <Flex
         gap={{ base: 1, md: 2 }}
+        fontSize="14px"
         w="full"
         direction={{ base: "column", md: "row" }}
-        fontSize="14px"
       >
-        <Text variant="body2" color="text.dark" fontWeight={500}>
+        <Text variant="body2" fontWeight={500} color="text.dark">
           Transaction Hash:
         </Text>
         <CopyLink
-          type="tx_hash"
           value={formatEvmTxHash(evmTxData.tx.hash)}
           amptrackSection="tx_header"
+          type="tx_hash"
         />
       </Flex>
-      <Flex align="center" gap={2} color="text.dark" fontSize="14px">
+      <Flex gap={2} fontSize="14px" color="text.dark" align="center">
         {!isMobile && (
           <Flex
             align="center"
@@ -118,9 +118,9 @@ export const EvmTxHeader = ({
             {isTxFailed ? (
               <>
                 <CustomIcon
-                  m={0}
                   name="close-circle-solid"
                   boxSize={3}
+                  m={0}
                   color="error.main"
                 />
                 <Text variant="body2" color="error.main">
@@ -130,9 +130,9 @@ export const EvmTxHeader = ({
             ) : (
               <>
                 <CustomIcon
-                  m={0}
                   name="check-circle-solid"
                   boxSize={3}
+                  m={0}
                   color="success.main"
                 />
                 <Text variant="body2" color="success.main">
@@ -142,21 +142,21 @@ export const EvmTxHeader = ({
             )}
           </Flex>
         )}
-        <Flex alignItems="center" gap={1}>
+        <Flex gap={1} alignItems="center">
           <CustomIcon name="history" boxSize={3} color="gray.600" />
           <Text
-            display="inline"
             variant={{ base: "body3", md: "body2" }}
             color="text.dark"
+            display="inline"
           >
             {dateFromNow(cosmosTxData.timestamp)}
           </Text>
         </Flex>
         <DotSeparator />
         <Text
-          display="inline"
           variant={{ base: "body3", md: "body2" }}
           color="text.dark"
+          display="inline"
         >
           {formatUTC(cosmosTxData.timestamp)}
         </Text>

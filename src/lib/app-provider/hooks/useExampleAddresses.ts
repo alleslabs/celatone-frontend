@@ -25,8 +25,8 @@ export const useExampleAddresses = () => {
     const validator = addrToValoper(user);
 
     return {
-      contract,
       user,
+      contract,
       validator,
     };
   };

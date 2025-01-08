@@ -14,56 +14,56 @@ import type {
 export enum PoolType {
   ALL = "All",
   BALANCER = "Balancer",
-  CL = "Concentrated",
-  COSMWASM = "CosmWasm",
   STABLESWAP = "Stableswap",
-}
-
-export interface Pool {
-  contractAddress: Nullish<BechAddr32>;
-  id: number;
-  isSuperfluid: boolean;
-  liquidity: TokenWithValue[];
-  type: PoolType;
-}
-
-export interface PoolData extends Pool {
-  address: BechAddr32;
-  contractAddress: Nullish<BechAddr32>;
-  createdHeight: Option<number>;
-  creator: Option<BechAddr>;
-  exitFee: string;
-  futurePoolGovernor: string;
-  isSupported: boolean;
-  scalingFactorController: Nullable<string>;
-  scalingFactors: Nullable<number[]>;
-  smoothWeightChangeParams: Nullable<object>;
-  spreadFactor: Nullable<string>;
-  swapFee: string;
-  tickSpacing: Nullable<number>;
-  weight: Nullable<PoolWeight[]>;
-}
-
-// MARK: move
-export interface PoolInfo {
-  coinA: {
-    amount: U<Token<Big>>;
-    denom: string;
-    precision: Option<number>;
-    symbol: Option<string>;
-  };
-  coinB: {
-    amount: U<Token<Big>>;
-    denom: string;
-    precision: Option<number>;
-    symbol: Option<string>;
-  };
+  COSMWASM = "CosmWasm",
+  CL = "Concentrated",
 }
 
 export type PoolTypeFilter = PoolType;
 
 export interface PoolWeight {
   denom: string;
-  percentWeight: Nullable<string>;
   weight: Big;
+  percentWeight: Nullable<string>;
+}
+
+export interface Pool {
+  id: number;
+  type: PoolType;
+  isSuperfluid: boolean;
+  liquidity: TokenWithValue[];
+  contractAddress: Nullish<BechAddr32>;
+}
+
+export interface PoolData extends Pool {
+  isSupported: boolean;
+  createdHeight: Option<number>;
+  creator: Option<BechAddr>;
+  address: BechAddr32;
+  swapFee: string;
+  exitFee: string;
+  futurePoolGovernor: string;
+  weight: Nullable<PoolWeight[]>;
+  smoothWeightChangeParams: Nullable<object>;
+  scalingFactors: Nullable<number[]>;
+  scalingFactorController: Nullable<string>;
+  spreadFactor: Nullable<string>;
+  tickSpacing: Nullable<number>;
+  contractAddress: Nullish<BechAddr32>;
+}
+
+// MARK: move
+export interface PoolInfo {
+  coinA: {
+    amount: U<Token<Big>>;
+    precision: Option<number>;
+    denom: string;
+    symbol: Option<string>;
+  };
+  coinB: {
+    amount: U<Token<Big>>;
+    precision: Option<number>;
+    denom: string;
+    symbol: Option<string>;
+  };
 }

@@ -16,16 +16,16 @@ import {
 
 interface AssetCardProps extends FlexProps {
   amount: string;
-  ampCopierSection?: string;
-  assetInfo: Option<AssetInfo>;
   denom: string;
+  assetInfo: Option<AssetInfo>;
+  ampCopierSection?: string;
 }
 
 export const AssetCard = ({
   amount,
-  ampCopierSection,
-  assetInfo,
   denom,
+  assetInfo,
+  ampCopierSection,
   ...cardProps
 }: AssetCardProps) => {
   const symbol = getTokenLabel(denom, assetInfo?.symbol, false);
@@ -33,49 +33,49 @@ export const AssetCard = ({
     <Tooltip label={`Token ID: ${denom}`} maxW="240px" textAlign="center">
       <Flex
         className="copier-wrapper"
-        gap={2}
-        minH="100px"
-        p={3}
+        direction="column"
         w="full"
+        minH="100px"
+        gap={2}
+        p={3}
         background="gray.800"
         borderRadius="8px"
-        direction="column"
         {...cardProps}
       >
         <Flex
-          alignItems="center"
           gap={1}
-          pb={2}
+          alignItems="center"
           borderBottom="1px solid"
           borderBottomColor="gray.700"
+          pb={2}
         >
           <Image
+            boxSize={6}
+            src={assetInfo?.logo ?? getUndefinedTokenIcon(denom)}
             alt={symbol}
             fallback={<NAToken />}
             fallbackStrategy="beforeLoadOrError"
-            src={assetInfo?.logo ?? getUndefinedTokenIcon(denom)}
-            boxSize={6}
           />
-          <Text className="ellipsis" variant="body2" fontWeight="bold">
+          <Text variant="body2" className="ellipsis" fontWeight="bold">
             {symbol}
           </Text>
           {assetInfo && (
-            <Badge ml="6px" variant="gray">
+            <Badge variant="gray" ml="6px">
               {formatPrice(assetInfo.price as USD<number>)}
             </Badge>
           )}
           <Copier
-            display="none"
-            ml="1px"
             type={assetInfo?.price ? "supported_asset" : "unsupported_asset"}
             value={denom}
-            amptrackSection={ampCopierSection}
             copyLabel="Token ID Copied!"
+            display="none"
+            ml="1px"
+            amptrackSection={ampCopierSection}
           />
         </Flex>
 
         <Flex direction="column">
-          <Text variant="body2" fontWeight="700">
+          <Text fontWeight="700" variant="body2">
             {formatUTokenWithPrecision(
               amount as U<Token>,
               assetInfo?.precision ?? 0,

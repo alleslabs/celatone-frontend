@@ -4,15 +4,15 @@ import { Flex, Text } from "@chakra-ui/react";
 import { TooltipInfo } from "lib/components/Tooltip";
 
 interface TotalCardTopProps {
-  fontWeight: TextProps["fontWeight"];
-  message: string;
   title: string;
+  message: string;
+  fontWeight: TextProps["fontWeight"];
 }
 
 export const TotalCardTop = ({
-  fontWeight,
-  message,
   title,
+  message,
+  fontWeight,
 }: TotalCardTopProps) => (
   <Flex alignItems="center" gap={2}>
     <Text variant="body2" fontWeight={fontWeight} textColor="text.dark">

@@ -3,32 +3,32 @@ import { Spinner, Text } from "@chakra-ui/react";
 import { CustomIcon } from "../icon";
 import type { Nullable } from "lib/types";
 
+export type ResponseState = "init" | "loading" | "success" | "error";
+
 export interface FormStatus {
+  state: ResponseState;
   message?: Nullable<string>;
   messageColor?: string;
-  state: ResponseState;
 }
-
-export type ResponseState = "error" | "init" | "loading" | "success";
 
 export const getStatusIcon = (state: ResponseState, boxSize = "1em") => {
   switch (state) {
-    case "error":
-      return (
-        <CustomIcon
-          name="alert-triangle-solid"
-          boxSize={boxSize}
-          color="error.light"
-        />
-      );
     case "loading":
       return <Spinner size="sm" />;
     case "success":
       return (
         <CustomIcon
           name="check-circle-solid"
-          boxSize={boxSize}
           color="success.main"
+          boxSize={boxSize}
+        />
+      );
+    case "error":
+      return (
+        <CustomIcon
+          name="alert-triangle-solid"
+          color="error.light"
+          boxSize={boxSize}
         />
       );
     case "init":
@@ -39,15 +39,15 @@ export const getStatusIcon = (state: ResponseState, boxSize = "1em") => {
 
 export const getResponseMsg = (statusInfo: FormStatus, helperText = "") => {
   switch (statusInfo.state) {
-    case "error":
+    case "success":
       return (
-        <Text variant="body3" color={statusInfo.messageColor ?? "error.main"}>
+        <Text color={statusInfo.messageColor ?? "success.main"} variant="body3">
           {statusInfo.message}
         </Text>
       );
-    case "success":
+    case "error":
       return (
-        <Text variant="body3" color={statusInfo.messageColor ?? "success.main"}>
+        <Text color={statusInfo.messageColor ?? "error.main"} variant="body3">
           {statusInfo.message}
         </Text>
       );
@@ -55,7 +55,7 @@ export const getResponseMsg = (statusInfo: FormStatus, helperText = "") => {
     case "loading":
     default:
       return (
-        <Text variant="body3" color={statusInfo.messageColor ?? "text.dark"}>
+        <Text color={statusInfo.messageColor ?? "text.dark"} variant="body3">
           {helperText}
         </Text>
       );

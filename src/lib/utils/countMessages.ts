@@ -30,35 +30,35 @@ const getMessageCount = (messages: Message[], type: string) =>
 
 export const countMessages = (messages: Message[]) => [
   {
-    count: getMessageCount(messages, "MsgExecuteContract"),
     type: "Execute",
+    count: getMessageCount(messages, "MsgExecuteContract"),
   },
   {
-    count: getMessageCount(messages, "MsgInstantiateContract"),
     type: "Instantiate",
+    count: getMessageCount(messages, "MsgInstantiateContract"),
   },
   {
-    count: getMessageCount(messages, "MsgStoreCode"),
     type: "Upload",
+    count: getMessageCount(messages, "MsgStoreCode"),
   },
   {
-    count: getMessageCount(messages, "MsgSend"),
     type: "Send",
+    count: getMessageCount(messages, "MsgSend"),
   },
   {
-    count: getMessageCount(messages, "MsgMigrateContract"),
     type: "Migrate",
+    count: getMessageCount(messages, "MsgMigrateContract"),
   },
   {
-    count: getMessageCount(messages, "MsgClearAdmin"),
     type: "Clear Admin",
+    count: getMessageCount(messages, "MsgClearAdmin"),
   },
   {
-    count: getMessageCount(messages, "MsgUpdateAdmin"),
     type: "Update Admin",
+    count: getMessageCount(messages, "MsgUpdateAdmin"),
   },
   {
-    count: getUnSupportedMessageCount(messages),
     type: "Message",
+    count: getUnSupportedMessageCount(messages),
   },
 ];

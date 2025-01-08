@@ -13,14 +13,14 @@ export const NonRedelegatablesTableMobileCard = ({
   nonRedelegatable,
 }: NonRedelegatablesTableMobileCardProps) => (
   <Flex
+    direction="column"
     gap={2}
-    minW={0}
-    my={3}
-    pt={3}
     w="full"
+    minW={0}
     borderTop="1px solid"
     borderTopColor="gray.700"
-    direction="column"
+    pt={3}
+    my={3}
   >
     <MobileLabel label="Cannot Redelegate From" />
     <ValidatorBadge validator={nonRedelegatable.dstValidator} />

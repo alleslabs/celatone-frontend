@@ -4,20 +4,20 @@ import { useMobile } from "lib/app-provider";
 import { TooltipInfo } from "lib/components/Tooltip";
 
 const InfoComponent = ({
-  content,
   title,
   tooltip,
+  content,
 }: {
-  content?: number;
   title: string;
   tooltip: string;
+  content?: number;
 }) => (
   <div>
     <Flex align="center" gap="4px">
       <Text
-        variant="body2"
         whiteSpace="nowrap"
         color="gray.400"
+        variant="body2"
         fontWeight={600}
       >
         {title}
@@ -31,17 +31,17 @@ const InfoComponent = ({
 );
 
 interface CollectionSupplyInfoProps {
-  currentSupply: number;
-  maxSupply?: number;
   totalBurned: number;
   totalMinted: number;
+  currentSupply: number;
+  maxSupply?: number;
 }
 
 export const CollectionSupplyInfo = ({
-  currentSupply,
-  maxSupply,
   totalBurned,
   totalMinted,
+  currentSupply,
+  maxSupply,
 }: CollectionSupplyInfoProps) => {
   const isMobile = useMobile();
 
@@ -55,22 +55,22 @@ export const CollectionSupplyInfo = ({
     "The maximum number of NFTs that can ever be minted in this collection.";
 
   return isMobile ? (
-    <Stack bg="gray.900" p="16px" spacing="16px" borderRadius="8px">
+    <Stack p="16px" spacing="16px" borderRadius="8px" bg="gray.900">
       <div>
-        <Flex align="center" gap="4px" fontSize="14px" fontWeight={600}>
+        <Flex fontSize="14px" fontWeight={600} align="center" gap="4px">
           <Text color="gray.400">Current Supply (Minted - Burned)</Text>
           <TooltipInfo label={currentSupplyTooltip} />
         </Flex>
-        <Flex align="end" gap="8px" fontWeight={600}>
+        <Flex fontWeight={600} align="end" gap="8px">
           <Text fontSize="16px">{currentSupply}</Text>
-          <Text color="gray.400" fontSize="12px">
+          <Text fontSize="12px" color="gray.400">
             ({totalMinted} - {totalBurned})
           </Text>
         </Flex>
       </div>
-      <Divider borderColor="gray.700" opacity={1} />
+      <Divider opacity={1} borderColor="gray.700" />
       <div>
-        <Flex align="center" gap="4px" fontSize="14px" fontWeight={600}>
+        <Flex fontSize="14px" fontWeight={600} align="center" gap="4px">
           <Text color="gray.400">Max Supply</Text>
           <TooltipInfo label={maxSupplyTooltip} />
         </Flex>
@@ -82,20 +82,20 @@ export const CollectionSupplyInfo = ({
   ) : (
     <Flex
       align="center"
-      bg="gray.900"
       mt="24px"
       p="16px"
       w="100%"
+      bg="gray.900"
       borderRadius="8px"
       overflow="auto"
     >
-      <Flex align="center" gap="40px" w="100%">
+      <Flex gap="40px" align="center" w="100%">
         <InfoComponent
           title="Current Supply"
           content={currentSupply}
           tooltip={currentSupplyTooltip}
         />
-        <Text color="gray.100" fontSize="24px" fontWeight={600}>
+        <Text fontSize="24px" fontWeight={600} color="gray.100">
           =
         </Text>
         <InfoComponent
@@ -103,7 +103,7 @@ export const CollectionSupplyInfo = ({
           content={totalMinted}
           tooltip={totalMintedTooltip}
         />
-        <Text color="gray.100" fontSize="24px" fontWeight={600}>
+        <Text fontSize="24px" fontWeight={600} color="gray.100">
           -
         </Text>
         <InfoComponent
@@ -113,8 +113,8 @@ export const CollectionSupplyInfo = ({
         />
       </Flex>
 
-      <Flex align="center" gap="48px" ml="48px" w="248px">
-        <Divider borderWidth="1px" height="47px" orientation="vertical" />
+      <Flex w="248px" gap="48px" align="center" ml="48px">
+        <Divider orientation="vertical" height="47px" borderWidth="1px" />
         <InfoComponent
           title="Max Supply"
           content={maxSupply}

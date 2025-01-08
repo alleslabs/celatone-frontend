@@ -9,24 +9,24 @@ interface CodeHashBoxProps {
 export const CodeHashBox = ({ codeHash }: CodeHashBoxProps) => (
   <Box position="relative">
     <Text
-      left={3}
-      px="1px"
+      position="absolute"
       variant="body3"
       color="text.dark"
-      position="absolute"
+      px="1px"
       top="-10px"
+      left={3}
     >
       Code Hash
     </Text>
     <Box
-      bg="gray.800"
-      h="56px"
+      border="1px"
+      borderRadius="5px"
       px={3}
       py={4}
-      w="full"
-      border="1px"
       borderColor="gray.700"
-      borderRadius="5px"
+      bg="gray.800"
+      h="56px"
+      w="full"
       overflowX="auto"
       overflowY="hidden"
     >

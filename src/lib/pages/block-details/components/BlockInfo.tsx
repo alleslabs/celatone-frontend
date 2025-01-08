@@ -25,7 +25,7 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
           gap={{ base: 4, md: 12 }}
           direction={{ base: "column", md: "row" }}
         >
-          <Flex flex={1} gap={1} maxW={{ md: "400px" }} direction="row">
+          <Flex direction="row" gap={1} flex={1} maxW={{ md: "400px" }}>
             <LabelText flex={1} label="Network">
               {currentChainId}
             </LabelText>
@@ -35,7 +35,7 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
               }`}
             </LabelText>
           </Flex>
-          <LabelText flex={1} label="Proposed by" minW={0}>
+          <LabelText label="Proposed by" flex={1} minW={0}>
             <ValidatorBadge
               validator={blockData.proposer}
               badgeSize={6}
@@ -44,11 +44,11 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
           </LabelText>
         </Flex>
       ) : (
-        <Flex flex={1} maxW={{ md: "400px" }} direction="row">
+        <Flex direction="row" flex={1} maxW={{ md: "400px" }}>
           <LabelText flex={1} label="Network">
             {currentChainId}
           </LabelText>
-          <LabelText flex={1} label="Proposed by" minW={0}>
+          <LabelText label="Proposed by" flex={1} minW={0}>
             <ValidatorBadge
               validator={blockData.proposer}
               badgeSize={6}

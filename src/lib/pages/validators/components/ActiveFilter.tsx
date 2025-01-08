@@ -7,20 +7,20 @@ import { SelectInput } from "lib/components/forms";
 import type { Option } from "lib/types";
 
 interface ActiveFilterProps {
-  activeCount: Option<number>;
-  inactiveCount: Option<number>;
   isActive: boolean;
   setIsActive: (value: boolean) => void;
+  activeCount: Option<number>;
+  inactiveCount: Option<number>;
 }
 
 const getOptionLabel = (label: string, count: Option<number>) =>
   label + (!isUndefined(count) ? ` (${count})` : "");
 
 export const ActiveFilter = ({
-  activeCount,
-  inactiveCount,
   isActive,
   setIsActive,
+  activeCount,
+  inactiveCount,
 }: ActiveFilterProps) => {
   const activeOptions = useMemo(
     () => [
@@ -43,17 +43,17 @@ export const ActiveFilter = ({
   };
 
   return (
-    <Flex gap={1} minW={{ base: "full", md: "256px" }} direction="column">
-      <Text pl={{ base: 1, md: 3 }} variant="body3" color="text.dark">
+    <Flex direction="column" gap={1} minW={{ base: "full", md: "256px" }}>
+      <Text variant="body3" color="text.dark" pl={{ base: 1, md: 3 }}>
         Show only
       </Text>
       <SelectInput
-        value={activeOptions.find(({ value }) => value === isActive)}
+        options={activeOptions}
         menuPortalTarget={document.body}
+        value={activeOptions.find(({ value }) => value === isActive)}
         onChange={(selectedOption) =>
           selectedOption && handleOnChange(selectedOption.value)
         }
-        options={activeOptions}
       />
     </Flex>
   );

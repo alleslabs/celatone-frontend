@@ -19,10 +19,10 @@ export const useRecentContracts = (
         const localInfo = getContractLocalInfo(contract.contractAddress);
         return {
           ...contract,
-          description: localInfo?.description,
-          lists: localInfo?.lists,
           name: localInfo?.name,
+          description: localInfo?.description,
           tags: localInfo?.tags,
+          lists: localInfo?.lists,
         };
       }),
       total: contracts.total,

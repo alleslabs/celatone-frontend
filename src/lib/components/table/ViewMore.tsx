@@ -5,25 +5,25 @@ import { CustomIcon } from "../icon";
 import { trackUseViewMore } from "lib/amplitude";
 
 interface ViewMoreProps {
+  onClick: () => void;
   borderRadius?: BorderProps["borderRadius"];
   minH?: LayoutProps["minH"];
-  onClick: () => void;
   text?: string;
 }
 
 export const ViewMore = ({
+  onClick,
   borderRadius = "0",
   minH = "64px",
-  onClick,
   text = "View More",
 }: ViewMoreProps) => (
-  <Flex textAlign="center" w="full" justifyContent="center">
+  <Flex w="full" justifyContent="center" textAlign="center">
     <Button
-      gap={2}
-      minH={minH}
-      variant="ghost-gray"
       w="full"
       borderRadius={borderRadius}
+      minH={minH}
+      variant="ghost-gray"
+      gap={2}
       onClick={() => {
         trackUseViewMore();
         onClick();

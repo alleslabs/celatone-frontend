@@ -11,21 +11,21 @@ import { mergeModulePath } from "lib/utils";
 
 export const RecentModulesTable = () => {
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
-    setCurrentPage,
-    setPageSize,
     setTotalData,
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    setPageSize,
+    offset,
   } = usePaginator({
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
   });
-  const { data, error, isLoading } = useModules(pageSize, offset, {
+  const { data, isLoading, error } = useModules(pageSize, offset, {
     onSuccess: ({ total }) => setTotalData(total),
   });
 
@@ -53,34 +53,34 @@ export const RecentModulesTable = () => {
   return (
     <>
       <ModulesTable
+        modules={data?.items}
+        moveVerifyInfos={moveVerifyInfos}
+        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="modules" />
           ) : (
             <EmptyState
+              withBorder
               imageVariant="empty"
               message="There are no modules on this network yet."
-              withBorder
             />
           )
         }
-        isLoading={isLoading}
-        modules={data?.items}
-        moveVerifyInfos={moveVerifyInfos}
       />
       {!!data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={data.total}
+          pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
           }}
-          totalData={data.total}
         />
       )}
     </>

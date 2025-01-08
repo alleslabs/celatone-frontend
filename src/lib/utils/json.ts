@@ -44,7 +44,7 @@ export const isNonEmptyJsonData = (jsonData: JsonDataType): boolean => {
 };
 
 export const getDefaultMsg = (msgSchema: SchemaInfo) => {
-  const { enum: enumOptions, properties, required, type } = msgSchema.schema;
+  const { type, required, enum: enumOptions, properties } = msgSchema.schema;
   if (type === "object") {
     if (required && properties) {
       const propertyName = Object.keys(properties)[0];
@@ -63,7 +63,7 @@ export const resolveInitialMsg = (
   msgSchema: SchemaInfo
 ) => {
   const parsed = parseJsonStr(initialMsg);
-  const { enum: enumOptions, required } = msgSchema.schema;
+  const { required, enum: enumOptions } = msgSchema.schema;
   if (
     typeof parsed === "object" &&
     Object.keys(parsed as object)[0] === required?.[0]

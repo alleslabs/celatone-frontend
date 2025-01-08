@@ -9,37 +9,37 @@ import type { BechAddr32, Option } from "lib/types";
 
 interface RelatedProposalsTableProps {
   contractAddress: BechAddr32;
-  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
+  refetchCount: () => void;
 }
 
 export const RelatedProposalsTable = ({
   contractAddress,
-  refetchCount,
   scrollComponentId,
   totalData,
+  refetchCount,
 }: RelatedProposalsTableProps) => {
   const {
-    currentPage,
-    offset,
-    pageSize,
     pagesQuantity,
+    currentPage,
     setCurrentPage,
+    pageSize,
     setPageSize,
+    offset,
   } = usePaginator({
+    total: totalData,
     initialState: {
+      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
-      pageSize: 10,
     },
-    total: totalData,
   });
 
   const {
     data: relatedProposals,
-    error,
     isLoading,
+    error,
   } = useRelatedProposalsByContractAddress(contractAddress, offset, pageSize);
 
   const onPageChange = (nextPage: number) => {
@@ -57,6 +57,8 @@ export const RelatedProposalsTable = ({
   return (
     <>
       <ProposalsTable
+        proposals={relatedProposals?.items}
+        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="related proposals" />
@@ -67,19 +69,17 @@ export const RelatedProposalsTable = ({
             />
           )
         }
-        isLoading={isLoading}
-        proposals={relatedProposals?.items}
       />
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
-          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
+          totalData={totalData}
+          scrollComponentId={scrollComponentId}
+          pageSize={pageSize}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
-          scrollComponentId={scrollComponentId}
-          totalData={totalData}
         />
       )}
     </>

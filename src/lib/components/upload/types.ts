@@ -1,15 +1,15 @@
 import type { StdFee } from "@cosmjs/stargate";
 
-export type CardTheme = "gray" | "primary";
+export type SimulateStatus = "pending" | "completed" | "failed";
 
-export type SimulateStatus = "completed" | "failed" | "pending";
+export type CardTheme = "primary" | "gray";
 
 export type Status = "error" | "info" | "init";
 
 export interface UploadSectionState {
+  wasmFile?: File;
   codeName: string;
   estimatedFee?: StdFee;
-  simulateError: string;
   simulateStatus: SimulateStatus;
-  wasmFile?: File;
+  simulateError: string;
 }

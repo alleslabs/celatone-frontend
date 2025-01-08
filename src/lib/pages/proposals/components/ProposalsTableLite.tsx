@@ -24,8 +24,8 @@ export const ProposalsTableLite = () => {
     error: proposalsError,
     fetchNextPage,
     hasNextPage,
-    isFetchingNextPage,
     isLoading: isProposalsLoading,
+    isFetchingNextPage,
   } = useProposalsLcd(status[0]);
 
   const { data: proposalData, isFetching: isProposalDataFetching } =
@@ -45,34 +45,34 @@ export const ProposalsTableLite = () => {
   return (
     <>
       <Grid
+        mt={8}
+        mb={{ base: 10, md: 8 }}
         gridTemplateColumns={{ base: "1fr", md: "1fr 370px" }}
         gap={{ base: 4, md: 6 }}
-        mb={{ base: 10, md: 8 }}
-        mt={8}
       >
         <GridItem>
           <InputWithIcon
-            size="lg"
-            value={search}
-            amptrackSection="proposal-list-search"
-            onChange={(e) => setSearch(e.target.value)}
             placeholder="Search with Proposal ID"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            size="lg"
+            amptrackSection="proposal-list-search"
           />
         </GridItem>
         <GridItem>
           <ProposalStatusFilter
-            isMulti={false}
             label="Filter by Status"
             result={status}
             setResult={setStatus}
             placeholder="All Status"
+            isMulti={false}
           />
         </GridItem>
       </Grid>
       {showAlert && (
-        <Alert gap={4} variant="info">
-          <CustomIcon name="info-circle" boxSize={4} />
-          <Text variant="body2" w="full" color="text.dark">
+        <Alert variant="info" gap={4}>
+          <CustomIcon boxSize={4} name="info-circle" />
+          <Text variant="body2" color="text.dark" w="full">
             <span style={{ fontWeight: 700 }}>Deposit Failed</span> and
             <span style={{ fontWeight: 700 }}> Cancelled</span> proposals are
             pruned from the network; thus, cannot be shown or searched here.
@@ -83,6 +83,8 @@ export const ProposalsTableLite = () => {
         </Alert>
       )}
       <ProposalsTable
+        proposals={proposals}
+        isLoading={isProposalsLoading || isProposalDataFetching}
         emptyState={
           proposalsError ? (
             <ErrorFetching dataName="proposals" />
@@ -94,14 +96,12 @@ export const ProposalsTableLite = () => {
             />
           )
         }
-        isLoading={isProposalsLoading || isProposalDataFetching}
-        proposals={proposals}
       />
       {isLoadNext && (
         <LoadNext
+          text="Load more 10 proposals"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          text="Load more 10 proposals"
         />
       )}
     </>

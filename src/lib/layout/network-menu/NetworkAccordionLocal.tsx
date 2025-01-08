@@ -12,24 +12,24 @@ import type { Option } from "lib/types";
 import { NetworkCard } from "./network-card";
 
 interface NetworkAccordionLocalProps {
-  cursor: Option<number>;
   networks: string[];
-  onClose: () => void;
+  cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
   startIndex: number;
+  onClose: () => void;
 }
 
 export const NetworkAccordionLocal = ({
-  cursor,
   networks,
-  onClose,
+  cursor,
   setCursor,
   startIndex,
+  onClose,
 }: NetworkAccordionLocalProps) => (
   <AccordionItem hidden={networks.length === 0}>
-    <Flex gap={4} direction="column">
+    <Flex direction="column" gap={4}>
       <AccordionButton p={0}>
-        <Flex w="full" justifyContent="space-between">
+        <Flex justifyContent="space-between" w="full">
           <Heading as="h6" variant="h6">
             Your Local Minitias
           </Heading>
@@ -37,15 +37,15 @@ export const NetworkAccordionLocal = ({
         </Flex>
       </AccordionButton>
       <AccordionPanel p={0}>
-        <Flex gap={4} direction="column">
+        <Flex direction="column" gap={4}>
           {networks.map((chainId, index) => (
             <NetworkCard
               key={chainId}
               chainId={chainId}
               index={startIndex + index}
               cursor={cursor}
-              onClose={onClose}
               setCursor={setCursor}
+              onClose={onClose}
             />
           ))}
         </Flex>

@@ -8,30 +8,30 @@ import { ViewResourceButton } from "./ViewResourceButton";
 
 interface TitleProps {
   collectionAddress: HexAddr32;
-  displayCollectionName: string;
-  isBurned: boolean;
   nftAddress: HexAddr32;
+  displayCollectionName: string;
   tokenId: string;
+  isBurned: boolean;
 }
 
 export const Title = ({
   collectionAddress,
   displayCollectionName,
-  isBurned,
-  nftAddress,
   tokenId,
+  nftAddress,
+  isBurned,
 }: TitleProps) => {
   const isMobile = useMobile();
   return (
-    <Flex w="full" direction="column">
+    <Flex direction="column" w="full">
       {isBurned && (
-        <Alert mb={4} px={2} py={1} variant="warning" borderRadius="4px">
+        <Alert variant="warning" px={2} py={1} borderRadius="4px" mb={4}>
           <Text variant="body2" color="warning.main">
             This NFT is already burned
           </Text>
         </Alert>
       )}
-      <Flex gap={8} w="full" justifyContent="space-between">
+      <Flex w="full" justifyContent="space-between" gap={8}>
         <Flex direction="column" overflow="hidden">
           <AppLink href={`/nft-collections/${collectionAddress}`}>
             <Text color="primary.main" fontSize="16px" fontWeight={700}>
@@ -39,9 +39,9 @@ export const Title = ({
             </Text>
           </AppLink>
           <Heading
-            className="ellipsis"
-            as="h5"
             variant={{ base: "h6", md: "h5" }}
+            as="h5"
+            className="ellipsis"
             wordBreak="break-word"
           >
             {tokenId}

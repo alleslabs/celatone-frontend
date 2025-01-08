@@ -8,23 +8,23 @@ import type { Nullable, Option } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
 interface SchemaPanelProps {
-  codeHash: string;
   codeId: number;
-  hasSchema: boolean;
+  codeHash: string;
   jsonSchema: Option<Nullable<object>>;
+  hasSchema: boolean;
   schemaProperty?: string;
 }
 
 export const SchemaPanel = ({
-  codeHash,
   codeId,
-  hasSchema,
+  codeHash,
   jsonSchema,
+  hasSchema,
   schemaProperty,
 }: SchemaPanelProps) => {
   if (jsonSchema === undefined)
     return hasSchema ? (
-      <Flex h="full" w="full" bgColor="gray.900" borderRadius="8px">
+      <Flex w="full" h="full" bgColor="gray.900" borderRadius="8px">
         <EmptyState
           imageVariant="empty"
           message={`Schema for ${capitalize(schemaProperty)}Msg doesn't exist`}
@@ -32,7 +32,7 @@ export const SchemaPanel = ({
         />
       </Flex>
     ) : (
-      <UploadSchemaSection codeHash={codeHash} codeId={codeId} />
+      <UploadSchemaSection codeId={codeId} codeHash={codeHash} />
     );
 
   return (

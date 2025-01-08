@@ -8,22 +8,22 @@ import type {
 } from "lib/types";
 
 export interface DelegationInfos {
-  delegations: Option<Delegation[]>;
-  isCommissionsLoading: boolean;
-  isDelegationsLoading: boolean;
   isLoading: boolean;
-  isRedelegationsLoading: boolean;
-  isRewardsLoading: boolean;
-  isTotalBondedLoading: boolean;
-  isUnbondingsLoading: boolean;
-  isValidator: Option<boolean>;
-  redelegations: Option<Redelegation[]>;
-  rewards: Option<Record<string, TokenWithValue[]>>;
   stakingParams: Option<StakingParams>;
+  isValidator: Option<boolean>;
+  isTotalBondedLoading: boolean;
   totalBonded: Option<Record<string, TokenWithValue>>;
-  totalCommissions: Option<Record<string, TokenWithValue>>;
+  isDelegationsLoading: boolean;
   totalDelegations: Option<Record<string, TokenWithValue>>;
-  totalRewards: Option<Record<string, TokenWithValue>>;
+  delegations: Option<Delegation[]>;
+  isUnbondingsLoading: boolean;
   totalUnbondings: Option<Record<string, TokenWithValue>>;
   unbondings: Option<Unbonding[]>;
+  isRewardsLoading: boolean;
+  totalRewards: Option<Record<string, TokenWithValue>>;
+  rewards: Option<Record<string, TokenWithValue[]>>;
+  isRedelegationsLoading: boolean;
+  redelegations: Option<Redelegation[]>;
+  isCommissionsLoading: boolean;
+  totalCommissions: Option<Record<string, TokenWithValue>>;
 }

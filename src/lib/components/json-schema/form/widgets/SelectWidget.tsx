@@ -17,19 +17,19 @@ import type React from "react";
 
 import { SelectInput } from "lib/components/forms";
 
-export interface SelectOptionBase<T = unknown> extends OptionBase {
-  label: string;
-  value: T;
-}
-
 /**
  * chakra-react-select option base.
  */
 interface OptionBase {
-  colorScheme?: string;
-  isDisabled?: boolean;
-  isFixed?: boolean;
   variant?: string;
+  colorScheme?: string;
+  isFixed?: boolean;
+  isDisabled?: boolean;
+}
+
+export interface SelectOptionBase<T = unknown> extends OptionBase {
+  label: string;
+  value: T;
 }
 
 /**
@@ -46,23 +46,23 @@ const SelectWidget = <
   props: WidgetProps<T, S, F>
 ) => {
   const {
-    autofocus,
-    disabled,
+    schema,
     id,
-    multiple,
-    onBlur,
-    onChange,
-    onFocus,
     options,
     placeholder = "",
+    multiple,
+    required,
+    disabled,
     readonly,
+    value,
+    autofocus,
+    onChange,
+    onBlur,
+    onFocus,
     // rawErrors = [],
     registry,
-    required,
-    schema,
-    value,
   } = props;
-  const { emptyValue, enumDisabled, enumOptions } = options;
+  const { enumOptions, enumDisabled, emptyValue } = options;
 
   const DescriptionFieldTemplate = getTemplate<
     "DescriptionFieldTemplate",
@@ -100,14 +100,14 @@ const SelectWidget = <
   const valueLabelMap: any = {};
   const displayEnumOptions = Array.isArray(enumOptions)
     ? enumOptions.map((option: EnumOptionsType<S>, index: number) => {
-        const { label: optionLabel, value: optionValue } = option;
+        const { value: optionValue, label: optionLabel } = option;
         valueLabelMap[index] = optionLabel || String(optionValue);
         return {
+          label: optionLabel,
+          value: String(index),
           isDisabled:
             Array.isArray(enumDisabled) &&
             enumDisabled.indexOf(optionValue) !== -1,
-          label: optionLabel,
-          value: String(index),
         };
       })
     : [];
@@ -135,37 +135,37 @@ const SelectWidget = <
 
   return (
     <FormControl
-      isDisabled={disabled || readonly}
-      isReadOnly={readonly}
-      isRequired={required && !readonly}
       my={2}
+      isDisabled={disabled || readonly}
+      isRequired={required && !readonly}
+      isReadOnly={readonly}
       // isInvalid={rawErrors && rawErrors.length > 0}
-      sx={{ "& > p": { mb: 2, mt: 4 } }}
+      sx={{ "& > p": { mt: 4, mb: 2 } }}
     >
       {!!schema.description && (
         <DescriptionFieldTemplate
           id={descriptionId<T>(id)}
-          registry={registry}
-          schema={schema}
           description={schema.description}
+          schema={schema}
+          registry={registry}
         />
       )}
       <SelectInput
         inputId={id}
-        isMulti={isMultiple}
         name={id}
-        size="md"
-        value={selectedIndex === undefined ? undefined : formValue}
-        autoFocus={autofocus}
+        isMulti={isMultiple}
         closeMenuOnSelect={!isMultiple}
-        menuPortalTarget={document.body}
         onBlur={handleOnBlur}
-        onChange={isMultiple ? handleOnMultiChange : handleOnChange}
         onFocus={handleOnFocus}
+        autoFocus={autofocus}
         options={displayEnumOptions}
         placeholder={
           placeholder.length > 0 || readonly ? placeholder : "Select option"
         }
+        size="md"
+        onChange={isMultiple ? handleOnMultiChange : handleOnChange}
+        value={selectedIndex === undefined ? undefined : formValue}
+        menuPortalTarget={document.body}
       />
     </FormControl>
   );

@@ -5,19 +5,19 @@ import { CustomIcon } from "../icon";
 import { useIsMac, useMobile } from "lib/app-provider";
 
 interface SubmitButtonProps {
-  isDisabled: boolean;
-  isFullWidth?: boolean;
+  text: string;
   isLoading: boolean;
   onSubmit: () => void;
-  text: string;
+  isDisabled: boolean;
+  isFullWidth?: boolean;
 }
 
 export const SubmitButton = ({
-  isDisabled,
-  isFullWidth = false,
+  text,
   isLoading,
   onSubmit,
-  text,
+  isDisabled,
+  isFullWidth = false,
 }: SubmitButtonProps) => {
   const isMobile = useMobile();
   const isMac = useIsMac();
@@ -38,15 +38,15 @@ export const SubmitButton = ({
 
   return (
     <Button
-      isDisabled={isDisabled}
-      p="6px 16px"
-      sx={{ pointerEvents: isLoading && "none" }}
-      variant="primary"
       w={isFullWidth ? "full" : "auto"}
+      variant="primary"
       fontSize="14px"
-      isLoading={isLoading}
-      leftIcon={<CustomIcon name="execute" />}
+      p="6px 16px"
       onClick={onSubmit}
+      isDisabled={isDisabled}
+      leftIcon={<CustomIcon name="execute" />}
+      isLoading={isLoading}
+      sx={{ pointerEvents: isLoading && "none" }}
     >
       {text} {!isMobile && `(${isMac ? "⌘" : "Ctrl"} + Enter)`}
     </Button>

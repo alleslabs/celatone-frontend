@@ -13,15 +13,15 @@ import type { DropzoneConfig, DropzoneFileType } from "./config";
 import { DROPZONE_CONFIG } from "./config";
 
 interface DropZoneProps extends FlexProps {
-  error?: string;
-  fileType: DropzoneFileType[];
   setFiles: (files: FileWithPath[]) => void;
+  fileType: DropzoneFileType[];
+  error?: string;
 }
 
 export function DropZone({
-  error,
-  fileType,
   setFiles,
+  fileType,
+  error,
   ...componentProps
 }: DropZoneProps) {
   const wasm = useWasmConfig({ shouldRedirect: false });
@@ -36,18 +36,18 @@ export function DropZone({
 
   const { accept, maxSize, selectedConfigs } = useMemo(() => {
     const initialAccept: { [key: string]: string[] } = {
-      "application/json": [],
       "application/octet-stream": [],
+      "application/json": [],
     };
 
     const sizes: {
       [key in DropzoneFileType]: number;
     } = {
-      move: 10_000_000,
-      mv: move.enabled ? move.moduleMaxFileSize : 0,
       schema: 10_000_000,
-      toml: 1_000_000,
+      move: 10_000_000,
       wasm: wasm.enabled ? wasm.storeCodeMaxFileSize : 0,
+      mv: move.enabled ? move.moduleMaxFileSize : 0,
+      toml: 1_000_000,
     };
 
     const selectedSizes: number[] = [];
@@ -73,11 +73,11 @@ export function DropZone({
     };
   }, [fileType, move, wasm]);
 
-  const { fileRejections, getInputProps, getRootProps } = useDropzone({
+  const { getRootProps, getInputProps, fileRejections } = useDropzone({
+    onDrop,
+    multiple: true,
     accept,
     maxSize,
-    multiple: true,
-    onDrop,
     useFsAccessApi: false,
   });
 
@@ -87,16 +87,16 @@ export function DropZone({
   return (
     <Flex direction="column">
       <Flex
-        align="center"
-        p="24px 16px"
-        w="full"
-        _hover={{ bg: "gray.900" }}
         border="1px dashed"
         borderColor={isError ? "error.main" : "gray.700"}
+        w="full"
+        p="24px 16px"
         borderRadius="8px"
-        cursor="pointer"
+        align="center"
         direction="column"
+        _hover={{ bg: "gray.900" }}
         transition="all 0.25s ease-in-out"
+        cursor="pointer"
         {...getRootProps()}
         {...componentProps}
       >
@@ -107,13 +107,13 @@ export function DropZone({
           })}
         />
         <UploadIcon />
-        <Flex gap={1} my={2}>
+        <Flex my={2} gap={1}>
           <Text
-            style={{ textDecoration: "underline" }}
             variant="body1"
-            _hover={{ color: "primary.light" }}
             color="primary.main"
             transition="all 0.25s ease-in-out"
+            _hover={{ color: "primary.light" }}
+            style={{ textDecoration: "underline" }}
           >
             Click to upload
           </Text>
@@ -138,7 +138,7 @@ export function DropZone({
         )}
       </Flex>
       {isError && (
-        <Text mt={1} variant="body3" color="error.main">
+        <Text variant="body3" color="error.main" mt={1}>
           {fileRejections[0]?.errors[0]?.message ?? error}
         </Text>
       )}

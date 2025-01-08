@@ -3,26 +3,26 @@ import { Button, Text } from "@chakra-ui/react";
 import { CustomIcon } from "../icon";
 
 interface ShowMoreButtonProps {
-  setToggleShowMore: () => void;
-  showLessText: string;
   showMoreText: string;
+  showLessText: string;
   toggleShowMore: boolean;
+  setToggleShowMore: () => void;
 }
 export const ShowMoreButton = ({
-  setToggleShowMore,
-  showLessText = "View Less",
   showMoreText = "View Full",
+  showLessText = "View Less",
   toggleShowMore,
+  setToggleShowMore,
 }: ShowMoreButtonProps) => (
   <Button
     p={0}
-    variant="none"
-    w="fit-content"
-    color="primary.main"
-    onClick={setToggleShowMore}
     rightIcon={
       <CustomIcon name={toggleShowMore ? "chevron-up" : "chevron-down"} />
     }
+    color="primary.main"
+    variant="none"
+    w="fit-content"
+    onClick={setToggleShowMore}
   >
     <Text variant="body3" color="primary.main" fontWeight={700}>
       {toggleShowMore ? showLessText : showMoreText}
