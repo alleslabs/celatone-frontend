@@ -59,7 +59,7 @@ export const SuccessAddCustomMinitiaModal = ({
             </ModalHeader>
             <ModalBody maxH="400px" overflow="overlay">
               <Text variant="body2" color="text.dark" textAlign="center">
-                Your rollup's information is being processed, and the scan’s for
+                Your rollup’s information is being processed, and the scan’s for
                 rollup will be ready shortly. Please do not close the browser
                 during this process.
               </Text>
