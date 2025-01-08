@@ -38,7 +38,7 @@ export const WalletSection = () => {
     if (address) {
       return (
         <ConnectWalletButton
-          buttonText={truncate(initiaUsername?.username ?? address)}
+          buttonText={truncate(initiaUsername?.username || address)}
           icon="wallet-solid"
           onClick={onClickOpenView}
           variant="ghost-primary"
@@ -71,7 +71,7 @@ export const WalletSection = () => {
         connecting={<ConnectWalletButton isLoading />}
         connected={
           <ConnectWalletButton
-            buttonText={truncate(icnsNames?.primaryName ?? address)}
+            buttonText={truncate(icnsNames?.primaryName || address)}
             icon="wallet-solid"
             onClick={onClickOpenView}
             variant="ghost-primary"
