@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import {
   CELATONE_QUERY_KEYS,
+  useCelatoneApp,
   useCurrentChain,
-  useLcdEndpoint,
 } from "lib/app-provider";
 import type { HexAddr20 } from "lib/types";
 import { isHexWalletAddress } from "lib/utils";
@@ -15,7 +15,9 @@ import {
 } from "./lcd";
 
 export const useEvmParams = () => {
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.EVM_PARAMS_LCD, lcdEndpoint],
@@ -30,7 +32,9 @@ export const useEvmParams = () => {
 };
 
 export const useEvmCodesByAddress = (address: HexAddr20, enabled = true) => {
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.EVM_CODES_BY_ADDRESS_LCD, lcdEndpoint, address],
@@ -44,7 +48,9 @@ export const useEvmCodesByAddress = (address: HexAddr20, enabled = true) => {
 };
 
 export const useEvmContractInfoSequencer = (address: HexAddr20) => {
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
   return useQuery(

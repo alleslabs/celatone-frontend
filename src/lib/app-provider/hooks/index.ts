@@ -4,7 +4,6 @@ export * from "./useExampleAddresses";
 export * from "./useFabricateFee";
 export * from "./useGas";
 export * from "./useInternalNavigate";
-export * from "./useLcdEndpoint";
 export * from "./useMediaQuery";
 export * from "./useNetworkChange";
 export * from "./useRestrictedInput";

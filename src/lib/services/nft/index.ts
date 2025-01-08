@@ -13,8 +13,8 @@ import { handleQueryByTier } from "../utils";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useCurrentChain,
-  useLcdEndpoint,
   useNftConfig,
   useTierConfig,
 } from "lib/app-provider";
@@ -46,7 +46,9 @@ export const useNfts = (
 ) => {
   const { tier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("nfts");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery<NftsResponse>(
     [
@@ -101,7 +103,9 @@ export const useNftByNftAddress = (
 ) => {
   const { tier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("nfts");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery(
     [
@@ -132,7 +136,9 @@ export const useNftByNftAddressLcd = (
   nftAddress: HexAddr32,
   enabled = true
 ) => {
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.NFT_BY_NFT_ADDRESS_LCD, nftAddress, lcdEndpoint],
@@ -149,7 +155,9 @@ export const useNftMintInfo = (nftAddress: HexAddr32) => {
   const { bech32Prefix } = useCurrentChain();
   const { tier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("nfts");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery<NftMintInfo>(
     [
@@ -210,7 +218,9 @@ export const useNftTransactionsSequencer = (
   nftAddress: HexAddr32,
   enabled = true
 ) => {
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   const { data, ...rest } = useInfiniteQuery(
     [CELATONE_QUERY_KEYS.NFT_TRANSACTIONS_SEQUENCER, lcdEndpoint],
@@ -307,7 +317,9 @@ export const useNftsByAccountByCollectionSequencer = (
   collectionAddress?: HexAddr32,
   enabled = true
 ) => {
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery<NftsByAccountAddressResponse>(
     [

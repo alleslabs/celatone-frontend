@@ -4,8 +4,8 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useGovConfig,
-  useLcdEndpoint,
   useTierConfig,
 } from "lib/app-provider";
 import type {
@@ -96,16 +96,18 @@ export const useMigrationHistoriesByContractAddressLcd = (
   contractAddress: BechAddr32,
   enabled = true
 ) => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.CONTRACT_MIGRATION_HISTORIES_BY_CONTRACT_ADDRESS_LCD,
-      endpoint,
+      lcdEndpoint,
       contractAddress,
     ],
     async () =>
-      getMigrationHistoriesByContractAddressLcd(endpoint, contractAddress),
+      getMigrationHistoriesByContractAddressLcd(lcdEndpoint, contractAddress),
     {
       retry: 1,
       keepPreviousData: true,
@@ -205,7 +207,9 @@ export const useContractData = (
 ) => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("contracts");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
   const { enabled: isGov } = useGovConfig({ shouldRedirect: false });
 
@@ -239,11 +243,13 @@ export const useContractTableCounts = (
 };
 
 export const useContractQueryMsgsLcd = (contractAddress: BechAddr32) => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS, endpoint, contractAddress],
-    async () => getContractQueryMsgsLcd(endpoint, contractAddress),
+    [CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS, lcdEndpoint, contractAddress],
+    async () => getContractQueryMsgsLcd(lcdEndpoint, contractAddress),
     {
       enabled: !!contractAddress,
       retry: false,
@@ -273,11 +279,13 @@ export const useContractsByCodeId = (
 };
 
 export const useContractsByCodeIdLcd = (codeId: number) => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID_LCD, endpoint, codeId],
-    ({ pageParam }) => getContractsByCodeIdLcd(endpoint, codeId, pageParam),
+    [CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID_LCD, lcdEndpoint, codeId],
+    ({ pageParam }) => getContractsByCodeIdLcd(lcdEndpoint, codeId, pageParam),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,
@@ -290,11 +298,13 @@ export const useContractQueryLcd = (
   msg: string,
   options: UseQueryOptions<JsonDataType>
 ) => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery<JsonDataType>(
-    [CELATONE_QUERY_KEYS.CONTRACT_QUERY_LCD, endpoint, contractAddress, msg],
-    async () => getContractQueryLcd(endpoint, contractAddress, msg),
+    [CELATONE_QUERY_KEYS.CONTRACT_QUERY_LCD, lcdEndpoint, contractAddress, msg],
+    async () => getContractQueryLcd(lcdEndpoint, contractAddress, msg),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -307,12 +317,14 @@ export const useInstantiatedContractsByAddressLcd = (
   address: Option<BechAddr>,
   enabled = false
 ) => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.INSTANTIATED_CONTRACTS_BY_ADDRESS_LCD,
-      endpoint,
+      lcdEndpoint,
       address,
     ],
     async () => {
@@ -320,7 +332,7 @@ export const useInstantiatedContractsByAddressLcd = (
         throw new Error(
           "address not found (getInstantiatedContractsByAddressLcd)"
         );
-      return getInstantiatedContractsByAddressLcd(endpoint, address);
+      return getInstantiatedContractsByAddressLcd(lcdEndpoint, address);
     },
     { enabled: Boolean(address) && enabled, refetchOnWindowFocus: false }
   );
@@ -330,11 +342,13 @@ export const useContractCw2InfoLcd = (
   contractAddress: BechAddr32,
   enabled = true
 ) => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.CONTRACT_CW2_INFO_LCD, endpoint, contractAddress],
-    async () => getContractCw2InfoLcd(endpoint, contractAddress),
+    [CELATONE_QUERY_KEYS.CONTRACT_CW2_INFO_LCD, lcdEndpoint, contractAddress],
+    async () => getContractCw2InfoLcd(lcdEndpoint, contractAddress),
     { retry: 1, refetchOnWindowFocus: false, enabled }
   );
 };

@@ -4,8 +4,8 @@ import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useGovConfig,
-  useLcdEndpoint,
 } from "lib/app-provider";
 import type { Code, CodeData, CodesResponse } from "lib/services/types";
 import type { BechAddr, BechAddr20, Option } from "lib/types";
@@ -20,10 +20,13 @@ import {
 import { getCodeLcd, getCodesLcd, getUploadAccessParamsLcd } from "./lcd";
 
 export const useUploadAccessParamsLcd = () => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
+
   return useQuery(
-    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS_LCD, endpoint],
-    () => getUploadAccessParamsLcd(endpoint),
+    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS_LCD, lcdEndpoint],
+    () => getUploadAccessParamsLcd(lcdEndpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false, retry: false }
   );
 };
@@ -45,11 +48,13 @@ export const useCodes = (
 };
 
 export const useCodesLcd = () => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.CODES_LCD, endpoint],
-    ({ pageParam }) => getCodesLcd(endpoint, pageParam),
+    [CELATONE_QUERY_KEYS.CODES_LCD, lcdEndpoint],
+    ({ pageParam }) => getCodesLcd(lcdEndpoint, pageParam),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,
@@ -76,11 +81,13 @@ export const useCodeLcd = (
   codeId: number,
   options?: Omit<UseQueryOptions<Code>, "queryKey">
 ) => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery<Code>(
-    [CELATONE_QUERY_KEYS.CODE_DATA_LCD, endpoint, codeId],
-    async () => getCodeLcd(endpoint, codeId),
+    [CELATONE_QUERY_KEYS.CODE_DATA_LCD, lcdEndpoint, codeId],
+    async () => getCodeLcd(lcdEndpoint, codeId),
     {
       retry: 1,
       refetchOnWindowFocus: false,

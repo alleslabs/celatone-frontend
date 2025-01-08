@@ -10,7 +10,6 @@ import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
-  useLcdEndpoint,
 } from "lib/app-provider";
 import { big } from "lib/types";
 import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
@@ -29,11 +28,10 @@ export const useBalances = (
   enabled = true
 ): UseQueryResult<Coin[]> => {
   const {
-    chainConfig: { chain },
+    chainConfig: { chain, lcd: lcdEndpoint },
   } = useCelatoneApp();
   const isSei = chain === "sei";
   const apiEndpoint = useBaseApiRoute("accounts");
-  const lcdEndpoint = useLcdEndpoint();
   const endpoint = isSei ? apiEndpoint : lcdEndpoint;
 
   return useQuery(
