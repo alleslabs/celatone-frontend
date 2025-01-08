@@ -12,8 +12,6 @@ export * from "./useGas";
 export * from "./useGetSigningClient";
 export * from "./useInitia";
 export * from "./useInternalNavigate";
-export * from "./useIsConnected";
-export * from "./useLcdEndpoint";
 export * from "./useMediaQuery";
 export * from "./useNetworkChange";
 export * from "./usePlatform";

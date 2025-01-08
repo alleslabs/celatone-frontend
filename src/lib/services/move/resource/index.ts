@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import {
   CELATONE_QUERY_KEYS,
-  useLcdEndpoint,
+  useCelatoneApp,
   useMoveConfig,
 } from "lib/app-provider";
 import type {
@@ -25,11 +25,13 @@ export interface ResourcesByAddressReturn {
 export const useResourcesByAddressLcd = (
   address: Addr
 ): UseQueryResult<ResourcesByAddressReturn> => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
   const { enabled } = useMoveConfig({ shouldRedirect: false });
 
   const queryFn: QueryFunction<ResourcesByAddressReturn> = () =>
-    getAccountResourcesLcd(endpoint, address).then((resources) => {
+    getAccountResourcesLcd(lcdEndpoint, address).then((resources) => {
       const groupedByOwner = resources.items.reduce<
         Record<string, ResourceGroupByAccount>
       >((acc, resource) => {
@@ -85,7 +87,7 @@ export const useResourcesByAddressLcd = (
       };
     });
   return useQuery(
-    [CELATONE_QUERY_KEYS.RESOURCES_BY_ADDRESS, endpoint, address],
+    [CELATONE_QUERY_KEYS.RESOURCES_BY_ADDRESS, lcdEndpoint, address],
     queryFn,
     { enabled, refetchOnWindowFocus: false, retry: 1 }
   );

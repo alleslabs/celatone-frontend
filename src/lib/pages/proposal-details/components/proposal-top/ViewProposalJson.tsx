@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 
 import { trackUseViewJSON } from "lib/amplitude";
-import { useGovConfig, useInitia, useLcdEndpoint } from "lib/app-provider";
+import { useCelatoneApp, useGovConfig, useInitia } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { ProposalStatus } from "lib/types";
@@ -13,7 +13,9 @@ interface ViewProposalJsonProps {
 }
 
 export const ViewProposalJson = ({ id, status }: ViewProposalJsonProps) => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
   const config = useGovConfig({ shouldRedirect: false });
   const isInitia = useInitia();
 
@@ -22,7 +24,7 @@ export const ViewProposalJson = ({ id, status }: ViewProposalJsonProps) => {
   const openLcdPage = () => {
     trackUseViewJSON("Proposal Details");
     openNewTab(
-      `${endpoint}/${isInitia ? "initia" : "cosmos"}/gov/${config.version}/proposals/${encodeURIComponent(id)}`
+      `${lcdEndpoint}/${isInitia ? "initia" : "cosmos"}/gov/${config.version}/proposals/${encodeURIComponent(id)}`
     );
   };
 
