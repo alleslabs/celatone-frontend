@@ -22,6 +22,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
               logo_URIs: chainConfig.logo_URIs,
               network_type: "devnet",
               pretty_name: chainConfig.prettyName,
+              staking: chainConfig.registry?.staking,
             }
           : undefined
       }
