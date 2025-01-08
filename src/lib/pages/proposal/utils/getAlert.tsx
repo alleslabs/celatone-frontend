@@ -4,14 +4,14 @@ import type { Nullable, Option } from "lib/types";
 import { d2Formatter } from "lib/utils";
 
 interface AlertProps {
-  variant: string;
   description: string;
   icon: Nullable<JSX.Element>;
+  variant: string;
 }
 const defaultAlertProps: AlertProps = {
-  variant: "",
   description: "",
   icon: null,
+  variant: "",
 };
 
 export const getAlert = (
@@ -25,20 +25,19 @@ export const getAlert = (
 
   if (enteredAmount.lt(minDepositAmount)) {
     return {
-      variant: "error",
       description: `${minDepositAmount} ${denom} is required to enter the deposit period.`,
       icon: (
         <CustomIcon
           name="alert-triangle-solid"
-          color="error.main"
           boxSize={4}
+          color="error.main"
         />
       ),
+      variant: "error",
     };
   }
   if (enteredAmount.lt(minVotingDepositAmount)) {
     return {
-      variant: "warning",
       description: `${d2Formatter(
         big(minVotingDepositAmount).sub(enteredAmount),
         "NaN"
@@ -46,32 +45,33 @@ export const getAlert = (
       icon: (
         <CustomIcon
           name="alert-triangle-solid"
-          color="warning.main"
           boxSize={4}
+          color="warning.main"
         />
       ),
+      variant: "warning",
     };
   }
   if (enteredAmount.eq(minVotingDepositAmount)) {
     return {
-      variant: "primary",
       description:
         "The proposal will proceed to voting period immediately after created.",
-      icon: <CustomIcon name="info-circle" color="primary.main" boxSize={4} />,
+      icon: <CustomIcon name="info-circle" boxSize={4} color="primary.main" />,
+      variant: "primary",
     };
   }
   if (big(minVotingDepositAmount).lt(enteredAmount)) {
     return {
-      variant: "warning",
       description: `You’re depositing more than the minimum requirement, the proposal will proceed to voting immediately after creation. To prevent fund loss if not passing the quorum, deposit equal to the minimum requirement.
 `,
       icon: (
         <CustomIcon
           name="alert-triangle-solid"
-          color="warning.main"
           boxSize={4}
+          color="warning.main"
         />
       ),
+      variant: "warning",
     };
   }
   return defaultAlertProps;

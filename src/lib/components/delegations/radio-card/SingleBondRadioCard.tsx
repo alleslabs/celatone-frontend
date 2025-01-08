@@ -8,26 +8,26 @@ import {
 } from "lib/utils";
 
 interface SingleBondRadioCardProps {
-  value: string;
-  token: Option<TokenWithValue>;
   isLoading: boolean;
+  token: Option<TokenWithValue>;
+  value: string;
 }
 
 const SingleBondRadioCardBody = ({
-  token,
   isLoading,
+  token,
 }: Omit<SingleBondRadioCardProps, "value">) => {
-  if (isLoading) return <Spinner mt={2} alignSelf="center" size="xl" />;
+  if (isLoading) return <Spinner alignSelf="center" mt={2} size="xl" />;
   if (!token)
     return (
-      <Heading variant="h6" as="h6">
+      <Heading as="h6" variant="h6">
         N/A
       </Heading>
     );
 
   return (
     <Flex alignItems="end" gap={1}>
-      <Heading variant={{ base: "h7", md: "h6" }} as="h6">
+      <Heading as="h6" variant={{ base: "h7", md: "h6" }}>
         {formatUTokenWithPrecision(token.amount, token.precision ?? 0)}
       </Heading>
       <Text variant="body2" textColor="text.main">
@@ -38,22 +38,22 @@ const SingleBondRadioCardBody = ({
 };
 
 export const SingleBondRadioCard = ({
-  value,
-  token,
   isLoading,
+  token,
+  value,
 }: SingleBondRadioCardProps) => (
   <Flex
-    direction={{ base: "column", md: "row" }}
     alignItems={{ base: "flex-start", md: "center" }}
     gap={{ base: 1, md: 2 }}
-    justifyContent="space-between"
     w="full"
+    direction={{ base: "column", md: "row" }}
+    justifyContent="space-between"
   >
-    <Flex direction="column" gap={1} alignItems="flex-start">
-      <Text variant="body2" textColor="gray.400" fontWeight={500}>
+    <Flex alignItems="flex-start" gap={1} direction="column">
+      <Text variant="body2" fontWeight={500} textColor="gray.400">
         {value}
       </Text>
-      <SingleBondRadioCardBody token={token} isLoading={isLoading} />
+      <SingleBondRadioCardBody isLoading={isLoading} token={token} />
     </Flex>
     <Text variant="body2" textColor="text.dark">
       ({token?.value ? formatPrice(token.value) : "-"})

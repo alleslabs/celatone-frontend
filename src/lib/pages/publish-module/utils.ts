@@ -14,17 +14,17 @@ const resolvePolicyPriority = (
 ) => priority.indexOf(selected) >= priority.indexOf(current);
 
 export const statusResolver = ({
-  data,
-  modules,
-  index,
-  policy,
   address,
+  data,
+  index,
+  modules,
+  policy,
 }: {
-  data: Option<DecodeModuleQueryResponse>;
-  modules: Module[];
-  index: number;
-  policy: UpgradePolicy;
   address: Option<BechAddr20>;
+  data: Option<DecodeModuleQueryResponse>;
+  index: number;
+  modules: Module[];
+  policy: UpgradePolicy;
 }): PublishStatus => {
   if (!data) return PUBLISH_STATUS_DEFAULT;
 
@@ -48,6 +48,13 @@ export const statusResolver = ({
     };
   // Condition check for existing module, break switch case for non-existing
   switch (currentPolicy) {
+    case policy:
+      return {
+        status: "info",
+        text: `The file will be uploaded to republish module “${abi.name}” in your address.`,
+      };
+    case undefined:
+      break;
     // Policy check
     // IMMUTABLE -> cannot be republished
     // COMPATIBLE -> can be republished as COMPATIBLE and IMMUTABLE only
@@ -56,13 +63,6 @@ export const statusResolver = ({
         status: "error",
         text: `“${abi.name}” is published with “Immutable” policy, which cannot be republished.`,
       };
-    case policy:
-      return {
-        status: "info",
-        text: `The file will be uploaded to republish module “${abi.name}” in your address.`,
-      };
-    case undefined:
-      break;
     default: {
       if (policy === UpgradePolicy.IMMUTABLE && priorUpload)
         return {

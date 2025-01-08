@@ -21,7 +21,7 @@ interface PublishCompletedProps {
 }
 
 export const PublishCompleted = ({
-  publishTxInfo: { txHash, txFee, upgradePolicy, modules },
+  publishTxInfo: { modules, txFee, txHash, upgradePolicy },
   resetState,
 }: PublishCompletedProps) => {
   const navigate = useInternalNavigate();
@@ -29,27 +29,28 @@ export const PublishCompleted = ({
   return (
     <ActionPageContainer>
       <CelatoneSeo pageName="Publish / Republish Modules" />
-      <CustomIcon boxSize={8} color="success.main" name="check-circle-solid" />
-      <Heading as="h4" variant="h4" mt={4} mb={2}>
+      <CustomIcon name="check-circle-solid" boxSize={8} color="success.main" />
+      <Heading as="h4" mb={2} mt={4} variant="h4">
         {modules.length} {plur("module", modules.length)} published!
       </Heading>
       <Text variant="body2" color="text.dark">
         Your .mv files are uploaded and published as modules.
       </Text>
       <TxReceiptRender
+        my={12}
         receipts={[
           {
-            title: "Tx Hash",
             html: <ExplorerLink type="tx_hash" value={txHash} />,
+            title: "Tx Hash",
           },
           {
-            title: "Tx Fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
+            title: "Tx Fee",
           },
           {
             title: "Upgrade Policy",
@@ -57,18 +58,17 @@ export const PublishCompleted = ({
           },
         ]}
         variant="full"
-        my={12}
       />
       {isInitiaL1 && (
-        <Flex direction="column" gap={4} w="full" mb={12}>
+        <Flex gap={4} mb={12} w="full" direction="column">
           <Heading as="h6" variant="h6">
             Module Verification
           </Heading>
           <Flex
+            alignItems="center"
+            gap={6}
             w="full"
             justifyContent="space-between"
-            gap={6}
-            alignItems="center"
           >
             <Text variant="body2" color="text.dark">
               Verifying modules enhances credibility by displaying a verified
@@ -76,8 +76,8 @@ export const PublishCompleted = ({
               module&apos;s source code on the details page.
             </Text>
             <Button
-              variant="primary"
               minW={40}
+              variant="primary"
               onClick={() =>
                 navigate({
                   pathname: "/modules/verify",
@@ -89,7 +89,7 @@ export const PublishCompleted = ({
           </Flex>
         </Flex>
       )}
-      <Flex direction="column" gap={6} w="full">
+      <Flex gap={6} w="full" direction="column">
         <Heading as="h6" variant="h6">
           Published {modules.length} {plur("module", modules.length)}
         </Heading>
@@ -101,14 +101,14 @@ export const PublishCompleted = ({
         ))}
       </Flex>
       <Button
-        variant="outline-primary"
         mt={6}
-        rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
+        variant="outline-primary"
         w="full"
         onClick={() => {
           track(AmpEvent.USE_PUBLISH_MORE_MODULE_BUTTON);
           resetState();
         }}
+        rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
       >
         Publish more modules
       </Button>

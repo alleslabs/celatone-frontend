@@ -7,8 +7,8 @@ import type { Option } from "lib/types";
 
 interface InteractionWrapperProps {
   currentTab: Option<ContractInteractionTabs>;
-  queryContent: ReactNode;
   executeContent: ReactNode;
+  queryContent: ReactNode;
 }
 const resolveTabDisplay = (
   current: Option<ContractInteractionTabs>,
@@ -19,16 +19,16 @@ const resolveTabDisplay = (
 
 export const InteractionWrapper = ({
   currentTab,
-  queryContent,
   executeContent,
+  queryContent,
 }: InteractionWrapperProps) => (
   <Box
     sx={{
-      "& .query": {
-        display: resolveTabDisplay(currentTab, ContractInteractionTabs.Query),
-      },
       "& .execute": {
         display: resolveTabDisplay(currentTab, ContractInteractionTabs.Execute),
+      },
+      "& .query": {
+        display: resolveTabDisplay(currentTab, ContractInteractionTabs.Query),
       },
     }}
   >

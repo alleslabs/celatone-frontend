@@ -6,50 +6,50 @@ import { TokenImageRender } from "lib/components/token";
 import type { TokenWithValue } from "lib/types";
 
 interface PoolLogoProps {
-  tokens: TokenWithValue[];
   logoSize?: ImageProps["boxSize"];
   marginLeft?: number;
   minW?: FlexProps["minW"];
   textVariant?: TextProps["variant"];
+  tokens: TokenWithValue[];
 }
 
 export const PoolLogo = ({
-  tokens,
   logoSize = 10,
   marginLeft = -12,
   minW = 24,
   textVariant = "body2",
+  tokens,
 }: PoolLogoProps) => {
   const isShortened = tokens.length > 3;
   return (
     <Flex
+      alignItems="center"
       css={{
         ">:not(:first-of-type)": {
           marginLeft,
         },
       }}
       minW={minW}
-      alignItems="center"
       justifyContent="center"
     >
       {tokens.slice(0, isShortened ? 2 : undefined).map((token, idx) => (
         <Flex key={token.denom}>
           <TokenImageRender
-            logo={token.logo || getUndefinedTokenIcon(token.denom)}
-            boxSize={logoSize}
             zIndex={2 - idx}
+            boxSize={logoSize}
+            logo={token.logo || getUndefinedTokenIcon(token.denom)}
           />
         </Flex>
       ))}
       {isShortened && (
         <Flex
           width={logoSize}
-          height={logoSize}
-          borderRadius="full"
-          backgroundColor="gray.700"
           alignItems="center"
-          justifyContent="center"
+          height={logoSize}
           marginLeft="-12px"
+          backgroundColor="gray.700"
+          borderRadius="full"
+          justifyContent="center"
         >
           <Text variant={textVariant}> +{tokens.length - 2}</Text>
         </Flex>

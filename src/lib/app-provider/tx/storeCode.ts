@@ -10,13 +10,13 @@ import type { AccessType, BechAddr, Option } from "lib/types";
 import { composeStoreCodeMsg } from "lib/utils";
 
 export interface StoreCodeStreamParams {
-  wasmFileName: Option<string>;
-  wasmCode: Option<Promise<ArrayBuffer>>;
   addresses?: BechAddr[];
-  permission: AccessType;
   codeName: string;
   estimatedFee: Option<StdFee>;
   onTxSucceed: StoreCodeSucceedCallback;
+  permission: AccessType;
+  wasmCode: Option<Promise<ArrayBuffer>>;
+  wasmFileName: Option<string>;
 }
 
 export const useStoreCodeTx = (isMigrate: boolean) => {
@@ -25,38 +25,38 @@ export const useStoreCodeTx = (isMigrate: boolean) => {
 
   return useCallback(
     async ({
-      wasmFileName,
-      wasmCode,
       addresses,
-      permission,
       codeName,
       estimatedFee,
       onTxSucceed,
+      permission,
+      wasmCode,
+      wasmFileName,
     }: StoreCodeStreamParams) => {
       if (!address) throw new Error("No address provided (useStoreCodeTx)");
       if (!wasmFileName || !wasmCode || !estimatedFee) return null;
 
       const message = composeStoreCodeMsg({
+        addresses,
+        permission,
         sender: address,
         wasmByteCode: new Uint8Array(
           await gzip(new Uint8Array(await wasmCode))
         ),
-        permission,
-        addresses,
       });
 
       return storeCodeTx({
         address,
-        messages: [message],
         codeName,
-        wasmFileName,
         fee: estimatedFee,
         isMigrate,
-        signAndBroadcast,
+        messages: [message],
         onTxSucceed: (txResult) => {
           trackTxSucceed();
           onTxSucceed(txResult);
         },
+        signAndBroadcast,
+        wasmFileName,
       });
     },
     [address, signAndBroadcast, isMigrate]

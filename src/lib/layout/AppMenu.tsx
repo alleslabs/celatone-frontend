@@ -11,114 +11,114 @@ import { CustomIcon } from "lib/components/icon";
 
 const appList = [
   {
-    name: "app",
-    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/app.svg",
     link: "https://app.testnet.initia.xyz/",
+    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/app.svg",
+    name: "app",
   },
   {
-    name: "scan",
-    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/scan.svg",
     link: "https://scan.testnet.initia.xyz/",
+    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/scan.svg",
+    name: "scan",
   },
   {
-    name: "usernames",
-    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/usernames.svg",
     link: "https://usernames.testnet.initia.xyz/",
+    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/usernames.svg",
+    name: "usernames",
   },
   {
-    name: "bridge",
-    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/bridge.svg",
     link: "https://bridge.testnet.initia.xyz/",
+    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/bridge.svg",
+    name: "bridge",
   },
   {
-    name: "faucet",
-    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/faucet.svg",
     link: "https://faucet.testnet.initia.xyz/",
+    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/faucet.svg",
+    name: "faucet",
   },
 ];
 
 export const AppMenu = ({
   trigger = "hover",
 }: {
-  trigger?: "hover" | "click" | undefined;
+  trigger?: "click" | "hover" | undefined;
 }) => {
   return (
     <Popover trigger={trigger}>
       <PopoverTrigger>
         <Flex
-          w="full"
-          h="full"
           align="center"
+          h="full"
           justify="center"
-          transition="all 0.25s ease-in-out"
+          w="full"
           _hover={{
-            cursor: "pointer",
-            background: "gray.900",
             "> svg": { color: "gray.400" },
+            background: "gray.900",
+            cursor: "pointer",
           }}
+          transition="all 0.25s ease-in-out"
         >
           <CustomIcon name="apps" color="gray.600" />
         </Flex>
       </PopoverTrigger>
       <PopoverContent
-        border="0"
-        zIndex={4}
         width="256px"
         bg="gray.800"
         ml={2}
         p={2}
-        top="-8px"
-        boxShadow="0px 20px 30px 5px var(--chakra-colors-background-main)"
+        zIndex={4}
         _focusVisible={{
           outline: "none",
         }}
+        border="0"
+        boxShadow="0px 20px 30px 5px var(--chakra-colors-background-main)"
+        top="-8px"
       >
         <Flex direction="column">
           {appList.map((app) => (
             <Flex
               key={app.name}
-              py={3}
               px={4}
-              borderRadius={8}
+              py={3}
               w="full"
-              cursor="pointer"
-              transition="all 0.25s ease-in-out"
               _hover={{
                 background: app.name !== "scan" && "gray.700",
               }}
               background={app.name === "scan" ? "gray.900" : "transparent"}
+              borderRadius={8}
+              cursor="pointer"
+              transition="all 0.25s ease-in-out"
             >
               {app.name === "scan" ? (
                 <Flex
                   alignItems="center"
-                  justifyContent="space-between"
                   w="full"
+                  justifyContent="space-between"
                 >
                   <Image
-                    src={app.logo}
                     alt={app.name}
                     height="20px"
                     minH="20px"
+                    src={app.logo}
                   />
-                  <CustomIcon name="check" color="gray.100" boxSize={3} />
+                  <CustomIcon name="check" boxSize={3} color="gray.100" />
                 </Flex>
               ) : (
                 <Link
-                  href={app.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   style={{ width: "100%" }}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  href={app.link}
                 >
                   <Flex
                     alignItems="center"
-                    justifyContent="space-between"
                     w="full"
+                    justifyContent="space-between"
                   >
                     <Image
-                      src={app.logo}
                       alt={app.name}
                       height="20px"
                       minH="20px"
+                      src={app.logo}
                     />
                   </Flex>
                 </Link>

@@ -24,9 +24,9 @@ import {
 import { getAddressTypeText } from "lib/utils/address";
 
 interface InstantiateInfoProps {
+  codeLocalInfo: Option<CodeLocalInfo>;
   contract: Contract;
   contractRest: Nullable<ContractRest>;
-  codeLocalInfo: Option<CodeLocalInfo>;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
@@ -49,9 +49,9 @@ const PortIdRender = ({ portId }: { portId: string }) => {
     >
       {charArray?.map((line, idx) =>
         idx === charArray.length - 1 ? (
-          <Flex align="center" key={line}>
+          <Flex key={line} align="center">
             {line}
-            <Copier type="ibc_port" value={portId} display="none" />
+            <Copier display="none" type="ibc_port" value={portId} />
           </Flex>
         ) : (
           line
@@ -62,19 +62,19 @@ const PortIdRender = ({ portId }: { portId: string }) => {
 };
 
 const InitRender = ({
-  initTxHash,
-  initProposalTitle,
-  initProposalId,
   createdHeight,
+  initProposalId,
+  initProposalTitle,
+  initTxHash,
 }: Contract) => {
   if (initTxHash) {
     return (
       <LabelText label="Instantiate Transaction">
         <ExplorerLink
+          fixedHeight
           type="tx_hash"
           value={initTxHash.toUpperCase()}
           showCopyOnHover
-          fixedHeight
         />
       </LabelText>
     );
@@ -83,14 +83,14 @@ const InitRender = ({
   if (initProposalTitle && initProposalId) {
     return (
       <LabelText
-        label="Instantiate Proposal ID"
         helperText1={initProposalTitle}
+        label="Instantiate Proposal ID"
       >
         <ExplorerLink
+          fixedHeight
           type="proposal_id"
           value={initProposalId.toString()}
           showCopyOnHover
-          fixedHeight
         />
       </LabelText>
     );
@@ -108,9 +108,9 @@ const InitRender = ({
 };
 
 export const InstantiateInfo = ({
+  codeLocalInfo,
   contract,
   contractRest,
-  codeLocalInfo,
   wasmVerifyInfo,
 }: InstantiateInfoProps) => {
   const { isFullTier } = useTierConfig();
@@ -124,25 +124,25 @@ export const InstantiateInfo = ({
   const wasmVerifyStatus = getWasmVerifyStatus(wasmVerifyInfo);
 
   return (
-    <Container w={{ base: "full", md: "auto" }} h="fit-content">
-      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
+    <Container h="fit-content" w={{ base: "full", md: "auto" }}>
+      <Flex gap={{ base: 4, md: 6 }} direction={{ base: "row", md: "column" }}>
         <LabelText flex={1} label="Network">
           {chainId}
         </LabelText>
-        <LabelText flex={1} label="From Code" helperText1={codeLocalInfo?.name}>
+        <LabelText flex={1} helperText1={codeLocalInfo?.name} label="From Code">
           <Flex direction="column">
             <Flex gap={1}>
               <ExplorerLink
+                fixedHeight
                 type="code_id"
                 value={contract.codeId.toString()}
                 showCopyOnHover
-                fixedHeight
               />
               <WasmVerifyBadge
-                status={wasmVerifyStatus}
-                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
                 hasText
+                status={wasmVerifyStatus}
                 linkedCodeId={contract.codeId}
+                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
               />
             </Flex>
             {!isMobile &&
@@ -151,31 +151,31 @@ export const InstantiateInfo = ({
                 <Text variant="body2" color="text.dark">
                   Is this your code?{" "}
                   <WasmVerifySubmitModal
-                    codeId={contract.codeId}
-                    codeHash={contract.codeHash}
-                    wasmVerifyStatus={wasmVerifyStatus}
-                    relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-                    contractAddress={contract.address}
                     triggerElement={
                       <Text
-                        cursor="pointer"
-                        color="primary.main"
-                        transition="all 0.25s ease-in-out"
                         _hover={{
                           textDecoration: "underline",
                           textDecorationColor: "primary.light",
                         }}
+                        color="primary.main"
+                        cursor="pointer"
+                        transition="all 0.25s ease-in-out"
                       >
                         Verify Code
                       </Text>
                     }
+                    wasmVerifyStatus={wasmVerifyStatus}
+                    codeHash={contract.codeHash}
+                    codeId={contract.codeId}
+                    contractAddress={contract.address}
+                    relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
                   />
                 </Text>
               )}
           </Flex>
         </LabelText>
       </Flex>
-      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
+      <Flex gap={{ base: 4, md: 6 }} direction={{ base: "row", md: "column" }}>
         <LabelText flex={1} label="CW2 Info">
           {cw2 ? (
             <Text variant="body2" wordBreak="break-all">
@@ -190,14 +190,14 @@ export const InstantiateInfo = ({
         {contract.admin ? (
           <LabelText
             flex={1}
-            label="Admin Address"
             helperText1={getAddressTypeText(adminType)}
+            label="Admin Address"
           >
             <ExplorerLink
+              fixedHeight
               type={adminType}
               value={contract.admin}
               showCopyOnHover
-              fixedHeight
             />
           </LabelText>
         ) : (
@@ -211,7 +211,6 @@ export const InstantiateInfo = ({
       <Divider border="1px solid" borderColor="gray.700" />
       <LabelText
         flex={1}
-        label="Instantiated Block Height"
         helperText1={
           contract.createdTimestamp
             ? formatUTC(contract.createdTimestamp)
@@ -222,29 +221,30 @@ export const InstantiateInfo = ({
             ? dateFromNow(contract.createdTimestamp)
             : undefined
         }
+        label="Instantiated Block Height"
       >
         {contract.createdHeight ? (
           <ExplorerLink
+            fixedHeight
             type="block_height"
             value={contract.createdHeight.toString()}
             showCopyOnHover
-            fixedHeight
           />
         ) : (
           "N/A"
         )}
       </LabelText>
-      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
+      <Flex gap={{ base: 1, md: 6 }} direction={{ base: "row", md: "column" }}>
         <LabelText
           flex={1}
-          label="Instantiated by"
           helperText1={getAddressTypeText(instantiatorType)}
+          label="Instantiated by"
         >
           <ExplorerLink
+            fixedHeight
             type={instantiatorType}
             value={contract.instantiator}
             showCopyOnHover
-            fixedHeight
           />
         </LabelText>
         {isFullTier && (
@@ -253,7 +253,7 @@ export const InstantiateInfo = ({
           </Flex>
         )}
       </Flex>
-      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
+      <Flex gap={{ base: 1, md: 6 }} direction={{ base: "row", md: "column" }}>
         {contractRest?.contract_info.ibc_port_id && (
           <LabelText label="IBC Port ID">
             <PortIdRender portId={contractRest.contract_info.ibc_port_id} />

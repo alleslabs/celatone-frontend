@@ -10,18 +10,18 @@ import { TooltipInfo } from "lib/components/Tooltip";
 
 const SortIcon = ({
   column,
-  order,
   isDesc,
+  order,
 }: {
   column: ValidatorOrder;
-  order: ValidatorOrder;
   isDesc: boolean;
+  order: ValidatorOrder;
 }) => {
   if (column !== order) return null;
   return (
     <CustomIcon
-      name={isDesc ? "arrow-down" : "arrow-up"}
       my={0}
+      name={isDesc ? "arrow-down" : "arrow-up"}
       boxSize="14px"
       color="gray.600"
     />
@@ -30,36 +30,36 @@ const SortIcon = ({
 
 const StyledTableHeader = chakra(TableHeader, {
   baseStyle: {
+    _hover: { bgColor: "gray.800", borderRadius: "4px" },
+    alignItems: "center",
+    cursor: "pointer",
     display: "flex",
     gap: 1,
-    alignItems: "center",
     py: 4,
-    cursor: "pointer",
     transition: "all 0.25s ease-in-out",
-    _hover: { bgColor: "gray.800", borderRadius: "4px" },
   },
 });
 
 interface ValidatorsTableHeaderProps {
-  templateColumns: GridProps["templateColumns"];
-  scrollComponentId: string;
   isActive: boolean;
-  order: ValidatorOrder;
-  setOrder: (value: ValidatorOrder) => void;
   isDesc: boolean;
+  order: ValidatorOrder;
+  scrollComponentId: string;
   setIsDesc: (value: boolean) => void;
+  setOrder: (value: ValidatorOrder) => void;
   showUptime: boolean;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const ValidatorsTableHeader = ({
-  templateColumns,
-  scrollComponentId,
   isActive,
-  order,
-  setOrder,
   isDesc,
+  order,
+  scrollComponentId,
   setIsDesc,
+  setOrder,
   showUptime,
+  templateColumns,
 }: ValidatorsTableHeaderProps) => {
   const handleOrderChange = useCallback(
     (column: ValidatorOrder) => () => {
@@ -80,7 +80,7 @@ export const ValidatorsTableHeader = ({
   );
 
   return (
-    <Grid templateColumns={templateColumns} id={scrollComponentId}>
+    <Grid id={scrollComponentId} templateColumns={templateColumns}>
       {isActive && (
         <StyledTableHeader
           textAlign="center"
@@ -92,9 +92,9 @@ export const ValidatorsTableHeader = ({
       <StyledTableHeader onClick={handleOrderChange(ValidatorOrder.Moniker)}>
         Validator
         <SortIcon
+          isDesc={isDesc}
           column={ValidatorOrder.Moniker}
           order={order}
-          isDesc={isDesc}
         />
       </StyledTableHeader>
       <StyledTableHeader
@@ -102,9 +102,9 @@ export const ValidatorsTableHeader = ({
       >
         Voting Power
         <SortIcon
+          isDesc={isDesc}
           column={ValidatorOrder.VotingPower}
           order={order}
-          isDesc={isDesc}
         />
       </StyledTableHeader>
       {showUptime && (
@@ -112,18 +112,18 @@ export const ValidatorsTableHeader = ({
           Uptime
           <TooltipInfo label="Calculated from recent 100 blocks" />
           <SortIcon
+            isDesc={isDesc}
             column={ValidatorOrder.Uptime}
             order={order}
-            isDesc={isDesc}
           />
         </StyledTableHeader>
       )}
       <StyledTableHeader onClick={handleOrderChange(ValidatorOrder.Commission)}>
         Commission
         <SortIcon
+          isDesc={isDesc}
           column={ValidatorOrder.Commission}
           order={order}
-          isDesc={isDesc}
         />
       </StyledTableHeader>
     </Grid>

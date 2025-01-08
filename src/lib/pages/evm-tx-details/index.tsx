@@ -22,10 +22,10 @@ import { zEvmTxDetailsQueryParams } from "./types";
 
 const mapEvmTxStatus = (status: Option<boolean>) => {
   switch (status) {
-    case true:
-      return "success";
     case false:
       return "failed";
+    case true:
+      return "success";
     default:
       return "not-found";
   }
@@ -39,7 +39,7 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
   useEvmConfig({ shouldRedirect: true });
   const router = useRouter();
   const isMobile = useMobile();
-  const { evmTxData, cosmosTxData, evmDenom, evmTxValue, gasInfo, isLoading } =
+  const { cosmosTxData, evmDenom, evmTxData, evmTxValue, gasInfo, isLoading } =
     useEvmTxDetailsData(evmTxHash);
 
   useEffect(() => {
@@ -60,17 +60,17 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
           {isMobile && (
             <EvmTxInfoMobile
               evmTxData={evmTxData}
-              cosmosTxData={cosmosTxData}
               evmTxValue={evmTxValue}
+              cosmosTxData={cosmosTxData}
               gasInfo={gasInfo}
             />
           )}
-          <Flex my={{ base: 0, md: 12 }} gap={4} justify="space-between">
+          <Flex gap={4} justify="space-between" my={{ base: 0, md: 12 }}>
             {!isMobile && (
               <EvmTxInfo
                 evmTxData={evmTxData}
-                cosmosTxData={cosmosTxData}
                 evmTxValue={evmTxValue}
+                cosmosTxData={cosmosTxData}
                 gasInfo={gasInfo}
               />
             )}
@@ -83,8 +83,8 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
         </>
       ) : (
         <EmptyState
-          imageVariant="not-found"
           heading="Transaction does not exist"
+          imageVariant="not-found"
           message="Please check your input or make sure you have selected the correct network."
         />
       )}
@@ -100,8 +100,8 @@ const EvmTxDetails = () => {
     <PageContainer>
       {!validated.success ? (
         <EmptyState
-          imageVariant="error"
           heading="Invalid transaction hash"
+          imageVariant="error"
           message="Invalid hex string format. Must start with 0x and have length 66."
         />
       ) : (

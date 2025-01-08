@@ -9,48 +9,48 @@ import "ace-builds/src-noconflict/theme-pastel_on_dark";
 import { useCelatoneApp } from "lib/app-provider";
 
 interface JsonEditorProps {
-  value: string;
-  setValue?: (value: string) => void;
-  readOnly?: boolean;
   isValid: boolean;
+  readOnly?: boolean;
+  setValue?: (value: string) => void;
   showLines: number;
+  value: string;
 }
 
 const JsonEditor = ({
-  value,
-  setValue,
-  readOnly = false,
   isValid,
+  readOnly = false,
+  setValue,
   showLines,
+  value,
 }: JsonEditorProps) => {
   const editorRef = useRef<AceEditor>(null);
   const { theme } = useCelatoneApp();
 
   return (
     <AceEditor
-      ref={editorRef}
-      mode="json"
-      theme={theme.jsonTheme}
-      fontSize="14px"
-      readOnly={readOnly}
       style={{
-        width: "100%",
         background: "transparent",
         color: readOnly && !isValid ? "error.light" : "text.main",
         offset: 0,
+        width: "100%",
       }}
-      setOptions={{
-        tabSize: 2,
-        useWorker: false,
-        showGutter: false,
-        wrap: readOnly && !isValid,
-        printMargin: false,
-        minLines: showLines,
-        maxLines: showLines,
-      }}
-      onChange={setValue}
+      readOnly={readOnly}
+      theme={theme.jsonTheme}
       value={value}
       editorProps={{ $blockScrolling: true }}
+      fontSize="14px"
+      mode="json"
+      onChange={setValue}
+      setOptions={{
+        maxLines: showLines,
+        minLines: showLines,
+        printMargin: false,
+        showGutter: false,
+        tabSize: 2,
+        useWorker: false,
+        wrap: readOnly && !isValid,
+      }}
+      ref={editorRef}
     />
   );
 };

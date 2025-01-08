@@ -7,49 +7,49 @@ import { useMetadata } from "lib/services/nft";
 import type { HexAddr32, Nullable, Option } from "lib/types";
 
 interface NftCardProps {
-  uri: string;
-  tokenId: string;
-  collectionName: Option<string>;
   collectionAddress: HexAddr32;
+  collectionName: Option<string>;
   nftAddress: Nullable<HexAddr32>;
   showCollection?: boolean;
+  tokenId: string;
+  uri: string;
 }
 
 export const NftCard = ({
-  uri,
-  tokenId,
-  nftAddress,
-  collectionName,
   collectionAddress,
+  collectionName,
+  nftAddress,
   showCollection = false,
+  tokenId,
+  uri,
 }: NftCardProps) => {
   const { data: metadata } = useMetadata(uri);
 
   return (
-    <Flex direction="column" minW="full">
+    <Flex minW="full" direction="column">
       <AppLink
-        href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
         onClick={() => track(AmpEvent.USE_NFT_CARD, { showCollection })}
+        href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}
       >
-        <Box position="relative" width="100%" paddingBottom="100%" mb={2}>
+        <Box width="100%" mb={2} paddingBottom="100%" position="relative">
           <Image
-            position="absolute"
-            top={0}
-            left={0}
             width="100%"
+            fallbackSrc={NFT_IMAGE_PLACEHOLDER}
+            fallbackStrategy="beforeLoadOrError"
             height="100%"
-            objectFit="contain"
+            left={0}
+            src={metadata?.image}
             background="gray.900"
             backgroundPosition="center"
             borderRadius="8px"
-            src={metadata?.image}
-            fallbackSrc={NFT_IMAGE_PLACEHOLDER}
-            fallbackStrategy="beforeLoadOrError"
+            objectFit="contain"
+            position="absolute"
+            top={0}
           />
         </Box>
         <Box>
           {showCollection && (
-            <Text fontSize="14px" color="primary.main" fontWeight={600}>
+            <Text color="primary.main" fontSize="14px" fontWeight={600}>
               {collectionName}
             </Text>
           )}

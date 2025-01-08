@@ -12,15 +12,15 @@ export const trackUseMainSearch = (
 ) =>
   amp.track(AmpEvent.USE_MAIN_SEARCH, {
     isClick,
-    type,
     section,
+    type,
   });
 
 export const trackUseTab = (tab: string, section?: string, info?: string) =>
   amp.track(AmpEvent.USE_TAB, {
-    tab,
-    section,
     info,
+    section,
+    tab,
   });
 
 export const trackUseViewMore = (properties?: { [key: string]: string }) =>
@@ -40,8 +40,8 @@ export const trackUseRadio = (radio: string, section?: string) =>
 
 export const trackUseOtherModal = (title: string, section?: string) =>
   amp.track(AmpEvent.USE_OTHER_MODAL, {
-    title,
     section,
+    title,
   });
 
 export const trackUseViewJSON = (section?: string) =>
@@ -61,10 +61,10 @@ export const trackUseCopier = (
   info?: string
 ) =>
   amp.track(AmpEvent.USE_COPIER, {
-    type,
+    info,
     section,
     subSection,
-    info,
+    type,
   });
 
 export const trackUseExpand = ({
@@ -73,21 +73,21 @@ export const trackUseExpand = ({
   info,
   section,
 }: {
-  action: "expand" | "collapse";
+  action: "collapse" | "expand";
   component:
     | "assets"
-    | "json"
-    | "permission_address"
     | "event_box"
-    | "unsupported_pool"
+    | "json"
     | "module_function_accordion"
-    | "module_struct_accordion"
     | "module_interaction_function_accordion"
     | "module_interaction_selected_function_card"
+    | "module_struct_accordion"
+    | "permission_address"
     | "pool_tx_msg"
     | "proposal_message_card"
+    | "resources_by_account_card"
     | "resources_detail_card"
-    | "resources_by_account_card";
+    | "unsupported_pool";
   info?: object;
   section?: string;
 }) =>
@@ -99,7 +99,7 @@ export const trackUseExpand = ({
   });
 
 export const trackUseExpandAll = (
-  action: "expand" | "collapse",
+  action: "collapse" | "expand",
   section?: string
 ) =>
   amp.track(AmpEvent.USE_EXPAND_ALL, {
@@ -131,10 +131,10 @@ export const trackUseInstantiatePermission = (
   section?: string
 ) =>
   amp.track(AmpEvent.USE_INSTANTIATE_PERMISSION, {
-    type,
-    emptyAddressesLength,
     addressesLength,
+    emptyAddressesLength,
     section,
+    type,
   });
 
 export const trackUseWhitelistedAddress = (
@@ -156,10 +156,10 @@ export const trackUseDepositFill = (amount: Token, section?: string) =>
 
 export const trackUseSubmitProposal = (
   properties: {
+    [key: string]: unknown;
+    assetDenom: Option<string>;
     initialDeposit: string;
     minDeposit: Option<string>;
-    assetDenom: Option<string>;
-    [key: string]: unknown;
   },
   section?: string
 ) => {
@@ -179,8 +179,8 @@ export const trackUseSubmitProposal = (
 export const trackUseFilter = (
   event:
     | AmpEvent.USE_FILTER_POOL_TYPE
-    | AmpEvent.USE_FILTER_PROPOSALS_TYPE
     | AmpEvent.USE_FILTER_PROPOSALS_STATUS
+    | AmpEvent.USE_FILTER_PROPOSALS_TYPE
     | AmpEvent.USE_FILTER_VALIDATORS_ACTIVE
     | AmpEvent.USE_FILTER_VOTED_PROPOSALS_ANSWER,
   filters: string[],
@@ -193,21 +193,21 @@ export const trackUsePaginationNavigate = (
   currentPage: number
 ) =>
   amp.track(AmpEvent.USE_PAGINATION_NAVIGATION, {
+    currentPage,
     navigate,
     pageSize,
-    currentPage,
   });
 
 export const trackUseSort = (
   sortBy: string,
   order: "ascending" | "descending"
-) => amp.track(AmpEvent.USE_SORT, { sortBy, order });
+) => amp.track(AmpEvent.USE_SORT, { order, sortBy });
 
 export const trackUseView = (view: string) =>
   amp.track(AmpEvent.USE_VIEW, { view });
 
 export const trackUseToggle = (name: string, isActive: boolean) =>
-  amp.track(AmpEvent.USE_TOGGLE, { name, isActive });
+  amp.track(AmpEvent.USE_TOGGLE, { isActive, name });
 
 export const trackUseModuleSelectionInputFill = (
   address: Addr,
@@ -217,6 +217,6 @@ export const trackUseModuleSelectionInputFill = (
   amp.track(AmpEvent.USE_MODULE_SELECTION_INPUT_FILL, {
     address: !!address,
     isHex: isHexWalletAddress(address) || isHexModuleAddress(address),
-    manualModuleName,
     manualFunctionName,
+    manualModuleName,
   });

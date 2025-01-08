@@ -5,33 +5,33 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { ProposalsTableRowProps } from "./ProposalsTableRow";
 
 export const ResolvedHeight = ({
-  resolvedHeight,
-  isDepositOrVoting,
   amptrackSection,
+  isDepositOrVoting,
+  resolvedHeight,
 }: {
-  resolvedHeight: ProposalsTableRowProps["proposal"]["resolvedHeight"];
-  isDepositOrVoting: boolean;
   amptrackSection?: string;
+  isDepositOrVoting: boolean;
+  resolvedHeight: ProposalsTableRowProps["proposal"]["resolvedHeight"];
 }) => {
   if (isDepositOrVoting)
     return (
-      <Text color="text.dark" variant="body2">
+      <Text variant="body2" color="text.dark">
         Pending
       </Text>
     );
   if (!resolvedHeight)
     return (
-      <Text color="text.dark" variant="body2">
+      <Text variant="body2" color="text.dark">
         N/A
       </Text>
     );
   return (
     <ExplorerLink
+      textVariant="body2"
       type="block_height"
       value={resolvedHeight.toString()}
-      showCopyOnHover
       ampCopierSection={amptrackSection}
-      textVariant="body2"
+      showCopyOnHover
     />
   );
 };

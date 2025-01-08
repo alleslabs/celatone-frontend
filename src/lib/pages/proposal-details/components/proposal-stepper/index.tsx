@@ -8,20 +8,20 @@ import { StepIcon } from "./StepIcon";
 import { getProgressBadgeProps } from "./utils";
 
 export interface ProposalStepperProps {
-  step: number;
-  proposalData: ProposalData;
   isOverview?: boolean;
+  proposalData: ProposalData;
+  step: number;
 }
 
 export const ProposalStepper = ({
-  step,
-  proposalData,
   isOverview = false,
+  proposalData,
+  step,
 }: ProposalStepperProps) => (
-  <Flex direction="column" gap={1} w="full" align="start">
-    <Flex w="full" gap={2} alignItems="center">
+  <Flex align="start" gap={1} w="full" direction="column">
+    <Flex alignItems="center" gap={2} w="full">
       <StepIcon step={step} proposalData={proposalData} />
-      <Text variant="body1" fontWeight={700} textAlign="start">
+      <Text textAlign="start" variant="body1" fontWeight={700}>
         {step === 1 ? "Deposit Period" : "Voting Period"}
       </Text>
       <Spacer />

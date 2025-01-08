@@ -60,9 +60,9 @@ export const getProposals = async (
         limit,
         offset,
         proposer,
+        search,
         statuses: statuses.join(","),
         types: types.join(","),
-        search,
       },
     })
     .then(({ data }) => parseWithError(zProposalsResponse, data));
@@ -144,9 +144,9 @@ export const getProposalValidatorVotes = async (
   axios
     .get(`${endpoint}/${encodeURIComponent(id)}/validator-votes`, {
       params: {
+        answer,
         limit,
         offset,
-        answer,
         search,
       },
     })

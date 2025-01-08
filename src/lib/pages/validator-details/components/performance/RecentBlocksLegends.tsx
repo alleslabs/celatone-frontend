@@ -4,35 +4,35 @@ import type { ComputedUptime, Ratio } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
 const LegendItem = ({
-  label,
   color,
-  value,
+  label,
   ratio,
+  value,
 }: {
-  label: string;
   color: string;
-  value: number;
+  label: string;
   ratio: Ratio<number>;
+  value: number;
 }) => (
   <Flex gap={2} w="full">
-    <Flex w={3} h={3} borderRadius="2px" backgroundColor={color} mt={1} />
+    <Flex h={3} mt={1} w={3} backgroundColor={color} borderRadius="2px" />
     <Flex
-      direction={{ base: "row", md: "column" }}
       alignItems={{ base: "center", md: "start" }}
+      direction={{ base: "row", md: "column" }}
     >
       <Text
         variant="body2"
-        fontWeight={700}
-        color="text.dark"
         w={{ base: 40, md: "auto" }}
+        color="text.dark"
+        fontWeight={700}
       >
         {label}
       </Text>
       <Text
         variant={{ base: "body2", md: "body1" }}
-        fontWeight={700}
-        color="text.main"
         w={{ base: 12, md: "auto" }}
+        color="text.main"
+        fontWeight={700}
       >
         {value}
       </Text>
@@ -48,25 +48,25 @@ interface RecentBlocksLegendsProps {
 }
 
 export const RecentBlocksLegends = ({
-  uptime: { signed, proposed, missed, signedRatio, proposedRatio, missedRatio },
+  uptime: { missed, missedRatio, proposed, proposedRatio, signed, signedRatio },
 }: RecentBlocksLegendsProps) => (
   <Flex direction={{ base: "column", md: "row" }}>
     <LegendItem
       label="Signed Blocks"
-      color="recentBlocks.signed"
       value={signed}
+      color="recentBlocks.signed"
       ratio={signedRatio}
     />
     <LegendItem
       label="Proposed Blocks"
-      color="recentBlocks.proposed"
       value={proposed}
+      color="recentBlocks.proposed"
       ratio={proposedRatio}
     />
     <LegendItem
       label="Missed Blocks"
-      color="recentBlocks.missed"
       value={missed}
+      color="recentBlocks.missed"
       ratio={missedRatio}
     />
   </Flex>

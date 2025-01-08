@@ -99,28 +99,28 @@ export default function BaseInputTemplate<
   F extends FormContextType = any,
 >(props: BaseInputTemplateProps<T, S, F>) {
   const {
-    id,
-    name, // remove this from ...rest
-    value,
-    label,
-    readonly,
-    disabled,
     autofocus,
+    disabled,
+    formContext,
+    hideError, // remove this from ...rest
+    hideLabel, // remove this from ...rest
+    id,
+    label,
+    name, // remove this from ...rest
     onBlur,
-    onFocus,
     onChange,
     onChangeOverride,
+    onFocus,
     options,
+    placeholder,
+    rawErrors,
+    readonly,
+    registry,
     required = false,
     schema,
-    uiSchema,
-    formContext,
-    registry,
-    rawErrors,
     type,
-    hideLabel, // remove this from ...rest
-    hideError, // remove this from ...rest
-    placeholder,
+    uiSchema,
+    value,
     ...rest
   } = props;
   const DescriptionFieldTemplate = getTemplate<
@@ -177,30 +177,30 @@ export default function BaseInputTemplate<
   const isStringType = isSchemaTypeString(schema.type);
   return (
     <FormControl
+      isInvalid={rawErrors && rawErrors.length > 0}
       className="form-control"
       isDisabled={disabled || readonly}
-      isRequired={required && !readonly}
       isReadOnly={readonly}
-      isInvalid={rawErrors && rawErrors.length > 0}
+      isRequired={required && !readonly}
     >
       {displayLabel && (
         <Flex gap={2}>
           <FormLabel
-            htmlFor={id}
             id={`${id}-label`}
-            fontSize="12px"
-            fontWeight={700}
-            marginInlineEnd={1}
             _disabled={{
               color: "text.main",
             }}
+            marginInlineEnd={1}
+            fontSize="12px"
+            fontWeight={700}
+            htmlFor={id}
           >
             {label}
           </FormLabel>
           <FieldTypeTag type={schema.type} format={schema.format} />
         </Flex>
       )}
-      <Flex direction="column" gap={2} mb={4}>
+      <Flex gap={2} mb={4} direction="column">
         <InputGroup>
           <Input
             id={id}
@@ -220,28 +220,28 @@ export default function BaseInputTemplate<
               // )?.[1]
             }
             {...inputProps}
-            list={schema.examples ? examplesId<T>(id) : undefined}
-            onChange={handleOnChange}
-            onBlur={handleOnBlur}
-            onFocus={handleOnFocus}
-            aria-describedby={ariaDescribedByIds<T>(id, !!schema.examples)}
             _disabled={{
-              color: "text.main",
-              cursor: "not-allowed",
-              _hover: {
-                borderColor: "gray.700",
-              },
               _active: {
                 border: "1px solid var(--chakra-colors-gray-700)",
               },
+              _hover: {
+                borderColor: "gray.700",
+              },
+              color: "text.main",
+              cursor: "not-allowed",
             }}
+            aria-describedby={ariaDescribedByIds<T>(id, !!schema.examples)}
+            list={schema.examples ? examplesId<T>(id) : undefined}
+            onBlur={handleOnBlur}
+            onChange={handleOnChange}
+            onFocus={handleOnFocus}
           />
           {/* {rightAddon && <InputRightAddon>{rightAddon}</InputRightAddon>} */}
         </InputGroup>
         {!readonly && isStringType && (
           <Checkbox
-            pl={2}
             isChecked={value === ""}
+            pl={2}
             onChange={(e) => {
               if (e.target.checked) onChange("" as T);
               else onChange(undefined as T);
@@ -261,7 +261,7 @@ export default function BaseInputTemplate<
             )
             .map((example: any) => {
               return (
-                <option key={example} value={example} aria-label={example} />
+                <option key={example} aria-label={example} value={example} />
               );
             })}
         </datalist>
@@ -270,9 +270,9 @@ export default function BaseInputTemplate<
         <Box mt={1}>
           <DescriptionFieldTemplate
             id={descriptionId<T>(id)}
-            description={schema.description}
-            schema={schema}
             registry={registry}
+            schema={schema}
+            description={schema.description}
           />
         </Box>
       )}

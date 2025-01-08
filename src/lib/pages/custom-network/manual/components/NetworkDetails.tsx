@@ -27,47 +27,47 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
   });
 
   return (
-    <Flex direction="column" gap={2} alignItems="center">
+    <Flex alignItems="center" gap={2} direction="column">
       <CustomNetworkPageHeader title="Add Network Details" />
-      <Flex w="full" direction="column" gap={6} mt={8}>
+      <Flex gap={6} mt={8} w="full" direction="column">
         <CustomNetworkSubheader
-          title="VM Type"
           subtitle="Choose supported VM for the custom Minitia"
+          title="VM Type"
         />
         <RadioGroup
-          onChange={(nextVal) => vmTypeField.onChange(nextVal)}
           value={vm.type}
+          onChange={(nextVal) => vmTypeField.onChange(nextVal)}
         >
           <Grid
             gridTemplateColumns="repeat(3, 1fr)"
             gap={4}
-            maxW={640}
             height={16}
+            maxW={640}
           >
             <Radio
-              variant="gray-card"
               width="fit-content"
               value={VmType.MOVE}
-              overflow="hidden"
+              variant="gray-card"
               w="full"
+              overflow="hidden"
             >
               Move
             </Radio>
             <Radio
-              variant="gray-card"
               width="fit-content"
               value={VmType.WASM}
-              overflow="hidden"
+              variant="gray-card"
               w="full"
+              overflow="hidden"
             >
               Wasm
             </Radio>
             <Radio
-              variant="gray-card"
               width="fit-content"
               value={VmType.EVM}
-              overflow="hidden"
+              variant="gray-card"
               w="full"
+              overflow="hidden"
             >
               EVM
             </Radio>
@@ -75,102 +75,102 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
         </RadioGroup>
         {vm.type === VmType.EVM && (
           <ControllerInput
-            name="vm.jsonRpc"
-            control={control}
             label="JSON RPC"
-            variant="fixed-floating"
-            w="full"
-            placeholder="https://"
+            name="vm.jsonRpc"
             rules={{
               required: "",
             }}
+            variant="fixed-floating"
+            w="full"
+            control={control}
             error={
               (errors.vm as { jsonRpc?: { message: string } })?.jsonRpc?.message
             }
+            placeholder="https://"
           />
         )}
       </Flex>
-      <Flex w="full" direction="column" gap={6} mt={8}>
+      <Flex gap={6} mt={8} w="full" direction="column">
         <CustomNetworkSubheader
-          title="Network Details"
           subtitle="Enter the Minitia’s general information and gather data touch points"
+          title="Network Details"
         />
         <ControllerInput
-          name="prettyName"
-          control={control}
           label="Minitia Name"
-          variant="fixed-floating"
-          w="full"
-          placeholder="ex. Jennie"
+          name="prettyName"
           rules={{
             required: "",
           }}
+          variant="fixed-floating"
+          w="full"
+          control={control}
           error={errors.prettyName?.message}
+          placeholder="ex. Jennie"
         />
         <ControllerInput
-          name="lcd"
-          control={control}
           label="Minitia LCD URL"
-          variant="fixed-floating"
-          w="full"
-          placeholder="https://"
+          name="lcd"
           rules={{
             required: "",
           }}
+          variant="fixed-floating"
+          w="full"
+          control={control}
           error={errors.lcd?.message}
+          placeholder="https://"
         />
         <ControllerInput
-          name="rpc"
-          control={control}
           label="Minitia RPC URL"
-          variant="fixed-floating"
-          w="full"
-          placeholder="https://"
+          name="rpc"
           rules={{
             required: "",
           }}
+          variant="fixed-floating"
+          w="full"
+          control={control}
           error={errors.rpc?.message}
+          placeholder="https://"
         />
         <Flex gap={6}>
           <ControllerInput
-            name="chainId"
-            control={control}
             label="Minitia Chain ID"
-            variant="fixed-floating"
-            w="full"
-            placeholder="ex. jennie-init-1"
+            name="chainId"
             rules={{
               required: "",
             }}
-            error={errors.chainId?.message}
-          />
-          <ControllerInput
-            name="registryChainName"
-            control={control}
-            label="Registry Chain Name"
             variant="fixed-floating"
             w="full"
-            placeholder="ex. jennieinit"
+            control={control}
+            error={errors.chainId?.message}
+            placeholder="ex. jennie-init-1"
+          />
+          <ControllerInput
             helperText={
               errors.registryChainName?.message
                 ? ""
                 : "Lower case letter (a-z) or number (0-9)"
             }
+            label="Registry Chain Name"
+            name="registryChainName"
             rules={{
               required: "",
             }}
+            variant="fixed-floating"
+            w="full"
+            control={control}
             error={errors.registryChainName?.message}
+            placeholder="ex. jennieinit"
           />
         </Flex>
         <ControllerInput
-          name="logoUri"
-          control={control}
+          helperText="1:1 ratio image is recommended"
           label="Logo URI"
+          name="logoUri"
           variant="fixed-floating"
           w="full"
-          placeholder="https://"
+          control={control}
           error={errors.logoUri?.message}
-          helperText="1:1 ratio image is recommended"
+          placeholder="https://"
         />
       </Flex>
       <Flex mt={8}>

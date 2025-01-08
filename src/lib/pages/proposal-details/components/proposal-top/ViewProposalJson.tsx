@@ -33,17 +33,17 @@ export const ViewProposalJson = ({ id, status }: ViewProposalJsonProps) => {
     status === ProposalStatus.CANCELLED;
   return (
     <Tooltip
-      label="Deposit failed and cancelled proposals are pruned from the network"
       hidden={!disabled}
+      label="Deposit failed and cancelled proposals are pruned from the network"
     >
       <Button
+        minWidth={{ md: "150px" }}
+        isDisabled={disabled}
+        size={{ base: "sm", md: "md" }}
         variant="outline-primary"
         w={{ base: "full", md: "min-content" }}
-        minWidth={{ md: "150px" }}
-        size={{ base: "sm", md: "md" }}
-        rightIcon={<CustomIcon name="launch" />}
         onClick={openLcdPage}
-        isDisabled={disabled}
+        rightIcon={<CustomIcon name="launch" />}
       >
         View in JSON
       </Button>

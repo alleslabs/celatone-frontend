@@ -18,22 +18,22 @@ import { JsonQuery } from "./JsonQuery";
 import { SchemaQuery } from "./schema-query";
 
 interface QueryAreaProps {
-  verifiedSchema: Nullish<CodeSchema>;
-  localSchema: Option<CodeSchema>;
+  codeHash: Option<string>;
+  codeId: Option<number>;
   contractAddress: BechAddr32;
   initialMsg: string;
-  codeId: Option<number>;
-  codeHash: Option<string>;
+  localSchema: Option<CodeSchema>;
+  verifiedSchema: Nullish<CodeSchema>;
 }
 
 export const QueryArea = observer(
   ({
-    verifiedSchema,
-    localSchema,
+    codeHash,
+    codeId,
     contractAddress,
     initialMsg,
-    codeId,
-    codeHash,
+    localSchema,
+    verifiedSchema,
   }: QueryAreaProps) => {
     const isMobile = useMobile();
     const [tab, setTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
@@ -60,9 +60,9 @@ export const QueryArea = observer(
       <>
         {!isMobile && (
           <Tabs
+            index={Object.values(MessageTabs).indexOf(tab)}
             isLazy
             lazyBehavior="keepMounted"
-            index={Object.values(MessageTabs).indexOf(tab)}
           >
             <TabList mb={8} borderBottom="1px" borderColor="gray.800">
               <CustomTab
@@ -71,12 +71,12 @@ export const QueryArea = observer(
                 JSON Input
               </CustomTab>
               <CustomTab
-                onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
                 isDisabled={!contractAddress}
+                onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
               >
                 <Tooltip
-                  label="Please select contract first"
                   hidden={Boolean(contractAddress)}
+                  label="Please select contract first"
                 >
                   Your Schema
                 </Tooltip>
@@ -88,8 +88,8 @@ export const QueryArea = observer(
           currentTab={tab}
           jsonContent={
             <JsonQuery
-              contractAddress={contractAddress}
               initialMsg={initialMsg}
+              contractAddress={contractAddress}
             />
           }
           schemaContent={
@@ -98,22 +98,20 @@ export const QueryArea = observer(
               <>
                 {hasSchema ? (
                   <SchemaQuery
-                    verifiedSchema={verifiedSchema}
-                    localSchema={localSchema}
-                    contractAddress={contractAddress}
                     initialMsg={initialMsg}
-                    codeId={codeId}
+                    verifiedSchema={verifiedSchema}
                     codeHash={codeHash}
+                    codeId={codeId}
+                    contractAddress={contractAddress}
+                    localSchema={localSchema}
                   />
                 ) : (
                   <UploadSchemaSection
-                    codeId={codeId}
-                    codeHash={codeHash}
                     title={
-                      <Flex flexDirection="column" alignItems="center">
+                      <Flex alignItems="center" flexDirection="column">
                         <Flex display="inline" textAlign="center">
                           You haven&#39;t attached the JSON Schema for
-                          <CustomIcon name="code" mx={1} color="gray.400" />
+                          <CustomIcon mx={1} name="code" color="gray.400" />
                           code {codeId}
                         </Flex>
                         <Flex textAlign="center">
@@ -121,6 +119,8 @@ export const QueryArea = observer(
                         </Flex>
                       </Flex>
                     }
+                    codeHash={codeHash}
+                    codeId={codeId}
                   />
                 )}
               </>

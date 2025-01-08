@@ -10,8 +10,8 @@ const indicatorProp: CSSProperties = {
   border: "solid 2px",
   borderColor: "gray.600",
   borderRadius: "100%",
-  width: "12px",
   height: "12px",
+  width: "12px",
 };
 
 export const ConnectingLine = ({
@@ -20,11 +20,11 @@ export const ConnectingLine = ({
   style,
 }: ConnectingLineProp) => (
   <Flex
-    top="36px"
     style={style}
-    position="absolute"
     alignItems="center"
     direction={alignment === "vertical" ? "column" : "row"}
+    position="absolute"
+    top="36px"
   >
     <Flex sx={indicatorProp} bgColor="gray.100" />
     <Flex

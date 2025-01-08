@@ -6,13 +6,13 @@ import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";
 import { TokenImageRender } from "./TokenImageRender";
 
 interface TokenImageWithAmountProps {
-  token: TokenWithValue;
   hasTrailingZeros?: boolean;
+  token: TokenWithValue;
 }
 
 export const TokenImageWithAmount = ({
-  token,
   hasTrailingZeros,
+  token,
 }: TokenImageWithAmountProps) => (
   <Flex alignItems="center" gap={2}>
     <TokenImageRender logo={token.logo} />

@@ -4,25 +4,25 @@ import { EmptyState } from "./EmptyState";
 
 interface ErrorFetchingProps {
   dataName: string;
-  withBorder?: boolean;
+  hasBorderTop?: boolean;
   my?: FlexProps["my"];
   py?: FlexProps["py"];
-  hasBorderTop?: boolean;
+  withBorder?: boolean;
 }
 
 export const ErrorFetching = ({
   dataName,
-  withBorder = false,
+  hasBorderTop = true,
   my = 12,
   py = 8,
-  hasBorderTop = true,
+  withBorder = false,
 }: ErrorFetchingProps) => (
   <EmptyState
     imageVariant="error"
     message={`There is an error during fetching ${dataName}. Please try again later.`}
-    withBorder={withBorder}
-    py={py}
     my={my}
+    py={py}
     hasBorderTop={hasBorderTop}
+    withBorder={withBorder}
   />
 );

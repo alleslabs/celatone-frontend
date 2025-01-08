@@ -13,10 +13,10 @@ import { extractParams } from "lib/pages/proposal-details/utils";
 import { VotingResult } from "./VotingResult";
 
 export const VotingThreshold = ({
-  proposalData,
-  params,
-  votesInfo,
   isLoading,
+  params,
+  proposalData,
+  votesInfo,
 }: VoteDetailsProps) => {
   const isMobile = useMobile();
   if (isLoading) return <Loading my={0} />;
@@ -28,7 +28,7 @@ export const VotingThreshold = ({
   );
 
   return (
-    <Flex direction="column" gap={4}>
+    <Flex gap={4} direction="column">
       {isMobile ? (
         <>
           <VotingResult
@@ -38,21 +38,21 @@ export const VotingThreshold = ({
             votesInfo={votesInfo}
           />
           <VoteThresholdBar
+            isCompact
             threshold={threshold}
             votesInfo={votesInfo}
-            isCompact
           />
           <ResultExplanation
-            proposalData={proposalData}
             params={params}
-            votesInfo={votesInfo}
             isLoading={isLoading}
+            proposalData={proposalData}
+            votesInfo={votesInfo}
           />
-          <VpPercentThreshold votesInfo={votesInfo} isCompact />
+          <VpPercentThreshold isCompact votesInfo={votesInfo} />
         </>
       ) : (
         <>
-          <Flex gap={2} align="center">
+          <Flex align="center" gap={2}>
             <Heading as="h6" variant="h6" textColor="text.main">
               Voting Results
             </Heading>
@@ -61,22 +61,22 @@ export const VotingThreshold = ({
               isCompact={false}
             />
           </Flex>
-          <Flex gap={12} align="center">
-            <Flex flex="2 2 0" direction="column" gap={4}>
+          <Flex align="center" gap={12}>
+            <Flex flex="2 2 0" gap={4} direction="column">
               <VoteThresholdBar
+                isCompact={false}
                 threshold={threshold}
                 votesInfo={votesInfo}
-                isCompact={false}
               />
-              <VpPercentThreshold votesInfo={votesInfo} isCompact={false} />
+              <VpPercentThreshold isCompact={false} votesInfo={votesInfo} />
             </Flex>
             <Flex
               flex="1 1 0"
-              direction="column"
               gap={2}
-              pl={6}
               h="fit-content"
+              pl={6}
               borderLeft="1px solid var(--chakra-colors-gray-700)"
+              direction="column"
             >
               <VotingResult
                 status={proposalData.status}
@@ -85,10 +85,10 @@ export const VotingThreshold = ({
                 votesInfo={votesInfo}
               />
               <ResultExplanation
-                proposalData={proposalData}
                 params={params}
-                votesInfo={votesInfo}
                 isLoading={isLoading}
+                proposalData={proposalData}
+                votesInfo={votesInfo}
               />
             </Flex>
           </Flex>

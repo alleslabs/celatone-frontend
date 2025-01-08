@@ -9,25 +9,25 @@ import type { AssetInfos, Option } from "lib/types";
 import { coinsFromStr } from "lib/utils";
 
 interface PoolAssetsGridProps {
-  txHash?: string;
-  msgIndex: number;
-  msgAssets?: Coin[];
-  msgSwapDenom?: string;
-  isJoin: boolean;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  isJoin: boolean;
+  isOpened: boolean;
+  msgAssets?: Coin[];
+  msgIndex: number;
+  msgSwapDenom?: string;
+  txHash?: string;
 }
 
 export const PoolAssetsGrid = ({
-  txHash,
-  msgIndex,
-  msgAssets,
-  msgSwapDenom,
-  isJoin,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  isJoin,
+  isOpened,
+  msgAssets,
+  msgIndex,
+  msgSwapDenom,
+  txHash,
 }: PoolAssetsGridProps) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (txHash && isLoading) return <Loading withBorder={false} />;
@@ -72,25 +72,25 @@ export const PoolAssetsGrid = ({
   return (
     <Flex
       className="pool-msg-detail-container"
-      direction="column"
       gap={2}
       p={4}
+      bgColor="gray.900"
       border="1px solid"
       borderColor="transparent"
       borderRadius="8px"
-      bgColor="gray.900"
+      direction="column"
     >
       <Text variant="body2" textColor="text.dark">
         {isJoin ? "Provided Assets" : "Receiving Assets"}
       </Text>
-      <SimpleGrid columns={2} spacing={2}>
+      <SimpleGrid spacing={2} columns={2}>
         {assets.map((asset) => (
           <AssetCard
             key={asset.denom}
             amount={asset.amount}
-            denom={asset.denom}
-            assetInfo={assetInfos?.[asset.denom]}
             ampCopierSection={ampCopierSection}
+            assetInfo={assetInfos?.[asset.denom]}
+            denom={asset.denom}
           />
         ))}
       </SimpleGrid>

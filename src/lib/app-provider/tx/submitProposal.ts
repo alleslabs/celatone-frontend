@@ -11,12 +11,12 @@ import {
 import type { Nullable } from "lib/types";
 
 export interface SubmitWhitelistProposalStreamParams {
+  amountToVote: Nullable<string>;
   estimatedFee?: StdFee;
   messages: EncodeObject[];
-  whitelistNumber: number;
-  amountToVote: Nullable<string>;
-  onTxSucceed?: () => void;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  whitelistNumber: number;
 }
 
 export const useSubmitWhitelistProposalTx = () => {
@@ -25,28 +25,28 @@ export const useSubmitWhitelistProposalTx = () => {
 
   return useCallback(
     async ({
-      onTxSucceed,
-      onTxFailed,
+      amountToVote,
       estimatedFee,
       messages,
+      onTxFailed,
+      onTxSucceed,
       whitelistNumber,
-      amountToVote,
     }: SubmitWhitelistProposalStreamParams) => {
       if (!address)
         throw new Error("No address provided (useSubmitWhitelistProposalTx)");
       if (!estimatedFee) return null;
       return submitWhitelistProposalTx({
         address,
+        amountToVote,
         fee: estimatedFee,
         messages,
-        whitelistNumber,
-        amountToVote,
-        signAndBroadcast,
+        onTxFailed,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
-        onTxFailed,
+        signAndBroadcast,
+        whitelistNumber,
       });
     },
     [address, signAndBroadcast]
@@ -54,12 +54,12 @@ export const useSubmitWhitelistProposalTx = () => {
 };
 
 interface SubmitStoreCodeProposalStreamParams {
-  wasmFileName: string;
-  messages: EncodeObject[];
   amountToVote: Nullable<string>;
   estimatedFee?: StdFee;
-  onTxSucceed?: () => void;
+  messages: EncodeObject[];
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  wasmFileName: string;
 }
 
 export const useSubmitStoreCodeProposalTx = () => {
@@ -68,29 +68,29 @@ export const useSubmitStoreCodeProposalTx = () => {
 
   return useCallback(
     async ({
+      amountToVote,
       estimatedFee,
       messages,
-      wasmFileName,
-      amountToVote,
-      onTxSucceed,
       onTxFailed,
+      onTxSucceed,
+      wasmFileName,
     }: SubmitStoreCodeProposalStreamParams) => {
       if (!address || !chainName)
         throw new Error("No address provided (useSubmitStoreCodeProposalTx)");
       if (!estimatedFee) return null;
       return submitStoreCodeProposalTx({
         address,
+        amountToVote,
         chainName,
         fee: estimatedFee,
         messages,
-        wasmFileName,
-        amountToVote,
-        signAndBroadcast,
+        onTxFailed,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
-        onTxFailed,
+        signAndBroadcast,
+        wasmFileName,
       });
     },
     [address, chainName, signAndBroadcast]

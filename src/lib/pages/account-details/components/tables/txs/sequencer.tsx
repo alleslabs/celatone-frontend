@@ -23,8 +23,8 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
     error,
     fetchNextPage,
     hasNextPage,
-    isLoading,
     isFetchingNextPage,
+    isLoading,
   } = useTxsByAddressSequencer(
     address as BechAddr20,
     undefined,
@@ -45,23 +45,23 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
         />
       ) : (
         <Flex direction="column">
-          <TableTitle title={title} mb={0} showCount={false} />
+          <TableTitle mb={0} title={title} showCount={false} />
           {!isMobileOverview && (
             <TransactionsTable
-              transactions={data}
-              isLoading={isLoading}
               emptyState={
                 error ? (
                   <ErrorFetching dataName="transactions" />
                 ) : (
                   <EmptyState
-                    withBorder
                     imageVariant="empty"
                     message="There are no transactions on this account, or they have been pruned from the LCD."
+                    withBorder
                   />
                 )
               }
+              isLoading={isLoading}
               showRelations
+              transactions={data}
             />
           )}
           {hasNextPage && (
@@ -70,9 +70,9 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
                 <ViewMore onClick={onViewMore} />
               ) : (
                 <LoadNext
-                  text="Load more 10 transactions"
                   fetchNextPage={fetchNextPage}
                   isFetchingNextPage={isFetchingNextPage}
+                  text="Load more 10 transactions"
                 />
               )}
             </>

@@ -8,16 +8,16 @@ import type { Option } from "lib/types";
 import { NftCard } from "./NftCard";
 
 interface NftListProps {
-  nfts: Option<Nft[]>;
-  isLoading?: boolean;
   emptyState: JSX.Element;
+  isLoading?: boolean;
+  nfts: Option<Nft[]>;
   showCollection: boolean;
 }
 
 export const NftList = ({
-  nfts,
-  isLoading,
   emptyState,
+  isLoading,
+  nfts,
   showCollection,
 }: NftListProps) => {
   if (isLoading) return <Loading />;
@@ -25,16 +25,16 @@ export const NftList = ({
   if (!nfts.length) return emptyState;
 
   return (
-    <SimpleGrid gap={6} columns={{ base: 2, lg: 3, xl: 5 }} mt={4} mb={8}>
+    <SimpleGrid gap={6} mb={8} mt={4} columns={{ base: 2, lg: 3, xl: 5 }}>
       {nfts.map((nft) => (
         <NftCard
           key={nft.tokenId + nft.uri}
-          showCollection={showCollection}
-          uri={nft.uri}
-          tokenId={nft.tokenId}
-          collectionName={nft.collectionName}
-          collectionAddress={nft.collectionAddress}
           nftAddress={nft.nftAddress}
+          uri={nft.uri}
+          collectionAddress={nft.collectionAddress}
+          collectionName={nft.collectionName}
+          showCollection={showCollection}
+          tokenId={nft.tokenId}
         />
       ))}
     </SimpleGrid>

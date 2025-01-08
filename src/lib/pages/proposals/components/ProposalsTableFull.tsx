@@ -35,24 +35,24 @@ export const ProposalsTableFull = () => {
   const debouncedSearch = useDebounce(search);
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
   const {
     data: proposals,
-    isLoading,
     error,
+    isLoading,
   } = useProposals(
     pageSize,
     offset,
@@ -89,31 +89,31 @@ export const ProposalsTableFull = () => {
 
   return (
     <>
-      <Flex direction="column" my={8} gap={{ base: 4, md: 8 }}>
-        <Flex justify="space-between" align="center">
+      <Flex gap={{ base: 4, md: 8 }} my={8} direction="column">
+        <Flex align="center" justify="space-between">
           <InputWithIcon
-            placeholder="Search with Proposal ID or Proposal Title"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
             size="lg"
+            value={search}
             amptrackSection="proposal-list-search"
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search with Proposal ID or Proposal Title"
           />
           {!isMobile && (
             <Tooltip
+              hidden={!!address}
               label="You need to connect your wallet to see your proposals"
               maxW="240px"
               textAlign="center"
-              hidden={!!address}
             >
               <Switch
                 alignItems="center"
-                justifyContent="center"
-                h="fit-content"
-                minW="200px"
-                display="flex"
-                size="md"
-                isChecked={!!proposer}
                 disabled={!address}
+                display="flex"
+                h="fit-content"
+                isChecked={!!proposer}
+                minW="200px"
+                size="md"
+                justifyContent="center"
                 onChange={(e) => {
                   if (e.target.checked && address) {
                     track(AmpEvent.USE_FILTER_MY_PROPOSALS, {
@@ -141,11 +141,11 @@ export const ProposalsTableFull = () => {
           direction={{ base: "column", md: "row" }}
         >
           <ProposalStatusFilter
+            isMulti
             label="Filter by Status"
             result={statuses}
             setResult={setStatuses}
             placeholder="All Status"
-            isMulti
           />
           <ProposalTypeFilter
             label="Filter by Type"
@@ -156,8 +156,6 @@ export const ProposalsTableFull = () => {
         </Flex>
       </Flex>
       <ProposalsTable
-        proposals={proposals?.items}
-        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="proposals" />
@@ -182,20 +180,22 @@ export const ProposalsTableFull = () => {
             </>
           )
         }
+        isLoading={isLoading}
+        proposals={proposals?.items}
       />
       {proposals && proposals.total > 10 && (
         <Pagination
           currentPage={currentPage}
+          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={proposals.total}
-          pageSize={pageSize}
           onPageChange={(nextPage) => setCurrentPage(nextPage)}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);
             setPageSize(size);
             setCurrentPage(1);
           }}
+          totalData={proposals.total}
         />
       )}
     </>

@@ -11,6 +11,10 @@ export class LocalChainConfigStore {
     SharedChainConfig
   >;
 
+  get isHydrated(): boolean {
+    return isHydrated(this);
+  }
+
   constructor() {
     this.localChainConfigs = {};
 
@@ -22,8 +26,12 @@ export class LocalChainConfigStore {
     });
   }
 
-  get isHydrated(): boolean {
-    return isHydrated(this);
+  addLocalChainConfig(chainId: string, chainConfig: SharedChainConfig) {
+    if (this.isLocalChainIdExist(chainId)) {
+      return;
+    }
+
+    this.updateLocalChainConfig(chainId, chainConfig);
   }
 
   getLocalChainConfig(chainId: string): Option<SharedChainConfig> {
@@ -34,27 +42,19 @@ export class LocalChainConfigStore {
     return this.localChainConfigs[chainId];
   }
 
-  updateLocalChainConfig(chainId: string, chainConfig: SharedChainConfig) {
-    this.localChainConfigs[chainId] = chainConfig;
-  }
-
-  addLocalChainConfig(chainId: string, chainConfig: SharedChainConfig) {
-    if (this.isLocalChainIdExist(chainId)) {
-      return;
-    }
-
-    this.updateLocalChainConfig(chainId, chainConfig);
-  }
-
-  removeLocalChainConfig(chainId: string) {
-    delete this.localChainConfigs[chainId];
-  }
-
   isLocalChainIdExist(chainId: string): boolean {
     return !!this.localChainConfigs[chainId];
   }
 
   isLocalPrettyNameExist(name: string): boolean {
     return !!find(this.localChainConfigs, { prettyName: name });
+  }
+
+  removeLocalChainConfig(chainId: string) {
+    delete this.localChainConfigs[chainId];
+  }
+
+  updateLocalChainConfig(chainId: string, chainConfig: SharedChainConfig) {
+    this.localChainConfigs[chainId] = chainConfig;
   }
 }

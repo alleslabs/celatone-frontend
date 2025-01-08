@@ -23,25 +23,25 @@ export const FailedAddCustomMinitiaModal = ({
   onClose,
 }: FailedAddCustomMinitiaModalProps) => (
   <Modal
-    isOpen={isOpen}
-    onClose={onClose}
     isCentered
+    isOpen={isOpen}
     closeOnOverlayClick={false}
+    onClose={onClose}
   >
     <ModalOverlay />
     <ModalContent bg="gray.800" py={10} w="414px">
-      <ModalHeader w="full" py={0}>
+      <ModalHeader py={0} w="full">
         <Stack alignItems="center" gap={4} w="100%">
           <CustomIcon
             name="alert-triangle-solid"
-            color="error.main"
             boxSize={14}
+            color="error.main"
           />
           <Heading variant="h5">JSON file is in wrong format</Heading>
         </Stack>
       </ModalHeader>
-      <ModalBody overflow="overlay" pt={2}>
-        <Text variant="body2" color="text.dark" textAlign="center">
+      <ModalBody pt={2} overflow="overlay">
+        <Text textAlign="center" variant="body2" color="text.dark">
           There is something wrong with your JSON file. So that the Minitia is
           cannot be added to InitiaScan.
         </Text>

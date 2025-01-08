@@ -9,12 +9,12 @@ import { TxsTableMobileCard } from "./TxsTableMobileCard";
 import { TxsTableRow } from "./TxsTableRow";
 
 interface TxsTableProps {
-  txs: Option<NftTxResponse[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
+  txs: Option<NftTxResponse[]>;
 }
 
-export const TxsTable = ({ txs, isLoading, emptyState }: TxsTableProps) => {
+export const TxsTable = ({ emptyState, isLoading, txs }: TxsTableProps) => {
   const isMobile = useMobile();
 
   if (isLoading) return <Loading withBorder />;
@@ -38,8 +38,8 @@ export const TxsTable = ({ txs, isLoading, emptyState }: TxsTableProps) => {
       {txs.map((transaction, index) => (
         <TxsTableRow
           key={transaction.txhash + index.toString()}
-          templateColumns={templateColumns}
           hash={transaction.txhash}
+          templateColumns={templateColumns}
           {...transaction}
         />
       ))}

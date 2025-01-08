@@ -9,19 +9,19 @@ export const sendingTx = (fee: StdFee) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (_: void) => {
     return {
-      value: null,
+      actionVariant: "sending",
       phase: TxStreamPhase.BROADCAST,
-      receipts: [
-        {
-          title: "Estimated Tx Fee",
-          html: <EstimatedFeeRender estimatedFee={fee} loading={false} />,
-        },
-      ],
       receiptInfo: {
         header: "Sending Transaction",
         headerIcon: <Spinner size="md" />,
       },
-      actionVariant: "sending",
+      receipts: [
+        {
+          html: <EstimatedFeeRender estimatedFee={fee} loading={false} />,
+          title: "Estimated Tx Fee",
+        },
+      ],
+      value: null,
     } as TxResultRendering;
   };
 };

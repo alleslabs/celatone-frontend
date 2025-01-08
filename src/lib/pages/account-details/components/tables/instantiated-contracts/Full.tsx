@@ -15,10 +15,10 @@ import type { InstantiatedContractsTableProps } from "./types";
 
 export const InstantiatedContractsTableFull = ({
   address,
+  onViewMore,
+  refetchCount,
   scrollComponentId,
   totalData,
-  refetchCount,
-  onViewMore,
 }: InstantiatedContractsTableProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -29,19 +29,19 @@ export const InstantiatedContractsTableFull = ({
     });
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: totalData,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: totalData,
   });
   const { contracts, isLoading } = useAccountContracts(
     address,
@@ -72,26 +72,26 @@ export const InstantiatedContractsTableFull = ({
         />
       ) : (
         <AccountSectionWrapper
-          totalData={totalData}
-          title="Contract Instances"
-          helperText="This account instantiated the following contracts"
           hasHelperText={!!contracts?.length}
+          helperText="This account instantiated the following contracts"
+          title="Contract Instances"
+          totalData={totalData}
         >
           <ContractsTable
-            contracts={contracts}
-            isLoading={isLoading}
             emptyState={
               !contracts ? (
                 <ErrorFetching
                   dataName="instantiated contracts"
-                  withBorder
                   my={2}
                   hasBorderTop={false}
+                  withBorder
                 />
               ) : (
                 <AccountDetailsEmptyState message="No contracts have been instantiated by this account before." />
               )
             }
+            contracts={contracts}
+            isLoading={isLoading}
             onRowSelect={onRowSelect}
           />
         </AccountSectionWrapper>
@@ -102,13 +102,13 @@ export const InstantiatedContractsTableFull = ({
           : totalData > 10 && (
               <Pagination
                 currentPage={currentPage}
+                pageSize={pageSize}
                 pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={totalData}
-                scrollComponentId={scrollComponentId}
-                pageSize={pageSize}
                 onPageChange={onPageChange}
                 onPageSizeChange={onPageSizeChange}
+                scrollComponentId={scrollComponentId}
+                totalData={totalData}
               />
             ))}
     </Box>

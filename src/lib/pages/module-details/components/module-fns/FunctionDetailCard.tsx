@@ -20,18 +20,18 @@ import type { ExposedFunction, IndexedModule, Visibility } from "lib/types";
 import { checkAvailability, getVisibilityIcon } from "lib/utils";
 
 interface FunctionDetailCardProps {
-  fnType: FunctionTypeTabIndex;
-  exposedFn: ExposedFunction;
   address: IndexedModule["address"];
+  exposedFn: ExposedFunction;
+  fnType: FunctionTypeTabIndex;
   moduleName: IndexedModule["moduleName"];
 }
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "24px",
     color: "gray.600",
+    display: "flex",
+    fontSize: "24px",
   },
 });
 
@@ -39,8 +39,8 @@ const VisibilityLabel = ({ visibility }: { visibility: Visibility }) => (
   <Flex alignItems="center">
     <CustomIcon
       name={getVisibilityIcon(visibility)}
-      color="gray.600"
       boxSize={3}
+      color="gray.600"
     />
     <Text variant="body3" color="text.dark" textTransform="capitalize">
       {visibility}
@@ -49,74 +49,74 @@ const VisibilityLabel = ({ visibility }: { visibility: Visibility }) => (
 );
 
 const FunctionButton = ({
+  address,
+  disabled,
+  exposedFn,
   fnType,
   isView,
-  disabled,
-  address,
   moduleName,
-  exposedFn,
 }: {
+  address: string;
+  disabled: boolean;
+  exposedFn: ExposedFunction;
   fnType: FunctionTypeTabIndex;
   isView: boolean;
-  disabled: boolean;
-  address: string;
   moduleName: string;
-  exposedFn: ExposedFunction;
 }) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
 
   const getButtonStyle = () => {
     if ((isMobile && !isView) || disabled)
-      return { variant: "outline-gray", color: "gray.500" };
-    if (isView) return { variant: "outline-primary", color: "primary.dark" };
-    return { variant: "outline-secondary", color: "secondary.main" };
+      return { color: "gray.500", variant: "outline-gray" };
+    if (isView) return { color: "primary.dark", variant: "outline-primary" };
+    return { color: "secondary.main", variant: "outline-secondary" };
   };
 
   return (
     <Tooltip
+      hidden={!disabled && !(isMobile && !isView)}
       label={
         isMobile && !isView
           ? "You can currently execute functions on a desktop device only"
           : "Only execute functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
       }
-      hidden={!disabled && !(isMobile && !isView)}
     >
       <Button
-        variant={getButtonStyle().variant}
         isDisabled={disabled || (isMobile && !isView)}
-        borderColor={getButtonStyle().color}
-        size="sm"
         minW={{ md: 24 }}
+        size="sm"
+        variant={getButtonStyle().variant}
+        borderColor={getButtonStyle().color}
+        leftIcon={
+          <CustomIcon
+            mx={0}
+            name={isView ? "query" : "execute"}
+            boxSize={3}
+            color={getButtonStyle().color}
+          />
+        }
         onClick={(e) => {
           track(AmpEvent.USE_MODULE_FUNCTION_CTA, {
             address,
-            moduleName,
-            functionType: isView ? "view" : "execute",
             functionName: exposedFn.name,
+            functionType: isView ? "view" : "execute",
+            moduleName,
             section: fnType,
           });
           navigate({
             pathname: "/interact",
             query: {
               address,
-              moduleName,
-              functionType: isView ? "view" : "execute",
               functionName: exposedFn.name,
+              functionType: isView ? "view" : "execute",
+              moduleName,
             },
           });
           e.stopPropagation();
         }}
-        leftIcon={
-          <CustomIcon
-            mx={0}
-            name={isView ? "query" : "execute"}
-            color={getButtonStyle().color}
-            boxSize={3}
-          />
-        }
       >
-        <Text color={getButtonStyle().color} mt="2px">
+        <Text mt="2px" color={getButtonStyle().color}>
           {isView ? "View" : "Execute"}
         </Text>
       </Button>
@@ -125,7 +125,7 @@ const FunctionButton = ({
 };
 
 const FunctionDetail = ({ exposedFn }: { exposedFn: ExposedFunction }) => (
-  <AccordionPanel bg="gray.900" borderRadius={8} mt={4} py={3} px={4}>
+  <AccordionPanel bg="gray.900" mt={4} px={4} py={3} borderRadius={8}>
     <Flex gap={3} direction="column">
       <Flex gap={8}>
         <LabelText
@@ -136,9 +136,9 @@ const FunctionDetail = ({ exposedFn }: { exposedFn: ExposedFunction }) => (
         >
           <Flex align="center">
             <CustomIcon
+              ml={0}
               name={getVisibilityIcon(exposedFn.visibility)}
               boxSize={3}
-              ml={0}
               color="gray.600"
             />
             <Text variant="body3" textTransform="capitalize">
@@ -154,10 +154,10 @@ const FunctionDetail = ({ exposedFn }: { exposedFn: ExposedFunction }) => (
         >
           <Flex align="center">
             <CustomIcon
-              boxSize={3}
               ml={0}
-              color={exposedFn.is_entry ? "success.main" : "gray.600"}
               name={exposedFn.is_entry ? "check" : "close"}
+              boxSize={3}
+              color={exposedFn.is_entry ? "success.main" : "gray.600"}
             />
             <Text variant="body3">{String(exposedFn.is_entry)}</Text>
           </Flex>
@@ -170,10 +170,10 @@ const FunctionDetail = ({ exposedFn }: { exposedFn: ExposedFunction }) => (
         >
           <Flex align="center">
             <CustomIcon
-              boxSize={3}
               ml={0}
-              color={exposedFn.is_view ? "success.main" : "gray.600"}
               name={exposedFn.is_view ? "check" : "close"}
+              boxSize={3}
+              color={exposedFn.is_view ? "success.main" : "gray.600"}
             />
             <Text variant="body3">{String(exposedFn.is_view)}</Text>
           </Flex>
@@ -202,12 +202,12 @@ const FunctionDetail = ({ exposedFn }: { exposedFn: ExposedFunction }) => (
 );
 
 export const FunctionDetailCard = ({
-  fnType,
-  exposedFn,
   address,
+  exposedFn,
+  fnType,
   moduleName,
 }: FunctionDetailCardProps) => {
-  const { is_view: isView, visibility, name } = exposedFn;
+  const { is_view: isView, name, visibility } = exposedFn;
   const disabled = !checkAvailability(exposedFn);
   const isMobile = useMobile();
   const fnColor = isView ? "primary.main" : "secondary.main";
@@ -215,19 +215,19 @@ export const FunctionDetailCard = ({
   return (
     <AccordionItem
       bg="gray.800"
+      gap={1}
+      p={{ base: 3, md: 4 }}
       _hover={{ bg: "gray.700" }}
       borderRadius={8}
-      p={{ base: 3, md: 4 }}
-      transition="all .25s ease-in-out"
       flexDirection="column"
-      gap={1}
+      transition="all .25s ease-in-out"
     >
       {({ isExpanded }) => (
         <>
           <AccordionButton
-            flexDirection="column"
             alignItems="flex-start"
             _hover={{ bg: "transparent" }}
+            flexDirection="column"
             onClick={() =>
               trackUseExpand({
                 action: !isExpanded ? "expand" : "collapse",
@@ -237,14 +237,14 @@ export const FunctionDetailCard = ({
               })
             }
           >
-            <Flex justifyContent="space-between" w="full" gap={2}>
-              <Flex direction="column" gap={1} alignItems="flex-start">
+            <Flex gap={2} w="full" justifyContent="space-between">
+              <Flex alignItems="flex-start" gap={1} direction="column">
                 <Flex alignItems="center" gap={1}>
-                  <Flex gap={{ base: 0, md: 1 }} alignItems="center">
+                  <Flex alignItems="center" gap={{ base: 0, md: 1 }}>
                     <CustomIcon
                       name={isView ? "query" : "execute"}
-                      color={fnColor}
                       boxSize={3}
+                      color={fnColor}
                     />
                     <Text variant="body3" color={fnColor}>
                       {isView ? "View" : "Execute"}
@@ -252,16 +252,16 @@ export const FunctionDetailCard = ({
                   </Flex>
                   <DotSeparator
                     bg="gray.600"
-                    ml={1}
                     display={{ base: "flex", md: "none" }}
+                    ml={1}
                   />
                   {isMobile && <VisibilityLabel visibility={visibility} />}
                 </Flex>
                 <Text
+                  textAlign="left"
                   variant="body2"
                   color="text.main"
                   wordBreak="break-word"
-                  textAlign="left"
                 >
                   {name}
                 </Text>
@@ -269,16 +269,16 @@ export const FunctionDetailCard = ({
               <Flex alignItems="center" gap={{ base: 0, md: 4 }}>
                 {!isMobile && <VisibilityLabel visibility={visibility} />}
                 <FunctionButton
+                  address={address}
+                  disabled={disabled}
                   fnType={fnType}
                   isView={isView}
-                  disabled={disabled}
-                  address={address}
-                  moduleName={moduleName}
                   exposedFn={exposedFn}
+                  moduleName={moduleName}
                 />
                 <StyledIconButton
-                  variant="none"
                   aria-label="external"
+                  variant="none"
                   _hover={{ backgroundColor: "gray.700" }}
                   icon={
                     <CustomIcon

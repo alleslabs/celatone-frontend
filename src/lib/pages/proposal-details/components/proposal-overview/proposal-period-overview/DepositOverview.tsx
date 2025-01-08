@@ -14,10 +14,10 @@ import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
 
 const DepositOverviewBody = ({
-  proposalData,
-  params,
-  isLoading,
   isDepositsLoading,
+  isLoading,
+  params,
+  proposalData,
 }: Omit<ProposalOverviewProps, "votesInfo">) => {
   const navigate = useInternalNavigate();
 
@@ -45,31 +45,31 @@ const DepositOverviewBody = ({
       {proposalData.status === ProposalStatus.DEPOSIT_PERIOD && (
         <DepositBar
           deposit={proposalData.totalDeposit}
-          minDeposit={minDeposit}
-          isDepositOrVoting
           isCompact
+          isDepositOrVoting
+          minDeposit={minDeposit}
         />
       )}
       <DepositList
-        proposalDeposits={proposalData.proposalDeposits.slice(0, 5)}
         isDepositsLoading={isDepositsLoading}
+        proposalDeposits={proposalData.proposalDeposits.slice(0, 5)}
       />
       {proposalData.proposalDeposits.length > 0 && (
         <Button
           variant="ghost-primary"
-          rightIcon={<CustomIcon name="chevron-right" />}
           onClick={() =>
             navigate({
+              options: {
+                shallow: true,
+              },
               pathname: "/proposals/[proposalId]/[tab]",
               query: {
                 proposalId: proposalData.id,
                 tab: TabIndex.Vote,
               },
-              options: {
-                shallow: true,
-              },
             })
           }
+          rightIcon={<CustomIcon name="chevron-right" />}
         >
           View All Depositors ({proposalData.proposalDeposits.length})
         </Button>
@@ -82,12 +82,12 @@ export const DepositOverview = (
   props: Omit<ProposalOverviewProps, "votesInfo">
 ) => (
   <Flex
-    direction="column"
     gap={4}
     ml={3}
     px={5}
     py={4}
     borderLeft="1px solid var(--chakra-colors-gray-600)"
+    direction="column"
   >
     <DepositOverviewBody {...props} />
   </Flex>

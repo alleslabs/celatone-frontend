@@ -19,8 +19,8 @@ export const fabricateFunds = (assets: CoinWithPrecision[]): Coin[] =>
     assets
       .filter((asset) => Number(asset.amount) && asset.denom)
       .map((asset) => ({
-        denom: asset.denom,
         amount: exponentify(asset.amount as Token, asset.precision).toFixed(0),
+        denom: asset.denom,
       }))
   );
 

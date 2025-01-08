@@ -7,12 +7,12 @@ import type { Option, QueryResponse, SchemaInfo } from "lib/types";
 import { dateFromNow, parseJsonStr } from "lib/utils";
 
 interface SchemaQueryResponseProps {
-  res: string;
-  resTab: Option<OutputMessageTabs>;
-  msgSchema: SchemaInfo;
-  resSchema: SchemaInfo;
-  timestamp: Option<Date>;
   isLoading: boolean;
+  msgSchema: SchemaInfo;
+  res: string;
+  resSchema: SchemaInfo;
+  resTab: Option<OutputMessageTabs>;
+  timestamp: Option<Date>;
 }
 
 const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {
@@ -33,23 +33,23 @@ const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {
 });
 
 export const SchemaQueryResponse = ({
-  res,
-  resTab,
-  msgSchema,
-  resSchema,
-  timestamp,
   isLoading,
+  msgSchema,
+  res,
+  resSchema,
+  resTab,
+  timestamp,
 }: SchemaQueryResponseProps) => {
   if (isLoading)
     return (
       <Flex
-        borderRadius={8}
-        p="48px 12px"
+        alignItems="center"
         gap={2}
-        direction="column"
+        p="48px 12px"
         border="1px solid"
         borderColor="gray.700"
-        alignItems="center"
+        borderRadius={8}
+        direction="column"
       >
         <Spinner color="text.100" />
         <Text color="text.dark">Querying...</Text>
@@ -57,12 +57,12 @@ export const SchemaQueryResponse = ({
     );
 
   return (
-    <Flex direction="column" gap={2}>
+    <Flex gap={2} direction="column">
       {!res ? (
         <Flex
           bg="gray.800"
-          borderRadius={8}
           p="16px 12px"
+          borderRadius={8}
           justifyContent="center"
         >
           <Text variant="body3" color="text.dark">
@@ -73,16 +73,16 @@ export const SchemaQueryResponse = ({
         <>
           {resTab === OutputMessageTabs.JSON_OUTPUT ? (
             <JsonReadOnly
-              topic="Return Output"
-              labelBgColor="gray.900"
               text={res}
               canCopy={res !== ""}
+              labelBgColor="gray.900"
+              topic="Return Output"
             />
           ) : (
             <Box bg="gray.800" p={4} borderRadius="8px">
               <JsonSchemaForm
-                formId={`response-${msgSchema.title}`}
                 schema={resSchema.schema}
+                formId={`response-${msgSchema.title}`}
                 initialFormData={(parseJsonStr(res) as QueryResponse).data}
               />
             </Box>

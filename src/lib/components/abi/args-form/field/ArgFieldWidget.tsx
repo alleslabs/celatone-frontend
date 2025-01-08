@@ -52,15 +52,15 @@ const boolOptions = [
 ];
 
 interface ArgFieldWidgetProps {
+  onChange: ControllerRenderProps["onChange"];
   type: string;
   value: Nullable<string>;
-  onChange: ControllerRenderProps["onChange"];
 }
 
 export const ArgFieldWidget = ({
+  onChange,
   type,
   value,
-  onChange,
 }: ArgFieldWidgetProps) => {
   const { bech32Prefix } = useCurrentChain();
   const { user: exampleAddress } = useExampleAddresses();
@@ -76,38 +76,38 @@ export const ArgFieldWidget = ({
     return (
       <Input
         size="md"
-        placeholder={getInputPlaceholder(type, value === null, bech32Prefix)}
         value={value ?? ""}
         onChange={onChange}
+        placeholder={getInputPlaceholder(type, value === null, bech32Prefix)}
       />
     );
 
   if (type === "bool")
     return (
       <SelectInput
-        classNamePrefix="chakra-react-select"
         size="md"
-        options={boolOptions}
-        placeholder=""
         value={boolOptions.find(
           ({ value: optionValue }) => optionValue === value
         )}
-        onChange={(newValue) => onChange(newValue?.value)}
         menuPortalTarget={document.body}
+        onChange={(newValue) => onChange(newValue?.value)}
+        options={boolOptions}
+        placeholder=""
+        classNamePrefix="chakra-react-select"
       />
     );
 
   return (
     <Textarea
-      minH="112px"
       h="fit-content"
+      minH="112px"
+      value={value ?? ""}
+      onChange={onChange}
       placeholder={
         type.startsWith("vector")
           ? getVectorPlaceholder(type, value === null, exampleAddress)
           : " "
       }
-      value={value ?? ""}
-      onChange={onChange}
     />
   );
 };

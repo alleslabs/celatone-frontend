@@ -9,28 +9,28 @@ import { useCardTheme } from "./hooks/useCardTheme";
 import type { CardTheme, Status } from "./types";
 
 interface UploadCardProps {
-  file: File;
   deleteFile: () => void;
-  theme?: CardTheme;
+  file: File;
   status?: Status;
   statusText?: Nullable<string>;
+  theme?: CardTheme;
 }
 
 export const UploadCard = ({
-  file,
   deleteFile,
-  theme = "primary",
+  file,
   status,
   statusText,
+  theme = "primary",
 }: UploadCardProps) => {
-  const { themeConfig, statusColor } = useCardTheme(theme, status);
+  const { statusColor, themeConfig } = useCardTheme(theme, status);
 
   return (
     <>
       <Flex
         align="center"
-        p="16px"
         gap="16px"
+        p="16px"
         w="full"
         bgColor={themeConfig.bgColor}
         border={themeConfig.border}
@@ -42,7 +42,7 @@ export const UploadCard = ({
           <UploadIcon />
           <Flex direction="column">
             <Text variant="body1">{file.name}</Text>
-            <Text variant="body2" color="text.dark" display="flex" gap="4px">
+            <Text display="flex" gap="4px" variant="body2" color="text.dark">
               {big(file.size)
                 .div(1000)
                 .toFixed(file.size > 1000 ? 0 : undefined)}{" "}
@@ -52,9 +52,9 @@ export const UploadCard = ({
         </Flex>
         <Flex align="center" gap={4}>
           <Button
-            leftIcon={<CustomIcon name="delete" boxSize={3} />}
             size="sm"
             variant={themeConfig.buttonVariant}
+            leftIcon={<CustomIcon name="delete" boxSize={3} />}
             onClick={() => {
               track(AmpEvent.USE_REMOVE_UPLOAD_FILE);
               deleteFile();
@@ -65,14 +65,14 @@ export const UploadCard = ({
           {status === "error" && (
             <CustomIcon
               name="alert-triangle-solid"
-              color="error.main"
               boxSize={4}
+              color="error.main"
             />
           )}
         </Flex>
       </Flex>
       {status && (
-        <Text variant="body3" color={statusColor} mt={1}>
+        <Text mt={1} variant="body3" color={statusColor}>
           {statusText}
         </Text>
       )}

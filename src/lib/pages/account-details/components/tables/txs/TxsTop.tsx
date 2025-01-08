@@ -5,23 +5,23 @@ import { TableTitle } from "lib/components/table";
 import type { Option } from "lib/types";
 
 interface TxsTopProps {
-  txsCount: Option<number>;
   onViewMore?: () => void;
   relationSelection: ReactNode;
+  txsCount: Option<number>;
   txTypeSelection: ReactNode;
 }
 export const TxsTop = ({
-  txsCount,
   onViewMore,
   relationSelection,
+  txsCount,
   txTypeSelection,
 }: TxsTopProps) => (
   <Flex
-    direction={{ base: "column", md: "row" }}
-    justify="space-between"
     alignItems={{ base: "start", md: "center" }}
+    justify="space-between"
+    direction={{ base: "column", md: "row" }}
   >
-    <TableTitle title="Transactions" count={txsCount} mb={0} />
+    <TableTitle mb={0} title="Transactions" count={txsCount} />
     {!onViewMore && (
       <Flex
         gap={{ base: 6, md: 4 }}

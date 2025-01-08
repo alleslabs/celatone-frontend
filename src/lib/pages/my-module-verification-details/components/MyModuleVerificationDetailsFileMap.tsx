@@ -15,9 +15,9 @@ export const MyModuleVerificationDetailsFileMap = ({
       File Map
     </Heading>
     <JsonReadOnly
+      fullWidth
       text={jsonPrettify(JSON.stringify(fileMap))}
       canCopy
-      fullWidth
     />
   </Stack>
 );

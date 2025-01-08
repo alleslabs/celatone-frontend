@@ -19,7 +19,7 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
     <>
       <Divider />
       <LabelText flex={1} label="Transaction Fee">
-        <TokenImageWithAmount token={gasInfo.txFee} hasTrailingZeros={false} />
+        <TokenImageWithAmount hasTrailingZeros={false} token={gasInfo.txFee} />
       </LabelText>
       <LabelText label="Gas Price">
         {formatTokenWithValue(gasInfo.gasPrice, undefined, false)}
@@ -30,27 +30,27 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
       {gasInfo.isEIP1559 && (
         <Box>
           <MotionBox
-            border="1px solid"
-            backgroundColor={expand ? "gray.900" : "transparent"}
-            borderRadius="8px"
-            borderColor="gray.800"
+            animate={expand ? "expanded" : "collapsed"}
+            initial="collapsed"
             variants={{
+              collapsed: { height: 0, marginBottom: 0, opacity: 0 },
               expanded: {
-                opacity: 1,
                 height: "auto",
                 marginBottom: "16px",
+                opacity: 1,
               },
-              collapsed: { opacity: 0, height: 0, marginBottom: 0 },
             }}
+            backgroundColor={expand ? "gray.900" : "transparent"}
+            border="1px solid"
+            borderColor="gray.800"
+            borderRadius="8px"
             overflow="hidden"
-            initial="collapsed"
-            animate={expand ? "expanded" : "collapsed"}
             transition={{
               duration: "0.25",
               ease: "easeInOut",
             }}
           >
-            <Flex direction="column" gap={6} m={4}>
+            <Flex gap={6} m={4} direction="column">
               <LabelText label="Base Fee">
                 {formatTokenWithValue(gasInfo.baseFee, undefined, false)}
               </LabelText>
@@ -63,16 +63,16 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
             </Flex>
           </MotionBox>
           <Button
+            size="sm"
             variant="ghost-primary"
             w="fit-content"
-            size="sm"
+            onClick={() => setExpand(!expand)}
             rightIcon={
               <CustomIcon
                 name={expand ? "chevron-up" : "chevron-down"}
                 boxSize={3}
               />
             }
-            onClick={() => setExpand(!expand)}
           >
             {expand ? "Hide gas info" : "See more gas info"}
           </Button>

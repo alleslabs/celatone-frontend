@@ -44,7 +44,7 @@ export const SelectContractInstantiator = ({
 }: SelectContractInstantiatorProps) => {
   const isMobile = useMobile();
   const { contract: exampleContractAddress } = useExampleAddresses();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const { validateContractAddress } = useValidateAddress();
 
   const [listSlug, setListSlug] = useState("");
@@ -73,19 +73,19 @@ export const SelectContractInstantiator = ({
     resetOnClose();
   };
 
-  const { refetch, isFetching, isRefetching } = useContractData(
+  const { isFetching, isRefetching, refetch } = useContractData(
     searchContract,
     {
-      enabled: false,
-      retry: false,
       cacheTime: 0,
-      refetchOnReconnect: false,
-      onSuccess: () => onSelectThenClose(searchContract),
+      enabled: false,
       onError: (err) =>
         setInvalid(
           (err as AxiosError<RpcQueryError>).response?.data.message ||
             DEFAULT_RPC_ERROR
         ),
+      onSuccess: () => onSelectThenClose(searchContract),
+      refetchOnReconnect: false,
+      retry: false,
     }
   );
 
@@ -111,24 +111,24 @@ export const SelectContractInstantiator = ({
   return (
     <>
       <Button
-        variant={notSelected ? "primary" : "outline-primary"}
+        px={4}
         py={1}
         size="sm"
-        px={4}
+        variant={notSelected ? "primary" : "outline-primary"}
+        leftIcon={
+          !notSelected ? <CustomIcon name="swap" boxSize="12px" /> : undefined
+        }
         onClick={() => {
           track(AmpEvent.USE_CONTRACT_MODAL);
           onOpen();
         }}
-        leftIcon={
-          !notSelected ? <CustomIcon name="swap" boxSize="12px" /> : undefined
-        }
       >
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
       <Drawer
         isOpen={isOpen}
-        onClose={resetOnClose}
         placement={isMobile ? "top" : "bottom"}
+        onClose={resetOnClose}
       >
         <DrawerOverlay />
         <DrawerContent h={{ base: "auto", md: "80%" }}>
@@ -147,50 +147,50 @@ export const SelectContractInstantiator = ({
               <DrawerCloseButton />
 
               <DrawerBody p={6} overflowY="scroll">
-                <Heading as="h6" variant="h6" mb={4}>
+                <Heading as="h6" mb={4} variant="h6">
                   Fill contract address manually
                 </Heading>
-                <Flex gap={2} alignItems="center">
+                <Flex alignItems="center" gap={2}>
                   <Input
                     isInvalid={invalid !== ""}
+                    size="lg"
                     value={searchContract}
+                    autoFocus
                     onChange={(e) => {
                       const inputValue = e.target.value;
                       setSearchContract(inputValue as BechAddr32);
                     }}
-                    placeholder={`ex. ${exampleContractAddress}`}
-                    size="lg"
-                    autoFocus
                     onKeyDown={handleKeydown}
+                    placeholder={`ex. ${exampleContractAddress}`}
                   />
                   <Button
                     height="56px"
-                    minW="72px"
                     isDisabled={searchContract.length === 0}
+                    minW="72px"
                     isLoading={isFetching || isRefetching}
                     onClick={handleSubmit}
                   >
                     Submit
                   </Button>
                 </Flex>
-                <Text variant="body3" color="error.main" mt={1} ml={3}>
+                <Text ml={3} mt={1} variant="body3" color="error.main">
                   {invalid}
                 </Text>
                 {!isMobile && (
                   <>
-                    <Flex my={6} gap={2} alignItems="center">
+                    <Flex alignItems="center" gap={2} my={6}>
                       <Divider borderColor="gray.700" />
                       <Text variant="body1">OR</Text>
                       <Divider borderColor="gray.700" />
                     </Flex>
 
-                    <Heading as="h6" variant="h6" mb={4}>
+                    <Heading as="h6" mb={4} variant="h6">
                       Select from your Contract List
                     </Heading>
                     <AllContractLists
-                      contractLists={contractLists}
                       handleListSelect={handleListSelect}
                       isReadOnly
+                      contractLists={contractLists}
                     />
                   </>
                 )}
@@ -202,9 +202,9 @@ export const SelectContractInstantiator = ({
                 <CustomIcon
                   name="chevron-left"
                   boxSize={5}
-                  onClick={() => setListSlug("")}
-                  cursor="pointer"
                   color="gray.600"
+                  cursor="pointer"
+                  onClick={() => setListSlug("")}
                 />
                 <Heading as="h5" variant="h5">
                   {contractList.name}
@@ -213,9 +213,9 @@ export const SelectContractInstantiator = ({
               <DrawerCloseButton />
               <DrawerBody maxH="full" overflowY="scroll">
                 <ContractListDetail
+                  isReadOnly
                   contractListInfo={contractList}
                   isLoading={isLoading}
-                  isReadOnly
                   onContractSelect={onSelectThenClose}
                 />
               </DrawerBody>

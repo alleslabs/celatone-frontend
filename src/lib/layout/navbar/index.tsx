@@ -78,9 +78,9 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                       category: "This Device",
                       submenu: [
                         {
+                          icon: "admin" as IconKeys,
                           name: "Saved Accounts",
                           slug: "/saved-accounts",
-                          icon: "admin" as IconKeys,
                         },
                         ...getDeviceSubmenuMove(isInitiaL1),
                         ...getDeviceSubmenuWasm(wasm.enabled),
@@ -120,9 +120,9 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                       category: "This Device",
                       submenu: [
                         {
+                          icon: "admin" as IconKeys,
                           name: "Saved Accounts",
                           slug: "/saved-accounts",
-                          icon: "admin" as IconKeys,
                         },
                         ...getDeviceSubmenuWasm(wasm.enabled),
                       ],
@@ -134,17 +134,17 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
         ];
 
   return (
-    <Flex direction="column" h="full" overflow="hidden" position="relative">
+    <Flex h="full" direction="column" overflow="hidden" position="relative">
       {isExpand ? (
         <ExpandNavMenu
-          navMenu={navMenu}
           isCurrentPage={isCurrentPage}
+          navMenu={navMenu}
           setIsExpand={setIsExpand}
         />
       ) : (
         <CollapseNavMenu
-          navMenu={navMenu}
           isCurrentPage={isCurrentPage}
+          navMenu={navMenu}
           setIsExpand={setIsExpand}
         />
       )}

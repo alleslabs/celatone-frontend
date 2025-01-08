@@ -26,19 +26,19 @@ import type {
 } from "./types";
 
 interface ModuleSelectDrawerProps {
+  handleModuleSelect: ModuleSelectFunction;
+  hexAddress: Option<HexAddr>;
   isOpen: boolean;
   onClose: () => void;
-  hexAddress: Option<HexAddr>;
-  handleModuleSelect: ModuleSelectFunction;
 }
 
 export const ModuleSelectDrawer = ({
+  handleModuleSelect,
+  hexAddress,
   isOpen,
   onClose,
-  hexAddress,
-  handleModuleSelect,
 }: ModuleSelectDrawerProps) => {
-  const { convertHexWalletAddress, convertHexModuleAddress } =
+  const { convertHexModuleAddress, convertHexWalletAddress } =
     useConvertHexAddress();
 
   const [mode, setMode] = useState<DisplayMode>("input");
@@ -78,7 +78,7 @@ export const ModuleSelectDrawer = ({
   }, [isOpen, refetch, selectedAddress.hex]);
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+    <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
       <DrawerOverlay />
       <DrawerContent h="90%">
         <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
@@ -91,26 +91,26 @@ export const ModuleSelectDrawer = ({
         <DrawerBody p={6}>
           <Flex h="full" direction="column">
             <ModuleSelector
-              mode={mode}
               selectedAddress={selectedAddress}
               setSelectedAddress={setSelectedAddress}
-              setModules={setModules}
-              setMode={setMode}
-              handleModuleSelect={handleModuleSelect}
               closeModal={onClose}
+              handleModuleSelect={handleModuleSelect}
+              mode={mode}
+              setMode={setMode}
+              setModules={setModules}
             />
             {modules ? (
               <DrawerBodyDesktop
                 selectedAddress={selectedAddress}
+                closeModal={onClose}
+                handleModuleSelect={handleModuleSelect}
                 mode={mode}
                 modules={modules}
-                handleModuleSelect={handleModuleSelect}
-                closeModal={onClose}
               />
             ) : (
               <ModuleEmptyState
-                description="Available functions for selected modules will display here"
                 hasImage
+                description="Available functions for selected modules will display here"
               />
             )}
           </Flex>

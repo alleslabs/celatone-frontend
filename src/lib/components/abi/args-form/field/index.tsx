@@ -21,18 +21,18 @@ import { OBJECT_TYPE, STRING_TYPE } from "./constants";
 import { getHelperText, getRules } from "./utils";
 
 interface ArgFieldTemplateProps {
+  control: Control<AbiFormData["args"]>;
   index: number;
   param: string;
-  control: Control<AbiFormData["args"]>;
 }
 
 export const ArgFieldTemplate = ({
+  control,
   index,
   param,
-  control,
 }: ArgFieldTemplateProps) => {
   const [isEditted, setIsEditted] = useState(false);
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const { validateContractAddress, validateUserAddress } = useValidateAddress();
 
   const isValidArgAddress = useCallback(
     (input: string) =>
@@ -53,11 +53,11 @@ export const ArgFieldTemplate = ({
   const rules = getRules(type, isOptional, isValidArgAddress, isValidArgObject);
 
   const {
-    field: { value, onChange, ...fieldProps },
-    fieldState: { isTouched, error },
+    field: { onChange, value, ...fieldProps },
+    fieldState: { error, isTouched },
   } = useController({
-    name: `${index}`,
     control,
+    name: `${index}`,
     rules,
   });
   const isError = (isTouched || isEditted) && !!error;
@@ -67,7 +67,10 @@ export const ArgFieldTemplate = ({
   return (
     <Box>
       <FormControl
+        isInvalid={isError}
         className={`${size}-form`}
+        isDisabled={isNull}
+        size={size}
         variant={
           (type === STRING_TYPE ||
             type.startsWith("vector") ||
@@ -76,9 +79,6 @@ export const ArgFieldTemplate = ({
             ? "fixed-floating"
             : "floating"
         }
-        size={size}
-        isInvalid={isError}
-        isDisabled={isNull}
         {...fieldProps}
       >
         <ArgFieldWidget
@@ -105,9 +105,9 @@ export const ArgFieldTemplate = ({
       </FormControl>
       {isOptional && (
         <Checkbox
-          pt="2px"
-          pl={2}
           isChecked={isNull}
+          pl={2}
+          pt="2px"
           onChange={(e) => {
             const newValue = e.target.checked;
             onChange(newValue ? null : "");

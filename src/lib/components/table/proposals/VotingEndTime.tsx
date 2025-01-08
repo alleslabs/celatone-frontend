@@ -5,13 +5,13 @@ import { ProposalStatus } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 export const VotingEndTime = ({
-  votingEndTime,
   depositEndTime,
   status,
+  votingEndTime,
 }: {
-  votingEndTime: Proposal["votingEndTime"];
   depositEndTime: Proposal["depositEndTime"];
   status: Proposal["status"];
+  votingEndTime: Proposal["votingEndTime"];
 }) => {
   if (status === ProposalStatus.DEPOSIT_FAILED) {
     return <Text color="text.dark">N/A</Text>;
@@ -21,7 +21,6 @@ export const VotingEndTime = ({
     status === ProposalStatus.DEPOSIT_PERIOD || votingEndTime === null;
   return (
     <Flex
-      direction="column"
       sx={{
         "& > p:first-of-type": {
           color: isDepositPeriod ? "text.dark" : "text.main",
@@ -32,8 +31,9 @@ export const VotingEndTime = ({
           fontSize: "12px",
         },
       }}
-      onClick={(e) => e.stopPropagation()}
       cursor="initial"
+      direction="column"
+      onClick={(e) => e.stopPropagation()}
     >
       <Text variant={{ base: "body3", md: "body2" }}>
         {isDepositPeriod ? "Voting not started" : formatUTC(votingEndTime)}

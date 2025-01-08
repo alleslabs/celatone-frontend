@@ -16,17 +16,17 @@ import { formatSlugName } from "lib/utils";
 interface ContractListContentProps {
   contractListInfo: ContractListInfo;
   filteredContracts: ContractInfo[];
-  onContractSelect: (addr: BechAddr32) => void;
   isLoading: boolean;
   isReadOnly: boolean;
+  onContractSelect: (addr: BechAddr32) => void;
 }
 
 const ContractListContent = ({
   contractListInfo,
   filteredContracts,
   isLoading,
-  onContractSelect,
   isReadOnly,
+  onContractSelect,
 }: ContractListContentProps) => {
   const { address } = useCurrentChain();
   const isInstantiatedByMe =
@@ -40,16 +40,14 @@ const ContractListContent = ({
 
   return (
     <ContractsTable
-      contracts={filteredContracts}
-      isLoading={isInstantiatedByMe && isLoading}
       emptyState={
         !contractListInfo.contracts.length ? (
           <ZeroState
+            isReadOnly={isReadOnly}
             list={{
               label: contractListInfo.name,
               value: contractListInfo.slug,
             }}
-            isReadOnly={isReadOnly}
           />
         ) : (
           <EmptyState
@@ -60,7 +58,6 @@ const ContractListContent = ({
           />
         )
       }
-      onRowSelect={onContractSelect}
       isReadOnly={isReadOnly}
       withCta={
         isReadOnly
@@ -71,6 +68,9 @@ const ContractListContent = ({
                 : undefined,
             }
       }
+      contracts={filteredContracts}
+      isLoading={isInstantiatedByMe && isLoading}
+      onRowSelect={onContractSelect}
     />
   );
 };
@@ -85,8 +85,8 @@ interface ContractListDetailProps {
 export const ContractListDetail = ({
   contractListInfo,
   isLoading,
-  onContractSelect,
   isReadOnly = false,
+  onContractSelect,
 }: ContractListDetailProps) => {
   const { isFullTier } = useTierConfig();
   const dataFull = useAdminsByContractAddresses(
@@ -111,8 +111,8 @@ export const ContractListDetail = ({
         .map<ContractInfo>((contractLocalInfo) => ({
           ...contractLocalInfo,
           admin: admins[contractLocalInfo.contractAddress],
-          latestUpdater: undefined,
           latestUpdated: undefined,
+          latestUpdater: undefined,
           remark: undefined,
         })),
     [admins, contractListInfo.contracts, searchKeyword, tagFilter]
@@ -121,39 +121,39 @@ export const ContractListDetail = ({
   return (
     <Box minH="xs">
       <Grid
-        w="full"
         gap={4}
-        templateColumns={isReadOnly ? "1fr" : "3fr 1fr"}
         my={isReadOnly ? 6 : 8}
+        w="full"
+        templateColumns={isReadOnly ? "1fr" : "3fr 1fr"}
       >
         <GridItem w="full">
           <InputWithIcon
-            placeholder="Search with Contract Address, Name, or Description"
-            value={searchKeyword}
-            onChange={(e) => setSearchKeyword(e.target.value)}
             size={{ base: "md", md: "lg" }}
+            value={searchKeyword}
             amptrackSection="contract-list-item-search"
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            placeholder="Search with Contract Address, Name, or Description"
           />
         </GridItem>
         {!isReadOnly && (
           <GridItem w="full">
             <TagSelection
+              boxWidth="400px"
+              creatable={false}
+              label="Filter by tag"
               result={tagFilter}
               setResult={setTagFilter}
               placeholder="No tag selected"
-              label="Filter by tag"
-              boxWidth="400px"
-              creatable={false}
             />
           </GridItem>
         )}
       </Grid>
       <ContractListContent
+        isReadOnly={isReadOnly}
         contractListInfo={contractListInfo}
         filteredContracts={filteredContracts}
         isLoading={isLoading}
         onContractSelect={onContractSelect}
-        isReadOnly={isReadOnly}
       />
     </Box>
   );

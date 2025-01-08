@@ -14,21 +14,21 @@ export const SavedAccountModalHeader = ({
 }: SavedAccountModalHeaderProps) => {
   const move = useMoveConfig({ shouldRedirect: false });
   return (
-    <Flex direction="column" gap={1}>
-      <Flex gap={4} alignItems="center" pt={6}>
-        <Text variant="body2" fontWeight={500} color="text.main" minW={32}>
+    <Flex gap={1} direction="column">
+      <Flex alignItems="center" gap={4} pt={6}>
+        <Text minW={32} variant="body2" color="text.main" fontWeight={500}>
           Account Address
         </Text>
-        <ExplorerLink value={address} type="user_address" />
+        <ExplorerLink type="user_address" value={address} />
       </Flex>
       {move.enabled && (
-        <Flex gap={4} alignItems="center">
-          <Text variant="body2" fontWeight={500} color="text.main" minW={32}>
+        <Flex alignItems="center" gap={4}>
+          <Text minW={32} variant="body2" color="text.main" fontWeight={500}>
             Hex Address
           </Text>
           <ExplorerLink
-            value={unpadHexAddress(bech32AddressToHex(address))}
             type="user_address"
+            value={unpadHexAddress(bech32AddressToHex(address))}
           />
         </Flex>
       )}

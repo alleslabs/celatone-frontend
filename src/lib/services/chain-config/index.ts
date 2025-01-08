@@ -12,9 +12,9 @@ export const useApiChainConfigs = (chainIds: string[]) =>
     async () => getApiChainConfigs(chainIds),
     {
       enabled: isUrl(String(CELATONE_API_OVERRIDE)),
-      retry: 1,
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
       refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: Infinity,
     }
   );

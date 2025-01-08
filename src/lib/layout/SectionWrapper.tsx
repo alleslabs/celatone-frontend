@@ -3,27 +3,27 @@ import { Flex } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
 interface SectionWrapperProps {
+  borderRight?: boolean;
   children: ReactNode;
+  justifyContent?: FlexboxProps["justifyContent"];
   minW?: FlexProps["minW"];
   w?: BoxProps["w"];
-  justifyContent?: FlexboxProps["justifyContent"];
-  borderRight?: boolean;
 }
 
 export const SectionWrapper = ({
+  borderRight = true,
   children,
+  justifyContent = "center",
   minW = "auto",
   w = "auto",
-  justifyContent = "center",
-  borderRight = true,
 }: SectionWrapperProps) => (
   <Flex
-    borderRight={borderRight ? "1px solid" : "none"}
-    borderColor="gray.700"
-    h="full"
     alignItems="center"
-    w={w}
+    h="full"
     minW={minW}
+    w={w}
+    borderColor="gray.700"
+    borderRight={borderRight ? "1px solid" : "none"}
     justifyContent={justifyContent}
   >
     {children}

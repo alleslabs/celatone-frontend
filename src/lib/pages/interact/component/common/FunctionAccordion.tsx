@@ -14,21 +14,21 @@ import type { ExposedFunction, Option } from "lib/types";
 import { NoImageEmptyState } from "./EmptyState";
 
 interface FunctionAccordionProps {
+  amptrackTab: string;
   filteredFns: ExposedFunction[];
   isEmpty: boolean;
-  triggerText: string;
   selectedFn: Option<ExposedFunction>;
   setSelectedFn: (fn: ExposedFunction) => void;
-  amptrackTab: string;
+  triggerText: string;
 }
 
 export const FunctionAccordion = ({
+  amptrackTab,
   filteredFns,
   isEmpty,
-  triggerText,
   selectedFn,
   setSelectedFn,
-  amptrackTab,
+  triggerText,
 }: FunctionAccordionProps) => (
   <AccordionItem bg="background.main" py={1}>
     {({ isExpanded }) => (
@@ -44,18 +44,18 @@ export const FunctionAccordion = ({
               });
             }}
           >
-            <Flex align="center" justify="space-between" gap={2}>
+            <Flex align="center" gap={2} justify="space-between">
               <Text variant="body2" color="text.dark">
                 {triggerText}
               </Text>
-              <CountBadge count={filteredFns.length} variant="common" />
+              <CountBadge variant="common" count={filteredFns.length} />
             </Flex>
-            <AccordionIcon color="gray.600" ml="auto" />
+            <AccordionIcon ml="auto" color="gray.600" />
           </AccordionButton>
         </h6>
-        <AccordionPanel py={3} px={0}>
+        <AccordionPanel px={0} py={3}>
           {filteredFns.length ? (
-            <Flex flexDirection="column" gap={1}>
+            <Flex gap={1} flexDirection="column">
               {filteredFns.map((fn) => (
                 <FunctionCard
                   key={fn.name}

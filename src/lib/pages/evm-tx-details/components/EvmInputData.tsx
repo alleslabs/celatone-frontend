@@ -49,8 +49,8 @@ export const EvmInputData = ({ inputData }: EvmInputDataProps) => {
   return (
     <>
       <Flex
-        gap={4}
         align={{ base: "flex-start", md: "center" }}
+        gap={4}
         direction={{ base: "column", md: "row" }}
       >
         <Heading as="h6" variant="h6">

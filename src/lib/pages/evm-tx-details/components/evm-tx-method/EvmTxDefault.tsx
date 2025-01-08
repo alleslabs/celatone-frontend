@@ -14,16 +14,16 @@ export const EvmTxDefault = ({ evmTxData }: EvmTxDefaultProps) => (
     <Heading as="h6" variant="h6">
       Sender / Receiver
     </Heading>
-    <Flex direction="column" gap={4}>
+    <Flex gap={4} direction="column">
       <EvmInfoLabelValue
         label="From"
         value={
           <ExplorerLink
+            fixedHeight={false}
             type="user_address"
             value={evmTxData.tx.from}
             showCopyOnHover
             textFormat="normal"
-            fixedHeight={false}
           />
         }
       />
@@ -32,11 +32,11 @@ export const EvmTxDefault = ({ evmTxData }: EvmTxDefaultProps) => (
         value={
           evmTxData.txReceipt.to ? (
             <ExplorerLink
+              fixedHeight={false}
               type="evm_contract_address"
               value={evmTxData.txReceipt.to}
               showCopyOnHover
               textFormat="normal"
-              fixedHeight={false}
             />
           ) : (
             <Text variant="body2" color="text.disabled">

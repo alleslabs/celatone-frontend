@@ -16,29 +16,29 @@ import { AppLink } from "./AppLink";
 import { Copier } from "./copy";
 
 export type LinkType =
-  | AddressReturnType
-  | "evm_contract_address"
-  | "tx_hash"
-  | "evm_tx_hash"
-  | "code_id"
   | "block_height"
-  | "proposal_id"
+  | "code_id"
+  | "evm_contract_address"
+  | "evm_tx_hash"
   | "pool_id"
-  | "task_id";
+  | "proposal_id"
+  | "task_id"
+  | "tx_hash"
+  | AddressReturnType;
 
 interface ExplorerLinkProps extends FlexProps {
-  value: string;
-  type: LinkType;
+  ampCopierSection?: string;
   copyValue?: string;
   externalLink?: string;
-  showCopyOnHover?: boolean;
-  isReadOnly?: boolean;
-  textFormat?: "truncate" | "ellipsis" | "normal";
-  textVariant?: TextProps["variant"];
-  ampCopierSection?: string;
-  openNewTab?: boolean;
   fixedHeight?: boolean;
+  isReadOnly?: boolean;
+  openNewTab?: boolean;
   rightIcon?: ReactNode;
+  showCopyOnHover?: boolean;
+  textFormat?: "ellipsis" | "normal" | "truncate";
+  textVariant?: TextProps["variant"];
+  type: LinkType;
+  value: string;
 }
 
 export const getNavigationUrl = ({
@@ -52,11 +52,13 @@ export const getNavigationUrl = ({
 }) => {
   let url = "";
   switch (type) {
-    case "tx_hash":
-      url = "/txs";
+    case "block_height":
+      // no block info for Genesis height (0)
+      if (value === "0") return "";
+      url = "/blocks";
       break;
-    case "evm_tx_hash":
-      url = "/evm-txs";
+    case "code_id":
+      url = "/codes";
       break;
     case "contract_address":
       url = wasmEnabled ? "/contracts" : "/accounts";
@@ -64,31 +66,29 @@ export const getNavigationUrl = ({
     case "evm_contract_address":
       url = "/evm-contracts";
       break;
+    case "evm_tx_hash":
+      url = "/evm-txs";
+      break;
+    case "invalid_address":
+      return "";
+    case "pool_id":
+      url = "/pools";
+      break;
+    case "proposal_id":
+      url = "/proposals";
+      break;
+    case "task_id":
+      url = "/my-module-verifications";
+      break;
+    case "tx_hash":
+      url = "/txs";
+      break;
     case "user_address":
       url = "/accounts";
       break;
     case "validator_address":
       url = "/validators";
       break;
-    case "code_id":
-      url = "/codes";
-      break;
-    case "block_height":
-      // no block info for Genesis height (0)
-      if (value === "0") return "";
-      url = "/blocks";
-      break;
-    case "proposal_id":
-      url = "/proposals";
-      break;
-    case "pool_id":
-      url = "/pools";
-      break;
-    case "task_id":
-      url = "/my-module-verifications";
-      break;
-    case "invalid_address":
-      return "";
     default:
       break;
   }
@@ -113,31 +113,31 @@ const getCopyLabel = (type: LinkType) =>
     .join(" ");
 
 const LinkRender = ({
-  type,
-  isInternal,
-  hrefLink,
-  textValue,
   fallbackValue,
+  hrefLink,
   isEllipsis,
-  textVariant,
+  isInternal,
   openNewTab,
+  textValue,
+  textVariant,
+  type,
 }: {
-  type: string;
-  isInternal: boolean;
-  hrefLink: string;
-  textValue: string;
   fallbackValue: string;
+  hrefLink: string;
   isEllipsis: boolean;
-  textVariant: TextProps["variant"];
+  isInternal: boolean;
   openNewTab: Option<boolean>;
+  textValue: string;
+  textVariant: TextProps["variant"];
+  type: string;
 }) => {
   const { currentChainId } = useCelatoneApp();
   const textElement = (
     <Text
-      variant={textVariant}
-      fontFamily="mono"
-      color={textValue.length ? "primary.main" : "text.disabled"}
       className={isEllipsis ? "ellipsis" : undefined}
+      variant={textVariant}
+      color={textValue.length ? "primary.main" : "text.disabled"}
+      fontFamily="mono"
       pointerEvents={hrefLink ? "auto" : "none"}
       wordBreak={{ base: "break-all", md: "inherit" }}
     >
@@ -147,24 +147,24 @@ const LinkRender = ({
 
   return isInternal && !openNewTab ? (
     <AppLink
+      style={{ overflow: "hidden" }}
+      onClick={(e) => e.stopPropagation()}
       href={hrefLink}
       passHref
-      onClick={(e) => e.stopPropagation()}
-      style={{ overflow: "hidden" }}
     >
       {textElement}
     </AppLink>
   ) : (
     <a
-      href={isInternal ? `/${currentChainId}${hrefLink}` : hrefLink}
-      target="_blank"
-      rel="noopener noreferrer"
+      style={{ overflow: "hidden" }}
       data-peer
+      rel="noopener noreferrer"
+      target="_blank"
       onClick={(e) => {
         if (!isInternal) trackMintScan(type);
         e.stopPropagation();
       }}
-      style={{ overflow: "hidden" }}
+      href={isInternal ? `/${currentChainId}${hrefLink}` : hrefLink}
     >
       {textElement}
     </a>
@@ -172,18 +172,18 @@ const LinkRender = ({
 };
 
 export const ExplorerLink = ({
-  type,
-  value,
+  ampCopierSection,
   copyValue,
   externalLink,
-  showCopyOnHover = false,
+  fixedHeight = true,
   isReadOnly = false,
+  openNewTab,
+  rightIcon = null,
+  showCopyOnHover = false,
   textFormat = "truncate",
   textVariant = "body2",
-  ampCopierSection,
-  openNewTab,
-  fixedHeight = true,
-  rightIcon = null,
+  type,
+  value,
   ...componentProps
 }: ExplorerLinkProps) => {
   const isMobile = useMobile();
@@ -212,35 +212,35 @@ export const ExplorerLink = ({
   ) : (
     <Flex
       className="copier-wrapper"
-      display="inline-flex"
       align="center"
+      display="inline-flex"
+      gap={1}
       h={fixedHeight ? "24px" : "auto"}
-      transition="all 0.25s ease-in-out"
       _hover={{
         textDecoration: "underline",
         textDecorationColor: "primary.light",
       }}
-      gap={1}
+      transition="all 0.25s ease-in-out"
       {...componentProps}
     >
       <LinkRender
-        type={type}
-        isInternal={isUndefined(externalLink)}
-        hrefLink={link}
-        textValue={textValue}
         fallbackValue={copyValue || value}
         isEllipsis={textFormat === "ellipsis"}
+        isInternal={isUndefined(externalLink)}
+        textValue={textValue}
         textVariant={textVariant}
+        type={type}
         openNewTab={openNewTab}
+        hrefLink={link}
       />
       {rightIcon}
       <Copier
-        type={type}
-        value={copyValue || value}
-        copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
         display={showCopyOnHover && !isMobile ? "none" : "inline"}
         ml={1}
+        type={type}
+        value={copyValue || value}
         amptrackSection={ampCopierSection}
+        copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
       />
     </Flex>
   );

@@ -39,27 +39,27 @@ import "ace-builds/src-noconflict/theme-pastel_on_dark";
 
 interface WasmCodeSnippetProps {
   contractAddress: BechAddr32;
-  message: string;
-  type: "query" | "execute";
-  ml?: ButtonProps["ml"];
   funds?: Coin[];
+  message: string;
+  ml?: ButtonProps["ml"];
+  type: "execute" | "query";
   w?: FlexProps["width"];
 }
 
 const WasmCodeSnippet = ({
   contractAddress,
-  message,
-  type = "query",
-  ml,
-  w,
   funds = [],
+  message,
+  ml,
+  type = "query",
+  w,
 }: WasmCodeSnippetProps) => {
   const isMobile = useMobile();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const isDisabled = !contractAddress || !message.length;
   const {
-    currentChainId,
     chainConfig: { chain, lcd: lcdEndpoint, rpc: rpcEndpoint },
+    currentChainId,
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();
@@ -73,72 +73,12 @@ const WasmCodeSnippet = ({
 
   const codeSnippets: Record<
     string,
-    { name: string; mode: string; snippet: string }[]
+    { mode: string; name: string; snippet: string }[]
   > = {
-    query: [
-      {
-        name: "CLI",
-        mode: "sh",
-        snippet: `export CHAIN_ID='${currentChainId}'\n
-export CONTRACT_ADDRESS='${contractAddress}'\n
-export QUERY_MSG='${message}'\n
-export RPC_URL='${rpcEndpoint}'\n
-${daemonName} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
-  --chain-id $CHAIN_ID \\
-  --node $RPC_URL`,
-      },
-      {
-        name: "Python",
-        mode: "python",
-        snippet: `import base64
-import requests\n
-CONTRACT_ADDRESS = "${contractAddress}"
-LCD_URL = "${lcdEndpoint}"
-QUERY_MSG = b'''${message}'''\n
-query_b64encoded = base64.b64encode(QUERY_MSG).decode("ascii")
-res = requests.get(
-  f"{LCD_URL}/cosmwasm/wasm/v1/contract/{CONTRACT_ADDRESS}/smart/{query_b64encoded}"
-).json()\n
-print(res)`,
-      },
-      {
-        name: "CosmJS",
-        mode: "javascript",
-        snippet: `const { SigningCosmWasmClient } = require("@cosmjs/cosmwasm-stargate");
-const rpcURL = "${rpcEndpoint}";
-const contractAddress =
-"${contractAddress}";
-const queryMsg = \`${message}\`;\n
-const queryContract = async (rpcURL, contractAddress, queryMsg) => {
-  const client = await SigningCosmWasmClient.connect(rpcURL);
-  const queryResult = await client.queryContractSmart(
-    contractAddress,
-    JSON.parse(queryMsg)
-  );
-  console.log(queryResult);
-};\n
-queryContract(rpcURL, contractAddress, queryMsg);`,
-      },
-      {
-        name: "Axios",
-        mode: "javascript",
-        snippet: `const axios = require('axios');\n
-const lcdURL = '${lcdEndpoint}';
-const contractAddress =
-"${contractAddress}";
-const queryMsg = ${message};\n
-const queryContract = async () => {
-  const queryB64Encoded = Buffer.from(JSON.stringify(queryMsg)).toString('base64');
-  const res = await axios.get(\`$\{lcdURL}/cosmwasm/wasm/v1/contract/$\{contractAddress}/smart/$\{queryB64Encoded}\`);
-  console.log(res.data);
-};\n
-queryContract();`,
-      },
-    ],
     execute: [
       {
-        name: "CLI",
         mode: "sh",
+        name: "CLI",
         snippet: `${daemonName} keys add --recover celatone\n
 export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
@@ -153,8 +93,8 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   --gas-adjustment 1.5`,
       },
       {
-        name: "CosmJS",
         mode: "javascript",
+        name: "CosmJS",
         snippet: `const { GasPrice } = require("@cosmjs/stargate");
 const { SigningCosmWasmClient } = require("@cosmjs/cosmwasm-stargate");
 const { getOfflineSignerAmino } = require("cosmjs-utils");
@@ -199,6 +139,66 @@ execute();
 `,
       },
     ],
+    query: [
+      {
+        mode: "sh",
+        name: "CLI",
+        snippet: `export CHAIN_ID='${currentChainId}'\n
+export CONTRACT_ADDRESS='${contractAddress}'\n
+export QUERY_MSG='${message}'\n
+export RPC_URL='${rpcEndpoint}'\n
+${daemonName} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
+  --chain-id $CHAIN_ID \\
+  --node $RPC_URL`,
+      },
+      {
+        mode: "python",
+        name: "Python",
+        snippet: `import base64
+import requests\n
+CONTRACT_ADDRESS = "${contractAddress}"
+LCD_URL = "${lcdEndpoint}"
+QUERY_MSG = b'''${message}'''\n
+query_b64encoded = base64.b64encode(QUERY_MSG).decode("ascii")
+res = requests.get(
+  f"{LCD_URL}/cosmwasm/wasm/v1/contract/{CONTRACT_ADDRESS}/smart/{query_b64encoded}"
+).json()\n
+print(res)`,
+      },
+      {
+        mode: "javascript",
+        name: "CosmJS",
+        snippet: `const { SigningCosmWasmClient } = require("@cosmjs/cosmwasm-stargate");
+const rpcURL = "${rpcEndpoint}";
+const contractAddress =
+"${contractAddress}";
+const queryMsg = \`${message}\`;\n
+const queryContract = async (rpcURL, contractAddress, queryMsg) => {
+  const client = await SigningCosmWasmClient.connect(rpcURL);
+  const queryResult = await client.queryContractSmart(
+    contractAddress,
+    JSON.parse(queryMsg)
+  );
+  console.log(queryResult);
+};\n
+queryContract(rpcURL, contractAddress, queryMsg);`,
+      },
+      {
+        mode: "javascript",
+        name: "Axios",
+        snippet: `const axios = require('axios');\n
+const lcdURL = '${lcdEndpoint}';
+const contractAddress =
+"${contractAddress}";
+const queryMsg = ${message};\n
+const queryContract = async () => {
+  const queryB64Encoded = Buffer.from(JSON.stringify(queryMsg)).toString('base64');
+  const res = await axios.get(\`$\{lcdURL}/cosmwasm/wasm/v1/contract/$\{contractAddress}/smart/$\{queryB64Encoded}\`);
+  console.log(res.data);
+};\n
+queryContract();`,
+      },
+    ],
   };
 
   const handleTabChange = (index: number) => {
@@ -209,13 +209,13 @@ execute();
   return (
     <>
       <Button
+        gap={1}
         isDisabled={isDisabled}
+        minW="128px"
+        ml={ml}
+        size="sm"
         variant="outline-white"
         w={w}
-        minW="128px"
-        size="sm"
-        ml={ml}
-        gap={1}
         onClick={() => {
           track(AmpEvent.USE_CONTRACT_SNIPPET, { actionType: type });
           onOpen();
@@ -225,9 +225,9 @@ execute();
         Code Snippet
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
+      <Modal isCentered isOpen={isOpen} size="4xl" onClose={onClose}>
         <ModalOverlay />
-        <ModalContent w="840px" maxH="80vh">
+        <ModalContent maxH="80vh" w="840px">
           <ModalHeader>
             <CustomIcon name="code" boxSize={6} color="gray.600" />
             <Heading as="h5" variant="h5">
@@ -251,35 +251,35 @@ execute();
                 {codeSnippets[type].map((item) => (
                   <TabPanel key={item.name} px={2} py={4}>
                     <Box
-                      bgColor="background.main"
                       p={4}
+                      bgColor="background.main"
                       borderRadius="8px"
                       position="relative"
                     >
                       <AceEditor
-                        readOnly
-                        mode={item.mode}
-                        theme={theme.jsonTheme}
-                        fontSize="14px"
                         style={{
-                          width: "100%",
                           background: "transparent",
+                          width: "100%",
                         }}
+                        readOnly
+                        theme={theme.jsonTheme}
                         value={item.snippet}
+                        fontSize="14px"
+                        mode={item.mode}
                         setOptions={{
+                          printMargin: false,
                           showGutter: false,
                           useWorker: false,
-                          printMargin: false,
                           wrap: true,
                         }}
                       />
                       {!isMobile && (
-                        <Box position="absolute" top={4} right={4}>
+                        <Box right={4} position="absolute" top={4}>
                           <CopyButton
                             value={item.snippet}
+                            amptrackInfo={type}
                             amptrackSection="code_snippet"
                             amptrackSubSection={item.name}
-                            amptrackInfo={type}
                           />
                         </Box>
                       )}
@@ -293,11 +293,11 @@ execute();
             <ModalFooter>
               <Flex w="full" justifyContent="flex-end">
                 <CopyButton
-                  buttonText="Copy Code Snippet"
                   value={activeSnippet}
+                  amptrackInfo={type}
                   amptrackSection="code_snippet"
                   amptrackSubSection={type}
-                  amptrackInfo={type}
+                  buttonText="Copy Code Snippet"
                 />
               </Flex>
             </ModalFooter>

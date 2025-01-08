@@ -5,32 +5,32 @@ import type { ProposalVotesInfo, Ratio } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
 
 interface BarSectionProps {
-  percent: string;
   color: string;
-  option: string;
-  textColor: string;
   isCompact: boolean;
+  option: string;
+  percent: string;
+  textColor: string;
 }
 
 const BarSection = ({
-  percent,
   color,
-  option,
-  textColor,
   isCompact,
+  option,
+  percent,
+  textColor,
 }: BarSectionProps) => (
   <Flex
-    minW={percent}
-    maxW={percent}
-    bgColor={color}
-    overflow="hidden"
-    whiteSpace="nowrap"
     alignItems="center"
     gap={2}
+    maxW={percent}
+    minW={percent}
+    whiteSpace="nowrap"
+    bgColor={color}
+    overflow="hidden"
   >
     {!isCompact && (
       <>
-        <Text variant="body2" fontWeight={700} color={textColor} ml={2}>
+        <Text ml={2} variant="body2" color={textColor} fontWeight={700}>
           {percent}
         </Text>
         <Text variant="body2" color={textColor}>
@@ -42,31 +42,31 @@ const BarSection = ({
 );
 
 interface VoteThresholdBarProps {
+  isCompact: boolean;
   threshold: number;
   votesInfo: ProposalVotesInfo;
-  isCompact: boolean;
 }
 
 export const VoteThresholdBar = ({
+  isCompact,
   threshold,
   votesInfo,
-  isCompact,
 }: VoteThresholdBarProps) => {
-  const { yesNonRatio, noNonRatio, noWithVetoNonRatio } =
+  const { noNonRatio, noWithVetoNonRatio, yesNonRatio } =
     normalizeVotesInfo(votesInfo);
 
   const thresholdPercent = formatPrettyPercent(threshold as Ratio<number>);
   return (
-    <Flex direction={isCompact ? "column-reverse" : "column"} w="full">
+    <Flex w="full" direction={isCompact ? "column-reverse" : "column"}>
       <Flex
-        direction={isCompact ? "row" : "column"}
         alignItems="center"
-        justifyContent="center"
-        w="fit-content"
         ml={thresholdPercent}
+        w="fit-content"
+        direction={isCompact ? "row" : "column"}
+        justifyContent="center"
         transform="translate(-50%)"
       >
-        <Text variant="body3" color="text.main" whiteSpace="preserve">
+        <Text variant="body3" whiteSpace="preserve" color="text.main">
           Threshold{isCompact && ": "}
         </Text>
         <Text variant="body3" color="text.main" fontWeight={700}>
@@ -74,45 +74,45 @@ export const VoteThresholdBar = ({
         </Text>
       </Flex>
       <Flex
-        direction={isCompact ? "column" : "column-reverse"}
         h={isCompact ? 6 : 8}
+        direction={isCompact ? "column" : "column-reverse"}
         position="relative"
       >
         <Flex
           h={isCompact ? 5 : 7}
-          overflow="hidden"
-          borderRadius={100}
           bgColor="gray.800"
+          borderRadius={100}
+          overflow="hidden"
         >
           <BarSection
             percent={formatPrettyPercent(yesNonRatio)}
             color="success.main"
+            isCompact={isCompact}
             option="Yes"
             textColor="background.main"
-            isCompact={isCompact}
           />
           <BarSection
             percent={formatPrettyPercent(noNonRatio)}
             color="error.main"
+            isCompact={isCompact}
             option="No"
             textColor="background.main"
-            isCompact={isCompact}
           />
           <BarSection
             percent={formatPrettyPercent(noWithVetoNonRatio)}
             color="error.dark"
+            isCompact={isCompact}
             option="No with veto"
             textColor="text.main"
-            isCompact={isCompact}
           />
         </Flex>
         <Flex
-          position="absolute"
-          w="4px"
-          ml={thresholdPercent}
-          transform="translate(-50%)"
-          bgColor="text.main"
           h="full"
+          ml={thresholdPercent}
+          w="4px"
+          bgColor="text.main"
+          position="absolute"
+          transform="translate(-50%)"
         />
       </Flex>
     </Flex>

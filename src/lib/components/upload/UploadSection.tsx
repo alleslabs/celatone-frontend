@@ -25,23 +25,23 @@ import { SimulateMessageRender } from "./SimulateMessageRender";
 import { UploadCard } from "./UploadCard";
 
 interface UploadSectionProps {
-  formData: UseFormReturn<UploadSectionState>;
   estimatedFee: Option<StdFee>;
-  setEstimatedFee: (fee: StdFee | undefined) => void;
+  formData: UseFormReturn<UploadSectionState>;
+  isSimulating: boolean;
   setDefaultBehavior: () => void;
+  setEstimatedFee: (fee: StdFee | undefined) => void;
   shouldNotSimulate: boolean;
   simulateStatus: SimulateStatus;
-  isSimulating: boolean;
 }
 
 export const UploadSection = ({
-  formData,
   estimatedFee,
-  setEstimatedFee,
+  formData,
+  isSimulating,
   setDefaultBehavior,
+  setEstimatedFee,
   shouldNotSimulate,
   simulateStatus,
-  isSimulating,
 }: UploadSectionProps) => {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
@@ -54,12 +54,12 @@ export const UploadSection = ({
 
   const {
     control,
-    setValue,
-    watch,
     formState: { errors },
+    setValue,
     trigger,
+    watch,
   } = formData;
-  const { wasmFile, codeName, permission } = watch();
+  const { codeName, permission, wasmFile } = watch();
 
   // Generate hash value from wasm file
   const setHashValue = useCallback(async () => {
@@ -90,35 +90,35 @@ export const UploadSection = ({
 
   const wasmVerifyStatus = getWasmVerifyStatus(derivedWasmVerifyInfo);
   return (
-    <Flex direction="column" gap={8} maxW="550px">
+    <Flex gap={8} maxW="550px" direction="column">
       {wasmFile ? (
         <UploadCard
-          file={wasmFile}
           deleteFile={() => {
             setValue("wasmFile", undefined);
             setEstimatedFee(undefined);
           }}
+          file={wasmFile}
         />
       ) : (
         <DropZone
-          setFiles={(files) => setValue("wasmFile", files[0])}
           fileType={["wasm"]}
+          setFiles={(files) => setValue("wasmFile", files[0])}
         />
       )}
       <CodeHashBox codeHash={codeHash} />
       <ControllerInput
-        name="codeName"
-        control={control}
-        label="Code Name (Optional)"
-        placeholder="Untitled Name"
         helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
+        label="Code Name (Optional)"
+        name="codeName"
         rules={{
           maxLength: constants.maxCodeNameLength,
         }}
+        variant="fixed-floating"
+        control={control}
         error={
           errors.codeName && getMaxLengthError(codeName.length, "code_name")
         }
-        variant="fixed-floating"
+        placeholder="Untitled Name"
       />
       {wasmVerifyStatus === WasmVerifyStatus.INDIRECTLY_VERIFIED && (
         <IndirectlyVerifiedAlert
@@ -126,39 +126,39 @@ export const UploadSection = ({
         />
       )}
       <Flex direction="column">
-        <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+        <Heading as="h6" my={2} variant="h6" fontWeight={600}>
           Instantiate Permission
         </Heading>
-        <Text color="text.dark" variant="body2" mb={4}>
+        <Text mb={4} variant="body2" color="text.dark">
           Specify who has the authority to instantiate the contract using this
           code
         </Text>
         <InstantiatePermissionRadio
-          control={control}
           setValue={setValue}
           trigger={trigger}
+          control={control}
         />
       </Flex>
       <Box width="full">
         {(simulateStatus.status !== "default" || isSimulating) && (
           <SimulateMessageRender
+            isSuccess={simulateStatus.status === "succeeded"}
+            mb={2}
             value={
               isSimulating
                 ? "Checking Wasm and permission validity"
                 : simulateStatus.message
             }
             isLoading={isSimulating}
-            mb={2}
-            isSuccess={simulateStatus.status === "succeeded"}
           />
         )}
         <Flex
-          fontSize="14px"
-          color="text.dark"
-          alignSelf="flex-start"
           alignItems="center"
+          alignSelf="flex-start"
           display="flex"
           gap={1}
+          color="text.dark"
+          fontSize="14px"
         >
           <p>Transaction Fee:</p>
           <EstimatedFeeRender

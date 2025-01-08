@@ -22,19 +22,19 @@ import {
 } from "lib/utils";
 
 interface EvmTransactionsTableRowProps {
-  templateColumns: string;
-  evmTransaction: TxDataWithTimeStampJsonRpc;
-  evmDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  evmDenom: Option<string>;
+  evmTransaction: TxDataWithTimeStampJsonRpc;
   showTimestamp: boolean;
+  templateColumns: string;
 }
 
 export const EvmTransactionsTableRow = ({
-  templateColumns,
-  evmTransaction,
-  evmDenom,
   assetInfos,
+  evmDenom,
+  evmTransaction,
   showTimestamp,
+  templateColumns,
 }: EvmTransactionsTableRowProps) => {
   const navigate = useInternalNavigate();
   const toAddress = getEvmToAddress(evmTransaction);
@@ -50,17 +50,17 @@ export const EvmTransactionsTableRow = ({
   return (
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(formatEvmTxHash(evmTransaction.tx.hash))}
       _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
+      onClick={() => onRowSelect(formatEvmTxHash(evmTransaction.tx.hash))}
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
     >
       <TableRow />
       <TableRow pr={1}>
         <ExplorerLink
-          value={formatEvmTxHash(evmTransaction.tx.hash)}
           type="evm_tx_hash"
+          value={formatEvmTxHash(evmTransaction.tx.hash)}
           showCopyOnHover
         />
       </TableRow>
@@ -76,8 +76,8 @@ export const EvmTransactionsTableRow = ({
       </TableRow>
       <TableRow>
         <ExplorerLink
-          value={evmTransaction.tx.from}
           type="user_address"
+          value={evmTransaction.tx.from}
           showCopyOnHover
         />
       </TableRow>
@@ -88,12 +88,12 @@ export const EvmTransactionsTableRow = ({
         <EvmToCell toAddress={toAddress} />
       </TableRow>
       <TableRow
-        flexDirection="column"
         alignItems="start"
+        flexDirection="column"
         justifyContent="center"
       >
         <Text variant="body2">
-          <Text as="span" fontWeight={700} mr={1}>
+          <Text as="span" mr={1} fontWeight={700}>
             {formatUTokenWithPrecision(
               token.amount,
               token.precision ?? 0,

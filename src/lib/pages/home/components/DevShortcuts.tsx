@@ -14,22 +14,22 @@ import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 
 const cardProps: SystemStyleObject = {
-  width: "full",
-  height: "full",
-  padding: "16px",
-  borderRadius: "8px",
-  justifyContent: "space-between",
-  bg: "transparent",
   alignItems: "center",
+  bg: "transparent",
   border: "2px solid",
   borderColor: "gray.700",
+  borderRadius: "8px",
+  height: "full",
+  justifyContent: "space-between",
+  padding: "16px",
+  width: "full",
 };
 
 interface ShortcutMetadata {
-  title: string;
-  subtitle: string;
-  slug: string;
   icon: IconKeys;
+  slug: string;
+  subtitle: string;
+  title: string;
 }
 
 export const DevShortcuts = () => {
@@ -43,44 +43,44 @@ export const DevShortcuts = () => {
       ...(wasm.enabled
         ? [
             {
-              title: "Deploy",
-              subtitle: "Upload code or instantiate contract",
-              slug: "deploy",
               icon: "add-new" as const,
+              slug: "deploy",
+              subtitle: "Upload code or instantiate contract",
+              title: "Deploy",
             },
             {
-              title: "Query",
-              subtitle: "Query and get contract state data",
-              slug: "interact-contract",
               icon: "query" as const,
+              slug: "interact-contract",
+              subtitle: "Query and get contract state data",
+              title: "Query",
             },
             {
-              title: "Execute",
-              subtitle: "Send transactions to contracts",
-              slug: "interact-contract?selectedType=execute",
               icon: "execute" as const,
+              slug: "interact-contract?selectedType=execute",
+              subtitle: "Send transactions to contracts",
+              title: "Execute",
             },
           ]
         : []),
       ...(move.enabled
         ? [
             {
-              title: "Publish / Republish",
-              subtitle: "Upload .mv files to publish new module",
-              slug: "publish-module",
               icon: "add-new" as const,
+              slug: "publish-module",
+              subtitle: "Upload .mv files to publish new module",
+              title: "Publish / Republish",
             },
             {
-              title: "View / Execute",
-              subtitle: "Interact with module's functions",
-              slug: "interact",
               icon: "execute" as const,
+              slug: "interact",
+              subtitle: "Interact with module's functions",
+              title: "View / Execute",
             },
             {
-              title: "Deploy Script",
-              subtitle: "Deploy one-time use Script",
-              slug: "deploy-script",
               icon: "code" as const,
+              slug: "deploy-script",
+              subtitle: "Deploy one-time use Script",
+              title: "Deploy Script",
             },
           ]
         : []),
@@ -91,19 +91,19 @@ export const DevShortcuts = () => {
   if (shortcutList.length === 0) return null;
 
   return (
-    <Flex gap={4} direction="column" mb="48px">
+    <Flex gap={4} mb="48px" direction="column">
       <Heading as="h5" variant="h5">
         Dev Shortcuts
       </Heading>
       <ConnectWalletAlert
-        title={`Connect wallet to start using ${theme.branding.seo.appName}`}
         subtitle="Specific use cases such as deploying new contract or sending execute messages require a wallet connection."
+        title={`Connect wallet to start using ${theme.branding.seo.appName}`}
       />
-      <SimpleGrid columns={{ sm: 1, md: 3 }} spacing={4} w="full">
+      <SimpleGrid spacing={4} w="full" columns={{ md: 3, sm: 1 }}>
         {shortcutList.map((item) => (
           <div key={item.slug}>
             {!isMobile || item.slug === "query" ? (
-              <AppLink href={`/${item.slug}`} key={item.slug}>
+              <AppLink key={item.slug} href={`/${item.slug}`}>
                 <Flex
                   sx={cardProps}
                   _hover={{ bg: "gray.800" }}
@@ -120,9 +120,9 @@ export const DevShortcuts = () => {
                         {item.title}
                       </Text>
                       <Text
-                        textDecoration="none"
                         variant="body2"
                         color="text.dark"
+                        textDecoration="none"
                       >
                         {item.subtitle}
                       </Text>
@@ -136,7 +136,7 @@ export const DevShortcuts = () => {
                 </Flex>
               </AppLink>
             ) : (
-              <Flex opacity={0.5} sx={cardProps}>
+              <Flex sx={cardProps} opacity={0.5}>
                 <Flex alignItems="center" gap={3}>
                   <CustomIcon
                     name={item.icon}
@@ -148,9 +148,9 @@ export const DevShortcuts = () => {
                       {item.title}
                     </Text>
                     <Text
-                      textDecoration="none"
                       variant="body2"
                       color="text.dark"
+                      textDecoration="none"
                     >
                       {item.subtitle}
                     </Text>

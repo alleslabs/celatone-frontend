@@ -29,17 +29,17 @@ export const TagsCell = ({
   return (
     <Flex
       w="full"
-      position="relative"
-      onMouseOver={handleMouseEnter}
       onMouseOut={handleMouseOut}
+      onMouseOver={handleMouseEnter}
+      position="relative"
     >
       <Flex
         gap={1}
         color="text.dark"
-        opacity={isHover ? "0" : "1"}
         onClick={(e) => {
           if (!isReadOnly) e.stopPropagation();
         }}
+        opacity={isHover ? "0" : "1"}
       >
         {tags.length ? (
           <Tag size={tagSize}>{tags[0]}</Tag>
@@ -49,9 +49,9 @@ export const TagsCell = ({
           </Text>
         )}
         <Tag
+          display={tags.length > 1 ? "flex" : "none"}
           size={tagSize}
           variant="gray"
-          display={tags.length > 1 ? "flex" : "none"}
         >
           {tags.length - 1}+
         </Tag>
@@ -59,31 +59,31 @@ export const TagsCell = ({
 
       {isHover && (
         <Flex
-          bgColor={tags.length > 1 ? "gray.800" : "inherit"}
-          py={4}
-          borderRadius="8px"
-          position="absolute"
-          w="340px"
-          top="-16px"
           left="-16px"
+          py={4}
+          w="340px"
+          zIndex="dropdown"
+          bgColor={tags.length > 1 ? "gray.800" : "inherit"}
+          borderRadius="8px"
           onClick={(e) => {
             if (!isReadOnly) e.stopPropagation();
           }}
-          zIndex="dropdown"
+          position="absolute"
+          top="-16px"
         >
           <Flex
-            gap={1}
-            px={4}
             alignItems="center"
-            maxW="full"
             display="flex"
             flexWrap="wrap"
+            gap={1}
+            maxW="full"
+            px={4}
             rowGap={2}
           >
             {tags.length ? (
               tags.map((item) => {
                 return (
-                  <Tag size={tagSize} key={item}>
+                  <Tag key={item} size={tagSize}>
                     {item}
                   </Tag>
                 );

@@ -48,21 +48,25 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       setNameStatus({ state: "init" });
     } else if (trimedName.length > constants.maxCodeNameLength)
       setNameStatus({
-        state: "error",
         message: getMaxLengthError(trimedName.length, "code_name"),
+        state: "error",
       });
     else setNameStatus({ state: "success" });
   }, [constants.maxCodeNameLength, getMaxLengthError, name]);
 
   /* DEPENDENCY */
   const toast = useToast();
-  const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
+  const { getCodeLocalInfo, isCodeIdSaved, saveNewCode, updateCodeInfo } =
     useCodeStore();
 
-  const { refetch, isFetching, isRefetching } = useCodeLcd(Number(codeId), {
-    enabled: false,
-    retry: false,
+  const { isFetching, isRefetching, refetch } = useCodeLcd(Number(codeId), {
     cacheTime: 0,
+    enabled: false,
+    onError: () => {
+      setCodeIdStatus({ message: "Invalid Code ID", state: "error" });
+      setUploader("Not Found");
+      setUploaderStatus({ state: "error" });
+    },
     onSuccess: (data) => {
       const { message, messageColor } = getPermissionHelper(
         address,
@@ -70,18 +74,14 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
         data.permissionAddresses
       );
       setCodeIdStatus({
-        state: "success",
         message: `${message} (${data.instantiatePermission})`,
         messageColor,
+        state: "success",
       });
       setUploader(data.uploader);
       setUploaderStatus({ state: "success" });
     },
-    onError: () => {
-      setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
-      setUploader("Not Found");
-      setUploaderStatus({ state: "error" });
-    },
+    retry: false,
   });
 
   /* CALLBACK */
@@ -102,12 +102,12 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
     // TODO: abstract toast to template later
     toast({
-      title: `Saved ${codeId} to Saved Codes`,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      status: "success",
+      title: `Saved ${codeId} to Saved Codes`,
     });
 
     reset();
@@ -131,13 +131,13 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
       if (isCodeIdSaved(Number(codeId))) {
         setCodeIdStatus({
-          state: "error",
           message: "You already added this Code ID",
+          state: "error",
         });
       } else {
         const timer = setTimeout(() => {
           if (isId(codeId)) refetch();
-          else setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
+          else setCodeIdStatus({ message: "Invalid Code ID", state: "error" });
         }, 500);
 
         return () => clearTimeout(timer);
@@ -170,45 +170,45 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
   return (
     <ActionModal
-      title="Save New Code"
-      icon="bookmark-solid"
-      trigger={<Button {...buttonProps} as="button" />}
+      disabledMain={disableMain}
       mainBtnTitle="Save New Code"
+      title="Save New Code"
+      trigger={<Button {...buttonProps} as="button" />}
+      icon="bookmark-solid"
       mainAction={handleSave}
       otherAction={reset}
-      disabledMain={disableMain}
       otherBtnTitle="Cancel"
     >
       <FormControl display="flex" flexDir="column" gap={9}>
         Save other stored codes to your &ldquo;Saved Codes&rdquo; list
         <NumberInput
-          variant="fixed-floating"
-          value={codeId}
-          onInputChange={setCodeId}
           label="Code ID"
-          labelBgColor="gray.900"
-          placeholder="ex. 1234"
           status={codeIdStatus}
+          value={codeId}
+          variant="fixed-floating"
+          labelBgColor="gray.900"
+          onInputChange={setCodeId}
+          placeholder="ex. 1234"
         />
         <TextInput
-          variant="fixed-floating"
-          value={uploader}
+          isDisabled
           label="Uploader"
-          labelBgColor="gray.900"
-          placeholder="Uploader address will display here"
           setInputState={() => {}}
           status={uploaderStatus}
-          isDisabled
+          value={uploader}
+          variant="fixed-floating"
+          labelBgColor="gray.900"
+          placeholder="Uploader address will display here"
         />
         <TextInput
-          variant="fixed-floating"
-          value={name}
-          setInputState={setName}
+          helperText="Fill in code name to define its use as a reminder"
           label="Code Name"
+          setInputState={setName}
+          status={nameStatus}
+          value={name}
+          variant="fixed-floating"
           labelBgColor="gray.900"
           placeholder="Untitled Name"
-          helperText="Fill in code name to define its use as a reminder"
-          status={nameStatus}
         />
       </FormControl>
     </ActionModal>

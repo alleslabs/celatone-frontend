@@ -16,9 +16,9 @@ export const getAccountDataLcd = async (
 
   // TODO: Implement this function
   return {
+    icns,
     projectInfo: null,
     publicInfo: null,
-    icns,
   };
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable perfectionist/sort-modules */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { EnumOptionsType, RJSFSchema, ValidatorType } from "@rjsf/utils";
 import isEqual from "lodash/isEqual";
@@ -57,7 +58,7 @@ export function enumOptionsIndexForValue(
  *        `emptyValue` or an empty list.
  */
 export function enumOptionsValueForIndex(
-  valueIndex: string | number | Array<string | number>,
+  valueIndex: Array<number | string> | number | string,
   allEnumOptions: EnumOptionsType[] = [],
   emptyValue?: EnumOptionsType["value"]
 ): EnumOptionsType["value"] | EnumOptionsType["value"][] | undefined {

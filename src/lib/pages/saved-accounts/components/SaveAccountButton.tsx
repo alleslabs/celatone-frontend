@@ -4,9 +4,9 @@ import { SaveNewAccountModal } from "lib/components/modal";
 export const SaveAccountButton = () => (
   <SaveNewAccountModal
     buttonProps={{
-      variant: "outline-primary",
-      leftIcon: <CustomIcon name="bookmark" />,
       children: "Save New Account",
+      leftIcon: <CustomIcon name="bookmark" />,
+      variant: "outline-primary",
     }}
   />
 );

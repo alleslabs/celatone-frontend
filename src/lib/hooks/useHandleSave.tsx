@@ -6,38 +6,38 @@ import type { BechAddr, BechAddr32, LVPair, Option } from "lib/types";
 
 import { useFormatAddresses } from "./useFormatAddresses";
 
-interface UseHandleContractSaveProps {
-  title: string;
-  contractAddress: BechAddr32;
-  label: string;
-  codeId: Option<number>;
-  instantiator: Option<BechAddr>;
-  name?: string;
-  description?: string;
-  tags?: string[];
-  lists?: LVPair[];
+interface UseHandleAccountSaveProps {
   actions?: () => void;
+  address: BechAddr;
+  description?: string;
+  name: string;
+  title: string;
 }
 
-interface UseHandleAccountSaveProps {
-  title: string;
-  address: BechAddr;
-  name: string;
-  description?: string;
+interface UseHandleContractSaveProps {
   actions?: () => void;
+  codeId: Option<number>;
+  contractAddress: BechAddr32;
+  description?: string;
+  instantiator: Option<BechAddr>;
+  label: string;
+  lists?: LVPair[];
+  name?: string;
+  tags?: string[];
+  title: string;
 }
 
 export const useHandleContractSave = ({
-  title,
-  contractAddress,
-  label,
-  codeId,
-  instantiator,
-  name,
-  description,
-  tags,
-  lists,
   actions,
+  codeId,
+  contractAddress,
+  description,
+  instantiator,
+  label,
+  lists,
+  name,
+  tags,
+  title,
 }: UseHandleContractSaveProps) => {
   const toast = useToast();
   const { updateContractLocalInfo } = useContractStore();
@@ -57,22 +57,22 @@ export const useHandleContractSave = ({
     actions?.();
 
     toast({
-      title,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      status: "success",
+      title,
     });
   };
 };
 
 export const useHandleAccountSave = ({
-  title,
-  address,
-  name,
-  description,
   actions,
+  address,
+  description,
+  name,
+  title,
 }: UseHandleAccountSaveProps) => {
   const toast = useToast();
   const { updateAccountLocalInfo } = useAccountStore();
@@ -85,12 +85,12 @@ export const useHandleAccountSave = ({
     actions?.();
 
     toast({
-      title,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      status: "success",
+      title,
     });
   };
 };

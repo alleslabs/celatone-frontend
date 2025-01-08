@@ -32,18 +32,18 @@ const SavedCodes = observer(() => {
       query: { codeId },
     });
   // TODO refactor to useState
-  const { watch, setValue } = useForm<CodeFilterState>({
+  const { setValue, watch } = useForm<CodeFilterState>({
     defaultValues: {
-      permissionValue: "all",
       keyword: "",
+      permissionValue: "all",
     },
   });
   const { keyword, permissionValue } = watch();
 
   const {
-    savedCodesCount,
-    savedCodes: saved,
     isSavedCodesLoading,
+    savedCodes: saved,
+    savedCodesCount,
   } = useMyCodesData(keyword, permissionValue);
 
   useEffect(() => {
@@ -56,19 +56,19 @@ const SavedCodes = observer(() => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Saved Codes" />
-      <Flex alignItems="center" justifyContent="space-between" mb={4}>
+      <Flex alignItems="center" mb={4} justifyContent="space-between">
         <Flex direction="column">
           <Flex align="center">
             <Heading
-              variant="h5"
-              as="h5"
-              minH="36px"
-              display="flex"
               alignItems="center"
+              as="h5"
+              display="flex"
+              minH="36px"
+              variant="h5"
             >
               Saved Codes
             </Heading>
-            <Badge variant="primary" ml={2}>
+            <Badge ml={2} variant="primary">
               {savedCodesCount}
             </Badge>
           </Flex>
@@ -80,13 +80,13 @@ const SavedCodes = observer(() => {
       </Flex>
       <Flex gap={3} my={8}>
         <InputWithIcon
-          placeholder="Search with Code ID or Code Name"
+          size="lg"
           value={keyword}
+          amptrackSection="saved-code-search"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setValue("keyword", e.target.value)
           }
-          size="lg"
-          amptrackSection="saved-code-search"
+          placeholder="Search with Code ID or Code Name"
         />
         <FilterByPermission
           initialSelected="all"
@@ -98,14 +98,14 @@ const SavedCodes = observer(() => {
       </Flex>
       <MySavedCodesTable
         codes={saved}
-        totalData={savedCodesCount}
         isLoading={isSavedCodesLoading}
         onRowSelect={onRowSelect}
+        totalData={savedCodesCount}
       />
       <UserDocsLink
-        isDevTool
-        title="How to organize and save codes?"
         cta="Read more about Saved Codes"
+        title="How to organize and save codes?"
+        isDevTool
         href="cosmwasm/codes/organize#saving-code-for-later-use"
       />
     </PageContainer>

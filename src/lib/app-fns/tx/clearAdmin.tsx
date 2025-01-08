@@ -17,34 +17,41 @@ import { sendingTx } from "./common/sending";
 
 interface ClearAdminTxParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   fee: StdFee;
-  signAndBroadcast: SignAndBroadcast;
+  messages: EncodeObject[];
   onTxSucceed?: () => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const clearAdminTx = ({
   address,
-  messages,
   fee,
-  signAndBroadcast,
+  messages,
   onTxSucceed,
+  signAndBroadcast,
 }: ClearAdminTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
       const txFee = findAttr(txInfo.events, "tx", "fee");
       return {
-        value: null,
         phase: TxStreamPhase.SUCCEED,
+        receiptInfo: {
+          header: "Clear Admin Complete!",
+          headerIcon: (
+            <CustomIcon
+              name="check-circle-solid"
+              boxSize={5}
+              color="success.main"
+            />
+          ),
+        },
         receipts: [
           {
-            title: "Tx Hash",
-            value: txInfo.transactionHash,
             html: (
               <ExplorerLink
                 type="tx_hash"
@@ -52,27 +59,20 @@ export const clearAdminTx = ({
                 openNewTab
               />
             ),
+            title: "Tx Hash",
+            value: txInfo.transactionHash,
           },
           {
-            title: "Tx Fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
+            title: "Tx Fee",
           },
         ],
-        receiptInfo: {
-          header: "Clear Admin Complete!",
-          headerIcon: (
-            <CustomIcon
-              name="check-circle-solid"
-              color="success.main"
-              boxSize={5}
-            />
-          ),
-        },
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError());

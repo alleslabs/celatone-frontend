@@ -23,78 +23,78 @@ import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { useAccountBech32 } from "lib/services/account";
 
+interface DenomUnitsProps extends WalletRegistryProps {
+  assetIndex: number;
+}
+
 interface WalletRegistryProps {
   control: Control<AddNetworkManualForm>;
   errors: FieldErrors<AddNetworkManualForm>;
 }
 
-interface DenomUnitsProps extends WalletRegistryProps {
-  assetIndex: number;
-}
-
-const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
-  const { fields, append, remove } = useFieldArray({
+const DenomUnits = ({ assetIndex, control, errors }: DenomUnitsProps) => {
+  const { append, fields, remove } = useFieldArray({
     control,
     name: `assets.${assetIndex}.denoms`,
   });
 
   return fields.length ? (
-    <Flex direction="column" gap={4}>
+    <Flex gap={4} direction="column">
       {fields.map((denom, index) => (
         <Flex
           key={denom.id}
+          bg="background.main"
           px={6}
           py={4}
-          bg="background.main"
-          rounded={8}
           direction="column"
+          rounded={8}
         >
           <Flex
             alignItems="center"
-            justifyContent="space-between"
             pb={4}
             w="full"
+            justifyContent="space-between"
           >
-            <Heading variant="h7" mb={2}>
+            <Heading mb={2} variant="h7">
               Denom Unit
             </Heading>
             <IconButton
               aria-label="Remove Asset"
+              size="sm"
+              variant="ghost-gray"
               icon={<CustomIcon name="delete" boxSize={4} />}
               onClick={() => remove(index)}
-              variant="ghost-gray"
-              size="sm"
             />
           </Flex>
-          <Grid gap={4} gridTemplateColumns="repeat(2, 1fr)">
+          <Grid gridTemplateColumns="repeat(2, 1fr)" gap={4}>
             <ControllerInput
-              name={`assets.${assetIndex}.denoms.${index}.denom`}
-              control={control}
               label="Denom"
-              variant="fixed-floating"
-              w="full"
-              placeholder="ex. uinit"
+              name={`assets.${assetIndex}.denoms.${index}.denom`}
               rules={{
                 required: "Denom is required",
               }}
+              variant="fixed-floating"
+              w="full"
+              control={control}
               error={
                 errors.assets?.[assetIndex]?.denoms?.[index]?.denom?.message
               }
+              placeholder="ex. uinit"
             />
             <ControllerInput
-              name={`assets.${assetIndex}.denoms.${index}.exponent`}
-              control={control}
               label="Exponent"
-              variant="fixed-floating"
-              type="number"
-              w="full"
-              placeholder="ex. 2"
+              name={`assets.${assetIndex}.denoms.${index}.exponent`}
               rules={{
                 required: "Exponent is required",
               }}
+              type="number"
+              variant="fixed-floating"
+              w="full"
+              control={control}
               error={
                 errors.assets?.[assetIndex]?.denoms?.[index]?.exponent?.message
               }
+              placeholder="ex. 2"
             />
           </Grid>
         </Flex>
@@ -102,25 +102,25 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
       <Button
         variant="ghost-primary"
         w="fit-content"
-        onClick={() => append({ denom: "", exponent: 0 })}
         leftIcon={<CustomIcon name="plus" boxSize={3} />}
+        onClick={() => append({ denom: "", exponent: 0 })}
       >
         Add more Denom Unit
       </Button>
     </Flex>
   ) : (
     <Flex
+      bg="background.main"
       px={6}
       py={4}
-      bg="background.main"
-      rounded={8}
       justifyContent="center"
+      rounded={8}
     >
       <Button
         variant="outline-primary"
         w="fit-content"
-        onClick={() => append({ denom: "", exponent: 0 })}
         leftIcon={<CustomIcon name="plus" boxSize={3} />}
+        onClick={() => append({ denom: "", exponent: 0 })}
       >
         Add Denom Unit
       </Button>
@@ -140,8 +140,8 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
   const {
     field: { onChange },
   } = useController({
-    name: "bech32_prefix",
     control,
+    name: "bech32_prefix",
   });
 
   useEffect(() => {
@@ -156,20 +156,20 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
     onChange,
   ]);
 
-  const { fields, append, remove } = useFieldArray({
+  const { append, fields, remove } = useFieldArray({
     control,
     name: "assets",
   });
 
   return (
-    <Flex direction="column" gap={2} alignItems="center">
+    <Flex alignItems="center" gap={2} direction="column">
       <CustomNetworkPageHeader title="Add Wallet Registry" />
-      <Flex w="full" direction="column" gap={6} my={8}>
+      <Flex gap={6} my={8} w="full" direction="column">
         <CustomNetworkSubheader
-          title="Account Prefix and Registered Coin Type"
           subtitle="This information is fetched from provided LCD URL"
+          title="Account Prefix and Registered Coin Type"
         />
-        <Stack bg="gray.900" py={4} px={6} rounded={8} gap={4}>
+        <Stack bg="gray.900" gap={4} px={6} py={4} rounded={8}>
           <Grid gridTemplateColumns="repeat(2, 1fr)" gap={6}>
             <LabelText label="Bech32">
               {isAccountBech32Loading ? (
@@ -181,10 +181,10 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
             <LabelText label="Slip44">118</LabelText>
           </Grid>
           <Flex
-            direction="column"
             pl={4}
-            borderLeft="2px solid"
             borderColor="gray.100"
+            borderLeft="2px solid"
+            direction="column"
           >
             <Text variant="body2" color="text.dark" fontWeight={600}>
               Account address in this Minitia will look like this:
@@ -209,86 +209,86 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
           )}
         </Stack>
       </Flex>
-      <Flex w="full" direction="column" gap={6} mb={8}>
+      <Flex gap={6} mb={8} w="full" direction="column">
         <CustomNetworkSubheader
-          title="Assets"
           subtitle="List the available supported tokens in this network"
+          title="Assets"
         />
         {fields.length ? (
-          <Flex direction="column" gap={4}>
+          <Flex gap={4} direction="column">
             {fields.map((asset, index) => (
               <Flex
                 key={asset.id}
-                direction="column"
-                background="gray.900"
                 px={6}
                 py={4}
-                rounded={8}
-                justifyContent="center"
                 w="full"
+                background="gray.900"
+                direction="column"
+                justifyContent="center"
+                rounded={8}
               >
-                <Flex alignItems="center" justifyContent="space-between" pb={4}>
-                  <Heading variant="h7" mb={2}>
+                <Flex alignItems="center" pb={4} justifyContent="space-between">
+                  <Heading mb={2} variant="h7">
                     Asset
                   </Heading>
                   <IconButton
                     aria-label="Remove Asset"
+                    size="sm"
+                    variant="ghost-gray"
                     icon={<CustomIcon name="delete" boxSize={4} />}
                     onClick={() => remove(index)}
-                    variant="ghost-gray"
-                    size="sm"
                   />
                 </Flex>
                 <Flex gap={4} direction="column">
                   <ControllerInput
-                    name={`assets.${index}.name` as const}
-                    control={control}
                     label="Name"
-                    variant="fixed-floating"
-                    labelBgColor="gray.900"
-                    placeholder="ex. Init"
+                    name={`assets.${index}.name` as const}
                     rules={{
                       required: "Name is required",
                     }}
+                    variant="fixed-floating"
+                    control={control}
                     error={errors.assets?.[index]?.name?.message}
+                    labelBgColor="gray.900"
+                    placeholder="ex. Init"
                   />
                   <ControllerInput
-                    name={`assets.${index}.base` as const}
-                    control={control}
                     label="Base"
-                    variant="fixed-floating"
-                    labelBgColor="gray.900"
-                    placeholder="ex. uinit"
+                    name={`assets.${index}.base` as const}
                     rules={{
                       required: "Base is required",
                     }}
+                    variant="fixed-floating"
+                    control={control}
                     error={errors.assets?.[index]?.base?.message}
+                    labelBgColor="gray.900"
+                    placeholder="ex. uinit"
                   />
                   <ControllerInput
-                    name={`assets.${index}.symbol` as const}
-                    control={control}
                     label="Symbol"
-                    variant="fixed-floating"
-                    labelBgColor="gray.900"
-                    placeholder="ex. INIT"
+                    name={`assets.${index}.symbol` as const}
                     rules={{
                       required: "Symbol is required",
                     }}
+                    variant="fixed-floating"
+                    control={control}
                     error={errors.assets?.[index]?.symbol?.message}
+                    labelBgColor="gray.900"
+                    placeholder="ex. INIT"
                   />
                 </Flex>
                 <Flex mt={4} w="full" direction="column">
                   <Flex
                     alignItems="center"
-                    justifyContent="space-between"
                     pb={4}
+                    justifyContent="space-between"
                   >
                     <Heading variant="h7">Denom Units</Heading>
                   </Flex>
                   <DenomUnits
+                    assetIndex={index}
                     control={control}
                     errors={errors}
-                    assetIndex={index}
                   />
                 </Flex>
               </Flex>
@@ -296,30 +296,30 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
             <Button
               variant="ghost-primary"
               w="fit-content"
-              onClick={() =>
-                append({ name: "", base: "", symbol: "", denoms: [] })
-              }
               leftIcon={<CustomIcon name="plus" boxSize={3} />}
+              onClick={() =>
+                append({ base: "", denoms: [], name: "", symbol: "" })
+              }
             >
               Add more Asset
             </Button>
           </Flex>
         ) : (
-          <Flex direction="column" gap={4}>
+          <Flex gap={4} direction="column">
             <Flex
+              bg="gray.900"
               px={6}
               py={4}
-              bg="gray.900"
-              rounded={8}
               justifyContent="center"
+              rounded={8}
             >
               <Button
                 variant="outline-primary"
                 w="fit-content"
-                onClick={() =>
-                  append({ name: "", base: "", symbol: "", denoms: [] })
-                }
                 leftIcon={<CustomIcon name="plus" boxSize={3} />}
+                onClick={() =>
+                  append({ base: "", denoms: [], name: "", symbol: "" })
+                }
               >
                 Add More Asset
               </Button>

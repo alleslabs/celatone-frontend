@@ -8,14 +8,14 @@ import { useSchemaStore } from "lib/providers/store";
 import { ActionModal } from "./ActionModal";
 
 interface RemoveSchemaModalProps {
-  codeId: number;
   codeHash: string;
+  codeId: number;
   trigger: ReactNode;
 }
 
 export function RemoveSchemaModal({
-  codeId,
   codeHash,
+  codeId,
   trigger,
 }: RemoveSchemaModalProps) {
   const { deleteSchema } = useSchemaStore();
@@ -27,24 +27,24 @@ export function RemoveSchemaModal({
 
     setTimeout(() => {
       toast({
-        title: `Removed JSON Schema`,
-        status: "success",
         duration: 5000,
+        icon: <CustomIcon name="check-circle-solid" color="success.main" />,
         isClosable: false,
         position: "bottom-right",
-        icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+        status: "success",
+        title: `Removed JSON Schema`,
       });
     }, 1000);
   };
 
   return (
     <ActionModal
-      title={`Removed JSON Schema for code '${codeId}'?`}
-      icon="delete"
-      iconColor="error.light"
-      trigger={trigger}
       mainBtnTitle="Yes, Remove JSON Schema"
       mainVariant="error"
+      title={`Removed JSON Schema for code '${codeId}'?`}
+      trigger={trigger}
+      icon="delete"
+      iconColor="error.light"
       mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
     >

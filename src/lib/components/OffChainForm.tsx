@@ -10,30 +10,30 @@ import { ListSelection } from "./ListSelection";
 import { TagSelection } from "./TagSelection";
 
 export interface OffchainDetail {
-  name: string;
   description: string;
-  tags: string[];
   lists: LVPair[];
+  name: string;
+  tags: string[];
 }
 
 interface OffChainFormProps<T extends OffchainDetail> {
-  state: OffchainDetail;
   contractLabel: string;
   control: Control<T>;
-  setTagsValue: (options: string[]) => void;
-  setContractListsValue: (options: LVPair[]) => void;
   errors: Partial<FieldErrorsImpl<T>>;
   labelBgColor?: string;
+  setContractListsValue: (options: LVPair[]) => void;
+  setTagsValue: (options: string[]) => void;
+  state: OffchainDetail;
 }
 
 export const OffChainForm = <T extends OffchainDetail>({
-  state,
   contractLabel,
   control,
-  setTagsValue,
-  setContractListsValue,
   errors,
   labelBgColor = "background.main",
+  setContractListsValue,
+  setTagsValue,
+  state,
 }: OffChainFormProps<T>) => {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
@@ -41,49 +41,49 @@ export const OffChainForm = <T extends OffchainDetail>({
   return (
     <VStack gap={4} w="full">
       <ControllerInput
-        name={"name" as FieldPath<T>}
-        control={control}
-        label="Name"
-        placeholder={contractLabel}
         helperText="Set name for your contract"
-        variant="fixed-floating"
+        label="Name"
+        name={"name" as FieldPath<T>}
         rules={{
           maxLength: constants.maxContractNameLength,
         }}
+        variant="fixed-floating"
+        control={control}
         error={
           errors.name && getMaxLengthError(state.name.length, "contract_name")
         }
         labelBgColor={labelBgColor}
+        placeholder={contractLabel}
       />
       <ControllerTextarea
-        name={"description" as FieldPath<T>}
-        control={control}
         label="Description"
-        placeholder="Help understanding what this contract does and how it works ..."
-        variant="fixed-floating"
+        name={"description" as FieldPath<T>}
         rules={{
           maxLength: constants.maxContractDescriptionLength,
         }}
+        variant="fixed-floating"
+        control={control}
         error={
           errors.description &&
           getMaxLengthError(state.description.length, "contract_desc")
         }
         labelBgColor={labelBgColor}
+        placeholder="Help understanding what this contract does and how it works ..."
       />
       <TagSelection
+        helperText="Add tag to organize and manage your contracts"
         result={state.tags}
         setResult={setTagsValue}
-        placeholder="Select tags or create new ones"
-        helperText="Add tag to organize and manage your contracts"
         labelBgColor={labelBgColor}
+        placeholder="Select tags or create new ones"
       />
       <ListSelection
-        result={state.lists}
-        placeholder="Not listed"
         helperText="Grouping your contracts by adding to your existing list or create
               a new list"
+        result={state.lists}
         setResult={setContractListsValue}
         labelBgColor={labelBgColor}
+        placeholder="Not listed"
       />
     </VStack>
   );

@@ -21,13 +21,13 @@ export const getPools = async (
   axios
     .get(`${endpoint}`, {
       params: {
+        is_desc: isDesc,
+        is_superfluid_only: isSuperfluidOnly,
+        is_supported: isSupported,
         limit,
         offset,
-        is_supported: isSupported,
-        type,
-        is_superfluid_only: isSuperfluidOnly,
         search,
-        is_desc: isDesc,
+        type,
       },
     })
     .then(({ data }) => parseWithError(zPoolsResponse, data));

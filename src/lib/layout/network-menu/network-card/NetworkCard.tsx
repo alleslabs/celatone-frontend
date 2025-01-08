@@ -15,11 +15,11 @@ import { NetworkCardCta } from "./NetworkCardCta";
 
 interface NetworkCardProps {
   chainId: string;
-  index?: number;
   cursor: Option<number>;
-  setCursor: (index: Option<number>) => void;
-  onClose: () => void;
+  index?: number;
   isDraggable?: boolean;
+  onClose: () => void;
+  setCursor: (index: Option<number>) => void;
 }
 
 const getCardBackground = (
@@ -49,11 +49,11 @@ const getDisplayCursor = (isDraggable: boolean, isSelected: boolean) => {
 export const NetworkCard = observer(
   ({
     chainId,
-    index,
     cursor,
-    setCursor,
-    onClose,
+    index,
     isDraggable = false,
+    onClose,
+    setCursor,
   }: NetworkCardProps) => {
     const { chainConfigs } = useChainConfigs();
     const isMobile = useMobile();
@@ -73,38 +73,38 @@ export const NetworkCard = observer(
     return (
       <Flex
         id={`item-${index}`}
-        position="relative"
-        justifyContent="space-between"
         alignItems="center"
+        gap={4}
         px={4}
         py={2}
-        gap={4}
-        borderRadius={8}
-        transition="all 0.25s ease-in-out"
-        onClick={handleClick}
-        background={getCardBackground(index, cursor, isSelected)}
-        cursor={getDisplayCursor(isDraggable, isSelected)}
-        onMouseMove={() => index !== cursor && setCursor(index)}
         _hover={
           isMobile
             ? undefined
             : {
-                background: isSelected ? "gray.700" : "gray.800",
                 "> .icon-wrapper > .icon-container": {
                   opacity: 1,
                 },
+                background: isSelected ? "gray.700" : "gray.800",
               }
         }
+        background={getCardBackground(index, cursor, isSelected)}
+        borderRadius={8}
+        cursor={getDisplayCursor(isDraggable, isSelected)}
+        justifyContent="space-between"
+        onClick={handleClick}
+        onMouseMove={() => index !== cursor && setCursor(index)}
+        position="relative"
+        transition="all 0.25s ease-in-out"
       >
         <Box
-          opacity={isSelected ? 1 : 0}
           width="4px"
           height="60%"
+          left="0px"
           bgColor="primary.main"
+          borderRadius="2px"
+          opacity={isSelected ? 1 : 0}
           position="absolute"
           top="20%"
-          borderRadius="2px"
-          left="0px"
         />
         <Flex alignItems="center" gap={4}>
           <NetworkImage chainId={chainId} />
@@ -112,15 +112,15 @@ export const NetworkCard = observer(
             <Text variant="body2" fontWeight={600}>
               {chainConfigs[chainId]?.prettyName || chainId}
             </Text>
-            <Text color="text.dark" variant="body3">
+            <Text variant="body3" color="text.dark">
               {chainId}
             </Text>
           </Flex>
         </Flex>
         <NetworkCardCta
           chainId={chainId}
-          isSelected={isSelected}
           isDraggable={isDraggable}
+          isSelected={isSelected}
         />
       </Flex>
     );

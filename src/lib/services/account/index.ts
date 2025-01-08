@@ -40,7 +40,7 @@ export const useAccountData = (
       isFullTier
         ? getAccountData(endpoint, address)
         : getAccountDataLcd(endpoint, address),
-    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
+    { enabled: !!address, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -61,7 +61,7 @@ export const useAccountTableCounts = (
       isWasm,
     ],
     async () => getAccountTableCounts(endpoint, address, isGov, isWasm),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { refetchOnWindowFocus: false, retry: 1, ...options }
   );
 };
 
@@ -69,7 +69,7 @@ export const useAccountType = (
   address: Option<BechAddr>,
   options: Pick<
     UseQueryOptions<AccountType, Error>,
-    "enabled" | "onSuccess" | "onError"
+    "enabled" | "onError" | "onSuccess"
   > = {}
 ): UseQueryResult<AccountType> => {
   const { isFullTier } = useTierConfig();
@@ -94,8 +94,8 @@ export const useAccountType = (
     queryFn,
     {
       ...options,
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -107,7 +107,7 @@ export const useAccountBech32 = (
     [CELATONE_QUERY_KEYS.ACCOUNT_BECH_32_LCD, endpoint],
     async () => getAccountBech32Lcd(endpoint),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );

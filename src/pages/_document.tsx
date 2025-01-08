@@ -17,9 +17,9 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link href={fontHrefs.heading} rel="stylesheet" />
-          <link href={fontHrefs.body} rel="stylesheet" />
-          <link href={fontHrefs.mono} rel="stylesheet" />
+          <link rel="stylesheet" href={fontHrefs.heading} />
+          <link rel="stylesheet" href={fontHrefs.body} />
+          <link rel="stylesheet" href={fontHrefs.mono} />
           <link
             id="favicon"
             rel="shortcut icon"
@@ -32,10 +32,10 @@ class MyDocument extends Document {
           <Main />
           <NextScript />
           <Script
-            strategy="lazyOnload"
             src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+            strategy="lazyOnload"
           />
-          <Script strategy="lazyOnload" id="google-tag-manager">
+          <Script id="google-tag-manager" strategy="lazyOnload">
             {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}

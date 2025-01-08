@@ -32,9 +32,9 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
   );
 
   return (
-    <Flex direction="column" gap={6}>
+    <Flex gap={6} direction="column">
       {/* History Table section */}
-      <Heading as="h6" variant="h6" id={tableHeaderId}>
+      <Heading id={tableHeaderId} as="h6" variant="h6">
         Transactions & Histories
       </Heading>
       <Tabs isLazy lazyBehavior="keepMounted">
@@ -43,17 +43,17 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
           borderColor="gray.700"
           overflowX={{ base: "scroll", md: "auto" }}
         >
-          <CustomTab count={data?.tx} isDisabled={data?.tx === 0}>
+          <CustomTab isDisabled={data?.tx === 0} count={data?.tx}>
             Transactions
           </CustomTab>
-          <CustomTab count={data?.migration} isDisabled={data?.migration === 0}>
+          <CustomTab isDisabled={data?.migration === 0} count={data?.migration}>
             Migrations
           </CustomTab>
           <CustomTab
-            count={data?.relatedProposal}
+            hidden={!gov.enabled || !isFullTier}
             isDisabled={data?.relatedProposal === 0}
             whiteSpace="nowrap"
-            hidden={!gov.enabled || !isFullTier}
+            count={data?.relatedProposal}
           >
             Related Proposals
           </CustomTab>

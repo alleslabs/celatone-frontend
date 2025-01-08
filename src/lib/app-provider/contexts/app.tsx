@@ -21,28 +21,28 @@ import { changeFavicon } from "lib/utils";
 
 import { DEFAULT_CHAIN_CONFIG } from "./default";
 
+interface AppContextInterface {
+  availableChainIds: string[];
+  chainConfig: ChainConfig;
+  constants: ProjectConstants;
+  currentChainId: string;
+  isHydrated: boolean;
+  setTheme: (newTheme: ThemeConfig) => void;
+  theme: ThemeConfig;
+}
+
 interface AppProviderProps {
   children: ReactNode;
 }
 
-interface AppContextInterface {
-  isHydrated: boolean;
-  availableChainIds: string[];
-  currentChainId: string;
-  chainConfig: ChainConfig;
-  constants: ProjectConstants;
-  theme: ThemeConfig;
-  setTheme: (newTheme: ThemeConfig) => void;
-}
-
 const DEFAULT_STATES: AppContextInterface = {
-  isHydrated: false,
   availableChainIds: SUPPORTED_CHAIN_IDS,
-  currentChainId: "",
   chainConfig: DEFAULT_CHAIN_CONFIG,
   constants: PROJECT_CONSTANTS,
-  theme: FALLBACK_THEME,
+  currentChainId: "",
+  isHydrated: false,
   setTheme: () => {},
+  theme: FALLBACK_THEME,
 };
 
 const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
@@ -72,14 +72,14 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       changeFavicon(theme.branding.favicon);
 
       setStates({
-        isHydrated: true,
         availableChainIds: supportedChainIds,
-        currentChainId: newChainId,
         chainConfig,
         constants: PROJECT_CONSTANTS,
-        theme,
+        currentChainId: newChainId,
+        isHydrated: true,
         setTheme: (newTheme: ThemeConfig) =>
           setStates((prev) => ({ ...prev, theme: newTheme })),
+        theme,
       });
     },
     [chainConfigs, supportedChainIds]

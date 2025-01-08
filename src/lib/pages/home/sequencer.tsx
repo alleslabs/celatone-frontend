@@ -37,14 +37,14 @@ export const HomeSequencer = () => {
   return (
     <PageContainer>
       <HomeTop
-        totalTxs={txsCount}
-        isTotalTxsLoading={isTxsCountLoading}
-        latestBlock={latestBlock}
-        isLatestBlockLoading={isLatestBlockLoading}
         blockTime={blockTimeAverage?.avgBlockTime}
         isBlockTimeLoading={isBlockTimeAverageLoading}
-        toTxs={toTxs}
+        isLatestBlockLoading={isLatestBlockLoading}
+        isTotalTxsLoading={isTxsCountLoading}
+        latestBlock={latestBlock}
         toBlocks={toBlocks}
+        totalTxs={txsCount}
+        toTxs={toTxs}
       />
       <Box as="section" mb="48px">
         <Box mb={5}>
@@ -61,7 +61,7 @@ export const HomeSequencer = () => {
         {!!txsCount && txsCount > 5 && <ViewMore onClick={toTxs} />}
       </Box>
       <Box as="section">
-        <Heading as="h5" variant="h5" mb={5}>
+        <Heading as="h5" mb={5} variant="h5">
           Recent Blocks
         </Heading>
         <RecentBlocksTableSequencer isViewMore />

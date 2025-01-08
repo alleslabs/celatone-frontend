@@ -45,23 +45,23 @@ export const CodeSelect = ({
   return (
     <Flex direction="column" {...componentProps}>
       <Flex
+        borderWidth="1px"
         align="center"
-        p={4}
         gap={4}
+        p={4}
         w="100%"
         bgColor="gray.900"
-        borderRadius="8px"
-        borderWidth="1px"
         borderColor={isError ? "error.main" : "gray.700"}
+        borderRadius="8px"
       >
         <UploadIcon variant={codeId ? "primary" : "muted"} />
         {codeId ? (
-          <Flex direction="column" w="60%">
+          <Flex w="60%" direction="column">
             <Text
               variant="body1"
+              whiteSpace="nowrap"
               fontWeight={500}
               overflow="hidden"
-              whiteSpace="nowrap"
               textOverflow="ellipsis"
             >
               {name ?? "Untitled Name"}
@@ -80,11 +80,11 @@ export const CodeSelect = ({
             </Flex>
             <Flex>
               <WasmVerifyBadge
+                hasText
                 status={getWasmVerifyStatus(wasmDerivedVerifyInfos)}
                 relatedVerifiedCodes={
                   wasmDerivedVerifyInfos?.relatedVerifiedCodes
                 }
-                hasText
               />
             </Flex>
           </Flex>
@@ -94,13 +94,13 @@ export const CodeSelect = ({
           </Text>
         )}
         <CodeSelectDrawerButton
-          onCodeSelect={onCodeSelect}
           buttonText={codeId ? "Change Code" : "Select Code"}
+          onCodeSelect={onCodeSelect}
         />
       </Flex>
 
       {isError && (
-        <Text variant="body3" color="error.main" mt={1} ml={3}>
+        <Text ml={3} mt={1} variant="body3" color="error.main">
           {status.message}
         </Text>
       )}

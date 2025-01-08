@@ -16,15 +16,15 @@ import { ProposalStatus } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 export interface VotedProposalsTableRowProps {
-  votedProposal: ValidatorVotedProposalsResponseItem;
-  templateColumns: GridProps["templateColumns"];
   boxShadow: DividerProps["boxShadow"];
+  templateColumns: GridProps["templateColumns"];
+  votedProposal: ValidatorVotedProposalsResponseItem;
 }
 
 export const VotedProposalsTableRow = ({
-  votedProposal,
-  templateColumns,
   boxShadow,
+  templateColumns,
+  votedProposal,
 }: VotedProposalsTableRowProps) => {
   const navigate = useInternalNavigate();
 
@@ -41,10 +41,7 @@ export const VotedProposalsTableRow = ({
   return (
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(votedProposal.proposalId)}
       minW="min-content"
-      cursor="pointer"
       _hover={{
         "> div": {
           bgColor:
@@ -53,13 +50,16 @@ export const VotedProposalsTableRow = ({
               : "gray.900",
         },
       }}
+      cursor="pointer"
+      onClick={() => onRowSelect(votedProposal.proposalId)}
+      templateColumns={templateColumns}
     >
       <TableRowFreeze left="0">
         <ExplorerLink
           type="proposal_id"
           value={votedProposal.proposalId.toString()}
-          showCopyOnHover
           ampCopierSection="proposal-list"
+          showCopyOnHover
         />
       </TableRowFreeze>
       <TableRowFreeze
@@ -68,9 +68,9 @@ export const VotedProposalsTableRow = ({
         color="gray.800"
       >
         <ProposalTextCell
+          isExpedited={votedProposal.isExpedited}
           title={votedProposal.title}
           types={votedProposal.types}
-          isExpedited={votedProposal.isExpedited}
           isDepositOrVoting={isDepositOrVoting}
         />
       </TableRowFreeze>
@@ -81,11 +81,11 @@ export const VotedProposalsTableRow = ({
       </TableRow>
       <TableRow>
         <Answer
-          isVoteWeighted={votedProposal.isVoteWeighted}
+          abstain={votedProposal.abstain}
           yes={votedProposal.yes}
+          isVoteWeighted={votedProposal.isVoteWeighted}
           no={votedProposal.no}
           noWithVeto={votedProposal.noWithVeto}
-          abstain={votedProposal.abstain}
         />
       </TableRow>
       <TableRow>

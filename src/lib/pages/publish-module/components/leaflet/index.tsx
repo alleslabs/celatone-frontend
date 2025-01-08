@@ -24,16 +24,16 @@ import { metadata } from "./metadata";
 
 const TitleContainer = (props: GridItemProps) => (
   <GridItem
-    display="flex"
+    alignItems="center"
     bg="gray.700"
-    fontSize="14px"
-    color="text.main"
-    fontWeight={600}
+    display="flex"
     p={1}
+    whiteSpace="pre"
+    color="text.main"
+    fontSize="14px"
+    fontWeight={600}
     justifyContent="center"
     wordBreak="break-all"
-    whiteSpace="pre"
-    alignItems="center"
     {...props}
   />
 );
@@ -41,20 +41,20 @@ const TitleContainer = (props: GridItemProps) => (
 const ContentContainer = (props: GridItemProps) => (
   <GridItem
     display="flex"
+    h="full"
+    p="12px 16px"
+    whiteSpace="pre-wrap"
     bgColor="gray.900"
     color="text.main"
-    whiteSpace="pre-wrap"
-    p="12px 16px"
     fontSize="14px"
-    h="full"
     {...props}
   />
 );
 
 const GridTemplate = chakra(Grid, {
   baseStyle: {
-    gridTemplateColumns: "140px repeat(3, 1fr)",
     columnGap: "2px",
+    gridTemplateColumns: "140px repeat(3, 1fr)",
     rowGap: "2px",
   },
 });
@@ -79,8 +79,8 @@ const centerRowMapper = (row: string[]) =>
   row.map((each, idx) => (
     <ContentContainer
       key={each + idx.toString()}
-      dangerouslySetInnerHTML={{ __html: each }}
       alignItems="center"
+      dangerouslySetInnerHTML={{ __html: each }}
     />
   ));
 
@@ -88,15 +88,15 @@ const StructContent = () => (
   <GridTemplate mt="2px">
     <TitleContainer rowSpan={2}>fields</TitleContainer>
     <ContentContainer
-      rowSpan={2}
       dangerouslySetInnerHTML={{ __html: metadata.fields[0][0] }}
+      rowSpan={2}
     />
     {metadata.fields.slice(1).map(rowMapper)}
   </GridTemplate>
 );
 
 const ExposedFnsContent = () => (
-  <Flex direction="column" rowGap="2px" mt="2px">
+  <Flex mt="2px" direction="column" rowGap="2px">
     <GridTemplate>
       <TitleContainer rowSpan={3}>visibility</TitleContainer>
       {metadata.visibility.map(centerRowMapper)}
@@ -112,10 +112,10 @@ const ExposedFnsContent = () => (
     <GridTemplate>
       <TitleContainer>generic_type_{"\n"}params</TitleContainer>
       <GridItem
-        colSpan={3}
-        display="grid"
         gridTemplateColumns="repeat(3, minmax(0, 1fr))"
+        display="grid"
         gap="2px"
+        colSpan={3}
       >
         <ContentContainer colSpan={3}>
           {metadata.generic_type_params[0]}
@@ -124,10 +124,10 @@ const ExposedFnsContent = () => (
           <TitleContainer key={title.toString()}>{title}</TitleContainer>
         ))}
         <ContentContainer
-          rowSpan={2}
           dangerouslySetInnerHTML={{
             __html: metadata.generic_type_params[2][0][0],
           }}
+          rowSpan={2}
         />
         {(metadata.generic_type_params[2].slice(1) as Array<string[]>).map(
           rowMapper
@@ -137,49 +137,49 @@ const ExposedFnsContent = () => (
   </Flex>
 );
 export const Leaflet = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <>
       <Text
-        ml={1}
         as="span"
+        ml={1}
         variant="body2"
-        textColor="primary.main"
-        fontWeight={600}
-        cursor="pointer"
         _hover={{ textDecoration: "underline" }}
+        cursor="pointer"
+        fontWeight={600}
         onClick={(e) => {
           track(AmpEvent.USE_VIEW_CONDITION);
           e.stopPropagation();
           onOpen();
         }}
+        textColor="primary.main"
       >
         View conditions
       </Text>
-      <Modal isOpen={isOpen} onClose={onClose} size="6xl">
+      <Modal isOpen={isOpen} size="6xl" onClose={onClose}>
         <ModalOverlay />
         <ModalContent
           maxH="80%"
-          overflowY="scroll"
           sx={{ "& > *": { bg: "gray.800" } }}
+          overflowY="scroll"
         >
-          <ModalHeader position="sticky" top={0} gap={2}>
+          <ModalHeader gap={2} position="sticky" top={0}>
             <CustomIcon
+              alignSelf="center"
               name="info-circle"
               boxSize={4}
               color="gray.600"
-              alignSelf="center"
             />
-            <Heading variant="h5" as="h5">
+            <Heading as="h5" variant="h5">
               Compatible Upgrade Policy
             </Heading>
             <ModalCloseButton color="gray.600" />
           </ModalHeader>
           <ModalBody>
-            <Heading variant="h6" as="h6">
+            <Heading as="h6" variant="h6">
               Structs
             </Heading>
-            <Text variant="body2" my={3}>
+            <Text my={3} variant="body2">
               New structs can be added, but all old structs must remain a subset
               of republished module. New fields cannot be added within structs,
               but current fields can be removed. Example for struct fields are
@@ -187,10 +187,10 @@ export const Leaflet = () => {
             </Text>
             <Header />
             <StructContent />
-            <Heading variant="h6" as="h6" mt={6}>
+            <Heading as="h6" mt={6} variant="h6">
               Exposed Functions
             </Heading>
-            <Text variant="body2" my={3}>
+            <Text my={3} variant="body2">
               New functions can be added, but all old functions must remain a
               subset of republished module. Example for exposed_functions
               properties changes are displayed below
@@ -199,10 +199,10 @@ export const Leaflet = () => {
             <Header />
             <ExposedFnsContent />
             {/*  */}
-            <Heading variant="h6" as="h6" mt={6}>
+            <Heading as="h6" mt={6} variant="h6">
               Friends
             </Heading>
-            <Text variant="body2" my={3}>
+            <Text my={3} variant="body2">
               <Text as="span" mx={2}>
                 &#x2022;
               </Text>
@@ -210,8 +210,8 @@ export const Leaflet = () => {
               friends.
             </Text>
           </ModalBody>
-          <ModalFooter justifyContent="center" position="sticky" bottom={0}>
-            <Button variant="outline-white" onClick={onClose} w="240px">
+          <ModalFooter bottom={0} justifyContent="center" position="sticky">
+            <Button variant="outline-white" w="240px" onClick={onClose}>
               Close
             </Button>
           </ModalFooter>

@@ -22,17 +22,17 @@ interface NetworkGuardProps {
 
 export const NetworkGuard = observer(({ children }: NetworkGuardProps) => {
   const {
-    isHydrated,
-    currentChainId,
     chainConfig: { registryChainName },
+    currentChainId,
+    isHydrated,
   } = useCelatoneApp();
 
   const { chainConfigs, isLoading } = useChainConfigs();
-  const { setAccountUserKey, isAccountUserKeyExist } = useAccountStore();
-  const { setCodeUserKey, isCodeUserKeyExist } = useCodeStore();
-  const { setContractUserKey, isContractUserKeyExist } = useContractStore();
-  const { setProjectUserKey, isProjectUserKeyExist } = usePublicProjectStore();
-  const { setMoveVerifyTaskUserKey, isMoveVerifyTaskUserKeyExist } =
+  const { isAccountUserKeyExist, setAccountUserKey } = useAccountStore();
+  const { isCodeUserKeyExist, setCodeUserKey } = useCodeStore();
+  const { isContractUserKeyExist, setContractUserKey } = useContractStore();
+  const { isProjectUserKeyExist, setProjectUserKey } = usePublicProjectStore();
+  const { isMoveVerifyTaskUserKeyExist, setMoveVerifyTaskUserKey } =
     useMoveVerifyTaskStore();
 
   useEffect(() => {

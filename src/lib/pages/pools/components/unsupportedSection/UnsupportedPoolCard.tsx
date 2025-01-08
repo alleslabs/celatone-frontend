@@ -30,10 +30,10 @@ interface UnsupportedPoolCardProps {
 }
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "24px",
     color: "gray.600",
+    display: "flex",
+    fontSize: "24px",
   },
 });
 
@@ -50,11 +50,11 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
 
   return (
     <AccordionItem
-      mt={4}
       bg="gray.900"
+      mt={4}
       _hover={{ bg: "gray.800" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
+      transition="all 0.25s ease-in-out"
     >
       {({ isExpanded }) => (
         <>
@@ -68,36 +68,36 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
               })
             }
           >
-            <Flex gap={4} flexDirection="column" p={4} w="full">
+            <Flex gap={4} p={4} w="full" flexDirection="column">
               <Flex alignItems="center" justifyContent="space-between">
                 <PoolHeader
-                  poolId={item.id}
                   isSuperfluid={item.isSuperfluid}
-                  poolType={item.type}
                   liquidity={item.liquidity}
+                  poolId={item.id}
+                  poolType={item.type}
                 />
                 <Flex>
                   <Tooltip label="See in osmosis.zone">
                     <Link
-                      href={`${poolUrl}/${item.id}`}
+                      rel="noopener noreferrer"
+                      target="_blank"
                       onClick={(e) => {
                         trackWebsite(`${poolUrl}/${item.id}`);
                         e.stopPropagation();
                       }}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={`${poolUrl}/${item.id}`}
                     >
                       <StyledIconButton
-                        variant="none"
                         aria-label="external"
+                        variant="none"
                         _hover={{ backgroundColor: hoverBgColor }}
                         icon={<CustomIcon name="launch" />}
                       />
                     </Link>
                   </Tooltip>
                   <StyledIconButton
-                    variant="none"
                     aria-label="external"
+                    variant="none"
                     _hover={{ backgroundColor: hoverBgColor }}
                     icon={
                       <CustomIcon
@@ -114,10 +114,10 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
           <AccordionPanel pb={4}>
             <Flex>
               <Text
-                color="text.dark"
                 variant="body2"
-                fontWeight="600"
                 w="144px"
+                color="text.dark"
+                fontWeight="600"
               >
                 Tokens in Pool
               </Text>
@@ -125,14 +125,14 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                 <Flex gap={2} flexDirection="column">
                   {item.liquidity.map((asset) => (
                     <Flex
-                      className="copier-wrapper"
                       key={asset.denom}
-                      gap={3}
+                      className="copier-wrapper"
                       alignItems="center"
+                      gap={3}
                     >
                       <TokenImageRender
-                        logo={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
                         boxSize={6}
+                        logo={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
                       />
                       <Text variant="body2" color="text.main" fontWeight="bold">
                         {formatUTokenWithPrecision(
@@ -144,28 +144,28 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                         {getTokenLabel(asset.denom, asset.symbol, false)}
                       </Flex>
                       <Copier
+                        display="none"
+                        ml="1px"
                         type={
                           asset.symbol ? "supported_asset" : "unsupported_asset"
                         }
                         value={asset.denom}
                         copyLabel="Token ID Copied!"
-                        display="none"
-                        ml="1px"
                       />
                     </Flex>
                   ))}
                 </Flex>
                 <Flex gap={3}>
-                  <Button onClick={handleOnClick} size="sm">
+                  <Button size="sm" onClick={handleOnClick}>
                     View Pool Details
                   </Button>
                   <Button
+                    size="sm"
+                    variant="outline-primary"
                     onClick={() => {
                       trackWebsite(`${poolUrl}/${item.id}`);
                       openNewTab(`${poolUrl}/${item.id}`);
                     }}
-                    size="sm"
-                    variant="outline-primary"
                     rightIcon={
                       <CustomIcon name="launch" color="outline-primary" />
                     }

@@ -3,14 +3,14 @@ import { Flex, Tag, Text } from "@chakra-ui/react";
 import { extractMsgType } from "lib/utils";
 
 interface PoolOtherMsgsProps {
-  otherMsgs: { [key: string]: number };
   isIbc: boolean;
+  otherMsgs: { [key: string]: number };
 }
 
-export const PoolOtherMsgs = ({ otherMsgs, isIbc }: PoolOtherMsgsProps) => {
+export const PoolOtherMsgs = ({ isIbc, otherMsgs }: PoolOtherMsgsProps) => {
   const typePaths = Object.keys(otherMsgs);
   return (
-    <Flex gap={2} flexWrap="wrap" alignContent="center">
+    <Flex flexWrap="wrap" gap={2} alignContent="center">
       Total
       {typePaths.map((typePath, index) => {
         const type = extractMsgType(typePath);
@@ -25,7 +25,7 @@ export const PoolOtherMsgs = ({ otherMsgs, isIbc }: PoolOtherMsgsProps) => {
         );
       })}
       {isIbc && (
-        <Tag variant="secondary" size="sm">
+        <Tag size="sm" variant="secondary">
           IBC
         </Tag>
       )}

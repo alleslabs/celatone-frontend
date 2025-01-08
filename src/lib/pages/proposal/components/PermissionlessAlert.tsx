@@ -4,12 +4,12 @@ import { CustomIcon } from "lib/components/icon";
 
 export const PermissionlessAlert = () => {
   return (
-    <Alert variant="error" alignItems="center" justifyContent="space-between">
-      <Flex gap={2} align="center">
+    <Alert alignItems="center" variant="error" justifyContent="space-between">
+      <Flex align="center" gap={2}>
         <CustomIcon
           name="alert-triangle-solid"
-          color="error.main"
           boxSize={4}
+          color="error.main"
         />
         <AlertDescription>
           You cannot create proposal to whitelist on permissionless network.

@@ -8,17 +8,17 @@ import { Expedited } from "lib/components/Expedited";
 import type { ProposalType } from "lib/types";
 
 interface ProposalTextCellProps {
+  isDepositOrVoting: boolean;
+  isExpedited: boolean;
   title: string;
   types: ProposalType[];
-  isExpedited: boolean;
-  isDepositOrVoting: boolean;
 }
 
 export const ProposalTextCell = ({
+  isDepositOrVoting,
+  isExpedited,
   title,
   types,
-  isExpedited,
-  isDepositOrVoting,
 }: ProposalTextCellProps) => {
   const isMobile = useMobile();
   const [isHoverText, setIsHoverText] = useState(false);
@@ -34,9 +34,9 @@ export const ProposalTextCell = ({
 
   if (isMobile)
     return (
-      <Flex direction="column" gap={1}>
+      <Flex gap={1} direction="column">
         <MobileLabel label="Proposal Title" />
-        <Text color="text.main" variant="body2" wordBreak="break-word">
+        <Text variant="body2" color="text.main" wordBreak="break-word">
           {title}
           {isExpedited && (
             <span
@@ -71,23 +71,23 @@ export const ProposalTextCell = ({
 
   return (
     <Flex
-      flexDirection="column"
       justify="center"
-      borderRadius="8px"
-      bgColor={showName ? "gray.800" : "undefined"}
-      px={4}
       maxW={showName ? undefined : "full"}
-      onMouseOver={() => setIsHoverText(true)}
-      onMouseOut={() => setIsHoverText(false)}
-      onClick={(e) => e.stopPropagation()}
+      px={4}
+      bgColor={showName ? "gray.800" : "undefined"}
+      borderRadius="8px"
       cursor="initial"
+      flexDirection="column"
+      onClick={(e) => e.stopPropagation()}
+      onMouseOut={() => setIsHoverText(false)}
+      onMouseOver={() => setIsHoverText(true)}
     >
       <Text
-        ref={titleRef}
+        className={showName ? undefined : "ellipsis"}
+        maxW={showName ? undefined : "full"}
         variant="body2"
         whiteSpace="nowrap"
-        maxW={showName ? undefined : "full"}
-        className={showName ? undefined : "ellipsis"}
+        ref={titleRef}
       >
         {title}
       </Text>
@@ -100,12 +100,12 @@ export const ProposalTextCell = ({
         )}
 
         <Text
-          ref={typeRef}
-          variant="body3"
-          color="text.dark"
-          whiteSpace="nowrap"
-          maxW={showName ? undefined : "full"}
           className={showName ? undefined : "ellipsis"}
+          maxW={showName ? undefined : "full"}
+          variant="body3"
+          whiteSpace="nowrap"
+          color="text.dark"
+          ref={typeRef}
         >
           {types.length
             ? types.map((msgType, index) => (

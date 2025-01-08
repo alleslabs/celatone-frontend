@@ -22,65 +22,65 @@ export const PublicProjectCard = observer(
     };
 
     const [ref, { clampedText }] = useClampText({
-      text: item?.description || "",
       ellipsis: "...",
       lines: 3,
+      text: item?.description || "",
     });
 
     return (
       <Flex
-        px={4}
-        pt={4}
-        pb={2}
         alignItems="center"
         bg="gray.800"
-        _hover={{ bg: "gray.700" }}
-        transition="all 0.25s ease-in-out"
-        borderRadius="8px"
         gap={4}
-        minH={48}
         height="full"
-        onClick={handleOnClick}
+        minH={48}
+        pb={2}
+        pt={4}
+        px={4}
+        _hover={{ bg: "gray.700" }}
+        borderRadius="8px"
         cursor="pointer"
+        onClick={handleOnClick}
+        transition="all 0.25s ease-in-out"
       >
         <Flex
-          flexDirection="column"
           gap={3}
-          w="full"
           height="full"
+          w="full"
+          flexDirection="column"
           justifyContent="space-between"
         >
           <Box>
             <Flex
-              justifyContent="space-between"
-              w="full"
               alignItems="flex-start"
+              w="full"
+              justifyContent="space-between"
             >
               <Flex gap={2} pr={1}>
                 <Image
+                  width={7}
+                  alt="Celatone"
+                  height={7}
                   src={item.logo ?? UNDEFINED_ICON_LIST[0]}
                   borderRadius="full"
-                  alt="Celatone"
-                  width={7}
-                  height={7}
                 />
                 <Text
+                  mt={1}
                   variant="body1"
                   fontWeight={700}
-                  textOverflow="ellipsis"
                   overflow="hidden"
-                  mt={1}
+                  textOverflow="ellipsis"
                 >
                   {item.name}
                 </Text>
               </Flex>
-              <BookmarkButton hasText={false} details={item} slug={slug} />
+              <BookmarkButton details={item} hasText={false} slug={slug} />
             </Flex>
             <Text
-              ref={ref as React.MutableRefObject<HTMLParagraphElement>}
+              pt={3}
               variant="body2"
               color="text.dark"
-              pt={3}
+              ref={ref as React.MutableRefObject<HTMLParagraphElement>}
             >
               {clampedText}
             </Text>

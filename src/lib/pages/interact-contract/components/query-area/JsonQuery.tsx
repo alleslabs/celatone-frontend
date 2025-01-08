@@ -61,27 +61,27 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
     setRes("");
   }, [contractAddress, initialMsg]);
 
-  const { refetch, isFetching } = useContractQueryLcd(contractAddress, msg, {
-    enabled: false,
-    retry: false,
+  const { isFetching, refetch } = useContractQueryLcd(contractAddress, msg, {
     cacheTime: 0,
-    onSettled: () => setMsg(jsonPrettify(msg)),
-    onSuccess: (data) => {
-      setRes(JSON.stringify(data, null, 2));
-      addActivity({
-        type: "query",
-        action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
-        sender: address,
-        contractAddress,
-        msg: encode(msg),
-        timestamp: getCurrentDate(),
-      });
-    },
+    enabled: false,
     onError: (err) =>
       setRes(
         (err as AxiosError<RpcQueryError>).response?.data.message ||
           DEFAULT_RPC_ERROR
       ),
+    onSettled: () => setMsg(jsonPrettify(msg)),
+    onSuccess: (data) => {
+      setRes(JSON.stringify(data, null, 2));
+      addActivity({
+        action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
+        contractAddress,
+        msg: encode(msg),
+        sender: address,
+        timestamp: getCurrentDate(),
+        type: "query",
+      });
+    },
+    retry: false,
   });
 
   const handleQuery = () => {
@@ -93,9 +93,9 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   return (
     <>
       {isCmdsFetching && <LoadingOverlay />}
-      <Box width="full" mb={8} alignItems="center">
+      <Box width="full" alignItems="center" mb={8}>
         {contractAddress && (
-          <Text variant="body3" mb={2}>
+          <Text mb={2} variant="body3">
             Message Suggestions:
           </Text>
         )}
@@ -103,13 +103,13 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
           <ButtonGroup
             width="90%"
             flexWrap="wrap"
-            rowGap={2}
             sx={{
               "> button": {
-                marginInlineStart: "0 !important",
                 marginInlineEnd: "1",
+                marginInlineStart: "0 !important",
               },
             }}
+            rowGap={2}
           >
             {queryCmds.sort().map(([cmd, queryMsg]) => (
               <ContractCmdButton
@@ -132,37 +132,37 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
       </Box>
       <Flex gap={4} direction={{ base: "column", md: "row" }}>
         <Box w="full">
-          <JsonInput topic="Query Msg" text={msg} setText={setMsg} />
+          <JsonInput setText={setMsg} text={msg} topic="Query Msg" />
           <Flex
-            direction={{ base: "column", md: "row" }}
-            justify="space-between"
             alignItems="center"
             gap={{ base: 1, md: 0 }}
+            justify="space-between"
+            direction={{ base: "column", md: "row" }}
           >
             <Grid
+              mb={{ base: 2, md: 0 }}
               w={{ base: "full", md: "auto" }}
               columnGap={2}
-              mb={{ base: 2, md: 0 }}
               templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(2, 1fr)" }}
             >
               <CopyButton
-                w="full"
                 isDisable={!msg.length}
                 value={msg}
+                w="full"
                 amptrackSection="query_msg"
               />
               <WasmCodeSnippet
-                w="full"
-                type="query"
-                contractAddress={contractAddress}
                 message={msg}
+                type="query"
+                w="full"
+                contractAddress={contractAddress}
               />
               {isMobile && (
                 <Button
-                  variant="outline-white"
-                  size="sm"
-                  background="background.main"
                   isDisabled={isButtonDisabled}
+                  size="sm"
+                  variant="outline-white"
+                  background="background.main"
                   onClick={() => setMsg(jsonPrettify(msg))}
                 >
                   Format JSON
@@ -170,29 +170,29 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
               )}
             </Grid>
             <SubmitButton
+              isFullWidth={isMobile}
+              isDisabled={isButtonDisabled}
               text="Query"
               isLoading={isFetching}
               onSubmit={handleQuery}
-              isDisabled={isButtonDisabled}
-              isFullWidth={isMobile}
             />
           </Flex>
         </Box>
         <Spacer
+          my={4}
           border={{ base: "1px solid", md: "0px" }}
           borderColor="gray.700"
-          my={4}
         />
 
         <Box w="full">
           <JsonReadOnly
-            topic="Return Output"
             text={res}
             canCopy={res.length !== 0}
+            topic="Return Output"
           />
           {/* If response line count > 100, the copy button is visible. */}
           {jsonLineCount(res) > 100 && (
-            <Flex justifyContent="flex-end" mt={4}>
+            <Flex mt={4} justifyContent="flex-end">
               <CopyButton
                 isDisable={res.length === 0}
                 value={res}

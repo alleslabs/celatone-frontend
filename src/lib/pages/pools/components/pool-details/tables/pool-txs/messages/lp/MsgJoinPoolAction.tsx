@@ -9,17 +9,17 @@ import { coinToTokenWithValue } from "lib/utils";
 import type { MsgJoinPoolDetails } from "lib/utils/tx/types";
 
 interface MsgJoinPoolActionProps {
+  ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
   msg: MsgJoinPoolDetails;
   pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  ampCopierSection?: string;
 }
 
 export const MsgJoinPoolAction = ({
+  ampCopierSection,
+  assetInfos,
   msg,
   pool,
-  assetInfos,
-  ampCopierSection,
 }: MsgJoinPoolActionProps) => {
   const poolDenom = getPoolDenom(msg.pool_id);
   const poolToken = coinToTokenWithValue(
@@ -28,31 +28,31 @@ export const MsgJoinPoolAction = ({
     assetInfos
   );
   return (
-    <Flex gap={1} alignItems="center" flexWrap="wrap">
+    <Flex alignItems="center" flexWrap="wrap" gap={1}>
       Provided{" "}
       {(msg.token_in_maxs ?? []).map((coin, index) => {
         const token = coinToTokenWithValue(coin.denom, coin.amount, assetInfos);
         return (
-          <Flex key={coin.denom} gap={1} alignItems="center">
+          <Flex key={coin.denom} alignItems="center" gap={1}>
             {index > 0 && (
               <CustomIcon name="plus" boxSize={4} color="primary.main" />
             )}
             at most
             <MsgToken
-              token={token}
-              fontWeight={400}
               ampCopierSection={ampCopierSection}
+              fontWeight={400}
+              token={token}
             />
           </Flex>
         );
       })}
       to
-      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
+      <PoolLogoLink ampCopierSection={ampCopierSection} pool={pool} />
       <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
       <MsgToken
-        token={poolToken}
-        fontWeight={700}
         ampCopierSection={ampCopierSection}
+        fontWeight={700}
+        token={poolToken}
       />
     </Flex>
   );

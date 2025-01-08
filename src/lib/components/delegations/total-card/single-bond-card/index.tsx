@@ -6,31 +6,31 @@ import type { BechAddr, Option, TokenWithValue } from "lib/types";
 import { SingleBondCardBody } from "./SingleBondCardBody";
 
 interface SingleBondCardProps {
-  title: string;
-  message: string;
   address: BechAddr;
   bondDenom: TokenWithValue;
+  message: string;
+  title: string;
   tokens: Option<Record<string, TokenWithValue>>;
 }
 
 export const SingleBondCard = ({
-  title,
-  message,
   address,
   bondDenom,
+  message,
+  title,
   tokens,
 }: SingleBondCardProps) => (
-  <Flex direction="column" minW="233px" gap={1}>
-    <TotalCardTop title={title} message={message} fontWeight={600} />
+  <Flex gap={1} minW="233px" direction="column">
+    <TotalCardTop message={message} title={title} fontWeight={600} />
     {!tokens ? (
-      <Heading variant="h6" as="h6">
+      <Heading as="h6" variant="h6">
         N/A
       </Heading>
     ) : (
       <SingleBondCardBody
-        title={title}
-        message={message}
         address={address}
+        message={message}
+        title={title}
         bondDenom={bondDenom}
         tokens={tokens}
       />

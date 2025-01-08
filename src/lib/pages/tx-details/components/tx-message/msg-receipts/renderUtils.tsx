@@ -16,21 +16,21 @@ import { convertToTitle } from "lib/utils";
 
 import { CoinsComponent } from "./CoinsComponent";
 
-type HtmlType = "json" | "explorer";
-
 interface CommonReceiptHtmlArgs<T extends HtmlType, V> {
+  fallback?: string;
+  linkType?: LinkType;
   type: T;
   value: Option<Nullable<V>>;
-  linkType?: LinkType;
-  fallback?: string;
 }
+
+type HtmlType = "explorer" | "json";
 
 // Util Functions
 export const getCommonReceiptHtml = <T extends HtmlType>({
+  fallback,
+  linkType = "invalid_address",
   type,
   value,
-  linkType = "invalid_address",
-  fallback,
 }: CommonReceiptHtmlArgs<T, T extends "json" ? object : string>) => {
   switch (true) {
     case value === null:
@@ -55,22 +55,22 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
     case type === "json" || typeof value === "object":
       return (
         <JsonReadOnly
-          text={JSON.stringify(value, null, 2)}
-          canCopy
           fullWidth
           isExpandable
+          text={JSON.stringify(value, null, 2)}
           amptrackSection="tx_page_msg_receipts"
+          canCopy
         />
       );
     default:
       return (
         <ExplorerLink
+          maxWidth="full"
           type={linkType}
           value={value as string}
+          ampCopierSection="tx_msg_receipts"
           showCopyOnHover
           textFormat="normal"
-          maxWidth="full"
-          ampCopierSection="tx_msg_receipts"
           wordBreak="break-word"
         />
       );
@@ -78,7 +78,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
 };
 
 export const getGenericValueEntry = (
-  [title, value]: [string, string | object],
+  [title, value]: [string, object | string],
   getAddressType: (address: string) => AddressReturnType
 ): TxReceipt => {
   let valueObj: Omit<TxReceipt, "title">;
@@ -95,9 +95,9 @@ export const getGenericValueEntry = (
       if (getAddressType(value) !== "invalid_address")
         valueObj = {
           html: getCommonReceiptHtml({
+            linkType: getAddressType(value),
             type: "explorer",
             value,
-            linkType: getAddressType(value),
           }),
         };
       else valueObj = { value };
@@ -110,7 +110,6 @@ export const getGenericValueEntry = (
 };
 
 export const attachFundsReceipt = (value: Option<Coin[]>): TxReceipt => ({
-  title: "Attached Funds",
   html: value?.length ? (
     <CoinsComponent coins={value} />
   ) : (
@@ -118,41 +117,42 @@ export const attachFundsReceipt = (value: Option<Coin[]>): TxReceipt => ({
       No Attached Funds
     </Text>
   ),
+  title: "Attached Funds",
 });
 
 export const delegatorAddrReceipt = (
   value: BechAddr,
   addrType: LinkType
 ): TxReceipt => ({
-  title: "Delegator Address",
   html: getCommonReceiptHtml({
+    linkType: addrType,
     type: "explorer",
     value,
-    linkType: addrType,
   }),
+  title: "Delegator Address",
 });
 
 export const validatorAddrReceipt = (value: ValidatorAddr): TxReceipt => ({
-  title: "Validator Address",
   html: getCommonReceiptHtml({
+    linkType: "validator_address",
     type: "explorer",
     value,
-    linkType: "validator_address",
   }),
+  title: "Validator Address",
 });
 
 export const proposalIdReceipt = (value: Option<string>): TxReceipt => ({
-  title: "Proposal ID",
   html: getCommonReceiptHtml({
+    linkType: "proposal_id",
     type: "explorer",
     value,
-    linkType: "proposal_id",
   }),
+  title: "Proposal ID",
 });
 
 export const clientStateReceipt = (value: object): TxReceipt => ({
-  title: "Client State",
   html: getCommonReceiptHtml({ type: "json", value }),
+  title: "Client State",
 });
 
 export const proofInitReceipt = (value: string): TxReceipt => ({
@@ -161,8 +161,8 @@ export const proofInitReceipt = (value: string): TxReceipt => ({
 });
 
 export const proofHeightReceipt = (value: object): TxReceipt => ({
-  title: "Proof Height",
   html: getCommonReceiptHtml({ type: "json", value }),
+  title: "Proof Height",
 });
 
 export const channelIdReceipt = (value: string): TxReceipt => ({

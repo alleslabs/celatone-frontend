@@ -10,55 +10,55 @@ import type { MsgExitSwapExternAmountOutDetails } from "lib/utils/tx/types";
 import { PoolAssetsGrid, PoolLPCard } from "./components";
 
 interface MsgExitSwapExternAmountOutDetailProps {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: MsgExitSwapExternAmountOutDetails;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: MsgExitSwapExternAmountOutDetails;
+  msgIndex: number;
+  txHash: string;
 }
 
 export const MsgExitSwapExternAmountOutDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  txHash,
 }: MsgExitSwapExternAmountOutDetailProps) => (
-  <Flex w="full" direction="column" alignItems="start" gap={12}>
+  <Flex alignItems="start" gap={12} w="full" direction="column">
     <Flex gap={12}>
       <PoolInfoText title="Block height">
         <ExplorerLink
-          value={blockHeight.toString()}
           type="block_height"
-          showCopyOnHover
+          value={blockHeight.toString()}
           ampCopierSection={ampCopierSection}
+          showCopyOnHover
         />
       </PoolInfoText>
       <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
     </Flex>
     <Box w="full">
       <PoolLPCard
-        txHash={txHash}
+        isOpened={isOpened}
         msgIndex={msgIndex}
-        poolId={msg.pool_id}
+        txHash={txHash}
+        ampCopierSection={ampCopierSection}
         assetInfos={assetInfos}
         isJoin={false}
-        isOpened={isOpened}
-        ampCopierSection={ampCopierSection}
+        poolId={msg.pool_id}
       />
       <DividerWithArrow />
       <PoolAssetsGrid
-        txHash={txHash}
-        msgIndex={msgIndex}
-        msgAssets={[msg.token_out]}
-        isJoin={false}
-        assetInfos={assetInfos}
         isOpened={isOpened}
+        msgAssets={[msg.token_out]}
+        msgIndex={msgIndex}
+        txHash={txHash}
         ampCopierSection={ampCopierSection}
+        assetInfos={assetInfos}
+        isJoin={false}
       />
     </Box>
   </Flex>

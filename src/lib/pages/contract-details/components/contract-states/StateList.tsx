@@ -10,32 +10,32 @@ import type { ContractState } from "lib/types";
 import { StateCard } from "./StateCard";
 
 interface StateListProps {
-  totalData: number;
-  states: ContractState[];
   isLoading: boolean;
   isSearching: boolean;
+  states: ContractState[];
+  totalData: number;
 }
 
 export const StateList = ({
-  totalData,
-  states,
   isLoading,
   isSearching,
+  states,
+  totalData,
 }: StateListProps) => {
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: totalData,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: totalData,
   });
 
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -64,7 +64,7 @@ export const StateList = ({
 
   return (
     <>
-      <Flex direction="column" gap={4} flexWrap="wrap">
+      <Flex flexWrap="wrap" gap={4} direction="column">
         {displayStates.map((state) => (
           <StateCard key={state.rawKey} state={state} />
         ))}
@@ -72,12 +72,12 @@ export const StateList = ({
       {!isLoading && (
         <Pagination
           currentPage={currentPage}
+          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
-          pageSize={pageSize}
           onPageChange={setCurrentPage}
           onPageSizeChange={onPageSizeChange}
+          totalData={totalData}
         />
       )}
     </>

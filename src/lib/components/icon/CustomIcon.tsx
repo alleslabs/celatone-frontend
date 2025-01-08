@@ -5,11 +5,11 @@ import { SvgIcon } from "./SvgIcon";
 import type { IconKeys } from "./types";
 
 interface CustomIconProps extends IconProps {
-  name: IconKeys;
   color?: string;
+  name: IconKeys;
 }
 
-export const CustomIcon = ({ name, color, ...props }: CustomIconProps) => {
+export const CustomIcon = ({ color, name, ...props }: CustomIconProps) => {
   if (name === "circle") {
     return <CircleIcon color={color} />;
   }

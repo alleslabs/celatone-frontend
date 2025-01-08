@@ -16,14 +16,14 @@ import { AccountNameCell } from "./AccountNameCell";
 
 interface SavedAccountsTableRowProps {
   accountInfo: AccountLocalInfo;
-  templateColumns: string;
   hasHexAddr: boolean;
+  templateColumns: string;
 }
 
 export const SavedAccountsTableRow = ({
   accountInfo,
-  templateColumns,
   hasHexAddr,
+  templateColumns,
 }: SavedAccountsTableRowProps) => {
   const navigate = useInternalNavigate();
 
@@ -35,12 +35,12 @@ export const SavedAccountsTableRow = ({
 
   return (
     <Grid
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(accountInfo.address)}
-      _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
-      cursor="pointer"
       minW="min-content"
+      _hover={{ bg: "gray.900" }}
+      cursor="pointer"
+      onClick={() => onRowSelect(accountInfo.address)}
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
     >
       <TableRow>
         <ExplorerLink
@@ -63,37 +63,37 @@ export const SavedAccountsTableRow = ({
       </TableRow>
       <TableRow>
         <Text
-          color={accountInfo.description ? "text.dark" : "text.disabled"}
-          textOverflow="ellipsis"
           maxW="450px"
-          overflow="hidden"
           whiteSpace="nowrap"
+          color={accountInfo.description ? "text.dark" : "text.disabled"}
+          overflow="hidden"
+          textOverflow="ellipsis"
         >
           {accountInfo.description ?? "No description"}
         </Text>
       </TableRow>
       <TableRow gap={2} justifyContent="center">
         <EditSavedAccountModal
-          accountLocalInfo={accountInfo}
           triggerElement={
             <IconButton
-              variant="ghost-gray-icon"
-              size="sm"
-              icon={<CustomIcon name="edit" boxSize={4} />}
               aria-label="edit account"
+              size="sm"
+              variant="ghost-gray-icon"
+              icon={<CustomIcon name="edit" boxSize={4} />}
             />
           }
+          accountLocalInfo={accountInfo}
         />
         <RemoveSavedAccountModal
-          accountLocalInfo={accountInfo}
           trigger={
             <IconButton
-              variant="ghost-gray-icon"
-              size="sm"
-              icon={<CustomIcon name="delete" boxSize={4} />}
               aria-label="remove account"
+              size="sm"
+              variant="ghost-gray-icon"
+              icon={<CustomIcon name="delete" boxSize={4} />}
             />
           }
+          accountLocalInfo={accountInfo}
         />
       </TableRow>
     </Grid>

@@ -11,12 +11,12 @@ export const LegendText = ({
   legendColor,
   ...TextProps
 }: LegendTextProps) => (
-  <Flex gap={3} px={1} alignItems="center">
+  <Flex alignItems="center" gap={3} px={1}>
     <Flex
-      w="14px"
       h="14px"
-      minW="14px"
       minH="14px"
+      minW="14px"
+      w="14px"
       backgroundColor={legendColor}
       borderRadius="100%"
     />

@@ -11,18 +11,18 @@ interface MutateEventsTableRowProps extends MutateEvent {
 }
 
 export const MutateEventsTableRow = ({
-  timestamp,
-  templateColumns,
   mutatedFieldName,
-  oldValue,
   newValue,
+  oldValue,
   remark,
+  templateColumns,
+  timestamp,
 }: MutateEventsTableRowProps) => (
-  <Box w="full" minW="min-content">
+  <Box minW="min-content" w="full">
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
       _hover={{ background: "gray.900" }}
+      templateColumns={templateColumns}
       transition="all 0.25s ease-in-out"
     >
       <TableRow pr={1}>
@@ -42,7 +42,7 @@ export const MutateEventsTableRow = ({
         </Text>
       </TableRow>
       <TableRow>
-        <Flex direction="column" gap={1}>
+        <Flex gap={1} direction="column">
           <Text variant="body3">{formatUTC(timestamp)}</Text>
           <Text variant="body3" color="text.dark">
             {`(${dateFromNow(timestamp)})`}

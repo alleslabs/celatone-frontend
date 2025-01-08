@@ -12,20 +12,41 @@ import { dateFromNow, formatUTC } from "lib/utils";
 import { RelationChip } from "./RelationChip";
 
 interface TransactionsTableMobileCardProps {
-  transaction: Transaction;
-  showSuccess: boolean;
   showRelations: boolean;
+  showSuccess: boolean;
   showTimestamp: boolean;
+  transaction: Transaction;
 }
 export const TransactionsTableMobileCard = ({
-  transaction,
-  showSuccess,
   showRelations,
+  showSuccess,
   showTimestamp,
+  transaction,
 }: TransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   return (
     <MobileCardTemplate
+      middleContent={<ActionMessages transaction={transaction} />}
+      bottomContent={
+        <Flex gap={3} direction="column">
+          <Flex direction="column">
+            <MobileLabel label="sender" />
+            <ExplorerLink
+              type="user_address"
+              value={transaction.sender}
+              showCopyOnHover
+            />
+          </Flex>
+          {showTimestamp && (
+            <Flex direction="column">
+              <Text variant="body3">{formatUTC(transaction.created)}</Text>
+              <Text variant="body3" color="text.dark">
+                {`(${dateFromNow(transaction.created)})`}
+              </Text>
+            </Flex>
+          )}
+        </Flex>
+      }
       onClick={() =>
         navigate({
           pathname: "/txs/[txHash]",
@@ -45,34 +66,13 @@ export const TransactionsTableMobileCard = ({
               </>
             )}
             <ExplorerLink
-              value={transaction.hash.toLocaleUpperCase()}
               type="tx_hash"
+              value={transaction.hash.toLocaleUpperCase()}
               showCopyOnHover
             />
           </Flex>
           {showRelations && <RelationChip isSigner={transaction.isSigner} />}
         </>
-      }
-      middleContent={<ActionMessages transaction={transaction} />}
-      bottomContent={
-        <Flex direction="column" gap={3}>
-          <Flex direction="column">
-            <MobileLabel label="sender" />
-            <ExplorerLink
-              value={transaction.sender}
-              type="user_address"
-              showCopyOnHover
-            />
-          </Flex>
-          {showTimestamp && (
-            <Flex direction="column">
-              <Text variant="body3">{formatUTC(transaction.created)}</Text>
-              <Text variant="body3" color="text.dark">
-                {`(${dateFromNow(transaction.created)})`}
-              </Text>
-            </Flex>
-          )}
-        </Flex>
       }
     />
   );

@@ -9,9 +9,9 @@ interface FilterChipProps {
 export const FilterChip = ({ chipComponent, onSelect }: FilterChipProps) => (
   <Flex
     display="inline-block"
-    onClick={onSelect}
     w="max-content"
     cursor="pointer"
+    onClick={onSelect}
   >
     {chipComponent}
   </Flex>

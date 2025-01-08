@@ -11,7 +11,7 @@ interface ContractInstantiatorCellProps {
 }
 
 export const ContractInstantiatorCell = ({
-  contractInfo: { instantiator, remark, latestUpdater },
+  contractInfo: { instantiator, latestUpdater, remark },
   isReadOnly,
 }: ContractInstantiatorCellProps) => {
   const isMobile = useMobile();
@@ -23,10 +23,10 @@ export const ContractInstantiatorCell = ({
   if (!latestUpdater)
     return instantiator ? (
       <ExplorerLink
-        value={instantiator}
-        type={getAddressType(instantiator)}
-        showCopyOnHover
         isReadOnly={isReadOnly}
+        type={getAddressType(instantiator)}
+        value={instantiator}
+        showCopyOnHover
       />
     ) : (
       <Text variant="body2" color="text.dark">
@@ -43,6 +43,15 @@ export const ContractInstantiatorCell = ({
           Genesis
         </Text>
       );
+    case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT:
+      return (
+        <ExplorerLink
+          isReadOnly={isReadOnly}
+          type={updaterType}
+          value={latestUpdater}
+          showCopyOnHover
+        />
+      );
     case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE:
       return (
         <Flex direction="column" onClick={(e) => e.stopPropagation()}>
@@ -52,21 +61,12 @@ export const ContractInstantiatorCell = ({
             </Text>
           )}
           <ExplorerLink
-            value={latestUpdater}
-            type={updaterType}
-            showCopyOnHover
             isReadOnly={isReadOnly}
+            type={updaterType}
+            value={latestUpdater}
+            showCopyOnHover
           />
         </Flex>
-      );
-    case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT:
-      return (
-        <ExplorerLink
-          value={latestUpdater}
-          type={updaterType}
-          showCopyOnHover
-          isReadOnly={isReadOnly}
-        />
       );
     default:
       return (

@@ -20,15 +20,15 @@ const formatColor = (value: Big) => {
 };
 
 interface VotingPowerChartDetailsProps {
+  assetInfo: Option<AssetInfo>;
   historicalPowers: HistoricalPowersResponse;
   singleStakingDenom: Option<string>;
-  assetInfo: Option<AssetInfo>;
 }
 
 export const VotingPowerChartDetails = ({
+  assetInfo,
   historicalPowers,
   singleStakingDenom,
-  assetInfo,
 }: VotingPowerChartDetailsProps) => {
   const currency = singleStakingDenom
     ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`
@@ -68,7 +68,7 @@ export const VotingPowerChartDetails = ({
   )}`;
 
   return (
-    <Flex gap={2} direction="column" px={{ base: 0, md: 2 }}>
+    <Flex gap={2} px={{ base: 0, md: 2 }} direction="column">
       <Heading variant="h6">
         {singleStakingDenom ? "Current Bonded Token" : "Current Voting Powers"}
       </Heading>
@@ -78,8 +78,8 @@ export const VotingPowerChartDetails = ({
       <Text variant="body1">
         <Text
           as="span"
-          fontWeight={700}
           color={formatColor(compareVotingPower)}
+          fontWeight={700}
         >
           {formattedVotingPower}
         </Text>

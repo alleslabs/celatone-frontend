@@ -21,8 +21,8 @@ const BlockDetailsBody = ({ height }: BlockDetailsBodyProps) => (
     <CelatoneSeo pageName={`Block #${height.toString()}`} />
     <TierSwitcher
       full={<BlockDetailsFull height={height} />}
-      sequencer={<BlockDetailsSequencer height={height} />}
       lite={<BlockDetailsLite height={height} />}
+      sequencer={<BlockDetailsSequencer height={height} />}
     />
   </>
 );

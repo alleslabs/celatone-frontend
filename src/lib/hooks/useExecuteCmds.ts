@@ -15,19 +15,18 @@ export const useExecuteCmds = (contractAddress: BechAddr32) => {
   }, [contractAddress]);
 
   const { isFetching } = useSimulateFeeQuery({
-    isDummyUser: true,
     enabled: !!contractAddress && !!dummyAddress,
+    isDummyUser: true,
     messages: dummyAddress
       ? [
           composeMsg(MsgType.EXECUTE, {
-            sender: dummyAddress,
             contract: contractAddress,
-            msg: Buffer.from('{"": {}}'),
             funds: [],
+            msg: Buffer.from('{"": {}}'),
+            sender: dummyAddress,
           }),
         ]
       : [],
-    retry: false,
     onError: (e) => {
       const executeCmds: string[] = [];
 
@@ -51,6 +50,7 @@ export const useExecuteCmds = (contractAddress: BechAddr32) => {
         setExecCmds(executeCmds.map((cmd) => [cmd, `{"${cmd}": {}}`]));
       }
     },
+    retry: false,
   });
-  return { isFetching, execCmds };
+  return { execCmds, isFetching };
 };

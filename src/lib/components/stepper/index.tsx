@@ -4,13 +4,13 @@ import { StepperItem } from "./StepperItem";
 import type { Mode, Step } from "./types";
 
 interface StepperProps {
-  mode: Mode;
   currentStep: Step;
+  mode: Mode;
 }
 
-export const Stepper = ({ mode, currentStep }: StepperProps) => (
+export const Stepper = ({ currentStep, mode }: StepperProps) => (
   <Flex width="100%">
-    <StepperItem step={1} mode={mode} currentStep={currentStep} />
-    <StepperItem step={2} mode={mode} currentStep={currentStep} />
+    <StepperItem currentStep={currentStep} step={1} mode={mode} />
+    <StepperItem currentStep={currentStep} step={2} mode={mode} />
   </Flex>
 );

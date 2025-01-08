@@ -14,16 +14,16 @@ export default function SubmitButton<
   F extends FormContextType = any,
 >({ uiSchema }: SubmitButtonProps<T, S, F>) {
   const {
-    submitText,
     norender,
     props: submitButtonProps,
+    submitText,
   } = getSubmitButtonOptions(uiSchema);
   if (norender) {
     return null;
   }
 
   return (
-    <Box marginTop={3} display="flex" justifyContent="end">
+    <Box display="flex" justifyContent="end" marginTop={3}>
       <Button type="submit" {...submitButtonProps}>
         {submitText}
       </Button>

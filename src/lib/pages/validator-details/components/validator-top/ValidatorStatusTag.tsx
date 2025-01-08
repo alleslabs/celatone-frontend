@@ -10,14 +10,14 @@ export const ValidatorStatusTag = ({ info }: ValidatorStatusProps) => {
   if (info.isActive) {
     return (
       <Flex
-        background="gray.900"
-        borderRadius={8}
-        py={1}
-        px={2}
         alignItems="center"
         gap={2}
+        px={2}
+        py={1}
+        background="gray.900"
+        borderRadius={8}
       >
-        <Flex h={3} w={3} borderRadius="full" background="success.main" />
+        <Flex h={3} w={3} background="success.main" borderRadius="full" />
         <Text variant="body3" color="text.main">
           Active
         </Text>
@@ -28,22 +28,22 @@ export const ValidatorStatusTag = ({ info }: ValidatorStatusProps) => {
   if (info.isJailed) {
     return (
       <Flex
-        background="gray.900"
-        borderRadius={8}
-        py={1}
-        px={2}
         alignItems="center"
         gap={2}
+        px={2}
+        py={1}
+        background="gray.900"
+        borderRadius={8}
       >
         <Flex
-          h={3}
-          w={3}
-          borderRadius="full"
-          background="error.main"
           display="grid"
+          h={3}
           placeItems="center"
+          w={3}
+          background="error.main"
+          borderRadius="full"
         >
-          <CustomIcon name="close" color="black" boxSize={1.5} margin={0} />
+          <CustomIcon margin={0} name="close" boxSize={1.5} color="black" />
         </Flex>
         <Text variant="body3" color="text.main">
           Jailed
@@ -54,14 +54,14 @@ export const ValidatorStatusTag = ({ info }: ValidatorStatusProps) => {
 
   return (
     <Flex
-      background="gray.900"
-      borderRadius={8}
-      py={1}
-      px={2}
       alignItems="center"
       gap={2}
+      px={2}
+      py={1}
+      background="gray.900"
+      borderRadius={8}
     >
-      <Flex h={3} w={3} borderRadius="full" background="gray.600" />
+      <Flex h={3} w={3} background="gray.600" borderRadius="full" />
       <Text variant="body3" color="text.main">
         Inactive
       </Text>

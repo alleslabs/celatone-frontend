@@ -11,46 +11,46 @@ export const getNavDrawerLite = (
     category: "Overview",
     slug: "overview",
     submenu: [
-      { name: "Overview", slug: "/", icon: "home" as IconKeys },
+      { icon: "home" as IconKeys, name: "Overview", slug: "/" },
       ...(isGov
         ? [
             {
+              icon: "validator" as IconKeys,
               name: "Validators",
               slug: "/validators",
-              icon: "validator" as IconKeys,
             },
             {
+              icon: "proposal" as IconKeys,
               name: "Proposals",
               slug: "/proposals",
-              icon: "proposal" as IconKeys,
             },
           ]
         : []),
       ...(isWasm
         ? [
             {
+              icon: "code" as IconKeys,
               name: "Codes",
               slug: "/codes",
-              icon: "code" as IconKeys,
             },
             {
+              icon: "query" as IconKeys,
               name: "Query",
               slug: "/interact-contract",
-              icon: "query" as IconKeys,
             },
           ]
         : []),
       ...(isMove
         ? [
             {
+              icon: "0x1" as IconKeys,
               name: "0x1 Page",
               slug: "/accounts/0x1",
-              icon: "0x1" as IconKeys,
             },
             {
+              icon: "query" as IconKeys,
               name: "View Module",
               slug: "/interact",
-              icon: "query" as IconKeys,
             },
           ]
         : []),
@@ -67,56 +67,56 @@ export const getNavDrawerSequencer = (
     category: "Overview",
     slug: "overview",
     submenu: [
-      { name: "Overview", slug: "/", icon: "home" as IconKeys },
+      { icon: "home" as IconKeys, name: "Overview", slug: "/" },
       {
+        icon: "file" as IconKeys,
         name: "Transactions",
         slug: "/txs",
-        icon: "file" as IconKeys,
       },
       {
+        icon: "block" as IconKeys,
         name: "Blocks",
         slug: "/blocks",
-        icon: "block" as IconKeys,
       },
       ...(isGov
         ? [
             {
+              icon: "validator" as IconKeys,
               name: "Validators",
               slug: "/validators",
-              icon: "validator" as IconKeys,
             },
             {
+              icon: "proposal" as IconKeys,
               name: "Proposals",
               slug: "/proposals",
-              icon: "proposal" as IconKeys,
             },
           ]
         : []),
       ...(isWasm
         ? [
             {
+              icon: "code" as IconKeys,
               name: "Codes",
               slug: "/codes",
-              icon: "code" as IconKeys,
             },
             {
+              icon: "query" as IconKeys,
               name: "Query",
               slug: "/interact-contract",
-              icon: "query" as IconKeys,
             },
           ]
         : []),
       ...(isMove
         ? [
             {
+              icon: "0x1" as IconKeys,
               name: "0x1 Page",
               slug: "/accounts/0x1",
-              icon: "0x1" as IconKeys,
             },
             {
+              icon: "query" as IconKeys,
               name: "View Module",
               slug: "/interact",
-              icon: "query" as IconKeys,
             },
           ]
         : []),
@@ -134,75 +134,75 @@ export const getNavDrawerFull = (
     category: "Overview",
     slug: "overview",
     submenu: [
-      { name: "Overview", slug: "/", icon: "home" as IconKeys },
+      { icon: "home" as IconKeys, name: "Overview", slug: "/" },
       {
+        icon: "file" as IconKeys,
         name: "Transactions",
         slug: "/txs",
-        icon: "file" as IconKeys,
       },
       {
+        icon: "block" as IconKeys,
         name: "Blocks",
         slug: "/blocks",
-        icon: "block" as IconKeys,
       },
       ...(isGov
         ? [
             {
+              icon: "validator" as IconKeys,
               name: "Validators",
               slug: "/validators",
-              icon: "validator" as IconKeys,
             },
             {
+              icon: "proposal" as IconKeys,
               name: "Proposals",
               slug: "/proposals",
-              icon: "proposal" as IconKeys,
             },
           ]
         : []),
       ...(isWasm
         ? [
             {
+              icon: "code" as IconKeys,
               name: "Codes",
               slug: "/codes",
-              icon: "code" as IconKeys,
             },
             {
+              icon: "contract-address" as IconKeys,
               name: "Contracts",
               slug: "/contracts",
-              icon: "contract-address" as IconKeys,
             },
             {
+              icon: "query" as IconKeys,
               name: "Query",
               slug: "/interact-contract",
-              icon: "query" as IconKeys,
             },
           ]
         : []),
       ...(isMove
         ? [
             {
+              icon: "contract-address" as IconKeys,
               name: "Modules",
               slug: "/modules",
-              icon: "contract-address" as IconKeys,
             },
             {
+              icon: "0x1" as IconKeys,
               name: "0x1 Page",
               slug: "/accounts/0x1",
-              icon: "0x1" as IconKeys,
             },
             {
+              icon: "query" as IconKeys,
               name: "View Module",
               slug: "/interact",
-              icon: "query" as IconKeys,
             },
           ]
         : []),
       ...(isNft
         ? [
             {
+              icon: "collection" as IconKeys,
               name: "NFT Collections",
               slug: "/nft-collections",
-              icon: "collection" as IconKeys,
             },
           ]
         : []),

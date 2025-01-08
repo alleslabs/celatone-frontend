@@ -16,33 +16,33 @@ export const getEventMessage = (
 };
 
 interface TxsTableRowProps {
-  templateColumns: string;
   hash: string;
-  timestamp: Date;
   isNftBurn: boolean;
   isNftMint: boolean;
   isNftTransfer: boolean;
+  templateColumns: string;
+  timestamp: Date;
 }
 
 export const TxsTableRow = ({
-  templateColumns,
   hash,
-  timestamp,
   isNftBurn,
   isNftMint,
   isNftTransfer,
+  templateColumns,
+  timestamp,
 }: TxsTableRowProps) => (
-  <Box w="full" minW="min-content">
+  <Box minW="min-content" w="full">
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
       _hover={{ background: "gray.900" }}
+      templateColumns={templateColumns}
       transition="all 0.25s ease-in-out"
     >
       <TableRow pr={1}>
         <ExplorerLink
-          value={hash.toUpperCase()}
           type="tx_hash"
+          value={hash.toUpperCase()}
           showCopyOnHover
         />
       </TableRow>
@@ -52,7 +52,7 @@ export const TxsTableRow = ({
         </Text>
       </TableRow>
       <TableRow>
-        <Flex direction="column" gap={1}>
+        <Flex gap={1} direction="column">
           <Text variant="body3">{formatUTC(timestamp)}</Text>
           <Text variant="body3" color="text.dark">
             {`(${dateFromNow(timestamp)})`}

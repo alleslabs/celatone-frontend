@@ -6,33 +6,33 @@ import type { Option } from "lib/types";
 import { TableTitle } from "./TableTitle";
 
 interface MobileTitleProps {
-  title: string;
   count: Option<number>;
-  showCount?: boolean;
   onViewMore?: () => void;
+  showCount?: boolean;
+  title: string;
 }
 const cardProps = {
-  width: "100%",
+  borderRadius: "8px",
   justifyContent: "space-between",
   padding: "16px",
-  borderRadius: "8px",
+  width: "100%",
 };
 
 export const MobileTitle = ({
-  title,
   count,
-  showCount = true,
   onViewMore,
+  showCount = true,
+  title,
 }: MobileTitleProps) => {
   const isDisabled = count === 0;
   return (
     <Flex
       style={cardProps}
+      bg="gray.900"
       onClick={isDisabled ? undefined : onViewMore}
       opacity={isDisabled ? 0.5 : 1}
-      bg="gray.900"
     >
-      <TableTitle title={title} count={count} showCount={showCount} mb={0} />
+      <TableTitle mb={0} title={title} count={count} showCount={showCount} />
       <CustomIcon name="chevron-right" color="gray.600" />
     </Flex>
   );

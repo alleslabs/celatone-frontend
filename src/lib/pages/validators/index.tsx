@@ -45,15 +45,15 @@ const Validators = () => {
       <CelatoneSeo pageName="Validators" />
       <PageHeaderContainer bgColor="transparent">
         <PageHeader
-          title="Validators"
           subtitle="This page displays all validators on this network"
+          title="Validators"
           docHref="introduction/overview#validators"
         />
         <Flex
-          direction={{ base: "column", md: "row" }}
           align="end"
           gap={{ base: "18px", md: "8px" }}
           w="full"
+          direction={{ base: "column", md: "row" }}
         >
           <ActiveFilter
             isActive={isActive}
@@ -63,26 +63,26 @@ const Validators = () => {
           />
           {isMobile && (
             <OrderSelect
-              order={order}
-              setOrder={setOrder}
               isDesc={isDesc}
               setIsDesc={setIsDesc}
+              setOrder={setOrder}
               allowUptime={isFullTier}
+              order={order}
             />
           )}
           <InputWithIcon
             size="lg"
+            value={search}
+            amptrackSection="validator-list-search"
+            onChange={(e) => {
+              const newValue = e.target.value;
+              setSearch(newValue);
+            }}
             placeholder={
               isMobile
                 ? "Search with name or address ..."
                 : "Search with validator name or validator address ..."
             }
-            value={search}
-            onChange={(e) => {
-              const newValue = e.target.value;
-              setSearch(newValue);
-            }}
-            amptrackSection="validator-list-search"
           />
         </Flex>
       </PageHeaderContainer>
@@ -91,25 +91,25 @@ const Validators = () => {
           full={
             <ValidatorsBodyFull
               isActive={isActive}
-              setCounts={setCounts}
-              order={order}
-              setOrder={setOrder}
               isDesc={isDesc}
-              setIsDesc={setIsDesc}
               search={debouncedSearch}
+              setIsDesc={setIsDesc}
+              setOrder={setOrder}
+              order={order}
               scrollComponentId={SCROLL_COMPONENT_ID}
+              setCounts={setCounts}
             />
           }
           lite={
             <ValidatorsBodyLite
               isActive={isActive}
-              setCounts={setCounts}
-              order={order}
-              setOrder={setOrder}
               isDesc={isDesc}
-              setIsDesc={setIsDesc}
               search={debouncedSearch}
+              setIsDesc={setIsDesc}
+              setOrder={setOrder}
+              order={order}
               scrollComponentId={SCROLL_COMPONENT_ID}
+              setCounts={setCounts}
             />
           }
         />

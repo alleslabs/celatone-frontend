@@ -59,7 +59,7 @@ export const formatSeconds = (sec: Option<string>) => {
   }
 };
 
-export const formatDuration = (duration: string | number) => {
+export const formatDuration = (duration: number | string) => {
   if (typeof duration === "number" || isNumeric(duration))
     return formatSeconds(big(duration).div(1e9).toFixed());
 

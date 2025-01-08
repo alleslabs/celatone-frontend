@@ -30,10 +30,10 @@ const RecentModules = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Modules" />
-      <Flex alignItems="center" w="full" gap={4}>
+      <Flex alignItems="center" gap={4} w="full">
         <PageHeader
-          title="Modules"
           subtitle=" These modules are the most recently published on this network"
+          title="Modules"
           docHref="move/modules/detail-page"
         />
         {!isMobile && isInitiaL1 && <ModuleVerificationButton />}

@@ -29,24 +29,24 @@ import { getWasmVerifyStatus } from "lib/utils";
 import type { PublicContractInfo } from ".";
 
 interface ContractTableRowProps {
-  templateColumns: string;
   publicContractInfo: PublicContractInfo;
+  templateColumns: string;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 // TODO - Revisit this style (exist in multiple places)
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "36px",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 
 export const PublicProjectContractRow = ({
-  templateColumns,
   publicContractInfo,
+  templateColumns,
   wasmVerifyInfo,
 }: ContractTableRowProps) => {
   const navigate = useInternalNavigate();
@@ -60,24 +60,24 @@ export const PublicProjectContractRow = ({
 
   return (
     <Grid
-      templateColumns={templateColumns}
-      onClick={goToContractDetails}
-      _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
-      cursor="pointer"
       minW="min-content"
+      _hover={{ bg: "gray.900" }}
+      cursor="pointer"
+      onClick={goToContractDetails}
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
     >
       <TableRow>
         <ExplorerLink
-          value={publicContractInfo.publicInfo.contractAddress}
           type={getAddressTypeByLength(
             publicContractInfo.publicInfo.contractAddress
           )}
+          value={publicContractInfo.publicInfo.contractAddress}
           rightIcon={
             <WasmVerifyBadge
               status={getWasmVerifyStatus(wasmVerifyInfo)}
-              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
               linkedCodeId={publicContractInfo.publicInfo.code}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
             />
           }
           showCopyOnHover
@@ -95,56 +95,56 @@ export const PublicProjectContractRow = ({
       </TableRow>
       <TableRow>
         <ExplorerLink
-          value={publicContractInfo.publicInfo.instantiator}
           type={getAddressTypeByLength(
             publicContractInfo.publicInfo.instantiator
           )}
+          value={publicContractInfo.publicInfo.instantiator}
           showCopyOnHover
         />
       </TableRow>
       <TableRow justifyContent="end">
         <Flex
-          gap={3}
           alignItems="center"
+          gap={3}
           justifyContent="center"
           onClick={(e) => e.stopPropagation()}
         >
           <AppLink
             href={`/interact-contract?selectedType=${ContractInteractionTabs.Execute}contract=${publicContractInfo.publicInfo.contractAddress}`}
           >
-            <Button variant="outline-gray" size="sm">
+            <Button size="sm" variant="outline-gray">
               Execute
             </Button>
           </AppLink>
           <AppLink
             href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${publicContractInfo.publicInfo.contractAddress}`}
           >
-            <Button variant="outline-gray" size="sm">
+            <Button size="sm" variant="outline-gray">
               Query
             </Button>
           </AppLink>
           <Box onClick={(e) => e.stopPropagation()}>
             {publicContractInfo.localInfo.lists ? (
               <AddToOtherListModal
-                contractLocalInfo={publicContractInfo.localInfo}
                 triggerElement={
                   <StyledIconButton
                     aria-label="button"
-                    icon={<CustomIcon name="bookmark-solid" />}
                     variant="ghost-primary"
+                    icon={<CustomIcon name="bookmark-solid" />}
                   />
                 }
+                contractLocalInfo={publicContractInfo.localInfo}
               />
             ) : (
               <SaveContractDetailsModal
-                contractLocalInfo={publicContractInfo.localInfo}
                 triggerElement={
                   <StyledIconButton
                     aria-label="button"
-                    icon={<CustomIcon name="bookmark" />}
                     variant="ghost-gray"
+                    icon={<CustomIcon name="bookmark" />}
                   />
                 }
+                contractLocalInfo={publicContractInfo.localInfo}
               />
             )}
           </Box>

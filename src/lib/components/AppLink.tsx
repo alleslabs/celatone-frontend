@@ -24,11 +24,11 @@ export const AppLink = ({
     <Link {...linkProps} href={`/${network}${componentHref}`}>
       {typeof children === "string" ? (
         <Text
+          h="auto"
           variant={{ base: "body3", md: "body2" }}
           w={{ base: "max-content", md: "auto" }}
-          color={linkProps.color}
-          h="auto"
           _hover={{ textDecoration: "underline" }}
+          color={linkProps.color}
         >
           {children}
         </Text>

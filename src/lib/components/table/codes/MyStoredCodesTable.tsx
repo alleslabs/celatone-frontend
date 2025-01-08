@@ -5,40 +5,40 @@ import { CodesTableWithWallet } from "./CodesTableWithWallet";
 
 interface MyStoredCodesTableProps {
   codes: CodeInfo[];
-  totalData: number;
-  isLoading: boolean;
-  onRowSelect: (codeId: number) => void;
-  emptyMessage: string;
   disconnectedMessage: string;
+  emptyMessage: string;
+  isLoading: boolean;
   isReadOnly?: boolean;
+  onRowSelect: (codeId: number) => void;
+  totalData: number;
 }
 
 export const MyStoredCodesTable = ({
   codes,
-  totalData,
-  isLoading,
-  onRowSelect,
-  emptyMessage,
   disconnectedMessage,
+  emptyMessage,
+  isLoading,
   isReadOnly = false,
+  onRowSelect,
+  totalData,
 }: MyStoredCodesTableProps) => (
   <CodesTableWithWallet
-    codes={codes}
-    isLoading={isLoading}
     emptyState={
       <EmptyState
-        my={0}
         imageVariant={totalData ? "not-found" : "empty"}
         message={
           totalData
             ? "No matched codes found. Make sure you are searching with Code ID or Code Name"
             : emptyMessage
         }
+        my={0}
         withBorder
       />
     }
-    onRowSelect={onRowSelect}
-    disconnectedMessage={disconnectedMessage}
     isReadOnly={isReadOnly}
+    codes={codes}
+    disconnectedMessage={disconnectedMessage}
+    isLoading={isLoading}
+    onRowSelect={onRowSelect}
   />
 );

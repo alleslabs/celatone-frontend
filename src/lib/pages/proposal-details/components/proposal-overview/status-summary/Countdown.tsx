@@ -21,7 +21,7 @@ interface CountdownProps {
 export const Countdown = ({ endTime, isString }: CountdownProps) => {
   const router = useRouter();
   const [time, setTime] = useState<ReactNode>(
-    <Spinner as="span" boxSize={2} mx={2} />
+    <Spinner as="span" mx={2} boxSize={2} />
   );
 
   useEffect(() => {

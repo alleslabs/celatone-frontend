@@ -53,23 +53,23 @@ const WasmCodeSnippet = dynamic(
 );
 
 interface SchemaQueryComponentProps {
-  msgSchema: SchemaInfo;
-  resSchema: SchemaInfo;
-  contractAddress: BechAddr32;
-  walletAddress: Option<BechAddr20>;
-  initialMsg: JsonDataType;
-  opened: boolean;
   addActivity: (activity: Activity) => void;
+  contractAddress: BechAddr32;
+  initialMsg: JsonDataType;
+  msgSchema: SchemaInfo;
+  opened: boolean;
+  resSchema: SchemaInfo;
+  walletAddress: Option<BechAddr20>;
 }
 
 export const SchemaQueryComponent = ({
-  msgSchema,
-  resSchema,
-  contractAddress,
-  walletAddress,
-  initialMsg,
-  opened,
   addActivity,
+  contractAddress,
+  initialMsg,
+  msgSchema,
+  opened,
+  resSchema,
+  walletAddress,
 }: SchemaQueryComponentProps) => {
   const [resTab, setResTab] = useState<Option<OutputMessageTabs>>(
     OutputMessageTabs.YOUR_SCHEMA
@@ -79,24 +79,9 @@ export const SchemaQueryComponent = ({
   const [queryError, setQueryError] = useState("");
   const [timestamp, setTimestamp] = useState<Date>();
 
-  const { refetch, isFetching } = useContractQueryLcd(contractAddress, msg, {
-    enabled: !msgSchema.inputRequired && opened,
-    retry: false,
+  const { isFetching, refetch } = useContractQueryLcd(contractAddress, msg, {
     cacheTime: 0,
-    onSuccess: (data) => {
-      const currentDate = getCurrentDate();
-      setQueryError("");
-      setRes(JSON.stringify(data, null, 2));
-      setTimestamp(currentDate);
-      addActivity({
-        type: "query",
-        action: msgSchema.title ?? "Unknown",
-        sender: walletAddress,
-        contractAddress,
-        msg: encode(msg),
-        timestamp: currentDate,
-      });
-    },
+    enabled: !msgSchema.inputRequired && opened,
     onError: (err) => {
       setQueryError(
         (err as AxiosError<RpcQueryError>).response?.data.message ||
@@ -105,6 +90,21 @@ export const SchemaQueryComponent = ({
       setTimestamp(undefined);
       setRes("");
     },
+    onSuccess: (data) => {
+      const currentDate = getCurrentDate();
+      setQueryError("");
+      setRes(JSON.stringify(data, null, 2));
+      setTimestamp(currentDate);
+      addActivity({
+        action: msgSchema.title ?? "Unknown",
+        contractAddress,
+        msg: encode(msg),
+        sender: walletAddress,
+        timestamp: currentDate,
+        type: "query",
+      });
+    },
+    retry: false,
   });
 
   const handleQuery = useCallback(() => {
@@ -127,7 +127,7 @@ export const SchemaQueryComponent = ({
     <AccordionItem className={`query_msg_${msgSchema.schema.required?.[0]}`}>
       <h6>
         <AccordionButton p={4}>
-          <Box w="full" textAlign="start">
+          <Box textAlign="start" w="full">
             <Text variant="body1" fontWeight={700}>
               {msgSchema.title}
             </Text>
@@ -140,8 +140,8 @@ export const SchemaQueryComponent = ({
       </h6>
       <AccordionPanel mx={2}>
         <Grid
-          templateColumns={msgSchema.inputRequired ? "1fr 1fr" : "1fr"}
           columnGap={6}
+          templateColumns={msgSchema.inputRequired ? "1fr 1fr" : "1fr"}
         >
           {msgSchema.inputRequired && (
             <GridItem>
@@ -149,8 +149,8 @@ export const SchemaQueryComponent = ({
                 Query Input
               </Text>
               <JsonSchemaForm
-                formId={`query-${msgSchema.title}`}
                 schema={msgSchema.schema}
+                formId={`query-${msgSchema.title}`}
                 initialFormData={initialMsg}
                 onChange={(data) => setMsg(JSON.stringify(data))}
               />
@@ -162,18 +162,18 @@ export const SchemaQueryComponent = ({
                   buttonText="Copy QueryMsg"
                 />
                 <WasmCodeSnippet
+                  message={msg}
                   type="query"
                   contractAddress={contractAddress}
-                  message={msg}
                 />
                 <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={handleQuery}
                   isDisabled={jsonValidate(msg) !== null}
+                  ml="auto"
+                  size="sm"
+                  variant="primary"
                   isLoading={isFetching}
                   leftIcon={<CustomIcon name="query" />}
-                  ml="auto"
+                  onClick={handleQuery}
                 >
                   Query
                 </Button>
@@ -193,23 +193,23 @@ export const SchemaQueryComponent = ({
               </Flex>
               <MessageInputSwitch
                 currentTab={resTab}
-                onTabChange={setResTab}
-                ml="auto"
                 isOutput
+                ml="auto"
+                onTabChange={setResTab}
               />
             </Flex>
             {queryError && (
-              <Alert variant="error" mb={3} alignItems="center">
+              <Alert alignItems="center" mb={3} variant="error">
                 <AlertDescription wordBreak="break-word">
                   {queryError}
                 </AlertDescription>
               </Alert>
             )}
             <SchemaQueryResponse
-              res={res}
-              resTab={resTab}
               msgSchema={msgSchema}
+              res={res}
               resSchema={resSchema}
+              resTab={resTab}
               timestamp={timestamp}
               isLoading={isFetching}
             />
@@ -222,9 +222,9 @@ export const SchemaQueryComponent = ({
                   buttonText="Copy QueryMsg"
                 />
                 <WasmCodeSnippet
+                  message={JSON.stringify({ [msgSchema.title ?? ""]: {} })}
                   type="query"
                   contractAddress={contractAddress}
-                  message={JSON.stringify({ [msgSchema.title ?? ""]: {} })}
                 />
                 <Flex gap={2} ml="auto">
                   <CopyButton
@@ -234,16 +234,16 @@ export const SchemaQueryComponent = ({
                     buttonText="Copy Output"
                   />
                   <Button
-                    variant="primary"
+                    isDisabled={jsonValidate(msg) !== null}
+                    ml="auto"
                     size="sm"
+                    variant="primary"
+                    isLoading={isFetching}
+                    leftIcon={<CustomIcon name="query" />}
                     onClick={() => {
                       handleQuery();
                       track(AmpEvent.USE_JSON_QUERY_AGAIN);
                     }}
-                    isDisabled={jsonValidate(msg) !== null}
-                    isLoading={isFetching}
-                    leftIcon={<CustomIcon name="query" />}
-                    ml="auto"
                   >
                     Query Again
                   </Button>

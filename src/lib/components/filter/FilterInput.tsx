@@ -5,74 +5,74 @@ import { DropdownChevron } from "../DropdownChevron";
 import { mergeRefs } from "lib/utils";
 
 interface FilterInputProps {
-  keyword: string;
-  result: string[];
-  isDropdown: boolean;
   chipContainerComponent: JSX.Element;
   inputRef: RefObject<HTMLInputElement>;
-  ref: ForwardedRef<HTMLInputElement>;
-  placeholder?: string;
+  isDropdown: boolean;
+  keyword: string;
   label?: string;
+  placeholder?: string;
+  ref: ForwardedRef<HTMLInputElement>;
+  result: string[];
   setIsDropdown: Dispatch<SetStateAction<boolean>>;
   setKeyword: Dispatch<SetStateAction<string>>;
 }
 export const FilterInput = ({
-  keyword,
-  placeholder,
-  result,
-  isDropdown,
-  label,
+  chipContainerComponent,
   inputRef,
+  isDropdown,
+  keyword,
+  label,
+  placeholder,
   ref,
+  result,
   setIsDropdown,
   setKeyword,
-  chipContainerComponent,
 }: FilterInputProps) => (
   <>
     <Flex
+      alignItems="center"
       w="full"
-      color="text.main"
       background="none"
-      borderRadius="8px"
       border="1px solid"
       borderColor="gray.700"
+      borderRadius="8px"
+      color="text.main"
       overflowX="scroll"
-      alignItems="center"
     >
       {chipContainerComponent}
       <Input
+        style={{ border: 0, maxHeight: "54px" }}
+        maxLength={36}
+        minW="150px"
+        size="lg"
         value={keyword}
         w="full"
         autoComplete="off"
-        size="lg"
-        minW="150px"
-        placeholder={result.length > 0 ? "" : placeholder}
-        ref={mergeRefs([inputRef, ref])}
-        maxLength={36}
-        style={{ border: 0, maxHeight: "54px" }}
-        onFocus={() => setIsDropdown(true)}
         onChange={(e) => setKeyword(e.currentTarget.value)}
         onClick={() => setIsDropdown(true)}
+        onFocus={() => setIsDropdown(true)}
+        placeholder={result.length > 0 ? "" : placeholder}
+        ref={mergeRefs([inputRef, ref])}
       />
       <DropdownChevron
-        isOpen={isDropdown}
         // input max height 54px + border top and bottom 2px
         height="56px"
+        isOpen={isDropdown}
         onClick={() => setIsDropdown((prev) => !prev)}
       />
     </Flex>
 
     <FormLabel
+      left={0}
+      lineHeight="1.2"
+      my={2}
+      px={1}
+      bgColor="background.main"
+      color="text.dark"
+      fontWeight={400}
+      pointerEvents="none"
       position="absolute"
       top={0}
-      left={0}
-      fontWeight={400}
-      color="text.dark"
-      bgColor="background.main"
-      pointerEvents="none"
-      px={1}
-      my={2}
-      lineHeight="1.2"
       transform="scale(0.75) translateY(-24px) translateX(0px)"
     >
       {label}

@@ -9,45 +9,45 @@ import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 import { DelegationRelatedTxsTokenChange } from "./DelegationRelatedTxsTokenChange";
 
 interface DelegationRelatedTxsTableRowProps {
-  delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
-  templateColumns: string;
   assetInfos: Option<AssetInfos>;
+  delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
   movePoolInfos: Option<MovePoolInfos>;
   onRowSelect: (txHash: string) => void;
+  templateColumns: string;
 }
 
 export const DelegationRelatedTxsTableRow = ({
-  delegationRelatedTx,
-  templateColumns,
-  onRowSelect,
-  movePoolInfos,
   assetInfos,
+  delegationRelatedTx,
+  movePoolInfos,
+  onRowSelect,
+  templateColumns,
 }: DelegationRelatedTxsTableRowProps) => (
   <Grid
     className="copier-wrapper"
-    templateColumns={templateColumns}
-    _hover={{ bg: "gray.900" }}
-    transition="all 0.25s ease-in-out"
-    cursor="pointer"
     minW="min-content"
+    _hover={{ bg: "gray.900" }}
+    cursor="pointer"
     onClick={() => onRowSelect(delegationRelatedTx.txHash)}
+    templateColumns={templateColumns}
+    transition="all 0.25s ease-in-out"
   >
     <TableRow>
       <ExplorerLink
-        value={delegationRelatedTx.txHash.toLocaleUpperCase()}
         type="tx_hash"
+        value={delegationRelatedTx.txHash.toLocaleUpperCase()}
         showCopyOnHover
       />
       {delegationRelatedTx.messages.length > 1 && (
-        <Badge variant="primary-light" ml={2}>
+        <Badge ml={2} variant="primary-light">
           {delegationRelatedTx.messages.length}
         </Badge>
       )}
     </TableRow>
     <TableRow>
       <ExplorerLink
-        value={delegationRelatedTx.sender}
         type="user_address"
+        value={delegationRelatedTx.sender}
         showCopyOnHover
       />
     </TableRow>
@@ -63,8 +63,8 @@ export const DelegationRelatedTxsTableRow = ({
         <DelegationRelatedTxsTokenChange
           key={delegationRelatedTx.txHash + coin.amount + coin.denom}
           txHash={delegationRelatedTx.txHash}
-          coin={coin}
           assetInfos={assetInfos}
+          coin={coin}
           movePoolInfos={movePoolInfos}
         />
       ))}

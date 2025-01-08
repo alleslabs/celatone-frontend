@@ -10,18 +10,18 @@ import { ModulesTableMobileCard } from "./ModulesTableMobileCard";
 import { ModulesTableRow } from "./ModulesTableRow";
 
 interface ModulesTableProps {
-  modules: Option<ModuleInfo[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
   isPublishedModules?: boolean;
+  modules: Option<ModuleInfo[]>;
   moveVerifyInfos: Option<Record<string, MoveVerifyInfoResponse>>;
 }
 
 export const ModulesTable = ({
-  modules,
-  isLoading,
   emptyState,
+  isLoading,
   isPublishedModules = false,
+  modules,
   moveVerifyInfos,
 }: ModulesTableProps) => {
   const isMobile = useMobile();
@@ -50,20 +50,20 @@ export const ModulesTable = ({
   ) : (
     <TableContainer>
       <ModulesTableHeader
-        templateColumns={templateColumns}
         isPublishedModules={isPublishedModules}
+        templateColumns={templateColumns}
       />
       {modules.map((module) => (
         <ModulesTableRow
           key={module.address + module.moduleName}
-          moduleInfo={module}
-          templateColumns={templateColumns}
           isPublishedModules={isPublishedModules}
+          moduleInfo={module}
           moveVerifyInfo={
             moveVerifyInfos?.[
               mergeModulePath(module.address, module.moduleName)
             ]
           }
+          templateColumns={templateColumns}
         />
       ))}
     </TableContainer>

@@ -19,21 +19,9 @@ export const PublishedEventsTableMobileCard = ({
   history,
 }: PublishedEventsTableMobileCardProps) => (
   <MobileCardTemplate
-    topContent={
-      <Flex direction="column" gap={3}>
-        <Flex direction="column">
-          <MobileLabel label="Upgrade Policy Changes" />
-          <PolicyChanges history={history} />
-        </Flex>
-        <Flex direction="column">
-          <MobileLabel label="Remark" />
-          <RemarkRender {...history.remark} />
-        </Flex>
-      </Flex>
-    }
     middleContent={
-      <Flex direction="column" gap={3}>
-        <Flex direction="column" flex={1}>
+      <Flex gap={3} direction="column">
+        <Flex flex={1} direction="column">
           <MobileLabel label="Block Height" />
           {history.height === 0 ? (
             <Text variant="body2" color="text.dark">
@@ -41,8 +29,8 @@ export const PublishedEventsTableMobileCard = ({
             </Text>
           ) : (
             <ExplorerLink
-              value={history.height.toString()}
               type="block_height"
+              value={history.height.toString()}
               showCopyOnHover
             />
           )}
@@ -52,6 +40,18 @@ export const PublishedEventsTableMobileCard = ({
           <Text variant="body3" color="text.dark">
             {`(${dateFromNow(history.timestamp)})`}
           </Text>
+        </Flex>
+      </Flex>
+    }
+    topContent={
+      <Flex gap={3} direction="column">
+        <Flex direction="column">
+          <MobileLabel label="Upgrade Policy Changes" />
+          <PolicyChanges history={history} />
+        </Flex>
+        <Flex direction="column">
+          <MobileLabel label="Remark" />
+          <RemarkRender {...history.remark} />
         </Flex>
       </Flex>
     }

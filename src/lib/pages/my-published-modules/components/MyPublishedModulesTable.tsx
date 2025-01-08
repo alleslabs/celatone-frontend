@@ -18,8 +18,8 @@ export const MyPublishedModulesTable = () => {
 
   const {
     data,
-    isFetching: isModulesLoading,
     error,
+    isFetching: isModulesLoading,
   } = useModulesByAddress({ address });
 
   const { data: moveVerifyInfos } = useMoveVerifyInfosByAddress(address);
@@ -54,20 +54,20 @@ export const MyPublishedModulesTable = () => {
   return (
     <>
       <InputWithIcon
-        placeholder="Search with Module Name"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-        amptrackSection="my-published-modules-search"
-        size="lg"
         my={8}
+        size="lg"
+        value={keyword}
+        amptrackSection="my-published-modules-search"
+        onChange={(e) => setKeyword(e.target.value)}
+        placeholder="Search with Module Name"
       />
       {address ? (
         <ModulesTable
-          modules={filteredPublishedModules}
-          isLoading={isModulesLoading}
           emptyState={emptyState()}
-          moveVerifyInfos={moveVerifyInfos}
+          isLoading={isModulesLoading}
           isPublishedModules
+          modules={filteredPublishedModules}
+          moveVerifyInfos={moveVerifyInfos}
         />
       ) : (
         <DisconnectedState text="to see your published modules" />

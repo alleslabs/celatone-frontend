@@ -25,19 +25,19 @@ const Layout = ({ children }: LayoutProps) => {
   const mode = useMemo(() => {
     if (isMobile)
       return {
-        templateAreas: `"header""main"`,
-        templateRows: "60px 1fr",
-        templateCols: "1fr",
         header: <MobileHeader />,
         subHeader: undefined,
+        templateAreas: `"header""main"`,
+        templateCols: "1fr",
+        templateRows: "60px 1fr",
       };
 
     return {
-      templateAreas: `"header header""subheader subheader""nav main"`,
-      templateRows: defaultRow,
-      templateCols: isExpand ? "235px 1fr" : "48px 1fr",
       header: <Header />,
       subHeader: <SubHeader />,
+      templateAreas: `"header header""subheader subheader""nav main"`,
+      templateCols: isExpand ? "235px 1fr" : "48px 1fr",
+      templateRows: defaultRow,
     };
   }, [isExpand, isMobile]);
 
@@ -49,39 +49,39 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <Grid
-      templateAreas={mode.templateAreas}
-      gridTemplateRows={mode.templateRows}
       gridTemplateColumns={mode.templateCols}
+      gridTemplateRows={mode.templateRows}
+      bg="background.main"
       h="100vh"
+      templateAreas={mode.templateAreas}
       overflowX="hidden"
       overflowY="scroll"
-      bg="background.main"
     >
-      <GridItem borderBottom="1px solid" borderColor="gray.700" area="header">
+      <GridItem area="header" borderBottom="1px solid" borderColor="gray.700">
         {mode.header}
       </GridItem>
       {!isMobile && (
         <>
           <GridItem
+            area="subheader"
+            px={{ base: 4, md: 0 }}
+            py={{ base: 2, md: 0 }}
             borderBottom="1px solid"
             borderColor="gray.700"
-            area="subheader"
-            py={{ base: 2, md: 0 }}
-            px={{ base: 4, md: 0 }}
           >
             {mode.subHeader}
           </GridItem>
           <GridItem
-            borderRight="1px solid"
-            borderColor="gray.700"
             area="nav"
+            borderColor="gray.700"
+            borderRight="1px solid"
             overflowY="auto"
           >
             <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
           </GridItem>
         </>
       )}
-      <GridItem area="main" overflowX="hidden" id="content">
+      <GridItem id="content" area="main" overflowX="hidden">
         <div style={{ minHeight: "calc(100vh - 129px)", position: "relative" }}>
           {children}
         </div>

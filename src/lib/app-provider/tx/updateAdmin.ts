@@ -10,10 +10,10 @@ import { toEncodeObject } from "lib/utils";
 
 export interface UpdateAdminStreamParams {
   contractAddress: BechAddr32;
-  newAdmin: BechAddr;
   estimatedFee: Option<StdFee>;
-  onTxSucceed?: () => void;
+  newAdmin: BechAddr;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
 }
 
 export const useUpdateAdminTx = () => {
@@ -23,10 +23,10 @@ export const useUpdateAdminTx = () => {
   return useCallback(
     async ({
       contractAddress,
-      newAdmin,
       estimatedFee,
-      onTxSucceed,
+      newAdmin,
       onTxFailed,
+      onTxSucceed,
     }: UpdateAdminStreamParams) => {
       if (!address) throw new Error("No address provided (useUpdateAdminTx)");
 
@@ -38,14 +38,14 @@ export const useUpdateAdminTx = () => {
 
       return updateAdminTx({
         address,
-        messages,
         fee: estimatedFee,
-        signAndBroadcast,
+        messages,
+        onTxFailed,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

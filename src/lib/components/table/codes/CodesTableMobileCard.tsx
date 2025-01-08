@@ -24,6 +24,45 @@ export const CodesTableMobileCard = ({
 
   return (
     <MobileCardTemplate
+      middleContent={
+        showCw2andContracts && (
+          <Flex direction="column">
+            <MobileLabel label="CW2 Info" />
+            <Text
+              color={cw2Info ? "text.main" : "text.disabled"}
+              onClick={(e) => e.stopPropagation()}
+              wordBreak="break-all"
+            >
+              {cw2Info ?? "N/A"}
+            </Text>
+          </Flex>
+        )
+      }
+      bottomContent={
+        showCw2andContracts && (
+          <Flex gap={3} w="full">
+            <Flex flex={1} direction="column">
+              <MobileLabel label="Contracts" />
+              <Text
+                variant="body3"
+                color={codeInfo.contractCount ? "text.main" : "text.disabled"}
+                cursor="text"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {codeInfo.contractCount ?? "N/A"}
+              </Text>
+            </Flex>
+            <Flex flex={1} direction="column">
+              <MobileLabel label="Permission" />
+              <PermissionChip
+                tagSize="xs"
+                instantiatePermission={codeInfo.instantiatePermission}
+                permissionAddresses={codeInfo.permissionAddresses}
+              />
+            </Flex>
+          </Flex>
+        )
+      }
       onClick={() =>
         navigate({
           pathname: "/codes/[codeId]",
@@ -32,8 +71,8 @@ export const CodesTableMobileCard = ({
       }
       topContent={
         showCw2andContracts ? (
-          <Flex gap={2} align="center">
-            <MobileLabel variant="body2" label="Code ID" />
+          <Flex align="center" gap={2}>
+            <MobileLabel label="Code ID" variant="body2" />
             <ExplorerLink
               type="code_id"
               value={codeInfo.id.toString()}
@@ -48,59 +87,20 @@ export const CodesTableMobileCard = ({
           </Flex>
         ) : (
           <Flex gap={3} w="full">
-            <Flex direction="column" flex={1}>
-              <MobileLabel variant="body2" label="Code ID" />
+            <Flex flex={1} direction="column">
+              <MobileLabel label="Code ID" variant="body2" />
               <ExplorerLink
                 type="code_id"
                 value={codeInfo.id.toString()}
                 showCopyOnHover
               />
             </Flex>
-            <Flex direction="column" flex={1} gap={1}>
-              <MobileLabel variant="body2" label="Permission" />
+            <Flex flex={1} gap={1} direction="column">
+              <MobileLabel label="Permission" variant="body2" />
               <PermissionChip
+                tagSize="xs"
                 instantiatePermission={codeInfo.instantiatePermission}
                 permissionAddresses={codeInfo.permissionAddresses}
-                tagSize="xs"
-              />
-            </Flex>
-          </Flex>
-        )
-      }
-      middleContent={
-        showCw2andContracts && (
-          <Flex direction="column">
-            <MobileLabel label="CW2 Info" />
-            <Text
-              color={cw2Info ? "text.main" : "text.disabled"}
-              wordBreak="break-all"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {cw2Info ?? "N/A"}
-            </Text>
-          </Flex>
-        )
-      }
-      bottomContent={
-        showCw2andContracts && (
-          <Flex gap={3} w="full">
-            <Flex direction="column" flex={1}>
-              <MobileLabel label="Contracts" />
-              <Text
-                variant="body3"
-                onClick={(e) => e.stopPropagation()}
-                cursor="text"
-                color={codeInfo.contractCount ? "text.main" : "text.disabled"}
-              >
-                {codeInfo.contractCount ?? "N/A"}
-              </Text>
-            </Flex>
-            <Flex direction="column" flex={1}>
-              <MobileLabel label="Permission" />
-              <PermissionChip
-                instantiatePermission={codeInfo.instantiatePermission}
-                permissionAddresses={codeInfo.permissionAddresses}
-                tagSize="xs"
               />
             </Flex>
           </Flex>

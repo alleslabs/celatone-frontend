@@ -14,24 +14,24 @@ import type { Option, TokenWithValue } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
 
 export interface GasInfo {
-  isEIP1559: boolean;
-  txFee: TokenWithValue;
-  gasPrice: TokenWithValue;
-  gasUsed: Big;
-  gasLimit: Big;
   // eip-1559
   baseFee: TokenWithValue;
+  gasLimit: Big;
+  gasPrice: TokenWithValue;
+  gasUsed: Big;
+  isEIP1559: boolean;
   maxFee: TokenWithValue;
   maxPriorityFee: TokenWithValue;
+  txFee: TokenWithValue;
 }
 
 interface EvmTxDetailsData {
-  isLoading: boolean;
   cosmosTxData: Option<TxData>;
-  evmTxData: Option<TxDataJsonRpc>;
   evmDenom: Option<string>;
+  evmTxData: Option<TxDataJsonRpc>;
   evmTxValue: Option<TokenWithValue>;
   gasInfo: Option<GasInfo>;
+  isLoading: boolean;
 }
 
 export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
@@ -95,27 +95,27 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
     );
 
     return {
-      isEIP1559: evmTxData.tx.type === "0x2",
-      txFee,
+      baseFee,
+      gasLimit: evmTxData.tx.gas,
       gasPrice,
       gasUsed: evmTxData.txReceipt.gasUsed,
-      gasLimit: evmTxData.tx.gas,
-      baseFee,
+      isEIP1559: evmTxData.tx.type === "0x2",
       maxFee,
       maxPriorityFee,
+      txFee,
     };
   }, [assetInfos, blockData, evmDenom, evmTxData]);
 
   return {
+    cosmosTxData,
+    evmDenom,
+    evmTxData,
+    evmTxValue,
+    gasInfo,
     isLoading:
       isLoadingEvmTxData ||
       isLoadingCosmosTxData ||
       isEvmParamsLoading ||
       isLoadingBlockData,
-    cosmosTxData,
-    evmTxData,
-    evmDenom,
-    evmTxValue,
-    gasInfo,
   };
 };

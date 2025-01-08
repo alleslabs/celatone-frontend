@@ -15,7 +15,7 @@ export const NoVotingPeriodTallyExplanation = () => {
 };
 
 export const NoVotingPeriodTallyAlert = () => (
-  <Alert variant="warning" gap={3}>
+  <Alert gap={3} variant="warning">
     <CustomIcon name="alert-triangle-solid" boxSize={4} color="warning.main" />
     <AlertDescription>
       <NoVotingPeriodTallyExplanation />

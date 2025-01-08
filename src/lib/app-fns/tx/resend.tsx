@@ -16,36 +16,49 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ResendTxParams {
   address: BechAddr20;
-  signAndBroadcast: SignAndBroadcast;
   fee: StdFee;
   messages: EncodeObject[];
-  onTxSucceed?: (txHash: string) => void;
   onTxFailed?: () => void;
+  onTxSucceed?: (txHash: string) => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const resendTx = ({
   address,
-  signAndBroadcast,
   fee,
   messages,
-  onTxSucceed,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcast,
 }: ResendTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.(txInfo.transactionHash);
       const txFee = findAttr(txInfo.events, "tx", "fee");
       return {
-        value: null,
+        actionVariant: "resend",
         phase: TxStreamPhase.SUCCEED,
+        receiptInfo: {
+          description: (
+            <Text fontWeight={700}>
+              Your transaction was successfully resent.
+            </Text>
+          ),
+          header: "Transaction Complete!",
+          headerIcon: (
+            <CustomIcon
+              name="check-circle-solid"
+              boxSize={5}
+              color="success.main"
+            />
+          ),
+        },
         receipts: [
           {
-            title: "Tx Hash",
-            value: txInfo.transactionHash,
             html: (
               <ExplorerLink
                 type="tx_hash"
@@ -53,33 +66,20 @@ export const resendTx = ({
                 openNewTab
               />
             ),
+            title: "Tx Hash",
+            value: txInfo.transactionHash,
           },
           {
-            title: "Tx Fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
+            title: "Tx Fee",
           },
         ],
-        receiptInfo: {
-          header: "Transaction Complete!",
-          description: (
-            <Text fontWeight={700}>
-              Your transaction was successfully resent.
-            </Text>
-          ),
-          headerIcon: (
-            <CustomIcon
-              name="check-circle-solid"
-              color="success.main"
-              boxSize={5}
-            />
-          ),
-        },
-        actionVariant: "resend",
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

@@ -23,6 +23,47 @@ export const PublicProjectCodeMobileCard = ({
 
   return (
     <MobileCardTemplate
+      middleContent={
+        <Flex gap={3} direction="column">
+          <Flex direction="column">
+            <MobileLabel label="Code Name" />
+            <Text>{publicInfo.name}</Text>
+          </Flex>
+          <Flex direction="column">
+            <MobileLabel label="CW2 Info" />
+            <Text
+              color={cw2Info ? "text.main" : "text.disabled"}
+              onClick={(e) => e.stopPropagation()}
+              wordBreak="break-all"
+            >
+              {cw2Info ?? "N/A"}
+            </Text>
+          </Flex>
+        </Flex>
+      }
+      bottomContent={
+        <Flex gap={3} w="full">
+          <Flex flex={1} direction="column">
+            <MobileLabel label="Contracts" />
+            <Text
+              variant="body3"
+              color={publicInfo.contractCount ? "text.main" : "text.disabled"}
+              cursor="text"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {publicInfo.contractCount ?? "N/A"}
+            </Text>
+          </Flex>
+          <Flex flex={1} direction="column">
+            <MobileLabel label="Permission" />
+            <PermissionChip
+              tagSize="xs"
+              instantiatePermission={publicInfo.instantiatePermission}
+              permissionAddresses={publicInfo.permissionAddresses}
+            />
+          </Flex>
+        </Flex>
+      }
       onClick={() =>
         navigate({
           pathname: "/codes/[codeId]",
@@ -30,8 +71,8 @@ export const PublicProjectCodeMobileCard = ({
         })
       }
       topContent={
-        <Flex gap={2} align="center">
-          <MobileLabel variant="body2" label="Code ID" />
+        <Flex align="center" gap={2}>
+          <MobileLabel label="Code ID" variant="body2" />
           <ExplorerLink
             type="code_id"
             value={publicInfo.id.toString()}
@@ -43,47 +84,6 @@ export const PublicProjectCodeMobileCard = ({
             }
             showCopyOnHover
           />
-        </Flex>
-      }
-      middleContent={
-        <Flex direction="column" gap={3}>
-          <Flex direction="column">
-            <MobileLabel label="Code Name" />
-            <Text>{publicInfo.name}</Text>
-          </Flex>
-          <Flex direction="column">
-            <MobileLabel label="CW2 Info" />
-            <Text
-              color={cw2Info ? "text.main" : "text.disabled"}
-              wordBreak="break-all"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {cw2Info ?? "N/A"}
-            </Text>
-          </Flex>
-        </Flex>
-      }
-      bottomContent={
-        <Flex gap={3} w="full">
-          <Flex direction="column" flex={1}>
-            <MobileLabel label="Contracts" />
-            <Text
-              variant="body3"
-              onClick={(e) => e.stopPropagation()}
-              cursor="text"
-              color={publicInfo.contractCount ? "text.main" : "text.disabled"}
-            >
-              {publicInfo.contractCount ?? "N/A"}
-            </Text>
-          </Flex>
-          <Flex direction="column" flex={1}>
-            <MobileLabel label="Permission" />
-            <PermissionChip
-              instantiatePermission={publicInfo.instantiatePermission}
-              permissionAddresses={publicInfo.permissionAddresses}
-              tagSize="xs"
-            />
-          </Flex>
         </Flex>
       }
     />

@@ -8,15 +8,15 @@ import { MutateEventsTableMobileCard } from "./MutateEventsTableMobileCard";
 import { MutateEventsTableRow } from "./MutateEventsTableRow";
 
 interface MutateEventsTableProps {
-  mutateEvents: Option<MutateEvent[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
+  mutateEvents: Option<MutateEvent[]>;
 }
 
 export const MutateEventsTable = ({
-  mutateEvents,
-  isLoading,
   emptyState,
+  isLoading,
+  mutateEvents,
 }: MutateEventsTableProps) => {
   const isMobile = useMobile();
 

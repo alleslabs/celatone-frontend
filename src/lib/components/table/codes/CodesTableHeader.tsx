@@ -4,15 +4,15 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "../tableComponents";
 
 export const CodesTableHeader = ({
-  templateColumns,
   isReadOnly,
   showCw2andContracts,
+  templateColumns,
 }: {
-  templateColumns: GridProps["templateColumns"];
   isReadOnly: boolean;
   showCw2andContracts: boolean;
+  templateColumns: GridProps["templateColumns"];
 }) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Code ID</TableHeader>
     <TableHeader>Code Name</TableHeader>
     {showCw2andContracts && (

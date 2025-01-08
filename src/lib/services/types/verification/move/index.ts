@@ -19,25 +19,25 @@ export type SubmitMoveVerifyResponse = z.infer<
 >;
 
 const zMoveVerificationModuleIdentifier = z.object({
-  name: z.string(),
   address: zHexAddr,
+  name: z.string(),
 });
 export type MoveVerificationModuleIdentifier = z.infer<
   typeof zMoveVerificationModuleIdentifier
 >;
 
 export const zMoveVerifyByTaskIdResponse = z.object({
+  result: z
+    .object({
+      chainId: z.string(),
+      moduleIdentifiers: z.array(zMoveVerificationModuleIdentifier),
+      verifiedAt: z.coerce.date(),
+    })
+    .nullable(),
   task: z.object({
     id: z.string().uuid(),
     status: z.nativeEnum(MoveVerifyTaskStatus),
   }),
-  result: z
-    .object({
-      moduleIdentifiers: z.array(zMoveVerificationModuleIdentifier),
-      chainId: z.string(),
-      verifiedAt: z.coerce.date(),
-    })
-    .nullable(),
 });
 export type MoveVerifyByTaskIdResponse = z.infer<
   typeof zMoveVerifyByTaskIdResponse
@@ -45,13 +45,13 @@ export type MoveVerifyByTaskIdResponse = z.infer<
 
 export const zMoveVerifyInfoResponse = z
   .object({
-    module_address: zHexAddr,
-    module_name: z.string(),
-    verified_at: zUtcDate,
-    digest: z.string(),
-    source: z.string(),
     base64: z.string(),
     chain_id: z.string(),
+    digest: z.string(),
+    module_address: zHexAddr,
+    module_name: z.string(),
+    source: z.string(),
+    verified_at: zUtcDate,
   })
   .transform(snakeToCamel);
 export type MoveVerifyInfoResponse = z.infer<typeof zMoveVerifyInfoResponse>;

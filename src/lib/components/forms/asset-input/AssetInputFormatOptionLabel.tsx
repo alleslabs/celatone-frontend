@@ -9,13 +9,13 @@ export const AssetInputFormatOptionLabel = ({
   label,
   value,
 }: SelectInputOption<AssetOptionValue>) => (
-  <Flex gap={2} alignItems="center">
+  <Flex alignItems="center" gap={2}>
     {!!value.logo && (
       <TokenImageRenderWithCache
-        src={value.logo}
-        alt={getTokenLabel(value.id, label)}
         width={24}
+        alt={getTokenLabel(value.id, label)}
         height={24}
+        src={value.logo}
       />
     )}
     <Text variant="body2" color="text.main">

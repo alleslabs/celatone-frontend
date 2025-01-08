@@ -13,9 +13,9 @@ import { CodeSelect } from "./CodeSelect";
 
 interface CodeSelectSectionProps<T extends FieldValues> {
   codeId: number;
-  name: FieldPath<T>;
   control: Control<T>;
   error: Option<string>;
+  name: FieldPath<T>;
   onCodeSelect: (codeId: number) => void;
   setCodeHash: (data: Code) => void;
   status: FormStatus;
@@ -23,15 +23,15 @@ interface CodeSelectSectionProps<T extends FieldValues> {
 
 export const CodeSelectSection = <T extends FieldValues>({
   codeId,
-  name,
   control,
   error,
+  name,
   onCodeSelect,
   setCodeHash,
   status,
 }: CodeSelectSectionProps<T>) => {
   const { isFullTier } = useTierConfig();
-  const [method, setMethod] = useState<"select-existing" | "fill-manually">(
+  const [method, setMethod] = useState<"fill-manually" | "select-existing">(
     isFullTier ? "select-existing" : "fill-manually"
   );
 
@@ -39,7 +39,9 @@ export const CodeSelectSection = <T extends FieldValues>({
     <>
       {isFullTier && (
         <RadioGroup
-          onChange={(nextVal: "select-existing" | "fill-manually") => {
+          value={method}
+          w="100%"
+          onChange={(nextVal: "fill-manually" | "select-existing") => {
             track(
               nextVal === "fill-manually"
                 ? AmpEvent.USE_CODE_FILL
@@ -47,8 +49,6 @@ export const CodeSelectSection = <T extends FieldValues>({
             );
             setMethod(nextVal);
           }}
-          value={method}
-          w="100%"
         >
           <Flex justify="space-around">
             <Radio value="select-existing">Select from your code</Radio>
@@ -59,25 +59,25 @@ export const CodeSelectSection = <T extends FieldValues>({
       <form style={{ width: "100%" }}>
         {method === "select-existing" ? (
           <CodeSelect
-            mt={4}
             mb={8}
+            mt={4}
+            status={status}
             codeId={codeId}
             onCodeSelect={onCodeSelect}
             setCodeHash={setCodeHash}
-            status={status}
           />
         ) : (
           <ControllerInput
-            name={name}
-            control={control}
-            type="number"
-            status={status}
-            error={error}
-            label="Code ID"
             helperText="Input existing Code ID manually"
-            variant="fixed-floating"
+            label="Code ID"
             my={8}
+            name={name}
             rules={{ required: "Code ID is required" }}
+            status={status}
+            type="number"
+            variant="fixed-floating"
+            control={control}
+            error={error}
           />
         )}
       </form>

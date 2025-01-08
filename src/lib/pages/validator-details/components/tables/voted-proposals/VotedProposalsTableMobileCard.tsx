@@ -34,27 +34,12 @@ export const VotedProposalsTableMobileCard = ({
 
   return (
     <MobileCardTemplate
-      onClick={() => onRowSelect(votedProposal.proposalId)}
-      topContent={
-        <>
-          <Flex gap={2} alignItems="center">
-            <MobileLabel label="Proposal ID" variant="body2" />
-            <ExplorerLink
-              type="proposal_id"
-              value={votedProposal.proposalId.toString()}
-              showCopyOnHover
-              ampCopierSection="proposal-list"
-            />
-          </Flex>
-          <StatusChip status={votedProposal.status} />
-        </>
-      }
       middleContent={
-        <Flex direction="column" gap={3}>
+        <Flex gap={3} direction="column">
           <ProposalTextCell
+            isExpedited={votedProposal.isExpedited}
             title={votedProposal.title}
             types={votedProposal.types}
-            isExpedited={votedProposal.isExpedited}
             isDepositOrVoting={isDepositOrVoting}
           />
           <Box>
@@ -63,11 +48,11 @@ export const VotedProposalsTableMobileCard = ({
                 Voted
               </Text>
               <Answer
-                isVoteWeighted={votedProposal.isVoteWeighted}
+                abstain={votedProposal.abstain}
                 yes={votedProposal.yes}
+                isVoteWeighted={votedProposal.isVoteWeighted}
                 no={votedProposal.no}
                 noWithVeto={votedProposal.noWithVeto}
-                abstain={votedProposal.abstain}
               />
               <Text variant="body2" color="text.dark">
                 On
@@ -89,6 +74,21 @@ export const VotedProposalsTableMobileCard = ({
             )}
           </Box>
         </Flex>
+      }
+      onClick={() => onRowSelect(votedProposal.proposalId)}
+      topContent={
+        <>
+          <Flex alignItems="center" gap={2}>
+            <MobileLabel label="Proposal ID" variant="body2" />
+            <ExplorerLink
+              type="proposal_id"
+              value={votedProposal.proposalId.toString()}
+              ampCopierSection="proposal-list"
+              showCopyOnHover
+            />
+          </Flex>
+          <StatusChip status={votedProposal.status} />
+        </>
       }
     />
   );

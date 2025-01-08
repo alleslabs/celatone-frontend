@@ -88,41 +88,41 @@ export const AddNetworkJson = observer(() => {
     <>
       <ActionPageContainer>
         <CustomNetworkPageHeader
-          title="Add Custom Minitia"
-          subtitle="Import JSON"
           hasAlert={false}
+          subtitle="Import JSON"
+          title="Add Custom Minitia"
         />
-        <Flex direction="column" mt={12} gap={6} w="full">
+        <Flex gap={6} mt={12} w="full" direction="column">
           <CustomNetworkSubheader
-            title="Upload your .JSON File"
             subtitle="The uploading JSON file must be in the supported format for InitiaScan only"
+            title="Upload your .JSON File"
           />
           {file ? (
-            <UploadCard file={file} deleteFile={() => setFile(null)} />
+            <UploadCard deleteFile={() => setFile(null)} file={file} />
           ) : (
             <DropZone
-              setFiles={(files: File[]) => setFile(files[0])}
               fileType={["schema"]}
+              setFiles={(files: File[]) => setFile(files[0])}
             />
           )}
-          <Flex justifyContent="space-between" w="full">
+          <Flex w="full" justifyContent="space-between">
             <Button
               variant="outline-primary"
-              onClick={() => navigate({ pathname: "/custom-network/add" })}
               w="140px"
+              onClick={() => navigate({ pathname: "/custom-network/add" })}
             >
               Cancel
             </Button>
             <Button
               isDisabled={!file}
               variant="primary"
-              onClick={handleSubmit}
               w="220px"
+              onClick={handleSubmit}
             >
               Import new Minitia
             </Button>
           </Flex>
-          <Text variant="body2" textAlign="center">
+          <Text textAlign="center" variant="body2">
             The added custom Minitia on Initiascan will be stored locally on
             your device.
           </Text>
@@ -134,15 +134,15 @@ export const AddNetworkJson = observer(() => {
       />
       <DuplicatedAddCustomMinitiaModal
         isOpen={isDuplicatedModalOpen}
-        onClose={duplicatedModalOnClose}
         label={duplicatedLabel()}
+        onClose={duplicatedModalOnClose}
       />
       {json && (
         <SuccessAddCustomMinitiaModal
-          isOpen={isSuccessModalOpen}
-          onClose={successModalOnClose}
-          prettyName={json.prettyName}
           chainId={json.chainId}
+          isOpen={isSuccessModalOpen}
+          prettyName={json.prettyName}
+          onClose={successModalOnClose}
         />
       )}
     </>

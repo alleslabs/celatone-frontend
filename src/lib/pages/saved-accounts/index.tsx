@@ -49,19 +49,19 @@ const SavedAccounts = observer(() => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Saved Accounts" />
-      <Flex alignItems="center" justifyContent="space-between" mb={8}>
+      <Flex alignItems="center" mb={8} justifyContent="space-between">
         <Flex direction="column">
           <Flex alignItems="center">
             <Heading
-              variant="h5"
-              as="h5"
-              minH="36px"
-              display="flex"
               alignItems="center"
+              as="h5"
+              display="flex"
+              minH="36px"
+              variant="h5"
             >
               Saved Accounts
             </Heading>
-            <Badge variant="primary" ml={2}>
+            <Badge ml={2} variant="primary">
               {accountsCount}
             </Badge>
           </Flex>
@@ -72,16 +72,14 @@ const SavedAccounts = observer(() => {
         <SaveAccountButton />
       </Flex>
       <InputWithIcon
-        placeholder="Search with Account Name, Address, or Description"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
         size="lg"
+        value={keyword}
         amptrackSection="saved-account-search"
+        onChange={(e) => setKeyword(e.target.value)}
+        placeholder="Search with Account Name, Address, or Description"
       />
       {savedAccounts.length ? (
         <SavedAccountsTable
-          accounts={filteredsavedAccounts}
-          isLoading={!isHydrated}
           emptyState={
             <EmptyState
               imageVariant="not-found"
@@ -89,6 +87,8 @@ const SavedAccounts = observer(() => {
               withBorder
             />
           }
+          accounts={filteredsavedAccounts}
+          isLoading={!isHydrated}
         />
       ) : (
         <AccountZeroState button={<SaveAccountButton />} />

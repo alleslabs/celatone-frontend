@@ -22,45 +22,45 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
 
   return (
     <Flex
-      background="gray.900"
-      borderRadius="8px"
+      mt={6}
       px={4}
       py={3}
+      wrap="wrap"
+      background="gray.900"
+      borderRadius="8px"
       columnGap={12}
       rowGap={6}
-      mt={6}
-      wrap="wrap"
     >
       <LabelText label="Pool ID">
         <CopyLink
-          value={pool.id.toString()}
           type="pool_id"
-          showCopyOnHover
+          value={pool.id.toString()}
           w="50px"
           amptrackSection="pool_info"
+          showCopyOnHover
         />
       </LabelText>
       <LabelText label="Created Height">
         <ExplorerLink
+          isReadOnly={!pool.createdHeight}
           type="block_height"
           value={(pool.createdHeight ?? "N/A").toString()}
-          showCopyOnHover
-          isReadOnly={!pool.createdHeight}
           ampCopierSection="pool_info"
+          showCopyOnHover
         />
       </LabelText>
       <LabelText label="Pool Created by">
         <ExplorerLink
-          value={pool.creator ?? "N/A"}
-          type={getAddressType(pool.creator)}
           isReadOnly={!pool.creator}
-          showCopyOnHover
-          textFormat="truncate"
+          type={getAddressType(pool.creator)}
+          value={pool.creator ?? "N/A"}
           w="140px"
           ampCopierSection="pool_info"
+          showCopyOnHover
+          textFormat="truncate"
         />
       </LabelText>
-      <Divider orientation="vertical" h="46px" />
+      <Divider h="46px" orientation="vertical" />
       {(pool.type === PoolType.BALANCER ||
         pool.type === PoolType.STABLESWAP) && (
         <LabelText
@@ -90,17 +90,17 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
             <ExplorerLink
               type={futurePoolGovernorType}
               value={pool.futurePoolGovernor}
+              w="140px"
               showCopyOnHover
               textFormat="truncate"
-              w="140px"
             />
           ) : (
             <Text
               as="p"
+              variant="body2"
               color={
                 pool.futurePoolGovernor.length ? "text.main" : "text.disabled"
               }
-              variant="body2"
             >
               {pool.futurePoolGovernor.length ? pool.futurePoolGovernor : "N/A"}
             </Text>
@@ -128,19 +128,19 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       {pool.smoothWeightChangeParams !== null && (
         <LabelText label="Smooth weight change params">
           <JsonModalButton
-            modalHeader="Smooth weight change params"
             jsonString={JSON.stringify(pool.smoothWeightChangeParams)}
+            modalHeader="Smooth weight change params"
           />
         </LabelText>
       )}
       {pool.scalingFactors !== null && (
         <LabelText label="Scaling Factors">
           <JsonModalButton
-            modalHeader="Scaling Factors"
             jsonString={JSON.stringify({
-              scaling_factors: pool.scalingFactors,
               scaling_factor_controller: pool.scalingFactorController,
+              scaling_factors: pool.scalingFactors,
             })}
+            modalHeader="Scaling Factors"
           />
         </LabelText>
       )}
@@ -149,8 +149,8 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           {pool.contractAddress ? (
             <Text variant="body2">
               <ExplorerLink
-                value={pool.contractAddress.toString()}
                 type="contract_address"
+                value={pool.contractAddress.toString()}
                 showCopyOnHover
               />
             </Text>

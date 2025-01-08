@@ -15,10 +15,10 @@ import {
 import type { Ratio } from "lib/types";
 
 export const VotingQuorum = ({
-  proposalData,
-  params,
-  votesInfo,
   isLoading,
+  params,
+  proposalData,
+  votesInfo,
 }: VoteDetailsProps) => {
   const isMobile = useMobile();
   if (isLoading) return <Loading my={0} />;
@@ -28,20 +28,20 @@ export const VotingQuorum = ({
   const { abstainRatio, nonAbstainRatio, totalRatio } =
     normalizeVotesInfo(votesInfo);
 
-  const { yes, abstain, no, noWithVeto, totalVotingPower } = votesInfo;
+  const { abstain, no, noWithVeto, totalVotingPower, yes } = votesInfo;
   const nonAbstain = yes.add(no).add(noWithVeto);
   const allVotes = nonAbstain.add(abstain);
 
   return (
-    <Flex direction="column" gap={4}>
-      <Flex gap={2} align="center">
+    <Flex gap={4} direction="column">
+      <Flex align="center" gap={2}>
         {isMobile ? (
           <>
             <VoteQuorumBadge
               status={proposalData.status}
+              isCompact
               quorum={quorum}
               totalRatio={totalRatio}
-              isCompact
             />
             <Text variant="body1" color="text.main">
               Quorum
@@ -54,9 +54,9 @@ export const VotingQuorum = ({
             </Heading>
             <VoteQuorumBadge
               status={proposalData.status}
+              isCompact={false}
               quorum={quorum}
               totalRatio={totalRatio}
-              isCompact={false}
             />
             <Spacer />
             <Text variant="body3" textColor="text.dark">
@@ -67,53 +67,53 @@ export const VotingQuorum = ({
       </Flex>
       {isMobile && <Divider borderColor="gray.700" />}
       <Flex
-        direction={{ base: "column", md: "row" }}
-        gap={{ base: 3, md: 12 }}
         align="center"
+        gap={{ base: 3, md: 12 }}
         textAlign={{ base: "center", md: "start" }}
         w="full"
+        direction={{ base: "column", md: "row" }}
       >
         <VoteQuorumCircle
-          quorum={quorum}
-          nonAbstainRatio={nonAbstainRatio}
-          totalRatio={totalRatio}
-          isCompact={false}
           isBgGray={!isMobile}
+          isCompact={false}
+          nonAbstainRatio={nonAbstainRatio}
+          quorum={quorum}
+          totalRatio={totalRatio}
         />
-        <Flex direction="column" gap={4} w="full">
+        <Flex gap={4} w="full" direction="column">
           <VoteQuorumText
             status={proposalData.status}
+            isCompact={false}
             quorum={quorum}
             totalRatio={totalRatio}
-            isCompact={false}
           />
-          <Flex direction={isMobile ? "column" : "row"} gap={isMobile ? 3 : 8}>
+          <Flex gap={isMobile ? 3 : 8} direction={isMobile ? "column" : "row"}>
             <VpPercentCard
               name="Voted"
-              ratio={nonAbstainRatio}
-              power={nonAbstain}
               color="voteParticipations.voted"
               isCompact={isMobile}
+              power={nonAbstain}
+              ratio={nonAbstainRatio}
             />
             <VpPercentCard
               name="Voted Abstain"
-              ratio={abstainRatio}
-              power={abstain}
               color="voteParticipations.votedAbstain"
               isCompact={isMobile}
+              power={abstain}
+              ratio={abstainRatio}
             />
             <Divider
-              orientation="vertical"
+              display={{ base: "none", lg: "flex" }}
               h="auto"
               color="gray.700"
-              display={{ base: "none", lg: "flex" }}
+              orientation="vertical"
             />
             <VpPercentCard
               name="Did not vote"
-              ratio={totalRatio ? ((1 - totalRatio) as Ratio<number>) : null}
-              power={totalVotingPower ? totalVotingPower.minus(allVotes) : null}
               color="voteParticipations.didNotVote"
               isCompact={isMobile}
+              power={totalVotingPower ? totalVotingPower.minus(allVotes) : null}
+              ratio={totalRatio ? ((1 - totalRatio) as Ratio<number>) : null}
             />
           </Flex>
         </Flex>

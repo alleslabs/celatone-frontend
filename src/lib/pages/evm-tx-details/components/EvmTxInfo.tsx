@@ -12,8 +12,8 @@ import type { TokenWithValue } from "lib/types";
 import { EvmTxGasReceipt } from "./EvmTxGasReceipt";
 
 interface EvmTxInfoProps extends FlexProps {
-  evmTxData: TxDataJsonRpc;
   cosmosTxData: TxData;
+  evmTxData: TxDataJsonRpc;
   evmTxValue: TokenWithValue;
   gasInfo: GasInfo;
 }
@@ -22,14 +22,14 @@ const Container = chakra(Flex, {
   baseStyle: {
     flexDir: "column",
     gap: 6,
-    w: "250px",
     minW: "180px",
+    w: "250px",
   },
 });
 
 export const EvmTxInfo = ({
-  evmTxData,
   cosmosTxData,
+  evmTxData,
   evmTxValue,
   gasInfo,
   ...flexProps
@@ -41,21 +41,21 @@ export const EvmTxInfo = ({
       <LabelText label="Network">{currentChainId}</LabelText>
       <LabelText label="Block Height">
         <ExplorerLink
-          value={evmTxData.tx.blockNumber.toString()}
           type="block_height"
-          showCopyOnHover
+          value={evmTxData.tx.blockNumber.toString()}
           ampCopierSection="tx_page_block_height"
+          showCopyOnHover
         />
       </LabelText>
       <LabelText label="Cosmos Tx">
         <ExplorerLink
-          value={cosmosTxData.txhash.toUpperCase()}
           type="tx_hash"
+          value={cosmosTxData.txhash.toUpperCase()}
           showCopyOnHover
         />
       </LabelText>
       <LabelText label="Amount">
-        <TokenImageWithAmount token={evmTxValue} hasTrailingZeros={false} />
+        <TokenImageWithAmount hasTrailingZeros={false} token={evmTxValue} />
       </LabelText>
       <EvmTxGasReceipt gasInfo={gasInfo} />
     </Container>

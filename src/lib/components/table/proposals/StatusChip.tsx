@@ -9,18 +9,18 @@ const getBgColor = (
   status: Proposal["status"]
 ): CSSProperties["backgroundColor"] => {
   switch (status) {
-    case ProposalStatus.DEPOSIT_PERIOD:
-      return "proposalChip.depositPeriod.bg";
-    case ProposalStatus.VOTING_PERIOD:
-      return "proposalChip.votingPeriod.bg";
-    case ProposalStatus.FAILED:
-      return "proposalChip.failed.bg";
-    case ProposalStatus.REJECTED:
-      return "proposalChip.rejected.bg";
-    case ProposalStatus.PASSED:
-      return "proposalChip.passed.bg";
     case ProposalStatus.CANCELLED:
       return "proposalChip.cancelled.bg";
+    case ProposalStatus.DEPOSIT_PERIOD:
+      return "proposalChip.depositPeriod.bg";
+    case ProposalStatus.FAILED:
+      return "proposalChip.failed.bg";
+    case ProposalStatus.PASSED:
+      return "proposalChip.passed.bg";
+    case ProposalStatus.REJECTED:
+      return "proposalChip.rejected.bg";
+    case ProposalStatus.VOTING_PERIOD:
+      return "proposalChip.votingPeriod.bg";
     case ProposalStatus.DEPOSIT_FAILED:
     default:
       return "proposalChip.depositFailed.bg";
@@ -28,13 +28,13 @@ const getBgColor = (
 };
 
 export const StatusChip = ({
-  status,
-  isTransparent = false,
   hasCloseBtn = false,
+  isTransparent = false,
+  status,
 }: {
-  status: Proposal["status"];
-  isTransparent?: boolean;
   hasCloseBtn?: boolean;
+  isTransparent?: boolean;
+  status: Proposal["status"];
 }) => {
   const formatStatus =
     status === ProposalStatus.DEPOSIT_FAILED
@@ -42,12 +42,12 @@ export const StatusChip = ({
       : status.replace(/([A-Z])/g, " $1").trim();
   return (
     <Tag
+      bgColor={isTransparent ? "transparent" : getBgColor(status)}
       border="1px solid"
       borderColor={getBgColor(status)}
-      bgColor={isTransparent ? "transparent" : getBgColor(status)}
     >
       {formatStatus}
-      {hasCloseBtn && <CustomIcon name="close" boxSize={3} mr={0} />}
+      {hasCloseBtn && <CustomIcon mr={0} name="close" boxSize={3} />}
     </Tag>
   );
 };

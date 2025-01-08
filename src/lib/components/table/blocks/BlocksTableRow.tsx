@@ -9,15 +9,15 @@ import type { Block } from "lib/types";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
 interface BlocksTableRowProps {
-  templateColumns: GridProps["templateColumns"];
   blockData: Block;
   showProposer: boolean;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const BlocksTableRow = ({
-  templateColumns,
   blockData,
   showProposer,
+  templateColumns,
 }: BlocksTableRowProps) => {
   const navigate = useInternalNavigate();
 
@@ -30,11 +30,11 @@ export const BlocksTableRow = ({
   return (
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(blockData.height)}
       _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
+      onClick={() => onRowSelect(blockData.height)}
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
     >
       <TableRow>
         <ExplorerLink
@@ -59,8 +59,8 @@ export const BlocksTableRow = ({
         </TableRow>
       )}
       <TableRow
-        justifyContent="center"
         color={blockData.txCount === 0 ? "text.dark" : "text.main"}
+        justifyContent="center"
       >
         {blockData.txCount}
       </TableRow>

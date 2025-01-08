@@ -11,14 +11,14 @@ import type { HexAddr, HexAddr32, Option } from "lib/types";
 import { FilterItem } from "./FilterItem";
 import { NftsByCollectionSequencer } from "./NftsByCollectionSequencer";
 
-interface SelectedCollection {
-  collectionAddress: HexAddr32;
-  nftsCount: number;
-}
-
 interface NftsSectionSequencerProps {
   address: HexAddr;
   totalData: Option<number>;
+}
+
+interface SelectedCollection {
+  collectionAddress: HexAddr32;
+  nftsCount: number;
 }
 
 export const NftsSectionSequencer = ({
@@ -49,38 +49,38 @@ export const NftsSectionSequencer = ({
 
   return (
     <Box mt={{ base: 4, md: 8 }}>
-      <Flex gap="8px" align="center">
+      <Flex align="center" gap="8px">
         <Heading variant="h6">NFTs</Heading>
         <Badge>{totalData}</Badge>
       </Flex>
-      <Flex gap="40px" mt="32px" flexDir={isMobile ? "column" : "row"}>
+      <Flex flexDir={isMobile ? "column" : "row"} gap="40px" mt="32px">
         <Stack
-          w={{ base: "100%", md: "35%", lg: "25%" }}
           minW={64}
           spacing="8px"
+          w={{ base: "100%", lg: "25%", md: "35%" }}
         >
           <FilterItem
-            collectionName="All Collections"
-            onClick={() => handleOnClick(undefined)}
             isActive={selectedCollection === undefined}
-            count={totalData}
             isDefault
+            collectionName="All Collections"
+            count={totalData}
+            onClick={() => handleOnClick(undefined)}
           />
           {Object.entries(collections).map(([collectionAddress, nfts]) => (
             <FilterItem
               key={collectionAddress}
+              isActive={
+                selectedCollection?.collectionAddress === collectionAddress
+              }
+              uri={nfts[0].uri}
               collectionName={nfts[0].collectionName}
+              count={nfts.length}
               onClick={() =>
                 handleOnClick({
                   collectionAddress: collectionAddress as HexAddr32,
                   nftsCount: nfts.length,
                 })
               }
-              uri={nfts[0].uri}
-              isActive={
-                selectedCollection?.collectionAddress === collectionAddress
-              }
-              count={nfts.length}
             />
           ))}
         </Stack>

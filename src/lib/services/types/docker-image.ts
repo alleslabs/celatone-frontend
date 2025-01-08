@@ -5,36 +5,36 @@ import { snakeToCamel } from "lib/utils";
 
 const zDockerImageTagResult = z
   .object({
+    content_type: z.string(),
     creator: z.number(),
+    digest: z.string().optional(),
+    full_size: z.number(),
     id: z.number(),
     images: z.array(
       z.object({
         architecture: z.string(),
-        features: z.string(),
-        variant: z.string().nullable(),
         digest: z.string(),
+        features: z.string(),
+        last_pulled: zUtcDate.nullable(),
+        last_pushed: zUtcDate.nullable(),
         os: z.string(),
         os_features: z.string(),
         os_version: z.string().nullable(),
         size: z.number(),
         status: z.string(),
-        last_pulled: zUtcDate.nullable(),
-        last_pushed: zUtcDate.nullable(),
+        variant: z.string().nullable(),
       })
     ),
     last_updated: zUtcDate,
     last_updater: z.number(),
     last_updater_username: z.string(),
+    media_type: z.string(),
     name: z.string(),
     repository: z.number(),
-    full_size: z.number(),
-    v2: z.boolean(),
-    tag_status: z.string(),
     tag_last_pulled: zUtcDate,
     tag_last_pushed: zUtcDate,
-    media_type: z.string(),
-    content_type: z.string(),
-    digest: z.string().optional(),
+    tag_status: z.string(),
+    v2: z.boolean(),
   })
   .transform(snakeToCamel);
 export type DockerImageTagResult = z.infer<typeof zDockerImageTagResult>;

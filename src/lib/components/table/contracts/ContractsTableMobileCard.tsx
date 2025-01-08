@@ -53,33 +53,14 @@ export const ContractsTableMobileCard = ({
   wasmVerifyInfo,
 }: ContractsTableMobileCardProps) => (
   <MobileCardTemplate
-    onClick={() => onRowSelect(contractInfo.contractAddress)}
-    topContent={
-      <Flex gap={2} align="center">
-        <MobileLabel variant="body2" label="Contract Address" />
-        <ExplorerLink
-          value={contractInfo.contractAddress}
-          type="contract_address"
-          rightIcon={
-            contractInfo.codeId ? (
-              <WasmVerifyBadge
-                status={getWasmVerifyStatus(wasmVerifyInfo)}
-                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-                linkedCodeId={contractInfo.codeId}
-              />
-            ) : undefined
-          }
-        />
-      </Flex>
-    }
     middleContent={
       showLastUpdate && (
-        <Flex gap={3} direction="column" w="full">
+        <Flex gap={3} w="full" direction="column">
           <div>
             <MobileLabel label="Contract Name" />
             <Text
-              variant="body2"
               maxW="full"
+              variant="body2"
               color="text.main"
               wordBreak="break-all"
             >
@@ -89,8 +70,8 @@ export const ContractsTableMobileCard = ({
           <div>
             <InstantiatorRemark remark={contractInfo.remark} />
             <ContractInstantiatorCell
-              contractInfo={contractInfo}
               isReadOnly={false}
+              contractInfo={contractInfo}
             />
           </div>
         </Flex>
@@ -105,6 +86,25 @@ export const ContractsTableMobileCard = ({
           </Text>
         </div>
       ) : null
+    }
+    onClick={() => onRowSelect(contractInfo.contractAddress)}
+    topContent={
+      <Flex align="center" gap={2}>
+        <MobileLabel label="Contract Address" variant="body2" />
+        <ExplorerLink
+          type="contract_address"
+          value={contractInfo.contractAddress}
+          rightIcon={
+            contractInfo.codeId ? (
+              <WasmVerifyBadge
+                status={getWasmVerifyStatus(wasmVerifyInfo)}
+                linkedCodeId={contractInfo.codeId}
+                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              />
+            ) : undefined
+          }
+        />
+      </Flex>
     }
   />
 );

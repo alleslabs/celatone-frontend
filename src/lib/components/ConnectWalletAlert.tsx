@@ -15,13 +15,13 @@ import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "./icon";
 
 interface ConnectWalletAlertProps extends AlertProps {
-  title?: string;
   subtitle?: string;
+  title?: string;
 }
 
 export const ConnectWalletAlert = ({
-  title,
   subtitle,
+  title,
   ...alertProps
 }: ConnectWalletAlertProps) => {
   const { address, connect } = useCurrentChain();
@@ -35,10 +35,10 @@ export const ConnectWalletAlert = ({
   return !address ? (
     <Alert
       {...alertProps}
-      variant="primary"
       alignItems="center"
-      justifyContent="space-between"
       py={3}
+      variant="primary"
+      justifyContent="space-between"
     >
       <Flex gap={2}>
         <CustomIcon name="wallet-solid" boxSize={4} />
@@ -48,9 +48,9 @@ export const ConnectWalletAlert = ({
         </Box>
       </Flex>
       <Button
+        gap={2}
         size="sm"
         variant="ghost-primary"
-        gap={2}
         onClick={onClickConnect}
       >
         <CustomIcon name="connect" /> Connect Wallet

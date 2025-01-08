@@ -2,16 +2,12 @@ import type { FlexProps } from "@chakra-ui/react";
 import { Flex } from "@chakra-ui/react";
 
 const PageHeaderContainer = ({
-  children,
   bgColor,
+  children,
   ...containerProps
 }: FlexProps) => (
   <Flex
     as="section"
-    direction="column"
-    gap={{ base: "24px", md: "32px" }}
-    px={{ base: "16px", md: "48px" }}
-    pt={{ base: "16px", md: "48px" }}
     bgGradient={
       bgColor
         ? {
@@ -19,6 +15,10 @@ const PageHeaderContainer = ({
           }
         : undefined
     }
+    gap={{ base: "24px", md: "32px" }}
+    pt={{ base: "16px", md: "48px" }}
+    px={{ base: "16px", md: "48px" }}
+    direction="column"
     {...containerProps}
   >
     {children}

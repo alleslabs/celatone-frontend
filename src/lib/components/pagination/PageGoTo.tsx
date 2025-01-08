@@ -15,20 +15,20 @@ export const PageGoTo = ({ lastPage, onPageChange }: PageGoToProps) => {
     const newPageValue = Number(newPage);
     if (newPageValue) {
       track(AmpEvent.USE_PAGINATION_GO_TO_PAGE, {
-        page: newPageValue,
         lastPage,
+        page: newPageValue,
       });
       onPageChange(newPageValue);
     }
   };
 
   return (
-    <Flex align="center" justify="center" gap={2}>
+    <Flex align="center" gap={2} justify="center">
       <Text variant="body2">Go to page:</Text>
       <Input
         textAlign="center"
-        w={16}
         value={newPage}
+        w={16}
         onChange={(e) => {
           if (e.target.value.length === 0) setNewPage("");
           const value = Number(e.target.value);
@@ -40,9 +40,9 @@ export const PageGoTo = ({ lastPage, onPageChange }: PageGoToProps) => {
         }}
       />
       <Button
-        variant="ghost-primary"
         margin={0}
         px={2}
+        variant="ghost-primary"
         onClick={handleGoTo}
         rightIcon={<CustomIcon name="chevron-right" />}
       >

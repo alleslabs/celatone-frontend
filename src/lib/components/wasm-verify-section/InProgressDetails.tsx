@@ -6,29 +6,29 @@ import { WasmVerifyStatusModal } from "lib/components/modal";
 import type { BechAddr32, WasmVerifyInfoBase } from "lib/types";
 
 interface InProgressDetailsProps {
-  codeId: number;
   codeHash: string;
-  verificationInfo: WasmVerifyInfoBase;
-  relatedVerifiedCodes: number[];
+  codeId: number;
   contractAddress?: BechAddr32;
+  relatedVerifiedCodes: number[];
+  verificationInfo: WasmVerifyInfoBase;
 }
 
 export const InProgressDetails = ({
-  codeId,
   codeHash,
-  verificationInfo,
-  relatedVerifiedCodes,
+  codeId,
   contractAddress,
+  relatedVerifiedCodes,
+  verificationInfo,
 }: InProgressDetailsProps) => (
   <>
     {contractAddress ? (
       <>
-        <CustomIcon name="hourglass" boxSize={4} ml={0} color="gray.400" />
+        <CustomIcon ml={0} name="hourglass" boxSize={4} color="gray.400" />
         <Text variant="body2" color="text.dark">
           This contract is an instance of code ID{" "}
           <ExplorerLink
-            value={codeId.toString()}
             type="code_id"
+            value={codeId.toString()}
             showCopyOnHover
           />{" "}
           which is currently undergoing verification. This can take several
@@ -43,14 +43,14 @@ export const InProgressDetails = ({
       </Text>
     )}
     <WasmVerifyStatusModal
-      codeHash={codeHash}
-      verificationInfo={verificationInfo}
-      relatedVerifiedCodes={relatedVerifiedCodes}
       triggerElement={
-        <Button variant="ghost-primary" size="sm">
+        <Button size="sm" variant="ghost-primary">
           View Verification Details
         </Button>
       }
+      codeHash={codeHash}
+      relatedVerifiedCodes={relatedVerifiedCodes}
+      verificationInfo={verificationInfo}
     />
   </>
 );

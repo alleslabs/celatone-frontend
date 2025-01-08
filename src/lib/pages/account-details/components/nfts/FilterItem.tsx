@@ -9,28 +9,30 @@ import type { Option } from "lib/types";
 interface FilterItemProps {
   collectionName: Option<string>;
   count: number;
-  onClick: () => void;
-  uri?: string;
   isActive?: boolean;
   isDefault?: boolean;
+  onClick: () => void;
+  uri?: string;
 }
 
 export const FilterItem = ({
   collectionName,
   count,
-  onClick,
-  uri,
   isActive,
   isDefault = false,
+  onClick,
+  uri,
 }: FilterItemProps) => {
   const { data: metadata } = useMetadata(uri ?? "");
 
   return (
     <Flex
-      p="12px"
+      align="center"
       bg={isActive ? "gray.800" : "gray.900"}
-      borderRadius="8px"
+      justify="space-between"
+      p="12px"
       _hover={{ bg: "gray.800" }}
+      borderRadius="8px"
       cursor="pointer"
       onClick={() => {
         track(AmpEvent.USE_SELECT_NFT_COLLECTION_GROUP, {
@@ -39,10 +41,8 @@ export const FilterItem = ({
         });
         onClick();
       }}
-      align="center"
-      justify="space-between"
     >
-      <Flex gap="8px" align="center">
+      <Flex align="center" gap="8px">
         {isDefault ? (
           <Flex
             width="32px"
@@ -56,14 +56,14 @@ export const FilterItem = ({
         ) : (
           <Image
             width="32px"
-            height="32px"
-            borderRadius="4px"
-            src={metadata?.image}
             fallbackSrc={NFT_IMAGE_PLACEHOLDER}
             fallbackStrategy="beforeLoadOrError"
+            height="32px"
+            src={metadata?.image}
+            borderRadius="4px"
           />
         )}
-        <Text fontSize="14px" width="150px" className="ellipsis">
+        <Text width="150px" className="ellipsis" fontSize="14px">
           {collectionName}
         </Text>
       </Flex>

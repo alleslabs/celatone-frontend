@@ -7,47 +7,47 @@ import { CustomIcon } from "lib/components/icon";
 const StyledCustomIcon = chakra(CustomIcon, {
   baseStyle: {
     boxSize: 3,
-    p: 0,
     m: 1,
+    p: 0,
   },
 });
 
 export interface ProgressBadgeProps {
+  bgColor?: string;
   state: PeriodState;
   text: string;
-  bgColor?: string;
 }
 
 const BadgeIcon = ({ state }: { state: PeriodState }) => {
   switch (state) {
-    case PeriodState.ONGOING:
-      return <ActiveDot m={1} />;
-    case PeriodState.FAILED:
-      return <StyledCustomIcon name="close-circle-solid" color="error.main" />;
     case PeriodState.COMPLETE:
       return (
         <StyledCustomIcon name="check-circle-solid" color="success.main" />
       );
+    case PeriodState.FAILED:
+      return <StyledCustomIcon name="close-circle-solid" color="error.main" />;
+    case PeriodState.ONGOING:
+      return <ActiveDot m={1} />;
     default:
       return <CustomIcon name="circle" color="gray.600" />;
   }
 };
 
 export const ProgressBadge = ({
+  bgColor = "gray.900",
   state,
   text,
-  bgColor = "gray.900",
 }: ProgressBadgeProps) => (
   <Flex
-    p="4px 8px"
-    gap={2}
     alignItems="center"
-    justifyContent="center"
+    gap={2}
+    p="4px 8px"
     bgColor={bgColor}
     borderRadius="8px"
+    justifyContent="center"
   >
     <BadgeIcon state={state} />
-    <Text variant="body3" color="text.main" whiteSpace="nowrap">
+    <Text variant="body3" whiteSpace="nowrap" color="text.main">
       {text}
     </Text>
   </Flex>

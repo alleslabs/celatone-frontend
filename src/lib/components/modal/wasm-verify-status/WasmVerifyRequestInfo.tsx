@@ -16,33 +16,33 @@ const baseTextStyle: TextProps = {
 };
 
 const baseContainerStyle: FlexProps = {
+  alignItems: { bases: "start", sm: "center" },
   direction: { base: "column", sm: "row" },
   gap: { base: 0, sm: 2 },
-  alignItems: { bases: "start", sm: "center" },
 };
 
 interface WasmVerifyRequestInfoProps {
   codeHash: string;
-  verificationInfo: WasmVerifyInfoBase;
   relatedVerifiedCodes: number[];
+  verificationInfo: WasmVerifyInfoBase;
 }
 
 export const WasmVerifyRequestInfo = ({
   codeHash,
-  verificationInfo,
   relatedVerifiedCodes,
+  verificationInfo,
 }: WasmVerifyRequestInfoProps) => {
   const wasmVerifyStatus = getWasmVerifyStatus({
-    verificationInfo,
-    schema: null,
     relatedVerifiedCodes,
+    schema: null,
+    verificationInfo,
   });
 
   const gitUrlWithCommit = `${verificationInfo.gitUrl}/tree/${verificationInfo.commit}`;
   return (
     <>
-      <Flex direction={{ base: "column", sm: "row" }} gap={{ base: 2, sm: 6 }}>
-        <Flex gap={2} alignItems="center">
+      <Flex gap={{ base: 2, sm: 6 }} direction={{ base: "column", sm: "row" }}>
+        <Flex alignItems="center" gap={2}>
           <Text {...baseTextStyle}>Code ID:</Text>
           <ExplorerLink
             type="code_id"
@@ -55,27 +55,25 @@ export const WasmVerifyRequestInfo = ({
             relatedVerifiedCodes={relatedVerifiedCodes}
           />
         </Flex>
-        <Flex gap={2} alignItems="center">
+        <Flex alignItems="center" gap={2}>
           <Text {...baseTextStyle}>Code Hash:</Text>
           <CopyLink
-            type="code_hash"
-            amptrackSection="code_hash"
-            value={codeHash.toUpperCase()}
             isTruncate
+            type="code_hash"
+            value={codeHash.toUpperCase()}
+            amptrackSection="code_hash"
             showCopyOnHover
           />
         </Flex>
       </Flex>
       <Divider borderColor="gray.700" />{" "}
-      <Flex direction="column" gap={{ base: 2, sm: 1 }}>
+      <Flex gap={{ base: 2, sm: 1 }} direction="column">
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Source Code:</Text>
           <Flex
-            overflow="hidden"
-            gap={1}
             alignItems="center"
+            gap={1}
             sx={{
-              cursor: "pointer",
               "&:hover": {
                 "> *": {
                   color: "primary.light",
@@ -85,13 +83,15 @@ export const WasmVerifyRequestInfo = ({
                   transitionTimingFunction: "ease-in-out",
                 },
               },
+              cursor: "pointer",
             }}
+            overflow="hidden"
           >
-            <Text className="ellipsis" color="primary.main" variant="body2">
+            <Text className="ellipsis" variant="body2" color="primary.main">
               <Link
-                href={gitUrlWithCommit}
-                target="_blank"
                 rel="noopener noreferrer"
+                target="_blank"
+                href={gitUrlWithCommit}
               >
                 {gitUrlWithCommit}
               </Link>
@@ -101,19 +101,19 @@ export const WasmVerifyRequestInfo = ({
         </Flex>
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Package Name:</Text>
-          <Text color="text.main" variant="body2">
+          <Text variant="body2" color="text.main">
             {verificationInfo.packageName}
           </Text>
         </Flex>
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Compiler Version:</Text>
-          <Text color="text.main" variant="body2">
+          <Text variant="body2" color="text.main">
             {verificationInfo.compilerVersion}
           </Text>
         </Flex>
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Submitted on:</Text>
-          <Text color="text.main" variant="body2">
+          <Text variant="body2" color="text.main">
             {formatUTC(verificationInfo.submittedTimestamp)}
           </Text>
         </Flex>

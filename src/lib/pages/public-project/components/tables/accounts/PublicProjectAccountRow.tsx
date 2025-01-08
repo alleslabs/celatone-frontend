@@ -23,25 +23,25 @@ export const PublicProjectAccountRow = ({
 
   return (
     <Grid
-      templateColumns={templateColumns}
-      onClick={goToDetail}
-      _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
-      cursor="pointer"
       minW="min-content"
+      _hover={{ bg: "gray.900" }}
+      cursor="pointer"
+      onClick={goToDetail}
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
     >
       <TableRow>
         <ExplorerLink
-          value={accountInfo.address.toString()}
           type={
             accountInfo.type === "account" ? "user_address" : "contract_address"
           }
+          value={accountInfo.address.toString()}
           showCopyOnHover
         />
       </TableRow>
       <TableRow>{accountInfo.name}</TableRow>
       <TableRow>
-        <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
+        <Text variant="body2" whiteSpace="break-spaces" color="text.dark">
           {accountInfo.description || "N/A"}
         </Text>
       </TableRow>

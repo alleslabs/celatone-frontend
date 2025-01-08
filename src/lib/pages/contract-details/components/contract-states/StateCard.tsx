@@ -17,7 +17,7 @@ export const StateCard = ({ state }: StateCardProps) => {
   }, [state.key]);
 
   return (
-    <Box borderRadius={8} bgColor="gray.900" p={3} maxWidth="100%">
+    <Box maxWidth="100%" p={3} bgColor="gray.900" borderRadius={8}>
       <Box mb={3}>
         <Text variant="body2" color="text.main" wordBreak="break-word">
           {firstKey}
@@ -32,10 +32,10 @@ export const StateCard = ({ state }: StateCardProps) => {
         ))}
       </Box>
       <JsonReadOnly
-        text={JSON.stringify(state.value, null, 2)}
-        canCopy
         fullWidth
         isExpandable
+        text={JSON.stringify(state.value, null, 2)}
+        canCopy
       />
     </Box>
   );

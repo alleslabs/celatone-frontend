@@ -31,35 +31,35 @@ export const DEFAULT_LIST: LVPair[] = [
 export const DEFAULT_ADDRESS = "default-address";
 
 export const typeUrlDict = {
-  [MsgType.STORE_CODE]: "/cosmwasm.wasm.v1.MsgStoreCode",
-  [MsgType.INSTANTIATE]: "/cosmwasm.wasm.v1.MsgInstantiateContract",
   [MsgType.EXECUTE]: "/cosmwasm.wasm.v1.MsgExecuteContract",
+  [MsgType.INSTANTIATE]: "/cosmwasm.wasm.v1.MsgInstantiateContract",
   [MsgType.MIGRATE]: "/cosmwasm.wasm.v1.MsgMigrateContract",
-  [MsgType.UPDATE_ADMIN]: "/cosmwasm.wasm.v1.MsgUpdateAdmin",
+  [MsgType.STORE_CODE]: "/cosmwasm.wasm.v1.MsgStoreCode",
   [MsgType.SUBMIT_PROPOSAL]: "/cosmos.gov.v1beta1.MsgSubmitProposal",
+  [MsgType.UPDATE_ADMIN]: "/cosmwasm.wasm.v1.MsgUpdateAdmin",
 };
 
 export const DEFAULT_RPC_ERROR = "Invalid format, or Something went wrong";
 
 export const DEFAULT_BASE_TX_FILTERS: BaseTxFilters = {
-  isSend: false,
   isIbc: false,
+  isSend: false,
 };
 
 export const DEFAULT_WASM_TX_FILTERS: WasmTxFilters = {
-  isInstantiate: false,
-  isStoreCode: false,
-  isExecute: false,
-  isMigrate: false,
-  isUpdateAdmin: false,
   isClearAdmin: false,
+  isExecute: false,
+  isInstantiate: false,
+  isMigrate: false,
+  isStoreCode: false,
+  isUpdateAdmin: false,
 };
 
 export const DEFAULT_MOVE_TX_FILTERS: MoveTxFilters = {
-  isMovePublish: false,
-  isMoveUpgrade: false,
   isMoveExecute: false,
+  isMovePublish: false,
   isMoveScript: false,
+  isMoveUpgrade: false,
 };
 
 export const DEFAULT_INITIA_TX_FILTERS: InitiaTxFilters = {
@@ -74,12 +74,12 @@ export const DEFAULT_TX_FILTERS: TxFilters = {
 };
 
 export enum StorageKeys {
-  NavSidebar = "nav-sidebar",
+  Annoucement = "annoucement",
   DevSidebar = "dev-sidebar",
+  NavSidebar = "nav-sidebar",
+  Networks = "networks",
   ProjectSidebar = "project-sidebar",
   Wallets = "wallets",
-  Networks = "networks",
-  Annoucement = "annoucement",
 }
 
 export const HEX_WALLET_ADDRESS_LENGTH = 40;

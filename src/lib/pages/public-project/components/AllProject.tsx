@@ -40,7 +40,7 @@ export const AllProject = observer(() => {
         )
       );
 
-      const order = new Set([...orderSavedProjects, ...orderedProjects]);
+      const order = new Set([...orderedProjects, ...orderSavedProjects]);
 
       return matchSorter([...Array.from(order)], searchKeyword, {
         keys: ["details.name"],
@@ -55,33 +55,33 @@ export const AllProject = observer(() => {
   if (!publicProjectInfo)
     return (
       <Flex
-        flexDirection="column"
         alignItems="center"
-        w="full"
         bg="gray.900"
-        borderRadius={8}
         p={12}
+        w="full"
+        borderRadius={8}
+        flexDirection="column"
       >
         <StateImage imageVariant="empty" />
-        <Heading as="h6" variant="h6" mt={2} textAlign="center">
+        <Heading as="h6" mt={2} textAlign="center" variant="h6">
           Gathering Public Projects...
         </Heading>
         <Text
-          mt={4}
           mb={8}
-          color="text.dark"
+          mt={4}
           textAlign="center"
-          whiteSpace="pre-wrap"
           variant="body2"
+          whiteSpace="pre-wrap"
+          color="text.dark"
         >
           We are currently gathering public projects to feature here.
           <br /> To share yours with the community, please submit your request.
         </Text>
         <Link
-          href="https://github.com/alleslabs/celatone-api"
-          target="_blank"
           rel="noopener noreferrer"
+          target="_blank"
           onClick={() => track(AmpEvent.USE_SUBMIT_PROJECT)}
+          href="https://github.com/alleslabs/celatone-api"
         >
           <Button gap={2} variant="outline-primary">
             <CustomIcon name="github" />
@@ -94,26 +94,26 @@ export const AllProject = observer(() => {
   return (
     <Box minH="xs" w="100%">
       <InputWithIcon
-        placeholder="Search with Project Name"
-        value={searchKeyword}
-        onChange={(e) => setSearchKeyword(e.target.value)}
-        size={{ base: "md", md: "lg" }}
         my={2}
+        size={{ base: "md", md: "lg" }}
+        value={searchKeyword}
         amptrackSection="public-project-search"
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        placeholder="Search with Project Name"
       />
       {!filteredPublicProjects.length ? (
         <EmptyState
+          imageVariant="not-found"
           message="No matching projects found.
         Make sure you are searching with Project Name."
-          imageVariant="not-found"
           withBorder
         />
       ) : (
         <SimpleGrid
-          columns={{ sm: 1, md: 3 }}
           mt={{ base: 6, md: 12 }}
           spacing={4}
           w="full"
+          columns={{ md: 3, sm: 1 }}
         >
           {filteredPublicProjects.map((item) => (
             <PublicProjectCard
@@ -125,20 +125,20 @@ export const AllProject = observer(() => {
         </SimpleGrid>
       )}
       <Flex
-        justifyContent="center"
         gap={2}
-        w="100%"
-        mt={{ base: 8, md: 16 }}
         mb={{ base: 4, md: 0 }}
+        mt={{ base: 8, md: 16 }}
+        w="100%"
+        justifyContent="center"
       >
-        <Text color="text.dark" variant="body2">
+        <Text variant="body2" color="text.dark">
           Want your project here?
         </Text>
         <Link
-          href="https://github.com/alleslabs/celatone-api"
-          target="_blank"
           rel="noopener noreferrer"
+          target="_blank"
           onClick={() => track(AmpEvent.USE_SUBMIT_PROJECT)}
+          href="https://github.com/alleslabs/celatone-api"
         >
           Submit on Github
         </Link>

@@ -25,30 +25,30 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
     proposalData.status === ProposalStatus.DEPOSIT_PERIOD ||
     proposalData.status === ProposalStatus.VOTING_PERIOD;
   return (
-    <Flex direction="column" gap={5}>
+    <Flex gap={5} direction="column">
       <Breadcrumb
         items={[
           {
-            text: "Proposals",
             href: "/proposals",
+            text: "Proposals",
           },
           { text: `#${proposalData.id.toString()}` },
         ]}
       />
       <Flex
-        justifyContent="space-between"
         direction={{ base: "column", md: "row" }}
+        justifyContent="space-between"
       >
-        <Flex direction="column" gap={1}>
+        <Flex gap={1} direction="column">
           <Flex gap={2}>
             <CustomIcon name="proposal" boxSize={5} color="primary.main" />
             <Heading
               as="h5"
-              mt={{ base: 1, md: 0 }}
               ml={{ base: 1, md: 0 }}
+              mt={{ base: 1, md: 0 }}
               variant={{ base: "h6", md: "h5" }}
-              wordBreak="break-word"
               color={proposalData.title ? "text.main" : "text.disabled"}
+              wordBreak="break-word"
             >
               <span style={{ color: "var(--chakra-colors-primary-main)" }}>
                 #{proposalData.id}
@@ -69,17 +69,17 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
           </Flex>
           <Flex gap={{ base: 2, md: 0 }} mb={4} direction="column">
             <Flex
+              align="start"
               gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
-              align="start"
             >
               <Text
-                variant="body2"
-                color="text.dark"
-                fontWeight={500}
-                whiteSpace="nowrap"
                 lineHeight="24px"
                 mt="1px"
+                variant="body2"
+                whiteSpace="nowrap"
+                color="text.dark"
+                fontWeight={500}
               >
                 Proposal Messages:
               </Text>
@@ -87,20 +87,20 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                 <Flex display="inline-block">
                   {proposalData.types.map((msgType, index) => (
                     <Text
-                      variant="body2"
-                      color="text.main"
-                      whiteSpace="normal"
-                      wordBreak="break-all"
-                      display="inline-block"
                       key={msgType + index.toString()}
+                      display="inline-block"
                       h={6}
+                      variant="body2"
+                      whiteSpace="normal"
+                      color="text.main"
+                      wordBreak="break-all"
                     >
                       {index > 0 && (
                         <span
                           style={{
                             color: "var(--chakra-colors-primary-main)",
-                            marginLeft: "4px",
                             fontWeight: 600,
+                            marginLeft: "4px",
                           }}
                         >
                           {" , "}
@@ -111,19 +111,19 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                   ))}
                 </Flex>
               ) : (
-                <Text variant="body2" color="text.dark" mt="3px">
+                <Text mt="3px" variant="body2" color="text.dark">
                   (No Message)
                 </Text>
               )}
             </Flex>
             {proposalData.createdHeight ? (
               <Flex
+                alignItems={{ base: "flex-start", md: "center" }}
                 gap={{ base: 0, md: 2 }}
                 direction={{ base: "column", md: "row" }}
-                alignItems={{ base: "flex-start", md: "center" }}
               >
-                <Flex gap={2} alignItems="center">
-                  <Text color="text.dark" variant="body2" fontWeight={500}>
+                <Flex alignItems="center" gap={2}>
+                  <Text variant="body2" color="text.dark" fontWeight={500}>
                     Created Height:
                   </Text>
                   <ExplorerLink
@@ -140,7 +140,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                 </Text>
               </Flex>
             ) : (
-              <Text color="text.dark" variant="body2">
+              <Text variant="body2" color="text.dark">
                 <span style={{ fontWeight: 500 }}>Created Time: </span>
                 {formatUTC(proposalData.submitTime)}
               </Text>

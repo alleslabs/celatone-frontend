@@ -23,8 +23,8 @@ const BlocksPage = () => {
     <PageContainer>
       <CelatoneSeo pageName="Blocks" />
       <PageHeader
-        title="Blocks"
         subtitle="This page displays all blocks on this network sorted by recency"
+        title="Blocks"
         docHref="introduction/overview#recent-blocks"
       />
       <TierSwitcher

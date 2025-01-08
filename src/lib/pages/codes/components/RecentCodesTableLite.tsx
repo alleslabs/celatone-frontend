@@ -14,8 +14,8 @@ export const RecentCodesTableLite = observer(() => {
     error,
     fetchNextPage,
     hasNextPage,
-    isLoading,
     isFetchingNextPage,
+    isLoading,
   } = useRecentCodesLcd();
 
   const onRowSelect = (codeId: number) =>
@@ -28,8 +28,6 @@ export const RecentCodesTableLite = observer(() => {
     <>
       {data && !!error && <AlertPaginationLcd />}
       <CodesTable
-        codes={data}
-        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant="empty"
@@ -37,14 +35,16 @@ export const RecentCodesTableLite = observer(() => {
             withBorder
           />
         }
+        codes={data}
+        isLoading={isLoading}
         onRowSelect={onRowSelect}
         showCw2andContracts={false}
       />
       {hasNextPage && (
         <LoadNext
-          text="Load more 10 codes"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          text="Load more 10 codes"
         />
       )}
     </>

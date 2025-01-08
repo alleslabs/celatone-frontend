@@ -18,18 +18,16 @@ export const EvmContractDetailsCosmosTxs = ({
 }: EvmContractDetailsCosmosTxsProps) => {
   const {
     data,
-    isLoading,
-    isError,
-    hasNextPage,
     fetchNextPage,
+    hasNextPage,
+    isError,
     isFetchingNextPage,
+    isLoading,
   } = useTxsByAddressSequencer(address, undefined);
 
   return (
     <>
       <TransactionsTable
-        transactions={!onViewMore ? data : data?.slice(0, 5)}
-        isLoading={isLoading}
         emptyState={
           data === undefined ? (
             <ErrorFetching dataName="cosmos transactions" />
@@ -40,18 +38,20 @@ export const EvmContractDetailsCosmosTxs = ({
             />
           )
         }
+        isLoading={isLoading}
         showRelations={false}
+        transactions={!onViewMore ? data : data?.slice(0, 5)}
       />
       {data && (
         <>
           {!onViewMore && (
             <>
-              <Text variant="body2" color="text.dark" mt={2}>
+              <Text mt={2} variant="body2" color="text.dark">
                 {data.length} Cosmos transactions found
               </Text>
               {isError && (
-                <Text variant="body2" color="warning.main" mt={2}>
-                  <CustomIcon name="alert-triangle-solid" boxSize={3} ml={0} />{" "}
+                <Text mt={2} variant="body2" color="warning.main">
+                  <CustomIcon ml={0} name="alert-triangle-solid" boxSize={3} />{" "}
                   There is an error during loading more transactions. Please try
                   again later.
                 </Text>
@@ -64,9 +64,9 @@ export const EvmContractDetailsCosmosTxs = ({
                 <ViewMore onClick={onViewMore} />
               ) : (
                 <LoadNext
-                  text="Load more 10 transactions"
                   fetchNextPage={fetchNextPage}
                   isFetchingNextPage={isFetchingNextPage}
+                  text="Load more 10 transactions"
                 />
               )}
             </>

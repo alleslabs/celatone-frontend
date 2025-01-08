@@ -20,8 +20,8 @@ export const convertToEvmDenom = (contractAddress: HexAddr20) =>
 
 export interface EvmToAddress {
   address: HexAddr20;
-  type: "user_address" | "evm_contract_address";
   isCreatedContract: boolean;
+  type: "evm_contract_address" | "user_address";
 }
 
 export const getEvmToAddress = (
@@ -29,14 +29,14 @@ export const getEvmToAddress = (
 ): Option<EvmToAddress> => {
   if (!evmTxData) return undefined;
 
-  const { to, input } = evmTxData.tx;
+  const { input, to } = evmTxData.tx;
   const method = getEvmMethod(input);
 
   if (method === EvmMethodName.TransferErc20) {
     return {
       address: `0x${input.slice(34, 74)}` as HexAddr20,
-      type: "user_address",
       isCreatedContract: false,
+      type: "user_address",
     };
   }
 
@@ -45,8 +45,8 @@ export const getEvmToAddress = (
     if (!contractAddress) return undefined;
     return {
       address: contractAddress,
-      type: "evm_contract_address",
       isCreatedContract: true,
+      type: "evm_contract_address",
     };
   }
 
@@ -56,16 +56,16 @@ export const getEvmToAddress = (
     if (!contractAddress) return undefined;
     return {
       address: contractAddress as HexAddr20,
-      type: "evm_contract_address",
       isCreatedContract: true,
+      type: "evm_contract_address",
     };
   }
 
   if (to) {
     return {
       address: to,
-      type: "user_address",
       isCreatedContract: false,
+      type: "user_address",
     };
   }
 

@@ -24,50 +24,50 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
   return (
     <ActionPageContainer>
       <CelatoneSeo pageName="Instantiate Contract" />
-      <CustomIcon name="check-circle-solid" color="success.main" boxSize={12} />
-      <Heading as="h5" variant="h5" mt={3} mb={12}>
+      <CustomIcon name="check-circle-solid" boxSize={12} color="success.main" />
+      <Heading as="h5" mb={12} mt={3} variant="h5">
         Instantiate Complete!
       </Heading>
       <TxReceiptRender
         receipts={[
           {
-            title: "Tx Hash",
             html: (
               <ExplorerLink type="tx_hash" value={txInfo.transactionHash} />
             ),
+            title: "Tx Hash",
           },
           {
-            title: "Contract Address",
             html: txInfo.contractAddress ? (
               <ExplorerLink
                 type="contract_address"
                 value={txInfo.contractAddress}
               />
             ) : undefined,
+            title: "Contract Address",
           },
           {
-            title: "Tx Fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
+            title: "Tx Fee",
           },
         ]}
         variant="full"
       />
       <Flex
-        gap={6}
-        w="full"
         borderBottomWidth={1}
-        borderBottomColor="gray.700"
-        pb={8}
+        gap={6}
         my={8}
+        pb={8}
+        w="full"
+        borderBottomColor="gray.700"
       >
         <Button
-          w="full"
           variant="outline-gray"
+          w="full"
           onClick={() =>
             navigate({ pathname: `/contracts/${txInfo.contractAddress}` })
           }
@@ -75,14 +75,14 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
           View Contract
         </Button>
         <Button
-          w="full"
           variant="outline-gray"
+          w="full"
           onClick={() =>
             navigate({
               pathname: "/interact-contract",
               query: {
-                selectedType: ContractInteractionTabs.Execute,
                 contract: txInfo.contractAddress,
+                selectedType: ContractInteractionTabs.Execute,
               },
             })
           }
@@ -90,14 +90,14 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
           Execute
         </Button>
         <Button
-          w="full"
           variant="outline-gray"
+          w="full"
           onClick={() =>
             navigate({
               pathname: "/interact-contract",
               query: {
-                selectedType: ContractInteractionTabs.Query,
                 contract: txInfo.contractAddress,
+                selectedType: ContractInteractionTabs.Query,
               },
             })
           }
@@ -107,11 +107,11 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
       </Flex>
       {/* Off chain detail */}
       <InstantiateOffChainForm
-        title="Contract Off-Chain Detail"
         subtitle="Filled information below will be saved on Celatone only and able to edit later."
+        title="Contract Off-Chain Detail"
+        codeId={txInfo.codeId}
         contractAddress={txInfo.contractAddress as BechAddr32}
         contractLabel={txInfo.contractLabel}
-        codeId={txInfo.codeId}
         instantiator={txInfo.instantiator}
       />
     </ActionPageContainer>

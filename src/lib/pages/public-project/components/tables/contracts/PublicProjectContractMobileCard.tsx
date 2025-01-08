@@ -34,47 +34,13 @@ export const PublicProjectContractMobileCard = ({
 
   return (
     <MobileCardTemplate
-      onClick={goToContractDetails}
-      topContent={
-        <>
-          <Flex align="start" direction="column">
-            <MobileLabel variant="body2" label="Contract Address" />
-            <ExplorerLink
-              value={publicInfo.contractAddress}
-              type="contract_address"
-              rightIcon={
-                <WasmVerifyBadge
-                  status={getWasmVerifyStatus(wasmVerifyInfo)}
-                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-                  linkedCodeId={publicInfo.code}
-                />
-              }
-              showCopyOnHover
-            />
-          </Flex>
-          <Flex
-            gap={3}
-            alignItems="center"
-            justifyContent="center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <AppLink
-              href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${publicInfo.contractAddress}`}
-            >
-              <Button variant="outline-gray" size="sm">
-                Query
-              </Button>
-            </AppLink>
-          </Flex>
-        </>
-      }
       middleContent={
-        <Flex direction="column" gap={3}>
+        <Flex gap={3} direction="column">
           <Flex flex={1} direction="column">
             <Flex direction="column">
               <MobileLabel label="Contract Name" />
               <Text>{publicInfo.name}</Text>
-              <Text variant="body3" color="text.dark" pt={1}>
+              <Text pt={1} variant="body3" color="text.dark">
                 {publicInfo.description}
               </Text>
             </Flex>
@@ -83,13 +49,47 @@ export const PublicProjectContractMobileCard = ({
             <Flex direction="column">
               <MobileLabel label="Instantiated By" />
               <ExplorerLink
-                value={publicInfo.instantiator}
                 type={getAddressTypeByLength(publicInfo.instantiator)}
+                value={publicInfo.instantiator}
                 showCopyOnHover
               />
             </Flex>
           </Flex>
         </Flex>
+      }
+      onClick={goToContractDetails}
+      topContent={
+        <>
+          <Flex align="start" direction="column">
+            <MobileLabel label="Contract Address" variant="body2" />
+            <ExplorerLink
+              type="contract_address"
+              value={publicInfo.contractAddress}
+              rightIcon={
+                <WasmVerifyBadge
+                  status={getWasmVerifyStatus(wasmVerifyInfo)}
+                  linkedCodeId={publicInfo.code}
+                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                />
+              }
+              showCopyOnHover
+            />
+          </Flex>
+          <Flex
+            alignItems="center"
+            gap={3}
+            justifyContent="center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <AppLink
+              href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${publicInfo.contractAddress}`}
+            >
+              <Button size="sm" variant="outline-gray">
+                Query
+              </Button>
+            </AppLink>
+          </Flex>
+        </>
       }
     />
   );

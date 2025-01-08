@@ -4,13 +4,13 @@ import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 import type { SearchResult } from "lib/services/searchService";
 
 interface SearchResultItemBodyProps {
-  result: SearchResult;
   isAccountAddress: boolean;
+  result: SearchResult;
 }
 
 export const SearchResultItemBody = ({
-  result,
   isAccountAddress,
+  result,
 }: SearchResultItemBodyProps) => {
   if (isAccountAddress && !!result.metadata?.initiaUsername)
     return (
@@ -34,7 +34,7 @@ export const SearchResultItemBody = ({
     return (
       <Flex direction="column">
         <Flex gap={1}>
-          <Flex gap={1} align="center">
+          <Flex align="center" gap={1}>
             <PrimaryNameMark />
             <Text variant="body2">
               {result.metadata.icns.icnsNames.primaryName}
@@ -46,9 +46,9 @@ export const SearchResultItemBody = ({
               <Text
                 variant="body2"
                 _before={{
+                  color: "text.dark",
                   content: '"/"',
                   fontSize: "12px",
-                  color: "text.dark",
                   mr: 1,
                 }}
               >

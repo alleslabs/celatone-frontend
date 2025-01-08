@@ -12,8 +12,8 @@ export const Templates = {
   ArrayFieldTemplate,
   BaseInputTemplate,
   ButtonTemplates,
+  DescriptionFieldTemplate,
   FieldTemplate,
   ObjectFieldTemplate,
-  DescriptionFieldTemplate,
   TitleFieldTemplate,
 };

@@ -15,11 +15,11 @@ export const EstimatedFeeRender = ({
     withPrices: false,
   });
 
-  if (isAssetInfoLoading) return <Spinner size="sm" mx={1} />;
+  if (isAssetInfoLoading) return <Spinner mx={1} size="sm" />;
   if (loading)
     return (
       <>
-        <Spinner size="sm" mx={1} /> Estimating ...
+        <Spinner mx={1} size="sm" /> Estimating ...
       </>
     );
 

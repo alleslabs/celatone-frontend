@@ -26,7 +26,7 @@ interface PublicProjectModuleTableProps {
 const TEMPLATE_COLUMNS = "320px 160px minmax(250px, 1fr) 160px";
 
 const ModuleTableHeader = () => (
-  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
+  <Grid minW="min-content" templateColumns={TEMPLATE_COLUMNS}>
     <TableHeader>Module Path</TableHeader>
     <TableHeader>Owner</TableHeader>
     <TableHeader>Module Description</TableHeader>
@@ -80,28 +80,28 @@ export const PublicProjectModuleTable = ({
   }, [modules, onViewMore, searchKeyword]);
 
   return (
-    <Box mt={{ base: 8, md: 12 }} mb={4}>
+    <Box mb={4} mt={{ base: 8, md: 12 }}>
       <TableTitle title="Modules" count={modules.length} />
       {!onViewMore && (
         <InputWithIcon
-          placeholder="Search with Module Address or Module Name"
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
-          size={{ base: "md", md: "lg" }}
           my={2}
+          size={{ base: "md", md: "lg" }}
+          value={searchKeyword}
           amptrackSection="public-project-module-search"
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          placeholder="Search with Module Address or Module Name"
         />
       )}
       {filteredModules.length ? (
         <ContentRender filteredModules={filteredModules} isMobile={isMobile} />
       ) : (
         <EmptyState
+          imageVariant={onViewMore && "empty"}
           message={
             modules.length
               ? "No matching module found for this project. Make sure you are searching with Module Address or Module Name"
               : "There are currently no modules related to this project."
           }
-          imageVariant={onViewMore && "empty"}
           withBorder
         />
       )}

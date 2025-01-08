@@ -22,8 +22,8 @@ const RecentContracts = () => {
     <PageContainer>
       <CelatoneSeo pageName="Contracts" />
       <PageHeader
-        title="Contracts"
         subtitle="This page displays all contracts on this network sorted by recency"
+        title="Contracts"
         docHref="introduction/overview#recent-contracts"
       />
       <RecentContractsTable />

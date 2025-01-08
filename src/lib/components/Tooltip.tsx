@@ -4,28 +4,28 @@ import { Tooltip as ChakraTooltip, useDisclosure } from "@chakra-ui/react";
 import { CustomIcon } from "./icon";
 
 export const Tooltip = ({
-  placement = "top",
   children,
+  placement = "top",
   ...tooltipProps
 }: TooltipProps) => {
-  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+  const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
   return (
     <ChakraTooltip
-      hasArrow
+      isOpen={isOpen}
       placement={placement}
       arrowSize={8}
-      isOpen={isOpen}
+      hasArrow
       {...tooltipProps}
     >
       <span
         style={{
-          display: "inline-flex",
           alignItems: "center",
+          display: "inline-flex",
           height: "fit-content",
         }}
+        onClickCapture={onToggle}
         onMouseEnter={onOpen}
         onMouseLeave={onClose}
-        onClickCapture={onToggle}
       >
         {children}
       </span>
@@ -40,10 +40,10 @@ interface TooltipInfoProps extends Omit<TooltipProps, "children"> {
 export const TooltipInfo = (props: TooltipInfoProps) => (
   <Tooltip {...props}>
     <CustomIcon
-      color="gray.600"
+      m={0}
       name="info-circle"
       boxSize={3}
-      m={0}
+      color="gray.600"
       cursor="pointer"
       onClick={(e) => e.stopPropagation()}
     />

@@ -19,14 +19,14 @@ import { MultiBondsRadioCard } from "./radio-card/MultiBondsRadioCard";
 import { SingleBondRadioCard } from "./radio-card/SingleBondRadioCard";
 
 interface DelegationsBodyProps {
-  totalDelegations: Option<Record<string, TokenWithValue>>;
+  bondDenoms: TokenWithValue[];
   delegations: Option<Delegation[]>;
-  totalUnbondings: Option<Record<string, TokenWithValue>>;
-  unbondings: Option<Unbonding[]>;
-  rewards: Option<Record<string, TokenWithValue[]>>;
   isDelegationsLoading: boolean;
   isUnbondingsLoading: boolean;
-  bondDenoms: TokenWithValue[];
+  rewards: Option<Record<string, TokenWithValue[]>>;
+  totalDelegations: Option<Record<string, TokenWithValue>>;
+  totalUnbondings: Option<Record<string, TokenWithValue>>;
+  unbondings: Option<Unbonding[]>;
 }
 
 const getPanelStyle = ({ isMobile }: { isMobile: boolean }) => ({
@@ -37,18 +37,18 @@ const getPanelStyle = ({ isMobile }: { isMobile: boolean }) => ({
 });
 
 interface DelegationTabProps extends TabProps {
-  value: string;
-  tokens: Option<Record<string, TokenWithValue>>;
-  isLoading: boolean;
   bondDenoms: TokenWithValue[];
+  isLoading: boolean;
+  tokens: Option<Record<string, TokenWithValue>>;
+  value: string;
 }
 
 const DelegationTab = ({
-  isDisabled,
-  value,
-  tokens,
-  isLoading,
   bondDenoms,
+  isDisabled,
+  isLoading,
+  tokens,
+  value,
   ...restProps
 }: DelegationTabProps) => {
   const tabProps = useTab({ ...restProps });
@@ -57,47 +57,47 @@ const DelegationTab = ({
   return (
     <Button
       __css={styles.tab}
-      display="flex"
-      w="full"
-      mb={0}
-      py={3}
-      borderRadius="8px 8px 0px 0px"
-      color="text.main"
-      sx={{
-        "&[aria-selected=true]": {
-          background: "gray.800",
-          border: "1px solid",
-          borderColor: "gray.700",
-          opacity: "100%",
-          borderBottomColor: "gray.800",
-        },
-        "&[aria-selected=false]": {
-          background: "transparent",
-          border: "1px solid",
-          borderColor: "gray.700",
-          opacity: "70%",
-          borderBottomColor: "transparent",
-        },
-      }}
-      isDisabled={isDisabled}
       _active={{
         bg: "unset",
       }}
+      display="flex"
+      isDisabled={isDisabled}
+      mb={0}
+      py={3}
+      sx={{
+        "&[aria-selected=false]": {
+          background: "transparent",
+          border: "1px solid",
+          borderBottomColor: "transparent",
+          borderColor: "gray.700",
+          opacity: "70%",
+        },
+        "&[aria-selected=true]": {
+          background: "gray.800",
+          border: "1px solid",
+          borderBottomColor: "gray.800",
+          borderColor: "gray.700",
+          opacity: "100%",
+        },
+      }}
+      w="full"
+      borderRadius="8px 8px 0px 0px"
+      color="text.main"
       {...tabProps}
     >
       {bondDenoms.length === 1 ? (
         <SingleBondRadioCard
           value={value}
+          isLoading={isLoading}
           token={
             tokens ? tokens[bondDenoms[0].denom] ?? bondDenoms[0] : undefined
           }
-          isLoading={isLoading}
         />
       ) : (
         <MultiBondsRadioCard
           value={value}
-          tokens={tokens}
           isLoading={isLoading}
+          tokens={tokens}
         />
       )}
     </Button>
@@ -105,14 +105,14 @@ const DelegationTab = ({
 };
 
 export const DelegationsBody = ({
-  totalDelegations,
+  bondDenoms,
   delegations,
-  totalUnbondings,
-  unbondings,
-  rewards,
   isDelegationsLoading,
   isUnbondingsLoading,
-  bondDenoms,
+  rewards,
+  totalDelegations,
+  totalUnbondings,
+  unbondings,
 }: DelegationsBodyProps) => {
   // NOTE: set between "Delegated" and "Unbonding"
   const router = useRouter();
@@ -125,42 +125,42 @@ export const DelegationsBody = ({
   const isMobile = useMobile();
 
   return (
-    <Tabs isLazy lazyBehavior="keepMounted" mt={6} w="full">
-      <TabList borderBottom="0px solid" gap={2}>
+    <Tabs isLazy mt={6} w="full" lazyBehavior="keepMounted">
+      <TabList gap={2} borderBottom="0px solid">
         <DelegationTab
-          tokens={totalDelegations}
-          isLoading={isDelegationsLoading}
-          bondDenoms={bondDenoms}
           value="Delegated"
+          bondDenoms={bondDenoms}
+          isLoading={isDelegationsLoading}
+          tokens={totalDelegations}
         />
         <DelegationTab
           value="Unbonding"
-          tokens={totalUnbondings}
-          isLoading={isUnbondingsLoading}
           bondDenoms={bondDenoms}
+          isLoading={isUnbondingsLoading}
+          tokens={totalUnbondings}
         />
       </TabList>
       <TabPanels
+        p={4}
         background="gray.800"
         border="1px solid"
         borderColor="gray.700"
-        borderTopColor="transparent"
         borderRadius="0px 0px 8px 8px"
-        p={4}
+        borderTopColor="transparent"
       >
         <TabPanel {...getPanelStyle({ isMobile })}>
           <DelegationsTable
-            delegations={delegations}
             rewards={rewards}
+            delegations={delegations}
             isLoading={isDelegationsLoading}
             isSingleBondDenom={bondDenoms.length === 1}
           />
         </TabPanel>
         <TabPanel {...getPanelStyle({ isMobile })}>
           <UnbondingsTable
-            unbondings={unbondings}
             isLoading={isUnbondingsLoading}
             isSingleBondDenom={bondDenoms.length === 1}
+            unbondings={unbondings}
           />
         </TabPanel>
       </TabPanels>

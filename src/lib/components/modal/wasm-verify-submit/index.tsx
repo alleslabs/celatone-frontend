@@ -18,29 +18,29 @@ import { WasmVerifySubmitCompleted } from "./WasmVerifySubmitCompleted";
 import { WasmVerifySubmitFailed } from "./WasmVerifySubmitFailed";
 import { WasmVerifySubmitForm } from "./WasmVerifySubmitForm";
 
-interface WasmVerifySubmitModalProps {
-  codeId: number;
-  codeHash: Option<string>;
-  wasmVerifyStatus: WasmVerifyStatus;
-  relatedVerifiedCodes?: number[];
-  contractAddress?: BechAddr32;
-  triggerElement: ReactNode;
-}
-
 interface WasmVerifySubmitModalBodyProps
   extends Omit<WasmVerifySubmitModalProps, "triggerElement"> {
-  onSubmit: (wasmVerifyRequest: WasmVerifyRequest) => void;
+  errorMsg: Option<string>;
+  isError: boolean;
   isLoading: boolean;
   isSuccess: boolean;
-  isError: boolean;
-  errorMsg: Option<string>;
   onClose: () => void;
+  onSubmit: (wasmVerifyRequest: WasmVerifyRequest) => void;
+}
+
+interface WasmVerifySubmitModalProps {
+  codeHash: Option<string>;
+  codeId: number;
+  contractAddress?: BechAddr32;
+  relatedVerifiedCodes?: number[];
+  triggerElement: ReactNode;
+  wasmVerifyStatus: WasmVerifyStatus;
 }
 
 const WasmVerifySubmitModalBody = ({
-  isSuccess,
-  isError,
   errorMsg,
+  isError,
+  isSuccess,
   onClose,
   ...props
 }: WasmVerifySubmitModalBodyProps) => {
@@ -51,16 +51,16 @@ const WasmVerifySubmitModalBody = ({
 };
 
 export const WasmVerifySubmitModal = ({
-  codeId,
   codeHash,
-  wasmVerifyStatus,
-  relatedVerifiedCodes,
+  codeId,
   contractAddress,
+  relatedVerifiedCodes,
   triggerElement,
+  wasmVerifyStatus,
 }: WasmVerifySubmitModalProps) => {
   const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
-  const { mutate, isLoading, isSuccess, isError, error } =
+  const { error, isError, isLoading, isSuccess, mutate } =
     useSubmitWasmVerify();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -89,29 +89,29 @@ export const WasmVerifySubmitModal = ({
         {triggerElement}
       </Flex>
       <Modal
+        isCentered
         isOpen={isOpen}
         onClose={handleClose}
-        isCentered
         returnFocusOnClose={false}
       >
         <ModalOverlay />
         <ModalContent
-          w={{ base: "full", md: "645px" }}
           bg="gray.800"
           maxW="100vw"
+          w={{ base: "full", md: "645px" }}
         >
           <WasmVerifySubmitModalBody
-            codeId={codeId}
-            codeHash={codeHash}
-            wasmVerifyStatus={wasmVerifyStatus}
-            relatedVerifiedCodes={relatedVerifiedCodes}
-            contractAddress={contractAddress}
-            onSubmit={mutate}
-            isLoading={isLoading}
             isSuccess={isSuccess}
-            isError={isError}
+            wasmVerifyStatus={wasmVerifyStatus}
+            codeHash={codeHash}
+            codeId={codeId}
+            contractAddress={contractAddress}
             errorMsg={error?.response?.data.message}
+            isError={isError}
+            isLoading={isLoading}
             onClose={handleClose}
+            onSubmit={mutate}
+            relatedVerifiedCodes={relatedVerifiedCodes}
           />
         </ModalContent>
       </Modal>

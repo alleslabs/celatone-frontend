@@ -16,12 +16,12 @@ import { ProposalStatus } from "lib/types";
 import { toggleItem } from "lib/utils";
 
 export interface ProposalStatusFilterProps extends InputProps {
-  result: ProposalStatus[];
-  minW?: string;
-  label?: string;
-  placeholder?: string;
-  setResult: (option: ProposalStatus[]) => void;
   isMulti: boolean;
+  label?: string;
+  minW?: string;
+  placeholder?: string;
+  result: ProposalStatus[];
+  setResult: (option: ProposalStatus[]) => void;
 }
 
 export const ProposalStatusFilter = forwardRef<
@@ -30,12 +30,12 @@ export const ProposalStatusFilter = forwardRef<
 >(
   (
     {
-      result,
-      minW = "50%",
-      setResult,
-      placeholder,
-      label,
       isMulti,
+      label,
+      minW = "50%",
+      placeholder,
+      result,
+      setResult,
     }: ProposalStatusFilterProps,
     ref
   ) => {
@@ -86,24 +86,19 @@ export const ProposalStatusFilter = forwardRef<
     };
 
     useOutsideClick({
-      ref: boxRef,
       handler: () => setIsDropdown(false),
+      ref: boxRef,
     });
 
     return (
-      <FormControl ref={boxRef} minW={minW} maxW="full" h={8}>
+      <FormControl h={8} maxW="full" minW={minW} ref={boxRef}>
         <FilterInput
           keyword={keyword}
-          placeholder={placeholder}
-          result={result}
-          label={label}
           inputRef={inputRef}
-          ref={ref}
-          isDropdown={isDropdown}
-          setKeyword={setKeyword}
-          setIsDropdown={setIsDropdown}
+          label={label}
+          result={result}
           chipContainerComponent={
-            <Flex alignItems="center" pl={2} gap={2}>
+            <Flex alignItems="center" gap={2} pl={2}>
               {result.map((option: ProposalStatus) => (
                 <FilterChip
                   key={option}
@@ -113,6 +108,11 @@ export const ProposalStatusFilter = forwardRef<
               ))}
             </Flex>
           }
+          isDropdown={isDropdown}
+          placeholder={placeholder}
+          setIsDropdown={setIsDropdown}
+          setKeyword={setKeyword}
+          ref={ref}
         />
 
         {isDropdown && (

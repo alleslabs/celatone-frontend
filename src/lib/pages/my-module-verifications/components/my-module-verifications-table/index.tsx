@@ -43,20 +43,20 @@ export const MyModuleVerificationsTable = observer(() => {
 
   return (
     <Box>
-      <Grid templateColumns="3fr 1.2fr" columnGap={4} my={6}>
+      <Grid my={6} columnGap={4} templateColumns="3fr 1.2fr">
         <InputWithIcon
-          placeholder="Search with Request ID"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          amptrackSection="my-published-modules-search"
           size="lg"
+          value={keyword}
+          amptrackSection="my-published-modules-search"
+          onChange={(e) => setKeyword(e.target.value)}
+          placeholder="Search with Request ID"
         />
         <MoveVerifyTaskStatusFilter
+          isMulti
           label="Filter by Status"
           result={statuses}
           setResult={setStatuses}
           placeholder="All Status"
-          isMulti
         />
       </Grid>
 
@@ -64,7 +64,6 @@ export const MyModuleVerificationsTable = observer(() => {
         <Stack alignItems="center">
           <EmptyState
             imageVariant={isFiltering ? "not-found" : "empty"}
-            withBorder
             message={
               isFiltering
                 ? `No past verification requests found.
@@ -72,10 +71,11 @@ Please submit a new verification request.`
                 : `Your past submission for module verifications will display here`
             }
             py={10}
+            withBorder
           >
             <Button
-              onClick={() => navigate({ pathname: "/modules/verify" })}
               leftIcon={<CustomIcon name="plus" />}
+              onClick={() => navigate({ pathname: "/modules/verify" })}
             >
               Submit Verification
             </Button>
@@ -87,8 +87,8 @@ Please submit a new verification request.`
           {filteredTasks.map((task) => (
             <MyModuleVerificationsRow
               key={task.taskId}
-              templateColumns={templateColumns}
               task={task}
+              templateColumns={templateColumns}
             />
           ))}
         </TableContainer>

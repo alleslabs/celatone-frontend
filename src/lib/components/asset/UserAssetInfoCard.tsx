@@ -5,25 +5,25 @@ import type { Option, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 interface UserAssetInfoCardProps {
-  totalSupportedAssetsValue: Option<USD<Big>>;
   helperText?: string;
+  totalSupportedAssetsValue: Option<USD<Big>>;
 }
 
 export const UserAssetInfoCard = ({
-  totalSupportedAssetsValue,
   helperText,
+  totalSupportedAssetsValue,
 }: UserAssetInfoCardProps) => {
   const isZeroValue =
     !totalSupportedAssetsValue || totalSupportedAssetsValue.eq(0);
 
   return (
-    <Flex direction="column" width="fit-content">
-      <Text variant="body2" fontWeight={500} color="text.dark">
+    <Flex width="fit-content" direction="column">
+      <Text variant="body2" color="text.dark" fontWeight={500}>
         {helperText}
       </Text>
       <Heading
-        mt={1}
         as="h6"
+        mt={1}
         variant="h6"
         color={isZeroValue ? "text.dark" : "text.main"}
       >

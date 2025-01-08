@@ -20,9 +20,9 @@ import { useTxsByAddress, useTxsCountByAddress } from "lib/services/tx";
 import type { Option, TxFilters } from "lib/types";
 
 interface PastTxsState {
-  search: string;
   filters: TxFilters;
   isSigner: Option<boolean>;
+  search: string;
 }
 
 export const PastTxsFull = () => {
@@ -30,12 +30,12 @@ export const PastTxsFull = () => {
   const { address, chainId } = useCurrentChain();
 
   const defaultValues: PastTxsState = {
-    search: "",
     filters: DEFAULT_TX_FILTERS,
     isSigner: undefined,
+    search: "",
   };
 
-  const { watch, setValue, reset } = useForm({
+  const { reset, setValue, watch } = useForm({
     defaultValues,
     mode: "all",
   });
@@ -51,19 +51,19 @@ export const PastTxsFull = () => {
   const txCount = rawTxCount ?? undefined;
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: txCount,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: txCount,
   });
 
   const { data: txs, isLoading } = useTxsByAddress(
@@ -108,45 +108,43 @@ export const PastTxsFull = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Past Transactions" />
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex alignItems="center" justifyContent="space-between">
         <Heading
-          variant="h5"
-          as="h5"
-          minH="36px"
-          display="flex"
           alignItems="center"
+          as="h5"
+          display="flex"
+          minH="36px"
+          variant="h5"
         >
           Past Transactions
         </Heading>
         <UserDocsLink isButton href="general/transactions/past-txs" />
       </Flex>
-      <Flex my={8} gap={3}>
+      <Flex gap={3} my={8}>
         <InputWithIcon
+          size={{ base: "md", md: "lg" }}
+          value={pastTxsState.search}
+          amptrackSection="past-txs-search"
+          onChange={handleOnSearchChange}
           placeholder={`Search with Transaction Hash${
             wasm.enabled ? " or Contract Address" : ""
           }`}
-          value={pastTxsState.search}
-          onChange={handleOnSearchChange}
-          size={{ base: "md", md: "lg" }}
-          amptrackSection="past-txs-search"
         />
         <Flex gap={3}>
           <TxRelationSelection
-            value={pastTxsState.isSigner}
             setValue={handleOnIsSignerChange}
+            value={pastTxsState.isSigner}
             w="165px"
           />
           <TxFilterSelection
+            boxWidth="285px"
             result={selectedFilters}
             setResult={handleOnFiltersChange}
-            boxWidth="285px"
             placeholder="All"
           />
         </Flex>
       </Flex>
       <TransactionsTableWithWallet
-        transactions={txs?.items}
-        isLoading={isLoading}
         emptyState={
           pastTxsState.search.trim().length > 0 ||
           pastTxsState.isSigner !== undefined ||
@@ -166,16 +164,17 @@ export const PastTxsFull = () => {
             />
           )
         }
+        isLoading={isLoading}
         showActions
         showRelations
+        transactions={txs?.items}
       />
       {!!txCount && txCount > 10 && (
         <Pagination
           currentPage={currentPage}
+          pageSize={pageSize}
           pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={txCount}
-          pageSize={pageSize}
           onPageChange={(nextPage) => {
             setCurrentPage(nextPage);
             refetchCount();
@@ -186,6 +185,7 @@ export const PastTxsFull = () => {
             setCurrentPage(1);
             refetchCount();
           }}
+          totalData={txCount}
         />
       )}
     </PageContainer>

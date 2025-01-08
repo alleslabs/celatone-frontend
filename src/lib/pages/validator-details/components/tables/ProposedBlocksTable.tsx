@@ -14,30 +14,30 @@ import type { ValidatorAddr } from "lib/types";
 const scrollComponentId = "proposed-block-table-header";
 
 interface ProposedBlocksTableProps {
-  validatorAddress: ValidatorAddr;
   onViewMore?: () => void;
+  validatorAddress: ValidatorAddr;
 }
 
 export const ProposedBlocksTable = ({
-  validatorAddress,
   onViewMore,
+  validatorAddress,
 }: ProposedBlocksTableProps) => {
   const isMobile = useMobile();
   const isMoibleOverview = isMobile && !!onViewMore;
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
@@ -52,36 +52,34 @@ export const ProposedBlocksTable = ({
 
   return isMoibleOverview ? (
     <Flex
-      backgroundColor="gray.900"
-      p={4}
-      rounded={8}
-      w="100%"
-      justifyContent="space-between"
       alignItems="center"
+      p={4}
+      w="100%"
+      backgroundColor="gray.900"
+      justifyContent="space-between"
       onClick={() => {
         trackUseViewMore();
         onViewMore();
       }}
+      rounded={8}
     >
-      <TableTitle title="Proposed Blocks" count={data?.total ?? 0} mb={0} />
-      <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
+      <TableTitle mb={0} title="Proposed Blocks" count={data?.total ?? 0} />
+      <CustomIcon m={0} name="chevron-right" boxSize={6} color="gray.600" />
     </Flex>
   ) : (
-    <Flex direction="column" gap={4} mt={4}>
+    <Flex gap={4} mt={4} direction="column">
       <TableTitle
         id={scrollComponentId}
-        title="Proposed Blocks"
-        count={data?.total ?? 0}
         helperText={
           onViewMore
             ? undefined
             : "Display the proposed blocks by this validator within the last 30 days"
         }
         mb={0}
+        title="Proposed Blocks"
+        count={data?.total ?? 0}
       />
       <BlocksTable
-        blocks={data?.items}
-        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant={onViewMore ? undefined : "empty"}
@@ -89,30 +87,32 @@ export const ProposedBlocksTable = ({
             withBorder
           />
         }
+        blocks={data?.items}
+        isLoading={isLoading}
         showProposer={false}
       />
       {data &&
         (onViewMore
           ? data.total > 5 && (
               <ViewMore
-                onClick={onViewMore}
                 text={`View all proposed blocks (${data.total})`}
+                onClick={onViewMore}
               />
             )
           : data.total > 10 && (
               <Pagination
                 currentPage={currentPage}
+                pageSize={pageSize}
                 pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={data.total}
-                scrollComponentId={scrollComponentId}
-                pageSize={pageSize}
                 onPageChange={setCurrentPage}
                 onPageSizeChange={(e) => {
                   const size = Number(e.target.value);
                   setPageSize(size);
                   setCurrentPage(1);
                 }}
+                scrollComponentId={scrollComponentId}
+                totalData={data.total}
               />
             ))}
     </Flex>

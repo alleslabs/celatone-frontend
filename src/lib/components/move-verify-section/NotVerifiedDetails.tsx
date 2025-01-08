@@ -8,7 +8,7 @@ export const NotVerifiedDetails = () => {
   const isMobile = useMobile();
 
   return isMobile ? (
-    <Text variant="body2" color="text.dark" whiteSpace="pre-line">
+    <Text variant="body2" whiteSpace="pre-line" color="text.dark">
       {`This module has not been verified. If you are the owner, you can submit for verification with the new files.\n\nVerification is only currently supported on desktop.`}
     </Text>
   ) : (
@@ -20,13 +20,13 @@ export const NotVerifiedDetails = () => {
             display="inline-flex"
             gap={1}
             size="sm"
-            color="primary.main"
-            transition="all .25s ease-in-out"
             _hover={{
+              "& > p": { color: "primary.light" },
               textDecoration: "underline",
               textDecorationColor: "primary.light",
-              "& > p": { color: "primary.light" },
             }}
+            color="primary.main"
+            transition="all .25s ease-in-out"
           >
             submit for verification
           </Text>
@@ -34,13 +34,13 @@ export const NotVerifiedDetails = () => {
         with the new files.
       </Text>
       <Button
+        size="sm"
+        variant="ghost-primary"
         onClick={() => {
           navigate({
             pathname: "/modules/verify",
           });
         }}
-        variant="ghost-primary"
-        size="sm"
       >
         Submit Verification
       </Button>

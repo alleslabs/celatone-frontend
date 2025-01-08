@@ -8,12 +8,12 @@ const DisconnectedState = () => {
   const isMobile = useMobile();
   return (
     <Flex
-      direction="column"
       alignItems="center"
       gap={4}
       py={12}
-      borderY="1px solid"
       borderColor="gray.700"
+      borderY="1px solid"
+      direction="column"
     >
       <StateImage imageVariant="empty" />
       <Text variant="body1" color="text.dark">
@@ -21,7 +21,7 @@ const DisconnectedState = () => {
       </Text>
       {!isMobile && (
         <Flex align="center" alignItems="center">
-          <Text variant="body1" color="text.dark" mr={2}>
+          <Text mr={2} variant="body1" color="text.dark">
             In order to instantiate contract from this code, you need to
           </Text>
           <ConnectWalletBtn />

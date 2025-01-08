@@ -6,32 +6,32 @@ import type { BechAddr32 } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
 interface MsgSuggestionProps {
-  contractAddress: BechAddr32;
   cmds: [string, string][];
+  contractAddress: BechAddr32;
   setMsg: (msg: string) => void;
 }
 
 export const MsgSuggestion = ({
-  contractAddress,
   cmds,
+  contractAddress,
   setMsg,
 }: MsgSuggestionProps) => (
   <Box mb={8}>
     {contractAddress && (
-      <Text variant="body3" mb={2}>
+      <Text mb={2} variant="body3">
         Message Suggestions:
       </Text>
     )}
     {cmds.length ? (
       <ButtonGroup
         flexWrap="wrap"
-        rowGap={4}
         sx={{
           "> button": {
-            marginInlineStart: "0 !important",
             marginInlineEnd: "1",
+            marginInlineStart: "0 !important",
           },
         }}
+        rowGap={4}
       >
         {cmds.sort().map(([cmd, queryMsg]) => (
           <ContractCmdButton

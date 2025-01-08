@@ -8,13 +8,13 @@ const dupStyleKeys = ["title", "container", "description"];
 
 const generateVariantStyle = (
   variant:
+    | "error"
+    | "info"
+    | "info-left-secondary"
     | "primary"
     | "secondary"
     | "success"
     | "warning"
-    | "error"
-    | "info"
-    | "info-left-secondary"
 ) => {
   let mainColor: ColorProps["color"];
   let bgColor: ColorProps["color"];
@@ -24,11 +24,6 @@ const generateVariantStyle = (
   let borderRadius: BorderProps["borderRadius"];
 
   switch (variant) {
-    case "primary":
-      mainColor = `${variant}.light`;
-      bgColor = `${variant}.background`;
-      borderColor = `${variant}.dark`;
-      break;
     case "info":
       mainColor = "gray.400";
       bgColor = "gray.800";
@@ -39,6 +34,11 @@ const generateVariantStyle = (
       border = "0";
       borderLeft = "3px solid";
       borderRadius = "0";
+      break;
+    case "primary":
+      mainColor = `${variant}.light`;
+      bgColor = `${variant}.background`;
+      borderColor = `${variant}.dark`;
       break;
     case "error":
     default:
@@ -51,9 +51,9 @@ const generateVariantStyle = (
     dupStyleKeys.map((key) => [
       key,
       {
-        color: mainColor,
         border,
         borderRadius,
+        color: mainColor,
         ...(key === "container" && {
           bg: bgColor,
           borderColor: borderColor || mainColor,
@@ -66,12 +66,6 @@ const generateVariantStyle = (
 
 export const Alert: ComponentStyleConfig = {
   baseStyle: {
-    title: {
-      color: "text.main",
-      fontSize: "16px",
-      fontWeight: 600,
-      letterSpacing: "0.4px",
-    },
     container: {
       bg: "gray.800",
       border: "1px solid",
@@ -82,13 +76,19 @@ export const Alert: ComponentStyleConfig = {
       fontWeight: 400,
       letterSpacing: "0.1px",
     },
+    title: {
+      color: "text.main",
+      fontSize: "16px",
+      fontWeight: 600,
+      letterSpacing: "0.4px",
+    },
   },
   variants: {
-    primary: generateVariantStyle("primary"),
-    success: generateVariantStyle("success"),
-    warning: generateVariantStyle("warning"),
     error: generateVariantStyle("error"),
     info: generateVariantStyle("info"),
     "info-left-secondary": generateVariantStyle("info-left-secondary"),
+    primary: generateVariantStyle("primary"),
+    success: generateVariantStyle("success"),
+    warning: generateVariantStyle("warning"),
   },
 };

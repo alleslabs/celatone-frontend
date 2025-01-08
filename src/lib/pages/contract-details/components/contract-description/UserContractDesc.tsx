@@ -11,23 +11,23 @@ import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Nullable, Option, PublicContractInfo } from "lib/types";
 
 interface UserContractDescProps {
-  publicInfo: Nullable<PublicContractInfo>;
   contract: Contract;
   contractLocalInfo: Option<ContractLocalInfo>;
+  publicInfo: Nullable<PublicContractInfo>;
 }
 export const UserContractDesc = ({
-  publicInfo,
   contract,
   contractLocalInfo,
+  publicInfo,
 }: UserContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
   const description = contractLocalInfo?.description;
 
-  const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: description || "No Contract description",
+  const [ref, { clampedText, key, noClamp }] = useClampText({
     ellipsis: "...",
     lines: publicInfo?.description ? 4 : 2,
+    text: description || "No Contract description",
   });
 
   const displayDescription = useMemo(() => {
@@ -39,56 +39,56 @@ export const UserContractDesc = ({
 
   return (
     <Flex
-      direction="column"
       bg="gray.900"
-      maxW="100%"
-      borderRadius="8px"
-      p={4}
       flex={1}
+      maxW="100%"
+      p={4}
+      borderRadius="8px"
+      direction="column"
       role="group"
     >
-      <Flex justify="space-between" align="center" h="32px">
-        <Text variant="body2" fontWeight={500} color="text.dark">
+      <Flex align="center" h="32px" justify="space-between">
+        <Text variant="body2" color="text.dark" fontWeight={500}>
           Your Contract Description
         </Text>
         <EditContractDetailsModal
-          contractLocalInfo={{
-            contractAddress: contract.address,
-            instantiator: contract.instantiator,
-            label: contract.label,
-            name: contractLocalInfo?.name,
-            description,
-            tags: contractLocalInfo?.tags,
-            lists: contractLocalInfo?.lists,
-          }}
           triggerElement={
             <Button
+              display="none"
               size="xs"
               variant="ghost-primary"
-              leftIcon={<CustomIcon name="edit" boxSize={3} />}
-              display="none"
               _groupHover={{ display: "flex" }}
+              leftIcon={<CustomIcon name="edit" boxSize={3} />}
             >
               {description ? "Edit" : "Add Description"}
             </Button>
           }
+          contractLocalInfo={{
+            contractAddress: contract.address,
+            description,
+            instantiator: contract.instantiator,
+            label: contract.label,
+            lists: contractLocalInfo?.lists,
+            name: contractLocalInfo?.name,
+            tags: contractLocalInfo?.tags,
+          }}
         />
       </Flex>
       <Text
+        key={key}
         variant="body2"
         whiteSpace="pre-wrap"
         ref={ref as React.MutableRefObject<HTMLParagraphElement>}
-        key={key}
       >
         <Linkify>{displayDescription}</Linkify>
       </Text>
 
       {!noClamp && description && (
         <ShowMoreButton
-          showMoreText="View Full Description"
-          showLessText="View Less Description"
-          toggleShowMore={showMore}
           setToggleShowMore={() => setShowMore(!showMore)}
+          showLessText="View Less Description"
+          showMoreText="View Full Description"
+          toggleShowMore={showMore}
         />
       )}
     </Flex>

@@ -28,11 +28,11 @@ export const Attributes = ({
   tokenId,
 }: AttributesProps) => {
   const isMobile = useMobile();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const displayedCount = isMobile ? 4 : 6;
   return (
-    <Stack w="100%" spacing={4} order={{ base: "-1", md: "1" }}>
+    <Stack spacing={4} w="100%" order={{ base: "-1", md: "1" }}>
       <Flex align="center" gap={1}>
         <Heading as="h6" variant="h6" fontWeight={600}>
           Attributes
@@ -41,27 +41,27 @@ export const Attributes = ({
       </Flex>
 
       <SimpleGrid
-        templateColumns={isMobile ? "1fr 1fr" : "1fr 1fr 1fr"}
         minChildWidth="172px"
         gap={4}
+        templateColumns={isMobile ? "1fr 1fr" : "1fr 1fr 1fr"}
       >
         {attributes.slice(0, displayedCount).map(({ traitType, value }) => (
           <GridItem
+            key={traitType}
             p="8px 12px"
             background="gray.900"
             borderRadius="8px"
-            key={traitType}
           >
             <Stack spacing="4px">
               <Text
                 variant="body3"
-                textTransform="capitalize"
-                fontWeight={700}
                 color="text.dark"
+                fontWeight={700}
+                textTransform="capitalize"
               >
                 {traitType}
               </Text>
-              <Text variant="body2" textTransform="capitalize" fontWeight={700}>
+              <Text variant="body2" fontWeight={700} textTransform="capitalize">
                 {value}
               </Text>
             </Stack>
@@ -81,12 +81,12 @@ export const Attributes = ({
         </Button>
       )}
       <AttributesModal
-        title="Attributes"
-        attributes={attributes}
         address={nftAddress}
-        tokenId={tokenId}
+        attributes={attributes}
         isOpen={isOpen}
+        title="Attributes"
         onClose={onClose}
+        tokenId={tokenId}
       />
     </Stack>
   );

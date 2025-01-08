@@ -29,16 +29,16 @@ export const useMoveVerifyTaskInfos = (
 
   return useQueries({
     queries: taskIds.map((taskId) => ({
+      keepPreviousData: true,
+      onSuccess,
+      queryFn: () => getMoveVerifyByTaskId(currentChainId, taskId),
       queryKey: [
         CELATONE_QUERY_KEYS.MOVE_VERIFY_TASK_BY_TASK_ID,
         currentChainId,
         taskId,
       ],
-      queryFn: () => getMoveVerifyByTaskId(currentChainId, taskId),
-      retry: 0,
       refetchOnWindowFocus: false,
-      keepPreviousData: true,
-      onSuccess,
+      retry: 0,
     })),
   });
 };
@@ -54,9 +54,9 @@ export const useMoveVerifyTaskInfo = (
     () => getMoveVerifyByTaskId(currentChainId, taskId),
     {
       enabled,
-      retry: 0,
-      refetchOnWindowFocus: false,
       keepPreviousData: true,
+      refetchOnWindowFocus: false,
+      retry: 0,
     }
   );
 };
@@ -78,9 +78,9 @@ export const useMoveVerifyInfo = (
     },
     {
       enabled: Boolean(address && moduleName),
-      retry: 0,
-      refetchOnWindowFocus: false,
       keepPreviousData: true,
+      refetchOnWindowFocus: false,
+      retry: 0,
     }
   );
 };
@@ -93,17 +93,17 @@ export const useMoveVerifyInfos = (
 
   return useQueries({
     queries: moduleInfos.map(({ address, moduleName }) => ({
+      enabled,
+      keepPreviousData: true,
+      queryFn: () => getMoveVerifyInfo(currentChainId, address, moduleName),
       queryKey: [
         CELATONE_QUERY_KEYS.MOVE_VERIFY_INFO,
         currentChainId,
         address,
         moduleName,
       ],
-      queryFn: () => getMoveVerifyInfo(currentChainId, address, moduleName),
-      enabled,
-      retry: 0,
       refetchOnWindowFocus: false,
-      keepPreviousData: true,
+      retry: 0,
     })),
   });
 };
@@ -122,9 +122,9 @@ export const useMoveVerifyInfosByAddress = (
     },
     {
       enabled: Boolean(address),
-      retry: 0,
-      refetchOnWindowFocus: false,
       keepPreviousData: true,
+      refetchOnWindowFocus: false,
+      retry: 0,
     }
   );
 };

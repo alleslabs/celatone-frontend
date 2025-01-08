@@ -18,6 +18,30 @@ export const BlocksTableMobileCard = ({
   const navigate = useInternalNavigate();
   return (
     <MobileCardTemplate
+      middleContent={
+        showProposer && <ValidatorBadge validator={blockData.proposer} />
+      }
+      bottomContent={
+        <Flex align="start" gap={4} w="full">
+          <Flex flex={1} direction="column">
+            <MobileLabel label="Transactions" />
+            <Flex align="end" h={6}>
+              <Text
+                variant="body2"
+                color={blockData.txCount === 0 ? "text.dark" : "text.main"}
+              >
+                {blockData.txCount}
+              </Text>
+            </Flex>
+          </Flex>
+          <Flex flex={{ base: 2, sm: 3 }} gap={0} direction="column">
+            <Text variant="body3">{formatUTC(blockData.timestamp)}</Text>
+            <Text mt="3px" variant="body3" color="text.dark">
+              {`(${dateFromNow(blockData.timestamp)})`}
+            </Text>
+          </Flex>
+        </Flex>
+      }
       onClick={() =>
         navigate({
           pathname: "/blocks/[blockHeight]",
@@ -26,7 +50,7 @@ export const BlocksTableMobileCard = ({
       }
       topContent={
         <Flex align="center" gap={4} w="full">
-          <Flex direction="column" flex={1}>
+          <Flex flex={1} direction="column">
             <MobileLabel label="Block Height" />
             <ExplorerLink
               type="block_height"
@@ -36,37 +60,13 @@ export const BlocksTableMobileCard = ({
               {blockData.height}
             </ExplorerLink>
           </Flex>
-          <Flex direction="column" flex={{ base: 2, sm: 3 }}>
+          <Flex flex={{ base: 2, sm: 3 }} direction="column">
             <MobileLabel label="Block Hash" />
-            <Flex h={6} align="end">
+            <Flex align="end" h={6}>
               <Text variant="body2" color="text.main" fontFamily="mono">
                 {truncate(blockData.hash.toUpperCase())}
               </Text>
             </Flex>
-          </Flex>
-        </Flex>
-      }
-      middleContent={
-        showProposer && <ValidatorBadge validator={blockData.proposer} />
-      }
-      bottomContent={
-        <Flex align="start" gap={4} w="full">
-          <Flex direction="column" flex={1}>
-            <MobileLabel label="Transactions" />
-            <Flex h={6} align="end">
-              <Text
-                variant="body2"
-                color={blockData.txCount === 0 ? "text.dark" : "text.main"}
-              >
-                {blockData.txCount}
-              </Text>
-            </Flex>
-          </Flex>
-          <Flex direction="column" flex={{ base: 2, sm: 3 }} gap={0}>
-            <Text variant="body3">{formatUTC(blockData.timestamp)}</Text>
-            <Text variant="body3" color="text.dark" mt="3px">
-              {`(${dateFromNow(blockData.timestamp)})`}
-            </Text>
           </Flex>
         </Flex>
       }

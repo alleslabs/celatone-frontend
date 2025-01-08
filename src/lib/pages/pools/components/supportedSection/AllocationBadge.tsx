@@ -13,25 +13,25 @@ import {
 } from "lib/utils";
 
 interface AllocationBadgeProps {
-  denom?: string;
-  logo?: string;
-  symbol?: string;
-  precision?: number;
   amount: U<Token<Big>>;
-  value: Option<USD<Big>>;
+  denom?: string;
   liquidity: USD<Big>;
+  logo?: string;
   mode: string;
+  precision?: number;
+  symbol?: string;
+  value: Option<USD<Big>>;
 }
 
 export const AllocationBadge = ({
-  denom,
-  logo,
-  symbol,
-  precision,
   amount,
-  value,
+  denom,
   liquidity,
+  logo,
   mode,
+  precision,
+  symbol,
+  value,
 }: AllocationBadgeProps) => {
   const formattedValue = formatRatio(
     divWithDefault(value ?? big(0), liquidity, 0) as Ratio<Big>
@@ -41,26 +41,26 @@ export const AllocationBadge = ({
     : "-";
   return (
     <Flex
+      alignItems="center"
       bg="gray.800"
+      gap={2}
       px={3}
       py={1}
       border="1px solid"
       borderColor="gray.700"
       borderRadius="8px"
       transition="all 0.25s ease-in-out"
-      alignItems="center"
-      gap={2}
     >
       {denom && (
         <TokenImageRender
-          logo={logo ?? getUndefinedTokenIcon(denom)}
           boxSize={4}
+          logo={logo ?? getUndefinedTokenIcon(denom)}
         />
       )}
-      <Box w="full" minW="50px">
+      <Box minW="50px" w="full">
         <Text
-          variant="body3"
           className="ellipsis"
+          variant="body3"
           color="text.dark"
           fontWeight="600"
         >

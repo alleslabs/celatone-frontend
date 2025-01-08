@@ -5,32 +5,32 @@ import { WasmVerifySection } from "lib/components/wasm-verify-section";
 import type { BechAddr32, Nullish, WasmVerifyInfo } from "lib/types";
 
 interface ContractVerificationSectionProps {
-  contractAddress: BechAddr32;
-  codeId: number;
   codeHash: string;
+  codeId: number;
+  contractAddress: BechAddr32;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const ContractVerificationSection = ({
-  contractAddress,
   codeHash,
   codeId,
+  contractAddress,
   wasmVerifyInfo,
 }: ContractVerificationSectionProps) => (
-  <Flex direction="column" mb={6} gap={4}>
+  <Flex gap={4} mb={6} direction="column">
     <StatusMessageBox
       content={
         <Flex
-          justifyContent="space-between"
           alignItems="center"
-          w="full"
           gap={2}
+          w="full"
+          justifyContent="space-between"
         >
           <WasmVerifySection
-            codeId={codeId}
             codeHash={codeHash}
-            wasmVerifyInfo={wasmVerifyInfo}
+            codeId={codeId}
             contractAddress={contractAddress}
+            wasmVerifyInfo={wasmVerifyInfo}
           />
         </Flex>
       }

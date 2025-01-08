@@ -9,8 +9,8 @@ export const OutdatedDetails = () => {
   return isMobile ? (
     <Text
       variant="body2"
-      color="text.dark"
       whiteSpace="pre-line"
+      color="text.dark"
     >{`This module was republished after verification, so the displayed source code is outdated. If you are the owner, you can submit for verification with the new files.\n\nVerification is only currently supported on desktop.`}</Text>
   ) : (
     <>
@@ -22,13 +22,13 @@ export const OutdatedDetails = () => {
             display="inline-flex"
             gap={1}
             size="sm"
-            color="primary.main"
-            transition="all .25s ease-in-out"
             _hover={{
+              "& > p": { color: "primary.light" },
               textDecoration: "underline",
               textDecorationColor: "primary.light",
-              "& > p": { color: "primary.light" },
             }}
+            color="primary.main"
+            transition="all .25s ease-in-out"
           >
             submit for verification
           </Text>
@@ -36,13 +36,13 @@ export const OutdatedDetails = () => {
         with the new files.
       </Text>
       <Button
+        size="sm"
+        variant="ghost-primary"
         onClick={() => {
           navigate({
             pathname: "/modules/verify",
           });
         }}
-        variant="ghost-primary"
-        size="sm"
       >
         Submit Verification
       </Button>

@@ -23,12 +23,11 @@ export default function ArrayFieldTemplate<
   F extends FormContextType = any,
 >(props: ArrayFieldTemplateProps<T, S, F>) {
   const {
-    formData,
     canAdd,
     className,
     disabled,
+    formData,
     idSchema,
-    uiSchema,
     items,
     onAddClick,
     readonly,
@@ -36,6 +35,7 @@ export default function ArrayFieldTemplate<
     required,
     schema,
     title,
+    uiSchema,
   } = props;
   const uiOptions = getUiOptions<T, S, F>(uiSchema);
   const ArrayFieldDescriptionTemplate = getTemplate<
@@ -64,49 +64,49 @@ export default function ArrayFieldTemplate<
       <Flex gap={3}>
         <ArrayFieldTitleTemplate
           idSchema={idSchema}
-          title={uiOptions.title || title}
+          registry={registry}
           required={required}
           schema={schema}
+          title={uiOptions.title || title}
           uiSchema={uiSchema}
-          registry={registry}
         />
         <FieldTypeTag type={schema.type} />
       </Flex>
       <ArrayFieldDescriptionTemplate
         idSchema={idSchema}
-        description={uiOptions.description || schema.description}
+        registry={registry}
         schema={schema}
         uiSchema={uiSchema}
-        registry={registry}
+        description={uiOptions.description || schema.description}
       />
       {isNullFormData(formData) || (readonly && items.length === 0) ? (
         <Text
-          variant="body3"
-          fontWeight={700}
-          textColor="text.disabled"
-          textAlign="center"
           my={2}
           p={4}
+          textAlign="center"
+          variant="body3"
           bgColor="gray.700"
           borderRadius="8px"
+          fontWeight={700}
+          textColor="text.disabled"
         >
           {isNullFormData(formData) ? "NULL" : "Empty"}
         </Text>
       ) : (
         <Grid
           key={`array-item-list-${idSchema.$id}`}
-          my={2}
           gap={4}
+          my={2}
+          p={4}
           bgColor="gray.800"
           borderRadius="8px"
-          p={4}
         >
           {items.length === 0 ? (
             <Text
               textAlign="center"
               variant="body2"
-              fontWeight={700}
               color="text.dark"
+              fontWeight={700}
             >
               Empty array
             </Text>
@@ -123,10 +123,10 @@ export default function ArrayFieldTemplate<
             <GridItem display="flex" justifyContent="center">
               <AddButton
                 className="array-item-add"
-                onClick={onAddClick}
                 disabled={disabled || readonly}
-                uiSchema={uiSchema}
                 registry={registry}
+                uiSchema={uiSchema}
+                onClick={onAddClick}
               />
             </GridItem>
           )}

@@ -31,19 +31,19 @@ const callQueryFn = async <T>(
 };
 
 export const handleQueryByTier = async <R>({
-  tier,
-  threshold = "lite",
+  queryFull,
   queryLite,
   queryMesa,
   querySequencer,
-  queryFull,
+  threshold = "lite",
+  tier,
 }: {
-  tier: ChainConfig["tier"];
-  threshold: ChainConfig["tier"];
+  queryFull?: () => Promise<R>;
   queryLite?: () => Promise<R>;
   queryMesa?: () => Promise<R>;
   querySequencer?: () => Promise<R>;
-  queryFull?: () => Promise<R>;
+  threshold: ChainConfig["tier"];
+  tier: ChainConfig["tier"];
 }): Promise<R> => {
   const tierValue = TierMap[tier];
   const thresholdValue = TierMap[threshold];
@@ -55,14 +55,14 @@ export const handleQueryByTier = async <R>({
   }
 
   switch (tier) {
+    case "full":
+      return callQueryFn("full", queryFull);
     case "lite":
       return callQueryFn("lite", queryLite);
     case "mesa":
       return callQueryFn("mesa", queryMesa);
     case "sequencer":
       return callQueryFn("sequencer", querySequencer);
-    case "full":
-      return callQueryFn("full", queryFull);
     default:
       throw new Error(`Unsupported tier: ${tier}`);
   }

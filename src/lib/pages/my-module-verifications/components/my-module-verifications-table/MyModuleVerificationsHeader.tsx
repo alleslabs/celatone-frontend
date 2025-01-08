@@ -9,7 +9,7 @@ interface ModulesTableHeaderProps {
 export const MyModuleVerificationsTableHeader = ({
   templateColumns,
 }: ModulesTableHeaderProps) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Request ID</TableHeader>
     <TableHeader>Request Note</TableHeader>
     <TableHeader>Files</TableHeader>

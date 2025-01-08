@@ -10,34 +10,34 @@ import { ProposalStepper } from "../proposal-stepper";
 import type { ProposalData } from "lib/types";
 
 interface VoteDetailsAccordionItemProps {
-  step: number;
-  proposalData: ProposalData;
   children: ReactNode;
   isDisabled?: boolean;
+  proposalData: ProposalData;
+  step: number;
 }
 
 export const VoteDetailsAccordionItem = ({
-  step,
-  proposalData,
   children,
   isDisabled,
+  proposalData,
+  step,
 }: VoteDetailsAccordionItemProps) => (
   <AccordionItem
-    borderTop="1px solid"
-    borderColor="gray.700"
     isDisabled={isDisabled}
+    borderColor="gray.700"
+    borderTop="1px solid"
   >
-    <AccordionButton py={3} px={0}>
+    <AccordionButton px={0} py={3}>
       <ProposalStepper step={step} proposalData={proposalData} />
-      <AccordionIcon color="gray.600" ml="auto" />
+      <AccordionIcon ml="auto" color="gray.600" />
     </AccordionButton>
     <AccordionPanel
       bg="transparent"
       p={0}
-      pt={3}
       pb={step === 1 ? 0 : 4}
-      borderTop="1px solid"
+      pt={3}
       borderColor="gray.700"
+      borderTop="1px solid"
     >
       {children}
     </AccordionPanel>

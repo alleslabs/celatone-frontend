@@ -26,19 +26,19 @@ import { RecentBlocksSection } from "./RecentBlocksSection";
 const SUPPORTED_UPTIME_BLOCKS = [100, 1000, 10000];
 
 interface UptimeSectionProps {
-  validatorAddress: ValidatorAddr;
-  uptimeData: ValidatorUptimeResponse;
-  uptimeBlock: number;
-  setUptimeBlock?: (block: number) => void;
   onViewMore?: () => void;
+  setUptimeBlock?: (block: number) => void;
+  uptimeBlock: number;
+  uptimeData: ValidatorUptimeResponse;
+  validatorAddress: ValidatorAddr;
 }
 
 export const UptimeSection = ({
-  validatorAddress,
-  uptimeData,
-  uptimeBlock,
-  setUptimeBlock,
   onViewMore,
+  setUptimeBlock,
+  uptimeBlock,
+  uptimeData,
+  validatorAddress,
 }: UptimeSectionProps) => {
   const isMobile = useMobile();
 
@@ -46,12 +46,12 @@ export const UptimeSection = ({
     const data = uptimeData.uptime;
 
     return {
-      signed: data.signedBlocks,
-      proposed: data.proposedBlocks,
       missed: data.missedBlocks,
-      signedRatio: (data.signedBlocks / data.total) as Ratio<number>,
-      proposedRatio: (data.proposedBlocks / data.total) as Ratio<number>,
       missedRatio: (data.missedBlocks / data.total) as Ratio<number>,
+      proposed: data.proposedBlocks,
+      proposedRatio: (data.proposedBlocks / data.total) as Ratio<number>,
+      signed: data.signedBlocks,
+      signedRatio: (data.signedBlocks / data.total) as Ratio<number>,
       uptimeRatio: ((data.signedBlocks + data.proposedBlocks) /
         data.total) as Ratio<number>,
     };
@@ -60,17 +60,17 @@ export const UptimeSection = ({
 
   return (
     <Flex
-      direction="column"
       gap={4}
-      backgroundColor="gray.900"
       p={{ base: 4, md: 6 }}
-      rounded={8}
       w="100%"
+      backgroundColor="gray.900"
+      direction="column"
+      rounded={8}
     >
-      <Flex direction="column" gap={2}>
-        <Flex justifyContent="space-between" w="full">
+      <Flex gap={2} direction="column">
+        <Flex w="full" justifyContent="space-between">
           <Flex alignItems="center" gap={2}>
-            <Heading variant="h6" as="h6" color="text.main">
+            <Heading as="h6" variant="h6" color="text.main">
               Uptime
             </Heading>
             {setUptimeBlock ? (
@@ -78,7 +78,7 @@ export const UptimeSection = ({
                 <MenuButton>
                   <Text variant="body2" color="text.dark">
                     Latest {uptimeBlock} Blocks
-                    <CustomIcon name="chevron-down" ml={2} />
+                    <CustomIcon ml={2} name="chevron-down" />
                   </Text>
                 </MenuButton>
                 <MenuList>
@@ -104,17 +104,17 @@ export const UptimeSection = ({
           {onViewMore && !isMobile && (
             <Button
               variant="ghost-primary"
-              rightIcon={<CustomIcon name="chevron-right" />}
               onClick={() => {
                 trackUseViewMore();
                 onViewMore();
               }}
+              rightIcon={<CustomIcon name="chevron-right" />}
             >
               View Performance
             </Button>
           )}
         </Flex>
-        <ValueWithIcon icon="block" value={formatRatio(computed.uptimeRatio)} />
+        <ValueWithIcon value={formatRatio(computed.uptimeRatio)} icon="block" />
       </Flex>
       <RecentBlocksLegends uptime={computed} />
       {onViewMore && (
@@ -129,11 +129,11 @@ export const UptimeSection = ({
           {isMobile && (
             <Button
               variant="ghost-primary"
-              rightIcon={<CustomIcon name="chevron-right" />}
               onClick={() => {
                 trackUseViewMore();
                 onViewMore();
               }}
+              rightIcon={<CustomIcon name="chevron-right" />}
             >
               View Performance
             </Button>

@@ -19,15 +19,15 @@ import { EvmContractDetailsEvmTxs } from "./EvmContractDetailsEvmTxs";
 interface EvmContractDetailsTxsProps {
   address: BechAddr20;
   onViewMore?: () => void;
-  tab: TxsTabIndex;
   setTab: (tab: TxsTabIndex) => void;
+  tab: TxsTabIndex;
 }
 
 export const EvmContractDetailsTxs = ({
   address,
   onViewMore,
-  tab,
   setTab,
+  tab,
 }: EvmContractDetailsTxsProps) => {
   const handleTabChange = useCallback(
     (nextTab: TxsTabIndex) => () => {

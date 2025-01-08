@@ -16,15 +16,15 @@ export const CosmosKitProvider = ({
   const {
     chainConfig: { wallets },
   } = useCelatoneApp();
-  const { chainConfigs, registryChains, registryAssets } = useChainConfigs();
+  const { chainConfigs, registryAssets, registryChains } = useChainConfigs();
   const availableChainsEndpoints = Object.values(chainConfigs).reduce<
     EndpointOptions["endpoints"]
   >(
     (endpoints, config) => ({
       ...endpoints,
       [config.registryChainName]: {
-        rpc: [config.rpc],
         rest: [config.lcd],
+        rpc: [config.rpc],
       },
     }),
     {}
@@ -32,23 +32,23 @@ export const CosmosKitProvider = ({
 
   return (
     <Provider
-      chains={registryChains}
       assetLists={registryAssets}
+      chains={registryChains}
       wallets={getWallets(wallets)}
+      endpointOptions={{
+        endpoints: availableChainsEndpoints,
+        isLazy: true,
+      }}
+      signerOptions={{
+        preferredSignType: () => "direct",
+        signingCosmwasm: () => getCustomedSigningCosmwasm(),
+      }}
       // TODO
       walletConnectOptions={{
         signClient: {
           projectId: "89b53d909ae6d042df584d8fb0491a77",
           relayUrl: "wss://relay.walletconnect.org",
         },
-      }}
-      endpointOptions={{
-        isLazy: true,
-        endpoints: availableChainsEndpoints,
-      }}
-      signerOptions={{
-        signingCosmwasm: () => getCustomedSigningCosmwasm(),
-        preferredSignType: () => "direct",
       }}
     >
       {children}

@@ -25,17 +25,17 @@ import {
 } from "lib/utils";
 
 const VotingPowerDetail = ({
+  amount,
+  assetInfo,
+  denom,
   label,
   ratio,
-  amount,
-  denom,
-  assetInfo,
 }: {
+  amount: U<Token<Big>>;
+  assetInfo: Option<AssetInfo>;
+  denom: Option<string>;
   label: string;
   ratio: Ratio<number>;
-  amount: U<Token<Big>>;
-  denom: Option<string>;
-  assetInfo: Option<AssetInfo>;
 }) => {
   const formattedPercent = formatPrettyPercent(ratio, 2, true);
   const formattedAmount = formatUTokenWithPrecision(
@@ -54,14 +54,14 @@ const VotingPowerDetail = ({
     : undefined;
 
   return (
-    <Flex direction="column" w="full">
-      <Text variant="body2" color="text.dark" mb={2}>
+    <Flex w="full" direction="column">
+      <Text mb={2} variant="body2" color="text.dark">
         {label}
       </Text>
-      <Text fontWeight={700} variant="body1">
+      <Text variant="body1" fontWeight={700}>
         {formattedPercent}
       </Text>
-      <Text fontWeight={700} variant="body2">
+      <Text variant="body2" fontWeight={700}>
         {formattedAmount}
         {denom && (
           <span
@@ -83,19 +83,19 @@ const VotingPowerDetail = ({
 };
 
 interface VotingPowerOverviewProps {
-  singleStakingDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
-  votingPower: Big;
-  totalVotingPower: Big;
   selfVotingPower: Big;
+  singleStakingDenom: Option<string>;
+  totalVotingPower: Big;
+  votingPower: Big;
 }
 
 export const VotingPowerOverview = ({
-  singleStakingDenom,
   assetInfos,
-  votingPower,
-  totalVotingPower,
   selfVotingPower,
+  singleStakingDenom,
+  totalVotingPower,
+  votingPower,
 }: VotingPowerOverviewProps) => {
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
@@ -133,12 +133,12 @@ export const VotingPowerOverview = ({
 
   return (
     <Flex
-      direction="column"
       gap={4}
-      backgroundColor="gray.900"
       p={{ base: 4, md: 6 }}
-      rounded={8}
       w="100%"
+      backgroundColor="gray.900"
+      direction="column"
+      rounded={8}
     >
       <Grid
         gridTemplateColumns={
@@ -149,16 +149,16 @@ export const VotingPowerOverview = ({
         alignItems="center"
         gap={4}
       >
-        <Flex direction="column" gap={1}>
-          <Flex minH="36px" alignItems="center">
-            <Heading variant="h6" as="h6" color="text.main">
+        <Flex gap={1} direction="column">
+          <Flex alignItems="center" minH="36px">
+            <Heading as="h6" variant="h6" color="text.main">
               Voting Power
             </Heading>
           </Flex>
-          <ValueWithIcon icon="vote" value={votingPowerPercent} />
-          <Flex gap={2} alignItems="center" mt={1}>
+          <ValueWithIcon value={votingPowerPercent} icon="vote" />
+          <Flex alignItems="center" gap={2} mt={1}>
             <Flex direction="column">
-              <Text fontWeight={700} variant="body1">
+              <Text variant="body1" fontWeight={700}>
                 {votingPowerAmount}
                 {singleStakingDenom && (
                   <span
@@ -190,45 +190,45 @@ export const VotingPowerOverview = ({
           <>
             <VotingPowerDetail
               label="Self-Bonded"
-              ratio={selfVotingPowerRatio}
               amount={selfVotingPower as U<Token<Big>>}
-              denom={singleStakingDenom}
               assetInfo={assetInfo}
+              denom={singleStakingDenom}
+              ratio={selfVotingPowerRatio}
             />
             <VotingPowerDetail
               label="From Delegators"
-              ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
               amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
-              denom={singleStakingDenom}
               assetInfo={assetInfo}
+              denom={singleStakingDenom}
+              ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
             />
           </>
         )}
       </Grid>
       <Grid
-        borderTop="1px solid"
-        borderTopColor="gray.700"
-        pt={4}
+        gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
         display={{
           base: isFullTier ? "none" : "grid",
           md: isFullTier ? "grid" : "none",
         }}
-        gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }}
         gap={4}
+        pt={4}
+        borderTop="1px solid"
+        borderTopColor="gray.700"
       >
         <VotingPowerDetail
           label="Self-Bonded"
-          ratio={selfVotingPowerRatio}
           amount={selfVotingPower as U<Token<Big>>}
-          denom={singleStakingDenom}
           assetInfo={assetInfo}
+          denom={singleStakingDenom}
+          ratio={selfVotingPowerRatio}
         />
         <VotingPowerDetail
           label="From Delegators"
-          ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
           amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
-          denom={singleStakingDenom}
           assetInfo={assetInfo}
+          denom={singleStakingDenom}
+          ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
         />
       </Grid>
     </Flex>

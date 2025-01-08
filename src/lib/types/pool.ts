@@ -14,56 +14,56 @@ import type {
 export enum PoolType {
   ALL = "All",
   BALANCER = "Balancer",
-  STABLESWAP = "Stableswap",
-  COSMWASM = "CosmWasm",
   CL = "Concentrated",
-}
-
-export type PoolTypeFilter = PoolType;
-
-export interface PoolWeight {
-  denom: string;
-  weight: Big;
-  percentWeight: Nullable<string>;
+  COSMWASM = "CosmWasm",
+  STABLESWAP = "Stableswap",
 }
 
 export interface Pool {
+  contractAddress: Nullish<BechAddr32>;
   id: number;
-  type: PoolType;
   isSuperfluid: boolean;
   liquidity: TokenWithValue[];
-  contractAddress: Nullish<BechAddr32>;
+  type: PoolType;
 }
 
 export interface PoolData extends Pool {
-  isSupported: boolean;
+  address: BechAddr32;
+  contractAddress: Nullish<BechAddr32>;
   createdHeight: Option<number>;
   creator: Option<BechAddr>;
-  address: BechAddr32;
-  swapFee: string;
   exitFee: string;
   futurePoolGovernor: string;
-  weight: Nullable<PoolWeight[]>;
-  smoothWeightChangeParams: Nullable<object>;
-  scalingFactors: Nullable<number[]>;
+  isSupported: boolean;
   scalingFactorController: Nullable<string>;
+  scalingFactors: Nullable<number[]>;
+  smoothWeightChangeParams: Nullable<object>;
   spreadFactor: Nullable<string>;
+  swapFee: string;
   tickSpacing: Nullable<number>;
-  contractAddress: Nullish<BechAddr32>;
+  weight: Nullable<PoolWeight[]>;
 }
 
 // MARK: move
 export interface PoolInfo {
   coinA: {
     amount: U<Token<Big>>;
-    precision: Option<number>;
     denom: string;
+    precision: Option<number>;
     symbol: Option<string>;
   };
   coinB: {
     amount: U<Token<Big>>;
-    precision: Option<number>;
     denom: string;
+    precision: Option<number>;
     symbol: Option<string>;
   };
+}
+
+export type PoolTypeFilter = PoolType;
+
+export interface PoolWeight {
+  denom: string;
+  percentWeight: Nullable<string>;
+  weight: Big;
 }

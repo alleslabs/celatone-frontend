@@ -12,28 +12,28 @@ import { FileNamesCell } from "./FileNamesCell";
 import { RequestNoteCell } from "./RequestNoteCell";
 
 interface MyModuleVerificationsRowProps {
-  templateColumns: GridProps["templateColumns"];
   task: MoveVerifyTaskInfo;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const MyModuleVerificationsRow = ({
-  templateColumns,
   task,
+  templateColumns,
 }: MyModuleVerificationsRowProps) => {
   const navigate = useInternalNavigate();
 
   return (
     <Grid
-      templateColumns={templateColumns}
+      _hover={{ bg: "gray.900" }}
+      cursor="pointer"
       onClick={() =>
         navigate({
           pathname: "/my-module-verifications/[taskId]",
           query: { taskId: task.taskId },
         })
       }
-      _hover={{ bg: "gray.900" }}
+      templateColumns={templateColumns}
       transition="all 0.25s ease-in-out"
-      cursor="pointer"
     >
       <TableRow>
         <ExplorerLink type="task_id" value={task.taskId} showCopyOnHover />

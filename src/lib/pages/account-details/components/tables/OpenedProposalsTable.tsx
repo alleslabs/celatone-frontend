@@ -13,35 +13,35 @@ import type { BechAddr, Option } from "lib/types";
 
 interface OpenedProposalsTableProps {
   address: BechAddr;
+  onViewMore?: () => void;
+  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
-  refetchCount: () => void;
-  onViewMore?: () => void;
 }
 
 export const OpenedProposalsTable = ({
   address,
+  onViewMore,
+  refetchCount,
   scrollComponentId,
   totalData,
-  refetchCount,
-  onViewMore,
 }: OpenedProposalsTableProps) => {
   const isMobile = useMobile();
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: totalData,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: totalData,
   });
 
   const { data: proposals, isLoading } = useProposalsByAddress(
@@ -74,20 +74,20 @@ export const OpenedProposalsTable = ({
       ) : (
         <AccountSectionWrapper title="Opened Proposals" totalData={totalData}>
           <ProposalsTable
-            proposals={proposals?.items}
-            isLoading={isLoading}
             emptyState={
               !proposals ? (
                 <ErrorFetching
                   dataName="proposals"
-                  withBorder
                   my={2}
                   hasBorderTop={false}
+                  withBorder
                 />
               ) : (
                 <AccountDetailsEmptyState message="No proposals have been opened by this account before." />
               )
             }
+            isLoading={isLoading}
+            proposals={proposals?.items}
           />
         </AccountSectionWrapper>
       )}
@@ -97,13 +97,13 @@ export const OpenedProposalsTable = ({
           : totalData > 10 && (
               <Pagination
                 currentPage={currentPage}
+                pageSize={pageSize}
                 pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={totalData}
-                scrollComponentId={scrollComponentId}
-                pageSize={pageSize}
                 onPageChange={onPageChange}
                 onPageSizeChange={onPageSizeChange}
+                scrollComponentId={scrollComponentId}
+                totalData={totalData}
               />
             ))}
     </Box>

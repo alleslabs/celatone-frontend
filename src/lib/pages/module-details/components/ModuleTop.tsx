@@ -32,17 +32,17 @@ interface ModuleTopProps {
 
 const baseTextStyle: TextProps = {
   color: "text.dark",
-  variant: "body2",
   fontWeight: 500,
+  variant: "body2",
   whiteSpace: "nowrap",
 };
 
 const ModuleCta = ({
-  moduleData,
   moduleAddress,
+  moduleData,
 }: {
-  moduleData: IndexedModule;
   moduleAddress: Addr;
+  moduleData: IndexedModule;
 }) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -76,15 +76,15 @@ const ModuleCta = ({
   return (
     <Flex
       gap={{ base: 2, md: 3 }}
+      mt={{ base: 4, md: 0 }}
       w={{ base: "full", md: "auto" }}
       justifyContent={{ md: "end" }}
-      mt={{ base: 4, md: 0 }}
     >
       <Button
+        size={{ base: "sm", md: "md" }}
         variant="outline-white"
         w={{ base: "full", md: "auto" }}
-        leftIcon={<CustomIcon name="query" mr={0} />}
-        size={{ base: "sm", md: "md" }}
+        leftIcon={<CustomIcon mr={0} name="query" />}
         onClick={() => {
           track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
             label: "view",
@@ -93,8 +93,8 @@ const ModuleCta = ({
             pathname: "/interact",
             query: {
               address: moduleData.address,
-              moduleName: moduleData.moduleName,
               functionType: "view",
+              moduleName: moduleData.moduleName,
             },
           });
         }}
@@ -105,7 +105,7 @@ const ModuleCta = ({
         <>
           <Button
             variant="outline-white"
-            leftIcon={<CustomIcon name="execute" mr={0} />}
+            leftIcon={<CustomIcon mr={0} name="execute" />}
             onClick={() => {
               track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
                 label: "execute",
@@ -114,8 +114,8 @@ const ModuleCta = ({
                 pathname: "/interact",
                 query: {
                   address: moduleData.address,
-                  moduleName: moduleData.moduleName,
                   functionType: "execute",
+                  moduleName: moduleData.moduleName,
                 },
               });
             }}
@@ -123,14 +123,14 @@ const ModuleCta = ({
             Execute
           </Button>
           <Tooltip
-            variant="primary-light"
             label={republishRemark}
+            variant="primary-light"
             closeOnClick={false}
           >
             <Button
               isDisabled={!canRepublish}
               variant="outline-white"
-              leftIcon={<CustomIcon name="migrate" mr={0} />}
+              leftIcon={<CustomIcon mr={0} name="migrate" />}
               onClick={() => {
                 track(AmpEvent.USE_MODULE_DETAILS_MAIN_CTA, {
                   label: "republish",
@@ -146,11 +146,11 @@ const ModuleCta = ({
         </>
       )}
       <CopyButton
-        w={{ base: "full", md: "auto" }}
         size={{ base: "sm", md: "md" }}
-        amptrackSection="[Module Detail CTA] Copy ABI "
         value={moduleData.abi}
         variant="outline-primary"
+        w={{ base: "full", md: "auto" }}
+        amptrackSection="[Module Detail CTA] Copy ABI "
         buttonText="Copy ABI"
         iconGap={2}
       />
@@ -161,7 +161,7 @@ const ModuleCta = ({
 export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
   const isMobile = useMobile();
 
-  const { convertHexWalletAddress, convertHexModuleAddress } =
+  const { convertHexModuleAddress, convertHexWalletAddress } =
     useConvertHexAddress();
 
   const moduleAddress = useMemo(() => {
@@ -177,27 +177,27 @@ export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
       <Breadcrumb
         items={[
           {
-            text: truncate(moduleData.address),
             href: `/accounts/${moduleData.address}`,
+            text: truncate(moduleData.address),
           },
           {
-            text: "Modules",
             href: `/accounts/${moduleData.address}/modules`,
+            text: "Modules",
           },
           { text: moduleData.moduleName },
         ]}
       />
       <Flex
-        justifyContent="space-between"
-        w="full"
         alignItems={{ base: "start", md: "center" }}
-        mt={5}
         mb={3}
+        mt={5}
+        w="full"
         direction={{ base: "column", md: "row" }}
+        justifyContent="space-between"
       >
         <Flex
-          gap={1}
           align={{ base: "start", md: "center" }}
+          gap={1}
           maxW={{ md: "640px" }}
         >
           <CustomIcon
@@ -206,58 +206,58 @@ export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
             color="primary.main"
           />
           <Heading
-            as="h5"
-            mt={{ base: 1, md: 0 }}
-            ml={{ base: 1, md: 0 }}
-            variant={{ base: "h6", md: "h5" }}
             className={!isMobile ? "ellipsis" : ""}
+            as="h5"
+            ml={{ base: 1, md: 0 }}
+            mt={{ base: 1, md: 0 }}
+            variant={{ base: "h6", md: "h5" }}
           >
             {moduleData.moduleName}
           </Heading>
           <MoveVerifyBadge status={moveVerifyStatus} hasTooltip />
         </Flex>
         {!isMobile && (
-          <ModuleCta moduleData={moduleData} moduleAddress={moduleAddress} />
+          <ModuleCta moduleAddress={moduleAddress} moduleData={moduleData} />
         )}
       </Flex>
-      <Flex direction="column" textOverflow="ellipsis" gap={{ base: 2, md: 1 }}>
+      <Flex gap={{ base: 2, md: 1 }} direction="column" textOverflow="ellipsis">
         <Flex
-          mt={{ base: 2, md: 2 }}
           gap={{ base: 0, md: 2 }}
+          mt={{ base: 2, md: 2 }}
           direction={{ base: "column", md: "row" }}
         >
           <Text {...baseTextStyle} color="text.main">
             Module Path:
           </Text>
           <CopyLink
+            type="module_path"
             value={mergeModulePath(moduleData.address, moduleData.moduleName)}
             amptrackSection="module_top"
-            type="module_path"
           />
         </Flex>
         <Flex
-          mt={{ base: 2, md: 0 }}
           gap={{ base: 0, md: 2 }}
+          mt={{ base: 2, md: 0 }}
           direction={{ base: "column", md: "row" }}
         >
           <Text {...baseTextStyle} color="text.main">
             Creator:
           </Text>
           <ExplorerLink
+            maxWidth="fit-content"
+            fixedHeight={false}
+            type="user_address"
             value={moduleAddress}
             ampCopierSection="module_top"
             textFormat="normal"
-            maxWidth="fit-content"
-            type="user_address"
-            fixedHeight={false}
           />
         </Flex>
         <Flex
-          mt={{ base: 2, md: 0 }}
           gap={{ base: 0, md: 2 }}
+          mt={{ base: 2, md: 0 }}
           direction={{ base: "column", md: "row" }}
         >
-          <Text {...baseTextStyle} color="text.main" mt="1px">
+          <Text {...baseTextStyle} mt="1px" color="text.main">
             Friends:
           </Text>
           <Flex gap={1} wordBreak="break-all">
@@ -284,7 +284,7 @@ export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
         </Flex>
       </Flex>
       {isMobile && (
-        <ModuleCta moduleData={moduleData} moduleAddress={moduleAddress} />
+        <ModuleCta moduleAddress={moduleAddress} moduleData={moduleData} />
       )}
     </Flex>
   );

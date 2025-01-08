@@ -8,10 +8,10 @@ import { SaveCodeDetailsModal } from "./SaveCodeDetails";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "full",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 
@@ -24,25 +24,25 @@ export const SaveOrRemoveCodeModal = ({
 }: SaveOrRemoveCodeModalProps) =>
   codeInfo.isSaved ? (
     <RemoveCodeModal
-      codeId={codeInfo.id}
       name={codeInfo.name}
       trigger={
         <StyledIconButton
           aria-label="button"
-          icon={<CustomIcon name="bookmark-solid" />}
           variant="ghost-primary"
+          icon={<CustomIcon name="bookmark-solid" />}
         />
       }
+      codeId={codeInfo.id}
     />
   ) : (
     <SaveCodeDetailsModal
-      codeInfo={codeInfo}
       triggerElement={
         <StyledIconButton
           aria-label="button"
-          icon={<CustomIcon name="bookmark" />}
           variant="ghost-gray"
+          icon={<CustomIcon name="bookmark" />}
         />
       }
+      codeInfo={codeInfo}
     />
   );

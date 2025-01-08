@@ -19,14 +19,14 @@ import {
 } from "lib/utils";
 
 interface MigrationRowProps {
-  templateColumns: GridProps["templateColumns"];
   history: ContractMigrationHistory;
+  templateColumns: GridProps["templateColumns"];
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 export const MigrationRow = ({
-  templateColumns,
   history,
+  templateColumns,
   wasmVerifyInfo,
 }: MigrationRowProps) => {
   const { isFullTier } = useTierConfig();
@@ -52,9 +52,9 @@ export const MigrationRow = ({
         <CodeNameCell
           code={{
             id: history.codeId,
+            name: history.codeName,
             // TODO: fix by handle uploader undefined
             uploader: history.uploader ?? ("" as BechAddr),
-            name: history.codeName,
           }}
         />
       </TableRow>
@@ -73,8 +73,8 @@ export const MigrationRow = ({
               <ExplorerLink
                 type={getAddressType(history.sender)}
                 value={history.sender}
-                textFormat="truncate"
                 showCopyOnHover
+                textFormat="truncate"
               />
             ) : (
               "N/A"
@@ -85,8 +85,8 @@ export const MigrationRow = ({
       <TableRow>
         {history.height ? (
           <ExplorerLink
-            value={history.height.toString()}
             type="block_height"
+            value={history.height.toString()}
             showCopyOnHover
           />
         ) : (
@@ -98,9 +98,9 @@ export const MigrationRow = ({
           <TableRow>
             {history.timestamp ? (
               <Flex
+                sx={{ "& p + p": { color: "text.dark", mt: "2px" } }}
                 direction="column"
                 fontSize="12px"
-                sx={{ "& p + p": { color: "text.dark", mt: "2px" } }}
               >
                 <p>{formatUTC(history.timestamp)}</p>
                 <p>({dateFromNow(history.timestamp)})</p>

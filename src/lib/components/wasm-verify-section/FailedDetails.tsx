@@ -10,19 +10,19 @@ import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
 import { VerifyButton } from "./VerifyButton";
 
 interface FailedDetailsProps {
-  codeId: number;
   codeHash: string;
-  verificationInfo: WasmVerifyInfoBase;
-  relatedVerifiedCodes: number[];
+  codeId: number;
   contractAddress?: BechAddr32;
+  relatedVerifiedCodes: number[];
+  verificationInfo: WasmVerifyInfoBase;
 }
 
 export const FailedDetails = ({
-  codeId,
   codeHash,
-  verificationInfo,
-  relatedVerifiedCodes,
+  codeId,
   contractAddress,
+  relatedVerifiedCodes,
+  verificationInfo,
 }: FailedDetailsProps) => {
   const isMobile = useMobile();
   return (
@@ -32,8 +32,8 @@ export const FailedDetails = ({
           <>
             This contract is an instance of code ID{" "}
             <ExplorerLink
-              value={codeId.toString()}
               type="code_id"
+              value={codeId.toString()}
               showCopyOnHover
             />
             , in which its verification was submitted on{" "}
@@ -70,26 +70,26 @@ export const FailedDetails = ({
       </Text>
       <Flex gap={2}>
         <WasmVerifyStatusModal
-          codeHash={codeHash}
-          verificationInfo={verificationInfo}
-          relatedVerifiedCodes={relatedVerifiedCodes}
           triggerElement={
-            <Button variant="ghost-primary" size="sm">
+            <Button size="sm" variant="ghost-primary">
               View Details
             </Button>
           }
+          codeHash={codeHash}
+          relatedVerifiedCodes={relatedVerifiedCodes}
+          verificationInfo={verificationInfo}
         />
         {!isMobile && (
           <VerifyButton
-            codeId={codeId}
-            codeHash={codeHash}
-            wasmVerifyStatus={getWasmVerifyStatus({
-              verificationInfo,
-              schema: null,
-              relatedVerifiedCodes,
-            })}
-            relatedVerifiedCodes={relatedVerifiedCodes}
             label="Reverify Code"
+            wasmVerifyStatus={getWasmVerifyStatus({
+              relatedVerifiedCodes,
+              schema: null,
+              verificationInfo,
+            })}
+            codeHash={codeHash}
+            codeId={codeId}
+            relatedVerifiedCodes={relatedVerifiedCodes}
           />
         )}
       </Flex>

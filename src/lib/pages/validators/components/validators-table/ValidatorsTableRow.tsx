@@ -22,23 +22,23 @@ import {
 } from "lib/utils";
 
 interface ValidatorsTableRowProps {
-  templateColumns: GridProps["templateColumns"];
-  isActive: boolean;
-  validator: ValidatorData;
-  totalVotingPower: Big;
-  minCommissionRate: number;
   assetInfo: Option<AssetInfo>;
+  isActive: boolean;
+  minCommissionRate: number;
   showUptime: boolean;
+  templateColumns: GridProps["templateColumns"];
+  totalVotingPower: Big;
+  validator: ValidatorData;
 }
 
 export const ValidatorsTableRow = ({
-  templateColumns,
-  isActive,
-  validator,
-  totalVotingPower,
-  minCommissionRate,
   assetInfo,
+  isActive,
+  minCommissionRate,
   showUptime,
+  templateColumns,
+  totalVotingPower,
+  validator,
 }: ValidatorsTableRowProps) => {
   const navigate = useInternalNavigate();
 
@@ -53,11 +53,11 @@ export const ValidatorsTableRow = ({
   return (
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(validator.validatorAddress)}
       _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
+      onClick={() => onRowSelect(validator.validatorAddress)}
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
     >
       {isActive && (
         <TableRow justifyContent="center">
@@ -69,9 +69,9 @@ export const ValidatorsTableRow = ({
       <TableRow>
         <ValidatorBadge
           validator={{
-            validatorAddress: validator.validatorAddress,
             identity: validator.identity,
             moniker: validator.moniker,
+            validatorAddress: validator.validatorAddress,
           }}
           badgeSize={7}
         />

@@ -9,28 +9,28 @@ import InstantiateCompleted from "./InstantiateCompleted";
 import InstantiateFormPage from "./InstantiateFormPage";
 
 export interface InstantiateTxInfo extends DeliverTxResponse {
-  contractLabel: string;
   codeId: number;
-  instantiator: BechAddr20;
   contractAddress: BechAddr32;
+  contractLabel: string;
+  instantiator: BechAddr20;
 }
 
 const Instantiate = () => {
   useWasmConfig({ shouldRedirect: true });
   const [completed, setCompleted] = useState(false);
   const [txInfo, setTxInfo] = useState<InstantiateTxInfo>({
-    contractAddress: "" as BechAddr32,
-    height: 0,
-    transactionHash: "",
-    events: [],
-    gasWanted: BigInt(0),
-    gasUsed: BigInt(0),
-    contractLabel: "",
-    codeId: 0,
-    instantiator: "" as BechAddr20,
-    txIndex: 0,
     code: 0,
+    codeId: 0,
+    contractAddress: "" as BechAddr32,
+    contractLabel: "",
+    events: [],
+    gasUsed: BigInt(0),
+    gasWanted: BigInt(0),
+    height: 0,
+    instantiator: "" as BechAddr20,
     msgResponses: [],
+    transactionHash: "",
+    txIndex: 0,
   });
 
   useEffect(() => {
@@ -50,9 +50,9 @@ const Instantiate = () => {
       ) => {
         setTxInfo({
           ...txResult,
+          codeId,
           contractAddress,
           contractLabel,
-          codeId,
           instantiator,
         });
         setCompleted(true);

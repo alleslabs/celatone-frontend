@@ -34,9 +34,9 @@ export const BlockEvmTxsTablesSequencer = ({
     // TODO: double check if order matches
     evmBlockData?.block.transactions.forEach((tx, index) => {
       txs.push({
+        timestamp: evmBlockData.block.timestamp,
         tx,
         txReceipt: evmBlockData.blockReceipts[index],
-        timestamp: evmBlockData.block.timestamp,
       });
     });
     return txs;
@@ -48,21 +48,21 @@ export const BlockEvmTxsTablesSequencer = ({
 
   return (
     <Flex
-      direction="column"
+      borderTopWidth="1px"
       gap={6}
       pt={8}
       borderTopColor="gray.700"
-      borderTopWidth="1px"
+      direction="column"
     >
       <Heading as="h6" variant="h6">
         Transactions
       </Heading>
       <Tabs isLazy lazyBehavior="keepMounted">
         <TabList
+          id={tableHeaderId}
           borderBottom="1px solid"
           borderColor="gray.700"
           overflowX="scroll"
-          id={tableHeaderId}
         >
           <CustomTab count={cosmosTxs?.length}>Cosmos</CustomTab>
           <CustomTab count={evmTxs?.length}>EVM</CustomTab>
@@ -70,29 +70,29 @@ export const BlockEvmTxsTablesSequencer = ({
         <TabPanels>
           <TabPanel p={0} pt={{ base: 0, md: 6 }}>
             <TransactionsTable
-              transactions={cosmosTxs}
-              isLoading={isCosmosTxsLoading}
               emptyState={
                 <EmptyState
                   imageVariant="empty"
                   message="There are no submitted transactions in this block"
                 />
               }
-              showSuccess
+              isLoading={isCosmosTxsLoading}
               showRelations={false}
+              showSuccess
               showTimestamp={false}
+              transactions={cosmosTxs}
             />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 0, md: 6 }}>
             <EvmTransactionsTable
-              evmTransactions={evmTxs}
-              isLoading={isEvmBlockDataLoading}
               emptyState={
                 <EmptyState
                   imageVariant="empty"
                   message="There are no submitted EVM transactions in this block"
                 />
               }
+              evmTransactions={evmTxs}
+              isLoading={isEvmBlockDataLoading}
             />
           </TabPanel>
         </TabPanels>

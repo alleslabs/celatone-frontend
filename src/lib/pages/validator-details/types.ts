@@ -3,14 +3,13 @@ import { z } from "zod";
 import { zValidatorAddr } from "lib/types";
 
 export enum TabIndex {
-  Overview = "overview",
-  Votes = "votes",
-  Performance = "performance",
   BondedTokenChanges = "bonded-token-changes",
+  Overview = "overview",
+  Performance = "performance",
+  Votes = "votes",
 }
 
 export const zValidatorDetailsQueryParams = z.object({
-  validatorAddress: zValidatorAddr,
   tab: z.union([
     z.nativeEnum(TabIndex),
     z
@@ -18,6 +17,7 @@ export const zValidatorDetailsQueryParams = z.object({
       .optional()
       .transform(() => TabIndex.Overview),
   ]),
+  validatorAddress: zValidatorAddr,
 });
 
 export type ValidatorDetailsQueryParams = z.infer<

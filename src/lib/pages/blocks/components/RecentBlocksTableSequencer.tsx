@@ -8,14 +8,12 @@ import type { RecentBlocksTableProps } from "./type";
 export const RecentBlocksTableSequencer = ({
   isViewMore,
 }: RecentBlocksTableProps) => {
-  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useBlocksSequencer(isViewMore ? 5 : 10);
 
   return (
     <>
       <BlocksTable
-        blocks={data}
-        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant="empty"
@@ -23,12 +21,14 @@ export const RecentBlocksTableSequencer = ({
             withBorder
           />
         }
+        blocks={data}
+        isLoading={isLoading}
       />
       {!isViewMore && hasNextPage && (
         <LoadNext
-          text="Load more 10 blocks"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          text="Load more 10 blocks"
         />
       )}
     </>
