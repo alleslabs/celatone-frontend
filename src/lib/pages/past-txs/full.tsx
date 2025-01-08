@@ -27,10 +27,7 @@ interface PastTxsState {
 
 export const PastTxsFull = () => {
   const wasm = useWasmConfig({ shouldRedirect: false });
-  const {
-    address,
-    chain: { chain_id: chainId },
-  } = useCurrentChain();
+  const { address, chainId } = useCurrentChain();
 
   const defaultValues: PastTxsState = {
     search: "",

@@ -1,10 +1,10 @@
-import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import { capitalize } from "lodash";
 import type { Observable } from "rxjs";
 
+import type { SignAndBroadcast } from "lib/app-provider/hooks";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -16,29 +16,29 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface SubmitWhitelistProposalTxParams {
   address: BechAddr20;
-  client: SigningCosmWasmClient;
   fee: StdFee;
   messages: EncodeObject[];
   whitelistNumber: number;
   amountToVote: Nullable<string>;
+  signAndBroadcast: SignAndBroadcast;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
 
 export const submitWhitelistProposalTx = ({
   address,
-  client,
   fee,
   messages,
   whitelistNumber,
   amountToVote,
+  signAndBroadcast,
   onTxSucceed,
   onTxFailed,
 }: SubmitWhitelistProposalTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx({
-      postFn: () => client.signAndBroadcast(address, messages, fee),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
@@ -99,31 +99,31 @@ export const submitWhitelistProposalTx = ({
 
 interface SubmitStoreCodeProposalTxParams {
   address: BechAddr20;
-  client: SigningCosmWasmClient;
   fee: StdFee;
   chainName: string;
   wasmFileName: string;
   messages: EncodeObject[];
   amountToVote: Nullable<string>;
+  signAndBroadcast: SignAndBroadcast;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
 
 export const submitStoreCodeProposalTx = ({
   address,
-  client,
   fee,
   chainName,
   wasmFileName,
   messages,
   amountToVote,
+  signAndBroadcast,
   onTxSucceed,
   onTxFailed,
 }: SubmitStoreCodeProposalTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx({
-      postFn: () => client.signAndBroadcast(address, messages, fee),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();

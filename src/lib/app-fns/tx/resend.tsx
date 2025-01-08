@@ -1,10 +1,10 @@
 import { Text } from "@chakra-ui/react";
-import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import type { SignAndBroadcast } from "lib/app-provider/hooks";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -16,7 +16,7 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ResendTxParams {
   address: BechAddr20;
-  client: SigningCosmWasmClient;
+  signAndBroadcast: SignAndBroadcast;
   fee: StdFee;
   messages: EncodeObject[];
   onTxSucceed?: (txHash: string) => void;
@@ -25,7 +25,7 @@ interface ResendTxParams {
 
 export const resendTx = ({
   address,
-  client,
+  signAndBroadcast,
   fee,
   messages,
   onTxSucceed,
@@ -34,7 +34,7 @@ export const resendTx = ({
   return pipe(
     sendingTx(fee),
     postTx({
-      postFn: () => client.signAndBroadcast(address, messages, fee),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.(txInfo.transactionHash);

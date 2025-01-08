@@ -3,17 +3,16 @@ import type { EncodeObject } from "@cosmjs/proto-signing";
 import { useCallback, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import {
-  useFabricateFee,
-  useResendTx,
-  useSimulateFeeQuery,
-} from "lib/app-provider";
+import { useFabricateFee, useResendTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/hooks";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import type { Gas, Message, Msg, Option } from "lib/types";
 import { camelToSnake, encode } from "lib/utils";
 
 interface ResendButtonProps {
   messages: Message[];
+  txHash: string;
+  msgIndex?: number;
 }
 
 const formatMsgs = (messages: Message[]) =>
@@ -32,7 +31,11 @@ const formatMsgs = (messages: Message[]) =>
     return acc;
   }, []);
 
-export const ResendButton = ({ messages }: ResendButtonProps) => {
+export const ResendButton = ({
+  messages,
+  txHash,
+  msgIndex = 0,
+}: ResendButtonProps) => {
   const fabricateFee = useFabricateFee();
   const resendTx = useResendTx();
   const { broadcast } = useTxBroadcast();
@@ -41,15 +44,15 @@ export const ResendButton = ({ messages }: ResendButtonProps) => {
   const composedMsgs = formatMsgs(messages);
 
   const proceed = useCallback(
-    async (estimatedGasUsed: Option<Gas<number>>) => {
+    async (estimatedGasUsed: Option<Gas>) => {
       track(AmpEvent.ACTION_RESEND);
       const stream = await resendTx({
-        onTxSucceed: () => setIsProcessing(false),
-        onTxFailed: () => setIsProcessing(false),
         estimatedFee: estimatedGasUsed
           ? fabricateFee(estimatedGasUsed)
           : undefined,
         messages: composedMsgs,
+        onTxSucceed: () => setIsProcessing(false),
+        onTxFailed: () => setIsProcessing(false),
       });
       if (stream) broadcast(stream);
     },
@@ -59,6 +62,7 @@ export const ResendButton = ({ messages }: ResendButtonProps) => {
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: isProcessing,
     messages: composedMsgs,
+    extraQueryKey: [txHash, msgIndex],
     onSuccess: proceed,
     onError: () => setIsProcessing(false),
   });

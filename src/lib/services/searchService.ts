@@ -94,9 +94,7 @@ export const useSearchHandler = (
       },
     },
   } = useCelatoneApp();
-  const {
-    chain: { bech32_prefix: bech32Prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
   const isInitia = useInitia();
 
   const getAddressType = useGetAddressType();

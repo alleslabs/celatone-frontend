@@ -8,7 +8,7 @@ import {
   VmType,
   zAddNetworkManualChainConfigJson,
   zAddNetworkManualForm,
-  zGasFeeDetailsForm,
+  zGasConfigFeeDetailsForm,
   zNetworkDetailsForm,
   zWalletRegistryForm,
 } from "../types";
@@ -112,7 +112,7 @@ export const AddNetworkManual = () => {
       }).success;
 
     if (currentStepIndex === 1)
-      return !zGasFeeDetailsForm.safeParse({
+      return !zGasConfigFeeDetailsForm.safeParse({
         gasAdjustment,
         maxGasLimit,
         denom,

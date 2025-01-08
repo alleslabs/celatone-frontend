@@ -40,6 +40,7 @@ export * from "./tags";
 export * from "./truncate";
 export * from "./tx";
 export * from "./txHash";
+export * from "./sleep";
 export * from "./validate";
 export * from "./validator";
 export * from "./verification";

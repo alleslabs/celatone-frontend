@@ -1,16 +1,15 @@
-import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { Coin } from "@cosmjs/stargate";
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { gzip } from "node-gzip";
 
-import { CELATONE_QUERY_KEYS } from "../env";
+import { useCelatoneApp } from "lib/app-provider/contexts";
+import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import {
   useCurrentChain,
   useDummyWallet,
-  useGetSigningClient,
-  useRpcEndpoint,
-} from "../hooks";
+  useSimulateFee,
+} from "lib/app-provider/hooks";
 import type { AccessType, BechAddr, ComposedMsg, Gas, Option } from "lib/types";
 import { composeStoreCodeMsg, composeStoreCodeProposalMsg } from "lib/utils";
 
@@ -19,7 +18,8 @@ interface SimulateQueryParams {
   messages: ComposedMsg[];
   isDummyUser?: boolean;
   retry?: UseQueryOptions["retry"];
-  onSuccess?: (gas: Gas<number> | undefined) => void;
+  extraQueryKey?: UseQueryOptions["queryKey"];
+  onSuccess?: (gas: Option<Gas>) => void;
   onError?: (err: Error) => void;
 }
 
@@ -28,45 +28,34 @@ export const useSimulateFeeQuery = ({
   messages,
   isDummyUser,
   retry = 2,
+  extraQueryKey = [],
   onSuccess,
   onError,
 }: SimulateQueryParams) => {
-  const { address, chain } = useCurrentChain();
-  const getSigningClient = useGetSigningClient();
-  const { dummyWallet, dummyAddress } = useDummyWallet();
-  const rpcEndpoint = useRpcEndpoint();
-  const userAddress = isDummyUser ? dummyAddress : address || dummyAddress;
+  const {
+    chainConfig: { rpc: rpcEndpoint },
+  } = useCelatoneApp();
+  const { address } = useCurrentChain();
+  const { dummyAddress } = useDummyWallet();
+  const simulateFee = useSimulateFee();
 
-  const simulateFn = async (msgs: ComposedMsg[]) => {
-    // TODO: revisit this logic
-    if (!userAddress) {
-      throw new Error("No user address");
-    }
-
-    const client =
-      dummyWallet && (isDummyUser || !address)
-        ? await SigningCosmWasmClient.connectWithSigner(
-            rpcEndpoint,
-            dummyWallet
-          )
-        : await getSigningClient();
-
-    if (!client) {
-      throw new Error("Fail to get SigningCosmWasmClient");
-    }
-
-    return (await client.simulate(userAddress, msgs, undefined)) as Gas;
+  const simulateFn = async () => {
+    const userAddress = isDummyUser ? dummyAddress : address;
+    if (!userAddress)
+      throw new Error("No address provided (useSimulateFeeQuery)");
+    return simulateFee({ address: userAddress, messages, isDummyUser });
   };
 
   return useQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE,
-      chain.chain_name,
-      userAddress,
-      messages,
       rpcEndpoint,
+      messages,
+      address,
+      isDummyUser,
+      ...extraQueryKey,
     ],
-    queryFn: async () => simulateFn(messages),
+    queryFn: simulateFn,
     enabled,
     retry,
     refetchOnReconnect: false,
@@ -81,7 +70,7 @@ interface SimulateQueryParamsForStoreCode {
   wasmFile: Option<File>;
   permission: AccessType;
   addresses?: BechAddr[];
-  onSuccess?: (gas: Gas<number> | undefined) => void;
+  onSuccess?: (gas: Option<Gas>) => void;
   onError?: (err: Error) => void;
 }
 
@@ -93,13 +82,14 @@ export const useSimulateFeeForStoreCode = ({
   onSuccess,
   onError,
 }: SimulateQueryParamsForStoreCode) => {
-  const { address, getSigningCosmWasmClient, chain } = useCurrentChain();
-  const simulateFn = async () => {
-    if (!address) throw new Error("Please check your wallet connection.");
-    if (!wasmFile) throw new Error("Fail to get Wasm file");
+  const { address, chainId } = useCurrentChain();
+  const simulateFee = useSimulateFee();
 
-    const client = await getSigningCosmWasmClient();
-    if (!client) throw new Error("Fail to get client");
+  const simulateFn = async () => {
+    if (!address)
+      throw new Error("No address provided (useSimulateFeeForStoreCode)");
+    if (!wasmFile)
+      throw new Error("No Wasm file provided (useSimulateFeeForStoreCode)");
 
     const submitStoreCodeMsg = async () => {
       return composeStoreCodeMsg({
@@ -110,17 +100,17 @@ export const useSimulateFeeForStoreCode = ({
       });
     };
     const craftMsg = await submitStoreCodeMsg();
-    return (await client.simulate(address, [craftMsg], undefined)) as Gas;
+    return simulateFee({ address, messages: [craftMsg] });
   };
   return useQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE,
-      chain.chain_name,
+      chainId,
       wasmFile,
       permission,
       addresses,
     ],
-    queryFn: async () => simulateFn(),
+    queryFn: simulateFn,
     enabled,
     retry: 2,
     refetchOnReconnect: false,
@@ -144,7 +134,7 @@ interface SimulateQueryParamsForProposalStoreCode {
   permission: AccessType;
   addresses: BechAddr[];
   precision: Option<number>;
-  onSuccess?: (gas: Gas<number> | undefined) => void;
+  onSuccess?: (gas: Option<Gas>) => void;
   onError?: (err: Error) => void;
 }
 
@@ -165,13 +155,18 @@ export const useSimulateFeeForProposalStoreCode = ({
   onSuccess,
   onError,
 }: SimulateQueryParamsForProposalStoreCode) => {
-  const { address, getSigningCosmWasmClient, chain } = useCurrentChain();
-  const simulateFn = async () => {
-    if (!address) throw new Error("Please check your wallet connection.");
-    if (!wasmFile) throw new Error("Fail to get Wasm file");
+  const { address, chainId } = useCurrentChain();
+  const simulateFee = useSimulateFee();
 
-    const client = await getSigningCosmWasmClient();
-    if (!client) throw new Error("Fail to get client");
+  const simulateFn = async () => {
+    if (!address)
+      throw new Error(
+        "No address provided (useSimulateFeeForProposalStoreCode)"
+      );
+    if (!wasmFile)
+      throw new Error(
+        "No Wasm file provided (useSimulateFeeForProposalStoreCode)"
+      );
 
     const submitStoreCodeProposalMsg = async () => {
       return composeStoreCodeProposalMsg({
@@ -192,13 +187,13 @@ export const useSimulateFeeForProposalStoreCode = ({
     };
 
     const craftMsg = await submitStoreCodeProposalMsg();
-    return (await client.simulate(address, [craftMsg], undefined)) as Gas;
+    return simulateFee({ address, messages: [craftMsg] });
   };
 
   return useQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE_PROPOSAL,
-      chain.chain_name,
+      chainId,
       runAs,
       initialDeposit,
       unpinCode,
@@ -210,7 +205,7 @@ export const useSimulateFeeForProposalStoreCode = ({
       addresses,
       enabled,
     ],
-    queryFn: async () => simulateFn(),
+    queryFn: simulateFn,
     enabled,
     retry: 2,
     refetchOnReconnect: false,

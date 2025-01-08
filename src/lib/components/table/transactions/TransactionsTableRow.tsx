@@ -117,6 +117,8 @@ export const TransactionsTableRow = ({
               isSigner={transaction.isSigner}
               key={index.toString() + msg.type}
               message={msg}
+              txHash={transaction.hash}
+              msgIndex={index}
               allowFurtherAction={showAction}
             />
           ))}

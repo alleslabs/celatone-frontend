@@ -1,22 +1,26 @@
+import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+import { useCelatoneApp } from "../contexts";
 import { DUMMY_MNEMONIC } from "env";
+import { getCustomedSigningCosmwasm } from "lib/providers/cosmos-kit/options";
 import type { BechAddr20 } from "lib/types";
 
 import { useCurrentChain } from "./useCurrentChain";
 
 export const useDummyWallet = () => {
-  const { chain } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
   const [dummyWallet, setDummyWallet] = useState<DirectSecp256k1HdWallet>();
   const [dummyAddress, setDummyAddress] = useState<BechAddr20>();
+
   useEffect(() => {
     (async () => {
       if (DUMMY_MNEMONIC) {
         const wallet = await DirectSecp256k1HdWallet.fromMnemonic(
           DUMMY_MNEMONIC,
           {
-            prefix: chain.bech32_prefix,
+            prefix: bech32Prefix,
           }
         );
 
@@ -26,7 +30,24 @@ export const useDummyWallet = () => {
         setDummyAddress(address as BechAddr20);
       }
     })();
-  }, [chain.bech32_prefix]);
+  }, [bech32Prefix]);
 
   return { dummyWallet, dummyAddress };
+};
+
+export const useGetDummyClient = () => {
+  const { dummyWallet } = useDummyWallet();
+  const {
+    chainConfig: { rpc: rpcEndpoint },
+  } = useCelatoneApp();
+
+  return useCallback(async () => {
+    if (!dummyWallet) throw new Error("No dummy wallet provided");
+
+    return SigningCosmWasmClient.connectWithSigner(
+      rpcEndpoint,
+      dummyWallet,
+      getCustomedSigningCosmwasm()
+    );
+  }, [dummyWallet, rpcEndpoint]);
 };

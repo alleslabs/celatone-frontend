@@ -55,7 +55,7 @@ export const InstantiateButton = ({
   codeId,
   ...buttonProps
 }: InstantiateButtonProps) => {
-  const { address, isWalletConnected } = useCurrentChain();
+  const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
   const goToInstantiate = () =>
     navigate({ pathname: "/instantiate", query: { codeId } });
@@ -74,7 +74,7 @@ export const InstantiateButton = ({
   const { tooltipLabel, variant, icon } = getInstantiateButtonProps(
     isAllowed,
     instantiatePermission === AccessConfigPermission.UNKNOWN,
-    isWalletConnected
+    !!address
   );
 
   return (
@@ -82,7 +82,7 @@ export const InstantiateButton = ({
       <Button
         w={{ base: "full", md: "auto" }}
         // Change to isDisabled when create proposal flow is done
-        isDisabled={!isAllowed || !isWalletConnected}
+        isDisabled={!isAllowed || !address}
         variant={variant}
         leftIcon={icon}
         size="sm"

@@ -37,7 +37,9 @@ export const FurtherActionButton = ({
     transaction.furtherAction === MsgFurtherAction.RESEND &&
     !isInstantiate2
   ) {
-    return <ResendButton messages={transaction.messages} />;
+    return (
+      <ResendButton messages={transaction.messages} txHash={transaction.hash} />
+    );
   }
 
   if (transaction.furtherAction === MsgFurtherAction.REDO && isInstantiate2) {

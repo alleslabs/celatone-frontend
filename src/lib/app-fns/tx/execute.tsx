@@ -1,9 +1,9 @@
-import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import type { SignAndBroadcast } from "lib/app-provider/hooks";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -21,7 +21,7 @@ interface ExecuteTxParams {
   action: string;
   fee: StdFee;
   base64Message: string;
-  client: SigningCosmWasmClient;
+  signAndBroadcast: SignAndBroadcast;
   onTxSucceed?: (activity: Activity) => void;
   onTxFailed?: () => void;
 }
@@ -33,14 +33,14 @@ export const executeContractTx = ({
   action,
   fee,
   base64Message,
-  client,
+  signAndBroadcast,
   onTxSucceed,
   onTxFailed,
 }: ExecuteTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => client.signAndBroadcast(address, messages, fee, ""),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.({

@@ -3,9 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { getContractLcd } from "../wasm/contract/lcd";
 import {
   CELATONE_QUERY_KEYS,
+  useCelatoneApp,
   useCurrentChain,
   useGetAddressType,
-  useLcdEndpoint,
 } from "lib/app-provider";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 
@@ -15,11 +15,13 @@ export const useIcnsNamesByAddressLcd = (
   address: Option<BechAddr>,
   enabled = true
 ) => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   const queryFn = async () => {
     if (!address) throw new Error("address is undefined");
-    const icnsNames = await getIcnsNamesByAddressLcd(endpoint, address);
+    const icnsNames = await getIcnsNamesByAddressLcd(lcdEndpoint, address);
     const primaryIndex = icnsNames.names.indexOf(icnsNames.primaryName);
 
     if (primaryIndex > -1) {
@@ -31,7 +33,7 @@ export const useIcnsNamesByAddressLcd = (
   };
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS_LCD, endpoint, address],
+    [CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS_LCD, lcdEndpoint, address],
     queryFn,
     {
       refetchOnWindowFocus: false,
@@ -42,11 +44,11 @@ export const useIcnsNamesByAddressLcd = (
 };
 
 export const useAddressByIcnsNameLcd = (name: string, enabled = true) => {
-  const lcdEndpoint = useLcdEndpoint();
-  const getAddressType = useGetAddressType();
   const {
-    chain: { bech32_prefix: bech32Prefix },
-  } = useCurrentChain();
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
+  const getAddressType = useGetAddressType();
+  const { bech32Prefix } = useCurrentChain();
   const queryFn = async () => {
     // Strip bech32 prefix to allow searching with .prefix (e.g. example.osmo)
     const [stripPrefixName] = name.split(`.${bech32Prefix}`);

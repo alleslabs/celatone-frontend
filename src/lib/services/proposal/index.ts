@@ -14,7 +14,7 @@ import type {
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
-  useLcdEndpoint,
+  useCelatoneApp,
   useTierConfig,
 } from "lib/app-provider";
 import type {
@@ -54,7 +54,9 @@ import {
 export const useProposalParams = () => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("proposals");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   const [endpoint, queryFn] = isFullTier
     ? [apiEndpoint, getProposalParams]
@@ -115,7 +117,9 @@ export const useProposals = (
 export const useProposalsLcd = (
   status?: Omit<ProposalStatus, "DEPOSIT_FAILED" | "CANCELLED">
 ) => {
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   const { data, ...rest } = useInfiniteQuery<ProposalsResponseLcd>(
     [CELATONE_QUERY_KEYS.PROPOSALS_LCD, lcdEndpoint, status],
@@ -192,7 +196,9 @@ export const useProposalData = (id: number, enabled = true) => {
 };
 
 export const useProposalDataLcd = (id: number, enabled = true) => {
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery<ProposalDataResponseLcd>(
     [CELATONE_QUERY_KEYS.PROPOSAL_DATA_LCD, lcdEndpoint, id],
@@ -206,7 +212,9 @@ export const useProposalDataLcd = (id: number, enabled = true) => {
 };
 
 export const useProposalDepositsLcd = (id: number, enabled = true) => {
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery<ProposalDeposit<Coin>[]>(
     [CELATONE_QUERY_KEYS.PROPOSAL_DEPOSITS_LCD, lcdEndpoint, id],
@@ -222,7 +230,9 @@ export const useProposalDepositsLcd = (id: number, enabled = true) => {
 export const useProposalVotesInfo = (id: number, enabled: boolean) => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("proposals");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   const [endpoint, queryFn] = isFullTier
     ? [apiEndpoint, getProposalVotesInfo]

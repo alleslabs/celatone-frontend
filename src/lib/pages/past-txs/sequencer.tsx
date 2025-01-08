@@ -42,10 +42,7 @@ const PastTxsSequencerTransactionsTableWithWalletEmptyState = ({
 };
 
 export const PastTxsSequencer = () => {
-  const {
-    address,
-    chain: { chain_id: chainId },
-  } = useCurrentChain();
+  const { address, chainId } = useCurrentChain();
 
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);

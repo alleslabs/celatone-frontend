@@ -11,7 +11,6 @@ import {
   useCurrentChain,
   useFabricateFee,
   useMoveConfig,
-  useSimulateFeeQuery,
 } from "lib/app-provider";
 import { usePublishModuleTx } from "lib/app-provider/tx/publish";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -21,6 +20,7 @@ import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { useTxBroadcast } from "lib/hooks";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import type { DecodeModuleQueryResponse } from "lib/services/types";
 import type { Option } from "lib/types";
 import { composePublishMsg } from "lib/utils";

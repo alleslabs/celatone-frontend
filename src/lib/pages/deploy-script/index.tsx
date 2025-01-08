@@ -4,11 +4,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import {
-  useCurrentChain,
-  useFabricateFee,
-  useSimulateFeeQuery,
-} from "lib/app-provider";
+import { useCurrentChain, useFabricateFee } from "lib/app-provider";
 import { useDeployScriptTx } from "lib/app-provider/tx/script";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -17,6 +13,7 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxBroadcast } from "lib/hooks";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import type { AbiFormData, ExposedFunction, Option } from "lib/types";
 import { composeScriptMsg, getAbiInitialData } from "lib/utils";
 

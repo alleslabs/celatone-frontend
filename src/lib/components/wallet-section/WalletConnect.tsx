@@ -2,7 +2,6 @@ import { Button } from "@chakra-ui/react";
 import { WalletStatus } from "@cosmos-kit/core";
 import type { MouseEventHandler, ReactNode } from "react";
 
-import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
 import type { ConnectWalletType } from "lib/types";
 
@@ -10,7 +9,7 @@ export const ConnectWalletButton = ({
   buttonText,
   isLoading,
   isDisabled,
-  onClickConnectBtn,
+  onClick,
   variant,
   icon,
 }: ConnectWalletType) => (
@@ -18,7 +17,7 @@ export const ConnectWalletButton = ({
     w="170px"
     isLoading={isLoading}
     isDisabled={isDisabled}
-    onClick={onClickConnectBtn}
+    onClick={onClick}
     variant={variant}
     gap={1}
     alignContent="center"
@@ -29,34 +28,6 @@ export const ConnectWalletButton = ({
     {buttonText || "Connect"}
   </Button>
 );
-
-export const Connected = ({
-  buttonText,
-  onClick,
-  icon,
-  variant,
-}: {
-  buttonText: string;
-  onClick: MouseEventHandler<HTMLButtonElement>;
-  icon?: IconKeys;
-  variant?: string;
-}) => (
-  <ConnectWalletButton
-    buttonText={buttonText}
-    onClickConnectBtn={onClick}
-    icon={icon}
-    variant={variant}
-  />
-);
-
-export const Disconnected = (props: {
-  buttonText: string;
-  iconColor: string;
-  onClick: MouseEventHandler<HTMLButtonElement>;
-  icon?: IconKeys;
-}) => <Connected {...props} />;
-
-export const Connecting = () => <ConnectWalletButton isLoading />;
 
 // For Rejected, NotExist or Error
 export const Others = ({
@@ -69,7 +40,7 @@ export const Others = ({
   <ConnectWalletButton
     buttonText={buttonText}
     isDisabled={false}
-    onClickConnectBtn={onClick}
+    onClick={onClick}
   />
 );
 

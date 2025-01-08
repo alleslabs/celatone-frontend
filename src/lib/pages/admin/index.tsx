@@ -9,7 +9,6 @@ import {
   useFabricateFee,
   useGetAddressType,
   useInternalNavigate,
-  useSimulateFeeQuery,
   useUpdateAdminTx,
   useValidateAddress,
   useWasmConfig,
@@ -26,6 +25,7 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxBroadcast } from "lib/hooks";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr, BechAddr32 } from "lib/types";
 import { MsgType } from "lib/types";

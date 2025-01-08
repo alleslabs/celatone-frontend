@@ -10,8 +10,8 @@ import type {
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useGovConfig,
-  useLcdEndpoint,
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
@@ -29,7 +29,9 @@ export const useAccountData = (
 ): UseQueryResult<AccountData> => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 
   return useQuery(
@@ -72,7 +74,9 @@ export const useAccountType = (
 ): UseQueryResult<AccountType> => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
     if (!address)
