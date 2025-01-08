@@ -187,7 +187,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
             borderColor="gray.100"
           >
             <Text variant="body2" color="text.dark" fontWeight={600}>
-              Account address in this Minitia will look like this:
+              Account address in this Rollup will look like this:
             </Text>
             {isAccountBech32Loading ? (
               <SkeletonText noOfLines={1} skeletonHeight={4} />

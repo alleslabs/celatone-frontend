@@ -76,7 +76,7 @@ export const NetworkAccordion = observer(
               )}
               {l2Networks.length > 0 && (
                 <NetworkAccordionSubsection
-                  title="Minitia (Layer 2)"
+                  title="Rollup (Layer 2)"
                   networks={l2Networks}
                   cursor={cursor}
                   setCursor={setCursor}

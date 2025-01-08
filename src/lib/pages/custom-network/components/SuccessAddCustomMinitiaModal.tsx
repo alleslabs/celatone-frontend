@@ -54,14 +54,14 @@ export const SuccessAddCustomMinitiaModal = ({
             <ModalHeader w="full">
               <Stack alignItems="center" gap={4} w="100%">
                 <Spinner w={16} h={16} thickness="4px" />
-                <Heading variant="h5">Adding Custom Minitia...</Heading>
+                <Heading variant="h5">Adding Custom Rollup...</Heading>
               </Stack>
             </ModalHeader>
             <ModalBody maxH="400px" overflow="overlay">
               <Text variant="body2" color="text.dark" textAlign="center">
-                Your minitia’s information is being processed, and the scan’s
-                for minitia will be ready shortly. Please do not close the
-                browser during this process.
+                Your rollup information is being processed, and the scan’s for
+                rollup will be ready shortly. Please do not close the browser
+                during this process.
               </Text>
             </ModalBody>
           </>
@@ -79,7 +79,7 @@ export const SuccessAddCustomMinitiaModal = ({
             </ModalHeader>
             <ModalBody maxH="400px" overflow="overlay">
               <Text variant="body2" color="text.dark" textAlign="center">
-                Your custom minitia is added to the InitiaScan locally on your
+                Your custom rollup is added to the InitiaScan locally on your
                 device. You also can download the configuration in to JSON file
                 to import them in other devices.
               </Text>
@@ -93,7 +93,7 @@ export const SuccessAddCustomMinitiaModal = ({
                   window.location.href = `/${chainId}`;
                 }}
               >
-                Explore new Minitia
+                Explore new Rollup
               </Button>
             </ModalFooter>
           </>
