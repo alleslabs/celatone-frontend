@@ -20,7 +20,7 @@ interface ControllerTextareaProps<T extends FieldValues>
   extends Omit<TextareaProps, "value" | "setInputState"> {
   name: FieldPath<T>;
   control: Control<T>;
-  rules?: UseControllerProps["rules"];
+  rules?: UseControllerProps<T>["rules"];
 }
 
 export const ControllerTextarea = <T extends FieldValues>({

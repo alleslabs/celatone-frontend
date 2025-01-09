@@ -30,7 +30,7 @@ export interface ControllerInputProps<T extends FieldValues>
   name: FieldPath<T>;
   control: Control<T>;
   type?: "text" | "number" | "decimal";
-  rules?: UseControllerProps["rules"];
+  rules?: UseControllerProps<T>["rules"];
   status?: FormStatus;
   maxLength?: number;
   helperAction?: ReactNode;

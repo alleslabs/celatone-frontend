@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#1185](https://github.com/alleslabs/celatone-frontend/pull/1185) Replace minitia with rollup
+- [#1186](https://github.com/alleslabs/celatone-frontend/pull/1186) Bump packages mainly @initia/react-wallet-widget
 
 ### Bug fixes
 
