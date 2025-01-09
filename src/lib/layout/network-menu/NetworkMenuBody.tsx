@@ -117,7 +117,7 @@ export const NetworkMenuBody = observer(
                     justifyContent="center"
                   >
                     <Text variant="body3" color="text.dark">
-                      You can add Custom Minitia on Desktop only
+                      You can add Custom Rollup on Desktop only
                     </Text>
                   </Flex>
                 ) : (
@@ -132,7 +132,7 @@ export const NetworkMenuBody = observer(
                       w="full"
                       h={12}
                     >
-                      Add custom Minitia
+                      Add custom Rollup
                     </Button>
                   </AppLink>
                 )}

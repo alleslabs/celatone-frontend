@@ -60,7 +60,7 @@ export function RemoveChainConfigModal({
       otherBtnTitle="No, Keep It"
     >
       <Text>
-        All information about your Minitia will be lost and can&lsquo;t be
+        All information about your Rollup will be lost and can&lsquo;t be
         recovered. You can save this address again later, but you will need to
         add its new address name.
       </Text>

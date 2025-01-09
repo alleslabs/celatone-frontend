@@ -1,7 +1,6 @@
 import type { ChainConfig } from "@alleslabs/shared";
 import { wallets as compassWallets } from "@cosmos-kit/compass";
 import type { MainWalletBase } from "@cosmos-kit/core";
-import { wallets as initiaWallets } from "@cosmos-kit/initia";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr";
 import { wallets as staionWallets } from "@cosmos-kit/station";
 
@@ -10,8 +9,6 @@ export const getWallets = (wallets: ChainConfig["wallets"]) =>
     switch (wallet) {
       case "keplr":
         return [...acc, ...keplrWallets];
-      case "initia":
-        return [...acc, ...initiaWallets];
       case "compass":
         return [...acc, ...compassWallets];
       case "station":

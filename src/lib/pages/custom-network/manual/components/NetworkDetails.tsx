@@ -32,7 +32,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
       <Flex w="full" direction="column" gap={6} mt={8}>
         <CustomNetworkSubheader
           title="VM Type"
-          subtitle="Choose supported VM for the custom Minitia"
+          subtitle="Choose supported VM for the custom Rollup"
         />
         <RadioGroup
           onChange={(nextVal) => vmTypeField.onChange(nextVal)}
@@ -93,12 +93,12 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
       <Flex w="full" direction="column" gap={6} mt={8}>
         <CustomNetworkSubheader
           title="Network Details"
-          subtitle="Enter the Minitia’s general information and gather data touch points"
+          subtitle="Enter the Rollup’s general information and gather data touch points"
         />
         <ControllerInput
           name="prettyName"
           control={control}
-          label="Minitia Name"
+          label="Rollup Name"
           variant="fixed-floating"
           w="full"
           placeholder="ex. Jennie"
@@ -110,7 +110,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
         <ControllerInput
           name="lcd"
           control={control}
-          label="Minitia LCD URL"
+          label="Rollup LCD URL"
           variant="fixed-floating"
           w="full"
           placeholder="https://"
@@ -122,7 +122,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
         <ControllerInput
           name="rpc"
           control={control}
-          label="Minitia RPC URL"
+          label="Rollup RPC URL"
           variant="fixed-floating"
           w="full"
           placeholder="https://"
@@ -135,7 +135,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           <ControllerInput
             name="chainId"
             control={control}
-            label="Minitia Chain ID"
+            label="Rollup Chain ID"
             variant="fixed-floating"
             w="full"
             placeholder="ex. jennie-init-1"

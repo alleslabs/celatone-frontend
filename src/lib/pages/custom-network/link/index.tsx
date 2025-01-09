@@ -140,14 +140,14 @@ export const AddNetworkLink = observer(() => {
             <Box minW="40%" maxW="70%">
               <TextReadOnly text={error.message} canCopy />
             </Box>
-            <Text mt={6}>You can add this custom Minitia manually</Text>
+            <Text mt={6}>You can add this custom Rollup manually</Text>
             <AppLink href="/custom-network/add">
               <Button
                 variant="outline-gray"
                 leftIcon={<CustomIcon name="plus" />}
                 mt={2}
               >
-                Add custom minitia
+                Add custom rollup
               </Button>
             </AppLink>
           </EmptyState>
