@@ -126,7 +126,8 @@ const EvmContractDetailsBody = ({
           <TabPanels>
             <TabPanel p={0} pt={8}>
               <EvmContractDetailsOverview
-                contractAddress={contractAddressBechAddr}
+                contractAddressBech={contractAddressBechAddr}
+                contractAddress={contractAddress}
                 hash={evmContractInfoData?.hash}
                 evmHash={evmHash}
                 sender={evmContractInfoData?.sender}

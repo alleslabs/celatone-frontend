@@ -1,18 +1,26 @@
-import { Flex, Grid, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
+import { Flex, Grid, Spinner, Stack, Text } from "@chakra-ui/react";
 
 import type { TxsTabIndex } from "../types";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { AssetsSection } from "lib/components/asset";
+import { NotVerifiedDetails } from "lib/components/evm-verify-section";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import type { BechAddr, BechAddr20, Nullish, Option } from "lib/types";
+import type {
+  BechAddr,
+  BechAddr20,
+  HexAddr20,
+  Nullish,
+  Option,
+} from "lib/types";
 import { dateFromNow, formatEvmTxHash, formatUTC } from "lib/utils";
 
 import { EvmContractDetailsTxs } from "./EvmContractDetailsTxs";
 
 interface EvmContractDetailsOverviewProps {
-  contractAddress: BechAddr20;
+  contractAddressBech: BechAddr20;
+  contractAddress: HexAddr20;
   hash: Option<string>;
   evmHash: Nullish<string>;
   sender: Option<BechAddr>;
@@ -25,6 +33,7 @@ interface EvmContractDetailsOverviewProps {
 }
 
 export const EvmContractDetailsOverview = ({
+  contractAddressBech,
   contractAddress,
   hash,
   evmHash,
@@ -42,18 +51,16 @@ export const EvmContractDetailsOverview = ({
 
   return (
     <Stack gap={8}>
+      {/* // TODO: Support all status */}
+      <NotVerifiedDetails contractAddress={contractAddress} />
       <Stack gap={4}>
-        <Heading as="h6" variant="h6">
-          Contract Info
-        </Heading>
         <Grid
           gridTemplateColumns={{
             base: "1fr",
             md: "minmax(0, 160px) repeat(3, minmax(0, 240px))",
           }}
           padding={4}
-          border="1px solid"
-          borderColor="gray.700"
+          bg="gray.900"
           borderRadius={8}
           columnGap={6}
           rowGap={4}
@@ -141,9 +148,12 @@ export const EvmContractDetailsOverview = ({
           </LabelText>
         </Grid>
       </Stack>
-      <AssetsSection address={contractAddress} onViewMore={onViewMoreAssets} />
+      <AssetsSection
+        address={contractAddressBech}
+        onViewMore={onViewMoreAssets}
+      />
       <EvmContractDetailsTxs
-        address={contractAddress}
+        address={contractAddressBech}
         onViewMore={onViewMoreTxs}
         tab={tab}
         setTab={setTab}
