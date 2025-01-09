@@ -14,7 +14,7 @@ export const NotVerifiedDetails = ({
 
   const handleNavigate = () =>
     navigate({
-      pathname: "/evm-contracts/[contractAddress]/verify",
+      pathname: "/evm-contracts/verify",
       query: { contractAddress },
     });
 
