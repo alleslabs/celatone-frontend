@@ -31,7 +31,7 @@ export const NetworkAccordionLocal = ({
       <AccordionButton p={0}>
         <Flex justifyContent="space-between" w="full">
           <Heading as="h6" variant="h6">
-            Your Local Minitias
+            Your Local Rollups
           </Heading>
           <AccordionIcon color="gray.600" />
         </Flex>

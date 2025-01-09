@@ -95,7 +95,7 @@ const networkDetailsFormValidator = (
   if (prettyName.length > 50)
     ctx.addIssue({
       code: ZodIssueCode.custom,
-      message: `Minitia Name is too long. (${prettyName.length}/50)`,
+      message: `Rollup Name is too long. (${prettyName.length}/50)`,
       path: ["prettyName"],
     });
 

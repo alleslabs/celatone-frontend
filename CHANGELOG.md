@@ -44,6 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1185](https://github.com/alleslabs/celatone-frontend/pull/1185) Replace minitia with rollup
+
 ### Bug fixes
 
 ## v1.9.3

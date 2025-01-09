@@ -88,7 +88,7 @@ export const AddNetworkJson = observer(() => {
     <>
       <ActionPageContainer>
         <CustomNetworkPageHeader
-          title="Add Custom Minitia"
+          title="Add Custom Rollup"
           subtitle="Import JSON"
           hasAlert={false}
         />
@@ -119,12 +119,12 @@ export const AddNetworkJson = observer(() => {
               onClick={handleSubmit}
               w="220px"
             >
-              Import new Minitia
+              Import new Rollup
             </Button>
           </Flex>
           <Text variant="body2" textAlign="center">
-            The added custom Minitia on Initiascan will be stored locally on
-            your device.
+            The added custom Rollup on Initiascan will be stored locally on your
+            device.
           </Text>
         </Flex>
       </ActionPageContainer>

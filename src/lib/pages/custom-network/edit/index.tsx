@@ -88,14 +88,14 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
     <ActionPageContainer width={900}>
       <CustomNetworkPageHeader
         title={chainConfig.prettyName}
-        subtitle="Your Custom Minitia"
+        subtitle="Your Custom Rollup"
         hasAlert={false}
       />
       <Stack gap={12} mt={8} w="full">
         <Flex justifyContent="space-between" gap={10}>
           <CustomNetworkSubheader
             title="Export as JSON File"
-            subtitle="You can export this Custom Minitia configuration in JSON file to use them in other device."
+            subtitle="You can export this Custom Rollup configuration in JSON file to use them in other device."
           />
           <Button
             minW={168}
@@ -135,7 +135,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   //     <ActionPageContainer width={900}>
   //       <CustomNetworkPageHeader
   //         title={chainConfig.prettyName}
-  //         subtitle="Your Custom Minitia"
+  //         subtitle="Your Custom Rollup"
   //         hasAlert={false}
   //       />
   //       <Tabs variant="unstyled" orientation="vertical" mt={6}>
