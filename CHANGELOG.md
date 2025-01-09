@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1187](https://github.com/alleslabs/celatone-frontend/pull/1187) Add onboarding section to EVM contract details page
 - [#1184](https://github.com/alleslabs/celatone-frontend/pull/1184) Add custom layer to Initia Widget
 - [#1182](https://github.com/alleslabs/celatone-frontend/pull/1182) Add Initia Widget
 
