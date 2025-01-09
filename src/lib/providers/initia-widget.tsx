@@ -2,6 +2,7 @@ import { WalletWidgetProvider } from "@initia/react-wallet-widget";
 import type { ReactNode } from "react";
 
 import { useCelatoneApp } from "lib/app-provider";
+import { LoadingOverlay } from "lib/components/LoadingOverlay";
 
 export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
   const { chainConfig, currentChainId } = useCelatoneApp();
@@ -25,6 +26,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
             }
           : undefined
       }
+      fallback={<LoadingOverlay />}
     >
       {children}
     </WalletWidgetProvider>
