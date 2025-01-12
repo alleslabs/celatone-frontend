@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { getStepStyles } from "../hooks/utils";
+import { getStepStyles } from "../helpers";
 
 const steps = [
   { label: "Network Details" },

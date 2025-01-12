@@ -13,7 +13,11 @@ import {
   zWalletRegistryForm,
 } from "../types";
 import type { AddNetworkManualForm } from "../types";
-import { useAllowCustomNetworks, useChainConfigs } from "lib/app-provider";
+import {
+  useAllowCustomNetworks,
+  useChainConfigs,
+  useInternalNavigate,
+} from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { CustomIcon } from "lib/components/icon";
 import { FooterCta } from "lib/components/layouts";
@@ -21,10 +25,11 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { useLocalChainConfigStore } from "lib/providers/store";
 
 import { AddNetworkForm, AddNetworkStepper } from "./components";
-import { useNetworkStepper } from "./hooks/useNetworkStepper";
+import { useStepper } from "lib/hooks";
 
 export const AddNetworkManual = () => {
   useAllowCustomNetworks({ shouldRedirect: true });
+  const navigate = useInternalNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { addLocalChainConfig } = useLocalChainConfigStore();
   const { isChainIdExist } = useChainConfigs();
@@ -95,7 +100,9 @@ export const AddNetworkManual = () => {
   };
 
   const { currentStepIndex, handleNext, handlePrevious, hasNext, hasPrevious } =
-    useNetworkStepper(3, handleSubmit(handleSubmitForm));
+    useStepper(3, handleSubmit(handleSubmitForm), () =>
+      navigate({ pathname: "/custom-network/add" })
+    );
 
   const isFormDisabled = () => {
     if (currentStepIndex === 0)
