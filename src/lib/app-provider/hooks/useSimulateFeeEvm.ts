@@ -12,13 +12,19 @@ export const useSimulateFeeEvm = () => {
 
   return useCallback(
     async (request: TransactionRequest): Promise<Gas<Big>> => {
-      // If the user has connected with Initia Widget
-      if (walletProvider.type === "initia-widget") {
-        const { estimateEthereumTx } = walletProvider.context;
-        return estimateEthereumTx(request, chainId).then(zGas(zBig).parse);
+      try {
+        // If the user has connected with Initia Widget
+        if (walletProvider.type === "initia-widget") {
+          const { estimateEthereumTx } = walletProvider.context;
+          const gas = await estimateEthereumTx(request, chainId).then(
+            zGas(zBig).parse
+          );
+          return gas;
+        }
+        throw new Error("Unsupported wallet provider (useSimulateFeeEvm)");
+      } catch {
+        return zGas(zBig).parse(0);
       }
-
-      throw new Error("Unsupported wallet provider");
     },
     [chainId, walletProvider.context, walletProvider.type]
   );

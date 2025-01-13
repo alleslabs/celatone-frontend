@@ -3,8 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { TransactionRequest } from "ethers";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
-import { useCurrentChain } from "lib/app-provider/hooks";
-import { useSimulateFeeEvm } from "lib/app-provider/hooks/useSimulateFeeEvm";
+import { useCurrentChain, useSimulateFeeEvm } from "lib/app-provider/hooks";
 import type { Gas, Option } from "lib/types";
 
 interface SimulateQueryEvmParams {

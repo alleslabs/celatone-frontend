@@ -4,10 +4,10 @@ import { useInitia } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { AccountData } from "lib/services/types";
 import type { AccountLocalInfo } from "lib/stores/account";
-import type { Option } from "lib/types";
+import type { Nullable, Option } from "lib/types";
 
 export interface InitiaUsernameDataResponse {
-  username: string | null;
+  username: Nullable<string>;
 }
 
 interface AccountTitleProps {

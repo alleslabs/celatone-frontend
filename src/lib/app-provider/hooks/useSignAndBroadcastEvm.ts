@@ -8,11 +8,16 @@ export const useSignAndBroadcastEvm = () => {
 
   return useCallback(
     async (request: TransactionRequest): Promise<string> => {
-      if (walletProvider.type === "initia-widget") {
-        const { requestEthereumTx } = walletProvider.context;
-        return requestEthereumTx(request, { chainId });
+      try {
+        if (walletProvider.type === "initia-widget") {
+          const { requestEthereumTx } = walletProvider.context;
+          const result = await requestEthereumTx(request, { chainId });
+          return result;
+        }
+        throw new Error("Unsupported wallet provider (useSignAndBroadcastEvm)");
+      } catch {
+        return "";
       }
-      throw new Error("Unsupported wallet provider");
     },
     [chainId, walletProvider.context, walletProvider.type]
   );
