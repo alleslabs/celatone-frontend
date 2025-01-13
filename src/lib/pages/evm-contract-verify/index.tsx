@@ -15,10 +15,8 @@ import { useForm } from "react-hook-form";
 import {
   EvmContractVerifyForm,
   EvmProgrammingLanguage,
-  LicenseType,
   VerificationOptions,
   zEvmContractVerifyForm,
-  zEvmContractVerifyOptionForm,
 } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { truncate } from "lib/utils";
@@ -59,15 +57,15 @@ export const EvmContractVerify = () => {
     () => [
       {
         label: "1. No License (None)",
-        value: LicenseType.NoLicense,
+        value: "no-license",
       },
       {
         label: "2. The Unlicense (Unlicense)",
-        value: LicenseType.TheUnLicense,
+        value: "the-unlicense",
       },
       {
         label: "3. MIT License (MIT)",
-        value: LicenseType.MIT,
+        value: "mit",
       },
     ],
     []

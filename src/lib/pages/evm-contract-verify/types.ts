@@ -1,13 +1,6 @@
 import { zHexAddr20 } from "lib/types";
 import { z } from "zod";
 
-// TODO: Add more license types
-export enum LicenseType {
-  NoLicense = "no-license",
-  TheUnLicense = "the-unlicense",
-  MIT = "mit",
-}
-
 export enum EvmProgrammingLanguage {
   Solidity = "solidity",
   Vyper = "vyper",
@@ -75,7 +68,7 @@ export const zEvmContractVerifyOptionForm = z.union([
 
 export const zEvmContractAddressAndLicenseForm = z.object({
   contractAddress: zHexAddr20,
-  licenseType: z.nativeEnum(LicenseType),
+  licenseType: z.string().refine((val) => val !== ""),
   language: z.nativeEnum(EvmProgrammingLanguage),
   compilerVersion: z.string().refine((val) => val !== ""),
 });

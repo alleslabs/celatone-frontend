@@ -20,7 +20,7 @@ import { EvmContractDetailsTxs } from "./EvmContractDetailsTxs";
 
 interface EvmContractDetailsOverviewProps {
   contractAddressBech: BechAddr20;
-  contractAddress: HexAddr20;
+  contractAddressHex: HexAddr20;
   hash: Option<string>;
   evmHash: Nullish<string>;
   sender: Option<BechAddr>;
@@ -34,7 +34,7 @@ interface EvmContractDetailsOverviewProps {
 
 export const EvmContractDetailsOverview = ({
   contractAddressBech,
-  contractAddress,
+  contractAddressHex,
   hash,
   evmHash,
   sender,
@@ -52,7 +52,7 @@ export const EvmContractDetailsOverview = ({
   return (
     <Stack gap={8}>
       {/* // TODO: Support all status */}
-      <NotVerifiedDetails contractAddress={contractAddress} />
+      <NotVerifiedDetails contractAddress={contractAddressHex} />
       <Stack gap={4}>
         <Grid
           gridTemplateColumns={{
