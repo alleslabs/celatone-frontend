@@ -44,6 +44,10 @@ export const zEvmContractVerifySolidityOptionFoundryForm = z.object({
 // MARK - Vyper
 export const zEvmContractVerifyVyperOptionUploadFileForm = z.object({
   option: z.literal(VerificationOptions.UploadFile),
+  file: z.instanceof(File),
+  // .refine((file) => ["application/vy"].includes(file.type), {
+  //   message: "Invalid file type",
+  // }),
 });
 
 export const zEvmContractVerifyVyperOptionContractCodeForm = z.object({

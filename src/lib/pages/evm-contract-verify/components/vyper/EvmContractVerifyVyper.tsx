@@ -17,7 +17,7 @@ const EvmContractVerifyVyperOptions = ({
 
   switch (verifyFormOption) {
     case VerificationOptions.UploadFile:
-      return <EvmContractVerifyVyperUploadFile />;
+      return <EvmContractVerifyVyperUploadFile control={control} />;
     case VerificationOptions.ContractCode:
       return <EvmContractVerifyVyperContractCode />;
     case VerificationOptions.JsonInput:

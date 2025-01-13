@@ -43,7 +43,7 @@ export const SelectContractInstantiator = ({
   onContractSelect,
 }: SelectContractInstantiatorProps) => {
   const isMobile = useMobile();
-  const { contract: exampleContractAddress } = useExampleAddresses();
+  const { contractBech: exampleContractAddress } = useExampleAddresses();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { validateContractAddress } = useValidateAddress();
 

@@ -1,3 +1,11 @@
+import { Stack } from "@chakra-ui/react";
+
 export const EvmContractVerifySolidityUploadFiles = () => {
-  return <div>TODO: EvmContractVerifySolidityUploadFiles</div>;
+  return (
+    <Stack spacing={12}>
+      {/* upload file */}
+      {/* constructor arguments */}
+      {/* evm version to target */}
+    </Stack>
+  );
 };

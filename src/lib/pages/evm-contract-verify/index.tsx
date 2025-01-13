@@ -19,7 +19,7 @@ import {
   zEvmContractVerifyForm,
 } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { truncate } from "lib/utils";
+import { isHexModuleAddress, truncate } from "lib/utils";
 import { EvmContractVerifySolidity } from "./components/solidity/EvmContractVerifySolidity";
 import { EvmContractVerifyVyper } from "./components/vyper/EvmContractVerifyVyper";
 import { NoMobile } from "lib/components/modal";
@@ -28,8 +28,7 @@ export const EvmContractVerify = () => {
   useEvmConfig({ shouldRedirect: true });
   const isMobile = useMobile();
   const router = useRouter();
-  // TODO: add evm contract address
-  const { contract: exampleContractAddress } = useExampleAddresses();
+  const { contractHex: exampleContractAddress } = useExampleAddresses();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_EVM_CONTRACT_VERIFY);
@@ -42,11 +41,21 @@ export const EvmContractVerify = () => {
       mode: "all",
       reValidateMode: "onChange",
       defaultValues: {
-        contractAddress: "",
+        contractAddress: router.query.contractAddress ?? "",
         compilerVersion: "",
       },
     });
-  const { licenseType, language, compilerVersion } = watch();
+  const {
+    licenseType,
+    contractAddress,
+    language,
+    compilerVersion,
+    verifyForm,
+  } = watch();
+
+  if (verifyForm?.option === VerificationOptions.UploadFile) {
+    console.log("file", verifyForm.file);
+  }
 
   const { handleNext, handlePrevious, hasNext, hasPrevious } = useStepper(
     1,
@@ -153,6 +162,11 @@ export const EvmContractVerify = () => {
                       name="contractAddress"
                       control={control}
                       variant="fixed-floating"
+                      status={{
+                        state: isHexModuleAddress(contractAddress)
+                          ? "success"
+                          : "init",
+                      }}
                     />
                   </GridItem>
                   <GridItem colSpan={1} colStart={1}>
@@ -203,6 +217,7 @@ export const EvmContractVerify = () => {
                             : VerificationOptions.UploadFile
                         );
                         setValue("language", selectedOption.value);
+                        setValue("compilerVersion", "");
                       }}
                       value={programmingLangaugeOptions.find(
                         (option) => option.value === language
