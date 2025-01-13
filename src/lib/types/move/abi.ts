@@ -3,12 +3,13 @@ import type { Nullable } from "../common";
 
 export type Visibility = "public" | "friend" | "private" | "script";
 
-export interface ModuleAbi {
-  address: HexAddr;
+export interface GenericTypeParam {
+  constraints: string[];
+}
+
+interface Field {
   name: string;
-  friends: string[];
-  exposed_functions: ExposedFunction[];
-  structs: Struct[];
+  type: string;
 }
 
 export interface ExposedFunction {
@@ -29,13 +30,12 @@ export interface Struct {
   fields: Field[];
 }
 
-export interface GenericTypeParam {
-  constraints: string[];
-}
-
-interface Field {
+export interface ModuleAbi {
+  address: HexAddr;
   name: string;
-  type: string;
+  friends: string[];
+  exposed_functions: ExposedFunction[];
+  structs: Struct[];
 }
 
 export interface AbiFormData {

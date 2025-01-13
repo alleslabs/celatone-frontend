@@ -71,7 +71,7 @@ export const SchemaExecute = ({
         // TODO: This is a workaround, refactor to a proper solution later
         const timeoutId = setTimeout(() => el?.scrollIntoView(), 200);
         return () => clearInterval(timeoutId);
-      } catch (_) {
+      } catch {
         //
       }
     }

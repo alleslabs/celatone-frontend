@@ -19,7 +19,7 @@ export const isUrl = (string: string): boolean => {
   try {
     z.string().url().parse(string);
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 };

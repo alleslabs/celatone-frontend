@@ -13,7 +13,7 @@ const zBucket = z.object({
 const zDecodedKey = z.union([zSingleton, zBucket]);
 export type DecodedKey = z.infer<typeof zDecodedKey>;
 
-const zContractState = z.object({
+export const zContractState = z.object({
   rawKey: z.string(),
   key: zDecodedKey,
   value: z.unknown(),

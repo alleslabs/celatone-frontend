@@ -6,16 +6,16 @@ import type { AccountData } from "lib/services/types";
 import type { AccountLocalInfo } from "lib/stores/account";
 import type { Option } from "lib/types";
 
+export interface InitiaUsernameDataResponse {
+  username: string | null;
+}
+
 interface AccountTitleProps {
   accountData: Option<AccountData>;
   accountLocalInfo: Option<AccountLocalInfo>;
   initiaUsernameData: Option<InitiaUsernameDataResponse>;
   isInitiaUsernameDataLoading: boolean;
   isInitiaUsernameDataFetching: boolean;
-}
-
-export interface InitiaUsernameDataResponse {
-  username: string | null;
 }
 
 export const AccountTitle = ({

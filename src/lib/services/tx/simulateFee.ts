@@ -1,9 +1,8 @@
 import type { Coin } from "@cosmjs/stargate";
-import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { gzip } from "node-gzip";
 
-import { useCelatoneApp } from "lib/app-provider/contexts";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import {
   useCurrentChain,
@@ -32,10 +31,7 @@ export const useSimulateFeeQuery = ({
   onSuccess,
   onError,
 }: SimulateQueryParams) => {
-  const {
-    chainConfig: { rpc: rpcEndpoint },
-  } = useCelatoneApp();
-  const { address } = useCurrentChain();
+  const { address, chainId } = useCurrentChain();
   const { dummyAddress } = useDummyWallet();
   const simulateFee = useSimulateFee();
 
@@ -49,7 +45,7 @@ export const useSimulateFeeQuery = ({
   return useQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE,
-      rpcEndpoint,
+      chainId,
       messages,
       address,
       isDummyUser,

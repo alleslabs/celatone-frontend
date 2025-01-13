@@ -129,7 +129,7 @@ const MethodRender = ({
             try {
               reader.readAsText(file);
               setJsonFile(file);
-            } catch (err) {
+            } catch {
               //
             }
           }}
