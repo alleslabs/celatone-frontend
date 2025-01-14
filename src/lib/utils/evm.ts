@@ -4,6 +4,7 @@ import type { Coin, HexAddr20, Option } from "lib/types";
 
 import { toChecksumAddress } from "./address";
 import { hexToBig } from "./number";
+import { Interface, JsonFragment } from "ethers";
 
 export const getEvmMethod = (txInput: string) => {
   if (txInput === EvmMethodId.Transfer) return EvmMethodName.Transfer;
@@ -89,4 +90,12 @@ export const getEvmAmount = (
     amount: evmTxData.tx.value.toString(),
     denom: evmDenom ?? "",
   };
+};
+
+export const encodeFunctionData = (
+  abiSection: JsonFragment,
+  values: unknown[]
+) => {
+  const iface = new Interface([abiSection]);
+  return iface.encodeFunctionData(abiSection.name ?? "", values);
 };

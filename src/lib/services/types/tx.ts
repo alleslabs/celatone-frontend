@@ -466,6 +466,7 @@ export const zTxReceiptJsonRpc = z.object({
   transactionIndex: zHexBig,
   type: z.string(), // TODO: convert to enum later
 });
+export type TxReceiptJsonRpc = z.infer<typeof zTxReceiptJsonRpc>;
 
 export const zTxDataJsonRpc = z
   .tuple([zTxJsonRpc, zTxReceiptJsonRpc])

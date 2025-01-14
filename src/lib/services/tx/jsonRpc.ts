@@ -9,6 +9,7 @@ import {
   zTxsDataJsonRpc,
 } from "../types";
 import { parseWithError } from "lib/utils";
+import { HexAddr, Nullable } from "lib/types";
 
 export const getEvmTxHashByCosmosTxHash = async (
   endpoint: string,
@@ -83,3 +84,10 @@ export const getCosmosTxHashByEvmTxHash = (
   requestJsonRpc(endpoint, "cosmos_cosmosTxHashByTxHash", [evmTxHash]).then(
     ({ result }) => parseWithError(z.string(), result)
   );
+
+export const getEthCall = (
+  endpoint: string,
+  from: Nullable<HexAddr>,
+  to: HexAddr,
+  data: string
+) => requestJsonRpc(endpoint, "eth_call", [{ from, to, data }, "latest"]);
