@@ -63,7 +63,7 @@ const zEvmContractVerifyVyperOptionJsonInputForm = z.object({
 });
 
 // MARK - Union of options by language
-const zEvmContractVerifySolidityOptionForm = z.discriminatedUnion("option", [
+const zEvmContractVerifySolidityForm = z.discriminatedUnion("option", [
   zEvmContractVerifySolidityOptionUploadFilesForm,
   zEvmContractVerifySolidityOptionContractCodeForm,
   zEvmContractVerifySolidityOptionJsonInputForm,
@@ -71,7 +71,7 @@ const zEvmContractVerifySolidityOptionForm = z.discriminatedUnion("option", [
   zEvmContractVerifySolidityOptionFoundryForm,
 ]);
 
-const zEvmContractVerifyVyperOptionForm = z.discriminatedUnion("option", [
+const zEvmContractVerifyVyperForm = z.discriminatedUnion("option", [
   zEvmContractVerifyVyperOptionUploadFileForm,
   zEvmContractVerifyVyperOptionContractCodeForm,
   zEvmContractVerifyVyperOptionJsonInputForm,
@@ -102,11 +102,11 @@ export const zEvmContractVerifyForm = zEvmContractAddressAndLicenseForm.merge(
       .union([
         z.object({
           language: z.literal(EvmProgrammingLanguage.Solidity),
-          form: zEvmContractVerifySolidityOptionForm,
+          form: zEvmContractVerifySolidityForm,
         }),
         z.object({
           language: z.literal(EvmProgrammingLanguage.Vyper),
-          form: zEvmContractVerifyVyperOptionForm,
+          form: zEvmContractVerifyVyperForm,
         }),
       ])
       .optional(),
