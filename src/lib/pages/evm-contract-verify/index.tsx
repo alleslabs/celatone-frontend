@@ -19,7 +19,7 @@ import {
   zEvmContractVerifyForm,
 } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { truncate } from "lib/utils";
+import { isHexModuleAddress, truncate } from "lib/utils";
 import { EvmContractVerifySolidity } from "./components/solidity/EvmContractVerifySolidity";
 import { EvmContractVerifyVyper } from "./components/vyper/EvmContractVerifyVyper";
 import { NoMobile } from "lib/components/modal";
@@ -42,11 +42,11 @@ export const EvmContractVerify = () => {
       mode: "all",
       reValidateMode: "onChange",
       defaultValues: {
-        contractAddress: "",
+        contractAddress: router.query.contractAddress ?? "",
         compilerVersion: "",
       },
     });
-  const { licenseType, language, compilerVersion } = watch();
+  const { licenseType, contractAddress, language, compilerVersion } = watch();
 
   const { handleNext, handlePrevious, hasNext, hasPrevious } = useStepper(
     1,
@@ -116,28 +116,20 @@ export const EvmContractVerify = () => {
         <NoMobile />
       ) : (
         <>
-          <PageContainer>
+          <PageContainer px={12} py={9} p={0}>
             <Grid
-              templateColumns={{
-                base: "6fr 4fr",
-                "2xl": "8fr 2fr",
-              }}
+              w="100%"
+              templateColumns="6fr 4fr"
               columnGap="32px"
               rowGap="48px"
-              p={{ base: "16px", "2xl": "48px" }}
+              maxW="1440px"
+              mx="auto"
             >
               <GridItem colSpan={1}>
                 <EvmContractVerifyTop />
               </GridItem>
               <GridItem colSpan={2}>
-                <Grid
-                  templateColumns={{
-                    base: "6fr 4fr",
-                    "2xl": "8fr 2fr",
-                  }}
-                  columnGap="32px"
-                  rowGap="24px"
-                >
+                <Grid templateColumns="6fr 4fr" columnGap="32px" rowGap="24px">
                   <GridItem colSpan={2}>
                     <Heading as="h6" variant="h6">
                       Contract Address & License
@@ -153,6 +145,11 @@ export const EvmContractVerify = () => {
                       name="contractAddress"
                       control={control}
                       variant="fixed-floating"
+                      status={{
+                        state: isHexModuleAddress(contractAddress)
+                          ? "success"
+                          : "init",
+                      }}
                     />
                   </GridItem>
                   <GridItem colSpan={1} colStart={1}>
@@ -203,6 +200,7 @@ export const EvmContractVerify = () => {
                             : VerificationOptions.UploadFile
                         );
                         setValue("language", selectedOption.value);
+                        setValue("compilerVersion", "");
                       }}
                       value={programmingLangaugeOptions.find(
                         (option) => option.value === language
