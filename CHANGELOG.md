@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1192](https://github.com/alleslabs/celatone-frontend/pull/1192) Add fixed bytes hex address util
+- [#1189](https://github.com/alleslabs/celatone-frontend/pull/1189) Add constructor args to EVM contract verify page
 - [#1187](https://github.com/alleslabs/celatone-frontend/pull/1187) Add onboarding section to EVM contract details page and add EVM contract verify page
 - [#1184](https://github.com/alleslabs/celatone-frontend/pull/1184) Add custom layer to Initia Widget
 - [#1182](https://github.com/alleslabs/celatone-frontend/pull/1182) Add Initia Widget

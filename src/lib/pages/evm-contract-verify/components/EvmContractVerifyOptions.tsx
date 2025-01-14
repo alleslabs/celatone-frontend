@@ -13,14 +13,14 @@ interface EvmContractVerifyVyperProps {
 export const EvmContractVerifyOptions = ({
   control,
 }: EvmContractVerifyVyperProps) => {
-  const { field: verifyFormOptinField } = useController({
+  const { field: verifyFormOptionField } = useController({
     control,
-    name: "verifyForm.option",
+    name: "verifyForm.form.option",
   });
 
-  const [verifyFormOption, language] = useWatch({
+  const [language, verifyFormOption] = useWatch({
     control,
-    name: ["verifyForm.option", "language"],
+    name: ["verifyForm.language", "verifyForm.form.option"],
   });
 
   return (
@@ -29,7 +29,7 @@ export const EvmContractVerifyOptions = ({
         Select Verification Option
       </Heading>
       <RadioGroup
-        onChange={(nextVal) => verifyFormOptinField.onChange(nextVal)}
+        onChange={(nextVal) => verifyFormOptionField.onChange(nextVal)}
         value={verifyFormOption}
       >
         <Grid gridTemplateColumns="repeat(3, 1fr)" gap={4}>
