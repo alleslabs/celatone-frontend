@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bug fixes
 
 - [#1190](https://github.com/alleslabs/celatone-frontend/pull/1190) Fix EVM contract details verify boarding and verification page
+- [#1191](https://github.com/alleslabs/celatone-frontend/pull/1191) Fix contract address form validation
 
 ## v1.9.3
 
