@@ -68,6 +68,7 @@ export const zEvmContractVerifyOptionForm = z.union([
 ]);
 
 export const zEvmContractAddressAndLicenseForm = z.object({
+  // TODO: refactor later
   contractAddress: zHexAddr20.superRefine((val, ctx) => {
     if (val === "")
       ctx.addIssue({
