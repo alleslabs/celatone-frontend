@@ -15,11 +15,14 @@ interface EvmContractVerifySolidityProps {
 const EvmContractVerifySolidityOptions = ({
   control,
 }: EvmContractVerifySolidityProps) => {
-  const verifyFormOption = useWatch({ control, name: "verifyForm.option" });
+  const verifyFormOption = useWatch({
+    control,
+    name: "verifyForm.form.option",
+  });
 
   switch (verifyFormOption) {
     case VerificationOptions.UploadFiles:
-      return <EvmContractVerifySolidityUploadFiles />;
+      return <EvmContractVerifySolidityUploadFiles control={control} />;
     case VerificationOptions.ContractCode:
       return <EvmContractVerifySolidityContractCode />;
     case VerificationOptions.JsonInput:
