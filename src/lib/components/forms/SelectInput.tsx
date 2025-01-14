@@ -35,7 +35,7 @@ export const SelectInput = <
   IsMulti extends boolean = false,
 >({
   options,
-  value,
+  value = null,
   onChange,
   size = "lg",
   placeholder,
@@ -86,7 +86,7 @@ export const SelectInput = <
       menuPortalTarget={menuPortalTarget}
       placeholder={placeholder}
       options={options}
-      value={value ?? null}
+      value={value}
       isDisabled={isDisabled}
       onChange={onChange}
       size={size}

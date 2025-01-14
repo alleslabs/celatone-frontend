@@ -19,7 +19,7 @@ import {
   zEvmContractVerifyForm,
 } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isHexModuleAddress, truncate } from "lib/utils";
+import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
 import { EvmContractVerifySolidity } from "./components/solidity/EvmContractVerifySolidity";
 import { EvmContractVerifyVyper } from "./components/vyper/EvmContractVerifyVyper";
 import { NoMobile } from "lib/components/modal";
@@ -28,6 +28,7 @@ export const EvmContractVerify = () => {
   useEvmConfig({ shouldRedirect: true });
   const isMobile = useMobile();
   const router = useRouter();
+  const contractAddressQueryParam = router.query.contractAddress ?? "";
   // TODO: add evm contract address
   const { contract: exampleContractAddress } = useExampleAddresses();
 
@@ -42,7 +43,9 @@ export const EvmContractVerify = () => {
       mode: "all",
       reValidateMode: "onChange",
       defaultValues: {
-        contractAddress: router.query.contractAddress ?? "",
+        contractAddress: isHexWalletAddress(String(contractAddressQueryParam))
+          ? contractAddressQueryParam
+          : "",
         compilerVersion: "",
       },
     });
