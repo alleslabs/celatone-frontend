@@ -71,6 +71,7 @@ export const zEvmContractAddressAndLicenseForm = z.object({
   licenseType: z.string().refine((val) => val !== ""),
   language: z.nativeEnum(EvmProgrammingLanguage),
   compilerVersion: z.string().refine((val) => val !== ""),
+  constructorArgs: z.string().optional(),
 });
 
 export const zEvmContractVerifyForm = zEvmContractAddressAndLicenseForm.merge(
