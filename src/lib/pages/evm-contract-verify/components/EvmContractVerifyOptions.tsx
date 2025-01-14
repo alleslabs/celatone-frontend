@@ -32,7 +32,7 @@ export const EvmContractVerifyOptions = ({
         onChange={(nextVal) => verifyFormOptinField.onChange(nextVal)}
         value={verifyFormOption}
       >
-        <Grid gridTemplateColumns="repeat(3, 1fr)" gap={4} maxW={640}>
+        <Grid gridTemplateColumns="repeat(3, 1fr)" gap={4}>
           {language === EvmProgrammingLanguage.Solidity && (
             <Radio
               variant="gray-card"
@@ -40,9 +40,8 @@ export const EvmContractVerifyOptions = ({
               value={VerificationOptions.UploadFiles}
               overflow="hidden"
               w="full"
-              size="sm"
             >
-              Upload Files
+              Upload File(s)
             </Radio>
           )}
           {language === EvmProgrammingLanguage.Vyper && (
@@ -52,7 +51,6 @@ export const EvmContractVerifyOptions = ({
               value={VerificationOptions.UploadFile}
               overflow="hidden"
               w="full"
-              size="sm"
             >
               Upload File
             </Radio>
@@ -63,7 +61,6 @@ export const EvmContractVerifyOptions = ({
             value={VerificationOptions.ContractCode}
             overflow="hidden"
             w="full"
-            size="sm"
           >
             Contract Code
           </Radio>
@@ -73,7 +70,6 @@ export const EvmContractVerifyOptions = ({
             value={VerificationOptions.JsonInput}
             overflow="hidden"
             w="full"
-            size="sm"
           >
             JSON Input
           </Radio>
@@ -85,7 +81,6 @@ export const EvmContractVerifyOptions = ({
                 value={VerificationOptions.Hardhat}
                 overflow="hidden"
                 w="full"
-                size="sm"
               >
                 Hardhat
               </Radio>
@@ -95,7 +90,6 @@ export const EvmContractVerifyOptions = ({
                 value={VerificationOptions.Foundry}
                 overflow="hidden"
                 w="full"
-                size="sm"
               >
                 Foundry
               </Radio>

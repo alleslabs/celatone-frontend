@@ -35,7 +35,7 @@ export const SelectInput = <
   IsMulti extends boolean = false,
 >({
   options,
-  value,
+  value = null,
   onChange,
   size = "lg",
   placeholder,
