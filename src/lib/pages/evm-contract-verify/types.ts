@@ -1,5 +1,5 @@
 import { zHexAddr20 } from "lib/types";
-import { isHexWalletAddress } from "lib/utils";
+import { isHex20Bytes } from "lib/utils";
 import { z, ZodIssueCode } from "zod";
 
 export enum EvmProgrammingLanguage {
@@ -86,7 +86,7 @@ const zEvmContractAddressAndLicenseForm = z.object({
         message: " ",
       });
 
-    if (!isHexWalletAddress(val))
+    if (!isHex20Bytes(val))
       ctx.addIssue({
         code: ZodIssueCode.custom,
         message: "Invalid address",

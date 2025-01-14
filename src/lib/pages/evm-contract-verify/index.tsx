@@ -19,7 +19,7 @@ import {
   zEvmContractVerifyForm,
 } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isHexModuleAddress, isHexWalletAddress, truncate } from "lib/utils";
+import { isHex20Bytes, truncate } from "lib/utils";
 import { EvmContractVerifySolidity } from "./components/solidity/EvmContractVerifySolidity";
 import { EvmContractVerifyVyper } from "./components/vyper/EvmContractVerifyVyper";
 import { NoMobile } from "lib/components/modal";
@@ -47,7 +47,7 @@ export const EvmContractVerify = () => {
     mode: "all",
     reValidateMode: "onChange",
     defaultValues: {
-      contractAddress: isHexWalletAddress(String(contractAddressQueryParam))
+      contractAddress: isHex20Bytes(String(contractAddressQueryParam))
         ? contractAddressQueryParam
         : "",
       compilerVersion: "",
@@ -153,7 +153,7 @@ export const EvmContractVerify = () => {
                       control={control}
                       variant="fixed-floating"
                       status={{
-                        state: isHexModuleAddress(contractAddress)
+                        state: isHex20Bytes(contractAddress)
                           ? "success"
                           : "init",
                       }}
