@@ -1,40 +1,61 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
-import { TransactionRequest } from "ethers";
+import { useCelatoneApp } from "lib/app-provider";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
-import { useCurrentChain, useSimulateFeeEvm } from "lib/app-provider/hooks";
-import type { Gas, Option } from "lib/types";
+import { useCurrentChain } from "lib/app-provider/hooks";
+import type { HexAddr20, Option } from "lib/types";
+import { SimulatedFeeEvm } from "../types";
+import { getSimulateFeeEvm } from "./jsonRpc";
+import { bech32AddressToHex } from "lib/utils";
 
 interface SimulateQueryEvmParams {
   enabled: boolean;
-  request: TransactionRequest;
+  to: HexAddr20;
+  data: string;
   retry?: UseQueryOptions["retry"];
   extraQueryKey?: UseQueryOptions["queryKey"];
-  onSuccess?: (gas: Option<Gas>) => void;
+  onSuccess?: (gas: Option<SimulatedFeeEvm>) => void;
   onError?: (err: Error) => void;
 }
 
 export const useSimulateFeeEvmQuery = ({
   enabled,
-  request,
+  to,
+  data,
   retry = 2,
   extraQueryKey = [],
   onSuccess,
   onError,
 }: SimulateQueryEvmParams) => {
+  const {
+    chainConfig: {
+      features: { evm },
+    },
+  } = useCelatoneApp();
   const { address } = useCurrentChain();
-  const simulateFeeEvm = useSimulateFeeEvm();
 
   return useQuery({
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_EVM,
-      request,
       address,
+      to,
+      data,
       ...extraQueryKey,
     ],
-    queryFn: () => simulateFeeEvm(request),
-    enabled,
+    queryFn: async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useSimulateFeeEvmQuery)");
+      if (!address)
+        throw new Error("No address provided (useSimulateFeeEvmQuery)");
+
+      return getSimulateFeeEvm(evm.jsonRpc, {
+        from: bech32AddressToHex(address),
+        to,
+        data,
+      });
+    },
+    enabled: enabled && !!address,
     retry,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

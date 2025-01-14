@@ -1,15 +1,15 @@
-import type { StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
 import { trackTxSucceed } from "lib/amplitude";
 import { requestEvmTx } from "lib/app-fns/tx/evm/requestEvm";
 import { useSignAndBroadcastEvm } from "lib/app-provider/hooks";
-import type { HexAddr } from "lib/types";
+import { SimulatedFeeEvm } from "lib/services/types";
+import type { HexAddr20 } from "lib/types";
 
 export interface RequestEvmStreamParams {
-  to: HexAddr;
+  to: HexAddr20;
   data: string;
-  estimatedFee?: StdFee;
+  estimatedFee?: SimulatedFeeEvm;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
 }
@@ -30,7 +30,7 @@ export const useRequestEvmTx = () => {
       return requestEvmTx({
         to,
         data,
-        fee: estimatedFee,
+        estimatedFee,
         signAndBroadcastEvm,
         onTxSucceed: () => {
           trackTxSucceed();

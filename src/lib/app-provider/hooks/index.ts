@@ -21,4 +21,3 @@ export * from "./useAllowCustomNetworks";
 export * from "./useSignAndBroadcast";
 export * from "./useSignAndBroadcastEvm";
 export * from "./useSimulateFee";
-export * from "./useSimulateFeeEvm";

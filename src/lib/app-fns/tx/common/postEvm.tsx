@@ -1,4 +1,4 @@
-import { EstimatedEvmFeeRender } from "lib/components/EstimatedEvmFeeRender";
+import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TxReceiptJsonRpc } from "lib/services/types";
 import type { TxResultRendering } from "lib/types";
@@ -31,8 +31,8 @@ export const postEvmTx = <T extends TxReceiptJsonRpc>({
             title: "Tx Fee",
             // TODO: Implement event/rawlog attribute picker
             html: (
-              <EstimatedEvmFeeRender
-                effectiveGasPrice={txResult.effectiveGasPrice}
+              <EstimatedFeeEvmRender
+                gasPrice={txResult.effectiveGasPrice}
                 gasUsed={txResult.gasUsed}
                 loading={false}
               />

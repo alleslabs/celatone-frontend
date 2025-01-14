@@ -1,21 +1,20 @@
-import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
 import type { SignAndBroadcastEvm } from "lib/app-provider/hooks";
-import { EstimatedEvmFeeRender } from "lib/components/EstimatedEvmFeeRender";
+import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { TxReceiptJsonRpc } from "lib/services/types";
+import { SimulatedFeeEvm, TxReceiptJsonRpc } from "lib/services/types";
 import type { HexAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { catchTxError, postEvmTx } from "../common";
-import { sendingTx } from "../common/sending";
+import { sendingEvmTx } from "../common/sendingEvm";
 
 interface RequestEvmTxParams {
   to: HexAddr;
   data: string;
-  fee: StdFee;
+  estimatedFee: SimulatedFeeEvm;
   signAndBroadcastEvm: SignAndBroadcastEvm;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
@@ -24,13 +23,13 @@ interface RequestEvmTxParams {
 export const requestEvmTx = ({
   to,
   data,
-  fee,
+  estimatedFee,
   signAndBroadcastEvm,
   onTxSucceed,
   onTxFailed,
 }: RequestEvmTxParams): Observable<TxResultRendering> => {
   return pipe(
-    sendingTx(fee),
+    sendingEvmTx(estimatedFee),
     postEvmTx<TxReceiptJsonRpc>({
       postFn: () => signAndBroadcastEvm({ to, data }),
     }),
@@ -45,7 +44,7 @@ export const requestEvmTx = ({
             value: txResult.value.transactionHash,
             html: (
               <ExplorerLink
-                type="tx_hash"
+                type="evm_tx_hash"
                 value={txResult.value.transactionHash}
                 openNewTab
               />
@@ -54,8 +53,8 @@ export const requestEvmTx = ({
           {
             title: "Tx Fee",
             html: (
-              <EstimatedEvmFeeRender
-                effectiveGasPrice={txResult.value.effectiveGasPrice}
+              <EstimatedFeeEvmRender
+                gasPrice={txResult.value.effectiveGasPrice}
                 gasUsed={txResult.value.gasUsed}
                 loading={false}
               />

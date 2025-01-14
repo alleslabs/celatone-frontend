@@ -3,7 +3,11 @@ import { useCallback } from "react";
 import { TransactionRequest } from "ethers";
 import { requestJsonRpc } from "lib/services/evm/jsonRpc";
 import { TxReceiptJsonRpc, zTxReceiptJsonRpc } from "lib/services/types";
-import { parseWithError, sleep } from "lib/utils";
+import {
+  convertCosmosChainIdToEvmChainId,
+  parseWithError,
+  sleep,
+} from "lib/utils";
 import { useCelatoneApp } from "../contexts";
 import { useCurrentChain } from "./useCurrentChain";
 
@@ -64,8 +68,17 @@ export const useSignAndBroadcastEvm = () => {
   return useCallback(
     async (request: TransactionRequest): Promise<TxReceiptJsonRpc> => {
       if (evm.enabled && walletProvider.type === "initia-widget") {
-        const { requestEthereumTx } = walletProvider.context;
-        const txHash = await requestEthereumTx(request, { chainId });
+        const { requestEthereumTx, ethereum } = walletProvider.context;
+        const evmChainId = convertCosmosChainIdToEvmChainId(chainId);
+
+        await ethereum?.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: evmChainId }],
+        });
+        const txHash = await requestEthereumTx(
+          { ...request, chainId: evmChainId },
+          { chainId }
+        );
         return getEvmTxResponse(evm.jsonRpc, txHash);
       }
       throw new Error("Unsupported wallet provider (useSignAndBroadcastEvm)");

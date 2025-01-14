@@ -2,12 +2,6 @@ import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import type {
-  AccountTxsResponse,
-  BlockTxsResponse,
-  TxData,
-  TxsResponse,
-} from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -25,7 +19,6 @@ import type {
   BechAddr,
   BechAddr20,
   BechAddr32,
-  HexAddr,
   Option,
   PoolTxFilter,
   Transaction,
@@ -33,11 +26,16 @@ import type {
   TxFilters,
 } from "lib/types";
 import {
-  bech32AddressToHex,
   convertAccountPubkeyToAccountAddress,
   extractTxLogs,
   isTxHash,
 } from "lib/utils";
+import type {
+  AccountTxsResponse,
+  BlockTxsResponse,
+  TxData,
+  TxsResponse,
+} from "../types";
 
 import {
   getTxData,
@@ -50,7 +48,6 @@ import {
 } from "./api";
 import {
   getCosmosTxHashByEvmTxHash,
-  getEthCall,
   getEvmTxHashByCosmosTxHash,
   getEvmTxHashesByCosmosTxHashes,
   getTxDataJsonRpc,
@@ -780,31 +777,5 @@ export const useTxsDataJsonRpc = (
   );
 };
 
-export const useEthCall = (to: HexAddr, data: string) => {
-  const { address } = useCurrentChain();
-  const hexAddr = address ? bech32AddressToHex(address) : undefined;
-  const evm = useEvmConfig({ shouldRedirect: false });
-
-  return useQuery(
-    [
-      CELATONE_QUERY_KEYS.EVM_ETH_CALL,
-      evm.enabled && evm.jsonRpc,
-      hexAddr,
-      to,
-      data,
-    ],
-    async () => {
-      if (!evm.enabled) throw new Error("EVM is not enabled (useEthCall)");
-
-      return getEthCall(evm.jsonRpc, hexAddr ?? null, to, data);
-    },
-    {
-      enabled: !!address && !!to && !!data,
-      retry: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
-  );
-};
-
 export * from "./simulateFee";
+export * from "./simulateFeeEvm";

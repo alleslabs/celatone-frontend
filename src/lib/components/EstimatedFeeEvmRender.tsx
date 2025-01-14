@@ -5,12 +5,12 @@ import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
 import { coinToTokenWithValue, formatTokenWithValue } from "lib/utils";
 
-export const EstimatedEvmFeeRender = ({
-  effectiveGasPrice,
+export const EstimatedFeeEvmRender = ({
+  gasPrice,
   gasUsed,
   loading,
 }: {
-  effectiveGasPrice: Big;
+  gasPrice: Big;
   gasUsed: Big;
   loading: boolean;
 }) => {
@@ -31,11 +31,11 @@ export const EstimatedEvmFeeRender = ({
   const feeDenom = evmParams?.params.feeDenom;
   if (!feeDenom) return <>--</>;
 
-  const feeAmount = effectiveGasPrice.mul(gasUsed);
+  const feeAmount = gasPrice.mul(gasUsed);
   const feeToken = coinToTokenWithValue(
     feeDenom,
     feeAmount.toFixed(),
     assetInfos
   );
-  return <>{formatTokenWithValue(feeToken)}</>;
+  return <>{formatTokenWithValue(feeToken, undefined, false)}</>;
 };
