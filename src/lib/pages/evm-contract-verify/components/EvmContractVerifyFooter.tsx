@@ -38,7 +38,9 @@ export const EvmContractFooter = ({
       borderColor: "gray.700",
       display: "grid",
       gridTemplateColumns: "6fr 4fr",
-      px: "96px",
+      pl: 12,
+      gap: 0,
+      pr: 24,
       "> div": {
         width: "100%",
       },

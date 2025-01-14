@@ -1,5 +1,6 @@
 import { zHexAddr20 } from "lib/types";
-import { z } from "zod";
+import { isHexWalletAddress } from "lib/utils";
+import { z, ZodIssueCode } from "zod";
 
 export enum EvmProgrammingLanguage {
   Solidity = "solidity",
@@ -77,7 +78,20 @@ const zEvmContractVerifyVyperOptionForm = z.discriminatedUnion("option", [
 ]);
 
 const zEvmContractAddressAndLicenseForm = z.object({
-  contractAddress: zHexAddr20,
+  // TODO: refactor later
+  contractAddress: zHexAddr20.superRefine((val, ctx) => {
+    if (val === "")
+      ctx.addIssue({
+        code: ZodIssueCode.custom,
+        message: " ",
+      });
+
+    if (!isHexWalletAddress(val))
+      ctx.addIssue({
+        code: ZodIssueCode.custom,
+        message: "Invalid address",
+      });
+  }),
   compilerVersion: z.string().refine((val) => val !== ""),
   licenseType: z.string().refine((val) => val !== ""),
 });
