@@ -37,18 +37,22 @@ export const EvmContractVerify = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
-  const { control, watch, handleSubmit, setValue } =
-    useForm<EvmContractVerifyForm>({
-      resolver: zodResolver(zEvmContractVerifyForm),
-      mode: "all",
-      reValidateMode: "onChange",
-      defaultValues: {
-        contractAddress: isHexWalletAddress(String(contractAddressQueryParam))
-          ? contractAddressQueryParam
-          : "",
-        compilerVersion: "",
-      },
-    });
+  const {
+    control,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<EvmContractVerifyForm>({
+    resolver: zodResolver(zEvmContractVerifyForm),
+    mode: "all",
+    reValidateMode: "onChange",
+    defaultValues: {
+      contractAddress: isHexWalletAddress(String(contractAddressQueryParam))
+        ? contractAddressQueryParam
+        : "",
+      compilerVersion: "",
+    },
+  });
   const { licenseType, contractAddress, language, compilerVersion } = watch();
 
   const { handleNext, handlePrevious, hasNext, hasPrevious } = useStepper(
@@ -153,6 +157,7 @@ export const EvmContractVerify = () => {
                           ? "success"
                           : "init",
                       }}
+                      error={errors.contractAddress?.message}
                     />
                   </GridItem>
                   <GridItem colSpan={1} colStart={1}>
