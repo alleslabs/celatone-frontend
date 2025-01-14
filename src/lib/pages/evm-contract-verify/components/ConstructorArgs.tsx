@@ -2,11 +2,11 @@ import { Checkbox, Heading, Stack, Text, Textarea } from "@chakra-ui/react";
 import { Control, useController, useWatch } from "react-hook-form";
 import { EvmContractVerifyForm } from "../types";
 
-interface ConstructorArgs {
+interface ConstructorArgsProps {
   control: Control<EvmContractVerifyForm>;
 }
 
-export const ConstructorArgs = ({ control }: ConstructorArgs) => {
+export const ConstructorArgs = ({ control }: ConstructorArgsProps) => {
   const { field } = useController({
     control,
     name: "constructorArgs",
