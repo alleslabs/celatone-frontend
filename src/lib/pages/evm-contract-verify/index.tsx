@@ -49,7 +49,7 @@ export const EvmContractVerify = () => {
         compilerVersion: "",
       },
     });
-  const { licenseType, contractAddress, language, compilerVersion } = watch();
+  const { licenseType, contractAddress, verifyForm, compilerVersion } = watch();
 
   const { handleNext, handlePrevious, hasNext, hasPrevious } = useStepper(
     1,
@@ -195,18 +195,18 @@ export const EvmContractVerify = () => {
                       options={programmingLangaugeOptions}
                       onChange={(selectedOption) => {
                         if (!selectedOption) return;
+                        setValue("verifyForm.language", selectedOption.value);
+                        setValue("compilerVersion", "");
                         setValue(
-                          "verifyForm.option",
+                          "verifyForm.form.option",
                           selectedOption.value ===
                             EvmProgrammingLanguage.Solidity
                             ? VerificationOptions.UploadFiles
                             : VerificationOptions.UploadFile
                         );
-                        setValue("language", selectedOption.value);
-                        setValue("compilerVersion", "");
                       }}
                       value={programmingLangaugeOptions.find(
-                        (option) => option.value === language
+                        (option) => option.value === verifyForm?.language
                       )}
                       menuPortalTarget={document.body}
                     />
@@ -223,16 +223,16 @@ export const EvmContractVerify = () => {
                         (option) => option.value === compilerVersion
                       )}
                       menuPortalTarget={document.body}
-                      isDisabled={!language}
+                      isDisabled={!verifyForm?.language}
                     />
                   </Grid>
                 </Stack>
               </GridItem>
               <GridItem colSpan={1} colStart={1}>
-                {language === EvmProgrammingLanguage.Solidity && (
+                {verifyForm?.language === EvmProgrammingLanguage.Solidity && (
                   <EvmContractVerifySolidity control={control} />
                 )}
-                {language === EvmProgrammingLanguage.Vyper && (
+                {verifyForm?.language === EvmProgrammingLanguage.Vyper && (
                   <EvmContractVerifyVyper control={control} />
                 )}
               </GridItem>

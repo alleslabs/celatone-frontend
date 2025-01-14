@@ -15,12 +15,12 @@ export const EvmContractVerifyOptions = ({
 }: EvmContractVerifyVyperProps) => {
   const { field: verifyFormOptionField } = useController({
     control,
-    name: "verifyForm.option",
+    name: "verifyForm.form.option",
   });
 
-  const [verifyFormOption, language] = useWatch({
+  const [language, verifyFormOption] = useWatch({
     control,
-    name: ["verifyForm.option", "language"],
+    name: ["verifyForm.language", "verifyForm.form.option"],
   });
 
   return (
