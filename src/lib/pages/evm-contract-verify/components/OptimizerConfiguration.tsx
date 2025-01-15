@@ -1,4 +1,4 @@
-import { Checkbox, Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import { Checkbox, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { Control, useController, useWatch } from "react-hook-form";
 import { EvmContractVerifyForm } from "../types";
 import { ControllerInput } from "lib/components/forms";
@@ -21,7 +21,7 @@ export const OptimizerConfiguration = ({
   });
 
   return (
-    <Stack spacing={6}>
+    <Stack spacing={2}>
       <Stack spacing={1}>
         <Heading as="h6" variant="h6">
           Optimization Configuration
@@ -30,7 +30,7 @@ export const OptimizerConfiguration = ({
           Provide optimization settings for the contract
         </Text>
       </Stack>
-      <HStack spacing={4} pl={3}>
+      <Flex gap={4} pl={2} alignItems="center">
         <Checkbox
           isChecked={enabled}
           onChange={(e) =>
@@ -39,7 +39,7 @@ export const OptimizerConfiguration = ({
         >
           <Text>Optimization Enabled</Text>
         </Checkbox>
-        <HStack spacing={2}>
+        <Flex gap={2} alignItems="center">
           <Text color="text.disabled">Optimization Run:</Text>
           <ControllerInput
             width={125}
@@ -47,10 +47,10 @@ export const OptimizerConfiguration = ({
             name="verifyForm.form.optimizerConfig.runs"
             isDisabled={!enabled}
             control={control}
-            size="sm"
+            size="md"
           />
-        </HStack>
-      </HStack>
+        </Flex>
+      </Flex>
     </Stack>
   );
 };

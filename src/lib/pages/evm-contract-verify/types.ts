@@ -28,6 +28,8 @@ const zConstructorArgs = z.object({
   }),
 });
 
+const zEvmVersion = z.string().optional();
+
 // MARK - Query Params
 export const zEvmContractVerifyQueryParams = z.object({
   contractAddress: zHexAddr20,
@@ -38,7 +40,7 @@ const zEvmContractVerifySolidityOptionUploadFilesForm = z.object({
   option: z.literal(VerificationOptions.UploadFiles),
   constructorArgs: zConstructorArgs,
   optimizerConfig: zOptimizerConfig,
-  evmVersion: z.string().optional(),
+  evmVersion: zEvmVersion,
 });
 
 const zEvmContractVerifySolidityOptionContractCodeForm = z.object({

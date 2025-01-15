@@ -26,7 +26,7 @@ export const ConstructorArgs = ({ control }: ConstructorArgsProps) => {
   });
 
   return (
-    <Stack spacing={6}>
+    <Stack spacing={2}>
       <Stack spacing={1}>
         <Heading as="h6" variant="h6">
           Input Constructor Arguments
@@ -36,7 +36,7 @@ export const ConstructorArgs = ({ control }: ConstructorArgsProps) => {
         </Text>
       </Stack>
       <Checkbox
-        pl={3}
+        p={2}
         isChecked={constructorArgs.enabled}
         onChange={(e) => fieldEnabled.onChange(e.target.checked)}
       >
