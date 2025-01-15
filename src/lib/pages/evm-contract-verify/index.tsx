@@ -23,13 +23,13 @@ import { isHex20Bytes, truncate } from "lib/utils";
 import { EvmContractVerifySolidity } from "./components/solidity/EvmContractVerifySolidity";
 import { EvmContractVerifyVyper } from "./components/vyper/EvmContractVerifyVyper";
 import { NoMobile } from "lib/components/modal";
+import { getVerifyFormInitialValue } from "./components/helper";
 
 export const EvmContractVerify = () => {
   useEvmConfig({ shouldRedirect: true });
   const isMobile = useMobile();
   const router = useRouter();
   const contractAddressQueryParam = router.query.contractAddress ?? "";
-  // TODO: add evm contract address
   const { contract: exampleContractAddress } = useExampleAddresses();
 
   useEffect(() => {
@@ -203,11 +203,14 @@ export const EvmContractVerify = () => {
                         setValue("verifyForm.language", selectedOption.value);
                         setValue("compilerVersion", "");
                         setValue(
-                          "verifyForm.form.option",
-                          selectedOption.value ===
-                            EvmProgrammingLanguage.Solidity
-                            ? VerificationOptions.UploadFiles
-                            : VerificationOptions.UploadFile
+                          "verifyForm.form",
+                          getVerifyFormInitialValue(
+                            selectedOption.value,
+                            selectedOption.value ===
+                              EvmProgrammingLanguage.Solidity
+                              ? VerificationOptions.UploadFiles
+                              : VerificationOptions.UploadFile
+                          )
                         );
                       }}
                       value={programmingLangaugeOptions.find(
