@@ -172,9 +172,13 @@ export const ControllerInput = <T extends FieldValues>({
           {isError && (
             <FormErrorMessage className="error-text">{error}</FormErrorMessage>
           )}
-          <FormHelperText className="helper-text">
-            {status?.message ? getResponseMsg(status, helperText) : helperText}
-          </FormHelperText>
+          {(status?.message || helperText) && (
+            <FormHelperText className="helper-text">
+              {status?.message
+                ? getResponseMsg(status, helperText)
+                : helperText}
+            </FormHelperText>
+          )}
         </Flex>
         {helperAction}
       </Flex>

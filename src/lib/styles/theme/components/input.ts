@@ -21,8 +21,10 @@ export const Input: ComponentStyleConfig = {
           borderWidth: "2px",
         },
         _disabled: {
-          borderStyle: "dashed",
           color: "text.disabled",
+          opacity: 0.8,
+          backgroundColor: "gray.900",
+          pointerEvents: "none",
         },
         _invalid: {
           borderColor: "error.main",
