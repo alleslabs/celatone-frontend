@@ -126,7 +126,8 @@ const EvmContractDetailsBody = ({
           <TabPanels>
             <TabPanel p={0} pt={8}>
               <EvmContractDetailsOverview
-                contractAddress={contractAddressBechAddr}
+                contractAddressBech={contractAddressBechAddr}
+                contractAddressHex={contractAddress}
                 hash={evmContractInfoData?.hash}
                 evmHash={evmHash}
                 sender={evmContractInfoData?.sender}
@@ -139,7 +140,10 @@ const EvmContractDetailsBody = ({
               />
             </TabPanel>
             <TabPanel p={0} pt={8}>
-              <EvmContractDetailsBytecode code={evmCodesByAddressData.code} />
+              <EvmContractDetailsBytecode
+                code={evmCodesByAddressData.code}
+                contractAddress={contractAddress}
+              />
             </TabPanel>
             <TabPanel p={0}>
               <AssetsSection address={contractAddressBechAddr} />

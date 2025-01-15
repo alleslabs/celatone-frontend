@@ -20,7 +20,7 @@ const generateCardStyle = ({
     minW: "fit-content",
     w: "full",
     px: "24px",
-    py: "12px",
+    py: "16px",
     border: "2px solid",
     borderRadius: "12px",
     borderColor: "gray.700",
@@ -66,7 +66,7 @@ export const Radio = defineMultiStyleConfig({
   sizes: {
     lg: {
       label: {
-        fontSize: "16px",
+        fontSize: "14px",
       },
     },
   },

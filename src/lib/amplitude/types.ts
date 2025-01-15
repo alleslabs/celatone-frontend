@@ -55,6 +55,7 @@ export enum AmpEvent {
   TO_CONTRACT_DETAILS = "To Contract Detail",
   TO_CODE_DETAILS = "To Code Detail",
   TO_EVM_CONTRACT_DETAILS = "To EVM Contract Detail",
+  TO_EVM_CONTRACT_VERIFY = "To EVM Contract Verify",
   TO_PROJECT_DETAILS = "To Public Project Detail",
   TO_EVM_TRANSACTION_DETAILS = "To EVM Transaction Detail",
   TO_TRANSACTION_DETAILS = "To Transaction Detail",
