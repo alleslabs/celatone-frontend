@@ -2,12 +2,6 @@ import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import type {
-  AccountTxsResponse,
-  BlockTxsResponse,
-  TxData,
-  TxsResponse,
-} from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -36,6 +30,12 @@ import {
   extractTxLogs,
   isTxHash,
 } from "lib/utils";
+import type {
+  AccountTxsResponse,
+  BlockTxsResponse,
+  TxData,
+  TxsResponse,
+} from "../types";
 
 import {
   getTxData,
@@ -778,3 +778,4 @@ export const useTxsDataJsonRpc = (
 };
 
 export * from "./simulateFee";
+export * from "./simulateFeeEvm";

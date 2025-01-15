@@ -49,7 +49,7 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
   const { data: blockData, isLoading: isLoadingBlockData } =
     useBlockDataJsonRpc(evmTxData?.tx.blockNumber.toNumber());
 
-  const evmDenom = evmParams?.params.fee_denom;
+  const evmDenom = evmParams?.params.feeDenom;
 
   const evmTxValue = useMemo<Option<TokenWithValue>>(() => {
     if (!evmTxData) return undefined;

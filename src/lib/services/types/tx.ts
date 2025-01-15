@@ -12,6 +12,7 @@ import {
   MsgFurtherAction,
   zBechAddr,
   zCoin,
+  zGas,
   zHex,
   zHexAddr20,
   zHexBig,
@@ -417,7 +418,11 @@ export const zTxsByPoolIdResponse = z.object({
 export const zTxsByPoolIdTxsCountResponse = z.object({
   total: z.number().nullable(),
 });
-// ---------------- JSON RPC ----------------
+
+// ----------------------------------------
+// --------------- JSON RPC ---------------
+// ----------------------------------------
+
 export const zEvmTxHashByCosmosTxHashJsonRpc = z.string().transform((val) =>
   val !== "0x0000000000000000000000000000000000000000000000000000000000000000" // if no related evm tx
     ? val
@@ -466,6 +471,7 @@ export const zTxReceiptJsonRpc = z.object({
   transactionIndex: zHexBig,
   type: z.string(), // TODO: convert to enum later
 });
+export type TxReceiptJsonRpc = z.infer<typeof zTxReceiptJsonRpc>;
 
 export const zTxDataJsonRpc = z
   .tuple([zTxJsonRpc, zTxReceiptJsonRpc])
@@ -476,3 +482,11 @@ export const zTxsDataJsonRpc = z.array(zTxDataJsonRpc);
 export type TxsDataJsonRpc = z.infer<typeof zTxsDataJsonRpc>;
 
 export type TxDataWithTimeStampJsonRpc = TxDataJsonRpc & { timestamp: Date };
+
+export const zSimulateFeeEvm = z
+  .tuple([zHexBig, zGas(zHexBig)])
+  .transform(([gasPrice, simulatedGasUsed]) => ({
+    gasPrice,
+    simulatedGasUsed,
+  }));
+export type SimulatedFeeEvm = z.infer<typeof zSimulateFeeEvm>;

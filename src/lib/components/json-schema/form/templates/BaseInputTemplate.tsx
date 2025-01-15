@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
@@ -150,7 +151,7 @@ export default function BaseInputTemplate<
   if (inputProps.type === "number" || inputProps.type === "integer") {
     inputValue = value || value === 0 ? value : "";
   } else {
-    inputValue = value == null ? "" : value;
+    inputValue = value === null ? "" : value;
   }
 
   const handleOnChange = useCallback(

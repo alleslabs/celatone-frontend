@@ -40,7 +40,7 @@ export const formatDecimal =
       const dd = d ? `.${d}` : "";
 
       return (ii === "0" && num[0] === "-" ? "-" : "") + ii + dd;
-    } catch (_) {
+    } catch {
       return fallbackValue;
     }
   };
