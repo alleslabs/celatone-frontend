@@ -1,4 +1,4 @@
-import { Flex, Stack, Text } from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
 import type { SystemStyleObject } from "@chakra-ui/styled-system";
 import type { Props } from "chakra-react-select";
 import { Select } from "chakra-react-select";
