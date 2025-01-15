@@ -21,7 +21,7 @@ export const postEvmTx = <T extends TxReceiptJsonRpc>({
             title: "Tx Hash",
             html: (
               <ExplorerLink
-                type="tx_hash"
+                type="evm_tx_hash"
                 value={txResult.transactionHash}
                 openNewTab
               />
