@@ -2,7 +2,7 @@ import { Heading, Stack, Text } from "@chakra-ui/react";
 
 export const EvmContractVerifyTop = () => (
   <Stack gap={2}>
-    <Heading as="h4" variant="h4">
+    <Heading as="h5" variant="h5">
       Verify & Publish Contract
     </Heading>
     <Text variant="body2" color="text.dark">

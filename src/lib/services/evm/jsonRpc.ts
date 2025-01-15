@@ -4,8 +4,9 @@ import * as uuid from "uuid";
 import type { JsonRpcResponse } from "../types/evm";
 import { zBatchJsonRpcResponse, zJsonRpcResponse } from "../types/evm";
 import { parseWithError } from "lib/utils";
+import { HexAddr20, Nullable, zHex } from "lib/types";
 
-export type JsonRpcParams = string | boolean;
+export type JsonRpcParams = object | string | boolean;
 
 export const requestJsonRpc = (
   endpoint: string,
@@ -33,7 +34,7 @@ export const requestJsonRpc = (
         throw new Error(parsed.error.message);
       }
 
-      return parsed;
+      return parsed.result;
     });
 
 export const requestBatchJsonRpc = (
@@ -71,3 +72,13 @@ export const requestBatchJsonRpc = (
 
       return parsedResults;
     });
+
+export const getEthCall = (
+  endpoint: string,
+  from: Nullable<HexAddr20>,
+  to: HexAddr20,
+  data: string
+) =>
+  requestJsonRpc(endpoint, "eth_call", [{ from, to, data }, "latest"]).then(
+    (result) => parseWithError(zHex, result)
+  );

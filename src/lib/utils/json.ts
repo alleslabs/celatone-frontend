@@ -30,7 +30,7 @@ export const parseJsonStr = <T extends JsonDataType>(
 ): T => {
   try {
     return JSON.parse(json);
-  } catch (_) {
+  } catch {
     return fallback as T;
   }
 };

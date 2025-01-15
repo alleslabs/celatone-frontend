@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1188](https://github.com/alleslabs/celatone-frontend/pull/1188) Add request and simulate evm tx
+- [#1192](https://github.com/alleslabs/celatone-frontend/pull/1192) Add fixed bytes hex address util
+- [#1189](https://github.com/alleslabs/celatone-frontend/pull/1189) Add constructor args to EVM contract verify page
 - [#1187](https://github.com/alleslabs/celatone-frontend/pull/1187) Add onboarding section to EVM contract details page and add EVM contract verify page
 - [#1184](https://github.com/alleslabs/celatone-frontend/pull/1184) Add custom layer to Initia Widget
 - [#1182](https://github.com/alleslabs/celatone-frontend/pull/1182) Add Initia Widget
@@ -49,6 +52,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#1186](https://github.com/alleslabs/celatone-frontend/pull/1186) Bump packages mainly @initia/react-wallet-widget
 
 ### Bug fixes
+
+- [#1191](https://github.com/alleslabs/celatone-frontend/pull/1191) Fix contract address form validation
+- [#1190](https://github.com/alleslabs/celatone-frontend/pull/1190) Fix EVM contract details verify boarding and verification page
 
 ## v1.9.3
 

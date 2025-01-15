@@ -1,9 +1,11 @@
 import type { TxDataJsonRpc } from "lib/services/types";
-import { EvmMethodId, EvmMethodName } from "lib/types";
+import { big, EvmMethodId, EvmMethodName } from "lib/types";
 import type { Coin, HexAddr20, Option } from "lib/types";
 
 import { toChecksumAddress } from "./address";
 import { hexToBig } from "./number";
+import { Interface, JsonFragment } from "ethers";
+import { keccak256 } from "@initia/initia.js";
 
 export const getEvmMethod = (txInput: string) => {
   if (txInput === EvmMethodId.Transfer) return EvmMethodName.Transfer;
@@ -89,4 +91,29 @@ export const getEvmAmount = (
     amount: evmTxData.tx.value.toString(),
     denom: evmDenom ?? "",
   };
+};
+
+export const convertCosmosChainIdToEvmChainId = (chainId: string) => {
+  // metamask max
+  const METAMASK_MAX = "4503599627370476";
+
+  const hash = keccak256(Buffer.from(chainId));
+  const rawEvmChainId = Buffer.from(hash).readBigUInt64BE();
+  return big(rawEvmChainId.toString()).mod(METAMASK_MAX).toFixed();
+};
+
+export const encodeEvmFunctionData = (
+  abiSection: JsonFragment,
+  values: unknown[]
+) => {
+  const iface = new Interface([abiSection]);
+  return iface.encodeFunctionData(abiSection.name ?? "", values);
+};
+
+export const decodeEvmFunctionResult = (
+  abiSection: JsonFragment,
+  data: string
+) => {
+  const iface = new Interface([abiSection]);
+  return iface.decodeFunctionResult(abiSection.name ?? "", data);
 };

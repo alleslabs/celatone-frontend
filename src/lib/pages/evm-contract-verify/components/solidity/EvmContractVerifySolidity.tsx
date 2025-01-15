@@ -15,7 +15,10 @@ interface EvmContractVerifySolidityProps {
 const EvmContractVerifySolidityOptions = ({
   control,
 }: EvmContractVerifySolidityProps) => {
-  const verifyFormOption = useWatch({ control, name: "verifyForm.option" });
+  const verifyFormOption = useWatch({
+    control,
+    name: "verifyForm.form.option",
+  });
 
   switch (verifyFormOption) {
     case VerificationOptions.UploadFiles:

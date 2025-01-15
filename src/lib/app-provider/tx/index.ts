@@ -1,3 +1,4 @@
+export * from "./evm";
 export * from "./move";
 export * from "./storeCode";
 export * from "./execute";

@@ -9,7 +9,23 @@
     "plugin:storybook/recommended"
   ],
   "rules": {
-    "@typescript-eslint/no-unused-vars": "off",
+    // eslint basic
+    "no-undef": "off",
+    "no-console": "error",
+    "no-unused-vars": "off",
+    "strict": ["error", "global"],
+    "consistent-return": "error",
+    "no-else-return": "error",
+    "no-param-reassign": [
+      "error",
+      { "props": true, "ignorePropertyModificationsFor": ["acc"] }
+    ],
+    "no-use-before-define": "error",
+    "object-shorthand": "error",
+    "prefer-const": "error",
+    "eqeqeq": "error",
+    "semi": "error",
+
     "@typescript-eslint/no-empty-object-type": "off",
     "sonarjs/no-duplicate-string": ["error", { "threshold": 3 }],
     "sonarjs/cognitive-complexity": ["error", 27],

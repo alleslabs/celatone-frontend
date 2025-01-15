@@ -13,7 +13,10 @@ interface EvmContractVerifyVyperProps {
 const EvmContractVerifyVyperOptions = ({
   control,
 }: EvmContractVerifyVyperProps) => {
-  const verifyFormOption = useWatch({ control, name: "verifyForm.option" });
+  const verifyFormOption = useWatch({
+    control,
+    name: "verifyForm.form.option",
+  });
 
   switch (verifyFormOption) {
     case VerificationOptions.UploadFile:
