@@ -14,6 +14,8 @@ export const getVerifyFormInitialValue = (
     runs: 200,
   };
 
+  const evmVersionConfig = "default";
+
   if (language === EvmProgrammingLanguage.Solidity) {
     switch (verificationOption) {
       case VerificationOptions.UploadFiles:
@@ -21,7 +23,7 @@ export const getVerifyFormInitialValue = (
           option: verificationOption,
           constructorArgs,
           optimizerConfig,
-          evmVersion: "default",
+          evmVersion: evmVersionConfig,
         };
       case VerificationOptions.ContractCode:
         return {
@@ -44,12 +46,15 @@ export const getVerifyFormInitialValue = (
           option: verificationOption,
           file: undefined,
           constructorArgs,
-          evmVersion: "default",
+          evmVersion: evmVersionConfig,
         };
       case VerificationOptions.ContractCode:
         return {
           option: verificationOption,
+          contractName: "",
+          contractCode: "",
           constructorArgs,
+          evmVersion: evmVersionConfig,
         };
       case VerificationOptions.JsonInput:
         return {

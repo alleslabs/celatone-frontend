@@ -145,9 +145,7 @@ export const EvmContractVerify = () => {
                   <GridItem colSpan={1}>
                     <ControllerInput
                       label="Contract Address"
-                      rules={{
-                        required: "",
-                      }}
+                      isRequired
                       placeholder={`ex. ${truncate(exampleContractAddress)}`}
                       name="contractAddress"
                       control={control}

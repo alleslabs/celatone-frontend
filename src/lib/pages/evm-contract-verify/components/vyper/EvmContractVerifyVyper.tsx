@@ -22,7 +22,7 @@ const EvmContractVerifyVyperOptions = ({
     case VerificationOptions.UploadFile:
       return <EvmContractVerifyVyperUploadFile control={control} />;
     case VerificationOptions.ContractCode:
-      return <EvmContractVerifyVyperContractCode />;
+      return <EvmContractVerifyVyperContractCode control={control} />;
     case VerificationOptions.JsonInput:
       return <EvmContractVerifyVyperJsonInput control={control} />;
     default:
