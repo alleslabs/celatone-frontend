@@ -73,7 +73,10 @@ const zEvmContractVerifyVyperOptionUploadFileForm = z.object({
 
 const zEvmContractVerifyVyperOptionContractCodeForm = z.object({
   option: z.literal(VerificationOptions.ContractCode),
+  contractName: z.string().refine((val) => val !== "", { message: " " }),
+  contractCode: z.string().refine((val) => val !== "", { message: " " }),
   constructorArgs: zConstructorArgs,
+  evmVersion: zEvmVersion,
 });
 
 const zEvmContractVerifyVyperOptionJsonInputForm = z.object({

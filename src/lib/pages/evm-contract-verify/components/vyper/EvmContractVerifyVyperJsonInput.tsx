@@ -1,8 +1,8 @@
 import { Control, useController } from "react-hook-form";
 import { EvmContractVerifyForm } from "../../types";
 import { Heading, Stack } from "@chakra-ui/react";
-import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
+import { DropZone } from "lib/components/dropzone";
 import { ConstructorArgs } from "../ConstructorArgs";
 
 interface EvmContractVerifyVyperJsonInputProps {
