@@ -30,7 +30,7 @@ export const EvmContractVerifyVyperJsonInput = ({
         ) : (
           <DropZone
             setFiles={(files) => onChange(files[0])}
-            fileType={["standard-json"]}
+            fileType={["json"]}
           />
         )}
       </Stack>

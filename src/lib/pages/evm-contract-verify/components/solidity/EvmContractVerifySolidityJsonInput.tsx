@@ -30,7 +30,7 @@ export const EvmContractVerifySolidityJsonInput = ({
         ) : (
           <DropZone
             setFiles={(files) => onChange(files[0])}
-            fileType={["standard-json"]}
+            fileType={["json"]}
           />
         )}
       </Stack>

@@ -102,7 +102,7 @@ export const AddNetworkJson = observer(() => {
           ) : (
             <DropZone
               setFiles={(files: File[]) => setFile(files[0])}
-              fileType={["schema"]}
+              fileType={["json"]}
             />
           )}
           <Flex justifyContent="space-between" w="full">
