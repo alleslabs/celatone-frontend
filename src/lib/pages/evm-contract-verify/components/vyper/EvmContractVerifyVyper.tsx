@@ -24,7 +24,7 @@ const EvmContractVerifyVyperOptions = ({
     case VerificationOptions.ContractCode:
       return <EvmContractVerifyVyperContractCode />;
     case VerificationOptions.JsonInput:
-      return <EvmContractVerifyVyperJsonInput />;
+      return <EvmContractVerifyVyperJsonInput control={control} />;
     default:
       return null;
   }
