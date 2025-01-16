@@ -20,11 +20,11 @@ const EvmContractVerifyVyperOptions = ({
 
   switch (verifyFormOption) {
     case VerificationOptions.UploadFile:
-      return <EvmContractVerifyVyperUploadFile />;
+      return <EvmContractVerifyVyperUploadFile control={control} />;
     case VerificationOptions.ContractCode:
       return <EvmContractVerifyVyperContractCode />;
     case VerificationOptions.JsonInput:
-      return <EvmContractVerifyVyperJsonInput />;
+      return <EvmContractVerifyVyperJsonInput control={control} />;
     default:
       return null;
   }

@@ -22,7 +22,7 @@ const EvmContractVerifySolidityOptions = ({
 
   switch (verifyFormOption) {
     case VerificationOptions.UploadFiles:
-      return <EvmContractVerifySolidityUploadFiles control={control} />;
+      return <EvmContractVerifySolidityUploadFiles />;
     case VerificationOptions.ContractCode:
       return <EvmContractVerifySolidityContractCode />;
     case VerificationOptions.JsonInput:

@@ -28,7 +28,7 @@ const zConstructorArgs = z.object({
   }),
 });
 
-const zEvmVersion = z.string().optional();
+const zEvmVersion = z.string();
 
 // MARK - Query Params
 export const zEvmContractVerifyQueryParams = z.object({
@@ -65,7 +65,9 @@ const zEvmContractVerifySolidityOptionFoundryForm = z.object({
 // MARK - Vyper
 const zEvmContractVerifyVyperOptionUploadFileForm = z.object({
   option: z.literal(VerificationOptions.UploadFile),
+  file: z.instanceof(File).optional(),
   constructorArgs: zConstructorArgs,
+  evmVersion: zEvmVersion,
 });
 
 const zEvmContractVerifyVyperOptionContractCodeForm = z.object({

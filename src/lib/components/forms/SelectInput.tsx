@@ -128,6 +128,12 @@ export const SelectInput = <
         }),
         ...chakraStyles,
       }}
+      styles={{
+        menuPortal: (provided) => ({
+          ...provided,
+          zIndex: 2,
+        }),
+      }}
       inputId={inputId}
       name={name}
       isMulti={isMulti}

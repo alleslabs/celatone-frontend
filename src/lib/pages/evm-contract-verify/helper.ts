@@ -1,4 +1,4 @@
-import { EvmProgrammingLanguage, VerificationOptions } from "../types";
+import { EvmProgrammingLanguage, VerificationOptions } from "./types";
 
 export const getVerifyFormInitialValue = (
   language: EvmProgrammingLanguage,
@@ -21,7 +21,7 @@ export const getVerifyFormInitialValue = (
           option: verificationOption,
           constructorArgs,
           optimizerConfig,
-          evmVersion: undefined,
+          evmVersion: "default",
         };
       case VerificationOptions.ContractCode:
         return {
@@ -42,7 +42,9 @@ export const getVerifyFormInitialValue = (
       case VerificationOptions.UploadFile:
         return {
           option: verificationOption,
+          file: undefined,
           constructorArgs,
+          evmVersion: "default",
         };
       case VerificationOptions.ContractCode:
         return {

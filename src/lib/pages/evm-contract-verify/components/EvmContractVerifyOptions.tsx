@@ -5,7 +5,7 @@ import {
   EvmProgrammingLanguage,
   VerificationOptions,
 } from "../types";
-import { getVerifyFormInitialValue } from "./helper";
+import { getVerifyFormInitialValue } from "../helper";
 
 interface EvmContractVerifyVyperProps {
   control: Control<EvmContractVerifyForm>;

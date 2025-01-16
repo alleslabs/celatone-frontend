@@ -19,18 +19,18 @@ import {
   zEvmContractVerifyForm,
 } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isHex20Bytes, truncate } from "lib/utils";
 import { EvmContractVerifySolidity } from "./components/solidity/EvmContractVerifySolidity";
 import { EvmContractVerifyVyper } from "./components/vyper/EvmContractVerifyVyper";
 import { NoMobile } from "lib/components/modal";
-import { getVerifyFormInitialValue } from "./components/helper";
+import { isHex20Bytes, truncate } from "lib/utils";
+import { getVerifyFormInitialValue } from "./helper";
 
 export const EvmContractVerify = () => {
   useEvmConfig({ shouldRedirect: true });
   const isMobile = useMobile();
   const router = useRouter();
   const contractAddressQueryParam = router.query.contractAddress ?? "";
-  const { contract: exampleContractAddress } = useExampleAddresses();
+  const { evmContract: exampleContractAddress } = useExampleAddresses();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_EVM_CONTRACT_VERIFY);

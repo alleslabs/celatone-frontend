@@ -48,6 +48,8 @@ export function DropZone({
       wasm: wasm.enabled ? wasm.storeCodeMaxFileSize : 0,
       mv: move.enabled ? move.moduleMaxFileSize : 0,
       toml: 1_000_000,
+      // TODO - Revisit
+      vy: 10_000_000,
     };
 
     const selectedSizes: number[] = [];

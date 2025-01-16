@@ -1,6 +1,12 @@
 import type { Accept } from "react-dropzone";
 
-export type DropzoneFileType = "wasm" | "schema" | "mv" | "move" | "toml";
+export type DropzoneFileType =
+  | "wasm"
+  | "schema"
+  | "mv"
+  | "move"
+  | "toml"
+  | "vy";
 
 export interface DropzoneConfig {
   accept: Accept;
@@ -44,6 +50,13 @@ export const DROPZONE_CONFIG: { [key in DropzoneFileType]: DropzoneConfig } = {
     text: {
       prettyFileType: ".toml",
       rawFileType: ".toml",
+    },
+  },
+  vy: {
+    accept: { "application/octet-stream": [".vy"] },
+    text: {
+      prettyFileType: ".vy",
+      rawFileType: ".vy",
     },
   },
 };

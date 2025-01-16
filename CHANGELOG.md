@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1194](https://github.com/alleslabs/celatone-frontend/pull/1194) Add EVM contract verification with Vyper upload file method
 - [#1193](https://github.com/alleslabs/celatone-frontend/pull/1193) Add optimizer configuration to EVM contract verify page, fix constructor args, and Zod type
 - [#1188](https://github.com/alleslabs/celatone-frontend/pull/1188) Add request and simulate evm tx
 - [#1192](https://github.com/alleslabs/celatone-frontend/pull/1192) Add fixed bytes hex address util

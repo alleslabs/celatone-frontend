@@ -26,7 +26,7 @@ export const ContractInputSection = ({
 }: ContractInputSectionProps) => {
   const [isChangeContract, setIsChangeContract] = useState(false);
   const { address } = useCurrentChain();
-  const { contract: contractExample } = useExampleAddresses();
+  const { wasmContract: contractExample } = useExampleAddresses();
   const { control, setValue, watch } = useForm({
     defaultValues: {
       contractAddress: "",
