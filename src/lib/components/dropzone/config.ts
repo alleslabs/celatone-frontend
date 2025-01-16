@@ -6,7 +6,8 @@ export type DropzoneFileType =
   | "mv"
   | "move"
   | "toml"
-  | "vy";
+  | "vy"
+  | "standard-json";
 
 export interface DropzoneConfig {
   accept: Accept;
@@ -57,6 +58,13 @@ export const DROPZONE_CONFIG: { [key in DropzoneFileType]: DropzoneConfig } = {
     text: {
       prettyFileType: ".vy",
       rawFileType: ".vy",
+    },
+  },
+  "standard-json": {
+    accept: { "application/json": [".json"] },
+    text: {
+      prettyFileType: ".json file",
+      rawFileType: ".json",
     },
   },
 };

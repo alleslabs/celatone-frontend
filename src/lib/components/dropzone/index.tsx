@@ -50,6 +50,7 @@ export function DropZone({
       toml: 1_000_000,
       // TODO - Revisit
       vy: 10_000_000,
+      "standard-json": 10_000_000,
     };
 
     const selectedSizes: number[] = [];
