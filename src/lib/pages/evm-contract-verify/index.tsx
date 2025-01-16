@@ -30,7 +30,7 @@ export const EvmContractVerify = () => {
   const isMobile = useMobile();
   const router = useRouter();
   const contractAddressQueryParam = router.query.contractAddress ?? "";
-  const { contractHex: exampleContractAddress } = useExampleAddresses();
+  const { evmContract: exampleContractAddress } = useExampleAddresses();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_EVM_CONTRACT_VERIFY);

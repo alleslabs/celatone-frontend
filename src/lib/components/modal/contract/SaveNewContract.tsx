@@ -39,7 +39,7 @@ export function SaveNewContractModal({
   const { getContractLocalInfo } = useContractStore();
   const { validateContractAddress } = useValidateAddress();
 
-  const { contractBech: exampleContractAddress } = useExampleAddresses();
+  const { wasmContract: exampleContractAddress } = useExampleAddresses();
   const initialList =
     list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? [] : [list];
 
