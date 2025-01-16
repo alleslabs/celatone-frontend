@@ -5,6 +5,7 @@ import {
   EvmProgrammingLanguage,
   VerificationOptions,
 } from "../types";
+import { getVerifyFormInitialValue } from "../helper";
 
 interface EvmContractVerifyVyperProps {
   control: Control<EvmContractVerifyForm>;
@@ -13,9 +14,9 @@ interface EvmContractVerifyVyperProps {
 export const EvmContractVerifyOptions = ({
   control,
 }: EvmContractVerifyVyperProps) => {
-  const { field: verifyFormOptionField } = useController({
+  const { field } = useController({
     control,
-    name: "verifyForm.form.option",
+    name: "verifyForm.form",
   });
 
   const [language, verifyFormOption] = useWatch({
@@ -23,15 +24,16 @@ export const EvmContractVerifyOptions = ({
     name: ["verifyForm.language", "verifyForm.form.option"],
   });
 
+  const handleOptionChange = (nextVal: VerificationOptions) => {
+    field.onChange(getVerifyFormInitialValue(language, nextVal));
+  };
+
   return (
     <Stack spacing={6}>
       <Heading as="h6" variant="h6">
         Select Verification Option
       </Heading>
-      <RadioGroup
-        onChange={(nextVal) => verifyFormOptionField.onChange(nextVal)}
-        value={verifyFormOption}
-      >
+      <RadioGroup onChange={handleOptionChange} value={verifyFormOption}>
         <Grid gridTemplateColumns="repeat(3, 1fr)" gap={4}>
           {language === EvmProgrammingLanguage.Solidity && (
             <Radio

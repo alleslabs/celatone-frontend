@@ -16,6 +16,20 @@ export enum VerificationOptions {
   Foundry = "foundry",
 }
 
+const zOptimizerConfig = z.object({
+  enabled: z.boolean(),
+  runs: z.number().nonnegative(),
+});
+
+const zConstructorArgs = z.object({
+  enabled: z.boolean(),
+  value: z.string().refine((val) => val !== "", {
+    message: " ",
+  }),
+});
+
+const zEvmVersion = z.string();
+
 // MARK - Query Params
 export const zEvmContractVerifyQueryParams = z.object({
   contractAddress: zHexAddr20,
@@ -24,18 +38,20 @@ export const zEvmContractVerifyQueryParams = z.object({
 // MARK - Solidity
 const zEvmContractVerifySolidityOptionUploadFilesForm = z.object({
   option: z.literal(VerificationOptions.UploadFiles),
-  constructorArgs: z.string().optional(),
-  evmVersion: z.string(),
+  constructorArgs: zConstructorArgs,
+  optimizerConfig: zOptimizerConfig,
+  evmVersion: zEvmVersion,
 });
 
 const zEvmContractVerifySolidityOptionContractCodeForm = z.object({
   option: z.literal(VerificationOptions.ContractCode),
-  constructorArgs: z.string().optional(),
+  constructorArgs: zConstructorArgs,
+  optimizerConfig: zOptimizerConfig,
 });
 
 const zEvmContractVerifySolidityOptionJsonInputForm = z.object({
   option: z.literal(VerificationOptions.JsonInput),
-  constructorArgs: z.string().optional(),
+  constructorArgs: zConstructorArgs,
 });
 
 const zEvmContractVerifySolidityOptionHardhatForm = z.object({
@@ -49,18 +65,19 @@ const zEvmContractVerifySolidityOptionFoundryForm = z.object({
 // MARK - Vyper
 const zEvmContractVerifyVyperOptionUploadFileForm = z.object({
   option: z.literal(VerificationOptions.UploadFile),
-  file: z.instanceof(File),
-  constructorArgs: z.string().optional(),
+  file: z.instanceof(File).optional(),
+  constructorArgs: zConstructorArgs,
+  evmVersion: zEvmVersion,
 });
 
 const zEvmContractVerifyVyperOptionContractCodeForm = z.object({
   option: z.literal(VerificationOptions.ContractCode),
-  constructorArgs: z.string().optional(),
+  constructorArgs: zConstructorArgs,
 });
 
 const zEvmContractVerifyVyperOptionJsonInputForm = z.object({
   option: z.literal(VerificationOptions.JsonInput),
-  constructorArgs: z.string().optional(),
+  constructorArgs: zConstructorArgs,
 });
 
 // MARK - Union of options by language

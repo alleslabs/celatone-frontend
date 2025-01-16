@@ -1,19 +1,32 @@
-import { Checkbox, Heading, Stack, Text, Textarea } from "@chakra-ui/react";
-import { Control, useController } from "react-hook-form";
+import { Box, Checkbox, Heading, Stack, Text } from "@chakra-ui/react";
+import { Control, useController, useWatch } from "react-hook-form";
 import { EvmContractVerifyForm } from "../types";
+import { ControllerTextarea } from "lib/components/forms";
 
 interface ConstructorArgsProps {
   control: Control<EvmContractVerifyForm>;
 }
 
 export const ConstructorArgs = ({ control }: ConstructorArgsProps) => {
-  const { field } = useController({
+  const { field: fieldEnabled } = useController({
+    control,
+    name: "verifyForm.form.constructorArgs.enabled",
+  });
+
+  const {
+    fieldState: { error },
+  } = useController({
+    control,
+    name: "verifyForm.form.constructorArgs.value",
+  });
+
+  const constructorArgs = useWatch({
     control,
     name: "verifyForm.form.constructorArgs",
   });
 
   return (
-    <Stack spacing={6}>
+    <Stack spacing={2}>
       <Stack spacing={1}>
         <Heading as="h6" variant="h6">
           Input Constructor Arguments
@@ -23,17 +36,31 @@ export const ConstructorArgs = ({ control }: ConstructorArgsProps) => {
         </Text>
       </Stack>
       <Checkbox
-        isChecked={field.value !== undefined}
-        onChange={(e) => field.onChange(e.target.checked ? "" : undefined)}
+        p={2}
+        isChecked={constructorArgs.enabled}
+        onChange={(e) => fieldEnabled.onChange(e.target.checked)}
       >
         <Text>Have constructor arguments</Text>
       </Checkbox>
-      <Textarea
-        visibility={field.value === undefined ? "hidden" : "visible"}
-        placeholder="ex.000000000000000000000000c005dc82818d67af737725bd4bf75435d065d239"
-        value={field.value}
-        onChange={(e) => field.onChange(e.target.value)}
-      />
+      <Box
+        py={4}
+        px={3}
+        bgColor="gray.900"
+        borderRadius="md"
+        display={fieldEnabled.value ? "block" : "none"}
+      >
+        <ControllerTextarea
+          backgroundColor="gray.900"
+          name="verifyForm.form.constructorArgs.value"
+          control={control}
+          isRequired
+          label="Constructor Arguments"
+          placeholder="ex.000000000000000000000000c005dc82818d67af737725bd4bf75435d065d239"
+          variant="fixed-floating"
+          labelBgColor="gray.900"
+          error={error?.message}
+        />
+      </Box>
     </Stack>
   );
 };
