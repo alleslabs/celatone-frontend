@@ -1,5 +1,5 @@
 import { Stack, Text } from "@chakra-ui/react";
-import { useCelatoneApp } from "lib/app-provider";
+import { useEvmConfig } from "lib/app-provider";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { useMemo } from "react";
 
@@ -13,9 +13,8 @@ interface EvmContractVerifySolidityFoundryProps {
 export const EvmContractVerifySolidityFoundry = ({
   control,
 }: EvmContractVerifySolidityFoundryProps) => {
-  const {
-    chainConfig: { rpc },
-  } = useCelatoneApp();
+  const evm = useEvmConfig({ shouldRedirect: false });
+  const jsonRpc = evm.enabled ? evm.jsonRpc : "<invalid_network>";
 
   const contractAddress = useWatch({ control, name: "contractAddress" });
 
@@ -24,12 +23,13 @@ export const EvmContractVerifySolidityFoundry = ({
 
   const cmd = useMemo(() => {
     return `forge verify-contract \\
---rpc-url ${rpc} \\
---verifier custom \\
---verifier-url ${verifierUrl} \\
-${contractAddress} \\
-[contractFile]:[contractName]`;
-  }, [rpc, contractAddress]);
+  --rpc-url ${jsonRpc} \\
+  --verifier custom \\
+  --verifier-url ${verifierUrl} \\
+  --constructor-args <constructor-args> \\
+  ${contractAddress || "<contract-address>"} \\
+  [contractFile]:[contractName]`;
+  }, [jsonRpc, contractAddress]);
 
   return (
     <Stack gap={4}>
