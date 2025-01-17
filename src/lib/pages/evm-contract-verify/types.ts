@@ -51,6 +51,7 @@ const zEvmContractVerifySolidityOptionContractCodeForm = z.object({
 
 const zEvmContractVerifySolidityOptionJsonInputForm = z.object({
   option: z.literal(VerificationOptions.JsonInput),
+  jsonFile: z.instanceof(File).optional(),
   constructorArgs: zConstructorArgs,
 });
 
@@ -80,6 +81,7 @@ const zEvmContractVerifyVyperOptionContractCodeForm = z.object({
 
 const zEvmContractVerifyVyperOptionJsonInputForm = z.object({
   option: z.literal(VerificationOptions.JsonInput),
+  jsonFile: z.instanceof(File).optional(),
   constructorArgs: zConstructorArgs,
 });
 

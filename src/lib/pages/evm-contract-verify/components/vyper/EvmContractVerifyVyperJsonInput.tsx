@@ -16,7 +16,7 @@ export const EvmContractVerifyVyperJsonInput = ({
     field: { value, onChange },
   } = useController({
     control,
-    name: "verifyForm.form.file",
+    name: "verifyForm.form.jsonFile",
   });
 
   return (
@@ -30,7 +30,7 @@ export const EvmContractVerifyVyperJsonInput = ({
         ) : (
           <DropZone
             setFiles={(files) => onChange(files[0])}
-            fileType={["schema"]}
+            fileType={["json"]}
           />
         )}
       </Stack>

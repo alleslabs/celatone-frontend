@@ -43,7 +43,7 @@ export function DropZone({
     const sizes: {
       [key in DropzoneFileType]: number;
     } = {
-      schema: 10_000_000,
+      json: 10_000_000,
       move: 10_000_000,
       wasm: wasm.enabled ? wasm.storeCodeMaxFileSize : 0,
       mv: move.enabled ? move.moduleMaxFileSize : 0,
@@ -122,7 +122,7 @@ export function DropZone({
           <Text variant="body1">
             {fileType.length > 1
               ? "or drag folder here"
-              : `or drag ${selectedConfigs[0].text.prettyFileType} file here`}
+              : `or drag ${selectedConfigs[0].text.rawFileType} file here`}
           </Text>
         </Flex>
         {fileType.length > 1 ? (
