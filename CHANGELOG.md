@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1198](https://github.com/alleslabs/celatone-frontend/pull/1198) Add EVM contract verification with Foundry
 - [#1197](https://github.com/alleslabs/celatone-frontend/pull/1197) Add EVM contract verification with standard JSON input both for Solidity and Vyper
 - [#1194](https://github.com/alleslabs/celatone-frontend/pull/1194) Add EVM contract verification with Vyper upload file method
 - [#1193](https://github.com/alleslabs/celatone-frontend/pull/1193) Add optimizer configuration to EVM contract verify page, fix constructor args, and Zod type

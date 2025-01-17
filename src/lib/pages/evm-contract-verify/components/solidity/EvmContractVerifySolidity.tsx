@@ -30,7 +30,7 @@ const EvmContractVerifySolidityOptions = ({
     case VerificationOptions.Hardhat:
       return <EvmContractVerifySolidityHardhat />;
     case VerificationOptions.Foundry:
-      return <EvmContractVerifySolidityFoundry />;
+      return <EvmContractVerifySolidityFoundry control={control} />;
     default:
       return null;
   }

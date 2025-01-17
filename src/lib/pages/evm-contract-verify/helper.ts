@@ -36,6 +36,11 @@ export const getVerifyFormInitialValue = (
           option: verificationOption,
           constructorArgs,
         };
+      case VerificationOptions.Hardhat:
+      case VerificationOptions.Foundry:
+        return {
+          option: verificationOption,
+        };
       default:
         throw new Error("Invalid verification option for Solidity");
     }
