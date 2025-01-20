@@ -15,6 +15,7 @@ export const TupleField = <T extends FieldValues>({
   name,
   control,
   components,
+  isDisabled,
   withoutBorder,
 }: TupleFieldProps<T>) => {
   const values = useWatch<T>({
@@ -53,6 +54,7 @@ export const TupleField = <T extends FieldValues>({
               type={subfieldType}
               label={subfieldLabel}
               dimensions={getTypeDimensions(subfieldType)}
+              isDisabled={isDisabled}
               {...rest}
             />
           </TypeLabel>

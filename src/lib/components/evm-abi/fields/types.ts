@@ -6,4 +6,5 @@ export interface FieldProps<T extends FieldValues>
   control: Control<T>;
   name: FieldPath<T>;
   label?: string;
+  isDisabled?: boolean;
 }

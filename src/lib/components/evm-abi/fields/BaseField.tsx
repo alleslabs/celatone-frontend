@@ -11,6 +11,7 @@ export const BaseField = <T extends FieldValues>({
   control,
   name,
   type,
+  isDisabled,
   isRequired = false,
 }: BaseFieldProps<T>) => {
   const {
@@ -24,7 +25,7 @@ export const BaseField = <T extends FieldValues>({
   const isError = (isTouched || isDirty) && !!error;
 
   return (
-    <FormControl isInvalid={isError} {...fieldProps}>
+    <FormControl isInvalid={isError} isDisabled={isDisabled} {...fieldProps}>
       <Input value={value} onBlur={onBlur} onChange={onChange} />
       {isError && <FormErrorMessage>{error.message}</FormErrorMessage>}
     </FormControl>

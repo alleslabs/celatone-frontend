@@ -16,6 +16,7 @@ const BOOL_FIELD_OPTIONS: SelectInputOption<string>[] = [
 export const BoolField = <T extends FieldValues>({
   control,
   name,
+  isDisabled,
 }: FieldProps<T>) => {
   const {
     field: { value, onChange },
@@ -34,6 +35,7 @@ export const BoolField = <T extends FieldValues>({
         onChange(newValue.value);
       }}
       size="md"
+      isDisabled={isDisabled}
     />
   );
 };

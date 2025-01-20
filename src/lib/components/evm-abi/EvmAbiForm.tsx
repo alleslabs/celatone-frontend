@@ -11,6 +11,7 @@ interface EvmAbiFormProps {
   isPayable: boolean;
   initialData?: JsonDataType[];
   propsOnChange?: (data: JsonDataType[]) => void;
+  isDisabled?: boolean;
 }
 
 export const EvmAbiForm = ({
@@ -18,6 +19,7 @@ export const EvmAbiForm = ({
   isPayable,
   initialData,
   propsOnChange,
+  isDisabled,
 }: EvmAbiFormProps) => {
   const defaultValues = useMemo(
     () => initialData ?? getComponentsDefaultValues(types),
@@ -45,6 +47,11 @@ export const EvmAbiForm = ({
   }, [JSON.stringify(inputs), propsOnChange]);
 
   return (
-    <FormFields control={control} components={types} isPayable={isPayable} />
+    <FormFields
+      control={control}
+      components={types}
+      isPayable={isPayable}
+      isDisabled={isDisabled}
+    />
   );
 };

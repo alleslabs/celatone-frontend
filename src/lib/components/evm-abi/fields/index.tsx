@@ -11,12 +11,14 @@ interface FormFieldsProps<T extends FieldValues> {
   control: Control<T>;
   components: ReadonlyArray<JsonFragmentType>;
   isPayable: boolean;
+  isDisabled?: boolean;
 }
 
 export const FormFields = <T extends FieldValues>({
   control,
   components,
   isPayable,
+  isDisabled,
 }: FormFieldsProps<T>) => {
   const { data: evmParamsData } = useEvmParams();
   const { data: assetInfos } = useAssetInfos({
@@ -34,6 +36,7 @@ export const FormFields = <T extends FieldValues>({
         control={control}
         name={"inputs" as Path<T>}
         components={components}
+        isDisabled={isDisabled}
         withoutBorder
       />
       {isPayable && (
