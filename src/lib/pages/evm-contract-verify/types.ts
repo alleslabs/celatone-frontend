@@ -66,14 +66,6 @@ const zEvmContractVerifySolidityOptionJsonInputForm = z.object({
   constructorArgs: zConstructorArgs,
 });
 
-const zEvmContractVerifySolidityOptionHardhatForm = z.object({
-  //
-});
-
-const zEvmContractVerifySolidityOptionFoundryForm = z.object({
-  //
-});
-
 // MARK - Vyper
 const zEvmContractVerifyVyperOptionUploadFileForm = z.object({
   file: z.instanceof(File).optional(),
@@ -121,8 +113,6 @@ export const zEvmContractVerifyForm = zEvmContractVerifyBase.merge(
       solidityUploadFiles: zEvmContractVerifySolidityOptionUploadFilesForm,
       solidityContractCode: zEvmContractVerifySolidityOptionContractCodeForm,
       solidityJsonInput: zEvmContractVerifySolidityOptionJsonInputForm,
-      solidityHardhat: zEvmContractVerifySolidityOptionHardhatForm,
-      solidityFoundry: zEvmContractVerifySolidityOptionFoundryForm,
       vyperUploadFile: zEvmContractVerifyVyperOptionUploadFileForm,
       vyperContractCode: zEvmContractVerifyVyperOptionContractCodeForm,
       vyperJsonInput: zEvmContractVerifyVyperOptionJsonInputForm,

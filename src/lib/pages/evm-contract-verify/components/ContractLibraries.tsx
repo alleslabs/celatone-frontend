@@ -1,12 +1,18 @@
-import { Box, Checkbox, Heading, Stack, Text } from "@chakra-ui/react";
+import { Button, Checkbox, Grid, Heading, Stack, Text } from "@chakra-ui/react";
+import { useExampleAddresses } from "lib/app-provider";
+import { ControllerInput } from "lib/components/forms";
+import { CustomIcon } from "lib/components/icon";
+import { truncate } from "lib/utils";
 import {
+  ArrayPath,
   Control,
+  FieldArray,
   FieldPath,
   FieldValues,
   useController,
+  useFieldArray,
   useWatch,
 } from "react-hook-form";
-import { ControllerTextarea } from "lib/components/forms";
 
 interface ContractLibrariesProps<T extends FieldValues> {
   control: Control<T>;
@@ -17,27 +23,32 @@ export const ContractLibraries = <T extends FieldValues>({
   control,
   name,
 }: ContractLibrariesProps<T>) => {
-  const {
-    field,
-    fieldState: { error },
-  } = useController({
+  const { evmContract: exampleContractAddress } = useExampleAddresses();
+
+  const { field } = useController({
     control,
-    name,
+    name: `${name}.contractLibraries` as FieldPath<T>,
   });
 
   const contractLibraries = useWatch({
     control,
-    name,
+    name: `${name}.contractLibraries` as FieldPath<T>,
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: `${name}.contractLibraries.value` as ArrayPath<T>,
   });
 
   return (
     <Stack spacing={2}>
       <Stack spacing={1}>
         <Heading as="h6" variant="h6">
-          Input Constructor Arguments
+          Add Contract Libraries
         </Heading>
         <Text variant="body2" color="text.dark">
-          Provide ABI that will become the config of the contract
+          Provide addresses of external libraries linked to the contract to
+          ensure accurate verification
         </Text>
       </Stack>
       <Checkbox
@@ -47,27 +58,65 @@ export const ContractLibraries = <T extends FieldValues>({
           field.onChange({ ...field.value, enabled: e.target.checked })
         }
       >
-        <Text>Have constructor arguments</Text>
+        <Text>Have contract libraries</Text>
       </Checkbox>
-      <Box
+      <Stack
+        gap={4}
         py={4}
         px={3}
         bgColor="gray.900"
         borderRadius="md"
-        display={contractLibraries.value ? "block" : "none"}
+        display={contractLibraries.enabled ? "flex" : "none"}
       >
-        <ControllerTextarea
-          backgroundColor="gray.900"
-          name={`${name}.value` as FieldPath<T>}
-          control={control}
-          isRequired
-          label="Constructor Arguments"
-          placeholder="ex.000000000000000000000000c005dc82818d67af737725bd4bf75435d065d239"
-          variant="fixed-floating"
-          labelBgColor="gray.900"
-          error={error?.message}
-        />
-      </Box>
+        {fields.map((item, index) => (
+          <Grid key={item.id} gridTemplateColumns="1fr 2fr auto" gap={4}>
+            <ControllerInput
+              label="Library Name"
+              isRequired
+              rules={{
+                required: "",
+              }}
+              placeholder="ex. simple_math"
+              name={`${item}.name` as FieldPath<T>}
+              control={control}
+              variant="fixed-floating"
+            />
+            <ControllerInput
+              label="Contract Library Address"
+              isRequired
+              rules={{
+                required: "",
+              }}
+              placeholder={`ex. ${truncate(exampleContractAddress)}`}
+              name={`${item}.address` as FieldPath<T>}
+              control={control}
+              variant="fixed-floating"
+            />
+            <Button
+              variant="outline-gray"
+              w={14}
+              h={14}
+              isDisabled={fields.length === 1}
+              onClick={() => remove(index)}
+            >
+              <CustomIcon name="delete" />
+            </Button>
+          </Grid>
+        ))}
+        <Button
+          onClick={() =>
+            append({ name: "", address: "" } as FieldArray<T, ArrayPath<T>>)
+          }
+          variant="ghost-primary"
+          p="unset"
+          size="md"
+          w="fit-content"
+          display="block"
+        >
+          <CustomIcon name="plus" boxSize={3} />
+          Add library
+        </Button>
+      </Stack>
     </Stack>
   );
 };

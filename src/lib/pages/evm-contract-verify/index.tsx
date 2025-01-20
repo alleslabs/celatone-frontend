@@ -160,6 +160,9 @@ export const EvmContractVerify = () => {
                           : "init",
                       }}
                       error={errors.contractAddress?.message}
+                      rules={{
+                        required: "",
+                      }}
                     />
                   </GridItem>
                   <GridItem colSpan={1} colStart={1}>

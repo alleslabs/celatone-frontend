@@ -22,11 +22,11 @@ export const EvmVersionToTarget = <T extends FieldValues>({
     field: { onChange },
   } = useController({
     control,
-    name,
+    name: `${name}.evmVersion` as FieldPath<T>,
   });
   const evmVersion = useWatch({
     control,
-    name,
+    name: `${name}.evmVersion` as FieldPath<T>,
   });
 
   const evmVersionOptions = useMemo(

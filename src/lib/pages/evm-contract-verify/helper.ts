@@ -12,11 +12,16 @@ const OPTIMIZER_CONFIG_DEFAULT_VALUE = {
   runs: 200,
 };
 
-const EVM_VERSION_DEFAULT_VALUE = "";
+const EVM_VERSION_DEFAULT_VALUE = "default";
 
 const CONTRACT_LIBRARIES_DEFAULT_VALUE = {
   enabled: false,
-  value: [],
+  value: [
+    {
+      name: "",
+      address: zHexAddr20.parse(""),
+    },
+  ],
 };
 
 export const getEvmContractVerifyFormDefaultValue = (
@@ -44,12 +49,6 @@ export const getEvmContractVerifyFormDefaultValue = (
     },
     solidityJsonInput: {
       constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
-    },
-    solidityHardhat: {
-      //
-    },
-    solidityFoundry: {
-      //
     },
     vyperUploadFile: {
       constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,

@@ -41,9 +41,9 @@ export const EvmContractVerifyForms = ({
     case VerifyOptions.SolidityJsonInput:
       return <EvmContractVerifySolidityJsonInput control={control} />;
     case VerifyOptions.SolidityHardhat:
-      return <EvmContractVerifySolidityHardhat />;
+      return <EvmContractVerifySolidityHardhat control={control} />;
     case VerifyOptions.SolidityFoundry:
-      return <EvmContractVerifySolidityFoundry />;
+      return <EvmContractVerifySolidityFoundry control={control} />;
     default:
       return null;
   }

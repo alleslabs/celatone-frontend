@@ -5,6 +5,7 @@ import { ControllerTextarea } from "lib/components/forms";
 import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
 import { OptimizerConfiguration } from "../OptimizerConfiguration";
+import { ContractLibraries } from "../ContractLibraries";
 
 interface EvmContractVerifySolidityContractCodeProps {
   control: Control<EvmContractVerifyForm>;
@@ -46,6 +47,10 @@ export const EvmContractVerifySolidityContractCode = ({
         name="verifyForm.solidityContractCode"
       />
       <OptimizerConfiguration<EvmContractVerifyForm>
+        control={control}
+        name="verifyForm.solidityContractCode"
+      />
+      <ContractLibraries<EvmContractVerifyForm>
         control={control}
         name="verifyForm.solidityContractCode"
       />

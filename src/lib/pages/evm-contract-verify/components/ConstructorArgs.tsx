@@ -22,12 +22,12 @@ export const ConstructorArgs = <T extends FieldValues>({
     fieldState: { error },
   } = useController({
     control,
-    name,
+    name: `${name}.constructorArgs` as FieldPath<T>,
   });
 
   const constructorArgs = useWatch({
     control,
-    name,
+    name: `${name}.constructorArgs` as FieldPath<T>,
   });
 
   return (
@@ -54,11 +54,11 @@ export const ConstructorArgs = <T extends FieldValues>({
         px={3}
         bgColor="gray.900"
         borderRadius="md"
-        display={constructorArgs.value ? "block" : "none"}
+        display={constructorArgs.enabled ? "block" : "none"}
       >
         <ControllerTextarea
           backgroundColor="gray.900"
-          name={`${name}.value` as FieldPath<T>}
+          name={`${name}.constructorArgs.value` as FieldPath<T>}
           control={control}
           isRequired
           label="Constructor Arguments"

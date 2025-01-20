@@ -123,6 +123,7 @@ export const ControllerInput = <T extends FieldValues>({
         <FormLabel
           className={`${size}-label`}
           bgColor={labelBgColor}
+          whiteSpace="nowrap"
           requiredIndicator={
             <Text as="span" color="error.main" pl={1}>
               * (Required)
