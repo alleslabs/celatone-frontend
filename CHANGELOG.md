@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1201](https://github.com/alleslabs/celatone-frontend/pull/1201) Add EVM contract verification with upload files
 - [#1200](https://github.com/alleslabs/celatone-frontend/pull/1200) Add EVM contract verification with contract code
 - [#1199](https://github.com/alleslabs/celatone-frontend/pull/1199) Add EVM contract verification with Hardhat
 - [#1198](https://github.com/alleslabs/celatone-frontend/pull/1198) Add EVM contract verification with Foundry
