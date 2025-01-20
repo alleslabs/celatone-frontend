@@ -28,9 +28,9 @@ const EvmContractVerifySolidityOptions = ({
     case VerificationOptions.JsonInput:
       return <EvmContractVerifySolidityJsonInput control={control} />;
     case VerificationOptions.Hardhat:
-      return <EvmContractVerifySolidityHardhat />;
+      return <EvmContractVerifySolidityHardhat control={control} />;
     case VerificationOptions.Foundry:
-      return <EvmContractVerifySolidityFoundry />;
+      return <EvmContractVerifySolidityFoundry control={control} />;
     default:
       return null;
   }
