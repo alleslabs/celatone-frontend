@@ -36,9 +36,11 @@ export const getEvmContractVerifyFormDefaultValue = (
   option: "",
   verifyForm: {
     solidityUploadFiles: {
+      files: [],
       constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
       optimizerConfig: OPTIMIZER_CONFIG_DEFAULT_VALUE,
       evmVersion: EVM_VERSION_DEFAULT_VALUE,
+      contractLibraries: CONTRACT_LIBRARIES_DEFAULT_VALUE,
     },
     solidityContractCode: {
       contractCode: "",
