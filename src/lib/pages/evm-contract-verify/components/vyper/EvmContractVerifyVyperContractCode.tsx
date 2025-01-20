@@ -16,14 +16,14 @@ export const EvmContractVerifyVyperContractCode = ({
     fieldState: { error: contractNameError },
   } = useController({
     control,
-    name: "verifyForm.form.contractName",
+    name: "verifyForm.vyperContractCode.contractName",
   });
 
   const {
     fieldState: { error: contractCodeError },
   } = useController({
     control,
-    name: "verifyForm.form.contractCode",
+    name: "verifyForm.vyperContractCode.contractCode",
   });
 
   return (
@@ -35,7 +35,7 @@ export const EvmContractVerifyVyperContractCode = ({
         <ControllerInput
           label="Contract Name"
           placeholder="Provide contract name"
-          name="verifyForm.form.contractName"
+          name="verifyForm.vyperContractCode.contractName"
           isRequired
           control={control}
           variant="fixed-floating"
@@ -44,7 +44,7 @@ export const EvmContractVerifyVyperContractCode = ({
         <ControllerTextarea
           label="Contract Code"
           placeholder="Provide contract source code here"
-          name="verifyForm.form.contractCode"
+          name="verifyForm.vyperContractCode.contractCode"
           isRequired
           control={control}
           variant="fixed-floating"
@@ -52,8 +52,14 @@ export const EvmContractVerifyVyperContractCode = ({
           height="400px"
         />
       </Stack>
-      <ConstructorArgs control={control} />
-      <EvmVersionToTarget control={control} />
+      <ConstructorArgs<EvmContractVerifyForm>
+        control={control}
+        name="verifyForm.vyperContractCode"
+      />
+      <EvmVersionToTarget<EvmContractVerifyForm>
+        control={control}
+        name="verifyForm.vyperContractCode"
+      />
     </Stack>
   );
 };

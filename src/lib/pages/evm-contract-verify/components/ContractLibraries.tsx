@@ -8,15 +8,15 @@ import {
 } from "react-hook-form";
 import { ControllerTextarea } from "lib/components/forms";
 
-interface ConstructorArgsProps<T extends FieldValues> {
+interface ContractLibrariesProps<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
 }
 
-export const ConstructorArgs = <T extends FieldValues>({
+export const ContractLibraries = <T extends FieldValues>({
   control,
   name,
-}: ConstructorArgsProps<T>) => {
+}: ContractLibrariesProps<T>) => {
   const {
     field,
     fieldState: { error },
@@ -25,7 +25,7 @@ export const ConstructorArgs = <T extends FieldValues>({
     name,
   });
 
-  const constructorArgs = useWatch({
+  const contractLibraries = useWatch({
     control,
     name,
   });
@@ -42,7 +42,7 @@ export const ConstructorArgs = <T extends FieldValues>({
       </Stack>
       <Checkbox
         p={2}
-        isChecked={constructorArgs.enabled}
+        isChecked={contractLibraries.enabled}
         onChange={(e) =>
           field.onChange({ ...field.value, enabled: e.target.checked })
         }
@@ -54,7 +54,7 @@ export const ConstructorArgs = <T extends FieldValues>({
         px={3}
         bgColor="gray.900"
         borderRadius="md"
-        display={constructorArgs.value ? "block" : "none"}
+        display={contractLibraries.value ? "block" : "none"}
       >
         <ControllerTextarea
           backgroundColor="gray.900"

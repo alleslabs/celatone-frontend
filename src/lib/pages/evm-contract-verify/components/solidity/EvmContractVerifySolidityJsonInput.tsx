@@ -16,7 +16,7 @@ export const EvmContractVerifySolidityJsonInput = ({
     field: { value, onChange },
   } = useController({
     control,
-    name: "verifyForm.form.jsonFile",
+    name: "verifyForm.solidityJsonInput.jsonFile",
   });
 
   return (
@@ -34,7 +34,10 @@ export const EvmContractVerifySolidityJsonInput = ({
           />
         )}
       </Stack>
-      <ConstructorArgs control={control} />
+      <ConstructorArgs<EvmContractVerifyForm>
+        control={control}
+        name="verifyForm.solidityJsonInput"
+      />
     </Stack>
   );
 };

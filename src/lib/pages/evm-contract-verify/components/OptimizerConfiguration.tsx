@@ -1,23 +1,30 @@
 import { Checkbox, Flex, Heading, Stack, Text } from "@chakra-ui/react";
-import { Control, useController, useWatch } from "react-hook-form";
-import { EvmContractVerifyForm } from "../types";
+import {
+  Control,
+  FieldPath,
+  FieldValues,
+  useController,
+  useWatch,
+} from "react-hook-form";
 import { ControllerInput } from "lib/components/forms";
 
-interface OptimizerConfigurationProps {
-  control: Control<EvmContractVerifyForm>;
+interface OptimizerConfigurationProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
 }
 
-export const OptimizerConfiguration = ({
+export const OptimizerConfiguration = <T extends FieldValues>({
   control,
-}: OptimizerConfigurationProps) => {
+  name,
+}: OptimizerConfigurationProps<T>) => {
   const { field } = useController({
     control,
-    name: "verifyForm.form.optimizerConfig",
+    name,
   });
 
-  const enabled = useWatch({
+  const { enabled } = useWatch({
     control,
-    name: "verifyForm.form.optimizerConfig.enabled",
+    name,
   });
 
   return (
@@ -44,7 +51,7 @@ export const OptimizerConfiguration = ({
           <ControllerInput
             width={125}
             type="number"
-            name="verifyForm.form.optimizerConfig.runs"
+            name={`${name}.runs` as FieldPath<T>}
             isDisabled={!enabled}
             control={control}
             size="md"
