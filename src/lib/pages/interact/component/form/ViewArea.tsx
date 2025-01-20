@@ -12,7 +12,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { AbiForm } from "lib/components/abi";
+import { AbiForm } from "lib/components/move-abi";
 import { SubmitButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";

@@ -1,11 +1,11 @@
 import type { TxDataJsonRpc } from "lib/services/types";
-import { big, EvmMethodId, EvmMethodName } from "lib/types";
 import type { Coin, HexAddr20, Option } from "lib/types";
+import { big, EvmMethodId, EvmMethodName } from "lib/types";
 
+import { keccak256 } from "@initia/initia.js";
+import { Interface, JsonFragment } from "ethers";
 import { toChecksumAddress } from "./address";
 import { hexToBig } from "./number";
-import { Interface, JsonFragment } from "ethers";
-import { keccak256 } from "@initia/initia.js";
 
 export const getEvmMethod = (txInput: string) => {
   if (txInput === EvmMethodId.Transfer) return EvmMethodName.Transfer;
@@ -107,7 +107,11 @@ export const encodeEvmFunctionData = (
   values: unknown[]
 ) => {
   const iface = new Interface([abiSection]);
-  return iface.encodeFunctionData(abiSection.name ?? "", values);
+  try {
+    return iface.encodeFunctionData(abiSection.name ?? "", values);
+  } catch {
+    return undefined;
+  }
 };
 
 export const decodeEvmFunctionResult = (
@@ -115,5 +119,9 @@ export const decodeEvmFunctionResult = (
   data: string
 ) => {
   const iface = new Interface([abiSection]);
-  return iface.decodeFunctionResult(abiSection.name ?? "", data);
+  try {
+    return iface.decodeFunctionResult(abiSection.name ?? "", data);
+  } catch {
+    return undefined;
+  }
 };

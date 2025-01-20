@@ -47,7 +47,7 @@ const isHexAddress = (address: string, length: number): boolean => {
   return isHex(strip);
 };
 
-const isHexFixedBytes = (address: string, length: number): boolean => {
+export const isHexFixedBytes = (address: string, length: number): boolean => {
   const regex = new RegExp(`^0x[a-fA-F0-9]{${length}}$`);
   if (!regex.test(address)) {
     return false;
