@@ -103,8 +103,8 @@ const zEvmContractVerifyBase = z.object({
   }),
   compilerVersion: z.string(),
   licenseType: z.string(),
-  language: z.union([z.literal(""), z.nativeEnum(EvmProgrammingLanguage)]),
-  option: z.union([z.literal(""), z.nativeEnum(VerifyOptions)]),
+  language: z.nativeEnum(EvmProgrammingLanguage).optional(),
+  option: z.nativeEnum(VerifyOptions).optional(),
 });
 
 export const zEvmContractVerifyForm = zEvmContractVerifyBase.merge(

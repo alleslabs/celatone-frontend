@@ -32,8 +32,8 @@ export const getEvmContractVerifyFormDefaultValue = (
     : zHexAddr20.parse(""),
   compilerVersion: "",
   licenseType: "",
-  language: "",
-  option: "",
+  language: undefined,
+  option: undefined,
   verifyForm: {
     solidityUploadFiles: {
       constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
