@@ -7,6 +7,7 @@ import { OptimizerConfiguration } from "../OptimizerConfiguration";
 import { ContractLibraries } from "../ContractLibraries";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
+import { Fragment } from "react";
 
 interface EvmContractVerifySolidityUploadFilesProps {
   control: Control<EvmContractVerifyForm>;
@@ -27,7 +28,9 @@ export const EvmContractVerifySolidityUploadFiles = ({
           Upload File(s)
         </Heading>
         {fields.map((field, index) => (
-          <UploadCard file={field.file} deleteFile={() => remove(index)} />
+          <Fragment key={field.id}>
+            <UploadCard file={field.file} deleteFile={() => remove(index)} />
+          </Fragment>
         ))}
         <DropZone
           setFiles={(files) => append(files.map((file) => ({ file })))}
