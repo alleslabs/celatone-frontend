@@ -27,7 +27,7 @@ export const FormFields = <T extends FieldValues>({
 
   const feeDenom = evmParamsData?.params.feeDenom;
   const feeLabel = feeDenom
-    ? getTokenLabel(feeDenom, assetInfos?.[feeDenom].symbol)
+    ? getTokenLabel(feeDenom, assetInfos?.[feeDenom]?.symbol)
     : undefined;
 
   return (

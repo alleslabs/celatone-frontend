@@ -24,7 +24,7 @@ export const EvmAbiForm = ({
   const defaultValues = useMemo(
     () => initialData ?? getComponentsDefaultValues(types),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(initialData)]
+    [JSON.stringify(initialData), types]
   );
 
   const { control, reset, watch } = useForm<{
