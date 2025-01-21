@@ -28,7 +28,7 @@ export const EvmContractVerifySolidityFoundry = ({
   --verifier-url ${verifierUrl} \\
   --constructor-args <constructor-args> \\
   ${contractAddress || "<contract-address>"} \\
-  [contractFile]:[contractName]`;
+  <contractFile>:<contractName>`;
   }, [jsonRpc, contractAddress]);
 
   return (

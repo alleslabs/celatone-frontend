@@ -1,23 +1,32 @@
 import { Grid, Heading, Stack, Text } from "@chakra-ui/react";
 import { SelectInput } from "lib/components/forms";
 import { useMemo } from "react";
-import { Control, useController, useWatch } from "react-hook-form";
-import { EvmContractVerifyForm } from "../types";
+import {
+  Control,
+  FieldPath,
+  FieldValues,
+  useController,
+  useWatch,
+} from "react-hook-form";
 
-interface EvmVersionToTargetProps {
-  control: Control<EvmContractVerifyForm>;
+interface EvmVersionToTargetProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
 }
 
-export const EvmVersionToTarget = ({ control }: EvmVersionToTargetProps) => {
+export const EvmVersionToTarget = <T extends FieldValues>({
+  control,
+  name,
+}: EvmVersionToTargetProps<T>) => {
   const {
     field: { onChange },
   } = useController({
     control,
-    name: "verifyForm.form.evmVersion",
+    name: `${name}.evmVersion` as FieldPath<T>,
   });
   const evmVersion = useWatch({
     control,
-    name: "verifyForm.form.evmVersion",
+    name: `${name}.evmVersion` as FieldPath<T>,
   });
 
   const evmVersionOptions = useMemo(

@@ -1,75 +1,69 @@
-import { EvmProgrammingLanguage, VerificationOptions } from "./types";
+import { zHexAddr20 } from "lib/types";
+import { EvmContractVerifyForm } from "./types";
+import { isHex20Bytes } from "lib/utils";
 
-export const getVerifyFormInitialValue = (
-  language: EvmProgrammingLanguage,
-  verificationOption: VerificationOptions
-) => {
-  const constructorArgs = {
-    enabled: false,
-    value: "",
-  };
-
-  const optimizerConfig = {
-    enabled: false,
-    runs: 200,
-  };
-
-  const evmVersionConfig = "default";
-
-  if (language === EvmProgrammingLanguage.Solidity) {
-    switch (verificationOption) {
-      case VerificationOptions.UploadFiles:
-        return {
-          option: verificationOption,
-          constructorArgs,
-          optimizerConfig,
-          evmVersion: evmVersionConfig,
-        };
-      case VerificationOptions.ContractCode:
-        return {
-          option: verificationOption,
-          constructorArgs,
-          optimizerConfig,
-        };
-      case VerificationOptions.JsonInput:
-        return {
-          option: verificationOption,
-          constructorArgs,
-        };
-      case VerificationOptions.Hardhat:
-      case VerificationOptions.Foundry:
-        return {
-          option: verificationOption,
-        };
-      default:
-        throw new Error("Invalid verification option for Solidity");
-    }
-  } else if (language === EvmProgrammingLanguage.Vyper) {
-    switch (verificationOption) {
-      case VerificationOptions.UploadFile:
-        return {
-          option: verificationOption,
-          file: undefined,
-          constructorArgs,
-          evmVersion: evmVersionConfig,
-        };
-      case VerificationOptions.ContractCode:
-        return {
-          option: verificationOption,
-          contractName: "",
-          contractCode: "",
-          constructorArgs,
-          evmVersion: evmVersionConfig,
-        };
-      case VerificationOptions.JsonInput:
-        return {
-          option: verificationOption,
-          constructorArgs,
-        };
-      default:
-        throw new Error("Invalid verification option for Vyper");
-    }
-  }
-
-  throw new Error("Invalid language (getVerifyFormInitialValue)");
+const CONSTRUCTOR_ARGS_DEFAULT_VALUE = {
+  enabled: false,
+  value: "",
 };
+
+const OPTIMIZER_CONFIG_DEFAULT_VALUE = {
+  enabled: false,
+  runs: 200,
+};
+
+const EVM_VERSION_DEFAULT_VALUE = "default";
+
+const CONTRACT_LIBRARIES_DEFAULT_VALUE = {
+  enabled: false,
+  value: [
+    {
+      name: "",
+      address: zHexAddr20.parse(""),
+    },
+  ],
+};
+
+export const getEvmContractVerifyFormDefaultValue = (
+  contractAddressQueryParam: string
+): EvmContractVerifyForm => ({
+  contractAddress: isHex20Bytes(contractAddressQueryParam)
+    ? zHexAddr20.parse(contractAddressQueryParam)
+    : zHexAddr20.parse(""),
+  compilerVersion: "",
+  licenseType: "",
+  language: undefined,
+  option: undefined,
+  verifyForm: {
+    solidityUploadFiles: {
+      files: [],
+      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
+      optimizerConfig: OPTIMIZER_CONFIG_DEFAULT_VALUE,
+      evmVersion: EVM_VERSION_DEFAULT_VALUE,
+      contractLibraries: CONTRACT_LIBRARIES_DEFAULT_VALUE,
+    },
+    solidityContractCode: {
+      contractCode: "",
+      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
+      evmVersion: EVM_VERSION_DEFAULT_VALUE,
+      optimizerConfig: OPTIMIZER_CONFIG_DEFAULT_VALUE,
+      contractLibraries: CONTRACT_LIBRARIES_DEFAULT_VALUE,
+    },
+    solidityJsonInput: {
+      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
+    },
+    vyperUploadFile: {
+      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
+      evmVersion: EVM_VERSION_DEFAULT_VALUE,
+    },
+    vyperContractCode: {
+      contractName: "",
+      contractCode: "",
+      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
+      evmVersion: EVM_VERSION_DEFAULT_VALUE,
+    },
+    vyperJsonInput: {
+      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
+    },
+  },
+});
