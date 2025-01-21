@@ -24,21 +24,38 @@ import {
   EvmProgrammingLanguage,
   VerifyOptions,
   zEvmContractVerifyForm,
+  zEvmContractVerifyQueryParams,
 } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NoMobile } from "lib/components/modal";
 import { isHex20Bytes, truncate } from "lib/utils";
 import { EvmContractVerifyOptions } from "./components/EvmContractVerifyOptions";
 import { EvmContractVerifyForms } from "./components/EvmContractVerifyForms";
-import { getEvmContractVerifyFormDefaultValue } from "./helper";
+import {
+  formatEvmOptions,
+  getEvmContractVerifyFormDefaultValue,
+  getLicenseTypeOptions,
+} from "./helper";
 import { HarthatInfoAccordion } from "./components/HardhatInfoAccordion";
 import { FoundryInfoAccordion } from "./components/FoundryInfoAccordion";
+import { ErrorFetching, InvalidState } from "lib/components/state";
+import { HexAddr20 } from "lib/types";
+import { useEvmVerifyConfig } from "lib/services/verification/evm";
+import { Loading } from "lib/components/Loading";
+import { EvmVerifyConfig } from "lib/services/types";
 
-export const EvmContractVerify = () => {
+interface EvmContractVerifyBodyProps {
+  contractAddress: HexAddr20;
+  evmVerifyConfig: EvmVerifyConfig;
+}
+
+export const EvmContractVerifyBody = ({
+  contractAddress: contractAddressQueryParam,
+  evmVerifyConfig,
+}: EvmContractVerifyBodyProps) => {
   useEvmConfig({ shouldRedirect: true });
   const isMobile = useMobile();
   const router = useRouter();
-  const contractAddressQueryParam = router.query.contractAddress ?? "";
   const { evmContract: exampleContractAddress } = useExampleAddresses();
 
   useEffect(() => {
@@ -56,7 +73,7 @@ export const EvmContractVerify = () => {
     mode: "all",
     reValidateMode: "onChange",
     defaultValues: getEvmContractVerifyFormDefaultValue(
-      String(contractAddressQueryParam)
+      contractAddressQueryParam
     ),
   });
   const { licenseType, contractAddress, language, compilerVersion, option } =
@@ -67,23 +84,15 @@ export const EvmContractVerify = () => {
     () => alert("Submit!")
   );
 
-  const licenseTypeOptions = useMemo(
-    () => [
-      {
-        label: "1. No License (None)",
-        value: "no-license",
-      },
-      {
-        label: "2. The Unlicense (Unlicense)",
-        value: "the-unlicense",
-      },
-      {
-        label: "3. MIT License (MIT)",
-        value: "mit",
-      },
-    ],
-    []
-  );
+  const { licenseTypeOptions, compilerVersionOptions } = useMemo(() => {
+    return {
+      licenseTypeOptions: getLicenseTypeOptions(evmVerifyConfig),
+      compilerVersionOptions:
+        language === EvmProgrammingLanguage.Solidity
+          ? formatEvmOptions(evmVerifyConfig.solidity_compiler_versions)
+          : formatEvmOptions(evmVerifyConfig.vyper_compiler_versions),
+    };
+  }, [evmVerifyConfig, language]);
 
   const programmingLangaugeOptions = useMemo(
     () => [
@@ -94,25 +103,6 @@ export const EvmContractVerify = () => {
       {
         label: "Vyper",
         value: EvmProgrammingLanguage.Vyper,
-      },
-    ],
-    []
-  );
-
-  // TODO: fetch from API
-  const compilerVersionOptions = useMemo(
-    () => [
-      {
-        label: "0.8.0",
-        value: "0.8.0",
-      },
-      {
-        label: "0.7.0",
-        value: "0.7.0",
-      },
-      {
-        label: "0.6.0",
-        value: "0.6.0",
       },
     ],
     []
@@ -251,7 +241,10 @@ export const EvmContractVerify = () => {
                     <Stack gap={12}>
                       <EvmContractVerifyOptions control={control} />
                       <Divider />
-                      <EvmContractVerifyForms control={control} />
+                      <EvmContractVerifyForms
+                        control={control}
+                        evmVerifyConfig={evmVerifyConfig}
+                      />
                     </Stack>
                     <GridItem maxHeight={0}>
                       {option === VerifyOptions.SolidityHardhat && (
@@ -277,4 +270,24 @@ export const EvmContractVerify = () => {
       )}
     </>
   );
+};
+
+export const EvmContractVerify = () => {
+  useEvmConfig({ shouldRedirect: true });
+  const router = useRouter();
+  const { data: evmVerifyConfig, isLoading } = useEvmVerifyConfig();
+
+  if (isLoading) return <Loading />;
+  if (!evmVerifyConfig) return <ErrorFetching dataName="EVM verify config" />;
+
+  const validated = zEvmContractVerifyQueryParams.safeParse(router.query);
+
+  if (validated.success)
+    return (
+      <EvmContractVerifyBody
+        evmVerifyConfig={evmVerifyConfig}
+        {...validated.data}
+      />
+    );
+  return <InvalidState title="Invalid contract address" />;
 };

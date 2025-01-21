@@ -5,13 +5,16 @@ import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
+import { EvmVerifyConfig } from "lib/services/types";
 
 interface EvmContractVerifyVyperUploadFileProps {
   control: Control<EvmContractVerifyForm>;
+  evmVerifyConfig: EvmVerifyConfig;
 }
 
 export const EvmContractVerifyVyperUploadFile = ({
   control,
+  evmVerifyConfig,
 }: EvmContractVerifyVyperUploadFileProps) => {
   const {
     field: { value, onChange },
@@ -42,6 +45,7 @@ export const EvmContractVerifyVyperUploadFile = ({
       <EvmVersionToTarget<EvmContractVerifyForm>
         control={control}
         name="verifyForm.vyperUploadFile"
+        evmVerifyConfig={evmVerifyConfig}
       />
     </Stack>
   );

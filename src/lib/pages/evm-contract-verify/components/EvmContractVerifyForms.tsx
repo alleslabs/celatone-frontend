@@ -12,13 +12,16 @@ import {
   EvmContractVerifySolidityJsonInput,
   EvmContractVerifySolidityUploadFiles,
 } from "./solidity";
+import { EvmVerifyConfig } from "lib/services/types";
 
 interface EvmContractVerifyFormsProps {
   control: Control<EvmContractVerifyForm>;
+  evmVerifyConfig: EvmVerifyConfig;
 }
 
 export const EvmContractVerifyForms = ({
   control,
+  evmVerifyConfig,
 }: EvmContractVerifyFormsProps) => {
   const verifyOption = useWatch({
     control,
@@ -26,24 +29,44 @@ export const EvmContractVerifyForms = ({
   });
 
   switch (verifyOption) {
-    // Vyper
-    case VerifyOptions.VyperUploadFile:
-      return <EvmContractVerifyVyperUploadFile control={control} />;
-    case VerifyOptions.VyperContractCode:
-      return <EvmContractVerifyVyperContractCode control={control} />;
-    case VerifyOptions.VyperJsonInput:
-      return <EvmContractVerifyVyperJsonInput control={control} />;
     // Solidity
     case VerifyOptions.SolidityUploadFiles:
-      return <EvmContractVerifySolidityUploadFiles control={control} />;
+      return (
+        <EvmContractVerifySolidityUploadFiles
+          control={control}
+          evmVerifyConfig={evmVerifyConfig}
+        />
+      );
     case VerifyOptions.SolidityContractCode:
-      return <EvmContractVerifySolidityContractCode control={control} />;
+      return (
+        <EvmContractVerifySolidityContractCode
+          control={control}
+          evmVerifyConfig={evmVerifyConfig}
+        />
+      );
     case VerifyOptions.SolidityJsonInput:
       return <EvmContractVerifySolidityJsonInput control={control} />;
     case VerifyOptions.SolidityHardhat:
       return <EvmContractVerifySolidityHardhat control={control} />;
     case VerifyOptions.SolidityFoundry:
       return <EvmContractVerifySolidityFoundry control={control} />;
+    // Vyper
+    case VerifyOptions.VyperUploadFile:
+      return (
+        <EvmContractVerifyVyperUploadFile
+          control={control}
+          evmVerifyConfig={evmVerifyConfig}
+        />
+      );
+    case VerifyOptions.VyperContractCode:
+      return (
+        <EvmContractVerifyVyperContractCode
+          control={control}
+          evmVerifyConfig={evmVerifyConfig}
+        />
+      );
+    case VerifyOptions.VyperJsonInput:
+      return <EvmContractVerifyVyperJsonInput control={control} />;
     default:
       return null;
   }
