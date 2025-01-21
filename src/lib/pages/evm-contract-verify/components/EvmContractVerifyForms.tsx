@@ -35,7 +35,7 @@ export const EvmContractVerifyForms = ({
       return <EvmContractVerifyVyperJsonInput control={control} />;
     // Solidity
     case VerifyOptions.SolidityUploadFiles:
-      return <EvmContractVerifySolidityUploadFiles />;
+      return <EvmContractVerifySolidityUploadFiles control={control} />;
     case VerifyOptions.SolidityContractCode:
       return <EvmContractVerifySolidityContractCode control={control} />;
     case VerifyOptions.SolidityJsonInput:

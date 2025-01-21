@@ -48,9 +48,15 @@ const zContractLibraries = z.object({
 
 // MARK - Solidity
 const zEvmContractVerifySolidityOptionUploadFilesForm = z.object({
+  files: z.array(
+    z.object({
+      file: z.instanceof(File),
+    })
+  ),
   constructorArgs: zConstructorArgs,
   optimizerConfig: zOptimizerConfig,
   evmVersion: zEvmVersion,
+  contractLibraries: zContractLibraries,
 });
 
 const zEvmContractVerifySolidityOptionContractCodeForm = z.object({

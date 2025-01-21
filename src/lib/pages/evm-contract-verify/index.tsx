@@ -31,6 +31,8 @@ import { isHex20Bytes, truncate } from "lib/utils";
 import { EvmContractVerifyOptions } from "./components/EvmContractVerifyOptions";
 import { EvmContractVerifyForms } from "./components/EvmContractVerifyForms";
 import { getEvmContractVerifyFormDefaultValue } from "./helper";
+import { HarthatInfoAccordion } from "./components/HardhatInfoAccordion";
+import { FoundryInfoAccordion } from "./components/FoundryInfoAccordion";
 
 export const EvmContractVerify = () => {
   useEvmConfig({ shouldRedirect: true });
@@ -57,7 +59,8 @@ export const EvmContractVerify = () => {
       String(contractAddressQueryParam)
     ),
   });
-  const { licenseType, contractAddress, language, compilerVersion } = watch();
+  const { licenseType, contractAddress, language, compilerVersion, option } =
+    watch();
 
   const { handleNext, handlePrevious, hasNext, hasPrevious } = useStepper(
     1,
@@ -239,12 +242,26 @@ export const EvmContractVerify = () => {
                 </Stack>
               </GridItem>
               {language && (
-                <GridItem colSpan={1} colStart={1}>
-                  <Stack gap={12}>
-                    <EvmContractVerifyOptions control={control} />
-                    <Divider />
-                    <EvmContractVerifyForms control={control} />
-                  </Stack>
+                <GridItem colSpan={2} colStart={1}>
+                  <Grid
+                    templateColumns="6fr 4fr"
+                    columnGap="32px"
+                    rowGap="24px"
+                  >
+                    <Stack gap={12}>
+                      <EvmContractVerifyOptions control={control} />
+                      <Divider />
+                      <EvmContractVerifyForms control={control} />
+                    </Stack>
+                    <GridItem maxHeight={0}>
+                      {option === VerifyOptions.SolidityHardhat && (
+                        <HarthatInfoAccordion />
+                      )}
+                      {option === VerifyOptions.SolidityFoundry && (
+                        <FoundryInfoAccordion />
+                      )}
+                    </GridItem>
+                  </Grid>
                 </GridItem>
               )}
             </Grid>
