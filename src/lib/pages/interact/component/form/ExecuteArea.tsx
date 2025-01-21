@@ -11,7 +11,7 @@ import {
   useExecuteModuleTx,
   useFabricateFee,
 } from "lib/app-provider";
-import { AbiForm } from "lib/components/abi";
+import { AbiForm } from "lib/components/move-abi";
 import { SubmitButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
