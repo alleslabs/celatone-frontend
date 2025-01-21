@@ -7,15 +7,23 @@ export enum EvmProgrammingLanguage {
   Vyper = "vyper",
 }
 
-export enum VerificationOptions {
-  UploadFile = "upload-file",
-  UploadFiles = "upload-files",
-  ContractCode = "contract-code",
-  JsonInput = "json-input",
-  Hardhat = "hardhat",
-  Foundry = "foundry",
+export enum VerifyOptions {
+  VyperUploadFile = "vyper-upload-file",
+  VyperContractCode = "vyper-contract-code",
+  VyperJsonInput = "vyper-json-input",
+  SolidityUploadFiles = "solidity-upload-files",
+  SolidityContractCode = "solidity-contract-code",
+  SolidityJsonInput = "solidity-json-input",
+  SolidityHardhat = "solidity-hardhat",
+  SolidityFoundry = "solidity-foundry",
 }
 
+// MARK - Query Params
+export const zEvmContractVerifyQueryParams = z.object({
+  contractAddress: zHexAddr20,
+});
+
+// MARK - Shared Components
 const zOptimizerConfig = z.object({
   enabled: z.boolean(),
   runs: z.number().nonnegative(),
@@ -23,84 +31,62 @@ const zOptimizerConfig = z.object({
 
 const zConstructorArgs = z.object({
   enabled: z.boolean(),
-  value: z.string().refine((val) => val !== "", {
-    message: " ",
-  }),
+  value: z.string(),
 });
 
 const zEvmVersion = z.string();
 
-// MARK - Query Params
-export const zEvmContractVerifyQueryParams = z.object({
-  contractAddress: zHexAddr20,
+const zContractLibrary = z.object({
+  name: z.string(),
+  address: zHexAddr20,
+});
+
+const zContractLibraries = z.object({
+  enabled: z.boolean(),
+  value: z.array(zContractLibrary),
 });
 
 // MARK - Solidity
 const zEvmContractVerifySolidityOptionUploadFilesForm = z.object({
-  option: z.literal(VerificationOptions.UploadFiles),
   constructorArgs: zConstructorArgs,
   optimizerConfig: zOptimizerConfig,
   evmVersion: zEvmVersion,
 });
 
 const zEvmContractVerifySolidityOptionContractCodeForm = z.object({
-  option: z.literal(VerificationOptions.ContractCode),
+  contractCode: z.string(),
   constructorArgs: zConstructorArgs,
+  evmVersion: zEvmVersion,
   optimizerConfig: zOptimizerConfig,
+  contractLibraries: zContractLibraries,
 });
 
 const zEvmContractVerifySolidityOptionJsonInputForm = z.object({
-  option: z.literal(VerificationOptions.JsonInput),
   jsonFile: z.instanceof(File).optional(),
   constructorArgs: zConstructorArgs,
 });
 
-const zEvmContractVerifySolidityOptionHardhatForm = z.object({
-  option: z.literal(VerificationOptions.Hardhat),
-});
-
-const zEvmContractVerifySolidityOptionFoundryForm = z.object({
-  option: z.literal(VerificationOptions.Foundry),
-});
-
 // MARK - Vyper
 const zEvmContractVerifyVyperOptionUploadFileForm = z.object({
-  option: z.literal(VerificationOptions.UploadFile),
   file: z.instanceof(File).optional(),
   constructorArgs: zConstructorArgs,
   evmVersion: zEvmVersion,
 });
 
 const zEvmContractVerifyVyperOptionContractCodeForm = z.object({
-  option: z.literal(VerificationOptions.ContractCode),
-  contractName: z.string().refine((val) => val !== "", { message: " " }),
-  contractCode: z.string().refine((val) => val !== "", { message: " " }),
+  contractName: z.string(),
+  contractCode: z.string(),
   constructorArgs: zConstructorArgs,
   evmVersion: zEvmVersion,
 });
 
 const zEvmContractVerifyVyperOptionJsonInputForm = z.object({
-  option: z.literal(VerificationOptions.JsonInput),
   jsonFile: z.instanceof(File).optional(),
   constructorArgs: zConstructorArgs,
 });
 
-// MARK - Union of options by language
-const zEvmContractVerifySolidityForm = z.discriminatedUnion("option", [
-  zEvmContractVerifySolidityOptionUploadFilesForm,
-  zEvmContractVerifySolidityOptionContractCodeForm,
-  zEvmContractVerifySolidityOptionJsonInputForm,
-  zEvmContractVerifySolidityOptionHardhatForm,
-  zEvmContractVerifySolidityOptionFoundryForm,
-]);
-
-const zEvmContractVerifyVyperForm = z.discriminatedUnion("option", [
-  zEvmContractVerifyVyperOptionUploadFileForm,
-  zEvmContractVerifyVyperOptionContractCodeForm,
-  zEvmContractVerifyVyperOptionJsonInputForm,
-]);
-
-const zEvmContractAddressAndLicenseForm = z.object({
+// MARK - Base
+const zEvmContractVerifyBase = z.object({
   // TODO: refactor later
   contractAddress: zHexAddr20.superRefine((val, ctx) => {
     if (val === "")
@@ -115,24 +101,22 @@ const zEvmContractAddressAndLicenseForm = z.object({
         message: "Invalid address",
       });
   }),
-  compilerVersion: z.string().refine((val) => val !== ""),
-  licenseType: z.string().refine((val) => val !== ""),
+  compilerVersion: z.string(),
+  licenseType: z.string(),
+  language: z.nativeEnum(EvmProgrammingLanguage).optional(),
+  option: z.nativeEnum(VerifyOptions).optional(),
 });
 
-export const zEvmContractVerifyForm = zEvmContractAddressAndLicenseForm.merge(
+export const zEvmContractVerifyForm = zEvmContractVerifyBase.merge(
   z.object({
-    verifyForm: z
-      .union([
-        z.object({
-          language: z.literal(EvmProgrammingLanguage.Solidity),
-          form: zEvmContractVerifySolidityForm,
-        }),
-        z.object({
-          language: z.literal(EvmProgrammingLanguage.Vyper),
-          form: zEvmContractVerifyVyperForm,
-        }),
-      ])
-      .optional(),
+    verifyForm: z.object({
+      solidityUploadFiles: zEvmContractVerifySolidityOptionUploadFilesForm,
+      solidityContractCode: zEvmContractVerifySolidityOptionContractCodeForm,
+      solidityJsonInput: zEvmContractVerifySolidityOptionJsonInputForm,
+      vyperUploadFile: zEvmContractVerifyVyperOptionUploadFileForm,
+      vyperContractCode: zEvmContractVerifyVyperOptionContractCodeForm,
+      vyperJsonInput: zEvmContractVerifyVyperOptionJsonInputForm,
+    }),
   })
 );
 export type EvmContractVerifyForm = z.infer<typeof zEvmContractVerifyForm>;

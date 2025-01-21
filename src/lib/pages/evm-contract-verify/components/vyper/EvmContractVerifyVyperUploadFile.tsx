@@ -17,7 +17,7 @@ export const EvmContractVerifyVyperUploadFile = ({
     field: { value, onChange },
   } = useController({
     control,
-    name: "verifyForm.form.file",
+    name: "verifyForm.vyperUploadFile.file",
   });
 
   return (
@@ -35,8 +35,14 @@ export const EvmContractVerifyVyperUploadFile = ({
           />
         )}
       </Stack>
-      <ConstructorArgs control={control} />
-      <EvmVersionToTarget control={control} />
+      <ConstructorArgs<EvmContractVerifyForm>
+        control={control}
+        name="verifyForm.vyperUploadFile"
+      />
+      <EvmVersionToTarget<EvmContractVerifyForm>
+        control={control}
+        name="verifyForm.vyperUploadFile"
+      />
     </Stack>
   );
 };

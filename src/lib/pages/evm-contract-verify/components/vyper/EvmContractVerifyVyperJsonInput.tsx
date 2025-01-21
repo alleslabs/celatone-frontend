@@ -16,7 +16,7 @@ export const EvmContractVerifyVyperJsonInput = ({
     field: { value, onChange },
   } = useController({
     control,
-    name: "verifyForm.form.jsonFile",
+    name: "verifyForm.vyperJsonInput.jsonFile",
   });
 
   return (
@@ -34,7 +34,10 @@ export const EvmContractVerifyVyperJsonInput = ({
           />
         )}
       </Stack>
-      <ConstructorArgs control={control} />
+      <ConstructorArgs<EvmContractVerifyForm>
+        name="verifyForm.vyperJsonInput"
+        control={control}
+      />
     </Stack>
   );
 };

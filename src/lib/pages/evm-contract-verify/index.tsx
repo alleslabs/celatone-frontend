@@ -5,7 +5,14 @@ import { track } from "@amplitude/analytics-browser";
 import { AmpEvent } from "lib/amplitude";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
-import { Grid, GridItem, Heading, Stack, Text } from "@chakra-ui/react";
+import {
+  Divider,
+  Grid,
+  GridItem,
+  Heading,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { EvmContractVerifyTop } from "./components/EvmContractVerifyTop";
 import { ContractLicenseInfoAccordion } from "./components/ContractLicenseInfoAccordion";
 import { useStepper } from "lib/hooks";
@@ -15,15 +22,15 @@ import { useForm } from "react-hook-form";
 import {
   EvmContractVerifyForm,
   EvmProgrammingLanguage,
-  VerificationOptions,
+  VerifyOptions,
   zEvmContractVerifyForm,
 } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EvmContractVerifySolidity } from "./components/solidity/EvmContractVerifySolidity";
-import { EvmContractVerifyVyper } from "./components/vyper/EvmContractVerifyVyper";
 import { NoMobile } from "lib/components/modal";
 import { isHex20Bytes, truncate } from "lib/utils";
-import { getVerifyFormInitialValue } from "./helper";
+import { EvmContractVerifyOptions } from "./components/EvmContractVerifyOptions";
+import { EvmContractVerifyForms } from "./components/EvmContractVerifyForms";
+import { getEvmContractVerifyFormDefaultValue } from "./helper";
 
 export const EvmContractVerify = () => {
   useEvmConfig({ shouldRedirect: true });
@@ -46,14 +53,11 @@ export const EvmContractVerify = () => {
     resolver: zodResolver(zEvmContractVerifyForm),
     mode: "all",
     reValidateMode: "onChange",
-    defaultValues: {
-      contractAddress: isHex20Bytes(String(contractAddressQueryParam))
-        ? contractAddressQueryParam
-        : "",
-      compilerVersion: "",
-    },
+    defaultValues: getEvmContractVerifyFormDefaultValue(
+      String(contractAddressQueryParam)
+    ),
   });
-  const { licenseType, contractAddress, verifyForm, compilerVersion } = watch();
+  const { licenseType, contractAddress, language, compilerVersion } = watch();
 
   const { handleNext, handlePrevious, hasNext, hasPrevious } = useStepper(
     1,
@@ -156,6 +160,9 @@ export const EvmContractVerify = () => {
                           : "init",
                       }}
                       error={errors.contractAddress?.message}
+                      rules={{
+                        required: "",
+                      }}
                     />
                   </GridItem>
                   <GridItem colSpan={1} colStart={1}>
@@ -198,21 +205,18 @@ export const EvmContractVerify = () => {
                       options={programmingLangaugeOptions}
                       onChange={(selectedOption) => {
                         if (!selectedOption) return;
-                        setValue("verifyForm.language", selectedOption.value);
+                        setValue("language", selectedOption.value);
                         setValue("compilerVersion", "");
                         setValue(
-                          "verifyForm.form",
-                          getVerifyFormInitialValue(
-                            selectedOption.value,
-                            selectedOption.value ===
-                              EvmProgrammingLanguage.Solidity
-                              ? VerificationOptions.UploadFiles
-                              : VerificationOptions.UploadFile
-                          )
+                          "option",
+                          selectedOption.value ===
+                            EvmProgrammingLanguage.Solidity
+                            ? VerifyOptions.SolidityUploadFiles
+                            : VerifyOptions.VyperUploadFile
                         );
                       }}
                       value={programmingLangaugeOptions.find(
-                        (option) => option.value === verifyForm?.language
+                        (option) => option.value === language
                       )}
                       menuPortalTarget={document.body}
                     />
@@ -229,19 +233,20 @@ export const EvmContractVerify = () => {
                         (option) => option.value === compilerVersion
                       )}
                       menuPortalTarget={document.body}
-                      isDisabled={!verifyForm?.language}
+                      isDisabled={!language}
                     />
                   </Grid>
                 </Stack>
               </GridItem>
-              <GridItem colSpan={1} colStart={1}>
-                {verifyForm?.language === EvmProgrammingLanguage.Solidity && (
-                  <EvmContractVerifySolidity control={control} />
-                )}
-                {verifyForm?.language === EvmProgrammingLanguage.Vyper && (
-                  <EvmContractVerifyVyper control={control} />
-                )}
-              </GridItem>
+              {language && (
+                <GridItem colSpan={1} colStart={1}>
+                  <Stack gap={12}>
+                    <EvmContractVerifyOptions control={control} />
+                    <Divider />
+                    <EvmContractVerifyForms control={control} />
+                  </Stack>
+                </GridItem>
+              )}
             </Grid>
           </PageContainer>
           <EvmContractFooter

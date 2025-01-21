@@ -1,28 +1,33 @@
 import { Box, Checkbox, Heading, Stack, Text } from "@chakra-ui/react";
-import { Control, useController, useWatch } from "react-hook-form";
-import { EvmContractVerifyForm } from "../types";
+import {
+  Control,
+  FieldPath,
+  FieldValues,
+  useController,
+  useWatch,
+} from "react-hook-form";
 import { ControllerTextarea } from "lib/components/forms";
 
-interface ConstructorArgsProps {
-  control: Control<EvmContractVerifyForm>;
+interface ConstructorArgsProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
 }
 
-export const ConstructorArgs = ({ control }: ConstructorArgsProps) => {
-  const { field: fieldEnabled } = useController({
-    control,
-    name: "verifyForm.form.constructorArgs.enabled",
-  });
-
+export const ConstructorArgs = <T extends FieldValues>({
+  control,
+  name,
+}: ConstructorArgsProps<T>) => {
   const {
+    field,
     fieldState: { error },
   } = useController({
     control,
-    name: "verifyForm.form.constructorArgs.value",
+    name: `${name}.constructorArgs` as FieldPath<T>,
   });
 
   const constructorArgs = useWatch({
     control,
-    name: "verifyForm.form.constructorArgs",
+    name: `${name}.constructorArgs` as FieldPath<T>,
   });
 
   return (
@@ -38,7 +43,9 @@ export const ConstructorArgs = ({ control }: ConstructorArgsProps) => {
       <Checkbox
         p={2}
         isChecked={constructorArgs.enabled}
-        onChange={(e) => fieldEnabled.onChange(e.target.checked)}
+        onChange={(e) =>
+          field.onChange({ ...field.value, enabled: e.target.checked })
+        }
       >
         <Text>Have constructor arguments</Text>
       </Checkbox>
@@ -47,11 +54,11 @@ export const ConstructorArgs = ({ control }: ConstructorArgsProps) => {
         px={3}
         bgColor="gray.900"
         borderRadius="md"
-        display={fieldEnabled.value ? "block" : "none"}
+        display={constructorArgs.enabled ? "block" : "none"}
       >
         <ControllerTextarea
           backgroundColor="gray.900"
-          name="verifyForm.form.constructorArgs.value"
+          name={`${name}.constructorArgs.value` as FieldPath<T>}
           control={control}
           isRequired
           label="Constructor Arguments"

@@ -55,7 +55,7 @@ export const EvmContractVerifySolidityHardhat = ({
     return `npx hardhat verify \\
   --network ${chainId} \\
   ${contractAddress || "<contract-address>"} \\
-  [...constructorArgs]`;
+  <...constructorArgs>`;
   }, [chainId, contractAddress]);
 
   return (
