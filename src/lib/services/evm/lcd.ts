@@ -7,6 +7,7 @@ import {
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
+import { zEvmMsgCreate } from "../types";
 
 export const getEvmParams = (endpoint: string) =>
   axios
@@ -35,14 +36,15 @@ export const getEvmContractInfoSequencer = async (
   const tx = txs.items[0];
   const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
 
-  const createEvent = tx.events?.find((event) => event.type === "create");
-  const code =
-    createEvent?.attributes?.find((attr) => attr.key === "ret")?.value ?? "";
+  const foundMsgCreate = tx.messages.find(
+    (msg) => msg.type === "/minievm.evm.v1.MsgCreate"
+  );
+  const evmMsgCreate = zEvmMsgCreate.parse(foundMsgCreate);
 
   return {
     hash: tx.hash,
     sender,
     created: tx.created,
-    code,
+    code: evmMsgCreate.code,
   };
 };
