@@ -1,10 +1,16 @@
 import { Heading, Stack } from "@chakra-ui/react";
+import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { jsonPrettify } from "lib/utils";
 
-export const ContractAbi = () => (
+interface ContractAbiProps {
+  abi: string;
+}
+
+export const ContractAbi = ({ abi }: ContractAbiProps) => (
   <Stack gap={4}>
     <Heading as="h6" variant="h7">
       Contract ABI
     </Heading>
-    {/* <TextReadOnly text={deployedCode} canCopy /> */}
+    <JsonReadOnly text={jsonPrettify(abi)} />
   </Stack>
 );
