@@ -9,6 +9,13 @@ export enum TabIndex {
   Transactions = "transactions",
 }
 
+export enum EvmContractDetailsContractTabs {
+  Code = "code",
+  Compiler = "compiler",
+  Abi = "abi",
+  ByteCode = "byteCode",
+}
+
 export const zEvmContractDetailsQueryParams = z.object({
   contractAddress: zHexAddr20,
   tab: z.union([

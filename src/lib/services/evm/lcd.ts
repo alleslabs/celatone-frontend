@@ -35,9 +35,14 @@ export const getEvmContractInfoSequencer = async (
   const tx = txs.items[0];
   const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
 
+  const createEvent = tx.events?.find((event) => event.type === "create");
+  const code =
+    createEvent?.attributes?.find((attr) => attr.key === "ret")?.value ?? "";
+
   return {
     hash: tx.hash,
     sender,
     created: tx.created,
+    code,
   };
 };

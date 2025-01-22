@@ -20,14 +20,10 @@ import type { BechAddr32, Coin } from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
 import { jsonPrettify, jsonValidate, libDecode } from "lib/utils";
 
-import {
-  ExecuteArea,
-  InteractionTypeSwitch,
-  InteractionWrapper,
-  QueryArea,
-} from "./components";
+import { ExecuteArea, InteractionWrapper, QueryArea } from "./components";
 import type { InteractContractQueryParams } from "./types";
 import { zInteractContractQueryParams } from "./types";
+import { TypeSwitch } from "lib/components/TypeSwitch";
 
 const INTERACT_CONTRACT_PATH_NAME = "/interact-contract";
 
@@ -154,7 +150,8 @@ const InteractContractBody = ({
           {capitalize(selectedType)} Message
         </Heading>
         {!isMobile && (
-          <InteractionTypeSwitch
+          <TypeSwitch
+            tabs={Object.values(ContractInteractionTabs)}
             currentTab={selectedType}
             onTabChange={handleSetSelectedType}
           />
