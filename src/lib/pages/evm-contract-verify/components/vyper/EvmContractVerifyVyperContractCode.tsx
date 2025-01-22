@@ -4,13 +4,16 @@ import { Heading, Stack } from "@chakra-ui/react";
 import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
+import { EvmVerifyConfig } from "lib/services/types";
 
 interface EvmContractVerifyVyperContractCodeProps {
   control: Control<EvmContractVerifyForm>;
+  evmVerifyConfig: EvmVerifyConfig;
 }
 
 export const EvmContractVerifyVyperContractCode = ({
   control,
+  evmVerifyConfig,
 }: EvmContractVerifyVyperContractCodeProps) => {
   const {
     fieldState: { error: contractNameError },
@@ -59,6 +62,7 @@ export const EvmContractVerifyVyperContractCode = ({
       <EvmVersionToTarget<EvmContractVerifyForm>
         control={control}
         name="verifyForm.vyperContractCode"
+        evmVerifyConfig={evmVerifyConfig}
       />
     </Stack>
   );

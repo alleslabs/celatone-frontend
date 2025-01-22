@@ -8,13 +8,16 @@ import { ContractLibraries } from "../ContractLibraries";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { Fragment } from "react";
+import { EvmVerifyConfig } from "lib/services/types";
 
 interface EvmContractVerifySolidityUploadFilesProps {
   control: Control<EvmContractVerifyForm>;
+  evmVerifyConfig: EvmVerifyConfig;
 }
 
 export const EvmContractVerifySolidityUploadFiles = ({
   control,
+  evmVerifyConfig,
 }: EvmContractVerifySolidityUploadFilesProps) => {
   const { fields, append, remove } = useFieldArray({
     control,
@@ -44,6 +47,7 @@ export const EvmContractVerifySolidityUploadFiles = ({
       <EvmVersionToTarget<EvmContractVerifyForm>
         control={control}
         name="verifyForm.solidityUploadFiles"
+        evmVerifyConfig={evmVerifyConfig}
       />
       <OptimizerConfiguration<EvmContractVerifyForm>
         control={control}
