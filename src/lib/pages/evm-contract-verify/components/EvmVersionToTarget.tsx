@@ -1,5 +1,6 @@
 import { Grid, Heading, Stack, Text } from "@chakra-ui/react";
 import { SelectInput } from "lib/components/forms";
+import { EvmVerifyConfig } from "lib/services/types";
 import { useMemo } from "react";
 import {
   Control,
@@ -8,15 +9,19 @@ import {
   useController,
   useWatch,
 } from "react-hook-form";
+import { EvmProgrammingLanguage } from "../types";
+import { formatEvmOptions } from "../helpers";
 
 interface EvmVersionToTargetProps<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
+  evmVerifyConfig: EvmVerifyConfig;
 }
 
 export const EvmVersionToTarget = <T extends FieldValues>({
   control,
   name,
+  evmVerifyConfig,
 }: EvmVersionToTargetProps<T>) => {
   const {
     field: { onChange },
@@ -24,19 +29,17 @@ export const EvmVersionToTarget = <T extends FieldValues>({
     control,
     name: `${name}.evmVersion` as FieldPath<T>,
   });
-  const evmVersion = useWatch({
+  const [evmVersion, language] = useWatch({
     control,
-    name: `${name}.evmVersion` as FieldPath<T>,
+    name: [`${name}.evmVersion`, "language"] as FieldPath<T>[],
   });
 
   const evmVersionOptions = useMemo(
-    () => [
-      {
-        label: "Default",
-        value: "default",
-      },
-    ],
-    []
+    () =>
+      language === EvmProgrammingLanguage.Solidity
+        ? formatEvmOptions(evmVerifyConfig.solidityEvmVersions)
+        : formatEvmOptions(evmVerifyConfig.vyperEvmVersions),
+    [language, evmVerifyConfig]
   );
 
   return (

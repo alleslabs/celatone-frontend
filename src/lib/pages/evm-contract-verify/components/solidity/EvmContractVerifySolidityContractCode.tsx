@@ -6,13 +6,16 @@ import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
 import { OptimizerConfiguration } from "../OptimizerConfiguration";
 import { ContractLibraries } from "../ContractLibraries";
+import { EvmVerifyConfig } from "lib/services/types";
 
 interface EvmContractVerifySolidityContractCodeProps {
   control: Control<EvmContractVerifyForm>;
+  evmVerifyConfig: EvmVerifyConfig;
 }
 
 export const EvmContractVerifySolidityContractCode = ({
   control,
+  evmVerifyConfig,
 }: EvmContractVerifySolidityContractCodeProps) => {
   const {
     fieldState: { error },
@@ -45,6 +48,7 @@ export const EvmContractVerifySolidityContractCode = ({
       <EvmVersionToTarget<EvmContractVerifyForm>
         control={control}
         name="verifyForm.solidityContractCode"
+        evmVerifyConfig={evmVerifyConfig}
       />
       <OptimizerConfiguration<EvmContractVerifyForm>
         control={control}

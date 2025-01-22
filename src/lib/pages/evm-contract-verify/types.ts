@@ -20,7 +20,10 @@ export enum VerifyOptions {
 
 // MARK - Query Params
 export const zEvmContractVerifyQueryParams = z.object({
-  contractAddress: zHexAddr20,
+  contractAddress: z.preprocess((val) => {
+    const address = String(val).trim();
+    return isHex20Bytes(address) ? address : undefined;
+  }, zHexAddr20.optional()),
 });
 
 // MARK - Shared Components
