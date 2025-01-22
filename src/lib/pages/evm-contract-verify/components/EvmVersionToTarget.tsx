@@ -10,7 +10,7 @@ import {
   useWatch,
 } from "react-hook-form";
 import { EvmProgrammingLanguage } from "../types";
-import { formatEvmOptions } from "../helper";
+import { formatEvmOptions } from "../helpers";
 
 interface EvmVersionToTargetProps<T extends FieldValues> {
   control: Control<T>;
@@ -29,21 +29,16 @@ export const EvmVersionToTarget = <T extends FieldValues>({
     control,
     name: `${name}.evmVersion` as FieldPath<T>,
   });
-  const evmVersion = useWatch({
+  const [evmVersion, language] = useWatch({
     control,
-    name: `${name}.evmVersion` as FieldPath<T>,
-  });
-
-  const language = useWatch({
-    control,
-    name: "language" as FieldPath<T>,
+    name: [`${name}.evmVersion`, "language"] as FieldPath<T>[],
   });
 
   const evmVersionOptions = useMemo(
     () =>
       language === EvmProgrammingLanguage.Solidity
-        ? formatEvmOptions(evmVerifyConfig.solidity_evm_versions)
-        : formatEvmOptions(evmVerifyConfig.vyper_evm_versions),
+        ? formatEvmOptions(evmVerifyConfig.solidityEvmVersions)
+        : formatEvmOptions(evmVerifyConfig.vyperEvmVersions),
     [language, evmVerifyConfig]
   );
 

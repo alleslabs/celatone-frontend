@@ -1,3 +1,4 @@
+import { snakeToCamel } from "lib/utils";
 import { z } from "zod";
 
 export enum EVMVerifyLicenseType {
@@ -17,11 +18,13 @@ export enum EVMVerifyLicenseType {
   BSL1_1 = "bsl_1_1",
 }
 
-export const zEvmVerifyConfig = z.object({
-  license_type: z.array(z.nativeEnum(EVMVerifyLicenseType)),
-  solidity_compiler_versions: z.array(z.string()),
-  solidity_evm_versions: z.array(z.string()),
-  vyper_compiler_versions: z.array(z.string()),
-  vyper_evm_versions: z.array(z.string()),
-});
+export const zEvmVerifyConfig = z
+  .object({
+    license_type: z.array(z.nativeEnum(EVMVerifyLicenseType)),
+    solidity_compiler_versions: z.array(z.string()),
+    solidity_evm_versions: z.array(z.string()),
+    vyper_compiler_versions: z.array(z.string()),
+    vyper_evm_versions: z.array(z.string()),
+  })
+  .transform(snakeToCamel);
 export type EvmVerifyConfig = z.infer<typeof zEvmVerifyConfig>;

@@ -35,17 +35,18 @@ import {
   formatEvmOptions,
   getEvmContractVerifyFormDefaultValue,
   getLicenseTypeOptions,
-} from "./helper";
+  PROGRAMMING_LANGUAGE_OPTIONS,
+} from "./helpers";
 import { HarthatInfoAccordion } from "./components/HardhatInfoAccordion";
 import { FoundryInfoAccordion } from "./components/FoundryInfoAccordion";
 import { ErrorFetching, InvalidState } from "lib/components/state";
-import { HexAddr20 } from "lib/types";
+import { HexAddr20, Option } from "lib/types";
 import { useEvmVerifyConfig } from "lib/services/verification/evm";
 import { Loading } from "lib/components/Loading";
 import { EvmVerifyConfig } from "lib/services/types";
 
 interface EvmContractVerifyBodyProps {
-  contractAddress: HexAddr20;
+  contractAddress: Option<HexAddr20>;
   evmVerifyConfig: EvmVerifyConfig;
 }
 
@@ -84,28 +85,15 @@ export const EvmContractVerifyBody = ({
     () => alert("Submit!")
   );
 
-  const { licenseTypeOptions, compilerVersionOptions } = useMemo(() => {
-    return {
+  const { licenseTypeOptions, compilerVersionOptions } = useMemo(
+    () => ({
       licenseTypeOptions: getLicenseTypeOptions(evmVerifyConfig),
       compilerVersionOptions:
         language === EvmProgrammingLanguage.Solidity
-          ? formatEvmOptions(evmVerifyConfig.solidity_compiler_versions)
-          : formatEvmOptions(evmVerifyConfig.vyper_compiler_versions),
-    };
-  }, [evmVerifyConfig, language]);
-
-  const programmingLangaugeOptions = useMemo(
-    () => [
-      {
-        label: "Solidity",
-        value: EvmProgrammingLanguage.Solidity,
-      },
-      {
-        label: "Vyper",
-        value: EvmProgrammingLanguage.Vyper,
-      },
-    ],
-    []
+          ? formatEvmOptions(evmVerifyConfig.solidityCompilerVersions)
+          : formatEvmOptions(evmVerifyConfig.vyperCompilerVersions),
+    }),
+    [evmVerifyConfig, language]
   );
 
   const isFormDisabled = () => {
@@ -195,7 +183,7 @@ export const EvmContractVerifyBody = ({
                       label="Language"
                       isRequired
                       placeholder="Select language"
-                      options={programmingLangaugeOptions}
+                      options={PROGRAMMING_LANGUAGE_OPTIONS}
                       onChange={(selectedOption) => {
                         if (!selectedOption) return;
                         setValue("language", selectedOption.value);
@@ -208,7 +196,7 @@ export const EvmContractVerifyBody = ({
                             : VerifyOptions.VyperUploadFile
                         );
                       }}
-                      value={programmingLangaugeOptions.find(
+                      value={PROGRAMMING_LANGUAGE_OPTIONS.find(
                         (option) => option.value === language
                       )}
                       menuPortalTarget={document.body}
@@ -285,8 +273,8 @@ export const EvmContractVerify = () => {
   if (validated.success)
     return (
       <EvmContractVerifyBody
+        contractAddress={validated.data.contractAddress}
         evmVerifyConfig={evmVerifyConfig}
-        {...validated.data}
       />
     );
   return <InvalidState title="Invalid contract address" />;

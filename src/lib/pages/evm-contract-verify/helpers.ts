@@ -1,5 +1,5 @@
-import { HexAddr20, zHexAddr20 } from "lib/types";
-import { EvmContractVerifyForm } from "./types";
+import { HexAddr20, Option, zHexAddr20 } from "lib/types";
+import { EvmContractVerifyForm, EvmProgrammingLanguage } from "./types";
 import { EvmVerifyConfig, EVMVerifyLicenseType } from "lib/services/types";
 
 const CONSTRUCTOR_ARGS_DEFAULT_VALUE = {
@@ -25,9 +25,9 @@ const CONTRACT_LIBRARIES_DEFAULT_VALUE = {
 };
 
 export const getEvmContractVerifyFormDefaultValue = (
-  contractAddressQueryParam: HexAddr20
+  contractAddressQueryParam: Option<HexAddr20>
 ): EvmContractVerifyForm => ({
-  contractAddress: contractAddressQueryParam,
+  contractAddress: contractAddressQueryParam ?? zHexAddr20.parse(""),
   compilerVersion: "",
   licenseType: "",
   language: undefined,
@@ -108,7 +108,18 @@ export const formatEvmOptions = (values: string[]) =>
   }));
 
 export const getLicenseTypeOptions = (evmVerifyConfig: EvmVerifyConfig) =>
-  evmVerifyConfig.license_type.map((license) => ({
+  evmVerifyConfig.licenseType.map((license) => ({
     label: getLicenseTypeLabel(license),
     value: license,
   }));
+
+export const PROGRAMMING_LANGUAGE_OPTIONS = [
+  {
+    label: "Solidity",
+    value: EvmProgrammingLanguage.Solidity,
+  },
+  {
+    label: "Vyper",
+    value: EvmProgrammingLanguage.Vyper,
+  },
+];

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { CELATONE_VERIFICATION_API } from "env";
-import { zEvmVerifyConfig } from "lib/services/types/verification/evm";
+import { zEvmVerifyConfig } from "lib/services/types";
 
 export const getEvmVerifyConfig = async () =>
   axios
