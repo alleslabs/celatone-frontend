@@ -1,10 +1,11 @@
 import { Stack, Text } from "@chakra-ui/react";
-import { useEvmConfig } from "lib/app-provider";
+import { useCelatoneApp, useEvmConfig } from "lib/app-provider";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { useMemo } from "react";
 
 import { Control, useWatch } from "react-hook-form";
 import { EvmContractVerifyForm } from "../../types";
+import { CELATONE_VERIFICATION_API } from "env";
 
 interface EvmContractVerifySolidityFoundryProps {
   control: Control<EvmContractVerifyForm>;
@@ -13,15 +14,15 @@ interface EvmContractVerifySolidityFoundryProps {
 export const EvmContractVerifySolidityFoundry = ({
   control,
 }: EvmContractVerifySolidityFoundryProps) => {
+  const { currentChainId } = useCelatoneApp();
   const evm = useEvmConfig({ shouldRedirect: false });
   const jsonRpc = evm.enabled ? evm.jsonRpc : "<invalid_network>";
 
   const contractAddress = useWatch({ control, name: "contractAddress" });
 
-  // TODO: get verifier url from chain config
-  const verifierUrl = "https://eth-sepolia.blockscout.com/api/";
-
   const cmd = useMemo(() => {
+    const verifierUrl = `${CELATONE_VERIFICATION_API}/evm/verification/solidity/external/${currentChainId}`;
+
     return `forge verify-contract \\
   --rpc-url ${jsonRpc} \\
   --verifier custom \\
@@ -29,7 +30,7 @@ export const EvmContractVerifySolidityFoundry = ({
   --constructor-args <constructor-args> \\
   ${contractAddress || "<contract-address>"} \\
   <contractFile>:<contractName>`;
-  }, [jsonRpc, contractAddress]);
+  }, [currentChainId, jsonRpc, contractAddress]);
 
   return (
     <Stack gap={4}>

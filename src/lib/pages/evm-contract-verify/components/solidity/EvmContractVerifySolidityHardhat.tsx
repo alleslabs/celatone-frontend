@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { Control, useWatch } from "react-hook-form";
 import { EvmContractVerifyForm } from "../../types";
 import { convertCosmosChainIdToEvmChainId } from "lib/utils/evm";
+import { CELATONE_VERIFICATION_API } from "env";
 
 interface EvmContractVerifySolidityHardhatProps {
   control: Control<EvmContractVerifyForm>;
@@ -14,49 +15,47 @@ interface EvmContractVerifySolidityHardhatProps {
 export const EvmContractVerifySolidityHardhat = ({
   control,
 }: EvmContractVerifySolidityHardhatProps) => {
-  const {
-    chainConfig: { chainId },
-  } = useCelatoneApp();
+  const { currentChainId } = useCelatoneApp();
   const evm = useEvmConfig({ shouldRedirect: false });
   const jsonRpc = evm.enabled ? evm.jsonRpc : "<invalid_network>";
 
   const contractAddress = useWatch({ control, name: "contractAddress" });
-  const evmChainId = convertCosmosChainIdToEvmChainId(chainId);
-
-  // TODO: get verifier url from chain config
-  const verifierUrl = "https://eth-sepolia.blockscout.com/api/";
+  const evmChainId = convertCosmosChainIdToEvmChainId(currentChainId);
 
   const step1Cmd = useMemo(() => {
+    const verifierUrl = `${CELATONE_VERIFICATION_API}/evm/verification/solidity/external/${currentChainId}`;
+
     return `const config: HardhatUserConfig = {
   solidity: "v0.8.28", // replace with your solidity version
   networks: {
-    '${chainId}': {
-      url: '${jsonRpc}'
+    '${currentChainId}': {
+      url: '${jsonRpc}',
     },
   },
   etherscan: {
     apiKey: {
-      '${chainId}': 'empty'
+      '${currentChainId}': 'empty'
     },
     customChains: [
       {
-        network: "${chainId}",
+        network: "${currentChainId}",
         chainId: ${evmChainId},
         urls: {
           apiURL: "${verifierUrl}",
+          browserURL: "",
         }
       }
     ]
   }
 };`;
-  }, [chainId, evmChainId, jsonRpc]);
+  }, [currentChainId, evmChainId, jsonRpc]);
 
   const step2Cmd = useMemo(() => {
     return `npx hardhat verify \\
-  --network ${chainId} \\
+  --network ${currentChainId} \\
   ${contractAddress || "<contract-address>"} \\
   <...constructorArgs>`;
-  }, [chainId, contractAddress]);
+  }, [currentChainId, contractAddress]);
 
   return (
     <Stack gap={12}>
