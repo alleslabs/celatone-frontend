@@ -5,6 +5,7 @@ import { EvmContractDetailsContractTabs } from "../../types";
 import { useState } from "react";
 import { TypeSwitch } from "lib/components/TypeSwitch";
 import { ContractByteCode, ContractByteCodeProps } from "./ContractByteCode";
+import { ContractAbi } from "./ContractAbi";
 
 interface EvmContractDetailsContractProps extends ContractByteCodeProps {
   contractAddress: HexAddr20;
@@ -16,7 +17,7 @@ export const EvmContractDetailsContract = ({
   deployedCode,
 }: EvmContractDetailsContractProps) => {
   const [currentTab, setCurrentTab] = useState(
-    EvmContractDetailsContractTabs.ByteCode
+    EvmContractDetailsContractTabs.Abi
   );
 
   return (
@@ -30,6 +31,7 @@ export const EvmContractDetailsContract = ({
           currentTab={currentTab}
         />
       </Flex>
+      {currentTab === EvmContractDetailsContractTabs.Abi && <ContractAbi />}
       {currentTab === EvmContractDetailsContractTabs.ByteCode && (
         <ContractByteCode code={code} deployedCode={deployedCode} />
       )}

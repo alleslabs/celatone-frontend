@@ -29,6 +29,7 @@ import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverv
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
 import { TabIndex, TxsTabIndex, zEvmContractDetailsQueryParams } from "./types";
+import { useEvmVerifyInfo } from "lib/services/verification/evm";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
@@ -54,6 +55,7 @@ const EvmContractDetailsBody = ({
   const { data: evmHash } = useEvmTxHashByCosmosTxHash(
     evmContractInfoData?.hash
   );
+  const { data: evmInfo } = useEvmVerifyInfo(contractAddress);
 
   const { totalData: totalAssets = 0 } = useBalanceInfos(
     contractAddressBechAddr
@@ -86,7 +88,7 @@ const EvmContractDetailsBody = ({
   }, [handleTabChange, overviewTabIndex]);
 
   if (isEvmCodesByAddressLoading) return <Loading />;
-  if (!evmCodesByAddressData)
+  if (!evmCodesByAddressData || !evmInfo)
     return <ErrorFetching dataName="evm contract information" />;
   if (!evmCodesByAddressData.code) return <InvalidContract />;
 
