@@ -3,26 +3,26 @@ import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { Option } from "lib/types";
 
 export interface ContractByteCodeProps {
-  code: Option<string>;
-  deployedCode: string;
+  byteCode: Option<string>;
+  deployedByteCode: string;
 }
 
 export const ContractByteCode = ({
-  code = "",
-  deployedCode,
+  byteCode = "",
+  deployedByteCode,
 }: ContractByteCodeProps) => (
   <Stack gap={8}>
     <Stack gap={4}>
       <Heading as="h6" variant="h7">
         ByteCode
       </Heading>
-      <TextReadOnly text={code} canCopy />
+      <TextReadOnly text={byteCode} canCopy />
     </Stack>
     <Stack gap={4}>
       <Heading as="h6" variant="h7">
         Deployed ByteCode
       </Heading>
-      <TextReadOnly text={deployedCode} canCopy />
+      <TextReadOnly text={deployedByteCode} canCopy />
     </Stack>
   </Stack>
 );
