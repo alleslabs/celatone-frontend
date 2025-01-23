@@ -15,8 +15,8 @@ interface EvmContractDetailsContractProps extends ContractByteCodeProps {
 
 export const EvmContractDetailsContract = ({
   contractAddress,
-  code,
-  deployedCode,
+  byteCode,
+  deployedByteCode,
 }: EvmContractDetailsContractProps) => {
   const { data } = useEvmVerifyInfo(contractAddress);
 
@@ -41,7 +41,10 @@ export const EvmContractDetailsContract = ({
         <ContractAbi abi={data.abi} />
       )}
       {currentTab === EvmContractDetailsContractTabs.ByteCode && (
-        <ContractByteCode code={code} deployedCode={deployedCode} />
+        <ContractByteCode
+          byteCode={byteCode}
+          deployedByteCode={deployedByteCode}
+        />
       )}
     </Stack>
   );
