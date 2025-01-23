@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1204](https://github.com/alleslabs/celatone-frontend/pull/1204) Add EVM contract details deployed bytecode
 - [#1203](https://github.com/alleslabs/celatone-frontend/pull/1203) Fetch EVM verify config from API, and wire up to UIs as initial values
 - [#1202](https://github.com/alleslabs/celatone-frontend/pull/1202) Add EVM contract interaction form
 - [#1201](https://github.com/alleslabs/celatone-frontend/pull/1201) Add EVM contract verification with upload files

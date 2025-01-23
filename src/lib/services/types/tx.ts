@@ -175,6 +175,7 @@ export const zTxsResponseItemFromLcd =
     const messages = txBody.messages.map<Message>((msg, idx) => ({
       log: logs[idx],
       type: msg["@type"],
+      ...msg,
     }));
 
     const { isIbc, isOpinit, isEvm } = messages.reduce(
@@ -490,3 +491,8 @@ export const zSimulateFeeEvm = z
     simulatedGasUsed,
   }));
 export type SimulatedFeeEvm = z.infer<typeof zSimulateFeeEvm>;
+
+export const zEvmMsgCreate = z.object({
+  type: z.literal("/minievm.evm.v1.MsgCreate"),
+  code: z.string(),
+});

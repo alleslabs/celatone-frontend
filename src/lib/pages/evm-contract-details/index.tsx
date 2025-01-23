@@ -24,7 +24,7 @@ import { useEvmTxHashByCosmosTxHash } from "lib/services/tx";
 import type { HexAddr20 } from "lib/types";
 import { isHexWalletAddress, truncate } from "lib/utils";
 
-import { EvmContractDetailsBytecode } from "./components/EvmContractDetailsBytecode";
+import { EvmContractDetailsContract } from "./components/EvmContractDetailsContarct";
 import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
@@ -140,8 +140,9 @@ const EvmContractDetailsBody = ({
               />
             </TabPanel>
             <TabPanel p={0} pt={8}>
-              <EvmContractDetailsBytecode
-                code={evmCodesByAddressData.code}
+              <EvmContractDetailsContract
+                deployedByteCode={evmCodesByAddressData.code}
+                byteCode={evmContractInfoData?.code}
                 contractAddress={contractAddress}
               />
             </TabPanel>
