@@ -1,11 +1,7 @@
+import { EvmProgrammingLanguage } from "lib/services/types";
 import { zHexAddr20 } from "lib/types";
 import { isHex20Bytes } from "lib/utils";
 import { z, ZodIssueCode } from "zod";
-
-export enum EvmProgrammingLanguage {
-  Solidity = "solidity",
-  Vyper = "vyper",
-}
 
 export enum VerifyOptions {
   VyperUploadFile = "vyper-upload-file",

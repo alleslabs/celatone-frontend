@@ -21,7 +21,6 @@ import { ControllerInput, SelectInput } from "lib/components/forms";
 import { useForm } from "react-hook-form";
 import {
   EvmContractVerifyForm,
-  EvmProgrammingLanguage,
   VerifyOptions,
   zEvmContractVerifyForm,
   zEvmContractVerifyQueryParams,
@@ -43,7 +42,7 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { HexAddr20, Option } from "lib/types";
 import { useEvmVerifyConfig } from "lib/services/verification/evm";
 import { Loading } from "lib/components/Loading";
-import { EvmVerifyConfig } from "lib/services/types";
+import { EvmProgrammingLanguage, EvmVerifyConfig } from "lib/services/types";
 
 interface EvmContractVerifyBodyProps {
   contractAddress: Option<HexAddr20>;

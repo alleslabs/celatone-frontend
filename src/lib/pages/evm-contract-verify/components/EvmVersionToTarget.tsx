@@ -1,6 +1,6 @@
 import { Grid, Heading, Stack, Text } from "@chakra-ui/react";
 import { SelectInput } from "lib/components/forms";
-import { EvmVerifyConfig } from "lib/services/types";
+import { EvmProgrammingLanguage, EvmVerifyConfig } from "lib/services/types";
 import { useMemo } from "react";
 import {
   Control,
@@ -9,7 +9,6 @@ import {
   useController,
   useWatch,
 } from "react-hook-form";
-import { EvmProgrammingLanguage } from "../types";
 import { formatEvmOptions } from "../helpers";
 
 interface EvmVersionToTargetProps<T extends FieldValues> {

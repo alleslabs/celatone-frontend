@@ -1,5 +1,11 @@
+import { zHexAddr20, zUtcDate } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 import { z } from "zod";
+
+export enum EvmProgrammingLanguage {
+  Solidity = "Solidity",
+  Vyper = "Vyper",
+}
 
 export enum EVMVerifyLicenseType {
   None = "none",
@@ -28,3 +34,36 @@ export const zEvmVerifyConfig = z
   })
   .transform(snakeToCamel);
 export type EvmVerifyConfig = z.infer<typeof zEvmVerifyConfig>;
+
+const zEvmVerifyInfoSourceFile = z
+  .object({
+    source_path: z.string(),
+    evm_source_file: z.object({
+      hash: z.string(),
+      content: z.string(),
+    }),
+  })
+  .transform(snakeToCamel);
+
+export const zEvmVerifyInfo = z
+  .object({
+    guid: z.string().uuid(),
+    license: z.nativeEnum(EVMVerifyLicenseType),
+    language: z.nativeEnum(EvmProgrammingLanguage),
+    chain_id: z.string(),
+    address: zHexAddr20,
+    contract_name: z.string(),
+    contract_path: z.string(),
+    compiler_version: z.string(),
+    evm_version: z.string(),
+    optimizer: z.string(),
+    constructor_arguments: z.string(),
+    abi: z.string(),
+    bytecode_type: z.string(),
+    verified_timestamp: zUtcDate,
+    submitted_timestamp: zUtcDate,
+    // libraries: z.array() // TODO: Recheck
+    settings: z.string(),
+    source_files: z.array(zEvmVerifyInfoSourceFile),
+  })
+  .transform(snakeToCamel);
