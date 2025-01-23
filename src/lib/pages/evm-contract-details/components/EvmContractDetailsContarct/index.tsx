@@ -12,8 +12,8 @@ interface EvmContractDetailsContractProps extends ContractByteCodeProps {
 
 export const EvmContractDetailsContract = ({
   contractAddress,
-  code,
-  deployedCode,
+  byteCode,
+  deployedByteCode,
 }: EvmContractDetailsContractProps) => {
   const [currentTab, setCurrentTab] = useState(
     EvmContractDetailsContractTabs.ByteCode
@@ -31,7 +31,10 @@ export const EvmContractDetailsContract = ({
         />
       </Flex>
       {currentTab === EvmContractDetailsContractTabs.ByteCode && (
-        <ContractByteCode code={code} deployedCode={deployedCode} />
+        <ContractByteCode
+          byteCode={byteCode}
+          deployedByteCode={deployedByteCode}
+        />
       )}
     </Stack>
   );
