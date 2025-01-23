@@ -82,7 +82,16 @@ export const EvmContractVerifyBody = ({
 
   const { handleNext, handlePrevious, hasNext, hasPrevious } = useStepper(
     1,
-    () => alert("Submit!")
+    () => {
+      if (
+        option === VerifyOptions.SolidityHardhat ||
+        option === VerifyOptions.SolidityFoundry
+      ) {
+        alert("Open Verification Status Modal");
+      } else {
+        alert("Submit!");
+      }
+    }
   );
 
   const { licenseTypeOptions, compilerVersionOptions } = useMemo(
@@ -248,6 +257,12 @@ export const EvmContractVerifyBody = ({
             </Grid>
           </PageContainer>
           <EvmContractFooter
+            actionLabel={
+              option === VerifyOptions.SolidityHardhat ||
+              option === VerifyOptions.SolidityFoundry
+                ? "View Verification Status"
+                : "Verify & Publish Contract"
+            }
             handleNext={handleNext}
             handlePrevious={handlePrevious}
             hasNext={hasNext}

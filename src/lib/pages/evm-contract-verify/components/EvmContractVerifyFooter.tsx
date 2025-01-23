@@ -7,6 +7,7 @@ interface EvmContractFooterProps {
   hasNext: boolean;
   hasPrevious: boolean;
   isDisabled: boolean;
+  actionLabel: string;
 }
 
 export const EvmContractFooter = ({
@@ -15,6 +16,7 @@ export const EvmContractFooter = ({
   hasNext,
   hasPrevious,
   isDisabled,
+  actionLabel,
 }: EvmContractFooterProps) => (
   <FooterCta
     cancelButton={{
@@ -32,7 +34,7 @@ export const EvmContractFooter = ({
         <CustomIcon name="chevron-right" boxSize={4} />
       ) : undefined,
     }}
-    actionLabel="Verify & Publish Contract"
+    actionLabel={actionLabel}
     sx={{
       backgroundColor: "background.main",
       borderColor: "gray.700",
