@@ -11,7 +11,7 @@ export const ContractCompiler = ({
 }: ContractCompilerProps) => (
   <Stack gap={4}>
     <Heading as="h6" variant="h7">
-      Contract ABI
+      Compiler Setting
     </Heading>
     <JsonReadOnly text={jsonPrettify(compilerSettings)} />
   </Stack>
