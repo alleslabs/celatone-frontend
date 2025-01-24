@@ -33,7 +33,7 @@ export const useGetAddressTypeByLength = () => {
   return useCallback(
     (address: Option<string>): AddressReturnType =>
       address
-        ? addressLengthMap[address.length] ?? "invalid_address"
+        ? (addressLengthMap[address.length] ?? "invalid_address")
         : "invalid_address",
     [addressLengthMap]
   );

@@ -9,6 +9,7 @@ import type { HexAddr20 } from "lib/types";
 export interface RequestEvmStreamParams {
   to: HexAddr20;
   data: string;
+  value: string;
   estimatedFee?: SimulatedFeeEvm;
   onTxSucceed?: () => void;
   onTxFailed?: () => void;
@@ -21,6 +22,7 @@ export const useRequestEvmTx = () => {
     async ({
       to,
       data,
+      value,
       estimatedFee,
       onTxSucceed,
       onTxFailed,
@@ -30,6 +32,7 @@ export const useRequestEvmTx = () => {
       return requestEvmTx({
         to,
         data,
+        value,
         estimatedFee,
         signAndBroadcastEvm,
         onTxSucceed: () => {

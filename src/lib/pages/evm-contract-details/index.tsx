@@ -28,7 +28,14 @@ import { EvmContractDetailsContract } from "./components/EvmContractDetailsConta
 import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
-import { TabIndex, TxsTabIndex, zEvmContractDetailsQueryParams } from "./types";
+import {
+  InteractTabsIndex,
+  TabIndex,
+  TxsTabIndex,
+  zEvmContractDetailsQueryParams,
+} from "./types";
+import { InteractEvmContract } from "./components/interact-evm-contract";
+import { EVM_ABI } from "./dummy";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
@@ -37,11 +44,15 @@ const tableHeaderId = "evmContractDetailsTab";
 interface EvmContractDetailsBodyProps {
   contractAddress: HexAddr20;
   tab: TabIndex;
+  selectedType: InteractTabsIndex;
+  selectedFn?: string;
 }
 
 const EvmContractDetailsBody = ({
   contractAddress,
   tab,
+  selectedType,
+  selectedFn,
 }: EvmContractDetailsBodyProps) => {
   const navigate = useInternalNavigate();
   const { convertHexWalletAddress } = useConvertHexAddress();
@@ -125,6 +136,13 @@ const EvmContractDetailsBody = ({
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={8}>
+              {/* TODO: move to a proper location */}
+              <InteractEvmContract
+                contractAddress={contractAddress}
+                contractAbi={EVM_ABI}
+                selectedType={selectedType}
+                selectedFn={selectedFn}
+              />
               <EvmContractDetailsOverview
                 contractAddressBech={contractAddressBechAddr}
                 contractAddressHex={contractAddress}

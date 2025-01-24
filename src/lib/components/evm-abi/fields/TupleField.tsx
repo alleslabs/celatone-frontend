@@ -46,7 +46,7 @@ export const TupleField = <T extends FieldValues>({
             key={`${subfieldType}-${index}`}
             label={subfieldLabel}
             type={subfieldType}
-            isRequired
+            isRequired={!isDisabled}
           >
             <FieldTemplate
               name={`${name}.${index}` as FieldPath<T>}

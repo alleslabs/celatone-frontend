@@ -120,7 +120,9 @@ export const decodeEvmFunctionResult = (
 ) => {
   const iface = new Interface([abiSection]);
   try {
-    return iface.decodeFunctionResult(abiSection.name ?? "", data);
+    return iface
+      .decodeFunctionResult(abiSection.name ?? "", data)
+      .map((v) => v.toString());
   } catch {
     return undefined;
   }

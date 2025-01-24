@@ -9,6 +9,13 @@ export enum TabIndex {
   Transactions = "transactions",
 }
 
+export enum InteractTabsIndex {
+  Read = "read",
+  Write = "write",
+  ReadProxy = "read-proxy",
+  WriteProxy = "write-proxy",
+}
+
 export enum EvmContractDetailsContractTabs {
   Code = "code",
   Compiler = "compiler",
@@ -25,6 +32,14 @@ export const zEvmContractDetailsQueryParams = z.object({
       .optional()
       .transform(() => TabIndex.Overview),
   ]),
+  selectedType: z.union([
+    z.nativeEnum(InteractTabsIndex),
+    z
+      .string()
+      .optional()
+      .transform(() => InteractTabsIndex.Read),
+  ]),
+  selectedFn: z.string().optional(),
 });
 
 export enum TxsTabIndex {

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -71,14 +71,18 @@ export const useEvmContractInfoSequencer = (address: HexAddr20) => {
   );
 };
 
-export const useEthCall = (to: HexAddr20, data: string) => {
+export const useEthCall = (
+  to: HexAddr20,
+  data: string,
+  options: UseQueryOptions<string>
+) => {
   const { address } = useCurrentChain();
   const hexAddr = address
     ? zHexAddr20.parse(bech32AddressToHex(address))
     : undefined;
   const evm = useEvmConfig({ shouldRedirect: false });
 
-  return useQuery(
+  return useQuery<string>(
     [
       CELATONE_QUERY_KEYS.EVM_ETH_CALL,
       evm.enabled && evm.jsonRpc,
@@ -95,6 +99,7 @@ export const useEthCall = (to: HexAddr20, data: string) => {
       retry: false,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
+      ...options,
     }
   );
 };

@@ -3,6 +3,7 @@ import Big from "big.js";
 
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
+import { Option } from "lib/types";
 import { coinToTokenWithValue, formatTokenWithValue } from "lib/utils";
 
 export const EstimatedFeeEvmRender = ({
@@ -10,8 +11,8 @@ export const EstimatedFeeEvmRender = ({
   gasUsed,
   loading,
 }: {
-  gasPrice: Big;
-  gasUsed: Big;
+  gasPrice: Option<Big>;
+  gasUsed: Option<Big>;
   loading: boolean;
 }) => {
   const { data: assetInfos, isLoading: isAssetInfoLoading } = useAssetInfos({
@@ -29,7 +30,7 @@ export const EstimatedFeeEvmRender = ({
     );
 
   const feeDenom = evmParams?.params.feeDenom;
-  if (!feeDenom) return <>--</>;
+  if (!gasPrice || !gasUsed || !feeDenom) return <>--</>;
 
   const feeAmount = gasPrice.mul(gasUsed);
   const feeToken = coinToTokenWithValue(

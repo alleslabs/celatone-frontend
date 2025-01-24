@@ -1,18 +1,20 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 
+import { toBeHex } from "ethers";
 import { useCelatoneApp } from "lib/app-provider";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { useCurrentChain } from "lib/app-provider/hooks";
-import type { HexAddr20, Option } from "lib/types";
+import { type HexAddr20, type Option } from "lib/types";
+import { bech32AddressToHex } from "lib/utils";
 import { SimulatedFeeEvm } from "../types";
 import { getSimulateFeeEvm } from "./jsonRpc";
-import { bech32AddressToHex } from "lib/utils";
 
 interface SimulateQueryEvmParams {
   enabled: boolean;
   to: HexAddr20;
   data: string;
+  value: string;
   retry?: UseQueryOptions["retry"];
   extraQueryKey?: UseQueryOptions["queryKey"];
   onSuccess?: (gas: Option<SimulatedFeeEvm>) => void;
@@ -23,6 +25,7 @@ export const useSimulateFeeEvmQuery = ({
   enabled,
   to,
   data,
+  value,
   retry = 2,
   extraQueryKey = [],
   onSuccess,
@@ -41,6 +44,7 @@ export const useSimulateFeeEvmQuery = ({
       address,
       to,
       data,
+      value,
       ...extraQueryKey,
     ],
     queryFn: async () => {
@@ -53,6 +57,7 @@ export const useSimulateFeeEvmQuery = ({
         from: bech32AddressToHex(address),
         to,
         data,
+        value: toBeHex(value),
       });
     },
     enabled: enabled && !!address,
