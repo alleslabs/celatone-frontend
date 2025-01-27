@@ -69,7 +69,7 @@ const EvmContractDetailsBody = ({
     useGetEvmProxyTarget(contractAddress);
   const {
     data: proxyTargetEvmVerifyInfo,
-    isLoading: isProxyTargetEvmVerifyInfoLoading,
+    isFetching: isProxyTargetEvmVerifyInfoFetching,
   } = useEvmVerifyInfo(proxyTarget?.target);
 
   const { data: evmHash } = useEvmTxHashByCosmosTxHash(
@@ -110,7 +110,7 @@ const EvmContractDetailsBody = ({
     isEvmCodesByAddressLoading ||
     isEvmVerifyInfoLoading ||
     isProxyTargetLoading ||
-    isProxyTargetEvmVerifyInfoLoading
+    isProxyTargetEvmVerifyInfoFetching
   )
     return <Loading />;
   if (!evmCodesByAddressData)
