@@ -6,6 +6,7 @@ export const zHex = z.string().regex(/^0x[0-9a-fA-F]*$/, {
   message:
     "Invalid hex string format. Must start with '0x' followed by hex digits.",
 });
+export type Hex = z.infer<typeof zHex>;
 
 export const zHexBig = zHex.transform((hex) => big(BigInt(hex).toString()));
 

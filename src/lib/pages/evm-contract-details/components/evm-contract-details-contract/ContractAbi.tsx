@@ -1,9 +1,9 @@
 import { Heading, Stack } from "@chakra-ui/react";
+import { JsonFragment } from "ethers";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
-import { jsonPrettify } from "lib/utils";
 
 interface ContractAbiProps {
-  abi: string;
+  abi: JsonFragment[];
 }
 
 export const ContractAbi = ({ abi }: ContractAbiProps) => (
@@ -11,6 +11,6 @@ export const ContractAbi = ({ abi }: ContractAbiProps) => (
     <Heading as="h6" variant="h7">
       Contract ABI
     </Heading>
-    <JsonReadOnly text={jsonPrettify(abi)} />
+    <JsonReadOnly text={JSON.stringify(abi, null, 2)} />
   </Stack>
 );

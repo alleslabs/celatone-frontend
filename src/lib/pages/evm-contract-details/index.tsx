@@ -19,12 +19,13 @@ import { useBalanceInfos } from "lib/services/bank";
 import {
   useEvmCodesByAddress,
   useEvmContractInfoSequencer,
+  useGetEvmProxyTarget,
 } from "lib/services/evm";
 import { useEvmTxHashByCosmosTxHash } from "lib/services/tx";
 import type { HexAddr20 } from "lib/types";
 import { isHexWalletAddress, truncate } from "lib/utils";
 
-import { EvmContractDetailsContract } from "./components/EvmContractDetailsContarct";
+import { EvmContractDetailsContract } from "./components/evm-contract-details-contract";
 import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
@@ -35,7 +36,7 @@ import {
   zEvmContractDetailsQueryParams,
 } from "./types";
 import { InteractEvmContract } from "./components/interact-evm-contract";
-import { EVM_ABI } from "./dummy";
+import { useEvmVerifyInfo } from "lib/services/verification/evm";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
@@ -62,6 +63,15 @@ const EvmContractDetailsBody = ({
     useEvmCodesByAddress(contractAddress);
   const { data: evmContractInfoData, isLoading: isEvmContractInfoLoading } =
     useEvmContractInfoSequencer(contractAddress);
+  const { data: evmVerifyInfo, isLoading: isEvmVerifyInfoLoading } =
+    useEvmVerifyInfo(contractAddress);
+  const { data: proxyTarget, isLoading: isProxyTargetLoading } =
+    useGetEvmProxyTarget(contractAddress);
+  const {
+    data: proxyTargetEvmVerifyInfo,
+    isLoading: isProxyTargetEvmVerifyInfoLoading,
+  } = useEvmVerifyInfo(proxyTarget?.target);
+
   const { data: evmHash } = useEvmTxHashByCosmosTxHash(
     evmContractInfoData?.hash
   );
@@ -96,7 +106,13 @@ const EvmContractDetailsBody = ({
     handleTabChange(TabIndex.Transactions)();
   }, [handleTabChange, overviewTabIndex]);
 
-  if (isEvmCodesByAddressLoading) return <Loading />;
+  if (
+    isEvmCodesByAddressLoading ||
+    isEvmVerifyInfoLoading ||
+    isProxyTargetLoading ||
+    isProxyTargetEvmVerifyInfoLoading
+  )
+    return <Loading />;
   if (!evmCodesByAddressData)
     return <ErrorFetching dataName="evm contract information" />;
   if (!evmCodesByAddressData.code) return <InvalidContract />;
@@ -139,9 +155,10 @@ const EvmContractDetailsBody = ({
               {/* TODO: move to a proper location */}
               <InteractEvmContract
                 contractAddress={contractAddress}
-                contractAbi={EVM_ABI}
+                contractAbi={evmVerifyInfo?.abi ?? []}
                 selectedType={selectedType}
                 selectedFn={selectedFn}
+                proxyTargetAbi={proxyTargetEvmVerifyInfo?.abi}
               />
               <EvmContractDetailsOverview
                 contractAddressBech={contractAddressBechAddr}
@@ -162,6 +179,7 @@ const EvmContractDetailsBody = ({
                 deployedByteCode={evmCodesByAddressData.code}
                 byteCode={evmContractInfoData?.code}
                 contractAddress={contractAddress}
+                evmVerifyInfo={evmVerifyInfo}
               />
             </TabPanel>
             <TabPanel p={0}>
