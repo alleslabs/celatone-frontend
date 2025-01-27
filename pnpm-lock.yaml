@@ -163,7 +163,7 @@ importers:
         version: 1.1.0(next@14.2.23(@babel/core@7.26.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(svelte@4.2.19)
       ace-builds:
         specifier: ^1.12.5
-        version: 1.37.3
+        version: 1.37.5
       axios:
         specifier: ^1.7.4
         version: 1.7.9
@@ -4763,8 +4763,8 @@ packages:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
     engines: {node: '>= 0.6'}
 
-  ace-builds@1.37.3:
-    resolution: {integrity: sha512-LXMNR57LGyUaJZoAXqVuy6x/ipQvj62iKUHv0DlOb57DNRiV3ZIvYNTVeBHCkUeQAc3BBmyLWC2uvMixSbhj9Q==}
+  ace-builds@1.37.5:
+    resolution: {integrity: sha512-VMJ4Cnhq6L9dwvOCyuyyvQuiVTSwdZC7zDKJBBBJJax0wGQ7MvzQZFoi0gMmCm2I4Zuv/ZbtwU/dlglIhCNLhw==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -17501,7 +17501,7 @@ snapshots:
       mime-types: 2.1.35
       negotiator: 0.6.3
 
-  ace-builds@1.37.3: {}
+  ace-builds@1.37.5: {}
 
   acorn-jsx@5.3.2(acorn@7.4.1):
     dependencies:
@@ -22549,7 +22549,7 @@ snapshots:
 
   react-ace@10.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      ace-builds: 1.37.3
+      ace-builds: 1.37.5
       diff-match-patch: 1.0.5
       lodash.get: 4.4.2
       lodash.isequal: 4.5.0

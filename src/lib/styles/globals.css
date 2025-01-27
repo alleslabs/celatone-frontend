@@ -27,3 +27,8 @@ div[data-floating-ui-portal] {
   visibility: hidden;
   background-color: unset;
 }
+
+/* For update on window shrink down */
+.monaco-editor {
+  position: absolute !important;
+}
