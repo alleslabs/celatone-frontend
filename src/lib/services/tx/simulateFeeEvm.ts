@@ -57,7 +57,7 @@ export const useSimulateFeeEvmQuery = ({
         from: bech32AddressToHex(address),
         to,
         data,
-        value: toBeHex(value),
+        value: value ? toBeHex(value) : null,
       });
     },
     enabled: enabled && !!address,

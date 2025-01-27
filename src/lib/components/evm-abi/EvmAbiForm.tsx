@@ -39,7 +39,7 @@ export const EvmAbiForm = ({
   const { inputs, value } = watch();
 
   useEffect(() => {
-    reset({ inputs: defaultValues });
+    reset({ inputs: defaultValues, value: "" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(defaultValues), reset]);
 

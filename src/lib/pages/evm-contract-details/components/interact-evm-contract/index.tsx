@@ -3,12 +3,12 @@ import { JsonFragment } from "ethers";
 import { useInternalNavigate } from "lib/app-provider";
 import { TypeSwitch } from "lib/components/TypeSwitch";
 import { HexAddr20, Option } from "lib/types";
+import { isUndefined } from "lodash";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { InteractTabsIndex } from "../../types";
 import { getInteractTabsIndex } from "../../utils";
 import { AbiRead } from "./abi-read";
 import { AbiWrite } from "./abi-write";
-import { isUndefined } from "lodash";
 
 const EVM_CONTRACT_INTERACT_PATH_NAME = "/evm-contracts/[contractAddress]";
 
@@ -22,7 +22,7 @@ interface InteractEvmContractProps {
   contractAbi: JsonFragment[];
   selectedType: InteractTabsIndex;
   selectedFn?: string;
-  proxyTarget?: HexAddr20;
+  proxyTargetAbi?: JsonFragment[];
 }
 
 export const InteractEvmContract = ({
@@ -30,20 +30,17 @@ export const InteractEvmContract = ({
   contractAbi,
   selectedType,
   selectedFn,
-  proxyTarget,
+  proxyTargetAbi,
 }: InteractEvmContractProps) => {
   const navigate = useInternalNavigate();
 
   const interactType = selectedType.startsWith("read")
     ? InteractType.Read
     : InteractType.Write;
-  const isAsProxy = !isUndefined(proxyTarget) && selectedType.endsWith("proxy");
+  const isAsProxy =
+    !isUndefined(proxyTargetAbi) && selectedType.endsWith("proxy");
 
   const [initialSelectedFn, setInitialSelectedFn] = useState<Option<string>>();
-
-  const proxiedContractAbi = !isUndefined(proxyTarget)
-    ? contractAbi.toReversed()
-    : [];
 
   const abiRead: JsonFragment[] = [];
   const abiWrite: JsonFragment[] = [];
@@ -56,7 +53,7 @@ export const InteractEvmContract = ({
 
   const abiReadProxy: JsonFragment[] = [];
   const abiWriteProxy: JsonFragment[] = [];
-  proxiedContractAbi.forEach((abi) => {
+  proxyTargetAbi?.forEach((abi) => {
     if (abi.type === "function") {
       if (abi.stateMutability?.endsWith("payable")) abiWriteProxy.push(abi);
       else abiReadProxy.push(abi);
@@ -116,7 +113,7 @@ export const InteractEvmContract = ({
           onTabChange={handleSetInteractType}
         />
       </Flex>
-      {!isUndefined(proxyTarget) && (
+      {!isUndefined(proxyTargetAbi) && (
         <Flex gap={2} align="center" mb={8}>
           <Switch isChecked={isAsProxy} onChange={handleSetIsAsProxy} />
           <Text variant="body2">Read/Write as Proxy Contract</Text>
@@ -136,7 +133,7 @@ export const InteractEvmContract = ({
                 ? "block"
                 : "none",
           },
-          ...(!isUndefined(proxyTarget) && {
+          ...(!isUndefined(proxyTargetAbi) && {
             "& .read-proxy": {
               display:
                 interactType === InteractType.Read && isAsProxy
@@ -166,7 +163,7 @@ export const InteractEvmContract = ({
             selectedFn={initialSelectedFn}
           />
         </div>
-        {!isUndefined(proxyTarget) && (
+        {!isUndefined(proxyTargetAbi) && (
           <>
             <div className="read-proxy">
               <AbiRead

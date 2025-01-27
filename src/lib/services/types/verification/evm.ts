@@ -1,3 +1,4 @@
+import { JsonFragment } from "ethers";
 import { zHexAddr20, zUtcDate } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 import { z } from "zod";
@@ -66,4 +67,8 @@ export const zEvmVerifyInfo = z
     settings: z.string(),
     source_files: z.array(zEvmVerifyInfoSourceFile),
   })
-  .transform(snakeToCamel);
+  .transform(({ abi, ...rest }) => ({
+    abi: JSON.parse(abi) as JsonFragment[],
+    ...snakeToCamel(rest),
+  }));
+export type EvmVerifyInfo = z.infer<typeof zEvmVerifyInfo>;

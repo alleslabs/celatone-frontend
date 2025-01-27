@@ -1,4 +1,4 @@
-import { requestBatchJsonRpc } from "../evm/jsonRpc";
+import { requestBatchJsonRpc } from "../evm/json-rpc";
 import { zBlockDataJsonRpc } from "../types";
 import { numberToHex, parseWithError } from "lib/utils";
 

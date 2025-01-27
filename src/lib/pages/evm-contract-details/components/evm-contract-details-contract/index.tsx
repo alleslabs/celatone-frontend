@@ -1,42 +1,36 @@
 import { Flex, Stack } from "@chakra-ui/react";
 import { NotVerifiedDetails } from "lib/components/evm-verify-section";
-import { HexAddr20 } from "lib/types";
-import { EvmContractDetailsContractTabs } from "../../types";
-import { useEffect, useState } from "react";
 import { TypeSwitch } from "lib/components/TypeSwitch";
-import { ContractByteCode, ContractByteCodeProps } from "./ContractByteCode";
+import { EvmVerifyInfo } from "lib/services/types";
+import { HexAddr20, Option } from "lib/types";
+import { useState } from "react";
+import { EvmContractDetailsContractTabs } from "../../types";
 import { ContractAbi } from "./ContractAbi";
-import { useEvmVerifyInfo } from "lib/services/verification/evm";
-import { Loading } from "lib/components/Loading";
+import { ContractByteCode, ContractByteCodeProps } from "./ContractByteCode";
 import { ContractCompiler } from "./ContractCompiler";
 
 interface EvmContractDetailsContractProps extends ContractByteCodeProps {
   contractAddress: HexAddr20;
+  evmVerifyInfo: Option<EvmVerifyInfo>;
 }
 
 export const EvmContractDetailsContract = ({
   contractAddress,
   byteCode,
   deployedByteCode,
+  evmVerifyInfo,
 }: EvmContractDetailsContractProps) => {
-  const { data, isLoading } = useEvmVerifyInfo(contractAddress);
-
   const [currentTab, setCurrentTab] = useState(
-    EvmContractDetailsContractTabs.Code
+    evmVerifyInfo
+      ? EvmContractDetailsContractTabs.Code
+      : EvmContractDetailsContractTabs.ByteCode
   );
-
-  useEffect(() => {
-    if (isLoading || data) return;
-    setCurrentTab(EvmContractDetailsContractTabs.ByteCode);
-  }, [isLoading, data]);
-
-  if (isLoading) return <Loading />;
 
   return (
     <Stack gap={8}>
       {/* // TODO: Support all status */}
       <NotVerifiedDetails contractAddress={contractAddress} />
-      {data && (
+      {evmVerifyInfo && (
         <>
           <Flex>
             <TypeSwitch
@@ -46,10 +40,10 @@ export const EvmContractDetailsContract = ({
             />
           </Flex>
           {currentTab === EvmContractDetailsContractTabs.Compiler && (
-            <ContractCompiler compilerSettings={data.settings} />
+            <ContractCompiler compilerSettings={evmVerifyInfo.settings} />
           )}
           {currentTab === EvmContractDetailsContractTabs.Abi && (
-            <ContractAbi abi={data.abi} />
+            <ContractAbi abi={evmVerifyInfo.abi} />
           )}
         </>
       )}

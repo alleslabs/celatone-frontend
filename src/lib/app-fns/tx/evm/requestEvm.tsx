@@ -34,7 +34,12 @@ export const requestEvmTx = ({
   return pipe(
     sendingEvmTx(estimatedFee),
     postEvmTx<TxReceiptJsonRpc>({
-      postFn: () => signAndBroadcastEvm({ to, data, value: toBeHex(value) }),
+      postFn: () =>
+        signAndBroadcastEvm({
+          to,
+          data,
+          value: value ? toBeHex(value) : null,
+        }),
     }),
     (txResult) => {
       onTxSucceed?.();
