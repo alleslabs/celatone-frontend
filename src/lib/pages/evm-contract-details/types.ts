@@ -17,10 +17,10 @@ export enum InteractTabsIndex {
 }
 
 export enum EvmContractDetailsContractTabs {
-  Code = "code",
-  Compiler = "compiler",
-  Abi = "abi",
-  ByteCode = "byteCode",
+  Code = "Code",
+  Compiler = "Compiler",
+  Abi = "ABI",
+  ByteCode = "ByteCode",
 }
 
 export const zEvmContractDetailsQueryParams = z.object({
