@@ -1,7 +1,10 @@
 import { last, split } from "lodash";
 import { EXTENSION_LIB, FilePath, SourceTreeNode } from "./types";
 
-export const generateSourceTree = (filesPath: FilePath[]): SourceTreeNode[] => {
+export const generateSourceTree = (
+  filesPath: FilePath[],
+  initialFilePath: string
+): SourceTreeNode[] => {
   const root: SourceTreeNode[] = [];
 
   filesPath.forEach(({ path, code }) => {
@@ -14,10 +17,12 @@ export const generateSourceTree = (filesPath: FilePath[]): SourceTreeNode[] => {
       if (!existingNode) {
         const extension = last(split(part, "."));
         const isFolder = extension ? !EXTENSION_LIB.includes(extension) : false;
+        const isInitializeNodePath = initialFilePath === path;
+        const isOpen = index === 0 ? true : false || isInitializeNodePath;
 
         existingNode = {
           name: part,
-          isOpen: index === 0 ? true : false,
+          isOpen,
           children: [],
           isFolder,
           treeLevel: index,

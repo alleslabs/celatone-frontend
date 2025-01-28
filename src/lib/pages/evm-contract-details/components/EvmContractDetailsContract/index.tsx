@@ -50,6 +50,7 @@ export const EvmContractDetailsContract = ({
             <ContractCode
               sourceFiles={data.sourceFiles}
               contractPath={data.contractPath}
+              constructorArguments={data.constructorArguments}
             />
           )}
           {currentTab === EvmContractDetailsContractTabs.Compiler && (

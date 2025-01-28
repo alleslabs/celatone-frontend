@@ -6,17 +6,29 @@ import { useEffect, useState } from "react";
 import { EditorTop } from "./EditorTop";
 import { Nullable } from "lib/types";
 import { Editor } from "./Editor";
+import { useMobile } from "lib/app-provider";
+import {
+  FullEditorSidebarMobile,
+  FullEditorSidebarMobileProps,
+} from "./FullEditorSidebarMobile";
 
-interface FullEditorProps {
+interface FullEditorProps
+  extends Pick<FullEditorSidebarMobileProps, "isOpen" | "onClose"> {
   filesPath: FilePath[];
   initialFilePath: string;
 }
 
-export const FullEditor = ({ filesPath, initialFilePath }: FullEditorProps) => {
+export const FullEditor = ({
+  filesPath,
+  initialFilePath,
+  isOpen,
+  onClose,
+}: FullEditorProps) => {
+  const isMobile = useMobile();
   const [filesList, setFilesList] = useState<SourceTreeNode[]>([]);
   const [selectedFile, setSelectedFile] =
     useState<Nullable<SourceTreeNode>>(null);
-  const generatedSourceTree = generateSourceTree(filesPath);
+  const generatedSourceTree = generateSourceTree(filesPath, initialFilePath);
 
   const handleFindInitialFile = (tree: SourceTreeNode[]) => {
     return tree.forEach((node) => {
@@ -39,6 +51,7 @@ export const FullEditor = ({ filesPath, initialFilePath }: FullEditorProps) => {
 
   const handleUpdateFilesList = (node: SourceTreeNode) => {
     setSelectedFile(node);
+    onClose();
     const foundNode = filesList.find((n) => n.path === node.path);
     if (foundNode) return;
     setFilesList([...filesList, node]);
@@ -52,18 +65,34 @@ export const FullEditor = ({ filesPath, initialFilePath }: FullEditorProps) => {
   };
 
   return (
-    <Grid gridTemplateColumns="200px 1fr">
-      <Stack gap={1} px={4} pt={4} bg="gray.900" height="472px">
-        <Text variant="body2">Files</Text>
-        <Box overflow="auto" flexGrow={1} pb={4}>
-          <EditorSidebar
-            initialFilePath={initialFilePath}
-            sourceTreeNode={generatedSourceTree}
-            onClick={handleUpdateFilesList}
-            selectedFile={selectedFile}
-          />
-        </Box>
-      </Stack>
+    <Grid
+      gridTemplateColumns={{
+        base: "1fr",
+        md: "200px 1fr",
+      }}
+    >
+      {isMobile ? (
+        <FullEditorSidebarMobile
+          isOpen={isOpen}
+          onClose={onClose}
+          initialFilePath={initialFilePath}
+          sourceTreeNode={generatedSourceTree}
+          onClick={handleUpdateFilesList}
+          selectedFile={selectedFile}
+        />
+      ) : (
+        <Stack gap={1} px={4} pt={4} bg="gray.900" height="472px">
+          <Text variant="body2">Files</Text>
+          <Box overflow="auto" flexGrow={1} pb={4}>
+            <EditorSidebar
+              initialFilePath={initialFilePath}
+              sourceTreeNode={generatedSourceTree}
+              onClick={handleUpdateFilesList}
+              selectedFile={selectedFile}
+            />
+          </Box>
+        </Stack>
+      )}
       <Box>
         <EditorTop
           selectedFile={selectedFile}

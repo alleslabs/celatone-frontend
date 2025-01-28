@@ -4,7 +4,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { EditorFileBody } from "./EditorFileBody";
 import { Nullable } from "lib/types";
 
-interface EditorSidebarProps {
+export interface EditorSidebarProps {
   sourceTreeNode: SourceTreeNode[];
   selectedFile: Nullable<SourceTreeNode>;
   initialFilePath: string;

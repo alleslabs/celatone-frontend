@@ -20,6 +20,7 @@ export const Editor = ({ ...props }: EditorProps) => (
     options={{
       readOnly: true,
       scrollBeyondLastLine: false,
+      automaticLayout: true,
     }}
     {...props}
   />
