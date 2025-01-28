@@ -141,7 +141,7 @@ export const ReadBox = ({
                   variant="primary"
                   size="sm"
                   onClick={handleRead}
-                  isDisabled={!isUndefined(data)}
+                  isDisabled={isUndefined(data)}
                   isLoading={isFetching}
                   leftIcon={<CustomIcon name="query" />}
                   ml="auto"
