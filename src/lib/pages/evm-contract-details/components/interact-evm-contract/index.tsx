@@ -9,10 +9,12 @@ import { InteractTabsIndex } from "../../types";
 import { getInteractTabsIndex } from "../../utils";
 import { AbiRead } from "./abi-read";
 import { AbiWrite } from "./abi-write";
+import { categorizeAbi } from "./utils";
 
-const EVM_CONTRACT_INTERACT_PATH_NAME = "/evm-contracts/[contractAddress]";
+export const EVM_CONTRACT_INTERACT_PATH_NAME =
+  "/evm-contracts/[contractAddress]";
 
-enum InteractType {
+export enum InteractType {
   Read = "read",
   Write = "write",
 }
@@ -42,23 +44,10 @@ export const InteractEvmContract = ({
 
   const [initialSelectedFn, setInitialSelectedFn] = useState<Option<string>>();
 
-  const abiRead: JsonFragment[] = [];
-  const abiWrite: JsonFragment[] = [];
-  contractAbi.forEach((abi) => {
-    if (abi.type === "function") {
-      if (abi.stateMutability?.endsWith("payable")) abiWrite.push(abi);
-      else abiRead.push(abi);
-    }
-  });
-
-  const abiReadProxy: JsonFragment[] = [];
-  const abiWriteProxy: JsonFragment[] = [];
-  proxyTargetAbi?.forEach((abi) => {
-    if (abi.type === "function") {
-      if (abi.stateMutability?.endsWith("payable")) abiWriteProxy.push(abi);
-      else abiReadProxy.push(abi);
-    }
-  });
+  const { read: abiRead, write: abiWrite } = categorizeAbi(contractAbi);
+  const { read: abiReadProxy, write: abiWriteProxy } = categorizeAbi(
+    proxyTargetAbi ?? []
+  );
 
   // ------------------------------------------//
   // ----------------CALLBACKS-----------------//

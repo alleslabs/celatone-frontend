@@ -75,8 +75,7 @@ export const ReadBox = ({
   // ------------------------------------------//
   // -------------------LOGICS-----------------//
   // ------------------------------------------//
-  const inputRequired =
-    abiSection.inputs && abiSection.inputs.length > 0 ? true : false;
+  const inputRequired = !!abiSection.inputs?.length;
   const data = useMemo(
     () => encodeEvmFunctionData(abiSection, inputs),
     [abiSection, inputs]

@@ -78,7 +78,7 @@ export const AbiRead = ({
           ))}
         </Accordion>
       ) : (
-        <EmptyState imageVariant="empty" message="No write function found." />
+        <EmptyState imageVariant="empty" message="No read function found." />
       )}
     </>
   );

@@ -1,7 +1,19 @@
-export const findIndexOpt = <T = unknown[]>(
-  array: T[],
-  predicate: (value: T) => boolean
-) => {
-  const index = array.findIndex(predicate);
-  return index === -1 ? undefined : index;
+import { JsonFragment } from "ethers";
+
+export const categorizeAbi = (abi: JsonFragment[]) => {
+  const read: JsonFragment[] = [];
+  const write: JsonFragment[] = [];
+
+  abi.forEach((item) => {
+    if (item.type !== "function") return;
+
+    const stateMutability = item.stateMutability;
+    if (stateMutability === "view" || stateMutability === "pure") {
+      read.push(item);
+    } else {
+      write.push(item);
+    }
+  });
+
+  return { read, write };
 };

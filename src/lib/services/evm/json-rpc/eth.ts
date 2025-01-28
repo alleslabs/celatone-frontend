@@ -1,7 +1,7 @@
+import { zTxReceiptJsonRpc } from "lib/services/types";
 import { HexAddr20, Nullable, zHex } from "lib/types";
 import { parseWithError } from "lib/utils";
 import { requestJsonRpc } from ".";
-import { zTxReceiptJsonRpc } from "lib/services/types";
 
 export const getEthCall = (
   endpoint: string,
@@ -19,11 +19,17 @@ export const getEthGetTransactionReceipt = (endpoint: string, txHash: string) =>
   );
 
 export const getEthGetCode = (endpoint: string, address: HexAddr20) =>
-  requestJsonRpc(endpoint, "eth_getCode", [address, "latest"]);
+  requestJsonRpc(endpoint, "eth_getCode", [address, "latest"]).then((result) =>
+    parseWithError(zHex, result)
+  );
 
 export const getEthGetStorageAt = (
   endpoint: string,
   address: HexAddr20,
   position: string
 ) =>
-  requestJsonRpc(endpoint, "eth_getStorageAt", [address, position, "latest"]);
+  requestJsonRpc(endpoint, "eth_getStorageAt", [
+    address,
+    position,
+    "latest",
+  ]).then((result) => parseWithError(zHex, result));
