@@ -3,6 +3,7 @@ import { SourceTreeNode } from "./types";
 import { EditorFileBody } from "./EditorFileBody";
 import { CustomIcon } from "../icon";
 import { Nullable } from "lib/types";
+import { Fragment } from "react";
 
 interface EditorTopProps {
   filesList: SourceTreeNode[];
@@ -52,7 +53,7 @@ export const EditorTop = ({
               borderRightColor: "gray.700",
               borderBottomColor: isSelected ? vsCodeDarkColor : "gray.700",
               bgColor: isSelected ? vsCodeDarkColor : "gray.900",
-              "&:first-child": {
+              "&:first-of-type": {
                 borderLeftColor: vsCodeDarkColor,
               },
             }}
@@ -89,14 +90,14 @@ export const EditorTop = ({
           borderTopColor="gray.700"
         >
           {selectedFile.path.split("/").map((path, index) => (
-            <>
+            <Fragment key={`${path}-${index}`}>
               {index !== 0 && (
                 <CustomIcon name="chevron-right" boxSize={3} color="gray.600" />
               )}
               <Text color="gray.600" variant="body3">
                 {path}
               </Text>
-            </>
+            </Fragment>
           ))}
         </Flex>
       </Box>
