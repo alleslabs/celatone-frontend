@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1210](https://github.com/alleslabs/celatone-frontend/pull/1210) Add EVM contract details code preview
 - [#1207](https://github.com/alleslabs/celatone-frontend/pull/1207) Add EVM contract details compiler settings
 - [#1206](https://github.com/alleslabs/celatone-frontend/pull/1206) Add EVM contract details abi
 - [#1204](https://github.com/alleslabs/celatone-frontend/pull/1204) Add EVM contract details deployed bytecode
