@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import {
   CELATONE_QUERY_KEYS,
+  useCelatoneApp,
   useCurrentChain,
   useLcdEndpoint,
 } from "lib/app-provider";
@@ -15,12 +16,21 @@ import {
 } from "./lcd";
 
 export const useEvmParams = () => {
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: {
+      lcd: lcdEndpoint,
+      features: { evm },
+    },
+  } = useCelatoneApp();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.EVM_PARAMS_LCD, lcdEndpoint],
-    async () => getEvmParams(lcdEndpoint),
+    async () => {
+      if (!evm.enabled) throw new Error("EVM is not enabled (useEvmParams)");
+      return getEvmParams(lcdEndpoint);
+    },
     {
+      enabled: evm.enabled,
       refetchOnWindowFocus: false,
       retry: false,
       staleTime: Infinity,

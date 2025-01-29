@@ -6,14 +6,17 @@ import { LabelText } from "lib/components/LabelText";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import type { TxData } from "lib/services/types";
+import { Option, Ratio } from "lib/types";
 import {
-  coinToTokenWithValue,
+  computeCosmosFee,
   formatInteger,
+  formatPrettyPercent,
   formatTokenWithValue,
 } from "lib/utils";
 
 interface TxInfoMobileProps extends FlexProps {
   txData: TxData;
+  gasRefundRatio: Option<Ratio<number>>;
 }
 
 const Container = chakra(Flex, {
@@ -27,7 +30,11 @@ const Container = chakra(Flex, {
   },
 });
 
-export const TxInfoMobile = ({ txData, ...flexProps }: TxInfoMobileProps) => {
+export const TxInfoMobile = ({
+  txData,
+  gasRefundRatio,
+  ...flexProps
+}: TxInfoMobileProps) => {
   const { data: assetInfos } = useAssetInfos({
     withPrices: true,
   });
@@ -36,14 +43,14 @@ export const TxInfoMobile = ({ txData, ...flexProps }: TxInfoMobileProps) => {
   });
 
   const feeCoin = txData.tx.authInfo.fee?.amount[0];
-  const feeToken = feeCoin
-    ? coinToTokenWithValue(
-        feeCoin.denom,
-        feeCoin.amount,
-        assetInfos,
-        movePoolInfos
-      )
-    : undefined;
+  const feeToken = computeCosmosFee(
+    feeCoin,
+    txData.gasUsed,
+    txData.gasWanted,
+    gasRefundRatio,
+    assetInfos,
+    movePoolInfos
+  );
   return (
     <Container {...flexProps}>
       <Flex>
@@ -75,6 +82,11 @@ export const TxInfoMobile = ({ txData, ...flexProps }: TxInfoMobileProps) => {
           )}`}
         </LabelText>
       </Flex>
+      {gasRefundRatio && (
+        <LabelText flex={1} label="Gas Refund Percentage">
+          {`${formatPrettyPercent(gasRefundRatio, 2, true)}`}
+        </LabelText>
+      )}
       <LabelText label="Memo">
         {txData.tx.body.memo || (
           <Text variant="body2" color="text.dark">
