@@ -19,13 +19,20 @@ import { ProxyResult } from "./json-rpc/proxy/types";
 
 export const useEvmParams = () => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: {
+      lcd: lcdEndpoint,
+      features: { evm },
+    },
   } = useCelatoneApp();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.EVM_PARAMS_LCD, lcdEndpoint],
-    async () => getEvmParams(lcdEndpoint),
+    async () => {
+      if (!evm.enabled) throw new Error("EVM is not enabled (useEvmParams)");
+      return getEvmParams(lcdEndpoint);
+    },
     {
+      enabled: evm.enabled,
       refetchOnWindowFocus: false,
       retry: false,
       staleTime: Infinity,
