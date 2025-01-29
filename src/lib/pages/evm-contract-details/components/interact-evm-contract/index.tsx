@@ -14,7 +14,7 @@ import { categorizeAbi } from "./utils";
 export const EVM_CONTRACT_INTERACT_PATH_NAME =
   "/evm-contracts/[contractAddress]";
 
-export enum InteractType {
+enum InteractType {
   Read = "read",
   Write = "write",
 }
