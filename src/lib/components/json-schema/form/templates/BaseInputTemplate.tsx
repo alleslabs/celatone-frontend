@@ -150,7 +150,7 @@ export default function BaseInputTemplate<
   if (inputProps.type === "number" || inputProps.type === "integer") {
     inputValue = value || value === 0 ? value : "";
   } else {
-    inputValue = value == null ? "" : value;
+    inputValue = value === null ? "" : value;
   }
 
   const handleOnChange = useCallback(

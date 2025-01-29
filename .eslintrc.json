@@ -1,5 +1,34 @@
 {
+  "plugins": ["@typescript-eslint", "sonarjs"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:@next/next/recommended",
+    "plugin:storybook/recommended"
+  ],
   "rules": {
+    // eslint basic
+    "no-undef": "off",
+    "no-console": "error",
+    "no-unused-vars": "off",
+    "strict": ["error", "global"],
+    "consistent-return": "error",
+    "no-else-return": "error",
+    "no-param-reassign": [
+      "error",
+      { "props": true, "ignorePropertyModificationsFor": ["acc"] }
+    ],
+    // "no-use-before-define": "error",
+    "object-shorthand": "error",
+    "prefer-const": "error",
+    "eqeqeq": "error",
+    "semi": "error",
+
+    "@typescript-eslint/no-empty-object-type": "off",
+    "sonarjs/no-duplicate-string": ["error", { "threshold": 3 }],
+    "sonarjs/cognitive-complexity": ["error", 27],
     "react/jsx-no-useless-fragment": [
       "error",
       {
@@ -9,14 +38,13 @@
     "sort-imports": [
       "error",
       { "ignoreCase": true, "ignoreDeclarationSort": true }
-    ]
+    ],
+
+    // temp remove
+    "@typescript-eslint/no-unused-vars": "off",
+    "no-use-before-define": "off"
   },
-  "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/jsx-runtime",
-    "plugin:@next/next/recommended",
-    "plugin:storybook/recommended"
-  ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": ["./tsconfig.json"]
   }
