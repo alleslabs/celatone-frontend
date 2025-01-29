@@ -24,7 +24,7 @@ import { useEvmTxHashByCosmosTxHash } from "lib/services/tx";
 import type { HexAddr20 } from "lib/types";
 import { isHexWalletAddress, truncate } from "lib/utils";
 
-import { EvmContractDetailsContract } from "./components/EvmContractDetailsContract";
+import { EvmContractDetailsContract } from "./components/evm-contract-details-contract";
 import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
