@@ -10,7 +10,7 @@ interface FilterInputProps {
   isDropdown: boolean;
   chipContainerComponent: JSX.Element;
   inputRef: RefObject<HTMLInputElement>;
-  ref: ForwardedRef<HTMLInputElement>;
+  mainRef: ForwardedRef<HTMLInputElement>;
   placeholder?: string;
   label?: string;
   setIsDropdown: Dispatch<SetStateAction<boolean>>;
@@ -23,7 +23,7 @@ export const FilterInput = ({
   isDropdown,
   label,
   inputRef,
-  ref,
+  mainRef,
   setIsDropdown,
   setKeyword,
   chipContainerComponent,
@@ -47,7 +47,7 @@ export const FilterInput = ({
         size="lg"
         minW="150px"
         placeholder={result.length > 0 ? "" : placeholder}
-        ref={mergeRefs([inputRef, ref])}
+        ref={mergeRefs([inputRef, mainRef])}
         maxLength={36}
         style={{ border: 0, maxHeight: "54px" }}
         onFocus={() => setIsDropdown(true)}

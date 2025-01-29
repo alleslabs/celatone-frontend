@@ -6,6 +6,7 @@ import { TypeLabel } from "./TypeLabel";
 import { useEvmParams } from "lib/services/evm";
 import { useAssetInfos } from "lib/services/assetService";
 import { getTokenLabel } from "lib/utils";
+import { Text } from "@chakra-ui/react";
 
 interface FormFieldsProps<T extends FieldValues> {
   control: Control<T>;
@@ -32,13 +33,28 @@ export const FormFields = <T extends FieldValues>({
 
   return (
     <>
-      <TupleField
-        control={control}
-        name={"inputs" as Path<T>}
-        components={components}
-        isDisabled={isDisabled}
-        withoutBorder
-      />
+      {components.length > 0 ? (
+        <TupleField
+          control={control}
+          name={"inputs" as Path<T>}
+          components={components}
+          isDisabled={isDisabled}
+          withoutBorder
+        />
+      ) : (
+        <Text
+          variant="body2"
+          textColor="text.disabled"
+          fontWeight={500}
+          bgColor="gray.800"
+          w="full"
+          py={4}
+          borderRadius="4px"
+          textAlign="center"
+        >
+          Empty {isDisabled ? "Output" : "Input"}
+        </Text>
+      )}
       {isPayable && (
         <TypeLabel
           label={`Send native${feeLabel ? ` ${feeLabel}` : ""}`}
@@ -46,7 +62,7 @@ export const FormFields = <T extends FieldValues>({
         >
           <BaseField
             control={control}
-            name={"payableAmount" as Path<T>}
+            name={"value" as Path<T>}
             type="uint256"
           />
         </TypeLabel>

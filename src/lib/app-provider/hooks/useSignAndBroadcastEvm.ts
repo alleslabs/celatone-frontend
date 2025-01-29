@@ -1,13 +1,9 @@
 import { useCallback } from "react";
 
 import { TransactionRequest } from "ethers";
-import { requestJsonRpc } from "lib/services/evm/jsonRpc";
-import { TxReceiptJsonRpc, zTxReceiptJsonRpc } from "lib/services/types";
-import {
-  convertCosmosChainIdToEvmChainId,
-  parseWithError,
-  sleep,
-} from "lib/utils";
+import { getEthGetTransactionReceipt } from "lib/services/evm/json-rpc";
+import { TxReceiptJsonRpc } from "lib/services/types";
+import { convertCosmosChainIdToEvmChainId, sleep } from "lib/utils";
 import { useCelatoneApp } from "../contexts";
 import { useCurrentChain } from "./useCurrentChain";
 
@@ -29,13 +25,10 @@ const getEvmTxResponse = async (jsonRpcEndpoint: string, txHash: string) => {
       );
     }
     await sleep(POLL_INTERVAL_MS);
-    const result = await requestJsonRpc(
+    const result = await getEthGetTransactionReceipt(
       jsonRpcEndpoint,
-      "eth_getTransactionReceipt",
-      [txHash]
-    )
-      .then((result) => parseWithError(zTxReceiptJsonRpc, result))
-      .catch(() => undefined);
+      txHash
+    ).catch(() => undefined);
     return result ? result : pollForEvmTx(_txHash);
   };
 

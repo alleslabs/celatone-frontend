@@ -91,6 +91,9 @@ export enum AmpEvent {
   ACTION_MOVE_EXECUTE = "Action Move Execute",
   ACTION_MOVE_PUBLISH = "Action Move Publish",
   ACTION_EXECUTE_SCRIPT = "Action Execute Script",
+  ACTION_EVM_WRITE = "Action Evm Write",
+  ACTION_EVM_READ = "Action Evm Read",
+  ACTION_EVM_READ_AGAIN = "Action Evm Read Again",
   // INTERACTS
   USE_SELECT_NETWORK = "Use Select Network",
   USE_CLICK_WALLET = "Use Click Wallet",

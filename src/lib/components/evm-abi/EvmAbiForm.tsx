@@ -8,17 +8,19 @@ import { cloneDeep } from "lodash";
 
 interface EvmAbiFormProps {
   types: ReadonlyArray<JsonFragmentType>;
-  isPayable: boolean;
+  isPayable?: boolean;
   initialData?: JsonDataType[];
-  propsOnChange?: (data: JsonDataType[]) => void;
+  propsOnChangeInputs?: (data: JsonDataType[]) => void;
+  propsOnChangeValue?: (value: string) => void;
   isDisabled?: boolean;
 }
 
 export const EvmAbiForm = ({
   types,
-  isPayable,
+  isPayable = false,
   initialData,
-  propsOnChange,
+  propsOnChangeInputs,
+  propsOnChangeValue,
   isDisabled,
 }: EvmAbiFormProps) => {
   const defaultValues = useMemo(
@@ -29,22 +31,26 @@ export const EvmAbiForm = ({
 
   const { control, reset, watch } = useForm<{
     inputs: JsonDataType[];
-    payableAmount: string;
+    value: string;
   }>({
-    defaultValues: { inputs: defaultValues, payableAmount: "" },
+    defaultValues: { inputs: defaultValues, value: "" },
     mode: "all",
   });
-  const { inputs } = watch();
+  const { inputs, value } = watch();
 
   useEffect(() => {
-    reset({ inputs: defaultValues });
+    reset({ inputs: defaultValues, value: "" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(defaultValues), reset]);
 
   useEffect(() => {
-    propsOnChange?.(cloneDeep(inputs));
+    propsOnChangeInputs?.(cloneDeep(inputs));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(inputs), propsOnChange]);
+  }, [JSON.stringify(inputs), propsOnChangeInputs]);
+
+  useEffect(() => {
+    propsOnChangeValue?.(value);
+  }, [value, propsOnChangeValue]);
 
   return (
     <FormFields

@@ -16,7 +16,7 @@ export const useExampleAddresses = () => {
 
     // reverse the bytes so the initial characters are different from the user address
     const evmContract = "0x" + toHex(Uint8Array.from(bytes20).reverse());
-    const wasmContract = toBech32(
+    const contract = toBech32(
       bech32Prefix,
       Uint8Array.from(bytes32.reverse())
     ) as BechAddr32;
@@ -25,7 +25,7 @@ export const useExampleAddresses = () => {
 
     return {
       user,
-      wasmContract,
+      contract,
       evmContract,
       validator,
     };
