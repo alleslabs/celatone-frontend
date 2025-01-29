@@ -6,14 +6,13 @@
         "allowExpressions": true
       }
     ],
-    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
     "sort-imports": [
       "error",
       { "ignoreCase": true, "ignoreDeclarationSort": true }
     ]
   },
   "extends": [
-    "sznm/react",
+    "plugin:@typescript-eslint/recommended",
     "plugin:react/jsx-runtime",
     "plugin:@next/next/recommended",
     "plugin:storybook/recommended"

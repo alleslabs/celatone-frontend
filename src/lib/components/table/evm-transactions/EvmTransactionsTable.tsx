@@ -51,7 +51,7 @@ export const EvmTransactionsTable = ({
         <EvmTransactionsTableMobileCard
           key={evmTransaction.tx.hash}
           evmTransaction={evmTransaction}
-          evmDenom={evmParams?.params.fee_denom}
+          evmDenom={evmParams?.params.feeDenom}
           assetInfos={assetInfos}
           showTimestamp={showTimestamp}
         />
@@ -68,7 +68,7 @@ export const EvmTransactionsTable = ({
           key={evmTransaction.tx.hash}
           templateColumns={templateColumns}
           evmTransaction={evmTransaction}
-          evmDenom={evmParams?.params.fee_denom}
+          evmDenom={evmParams?.params.feeDenom}
           assetInfos={assetInfos}
           showTimestamp={showTimestamp}
         />

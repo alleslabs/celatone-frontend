@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, SimpleGrid } from "@chakra-ui/react";
 import { useState } from "react";
 
 import type { GasInfo } from "../data";
@@ -6,7 +6,11 @@ import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { MotionBox } from "lib/components/MotionBox";
 import { TokenImageWithAmount } from "lib/components/token";
-import { formatInteger, formatTokenWithValue } from "lib/utils";
+import {
+  formatInteger,
+  formatPrettyPercent,
+  formatTokenWithValue,
+} from "lib/utils";
 
 interface EvmTxGasReceiptProps {
   gasInfo: GasInfo;
@@ -18,15 +22,23 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
   return (
     <>
       <Divider />
-      <LabelText flex={1} label="Transaction Fee">
-        <TokenImageWithAmount token={gasInfo.txFee} hasTrailingZeros={false} />
-      </LabelText>
-      <LabelText label="Gas Price">
-        {formatTokenWithValue(gasInfo.gasPrice, undefined, false)}
-      </LabelText>
-      <LabelText label="Usage by Tx & Gas Limit">
-        {`${formatInteger(gasInfo.gasUsed)}/${formatInteger(gasInfo.gasLimit)}`}
-      </LabelText>
+      <SimpleGrid columns={{ base: 2, md: 1 }} gap={4}>
+        <LabelText flex={1} label="Transaction Fee">
+          <TokenImageWithAmount
+            token={gasInfo.txFee}
+            hasTrailingZeros={false}
+          />
+        </LabelText>
+        <LabelText label="Gas Price">
+          {formatTokenWithValue(gasInfo.gasPrice, undefined, false)}
+        </LabelText>
+        <LabelText label="Usage by Tx & Gas Limit">
+          {`${formatInteger(gasInfo.gasUsed)}/${formatInteger(gasInfo.gasLimit)}`}
+        </LabelText>
+        <LabelText label="Gas Refund Percentage">
+          {`${formatPrettyPercent(gasInfo.gasRefundRatio, 2, true)}`}
+        </LabelText>
+      </SimpleGrid>
       {gasInfo.isEIP1559 && (
         <Box>
           <MotionBox

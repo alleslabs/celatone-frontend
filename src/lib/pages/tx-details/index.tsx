@@ -17,6 +17,7 @@ import { TxHeader, TxInfo, TxInfoMobile } from "./components";
 import { MessageSection } from "./components/MessageSection";
 import { useTxRedirect } from "./hooks";
 import { zTxDetailsQueryParams } from "./types";
+import { useEvmParams } from "lib/services/evm";
 
 const mapTxisFailed = (isFailed: Option<boolean>) => {
   switch (isFailed) {
@@ -37,8 +38,13 @@ const TxDetailsBody = ({ txHash }: { txHash: string }) => {
 
   const isCheckingRedirect = useTxRedirect(txHash);
   const { data, isLoading } = useTxData(txHash);
+
+  const { data: evmParams, isFetching: isEvmParamsFetching } = useEvmParams();
   const { data: relatedEvmTxHash, isFetching: isRelatedEvmTxFetching } =
     useEvmTxHashByCosmosTxHash(txHash);
+  const gasRefundRatio = relatedEvmTxHash
+    ? evmParams?.params.gasRefundRatio
+    : undefined;
 
   useEffect(() => {
     if (router.isReady && !isLoading)
@@ -47,7 +53,12 @@ const TxDetailsBody = ({ txHash }: { txHash: string }) => {
       });
   }, [router.isReady, data, isLoading]);
 
-  if (isCheckingRedirect || isLoading || isRelatedEvmTxFetching)
+  if (
+    isCheckingRedirect ||
+    isLoading ||
+    isRelatedEvmTxFetching ||
+    isEvmParamsFetching
+  )
     return <Loading withBorder />;
   if (!data) return <InvalidTx />;
 
@@ -63,9 +74,13 @@ const TxDetailsBody = ({ txHash }: { txHash: string }) => {
       {data ? (
         <>
           <TxHeader mt={2} txData={data} />
-          {isMobile && <TxInfoMobile txData={data} />}
+          {isMobile && (
+            <TxInfoMobile txData={data} gasRefundRatio={gasRefundRatio} />
+          )}
           <Flex my={{ base: 0, md: 12 }} gap={4} justify="space-between">
-            {!isMobile && <TxInfo txData={data} />}
+            {!isMobile && (
+              <TxInfo txData={data} gasRefundRatio={gasRefundRatio} />
+            )}
             <MessageSection txData={data} relatedEvmTxHash={relatedEvmTxHash} />
           </Flex>
         </>
