@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -6,7 +6,7 @@ import {
   useCurrentChain,
   useEvmConfig,
 } from "lib/app-provider";
-import { type HexAddr20, zHexAddr20 } from "lib/types";
+import { type HexAddr20, Nullable, zHexAddr20 } from "lib/types";
 import { bech32AddressToHex, isHexWalletAddress } from "lib/utils";
 
 import {
@@ -14,7 +14,8 @@ import {
   getEvmContractInfoSequencer,
   getEvmParams,
 } from "./lcd";
-import { getEthCall } from "./jsonRpc";
+import { getEthCall, getEvmProxyTarget } from "./json-rpc";
+import { ProxyResult } from "./json-rpc/proxy/types";
 
 export const useEvmParams = () => {
   const {
@@ -71,14 +72,18 @@ export const useEvmContractInfoSequencer = (address: HexAddr20) => {
   );
 };
 
-export const useEthCall = (to: HexAddr20, data: string) => {
+export const useEthCall = (
+  to: HexAddr20,
+  data: string,
+  options: UseQueryOptions<string>
+) => {
   const { address } = useCurrentChain();
   const hexAddr = address
     ? zHexAddr20.parse(bech32AddressToHex(address))
     : undefined;
   const evm = useEvmConfig({ shouldRedirect: false });
 
-  return useQuery(
+  return useQuery<string>(
     [
       CELATONE_QUERY_KEYS.EVM_ETH_CALL,
       evm.enabled && evm.jsonRpc,
@@ -95,6 +100,37 @@ export const useEthCall = (to: HexAddr20, data: string) => {
       retry: false,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
+      ...options,
+    }
+  );
+};
+
+export const useGetEvmProxyTarget = (
+  proxyAddress: HexAddr20,
+  options?: UseQueryOptions<Nullable<ProxyResult>>
+) => {
+  const {
+    chainConfig: {
+      features: { evm },
+    },
+  } = useCelatoneApp();
+  return useQuery<Nullable<ProxyResult>>(
+    [
+      CELATONE_QUERY_KEYS.EVM_PROXY_TARGET,
+      evm.enabled && evm.jsonRpc,
+      proxyAddress,
+    ],
+    async () => {
+      if (!evm.enabled)
+        throw new Error("EVM is not enabled (useGetEvmProxyTarget)");
+      return getEvmProxyTarget(evm.jsonRpc, proxyAddress);
+    },
+    {
+      enabled: evm.enabled && !!evm.jsonRpc,
+      retry: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      ...options,
     }
   );
 };

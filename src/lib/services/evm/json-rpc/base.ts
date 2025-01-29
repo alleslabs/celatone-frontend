@@ -1,10 +1,9 @@
 import axios from "axios";
 import * as uuid from "uuid";
 
-import type { JsonRpcResponse } from "../types/evm";
-import { zBatchJsonRpcResponse, zJsonRpcResponse } from "../types/evm";
 import { parseWithError } from "lib/utils";
-import { HexAddr20, Nullable, zHex } from "lib/types";
+import type { JsonRpcResponse } from "../../types/evm";
+import { zBatchJsonRpcResponse, zJsonRpcResponse } from "../../types/evm";
 
 export type JsonRpcParams = object | string | boolean;
 
@@ -66,19 +65,10 @@ export const requestBatchJsonRpc = (
         requests.length
       );
       parsed.forEach((result) => {
+        if (result.error) throw new Error(result.error.message);
         if (typeof result.id === "number")
           parsedResults[result.id] = result.result;
       });
 
       return parsedResults;
     });
-
-export const getEthCall = (
-  endpoint: string,
-  from: Nullable<HexAddr20>,
-  to: HexAddr20,
-  data: string
-) =>
-  requestJsonRpc(endpoint, "eth_call", [{ from, to, data }, "latest"]).then(
-    (result) => parseWithError(zHex, result)
-  );

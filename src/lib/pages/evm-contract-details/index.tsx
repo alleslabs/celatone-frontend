@@ -19,6 +19,7 @@ import { useBalanceInfos } from "lib/services/bank";
 import {
   useEvmCodesByAddress,
   useEvmContractInfoSequencer,
+  useGetEvmProxyTarget,
 } from "lib/services/evm";
 import { useEvmTxHashByCosmosTxHash } from "lib/services/tx";
 import type { HexAddr20 } from "lib/types";
@@ -28,7 +29,14 @@ import { EvmContractDetailsContract } from "./components/evm-contract-details-co
 import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
-import { TabIndex, TxsTabIndex, zEvmContractDetailsQueryParams } from "./types";
+import {
+  InteractTabsIndex,
+  TabIndex,
+  TxsTabIndex,
+  zEvmContractDetailsQueryParams,
+} from "./types";
+import { InteractEvmContract } from "./components/interact-evm-contract";
+import { useEvmVerifyInfo } from "lib/services/verification/evm";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
@@ -37,11 +45,15 @@ const tableHeaderId = "evmContractDetailsTab";
 interface EvmContractDetailsBodyProps {
   contractAddress: HexAddr20;
   tab: TabIndex;
+  selectedType: InteractTabsIndex;
+  selectedFn?: string;
 }
 
 const EvmContractDetailsBody = ({
   contractAddress,
   tab,
+  selectedType,
+  selectedFn,
 }: EvmContractDetailsBodyProps) => {
   const navigate = useInternalNavigate();
   const { convertHexWalletAddress } = useConvertHexAddress();
@@ -51,6 +63,15 @@ const EvmContractDetailsBody = ({
     useEvmCodesByAddress(contractAddress);
   const { data: evmContractInfoData, isLoading: isEvmContractInfoLoading } =
     useEvmContractInfoSequencer(contractAddress);
+  const { data: evmVerifyInfo, isLoading: isEvmVerifyInfoLoading } =
+    useEvmVerifyInfo(contractAddress);
+  const { data: proxyTarget, isLoading: isProxyTargetLoading } =
+    useGetEvmProxyTarget(contractAddress);
+  const {
+    data: proxyTargetEvmVerifyInfo,
+    isFetching: isProxyTargetEvmVerifyInfoFetching,
+  } = useEvmVerifyInfo(proxyTarget?.target);
+
   const { data: evmHash } = useEvmTxHashByCosmosTxHash(
     evmContractInfoData?.hash
   );
@@ -85,7 +106,13 @@ const EvmContractDetailsBody = ({
     handleTabChange(TabIndex.Transactions)();
   }, [handleTabChange, overviewTabIndex]);
 
-  if (isEvmCodesByAddressLoading) return <Loading />;
+  if (
+    isEvmCodesByAddressLoading ||
+    isEvmVerifyInfoLoading ||
+    isProxyTargetLoading ||
+    isProxyTargetEvmVerifyInfoFetching
+  )
+    return <Loading />;
   if (!evmCodesByAddressData)
     return <ErrorFetching dataName="evm contract information" />;
   if (!evmCodesByAddressData.code) return <InvalidContract />;
@@ -125,6 +152,14 @@ const EvmContractDetailsBody = ({
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={8}>
+              {/* TODO: move to a proper location */}
+              <InteractEvmContract
+                contractAddress={contractAddress}
+                contractAbi={evmVerifyInfo?.abi ?? []}
+                selectedType={selectedType}
+                selectedFn={selectedFn}
+                proxyTargetAbi={proxyTargetEvmVerifyInfo?.abi}
+              />
               <EvmContractDetailsOverview
                 contractAddressBech={contractAddressBechAddr}
                 contractAddressHex={contractAddress}
@@ -144,6 +179,7 @@ const EvmContractDetailsBody = ({
                 deployedByteCode={evmCodesByAddressData.code}
                 byteCode={evmContractInfoData?.code}
                 contractAddress={contractAddress}
+                evmVerifyInfo={evmVerifyInfo}
               />
             </TabPanel>
             <TabPanel p={0}>

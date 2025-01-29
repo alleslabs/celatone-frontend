@@ -10,10 +10,12 @@ import type { HexAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { catchTxError, postEvmTx } from "../common";
 import { sendingEvmTx } from "../common/sendingEvm";
+import { toBeHex } from "ethers";
 
 interface RequestEvmTxParams {
   to: HexAddr;
   data: string;
+  value: string;
   estimatedFee: SimulatedFeeEvm;
   signAndBroadcastEvm: SignAndBroadcastEvm;
   onTxSucceed?: () => void;
@@ -23,6 +25,7 @@ interface RequestEvmTxParams {
 export const requestEvmTx = ({
   to,
   data,
+  value,
   estimatedFee,
   signAndBroadcastEvm,
   onTxSucceed,
@@ -31,7 +34,12 @@ export const requestEvmTx = ({
   return pipe(
     sendingEvmTx(estimatedFee),
     postEvmTx<TxReceiptJsonRpc>({
-      postFn: () => signAndBroadcastEvm({ to, data }),
+      postFn: () =>
+        signAndBroadcastEvm({
+          to,
+          data,
+          value: value ? toBeHex(value) : null,
+        }),
     }),
     (txResult) => {
       onTxSucceed?.();
