@@ -54,22 +54,24 @@ export const zEvmVerifyInfo = z
     language: z.nativeEnum(EvmProgrammingLanguage),
     chain_id: z.string(),
     address: zHexAddr20,
-    contract_name: z.string(),
-    contract_path: z.string(),
+    contract_name: z.string().optional(),
+    contract_path: z.string().optional(),
     compiler_version: z.string(),
     evm_version: z.string(),
     optimizer: z.string(),
     constructor_arguments: z.string(),
-    abi: z.string(),
+    abi: z.string().optional(),
     bytecode_type: z.string(),
-    verified_timestamp: zUtcDate,
+    verified_timestamp: zUtcDate.optional(),
     submitted_timestamp: zUtcDate,
+    error_message: z.string().optional(),
     // libraries: z.array() // TODO: Recheck
     settings: z.string(),
     source_files: z.array(zEvmVerifyInfoSourceFile),
   })
   .transform(({ abi, ...rest }) => ({
-    abi: JSON.parse(abi) as JsonFragment[],
+    abi: abi ? (JSON.parse(abi) as JsonFragment[]) : undefined,
     ...snakeToCamel(rest),
+    isVerified: !!rest.verified_timestamp,
   }));
 export type EvmVerifyInfo = z.infer<typeof zEvmVerifyInfo>;

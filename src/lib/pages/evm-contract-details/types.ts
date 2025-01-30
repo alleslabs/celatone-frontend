@@ -5,6 +5,7 @@ import { zHexAddr20 } from "lib/types";
 export enum TabIndex {
   Overview = "overview",
   Contract = "contract",
+  ReadWrite = "read-write",
   Assets = "assets",
   Transactions = "transactions",
 }
@@ -16,7 +17,7 @@ export enum InteractTabsIndex {
   WriteProxy = "write-proxy",
 }
 
-export enum EvmContractDetailsContractTabs {
+export enum EvmContractDetailsContractInfoTabs {
   Code = "Code",
   Compiler = "Compiler",
   Abi = "ABI",

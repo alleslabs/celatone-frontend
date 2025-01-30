@@ -25,7 +25,7 @@ import { useEvmTxHashByCosmosTxHash } from "lib/services/tx";
 import type { HexAddr20 } from "lib/types";
 import { isHexWalletAddress, truncate } from "lib/utils";
 
-import { EvmContractDetailsContract } from "./components/evm-contract-details-contract";
+import { EvmContractDetailsContractInfo } from "./components/evm-contract-details-contract-info";
 import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
@@ -71,6 +71,8 @@ const EvmContractDetailsBody = ({
     data: proxyTargetEvmVerifyInfo,
     isFetching: isProxyTargetEvmVerifyInfoFetching,
   } = useEvmVerifyInfo(proxyTarget?.target);
+
+  const isVerified = evmVerifyInfo?.isVerified;
 
   const { data: evmHash } = useEvmTxHashByCosmosTxHash(
     evmContractInfoData?.hash
@@ -140,6 +142,12 @@ const EvmContractDetailsBody = ({
               Contract
             </CustomTab>
             <CustomTab
+              onClick={handleTabChange(TabIndex.ReadWrite)}
+              hidden={!isVerified}
+            >
+              Read/Write
+            </CustomTab>
+            <CustomTab
               onClick={handleTabChange(TabIndex.Assets)}
               count={totalAssets}
               isDisabled={!totalAssets}
@@ -152,14 +160,6 @@ const EvmContractDetailsBody = ({
           </TabList>
           <TabPanels>
             <TabPanel p={0} pt={8}>
-              {/* TODO: move to a proper location */}
-              <InteractEvmContract
-                contractAddress={contractAddress}
-                contractAbi={evmVerifyInfo?.abi ?? []}
-                selectedType={selectedType}
-                selectedFn={selectedFn}
-                proxyTargetAbi={proxyTargetEvmVerifyInfo?.abi}
-              />
               <EvmContractDetailsOverview
                 contractAddressBech={contractAddressBechAddr}
                 contractAddressHex={contractAddress}
@@ -175,11 +175,20 @@ const EvmContractDetailsBody = ({
               />
             </TabPanel>
             <TabPanel p={0} pt={8}>
-              <EvmContractDetailsContract
+              <EvmContractDetailsContractInfo
                 byteCode={evmContractInfoData?.code}
                 deployedByteCode={evmCodesByAddressData.code}
                 contractAddress={contractAddress}
                 evmVerifyInfo={evmVerifyInfo}
+              />
+            </TabPanel>
+            <TabPanel p={0} pt={8}>
+              <InteractEvmContract
+                contractAddress={contractAddress}
+                contractAbi={evmVerifyInfo?.abi ?? []}
+                selectedType={selectedType}
+                selectedFn={selectedFn}
+                proxyTargetAbi={proxyTargetEvmVerifyInfo?.abi}
               />
             </TabPanel>
             <TabPanel p={0}>
