@@ -2,9 +2,6 @@ import { Flex } from "@chakra-ui/react";
 
 import type { HexAddr20, Option } from "lib/types";
 
-// import { FailedDetails } from "./FailedDetails";
-// import { IndirectlyVerifiedDetails } from "./IndirectlyVerifiedDetails";
-// import { InProgressDetails } from "./InProgressDetails";
 import { NotVerifiedDetails } from "./NotVerifiedDetails";
 import { EvmVerifyInfo } from "lib/services/types";
 import { useMobile } from "lib/app-provider";
