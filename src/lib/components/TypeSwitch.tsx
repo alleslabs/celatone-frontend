@@ -46,7 +46,7 @@ export const TypeSwitch = <T extends string>({
           variants={{
             active: { color: "var(--chakra-colors-text-main)" },
             inactive: {
-              color: "var(--chakra-colors-primary-light)",
+              color: "var(--chakra-colors-white)",
             },
           }}
           initial="inactive"

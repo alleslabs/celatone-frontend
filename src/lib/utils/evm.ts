@@ -127,3 +127,16 @@ export const decodeEvmFunctionResult = (
     return undefined;
   }
 };
+
+export const decodeEvmConstructorArgs = (
+  abiSection: JsonFragment,
+  constructorArgs: string
+) => {
+  const iface = new Interface([abiSection]);
+
+  try {
+    return iface._decodeParams(iface.deploy.inputs, "0x" + constructorArgs);
+  } catch {
+    return undefined;
+  }
+};
