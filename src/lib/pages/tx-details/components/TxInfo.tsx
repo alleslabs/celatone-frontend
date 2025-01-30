@@ -7,14 +7,17 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import type { TxData } from "lib/services/types";
+import { Option, Ratio } from "lib/types";
 import {
-  coinToTokenWithValue,
+  computeCosmosFee,
   formatInteger,
+  formatPrettyPercent,
   formatTokenWithValue,
 } from "lib/utils";
 
 interface TxInfoProps extends FlexProps {
   txData: TxData;
+  gasRefundRatio: Option<Ratio<number>>;
 }
 
 const Container = chakra(Flex, {
@@ -26,7 +29,11 @@ const Container = chakra(Flex, {
   },
 });
 
-export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
+export const TxInfo = ({
+  txData,
+  gasRefundRatio,
+  ...flexProps
+}: TxInfoProps) => {
   const { data: assetInfos } = useAssetInfos({
     withPrices: true,
   });
@@ -35,14 +42,14 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
   });
 
   const feeCoin = txData.tx.authInfo?.fee?.amount[0];
-  const feeToken = feeCoin
-    ? coinToTokenWithValue(
-        feeCoin.denom,
-        feeCoin.amount,
-        assetInfos,
-        movePoolInfos
-      )
-    : undefined;
+  const feeToken = computeCosmosFee(
+    feeCoin,
+    txData.gasUsed,
+    txData.gasWanted,
+    gasRefundRatio,
+    assetInfos,
+    movePoolInfos
+  );
   return (
     <Container {...flexProps}>
       <LabelText label="Network">{txData.chainId}</LabelText>
@@ -66,6 +73,11 @@ export const TxInfo = ({ txData, ...flexProps }: TxInfoProps) => {
       <LabelText label="Gas Used/Wanted">
         {`${formatInteger(txData.gasUsed)}/${formatInteger(txData.gasWanted)}`}
       </LabelText>
+      {gasRefundRatio && (
+        <LabelText label="Gas Refund Percentage">
+          {`${formatPrettyPercent(gasRefundRatio, 2, true)}`}
+        </LabelText>
+      )}
       <LabelText label="Memo">
         {txData.tx.body.memo || (
           <Text variant="body2" color="text.dark">

@@ -10,7 +10,7 @@ import {
   useTxDataJsonRpc,
 } from "lib/services/tx";
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import type { Option, TokenWithValue } from "lib/types";
+import { type Option, type Ratio, type TokenWithValue } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
 
 export interface GasInfo {
@@ -19,6 +19,7 @@ export interface GasInfo {
   gasPrice: TokenWithValue;
   gasUsed: Big;
   gasLimit: Big;
+  gasRefundRatio: Ratio<number>;
   // eip-1559
   baseFee: TokenWithValue;
   maxFee: TokenWithValue;
@@ -50,6 +51,8 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
     useBlockDataJsonRpc(evmTxData?.tx.blockNumber.toNumber());
 
   const evmDenom = evmParams?.params.feeDenom;
+  const gasRefundRatio =
+    evmParams?.params.gasRefundRatio ?? (0 as Ratio<number>);
 
   const evmTxValue = useMemo<Option<TokenWithValue>>(() => {
     if (!evmTxData) return undefined;
@@ -62,11 +65,13 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
 
   const gasInfo = useMemo<Option<GasInfo>>(() => {
     if (!evmTxData || !blockData) return undefined;
+    const gasRefund = evmTxData.tx.gas
+      .minus(evmTxData.txReceipt.gasUsed)
+      .mul(gasRefundRatio);
+    const actualGasAmount = evmTxData.tx.gas.minus(gasRefund);
     const txFee = coinToTokenWithValue(
       evmDenom ?? "",
-      evmTxData.txReceipt.gasUsed
-        .mul(evmTxData.txReceipt.effectiveGasPrice)
-        .toString(),
+      actualGasAmount.mul(evmTxData.txReceipt.effectiveGasPrice).toString(),
       assetInfos
     );
 
@@ -100,11 +105,12 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
       gasPrice,
       gasUsed: evmTxData.txReceipt.gasUsed,
       gasLimit: evmTxData.tx.gas,
+      gasRefundRatio,
       baseFee,
       maxFee,
       maxPriorityFee,
     };
-  }, [assetInfos, blockData, evmDenom, evmTxData]);
+  }, [assetInfos, blockData, evmDenom, evmTxData, gasRefundRatio]);
 
   return {
     isLoading:
