@@ -176,8 +176,8 @@ const EvmContractDetailsBody = ({
             </TabPanel>
             <TabPanel p={0} pt={8}>
               <EvmContractDetailsContract
-                deployedByteCode={evmCodesByAddressData.code}
                 byteCode={evmContractInfoData?.code}
+                deployedByteCode={evmCodesByAddressData.code}
                 contractAddress={contractAddress}
                 evmVerifyInfo={evmVerifyInfo}
               />

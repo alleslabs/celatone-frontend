@@ -8,6 +8,7 @@ import { EvmContractDetailsContractTabs } from "../../types";
 import { ContractAbi } from "./ContractAbi";
 import { ContractByteCode, ContractByteCodeProps } from "./ContractByteCode";
 import { ContractCompiler } from "./ContractCompiler";
+import { ContractCode } from "./ContractCode";
 
 interface EvmContractDetailsContractProps extends ContractByteCodeProps {
   contractAddress: HexAddr20;
@@ -39,6 +40,13 @@ export const EvmContractDetailsContract = ({
               currentTab={currentTab}
             />
           </Flex>
+          {currentTab === EvmContractDetailsContractTabs.Code && (
+            <ContractCode
+              sourceFiles={evmVerifyInfo.sourceFiles}
+              contractPath={evmVerifyInfo.contractPath}
+              constructorArguments={evmVerifyInfo.constructorArguments}
+            />
+          )}
           {currentTab === EvmContractDetailsContractTabs.Compiler && (
             <ContractCompiler compilerSettings={evmVerifyInfo.settings} />
           )}

@@ -45,6 +45,7 @@ const zEvmVerifyInfoSourceFile = z
     }),
   })
   .transform(snakeToCamel);
+export type EvmVerifyInfoSourceFile = z.infer<typeof zEvmVerifyInfoSourceFile>;
 
 export const zEvmVerifyInfo = z
   .object({
