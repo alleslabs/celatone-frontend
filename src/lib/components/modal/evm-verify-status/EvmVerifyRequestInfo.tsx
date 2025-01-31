@@ -60,7 +60,7 @@ export const EvmVerifyRequestInfo = ({
         <HStack>
           <Text {...baseTextStyle}>License Type:</Text>
           <Text color="text.main" variant="body2">
-            {getLicenseTypeLabel(evmVerifyInfo.license, false)}
+            {getLicenseTypeLabel(evmVerifyInfo.license)}
           </Text>
         </HStack>
       </Flex>

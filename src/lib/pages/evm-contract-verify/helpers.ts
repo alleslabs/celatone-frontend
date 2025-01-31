@@ -74,8 +74,8 @@ export const formatEvmOptions = (values: string[]) =>
   }));
 
 export const getLicenseTypeOptions = (evmVerifyConfig: EvmVerifyConfig) =>
-  evmVerifyConfig.licenseType.map((license) => ({
-    label: getLicenseTypeLabel(license),
+  evmVerifyConfig.licenseType.map((license, index) => ({
+    label: `${index + 1}. ${getLicenseTypeLabel(license)}`,
     value: license,
   }));
 

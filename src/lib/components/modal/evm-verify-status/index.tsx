@@ -51,7 +51,9 @@ export const EvmVerifyStatusModal = ({
       </ModalHeader>
       <ModalCloseButton color="gray.400" />
       <ModalBody p={{ base: 4, md: 6 }}>
-        <EvmVerifyAlert errorMsg={evmVerifyInfo?.errorMessage} />
+        {evmVerifyInfo?.errorMessage && (
+          <EvmVerifyAlert errorMsg={evmVerifyInfo.errorMessage} />
+        )}
         <Flex direction="column" gap={4}>
           <EvmVerifyRequestInfo
             contractAddress={contractAddress}

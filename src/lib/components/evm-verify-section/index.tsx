@@ -22,7 +22,7 @@ const EvmVerifySectionBody = ({
     return <NotVerifiedDetails contractAddress={contractAddress} />;
   }
 
-  const { errorMessage, isVerified, submittedTimestamp } = evmVerifyInfo;
+  const { errorMessage, isVerified } = evmVerifyInfo;
 
   if (errorMessage) {
     return (
@@ -37,16 +37,12 @@ const EvmVerifySectionBody = ({
     return <VerifiedDetails contractAddress={contractAddress} />;
   }
 
-  if (submittedTimestamp) {
-    return (
-      <InProgressDetails
-        contractAddress={contractAddress}
-        evmVerifyInfo={evmVerifyInfo}
-      />
-    );
-  }
-
-  return <NotVerifiedDetails contractAddress={contractAddress} />;
+  return (
+    <InProgressDetails
+      contractAddress={contractAddress}
+      evmVerifyInfo={evmVerifyInfo}
+    />
+  );
 };
 
 export const EvmVerifySection = (props: EvmVerifySectionProps) => {
