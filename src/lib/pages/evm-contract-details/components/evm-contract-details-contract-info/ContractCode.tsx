@@ -6,20 +6,24 @@ import {
   Stack,
   useDisclosure,
 } from "@chakra-ui/react";
+import { JsonFragment } from "ethers";
 import { FullEditor } from "lib/components/editor/FullEditor";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { EvmVerifyInfoSourceFile } from "lib/services/types";
+import { findAndDecodeEvmConstructorArgs } from "lib/utils";
 
 interface ContractCodeProps {
   sourceFiles: EvmVerifyInfoSourceFile[];
   contractPath: string;
   constructorArguments: string;
+  abi: JsonFragment[];
 }
 
 export const ContractCode = ({
   sourceFiles,
   contractPath,
   constructorArguments,
+  abi,
 }: ContractCodeProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -59,7 +63,10 @@ export const ContractCode = ({
         <Heading as="h6" variant="h7">
           Constructor Arguments
         </Heading>
-        <TextReadOnly text={constructorArguments} canCopy />
+        <TextReadOnly
+          text={findAndDecodeEvmConstructorArgs(abi, constructorArguments)}
+          canCopy
+        />
       </Stack>
     </Stack>
   );

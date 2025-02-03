@@ -70,8 +70,8 @@ export const zEvmVerifyInfo = z
     source_files: z.array(zEvmVerifyInfoSourceFile),
   })
   .transform(({ abi, ...rest }) => ({
-    abi: abi ? (JSON.parse(abi) as JsonFragment[]) : undefined,
     ...snakeToCamel(rest),
+    abi: abi ? (JSON.parse(abi) as JsonFragment[]) : [],
     isVerified: !!rest.verified_timestamp,
   }));
 export type EvmVerifyInfo = z.infer<typeof zEvmVerifyInfo>;
