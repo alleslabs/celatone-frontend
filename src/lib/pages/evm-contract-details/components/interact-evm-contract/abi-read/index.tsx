@@ -1,5 +1,5 @@
-import { Accordion } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { Accordion, Button, Flex } from "@chakra-ui/react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { EmptyState } from "lib/components/state";
 
@@ -7,6 +7,9 @@ import { JsonFragment } from "ethers";
 import { HexAddr20 } from "lib/types";
 import { ReadBox } from "./ReadBox";
 import { isUndefined } from "lodash";
+import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
+import { trackUseExpandAll } from "lib/amplitude";
 
 interface AbiReadProps {
   contractAddress: HexAddr20;
@@ -27,7 +30,16 @@ export const AbiRead = ({
   // ------------------------------------------//
   // -------------------STATES-----------------//
   // ------------------------------------------//
+  const [keyword, setKeyword] = useState("");
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
+
+  const filteredAbiRead = useMemo(
+    () =>
+      abiRead.filter((abiSection) =>
+        abiSection.name?.toLowerCase().includes(keyword.toLowerCase())
+      ),
+    [abiRead, keyword]
+  );
 
   // ------------------------------------------//
   // -------------------EFFECTS----------------//
@@ -57,7 +69,35 @@ export const AbiRead = ({
 
   return (
     <>
-      {abiRead.length ? (
+      <Flex gap={6} mb={6}>
+        <InputWithIcon
+          placeholder="Search by method name"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          size="md"
+          amptrackSection="read-message-search"
+        />
+        <Button
+          variant="outline-gray"
+          rightIcon={
+            <CustomIcon
+              name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+              boxSize={3}
+              right={0}
+            />
+          }
+          minH="40px"
+          onClick={() => {
+            trackUseExpandAll(expandedIndexes.length ? "collapse" : "expand");
+            setExpandedIndexes((prev) =>
+              prev.length ? [] : Array.from(Array(abiRead.length).keys())
+            );
+          }}
+        >
+          {expandedIndexes.length ? "Collapse All" : "Expand All"}
+        </Button>
+      </Flex>
+      {filteredAbiRead.length ? (
         <Accordion
           ref={accordionRef}
           allowMultiple
