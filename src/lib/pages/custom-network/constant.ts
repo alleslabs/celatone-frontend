@@ -24,11 +24,6 @@ export const DEFAULT_GOV_CONFIG: ChainConfig["features"]["gov"] = {
   enabled: false,
 };
 
-export const DEFAULT_WALLET_CONFIG: ChainConfig["wallets"] = [
-  "initia",
-  "keplr",
-];
-
 export const DEFAULT_BECH32_PREFIX = "init";
 
 export const DEFAULT_GAS = {

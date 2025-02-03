@@ -9,12 +9,16 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <WalletWidgetProvider
+      key={chainConfig.network_type === "local" ? currentChainId : undefined}
       customLayer={
         chainConfig.network_type === "local"
           ? {
               apis: {
                 rest: [{ address: chainConfig.lcd }],
                 rpc: [{ address: chainConfig.rpc }],
+                "json-rpc": chainConfig.features.evm.enabled
+                  ? [{ address: chainConfig.features.evm.jsonRpc }]
+                  : undefined,
               },
               bech32_prefix: "init" as const,
               chain_id: currentChainId,

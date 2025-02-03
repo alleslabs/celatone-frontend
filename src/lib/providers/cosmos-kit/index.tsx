@@ -14,7 +14,7 @@ export const CosmosKitProvider = ({
   children: React.ReactNode;
 }) => {
   const {
-    chainConfig: { wallets },
+    chainConfig: { wallets, chain },
   } = useCelatoneApp();
   const { chainConfigs, registryChains, registryAssets } = useChainConfigs();
   const availableChainsEndpoints = Object.values(chainConfigs).reduce<
@@ -32,6 +32,7 @@ export const CosmosKitProvider = ({
 
   return (
     <Provider
+      key={chain}
       chains={registryChains}
       assetLists={registryAssets}
       wallets={getWallets(wallets)}

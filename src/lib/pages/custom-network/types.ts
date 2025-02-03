@@ -25,7 +25,6 @@ import {
   DEFAULT_POOL_CONFIG,
   DEFAULT_PUBLIC_PROJECT_CONFIG,
   DEFAULT_SLIP44,
-  DEFAULT_WALLET_CONFIG,
   DEFAULT_WASM_CONFIG,
 } from "./constant";
 
@@ -368,7 +367,7 @@ export const zAddNetworkManualChainConfigJson = ({
       assets,
     }: AddNetworkManualForm) => ({
       ...DEFAULT_CUSTOM_MINITIA_NETWORK,
-      wallets: DEFAULT_WALLET_CONFIG,
+      wallets: [],
       chainId,
       registryChainName,
       prettyName,
@@ -490,7 +489,7 @@ export const zAddNetworkLinkChainConfigJson = z
       chainId: val.chainId,
       registryChainName: val.chainId,
       prettyName: capitalize(val.chainId),
-      wallets: DEFAULT_WALLET_CONFIG,
+      wallets: [],
       lcd: val.lcd,
       rpc: val.rpc,
       features: {
