@@ -10,7 +10,7 @@ import { JsonFragment } from "ethers";
 import { FullEditor } from "lib/components/editor/FullEditor";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { EvmVerifyInfoSourceFile } from "lib/services/types";
-import { decodeEvmConstructorArgs } from "lib/utils";
+import { findAndDecodeEvmConstructorArgs } from "lib/utils";
 
 interface ContractCodeProps {
   sourceFiles: EvmVerifyInfoSourceFile[];
@@ -26,30 +26,6 @@ export const ContractCode = ({
   abi,
 }: ContractCodeProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-
-  const handleConstructorArgs = () => {
-    const foundTypeConstructor = abi.find(
-      (item) => item.type === "constructor"
-    );
-    if (!foundTypeConstructor || !foundTypeConstructor.inputs)
-      return constructorArguments;
-
-    const decodedConstructorArgs = decodeEvmConstructorArgs(
-      foundTypeConstructor,
-      constructorArguments
-    );
-
-    if (!decodedConstructorArgs) return constructorArguments;
-
-    const mapDecodedConstructorArgs = decodedConstructorArgs
-      .map((arg, index) => {
-        if (!foundTypeConstructor.inputs?.length) return "";
-        return `Arg [${index}] ${foundTypeConstructor.inputs[index].name} (${foundTypeConstructor.inputs[index].type}): ${arg}`;
-      })
-      .join("\n");
-
-    return constructorArguments + "\n\n" + mapDecodedConstructorArgs;
-  };
 
   return (
     <Stack gap={8}>
@@ -87,7 +63,10 @@ export const ContractCode = ({
         <Heading as="h6" variant="h7">
           Constructor Arguments
         </Heading>
-        <TextReadOnly text={handleConstructorArgs()} canCopy />
+        <TextReadOnly
+          text={findAndDecodeEvmConstructorArgs(abi, constructorArguments)}
+          canCopy
+        />
       </Stack>
     </Stack>
   );

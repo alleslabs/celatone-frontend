@@ -128,15 +128,32 @@ export const decodeEvmFunctionResult = (
   }
 };
 
-export const decodeEvmConstructorArgs = (
-  abiSection: JsonFragment,
+export const findAndDecodeEvmConstructorArgs = (
+  abi: JsonFragment[],
   constructorArgs: string
 ) => {
-  const iface = new Interface([abiSection]);
-
   try {
-    return iface._decodeParams(iface.deploy.inputs, "0x" + constructorArgs);
+    const foundTypeConstructor = abi.find(
+      (item) => item.type === "constructor"
+    );
+    if (!foundTypeConstructor || !foundTypeConstructor.inputs)
+      throw new Error("No constructor found (findAndDecodeEvmConstructorArgs)");
+
+    const iface = new Interface([foundTypeConstructor]);
+    const decodedConstructorArgs = iface._decodeParams(
+      iface.deploy.inputs,
+      "0x" + constructorArgs
+    );
+
+    const mapDecodedConstructorArgs = decodedConstructorArgs
+      .map((arg, index) => {
+        if (!foundTypeConstructor.inputs?.length) return "";
+        return `Arg [${index}] ${foundTypeConstructor.inputs[index].name} (${foundTypeConstructor.inputs[index].type}): ${arg}`;
+      })
+      .join("\n");
+
+    return constructorArgs + "\n\n" + mapDecodedConstructorArgs;
   } catch {
-    return undefined;
+    return constructorArgs;
   }
 };
