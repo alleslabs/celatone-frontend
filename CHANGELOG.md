@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1218](https://github.com/alleslabs/celatone-frontend/pull/1218) Add EVM library contract
 - [#1214](https://github.com/alleslabs/celatone-frontend/pull/1214) Add EVM contract details constructor arguments
 - [#1213](https://github.com/alleslabs/celatone-frontend/pull/1213) EVM verification status modal, and highlight bar
 - [#1211](https://github.com/alleslabs/celatone-frontend/pull/1211) Implement evm gas refund logic

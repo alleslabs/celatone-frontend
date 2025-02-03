@@ -9,14 +9,19 @@ import {
 import { JsonFragment } from "ethers";
 import { FullEditor } from "lib/components/editor/FullEditor";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
-import { EvmVerifyInfoSourceFile } from "lib/services/types";
+import {
+  EvmVerifyInfoLibraries,
+  EvmVerifyInfoSourceFile,
+} from "lib/services/types";
 import { findAndDecodeEvmConstructorArgs } from "lib/utils";
+import { ContractLibrary } from "./ContractLibrary";
 
 interface ContractCodeProps {
   sourceFiles: EvmVerifyInfoSourceFile[];
   contractPath: string;
   constructorArguments: string;
   abi: JsonFragment[];
+  libraries: EvmVerifyInfoLibraries;
 }
 
 export const ContractCode = ({
@@ -24,6 +29,7 @@ export const ContractCode = ({
   contractPath,
   constructorArguments,
   abi,
+  libraries,
 }: ContractCodeProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -60,11 +66,23 @@ export const ContractCode = ({
         />
       </Stack>
       <Stack gap={4}>
+        <Flex gap={2} alignItems="center">
+          <Heading as="h6" variant="h7">
+            Contract Library
+          </Heading>
+          <Badge>{libraries.length}</Badge>
+        </Flex>
+        <ContractLibrary libraries={libraries} />
+      </Stack>
+      <Stack gap={4}>
         <Heading as="h6" variant="h7">
           Constructor Arguments
         </Heading>
         <TextReadOnly
-          text={findAndDecodeEvmConstructorArgs(abi, constructorArguments)}
+          text={
+            findAndDecodeEvmConstructorArgs(abi, constructorArguments) ||
+            "No constructor arguments"
+          }
           canCopy
         />
       </Stack>

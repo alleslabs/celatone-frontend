@@ -47,6 +47,18 @@ const zEvmVerifyInfoSourceFile = z
   .transform(snakeToCamel);
 export type EvmVerifyInfoSourceFile = z.infer<typeof zEvmVerifyInfoSourceFile>;
 
+const zEvmVerifyInfoLibraries = z
+  .record(z.string(), z.record(z.string(), z.string()))
+  .transform((libraries) =>
+    Object.entries(libraries).flatMap(([, libs]) =>
+      Object.entries(libs).map(([name, address]) => ({
+        name,
+        address,
+      }))
+    )
+  );
+export type EvmVerifyInfoLibraries = z.infer<typeof zEvmVerifyInfoLibraries>;
+
 export const zEvmVerifyInfo = z
   .object({
     guid: z.string().uuid(),
@@ -65,7 +77,6 @@ export const zEvmVerifyInfo = z
     verified_timestamp: zUtcDate.optional(),
     submitted_timestamp: zUtcDate,
     error_message: z.string().optional(),
-    // libraries: z.array() // TODO: Recheck
     settings: z.string(),
     source_files: z.array(zEvmVerifyInfoSourceFile),
   })
@@ -73,5 +84,8 @@ export const zEvmVerifyInfo = z
     ...snakeToCamel(rest),
     abi: abi ? (JSON.parse(abi) as JsonFragment[]) : [],
     isVerified: !!rest.verified_timestamp,
+    libraries: zEvmVerifyInfoLibraries.parse(
+      JSON.parse(rest.settings).libraries
+    ),
   }));
 export type EvmVerifyInfo = z.infer<typeof zEvmVerifyInfo>;
