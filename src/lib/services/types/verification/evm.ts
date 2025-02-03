@@ -8,7 +8,7 @@ export enum EvmProgrammingLanguage {
   Vyper = "Vyper",
 }
 
-export enum EVMVerifyLicenseType {
+export enum EvmVerifyLicenseType {
   None = "none",
   Unlicense = "unlicense",
   MIT = "mit",
@@ -27,7 +27,7 @@ export enum EVMVerifyLicenseType {
 
 export const zEvmVerifyConfig = z
   .object({
-    license_type: z.array(z.nativeEnum(EVMVerifyLicenseType)),
+    license_type: z.array(z.nativeEnum(EvmVerifyLicenseType)),
     solidity_compiler_versions: z.array(z.string()),
     solidity_evm_versions: z.array(z.string()),
     vyper_compiler_versions: z.array(z.string()),
@@ -50,7 +50,7 @@ export type EvmVerifyInfoSourceFile = z.infer<typeof zEvmVerifyInfoSourceFile>;
 export const zEvmVerifyInfo = z
   .object({
     guid: z.string().uuid(),
-    license: z.nativeEnum(EVMVerifyLicenseType),
+    license: z.nativeEnum(EvmVerifyLicenseType),
     language: z.nativeEnum(EvmProgrammingLanguage),
     chain_id: z.string(),
     address: zHexAddr20,
