@@ -108,8 +108,8 @@ importers:
         specifier: 0.2.4
         version: 0.2.4
       '@initia/react-wallet-widget':
-        specifier: 0.193.0
-        version: 0.193.0(ezwwwjbmmkqak4ar5vscok7iku)
+        specifier: 0.195.0
+        version: 0.195.0(ezwwwjbmmkqak4ar5vscok7iku)
       '@interchain-ui/react':
         specifier: 1.23.9
         version: 1.23.9(@types/react@18.3.18)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2279,13 +2279,13 @@ packages:
   '@initia/opinit.proto@0.0.8':
     resolution: {integrity: sha512-MddIGje1CX2lT+jezpWDQv7ex/wLbAK9qCHu+RM/kY13yOwzMeeD539Au2llVB4LWwPEkd0h71HwxJWE78IE1A==}
 
-  '@initia/react-wallet-widget@0.193.0':
-    resolution: {integrity: sha512-oCgcxIGUTTHTijJw2xht3ayfGD5DVTFoorGJa/4xRVt9hDoQzOGEKzWW9c7d5VL28rJsJecv4qzW9gSeU8+f0A==}
+  '@initia/react-wallet-widget@0.195.0':
+    resolution: {integrity: sha512-FhDHO43gywDwm5C2ASY+1cY64SrNg9LU47tqutxWsb9zH5g3OsUj62I50DHQOhxwAg0gJ41dxWHEtghViC8hcQ==}
     peerDependencies:
       '@cosmjs/proto-signing': ^0.32.4
       '@initia/initia.js': ^0.2.26
-      '@initia/utils': ^0.121.0
-      '@initia/wallet-widget': ^0.193.0
+      '@initia/utils': ^0.122.0
+      '@initia/wallet-widget': ^0.195.0
       '@keplr-wallet/types': ^0.12.156
       cosmjs-types: ^0.9.0
       ethers: ^6.13.4
@@ -13567,7 +13567,7 @@ snapshots:
       long: 5.2.3
       protobufjs: 7.4.0
 
-  '@initia/react-wallet-widget@0.193.0(ezwwwjbmmkqak4ar5vscok7iku)':
+  '@initia/react-wallet-widget@0.195.0(ezwwwjbmmkqak4ar5vscok7iku)':
     dependencies:
       '@cosmjs/proto-signing': 0.32.4
       '@initia/initia.js': 0.2.26(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
