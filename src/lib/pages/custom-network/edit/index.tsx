@@ -60,7 +60,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   const json = useMemo(
     () =>
       JSON.stringify(
-        omit(chainConfig, ["tier", "wallet", "chain", "extra", "network_type"])
+        omit(chainConfig, ["tier", "wallets", "chain", "extra", "network_type"])
       ),
     [chainConfig]
   );
