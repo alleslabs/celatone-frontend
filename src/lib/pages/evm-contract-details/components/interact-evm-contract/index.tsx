@@ -5,14 +5,14 @@ import { TypeSwitch } from "lib/components/TypeSwitch";
 import { HexAddr20, Option } from "lib/types";
 import { isUndefined } from "lodash";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { InteractTabsIndex } from "../../types";
+import { InteractTabsIndex, TabIndex } from "../../types";
 import { getInteractTabsIndex } from "../../utils";
 import { AbiRead } from "./abi-read";
 import { AbiWrite } from "./abi-write";
 import { categorizeAbi } from "./utils";
 
 export const EVM_CONTRACT_INTERACT_PATH_NAME =
-  "/evm-contracts/[contractAddress]";
+  "/evm-contracts/[contractAddress]/[tab]";
 
 enum InteractType {
   Read = "read",
@@ -58,6 +58,7 @@ export const InteractEvmContract = ({
         pathname: EVM_CONTRACT_INTERACT_PATH_NAME,
         query: {
           contractAddress,
+          tab: TabIndex.ReadWrite,
           selectedType: getInteractTabsIndex(
             newType === InteractType.Read,
             isAsProxy
@@ -76,6 +77,7 @@ export const InteractEvmContract = ({
         pathname: EVM_CONTRACT_INTERACT_PATH_NAME,
         query: {
           contractAddress,
+          tab: TabIndex.ReadWrite,
           selectedType: getInteractTabsIndex(
             interactType === InteractType.Read,
             e.target.checked

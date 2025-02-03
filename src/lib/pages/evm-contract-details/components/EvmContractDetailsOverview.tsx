@@ -3,7 +3,7 @@ import { Flex, Grid, Spinner, Stack, Text } from "@chakra-ui/react";
 import type { TxsTabIndex } from "../types";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { AssetsSection } from "lib/components/asset";
-import { NotVerifiedDetails } from "lib/components/evm-verify-section";
+import { EvmVerifySection } from "lib/components/evm-verify-section";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
@@ -17,6 +17,7 @@ import type {
 import { dateFromNow, formatEvmTxHash, formatUTC } from "lib/utils";
 
 import { EvmContractDetailsTxs } from "./EvmContractDetailsTxs";
+import { useEvmVerifyInfo } from "lib/services/verification/evm";
 
 interface EvmContractDetailsOverviewProps {
   contractAddressBech: BechAddr20;
@@ -48,11 +49,14 @@ export const EvmContractDetailsOverview = ({
   const { currentChainId } = useCelatoneApp();
   const formatAddresses = useFormatAddresses();
   const isMobile = useMobile();
+  const { data: evmVerifyInfo } = useEvmVerifyInfo(contractAddressHex);
 
   return (
     <Stack gap={8}>
-      {/* // TODO: Support all status */}
-      <NotVerifiedDetails contractAddress={contractAddressHex} />
+      <EvmVerifySection
+        contractAddress={contractAddressHex}
+        evmVerifyInfo={evmVerifyInfo}
+      />
       <Stack gap={4}>
         <Grid
           gridTemplateColumns={{

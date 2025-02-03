@@ -1,61 +1,69 @@
 import { Flex, Stack } from "@chakra-ui/react";
-import { NotVerifiedDetails } from "lib/components/evm-verify-section";
+import { EvmVerifySection } from "lib/components/evm-verify-section";
 import { TypeSwitch } from "lib/components/TypeSwitch";
 import { EvmVerifyInfo } from "lib/services/types";
 import { HexAddr20, Option } from "lib/types";
 import { useState } from "react";
-import { EvmContractDetailsContractTabs } from "../../types";
+import { EvmContractDetailsContractInfoTabs } from "../../types";
 import { ContractAbi } from "./ContractAbi";
 import { ContractByteCode, ContractByteCodeProps } from "./ContractByteCode";
 import { ContractCompiler } from "./ContractCompiler";
 import { ContractCode } from "./ContractCode";
 
-interface EvmContractDetailsContractProps extends ContractByteCodeProps {
+interface EvmContractDetailsContractInfoProps extends ContractByteCodeProps {
   contractAddress: HexAddr20;
   evmVerifyInfo: Option<EvmVerifyInfo>;
 }
 
-export const EvmContractDetailsContract = ({
+export const EvmContractDetailsContractInfo = ({
   contractAddress,
   byteCode,
   deployedByteCode,
   evmVerifyInfo,
-}: EvmContractDetailsContractProps) => {
+}: EvmContractDetailsContractInfoProps) => {
+  const isVerified = evmVerifyInfo?.isVerified;
   const [currentTab, setCurrentTab] = useState(
-    evmVerifyInfo
-      ? EvmContractDetailsContractTabs.Code
-      : EvmContractDetailsContractTabs.ByteCode
+    isVerified
+      ? EvmContractDetailsContractInfoTabs.Code
+      : EvmContractDetailsContractInfoTabs.ByteCode
   );
 
   return (
     <Stack gap={8}>
-      {/* // TODO: Support all status */}
-      <NotVerifiedDetails contractAddress={contractAddress} />
-      {evmVerifyInfo && (
+      <EvmVerifySection
+        contractAddress={contractAddress}
+        evmVerifyInfo={evmVerifyInfo}
+      />
+      {isVerified ? (
         <>
           <Flex>
             <TypeSwitch
-              tabs={Object.values(EvmContractDetailsContractTabs)}
+              tabs={Object.values(EvmContractDetailsContractInfoTabs)}
               onTabChange={setCurrentTab}
               currentTab={currentTab}
             />
           </Flex>
-          {currentTab === EvmContractDetailsContractTabs.Code && (
+          {currentTab === EvmContractDetailsContractInfoTabs.Code && (
             <ContractCode
               sourceFiles={evmVerifyInfo.sourceFiles}
-              contractPath={evmVerifyInfo.contractPath}
+              contractPath={evmVerifyInfo.contractPath ?? ""}
               constructorArguments={evmVerifyInfo.constructorArguments}
             />
           )}
-          {currentTab === EvmContractDetailsContractTabs.Compiler && (
+          {currentTab === EvmContractDetailsContractInfoTabs.Compiler && (
             <ContractCompiler compilerSettings={evmVerifyInfo.settings} />
           )}
-          {currentTab === EvmContractDetailsContractTabs.Abi && (
-            <ContractAbi abi={evmVerifyInfo.abi} />
+          {currentTab === EvmContractDetailsContractInfoTabs.Abi && (
+            <ContractAbi abi={evmVerifyInfo.abi ?? []} />
+          )}
+          {currentTab === EvmContractDetailsContractInfoTabs.ByteCode && (
+            <ContractByteCode
+              byteCode={byteCode}
+              deployedByteCode={deployedByteCode}
+            />
           )}
         </>
-      )}
-      {currentTab === EvmContractDetailsContractTabs.ByteCode && (
+      ) : (
         <ContractByteCode
           byteCode={byteCode}
           deployedByteCode={deployedByteCode}
