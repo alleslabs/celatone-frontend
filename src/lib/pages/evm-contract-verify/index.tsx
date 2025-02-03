@@ -12,10 +12,10 @@ import {
   Heading,
   Stack,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { EvmContractVerifyTop } from "./components/EvmContractVerifyTop";
 import { ContractLicenseInfoAccordion } from "./components/ContractLicenseInfoAccordion";
-import { useStepper } from "lib/hooks";
 import { EvmContractFooter } from "./components/EvmContractVerifyFooter";
 import { ControllerInput, SelectInput } from "lib/components/forms";
 import { useForm } from "react-hook-form";
@@ -40,9 +40,13 @@ import { HarthatInfoAccordion } from "./components/HardhatInfoAccordion";
 import { FoundryInfoAccordion } from "./components/FoundryInfoAccordion";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { HexAddr20, Option } from "lib/types";
-import { useEvmVerifyConfig } from "lib/services/verification/evm";
+import {
+  useEvmVerifyConfig,
+  useEvmVerifyInfo,
+} from "lib/services/verification/evm";
 import { Loading } from "lib/components/Loading";
 import { EvmProgrammingLanguage, EvmVerifyConfig } from "lib/services/types";
+import { EvmVerifyStatusModal } from "lib/components/modal/evm-verify-status";
 
 interface EvmContractVerifyBodyProps {
   contractAddress: Option<HexAddr20>;
@@ -79,20 +83,6 @@ export const EvmContractVerifyBody = ({
   const { licenseType, contractAddress, language, compilerVersion, option } =
     watch();
 
-  const { handleNext, handlePrevious, hasNext, hasPrevious } = useStepper(
-    1,
-    () => {
-      if (
-        option === VerifyOptions.SolidityHardhat ||
-        option === VerifyOptions.SolidityFoundry
-      ) {
-        alert("Open Verification Status Modal");
-      } else {
-        alert("Submit!");
-      }
-    }
-  );
-
   const { licenseTypeOptions, compilerVersionOptions } = useMemo(
     () => ({
       licenseTypeOptions: getLicenseTypeOptions(evmVerifyConfig),
@@ -104,8 +94,21 @@ export const EvmContractVerifyBody = ({
     [evmVerifyConfig, language]
   );
 
+  const { data: evmVerifyInfo } = useEvmVerifyInfo(contractAddress);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleSubmit = () => {
+    if (
+      option === VerifyOptions.SolidityHardhat ||
+      option === VerifyOptions.SolidityFoundry
+    ) {
+      onOpen();
+    } else {
+      alert("Submit!");
+    }
+  };
+
   const isFormDisabled = () => {
-    // TODO: Update the validation
     return false;
   };
 
@@ -262,11 +265,15 @@ export const EvmContractVerifyBody = ({
                 ? "View Verification Status"
                 : "Verify & Publish Contract"
             }
-            handleNext={handleNext}
-            handlePrevious={handlePrevious}
-            hasNext={hasNext}
-            hasPrevious={hasPrevious}
+            handleNext={handleSubmit}
+            handlePrevious={router.back}
             isDisabled={isFormDisabled()}
+          />
+          <EvmVerifyStatusModal
+            contractAddress={contractAddress}
+            evmVerifyInfo={evmVerifyInfo}
+            isOpen={isOpen}
+            onClose={onClose}
           />
         </>
       )}
