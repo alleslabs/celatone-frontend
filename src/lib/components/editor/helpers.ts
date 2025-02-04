@@ -4,7 +4,7 @@ import { EXTENSION_LIB, FilePath, SourceTreeNode } from "./types";
 export const generateSourceTree = (
   filesPath: FilePath[],
   initialFilePath: string,
-  libraries: string[]
+  libraryFilesPath: string[]
 ): SourceTreeNode[] => {
   const root: SourceTreeNode[] = [];
 
@@ -18,7 +18,7 @@ export const generateSourceTree = (
       if (!existingNode) {
         const extension = last(split(part, "."));
         const isFolder = extension ? !EXTENSION_LIB.includes(extension) : false;
-        const isLib = !isFolder && libraries.includes(path);
+        const isLib = !isFolder && libraryFilesPath.includes(path);
         const isInitializeNodePath = initialFilePath === path;
         const isOpen = index === 0 ? true : false || isInitializeNodePath;
 
