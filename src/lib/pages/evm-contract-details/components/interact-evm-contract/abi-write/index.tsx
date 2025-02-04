@@ -1,5 +1,5 @@
-import { Accordion } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { Accordion, Button, Flex } from "@chakra-ui/react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { EmptyState } from "lib/components/state";
 
@@ -7,6 +7,9 @@ import { JsonFragment } from "ethers";
 import { HexAddr20 } from "lib/types";
 import { isUndefined } from "lodash";
 import { WriteBox } from "./WriteBox";
+import InputWithIcon from "lib/components/InputWithIcon";
+import { CustomIcon } from "lib/components/icon";
+import { trackUseExpandAll } from "lib/amplitude";
 
 interface AbiWriteProps {
   contractAddress: HexAddr20;
@@ -27,7 +30,16 @@ export const AbiWrite = ({
   // ------------------------------------------//
   // -------------------STATES-----------------//
   // ------------------------------------------//
+  const [keyword, setKeyword] = useState("");
   const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
+
+  const filteredAbiWrite = useMemo(
+    () =>
+      abiWrite.filter((abiSection) =>
+        abiSection.name?.toLowerCase().includes(keyword.toLowerCase())
+      ),
+    [abiWrite, keyword]
+  );
 
   // ------------------------------------------//
   // -------------------EFFECTS----------------//
@@ -57,7 +69,35 @@ export const AbiWrite = ({
 
   return (
     <>
-      {abiWrite.length ? (
+      <Flex gap={6} mb={6}>
+        <InputWithIcon
+          placeholder="Search by method name"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          size="md"
+          amptrackSection="write-message-search"
+        />
+        <Button
+          variant="outline-gray"
+          rightIcon={
+            <CustomIcon
+              name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
+              boxSize={3}
+              right={0}
+            />
+          }
+          minH="40px"
+          onClick={() => {
+            trackUseExpandAll(expandedIndexes.length ? "collapse" : "expand");
+            setExpandedIndexes((prev) =>
+              prev.length ? [] : Array.from(Array(abiWrite.length).keys())
+            );
+          }}
+        >
+          {expandedIndexes.length ? "Collapse All" : "Expand All"}
+        </Button>
+      </Flex>
+      {filteredAbiWrite.length ? (
         <Accordion
           ref={accordionRef}
           allowMultiple

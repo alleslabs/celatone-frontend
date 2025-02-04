@@ -26,7 +26,7 @@ import type { HexAddr20 } from "lib/types";
 import { isHexWalletAddress, truncate } from "lib/utils";
 
 import { EvmContractDetailsContractInfo } from "./components/evm-contract-details-contract-info";
-import { EvmContractDetailsOverview } from "./components/EvmContractDetailsOverview";
+import { EvmContractDetailsOverview } from "./components/evm-contract-details-overview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
 import {
@@ -172,6 +172,8 @@ const EvmContractDetailsBody = ({
                 onViewMoreTxs={handleOnViewMoreTxs}
                 tab={overviewTabIndex}
                 setTab={setOverviewTabIndex}
+                evmVerifyInfo={evmVerifyInfo}
+                proxyTargetEvmVerifyInfo={proxyTargetEvmVerifyInfo}
               />
             </TabPanel>
             <TabPanel p={0} pt={8}>

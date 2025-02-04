@@ -49,7 +49,9 @@ export const SchemaExecute = ({
   const filteredMsgs = useMemo(() => {
     if (!keyword) return schema;
 
-    return schema?.filter((msg) => msg.title?.includes(keyword));
+    return schema?.filter((msg) =>
+      msg.title?.toLowerCase().includes(keyword.toLowerCase())
+    );
   }, [keyword, schema]);
 
   // ------------------------------------------//

@@ -40,7 +40,9 @@ export const SchemaQuery = ({
   const schema = getQuerySchema(verifiedSchema ?? localSchema);
   const filteredMsgs = useMemo(
     () =>
-      schema?.filter((querySchema) => querySchema[0].title?.includes(keyword)),
+      schema?.filter((querySchema) =>
+        querySchema[0].title?.toLowerCase().includes(keyword.toLowerCase())
+      ),
     [schema, keyword]
   );
 
