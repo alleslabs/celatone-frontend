@@ -9,6 +9,7 @@ export interface SourceTreeNode extends FilePath {
   name: string;
   isOpen: boolean;
   isFolder: boolean;
+  isLib: boolean;
   treeLevel: number;
   children: SourceTreeNode[];
 }

@@ -60,6 +60,7 @@ export const ContractCode = ({
             path: file.sourcePath,
             code: file.evmSourceFile.content,
           }))}
+          libraryFilesPath={libraries.map((lib) => lib.contractPath)}
           initialFilePath={contractPath}
           isOpen={isOpen}
           onClose={onClose}
