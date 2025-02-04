@@ -60,7 +60,7 @@ export const EvmContractDetailsOverview = ({
       created={created}
       isContractInfoLoading={isContractInfoLoading}
     />
-    {evmVerifyInfo && (
+    {evmVerifyInfo?.isVerified && (
       <>
         <OverviewVerifiedInfo evmVerifyInfo={evmVerifyInfo} />
         <OverviewVerifiedCmds
