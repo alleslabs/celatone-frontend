@@ -1,6 +1,7 @@
 import { Flex, FlexProps, Text } from "@chakra-ui/react";
 import { SourceTreeNode } from "./types";
 import { CustomIcon } from "../icon";
+import { Tooltip } from "../Tooltip";
 
 interface EditorFileBodyProps extends FlexProps {
   node: SourceTreeNode;
@@ -29,7 +30,9 @@ export const EditorFileBody = ({
     ) : (
       <>
         {initialFilePath === node.path && (
-          <CustomIcon name="star-solid" color="secondary.main" boxSize={3} />
+          <Tooltip label="Main verified contract file">
+            <CustomIcon name="star-solid" color="secondary.main" boxSize={3} />
+          </Tooltip>
         )}
         <CustomIcon name="code-file" color="gray.600" boxSize={3.5} />
       </>
