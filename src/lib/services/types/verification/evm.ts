@@ -47,6 +47,11 @@ const zEvmVerifyInfoSourceFile = z
   .transform(snakeToCamel);
 export type EvmVerifyInfoSourceFile = z.infer<typeof zEvmVerifyInfoSourceFile>;
 
+const zEvmOptimizer = z.object({
+  enabled: z.boolean(),
+  runs: z.number(),
+});
+
 export const zEvmVerifyInfo = z
   .object({
     guid: z.string().uuid(),
@@ -69,9 +74,10 @@ export const zEvmVerifyInfo = z
     settings: z.string(),
     source_files: z.array(zEvmVerifyInfoSourceFile),
   })
-  .transform(({ abi, ...rest }) => ({
+  .transform(({ abi, optimizer, ...rest }) => ({
     ...snakeToCamel(rest),
     abi: abi ? (JSON.parse(abi) as JsonFragment[]) : [],
+    optimizer: zEvmOptimizer.parse(JSON.parse(optimizer)),
     isVerified: !!rest.verified_timestamp,
   }));
 export type EvmVerifyInfo = z.infer<typeof zEvmVerifyInfo>;
