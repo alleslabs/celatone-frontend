@@ -137,7 +137,7 @@ export const FunctionCard = ({
     />
   ) : (
     <Tooltip
-      label="Only functions with “is_entry: true” are able to interacted through Celatone’s module interactions."
+      label="Only functions with “is_entry: true” are able to interacted through Scan’s module interactions."
       hidden={!disabled}
     >
       <FunctionCardBody
