@@ -16,11 +16,13 @@ interface FullEditorProps
   extends Pick<FullEditorSidebarMobileProps, "isOpen" | "onClose"> {
   filesPath: FilePath[];
   initialFilePath: string;
+  libraries: string[];
 }
 
 export const FullEditor = ({
   filesPath,
   initialFilePath,
+  libraries,
   isOpen,
   onClose,
 }: FullEditorProps) => {
@@ -28,7 +30,11 @@ export const FullEditor = ({
   const [filesList, setFilesList] = useState<SourceTreeNode[]>([]);
   const [selectedFile, setSelectedFile] =
     useState<Nullable<SourceTreeNode>>(null);
-  const generatedSourceTree = generateSourceTree(filesPath, initialFilePath);
+  const generatedSourceTree = generateSourceTree(
+    filesPath,
+    initialFilePath,
+    libraries
+  );
 
   const handleFindInitialFile = (tree: SourceTreeNode[]) => {
     return tree.forEach((node) => {

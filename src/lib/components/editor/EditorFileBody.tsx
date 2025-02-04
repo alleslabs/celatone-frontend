@@ -28,14 +28,23 @@ export const EditorFileBody = ({
         <CustomIcon name="folder" color="primary.main" boxSize={3} />
       </>
     ) : (
-      <>
+      <Flex
+        alignItems="center"
+        pl={node.treeLevel === 0 && node.path === initialFilePath ? 2 : 0}
+      >
         {initialFilePath === node.path && (
           <Tooltip label="Main verified contract file">
             <CustomIcon name="star-solid" color="secondary.main" boxSize={3} />
           </Tooltip>
         )}
-        <CustomIcon name="code-file" color="gray.600" boxSize={3.5} />
-      </>
+        {node.isLib ? (
+          <Tooltip label="Library contract">
+            <CustomIcon name="document" color="gray.600" boxSize={3} />
+          </Tooltip>
+        ) : (
+          <CustomIcon name="code-file" color="gray.600" boxSize={3.5} />
+        )}
+      </Flex>
     )}
     <Text
       variant="body2"
