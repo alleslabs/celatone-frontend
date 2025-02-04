@@ -43,12 +43,12 @@ export const ContractLibrary = ({ libraries }: ContractLibraryProps) => {
             </GridItem>
             <GridItem>
               <Text color="text.dark" variant="body2">
-                {library.name}
+                {library.contractName}
               </Text>
             </GridItem>
             <GridItem>
               <ExplorerLink
-                value={library.address}
+                value={library.contractAddress}
                 type="evm_contract_address"
                 textFormat={isMobile ? "truncate" : "normal"}
                 showCopyOnHover

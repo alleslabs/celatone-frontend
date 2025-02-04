@@ -50,10 +50,11 @@ export type EvmVerifyInfoSourceFile = z.infer<typeof zEvmVerifyInfoSourceFile>;
 const zEvmVerifyInfoLibraries = z
   .record(z.string(), z.record(z.string(), z.string()))
   .transform((libraries) =>
-    Object.entries(libraries).flatMap(([, libs]) =>
+    Object.entries(libraries).flatMap(([path, libs]) =>
       Object.entries(libs).map(([name, address]) => ({
-        name,
-        address,
+        contractName: name,
+        contractAddress: address,
+        contractPath: path,
       }))
     )
   );
