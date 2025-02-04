@@ -64,7 +64,7 @@ export const EvmContractCmdGroup = ({
           {abiSections.sort().map(({ name }, index) => (
             <ContractCmdButton
               key={`${interactTab}-cmd-${name}-${index}`}
-              cmd={name ?? ""}
+              cmd={name}
               onClickCmd={() => {
                 navigate({
                   pathname: "/evm-contracts/[contractAddress]/[tab]",
