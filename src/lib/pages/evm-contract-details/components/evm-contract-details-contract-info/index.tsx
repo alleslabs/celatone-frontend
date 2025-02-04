@@ -49,6 +49,7 @@ export const EvmContractDetailsContractInfo = ({
               contractPath={evmVerifyInfo.contractPath ?? ""}
               constructorArguments={evmVerifyInfo.constructorArguments}
               abi={evmVerifyInfo.abi}
+              libraries={evmVerifyInfo.libraries}
             />
           )}
           {currentTab === EvmContractDetailsContractInfoTabs.Compiler && (

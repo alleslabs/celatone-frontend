@@ -47,6 +47,20 @@ const zEvmVerifyInfoSourceFile = z
   .transform(snakeToCamel);
 export type EvmVerifyInfoSourceFile = z.infer<typeof zEvmVerifyInfoSourceFile>;
 
+const zEvmVerifyInfoLibraries = z
+  .record(z.string(), z.record(z.string(), z.string()))
+  .default({})
+  .transform((libraries) =>
+    Object.entries(libraries).flatMap(([path, libs]) =>
+      Object.entries(libs).map(([name, address]) => ({
+        contractName: name,
+        contractAddress: address,
+        contractPath: path,
+      }))
+    )
+  );
+export type EvmVerifyInfoLibraries = z.infer<typeof zEvmVerifyInfoLibraries>;
+
 const zEvmOptimizer = z.object({
   enabled: z.boolean(),
   runs: z.number(),
@@ -70,7 +84,6 @@ export const zEvmVerifyInfo = z
     verified_timestamp: zUtcDate.optional(),
     submitted_timestamp: zUtcDate,
     error_message: z.string().optional(),
-    // libraries: z.array() // TODO: Recheck
     settings: z.string(),
     source_files: z.array(zEvmVerifyInfoSourceFile),
   })
@@ -79,5 +92,8 @@ export const zEvmVerifyInfo = z
     abi: abi ? (JSON.parse(abi) as JsonFragment[]) : [],
     optimizer: zEvmOptimizer.parse(JSON.parse(optimizer)),
     isVerified: !!rest.verified_timestamp,
+    libraries: zEvmVerifyInfoLibraries.parse(
+      JSON.parse(rest.settings).libraries
+    ),
   }));
 export type EvmVerifyInfo = z.infer<typeof zEvmVerifyInfo>;
