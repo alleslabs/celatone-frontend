@@ -49,6 +49,7 @@ export type EvmVerifyInfoSourceFile = z.infer<typeof zEvmVerifyInfoSourceFile>;
 
 const zEvmVerifyInfoLibraries = z
   .record(z.string(), z.record(z.string(), z.string()))
+  .default({})
   .transform((libraries) =>
     Object.entries(libraries).flatMap(([path, libs]) =>
       Object.entries(libs).map(([name, address]) => ({

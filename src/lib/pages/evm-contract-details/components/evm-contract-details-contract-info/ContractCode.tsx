@@ -65,15 +65,17 @@ export const ContractCode = ({
           onClose={onClose}
         />
       </Stack>
-      <Stack gap={4}>
-        <Flex gap={2} alignItems="center">
-          <Heading as="h6" variant="h7">
-            Contract Library
-          </Heading>
-          <Badge>{libraries.length}</Badge>
-        </Flex>
-        <ContractLibrary libraries={libraries} />
-      </Stack>
+      {libraries.length > 0 && (
+        <Stack gap={4}>
+          <Flex gap={2} alignItems="center">
+            <Heading as="h6" variant="h7">
+              Contract Library
+            </Heading>
+            <Badge>{libraries.length}</Badge>
+          </Flex>
+          <ContractLibrary libraries={libraries} />
+        </Stack>
+      )}
       <Stack gap={4}>
         <Heading as="h6" variant="h7">
           Constructor Arguments
