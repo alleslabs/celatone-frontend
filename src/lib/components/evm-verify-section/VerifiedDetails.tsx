@@ -17,12 +17,13 @@ export const VerifiedDetails = ({ contractAddress }: VerifiedDetailsProps) => (
         cursor="pointer"
         color="primary.main"
         transition="all 0.25s ease-in-out"
+        fontWeight={700}
         _hover={{
           textDecoration: "underline",
           textDecorationColor: "primary.light",
         }}
       >
-        Source Code.
+        source code.
       </Text>
     </AppLink>
   </Text>
