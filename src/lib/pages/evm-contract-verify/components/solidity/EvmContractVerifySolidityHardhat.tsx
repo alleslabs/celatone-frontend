@@ -4,9 +4,9 @@ import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { useMemo } from "react";
 
 import { Control, useWatch } from "react-hook-form";
-import { EvmContractVerifyForm } from "../../types";
 import { convertCosmosChainIdToEvmChainId } from "lib/utils/evm";
 import { CELATONE_VERIFICATION_API } from "env";
+import { EvmContractVerifyForm } from "lib/services/types";
 
 interface EvmContractVerifySolidityHardhatProps {
   control: Control<EvmContractVerifyForm>;

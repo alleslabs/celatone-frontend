@@ -1,4 +1,5 @@
 import {
+  CELATONE_QUERY_KEYS,
   useCelatoneApp,
   useEvmConfig,
   useExampleAddresses,
@@ -24,12 +25,7 @@ import { ContractLicenseInfoAccordion } from "./components/ContractLicenseInfoAc
 import { EvmContractFooter } from "./components/EvmContractVerifyFooter";
 import { ControllerInput, SelectInput } from "lib/components/forms";
 import { useForm } from "react-hook-form";
-import {
-  EvmContractVerifyForm,
-  EvmVerifyOptions,
-  zEvmContractVerifyForm,
-  zEvmContractVerifyQueryParams,
-} from "./types";
+import { zEvmContractVerifyQueryParams } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NoMobile } from "lib/components/modal";
 import { isHex20Bytes, truncate } from "lib/utils";
@@ -51,9 +47,16 @@ import {
   useSubmitEvmVerify,
 } from "lib/services/verification/evm";
 import { Loading } from "lib/components/Loading";
-import { EvmProgrammingLanguage, EvmVerifyConfig } from "lib/services/types";
+import {
+  EvmContractVerifyForm,
+  EvmProgrammingLanguage,
+  EvmVerifyConfig,
+  EvmVerifyOptions,
+  zEvmContractVerifyForm,
+} from "lib/services/types";
 import { EvmVerifyStatusModal } from "lib/components/modal/evm-verify-status";
 import { EvmContractVerifyModal } from "./components/evm-contract-verify-modal";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface EvmContractVerifyBodyProps {
   contractAddress: Option<HexAddr20>;
@@ -67,9 +70,10 @@ export const EvmContractVerifyBody = ({
   useEvmConfig({ shouldRedirect: true });
   const isMobile = useMobile();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
   const { evmContract: exampleContractAddress } = useExampleAddresses();
-  const { mutateAsync, isLoading, isError } = useSubmitEvmVerify();
+  const { mutate, isLoading, isError } = useSubmitEvmVerify();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_EVM_CONTRACT_VERIFY);
@@ -120,7 +124,7 @@ export const EvmContractVerifyBody = ({
     return false;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!option || !language || !licenseType) return;
 
     // open modal for either verification status or verification result
@@ -129,19 +133,27 @@ export const EvmContractVerifyBody = ({
     // if verify by tools, don't need to submit verification
     if (isVerifyByExternals) return;
 
-    try {
-      await mutateAsync({
+    mutate(
+      {
         option,
         verifyForm,
         contractAddress,
         compilerVersion,
         licenseType,
         chainId: currentChainId,
-      });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Error submitting verification", error);
-    }
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              CELATONE_QUERY_KEYS.EVM_VERIFY_INFO,
+              currentChainId,
+              contractAddress,
+            ],
+          });
+        },
+      }
+    );
   };
 
   return (

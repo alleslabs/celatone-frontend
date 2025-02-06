@@ -15,8 +15,8 @@ import type { Control } from "react-hook-form";
 import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
-import { EvmContractVerifyForm } from "../../types";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { EvmContractVerifyForm } from "lib/services/types";
 
 interface EvmContractVerifySuccessModalProps {
   control: Control<EvmContractVerifyForm>;
@@ -65,15 +65,14 @@ export const EvmContractVerifySuccessModal = ({
           </Grid>
         </Stack>
       </ModalBody>
-      <ModalFooter pb={0} gap={4}>
+      <ModalFooter pb={0} gap={4} display="grid" gridTemplateColumns="1fr 1fr">
         <Button
           variant="outline-primary"
           onClick={() => navigate({ pathname: "/evm-contract-verify" })}
-          flex={1}
         >
           Verify More
         </Button>
-        <AppLink href={`/evm-contracts/${contractAddress}`} style={{ flex: 1 }}>
+        <AppLink href={`/evm-contracts/${contractAddress}`}>
           <Button variant="primary" w="full">
             See Contract Details
           </Button>

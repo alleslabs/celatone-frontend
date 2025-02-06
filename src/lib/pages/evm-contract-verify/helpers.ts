@@ -1,6 +1,9 @@
 import { HexAddr20, Option, zHexAddr20 } from "lib/types";
-import { EvmContractVerifyForm } from "./types";
-import { EvmProgrammingLanguage, EvmVerifyConfig } from "lib/services/types";
+import {
+  EvmContractVerifyForm,
+  EvmProgrammingLanguage,
+  EvmVerifyConfig,
+} from "lib/services/types";
 import { getLicenseTypeLabel } from "lib/utils";
 
 const CONSTRUCTOR_ARGS_DEFAULT_VALUE = {

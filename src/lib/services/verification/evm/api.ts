@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CELATONE_VERIFICATION_API } from "env";
-import { EvmVerifyOptions } from "lib/pages/evm-contract-verify/types";
 import {
+  EvmVerifyOptions,
   SubmitEvmVerifyArgs,
   SubmitEvmVerifyFlattenArgs,
   zEvmVerifyConfig,

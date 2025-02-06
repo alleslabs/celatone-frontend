@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import type { Control } from "react-hook-form";
 
-import type { EvmContractVerifyForm } from "../../types";
 import { EvmContractVerifyFailedModal } from "./EvmContractVerifyFailedModal";
 import { EvmContractVerifyLoadingModal } from "./EvmContractVerifyLoadingModal";
 import { EvmContractVerifySuccessModal } from "./EvmContractVerifySuccessModal";
+import { EvmContractVerifyForm } from "lib/services/types";
 
 interface EvmContractVerifyModalBodyProps {
   isError: boolean;

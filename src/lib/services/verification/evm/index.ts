@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { getEvmVerifyConfig, getEvmVerifyInfo, submitEvmVerify } from "./api";
 import { HexAddr20, Option } from "lib/types";
@@ -32,15 +32,7 @@ export const useEvmVerifyInfo = (contractAddress: Option<HexAddr20>) => {
   });
 };
 
-export const useSubmitEvmVerify = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+export const useSubmitEvmVerify = () =>
+  useMutation({
     mutationFn: submitEvmVerify,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [CELATONE_QUERY_KEYS.EVM_VERIFY_INFO],
-      });
-    },
   });
-};
