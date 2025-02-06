@@ -68,8 +68,8 @@ export const ContractLibraries = <T extends FieldValues>({
         borderRadius="md"
         display={contractLibraries.enabled ? "flex" : "none"}
       >
-        {fields.map((item, index) => (
-          <Grid key={item.id} gridTemplateColumns="1fr 2fr auto" gap={4}>
+        {fields.map((field, index) => (
+          <Grid key={field.id} gridTemplateColumns="1fr 2fr auto" gap={4}>
             <ControllerInput
               label="Library Name"
               isRequired
@@ -77,7 +77,9 @@ export const ContractLibraries = <T extends FieldValues>({
                 required: "",
               }}
               placeholder="ex. simple_math"
-              name={`${item}.name` as FieldPath<T>}
+              name={
+                `${name}.contractLibraries.value.${index}.name` as FieldPath<T>
+              }
               control={control}
               variant="fixed-floating"
             />
@@ -88,7 +90,9 @@ export const ContractLibraries = <T extends FieldValues>({
                 required: "",
               }}
               placeholder={`ex. ${truncate(exampleContractAddress)}`}
-              name={`${item}.address` as FieldPath<T>}
+              name={
+                `${name}.contractLibraries.value.${index}.address` as FieldPath<T>
+              }
               control={control}
               variant="fixed-floating"
             />
