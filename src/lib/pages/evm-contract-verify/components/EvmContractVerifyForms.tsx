@@ -1,5 +1,5 @@
 import { Control, useWatch } from "react-hook-form";
-import { EvmContractVerifyForm, VerifyOptions } from "../types";
+import { EvmContractVerifyForm, EvmVerifyOptions } from "../types";
 import {
   EvmContractVerifyVyperContractCode,
   EvmContractVerifyVyperJsonInput,
@@ -30,42 +30,42 @@ export const EvmContractVerifyForms = ({
 
   switch (verifyOption) {
     // Solidity
-    case VerifyOptions.SolidityUploadFiles:
+    case EvmVerifyOptions.SolidityUploadFiles:
       return (
         <EvmContractVerifySolidityUploadFiles
           control={control}
           evmVerifyConfig={evmVerifyConfig}
         />
       );
-    case VerifyOptions.SolidityContractCode:
+    case EvmVerifyOptions.SolidityContractCode:
       return (
         <EvmContractVerifySolidityContractCode
           control={control}
           evmVerifyConfig={evmVerifyConfig}
         />
       );
-    case VerifyOptions.SolidityJsonInput:
+    case EvmVerifyOptions.SolidityJsonInput:
       return <EvmContractVerifySolidityJsonInput control={control} />;
-    case VerifyOptions.SolidityHardhat:
+    case EvmVerifyOptions.SolidityHardhat:
       return <EvmContractVerifySolidityHardhat control={control} />;
-    case VerifyOptions.SolidityFoundry:
+    case EvmVerifyOptions.SolidityFoundry:
       return <EvmContractVerifySolidityFoundry control={control} />;
     // Vyper
-    case VerifyOptions.VyperUploadFile:
+    case EvmVerifyOptions.VyperUploadFile:
       return (
         <EvmContractVerifyVyperUploadFile
           control={control}
           evmVerifyConfig={evmVerifyConfig}
         />
       );
-    case VerifyOptions.VyperContractCode:
+    case EvmVerifyOptions.VyperContractCode:
       return (
         <EvmContractVerifyVyperContractCode
           control={control}
           evmVerifyConfig={evmVerifyConfig}
         />
       );
-    case VerifyOptions.VyperJsonInput:
+    case EvmVerifyOptions.VyperJsonInput:
       return <EvmContractVerifyVyperJsonInput control={control} />;
     default:
       return null;

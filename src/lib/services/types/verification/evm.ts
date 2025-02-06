@@ -77,20 +77,22 @@ export const zEvmVerifyInfo = z
     contract_path: z.string().optional(),
     compiler_version: z.string(),
     evm_version: z.string(),
-    optimizer: z.string(),
+    optimizer: z.string().optional(),
     constructor_arguments: z.string(),
     abi: z.string().optional(),
     bytecode_type: z.string(),
     verified_timestamp: zUtcDate.optional(),
     submitted_timestamp: zUtcDate,
     error_message: z.string().optional(),
-    settings: z.string(),
+    settings: z.string().default("{}"),
     source_files: z.array(zEvmVerifyInfoSourceFile),
   })
   .transform(({ abi, optimizer, ...rest }) => ({
     ...snakeToCamel(rest),
     abi: abi ? (JSON.parse(abi) as JsonFragment[]) : [],
-    optimizer: zEvmOptimizer.parse(JSON.parse(optimizer)),
+    optimizer: optimizer
+      ? zEvmOptimizer.parse(JSON.parse(optimizer))
+      : undefined,
     isVerified: !!rest.verified_timestamp,
     libraries: zEvmVerifyInfoLibraries.parse(
       JSON.parse(rest.settings).libraries

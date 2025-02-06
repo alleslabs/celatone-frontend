@@ -10,7 +10,7 @@ const CONSTRUCTOR_ARGS_DEFAULT_VALUE = {
 
 const OPTIMIZER_CONFIG_DEFAULT_VALUE = {
   enabled: false,
-  runs: 200,
+  runs: "200",
 };
 
 const EVM_VERSION_DEFAULT_VALUE = "default";
@@ -30,7 +30,7 @@ export const getEvmContractVerifyFormDefaultValue = (
 ): EvmContractVerifyForm => ({
   contractAddress: contractAddressQueryParam ?? zHexAddr20.parse(""),
   compilerVersion: "",
-  licenseType: "",
+  licenseType: undefined,
   language: undefined,
   option: undefined,
   verifyForm: {

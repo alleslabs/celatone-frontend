@@ -1,9 +1,12 @@
-import { EvmProgrammingLanguage } from "lib/services/types";
+import {
+  EvmProgrammingLanguage,
+  EvmVerifyLicenseType,
+} from "lib/services/types";
 import { zHexAddr20 } from "lib/types";
 import { isHex20Bytes } from "lib/utils";
 import { z, ZodIssueCode } from "zod";
 
-export enum VerifyOptions {
+export enum EvmVerifyOptions {
   VyperUploadFile = "vyper-upload-file",
   VyperContractCode = "vyper-contract-code",
   VyperJsonInput = "vyper-json-input",
@@ -25,15 +28,16 @@ export const zEvmContractVerifyQueryParams = z.object({
 // MARK - Shared Components
 const zOptimizerConfig = z.object({
   enabled: z.boolean(),
-  runs: z.number().nonnegative(),
+  runs: z.string(),
 });
+export type OptimizerConfig = z.infer<typeof zOptimizerConfig>;
 
 const zConstructorArgs = z.object({
   enabled: z.boolean(),
   value: z.string(),
 });
 
-const zEvmVersion = z.string();
+const zEvmTargetVersion = z.string();
 
 const zContractLibrary = z.object({
   name: z.string(),
@@ -54,14 +58,14 @@ const zEvmContractVerifySolidityOptionUploadFilesForm = z.object({
   ),
   constructorArgs: zConstructorArgs,
   optimizerConfig: zOptimizerConfig,
-  evmVersion: zEvmVersion,
+  evmVersion: zEvmTargetVersion,
   contractLibraries: zContractLibraries,
 });
 
 const zEvmContractVerifySolidityOptionContractCodeForm = z.object({
   contractCode: z.string(),
   constructorArgs: zConstructorArgs,
-  evmVersion: zEvmVersion,
+  evmVersion: zEvmTargetVersion,
   optimizerConfig: zOptimizerConfig,
   contractLibraries: zContractLibraries,
 });
@@ -75,14 +79,14 @@ const zEvmContractVerifySolidityOptionJsonInputForm = z.object({
 const zEvmContractVerifyVyperOptionUploadFileForm = z.object({
   file: z.instanceof(File).optional(),
   constructorArgs: zConstructorArgs,
-  evmVersion: zEvmVersion,
+  evmVersion: zEvmTargetVersion,
 });
 
 const zEvmContractVerifyVyperOptionContractCodeForm = z.object({
   contractName: z.string(),
   contractCode: z.string(),
   constructorArgs: zConstructorArgs,
-  evmVersion: zEvmVersion,
+  evmVersion: zEvmTargetVersion,
 });
 
 const zEvmContractVerifyVyperOptionJsonInputForm = z.object({
@@ -107,9 +111,9 @@ const zEvmContractVerifyBase = z.object({
       });
   }),
   compilerVersion: z.string(),
-  licenseType: z.string(),
+  licenseType: z.nativeEnum(EvmVerifyLicenseType).optional(),
   language: z.nativeEnum(EvmProgrammingLanguage).optional(),
-  option: z.nativeEnum(VerifyOptions).optional(),
+  option: z.nativeEnum(EvmVerifyOptions).optional(),
 });
 
 export const zEvmContractVerifyForm = zEvmContractVerifyBase.merge(
