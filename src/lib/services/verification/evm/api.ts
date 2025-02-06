@@ -1,11 +1,9 @@
 import axios from "axios";
 import { CELATONE_VERIFICATION_API } from "env";
+import { EvmVerifyOptions } from "lib/pages/evm-contract-verify/types";
 import {
-  EvmContractVerifyForm,
-  EvmVerifyOptions,
-} from "lib/pages/evm-contract-verify/types";
-import {
-  EvmVerifyLicenseType,
+  SubmitEvmVerifyArgs,
+  SubmitEvmVerifyFlattenArgs,
   zEvmVerifyConfig,
   zEvmVerifyInfo,
 } from "lib/services/types";
@@ -34,16 +32,6 @@ export const getEvmVerifyInfo = async (
 // Handles HTTP POST requests for different verification options.
 // Prepares data for Solidity & Vyper verification.
 // ============================================
-type SubmitEvmVerifyBaseArgs = {
-  verifierUrl: string;
-  contractAddress: string;
-  chainId: string;
-  compilerVersion: string;
-  licenseType: EvmVerifyLicenseType;
-};
-
-type SubmitEvmVerifyFlattenArgs = SubmitEvmVerifyBaseArgs &
-  EvmContractVerifyForm["verifyForm"]["solidityContractCode"];
 
 const submitEvmVerifyFlatten = async ({
   verifierUrl,
@@ -94,12 +82,6 @@ const submitEvmVerifyFlatten = async ({
     }
   );
 };
-
-interface SubmitEvmVerifyArgs
-  extends Omit<SubmitEvmVerifyBaseArgs, "verifierUrl"> {
-  option: EvmVerifyOptions;
-  verifyForm: EvmContractVerifyForm["verifyForm"];
-}
 
 export const submitEvmVerify = async ({
   option,

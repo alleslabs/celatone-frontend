@@ -111,7 +111,7 @@ export const EvmContractVerifyBody = ({
 
   const { data: evmVerifyInfo } = useEvmVerifyInfo(contractAddress);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const isVerifyByTools =
+  const isVerifyByExternals =
     option === EvmVerifyOptions.SolidityFoundry ||
     option === EvmVerifyOptions.SolidityHardhat;
 
@@ -127,7 +127,7 @@ export const EvmContractVerifyBody = ({
     onOpen();
 
     // if verify by tools, don't need to submit verification
-    if (isVerifyByTools) return;
+    if (isVerifyByExternals) return;
 
     try {
       await mutateAsync({
@@ -301,7 +301,7 @@ export const EvmContractVerifyBody = ({
             handlePrevious={router.back}
             isDisabled={isFormDisabled()}
           />
-          {isVerifyByTools ? (
+          {isVerifyByExternals ? (
             <EvmVerifyStatusModal
               contractAddress={contractAddress}
               evmVerifyInfo={evmVerifyInfo}

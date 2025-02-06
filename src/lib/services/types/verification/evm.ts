@@ -1,4 +1,8 @@
 import { JsonFragment } from "ethers";
+import {
+  EvmContractVerifyForm,
+  EvmVerifyOptions,
+} from "lib/pages/evm-contract-verify/types";
 import { zHexAddr20, zUtcDate } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 import { z } from "zod";
@@ -66,6 +70,7 @@ const zEvmOptimizer = z.object({
   runs: z.number(),
 });
 
+// MARK - EvmVerifyInfo
 export const zEvmVerifyInfo = z
   .object({
     guid: z.string().uuid(),
@@ -99,3 +104,21 @@ export const zEvmVerifyInfo = z
     ),
   }));
 export type EvmVerifyInfo = z.infer<typeof zEvmVerifyInfo>;
+
+// MARK - SubmitEvmVerify
+type SubmitEvmVerifyBaseArgs = {
+  verifierUrl: string;
+  contractAddress: string;
+  chainId: string;
+  compilerVersion: string;
+  licenseType: EvmVerifyLicenseType;
+};
+
+export type SubmitEvmVerifyFlattenArgs = SubmitEvmVerifyBaseArgs &
+  EvmContractVerifyForm["verifyForm"]["solidityContractCode"];
+
+export interface SubmitEvmVerifyArgs
+  extends Omit<SubmitEvmVerifyBaseArgs, "verifierUrl"> {
+  option: EvmVerifyOptions;
+  verifyForm: EvmContractVerifyForm["verifyForm"];
+}

@@ -26,7 +26,7 @@ export const EvmContractVerifyFailedModal = ({
         <Heading variant="h5">Verification is unavailable</Heading>
       </Stack>
     </ModalHeader>
-    <ModalBody overflow="overlay" pt={2} w="334px" mx="auto">
+    <ModalBody overflow="overlay" pt={2} mx="auto">
       <Text variant="body2" color="text.dark" textAlign="center">
         There is something wrong with submission. Please try again later.
       </Text>

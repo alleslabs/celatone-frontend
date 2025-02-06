@@ -69,11 +69,11 @@ export const EvmContractVerifySuccessModal = ({
         <Button
           variant="outline-primary"
           onClick={() => navigate({ pathname: "/evm-contract-verify" })}
-          w="full"
+          flex={1}
         >
           Verify More
         </Button>
-        <AppLink href={`/evm-contracts/${contractAddress}`}>
+        <AppLink href={`/evm-contracts/${contractAddress}`} style={{ flex: 1 }}>
           <Button variant="primary" w="full">
             See Contract Details
           </Button>
