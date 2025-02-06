@@ -43,6 +43,7 @@ const submitEvmVerifyFlatten = async ({
   optimizerConfig,
   constructorArgs,
   evmVersion,
+  contractLibraries,
 }: SubmitEvmVerifyFlattenArgs) => {
   const settings = {
     evmVersion: evmVersion === "default" ? "cancun" : evmVersion,
@@ -50,6 +51,15 @@ const submitEvmVerifyFlatten = async ({
       enabled: optimizerConfig.enabled,
       runs: Number(optimizerConfig.runs),
     },
+    libraries: contractLibraries.value.reduce(
+      (acc, library) => ({
+        ...acc,
+        [`${library.name}.sol`]: {
+          [library.name]: library.address,
+        },
+      }),
+      {}
+    ),
     metadata: {
       bytecodeHash: "none",
     },
