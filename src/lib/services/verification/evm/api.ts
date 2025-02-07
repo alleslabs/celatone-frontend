@@ -51,15 +51,14 @@ const submitEvmVerifyFlatten = async ({
       enabled: optimizerConfig.enabled,
       runs: Number(optimizerConfig.runs),
     },
-    libraries: contractLibraries.value.reduce(
-      (acc, library) => ({
-        ...acc,
+    libraries: contractLibraries.value.reduce((acc, library) => {
+      Object.assign(acc, {
         [`${library.name}.sol`]: {
           [library.name]: library.address,
         },
-      }),
-      {}
-    ),
+      });
+      return acc;
+    }, {}),
     metadata: {
       bytecodeHash: "none",
     },
