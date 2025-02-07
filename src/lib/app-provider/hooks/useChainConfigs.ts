@@ -111,8 +111,8 @@ export const useChainConfigs = (): {
       ),
       supportedChainIds: [
         ...api.supportedChainIds,
-        ...local.supportedChainIds,
         ...dev.supportedChainIds,
+        ...local.supportedChainIds,
       ],
       isChainIdExist: (chainId: string) => !!chainConfigs[chainId],
       isLoading: isFetching || !isHydrated,
