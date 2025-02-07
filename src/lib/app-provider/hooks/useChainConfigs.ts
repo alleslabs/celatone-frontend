@@ -5,10 +5,10 @@ import { isUndefined, unionBy } from "lodash";
 import { useMemo } from "react";
 
 import { devChainConfigs } from "config/chain";
-import { SUPPORTED_CHAIN_IDS } from "env";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { useApiChainConfigs } from "lib/services/chain-config";
 import { getRegistryAssets, getRegistryChain } from "lib/utils";
+import { CHAIN, SUPPORTED_NETWORK_TYPES } from "env";
 
 const defaultConfigs = {
   chainConfigs: {} as { [chainId: string]: ChainConfig },
@@ -25,14 +25,28 @@ export const useChainConfigs = (): {
   isChainIdExist: (chainId: string) => boolean;
   isLoading: boolean;
 } => {
-  const { data: apiChainConfigs, isFetching } =
-    useApiChainConfigs(SUPPORTED_CHAIN_IDS);
+  const { data: apiChainConfigs, isFetching } = useApiChainConfigs(
+    SUPPORTED_NETWORK_TYPES,
+    CHAIN
+  );
   const { localChainConfigs, isHydrated } = useLocalChainConfigStore();
 
   const api = useMemo(() => {
     if (isFetching || isUndefined(apiChainConfigs)) return defaultConfigs;
 
-    return apiChainConfigs.reduce(
+    const sortedApiChainConfigs = apiChainConfigs.sort((a, b) => {
+      const networkOrder = a.network_type === "mainnet" ? 0 : 1;
+      const networkOrderB = b.network_type === "mainnet" ? 0 : 1;
+      if (networkOrder !== networkOrderB) {
+        return networkOrder - networkOrderB;
+      }
+
+      const layerOrder = a.extra?.layer === "1" ? 0 : 1;
+      const layerOrderB = b.extra?.layer === "1" ? 0 : 1;
+      return layerOrder - layerOrderB;
+    });
+
+    return sortedApiChainConfigs.reduce(
       (acc, each) => ({
         chainConfigs: {
           ...acc.chainConfigs,
@@ -67,24 +81,20 @@ export const useChainConfigs = (): {
 
   const dev = useMemo(
     () =>
-      devChainConfigs.reduce(
-        (acc, each) =>
-          SUPPORTED_CHAIN_IDS.includes(each.chainId)
-            ? {
-                chainConfigs: {
-                  ...acc.chainConfigs,
-                  [each.chainId]: each,
-                },
-                registryChains: [...acc.registryChains, getRegistryChain(each)],
-                registryAssets: [
-                  ...acc.registryAssets,
-                  getRegistryAssets(each),
-                ],
-                supportedChainIds: [...acc.supportedChainIds, each.chainId],
-              }
-            : acc,
-        defaultConfigs
-      ),
+      SUPPORTED_NETWORK_TYPES.includes("local")
+        ? devChainConfigs.reduce(
+            (acc, each) => ({
+              chainConfigs: {
+                ...acc.chainConfigs,
+                [each.chainId]: each,
+              },
+              registryChains: [...acc.registryChains, getRegistryChain(each)],
+              registryAssets: [...acc.registryAssets, getRegistryAssets(each)],
+              supportedChainIds: [...acc.supportedChainIds, each.chainId],
+            }),
+            defaultConfigs
+          )
+        : defaultConfigs,
     []
   );
 
@@ -111,22 +121,28 @@ export const useChainConfigs = (): {
         dev.registryAssets,
         "chain_name"
       ),
-      supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
+      supportedChainIds: [
+        ...api.supportedChainIds,
+        ...dev.supportedChainIds,
+        ...local.supportedChainIds,
+      ],
       isChainIdExist: (chainId: string) => !!chainConfigs[chainId],
       isLoading: isFetching || !isHydrated,
     };
   }, [
     api.chainConfigs,
-    api.registryAssets,
     api.registryChains,
+    api.registryAssets,
+    api.supportedChainIds,
+    local.chainConfigs,
+    local.registryChains,
+    local.registryAssets,
+    local.supportedChainIds,
     dev.chainConfigs,
-    dev.registryAssets,
     dev.registryChains,
+    dev.registryAssets,
+    dev.supportedChainIds,
     isFetching,
     isHydrated,
-    local.chainConfigs,
-    local.registryAssets,
-    local.registryChains,
-    local.supportedChainIds,
   ]);
 };

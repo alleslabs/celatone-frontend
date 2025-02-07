@@ -16,7 +16,6 @@ import type { ProjectConstants } from "config/project";
 import { PROJECT_CONSTANTS } from "config/project";
 import { FALLBACK_THEME, getTheme } from "config/theme";
 import type { ThemeConfig } from "config/theme/types";
-import { SUPPORTED_CHAIN_IDS } from "env";
 import { changeFavicon } from "lib/utils";
 
 import { DEFAULT_CHAIN_CONFIG } from "./default";
@@ -27,7 +26,6 @@ interface AppProviderProps {
 
 interface AppContextInterface {
   isHydrated: boolean;
-  availableChainIds: string[];
   currentChainId: string;
   chainConfig: ChainConfig;
   constants: ProjectConstants;
@@ -37,7 +35,6 @@ interface AppContextInterface {
 
 const DEFAULT_STATES: AppContextInterface = {
   isHydrated: false,
-  availableChainIds: SUPPORTED_CHAIN_IDS,
   currentChainId: "",
   chainConfig: DEFAULT_CHAIN_CONFIG,
   constants: PROJECT_CONSTANTS,
@@ -49,7 +46,7 @@ const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
 
 export const AppProvider = observer(({ children }: AppProviderProps) => {
   const { setModalTheme } = useModalTheme();
-  const { chainConfigs, supportedChainIds } = useChainConfigs();
+  const { chainConfigs } = useChainConfigs();
 
   const [states, setStates] = useState<AppContextInterface>(DEFAULT_STATES);
 
@@ -73,7 +70,6 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
 
       setStates({
         isHydrated: true,
-        availableChainIds: supportedChainIds,
         currentChainId: newChainId,
         chainConfig,
         constants: PROJECT_CONSTANTS,
@@ -82,7 +78,7 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
           setStates((prev) => ({ ...prev, theme: newTheme })),
       });
     },
-    [chainConfigs, supportedChainIds]
+    [chainConfigs]
   );
 
   // Disable "Leave page" alert

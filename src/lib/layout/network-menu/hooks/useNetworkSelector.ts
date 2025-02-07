@@ -3,14 +3,13 @@ import { isUndefined } from "lodash";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useCallback, useMemo, useState } from "react";
 
-import { useCelatoneApp, useChainConfigs } from "lib/app-provider";
+import { useChainConfigs } from "lib/app-provider";
 import { usePinnedNetworks } from "lib/hooks";
 
 import { filterChains, getNextCursor } from "./utils";
 
 export const useNetworkSelector = (onClose: () => void) => {
-  const { chainConfigs } = useChainConfigs();
-  const { availableChainIds } = useCelatoneApp();
+  const { chainConfigs, supportedChainIds } = useChainConfigs();
   const pinnedNetworks = usePinnedNetworks();
 
   const [keyword, setKeyword] = useState("");
@@ -25,12 +24,12 @@ export const useNetworkSelector = (onClose: () => void) => {
   ] = useMemo(
     () => [
       filterChains(chainConfigs, pinnedNetworks, keyword),
-      filterChains(chainConfigs, availableChainIds, keyword, "mainnet"),
-      filterChains(chainConfigs, availableChainIds, keyword, "testnet"),
-      filterChains(chainConfigs, availableChainIds, keyword, "devnet"),
-      filterChains(chainConfigs, availableChainIds, keyword, "local"),
+      filterChains(chainConfigs, supportedChainIds, keyword, "mainnet"),
+      filterChains(chainConfigs, supportedChainIds, keyword, "testnet"),
+      filterChains(chainConfigs, supportedChainIds, keyword, "devnet"),
+      filterChains(chainConfigs, supportedChainIds, keyword, "local"),
     ],
-    [chainConfigs, JSON.stringify(pinnedNetworks), availableChainIds, keyword]
+    [chainConfigs, JSON.stringify(pinnedNetworks), supportedChainIds, keyword]
   );
 
   const totalNetworks =

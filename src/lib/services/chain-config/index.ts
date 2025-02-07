@@ -5,11 +5,15 @@ import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { isUrl } from "lib/utils";
 
 import { getApiChainConfigs } from "./api";
+import { Option } from "lib/types";
 
-export const useApiChainConfigs = (chainIds: string[]) =>
+export const useApiChainConfigs = (
+  networkTypes: string[],
+  chain: Option<string>
+) =>
   useQuery(
-    [CELATONE_QUERY_KEYS.CHAIN_CONFIGS, chainIds],
-    async () => getApiChainConfigs(chainIds),
+    [CELATONE_QUERY_KEYS.CHAIN_CONFIGS, networkTypes, chain],
+    async () => getApiChainConfigs(networkTypes, chain),
     {
       enabled: isUrl(String(CELATONE_API_OVERRIDE)),
       retry: 1,

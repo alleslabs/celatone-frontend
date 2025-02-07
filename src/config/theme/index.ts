@@ -1,10 +1,10 @@
-import { FALLBACK_CHAIN } from "env";
-
+import { CHAIN } from "env";
 import { DEFAULT_THEME } from "./default";
 import { INITIA_THEME } from "./initia";
 import { SEI_THEME } from "./sei";
+import { Option } from "lib/types";
 
-export const getTheme = (chain: string) => {
+export const getTheme = (chain: Option<string>) => {
   switch (chain) {
     case "sei":
       return SEI_THEME;
@@ -15,4 +15,4 @@ export const getTheme = (chain: string) => {
   }
 };
 
-export const FALLBACK_THEME = getTheme(FALLBACK_CHAIN);
+export const FALLBACK_THEME = getTheme(CHAIN);
