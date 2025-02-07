@@ -16,7 +16,6 @@ import type { ProjectConstants } from "config/project";
 import { PROJECT_CONSTANTS } from "config/project";
 import { FALLBACK_THEME, getTheme } from "config/theme";
 import type { ThemeConfig } from "config/theme/types";
-import { SUPPORTED_CHAIN_IDS } from "env";
 import { changeFavicon } from "lib/utils";
 
 import { DEFAULT_CHAIN_CONFIG } from "./default";
@@ -37,7 +36,7 @@ interface AppContextInterface {
 
 const DEFAULT_STATES: AppContextInterface = {
   isHydrated: false,
-  availableChainIds: SUPPORTED_CHAIN_IDS,
+  availableChainIds: [],
   currentChainId: "",
   chainConfig: DEFAULT_CHAIN_CONFIG,
   constants: PROJECT_CONSTANTS,

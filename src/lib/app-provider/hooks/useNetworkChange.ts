@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
-import { FALLBACK_SUPPORTED_CHAIN_ID } from "env";
 import { getFirstQueryParam } from "lib/utils";
 
 import { useChainConfigs } from "./useChainConfigs";
@@ -33,7 +32,7 @@ export const useNetworkChange = (
         navigate({
           pathname: "/404",
           query: {
-            network: FALLBACK_SUPPORTED_CHAIN_ID,
+            network: supportedChainIds[0],
           },
         });
       } else if (networkRoute !== networkRef.current) {
@@ -49,7 +48,7 @@ export const useNetworkChange = (
         query: {
           network: supportedChainIds.includes(networkRoute)
             ? networkRoute
-            : FALLBACK_SUPPORTED_CHAIN_ID,
+            : supportedChainIds[0],
         },
       });
     }

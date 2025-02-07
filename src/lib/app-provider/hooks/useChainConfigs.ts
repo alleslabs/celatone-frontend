@@ -5,10 +5,10 @@ import { isUndefined, unionBy } from "lodash";
 import { useMemo } from "react";
 
 import { devChainConfigs } from "config/chain";
-import { SUPPORTED_CHAIN_IDS } from "env";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { useApiChainConfigs } from "lib/services/chain-config";
 import { getRegistryAssets, getRegistryChain } from "lib/utils";
+import { CHAIN, SUPPORTED_NETWORK_TYPES } from "env";
 
 const defaultConfigs = {
   chainConfigs: {} as { [chainId: string]: ChainConfig },
@@ -25,8 +25,10 @@ export const useChainConfigs = (): {
   isChainIdExist: (chainId: string) => boolean;
   isLoading: boolean;
 } => {
-  const { data: apiChainConfigs, isFetching } =
-    useApiChainConfigs(SUPPORTED_CHAIN_IDS);
+  const { data: apiChainConfigs, isFetching } = useApiChainConfigs(
+    SUPPORTED_NETWORK_TYPES,
+    CHAIN
+  );
   const { localChainConfigs, isHydrated } = useLocalChainConfigStore();
 
   const api = useMemo(() => {
@@ -67,24 +69,20 @@ export const useChainConfigs = (): {
 
   const dev = useMemo(
     () =>
-      devChainConfigs.reduce(
-        (acc, each) =>
-          SUPPORTED_CHAIN_IDS.includes(each.chainId)
-            ? {
-                chainConfigs: {
-                  ...acc.chainConfigs,
-                  [each.chainId]: each,
-                },
-                registryChains: [...acc.registryChains, getRegistryChain(each)],
-                registryAssets: [
-                  ...acc.registryAssets,
-                  getRegistryAssets(each),
-                ],
-                supportedChainIds: [...acc.supportedChainIds, each.chainId],
-              }
-            : acc,
-        defaultConfigs
-      ),
+      SUPPORTED_NETWORK_TYPES.includes("local")
+        ? devChainConfigs.reduce(
+            (acc, each) => ({
+              chainConfigs: {
+                ...acc.chainConfigs,
+                [each.chainId]: each,
+              },
+              registryChains: [...acc.registryChains, getRegistryChain(each)],
+              registryAssets: [...acc.registryAssets, getRegistryAssets(each)],
+              supportedChainIds: [...acc.supportedChainIds, each.chainId],
+            }),
+            defaultConfigs
+          )
+        : defaultConfigs,
     []
   );
 
@@ -111,7 +109,11 @@ export const useChainConfigs = (): {
         dev.registryAssets,
         "chain_name"
       ),
-      supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
+      supportedChainIds: [
+        ...api.supportedChainIds,
+        ...local.supportedChainIds,
+        ...dev.supportedChainIds,
+      ],
       isChainIdExist: (chainId: string) => !!chainConfigs[chainId],
       isLoading: isFetching || !isHydrated,
     };
@@ -119,9 +121,11 @@ export const useChainConfigs = (): {
     api.chainConfigs,
     api.registryAssets,
     api.registryChains,
+    api.supportedChainIds,
     dev.chainConfigs,
     dev.registryAssets,
     dev.registryChains,
+    dev.supportedChainIds,
     isFetching,
     isHydrated,
     local.chainConfigs,
