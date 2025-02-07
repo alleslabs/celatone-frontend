@@ -34,7 +34,19 @@ export const useChainConfigs = (): {
   const api = useMemo(() => {
     if (isFetching || isUndefined(apiChainConfigs)) return defaultConfigs;
 
-    return apiChainConfigs.reduce(
+    const sortedApiChainConfigs = apiChainConfigs.sort((a, b) => {
+      const networkOrder = a.network_type === "mainnet" ? 0 : 1;
+      const networkOrderB = b.network_type === "mainnet" ? 0 : 1;
+      if (networkOrder !== networkOrderB) {
+        return networkOrder - networkOrderB;
+      }
+
+      const layerOrder = a.extra?.layer === "1" ? 0 : 1;
+      const layerOrderB = b.extra?.layer === "1" ? 0 : 1;
+      return layerOrder - layerOrderB;
+    });
+
+    return sortedApiChainConfigs.reduce(
       (acc, each) => ({
         chainConfigs: {
           ...acc.chainConfigs,
@@ -119,18 +131,18 @@ export const useChainConfigs = (): {
     };
   }, [
     api.chainConfigs,
-    api.registryAssets,
     api.registryChains,
+    api.registryAssets,
     api.supportedChainIds,
+    local.chainConfigs,
+    local.registryChains,
+    local.registryAssets,
+    local.supportedChainIds,
     dev.chainConfigs,
-    dev.registryAssets,
     dev.registryChains,
+    dev.registryAssets,
     dev.supportedChainIds,
     isFetching,
     isHydrated,
-    local.chainConfigs,
-    local.registryAssets,
-    local.registryChains,
-    local.supportedChainIds,
   ]);
 };
