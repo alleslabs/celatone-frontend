@@ -1,6 +1,5 @@
 import { Heading, Stack } from "@chakra-ui/react";
 import { Control, useFieldArray } from "react-hook-form";
-import { EvmContractVerifyForm } from "../../types";
 import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
 import { OptimizerConfiguration } from "../OptimizerConfiguration";
@@ -8,7 +7,7 @@ import { ContractLibraries } from "../ContractLibraries";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { Fragment } from "react";
-import { EvmVerifyConfig } from "lib/services/types";
+import { EvmContractVerifyForm, EvmVerifyConfig } from "lib/services/types";
 
 interface EvmContractVerifySolidityUploadFilesProps {
   control: Control<EvmContractVerifyForm>;

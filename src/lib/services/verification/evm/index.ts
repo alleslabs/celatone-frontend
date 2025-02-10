@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
-import { getEvmVerifyConfig, getEvmVerifyInfo } from "./api";
+import { getEvmVerifyConfig, getEvmVerifyInfo, submitEvmVerify } from "./api";
 import { HexAddr20, Option } from "lib/types";
 import { useCurrentChain } from "lib/app-provider";
 
@@ -31,3 +31,8 @@ export const useEvmVerifyInfo = (contractAddress: Option<HexAddr20>) => {
     retryOnMount: false,
   });
 };
+
+export const useSubmitEvmVerify = () =>
+  useMutation({
+    mutationFn: submitEvmVerify,
+  });

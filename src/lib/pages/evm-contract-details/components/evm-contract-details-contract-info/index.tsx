@@ -30,10 +30,12 @@ export const EvmContractDetailsContractInfo = ({
 
   return (
     <Stack gap={8}>
-      <EvmVerifySection
-        contractAddress={contractAddress}
-        evmVerifyInfo={evmVerifyInfo}
-      />
+      {!isVerified && (
+        <EvmVerifySection
+          contractAddress={contractAddress}
+          evmVerifyInfo={evmVerifyInfo}
+        />
+      )}
       {isVerified ? (
         <>
           <Flex>

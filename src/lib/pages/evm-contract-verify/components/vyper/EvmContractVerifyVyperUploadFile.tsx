@@ -1,11 +1,10 @@
 import { Control, useController } from "react-hook-form";
-import { EvmContractVerifyForm } from "../../types";
 import { Heading, Stack } from "@chakra-ui/react";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
-import { EvmVerifyConfig } from "lib/services/types";
+import { EvmContractVerifyForm, EvmVerifyConfig } from "lib/services/types";
 
 interface EvmContractVerifyVyperUploadFileProps {
   control: Control<EvmContractVerifyForm>;

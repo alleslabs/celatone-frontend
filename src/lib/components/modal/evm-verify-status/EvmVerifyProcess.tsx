@@ -43,7 +43,11 @@ export const EvmVerifyProcess = ({ evmVerifyInfo }: EvmVerifyProcessProps) => {
                   </Text>
                 )}
                 {step.errorMsg && (
-                  <Text variant="body3" color="error.main">
+                  <Text
+                    variant="body3"
+                    color="error.main"
+                    wordBreak="break-word"
+                  >
                     {step.errorMsg}
                   </Text>
                 )}

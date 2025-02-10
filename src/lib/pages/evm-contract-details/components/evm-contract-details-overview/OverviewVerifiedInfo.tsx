@@ -31,9 +31,11 @@ export const OverviewVerifiedInfo = ({
         {capitalize(evmVerifyInfo.evmVersion)}
       </LabelText>
       <LabelText label="Optimization Enabled">
-        {evmVerifyInfo.optimizer.enabled
-          ? `Yes with ${evmVerifyInfo.optimizer.runs} runs`
-          : "No"}
+        {evmVerifyInfo.optimizer
+          ? evmVerifyInfo.optimizer.enabled
+            ? `Yes with ${evmVerifyInfo.optimizer.runs} runs`
+            : "No"
+          : "N/A"}
       </LabelText>
       <LabelText label="License Type">
         {getLicenseTypeLabel(evmVerifyInfo.license)}
