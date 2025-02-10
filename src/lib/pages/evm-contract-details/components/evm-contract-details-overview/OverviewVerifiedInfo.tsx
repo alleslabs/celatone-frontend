@@ -3,6 +3,7 @@ import { LabelText } from "lib/components/LabelText";
 import { EvmVerifyInfo } from "lib/services/types";
 import { getLicenseTypeLabel } from "lib/utils";
 import { capitalize } from "lodash";
+import { Optimizer } from "./Optimizer";
 
 interface OverviewVerifiedInfoProps {
   evmVerifyInfo: EvmVerifyInfo;
@@ -30,13 +31,7 @@ export const OverviewVerifiedInfo = ({
       <LabelText label="EVM Version">
         {capitalize(evmVerifyInfo.evmVersion)}
       </LabelText>
-      <LabelText label="Optimization Enabled">
-        {evmVerifyInfo.optimizer
-          ? evmVerifyInfo.optimizer.enabled
-            ? `Yes with ${evmVerifyInfo.optimizer.runs} runs`
-            : "No"
-          : "N/A"}
-      </LabelText>
+      <Optimizer evmVerifyInfo={evmVerifyInfo} />
       <LabelText label="License Type">
         {getLicenseTypeLabel(evmVerifyInfo.license)}
       </LabelText>

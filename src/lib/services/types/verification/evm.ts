@@ -25,47 +25,6 @@ export enum EvmVerifyLicenseType {
   BSL1_1 = "bsl_1_1",
 }
 
-export const zEvmVerifyConfig = z
-  .object({
-    license_type: z.array(z.nativeEnum(EvmVerifyLicenseType)),
-    solidity_compiler_versions: z.array(z.string()),
-    solidity_evm_versions: z.array(z.string()),
-    vyper_compiler_versions: z.array(z.string()),
-    vyper_evm_versions: z.array(z.string()),
-  })
-  .transform(snakeToCamel);
-export type EvmVerifyConfig = z.infer<typeof zEvmVerifyConfig>;
-
-const zEvmVerifyInfoSourceFile = z
-  .object({
-    source_path: z.string(),
-    evm_source_file: z.object({
-      hash: z.string(),
-      content: z.string(),
-    }),
-  })
-  .transform(snakeToCamel);
-export type EvmVerifyInfoSourceFile = z.infer<typeof zEvmVerifyInfoSourceFile>;
-
-const zEvmVerifyInfoLibraries = z
-  .record(z.string(), z.record(z.string(), z.string()))
-  .default({})
-  .transform((libraries) =>
-    Object.entries(libraries).flatMap(([path, libs]) =>
-      Object.entries(libs).map(([name, address]) => ({
-        contractName: name,
-        contractAddress: address,
-        contractPath: path,
-      }))
-    )
-  );
-export type EvmVerifyInfoLibraries = z.infer<typeof zEvmVerifyInfoLibraries>;
-
-const zEvmOptimizer = z.object({
-  enabled: z.boolean(),
-  runs: z.number(),
-});
-
 export enum EvmVerifyOptions {
   VyperUploadFile = "vyper-upload-file",
   VyperContractCode = "vyper-contract-code",
@@ -78,11 +37,11 @@ export enum EvmVerifyOptions {
 }
 
 // MARK - Shared Components
-const zOptimizerConfig = z.object({
+const zEvmOptimizerConfig = z.object({
   enabled: z.boolean(),
   runs: z.string(),
 });
-export type OptimizerConfig = z.infer<typeof zOptimizerConfig>;
+export type EvmOptimizerConfig = z.infer<typeof zEvmOptimizerConfig>;
 
 const zConstructorArgs = z.object({
   enabled: z.boolean(),
@@ -109,7 +68,7 @@ const zEvmContractVerifySolidityOptionUploadFilesForm = z.object({
     })
   ),
   constructorArgs: zConstructorArgs,
-  optimizerConfig: zOptimizerConfig,
+  optimizerConfig: zEvmOptimizerConfig,
   evmVersion: zEvmTargetVersion,
   contractLibraries: zContractLibraries,
 });
@@ -118,7 +77,7 @@ const zEvmContractVerifySolidityOptionContractCodeForm = z.object({
   contractCode: z.string(),
   constructorArgs: zConstructorArgs,
   evmVersion: zEvmTargetVersion,
-  optimizerConfig: zOptimizerConfig,
+  optimizerConfig: zEvmOptimizerConfig,
   contractLibraries: zContractLibraries,
 });
 
@@ -146,7 +105,7 @@ const zEvmContractVerifyVyperOptionJsonInputForm = z.object({
   constructorArgs: zConstructorArgs,
 });
 
-// MARK - Base
+// MARK - Base for all verify forms
 const zEvmContractVerifyBase = z.object({
   // TODO: refactor later
   contractAddress: zHexAddr20.superRefine((val, ctx) => {
@@ -168,6 +127,7 @@ const zEvmContractVerifyBase = z.object({
   option: z.nativeEnum(EvmVerifyOptions).optional(),
 });
 
+// MARK - EvmContractVerifyForm
 export const zEvmContractVerifyForm = zEvmContractVerifyBase.merge(
   z.object({
     verifyForm: z.object({
@@ -182,6 +142,67 @@ export const zEvmContractVerifyForm = zEvmContractVerifyBase.merge(
 );
 export type EvmContractVerifyForm = z.infer<typeof zEvmContractVerifyForm>;
 
+// MARK - EvmVerifyConfig
+export const zEvmVerifyConfig = z
+  .object({
+    license_type: z.array(z.nativeEnum(EvmVerifyLicenseType)),
+    solidity_compiler_versions: z.array(z.string()),
+    solidity_evm_versions: z.array(z.string()),
+    vyper_compiler_versions: z.array(z.string()),
+    vyper_evm_versions: z.array(z.string()),
+  })
+  .transform(snakeToCamel);
+export type EvmVerifyConfig = z.infer<typeof zEvmVerifyConfig>;
+
+// MARK - For EvmVerifyInfo
+const zEvmVerifyInfoSourceFile = z
+  .object({
+    source_path: z.string(),
+    evm_source_file: z.object({
+      hash: z.string(),
+      content: z.string(),
+    }),
+  })
+  .transform(snakeToCamel);
+export type EvmVerifyInfoSourceFile = z.infer<typeof zEvmVerifyInfoSourceFile>;
+
+const zEvmVerifyInfoLibraries = z
+  .record(z.string(), z.record(z.string(), z.string()))
+  .default({})
+  .transform((libraries) =>
+    Object.entries(libraries).flatMap(([path, libs]) =>
+      Object.entries(libs).map(([name, address]) => ({
+        contractName: name,
+        contractAddress: address,
+        contractPath: path,
+      }))
+    )
+  );
+export type EvmVerifyInfoLibraries = z.infer<typeof zEvmVerifyInfoLibraries>;
+
+const zEvmOptimizer = z.string().transform((value, ctx) => {
+  try {
+    const parsed = JSON.parse(value);
+    return z
+      .object({
+        enabled: z.boolean(),
+        runs: z.number(),
+      })
+      .parse(parsed);
+  } catch {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Invalid JSON format for optimizer object.",
+    });
+    return z.NEVER;
+  }
+});
+
+// possible values: "none", "codesize", "gas" (default: "gas")
+const zVyperOptimizer = z.enum(["none", "codesize", "gas"]);
+
+const zOptimizer = z.union([zEvmOptimizer, zVyperOptimizer]).optional();
+
 // MARK - EvmVerifyInfo
 export const zEvmVerifyInfo = z
   .object({
@@ -194,7 +215,7 @@ export const zEvmVerifyInfo = z
     contract_path: z.string().optional(),
     compiler_version: z.string(),
     evm_version: z.string(),
-    optimizer: z.string().optional(),
+    optimizer: zOptimizer,
     constructor_arguments: z.string(),
     abi: z.string().optional(),
     bytecode_type: z.string(),
@@ -204,12 +225,9 @@ export const zEvmVerifyInfo = z
     settings: z.string().default("{}"),
     source_files: z.array(zEvmVerifyInfoSourceFile),
   })
-  .transform(({ abi, optimizer, ...rest }) => ({
+  .transform(({ abi, ...rest }) => ({
     ...snakeToCamel(rest),
     abi: abi ? (JSON.parse(abi) as JsonFragment[]) : [],
-    optimizer: optimizer
-      ? zEvmOptimizer.parse(JSON.parse(optimizer))
-      : undefined,
     isVerified: !!rest.verified_timestamp,
     libraries: zEvmVerifyInfoLibraries.parse(
       JSON.parse(rest.settings).libraries
