@@ -1,4 +1,4 @@
-export const EXTENSION_LIB = ["sol"];
+export const EXTENSION_LIB = ["sol", "vy"];
 
 export interface FilePath {
   path: string;

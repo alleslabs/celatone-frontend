@@ -136,7 +136,7 @@ export const findAndDecodeEvmConstructorArgs = (
     const foundTypeConstructor = abi.find(
       (item) => item.type === "constructor"
     );
-    if (!foundTypeConstructor || !foundTypeConstructor.inputs)
+    if (!foundTypeConstructor || !foundTypeConstructor.inputs?.length)
       throw new Error("No constructor found (findAndDecodeEvmConstructorArgs)");
 
     const iface = new Interface([foundTypeConstructor]);
