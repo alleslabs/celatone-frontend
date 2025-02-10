@@ -9,6 +9,7 @@ import {
 } from "lib/services/types";
 import { HexAddr20 } from "lib/types";
 import { getVerifierUrl } from "./utils";
+import { isHex20Bytes } from "lib/utils";
 
 export const getEvmVerifyConfig = async () =>
   axios
@@ -52,6 +53,12 @@ const submitEvmVerifyFlatten = async ({
       runs: Number(optimizerConfig.runs),
     },
     libraries: contractLibraries.value.reduce((acc, library) => {
+      if (
+        library.name.trim().length === 0 ||
+        !isHex20Bytes(library.address.trim())
+      )
+        return acc;
+
       Object.assign(acc, {
         [`${library.name}.sol`]: {
           [library.name]: library.address,
