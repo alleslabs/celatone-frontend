@@ -3,7 +3,8 @@ import { CELATONE_VERIFICATION_API } from "env";
 import {
   EvmVerifyOptions,
   SubmitEvmVerifyArgs,
-  SubmitEvmVerifyFlattenArgs,
+  SubmitEvmVerifySolidityContractCodeArgs,
+  SubmitEvmVerifyVyperContractCodeArgs,
   zEvmVerifyConfig,
   zEvmVerifyInfo,
 } from "lib/services/types";
@@ -34,7 +35,7 @@ export const getEvmVerifyInfo = async (
 // Prepares data for Solidity & Vyper verification.
 // ============================================
 
-const submitEvmVerifyFlatten = async ({
+const submitEvmVerifySolidityContractCode = async ({
   verifierUrl,
   contractAddress,
   chainId,
@@ -45,7 +46,7 @@ const submitEvmVerifyFlatten = async ({
   constructorArgs,
   evmVersion,
   contractLibraries,
-}: SubmitEvmVerifyFlattenArgs) => {
+}: SubmitEvmVerifySolidityContractCodeArgs) => {
   const settings = {
     evmVersion: evmVersion === "default" ? "cancun" : evmVersion,
     optimizer: {
@@ -66,15 +67,6 @@ const submitEvmVerifyFlatten = async ({
       });
       return acc;
     }, {}),
-    metadata: {
-      bytecodeHash: "none",
-    },
-    outputSelection: {
-      "*": {
-        "": ["ast"],
-        "*": ["abi", "evm.bytecode", "evm.methodIdentifiers", "metadata"],
-      },
-    },
   };
 
   return axios.post(
@@ -82,6 +74,44 @@ const submitEvmVerifyFlatten = async ({
     {
       license: licenseType,
       bytecode_type: "CREATION_INPUT",
+      compiler_version: compilerVersion,
+      constructor_arguments: constructorArgs.value,
+      metadata: {
+        chain_id: chainId,
+        contract_address: contractAddress,
+      },
+      source_code: contractCode,
+      settings: JSON.stringify(settings),
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};
+
+const submitEvmVerifyVyperContractCode = async ({
+  verifierUrl,
+  contractAddress,
+  chainId,
+  compilerVersion,
+  licenseType,
+  contractCode,
+  evmVersion,
+  contractName,
+  constructorArgs,
+}: SubmitEvmVerifyVyperContractCodeArgs) => {
+  const settings = {
+    evmVersion: evmVersion === "default" ? "cancun" : evmVersion,
+  };
+
+  return axios.post(
+    verifierUrl,
+    {
+      license: licenseType,
+      bytecode_type: "CREATION_INPUT",
+      contract_name: contractName,
       compiler_version: compilerVersion,
       constructor_arguments: constructorArgs.value,
       metadata: {
@@ -108,10 +138,16 @@ export const submitEvmVerify = async ({
 
   switch (option) {
     case EvmVerifyOptions.SolidityContractCode:
-      return submitEvmVerifyFlatten({
+      return submitEvmVerifySolidityContractCode({
         verifierUrl,
         ...rest,
         ...verifyForm.solidityContractCode,
+      });
+    case EvmVerifyOptions.VyperContractCode:
+      return submitEvmVerifyVyperContractCode({
+        verifierUrl,
+        ...rest,
+        ...verifyForm.vyperContractCode,
       });
     // TODO: Implement other options
     default:
