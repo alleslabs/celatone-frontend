@@ -17,14 +17,12 @@ interface FullEditorProps
   filesPath: FilePath[];
   initialFilePath: string;
   libraryFilesPath: string[];
-  editorLanguage: "sol" | "python";
 }
 
 export const FullEditor = ({
   filesPath,
   initialFilePath,
   libraryFilesPath,
-  editorLanguage,
   isOpen,
   onClose,
 }: FullEditorProps) => {
@@ -109,7 +107,10 @@ export const FullEditor = ({
           filesList={filesList}
           initialFilePath={initialFilePath}
         />
-        <Editor language={editorLanguage} value={selectedFile?.code ?? ""} />
+        <Editor
+          language={selectedFile?.language}
+          value={selectedFile?.code ?? ""}
+        />
       </Box>
     </Grid>
   );

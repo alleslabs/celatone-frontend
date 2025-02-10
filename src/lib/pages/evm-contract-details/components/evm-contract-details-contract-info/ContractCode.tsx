@@ -62,7 +62,6 @@ export const ContractCode = ({
           }))}
           libraryFilesPath={libraries.map((lib) => lib.contractPath)}
           initialFilePath={contractPath}
-          editorLanguage={contractPath.endsWith(".vy") ? "python" : "sol"}
           isOpen={isOpen}
           onClose={onClose}
         />

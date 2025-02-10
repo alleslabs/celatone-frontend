@@ -31,6 +31,7 @@ export const generateSourceTree = (
           treeLevel: index,
           code,
           path: parts.slice(0, index + 1).join("/"),
+          language: extension === "vy" ? "python" : extension,
         };
         currentLevel.push(existingNode);
       }
