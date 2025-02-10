@@ -22,7 +22,7 @@ export const OptimizerConfiguration = <T extends FieldValues>({
     name: `${name}.optimizerConfig` as FieldPath<T>,
   });
 
-  const { enabled } = useWatch({
+  const { enabled, runs } = useWatch({
     control,
     name: `${name}.optimizerConfig` as FieldPath<T>,
   });
@@ -55,6 +55,13 @@ export const OptimizerConfiguration = <T extends FieldValues>({
             isDisabled={!enabled}
             control={control}
             size="md"
+            status={
+              enabled && runs === ""
+                ? {
+                    state: "error",
+                  }
+                : undefined
+            }
           />
         </Flex>
       </Flex>
