@@ -21,6 +21,10 @@ export type SubmitEvmVerifySolidityContractCodeArgs = SubmitEvmVerifyBaseArgs &
 export type SubmitEvmVerifySolidityJsonInputArgs = SubmitEvmVerifyBaseArgs &
   EvmContractVerifyForm["verifyForm"]["solidityJsonInput"];
 
+// MARK - Solidity Upload Files
+export type SubmitEvmVerifySolidityUploadFilesArgs = SubmitEvmVerifyBaseArgs &
+  EvmContractVerifyForm["verifyForm"]["solidityUploadFiles"];
+
 // MARK - Vyper Contract Code
 export type SubmitEvmVerifyVyperContractCodeArgs = SubmitEvmVerifyBaseArgs &
   EvmContractVerifyForm["verifyForm"]["vyperContractCode"];
@@ -28,6 +32,10 @@ export type SubmitEvmVerifyVyperContractCodeArgs = SubmitEvmVerifyBaseArgs &
 // MARK - Vyper Json Input
 export type SubmitEvmVerifyVyperJsonInputArgs = SubmitEvmVerifyBaseArgs &
   EvmContractVerifyForm["verifyForm"]["vyperJsonInput"];
+
+// MARK - Vyper Upload File
+export type SubmitEvmVerifyVyperUploadFilesArgs = SubmitEvmVerifyBaseArgs &
+  EvmContractVerifyForm["verifyForm"]["vyperUploadFile"];
 
 export interface SubmitEvmVerifyArgs
   extends Omit<SubmitEvmVerifyBaseArgs, "verifierUrl"> {

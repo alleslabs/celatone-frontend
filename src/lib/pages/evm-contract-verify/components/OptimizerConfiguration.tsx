@@ -51,7 +51,7 @@ export const OptimizerConfiguration = <T extends FieldValues>({
           <ControllerInput
             width={125}
             type="number"
-            name={`${name}.optimizerConfig.runs` as FieldPath<T>}
+            name={`${name}.runs` as FieldPath<T>}
             isDisabled={!enabled}
             control={control}
             size="md"
