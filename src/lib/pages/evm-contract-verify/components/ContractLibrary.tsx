@@ -27,7 +27,6 @@ export const ContractLibrary = <T extends FieldValues>({
     <>
       <ControllerInput
         label="Library Name"
-        isRequired
         rules={{
           required: "",
         }}
@@ -40,7 +39,6 @@ export const ContractLibrary = <T extends FieldValues>({
       />
       <ControllerInput
         label="Contract Library Address"
-        isRequired
         rules={{
           required: "",
         }}

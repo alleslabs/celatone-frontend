@@ -55,7 +55,7 @@ export const EvmContractVerifySolidityContractCode = ({
       />
       <ContractLibraries<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityContractCode.contractLibraries"
+        name="verifyForm.solidityContractCode"
       />
     </Stack>
   );
