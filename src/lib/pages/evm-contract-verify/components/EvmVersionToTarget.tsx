@@ -1,6 +1,6 @@
 import { Grid, Heading, Stack, Text } from "@chakra-ui/react";
 import { SelectInput } from "lib/components/forms";
-import { EvmProgrammingLanguage, EvmVerifyConfig } from "lib/services/types";
+import { EvmProgrammingLanguage, EvmVerifyConfig } from "lib/types";
 import { useMemo } from "react";
 import {
   Control,
@@ -26,11 +26,11 @@ export const EvmVersionToTarget = <T extends FieldValues>({
     field: { onChange },
   } = useController({
     control,
-    name: `${name}.evmVersion` as FieldPath<T>,
+    name,
   });
   const [evmVersion, language] = useWatch({
     control,
-    name: [`${name}.evmVersion`, "language"] as FieldPath<T>[],
+    name: [name, "language"] as FieldPath<T>[],
   });
 
   const evmVersionOptions = useMemo(

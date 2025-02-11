@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 import { Control, useWatch } from "react-hook-form";
 import { CELATONE_VERIFICATION_API } from "env";
-import { EvmContractVerifyForm } from "lib/services/types";
+import { EvmContractVerifyForm } from "lib/types";
 
 interface EvmContractVerifySolidityFoundryProps {
   control: Control<EvmContractVerifyForm>;

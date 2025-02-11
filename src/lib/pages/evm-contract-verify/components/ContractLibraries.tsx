@@ -1,7 +1,6 @@
 import { Button, Checkbox, Grid, Heading, Stack, Text } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 import {
-  ArrayPath,
   Control,
   FieldArray,
   FieldArrayPath,
@@ -23,12 +22,12 @@ export const ContractLibraries = <T extends FieldValues>({
 }: ContractLibrariesProps<T>) => {
   const { field } = useController({
     control,
-    name: `${name}.contractLibraries.enabled` as FieldPath<T>,
+    name: `${name}.enabled` as FieldPath<T>,
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `${name}.contractLibraries.value` as FieldArrayPath<T>,
+    name: `${name}.value` as FieldArrayPath<T>,
   });
 
   return (
@@ -75,9 +74,7 @@ export const ContractLibraries = <T extends FieldValues>({
           </Grid>
         ))}
         <Button
-          onClick={() =>
-            append({ name: "", address: "" } as FieldArray<T, ArrayPath<T>>)
-          }
+          onClick={() => append({ name: "", address: "" } as FieldArray<T>)}
           variant="ghost-primary"
           p="unset"
           size="md"

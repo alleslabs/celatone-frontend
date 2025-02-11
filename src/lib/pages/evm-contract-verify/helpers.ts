@@ -3,7 +3,7 @@ import {
   EvmContractVerifyForm,
   EvmProgrammingLanguage,
   EvmVerifyConfig,
-} from "lib/services/types";
+} from "lib/types";
 import { getLicenseTypeLabel } from "lib/utils";
 
 const CONSTRUCTOR_ARGS_DEFAULT_VALUE = {

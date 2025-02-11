@@ -3,7 +3,7 @@ import { Heading, Stack } from "@chakra-ui/react";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { ConstructorArgs } from "../ConstructorArgs";
-import { EvmContractVerifyForm } from "lib/services/types";
+import { EvmContractVerifyForm } from "lib/types";
 
 interface EvmContractVerifySolidityJsonInputProps {
   control: Control<EvmContractVerifyForm>;
@@ -36,7 +36,7 @@ export const EvmContractVerifySolidityJsonInput = ({
       </Stack>
       <ConstructorArgs<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityJsonInput"
+        name="verifyForm.solidityJsonInput.constructorArgs"
       />
     </Stack>
   );

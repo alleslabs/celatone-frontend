@@ -1,7 +1,7 @@
 import { Flex, Stack } from "@chakra-ui/react";
 import { EvmVerifySection } from "lib/components/evm-verify-section";
 import { TypeSwitch } from "lib/components/TypeSwitch";
-import { EvmVerifyInfo } from "lib/services/types";
+import { EvmVerifyInfo } from "lib/types";
 import { HexAddr20, Option } from "lib/types";
 import { useState } from "react";
 import { EvmContractDetailsContractInfoTabs } from "../../types";

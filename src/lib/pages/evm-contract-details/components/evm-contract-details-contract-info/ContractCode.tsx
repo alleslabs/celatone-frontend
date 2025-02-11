@@ -9,10 +9,7 @@ import {
 import { JsonFragment } from "ethers";
 import { FullEditor } from "lib/components/editor/FullEditor";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
-import {
-  EvmVerifyInfoLibraries,
-  EvmVerifyInfoSourceFile,
-} from "lib/services/types";
+import { EvmVerifyInfoLibraries, EvmVerifyInfoSourceFile } from "lib/types";
 import { findAndDecodeEvmConstructorArgs } from "lib/utils";
 import { ContractLibraryList } from "./ContractLibraryList";
 

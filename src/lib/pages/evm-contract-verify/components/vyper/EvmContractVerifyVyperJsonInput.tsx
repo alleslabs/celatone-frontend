@@ -3,7 +3,7 @@ import { Heading, Stack } from "@chakra-ui/react";
 import { UploadCard } from "lib/components/upload";
 import { DropZone } from "lib/components/dropzone";
 import { ConstructorArgs } from "../ConstructorArgs";
-import { EvmContractVerifyForm } from "lib/services/types";
+import { EvmContractVerifyForm } from "lib/types";
 
 interface EvmContractVerifyVyperJsonInputProps {
   control: Control<EvmContractVerifyForm>;
@@ -35,7 +35,7 @@ export const EvmContractVerifyVyperJsonInput = ({
         )}
       </Stack>
       <ConstructorArgs<EvmContractVerifyForm>
-        name="verifyForm.vyperJsonInput"
+        name="verifyForm.vyperJsonInput.constructorArgs"
         control={control}
       />
     </Stack>

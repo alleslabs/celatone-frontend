@@ -19,12 +19,12 @@ export const OptimizerConfiguration = <T extends FieldValues>({
 }: OptimizerConfigurationProps<T>) => {
   const { field } = useController({
     control,
-    name: `${name}.optimizerConfig` as FieldPath<T>,
+    name,
   });
 
   const { enabled, runs } = useWatch({
     control,
-    name: `${name}.optimizerConfig` as FieldPath<T>,
+    name,
   });
 
   return (

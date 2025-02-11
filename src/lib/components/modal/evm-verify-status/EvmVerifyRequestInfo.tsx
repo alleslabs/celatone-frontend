@@ -1,5 +1,5 @@
 import type { HexAddr20, Option } from "lib/types";
-import { EvmVerifyInfo } from "lib/services/types";
+import { EvmVerifyInfo } from "lib/types";
 import { Flex, HStack } from "@chakra-ui/react";
 import { Divider, Text, TextProps } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";

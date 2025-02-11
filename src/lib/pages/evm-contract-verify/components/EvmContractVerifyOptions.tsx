@@ -4,7 +4,7 @@ import {
   EvmContractVerifyForm,
   EvmProgrammingLanguage,
   EvmVerifyOptions,
-} from "lib/services/types";
+} from "lib/types";
 
 interface EvmContractVerifyVyperProps {
   control: Control<EvmContractVerifyForm>;

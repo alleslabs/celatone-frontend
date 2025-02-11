@@ -1,4 +1,4 @@
-import { EvmVerifyLicenseType } from "lib/services/types";
+import { EvmVerifyLicenseType } from "lib/types";
 
 export const getLicenseTypeLabel = (license: EvmVerifyLicenseType) => {
   switch (license) {

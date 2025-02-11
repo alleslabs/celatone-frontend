@@ -1,6 +1,6 @@
 import { Flex, Heading, HStack, Text, VStack } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
-import { EvmVerifyInfo } from "lib/services/types";
+import { EvmVerifyInfo } from "lib/types";
 import { HexAddr20, Option } from "lib/types";
 import { EvmContractCmdGroup } from "./EvmContractCmdGroup";
 import { InteractTabsIndex } from "../../types";
