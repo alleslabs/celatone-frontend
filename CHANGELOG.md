@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1229](https://github.com/alleslabs/celatone-frontend/pull/1229) Support EVM verification with JSON input (both Solidity and Vyper)
 - [#1224](https://github.com/alleslabs/celatone-frontend/pull/1224) Support Vyper verification with contract code
 - [#1223](https://github.com/alleslabs/celatone-frontend/pull/1223) Support Vyper on EVM contract details
 - [#1220](https://github.com/alleslabs/celatone-frontend/pull/1220) Add EVM contract verification for Solidity with contract code (flattened method)
