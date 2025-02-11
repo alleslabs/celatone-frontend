@@ -14,7 +14,7 @@ import {
   EvmVerifyInfoSourceFile,
 } from "lib/services/types";
 import { findAndDecodeEvmConstructorArgs } from "lib/utils";
-import { ContractLibrary } from "./ContractLibrary";
+import { ContractLibraryList } from "./ContractLibraryList";
 
 interface ContractCodeProps {
   sourceFiles: EvmVerifyInfoSourceFile[];
@@ -74,7 +74,7 @@ export const ContractCode = ({
             </Heading>
             <Badge>{libraries.length}</Badge>
           </Flex>
-          <ContractLibrary libraries={libraries} />
+          <ContractLibraryList libraries={libraries} />
         </Stack>
       )}
       <Stack gap={4}>

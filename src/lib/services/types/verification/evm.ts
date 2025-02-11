@@ -37,43 +37,66 @@ export enum EvmVerifyOptions {
 }
 
 // MARK - Shared Components
-const zEvmOptimizerConfig = z.object({
-  enabled: z.boolean(),
-  runs: z.string(),
-});
+const zEvmOptimizerConfig = z
+  .object({
+    enabled: z.boolean(),
+    runs: z.string(),
+  })
+  .refine(({ enabled, runs }) => !enabled || runs !== "");
 export type EvmOptimizerConfig = z.infer<typeof zEvmOptimizerConfig>;
 
-const zConstructorArgs = z.object({
-  enabled: z.boolean(),
-  value: z.string(),
-});
+const zConstructorArgs = z
+  .object({
+    enabled: z.boolean(),
+    value: z.string(),
+  })
+  .refine(({ enabled, value }) => !enabled || value !== "");
 
-const zEvmTargetVersion = z.string();
+const zEvmTargetVersion = z.string().refine((val) => val !== "");
 
 const zContractLibrary = z.object({
   name: z.string(),
   address: zHexAddr20,
 });
 
-const zContractLibraries = z.object({
-  enabled: z.boolean(),
-  value: z.array(zContractLibrary),
-});
+const zContractLibraries = z
+  .object({
+    enabled: z.boolean(),
+    value: z.array(zContractLibrary),
+  })
+  .refine(
+    ({ enabled, value }) =>
+      !enabled ||
+      value.every((item) => item.name !== "" && isHex20Bytes(item.address))
+  );
+
+const zFile = z
+  .instanceof(File)
+  .optional()
+  .superRefine((file, ctx) => {
+    if (file === undefined)
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "File is required",
+      });
+  });
 
 // MARK - Solidity
-const zEvmContractVerifySolidityOptionUploadFilesForm = z.object({
-  files: z.array(
-    z.object({
-      file: z.instanceof(File),
-    })
-  ),
+export const zEvmContractVerifySolidityOptionUploadFilesForm = z.object({
+  files: z
+    .array(
+      z.object({
+        file: z.instanceof(File),
+      })
+    )
+    .refine((val) => val.length > 0),
   constructorArgs: zConstructorArgs,
   optimizerConfig: zEvmOptimizerConfig,
   evmVersion: zEvmTargetVersion,
   contractLibraries: zContractLibraries,
 });
 
-const zEvmContractVerifySolidityOptionContractCodeForm = z.object({
+export const zEvmContractVerifySolidityOptionContractCodeForm = z.object({
   contractCode: z.string(),
   constructorArgs: zConstructorArgs,
   evmVersion: zEvmTargetVersion,
@@ -81,32 +104,32 @@ const zEvmContractVerifySolidityOptionContractCodeForm = z.object({
   contractLibraries: zContractLibraries,
 });
 
-const zEvmContractVerifySolidityOptionJsonInputForm = z.object({
-  jsonFile: z.instanceof(File).optional(),
+export const zEvmContractVerifySolidityOptionJsonInputForm = z.object({
+  jsonFile: zFile,
   constructorArgs: zConstructorArgs,
 });
 
 // MARK - Vyper
-const zEvmContractVerifyVyperOptionUploadFileForm = z.object({
-  file: z.instanceof(File).optional(),
+export const zEvmContractVerifyVyperOptionUploadFileForm = z.object({
+  file: zFile,
   constructorArgs: zConstructorArgs,
   evmVersion: zEvmTargetVersion,
 });
 
-const zEvmContractVerifyVyperOptionContractCodeForm = z.object({
-  contractName: z.string(),
-  contractCode: z.string(),
+export const zEvmContractVerifyVyperOptionContractCodeForm = z.object({
+  contractName: z.string().refine((val) => val !== ""),
+  contractCode: z.string().refine((val) => val !== ""),
   constructorArgs: zConstructorArgs,
   evmVersion: zEvmTargetVersion,
 });
 
-const zEvmContractVerifyVyperOptionJsonInputForm = z.object({
-  jsonFile: z.instanceof(File).optional(),
+export const zEvmContractVerifyVyperOptionJsonInputForm = z.object({
+  jsonFile: zFile,
   constructorArgs: zConstructorArgs,
 });
 
 // MARK - Base for all verify forms
-const zEvmContractVerifyBase = z.object({
+export const zEvmContractVerifyBase = z.object({
   // TODO: refactor later
   contractAddress: zHexAddr20.superRefine((val, ctx) => {
     if (val === "")
@@ -121,9 +144,9 @@ const zEvmContractVerifyBase = z.object({
         message: "Invalid address",
       });
   }),
-  compilerVersion: z.string(),
   licenseType: z.nativeEnum(EvmVerifyLicenseType).optional(),
   language: z.nativeEnum(EvmProgrammingLanguage).optional(),
+  compilerVersion: z.string(),
   option: z.nativeEnum(EvmVerifyOptions).optional(),
 });
 
