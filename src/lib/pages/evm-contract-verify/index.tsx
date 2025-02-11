@@ -228,7 +228,7 @@ export const EvmContractVerifyBody = ({
               templateColumns="6fr 4fr"
               columnGap="32px"
               rowGap="48px"
-              maxW="1440px"
+              maxW="1080px"
               mx="auto"
             >
               <GridItem colSpan={1}>
