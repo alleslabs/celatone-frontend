@@ -20,7 +20,6 @@ export enum EvmMethodName {
 }
 
 // MARK: Verification
-
 export enum EvmProgrammingLanguage {
   Solidity = "Solidity",
   Vyper = "Vyper",
