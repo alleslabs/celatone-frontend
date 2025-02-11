@@ -15,8 +15,11 @@ import {
   zEvmVerifyConfig,
   zEvmVerifyInfo,
 } from "lib/types";
-import { BYTECODE_TYPE, getVerifierUrl } from "./utils";
-import { isHex20Bytes } from "lib/utils";
+import {
+  BYTECODE_TYPE,
+  formatContractLibraries,
+  getVerifierUrl,
+} from "./utils";
 
 export const getEvmVerifyConfig = async () =>
   axios
@@ -60,20 +63,7 @@ const submitEvmVerifySolidityContractCode = async ({
       enabled: optimizerConfig.enabled,
       runs: Number(optimizerConfig.runs),
     },
-    libraries: contractLibraries.value.reduce((acc, library) => {
-      if (
-        library.name.trim().length === 0 ||
-        !isHex20Bytes(library.address.trim())
-      )
-        return acc;
-
-      Object.assign(acc, {
-        [`${library.name}.sol`]: {
-          [library.name]: library.address,
-        },
-      });
-      return acc;
-    }, {}),
+    libraries: formatContractLibraries(contractLibraries),
   };
 
   return axios.post(
@@ -106,6 +96,7 @@ const submitEvmVerifySolidityUploadFiles = async ({
   compilerVersion,
   licenseType,
   constructorArgs,
+  contractLibraries,
   files,
   optimizerConfig,
 }: SubmitEvmVerifySolidityUploadFilesArgs) => {
@@ -136,6 +127,7 @@ const submitEvmVerifySolidityUploadFiles = async ({
         enabled: optimizerConfig.enabled,
         runs: Number(optimizerConfig.runs),
       },
+      libraries: formatContractLibraries(contractLibraries),
     })
   );
 
