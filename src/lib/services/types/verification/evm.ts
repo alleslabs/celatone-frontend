@@ -13,8 +13,13 @@ type SubmitEvmVerifyBaseArgs = {
   licenseType: EvmVerifyLicenseType;
 };
 
-export type SubmitEvmVerifyFlattenArgs = SubmitEvmVerifyBaseArgs &
+// MARK - Solidity Contract Code
+export type SubmitEvmVerifySolidityContractCodeArgs = SubmitEvmVerifyBaseArgs &
   EvmContractVerifyForm["verifyForm"]["solidityContractCode"];
+
+// MARK - Vyper Contract Code
+export type SubmitEvmVerifyVyperContractCodeArgs = SubmitEvmVerifyBaseArgs &
+  EvmContractVerifyForm["verifyForm"]["vyperContractCode"];
 
 export interface SubmitEvmVerifyArgs
   extends Omit<SubmitEvmVerifyBaseArgs, "verifierUrl"> {
