@@ -54,6 +54,7 @@ export const EvmTxInfo = ({
           showCopyOnHover
         />
       </LabelText>
+      <LabelText label="Nonce">{evmTxData.tx.nonce.toFixed(0)}</LabelText>
       <LabelText label="Amount">
         <TokenImageWithAmount token={evmTxValue} hasTrailingZeros={false} />
       </LabelText>
