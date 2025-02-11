@@ -3,7 +3,9 @@ import { CELATONE_VERIFICATION_API } from "env";
 import {
   SubmitEvmVerifyArgs,
   SubmitEvmVerifySolidityContractCodeArgs,
+  SubmitEvmVerifySolidityJsonInputArgs,
   SubmitEvmVerifyVyperContractCodeArgs,
+  SubmitEvmVerifyVyperJsonInputArgs,
 } from "lib/services/types";
 import {
   EvmVerifyOptions,
@@ -93,6 +95,46 @@ const submitEvmVerifySolidityContractCode = async ({
   );
 };
 
+const submitEvmVerifyJsonInput = async ({
+  verifierUrl,
+  contractAddress,
+  chainId,
+  compilerVersion,
+  licenseType,
+  jsonFile,
+  constructorArgs,
+}:
+  | SubmitEvmVerifySolidityJsonInputArgs
+  | SubmitEvmVerifyVyperJsonInputArgs) => {
+  if (!jsonFile)
+    throw new Error("JSON file is required (submitEvmVerifyJsonInput)");
+  const reader = new FileReader();
+  const jsonContent = await new Promise<string>((resolve, reject) => {
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsText(jsonFile);
+  });
+  return axios.post(
+    verifierUrl,
+    {
+      license: licenseType,
+      bytecode_type: BYTECODE_TYPE,
+      compiler_version: compilerVersion,
+      constructor_arguments: constructorArgs.value,
+      metadata: {
+        chain_id: chainId,
+        contract_address: contractAddress,
+      },
+      input: jsonContent,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+};
+
 const submitEvmVerifyVyperContractCode = async ({
   verifierUrl,
   contractAddress,
@@ -141,6 +183,18 @@ export const submitEvmVerify = async ({
         verifierUrl,
         ...rest,
         ...verifyForm.solidityContractCode,
+      });
+    case EvmVerifyOptions.SolidityJsonInput:
+      return submitEvmVerifyJsonInput({
+        verifierUrl,
+        ...rest,
+        ...verifyForm.solidityJsonInput,
+      });
+    case EvmVerifyOptions.VyperJsonInput:
+      return submitEvmVerifyJsonInput({
+        verifierUrl,
+        ...rest,
+        ...verifyForm.vyperJsonInput,
       });
     case EvmVerifyOptions.VyperContractCode:
       return submitEvmVerifyVyperContractCode({
