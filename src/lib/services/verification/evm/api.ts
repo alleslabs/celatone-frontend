@@ -9,7 +9,7 @@ import {
   zEvmVerifyInfo,
 } from "lib/services/types";
 import { HexAddr20 } from "lib/types";
-import { getVerifierUrl } from "./utils";
+import { BYTECODE_TYPE, getVerifierUrl } from "./utils";
 import { isHex20Bytes } from "lib/utils";
 
 export const getEvmVerifyConfig = async () =>
@@ -48,7 +48,7 @@ const submitEvmVerifySolidityContractCode = async ({
   contractLibraries,
 }: SubmitEvmVerifySolidityContractCodeArgs) => {
   const settings = {
-    evmVersion: evmVersion === "default" ? "cancun" : evmVersion,
+    evmVersion,
     optimizer: {
       enabled: optimizerConfig.enabled,
       runs: Number(optimizerConfig.runs),
@@ -73,7 +73,7 @@ const submitEvmVerifySolidityContractCode = async ({
     verifierUrl,
     {
       license: licenseType,
-      bytecode_type: "CREATION_INPUT",
+      bytecode_type: BYTECODE_TYPE,
       compiler_version: compilerVersion,
       constructor_arguments: constructorArgs.value,
       metadata: {
@@ -110,7 +110,7 @@ const submitEvmVerifyVyperContractCode = async ({
     verifierUrl,
     {
       license: licenseType,
-      bytecode_type: "CREATION_INPUT",
+      bytecode_type: BYTECODE_TYPE,
       contract_name: contractName,
       compiler_version: compilerVersion,
       constructor_arguments: constructorArgs.value,

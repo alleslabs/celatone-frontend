@@ -20,3 +20,5 @@ export const getVerifierUrl = (option: EvmVerifyOptions) => {
       throw new Error("Unsupported option (getVerifierUrl)");
   }
 };
+
+export const BYTECODE_TYPE = "CREATION_INPUT";
