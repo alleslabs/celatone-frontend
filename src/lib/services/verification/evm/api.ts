@@ -5,6 +5,7 @@ import {
   SubmitEvmVerifyArgs,
   SubmitEvmVerifySolidityContractCodeArgs,
   SubmitEvmVerifySolidityJsonInputArgs,
+  SubmitEvmVerifySolidityUploadFilesArgs,
   SubmitEvmVerifyVyperContractCodeArgs,
   SubmitEvmVerifyVyperJsonInputArgs,
   zEvmVerifyConfig,
@@ -133,6 +134,43 @@ const submitEvmVerifyJsonInput = async ({
   );
 };
 
+const submitEvmVerifySolidityUploadFiles = async ({
+  verifierUrl,
+  contractAddress,
+  chainId,
+  compilerVersion,
+  licenseType,
+  constructorArgs,
+  files,
+}: SubmitEvmVerifySolidityUploadFilesArgs) => {
+  if (files.length === 0)
+    throw new Error(
+      "At least one file is required (submitEvmVerifySolidityUploadFiles)"
+    );
+
+  const formData = new FormData();
+  formData.append("license", licenseType);
+  formData.append("language", "Solidity");
+  formData.append("bytecode_type", BYTECODE_TYPE);
+  formData.append("compiler_version", compilerVersion);
+  formData.append("constructor_arguments", constructorArgs.value);
+  formData.append(
+    "metadata",
+    JSON.stringify({
+      chain_id: chainId,
+      contract_address: contractAddress,
+    })
+  );
+  files.forEach((file) => {
+    formData.append("files", file.file);
+  });
+  return axios.post(verifierUrl, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
 const submitEvmVerifyVyperContractCode = async ({
   verifierUrl,
   contractAddress,
@@ -190,6 +228,12 @@ export const submitEvmVerify = async ({
         verifierUrl,
         ...rest,
         ...verifyForm.solidityJsonInput,
+      });
+    case EvmVerifyOptions.SolidityUploadFiles:
+      return submitEvmVerifySolidityUploadFiles({
+        verifierUrl,
+        ...rest,
+        ...verifyForm.solidityUploadFiles,
       });
     case EvmVerifyOptions.VyperJsonInput:
       return submitEvmVerifyJsonInput({
