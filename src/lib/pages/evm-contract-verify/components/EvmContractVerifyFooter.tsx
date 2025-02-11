@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { FooterCta } from "lib/components/layouts";
 
 interface EvmContractFooterProps {
@@ -13,28 +14,35 @@ export const EvmContractFooter = ({
   isDisabled,
   actionLabel,
 }: EvmContractFooterProps) => (
-  <FooterCta
-    cancelButton={{
-      onClick: handlePrevious,
-      variant: "outline-primary",
-    }}
-    cancelLabel="Cancel"
-    actionButton={{
-      onClick: handleNext,
-      isDisabled,
-    }}
-    actionLabel={actionLabel}
-    sx={{
-      backgroundColor: "background.main",
-      borderColor: "gray.700",
-      display: "grid",
-      gridTemplateColumns: "6fr 4fr",
-      pl: 12,
-      gap: 0,
-      pr: 24,
-      "> div": {
-        width: "100%",
-      },
-    }}
-  />
+  <Box
+    position="sticky"
+    bottom={0}
+    borderTop="1px"
+    borderColor="gray.700"
+    px={12}
+    zIndex={2}
+  >
+    <FooterCta
+      cancelButton={{
+        onClick: handlePrevious,
+      }}
+      cancelLabel="Cancel"
+      actionButton={{
+        onClick: handleNext,
+        isDisabled,
+      }}
+      actionLabel={actionLabel}
+      sx={{
+        backgroundColor: "background.main",
+        columnGap: "32px",
+        display: "grid",
+        gridTemplateColumns: "6fr 4fr",
+        maxW: "1080px",
+        mx: "auto",
+        "> div": {
+          width: "100%",
+        },
+      }}
+    />
+  </Box>
 );
