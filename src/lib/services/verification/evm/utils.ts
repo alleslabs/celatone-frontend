@@ -1,5 +1,5 @@
 import { CELATONE_VERIFICATION_API } from "env";
-import { EvmVerifyOptions } from "lib/services/types";
+import { EvmVerifyOptions } from "lib/types";
 
 export const getVerifierUrl = (option: EvmVerifyOptions) => {
   const baseUrl = `${CELATONE_VERIFICATION_API}/evm/verification`;

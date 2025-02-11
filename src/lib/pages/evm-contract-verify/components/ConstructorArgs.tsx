@@ -22,12 +22,12 @@ export const ConstructorArgs = <T extends FieldValues>({
     fieldState: { error },
   } = useController({
     control,
-    name: `${name}.constructorArgs` as FieldPath<T>,
+    name,
   });
 
   const constructorArgs = useWatch({
     control,
-    name: `${name}.constructorArgs` as FieldPath<T>,
+    name,
   });
 
   return (

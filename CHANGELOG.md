@@ -74,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1228](https://github.com/alleslabs/celatone-frontend/pull/1228) Refactor EVM verification form path and form type location
 - [#1215](https://github.com/alleslabs/celatone-frontend/pull/1215) Bump react wallet widget package to support http endpoints
 - [#1205](https://github.com/alleslabs/celatone-frontend/pull/1205) Improve EVM contract verify page via external verifier
 - [#1185](https://github.com/alleslabs/celatone-frontend/pull/1185) Replace minitia with rollup

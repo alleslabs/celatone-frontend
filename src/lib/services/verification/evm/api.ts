@@ -1,13 +1,15 @@
 import axios from "axios";
 import { CELATONE_VERIFICATION_API } from "env";
 import {
-  EvmVerifyOptions,
   SubmitEvmVerifyArgs,
   SubmitEvmVerifyFlattenArgs,
+} from "lib/services/types";
+import {
+  EvmVerifyOptions,
+  HexAddr20,
   zEvmVerifyConfig,
   zEvmVerifyInfo,
-} from "lib/services/types";
-import { HexAddr20 } from "lib/types";
+} from "lib/types";
 import { getVerifierUrl } from "./utils";
 import { isHex20Bytes } from "lib/utils";
 

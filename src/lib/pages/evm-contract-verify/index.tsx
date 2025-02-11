@@ -38,7 +38,7 @@ import {
   zEvmContractVerifyVyperOptionContractCodeForm,
   zEvmContractVerifyVyperOptionJsonInputForm,
   zEvmContractVerifyVyperOptionUploadFileForm,
-} from "lib/services/types";
+} from "lib/types";
 import {
   useEvmVerifyConfig,
   useEvmVerifyInfo,

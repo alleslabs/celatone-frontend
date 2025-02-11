@@ -7,7 +7,7 @@ import { ContractLibraries } from "../ContractLibraries";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { Fragment } from "react";
-import { EvmContractVerifyForm, EvmVerifyConfig } from "lib/services/types";
+import { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
 
 interface EvmContractVerifySolidityUploadFilesProps {
   control: Control<EvmContractVerifyForm>;
@@ -41,20 +41,20 @@ export const EvmContractVerifySolidityUploadFiles = ({
       </Stack>
       <ConstructorArgs<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityUploadFiles"
+        name="verifyForm.solidityUploadFiles.constructorArgs"
       />
       <EvmVersionToTarget<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityUploadFiles"
+        name="verifyForm.solidityUploadFiles.evmVersion"
         evmVerifyConfig={evmVerifyConfig}
       />
       <OptimizerConfiguration<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityUploadFiles"
+        name="verifyForm.solidityUploadFiles.optimizerConfig"
       />
       <ContractLibraries<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityUploadFiles"
+        name="verifyForm.solidityUploadFiles.contractLibraries"
       />
     </Stack>
   );

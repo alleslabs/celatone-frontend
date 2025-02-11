@@ -16,7 +16,7 @@ import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { EvmContractVerifyForm } from "lib/services/types";
+import { EvmContractVerifyForm } from "lib/types";
 
 interface EvmContractVerifySuccessModalProps {
   control: Control<EvmContractVerifyForm>;

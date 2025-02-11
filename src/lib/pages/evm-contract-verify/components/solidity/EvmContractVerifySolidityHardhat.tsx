@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { Control, useWatch } from "react-hook-form";
 import { convertCosmosChainIdToEvmChainId } from "lib/utils/evm";
 import { CELATONE_VERIFICATION_API } from "env";
-import { EvmContractVerifyForm } from "lib/services/types";
+import { EvmContractVerifyForm } from "lib/types";
 
 interface EvmContractVerifySolidityHardhatProps {
   control: Control<EvmContractVerifyForm>;

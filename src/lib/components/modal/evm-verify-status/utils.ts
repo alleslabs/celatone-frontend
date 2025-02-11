@@ -1,4 +1,4 @@
-import { EvmVerifyInfo } from "lib/services/types";
+import { EvmVerifyInfo } from "lib/types";
 import type { Option } from "lib/types";
 
 enum ProcessStepState {

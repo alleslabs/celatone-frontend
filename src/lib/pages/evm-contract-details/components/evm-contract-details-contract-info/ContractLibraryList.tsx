@@ -1,4 +1,4 @@
-import { EvmVerifyInfoLibraries } from "lib/services/types";
+import { EvmVerifyInfoLibraries } from "lib/types";
 import { Box, Divider, Grid, GridItem, Text } from "@chakra-ui/react";
 import { Fragment } from "react";
 import { ExplorerLink } from "lib/components/ExplorerLink";

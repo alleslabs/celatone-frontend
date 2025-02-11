@@ -5,7 +5,7 @@ import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
 import { OptimizerConfiguration } from "../OptimizerConfiguration";
 import { ContractLibraries } from "../ContractLibraries";
-import { EvmContractVerifyForm, EvmVerifyConfig } from "lib/services/types";
+import { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
 
 interface EvmContractVerifySolidityContractCodeProps {
   control: Control<EvmContractVerifyForm>;
@@ -42,20 +42,20 @@ export const EvmContractVerifySolidityContractCode = ({
       </Stack>
       <ConstructorArgs<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityContractCode"
+        name="verifyForm.solidityContractCode.constructorArgs"
       />
       <EvmVersionToTarget<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityContractCode"
+        name="verifyForm.solidityContractCode.evmVersion"
         evmVerifyConfig={evmVerifyConfig}
       />
       <OptimizerConfiguration<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityContractCode"
+        name="verifyForm.solidityContractCode.optimizerConfig"
       />
       <ContractLibraries<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityContractCode"
+        name="verifyForm.solidityContractCode.contractLibraries"
       />
     </Stack>
   );
