@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#1225](https://github.com/alleslabs/celatone-frontend/pull/1225) Validate EVM verification form options
 - [#1226](https://github.com/alleslabs/celatone-frontend/pull/1226) Show nonce on EVM tx details
+- [#1224](https://github.com/alleslabs/celatone-frontend/pull/1224) Support Vyper verification with contract code
 - [#1223](https://github.com/alleslabs/celatone-frontend/pull/1223) Support Vyper on EVM contract details
 - [#1220](https://github.com/alleslabs/celatone-frontend/pull/1220) Add EVM contract verification for Solidity with contract code (flattened method)
 - [#1219](https://github.com/alleslabs/celatone-frontend/pull/1219) Add tooltip to full editor sidebar

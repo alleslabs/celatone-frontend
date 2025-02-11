@@ -12,11 +12,12 @@ import {
 import { useWatch } from "react-hook-form";
 import type { Control } from "react-hook-form";
 
-import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
+import { useCelatoneApp } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { EvmContractVerifyForm } from "lib/types";
+import { useRouter } from "next/router";
 
 interface EvmContractVerifySuccessModalProps {
   control: Control<EvmContractVerifyForm>;
@@ -26,7 +27,7 @@ export const EvmContractVerifySuccessModal = ({
   control,
 }: EvmContractVerifySuccessModalProps) => {
   const { currentChainId } = useCelatoneApp();
-  const navigate = useInternalNavigate();
+  const router = useRouter();
 
   const contractAddress = useWatch({
     control,
@@ -66,10 +67,7 @@ export const EvmContractVerifySuccessModal = ({
         </Stack>
       </ModalBody>
       <ModalFooter pb={0} gap={4} display="grid" gridTemplateColumns="1fr 1fr">
-        <Button
-          variant="outline-primary"
-          onClick={() => navigate({ pathname: "/evm-contract-verify" })}
-        >
+        <Button variant="outline-primary" onClick={router.reload}>
           Verify More
         </Button>
         <AppLink href={`/evm-contracts/${contractAddress}`}>
