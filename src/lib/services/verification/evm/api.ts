@@ -103,12 +103,8 @@ const submitEvmVerifyVyperContractCode = async ({
   evmVersion,
   contractName,
   constructorArgs,
-}: SubmitEvmVerifyVyperContractCodeArgs) => {
-  const settings = {
-    evmVersion: evmVersion === "default" ? "cancun" : evmVersion,
-  };
-
-  return axios.post(
+}: SubmitEvmVerifyVyperContractCodeArgs) =>
+  axios.post(
     verifierUrl,
     {
       license: licenseType,
@@ -121,7 +117,9 @@ const submitEvmVerifyVyperContractCode = async ({
         contract_address: contractAddress,
       },
       source_code: contractCode,
-      settings: JSON.stringify(settings),
+      settings: JSON.stringify({
+        evmVersion,
+      }),
     },
     {
       headers: {
@@ -129,7 +127,6 @@ const submitEvmVerifyVyperContractCode = async ({
       },
     }
   );
-};
 
 export const submitEvmVerify = async ({
   option,

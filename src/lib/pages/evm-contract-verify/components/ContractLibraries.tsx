@@ -60,7 +60,7 @@ export const ContractLibraries = <T extends FieldValues>({
           <Grid key={id} gridTemplateColumns="1fr 2fr auto" gap={4}>
             <ContractLibrary<T>
               control={control}
-              name={`${name}.contractLibraries.value.${index}` as FieldPath<T>}
+              name={`${name}.value.${index}` as FieldPath<T>}
             />
             <Button
               variant="outline-gray"
