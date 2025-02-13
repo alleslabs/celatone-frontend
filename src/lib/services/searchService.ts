@@ -16,6 +16,7 @@ import {
   isHexModuleAddress,
   isHexWalletAddress,
   isId,
+  isMovePrefixHexModuleAddress,
   isPosDecimal,
   splitModulePath,
 } from "lib/utils";
@@ -120,6 +121,13 @@ export const useSearchHandler = (
     addressType === "contract_address" ||
     isMoveHexAddr ||
     isEvmHexAddr;
+
+  // handle "move/" prefix hex module address
+  const isMovePrefixHexModuleAddr =
+    isMove && isMovePrefixHexModuleAddress(debouncedKeyword);
+  const addressByMovePrefixKeyword = isMovePrefixHexModuleAddr
+    ? `0x${debouncedKeyword.slice(5)}`
+    : undefined;
 
   // ICNS
   const { data: icnsAddrByKeyword, isFetching: icnsAddrByKeywordFetching } =
@@ -362,6 +370,13 @@ export const useSearchHandler = (
             : undefined,
         initiaUsername: iuNameByKeyword?.username ?? undefined,
       },
+    });
+
+  // handle "move/" prefix hex module address
+  if (addressByMovePrefixKeyword)
+    results.push({
+      value: addressByMovePrefixKeyword,
+      type: "Account Address",
     });
 
   if (icnsAddrByKeyword && icnsAddrByKeyword.address !== "")
