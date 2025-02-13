@@ -57,6 +57,11 @@ export const isHexFixedBytes = (address: string, length: number): boolean => {
   return isHex(strip);
 };
 
+export const isMovePrefixHexModuleAddress = (address: string) => {
+  const regex = new RegExp(`^move/[a-fA-F0-9]{${HEX_MODULE_ADDRESS_LENGTH}}$`);
+  return regex.test(address);
+};
+
 export const isHexWalletAddress = (address: string) =>
   isHexAddress(address, HEX_WALLET_ADDRESS_LENGTH);
 
