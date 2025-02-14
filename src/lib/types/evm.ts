@@ -85,6 +85,7 @@ const zContractLibraries = z
       !enabled ||
       value.every((item) => item.name !== "" && isHex20Bytes(item.address))
   );
+export type ContractLibraries = z.infer<typeof zContractLibraries>;
 
 const zFile = z
   .instanceof(File)

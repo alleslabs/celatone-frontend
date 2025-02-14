@@ -6,7 +6,7 @@ import {
   AccordionPanel,
   Text,
 } from "@chakra-ui/react";
-import { UserDocsLink } from "lib/components/UserDocsLink";
+// import { UserDocsLink } from "lib/components/UserDocsLink";
 
 export const FoundryInfoAccordion = () => (
   <Accordion
@@ -40,12 +40,13 @@ export const FoundryInfoAccordion = () => (
           ensuring accurate verification by matching the deployed bytecode.
         </Text>
       </AccordionPanel>
-      <UserDocsLink
+      {/* TODO to commented UserDoc */}
+      {/* <UserDocsLink
         mt={3}
         cta="See how to verify contract via Foundry"
         // TODO: Update link
         href="#"
-      />
+      /> */}
     </AccordionItem>
   </Accordion>
 );

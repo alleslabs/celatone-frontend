@@ -17,17 +17,14 @@ export const ConstructorArgs = <T extends FieldValues>({
   control,
   name,
 }: ConstructorArgsProps<T>) => {
-  const {
-    field,
-    fieldState: { error },
-  } = useController({
+  const { field } = useController({
     control,
-    name,
+    name: `${name}.enabled` as FieldPath<T>,
   });
 
-  const constructorArgs = useWatch({
+  const constructorArgsValue = useWatch({
     control,
-    name,
+    name: `${name}.value` as FieldPath<T>,
   });
 
   return (
@@ -42,10 +39,8 @@ export const ConstructorArgs = <T extends FieldValues>({
       </Stack>
       <Checkbox
         p={2}
-        isChecked={constructorArgs.enabled}
-        onChange={(e) =>
-          field.onChange({ ...field.value, enabled: e.target.checked })
-        }
+        isChecked={field.value}
+        onChange={(e) => field.onChange(e.target.checked)}
       >
         <Text>Have constructor arguments</Text>
       </Checkbox>
@@ -54,18 +49,22 @@ export const ConstructorArgs = <T extends FieldValues>({
         px={3}
         bgColor="gray.900"
         borderRadius="md"
-        display={constructorArgs.enabled ? "block" : "none"}
+        display={field.value ? "block" : "none"}
       >
         <ControllerTextarea
           backgroundColor="gray.900"
-          name={`${name}.constructorArgs.value` as FieldPath<T>}
+          name={`${name}.value` as FieldPath<T>}
           control={control}
           isRequired
           label="Constructor Arguments"
           placeholder="ex.000000000000000000000000c005dc82818d67af737725bd4bf75435d065d239"
           variant="fixed-floating"
           labelBgColor="gray.900"
-          error={error?.message}
+          error={
+            constructorArgsValue === ""
+              ? "Invalid constructor arguments"
+              : undefined
+          }
         />
       </Box>
     </Stack>

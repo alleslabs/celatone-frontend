@@ -44,8 +44,7 @@ export const ContractLicenseInfoAccordion = () => (
       <UserDocsLink
         mt={3}
         cta="See contract license types"
-        // TODO: Update link
-        href="#"
+        href="https://github.com/github/choosealicense.com/tree/gh-pages/_licenses"
       />
     </AccordionItem>
   </Accordion>

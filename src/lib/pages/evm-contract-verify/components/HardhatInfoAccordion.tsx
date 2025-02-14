@@ -6,7 +6,7 @@ import {
   AccordionPanel,
   Text,
 } from "@chakra-ui/react";
-import { UserDocsLink } from "lib/components/UserDocsLink";
+// import { UserDocsLink } from "lib/components/UserDocsLink";
 
 export const HarthatInfoAccordion = () => (
   <Accordion
@@ -40,12 +40,13 @@ export const HarthatInfoAccordion = () => (
           compilation and automating the process through plugins.
         </Text>
       </AccordionPanel>
-      <UserDocsLink
+      {/*  TODO to commented UserDoc */}
+      {/* <UserDocsLink
         mt={3}
         cta="See how to verify contract via Hardhat"
         // TODO: Update link
         href="#"
-      />
+      /> */}
     </AccordionItem>
   </Accordion>
 );
