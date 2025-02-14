@@ -40,6 +40,7 @@ export const FoundryInfoAccordion = () => (
           ensuring accurate verification by matching the deployed bytecode.
         </Text>
       </AccordionPanel>
+      {/* TODO to commented UserDoc */}
       {/* <UserDocsLink
         mt={3}
         cta="See how to verify contract via Foundry"

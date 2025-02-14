@@ -40,6 +40,7 @@ export const HarthatInfoAccordion = () => (
           compilation and automating the process through plugins.
         </Text>
       </AccordionPanel>
+      {/*  TODO to commented UserDoc */}
       {/* <UserDocsLink
         mt={3}
         cta="See how to verify contract via Hardhat"
