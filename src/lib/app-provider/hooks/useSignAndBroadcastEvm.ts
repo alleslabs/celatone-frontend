@@ -6,6 +6,7 @@ import { TxReceiptJsonRpc } from "lib/services/types";
 import { convertCosmosChainIdToEvmChainId, sleep } from "lib/utils";
 import { useCelatoneApp } from "../contexts";
 import { useCurrentChain } from "./useCurrentChain";
+import { useEvmParams } from "lib/services/evm";
 
 const getEvmTxResponse = async (jsonRpcEndpoint: string, txHash: string) => {
   const TIME_OUT_MS = 3000;
@@ -51,23 +52,60 @@ export type SignAndBroadcastEvm = (
 ) => Promise<TxReceiptJsonRpc>;
 
 export const useSignAndBroadcastEvm = () => {
-  const { walletProvider, chainId } = useCurrentChain();
   const {
     chainConfig: {
+      prettyName,
+      logo_URIs,
       features: { evm },
+      registry,
     },
   } = useCelatoneApp();
+  const { walletProvider, chainId } = useCurrentChain();
+  const { data } = useEvmParams();
 
   return useCallback(
     async (request: TransactionRequest): Promise<TxReceiptJsonRpc> => {
       if (evm.enabled && walletProvider.type === "initia-widget") {
         const { requestEthereumTx, ethereum } = walletProvider.context;
-        const evmChainId = convertCosmosChainIdToEvmChainId(chainId);
+        const evmChainId = "0x".concat(
+          convertCosmosChainIdToEvmChainId(chainId).toString(16)
+        );
+
+        const feeDenom = data?.params.feeDenom.slice(-40) ?? "";
+        const foundAsset = registry?.assets.find((asset) =>
+          asset.denom_units.find(
+            (denom_unit) => denom_unit.denom.slice(-40) === feeDenom
+          )
+        );
+
+        if (foundAsset) {
+          const denomUnit = foundAsset.denom_units.reduce((max, unit) =>
+            unit.exponent > max.exponent ? unit : max
+          );
+
+          await ethereum?.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: evmChainId,
+                chainName: prettyName,
+                iconUrls: Object.values(logo_URIs ?? {}),
+                nativeCurrency: {
+                  name: foundAsset.name,
+                  symbol: foundAsset.symbol,
+                  decimals: denomUnit.exponent,
+                },
+                rpcUrls: [evm.jsonRpc],
+              },
+            ],
+          });
+        }
 
         await ethereum?.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: evmChainId }],
         });
+
         const txHash = await requestEthereumTx(
           { ...request, chainId: evmChainId },
           { chainId }

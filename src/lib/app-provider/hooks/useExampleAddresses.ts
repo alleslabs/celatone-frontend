@@ -1,4 +1,4 @@
-import { toBech32, toHex } from "@cosmjs/encoding";
+import { toBech32 } from "@cosmjs/encoding";
 import { useMemo } from "react";
 
 import type { BechAddr20, BechAddr32 } from "lib/types";
@@ -14,8 +14,6 @@ export const useExampleAddresses = () => {
     const bytes20 = bytes32.slice(0, 20);
     const user = toBech32(bech32Prefix, Uint8Array.from(bytes20)) as BechAddr20;
 
-    // reverse the bytes so the initial characters are different from the user address
-    const evmContract = "0x" + toHex(Uint8Array.from(bytes20).reverse());
     const contract = toBech32(
       bech32Prefix,
       Uint8Array.from(bytes32.reverse())
@@ -26,7 +24,6 @@ export const useExampleAddresses = () => {
     return {
       user,
       contract,
-      evmContract,
       validator,
     };
   };

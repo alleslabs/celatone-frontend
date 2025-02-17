@@ -4,7 +4,11 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useCurrentChain, useFabricateFee } from "lib/app-provider";
+import {
+  useCurrentChain,
+  useFabricateFee,
+  useWasmConfig,
+} from "lib/app-provider";
 import { useDeployScriptTx } from "lib/app-provider/tx/script";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -34,6 +38,8 @@ const DEFAULT_FILE_STATE: FileState = {
 };
 
 export const DeployScript = () => {
+  useWasmConfig({ shouldRedirect: true });
+
   const router = useRouter();
   const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();
