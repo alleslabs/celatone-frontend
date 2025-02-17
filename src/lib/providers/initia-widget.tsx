@@ -9,7 +9,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <WalletWidgetProvider
-      key={chainConfig.network_type === "local" ? currentChainId : undefined}
+      key={currentChainId}
       customLayer={
         chainConfig.network_type === "local"
           ? {
@@ -32,6 +32,9 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
           : undefined
       }
       fallback={<LoadingOverlay />}
+      filterWallet={(wallet) =>
+        !chainConfig.features.evm.enabled || wallet.type === "evm"
+      }
     >
       {children}
     </WalletWidgetProvider>

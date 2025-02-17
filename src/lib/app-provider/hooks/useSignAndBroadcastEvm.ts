@@ -66,7 +66,10 @@ export const useSignAndBroadcastEvm = () => {
   return useCallback(
     async (request: TransactionRequest): Promise<TxReceiptJsonRpc> => {
       if (evm.enabled && walletProvider.type === "initia-widget") {
-        const { requestEthereumTx, ethereum } = walletProvider.context;
+        const { requestEthereumTx, ethereum, wallet } = walletProvider.context;
+        if (wallet?.type !== "evm")
+          throw new Error("Please reconnect to EVM wallet");
+
         const evmChainId = "0x".concat(
           convertCosmosChainIdToEvmChainId(chainId).toString(16)
         );
