@@ -8,6 +8,7 @@ import {
   useConvertHexAddress,
   useEvmConfig,
   useInternalNavigate,
+  useMobile,
 } from "lib/app-provider";
 import { AssetsSection } from "lib/components/asset";
 import { CustomTab } from "lib/components/CustomTab";
@@ -55,6 +56,7 @@ const EvmContractDetailsBody = ({
   selectedType,
   selectedFn,
 }: EvmContractDetailsBodyProps) => {
+  const isMobile = useMobile();
   const navigate = useInternalNavigate();
   const { convertHexWalletAddress } = useConvertHexAddress();
   const contractAddressBechAddr = convertHexWalletAddress(contractAddress);
@@ -123,7 +125,10 @@ const EvmContractDetailsBody = ({
     <>
       <CelatoneSeo pageName={`EVM Contract – ${truncate(contractAddress)}`} />
       <Stack gap={6}>
-        <EvmContractDetailsTop contractAddress={contractAddress} />
+        <EvmContractDetailsTop
+          contractAddress={contractAddress}
+          isVerified={!!isVerified}
+        />
         <Tabs
           index={Object.values(TabIndex).indexOf(tab)}
           isLazy
@@ -145,7 +150,7 @@ const EvmContractDetailsBody = ({
               onClick={handleTabChange(TabIndex.ReadWrite)}
               hidden={!isVerified}
             >
-              Read/Write
+              {isMobile ? "Read" : "Read/Write"}
             </CustomTab>
             <CustomTab
               onClick={handleTabChange(TabIndex.Assets)}
@@ -190,7 +195,7 @@ const EvmContractDetailsBody = ({
                 contractAbi={evmVerifyInfo?.abi ?? []}
                 selectedType={selectedType}
                 selectedFn={selectedFn}
-                proxyTargetAbi={proxyTargetEvmVerifyInfo?.abi}
+                proxyTargetEvmVerifyInfo={proxyTargetEvmVerifyInfo}
               />
             </TabPanel>
             <TabPanel p={0}>

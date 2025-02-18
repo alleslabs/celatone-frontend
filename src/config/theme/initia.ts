@@ -28,12 +28,12 @@ const INITIA_BASE_THEME: ThemeConfig = {
       background: "#0E3139",
     },
     secondary: {
-      lighter: "#F0D5FF",
-      light: "#E1ADFE",
-      main: "#CE89F4",
-      dark: "#B851F0",
-      darker: "#A400FF",
-      background: "#432E4F",
+      lighter: "#EBDDFF",
+      light: "#D8BEFC",
+      main: "#D2A3F9",
+      dark: "#A28FBD",
+      darker: "#6C5F7E",
+      background: "#36303F",
     },
     gray: {
       100: "#F5F5F5",

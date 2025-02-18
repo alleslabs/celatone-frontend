@@ -42,15 +42,6 @@ export const EvmVerifyProcess = ({ evmVerifyInfo }: EvmVerifyProcessProps) => {
                     {formatUTC(step.timestamp)}
                   </Text>
                 )}
-                {step.errorMsg && (
-                  <Text
-                    variant="body3"
-                    color="error.main"
-                    wordBreak="break-word"
-                  >
-                    {step.errorMsg}
-                  </Text>
-                )}
                 <Box height={4} />
               </Flex>
             </Flex>
