@@ -8,12 +8,15 @@ import {
   zAsset,
   zChainConfig,
   zDenomUnit,
+  zEvmConfig,
   zFeeToken,
   zGasConfig,
   zGasConfigCosts,
   zHttpsUrl,
+  zMoveConfig,
   zNumberInput,
   zRegistry,
+  zWasmConfig,
 } from "lib/types";
 
 import {
@@ -367,7 +370,6 @@ export const zAddNetworkManualChainConfigJson = ({
       assets,
     }: AddNetworkManualForm) => ({
       ...DEFAULT_CUSTOM_MINITIA_NETWORK,
-      wallets: [],
       chainId,
       registryChainName,
       prettyName,
@@ -414,9 +416,6 @@ export const zAddNetworkManualChainConfigJson = ({
       registry: {
         bech32_prefix,
         slip44,
-        staking: {
-          staking_tokens: [],
-        },
         assets: assets.map(({ name, base, symbol, denoms }) => ({
           name,
           base,
@@ -445,15 +444,29 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
     logo_URIs: true,
     lcd: true,
     rpc: true,
-    wallets: true,
-    features: true,
     gas: true,
     fees: true,
     registry: true,
   })
-  .transform<ChainConfig>((val) => ({
+  .extend({
+    features: z.object({
+      wasm: zWasmConfig,
+      move: zMoveConfig,
+      evm: zEvmConfig,
+    }),
+  })
+  .transform<ChainConfig>(({ features, ...val }) => ({
     ...val,
     ...DEFAULT_CUSTOM_MINITIA_NETWORK,
+    features: {
+      ...features,
+      pool: DEFAULT_POOL_CONFIG,
+      publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
+      gov: DEFAULT_GOV_CONFIG,
+      nft: {
+        enabled: features.move.enabled,
+      },
+    },
   }));
 
 export type AddNetworkJsonChainConfigJson = z.infer<
@@ -489,7 +502,6 @@ export const zAddNetworkLinkChainConfigJson = z
       chainId: val.chainId,
       registryChainName: val.chainId,
       prettyName: capitalize(val.chainId),
-      wallets: [],
       lcd: val.lcd,
       rpc: val.rpc,
       features: {
@@ -523,9 +535,6 @@ export const zAddNetworkLinkChainConfigJson = z
       registry: {
         bech32_prefix: bech32Prefix,
         slip44: DEFAULT_SLIP44,
-        staking: {
-          staking_tokens: [],
-        },
         assets: [],
       },
     };
