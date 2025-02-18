@@ -7,7 +7,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import {
   useCurrentChain,
   useFabricateFee,
-  useWasmConfig,
+  useMoveConfig,
 } from "lib/app-provider";
 import { useDeployScriptTx } from "lib/app-provider/tx/script";
 import ActionPageContainer from "lib/components/ActionPageContainer";
@@ -38,7 +38,7 @@ const DEFAULT_FILE_STATE: FileState = {
 };
 
 export const DeployScript = () => {
-  useWasmConfig({ shouldRedirect: true });
+  useMoveConfig({ shouldRedirect: true });
 
   const router = useRouter();
   const { address } = useCurrentChain();

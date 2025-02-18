@@ -79,7 +79,7 @@ export const EvmContractVerifyBody = ({
   const router = useRouter();
   const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
-  const { user: exampleBechContractAddress } = useExampleAddresses();
+  const { user: exampleBechAddress } = useExampleAddresses();
   const { mutate, isLoading, isError } = useSubmitEvmVerify();
 
   useEffect(() => {
@@ -245,7 +245,7 @@ export const EvmContractVerifyBody = ({
                     <ControllerInput
                       label="Contract Address"
                       isRequired
-                      placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechContractAddress))}`}
+                      placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
                       name="contractAddress"
                       control={control}
                       variant="fixed-floating"

@@ -17,7 +17,7 @@ export const ContractLibrary = <T extends FieldValues>({
   control,
   name,
 }: ContractLibraryProps<T>) => {
-  const { user: exampleBechContractAddress } = useExampleAddresses();
+  const { user: exampleBechAddress } = useExampleAddresses();
   const { field } = useController({
     control,
     name,
@@ -42,7 +42,7 @@ export const ContractLibrary = <T extends FieldValues>({
         rules={{
           required: "",
         }}
-        placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechContractAddress))}`}
+        placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
         name={`${name}.address` as FieldPath<T>}
         control={control}
         variant="fixed-floating"
