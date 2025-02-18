@@ -45,7 +45,7 @@ import {
   useSubmitEvmVerify,
 } from "lib/services/verification/evm";
 import { HexAddr20, Option } from "lib/types";
-import { isHex20Bytes, truncate } from "lib/utils";
+import { bech32AddressToHex, isHex20Bytes, truncate } from "lib/utils";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -79,7 +79,7 @@ export const EvmContractVerifyBody = ({
   const router = useRouter();
   const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
-  const { evmContract: exampleContractAddress } = useExampleAddresses();
+  const { user: exampleBechAddress } = useExampleAddresses();
   const { mutate, isLoading, isError } = useSubmitEvmVerify();
 
   useEffect(() => {
@@ -245,7 +245,7 @@ export const EvmContractVerifyBody = ({
                     <ControllerInput
                       label="Contract Address"
                       isRequired
-                      placeholder={`ex. ${truncate(exampleContractAddress)}`}
+                      placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
                       name="contractAddress"
                       control={control}
                       variant="fixed-floating"
