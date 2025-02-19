@@ -38,19 +38,24 @@ export const OverviewVerifiedCmds = ({
             color="secondary.main"
           />
         </Flex>
-        <Flex gap={4} width="full">
+        <Flex
+          gap={4}
+          width="full"
+          flexDirection={{
+            base: "column",
+            md: "row",
+          }}
+        >
           <EvmContractCmdGroup
             contractAddress={contractAddress}
             abiSections={abiRead}
             interactTab={InteractTabsIndex.Read}
           />
-          {!isMobile && (
-            <EvmContractCmdGroup
-              contractAddress={contractAddress}
-              abiSections={abiWrite}
-              interactTab={InteractTabsIndex.Write}
-            />
-          )}
+          <EvmContractCmdGroup
+            contractAddress={contractAddress}
+            abiSections={abiWrite}
+            interactTab={InteractTabsIndex.Write}
+          />
         </Flex>
       </VStack>
       {proxyTargetEvmVerifyInfo && (

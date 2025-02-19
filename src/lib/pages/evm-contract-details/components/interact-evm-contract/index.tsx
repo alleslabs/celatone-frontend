@@ -38,9 +38,10 @@ export const InteractEvmContract = ({
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
 
-  const interactType = selectedType.startsWith("read")
-    ? InteractType.Read
-    : InteractType.Write;
+  const interactType =
+    isMobile || selectedType.startsWith("read")
+      ? InteractType.Read
+      : InteractType.Write;
   const isAsProxy =
     !isUndefined(proxyTargetEvmVerifyInfo?.abi) &&
     selectedType.endsWith("proxy");
@@ -96,11 +97,6 @@ export const InteractEvmContract = ({
   useEffect(() => {
     setInitialSelectedFn(selectedFn);
   }, [selectedFn]);
-
-  useEffect(() => {
-    if (!isMobile) return;
-    handleSetInteractType(InteractType.Read);
-  }, [isMobile, handleSetInteractType]);
 
   return (
     <Box>
