@@ -47,7 +47,12 @@ export const useChainConfigs = (): {
         return layerOrderA - layerOrderB;
       }
 
-      return a.chain.localeCompare(b.chain);
+      const chainCompared = a.chain.localeCompare(b.chain);
+      if (chainCompared !== 0) {
+        return chainCompared;
+      }
+
+      return a.prettyName.localeCompare(b.prettyName);
     });
 
     return sortedApiChainConfigs.reduce(
