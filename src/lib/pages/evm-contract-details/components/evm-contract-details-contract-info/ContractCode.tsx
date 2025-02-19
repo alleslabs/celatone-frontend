@@ -1,9 +1,11 @@
 import {
   Badge,
+  Box,
   Button,
   Flex,
   Heading,
   Stack,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { JsonFragment } from "ethers";
@@ -29,6 +31,11 @@ export const ContractCode = ({
   libraries,
 }: ContractCodeProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const foundConstructorArgs = findAndDecodeEvmConstructorArgs(
+    abi,
+    constructorArguments
+  );
 
   return (
     <Stack gap={8}>
@@ -78,13 +85,15 @@ export const ContractCode = ({
         <Heading as="h6" variant="h7">
           Constructor Arguments
         </Heading>
-        <TextReadOnly
-          text={
-            findAndDecodeEvmConstructorArgs(abi, constructorArguments) ||
-            "No constructor arguments"
-          }
-          canCopy
-        />
+        {foundConstructorArgs ? (
+          <TextReadOnly text={foundConstructorArgs} canCopy />
+        ) : (
+          <Box>
+            <Text py={4} px={3} rounded={8} bg="gray.900" color="text.disabled">
+              No constructor arguments
+            </Text>
+          </Box>
+        )}
       </Stack>
     </Stack>
   );

@@ -78,7 +78,7 @@ export const AbiRead = ({
           amptrackSection="read-message-search"
         />
         <Button
-          variant="outline-gray"
+          variant="ghost-gray"
           rightIcon={
             <CustomIcon
               name={expandedIndexes.length ? "chevron-up" : "chevron-down"}

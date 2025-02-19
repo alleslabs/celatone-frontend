@@ -136,7 +136,7 @@ export const WriteBox = ({
   return (
     <AccordionItem className={`abi_write_${abiSection.name}`}>
       <h6>
-        <AccordionButton p={4}>
+        <AccordionButton p={4} justifyContent="space-between">
           <Text variant="body1" fontWeight={700}>
             {abiSection.name}
           </Text>

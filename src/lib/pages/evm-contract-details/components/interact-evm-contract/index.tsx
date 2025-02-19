@@ -1,8 +1,8 @@
-import { Box, Flex, Heading, Switch, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Stack, Switch, Text } from "@chakra-ui/react";
 import { JsonFragment } from "ethers";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { TypeSwitch } from "lib/components/TypeSwitch";
-import { HexAddr20, Option } from "lib/types";
+import { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
 import { isUndefined } from "lodash";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { InteractTabsIndex, TabIndex } from "../../types";
@@ -10,6 +10,7 @@ import { getInteractTabsIndex } from "../../utils";
 import { AbiRead } from "./abi-read";
 import { AbiWrite } from "./abi-write";
 import { categorizeAbi } from "./utils";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 
 export const EVM_CONTRACT_INTERACT_PATH_NAME =
   "/evm-contracts/[contractAddress]/[tab]";
@@ -24,7 +25,7 @@ interface InteractEvmContractProps {
   contractAbi: JsonFragment[];
   selectedType: InteractTabsIndex;
   selectedFn?: string;
-  proxyTargetAbi?: JsonFragment[];
+  proxyTargetEvmVerifyInfo: Option<EvmVerifyInfo>;
 }
 
 export const InteractEvmContract = ({
@@ -32,21 +33,23 @@ export const InteractEvmContract = ({
   contractAbi,
   selectedType,
   selectedFn,
-  proxyTargetAbi,
+  proxyTargetEvmVerifyInfo,
 }: InteractEvmContractProps) => {
+  const isMobile = useMobile();
   const navigate = useInternalNavigate();
 
   const interactType = selectedType.startsWith("read")
     ? InteractType.Read
     : InteractType.Write;
   const isAsProxy =
-    !isUndefined(proxyTargetAbi) && selectedType.endsWith("proxy");
+    !isUndefined(proxyTargetEvmVerifyInfo?.abi) &&
+    selectedType.endsWith("proxy");
 
   const [initialSelectedFn, setInitialSelectedFn] = useState<Option<string>>();
 
   const { read: abiRead, write: abiWrite } = categorizeAbi(contractAbi);
   const { read: abiReadProxy, write: abiWriteProxy } = categorizeAbi(
-    proxyTargetAbi ?? []
+    proxyTargetEvmVerifyInfo?.abi ?? []
   );
 
   // ------------------------------------------//
@@ -94,21 +97,41 @@ export const InteractEvmContract = ({
     setInitialSelectedFn(selectedFn);
   }, [selectedFn]);
 
+  useEffect(() => {
+    if (!isMobile) return;
+    handleSetInteractType(InteractType.Read);
+  }, [isMobile, handleSetInteractType]);
+
   return (
     <Box>
       <Flex gap={2} align="center" mb={8}>
         <Heading variant="h6">Contract Interactions</Heading>
-        <TypeSwitch
-          tabs={Object.values(InteractType)}
-          currentTab={interactType}
-          onTabChange={handleSetInteractType}
-        />
+        {!isMobile && (
+          <TypeSwitch
+            tabs={Object.values(InteractType)}
+            currentTab={interactType}
+            onTabChange={handleSetInteractType}
+          />
+        )}
       </Flex>
-      {!isUndefined(proxyTargetAbi) && (
-        <Flex gap={2} align="center" mb={8}>
-          <Switch isChecked={isAsProxy} onChange={handleSetIsAsProxy} />
-          <Text variant="body2">Read/Write as Proxy Contract</Text>
-        </Flex>
+      {!isUndefined(proxyTargetEvmVerifyInfo) && (
+        <Stack gap={1} mb={8}>
+          <Flex gap={2} align="center">
+            <Switch isChecked={isAsProxy} onChange={handleSetIsAsProxy} />
+            <Text variant="body2">Read/Write as Proxy Contract</Text>
+          </Flex>
+          <Flex gap={2}>
+            <Text variant="body2" color="text.dark">
+              Implementation Address:
+            </Text>
+            <ExplorerLink
+              type="evm_contract_address"
+              value={proxyTargetEvmVerifyInfo.address}
+              textFormat={isMobile ? "truncate" : "normal"}
+              showCopyOnHover
+            />
+          </Flex>
+        </Stack>
       )}
       <Box
         sx={{
@@ -124,7 +147,7 @@ export const InteractEvmContract = ({
                 ? "block"
                 : "none",
           },
-          ...(!isUndefined(proxyTargetAbi) && {
+          ...(!isUndefined(proxyTargetEvmVerifyInfo) && {
             "& .read-proxy": {
               display:
                 interactType === InteractType.Read && isAsProxy
@@ -154,7 +177,7 @@ export const InteractEvmContract = ({
             selectedFn={initialSelectedFn}
           />
         </div>
-        {!isUndefined(proxyTargetAbi) && (
+        {!isUndefined(proxyTargetEvmVerifyInfo) && (
           <>
             <div className="read-proxy">
               <AbiRead
