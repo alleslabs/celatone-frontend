@@ -35,15 +35,19 @@ export const useChainConfigs = (): {
     if (isFetching || isUndefined(apiChainConfigs)) return defaultConfigs;
 
     const sortedApiChainConfigs = apiChainConfigs.sort((a, b) => {
-      const networkOrder = a.network_type === "mainnet" ? 0 : 1;
+      const networkOrderA = a.network_type === "mainnet" ? 0 : 1;
       const networkOrderB = b.network_type === "mainnet" ? 0 : 1;
-      if (networkOrder !== networkOrderB) {
-        return networkOrder - networkOrderB;
+      if (networkOrderA !== networkOrderB) {
+        return networkOrderA - networkOrderB;
       }
 
-      const layerOrder = a.extra?.layer === "1" ? 0 : 1;
+      const layerOrderA = a.extra?.layer === "1" ? 0 : 1;
       const layerOrderB = b.extra?.layer === "1" ? 0 : 1;
-      return layerOrder - layerOrderB;
+      if (layerOrderA !== layerOrderB) {
+        return layerOrderA - layerOrderB;
+      }
+
+      return a.chain.localeCompare(b.chain);
     });
 
     return sortedApiChainConfigs.reduce(
@@ -61,7 +65,7 @@ export const useChainConfigs = (): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(apiChainConfigs), isFetching]);
 
-  const local = useMemo(
+  const custom = useMemo(
     () =>
       Object.values(localChainConfigs).reduce(
         (acc, each) => ({
@@ -79,7 +83,7 @@ export const useChainConfigs = (): {
     [JSON.stringify(localChainConfigs)]
   );
 
-  const dev = useMemo(
+  const local = useMemo(
     () =>
       SUPPORTED_NETWORK_TYPES.includes("local")
         ? devChainConfigs.reduce(
@@ -101,8 +105,8 @@ export const useChainConfigs = (): {
   return useMemo(() => {
     const chainConfigs = {
       ...api.chainConfigs,
+      ...custom.chainConfigs,
       ...local.chainConfigs,
-      ...dev.chainConfigs,
     };
 
     return {
@@ -110,20 +114,20 @@ export const useChainConfigs = (): {
       registryChains: unionBy(
         chainRegistry.chains,
         api.registryChains,
+        custom.registryChains,
         local.registryChains,
-        dev.registryChains,
         "chain_id"
       ),
       registryAssets: unionBy(
         chainRegistry.assets,
         api.registryAssets,
+        custom.registryAssets,
         local.registryAssets,
-        dev.registryAssets,
         "chain_name"
       ),
       supportedChainIds: [
         ...api.supportedChainIds,
-        ...dev.supportedChainIds,
+        ...custom.supportedChainIds,
         ...local.supportedChainIds,
       ],
       isChainIdExist: (chainId: string) => !!chainConfigs[chainId],
@@ -134,14 +138,14 @@ export const useChainConfigs = (): {
     api.registryChains,
     api.registryAssets,
     api.supportedChainIds,
+    custom.chainConfigs,
+    custom.registryChains,
+    custom.registryAssets,
+    custom.supportedChainIds,
     local.chainConfigs,
     local.registryChains,
     local.registryAssets,
     local.supportedChainIds,
-    dev.chainConfigs,
-    dev.registryChains,
-    dev.registryAssets,
-    dev.supportedChainIds,
     isFetching,
     isHydrated,
   ]);
