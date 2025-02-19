@@ -1,10 +1,4 @@
-import { useEvmConfig, useExampleAddresses, useMobile } from "lib/app-provider";
-import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
 import { track } from "@amplitude/analytics-browser";
-import { AmpEvent } from "lib/amplitude";
-import PageContainer from "lib/components/PageContainer";
-import { CelatoneSeo } from "lib/components/Seo";
 import {
   Divider,
   Grid,
@@ -14,39 +8,62 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { EvmContractVerifyTop } from "./components/EvmContractVerifyTop";
-import { ContractLicenseInfoAccordion } from "./components/ContractLicenseInfoAccordion";
-import { EvmContractFooter } from "./components/EvmContractVerifyFooter";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
+import { AmpEvent } from "lib/amplitude";
+import {
+  CELATONE_QUERY_KEYS,
+  useCelatoneApp,
+  useEvmConfig,
+  useExampleAddresses,
+  useMobile,
+} from "lib/app-provider";
 import { ControllerInput, SelectInput } from "lib/components/forms";
-import { useForm } from "react-hook-form";
+import { Loading } from "lib/components/Loading";
+import { NoMobile } from "lib/components/modal";
+import { EvmVerifyStatusModal } from "lib/components/modal/evm-verify-status";
+import PageContainer from "lib/components/PageContainer";
+import { CelatoneSeo } from "lib/components/Seo";
+import { ErrorFetching, InvalidState } from "lib/components/state";
 import {
   EvmContractVerifyForm,
-  VerifyOptions,
+  EvmProgrammingLanguage,
+  EvmVerifyConfig,
+  EvmVerifyOptions,
+  zEvmContractVerifyBase,
   zEvmContractVerifyForm,
-  zEvmContractVerifyQueryParams,
-} from "./types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { NoMobile } from "lib/components/modal";
-import { isHex20Bytes, truncate } from "lib/utils";
-import { EvmContractVerifyOptions } from "./components/EvmContractVerifyOptions";
+  zEvmContractVerifySolidityOptionContractCodeForm,
+  zEvmContractVerifySolidityOptionJsonInputForm,
+  zEvmContractVerifySolidityOptionUploadFilesForm,
+  zEvmContractVerifyVyperOptionContractCodeForm,
+  zEvmContractVerifyVyperOptionJsonInputForm,
+  zEvmContractVerifyVyperOptionUploadFileForm,
+} from "lib/types";
+import {
+  useEvmVerifyConfig,
+  useEvmVerifyInfo,
+  useSubmitEvmVerify,
+} from "lib/services/verification/evm";
+import { HexAddr20, Option } from "lib/types";
+import { bech32AddressToHex, isHex20Bytes, truncate } from "lib/utils";
+import { useRouter } from "next/router";
+import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { ContractLicenseInfoAccordion } from "./components/ContractLicenseInfoAccordion";
+import { EvmContractVerifyModal } from "./components/evm-contract-verify-modal";
+import { EvmContractFooter } from "./components/EvmContractVerifyFooter";
 import { EvmContractVerifyForms } from "./components/EvmContractVerifyForms";
+import { EvmContractVerifyOptions } from "./components/EvmContractVerifyOptions";
+import { EvmContractVerifyTop } from "./components/EvmContractVerifyTop";
+import { FoundryInfoAccordion } from "./components/FoundryInfoAccordion";
+import { HarthatInfoAccordion } from "./components/HardhatInfoAccordion";
 import {
   formatEvmOptions,
   getEvmContractVerifyFormDefaultValue,
   getLicenseTypeOptions,
   PROGRAMMING_LANGUAGE_OPTIONS,
 } from "./helpers";
-import { HarthatInfoAccordion } from "./components/HardhatInfoAccordion";
-import { FoundryInfoAccordion } from "./components/FoundryInfoAccordion";
-import { ErrorFetching, InvalidState } from "lib/components/state";
-import { HexAddr20, Option } from "lib/types";
-import {
-  useEvmVerifyConfig,
-  useEvmVerifyInfo,
-} from "lib/services/verification/evm";
-import { Loading } from "lib/components/Loading";
-import { EvmProgrammingLanguage, EvmVerifyConfig } from "lib/services/types";
-import { EvmVerifyStatusModal } from "lib/components/modal/evm-verify-status";
+import { zEvmContractVerifyQueryParams } from "./types";
 
 interface EvmContractVerifyBodyProps {
   contractAddress: Option<HexAddr20>;
@@ -60,7 +77,10 @@ export const EvmContractVerifyBody = ({
   useEvmConfig({ shouldRedirect: true });
   const isMobile = useMobile();
   const router = useRouter();
-  const { evmContract: exampleContractAddress } = useExampleAddresses();
+  const queryClient = useQueryClient();
+  const { currentChainId } = useCelatoneApp();
+  const { user: exampleBechAddress } = useExampleAddresses();
+  const { mutate, isLoading, isError } = useSubmitEvmVerify();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_EVM_CONTRACT_VERIFY);
@@ -80,8 +100,14 @@ export const EvmContractVerifyBody = ({
       contractAddressQueryParam
     ),
   });
-  const { licenseType, contractAddress, language, compilerVersion, option } =
-    watch();
+  const {
+    licenseType,
+    contractAddress,
+    language,
+    compilerVersion,
+    option,
+    verifyForm,
+  } = watch();
 
   const { licenseTypeOptions, compilerVersionOptions } = useMemo(
     () => ({
@@ -96,20 +122,97 @@ export const EvmContractVerifyBody = ({
 
   const { data: evmVerifyInfo } = useEvmVerifyInfo(contractAddress);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const isVerifyByExternals =
+    option === EvmVerifyOptions.SolidityFoundry ||
+    option === EvmVerifyOptions.SolidityHardhat;
 
-  const handleSubmit = () => {
-    if (
-      option === VerifyOptions.SolidityHardhat ||
-      option === VerifyOptions.SolidityFoundry
-    ) {
-      onOpen();
-    } else {
-      alert("Submit!");
+  // TODO
+  const isFormDisabled = () => {
+    const isEvmContractVerifyBaseSuccess =
+      zEvmContractVerifyBase.safeParse({
+        contractAddress,
+        licenseType,
+        language,
+        compilerVersion,
+        option,
+      }).success &&
+      language !== undefined &&
+      option !== undefined;
+
+    let isEvmOptionSuccess = false;
+    if (isVerifyByExternals) isEvmOptionSuccess = true;
+    else {
+      isEvmOptionSuccess = licenseType !== undefined && compilerVersion !== "";
+      if (option === EvmVerifyOptions.SolidityUploadFiles)
+        isEvmOptionSuccess =
+          isEvmOptionSuccess &&
+          zEvmContractVerifySolidityOptionUploadFilesForm.safeParse(
+            verifyForm.solidityUploadFiles
+          ).success;
+      if (option === EvmVerifyOptions.SolidityContractCode)
+        isEvmOptionSuccess =
+          isEvmOptionSuccess &&
+          zEvmContractVerifySolidityOptionContractCodeForm.safeParse(
+            verifyForm.solidityContractCode
+          ).success;
+      if (option === EvmVerifyOptions.SolidityJsonInput)
+        isEvmOptionSuccess =
+          isEvmOptionSuccess &&
+          zEvmContractVerifySolidityOptionJsonInputForm.safeParse(
+            verifyForm.solidityJsonInput
+          ).success;
+      if (option === EvmVerifyOptions.VyperUploadFile)
+        isEvmOptionSuccess =
+          isEvmOptionSuccess &&
+          zEvmContractVerifyVyperOptionUploadFileForm.safeParse(
+            verifyForm.vyperUploadFile
+          ).success;
+      if (option === EvmVerifyOptions.VyperContractCode)
+        isEvmOptionSuccess =
+          isEvmOptionSuccess &&
+          zEvmContractVerifyVyperOptionContractCodeForm.safeParse(
+            verifyForm.vyperContractCode
+          ).success;
+      if (option === EvmVerifyOptions.VyperJsonInput)
+        isEvmOptionSuccess =
+          isEvmOptionSuccess &&
+          zEvmContractVerifyVyperOptionJsonInputForm.safeParse(
+            verifyForm.vyperJsonInput
+          ).success;
     }
+
+    return !isEvmContractVerifyBaseSuccess || !isEvmOptionSuccess;
   };
 
-  const isFormDisabled = () => {
-    return false;
+  const handleSubmit = () => {
+    // open modal for either verification status or verification result
+    onOpen();
+
+    // if verify by tools, don't need to submit verification
+    if (isVerifyByExternals) return;
+
+    if (!option || !language || !licenseType) return;
+    mutate(
+      {
+        option,
+        verifyForm,
+        contractAddress,
+        compilerVersion,
+        licenseType,
+        chainId: currentChainId,
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              CELATONE_QUERY_KEYS.EVM_VERIFY_INFO,
+              currentChainId,
+              contractAddress,
+            ],
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -125,7 +228,7 @@ export const EvmContractVerifyBody = ({
               templateColumns="6fr 4fr"
               columnGap="32px"
               rowGap="48px"
-              maxW="1440px"
+              maxW="1080px"
               mx="auto"
             >
               <GridItem colSpan={1}>
@@ -142,7 +245,7 @@ export const EvmContractVerifyBody = ({
                     <ControllerInput
                       label="Contract Address"
                       isRequired
-                      placeholder={`ex. ${truncate(exampleContractAddress)}`}
+                      placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
                       name="contractAddress"
                       control={control}
                       variant="fixed-floating"
@@ -203,8 +306,8 @@ export const EvmContractVerifyBody = ({
                           "option",
                           selectedOption.value ===
                             EvmProgrammingLanguage.Solidity
-                            ? VerifyOptions.SolidityUploadFiles
-                            : VerifyOptions.VyperUploadFile
+                            ? EvmVerifyOptions.SolidityUploadFiles
+                            : EvmVerifyOptions.VyperUploadFile
                         );
                       }}
                       value={PROGRAMMING_LANGUAGE_OPTIONS.find(
@@ -246,10 +349,10 @@ export const EvmContractVerifyBody = ({
                       />
                     </Stack>
                     <GridItem maxHeight={0}>
-                      {option === VerifyOptions.SolidityHardhat && (
+                      {option === EvmVerifyOptions.SolidityHardhat && (
                         <HarthatInfoAccordion />
                       )}
-                      {option === VerifyOptions.SolidityFoundry && (
+                      {option === EvmVerifyOptions.SolidityFoundry && (
                         <FoundryInfoAccordion />
                       )}
                     </GridItem>
@@ -260,8 +363,8 @@ export const EvmContractVerifyBody = ({
           </PageContainer>
           <EvmContractFooter
             actionLabel={
-              option === VerifyOptions.SolidityHardhat ||
-              option === VerifyOptions.SolidityFoundry
+              option === EvmVerifyOptions.SolidityHardhat ||
+              option === EvmVerifyOptions.SolidityFoundry
                 ? "View Verification Status"
                 : "Verify & Publish Contract"
             }
@@ -269,12 +372,22 @@ export const EvmContractVerifyBody = ({
             handlePrevious={router.back}
             isDisabled={isFormDisabled()}
           />
-          <EvmVerifyStatusModal
-            contractAddress={contractAddress}
-            evmVerifyInfo={evmVerifyInfo}
-            isOpen={isOpen}
-            onClose={onClose}
-          />
+          {isVerifyByExternals ? (
+            <EvmVerifyStatusModal
+              contractAddress={contractAddress}
+              evmVerifyInfo={evmVerifyInfo}
+              isOpen={isOpen}
+              onClose={onClose}
+            />
+          ) : (
+            <EvmContractVerifyModal
+              isOpen={isOpen}
+              onClose={onClose}
+              isError={isError}
+              isLoading={isLoading}
+              control={control}
+            />
+          )}
         </>
       )}
     </>

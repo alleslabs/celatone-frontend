@@ -99,7 +99,7 @@ export const convertCosmosChainIdToEvmChainId = (chainId: string) => {
 
   const hash = keccak256(Buffer.from(chainId));
   const rawEvmChainId = Buffer.from(hash).readBigUInt64BE();
-  return big(rawEvmChainId.toString()).mod(METAMASK_MAX).toFixed();
+  return big(rawEvmChainId.toString()).mod(METAMASK_MAX).toNumber();
 };
 
 export const encodeEvmFunctionData = (
@@ -136,7 +136,7 @@ export const findAndDecodeEvmConstructorArgs = (
     const foundTypeConstructor = abi.find(
       (item) => item.type === "constructor"
     );
-    if (!foundTypeConstructor || !foundTypeConstructor.inputs)
+    if (!foundTypeConstructor || !foundTypeConstructor.inputs?.length)
       throw new Error("No constructor found (findAndDecodeEvmConstructorArgs)");
 
     const iface = new Interface([foundTypeConstructor]);

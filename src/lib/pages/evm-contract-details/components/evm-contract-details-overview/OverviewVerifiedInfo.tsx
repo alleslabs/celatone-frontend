@@ -1,8 +1,9 @@
 import { Grid, Heading, VStack } from "@chakra-ui/react";
 import { LabelText } from "lib/components/LabelText";
-import { EvmVerifyInfo } from "lib/services/types";
+import { EvmVerifyInfo } from "lib/types";
 import { getLicenseTypeLabel } from "lib/utils";
 import { capitalize } from "lodash";
+import { Optimizer } from "./Optimizer";
 
 interface OverviewVerifiedInfoProps {
   evmVerifyInfo: EvmVerifyInfo;
@@ -30,11 +31,7 @@ export const OverviewVerifiedInfo = ({
       <LabelText label="EVM Version">
         {capitalize(evmVerifyInfo.evmVersion)}
       </LabelText>
-      <LabelText label="Optimization Enabled">
-        {evmVerifyInfo.optimizer.enabled
-          ? `Yes with ${evmVerifyInfo.optimizer.runs} runs`
-          : "No"}
-      </LabelText>
+      <Optimizer evmVerifyInfo={evmVerifyInfo} />
       <LabelText label="License Type">
         {getLicenseTypeLabel(evmVerifyInfo.license)}
       </LabelText>

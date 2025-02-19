@@ -62,10 +62,13 @@ export const EvmTxInfoMobile = ({
             fixedHeight={false}
           />
         </LabelText>
-        <LabelText flex={1} label="Amount">
-          <TokenImageWithAmount token={evmTxValue} hasTrailingZeros={false} />
+        <LabelText flex={1} label="Nonce">
+          {evmTxData.tx.nonce.toFixed(0)}
         </LabelText>
       </Flex>
+      <LabelText flex={1} label="Amount">
+        <TokenImageWithAmount token={evmTxValue} hasTrailingZeros={false} />
+      </LabelText>
       <EvmTxGasReceipt gasInfo={gasInfo} />
     </Container>
   );

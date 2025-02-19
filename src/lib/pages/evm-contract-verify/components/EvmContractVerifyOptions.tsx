@@ -1,7 +1,10 @@
 import { Grid, Heading, Radio, RadioGroup, Stack } from "@chakra-ui/react";
 import { Control, useController, useWatch } from "react-hook-form";
-import { EvmContractVerifyForm, VerifyOptions } from "../types";
-import { EvmProgrammingLanguage } from "lib/services/types";
+import {
+  EvmContractVerifyForm,
+  EvmProgrammingLanguage,
+  EvmVerifyOptions,
+} from "lib/types";
 
 interface EvmContractVerifyVyperProps {
   control: Control<EvmContractVerifyForm>;
@@ -12,7 +15,7 @@ const EvmContractVerifyOptionsVyper = () => (
     <Radio
       variant="gray-card"
       width="fit-content"
-      value={VerifyOptions.VyperUploadFile}
+      value={EvmVerifyOptions.VyperUploadFile}
       overflow="hidden"
       w="full"
     >
@@ -21,7 +24,7 @@ const EvmContractVerifyOptionsVyper = () => (
     <Radio
       variant="gray-card"
       width="fit-content"
-      value={VerifyOptions.VyperContractCode}
+      value={EvmVerifyOptions.VyperContractCode}
       overflow="hidden"
       w="full"
     >
@@ -30,7 +33,7 @@ const EvmContractVerifyOptionsVyper = () => (
     <Radio
       variant="gray-card"
       width="fit-content"
-      value={VerifyOptions.VyperJsonInput}
+      value={EvmVerifyOptions.VyperJsonInput}
       overflow="hidden"
       w="full"
     >
@@ -44,7 +47,7 @@ const EvmContractVerifyOptionsSolidity = () => (
     <Radio
       variant="gray-card"
       width="fit-content"
-      value={VerifyOptions.SolidityUploadFiles}
+      value={EvmVerifyOptions.SolidityUploadFiles}
       overflow="hidden"
       w="full"
     >
@@ -53,7 +56,7 @@ const EvmContractVerifyOptionsSolidity = () => (
     <Radio
       variant="gray-card"
       width="fit-content"
-      value={VerifyOptions.SolidityContractCode}
+      value={EvmVerifyOptions.SolidityContractCode}
       overflow="hidden"
       w="full"
     >
@@ -62,7 +65,7 @@ const EvmContractVerifyOptionsSolidity = () => (
     <Radio
       variant="gray-card"
       width="fit-content"
-      value={VerifyOptions.SolidityJsonInput}
+      value={EvmVerifyOptions.SolidityJsonInput}
       overflow="hidden"
       w="full"
     >
@@ -71,7 +74,7 @@ const EvmContractVerifyOptionsSolidity = () => (
     <Radio
       variant="gray-card"
       width="fit-content"
-      value={VerifyOptions.SolidityHardhat}
+      value={EvmVerifyOptions.SolidityHardhat}
       overflow="hidden"
       w="full"
     >
@@ -80,7 +83,7 @@ const EvmContractVerifyOptionsSolidity = () => (
     <Radio
       variant="gray-card"
       width="fit-content"
-      value={VerifyOptions.SolidityFoundry}
+      value={EvmVerifyOptions.SolidityFoundry}
       overflow="hidden"
       w="full"
     >

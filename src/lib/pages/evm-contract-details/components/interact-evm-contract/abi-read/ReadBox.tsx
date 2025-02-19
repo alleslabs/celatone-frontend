@@ -109,7 +109,7 @@ export const ReadBox = ({
   return (
     <AccordionItem className={`abi_read_${abiSection.name}`}>
       <h6>
-        <AccordionButton p={4}>
+        <AccordionButton p={4} justifyContent="space-between">
           <Text variant="body1" fontWeight={700}>
             {abiSection.name}
           </Text>
@@ -117,7 +117,13 @@ export const ReadBox = ({
         </AccordionButton>
       </h6>
       <AccordionPanel mx={2}>
-        <Grid templateColumns={inputRequired ? "1fr 1fr" : "1fr"} columnGap={6}>
+        <Grid
+          templateColumns={{
+            md: inputRequired ? "1fr 1fr" : "1fr",
+            base: "1fr",
+          }}
+          gap={6}
+        >
           {inputRequired && (
             <GridItem>
               <Text variant="body2" color="text.dark" fontWeight={700} mb={3}>
@@ -128,13 +134,22 @@ export const ReadBox = ({
                 isPayable={abiSection.stateMutability === "payable"}
                 propsOnChangeInputs={setInputs}
               />
-              <Flex gap={2} justify="flex-start" mt={3}>
+              <Flex
+                flexDirection={{
+                  md: "row",
+                  base: "column",
+                }}
+                justifyContent="space-between"
+                gap={2}
+                mt={6}
+              >
                 <CopyButton
                   variant="outline-secondary"
                   isDisable={isUndefined(data)}
                   value={data ?? ""}
                   amptrackSection="read_inputs"
                   buttonText="Copy Encoded Inputs"
+                  w="100%"
                 />
                 <EvmCodeSnippet />
                 <Button
@@ -144,7 +159,6 @@ export const ReadBox = ({
                   isDisabled={isUndefined(data)}
                   isLoading={isFetching}
                   leftIcon={<CustomIcon name="query" />}
-                  ml="auto"
                 >
                   Read
                 </Button>
@@ -171,22 +185,48 @@ export const ReadBox = ({
               <TimestampText timestamp={timestamp} />
             </Flex>
             {!inputRequired ? (
-              <Flex gap={2} justify="flex-start" mt={3}>
-                <CopyButton
-                  variant="outline-secondary"
-                  isDisable={isUndefined(data)}
-                  value={data ?? ""}
-                  amptrackSection="read_inputs"
-                  buttonText="Copy Encoded Inputs"
-                />
-                <EvmCodeSnippet />
-                <Flex gap={2} ml="auto">
+              <Flex
+                flexDirection={{
+                  md: "row",
+                  base: "column",
+                }}
+                gap={2}
+                mt={3}
+                justifyContent="space-between"
+              >
+                <Grid gridTemplateColumns="1fr 1fr" gap={2}>
+                  <CopyButton
+                    variant="outline-secondary"
+                    isDisable={isUndefined(data)}
+                    value={data ?? ""}
+                    amptrackSection="read_inputs"
+                    buttonText="Copy Encoded Inputs"
+                    w="100%"
+                  />
                   <CopyButton
                     variant="outline-secondary"
                     isDisable={res === "" || Boolean(queryError)}
                     value={res}
                     amptrackSection="read_outputs"
                     buttonText="Copy Encoded Outputs"
+                    display={{ md: "none", base: "block" }}
+                    w="100%"
+                  />
+                </Grid>
+                <EvmCodeSnippet />
+                <Flex
+                  gap={{
+                    md: 2,
+                    base: 0,
+                  }}
+                >
+                  <CopyButton
+                    variant="outline-secondary"
+                    isDisable={res === "" || Boolean(queryError)}
+                    value={res}
+                    amptrackSection="read_outputs"
+                    buttonText="Copy Encoded Outputs"
+                    display={{ base: "none", md: "block" }}
                   />
                   <Button
                     variant="primary"
@@ -198,20 +238,33 @@ export const ReadBox = ({
                     isDisabled={isUndefined(data)}
                     isLoading={isFetching}
                     leftIcon={<CustomIcon name="query" />}
-                    ml="auto"
+                    w="100%"
                   >
                     Read Again
                   </Button>
                 </Flex>
               </Flex>
             ) : (
-              <CopyButton
-                variant="outline-secondary"
-                isDisable={res === "" || Boolean(queryError)}
-                value={res}
-                amptrackSection="read_outputs"
-                buttonText="Copy Encoded Outputs"
-              />
+              <Flex
+                flexDirection={{
+                  md: "row",
+                  base: "column",
+                }}
+                justifyContent="flex-end"
+                mt={{
+                  md: 0,
+                  base: 3,
+                }}
+              >
+                <CopyButton
+                  variant="outline-secondary"
+                  isDisable={res === "" || Boolean(queryError)}
+                  value={res}
+                  amptrackSection="read_outputs"
+                  buttonText="Copy Encoded Outputs"
+                  w="100%"
+                />
+              </Flex>
             )}
           </GridItem>
         </Grid>

@@ -15,7 +15,7 @@ import type { ReactNode } from "react";
 
 import { CustomIcon } from "../../icon";
 import type { HexAddr20, Option } from "lib/types";
-import { EvmVerifyInfo } from "lib/services/types";
+import { EvmVerifyInfo } from "lib/types";
 import { EvmVerifyRequestInfo } from "./EvmVerifyRequestInfo";
 import { EvmVerifyAlert } from "./EvmVerifyAlert";
 import { EvmVerifyProcess } from "./EvmVerifyProcess";

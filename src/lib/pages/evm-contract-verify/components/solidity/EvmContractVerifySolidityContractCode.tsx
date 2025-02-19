@@ -1,12 +1,11 @@
 import { Control, useController } from "react-hook-form";
-import { EvmContractVerifyForm } from "../../types";
 import { Heading, Stack } from "@chakra-ui/react";
 import { ControllerTextarea } from "lib/components/forms";
 import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
 import { OptimizerConfiguration } from "../OptimizerConfiguration";
 import { ContractLibraries } from "../ContractLibraries";
-import { EvmVerifyConfig } from "lib/services/types";
+import { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
 
 interface EvmContractVerifySolidityContractCodeProps {
   control: Control<EvmContractVerifyForm>;
@@ -43,20 +42,20 @@ export const EvmContractVerifySolidityContractCode = ({
       </Stack>
       <ConstructorArgs<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityContractCode"
+        name="verifyForm.solidityContractCode.constructorArgs"
       />
       <EvmVersionToTarget<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityContractCode"
+        name="verifyForm.solidityContractCode.evmVersion"
         evmVerifyConfig={evmVerifyConfig}
       />
       <OptimizerConfiguration<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityContractCode"
+        name="verifyForm.solidityContractCode.optimizerConfig"
       />
       <ContractLibraries<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityContractCode"
+        name="verifyForm.solidityContractCode.contractLibraries"
       />
     </Stack>
   );

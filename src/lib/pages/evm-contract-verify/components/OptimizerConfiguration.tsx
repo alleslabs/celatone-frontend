@@ -19,12 +19,12 @@ export const OptimizerConfiguration = <T extends FieldValues>({
 }: OptimizerConfigurationProps<T>) => {
   const { field } = useController({
     control,
-    name: `${name}.optimizerConfig` as FieldPath<T>,
+    name,
   });
 
-  const { enabled } = useWatch({
+  const { enabled, runs } = useWatch({
     control,
-    name: `${name}.optimizerConfig` as FieldPath<T>,
+    name,
   });
 
   return (
@@ -51,10 +51,17 @@ export const OptimizerConfiguration = <T extends FieldValues>({
           <ControllerInput
             width={125}
             type="number"
-            name={`${name}.optimizerConfig.runs` as FieldPath<T>}
+            name={`${name}.runs` as FieldPath<T>}
             isDisabled={!enabled}
             control={control}
             size="md"
+            status={
+              enabled && runs === ""
+                ? {
+                    state: "error",
+                  }
+                : undefined
+            }
           />
         </Flex>
       </Flex>

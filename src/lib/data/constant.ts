@@ -6,7 +6,7 @@ import type {
   TxFilters,
   WasmTxFilters,
 } from "lib/types";
-import { MsgType } from "lib/types";
+import { MsgType } from "lib/types/tx/msg";
 // TODO: Revisit utils import later
 import { formatSlugName } from "lib/utils/format";
 

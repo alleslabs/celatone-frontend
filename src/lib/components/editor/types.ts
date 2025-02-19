@@ -1,4 +1,6 @@
-export const EXTENSION_LIB = ["sol"];
+import { Option } from "lib/types";
+
+export const EXTENSION_LIB = ["sol", "vy"];
 
 export interface FilePath {
   path: string;
@@ -12,4 +14,5 @@ export interface SourceTreeNode extends FilePath {
   isLib: boolean;
   treeLevel: number;
   children: SourceTreeNode[];
+  language: Option<string>;
 }

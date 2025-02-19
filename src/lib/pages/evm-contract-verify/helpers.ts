@@ -1,6 +1,9 @@
 import { HexAddr20, Option, zHexAddr20 } from "lib/types";
-import { EvmContractVerifyForm } from "./types";
-import { EvmProgrammingLanguage, EvmVerifyConfig } from "lib/services/types";
+import {
+  EvmContractVerifyForm,
+  EvmProgrammingLanguage,
+  EvmVerifyConfig,
+} from "lib/types";
 import { getLicenseTypeLabel } from "lib/utils";
 
 const CONSTRUCTOR_ARGS_DEFAULT_VALUE = {
@@ -10,7 +13,7 @@ const CONSTRUCTOR_ARGS_DEFAULT_VALUE = {
 
 const OPTIMIZER_CONFIG_DEFAULT_VALUE = {
   enabled: false,
-  runs: 200,
+  runs: "200",
 };
 
 const EVM_VERSION_DEFAULT_VALUE = "default";
@@ -30,7 +33,7 @@ export const getEvmContractVerifyFormDefaultValue = (
 ): EvmContractVerifyForm => ({
   contractAddress: contractAddressQueryParam ?? zHexAddr20.parse(""),
   compilerVersion: "",
-  licenseType: "",
+  licenseType: undefined,
   language: undefined,
   option: undefined,
   verifyForm: {

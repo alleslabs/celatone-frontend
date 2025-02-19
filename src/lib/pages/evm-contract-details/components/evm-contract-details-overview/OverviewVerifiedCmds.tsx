@@ -1,6 +1,6 @@
-import { Flex, Heading, HStack, Text, VStack } from "@chakra-ui/react";
+import { Flex, Heading, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
-import { EvmVerifyInfo } from "lib/services/types";
+import { EvmVerifyInfo } from "lib/types";
 import { HexAddr20, Option } from "lib/types";
 import { EvmContractCmdGroup } from "./EvmContractCmdGroup";
 import { InteractTabsIndex } from "../../types";
@@ -28,7 +28,7 @@ export const OverviewVerifiedCmds = ({
   return (
     <>
       <VStack spacing={4} alignItems="flex-start">
-        <Flex gap={2} alignItems="center">
+        <Flex gap={1} alignItems="center">
           <Heading as="h6" variant="h6">
             Verified command shortcuts
           </Heading>
@@ -55,20 +55,22 @@ export const OverviewVerifiedCmds = ({
       </VStack>
       {proxyTargetEvmVerifyInfo && (
         <VStack spacing={4} alignItems="flex-start">
-          <Heading as="h6" variant="h6">
-            Proxy target contract
-          </Heading>
-          <HStack spacing={2} alignItems="center">
-            <Text variant="body2" color="text.dark">
-              Implementation Address:
-            </Text>
-            <ExplorerLink
-              type="evm_contract_address"
-              value={proxyTargetEvmVerifyInfo.address}
-              textFormat={isMobile ? "truncate" : "normal"}
-              showCopyOnHover
-            />
-          </HStack>
+          <Stack spacing={1}>
+            <Heading as="h6" variant="h6">
+              Proxy target contract
+            </Heading>
+            <HStack spacing={2} alignItems="center">
+              <Text variant="body2" color="text.dark">
+                Implementation Address:
+              </Text>
+              <ExplorerLink
+                type="evm_contract_address"
+                value={proxyTargetEvmVerifyInfo.address}
+                textFormat={isMobile ? "truncate" : "normal"}
+                showCopyOnHover
+              />
+            </HStack>
+          </Stack>
           <Flex gap={4} width="full">
             <EvmContractCmdGroup
               contractAddress={contractAddress}

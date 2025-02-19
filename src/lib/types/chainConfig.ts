@@ -15,7 +15,7 @@ export const zNumberInput = z.preprocess(
   })
 );
 
-const zWasmConfig = z.union([
+export const zWasmConfig = z.union([
   z.object({
     enabled: z.literal(true),
     storeCodeMaxFileSize: z.number(),
@@ -26,7 +26,7 @@ const zWasmConfig = z.union([
   }),
 ]);
 
-const zMoveConfig = z.union([
+export const zMoveConfig = z.union([
   z.object({
     enabled: z.literal(true),
     moduleMaxFileSize: z.number(),
@@ -36,7 +36,7 @@ const zMoveConfig = z.union([
   }),
 ]);
 
-const zEvmConfig = z.union([
+export const zEvmConfig = z.union([
   z.object({
     enabled: z.literal(true),
     jsonRpc: zHttpsUrl,

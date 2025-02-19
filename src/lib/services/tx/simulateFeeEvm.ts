@@ -36,7 +36,7 @@ export const useSimulateFeeEvmQuery = ({
       features: { evm },
     },
   } = useCelatoneApp();
-  const { address } = useCurrentChain();
+  const { walletProvider, address } = useCurrentChain();
 
   return useQuery({
     queryKey: [
@@ -52,6 +52,11 @@ export const useSimulateFeeEvmQuery = ({
         throw new Error("EVM is not enabled (useSimulateFeeEvmQuery)");
       if (!address)
         throw new Error("No address provided (useSimulateFeeEvmQuery)");
+      if (
+        walletProvider.type !== "initia-widget" ||
+        walletProvider.context.wallet?.type !== "evm"
+      )
+        throw new Error("Please reconnect to EVM wallet");
 
       return getSimulateFeeEvm(evm.jsonRpc, {
         from: bech32AddressToHex(address),

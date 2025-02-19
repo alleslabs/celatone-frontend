@@ -107,7 +107,10 @@ export const FullEditor = ({
           filesList={filesList}
           initialFilePath={initialFilePath}
         />
-        <Editor language="sol" value={selectedFile?.code ?? ""} />
+        <Editor
+          language={selectedFile?.language}
+          value={selectedFile?.code ?? ""}
+        />
       </Box>
     </Grid>
   );

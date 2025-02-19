@@ -1,18 +1,15 @@
 import { Button, Checkbox, Grid, Heading, Stack, Text } from "@chakra-ui/react";
-import { useExampleAddresses } from "lib/app-provider";
-import { ControllerInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
-import { truncate } from "lib/utils";
 import {
-  ArrayPath,
   Control,
   FieldArray,
+  FieldArrayPath,
   FieldPath,
   FieldValues,
   useController,
   useFieldArray,
-  useWatch,
 } from "react-hook-form";
+import { ContractLibrary } from "./ContractLibrary";
 
 interface ContractLibrariesProps<T extends FieldValues> {
   control: Control<T>;
@@ -23,21 +20,14 @@ export const ContractLibraries = <T extends FieldValues>({
   control,
   name,
 }: ContractLibrariesProps<T>) => {
-  const { evmContract: exampleContractAddress } = useExampleAddresses();
-
   const { field } = useController({
     control,
-    name: `${name}.contractLibraries` as FieldPath<T>,
-  });
-
-  const contractLibraries = useWatch({
-    control,
-    name: `${name}.contractLibraries` as FieldPath<T>,
+    name: `${name}.enabled` as FieldPath<T>,
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `${name}.contractLibraries.value` as ArrayPath<T>,
+    name: `${name}.value` as FieldArrayPath<T>,
   });
 
   return (
@@ -53,10 +43,8 @@ export const ContractLibraries = <T extends FieldValues>({
       </Stack>
       <Checkbox
         p={2}
-        isChecked={contractLibraries.enabled}
-        onChange={(e) =>
-          field.onChange({ ...field.value, enabled: e.target.checked })
-        }
+        isChecked={field.value}
+        onChange={(e) => field.onChange(e.target.checked)}
       >
         <Text>Have contract libraries</Text>
       </Checkbox>
@@ -66,31 +54,13 @@ export const ContractLibraries = <T extends FieldValues>({
         px={3}
         bgColor="gray.900"
         borderRadius="md"
-        display={contractLibraries.enabled ? "flex" : "none"}
+        display={field.value ? "flex" : "none"}
       >
-        {fields.map((item, index) => (
-          <Grid key={item.id} gridTemplateColumns="1fr 2fr auto" gap={4}>
-            <ControllerInput
-              label="Library Name"
-              isRequired
-              rules={{
-                required: "",
-              }}
-              placeholder="ex. simple_math"
-              name={`${item}.name` as FieldPath<T>}
+        {fields.map(({ id }, index) => (
+          <Grid key={id} gridTemplateColumns="1fr 2fr auto" gap={4}>
+            <ContractLibrary<T>
               control={control}
-              variant="fixed-floating"
-            />
-            <ControllerInput
-              label="Contract Library Address"
-              isRequired
-              rules={{
-                required: "",
-              }}
-              placeholder={`ex. ${truncate(exampleContractAddress)}`}
-              name={`${item}.address` as FieldPath<T>}
-              control={control}
-              variant="fixed-floating"
+              name={`${name}.value.${index}` as FieldPath<T>}
             />
             <Button
               variant="outline-gray"
@@ -104,9 +74,7 @@ export const ContractLibraries = <T extends FieldValues>({
           </Grid>
         ))}
         <Button
-          onClick={() =>
-            append({ name: "", address: "" } as FieldArray<T, ArrayPath<T>>)
-          }
+          onClick={() => append({ name: "", address: "" } as FieldArray<T>)}
           variant="ghost-primary"
           p="unset"
           size="md"

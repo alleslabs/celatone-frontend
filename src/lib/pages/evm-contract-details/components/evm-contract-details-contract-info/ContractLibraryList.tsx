@@ -1,16 +1,18 @@
-import { EvmVerifyInfoLibraries } from "lib/services/types";
+import { EvmVerifyInfoLibraries } from "lib/types";
 import { Box, Divider, Grid, GridItem, Text } from "@chakra-ui/react";
 import { Fragment } from "react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useMobile } from "lib/app-provider";
 
-interface ContractLibraryProps {
+interface ContractLibraryListProps {
   libraries: EvmVerifyInfoLibraries;
 }
 
 const templateColumns = "20px minmax(100px, 120px) auto";
 
-export const ContractLibrary = ({ libraries }: ContractLibraryProps) => {
+export const ContractLibraryList = ({
+  libraries,
+}: ContractLibraryListProps) => {
   const isMobile = useMobile();
 
   return (

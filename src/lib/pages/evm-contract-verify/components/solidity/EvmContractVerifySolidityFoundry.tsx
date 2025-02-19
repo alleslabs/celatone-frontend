@@ -4,8 +4,8 @@ import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { useMemo } from "react";
 
 import { Control, useWatch } from "react-hook-form";
-import { EvmContractVerifyForm } from "../../types";
 import { CELATONE_VERIFICATION_API } from "env";
+import { EvmContractVerifyForm } from "lib/types";
 
 interface EvmContractVerifySolidityFoundryProps {
   control: Control<EvmContractVerifyForm>;

@@ -21,6 +21,10 @@ export const TypeSwitch = <T extends string>({
   const onTabChange = useCallback(
     (tab: T) => {
       onTabChangeProps(tab);
+      const content = document.getElementById("content");
+      if (content) {
+        content.scrollTo({ top: 0 });
+      }
     },
     [onTabChangeProps]
   );

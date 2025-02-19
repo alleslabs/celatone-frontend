@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
-import { EvmVerifyInfo } from "lib/services/types";
+import { EvmVerifyInfo } from "lib/types";
 import { getProcessSteps } from "./utils";
 import { formatUTC } from "lib/utils";
 import { EvmVerifyProcessStepIcon } from "./EvmVerifyProcessStepIcon";
@@ -40,11 +40,6 @@ export const EvmVerifyProcess = ({ evmVerifyInfo }: EvmVerifyProcessProps) => {
                 {isMobile && step.timestamp && (
                   <Text color="gray.500" variant="body2">
                     {formatUTC(step.timestamp)}
-                  </Text>
-                )}
-                {step.errorMsg && (
-                  <Text variant="body3" color="error.main">
-                    {step.errorMsg}
                   </Text>
                 )}
                 <Box height={4} />

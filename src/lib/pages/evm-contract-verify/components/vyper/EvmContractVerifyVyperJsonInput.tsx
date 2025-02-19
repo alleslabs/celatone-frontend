@@ -1,9 +1,9 @@
 import { Control, useController } from "react-hook-form";
-import { EvmContractVerifyForm } from "../../types";
 import { Heading, Stack } from "@chakra-ui/react";
 import { UploadCard } from "lib/components/upload";
 import { DropZone } from "lib/components/dropzone";
 import { ConstructorArgs } from "../ConstructorArgs";
+import { EvmContractVerifyForm } from "lib/types";
 
 interface EvmContractVerifyVyperJsonInputProps {
   control: Control<EvmContractVerifyForm>;
@@ -35,7 +35,7 @@ export const EvmContractVerifyVyperJsonInput = ({
         )}
       </Stack>
       <ConstructorArgs<EvmContractVerifyForm>
-        name="verifyForm.vyperJsonInput"
+        name="verifyForm.vyperJsonInput.constructorArgs"
         control={control}
       />
     </Stack>
