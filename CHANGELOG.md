@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1222](https://github.com/alleslabs/celatone-frontend/pull/1222) Update Scan required environment variable
 - [#1232](https://github.com/alleslabs/celatone-frontend/pull/1232) Support EVM verification with multiparts and standard JSON input for both Solidity and Vyper
 - [#1233](https://github.com/alleslabs/celatone-frontend/pull/1233) Support "move/" prefix hex module address in search
 - [#1230](https://github.com/alleslabs/celatone-frontend/pull/1230) Update EVM contract verify max width layout
