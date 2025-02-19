@@ -5,6 +5,18 @@ import { trackWebsite } from "lib/amplitude";
 import { DEVELOPER_TOOL_DOCS_LINK, USER_GUIDE_DOCS_LINK } from "lib/data";
 
 import { CustomIcon } from "./icon";
+import { Option } from "lib/types";
+
+const handleLink = (
+  href: Option<string> = "",
+  isExternal: boolean,
+  isDevTool: boolean
+) => {
+  if (isExternal) return href;
+  return isDevTool
+    ? DEVELOPER_TOOL_DOCS_LINK
+    : `${USER_GUIDE_DOCS_LINK}/${href}`;
+};
 
 interface UserDocsLinkProps {
   href?: string;
@@ -13,6 +25,7 @@ interface UserDocsLinkProps {
   isButton?: boolean;
   isInline?: boolean;
   isDevTool?: boolean;
+  isExternal?: boolean;
   mt?: number;
 }
 
@@ -23,15 +36,16 @@ export const UserDocsLink = ({
   isButton = false,
   isInline = false,
   isDevTool = false,
+  isExternal = false,
   mt = 8,
-}: UserDocsLinkProps) =>
-  isButton ? (
+}: UserDocsLinkProps) => {
+  const link = handleLink(href, isExternal, isDevTool);
+
+  return isButton ? (
     <Link
-      href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
+      href={link}
       onClick={(e) => {
-        trackWebsite(
-          `${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`
-        );
+        trackWebsite(link);
         e.stopPropagation();
       }}
       target="_blank"
@@ -58,11 +72,7 @@ export const UserDocsLink = ({
           {title}
         </Text>
       )}
-      <Link
-        href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <Link href={link} target="_blank" rel="noopener noreferrer">
         <Flex
           gap={1}
           alignItems="center"
@@ -87,3 +97,4 @@ export const UserDocsLink = ({
       </Link>
     </Flex>
   );
+};

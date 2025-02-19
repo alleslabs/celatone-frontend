@@ -61,7 +61,8 @@ export const EvmContractDetailsTop = ({
         {isVerified && (
           <Grid gap={2} templateColumns={{ md: "repeat(2, 1fr)", base: "1fr" }}>
             <Button
-              variant="outline-white"
+              variant="outline-primary"
+              leftIcon={<CustomIcon name="query" />}
               onClick={() =>
                 navigate({
                   pathname: "/evm-contracts/[contractAddress]/[tab]",
@@ -76,6 +77,8 @@ export const EvmContractDetailsTop = ({
               Read
             </Button>
             <Button
+              variant="outline-primary"
+              leftIcon={<CustomIcon name="execute" />}
               onClick={() =>
                 navigate({
                   pathname: "/evm-contracts/[contractAddress]/[tab]",
@@ -86,8 +89,7 @@ export const EvmContractDetailsTop = ({
                   },
                 })
               }
-              variant="outline-white"
-              display={{ base: "none", md: "block" }}
+              display={{ base: "none", md: "flex" }}
             >
               Write
             </Button>
