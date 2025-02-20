@@ -59,7 +59,7 @@ export const UploadCard = ({
               track(AmpEvent.USE_REMOVE_UPLOAD_FILE);
               deleteFile();
             }}
-            aria-label="delete schema"
+            aria-label="upload card"
             sx={{
               color: "gray.600",
               _hover: {
