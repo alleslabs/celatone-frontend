@@ -1,5 +1,4 @@
-import { EvmVerifyInfo } from "lib/types";
-import type { Option } from "lib/types";
+import type { EvmVerifyInfo, Option } from "lib/types";
 
 enum ProcessStepState {
   PENDING = "Pending",

@@ -1,6 +1,8 @@
-import { SelectInput, SelectInputOption } from "lib/components/forms";
-import { FieldValues, useController } from "react-hook-form";
-import { FieldProps } from "./types";
+import type { SelectInputOption } from "lib/components/forms";
+import { SelectInput } from "lib/components/forms";
+import type { FieldValues } from "react-hook-form";
+import { useController } from "react-hook-form";
+import type { FieldProps } from "./types";
 
 const BOOL_FIELD_OPTIONS: SelectInputOption<string>[] = [
   {

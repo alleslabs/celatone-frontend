@@ -3,7 +3,7 @@ import { Flex } from "@chakra-ui/react";
 import type { HexAddr20, Option } from "lib/types";
 
 import { NotVerifiedDetails } from "./NotVerifiedDetails";
-import { EvmVerifyInfo } from "lib/types";
+import type { EvmVerifyInfo } from "lib/types";
 import { useMobile } from "lib/app-provider";
 import { VerifiedDetails } from "./VerifiedDetails";
 import { FailedDetails } from "./FailedDetails";

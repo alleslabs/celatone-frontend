@@ -1,9 +1,9 @@
 import { Spinner } from "@chakra-ui/react";
-import Big from "big.js";
+import type Big from "big.js";
 
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
-import { Option } from "lib/types";
+import type { Option } from "lib/types";
 import { coinToTokenWithValue, formatTokenWithValue } from "lib/utils";
 
 export const EstimatedFeeEvmRender = ({

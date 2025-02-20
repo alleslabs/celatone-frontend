@@ -1,5 +1,6 @@
 import { zTxReceiptJsonRpc } from "lib/services/types";
-import { HexAddr20, Nullable, zHex } from "lib/types";
+import type { HexAddr20, Nullable } from "lib/types";
+import { zHex } from "lib/types";
 import { parseWithError } from "lib/utils";
 import { requestJsonRpc } from ".";
 

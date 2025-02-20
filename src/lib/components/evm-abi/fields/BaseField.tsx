@@ -1,5 +1,6 @@
-import { FieldProps } from "./types";
-import { FieldValues, useController } from "react-hook-form";
+import type { FieldProps } from "./types";
+import type { FieldValues } from "react-hook-form";
+import { useController } from "react-hook-form";
 import { FormControl, FormErrorMessage, Input } from "@chakra-ui/react";
 import { getRules } from "./utils";
 

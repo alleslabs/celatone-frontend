@@ -8,10 +8,13 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { JsonFragment } from "ethers";
+import type { JsonFragment } from "ethers";
 import { FullEditor } from "lib/components/editor/FullEditor";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
-import { EvmVerifyInfoLibraries, EvmVerifyInfoSourceFile } from "lib/types";
+import type {
+  EvmVerifyInfoLibraries,
+  EvmVerifyInfoSourceFile,
+} from "lib/types";
 import { findAndDecodeEvmConstructorArgs } from "lib/utils";
 import { ContractLibraryList } from "./ContractLibraryList";
 

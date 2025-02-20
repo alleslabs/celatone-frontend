@@ -1,6 +1,6 @@
 import axios from "axios";
 import { CELATONE_VERIFICATION_API } from "env";
-import {
+import type {
   SubmitEvmVerifyArgs,
   SubmitEvmVerifySolidityContractCodeArgs,
   SubmitEvmVerifySolidityJsonInputArgs,
@@ -9,12 +9,8 @@ import {
   SubmitEvmVerifyVyperJsonInputArgs,
   SubmitEvmVerifyVyperUploadFilesArgs,
 } from "lib/services/types";
-import {
-  EvmVerifyOptions,
-  HexAddr20,
-  zEvmVerifyConfig,
-  zEvmVerifyInfo,
-} from "lib/types";
+import type { HexAddr20 } from "lib/types";
+import { EvmVerifyOptions, zEvmVerifyConfig, zEvmVerifyInfo } from "lib/types";
 import {
   BYTECODE_TYPE,
   formatContractLibraries,

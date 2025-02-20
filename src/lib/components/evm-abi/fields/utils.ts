@@ -1,6 +1,6 @@
 import { big } from "lib/types";
 import { is0x, isHex, isHex20Bytes, isHexFixedBytes } from "lib/utils";
-import { FieldValues, UseControllerProps } from "react-hook-form";
+import type { FieldValues, UseControllerProps } from "react-hook-form";
 
 const validateAddress = (v: string) =>
   isHex20Bytes(v) ? undefined : "Invalid address";

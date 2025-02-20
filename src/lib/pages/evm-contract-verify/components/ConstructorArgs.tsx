@@ -1,11 +1,6 @@
 import { Box, Checkbox, Heading, Stack, Text } from "@chakra-ui/react";
-import {
-  Control,
-  FieldPath,
-  FieldValues,
-  useController,
-  useWatch,
-} from "react-hook-form";
+import type { Control, FieldPath, FieldValues } from "react-hook-form";
+import { useController, useWatch } from "react-hook-form";
 import { ControllerTextarea } from "lib/components/forms";
 
 interface ConstructorArgsProps<T extends FieldValues> {

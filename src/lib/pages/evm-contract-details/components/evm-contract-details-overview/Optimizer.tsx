@@ -1,5 +1,5 @@
 import { LabelText } from "lib/components/LabelText";
-import { EvmVerifyInfo } from "lib/types";
+import type { EvmVerifyInfo } from "lib/types";
 
 interface OptimizerProps {
   evmVerifyInfo: EvmVerifyInfo;

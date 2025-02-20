@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 
-import { TransactionRequest } from "ethers";
+import type { TransactionRequest } from "ethers";
 import { getEthGetTransactionReceipt } from "lib/services/evm/json-rpc";
-import { TxReceiptJsonRpc } from "lib/services/types";
+import type { TxReceiptJsonRpc } from "lib/services/types";
 import { convertCosmosChainIdToEvmChainId, sleep } from "lib/utils";
 import { useCelatoneApp } from "../contexts";
 import { useCurrentChain } from "./useCurrentChain";

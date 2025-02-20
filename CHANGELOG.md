@@ -80,6 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1242](https://github.com/alleslabs/celatone-frontend/pull/1242) Improve EVM proxy contract details and checksum address
 - [#1236](https://github.com/alleslabs/celatone-frontend/pull/1236) Remove unnecessary configs for users in custom network configs
 - [#1228](https://github.com/alleslabs/celatone-frontend/pull/1228) Refactor EVM verification form path and form type location
 - [#1215](https://github.com/alleslabs/celatone-frontend/pull/1215) Bump react wallet widget package to support http endpoints

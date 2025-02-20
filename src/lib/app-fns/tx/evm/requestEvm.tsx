@@ -5,7 +5,7 @@ import type { SignAndBroadcastEvm } from "lib/app-provider/hooks";
 import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { SimulatedFeeEvm, TxReceiptJsonRpc } from "lib/services/types";
+import type { SimulatedFeeEvm, TxReceiptJsonRpc } from "lib/services/types";
 import type { HexAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { catchTxError, postEvmTx } from "../common";

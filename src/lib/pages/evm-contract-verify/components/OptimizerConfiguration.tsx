@@ -1,11 +1,6 @@
 import { Checkbox, Flex, Heading, Stack, Text } from "@chakra-ui/react";
-import {
-  Control,
-  FieldPath,
-  FieldValues,
-  useController,
-  useWatch,
-} from "react-hook-form";
+import type { Control, FieldPath, FieldValues } from "react-hook-form";
+import { useController, useWatch } from "react-hook-form";
 import { ControllerInput } from "lib/components/forms";
 
 interface OptimizerConfigurationProps<T extends FieldValues> {

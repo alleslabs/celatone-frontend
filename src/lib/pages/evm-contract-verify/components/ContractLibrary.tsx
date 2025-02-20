@@ -1,12 +1,8 @@
 import { useExampleAddresses } from "lib/app-provider";
 import { ControllerInput } from "lib/components/forms";
 import { bech32AddressToHex, truncate } from "lib/utils";
-import {
-  Control,
-  FieldPath,
-  FieldValues,
-  useController,
-} from "react-hook-form";
+import type { Control, FieldPath, FieldValues } from "react-hook-form";
+import { useController } from "react-hook-form";
 
 interface ContractLibraryProps<T extends FieldValues> {
   control: Control<T>;

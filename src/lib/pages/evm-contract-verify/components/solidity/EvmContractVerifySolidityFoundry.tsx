@@ -3,9 +3,10 @@ import { useCelatoneApp, useEvmConfig } from "lib/app-provider";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { useMemo } from "react";
 
-import { Control, useWatch } from "react-hook-form";
+import type { Control } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import { CELATONE_VERIFICATION_API } from "env";
-import { EvmContractVerifyForm } from "lib/types";
+import type { EvmContractVerifyForm } from "lib/types";
 
 interface EvmContractVerifySolidityFoundryProps {
   control: Control<EvmContractVerifyForm>;

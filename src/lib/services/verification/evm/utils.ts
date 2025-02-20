@@ -1,5 +1,6 @@
 import { CELATONE_VERIFICATION_API } from "env";
-import { ContractLibraries, EvmVerifyOptions } from "lib/types";
+import type { ContractLibraries } from "lib/types";
+import { EvmVerifyOptions } from "lib/types";
 import { isHex20Bytes } from "lib/utils/validate";
 
 export const getVerifierUrl = (option: EvmVerifyOptions) => {

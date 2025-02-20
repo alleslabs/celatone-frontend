@@ -6,12 +6,8 @@ import {
   useCelatoneApp,
   useMoveConfig,
 } from "lib/app-provider";
-import type {
-  Addr,
-  HexAddr,
-  ResourceGroup,
-  ResourceGroupByAccount,
-} from "lib/types";
+import type { Addr, ResourceGroup, ResourceGroupByAccount } from "lib/types";
+import { zHexAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { getAccountResourcesLcd } from "./lcd";
@@ -44,7 +40,7 @@ export const useResourcesByAddressLcd = (
         if (groupResourcesIndex === -1)
           ownerResources.push({
             group: groupName,
-            account: ownerName as HexAddr,
+            account: zHexAddr.parse(ownerName),
             displayName: `${truncate(ownerName)}::${groupName}`,
             items: [resource],
           });
@@ -53,7 +49,7 @@ export const useResourcesByAddressLcd = (
         return {
           ...acc,
           [ownerName]: {
-            owner: ownerName as HexAddr,
+            owner: zHexAddr.parse(ownerName),
             resources: ownerResources,
           },
         };
@@ -73,7 +69,7 @@ export const useResourcesByAddressLcd = (
           ...acc,
           [resourceKey]: {
             displayName: `${truncate(accountName)}::${groupName}`,
-            account: accountName as HexAddr,
+            account: zHexAddr.parse(accountName),
             group: groupName,
             items,
           },

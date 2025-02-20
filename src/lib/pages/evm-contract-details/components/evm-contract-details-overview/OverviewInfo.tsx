@@ -3,7 +3,7 @@ import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { BechAddr, Nullish, Option } from "lib/types";
+import type { BechAddr, Nullish, Option } from "lib/types";
 import { dateFromNow, formatEvmTxHash, formatUTC } from "lib/utils";
 
 interface OverviewInfoProps {

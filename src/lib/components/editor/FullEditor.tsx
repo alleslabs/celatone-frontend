@@ -1,16 +1,14 @@
 import { Box, Grid, Stack, Text } from "@chakra-ui/react";
 import { generateSourceTree } from "./helpers";
-import { FilePath, SourceTreeNode } from "./types";
+import type { FilePath, SourceTreeNode } from "./types";
 import { EditorSidebar } from "./EditorSidebar";
 import { useEffect, useState } from "react";
 import { EditorTop } from "./EditorTop";
-import { Nullable } from "lib/types";
+import type { Nullable } from "lib/types";
 import { Editor } from "./Editor";
 import { useMobile } from "lib/app-provider";
-import {
-  FullEditorSidebarMobile,
-  FullEditorSidebarMobileProps,
-} from "./FullEditorSidebarMobile";
+import type { FullEditorSidebarMobileProps } from "./FullEditorSidebarMobile";
+import { FullEditorSidebarMobile } from "./FullEditorSidebarMobile";
 
 interface FullEditorProps
   extends Pick<FullEditorSidebarMobileProps, "isOpen" | "onClose"> {

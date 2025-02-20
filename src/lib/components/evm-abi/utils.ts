@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
-import { JsonFragmentType } from "ethers";
-import { JsonDataType, Option } from "lib/types";
+import type { JsonFragmentType } from "ethers";
+import type { JsonDataType, Option } from "lib/types";
 import { isPositiveInt } from "lib/utils";
 
 export const getTypeDimensions = (type = "") => {

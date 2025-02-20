@@ -23,15 +23,16 @@ import type {
   ModuleTableCountsResponse,
   ModuleTxsResponse,
 } from "lib/services/types";
-import type {
-  AbiFormData,
-  Addr,
-  ExposedFunction,
-  HexAddr,
-  IndexedModule,
-  ModulePublishInfo,
-  Option,
-  RpcQueryError,
+import {
+  type AbiFormData,
+  type Addr,
+  type ExposedFunction,
+  type HexAddr,
+  type IndexedModule,
+  type ModulePublishInfo,
+  type Option,
+  type RpcQueryError,
+  zHexAddr,
 } from "lib/types";
 import { truncate } from "lib/utils";
 
@@ -165,7 +166,7 @@ export const useDecodeModule = ({
 
     const currentPolicy = await getModuleByAddressLcd(
       lcdEndpoint,
-      abi.address as HexAddr,
+      zHexAddr.parse(abi.address),
       abi.name
     )
       .then((data) => data.upgradePolicy)

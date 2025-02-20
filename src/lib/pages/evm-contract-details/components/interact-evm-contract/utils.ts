@@ -1,4 +1,4 @@
-import { JsonFragment } from "ethers";
+import type { JsonFragment } from "ethers";
 
 export const categorizeAbi = (abi: JsonFragment[]) => {
   const read: JsonFragment[] = [];

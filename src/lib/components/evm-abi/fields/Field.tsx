@@ -1,8 +1,8 @@
-import { FieldValues } from "react-hook-form";
+import type { FieldValues } from "react-hook-form";
 import { BaseField } from "./BaseField";
 import { BoolField } from "./BoolField";
 import { TupleField } from "./TupleField";
-import { FieldProps } from "./types";
+import type { FieldProps } from "./types";
 
 export const Field = <T extends FieldValues>({
   type,

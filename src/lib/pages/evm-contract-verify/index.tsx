@@ -25,10 +25,9 @@ import { EvmVerifyStatusModal } from "lib/components/modal/evm-verify-status";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
+import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
 import {
-  EvmContractVerifyForm,
   EvmProgrammingLanguage,
-  EvmVerifyConfig,
   EvmVerifyOptions,
   zEvmContractVerifyBase,
   zEvmContractVerifyForm,
@@ -44,7 +43,7 @@ import {
   useEvmVerifyInfo,
   useSubmitEvmVerify,
 } from "lib/services/verification/evm";
-import { HexAddr20, Option } from "lib/types";
+import type { HexAddr20, Option } from "lib/types";
 import { bech32AddressToHex, isHex20Bytes, truncate } from "lib/utils";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";

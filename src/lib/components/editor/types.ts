@@ -1,4 +1,4 @@
-import { Option } from "lib/types";
+import type { Option } from "lib/types";
 
 export const EXTENSION_LIB = ["sol", "vy"];
 

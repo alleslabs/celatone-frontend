@@ -1,9 +1,10 @@
 import type { TxDataJsonRpc } from "lib/services/types";
 import type { Coin, HexAddr20, Option } from "lib/types";
-import { big, EvmMethodId, EvmMethodName } from "lib/types";
+import { big, EvmMethodId, EvmMethodName, zHexAddr20 } from "lib/types";
 
 import { keccak256 } from "@initia/initia.js";
-import { Interface, JsonFragment } from "ethers";
+import type { JsonFragment } from "ethers";
+import { Interface } from "ethers";
 import { toChecksumAddress } from "./address";
 import { hexToBig } from "./number";
 
@@ -36,7 +37,7 @@ export const getEvmToAddress = (
 
   if (method === EvmMethodName.TransferErc20) {
     return {
-      address: `0x${input.slice(34, 74)}` as HexAddr20,
+      address: toChecksumAddress(zHexAddr20.parse(`0x${input.slice(34, 74)}`)),
       type: "user_address",
       isCreatedContract: false,
     };
@@ -46,7 +47,7 @@ export const getEvmToAddress = (
     const { contractAddress } = evmTxData.txReceipt;
     if (!contractAddress) return undefined;
     return {
-      address: contractAddress,
+      address: toChecksumAddress(contractAddress),
       type: "evm_contract_address",
       isCreatedContract: true,
     };
@@ -57,7 +58,7 @@ export const getEvmToAddress = (
     const contractAddress = logs[0]?.address;
     if (!contractAddress) return undefined;
     return {
-      address: contractAddress as HexAddr20,
+      address: toChecksumAddress(zHexAddr20.parse(contractAddress)),
       type: "evm_contract_address",
       isCreatedContract: true,
     };
@@ -65,7 +66,7 @@ export const getEvmToAddress = (
 
   if (to) {
     return {
-      address: to,
+      address: toChecksumAddress(to),
       type: "user_address",
       isCreatedContract: false,
     };

@@ -1,14 +1,13 @@
 import { Button, Checkbox, Grid, Heading, Stack, Text } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
-import {
+import type {
   Control,
   FieldArray,
   FieldArrayPath,
   FieldPath,
   FieldValues,
-  useController,
-  useFieldArray,
 } from "react-hook-form";
+import { useController, useFieldArray } from "react-hook-form";
 import { ContractLibrary } from "./ContractLibrary";
 
 interface ContractLibrariesProps<T extends FieldValues> {

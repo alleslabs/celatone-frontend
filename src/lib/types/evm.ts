@@ -1,4 +1,4 @@
-import { JsonFragment } from "ethers";
+import type { JsonFragment } from "ethers";
 import { z, ZodIssueCode } from "zod";
 import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
 import { isHex20Bytes } from "lib/utils/validate";
