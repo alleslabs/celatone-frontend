@@ -7,8 +7,8 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
     logo: "/celatone.svg",
     favicon: "https://assets.alleslabs.dev/celatone-brand/favicon.ico",
     seo: {
-      appName: "Scan",
-      title: "Scan Explorer",
+      appName: "Celatone",
+      title: "Celatone Explorer",
       description: "All in one place.",
       image:
         "https://assets.alleslabs.dev/celatone-brand/socials/celatone-ogimg.jpg",
