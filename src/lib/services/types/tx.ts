@@ -30,6 +30,7 @@ import {
   getTxBadges,
   parseTxHash,
   snakeToCamel,
+  toChecksumAddress,
 } from "lib/utils";
 
 import { zAny } from "./protobuf";
@@ -434,44 +435,56 @@ export const zEvmTxHashesByCosmosTxHashesJsonRpc = z.array(
   zEvmTxHashByCosmosTxHashJsonRpc
 );
 
-export const zTxJsonRpc = z.object({
-  blockHash: z.string(),
-  blockNumber: zHexBig,
-  from: zHexAddr20,
-  gas: zHexBig,
-  gasPrice: zHexBig,
-  maxFeePerGas: zHexBig,
-  maxPriorityFeePerGas: zHexBig,
-  hash: z.string(),
-  input: z.string(),
-  nonce: zHexBig,
-  to: zHexAddr20.nullable(),
-  transactionIndex: zHexBig,
-  value: zHexBig,
-  type: z.string(), // TODO: convert to enum later
-  chainId: zHexBig,
-  v: z.string(),
-  r: z.string(),
-  s: z.string(),
-  yParity: z.string().optional(),
-});
+export const zTxJsonRpc = z
+  .object({
+    blockHash: z.string(),
+    blockNumber: zHexBig,
+    from: zHexAddr20,
+    gas: zHexBig,
+    gasPrice: zHexBig,
+    maxFeePerGas: zHexBig,
+    maxPriorityFeePerGas: zHexBig,
+    hash: z.string(),
+    input: z.string(),
+    nonce: zHexBig,
+    to: zHexAddr20.nullable(),
+    transactionIndex: zHexBig,
+    value: zHexBig,
+    type: z.string(), // TODO: convert to enum later
+    chainId: zHexBig,
+    v: z.string(),
+    r: z.string(),
+    s: z.string(),
+    yParity: z.string().optional(),
+  })
+  .transform(({ from, to, ...val }) => ({
+    from: toChecksumAddress(from),
+    to: to ? toChecksumAddress(to) : null,
+    ...val,
+  }));
 
-export const zTxReceiptJsonRpc = z.object({
-  blockHash: z.string(),
-  blockNumber: zHexBig,
-  contractAddress: zHexAddr20.nullable(),
-  cumulativeGasUsed: zHexBig,
-  effectiveGasPrice: zHexBig,
-  from: zHexAddr20,
-  gasUsed: zHexBig,
-  logs: z.object({}).passthrough().array(),
-  logsBloom: zHex,
-  status: zHexBool,
-  to: zHexAddr20.nullable(),
-  transactionHash: z.string(),
-  transactionIndex: zHexBig,
-  type: z.string(), // TODO: convert to enum later
-});
+export const zTxReceiptJsonRpc = z
+  .object({
+    blockHash: z.string(),
+    blockNumber: zHexBig,
+    contractAddress: zHexAddr20.nullable(),
+    cumulativeGasUsed: zHexBig,
+    effectiveGasPrice: zHexBig,
+    from: zHexAddr20,
+    gasUsed: zHexBig,
+    logs: z.object({}).passthrough().array(),
+    logsBloom: zHex,
+    status: zHexBool,
+    to: zHexAddr20.nullable(),
+    transactionHash: z.string(),
+    transactionIndex: zHexBig,
+    type: z.string(), // TODO: convert to enum later
+  })
+  .transform(({ from, to, ...val }) => ({
+    from: toChecksumAddress(from),
+    to: to ? toChecksumAddress(to) : null,
+    ...val,
+  }));
 export type TxReceiptJsonRpc = z.infer<typeof zTxReceiptJsonRpc>;
 
 export const zTxDataJsonRpc = z

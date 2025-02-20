@@ -1,5 +1,4 @@
 import { Box, Flex, Heading, Stack, Switch, Text } from "@chakra-ui/react";
-import { JsonFragment } from "ethers";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { TypeSwitch } from "lib/components/TypeSwitch";
 import { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
@@ -22,18 +21,18 @@ enum InteractType {
 
 interface InteractEvmContractProps {
   contractAddress: HexAddr20;
-  contractAbi: JsonFragment[];
+  evmVerifyInfo: Option<EvmVerifyInfo>;
+  proxyTargetEvmVerifyInfo: Option<EvmVerifyInfo>;
   selectedType: InteractTabsIndex;
   selectedFn?: string;
-  proxyTargetEvmVerifyInfo: Option<EvmVerifyInfo>;
 }
 
 export const InteractEvmContract = ({
   contractAddress,
-  contractAbi,
+  evmVerifyInfo,
+  proxyTargetEvmVerifyInfo,
   selectedType,
   selectedFn,
-  proxyTargetEvmVerifyInfo,
 }: InteractEvmContractProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -43,12 +42,14 @@ export const InteractEvmContract = ({
       ? InteractType.Read
       : InteractType.Write;
   const isAsProxy =
-    !isUndefined(proxyTargetEvmVerifyInfo?.abi) &&
-    selectedType.endsWith("proxy");
+    !evmVerifyInfo?.isVerified ||
+    (!!proxyTargetEvmVerifyInfo?.isVerified && selectedType.endsWith("proxy"));
 
   const [initialSelectedFn, setInitialSelectedFn] = useState<Option<string>>();
 
-  const { read: abiRead, write: abiWrite } = categorizeAbi(contractAbi);
+  const { read: abiRead, write: abiWrite } = categorizeAbi(
+    evmVerifyInfo?.abi ?? []
+  );
   const { read: abiReadProxy, write: abiWriteProxy } = categorizeAbi(
     proxyTargetEvmVerifyInfo?.abi ?? []
   );
@@ -110,10 +111,14 @@ export const InteractEvmContract = ({
           />
         )}
       </Flex>
-      {!isUndefined(proxyTargetEvmVerifyInfo) && (
+      {!!proxyTargetEvmVerifyInfo?.isVerified && (
         <Stack gap={1} mb={8}>
           <Flex gap={2} align="center">
-            <Switch isChecked={isAsProxy} onChange={handleSetIsAsProxy} />
+            <Switch
+              isChecked={isAsProxy}
+              onChange={handleSetIsAsProxy}
+              isDisabled={!evmVerifyInfo?.isVerified}
+            />
             <Text variant="body2">Read/Write as Proxy Contract</Text>
           </Flex>
           <Flex gap={2}>

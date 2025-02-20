@@ -9,16 +9,18 @@ import {
   useValidateAddress,
 } from "lib/app-provider";
 import type { Addr, BechAddr, HexAddr32 } from "lib/types";
-import { zBechAddr32, zHexAddr20, zValidatorAddr } from "lib/types";
+import { zBechAddr32, zHexAddr20, zHexAddr32, zValidatorAddr } from "lib/types";
 import type { IcnsNamesByAddress } from "lib/types/name";
 import {
   isHex,
+  isHex20Bytes,
   isHexModuleAddress,
   isHexWalletAddress,
   isId,
   isMovePrefixHexModuleAddress,
   isPosDecimal,
   splitModulePath,
+  toChecksumAddress,
 } from "lib/utils";
 
 import { useBlockData, useBlockDataLcd } from "./block";
@@ -149,13 +151,13 @@ export const useSearchHandler = (
   /// /////////////////////////////////////////////////////
 
   const { data: nftData, isFetching: nftFetching } = useNftByNftAddressLcd(
-    debouncedKeyword as HexAddr32,
+    zHexAddr32.parse(debouncedKeyword),
     isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
   );
 
   const { data: nftCollectionData, isFetching: nftCollectionFetching } =
     useNftCollectionByCollectionAddress(
-      debouncedKeyword as HexAddr32,
+      zHexAddr32.parse(debouncedKeyword),
       isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
     );
 
@@ -355,7 +357,10 @@ export const useSearchHandler = (
 
   if (isAddr)
     results.push({
-      value: debouncedKeyword,
+      value:
+        isEvm && isHex20Bytes(debouncedKeyword)
+          ? toChecksumAddress(debouncedKeyword)
+          : debouncedKeyword,
       type:
         // eslint-disable-next-line sonarjs/no-duplicate-string
         contractData || evmCodes?.code ? "Contract Address" : "Account Address",

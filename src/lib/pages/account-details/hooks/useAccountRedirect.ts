@@ -6,7 +6,12 @@ import {
 } from "lib/app-provider";
 import { useEvmCodesByAddress } from "lib/services/evm";
 import { useContractData } from "lib/services/wasm/contract";
-import type { BechAddr, BechAddr32, HexAddr, HexAddr20 } from "lib/types";
+import {
+  type BechAddr,
+  type BechAddr32,
+  type HexAddr,
+  zHexAddr20,
+} from "lib/types";
 import { isHexWalletAddress } from "lib/utils";
 
 export const useAccountRedirect = (bechAddr: BechAddr, hexAddr: HexAddr) => {
@@ -24,7 +29,7 @@ export const useAccountRedirect = (bechAddr: BechAddr, hexAddr: HexAddr) => {
 
   const { data: evmCodes, isFetching: isEvmCodesFetching } =
     useEvmCodesByAddress(
-      hexAddr as HexAddr20,
+      zHexAddr20.parse(hexAddr),
       evm.enabled && isHexWalletAddress(hexAddr)
     );
 

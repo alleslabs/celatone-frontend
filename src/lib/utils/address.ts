@@ -9,7 +9,7 @@ import {
 
 import type { AddressReturnType } from "lib/app-provider";
 import type { BechAddr, HexAddr, Option, Pubkey } from "lib/types";
-import { zBechAddr20 } from "lib/types";
+import { zBechAddr20, zHexAddr } from "lib/types";
 
 import { utf8ToBytes } from "./base64";
 import { uint8ArrayToHexString } from "./hex";
@@ -35,13 +35,13 @@ export const getAddressTypeText = (addressType: AddressReturnType) => {
 };
 
 export const bech32AddressToHex = (addr: BechAddr): HexAddr =>
-  "0x".concat(toHex(fromBech32(addr).data)) as HexAddr;
+  zHexAddr.parse("0x".concat(toHex(fromBech32(addr).data)));
 
 export const padHexAddress = (hexAddr: HexAddr, length: number): HexAddr =>
-  `0x${hexAddr.slice(2).padStart(length, "0")}` as HexAddr;
+  zHexAddr.parse(`0x${hexAddr.slice(2).padStart(length, "0")}`);
 
 export const unpadHexAddress = (hexAddr: HexAddr) =>
-  `0x${hexAddr.slice(2).replace(/^0+/, "")}` as HexAddr;
+  zHexAddr.parse(`0x${hexAddr.slice(2).replace(/^0+/, "")}`);
 
 export const hexToBech32Address = (
   prefix: string,
@@ -83,7 +83,7 @@ export const convertAccountPubkeyToAccountAddress = (
   return zBechAddr20.parse("");
 };
 
-export const toChecksumAddress = (address: HexAddr): string => {
+export const toChecksumAddress = <T extends string>(address: T): T => {
   const lowerCaseAddress = address.toLowerCase().replace(/^0x/i, "");
 
   const hash = `0x${uint8ArrayToHexString(
@@ -96,7 +96,7 @@ export const toChecksumAddress = (address: HexAddr): string => {
     hash ===
     "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
   )
-    return "";
+    return "" as T;
 
   let checksumAddress = "0x";
   const addressHash = hash.replace(/^0x/i, "");
@@ -109,5 +109,5 @@ export const toChecksumAddress = (address: HexAddr): string => {
       checksumAddress += lowerCaseAddress[i];
     }
   }
-  return checksumAddress;
+  return checksumAddress as T;
 };

@@ -1,4 +1,5 @@
 import { Hex, zHex, zHexAddr20 } from "lib/types";
+import { toChecksumAddress } from "lib/utils";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -16,7 +17,7 @@ export const readAddress = (value: unknown) => {
     throw new Error("Empty address");
   }
 
-  return zHexAddr20.parse(address);
+  return toChecksumAddress(zHexAddr20.parse(address));
 };
 
 const EIP_1167_BYTECODE_PREFIX = "0x363d3d373d3d3d363d";

@@ -16,6 +16,7 @@ import { OverviewInfo } from "./OverviewInfo";
 import { OverviewVerifiedInfo } from "./OverviewVerifiedInfo";
 import { EvmVerifyInfo } from "lib/types";
 import { OverviewVerifiedCmds } from "./OverviewVerifiedCmds";
+import { OverviewVerifiedProxyTargetCmds } from "./OverviewVerifiedProxyTargetCmds";
 
 interface EvmContractDetailsOverviewProps {
   contractAddressBech: BechAddr20;
@@ -66,9 +67,14 @@ export const EvmContractDetailsOverview = ({
         <OverviewVerifiedCmds
           contractAddress={contractAddressHex}
           evmVerifyInfo={evmVerifyInfo}
-          proxyTargetEvmVerifyInfo={proxyTargetEvmVerifyInfo}
         />
       </>
+    )}
+    {proxyTargetEvmVerifyInfo?.isVerified && (
+      <OverviewVerifiedProxyTargetCmds
+        contractAddress={contractAddressHex}
+        proxyTargetEvmVerifyInfo={proxyTargetEvmVerifyInfo}
+      />
     )}
     <AssetsSection
       address={contractAddressBech}
