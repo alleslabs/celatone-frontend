@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Flex, IconButton, Text } from "@chakra-ui/react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon, UploadIcon } from "lib/components/icon";
@@ -51,17 +51,23 @@ export const UploadCard = ({
           </Flex>
         </Flex>
         <Flex align="center" gap={4}>
-          <Button
-            leftIcon={<CustomIcon name="delete" boxSize={3} />}
+          <IconButton
+            variant="ghost-error"
             size="sm"
-            variant={themeConfig.buttonVariant}
+            icon={<CustomIcon name="delete" boxSize={4} />}
             onClick={() => {
               track(AmpEvent.USE_REMOVE_UPLOAD_FILE);
               deleteFile();
             }}
-          >
-            Remove file
-          </Button>
+            aria-label="delete schema"
+            sx={{
+              color: "gray.600",
+              _hover: {
+                color: "error.main",
+                backgroundColor: "error.background",
+              },
+            }}
+          />
           {status === "error" && (
             <CustomIcon
               name="alert-triangle-solid"
