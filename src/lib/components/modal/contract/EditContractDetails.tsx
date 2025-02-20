@@ -12,7 +12,7 @@ export const EditContractDetailsModal = ({
 }: EditContractDetailsModalProps) => (
   <ContractDetailsTemplateModal
     title="Edit Contract Details"
-    subtitle="Filled information below will be saved on Celatone only and able to edit later."
+    subtitle="Filled information below will be saved on Scan only and able to edit later."
     contractLocalInfo={contractLocalInfo}
     triggerElement={triggerElement}
   />

@@ -32,7 +32,7 @@ const socialMenu: SocialMenuType[] = [
     slug: "x",
   },
   {
-    url: "https://medium.com/@initiafdn",
+    url: "https://medium.com/@initialabs",
     icon: "medium",
     slug: "medium",
   },

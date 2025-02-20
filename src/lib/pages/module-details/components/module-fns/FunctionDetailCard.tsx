@@ -78,7 +78,7 @@ const FunctionButton = ({
       label={
         isMobile && !isView
           ? "You can currently execute functions on a desktop device only"
-          : "Only execute functions with “is_entry: true” and “visibility: public” are interactable through Celatone’s module interactions."
+          : "Only execute functions with “is_entry: true” and “visibility: public” are interactable through Scan’s module interactions."
       }
       hidden={!disabled && !(isMobile && !isView)}
     >

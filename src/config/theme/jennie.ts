@@ -89,7 +89,7 @@ const JENNIE_BASE_THEME: ThemeConfig = {
     website: "https://initia.xyz",
     github: "https://github.com/initia-labs",
     x: "https://x.com/initia",
-    medium: "https://medium.com/@initiafdn",
+    medium: "https://medium.com/@initialabs",
   },
 };
 

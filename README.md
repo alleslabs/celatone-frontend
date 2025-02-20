@@ -1,4 +1,4 @@
-# Celatone Frontend
+# Scan Frontend
 
 An explorer for a [CosmWasm](https://cosmwasm.com/)-powered [Cosmos](http://cosmos.network/) ecosystem.
 
@@ -6,7 +6,7 @@ An explorer for a [CosmWasm](https://cosmwasm.com/)-powered [Cosmos](http://cosm
 
 ### Stack
 
-The Celatone frontend uses the following technologies:
+The Scan frontend uses the following technologies:
 
 - Language: [TypeScript](https://www.typescriptlang.org/)
 - Framework: [React](https://reactjs.org/) & [Next.js](https://nextjs.org/)

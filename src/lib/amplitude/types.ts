@@ -202,7 +202,6 @@ export enum AmpEvent {
   MINTSCAN = "Mintscan",
   WEBSITE = "Website",
   SOCIAL = "Social",
-  ALLESLABS = "AllesLabs",
 }
 
 export type ActionAmpEvent =

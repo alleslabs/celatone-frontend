@@ -7,8 +7,8 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
     logo: "/celatone.svg",
     favicon: "https://assets.alleslabs.dev/celatone-brand/favicon.ico",
     seo: {
-      appName: "Celatone",
-      title: "Celatone Explorer",
+      appName: "Scan",
+      title: "Scan Explorer",
       description: "All in one place.",
       image:
         "https://assets.alleslabs.dev/celatone-brand/socials/celatone-ogimg.jpg",
@@ -89,7 +89,7 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
     website: "https://initia.xyz",
     github: "https://github.com/initia-labs",
     x: "https://x.com/initia",
-    medium: "https://medium.com/@initiafdn",
+    medium: "https://medium.com/@initialabs",
   },
 };
 

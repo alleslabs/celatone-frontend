@@ -20,7 +20,7 @@ export const NetworkErrorState = () => {
       h="100vh"
       bg="background.main"
     >
-      <Image src={FALLBACK_THEME.branding.logo} alt="Celatone" width="300px" />
+      <Image src={FALLBACK_THEME.branding.logo} alt="Scan" width="300px" />
       <Flex
         flexDir="column"
         align="center"
@@ -57,7 +57,7 @@ export const NetworkErrorState = () => {
         variant="outline-primary"
         onClick={() => router.replace("/", undefined)}
       >
-        Go to Celatone Homepage
+        Go to Scan Homepage
       </Button>
     </Flex>
   );

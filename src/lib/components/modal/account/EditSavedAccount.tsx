@@ -90,7 +90,7 @@ export const EditSavedAccountModal = ({
           control={control}
           label="Account Name"
           variant="fixed-floating"
-          placeholder="ex. Celatone Account 1"
+          placeholder="ex. Scan Account 1"
           labelBgColor="gray.900"
           rules={{
             maxLength: constants.maxAccountNameLength,
