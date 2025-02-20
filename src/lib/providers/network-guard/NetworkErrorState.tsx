@@ -57,7 +57,7 @@ export const NetworkErrorState = () => {
         variant="outline-primary"
         onClick={() => router.replace("/", undefined)}
       >
-        Go to Scan Homepage
+        Go to Homepage
       </Button>
     </Flex>
   );

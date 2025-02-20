@@ -29,8 +29,8 @@ export const NoMobile = () => {
             Sorry, this feature is currently not supported on mobile.
           </Heading>
           <Text variant="body1" color="text.dark" mt={2}>
-            Please use {isInitia ? "Initia Scan" : "Scan"} through the desktop
-            browser for the best experience with this feature.
+            Please use {isInitia ? "Initia Scan" : "Celatone"} through the
+            desktop browser for the best experience with this feature.
           </Text>
         </Flex>
       </ModalContent>
