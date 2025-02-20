@@ -12,8 +12,8 @@ const JENNIE_BASE_THEME: ThemeConfig = {
       description: "Initia, a network for interwoven rollups",
       image:
         "https://assets.alleslabs.dev/celatone-brand/socials/scan-ogimage.jpg",
-      twitter: {
-        handle: "@initiafdn",
+      x: {
+        handle: "@initia",
         cardType: "summary_large_image",
       },
     },
@@ -88,7 +88,7 @@ const JENNIE_BASE_THEME: ThemeConfig = {
   socialMedia: {
     website: "https://initia.xyz",
     github: "https://github.com/initia-labs",
-    twitter: "https://x.com/initiaFDN",
+    x: "https://x.com/initia",
     medium: "https://medium.com/@initiafdn",
   },
 };

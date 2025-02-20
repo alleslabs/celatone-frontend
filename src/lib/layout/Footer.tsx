@@ -27,9 +27,9 @@ const socialMenu: SocialMenuType[] = [
     slug: "github",
   },
   {
-    url: "https://twitter.com/initiaFDN",
-    icon: "twitter",
-    slug: "twitter",
+    url: "https://x.com/initia",
+    icon: "x",
+    slug: "x",
   },
   {
     url: "https://medium.com/@initiafdn",
@@ -42,7 +42,7 @@ const socialSequence = {
   website: 0,
   github: 1,
   discord: 2,
-  twitter: 3,
+  x: 3,
   telegram: 4,
   medium: 5,
   reddit: 6,
