@@ -123,7 +123,7 @@ export const WasmVerifySubmitForm = ({
             <Flex gap={0.5} alignItems="center">
               <CustomIcon name="check" color="success.main" />
               <Text variant="body2">
-                Execute it through Celatone&apos;s system-generated schema
+                Execute it through Scan&apos;s system-generated schema
               </Text>
             </Flex>
           </Flex>

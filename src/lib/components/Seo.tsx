@@ -29,8 +29,8 @@ export const CelatoneSeo = ({ pageName }: { pageName?: string }) => {
         ],
       }}
       twitter={{
-        handle: theme.branding.seo.twitter.handle,
-        cardType: theme.branding.seo.twitter.cardType,
+        handle: theme.branding.seo.x.handle,
+        cardType: theme.branding.seo.x.cardType,
       }}
     />
   );

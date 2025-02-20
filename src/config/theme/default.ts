@@ -12,7 +12,7 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
       description: "All in one place.",
       image:
         "https://assets.alleslabs.dev/celatone-brand/socials/celatone-ogimg.jpg",
-      twitter: {
+      x: {
         handle: "@celatone_",
         cardType: "summary_large_image",
       },
@@ -88,8 +88,8 @@ const DEFAULT_BASE_THEME: ThemeConfig = {
   socialMedia: {
     website: "https://initia.xyz",
     github: "https://github.com/initia-labs",
-    twitter: "https://x.com/initiaFDN",
-    medium: "https://medium.com/@initiafdn",
+    x: "https://x.com/initia",
+    medium: "https://medium.com/@initialabs",
   },
 };
 

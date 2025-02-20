@@ -36,7 +36,7 @@ const Meta = () => {
       {/* Twitter */}
       <meta
         property="twitter:card"
-        content={FALLBACK_THEME.branding.seo.twitter.cardType}
+        content={FALLBACK_THEME.branding.seo.x.cardType}
       />
       <meta property="twitter:title" content={title} />
       <meta

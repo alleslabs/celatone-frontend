@@ -108,7 +108,7 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
       {/* Off chain detail */}
       <InstantiateOffChainForm
         title="Contract Off-Chain Detail"
-        subtitle="Filled information below will be saved on Celatone only and able to edit later."
+        subtitle="Filled information below will be saved on Scan only and able to edit later."
         contractAddress={txInfo.contractAddress as BechAddr32}
         contractLabel={txInfo.contractLabel}
         codeId={txInfo.codeId}

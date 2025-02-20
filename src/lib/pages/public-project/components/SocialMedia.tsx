@@ -7,8 +7,8 @@ import type { Option, PublicDetail } from "lib/types";
 
 export const renderSocial = (name: string): IconKeys => {
   switch (name) {
-    case "twitter":
-      return "twitter";
+    case "x":
+      return "x";
     case "telegram":
       return "telegram";
     case "discord":
