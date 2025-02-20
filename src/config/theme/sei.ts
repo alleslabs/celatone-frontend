@@ -13,7 +13,7 @@ const SEI_BASE_THEME: ThemeConfig = {
       description:
         "Explore, deploy, execute, and query smart contracts on Sei from a user-friendly web UI",
       image: "https://assets.alleslabs.dev/integrations/sei/cover.jpg",
-      twitter: {
+      x: {
         handle: "@SeiNetwork",
         cardType: "summary_large_image",
       },
@@ -95,7 +95,7 @@ const SEI_BASE_THEME: ThemeConfig = {
     website: "https://www.sei.io/",
     github: "https://github.com/sei-protocol/sei-chain",
     discord: "https://discord.com/invite/sei",
-    twitter: "https://twitter.com/SeiNetwork",
+    x: "https://x.com/SeiNetwork",
     telegram: "https://t.me/seinetwork",
   },
 };

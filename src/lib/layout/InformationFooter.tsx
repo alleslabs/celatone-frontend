@@ -1,8 +1,7 @@
-import { track } from "@amplitude/analytics-browser";
 import { Flex, Skeleton, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
-import { AmpEvent, trackWebsite } from "lib/amplitude";
+import { trackWebsite } from "lib/amplitude";
 import { useTierConfig } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
@@ -17,12 +16,6 @@ const FOOTER_BUTTONS = [
     text: "View Doc",
     onClick: () =>
       trackWebsite(`${USER_GUIDE_DOCS_LINK}/introduction/overview`),
-  },
-  {
-    href: "https://feedback.alleslabs.com",
-    icon: "feedback" as IconKeys,
-    text: "Feedback",
-    onClick: () => track(AmpEvent.FEEDBACK),
   },
 ];
 

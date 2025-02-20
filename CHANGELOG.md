@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- [#1222](https://github.com/alleslabs/celatone-frontend/pull/1222) Update Scan required environment variable
+- [#1240](https://github.com/alleslabs/celatone-frontend/pull/1222) Update social media handle and naming convention from Celatone to Scan
 - [#1232](https://github.com/alleslabs/celatone-frontend/pull/1232) Support EVM verification with multiparts and standard JSON input for both Solidity and Vyper
 - [#1233](https://github.com/alleslabs/celatone-frontend/pull/1233) Support "move/" prefix hex module address in search
 - [#1230](https://github.com/alleslabs/celatone-frontend/pull/1230) Update EVM contract verify max width layout
@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#1226](https://github.com/alleslabs/celatone-frontend/pull/1226) Show nonce on EVM tx details
 - [#1224](https://github.com/alleslabs/celatone-frontend/pull/1224) Support Vyper verification with contract code
 - [#1223](https://github.com/alleslabs/celatone-frontend/pull/1223) Support Vyper on EVM contract details
+- [#1222](https://github.com/alleslabs/celatone-frontend/pull/1222) Update Scan required environment variable
 - [#1220](https://github.com/alleslabs/celatone-frontend/pull/1220) Add EVM contract verification for Solidity with contract code (flattened method)
 - [#1219](https://github.com/alleslabs/celatone-frontend/pull/1219) Add tooltip to full editor sidebar
 - [#1218](https://github.com/alleslabs/celatone-frontend/pull/1218) Add EVM library contract
@@ -89,6 +90,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1241](https://github.com/alleslabs/celatone-frontend/pull/1241) Fix EVM contract details interaction filter
+- [#1239](https://github.com/alleslabs/celatone-frontend/pull/1239) Fix check verified EVM contract and minor EVM contract details
 - [#1238](https://github.com/alleslabs/celatone-frontend/pull/1238) Fix EVM verify external docs link and EVM contract details mobile
 - [#1237](https://github.com/alleslabs/celatone-frontend/pull/1237) Fix EVM contract details UI layout and mobile
 - [#1235](https://github.com/alleslabs/celatone-frontend/pull/1235) Support EVM custom chain id and minor bug fixes

@@ -27,7 +27,7 @@ const MobileHeader = () => {
       <SectionWrapper minW="64px" w="full" justifyContent="start">
         <AppLink href="/">
           <Image
-            alt="Celatone"
+            alt="Scan"
             src={
               isInitia
                 ? "https://assets.alleslabs.dev/integrations/initia/logo_mobile.png"

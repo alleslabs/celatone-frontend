@@ -108,7 +108,7 @@ export const AbiRead = ({
           onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
           sx={{ ".chakra-accordion__icon": { color: "gray.600" } }}
         >
-          {abiRead.map((abiSection, idx) => (
+          {filteredAbiRead.map((abiSection, idx) => (
             <ReadBox
               key={abiSection.name}
               contractAddress={contractAddress}

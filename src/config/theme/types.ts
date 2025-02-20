@@ -7,7 +7,7 @@ export type ThemeConfig = {
       title: string;
       description: string;
       image: string;
-      twitter: {
+      x: {
         handle: string;
         cardType: string;
       };
@@ -84,7 +84,7 @@ export type ThemeConfig = {
     website?: string;
     github?: string;
     discord?: string;
-    twitter?: string;
+    x?: string;
     medium?: string;
     telegram?: string;
     reddit?: string;

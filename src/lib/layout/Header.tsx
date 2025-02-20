@@ -36,7 +36,7 @@ const Header = () => {
           <AppLink href="/">
             <Image
               src={theme.branding.logo}
-              alt="Celatone"
+              alt="Scan"
               minWidth="139px"
               width="139px"
               maxWidth="139px"

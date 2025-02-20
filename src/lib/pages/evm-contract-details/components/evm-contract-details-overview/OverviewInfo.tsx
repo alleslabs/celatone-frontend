@@ -29,12 +29,15 @@ export const OverviewInfo = ({
     <Grid
       gridTemplateColumns={{
         base: "1fr",
-        md: "minmax(0, 160px) repeat(3, minmax(0, 240px))",
+        md: "repeat(4, max-content)",
       }}
       padding={4}
       bg="gray.900"
       borderRadius={8}
-      columnGap={6}
+      columnGap={{
+        base: 14,
+        "2xl": 36,
+      }}
       rowGap={4}
     >
       <LabelText label="Network">{currentChainId}</LabelText>
@@ -50,7 +53,6 @@ export const OverviewInfo = ({
               <ExplorerLink
                 value={formatAddresses(sender).hex}
                 type="user_address"
-                showCopyOnHover
               />
             ) : (
               <Text variant="body2" color="text.disabled">
@@ -70,7 +72,7 @@ export const OverviewInfo = ({
                 Cosmos:
               </Text>
               {hash ? (
-                <ExplorerLink value={hash} type="tx_hash" showCopyOnHover />
+                <ExplorerLink value={hash} type="tx_hash" />
               ) : (
                 <Text variant="body2" color="text.disabled">
                   -
@@ -85,7 +87,6 @@ export const OverviewInfo = ({
                 <ExplorerLink
                   value={formatEvmTxHash(evmHash)}
                   type="evm_tx_hash"
-                  showCopyOnHover
                 />
               ) : (
                 <Text variant="body2" color="text.disabled">

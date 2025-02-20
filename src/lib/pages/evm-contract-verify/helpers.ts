@@ -69,8 +69,8 @@ export const getEvmContractVerifyFormDefaultValue = (
 });
 
 export const formatEvmOptions = (values: string[]) =>
-  values.map((value) => ({
-    label: value,
+  values.map((value, index) => ({
+    label: value === "default" ? `default (${values[index + 1]})` : value,
     value,
   }));
 

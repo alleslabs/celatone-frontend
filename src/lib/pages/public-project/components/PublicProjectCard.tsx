@@ -60,7 +60,7 @@ export const PublicProjectCard = observer(
                 <Image
                   src={item.logo ?? UNDEFINED_ICON_LIST[0]}
                   borderRadius="full"
-                  alt="Celatone"
+                  alt="Scan"
                   width={7}
                   height={7}
                 />

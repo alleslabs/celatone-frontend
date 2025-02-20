@@ -187,9 +187,11 @@ export const zEvmVerifyConfig = z
   .object({
     license_type: z.array(z.nativeEnum(EvmVerifyLicenseType)),
     solidity_compiler_versions: z.array(z.string()),
-    solidity_evm_versions: z.array(z.string()),
+    solidity_evm_versions: z
+      .array(z.string())
+      .transform((val) => val.reverse()),
     vyper_compiler_versions: z.array(z.string()),
-    vyper_evm_versions: z.array(z.string()),
+    vyper_evm_versions: z.array(z.string()).transform((val) => val.reverse()),
   })
   .transform(snakeToCamel);
 export type EvmVerifyConfig = z.infer<typeof zEvmVerifyConfig>;

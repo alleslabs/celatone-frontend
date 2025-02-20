@@ -108,7 +108,7 @@ export const AbiWrite = ({
           onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
           sx={{ ".chakra-accordion__icon": { color: "gray.600" } }}
         >
-          {abiWrite.map((abiSection, idx) => (
+          {filteredAbiWrite.map((abiSection, idx) => (
             <WriteBox
               key={abiSection.name}
               contractAddress={contractAddress}

@@ -155,7 +155,7 @@ export const ExecuteArea = ({
           <AlertDescription wordBreak="break-word">
             Title This function cannot be executed through this page. Only
             execute functions with “is_entry: true” and visibility is “public”
-            or “friend” are able to interacted through Celatone’s module
+            or “friend” are able to interacted through Scan’s module
             interactions.
           </AlertDescription>
         </Alert>

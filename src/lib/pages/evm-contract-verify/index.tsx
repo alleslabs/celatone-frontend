@@ -125,7 +125,6 @@ export const EvmContractVerifyBody = ({
     option === EvmVerifyOptions.SolidityFoundry ||
     option === EvmVerifyOptions.SolidityHardhat;
 
-  // TODO
   const isFormDisabled = () => {
     const isEvmContractVerifyBaseSuccess =
       zEvmContractVerifyBase.safeParse({
@@ -180,7 +179,11 @@ export const EvmContractVerifyBody = ({
           ).success;
     }
 
-    return !isEvmContractVerifyBaseSuccess || !isEvmOptionSuccess;
+    return (
+      !isEvmContractVerifyBaseSuccess ||
+      !isEvmOptionSuccess ||
+      !!evmVerifyInfo?.isVerified
+    );
   };
 
   const handleSubmit = () => {
@@ -221,7 +224,7 @@ export const EvmContractVerifyBody = ({
         <NoMobile />
       ) : (
         <>
-          <PageContainer px={12} py={9} p={0}>
+          <PageContainer px={12} pt={9} pb={40} p={0}>
             <Grid
               w="100%"
               templateColumns="6fr 4fr"
@@ -253,7 +256,11 @@ export const EvmContractVerifyBody = ({
                           ? "success"
                           : "init",
                       }}
-                      error={errors.contractAddress?.message}
+                      error={
+                        evmVerifyInfo?.isVerified
+                          ? "Contract is already verified"
+                          : errors.contractAddress?.message
+                      }
                       rules={{
                         required: "",
                       }}
