@@ -5,7 +5,7 @@ import { trackWebsite } from "lib/amplitude";
 import { DEVELOPER_TOOL_DOCS_LINK, USER_GUIDE_DOCS_LINK } from "lib/data";
 
 import { CustomIcon } from "./icon";
-import { Option } from "lib/types";
+import type { Option } from "lib/types";
 
 const handleLink = (
   href: Option<string> = "",

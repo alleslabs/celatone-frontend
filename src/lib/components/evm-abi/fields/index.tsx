@@ -1,6 +1,6 @@
-import { Control, FieldValues, Path } from "react-hook-form";
+import type { Control, FieldValues, Path } from "react-hook-form";
 import { TupleField } from "./TupleField";
-import { JsonFragmentType } from "ethers";
+import type { JsonFragmentType } from "ethers";
 import { BaseField } from "./BaseField";
 import { TypeLabel } from "./TypeLabel";
 import { useEvmParams } from "lib/services/evm";

@@ -1,4 +1,4 @@
-import { HexAddr20 } from "lib/types";
+import type { HexAddr20 } from "lib/types";
 
 export enum ProxyType {
   Eip1167 = "Eip1167",

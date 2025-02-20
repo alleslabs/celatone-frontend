@@ -1,10 +1,12 @@
 import { Box, Flex, Heading, Stack, Switch, Text } from "@chakra-ui/react";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { TypeSwitch } from "lib/components/TypeSwitch";
-import { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
+import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
 import { isUndefined } from "lodash";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { InteractTabsIndex, TabIndex } from "../../types";
+import type { ChangeEvent } from "react";
+import { useCallback, useEffect, useState } from "react";
+import type { InteractTabsIndex } from "../../types";
+import { TabIndex } from "../../types";
 import { getInteractTabsIndex } from "../../utils";
 import { AbiRead } from "./abi-read";
 import { AbiWrite } from "./abi-write";

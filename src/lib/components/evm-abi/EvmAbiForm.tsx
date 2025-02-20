@@ -1,5 +1,5 @@
-import { JsonFragmentType } from "ethers";
-import { JsonDataType } from "lib/types";
+import type { JsonFragmentType } from "ethers";
+import type { JsonDataType } from "lib/types";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { FormFields } from "./fields";

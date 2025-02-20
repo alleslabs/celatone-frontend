@@ -2,7 +2,7 @@ import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
+import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
 
 interface OverviewProxyTargetInfoProps {
   proxyTargetAddressHex: HexAddr20;

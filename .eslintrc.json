@@ -26,6 +26,14 @@
     "eqeqeq": "error",
     "semi": "error",
 
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "disallowTypeAnnotations": true,
+        "fixStyle": "separate-type-imports",
+        "prefer": "type-imports"
+      }
+    ],
     "@typescript-eslint/no-empty-object-type": "off",
     "sonarjs/no-duplicate-string": ["error", { "threshold": 3 }],
     "sonarjs/cognitive-complexity": ["error", 27],

@@ -1,4 +1,5 @@
-import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import type { UseQueryOptions } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import {
   CELATONE_QUERY_KEYS,
@@ -6,7 +7,8 @@ import {
   useCurrentChain,
   useEvmConfig,
 } from "lib/app-provider";
-import { type HexAddr20, Nullable, zHexAddr20 } from "lib/types";
+import type { Nullable } from "lib/types";
+import { type HexAddr20, zHexAddr20 } from "lib/types";
 import { bech32AddressToHex, isHexWalletAddress } from "lib/utils";
 
 import {
@@ -15,7 +17,7 @@ import {
   getEvmParams,
 } from "./lcd";
 import { getEthCall, getEvmProxyTarget } from "./json-rpc";
-import { ProxyResult } from "./json-rpc/proxy/types";
+import type { ProxyResult } from "./json-rpc/proxy/types";
 
 export const useEvmParams = () => {
   const {

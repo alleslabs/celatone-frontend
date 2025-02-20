@@ -1,7 +1,8 @@
 import axios from "axios";
 
 import { CELATONE_API_OVERRIDE } from "env";
-import { Option, zChainConfig } from "lib/types";
+import type { Option } from "lib/types";
+import { zChainConfig } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getApiChainConfigs = async (

@@ -30,12 +30,8 @@ import { EvmContractDetailsContractInfo } from "./components/evm-contract-detail
 import { EvmContractDetailsOverview } from "./components/evm-contract-details-overview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
-import {
-  InteractTabsIndex,
-  TabIndex,
-  TxsTabIndex,
-  zEvmContractDetailsQueryParams,
-} from "./types";
+import type { InteractTabsIndex } from "./types";
+import { TabIndex, TxsTabIndex, zEvmContractDetailsQueryParams } from "./types";
 import { InteractEvmContract } from "./components/interact-evm-contract";
 import { useEvmVerifyInfo } from "lib/services/verification/evm";
 

@@ -3,8 +3,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { EmptyState } from "lib/components/state";
 
-import { JsonFragment } from "ethers";
-import { HexAddr20 } from "lib/types";
+import type { JsonFragment } from "ethers";
+import type { HexAddr20 } from "lib/types";
 import { isUndefined } from "lodash";
 import { WriteBox } from "./WriteBox";
 import InputWithIcon from "lib/components/InputWithIcon";

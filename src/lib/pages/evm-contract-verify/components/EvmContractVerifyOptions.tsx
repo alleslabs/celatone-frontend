@@ -1,10 +1,8 @@
 import { Grid, Heading, Radio, RadioGroup, Stack } from "@chakra-ui/react";
-import { Control, useController, useWatch } from "react-hook-form";
-import {
-  EvmContractVerifyForm,
-  EvmProgrammingLanguage,
-  EvmVerifyOptions,
-} from "lib/types";
+import type { Control } from "react-hook-form";
+import { useController, useWatch } from "react-hook-form";
+import type { EvmContractVerifyForm } from "lib/types";
+import { EvmProgrammingLanguage, EvmVerifyOptions } from "lib/types";
 
 interface EvmContractVerifyVyperProps {
   control: Control<EvmContractVerifyForm>;

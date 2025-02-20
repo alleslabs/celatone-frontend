@@ -1,10 +1,11 @@
 import { Flex } from "@chakra-ui/react";
-import { JsonFragmentType } from "ethers";
-import { FieldPath, FieldValues, useWatch } from "react-hook-form";
+import type { JsonFragmentType } from "ethers";
+import type { FieldPath, FieldValues } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import { getTypeDimensions } from "../utils";
 import { FieldTemplate } from "./FieldTemplate";
 import { TypeLabel } from "./TypeLabel";
-import { FieldProps } from "./types";
+import type { FieldProps } from "./types";
 
 interface TupleFieldProps<T extends FieldValues> extends FieldProps<T> {
   components: ReadonlyArray<JsonFragmentType>;

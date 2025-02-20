@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { Option } from "lib/types";
+import type { Option } from "lib/types";
 
 interface ContractCmdButtonProps {
   cmd: Option<string>;

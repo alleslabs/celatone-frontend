@@ -14,13 +14,14 @@ import {
 import dynamic from "next/dynamic";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
-import { JsonFragment } from "ethers";
+import type { JsonFragment } from "ethers";
 import { AmpEvent, track } from "lib/amplitude";
 import { CopyButton } from "lib/components/copy";
 import { EvmAbiForm } from "lib/components/evm-abi";
 import { CustomIcon } from "lib/components/icon";
 import { useEthCall } from "lib/services/evm";
-import { type HexAddr20, type JsonDataType, Option } from "lib/types";
+import type { Option } from "lib/types";
+import { type HexAddr20, type JsonDataType } from "lib/types";
 import {
   dateFromNow,
   decodeEvmFunctionResult,

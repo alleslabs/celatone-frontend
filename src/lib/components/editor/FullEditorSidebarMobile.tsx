@@ -8,7 +8,8 @@ import {
   DrawerOverlay,
   Heading,
 } from "@chakra-ui/react";
-import { EditorSidebar, EditorSidebarProps } from "./EditorSidebar";
+import type { EditorSidebarProps } from "./EditorSidebar";
+import { EditorSidebar } from "./EditorSidebar";
 
 export interface FullEditorSidebarMobileProps extends EditorSidebarProps {
   isOpen: boolean;

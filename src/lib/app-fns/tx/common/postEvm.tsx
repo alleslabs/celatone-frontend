@@ -1,6 +1,6 @@
 import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TxReceiptJsonRpc } from "lib/services/types";
+import type { TxReceiptJsonRpc } from "lib/services/types";
 import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 

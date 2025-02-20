@@ -14,7 +14,7 @@ import type { TxsTabIndex } from "../../types";
 import { EvmContractDetailsTxs } from "../EvmContractDetailsTxs";
 import { OverviewInfo } from "./OverviewInfo";
 import { OverviewVerifiedInfo } from "./OverviewVerifiedInfo";
-import { EvmVerifyInfo } from "lib/types";
+import type { EvmVerifyInfo } from "lib/types";
 import { OverviewVerifiedCmds } from "./OverviewVerifiedCmds";
 import { OverviewVerifiedProxyTargetCmds } from "./OverviewVerifiedProxyTargetCmds";
 

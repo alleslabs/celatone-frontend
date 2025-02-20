@@ -1,6 +1,6 @@
 import { Flex, Heading, VStack } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
-import { EvmVerifyInfo, HexAddr20 } from "lib/types";
+import type { EvmVerifyInfo, HexAddr20 } from "lib/types";
 import { InteractTabsIndex } from "../../types";
 import { categorizeAbi } from "../interact-evm-contract/utils";
 import { EvmContractCmdGroup } from "./EvmContractCmdGroup";

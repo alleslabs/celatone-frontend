@@ -1,12 +1,13 @@
 import { Flex, Stack } from "@chakra-ui/react";
 import { EvmVerifySection } from "lib/components/evm-verify-section";
 import { TypeSwitch } from "lib/components/TypeSwitch";
-import { EvmVerifyInfo } from "lib/types";
-import { HexAddr20, Option } from "lib/types";
+import type { EvmVerifyInfo } from "lib/types";
+import type { HexAddr20, Option } from "lib/types";
 import { useState } from "react";
 import { EvmContractDetailsContractInfoTabs } from "../../types";
 import { ContractAbi } from "./ContractAbi";
-import { ContractByteCode, ContractByteCodeProps } from "./ContractByteCode";
+import type { ContractByteCodeProps } from "./ContractByteCode";
+import { ContractByteCode } from "./ContractByteCode";
 import { ContractCompiler } from "./ContractCompiler";
 import { ContractCode } from "./ContractCode";
 

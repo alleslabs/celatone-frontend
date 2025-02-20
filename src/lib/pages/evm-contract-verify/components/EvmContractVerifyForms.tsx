@@ -1,4 +1,5 @@
-import { Control, useWatch } from "react-hook-form";
+import type { Control } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import {
   EvmContractVerifyVyperContractCode,
   EvmContractVerifyVyperJsonInput,
@@ -11,11 +12,8 @@ import {
   EvmContractVerifySolidityJsonInput,
   EvmContractVerifySolidityUploadFiles,
 } from "./solidity";
-import {
-  EvmContractVerifyForm,
-  EvmVerifyConfig,
-  EvmVerifyOptions,
-} from "lib/types";
+import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import { EvmVerifyOptions } from "lib/types";
 
 interface EvmContractVerifyFormsProps {
   control: Control<EvmContractVerifyForm>;

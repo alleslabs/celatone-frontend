@@ -1,5 +1,5 @@
-import { JsonFragmentType } from "ethers";
-import { Control, FieldPath, FieldValues } from "react-hook-form";
+import type { JsonFragmentType } from "ethers";
+import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
 export interface FieldProps<T extends FieldValues>
   extends Omit<JsonFragmentType, "name"> {

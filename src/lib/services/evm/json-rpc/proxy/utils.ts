@@ -1,4 +1,5 @@
-import { Hex, zHex, zHexAddr20 } from "lib/types";
+import type { Hex } from "lib/types";
+import { zHex, zHexAddr20 } from "lib/types";
 import { toChecksumAddress } from "lib/utils";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";

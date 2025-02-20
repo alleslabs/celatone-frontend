@@ -1,5 +1,6 @@
 import { last, split } from "lodash";
-import { EXTENSION_LIB, FilePath, SourceTreeNode } from "./types";
+import type { FilePath, SourceTreeNode } from "./types";
+import { EXTENSION_LIB } from "./types";
 
 export const generateSourceTree = (
   filesPath: FilePath[],

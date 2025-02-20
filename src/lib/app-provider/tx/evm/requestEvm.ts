@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { trackTxSucceed } from "lib/amplitude";
 import { requestEvmTx } from "lib/app-fns/tx/evm/requestEvm";
 import { useSignAndBroadcastEvm } from "lib/app-provider/hooks";
-import { SimulatedFeeEvm } from "lib/services/types";
+import type { SimulatedFeeEvm } from "lib/services/types";
 import type { HexAddr20 } from "lib/types";
 
 export interface RequestEvmStreamParams {

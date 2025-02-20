@@ -1,9 +1,10 @@
-import { Control, useController } from "react-hook-form";
+import type { Control } from "react-hook-form";
+import { useController } from "react-hook-form";
 import { Heading, Stack } from "@chakra-ui/react";
 import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
-import { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
 
 interface EvmContractVerifyVyperContractCodeProps {
   control: Control<EvmContractVerifyForm>;

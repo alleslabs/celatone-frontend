@@ -1,6 +1,6 @@
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
-import { Option } from "lib/types";
+import type { Option } from "lib/types";
 
 export interface ContractByteCodeProps {
   byteCode: Option<string>;

@@ -1,7 +1,7 @@
 import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/react";
 import { EvmContractVerifyModalBody } from "./EvmContractVerifyModalBody";
 import type { Control } from "react-hook-form";
-import { EvmContractVerifyForm } from "lib/types";
+import type { EvmContractVerifyForm } from "lib/types";
 
 interface EvmContractVerifyModalProps {
   isOpen: boolean;

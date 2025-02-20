@@ -2,7 +2,7 @@ import { CHAIN } from "env";
 import { DEFAULT_THEME } from "./default";
 import { INITIA_THEME } from "./initia";
 import { SEI_THEME } from "./sei";
-import { Option } from "lib/types";
+import type { Option } from "lib/types";
 
 export const getTheme = (chain: Option<string>) => {
   switch (chain) {

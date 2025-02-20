@@ -16,7 +16,7 @@ import { useCelatoneApp } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import { EvmContractVerifyForm } from "lib/types";
+import type { EvmContractVerifyForm } from "lib/types";
 import { useRouter } from "next/router";
 
 interface EvmContractVerifySuccessModalProps {

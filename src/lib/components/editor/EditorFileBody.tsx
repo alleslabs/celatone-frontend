@@ -1,5 +1,6 @@
-import { Flex, FlexProps, Text } from "@chakra-ui/react";
-import { SourceTreeNode } from "./types";
+import type { FlexProps } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
+import type { SourceTreeNode } from "./types";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 

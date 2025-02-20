@@ -3,7 +3,8 @@ import type { Coin, HexAddr20, Option } from "lib/types";
 import { big, EvmMethodId, EvmMethodName, zHexAddr20 } from "lib/types";
 
 import { keccak256 } from "@initia/initia.js";
-import { Interface, JsonFragment } from "ethers";
+import type { JsonFragment } from "ethers";
+import { Interface } from "ethers";
 import { toChecksumAddress } from "./address";
 import { hexToBig } from "./number";
 

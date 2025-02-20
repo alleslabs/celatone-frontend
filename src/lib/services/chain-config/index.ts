@@ -5,7 +5,7 @@ import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { isUrl } from "lib/utils";
 
 import { getApiChainConfigs } from "./api";
-import { Option } from "lib/types";
+import type { Option } from "lib/types";
 
 export const useApiChainConfigs = (
   networkTypes: string[],

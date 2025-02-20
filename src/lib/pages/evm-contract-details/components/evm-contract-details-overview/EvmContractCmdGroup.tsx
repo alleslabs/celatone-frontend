@@ -1,8 +1,8 @@
 import { ButtonGroup, Flex, Text } from "@chakra-ui/react";
-import { JsonFragment } from "ethers";
+import type { JsonFragment } from "ethers";
 import { useInternalNavigate } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
-import { HexAddr20 } from "lib/types";
+import type { HexAddr20 } from "lib/types";
 import { InteractTabsIndex, TabIndex } from "../../types";
 import { getInteractTabsIndex } from "../../utils";
 
