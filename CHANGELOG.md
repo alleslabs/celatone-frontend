@@ -90,6 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1243](https://github.com/alleslabs/celatone-frontend/pull/1243) Fix EVM Create checked by null To instead
 - [#1241](https://github.com/alleslabs/celatone-frontend/pull/1241) Fix EVM contract details interaction filter
 - [#1239](https://github.com/alleslabs/celatone-frontend/pull/1239) Fix check verified EVM contract and minor EVM contract details
 - [#1238](https://github.com/alleslabs/celatone-frontend/pull/1238) Fix EVM verify external docs link and EVM contract details mobile

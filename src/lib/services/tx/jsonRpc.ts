@@ -78,6 +78,7 @@ export const getTxsDataJsonRpc = async (
     return parseWithError(zTxsDataJsonRpc, parsedResults);
   });
 };
+
 export const getCosmosTxHashByEvmTxHash = (
   endpoint: string,
   evmTxHash: string

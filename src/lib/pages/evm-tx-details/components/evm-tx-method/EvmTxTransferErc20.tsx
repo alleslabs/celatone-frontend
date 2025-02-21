@@ -9,9 +9,8 @@ import type { AssetInfos, Option } from "lib/types";
 import {
   coinToTokenWithValue,
   convertToEvmDenom,
+  extractErc20TransferInput,
   formatTokenWithValue,
-  getEvmToAddress,
-  hexToBig,
   isSupportedToken,
 } from "lib/utils";
 
@@ -29,12 +28,11 @@ export const EvmTxTransferErc20 = ({
 }: EvmTxTransferErc20Props) => {
   const { from, input, to: erc20Contract } = evmTxData.tx;
 
-  const toAddress = getEvmToAddress(evmTxData);
-  const amountBig = hexToBig(evmTxData.tx.input.slice(74, 138));
+  const { address, amount } = extractErc20TransferInput(input);
 
-  const amount = coinToTokenWithValue(
+  const amountToken = coinToTokenWithValue(
     erc20Contract ? convertToEvmDenom(erc20Contract) : "",
-    amountBig.toString(),
+    amount.toString(),
     assetInfos
   );
 
@@ -50,20 +48,14 @@ export const EvmTxTransferErc20 = ({
             textVariant="body1"
             ampCopierSection="tx_page_message_header_send_address"
           />{" "}
-          <EvmMethodChip txInput={input} width="110px" />{" "}
-          {formatTokenWithValue(amount)} to{" "}
-          {toAddress?.address ? (
-            <ExplorerLink
-              type={toAddress.type}
-              value={toAddress.address}
-              showCopyOnHover
-              textVariant="body1"
-            />
-          ) : (
-            <Text variant="body2" color="text.disabled">
-              -
-            </Text>
-          )}
+          <EvmMethodChip txInput={input} txTo={erc20Contract} width="110px" />{" "}
+          {formatTokenWithValue(amountToken)} to{" "}
+          <ExplorerLink
+            type="user_address"
+            value={address}
+            showCopyOnHover
+            textVariant="body1"
+          />
         </Box>
       }
     >
@@ -82,19 +74,13 @@ export const EvmTxTransferErc20 = ({
       <EvmInfoLabelValue
         label="To"
         value={
-          toAddress ? (
-            <ExplorerLink
-              type={toAddress.type}
-              value={toAddress.address}
-              showCopyOnHover
-              textFormat="normal"
-              fixedHeight={false}
-            />
-          ) : (
-            <Text variant="body2" color="text.disabled">
-              -
-            </Text>
-          )
+          <ExplorerLink
+            type="user_address"
+            value={address}
+            showCopyOnHover
+            textFormat="normal"
+            fixedHeight={false}
+          />
         }
       />
       <EvmInfoLabelValue
@@ -125,11 +111,11 @@ export const EvmTxTransferErc20 = ({
       <EvmInfoLabelValue
         label="Transferred Token"
         value={
-          isSupportedToken(amount) ? (
-            <TokenCard token={amount} minW={{ base: "full", md: "50%" }} />
+          isSupportedToken(amountToken) ? (
+            <TokenCard token={amountToken} minW={{ base: "full", md: "50%" }} />
           ) : (
             <UnsupportedToken
-              token={amount}
+              token={amountToken}
               minW={{ base: "full", md: "50%" }}
             />
           )

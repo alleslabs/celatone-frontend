@@ -45,7 +45,7 @@ export const EvmTxTransfer = ({
             textVariant="body1"
             ampCopierSection="tx_page_message_header_send_address"
           />{" "}
-          <EvmMethodChip txInput={input} width="65px" />{" "}
+          <EvmMethodChip txInput={input} txTo={to} width="65px" />{" "}
           {formatTokenWithValue(amount)} to{" "}
           {to ? (
             <ExplorerLink

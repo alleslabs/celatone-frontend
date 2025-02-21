@@ -6,8 +6,8 @@ import { useBlockDataJsonRpc } from "lib/services/block";
 import { useEvmParams } from "lib/services/evm";
 import {
   useCosmosTxHashByEvmTxHash,
+  useEvmTxDataJsonRpc,
   useTxData,
-  useTxDataJsonRpc,
 } from "lib/services/tx";
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
 import { type Option, type Ratio, type TokenWithValue } from "lib/types";
@@ -41,7 +41,7 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
     withPrices: true,
   });
   const { data: evmTxData, isLoading: isLoadingEvmTxData } =
-    useTxDataJsonRpc(evmTxHash);
+    useEvmTxDataJsonRpc(evmTxHash);
   const { data: cosmosTxHash } = useCosmosTxHashByEvmTxHash(evmTxHash);
   const { data: cosmosTxData, isLoading: isLoadingCosmosTxData } = useTxData(
     cosmosTxHash,

@@ -21,7 +21,7 @@ export const EvmTxMsgDetailsBody = ({
   evmTxData,
   evmDenom,
 }: EvmTxMsgDetailsBodyProps) => {
-  const method = getEvmMethod(evmTxData.tx.input);
+  const method = getEvmMethod(evmTxData.tx.input, evmTxData.tx.to);
   const { data: assetInfos } = useAssetInfos({
     withPrices: true,
   });

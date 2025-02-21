@@ -1,14 +1,19 @@
 import type { JsonFragment } from "ethers";
-import { z, ZodIssueCode } from "zod";
 import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
 import { isHex20Bytes } from "lib/utils/validate";
+import { z, ZodIssueCode } from "zod";
+import type { HexAddr20 } from "./addrs";
 import { zHexAddr20 } from "./addrs";
+import type { Option } from "./common";
 import { zUtcDate } from "./time";
 
 export enum EvmMethodId {
   Transfer = "0x",
   TransferErc20 = "0xa9059cbb",
-  Create = "0x60806040",
+  // Note: Create multiple contracts
+  // 2 -> 0x60A06040
+  // 3 -> 0x60C06040
+  SingleCreate = "0x60806040",
   CallErc20Factory = "0x06ef1a86",
 }
 
@@ -18,6 +23,21 @@ export enum EvmMethodName {
   Create = "Create",
   CallErc20Factory = "Call ERC20 Factory",
 }
+
+export type EvmToAddress =
+  | {
+      toType: EvmMethodName.Create;
+      address: HexAddr20;
+      evmTxHash: Option<string>;
+    }
+  | {
+      toType: EvmMethodName.CallErc20Factory;
+      address: HexAddr20;
+    }
+  | {
+      toType: null;
+      address: HexAddr20;
+    };
 
 // MARK: Verification
 export enum EvmProgrammingLanguage {

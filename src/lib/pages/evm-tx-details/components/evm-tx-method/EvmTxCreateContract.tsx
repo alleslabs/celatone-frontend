@@ -17,6 +17,8 @@ export const EvmTxCreateContract = ({
   const { from } = evmTxData.tx;
   const { contractAddress } = evmTxData.txReceipt;
 
+  // TODO: fix contract addresses
+
   return (
     <EvmTxMethodAccordion
       msgIcon="instantiate"

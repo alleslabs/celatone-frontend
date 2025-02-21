@@ -662,9 +662,10 @@ export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
       return getEvmTxHashByCosmosTxHash(evm.jsonRpc, cosmosTxHash);
     },
     {
+      enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHash,
       retry: false,
       refetchOnWindowFocus: false,
-      enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHash,
+      staleTime: Infinity,
     }
   );
 };
@@ -701,7 +702,7 @@ export const useEvmTxHashesByCosmosTxHashes = (
   );
 };
 
-export const useTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
+export const useEvmTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
   return useQuery(
@@ -712,7 +713,7 @@ export const useTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
     ],
     async () => {
       if (!evm.enabled)
-        throw new Error("EVM is not enabled (useTxDataJsonRpc)");
+        throw new Error("EVM is not enabled (useEvmTxDataJsonRpc)");
 
       return getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
     },
@@ -740,14 +741,15 @@ export const useCosmosTxHashByEvmTxHash = (evmTxHash: string) => {
       return getCosmosTxHashByEvmTxHash(evm.jsonRpc, evmTxHash);
     },
     {
+      enabled: evm.enabled && !!evm.jsonRpc,
       retry: false,
       refetchOnWindowFocus: false,
-      enabled: evm.enabled && !!evm.jsonRpc,
+      staleTime: Infinity,
     }
   );
 };
 
-export const useTxsDataJsonRpc = (
+export const useEvmTxsDataJsonRpc = (
   evmTxHashes: Option<string[]>,
   enabled = true
 ) => {
@@ -761,9 +763,9 @@ export const useTxsDataJsonRpc = (
     ],
     async () => {
       if (!evm.enabled)
-        throw new Error("EVM is not enabled (useTxsDataJsonRpc)");
+        throw new Error("EVM is not enabled (useEvmTxsDataJsonRpc)");
       if (!evmTxHashes)
-        throw new Error("evmTxHashes is undefined (useTxsDataJsonRpc)");
+        throw new Error("evmTxHashes is undefined (useEvmTxsDataJsonRpc)");
 
       if (!evmTxHashes.length) return [];
       return getTxsDataJsonRpc(evm.jsonRpc, evmTxHashes);
