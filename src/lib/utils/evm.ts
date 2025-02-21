@@ -24,8 +24,8 @@ export const getEvmMethod = (txInput: string, txTo: Nullable<HexAddr20>) => {
   return txInput.slice(0, 10);
 };
 
-export const isEvmBasicCreate = (txInput: string, txTo: Nullable<HexAddr20>) =>
-  txTo === null && txInput.startsWith(EvmMethodId.BasicCreate);
+export const isEvmSingleCreate = (txInput: string, txTo: Nullable<HexAddr20>) =>
+  txTo === null && txInput.startsWith(EvmMethodId.SingleCreate);
 
 export const convertToEvmDenom = (contractAddress: HexAddr20) =>
   toChecksumAddress(contractAddress).replace("0x", "evm/");
@@ -47,7 +47,7 @@ export const getEvmToAddress = (
     return {
       toType: EvmMethodName.Create,
       address: toChecksumAddress(contractAddress),
-      evmTxHash: !isEvmBasicCreate(input, to) ? evmTxData.tx.hash : null,
+      evmTxHash: !isEvmSingleCreate(input, to) ? evmTxData.tx.hash : null,
     };
   }
 
