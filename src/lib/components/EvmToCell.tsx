@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import type { HexAddr20, Nullable } from "lib/types";
-import { EvmMethodName, type EvmToAddress, type Option } from "lib/types";
+import type { EvmToAddress, HexAddr20, Option } from "lib/types";
+import { EvmMethodName } from "lib/types";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { CustomIcon } from "./icon";
@@ -14,7 +14,7 @@ const EvmToCellCreate = ({
   address,
 }: {
   address: HexAddr20;
-  evmTxHash: Nullable<string>;
+  evmTxHash?: string;
 }) => (
   <Flex direction="column">
     <Text variant="body3" color="text.disabled">
@@ -49,7 +49,7 @@ export const EvmToCell = ({ toAddress }: EvmToCellProps) => {
     );
 
   if (toAddress.toType === EvmMethodName.CallErc20Factory)
-    return <EvmToCellCreate address={toAddress.address} evmTxHash={null} />;
+    return <EvmToCellCreate address={toAddress.address} />;
 
   return (
     <ExplorerLink

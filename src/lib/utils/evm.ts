@@ -44,7 +44,7 @@ export const getEvmToAddress = (
     return {
       toType: EvmMethodName.Create,
       address: toChecksumAddress(contractAddress),
-      evmTxHash: !isEvmSingleCreate(input, to) ? evmTxData.tx.hash : null,
+      evmTxHash: !isEvmSingleCreate(input, to) ? evmTxData.tx.hash : undefined,
     };
   }
 
