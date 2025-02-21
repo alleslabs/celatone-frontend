@@ -41,7 +41,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         />
       </EvmRelatedField>
       <EvmRelatedField label="Method">
-        <EvmMethodChip txInput={data.tx.input} width={36} />
+        <EvmMethodChip txInput={data.tx.input} txTo={data.tx.to} width={36} />
       </EvmRelatedField>
       <EvmRelatedField label="Sender">
         <ExplorerLink

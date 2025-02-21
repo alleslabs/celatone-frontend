@@ -1,5 +1,11 @@
 import type { TxDataJsonRpc } from "lib/services/types";
-import type { Coin, HexAddr20, Option } from "lib/types";
+import type {
+  Coin,
+  EvmToAddress,
+  HexAddr20,
+  Nullable,
+  Option,
+} from "lib/types";
 import { big, EvmMethodId, EvmMethodName, zHexAddr20 } from "lib/types";
 
 import { keccak256 } from "@initia/initia.js";
@@ -8,11 +14,11 @@ import { Interface } from "ethers";
 import { toChecksumAddress } from "./address";
 import { hexToBig } from "./number";
 
-export const getEvmMethod = (txInput: string) => {
+export const getEvmMethod = (txInput: string, txTo: Nullable<HexAddr20>) => {
+  if (txTo === null && txInput !== "0x") return EvmMethodName.Create;
   if (txInput === EvmMethodId.Transfer) return EvmMethodName.Transfer;
   if (txInput.startsWith(EvmMethodId.TransferErc20))
     return EvmMethodName.TransferErc20;
-  if (txInput.startsWith(EvmMethodId.Create)) return EvmMethodName.Create;
   if (txInput.startsWith(EvmMethodId.CallErc20Factory))
     return EvmMethodName.CallErc20Factory;
   return txInput.slice(0, 10);
@@ -21,35 +27,24 @@ export const getEvmMethod = (txInput: string) => {
 export const convertToEvmDenom = (contractAddress: HexAddr20) =>
   toChecksumAddress(contractAddress).replace("0x", "evm/");
 
-export interface EvmToAddress {
-  address: HexAddr20;
-  type: "user_address" | "evm_contract_address";
-  isCreatedContract: boolean;
-}
+export const extractErc20TransferInput = (input: string) => ({
+  address: toChecksumAddress(zHexAddr20.parse(`0x${input.slice(34, 74)}`)),
+  amount: hexToBig(input.slice(74, 138)).toString(),
+});
 
 export const getEvmToAddress = (
-  evmTxData: Option<TxDataJsonRpc>
+  evmTxData: TxDataJsonRpc
 ): Option<EvmToAddress> => {
-  if (!evmTxData) return undefined;
-
   const { to, input } = evmTxData.tx;
-  const method = getEvmMethod(input);
-
-  if (method === EvmMethodName.TransferErc20) {
-    return {
-      address: toChecksumAddress(zHexAddr20.parse(`0x${input.slice(34, 74)}`)),
-      type: "user_address",
-      isCreatedContract: false,
-    };
-  }
+  const method = getEvmMethod(input, to);
 
   if (method === EvmMethodName.Create) {
     const { contractAddress } = evmTxData.txReceipt;
     if (!contractAddress) return undefined;
     return {
+      Method: EvmMethodName.Create,
       address: toChecksumAddress(contractAddress),
-      type: "evm_contract_address",
-      isCreatedContract: true,
+      evmTxHash: evmTxData.tx.hash,
     };
   }
 
@@ -58,17 +53,22 @@ export const getEvmToAddress = (
     const contractAddress = logs[0]?.address;
     if (!contractAddress) return undefined;
     return {
+      Method: EvmMethodName.CallErc20Factory,
       address: toChecksumAddress(zHexAddr20.parse(contractAddress)),
-      type: "evm_contract_address",
-      isCreatedContract: true,
+    };
+  }
+
+  if (method === EvmMethodName.TransferErc20) {
+    return {
+      Method: null,
+      address: extractErc20TransferInput(input).address,
     };
   }
 
   if (to) {
     return {
+      Method: null,
       address: toChecksumAddress(to),
-      type: "user_address",
-      isCreatedContract: false,
     };
   }
 
@@ -79,11 +79,11 @@ export const getEvmAmount = (
   evmTxData: TxDataJsonRpc,
   evmDenom: Option<string>
 ): Coin => {
-  const method = getEvmMethod(evmTxData.tx.input);
+  const method = getEvmMethod(evmTxData.tx.input, evmTxData.tx.to);
 
   if (method === EvmMethodName.TransferErc20) {
     return {
-      amount: hexToBig(evmTxData.tx.input.slice(74, 138)).toString(),
+      amount: extractErc20TransferInput(evmTxData.tx.input).amount,
       denom: evmTxData.tx.to ? convertToEvmDenom(evmTxData.tx.to) : "",
     };
   }

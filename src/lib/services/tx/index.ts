@@ -662,9 +662,10 @@ export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
       return getEvmTxHashByCosmosTxHash(evm.jsonRpc, cosmosTxHash);
     },
     {
+      enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHash,
       retry: false,
       refetchOnWindowFocus: false,
-      enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHash,
+      staleTime: Infinity,
     }
   );
 };
@@ -740,9 +741,10 @@ export const useCosmosTxHashByEvmTxHash = (evmTxHash: string) => {
       return getCosmosTxHashByEvmTxHash(evm.jsonRpc, evmTxHash);
     },
     {
+      enabled: evm.enabled && !!evm.jsonRpc,
       retry: false,
       refetchOnWindowFocus: false,
-      enabled: evm.enabled && !!evm.jsonRpc,
+      staleTime: Infinity,
     }
   );
 };
