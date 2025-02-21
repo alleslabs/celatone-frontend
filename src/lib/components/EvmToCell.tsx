@@ -17,7 +17,7 @@ export const EvmToCell = ({ toAddress }: EvmToCellProps) => {
       </Text>
     );
 
-  if (toAddress.Method === EvmMethodName.Create)
+  if (toAddress.toType === EvmMethodName.Create)
     return (
       <Flex direction="column">
         <Text variant="body3" color="text.disabled">
@@ -39,7 +39,7 @@ export const EvmToCell = ({ toAddress }: EvmToCellProps) => {
       </Flex>
     );
 
-  if (toAddress.Method === EvmMethodName.CallErc20Factory)
+  if (toAddress.toType === EvmMethodName.CallErc20Factory)
     return (
       <Flex direction="column">
         <Text variant="body3" color="text.disabled">

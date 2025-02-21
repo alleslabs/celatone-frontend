@@ -24,6 +24,9 @@ export const getEvmMethod = (txInput: string, txTo: Nullable<HexAddr20>) => {
   return txInput.slice(0, 10);
 };
 
+export const isEvmBasicCreate = (txInput: string, txTo: Nullable<HexAddr20>) =>
+  txTo === null && txInput.startsWith(EvmMethodId.BasicCreate);
+
 export const convertToEvmDenom = (contractAddress: HexAddr20) =>
   toChecksumAddress(contractAddress).replace("0x", "evm/");
 
@@ -42,9 +45,9 @@ export const getEvmToAddress = (
     const { contractAddress } = evmTxData.txReceipt;
     if (!contractAddress) return undefined;
     return {
-      Method: EvmMethodName.Create,
+      toType: EvmMethodName.Create,
       address: toChecksumAddress(contractAddress),
-      evmTxHash: evmTxData.tx.hash,
+      evmTxHash: !isEvmBasicCreate(input, to) ? evmTxData.tx.hash : null,
     };
   }
 
@@ -53,21 +56,21 @@ export const getEvmToAddress = (
     const contractAddress = logs[0]?.address;
     if (!contractAddress) return undefined;
     return {
-      Method: EvmMethodName.CallErc20Factory,
+      toType: EvmMethodName.CallErc20Factory,
       address: toChecksumAddress(zHexAddr20.parse(contractAddress)),
     };
   }
 
   if (method === EvmMethodName.TransferErc20) {
     return {
-      Method: null,
+      toType: null,
       address: extractErc20TransferInput(input).address,
     };
   }
 
   if (to) {
     return {
-      Method: null,
+      toType: null,
       address: toChecksumAddress(to),
     };
   }

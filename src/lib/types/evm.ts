@@ -5,10 +5,12 @@ import { isHex20Bytes } from "lib/utils/validate";
 import type { HexAddr20 } from "./addrs";
 import { zHexAddr20 } from "./addrs";
 import { zUtcDate } from "./time";
+import type { Nullable } from "./common";
 
 export enum EvmMethodId {
   Transfer = "0x",
   TransferErc20 = "0xa9059cbb",
+  BasicCreate = "0x60806040",
   CallErc20Factory = "0x06ef1a86",
 }
 
@@ -21,16 +23,16 @@ export enum EvmMethodName {
 
 export type EvmToAddress =
   | {
-      Method: EvmMethodName.Create;
-      address: HexAddr20; // TODO: remove
-      evmTxHash: string;
+      toType: EvmMethodName.Create;
+      address: HexAddr20;
+      evmTxHash: Nullable<string>;
     }
   | {
-      Method: EvmMethodName.CallErc20Factory;
+      toType: EvmMethodName.CallErc20Factory;
       address: HexAddr20;
     }
   | {
-      Method: null;
+      toType: null;
       address: HexAddr20;
     };
 
