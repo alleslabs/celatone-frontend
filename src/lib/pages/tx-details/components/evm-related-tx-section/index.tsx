@@ -7,7 +7,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import { useTxDataJsonRpc } from "lib/services/tx";
+import { useEvmTxDataJsonRpc } from "lib/services/tx";
 import { formatEvmTxHash, getEvmToAddress } from "lib/utils";
 
 import { EvmRelatedField } from "./EvmRelatedField";
@@ -18,7 +18,7 @@ interface EvmRelatedTxSectionProps {
 
 const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
   const isMobile = useMobile();
-  const { data, isLoading } = useTxDataJsonRpc(evmTxHash);
+  const { data, isLoading } = useEvmTxDataJsonRpc(evmTxHash);
 
   if (isLoading) return <Loading my={0} py={0} />;
   if (!data)

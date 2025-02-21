@@ -702,7 +702,7 @@ export const useEvmTxHashesByCosmosTxHashes = (
   );
 };
 
-export const useTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
+export const useEvmTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
   return useQuery(
@@ -713,7 +713,7 @@ export const useTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
     ],
     async () => {
       if (!evm.enabled)
-        throw new Error("EVM is not enabled (useTxDataJsonRpc)");
+        throw new Error("EVM is not enabled (useEvmTxDataJsonRpc)");
 
       return getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
     },

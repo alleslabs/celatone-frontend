@@ -31,7 +31,7 @@ import { useNftByNftAddressLcd } from "./nft";
 import { useNftCollectionByCollectionAddress } from "./nft-collection";
 import { usePoolData } from "./pools";
 import { useProposalData, useProposalDataLcd } from "./proposal";
-import { useTxData, useTxDataJsonRpc } from "./tx";
+import { useEvmTxDataJsonRpc, useTxData } from "./tx";
 import {
   useAddressByInitiaUsername,
   useInitiaUsernameByAddress,
@@ -219,7 +219,7 @@ export const useSearchHandler = (
     isHexWalletAddress(debouncedKeyword)
   );
 
-  const { data: evmTxData, isFetching: evmTxFetching } = useTxDataJsonRpc(
+  const { data: evmTxData, isFetching: evmTxFetching } = useEvmTxDataJsonRpc(
     debouncedKeyword,
     debouncedKeyword.startsWith("0x") &&
       debouncedKeyword.length === 66 &&
