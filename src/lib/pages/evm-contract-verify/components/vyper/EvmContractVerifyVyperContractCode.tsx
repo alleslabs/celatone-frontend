@@ -4,7 +4,12 @@ import { Heading, Stack } from "@chakra-ui/react";
 import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
-import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import {
+  type EvmContractVerifyForm,
+  type EvmVerifyConfig,
+  EvmVerifyOptions,
+} from "lib/types";
+import { EvmContractVerifyAlert } from "../EvmContractVerifyAlert";
 
 interface EvmContractVerifyVyperContractCodeProps {
   control: Control<EvmContractVerifyForm>;
@@ -31,6 +36,7 @@ export const EvmContractVerifyVyperContractCode = ({
 
   return (
     <Stack spacing={12}>
+      <EvmContractVerifyAlert option={EvmVerifyOptions.VyperContractCode} />
       <Stack spacing={6}>
         <Heading as="h6" variant="h6">
           Provide Contract Code
