@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Alert, Flex } from "@chakra-ui/react";
 
 import type { HexAddr20, Option } from "lib/types";
 
@@ -49,17 +49,16 @@ export const EvmVerifySection = (props: EvmVerifySectionProps) => {
   const isMobile = useMobile();
 
   return (
-    <Flex
-      pl={6}
-      justifyContent="space-between"
-      alignItems={isMobile ? "flex-start" : "center"}
-      flexDirection={isMobile ? "column" : "row"}
-      w="full"
-      borderColor="primary.main"
-      borderLeftWidth={4}
-      gap={2}
-    >
-      <EvmVerifySectionBody {...props} />
-    </Flex>
+    <Alert variant="info-left-primary">
+      <Flex
+        w="full"
+        justifyContent="space-between"
+        alignItems={isMobile ? "flex-start" : "center"}
+        flexDirection={isMobile ? "column" : "row"}
+        gap={2}
+      >
+        <EvmVerifySectionBody {...props} />
+      </Flex>
+    </Alert>
   );
 };

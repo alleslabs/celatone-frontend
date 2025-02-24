@@ -693,6 +693,17 @@ export const ICONS = {
     ),
     viewBox: viewboxDefault,
   },
+  "info-circle-solid": {
+    svg: (
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM9 4C9 4.55228 8.55229 5 8 5C7.44772 5 7 4.55228 7 4C7 3.44772 7.44772 3 8 3C8.55229 3 9 3.44772 9 4ZM8.0002 6C7.55837 6 7.2002 6.35817 7.2002 6.8V12.2C7.2002 12.6418 7.55837 13 8.0002 13C8.44202 13 8.8002 12.6418 8.8002 12.2V6.8C8.8002 6.35817 8.44202 6 8.0002 6Z"
+        fill="currentColor"
+      />
+    ),
+    viewBox: viewboxDefault,
+  },
   instantiate: {
     svg: (
       <path

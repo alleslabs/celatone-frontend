@@ -8,7 +8,12 @@ import { ContractLibraries } from "../ContractLibraries";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { Fragment } from "react";
-import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import {
+  type EvmContractVerifyForm,
+  type EvmVerifyConfig,
+  EvmVerifyOptions,
+} from "lib/types";
+import { EvmContractVerifyAlert } from "../EvmContractVerifyAlert";
 
 interface EvmContractVerifySolidityUploadFilesProps {
   control: Control<EvmContractVerifyForm>;
@@ -26,6 +31,7 @@ export const EvmContractVerifySolidityUploadFiles = ({
 
   return (
     <Stack spacing={12}>
+      <EvmContractVerifyAlert option={EvmVerifyOptions.SolidityUploadFiles} />
       <Stack spacing={4}>
         <Heading as="h6" variant="h6">
           Upload File(s)
