@@ -2,7 +2,7 @@ import { Flex, Heading } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
-import { EvmToCell } from "lib/components/EvmToCell";
+import { EvmToCell } from "lib/components/evm-to-cell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -56,6 +56,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         color="gray.600"
         display={{ base: "none", xl: "block" }}
         flex={0.3}
+        mt={5}
       />
       <EvmRelatedField label="To">
         <EvmToCell toAddress={toAddress} />
@@ -73,7 +74,6 @@ export const EvmRelatedTxSection = ({
     </Heading>
     <Flex
       direction={{ base: "column", xl: "row" }}
-      alignItems={{ base: "start", xl: "center" }}
       gap={4}
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="8px"

@@ -24,9 +24,6 @@ export const getEvmMethod = (txInput: string, txTo: Nullable<HexAddr20>) => {
   return txInput.slice(0, 10);
 };
 
-export const isEvmSingleCreate = (txInput: string, txTo: Nullable<HexAddr20>) =>
-  txTo === null && txInput.startsWith(EvmMethodId.SingleCreate);
-
 export const extractErc20TransferInput = (input: string) => ({
   address: toChecksumAddress(zHexAddr20.parse(`0x${input.slice(34, 74)}`)),
   amount: hexToBig(input.slice(74, 138)).toString(),
@@ -44,7 +41,7 @@ export const getEvmToAddress = (
     return {
       toType: EvmMethodName.Create,
       address: toChecksumAddress(contractAddress),
-      evmTxHash: !isEvmSingleCreate(input, to) ? evmTxData.tx.hash : undefined,
+      evmTxHash: evmTxData.tx.hash,
     };
   }
 
