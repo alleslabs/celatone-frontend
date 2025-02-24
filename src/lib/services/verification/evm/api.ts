@@ -68,7 +68,9 @@ const submitEvmVerifySolidityContractCode = async ({
       license: licenseType,
       bytecode_type: BYTECODE_TYPE,
       compiler_version: compilerVersion,
-      constructor_arguments: constructorArgs.value,
+      constructor_arguments: constructorArgs.enabled
+        ? constructorArgs.value
+        : undefined,
       metadata: {
         chain_id: chainId,
         contract_address: contractAddress,
@@ -107,7 +109,9 @@ const submitEvmVerifySolidityUploadFiles = async ({
   formData.append("language", "Solidity");
   formData.append("bytecode_type", BYTECODE_TYPE);
   formData.append("compiler_version", compilerVersion);
-  formData.append("constructor_arguments", constructorArgs.value);
+  if (constructorArgs.enabled) {
+    formData.append("constructor_arguments", constructorArgs.value);
+  }
   formData.append(
     "metadata",
     JSON.stringify({
@@ -157,7 +161,9 @@ const submitEvmVerifyVyperContractCode = async ({
       bytecode_type: BYTECODE_TYPE,
       contract_name: contractName,
       compiler_version: compilerVersion,
-      constructor_arguments: constructorArgs.value,
+      constructor_arguments: constructorArgs.enabled
+        ? constructorArgs.value
+        : undefined,
       metadata: {
         chain_id: chainId,
         contract_address: contractAddress,
@@ -193,7 +199,9 @@ const submitEvmVerifyVyperUploadFiles = async ({
   formData.append("language", "Vyper");
   formData.append("bytecode_type", BYTECODE_TYPE);
   formData.append("compiler_version", compilerVersion);
-  formData.append("constructor_arguments", constructorArgs.value);
+  if (constructorArgs.enabled) {
+    formData.append("constructor_arguments", constructorArgs.value);
+  }
   formData.append(
     "metadata",
     JSON.stringify({
@@ -242,7 +250,9 @@ const submitEvmVerifyJsonInput = async ({
       license: licenseType,
       bytecode_type: BYTECODE_TYPE,
       compiler_version: compilerVersion,
-      constructor_arguments: constructorArgs.value,
+      constructor_arguments: constructorArgs.enabled
+        ? constructorArgs.value
+        : undefined,
       metadata: {
         chain_id: chainId,
         contract_address: contractAddress,
