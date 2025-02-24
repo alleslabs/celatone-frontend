@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1245](https://github.com/alleslabs/celatone-frontend/pull/1245) Support assets from assetlist in chain config
 - [#1240](https://github.com/alleslabs/celatone-frontend/pull/1222) Update social media handle and naming convention from Celatone to Scan
 - [#1232](https://github.com/alleslabs/celatone-frontend/pull/1232) Support EVM verification with multiparts and standard JSON input for both Solidity and Vyper
 - [#1233](https://github.com/alleslabs/celatone-frontend/pull/1233) Support "move/" prefix hex module address in search
