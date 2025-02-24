@@ -3,27 +3,20 @@ import Link from "next/link";
 
 import { trackWebsite } from "lib/amplitude";
 import { useTierConfig } from "lib/app-provider";
-import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { USER_GUIDE_DOCS_LINK } from "lib/data";
 import { useLatestBlockLcd } from "lib/services/block";
 import { useOverviewsStats } from "lib/services/stats";
-
-const FOOTER_BUTTONS = [
-  {
-    href: `${USER_GUIDE_DOCS_LINK}/introduction/overview`,
-    icon: "document" as IconKeys,
-    text: "View Doc",
-    onClick: () =>
-      trackWebsite(`${USER_GUIDE_DOCS_LINK}/introduction/overview`),
-  },
-];
+import { useAuth } from "lib/hooks";
 
 export const InformationFooter = () => {
+  const { auth, signOut, isEnable } = useAuth();
   const { isFullTier } = useTierConfig();
   const { data: overviewsStats, isLoading: isLoadingFull } =
     useOverviewsStats(isFullTier);
   const { data: latestHeight, isLoading: isLoadingLite } = useLatestBlockLcd();
+
+  const handleSignOut = async () => signOut(auth);
 
   const latest = isFullTier ? overviewsStats?.latestBlock : latestHeight;
   const isLoading = isFullTier ? isLoadingFull : isLoadingLite;
@@ -68,32 +61,50 @@ export const InformationFooter = () => {
           </>
         )}
       </Flex>
-      <Flex>
-        {FOOTER_BUTTONS.map(({ href, icon, text, onClick }) => (
-          <Link
-            key={text}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={onClick}
+      <Flex flexDirection="column">
+        <Link
+          key="View Doc"
+          href={`${USER_GUIDE_DOCS_LINK}/introduction/overview`}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() =>
+            trackWebsite(`${USER_GUIDE_DOCS_LINK}/introduction/overview`)
+          }
+        >
+          <Flex
+            gap={1}
+            py={1}
+            px={2}
+            borderRadius={4}
+            align="center"
+            cursor="pointer"
+            _hover={{ background: "gray.800" }}
+            transition="all 0.25s ease-in-out"
           >
-            <Flex
-              gap={1}
-              py={1}
-              px={2}
-              borderRadius={4}
-              align="center"
-              cursor="pointer"
-              _hover={{ background: "gray.800" }}
-              transition="all 0.25s ease-in-out"
-            >
-              <CustomIcon name={icon} color="gray.600" boxSize={3} />
-              <Text variant="body3" color="text.dark">
-                {text}
-              </Text>
-            </Flex>
-          </Link>
-        ))}
+            <CustomIcon name="document" color="gray.600" boxSize={3} />
+            <Text variant="body3" color="text.dark">
+              View Doc
+            </Text>
+          </Flex>
+        </Link>
+        {isEnable && (
+          <Flex
+            gap={1}
+            py={1}
+            px={2}
+            borderRadius={4}
+            align="center"
+            cursor="pointer"
+            _hover={{ background: "gray.800" }}
+            transition="all 0.25s ease-in-out"
+            onClick={handleSignOut}
+          >
+            <CustomIcon name="slashed" color="gray.600" boxSize={3} />
+            <Text variant="body3" color="text.dark">
+              Sign Out
+            </Text>
+          </Flex>
+        )}
       </Flex>
     </Flex>
   );
