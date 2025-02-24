@@ -5,7 +5,12 @@ import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
-import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import {
+  type EvmContractVerifyForm,
+  type EvmVerifyConfig,
+  EvmVerifyOptions,
+} from "lib/types";
+import { EvmContractVerifyAlert } from "../EvmContractVerifyAlert";
 
 interface EvmContractVerifyVyperUploadFileProps {
   control: Control<EvmContractVerifyForm>;
@@ -25,6 +30,7 @@ export const EvmContractVerifyVyperUploadFile = ({
 
   return (
     <Stack spacing={12}>
+      <EvmContractVerifyAlert option={EvmVerifyOptions.VyperUploadFile} />
       <Stack spacing={4}>
         <Heading as="h6" variant="h6">
           Upload Source Code File

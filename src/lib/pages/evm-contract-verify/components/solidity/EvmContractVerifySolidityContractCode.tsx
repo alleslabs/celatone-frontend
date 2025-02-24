@@ -6,7 +6,12 @@ import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
 import { OptimizerConfiguration } from "../OptimizerConfiguration";
 import { ContractLibraries } from "../ContractLibraries";
-import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import {
+  type EvmContractVerifyForm,
+  type EvmVerifyConfig,
+  EvmVerifyOptions,
+} from "lib/types";
+import { EvmContractVerifyAlert } from "../EvmContractVerifyAlert";
 
 interface EvmContractVerifySolidityContractCodeProps {
   control: Control<EvmContractVerifyForm>;
@@ -26,6 +31,7 @@ export const EvmContractVerifySolidityContractCode = ({
 
   return (
     <Stack spacing={12}>
+      <EvmContractVerifyAlert option={EvmVerifyOptions.SolidityContractCode} />
       <Stack spacing={6}>
         <Heading as="h6" variant="h6">
           Provide Contract Code
