@@ -18,6 +18,13 @@ const secondary = definePartsStyle({
   },
 });
 
+const primary = definePartsStyle({
+  container: {
+    bg: "primary.main",
+    color: "gray.900",
+  },
+});
+
 const primaryLight = definePartsStyle({
   container: {
     bg: "primary.light",
@@ -68,6 +75,7 @@ export const Tag = defineMultiStyleConfig({
     },
   },
   variants: {
+    primary,
     "primary-light": primaryLight,
     "primary-darker": primaryDarker,
     secondary,

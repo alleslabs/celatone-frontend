@@ -15,15 +15,18 @@ import {
   useWasmConfig,
 } from "lib/app-provider";
 import { createQueryFnWithTimeout } from "lib/services/utils";
-import type {
-  BechAddr,
-  BechAddr20,
-  BechAddr32,
-  Option,
-  PoolTxFilter,
-  Transaction,
-  TransactionWithSignerPubkey,
-  TxFilters,
+import type { Nullable } from "lib/types";
+import {
+  type BechAddr,
+  type BechAddr20,
+  type BechAddr32,
+  type HexAddr20,
+  type Option,
+  type PoolTxFilter,
+  type Transaction,
+  type TransactionWithSignerPubkey,
+  type TxFilters,
+  zHexAddr20,
 } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
@@ -108,6 +111,7 @@ export const useTxData = (
     {
       enabled: enabled && Boolean(txHash && isTxHash(txHash)),
       refetchOnWindowFocus: false,
+      staleTime: Infinity,
     }
   );
 };
@@ -725,7 +729,7 @@ export const useEvmTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
   );
 };
 
-export const useCosmosTxHashByEvmTxHash = (evmTxHash: string) => {
+export const useCosmosTxHashByEvmTxHash = (evmTxHash: Option<string>) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
   return useQuery(
@@ -737,11 +741,13 @@ export const useCosmosTxHashByEvmTxHash = (evmTxHash: string) => {
     async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useCosmosTxHashByEvmTxHash)");
+      if (!evmTxHash)
+        throw new Error("evmTxHash is undefined (useCosmosTxHashByEvmTxHash)");
 
       return getCosmosTxHashByEvmTxHash(evm.jsonRpc, evmTxHash);
     },
     {
-      enabled: evm.enabled && !!evm.jsonRpc,
+      enabled: evm.enabled && !!evm.jsonRpc && !!evmTxHash,
       retry: false,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
@@ -777,6 +783,40 @@ export const useEvmTxsDataJsonRpc = (
       refetchOnMount: false,
     }
   );
+};
+
+const useCosmosTxDataByEvmTxHash = (evmTxHash: Option<string>) => {
+  const { data: cosmosTxHash, isFetching: isCosmosTxHashFetching } =
+    useCosmosTxHashByEvmTxHash(evmTxHash);
+  const { data: txData, isFetching: isTxDataFetching } =
+    useTxData(cosmosTxHash);
+  return {
+    data: txData,
+    isFetching: isCosmosTxHashFetching || isTxDataFetching,
+  };
+};
+
+export const useCreatedContractsByEvmTxHash = (
+  evmTxHash: Option<string>,
+  evmTxContract: Nullable<HexAddr20>
+) => {
+  const { data: cosmosTxData, isFetching } =
+    useCosmosTxDataByEvmTxHash(evmTxHash);
+
+  const contracts =
+    cosmosTxData?.events
+      .filter((event) => event.type === "contract_created")
+      .map((event) => zHexAddr20.parse(event.attributes[0].value)) ?? [];
+
+  return {
+    data: evmTxContract
+      ? [
+          evmTxContract,
+          ...contracts.filter((contract) => contract !== evmTxContract),
+        ]
+      : contracts,
+    isFetching,
+  };
 };
 
 export * from "./simulateFee";

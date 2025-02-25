@@ -10,10 +10,6 @@ import { zUtcDate } from "./time";
 export enum EvmMethodId {
   Transfer = "0x",
   TransferErc20 = "0xa9059cbb",
-  // Note: Create multiple contracts
-  // 2 -> 0x60A06040
-  // 3 -> 0x60C06040
-  SingleCreate = "0x60806040",
   CallErc20Factory = "0x06ef1a86",
 }
 

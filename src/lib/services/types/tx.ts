@@ -480,9 +480,12 @@ export const zTxReceiptJsonRpc = z
     transactionIndex: zHexBig,
     type: z.string(), // TODO: convert to enum later
   })
-  .transform(({ from, to, ...val }) => ({
+  .transform(({ from, to, contractAddress, ...val }) => ({
     from: toChecksumAddress(from),
     to: to ? toChecksumAddress(to) : null,
+    contractAddress: contractAddress
+      ? toChecksumAddress(contractAddress)
+      : null,
     ...val,
   }));
 export type TxReceiptJsonRpc = z.infer<typeof zTxReceiptJsonRpc>;
