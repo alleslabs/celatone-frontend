@@ -2,6 +2,10 @@ import { MsgClearAdmin } from "@initia/initia.js";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
+import { trackTxSucceed } from "lib/amplitude";
+import { clearAdminTx } from "lib/app-fns/tx/clearAdmin";
+import type { BechAddr32 } from "lib/types";
+import { toEncodeObject } from "lib/utils";
 import { CELATONE_QUERY_KEYS } from "../env";
 import {
   useCurrentChain,
@@ -9,10 +13,6 @@ import {
   useSignAndBroadcast,
   useWasmConfig,
 } from "../hooks";
-import { trackTxSucceed } from "lib/amplitude";
-import { clearAdminTx } from "lib/app-fns/tx/clearAdmin";
-import type { BechAddr32 } from "lib/types";
-import { toEncodeObject } from "lib/utils";
 
 export interface ClearAdminStreamParams {
   onTxSucceed?: () => void;

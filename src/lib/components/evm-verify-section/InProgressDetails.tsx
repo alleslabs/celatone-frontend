@@ -1,7 +1,6 @@
 import { Button, Text } from "@chakra-ui/react";
 
-import type { HexAddr20 } from "lib/types";
-import type { EvmVerifyInfo } from "lib/types";
+import type { HexAddr20, EvmVerifyInfo } from "lib/types";
 import { EvmVerifyStatusModalWithTrigger } from "../modal/evm-verify-status";
 
 interface InProgressDetailsProps {

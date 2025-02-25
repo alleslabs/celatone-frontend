@@ -1,11 +1,11 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
-import InputWithIcon from "../InputWithIcon";
 import { EmptyState } from "lib/components/state";
 import type { ContractListInfo } from "lib/stores/contract";
 
 import { ContractListCard } from "./ContractListCard";
+import InputWithIcon from "../InputWithIcon";
 
 interface AllContractListsProps {
   contractLists: ContractListInfo[];

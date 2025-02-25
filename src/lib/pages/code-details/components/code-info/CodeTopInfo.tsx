@@ -1,7 +1,6 @@
 import { Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import { CtaSection } from "../CtaSection";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
@@ -20,6 +19,7 @@ import type {
 } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
+import { CtaSection } from "../CtaSection";
 
 interface CodeTopInfoProps {
   codeId: number;

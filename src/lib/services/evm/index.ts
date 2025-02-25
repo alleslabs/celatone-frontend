@@ -7,17 +7,17 @@ import {
   useCurrentChain,
   useEvmConfig,
 } from "lib/app-provider";
-import type { Nullable } from "lib/types";
-import { type HexAddr20, zHexAddr20 } from "lib/types";
+import type { Nullable, HexAddr20 } from "lib/types";
+import { zHexAddr20 } from "lib/types";
 import { bech32AddressToHex, isHexWalletAddress } from "lib/utils";
 
+import { getEthCall, getEvmProxyTarget } from "./json-rpc";
+import type { ProxyResult } from "./json-rpc/proxy/types";
 import {
   getEvmCodesByAddress,
   getEvmContractInfoSequencer,
   getEvmParams,
 } from "./lcd";
-import { getEthCall, getEvmProxyTarget } from "./json-rpc";
-import type { ProxyResult } from "./json-rpc/proxy/types";
 
 export const useEvmParams = () => {
   const {

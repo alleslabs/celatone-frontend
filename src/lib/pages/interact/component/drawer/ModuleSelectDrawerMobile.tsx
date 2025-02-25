@@ -12,8 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { ModuleInteractionMobileStep } from "../../types";
-import { ModuleEmptyState } from "../common";
 import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ModuleCard } from "lib/components/module";
@@ -29,6 +27,8 @@ import type {
   ModuleSelectFunction,
   SelectedAddress,
 } from "./types";
+import { ModuleInteractionMobileStep } from "../../types";
+import { ModuleEmptyState } from "../common";
 
 interface ModuleSelectDrawerMobileProps {
   isOpen: boolean;

@@ -16,9 +16,9 @@ import {
 import type { ReactNode } from "react";
 import { useCallback } from "react";
 
+import { trackUseOtherModal } from "lib/amplitude";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
-import { trackUseOtherModal } from "lib/amplitude";
 
 export interface ActionModalProps {
   icon?: IconKeys;

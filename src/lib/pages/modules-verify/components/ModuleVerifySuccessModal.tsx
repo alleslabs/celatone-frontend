@@ -15,10 +15,10 @@ import {
 import { useWatch } from "react-hook-form";
 import type { Control } from "react-hook-form";
 
-import type { ModuleVerifyForm } from "../types";
 import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
+import type { ModuleVerifyForm } from "../types";
 
 interface ModuleVerifySuccessModalProps {
   onClose: () => void;

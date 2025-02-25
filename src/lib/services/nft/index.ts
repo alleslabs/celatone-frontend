@@ -1,15 +1,6 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
-import type {
-  Metadata,
-  NftMintInfo,
-  NftMutateEventsResponse,
-  NftsByAccountAddressResponse,
-  NftsResponse,
-  NftTxsResponse,
-} from "../types";
-import { handleQueryByTier } from "../utils";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -36,6 +27,15 @@ import {
   getNftsSequencer,
   getNftTransactionsSequencer,
 } from "./sequencer";
+import type {
+  Metadata,
+  NftMintInfo,
+  NftMutateEventsResponse,
+  NftsByAccountAddressResponse,
+  NftsResponse,
+  NftTxsResponse,
+} from "../types";
+import { handleQueryByTier } from "../utils";
 
 export const useNfts = (
   collectionAddress: HexAddr32,

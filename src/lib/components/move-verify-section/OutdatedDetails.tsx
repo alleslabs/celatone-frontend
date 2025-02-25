@@ -1,7 +1,7 @@
 import { Button, Text } from "@chakra-ui/react";
 
-import { AppLink } from "../AppLink";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
+import { AppLink } from "../AppLink";
 
 export const OutdatedDetails = () => {
   const navigate = useInternalNavigate();

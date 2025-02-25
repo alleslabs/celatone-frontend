@@ -1,13 +1,12 @@
 import { Alert, Flex } from "@chakra-ui/react";
 
-import type { HexAddr20, Option } from "lib/types";
-
-import { NotVerifiedDetails } from "./NotVerifiedDetails";
-import type { EvmVerifyInfo } from "lib/types";
 import { useMobile } from "lib/app-provider";
-import { VerifiedDetails } from "./VerifiedDetails";
+import type { HexAddr20, Option, EvmVerifyInfo } from "lib/types";
+
 import { FailedDetails } from "./FailedDetails";
 import { InProgressDetails } from "./InProgressDetails";
+import { NotVerifiedDetails } from "./NotVerifiedDetails";
+import { VerifiedDetails } from "./VerifiedDetails";
 
 interface EvmVerifySectionProps {
   contractAddress: HexAddr20;

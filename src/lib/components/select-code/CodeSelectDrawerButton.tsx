@@ -17,14 +17,14 @@ import {
 import type { ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 
+import { AmpEvent, track } from "lib/amplitude";
+import type { PermissionFilterValue } from "lib/hooks";
+import { useMyCodesData } from "lib/model/code";
 import { CustomTab } from "../CustomTab";
 import { FilterByPermission } from "../forms";
 import { CustomIcon } from "../icon";
 import InputWithIcon from "../InputWithIcon";
 import { MySavedCodesTable, MyStoredCodesTable } from "../table";
-import { AmpEvent, track } from "lib/amplitude";
-import type { PermissionFilterValue } from "lib/hooks";
-import { useMyCodesData } from "lib/model/code";
 
 interface CodeFilterState {
   keyword: string;

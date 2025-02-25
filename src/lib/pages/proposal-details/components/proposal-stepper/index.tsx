@@ -1,11 +1,11 @@
 import { Flex, Spacer, Text } from "@chakra-ui/react";
 
-import { ProgressBadge } from "../ProgressBadge";
 import type { ProposalData } from "lib/types";
 
 import { StepperHelperText } from "./StepHelperText";
 import { StepIcon } from "./StepIcon";
 import { getProgressBadgeProps } from "./utils";
+import { ProgressBadge } from "../ProgressBadge";
 
 export interface ProposalStepperProps {
   step: number;

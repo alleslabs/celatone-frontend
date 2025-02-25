@@ -1,7 +1,6 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { chakra, Flex } from "@chakra-ui/react";
 
-import type { GasInfo } from "../data";
 import { useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
@@ -10,6 +9,7 @@ import type { TxData, TxDataJsonRpc } from "lib/services/types";
 import type { TokenWithValue } from "lib/types";
 
 import { EvmTxGasReceipt } from "./EvmTxGasReceipt";
+import type { GasInfo } from "../data";
 
 interface EvmTxInfoMobileProps extends FlexProps {
   evmTxData: TxDataJsonRpc;

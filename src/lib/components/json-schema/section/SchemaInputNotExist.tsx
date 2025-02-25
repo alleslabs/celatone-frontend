@@ -1,8 +1,8 @@
 import { Text } from "@chakra-ui/react";
 
-import { AttachSchemaCard } from "../AttachSchemaCard";
 import { CustomIcon } from "lib/components/icon";
 import type { CodeSchema, Nullish, Option } from "lib/types";
+import { AttachSchemaCard } from "../AttachSchemaCard";
 
 interface SchemaInputNotExistProps {
   prettyType: string;

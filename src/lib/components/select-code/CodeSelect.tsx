@@ -1,9 +1,6 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 
-import { DotSeparator } from "../DotSeparator";
-import { PermissionChip } from "../PermissionChip";
-import { WasmVerifyBadge } from "../WasmVerifyBadge";
 import type { FormStatus } from "lib/components/forms";
 import { UploadIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
@@ -14,6 +11,9 @@ import { AccessConfigPermission } from "lib/types";
 import { getWasmVerifyStatus } from "lib/utils";
 
 import { CodeSelectDrawerButton } from "./CodeSelectDrawerButton";
+import { DotSeparator } from "../DotSeparator";
+import { PermissionChip } from "../PermissionChip";
+import { WasmVerifyBadge } from "../WasmVerifyBadge";
 
 interface CodeSelectProps extends Omit<FlexProps, "onSelect"> {
   codeId: number;

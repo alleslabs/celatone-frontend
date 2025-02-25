@@ -13,10 +13,6 @@ import type { ChangeEvent } from "react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { useDerivedPools } from "../../data";
-import type { PoolFilterState } from "../../types";
-import { FilterByPoolType } from "../FilterByPoolType";
-import { SuperfluidLabel } from "../SuperfluidLabel";
 import { trackUseSort, trackUseToggle, trackUseView } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -30,6 +26,10 @@ import { PoolType } from "lib/types";
 import { isPositiveInt } from "lib/utils";
 
 import { SupportedPoolList } from "./SupportedPoolList";
+import { useDerivedPools } from "../../data";
+import type { PoolFilterState } from "../../types";
+import { FilterByPoolType } from "../FilterByPoolType";
+import { SuperfluidLabel } from "../SuperfluidLabel";
 
 const OPTIONS = [
   {

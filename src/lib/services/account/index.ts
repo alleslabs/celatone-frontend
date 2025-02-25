@@ -2,11 +2,6 @@ import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import type {
-  AccountBech32LcdResponse,
-  AccountData,
-  AccountTableCounts,
-} from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -23,6 +18,11 @@ import {
   getAccountDataLcd,
   getAccountTypeLcd,
 } from "./lcd";
+import type {
+  AccountBech32LcdResponse,
+  AccountData,
+  AccountTableCounts,
+} from "../types";
 
 export const useAccountData = (
   address: BechAddr

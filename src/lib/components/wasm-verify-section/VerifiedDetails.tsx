@@ -3,8 +3,6 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { isNull } from "lodash";
 import Link from "next/link";
 
-import { ExplorerLink } from "../ExplorerLink";
-import { WasmVerifyBadge } from "../WasmVerifyBadge";
 import { Copier } from "lib/components/copy";
 import { WasmVerifyStatusModal } from "lib/components/modal";
 import { StatusMessageBox } from "lib/components/StatusMessageBox";
@@ -16,6 +14,8 @@ import type {
   WasmVerifyInfoBase,
 } from "lib/types";
 import { formatUTC } from "lib/utils";
+import { ExplorerLink } from "../ExplorerLink";
+import { WasmVerifyBadge } from "../WasmVerifyBadge";
 
 const baseTextStyle: TextProps = {
   color: "text.dark",

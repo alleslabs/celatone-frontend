@@ -1,11 +1,11 @@
 import { Button, Flex, IconButton, Text } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 
-import type { DisplayMode, SelectedAddress } from "../types";
 import { useMobile } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
+import type { DisplayMode, SelectedAddress } from "../types";
 
 interface ModuleSelectorDisplayProps {
   selectedAddress: SelectedAddress;

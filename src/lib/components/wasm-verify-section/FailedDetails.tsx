@@ -1,6 +1,5 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "../ExplorerLink";
 import { useMobile } from "lib/app-provider";
 import { WasmVerifyStatusModal } from "lib/components/modal";
 import type { BechAddr32, WasmVerifyInfoBase } from "lib/types";
@@ -8,6 +7,7 @@ import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 
 import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
 import { VerifyButton } from "./VerifyButton";
+import { ExplorerLink } from "../ExplorerLink";
 
 interface FailedDetailsProps {
   codeId: number;

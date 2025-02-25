@@ -15,30 +15,24 @@ import {
   useWasmConfig,
 } from "lib/app-provider";
 import { createQueryFnWithTimeout } from "lib/services/utils";
-import type { Nullable } from "lib/types";
-import {
-  type BechAddr,
-  type BechAddr20,
-  type BechAddr32,
-  type HexAddr20,
-  type Option,
-  type PoolTxFilter,
-  type Transaction,
-  type TransactionWithSignerPubkey,
-  type TxFilters,
-  zHexAddr20,
+import { zHexAddr20 } from "lib/types";
+import type {
+  Nullable,
+  BechAddr,
+  BechAddr20,
+  BechAddr32,
+  HexAddr20,
+  Option,
+  PoolTxFilter,
+  Transaction,
+  TransactionWithSignerPubkey,
+  TxFilters,
 } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
   extractTxLogs,
   isTxHash,
 } from "lib/utils";
-import type {
-  AccountTxsResponse,
-  BlockTxsResponse,
-  TxData,
-  TxsResponse,
-} from "../types";
 
 import {
   getTxData,
@@ -69,6 +63,12 @@ import {
   getTxsCountSequencer,
   getTxsSequencer,
 } from "./sequencer";
+import type {
+  AccountTxsResponse,
+  BlockTxsResponse,
+  TxData,
+  TxsResponse,
+} from "../types";
 
 export const useTxData = (
   txHash: Option<string>,

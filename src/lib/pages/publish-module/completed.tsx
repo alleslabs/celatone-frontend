@@ -12,8 +12,8 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { TxReceiptRender } from "lib/components/tx";
 import { feeFromStr } from "lib/utils";
 
-import type { PublishCompleteState } from ".";
 import { ModulePublishCard } from "./components/ModulePublishCard";
+import type { PublishCompleteState } from ".";
 
 interface PublishCompletedProps {
   publishTxInfo: PublishCompleteState;

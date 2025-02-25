@@ -7,8 +7,8 @@ import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/theme-one_dark";
 import "ace-builds/src-noconflict/theme-pastel_on_dark";
-import { CopyButton } from "../copy";
 import { useCelatoneApp } from "lib/app-provider";
+import { CopyButton } from "../copy";
 
 interface TextReadOnlyProps {
   text: string;

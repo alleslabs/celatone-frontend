@@ -1,11 +1,11 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 
-import { MobileLabel } from "../MobileLabel";
 import { useMobile } from "lib/app-provider";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { Expedited } from "lib/components/Expedited";
 import type { ProposalType } from "lib/types";
+import { MobileLabel } from "../MobileLabel";
 
 interface ProposalTextCellProps {
   title: string;

@@ -1,10 +1,6 @@
 import { Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
 
-import { CustomIcon } from "../icon";
-import { Loading } from "../Loading";
-import { ErrorFetching } from "../state";
-import { TableTitle } from "../table";
 import { trackUseViewJSON } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { useOpenAssetTab } from "lib/hooks";
@@ -18,6 +14,10 @@ import { SupportedAssetTitle } from "./SupportedAssetTitle";
 import { UnsupportedAssetSectionContent } from "./UnsupportedAssetSectionContent";
 import { UnsupportedAssetTitle } from "./UnsupportedAssetTitle";
 import { UserAssetInfoCard } from "./UserAssetInfoCard";
+import { CustomIcon } from "../icon";
+import { Loading } from "../Loading";
+import { ErrorFetching } from "../state";
+import { TableTitle } from "../table";
 
 interface AssetsSectionProps {
   address: BechAddr;

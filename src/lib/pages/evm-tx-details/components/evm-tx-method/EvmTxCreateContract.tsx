@@ -2,11 +2,11 @@ import { Flex, Tag, Text } from "@chakra-ui/react";
 
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
+import { useCreatedContractsByEvmTxHash } from "lib/services/tx";
 import type { TxDataJsonRpc } from "lib/services/types";
 
 import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
-import { useCreatedContractsByEvmTxHash } from "lib/services/tx";
 
 interface EvmTxCreateContractProps {
   evmTxData: TxDataJsonRpc;

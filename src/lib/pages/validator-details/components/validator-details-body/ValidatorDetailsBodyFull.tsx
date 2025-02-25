@@ -1,13 +1,6 @@
 import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { TabIndex } from "../../types";
-import type { ValidatorDetailsQueryParams } from "../../types";
-import { BondedTokenChanges } from "../bonded-token-changes";
-import { Performance } from "../performance";
-import { VotedProposalsTable } from "../tables";
-import { ValidatorOverview } from "../validator-overview";
-import { ValidatorTop } from "../validator-top";
 import { trackUseTab } from "lib/amplitude";
 import { useInitia, useInternalNavigate } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
@@ -21,6 +14,13 @@ import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import { useStakingParamsLcd } from "lib/services/staking";
 import { useValidatorData } from "lib/services/validator";
+import type { ValidatorDetailsQueryParams } from "../../types";
+import { TabIndex } from "../../types";
+import { BondedTokenChanges } from "../bonded-token-changes";
+import { Performance } from "../performance";
+import { VotedProposalsTable } from "../tables";
+import { ValidatorOverview } from "../validator-overview";
+import { ValidatorTop } from "../validator-top";
 
 export const ValidatorDetailsBodyFull = ({
   validatorAddress,

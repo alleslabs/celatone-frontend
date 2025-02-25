@@ -1,12 +1,11 @@
 import { Flex, Image } from "@chakra-ui/react";
 
+import { useCelatoneApp, useInitia } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
+import { NavDrawer } from "./NavDrawer";
 import { AppMenu } from "../AppMenu";
 import { SearchComponent } from "../search";
 import { SectionWrapper } from "../SectionWrapper";
-import { useCelatoneApp, useInitia } from "lib/app-provider";
-import { AppLink } from "lib/components/AppLink";
-
-import { NavDrawer } from "./NavDrawer";
 
 const MobileHeader = () => {
   const { theme } = useCelatoneApp();

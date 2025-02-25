@@ -1,7 +1,6 @@
 import type { DividerProps, GridProps } from "@chakra-ui/react";
 import { Grid } from "@chakra-ui/react";
 
-import { TableRow, TableRowFreeze } from "../tableComponents";
 import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { StopPropagationBox } from "lib/components/StopPropagationBox";
@@ -13,6 +12,7 @@ import { Proposer } from "./Proposer";
 import { ResolvedHeight } from "./ResolvedHeight";
 import { StatusChip } from "./StatusChip";
 import { VotingEndTime } from "./VotingEndTime";
+import { TableRow, TableRowFreeze } from "../tableComponents";
 
 export interface ProposalsTableRowProps {
   proposal: Proposal;

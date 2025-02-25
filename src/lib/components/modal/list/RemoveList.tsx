@@ -1,13 +1,13 @@
 import type { MenuItemProps } from "@chakra-ui/react";
 import { MenuItem, Text, useToast } from "@chakra-ui/react";
 
-import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useContractStore } from "lib/providers/store";
 import type { LVPair } from "lib/types";
 import { shortenName } from "lib/utils";
+import { ActionModal } from "../ActionModal";
 
 interface RemoveListModalProps {
   list: LVPair;

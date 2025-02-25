@@ -2,8 +2,8 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import type { MenuListProps } from "chakra-react-select";
 import { components } from "chakra-react-select";
 
-import type { SelectInputOption } from "../SelectInput";
 import type { AssetOptionValue } from "lib/types";
+import type { SelectInputOption } from "../SelectInput";
 
 export const AssetInputMenuList = (
   props: MenuListProps<SelectInputOption<AssetOptionValue>>

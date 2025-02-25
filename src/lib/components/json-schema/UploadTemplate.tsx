@@ -10,7 +10,6 @@ import {
 import type { Dispatch } from "react";
 import { useCallback, useMemo, useReducer, useState } from "react";
 
-import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import { DropZone } from "lib/components/dropzone";
 import type { ResponseState } from "lib/components/forms";
@@ -20,6 +19,7 @@ import { UploadCard } from "lib/components/upload/UploadCard";
 import { useSchemaStore } from "lib/providers/store";
 import type { Nullable } from "lib/types";
 import { jsonValidate } from "lib/utils";
+import { CustomIcon } from "../icon";
 
 enum Method {
   UPLOAD_FILE = "upload-file",

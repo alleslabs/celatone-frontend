@@ -1,14 +1,14 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
-import { NoImageEmptyState } from "../../common";
-import type { SelectedAddress } from "../types";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge, ModuleCard } from "lib/components/module";
 import type { ModuleInteractionMobileStep } from "lib/pages/interact/types";
 import { useMoveVerifyInfosByAddress } from "lib/services/verification/move";
 import type { IndexedModule, Option } from "lib/types";
 import { mergeModulePath } from "lib/utils";
+import { NoImageEmptyState } from "../../common";
+import type { SelectedAddress } from "../types";
 
 interface SelectModuleSectionProps {
   selectedAddress: SelectedAddress;

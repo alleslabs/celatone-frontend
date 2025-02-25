@@ -13,13 +13,13 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
+import { trackUseUnsupportedToken } from "lib/amplitude";
+import type { AddressReturnType } from "lib/app-provider";
+import type { BechAddr, TokenWithValue } from "lib/types";
 import { ExplorerLink } from "../ExplorerLink";
 import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
 import { UnsupportedToken } from "../token";
-import { trackUseUnsupportedToken } from "lib/amplitude";
-import type { AddressReturnType } from "lib/app-provider";
-import type { BechAddr, TokenWithValue } from "lib/types";
 
 interface UnsupportedTokensModalProps {
   unsupportedAssets: TokenWithValue[];

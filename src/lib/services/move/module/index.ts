@@ -23,16 +23,16 @@ import type {
   ModuleTableCountsResponse,
   ModuleTxsResponse,
 } from "lib/services/types";
-import {
-  type AbiFormData,
-  type Addr,
-  type ExposedFunction,
-  type HexAddr,
-  type IndexedModule,
-  type ModulePublishInfo,
-  type Option,
-  type RpcQueryError,
-  zHexAddr,
+import { zHexAddr } from "lib/types";
+import type {
+  AbiFormData,
+  Addr,
+  ExposedFunction,
+  HexAddr,
+  IndexedModule,
+  ModulePublishInfo,
+  Option,
+  RpcQueryError,
 } from "lib/types";
 import { truncate } from "lib/utils";
 

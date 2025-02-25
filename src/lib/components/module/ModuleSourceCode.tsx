@@ -12,15 +12,15 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { AppLink } from "../AppLink";
-import { CopyButton } from "../copy";
-import { CustomIcon } from "../icon";
-import { MoveVerifyBadge } from "../MoveVerifyBadge";
 import type { MoveVerifyInfoResponse } from "lib/services/types";
 import { MoveVerifyStatus } from "lib/types";
 import type { Nullish } from "lib/types";
 import { formatUTC } from "lib/utils";
+import { AppLink } from "../AppLink";
+import { CopyButton } from "../copy";
 import { Editor } from "../editor/Editor";
+import { CustomIcon } from "../icon";
+import { MoveVerifyBadge } from "../MoveVerifyBadge";
 
 interface ModuleSourceCodeProps {
   verificationData: Nullish<MoveVerifyInfoResponse>;

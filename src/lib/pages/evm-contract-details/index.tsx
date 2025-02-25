@@ -23,6 +23,7 @@ import {
   useGetEvmProxyTarget,
 } from "lib/services/evm";
 import { useEvmTxHashByCosmosTxHash } from "lib/services/tx";
+import { useEvmVerifyInfos } from "lib/services/verification/evm";
 import type { HexAddr20 } from "lib/types";
 import { isHexWalletAddress, toChecksumAddress, truncate } from "lib/utils";
 
@@ -30,10 +31,9 @@ import { EvmContractDetailsContractInfo } from "./components/evm-contract-detail
 import { EvmContractDetailsOverview } from "./components/evm-contract-details-overview";
 import { EvmContractDetailsTop } from "./components/EvmContractDetailsTop";
 import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
+import { InteractEvmContract } from "./components/interact-evm-contract";
 import type { InteractTabsIndex } from "./types";
 import { TabIndex, TxsTabIndex, zEvmContractDetailsQueryParams } from "./types";
-import { InteractEvmContract } from "./components/interact-evm-contract";
-import { useEvmVerifyInfos } from "lib/services/verification/evm";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 

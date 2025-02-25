@@ -1,13 +1,13 @@
 import { Stack, Text } from "@chakra-ui/react";
-import { useCelatoneApp, useEvmConfig } from "lib/app-provider";
-import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { useMemo } from "react";
 
 import type { Control } from "react-hook-form";
 import { useWatch } from "react-hook-form";
-import { convertCosmosChainIdToEvmChainId } from "lib/utils/evm";
 import { CELATONE_VERIFICATION_API } from "env";
+import { useCelatoneApp, useEvmConfig } from "lib/app-provider";
+import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import type { EvmContractVerifyForm } from "lib/types";
+import { convertCosmosChainIdToEvmChainId } from "lib/utils/evm";
 
 interface EvmContractVerifySolidityHardhatProps {
   control: Control<EvmContractVerifyForm>;

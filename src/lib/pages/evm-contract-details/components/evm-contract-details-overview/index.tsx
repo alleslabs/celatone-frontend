@@ -8,15 +8,15 @@ import type {
   HexAddr20,
   Nullish,
   Option,
+  EvmVerifyInfo,
 } from "lib/types";
-import type { TxsTabIndex } from "../../types";
 
-import { EvmContractDetailsTxs } from "../EvmContractDetailsTxs";
 import { OverviewInfo } from "./OverviewInfo";
-import { OverviewVerifiedInfo } from "./OverviewVerifiedInfo";
-import type { EvmVerifyInfo } from "lib/types";
 import { OverviewVerifiedCmds } from "./OverviewVerifiedCmds";
+import { OverviewVerifiedInfo } from "./OverviewVerifiedInfo";
 import { OverviewVerifiedProxyTargetCmds } from "./OverviewVerifiedProxyTargetCmds";
+import type { TxsTabIndex } from "../../types";
+import { EvmContractDetailsTxs } from "../EvmContractDetailsTxs";
 
 interface EvmContractDetailsOverviewProps {
   contractAddressBech: BechAddr20;

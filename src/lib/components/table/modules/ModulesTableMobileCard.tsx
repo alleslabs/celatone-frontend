@@ -1,7 +1,5 @@
 import { Flex, Grid, Tag, Text } from "@chakra-ui/react";
 
-import { MobileCardTemplate } from "../MobileCardTemplate";
-import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
@@ -10,6 +8,8 @@ import type { ModuleInfo, Option } from "lib/types";
 import { dateFromNow, formatUTC, resolveMoveVerifyStatus } from "lib/utils";
 
 import { ModulePathLink } from "./ModulePathLink";
+import { MobileCardTemplate } from "../MobileCardTemplate";
+import { MobileLabel } from "../MobileLabel";
 
 interface ModulesTableMobileCardProps {
   moduleInfo: ModuleInfo;

@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getContractLcd } from "../wasm/contract/lcd";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
@@ -10,6 +9,7 @@ import {
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 
 import { getAddressByIcnsNameLcd, getIcnsNamesByAddressLcd } from "./lcd";
+import { getContractLcd } from "../wasm/contract/lcd";
 
 export const useIcnsNamesByAddressLcd = (
   address: Option<BechAddr>,
