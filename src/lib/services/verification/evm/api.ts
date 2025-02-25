@@ -1,16 +1,17 @@
 import axios from "axios";
 import { CELATONE_VERIFICATION_API } from "env";
-import type {
-  SubmitEvmVerifyArgs,
-  SubmitEvmVerifySolidityContractCodeArgs,
-  SubmitEvmVerifySolidityJsonInputArgs,
-  SubmitEvmVerifySolidityUploadFilesArgs,
-  SubmitEvmVerifyVyperContractCodeArgs,
-  SubmitEvmVerifyVyperJsonInputArgs,
-  SubmitEvmVerifyVyperUploadFilesArgs,
+import {
+  type SubmitEvmVerifyArgs,
+  type SubmitEvmVerifySolidityContractCodeArgs,
+  type SubmitEvmVerifySolidityJsonInputArgs,
+  type SubmitEvmVerifySolidityUploadFilesArgs,
+  type SubmitEvmVerifyVyperContractCodeArgs,
+  type SubmitEvmVerifyVyperJsonInputArgs,
+  type SubmitEvmVerifyVyperUploadFilesArgs,
+  zEvmVerifyInfosResponse,
 } from "lib/services/types";
 import type { HexAddr20 } from "lib/types";
-import { EvmVerifyOptions, zEvmVerifyConfig, zEvmVerifyInfo } from "lib/types";
+import { EvmVerifyOptions, zEvmVerifyConfig } from "lib/types";
 import {
   BYTECODE_TYPE,
   formatContractLibraries,
@@ -22,18 +23,18 @@ export const getEvmVerifyConfig = async () =>
     .get(`${CELATONE_VERIFICATION_API}/evm/verification/config`)
     .then(({ data }) => zEvmVerifyConfig.parse(data));
 
-export const getEvmVerifyInfo = async (
+export const getEvmVerifyInfos = async (
   chainId: string,
-  contractAddress: HexAddr20
+  contractAddresses: HexAddr20[]
 ) =>
   axios
-    .get(`${CELATONE_VERIFICATION_API}/evm/verification/info`, {
+    .get(`${CELATONE_VERIFICATION_API}/evm/verification/infos`, {
       params: {
         chain_id: chainId,
-        address: contractAddress,
+        addresses: contractAddresses.join(","),
       },
     })
-    .then(({ data }) => zEvmVerifyInfo.parse(data));
+    .then(({ data }) => zEvmVerifyInfosResponse.parse(data));
 
 // === EVM Contract Verification Submission ===
 // Handles HTTP POST requests for different verification options.
