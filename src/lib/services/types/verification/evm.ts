@@ -1,8 +1,10 @@
-import type {
-  EvmContractVerifyForm,
-  EvmVerifyLicenseType,
-  EvmVerifyOptions,
+import {
+  type EvmContractVerifyForm,
+  type EvmVerifyLicenseType,
+  type EvmVerifyOptions,
+  zEvmVerifyInfo,
 } from "lib/types";
+import { z } from "zod";
 
 // MARK - SubmitEvmVerify
 type SubmitEvmVerifyBaseArgs = {
@@ -42,3 +44,9 @@ export interface SubmitEvmVerifyArgs
   option: EvmVerifyOptions;
   verifyForm: EvmContractVerifyForm["verifyForm"];
 }
+
+export const zEvmVerifyInfosResponse = z.record(
+  z.string(),
+  zEvmVerifyInfo.nullable()
+);
+export type EvmVerifyInfosResponse = z.infer<typeof zEvmVerifyInfosResponse>;

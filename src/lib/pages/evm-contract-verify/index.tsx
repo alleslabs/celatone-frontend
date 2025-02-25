@@ -40,7 +40,7 @@ import {
 } from "lib/types";
 import {
   useEvmVerifyConfig,
-  useEvmVerifyInfo,
+  useEvmVerifyInfos,
   useSubmitEvmVerify,
 } from "lib/services/verification/evm";
 import type { HexAddr20, Option } from "lib/types";
@@ -119,7 +119,10 @@ export const EvmContractVerifyBody = ({
     [evmVerifyConfig, language]
   );
 
-  const { data: evmVerifyInfo } = useEvmVerifyInfo(contractAddress);
+  const { data: evmVerifyInfos } = useEvmVerifyInfos([contractAddress]);
+  const evmVerifyInfo =
+    evmVerifyInfos?.[contractAddress.toLowerCase()] ?? undefined;
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isVerifyByExternals =
     option === EvmVerifyOptions.SolidityFoundry ||
@@ -207,7 +210,7 @@ export const EvmContractVerifyBody = ({
         onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: [
-              CELATONE_QUERY_KEYS.EVM_VERIFY_INFO,
+              CELATONE_QUERY_KEYS.EVM_VERIFY_INFOS,
               currentChainId,
               contractAddress,
             ],

@@ -33,7 +33,7 @@ import { EvmContractDetailsTxs } from "./components/EvmContractDetailsTxs";
 import type { InteractTabsIndex } from "./types";
 import { TabIndex, TxsTabIndex, zEvmContractDetailsQueryParams } from "./types";
 import { InteractEvmContract } from "./components/interact-evm-contract";
-import { useEvmVerifyInfo } from "lib/services/verification/evm";
+import { useEvmVerifyInfos } from "lib/services/verification/evm";
 
 const InvalidContract = () => <InvalidState title="Contract does not exist" />;
 
@@ -61,14 +61,20 @@ const EvmContractDetailsBody = ({
     useEvmCodesByAddress(contractAddress);
   const { data: evmContractInfoData, isLoading: isEvmContractInfoLoading } =
     useEvmContractInfoSequencer(contractAddress);
-  const { data: evmVerifyInfo, isFetching: isEvmVerifyInfoFetching } =
-    useEvmVerifyInfo(contractAddress);
+  const { data: evmVerifyInfos, isFetching: isEvmVerifyInfoFetching } =
+    useEvmVerifyInfos([contractAddress]);
+  const evmVerifyInfo =
+    evmVerifyInfos?.[contractAddress.toLowerCase()] ?? undefined;
+
   const { data: proxyTarget, isLoading: isProxyTargetLoading } =
     useGetEvmProxyTarget(contractAddress);
   const {
-    data: proxyTargetEvmVerifyInfo,
+    data: proxyTargetEvmVerifyInfos,
     isFetching: isProxyTargetEvmVerifyInfoFetching,
-  } = useEvmVerifyInfo(proxyTarget?.target);
+  } = useEvmVerifyInfos(proxyTarget ? [proxyTarget.target] : []);
+  const proxyTargetEvmVerifyInfo =
+    proxyTargetEvmVerifyInfos?.[proxyTarget?.target.toLowerCase() ?? ""] ??
+    undefined;
 
   const { data: evmHash } = useEvmTxHashByCosmosTxHash(
     evmContractInfoData?.hash
