@@ -13,6 +13,7 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
+import { TypeSwitch } from "lib/components/TypeSwitch";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
@@ -23,7 +24,6 @@ import { jsonPrettify, jsonValidate, libDecode } from "lib/utils";
 import { ExecuteArea, InteractionWrapper, QueryArea } from "./components";
 import type { InteractContractQueryParams } from "./types";
 import { zInteractContractQueryParams } from "./types";
-import { TypeSwitch } from "lib/components/TypeSwitch";
 
 const INTERACT_CONTRACT_PATH_NAME = "/interact-contract";
 

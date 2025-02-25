@@ -1,13 +1,13 @@
 import { Skeleton, Text } from "@chakra-ui/react";
 import { isNull } from "lodash";
 
-import type { ProposalOverviewProps } from "..";
 import { StatusChip } from "lib/components/table";
 import {
   extractParams,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
+import type { ProposalOverviewProps } from "..";
 
 export const SummaryStatusChip = ({
   proposalData,

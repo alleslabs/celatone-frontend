@@ -1,10 +1,10 @@
 import { Badge, Box, Flex, Grid, Text } from "@chakra-ui/react";
 
-import { RemarkRender } from "../RemarkRender";
-import { TableRow } from "../tableComponents";
 import { CustomIcon } from "lib/components/icon";
 import type { MutateEvent } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+import { RemarkRender } from "../RemarkRender";
+import { TableRow } from "../tableComponents";
 
 interface MutateEventsTableRowProps extends MutateEvent {
   templateColumns: string;

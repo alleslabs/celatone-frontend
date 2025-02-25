@@ -1,13 +1,13 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { MobileCardTemplate } from "../MobileCardTemplate";
-import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type { CodeInfo, Nullish, WasmVerifyInfo } from "lib/types";
 import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
+import { MobileCardTemplate } from "../MobileCardTemplate";
+import { MobileLabel } from "../MobileLabel";
 
 interface CodesTableMobileCardProps {
   codeInfo: CodeInfo;

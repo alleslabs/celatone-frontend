@@ -1,11 +1,11 @@
 import { useToast } from "@chakra-ui/react";
 
-import { EditableCell } from "../EditableCell";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
 import type { CodeLocalInfo } from "lib/stores/code";
+import { EditableCell } from "../EditableCell";
 
 interface CodeNameCellProps {
   code: CodeLocalInfo;

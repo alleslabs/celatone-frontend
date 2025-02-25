@@ -8,11 +8,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
 import { EditListNameModal, RemoveListModal } from "lib/components/modal";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import type { ContractListInfo } from "lib/stores/contract";
 import { dateFromNow, formatSlugName, getListIcon } from "lib/utils";
+import { CustomIcon } from "../icon";
 
 interface ContractListCardProps {
   item: ContractListInfo;

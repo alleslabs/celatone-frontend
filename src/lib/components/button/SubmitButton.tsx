@@ -1,8 +1,8 @@
 import { Button } from "@chakra-ui/react";
 import { useEffect } from "react";
 
-import { CustomIcon } from "../icon";
 import { useIsMac, useMobile } from "lib/app-provider";
+import { CustomIcon } from "../icon";
 
 interface SubmitButtonProps {
   text: string;

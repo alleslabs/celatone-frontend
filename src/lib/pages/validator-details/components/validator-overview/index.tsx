@@ -1,17 +1,16 @@
 import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 import type Big from "big.js";
 
+import { useMobile, useTierConfig } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
+import type { AssetInfos, Option, ValidatorAddr } from "lib/types";
+import { ValidatorDescription } from "./ValidatorDescription";
+import { VotingPowerOverview } from "./VotingPowerOverview";
 import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
 import { Performance } from "../performance";
 import { RecentBlocksSection } from "../performance/RecentBlocksSection";
 import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 import { VotedProposalsTable } from "../tables/voted-proposals";
-import { useMobile, useTierConfig } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon";
-import type { AssetInfos, Option, ValidatorAddr } from "lib/types";
-
-import { ValidatorDescription } from "./ValidatorDescription";
-import { VotingPowerOverview } from "./VotingPowerOverview";
 
 interface ValidatorOverviewProps {
   onSelectVotes: Option<() => void>;

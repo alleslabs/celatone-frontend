@@ -7,12 +7,12 @@ import {
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { useAccountStore } from "lib/providers/store";
 import type { AccountLocalInfo } from "lib/stores/account";
 import { truncate } from "lib/utils";
+import { ActionModal } from "../ActionModal";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {

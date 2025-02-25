@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 
-import { useRecentContracts } from "../data";
 import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ContractsTable } from "lib/components/table";
 import type { BechAddr32 } from "lib/types";
+import { useRecentContracts } from "../data";
 
 export const RecentContractsTable = observer(() => {
   const navigate = useInternalNavigate();

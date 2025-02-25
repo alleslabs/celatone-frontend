@@ -18,13 +18,13 @@ import {
 import { useMemo } from "react";
 import AceEditor from "react-ace";
 
-import { CopyButton } from "../copy";
-import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useGas } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 import { getArgType, serializeAbiData } from "lib/utils";
+import { CopyButton } from "../copy";
+import { CustomIcon } from "../icon";
 
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-javascript";

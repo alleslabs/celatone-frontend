@@ -1,10 +1,10 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { mapDeposit } from "../../utils";
 import type { ProposalData, TokenWithValue } from "lib/types";
 
 import { DepositRatio } from "./DepositRatio";
 import { ProgressBar } from "./ProgressBar";
+import { mapDeposit } from "../../utils";
 
 interface DepositBarProps {
   deposit: ProposalData["totalDeposit"];

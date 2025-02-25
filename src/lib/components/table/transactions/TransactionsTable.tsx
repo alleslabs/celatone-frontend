@@ -1,4 +1,3 @@
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import type { Option, Transaction } from "lib/types";
@@ -6,6 +5,7 @@ import type { Option, Transaction } from "lib/types";
 import { TransactionsTableHeader } from "./TransactionsTableHeader";
 import { TransactionsTableMobileCard } from "./TransactionsTableMobileCard";
 import { TransactionsTableRow } from "./TransactionsTableRow";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface TransactionsTableProps {
   transactions: Option<Transaction[]>;

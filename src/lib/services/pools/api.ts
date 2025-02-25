@@ -1,12 +1,12 @@
 import axios from "axios";
 
+import type { PoolTypeFilter } from "lib/types";
+import { parseWithError } from "lib/utils";
 import {
   zPoolDataResponse,
   zPoolsLiquidityResponse,
   zPoolsResponse,
 } from "../types";
-import type { PoolTypeFilter } from "lib/types";
-import { parseWithError } from "lib/utils";
 
 export const getPools = async (
   endpoint: string,

@@ -3,7 +3,6 @@
 /* eslint-disable complexity */
 import { Flex } from "@chakra-ui/react";
 
-import type { TxMsgData } from "..";
 import type { AddressReturnType } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
 import { PermissionChip } from "lib/components/PermissionChip";
@@ -32,6 +31,7 @@ import {
   proposalIdReceipt,
   validatorAddrReceipt,
 } from "./renderUtils";
+import type { TxMsgData } from "..";
 
 export const generateReceipts = (
   { msgBody, log }: Omit<TxMsgData, "assetInfos">,
@@ -72,14 +72,14 @@ export const generateReceipts = (
                 permissionAddresses={
                   details.instantiate_permission.address
                     ? [details.instantiate_permission.address]
-                    : details.instantiate_permission.addresses ?? []
+                    : (details.instantiate_permission.addresses ?? [])
                 }
               />
               <ViewPermissionAddresses
                 permissionAddresses={
                   details.instantiate_permission.address
                     ? [details.instantiate_permission.address]
-                    : details.instantiate_permission.addresses ?? []
+                    : (details.instantiate_permission.addresses ?? [])
                 }
                 amptrackSection="tx_msg_receipts"
               />

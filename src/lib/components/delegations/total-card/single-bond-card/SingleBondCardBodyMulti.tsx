@@ -2,10 +2,10 @@ import { Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import big from "big.js";
 import type Big from "big.js";
 
-import { TotalCardModal } from "../TotalCardModal";
 import { CustomIcon } from "lib/components/icon";
 import type { BechAddr, TokenWithValue, USD } from "lib/types";
 import { formatPrice, totalValueTokenWithValue } from "lib/utils";
+import { TotalCardModal } from "../TotalCardModal";
 
 interface SingleBondCardBodyMultiProps {
   title: string;

@@ -1,8 +1,8 @@
 import { Grid, Heading, VStack } from "@chakra-ui/react";
+import { capitalize } from "lodash";
 import { LabelText } from "lib/components/LabelText";
 import type { EvmVerifyInfo } from "lib/types";
 import { getLicenseTypeLabel } from "lib/utils";
-import { capitalize } from "lodash";
 import { Optimizer } from "./Optimizer";
 
 interface OverviewVerifiedInfoProps {

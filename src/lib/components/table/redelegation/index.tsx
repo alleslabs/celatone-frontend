@@ -1,12 +1,12 @@
 import { TableContainer } from "@chakra-ui/react";
 
-import { MobileTableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import type { Redelegation } from "lib/types";
 
 import { RedelegationTableHeader } from "./RedelegationTableHeader";
 import { RedelegationTableMobileCard } from "./RedelegationTableMobileCard";
 import { RedelegationTableRow } from "./RedelegationTableRow";
+import { MobileTableContainer } from "../tableComponents";
 
 const TEMPLATE_COLUMNS =
   "minmax(250px, 300px) 50px minmax(250px, 300px) minmax(300px, 1fr) minmax(250px, 1fr)";

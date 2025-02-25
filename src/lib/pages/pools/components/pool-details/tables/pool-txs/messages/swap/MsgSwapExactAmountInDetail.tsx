@@ -1,12 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { PoolInfoText } from "../components/PoolInfoText";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfos, Option } from "lib/types";
 import { extractMsgType } from "lib/utils";
 import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
 
 import { PoolRoute, PoolSwap } from "./components";
+import { PoolInfoText } from "../components/PoolInfoText";
 
 interface MsgSwapExactAmountInDetailProps {
   txHash: string;

@@ -3,14 +3,14 @@ import big from "big.js";
 import { parseInt } from "lodash";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
+import type { Nullable, Option } from "lib/types";
+import { getArgType, getVectorElements } from "lib/utils";
 import {
   DECIMAL_TYPES,
   FIXED_POINT_TYPES,
   OBJECT_TYPE,
   UINT_TYPES,
 } from "../constants";
-import type { Nullable, Option } from "lib/types";
-import { getArgType, getVectorElements } from "lib/utils";
 
 const validateNull = (v: Option<string>) =>
   v !== null ? undefined : "cannot be null";

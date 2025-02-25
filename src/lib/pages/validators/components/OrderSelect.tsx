@@ -1,9 +1,9 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { ValidatorOrder } from "../types";
 import { trackUseSort } from "lib/amplitude";
 import type { SelectInputOption } from "lib/components/forms";
 import { SelectInput } from "lib/components/forms";
+import { ValidatorOrder } from "../types";
 
 interface OrderOptionValue {
   order: ValidatorOrder;

@@ -1,7 +1,7 @@
-import { getMoveViewJsonLcd } from "../move/module/lcd";
 import type { HexAddr, HexAddr32 } from "lib/types";
 import { zHexAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
+import { getMoveViewJsonLcd } from "../move/module/lcd";
 
 const INITIATION_2_LCD = "https://rest.initiation-2.initia.xyz";
 const USERNAME_MODULE_ADDRESS =

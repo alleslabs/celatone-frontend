@@ -1,7 +1,6 @@
 import { Accordion, Button, Flex, Heading } from "@chakra-ui/react";
 import { useCallback, useMemo, useState } from "react";
 
-import { FunctionTypeTabIndex } from "../../types";
 import {
   AmpEvent,
   track,
@@ -16,6 +15,7 @@ import type { ExposedFunction, IndexedModule } from "lib/types";
 
 import { FunctionDetailCard } from "./FunctionDetailCard";
 import { FunctionTypeSwitch } from "./FunctionTypeSwitch";
+import { FunctionTypeTabIndex } from "../../types";
 
 interface ModuleFunctionsProps {
   address: IndexedModule["address"];

@@ -1,8 +1,7 @@
 import { Button, HStack, Text } from "@chakra-ui/react";
 
 import { useInternalNavigate, useMobile } from "lib/app-provider";
-import type { EvmVerifyInfo } from "lib/types";
-import type { HexAddr20 } from "lib/types";
+import type { EvmVerifyInfo, HexAddr20 } from "lib/types";
 import { formatUTC } from "lib/utils";
 import { EvmVerifyStatusModalWithTrigger } from "../modal/evm-verify-status";
 

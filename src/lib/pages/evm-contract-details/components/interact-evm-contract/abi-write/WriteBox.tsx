@@ -9,12 +9,14 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
+import type { JsonFragment } from "ethers";
+import { isUndefined } from "lodash";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import type { JsonFragment } from "ethers";
 import { AmpEvent, track } from "lib/amplitude";
 import { useRequestEvmTx } from "lib/app-provider";
+import { CopyButton } from "lib/components/copy";
 import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
 import { EvmAbiForm } from "lib/components/evm-abi";
 import { CustomIcon } from "lib/components/icon";
@@ -23,8 +25,6 @@ import { useSimulateFeeEvmQuery } from "lib/services/tx";
 import type { SimulatedFeeEvm } from "lib/services/types";
 import type { HexAddr20, JsonDataType } from "lib/types";
 import { encodeEvmFunctionData } from "lib/utils";
-import { isUndefined } from "lodash";
-import { CopyButton } from "lib/components/copy";
 
 const EvmCodeSnippet = dynamic(
   () => import("lib/components/modal/EvmCodeSnippet"),

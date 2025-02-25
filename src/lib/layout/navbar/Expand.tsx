@@ -11,7 +11,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { InformationFooter } from "../InformationFooter";
 import { AmpEvent, track } from "lib/amplitude";
 import { useNavContext } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
@@ -19,6 +18,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 
 import type { MenuInfo, NavMenuProps, SubmenuInfo } from "./types";
+import { InformationFooter } from "../InformationFooter";
 
 interface NavInfoProps {
   submenu: SubmenuInfo;

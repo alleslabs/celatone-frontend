@@ -1,12 +1,12 @@
 import axios from "axios";
 
+import type { Option } from "lib/types";
+import { parseWithError } from "lib/utils";
 import {
   zBlockDataResponseSequencer,
   zBlocksResponseSequencer,
   zBlockTimeAverageSequencer,
 } from "../types";
-import type { Option } from "lib/types";
-import { parseWithError } from "lib/utils";
 
 // NOTE: There is a bug in /indexer/block/v1/blocks, so we have to increase last byte by 1
 function incrementLastByte(base64: string): string {

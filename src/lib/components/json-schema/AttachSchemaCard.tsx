@@ -1,12 +1,12 @@
 import { Button, Flex, IconButton, Text } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import type { CodeSchema, Option } from "lib/types";
 
 import { ViewSchemaModal } from "./view/ViewSchemaModal";
+import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
 
 interface AttachSchemaCardProps {
   attached: boolean;

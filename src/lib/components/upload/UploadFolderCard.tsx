@@ -1,10 +1,10 @@
 import { Flex, IconButton, Text } from "@chakra-ui/react";
 
-import { CustomIcon, UploadFolderIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 
 import { useCardTheme } from "./hooks/useCardTheme";
 import type { CardTheme, Status } from "./types";
+import { CustomIcon, UploadFolderIcon } from "../icon";
 
 interface UploadFolderCardProps {
   fileName: string;

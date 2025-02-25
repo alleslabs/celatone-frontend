@@ -9,15 +9,15 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useWatch } from "react-hook-form";
 import type { Control } from "react-hook-form";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import { CustomIcon } from "lib/components/icon";
 import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import type { EvmContractVerifyForm } from "lib/types";
-import { useRouter } from "next/router";
 
 interface EvmContractVerifySuccessModalProps {
   control: Control<EvmContractVerifyForm>;

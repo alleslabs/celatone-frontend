@@ -1,8 +1,8 @@
 import axios from "axios";
 
+import { parseWithError } from "lib/utils";
 import { zOverviewsStatsResponse } from "../types";
 import type { OverviewsStats } from "../types";
-import { parseWithError } from "lib/utils";
 
 export const getOverviewsStats = async (
   endpoint: string

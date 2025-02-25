@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import type Big from "big.js";
 
-import { useAssetInfos } from "../assetService";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -12,6 +11,7 @@ import type { MovePoolInfos, Option, Token, U, USD } from "lib/types";
 import { calculateAssetValue, toToken } from "lib/utils";
 
 import { getMovePoolInfos } from "./pool";
+import { useAssetInfos } from "../assetService";
 
 const computePricePerPShare = (
   amountAPerShare: Token<Big>,

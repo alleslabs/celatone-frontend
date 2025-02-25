@@ -1,15 +1,14 @@
 import { Flex, Stack } from "@chakra-ui/react";
+import { useState } from "react";
 import { EvmVerifySection } from "lib/components/evm-verify-section";
 import { TypeSwitch } from "lib/components/TypeSwitch";
-import type { EvmVerifyInfo } from "lib/types";
-import type { HexAddr20, Option } from "lib/types";
-import { useState } from "react";
-import { EvmContractDetailsContractInfoTabs } from "../../types";
+import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
 import { ContractAbi } from "./ContractAbi";
 import type { ContractByteCodeProps } from "./ContractByteCode";
 import { ContractByteCode } from "./ContractByteCode";
-import { ContractCompiler } from "./ContractCompiler";
 import { ContractCode } from "./ContractCode";
+import { ContractCompiler } from "./ContractCompiler";
+import { EvmContractDetailsContractInfoTabs } from "../../types";
 
 interface EvmContractDetailsContractInfoProps extends ContractByteCodeProps {
   contractAddress: HexAddr20;

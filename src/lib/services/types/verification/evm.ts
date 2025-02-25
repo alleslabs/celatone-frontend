@@ -1,10 +1,10 @@
-import {
-  type EvmContractVerifyForm,
-  type EvmVerifyLicenseType,
-  type EvmVerifyOptions,
-  zEvmVerifyInfo,
-} from "lib/types";
 import { z } from "zod";
+import { zEvmVerifyInfo } from "lib/types";
+import type {
+  EvmContractVerifyForm,
+  EvmVerifyLicenseType,
+  EvmVerifyOptions,
+} from "lib/types";
 
 // MARK - SubmitEvmVerify
 type SubmitEvmVerifyBaseArgs = {

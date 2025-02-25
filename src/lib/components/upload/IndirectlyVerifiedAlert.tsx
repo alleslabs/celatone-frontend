@@ -1,8 +1,8 @@
 import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
 import type { Option } from "lib/types";
 import { formatRelatedVerifiedCodes } from "lib/utils";
+import { CustomIcon } from "../icon";
 
 interface IndirectlyVerifiedAlertProps {
   relatedVerifiedCodes: Option<number[]>;

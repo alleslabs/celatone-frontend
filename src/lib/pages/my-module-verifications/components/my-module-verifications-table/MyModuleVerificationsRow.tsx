@@ -1,7 +1,6 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 import type { GridProps } from "@chakra-ui/react";
 
-import type { MoveVerifyTaskInfo } from "../../data";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
@@ -10,6 +9,7 @@ import { dateFromNow, formatUTC } from "lib/utils";
 
 import { FileNamesCell } from "./FileNamesCell";
 import { RequestNoteCell } from "./RequestNoteCell";
+import type { MoveVerifyTaskInfo } from "../../data";
 
 interface MyModuleVerificationsRowProps {
   templateColumns: GridProps["templateColumns"];

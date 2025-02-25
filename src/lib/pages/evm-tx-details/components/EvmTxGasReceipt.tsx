@@ -1,7 +1,6 @@
 import { Box, Button, Divider, Flex, SimpleGrid } from "@chakra-ui/react";
 import { useState } from "react";
 
-import type { GasInfo } from "../data";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { MotionBox } from "lib/components/MotionBox";
@@ -11,6 +10,7 @@ import {
   formatPrettyPercent,
   formatTokenWithValue,
 } from "lib/utils";
+import type { GasInfo } from "../data";
 
 interface EvmTxGasReceiptProps {
   gasInfo: GasInfo;

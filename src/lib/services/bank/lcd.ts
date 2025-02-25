@@ -1,8 +1,8 @@
 import axios from "axios";
 
-import { zBalancesReponseLcd } from "../types";
 import type { BechAddr, Coin, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
+import { zBalancesReponseLcd } from "../types";
 
 export const getBalancesLcd = async (
   endpoint: string,

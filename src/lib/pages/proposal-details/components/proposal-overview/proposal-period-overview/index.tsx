@@ -1,10 +1,9 @@
 import { Heading } from "@chakra-ui/react";
 
-import type { ProposalOverviewProps } from "..";
-import { ProposalStepper } from "../../proposal-stepper";
-
 import { DepositOverview } from "./DepositOverview";
 import { VotingOverview } from "./VotingOverview";
+import type { ProposalOverviewProps } from "..";
+import { ProposalStepper } from "../../proposal-stepper";
 
 export const ProposalPeriodOverview = ({
   proposalData,

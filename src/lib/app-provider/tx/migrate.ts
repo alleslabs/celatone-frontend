@@ -2,11 +2,11 @@ import type { StdFee } from "@cosmjs/stargate";
 import { MsgMigrateContract } from "@initia/initia.js";
 import { useCallback } from "react";
 
-import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { migrateContractTx } from "lib/app-fns/tx/migrate";
 import type { BechAddr32, Option } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
+import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface MigrateStreamParams {
   contractAddress: BechAddr32;

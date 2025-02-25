@@ -5,8 +5,6 @@ import type { Msg } from "@initia/initia.js";
 import { ParameterChangeProposal } from "cosmjs-types/cosmos/params/v1beta1/params";
 import { StoreCodeProposal } from "cosmjs-types/cosmwasm/wasm/v1/proposal";
 
-import { serializeAbiData } from "../abi";
-import { exponentify } from "../formatter";
 import { typeUrlDict } from "lib/data";
 import type {
   AbiFormData,
@@ -20,6 +18,8 @@ import type {
   TxMessage,
 } from "lib/types";
 import { MsgType, UpgradePolicy } from "lib/types";
+import { serializeAbiData } from "../abi";
+import { exponentify } from "../formatter";
 
 export const toEncodeObject = (msgs: Msg[]): EncodeObject[] => {
   return msgs.map((msg) => ({

@@ -1,11 +1,9 @@
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 
-import { MobileCardTemplate } from "../MobileCardTemplate";
-import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
-import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { EvmToCell } from "lib/components/evm-to-cell";
+import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
@@ -21,6 +19,8 @@ import {
   getEvmToAddress,
   getTokenLabel,
 } from "lib/utils";
+import { MobileCardTemplate } from "../MobileCardTemplate";
+import { MobileLabel } from "../MobileLabel";
 
 interface EvmTransactionsTableMobileCardProps {
   evmTransaction: TxDataWithTimeStampJsonRpc;

@@ -1,11 +1,11 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
-import { ValidatorBadge } from "../../ValidatorBadge";
-import { TableRow } from "../tableComponents";
 import type { TokenWithValue, Validator } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { TokensCell } from "./TokensCell";
+import { ValidatorBadge } from "../../ValidatorBadge";
+import { TableRow } from "../tableComponents";
 
 export interface BondedInfo {
   validator: Validator;

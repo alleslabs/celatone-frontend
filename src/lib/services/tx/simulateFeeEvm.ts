@@ -5,10 +5,10 @@ import { toBeHex } from "ethers";
 import { useCelatoneApp } from "lib/app-provider";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { useCurrentChain } from "lib/app-provider/hooks";
-import { type HexAddr20, type Option } from "lib/types";
+import type { HexAddr20, Option } from "lib/types";
 import { bech32AddressToHex } from "lib/utils";
-import type { SimulatedFeeEvm } from "../types";
 import { getSimulateFeeEvm } from "./jsonRpc";
+import type { SimulatedFeeEvm } from "../types";
 
 interface SimulateQueryEvmParams {
   enabled: boolean;

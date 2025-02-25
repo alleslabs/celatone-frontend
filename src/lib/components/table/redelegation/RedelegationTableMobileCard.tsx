@@ -1,11 +1,11 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
+import type { Redelegation } from "lib/types";
+import { dateFromNow, formatUTC } from "lib/utils";
 import { CustomIcon } from "../../icon";
 import { ValidatorBadge } from "../../ValidatorBadge";
 import { MobileLabel } from "../MobileLabel";
 import { TokenCell } from "../TokenCell";
-import type { Redelegation } from "lib/types";
-import { dateFromNow, formatUTC } from "lib/utils";
 
 interface RedelegationTableMobileCardProps {
   redelegation: Redelegation;

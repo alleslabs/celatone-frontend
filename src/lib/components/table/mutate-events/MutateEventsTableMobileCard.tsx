@@ -1,10 +1,10 @@
 import { Badge, Flex, Stack, Text } from "@chakra-ui/react";
 
-import { MobileCardTemplate } from "../MobileCardTemplate";
-import { MobileLabel } from "../MobileLabel";
 import { CustomIcon } from "lib/components/icon";
 import type { MutateEvent } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+import { MobileCardTemplate } from "../MobileCardTemplate";
+import { MobileLabel } from "../MobileLabel";
 
 export const MutateEventsTableMobileCard = ({
   timestamp,

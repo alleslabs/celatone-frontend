@@ -1,8 +1,8 @@
-import { useState } from "react";
-import type { SourceTreeNode } from "./types";
 import { Box, Flex } from "@chakra-ui/react";
-import { EditorFileBody } from "./EditorFileBody";
+import { useState } from "react";
 import type { Nullable } from "lib/types";
+import { EditorFileBody } from "./EditorFileBody";
+import type { SourceTreeNode } from "./types";
 
 export interface EditorSidebarProps {
   sourceTreeNode: SourceTreeNode[];

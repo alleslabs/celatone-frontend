@@ -1,11 +1,11 @@
 import { Spinner, Text } from "@chakra-ui/react";
 
-import { useContractDetailsEvmTxs } from "../data";
 import { CustomIcon } from "lib/components/icon";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { EvmTransactionsTable, ViewMore } from "lib/components/table";
 import type { BechAddr20 } from "lib/types";
+import { useContractDetailsEvmTxs } from "../data";
 
 interface EvmContractDetailsEvmTxsProps {
   address: BechAddr20;

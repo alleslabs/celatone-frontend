@@ -1,9 +1,9 @@
 import { Button, Spacer, Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "../ExplorerLink";
-import { CustomIcon } from "../icon";
 import { WasmVerifyStatusModal } from "lib/components/modal";
 import type { BechAddr32, WasmVerifyInfoBase } from "lib/types";
+import { ExplorerLink } from "../ExplorerLink";
+import { CustomIcon } from "../icon";
 
 interface InProgressDetailsProps {
   codeId: number;

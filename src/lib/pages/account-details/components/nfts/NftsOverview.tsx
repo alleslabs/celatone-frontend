@@ -1,7 +1,5 @@
 import { Box, Divider, Flex } from "@chakra-ui/react";
 
-import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
-import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { NftList } from "lib/components/nft";
 import { MobileTitle, ViewMore } from "lib/components/table";
@@ -10,6 +8,8 @@ import {
   useNftsByAccountByCollectionSequencer,
 } from "lib/services/nft";
 import type { HexAddr } from "lib/types";
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
+import AccountSectionWrapper from "../AccountSectionWrapper";
 
 interface NftsOverviewProps {
   userAddress: HexAddr;

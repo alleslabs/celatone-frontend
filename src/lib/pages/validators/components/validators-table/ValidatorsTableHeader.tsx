@@ -2,11 +2,11 @@ import type { GridProps } from "@chakra-ui/react";
 import { chakra, Grid } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { ValidatorOrder } from "../../types";
 import { trackUseSort } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { TableHeader } from "lib/components/table";
 import { TooltipInfo } from "lib/components/Tooltip";
+import { ValidatorOrder } from "../../types";
 
 const SortIcon = ({
   column,

@@ -10,8 +10,6 @@ import {
 import { isNull } from "lodash";
 import type { ReactNode } from "react";
 
-import type { VoteDetailsProps } from "..";
-import { NoVotingPeriodTallyAlert } from "../../NoVotingPeriodTally";
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig, useMobile, useTierConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
@@ -26,6 +24,8 @@ import { ValidatorVotesPanel } from "./ValidatorVotesPanel";
 import { ProposalVotesTable } from "./votes-table";
 import { VotingQuorum } from "./VotingQuorum";
 import { VotingThreshold } from "./VotingThreshold";
+import type { VoteDetailsProps } from "..";
+import { NoVotingPeriodTallyAlert } from "../../NoVotingPeriodTally";
 
 type VoterVariant = "validator" | "all";
 

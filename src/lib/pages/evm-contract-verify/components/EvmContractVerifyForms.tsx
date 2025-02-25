@@ -1,10 +1,7 @@
 import type { Control } from "react-hook-form";
 import { useWatch } from "react-hook-form";
-import {
-  EvmContractVerifyVyperContractCode,
-  EvmContractVerifyVyperJsonInput,
-  EvmContractVerifyVyperUploadFile,
-} from "./vyper";
+import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import { EvmVerifyOptions } from "lib/types";
 import {
   EvmContractVerifySolidityContractCode,
   EvmContractVerifySolidityFoundry,
@@ -12,8 +9,11 @@ import {
   EvmContractVerifySolidityJsonInput,
   EvmContractVerifySolidityUploadFiles,
 } from "./solidity";
-import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
-import { EvmVerifyOptions } from "lib/types";
+import {
+  EvmContractVerifyVyperContractCode,
+  EvmContractVerifyVyperJsonInput,
+  EvmContractVerifyVyperUploadFile,
+} from "./vyper";
 
 interface EvmContractVerifyFormsProps {
   control: Control<EvmContractVerifyForm>;

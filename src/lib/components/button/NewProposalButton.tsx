@@ -1,9 +1,9 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
-import { Tooltip } from "../Tooltip";
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { Tooltip } from "../Tooltip";
 // import { useGovParams } from "lib/services/proposalService";
 // import { AccessConfigPermission } from "lib/types";
 

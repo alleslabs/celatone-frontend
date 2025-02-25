@@ -1,14 +1,14 @@
 import axios from "axios";
 import { CELATONE_VERIFICATION_API } from "env";
-import {
-  type SubmitEvmVerifyArgs,
-  type SubmitEvmVerifySolidityContractCodeArgs,
-  type SubmitEvmVerifySolidityJsonInputArgs,
-  type SubmitEvmVerifySolidityUploadFilesArgs,
-  type SubmitEvmVerifyVyperContractCodeArgs,
-  type SubmitEvmVerifyVyperJsonInputArgs,
-  type SubmitEvmVerifyVyperUploadFilesArgs,
-  zEvmVerifyInfosResponse,
+import { zEvmVerifyInfosResponse } from "lib/services/types";
+import type {
+  SubmitEvmVerifyArgs,
+  SubmitEvmVerifySolidityContractCodeArgs,
+  SubmitEvmVerifySolidityJsonInputArgs,
+  SubmitEvmVerifySolidityUploadFilesArgs,
+  SubmitEvmVerifyVyperContractCodeArgs,
+  SubmitEvmVerifyVyperJsonInputArgs,
+  SubmitEvmVerifyVyperUploadFilesArgs,
 } from "lib/services/types";
 import type { HexAddr20 } from "lib/types";
 import { EvmVerifyOptions, zEvmVerifyConfig } from "lib/types";

@@ -1,12 +1,12 @@
 import { Divider, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 
-import { ViewMore } from "../table";
 import type { Option, TokenWithValue, USD } from "lib/types";
 
 import { SupportedAssetSectionContent } from "./SupportedAssetSectionContent";
 import { SupportedAssetTitle } from "./SupportedAssetTitle";
 import { UnsupportedAssetSectionContent } from "./UnsupportedAssetSectionContent";
 import { UnsupportedAssetTitle } from "./UnsupportedAssetTitle";
+import { ViewMore } from "../table";
 
 const MAX_SUPPORTED_ASSETS_SHOW = 4;
 const MAX_UNSUPPORTED_ASSETS_SHOW = 3;

@@ -1,10 +1,5 @@
 import axios from "axios";
 
-import {
-  zBlockTxsResponseSequencer,
-  zTxsByHashResponseSequencer,
-  zTxsResponseSequencer,
-} from "../types";
 import type {
   Addr,
   Nullable,
@@ -12,6 +7,11 @@ import type {
   TransactionWithSignerPubkey,
 } from "lib/types";
 import { parseWithError } from "lib/utils";
+import {
+  zBlockTxsResponseSequencer,
+  zTxsByHashResponseSequencer,
+  zTxsResponseSequencer,
+} from "../types";
 
 export const getTxsCountSequencer = async (endpoint: string) =>
   axios

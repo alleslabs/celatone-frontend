@@ -1,10 +1,10 @@
 import { Button } from "@chakra-ui/react";
 import type { BoxProps, ButtonProps } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 
 import { CopyTemplate } from "./CopyTemplate";
+import { CustomIcon } from "../icon";
 
 interface CopyButtonProps extends ButtonProps {
   isDisable?: boolean;

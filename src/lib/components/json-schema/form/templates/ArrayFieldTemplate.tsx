@@ -9,9 +9,8 @@ import type {
 } from "@rjsf/utils";
 import { getTemplate, getUiOptions } from "@rjsf/utils";
 
-import { isNullFormData } from "../utils";
-
 import { FieldTypeTag } from "./FieldTypeTag";
+import { isNullFormData } from "../utils";
 
 /** The `ArrayFieldTemplate` component is the template used to render all items in an array.
  *

@@ -1,8 +1,8 @@
-import { EditableCell } from "../EditableCell";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractLocalInfo } from "lib/stores/contract";
+import { EditableCell } from "../EditableCell";
 
 interface ContractNameCellProps {
   contractLocalInfo: ContractLocalInfo;

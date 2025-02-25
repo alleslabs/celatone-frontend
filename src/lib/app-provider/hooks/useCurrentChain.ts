@@ -3,11 +3,11 @@ import { useChain } from "@cosmos-kit/react";
 import { useWallet } from "@initia/react-wallet-widget";
 import type { ReactWalletWidget as InitiaWidget } from "@initia/react-wallet-widget/dist/types";
 
-import { useCelatoneApp } from "../contexts";
 import { zBechAddr20 } from "lib/types";
 import type { BechAddr20, Option } from "lib/types";
 
 import { useInitia } from "./useInitia";
+import { useCelatoneApp } from "../contexts";
 
 interface CurrentChain {
   bech32Prefix: string;

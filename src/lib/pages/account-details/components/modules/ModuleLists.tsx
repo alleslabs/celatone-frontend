@@ -1,13 +1,13 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { MobileTitle, ViewMore } from "lib/components/table";
 import type { BechAddr, IndexedModule, Option } from "lib/types";
 
 import { ModuleListsBody } from "./ModuleListsBody";
+import AccountSectionWrapper from "../AccountSectionWrapper";
 
 interface ModuleListsProps {
   address: BechAddr;

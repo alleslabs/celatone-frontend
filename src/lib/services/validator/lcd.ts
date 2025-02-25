@@ -1,11 +1,5 @@
 import axios from "axios";
 
-import {
-  getAnnualProvisionsLcd,
-  getDistributionParamsLcd,
-  getEpochProvisionsLcd,
-  getMintParamsLcd,
-} from "../staking/lcd";
 import type {
   ValidatorDelegatorsResponse,
   ValidatorInfoLcd,
@@ -18,6 +12,12 @@ import {
 import { big } from "lib/types";
 import type { Nullable, ValidatorAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
+import {
+  getAnnualProvisionsLcd,
+  getDistributionParamsLcd,
+  getEpochProvisionsLcd,
+  getMintParamsLcd,
+} from "../staking/lcd";
 
 export const getValidatorsLcd = async (endpoint: string) => {
   const result: ValidatorInfoLcd[] = [];

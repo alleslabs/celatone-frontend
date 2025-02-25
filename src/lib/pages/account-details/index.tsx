@@ -3,7 +3,6 @@ import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo } from "react";
 
-import { DelegationsSection } from "../../components/delegations";
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useCurrentChain,
@@ -59,6 +58,7 @@ import { UserAccountDesc } from "./components/UserAccountDesc";
 import { useAccountDetailsTableCounts } from "./data";
 import { useAccountRedirect } from "./hooks";
 import { TabIndex, zAccountDetailsQueryParams } from "./types";
+import { DelegationsSection } from "../../components/delegations";
 
 const tableHeaderId = "accountDetailsTab";
 

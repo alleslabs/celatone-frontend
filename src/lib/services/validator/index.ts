@@ -2,15 +2,6 @@ import { useToken } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 
-import type {
-  BlocksResponse,
-  StakingProvisionsResponse,
-  ValidatorDataResponse,
-  ValidatorDelegationRelatedTxsResponse,
-  ValidatorsResponse,
-  ValidatorUptimeResponse,
-  ValidatorVotedProposalsResponse,
-} from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -48,6 +39,15 @@ import {
   getValidatorStakingProvisionsLcd,
 } from "./lcd";
 import { resolveValIdentity } from "./misc";
+import type {
+  BlocksResponse,
+  StakingProvisionsResponse,
+  ValidatorDataResponse,
+  ValidatorDelegationRelatedTxsResponse,
+  ValidatorsResponse,
+  ValidatorUptimeResponse,
+  ValidatorVotedProposalsResponse,
+} from "../types";
 
 export const useValidators = (
   limit: number,

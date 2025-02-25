@@ -1,9 +1,9 @@
 import { Box, Grid, TableContainer } from "@chakra-ui/react";
 
-import { ModulePathLink } from "../modules/ModulePathLink";
-import { TableHeader, TableRow } from "../tableComponents";
 import { useInternalNavigate } from "lib/app-provider";
 import type { MoveVerificationModuleIdentifier } from "lib/services/types";
+import { ModulePathLink } from "../modules/ModulePathLink";
+import { TableHeader, TableRow } from "../tableComponents";
 
 interface ModuleVerificationDetailsTableProps {
   moduleIdentifiers: MoveVerificationModuleIdentifier[];

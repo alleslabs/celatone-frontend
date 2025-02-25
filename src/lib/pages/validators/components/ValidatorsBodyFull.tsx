@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 
-import type { ValidatorCounts, ValidatorOrder } from "../types";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useValidators } from "lib/services/validator";
 import type { Option } from "lib/types";
 
 import { ValidatorsTable } from "./validators-table";
+import type { ValidatorCounts, ValidatorOrder } from "../types";
 
 interface ValidatorsBodyFullProps {
   isActive: boolean;

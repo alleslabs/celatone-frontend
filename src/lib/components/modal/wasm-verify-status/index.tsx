@@ -13,12 +13,12 @@ import {
 } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
-import { CustomIcon } from "../../icon";
 import type { WasmVerifyInfoBase } from "lib/types";
 
 import { WasmVerifyAlert } from "./WasmVerifyAlert";
 import { WasmVerifyProcess } from "./WasmVerifyProcess";
 import { WasmVerifyRequestInfo } from "./WasmVerifyRequestInfo";
+import { CustomIcon } from "../../icon";
 
 interface WasmVerifyStatusModalProps {
   codeHash: string;

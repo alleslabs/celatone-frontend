@@ -12,10 +12,10 @@ import type { FileWithPath } from "react-dropzone";
 import { useController, useWatch } from "react-hook-form";
 import type { Control } from "react-hook-form";
 
-import type { ModuleVerifyForm } from "../types";
 import { DropZone } from "lib/components/dropzone";
 import { CustomIcon } from "lib/components/icon";
 import { UploadFolderCard } from "lib/components/upload/UploadFolderCard";
+import type { ModuleVerifyForm } from "../types";
 
 interface ModuleVerifyUploadFolderProps {
   control: Control<ModuleVerifyForm>;

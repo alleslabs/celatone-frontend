@@ -1,12 +1,12 @@
-import type { Control, FieldValues, Path } from "react-hook-form";
-import { TupleField } from "./TupleField";
-import type { JsonFragmentType } from "ethers";
-import { BaseField } from "./BaseField";
-import { TypeLabel } from "./TypeLabel";
-import { useEvmParams } from "lib/services/evm";
-import { useAssetInfos } from "lib/services/assetService";
-import { getTokenLabel } from "lib/utils";
 import { Text } from "@chakra-ui/react";
+import type { JsonFragmentType } from "ethers";
+import type { Control, FieldValues, Path } from "react-hook-form";
+import { useAssetInfos } from "lib/services/assetService";
+import { useEvmParams } from "lib/services/evm";
+import { getTokenLabel } from "lib/utils";
+import { BaseField } from "./BaseField";
+import { TupleField } from "./TupleField";
+import { TypeLabel } from "./TypeLabel";
 
 interface FormFieldsProps<T extends FieldValues> {
   control: Control<T>;

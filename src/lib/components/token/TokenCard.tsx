@@ -2,8 +2,6 @@ import type { FlexProps } from "@chakra-ui/react";
 import { Badge, Flex, Text } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 
-import { Copier } from "../copy";
-import { Tooltip } from "../Tooltip";
 import type { TokenWithValue } from "lib/types";
 import {
   formatPrice,
@@ -13,6 +11,8 @@ import {
 } from "lib/utils";
 
 import { TokenImageRender } from "./TokenImageRender";
+import { Copier } from "../copy";
+import { Tooltip } from "../Tooltip";
 
 interface TokenCardProps extends FlexProps {
   token: TokenWithValue;

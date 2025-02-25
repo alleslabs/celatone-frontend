@@ -1,8 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { VoteThresholdBadge } from "../../VoteThresholdBadge";
-import { VoteThresholdBar } from "../../VoteThresholdBar";
-import { VpPercentThreshold } from "../../VpPercentThreshold";
 import { CustomIcon } from "lib/components/icon";
 import { LegendText } from "lib/components/LegendText";
 import { StatusChip } from "lib/components/table";
@@ -18,6 +15,9 @@ import type {
   ProposalVotesInfo,
 } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
+import { VoteThresholdBadge } from "../../VoteThresholdBadge";
+import { VoteThresholdBar } from "../../VoteThresholdBar";
+import { VpPercentThreshold } from "../../VpPercentThreshold";
 
 interface VotingOverviewThresholdProps {
   proposalData: ProposalData;

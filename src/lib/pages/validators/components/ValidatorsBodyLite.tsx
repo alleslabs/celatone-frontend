@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from "react";
 
-import type { ValidatorCounts, ValidatorOrder } from "../types";
-import { compareValidator, indexValidatorsLcd } from "../utils";
 import type { ValidatorsResponse } from "lib/services/types";
 import { useValidatorsLcd } from "lib/services/validator";
 import type { Option } from "lib/types";
 
 import { ValidatorsTable } from "./validators-table";
+import type { ValidatorCounts, ValidatorOrder } from "../types";
+import { compareValidator, indexValidatorsLcd } from "../utils";
 
 interface ValidatorsBodyLiteProps {
   isActive: boolean;

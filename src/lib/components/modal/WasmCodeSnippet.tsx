@@ -21,13 +21,13 @@ import type { Coin } from "@cosmjs/stargate";
 import { useState } from "react";
 import AceEditor from "react-ace";
 
-import { CopyButton } from "../copy";
-import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useGas, useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { BechAddr32 } from "lib/types";
 import { coinsToStr, jsonPrettify } from "lib/utils";
+import { CopyButton } from "../copy";
+import { CustomIcon } from "../icon";
 
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-javascript";

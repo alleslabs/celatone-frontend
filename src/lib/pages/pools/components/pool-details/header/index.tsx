@@ -1,6 +1,5 @@
 import { Button, Flex } from "@chakra-ui/react";
 
-import { PoolHeader } from "../../PoolHeader";
 import { trackUseViewJSON, trackWebsite } from "lib/amplitude";
 import { useBaseApiRoute, usePoolConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
@@ -9,6 +8,7 @@ import type { PoolData } from "lib/types";
 import { openNewTab } from "lib/utils";
 
 import { PoolInfo } from "./PoolInfo";
+import { PoolHeader } from "../../PoolHeader";
 
 interface PoolTopSectionProps {
   pool: PoolData;

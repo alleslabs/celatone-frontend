@@ -1,4 +1,5 @@
 import { pipe } from "@rx-stream/pipe";
+import { toBeHex } from "ethers";
 import type { Observable } from "rxjs";
 
 import type { SignAndBroadcastEvm } from "lib/app-provider/hooks";
@@ -10,7 +11,6 @@ import type { HexAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { catchTxError, postEvmTx } from "../common";
 import { sendingEvmTx } from "../common/sendingEvm";
-import { toBeHex } from "ethers";
 
 interface RequestEvmTxParams {
   to: HexAddr;

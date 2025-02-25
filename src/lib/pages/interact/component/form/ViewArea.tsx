@@ -12,10 +12,10 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { AbiForm } from "lib/components/move-abi";
 import { SubmitButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
+import { AbiForm } from "lib/components/move-abi";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useFunctionView } from "lib/services/move/module";
 import type {

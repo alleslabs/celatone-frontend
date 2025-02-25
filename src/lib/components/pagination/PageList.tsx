@@ -1,12 +1,12 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 
 import { Next } from "./Next";
 import { PageButton } from "./PageButton";
 import { Previous } from "./Previous";
+import { CustomIcon } from "../icon";
 
 interface PageListProps {
   pageSize: number;

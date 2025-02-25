@@ -11,12 +11,12 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { DelegationsTable, UnbondingsTable } from "../table";
 import { useMobile } from "lib/app-provider";
 import type { Delegation, Option, TokenWithValue, Unbonding } from "lib/types";
 
 import { MultiBondsRadioCard } from "./radio-card/MultiBondsRadioCard";
 import { SingleBondRadioCard } from "./radio-card/SingleBondRadioCard";
+import { DelegationsTable, UnbondingsTable } from "../table";
 
 interface DelegationsBodyProps {
   totalDelegations: Option<Record<string, TokenWithValue>>;
@@ -89,7 +89,7 @@ const DelegationTab = ({
         <SingleBondRadioCard
           value={value}
           token={
-            tokens ? tokens[bondDenoms[0].denom] ?? bondDenoms[0] : undefined
+            tokens ? (tokens[bondDenoms[0].denom] ?? bondDenoms[0]) : undefined
           }
           isLoading={isLoading}
         />

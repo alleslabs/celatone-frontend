@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import type { HexAddr, HexAddr32 } from "lib/types";
+import { parseWithError } from "lib/utils";
 import {
   zMetadata,
   zNft,
@@ -9,8 +11,6 @@ import {
   zNftsResponse,
   zNftTxsResponse,
 } from "../types";
-import type { HexAddr, HexAddr32 } from "lib/types";
-import { parseWithError } from "lib/utils";
 
 export const getNftsByCollectionAddress = async (
   endpoint: string,

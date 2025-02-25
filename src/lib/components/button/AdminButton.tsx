@@ -1,10 +1,10 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 
+import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
+import type { BechAddr, BechAddr32, Nullable } from "lib/types";
 import { CustomIcon } from "../icon";
 import { ClearAdminModal } from "../modal/contract/ClearAdmin";
 import { Tooltip } from "../Tooltip";
-import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
-import type { BechAddr, BechAddr32, Nullable } from "lib/types";
 
 interface AdminButtonProps {
   contractAddress: BechAddr32;

@@ -25,7 +25,6 @@ import type { DecodeModuleQueryResponse } from "lib/services/types";
 import type { Option } from "lib/types";
 import { composePublishMsg } from "lib/utils";
 
-import type { PublishCompleteState } from ".";
 import {
   Footer,
   PolicyAccordion,
@@ -36,6 +35,7 @@ import {
 import type { PublishModuleState, PublishStatus } from "./formConstants";
 import { defaultValues, emptyModule, POLICIES } from "./formConstants";
 import { statusResolver } from "./utils";
+import type { PublishCompleteState } from ".";
 
 interface PublishModuleProps {
   setPublishTxInfo: Dispatch<SetStateAction<PublishCompleteState>>;

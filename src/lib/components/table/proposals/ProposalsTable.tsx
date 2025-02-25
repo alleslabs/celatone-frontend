@@ -1,4 +1,3 @@
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import type { Option, Proposal } from "lib/types";
@@ -6,6 +5,7 @@ import type { Option, Proposal } from "lib/types";
 import { ProposalsTableHeader } from "./ProposalsTableHeader";
 import { ProposalsTableMobileCard } from "./ProposalsTableMobileCard";
 import { ProposalsTableRow } from "./ProposalsTableRow";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface ProposalsTableProps {
   proposals: Option<Proposal[]>;

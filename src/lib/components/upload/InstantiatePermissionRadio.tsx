@@ -3,13 +3,13 @@ import { useEffect } from "react";
 import type { Control, UseFormSetValue, UseFormTrigger } from "react-hook-form";
 import { useController, useFieldArray, useWatch } from "react-hook-form";
 
-import { AddressInput } from "../AddressInput";
-import { AssignMe } from "../AssignMe";
 import { AmpEvent, track, trackUseInstantiatePermission } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import type { BechAddr, UploadSectionState } from "lib/types";
 import { AccessType } from "lib/types";
+import { AddressInput } from "../AddressInput";
+import { AssignMe } from "../AssignMe";
 
 interface InstantiatePermissionRadioProps {
   control: Control<UploadSectionState>;

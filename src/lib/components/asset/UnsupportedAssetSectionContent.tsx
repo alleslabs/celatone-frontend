@@ -1,7 +1,7 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
-import { UnsupportedToken } from "../token";
 import type { TokenWithValue } from "lib/types";
+import { UnsupportedToken } from "../token";
 
 interface UnsupportedAssetSectionContentProps {
   unsupportedAssets: TokenWithValue[];

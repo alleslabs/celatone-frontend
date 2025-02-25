@@ -1,9 +1,9 @@
 import { Flex, Heading } from "@chakra-ui/react";
 
-import { TotalCardTop } from "../TotalCardTop";
 import type { BechAddr, Option, TokenWithValue } from "lib/types";
 
 import { SingleBondCardBody } from "./SingleBondCardBody";
+import { TotalCardTop } from "../TotalCardTop";
 
 interface SingleBondCardProps {
   title: string;

@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { PoolInfoText } from "../components/PoolInfoText";
 import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { AssetInfos, Option } from "lib/types";
@@ -8,6 +7,7 @@ import { extractMsgType } from "lib/utils";
 import type { MsgExitSwapExternAmountOutDetails } from "lib/utils/tx/types";
 
 import { PoolAssetsGrid, PoolLPCard } from "./components";
+import { PoolInfoText } from "../components/PoolInfoText";
 
 interface MsgExitSwapExternAmountOutDetailProps {
   txHash: string;

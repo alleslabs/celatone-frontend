@@ -1,7 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import type Big from "big.js";
 
-import { getUndefinedTokenIcon } from "../../utils";
 import { TokenImageRender } from "lib/components/token";
 import { big } from "lib/types";
 import type { Option, Ratio, Token, U, USD } from "lib/types";
@@ -11,6 +10,7 @@ import {
   formatUTokenWithPrecision,
   getTokenLabel,
 } from "lib/utils";
+import { getUndefinedTokenIcon } from "../../utils";
 
 interface AllocationBadgeProps {
   denom?: string;

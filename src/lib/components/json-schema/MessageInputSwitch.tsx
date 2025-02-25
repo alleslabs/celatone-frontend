@@ -2,10 +2,10 @@ import { Flex } from "@chakra-ui/react";
 import { useCallback, useMemo } from "react";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 
-import { Tooltip } from "../Tooltip";
 import { AmpEvent, track } from "lib/amplitude";
 import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
+import { Tooltip } from "../Tooltip";
 
 export enum MessageTabs {
   JSON_INPUT = "JSON Input",

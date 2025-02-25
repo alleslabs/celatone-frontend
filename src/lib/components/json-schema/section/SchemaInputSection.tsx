@@ -4,13 +4,12 @@ import { capitalize } from "lodash";
 import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
 
+import { AmpEvent, track } from "lib/amplitude";
+import type { CodeSchema, Nullish, Option } from "lib/types";
+import { SchemaInputNotExist } from "./SchemaInputNotExist";
 import { JsonSchemaForm } from "../form";
 import { JsonSchemaModal } from "../JsonSchemaModal";
 import { ViewSchemaModal } from "../view/ViewSchemaModal";
-import { AmpEvent, track } from "lib/amplitude";
-import type { CodeSchema, Nullish, Option } from "lib/types";
-
-import { SchemaInputNotExist } from "./SchemaInputNotExist";
 
 interface SchemaSectionProps {
   type: "migrate" | "instantiate";

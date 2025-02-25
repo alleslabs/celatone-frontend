@@ -17,7 +17,6 @@ import type { AxiosError } from "axios";
 import type { KeyboardEvent } from "react";
 import { useState } from "react";
 
-import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useExampleAddresses,
@@ -32,6 +31,7 @@ import type { BechAddr32, RpcQueryError } from "lib/types";
 
 import { AllContractLists } from "./AllContractLists";
 import { ContractListDetail } from "./ContractListDetail";
+import { CustomIcon } from "../icon";
 
 interface SelectContractInstantiatorProps {
   notSelected: boolean;

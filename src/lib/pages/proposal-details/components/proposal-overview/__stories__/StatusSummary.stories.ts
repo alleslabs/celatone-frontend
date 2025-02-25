@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Big from "big.js";
 import dayjs from "dayjs";
 
-import { StatusSummary } from "../status-summary";
 import { big, ProposalStatus } from "lib/types";
 import type { ProposalData, ProposalParams, Ratio, Token, U } from "lib/types";
+import { StatusSummary } from "../status-summary";
 
 const meta: Meta<typeof StatusSummary> = {
   component: StatusSummary,

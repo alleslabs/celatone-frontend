@@ -1,12 +1,12 @@
 import axios from "axios";
 
+import type { BechAddr20, BechAddr32 } from "lib/types";
+import { parseWithError } from "lib/utils";
 import {
   zTxByHashResponseLcd,
   zTxsByAddressResponseLcd,
   zTxsByHashResponseLcd,
 } from "../types";
-import type { BechAddr20, BechAddr32 } from "lib/types";
-import { parseWithError } from "lib/utils";
 
 export const getTxDataLcd = async (endpoint: string, txHash: string) =>
   axios

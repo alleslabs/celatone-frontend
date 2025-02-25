@@ -9,6 +9,7 @@ import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState, InvalidState } from "lib/components/state";
+import { useEvmParams } from "lib/services/evm";
 import { useEvmTxHashByCosmosTxHash, useTxData } from "lib/services/tx";
 import type { Option } from "lib/types";
 import { truncate } from "lib/utils";
@@ -17,7 +18,6 @@ import { TxHeader, TxInfo, TxInfoMobile } from "./components";
 import { MessageSection } from "./components/MessageSection";
 import { useTxRedirect } from "./hooks";
 import { zTxDetailsQueryParams } from "./types";
-import { useEvmParams } from "lib/services/evm";
 
 const mapTxisFailed = (isFailed: Option<boolean>) => {
   switch (isFailed) {

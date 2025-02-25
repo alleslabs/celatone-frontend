@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-import { NetworkMenu } from "../network-menu";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useGovConfig,
@@ -35,6 +34,7 @@ import {
   getNavDrawerLite,
   getNavDrawerSequencer,
 } from "./utils";
+import { NetworkMenu } from "../network-menu";
 
 export const NavDrawer = () => {
   const { tier } = useTierConfig();

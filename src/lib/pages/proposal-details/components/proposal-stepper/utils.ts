@@ -1,9 +1,9 @@
 import { isNull } from "lodash";
 
-import { PeriodState } from "../../types";
-import type { ProgressBadgeProps } from "../ProgressBadge";
 import type { ProposalData } from "lib/types";
 import { ProposalStatus } from "lib/types";
+import { PeriodState } from "../../types";
+import type { ProgressBadgeProps } from "../ProgressBadge";
 
 export const getProgressBadgeProps = (
   step: number,

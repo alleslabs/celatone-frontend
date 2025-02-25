@@ -1,9 +1,9 @@
 import type { IconProps, LayoutProps } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
 import { trackUseCopier } from "lib/amplitude";
 
 import { CopyTemplate } from "./CopyTemplate";
+import { CustomIcon } from "../icon";
 
 interface CopierProps {
   type: string;

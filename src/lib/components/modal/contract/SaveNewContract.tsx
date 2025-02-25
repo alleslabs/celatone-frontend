@@ -3,7 +3,6 @@ import { Button, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useExampleAddresses, useValidateAddress } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
@@ -20,6 +19,7 @@ import {
   getNameAndDescriptionDefault,
   getTagsDefault,
 } from "lib/utils";
+import { ActionModal } from "../ActionModal";
 
 interface SaveNewContractDetail extends OffchainDetail {
   contractAddress: string;

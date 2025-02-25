@@ -1,16 +1,10 @@
 import type { StdFee } from "@cosmjs/stargate";
 
-import {
-  type AssetInfos,
-  big,
-  type Coin,
-  type MovePoolInfos,
-  type Option,
-  type Ratio,
-} from "lib/types";
+import { big } from "lib/types";
+import type { AssetInfos, Coin, MovePoolInfos, Option, Ratio } from "lib/types";
 
-import { coinsFromStr } from "./funds";
 import { coinToTokenWithValue } from "./assetValue";
+import { coinsFromStr } from "./funds";
 
 export const feeFromStr = (uFee: Option<string>): Option<StdFee> => {
   if (!uFee) return undefined;

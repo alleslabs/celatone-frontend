@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import type { BechAddr, Option, PoolTxFilter, TxFilters } from "lib/types";
+import { camelToSnake, parseWithError } from "lib/utils";
 import {
   zAccountTxsResponse,
   zBlockTxsResponse,
@@ -9,8 +11,6 @@ import {
   zTxsCountResponse,
   zTxsResponse,
 } from "../types";
-import type { BechAddr, Option, PoolTxFilter, TxFilters } from "lib/types";
-import { camelToSnake, parseWithError } from "lib/utils";
 
 export const getTxData = async (txsApiRoute: string, txHash: string) =>
   axios

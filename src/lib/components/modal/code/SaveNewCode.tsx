@@ -2,7 +2,6 @@ import type { ButtonProps } from "@chakra-ui/react";
 import { Button, FormControl, useToast } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 
-import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
@@ -17,6 +16,7 @@ import {
   getPermissionHelper,
   isId,
 } from "lib/utils";
+import { ActionModal } from "../ActionModal";
 
 interface SaveNewCodeModalProps {
   buttonProps: ButtonProps;

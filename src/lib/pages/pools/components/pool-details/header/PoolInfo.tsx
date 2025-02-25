@@ -1,6 +1,5 @@
 import { Divider, Flex, Text } from "@chakra-ui/react";
 
-import { JsonModalButton } from "../JsonModalButton";
 import { useGetAddressType } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -8,6 +7,7 @@ import { LabelText } from "lib/components/LabelText";
 import type { PoolData, Ratio } from "lib/types";
 import { PoolType } from "lib/types";
 import { formatRatio } from "lib/utils";
+import { JsonModalButton } from "../JsonModalButton";
 
 interface PoolInfoProps {
   pool: PoolData;

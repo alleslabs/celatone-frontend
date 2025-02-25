@@ -1,10 +1,10 @@
 import { Flex, IconButton } from "@chakra-ui/react";
 import { useCallback } from "react";
 
+import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "../icon";
 import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
 import { Tooltip } from "../Tooltip";
-import { AmpEvent, track } from "lib/amplitude";
 
 interface EditSchemaButtonsProps {
   codeId: number;

@@ -3,9 +3,9 @@ import { Button, Flex, Input, Text, useOutsideClick } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 
+import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
-import { useMobile } from "lib/app-provider";
 
 interface EditableCellProps {
   initialValue?: string;

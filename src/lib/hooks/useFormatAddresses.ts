@@ -1,7 +1,8 @@
 import { useCallback } from "react";
 
 import { useCelatoneApp, useConvertHexAddress } from "lib/app-provider";
-import { type HexAddr, zBechAddr, zHexAddr } from "lib/types";
+import { zBechAddr, zHexAddr } from "lib/types";
+import type { HexAddr } from "lib/types";
 import {
   bech32AddressToHex,
   isHexModuleAddress,

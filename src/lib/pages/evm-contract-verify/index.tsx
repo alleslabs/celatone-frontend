@@ -10,6 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
 import { AmpEvent } from "lib/amplitude";
 import {
   CELATONE_QUERY_KEYS,
@@ -25,7 +28,11 @@ import { EvmVerifyStatusModal } from "lib/components/modal/evm-verify-status";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
-import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import {
+  useEvmVerifyConfig,
+  useEvmVerifyInfos,
+  useSubmitEvmVerify,
+} from "lib/services/verification/evm";
 import {
   EvmProgrammingLanguage,
   EvmVerifyOptions,
@@ -38,16 +45,13 @@ import {
   zEvmContractVerifyVyperOptionJsonInputForm,
   zEvmContractVerifyVyperOptionUploadFileForm,
 } from "lib/types";
-import {
-  useEvmVerifyConfig,
-  useEvmVerifyInfos,
-  useSubmitEvmVerify,
-} from "lib/services/verification/evm";
-import type { HexAddr20, Option } from "lib/types";
+import type {
+  EvmContractVerifyForm,
+  EvmVerifyConfig,
+  HexAddr20,
+  Option,
+} from "lib/types";
 import { bech32AddressToHex, isHex20Bytes, truncate } from "lib/utils";
-import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
 import { ContractLicenseInfoAccordion } from "./components/ContractLicenseInfoAccordion";
 import { EvmContractVerifyModal } from "./components/evm-contract-verify-modal";
 import { EvmContractFooter } from "./components/EvmContractVerifyFooter";

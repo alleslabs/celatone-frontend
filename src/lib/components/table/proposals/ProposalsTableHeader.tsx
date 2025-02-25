@@ -1,8 +1,8 @@
 import type { DividerProps, GridProps } from "@chakra-ui/react";
 import { Grid, Text } from "@chakra-ui/react";
 
-import { TableHeader, TableHeaderFreeze } from "../tableComponents";
 import { useTierConfig } from "lib/app-provider";
+import { TableHeader, TableHeaderFreeze } from "../tableComponents";
 
 interface ProposalsTableHeaderProps {
   templateColumns: GridProps["templateColumns"];

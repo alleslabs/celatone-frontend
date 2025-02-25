@@ -1,12 +1,12 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
-import { Tooltip } from "../Tooltip";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import type { PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
+import { CustomIcon } from "../icon";
+import { Tooltip } from "../Tooltip";
 
 interface InstantiateButtonProps extends ButtonProps {
   instantiatePermission: AccessConfigPermission;

@@ -1,7 +1,7 @@
 import type { JsonFragment } from "ethers";
+import { z, ZodIssueCode } from "zod";
 import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
 import { isHex20Bytes } from "lib/utils/validate";
-import { z, ZodIssueCode } from "zod";
 import type { HexAddr20 } from "./addrs";
 import { zHexAddr20 } from "./addrs";
 import type { Option } from "./common";

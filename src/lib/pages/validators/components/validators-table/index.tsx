@@ -2,7 +2,6 @@
 import { TableContainer } from "@chakra-ui/react";
 import { Fragment } from "react";
 
-import { ValidatorOrder } from "../../types";
 import { useInitia, useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
@@ -17,6 +16,7 @@ import { ValidatorsPercentDivider } from "./ValidatorsPercentDivider";
 import { ValidatorsTableHeader } from "./ValidatorsTableHeader";
 import { ValidatorsTableMobileCard } from "./ValidatorsTableMobileCard";
 import { ValidatorsTableRow } from "./ValidatorsTableRow";
+import { ValidatorOrder } from "../../types";
 
 interface ValidatorsTableProps {
   data: Option<ValidatorsResponse>;

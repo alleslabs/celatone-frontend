@@ -11,24 +11,23 @@ import {
   GridItem,
   Text,
 } from "@chakra-ui/react";
+import type { JsonFragment } from "ethers";
+import { isUndefined } from "lodash";
 import dynamic from "next/dynamic";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
-import type { JsonFragment } from "ethers";
 import { AmpEvent, track } from "lib/amplitude";
 import { CopyButton } from "lib/components/copy";
 import { EvmAbiForm } from "lib/components/evm-abi";
 import { CustomIcon } from "lib/components/icon";
 import { useEthCall } from "lib/services/evm";
-import type { Option } from "lib/types";
-import { type HexAddr20, type JsonDataType } from "lib/types";
+import type { Option, HexAddr20, JsonDataType } from "lib/types";
 import {
   dateFromNow,
   decodeEvmFunctionResult,
   encodeEvmFunctionData,
   getCurrentDate,
 } from "lib/utils";
-import { isUndefined } from "lodash";
 
 const EvmCodeSnippet = dynamic(
   () => import("lib/components/modal/EvmCodeSnippet"),

@@ -1,9 +1,8 @@
 import type { GridProps } from "@chakra-ui/react";
 import { Grid } from "@chakra-ui/react";
 
-import { TableHeader } from "../tableComponents";
-
 import type { CtaInfo } from "./ContractsTableRowCta";
+import { TableHeader } from "../tableComponents";
 
 export const ContractsTableHeader = ({
   templateColumns,

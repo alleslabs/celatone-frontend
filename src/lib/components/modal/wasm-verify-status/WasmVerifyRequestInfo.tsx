@@ -2,12 +2,12 @@ import type { FlexProps, TextProps } from "@chakra-ui/react";
 import { Divider, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
+import type { WasmVerifyInfoBase } from "lib/types";
+import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 import { Copier } from "../../copy";
 import { CopyLink } from "../../CopyLink";
 import { ExplorerLink } from "../../ExplorerLink";
 import { WasmVerifyBadge } from "../../WasmVerifyBadge";
-import type { WasmVerifyInfoBase } from "lib/types";
-import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 
 const baseTextStyle: TextProps = {
   color: "text.dark",

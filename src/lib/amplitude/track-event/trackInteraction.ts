@@ -1,9 +1,9 @@
-import { amp } from "../Amplitude";
-import { AmpEvent } from "../types";
 import type { SearchResultType } from "lib/services/searchService";
 import { big } from "lib/types";
 import type { Addr, Option, Token } from "lib/types";
 import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
+import { amp } from "../Amplitude";
+import { AmpEvent } from "../types";
 
 export const trackUseMainSearch = (
   isClick: boolean,

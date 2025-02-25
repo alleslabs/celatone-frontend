@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { TokenCell } from "../TokenCell";
 import type { TokenWithValue } from "lib/types";
+import { TokenCell } from "../TokenCell";
 
 interface TokensCellProps {
   tokens: TokenWithValue[];

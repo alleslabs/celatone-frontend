@@ -3,9 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 import type { Big } from "big.js";
 
-import { useAssetInfos } from "../assetService";
-import { useMovePoolInfos } from "../move/poolService";
-import type { BalanceInfos } from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -22,6 +19,9 @@ import {
 
 import { getBalances } from "./api";
 import { getBalancesLcd } from "./lcd";
+import { useAssetInfos } from "../assetService";
+import { useMovePoolInfos } from "../move/poolService";
+import type { BalanceInfos } from "../types";
 
 export const useBalances = (
   address: Option<BechAddr>,

@@ -2,12 +2,12 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 import type { Event } from "@cosmjs/stargate";
 import type { Coin } from "cosmjs-types/cosmos/base/v1beta1/coin";
 
-import { AssetCard, ErrorFetchingDetail } from "../../components";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { useTxData } from "lib/services/tx";
 import type { AssetInfos, Option } from "lib/types";
 import { coinsFromStr } from "lib/utils";
+import { AssetCard, ErrorFetchingDetail } from "../../components";
 
 interface ExactInput {
   isExactIn: boolean;

@@ -1,6 +1,5 @@
 import { Grid, HStack, Text } from "@chakra-ui/react";
 
-import { TableRow } from "../tableComponents";
 import { useGetAddressType } from "lib/app-provider";
 import { InstantiateButton } from "lib/components/button";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -11,6 +10,7 @@ import type { CodeInfo, Nullish, WasmVerifyInfo } from "lib/types";
 import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
 
 import { CodeNameCell } from "./CodeNameCell";
+import { TableRow } from "../tableComponents";
 
 interface CodesTableRowProps {
   codeInfo: CodeInfo;

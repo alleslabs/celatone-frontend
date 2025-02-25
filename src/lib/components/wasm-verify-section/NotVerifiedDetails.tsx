@@ -1,12 +1,12 @@
 import { Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "../ExplorerLink";
 import { useMobile } from "lib/app-provider";
 import { WasmVerifySubmitModal } from "lib/components/modal";
 import type { BechAddr32 } from "lib/types";
 import { WasmVerifyStatus } from "lib/types";
 
 import { VerifyButton } from "./VerifyButton";
+import { ExplorerLink } from "../ExplorerLink";
 
 interface NotVerifiedDetailsProps {
   codeId: number;

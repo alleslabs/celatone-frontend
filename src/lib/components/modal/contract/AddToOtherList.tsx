@@ -2,13 +2,13 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 
-import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ListSelection } from "lib/components/ListSelection";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
+import { ActionModal } from "../ActionModal";
 
 interface AddToOtherListModalProps {
   contractLocalInfo: ContractLocalInfo;

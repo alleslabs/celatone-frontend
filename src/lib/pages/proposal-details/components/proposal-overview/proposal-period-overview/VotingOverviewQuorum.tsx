@@ -1,9 +1,6 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 import { isNull } from "lodash";
 
-import { VoteQuorumBadge } from "../../VoteQuorumBadge";
-import { VoteQuorumCircle } from "../../VoteQuorumCircle";
-import { VoteQuorumText } from "../../VoteQuorumText";
 import { LegendText } from "lib/components/LegendText";
 import { Tooltip } from "lib/components/Tooltip";
 import {
@@ -16,6 +13,9 @@ import type {
   ProposalVotesInfo,
 } from "lib/types";
 import { dateFromNow, formatPrettyPercent, formatUTC } from "lib/utils";
+import { VoteQuorumBadge } from "../../VoteQuorumBadge";
+import { VoteQuorumCircle } from "../../VoteQuorumCircle";
+import { VoteQuorumText } from "../../VoteQuorumText";
 
 interface VotingOverviewQuorumProps {
   proposalData: ProposalData;

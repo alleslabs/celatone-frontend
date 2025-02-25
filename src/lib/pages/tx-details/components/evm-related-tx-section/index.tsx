@@ -1,8 +1,8 @@
 import { Flex, Heading } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
-import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { EvmToCell } from "lib/components/evm-to-cell";
+import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";

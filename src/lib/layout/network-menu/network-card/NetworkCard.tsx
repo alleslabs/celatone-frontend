@@ -2,7 +2,6 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
 
-import { NetworkImage } from "../NetworkImage";
 import {
   useCelatoneApp,
   useChainConfigs,
@@ -12,6 +11,7 @@ import {
 import type { Option } from "lib/types";
 
 import { NetworkCardCta } from "./NetworkCardCta";
+import { NetworkImage } from "../NetworkImage";
 
 interface NetworkCardProps {
   chainId: string;

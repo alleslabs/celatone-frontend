@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useRecentCodes } from "../data";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import { Pagination } from "lib/components/pagination";
@@ -11,6 +10,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { CodesTable } from "lib/components/table";
 import type { PermissionFilterValue } from "lib/hooks";
+import { useRecentCodes } from "../data";
 
 interface RecentCodesState {
   permissionValue: PermissionFilterValue;

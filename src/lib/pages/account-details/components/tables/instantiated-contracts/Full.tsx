@@ -1,8 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
 
-import { AccountDetailsEmptyState } from "../../AccountDetailsEmptyState";
-import AccountSectionWrapper from "../../AccountSectionWrapper";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -12,6 +10,8 @@ import { useAccountContracts } from "lib/pages/account-details/data";
 import type { BechAddr32 } from "lib/types";
 
 import type { InstantiatedContractsTableProps } from "./types";
+import { AccountDetailsEmptyState } from "../../AccountDetailsEmptyState";
+import AccountSectionWrapper from "../../AccountSectionWrapper";
 
 export const InstantiatedContractsTableFull = ({
   address,

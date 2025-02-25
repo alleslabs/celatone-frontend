@@ -1,10 +1,10 @@
+import { Heading, Stack } from "@chakra-ui/react";
 import type { Control } from "react-hook-form";
 import { useController } from "react-hook-form";
-import { Heading, Stack } from "@chakra-ui/react";
-import { UploadCard } from "lib/components/upload";
 import { DropZone } from "lib/components/dropzone";
-import { ConstructorArgs } from "../ConstructorArgs";
+import { UploadCard } from "lib/components/upload";
 import type { EvmContractVerifyForm } from "lib/types";
+import { ConstructorArgs } from "../ConstructorArgs";
 
 interface EvmContractVerifyVyperJsonInputProps {
   control: Control<EvmContractVerifyForm>;

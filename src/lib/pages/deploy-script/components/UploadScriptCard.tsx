@@ -1,12 +1,12 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 
-import type { FileState } from "..";
 import { ComponentLoader } from "lib/components/ComponentLoader";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { useDecodeScript } from "lib/services/move/module";
 import type { ExposedFunction, Option } from "lib/types";
+import type { FileState } from "..";
 
 const DEFAULT_TEMP_FILE = {
   file: undefined,

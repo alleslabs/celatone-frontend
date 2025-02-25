@@ -1,7 +1,6 @@
 import { Flex, Text, useToast } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 
-import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -11,6 +10,7 @@ import { CustomIcon } from "lib/components/icon";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { useCodeStore } from "lib/providers/store";
 import type { CodeInfo } from "lib/types";
+import { ActionModal } from "../ActionModal";
 
 interface CodeDetailsTemplateModalProps {
   title: string;

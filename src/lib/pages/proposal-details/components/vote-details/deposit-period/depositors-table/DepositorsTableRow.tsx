@@ -1,10 +1,10 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
-import { DepositAmounts } from "../../../DepositAmounts";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import type { ProposalDeposit } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+import { DepositAmounts } from "../../../DepositAmounts";
 
 interface DepositorsTableRowProps {
   proposalDeposit: ProposalDeposit;

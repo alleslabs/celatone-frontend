@@ -1,8 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { ConnectWalletBtn } from "../button/ConnectWallet";
-
 import { StateImage } from "./StateImage";
+import { ConnectWalletBtn } from "../button/ConnectWallet";
 
 interface DisconnectedStateProps {
   text: string;

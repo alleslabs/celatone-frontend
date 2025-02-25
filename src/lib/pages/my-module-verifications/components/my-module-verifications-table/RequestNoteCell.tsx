@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
 
-import type { MoveVerifyTaskInfo } from "../../data";
 import { useCelatoneApp } from "lib/app-provider";
 import { EditableCell } from "lib/components/table";
 import { useMoveVerifyTaskStore } from "lib/providers/store";
+import type { MoveVerifyTaskInfo } from "../../data";
 
 interface RequestNoteProps {
   moveVerifyTask: MoveVerifyTaskInfo;

@@ -1,7 +1,7 @@
-import type { FieldProps } from "./types";
+import { FormControl, FormErrorMessage, Input } from "@chakra-ui/react";
 import type { FieldValues } from "react-hook-form";
 import { useController } from "react-hook-form";
-import { FormControl, FormErrorMessage, Input } from "@chakra-ui/react";
+import type { FieldProps } from "./types";
 import { getRules } from "./utils";
 
 interface BaseFieldProps<T extends FieldValues> extends FieldProps<T> {

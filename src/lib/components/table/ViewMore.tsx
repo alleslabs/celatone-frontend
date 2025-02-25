@@ -1,8 +1,8 @@
 import type { BorderProps, LayoutProps } from "@chakra-ui/react";
 import { Button, Flex } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
 import { trackUseViewMore } from "lib/amplitude";
+import { CustomIcon } from "../icon";
 
 interface ViewMoreProps {
   onClick: () => void;

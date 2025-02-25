@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import type { OverviewsStats } from "../types";
 import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 
 import { getOverviewsStats } from "./api";
+import type { OverviewsStats } from "../types";
 
 /**
  * Fetches the overviews stats from the source based on the tier.

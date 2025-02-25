@@ -1,7 +1,5 @@
 import { Box } from "@chakra-ui/react";
 
-import { MobileTableContainer, TableContainer } from "../tableComponents";
-import { TableTitle } from "../TableTitle";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
@@ -11,6 +9,8 @@ import { BondedTableHeader } from "./BondedTableHeader";
 import { BondedTableMobileCard } from "./BondedTableMobileCard";
 import { BondedTableRow } from "./BondedTableRow";
 import { TEMPLATE_COLUMNS } from "./constants";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
+import { TableTitle } from "../TableTitle";
 
 interface DelegationsTableProps {
   delegations: Option<Delegation[]>;

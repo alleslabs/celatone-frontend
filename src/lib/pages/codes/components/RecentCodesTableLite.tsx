@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 
-import { useRecentCodesLcd } from "../data";
 import { useInternalNavigate } from "lib/app-provider";
 import { AlertPaginationLcd } from "lib/components/AlertPaginationLcd";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
 import { CodesTable } from "lib/components/table";
+import { useRecentCodesLcd } from "../data";
 
 export const RecentCodesTableLite = observer(() => {
   const navigate = useInternalNavigate();

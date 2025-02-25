@@ -3,8 +3,8 @@ import { Text } from "@chakra-ui/react";
 import type { EvmToAddress, Option } from "lib/types";
 import { EvmMethodName } from "lib/types";
 
-import { ExplorerLink } from "../ExplorerLink";
 import { EvmToCellCreate } from "./evm-to-cell-create";
+import { ExplorerLink } from "../ExplorerLink";
 
 interface EvmToCellProps {
   toAddress: Option<EvmToAddress>;

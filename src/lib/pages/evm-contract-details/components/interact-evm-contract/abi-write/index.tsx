@@ -1,15 +1,15 @@
 import { Accordion, Button, Flex } from "@chakra-ui/react";
+import type { JsonFragment } from "ethers";
+import { isUndefined } from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { trackUseExpandAll } from "lib/amplitude";
+import { CustomIcon } from "lib/components/icon";
+import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
 
-import type { JsonFragment } from "ethers";
 import type { HexAddr20 } from "lib/types";
-import { isUndefined } from "lodash";
 import { WriteBox } from "./WriteBox";
-import InputWithIcon from "lib/components/InputWithIcon";
-import { CustomIcon } from "lib/components/icon";
-import { trackUseExpandAll } from "lib/amplitude";
 
 interface AbiWriteProps {
   contractAddress: HexAddr20;

@@ -12,10 +12,6 @@ import type { ChangeEvent } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { useDerivedPools } from "../../data";
-import type { PoolFilterState } from "../../types";
-import { FilterByPoolType } from "../FilterByPoolType";
-import { SuperfluidLabel } from "../SuperfluidLabel";
 import { trackUseExpandAll, trackUseSort, trackUseToggle } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -26,6 +22,10 @@ import type { PoolTypeFilter } from "lib/types";
 import { PoolType } from "lib/types";
 
 import { UnsupportedPoolList } from "./UnsupportedPoolList";
+import { useDerivedPools } from "../../data";
+import type { PoolFilterState } from "../../types";
+import { FilterByPoolType } from "../FilterByPoolType";
+import { SuperfluidLabel } from "../SuperfluidLabel";
 
 interface UnsupportedSectionProp {
   scrollComponentId: string;

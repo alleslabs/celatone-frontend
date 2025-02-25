@@ -1,7 +1,7 @@
 import { capitalize } from "lodash";
 
-import { truncate } from "../truncate";
 import type { Option } from "lib/types";
+import { truncate } from "../truncate";
 
 export const getTokenType = (type: string) => {
   switch (type.toLowerCase()) {

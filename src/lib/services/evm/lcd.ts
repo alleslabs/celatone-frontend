@@ -1,13 +1,13 @@
 import axios from "axios";
 
-import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
-import { zEvmCodesByAddressResponseLcd, zEvmParams } from "../types/evm";
 import type { HexAddr20 } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
+import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import { zEvmMsgCreate } from "../types";
+import { zEvmCodesByAddressResponseLcd, zEvmParams } from "../types/evm";
 
 export const getEvmParams = (endpoint: string) =>
   axios

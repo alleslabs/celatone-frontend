@@ -1,10 +1,6 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { isNull } from "lodash";
 
-import type { ProposalOverviewProps } from "..";
-import { DepositBar } from "../../deposit-bar";
-import { DepositList } from "../../DepositList";
-import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -12,6 +8,10 @@ import { TabIndex } from "lib/pages/proposal-details/types";
 import { extractParams } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
+import type { ProposalOverviewProps } from "..";
+import { DepositBar } from "../../deposit-bar";
+import { DepositList } from "../../DepositList";
+import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 
 const DepositOverviewBody = ({
   proposalData,

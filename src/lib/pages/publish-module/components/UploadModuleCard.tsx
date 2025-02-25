@@ -1,8 +1,6 @@
 import { Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 
-import type { Module, PublishStatus } from "../formConstants";
-import { statusResolver } from "../utils";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { ComponentLoader } from "lib/components/ComponentLoader";
@@ -13,6 +11,8 @@ import { UploadCard } from "lib/components/upload";
 import { useDecodeModule } from "lib/services/move/module";
 import type { DecodeModuleQueryResponse } from "lib/services/types";
 import type { Option, UpgradePolicy } from "lib/types";
+import type { Module, PublishStatus } from "../formConstants";
+import { statusResolver } from "../utils";
 
 const DEFAULT_TEMP_FILE = {
   file: undefined,

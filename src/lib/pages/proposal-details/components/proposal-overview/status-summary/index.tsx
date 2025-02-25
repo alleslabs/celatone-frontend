@@ -1,8 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 
-import type { ProposalOverviewProps } from "..";
-import { ResultExplanation } from "../../ResultExplanation";
 import { useGovConfig } from "lib/app-provider";
 import { ActiveDot } from "lib/components/ActiveDot";
 import { StatusChip } from "lib/components/table";
@@ -10,6 +8,8 @@ import { ProposalStatus } from "lib/types";
 
 import { SummaryStatusChip } from "./SummaryStatusChip";
 import { SummaryStatusTime } from "./SummaryStatusTime";
+import type { ProposalOverviewProps } from "..";
+import { ResultExplanation } from "../../ResultExplanation";
 
 const getStatusSummaryBorderColor = (
   status: ProposalStatus

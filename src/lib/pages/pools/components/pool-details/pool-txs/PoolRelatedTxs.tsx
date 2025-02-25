@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 
-import { PoolRelatedTxsTable } from "../tables/pool-txs";
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
 import { UPPERBOUND_COUNT } from "lib/data";
@@ -17,6 +16,7 @@ import type { PoolData } from "lib/types";
 import { PoolType } from "lib/types";
 
 import { usePoolTxsTableCounts } from "./data";
+import { PoolRelatedTxsTable } from "../tables/pool-txs";
 
 enum TabIndex {
   All = "all",

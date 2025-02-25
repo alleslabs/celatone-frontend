@@ -3,10 +3,10 @@ import { useMemo } from "react";
 import { useWatch } from "react-hook-form";
 import type { Control } from "react-hook-form";
 
-import type { ModuleVerifyForm } from "../types";
-import { generateFileMap } from "../utils";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { jsonPrettify } from "lib/utils";
+import type { ModuleVerifyForm } from "../types";
+import { generateFileMap } from "../utils";
 
 interface ModuleVerifyFileMapProps {
   control: Control<ModuleVerifyForm>;

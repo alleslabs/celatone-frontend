@@ -1,8 +1,8 @@
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
+import { CustomIcon } from "../icon";
 
 interface PageGoToProps {
   lastPage: number;

@@ -4,13 +4,13 @@ import { useCallback, useMemo } from "react";
 import type { FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 
-import { UploadIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { big } from "lib/types";
 
 import type { DropzoneConfig, DropzoneFileType } from "./config";
 import { DROPZONE_CONFIG } from "./config";
+import { UploadIcon } from "../icon";
 
 interface DropZoneProps extends FlexProps {
   setFiles: (files: FileWithPath[]) => void;

@@ -2,7 +2,6 @@ import { Flex, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { TableTitle } from "../table";
 import { AmpEvent, track } from "lib/amplitude";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
@@ -14,6 +13,7 @@ import { DelegationInfo } from "./DelegationInfo";
 import { DelegationsBody } from "./DelegationsBody";
 import { RedelegationsSection } from "./RedelegationsSection";
 import { TotalCard } from "./total-card";
+import { TableTitle } from "../table";
 
 interface DelegationsSectionProps {
   address: BechAddr;

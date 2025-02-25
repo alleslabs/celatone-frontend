@@ -1,16 +1,15 @@
 import { Flex, Heading } from "@chakra-ui/react";
 
+import { useMobile } from "lib/app-provider";
+import { Loading } from "lib/components/Loading";
+import { extractParams } from "lib/pages/proposal-details/utils";
+import { VotingResult } from "./VotingResult";
 import type { VoteDetailsProps } from "..";
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import { ResultExplanation } from "../../ResultExplanation";
 import { VoteThresholdBadge } from "../../VoteThresholdBadge";
 import { VoteThresholdBar } from "../../VoteThresholdBar";
 import { VpPercentThreshold } from "../../VpPercentThreshold";
-import { useMobile } from "lib/app-provider";
-import { Loading } from "lib/components/Loading";
-import { extractParams } from "lib/pages/proposal-details/utils";
-
-import { VotingResult } from "./VotingResult";
 
 export const VotingThreshold = ({
   proposalData,
