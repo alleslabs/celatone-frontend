@@ -10,7 +10,7 @@ export const useAllowCustomNetworks = ({
   const { supportedChainIds } = useChainConfigs();
 
   const isAllow = supportedChainIds.some(
-    (chainId) => chainId === "initiation-2"
+    (chainId) => chainId === "rehearsal-1"
   );
 
   if (!isAllow && shouldRedirect) navigate({ pathname: "/", replace: true });
