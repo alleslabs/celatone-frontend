@@ -19,7 +19,7 @@ import { MyStoredCodesTable } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
-import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
+import { useUploadAccessParamsRest } from "lib/services/wasm/code";
 
 import { ProposalButton } from "./components/ProposalButton";
 import { UploadButton } from "./components/UploadButton";
@@ -50,7 +50,7 @@ const StoredCodes = observer(() => {
     isStoredCodesLoading,
   } = useMyCodesData(keyword, permissionValue);
   const { data, isFetching: isUploadAccessFetching } =
-    useUploadAccessParamsLcd();
+    useUploadAccessParamsRest();
 
   const isAllowed = Boolean(address && data?.addresses?.includes(address));
 

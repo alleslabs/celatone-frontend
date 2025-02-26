@@ -51,7 +51,7 @@ import { useSchemaStore } from "lib/providers/store";
 import { useSimulateFeeQuery } from "lib/services/tx";
 import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
-import { useCodeLcd } from "lib/services/wasm/code";
+import { useCodeRest } from "lib/services/wasm/code";
 import type { BechAddr, BechAddr20, BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
@@ -197,7 +197,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
     },
   });
 
-  const { refetch } = useCodeLcd(Number(codeId), {
+  const { refetch } = useCodeRest(Number(codeId), {
     enabled: false,
     retry: false,
     cacheTime: 0,

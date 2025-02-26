@@ -21,7 +21,7 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { useUploadCode } from "lib/hooks";
-import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
+import { useUploadAccessParamsRest } from "lib/services/wasm/code";
 import { useContractData } from "lib/services/wasm/contract";
 import type { BechAddr32, Option } from "lib/types";
 
@@ -49,7 +49,7 @@ const MigrateBody = ({
 }: MigrateBodyProps) => {
   useWasmConfig({ shouldRedirect: true });
   const navigate = useInternalNavigate();
-  const { data: uploadAccessParams, isFetching } = useUploadAccessParamsLcd();
+  const { data: uploadAccessParams, isFetching } = useUploadAccessParamsRest();
   const {
     proceed,
     formData,

@@ -22,7 +22,7 @@ const zUploadAccessParams = z
   }));
 export type UploadAccessParams = z.infer<typeof zUploadAccessParams>;
 
-export const zUploadAccessParamsLcd = z
+export const zUploadAccessParamsRest = z
   .object({
     params: z.object({
       code_upload_access: zUploadAccessParams,
@@ -30,7 +30,7 @@ export const zUploadAccessParamsLcd = z
   })
   .transform<UploadAccessParams>((val) => val.params.code_upload_access);
 
-export const zUploadAccessParamsSubspaceLcd = z
+export const zUploadAccessParamsSubspaceRest = z
   .object({
     params: z.object({
       subspace: z.literal("wasm"),
@@ -61,7 +61,7 @@ export const zCodesResponse = z.object({
 });
 export type CodesResponse = z.infer<typeof zCodesResponse>;
 
-const zCodesResponseItemLcd = z
+const zCodesResponseItemRest = z
   .object({
     code_id: z.coerce.number(),
     creator: zBechAddr,
@@ -80,8 +80,8 @@ const zCodesResponseItemLcd = z
     permissionAddresses: val.instantiate_permission.addresses,
   }));
 
-export const zCodesResponseLcd = z.object({
-  code_infos: z.array(zCodesResponseItemLcd),
+export const zCodesResponseRest = z.object({
+  code_infos: z.array(zCodesResponseItemRest),
   pagination: zPagination,
 });
 
@@ -124,7 +124,7 @@ export const zCodeData = z
   .transform(snakeToCamel);
 export type CodeData = z.infer<typeof zCodeData>;
 
-export const zCodeInfoResponseLcd = z
+export const zCodeInfoResponseRest = z
   .object({
     code_info: z.object({
       code_id: z.coerce.number(),

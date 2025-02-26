@@ -2,23 +2,23 @@ import { Breadcrumb } from "lib/components/Breadcrumb";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useLatestBlockLcd } from "lib/services/block";
+import { useLatestBlockRest } from "lib/services/block";
 
 import { BlockDetailsTop, BlockInfo, BlockTxsTableLite } from "./components";
 import { InvalidBlock } from "./components/InvalidBlock";
-import { useBlockDataWithValidatorLcd } from "./data";
+import { useBlockDataWithValidatorRest } from "./data";
 
 export const BlockDetailsLite = ({ height }: { height: number }) => {
-  const { data, isLoading } = useBlockDataWithValidatorLcd(height);
+  const { data, isLoading } = useBlockDataWithValidatorRest(height);
   const { data: latestHeight, isLoading: isLatestHeightLoading } =
-    useLatestBlockLcd();
+    useLatestBlockRest();
 
   if (isLoading || isLatestHeightLoading) return <Loading withBorder />;
   if (latestHeight && latestHeight > height && !data)
     return (
       <EmptyState
-        heading={`Block ${height} is too old and has been pruned from LCD`}
-        message="Due to the LCD pruning the old blocks, this block's information cannot be retrieved."
+        heading={`Block ${height} is too old and has been pruned from REST`}
+        message="Due to the REST pruning the old blocks, this block's information cannot be retrieved."
         imageVariant="not-found"
         textVariant="body2"
         withBorder

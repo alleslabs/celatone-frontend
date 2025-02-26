@@ -1,6 +1,6 @@
 import type { PermissionFilterValue } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import { useCodes, useCodesLcd } from "lib/services/wasm/code";
+import { useCodes, useCodesRest } from "lib/services/wasm/code";
 import type { BechAddr20, CodeInfo, Option } from "lib/types";
 
 export const useRecentCodes = (
@@ -37,9 +37,9 @@ export const useRecentCodes = (
   };
 };
 
-export const useRecentCodesLcd = () => {
+export const useRecentCodesRest = () => {
   const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
-  const { data, ...rest } = useCodesLcd();
+  const { data, ...rest } = useCodesRest();
 
   return {
     data: data?.pages.flatMap((page) =>

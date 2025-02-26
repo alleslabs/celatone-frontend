@@ -47,9 +47,9 @@ import {
   getModuleTableCounts,
   getModuleTxs,
 } from "./api";
-import { getModuleByAddressLcd, getModulesByAddressLcd } from "./lcd";
+import { getModuleByAddressRest, getModulesByAddressRest } from "./rest";
 
-export const useModuleByAddressLcd = ({
+export const useModuleByAddressRest = ({
   address,
   moduleName,
   options = {},
@@ -59,14 +59,15 @@ export const useModuleByAddressLcd = ({
   options?: Omit<UseQueryOptions<IndexedModule>, "queryKey">;
 }) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
-  const queryFn = () => getModuleByAddressLcd(lcdEndpoint, address, moduleName);
+  const queryFn = () =>
+    getModuleByAddressRest(restEndpoint, address, moduleName);
 
   return useQuery<IndexedModule>(
     [
-      CELATONE_QUERY_KEYS.MODULE_BY_ADDRESS_LCD,
-      lcdEndpoint,
+      CELATONE_QUERY_KEYS.MODULE_BY_ADDRESS_REST,
+      restEndpoint,
       address,
       moduleName,
     ],
@@ -87,15 +88,15 @@ export const useModulesByAddress = ({
   onError?: (err: AxiosError<RpcQueryError>) => void;
 }) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.MODULES_BY_ADDRESS, lcdEndpoint, address],
+    [CELATONE_QUERY_KEYS.MODULES_BY_ADDRESS, restEndpoint, address],
     async () => {
       if (!address)
         throw new Error("address is undefined (useModulesByAddress)");
-      return getModulesByAddressLcd(lcdEndpoint, address);
+      return getModulesByAddressRest(restEndpoint, address);
     },
     {
       enabled,
@@ -123,14 +124,14 @@ export const useFunctionView = ({
   onError?: (err: AxiosError<RpcQueryError>) => void;
 }): UseQueryResult<string> => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const queryFn: QueryFunction<string> = () =>
-    getFunctionView(lcdEndpoint, moduleAddress, moduleName, fn, abiData);
+    getFunctionView(restEndpoint, moduleAddress, moduleName, fn, abiData);
   return useQuery(
     [
       CELATONE_QUERY_KEYS.FUNCTION_VIEW,
-      lcdEndpoint,
+      restEndpoint,
       moduleAddress,
       moduleName,
       fn.name,
@@ -155,7 +156,7 @@ export const useDecodeModule = ({
   options?: Omit<UseQueryOptions<DecodeModuleQueryResponse>, "queryKey">;
 }) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const move = useMoveConfig({ shouldRedirect: false });
 
@@ -164,8 +165,8 @@ export const useDecodeModule = ({
     const abi = await decodeModule(base64EncodedFile);
     const modulePath = `${truncate(abi.address)}::${abi.name}`;
 
-    const currentPolicy = await getModuleByAddressLcd(
-      lcdEndpoint,
+    const currentPolicy = await getModuleByAddressRest(
+      restEndpoint,
       zHexAddr.parse(abi.address),
       abi.name
     )
@@ -177,7 +178,7 @@ export const useDecodeModule = ({
   return useQuery(
     [
       CELATONE_QUERY_KEYS.MODULE_DECODE,
-      lcdEndpoint,
+      restEndpoint,
       move.enabled,
       base64EncodedFile,
     ],
@@ -194,12 +195,12 @@ export const useDecodeScript = ({
   options?: Omit<UseQueryOptions<ExposedFunction>, "queryKey">;
 }): UseQueryResult<ExposedFunction> => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   const queryFn = async (): Promise<ExposedFunction> => {
     const fn = await decodeScript(
-      `${lcdEndpoint}/initia/move/v1/script/abi`,
+      `${restEndpoint}/initia/move/v1/script/abi`,
       base64EncodedFile
     );
     return {
@@ -212,7 +213,7 @@ export const useDecodeScript = ({
   };
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.SCRIPT_DECODE, lcdEndpoint, base64EncodedFile],
+    [CELATONE_QUERY_KEYS.SCRIPT_DECODE, restEndpoint, base64EncodedFile],
     queryFn,
     options
   );

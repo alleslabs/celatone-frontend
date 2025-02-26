@@ -8,7 +8,7 @@ import {
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import type { Addr, Nullish } from "lib/types";
 
-import { getAddressByInitiaUsername, getInitiaUsernameByAddress } from "./lcd";
+import { getAddressByInitiaUsername, getInitiaUsernameByAddress } from "./rest";
 
 export const useInitiaUsernameByAddress = (
   address: Nullish<Addr>,

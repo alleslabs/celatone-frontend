@@ -6,7 +6,7 @@ import { UploadIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
-import { useCodeLcd } from "lib/services/wasm/code";
+import { useCodeRest } from "lib/services/wasm/code";
 import { AccessConfigPermission } from "lib/types";
 import { getWasmVerifyStatus } from "lib/utils";
 
@@ -31,7 +31,7 @@ export const CodeSelect = ({
 }: CodeSelectProps) => {
   const { getCodeLocalInfo } = useCodeStore();
   const name = getCodeLocalInfo(codeId)?.name;
-  const { data } = useCodeLcd(codeId, {
+  const { data } = useCodeRest(codeId, {
     enabled: !!codeId,
     onSuccess: setCodeHash,
   });

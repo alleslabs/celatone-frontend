@@ -6,7 +6,7 @@ export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
   chain: "",
   registryChainName: "",
   prettyName: "",
-  lcd: "",
+  rest: "",
   rpc: "",
   wallets: [],
   features: {

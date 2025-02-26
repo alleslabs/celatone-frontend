@@ -18,7 +18,7 @@ const zContractCreated = z.object({
   tx_index: z.coerce.number(),
 });
 
-const zContractRest = z.object({
+const zContractRestApi = z.object({
   address: zBechAddr32,
   contract_info: z.object({
     code_id: z.string(),
@@ -30,7 +30,7 @@ const zContractRest = z.object({
     extension: z.string().nullable(),
   }),
 });
-export type ContractRest = z.infer<typeof zContractRest>;
+export type ContractRestApi = z.infer<typeof zContractRestApi>;
 
 const zContractsResponseItem = z
   .object({
@@ -62,7 +62,7 @@ export const zContractsResponse = z.object({
 
 export type ContractsResponse = z.infer<typeof zContractsResponse>;
 
-const zContractsResponseItemLcd = zBechAddr32.transform<ContractInfo>(
+const zContractsResponseItemRest = zBechAddr32.transform<ContractInfo>(
   (val) => ({
     contractAddress: val,
     label: "",
@@ -75,10 +75,10 @@ const zContractsResponseItemLcd = zBechAddr32.transform<ContractInfo>(
   })
 );
 
-export const zContractsResponseLcd = z
+export const zContractsResponseRest = z
   .object({
-    contracts: z.array(zContractsResponseItemLcd).default([]), // by code id case
-    contract_addresses: z.array(zContractsResponseItemLcd).optional(),
+    contracts: z.array(zContractsResponseItemRest).default([]), // by code id case
+    contract_addresses: z.array(zContractsResponseItemRest).optional(),
     pagination: zPagination,
   })
   .transform((val) => ({
@@ -109,7 +109,7 @@ export type Contract = z.infer<typeof zContract>;
 export const zContractData = z
   .object({
     contract: zContract,
-    contract_rest: zContractRest.nullable(),
+    contract_rest: zContractRestApi.nullable(),
     project_info: zProjectInfo.nullable(),
     public_info: zPublicContractInfo.nullable(),
   })
@@ -119,31 +119,33 @@ export const zContractData = z
   }));
 export type ContractData = z.infer<typeof zContractData>;
 
-export const zContractLcd = zContractRest.transform<ContractData>((val) => ({
-  contract: {
-    address: val.address,
-    admin: val.contract_info.admin.length
-      ? zBechAddr.parse(val.contract_info.admin)
-      : null,
-    codeId: Number(val.contract_info.code_id),
-    codeHash: "",
-    createdHeight: val.contract_info.created
-      ? Number(val.contract_info.created.block_height)
-      : null,
-    createdTimestamp: null,
-    cw2Contract: null,
-    cw2Version: null,
-    initMsg: "",
-    initProposalId: null,
-    initProposalTitle: null,
-    initTxHash: null,
-    instantiator: val.contract_info.creator,
-    label: val.contract_info.label,
-  },
-  contractRest: val,
-  projectInfo: null,
-  publicInfo: null,
-}));
+export const zContractRest = zContractRestApi.transform<ContractData>(
+  (val) => ({
+    contract: {
+      address: val.address,
+      admin: val.contract_info.admin.length
+        ? zBechAddr.parse(val.contract_info.admin)
+        : null,
+      codeId: Number(val.contract_info.code_id),
+      codeHash: "",
+      createdHeight: val.contract_info.created
+        ? Number(val.contract_info.created.block_height)
+        : null,
+      createdTimestamp: null,
+      cw2Contract: null,
+      cw2Version: null,
+      initMsg: "",
+      initProposalId: null,
+      initProposalTitle: null,
+      initTxHash: null,
+      instantiator: val.contract_info.creator,
+      label: val.contract_info.label,
+    },
+    contractRest: val,
+    projectInfo: null,
+    publicInfo: null,
+  })
+);
 
 export const zContractTableCounts = z
   .object({
@@ -183,7 +185,7 @@ export const zContractQueryMsgs = z
     val.query.map<[string, string]>((msg) => [msg, `{"${msg}": {}}`])
   );
 
-export const zMigrationHistoriesResponseItemLcd = z
+export const zMigrationHistoriesResponseItemRest = z
   .object({
     operation: zRemarkOperation,
     code_id: z.coerce.number().positive(),
@@ -205,25 +207,25 @@ export const zMigrationHistoriesResponseItemLcd = z
     cw2Version: null,
     msg: JSON.stringify(val.msg),
   }));
-export type MigrationHistoriesResponseItemLcd = z.infer<
-  typeof zMigrationHistoriesResponseItemLcd
+export type MigrationHistoriesResponseItemRest = z.infer<
+  typeof zMigrationHistoriesResponseItemRest
 >;
 
-export const zMigrationHistoriesResponseLcd = z.object({
-  entries: z.array(zMigrationHistoriesResponseItemLcd),
+export const zMigrationHistoriesResponseRest = z.object({
+  entries: z.array(zMigrationHistoriesResponseItemRest),
   pagination: zPagination,
 });
-export type MigrationHistoriesResponseLcd = z.infer<
-  typeof zMigrationHistoriesResponseLcd
+export type MigrationHistoriesResponseRest = z.infer<
+  typeof zMigrationHistoriesResponseRest
 >;
 
-export const zInstantiatedContractsLcd = z
+export const zInstantiatedContractsRest = z
   .object({
     contract_addresses: zBechAddr32.array(),
   })
   .transform(snakeToCamel);
 
-export const zContractCw2InfoLcd = z
+export const zContractCw2InfoRest = z
   .object({
     data: z.string().nullable(),
   })
@@ -237,7 +239,7 @@ export const zContractCw2InfoLcd = z
       .nullable()
   );
 
-export type ContractCw2InfoLcd = z.infer<typeof zContractCw2InfoLcd>;
+export type ContractCw2InfoRest = z.infer<typeof zContractCw2InfoRest>;
 
 const zAllAdminContractsResponseItem = z
   .object({

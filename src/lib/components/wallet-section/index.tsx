@@ -3,7 +3,7 @@ import type { MouseEventHandler } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain, useInitia } from "lib/app-provider";
-import { useIcnsNamesByAddressLcd } from "lib/services/name";
+import { useIcnsNamesByAddressRest } from "lib/services/name";
 import { useInitiaUsernameByAddress } from "lib/services/username";
 import { truncate } from "lib/utils";
 
@@ -20,7 +20,7 @@ export const WalletSection = () => {
     address,
     isInitia
   );
-  const { data: icnsNames } = useIcnsNamesByAddressLcd(address, !isInitia);
+  const { data: icnsNames } = useIcnsNamesByAddressRest(address, !isInitia);
 
   const onClickConnect: MouseEventHandler = async (e) => {
     track(AmpEvent.USE_CLICK_WALLET);

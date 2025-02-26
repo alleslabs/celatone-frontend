@@ -1,5 +1,5 @@
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import { useResourcesByAddressLcd } from "lib/services/move/resource";
+import { useResourcesByAddressRest } from "lib/services/move/resource";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 
 interface SupplyData {
@@ -24,7 +24,8 @@ export const useCollectionInfos = (
 ): { collectionInfos: Option<CollectionInfos>; isLoading: boolean } => {
   const formatAddress = useFormatAddresses();
   const { address } = formatAddress(collectionAddress);
-  const { data: resourcesData, isFetching } = useResourcesByAddressLcd(address);
+  const { data: resourcesData, isFetching } =
+    useResourcesByAddressRest(address);
 
   if (!resourcesData)
     return { collectionInfos: undefined, isLoading: isFetching };

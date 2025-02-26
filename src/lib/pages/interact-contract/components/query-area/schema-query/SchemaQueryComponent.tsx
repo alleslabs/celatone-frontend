@@ -25,7 +25,7 @@ import {
   OutputMessageTabs,
 } from "lib/components/json-schema";
 import { DEFAULT_RPC_ERROR } from "lib/data";
-import { useContractQueryLcd } from "lib/services/wasm/contract";
+import { useContractQueryRest } from "lib/services/wasm/contract";
 import type { Activity } from "lib/stores/contract";
 import type {
   BechAddr20,
@@ -79,7 +79,7 @@ export const SchemaQueryComponent = ({
   const [queryError, setQueryError] = useState("");
   const [timestamp, setTimestamp] = useState<Date>();
 
-  const { refetch, isFetching } = useContractQueryLcd(contractAddress, msg, {
+  const { refetch, isFetching } = useContractQueryRest(contractAddress, msg, {
     enabled: !msgSchema.inputRequired && opened,
     retry: false,
     cacheTime: 0,

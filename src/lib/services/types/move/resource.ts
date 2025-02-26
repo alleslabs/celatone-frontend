@@ -13,7 +13,7 @@ const zResourcesResponseItem = z
   .transform(snakeToCamel);
 export type ResourceResponseItem = z.infer<typeof zResourcesResponseItem>;
 
-export const zResourcesResponseLcd = z.object({
+export const zResourcesResponseRest = z.object({
   resources: z.array(zResourcesResponseItem),
   pagination: zPagination,
 });

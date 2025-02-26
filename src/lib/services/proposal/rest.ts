@@ -1,15 +1,15 @@
 import axios from "axios";
 
 import type {
-  ProposalDataResponseLcd,
-  ProposalsResponseLcd,
+  ProposalDataResponseRest,
+  ProposalsResponseRest,
 } from "lib/services/types";
 import {
-  zProposalDataResponseLcd,
-  zProposalDepositsResponseLcd,
-  zProposalParamsResponseLcd,
-  zProposalsResponseLcd,
-  zProposalVotesInfoResponseLcd,
+  zProposalDataResponseRest,
+  zProposalDepositsResponseRest,
+  zProposalParamsResponseRest,
+  zProposalsResponseRest,
+  zProposalVotesInfoResponseRest,
 } from "lib/services/types";
 import type {
   Coin,
@@ -21,18 +21,18 @@ import type {
 } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-export const getProposalParamsLcd = (lcdEndpoint: string) =>
+export const getProposalParamsRest = (restEndpoint: string) =>
   axios
-    .get(`${lcdEndpoint}/cosmos/gov/v1/params/deposit`)
+    .get(`${restEndpoint}/cosmos/gov/v1/params/deposit`)
     .then(
-      ({ data }) => parseWithError(zProposalParamsResponseLcd, data).params
+      ({ data }) => parseWithError(zProposalParamsResponseRest, data).params
     );
 
-export const getProposalsLcd = async (
+export const getProposalsRest = async (
   endpoint: string,
   paginationKey: Option<string>,
   status?: Omit<ProposalStatus, "DEPOSIT_FAILED" | "CANCELLED">
-): Promise<ProposalsResponseLcd> =>
+): Promise<ProposalsResponseRest> =>
   axios
     .get(`${endpoint}/cosmos/gov/v1/proposals`, {
       params: {
@@ -44,19 +44,19 @@ export const getProposalsLcd = async (
         }),
       },
     })
-    .then(({ data }) => parseWithError(zProposalsResponseLcd, data));
+    .then(({ data }) => parseWithError(zProposalsResponseRest, data));
 
-export const getProposalDataLcd = async (
+export const getProposalDataRest = async (
   endpoint: string,
   id: number
-): Promise<ProposalDataResponseLcd> =>
+): Promise<ProposalDataResponseRest> =>
   axios
     .get(`${endpoint}/cosmos/gov/v1/proposals/${encodeURIComponent(id)}`)
     .then(({ data }) =>
-      parseWithError(zProposalDataResponseLcd, data.proposal)
+      parseWithError(zProposalDataResponseRest, data.proposal)
     );
 
-export const getProposalDepositsLcd = async (endpoint: string, id: number) => {
+export const getProposalDepositsRest = async (endpoint: string, id: number) => {
   const result: ProposalDeposit<Coin>[] = [];
 
   const fetchFn = async (paginationKey: Nullable<string>) => {
@@ -70,7 +70,7 @@ export const getProposalDepositsLcd = async (endpoint: string, id: number) => {
           },
         }
       )
-      .then(({ data }) => parseWithError(zProposalDepositsResponseLcd, data));
+      .then(({ data }) => parseWithError(zProposalDepositsResponseRest, data));
     result.push(...res.deposits);
     if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
   };
@@ -80,7 +80,7 @@ export const getProposalDepositsLcd = async (endpoint: string, id: number) => {
   return result;
 };
 
-export const getProposalVotesInfoLcd = async (
+export const getProposalVotesInfoRest = async (
   endpoint: string,
   id: number
 ): Promise<ProposalVotesInfo> =>
@@ -90,5 +90,8 @@ export const getProposalVotesInfoLcd = async (
     ),
     axios.get(`${endpoint}/cosmos/staking/v1beta1/pool`),
   ]).then(([tallyRes, poolRes]) =>
-    parseWithError(zProposalVotesInfoResponseLcd, [tallyRes.data, poolRes.data])
+    parseWithError(zProposalVotesInfoResponseRest, [
+      tallyRes.data,
+      poolRes.data,
+    ])
   );

@@ -18,7 +18,7 @@ import {
 } from "lib/utils";
 
 import { getBalances } from "./api";
-import { getBalancesLcd } from "./lcd";
+import { getBalancesRest } from "./rest";
 import { useAssetInfos } from "../assetService";
 import { useMovePoolInfos } from "../move/poolService";
 import type { BalanceInfos } from "../types";
@@ -28,11 +28,11 @@ export const useBalances = (
   enabled = true
 ): UseQueryResult<Coin[]> => {
   const {
-    chainConfig: { chain, lcd: lcdEndpoint },
+    chainConfig: { chain, rest: restEndpoint },
   } = useCelatoneApp();
   const isSei = chain === "sei";
   const apiEndpoint = useBaseApiRoute("accounts");
-  const endpoint = isSei ? apiEndpoint : lcdEndpoint;
+  const endpoint = isSei ? apiEndpoint : restEndpoint;
 
   return useQuery(
     [CELATONE_QUERY_KEYS.BALANCES, endpoint, address, isSei],
@@ -40,7 +40,7 @@ export const useBalances = (
       if (!address) throw new Error("address is undefined (useBalances)");
       return isSei
         ? getBalances(endpoint, address)
-        : getBalancesLcd(endpoint, address);
+        : getBalancesRest(endpoint, address);
     },
     { retry: 1, refetchOnWindowFocus: false, enabled }
   );

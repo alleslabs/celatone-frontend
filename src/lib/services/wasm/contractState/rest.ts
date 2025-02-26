@@ -9,7 +9,7 @@ import {
   parseWithError,
 } from "lib/utils";
 
-export const getContractStatesLcd = async (
+export const getContractStatesRest = async (
   endpoint: string,
   contractAddress: BechAddr32,
   limit: number,
