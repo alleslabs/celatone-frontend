@@ -1,6 +1,6 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import type { FieldPath, FieldValues } from "react-hook-form";
-import { useController } from "react-hook-form";
+import { useController, useWatch } from "react-hook-form";
 import { CustomIcon } from "lib/components/icon";
 import type { Option } from "lib/types";
 import { Field } from "./Field";
@@ -19,11 +19,13 @@ export const FieldTemplate = <T extends FieldValues>({
   ...rest
 }: FieldTemplateProps<T>) => {
   const {
-    field: { value, onChange },
+    field: { onChange },
   } = useController<T>({
     control,
     name,
   });
+
+  const value = useWatch({ control, name });
 
   if (dimensions.length === 0)
     return (

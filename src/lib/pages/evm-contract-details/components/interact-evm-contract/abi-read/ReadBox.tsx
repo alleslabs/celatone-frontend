@@ -9,6 +9,7 @@ import {
   Flex,
   Grid,
   GridItem,
+  HStack,
   Text,
 } from "@chakra-ui/react";
 import type { JsonFragment } from "ethers";
@@ -81,7 +82,7 @@ export const ReadBox = ({
     [abiSection, inputs]
   );
   const { refetch, isFetching } = useEthCall(contractAddress, data ?? "", {
-    enabled: !isUndefined(data) && opened,
+    enabled: opened && !isUndefined(data) && !inputRequired,
     retry: false,
     cacheTime: 0,
     onSuccess: (data) => {
@@ -143,15 +144,22 @@ export const ReadBox = ({
                 gap={2}
                 mt={6}
               >
-                <CopyButton
-                  variant="outline-secondary"
-                  isDisable={isUndefined(data)}
-                  value={data ?? ""}
-                  amptrackSection="read_inputs"
-                  buttonText="Copy Encoded Inputs"
-                  w="100%"
-                />
-                <EvmCodeSnippet />
+                <HStack gap={2}>
+                  <CopyButton
+                    variant="outline-secondary"
+                    isDisable={isUndefined(data)}
+                    value={data ?? ""}
+                    amptrackSection="read_inputs"
+                    buttonText="Copy Encoded Inputs"
+                    w="100%"
+                  />
+                  <EvmCodeSnippet
+                    abiSection={abiSection}
+                    contractAddress={contractAddress}
+                    type="read"
+                    inputs={inputs}
+                  />
+                </HStack>
                 <Button
                   variant="primary"
                   size="sm"
@@ -195,14 +203,21 @@ export const ReadBox = ({
                 justifyContent="space-between"
               >
                 <Grid gridTemplateColumns="1fr 1fr" gap={2}>
-                  <CopyButton
-                    variant="outline-secondary"
-                    isDisable={isUndefined(data)}
-                    value={data ?? ""}
-                    amptrackSection="read_inputs"
-                    buttonText="Copy Encoded Inputs"
-                    w="100%"
-                  />
+                  <HStack gap={2}>
+                    <CopyButton
+                      variant="outline-secondary"
+                      isDisable={isUndefined(data)}
+                      value={data ?? ""}
+                      amptrackSection="read_inputs"
+                      buttonText="Copy Encoded Inputs"
+                      w="100%"
+                    />
+                    <EvmCodeSnippet
+                      abiSection={abiSection}
+                      contractAddress={contractAddress}
+                      type="read"
+                    />
+                  </HStack>
                   <CopyButton
                     variant="outline-secondary"
                     isDisable={res === "" || Boolean(queryError)}
@@ -213,7 +228,6 @@ export const ReadBox = ({
                     w="100%"
                   />
                 </Grid>
-                <EvmCodeSnippet />
                 <Flex
                   gap={{
                     md: 2,
