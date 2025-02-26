@@ -1,6 +1,6 @@
+import type { Dict } from "lib/types";
 import { amp } from "../Amplitude";
 import { AmpEvent } from "../types";
-import type { Dict } from "lib/types";
 
 export const trackMintScan = (
   type: string,

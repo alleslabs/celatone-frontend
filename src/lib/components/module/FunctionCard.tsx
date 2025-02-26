@@ -1,12 +1,12 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 
-import { DotSeparator } from "../DotSeparator";
-import { CustomIcon } from "../icon";
 import { useMobile } from "lib/app-provider";
 import { Tooltip } from "lib/components/Tooltip";
 import type { ExposedFunction } from "lib/types";
 import { checkAvailability, getVisibilityIcon } from "lib/utils";
+import { DotSeparator } from "../DotSeparator";
+import { CustomIcon } from "../icon";
 
 type CardVariant = "common" | "disabled" | "selected" | "readonly";
 

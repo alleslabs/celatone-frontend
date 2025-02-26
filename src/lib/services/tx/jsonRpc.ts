@@ -1,6 +1,6 @@
+import type { TransactionRequest } from "ethers";
 import { z } from "zod";
 
-import type { TransactionRequest } from "ethers";
 import { parseWithError } from "lib/utils";
 import type { JsonRpcParams } from "../evm/json-rpc";
 import { requestBatchJsonRpc, requestJsonRpc } from "../evm/json-rpc";

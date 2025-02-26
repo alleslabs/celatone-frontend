@@ -1,5 +1,5 @@
-import type { CardTheme, Status } from "../types";
 import type { Option } from "lib/types";
+import type { CardTheme, Status } from "../types";
 
 export const useCardTheme = (theme: CardTheme, status: Option<Status>) => {
   const getTheme = () => {

@@ -1,7 +1,5 @@
 import { Flex, Tag, Text } from "@chakra-ui/react";
 
-import type { HexAddr20 } from "lib/types";
-
 import {
   flip,
   offset,
@@ -9,9 +7,10 @@ import {
   useHover,
   useInteractions,
 } from "@floating-ui/react";
-import { useCreatedContractsByEvmTxHash } from "lib/services/tx";
 import plur from "plur";
 import { useState } from "react";
+import { useCreatedContractsByEvmTxHash } from "lib/services/tx";
+import type { HexAddr20 } from "lib/types";
 import { ExplorerLink } from "../ExplorerLink";
 import { CustomIcon } from "../icon";
 

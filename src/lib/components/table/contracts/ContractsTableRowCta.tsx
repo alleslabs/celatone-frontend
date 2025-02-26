@@ -12,7 +12,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { TableRow } from "../tableComponents";
 import {
   useCurrentChain,
   useInternalNavigate,
@@ -30,6 +29,7 @@ import {
 import type { ContractInfo, LVPair, Option } from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+import { TableRow } from "../tableComponents";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {

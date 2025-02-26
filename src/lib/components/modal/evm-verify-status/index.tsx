@@ -13,12 +13,11 @@ import {
 } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
-import { CustomIcon } from "../../icon";
-import type { HexAddr20, Option } from "lib/types";
-import type { EvmVerifyInfo } from "lib/types";
-import { EvmVerifyRequestInfo } from "./EvmVerifyRequestInfo";
+import type { HexAddr20, Option, EvmVerifyInfo } from "lib/types";
 import { EvmVerifyAlert } from "./EvmVerifyAlert";
 import { EvmVerifyProcess } from "./EvmVerifyProcess";
+import { EvmVerifyRequestInfo } from "./EvmVerifyRequestInfo";
+import { CustomIcon } from "../../icon";
 
 interface EvmVerifyStatusModalProps {
   contractAddress: HexAddr20;

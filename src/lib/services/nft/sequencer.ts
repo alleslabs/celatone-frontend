@@ -1,16 +1,16 @@
 import axios from "axios";
 
+import type { HexAddr, HexAddr32, Nullable, Option } from "lib/types";
+import {
+  convertAccountPubkeyToAccountAddress,
+  parseWithError,
+} from "lib/utils";
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import type { Nft, NftMintInfo, NftTxResponse } from "../types";
 import {
   zNftsByAccountResponseSequencer,
   zNftsResponseSequencer,
 } from "../types";
-import type { HexAddr, HexAddr32, Nullable, Option } from "lib/types";
-import {
-  convertAccountPubkeyToAccountAddress,
-  parseWithError,
-} from "lib/utils";
 
 export const getNftsSequencer = async (
   endpoint: string,

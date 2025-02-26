@@ -10,7 +10,7 @@ import {
   useTxData,
 } from "lib/services/tx";
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import { type Option, type Ratio, type TokenWithValue } from "lib/types";
+import type { Option, Ratio, TokenWithValue } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
 
 export interface GasInfo {

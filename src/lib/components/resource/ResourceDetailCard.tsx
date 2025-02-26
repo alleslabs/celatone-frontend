@@ -7,12 +7,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { Copier, CopyButton } from "../copy";
-import { CustomIcon } from "../icon";
 import { trackUseExpand } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import type { InternalResource } from "lib/types";
 import { parseJsonStr } from "lib/utils";
+import { Copier, CopyButton } from "../copy";
+import { CustomIcon } from "../icon";
 
 interface ResourceDetailCardProps {
   resourceData: InternalResource;

@@ -2,10 +2,10 @@ import { Box, Button, Flex, Spinner, Text } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState } from "react";
 
-import { CustomIcon } from "../icon";
 import { useMobile } from "lib/app-provider";
 import type { Nullable } from "lib/types";
 import { jsonLineCount, jsonPrettify, jsonValidate } from "lib/utils";
+import { CustomIcon } from "../icon";
 
 const JsonEditor = dynamic(() => import("./JsonEditor"), {
   ssr: false,

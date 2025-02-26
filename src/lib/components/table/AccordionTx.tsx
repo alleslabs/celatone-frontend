@@ -2,13 +2,13 @@ import type { GridItemProps } from "@chakra-ui/react";
 import { Flex, SlideFade } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { AccordionStepperItem } from "../AccordionStepperItem";
 import { SingleActionMsg } from "lib/components/action-msg/SingleActionMsg";
 import { RedoButton, ResendButton } from "lib/components/button";
 import type { Message } from "lib/types";
 import { extractMsgType } from "lib/utils";
 
 import { TableRow } from "./tableComponents";
+import { AccordionStepperItem } from "../AccordionStepperItem";
 
 interface RenderButtonProps {
   message: Message;

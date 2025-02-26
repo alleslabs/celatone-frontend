@@ -13,7 +13,6 @@ import { useEffect } from "react";
 import { useController, useFieldArray, useWatch } from "react-hook-form";
 import type { Control, FieldErrors } from "react-hook-form";
 
-import type { AddNetworkManualForm } from "../../types";
 import {
   CustomNetworkPageHeader,
   CustomNetworkSubheader,
@@ -22,6 +21,7 @@ import { ControllerInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { useAccountBech32 } from "lib/services/account";
+import type { AddNetworkManualForm } from "../../types";
 
 interface WalletRegistryProps {
   control: Control<AddNetworkManualForm>;
@@ -175,7 +175,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
               {isAccountBech32Loading ? (
                 <SkeletonText noOfLines={1} skeletonHeight={4} />
               ) : (
-                accountBech32?.bech32Prefix ?? "init"
+                (accountBech32?.bech32Prefix ?? "init")
               )}
             </LabelText>
             <LabelText label="Slip44">118</LabelText>

@@ -1,11 +1,9 @@
-import type { HexAddr20, Option } from "lib/types";
-import type { EvmVerifyInfo } from "lib/types";
-import { Flex, HStack } from "@chakra-ui/react";
 import type { TextProps } from "@chakra-ui/react";
-import { Divider, Text } from "@chakra-ui/react";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { formatUTC, getLicenseTypeLabel } from "lib/utils";
+import { Flex, HStack, Divider, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import type { HexAddr20, Option, EvmVerifyInfo } from "lib/types";
+import { formatUTC, getLicenseTypeLabel } from "lib/utils";
 
 const baseTextStyle: TextProps = {
   color: "text.dark",

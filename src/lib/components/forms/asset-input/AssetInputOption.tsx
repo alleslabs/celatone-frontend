@@ -2,10 +2,10 @@ import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import type { OptionProps } from "chakra-react-select";
 import { components } from "chakra-react-select";
 
-import type { SelectInputOption } from "../SelectInput";
 import { TokenImageRenderWithCache } from "lib/components/token";
 import type { AssetOptionValue } from "lib/types";
 import { getTokenLabel } from "lib/utils";
+import type { SelectInputOption } from "../SelectInput";
 
 export const AssetInputOption = (
   props: OptionProps<SelectInputOption<AssetOptionValue>>

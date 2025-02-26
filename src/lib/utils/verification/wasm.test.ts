@@ -1,13 +1,13 @@
-import {
-  exampleCodeId,
-  exampleSchema,
-} from "../_suites/verification/wasm/example";
 import type { CodeSchema } from "lib/types";
 import { SchemaProperties } from "lib/types";
 import executeSchemaOutput from "lib/utils/_suites/verification/wasm/execute-schema-output.json";
 import querySchemaOutput from "lib/utils/_suites/verification/wasm/query-schema-output.json";
 
 import { getExecuteSchema, getQuerySchema, getSchemaProperty } from "./wasm";
+import {
+  exampleCodeId,
+  exampleSchema,
+} from "../_suites/verification/wasm/example";
 
 const randomSchema = {} as CodeSchema;
 

@@ -2,8 +2,6 @@ import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { useMemo, useState } from "react";
 
-import InputWithIcon from "../InputWithIcon";
-import { ContractsTable } from "../table";
 import { useCurrentChain, useTierConfig } from "lib/app-provider";
 import { DisconnectedState, EmptyState, ZeroState } from "lib/components/state";
 import { TagSelection } from "lib/components/TagSelection";
@@ -12,6 +10,8 @@ import { useAdminsByContractAddresses } from "lib/services/wasm/contract";
 import type { ContractListInfo } from "lib/stores/contract";
 import type { BechAddr32, ContractInfo } from "lib/types";
 import { formatSlugName } from "lib/utils";
+import InputWithIcon from "../InputWithIcon";
+import { ContractsTable } from "../table";
 
 interface ContractListContentProps {
   contractListInfo: ContractListInfo;

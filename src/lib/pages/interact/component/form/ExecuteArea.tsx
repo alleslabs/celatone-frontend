@@ -11,11 +11,11 @@ import {
   useExecuteModuleTx,
   useFabricateFee,
 } from "lib/app-provider";
-import { AbiForm } from "lib/components/move-abi";
 import { SubmitButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
+import { AbiForm } from "lib/components/move-abi";
 import { useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeQuery } from "lib/services/tx";
 import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";

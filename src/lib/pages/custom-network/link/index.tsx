@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { zAddNetworkLinkChainConfigJson } from "../types";
 import { useChainConfigs } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
@@ -15,6 +14,7 @@ import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { EmptyState } from "lib/components/state";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { libDecode } from "lib/utils";
+import { zAddNetworkLinkChainConfigJson } from "../types";
 
 type AddCustomNetworkError =
   | {

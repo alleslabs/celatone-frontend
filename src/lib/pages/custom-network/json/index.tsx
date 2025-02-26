@@ -4,12 +4,6 @@ import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback, useState } from "react";
 
-import {
-  DuplicatedAddCustomMinitiaModal,
-  FailedAddCustomMinitiaModal,
-  SuccessAddCustomMinitiaModal,
-} from "../components";
-import { zAddNetworkJsonChainConfigJson } from "../types";
 import { useChainConfigs, useInternalNavigate } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import {
@@ -19,6 +13,12 @@ import {
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import { useLocalChainConfigStore } from "lib/providers/store";
+import {
+  DuplicatedAddCustomMinitiaModal,
+  FailedAddCustomMinitiaModal,
+  SuccessAddCustomMinitiaModal,
+} from "../components";
+import { zAddNetworkJsonChainConfigJson } from "../types";
 
 export const AddNetworkJson = observer(() => {
   const navigate = useInternalNavigate();

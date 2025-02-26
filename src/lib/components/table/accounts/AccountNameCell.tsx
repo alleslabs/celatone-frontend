@@ -1,7 +1,7 @@
-import { EditableCell } from "../EditableCell";
 import { useCelatoneApp } from "lib/app-provider";
 import { useHandleAccountSave } from "lib/hooks";
 import type { AccountLocalInfo } from "lib/stores/account";
+import { EditableCell } from "../EditableCell";
 
 interface AccountNameCellProps {
   accountLocalInfo: AccountLocalInfo;

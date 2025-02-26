@@ -1,17 +1,14 @@
+import { Heading, Stack } from "@chakra-ui/react";
 import type { Control } from "react-hook-form";
 import { useController } from "react-hook-form";
-import { Heading, Stack } from "@chakra-ui/react";
 import { ControllerTextarea } from "lib/components/forms";
+import { EvmVerifyOptions } from "lib/types";
+import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
 import { ConstructorArgs } from "../ConstructorArgs";
+import { ContractLibraries } from "../ContractLibraries";
+import { EvmContractVerifyAlert } from "../EvmContractVerifyAlert";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
 import { OptimizerConfiguration } from "../OptimizerConfiguration";
-import { ContractLibraries } from "../ContractLibraries";
-import {
-  type EvmContractVerifyForm,
-  type EvmVerifyConfig,
-  EvmVerifyOptions,
-} from "lib/types";
-import { EvmContractVerifyAlert } from "../EvmContractVerifyAlert";
 
 interface EvmContractVerifySolidityContractCodeProps {
   control: Control<EvmContractVerifyForm>;

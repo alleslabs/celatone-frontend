@@ -2,11 +2,11 @@ import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { Coins, MsgInstantiateContract } from "@initia/initia.js";
 import { useCallback } from "react";
 
-import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { instantiateContractTx } from "lib/app-fns/tx/instantiate";
 import type { BechAddr32, Coin } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
+import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface InstantiateStreamParams {
   estimatedFee: StdFee | undefined;

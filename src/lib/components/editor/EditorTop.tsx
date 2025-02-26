@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import type { SourceTreeNode } from "./types";
-import { EditorFileBody } from "./EditorFileBody";
-import { CustomIcon } from "../icon";
-import type { Nullable } from "lib/types";
 import { Fragment } from "react";
+import type { Nullable } from "lib/types";
+import { EditorFileBody } from "./EditorFileBody";
+import type { SourceTreeNode } from "./types";
+import { CustomIcon } from "../icon";
 
 interface EditorTopProps {
   filesList: SourceTreeNode[];

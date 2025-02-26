@@ -8,13 +8,13 @@ import {
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { TxsTabIndex } from "../types";
 import { trackUseTab } from "lib/amplitude";
 import { CustomTab } from "lib/components/CustomTab";
 import type { BechAddr20 } from "lib/types";
 
 import { EvmContractDetailsCosmosTxs } from "./EvmContractDetailsCosmosTxs";
 import { EvmContractDetailsEvmTxs } from "./EvmContractDetailsEvmTxs";
+import { TxsTabIndex } from "../types";
 
 interface EvmContractDetailsTxsProps {
   address: BechAddr20;

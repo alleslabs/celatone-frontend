@@ -9,10 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
-import { LabelText } from "../LabelText";
 import { trackUseExpand } from "lib/amplitude";
 import type { Struct } from "lib/types";
+import { CustomIcon } from "../icon";
+import { LabelText } from "../LabelText";
 
 interface StructCardProps {
   struct: Struct;

@@ -1,9 +1,9 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Heading } from "@chakra-ui/react";
 
-import { FunctionTypeTabIndex } from "../../types";
 import { MotionBox } from "lib/components/MotionBox";
 import type { Option } from "lib/types";
+import { FunctionTypeTabIndex } from "../../types";
 
 interface FunctionTypeSwitchProps extends FlexProps {
   currentTab: FunctionTypeTabIndex;

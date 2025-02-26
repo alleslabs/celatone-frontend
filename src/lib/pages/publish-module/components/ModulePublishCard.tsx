@@ -1,11 +1,11 @@
 import { Button, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 
-import type { Module } from "../formConstants";
 import { AmpEvent, track } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { CountBadge } from "lib/components/module";
 import { useOpenNewTab } from "lib/hooks";
+import type { Module } from "../formConstants";
 
 interface ModulePublishCardProps {
   module: Module;

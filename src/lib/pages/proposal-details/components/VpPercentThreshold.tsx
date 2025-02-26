@@ -1,12 +1,12 @@
 import { Divider, Flex, Text } from "@chakra-ui/react";
 import { Fragment } from "react";
 
-import { normalizeVotesInfo } from "../utils";
 import { LegendText } from "lib/components/LegendText";
 import type { ProposalVotesInfo } from "lib/types";
 import { d0Formatter, formatPrettyPercent } from "lib/utils";
 
 import { VpPercentCard } from "./VpPercentCard";
+import { normalizeVotesInfo } from "../utils";
 
 interface VpPercentThresholdProps {
   votesInfo: ProposalVotesInfo;

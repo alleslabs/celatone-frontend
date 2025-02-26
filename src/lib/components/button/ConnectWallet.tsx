@@ -1,9 +1,9 @@
 import { Button } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
-import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
+import { CustomIcon } from "../icon";
 
 export const ConnectWalletBtn = () => {
   const { connect } = useCurrentChain();

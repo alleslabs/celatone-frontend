@@ -3,8 +3,6 @@ import { Box, Button, Grid, Stack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 
-import { useMyModuleVerifications } from "../../data";
-import { MoveVerifyTaskStatusFilter } from "../MoveVerifyTaskStatusFilter";
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -15,6 +13,8 @@ import type { MoveVerifyTaskStatus } from "lib/services/types";
 
 import { MyModuleVerificationsTableHeader } from "./MyModuleVerificationsHeader";
 import { MyModuleVerificationsRow } from "./MyModuleVerificationsRow";
+import { useMyModuleVerifications } from "../../data";
+import { MoveVerifyTaskStatusFilter } from "../MoveVerifyTaskStatusFilter";
 
 export const MyModuleVerificationsTable = observer(() => {
   const navigate = useInternalNavigate();

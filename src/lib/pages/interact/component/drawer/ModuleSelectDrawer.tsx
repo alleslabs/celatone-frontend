@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { ModuleEmptyState } from "../common";
 import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useModulesByAddress } from "lib/services/move/module";
@@ -24,6 +23,7 @@ import type {
   ModuleSelectFunction,
   SelectedAddress,
 } from "./types";
+import { ModuleEmptyState } from "../common";
 
 interface ModuleSelectDrawerProps {
   isOpen: boolean;

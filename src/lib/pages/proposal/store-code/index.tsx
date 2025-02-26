@@ -15,13 +15,6 @@ import { gzip } from "node-gzip";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { AssetBox, Footer } from "../components";
-import { InitialDeposit } from "../components/InitialDeposit";
-import {
-  PROPOSAL_STORE_CODE_TEXT,
-  SIDEBAR_STORE_CODE_DETAILS,
-} from "../constants";
-import { getAlert } from "../utils";
 import {
   AmpEvent,
   track,
@@ -65,6 +58,13 @@ import {
   getAmountToVote,
   getCodeHash,
 } from "lib/utils";
+import { AssetBox, Footer } from "../components";
+import { InitialDeposit } from "../components/InitialDeposit";
+import {
+  PROPOSAL_STORE_CODE_TEXT,
+  SIDEBAR_STORE_CODE_DETAILS,
+} from "../constants";
+import { getAlert } from "../utils";
 
 interface StoreCodeProposalState {
   title: string;

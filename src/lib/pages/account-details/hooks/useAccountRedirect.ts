@@ -6,12 +6,8 @@ import {
 } from "lib/app-provider";
 import { useEvmCodesByAddress } from "lib/services/evm";
 import { useContractData } from "lib/services/wasm/contract";
-import {
-  type BechAddr,
-  type BechAddr32,
-  type HexAddr,
-  zHexAddr20,
-} from "lib/types";
+import { zHexAddr20 } from "lib/types";
+import type { BechAddr, BechAddr32, HexAddr } from "lib/types";
 import { isHexWalletAddress } from "lib/utils";
 
 export const useAccountRedirect = (bechAddr: BechAddr, hexAddr: HexAddr) => {

@@ -1,10 +1,10 @@
 import { Button } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
 import { useCurrentChain } from "lib/app-provider";
 import { useRedo } from "lib/hooks/useRedo";
 import type { Message, Msg } from "lib/types";
 import { extractMsgType } from "lib/utils";
+import { CustomIcon } from "../icon";
 
 interface RedoButtonProps {
   message: Message;

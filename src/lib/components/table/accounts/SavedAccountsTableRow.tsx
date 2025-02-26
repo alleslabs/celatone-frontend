@@ -1,6 +1,5 @@
 import { Grid, IconButton, Text } from "@chakra-ui/react";
 
-import { TableRow } from "../tableComponents";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -13,6 +12,7 @@ import type { BechAddr } from "lib/types";
 import { bech32AddressToHex, unpadHexAddress } from "lib/utils";
 
 import { AccountNameCell } from "./AccountNameCell";
+import { TableRow } from "../tableComponents";
 
 interface SavedAccountsTableRowProps {
   accountInfo: AccountLocalInfo;

@@ -1,7 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { MobileCardTemplate } from "../MobileCardTemplate";
-import { MobileLabel } from "../MobileLabel";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type {
@@ -16,6 +14,8 @@ import { RemarkOperation } from "lib/types";
 import { dateFromNow, formatUTC, getWasmVerifyStatus } from "lib/utils";
 
 import { ContractInstantiatorCell } from "./ContractInstantiatorCell";
+import { MobileCardTemplate } from "../MobileCardTemplate";
+import { MobileLabel } from "../MobileLabel";
 
 interface ContractsTableMobileCardProps {
   contractInfo: ContractInfo;

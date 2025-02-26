@@ -2,9 +2,9 @@ import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
-import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { deployScriptTx } from "lib/app-fns/tx/script";
+import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface DeployScriptStreamParams {
   onTxSucceed?: () => void;

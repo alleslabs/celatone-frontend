@@ -1,9 +1,9 @@
 import { Flex, Heading, VStack } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 import type { EvmVerifyInfo, HexAddr20 } from "lib/types";
+import { EvmContractCmdGroup } from "./EvmContractCmdGroup";
 import { InteractTabsIndex } from "../../types";
 import { categorizeAbi } from "../interact-evm-contract/utils";
-import { EvmContractCmdGroup } from "./EvmContractCmdGroup";
 
 interface OverviewVerifiedCmdsProps {
   contractAddress: HexAddr20;

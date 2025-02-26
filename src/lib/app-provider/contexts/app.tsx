@@ -10,8 +10,6 @@ import {
   useState,
 } from "react";
 
-import { useChainConfigs } from "../hooks/useChainConfigs";
-import { useNetworkChange } from "../hooks/useNetworkChange";
 import type { ProjectConstants } from "config/project";
 import { PROJECT_CONSTANTS } from "config/project";
 import { FALLBACK_THEME, getTheme } from "config/theme";
@@ -19,6 +17,8 @@ import type { ThemeConfig } from "config/theme/types";
 import { changeFavicon } from "lib/utils";
 
 import { DEFAULT_CHAIN_CONFIG } from "./default";
+import { useChainConfigs } from "../hooks/useChainConfigs";
+import { useNetworkChange } from "../hooks/useNetworkChange";
 
 interface AppProviderProps {
   children: ReactNode;

@@ -2,12 +2,12 @@ import type { Coin, StdFee } from "@cosmjs/stargate";
 import { Coins, MsgExecuteContract } from "@initia/initia.js";
 import { useCallback } from "react";
 
-import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { executeContractTx } from "lib/app-fns/tx/execute";
 import type { Activity } from "lib/stores/contract";
 import type { BechAddr32 } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
+import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface ExecuteStreamParams {
   estimatedFee: StdFee | undefined;

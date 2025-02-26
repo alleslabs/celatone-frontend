@@ -11,8 +11,8 @@ import { ContractInteractionTabs } from "lib/types";
 import type { BechAddr32 } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
-import type { InstantiateTxInfo } from ".";
 import { InstantiateOffChainForm } from "./component";
+import type { InstantiateTxInfo } from ".";
 
 interface InstantiateCompletedProps {
   txInfo: InstantiateTxInfo;

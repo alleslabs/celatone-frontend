@@ -6,9 +6,9 @@ import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import { TxReceiptRender } from "lib/components/tx";
 import type { TxReceipt } from "lib/types";
 
-import type { TxMsgData } from ".";
 import { EventBox } from "./EventBox";
 import { generateReceipts } from "./msg-receipts";
+import type { TxMsgData } from ".";
 
 interface TxMsgDetailsProps extends TxMsgData {
   isExpand: boolean;

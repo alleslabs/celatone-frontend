@@ -2,10 +2,10 @@
 import { Text } from "@chakra-ui/react";
 import { isNull } from "lodash";
 
-import { Countdown } from "../proposal-overview/status-summary/Countdown";
 import type { ProposalData } from "lib/types";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
+import { Countdown } from "../proposal-overview/status-summary/Countdown";
 
 interface StepperHelperTextProps {
   step: number;

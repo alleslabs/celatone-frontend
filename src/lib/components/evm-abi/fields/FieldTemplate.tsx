@@ -1,11 +1,11 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { CustomIcon } from "lib/components/icon";
-import type { Option } from "lib/types";
 import type { FieldPath, FieldValues } from "react-hook-form";
 import { useController } from "react-hook-form";
-import { getDefaultValueFromDimensions } from "../utils";
+import { CustomIcon } from "lib/components/icon";
+import type { Option } from "lib/types";
 import { Field } from "./Field";
 import type { FieldProps } from "./types";
+import { getDefaultValueFromDimensions } from "../utils";
 
 interface FieldTemplateProps<T extends FieldValues> extends FieldProps<T> {
   dimensions?: Option<number>[];

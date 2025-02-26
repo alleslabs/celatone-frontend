@@ -1,8 +1,8 @@
 import { Flex, FormLabel, Input } from "@chakra-ui/react";
 import type { Dispatch, ForwardedRef, RefObject, SetStateAction } from "react";
 
-import { DropdownChevron } from "../DropdownChevron";
 import { mergeRefs } from "lib/utils";
+import { DropdownChevron } from "../DropdownChevron";
 
 interface FilterInputProps {
   keyword: string;

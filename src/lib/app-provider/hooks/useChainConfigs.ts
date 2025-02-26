@@ -5,10 +5,10 @@ import { isUndefined, unionBy } from "lodash";
 import { useMemo } from "react";
 
 import { devChainConfigs } from "config/chain";
+import { CHAIN, SUPPORTED_NETWORK_TYPES } from "env";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { useApiChainConfigs } from "lib/services/chain-config";
 import { getRegistryAssets, getRegistryChain } from "lib/utils";
-import { CHAIN, SUPPORTED_NETWORK_TYPES } from "env";
 
 const defaultConfigs = {
   chainConfigs: {} as { [chainId: string]: ChainConfig },

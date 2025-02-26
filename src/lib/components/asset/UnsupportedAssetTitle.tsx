@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 
-import { TableTitle } from "../table";
 import type { TokenWithValue } from "lib/types";
+import { TableTitle } from "../table";
 
 interface UnsupportedAssetTitleProps {
   unsupportedAssets: TokenWithValue[];

@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import type { EvmVerifyInfo } from "lib/types";
-import { getProcessSteps } from "./utils";
 import { formatUTC } from "lib/utils";
 import { EvmVerifyProcessStepIcon } from "./EvmVerifyProcessStepIcon";
+import { getProcessSteps } from "./utils";
 
 interface EvmVerifyProcessProps {
   evmVerifyInfo: EvmVerifyInfo;
