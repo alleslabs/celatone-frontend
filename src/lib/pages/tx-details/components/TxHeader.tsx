@@ -20,7 +20,7 @@ const DotSeparator = () => (
 export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
   const isMobile = useMobile();
   const evm = useEvmConfig({ shouldRedirect: false });
-  const openLcdTab = useOpenTxTab("lcd");
+  const openRestTab = useOpenTxTab("rest");
 
   return (
     <Flex direction="column" gap={2} {...flexProps}>
@@ -69,7 +69,7 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
             rightIcon={<CustomIcon name="launch" boxSize={3} m={0} />}
             onClick={() => {
               trackUseViewJSON("tx_page_transaction_hash");
-              openLcdTab(txData.txhash);
+              openRestTab(txData.txhash);
             }}
           >
             View in JSON

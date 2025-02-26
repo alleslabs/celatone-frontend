@@ -31,13 +31,13 @@ interface BlockDetailsTopProps {
 export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   const block = Number(blockData.height);
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  const openLcdPage = () => {
+  const openRestPage = () => {
     trackUseViewJSON("Block Details");
     openNewTab(
-      `${lcdEndpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`
+      `${restEndpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`
     );
   };
 
@@ -89,7 +89,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
               variant="ghost-gray"
               size={{ base: "sm", md: "md" }}
               rightIcon={<CustomIcon name="launch" boxSize={3} />}
-              onClick={openLcdPage}
+              onClick={openRestPage}
             >
               View in JSON
             </Button>

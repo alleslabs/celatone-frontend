@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import {
   AccountType,
-  AccountTypeLcd,
+  AccountTypeRest,
   zProjectInfo,
   zPublicAccountInfo,
 } from "lib/types";
@@ -35,10 +35,10 @@ export const zAccountTableCounts = z
 
 export type AccountTableCounts = z.infer<typeof zAccountTableCounts>;
 
-export const zAccountTypeLcd = z
+export const zAccountTypeRest = z
   .object({
     account: z.object({
-      "@type": z.nativeEnum(AccountTypeLcd),
+      "@type": z.nativeEnum(AccountTypeRest),
     }),
   })
   .transform((data) => data.account["@type"]);
@@ -49,12 +49,12 @@ export const zAccountTypeResponse = z
   })
   .transform((val) => val.type);
 
-export const zAccountBech32LcdResponse = z
+export const zAccountBech32RestResponse = z
   .object({
     bech32_prefix: z.string(),
   })
   .transform(snakeToCamel);
 
-export type AccountBech32LcdResponse = z.infer<
-  typeof zAccountBech32LcdResponse
+export type AccountBech32RestResponse = z.infer<
+  typeof zAccountBech32RestResponse
 >;

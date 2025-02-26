@@ -7,7 +7,7 @@ import { encode, parseWithError } from "lib/utils";
 const icnsResolverAddress =
   "osmo1xk0s8xgktn9x5vwcgtjdxqzadg88fgn33p8u9cnpdxwemvxscvast52cdd";
 
-export const getIcnsNamesByAddressLcd = async (
+export const getIcnsNamesByAddressRest = async (
   endpoint: string,
   address: BechAddr
 ) => {
@@ -26,7 +26,7 @@ export const getIcnsNamesByAddressLcd = async (
     .then(({ data }) => parseWithError(zIcnsNamesByAddress, data));
 };
 
-export const getAddressByIcnsNameLcd = async (
+export const getAddressByIcnsNameRest = async (
   endpoint: string,
   name: string,
   bech32Prefix: string

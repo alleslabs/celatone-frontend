@@ -8,20 +8,20 @@ import {
 } from "lib/app-provider";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 
-import { getAddressByIcnsNameLcd, getIcnsNamesByAddressLcd } from "./lcd";
-import { getContractLcd } from "../wasm/contract/lcd";
+import { getAddressByIcnsNameRest, getIcnsNamesByAddressRest } from "./rest";
+import { getContractRest } from "../wasm/contract/rest";
 
-export const useIcnsNamesByAddressLcd = (
+export const useIcnsNamesByAddressRest = (
   address: Option<BechAddr>,
   enabled = true
 ) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   const queryFn = async () => {
     if (!address) throw new Error("address is undefined");
-    const icnsNames = await getIcnsNamesByAddressLcd(lcdEndpoint, address);
+    const icnsNames = await getIcnsNamesByAddressRest(restEndpoint, address);
     const primaryIndex = icnsNames.names.indexOf(icnsNames.primaryName);
 
     if (primaryIndex > -1) {
@@ -33,7 +33,7 @@ export const useIcnsNamesByAddressLcd = (
   };
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS_LCD, lcdEndpoint, address],
+    [CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS_REST, restEndpoint, address],
     queryFn,
     {
       refetchOnWindowFocus: false,
@@ -43,24 +43,24 @@ export const useIcnsNamesByAddressLcd = (
   );
 };
 
-export const useAddressByIcnsNameLcd = (name: string, enabled = true) => {
+export const useAddressByIcnsNameRest = (name: string, enabled = true) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const getAddressType = useGetAddressType();
   const { bech32Prefix } = useCurrentChain();
   const queryFn = async () => {
     // Strip bech32 prefix to allow searching with .prefix (e.g. example.osmo)
     const [stripPrefixName] = name.split(`.${bech32Prefix}`);
-    const { address: icnsAddress } = await getAddressByIcnsNameLcd(
-      lcdEndpoint,
+    const { address: icnsAddress } = await getAddressByIcnsNameRest(
+      restEndpoint,
       stripPrefixName,
       bech32Prefix
     );
     let addressType = getAddressType(icnsAddress);
     if (addressType === "contract_address") {
-      const contractData = await getContractLcd(
-        lcdEndpoint,
+      const contractData = await getContractRest(
+        restEndpoint,
         icnsAddress as BechAddr32
       );
       if (!contractData) addressType = "user_address";
@@ -73,8 +73,8 @@ export const useAddressByIcnsNameLcd = (name: string, enabled = true) => {
 
   return useQuery({
     queryKey: [
-      CELATONE_QUERY_KEYS.ADDRESS_BY_ICNS_NAME_LCD,
-      lcdEndpoint,
+      CELATONE_QUERY_KEYS.ADDRESS_BY_ICNS_NAME_REST,
+      restEndpoint,
       name,
       bech32Prefix,
     ],

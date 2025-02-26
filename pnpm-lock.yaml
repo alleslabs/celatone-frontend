@@ -15,8 +15,8 @@ importers:
         specifier: 0.0.3
         version: 0.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@alleslabs/shared':
-        specifier: 1.0.0-dev6
-        version: 1.0.0-dev6
+        specifier: file:../celatone-core/shared
+        version: file:../celatone-core/shared
       '@amplitude/analytics-browser':
         specifier: ^2.3.3
         version: 2.11.11
@@ -415,8 +415,8 @@ packages:
     resolution: {integrity: sha512-93dSIOMsviBYqGP3sXO04vbTwLR8LOlb40fy24f851Ii8Bwi/W7fnIie9GAyo2F1JzRcUd5oo9YequhcA7LejQ==}
     engines: {node: '>=14'}
 
-  '@alleslabs/shared@1.0.0-dev6':
-    resolution: {integrity: sha512-JFkD+EhzUYLlnxplNBFgjzPh5zaZlpZ4Gg3sWzVdwrX3RAJgdvLJ0Xz2pUazEbzgr4Kszso0SRsmIod7O2/NsQ==}
+  '@alleslabs/shared@file:../celatone-core/shared':
+    resolution: {directory: ../celatone-core/shared, type: directory}
 
   '@amplitude/analytics-browser@2.11.11':
     resolution: {integrity: sha512-AdpNNPwoNPezojeeU2ITcyqKcrrW8edVBHlCEvDNIXYkf5Y0i5Blbes3x6rgONsOeV2hx85trTXhhVkilWgHcg==}
@@ -10597,7 +10597,7 @@ snapshots:
       - debug
       - utf-8-validate
 
-  '@alleslabs/shared@1.0.0-dev6':
+  '@alleslabs/shared@file:../celatone-core/shared':
     dependencies:
       '@chain-registry/types': 0.45.20
 

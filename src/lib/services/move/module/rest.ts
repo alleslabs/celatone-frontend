@@ -2,14 +2,14 @@ import axios from "axios";
 
 import type { AccountModulesResponse } from "lib/services/types";
 import {
-  zModuleResponseLcd,
-  zModulesResponseLcd,
-  zMoveViewJsonResponseLcd,
+  zModuleResponseRest,
+  zModulesResponseRest,
+  zMoveViewJsonResponseRest,
 } from "lib/services/types";
 import type { Addr, HexAddr, IndexedModule, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-export const getModuleByAddressLcd = async (
+export const getModuleByAddressRest = async (
   endpoint: string,
   address: Addr,
   moduleName: string
@@ -18,9 +18,9 @@ export const getModuleByAddressLcd = async (
     .get(
       `${endpoint}/initia/move/v1/accounts/${encodeURI(address)}/modules/${encodeURI(moduleName)}`
     )
-    .then(({ data }) => parseWithError(zModuleResponseLcd, data).module);
+    .then(({ data }) => parseWithError(zModuleResponseRest, data).module);
 
-export const getModulesByAddressLcd = async (
+export const getModulesByAddressRest = async (
   endpoint: string,
   address: Addr
 ): Promise<AccountModulesResponse> => {
@@ -36,7 +36,7 @@ export const getModulesByAddressLcd = async (
           },
         }
       )
-      .then(({ data }) => parseWithError(zModulesResponseLcd, data));
+      .then(({ data }) => parseWithError(zModulesResponseRest, data));
     result.push(...res.modules);
     if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
   };
@@ -49,7 +49,7 @@ export const getModulesByAddressLcd = async (
   };
 };
 
-export const getMoveViewJsonLcd = async (
+export const getMoveViewJsonRest = async (
   endpoint: string,
   vmAddress: HexAddr,
   moduleName: string,
@@ -65,4 +65,4 @@ export const getMoveViewJsonLcd = async (
       type_args: typeArgs,
       args,
     })
-    .then(({ data }) => parseWithError(zMoveViewJsonResponseLcd, data));
+    .then(({ data }) => parseWithError(zMoveViewJsonResponseRest, data));

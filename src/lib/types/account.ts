@@ -15,7 +15,7 @@ export enum AccountType {
   BaseVestingAccount = "BaseVestingAccount",
 }
 
-export enum AccountTypeLcd {
+export enum AccountTypeRest {
   BaseAccount = "/cosmos.auth.v1beta1.BaseAccount",
   ModuleAccount = "/cosmos.auth.v1beta1.ModuleAccount",
 }

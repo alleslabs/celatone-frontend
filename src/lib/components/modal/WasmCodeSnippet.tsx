@@ -59,7 +59,7 @@ const WasmCodeSnippet = ({
   const isDisabled = !contractAddress || !message.length;
   const {
     currentChainId,
-    chainConfig: { chain, lcd: lcdEndpoint, rpc: rpcEndpoint },
+    chainConfig: { chain, rest: restEndpoint, rpc: rpcEndpoint },
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();
@@ -93,7 +93,7 @@ ${daemonName} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
         snippet: `import base64
 import requests\n
 CONTRACT_ADDRESS = "${contractAddress}"
-LCD_URL = "${lcdEndpoint}"
+LCD_URL = "${restEndpoint}"
 QUERY_MSG = b'''${message}'''\n
 query_b64encoded = base64.b64encode(QUERY_MSG).decode("ascii")
 res = requests.get(
@@ -123,7 +123,7 @@ queryContract(rpcURL, contractAddress, queryMsg);`,
         name: "Axios",
         mode: "javascript",
         snippet: `const axios = require('axios');\n
-const lcdURL = '${lcdEndpoint}';
+const lcdURL = '${restEndpoint}';
 const contractAddress =
 "${contractAddress}";
 const queryMsg = ${message};\n

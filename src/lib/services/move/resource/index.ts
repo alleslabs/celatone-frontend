@@ -10,7 +10,7 @@ import type { Addr, ResourceGroup, ResourceGroupByAccount } from "lib/types";
 import { zHexAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
-import { getAccountResourcesLcd } from "./lcd";
+import { getAccountResourcesRest } from "./rest";
 
 export interface ResourcesByAddressReturn {
   groupedByOwner: ResourceGroupByAccount[];
@@ -18,16 +18,16 @@ export interface ResourcesByAddressReturn {
   totalCount: number;
 }
 
-export const useResourcesByAddressLcd = (
+export const useResourcesByAddressRest = (
   address: Addr
 ): UseQueryResult<ResourcesByAddressReturn> => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const { enabled } = useMoveConfig({ shouldRedirect: false });
 
   const queryFn: QueryFunction<ResourcesByAddressReturn> = () =>
-    getAccountResourcesLcd(lcdEndpoint, address).then((resources) => {
+    getAccountResourcesRest(restEndpoint, address).then((resources) => {
       const groupedByOwner = resources.items.reduce<
         Record<string, ResourceGroupByAccount>
       >((acc, resource) => {
@@ -83,7 +83,7 @@ export const useResourcesByAddressLcd = (
       };
     });
   return useQuery(
-    [CELATONE_QUERY_KEYS.RESOURCES_BY_ADDRESS, lcdEndpoint, address],
+    [CELATONE_QUERY_KEYS.RESOURCES_BY_ADDRESS, restEndpoint, address],
     queryFn,
     { enabled, refetchOnWindowFocus: false, retry: 1 }
   );

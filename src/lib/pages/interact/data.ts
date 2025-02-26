@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
 import {
-  useModuleByAddressLcd,
+  useModuleByAddressRest,
   useModulesByAddress,
 } from "lib/services/move/module";
 import type { Addr, IndexedModule, Option } from "lib/types";
@@ -20,7 +20,7 @@ export const useSearchModules = ({
   onError: (err: unknown) => void;
 }) => {
   const { refetch: refetchModule, isFetching: isModuleFetching } =
-    useModuleByAddressLcd({
+    useModuleByAddressRest({
       address,
       moduleName: moduleName ?? "",
       options: {

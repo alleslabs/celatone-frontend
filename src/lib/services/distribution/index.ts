@@ -9,26 +9,26 @@ import {
 import type { BechAddr, Option, ValidatorAddr } from "lib/types";
 
 import {
-  getCommissionsByValidatorAddressLcd,
-  getDelegationRewardsByAddressLcd,
-} from "./lcd";
+  getCommissionsByValidatorAddressRest,
+  getDelegationRewardsByAddressRest,
+} from "./rest";
 
-export const useDelegationRewardsByAddressLcd = (
+export const useDelegationRewardsByAddressRest = (
   address: BechAddr,
   enabled: boolean
 ) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
     [
-      CELATONE_QUERY_KEYS.DELEGATION_REWARDS_BY_ADDRESS_LCD,
-      lcdEndpoint,
+      CELATONE_QUERY_KEYS.DELEGATION_REWARDS_BY_ADDRESS_REST,
+      restEndpoint,
       address,
     ],
-    () => getDelegationRewardsByAddressLcd(lcdEndpoint, address),
+    () => getDelegationRewardsByAddressRest(restEndpoint, address),
     {
       enabled: enabled && gov.enabled,
       refetchOnWindowFocus: false,
@@ -36,24 +36,24 @@ export const useDelegationRewardsByAddressLcd = (
   );
 };
 
-export const useCommissionsByValidatorAddressLcd = (
+export const useCommissionsByValidatorAddressRest = (
   valAddr: Option<ValidatorAddr>,
   enabled: boolean
 ) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const gov = useGovConfig({ shouldRedirect: false });
 
   return useQuery(
     [
-      CELATONE_QUERY_KEYS.COMMISSIONS_BY_VALIDATOR_ADDRESS_LCD,
-      lcdEndpoint,
+      CELATONE_QUERY_KEYS.COMMISSIONS_BY_VALIDATOR_ADDRESS_REST,
+      restEndpoint,
       valAddr,
     ],
     () => {
       if (isUndefined(valAddr)) return { commission: [] };
-      return getCommissionsByValidatorAddressLcd(lcdEndpoint, valAddr);
+      return getCommissionsByValidatorAddressRest(restEndpoint, valAddr);
     },
     {
       enabled: enabled && gov.enabled,
