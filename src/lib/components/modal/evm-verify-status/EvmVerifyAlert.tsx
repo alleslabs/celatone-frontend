@@ -6,13 +6,7 @@ interface EvmVerifyAlertProps {
   errorMsg: string;
 }
 export const EvmVerifyAlert = ({ errorMsg }: EvmVerifyAlertProps) => (
-  <Alert
-    p={2}
-    variant="error"
-    gap={{ base: 2, md: 4 }}
-    mb={{ base: 4, md: 6 }}
-    alignItems="flex-start"
-  >
+  <Alert p={2} variant="error" gap={{ base: 2, md: 4 }} alignItems="flex-start">
     <CustomIcon name="alert-triangle-solid" boxSize={4} color="error.main" />
     <AlertDescription>
       <Flex direction="column" gap={1}>

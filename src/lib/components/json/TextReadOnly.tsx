@@ -13,9 +13,14 @@ import { CopyButton } from "../copy";
 interface TextReadOnlyProps {
   text: string;
   canCopy?: boolean;
+  showLines?: number;
 }
 
-export const TextReadOnly = ({ text, canCopy }: TextReadOnlyProps) => {
+export const TextReadOnly = ({
+  text,
+  canCopy,
+  showLines,
+}: TextReadOnlyProps) => {
   const editorRef = useRef<AceEditor>(null);
   const { theme } = useCelatoneApp();
 
@@ -54,7 +59,8 @@ export const TextReadOnly = ({ text, canCopy }: TextReadOnlyProps) => {
           showGutter: false,
           printMargin: false,
           indentedSoftWrap: false,
-          maxLines: Infinity,
+          maxLines: showLines ?? Infinity,
+          minLines: showLines,
         }}
         value={text}
         editorProps={{ $blockScrolling: true }}
