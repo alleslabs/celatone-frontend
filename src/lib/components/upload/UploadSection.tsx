@@ -3,8 +3,6 @@ import type { StdFee } from "@cosmjs/stargate";
 import { useCallback, useEffect, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 
-import { DropZone } from "../dropzone";
-import { ControllerInput } from "../forms";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { useGetMaxLengthError } from "lib/hooks";
@@ -23,6 +21,8 @@ import { IndirectlyVerifiedAlert } from "./IndirectlyVerifiedAlert";
 import { InstantiatePermissionRadio } from "./InstantiatePermissionRadio";
 import { SimulateMessageRender } from "./SimulateMessageRender";
 import { UploadCard } from "./UploadCard";
+import { DropZone } from "../dropzone";
+import { ControllerInput } from "../forms";
 
 interface UploadSectionProps {
   formData: UseFormReturn<UploadSectionState>;

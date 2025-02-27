@@ -1,11 +1,11 @@
 import { chakra, IconButton, Text, useToast } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
 import { getNameAndDescriptionDefault, shortenName } from "lib/utils";
+import { ActionModal } from "../ActionModal";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {

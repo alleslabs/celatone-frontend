@@ -1,4 +1,3 @@
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
@@ -8,6 +7,7 @@ import type { CodeInfo, Option } from "lib/types";
 import { CodesTableHeader } from "./CodesTableHeader";
 import { CodesTableMobileCard } from "./CodesTableMobileCard";
 import { CodesTableRow } from "./CodesTableRow";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface CodesTableProps {
   codes: Option<CodeInfo[]>;

@@ -30,7 +30,7 @@ export interface ControllerInputProps<T extends FieldValues>
   name: FieldPath<T>;
   control: Control<T>;
   type?: "text" | "number" | "decimal";
-  rules?: UseControllerProps["rules"];
+  rules?: UseControllerProps<T>["rules"];
   status?: FormStatus;
   maxLength?: number;
   helperAction?: ReactNode;
@@ -123,6 +123,7 @@ export const ControllerInput = <T extends FieldValues>({
         <FormLabel
           className={`${size}-label`}
           bgColor={labelBgColor}
+          whiteSpace="nowrap"
           requiredIndicator={
             <Text as="span" color="error.main" pl={1}>
               * (Required)
@@ -172,9 +173,13 @@ export const ControllerInput = <T extends FieldValues>({
           {isError && (
             <FormErrorMessage className="error-text">{error}</FormErrorMessage>
           )}
-          <FormHelperText className="helper-text">
-            {status?.message ? getResponseMsg(status, helperText) : helperText}
-          </FormHelperText>
+          {(status?.message || helperText) && (
+            <FormHelperText className="helper-text">
+              {status?.message
+                ? getResponseMsg(status, helperText)
+                : helperText}
+            </FormHelperText>
+          )}
         </Flex>
         {helperAction}
       </Flex>

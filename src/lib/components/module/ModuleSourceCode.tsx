@@ -11,27 +11,16 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import type { Monaco } from "@monaco-editor/react";
-import MonacoEditor from "@monaco-editor/react";
 
-import { AppLink } from "../AppLink";
-import { CopyButton } from "../copy";
-import { CustomIcon } from "../icon";
-import { MoveVerifyBadge } from "../MoveVerifyBadge";
 import type { MoveVerifyInfoResponse } from "lib/services/types";
 import { MoveVerifyStatus } from "lib/types";
 import type { Nullish } from "lib/types";
 import { formatUTC } from "lib/utils";
-
-import { moveLanguageConfig, moveTokenProvider } from "./moveSyntax";
-
-const loadMoveSyntax = (monaco: Monaco) => {
-  monaco.languages.register({ id: "move" });
-  monaco.languages.onLanguage("move", () => {
-    monaco.languages.setMonarchTokensProvider("move", moveTokenProvider);
-    monaco.languages.setLanguageConfiguration("move", moveLanguageConfig);
-  });
-};
+import { AppLink } from "../AppLink";
+import { CopyButton } from "../copy";
+import { Editor } from "../editor/Editor";
+import { CustomIcon } from "../icon";
+import { MoveVerifyBadge } from "../MoveVerifyBadge";
 
 interface ModuleSourceCodeProps {
   verificationData: Nullish<MoveVerifyInfoResponse>;
@@ -120,14 +109,7 @@ export const ModuleSourceCode = ({
             borderColor="gray.700"
             borderRadius="8px"
           >
-            <MonacoEditor
-              height={400}
-              language="move"
-              theme="vs-dark"
-              beforeMount={loadMoveSyntax}
-              value={verificationData.source}
-              options={{ readOnly: true, scrollBeyondLastLine: false }}
-            />
+            <Editor value={verificationData.source} />
           </Box>
         </AccordionPanel>
       </AccordionItem>

@@ -6,8 +6,8 @@ import {
 } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
-import { ProposalStepper } from "../proposal-stepper";
 import type { ProposalData } from "lib/types";
+import { ProposalStepper } from "../proposal-stepper";
 
 interface VoteDetailsAccordionItemProps {
   step: number;

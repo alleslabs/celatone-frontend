@@ -1,12 +1,12 @@
 import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 
-import { Voter } from "../table/Voter";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Answer, TableRow } from "lib/components/table";
 import { useOpenTxTab } from "lib/hooks";
 import type { ProposalValidatorVote } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
+import { Voter } from "../table/Voter";
 
 interface ValidatorVotesTableRowProps {
   proposalVote: ProposalValidatorVote;

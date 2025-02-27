@@ -20,7 +20,7 @@ interface ControllerTextareaProps<T extends FieldValues>
   extends Omit<TextareaProps, "value" | "setInputState"> {
   name: FieldPath<T>;
   control: Control<T>;
-  rules?: UseControllerProps["rules"];
+  rules?: UseControllerProps<T>["rules"];
 }
 
 export const ControllerTextarea = <T extends FieldValues>({
@@ -39,20 +39,31 @@ export const ControllerTextarea = <T extends FieldValues>({
     name,
     control,
   });
-  const { field } = useController<T>({ name, control, rules });
+  const {
+    field,
+    fieldState: { isDirty, isTouched },
+  } = useController<T>({ name, control, rules });
   const isError = Boolean(error);
   const isRequired = "required" in rules;
   return (
     <FormControl
       size="md"
-      isInvalid={isError}
+      isInvalid={isError && (isDirty || isTouched)}
       isRequired={isRequired}
       sx={{ "> div": { marginTop: "1 !important" } }}
       {...componentProps}
       {...field}
     >
       {label && (
-        <FormLabel className="textarea-label" bgColor={labelBgColor}>
+        <FormLabel
+          requiredIndicator={
+            <Text as="span" color="error.main" pl={1}>
+              * (Required)
+            </Text>
+          }
+          className="textarea-label"
+          bgColor={labelBgColor}
+        >
           {label}
         </FormLabel>
       )}

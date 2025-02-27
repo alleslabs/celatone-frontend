@@ -1,5 +1,5 @@
-import type { CardTheme, Status } from "../types";
 import type { Option } from "lib/types";
+import type { CardTheme, Status } from "../types";
 
 export const useCardTheme = (theme: CardTheme, status: Option<Status>) => {
   const getTheme = () => {
@@ -7,13 +7,11 @@ export const useCardTheme = (theme: CardTheme, status: Option<Status>) => {
       return {
         bgColor: "gray.800",
         border: "1px solid var(--chakra-colors-gray-700)",
-        buttonVariant: "outline-gray",
       };
 
     return {
       bgColor: "gray.900",
       border: "1px solid var(--chakra-colors-gray-900)",
-      buttonVariant: "outline-primary",
     };
   };
 

@@ -2,22 +2,12 @@ import { useToken } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 
-import type {
-  BlocksResponse,
-  StakingProvisionsResponse,
-  ValidatorDataResponse,
-  ValidatorDelegationRelatedTxsResponse,
-  ValidatorsResponse,
-  ValidatorUptimeResponse,
-  ValidatorVotedProposalsResponse,
-} from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useCurrentChain,
   useInitia,
-  useLcdEndpoint,
   useTierConfig,
 } from "lib/app-provider";
 import { createQueryFnWithTimeout } from "lib/services/utils";
@@ -49,6 +39,15 @@ import {
   getValidatorStakingProvisionsLcd,
 } from "./lcd";
 import { resolveValIdentity } from "./misc";
+import type {
+  BlocksResponse,
+  StakingProvisionsResponse,
+  ValidatorDataResponse,
+  ValidatorDelegationRelatedTxsResponse,
+  ValidatorsResponse,
+  ValidatorUptimeResponse,
+  ValidatorVotedProposalsResponse,
+} from "../types";
 
 export const useValidators = (
   limit: number,
@@ -84,20 +83,20 @@ export const useValidators = (
 };
 
 export const useValidatorsLcd = (enabled = true) => {
-  const endpoint = useLcdEndpoint();
   const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
+  const { bech32Prefix } = useCurrentChain();
 
   return useQuery<ValidatorData[]>(
-    [CELATONE_QUERY_KEYS.VALIDATORS_LCD, endpoint],
+    [CELATONE_QUERY_KEYS.VALIDATORS_LCD, lcdEndpoint],
     async () => {
-      const res = await getValidatorsLcd(endpoint);
+      const res = await getValidatorsLcd(lcdEndpoint);
       return res.map((val) => ({
         ...val,
         consensusAddress: convertConsensusPubkeyToConsensusAddr(
           val.consensusPubkey,
-          prefix
+          bech32Prefix
         ),
       }));
     },
@@ -130,20 +129,20 @@ export const useValidatorDataLcd = (
   validatorAddr: ValidatorAddr,
   enabled = true
 ) => {
-  const endpoint = useLcdEndpoint();
   const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
+  const { bech32Prefix } = useCurrentChain();
 
   return useQuery<ValidatorData>(
-    [CELATONE_QUERY_KEYS.VALIDATOR_DATA_LCD, endpoint, validatorAddr],
+    [CELATONE_QUERY_KEYS.VALIDATOR_DATA_LCD, lcdEndpoint, validatorAddr],
     async () => {
-      const res = await getValidatorDataLcd(endpoint, validatorAddr);
+      const res = await getValidatorDataLcd(lcdEndpoint, validatorAddr);
       return {
         ...res,
         consensusAddress: convertConsensusPubkeyToConsensusAddr(
           res.consensusPubkey,
-          prefix
+          bech32Prefix
         ),
       };
     },
@@ -158,7 +157,9 @@ export const useValidatorDataLcd = (
 export const useValidatorStakingProvisions = (enabled: boolean) => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("validators");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 
   const {
@@ -180,15 +181,17 @@ export const useValidatorStakingProvisions = (enabled: boolean) => {
 
 export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
   const isInitia = useInitia();
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   const queryFn = async () =>
-    getValidatorDelegatorsLcd(endpoint, validatorAddress, isInitia);
+    getValidatorDelegatorsLcd(lcdEndpoint, validatorAddress, isInitia);
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS,
-      endpoint,
+      lcdEndpoint,
       validatorAddress,
       isInitia,
     ],
@@ -334,9 +337,7 @@ export const useValidatorDelegationRelatedTxs = (
 export const useValidatorImage = (
   validator: Nullable<Validator>
 ): UseQueryResult<string> => {
-  const {
-    chain: { chain_name: chainName },
-  } = useCurrentChain();
+  const { chainName } = useCurrentChain();
   const [primaryDark] = useToken("colors", ["primary.dark"]);
 
   return useQuery({

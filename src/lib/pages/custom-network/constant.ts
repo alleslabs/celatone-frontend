@@ -17,17 +17,12 @@ export const DEFAULT_POOL_CONFIG: ChainConfig["features"]["pool"] = {
 
 export const DEFAULT_PUBLIC_PROJECT_CONFIG: ChainConfig["features"]["publicProject"] =
   {
-    enabled: true,
+    enabled: false,
   };
 
 export const DEFAULT_GOV_CONFIG: ChainConfig["features"]["gov"] = {
   enabled: false,
 };
-
-export const DEFAULT_WALLET_CONFIG: ChainConfig["wallets"] = [
-  "initia",
-  "keplr",
-];
 
 export const DEFAULT_BECH32_PREFIX = "init";
 
@@ -47,10 +42,11 @@ export const DEFAULT_DENOM = "umin";
 
 export const DEFAULT_CUSTOM_MINITIA_NETWORK: Pick<
   ChainConfig,
-  "tier" | "chain" | "network_type" | "extra"
+  "tier" | "chain" | "wallets" | "network_type" | "extra"
 > = {
   tier: "sequencer",
   chain: "initia",
+  wallets: [],
   network_type: "local",
   extra: {
     isValidatorExternalLink: null,

@@ -1,11 +1,11 @@
 import { Text } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useClearAdminTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/hooks";
 import type { BechAddr32 } from "lib/types";
+import { ActionModal } from "../ActionModal";
 
 interface ClearAdminModalProps {
   contractAddress: BechAddr32;

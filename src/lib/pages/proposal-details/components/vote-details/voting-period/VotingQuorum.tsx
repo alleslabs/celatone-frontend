@@ -1,11 +1,5 @@
 import { Divider, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 
-import type { VoteDetailsProps } from "..";
-import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
-import { VoteQuorumBadge } from "../../VoteQuorumBadge";
-import { VoteQuorumCircle } from "../../VoteQuorumCircle";
-import { VoteQuorumText } from "../../VoteQuorumText";
-import { VpPercentCard } from "../../VpPercentCard";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import {
@@ -13,6 +7,12 @@ import {
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import type { Ratio } from "lib/types";
+import type { VoteDetailsProps } from "..";
+import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
+import { VoteQuorumBadge } from "../../VoteQuorumBadge";
+import { VoteQuorumCircle } from "../../VoteQuorumCircle";
+import { VoteQuorumText } from "../../VoteQuorumText";
+import { VpPercentCard } from "../../VpPercentCard";
 
 export const VotingQuorum = ({
   proposalData,

@@ -11,12 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { TxReceiptRender } from "../TxReceiptRender";
 import { useInternalNavigate } from "lib/app-provider";
 import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 
 import { ButtonSection } from "./ButtonSection";
+import { TxReceiptRender } from "../TxReceiptRender";
 
 interface TxModalProps {
   result: TxResultRendering;

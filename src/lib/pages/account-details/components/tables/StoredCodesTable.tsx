@@ -2,8 +2,6 @@ import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import type { ChangeEvent } from "react";
 
-import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
-import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -11,6 +9,8 @@ import { ErrorFetching } from "lib/components/state";
 import { CodesTable, MobileTitle, ViewMore } from "lib/components/table";
 import { useAccountCodes } from "lib/pages/account-details/data";
 import type { BechAddr, Option } from "lib/types";
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
+import AccountSectionWrapper from "../AccountSectionWrapper";
 
 interface StoredCodesTableProps {
   address: BechAddr;

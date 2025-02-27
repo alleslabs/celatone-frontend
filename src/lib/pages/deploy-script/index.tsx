@@ -7,7 +7,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import {
   useCurrentChain,
   useFabricateFee,
-  useSimulateFeeQuery,
+  useMoveConfig,
 } from "lib/app-provider";
 import { useDeployScriptTx } from "lib/app-provider/tx/script";
 import ActionPageContainer from "lib/components/ActionPageContainer";
@@ -17,6 +17,7 @@ import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxBroadcast } from "lib/hooks";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import type { AbiFormData, ExposedFunction, Option } from "lib/types";
 import { composeScriptMsg, getAbiInitialData } from "lib/utils";
 
@@ -37,6 +38,8 @@ const DEFAULT_FILE_STATE: FileState = {
 };
 
 export const DeployScript = () => {
+  useMoveConfig({ shouldRedirect: true });
+
   const router = useRouter();
   const { address } = useCurrentChain();
   const fabricateFee = useFabricateFee();

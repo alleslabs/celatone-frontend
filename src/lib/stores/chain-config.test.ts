@@ -10,7 +10,7 @@ const MOCK_CONFIG: ChainConfig = {
   prettyName: "Test Only",
   rpc: "https://rpc.testonly.com",
   lcd: "https://rpc.testonly.com",
-  wallets: ["keplr", "initia", "compass", "station"],
+  wallets: ["keplr", "compass", "station"],
   features: {
     wasm: { enabled: false },
     move: { enabled: false },

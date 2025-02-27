@@ -1,8 +1,8 @@
 import axios from "axios";
 
+import { parseWithError } from "lib/utils";
 import type { DockerImageTagResult } from "../types/docker-image";
 import { zDockerImageTag } from "../types/docker-image";
-import { parseWithError } from "lib/utils";
 
 export const getDockerImageTag = async (repository: string, image: string) => {
   const result: DockerImageTagResult[] = [];

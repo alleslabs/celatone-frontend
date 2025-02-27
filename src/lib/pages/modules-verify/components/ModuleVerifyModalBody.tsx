@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import type { Control } from "react-hook-form";
 
-import type { ModuleVerifyForm } from "../types";
-
 import { ModuleVerifyFailedModal } from "./ModuleVerifyFailedModal";
 import { ModuleVerifyLoadingModal } from "./ModuleVerifyLoadingModal";
 import { ModuleVerifySuccessModal } from "./ModuleVerifySuccessModal";
+import type { ModuleVerifyForm } from "../types";
 
 interface ModuleVerifyModalBodyProps {
   isError: boolean;

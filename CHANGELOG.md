@@ -43,6 +43,79 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+## v1.10.0
+
+### Features
+
+- [#1250](https://github.com/alleslabs/celatone-frontend/pull/1250) Add evm code snippet modal and fix input fields
+- [#1247](https://github.com/alleslabs/celatone-frontend/pull/1247) Support multi address creation txs
+- [#1245](https://github.com/alleslabs/celatone-frontend/pull/1245) Support assets from assetlist in chain config
+- [#1244](https://github.com/alleslabs/celatone-frontend/pull/1244) Add EVM contract verify alert info to both Solidity and Vyper upload file(s) and contract code
+- [#1240](https://github.com/alleslabs/celatone-frontend/pull/1240) Update social media handle and naming convention from Celatone to Scan
+- [#1232](https://github.com/alleslabs/celatone-frontend/pull/1232) Support EVM verification with multiparts and standard JSON input for both Solidity and Vyper
+- [#1233](https://github.com/alleslabs/celatone-frontend/pull/1233) Support "move/" prefix hex module address in search
+- [#1230](https://github.com/alleslabs/celatone-frontend/pull/1230) Update EVM contract verify max width layout
+- [#1225](https://github.com/alleslabs/celatone-frontend/pull/1225) Validate EVM verification form options
+- [#1226](https://github.com/alleslabs/celatone-frontend/pull/1226) Show nonce on EVM tx details
+- [#1224](https://github.com/alleslabs/celatone-frontend/pull/1224) Support Vyper verification with contract code
+- [#1223](https://github.com/alleslabs/celatone-frontend/pull/1223) Support Vyper on EVM contract details
+- [#1222](https://github.com/alleslabs/celatone-frontend/pull/1222) Update Scan required environment variable
+- [#1220](https://github.com/alleslabs/celatone-frontend/pull/1220) Add EVM contract verification for Solidity with contract code (flattened method)
+- [#1219](https://github.com/alleslabs/celatone-frontend/pull/1219) Add tooltip to full editor sidebar
+- [#1218](https://github.com/alleslabs/celatone-frontend/pull/1218) Add EVM library contract
+- [#1217](https://github.com/alleslabs/celatone-frontend/pull/1217) Add evm contract method shortcuts on the overview section
+- [#1216](https://github.com/alleslabs/celatone-frontend/pull/1216) Supports searching by method name in evm contract details
+- [#1214](https://github.com/alleslabs/celatone-frontend/pull/1214) Add EVM contract details constructor arguments
+- [#1213](https://github.com/alleslabs/celatone-frontend/pull/1213) EVM verification status modal, and highlight bar
+- [#1211](https://github.com/alleslabs/celatone-frontend/pull/1211) Implement evm gas refund logic
+- [#1210](https://github.com/alleslabs/celatone-frontend/pull/1210) Add EVM contract details code preview
+- [#1209](https://github.com/alleslabs/celatone-frontend/pull/1209) Implement evm contract details interaction
+- [#1208](https://github.com/alleslabs/celatone-frontend/pull/1208) Implement evm interaction section
+- [#1207](https://github.com/alleslabs/celatone-frontend/pull/1207) Add EVM contract details compiler settings
+- [#1206](https://github.com/alleslabs/celatone-frontend/pull/1206) Add EVM contract details abi
+- [#1204](https://github.com/alleslabs/celatone-frontend/pull/1204) Add EVM contract details deployed bytecode
+- [#1203](https://github.com/alleslabs/celatone-frontend/pull/1203) Fetch EVM verify config from API, and wire up to UIs as initial values
+- [#1202](https://github.com/alleslabs/celatone-frontend/pull/1202) Add EVM contract interaction form
+- [#1201](https://github.com/alleslabs/celatone-frontend/pull/1201) Add EVM contract verification with upload files
+- [#1200](https://github.com/alleslabs/celatone-frontend/pull/1200) Add EVM contract verification with contract code
+- [#1199](https://github.com/alleslabs/celatone-frontend/pull/1199) Add EVM contract verification with Hardhat
+- [#1198](https://github.com/alleslabs/celatone-frontend/pull/1198) Add EVM contract verification with Foundry
+- [#1197](https://github.com/alleslabs/celatone-frontend/pull/1197) Add EVM contract verification with standard JSON input both for Solidity and Vyper
+- [#1194](https://github.com/alleslabs/celatone-frontend/pull/1194) Add EVM contract verification with Vyper upload file method
+- [#1193](https://github.com/alleslabs/celatone-frontend/pull/1193) Add optimizer configuration to EVM contract verify page, fix constructor args, and Zod type
+- [#1188](https://github.com/alleslabs/celatone-frontend/pull/1188) Add request and simulate evm tx
+- [#1192](https://github.com/alleslabs/celatone-frontend/pull/1192) Add fixed bytes hex address util
+- [#1189](https://github.com/alleslabs/celatone-frontend/pull/1189) Add constructor args to EVM contract verify page
+- [#1187](https://github.com/alleslabs/celatone-frontend/pull/1187) Add onboarding section to EVM contract details page and add EVM contract verify page
+- [#1184](https://github.com/alleslabs/celatone-frontend/pull/1184) Add custom layer to Initia Widget
+- [#1182](https://github.com/alleslabs/celatone-frontend/pull/1182) Add Initia Widget
+
+### Improvements
+
+- [#1252](https://github.com/alleslabs/celatone-frontend/pull/1252) Improve EVM verify error details
+- [#1253](https://github.com/alleslabs/celatone-frontend/pull/1253) Filter initia wallet, change isInitia logic, and theme logic
+- [#1249](https://github.com/alleslabs/celatone-frontend/pull/1249) Improve import order
+- [#1248](https://github.com/alleslabs/celatone-frontend/pull/1248) Support querying multiple evm verification infos
+- [#1246](https://github.com/alleslabs/celatone-frontend/pull/1246) Handle undefined constructor args
+- [#1242](https://github.com/alleslabs/celatone-frontend/pull/1242) Improve EVM proxy contract details and checksum address
+- [#1236](https://github.com/alleslabs/celatone-frontend/pull/1236) Remove unnecessary configs for users in custom network configs
+- [#1228](https://github.com/alleslabs/celatone-frontend/pull/1228) Refactor EVM verification form path and form type location
+- [#1215](https://github.com/alleslabs/celatone-frontend/pull/1215) Bump react wallet widget package to support http endpoints
+- [#1205](https://github.com/alleslabs/celatone-frontend/pull/1205) Improve EVM contract verify page via external verifier
+- [#1185](https://github.com/alleslabs/celatone-frontend/pull/1185) Replace minitia with rollup
+- [#1186](https://github.com/alleslabs/celatone-frontend/pull/1186) Bump packages mainly @initia/react-wallet-widget
+
+### Bug fixes
+
+- [#1243](https://github.com/alleslabs/celatone-frontend/pull/1243) Fix EVM Create checked by null To instead
+- [#1241](https://github.com/alleslabs/celatone-frontend/pull/1241) Fix EVM contract details interaction filter
+- [#1239](https://github.com/alleslabs/celatone-frontend/pull/1239) Fix check verified EVM contract and minor EVM contract details
+- [#1238](https://github.com/alleslabs/celatone-frontend/pull/1238) Fix EVM verify external docs link and EVM contract details mobile
+- [#1237](https://github.com/alleslabs/celatone-frontend/pull/1237) Fix EVM contract details UI layout and mobile
+- [#1235](https://github.com/alleslabs/celatone-frontend/pull/1235) Support EVM custom chain id and minor bug fixes
+- [#1191](https://github.com/alleslabs/celatone-frontend/pull/1191) Fix contract address form validation
+- [#1190](https://github.com/alleslabs/celatone-frontend/pull/1190) Fix EVM contract details verify boarding and verification page
+
 ## v1.9.3
 
 ### Features

@@ -7,9 +7,7 @@ import { hexToBech32Address } from "lib/utils";
 import { useCurrentChain } from "./useCurrentChain";
 
 export const useConvertHexAddress = () => {
-  const {
-    chain: { bech32_prefix: bech32Prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
 
   return {
     convertHexWalletAddress: useCallback(

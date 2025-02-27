@@ -3,7 +3,7 @@ import { Flex, Image } from "@chakra-ui/react";
 import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { FaucetButton } from "lib/components/button";
-import { WalletSection } from "lib/components/Wallet";
+import { WalletSection } from "lib/components/wallet-section";
 
 import { AppMenu } from "./AppMenu";
 import { NetworkMenu } from "./network-menu";
@@ -36,7 +36,7 @@ const Header = () => {
           <AppLink href="/">
             <Image
               src={theme.branding.logo}
-              alt="Celatone"
+              alt="Scan"
               minWidth="139px"
               width="139px"
               maxWidth="139px"

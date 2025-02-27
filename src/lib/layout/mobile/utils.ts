@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import type { MenuInfo } from "../navbar/types";
 import type { IconKeys } from "lib/components/icon";
+import type { MenuInfo } from "../navbar/types";
 
 export const getNavDrawerLite = (
   isGov: boolean,

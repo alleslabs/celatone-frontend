@@ -1,7 +1,5 @@
 import { Badge, Box, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
 
-import { AccordionTx } from "../AccordionTx";
-import { TableRow } from "../tableComponents";
 import { ActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -10,6 +8,8 @@ import { dateFromNow, formatUTC } from "lib/utils";
 
 import { FurtherActionButton } from "./FurtherActionButton";
 import { RelationChip } from "./RelationChip";
+import { AccordionTx } from "../AccordionTx";
+import { TableRow } from "../tableComponents";
 
 interface TransactionsTableRowProps {
   transaction: Transaction;
@@ -117,6 +117,8 @@ export const TransactionsTableRow = ({
               isSigner={transaction.isSigner}
               key={index.toString() + msg.type}
               message={msg}
+              txHash={transaction.hash}
+              msgIndex={index}
               allowFurtherAction={showAction}
             />
           ))}

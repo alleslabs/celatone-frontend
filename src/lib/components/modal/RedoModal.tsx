@@ -13,11 +13,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
 import { useCurrentChain } from "lib/app-provider";
 import { useRedo } from "lib/hooks";
 import type { Message, Msg } from "lib/types";
 import { extractMsgType } from "lib/utils";
+import { CustomIcon } from "../icon";
 
 interface RedoModalProps {
   message: Message;
@@ -26,9 +26,7 @@ interface RedoModalProps {
 export const RedoModal = ({ message }: RedoModalProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const onClickRedo = useRedo();
-  const {
-    chain: { chain_name: chainName },
-  } = useCurrentChain();
+  const { chainName } = useCurrentChain();
 
   return (
     <>

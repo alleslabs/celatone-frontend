@@ -1,8 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
-
 import type { Mode, Step } from "./types";
+import { CustomIcon } from "../icon";
 
 export const stepperText: Record<Mode, Record<number, string>> = {
   deploy: { 1: "Upload or Select Code ID", 2: "Instantiate Contract" },

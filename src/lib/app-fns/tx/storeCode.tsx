@@ -1,13 +1,13 @@
-import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import type { SignAndBroadcast } from "lib/app-provider/hooks";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type {
-  BechAddr,
+  BechAddr20,
   ComposedMsg,
   Option,
   TxResultRendering,
@@ -32,14 +32,13 @@ export type StoreCodeSucceedCallback = (
 ) => void;
 
 interface StoreCodeTxParams {
-  address: BechAddr;
+  address: BechAddr20;
   codeName: string;
   messages: ComposedMsg[];
   wasmFileName: string;
   fee: StdFee;
-  memo?: string;
-  client: SigningCosmWasmClient;
   isMigrate: boolean;
+  signAndBroadcast: SignAndBroadcast;
   onTxSucceed: StoreCodeSucceedCallback;
 }
 
@@ -49,15 +48,14 @@ export const storeCodeTx = ({
   messages,
   wasmFileName,
   fee,
-  memo,
-  client,
   isMigrate,
+  signAndBroadcast,
   onTxSucceed,
 }: StoreCodeTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => client.signAndBroadcast(address, messages, fee, memo),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       const codeId = findAttr(txInfo.events, "store_code", "code_id") ?? "0";

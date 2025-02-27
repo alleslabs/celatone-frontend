@@ -158,7 +158,7 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
     // default
     base.push({
       title: "User Guide",
-      subtitle: "View Celatone documents",
+      subtitle: "View Scan documents",
       icon: "document" as const,
       isDocument: true,
     });

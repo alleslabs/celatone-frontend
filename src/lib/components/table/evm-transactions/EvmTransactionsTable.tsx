@@ -1,4 +1,3 @@
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
@@ -9,6 +8,7 @@ import type { Option } from "lib/types";
 import { EvmTransactionsTableHeader } from "./EvmTransactionsTableHeader";
 import { EvmTransactionsTableMobileCard } from "./EvmTransactionsTableMobileCard";
 import { EvmTransactionsTableRow } from "./EvmTransactionsTableRow";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface EvmTransactionsTableProps {
   evmTransactions: Option<TxDataWithTimeStampJsonRpc[]>;

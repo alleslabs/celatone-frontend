@@ -1,7 +1,7 @@
 import { Box, Text } from "@chakra-ui/react";
 
-import { NonRedelegatablesTable } from "../table";
 import type { NonRedelegatable, Redelegation } from "lib/types";
+import { NonRedelegatablesTable } from "../table";
 
 interface NonRedelegatableSectionProps {
   redelegations: Redelegation[];

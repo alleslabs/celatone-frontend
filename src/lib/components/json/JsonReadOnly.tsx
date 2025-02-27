@@ -2,11 +2,11 @@ import { Box, Text } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
-import { CopyButton } from "../copy";
 import { trackUseExpand } from "lib/amplitude";
 import { jsonLineCount, jsonValidate } from "lib/utils";
 
 import { ViewFullMsgButton } from "./ViewFullMsgButton";
+import { CopyButton } from "../copy";
 
 const JsonEditor = dynamic(() => import("lib/components/json/JsonEditor"), {
   ssr: false,

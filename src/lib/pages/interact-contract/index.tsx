@@ -13,6 +13,7 @@ import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { InvalidState } from "lib/components/state";
+import { TypeSwitch } from "lib/components/TypeSwitch";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
@@ -20,12 +21,7 @@ import type { BechAddr32, Coin } from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
 import { jsonPrettify, jsonValidate, libDecode } from "lib/utils";
 
-import {
-  ExecuteArea,
-  InteractionTypeSwitch,
-  InteractionWrapper,
-  QueryArea,
-} from "./components";
+import { ExecuteArea, InteractionWrapper, QueryArea } from "./components";
 import type { InteractContractQueryParams } from "./types";
 import { zInteractContractQueryParams } from "./types";
 
@@ -154,7 +150,8 @@ const InteractContractBody = ({
           {capitalize(selectedType)} Message
         </Heading>
         {!isMobile && (
-          <InteractionTypeSwitch
+          <TypeSwitch
+            tabs={Object.values(ContractInteractionTabs)}
             currentTab={selectedType}
             onTabChange={handleSetSelectedType}
           />

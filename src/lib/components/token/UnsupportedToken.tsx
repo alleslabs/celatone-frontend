@@ -1,9 +1,6 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Tag, Text } from "@chakra-ui/react";
 
-import { Copier } from "../copy";
-import { CustomIcon } from "../icon";
-import { Tooltip } from "../Tooltip";
 import type { AddressReturnType } from "lib/app-provider";
 import { useGetAddressType, useMobile } from "lib/app-provider";
 import type { TokenWithValue } from "lib/types";
@@ -12,6 +9,9 @@ import {
   getTokenLabel,
   getTokenType,
 } from "lib/utils";
+import { Copier } from "../copy";
+import { CustomIcon } from "../icon";
+import { Tooltip } from "../Tooltip";
 
 const getTokenTypeWithAddress = (addrType: AddressReturnType) =>
   addrType === "contract_address"

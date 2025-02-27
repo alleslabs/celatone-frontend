@@ -1,21 +1,23 @@
+import type { TransactionRequest } from "ethers";
 import { z } from "zod";
 
-import type { JsonRpcParams } from "../evm/jsonRpc";
-import { requestBatchJsonRpc, requestJsonRpc } from "../evm/jsonRpc";
+import { parseWithError } from "lib/utils";
+import type { JsonRpcParams } from "../evm/json-rpc";
+import { requestBatchJsonRpc, requestJsonRpc } from "../evm/json-rpc";
 import {
   zEvmTxHashByCosmosTxHashJsonRpc,
   zEvmTxHashesByCosmosTxHashesJsonRpc,
+  zSimulateFeeEvm,
   zTxDataJsonRpc,
   zTxsDataJsonRpc,
 } from "../types";
-import { parseWithError } from "lib/utils";
 
 export const getEvmTxHashByCosmosTxHash = async (
   endpoint: string,
   cosmosTxHash: string
 ) =>
   requestJsonRpc(endpoint, "cosmos_txHashByCosmosTxHash", [cosmosTxHash]).then(
-    ({ result }) => parseWithError(zEvmTxHashByCosmosTxHashJsonRpc, result)
+    (result) => parseWithError(zEvmTxHashByCosmosTxHashJsonRpc, result)
   );
 
 export const getEvmTxHashesByCosmosTxHashes = async (
@@ -76,10 +78,26 @@ export const getTxsDataJsonRpc = async (
     return parseWithError(zTxsDataJsonRpc, parsedResults);
   });
 };
+
 export const getCosmosTxHashByEvmTxHash = (
   endpoint: string,
   evmTxHash: string
 ) =>
   requestJsonRpc(endpoint, "cosmos_cosmosTxHashByTxHash", [evmTxHash]).then(
-    ({ result }) => parseWithError(z.string(), result)
+    (result) => parseWithError(z.string(), result)
   );
+
+export const getSimulateFeeEvm = (
+  endpoint: string,
+  request: TransactionRequest
+) =>
+  requestBatchJsonRpc(endpoint, [
+    {
+      method: "eth_gasPrice",
+      params: [],
+    },
+    {
+      method: "eth_estimateGas",
+      params: [request],
+    },
+  ]).then((results) => parseWithError(zSimulateFeeEvm, results));

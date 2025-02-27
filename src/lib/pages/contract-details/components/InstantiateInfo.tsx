@@ -116,9 +116,7 @@ export const InstantiateInfo = ({
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
   const getAddressType = useGetAddressType();
-  const {
-    chain: { chain_id: chainId },
-  } = useCurrentChain();
+  const { chainId } = useCurrentChain();
 
   const instantiatorType = getAddressType(contract.instantiator);
   const adminType = getAddressType(contract.admin ?? undefined);

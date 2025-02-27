@@ -8,9 +8,13 @@ import { getCustomedSigningCosmwasm } from "./options";
 
 // Remark: The avaliable wallet list won't change after the app is loaded.
 // So we have to revisit this later if we have another solution.
-export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
+export const CosmosKitProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const {
-    chainConfig: { wallets },
+    chainConfig: { wallets, chain },
   } = useCelatoneApp();
   const { chainConfigs, registryChains, registryAssets } = useChainConfigs();
   const availableChainsEndpoints = Object.values(chainConfigs).reduce<
@@ -28,6 +32,7 @@ export const ChainProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Provider
+      key={chain}
       chains={registryChains}
       assetLists={registryAssets}
       wallets={getWallets(wallets)}

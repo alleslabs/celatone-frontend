@@ -1,9 +1,9 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { Copier } from "../copy";
-import { TooltipInfo } from "../Tooltip";
 import type { TokenWithValue } from "lib/types";
 import { formatTokenWithValue, isSupportedToken } from "lib/utils";
+import { Copier } from "../copy";
+import { TooltipInfo } from "../Tooltip";
 
 interface MsgTokenProps {
   token: TokenWithValue;

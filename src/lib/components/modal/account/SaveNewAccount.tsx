@@ -3,7 +3,6 @@ import { Button, Flex } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -23,6 +22,7 @@ import type { BechAddr } from "lib/types";
 import { AccountType } from "lib/types";
 
 import { ToContractButton } from "./ToContractButton";
+import { ActionModal } from "../ActionModal";
 
 export interface SaveAccountDetail {
   address: BechAddr;
@@ -206,7 +206,7 @@ export function SaveNewAccountModal({
           control={control}
           label="Account Name"
           variant="fixed-floating"
-          placeholder="ex. Celatone Account 1"
+          placeholder="ex. Scan Account 1"
           labelBgColor="gray.900"
           rules={{
             maxLength: constants.maxAccountNameLength,

@@ -1,9 +1,9 @@
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
+import type { CodeSchema, Option } from "lib/types";
 import { AttachSchemaCard } from "../AttachSchemaCard";
 import { JsonSchemaModal } from "../JsonSchemaModal";
-import type { CodeSchema, Option } from "lib/types";
 
 interface UploadSchemaContentInterface {
   attached: boolean;

@@ -1,8 +1,5 @@
 import { useMemo } from "react";
 
-import type { ValidatorDetailsQueryParams } from "../../types";
-import { ValidatorOverview } from "../validator-overview";
-import { ValidatorTop } from "../validator-top";
 import { useInitia } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -19,6 +16,9 @@ import {
 import { useValidatorsLcd } from "lib/services/validator";
 import { big } from "lib/types";
 import { valoperToAddr } from "lib/utils";
+import type { ValidatorDetailsQueryParams } from "../../types";
+import { ValidatorOverview } from "../validator-overview";
+import { ValidatorTop } from "../validator-top";
 
 export const ValidatorDetailsBodyLite = ({
   validatorAddress,

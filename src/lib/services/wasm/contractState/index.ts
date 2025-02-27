@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import { CELATONE_QUERY_KEYS, useLcdEndpoint } from "lib/app-provider";
+import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import type { BechAddr32 } from "lib/types";
 
 import { getContractStatesLcd } from "./lcd";
@@ -9,7 +9,9 @@ export const useContractStatesLcd = (
   contractAddress: BechAddr32,
   numStatesToLoad: number
 ) => {
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useInfiniteQuery(
     [

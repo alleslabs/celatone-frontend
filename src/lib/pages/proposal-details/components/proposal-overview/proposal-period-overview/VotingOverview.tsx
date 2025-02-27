@@ -1,8 +1,5 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 
-import type { ProposalOverviewProps } from "..";
-import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
-import { NoVotingPeriodTallyAlert } from "../../NoVotingPeriodTally";
 import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
@@ -12,6 +9,9 @@ import { formatUTC } from "lib/utils";
 
 import { VotingOverviewQuorum } from "./VotingOverviewQuorum";
 import { VotingOverviewThreshold } from "./VotingOverviewThreshold";
+import type { ProposalOverviewProps } from "..";
+import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
+import { NoVotingPeriodTallyAlert } from "../../NoVotingPeriodTally";
 
 const VotingOverviewBody = ({
   proposalData,

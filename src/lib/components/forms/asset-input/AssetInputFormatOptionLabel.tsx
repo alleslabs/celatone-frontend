@@ -1,9 +1,9 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import type { SelectInputOption } from "../SelectInput";
 import { TokenImageRenderWithCache } from "lib/components/token";
 import type { AssetOptionValue } from "lib/types";
 import { getTokenLabel } from "lib/utils";
+import type { SelectInputOption } from "../SelectInput";
 
 export const AssetInputFormatOptionLabel = ({
   label,

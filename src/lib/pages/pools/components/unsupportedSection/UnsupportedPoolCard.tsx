@@ -10,8 +10,6 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
-import { getUndefinedTokenIcon } from "../../utils";
-import { PoolHeader } from "../PoolHeader";
 import { trackUseExpand, trackWebsite } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
@@ -24,6 +22,8 @@ import {
   getTokenLabel,
   openNewTab,
 } from "lib/utils";
+import { getUndefinedTokenIcon } from "../../utils";
+import { PoolHeader } from "../PoolHeader";
 
 interface UnsupportedPoolCardProps {
   item: Pool;

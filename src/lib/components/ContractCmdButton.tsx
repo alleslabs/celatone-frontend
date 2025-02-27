@@ -1,7 +1,8 @@
 import { Button } from "@chakra-ui/react";
+import type { Option } from "lib/types";
 
 interface ContractCmdButtonProps {
-  cmd: string;
+  cmd: Option<string>;
   onClickCmd: () => void;
 }
 export const ContractCmdButton = ({

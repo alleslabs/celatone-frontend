@@ -1,9 +1,4 @@
-import type {
-  DeliverTxResponse,
-  ExecuteResult,
-  InstantiateResult,
-  UploadResult,
-} from "@cosmjs/cosmwasm-stargate";
+import type { DeliverTxResponse } from "@cosmjs/cosmwasm-stargate";
 import { isDeliverTxFailure } from "@cosmjs/stargate";
 
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -12,14 +7,7 @@ import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
-// TODO: We'll use only DeliverTxResponse later.
-type TxResult =
-  | UploadResult
-  | InstantiateResult
-  | ExecuteResult
-  | DeliverTxResponse;
-
-interface PostTxParams<T extends TxResult> {
+interface PostTxParams<T extends DeliverTxResponse> {
   postFn: () => Promise<T>;
 }
 
@@ -30,7 +18,9 @@ function createDeliverTxResponseErrorMessage(
   return `Error when broadcasting tx ${result.transactionHash} at height ${result.height}. Code: ${result.code}; Raw log: ${result.rawLog}`;
 }
 
-export const postTx = <T extends TxResult>({ postFn }: PostTxParams<T>) => {
+export const postTx = <T extends DeliverTxResponse>({
+  postFn,
+}: PostTxParams<T>) => {
   return () =>
     postFn().then(
       // NOTE: only shown if there is a wait for the next step

@@ -2,17 +2,17 @@ import { MsgClearAdmin } from "@initia/initia.js";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { CELATONE_QUERY_KEYS } from "../env";
-import {
-  useCurrentChain,
-  useFabricateFee,
-  useGetSigningClient,
-  useWasmConfig,
-} from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { clearAdminTx } from "lib/app-fns/tx/clearAdmin";
 import type { BechAddr32 } from "lib/types";
 import { toEncodeObject } from "lib/utils";
+import { CELATONE_QUERY_KEYS } from "../env";
+import {
+  useCurrentChain,
+  useFabricateFee,
+  useSignAndBroadcast,
+  useWasmConfig,
+} from "../hooks";
 
 export interface ClearAdminStreamParams {
   onTxSucceed?: () => void;
@@ -20,21 +20,17 @@ export interface ClearAdminStreamParams {
 
 export const useClearAdminTx = (contractAddress: BechAddr32) => {
   const { address } = useCurrentChain();
-  const getSigningClient = useGetSigningClient();
+  const signAndBroadcast = useSignAndBroadcast();
   const queryClient = useQueryClient();
   const fabricateFee = useFabricateFee();
   const wasm = useWasmConfig({ shouldRedirect: false });
 
   return useCallback(
     async ({ onTxSucceed }: ClearAdminStreamParams) => {
-      const client = await getSigningClient();
-      if (!address || !client)
-        throw new Error("Please check your wallet connection.");
+      if (!address) throw new Error("No address provided (useClearAdminTx)");
 
       if (!wasm.enabled)
-        throw new Error(
-          "Wasm config isn't loaded or Wasm feature is disabled."
-        );
+        throw new Error("Wasm config is not enabled (useClearAdminTx)");
 
       const clearAdminFee = fabricateFee(wasm.clearAdminGas);
 
@@ -46,7 +42,7 @@ export const useClearAdminTx = (contractAddress: BechAddr32) => {
         address,
         messages,
         fee: clearAdminFee,
-        client,
+        signAndBroadcast,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
@@ -65,8 +61,8 @@ export const useClearAdminTx = (contractAddress: BechAddr32) => {
       address,
       contractAddress,
       fabricateFee,
-      getSigningClient,
       queryClient,
+      signAndBroadcast,
       wasm,
     ]
   );

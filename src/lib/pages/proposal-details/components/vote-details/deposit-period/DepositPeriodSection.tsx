@@ -1,9 +1,5 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
-import { DepositBar } from "../../deposit-bar";
-import { DepositList } from "../../DepositList";
-import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
-import type { ProposalOverviewProps } from "../../proposal-overview";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { TableTitle } from "lib/components/table";
@@ -12,6 +8,10 @@ import { extractParams } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
 
 import { DepositorsTable } from "./depositors-table";
+import { DepositBar } from "../../deposit-bar";
+import { DepositList } from "../../DepositList";
+import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
+import type { ProposalOverviewProps } from "../../proposal-overview";
 
 export const DepositPeriodSection = ({
   proposalData,

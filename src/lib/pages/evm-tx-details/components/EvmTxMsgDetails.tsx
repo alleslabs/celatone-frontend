@@ -34,6 +34,6 @@ export const EvmTxMsgDetails = ({
       </Alert>
     )}
     <EvmTxMsgDetailsBody evmTxData={evmTxData} evmDenom={evmDenom} />
-    <EvmInputData inputData={evmTxData.tx.input} />
+    <EvmInputData txInput={evmTxData.tx.input} txTo={evmTxData.tx.to} />
   </Flex>
 );

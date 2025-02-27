@@ -1,8 +1,7 @@
-import type { DisplayMode } from "../types";
-
 import { ModuleSelectorDisplay } from "./ModuleSelectorDisplay";
 import type { ModuleSelectorInputProps } from "./ModuleSelectorInput";
 import { ModuleSelectorInput } from "./ModuleSelectorInput";
+import type { DisplayMode } from "../types";
 
 interface ModuleSelectorProps extends ModuleSelectorInputProps {
   mode: DisplayMode;

@@ -8,11 +8,11 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useFabricateFee,
-  useSimulateFeeForStoreCode,
   useStoreCodeTx,
   useValidateAddress,
 } from "lib/app-provider";
 import { useCodeStore } from "lib/providers/store";
+import { useSimulateFeeForStoreCode } from "lib/services/tx";
 import { AccessType } from "lib/types";
 import type {
   BechAddr,

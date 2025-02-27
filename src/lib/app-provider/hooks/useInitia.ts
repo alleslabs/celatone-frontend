@@ -1,12 +1,11 @@
-import { useCelatoneApp } from "../contexts";
-
 import { useInternalNavigate } from "./useInternalNavigate";
+import { useCelatoneApp } from "../contexts";
 
 export const useInitia = () => {
   const {
     chainConfig: { chain },
   } = useCelatoneApp();
-  return chain === "initia";
+  return chain.includes("initia");
 };
 
 export const useInitiaL1 = ({

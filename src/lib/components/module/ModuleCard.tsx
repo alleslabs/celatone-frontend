@@ -2,9 +2,6 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-import { AppLink } from "../AppLink";
-import { CustomIcon } from "../icon";
-import { MoveVerifyBadge } from "../MoveVerifyBadge";
 import { AmpEvent, track } from "lib/amplitude";
 import { ModuleInteractionMobileStep } from "lib/pages/interact/types";
 import type { MoveVerifyInfoResponse } from "lib/services/types";
@@ -12,6 +9,9 @@ import type { IndexedModule, Option } from "lib/types";
 import { resolveMoveVerifyStatus } from "lib/utils";
 
 import { CountBadge } from "./CountBadge";
+import { AppLink } from "../AppLink";
+import { CustomIcon } from "../icon";
+import { MoveVerifyBadge } from "../MoveVerifyBadge";
 
 interface ModuleCardProps {
   module: IndexedModule;

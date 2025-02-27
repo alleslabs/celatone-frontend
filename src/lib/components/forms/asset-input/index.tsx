@@ -1,14 +1,14 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
 import { Box, Button, Grid, Text } from "@chakra-ui/react";
 
-import { CustomIcon } from "../../icon";
-import { SelectInput } from "../SelectInput";
 import type { AssetOption, AssetOptionValue, Option } from "lib/types";
 
 import { AssetInputFormatOptionLabel } from "./AssetInputFormatOptionLabel";
 import { AssetInputMenuList } from "./AssetInputMenuList";
 import { AssetInputNoOptionsMessage } from "./AssetInputNoOptionsMessage";
 import { AssetInputOption } from "./AssetInputOption";
+import { CustomIcon } from "../../icon";
+import { SelectInput } from "../SelectInput";
 
 interface AssetInputProps {
   disableDelete: boolean;

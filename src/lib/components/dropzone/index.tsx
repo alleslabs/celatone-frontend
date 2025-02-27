@@ -4,13 +4,13 @@ import { useCallback, useMemo } from "react";
 import type { FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 
-import { UploadIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
 import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { big } from "lib/types";
 
 import type { DropzoneConfig, DropzoneFileType } from "./config";
 import { DROPZONE_CONFIG } from "./config";
+import { UploadIcon } from "../icon";
 
 interface DropZoneProps extends FlexProps {
   setFiles: (files: FileWithPath[]) => void;
@@ -43,11 +43,14 @@ export function DropZone({
     const sizes: {
       [key in DropzoneFileType]: number;
     } = {
-      schema: 10_000_000,
+      json: 10_000_000,
       move: 10_000_000,
       wasm: wasm.enabled ? wasm.storeCodeMaxFileSize : 0,
       mv: move.enabled ? move.moduleMaxFileSize : 0,
       toml: 1_000_000,
+      // TODO - Revisit
+      vy: 10_000_000,
+      sol: 10_000_000,
     };
 
     const selectedSizes: number[] = [];
@@ -120,7 +123,7 @@ export function DropZone({
           <Text variant="body1">
             {fileType.length > 1
               ? "or drag folder here"
-              : `or drag ${selectedConfigs[0].text.prettyFileType} file here`}
+              : `or drag ${selectedConfigs[0].text.rawFileType} file here`}
           </Text>
         </Flex>
         {fileType.length > 1 ? (

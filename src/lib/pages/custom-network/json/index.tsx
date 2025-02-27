@@ -4,12 +4,6 @@ import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useCallback, useState } from "react";
 
-import {
-  DuplicatedAddCustomMinitiaModal,
-  FailedAddCustomMinitiaModal,
-  SuccessAddCustomMinitiaModal,
-} from "../components";
-import { zAddNetworkJsonChainConfigJson } from "../types";
 import { useChainConfigs, useInternalNavigate } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import {
@@ -19,6 +13,12 @@ import {
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import { useLocalChainConfigStore } from "lib/providers/store";
+import {
+  DuplicatedAddCustomMinitiaModal,
+  FailedAddCustomMinitiaModal,
+  SuccessAddCustomMinitiaModal,
+} from "../components";
+import { zAddNetworkJsonChainConfigJson } from "../types";
 
 export const AddNetworkJson = observer(() => {
   const navigate = useInternalNavigate();
@@ -88,7 +88,7 @@ export const AddNetworkJson = observer(() => {
     <>
       <ActionPageContainer>
         <CustomNetworkPageHeader
-          title="Add Custom Minitia"
+          title="Add Custom Rollup"
           subtitle="Import JSON"
           hasAlert={false}
         />
@@ -102,7 +102,7 @@ export const AddNetworkJson = observer(() => {
           ) : (
             <DropZone
               setFiles={(files: File[]) => setFile(files[0])}
-              fileType={["schema"]}
+              fileType={["json"]}
             />
           )}
           <Flex justifyContent="space-between" w="full">
@@ -119,12 +119,12 @@ export const AddNetworkJson = observer(() => {
               onClick={handleSubmit}
               w="220px"
             >
-              Import new Minitia
+              Import new Rollup
             </Button>
           </Flex>
           <Text variant="body2" textAlign="center">
-            The added custom Minitia on Initiascan will be stored locally on
-            your device.
+            The added custom Rollup on Initiascan will be stored locally on your
+            device.
           </Text>
         </Flex>
       </ActionPageContainer>

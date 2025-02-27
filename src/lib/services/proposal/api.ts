@@ -155,7 +155,7 @@ export const getProposalValidatorVotes = async (
       return {
         items: parsed.items.map<ProposalValidatorVote>((item, idx) => ({
           ...item,
-          rank: idx + 1,
+          rank: offset + idx + 1,
         })),
         total: parsed.total,
       };

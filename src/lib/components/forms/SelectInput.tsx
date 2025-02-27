@@ -1,3 +1,4 @@
+import { Stack, Text } from "@chakra-ui/react";
 import type { SystemStyleObject } from "@chakra-ui/styled-system";
 import type { Props } from "chakra-react-select";
 import { Select } from "chakra-react-select";
@@ -13,7 +14,10 @@ export interface SelectInputOption<OptionValue extends SelectInputOptionValue> {
 interface SelectInputProps<
   OptionValue extends SelectInputOptionValue,
   IsMulti extends boolean = false,
-> extends Props<SelectInputOption<OptionValue>, IsMulti> {}
+> extends Props<SelectInputOption<OptionValue>, IsMulti> {
+  label?: string;
+  isRequired?: boolean;
+}
 
 const handleFilterOption = (
   candidate: { label: string; value: string },
@@ -31,7 +35,7 @@ export const SelectInput = <
   IsMulti extends boolean = false,
 >({
   options,
-  value,
+  value = null,
   onChange,
   size = "lg",
   placeholder,
@@ -48,60 +52,96 @@ export const SelectInput = <
   onFocus,
   autoFocus,
   classNamePrefix,
+  label,
+  isRequired,
+  isDisabled,
 }: SelectInputProps<OptionValue, IsMulti>) => (
-  <Select<SelectInputOption<OptionValue>, IsMulti>
-    menuPosition="fixed"
-    menuPortalTarget={menuPortalTarget}
-    placeholder={placeholder}
-    options={options}
-    value={value}
-    onChange={onChange}
-    size={size}
-    filterOption={handleFilterOption}
-    formatOptionLabel={formatOptionLabel}
-    components={components}
-    isSearchable={isSearchable}
-    chakraStyles={{
-      container: (provided: SystemStyleObject) => ({
-        ...provided,
-        width: "100%",
-      }),
-      valueContainer: (provided: SystemStyleObject) => ({
-        ...provided,
-        pl: 3,
-        pr: 0,
-      }),
-      dropdownIndicator: (provided: SystemStyleObject) => ({
-        ...provided,
-        px: 2,
-        color: "gray.600",
-      }),
-      placeholder: (provided: SystemStyleObject) => ({
-        ...provided,
-        color: "gray.500",
-        fontSize: "14px",
-        whiteSpace: "nowrap",
-      }),
-      option: (provided) => ({
-        ...provided,
-        color: "text.main",
-        fontSize: "16px",
-        _hover: {
-          bg: "gray.700",
-        },
-        _selected: {
-          bg: "gray.800",
-        },
-      }),
-      ...chakraStyles,
-    }}
-    inputId={inputId}
-    name={name}
-    isMulti={isMulti}
-    closeMenuOnSelect={closeMenuOnSelect}
-    onBlur={onBlur}
-    onFocus={onFocus}
-    autoFocus={autoFocus}
-    classNamePrefix={classNamePrefix}
-  />
+  <Stack position="relative">
+    {label && (
+      <Text
+        className="form-label"
+        sx={{
+          fontSize: "12px",
+          color: "text.dark",
+          letterSpacing: "0.15px",
+          position: "absolute",
+          ml: 3,
+          px: 1,
+          bg: "background.main",
+          top: -2,
+          zIndex: 1,
+          "::after": {
+            content: isRequired ? '"* (Required)"' : '""',
+            color: "error.main",
+            ml: 1,
+          },
+          opacity: isDisabled ? 0.3 : 1,
+        }}
+      >
+        {label}
+      </Text>
+    )}
+    <Select<SelectInputOption<OptionValue>, IsMulti>
+      menuPosition="fixed"
+      menuPortalTarget={menuPortalTarget}
+      placeholder={placeholder}
+      options={options}
+      value={value}
+      isDisabled={isDisabled}
+      onChange={onChange}
+      size={size}
+      filterOption={handleFilterOption}
+      formatOptionLabel={formatOptionLabel}
+      components={components}
+      isSearchable={isSearchable}
+      chakraStyles={{
+        container: (provided: SystemStyleObject) => ({
+          ...provided,
+          width: "100%",
+        }),
+        valueContainer: (provided: SystemStyleObject) => ({
+          ...provided,
+          pl: 3,
+          pr: 0,
+        }),
+        dropdownIndicator: (provided: SystemStyleObject) => ({
+          ...provided,
+          px: 2,
+          color: "gray.600",
+        }),
+        placeholder: (provided: SystemStyleObject) => ({
+          ...provided,
+          color: "gray.500",
+          fontSize: "14px",
+          whiteSpace: "nowrap",
+        }),
+        option: (provided) => ({
+          ...provided,
+          color: "text.main",
+          fontSize: "16px",
+          _hover: {
+            bg: "gray.700",
+          },
+          _selected: {
+            bg: "gray.800",
+          },
+        }),
+        ...chakraStyles,
+      }}
+      styles={{
+        menuPortal: (provided) => ({
+          ...provided,
+          zIndex: 2,
+        }),
+      }}
+      inputId={inputId}
+      name={name}
+      isMulti={isMulti}
+      closeMenuOnSelect={closeMenuOnSelect}
+      onBlur={onBlur}
+      onFocus={onFocus}
+      autoFocus={autoFocus}
+      classNamePrefix={classNamePrefix}
+    />
+  </Stack>
 );

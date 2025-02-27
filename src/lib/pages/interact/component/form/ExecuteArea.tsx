@@ -10,14 +10,14 @@ import {
   useCurrentChain,
   useExecuteModuleTx,
   useFabricateFee,
-  useSimulateFeeQuery,
 } from "lib/app-provider";
-import { AbiForm } from "lib/components/abi";
 import { SubmitButton } from "lib/components/button";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { CustomIcon } from "lib/components/icon";
+import { AbiForm } from "lib/components/move-abi";
 import { useTxBroadcast } from "lib/hooks";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 import { getAbiInitialData, serializeAbiData, toEncodeObject } from "lib/utils";
 
@@ -72,7 +72,7 @@ export const ExecuteArea = ({
   );
 
   const { isFetching } = useSimulateFeeQuery({
-    enabled: composedTxMsgs.length > 0,
+    enabled: enableExecute,
     messages: composedTxMsgs,
     onSuccess: (gasRes) => {
       setSimulateFeeError(undefined);
@@ -131,6 +131,9 @@ export const ExecuteArea = ({
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
+
+    // Reset when the user disconnects
+    setFee(undefined);
     return () => {};
   }, [address, data, enableExecute, executeFn, moduleAddress, moduleName]);
 
@@ -152,7 +155,7 @@ export const ExecuteArea = ({
           <AlertDescription wordBreak="break-word">
             Title This function cannot be executed through this page. Only
             execute functions with “is_entry: true” and visibility is “public”
-            or “friend” are able to interacted through Celatone’s module
+            or “friend” are able to interacted through Scan’s module
             interactions.
           </AlertDescription>
         </Alert>

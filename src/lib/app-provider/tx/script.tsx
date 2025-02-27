@@ -2,9 +2,9 @@ import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
 import { useCallback } from "react";
 
-import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { deployScriptTx } from "lib/app-fns/tx/script";
+import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface DeployScriptStreamParams {
   onTxSucceed?: () => void;
@@ -15,7 +15,7 @@ export interface DeployScriptStreamParams {
 
 export const useDeployScriptTx = () => {
   const { address } = useCurrentChain();
-  const getSigningClient = useGetSigningClient();
+  const signAndBroadcast = useSignAndBroadcast();
 
   return useCallback(
     async ({
@@ -24,22 +24,21 @@ export const useDeployScriptTx = () => {
       estimatedFee,
       messages,
     }: DeployScriptStreamParams) => {
-      const client = await getSigningClient();
-      if (!address || !client)
-        throw new Error("Please check your wallet connection.");
+      if (!address) throw new Error("No address provided (useDeployScriptTx)");
+
       if (!estimatedFee) return null;
       return deployScriptTx({
         address,
-        client,
+        fee: estimatedFee,
+        messages,
+        signAndBroadcast,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
         onTxFailed,
-        fee: estimatedFee,
-        messages,
       });
     },
-    [address, getSigningClient]
+    [address, signAndBroadcast]
   );
 };

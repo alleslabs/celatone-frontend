@@ -1,7 +1,5 @@
 import { Flex } from "@chakra-ui/react";
 
-import { MobileCardTemplate } from "../MobileCardTemplate";
-import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Proposal } from "lib/types";
@@ -12,6 +10,8 @@ import { Proposer } from "./Proposer";
 import { ResolvedHeight } from "./ResolvedHeight";
 import { StatusChip } from "./StatusChip";
 import { VotingEndTime } from "./VotingEndTime";
+import { MobileCardTemplate } from "../MobileCardTemplate";
+import { MobileLabel } from "../MobileLabel";
 
 export interface ProposalsTableMobileCardProps {
   proposal: Proposal;

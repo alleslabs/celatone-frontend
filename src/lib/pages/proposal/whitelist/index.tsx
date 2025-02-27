@@ -13,11 +13,6 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-import { AssetBox, Footer } from "../components";
-import { InitialDeposit } from "../components/InitialDeposit";
-import { PermissionlessAlert } from "../components/PermissionlessAlert";
-import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
-import { getAlert } from "../utils";
 import {
   AmpEvent,
   track,
@@ -29,7 +24,6 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useFabricateFee,
-  useSimulateFeeQuery,
   useSubmitWhitelistProposalTx,
   useWasmConfig,
 } from "lib/app-provider";
@@ -44,10 +38,16 @@ import PageContainer from "lib/components/PageContainer";
 import { StickySidebar } from "lib/components/StickySidebar";
 import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
 import { useGovParamsDeprecated } from "lib/model/proposal";
+import { useSimulateFeeQuery } from "lib/services/tx";
 import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
 import type { BechAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
+import { AssetBox, Footer } from "../components";
+import { InitialDeposit } from "../components/InitialDeposit";
+import { PermissionlessAlert } from "../components/PermissionlessAlert";
+import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
+import { getAlert } from "../utils";
 
 interface WhiteListState {
   title: string;

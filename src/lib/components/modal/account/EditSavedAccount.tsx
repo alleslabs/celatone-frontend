@@ -2,7 +2,6 @@ import { Flex } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
@@ -11,6 +10,7 @@ import type { AccountLocalInfo } from "lib/stores/account";
 
 import { SavedAccountModalHeader } from "./SavedAccountModalHeader";
 import type { SaveAccountDetail } from "./SaveNewAccount";
+import { ActionModal } from "../ActionModal";
 
 interface EditSavedAccountModalProps {
   accountLocalInfo: AccountLocalInfo;
@@ -90,7 +90,7 @@ export const EditSavedAccountModal = ({
           control={control}
           label="Account Name"
           variant="fixed-floating"
-          placeholder="ex. Celatone Account 1"
+          placeholder="ex. Scan Account 1"
           labelBgColor="gray.900"
           rules={{
             maxLength: constants.maxAccountNameLength,

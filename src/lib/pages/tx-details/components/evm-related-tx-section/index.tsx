@@ -1,13 +1,13 @@
 import { Flex, Heading } from "@chakra-ui/react";
 
 import { useMobile } from "lib/app-provider";
+import { EvmToCell } from "lib/components/evm-to-cell";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
-import { EvmToCell } from "lib/components/EvmToCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import { useTxDataJsonRpc } from "lib/services/tx";
+import { useEvmTxDataJsonRpc } from "lib/services/tx";
 import { formatEvmTxHash, getEvmToAddress } from "lib/utils";
 
 import { EvmRelatedField } from "./EvmRelatedField";
@@ -18,7 +18,7 @@ interface EvmRelatedTxSectionProps {
 
 const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
   const isMobile = useMobile();
-  const { data, isLoading } = useTxDataJsonRpc(evmTxHash);
+  const { data, isLoading } = useEvmTxDataJsonRpc(evmTxHash);
 
   if (isLoading) return <Loading my={0} py={0} />;
   if (!data)
@@ -41,7 +41,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         />
       </EvmRelatedField>
       <EvmRelatedField label="Method">
-        <EvmMethodChip txInput={data.tx.input} width={36} />
+        <EvmMethodChip txInput={data.tx.input} txTo={data.tx.to} width={36} />
       </EvmRelatedField>
       <EvmRelatedField label="Sender">
         <ExplorerLink
@@ -56,6 +56,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
         color="gray.600"
         display={{ base: "none", xl: "block" }}
         flex={0.3}
+        mt={5}
       />
       <EvmRelatedField label="To">
         <EvmToCell toAddress={toAddress} />
@@ -73,7 +74,6 @@ export const EvmRelatedTxSection = ({
     </Heading>
     <Flex
       direction={{ base: "column", xl: "row" }}
-      alignItems={{ base: "start", xl: "center" }}
       gap={4}
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="8px"

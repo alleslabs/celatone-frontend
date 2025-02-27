@@ -1,4 +1,4 @@
-import { BCS } from "@initia/initia.js";
+import { BCS } from "@alleslabs/legacy-bcs";
 
 import type {
   AbiFormData,
@@ -111,7 +111,7 @@ const getArgValue = ({
     if (type === "bool" || getChildType("0x1::option::Option", type) === "bool")
       return value.toLowerCase() === "true";
     return value.trim();
-  } catch (e) {
+  } catch {
     return "";
   }
 };
@@ -124,7 +124,7 @@ const serializeArg = (arg: { type: string; value: Nullable<string> }) => {
     const argType = getArgType(arg.type);
     const argValue = getArgValue(arg);
     return bcs.serialize(argType, argValue, bufferSize);
-  } catch (e) {
+  } catch {
     return "";
   }
 };

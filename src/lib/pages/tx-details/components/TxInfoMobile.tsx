@@ -6,7 +6,7 @@ import { LabelText } from "lib/components/LabelText";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import type { TxData } from "lib/services/types";
-import { Option, Ratio } from "lib/types";
+import type { Option, Ratio } from "lib/types";
 import {
   computeCosmosFee,
   formatInteger,

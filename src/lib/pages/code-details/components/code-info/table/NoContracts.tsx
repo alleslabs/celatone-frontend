@@ -32,8 +32,8 @@ const DisconnectedState = () => {
 };
 
 export const NoContracts = () => {
-  const { isWalletConnected } = useCurrentChain();
-  return !isWalletConnected ? (
+  const { address } = useCurrentChain();
+  return !address ? (
     <DisconnectedState />
   ) : (
     <EmptyState

@@ -1,7 +1,6 @@
 import { Flex, SimpleGrid } from "@chakra-ui/react";
 import { useCallback } from "react";
 
-import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import { useInternalNavigate } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ResourceCard } from "lib/components/resource";
@@ -9,6 +8,7 @@ import { ErrorFetching } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
 import type { BechAddr, Option, ResourceGroup } from "lib/types";
 import { scrollToTop } from "lib/utils";
+import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 
 interface ResourceOverviewBodyProps {
   address: BechAddr;

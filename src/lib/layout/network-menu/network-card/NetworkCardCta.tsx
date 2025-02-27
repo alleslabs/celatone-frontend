@@ -95,14 +95,15 @@ export const NetworkCardCta = observer(
         {isEditable && (
           <Flex
             {...pinIconStyles}
-            onClick={() =>
+            onClick={(e) => {
+              e.stopPropagation();
               navigate({
                 pathname: "/custom-network/edit/[chainId]",
                 query: {
                   chainId,
                 },
-              })
-            }
+              });
+            }}
           >
             <CustomIcon name="settings" color="gray.600" boxSize={6} />
           </Flex>

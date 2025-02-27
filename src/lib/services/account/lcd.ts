@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from "axios";
 
-import { getIcnsNamesByAddressLcd } from "../name/lcd";
-import { zAccountBech32LcdResponse, zAccountTypeLcd } from "../types";
-import type { AccountData } from "../types";
 import { AccountType } from "lib/types";
 import type { BechAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
+import { getIcnsNamesByAddressLcd } from "../name/lcd";
+import { zAccountBech32LcdResponse, zAccountTypeLcd } from "../types";
+import type { AccountData } from "../types";
 
 export const getAccountDataLcd = async (
   endpoint: string,

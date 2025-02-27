@@ -160,7 +160,7 @@ export const QuickMenuLite = () => {
         },
         {
           title: "User Guide",
-          subtitle: "View Celatone documents",
+          subtitle: "View Scan documents",
           slug: "wasm-user-guide",
           icon: "document" as const,
           isHighlight: false,
@@ -196,7 +196,7 @@ export const QuickMenuLite = () => {
         },
         {
           title: "User Guide",
-          subtitle: "View Celatone documents",
+          subtitle: "View Scan documents",
           icon: "document" as const,
           slug: "move-user-guide",
           isHighlight: false,

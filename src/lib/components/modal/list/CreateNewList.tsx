@@ -3,7 +3,6 @@ import { Box, Button, useToast } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
-import { ActionModal } from "../ActionModal";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
 import type { FormStatus } from "lib/components/forms";
@@ -12,6 +11,7 @@ import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { shortenName } from "lib/utils";
+import { ActionModal } from "../ActionModal";
 
 interface CreateNewListModalProps {
   buttonProps?: ButtonProps;

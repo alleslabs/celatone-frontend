@@ -1,4 +1,3 @@
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
@@ -8,6 +7,7 @@ import { ContractsTableHeader } from "./ContractsTableHeader";
 import { ContractsTableMobileCard } from "./ContractsTableMobileCard";
 import { ContractsTableRow } from "./ContractsTableRow";
 import type { CtaInfo } from "./ContractsTableRowCta";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface ContractsTableProps {
   contracts: Option<ContractInfo[]>;
