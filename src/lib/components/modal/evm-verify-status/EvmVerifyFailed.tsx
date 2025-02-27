@@ -16,7 +16,11 @@ export const EvmVerifyFailed = ({ evmVerifyError }: EvmVerifyFailedProps) => (
         <Text variant="body2" color="text.dark">
           Compiler Warning
         </Text>
-        <TextReadOnly text={evmVerifyError.details} canCopy showLines={10} />
+        <TextReadOnly
+          text={jsonPrettify(evmVerifyError.details)}
+          canCopy
+          showLines={10}
+        />
       </Flex>
     ) : (
       <>
