@@ -2,6 +2,7 @@ import { Button, Flex, Grid, Heading, Stack, Text } from "@chakra-ui/react";
 
 import { useConvertHexAddress, useInternalNavigate } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TotalValue } from "lib/components/TotalValue";
 import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
@@ -80,10 +81,10 @@ export const EvmContractDetailsTop = ({
               Implementation Address:
             </Text>
             <Flex alignItems="center">
-              <CopyLink
+              <ExplorerLink
+                type="evm_contract_address"
                 value={proxyTargetAddress}
-                amptrackSection="contract_top"
-                type="contract_address"
+                textFormat="normal"
               />
               {!!proxyTargetEvmVerifyInfo?.isVerified && (
                 <CustomIcon
