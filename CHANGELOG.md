@@ -39,6 +39,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+## v1.10.0
+
+### Features
+
 - [#1250](https://github.com/alleslabs/celatone-frontend/pull/1250) Add evm code snippet modal and fix input fields
 - [#1247](https://github.com/alleslabs/celatone-frontend/pull/1247) Support multi address creation txs
 - [#1245](https://github.com/alleslabs/celatone-frontend/pull/1245) Support assets from assetlist in chain config
