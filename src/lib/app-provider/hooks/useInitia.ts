@@ -5,7 +5,7 @@ export const useInitia = () => {
   const {
     chainConfig: { chain },
   } = useCelatoneApp();
-  return chain === "initia";
+  return chain.includes("initia");
 };
 
 export const useInitiaL1 = ({
