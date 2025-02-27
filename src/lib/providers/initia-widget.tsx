@@ -33,7 +33,8 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
       }
       fallback={<LoadingOverlay />}
       filterWallet={(wallet) =>
-        !chainConfig.features.evm.enabled || wallet.type === "evm"
+        wallet.type !== "initia" &&
+        (!chainConfig.features.evm.enabled || wallet.type === "evm")
       }
     >
       {children}

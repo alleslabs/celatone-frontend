@@ -1,4 +1,4 @@
-import { useChainConfigs } from "./useChainConfigs";
+import { useInitia } from "./useInitia";
 import { useInternalNavigate } from "./useInternalNavigate";
 
 export const useAllowCustomNetworks = ({
@@ -7,13 +7,9 @@ export const useAllowCustomNetworks = ({
   shouldRedirect: boolean;
 }) => {
   const navigate = useInternalNavigate();
-  const { supportedChainIds } = useChainConfigs();
+  const isInitia = useInitia();
 
-  const isAllow = supportedChainIds.some(
-    (chainId) => chainId === "initiation-2"
-  );
+  if (!isInitia && shouldRedirect) navigate({ pathname: "/", replace: true });
 
-  if (!isAllow && shouldRedirect) navigate({ pathname: "/", replace: true });
-
-  return isAllow;
+  return isInitia;
 };

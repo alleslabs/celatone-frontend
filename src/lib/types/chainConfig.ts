@@ -202,12 +202,7 @@ export const zChainConfig = z
     lcd: zHttpsUrl,
     mesa: zHttpsUrl.optional(),
     wallets: z.array(
-      z.union([
-        z.literal("keplr"),
-        z.literal("initia"),
-        z.literal("compass"),
-        z.literal("station"),
-      ])
+      z.union([z.literal("keplr"), z.literal("compass"), z.literal("station")])
     ),
     features: z.object({
       wasm: zWasmConfig,

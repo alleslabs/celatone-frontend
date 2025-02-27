@@ -71,7 +71,7 @@ The website will then be live on [http://localhost:3000](http://localhost:3000)
     prettyName: "Local Initia",
     lcd: "http://localhost:1317",
     rpc: "http://localhost:26657",
-    wallets: ["initia"], // keplr, initia, compass, station
+    wallets: ["keplr"], // keplr, compass, station
     features: {
       faucet: {
         enabled: false,
