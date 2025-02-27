@@ -213,11 +213,7 @@ export const EvmContractVerifyBody = ({
       {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            queryKey: [
-              CELATONE_QUERY_KEYS.EVM_VERIFY_INFOS,
-              currentChainId,
-              contractAddress,
-            ],
+            queryKey: [CELATONE_QUERY_KEYS.EVM_VERIFY_INFOS, currentChainId],
           });
         },
       }
