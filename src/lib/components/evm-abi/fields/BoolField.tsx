@@ -4,14 +4,14 @@ import type { SelectInputOption } from "lib/components/forms";
 import { SelectInput } from "lib/components/forms";
 import type { FieldProps } from "./types";
 
-const BOOL_FIELD_OPTIONS: SelectInputOption<string>[] = [
+const BOOL_FIELD_OPTIONS: SelectInputOption<boolean>[] = [
   {
     label: "True",
-    value: "1",
+    value: true,
   },
   {
     label: "False",
-    value: "0",
+    value: false,
   },
 ];
 

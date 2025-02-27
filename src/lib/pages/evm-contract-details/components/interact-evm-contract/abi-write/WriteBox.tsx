@@ -167,7 +167,12 @@ export const WriteBox = ({
                 amptrackSection="write_inputs"
                 buttonText="Copy Encoded Inputs"
               />
-              <EvmCodeSnippet />
+              <EvmCodeSnippet
+                contractAddress={contractAddress}
+                abiSection={abiSection}
+                type="write"
+                inputs={inputs}
+              />
             </Flex>
             <Flex direction="row" align="center" gap={2}>
               <Flex fontSize="14px" color="text.dark" alignItems="center">

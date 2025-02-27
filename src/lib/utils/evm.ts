@@ -6,6 +6,7 @@ import type {
   Coin,
   EvmToAddress,
   HexAddr20,
+  JsonDataType,
   Nullable,
   Option,
 } from "lib/types";
@@ -105,7 +106,7 @@ export const convertCosmosChainIdToEvmChainId = (chainId: string) => {
 
 export const encodeEvmFunctionData = (
   abiSection: JsonFragment,
-  values: unknown[]
+  values: JsonDataType[]
 ) => {
   const iface = new Interface([abiSection]);
   try {
@@ -120,13 +121,33 @@ export const decodeEvmFunctionResult = (
   data: string
 ) => {
   const iface = new Interface([abiSection]);
+
+  const deepStringify = (v: JsonDataType): JsonDataType => {
+    if (Array.isArray(v)) return v.map(deepStringify);
+    if (typeof v === "boolean") return v;
+    return String(v);
+  };
+
   try {
     return iface
       .decodeFunctionResult(abiSection.name ?? "", data)
-      .map((v) => v.toString());
+      .map(deepStringify);
   } catch {
     return undefined;
   }
+};
+
+export const formatEvmFunctionInputsArgs = (
+  inputs: JsonDataType[] | undefined
+) => {
+  if (!inputs) return "[]";
+
+  const deepFormat = (v: JsonDataType): JsonDataType => {
+    if (Array.isArray(v)) return `[${v.map(deepFormat).join(", ")}]`;
+    if (typeof v !== "boolean") return `"${v}"`;
+    return v;
+  };
+  return `[${inputs.map(deepFormat).join(", ")}]`;
 };
 
 export const findAndDecodeEvmConstructorArgs = (
