@@ -52,14 +52,14 @@ export const getProcessSteps = (
     label: "Submitted Source Code",
     ...getProcessStep(
       evmVerifyInfo.submittedTimestamp,
-      evmVerifyInfo.errorMessage
+      evmVerifyInfo.error?.message
     ),
   };
   const step2 = {
     label: "Verifying",
     ...getProcessStep(
       evmVerifyInfo.verifiedTimestamp,
-      evmVerifyInfo.errorMessage,
+      evmVerifyInfo.error?.message,
       step1.state
     ),
   };

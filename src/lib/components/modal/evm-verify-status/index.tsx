@@ -14,7 +14,7 @@ import {
 import type { ReactNode } from "react";
 
 import type { HexAddr20, Option, EvmVerifyInfo } from "lib/types";
-import { EvmVerifyAlert } from "./EvmVerifyAlert";
+import { EvmVerifyFailed } from "./EvmVerifyFailed";
 import { EvmVerifyProcess } from "./EvmVerifyProcess";
 import { EvmVerifyRequestInfo } from "./EvmVerifyRequestInfo";
 import { CustomIcon } from "../../icon";
@@ -50,16 +50,21 @@ export const EvmVerifyStatusModal = ({
       </ModalHeader>
       <ModalCloseButton color="gray.400" />
       <ModalBody p={{ base: 4, md: 6 }}>
-        {evmVerifyInfo?.errorMessage && (
-          <EvmVerifyAlert errorMsg={evmVerifyInfo.errorMessage} />
-        )}
         <Flex direction="column" gap={4}>
           <EvmVerifyRequestInfo
             contractAddress={contractAddress}
             evmVerifyInfo={evmVerifyInfo}
           />
-          <Divider borderColor="gray.700" />
-          {evmVerifyInfo && <EvmVerifyProcess evmVerifyInfo={evmVerifyInfo} />}
+          {evmVerifyInfo ? (
+            evmVerifyInfo.error ? (
+              <EvmVerifyFailed evmVerifyError={evmVerifyInfo.error} />
+            ) : (
+              <>
+                <EvmVerifyProcess evmVerifyInfo={evmVerifyInfo} />
+                <Divider borderColor="gray.700" />
+              </>
+            )
+          ) : null}
           <Button onClick={onClose} variant="outline-primary" mt={2}>
             Close
           </Button>

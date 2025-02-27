@@ -261,6 +261,31 @@ const zVyperOptimizer = z.enum(["none", "codesize", "gas"]);
 
 const zOptimizer = z.union([zEvmOptimizer, zVyperOptimizer]).optional();
 
+const zCompiledResults = z.array(
+  z.record(z.string(), z.object({ creation: z.string(), deployed: z.string() }))
+);
+
+const zEvmVerifyError = z
+  .preprocess(
+    (val) => JSON.parse(String(val)),
+    z.object({
+      code: z.string(),
+      message: z.string(),
+      details: z.union([
+        z.preprocess(
+          (val) => JSON.parse(String(val)),
+          z.object({
+            required_bytecode: z.string(),
+            compiled_results: zCompiledResults,
+          })
+        ),
+        z.string(),
+      ]),
+    })
+  )
+  .transform(snakeToCamel);
+export type EvmVerifyError = z.infer<typeof zEvmVerifyError>;
+
 // MARK - EvmVerifyInfo
 export const zEvmVerifyInfo = z
   .object({
@@ -279,7 +304,7 @@ export const zEvmVerifyInfo = z
     bytecode_type: z.string(),
     verified_timestamp: zUtcDate.optional(),
     submitted_timestamp: zUtcDate,
-    error_message: z.string().optional(),
+    error_message: zEvmVerifyError.optional(),
     settings: z.string().default("{}"),
     source_files: z.array(zEvmVerifyInfoSourceFile),
   })
@@ -290,5 +315,6 @@ export const zEvmVerifyInfo = z
     libraries: zEvmVerifyInfoLibraries.parse(
       JSON.parse(rest.settings).libraries
     ),
+    error: rest.error_message,
   }));
 export type EvmVerifyInfo = z.infer<typeof zEvmVerifyInfo>;

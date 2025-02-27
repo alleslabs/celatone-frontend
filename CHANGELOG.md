@@ -84,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1252](https://github.com/alleslabs/celatone-frontend/pull/1252) Improve EVM verify error details
 - [#1249](https://github.com/alleslabs/celatone-frontend/pull/1249) Improve import order
 - [#1248](https://github.com/alleslabs/celatone-frontend/pull/1248) Support querying multiple evm verification infos
 - [#1246](https://github.com/alleslabs/celatone-frontend/pull/1246) Handle undefined constructor args
