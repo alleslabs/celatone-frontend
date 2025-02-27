@@ -10,6 +10,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
   return (
     <WalletWidgetProvider
       key={currentChainId}
+      registryUrl="https://registry.rehearsal.initia.xyz"
       customLayer={
         chainConfig.network_type === "local"
           ? {
