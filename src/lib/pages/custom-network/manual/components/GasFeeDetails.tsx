@@ -20,12 +20,12 @@ import type {
   UseFormTrigger,
 } from "react-hook-form";
 
-import type { AddNetworkManualForm } from "../../types";
 import {
   CustomNetworkPageHeader,
   CustomNetworkSubheader,
 } from "lib/components/custom-network";
 import { ControllerInput } from "lib/components/forms";
+import type { AddNetworkManualForm } from "../../types";
 
 export enum GasPriceConfiguration {
   STANDARD = "standard",

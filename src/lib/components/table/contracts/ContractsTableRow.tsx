@@ -1,6 +1,5 @@
 import { Grid } from "@chakra-ui/react";
 
-import { TableRow } from "../tableComponents";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type {
@@ -16,6 +15,7 @@ import { ContractNameCell } from "./ContractNameCell";
 import type { CtaInfo } from "./ContractsTableRowCta";
 import { ContractsTableRowCta } from "./ContractsTableRowCta";
 import { TagsCell } from "./TagsCell";
+import { TableRow } from "../tableComponents";
 
 interface ContractsTableRowProps {
   contractInfo: ContractInfo;

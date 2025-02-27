@@ -5,7 +5,7 @@ import { isUndefined, unionBy } from "lodash";
 import { useMemo } from "react";
 
 import { devChainConfigs } from "config/chain";
-import { SUPPORTED_CHAIN_IDS } from "env";
+import { CHAIN, SUPPORTED_NETWORK_TYPES } from "env";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { useApiChainConfigs } from "lib/services/chain-config";
 import { getRegistryAssets, getRegistryChain } from "lib/utils";
@@ -25,14 +25,37 @@ export const useChainConfigs = (): {
   isChainIdExist: (chainId: string) => boolean;
   isLoading: boolean;
 } => {
-  const { data: apiChainConfigs, isFetching } =
-    useApiChainConfigs(SUPPORTED_CHAIN_IDS);
+  const { data: apiChainConfigs, isFetching } = useApiChainConfigs(
+    SUPPORTED_NETWORK_TYPES,
+    CHAIN
+  );
   const { localChainConfigs, isHydrated } = useLocalChainConfigStore();
 
   const api = useMemo(() => {
     if (isFetching || isUndefined(apiChainConfigs)) return defaultConfigs;
 
-    return apiChainConfigs.reduce(
+    const sortedApiChainConfigs = apiChainConfigs.sort((a, b) => {
+      const networkOrderA = a.network_type === "mainnet" ? 0 : 1;
+      const networkOrderB = b.network_type === "mainnet" ? 0 : 1;
+      if (networkOrderA !== networkOrderB) {
+        return networkOrderA - networkOrderB;
+      }
+
+      const layerOrderA = a.extra?.layer === "1" ? 0 : 1;
+      const layerOrderB = b.extra?.layer === "1" ? 0 : 1;
+      if (layerOrderA !== layerOrderB) {
+        return layerOrderA - layerOrderB;
+      }
+
+      const chainCompared = a.chain.localeCompare(b.chain);
+      if (chainCompared !== 0) {
+        return chainCompared;
+      }
+
+      return a.prettyName.localeCompare(b.prettyName);
+    });
+
+    return sortedApiChainConfigs.reduce(
       (acc, each) => ({
         chainConfigs: {
           ...acc.chainConfigs,
@@ -47,7 +70,7 @@ export const useChainConfigs = (): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(apiChainConfigs), isFetching]);
 
-  const local = useMemo(
+  const custom = useMemo(
     () =>
       Object.values(localChainConfigs).reduce(
         (acc, each) => ({
@@ -65,34 +88,30 @@ export const useChainConfigs = (): {
     [JSON.stringify(localChainConfigs)]
   );
 
-  const dev = useMemo(
+  const local = useMemo(
     () =>
-      devChainConfigs.reduce(
-        (acc, each) =>
-          SUPPORTED_CHAIN_IDS.includes(each.chainId)
-            ? {
-                chainConfigs: {
-                  ...acc.chainConfigs,
-                  [each.chainId]: each,
-                },
-                registryChains: [...acc.registryChains, getRegistryChain(each)],
-                registryAssets: [
-                  ...acc.registryAssets,
-                  getRegistryAssets(each),
-                ],
-                supportedChainIds: [...acc.supportedChainIds, each.chainId],
-              }
-            : acc,
-        defaultConfigs
-      ),
+      SUPPORTED_NETWORK_TYPES.includes("local")
+        ? devChainConfigs.reduce(
+            (acc, each) => ({
+              chainConfigs: {
+                ...acc.chainConfigs,
+                [each.chainId]: each,
+              },
+              registryChains: [...acc.registryChains, getRegistryChain(each)],
+              registryAssets: [...acc.registryAssets, getRegistryAssets(each)],
+              supportedChainIds: [...acc.supportedChainIds, each.chainId],
+            }),
+            defaultConfigs
+          )
+        : defaultConfigs,
     []
   );
 
   return useMemo(() => {
     const chainConfigs = {
       ...api.chainConfigs,
+      ...custom.chainConfigs,
       ...local.chainConfigs,
-      ...dev.chainConfigs,
     };
 
     return {
@@ -100,33 +119,39 @@ export const useChainConfigs = (): {
       registryChains: unionBy(
         chainRegistry.chains,
         api.registryChains,
+        custom.registryChains,
         local.registryChains,
-        dev.registryChains,
         "chain_id"
       ),
       registryAssets: unionBy(
         chainRegistry.assets,
         api.registryAssets,
+        custom.registryAssets,
         local.registryAssets,
-        dev.registryAssets,
         "chain_name"
       ),
-      supportedChainIds: [...SUPPORTED_CHAIN_IDS, ...local.supportedChainIds],
+      supportedChainIds: [
+        ...api.supportedChainIds,
+        ...custom.supportedChainIds,
+        ...local.supportedChainIds,
+      ],
       isChainIdExist: (chainId: string) => !!chainConfigs[chainId],
       isLoading: isFetching || !isHydrated,
     };
   }, [
     api.chainConfigs,
-    api.registryAssets,
     api.registryChains,
-    dev.chainConfigs,
-    dev.registryAssets,
-    dev.registryChains,
+    api.registryAssets,
+    api.supportedChainIds,
+    custom.chainConfigs,
+    custom.registryChains,
+    custom.registryAssets,
+    custom.supportedChainIds,
+    local.chainConfigs,
+    local.registryChains,
+    local.registryAssets,
+    local.supportedChainIds,
     isFetching,
     isHydrated,
-    local.chainConfigs,
-    local.registryAssets,
-    local.registryChains,
-    local.supportedChainIds,
   ]);
 };

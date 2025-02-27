@@ -14,6 +14,7 @@ const generateVariantStyle = (
     | "warning"
     | "error"
     | "info"
+    | "info-left-primary"
     | "info-left-secondary"
 ) => {
   let mainColor: ColorProps["color"];
@@ -33,6 +34,13 @@ const generateVariantStyle = (
       mainColor = "gray.400";
       bgColor = "gray.800";
       borderColor = "gray.700";
+      break;
+    case "info-left-primary":
+      bgColor = "";
+      border = "0";
+      borderLeft = "3px solid";
+      borderRadius = "0";
+      borderColor = "primary.main";
       break;
     case "info-left-secondary":
       bgColor = "background.main";
@@ -56,8 +64,8 @@ const generateVariantStyle = (
         borderRadius,
         ...(key === "container" && {
           bg: bgColor,
-          borderColor: borderColor || mainColor,
           borderLeft,
+          borderColor: borderColor || mainColor,
         }),
       },
     ])
@@ -89,6 +97,7 @@ export const Alert: ComponentStyleConfig = {
     warning: generateVariantStyle("warning"),
     error: generateVariantStyle("error"),
     info: generateVariantStyle("info"),
+    "info-left-primary": generateVariantStyle("info-left-primary"),
     "info-left-secondary": generateVariantStyle("info-left-secondary"),
   },
 };

@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
 import { trackSocial } from "lib/amplitude";
+import { CustomIcon } from "../icon";
 
 interface GitHubLinkProps {
   github: string;

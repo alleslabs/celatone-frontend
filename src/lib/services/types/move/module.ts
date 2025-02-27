@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { zProposal, zProposalsResponseItem } from "../proposal";
-import { zTxsResponseItem } from "../tx";
 import type {
   HexAddr,
   IndexedModule,
@@ -23,6 +21,8 @@ import {
   sha256Hex,
   snakeToCamel,
 } from "lib/utils";
+import { zProposal, zProposalsResponseItem } from "../proposal";
+import { zTxsResponseItem } from "../tx";
 
 const zBaseModuleLcd = z.object({
   address: zHexAddr,

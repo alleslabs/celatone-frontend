@@ -9,16 +9,18 @@ import {
   useValidateAddress,
 } from "lib/app-provider";
 import type { Addr, BechAddr, HexAddr32 } from "lib/types";
-import { zBechAddr32, zHexAddr20, zValidatorAddr } from "lib/types";
+import { zBechAddr32, zHexAddr20, zHexAddr32, zValidatorAddr } from "lib/types";
 import type { IcnsNamesByAddress } from "lib/types/name";
 import {
   isHex,
+  isHex20Bytes,
   isHexModuleAddress,
   isHexWalletAddress,
   isId,
   isMovePrefixHexModuleAddress,
   isPosDecimal,
   splitModulePath,
+  toChecksumAddress,
 } from "lib/utils";
 
 import { useBlockData, useBlockDataLcd } from "./block";
@@ -29,7 +31,7 @@ import { useNftByNftAddressLcd } from "./nft";
 import { useNftCollectionByCollectionAddress } from "./nft-collection";
 import { usePoolData } from "./pools";
 import { useProposalData, useProposalDataLcd } from "./proposal";
-import { useTxData, useTxDataJsonRpc } from "./tx";
+import { useEvmTxDataJsonRpc, useTxData } from "./tx";
 import {
   useAddressByInitiaUsername,
   useInitiaUsernameByAddress,
@@ -95,9 +97,7 @@ export const useSearchHandler = (
       },
     },
   } = useCelatoneApp();
-  const {
-    chain: { bech32_prefix: bech32Prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
   const isInitia = useInitia();
 
   const getAddressType = useGetAddressType();
@@ -151,13 +151,13 @@ export const useSearchHandler = (
   /// /////////////////////////////////////////////////////
 
   const { data: nftData, isFetching: nftFetching } = useNftByNftAddressLcd(
-    debouncedKeyword as HexAddr32,
+    zHexAddr32.parse(debouncedKeyword),
     isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
   );
 
   const { data: nftCollectionData, isFetching: nftCollectionFetching } =
     useNftCollectionByCollectionAddress(
-      debouncedKeyword as HexAddr32,
+      zHexAddr32.parse(debouncedKeyword),
       isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
     );
 
@@ -219,7 +219,7 @@ export const useSearchHandler = (
     isHexWalletAddress(debouncedKeyword)
   );
 
-  const { data: evmTxData, isFetching: evmTxFetching } = useTxDataJsonRpc(
+  const { data: evmTxData, isFetching: evmTxFetching } = useEvmTxDataJsonRpc(
     debouncedKeyword,
     debouncedKeyword.startsWith("0x") &&
       debouncedKeyword.length === 66 &&
@@ -357,7 +357,10 @@ export const useSearchHandler = (
 
   if (isAddr)
     results.push({
-      value: debouncedKeyword,
+      value:
+        isEvm && isHex20Bytes(debouncedKeyword)
+          ? toChecksumAddress(debouncedKeyword)
+          : debouncedKeyword,
       type:
         // eslint-disable-next-line sonarjs/no-duplicate-string
         contractData || evmCodes?.code ? "Contract Address" : "Account Address",

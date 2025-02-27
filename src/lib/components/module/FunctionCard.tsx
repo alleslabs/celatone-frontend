@@ -1,12 +1,12 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 
-import { DotSeparator } from "../DotSeparator";
-import { CustomIcon } from "../icon";
 import { useMobile } from "lib/app-provider";
 import { Tooltip } from "lib/components/Tooltip";
 import type { ExposedFunction } from "lib/types";
 import { checkAvailability, getVisibilityIcon } from "lib/utils";
+import { DotSeparator } from "../DotSeparator";
+import { CustomIcon } from "../icon";
 
 type CardVariant = "common" | "disabled" | "selected" | "readonly";
 
@@ -137,7 +137,7 @@ export const FunctionCard = ({
     />
   ) : (
     <Tooltip
-      label="Only functions with “is_entry: true” are able to interacted through Celatone’s module interactions."
+      label="Only functions with “is_entry: true” are able to interacted through Scan’s module interactions."
       hidden={!disabled}
     >
       <FunctionCardBody

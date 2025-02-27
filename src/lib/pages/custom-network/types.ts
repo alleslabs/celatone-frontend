@@ -8,12 +8,15 @@ import {
   zAsset,
   zChainConfig,
   zDenomUnit,
+  zEvmConfig,
   zFeeToken,
-  zGas,
-  zGasCosts,
+  zGasConfig,
+  zGasConfigCosts,
   zHttpsUrl,
+  zMoveConfig,
   zNumberInput,
   zRegistry,
+  zWasmConfig,
 } from "lib/types";
 
 import {
@@ -25,7 +28,6 @@ import {
   DEFAULT_POOL_CONFIG,
   DEFAULT_PUBLIC_PROJECT_CONFIG,
   DEFAULT_SLIP44,
-  DEFAULT_WALLET_CONFIG,
   DEFAULT_WASM_CONFIG,
 } from "./constant";
 
@@ -95,7 +97,7 @@ const networkDetailsFormValidator = (
   if (prettyName.length > 50)
     ctx.addIssue({
       code: ZodIssueCode.custom,
-      message: `Minitia Name is too long. (${prettyName.length}/50)`,
+      message: `Rollup Name is too long. (${prettyName.length}/50)`,
       path: ["prettyName"],
     });
 
@@ -134,7 +136,7 @@ export type NetworkDetailsForm = z.infer<
 >;
 
 // MARK: Gas Details Form
-const zGasFeeDetails = zGas
+const zGasConfigFeeDetails = zGasConfig
   .pick({
     gasAdjustment: true,
     maxGasLimit: true,
@@ -148,12 +150,12 @@ const zGasFeeDetails = zGas
       high_gas_price: true,
     })
   )
-  .merge(zGasCosts.pick({ cosmos_send: true, ibc_transfer: true }))
+  .merge(zGasConfigCosts.pick({ cosmos_send: true, ibc_transfer: true }))
   .extend({
     gasConfig: z.enum(["standard", "custom"]),
     gasPrice: zNumberInput.optional(),
   });
-type GasFeeDetails = z.infer<typeof zGasFeeDetails>;
+type GasFeeDetails = z.infer<typeof zGasConfigFeeDetails>;
 
 const gasFeeDetailsFormValidator = (val: GasFeeDetails, ctx: RefinementCtx) => {
   const {
@@ -213,10 +215,10 @@ const gasFeeDetailsFormValidator = (val: GasFeeDetails, ctx: RefinementCtx) => {
   return true;
 };
 
-export const zGasFeeDetailsForm = zGasFeeDetails.superRefine((val, ctx) =>
-  gasFeeDetailsFormValidator(val, ctx)
+export const zGasConfigFeeDetailsForm = zGasConfigFeeDetails.superRefine(
+  (val, ctx) => gasFeeDetailsFormValidator(val, ctx)
 );
-export type GasFeeDetailsForm = z.infer<typeof zGasFeeDetailsForm>;
+export type GasFeeDetailsForm = z.infer<typeof zGasConfigFeeDetailsForm>;
 
 // MARK: WalletRegistryForm
 const zWalletRegistryAssetDenom = zDenomUnit
@@ -327,7 +329,7 @@ export const zAddNetworkManualForm = (
   validateExistingChain: ValidateExistingChain
 ) =>
   zNetworkDetails
-    .merge(zGasFeeDetails)
+    .merge(zGasConfigFeeDetails)
     .merge(zWalletRegistry)
     .superRefine((val, ctx) => {
       networkDetailsFormValidator(val, ctx, validateExistingChain);
@@ -368,7 +370,6 @@ export const zAddNetworkManualChainConfigJson = ({
       assets,
     }: AddNetworkManualForm) => ({
       ...DEFAULT_CUSTOM_MINITIA_NETWORK,
-      wallets: DEFAULT_WALLET_CONFIG,
       chainId,
       registryChainName,
       prettyName,
@@ -415,9 +416,6 @@ export const zAddNetworkManualChainConfigJson = ({
       registry: {
         bech32_prefix,
         slip44,
-        staking: {
-          staking_tokens: [],
-        },
         assets: assets.map(({ name, base, symbol, denoms }) => ({
           name,
           base,
@@ -446,15 +444,29 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
     logo_URIs: true,
     lcd: true,
     rpc: true,
-    wallets: true,
-    features: true,
     gas: true,
     fees: true,
     registry: true,
   })
-  .transform<ChainConfig>((val) => ({
+  .extend({
+    features: z.object({
+      wasm: zWasmConfig,
+      move: zMoveConfig,
+      evm: zEvmConfig,
+    }),
+  })
+  .transform<ChainConfig>(({ features, ...val }) => ({
     ...val,
     ...DEFAULT_CUSTOM_MINITIA_NETWORK,
+    features: {
+      ...features,
+      pool: DEFAULT_POOL_CONFIG,
+      publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
+      gov: DEFAULT_GOV_CONFIG,
+      nft: {
+        enabled: features.move.enabled,
+      },
+    },
   }));
 
 export type AddNetworkJsonChainConfigJson = z.infer<
@@ -490,7 +502,6 @@ export const zAddNetworkLinkChainConfigJson = z
       chainId: val.chainId,
       registryChainName: val.chainId,
       prettyName: capitalize(val.chainId),
-      wallets: DEFAULT_WALLET_CONFIG,
       lcd: val.lcd,
       rpc: val.rpc,
       features: {
@@ -524,9 +535,6 @@ export const zAddNetworkLinkChainConfigJson = z
       registry: {
         bech32_prefix: bech32Prefix,
         slip44: DEFAULT_SLIP44,
-        staking: {
-          staking_tokens: [],
-        },
         assets: [],
       },
     };

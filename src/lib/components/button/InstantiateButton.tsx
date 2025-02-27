@@ -1,12 +1,12 @@
 import type { ButtonProps } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
-import { Tooltip } from "../Tooltip";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import type { PermissionAddresses } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
+import { CustomIcon } from "../icon";
+import { Tooltip } from "../Tooltip";
 
 interface InstantiateButtonProps extends ButtonProps {
   instantiatePermission: AccessConfigPermission;
@@ -55,7 +55,7 @@ export const InstantiateButton = ({
   codeId,
   ...buttonProps
 }: InstantiateButtonProps) => {
-  const { address, isWalletConnected } = useCurrentChain();
+  const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
   const goToInstantiate = () =>
     navigate({ pathname: "/instantiate", query: { codeId } });
@@ -74,7 +74,7 @@ export const InstantiateButton = ({
   const { tooltipLabel, variant, icon } = getInstantiateButtonProps(
     isAllowed,
     instantiatePermission === AccessConfigPermission.UNKNOWN,
-    isWalletConnected
+    !!address
   );
 
   return (
@@ -82,7 +82,7 @@ export const InstantiateButton = ({
       <Button
         w={{ base: "full", md: "auto" }}
         // Change to isDisabled when create proposal flow is done
-        isDisabled={!isAllowed || !isWalletConnected}
+        isDisabled={!isAllowed || !address}
         variant={variant}
         leftIcon={icon}
         size="sm"

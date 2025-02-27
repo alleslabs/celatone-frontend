@@ -155,7 +155,7 @@ const InteractBody = ({
     (selectedModuleInput: IndexedModule, fn?: ExposedFunction) => {
       setModule(selectedModuleInput);
       setSelectedFn(fn);
-      handleSetSelectedType(fn?.is_view ?? true ? "view" : "execute");
+      handleSetSelectedType((fn?.is_view ?? true) ? "view" : "execute");
 
       navigate({
         pathname: "/interact",

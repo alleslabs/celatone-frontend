@@ -1,9 +1,8 @@
 import { Flex, Text } from "@chakra-ui/react";
 
+import { UploadSchema } from "./UploadSchema";
 import { ConnectingLine } from "../../ConnectingLine";
 import { CustomIcon } from "../../icon";
-
-import { UploadSchema } from "./UploadSchema";
 
 interface UploadSchemaSectionProps {
   codeId: number;

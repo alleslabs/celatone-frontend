@@ -2,11 +2,11 @@ import type { StdFee } from "@cosmjs/stargate";
 import { MsgUpdateAdmin } from "@initia/initia.js";
 import { useCallback } from "react";
 
-import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { updateAdminTx } from "lib/app-fns/tx/updateAdmin";
 import type { BechAddr, BechAddr32, Option } from "lib/types";
 import { toEncodeObject } from "lib/utils";
+import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface UpdateAdminStreamParams {
   contractAddress: BechAddr32;
@@ -18,7 +18,7 @@ export interface UpdateAdminStreamParams {
 
 export const useUpdateAdminTx = () => {
   const { address } = useCurrentChain();
-  const getSigningClient = useGetSigningClient();
+  const signAndBroadcast = useSignAndBroadcast();
 
   return useCallback(
     async ({
@@ -28,9 +28,8 @@ export const useUpdateAdminTx = () => {
       onTxSucceed,
       onTxFailed,
     }: UpdateAdminStreamParams) => {
-      const client = await getSigningClient();
-      if (!address || !client)
-        throw new Error("Please check your wallet connection.");
+      if (!address) throw new Error("No address provided (useUpdateAdminTx)");
+
       if (!estimatedFee) return null;
 
       const messages = toEncodeObject([
@@ -41,7 +40,7 @@ export const useUpdateAdminTx = () => {
         address,
         messages,
         fee: estimatedFee,
-        client,
+        signAndBroadcast,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
@@ -49,6 +48,6 @@ export const useUpdateAdminTx = () => {
         onTxFailed,
       });
     },
-    [address, getSigningClient]
+    [address, signAndBroadcast]
   );
 };

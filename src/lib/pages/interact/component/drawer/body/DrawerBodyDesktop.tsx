@@ -1,15 +1,15 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
+import type { IndexedModule } from "lib/types";
+
+import { SelectFunctionSection } from "./SelectFunctionSection";
+import { SelectModuleSection } from "./SelectModuleSection";
 import type {
   DisplayMode,
   ModuleSelectFunction,
   SelectedAddress,
 } from "../types";
-import type { IndexedModule } from "lib/types";
-
-import { SelectFunctionSection } from "./SelectFunctionSection";
-import { SelectModuleSection } from "./SelectModuleSection";
 
 interface ModuleSelectBodyProps {
   selectedAddress: SelectedAddress;

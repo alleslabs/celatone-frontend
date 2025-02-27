@@ -1,6 +1,5 @@
 import { Box, Button, Flex, Grid, Tag, Text } from "@chakra-ui/react";
 
-import { TableRow } from "../tableComponents";
 import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -11,6 +10,7 @@ import type { ModuleInfo, Option } from "lib/types";
 import { dateFromNow, formatUTC, resolveMoveVerifyStatus } from "lib/utils";
 
 import { ModulePathLink } from "./ModulePathLink";
+import { TableRow } from "../tableComponents";
 
 interface ModulesTableRowProps {
   moduleInfo: ModuleInfo;

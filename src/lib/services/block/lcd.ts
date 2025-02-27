@@ -1,7 +1,7 @@
 import axios from "axios";
 
-import { zBlockDataResponseLcd, zBlockLcd } from "../types";
 import { parseWithError } from "lib/utils";
+import { zBlockDataResponseLcd, zBlockLcd } from "../types";
 
 export const getLatestBlockLcd = async (endpoint: string) =>
   axios

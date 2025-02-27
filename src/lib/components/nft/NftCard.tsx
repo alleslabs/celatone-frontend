@@ -1,10 +1,10 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 
-import { AppLink } from "../AppLink";
 import { AmpEvent, track } from "lib/amplitude";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
 import type { HexAddr32, Nullable, Option } from "lib/types";
+import { AppLink } from "../AppLink";
 
 interface NftCardProps {
   uri: string;

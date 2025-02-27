@@ -33,7 +33,7 @@ export const useGetAddressTypeByLength = () => {
   return useCallback(
     (address: Option<string>): AddressReturnType =>
       address
-        ? addressLengthMap[address.length] ?? "invalid_address"
+        ? (addressLengthMap[address.length] ?? "invalid_address")
         : "invalid_address",
     [addressLengthMap]
   );
@@ -74,9 +74,7 @@ const validateAddress = (
 };
 
 export const useGetAddressType = () => {
-  const {
-    chain: { bech32_prefix: bech32Prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
   const getAddressTypeByLength = useGetAddressTypeByLength();
   return useCallback(
     (address: Option<string>): AddressReturnType => {
@@ -99,9 +97,7 @@ export const useGetAddressType = () => {
 };
 
 export const useValidateAddress = () => {
-  const {
-    chain: { bech32_prefix: bech32Prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
   const getAddressTypeByLength = useGetAddressTypeByLength();
   const move = useMoveConfig({ shouldRedirect: false });
   const evm = useEvmConfig({ shouldRedirect: false });

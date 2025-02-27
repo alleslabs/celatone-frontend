@@ -2,17 +2,19 @@ import { Flex, Heading } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
+import type { HexAddr20, Nullable } from "lib/types";
 import { EvmMethodName } from "lib/types";
 import { getEvmMethod } from "lib/utils";
 
 import { EvmDataFormatSwitch, EvmDataFormatTabs } from "./EvmDataFormatSwitch";
 
 interface EvmInputDataProps {
-  inputData: string;
+  txInput: string;
+  txTo: Nullable<HexAddr20>;
 }
 
-export const EvmInputData = ({ inputData }: EvmInputDataProps) => {
-  const evmMethod = getEvmMethod(inputData);
+export const EvmInputData = ({ txInput, txTo }: EvmInputDataProps) => {
+  const evmMethod = getEvmMethod(txInput, txTo);
   const showFormatOption =
     evmMethod !== EvmMethodName.Transfer && evmMethod !== EvmMethodName.Create;
   const [tab, setTab] = useState<EvmDataFormatTabs>(
@@ -25,8 +27,8 @@ export const EvmInputData = ({ inputData }: EvmInputDataProps) => {
         const chunkSize = 64;
         const formattedData: string[] = [];
 
-        const methodId = inputData.slice(0, 10);
-        const remainingData = inputData.slice(10);
+        const methodId = txInput.slice(0, 10);
+        const remainingData = txInput.slice(10);
 
         formattedData.push(`MethodID: ${methodId}`);
 
@@ -39,12 +41,12 @@ export const EvmInputData = ({ inputData }: EvmInputDataProps) => {
         return formattedData.join("\n");
       }
       case EvmDataFormatTabs.UTF8:
-        return Buffer.from(inputData.slice(2), "hex").toString("binary");
+        return Buffer.from(txInput.slice(2), "hex").toString("binary");
       case EvmDataFormatTabs.Raw:
       default:
-        return inputData;
+        return txInput;
     }
-  }, [inputData, tab]);
+  }, [txInput, tab]);
 
   return (
     <>

@@ -55,6 +55,7 @@ export enum AmpEvent {
   TO_CONTRACT_DETAILS = "To Contract Detail",
   TO_CODE_DETAILS = "To Code Detail",
   TO_EVM_CONTRACT_DETAILS = "To EVM Contract Detail",
+  TO_EVM_CONTRACT_VERIFY = "To EVM Contract Verify",
   TO_PROJECT_DETAILS = "To Public Project Detail",
   TO_EVM_TRANSACTION_DETAILS = "To EVM Transaction Detail",
   TO_TRANSACTION_DETAILS = "To Transaction Detail",
@@ -90,6 +91,9 @@ export enum AmpEvent {
   ACTION_MOVE_EXECUTE = "Action Move Execute",
   ACTION_MOVE_PUBLISH = "Action Move Publish",
   ACTION_EXECUTE_SCRIPT = "Action Execute Script",
+  ACTION_EVM_WRITE = "Action Evm Write",
+  ACTION_EVM_READ = "Action Evm Read",
+  ACTION_EVM_READ_AGAIN = "Action Evm Read Again",
   // INTERACTS
   USE_SELECT_NETWORK = "Use Select Network",
   USE_CLICK_WALLET = "Use Click Wallet",
@@ -198,8 +202,6 @@ export enum AmpEvent {
   MINTSCAN = "Mintscan",
   WEBSITE = "Website",
   SOCIAL = "Social",
-  FEEDBACK = "Feedback",
-  ALLESLABS = "AllesLabs",
 }
 
 export type ActionAmpEvent =

@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { zAddNetworkLinkChainConfigJson } from "../types";
 import { useChainConfigs } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
@@ -15,6 +14,7 @@ import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { EmptyState } from "lib/components/state";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { libDecode } from "lib/utils";
+import { zAddNetworkLinkChainConfigJson } from "../types";
 
 type AddCustomNetworkError =
   | {
@@ -140,14 +140,14 @@ export const AddNetworkLink = observer(() => {
             <Box minW="40%" maxW="70%">
               <TextReadOnly text={error.message} canCopy />
             </Box>
-            <Text mt={6}>You can add this custom Minitia manually</Text>
+            <Text mt={6}>You can add this custom Rollup manually</Text>
             <AppLink href="/custom-network/add">
               <Button
                 variant="outline-gray"
                 leftIcon={<CustomIcon name="plus" />}
                 mt={2}
               >
-                Add custom minitia
+                Add custom rollup
               </Button>
             </AppLink>
           </EmptyState>

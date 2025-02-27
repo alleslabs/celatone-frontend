@@ -18,18 +18,13 @@ import {
 import { useMemo } from "react";
 import AceEditor from "react-ace";
 
-import { CopyButton } from "../copy";
-import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
-import {
-  useCelatoneApp,
-  useGas,
-  useLcdEndpoint,
-  useRpcEndpoint,
-} from "lib/app-provider";
+import { useCelatoneApp, useGas } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 import { getArgType, serializeAbiData } from "lib/utils";
+import { CopyButton } from "../copy";
+import { CustomIcon } from "../icon";
 
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-javascript";
@@ -68,11 +63,9 @@ const MoveCodeSnippet = ({
   ml,
 }: MoveCodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const lcdEndpoint = useLcdEndpoint();
-  const rpcEndpoint = useRpcEndpoint();
   const {
     currentChainId,
-    chainConfig: { chain },
+    chainConfig: { chain, lcd: lcdEndpoint, rpc: rpcEndpoint },
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();
@@ -110,7 +103,7 @@ const MoveCodeSnippet = ({
         ? `\n\t--type-args '${serializedAbiData.typeArgs.join(" ")}' \\`
         : "",
       argsFlags: displayArgs
-        ? `\n\t--args '${argsWithTypes.join(" ")}' \\`
+        ? `\n\t--args '[${argsWithTypes.map((val) => JSON.stringify(val)).join(",")}]' \\`
         : "",
       isHiddenCLI: argTypes.some(
         (argType) =>
@@ -219,16 +212,17 @@ execute();`,
         name: "CLI",
         mode: "sh",
         isHidden: isHiddenCLI,
-        snippet: `${daemonName} keys add --recover celatone\n
+        snippet: `export WALLET_NAME='<your-wallet-name>'\n
 export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
 export MODULE_ADDRESS='${moduleAddress}'\n
 export MODULE_NAME='${moduleName}'\n
 export MODULE_FN='${fn.name}'\n
+${daemonName} keys add --recover $WALLET_NAME\n
 ${daemonName} tx move execute $MODULE_ADDRESS \\
     $MODULE_NAME \\
     $MODULE_FN \\${typeArgsFlags}${argsFlags}
-    --from celatone \\
+    --from $WALLET_NAME \\
     --chain-id $CHAIN_ID \\
     --node $RPC_URL \\
     --gas auto \\

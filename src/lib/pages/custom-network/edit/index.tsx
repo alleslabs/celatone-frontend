@@ -1,5 +1,5 @@
 import { Button, Flex, Heading, Stack } from "@chakra-ui/react";
-import { isUndefined, omit } from "lodash";
+import { isUndefined, pick } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 import { z } from "zod";
@@ -57,13 +57,23 @@ interface NetworkConfigBodyProps {
 const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   const { getLocalChainConfig } = useLocalChainConfigStore();
   const chainConfig = getLocalChainConfig(chainId);
-  const json = useMemo(
-    () =>
-      JSON.stringify(
-        omit(chainConfig, ["tier", "chain", "extra", "network_type"])
-      ),
-    [chainConfig]
-  );
+  const json = useMemo(() => {
+    if (!chainConfig) return "";
+
+    // NOTE: hardcoding so the order is fixed
+    return JSON.stringify({
+      chainId: chainConfig.chainId,
+      registryChainName: chainConfig.registryChainName,
+      prettyName: chainConfig.prettyName,
+      logo_URIs: chainConfig.logo_URIs,
+      lcd: chainConfig.lcd,
+      rpc: chainConfig.rpc,
+      features: pick(chainConfig.features, ["wasm", "move", "evm"]),
+      gas: chainConfig.gas,
+      fees: chainConfig.fees,
+      registry: chainConfig.registry,
+    });
+  }, [chainConfig]);
 
   const handleExportJson = useCallback(() => {
     const blob = new Blob([json], {
@@ -88,14 +98,14 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
     <ActionPageContainer width={900}>
       <CustomNetworkPageHeader
         title={chainConfig.prettyName}
-        subtitle="Your Custom Minitia"
+        subtitle="Your Custom Rollup"
         hasAlert={false}
       />
       <Stack gap={12} mt={8} w="full">
         <Flex justifyContent="space-between" gap={10}>
           <CustomNetworkSubheader
             title="Export as JSON File"
-            subtitle="You can export this Custom Minitia configuration in JSON file to use them in other device."
+            subtitle="You can export this Custom Rollup configuration in JSON file to use them in other device."
           />
           <Button
             minW={168}
@@ -135,7 +145,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   //     <ActionPageContainer width={900}>
   //       <CustomNetworkPageHeader
   //         title={chainConfig.prettyName}
-  //         subtitle="Your Custom Minitia"
+  //         subtitle="Your Custom Rollup"
   //         hasAlert={false}
   //       />
   //       <Tabs variant="unstyled" orientation="vertical" mt={6}>

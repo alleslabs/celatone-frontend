@@ -1,7 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
 
-import { MobileCardTemplate } from "../MobileCardTemplate";
-import { MobileLabel } from "../MobileLabel";
 import { useInternalNavigate } from "lib/app-provider";
 import { ActionMessages } from "lib/components/action-msg/ActionMessages";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -10,6 +8,8 @@ import type { Transaction } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import { RelationChip } from "./RelationChip";
+import { MobileCardTemplate } from "../MobileCardTemplate";
+import { MobileLabel } from "../MobileLabel";
 
 interface TransactionsTableMobileCardProps {
   transaction: Transaction;

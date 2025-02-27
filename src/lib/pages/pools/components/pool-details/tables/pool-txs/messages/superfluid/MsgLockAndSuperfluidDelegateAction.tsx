@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react";
 
-import { PoolLogoLink } from "../components";
-import { getPoolDenom } from "../utils";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
 import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
+import { PoolLogoLink } from "../components";
+import { getPoolDenom } from "../utils";
 
 interface MsgLockAndSuperfluidDelegateActionProps {
   msg: MsgLockAndSuperfluidDelegateDetails;

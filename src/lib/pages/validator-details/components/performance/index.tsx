@@ -2,7 +2,6 @@ import { Flex } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 import { useState } from "react";
 
-import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useValidatorUptime } from "lib/services/validator";
@@ -11,6 +10,7 @@ import type { ValidatorAddr } from "lib/types";
 import { PenaltySection } from "./PenaltySection";
 import { RecentBlocksSection } from "./RecentBlocksSection";
 import { UptimeSection } from "./UptimeSection";
+import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 
 interface PerformanceProps {
   validatorAddress: ValidatorAddr;

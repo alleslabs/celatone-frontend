@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 
-import { AccountDetailsEmptyState } from "../../AccountDetailsEmptyState";
 import { useCurrentChain, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -16,6 +15,7 @@ import type { Option, Transaction, TxFilters } from "lib/types";
 import { TxsAlert } from "./TxsAlert";
 import { TxsTop } from "./TxsTop";
 import type { TxsTableProps } from "./types";
+import { AccountDetailsEmptyState } from "../../AccountDetailsEmptyState";
 
 const getEmptyState = ({
   transactions,
@@ -57,9 +57,7 @@ export const TxsTableFull = ({
   refetchCount,
   onViewMore,
 }: TxsTableProps) => {
-  const {
-    chain: { chain_id: chainId },
-  } = useCurrentChain();
+  const { chainId } = useCurrentChain();
   const [isSigner, setIsSigner] = useState<Option<boolean>>();
   const [filters, setFilters] = useState<TxFilters>(DEFAULT_TX_FILTERS);
   const isMobile = useMobile();

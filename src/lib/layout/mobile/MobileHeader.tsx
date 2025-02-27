@@ -1,12 +1,11 @@
 import { Flex, Image } from "@chakra-ui/react";
 
+import { useCelatoneApp, useInitia } from "lib/app-provider";
+import { AppLink } from "lib/components/AppLink";
+import { NavDrawer } from "./NavDrawer";
 import { AppMenu } from "../AppMenu";
 import { SearchComponent } from "../search";
 import { SectionWrapper } from "../SectionWrapper";
-import { useCelatoneApp, useInitia } from "lib/app-provider";
-import { AppLink } from "lib/components/AppLink";
-
-import { NavDrawer } from "./NavDrawer";
 
 const MobileHeader = () => {
   const { theme } = useCelatoneApp();
@@ -27,7 +26,7 @@ const MobileHeader = () => {
       <SectionWrapper minW="64px" w="full" justifyContent="start">
         <AppLink href="/">
           <Image
-            alt="Celatone"
+            alt="Scan"
             src={
               isInitia
                 ? "https://assets.alleslabs.dev/integrations/initia/logo_mobile.png"

@@ -1,13 +1,13 @@
 import { Text } from "@chakra-ui/react";
 
-import { ExplorerLink } from "../ExplorerLink";
-import { WasmVerifyBadge } from "../WasmVerifyBadge";
 import { useMobile } from "lib/app-provider";
 import type { BechAddr32 } from "lib/types";
 import { WasmVerifyStatus } from "lib/types";
 
 import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
 import { VerifyButton } from "./VerifyButton";
+import { ExplorerLink } from "../ExplorerLink";
+import { WasmVerifyBadge } from "../WasmVerifyBadge";
 
 interface IndirectlyVerifiedDetailsProps {
   codeId: number;

@@ -11,16 +11,16 @@ export const AddNetwork = () => {
 
   return (
     <ActionPageContainer>
-      <CelatoneSeo pageName="Add Minitias" />
+      <CelatoneSeo pageName="Add Rollups" />
       <Flex direction="column" gap={12}>
         <Flex direction="column" gap={4} textAlign="center">
           <Heading as="h4" variant="h4">
-            Add Custom Minitia
+            Add Custom Rollup
           </Heading>
           <Alert my={4} p={3} variant="info">
             <AlertDescription>
               <Text color="text.dark" textAlign="center" lineHeight="normal">
-                Please note that the custom Minitia you add on our website will
+                Please note that the custom Rollup you add on our website will
                 only be stored locally on your device.
               </Text>
             </AlertDescription>
@@ -29,7 +29,7 @@ export const AddNetwork = () => {
         <Flex direction="column" gap={4}>
           <ButtonCard
             title="Fill in Network Details Manually"
-            description="Add new Minitia through fill in each configuration manually"
+            description="Add new Rollup through fill in each configuration manually"
             onClick={() => navigate({ pathname: "/custom-network/add/manual" })}
           />
           <ButtonCard

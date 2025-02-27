@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 import {
   useEvmTxHashesByCosmosTxHashes,
+  useEvmTxsDataJsonRpc,
   useTxsByAddressPaginationSequencer,
-  useTxsDataJsonRpc,
 } from "lib/services/tx";
 import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
 import type { BechAddr20, Nullish } from "lib/types";
@@ -38,7 +38,7 @@ export const useContractDetailsEvmTxs = (address: BechAddr20) => {
     data: newEvmTxsData,
     isFetching: isNewEvmTxsDataFetching,
     isError: isNewEvmTxsDataError,
-  } = useTxsDataJsonRpc(
+  } = useEvmTxsDataJsonRpc(
     newEvmTxHashes?.filter((tx) => tx !== null) as string[],
     !isCosmosTxsFetching && !isNewEvmHashesFetching
   );

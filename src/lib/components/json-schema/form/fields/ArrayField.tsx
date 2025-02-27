@@ -33,8 +33,8 @@ import set from "lodash/set";
 import { Component } from "react";
 import * as uuid from "uuid";
 
-import { isNullFormData } from "../utils";
 import { CustomIcon } from "lib/components/icon";
+import { isNullFormData } from "../utils";
 
 /** Type used to represent the keyed form data used in the state */
 type KeyedFormDataType<T> = { key: string; item: T };

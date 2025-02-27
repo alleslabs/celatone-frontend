@@ -15,7 +15,7 @@ export const zNumberInput = z.preprocess(
   })
 );
 
-const zWasmConfig = z.union([
+export const zWasmConfig = z.union([
   z.object({
     enabled: z.literal(true),
     storeCodeMaxFileSize: z.number(),
@@ -26,7 +26,7 @@ const zWasmConfig = z.union([
   }),
 ]);
 
-const zMoveConfig = z.union([
+export const zMoveConfig = z.union([
   z.object({
     enabled: z.literal(true),
     moduleMaxFileSize: z.number(),
@@ -36,7 +36,7 @@ const zMoveConfig = z.union([
   }),
 ]);
 
-const zEvmConfig = z.union([
+export const zEvmConfig = z.union([
   z.object({
     enabled: z.literal(true),
     jsonRpc: zHttpsUrl,
@@ -85,7 +85,7 @@ const zExtraConfig = z.object({
   layer: z.union([z.literal("1"), z.literal("2")]).optional(),
 });
 
-export const zGasCosts = z.object({
+export const zGasConfigCosts = z.object({
   cosmos_send: z.number().optional(),
   ibc_transfer: z.number().optional(),
 });
@@ -96,7 +96,7 @@ export const zFeeToken = z.object({
   low_gas_price: z.number().optional(),
   average_gas_price: z.number().optional(),
   high_gas_price: z.number().optional(),
-  gas_costs: zGasCosts.optional(),
+  gas_costs: zGasConfigCosts.optional(),
 });
 
 const zFeeConfig = z.object({
@@ -181,7 +181,7 @@ export const zRegistry = z.object({
   assets: zAsset.array(),
 });
 
-export const zGas = z.object({
+export const zGasConfig = z.object({
   gasAdjustment: zNumberInput,
   maxGasLimit: zNumberInput,
 });
@@ -202,12 +202,7 @@ export const zChainConfig = z
     lcd: zHttpsUrl,
     mesa: zHttpsUrl.optional(),
     wallets: z.array(
-      z.union([
-        z.literal("keplr"),
-        z.literal("initia"),
-        z.literal("compass"),
-        z.literal("station"),
-      ])
+      z.union([z.literal("keplr"), z.literal("compass"), z.literal("station")])
     ),
     features: z.object({
       wasm: zWasmConfig,
@@ -218,7 +213,7 @@ export const zChainConfig = z
       gov: zGovConfig,
       publicProject: zPublicProjectConfig,
     }),
-    gas: zGas,
+    gas: zGasConfig,
     extra: zExtraConfig,
     network_type: z.union([
       z.literal("mainnet"),

@@ -6,6 +6,7 @@ import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useNftsByAccountByCollectionSequencer } from "lib/services/nft";
+import { zHexAddr32 } from "lib/types";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 
 import { FilterItem } from "./FilterItem";
@@ -72,7 +73,7 @@ export const NftsSectionSequencer = ({
               collectionName={nfts[0].collectionName}
               onClick={() =>
                 handleOnClick({
-                  collectionAddress: collectionAddress as HexAddr32,
+                  collectionAddress: zHexAddr32.parse(collectionAddress),
                   nftsCount: nfts.length,
                 })
               }

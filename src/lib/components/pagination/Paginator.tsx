@@ -2,10 +2,9 @@ import type { ButtonProps } from "@chakra-ui/react";
 import type { FC } from "react";
 import type React from "react";
 
-import type { IconKeys } from "../icon";
-
 import { INITIAL_VALUES } from "./paginationData";
 import { PaginatorProvider } from "./PaginatorProvider";
+import type { IconKeys } from "../icon";
 
 export type PaginatorProps = {
   children?: React.ReactNode;

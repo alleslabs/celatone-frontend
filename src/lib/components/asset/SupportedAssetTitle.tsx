@@ -1,9 +1,9 @@
 import { Flex, Heading } from "@chakra-ui/react";
 
-import { TableTitle } from "../table";
 import { useMobile } from "lib/app-provider";
 import type { Option, TokenWithValue, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
+import { TableTitle } from "../table";
 
 interface SupportedAssetTitleProps {
   supportedAssets: TokenWithValue[];

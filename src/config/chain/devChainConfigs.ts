@@ -11,7 +11,7 @@ export const devChainConfigs: ChainConfig[] = [
     prettyName: "Local Initia",
     lcd: "http://localhost:1317",
     rpc: "http://localhost:26657",
-    wallets: ["initia"],
+    wallets: ["keplr"],
     features: {
       wasm: {
         enabled: false,

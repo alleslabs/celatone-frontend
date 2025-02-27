@@ -7,8 +7,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
 import { useInitia } from "lib/app-provider";
+import { CustomIcon } from "../icon";
 
 export const NoMobile = () => {
   const isInitia = useInitia();

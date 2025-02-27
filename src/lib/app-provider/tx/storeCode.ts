@@ -2,12 +2,12 @@ import type { StdFee } from "@cosmjs/stargate";
 import { gzip } from "node-gzip";
 import { useCallback } from "react";
 
-import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
 import { storeCodeTx } from "lib/app-fns/tx/storeCode";
 import type { AccessType, BechAddr, Option } from "lib/types";
 import { composeStoreCodeMsg } from "lib/utils";
+import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface StoreCodeStreamParams {
   wasmFileName: Option<string>;
@@ -21,7 +21,7 @@ export interface StoreCodeStreamParams {
 
 export const useStoreCodeTx = (isMigrate: boolean) => {
   const { address } = useCurrentChain();
-  const getSigningClient = useGetSigningClient();
+  const signAndBroadcast = useSignAndBroadcast();
 
   return useCallback(
     async ({
@@ -33,9 +33,7 @@ export const useStoreCodeTx = (isMigrate: boolean) => {
       estimatedFee,
       onTxSucceed,
     }: StoreCodeStreamParams) => {
-      const client = await getSigningClient();
-      if (!address || !client)
-        throw new Error("Please check your wallet connection.");
+      if (!address) throw new Error("No address provided (useStoreCodeTx)");
       if (!wasmFileName || !wasmCode || !estimatedFee) return null;
 
       const message = composeStoreCodeMsg({
@@ -53,14 +51,14 @@ export const useStoreCodeTx = (isMigrate: boolean) => {
         codeName,
         wasmFileName,
         fee: estimatedFee,
-        client,
         isMigrate,
+        signAndBroadcast,
         onTxSucceed: (txResult) => {
           trackTxSucceed();
           onTxSucceed(txResult);
         },
       });
     },
-    [address, getSigningClient, isMigrate]
+    [address, signAndBroadcast, isMigrate]
   );
 };

@@ -7,21 +7,16 @@ import { addrToValoper } from "lib/utils";
 import { useCurrentChain } from "./useCurrentChain";
 
 export const useExampleAddresses = () => {
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
 
   const generateExampleAddresses = () => {
-    const bytes = Array.from(Array(32).keys());
-    const user = toBech32(
-      prefix,
-      new Uint8Array(bytes.slice(0, 20))
-    ) as BechAddr20;
+    const bytes32 = Array.from(Array(32).keys());
+    const bytes20 = bytes32.slice(0, 20);
+    const user = toBech32(bech32Prefix, Uint8Array.from(bytes20)) as BechAddr20;
 
-    // reverse the bytes so the initial characters are different from the user address
     const contract = toBech32(
-      prefix,
-      new Uint8Array(bytes.reverse())
+      bech32Prefix,
+      Uint8Array.from(bytes32.reverse())
     ) as BechAddr32;
 
     const validator = addrToValoper(user);
@@ -33,5 +28,5 @@ export const useExampleAddresses = () => {
     };
   };
 
-  return useMemo(generateExampleAddresses, [prefix]);
+  return useMemo(generateExampleAddresses, [bech32Prefix]);
 };

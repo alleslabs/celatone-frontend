@@ -21,19 +21,13 @@ import type { Coin } from "@cosmjs/stargate";
 import { useState } from "react";
 import AceEditor from "react-ace";
 
-import { CopyButton } from "../copy";
-import { CustomIcon } from "../icon";
 import { AmpEvent, track } from "lib/amplitude";
-import {
-  useCelatoneApp,
-  useGas,
-  useLcdEndpoint,
-  useMobile,
-  useRpcEndpoint,
-} from "lib/app-provider";
+import { useCelatoneApp, useGas, useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import type { BechAddr32 } from "lib/types";
 import { coinsToStr, jsonPrettify } from "lib/utils";
+import { CopyButton } from "../copy";
+import { CustomIcon } from "../icon";
 
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-javascript";
@@ -63,11 +57,9 @@ const WasmCodeSnippet = ({
   const isMobile = useMobile();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const isDisabled = !contractAddress || !message.length;
-  const lcdEndpoint = useLcdEndpoint();
-  const rpcEndpoint = useRpcEndpoint();
   const {
     currentChainId,
-    chainConfig: { chain },
+    chainConfig: { chain, lcd: lcdEndpoint, rpc: rpcEndpoint },
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();
@@ -145,22 +137,6 @@ queryContract();`,
     ],
     execute: [
       {
-        name: "CLI",
-        mode: "sh",
-        snippet: `${daemonName} keys add --recover celatone\n
-export CHAIN_ID='${currentChainId}'\n
-export RPC_URL='${rpcEndpoint}'\n
-export CONTRACT_ADDRESS='${contractAddress}'\n
-export EXECUTE_MSG='${message}'\n
-${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
-  --from celatone \\
-  --chain-id $CHAIN_ID \\
-  --node $RPC_URL \\${fundsFlags}
-  --gas auto \\
-  --gas-prices ${gasPriceStr} \\
-  --gas-adjustment 1.5`,
-      },
-      {
         name: "CosmJS",
         mode: "javascript",
         snippet: `const { GasPrice } = require("@cosmjs/stargate");
@@ -205,6 +181,23 @@ const execute = async () => {
 
 execute();
 `,
+      },
+      {
+        name: "CLI",
+        mode: "sh",
+        snippet: `export WALLET_NAME='<your-wallet-name>'\n
+export CHAIN_ID='${currentChainId}'\n
+export RPC_URL='${rpcEndpoint}'\n
+export CONTRACT_ADDRESS='${contractAddress}'\n
+export EXECUTE_MSG='${message}'\n
+${daemonName} keys add --recover $WALLET_NAME\n
+${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
+  --from $WALLET_NAME \\
+  --chain-id $CHAIN_ID \\
+  --node $RPC_URL \\${fundsFlags}
+  --gas auto \\
+  --gas-prices ${gasPriceStr} \\
+  --gas-adjustment 1.5`,
       },
     ],
   };

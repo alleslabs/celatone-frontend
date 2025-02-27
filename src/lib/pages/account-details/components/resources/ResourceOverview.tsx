@@ -1,11 +1,11 @@
 import { Box } from "@chakra-ui/react";
 
-import AccountSectionWrapper from "../AccountSectionWrapper";
 import { useMobile } from "lib/app-provider";
 import { MobileTitle } from "lib/components/table";
 import type { BechAddr, Option, ResourceGroup } from "lib/types";
 
 import { ResourceOverviewBody } from "./ResourceOverviewBody";
+import AccountSectionWrapper from "../AccountSectionWrapper";
 
 interface ResourceOverviewProps {
   address: BechAddr;

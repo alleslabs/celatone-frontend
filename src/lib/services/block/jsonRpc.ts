@@ -1,6 +1,6 @@
-import { requestBatchJsonRpc } from "../evm/jsonRpc";
-import { zBlockDataJsonRpc } from "../types";
 import { numberToHex, parseWithError } from "lib/utils";
+import { requestBatchJsonRpc } from "../evm/json-rpc";
+import { zBlockDataJsonRpc } from "../types";
 
 export const getBlockDataJsonRpc = (endpoint: string, height: number) =>
   requestBatchJsonRpc(endpoint, [

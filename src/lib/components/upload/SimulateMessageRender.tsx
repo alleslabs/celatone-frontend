@@ -1,8 +1,8 @@
 import type { FlexProps } from "@chakra-ui/react";
 import { Flex, Spinner, Text } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
 import type { Option } from "lib/types";
+import { CustomIcon } from "../icon";
 
 interface SimulateMessageRenderProps extends FlexProps {
   value: Option<string>;

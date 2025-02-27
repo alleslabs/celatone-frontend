@@ -2,7 +2,6 @@ import { Flex, IconButton, SimpleGrid, Text } from "@chakra-ui/react";
 import type Big from "big.js";
 import Link from "next/link";
 
-import { PoolHeader } from "../PoolHeader";
 import { trackWebsite } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
@@ -13,6 +12,7 @@ import type { Pool, Token, U, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
 
 import { AllocationBadge } from "./AllocationBadge";
+import { PoolHeader } from "../PoolHeader";
 
 const hoverBgColor = "gray.700";
 

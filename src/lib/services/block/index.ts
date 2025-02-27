@@ -4,9 +4,9 @@ import type { UseQueryOptions } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useCurrentChain,
   useEvmConfig,
-  useLcdEndpoint,
 } from "lib/app-provider";
 import type { BlocksResponse } from "lib/services/types";
 import type { BlockData, ConsensusAddr, Option, Transaction } from "lib/types";
@@ -52,29 +52,32 @@ export const useBlockData = (height: number, enabled = true) => {
 };
 
 export const useBlockDataLcd = (height: number, enabled = true) => {
-  const endpoint = useLcdEndpoint();
   const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
+  const { bech32Prefix } = useCurrentChain();
 
   return useQuery<{
     block: BlockData;
     proposerConsensusAddress: ConsensusAddr;
     transactions: Transaction[];
   }>(
-    [CELATONE_QUERY_KEYS.BLOCK_DATA_LCD, endpoint, height],
+    [CELATONE_QUERY_KEYS.BLOCK_DATA_LCD, lcdEndpoint, height],
     async () => {
       const { rawProposerConsensusAddress, transactions, ...rest } =
-        await getBlockDataLcd(endpoint, height);
+        await getBlockDataLcd(lcdEndpoint, height);
       return {
         ...rest,
         proposerConsensusAddress: convertRawConsensusAddrToConsensusAddr(
           rawProposerConsensusAddress,
-          prefix
+          bech32Prefix
         ),
         transactions: transactions.map<Transaction>((tx) => ({
           ...tx,
-          sender: convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix),
+          sender: convertAccountPubkeyToAccountAddress(
+            tx.signerPubkey,
+            bech32Prefix
+          ),
         })),
       };
     },
@@ -87,11 +90,13 @@ export const useBlockDataLcd = (height: number, enabled = true) => {
 };
 
 export const useLatestBlockLcd = () => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_LCD, endpoint],
-    async () => getLatestBlockLcd(endpoint),
+    [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_LCD, lcdEndpoint],
+    async () => getLatestBlockLcd(lcdEndpoint),
     {
       retry: false,
       refetchOnWindowFocus: false,
@@ -101,11 +106,13 @@ export const useLatestBlockLcd = () => {
 };
 
 export const useBlocksSequencer = (limit = 10) => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   const { data, ...rest } = useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, endpoint, limit],
-    async ({ pageParam }) => getBlocksSequencer(endpoint, pageParam, limit),
+    [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, lcdEndpoint, limit],
+    async ({ pageParam }) => getBlocksSequencer(lcdEndpoint, pageParam, limit),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,
@@ -119,11 +126,13 @@ export const useBlocksSequencer = (limit = 10) => {
 };
 
 export const useBlockTimeAverageSequencer = () => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BLOCK_TIME_AVERAGE_SEQUENCER, endpoint],
-    async () => getBlockTimeAverageSequencer(endpoint),
+    [CELATONE_QUERY_KEYS.BLOCK_TIME_AVERAGE_SEQUENCER, lcdEndpoint],
+    async () => getBlockTimeAverageSequencer(lcdEndpoint),
     {
       retry: false,
       refetchOnWindowFocus: false,
@@ -132,11 +141,13 @@ export const useBlockTimeAverageSequencer = () => {
 };
 
 export const useBlockDataSequencer = (height: number) => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useQuery<BlockData>(
-    [CELATONE_QUERY_KEYS.BLOCK_DATA_SEQUENCER, endpoint, height],
-    async () => getBlockDataSequencer(endpoint, height),
+    [CELATONE_QUERY_KEYS.BLOCK_DATA_SEQUENCER, lcdEndpoint, height],
+    async () => getBlockDataSequencer(lcdEndpoint, height),
     {
       retry: false,
       refetchOnWindowFocus: false,

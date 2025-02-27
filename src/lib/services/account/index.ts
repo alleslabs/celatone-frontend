@@ -2,16 +2,11 @@ import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import type {
-  AccountBech32LcdResponse,
-  AccountData,
-  AccountTableCounts,
-} from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
+  useCelatoneApp,
   useGovConfig,
-  useLcdEndpoint,
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
@@ -23,13 +18,20 @@ import {
   getAccountDataLcd,
   getAccountTypeLcd,
 } from "./lcd";
+import type {
+  AccountBech32LcdResponse,
+  AccountData,
+  AccountTableCounts,
+} from "../types";
 
 export const useAccountData = (
   address: BechAddr
 ): UseQueryResult<AccountData> => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
   const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
 
   return useQuery(
@@ -72,7 +74,9 @@ export const useAccountType = (
 ): UseQueryResult<AccountType> => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
     if (!address)

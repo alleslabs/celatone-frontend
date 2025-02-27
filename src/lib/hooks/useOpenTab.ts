@@ -3,7 +3,6 @@ import { useCallback } from "react";
 import {
   useBaseApiRoute,
   useCelatoneApp,
-  useLcdEndpoint,
   useTierConfig,
 } from "lib/app-provider";
 import type { Option } from "lib/types";
@@ -25,7 +24,9 @@ export const useOpenTxTab = (type: "lcd" | "tx-page") => {
 export const useOpenAssetTab = () => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
-  const lcdEndpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
 
   return useCallback(
     (walletAddr: string) => {

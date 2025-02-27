@@ -2,29 +2,34 @@ import { Flex, useDisclosure } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { SuccessAddCustomMinitiaModal } from "../components";
-import { DEFAULT_DENOM, DEFAULT_GAS, DEFAULT_SLIP44 } from "../constant";
 import {
-  VmType,
-  zAddNetworkManualChainConfigJson,
-  zAddNetworkManualForm,
-  zGasFeeDetailsForm,
-  zNetworkDetailsForm,
-  zWalletRegistryForm,
-} from "../types";
-import type { AddNetworkManualForm } from "../types";
-import { useAllowCustomNetworks, useChainConfigs } from "lib/app-provider";
+  useAllowCustomNetworks,
+  useChainConfigs,
+  useInternalNavigate,
+} from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { CustomIcon } from "lib/components/icon";
 import { FooterCta } from "lib/components/layouts";
 import { CelatoneSeo } from "lib/components/Seo";
+import { useStepper } from "lib/hooks";
 import { useLocalChainConfigStore } from "lib/providers/store";
 
 import { AddNetworkForm, AddNetworkStepper } from "./components";
-import { useNetworkStepper } from "./hooks/useNetworkStepper";
+import { SuccessAddCustomMinitiaModal } from "../components";
+import { DEFAULT_DENOM, DEFAULT_GAS, DEFAULT_SLIP44 } from "../constant";
+import type { AddNetworkManualForm } from "../types";
+import {
+  VmType,
+  zAddNetworkManualChainConfigJson,
+  zAddNetworkManualForm,
+  zGasConfigFeeDetailsForm,
+  zNetworkDetailsForm,
+  zWalletRegistryForm,
+} from "../types";
 
 export const AddNetworkManual = () => {
   useAllowCustomNetworks({ shouldRedirect: true });
+  const navigate = useInternalNavigate();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { addLocalChainConfig } = useLocalChainConfigStore();
   const { isChainIdExist } = useChainConfigs();
@@ -95,7 +100,9 @@ export const AddNetworkManual = () => {
   };
 
   const { currentStepIndex, handleNext, handlePrevious, hasNext, hasPrevious } =
-    useNetworkStepper(3, handleSubmit(handleSubmitForm));
+    useStepper(3, handleSubmit(handleSubmitForm), () =>
+      navigate({ pathname: "/custom-network/add" })
+    );
 
   const isFormDisabled = () => {
     if (currentStepIndex === 0)
@@ -112,7 +119,7 @@ export const AddNetworkManual = () => {
       }).success;
 
     if (currentStepIndex === 1)
-      return !zGasFeeDetailsForm.safeParse({
+      return !zGasConfigFeeDetailsForm.safeParse({
         gasAdjustment,
         maxGasLimit,
         denom,
@@ -137,14 +144,14 @@ export const AddNetworkManual = () => {
   };
 
   const handleActionLabel = () => {
-    if (currentStepIndex === 2) return "Save new Minitia";
+    if (currentStepIndex === 2) return "Save new Rollup";
 
     return "Next";
   };
 
   return (
     <>
-      <CelatoneSeo pageName="Add Minitias" />
+      <CelatoneSeo pageName="Add Rollups" />
       <Flex position="sticky" top={0} left={0} w="full" zIndex={2}>
         <AddNetworkStepper currentStepIndex={currentStepIndex} />
       </Flex>
@@ -174,7 +181,7 @@ export const AddNetworkManual = () => {
           ) : undefined,
         }}
         actionLabel={handleActionLabel()}
-        helperText="The added custom Minitia on Initiascan will be stored locally on your device."
+        helperText="The added custom Rollup on Initiascan will be stored locally on your device."
         sx={{
           backgroundColor: "background.main",
           borderColor: "gray.700",

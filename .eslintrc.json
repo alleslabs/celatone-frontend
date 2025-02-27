@@ -3,11 +3,24 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
     "plugin:react-hooks/recommended",
     "plugin:react/jsx-runtime",
     "plugin:@next/next/recommended",
     "plugin:storybook/recommended"
   ],
+  "settings": {
+    "import/resolver": {
+      // You will also need to install and configure the TypeScript resolver
+      // See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
+      "typescript": true,
+      "node": true
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    }
+  },
   "rules": {
     // eslint basic
     "no-undef": "off",
@@ -20,12 +33,20 @@
       "error",
       { "props": true, "ignorePropertyModificationsFor": ["acc"] }
     ],
-    // "no-use-before-define": "error",
+    "no-use-before-define": "error",
     "object-shorthand": "error",
     "prefer-const": "error",
     "eqeqeq": "error",
     "semi": "error",
 
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "disallowTypeAnnotations": true,
+        "fixStyle": "separate-type-imports",
+        "prefer": "type-imports"
+      }
+    ],
     "@typescript-eslint/no-empty-object-type": "off",
     "sonarjs/no-duplicate-string": ["error", { "threshold": 3 }],
     "sonarjs/cognitive-complexity": ["error", 27],
@@ -35,14 +56,47 @@
         "allowExpressions": true
       }
     ],
-    "sort-imports": [
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+    "import/order": [
       "error",
-      { "ignoreCase": true, "ignoreDeclarationSort": true }
+      {
+        "groups": [
+          "external",
+          "builtin",
+          "internal",
+          "sibling",
+          "parent",
+          "index"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "components",
+            "group": "internal"
+          },
+          {
+            "pattern": "common",
+            "group": "internal"
+          },
+          {
+            "pattern": "routes/ **",
+            "group": "internal"
+          },
+          {
+            "pattern": "assets/**",
+            "group": "internal",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["internal"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
     ],
-
-    // temp remove
-    "@typescript-eslint/no-unused-vars": "off",
-    "no-use-before-define": "off"
+    "import/no-named-as-default": "off",
+    "import/no-named-as-default-member": "off",
+    "import/namespace": "off"
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

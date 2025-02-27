@@ -1,10 +1,9 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 import { isUndefined } from "lodash";
 
-import { TableRow } from "../tableComponents";
 import { useInternalNavigate } from "lib/app-provider";
+import { EvmToCell } from "lib/components/evm-to-cell";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
-import { EvmToCell } from "lib/components/EvmToCell";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
@@ -20,6 +19,7 @@ import {
   getEvmToAddress,
   getTokenLabel,
 } from "lib/utils";
+import { TableRow } from "../tableComponents";
 
 interface EvmTransactionsTableRowProps {
   templateColumns: string;
@@ -72,7 +72,10 @@ export const EvmTransactionsTableRow = ({
         )}
       </TableRow>
       <TableRow>
-        <EvmMethodChip txInput={evmTransaction.tx.input} />
+        <EvmMethodChip
+          txInput={evmTransaction.tx.input}
+          txTo={evmTransaction.tx.to}
+        />
       </TableRow>
       <TableRow>
         <ExplorerLink
@@ -85,7 +88,7 @@ export const EvmTransactionsTableRow = ({
         <CustomIcon name="arrow-right" boxSize={5} color="gray.600" />
       </TableRow>
       <TableRow>
-        <EvmToCell toAddress={toAddress} />
+        <EvmToCell toAddress={toAddress} isCompact />
       </TableRow>
       <TableRow
         flexDirection="column"

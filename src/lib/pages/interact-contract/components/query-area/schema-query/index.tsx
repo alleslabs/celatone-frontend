@@ -40,7 +40,9 @@ export const SchemaQuery = ({
   const schema = getQuerySchema(verifiedSchema ?? localSchema);
   const filteredMsgs = useMemo(
     () =>
-      schema?.filter((querySchema) => querySchema[0].title?.includes(keyword)),
+      schema?.filter((querySchema) =>
+        querySchema[0].title?.toLowerCase().includes(keyword.toLowerCase())
+      ),
     [schema, keyword]
   );
 
@@ -60,7 +62,7 @@ export const SchemaQuery = ({
         // TODO: This is a workaround, refactor to a proper solution later
         const timeoutId = setTimeout(() => el?.scrollIntoView(), 200);
         return () => clearInterval(timeoutId);
-      } catch (_) {
+      } catch {
         //
       }
     }

@@ -1,4 +1,3 @@
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import type { MoveVerifyInfoResponse } from "lib/services/types";
@@ -8,6 +7,7 @@ import { mergeModulePath } from "lib/utils";
 import { ModulesTableHeader } from "./ModulesTableHeader";
 import { ModulesTableMobileCard } from "./ModulesTableMobileCard";
 import { ModulesTableRow } from "./ModulesTableRow";
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface ModulesTableProps {
   modules: Option<ModuleInfo[]>;

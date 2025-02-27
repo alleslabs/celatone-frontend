@@ -1,20 +1,7 @@
-export const SUPPORTED_CHAIN_IDS: string[] = (() => {
-  const chainIds = process.env.NEXT_PUBLIC_SUPPORTED_CHAIN_IDS?.split(",");
-  if (!chainIds)
-    throw new Error("NEXT_PUBLIC_SUPPORTED_CHAIN_IDS is undefined");
+export const SUPPORTED_NETWORK_TYPES =
+  process.env.NEXT_PUBLIC_SUPPORTED_NETWORK_TYPES?.split(",") ?? [];
 
-  if (chainIds[0].trim().length === 0)
-    throw new Error(
-      "NEXT_PUBLIC_SUPPORTED_CHAIN_IDS is not valid. Please include at least one chain identifier. For instance, NEXT_PUBLIC_SUPPORTED_CHAIN_IDS=osmo-test-5"
-    );
-
-  return chainIds;
-})();
-
-export const FALLBACK_CHAIN = process.env.NEXT_PUBLIC_FALLBACK_CHAIN ?? "";
-
-// Remark: We've already checked that the first element is not empty on the above code
-export const FALLBACK_SUPPORTED_CHAIN_ID = SUPPORTED_CHAIN_IDS[0];
+export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
 
 export const DUMMY_MNEMONIC = (() => {
   const mnemonic = process.env.NEXT_PUBLIC_DUMMY_MNEMONIC;

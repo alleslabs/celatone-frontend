@@ -3,15 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 
 import {
   CELATONE_QUERY_KEYS,
-  useLcdEndpoint,
+  useCelatoneApp,
   useMoveConfig,
 } from "lib/app-provider";
-import type {
-  Addr,
-  HexAddr,
-  ResourceGroup,
-  ResourceGroupByAccount,
-} from "lib/types";
+import type { Addr, ResourceGroup, ResourceGroupByAccount } from "lib/types";
+import { zHexAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { getAccountResourcesLcd } from "./lcd";
@@ -25,11 +21,13 @@ export interface ResourcesByAddressReturn {
 export const useResourcesByAddressLcd = (
   address: Addr
 ): UseQueryResult<ResourcesByAddressReturn> => {
-  const endpoint = useLcdEndpoint();
+  const {
+    chainConfig: { lcd: lcdEndpoint },
+  } = useCelatoneApp();
   const { enabled } = useMoveConfig({ shouldRedirect: false });
 
   const queryFn: QueryFunction<ResourcesByAddressReturn> = () =>
-    getAccountResourcesLcd(endpoint, address).then((resources) => {
+    getAccountResourcesLcd(lcdEndpoint, address).then((resources) => {
       const groupedByOwner = resources.items.reduce<
         Record<string, ResourceGroupByAccount>
       >((acc, resource) => {
@@ -42,7 +40,7 @@ export const useResourcesByAddressLcd = (
         if (groupResourcesIndex === -1)
           ownerResources.push({
             group: groupName,
-            account: ownerName as HexAddr,
+            account: zHexAddr.parse(ownerName),
             displayName: `${truncate(ownerName)}::${groupName}`,
             items: [resource],
           });
@@ -51,7 +49,7 @@ export const useResourcesByAddressLcd = (
         return {
           ...acc,
           [ownerName]: {
-            owner: ownerName as HexAddr,
+            owner: zHexAddr.parse(ownerName),
             resources: ownerResources,
           },
         };
@@ -71,7 +69,7 @@ export const useResourcesByAddressLcd = (
           ...acc,
           [resourceKey]: {
             displayName: `${truncate(accountName)}::${groupName}`,
-            account: accountName as HexAddr,
+            account: zHexAddr.parse(accountName),
             group: groupName,
             items,
           },
@@ -85,7 +83,7 @@ export const useResourcesByAddressLcd = (
       };
     });
   return useQuery(
-    [CELATONE_QUERY_KEYS.RESOURCES_BY_ADDRESS, endpoint, address],
+    [CELATONE_QUERY_KEYS.RESOURCES_BY_ADDRESS, lcdEndpoint, address],
     queryFn,
     { enabled, refetchOnWindowFocus: false, retry: 1 }
   );

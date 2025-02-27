@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { IconButtonProps as ChakraIconButtonProps } from "@chakra-ui/react";
 import { IconButton } from "@chakra-ui/react";

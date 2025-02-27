@@ -3,14 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 import type { Big } from "big.js";
 
-import { useAssetInfos } from "../assetService";
-import { useMovePoolInfos } from "../move/poolService";
-import type { BalanceInfos } from "../types";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
-  useLcdEndpoint,
 } from "lib/app-provider";
 import { big } from "lib/types";
 import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
@@ -23,17 +19,19 @@ import {
 
 import { getBalances } from "./api";
 import { getBalancesLcd } from "./lcd";
+import { useAssetInfos } from "../assetService";
+import { useMovePoolInfos } from "../move/poolService";
+import type { BalanceInfos } from "../types";
 
 export const useBalances = (
   address: Option<BechAddr>,
   enabled = true
 ): UseQueryResult<Coin[]> => {
   const {
-    chainConfig: { chain },
+    chainConfig: { chain, lcd: lcdEndpoint },
   } = useCelatoneApp();
   const isSei = chain === "sei";
   const apiEndpoint = useBaseApiRoute("accounts");
-  const lcdEndpoint = useLcdEndpoint();
   const endpoint = isSei ? apiEndpoint : lcdEndpoint;
 
   return useQuery(

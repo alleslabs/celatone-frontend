@@ -19,7 +19,7 @@ export const isUrl = (string: string): boolean => {
   try {
     z.string().url().parse(string);
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 };
@@ -47,6 +47,16 @@ const isHexAddress = (address: string, length: number): boolean => {
   return isHex(strip);
 };
 
+export const isHexFixedBytes = (address: string, length: number): boolean => {
+  const regex = new RegExp(`^0x[a-fA-F0-9]{${length}}$`);
+  if (!regex.test(address)) {
+    return false;
+  }
+
+  const strip = padHexAddress(address as HexAddr, length).slice(2);
+  return isHex(strip);
+};
+
 export const isMovePrefixHexModuleAddress = (address: string) => {
   const regex = new RegExp(`^move/[a-fA-F0-9]{${HEX_MODULE_ADDRESS_LENGTH}}$`);
   return regex.test(address);
@@ -57,5 +67,8 @@ export const isHexWalletAddress = (address: string) =>
 
 export const isHexModuleAddress = (address: string) =>
   isHexAddress(address, HEX_MODULE_ADDRESS_LENGTH);
+
+export const isHex20Bytes = (address: string) =>
+  isHexFixedBytes(address, HEX_WALLET_ADDRESS_LENGTH);
 
 export const is0x = (address: string): boolean => address === "0x";

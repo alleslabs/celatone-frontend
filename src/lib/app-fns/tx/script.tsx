@@ -1,9 +1,9 @@
-import type { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
 import { pipe } from "@rx-stream/pipe";
 import type { Observable } from "rxjs";
 
+import type { SignAndBroadcast } from "lib/app-provider/hooks";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -15,28 +15,29 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface DeployScriptTxParams {
   address: BechAddr20;
-  client: SigningCosmWasmClient;
-  onTxSucceed?: () => void;
-  onTxFailed?: () => void;
   fee: StdFee;
   messages: EncodeObject[];
+  signAndBroadcast: SignAndBroadcast;
+  onTxSucceed?: () => void;
+  onTxFailed?: () => void;
 }
 
 export const deployScriptTx = ({
   address,
-  client,
-  onTxSucceed,
-  onTxFailed,
   fee,
   messages,
+  signAndBroadcast,
+  onTxSucceed,
+  onTxFailed,
 }: DeployScriptTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx({
-      postFn: () => client.signAndBroadcast(address, messages, fee),
+      postFn: () => signAndBroadcast({ address, messages, fee }),
     }),
     ({ value: txInfo }) => {
       const txFee = findAttr(txInfo.events, "tx", "fee");
+
       onTxSucceed?.();
       return {
         value: null,

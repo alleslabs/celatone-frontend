@@ -7,7 +7,7 @@ export const UpdateSupportedFeatures = () => {
     <Flex direction="column" gap={6}>
       <CustomNetworkSubheader
         title="Feature Lists"
-        subtitle="Choose supported features for your custom Minitia"
+        subtitle="Choose supported features for your custom Rollup"
       />
       <Flex bg="teal">form goes here</Flex>
     </Flex>

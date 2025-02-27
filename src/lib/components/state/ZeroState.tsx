@@ -1,6 +1,5 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 
-import { CustomIcon } from "../icon";
 import { useInternalNavigate } from "lib/app-provider";
 import { SaveNewContractModal } from "lib/components/modal/contract";
 import { ADMIN_SPECIAL_SLUG, INSTANTIATED_LIST_NAME } from "lib/data";
@@ -8,6 +7,7 @@ import type { LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
 
 import { StateImage } from "./StateImage";
+import { CustomIcon } from "../icon";
 
 interface ZeroStateProps {
   list: LVPair;

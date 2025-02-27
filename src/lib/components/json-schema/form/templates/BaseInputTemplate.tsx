@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
@@ -27,9 +28,8 @@ import {
 import { useCallback } from "react";
 import type { ChangeEvent, FocusEvent } from "react";
 
-import { isSchemaTypeString } from "../utils";
-
 import { FieldTypeTag } from "./FieldTypeTag";
+import { isSchemaTypeString } from "../utils";
 
 // const PLACEHOLDERS = {
 //   addr: "cosmos1...",

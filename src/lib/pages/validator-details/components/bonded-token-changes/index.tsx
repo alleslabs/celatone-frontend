@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { DelegationRelatedTxsTable } from "../tables";
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -14,6 +13,7 @@ import type {
 } from "lib/types";
 
 import { VotingPowerChart } from "./VotingPowerChart";
+import { DelegationRelatedTxsTable } from "../tables";
 
 interface BondedTokenChangesProps {
   validatorAddress: ValidatorAddr;

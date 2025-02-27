@@ -1,12 +1,12 @@
 import { Flex } from "@chakra-ui/react";
 
-import { PoolLogoLink } from "../components";
-import { getPoolDenom } from "../utils";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { CustomIcon } from "lib/components/icon";
 import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
 import type { MsgJoinSwapExternAmountInDetails } from "lib/utils/tx/types";
+import { PoolLogoLink } from "../components";
+import { getPoolDenom } from "../utils";
 
 interface MsgJoinSwapExternAmountInActionProps {
   msg: MsgJoinSwapExternAmountInDetails;

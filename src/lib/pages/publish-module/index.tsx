@@ -8,16 +8,17 @@ import { PublishCompleted } from "./completed";
 import type { Module } from "./formConstants";
 import { PublishModule } from "./publish";
 
+export interface PublishCompleteState extends PublishTxInternalResult {
+  upgradePolicy: UpgradePolicy;
+  modules: Module[];
+}
+
 const DEFAULT_STATE: PublishCompleteState = {
   txHash: "",
   txFee: undefined,
   upgradePolicy: UpgradePolicy.UNSPECIFIED,
   modules: [],
 };
-export interface PublishCompleteState extends PublishTxInternalResult {
-  upgradePolicy: UpgradePolicy;
-  modules: Module[];
-}
 
 export const PublishIndex = () => {
   const [publishTxInfo, setPublishTxInfo] =

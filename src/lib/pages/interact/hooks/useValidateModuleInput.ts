@@ -15,9 +15,7 @@ import {
 
 export const useValidateModuleInput = () => {
   const { validateUserAddress, validateContractAddress } = useValidateAddress();
-  const {
-    chain: { bech32_prefix: prefix },
-  } = useCurrentChain();
+  const { bech32Prefix } = useCurrentChain();
 
   const { user } = useExampleAddresses();
   const truncateExampleAddr = truncate(user);
@@ -31,7 +29,7 @@ export const useValidateModuleInput = () => {
       // Allow only module path for now
       if (inputArr.length > 3) return errText;
       const [address, module, functionName] = inputArr;
-      const invalidAddress = address.startsWith(prefix)
+      const invalidAddress = address.startsWith(bech32Prefix)
         ? !!validateUserAddress(address) && !!validateContractAddress(address)
         : !isHexWalletAddress(address) && !isHexModuleAddress(address);
 
@@ -40,6 +38,6 @@ export const useValidateModuleInput = () => {
 
       return null;
     },
-    [errText, prefix, validateContractAddress, validateUserAddress]
+    [errText, bech32Prefix, validateContractAddress, validateUserAddress]
   );
 };

@@ -1,19 +1,18 @@
 import axios from "axios";
 
-import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
-import type { Activity, CollectionCreatorResponse } from "../types";
-import {
-  zCollectionByCollectionAddressResponseSequencer,
-  zCollectionsByAccountAddressResponseSequencer,
-} from "../types";
 import type { HexAddr, HexAddr32, Option } from "lib/types";
 import {
   bech32AddressToHex,
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
-
 import { getCollectionByCollectionAddressLcd } from "./lcd";
+import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
+import type { Activity, CollectionCreatorResponse } from "../types";
+import {
+  zCollectionByCollectionAddressResponseSequencer,
+  zCollectionsByAccountAddressResponseSequencer,
+} from "../types";
 
 export const getNftCollectionByCollectionAddressSequencer = async (
   endpoint: string,

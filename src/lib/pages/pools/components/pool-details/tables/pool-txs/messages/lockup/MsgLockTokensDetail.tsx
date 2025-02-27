@@ -1,8 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { ErrorFetchingDetail, PoolAssetCard } from "../components";
-import { PoolInfoText } from "../components/PoolInfoText";
-import { getPoolDenom } from "../utils";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
@@ -10,6 +7,9 @@ import { useTxData } from "lib/services/tx";
 import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue, extractMsgType } from "lib/utils";
 import type { MsgLockTokensDetails } from "lib/utils/tx/types";
+import { ErrorFetchingDetail, PoolAssetCard } from "../components";
+import { PoolInfoText } from "../components/PoolInfoText";
+import { getPoolDenom } from "../utils";
 
 interface MsgLockTokensDetailProps {
   txHash: string;

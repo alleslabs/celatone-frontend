@@ -2,11 +2,10 @@
 import type { WalletClient } from "@cosmos-kit/core";
 
 import { useCurrentChain } from "./useCurrentChain";
-import { useCallback } from "react";
 import { useWalletClient } from "@cosmos-kit/react";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { useRpcEndpoint } from "./useRpcEndpoint";
 import { getCustomedSigningCosmwasm } from "lib/providers/cosmos-kit/options";
+import { useCelatoneApp } from "../contexts";
 
 type MergedWalletClient =
   | WalletClient
@@ -38,11 +37,10 @@ export const isLedger = async <T extends MergedWalletClient>(
 
 export const useGetSigningClient = () => {
   const { client: walletClient } = useWalletClient();
+  const { chainId, walletProvider } = useCurrentChain();
   const {
-    chain: { chain_id: chainId },
-    getSigningCosmWasmClient,
-  } = useCurrentChain();
-  const rpcEndpoint = useRpcEndpoint();
+    chainConfig: { rpc: rpcEndpoint },
+  } = useCelatoneApp();
 
   return async () => {
     if (walletClient && (await isLedger(walletClient, chainId))) {
@@ -50,7 +48,8 @@ export const useGetSigningClient = () => {
         walletClient.getOfflineSignerAmino?.(chainId) ??
         (await walletClient.getOfflineSigner?.(chainId, "amino"));
 
-      if (!signer || !("signAmino" in signer)) return undefined;
+      if (!signer || !("signAmino" in signer))
+        throw new Error("Unsupport signAmino type for getSigningClient");
 
       return SigningCosmWasmClient.connectWithSigner(
         rpcEndpoint,
@@ -58,6 +57,11 @@ export const useGetSigningClient = () => {
         getCustomedSigningCosmwasm()
       );
     }
-    return await getSigningCosmWasmClient();
+
+    if (walletProvider.type === "cosmos-kit") {
+      return walletProvider.context.getSigningCosmWasmClient();
+    }
+
+    throw new Error("Unsupported wallet provider type for getSigningClient");
   };
 };

@@ -2,11 +2,11 @@ import type { StdFee } from "@cosmjs/stargate";
 import { MsgMigrateContract } from "@initia/initia.js";
 import { useCallback } from "react";
 
-import { useCurrentChain, useGetSigningClient } from "../hooks";
 import { trackTxSucceed } from "lib/amplitude";
 import { migrateContractTx } from "lib/app-fns/tx/migrate";
 import type { BechAddr32, Option } from "lib/types";
 import { libEncode, toEncodeObject } from "lib/utils";
+import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface MigrateStreamParams {
   contractAddress: BechAddr32;
@@ -17,9 +17,9 @@ export interface MigrateStreamParams {
   onTxFailed?: () => void;
 }
 
-export const useMigrateTx = () => {
+export const useMigrateContractTx = () => {
   const { address } = useCurrentChain();
-  const getSigningClient = useGetSigningClient();
+  const signAndBroadcast = useSignAndBroadcast();
 
   return useCallback(
     async ({
@@ -30,9 +30,8 @@ export const useMigrateTx = () => {
       onTxSucceed,
       onTxFailed,
     }: MigrateStreamParams) => {
-      const client = await getSigningClient();
-      if (!address || !client)
-        throw new Error("Please check your wallet connection.");
+      if (!address)
+        throw new Error("No address provided (useMigrateContractTx)");
       if (!estimatedFee) return null;
 
       const messages = toEncodeObject([
@@ -45,10 +44,10 @@ export const useMigrateTx = () => {
       ]);
 
       return migrateContractTx({
-        sender: address,
+        address,
         messages,
         fee: estimatedFee,
-        client,
+        signAndBroadcast,
         onTxSucceed: (txHash) => {
           trackTxSucceed();
           onTxSucceed?.(txHash);
@@ -56,6 +55,6 @@ export const useMigrateTx = () => {
         onTxFailed,
       });
     },
-    [address, getSigningClient]
+    [address, signAndBroadcast]
   );
 };

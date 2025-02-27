@@ -1,11 +1,11 @@
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import type { MouseEventHandler } from "react";
 
-import { EmptyState } from "../state";
-import { TableTitle } from "../table";
 import { trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+import { EmptyState } from "../state";
+import { TableTitle } from "../table";
 
 interface DelegationInfoProps {
   totalBondedCard: JSX.Element;
