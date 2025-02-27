@@ -76,7 +76,7 @@ const provider = new ethers.JsonRpcProvider("${evm.jsonRpc}");
 const iface = new Interface([${JSON.stringify(abiSection)}]);
 
 const main = async () => {
-  const encodedData = iface.encodeFunctionData(${functionName}${inputsString});
+  const encodedData = iface.encodeFunctionData(${functionName}, ${inputsString});
 
   const rawResult = await provider.call({
     to: "${contractAddress}",
@@ -102,7 +102,7 @@ const wallet = new ethers.Wallet(privateKey, provider);
 
 const ABI = [${JSON.stringify(abiSection)}];
 const iface = new Interface(ABI);
-const encodedData = iface.encodeFunctionData(${functionName}${inputsString});
+const encodedData = iface.encodeFunctionData(${functionName}, ${inputsString});
 
 const main = async () => {
   const tx = await wallet.sendTransaction({

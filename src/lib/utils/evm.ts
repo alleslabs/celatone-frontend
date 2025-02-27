@@ -140,14 +140,14 @@ export const decodeEvmFunctionResult = (
 export const formatEvmFunctionInputsArgs = (
   inputs: JsonDataType[] | undefined
 ) => {
-  if (!inputs) return "";
+  if (!inputs) return "[]";
 
   const deepFormat = (v: JsonDataType): JsonDataType => {
     if (Array.isArray(v)) return `[${v.map(deepFormat).join(", ")}]`;
     if (typeof v !== "boolean") return `"${v}"`;
     return v;
   };
-  return `, [${inputs.map(deepFormat).join(", ")}]`;
+  return `[${inputs.map(deepFormat).join(", ")}]`;
 };
 
 export const findAndDecodeEvmConstructorArgs = (
