@@ -463,6 +463,19 @@ export const zTxJsonRpc = z
     ...val,
   }));
 
+const zTxReceiptJsonRpcLog = z.object({
+  address: zHexAddr20,
+  topics: z.string().array(),
+  data: z.string(),
+  blockNumber: zHexBig,
+  transactionHash: z.string(),
+  transactionIndex: zHexBig,
+  blockHash: z.string(),
+  logIndex: zHexBig,
+  removed: z.boolean(),
+});
+export type TxReceiptJsonRpcLog = z.infer<typeof zTxReceiptJsonRpcLog>;
+
 export const zTxReceiptJsonRpc = z
   .object({
     blockHash: z.string(),
@@ -472,7 +485,7 @@ export const zTxReceiptJsonRpc = z
     effectiveGasPrice: zHexBig,
     from: zHexAddr20,
     gasUsed: zHexBig,
-    logs: z.object({}).passthrough().array(),
+    logs: z.array(zTxReceiptJsonRpcLog),
     logsBloom: zHex,
     status: zHexBool,
     to: zHexAddr20.nullable(),

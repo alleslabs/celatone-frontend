@@ -1,9 +1,12 @@
-import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
+import { Alert, AlertDescription, Flex, Text } from "@chakra-ui/react";
 
+import plur from "plur";
+import { DividerWithArrow } from "lib/components/DividerWithArrow";
 import { CustomIcon } from "lib/components/icon";
 import type { TxData, TxDataJsonRpc } from "lib/services/types";
 import type { Option } from "lib/types";
 
+import { EvmEventBox } from "./EvmEventBox";
 import { EvmInputData } from "./EvmInputData";
 import { EvmTxMsgDetailsBody } from "./EvmTxMsgDetailsBody";
 
@@ -35,5 +38,22 @@ export const EvmTxMsgDetails = ({
     )}
     <EvmTxMsgDetailsBody evmTxData={evmTxData} evmDenom={evmDenom} />
     <EvmInputData txInput={evmTxData.tx.input} txTo={evmTxData.tx.to} />
+    {evmTxData.txReceipt.logs && (
+      <>
+        <DividerWithArrow />
+        <Text variant="body2" fontWeight={500} color="text.dark">
+          {plur("Event Log", evmTxData.txReceipt.logs.length)}
+        </Text>
+        <Flex direction="column" gap={3} w="full">
+          {evmTxData.txReceipt.logs.map((log) => (
+            <EvmEventBox
+              key={log.logIndex.toString()}
+              // log={log}
+              // msgIndex={idx}
+            />
+          ))}
+        </Flex>
+      </>
+    )}
   </Flex>
 );
