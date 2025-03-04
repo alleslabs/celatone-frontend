@@ -34,7 +34,7 @@ export const EvmEventBoxTopics = ({
   <Stack gap={2} wordBreak="break-all" w="full">
     {tab === EvmEventBoxTabs.Hex ? (
       topics.map((topic, index) => (
-        <EvmEventBoxTopicHex topic={topic} index={index} />
+        <EvmEventBoxTopicHex topic={topic} key={topic} index={index} />
       ))
     ) : (
       <>
