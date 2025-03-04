@@ -56,6 +56,7 @@ export const ModuleVerifyUploadFolderInfo = () => (
         cta="See module verification guideline"
         href="initia/move/module-verification"
         mt={0}
+        isDevTool
       />
     </AccordionItem>
   </Accordion>
