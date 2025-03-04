@@ -1,9 +1,9 @@
-import { Heading, Stack, Text } from "@chakra-ui/react";
+import { Heading, Stack } from "@chakra-ui/react";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
-import type { Nullish } from "lib/types";
+import type { Option } from "lib/types";
 
 export interface ContractByteCodeProps {
-  byteCode: Nullish<string>;
+  byteCode: Option<string>;
   deployedByteCode: string;
 }
 
@@ -12,18 +12,12 @@ export const ContractByteCode = ({
   deployedByteCode,
 }: ContractByteCodeProps) => (
   <Stack gap={8}>
-    {byteCode !== null && (
+    {byteCode && (
       <Stack gap={4}>
         <Heading as="h6" variant="h7">
           ByteCode
         </Heading>
-        {byteCode ? (
-          <TextReadOnly text={byteCode} canCopy />
-        ) : (
-          <Text variant="body2" color="text.disabled">
-            -
-          </Text>
-        )}
+        <TextReadOnly text={byteCode} canCopy />
       </Stack>
     )}
     <Stack gap={4}>

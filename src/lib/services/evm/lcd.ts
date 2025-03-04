@@ -49,7 +49,7 @@ export const getEvmContractInfoSequencer = async (
   const code =
     eventCreateIndex && eventCreateIndex >= 0
       ? zEvmMsgCreate.parse(msgCreates[eventCreateIndex]).code
-      : null;
+      : undefined;
 
   return {
     hash: tx.hash,
