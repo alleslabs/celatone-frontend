@@ -37,6 +37,7 @@ export const TypeSwitch = <T extends string>({
       direction="row"
       align="center"
       position="relative"
+      height="fit-content"
       sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
     >
       {tabs.map((tab) => (
