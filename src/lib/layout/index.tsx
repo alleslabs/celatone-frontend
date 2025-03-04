@@ -54,7 +54,7 @@ const Layout = ({ children }: LayoutProps) => {
       gridTemplateColumns={mode.templateCols}
       h="100vh"
       overflowX="hidden"
-      overflowY="scroll"
+      overflowY="auto"
       bg="background.main"
     >
       <GridItem borderBottom="1px solid" borderColor="gray.700" area="header">
