@@ -24,6 +24,7 @@ const EvmEventBoxDecodedBody = ({
           value={decode.toString()}
           type="user_address"
           openNewTab
+          textFormat="normal"
         />
       );
     case "tuple":
