@@ -123,6 +123,7 @@ export const EvmEventBox = ({ log, evmVerifyInfo }: EvmEventBoxProps) => {
               onTabChange={setCurrentTab}
               currentTab={currentTab}
               disabled={!evmVerifyInfo?.isVerified}
+              disabledScrollToTop
             />
           </Tooltip>
         </Stack>

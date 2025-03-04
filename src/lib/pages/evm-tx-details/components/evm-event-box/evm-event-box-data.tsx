@@ -102,7 +102,7 @@ export const EvmEventBoxData = ({
 }: EvmEventBoxDataProps) => {
   const [isFormatted, setIsFormatted] = useState(false);
 
-  return tab === EvmEventBoxTabs.Hex ? (
+  return tab === EvmEventBoxTabs.Hex || data.trim() === "0x" ? (
     <Stack gap={1} w="full">
       {isFormatted ? (
         <Box
