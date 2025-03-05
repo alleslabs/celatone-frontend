@@ -31,7 +31,7 @@ export const EvmEventBoxTopics = ({
   topics,
   parsedLog,
 }: EvmEventBoxTopicsProps) => (
-  <Stack gap={2} wordBreak="break-all" w="full">
+  <Stack rowGap={4} columnGap={2} wordBreak="break-all" w="full">
     {tab === EvmEventBoxTabs.Hex ? (
       topics.map((topic, index) => (
         <EvmEventBoxTopicHex topic={topic} key={topic} index={index} />
@@ -40,7 +40,13 @@ export const EvmEventBoxTopics = ({
       <>
         <EvmEventBoxTopicHex topic={topics[0]} index={0} />
         {topics.length > 1 && (
-          <Stack gap={2} p={4} borderRadius={8} bgColor="gray.800">
+          <Stack
+            rowGap={4}
+            columnGap={2}
+            p={4}
+            borderRadius={8}
+            bgColor="gray.800"
+          >
             {parsedLog &&
               parsedLog.fragment.inputs
                 .slice(0, topics.length - 1)

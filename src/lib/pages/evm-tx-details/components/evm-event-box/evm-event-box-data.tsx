@@ -141,7 +141,14 @@ export const EvmEventBoxData = ({
       )}
     </Stack>
   ) : (
-    <Stack gap={2} p={4} borderRadius={8} bgColor="gray.800" w="full">
+    <Stack
+      rowGap={4}
+      columnGap={2}
+      p={4}
+      borderRadius={8}
+      bgColor="gray.800"
+      w="full"
+    >
       {parsedLog &&
         parsedLog.fragment.inputs
           .slice(topics.length - 1)

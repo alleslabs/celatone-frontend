@@ -51,7 +51,10 @@ export const EvmEventBoxDecoded = ({
 }: EvmEventBoxDecodedProps) => (
   <Grid
     gap={1}
-    gridTemplateColumns="minmax(max-content,180px) 1fr"
+    gridTemplateColumns={{
+      base: "1fr",
+      md: "minmax(max-content,180px) 1fr",
+    }}
     wordBreak="break-all"
   >
     <Flex gap={2} alignItems="center">
