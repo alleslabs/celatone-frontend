@@ -118,7 +118,7 @@ export const SelectInput = <
         option: (provided) => ({
           ...provided,
           color: "text.main",
-          fontSize: "16px",
+          fontSize: size === "sm" ? "14px" : "16px",
           _hover: {
             bg: "gray.700",
           },

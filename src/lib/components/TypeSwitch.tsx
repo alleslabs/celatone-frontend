@@ -8,6 +8,7 @@ interface TypeSwitchProps<T extends string> {
   currentTab: T;
   disabled?: boolean;
   onTabChange: (newType: T) => void;
+  disabledScrollToTop?: boolean;
 }
 
 export const TypeSwitch = <T extends string>({
@@ -15,6 +16,7 @@ export const TypeSwitch = <T extends string>({
   currentTab,
   disabled = false,
   onTabChange: onTabChangeProps,
+  disabledScrollToTop = false,
 }: TypeSwitchProps<T>) => {
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
 
@@ -22,11 +24,11 @@ export const TypeSwitch = <T extends string>({
     (tab: T) => {
       onTabChangeProps(tab);
       const content = document.getElementById("content");
-      if (content) {
+      if (content && !disabledScrollToTop) {
         content.scrollTo({ top: 0 });
       }
     },
-    [onTabChangeProps]
+    [onTabChangeProps, disabledScrollToTop]
   );
 
   return (
@@ -37,6 +39,7 @@ export const TypeSwitch = <T extends string>({
       direction="row"
       align="center"
       position="relative"
+      height="fit-content"
       sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
     >
       {tabs.map((tab) => (

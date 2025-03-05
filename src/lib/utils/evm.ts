@@ -1,7 +1,7 @@
 import { keccak256 } from "@initia/initia.js";
 import type { JsonFragment } from "ethers";
 import { Interface } from "ethers";
-import type { TxDataJsonRpc } from "lib/services/types";
+import type { TxDataJsonRpc, TxReceiptJsonRpcLog } from "lib/services/types";
 import type {
   Coin,
   EvmToAddress,
@@ -177,5 +177,14 @@ export const findAndDecodeEvmConstructorArgs = (
     return constructorArgs + "\n\n" + mapDecodedConstructorArgs;
   } catch {
     return constructorArgs;
+  }
+};
+
+export const parseEvmLog = (abi: JsonFragment[], log: TxReceiptJsonRpcLog) => {
+  const iface = new Interface(abi);
+  try {
+    return iface.parseLog(log) ?? undefined;
+  } catch {
+    return undefined;
   }
 };
