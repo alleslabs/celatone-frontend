@@ -5,19 +5,19 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SelectInput } from "lib/components/forms";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import type { TxReceiptJsonRpcLog } from "lib/services/types";
-import type { Nullish } from "lib/types";
+import type { Option } from "lib/types";
 import { EvmEventBoxDecoded } from "./evm-event-box-decoded";
 import { EvmEventBoxTabs } from "../../types";
 
 interface EvmEventBoxDataProps
   extends Pick<TxReceiptJsonRpcLog, "data" | "topics"> {
   tab: EvmEventBoxTabs;
-  parsedLog: Nullish<LogDescription>;
+  parsedLog: Option<LogDescription>;
 }
 
 const EvmEventBoxDataBody = ({ text }: { text: string }) => {
-  const count0x = text.match(/^0+/)?.[0].length || 0;
-  const isAddress = count0x >= 24;
+  const countZero = text.match(/^0+/)?.[0].length || 0;
+  const isAddress = countZero >= 24;
   const options = [
     {
       label: "Hex",
@@ -101,6 +101,7 @@ export const EvmEventBoxData = ({
   parsedLog,
 }: EvmEventBoxDataProps) => {
   const [isFormatted, setIsFormatted] = useState(false);
+  const formattedData = data.replace("0x", "").match(/.{1,64}/g) ?? [];
 
   return tab === EvmEventBoxTabs.Hex || data.trim() === "0x" ? (
     <Stack gap={1} w="full">
@@ -120,12 +121,9 @@ export const EvmEventBoxData = ({
           }}
         >
           <Stack gap={2}>
-            {data
-              .slice(2)
-              .match(/.{1,64}/g)
-              ?.map((d, index) => (
-                <EvmEventBoxDataBody text={d} key={`${d}-${index}`} />
-              ))}
+            {formattedData.map((d, index) => (
+              <EvmEventBoxDataBody text={d} key={`${d}-${index}`} />
+            ))}
           </Stack>
         </Box>
       ) : (

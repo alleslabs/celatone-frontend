@@ -1,6 +1,6 @@
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import type { LogDescription } from "ethers";
-import type { Nullish } from "lib/types";
+import type { Option } from "lib/types";
 import { EvmEventBoxDecoded } from "./evm-event-box-decoded";
 import { EvmEventBoxTabs } from "../../types";
 
@@ -23,7 +23,7 @@ const EvmEventBoxTopicHex = ({ topic, index }: EvmEventBoxTopicProps) => (
 interface EvmEventBoxTopicsProps {
   tab: EvmEventBoxTabs;
   topics: string[];
-  parsedLog: Nullish<LogDescription>;
+  parsedLog: Option<LogDescription>;
 }
 
 export const EvmEventBoxTopics = ({

@@ -21,7 +21,7 @@ const EvmEventBoxDecodedBody = ({
     case "address":
       return (
         <ExplorerLink
-          value={decode.toString()}
+          value={String(decode)}
           type="user_address"
           openNewTab
           textFormat="normal"

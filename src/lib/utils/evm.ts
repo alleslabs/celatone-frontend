@@ -180,10 +180,10 @@ export const findAndDecodeEvmConstructorArgs = (
   }
 };
 
-export const evmParseLog = (abi: JsonFragment[], log: TxReceiptJsonRpcLog) => {
+export const parseEvmLog = (abi: JsonFragment[], log: TxReceiptJsonRpcLog) => {
   const iface = new Interface(abi);
   try {
-    return iface.parseLog(log);
+    return iface.parseLog(log) ?? undefined;
   } catch {
     return undefined;
   }

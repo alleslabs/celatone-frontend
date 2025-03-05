@@ -16,7 +16,7 @@ export const TypeSwitch = <T extends string>({
   currentTab,
   disabled = false,
   onTabChange: onTabChangeProps,
-  disabledScrollToTop,
+  disabledScrollToTop = false,
 }: TypeSwitchProps<T>) => {
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
 

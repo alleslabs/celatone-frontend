@@ -1,4 +1,5 @@
 import { Flex, Stack, Text } from "@chakra-ui/react";
+import type { LogDescription } from "ethers";
 import { Fragment, useState } from "react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -6,8 +7,8 @@ import { LabelText } from "lib/components/LabelText";
 import { Tooltip } from "lib/components/Tooltip";
 import { TypeSwitch } from "lib/components/TypeSwitch";
 import type { TxReceiptJsonRpcLog } from "lib/services/types";
-import type { EvmVerifyInfo, Nullable } from "lib/types";
-import { evmParseLog } from "lib/utils";
+import type { EvmVerifyInfo, Nullable, Option } from "lib/types";
+import { parseEvmLog } from "lib/utils";
 import { EvmEventBoxData } from "./evm-event-box-data";
 import { EvmEventBoxTopics } from "./evm-event-box-topics";
 import { EvmEventBoxTabs } from "../../types";
@@ -17,34 +18,40 @@ interface EvmEventBoxProps {
   evmVerifyInfo: Nullable<EvmVerifyInfo>;
 }
 
+const EvmEventBoxName = ({
+  parsedLog,
+}: {
+  parsedLog: Option<LogDescription>;
+}) => {
+  if (!parsedLog) return "";
+
+  const { fragment } = parsedLog;
+
+  return (
+    <Text variant="body2">
+      {fragment.name}(
+      {fragment.inputs.map((input, index) => (
+        <Fragment key={input.name}>
+          <Text as="span" color="success.main">
+            {input.type}
+          </Text>{" "}
+          <Text as="span" color="text.dark">
+            {input.indexed ? "indexed " : ""}
+          </Text>
+          <Text as="span" color="warning.main">
+            {input.name}
+          </Text>
+          {index < fragment.inputs.length - 1 ? ", " : ""}
+        </Fragment>
+      ))}
+      )
+    </Text>
+  );
+};
+
 export const EvmEventBox = ({ log, evmVerifyInfo }: EvmEventBoxProps) => {
   const [currentTab, setCurrentTab] = useState(EvmEventBoxTabs.Hex);
-  const parsedLog = evmParseLog(evmVerifyInfo?.abi ?? [], log);
-
-  const handleGenerateLogName = () => {
-    if (!parsedLog) return "";
-    const { fragment } = parsedLog;
-    return (
-      <>
-        {fragment.name}(
-        {fragment.inputs.map((input, index) => (
-          <Fragment key={input.name}>
-            <Text as="span" color="success.main">
-              {input.type}
-            </Text>{" "}
-            <Text as="span" color="text.dark">
-              {input.indexed ? "indexed " : ""}
-            </Text>
-            <Text as="span" color="warning.main">
-              {input.name}
-            </Text>
-            {index < fragment.inputs.length - 1 ? ", " : ""}
-          </Fragment>
-        ))}
-        )
-      </>
-    );
-  };
+  const parsedLog = parseEvmLog(evmVerifyInfo?.abi ?? [], log);
 
   return (
     <Stack
@@ -108,7 +115,7 @@ export const EvmEventBox = ({ log, evmVerifyInfo }: EvmEventBoxProps) => {
               minWidth="120px"
               alignItems="flex-start"
             >
-              <Text variant="body2">{handleGenerateLogName()}</Text>
+              <EvmEventBoxName parsedLog={parsedLog} />
             </LabelText>
           )}
         </Stack>
