@@ -1,9 +1,9 @@
 import { Flex, Image } from "@chakra-ui/react";
 
+import Script from "next/script";
 import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { NavDrawer } from "./NavDrawer";
-import { AppMenu } from "../AppMenu";
 import { SearchComponent } from "../search";
 import { SectionWrapper } from "../SectionWrapper";
 
@@ -20,7 +20,8 @@ const MobileHeader = () => {
     >
       {isInitia && (
         <SectionWrapper minW="64px">
-          <AppMenu trigger="click" />
+          <div id="app-menu" data-app="scan" />
+          <Script src="/script.js" strategy="lazyOnload" />
         </SectionWrapper>
       )}
       <SectionWrapper minW="64px" w="full" justifyContent="start">

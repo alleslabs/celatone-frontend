@@ -7,6 +7,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import "@interchain-ui/react/styles";
 
+import Script from "next/script";
 import { MobileGuard } from "lib/components/MobileGuard";
 import { CelatoneSeo } from "lib/components/Seo";
 import Layout from "lib/layout";
@@ -45,6 +46,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
         <Analytics />
       </MobileGuard>
     </Layout>
+    <Script src="/script.js" strategy="lazyOnload" />
   </Providers>
 );
 

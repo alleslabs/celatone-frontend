@@ -5,7 +5,6 @@ import { AppLink } from "lib/components/AppLink";
 import { FaucetButton } from "lib/components/button";
 import { WalletSection } from "lib/components/wallet-section";
 
-import { AppMenu } from "./AppMenu";
 import { NetworkMenu } from "./network-menu";
 import { SearchComponent } from "./search";
 import { SectionWrapper } from "./SectionWrapper";
@@ -29,7 +28,7 @@ const Header = () => {
       <Flex h="full">
         {isInitia && (
           <SectionWrapper minW="64px">
-            <AppMenu />
+            <div id="app-menu" data-app="scan" />
           </SectionWrapper>
         )}
         <SectionWrapper minW={isInitia ? "auto" : "234px"}>

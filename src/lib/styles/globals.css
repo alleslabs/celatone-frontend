@@ -1,4 +1,6 @@
 /* Global Styling here */
+@import "../../../public/styles.css";
+
 div[data-floating-ui-portal] {
   position: relative;
   z-index: 9999;
