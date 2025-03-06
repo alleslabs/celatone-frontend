@@ -139,24 +139,27 @@ export const EvmEventBoxData = ({
       )}
     </Stack>
   ) : (
-    <Stack
-      rowGap={4}
-      columnGap={2}
-      p={4}
-      borderRadius={8}
-      bgColor="gray.800"
-      w="full"
-    >
-      {parsedLog &&
-        parsedLog.fragment.inputs
-          .slice(topics.length - 1)
-          .map((input, index) => (
-            <EvmEventBoxDecoded
-              key={input.name}
-              input={input}
-              decode={parsedLog.args.slice(topics.length - 1)[index]}
-            />
-          ))}
-    </Stack>
+    <>
+      {parsedLog ? (
+        <Stack
+          rowGap={4}
+          columnGap={2}
+          p={4}
+          borderRadius={8}
+          bgColor="gray.800"
+          w="full"
+        >
+          {parsedLog.fragment.inputs
+            .slice(topics.length - 1)
+            .map((input, index) => (
+              <EvmEventBoxDecoded
+                key={input.name}
+                input={input}
+                decode={parsedLog.args.slice(topics.length - 1)[index]}
+              />
+            ))}
+        </Stack>
+      ) : null}
+    </>
   );
 };
