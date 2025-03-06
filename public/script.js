@@ -302,10 +302,10 @@ function getCookie() {
 
 function setCookie() {
   const assign = COOKIE_NAME + "=" + "true" + ";";
-  const expires = "expires=" + "2038-01-19T04:14:07.000Z" + ";";
+  const maxAge = "max-age=" + "34560000" + ";"; // 400 days chrome limit
   const path = "path=/;";
   const domain = "domain=" + getCurrentDomain() + ";";
-  document.cookie = assign + expires + path + domain;
+  document.cookie = assign + maxAge + path + domain;
 }
 
 function createTermsHeader() {
