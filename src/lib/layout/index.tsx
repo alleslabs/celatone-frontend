@@ -54,10 +54,11 @@ const Layout = ({ children }: LayoutProps) => {
     }
   }, [router.asPath, router.query.tab]);
 
+  // March 18th, 2025 12:00 KST
   const date = dayjs
     .utc(new Date("2025-03-18T03:00:00Z"))
     .local()
-    .format("MMMM DD, YYYY, h:mm A");
+    .format("MMMM DD, YYYY, h:mm (UTCZ)");
 
   return (
     <Box>
