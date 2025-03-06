@@ -1,4 +1,6 @@
 import { Box, Button, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import pluginUtc from "dayjs/plugin/utc";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
@@ -13,6 +15,8 @@ import Header from "./Header";
 import MobileHeader from "./mobile/MobileHeader";
 import Navbar from "./navbar";
 import SubHeader from "./subheader";
+
+dayjs.extend(pluginUtc);
 
 type LayoutProps = {
   children: ReactNode;
@@ -50,6 +54,11 @@ const Layout = ({ children }: LayoutProps) => {
     }
   }, [router.asPath, router.query.tab]);
 
+  const date = dayjs
+    .utc(new Date("2025-03-18T03:00:00Z"))
+    .local()
+    .format("MMMM DD, YYYY, h:mm A");
+
   return (
     <Box>
       {isInitia && (
@@ -73,8 +82,8 @@ const Layout = ({ children }: LayoutProps) => {
         >
           <Text variant="body2">
             Initia Wallet extension is being deprecated. Existing extension
-            users must migrate before March 18, 2025 22:00 EST to be eligible
-            for future incentives.
+            users must migrate before {date} to be eligible for future
+            incentives.
           </Text>
           <Link
             href="https://migration.initia.xyz"
