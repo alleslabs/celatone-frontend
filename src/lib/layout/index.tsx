@@ -71,11 +71,16 @@ const Layout = ({ children }: LayoutProps) => {
             md: "center",
           }}
         >
-          <Text variant="body1">
+          <Text variant="body2">
             Initia Wallet extension is being deprecated. Existing extension
-            users must migrate to be eligible for future incentives.
+            users must migrate before March 18, 2025 22:00 EST to be eligible
+            for future incentives.
           </Text>
-          <Link href="#" target="_blank" rel="noopener noreferrer">
+          <Link
+            href="https://migration.initia.xyz"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button
               size="sm"
               rightIcon={<CustomIcon name="launch" boxSize={2.5} />}
