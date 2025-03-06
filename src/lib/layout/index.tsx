@@ -58,7 +58,7 @@ const Layout = ({ children }: LayoutProps) => {
   const date = dayjs
     .utc(new Date("2025-03-18T03:00:00Z"))
     .local()
-    .format("MMMM DD, YYYY, h:mm (UTCZ)");
+    .format("MMMM DD, YYYY, h:mm A (UTCZ)");
 
   return (
     <Box>
