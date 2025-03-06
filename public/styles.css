@@ -197,7 +197,7 @@
 
   font-weight: 500;
   color: #757C82;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   padding: 24px;
   font-size: 12px;
