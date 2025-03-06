@@ -140,7 +140,7 @@ export const EvmEventBoxData = ({
     </Stack>
   ) : (
     <>
-      {parsedLog ? (
+      {parsedLog && (
         <Stack
           rowGap={4}
           columnGap={2}
@@ -159,7 +159,7 @@ export const EvmEventBoxData = ({
               />
             ))}
         </Stack>
-      ) : null}
+      )}
     </>
   );
 };
