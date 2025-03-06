@@ -7,8 +7,7 @@ import { jsonPrettify } from "lib/utils";
 interface EvmEventBoxDecodedProps {
   index?: number;
   input: ParamType;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  decode: any;
+  decode: unknown;
 }
 
 const EvmEventBoxDecodedBody = ({
@@ -32,13 +31,13 @@ const EvmEventBoxDecodedBody = ({
     case "array":
       return (
         <Text variant="body2" fontFamily="mono">
-          [{decode.toString()}]
+          [{String(decode)}]
         </Text>
       );
     default:
       return (
         <Text variant="body2" fontFamily="mono">
-          {decode.toString()}
+          {String(decode)}
         </Text>
       );
   }
