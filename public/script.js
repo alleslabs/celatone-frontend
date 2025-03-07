@@ -289,7 +289,7 @@ const INITIA_TERMS = [
 
 function getCurrentDomain() {
   if (location.hostname.endsWith(INITIA_DOMAIN)) return INITIA_DOMAIN;
-  if (location.hostname.endsWith("alleslabs.dev")) return "alleslabs.dev";
+  if (location.hostname.endsWith(".alleslabs.dev")) return "alleslabs.dev";
   return location.hostname;
 }
 
