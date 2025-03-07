@@ -289,7 +289,7 @@ const INITIA_TERMS = [
 
 function getCurrentDomain() {
   if (location.hostname.endsWith(INITIA_DOMAIN)) return INITIA_DOMAIN;
-  if (location.hostname.endsWith(".vercel.live")) return ".vercel.live";
+  if (location.hostname.endsWith(".vercel.app")) return ".vercel.app";
   return location.hostname;
 }
 
