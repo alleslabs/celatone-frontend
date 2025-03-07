@@ -289,10 +289,11 @@ const INITIA_TERMS = [
 
 function getCurrentDomain() {
   if (location.hostname.endsWith(INITIA_DOMAIN)) return INITIA_DOMAIN;
+  if (location.hostname.endsWith(".vercel.live")) return ".vercel.live";
   return location.hostname;
 }
 
-function getCookie() {
+function hasTermsCookie() {
   const cookies = document.cookie.split(";");
   return cookies.some((cookie) => {
     const [k, v] = cookie.trim().split("=");
@@ -300,7 +301,7 @@ function getCookie() {
   });
 }
 
-function setCookie() {
+function addTermsCookie() {
   const assign = COOKIE_NAME + "=" + "true" + ";";
   const maxAge = "max-age=" + "34560000" + ";"; // 400 days chrome limit
   const path = "path=/;";
@@ -399,7 +400,7 @@ function createTermsFooter(handleOnAccept) {
 }
 
 function injectTermsOfService() {
-  const isAccepted = getCookie();
+  const isAccepted = hasTermsCookie();
   if (isAccepted) return;
 
   const initiaTerms = document.createElement("div");
@@ -414,7 +415,7 @@ function injectTermsOfService() {
   termsContainer.appendChild(createTermsBody());
   termsContainer.appendChild(
     createTermsFooter(function () {
-      setCookie();
+      addTermsCookie();
 
       initiaTerms.classList.add("accepted");
       setTimeout(() => {
