@@ -289,7 +289,7 @@ const INITIA_TERMS = [
 
 function getCurrentDomain() {
   if (location.hostname.endsWith(INITIA_DOMAIN)) return INITIA_DOMAIN;
-  if (location.hostname.endsWith(".vercel.app")) return "vercel.app";
+  if (location.hostname.endsWith("alleslabs.dev")) return "alleslabs.dev";
   return location.hostname;
 }
 
@@ -304,8 +304,8 @@ function hasTermsCookie() {
 function addTermsCookie() {
   const assign = COOKIE_NAME + "=" + "true" + ";";
   const maxAge = "max-age=" + "34560000" + ";"; // 400 days chrome limit
-  const path = "path=/;";
   const domain = "domain=" + getCurrentDomain() + ";";
+  const path = "path=/;";
   document.cookie = assign + maxAge + path + domain;
 }
 
