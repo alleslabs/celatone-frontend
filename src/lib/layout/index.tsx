@@ -29,7 +29,7 @@ const Layout = ({ children }: LayoutProps) => {
   const { isExpand, setIsExpand } = useNavContext();
   const isInitia = useInitia();
 
-  const defaultRow = `64px ${isInitia ? "60px" : ""} 48px 1fr`;
+  const defaultRow = `64px 48px ${isInitia ? "60px" : ""} 1fr`;
   const mode = useMemo(() => {
     if (isMobile)
       return {
@@ -41,7 +41,7 @@ const Layout = ({ children }: LayoutProps) => {
       };
 
     return {
-      templateAreas: `"header header"${isInitia ? `"migrationBanner migrationBanner"` : ""}"subheader subheader""nav main"`,
+      templateAreas: `"header header""subheader subheader"${isInitia ? `"migrationBanner migrationBanner"` : ""}"nav main"`,
       templateRows: defaultRow,
       templateCols: isExpand ? "235px 1fr" : "48px 1fr",
       header: <Header />,

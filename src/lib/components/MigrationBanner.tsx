@@ -5,7 +5,7 @@ export const MigrationBanner = () => {
   const date = dayjs
     .utc(new Date("2025-03-18T03:00:00Z"))
     .local()
-    .format("MMMM DD, YYYY, h:mm A [(local time)]");
+    .format("M/DD/YYYY, h:mm:ss A [(local time)]");
 
   return (
     <Flex
@@ -17,6 +17,7 @@ export const MigrationBanner = () => {
       bg="#cc4949"
       justifyContent="center"
       flexDirection={{ base: "column", md: "row" }}
+      fontFamily="Pilat Wide"
       gap={{
         base: 2,
         md: 6,
@@ -30,7 +31,7 @@ export const MigrationBanner = () => {
         md: "60px",
       }}
     >
-      <Text variant="body3" fontFamily="Pilat Wide">
+      <Text fontSize={{ base: "12px", lg: "14px" }} fontWeight={600}>
         Initia Wallet extension is being deprecated. Existing extension users
         must migrate before {date} to be eligible for future incentives.
       </Text>
@@ -38,6 +39,9 @@ export const MigrationBanner = () => {
         href="https://migration.initia.xyz"
         target="_blank"
         rel="noopener noreferrer"
+        style={{
+          textDecoration: "none",
+        }}
       >
         <Button
           size="sm"
@@ -46,16 +50,11 @@ export const MigrationBanner = () => {
           py={1}
           px={4}
           color="gray.100"
-          style={{
-            background:
-              "oklch(from var(--chakra-colors-background-main) l c h / calc(alpha - .3))",
-          }}
-          sx={{
-            _hover: {
-              textDecoration: "none !important",
-              background:
-                "oklch(from var(--chakra-colors-background-main) l c h / calc(alpha - .7))",
-            },
+          fontWeight={600}
+          borderRadius="full"
+          background="rgba(0,0,0, 0.7)"
+          _hover={{
+            background: "rgba(0,0,0, 0.3)",
           }}
           rightIcon={
             <video
