@@ -2,10 +2,11 @@ import { Flex, Text, Button, Link } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 export const MigrationBanner = () => {
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const date = dayjs
     .utc(new Date("2025-03-18T03:00:00Z"))
     .local()
-    .format("M/DD/YYYY, h:mm:ss A [(local time)]");
+    .format(`M/DD/YYYY, h:mm:ss A [(${timeZone})]`);
 
   return (
     <Flex
