@@ -20,7 +20,7 @@ export const submitMoveVerify = async (
   formData: FormData
 ): Promise<SubmitMoveVerifyResponse> =>
   axios
-    .post(`${CELATONE_VERIFICATION_API}/move/initia-verify`, formData, {
+    .post(`${CELATONE_VERIFICATION_API}/move/verify`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -32,12 +32,12 @@ export const getMoveVerifyByTaskId = async (
   taskId: string
 ): Promise<MoveVerifyByTaskIdResponse> =>
   axios
-    .get(
-      `${CELATONE_VERIFICATION_API}/move/initia-task-info/${encodeURI(taskId)}`,
-      {
-        params: { chainId },
-      }
-    )
+    .get(`${CELATONE_VERIFICATION_API}/move/task-info`, {
+      params: {
+        chainId,
+        taskId,
+      },
+    })
     .then(({ data }) => parseWithError(zMoveVerifyByTaskIdResponse, data));
 
 export const getMoveVerifyInfo = async (
@@ -46,25 +46,26 @@ export const getMoveVerifyInfo = async (
   moduleName: string
 ): Promise<Nullable<MoveVerifyInfoResponse>> =>
   axios
-    .get(
-      `${CELATONE_VERIFICATION_API}/move/initia-verify-infos/${encodeURI(address)}/${encodeURI(moduleName)}`,
-      {
-        params: { chainId },
-      }
-    )
-    .then(({ data }) => parseWithError(zMoveVerifyInfoResponse, data));
+    .get(`${CELATONE_VERIFICATION_API}/move/verify-info`, {
+      params: {
+        chainId,
+        address,
+        moduleName,
+      },
+    })
+    .then((res) => parseWithError(zMoveVerifyInfoResponse, res.data));
 
 export const getMoveVerifyInfosByAddress = async (
   chainId: string,
   address: Addr
 ): Promise<MoveVerifyInfosByAddressResponse> =>
   axios
-    .get(
-      `${CELATONE_VERIFICATION_API}/move/initia-verify-infos/${encodeURI(address)}`,
-      {
-        params: { chainId },
-      }
-    )
+    .get(`${CELATONE_VERIFICATION_API}/move/verify-infos`, {
+      params: {
+        chainId,
+        address,
+      },
+    })
     .then(({ data }) =>
       parseWithError(zMoveVerifyInfosByAddressResponse, data)
     );
