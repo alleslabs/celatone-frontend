@@ -10,8 +10,7 @@ import { useCelatoneApp } from "../contexts";
 type MergedWalletClient =
   | WalletClient
   // | import("@cosmos-kit/cosmostation-extension/cjs/extension/client").CosmostationClient
-  | import("@cosmos-kit/keplr-extension/cjs/extension/client").KeplrClient
-  | import("@cosmos-kit/station-extension/cjs/extension/client").StationClient;
+  | import("@cosmos-kit/keplr-extension/cjs/extension/client").KeplrClient;
 
 export const isLedger = async <T extends MergedWalletClient>(
   walletClient: T,
