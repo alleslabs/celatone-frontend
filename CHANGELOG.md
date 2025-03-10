@@ -40,7 +40,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 - [#1257](https://github.com/alleslabs/celatone-frontend/pull/1257) Add EVM transaction event logs
-- [#1250](https://github.com/alleslabs/celatone-frontend/pull/1250) Add EVM code snippet modal and fix input fields
+
+### Improvements
+
+- [#1256](https://github.com/alleslabs/celatone-frontend/pull/1256) Remove Bytecodes for non primary instantiated EVM contracts
+- [#1256](https://github.com/alleslabs/celatone-frontend/pull/1256) Remove Bytecodes for non primary instantiated EVM contracts
+- [#1255](https://github.com/alleslabs/celatone-frontend/pull/1255) Remove layout scrollbar and implementation address link
+
+### Bug fixes
+
+## v1.10.0
+
+### Features
+
+- [#1262](https://github.com/alleslabs/celatone-frontend/pull/1262) Change Move verification API path and response
 - [#1247](https://github.com/alleslabs/celatone-frontend/pull/1247) Support multi address creation txs
 - [#1245](https://github.com/alleslabs/celatone-frontend/pull/1245) Support assets from assetlist in chain config
 - [#1244](https://github.com/alleslabs/celatone-frontend/pull/1244) Add EVM contract verify alert info to both Solidity and Vyper upload file(s) and contract code
@@ -85,8 +98,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1256](https://github.com/alleslabs/celatone-frontend/pull/1256) Remove Bytecodes for non primary instantiated EVM contracts
-- [#1255](https://github.com/alleslabs/celatone-frontend/pull/1255) Remove layout scrollbar and implementation address link
 - [#1252](https://github.com/alleslabs/celatone-frontend/pull/1252) Improve EVM verify error details
 - [#1253](https://github.com/alleslabs/celatone-frontend/pull/1253) Filter initia wallet, change isInitia logic, and theme logic
 - [#1249](https://github.com/alleslabs/celatone-frontend/pull/1249) Improve import order
