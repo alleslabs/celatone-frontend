@@ -1,4 +1,5 @@
 import type { ChainConfig } from "@alleslabs/shared";
+import { SUPPORTED_NETWORK_TYPES } from "env";
 
 export const DEFAULT_WASM_CONFIG: ChainConfig["features"]["wasm"] = {
   enabled: true,
@@ -36,7 +37,8 @@ export const DEFAULT_GAS = {
   maxGasLimit: 25000000,
 };
 
-export const DEFAULT_SLIP44 = 118;
+export const DEFAULT_SLIP44 =
+  SUPPORTED_NETWORK_TYPES[0] === "mainnet" ? 60 : 118;
 
 export const DEFAULT_DENOM = "umin";
 

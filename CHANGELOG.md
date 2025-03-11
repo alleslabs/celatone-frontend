@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1263](https://github.com/alleslabs/celatone-frontend/pull/1263) Support slip44 as 60
 - [#1262](https://github.com/alleslabs/celatone-frontend/pull/1262) Remove unused packages, bump packages, and add signAsKeplr when using wasm
 - [#1261](https://github.com/alleslabs/celatone-frontend/pull/1261) Update Move verification API path and response
 - [#1256](https://github.com/alleslabs/celatone-frontend/pull/1256) Remove Bytecodes for non primary instantiated EVM contracts
