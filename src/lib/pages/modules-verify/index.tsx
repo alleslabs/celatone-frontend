@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
-import { useCelatoneApp, useInitiaL1, useMobile } from "lib/app-provider";
+import { useCelatoneApp, useMobile, useMoveConfig } from "lib/app-provider";
 import { ControllerInput } from "lib/components/forms";
 import { FooterCta } from "lib/components/layouts";
 import { NoMobile } from "lib/components/modal";
@@ -38,7 +38,7 @@ export const ModulesVerify = observer(() => {
   const { mutateAsync, isError, isLoading } = useSubmitMoveVerify();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { addMoveVerifyTask } = useMoveVerifyTaskStore();
-  useInitiaL1({ shouldRedirect: true });
+  useMoveConfig({ shouldRedirect: true });
 
   const { control, watch, handleSubmit, setValue } = useForm<ModuleVerifyForm>({
     mode: "all",

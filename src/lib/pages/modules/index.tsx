@@ -3,12 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { AmpEvent, track } from "lib/amplitude";
-import {
-  useInitiaL1,
-  useMobile,
-  useMoveConfig,
-  useTierConfig,
-} from "lib/app-provider";
+import { useMobile, useMoveConfig, useTierConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import { CelatoneSeo } from "lib/components/Seo";
@@ -21,7 +16,6 @@ const RecentModules = () => {
   useMoveConfig({ shouldRedirect: true });
   const router = useRouter();
   const isMobile = useMobile();
-  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_MODULES);
@@ -36,7 +30,7 @@ const RecentModules = () => {
           subtitle=" These modules are the most recently published on this network"
           docHref="move/modules/detail-page"
         />
-        {!isMobile && isInitiaL1 && <ModuleVerificationButton />}
+        {!isMobile && <ModuleVerificationButton />}
       </Flex>
       <RecentModulesTable />
     </PageContainer>
