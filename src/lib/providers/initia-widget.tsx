@@ -1,15 +1,17 @@
 import { WalletWidgetProvider } from "@initia/react-wallet-widget";
 import type { ReactNode } from "react";
 
-import { useCelatoneApp } from "lib/app-provider";
+import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 
 export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
   const { chainConfig, currentChainId } = useCelatoneApp();
+  const enabledWasm = useWasmConfig({ shouldRedirect: false });
 
   return (
     <WalletWidgetProvider
       key={currentChainId}
+      useKeplrAsDirectSigner={enabledWasm.enabled}
       customLayer={
         chainConfig.network_type === "local"
           ? {
