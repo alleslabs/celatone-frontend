@@ -20,7 +20,7 @@ import { StatusMessageBox } from "lib/components/StatusMessageBox";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import {
-  useModuleByAddressLcd,
+  useModuleByAddressRest,
   useModulePublishInfo,
   useModuleTableCounts,
 } from "lib/services/move/module";
@@ -63,7 +63,7 @@ const ModuleDetailsBody = ({
   const currentTab =
     !isFullTier && tab === TabIndex.TxsHistories ? TabIndex.Overview : tab;
 
-  const { data, isLoading: isModuleLoading } = useModuleByAddressLcd({
+  const { data, isLoading: isModuleLoading } = useModuleByAddressRest({
     address: vmAddress,
     moduleName,
   });

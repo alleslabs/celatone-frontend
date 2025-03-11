@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from "react";
 
 import type { ValidatorsResponse } from "lib/services/types";
-import { useValidatorsLcd } from "lib/services/validator";
+import { useValidatorsRest } from "lib/services/validator";
 import type { Option } from "lib/types";
 
 import { ValidatorsTable } from "./validators-table";
 import type { ValidatorCounts, ValidatorOrder } from "../types";
-import { compareValidator, indexValidatorsLcd } from "../utils";
+import { compareValidator, indexValidatorsRest } from "../utils";
 
 interface ValidatorsBodyLiteProps {
   isActive: boolean;
@@ -29,8 +29,8 @@ export const ValidatorsBodyLite = ({
   search,
   scrollComponentId,
 }: ValidatorsBodyLiteProps) => {
-  const { data, isFetching: isLoading } = useValidatorsLcd();
-  const indexedData = useMemo(() => indexValidatorsLcd(data), [data]);
+  const { data, isFetching: isLoading } = useValidatorsRest();
+  const indexedData = useMemo(() => indexValidatorsRest(data), [data]);
   const filteredData: Option<ValidatorsResponse> = useMemo(() => {
     if (!indexedData) return undefined;
 

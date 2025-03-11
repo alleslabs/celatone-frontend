@@ -23,21 +23,21 @@ import {
   toChecksumAddress,
 } from "lib/utils";
 
-import { useBlockData, useBlockDataLcd } from "./block";
+import { useBlockData, useBlockDataRest } from "./block";
 import { useEvmCodesByAddress } from "./evm";
-import { useModuleByAddressLcd } from "./move/module";
-import { useAddressByIcnsNameLcd, useIcnsNamesByAddressLcd } from "./name";
-import { useNftByNftAddressLcd } from "./nft";
+import { useModuleByAddressRest } from "./move/module";
+import { useAddressByIcnsNameRest, useIcnsNamesByAddressRest } from "./name";
+import { useNftByNftAddressRest } from "./nft";
 import { useNftCollectionByCollectionAddress } from "./nft-collection";
 import { usePoolData } from "./pools";
-import { useProposalData, useProposalDataLcd } from "./proposal";
+import { useProposalData, useProposalDataRest } from "./proposal";
 import { useEvmTxDataJsonRpc, useTxData } from "./tx";
 import {
   useAddressByInitiaUsername,
   useInitiaUsernameByAddress,
 } from "./username";
-import { useValidatorData, useValidatorDataLcd } from "./validator";
-import { useCodeLcd } from "./wasm/code";
+import { useValidatorData, useValidatorDataRest } from "./validator";
+import { useCodeRest } from "./wasm/code";
 import { useContractData } from "./wasm/contract";
 
 export type SearchResultType =
@@ -131,14 +131,17 @@ export const useSearchHandler = (
 
   // ICNS
   const { data: icnsAddrByKeyword, isFetching: icnsAddrByKeywordFetching } =
-    useAddressByIcnsNameLcd(debouncedKeyword, isWasm);
+    useAddressByIcnsNameRest(debouncedKeyword, isWasm);
   const { data: icnsNamesByIcnsAddr, isFetching: icnsNamesByIcnsAddrFetching } =
-    useIcnsNamesByAddressLcd(
+    useIcnsNamesByAddressRest(
       icnsAddrByKeyword?.address as BechAddr,
       !isInitia && icnsAddrByKeyword !== undefined
     );
   const { data: icnsNamesByKeyword, isFetching: icnsNamesByKeywordFetching } =
-    useIcnsNamesByAddressLcd(debouncedKeyword as BechAddr, !isInitia && isAddr);
+    useIcnsNamesByAddressRest(
+      debouncedKeyword as BechAddr,
+      !isInitia && isAddr
+    );
 
   // Initia Username (IU)
   const { data: iuAddrByKeyword, isFetching: iuAddrByKeywordFetching } =
@@ -150,7 +153,7 @@ export const useSearchHandler = (
   //                       NFT
   /// /////////////////////////////////////////////////////
 
-  const { data: nftData, isFetching: nftFetching } = useNftByNftAddressLcd(
+  const { data: nftData, isFetching: nftFetching } = useNftByNftAddressRest(
     zHexAddr32.parse(debouncedKeyword),
     isNft && isHexModuleAddress(debouncedKeyword) && !isLiteTier
   );
@@ -179,7 +182,7 @@ export const useSearchHandler = (
   );
 
   const { data: moduleData, isFetching: moduleFetching } =
-    useModuleByAddressLcd({
+    useModuleByAddressRest({
       address: addr,
       moduleName: moduleName ?? "",
       options: {
@@ -195,7 +198,7 @@ export const useSearchHandler = (
   //                       Wasm
   /// /////////////////////////////////////////////////////
 
-  const { data: codeData, isFetching: codeFetching } = useCodeLcd(
+  const { data: codeData, isFetching: codeFetching } = useCodeRest(
     Number(debouncedKeyword),
     {
       enabled: isWasm && isId(debouncedKeyword),
@@ -240,13 +243,13 @@ export const useSearchHandler = (
     Number(debouncedKeyword),
     isPosDecimal(debouncedKeyword) && isFullTier
   );
-  const blockLcd = useBlockDataLcd(
+  const blockRest = useBlockDataRest(
     Number(debouncedKeyword),
     isPosDecimal(debouncedKeyword) && !isFullTier
   );
   const { data: blockData, isFetching: blockFetching } = isFullTier
     ? blockApi
-    : blockLcd;
+    : blockRest;
 
   /// /////////////////////////////////////////////////////
   //                         Proposal
@@ -257,20 +260,20 @@ export const useSearchHandler = (
       Number(debouncedKeyword),
       isGov && isId(debouncedKeyword) && isFullTier
     );
-  const { data: proposalLcdData, isFetching: proposalLcdIsFetching } =
-    useProposalDataLcd(
+  const { data: proposalRestData, isFetching: proposalRestIsFetching } =
+    useProposalDataRest(
       Number(debouncedKeyword),
       isGov && isId(debouncedKeyword) && !isFullTier
     );
   const [proposalData, proposalFetching] = isFullTier
     ? [proposalApiData, proposalApiIsFetching]
     : [
-        proposalLcdData
+        proposalRestData
           ? {
-              info: proposalLcdData,
+              info: proposalRestData,
             }
           : undefined,
-        proposalLcdIsFetching,
+        proposalRestIsFetching,
       ];
 
   /// /////////////////////////////////////////////////////
@@ -281,13 +284,13 @@ export const useSearchHandler = (
     zValidatorAddr.parse(debouncedKeyword),
     isGov && validateValidatorAddress(debouncedKeyword) === null && isFullTier
   );
-  const validatorLcd = useValidatorDataLcd(
+  const validatorRest = useValidatorDataRest(
     zValidatorAddr.parse(debouncedKeyword),
     isGov && validateValidatorAddress(debouncedKeyword) === null && !isFullTier
   );
   const { data: validatorData, isFetching: validatorFetching } = isFullTier
     ? validatorApi
-    : validatorLcd;
+    : validatorRest;
 
   /// /////////////////////////////////////////////////////
   //                     Osmosis Pool

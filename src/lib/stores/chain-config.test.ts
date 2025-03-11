@@ -9,7 +9,7 @@ const MOCK_CONFIG: ChainConfig = {
   registryChainName: "testonly",
   prettyName: "Test Only",
   rpc: "https://rpc.testonly.com",
-  lcd: "https://rpc.testonly.com",
+  rest: "https://rpc.testonly.com",
   wallets: ["keplr", "compass", "station"],
   features: {
     wasm: { enabled: false },

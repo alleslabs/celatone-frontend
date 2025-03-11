@@ -6,7 +6,7 @@ import { useTierConfig } from "lib/app-provider";
 import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { USER_GUIDE_DOCS_LINK } from "lib/data";
-import { useLatestBlockLcd } from "lib/services/block";
+import { useLatestBlockRest } from "lib/services/block";
 import { useOverviewsStats } from "lib/services/stats";
 
 const FOOTER_BUTTONS = [
@@ -23,7 +23,7 @@ export const InformationFooter = () => {
   const { isFullTier } = useTierConfig();
   const { data: overviewsStats, isLoading: isLoadingFull } =
     useOverviewsStats(isFullTier);
-  const { data: latestHeight, isLoading: isLoadingLite } = useLatestBlockLcd();
+  const { data: latestHeight, isLoading: isLoadingLite } = useLatestBlockRest();
 
   const latest = isFullTier ? overviewsStats?.latestBlock : latestHeight;
   const isLoading = isFullTier ? isLoadingFull : isLoadingLite;

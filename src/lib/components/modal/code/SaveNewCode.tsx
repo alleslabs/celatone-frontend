@@ -9,7 +9,7 @@ import { NumberInput, TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
-import { useCodeLcd } from "lib/services/wasm/code";
+import { useCodeRest } from "lib/services/wasm/code";
 import type { BechAddr } from "lib/types";
 import {
   getNameAndDescriptionDefault,
@@ -59,7 +59,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
   const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
     useCodeStore();
 
-  const { refetch, isFetching, isRefetching } = useCodeLcd(Number(codeId), {
+  const { refetch, isFetching, isRefetching } = useCodeRest(Number(codeId), {
     enabled: false,
     retry: false,
     cacheTime: 0,

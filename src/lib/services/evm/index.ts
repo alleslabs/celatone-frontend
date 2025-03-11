@@ -17,21 +17,21 @@ import {
   getEvmCodesByAddress,
   getEvmContractInfoSequencer,
   getEvmParams,
-} from "./lcd";
+} from "./rest";
 
 export const useEvmParams = () => {
   const {
     chainConfig: {
-      lcd: lcdEndpoint,
+      rest: restEndpoint,
       features: { evm },
     },
   } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.EVM_PARAMS_LCD, lcdEndpoint],
+    [CELATONE_QUERY_KEYS.EVM_PARAMS_REST, restEndpoint],
     async () => {
       if (!evm.enabled) throw new Error("EVM is not enabled (useEvmParams)");
-      return getEvmParams(lcdEndpoint);
+      return getEvmParams(restEndpoint);
     },
     {
       enabled: evm.enabled,
@@ -45,12 +45,12 @@ export const useEvmParams = () => {
 
 export const useEvmCodesByAddress = (address: HexAddr20, enabled = true) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.EVM_CODES_BY_ADDRESS_LCD, lcdEndpoint, address],
-    async () => getEvmCodesByAddress(lcdEndpoint, address),
+    [CELATONE_QUERY_KEYS.EVM_CODES_BY_ADDRESS_REST, restEndpoint, address],
+    async () => getEvmCodesByAddress(restEndpoint, address),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -61,18 +61,19 @@ export const useEvmCodesByAddress = (address: HexAddr20, enabled = true) => {
 
 export const useEvmContractInfoSequencer = (address: HexAddr20) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.EVM_CONTRACT_INFO_SEQUENCER,
-      lcdEndpoint,
+      restEndpoint,
       bech32Prefix,
       address,
     ],
-    async () => getEvmContractInfoSequencer(lcdEndpoint, bech32Prefix, address),
+    async () =>
+      getEvmContractInfoSequencer(restEndpoint, bech32Prefix, address),
     {
       retry: 1,
       refetchOnWindowFocus: false,

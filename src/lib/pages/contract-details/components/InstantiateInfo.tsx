@@ -11,7 +11,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { WasmVerifySubmitModal } from "lib/components/modal";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
-import type { Contract, ContractRest } from "lib/services/types";
+import type { Contract, ContractRestApi } from "lib/services/types";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { Nullable, Nullish, Option, WasmVerifyInfo } from "lib/types";
 import { WasmVerifyStatus } from "lib/types";
@@ -25,7 +25,7 @@ import { getAddressTypeText } from "lib/utils/address";
 
 interface InstantiateInfoProps {
   contract: Contract;
-  contractRest: Nullable<ContractRest>;
+  contractRest: Nullable<ContractRestApi>;
   codeLocalInfo: Option<CodeLocalInfo>;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }

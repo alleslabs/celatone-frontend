@@ -7,7 +7,7 @@ import { big } from "lib/types";
 import { totalValueTokenWithValue } from "lib/utils";
 
 import { useAccountDelegationInfosApi } from "./api";
-import { useAccountDelegationInfosLcd } from "./lcd";
+import { useAccountDelegationInfosRest } from "./rest";
 
 // ------------------------------------------//
 // ----------------DELEGATIONS---------------//
@@ -15,10 +15,10 @@ import { useAccountDelegationInfosLcd } from "./lcd";
 
 export const useAccountDelegationInfos = (address: BechAddr) => {
   const isInitia = useInitia();
-  const resLcd = useAccountDelegationInfosLcd(address, !isInitia);
+  const resRest = useAccountDelegationInfosRest(address, !isInitia);
   const resApi = useAccountDelegationInfosApi(address, isInitia);
 
-  return isInitia ? resApi : resLcd;
+  return isInitia ? resApi : resRest;
 };
 
 export const useAccountTotalValue = (address: BechAddr) => {

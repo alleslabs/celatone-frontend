@@ -12,7 +12,7 @@ import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
-import { useStakingParamsLcd } from "lib/services/staking";
+import { useStakingParamsRest } from "lib/services/staking";
 import { useValidatorData } from "lib/services/validator";
 import type { ValidatorDetailsQueryParams } from "../../types";
 import { TabIndex } from "../../types";
@@ -37,7 +37,7 @@ export const ValidatorDetailsBodyFull = ({
       withPrices: true,
     });
   const { data: stakingParams, isFetching: isStakingParamsLoading } =
-    useStakingParamsLcd(!isInitia);
+    useStakingParamsRest(!isInitia);
   const { data, isLoading } = useValidatorData(validatorAddress);
 
   const handleTabChange = useCallback(

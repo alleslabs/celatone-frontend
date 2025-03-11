@@ -65,7 +65,7 @@ const MoveCodeSnippet = ({
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     currentChainId,
-    chainConfig: { chain, lcd: lcdEndpoint, rpc: rpcEndpoint },
+    chainConfig: { chain, rest: restEndpoint, rpc: rpcEndpoint },
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();
@@ -126,7 +126,7 @@ const MoveCodeSnippet = ({
       {
         name: "Curl",
         mode: "sh",
-        snippet: `\n\ncurl '${lcdEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
+        snippet: `\n\ncurl '${restEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
 --data-raw '${formatedAbiData}'`,
       },
       {
@@ -149,7 +149,7 @@ ${daemonName} query move view $MODULE_ADDRESS \\
         mode: "javascript",
         snippet: `import { LCDClient } from '@initia/initia.js'
 
-const lcd = new LCDClient('${lcdEndpoint}', {
+const lcd = new LCDClient('${restEndpoint}', {
     chainId: '${currentChainId}',
 });
 const moduleAddress =
@@ -178,7 +178,7 @@ viewModule(moduleAddress, moduleName, fnName);`,
         mode: "javascript",
         snippet: `import { LCDClient, Wallet, MnemonicKey, MsgExecute } from '@initia/initia.js';
 
-const lcd = new LCDClient('${lcdEndpoint}', {
+const lcd = new LCDClient('${restEndpoint}', {
     chainId: '${currentChainId}',
     gasPrices: '${gasPriceStr}',
     gasAdjustment: '2.0',

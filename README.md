@@ -69,7 +69,7 @@ The website will then be live on [http://localhost:3000](http://localhost:3000)
     chain: "localinitia",
     registryChainName: "localinitia",
     prettyName: "Local Initia",
-    lcd: "http://localhost:1317",
+    rest: "http://localhost:1317",
     rpc: "http://localhost:26657",
     wallets: ["keplr"], // keplr, compass, station
     features: {

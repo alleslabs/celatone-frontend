@@ -5,7 +5,7 @@ import type { Option, TokenWithValue, USD } from "lib/types";
 
 export const zBalancesResponse = z.array(zCoin);
 
-export const zBalancesReponseLcd = z.object({
+export const zBalancesReponseRest = z.object({
   balances: zBalancesResponse,
   pagination: zPagination.nullable(),
 });

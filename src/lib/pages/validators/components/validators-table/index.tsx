@@ -7,7 +7,7 @@ import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer } from "lib/components/table";
 import { useAssetInfos } from "lib/services/assetService";
-import { useStakingParamsLcd } from "lib/services/staking";
+import { useStakingParamsRest } from "lib/services/staking";
 import type { ValidatorsResponse } from "lib/services/types";
 import type { Option } from "lib/types";
 import { getStakingAssetInfo } from "lib/utils";
@@ -48,7 +48,7 @@ export const ValidatorsTable = ({
 
   const { data: assetInfos } = useAssetInfos({ withPrices: false });
   const { data: stakingParams, isFetching: isStakingParamsLoading } =
-    useStakingParamsLcd(!isInitia);
+    useStakingParamsRest(!isInitia);
 
   if (isLoading || isStakingParamsLoading) return <Loading />;
   if (!data) return <ErrorFetching dataName="validators" />;

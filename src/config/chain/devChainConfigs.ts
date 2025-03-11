@@ -9,7 +9,7 @@ export const devChainConfigs: ChainConfig[] = [
     chain: "localinitia",
     registryChainName: "localinitia",
     prettyName: "Local Initia",
-    lcd: "http://localhost:1317",
+    rest: "http://localhost:1317",
     rpc: "http://localhost:26657",
     wallets: ["keplr"],
     features: {

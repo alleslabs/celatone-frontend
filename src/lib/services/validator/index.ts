@@ -32,13 +32,13 @@ import {
   getValidatorVotedProposals,
   getValidatorVotedProposalsAnswerCounts,
 } from "./api";
-import {
-  getValidatorDataLcd,
-  getValidatorDelegatorsLcd,
-  getValidatorsLcd,
-  getValidatorStakingProvisionsLcd,
-} from "./lcd";
 import { resolveValIdentity } from "./misc";
+import {
+  getValidatorDataRest,
+  getValidatorDelegatorsRest,
+  getValidatorsRest,
+  getValidatorStakingProvisionsRest,
+} from "./rest";
 import type {
   BlocksResponse,
   StakingProvisionsResponse,
@@ -82,16 +82,16 @@ export const useValidators = (
   );
 };
 
-export const useValidatorsLcd = (enabled = true) => {
+export const useValidatorsRest = (enabled = true) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
   return useQuery<ValidatorData[]>(
-    [CELATONE_QUERY_KEYS.VALIDATORS_LCD, lcdEndpoint],
+    [CELATONE_QUERY_KEYS.VALIDATORS_REST, restEndpoint],
     async () => {
-      const res = await getValidatorsLcd(lcdEndpoint);
+      const res = await getValidatorsRest(restEndpoint);
       return res.map((val) => ({
         ...val,
         consensusAddress: convertConsensusPubkeyToConsensusAddr(
@@ -125,19 +125,19 @@ export const useValidatorData = (
   );
 };
 
-export const useValidatorDataLcd = (
+export const useValidatorDataRest = (
   validatorAddr: ValidatorAddr,
   enabled = true
 ) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
   return useQuery<ValidatorData>(
-    [CELATONE_QUERY_KEYS.VALIDATOR_DATA_LCD, lcdEndpoint, validatorAddr],
+    [CELATONE_QUERY_KEYS.VALIDATOR_DATA_REST, restEndpoint, validatorAddr],
     async () => {
-      const res = await getValidatorDataLcd(lcdEndpoint, validatorAddr);
+      const res = await getValidatorDataRest(restEndpoint, validatorAddr);
       return {
         ...res,
         consensusAddress: convertConsensusPubkeyToConsensusAddr(
@@ -158,9 +158,9 @@ export const useValidatorStakingProvisions = (enabled: boolean) => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("validators");
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
-  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
+  const endpoint = isFullTier ? apiEndpoint : restEndpoint;
 
   const {
     chainConfig: { chain },
@@ -171,7 +171,7 @@ export const useValidatorStakingProvisions = (enabled: boolean) => {
     async () =>
       isFullTier
         ? getValidatorStakingProvisions(endpoint)
-        : getValidatorStakingProvisionsLcd(endpoint, chain),
+        : getValidatorStakingProvisionsRest(endpoint, chain),
     {
       enabled,
       retry: 1,
@@ -182,16 +182,16 @@ export const useValidatorStakingProvisions = (enabled: boolean) => {
 export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
   const isInitia = useInitia();
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   const queryFn = async () =>
-    getValidatorDelegatorsLcd(lcdEndpoint, validatorAddress, isInitia);
+    getValidatorDelegatorsRest(restEndpoint, validatorAddress, isInitia);
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.VALIDATOR_DELEGATORS,
-      lcdEndpoint,
+      restEndpoint,
       validatorAddress,
       isInitia,
     ],

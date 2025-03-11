@@ -11,7 +11,7 @@ import {
   TransactionsTable,
   ViewMore,
 } from "lib/components/table";
-import { useTxsByAddressLcd } from "lib/services/tx";
+import { useTxsByAddressRest } from "lib/services/tx";
 import type { BechAddr20 } from "lib/types";
 
 import type { TxsTableProps } from "./types";
@@ -40,7 +40,7 @@ export const TxsTableLite = ({
     },
   });
 
-  const { data, isLoading, error } = useTxsByAddressLcd(
+  const { data, isLoading, error } = useTxsByAddressRest(
     address as BechAddr20,
     undefined,
     onViewMore ? 5 : pageSize,
@@ -76,8 +76,8 @@ export const TxsTableLite = ({
               color="warning.main"
             />
             <AlertDescription>
-              Please note that account transactions are queried from the LCD and
-              may have pruned transactions that will not be displayed.
+              Please note that account transactions are queried from the Rest
+              and may have pruned transactions that will not be displayed.
             </AlertDescription>
           </Alert>
           {!isMobileOverview && (
@@ -91,7 +91,7 @@ export const TxsTableLite = ({
                   <EmptyState
                     withBorder
                     imageVariant="empty"
-                    message="There are no transactions on this account, or they have been pruned from the LCD."
+                    message="There are no transactions on this account, or they have been pruned from the REST."
                   />
                 )
               }

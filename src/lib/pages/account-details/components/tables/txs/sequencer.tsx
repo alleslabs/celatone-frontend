@@ -57,7 +57,7 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
                   <EmptyState
                     withBorder
                     imageVariant="empty"
-                    message="There are no transactions on this account, or they have been pruned from the LCD."
+                    message="There are no transactions on this account, or they have been pruned from the REST."
                   />
                 )
               }

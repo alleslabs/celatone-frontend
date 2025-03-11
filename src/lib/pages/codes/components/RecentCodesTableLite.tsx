@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { AlertPaginationLcd } from "lib/components/AlertPaginationLcd";
+import { AlertPaginationRest } from "lib/components/AlertPaginationRest";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
 import { CodesTable } from "lib/components/table";
-import { useRecentCodesLcd } from "../data";
+import { useRecentCodesRest } from "../data";
 
 export const RecentCodesTableLite = observer(() => {
   const navigate = useInternalNavigate();
@@ -16,7 +16,7 @@ export const RecentCodesTableLite = observer(() => {
     hasNextPage,
     isLoading,
     isFetchingNextPage,
-  } = useRecentCodesLcd();
+  } = useRecentCodesRest();
 
   const onRowSelect = (codeId: number) =>
     navigate({
@@ -26,7 +26,7 @@ export const RecentCodesTableLite = observer(() => {
 
   return (
     <>
-      {data && !!error && <AlertPaginationLcd />}
+      {data && !!error && <AlertPaginationRest />}
       <CodesTable
         codes={data}
         isLoading={isLoading}

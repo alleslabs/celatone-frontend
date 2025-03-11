@@ -7,7 +7,7 @@ import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { useDebounce } from "lib/hooks";
-import { useProposalDataLcd, useProposalsLcd } from "lib/services/proposal";
+import { useProposalDataRest, useProposalsRest } from "lib/services/proposal";
 import type { ProposalStatus } from "lib/types";
 import { isPositiveInt } from "lib/utils";
 
@@ -26,10 +26,13 @@ export const ProposalsTableLite = () => {
     hasNextPage,
     isLoading: isProposalsLoading,
     isFetchingNextPage,
-  } = useProposalsLcd(status[0]);
+  } = useProposalsRest(status[0]);
 
   const { data: proposalData, isFetching: isProposalDataFetching } =
-    useProposalDataLcd(Number(debouncedSearch), isPositiveInt(debouncedSearch));
+    useProposalDataRest(
+      Number(debouncedSearch),
+      isPositiveInt(debouncedSearch)
+    );
 
   const proposal = proposalData ? [proposalData] : [];
   const proposals =

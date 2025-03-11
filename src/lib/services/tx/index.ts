@@ -51,11 +51,11 @@ import {
   getTxsDataJsonRpc,
 } from "./jsonRpc";
 import {
-  getTxDataLcd,
-  getTxsByAccountAddressLcd,
-  getTxsByContractAddressLcd,
-  getTxsByHashLcd,
-} from "./lcd";
+  getTxDataRest,
+  getTxsByAccountAddressRest,
+  getTxsByContractAddressRest,
+  getTxsByHashRest,
+} from "./rest";
 import {
   getTxsByAccountAddressSequencer,
   getTxsByBlockHeightSequencer,
@@ -76,12 +76,12 @@ export const useTxData = (
 ): UseQueryResult<TxData> => {
   const {
     currentChainId,
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
 
-  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
+  const endpoint = isFullTier ? apiEndpoint : restEndpoint;
 
   const queryFn = useCallback(
     async (hash: Option<string>) => {
@@ -89,7 +89,7 @@ export const useTxData = (
 
       const txData = isFullTier
         ? await getTxData(endpoint, hash)
-        : await getTxDataLcd(endpoint, hash);
+        : await getTxDataRest(endpoint, hash);
 
       const { txResponse } = txData;
 
@@ -321,20 +321,20 @@ export const useTxsCountByAddress = (
   );
 };
 
-export const useTxsByContractAddressLcd = (
+export const useTxsByContractAddressRest = (
   address: BechAddr32,
   limit: number,
   offset: number,
   options: UseQueryOptions<TxsResponse> = {}
 ) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
   const queryfn = useCallback(
     () =>
-      getTxsByContractAddressLcd(lcdEndpoint, address, limit, offset).then(
+      getTxsByContractAddressRest(restEndpoint, address, limit, offset).then(
         (txs) => ({
           items: txs.items.map<Transaction>((tx) => ({
             ...tx,
@@ -346,13 +346,13 @@ export const useTxsByContractAddressLcd = (
           total: txs.total,
         })
       ),
-    [address, lcdEndpoint, limit, offset, bech32Prefix]
+    [address, restEndpoint, limit, offset, bech32Prefix]
   );
 
   return useQuery<TxsResponse>(
     [
-      CELATONE_QUERY_KEYS.TXS_BY_CONTRACT_ADDRESS_LCD,
-      lcdEndpoint,
+      CELATONE_QUERY_KEYS.TXS_BY_CONTRACT_ADDRESS_REST,
+      restEndpoint,
       address,
       limit,
       offset,
@@ -362,7 +362,7 @@ export const useTxsByContractAddressLcd = (
   );
 };
 
-export const useTxsByAddressLcd = (
+export const useTxsByAddressRest = (
   address: Option<BechAddr20>,
   search: Option<string>,
   limit: number,
@@ -370,7 +370,7 @@ export const useTxsByAddressLcd = (
   options: UseQueryOptions<TxsResponse> = {}
 ) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
@@ -378,10 +378,10 @@ export const useTxsByAddressLcd = (
   const queryfn = useCallback(async () => {
     const txs = await (async () => {
       if (search && isTxHash(search)) {
-        const txsByHash = await getTxsByHashLcd(lcdEndpoint, search);
+        const txsByHash = await getTxsByHashRest(restEndpoint, search);
 
         if (txsByHash.total === 0)
-          throw new Error("transaction not found (getTxsByHashLcd)");
+          throw new Error("transaction not found (getTxsByHashRest)");
 
         const tx = txsByHash.items[0];
         const sender = convertAccountPubkeyToAccountAddress(
@@ -391,15 +391,15 @@ export const useTxsByAddressLcd = (
 
         if (address === sender) return txsByHash;
 
-        throw new Error("address is not equal to sender (getTxsByHashLcd)");
+        throw new Error("address is not equal to sender (getTxsByHashRest)");
       }
 
       if (search && !isTxHash(search))
-        throw new Error("search is not a tx hash (useTxsByAddressLcd)");
+        throw new Error("search is not a tx hash (useTxsByAddressRest)");
 
       if (!address)
-        throw new Error("address is undefined (useTxsByAddressLcd)");
-      return getTxsByAccountAddressLcd(lcdEndpoint, address, limit, offset);
+        throw new Error("address is undefined (useTxsByAddressRest)");
+      return getTxsByAccountAddressRest(restEndpoint, address, limit, offset);
     })();
 
     return {
@@ -412,12 +412,12 @@ export const useTxsByAddressLcd = (
       })),
       total: txs.total,
     };
-  }, [address, lcdEndpoint, limit, offset, bech32Prefix, search]);
+  }, [address, restEndpoint, limit, offset, bech32Prefix, search]);
 
   return useQuery<TxsResponse>(
     [
-      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_LCD,
-      lcdEndpoint,
+      CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_REST,
+      restEndpoint,
       address,
       search,
       limit,
@@ -430,19 +430,19 @@ export const useTxsByAddressLcd = (
 
 export const useTxsSequencer = (limit = 10) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
   const queryfn = useCallback(
     async (pageParam: Option<string>) => {
-      return getTxsSequencer(lcdEndpoint, pageParam, limit);
+      return getTxsSequencer(restEndpoint, pageParam, limit);
     },
-    [lcdEndpoint, limit]
+    [restEndpoint, limit]
   );
 
   const { data, ...rest } = useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.TXS_SEQUENCER, lcdEndpoint, limit],
+    [CELATONE_QUERY_KEYS.TXS_SEQUENCER, restEndpoint, limit],
     ({ pageParam }) => queryfn(pageParam),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
@@ -470,12 +470,12 @@ export const useTxsSequencer = (limit = 10) => {
 
 export const useTxsCountSequencer = () => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.TXS_COUNT_SEQUENCER, lcdEndpoint],
-    async () => getTxsCountSequencer(lcdEndpoint),
+    [CELATONE_QUERY_KEYS.TXS_COUNT_SEQUENCER, restEndpoint],
+    async () => getTxsCountSequencer(restEndpoint),
     { retry: 1, refetchOnWindowFocus: false }
   );
 };
@@ -504,7 +504,7 @@ export const useTxsByAddressSequencer = (
   limit = 10
 ) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
@@ -513,7 +513,7 @@ export const useTxsByAddressSequencer = (
     async (pageParam: Option<string>) => {
       return (async () => {
         if (search && isTxHash(search)) {
-          const txsByHash = await getTxsByHashSequencer(lcdEndpoint, search);
+          const txsByHash = await getTxsByHashSequencer(restEndpoint, search);
 
           if (txsByHash.pagination.total === 0)
             throw new Error("transaction not found (getTxsByHashSequencer)");
@@ -544,20 +544,20 @@ export const useTxsByAddressSequencer = (
           throw new Error("address is undefined (useTxsByAddressSequncer)");
 
         return getTxsByAccountAddressSequencer({
-          endpoint: lcdEndpoint,
+          endpoint: restEndpoint,
           address,
           paginationKey: pageParam,
           limit,
         });
       })();
     },
-    [address, lcdEndpoint, bech32Prefix, search, limit]
+    [address, restEndpoint, bech32Prefix, search, limit]
   );
 
   const { data, ...rest } = useInfiniteQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_SEQUENCER,
-      lcdEndpoint,
+      restEndpoint,
       address,
       search,
       limit,
@@ -591,20 +591,20 @@ export const useTxsByAddressPaginationSequencer = (
   enabled = true
 ) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_ADDRESS_PAGINATION_SEQUENCER,
-      lcdEndpoint,
+      restEndpoint,
       address,
       paginationKey,
       limit,
     ],
     () =>
       getTxsByAccountAddressSequencer({
-        endpoint: lcdEndpoint,
+        endpoint: restEndpoint,
         address,
         paginationKey,
         limit,
@@ -620,19 +620,19 @@ export const useTxsByAddressPaginationSequencer = (
 
 export const useTxsByBlockHeightSequencer = (height: number) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
   return useQuery(
     [
       CELATONE_QUERY_KEYS.TXS_BY_BLOCK_HEIGHT_SEQUENCER,
-      lcdEndpoint,
+      restEndpoint,
       height,
       bech32Prefix,
     ],
     async () => {
-      const txs = await getTxsByBlockHeightSequencer(lcdEndpoint, height);
+      const txs = await getTxsByBlockHeightSequencer(restEndpoint, height);
 
       return txs.map<Transaction>((tx) => ({
         ...tx,

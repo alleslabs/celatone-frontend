@@ -66,7 +66,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
       registryChainName: chainConfig.registryChainName,
       prettyName: chainConfig.prettyName,
       logo_URIs: chainConfig.logo_URIs,
-      lcd: chainConfig.lcd,
+      rest: chainConfig.rest,
       rpc: chainConfig.rpc,
       features: pick(chainConfig.features, ["wasm", "move", "evm"]),
       gas: chainConfig.gas,
