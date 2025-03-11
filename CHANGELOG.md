@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1263](https://github.com/alleslabs/celatone-frontend/pull/1263) Support slip44 as 60
+
 ### Bug fixes
 
 ## v1.10.0

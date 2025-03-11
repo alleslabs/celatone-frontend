@@ -21,6 +21,7 @@ import { ControllerInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { useAccountBech32 } from "lib/services/account";
+import { DEFAULT_SLIP44 } from "../../constant";
 import type { AddNetworkManualForm } from "../../types";
 
 interface WalletRegistryProps {
@@ -178,7 +179,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
                 (accountBech32?.bech32Prefix ?? "init")
               )}
             </LabelText>
-            <LabelText label="Slip44">118</LabelText>
+            <LabelText label="Slip44">{`${DEFAULT_SLIP44}`}</LabelText>
           </Grid>
           <Flex
             direction="column"
