@@ -1,13 +1,13 @@
 import { EmptyState } from "lib/components/state";
 import { TableTitle, TransactionsTable } from "lib/components/table";
-import { useBlockDataLcd } from "lib/services/block";
+import { useBlockDataRest } from "lib/services/block";
 
 interface BlockTxsTableProps {
   height: number;
 }
 
 export const BlockTxsTableLite = ({ height }: BlockTxsTableProps) => {
-  const { data, isLoading } = useBlockDataLcd(height);
+  const { data, isLoading } = useBlockDataRest(height);
   const total = data?.transactions.length;
 
   return (

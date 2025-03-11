@@ -18,7 +18,7 @@ import { Loading } from "lib/components/Loading";
 import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
+import { useUploadAccessParamsRest } from "lib/services/wasm/code";
 
 const getAlertContent = (
   enabled: boolean,
@@ -55,7 +55,7 @@ const Deploy = () => {
   const {
     chainConfig: { prettyName: chainPrettyName },
   } = useCelatoneApp();
-  const { data, isFetching } = useUploadAccessParamsLcd();
+  const { data, isFetching } = useUploadAccessParamsRest();
 
   const enableUpload =
     !data?.isPermissionedNetwork ||

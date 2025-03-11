@@ -6,7 +6,7 @@ import { useCodesByAddress } from "lib/services/wasm/code";
 import {
   useAdminContractsByAddress,
   useInstantiatedContractsByAddress,
-  useInstantiatedContractsByAddressLcd,
+  useInstantiatedContractsByAddressRest,
 } from "lib/services/wasm/contract";
 import type {
   BechAddr,
@@ -110,8 +110,10 @@ export const useAccountContracts = (
   };
 };
 
-export const useAccountContractsLcd = (address: BechAddr): AccountContracts => {
-  const { data: contracts, isLoading } = useInstantiatedContractsByAddressLcd(
+export const useAccountContractsRest = (
+  address: BechAddr
+): AccountContracts => {
+  const { data: contracts, isLoading } = useInstantiatedContractsByAddressRest(
     address,
     true
   );

@@ -129,13 +129,13 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
 };
 
 export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
-  const [lcd, bech32Prefix] = useWatch({
+  const [rest, bech32Prefix] = useWatch({
     control,
-    name: ["lcd", "bech32_prefix"],
+    name: ["rest", "bech32_prefix"],
   });
 
   const { data: accountBech32, isLoading: isAccountBech32Loading } =
-    useAccountBech32(lcd);
+    useAccountBech32(rest);
 
   const {
     field: { onChange },
@@ -167,7 +167,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
       <Flex w="full" direction="column" gap={6} my={8}>
         <CustomNetworkSubheader
           title="Account Prefix and Registered Coin Type"
-          subtitle="This information is fetched from provided LCD URL"
+          subtitle="This information is fetched from provided REST URL"
         />
         <Stack bg="gray.900" py={4} px={6} rounded={8} gap={4}>
           <Grid gridTemplateColumns="repeat(2, 1fr)" gap={6}>
@@ -202,7 +202,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
             <>
               <Divider />
               <Text variant="body2" color="warning.main">
-                * Bech32 and Slip44 data is not available from LCD. The input
+                * Bech32 and Slip44 data is not available from REST. The input
                 above will be set as default.
               </Text>
             </>

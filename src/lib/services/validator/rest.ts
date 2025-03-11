@@ -2,32 +2,32 @@ import axios from "axios";
 
 import type {
   ValidatorDelegatorsResponse,
-  ValidatorInfoLcd,
+  ValidatorInfoRest,
 } from "lib/services/types";
 import {
   zValidatorDelegatorsResponse,
-  zValidatorResponseLcd,
-  zValidatorsResponseLcd,
+  zValidatorResponseRest,
+  zValidatorsResponseRest,
 } from "lib/services/types";
 import { big } from "lib/types";
 import type { Nullable, ValidatorAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
 import {
-  getAnnualProvisionsLcd,
-  getDistributionParamsLcd,
-  getEpochProvisionsLcd,
-  getMintParamsLcd,
-} from "../staking/lcd";
+  getAnnualProvisionsRest,
+  getDistributionParamsRest,
+  getEpochProvisionsRest,
+  getMintParamsRest,
+} from "../staking/rest";
 
-export const getValidatorsLcd = async (endpoint: string) => {
-  const result: ValidatorInfoLcd[] = [];
+export const getValidatorsRest = async (endpoint: string) => {
+  const result: ValidatorInfoRest[] = [];
 
   const fetchFn = async (paginationKey: Nullable<string>) => {
     const res = await axios
       .get(`${endpoint}/cosmos/staking/v1beta1/validators`, {
         params: { "pagination.key": paginationKey, "pagination.limit": "1000" },
       })
-      .then(({ data }) => parseWithError(zValidatorsResponseLcd, data));
+      .then(({ data }) => parseWithError(zValidatorsResponseRest, data));
     result.push(...res.validators);
     if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
   };
@@ -37,7 +37,7 @@ export const getValidatorsLcd = async (endpoint: string) => {
   return result;
 };
 
-export const getValidatorDataLcd = (
+export const getValidatorDataRest = (
   endpoint: string,
   validatorAddr: ValidatorAddr
 ) =>
@@ -45,16 +45,16 @@ export const getValidatorDataLcd = (
     .get(
       `${endpoint}/cosmos/staking/v1beta1/validators/${encodeURI(validatorAddr)}`
     )
-    .then(({ data }) => parseWithError(zValidatorResponseLcd, data).validator);
+    .then(({ data }) => parseWithError(zValidatorResponseRest, data).validator);
 
-export const getValidatorStakingProvisionsLcd = async (
+export const getValidatorStakingProvisionsRest = async (
   endpoint: string,
   chain: string
 ) => {
   if (chain === "osmosis") {
     const [mintParams, epochProvisions] = await Promise.all([
-      getMintParamsLcd(endpoint, chain),
-      getEpochProvisionsLcd(endpoint, chain),
+      getMintParamsRest(endpoint, chain),
+      getEpochProvisionsRest(endpoint, chain),
     ]);
 
     const stakingProportion =
@@ -80,8 +80,8 @@ export const getValidatorStakingProvisionsLcd = async (
   }
 
   const [distParams, annualProvisions] = await Promise.all([
-    getDistributionParamsLcd(endpoint),
-    getAnnualProvisionsLcd(endpoint, chain),
+    getDistributionParamsRest(endpoint),
+    getAnnualProvisionsRest(endpoint, chain),
   ]);
 
   const stakingProvisions = annualProvisions.annualProvisions.mul(
@@ -91,7 +91,7 @@ export const getValidatorStakingProvisionsLcd = async (
   return { stakingProvisions };
 };
 
-export const getValidatorDelegatorsLcd = async (
+export const getValidatorDelegatorsRest = async (
   endpoint: string,
   validatorAddress: ValidatorAddr,
   isInitia: boolean

@@ -3,8 +3,8 @@ import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import {
   useProposalData,
-  useProposalDataLcd,
-  useProposalDepositsLcd,
+  useProposalDataRest,
+  useProposalDepositsRest,
   useProposalVotesInfo,
 } from "lib/services/proposal";
 import type {
@@ -32,26 +32,26 @@ export const useDerivedProposalData = (
     id,
     isFullTier
   );
-  const { data: dataLcd, isLoading: isLcdLoading } = useProposalDataLcd(
+  const { data: dataRest, isLoading: isRestLoading } = useProposalDataRest(
     id,
     !isFullTier
   );
-  const { data: dataDepositsLcd, isLoading: isDepositsLcdLoading } =
-    useProposalDepositsLcd(id, !isFullTier);
+  const { data: dataDepositsRest, isLoading: isDepositsRestLoading } =
+    useProposalDepositsRest(id, !isFullTier);
 
   const [data, isLoading, isDepositsLoading] = isFullTier
     ? [dataApi, isApiLoading, isApiLoading]
     : [
-        dataLcd
+        dataRest
           ? {
               info: {
-                ...dataLcd,
-                proposalDeposits: dataDepositsLcd ?? [],
+                ...dataRest,
+                proposalDeposits: dataDepositsRest ?? [],
               },
             }
           : undefined,
-        isLcdLoading,
-        isDepositsLcdLoading,
+        isRestLoading,
+        isDepositsRestLoading,
       ];
 
   const { data: assetInfos, isLoading: isAssetInfosLoading } = useAssetInfos({

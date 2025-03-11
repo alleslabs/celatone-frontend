@@ -30,7 +30,7 @@ import {
 } from "./components/code-info";
 import { CodeSchemaSection } from "./components/code-schema-section";
 import { CodeVerificationSection } from "./components/CodeVerificationSection";
-import { useCodeDataLcd } from "./data";
+import { useCodeDataRest } from "./data";
 import { TabIndex, zCodeDetailsQueryParams } from "./types";
 
 const codeTabId = "codeDetailsTab";
@@ -51,8 +51,8 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const { getSchemaByCodeHash } = useSchemaStore();
 
   const resApi = useCodeData(codeId, isFullTier);
-  const resLcd = useCodeDataLcd(codeId, !isFullTier);
-  const { data, isLoading } = isFullTier ? resApi : resLcd;
+  const resRest = useCodeDataRest(codeId, !isFullTier);
+  const { data, isLoading } = isFullTier ? resApi : resRest;
 
   const {
     data: derivedWasmVerifyInfo,

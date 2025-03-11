@@ -48,7 +48,7 @@ export const AddNetworkManual = () => {
     defaultValues: {
       ...DEFAULT_GAS,
       prettyName: "",
-      lcd: "",
+      rest: "",
       rpc: "",
       chainId: "",
       registryChainName: "",
@@ -67,7 +67,7 @@ export const AddNetworkManual = () => {
   const {
     vm,
     prettyName,
-    lcd,
+    rest,
     rpc,
     chainId,
     registryChainName,
@@ -111,7 +111,7 @@ export const AddNetworkManual = () => {
       }).safeParse({
         vm,
         prettyName,
-        lcd,
+        rest,
         rpc,
         chainId,
         registryChainName,

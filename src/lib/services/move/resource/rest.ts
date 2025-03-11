@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { zResourcesResponseLcd } from "lib/services/types";
+import { zResourcesResponseRest } from "lib/services/types";
 import type {
   ResourceResponse,
   ResourceResponseItem,
@@ -8,7 +8,7 @@ import type {
 import type { Addr, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-export const getAccountResourcesLcd = async (
+export const getAccountResourcesRest = async (
   endpoint: string,
   address: Addr
 ): Promise<ResourceResponse> => {
@@ -24,7 +24,7 @@ export const getAccountResourcesLcd = async (
           },
         }
       )
-      .then(({ data }) => parseWithError(zResourcesResponseLcd, data));
+      .then(({ data }) => parseWithError(zResourcesResponseRest, data));
     result.push(...res.resources);
     if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
   };

@@ -11,7 +11,7 @@ import {
 } from "lib/types";
 import { formatSeconds, snakeToCamel } from "lib/utils";
 
-export const zStakingParamsResponseLcd = z
+export const zStakingParamsResponseRest = z
   .object({
     params: z.object({
       unbonding_time: z.string().transform((val) => formatSeconds(val)), // e.g. "1209600s"
@@ -24,7 +24,7 @@ export const zStakingParamsResponseLcd = z
   })
   .transform(snakeToCamel);
 
-export const zDistributionParamsResponseLcd = z
+export const zDistributionParamsResponseRest = z
   .object({
     params: z.object({
       community_tax: zBig,
@@ -35,13 +35,13 @@ export const zDistributionParamsResponseLcd = z
   })
   .transform(snakeToCamel);
 
-export const zAnnualProvisionsResponseLcd = z
+export const zAnnualProvisionsResponseRest = z
   .object({
     annual_provisions: zBig,
   })
   .transform(snakeToCamel);
 
-export const zMintParamsResponseLcd = z
+export const zMintParamsResponseRest = z
   .object({
     params: z.object({
       mint_denom: z.string(),
@@ -66,13 +66,13 @@ export const zMintParamsResponseLcd = z
   })
   .transform(snakeToCamel);
 
-export const zEpochProvisionsResponseLcd = z
+export const zEpochProvisionsResponseRest = z
   .object({
     epoch_provisions: zBig,
   })
   .transform(snakeToCamel);
 
-export const zDelegationsResponseLcd = z
+export const zDelegationsResponseRest = z
   .object({
     delegation_responses: z.array(
       z.object({
@@ -87,7 +87,7 @@ export const zDelegationsResponseLcd = z
   })
   .transform(snakeToCamel);
 
-export const zUnbondingsResponseLcd = z
+export const zUnbondingsResponseRest = z
   .object({
     unbonding_responses: z.array(
       z.object({
@@ -106,7 +106,7 @@ export const zUnbondingsResponseLcd = z
   })
   .transform(snakeToCamel);
 
-export const zRedelegationsResponseLcd = z
+export const zRedelegationsResponseRest = z
   .object({
     redelegation_responses: z.array(
       z.object({

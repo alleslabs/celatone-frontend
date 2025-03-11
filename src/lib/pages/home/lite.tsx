@@ -3,7 +3,7 @@ import { Flex, Heading, Spinner, Text } from "@chakra-ui/react";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import PageContainer from "lib/components/PageContainer";
-import { useLatestBlockLcd } from "lib/services/block";
+import { useLatestBlockRest } from "lib/services/block";
 
 import { QuickMenuLite, QuickMenuMobileLite } from "./components";
 
@@ -14,7 +14,7 @@ export const HomeLite = () => {
     theme,
   } = useCelatoneApp();
 
-  const { data: latestHeight, isLoading } = useLatestBlockLcd();
+  const { data: latestHeight, isLoading } = useLatestBlockRest();
 
   return (
     <PageContainer display="flex" alignItems="center">

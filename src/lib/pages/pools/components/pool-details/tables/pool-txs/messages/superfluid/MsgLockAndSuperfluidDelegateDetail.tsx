@@ -4,7 +4,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { useTxData } from "lib/services/tx";
-import { useValidatorDataLcd } from "lib/services/validator";
+import { useValidatorDataRest } from "lib/services/validator";
 import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue, extractMsgType } from "lib/utils";
 import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
@@ -52,7 +52,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
     isOpened
   );
   const { data: validator, isLoading: isValidatorLoading } =
-    useValidatorDataLcd(msg.val_addr, isOpened);
+    useValidatorDataRest(msg.val_addr, isOpened);
 
   if (isTxDataLoading || isValidatorLoading)
     return <Loading withBorder={false} />;

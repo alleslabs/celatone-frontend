@@ -18,7 +18,7 @@ import {
 } from "lib/types";
 import { parseTxHash, snakeToCamel, valoperToAddr } from "lib/utils";
 
-const zValidatorInfoLcd = z
+const zValidatorInfoRest = z
   .object({
     operator_address: zValidatorAddr,
     consensus_pubkey: zConsensusPubkey,
@@ -67,14 +67,14 @@ const zValidatorInfoLcd = z
     website: val.description.website,
     consensusPubkey: val.consensus_pubkey,
   }));
-export type ValidatorInfoLcd = z.infer<typeof zValidatorInfoLcd>;
+export type ValidatorInfoRest = z.infer<typeof zValidatorInfoRest>;
 
-export const zValidatorResponseLcd = z.object({
-  validator: zValidatorInfoLcd,
+export const zValidatorResponseRest = z.object({
+  validator: zValidatorInfoRest,
 });
 
-export const zValidatorsResponseLcd = z.object({
-  validators: z.array(zValidatorInfoLcd),
+export const zValidatorsResponseRest = z.object({
+  validators: z.array(zValidatorInfoRest),
   pagination: zPagination,
 });
 

@@ -14,12 +14,12 @@ import type { AccountType, BechAddr, Option } from "lib/types";
 
 import { getAccountData, getAccountTableCounts, getAccountType } from "./api";
 import {
-  getAccountBech32Lcd,
-  getAccountDataLcd,
-  getAccountTypeLcd,
-} from "./lcd";
+  getAccountBech32Rest,
+  getAccountDataRest,
+  getAccountTypeRest,
+} from "./rest";
 import type {
-  AccountBech32LcdResponse,
+  AccountBech32RestResponse,
   AccountData,
   AccountTableCounts,
 } from "../types";
@@ -30,16 +30,16 @@ export const useAccountData = (
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
-  const endpoint = isFullTier ? apiEndpoint : lcdEndpoint;
+  const endpoint = isFullTier ? apiEndpoint : restEndpoint;
 
   return useQuery(
     [CELATONE_QUERY_KEYS.ACCOUNT_DATA, endpoint, address],
     async () =>
       isFullTier
         ? getAccountData(endpoint, address)
-        : getAccountDataLcd(endpoint, address),
+        : getAccountDataRest(endpoint, address),
     { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
   );
 };
@@ -75,22 +75,22 @@ export const useAccountType = (
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   const queryFn = useCallback(async () => {
     if (!address)
       throw new Error(
-        "Fetching account type: failed to retrieve address. (useAccountTypeLcd)"
+        "Fetching account type: failed to retrieve address. (useAccountTypeRest)"
       );
 
     if (isFullTier) return getAccountType(apiEndpoint, address);
 
-    return getAccountTypeLcd(lcdEndpoint, address);
-  }, [lcdEndpoint, address, apiEndpoint, isFullTier]);
+    return getAccountTypeRest(restEndpoint, address);
+  }, [restEndpoint, address, apiEndpoint, isFullTier]);
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_TYPE, apiEndpoint, lcdEndpoint, address],
+    [CELATONE_QUERY_KEYS.ACCOUNT_TYPE, apiEndpoint, restEndpoint, address],
     queryFn,
     {
       ...options,
@@ -102,10 +102,10 @@ export const useAccountType = (
 
 export const useAccountBech32 = (
   endpoint: string
-): UseQueryResult<AccountBech32LcdResponse> =>
+): UseQueryResult<AccountBech32RestResponse> =>
   useQuery(
-    [CELATONE_QUERY_KEYS.ACCOUNT_BECH_32_LCD, endpoint],
-    async () => getAccountBech32Lcd(endpoint),
+    [CELATONE_QUERY_KEYS.ACCOUNT_BECH_32_REST, endpoint],
+    async () => getAccountBech32Rest(endpoint),
     {
       retry: 1,
       refetchOnWindowFocus: false,

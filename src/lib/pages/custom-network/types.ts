@@ -3,7 +3,7 @@ import { capitalize } from "lodash";
 import type { RefinementCtx } from "zod";
 import { z, ZodIssueCode } from "zod";
 
-import { getAccountBech32Lcd } from "lib/services/account/lcd";
+import { getAccountBech32Rest } from "lib/services/account/rest";
 import {
   zAsset,
   zChainConfig,
@@ -68,7 +68,7 @@ const zNetworkDetails = zChainConfig
   .innerType()
   .pick({
     prettyName: true,
-    lcd: true,
+    rest: true,
     rpc: true,
     chainId: true,
     registryChainName: true,
@@ -354,7 +354,7 @@ export const zAddNetworkManualChainConfigJson = ({
       registryChainName,
       prettyName,
       logoUri,
-      lcd,
+      rest,
       rpc,
       vm,
       gasAdjustment,
@@ -376,7 +376,7 @@ export const zAddNetworkManualChainConfigJson = ({
       logo_URIs: {
         png: logoUri || undefined,
       },
-      lcd,
+      rest,
       rpc,
       features: {
         wasm: vm.type === "wasm" ? DEFAULT_WASM_CONFIG : { enabled: false },
@@ -442,7 +442,7 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
     registryChainName: true,
     prettyName: true,
     logo_URIs: true,
-    lcd: true,
+    rest: true,
     rpc: true,
     gas: true,
     fees: true,
@@ -476,7 +476,7 @@ export type AddNetworkJsonChainConfigJson = z.infer<
 export const zAddNetworkLinkChainConfigJson = z
   .object({
     chainId: z.string().min(1, "Chain ID cannot be empty"),
-    lcd: zHttpsUrl,
+    rest: zHttpsUrl,
     rpc: zHttpsUrl,
     jsonRpc: zHttpsUrl.optional(),
     vm: z.nativeEnum(VmType),
@@ -493,7 +493,7 @@ export const zAddNetworkLinkChainConfigJson = z
     }
   })
   .transform<ChainConfig>(async (val) => {
-    const bech32Prefix = await getAccountBech32Lcd(val.lcd)
+    const bech32Prefix = await getAccountBech32Rest(val.rest)
       .then((res) => res.bech32Prefix)
       .catch(() => DEFAULT_BECH32_PREFIX);
 
@@ -502,7 +502,7 @@ export const zAddNetworkLinkChainConfigJson = z
       chainId: val.chainId,
       registryChainName: val.chainId,
       prettyName: capitalize(val.chainId),
-      lcd: val.lcd,
+      rest: val.rest,
       rpc: val.rpc,
       features: {
         wasm: val.vm === VmType.WASM ? DEFAULT_WASM_CONFIG : { enabled: false },

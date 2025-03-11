@@ -50,7 +50,7 @@ import {
 import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
 import { useGovParamsDeprecated } from "lib/model/proposal";
 import { useSimulateFeeForProposalStoreCode } from "lib/services/tx";
-import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
+import { useUploadAccessParamsRest } from "lib/services/wasm/code";
 import type { BechAddr, SimulateStatus, UploadSectionState } from "lib/types";
 import { AccessType } from "lib/types";
 import {
@@ -99,7 +99,7 @@ const StoreCodeProposal = () => {
   const { address: walletAddress } = useCurrentChain();
   const fabricateFee = useFabricateFee();
   const { data: govParams } = useGovParamsDeprecated();
-  const { data: uploadAccessParams } = useUploadAccessParamsLcd();
+  const { data: uploadAccessParams } = useUploadAccessParamsRest();
   const minDeposit = govParams?.depositParams.minDeposit;
 
   const { validateUserAddress, validateContractAddress } = useValidateAddress();

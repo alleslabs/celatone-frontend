@@ -4,15 +4,15 @@ import axios from "axios";
 import { AccountType } from "lib/types";
 import type { BechAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
-import { getIcnsNamesByAddressLcd } from "../name/lcd";
-import { zAccountBech32LcdResponse, zAccountTypeLcd } from "../types";
+import { getIcnsNamesByAddressRest } from "../name/rest";
+import { zAccountBech32RestResponse, zAccountTypeRest } from "../types";
 import type { AccountData } from "../types";
 
-export const getAccountDataLcd = async (
+export const getAccountDataRest = async (
   endpoint: string,
   address: BechAddr
 ): Promise<AccountData> => {
-  const icns = await getIcnsNamesByAddressLcd(endpoint, address);
+  const icns = await getIcnsNamesByAddressRest(endpoint, address);
 
   // TODO: Implement this function
   return {
@@ -22,24 +22,24 @@ export const getAccountDataLcd = async (
   };
 };
 
-export const getAccountTypeLcd = async (
+export const getAccountTypeRest = async (
   endpoint: string,
   address: BechAddr
 ) => {
-  const [accountTypeLcd, isContract] = await Promise.all([
+  const [accountTypeRest, isContract] = await Promise.all([
     axios
       .get(`${endpoint}/cosmos/auth/v1beta1/accounts/${encodeURI(address)}`)
-      .then(({ data }) => parseWithError(zAccountTypeLcd, data)),
+      .then(({ data }) => parseWithError(zAccountTypeRest, data)),
     axios
       .get(`${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(address)}`)
       .then(() => true)
       .catch(() => false),
   ]);
 
-  return isContract ? AccountType.ContractAccount : accountTypeLcd;
+  return isContract ? AccountType.ContractAccount : accountTypeRest;
 };
 
-export const getAccountBech32Lcd = async (endpoint: string) =>
+export const getAccountBech32Rest = async (endpoint: string) =>
   axios
     .get(`${endpoint}/cosmos/auth/v1beta1/bech32`)
-    .then(({ data }) => parseWithError(zAccountBech32LcdResponse, data));
+    .then(({ data }) => parseWithError(zAccountBech32RestResponse, data));

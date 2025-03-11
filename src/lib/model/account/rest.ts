@@ -3,17 +3,17 @@ import { useMemo } from "react";
 import { useValidateAddress } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import {
-  useCommissionsByValidatorAddressLcd,
-  useDelegationRewardsByAddressLcd,
+  useCommissionsByValidatorAddressRest,
+  useDelegationRewardsByAddressRest,
 } from "lib/services/distribution";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import {
-  useDelegationsByAddressLcd,
-  useRedelegationsByAddressLcd,
-  useStakingParamsLcd,
-  useUnbondingsByAddressLcd,
+  useDelegationsByAddressRest,
+  useRedelegationsByAddressRest,
+  useStakingParamsRest,
+  useUnbondingsByAddressRest,
 } from "lib/services/staking";
-import { useValidatorsLcd } from "lib/services/validator";
+import { useValidatorsRest } from "lib/services/validator";
 import type {
   BechAddr,
   BechAddr20,
@@ -33,7 +33,7 @@ import {
 import type { DelegationInfos } from "./types";
 import { calBonded } from "./utils";
 
-export const useAccountDelegationInfosLcd = (
+export const useAccountDelegationInfosRest = (
   address: BechAddr,
   enabled: boolean
 ) => {
@@ -52,21 +52,21 @@ export const useAccountDelegationInfosLcd = (
     });
 
   const { data: stakingParams, isFetching: isStakingParamsLoading } =
-    useStakingParamsLcd(enabled);
+    useStakingParamsRest(enabled);
   const { data: delegations, isFetching: isDelegationsLoading } =
-    useDelegationsByAddressLcd(address, enabled);
+    useDelegationsByAddressRest(address, enabled);
   const { data: unbondings, isFetching: isUnbondingsLoading } =
-    useUnbondingsByAddressLcd(address, enabled);
+    useUnbondingsByAddressRest(address, enabled);
   const { data: redelegations, isFetching: isRedelegationsLoading } =
-    useRedelegationsByAddressLcd(address, enabled);
+    useRedelegationsByAddressRest(address, enabled);
   const { data: rewards, isFetching: isRewardsLoading } =
-    useDelegationRewardsByAddressLcd(address, enabled);
+    useDelegationRewardsByAddressRest(address, enabled);
 
   const { data: commissions, isFetching: isCommissionsLoading } =
-    useCommissionsByValidatorAddressLcd(valAddr, enabled);
+    useCommissionsByValidatorAddressRest(valAddr, enabled);
 
   const { data: validators, isFetching: isValidatorsLoading } =
-    useValidatorsLcd(enabled);
+    useValidatorsRest(enabled);
   const validatorsMap = useMemo(
     () =>
       validators?.reduce<Record<ValidatorAddr, ValidatorData>>(

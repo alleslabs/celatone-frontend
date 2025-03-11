@@ -1,37 +1,39 @@
 import axios from "axios";
 
 import {
-  zAnnualProvisionsResponseLcd,
-  zDelegationsResponseLcd,
-  zDistributionParamsResponseLcd,
-  zEpochProvisionsResponseLcd,
-  zMintParamsResponseLcd,
-  zRedelegationsResponseLcd,
-  zStakingParamsResponseLcd,
-  zUnbondingsResponseLcd,
+  zAnnualProvisionsResponseRest,
+  zDelegationsResponseRest,
+  zDistributionParamsResponseRest,
+  zEpochProvisionsResponseRest,
+  zMintParamsResponseRest,
+  zRedelegationsResponseRest,
+  zStakingParamsResponseRest,
+  zUnbondingsResponseRest,
 } from "lib/services/types";
 import { big } from "lib/types";
 import type { BechAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-export const getStakingParamsLcd = (endpoint: string) =>
+export const getStakingParamsRest = (endpoint: string) =>
   axios
     .get(`${endpoint}/cosmos/staking/v1beta1/params`)
-    .then(({ data }) => parseWithError(zStakingParamsResponseLcd, data).params);
+    .then(
+      ({ data }) => parseWithError(zStakingParamsResponseRest, data).params
+    );
 
-export const getDelegationsByAddressLcd = (
+export const getDelegationsByAddressRest = (
   endpoint: string,
   address: BechAddr
 ) =>
   axios
     .get(`${endpoint}/cosmos/staking/v1beta1/delegations/${encodeURI(address)}`)
     .then(({ data }) =>
-      parseWithError(zDelegationsResponseLcd, data).delegationResponses.sort(
+      parseWithError(zDelegationsResponseRest, data).delegationResponses.sort(
         (a, b) => big(b.balance.amount).cmp(a.balance.amount)
       )
     );
 
-export const getUnbondingsByAddressLcd = (
+export const getUnbondingsByAddressRest = (
   endpoint: string,
   address: BechAddr
 ) =>
@@ -40,7 +42,7 @@ export const getUnbondingsByAddressLcd = (
       `${endpoint}/cosmos/staking/v1beta1/delegators/${encodeURI(address)}/unbonding_delegations`
     )
     .then(({ data }) =>
-      parseWithError(zUnbondingsResponseLcd, data)
+      parseWithError(zUnbondingsResponseRest, data)
         .unbondingResponses.flatMap((unbonding) =>
           unbonding.entries.map((entry) => ({
             delegatorAddress: unbonding.delegatorAddress,
@@ -51,7 +53,7 @@ export const getUnbondingsByAddressLcd = (
         .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime())
     );
 
-export const getRedelegationsByAddressLcd = (
+export const getRedelegationsByAddressRest = (
   endpoint: string,
   address: BechAddr
 ) =>
@@ -60,7 +62,7 @@ export const getRedelegationsByAddressLcd = (
       `${endpoint}/cosmos/staking/v1beta1/delegators/${encodeURI(address)}/redelegations`
     )
     .then(({ data }) =>
-      parseWithError(zRedelegationsResponseLcd, data)
+      parseWithError(zRedelegationsResponseRest, data)
         .redelegationResponses.flatMap((redelegation) =>
           redelegation.entries.map((entry) => ({
             ...redelegation.redelegation,
@@ -71,12 +73,12 @@ export const getRedelegationsByAddressLcd = (
         .sort((a, b) => a.completionTime.getTime() - b.completionTime.getTime())
     );
 
-export const getDistributionParamsLcd = (endpoint: string) =>
+export const getDistributionParamsRest = (endpoint: string) =>
   axios
     .get(`${endpoint}/cosmos/distribution/v1beta1/params`)
-    .then(({ data }) => parseWithError(zDistributionParamsResponseLcd, data));
+    .then(({ data }) => parseWithError(zDistributionParamsResponseRest, data));
 
-export const getAnnualProvisionsLcd = (endpoint: string, chain: string) => {
+export const getAnnualProvisionsRest = (endpoint: string, chain: string) => {
   if (chain === "sei")
     return {
       annualProvisions: big(0),
@@ -84,22 +86,22 @@ export const getAnnualProvisionsLcd = (endpoint: string, chain: string) => {
 
   return axios
     .get(`${endpoint}/cosmos/mint/v1beta1/annual_provisions`)
-    .then(({ data }) => parseWithError(zAnnualProvisionsResponseLcd, data));
+    .then(({ data }) => parseWithError(zAnnualProvisionsResponseRest, data));
 };
 
-export const getMintParamsLcd = (endpoint: string, chain: string) =>
+export const getMintParamsRest = (endpoint: string, chain: string) =>
   axios
     .get(
       `${endpoint}/${chain === "osmosis" ? chain : "cosmos"}/mint/v1beta1/params`
     )
-    .then(({ data }) => parseWithError(zMintParamsResponseLcd, data));
+    .then(({ data }) => parseWithError(zMintParamsResponseRest, data));
 
-export const getEpochProvisionsLcd = (endpoint: string, chain: string) => {
+export const getEpochProvisionsRest = (endpoint: string, chain: string) => {
   if (chain !== "osmosis") {
     throw new Error("Unsupported chain");
   }
 
   return axios
     .get(`${endpoint}/osmosis/mint/v1beta1/epoch_provisions`)
-    .then(({ data }) => parseWithError(zEpochProvisionsResponseLcd, data));
+    .then(({ data }) => parseWithError(zEpochProvisionsResponseRest, data));
 };

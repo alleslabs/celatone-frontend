@@ -24,7 +24,7 @@ export const CosmosKitProvider = ({
       ...endpoints,
       [config.registryChainName]: {
         rpc: [config.rpc],
-        rest: [config.lcd],
+        rest: [config.rest],
       },
     }),
     {}

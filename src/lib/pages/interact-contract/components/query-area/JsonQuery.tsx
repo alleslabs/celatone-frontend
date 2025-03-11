@@ -22,8 +22,8 @@ import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import {
-  useContractQueryLcd,
-  useContractQueryMsgsLcd,
+  useContractQueryMsgsRest,
+  useContractQueryRest,
 } from "lib/services/wasm/contract";
 import type { BechAddr32, RpcQueryError } from "lib/types";
 import {
@@ -49,7 +49,7 @@ interface JsonQueryProps {
 export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   const isMobile = useMobile();
   const { data: queryCmds = [], isFetching: isCmdsFetching } =
-    useContractQueryMsgsLcd(contractAddress);
+    useContractQueryMsgsRest(contractAddress);
   const { addActivity } = useContractStore();
   const { address } = useCurrentChain();
 
@@ -61,7 +61,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
     setRes("");
   }, [contractAddress, initialMsg]);
 
-  const { refetch, isFetching } = useContractQueryLcd(contractAddress, msg, {
+  const { refetch, isFetching } = useContractQueryRest(contractAddress, msg, {
     enabled: false,
     retry: false,
     cacheTime: 0,
