@@ -8,6 +8,22 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
   const { chainConfig, currentChainId } = useCelatoneApp();
   const enabledWasm = useWasmConfig({ shouldRedirect: false });
 
+  const testnetConfigs = {
+    registryUrl: "https://registry.testnet.initia.xyz",
+    apiUrl: "https://api.testnet.initia.xyz",
+    dexApiUrl: "https://dex-api.testnet.initia.xyz",
+    explorerUrl: "https://scan.testnet.initia.xyz",
+    swaplistUrl: "https://list.testnet.initia.xyz/pairs.json",
+    modules: {
+      usernames:
+        "0x42cd8467b1c86e59bf319e5664a09b6b5840bb3fac64f5ce690b5041c530565a",
+      dex_utils:
+        "0x42cd8467b1c86e59bf319e5664a09b6b5840bb3fac64f5ce690b5041c530565a",
+      swap_transfer:
+        "0x42cd8467b1c86e59bf319e5664a09b6b5840bb3fac64f5ce690b5041c530565a",
+    },
+  };
+
   return (
     <WalletWidgetProvider
       key={currentChainId}
@@ -39,6 +55,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
         wallet.type !== "initia" &&
         (!chainConfig.features.evm.enabled || wallet.type === "evm")
       }
+      {...(chainConfig.network_type === "testnet" && testnetConfigs)}
     >
       {children}
     </WalletWidgetProvider>
