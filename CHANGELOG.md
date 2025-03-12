@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1265](https://github.com/alleslabs/celatone-frontend/pull/1265) Add custom network coin type
 - [#1263](https://github.com/alleslabs/celatone-frontend/pull/1263) Support slip44 as 60
 
 ### Bug fixes

@@ -28,6 +28,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
               network_type: "devnet",
               pretty_name: chainConfig.prettyName,
               staking: chainConfig.registry?.staking,
+              slip44: chainConfig.registry?.slip44,
             }
           : undefined
       }
