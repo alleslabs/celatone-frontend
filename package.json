@@ -70,9 +70,10 @@
     "@emotion/styled": "^11.11.0",
     "@floating-ui/react": "0.26.28",
     "@hookform/resolvers": "^3.9.0",
-    "@initia/initia.js": "0.2.26",
-    "@initia/initia.proto": "0.2.4",
-    "@initia/react-wallet-widget": "0.216.0",
+    "@initia/initia.js": "0.2.30",
+    "@initia/initia.proto": "0.2.6",
+    "@initia/react-wallet-widget": "1.0.0",
+    "@initia/utils": "1.0.0",
     "@interchain-ui/react": "1.23.9",
     "@monaco-editor/react": "^4.6.0",
     "@rjsf/chakra-ui": "v5.18.1",
@@ -133,10 +134,12 @@
     "snake-case": "^3.0.4",
     "use-clamp-text": "^1.1.0",
     "uuid": "^9.0.1",
-    "zod": "^3.22.4"
+    "zod": "^3.24.2"
   },
   "resolutions": {
-    "@chain-registry/types": "0.45.20"
+    "@chain-registry/types": "0.45.20",
+    "@initia/wallet-widget": "1.0.0",
+    "@initia/utils": "1.0.0"
   },
   "devDependencies": {
     "@chakra-ui/storybook-addon": "^5.1.0",
