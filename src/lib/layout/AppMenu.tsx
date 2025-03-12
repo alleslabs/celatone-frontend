@@ -33,6 +33,11 @@ const appList = [
     logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/bridge.svg",
     link: getAppLink("bridge"),
   },
+  {
+    name: "multisig",
+    logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/multisig.svg",
+    link: getAppLink("multisig"),
+  },
   SUPPORTED_NETWORK_TYPES[0] === "mainnet"
     ? null
     : {
