@@ -3,7 +3,7 @@ import type { SystemStyleObject } from "@chakra-ui/styled-system";
 import type { Props } from "chakra-react-select";
 import { Select } from "chakra-react-select";
 
-type SelectInputOptionValue = object | string | boolean | null | number;
+type SelectInputOptionValue = object | string | boolean | number | null;
 
 export interface SelectInputOption<OptionValue extends SelectInputOptionValue> {
   label: string;

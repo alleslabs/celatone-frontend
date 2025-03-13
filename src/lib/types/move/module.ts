@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { snakeToCamel } from "lib/utils";
+import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
 import type { ExposedFunction, ModuleAbi } from "./abi";
 import type { HexAddr } from "../addrs";
 import type { Nullable } from "../common";
