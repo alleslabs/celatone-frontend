@@ -13,8 +13,14 @@ import {
   zMoveVerifyInfosByAddressResponse,
   zSubmitMoveVerifyResponse,
 } from "lib/services/types";
+import { zMoveVerifyConfig } from "lib/types";
 import type { Addr, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
+
+export const getMoveVerifyConfig = async () =>
+  axios
+    .get(`${CELATONE_VERIFICATION_API}/move/config`)
+    .then(({ data }) => zMoveVerifyConfig.parse(data));
 
 export const submitMoveVerify = async (
   formData: FormData

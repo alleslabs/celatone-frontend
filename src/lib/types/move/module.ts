@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { snakeToCamel } from "lib/utils";
 import type { ExposedFunction, ModuleAbi } from "./abi";
 import type { HexAddr } from "../addrs";
 import type { Nullable } from "../common";
@@ -44,3 +46,15 @@ export enum MoveVerifyStatus {
   NotVerified = "NOT_VERIFIED",
   Outdated = "OUTDATED",
 }
+
+export const zMoveVerifyConfig = z
+  .object({
+    enable_compiler_versions: z.array(z.string()),
+    enable_language_versions: z.array(z.string()),
+    enable_bytecode_versions: z.array(z.number()),
+    default_compiler_version: z.string(),
+    default_language_version: z.string(),
+    default_bytecode_version: z.number(),
+  })
+  .transform((val) => snakeToCamel(val));
+export type MoveVerifyConfig = z.infer<typeof zMoveVerifyConfig>;
