@@ -5,8 +5,8 @@ import type { Control } from "react-hook-form";
 
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { jsonPrettify } from "lib/utils";
+import { generateFileMap } from "../helpers";
 import type { ModuleVerifyForm } from "../types";
-import { generateFileMap } from "../utils";
 
 interface ModuleVerifyFileMapProps {
   control: Control<ModuleVerifyForm>;
