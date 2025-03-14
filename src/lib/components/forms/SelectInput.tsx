@@ -3,7 +3,7 @@ import type { SystemStyleObject } from "@chakra-ui/styled-system";
 import type { Props } from "chakra-react-select";
 import { Select } from "chakra-react-select";
 
-type SelectInputOptionValue = object | string | boolean | null;
+type SelectInputOptionValue = object | string | boolean | number | null;
 
 export interface SelectInputOption<OptionValue extends SelectInputOptionValue> {
   label: string;
@@ -16,6 +16,7 @@ interface SelectInputProps<
   IsMulti extends boolean = false,
 > extends Props<SelectInputOption<OptionValue>, IsMulti> {
   label?: string;
+  labelBg?: string;
   isRequired?: boolean;
 }
 
@@ -55,6 +56,7 @@ export const SelectInput = <
   label,
   isRequired,
   isDisabled,
+  labelBg = "background.main",
 }: SelectInputProps<OptionValue, IsMulti>) => (
   <Stack position="relative">
     {label && (
@@ -67,7 +69,7 @@ export const SelectInput = <
           position: "absolute",
           ml: 3,
           px: 1,
-          bg: "background.main",
+          bg: labelBg,
           top: -2,
           zIndex: 1,
           "::after": {
@@ -118,7 +120,7 @@ export const SelectInput = <
         option: (provided) => ({
           ...provided,
           color: "text.main",
-          fontSize: "16px",
+          fontSize: size === "sm" ? "14px" : "16px",
           _hover: {
             bg: "gray.700",
           },

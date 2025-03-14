@@ -87,7 +87,11 @@ export const ModuleInfoBody = ({
                   showCopyOnHover
                 />
               ) : (
-                "N/A"
+                <>
+                  {modulePublishInfo?.recentPublishBlockHeight === 0
+                    ? "Genesis"
+                    : "N/A"}
+                </>
               )}
             </LabelText>
           )}

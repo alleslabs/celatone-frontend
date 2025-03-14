@@ -12,6 +12,7 @@ export interface LabelTextProps extends FlexProps {
   children?: string | JSX.Element;
   helperText1?: string;
   helperText2?: string;
+  minWidth?: string;
 }
 
 export const LabelText = ({
@@ -23,10 +24,11 @@ export const LabelText = ({
   children,
   helperText1,
   helperText2,
+  minWidth,
   ...flexProps
 }: LabelTextProps) => (
   <Flex direction="column" gap={1} {...flexProps}>
-    <Flex align="center" gap={1}>
+    <Flex align="center" gap={1} minWidth={minWidth}>
       <Text
         variant={isSmall ? "body3" : "body2"}
         color={labelColor}

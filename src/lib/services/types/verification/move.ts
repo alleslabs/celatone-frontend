@@ -33,11 +33,12 @@ export const zMoveVerifyByTaskIdResponse = z.object({
   }),
   result: z
     .object({
-      moduleIdentifiers: z.array(zMoveVerificationModuleIdentifier),
-      chainId: z.string(),
-      verifiedAt: z.coerce.date(),
+      module_identifiers: z.array(zMoveVerificationModuleIdentifier),
+      chain_id: z.string(),
+      verified_at: z.coerce.date(),
     })
-    .nullable(),
+    .optional()
+    .transform((val) => (val ? snakeToCamel(val) : undefined)),
 });
 export type MoveVerifyByTaskIdResponse = z.infer<
   typeof zMoveVerifyByTaskIdResponse

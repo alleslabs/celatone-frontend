@@ -41,15 +41,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1265](https://github.com/alleslabs/celatone-frontend/pull/1265) Add custom network coin type
-- [#1263](https://github.com/alleslabs/celatone-frontend/pull/1263) Support slip44 as 60
-
 ### Bug fixes
 
 ## v1.10.0
 
 ### Features
 
+- [#1257](https://github.com/alleslabs/celatone-frontend/pull/1257) Add EVM transaction event logs
+- [#1262](https://github.com/alleslabs/celatone-frontend/pull/1262) Change Move verification API path and response
 - [#1250](https://github.com/alleslabs/celatone-frontend/pull/1250) Add evm code snippet modal and fix input fields
 - [#1247](https://github.com/alleslabs/celatone-frontend/pull/1247) Support multi address creation txs
 - [#1245](https://github.com/alleslabs/celatone-frontend/pull/1245) Support assets from assetlist in chain config
@@ -95,6 +94,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1267](https://github.com/alleslabs/celatone-frontend/pull/1267) Add advanced options to Move verification
+- [#1265](https://github.com/alleslabs/celatone-frontend/pull/1265) Add custom network coin type
+- [#1263](https://github.com/alleslabs/celatone-frontend/pull/1263) Support slip44 as 60
+- [#1262](https://github.com/alleslabs/celatone-frontend/pull/1262) Remove unused packages, bump packages, and add signAsKeplr when using wasm
+- [#1261](https://github.com/alleslabs/celatone-frontend/pull/1261) Update Move verification API path and response
+- [#1256](https://github.com/alleslabs/celatone-frontend/pull/1256) Remove Bytecodes for non primary instantiated EVM contracts
+- [#1255](https://github.com/alleslabs/celatone-frontend/pull/1255) Remove layout scrollbar and implementation address link
 - [#1252](https://github.com/alleslabs/celatone-frontend/pull/1252) Improve EVM verify error details
 - [#1253](https://github.com/alleslabs/celatone-frontend/pull/1253) Filter initia wallet, change isInitia logic, and theme logic
 - [#1249](https://github.com/alleslabs/celatone-frontend/pull/1249) Improve import order

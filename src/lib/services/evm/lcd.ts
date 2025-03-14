@@ -36,15 +36,25 @@ export const getEvmContractInfoSequencer = async (
   const tx = txs.items[0];
   const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
 
-  const foundMsgCreate = tx.messages.find(
+  const eventCreates = tx.events?.filter(
+    (event) =>
+      event.type === "create" && event.attributes[0]?.key === "contract"
+  );
+  const eventCreateIndex = eventCreates?.findIndex(
+    (event) => event.attributes[0]?.key === "contract"
+  );
+  const msgCreates = tx.messages.filter(
     (msg) => msg.type === "/minievm.evm.v1.MsgCreate"
   );
-  const evmMsgCreate = zEvmMsgCreate.parse(foundMsgCreate);
+  const code =
+    eventCreateIndex && eventCreateIndex >= 0
+      ? zEvmMsgCreate.parse(msgCreates[eventCreateIndex]).code
+      : undefined;
 
   return {
     hash: tx.hash,
     sender,
     created: tx.created,
-    code: evmMsgCreate.code,
+    code,
   };
 };

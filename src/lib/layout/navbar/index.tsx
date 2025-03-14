@@ -5,7 +5,6 @@ import type { Dispatch, SetStateAction } from "react";
 import {
   useCurrentChain,
   useEvmConfig,
-  useInitiaL1,
   useMoveConfig,
   usePublicProjectConfig,
   useTierConfig,
@@ -42,7 +41,6 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   const evm = useEvmConfig({ shouldRedirect: false });
-  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
 
   const { getSavedPublicProjects } = usePublicProjectStore();
   const publicProject = usePublicProjectConfig({ shouldRedirect: false });
@@ -82,7 +80,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                           slug: "/saved-accounts",
                           icon: "admin" as IconKeys,
                         },
-                        ...getDeviceSubmenuMove(isInitiaL1),
+                        ...getDeviceSubmenuMove(move.enabled),
                         ...getDeviceSubmenuWasm(wasm.enabled),
                       ],
                     },
