@@ -11,10 +11,21 @@ import type { Addr, HexAddr, Option } from "lib/types";
 
 import {
   getMoveVerifyByTaskId,
+  getMoveVerifyConfig,
   getMoveVerifyInfo,
   getMoveVerifyInfosByAddress,
   submitMoveVerify,
 } from "./api";
+
+export const useMoveVerifyConfig = () =>
+  useQuery({
+    queryKey: [CELATONE_QUERY_KEYS.MOVE_VERIFY_CONFIG],
+    queryFn: getMoveVerifyConfig,
+    refetchOnWindowFocus: false,
+    retry: 1,
+    staleTime: Infinity,
+    retryOnMount: false,
+  });
 
 export const useSubmitMoveVerify = () =>
   useMutation({

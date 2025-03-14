@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1267](https://github.com/alleslabs/celatone-frontend/pull/1267) Add advanced options to Move verification
 - [#1265](https://github.com/alleslabs/celatone-frontend/pull/1265) Add custom network coin type
 - [#1263](https://github.com/alleslabs/celatone-frontend/pull/1263) Support slip44 as 60
 - [#1262](https://github.com/alleslabs/celatone-frontend/pull/1262) Remove unused packages, bump packages, and add signAsKeplr when using wasm
