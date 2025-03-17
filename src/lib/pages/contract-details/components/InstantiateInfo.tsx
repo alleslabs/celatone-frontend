@@ -11,7 +11,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { WasmVerifySubmitModal } from "lib/components/modal";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
-import type { Contract, ContractRestApi } from "lib/services/types";
+import type { Contract, ContractApi } from "lib/services/types";
 import type { CodeLocalInfo } from "lib/stores/code";
 import type { Nullable, Nullish, Option, WasmVerifyInfo } from "lib/types";
 import { WasmVerifyStatus } from "lib/types";
@@ -25,7 +25,7 @@ import { getAddressTypeText } from "lib/utils/address";
 
 interface InstantiateInfoProps {
   contract: Contract;
-  contractRest: Nullable<ContractRestApi>;
+  contractApi: Nullable<ContractApi>;
   codeLocalInfo: Option<CodeLocalInfo>;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
@@ -109,7 +109,7 @@ const InitRender = ({
 
 export const InstantiateInfo = ({
   contract,
-  contractRest,
+  contractApi,
   codeLocalInfo,
   wasmVerifyInfo,
 }: InstantiateInfoProps) => {
@@ -254,9 +254,9 @@ export const InstantiateInfo = ({
         )}
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
-        {contractRest?.contract_info.ibc_port_id && (
+        {contractApi?.contract_info.ibc_port_id && (
           <LabelText label="IBC Port ID">
-            <PortIdRender portId={contractRest.contract_info.ibc_port_id} />
+            <PortIdRender portId={contractApi.contract_info.ibc_port_id} />
           </LabelText>
         )}
       </Flex>

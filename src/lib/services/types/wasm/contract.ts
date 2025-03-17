@@ -18,7 +18,7 @@ const zContractCreated = z.object({
   tx_index: z.coerce.number(),
 });
 
-const zContractRestApi = z.object({
+const zContractApi = z.object({
   address: zBechAddr32,
   contract_info: z.object({
     code_id: z.string(),
@@ -30,7 +30,7 @@ const zContractRestApi = z.object({
     extension: z.string().nullable(),
   }),
 });
-export type ContractRestApi = z.infer<typeof zContractRestApi>;
+export type ContractApi = z.infer<typeof zContractApi>;
 
 const zContractsResponseItem = z
   .object({
@@ -109,43 +109,41 @@ export type Contract = z.infer<typeof zContract>;
 export const zContractData = z
   .object({
     contract: zContract,
-    contract_rest: zContractRestApi.nullable(),
+    contract_rest: zContractApi.nullable(),
     project_info: zProjectInfo.nullable(),
     public_info: zPublicContractInfo.nullable(),
   })
   .transform(({ contract_rest, ...rest }) => ({
     ...snakeToCamel(rest),
-    contractRest: contract_rest,
+    contractApi: contract_rest,
   }));
 export type ContractData = z.infer<typeof zContractData>;
 
-export const zContractRest = zContractRestApi.transform<ContractData>(
-  (val) => ({
-    contract: {
-      address: val.address,
-      admin: val.contract_info.admin.length
-        ? zBechAddr.parse(val.contract_info.admin)
-        : null,
-      codeId: Number(val.contract_info.code_id),
-      codeHash: "",
-      createdHeight: val.contract_info.created
-        ? Number(val.contract_info.created.block_height)
-        : null,
-      createdTimestamp: null,
-      cw2Contract: null,
-      cw2Version: null,
-      initMsg: "",
-      initProposalId: null,
-      initProposalTitle: null,
-      initTxHash: null,
-      instantiator: val.contract_info.creator,
-      label: val.contract_info.label,
-    },
-    contractRest: val,
-    projectInfo: null,
-    publicInfo: null,
-  })
-);
+export const zContractRest = zContractApi.transform<ContractData>((val) => ({
+  contract: {
+    address: val.address,
+    admin: val.contract_info.admin.length
+      ? zBechAddr.parse(val.contract_info.admin)
+      : null,
+    codeId: Number(val.contract_info.code_id),
+    codeHash: "",
+    createdHeight: val.contract_info.created
+      ? Number(val.contract_info.created.block_height)
+      : null,
+    createdTimestamp: null,
+    cw2Contract: null,
+    cw2Version: null,
+    initMsg: "",
+    initProposalId: null,
+    initProposalTitle: null,
+    initTxHash: null,
+    instantiator: val.contract_info.creator,
+    label: val.contract_info.label,
+  },
+  contractApi: val,
+  projectInfo: null,
+  publicInfo: null,
+}));
 
 export const zContractTableCounts = z
   .object({
