@@ -37,8 +37,8 @@ export const zMoveVerifyByTaskIdResponse = z.object({
       chain_id: z.string(),
       verified_at: z.coerce.date(),
     })
-    .nullable()
-    .transform((val) => (val ? snakeToCamel(val) : null)),
+    .optional()
+    .transform((val) => (val ? snakeToCamel(val) : undefined)),
 });
 export type MoveVerifyByTaskIdResponse = z.infer<
   typeof zMoveVerifyByTaskIdResponse

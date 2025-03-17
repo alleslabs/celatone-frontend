@@ -6,6 +6,8 @@ settings:
 
 overrides:
   '@chain-registry/types': 0.45.20
+  '@initia/wallet-widget': 1.0.0
+  '@initia/utils': 1.0.0
 
 importers:
 
@@ -96,14 +98,17 @@ importers:
         specifier: ^3.9.0
         version: 3.10.0(react-hook-form@7.54.2(react@18.3.1))
       '@initia/initia.js':
-        specifier: 0.2.26
-        version: 0.2.26(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
+        specifier: 0.2.30
+        version: 0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
       '@initia/initia.proto':
-        specifier: 0.2.4
-        version: 0.2.4
+        specifier: 0.2.6
+        version: 0.2.6
       '@initia/react-wallet-widget':
-        specifier: 0.216.0
-        version: 0.216.0(lzdq2lddcrxw2hmvklccysthxi)
+        specifier: 1.0.0
+        version: 1.0.0(hdllajclw73kfsmpcjiurgxmse)
+      '@initia/utils':
+        specifier: 1.0.0
+        version: 1.0.0(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@0.0.28)(@initia/initia.js@0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@0.2.6)(@initia/opinit.proto@0.0.11)(@keplr-wallet/types@0.12.194(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.7.5)(long@5.2.3)(ramda@0.29.0)(rxjs@7.8.1)(zod@3.24.2)
       '@interchain-ui/react':
         specifier: 1.23.9
         version: 1.23.9(@types/react@18.3.18)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -285,8 +290,8 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1
       zod:
-        specifier: ^3.22.4
-        version: 3.24.1
+        specifier: ^3.24.2
+        version: 3.24.2
     devDependencies:
       '@chakra-ui/storybook-addon':
         specifier: ^5.1.0
@@ -2240,15 +2245,12 @@ packages:
   '@initia/initia-registry-types@0.0.28':
     resolution: {integrity: sha512-5DoZXI+xN1ky2l0NuyZkeHavXm60JdFmEOmRfVVlnr7qn6Iguc6IyhLaIPJ+E3ob2o9fVHkadU93PHgea5Y2tQ==}
 
-  '@initia/initia.js@0.2.26':
-    resolution: {integrity: sha512-qlChzqPi7I45kxs+ef/8JSP9r7i/nZS0Mx7H3zkBKiXGbg4lgsADyirxT1hsP0JVvpmu0Q+CD8kwx44yRZgFkA==}
+  '@initia/initia.js@0.2.30':
+    resolution: {integrity: sha512-L38CwqK8fcIC2iiPRD6CQN3kGlya7z1mVWA0OPjSdQMNubMXbk9QJFuQXRw8IhkOqsr+wRPVu4zwFUxI85nhDA==}
     engines: {node: '>=20'}
 
-  '@initia/initia.proto@0.2.4':
-    resolution: {integrity: sha512-/QTENbGto8MxoTrYxw0qQFU3IjCeEv3KEmeAmd1DgVzXrLVBimZjSYSW72JfDVQrNaXEeNTCtLjd5ZivWPbcLA==}
-
-  '@initia/initia.proto@0.2.5':
-    resolution: {integrity: sha512-luTUKU28TjzFJlrQ2XODbZ6Ah7lytl3R9viuBqjiyKR3d24HkfYIIEnXyThYA8vaQWy/zEcJA2c7J43rSnlo+g==}
+  '@initia/initia.proto@0.2.6':
+    resolution: {integrity: sha512-khiCPUxZTkyAl+SQbQCOlcJId/a0ToUhG+ChrVXN9a+1ypPz5355j2UP2IvnUf+lAix/+zzdekcqO/Lig7htAQ==}
 
   '@initia/opinit.proto@0.0.11':
     resolution: {integrity: sha512-Op9GIlXiV1xhUIjVQ2TFE9a3X8iyFVNtJNHCM34gwLQHJktDNm2KCoW4eHh6pkn4//ECRVH7zuKgV8TdZWogCw==}
@@ -2256,21 +2258,21 @@ packages:
   '@initia/opinit.proto@0.0.8':
     resolution: {integrity: sha512-MddIGje1CX2lT+jezpWDQv7ex/wLbAK9qCHu+RM/kY13yOwzMeeD539Au2llVB4LWwPEkd0h71HwxJWE78IE1A==}
 
-  '@initia/react-wallet-widget@0.216.0':
-    resolution: {integrity: sha512-pDSNBPQvAGhNd/6bHxaZUN0ppY7WrSuRkkz2CtqwBSc7pJPgKYBVKzX9Cr28KBhtxjiokUdVwrofpkMnKiM3XQ==}
+  '@initia/react-wallet-widget@1.0.0':
+    resolution: {integrity: sha512-CjqkMhQIKB4kB4L/LE5ofLNY7tvsshanQaGbcSvNbLimDdn/VTDk9fad7aVjL9i3BJY93HcMHExZUAI36f3fiA==}
     peerDependencies:
       '@cosmjs/proto-signing': ^0.33.0
       '@initia/initia.js': ^0.2.30
-      '@initia/utils': ^0.125.0
-      '@initia/wallet-widget': ^0.216.0
+      '@initia/utils': 1.0.0
+      '@initia/wallet-widget': 1.0.0
       '@keplr-wallet/types': ^0.12.190
       cosmjs-types: ^0.9.0
       ethers: ^6.13.5
       react: ^19.0.0
       rxjs: ^7.8.2
 
-  '@initia/utils@0.125.0':
-    resolution: {integrity: sha512-VzAwOYHQtGK7zZ9L6wKb4zTUNHHEJXkZTqlP3kFgKs2gKWvUtr3Ey3uOzdoc31cnq+y0WNRIsYDFLe5/jfD5DQ==}
+  '@initia/utils@1.0.0':
+    resolution: {integrity: sha512-2wav7Zx3p8whWN+bRgblB9hvxl9+cdyhmJDK3+ydJZELaVrm0i8SbORXkEERG7Ll7SmyArr4fV3dvqx97L76lw==}
     peerDependencies:
       '@cosmjs/amino': ^0.33.0
       '@cosmjs/encoding': ^0.33.0
@@ -10823,8 +10825,8 @@ packages:
     resolution: {integrity: sha512-b4JR1PFR10y1mKjhHY9LaGo6tmrgjit7hxVIeAmyMw3jegXR4dhYqLaQF5zMXZxY7tLpMyJeLjr1C4rLmkVe8g==}
     engines: {node: '>=12.20'}
 
-  zod@3.24.1:
-    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
+  zod@3.24.2:
+    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
 
   zustand@4.5.6:
     resolution: {integrity: sha512-ibr/n1hBzLLj5Y+yUcU7dYw8p6WnIVzdJbnX+1YpaScvZVF2ziugqHs+LAmHw4lWO9c/zRj+K1ncgWDQuthEdQ==}
@@ -10852,7 +10854,7 @@ snapshots:
 
   '@alleslabs/legacy-bcs@0.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)':
     dependencies:
-      '@initia/initia.proto': 0.2.4
+      '@initia/initia.proto': 0.2.6
       '@initia/opinit.proto': 0.0.8
       '@ledgerhq/hw-transport': 6.31.4
       '@ledgerhq/hw-transport-webhid': 6.30.0
@@ -13556,12 +13558,12 @@ snapshots:
 
   '@initia/initia-registry-types@0.0.28':
     dependencies:
-      zod: 3.24.1
+      zod: 3.24.2
 
-  '@initia/initia.js@0.2.26(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)':
+  '@initia/initia.js@0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@bitcoinerlab/secp256k1': 1.2.0
-      '@initia/initia.proto': 0.2.5
+      '@initia/initia.proto': 0.2.6
       '@initia/opinit.proto': 0.0.11
       '@ledgerhq/hw-transport': 6.31.4
       '@ledgerhq/hw-transport-webhid': 6.30.0
@@ -13584,55 +13586,48 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@initia/initia.proto@0.2.4':
+  '@initia/initia.proto@0.2.6':
     dependencies:
       '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.4)
       google-protobuf: 3.21.4
-      long: 5.2.3
-      protobufjs: 7.4.0
-
-  '@initia/initia.proto@0.2.5':
-    dependencies:
-      '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.4)
-      google-protobuf: 3.21.4
-      long: 5.2.3
+      long: 5.3.1
       protobufjs: 7.4.0
 
   '@initia/opinit.proto@0.0.11':
     dependencies:
       '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.4)
       google-protobuf: 3.21.4
-      long: 5.2.3
+      long: 5.3.1
       protobufjs: 7.4.0
 
   '@initia/opinit.proto@0.0.8':
     dependencies:
       '@improbable-eng/grpc-web': 0.15.0(google-protobuf@3.21.4)
       google-protobuf: 3.21.4
-      long: 5.2.3
+      long: 5.3.1
       protobufjs: 7.4.0
 
-  '@initia/react-wallet-widget@0.216.0(lzdq2lddcrxw2hmvklccysthxi)':
+  '@initia/react-wallet-widget@1.0.0(hdllajclw73kfsmpcjiurgxmse)':
     dependencies:
       '@cosmjs/proto-signing': 0.32.4
-      '@initia/initia.js': 0.2.26(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
-      '@initia/utils': 0.125.0(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@0.0.28)(@initia/initia.js@0.2.26(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@0.2.4)(@initia/opinit.proto@0.0.11)(@keplr-wallet/types@0.12.194(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.7.5)(long@5.2.3)(ramda@0.29.0)(rxjs@7.8.1)(zod@3.24.1)
-      '@initia/wallet-widget': 0.216.0(@initia/icons-svelte@0.2.7(svelte@4.2.19))(@initia/initia.js@0.2.26(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@ledgerhq/errors@6.19.1)(@ledgerhq/hw-transport-webhid@6.30.0)(@ledgerhq/hw-transport@6.31.4)(@tanstack/svelte-query@5.67.2(svelte@4.2.19))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(js-cookie@3.0.5)(starknet@6.11.0)(tslib@2.8.1)(typescript@5.3.3)(utf-8-validate@5.0.10)(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))
+      '@initia/initia.js': 0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
+      '@initia/utils': 1.0.0(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@0.0.28)(@initia/initia.js@0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@0.2.6)(@initia/opinit.proto@0.0.11)(@keplr-wallet/types@0.12.194(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.7.5)(long@5.2.3)(ramda@0.29.0)(rxjs@7.8.1)(zod@3.24.2)
+      '@initia/wallet-widget': 0.216.0(@initia/icons-svelte@0.2.7(svelte@4.2.19))(@initia/initia.js@0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@ledgerhq/errors@6.19.1)(@ledgerhq/hw-transport-webhid@6.30.0)(@ledgerhq/hw-transport@6.31.4)(@tanstack/svelte-query@5.67.2(svelte@4.2.19))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(js-cookie@3.0.5)(starknet@6.11.0)(tslib@2.8.1)(typescript@5.3.3)(utf-8-validate@5.0.10)(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))
       '@keplr-wallet/types': 0.12.194(starknet@6.11.0)
       cosmjs-types: 0.9.0
       ethers: 6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       react: 18.3.1
       rxjs: 7.8.1
 
-  '@initia/utils@0.125.0(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@0.0.28)(@initia/initia.js@0.2.26(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@0.2.4)(@initia/opinit.proto@0.0.11)(@keplr-wallet/types@0.12.194(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.7.5)(long@5.2.3)(ramda@0.29.0)(rxjs@7.8.1)(zod@3.24.1)':
+  '@initia/utils@1.0.0(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@0.0.28)(@initia/initia.js@0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@0.2.6)(@initia/opinit.proto@0.0.11)(@keplr-wallet/types@0.12.194(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.7.5)(long@5.2.3)(ramda@0.29.0)(rxjs@7.8.1)(zod@3.24.2)':
     dependencies:
       '@cosmjs/amino': 0.32.4
       '@cosmjs/encoding': 0.32.4
       '@cosmjs/proto-signing': 0.32.4
       '@cosmjs/stargate': 0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@initia/initia-registry-types': 0.0.28
-      '@initia/initia.js': 0.2.26(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
-      '@initia/initia.proto': 0.2.4
+      '@initia/initia.js': 0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
+      '@initia/initia.proto': 0.2.6
       '@initia/opinit.proto': 0.0.11
       '@keplr-wallet/types': 0.12.194(starknet@6.11.0)
       '@msgpack/msgpack': 3.1.0
@@ -13648,12 +13643,12 @@ snapshots:
       long: 5.2.3
       ramda: 0.29.0
       rxjs: 7.8.1
-      zod: 3.24.1
+      zod: 3.24.2
 
-  '@initia/wallet-widget@0.216.0(@initia/icons-svelte@0.2.7(svelte@4.2.19))(@initia/initia.js@0.2.26(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@ledgerhq/errors@6.19.1)(@ledgerhq/hw-transport-webhid@6.30.0)(@ledgerhq/hw-transport@6.31.4)(@tanstack/svelte-query@5.67.2(svelte@4.2.19))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(js-cookie@3.0.5)(starknet@6.11.0)(tslib@2.8.1)(typescript@5.3.3)(utf-8-validate@5.0.10)(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
+  '@initia/wallet-widget@0.216.0(@initia/icons-svelte@0.2.7(svelte@4.2.19))(@initia/initia.js@0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@ledgerhq/errors@6.19.1)(@ledgerhq/hw-transport-webhid@6.30.0)(@ledgerhq/hw-transport@6.31.4)(@tanstack/svelte-query@5.67.2(svelte@4.2.19))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(js-cookie@3.0.5)(starknet@6.11.0)(tslib@2.8.1)(typescript@5.3.3)(utf-8-validate@5.0.10)(ws@7.5.10(bufferutil@4.0.9)(utf-8-validate@5.0.10))':
     dependencies:
       '@initia/icons-svelte': 0.2.7(svelte@4.2.19)
-      '@initia/initia.js': 0.2.26(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
+      '@initia/initia.js': 0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)
       '@keplr-wallet/types': 0.12.194(starknet@6.11.0)
       '@layerzerolabs/lz-v2-utilities': 3.0.75
       '@ledgerhq/errors': 6.19.1
@@ -18232,8 +18227,8 @@ snapshots:
 
   bip32@5.0.0-rc.0(typescript@5.3.3):
     dependencies:
-      '@noble/hashes': 1.7.0
-      '@scure/base': 1.1.9
+      '@noble/hashes': 1.7.1
+      '@scure/base': 1.2.4
       uint8array-tools: 0.0.8
       valibot: 0.37.0(typescript@5.3.3)
       wif: 5.0.0
@@ -18390,7 +18385,7 @@ snapshots:
 
   bs58check@4.0.0:
     dependencies:
-      '@noble/hashes': 1.7.0
+      '@noble/hashes': 1.7.1
       bs58: 6.0.0
 
   bser@2.1.1:
@@ -22718,7 +22713,7 @@ snapshots:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/node': 22.10.5
-      long: 5.2.3
+      long: 5.3.1
 
   proxy-addr@2.0.7:
     dependencies:
@@ -24787,7 +24782,7 @@ snapshots:
 
   yocto-queue@1.1.1: {}
 
-  zod@3.24.1: {}
+  zod@3.24.2: {}
 
   zustand@4.5.6(@types/react@18.3.18)(immer@10.1.1)(react@18.3.1):
     dependencies:

@@ -2,7 +2,7 @@ import { Box, ListItem, Stack, Text, UnorderedList } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 
-import { useInitiaL1 } from "lib/app-provider";
+import { useMoveConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
@@ -25,7 +25,7 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
   const { data, isLoading, error } = useMoveVerifyTaskInfo(taskId, !!taskId);
   const { getMoveVerifyTask } = useMoveVerifyTaskStore();
   const verifyModuleTask = getMoveVerifyTask(taskId);
-  useInitiaL1({ shouldRedirect: true });
+  useMoveConfig({ shouldRedirect: true });
 
   if (isLoading) return <Loading />;
   if (!data || error)

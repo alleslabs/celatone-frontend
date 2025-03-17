@@ -6,8 +6,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
-  useInitiaL1,
   useInternalNavigate,
+  useMoveConfig,
   useTierConfig,
 } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
@@ -56,7 +56,7 @@ const ModuleDetailsBody = ({
   const router = useRouter();
   const navigate = useInternalNavigate();
   const formatAddresses = useFormatAddresses();
-  const isInitiaL1 = useInitiaL1({ shouldRedirect: false });
+  useMoveConfig({ shouldRedirect: true });
   const { hex: vmAddress } = formatAddresses(address);
 
   const { isFullTier } = useTierConfig();
@@ -183,12 +183,10 @@ const ModuleDetailsBody = ({
         <TabPanels>
           <TabPanel p={0}>
             <Flex gap={6} flexDirection="column">
-              {isInitiaL1 && (
-                <StatusMessageBox
-                  borderColor="gray.100"
-                  content={<MoveVerifySection status={moveVerifyStatus} />}
-                />
-              )}
+              <StatusMessageBox
+                borderColor="gray.100"
+                content={<MoveVerifySection status={moveVerifyStatus} />}
+              />
               <ModuleActions
                 viewFns={data.viewFunctions.length}
                 executeFns={data.executeFunctions.length}
