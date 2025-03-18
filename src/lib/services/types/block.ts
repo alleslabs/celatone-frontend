@@ -82,8 +82,8 @@ export const zBlockDataResponse = z
     gasLimit: val.gas_limit,
   }));
 
-// ---------------- LCD ----------------
-export const zBlockLcd = z.object({
+// ---------------- REST ----------------
+export const zBlockRest = z.object({
   block: z.object({
     header: z.object({
       chain_id: z.string(),
@@ -100,7 +100,7 @@ export const zBlockLcd = z.object({
   }),
 });
 
-export const zBlockDataResponseLcd = zBlockLcd
+export const zBlockDataResponseRest = zBlockRest
   .extend({
     txs: z.array(zTx),
     pagination: zPagination,

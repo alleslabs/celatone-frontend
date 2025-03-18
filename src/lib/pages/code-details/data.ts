@@ -2,15 +2,15 @@ import type { UseQueryOptions } from "@tanstack/react-query";
 
 import { useContractStore } from "lib/providers/store";
 import type { ContractsResponse } from "lib/services/types";
-import { useCodeLcd } from "lib/services/wasm/code";
+import { useCodeRest } from "lib/services/wasm/code";
 import {
   useContractsByCodeId,
-  useContractsByCodeIdLcd,
+  useContractsByCodeIdRest,
 } from "lib/services/wasm/contract";
 import type { ContractInfo, Option } from "lib/types";
 
-export const useCodeDataLcd = (codeId: number, enabled: boolean) => {
-  const { data, isLoading } = useCodeLcd(codeId, {
+export const useCodeDataRest = (codeId: number, enabled: boolean) => {
+  const { data, isLoading } = useCodeRest(codeId, {
     enabled,
   });
 
@@ -56,9 +56,9 @@ export const useCodeContracts = (
   };
 };
 
-export const useCodeContractsLcd = (codeId: number) => {
+export const useCodeContractsRest = (codeId: number) => {
   const { getContractLocalInfo } = useContractStore();
-  const { data, ...rest } = useContractsByCodeIdLcd(codeId);
+  const { data, ...rest } = useContractsByCodeIdRest(codeId);
 
   return {
     data: data?.pages.flatMap((page) =>

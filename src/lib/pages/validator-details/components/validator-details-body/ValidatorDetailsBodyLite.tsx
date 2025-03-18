@@ -7,13 +7,13 @@ import PageHeaderContainer from "lib/components/PageHeaderContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching, InvalidState } from "lib/components/state";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import { indexValidatorsLcd } from "lib/pages/validators/utils";
+import { indexValidatorsRest } from "lib/pages/validators/utils";
 import { useAssetInfos } from "lib/services/assetService";
 import {
-  useDelegationsByAddressLcd,
-  useStakingParamsLcd,
+  useDelegationsByAddressRest,
+  useStakingParamsRest,
 } from "lib/services/staking";
-import { useValidatorsLcd } from "lib/services/validator";
+import { useValidatorsRest } from "lib/services/validator";
 import { big } from "lib/types";
 import { valoperToAddr } from "lib/utils";
 import type { ValidatorDetailsQueryParams } from "../../types";
@@ -24,8 +24,8 @@ export const ValidatorDetailsBodyLite = ({
   validatorAddress,
 }: Pick<ValidatorDetailsQueryParams, "validatorAddress">) => {
   const isInitia = useInitia();
-  const { data, isLoading } = useValidatorsLcd();
-  const indexedData = useMemo(() => indexValidatorsLcd(data), [data]);
+  const { data, isLoading } = useValidatorsRest();
+  const indexedData = useMemo(() => indexValidatorsRest(data), [data]);
   const totalVotingPower =
     indexedData?.active.reduce(
       (prev, validator) => prev.add(validator.votingPower),
@@ -49,9 +49,9 @@ export const ValidatorDetailsBodyLite = ({
     withPrices: true,
   });
   const { data: stakingParams, isFetching: isStakingParamsLoading } =
-    useStakingParamsLcd(!isInitia);
+    useStakingParamsRest(!isInitia);
   const { data: delegations, isLoading: isDelegationsLoading } =
-    useDelegationsByAddressLcd(valoperToAddr(validatorAddress));
+    useDelegationsByAddressRest(valoperToAddr(validatorAddress));
 
   if (
     isLoading ||

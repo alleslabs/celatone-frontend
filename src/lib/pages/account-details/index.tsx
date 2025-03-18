@@ -29,7 +29,7 @@ import { useAccountDelegationInfos } from "lib/model/account";
 import { useAccountStore } from "lib/providers/store";
 import { useAccountData } from "lib/services/account";
 import { useModulesByAddress } from "lib/services/move/module";
-import { useResourcesByAddressLcd } from "lib/services/move/resource";
+import { useResourcesByAddressRest } from "lib/services/move/resource";
 import {
   useNftsByAccountAddress,
   useNftsByAccountByCollectionSequencer,
@@ -119,7 +119,7 @@ const AccountDetailsBody = ({
   const { data: modulesData, isFetching: isModulesLoading } =
     useModulesByAddress({ address: accountAddress });
   const { data: resourcesData, isFetching: isResourceLoading } =
-    useResourcesByAddressLcd(accountAddress);
+    useResourcesByAddressRest(accountAddress);
   // nft
   const { data: nfts, isFetching: isNftsCountLoading } =
     useNftsByAccountAddress(hexAddress, 10, 0, undefined, "", {

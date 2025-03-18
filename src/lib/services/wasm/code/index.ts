@@ -17,16 +17,16 @@ import {
   getCodes,
   getCodesByAddress,
 } from "./api";
-import { getCodeLcd, getCodesLcd, getUploadAccessParamsLcd } from "./lcd";
+import { getCodeRest, getCodesRest, getUploadAccessParamsRest } from "./rest";
 
-export const useUploadAccessParamsLcd = () => {
+export const useUploadAccessParamsRest = () => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS_LCD, lcdEndpoint],
-    () => getUploadAccessParamsLcd(lcdEndpoint),
+    [CELATONE_QUERY_KEYS.UPLOAD_ACCESS_PARAMS_REST, restEndpoint],
+    () => getUploadAccessParamsRest(restEndpoint),
     { keepPreviousData: true, refetchOnWindowFocus: false, retry: false }
   );
 };
@@ -47,14 +47,14 @@ export const useCodes = (
   );
 };
 
-export const useCodesLcd = () => {
+export const useCodesRest = () => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.CODES_LCD, lcdEndpoint],
-    ({ pageParam }) => getCodesLcd(lcdEndpoint, pageParam),
+    [CELATONE_QUERY_KEYS.CODES_REST, restEndpoint],
+    ({ pageParam }) => getCodesRest(restEndpoint, pageParam),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,
@@ -77,17 +77,17 @@ export const useCodeData = (codeId: number, enabled = true) => {
   );
 };
 
-export const useCodeLcd = (
+export const useCodeRest = (
   codeId: number,
   options?: Omit<UseQueryOptions<Code>, "queryKey">
 ) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useQuery<Code>(
-    [CELATONE_QUERY_KEYS.CODE_DATA_LCD, lcdEndpoint, codeId],
-    async () => getCodeLcd(lcdEndpoint, codeId),
+    [CELATONE_QUERY_KEYS.CODE_DATA_REST, restEndpoint, codeId],
+    async () => getCodeRest(restEndpoint, codeId),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -138,4 +138,4 @@ export const useCodeList = (codeIds: number[]) => {
   );
 };
 
-export * from "./lcd";
+export * from "./rest";

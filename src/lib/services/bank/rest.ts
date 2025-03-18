@@ -2,9 +2,9 @@ import axios from "axios";
 
 import type { BechAddr, Coin, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
-import { zBalancesReponseLcd } from "../types";
+import { zBalancesReponseRest } from "../types";
 
-export const getBalancesLcd = async (
+export const getBalancesRest = async (
   endpoint: string,
   address: BechAddr
 ): Promise<Coin[]> => {
@@ -18,7 +18,7 @@ export const getBalancesLcd = async (
           "pagination.limit": "500",
         },
       })
-      .then(({ data }) => parseWithError(zBalancesReponseLcd, data));
+      .then(({ data }) => parseWithError(zBalancesReponseRest, data));
     result.push(...res.balances);
     if (res.pagination?.nextKey) await fetchFn(res.pagination.nextKey);
   };

@@ -75,7 +75,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
         chainConfig.network_type === "local"
           ? {
               apis: {
-                rest: [{ address: chainConfig.lcd }],
+                rest: [{ address: chainConfig.rest }],
                 rpc: [{ address: chainConfig.rpc }],
                 "json-rpc": chainConfig.features.evm.enabled
                   ? [{ address: chainConfig.features.evm.jsonRpc }]

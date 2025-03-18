@@ -24,7 +24,7 @@ import {
 import { zProposal, zProposalsResponseItem } from "../proposal";
 import { zTxsResponseItem } from "../tx";
 
-const zBaseModuleLcd = z.object({
+const zBaseModuleRest = z.object({
   address: zHexAddr,
   module_name: z.string(),
   abi: z.string(),
@@ -32,23 +32,23 @@ const zBaseModuleLcd = z.object({
   upgrade_policy: z.nativeEnum(UpgradePolicy),
 });
 
-const zIndexedModuleLcd = zBaseModuleLcd.transform<IndexedModule>((val) => ({
+const zIndexedModuleRest = zBaseModuleRest.transform<IndexedModule>((val) => ({
   ...snakeToCamel(val),
   ...indexModuleAbi(val.abi),
   digest: sha256Hex(Buffer.from(val.raw_bytes, "utf-8")),
 }));
 
-export const zModuleResponseLcd = z.object({
-  module: zIndexedModuleLcd,
+export const zModuleResponseRest = z.object({
+  module: zIndexedModuleRest,
 });
 
-export const zModulesResponseLcd = z.object({
-  modules: z.array(zIndexedModuleLcd),
+export const zModulesResponseRest = z.object({
+  modules: z.array(zIndexedModuleRest),
   pagination: zPagination,
 });
 
 export const zAccountModulesResponse = z.object({
-  items: z.array(zIndexedModuleLcd),
+  items: z.array(zIndexedModuleRest),
   total: z.number().nonnegative(),
 });
 export type AccountModulesResponse = z.infer<typeof zAccountModulesResponse>;
@@ -146,7 +146,7 @@ export interface ModuleInitialPublishInfo {
   initProposalTitle: Option<string>;
 }
 
-export const zMoveViewJsonResponseLcd = z
+export const zMoveViewJsonResponseRest = z
   .object({
     data: z.string(),
   })

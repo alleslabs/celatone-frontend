@@ -108,7 +108,7 @@ const ContractDetailsBody = observer(
       return <Loading withBorder />;
     if (!contractData) return <ErrorFetching dataName="contract information" />;
 
-    const { projectInfo, publicInfo, contract, contractRest } = contractData;
+    const { projectInfo, publicInfo, contract, contractApi } = contractData;
 
     const hasTotalBonded =
       !isTotalBondedLoading &&
@@ -230,7 +230,7 @@ const ContractDetailsBody = observer(
                       )}
                       <InstantiateInfo
                         contract={contract}
-                        contractRest={contractRest}
+                        contractApi={contractApi}
                         codeLocalInfo={codeLocalInfo}
                         wasmVerifyInfo={derivedWasmVerifyInfo}
                       />
@@ -254,7 +254,7 @@ const ContractDetailsBody = observer(
                       <JsonInfo
                         header="Contract Info"
                         jsonString={jsonPrettify(
-                          JSON.stringify(contractRest?.contract_info ?? {})
+                          JSON.stringify(contractApi?.contract_info ?? {})
                         )}
                       />
                       <JsonInfo

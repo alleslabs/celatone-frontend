@@ -7,7 +7,7 @@ import { RecentBlocksTableSequencer } from "lib/pages/blocks/components/RecentBl
 import { TxsTableSequencer } from "lib/pages/txs/components/TxsTableSequencer";
 import {
   useBlockTimeAverageSequencer,
-  useLatestBlockLcd,
+  useLatestBlockRest,
 } from "lib/services/block";
 import { useTxsCountSequencer } from "lib/services/tx";
 
@@ -20,7 +20,7 @@ export const HomeSequencer = () => {
   const { data: txsCount, isLoading: isTxsCountLoading } =
     useTxsCountSequencer();
   const { data: latestBlock, isLoading: isLatestBlockLoading } =
-    useLatestBlockLcd();
+    useLatestBlockRest();
   const { data: blockTimeAverage, isLoading: isBlockTimeAverageLoading } =
     useBlockTimeAverageSequencer();
 

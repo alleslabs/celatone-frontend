@@ -1,19 +1,19 @@
 import { useMemo } from "react";
 
-import { useBlockDataLcd } from "lib/services/block";
-import { useValidatorsLcd } from "lib/services/validator";
+import { useBlockDataRest } from "lib/services/block";
+import { useValidatorsRest } from "lib/services/validator";
 import type { BlockData, Nullable, Option, Validator } from "lib/types";
 
-export const useBlockDataWithValidatorLcd = (
+export const useBlockDataWithValidatorRest = (
   height: number
 ): {
   data: Option<BlockData>;
   isLoading: boolean;
 } => {
   const { data: blockData, isLoading: isLoadingBlockData } =
-    useBlockDataLcd(height);
+    useBlockDataRest(height);
   const { data: validators, isLoading: isLoadingValidators } =
-    useValidatorsLcd();
+    useValidatorsRest();
 
   const proposer = useMemo<Nullable<Validator>>(() => {
     if (!blockData || !validators) return null;

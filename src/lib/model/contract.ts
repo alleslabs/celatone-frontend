@@ -3,7 +3,7 @@ import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import {
   useAllInstantiatedContractsByAddress,
-  useInstantiatedContractsByAddressLcd,
+  useInstantiatedContractsByAddressRest,
 } from "lib/services/wasm/contract";
 import type { ContractListInfo } from "lib/stores/contract";
 import { formatSlugName, getCurrentDate } from "lib/utils";
@@ -19,12 +19,12 @@ export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
 
   const { data: dataApi, isLoading: isApiLoading } =
     useAllInstantiatedContractsByAddress(address, enable && isFullTier);
-  const { data: dataLcd, isLoading: isLcdLoading } =
-    useInstantiatedContractsByAddressLcd(address, enable && !isFullTier);
+  const { data: dataRest, isLoading: isRestLoading } =
+    useInstantiatedContractsByAddressRest(address, enable && !isFullTier);
 
   const [contracts = [], isLoading] = isFullTier
     ? [dataApi?.items, isApiLoading]
-    : [dataLcd, isLcdLoading];
+    : [dataRest, isRestLoading];
   const { getContractLocalInfo } = useContractStore();
 
   return {

@@ -14,7 +14,7 @@ import { Stepper } from "lib/components/stepper";
 import { UploadSection } from "lib/components/upload";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useUploadCode } from "lib/hooks";
-import { useUploadAccessParamsLcd } from "lib/services/wasm/code";
+import { useUploadAccessParamsRest } from "lib/services/wasm/code";
 
 export const Upload = ({
   onComplete,
@@ -24,7 +24,7 @@ export const Upload = ({
   const router = useRouter();
   const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
-  const { data, isLoading } = useUploadAccessParamsLcd();
+  const { data, isLoading } = useUploadAccessParamsRest();
   const {
     proceed,
     formData,

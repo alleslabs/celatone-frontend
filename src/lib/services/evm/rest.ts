@@ -7,7 +7,7 @@ import {
 } from "lib/utils";
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import { zEvmMsgCreate } from "../types";
-import { zEvmCodesByAddressResponseLcd, zEvmParams } from "../types/evm";
+import { zEvmCodesByAddressResponseRest, zEvmParams } from "../types/evm";
 
 export const getEvmParams = (endpoint: string) =>
   axios
@@ -17,7 +17,7 @@ export const getEvmParams = (endpoint: string) =>
 export const getEvmCodesByAddress = (endpoint: string, address: HexAddr20) =>
   axios
     .get(`${endpoint}/minievm/evm/v1/codes/${encodeURI(address)}`)
-    .then(({ data }) => parseWithError(zEvmCodesByAddressResponseLcd, data));
+    .then(({ data }) => parseWithError(zEvmCodesByAddressResponseRest, data));
 
 export const getEvmContractInfoSequencer = async (
   endpoint: string,

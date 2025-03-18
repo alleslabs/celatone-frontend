@@ -12,7 +12,7 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTableWithWallet } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useDebounce } from "lib/hooks";
-import { useTxsByAddressLcd } from "lib/services/tx";
+import { useTxsByAddressRest } from "lib/services/tx";
 
 interface PastTxsLiteTransactionsTableWithWalletEmptyStateProps {
   search: string;
@@ -65,7 +65,7 @@ export const PastTxsLite = () => {
     },
   });
 
-  const { data, isLoading, error } = useTxsByAddressLcd(
+  const { data, isLoading, error } = useTxsByAddressRest(
     address,
     debouncedSearch,
     pageSize,

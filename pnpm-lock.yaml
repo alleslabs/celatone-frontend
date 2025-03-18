@@ -17,8 +17,8 @@ importers:
         specifier: 0.0.3
         version: 0.0.3(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@alleslabs/shared':
-        specifier: 1.0.0-dev6
-        version: 1.0.0-dev6
+        specifier: 1.0.0-dev7
+        version: 1.0.0-dev7
       '@amplitude/analytics-browser':
         specifier: ^2.3.3
         version: 2.11.11
@@ -411,8 +411,8 @@ packages:
     resolution: {integrity: sha512-93dSIOMsviBYqGP3sXO04vbTwLR8LOlb40fy24f851Ii8Bwi/W7fnIie9GAyo2F1JzRcUd5oo9YequhcA7LejQ==}
     engines: {node: '>=14'}
 
-  '@alleslabs/shared@1.0.0-dev6':
-    resolution: {integrity: sha512-JFkD+EhzUYLlnxplNBFgjzPh5zaZlpZ4Gg3sWzVdwrX3RAJgdvLJ0Xz2pUazEbzgr4Kszso0SRsmIod7O2/NsQ==}
+  '@alleslabs/shared@1.0.0-dev7':
+    resolution: {integrity: sha512-ckjGvmhFlQKKk36lb9zd6CJkasTWlNEfFTHOvGJyn+WqLR4olUm65pr9LkPeBMGgX3/pQnIb8T7/4TZQ7754Cw==}
 
   '@amplitude/analytics-browser@2.11.11':
     resolution: {integrity: sha512-AdpNNPwoNPezojeeU2ITcyqKcrrW8edVBHlCEvDNIXYkf5Y0i5Blbes3x6rgONsOeV2hx85trTXhhVkilWgHcg==}
@@ -10877,7 +10877,7 @@ snapshots:
       - debug
       - utf-8-validate
 
-  '@alleslabs/shared@1.0.0-dev6':
+  '@alleslabs/shared@1.0.0-dev7':
     dependencies:
       '@chain-registry/types': 0.45.20
 

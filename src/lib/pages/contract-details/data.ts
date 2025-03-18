@@ -3,31 +3,34 @@ import type { UseQueryResult } from "@tanstack/react-query";
 import { useTierConfig } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import type { ContractData } from "lib/services/types";
-import { useCodeLcd } from "lib/services/wasm/code";
+import { useCodeRest } from "lib/services/wasm/code";
 import {
-  useContractCw2InfoLcd,
+  useContractCw2InfoRest,
   useContractData,
   useMigrationHistoriesByContractAddress,
-  useMigrationHistoriesByContractAddressLcd,
+  useMigrationHistoriesByContractAddressRest,
 } from "lib/services/wasm/contract";
 import { RemarkOperation } from "lib/types";
 import type { BechAddr32, ContractMigrationHistory } from "lib/types";
 
-const useContractDataLcd = (
+const useContractDataRest = (
   contractData: UseQueryResult<ContractData>,
   contractAddress: BechAddr32
 ) => {
   const { isFullTier } = useTierConfig();
 
-  const { data: code } = useCodeLcd(
+  const { data: code } = useCodeRest(
     Number(contractData.data?.contract.codeId),
     {
       enabled: !isFullTier && !!contractData.data?.contract.codeId,
     }
   );
-  const { data: cw2Info } = useContractCw2InfoLcd(contractAddress, !isFullTier);
+  const { data: cw2Info } = useContractCw2InfoRest(
+    contractAddress,
+    !isFullTier
+  );
   const { data: migrationHistories } =
-    useMigrationHistoriesByContractAddressLcd(contractAddress, !isFullTier);
+    useMigrationHistoriesByContractAddressRest(contractAddress, !isFullTier);
 
   return !isFullTier && contractData.data
     ? {
@@ -56,7 +59,7 @@ export const useContractDataWithLocalInfos = (contractAddress: BechAddr32) => {
   const { getContractLocalInfo } = useContractStore();
 
   let result = useContractData(contractAddress);
-  result = useContractDataLcd(result, contractAddress);
+  result = useContractDataRest(result, contractAddress);
 
   const codeLocalInfo = result.data?.contract
     ? getCodeLocalInfo(Number(result.data.contract.codeId))
@@ -95,9 +98,9 @@ export const useMigrationHistories = (
   };
 };
 
-export const useMigrationHistoriesLcd = (contractAddress: BechAddr32) => {
+export const useMigrationHistoriesRest = (contractAddress: BechAddr32) => {
   const { data, ...res } =
-    useMigrationHistoriesByContractAddressLcd(contractAddress);
+    useMigrationHistoriesByContractAddressRest(contractAddress);
 
   const { getCodeLocalInfo } = useCodeStore();
 

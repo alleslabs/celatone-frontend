@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 import { useExecuteCmds } from "lib/hooks";
-import { useContractQueryMsgsLcd } from "lib/services/wasm/contract";
+import { useContractQueryMsgsRest } from "lib/services/wasm/contract";
 import type { BechAddr32, Nullish, WasmVerifyInfo } from "lib/types";
 
 import { CommandSectionHeader } from "./CommandSectionHeader";
@@ -19,7 +19,7 @@ export const CommandSection = ({
   ...props
 }: CommandSectionProps) => {
   const { isFetching: isQueryCmdsFetching, data: queryCmds = [] } =
-    useContractQueryMsgsLcd(contractAddress);
+    useContractQueryMsgsRest(contractAddress);
   const { isFetching: isExecuteCmdsFetching, execCmds } =
     useExecuteCmds(contractAddress);
 
