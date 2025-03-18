@@ -6,9 +6,7 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { useEffect, useMemo } from "react";
 
-import { useInitia, useMobile, useNavContext } from "lib/app-provider";
-
-import { MigrationBanner } from "lib/components/MigrationBanner";
+import { useMobile, useNavContext } from "lib/app-provider";
 import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";
@@ -27,27 +25,26 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const isMobile = useMobile();
   const { isExpand, setIsExpand } = useNavContext();
-  const isInitia = useInitia();
 
-  const defaultRow = `64px 48px ${isInitia ? "60px" : ""} 1fr`;
+  const defaultRow = `64px 48px 1fr`;
   const mode = useMemo(() => {
     if (isMobile)
       return {
-        templateAreas: `"header"${isInitia ? `"migrationBanner"` : ""}"main"`,
-        templateRows: `60px ${isInitia ? "125px" : ""} 1fr`,
+        templateAreas: `"header" "main"`,
+        templateRows: `60px 1fr`,
         templateCols: "1fr",
         header: <MobileHeader />,
         subHeader: undefined,
       };
 
     return {
-      templateAreas: `"header header""subheader subheader"${isInitia ? `"migrationBanner migrationBanner"` : ""}"nav main"`,
+      templateAreas: `"header header""subheader subheader" "nav main"`,
       templateRows: defaultRow,
       templateCols: isExpand ? "235px 1fr" : "48px 1fr",
       header: <Header />,
       subHeader: <SubHeader />,
     };
-  }, [defaultRow, isExpand, isInitia, isMobile]);
+  }, [defaultRow, isExpand, isMobile]);
 
   useEffect(() => {
     if (!(router.query.tab === "resources")) {
@@ -68,9 +65,6 @@ const Layout = ({ children }: LayoutProps) => {
       >
         <GridItem borderBottom="1px solid" borderColor="gray.700" area="header">
           {mode.header}
-        </GridItem>
-        <GridItem area="migrationBanner">
-          {isInitia && <MigrationBanner />}
         </GridItem>
         {!isMobile && (
           <>
