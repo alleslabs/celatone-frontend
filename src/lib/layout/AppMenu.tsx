@@ -33,13 +33,6 @@ const appList = [
     logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/bridge.svg",
     link: getAppLink("bridge"),
   },
-  SUPPORTED_NETWORK_TYPES[0] === "mainnet"
-    ? null
-    : {
-        name: "faucet",
-        logo: "https://assets.alleslabs.dev/integrations/initia/app-logo/faucet.svg",
-        link: "https://faucet.testnet.initia.xyz/",
-      },
 ];
 
 export const AppMenu = ({
