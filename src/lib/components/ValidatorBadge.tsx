@@ -1,6 +1,5 @@
 import type { ImageProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
-import { isNull } from "lodash";
 
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -46,7 +45,6 @@ export const ValidatorBadge = ({
                 ? `${isValidatorExternalLink}/${validator.validatorAddress}`
                 : undefined
             }
-            isReadOnly={isNull(isValidatorExternalLink)}
             showCopyOnHover
             textFormat="ellipsis"
             ampCopierSection={ampCopierSection}

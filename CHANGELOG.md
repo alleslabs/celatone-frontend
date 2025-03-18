@@ -45,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1277](https://github.com/alleslabs/celatone-frontend/pull/1277) Fix validator badge external link
+
 ## v1.10.1
 
 ### Improvements
