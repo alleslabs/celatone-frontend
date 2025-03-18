@@ -4,15 +4,15 @@ import { z } from "zod";
 import { zHexAddr } from "lib/types";
 import type { HexAddr, HexAddr32 } from "lib/types";
 import { parseWithError } from "lib/utils";
-import { getMoveViewJsonLcd } from "../move/module/lcd";
+import { getMoveViewJsonRest } from "../move/module/rest";
 import type { CollectionByCollectionAddressResponse } from "../types";
 
-export const getCollectionByCollectionAddressLcd = async (
+export const getCollectionByCollectionAddressRest = async (
   endpoint: string,
   collectionAddress: HexAddr32
 ) =>
   Promise.all([
-    getMoveViewJsonLcd(
+    getMoveViewJsonRest(
       endpoint,
       "0x1" as HexAddr,
       "collection",
@@ -20,7 +20,7 @@ export const getCollectionByCollectionAddressLcd = async (
       ["0x1::collection::Collection"],
       [`"${collectionAddress}"`]
     ).then((name) => parseWithError(z.string(), name)),
-    getMoveViewJsonLcd(
+    getMoveViewJsonRest(
       endpoint,
       "0x1" as HexAddr,
       "collection",
@@ -28,7 +28,7 @@ export const getCollectionByCollectionAddressLcd = async (
       ["0x1::collection::Collection"],
       [`"${collectionAddress}"`]
     ).then((name) => parseWithError(z.string(), name)),
-    getMoveViewJsonLcd(
+    getMoveViewJsonRest(
       endpoint,
       "0x1" as HexAddr,
       "collection",
@@ -36,7 +36,7 @@ export const getCollectionByCollectionAddressLcd = async (
       ["0x1::collection::Collection"],
       [`"${collectionAddress}"`]
     ).then((name) => parseWithError(z.string(), name)),
-    getMoveViewJsonLcd(
+    getMoveViewJsonRest(
       endpoint,
       "0x1" as HexAddr,
       "collection",

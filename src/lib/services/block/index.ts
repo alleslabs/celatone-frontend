@@ -17,7 +17,7 @@ import {
 
 import { getBlockData, getBlocks } from "./api";
 import { getBlockDataJsonRpc } from "./jsonRpc";
-import { getBlockDataLcd, getLatestBlockLcd } from "./lcd";
+import { getBlockDataRest, getLatestBlockRest } from "./rest";
 import {
   getBlockDataSequencer,
   getBlocksSequencer,
@@ -51,9 +51,9 @@ export const useBlockData = (height: number, enabled = true) => {
   );
 };
 
-export const useBlockDataLcd = (height: number, enabled = true) => {
+export const useBlockDataRest = (height: number, enabled = true) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
@@ -62,10 +62,10 @@ export const useBlockDataLcd = (height: number, enabled = true) => {
     proposerConsensusAddress: ConsensusAddr;
     transactions: Transaction[];
   }>(
-    [CELATONE_QUERY_KEYS.BLOCK_DATA_LCD, lcdEndpoint, height],
+    [CELATONE_QUERY_KEYS.BLOCK_DATA_REST, restEndpoint, height],
     async () => {
       const { rawProposerConsensusAddress, transactions, ...rest } =
-        await getBlockDataLcd(lcdEndpoint, height);
+        await getBlockDataRest(restEndpoint, height);
       return {
         ...rest,
         proposerConsensusAddress: convertRawConsensusAddrToConsensusAddr(
@@ -89,14 +89,14 @@ export const useBlockDataLcd = (height: number, enabled = true) => {
   );
 };
 
-export const useLatestBlockLcd = () => {
+export const useLatestBlockRest = () => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_LCD, lcdEndpoint],
-    async () => getLatestBlockLcd(lcdEndpoint),
+    [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_REST, restEndpoint],
+    async () => getLatestBlockRest(restEndpoint),
     {
       retry: false,
       refetchOnWindowFocus: false,
@@ -107,12 +107,12 @@ export const useLatestBlockLcd = () => {
 
 export const useBlocksSequencer = (limit = 10) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   const { data, ...rest } = useInfiniteQuery(
-    [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, lcdEndpoint, limit],
-    async ({ pageParam }) => getBlocksSequencer(lcdEndpoint, pageParam, limit),
+    [CELATONE_QUERY_KEYS.BLOCKS_SEQUENCER, restEndpoint, limit],
+    async ({ pageParam }) => getBlocksSequencer(restEndpoint, pageParam, limit),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,
@@ -127,12 +127,12 @@ export const useBlocksSequencer = (limit = 10) => {
 
 export const useBlockTimeAverageSequencer = () => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useQuery(
-    [CELATONE_QUERY_KEYS.BLOCK_TIME_AVERAGE_SEQUENCER, lcdEndpoint],
-    async () => getBlockTimeAverageSequencer(lcdEndpoint),
+    [CELATONE_QUERY_KEYS.BLOCK_TIME_AVERAGE_SEQUENCER, restEndpoint],
+    async () => getBlockTimeAverageSequencer(restEndpoint),
     {
       retry: false,
       refetchOnWindowFocus: false,
@@ -142,12 +142,12 @@ export const useBlockTimeAverageSequencer = () => {
 
 export const useBlockDataSequencer = (height: number) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useQuery<BlockData>(
-    [CELATONE_QUERY_KEYS.BLOCK_DATA_SEQUENCER, lcdEndpoint, height],
-    async () => getBlockDataSequencer(lcdEndpoint, height),
+    [CELATONE_QUERY_KEYS.BLOCK_DATA_SEQUENCER, restEndpoint, height],
+    async () => getBlockDataSequencer(restEndpoint, height),
     {
       retry: false,
       refetchOnWindowFocus: false,

@@ -11,7 +11,7 @@ import { useMemo, useState } from "react";
 
 import { AmpEvent, track, trackContractStatesLoad } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
-import { useContractStatesLcd } from "lib/services/wasm/contractState";
+import { useContractStatesRest } from "lib/services/wasm/contractState";
 import type { BechAddr32 } from "lib/types";
 import { groupContractStatesByFirstIndex } from "lib/utils";
 
@@ -39,7 +39,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
     hasNextPage,
     isFetching,
     isFetchingNextPage,
-  } = useContractStatesLcd(contractAddress, limit);
+  } = useContractStatesRest(contractAddress, limit);
 
   const [selectedNamespace, setSelectedNamespace] = useState("all");
   const [keyword, setKeyword] = useState("");
@@ -120,7 +120,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
       {!!error && (
         <Alert variant="error" alignItems="center">
           <AlertDescription wordBreak="break-word">
-            Error fetching data from LCD. Please refresh to try again.
+            Error fetching data from REST. Please refresh to try again.
           </AlertDescription>
         </Alert>
       )}

@@ -108,16 +108,16 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           error={errors.prettyName?.message}
         />
         <ControllerInput
-          name="lcd"
+          name="rest"
           control={control}
-          label="Rollup LCD URL"
+          label="Rollup REST URL"
           variant="fixed-floating"
           w="full"
           placeholder="https://"
           rules={{
             required: "",
           }}
-          error={errors.lcd?.message}
+          error={errors.rest?.message}
         />
         <ControllerInput
           name="rpc"

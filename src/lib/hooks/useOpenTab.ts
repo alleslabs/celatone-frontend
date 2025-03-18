@@ -8,10 +8,10 @@ import {
 import type { Option } from "lib/types";
 import { openNewTab } from "lib/utils";
 
-export const useOpenTxTab = (type: "lcd" | "tx-page") => {
+export const useOpenTxTab = (type: "rest" | "tx-page") => {
   const { currentChainId } = useCelatoneApp();
   const txsApiRoute = useBaseApiRoute("txs");
-  const baseUrl = type === "lcd" ? txsApiRoute : `/${currentChainId}/txs`;
+  const baseUrl = type === "rest" ? txsApiRoute : `/${currentChainId}/txs`;
 
   return useCallback(
     (txHash: Option<string>) => {
@@ -25,7 +25,7 @@ export const useOpenAssetTab = () => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("accounts");
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useCallback(
@@ -33,10 +33,10 @@ export const useOpenAssetTab = () => {
       openNewTab(
         isFullTier
           ? `${apiEndpoint}/${walletAddr}/balances`
-          : `${lcdEndpoint}/cosmos/bank/v1beta1/balances/${walletAddr}?pagination.limit=1000`
+          : `${restEndpoint}/cosmos/bank/v1beta1/balances/${walletAddr}?pagination.limit=1000`
       );
     },
-    [apiEndpoint, isFullTier, lcdEndpoint]
+    [apiEndpoint, isFullTier, restEndpoint]
   );
 };
 

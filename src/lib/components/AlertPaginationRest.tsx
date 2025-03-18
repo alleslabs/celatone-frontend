@@ -1,9 +1,9 @@
 import { Alert, AlertDescription } from "@chakra-ui/react";
 
-export const AlertPaginationLcd = () => (
+export const AlertPaginationRest = () => (
   <Alert variant="error" alignItems="center">
     <AlertDescription wordBreak="break-word">
-      Error fetching data from LCD. Please try again later.
+      Error fetching data from REST. Please try again later.
     </AlertDescription>
   </Alert>
 );

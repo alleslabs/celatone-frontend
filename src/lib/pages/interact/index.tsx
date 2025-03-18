@@ -17,7 +17,7 @@ import { PageHeader } from "lib/components/PageHeader";
 import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState } from "lib/components/state";
 import { useOpenNewTab } from "lib/hooks";
-import { useModuleByAddressLcd } from "lib/services/move/module";
+import { useModuleByAddressRest } from "lib/services/move/module";
 import { useMoveVerifyInfo } from "lib/services/verification/move";
 import type { Addr, ExposedFunction, IndexedModule } from "lib/types";
 import { resolveMoveVerifyStatus } from "lib/utils";
@@ -190,7 +190,7 @@ const InteractBody = ({
     module?.moduleName
   );
 
-  const { refetch } = useModuleByAddressLcd({
+  const { refetch } = useModuleByAddressRest({
     address: address as Addr,
     moduleName,
     options: {

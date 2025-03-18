@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zCoin, zValidatorAddr } from "lib/types";
 import { snakeToCamel } from "lib/utils";
 
-export const zDelegationRewardsResponseLcd = z
+export const zDelegationRewardsResponseRest = z
   .object({
     rewards: z.array(
       z.object({
@@ -15,7 +15,7 @@ export const zDelegationRewardsResponseLcd = z
   })
   .transform(snakeToCamel);
 
-export const zCommissionsResponseLcd = z.object({
+export const zCommissionsResponseRest = z.object({
   commission: z.object({
     commission: z.array(zCoin),
   }),

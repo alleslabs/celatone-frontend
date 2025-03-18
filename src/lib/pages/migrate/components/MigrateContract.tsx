@@ -26,7 +26,7 @@ import { useSchemaStore } from "lib/providers/store";
 import { useSimulateFeeQuery } from "lib/services/tx";
 import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
-import { useCodeLcd } from "lib/services/wasm/code";
+import { useCodeRest } from "lib/services/wasm/code";
 import type { BechAddr32, ComposedMsg, Option } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, jsonValidate, resolvePermission } from "lib/utils";
@@ -128,7 +128,7 @@ export const MigrateContract = ({
     },
   });
 
-  const { refetch } = useCodeLcd(codeId, {
+  const { refetch } = useCodeRest(codeId, {
     enabled: false,
     retry: false,
     cacheTime: 0,

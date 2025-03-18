@@ -6,7 +6,8 @@ import {
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
-import { getCollectionByCollectionAddressLcd } from "./lcd";
+
+import { getCollectionByCollectionAddressRest } from "./rest";
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import type { Activity, CollectionCreatorResponse } from "../types";
 import {
@@ -27,7 +28,7 @@ export const getNftCollectionByCollectionAddressSequencer = async (
     )
     // Fallback to lite version if the collection is not found
     .catch(() =>
-      getCollectionByCollectionAddressLcd(endpoint, collectionAddress)
+      getCollectionByCollectionAddressRest(endpoint, collectionAddress)
     );
 
 export const getNftCollectionsByAccountAddressSequencer = async (

@@ -3,22 +3,22 @@ import axios from "axios";
 import type { BechAddr20, BechAddr32 } from "lib/types";
 import { parseWithError } from "lib/utils";
 import {
-  zTxByHashResponseLcd,
-  zTxsByAddressResponseLcd,
-  zTxsByHashResponseLcd,
+  zTxByHashResponseRest,
+  zTxsByAddressResponseRest,
+  zTxsByHashResponseRest,
 } from "../types";
 
-export const getTxDataLcd = async (endpoint: string, txHash: string) =>
+export const getTxDataRest = async (endpoint: string, txHash: string) =>
   axios
     .get(`${endpoint}/cosmos/tx/v1beta1/txs/${encodeURI(txHash)}`)
-    .then(({ data }) => parseWithError(zTxByHashResponseLcd, data));
+    .then(({ data }) => parseWithError(zTxByHashResponseRest, data));
 
-export const getTxsByHashLcd = async (endpoint: string, txHash: string) =>
+export const getTxsByHashRest = async (endpoint: string, txHash: string) =>
   axios
     .get(`${endpoint}/cosmos/tx/v1beta1/txs/${encodeURI(txHash)}`)
-    .then(({ data }) => parseWithError(zTxsByHashResponseLcd, data));
+    .then(({ data }) => parseWithError(zTxsByHashResponseRest, data));
 
-export const getTxsByContractAddressLcd = async (
+export const getTxsByContractAddressRest = async (
   endpoint: string,
   contractAddress: BechAddr32,
   limit: number,
@@ -43,15 +43,15 @@ export const getTxsByContractAddressLcd = async (
     }),
   ]).then(([queryParam, eventsParam]) => {
     if (queryParam.status === "fulfilled")
-      return parseWithError(zTxsByAddressResponseLcd, queryParam.value.data);
+      return parseWithError(zTxsByAddressResponseRest, queryParam.value.data);
 
     if (eventsParam.status === "fulfilled")
-      return parseWithError(zTxsByAddressResponseLcd, eventsParam.value.data);
+      return parseWithError(zTxsByAddressResponseRest, eventsParam.value.data);
 
-    throw new Error("No data found (getTxsByContractAddressLcd)");
+    throw new Error("No data found (getTxsByContractAddressRest)");
   });
 
-export const getTxsByAccountAddressLcd = async (
+export const getTxsByAccountAddressRest = async (
   endpoint: string,
   address: BechAddr20,
   limit: number,
@@ -76,10 +76,10 @@ export const getTxsByAccountAddressLcd = async (
     }),
   ]).then(([queryParam, eventsParam]) => {
     if (queryParam.status === "fulfilled")
-      return parseWithError(zTxsByAddressResponseLcd, queryParam.value.data);
+      return parseWithError(zTxsByAddressResponseRest, queryParam.value.data);
 
     if (eventsParam.status === "fulfilled")
-      return parseWithError(zTxsByAddressResponseLcd, eventsParam.value.data);
+      return parseWithError(zTxsByAddressResponseRest, eventsParam.value.data);
 
-    throw new Error("No data found (getTxsByAccountAddressLcd)");
+    throw new Error("No data found (getTxsByAccountAddressRest)");
   });

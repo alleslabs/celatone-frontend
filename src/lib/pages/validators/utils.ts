@@ -28,7 +28,7 @@ export const compareValidator =
     return (isLower ? -1 : 1) * (isDesc ? -1 : 1);
   };
 
-export const indexValidatorsLcd = (data: Option<ValidatorData[]>) => {
+export const indexValidatorsRest = (data: Option<ValidatorData[]>) => {
   if (!data) return undefined;
 
   const active = data

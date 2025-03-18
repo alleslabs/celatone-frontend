@@ -46,7 +46,7 @@ export const zProposalParamsResponse = z
   })
   .transform<ProposalParams<Coin>>(snakeToCamel);
 
-export const zProposalParamsResponseLcd = z.object({
+export const zProposalParamsResponseRest = z.object({
   params: zProposalParamsResponse,
 });
 
@@ -144,7 +144,7 @@ export const zProposalVotesInfoResponse = z
     totalVotingPower: val.current_total_voting_power,
   }));
 
-export const zProposalVotesInfoResponseLcd = z
+export const zProposalVotesInfoResponseRest = z
   .tuple([
     z.object({
       tally: z.object({
@@ -220,7 +220,7 @@ export type ProposalAnswerCountsResponse = z.infer<
   typeof zProposalAnswerCountsResponse
 >;
 
-export const zProposalDataResponseLcd = z
+export const zProposalDataResponseRest = z
   .object({
     id: z.coerce.number(),
     messages: z.array(zMessageResponse).nullable(),
@@ -268,15 +268,17 @@ export const zProposalDataResponseLcd = z
     resolvedTimestamp: null,
     votingTime: val.voting_start_time,
   }));
-export type ProposalDataResponseLcd = z.infer<typeof zProposalDataResponseLcd>;
+export type ProposalDataResponseRest = z.infer<
+  typeof zProposalDataResponseRest
+>;
 
-export const zProposalsResponseLcd = z.object({
-  proposals: z.array(zProposalDataResponseLcd),
+export const zProposalsResponseRest = z.object({
+  proposals: z.array(zProposalDataResponseRest),
   pagination: zPagination,
 });
-export type ProposalsResponseLcd = z.infer<typeof zProposalsResponseLcd>;
+export type ProposalsResponseRest = z.infer<typeof zProposalsResponseRest>;
 
-export const zProposalDepositsResponseLcd = z.object({
+export const zProposalDepositsResponseRest = z.object({
   deposits: z.array(
     z
       .object({

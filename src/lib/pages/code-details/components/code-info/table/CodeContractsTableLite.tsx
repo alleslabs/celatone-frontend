@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 
 import { useInternalNavigate } from "lib/app-provider";
-import { AlertPaginationLcd } from "lib/components/AlertPaginationLcd";
+import { AlertPaginationRest } from "lib/components/AlertPaginationRest";
 import { LoadNext } from "lib/components/LoadNext";
 import { ContractsTable, TableTitle } from "lib/components/table";
-import { useCodeContractsLcd } from "lib/pages/code-details/data";
+import { useCodeContractsRest } from "lib/pages/code-details/data";
 import type { BechAddr32 } from "lib/types";
 
 import { NoContracts } from "./NoContracts";
@@ -23,7 +23,7 @@ export const CodeContractsTableLite = observer(
       hasNextPage,
       isLoading,
       isFetchingNextPage,
-    } = useCodeContractsLcd(codeId);
+    } = useCodeContractsRest(codeId);
 
     const onRowSelect = (contract: BechAddr32) =>
       navigate({
@@ -33,7 +33,7 @@ export const CodeContractsTableLite = observer(
 
     return (
       <>
-        {data && !!error && <AlertPaginationLcd />}
+        {data && !!error && <AlertPaginationRest />}
         <TableTitle title="Contract Instances" showCount={false} />
         <ContractsTable
           contracts={data}

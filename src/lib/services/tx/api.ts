@@ -5,7 +5,7 @@ import { camelToSnake, parseWithError } from "lib/utils";
 import {
   zAccountTxsResponse,
   zBlockTxsResponse,
-  zTxByHashResponseLcd,
+  zTxByHashResponseRest,
   zTxsByPoolIdResponse,
   zTxsByPoolIdTxsCountResponse,
   zTxsCountResponse,
@@ -15,7 +15,7 @@ import {
 export const getTxData = async (txsApiRoute: string, txHash: string) =>
   axios
     .get(`${txsApiRoute}/${encodeURI(txHash.toUpperCase())}`)
-    .then(({ data }) => parseWithError(zTxByHashResponseLcd, data));
+    .then(({ data }) => parseWithError(zTxByHashResponseRest, data));
 
 export const getTxs = async (
   endpoint: string,

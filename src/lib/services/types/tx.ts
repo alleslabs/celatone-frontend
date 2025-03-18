@@ -167,7 +167,7 @@ export interface TxData extends TxResponse {
   isTxFailed: boolean;
 }
 
-export const zTxsResponseItemFromLcd =
+export const zTxsResponseItemFromRest =
   zTxResponse.transform<TransactionWithSignerPubkey>((val) => {
     const txBody = val.tx.body;
 
@@ -210,20 +210,22 @@ export const zTxsResponseItemFromLcd =
     };
   });
 
-export const zTxsByAddressResponseLcd = z
+export const zTxsByAddressResponseRest = z
   .object({
-    tx_responses: z.array(zTxsResponseItemFromLcd),
+    tx_responses: z.array(zTxsResponseItemFromRest),
     total: z.coerce.number(),
   })
   .transform((val) => ({
     items: val.tx_responses,
     total: val.total,
   }));
-export type TxsByAddressResponseLcd = z.infer<typeof zTxsByAddressResponseLcd>;
+export type TxsByAddressResponseRest = z.infer<
+  typeof zTxsByAddressResponseRest
+>;
 
 export const zTxsResponseSequencer = z
   .object({
-    txs: z.array(zTxsResponseItemFromLcd),
+    txs: z.array(zTxsResponseItemFromRest),
     pagination: zPagination,
   })
   .transform((val) => ({
@@ -231,9 +233,9 @@ export const zTxsResponseSequencer = z
     pagination: val.pagination,
   }));
 
-export const zTxsByHashResponseLcd = z
+export const zTxsByHashResponseRest = z
   .object({
-    tx_response: zTxsResponseItemFromLcd,
+    tx_response: zTxsResponseItemFromRest,
   })
   .transform((val) => ({
     items: [val.tx_response],
@@ -242,7 +244,7 @@ export const zTxsByHashResponseLcd = z
 
 export const zTxsByHashResponseSequencer = z
   .object({
-    tx: zTxsResponseItemFromLcd,
+    tx: zTxsResponseItemFromRest,
   })
   .transform((val) => ({
     items: [val.tx],
@@ -255,7 +257,7 @@ export type TxsByHashResponseSequencer = z.infer<
   typeof zTxsByHashResponseSequencer
 >;
 
-export const zTxByHashResponseLcd = z
+export const zTxByHashResponseRest = z
   .object({
     tx_response: zTxResponse,
   })
@@ -387,7 +389,7 @@ export const zTxsCountResponse = z
   .transform((val) => val.count);
 
 export const zBlockTxsResponseSequencer = z.object({
-  txs: z.array(zTxsResponseItemFromLcd),
+  txs: z.array(zTxsResponseItemFromRest),
   pagination: zPagination,
 });
 

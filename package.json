@@ -1,6 +1,6 @@
 {
   "name": "celatone",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "author": "Alles Labs",
   "contributors": [
     {
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@alleslabs/legacy-bcs": "0.0.3",
-    "@alleslabs/shared": "1.0.0-dev6",
+    "@alleslabs/shared": "1.0.0-dev7",
     "@amplitude/analytics-browser": "^2.3.3",
     "@amplitude/analytics-types": "^2.3.0",
     "@amplitude/plugin-user-agent-enrichment-browser": "^1.0.0",

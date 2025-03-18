@@ -2,7 +2,7 @@ import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import { useMigrationHistoriesLcd } from "lib/pages/contract-details/data";
+import { useMigrationHistoriesRest } from "lib/pages/contract-details/data";
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
 import type { BechAddr32 } from "lib/types";
 
@@ -18,7 +18,7 @@ export const MigrationTableLite = ({
   contractAddress,
 }: MigrationTableLiteProps) => {
   const isMobile = useMobile();
-  const { data, error, isLoading } = useMigrationHistoriesLcd(contractAddress);
+  const { data, error, isLoading } = useMigrationHistoriesRest(contractAddress);
   const { data: wasmVerifyInfos, isLoading: isWasmVerifyInfosLoading } =
     useWasmVerifyInfos(data?.map((history) => history.codeId) ?? [], !!data);
 

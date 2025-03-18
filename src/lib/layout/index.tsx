@@ -7,7 +7,6 @@ import type { ReactNode } from "react";
 import { useEffect, useMemo } from "react";
 
 import { useMobile, useNavContext } from "lib/app-provider";
-
 import { scrollToTop } from "lib/utils";
 
 import Footer from "./Footer";

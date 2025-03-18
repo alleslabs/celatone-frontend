@@ -34,33 +34,33 @@ import {
   getRelatedProposalsByContractAddress,
 } from "./api";
 import {
-  getProposalDataLcd,
-  getProposalDepositsLcd,
-  getProposalParamsLcd,
-  getProposalsLcd,
-  getProposalVotesInfoLcd,
-} from "./lcd";
+  getProposalDataRest,
+  getProposalDepositsRest,
+  getProposalParamsRest,
+  getProposalsRest,
+  getProposalVotesInfoRest,
+} from "./rest";
 import type {
   ProposalAnswerCountsResponse,
   ProposalDataResponse,
-  ProposalDataResponseLcd,
+  ProposalDataResponseRest,
   ProposalsResponse,
-  ProposalsResponseLcd,
+  ProposalsResponseRest,
   ProposalValidatorVotesResponse,
   ProposalVotesResponse,
   RelatedProposalsResponse,
-} from "../types/proposal";
+} from "../types";
 
 export const useProposalParams = () => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("proposals");
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   const [endpoint, queryFn] = isFullTier
     ? [apiEndpoint, getProposalParams]
-    : [lcdEndpoint, getProposalParamsLcd];
+    : [restEndpoint, getProposalParamsRest];
 
   return useQuery<ProposalParams<Coin>>(
     [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
@@ -114,16 +114,16 @@ export const useProposals = (
   );
 };
 
-export const useProposalsLcd = (
+export const useProposalsRest = (
   status?: Omit<ProposalStatus, "DEPOSIT_FAILED" | "CANCELLED">
 ) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  const { data, ...rest } = useInfiniteQuery<ProposalsResponseLcd>(
-    [CELATONE_QUERY_KEYS.PROPOSALS_LCD, lcdEndpoint, status],
-    ({ pageParam }) => getProposalsLcd(lcdEndpoint, pageParam, status),
+  const { data, ...rest } = useInfiniteQuery<ProposalsResponseRest>(
+    [CELATONE_QUERY_KEYS.PROPOSALS_REST, restEndpoint, status],
+    ({ pageParam }) => getProposalsRest(restEndpoint, pageParam, status),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
       refetchOnWindowFocus: false,
@@ -195,14 +195,14 @@ export const useProposalData = (id: number, enabled = true) => {
   );
 };
 
-export const useProposalDataLcd = (id: number, enabled = true) => {
+export const useProposalDataRest = (id: number, enabled = true) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
-  return useQuery<ProposalDataResponseLcd>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_DATA_LCD, lcdEndpoint, id],
-    async () => getProposalDataLcd(lcdEndpoint, id),
+  return useQuery<ProposalDataResponseRest>(
+    [CELATONE_QUERY_KEYS.PROPOSAL_DATA_REST, restEndpoint, id],
+    async () => getProposalDataRest(restEndpoint, id),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -211,14 +211,14 @@ export const useProposalDataLcd = (id: number, enabled = true) => {
   );
 };
 
-export const useProposalDepositsLcd = (id: number, enabled = true) => {
+export const useProposalDepositsRest = (id: number, enabled = true) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   return useQuery<ProposalDeposit<Coin>[]>(
-    [CELATONE_QUERY_KEYS.PROPOSAL_DEPOSITS_LCD, lcdEndpoint, id],
-    async () => getProposalDepositsLcd(lcdEndpoint, id),
+    [CELATONE_QUERY_KEYS.PROPOSAL_DEPOSITS_REST, restEndpoint, id],
+    async () => getProposalDepositsRest(restEndpoint, id),
     {
       retry: 1,
       refetchOnWindowFocus: false,
@@ -231,12 +231,12 @@ export const useProposalVotesInfo = (id: number, enabled: boolean) => {
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("proposals");
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
 
   const [endpoint, queryFn] = isFullTier
     ? [apiEndpoint, getProposalVotesInfo]
-    : [lcdEndpoint, getProposalVotesInfoLcd];
+    : [restEndpoint, getProposalVotesInfoRest];
 
   return useQuery<ProposalVotesInfo>(
     [CELATONE_QUERY_KEYS.PROPOSAL_VOTES_INFO, endpoint, id],

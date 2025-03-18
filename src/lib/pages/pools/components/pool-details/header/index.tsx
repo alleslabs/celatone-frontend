@@ -19,10 +19,10 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
   // Remark: the empty string has never been used when poolConfig is disabled
   const poolUrl = poolConfig.enabled ? poolConfig.url : "";
 
-  const lcdEndpoint = useBaseApiRoute("rest");
-  const openPoolLcd = () => {
-    trackUseViewJSON("pool_page_pool_lcd");
-    openNewTab(`${lcdEndpoint}/osmosis/poolmanager/v1beta1/pools/${pool.id}`);
+  const restEndpoint = useBaseApiRoute("rest");
+  const openPoolRest = () => {
+    trackUseViewJSON("pool_page_pool_rest");
+    openNewTab(`${restEndpoint}/osmosis/poolmanager/v1beta1/pools/${pool.id}`);
   };
   const openOsmosisPool = () => {
     trackWebsite(`${poolUrl}/${pool.id}`);
@@ -49,7 +49,7 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
             rightIcon={
               <CustomIcon name="launch" boxSize={3} color="gray.400" />
             }
-            onClick={openPoolLcd}
+            onClick={openPoolRest}
           >
             View in JSON
           </Button>

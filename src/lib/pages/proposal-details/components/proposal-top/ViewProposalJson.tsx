@@ -14,17 +14,17 @@ interface ViewProposalJsonProps {
 
 export const ViewProposalJson = ({ id, status }: ViewProposalJsonProps) => {
   const {
-    chainConfig: { lcd: lcdEndpoint },
+    chainConfig: { rest: restEndpoint },
   } = useCelatoneApp();
   const config = useGovConfig({ shouldRedirect: false });
   const isInitia = useInitia();
 
   if (!config.enabled) return null;
 
-  const openLcdPage = () => {
+  const openRestPage = () => {
     trackUseViewJSON("Proposal Details");
     openNewTab(
-      `${lcdEndpoint}/${isInitia ? "initia" : "cosmos"}/gov/${config.version}/proposals/${encodeURIComponent(id)}`
+      `${restEndpoint}/${isInitia ? "initia" : "cosmos"}/gov/${config.version}/proposals/${encodeURIComponent(id)}`
     );
   };
 
@@ -42,7 +42,7 @@ export const ViewProposalJson = ({ id, status }: ViewProposalJsonProps) => {
         minWidth={{ md: "150px" }}
         size={{ base: "sm", md: "md" }}
         rightIcon={<CustomIcon name="launch" />}
-        onClick={openLcdPage}
+        onClick={openRestPage}
         isDisabled={disabled}
       >
         View in JSON
