@@ -1,11 +1,12 @@
 import { Flex, Image } from "@chakra-ui/react";
 
+import { SUPPORTED_NETWORK_TYPES } from "env";
 import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { FaucetButton } from "lib/components/button";
 import { WalletSection } from "lib/components/wallet-section";
 
-import { AppMenu } from "./AppMenu";
+import { InitiaAppMenu } from "submodules/react-app-shell/initia-app-menu";
 import { NetworkMenu } from "./network-menu";
 import { SearchComponent } from "./search";
 import { SectionWrapper } from "./SectionWrapper";
@@ -29,7 +30,14 @@ const Header = () => {
       <Flex h="full">
         {isInitia && (
           <SectionWrapper minW="64px">
-            <AppMenu />
+            <InitiaAppMenu
+              app="scan"
+              subdomain={
+                SUPPORTED_NETWORK_TYPES[0] === "mainnet"
+                  ? undefined
+                  : SUPPORTED_NETWORK_TYPES[0]
+              }
+            />
           </SectionWrapper>
         )}
         <SectionWrapper minW={isInitia ? "auto" : "234px"}>

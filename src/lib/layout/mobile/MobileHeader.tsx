@@ -1,9 +1,10 @@
 import { Flex, Image } from "@chakra-ui/react";
 
+import { SUPPORTED_NETWORK_TYPES } from "env";
 import { useCelatoneApp, useInitia } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
+import { InitiaAppMenu } from "submodules/react-app-shell/initia-app-menu";
 import { NavDrawer } from "./NavDrawer";
-import { AppMenu } from "../AppMenu";
 import { SearchComponent } from "../search";
 import { SectionWrapper } from "../SectionWrapper";
 
@@ -20,7 +21,14 @@ const MobileHeader = () => {
     >
       {isInitia && (
         <SectionWrapper minW="64px">
-          <AppMenu trigger="click" />
+          <InitiaAppMenu
+            app="scan"
+            subdomain={
+              SUPPORTED_NETWORK_TYPES[0] === "mainnet"
+                ? undefined
+                : SUPPORTED_NETWORK_TYPES[0]
+            }
+          />
         </SectionWrapper>
       )}
       <SectionWrapper minW="64px" w="full" justifyContent="start">

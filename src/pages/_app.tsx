@@ -9,6 +9,7 @@ import "@interchain-ui/react/styles";
 
 import { MobileGuard } from "lib/components/MobileGuard";
 import { CelatoneSeo } from "lib/components/Seo";
+import "submodules/react-app-shell/styles.css";
 import Layout from "lib/layout";
 import "lib/styles/globals.css";
 import Providers from "lib/providers";

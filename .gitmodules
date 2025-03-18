@@ -1,0 +1,3 @@
+[submodule "src/submodules/react-app-shell"]
+	path = src/submodules/react-app-shell
+	url = https://github.com/initia-labs/react-app-shell
