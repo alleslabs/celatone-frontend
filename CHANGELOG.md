@@ -41,9 +41,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1251](https://github.com/alleslabs/celatone-frontend/pull/1251) Update naming convention from LCD to REST
-
 ### Bug fixes
+
+## v1.10.1
+
+### Improvements
+
+- [#1251](https://github.com/alleslabs/celatone-frontend/pull/1251) Update naming convention from LCD to REST
 
 ## v1.10.0
 
