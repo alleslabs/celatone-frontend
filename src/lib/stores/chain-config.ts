@@ -5,6 +5,8 @@ import { isHydrated, makePersistable } from "mobx-persist-store";
 
 import type { Option } from "lib/types";
 
+type SharedChainConfigWithLcd = SharedChainConfig & { lcd: string };
+
 export class LocalChainConfigStore {
   localChainConfigs: Record<
     string, // chainId
@@ -23,7 +25,24 @@ export class LocalChainConfigStore {
   }
 
   get isHydrated(): boolean {
-    return isHydrated(this);
+    const hydrated = isHydrated(this);
+
+    // MARK: Support backward lcd to rest
+    if (hydrated) {
+      this.localChainConfigs = Object.entries(this.localChainConfigs).reduce<
+        Record<string, SharedChainConfig>
+      >((acc, [chainId, config]) => {
+        const { lcd, rest, ...val } = config as SharedChainConfigWithLcd;
+        if (lcd && rest === undefined) {
+          acc[chainId] = { rest: lcd as string, ...val };
+        } else {
+          acc[chainId] = { rest, ...val };
+        }
+        return acc;
+      }, {});
+    }
+
+    return hydrated;
   }
 
   getLocalChainConfig(chainId: string): Option<SharedChainConfig> {
