@@ -30,7 +30,7 @@ const Layout = ({ children }: LayoutProps) => {
   const mode = useMemo(() => {
     if (isMobile)
       return {
-        templateAreas: `"header" "main"`,
+        templateAreas: `"header""main"`,
         templateRows: `60px 1fr`,
         templateCols: "1fr",
         header: <MobileHeader />,
@@ -38,7 +38,7 @@ const Layout = ({ children }: LayoutProps) => {
       };
 
     return {
-      templateAreas: `"header header""subheader subheader" "nav main"`,
+      templateAreas: `"header header""subheader subheader""nav main"`,
       templateRows: defaultRow,
       templateCols: isExpand ? "235px 1fr" : "48px 1fr",
       header: <Header />,
