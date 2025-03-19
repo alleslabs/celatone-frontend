@@ -476,7 +476,9 @@ export type AddNetworkJsonChainConfigJson = z.infer<
 export const zAddNetworkLinkChainConfigJson = z
   .object({
     chainId: z.string().min(1, "Chain ID cannot be empty"),
-    rest: zHttpsUrl,
+    // MARK: Support backward lcd to rest
+    lcd: zHttpsUrl.optional(),
+    rest: zHttpsUrl.optional(),
     rpc: zHttpsUrl,
     jsonRpc: zHttpsUrl.optional(),
     vm: z.nativeEnum(VmType),
@@ -484,6 +486,14 @@ export const zAddNetworkLinkChainConfigJson = z
     denom: z.string(),
   })
   .superRefine((val, ctx) => {
+    if (!val.lcd && !val.rest) {
+      ctx.addIssue({
+        code: ZodIssueCode.custom,
+        message: "REST is required",
+        path: ["rest"],
+      });
+    }
+
     if (val.vm === VmType.EVM && !val.jsonRpc) {
       ctx.addIssue({
         code: ZodIssueCode.custom,
@@ -493,7 +503,10 @@ export const zAddNetworkLinkChainConfigJson = z
     }
   })
   .transform<ChainConfig>(async (val) => {
-    const bech32Prefix = await getAccountBech32Rest(val.rest)
+    // MARK: Support backward lcd to rest
+    const restEndpoint = val.rest ?? val.lcd ?? "";
+
+    const bech32Prefix = await getAccountBech32Rest(restEndpoint)
       .then((res) => res.bech32Prefix)
       .catch(() => DEFAULT_BECH32_PREFIX);
 
@@ -502,7 +515,7 @@ export const zAddNetworkLinkChainConfigJson = z
       chainId: val.chainId,
       registryChainName: val.chainId,
       prettyName: capitalize(val.chainId),
-      rest: val.rest,
+      rest: restEndpoint,
       rpc: val.rpc,
       features: {
         wasm: val.vm === VmType.WASM ? DEFAULT_WASM_CONFIG : { enabled: false },

@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#1275](https://github.com/alleslabs/celatone-frontend/pull/1275) Add Initia App Menu from submodules
+- [#1276](https://github.com/alleslabs/celatone-frontend/pull/1276) Support backward LCD compatibility for custom networks
 
 ### Bug fixes
 
