@@ -103,6 +103,9 @@ importers:
       '@initia/initia.proto':
         specifier: 0.2.6
         version: 0.2.6
+      '@initia/react-app-shell':
+        specifier: ^1.0.1
+        version: 1.0.1
       '@initia/react-wallet-widget':
         specifier: 1.0.0
         version: 1.0.0(hdllajclw73kfsmpcjiurgxmse)
@@ -2257,6 +2260,9 @@ packages:
 
   '@initia/opinit.proto@0.0.8':
     resolution: {integrity: sha512-MddIGje1CX2lT+jezpWDQv7ex/wLbAK9qCHu+RM/kY13yOwzMeeD539Au2llVB4LWwPEkd0h71HwxJWE78IE1A==}
+
+  '@initia/react-app-shell@1.0.1':
+    resolution: {integrity: sha512-Zh2JR620wQTuEd7JDsvzfDZd9hZnGhWxSNykKf3fcZnAqt6wobP81ymB4F31sHGA0eyC7bXzC5pyVgAPmC9ooQ==}
 
   '@initia/react-wallet-widget@1.0.0':
     resolution: {integrity: sha512-CjqkMhQIKB4kB4L/LE5ofLNY7tvsshanQaGbcSvNbLimDdn/VTDk9fad7aVjL9i3BJY93HcMHExZUAI36f3fiA==}
@@ -13606,6 +13612,8 @@ snapshots:
       google-protobuf: 3.21.4
       long: 5.3.1
       protobufjs: 7.4.0
+
+  '@initia/react-app-shell@1.0.1': {}
 
   '@initia/react-wallet-widget@1.0.0(hdllajclw73kfsmpcjiurgxmse)':
     dependencies:
