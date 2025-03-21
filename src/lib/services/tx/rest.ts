@@ -28,33 +28,40 @@ export const getTxsByContractAddressRest = async (
   contractAddress: BechAddr32,
   limit: number,
   offset: number
-) =>
-  Promise.allSettled([
-    axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
-      params: {
-        order_by: 2,
-        limit,
-        page: offset / limit + 1,
-        query: `wasm._contract_address='${encodeURI(contractAddress)}'`,
-      },
-    }),
-    axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
-      params: {
-        order_by: 2,
-        limit,
-        page: offset / limit + 1,
-        events: `wasm._contract_address='${encodeURI(contractAddress)}'`,
-      },
-    }),
-  ]).then(([queryParam, eventsParam]) => {
-    if (queryParam.status === "fulfilled")
-      return parseWithError(zTxsByAddressResponseRest, queryParam.value.data);
+) => {
+  const fetch = async (endpoint: string) =>
+    Promise.allSettled([
+      axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
+        params: {
+          order_by: 2,
+          limit,
+          page: offset / limit + 1,
+          query: `wasm._contract_address='${encodeURI(contractAddress)}'`,
+        },
+      }),
+      axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
+        params: {
+          order_by: 2,
+          limit,
+          page: offset / limit + 1,
+          events: `wasm._contract_address='${encodeURI(contractAddress)}'`,
+        },
+      }),
+    ]).then(([queryParam, eventsParam]) => {
+      if (queryParam.status === "fulfilled")
+        return parseWithError(zTxsByAddressResponseRest, queryParam.value.data);
 
-    if (eventsParam.status === "fulfilled")
-      return parseWithError(zTxsByAddressResponseRest, eventsParam.value.data);
+      if (eventsParam.status === "fulfilled")
+        return parseWithError(
+          zTxsByAddressResponseRest,
+          eventsParam.value.data
+        );
 
-    throw new Error("No data found (getTxsByContractAddressRest)");
-  });
+      throw new Error("No data found (getTxsByContractAddressRest)");
+    });
+
+  return queryWithArchivalFallback(endpoint, fetch);
+};
 
 export const getTxsByAccountAddressRest = async (
   endpoint: string,
