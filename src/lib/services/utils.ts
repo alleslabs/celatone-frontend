@@ -67,3 +67,17 @@ export const handleQueryByTier = async <R>({
       throw new Error(`Unsupported tier: ${tier}`);
   }
 };
+
+export const queryWithArchivalFallback = async <T>(
+  endpoint: string,
+  fetch: (endpoint: string) => Promise<T>
+) => {
+  try {
+    return await fetch(endpoint);
+  } catch (error) {
+    if (endpoint.includes("sequencer") && endpoint.includes("anvil")) {
+      return fetch(endpoint.replace("sequencer", "archival"));
+    }
+    throw error;
+  }
+};
