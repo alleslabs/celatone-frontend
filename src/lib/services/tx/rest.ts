@@ -7,11 +7,16 @@ import {
   zTxsByAddressResponseRest,
   zTxsByHashResponseRest,
 } from "../types";
+import { queryWithArchivalFallback } from "../utils";
 
-export const getTxDataRest = async (endpoint: string, txHash: string) =>
-  axios
-    .get(`${endpoint}/cosmos/tx/v1beta1/txs/${encodeURI(txHash)}`)
-    .then(({ data }) => parseWithError(zTxByHashResponseRest, data));
+export const getTxDataRest = async (endpoint: string, txHash: string) => {
+  const fetch = async (endpoint: string) =>
+    axios
+      .get(`${endpoint}/cosmos/tx/v1beta1/txs/${encodeURI(txHash)}`)
+      .then(({ data }) => parseWithError(zTxByHashResponseRest, data));
+
+  return queryWithArchivalFallback(endpoint, fetch);
+};
 
 export const getTxsByHashRest = async (endpoint: string, txHash: string) =>
   axios

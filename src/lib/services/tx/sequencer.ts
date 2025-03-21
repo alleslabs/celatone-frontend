@@ -12,7 +12,9 @@ import {
   zTxsByHashResponseSequencer,
   zTxsResponseSequencer,
 } from "../types";
+import { queryWithArchivalFallback } from "../utils";
 
+// NOTE: Replace with new txs count endpoint
 export const getTxsCountSequencer = async (endpoint: string) =>
   axios
     .get(`${endpoint}/indexer/tx/v1/txs`, {
@@ -29,16 +31,20 @@ export const getTxsSequencer = async (
   endpoint: string,
   paginationKey: Option<string>,
   limit: number
-) =>
-  axios
-    .get(`${endpoint}/indexer/tx/v1/txs`, {
-      params: {
-        "pagination.limit": limit,
-        "pagination.reverse": true,
-        "pagination.key": paginationKey,
-      },
-    })
-    .then(({ data }) => parseWithError(zTxsResponseSequencer, data));
+) => {
+  const fetch = async (endpoint: string) =>
+    axios
+      .get(`${endpoint}/indexer/tx/v1/txs`, {
+        params: {
+          "pagination.limit": limit,
+          "pagination.reverse": true,
+          "pagination.key": paginationKey,
+        },
+      })
+      .then(({ data }) => parseWithError(zTxsResponseSequencer, data));
+
+  return queryWithArchivalFallback(endpoint, fetch);
+};
 
 export const getTxsByAccountAddressSequencer = async ({
   endpoint,
@@ -52,21 +58,33 @@ export const getTxsByAccountAddressSequencer = async ({
   paginationKey?: string;
   limit?: number;
   reverse?: boolean;
-}) =>
-  axios
-    .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {
-      params: {
-        "pagination.limit": limit,
-        "pagination.reverse": reverse,
-        "pagination.key": paginationKey,
-      },
-    })
-    .then(({ data }) => parseWithError(zTxsResponseSequencer, data));
+}) => {
+  const fetch = async (endpoint: string) =>
+    axios
+      .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {
+        params: {
+          "pagination.limit": limit,
+          "pagination.reverse": reverse,
+          "pagination.key": paginationKey,
+        },
+      })
+      .then(({ data }) => parseWithError(zTxsResponseSequencer, data));
 
-export const getTxsByHashSequencer = async (endpoint: string, txHash: string) =>
-  axios
-    .get(`${endpoint}/indexer/tx/v1/txs/${encodeURI(txHash)}`)
-    .then(({ data }) => parseWithError(zTxsByHashResponseSequencer, data));
+  return queryWithArchivalFallback(endpoint, fetch);
+};
+
+// REVISIT: Can we remove this function?
+export const getTxsByHashSequencer = async (
+  endpoint: string,
+  txHash: string
+) => {
+  const fetch = async (endpoint: string) =>
+    axios
+      .get(`${endpoint}/indexer/tx/v1/txs/${encodeURI(txHash)}`)
+      .then(({ data }) => parseWithError(zTxsByHashResponseSequencer, data));
+
+  return queryWithArchivalFallback(endpoint, fetch);
+};
 
 export const getTxsByBlockHeightSequencer = async (
   endpoint: string,
@@ -74,23 +92,27 @@ export const getTxsByBlockHeightSequencer = async (
 ): Promise<TransactionWithSignerPubkey[]> => {
   const result: TransactionWithSignerPubkey[] = [];
 
-  const fetchFn = async (paginationKey: Nullable<string>) => {
-    const res = await axios
-      .get(
-        `${endpoint}/indexer/tx/v1/txs/by_height/${encodeURIComponent(height)}`,
-        {
-          params: {
-            "pagination.key": paginationKey,
-            "pagination.limit": "500",
-          },
-        }
-      )
-      .then(({ data }) => parseWithError(zBlockTxsResponseSequencer, data));
+  const fetchTxsByPaginationKey = async (paginationKey: Nullable<string>) => {
+    const fetch = async (endpoint: string) =>
+      axios
+        .get(
+          `${endpoint}/indexer/tx/v1/txs/by_height/${encodeURIComponent(height)}`,
+          {
+            params: {
+              "pagination.key": paginationKey,
+              "pagination.limit": "500",
+            },
+          }
+        )
+        .then(({ data }) => parseWithError(zBlockTxsResponseSequencer, data));
+
+    const res = await queryWithArchivalFallback(endpoint, fetch);
     result.push(...res.txs);
-    if (res.pagination.nextKey) await fetchFn(res.pagination.nextKey);
+    if (res.pagination.nextKey)
+      await fetchTxsByPaginationKey(res.pagination.nextKey);
   };
 
-  await fetchFn(null);
+  await fetchTxsByPaginationKey(null);
 
   return result;
 };
