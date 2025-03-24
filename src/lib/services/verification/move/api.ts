@@ -14,7 +14,7 @@ import {
   zSubmitMoveVerifyResponse,
 } from "lib/services/types";
 import { zMoveVerifyConfig } from "lib/types";
-import type { Addr, Nullable } from "lib/types";
+import type { Addr, HexAddr, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getMoveVerifyConfig = async () =>
@@ -63,7 +63,7 @@ export const getMoveVerifyInfo = async (
 
 export const getMoveVerifyInfosByAddress = async (
   chainId: string,
-  address: Addr
+  address: HexAddr
 ): Promise<MoveVerifyInfosByAddressResponse> =>
   axios
     .get(`${CELATONE_VERIFICATION_API}/move/verify-infos`, {

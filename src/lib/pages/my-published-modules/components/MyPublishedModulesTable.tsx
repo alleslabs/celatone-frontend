@@ -11,6 +11,7 @@ import { ModulesTable } from "lib/components/table";
 import { useModulesByAddress } from "lib/services/move/module";
 import { useMoveVerifyInfosByAddress } from "lib/services/verification/move";
 import type { ModuleInfo, Option } from "lib/types";
+import { bech32AddressToHex } from "lib/utils";
 
 export const MyPublishedModulesTable = () => {
   const [keyword, setKeyword] = useState("");
@@ -22,7 +23,9 @@ export const MyPublishedModulesTable = () => {
     error,
   } = useModulesByAddress({ address });
 
-  const { data: moveVerifyInfos } = useMoveVerifyInfosByAddress(address);
+  const { data: moveVerifyInfos } = useMoveVerifyInfosByAddress(
+    address ? bech32AddressToHex(address) : undefined
+  );
 
   const filteredPublishedModules: Option<ModuleInfo[]> = useMemo(() => {
     if (!keyword) return data?.items;

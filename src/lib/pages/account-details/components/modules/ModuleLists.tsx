@@ -4,13 +4,13 @@ import { useState } from "react";
 import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { MobileTitle, ViewMore } from "lib/components/table";
-import type { BechAddr, IndexedModule, Option } from "lib/types";
+import type { HexAddr, IndexedModule, Option } from "lib/types";
 
 import { ModuleListsBody } from "./ModuleListsBody";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 
 interface ModuleListsProps {
-  address: BechAddr;
+  address: HexAddr;
   totalCount: Option<number>;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;

@@ -41,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1281](https://github.com/alleslabs/celatone-frontend/pull/1281) Add advanced options helper text to module verify page
+- [#1281](https://github.com/alleslabs/celatone-frontend/pull/1281) Add advanced options helper text, and limit fetching verification infos to hex addresses only
 - [#1276](https://github.com/alleslabs/celatone-frontend/pull/1276) Support backward LCD compatibility for custom networks
 
 ### Bug fixes
