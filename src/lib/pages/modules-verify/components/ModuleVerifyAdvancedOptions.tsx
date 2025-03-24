@@ -55,9 +55,21 @@ export const ModuleVerifyAdvancedOptions = ({
     <Accordion allowToggle width="full">
       <AccordionItem>
         <AccordionButton>
-          <Flex p={4} justifyContent="space-between" w="full">
-            <Text>Advanced Options</Text>
-            <AccordionIcon />
+          <Flex
+            p={4}
+            justifyContent="space-between"
+            w="full"
+            alignItems="center"
+          >
+            <Flex direction="column" gap={1} alignItems="flex-start">
+              <Text>Advanced Options</Text>
+              <Text variant="body3" color="text.dark" textAlign="left">
+                Skip this section if you built your module with default
+                settings. Otherwise, ensure your specified versions match here
+                to prevent verification errors.
+              </Text>
+            </Flex>
+            <AccordionIcon boxSize={6} color="gray.600" />
           </Flex>
         </AccordionButton>
         <AccordionPanel>
