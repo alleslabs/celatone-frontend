@@ -5,12 +5,12 @@ import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useMoveVerifyInfosByAddress } from "lib/services/verification/move";
-import type { BechAddr, IndexedModule, Option } from "lib/types";
+import type { HexAddr, IndexedModule, Option } from "lib/types";
 import { mergeModulePath } from "lib/utils";
 import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 
 interface ModuleListsBodyProps {
-  address: BechAddr;
+  address: HexAddr;
   keyword: string;
   modules: Option<IndexedModule[]>;
   isLoading: boolean;
