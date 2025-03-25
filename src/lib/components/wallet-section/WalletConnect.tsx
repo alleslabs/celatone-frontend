@@ -1,9 +1,8 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import { WalletStatus } from "@cosmos-kit/core";
 import type { MouseEventHandler, ReactNode } from "react";
 
 import type { ConnectWalletType } from "lib/types";
-import { CustomIcon } from "../icon";
 
 export const ConnectWalletButton = ({
   buttonText,
@@ -11,21 +10,28 @@ export const ConnectWalletButton = ({
   isDisabled,
   onClick,
   variant,
-  icon,
 }: ConnectWalletType) => (
   <Button
-    w="170px"
     isLoading={isLoading}
     isDisabled={isDisabled}
     onClick={onClick}
     variant={variant}
     gap={1}
     alignContent="center"
-    minH="64px"
-    borderRadius={0}
+    maxH="32px"
+    px="18px"
   >
-    <CustomIcon name={icon ?? "wallet"} />
-    {buttonText || "Connect"}
+    <Text
+      color="gray.900"
+      fontFamily="heading"
+      fontSize="12px"
+      fontWeight={600}
+      letterSpacing={0}
+    >
+      {buttonText || "Connect Wallet"}
+    </Text>
+    {/* <Heading as="h6" color="gray.900" fontSize="12px" fontWeight={300}>
+    </Heading> */}
   </Button>
 );
 

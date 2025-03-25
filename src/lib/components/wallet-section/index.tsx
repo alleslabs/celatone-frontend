@@ -39,7 +39,6 @@ export const WalletSection = () => {
       return (
         <ConnectWalletButton
           buttonText={truncate(initiaUsername?.username || address)}
-          icon="wallet-solid"
           onClick={onClickOpenView}
           variant="ghost-primary"
         />
@@ -48,10 +47,8 @@ export const WalletSection = () => {
 
     return (
       <ConnectWalletButton
-        buttonText="Connect Wallet"
+        buttonText="Connect wallet"
         onClick={onClickConnect}
-        iconColor="text.main"
-        icon="wallet"
       />
     );
   }
@@ -62,25 +59,21 @@ export const WalletSection = () => {
         walletStatus={walletProvider.context.status}
         disconnect={
           <ConnectWalletButton
-            buttonText="Connect Wallet"
+            buttonText="Connect wallet"
             onClick={onClickConnect}
-            iconColor="text.main"
-            icon="wallet"
           />
         }
         connecting={<ConnectWalletButton isLoading />}
         connected={
           <ConnectWalletButton
             buttonText={truncate(icnsNames?.primaryName || address)}
-            icon="wallet-solid"
             onClick={onClickOpenView}
-            variant="ghost-primary"
           />
         }
         rejected={<Others buttonText="Reconnect" onClick={onClickConnect} />}
-        error={<Others buttonText="Change Wallet" onClick={onClickOpenView} />}
+        error={<Others buttonText="Change wallet" onClick={onClickOpenView} />}
         notExist={
-          <Others buttonText="Install Wallet" onClick={onClickOpenView} />
+          <Others buttonText="Install wallet" onClick={onClickOpenView} />
         }
       />
     </Flex>
