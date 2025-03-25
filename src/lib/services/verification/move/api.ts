@@ -17,12 +17,12 @@ import { zMoveVerifyConfig } from "lib/types";
 import type { Addr, HexAddr, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
-export const getMoveVerifyConfig = async () =>
+export const getMoveVerifyConfig = () =>
   axios
     .get(`${CELATONE_VERIFICATION_API}/move/config`)
     .then(({ data }) => zMoveVerifyConfig.parse(data));
 
-export const submitMoveVerify = async (
+export const submitMoveVerify = (
   formData: FormData
 ): Promise<SubmitMoveVerifyResponse> =>
   axios
@@ -33,7 +33,7 @@ export const submitMoveVerify = async (
     })
     .then(({ data }) => parseWithError(zSubmitMoveVerifyResponse, data));
 
-export const getMoveVerifyByTaskId = async (
+export const getMoveVerifyByTaskId = (
   chainId: string,
   taskId: string
 ): Promise<MoveVerifyByTaskIdResponse> =>
@@ -46,7 +46,7 @@ export const getMoveVerifyByTaskId = async (
     })
     .then(({ data }) => parseWithError(zMoveVerifyByTaskIdResponse, data));
 
-export const getMoveVerifyInfo = async (
+export const getMoveVerifyInfo = (
   chainId: string,
   address: Addr,
   moduleName: string
@@ -61,7 +61,7 @@ export const getMoveVerifyInfo = async (
     })
     .then((res) => parseWithError(zMoveVerifyInfoResponse, res.data));
 
-export const getMoveVerifyInfosByAddress = async (
+export const getMoveVerifyInfosByAddress = (
   chainId: string,
   address: HexAddr
 ): Promise<MoveVerifyInfosByAddressResponse> =>

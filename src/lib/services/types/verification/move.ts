@@ -39,6 +39,14 @@ export const zMoveVerifyByTaskIdResponse = z.object({
     })
     .optional()
     .transform((val) => (val ? snakeToCamel(val) : undefined)),
+  info: z
+    .object({
+      language_version: z.string(),
+      bytecode_version: z.number(),
+      compiler_version: z.string(),
+    })
+    .nullable()
+    .transform((val) => (val ? snakeToCamel(val) : null)),
 });
 export type MoveVerifyByTaskIdResponse = z.infer<
   typeof zMoveVerifyByTaskIdResponse
