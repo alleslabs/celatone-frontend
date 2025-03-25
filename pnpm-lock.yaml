@@ -107,8 +107,8 @@ importers:
         specifier: 1.0.4
         version: 1.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@initia/react-wallet-widget':
-        specifier: 1.0.0
-        version: 1.0.0(hdllajclw73kfsmpcjiurgxmse)
+        specifier: 1.2.6
+        version: 1.2.6(hdllajclw73kfsmpcjiurgxmse)
       '@initia/utils':
         specifier: 1.0.0
         version: 1.0.0(@cosmjs/amino@0.32.4)(@cosmjs/encoding@0.32.4)(@cosmjs/proto-signing@0.32.4)(@cosmjs/stargate@0.32.4(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@initia/initia-registry-types@0.0.28)(@initia/initia.js@0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10))(@initia/initia.proto@0.2.6)(@initia/opinit.proto@0.0.11)(@keplr-wallet/types@0.12.194(starknet@6.11.0))(@msgpack/msgpack@3.1.0)(@mysten/bcs@1.2.0)(@noble/hashes@1.7.1)(@types/ramda@0.30.2)(bech32@2.0.0)(bignumber.js@9.1.2)(change-case@5.4.4)(cosmjs-types@0.9.0)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(ky@1.7.5)(long@5.2.3)(ramda@0.29.0)(rxjs@7.8.1)(zod@3.24.2)
@@ -2267,8 +2267,8 @@ packages:
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@initia/react-wallet-widget@1.0.0':
-    resolution: {integrity: sha512-CjqkMhQIKB4kB4L/LE5ofLNY7tvsshanQaGbcSvNbLimDdn/VTDk9fad7aVjL9i3BJY93HcMHExZUAI36f3fiA==}
+  '@initia/react-wallet-widget@1.2.6':
+    resolution: {integrity: sha512-dYH7m00n/TwgolhNPiTbtFC1iyBMLljmrobuXcsbOMPOOd9SThSnsTW0YxTXJanzM43AXePRaT7vO+PwgIZTmw==}
     peerDependencies:
       '@cosmjs/proto-signing': ^0.33.0
       '@initia/initia.js': ^0.2.30
@@ -13621,7 +13621,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@initia/react-wallet-widget@1.0.0(hdllajclw73kfsmpcjiurgxmse)':
+  '@initia/react-wallet-widget@1.2.6(hdllajclw73kfsmpcjiurgxmse)':
     dependencies:
       '@cosmjs/proto-signing': 0.32.4
       '@initia/initia.js': 0.2.30(bufferutil@4.0.9)(typescript@5.3.3)(utf-8-validate@5.0.10)

@@ -73,7 +73,7 @@
     "@initia/initia.js": "0.2.30",
     "@initia/initia.proto": "0.2.6",
     "@initia/react-app-shell": "1.0.4",
-    "@initia/react-wallet-widget": "1.0.0",
+    "@initia/react-wallet-widget": "1.2.6",
     "@initia/utils": "1.0.0",
     "@interchain-ui/react": "1.23.9",
     "@monaco-editor/react": "^4.6.0",

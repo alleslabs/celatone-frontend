@@ -53,6 +53,10 @@ export const zMoveVerifyInfoResponse = z
     source: z.string(),
     base64: z.string(),
     chain_id: z.string(),
+    language_version: z.string(),
+    bytecode_version: z.number(),
+    compiler_version: z.string(),
+    toml: z.string(),
   })
   .transform(snakeToCamel);
 export type MoveVerifyInfoResponse = z.infer<typeof zMoveVerifyInfoResponse>;
