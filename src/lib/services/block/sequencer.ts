@@ -7,6 +7,7 @@ import {
   zBlocksResponseSequencer,
   zBlockTimeAverageSequencer,
 } from "../types";
+import { queryWithArchivalFallback } from "../utils";
 
 // NOTE: There is a bug in /indexer/block/v1/blocks, so we have to increase last byte by 1
 function incrementLastByte(base64: string): string {
@@ -26,32 +27,40 @@ function incrementLastByte(base64: string): string {
   return buffer.toString("base64");
 }
 
-export const getBlocksSequencer = async (
+export const getBlocksSequencer = (
   endpoint: string,
   paginationKey: Option<string>,
   limit: number
-) =>
-  axios
-    .get(`${endpoint}/indexer/block/v1/blocks`, {
-      params: {
-        "pagination.offset": 0,
-        "pagination.limit": limit,
-        "pagination.reverse": true,
-        "pagination.key": paginationKey
-          ? incrementLastByte(paginationKey)
-          : undefined,
-      },
-    })
-    .then(({ data }) => parseWithError(zBlocksResponseSequencer, data));
+) => {
+  const fetch = (endpoint: string) =>
+    axios
+      .get(`${endpoint}/indexer/block/v1/blocks`, {
+        params: {
+          "pagination.offset": 0,
+          "pagination.limit": limit,
+          "pagination.reverse": true,
+          "pagination.key": paginationKey
+            ? incrementLastByte(paginationKey)
+            : undefined,
+        },
+      })
+      .then(({ data }) => parseWithError(zBlocksResponseSequencer, data));
 
-export const getBlockTimeAverageSequencer = async (endpoint: string) =>
+  return queryWithArchivalFallback(endpoint, fetch);
+};
+
+export const getBlockTimeAverageSequencer = (endpoint: string) =>
   axios
     .get(`${endpoint}/indexer/block/v1/avg_blocktime`)
     .then(({ data }) => parseWithError(zBlockTimeAverageSequencer, data));
 
-export const getBlockDataSequencer = async (endpoint: string, height: number) =>
-  axios
-    .get(`${endpoint}/indexer/block/v1/blocks/${height}`)
-    .then(({ data }) =>
-      parseWithError(zBlockDataResponseSequencer, data.block)
-    );
+export const getBlockDataSequencer = (endpoint: string, height: number) => {
+  const fetch = (endpoint: string) =>
+    axios
+      .get(`${endpoint}/indexer/block/v1/blocks/${height}`)
+      .then(({ data }) =>
+        parseWithError(zBlockDataResponseSequencer, data.block)
+      );
+
+  return queryWithArchivalFallback(endpoint, fetch);
+};
