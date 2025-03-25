@@ -54,7 +54,7 @@ export const ModuleSourceCode = ({
                   color="text.dark"
                   textAlign="start"
                 >
-                  Verifed at {formatUTC(verificationData.verifiedAt)}
+                  Verified at {formatUTC(verificationData.verifiedAt)}
                 </Text>
               </Flex>
               <AccordionIcon color="gray.600" ml="auto" boxSize={6} />
