@@ -71,9 +71,8 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
         />
         <Stack gap={10}>
           <MyModuleVerificationDetailsInfo
-            chainId={verifyModuleTask?.chainId ?? data.result?.chainId}
-            status={data.task.status}
-            verifiedAt={verifyModuleTask?.verifiedAt ?? data.result?.verifiedAt}
+            verifyTaskLocalInfo={verifyModuleTask}
+            verifyTaskInfo={data}
           />
           <MyModuleVerificationDetailsAlert status={data.task.status} />
           {verifyModuleTask && (

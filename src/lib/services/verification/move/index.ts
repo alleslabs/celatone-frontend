@@ -120,7 +120,7 @@ export const useMoveVerifyInfos = (
 };
 
 export const useMoveVerifyInfosByAddress = (
-  address: Option<Addr>
+  address: Option<HexAddr>
 ): UseQueryResult<MoveVerifyInfosByAddressResponse> => {
   const { currentChainId } = useCelatoneApp();
 
