@@ -27,12 +27,12 @@ function incrementLastByte(base64: string): string {
   return buffer.toString("base64");
 }
 
-export const getBlocksSequencer = async (
+export const getBlocksSequencer = (
   endpoint: string,
   paginationKey: Option<string>,
   limit: number
 ) => {
-  const fetch = async (endpoint: string) =>
+  const fetch = (endpoint: string) =>
     axios
       .get(`${endpoint}/indexer/block/v1/blocks`, {
         params: {
@@ -49,16 +49,13 @@ export const getBlocksSequencer = async (
   return queryWithArchivalFallback(endpoint, fetch);
 };
 
-export const getBlockTimeAverageSequencer = async (endpoint: string) =>
+export const getBlockTimeAverageSequencer = (endpoint: string) =>
   axios
     .get(`${endpoint}/indexer/block/v1/avg_blocktime`)
     .then(({ data }) => parseWithError(zBlockTimeAverageSequencer, data));
 
-export const getBlockDataSequencer = async (
-  endpoint: string,
-  height: number
-) => {
-  const fetch = async (endpoint: string) =>
+export const getBlockDataSequencer = (endpoint: string, height: number) => {
+  const fetch = (endpoint: string) =>
     axios
       .get(`${endpoint}/indexer/block/v1/blocks/${height}`)
       .then(({ data }) =>

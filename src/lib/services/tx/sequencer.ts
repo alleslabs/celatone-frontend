@@ -15,7 +15,7 @@ import {
 import { queryWithArchivalFallback } from "../utils";
 
 // NOTE: Replace with new txs count endpoint
-export const getTxsCountSequencer = async (endpoint: string) =>
+export const getTxsCountSequencer = (endpoint: string) =>
   axios
     .get(`${endpoint}/indexer/tx/v1/txs`, {
       params: {
@@ -27,12 +27,12 @@ export const getTxsCountSequencer = async (endpoint: string) =>
       ({ data }) => parseWithError(zTxsResponseSequencer, data).pagination.total
     );
 
-export const getTxsSequencer = async (
+export const getTxsSequencer = (
   endpoint: string,
   paginationKey: Option<string>,
   limit: number
 ) => {
-  const fetch = async (endpoint: string) =>
+  const fetch = (endpoint: string) =>
     axios
       .get(`${endpoint}/indexer/tx/v1/txs`, {
         params: {
@@ -46,7 +46,7 @@ export const getTxsSequencer = async (
   return queryWithArchivalFallback(endpoint, fetch);
 };
 
-export const getTxsByAccountAddressSequencer = async ({
+export const getTxsByAccountAddressSequencer = ({
   endpoint,
   address,
   paginationKey,
@@ -59,7 +59,7 @@ export const getTxsByAccountAddressSequencer = async ({
   limit?: number;
   reverse?: boolean;
 }) => {
-  const fetch = async (endpoint: string) =>
+  const fetch = (endpoint: string) =>
     axios
       .get(`${endpoint}/indexer/tx/v1/txs/by_account/${encodeURI(address)}`, {
         params: {
@@ -73,12 +73,8 @@ export const getTxsByAccountAddressSequencer = async ({
   return queryWithArchivalFallback(endpoint, fetch);
 };
 
-// REVISIT: Can we remove this function?
-export const getTxsByHashSequencer = async (
-  endpoint: string,
-  txHash: string
-) => {
-  const fetch = async (endpoint: string) =>
+export const getTxsByHashSequencer = (endpoint: string, txHash: string) => {
+  const fetch = (endpoint: string) =>
     axios
       .get(`${endpoint}/indexer/tx/v1/txs/${encodeURI(txHash)}`)
       .then(({ data }) => parseWithError(zTxsByHashResponseSequencer, data));
@@ -93,7 +89,7 @@ export const getTxsByBlockHeightSequencer = async (
   const result: TransactionWithSignerPubkey[] = [];
 
   const fetchTxsByPaginationKey = async (paginationKey: Nullable<string>) => {
-    const fetch = async (endpoint: string) =>
+    const fetch = (endpoint: string) =>
       axios
         .get(
           `${endpoint}/indexer/tx/v1/txs/by_height/${encodeURIComponent(height)}`,

@@ -4,13 +4,13 @@ import { parseWithError } from "lib/utils";
 import { zBlockDataResponseRest, zBlockRest } from "../types";
 import { queryWithArchivalFallback } from "../utils";
 
-export const getLatestBlockRest = async (endpoint: string) =>
+export const getLatestBlockRest = (endpoint: string) =>
   axios
     .get(`${endpoint}/cosmos/base/tendermint/v1beta1/blocks/latest`)
     .then(({ data }) => parseWithError(zBlockRest, data).block.header.height);
 
-export const getBlockDataRest = async (endpoint: string, height: number) => {
-  const fetch = async (endpoint: string) =>
+export const getBlockDataRest = (endpoint: string, height: number) => {
+  const fetch = (endpoint: string) =>
     axios
       .get(
         `${endpoint}/cosmos/tx/v1beta1/txs/block/${encodeURIComponent(height)}`

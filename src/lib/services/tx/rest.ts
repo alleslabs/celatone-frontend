@@ -9,8 +9,8 @@ import {
 } from "../types";
 import { queryWithArchivalFallback } from "../utils";
 
-export const getTxDataRest = async (endpoint: string, txHash: string) => {
-  const fetch = async (endpoint: string) =>
+export const getTxDataRest = (endpoint: string, txHash: string) => {
+  const fetch = (endpoint: string) =>
     axios
       .get(`${endpoint}/cosmos/tx/v1beta1/txs/${encodeURI(txHash)}`)
       .then(({ data }) => parseWithError(zTxByHashResponseRest, data));
@@ -18,18 +18,18 @@ export const getTxDataRest = async (endpoint: string, txHash: string) => {
   return queryWithArchivalFallback(endpoint, fetch);
 };
 
-export const getTxsByHashRest = async (endpoint: string, txHash: string) =>
+export const getTxsByHashRest = (endpoint: string, txHash: string) =>
   axios
     .get(`${endpoint}/cosmos/tx/v1beta1/txs/${encodeURI(txHash)}`)
     .then(({ data }) => parseWithError(zTxsByHashResponseRest, data));
 
-export const getTxsByContractAddressRest = async (
+export const getTxsByContractAddressRest = (
   endpoint: string,
   contractAddress: BechAddr32,
   limit: number,
   offset: number
 ) => {
-  const fetch = async (endpoint: string) =>
+  const fetch = (endpoint: string) =>
     Promise.allSettled([
       axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
         params: {
@@ -63,7 +63,7 @@ export const getTxsByContractAddressRest = async (
   return queryWithArchivalFallback(endpoint, fetch);
 };
 
-export const getTxsByAccountAddressRest = async (
+export const getTxsByAccountAddressRest = (
   endpoint: string,
   address: BechAddr20,
   limit: number,
