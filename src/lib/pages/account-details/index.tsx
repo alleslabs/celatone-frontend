@@ -445,7 +445,7 @@ const AccountDetailsBody = ({
                   )}
                 />
                 <ModuleLists
-                  address={accountAddress}
+                  address={hexAddress}
                   totalCount={modulesData?.total}
                   modules={modulesData?.items}
                   isLoading={isModulesLoading}
@@ -573,7 +573,7 @@ const AccountDetailsBody = ({
           </TabPanel>
           <TabPanel p={0}>
             <ModuleLists
-              address={accountAddress}
+              address={hexAddress}
               totalCount={modulesData?.total}
               modules={modulesData?.items}
               isLoading={isModulesLoading}

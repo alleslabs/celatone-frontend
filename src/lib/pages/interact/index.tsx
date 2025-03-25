@@ -303,9 +303,34 @@ const InteractBody = ({
                 labelWeight={600}
                 labelColor="text.main"
               >
-                <Text variant="body2" color="gray.400">
-                  {JSON.stringify(module.parsedAbi.friends)}
-                </Text>
+                <Flex gap={1} wordBreak="break-all">
+                  {module.parsedAbi.friends.length ? (
+                    <Flex
+                      display="inline"
+                      sx={{
+                        "> p:last-child > span": {
+                          display: "none",
+                        },
+                      }}
+                    >
+                      {module.parsedAbi.friends.map((item) => (
+                        <Text
+                          key={item}
+                          display="inline-flex"
+                          variant="body2"
+                          color="gray.400"
+                        >
+                          {item}
+                          <span>,&nbsp;</span>
+                        </Text>
+                      ))}
+                    </Flex>
+                  ) : (
+                    <Text variant="body2" color="gray.400">
+                      -
+                    </Text>
+                  )}
+                </Flex>
               </LabelText>
             </Flex>
             <Flex direction={{ base: "row", md: "column" }} gap={2}>
