@@ -68,6 +68,11 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
       !chainConfig.features.evm.enabled || wallet.type === "evm",
   };
 
+  const networkType =
+    SUPPORTED_NETWORK_TYPES.length > 1
+      ? chainConfig.network_type
+      : SUPPORTED_NETWORK_TYPES[0];
+
   return (
     <WalletWidgetProvider
       key={currentChainId}
@@ -95,7 +100,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
           : undefined
       }
       fallback={<LoadingOverlay />}
-      {...(SUPPORTED_NETWORK_TYPES[0] === "testnet" && testnetConfigs)}
+      {...(networkType !== "mainnet" && testnetConfigs)}
     >
       {children}
     </WalletWidgetProvider>

@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1285](https://github.com/alleslabs/celatone-frontend/pull/1285) Enable My Stored Codes in full tier only
+
 ### Bug fixes
 
 ## v1.10.2
