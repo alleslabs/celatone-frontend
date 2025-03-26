@@ -55,7 +55,7 @@ export const useAddressByInitiaUsername = (
     queryFn,
     {
       refetchOnWindowFocus: false,
-      enabled: enabled && isInitia,
+      enabled: enabled && username.length > 0 && isInitia,
       retry: 1,
     }
   );

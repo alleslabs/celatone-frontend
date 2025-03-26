@@ -12,7 +12,7 @@ const useStoredCodes = () => {
   const { address } = useCurrentChain();
   const { getCodeLocalInfo, isCodeIdSaved, isHydrated } = useCodeStore();
 
-  const { data: rawStoredCodes, isLoading } = useAllCodesByAddress(
+  const { data: rawStoredCodes, isFetching } = useAllCodesByAddress(
     address as BechAddr
   );
 
@@ -23,14 +23,14 @@ const useStoredCodes = () => {
       isSaved: isCodeIdSaved(code.id),
     })) ?? [];
 
-  return { storedCodes, isLoading: isLoading && isHydrated };
+  return { storedCodes, isLoading: isFetching && isHydrated };
 };
 
 const useSavedCodes = () => {
   const { lastSavedCodes, lastSavedCodeIds, isHydrated } = useCodeStore();
 
   const savedCodeIds = lastSavedCodeIds();
-  const { data: rawSavedCodes, isLoading } = useCodeList(savedCodeIds);
+  const { data: rawSavedCodes, isFetching } = useCodeList(savedCodeIds);
 
   const savedCodes = lastSavedCodes().map<CodeInfo>((localSavedCode) => {
     const rawSavedCode = rawSavedCodes?.items.find(
@@ -48,7 +48,7 @@ const useSavedCodes = () => {
     };
   });
 
-  return { savedCodes, isLoading: isLoading && isHydrated };
+  return { savedCodes, isLoading: isFetching && isHydrated };
 };
 
 interface MyCodesData {

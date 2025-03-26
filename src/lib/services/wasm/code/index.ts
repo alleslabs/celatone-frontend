@@ -6,6 +6,7 @@ import {
   useBaseApiRoute,
   useCelatoneApp,
   useGovConfig,
+  useTierConfig,
 } from "lib/app-provider";
 import type { Code, CodeData, CodesResponse } from "lib/services/types";
 import type { BechAddr, BechAddr20, Option } from "lib/types";
@@ -117,11 +118,13 @@ export const useAllCodesByAddress = (
   address: BechAddr
 ): UseQueryResult<CodesResponse> => {
   const endpoint = useBaseApiRoute("accounts");
+  const { isFullTier } = useTierConfig();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.ALL_CODES_BY_ADDRESS, endpoint, address],
     async () => getAllCodesByAddress(endpoint, address),
     {
+      enabled: isFullTier,
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -130,11 +133,13 @@ export const useAllCodesByAddress = (
 
 export const useCodeList = (codeIds: number[]) => {
   const endpoint = useBaseApiRoute("codes");
+  const { isFullTier } = useTierConfig();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.CODE_LIST, endpoint, codeIds],
     async () => getCodeList(endpoint, codeIds),
     {
+      enabled: isFullTier,
       retry: 1,
       refetchOnWindowFocus: false,
     }
