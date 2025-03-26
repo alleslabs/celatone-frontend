@@ -28,8 +28,10 @@ export const MyModuleVerificationDetailsInfo = ({
 
   return (
     <Grid
-      gridTemplateColumns="repeat(auto-fill, minmax(130px, 1fr))"
-      rowGap={4}
+      display="flex"
+      columnGap={8}
+      rowGap={2}
+      flexWrap="wrap"
       border="1px"
       borderColor="gray.700"
       rounded={8}
@@ -41,17 +43,8 @@ export const MyModuleVerificationDetailsInfo = ({
           status={verifyTaskInfo.task.status}
         />
       </LabelText>
-      {[
-        { label: "Language Version", value: languageVersion },
-        { label: "Compiler Version", value: compilerVersion },
-        { label: "Bytecode Version", value: bytecodeVersion },
-      ].map(({ label, value }) => (
-        <LabelText key={label} label={label}>
-          {value ? <Text variant="body2">{value}</Text> : "-"}
-        </LabelText>
-      ))}
       {verifiedAt && (
-        <LabelText label="Verified at" gridColumn="span 2">
+        <LabelText label="Verified at">
           <Flex direction="column">
             <Text variant="body2" color="text.dark">
               {formatUTC(verifiedAt)}
@@ -62,6 +55,15 @@ export const MyModuleVerificationDetailsInfo = ({
           </Flex>
         </LabelText>
       )}
+      {[
+        { label: "Language Version", value: languageVersion },
+        { label: "Compiler Version", value: compilerVersion },
+        { label: "Bytecode Version", value: bytecodeVersion },
+      ].map(({ label, value }) => (
+        <LabelText key={label} label={label}>
+          {value ? <Text variant="body2">{value}</Text> : "-"}
+        </LabelText>
+      ))}
     </Grid>
   );
 };

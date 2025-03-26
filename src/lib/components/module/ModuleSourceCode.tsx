@@ -116,7 +116,7 @@ export const ModuleSourceCode = ({
                 }
               />
             </Box>
-            <Flex gap={4} flexWrap="wrap">
+            <Flex gap={4} flexWrap="wrap" rowGap={1}>
               <Text variant="body2" fontWeight={600} mr={2} color="text.dark">
                 Advanced Settings
               </Text>
