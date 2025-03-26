@@ -7,6 +7,7 @@ import { useCodeStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeRest } from "lib/services/wasm/code";
+import type { Option } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { getWasmVerifyStatus } from "lib/utils";
 
@@ -16,7 +17,7 @@ import { PermissionChip } from "../PermissionChip";
 import { WasmVerifyBadge } from "../WasmVerifyBadge";
 
 interface CodeSelectProps extends Omit<FlexProps, "onSelect"> {
-  codeId: number;
+  codeId: Option<number>;
   onCodeSelect: (code: number) => void;
   setCodeHash: (data: Code) => void;
   status: FormStatus;
@@ -30,9 +31,8 @@ export const CodeSelect = ({
   ...componentProps
 }: CodeSelectProps) => {
   const { getCodeLocalInfo } = useCodeStore();
-  const name = getCodeLocalInfo(codeId)?.name;
+  const name = codeId ? getCodeLocalInfo(codeId)?.name : undefined;
   const { data } = useCodeRest(codeId, {
-    enabled: !!codeId,
     onSuccess: setCodeHash,
   });
 

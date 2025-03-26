@@ -78,8 +78,8 @@ export const useCodeData = (codeId: number, enabled = true) => {
 };
 
 export const useCodeRest = (
-  codeId: number,
-  options?: Omit<UseQueryOptions<Code>, "queryKey">
+  codeId: Option<number>,
+  { enabled, ...options }: Omit<UseQueryOptions<Code>, "queryKey"> = {}
 ) => {
   const {
     chainConfig: { rest: restEndpoint },
@@ -87,9 +87,12 @@ export const useCodeRest = (
 
   return useQuery<Code>(
     [CELATONE_QUERY_KEYS.CODE_DATA_REST, restEndpoint, codeId],
-    async () => getCodeRest(restEndpoint, codeId),
+    async () => {
+      if (!codeId) throw new Error("codeId is undefined (useCodeRest)");
+      return getCodeRest(restEndpoint, codeId);
+    },
     {
-      retry: 1,
+      enabled: !!codeId && enabled,
       refetchOnWindowFocus: false,
       ...options,
     }

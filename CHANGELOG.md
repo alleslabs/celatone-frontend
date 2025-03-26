@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1283](https://github.com/alleslabs/celatone-frontend/pull/1283) Fix code ID type in form to prevent default 0 value
+
 ### Bug fixes
 
 ## v1.10.2
