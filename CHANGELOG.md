@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+- [#1287](https://github.com/alleslabs/celatone-frontend/pull/1287) Disable WASM verification on custom rollups
+
 ### Improvements
 
 - [#1286](https://github.com/alleslabs/celatone-frontend/pull/1286) Adjust module verification info layout, query wallet widget latest version

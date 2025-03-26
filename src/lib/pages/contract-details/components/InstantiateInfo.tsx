@@ -1,11 +1,13 @@
 import { Box, chakra, Divider, Flex, Text } from "@chakra-ui/react";
 
+import { observer } from "mobx-react-lite";
 import {
   useCurrentChain,
   useGetAddressType,
   useMobile,
   useTierConfig,
 } from "lib/app-provider";
+import { useIsLocalChainIdExist } from "lib/app-provider/hooks/useLocalChainConfig";
 import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
@@ -22,7 +24,6 @@ import {
   getWasmVerifyStatus,
 } from "lib/utils";
 import { getAddressTypeText } from "lib/utils/address";
-
 interface InstantiateInfoProps {
   contract: Contract;
   contractApi: Nullable<ContractApi>;
@@ -107,159 +108,183 @@ const InitRender = ({
   );
 };
 
-export const InstantiateInfo = ({
-  contract,
-  contractApi,
-  codeLocalInfo,
-  wasmVerifyInfo,
-}: InstantiateInfoProps) => {
-  const { isFullTier } = useTierConfig();
-  const isMobile = useMobile();
-  const getAddressType = useGetAddressType();
-  const { chainId } = useCurrentChain();
+export const InstantiateInfo = observer(
+  ({
+    contract,
+    contractApi,
+    codeLocalInfo,
+    wasmVerifyInfo,
+  }: InstantiateInfoProps) => {
+    const isLocalChainIdExist = useIsLocalChainIdExist({
+      shouldRedirect: false,
+    });
+    const { isFullTier } = useTierConfig();
+    const isMobile = useMobile();
+    const getAddressType = useGetAddressType();
+    const { chainId } = useCurrentChain();
 
-  const instantiatorType = getAddressType(contract.instantiator);
-  const adminType = getAddressType(contract.admin ?? undefined);
-  const cw2 = getCw2Info(contract.cw2Contract, contract.cw2Version);
-  const wasmVerifyStatus = getWasmVerifyStatus(wasmVerifyInfo);
+    const instantiatorType = getAddressType(contract.instantiator);
+    const adminType = getAddressType(contract.admin ?? undefined);
+    const cw2 = getCw2Info(contract.cw2Contract, contract.cw2Version);
+    const wasmVerifyStatus = getWasmVerifyStatus(wasmVerifyInfo);
 
-  return (
-    <Container w={{ base: "full", md: "auto" }} h="fit-content">
-      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
-        <LabelText flex={1} label="Network">
-          {chainId}
-        </LabelText>
-        <LabelText flex={1} label="From Code" helperText1={codeLocalInfo?.name}>
-          <Flex direction="column">
-            <Flex gap={1}>
+    return (
+      <Container w={{ base: "full", md: "auto" }} h="fit-content">
+        <Flex
+          direction={{ base: "row", md: "column" }}
+          gap={{ base: 4, md: 6 }}
+        >
+          <LabelText flex={1} label="Network">
+            {chainId}
+          </LabelText>
+          <LabelText
+            flex={1}
+            label="From Code"
+            helperText1={codeLocalInfo?.name}
+          >
+            <Flex direction="column">
+              <Flex gap={1}>
+                <ExplorerLink
+                  type="code_id"
+                  value={contract.codeId.toString()}
+                  showCopyOnHover
+                  fixedHeight
+                />
+                <WasmVerifyBadge
+                  status={wasmVerifyStatus}
+                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                  hasText
+                  linkedCodeId={contract.codeId}
+                />
+              </Flex>
+              {!isMobile &&
+                !isLocalChainIdExist &&
+                wasmVerifyStatus !== WasmVerifyStatus.VERIFIED &&
+                wasmVerifyStatus !== WasmVerifyStatus.IN_PROGRESS && (
+                  <Text variant="body2" color="text.dark">
+                    Is this your code?{" "}
+                    <WasmVerifySubmitModal
+                      codeId={contract.codeId}
+                      codeHash={contract.codeHash}
+                      wasmVerifyStatus={wasmVerifyStatus}
+                      relatedVerifiedCodes={
+                        wasmVerifyInfo?.relatedVerifiedCodes
+                      }
+                      contractAddress={contract.address}
+                      triggerElement={
+                        <Text
+                          cursor="pointer"
+                          color="primary.main"
+                          transition="all 0.25s ease-in-out"
+                          _hover={{
+                            textDecoration: "underline",
+                            textDecorationColor: "primary.light",
+                          }}
+                        >
+                          Verify Code
+                        </Text>
+                      }
+                    />
+                  </Text>
+                )}
+            </Flex>
+          </LabelText>
+        </Flex>
+        <Flex
+          direction={{ base: "row", md: "column" }}
+          gap={{ base: 4, md: 6 }}
+        >
+          <LabelText flex={1} label="CW2 Info">
+            {cw2 ? (
+              <Text variant="body2" wordBreak="break-all">
+                {cw2}
+              </Text>
+            ) : (
+              <Text variant="body2" color="text.dark">
+                No Info
+              </Text>
+            )}
+          </LabelText>
+          {contract.admin ? (
+            <LabelText
+              flex={1}
+              label="Admin Address"
+              helperText1={getAddressTypeText(adminType)}
+            >
               <ExplorerLink
-                type="code_id"
-                value={contract.codeId.toString()}
+                type={adminType}
+                value={contract.admin}
                 showCopyOnHover
                 fixedHeight
               />
-              <WasmVerifyBadge
-                status={wasmVerifyStatus}
-                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-                hasText
-                linkedCodeId={contract.codeId}
-              />
-            </Flex>
-            {!isMobile &&
-              wasmVerifyStatus !== WasmVerifyStatus.VERIFIED &&
-              wasmVerifyStatus !== WasmVerifyStatus.IN_PROGRESS && (
-                <Text variant="body2" color="text.dark">
-                  Is this your code?{" "}
-                  <WasmVerifySubmitModal
-                    codeId={contract.codeId}
-                    codeHash={contract.codeHash}
-                    wasmVerifyStatus={wasmVerifyStatus}
-                    relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-                    contractAddress={contract.address}
-                    triggerElement={
-                      <Text
-                        cursor="pointer"
-                        color="primary.main"
-                        transition="all 0.25s ease-in-out"
-                        _hover={{
-                          textDecoration: "underline",
-                          textDecorationColor: "primary.light",
-                        }}
-                      >
-                        Verify Code
-                      </Text>
-                    }
-                  />
-                </Text>
-              )}
-          </Flex>
-        </LabelText>
-      </Flex>
-      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
-        <LabelText flex={1} label="CW2 Info">
-          {cw2 ? (
-            <Text variant="body2" wordBreak="break-all">
-              {cw2}
-            </Text>
+            </LabelText>
           ) : (
-            <Text variant="body2" color="text.dark">
-              No Info
-            </Text>
+            <LabelText flex={1} label="Admin Address">
+              <Text variant="body2" color="text.dark">
+                No Admin
+              </Text>
+            </LabelText>
+          )}
+        </Flex>
+        <Divider border="1px solid" borderColor="gray.700" />
+        <LabelText
+          flex={1}
+          label="Instantiated Block Height"
+          helperText1={
+            contract.createdTimestamp
+              ? formatUTC(contract.createdTimestamp)
+              : undefined
+          }
+          helperText2={
+            contract.createdTimestamp
+              ? dateFromNow(contract.createdTimestamp)
+              : undefined
+          }
+        >
+          {contract.createdHeight ? (
+            <ExplorerLink
+              type="block_height"
+              value={contract.createdHeight.toString()}
+              showCopyOnHover
+              fixedHeight
+            />
+          ) : (
+            "N/A"
           )}
         </LabelText>
-        {contract.admin ? (
+        <Flex
+          direction={{ base: "row", md: "column" }}
+          gap={{ base: 1, md: 6 }}
+        >
           <LabelText
             flex={1}
-            label="Admin Address"
-            helperText1={getAddressTypeText(adminType)}
+            label="Instantiated by"
+            helperText1={getAddressTypeText(instantiatorType)}
           >
             <ExplorerLink
-              type={adminType}
-              value={contract.admin}
+              type={instantiatorType}
+              value={contract.instantiator}
               showCopyOnHover
               fixedHeight
             />
           </LabelText>
-        ) : (
-          <LabelText flex={1} label="Admin Address">
-            <Text variant="body2" color="text.dark">
-              No Admin
-            </Text>
-          </LabelText>
-        )}
-      </Flex>
-      <Divider border="1px solid" borderColor="gray.700" />
-      <LabelText
-        flex={1}
-        label="Instantiated Block Height"
-        helperText1={
-          contract.createdTimestamp
-            ? formatUTC(contract.createdTimestamp)
-            : undefined
-        }
-        helperText2={
-          contract.createdTimestamp
-            ? dateFromNow(contract.createdTimestamp)
-            : undefined
-        }
-      >
-        {contract.createdHeight ? (
-          <ExplorerLink
-            type="block_height"
-            value={contract.createdHeight.toString()}
-            showCopyOnHover
-            fixedHeight
-          />
-        ) : (
-          "N/A"
-        )}
-      </LabelText>
-      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
-        <LabelText
-          flex={1}
-          label="Instantiated by"
-          helperText1={getAddressTypeText(instantiatorType)}
+          {isFullTier && (
+            <Flex flex={1}>
+              <InitRender {...contract} />
+            </Flex>
+          )}
+        </Flex>
+        <Flex
+          direction={{ base: "row", md: "column" }}
+          gap={{ base: 1, md: 6 }}
         >
-          <ExplorerLink
-            type={instantiatorType}
-            value={contract.instantiator}
-            showCopyOnHover
-            fixedHeight
-          />
-        </LabelText>
-        {isFullTier && (
-          <Flex flex={1}>
-            <InitRender {...contract} />
-          </Flex>
-        )}
-      </Flex>
-      <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
-        {contractApi?.contract_info.ibc_port_id && (
-          <LabelText label="IBC Port ID">
-            <PortIdRender portId={contractApi.contract_info.ibc_port_id} />
-          </LabelText>
-        )}
-      </Flex>
-    </Container>
-  );
-};
+          {contractApi?.contract_info.ibc_port_id && (
+            <LabelText label="IBC Port ID">
+              <PortIdRender portId={contractApi.contract_info.ibc_port_id} />
+            </LabelText>
+          )}
+        </Flex>
+      </Container>
+    );
+  }
+);
