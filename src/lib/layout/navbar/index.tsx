@@ -71,7 +71,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                   ],
                   subSection: [
                     ...getWalletSubSectionMove(move.enabled),
-                    ...getWalletSubSectionWasm(wasm.enabled),
+                    ...getWalletSubSectionWasm(wasm.enabled, isFullTier),
                     {
                       category: "This Device",
                       submenu: [

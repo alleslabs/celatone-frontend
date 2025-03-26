@@ -142,17 +142,24 @@ export const getWalletSubSectionMove = (isMove: boolean) =>
       ]
     : [];
 
-export const getWalletSubSectionWasm = (isWasm: boolean) =>
+export const getWalletSubSectionWasm = (
+  isWasm: boolean,
+  isFullTier: boolean
+) =>
   isWasm
     ? [
         {
           category: "This Wallet",
           submenu: [
-            {
-              name: "My Stored Codes",
-              slug: "/stored-codes",
-              icon: "code" as IconKeys,
-            },
+            ...(isFullTier
+              ? [
+                  {
+                    name: "My Stored Codes",
+                    slug: "/stored-codes",
+                    icon: "code" as IconKeys,
+                  },
+                ]
+              : []),
             {
               name: INSTANTIATED_LIST_NAME,
               slug: `/contract-lists/${formatSlugName(INSTANTIATED_LIST_NAME)}`,

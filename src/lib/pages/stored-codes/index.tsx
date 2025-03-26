@@ -10,6 +10,7 @@ import {
   useCurrentChain,
   useGovConfig,
   useInternalNavigate,
+  useTierConfig,
 } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -30,6 +31,7 @@ interface CodeFilterState {
 }
 
 const StoredCodes = observer(() => {
+  useTierConfig({ minTier: "full" });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { address } = useCurrentChain();
