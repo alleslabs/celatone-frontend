@@ -6,7 +6,11 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate, useTierConfig } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useTierConfig,
+  useWasmConfig,
+} from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -24,6 +28,7 @@ interface CodeFilterState {
 }
 
 const SavedCodes = observer(() => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { isFullTier } = useTierConfig();

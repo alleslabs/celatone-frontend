@@ -10,7 +10,7 @@ import {
 import { observer } from "mobx-react-lite";
 
 import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -36,6 +36,7 @@ interface UploadCompleteProps {
 }
 
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
+  const { isFullTier } = useTierConfig();
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
   const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
@@ -205,15 +206,17 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           ? "Skip and proceed to instantiate"
           : "Proceed to instantiate"}
       </Button>
-      <Button
-        variant="outline-primary"
-        w="full"
-        onClick={() => {
-          navigate({ pathname: "/stored-codes" });
-        }}
-      >
-        Go to my stored codes
-      </Button>
+      {isFullTier && (
+        <Button
+          variant="outline-primary"
+          w="full"
+          onClick={() => {
+            navigate({ pathname: "/stored-codes" });
+          }}
+        >
+          Go to my stored codes
+        </Button>
+      )}
     </ActionPageContainer>
   );
 });
