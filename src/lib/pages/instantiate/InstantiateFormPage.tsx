@@ -355,7 +355,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
             composeMsg(MsgType.INSTANTIATE, {
               sender: address,
               admin: adminAddress as BechAddr,
-              codeId: Long.fromInt(Number(codeId)),
+              codeId: Long.fromString(codeId),
               label,
               msg: Buffer.from(currentInput),
               funds,
