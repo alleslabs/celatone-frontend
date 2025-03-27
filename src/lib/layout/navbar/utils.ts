@@ -191,8 +191,8 @@ export const getDeviceSubmenuWasm = (isWasm: boolean) =>
       ]
     : [];
 
-export const getDeviceSubmenuMove = (isMove: boolean) =>
-  isMove
+export const getDeviceSubmenuMove = (enabled: boolean) =>
+  enabled
     ? [
         {
           name: "My Past Verification",

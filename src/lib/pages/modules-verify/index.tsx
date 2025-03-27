@@ -11,7 +11,12 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
-import { useCelatoneApp, useMobile, useMoveConfig } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useIsApiChain,
+  useMobile,
+  useMoveConfig,
+} from "lib/app-provider";
 import { ControllerInput } from "lib/components/forms";
 import { FooterCta } from "lib/components/layouts";
 import { Loading } from "lib/components/Loading";
@@ -202,6 +207,7 @@ export const ModulesVerifyBody = observer(
 
 export const ModulesVerify = () => {
   useMoveConfig({ shouldRedirect: true });
+  useIsApiChain({ shouldRedirect: true });
   const { data: moveVerifyConfig, isLoading } = useMoveVerifyConfig();
 
   if (isLoading) return <Loading />;
