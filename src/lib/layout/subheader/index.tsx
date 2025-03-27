@@ -69,7 +69,7 @@ const SubHeader = () => {
           <Flex
             alignItems="center"
             px={4}
-            gap={2}
+            gap={1}
             h="full"
             borderBottomWidth={2}
             borderColor={
@@ -96,8 +96,9 @@ const SubHeader = () => {
             <Text
               variant="body3"
               fontWeight={600}
-              color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "text.dark"}
+              color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "text.disabled"}
               fontFamily="heading"
+              textTransform="uppercase"
             >
               {item.name}
             </Text>
