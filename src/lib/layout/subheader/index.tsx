@@ -20,7 +20,7 @@ import {
   getSubHeaderSequencer,
 } from "./utils";
 
-const ACTIVE_COLOR = "primary.main";
+const ACTIVE_COLOR = "gray.100";
 
 const SubHeader = () => {
   const { tier } = useTierConfig();
@@ -94,9 +94,10 @@ const SubHeader = () => {
               color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "gray.600"}
             />
             <Text
-              variant="body2"
-              fontWeight={700}
+              variant="body3"
+              fontWeight={600}
               color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "text.dark"}
+              fontFamily="heading"
             >
               {item.name}
             </Text>
