@@ -144,7 +144,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
               disabled={!isApiChain}
               triggerElement={
                 <Tooltip
-                  label="Code verification is only available on Initia (Layer 1) and Rollups (Layer 2)"
+                  label="Code verification is only available on official networks"
                   hidden={isApiChain}
                 >
                   <OptionButton

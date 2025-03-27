@@ -40,8 +40,7 @@ const WasmVerifySectionBody = ({
             .
           </>
         ) : null}{" "}
-        Verification is only available on Initia (Layer 1) and Rollups (Layer
-        2).
+        Verification is only available on official networks
       </Text>
     );
 
