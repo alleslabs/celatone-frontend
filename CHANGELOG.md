@@ -39,6 +39,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+- [#1284](https://github.com/alleslabs/celatone-frontend/pull/1284) Fix code ID type in form to prevent default 0 value
+- [#1285](https://github.com/alleslabs/celatone-frontend/pull/1285) Enable My Stored Codes in full tier only
+
+### Bug fixes
+
+## v1.10.2
+
 - [#1280](https://github.com/alleslabs/celatone-frontend/pull/1280) Support archival fallback for txs and blocks
 
 ### Improvements
@@ -46,9 +55,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#1290](https://github.com/alleslabs/celatone-frontend/pull/1290) Change minor ui
 - [#1281](https://github.com/alleslabs/celatone-frontend/pull/1281) Add advanced options helper text, limit fetching verification infos to hex address only, add more module information
 - [#1279](https://github.com/alleslabs/celatone-frontend/pull/1279) Add Initia App Menu from library
-- [#1276](https://github.com/alleslabs/celatone-frontend/pull/1276) Support backward LCD compatibility for custom networks
-
-### Bug fixes
 
 ## v1.10.1
 

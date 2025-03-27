@@ -3,6 +3,7 @@ import type { WalletWidget, WidgetConfig, WidgetWallet } from "@initia/utils";
 import { useEffect, useState } from "react";
 import type { ReactNode, PropsWithChildren } from "react";
 
+import { SUPPORTED_NETWORK_TYPES } from "env";
 import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 
@@ -67,6 +68,11 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
       !chainConfig.features.evm.enabled || wallet.type === "evm",
   };
 
+  const networkType =
+    SUPPORTED_NETWORK_TYPES.length > 1
+      ? chainConfig.network_type
+      : SUPPORTED_NETWORK_TYPES[0];
+
   return (
     <WalletWidgetProvider
       key={currentChainId}
@@ -94,7 +100,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
           : undefined
       }
       fallback={<LoadingOverlay />}
-      {...(chainConfig.network_type === "testnet" && testnetConfigs)}
+      {...(networkType !== "mainnet" && testnetConfigs)}
     >
       {children}
     </WalletWidgetProvider>

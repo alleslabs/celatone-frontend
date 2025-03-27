@@ -18,6 +18,7 @@ interface CodesTableRowProps {
   onRowSelect: (codeId: number) => void;
   isReadOnly: boolean;
   showCw2andContracts: boolean;
+  disablePermission: boolean;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
@@ -27,6 +28,7 @@ export const CodesTableRow = ({
   onRowSelect,
   isReadOnly,
   showCw2andContracts,
+  disablePermission,
   wasmVerifyInfo,
 }: CodesTableRowProps) => {
   const getAddressType = useGetAddressType();
@@ -86,23 +88,27 @@ export const CodesTableRow = ({
           isReadOnly={isReadOnly}
         />
       </TableRow>
-      <TableRow>
-        <PermissionChip
-          instantiatePermission={codeInfo.instantiatePermission}
-          permissionAddresses={codeInfo.permissionAddresses}
-        />
-      </TableRow>
-      {!isReadOnly && (
-        <TableRow px={0}>
-          <HStack onClick={(e) => e.stopPropagation()}>
-            <InstantiateButton
+      {!disablePermission && (
+        <>
+          <TableRow>
+            <PermissionChip
               instantiatePermission={codeInfo.instantiatePermission}
               permissionAddresses={codeInfo.permissionAddresses}
-              codeId={codeInfo.id}
             />
-            <SaveOrRemoveCodeModal codeInfo={codeInfo} />
-          </HStack>
-        </TableRow>
+          </TableRow>
+          {!isReadOnly && (
+            <TableRow px={0}>
+              <HStack onClick={(e) => e.stopPropagation()}>
+                <InstantiateButton
+                  instantiatePermission={codeInfo.instantiatePermission}
+                  permissionAddresses={codeInfo.permissionAddresses}
+                  codeId={codeInfo.id}
+                />
+                <SaveOrRemoveCodeModal codeInfo={codeInfo} />
+              </HStack>
+            </TableRow>
+          )}
+        </>
       )}
     </Grid>
   );

@@ -16,6 +16,7 @@ interface CodesTableProps {
   onRowSelect: (codeId: number) => void;
   isReadOnly?: boolean;
   showCw2andContracts?: boolean;
+  disablePermission?: boolean;
 }
 
 export const CodesTable = ({
@@ -25,6 +26,7 @@ export const CodesTable = ({
   onRowSelect,
   isReadOnly = false,
   showCw2andContracts = true,
+  disablePermission = false,
 }: CodesTableProps) => {
   const isMobile = useMobile();
   const { data: wasmVerifyInfos, isLoading: isWasmVerifyInfosLoading } =
@@ -34,7 +36,7 @@ export const CodesTable = ({
   if (!codes) return <ErrorFetching dataName="codes" />;
   if (!codes.length) return emptyState;
 
-  const templateColumns = `max(100px) minmax(250px, 1fr)${showCw2andContracts ? " minmax(200px, 1fr) max(100px)" : ""} max(160px) 150px ${!isReadOnly ? " 180px" : ""}`;
+  const templateColumns = `max(100px) minmax(250px, 1fr)${showCw2andContracts ? " minmax(200px, 1fr) max(100px)" : ""}${!disablePermission ? ` max(160px) 150px${!isReadOnly ? " 180px" : ""}` : "2fr"}`;
 
   return isMobile ? (
     <MobileTableContainer>
@@ -53,6 +55,7 @@ export const CodesTable = ({
         templateColumns={templateColumns}
         isReadOnly={isReadOnly}
         showCw2andContracts={showCw2andContracts}
+        disablePermission={disablePermission}
       />
       {codes.map((code) => (
         <CodesTableRow
@@ -62,6 +65,7 @@ export const CodesTable = ({
           onRowSelect={onRowSelect}
           isReadOnly={isReadOnly}
           showCw2andContracts={showCw2andContracts}
+          disablePermission={disablePermission}
           wasmVerifyInfo={wasmVerifyInfos?.[code.id]}
         />
       ))}
