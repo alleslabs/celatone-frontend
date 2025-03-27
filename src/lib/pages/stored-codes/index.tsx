@@ -11,6 +11,7 @@ import {
   useGovConfig,
   useInternalNavigate,
   useTierConfig,
+  useWasmConfig,
 } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -32,6 +33,7 @@ interface CodeFilterState {
 
 const StoredCodes = observer(() => {
   useTierConfig({ minTier: "full" });
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { address } = useCurrentChain();

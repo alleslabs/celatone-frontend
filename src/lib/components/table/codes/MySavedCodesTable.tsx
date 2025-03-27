@@ -10,6 +10,8 @@ interface MySavedCodesTableProps {
   isLoading: boolean;
   onRowSelect: (codeId: number) => void;
   isReadOnly?: boolean;
+  showCw2andContracts?: boolean;
+  disablePermission?: boolean;
 }
 
 export const MySavedCodesTable = ({
@@ -18,6 +20,8 @@ export const MySavedCodesTable = ({
   isLoading,
   onRowSelect,
   isReadOnly = false,
+  showCw2andContracts = true,
+  disablePermission = false,
 }: MySavedCodesTableProps) =>
   totalData ? (
     <CodesTable
@@ -33,6 +37,8 @@ export const MySavedCodesTable = ({
       }
       onRowSelect={onRowSelect}
       isReadOnly={isReadOnly}
+      showCw2andContracts={showCw2andContracts}
+      disablePermission={disablePermission}
     />
   ) : (
     <>

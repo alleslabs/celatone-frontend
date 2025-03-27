@@ -6,6 +6,7 @@ import {
   useBaseApiRoute,
   useCelatoneApp,
   useGovConfig,
+  useTierConfig,
 } from "lib/app-provider";
 import type { Code, CodeData, CodesResponse } from "lib/services/types";
 import type { BechAddr, BechAddr20, Option } from "lib/types";
@@ -78,8 +79,8 @@ export const useCodeData = (codeId: number, enabled = true) => {
 };
 
 export const useCodeRest = (
-  codeId: number,
-  options?: Omit<UseQueryOptions<Code>, "queryKey">
+  codeId: Option<number>,
+  { enabled, ...options }: Omit<UseQueryOptions<Code>, "queryKey"> = {}
 ) => {
   const {
     chainConfig: { rest: restEndpoint },
@@ -87,8 +88,12 @@ export const useCodeRest = (
 
   return useQuery<Code>(
     [CELATONE_QUERY_KEYS.CODE_DATA_REST, restEndpoint, codeId],
-    async () => getCodeRest(restEndpoint, codeId),
+    async () => {
+      if (!codeId) throw new Error("codeId is undefined (useCodeRest)");
+      return getCodeRest(restEndpoint, codeId);
+    },
     {
+      enabled: !!codeId && enabled,
       retry: 1,
       refetchOnWindowFocus: false,
       ...options,
@@ -114,11 +119,13 @@ export const useAllCodesByAddress = (
   address: BechAddr
 ): UseQueryResult<CodesResponse> => {
   const endpoint = useBaseApiRoute("accounts");
+  const { isFullTier } = useTierConfig();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.ALL_CODES_BY_ADDRESS, endpoint, address],
     async () => getAllCodesByAddress(endpoint, address),
     {
+      enabled: isFullTier,
       retry: 1,
       refetchOnWindowFocus: false,
     }
@@ -127,11 +134,13 @@ export const useAllCodesByAddress = (
 
 export const useCodeList = (codeIds: number[]) => {
   const endpoint = useBaseApiRoute("codes");
+  const { isFullTier } = useTierConfig();
 
   return useQuery(
     [CELATONE_QUERY_KEYS.CODE_LIST, endpoint, codeIds],
     async () => getCodeList(endpoint, codeIds),
     {
+      enabled: isFullTier,
       retry: 1,
       refetchOnWindowFocus: false,
     }
