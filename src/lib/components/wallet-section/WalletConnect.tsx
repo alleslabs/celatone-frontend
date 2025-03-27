@@ -30,8 +30,6 @@ export const ConnectWalletButton = ({
     >
       {buttonText || "Connect Wallet"}
     </Text>
-    {/* <Heading as="h6" color="gray.900" fontSize="12px" fontWeight={300}>
-    </Heading> */}
   </Button>
 );
 
