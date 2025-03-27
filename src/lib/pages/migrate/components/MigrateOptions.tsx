@@ -29,8 +29,8 @@ export const MigrateOptions = ({
     !uploadAccessParams?.isPermissionedNetwork ||
     resolvePermission(
       address,
-      uploadAccessParams?.permission,
-      uploadAccessParams?.addresses
+      uploadAccessParams?.codeUploadAccess.permission,
+      uploadAccessParams?.codeUploadAccess.addresses
     );
   return (
     <>

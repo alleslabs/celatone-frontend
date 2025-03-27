@@ -56,7 +56,9 @@ const StoredCodes = observer(() => {
   const { data, isFetching: isUploadAccessFetching } =
     useUploadAccessParamsRest();
 
-  const isAllowed = Boolean(address && data?.addresses?.includes(address));
+  const isAllowed = Boolean(
+    address && data?.codeUploadAccess.addresses?.includes(address)
+  );
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_MY_STORED_CODES);

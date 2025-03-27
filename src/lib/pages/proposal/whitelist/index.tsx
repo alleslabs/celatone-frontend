@@ -131,7 +131,10 @@ const ProposalToWhitelist = () => {
           permission: uploadAccessParams?.isPermissionedNetwork
             ? AccessConfigPermission.ANY_OF_ADDRESSES
             : AccessConfigPermission.EVERYBODY,
-          addresses: uploadAccessParams?.addresses?.concat(addressesArray),
+          addresses:
+            uploadAccessParams?.codeUploadAccess.addresses?.concat(
+              addressesArray
+            ),
         }),
         initialDeposit,
         proposer: walletAddress,
@@ -333,7 +336,7 @@ const ProposalToWhitelist = () => {
                             addressObj.address === addresses[idx].address
                         ) && "You already input this address",
                       whitelisted: () =>
-                        uploadAccessParams?.addresses?.includes(
+                        uploadAccessParams?.codeUploadAccess.addresses?.includes(
                           addresses[idx].address
                         )
                           ? "This address is already included in whitelist"

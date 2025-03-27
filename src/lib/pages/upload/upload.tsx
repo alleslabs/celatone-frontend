@@ -39,7 +39,7 @@ export const Upload = ({
 
   const enableUpload =
     !data?.isPermissionedNetwork ||
-    (address && Boolean(data?.addresses?.includes(address)));
+    (address && Boolean(data?.codeUploadAccess.addresses?.includes(address)));
 
   useEffect(() => {
     // Redirect back to deploy page
