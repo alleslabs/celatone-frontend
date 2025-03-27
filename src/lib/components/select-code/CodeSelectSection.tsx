@@ -12,7 +12,7 @@ import type { Option } from "lib/types";
 import { CodeSelect } from "./CodeSelect";
 
 interface CodeSelectSectionProps<T extends FieldValues> {
-  codeId: number;
+  codeId: Option<number>;
   name: FieldPath<T>;
   control: Control<T>;
   error: Option<string>;
@@ -59,12 +59,12 @@ export const CodeSelectSection = <T extends FieldValues>({
       <form style={{ width: "100%" }}>
         {method === "select-existing" ? (
           <CodeSelect
-            mt={4}
-            mb={8}
             codeId={codeId}
             onCodeSelect={onCodeSelect}
             setCodeHash={setCodeHash}
             status={status}
+            mb={8}
+            mt={4}
           />
         ) : (
           <ControllerInput
@@ -76,6 +76,7 @@ export const CodeSelectSection = <T extends FieldValues>({
             label="Code ID"
             helperText="Input existing Code ID manually"
             variant="fixed-floating"
+            placeholder="ex. 1234"
             my={8}
             rules={{ required: "Code ID is required" }}
           />

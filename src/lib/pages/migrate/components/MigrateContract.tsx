@@ -29,7 +29,7 @@ import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeRest } from "lib/services/wasm/code";
 import type { BechAddr32, ComposedMsg, Option } from "lib/types";
 import { MsgType } from "lib/types";
-import { composeMsg, jsonValidate, resolvePermission } from "lib/utils";
+import { composeMsg, isId, jsonValidate, resolvePermission } from "lib/utils";
 
 interface MigrateContractProps {
   contractAddress: BechAddr32;
@@ -61,7 +61,7 @@ export const MigrateContract = ({
     formState: { errors: formErrors },
   } = useForm({
     defaultValues: {
-      codeId: codeIdParam ?? 0,
+      codeId: codeIdParam?.toString() ?? "",
       codeHash: "",
       msgInput: {
         [jsonInputFormKey]: "{}",
@@ -87,7 +87,7 @@ export const MigrateContract = ({
   // -------------------DATA-------------------//
   // ------------------------------------------//
   const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
-    codeId,
+    isId(codeId) ? Number(codeId) : undefined,
     codeHash
   );
 
@@ -128,7 +128,7 @@ export const MigrateContract = ({
     },
   });
 
-  const { refetch } = useCodeRest(codeId, {
+  const { refetch } = useCodeRest(Number(codeId), {
     enabled: false,
     retry: false,
     cacheTime: 0,
@@ -179,7 +179,7 @@ export const MigrateContract = ({
     );
     const stream = await migrateTx({
       contractAddress,
-      codeId,
+      codeId: Number(codeId),
       migrateMsg: JSON.parse(currentInput),
       estimatedFee,
       onTxSucceed: () => setProcessing(false),
@@ -228,7 +228,7 @@ export const MigrateContract = ({
             composeMsg(MsgType.MIGRATE, {
               sender: address,
               contract: contractAddress,
-              codeId: Long.fromInt(codeId),
+              codeId: Long.fromString(codeId),
               msg: Buffer.from(currentInput),
             }),
           ]
@@ -255,18 +255,18 @@ export const MigrateContract = ({
         Migrate to Code ID
       </Heading>
       <CodeSelectSection
+        codeId={isId(codeId) ? Number(codeId) : undefined}
         name="codeId"
         control={control}
         status={status}
         error={formErrors.codeId?.message}
         onCodeSelect={(code: number) => {
-          setValue("codeId", code);
+          setValue("codeId", code.toString());
           resetMsgInputSchema();
         }}
         setCodeHash={(data: Code) =>
           setValue("codeHash", data.hash.toLowerCase())
         }
-        codeId={codeId}
       />
       <Flex align="center" justify="space-between" mt={12} mb={6}>
         <Heading as="h6" variant="h6">
@@ -290,11 +290,11 @@ export const MigrateContract = ({
           />
         }
         schemaContent={
-          codeId && (
+          isId(codeId) && (
             <SchemaInputSection
               type="migrate"
               codeHash={codeHash}
-              codeId={codeId}
+              codeId={Number(codeId)}
               verifiedSchema={verifiedSchema}
               localSchema={localSchema}
               handleChange={handleChange}
