@@ -290,7 +290,7 @@ export const MigrateContract = ({
           />
         }
         schemaContent={
-          codeId && (
+          isId(codeId) && (
             <SchemaInputSection
               type="migrate"
               codeHash={codeHash}

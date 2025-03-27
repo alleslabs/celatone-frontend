@@ -94,6 +94,7 @@ export const useCodeRest = (
     },
     {
       enabled: !!codeId && enabled,
+      retry: 1,
       refetchOnWindowFocus: false,
       ...options,
     }

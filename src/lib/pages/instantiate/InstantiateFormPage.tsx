@@ -498,7 +498,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
               />
             }
             schemaContent={
-              codeId && (
+              isId(codeId) && (
                 <SchemaInputSection
                   type="instantiate"
                   codeHash={codeHash}
