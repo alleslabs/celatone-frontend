@@ -10,7 +10,11 @@ import {
 import { observer } from "mobx-react-lite";
 
 import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
-import { useInternalNavigate, useTierConfig } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useTierConfig,
+  useIsApiChain,
+} from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -18,6 +22,7 @@ import { CustomIcon } from "lib/components/icon";
 import { UploadSchema } from "lib/components/json-schema";
 import { WasmVerifySubmitModal } from "lib/components/modal";
 import { Stepper } from "lib/components/stepper";
+import { Tooltip } from "lib/components/Tooltip";
 import { TxReceiptRender } from "lib/components/tx";
 import {
   IndirectlyVerifiedAlert,
@@ -37,6 +42,9 @@ interface UploadCompleteProps {
 
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
   const { isFullTier } = useTierConfig();
+  const isApiChain = useIsApiChain({
+    shouldRedirect: false,
+  });
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
   const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
@@ -133,11 +141,18 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
               codeHash={txResult.codeHash}
               wasmVerifyStatus={getWasmVerifyStatus(derivedWasmVerifyInfo)}
               relatedVerifiedCodes={derivedWasmVerifyInfo?.relatedVerifiedCodes}
+              disabled={!isApiChain}
               triggerElement={
-                <OptionButton
-                  title="Verify Code"
-                  description="Ensures that the deployed code matches its published source code"
-                />
+                <Tooltip
+                  label="Code verification is only available on Initia (Layer 1) and Rollups (Layer 2)"
+                  hidden={isApiChain}
+                >
+                  <OptionButton
+                    title="Verify Code"
+                    description="Ensures that the deployed code matches its published source code"
+                    disabled={!isApiChain}
+                  />
+                </Tooltip>
               }
             />
             {txResult.codeHash && (

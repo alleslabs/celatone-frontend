@@ -1,5 +1,6 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
+import { useIsApiChain } from "lib/app-provider";
 import type { BechAddr32, Nullish, WasmVerifyInfo } from "lib/types";
 
 import { FailedDetails } from "./FailedDetails";
@@ -7,6 +8,7 @@ import { IndirectlyVerifiedDetails } from "./IndirectlyVerifiedDetails";
 import { InProgressDetails } from "./InProgressDetails";
 import { NotVerifiedDetails } from "./NotVerifiedDetails";
 import { VerifiedDetails } from "./VerifiedDetails";
+import { ExplorerLink } from "../ExplorerLink";
 
 interface WasmVerifySectionProps {
   codeId: number;
@@ -21,6 +23,28 @@ const WasmVerifySectionBody = ({
   wasmVerifyInfo,
   contractAddress,
 }: WasmVerifySectionProps) => {
+  const isApiChain = useIsApiChain({
+    shouldRedirect: false,
+  });
+  if (!isApiChain)
+    return (
+      <Text variant="body2" color="text.dark">
+        {contractAddress ? (
+          <>
+            This contract is an instance of code ID{" "}
+            <ExplorerLink
+              value={codeId.toString()}
+              type="code_id"
+              showCopyOnHover
+            />
+            .
+          </>
+        ) : null}{" "}
+        Verification is only available on Initia (Layer 1) and Rollups (Layer
+        2).
+      </Text>
+    );
+
   if (!wasmVerifyInfo)
     return (
       <NotVerifiedDetails
