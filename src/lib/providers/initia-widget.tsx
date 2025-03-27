@@ -1,23 +1,18 @@
 import { context, loadScript } from "@initia/react-wallet-widget/ssr";
 import type { WalletWidget, WidgetConfig, WidgetWallet } from "@initia/utils";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import type { ReactNode, PropsWithChildren } from "react";
 
 import { SUPPORTED_NETWORK_TYPES } from "env";
 import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import pkg from "../../../package.json";
 
 declare global {
   interface Window {
     createWalletWidget?: (config: WidgetConfig) => Promise<WalletWidget>;
   }
 }
-
-// You can specify the version of wallet-widget you want to use here.
-// While you can use "latest", we recommend explicitly specifying the latest version number and updating it manually when needed for better stability.
-// (You can check the latest available version here: https://www.npmjs.com/package/@initia/wallet-widget)
-const FALLBACK_VERSION = "1.2.6";
 
 const WalletWidgetProvider = ({
   children,
@@ -32,15 +27,8 @@ const WalletWidgetProvider = ({
     if (typeof window === "undefined") return;
 
     async function setup() {
-      const {
-        data: { version },
-      } = await axios.get(
-        "https://registry.npmjs.org/@initia/wallet-widget/latest"
-      );
-      const latestVersion =
-        version > FALLBACK_VERSION ? version : FALLBACK_VERSION;
       await loadScript(
-        `https://cdn.jsdelivr.net/npm/@initia/wallet-widget@${latestVersion}/dist/index.js`
+        `https://cdn.jsdelivr.net/npm/@initia/wallet-widget@${pkg.dependencies["@initia/react-wallet-widget"]}/dist/index.js`
       );
       const widget = await window.createWalletWidget!(config);
       setWidget(widget);
