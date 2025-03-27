@@ -7,7 +7,7 @@ export const useIsApiChain = ({
   shouldRedirect,
 }: {
   shouldRedirect: boolean;
-}) => {
+}): boolean => {
   const { data: apiChainConfigs } = useApiChainConfigs(
     SUPPORTED_NETWORK_TYPES,
     CHAIN
@@ -15,9 +15,10 @@ export const useIsApiChain = ({
   const navigate = useInternalNavigate();
   const { currentChainId } = useCelatoneApp();
 
-  const isApiChain = apiChainConfigs?.some(
-    (chainConfig) => chainConfig.chainId === currentChainId
-  );
+  const isApiChain =
+    apiChainConfigs?.some(
+      (chainConfig) => chainConfig.chainId === currentChainId
+    ) ?? false;
 
   if (!isApiChain && shouldRedirect) navigate({ pathname: "/", replace: true });
 
