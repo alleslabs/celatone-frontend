@@ -25,7 +25,7 @@ export const TableTitle = ({
           {title}
         </Text>
       ) : (
-        <Heading as="h6" variant="h6">
+        <Heading as="h6" variant="h6" fontWeight={700}>
           {title}
         </Heading>
       )}

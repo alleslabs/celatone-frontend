@@ -26,6 +26,7 @@ const Header = () => {
       height="full"
       align="center"
       justifyContent="space-between"
+      minH="64px"
     >
       <Flex h="full">
         {isInitia && (
@@ -40,17 +41,20 @@ const Header = () => {
             />
           </SectionWrapper>
         )}
-        <SectionWrapper minW={isInitia ? "auto" : "234px"}>
+        <SectionWrapper minW="171px">
           <AppLink href="/">
             <Image
               src={theme.branding.logo}
               alt="Scan"
-              minWidth="139px"
-              width="139px"
-              maxWidth="139px"
+              minH="24px"
+              h="24px"
+              maxH="24px"
+              // minWidth="139px"
+              // width="139px"
+              // maxWidth="139px"
               transition="all 0.25s ease-in-out"
               _hover={{ cursor: "pointer", opacity: 0.85 }}
-              mx={4}
+              // mx={4}
             />
           </AppLink>
         </SectionWrapper>
@@ -67,7 +71,7 @@ const Header = () => {
         <SectionWrapper>
           <NetworkMenu />
         </SectionWrapper>
-        <SectionWrapper>
+        <SectionWrapper minW="204px">
           <WalletSection />
         </SectionWrapper>
       </Flex>

@@ -26,7 +26,7 @@ const Layout = ({ children }: LayoutProps) => {
   const isMobile = useMobile();
   const { isExpand, setIsExpand } = useNavContext();
 
-  const defaultRow = `64px 48px 1fr`;
+  const defaultRow = `65px 48px 1fr`;
   const mode = useMemo(() => {
     if (isMobile)
       return {

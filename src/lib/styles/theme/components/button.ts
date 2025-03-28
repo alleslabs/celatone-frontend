@@ -54,21 +54,21 @@ export const Button: ComponentStyleConfig = {
       transform: "scale(0.98)",
     },
     boxShadow: "none",
+    fontFamily: "heading",
+    fontWeight: 600,
   },
   sizes: {
     sm: {
       fontSize: "12px",
       padding: "4px 10px",
       height: "30px",
-      fontWeight: 700,
-      letterSpacing: "0.4px",
+      fontWeight: 600,
     },
     md: {
       fontSize: "14px",
       padding: "6px 16px",
       height: "36px",
-      fontWeight: 700,
-      letterSpacing: "0.4px",
+      fontWeight: 600,
     },
   },
   variants: {

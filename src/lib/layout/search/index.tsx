@@ -189,7 +189,7 @@ export const SearchComponent = () => {
         >
           <Flex gap={1}>
             <CustomIcon color="gray.600" name="search" boxSize={4} />
-            <Text variant="body1" color="text.disabled">
+            <Text variant="body2" color="text.disabled" mt="1px">
               Search on {currentChainId}
             </Text>
           </Flex>
