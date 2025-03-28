@@ -6,17 +6,13 @@ import type { ReactNode, PropsWithChildren } from "react";
 import { SUPPORTED_NETWORK_TYPES } from "env";
 import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import pkg from "../../../package.json";
 
 declare global {
   interface Window {
     createWalletWidget?: (config: WidgetConfig) => Promise<WalletWidget>;
   }
 }
-
-// You can specify the version of wallet-widget you want to use here.
-// While you can use "latest", we recommend explicitly specifying the latest version number and updating it manually when needed for better stability.
-// (You can check the latest available version here: https://www.npmjs.com/package/@initia/wallet-widget)
-const VERSION = "1.0.0";
 
 const WalletWidgetProvider = ({
   children,
@@ -32,7 +28,7 @@ const WalletWidgetProvider = ({
 
     async function setup() {
       await loadScript(
-        `https://cdn.jsdelivr.net/npm/@initia/wallet-widget@${VERSION}/dist/index.js`
+        `https://cdn.jsdelivr.net/npm/@initia/wallet-widget@${pkg.dependencies["@initia/react-wallet-widget"]}/dist/index.js`
       );
       const widget = await window.createWalletWidget!(config);
       setWidget(widget);
