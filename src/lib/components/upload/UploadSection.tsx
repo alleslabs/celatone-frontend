@@ -154,8 +154,9 @@ export const UploadSection = ({
           <Alert variant="primary" mt={3} alignItems="center" gap={3}>
             <CustomIcon name="info-circle" boxSize={4} color="primary.main" />
             <AlertDescription>
-              The instantiate permission is set to the default when deploying
-              through Scan. To customize permissions, deploy via the CLI.
+              The CosmWasm instantiate permission is set to the default when
+              deploying through Initia Scan. To customize permissions, deploy
+              via the CLI.
             </AlertDescription>
           </Alert>
         </Box>
