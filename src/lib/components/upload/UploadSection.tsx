@@ -1,13 +1,21 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  Box,
+  Flex,
+  Heading,
+  Text,
+} from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
 import { useCallback, useEffect, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 
-import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
+import { useCelatoneApp, useCurrentChain, useInitia } from "lib/app-provider";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
-import { WasmVerifyStatus } from "lib/types";
+import { useUploadAccessParamsRest } from "lib/services/wasm/code";
+import { AccessConfigPermission, WasmVerifyStatus } from "lib/types";
 import type {
   BechAddr,
   Option,
@@ -23,6 +31,8 @@ import { SimulateMessageRender } from "./SimulateMessageRender";
 import { UploadCard } from "./UploadCard";
 import { DropZone } from "../dropzone";
 import { ControllerInput } from "../forms";
+import { CustomIcon } from "../icon";
+import { PermissionChip } from "../PermissionChip";
 
 interface UploadSectionProps {
   formData: UseFormReturn<UploadSectionState>;
@@ -43,6 +53,8 @@ export const UploadSection = ({
   simulateStatus,
   isSimulating,
 }: UploadSectionProps) => {
+  const isInitia = useInitia();
+  const { data: uploadAccessParams } = useUploadAccessParamsRest();
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
   const { address } = useCurrentChain();
@@ -125,20 +137,45 @@ export const UploadSection = ({
           relatedVerifiedCodes={derivedWasmVerifyInfo?.relatedVerifiedCodes}
         />
       )}
-      <Flex direction="column">
-        <Heading as="h6" variant="h6" fontWeight={600} my={2}>
-          Instantiate Permission
-        </Heading>
-        <Text color="text.dark" variant="body2" mb={4}>
-          Specify who has the authority to instantiate the contract using this
-          code
-        </Text>
-        <InstantiatePermissionRadio
-          control={control}
-          setValue={setValue}
-          trigger={trigger}
-        />
-      </Flex>
+      {isInitia ? (
+        <Box>
+          <Flex alignItems="center" gap={2}>
+            <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+              Instantiate Permission:
+            </Heading>
+            <PermissionChip
+              instantiatePermission={
+                uploadAccessParams?.instantiateDefaultPermission ??
+                AccessConfigPermission.EVERYBODY
+              }
+              permissionAddresses={[]}
+            />
+          </Flex>
+          <Alert variant="primary" mt={3} alignItems="center" gap={3}>
+            <CustomIcon name="info-circle" boxSize={4} color="primary.main" />
+            <AlertDescription>
+              The CosmWasm instantiate permission is set to the default when
+              deploying through Initia Scan. To customize permissions, deploy
+              via the CLI.
+            </AlertDescription>
+          </Alert>
+        </Box>
+      ) : (
+        <Flex direction="column">
+          <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+            Instantiate Permission
+          </Heading>
+          <Text color="text.dark" variant="body2" mb={4}>
+            Specify who has the authority to instantiate the contract using this
+            code
+          </Text>
+          <InstantiatePermissionRadio
+            control={control}
+            setValue={setValue}
+            trigger={trigger}
+          />
+        </Flex>
+      )}
       <Box width="full">
         {(simulateStatus.status !== "default" || isSimulating) && (
           <SimulateMessageRender

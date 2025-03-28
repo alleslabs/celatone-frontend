@@ -59,7 +59,7 @@ const Deploy = () => {
 
   const enableUpload =
     !data?.isPermissionedNetwork ||
-    Boolean(address && data?.addresses?.includes(address));
+    Boolean(address && data?.codeUploadAccess.addresses?.includes(address));
 
   useWasmConfig({ shouldRedirect: true });
 

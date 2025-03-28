@@ -64,7 +64,7 @@ export const useSimulateFeeQuery = ({
 interface SimulateQueryParamsForStoreCode {
   enabled: boolean;
   wasmFile: Option<File>;
-  permission: AccessType;
+  permission?: AccessType;
   addresses?: BechAddr[];
   onSuccess?: (gas: Option<Gas>) => void;
   onError?: (err: Error) => void;
