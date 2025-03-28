@@ -5,9 +5,14 @@ import { CustomIcon } from "lib/components/icon";
 interface OptionButtonProps {
   title: string;
   description: string;
+  disabled?: boolean;
 }
 
-export const OptionButton = ({ title, description }: OptionButtonProps) => (
+export const OptionButton = ({
+  title,
+  description,
+  disabled,
+}: OptionButtonProps) => (
   <Flex
     alignItems="center"
     w="full"
@@ -15,7 +20,8 @@ export const OptionButton = ({ title, description }: OptionButtonProps) => (
     p={4}
     borderRadius={8}
     transition="all 0.25s ease-in-out"
-    cursor="pointer"
+    cursor={disabled ? "not-allowed" : "pointer"}
+    opacity={disabled ? 0.5 : 1}
     _hover={{ bg: "gray.700" }}
   >
     <Flex direction="column" gap={1} w="full">

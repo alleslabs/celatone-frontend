@@ -20,6 +20,7 @@ import {
   useEvmConfig,
   useExampleAddresses,
   useMobile,
+  useIsApiChain,
 } from "lib/app-provider";
 import { ControllerInput, SelectInput } from "lib/components/forms";
 import { Loading } from "lib/components/Loading";
@@ -78,6 +79,7 @@ export const EvmContractVerifyBody = ({
   evmVerifyConfig,
 }: EvmContractVerifyBodyProps) => {
   useEvmConfig({ shouldRedirect: true });
+  useIsApiChain({ shouldRedirect: true });
   const isMobile = useMobile();
   const router = useRouter();
   const queryClient = useQueryClient();

@@ -25,6 +25,7 @@ interface WasmVerifySubmitModalProps {
   relatedVerifiedCodes?: number[];
   contractAddress?: BechAddr32;
   triggerElement: ReactNode;
+  disabled?: boolean;
 }
 
 interface WasmVerifySubmitModalBodyProps
@@ -57,6 +58,7 @@ export const WasmVerifySubmitModal = ({
   relatedVerifiedCodes,
   contractAddress,
   triggerElement,
+  disabled,
 }: WasmVerifySubmitModalProps) => {
   const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
@@ -82,6 +84,7 @@ export const WasmVerifySubmitModal = ({
         as="span"
         display="inline-flex"
         onClick={(e) => {
+          if (disabled) return;
           e.stopPropagation();
           onOpen();
         }}
