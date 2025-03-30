@@ -40,7 +40,8 @@ export const WalletSection = () => {
         <ConnectWalletButton
           buttonText={truncate(initiaUsername?.username || address)}
           onClick={onClickOpenView}
-          variant="ghost-primary"
+          hasIcon
+          variant="ghost-white"
         />
       );
     }
@@ -49,6 +50,7 @@ export const WalletSection = () => {
       <ConnectWalletButton
         buttonText="Connect wallet"
         onClick={onClickConnect}
+        variant="white-solid"
       />
     );
   }
@@ -68,6 +70,8 @@ export const WalletSection = () => {
           <ConnectWalletButton
             buttonText={truncate(icnsNames?.primaryName || address)}
             onClick={onClickOpenView}
+            hasIcon
+            variant="ghost-white"
           />
         }
         rejected={<Others buttonText="Reconnect" onClick={onClickConnect} />}

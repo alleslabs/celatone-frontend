@@ -102,6 +102,21 @@ export const Button: ComponentStyleConfig = {
       hoverBg: gray700,
       activeBg: gray700,
     }),
+    "white-solid": generateStyle({
+      basic: {
+        background: "#ffffff",
+        color: "gray.900",
+        fontSize: "12px",
+        fontWeight: 600,
+        letterSpacing: 0,
+      },
+      disabled: {
+        background: "gray.100",
+        color: "gray.900",
+      },
+      hoverBg: "gray.100",
+      activeBg: "gray.100",
+    }),
     error: generateStyle({
       basic: { background: "error.main", color: "black" },
       disabled: {
@@ -232,6 +247,25 @@ export const Button: ComponentStyleConfig = {
         "> svg": {
           color: "gray.400",
         },
+      },
+      disabled: {
+        color: gray500,
+        "> svg": {
+          color: gray500,
+        },
+      },
+      hoverBg: gray800,
+      activeBg: "transparent",
+    }),
+    "ghost-white": generateStyle({
+      basic: {
+        color: "gray.300",
+        "> svg": {
+          color: "gray.300",
+        },
+        fontSize: "12px",
+        fontWeight: 600,
+        letterSpacing: 0,
       },
       disabled: {
         color: gray500,

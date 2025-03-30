@@ -14,5 +14,6 @@ export interface ConnectWalletType {
   isDisabled?: boolean;
   iconColor?: string;
   variant?: string;
+  hasIcon?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }

@@ -49,12 +49,8 @@ const Header = () => {
               minH="24px"
               h="24px"
               maxH="24px"
-              // minWidth="139px"
-              // width="139px"
-              // maxWidth="139px"
               transition="all 0.25s ease-in-out"
               _hover={{ cursor: "pointer", opacity: 0.85 }}
-              // mx={4}
             />
           </AppLink>
         </SectionWrapper>
