@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
 import { observer } from "mobx-react-lite";
-import type { CSSProperties, KeyboardEvent } from "react";
+import type { CSSProperties, KeyboardEvent, RefObject } from "react";
 import { forwardRef, useEffect, useRef, useState } from "react";
 
 import { useContractStore } from "lib/providers/store";
@@ -126,7 +126,7 @@ export const TagSelection = observer(
       };
 
       useOutsideClick({
-        ref: boxRef,
+        ref: boxRef as RefObject<HTMLDivElement>,
         handler: () => setDisplayOptions(false),
       });
 

@@ -1,6 +1,6 @@
 import type { TextProps } from "@chakra-ui/react";
 import { Button, Flex, Input, Text, useOutsideClick } from "@chakra-ui/react";
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, RefObject } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
@@ -39,11 +39,11 @@ export const EditableCell = ({
   const [isHover, setIsHover] = useState(false);
   const [isHoverText, setIsHoverText] = useState(false);
 
-  const editCellRef = useRef(null);
+  const editCellRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const [isEditCellOpen, setIsEditCellOpen] = useState(false);
   useOutsideClick({
-    ref: editCellRef,
+    ref: editCellRef as RefObject<HTMLDivElement>,
     handler: () => {
       setIsEditCellOpen(false);
     },

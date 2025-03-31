@@ -16,7 +16,11 @@ import {
   useOutsideClick,
 } from "@chakra-ui/react";
 import plur from "plur";
-import type { ChangeEvent, KeyboardEvent as ReactKeyboardEvent } from "react";
+import type {
+  ChangeEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  RefObject,
+} from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { trackUseMainSearch } from "lib/amplitude";
@@ -154,7 +158,7 @@ export const SearchComponent = () => {
   );
 
   useOutsideClick({
-    ref: boxRef,
+    ref: boxRef as RefObject<HTMLDivElement>,
     handler: onCloseWithClear,
   });
 

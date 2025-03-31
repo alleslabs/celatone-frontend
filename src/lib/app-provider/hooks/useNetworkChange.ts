@@ -10,7 +10,7 @@ export const useNetworkChange = (
   handleOnChainIdChange: (newChainId: string) => void
 ) => {
   const router = useRouter();
-  const networkRef = useRef<string>();
+  const networkRef = useRef<string>(null);
   const navigate = useInternalNavigate();
   const { supportedChainIds, isLoading } = useChainConfigs();
 

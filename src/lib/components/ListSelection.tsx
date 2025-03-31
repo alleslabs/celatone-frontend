@@ -13,7 +13,7 @@ import {
   useOutsideClick,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
-import type { CSSProperties } from "react";
+import type { CSSProperties, RefObject } from "react";
 import { forwardRef, useRef, useState } from "react";
 
 import { useContractStore } from "lib/providers/store";
@@ -115,9 +115,10 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
 
     useOutsideClick({
       enabled: enableOutside,
-      ref: boxRef,
+      ref: boxRef as RefObject<HTMLDivElement>,
       handler: () => setDisplayOptions(false),
     });
+
     return (
       <Box ref={boxRef} w="full">
         <FormControl>

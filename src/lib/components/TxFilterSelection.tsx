@@ -13,7 +13,7 @@ import {
   useOutsideClick,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
-import type { CSSProperties } from "react";
+import type { CSSProperties, RefObject } from "react";
 import { forwardRef, useMemo, useRef, useState } from "react";
 
 import { useInitia, useMoveConfig, useWasmConfig } from "lib/app-provider";
@@ -120,7 +120,7 @@ export const TxFilterSelection = forwardRef<
     };
 
     useOutsideClick({
-      ref: boxRef,
+      ref: boxRef as RefObject<HTMLDivElement>,
       handler: () => setDisplayOptions(false),
     });
 
