@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1290](https://github.com/alleslabs/celatone-frontend/pull/1290) Change minor ui
 - [#1284](https://github.com/alleslabs/celatone-frontend/pull/1284) Fix code ID type in form to prevent default 0 value
 - [#1285](https://github.com/alleslabs/celatone-frontend/pull/1285) Enable My Stored Codes in full tier only
 
@@ -52,7 +53,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1290](https://github.com/alleslabs/celatone-frontend/pull/1290) Change minor ui
 - [#1281](https://github.com/alleslabs/celatone-frontend/pull/1281) Add advanced options helper text, limit fetching verification infos to hex address only, add more module information
 - [#1279](https://github.com/alleslabs/celatone-frontend/pull/1279) Add Initia App Menu from library
 

@@ -232,7 +232,7 @@ export const PublishModule = ({
             </Box>
             {/* Upload File Section */}
             <Box gridArea="2 / 2">
-              <Heading as="h6" variant="h6" fontWeight={700}>
+              <Heading as="h6" variant="h6">
                 Upload .mv file(s)
               </Heading>
               <Flex gap={6} flexDirection="column" my={6}>
@@ -268,7 +268,7 @@ export const PublishModule = ({
             </Box>
             {/* Upgrade Policy Section */}
             <Box gridArea="3 / 2">
-              <Heading as="h6" variant="h6" fontWeight={700}>
+              <Heading as="h6" variant="h6">
                 Upgrade Policy
               </Heading>
               <Text color="text.dark" variant="body2" mt={2}>

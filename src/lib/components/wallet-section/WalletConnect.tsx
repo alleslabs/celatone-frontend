@@ -24,7 +24,7 @@ export const ConnectWalletButton = ({
     px={hasIcon ? "8px" : "18px"}
   >
     {hasIcon && <CustomIcon name="wallet" mr={2} />}
-    {buttonText || "Connect Wallet"}
+    {buttonText || "Connect wallet"}
     {hasIcon && <CustomIcon name="chevron-down" boxSize={3} />}
   </Button>
 );
