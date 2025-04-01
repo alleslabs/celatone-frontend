@@ -102,7 +102,7 @@ const Deploy = () => {
         </Alert>
       )}
       <ButtonCard
-        title="Upload new WASM File"
+        title="Upload new Wasm file"
         description={
           data?.isPermissionedNetwork
             ? "Available for whitelisted addresses only"

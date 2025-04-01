@@ -51,7 +51,7 @@ export const Upload = ({
   return (
     <>
       <ActionPageContainer>
-        <CelatoneSeo pageName="Upload WASM file" />
+        <CelatoneSeo pageName="Upload Wasm file" />
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>

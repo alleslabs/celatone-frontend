@@ -106,7 +106,7 @@ export const storeCodeTx = ({
               },
             ],
             receiptInfo: {
-              header: "Upload Wasm Complete!",
+              header: "Upload Wasm complete!",
               description: (
                 <>
                   <span style={{ fontWeight: 700 }}>

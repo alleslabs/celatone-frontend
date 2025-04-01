@@ -54,7 +54,7 @@ export const MigrateOptions = ({
       )}
       <ButtonCard
         disabled={!isAdmin || !isAllowed}
-        title="Upload new WASM File"
+        title="Upload new Wasm file"
         description={
           uploadAccessParams?.isPermissionedNetwork
             ? "Available for whitelisted addresses only"

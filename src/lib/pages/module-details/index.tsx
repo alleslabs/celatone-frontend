@@ -232,8 +232,8 @@ const ModuleDetailsBody = ({
               )}
             </Flex>
             <UserDocsLink
-              title="What is a move module?"
-              cta="Read more about Module"
+              title="What is a Move module?"
+              cta="Read more about module"
               href="move/modules/detail-page"
             />
           </TabPanel>

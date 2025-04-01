@@ -128,7 +128,7 @@ export const QuickMenuLite = () => {
       base.push(
         {
           title: "Deploy a new contract",
-          subtitle: "Upload a new wasm code or instantiate a new contract",
+          subtitle: "Upload a new Wasm code or instantiate a new contract",
           slug: "deploy",
           icon: "instantiate" as const,
           isHighlight: true,
