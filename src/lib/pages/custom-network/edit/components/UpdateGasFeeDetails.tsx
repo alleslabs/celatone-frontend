@@ -14,7 +14,7 @@ export const UpdateGasFeeDetails = () => {
   return (
     <Flex direction="column" gap={8}>
       <Flex direction="column" gap={6}>
-        <CustomNetworkSubheader title="Gas & Fee Details" />
+        <CustomNetworkSubheader title="Gas & fee details" />
         <Flex bg="teal">form goes here</Flex>
       </Flex>
       <Flex direction="column" gap={6}>
