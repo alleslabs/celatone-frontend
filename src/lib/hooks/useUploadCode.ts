@@ -8,6 +8,7 @@ import {
   useCelatoneApp,
   useCurrentChain,
   useFabricateFee,
+  useInitia,
   useStoreCodeTx,
   useValidateAddress,
 } from "lib/app-provider";
@@ -32,6 +33,7 @@ export const useUploadCode = (
   const { updateCodeInfo } = useCodeStore();
   const storeCodeTx = useStoreCodeTx(isMigrate);
   const { address } = useCurrentChain();
+  const isInitia = useInitia();
   const {
     chainConfig: {
       extra: { disableAnyOfAddresses },
@@ -91,7 +93,7 @@ export const useUploadCode = (
   const { isFetching: isSimulating } = useSimulateFeeForStoreCode({
     enabled: Boolean(wasmFile && address && !shouldNotSimulate),
     wasmFile,
-    permission,
+    permission: isInitia ? undefined : permission,
     // Remarks: disableAnyOfAddresses is only used for Cosmos SDK 0.26
     addresses: disableAnyOfAddresses
       ? undefined
@@ -130,7 +132,11 @@ export const useUploadCode = (
         addresses: disableAnyOfAddresses
           ? undefined
           : addresses.map((addr) => addr.address),
-        permission,
+        // Remarks: There's a bug when signing an Amino message including the permission field.
+        // Therefore, we decided not to include the permission field when deploying through Scan.
+        // To customize permissions, deploy via the CLI.
+        // If permission is undefined, the default permission is set to 'everybody'.
+        permission: isInitia ? undefined : permission,
         codeName,
         estimatedFee,
         onTxSucceed: (txResult) => {
@@ -157,6 +163,7 @@ export const useUploadCode = (
     updateCodeInfo,
     onComplete,
     disableAnyOfAddresses,
+    isInitia,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     JSON.stringify(addresses),
   ]);
