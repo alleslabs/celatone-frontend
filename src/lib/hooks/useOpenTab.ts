@@ -8,10 +8,19 @@ import {
 import type { Option } from "lib/types";
 import { openNewTab } from "lib/utils";
 
+export const useOpenBlockTab = () => {};
+
 export const useOpenTxTab = (type: "rest" | "tx-page") => {
-  const { currentChainId } = useCelatoneApp();
+  const {
+    currentChainId,
+    chainConfig: { network_type, rest },
+  } = useCelatoneApp();
   const txsApiRoute = useBaseApiRoute("txs");
-  const baseUrl = type === "rest" ? txsApiRoute : `/${currentChainId}/txs`;
+
+  let baseUrl: string;
+  if (network_type === "local") baseUrl = `${rest}/cosmos/tx/v1beta1/txs`;
+  else if (type === "rest") baseUrl = txsApiRoute;
+  else baseUrl = `/${currentChainId}/txs`;
 
   return useCallback(
     (txHash: Option<string>) => {

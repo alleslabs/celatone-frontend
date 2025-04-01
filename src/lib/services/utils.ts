@@ -75,8 +75,8 @@ export const queryWithArchivalFallback = async <T>(
   try {
     return await fetch(endpoint);
   } catch (error) {
-    if (endpoint.includes("sequencer") && endpoint.includes("anvil")) {
-      return fetch(endpoint.replace("sequencer", "archival"));
+    if (endpoint.includes("anvil")) {
+      return fetch(endpoint.replace("rest-", "archival-rest-"));
     }
     throw error;
   }
