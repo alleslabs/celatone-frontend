@@ -67,7 +67,7 @@ export const TxInfoMobile = ({
         </LabelText>
       </Flex>
       <Flex>
-        <LabelText flex={1} label="Transaction Fee">
+        <LabelText flex={1} label="Transaction fee">
           {feeToken ? (
             formatTokenWithValue(feeToken)
           ) : (

@@ -30,7 +30,7 @@ export const ProposalVotesTableHeader = ({
       {fullVersion && (
         <>
           <TableHeader>Timestamp</TableHeader>
-          <TableHeader>Transaction Hash</TableHeader>
+          <TableHeader>Transaction hash</TableHeader>
         </>
       )}
     </Grid>

@@ -159,7 +159,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
 
       {/* Searchbar */}
       <InputWithIcon
-        placeholder="Search by Key"
+        placeholder="Search by key"
         value={keyword}
         onChange={(e) => {
           const newVal = e.target.value;

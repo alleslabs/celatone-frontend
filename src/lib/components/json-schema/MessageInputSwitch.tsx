@@ -36,7 +36,7 @@ export const MessageInputSwitch = <
 >({
   currentTab,
   disabled = false,
-  tooltipLabel = "Select or fill code id first",
+  tooltipLabel = "Select or fill code ID first",
   ml,
   isOutput = false,
   onTabChange: onTabChangeProps,

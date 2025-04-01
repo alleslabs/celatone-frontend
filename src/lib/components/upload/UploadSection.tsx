@@ -197,7 +197,7 @@ export const UploadSection = ({
           display="flex"
           gap={1}
         >
-          <p>Transaction Fee:</p>
+          <p>Transaction fee:</p>
           <EstimatedFeeRender
             estimatedFee={estimatedFee}
             loading={isSimulating}

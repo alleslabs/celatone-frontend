@@ -191,7 +191,7 @@ export const ModuleFunctions = ({
               if (jsonWindow) {
                 // Modify styling later
                 jsonWindow.document.write(
-                  `<html><head><title>Module Exposed Function</title>`
+                  `<html><head><title>Module exposed function</title>`
                 );
 
                 // Add styling

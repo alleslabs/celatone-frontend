@@ -57,7 +57,7 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Failed Reason</ModalHeader>
+          <ModalHeader>Failed reason</ModalHeader>
           <ModalCloseButton color="gray.600" />
           <ModalBody>
             <Box

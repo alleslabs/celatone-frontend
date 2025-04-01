@@ -35,9 +35,9 @@ const TEMPLATE_COLUMNS = "max(160px) minmax(300px, 1fr) max(200px) max(300px) ";
 
 const ContractTableHeader = () => (
   <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
-    <TableHeader>Contract Address</TableHeader>
-    <TableHeader>Contract Name</TableHeader>
-    <TableHeader>Instantiated By</TableHeader>
+    <TableHeader>Contract address</TableHeader>
+    <TableHeader>Contract name</TableHeader>
+    <TableHeader>Instantiated by</TableHeader>
     <TableHeader />
   </Grid>
 );

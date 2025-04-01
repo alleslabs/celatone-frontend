@@ -98,7 +98,7 @@ export const VerifiedDetails = ({
       </Flex>
       <Flex gap={{ base: 6, md: 12 }} direction={{ base: "column", md: "row" }}>
         <Flex direction="column" gap={1}>
-          <Text {...baseTextStyle}>Compiler Version</Text>
+          <Text {...baseTextStyle}>Compiler version</Text>
           <Text color="text.main" variant="body2">
             {verificationInfo.compilerVersion}
           </Text>

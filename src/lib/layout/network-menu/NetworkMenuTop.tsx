@@ -62,7 +62,7 @@ export const NetworkMenuTop = observer(
           )}
         </Flex>
         <InputWithIcon
-          placeholder="Search by Name or Chain ID"
+          placeholder="Search by name or chain ID"
           size="md"
           value={keyword}
           autoFocus={!isMobile}

@@ -129,7 +129,7 @@ export const ViewSchemaModal = ({
               onChange={trackTabOnChange}
             >
               <TabList>
-                <StyledCustomTab>Full Schema</StyledCustomTab>
+                <StyledCustomTab>Full schema</StyledCustomTab>
                 {SchemaMsgTabList.map((schemaProperty) => (
                   <StyledCustomTab key={schemaProperty}>
                     {capitalize(schemaProperty)}Msg

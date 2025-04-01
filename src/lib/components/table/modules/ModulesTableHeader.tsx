@@ -12,10 +12,10 @@ export const ModulesTableHeader = ({
   isPublishedModules,
 }: ModulesTableHeaderProps) => (
   <Grid templateColumns={templateColumns} minW="min-content">
-    <TableHeader>Module Path</TableHeader>
+    <TableHeader>Module path</TableHeader>
     {isPublishedModules && (
       <>
-        <TableHeader>Module Name</TableHeader>
+        <TableHeader>Module name</TableHeader>
         <TableHeader w="full" textAlign="center">
           View/Execute Functions
         </TableHeader>
@@ -24,8 +24,8 @@ export const ModulesTableHeader = ({
     <TableHeader>Creator</TableHeader>
     {!isPublishedModules && (
       <>
-        <TableHeader>Publishing Activity</TableHeader>
-        <TableHeader>Published/Republished Timestamp</TableHeader>
+        <TableHeader>Publishing activity</TableHeader>
+        <TableHeader>Published/Republished timestamp</TableHeader>
       </>
     )}
     <TableHeader />

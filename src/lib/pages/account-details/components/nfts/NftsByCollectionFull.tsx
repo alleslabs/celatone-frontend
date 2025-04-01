@@ -61,7 +61,7 @@ export const NftsByCollectionFull = ({
   return (
     <Stack spacing="24px" w="full">
       <InputWithIcon
-        placeholder="Search with Token ID or NFT VM Address"
+        placeholder="Search with token ID or NFT VM address"
         value={searchKeyword}
         autoFocus={!isMobile}
         onChange={(e) => setSearchKeyword(e.target.value)}

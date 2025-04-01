@@ -306,9 +306,9 @@ export const UploadTemplate = ({
         mb={6}
       >
         <Flex gap="64px">
-          <Radio value={Method.UPLOAD_FILE}>Upload File</Radio>
-          <Radio value={Method.LOAD_URL}>Load from URL</Radio>
-          <Radio value={Method.FILL_MANUALLY}>Fill Manually</Radio>
+          <Radio value={Method.UPLOAD_FILE}>Upload file</Radio>
+          <Radio value={Method.LOAD_URL}>Load from url</Radio>
+          <Radio value={Method.FILL_MANUALLY}>Fill manually</Radio>
         </Flex>
       </RadioGroup>
       <MethodRender

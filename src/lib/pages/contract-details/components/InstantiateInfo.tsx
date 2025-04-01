@@ -83,7 +83,7 @@ const InitRender = ({
   if (initProposalTitle && initProposalId) {
     return (
       <LabelText
-        label="Instantiate Proposal ID"
+        label="Instantiate proposal ID"
         helperText1={initProposalTitle}
       >
         <ExplorerLink
@@ -259,7 +259,7 @@ export const InstantiateInfo = ({
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
         {contractApi?.contract_info.ibc_port_id && (
-          <LabelText label="IBC Port ID">
+          <LabelText label="IBC port ID">
             <PortIdRender portId={contractApi.contract_info.ibc_port_id} />
           </LabelText>
         )}

@@ -71,7 +71,7 @@ export const CollectionSupplyInfo = ({
       <Divider opacity={1} borderColor="gray.700" />
       <div>
         <Flex fontSize="14px" fontWeight={600} align="center" gap="4px">
-          <Text color="gray.400">Max Supply</Text>
+          <Text color="gray.400">Max supply</Text>
           <TooltipInfo label={maxSupplyTooltip} />
         </Flex>
         <Text fontSize="18px" fontWeight={600}>

@@ -23,8 +23,8 @@ export const VotedProposalsTableHeader = ({
         Proposal Title/Types
       </Text>
     </TableHeaderFreeze>
-    <TableHeader textAlign="center">Proposal Status</TableHeader>
-    <TableHeader>Vote Answer</TableHeader>
-    <TableHeader>Voted On</TableHeader>
+    <TableHeader textAlign="center">Proposal status</TableHeader>
+    <TableHeader>Vote answer</TableHeader>
+    <TableHeader>Voted on</TableHeader>
   </Grid>
 );

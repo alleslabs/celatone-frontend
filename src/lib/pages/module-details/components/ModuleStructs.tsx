@@ -77,7 +77,7 @@ export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
               if (jsonWindow) {
                 // Modify styling later
                 jsonWindow.document.write(
-                  `<html><head><title>Module Structs</title>`
+                  `<html><head><title>Module structs</title>`
                 );
 
                 // Add styling

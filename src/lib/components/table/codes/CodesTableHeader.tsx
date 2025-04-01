@@ -16,7 +16,7 @@ export const CodesTableHeader = ({
 }) => (
   <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Code ID</TableHeader>
-    <TableHeader>Code Name</TableHeader>
+    <TableHeader>Code name</TableHeader>
     {showCw2andContracts && (
       <>
         <TableHeader>CW2 Info</TableHeader>

@@ -27,9 +27,9 @@ const TEMPLATE_COLUMNS = "320px 160px minmax(250px, 1fr) 160px";
 
 const ModuleTableHeader = () => (
   <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
-    <TableHeader>Module Path</TableHeader>
+    <TableHeader>Module path</TableHeader>
     <TableHeader>Owner</TableHeader>
-    <TableHeader>Module Description</TableHeader>
+    <TableHeader>Module description</TableHeader>
     <TableHeader />
   </Grid>
 );

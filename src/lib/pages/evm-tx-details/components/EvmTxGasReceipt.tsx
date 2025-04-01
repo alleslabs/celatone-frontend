@@ -23,7 +23,7 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
     <>
       <Divider />
       <SimpleGrid columns={{ base: 2, md: 1 }} gap={4}>
-        <LabelText flex={1} label="Transaction Fee">
+        <LabelText flex={1} label="Transaction fee">
           <TokenImageWithAmount
             token={gasInfo.txFee}
             hasTrailingZeros={false}

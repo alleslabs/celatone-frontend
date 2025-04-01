@@ -61,7 +61,7 @@ export const TxInfo = ({
           ampCopierSection="tx_page_block_height"
         />
       </LabelText>
-      <LabelText label="Transaction Fee">
+      <LabelText label="Transaction fee">
         {feeToken ? (
           formatTokenWithValue(feeToken)
         ) : (

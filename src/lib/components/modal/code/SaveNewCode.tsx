@@ -78,7 +78,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       setUploaderStatus({ state: "success" });
     },
     onError: () => {
-      setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
+      setCodeIdStatus({ state: "error", message: "Invalid code ID" });
       setUploader("Not Found");
       setUploaderStatus({ state: "error" });
     },
@@ -132,12 +132,12 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       if (isCodeIdSaved(Number(codeId))) {
         setCodeIdStatus({
           state: "error",
-          message: "You already added this Code ID",
+          message: "You already added this code ID",
         });
       } else {
         const timer = setTimeout(() => {
           if (isId(codeId)) refetch();
-          else setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
+          else setCodeIdStatus({ state: "error", message: "Invalid code ID" });
         }, 500);
 
         return () => clearTimeout(timer);

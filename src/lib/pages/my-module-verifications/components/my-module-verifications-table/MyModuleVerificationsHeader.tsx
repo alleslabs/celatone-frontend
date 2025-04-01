@@ -11,7 +11,7 @@ export const MyModuleVerificationsTableHeader = ({
 }: ModulesTableHeaderProps) => (
   <Grid templateColumns={templateColumns} minW="min-content">
     <TableHeader>Request ID</TableHeader>
-    <TableHeader>Request Note</TableHeader>
+    <TableHeader>Request note</TableHeader>
     <TableHeader>Files</TableHeader>
     <TableHeader>Status</TableHeader>
     <TableHeader>Verified at</TableHeader>

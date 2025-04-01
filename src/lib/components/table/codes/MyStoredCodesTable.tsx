@@ -31,7 +31,7 @@ export const MyStoredCodesTable = ({
         imageVariant={totalData ? "not-found" : "empty"}
         message={
           totalData
-            ? "No matched codes found. Make sure you are searching with Code ID or Code Name"
+            ? "No matched codes found. Make sure you are searching with code ID or code name"
             : emptyMessage
         }
         withBorder

@@ -111,7 +111,7 @@ const networkDetailsFormValidator = (
   if (isChainIdExist(chainId))
     ctx.addIssue({
       code: ZodIssueCode.custom,
-      message: "This Chain ID is already added.",
+      message: "This chain ID is already added.",
       path: ["chainId"],
     });
 

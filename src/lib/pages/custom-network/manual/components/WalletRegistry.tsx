@@ -284,7 +284,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
                     justifyContent="space-between"
                     pb={4}
                   >
-                    <Heading variant="h7">Denom Units</Heading>
+                    <Heading variant="h7">Denom units</Heading>
                   </Flex>
                   <DenomUnits
                     control={control}

@@ -170,7 +170,7 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
     <Grid gap={4} pt={6}>
       {wasm.enabled && (
         <>
-          <Heading variant="h6">Quick Action</Heading>
+          <Heading variant="h6">Quick action</Heading>
           <QuickActionCard
             item={{
               title: "Query",

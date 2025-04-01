@@ -112,7 +112,7 @@ export const SchemaQuery = ({
     <>
       <Flex gap={6} mb={6}>
         <InputWithIcon
-          placeholder="Search by Query Message"
+          placeholder="Search by query message"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           size="md"

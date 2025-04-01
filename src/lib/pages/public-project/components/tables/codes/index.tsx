@@ -36,7 +36,7 @@ const TEMPLATE_COLUMNS =
 const CodeTableHeader = () => (
   <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
     <TableHeader>Code ID</TableHeader>
-    <TableHeader>Code Name</TableHeader>
+    <TableHeader>Code name</TableHeader>
     <TableHeader>CW2 Info</TableHeader>
     <TableHeader textAlign="center">Contracts</TableHeader>
     <TableHeader>Uploader</TableHeader>

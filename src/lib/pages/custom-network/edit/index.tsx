@@ -48,7 +48,7 @@ import { jsonPrettify } from "lib/utils";
 //   { name: "Wallet Registry", key: "wallet-registry" },
 // ];
 
-const InvalidChainId = () => <InvalidState title="Invalid Chain ID" />;
+const InvalidChainId = () => <InvalidState title="Invalid chain ID" />;
 
 interface NetworkConfigBodyProps {
   chainId: string;

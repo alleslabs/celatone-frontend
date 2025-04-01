@@ -211,7 +211,7 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
         gap={1}
         mt={12}
       >
-        <p>Transaction Fee:</p>
+        <p>Transaction fee:</p>
         <EstimatedFeeRender estimatedFee={estimatedFee} loading={isFetching} />
       </Flex>
       {simulateError && (

@@ -24,7 +24,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
   if (!data)
     return (
       <EmptyState
-        message="Error fetching data from Json RPC. Please try again later."
+        message="Error fetching data from JSON RPC. Please try again later."
         my={3}
         py={1}
       />

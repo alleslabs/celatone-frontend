@@ -71,7 +71,7 @@ export const CommandSectionHeader = observer(
                 boxSize={3}
                 color="gray.600"
               />
-              <Text variant="body3">Attached Schema to Code ID {codeId}</Text>
+              <Text variant="body3">Attached schema to code ID {codeId}</Text>
             </Tag>
             <ViewSchemaModal isIcon codeId={codeId} schema={localSchema} />
             <EditSchemaButtons

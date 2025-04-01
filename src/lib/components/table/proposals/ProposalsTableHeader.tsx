@@ -32,8 +32,8 @@ export const ProposalsTableHeader = ({
       </TableHeaderFreeze>
       <TableHeader textAlign="center">Status</TableHeader>
       <TableHeader>Voting ends</TableHeader>
-      {isFullTier && <TableHeader>Resolved Block Height</TableHeader>}
-      <TableHeader>Proposed By</TableHeader>
+      {isFullTier && <TableHeader>Resolved block height</TableHeader>}
+      <TableHeader>Proposed by</TableHeader>
     </Grid>
   );
 };

@@ -123,7 +123,7 @@ export const SchemaExecute = ({
     <>
       <Flex gap={6} mb={6}>
         <InputWithIcon
-          placeholder="Search by Execute Message"
+          placeholder="Search by execute message"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           size="md"
