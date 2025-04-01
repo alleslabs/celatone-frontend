@@ -89,7 +89,7 @@ export const FailedDetails = ({
               relatedVerifiedCodes,
             })}
             relatedVerifiedCodes={relatedVerifiedCodes}
-            label="Reverify Code"
+            label="Reverify code"
           />
         )}
       </Flex>

@@ -30,7 +30,7 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
 
   return (
     <ActionModal
-      title="Edit Tags"
+      title="Edit tags"
       trigger={
         <CustomIcon cursor="pointer" name="edit" color="gray.600" boxSize={3} />
       }

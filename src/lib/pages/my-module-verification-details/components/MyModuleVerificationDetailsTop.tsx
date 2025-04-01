@@ -18,7 +18,7 @@ export const MyModuleVerificationDetailsTop = ({
     <Breadcrumb
       items={[
         {
-          text: "My Past Verification",
+          text: "My past verification",
           href: "/my-module-verifications",
         },
         {

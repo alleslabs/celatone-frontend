@@ -81,7 +81,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           variant="primary"
           onClick={() => {
             track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {
-              label: "See Module",
+              label: "See module",
             });
             openNewTab({
               pathname: `/modules/${decodeRes?.abi.address}/${decodeRes?.abi.name}`,

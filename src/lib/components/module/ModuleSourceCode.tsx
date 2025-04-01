@@ -122,15 +122,15 @@ export const ModuleSourceCode = ({
               </Text>
               {[
                 {
-                  label: "Language Version",
+                  label: "Language version",
                   value: verificationData.languageVersion,
                 },
                 {
-                  label: "Compiler Version",
+                  label: "Compiler version",
                   value: verificationData.compilerVersion,
                 },
                 {
-                  label: "Bytecode Version",
+                  label: "Bytecode version",
                   value: verificationData.bytecodeVersion,
                 },
               ].map(({ label, value }) => (

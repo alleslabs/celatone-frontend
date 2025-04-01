@@ -43,12 +43,12 @@ export const getNavDrawerLite = (
       ...(isMove
         ? [
             {
-              name: "0x1 Page",
+              name: "0x1 page",
               slug: "/accounts/0x1",
               icon: "0x1" as IconKeys,
             },
             {
-              name: "View Module",
+              name: "View module",
               slug: "/interact",
               icon: "query" as IconKeys,
             },
@@ -114,7 +114,7 @@ export const getNavDrawerSequencer = (
               icon: "0x1" as IconKeys,
             },
             {
-              name: "View Module",
+              name: "View module",
               slug: "/interact",
               icon: "query" as IconKeys,
             },
@@ -191,7 +191,7 @@ export const getNavDrawerFull = (
               icon: "0x1" as IconKeys,
             },
             {
-              name: "View Module",
+              name: "View module",
               slug: "/interact",
               icon: "query" as IconKeys,
             },

@@ -39,11 +39,11 @@ export const PublishCompleted = ({
       <TxReceiptRender
         receipts={[
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             html: <ExplorerLink type="tx_hash" value={txHash} />,
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
@@ -52,7 +52,7 @@ export const PublishCompleted = ({
             ),
           },
           {
-            title: "Upgrade Policy",
+            title: "Upgrade policy",
             value: capitalize(upgradePolicy),
           },
         ]}

@@ -49,7 +49,7 @@ export const CodeTopInfo = observer(
         <Breadcrumb
           items={[
             {
-              text: projectInfo?.name ? "Public Projects" : "Codes",
+              text: projectInfo?.name ? "Public projects" : "Codes",
               href: projectInfo?.name ? "/projects" : "/codes",
             },
             {
@@ -165,7 +165,7 @@ export const CodeTopInfo = observer(
         </Flex>
         {publicInfo && (
           <PublicDescription
-            title="Public Code Description"
+            title="Public code description"
             description={publicInfo.description}
             textLine={2}
             icon={<CustomIcon name="public-project" ml={0} color="gray.600" />}

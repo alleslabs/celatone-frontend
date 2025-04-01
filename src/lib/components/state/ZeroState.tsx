@@ -37,7 +37,7 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
           buttonProps={{
             variant: "outline-primary",
             leftIcon: <CustomIcon name="bookmark" />,
-            children: "Save Contract",
+            children: "Save contract",
             ml: 2,
           }}
         />

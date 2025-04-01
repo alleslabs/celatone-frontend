@@ -62,7 +62,7 @@ const SavedCodes = observer(() => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="Saved Codes" />
+      <CelatoneSeo pageName="Saved codes" />
       <Flex alignItems="center" justifyContent="space-between" mb={4}>
         <Flex direction="column">
           <Flex align="center">

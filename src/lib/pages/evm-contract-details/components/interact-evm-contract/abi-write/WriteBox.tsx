@@ -165,7 +165,7 @@ export const WriteBox = ({
                 isDisable={isUndefined(data)}
                 value={data ?? ""}
                 amptrackSection="write_inputs"
-                buttonText="Copy Encoded Inputs"
+                buttonText="Copy encoded inputs"
               />
               <EvmCodeSnippet
                 contractAddress={contractAddress}

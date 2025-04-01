@@ -18,12 +18,12 @@ const relationOptions = [
     disabled: false,
   },
   {
-    label: "Signing Address",
+    label: "Signing address",
     value: RelationType.SIGNING,
     disabled: false,
   },
   {
-    label: "Related Address",
+    label: "Related address",
     value: RelationType.RELATED,
     disabled: false,
   },

@@ -58,7 +58,7 @@ export const CollectionInfoSection = ({
           mb={{ base: 4, md: 0 }}
         >
           <LabelText
-            label="Created Block Height"
+            label="Created block height"
             helperText1={formatUTC(timestamp)}
             helperText2={dateFromNow(timestamp)}
           >
@@ -79,7 +79,7 @@ export const CollectionInfoSection = ({
               ampCopierSection="collection-creation-information"
             />
           </LabelText>
-          <LabelText label="Created Transaction">
+          <LabelText label="Created transaction">
             <ExplorerLink
               value={txhash.toUpperCase()}
               type="tx_hash"
@@ -121,7 +121,7 @@ export const CollectionInfoSection = ({
               color={collectionName.length ? "text.main" : "text.disabled"}
               fontWeight={collectionName.length ? "600" : "300"}
             >
-              {collectionName || "Untitled Collection"}
+              {collectionName || "Untitled collection"}
             </Text>
           </Flex>
           <Flex gap={infoGap} flexDir={infoDirection}>
@@ -164,7 +164,7 @@ export const CollectionInfoSection = ({
         />
         {isFullTier && (
           <InfoCard
-            title="Mutate Events"
+            title="Mutate events"
             icon="migrate"
             content={mutateEventes}
             onClick={onClickMutateEvents}

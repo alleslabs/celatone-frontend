@@ -8,7 +8,7 @@ interface CustomNetworkPageHeaderProps {
 
 export const CustomNetworkPageHeader = ({
   title,
-  subtitle = "Add Custom Rollup",
+  subtitle = "Add custom rollup",
   hasAlert = true,
 }: CustomNetworkPageHeaderProps) => (
   <>

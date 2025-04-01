@@ -60,7 +60,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
               Denom Unit
             </Heading>
             <IconButton
-              aria-label="Remove Asset"
+              aria-label="Remove asset"
               icon={<CustomIcon name="delete" boxSize={4} />}
               onClick={() => remove(index)}
               variant="ghost-gray"
@@ -164,7 +164,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
 
   return (
     <Flex direction="column" gap={2} alignItems="center">
-      <CustomNetworkPageHeader title="Add Wallet Registry" />
+      <CustomNetworkPageHeader title="Add wallet registry" />
       <Flex w="full" direction="column" gap={6} my={8}>
         <CustomNetworkSubheader
           title="Account Prefix and Registered Coin Type"
@@ -233,7 +233,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
                     Asset
                   </Heading>
                   <IconButton
-                    aria-label="Remove Asset"
+                    aria-label="Remove asset"
                     icon={<CustomIcon name="delete" boxSize={4} />}
                     onClick={() => remove(index)}
                     variant="ghost-gray"

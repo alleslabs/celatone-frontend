@@ -159,7 +159,7 @@ export const QuickMenuLite = () => {
           isDocument: false,
         },
         {
-          title: "User Guide",
+          title: "User guide",
           subtitle: "View Scan documents",
           slug: "wasm-user-guide",
           icon: "document" as const,
@@ -187,7 +187,7 @@ export const QuickMenuLite = () => {
           isDocument: false,
         },
         {
-          title: "Deploy Script",
+          title: "Deploy script",
           subtitle: "Deploy one-time use Script",
           slug: "deploy-script",
           icon: "code" as const,
@@ -195,7 +195,7 @@ export const QuickMenuLite = () => {
           isDocument: false,
         },
         {
-          title: "User Guide",
+          title: "User guide",
           subtitle: "View Scan documents",
           icon: "document" as const,
           slug: "move-user-guide",

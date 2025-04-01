@@ -34,7 +34,7 @@ export const MintInfo = ({ nftAddress }: MintInfoProps) => {
           spacing="24px"
         >
           <LabelText
-            label="Minted Block Height"
+            label="Minted block height"
             helperText1={formatUTC(mintInfo.timestamp)}
             helperText2={dateFromNow(mintInfo.timestamp)}
           >
@@ -53,7 +53,7 @@ export const MintInfo = ({ nftAddress }: MintInfoProps) => {
               ampCopierSection="nft-detail-mint-information"
             />
           </LabelText>
-          <LabelText label="Minted Transaction">
+          <LabelText label="Minted transaction">
             <ExplorerLink
               value={mintInfo.txhash.toUpperCase()}
               type="tx_hash"

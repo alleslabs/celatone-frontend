@@ -95,7 +95,7 @@ export function EditListNameModal({
         setInputState={setListName}
         labelBgColor="gray.900"
         status={status}
-        label="List Name"
+        label="List name"
       />
     </ActionModal>
   );

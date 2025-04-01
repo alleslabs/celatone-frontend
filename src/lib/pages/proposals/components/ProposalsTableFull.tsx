@@ -144,14 +144,14 @@ export const ProposalsTableFull = () => {
             label="Filter by Status"
             result={statuses}
             setResult={setStatuses}
-            placeholder="All Status"
+            placeholder="All status"
             isMulti
           />
           <ProposalTypeFilter
             label="Filter by Type"
             result={types}
             setResult={setTypes}
-            placeholder="All Type"
+            placeholder="All type"
           />
         </Flex>
       </Flex>

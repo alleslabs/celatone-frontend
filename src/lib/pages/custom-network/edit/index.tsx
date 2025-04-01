@@ -42,10 +42,10 @@ import { jsonPrettify } from "lib/utils";
 // });
 
 // const TabMenu = [
-//   { name: "Network Details", key: "network-details" },
-//   { name: "Supported Features", key: "supported-features" },
+//   { name: "Network details", key: "network-details" },
+//   { name: "Supported features", key: "supported-features" },
 //   { name: "Gas & Fee Details", key: "gas-fee-details" },
-//   { name: "Wallet Registry", key: "wallet-registry" },
+//   { name: "Wallet registry", key: "wallet-registry" },
 // ];
 
 const InvalidChainId = () => <InvalidState title="Invalid chain ID" />;
@@ -98,7 +98,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
     <ActionPageContainer width={900}>
       <CustomNetworkPageHeader
         title={chainConfig.prettyName}
-        subtitle="Your Custom Rollup"
+        subtitle="Your custom rollup"
         hasAlert={false}
       />
       <Stack gap={12} mt={8} w="full">
@@ -145,7 +145,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   //     <ActionPageContainer width={900}>
   //       <CustomNetworkPageHeader
   //         title={chainConfig.prettyName}
-  //         subtitle="Your Custom Rollup"
+  //         subtitle="Your custom rollup"
   //         hasAlert={false}
   //       />
   //       <Tabs variant="unstyled" orientation="vertical" mt={6}>

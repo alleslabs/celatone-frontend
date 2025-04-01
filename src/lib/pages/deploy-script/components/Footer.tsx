@@ -33,7 +33,7 @@ export const Footer = ({
           isDisabled={isLoading || disabled}
           onClick={executeScript}
         >
-          {isLoading ? <Spinner size="md" variant="light" /> : "Execute Script"}
+          {isLoading ? <Spinner size="md" variant="light" /> : "Execute script"}
         </Button>
       </Flex>
     </Flex>

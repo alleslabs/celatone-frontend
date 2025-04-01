@@ -29,7 +29,7 @@ export const ButtonSection = ({
 
   const openTxExplorer = () => {
     const txHash = receipts
-      .find((r) => r.title === "Tx Hash")
+      .find((r) => r.title === "Tx hash")
       ?.value?.toString();
     openTxTab(txHash);
   };
@@ -122,7 +122,7 @@ export const ButtonSection = ({
       return (
         <Flex justify="space-between" w="full">
           <CopyButton
-            buttonText="Copy Error Log"
+            buttonText="Copy error log"
             value={errorMsg}
             amptrackSection="tx_error_log"
             size="md"

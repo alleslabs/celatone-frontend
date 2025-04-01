@@ -173,7 +173,7 @@ export const SupportedSection = ({
                 setShowNewest(isDesc);
               }}
             >
-              {showNewest ? "Newest First" : "Oldest First"}
+              {showNewest ? "Newest first" : "Oldest first"}
               <CustomIcon
                 name={showNewest ? "arrow-down" : "arrow-up"}
                 color="text.dark"

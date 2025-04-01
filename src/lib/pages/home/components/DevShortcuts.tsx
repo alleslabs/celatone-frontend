@@ -77,7 +77,7 @@ export const DevShortcuts = () => {
               icon: "execute" as const,
             },
             {
-              title: "Deploy Script",
+              title: "Deploy script",
               subtitle: "Deploy one-time use Script",
               slug: "deploy-script",
               icon: "code" as const,

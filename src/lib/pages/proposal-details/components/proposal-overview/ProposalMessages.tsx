@@ -48,14 +48,14 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
             onClick={() => {
               trackUseExpandAll(
                 expandedIndexes.length ? "collapse" : "expand",
-                "Proposal Messages"
+                "Proposal messages"
               );
               setExpandedIndexes((prev) =>
                 !prev.length ? Array.from(Array(messages.length).keys()) : []
               );
             }}
           >
-            {expandedIndexes.length ? "Collapse All" : "Expand All"}
+            {expandedIndexes.length ? "Collapse all" : "Expand all"}
           </Button>
         )}
       </Flex>

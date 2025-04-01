@@ -252,13 +252,13 @@ const ContractDetailsBody = observer(
                       mt={{ base: 12, md: 0 }}
                     >
                       <JsonInfo
-                        header="Contract Info"
+                        header="Contract info"
                         jsonString={jsonPrettify(
                           JSON.stringify(contractApi?.contract_info ?? {})
                         )}
                       />
                       <JsonInfo
-                        header="Instantiate Message"
+                        header="Instantiate message"
                         jsonString={jsonPrettify(contract.initMsg)}
                         defaultExpand
                       />

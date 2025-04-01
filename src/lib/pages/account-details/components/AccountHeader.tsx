@@ -103,7 +103,7 @@ export const AccountHeader = observer(
                       leftIcon: (
                         <CustomIcon name="bookmark" boxSize={3} mr={0} />
                       ),
-                      children: "Save Account",
+                      children: "Save account",
                     }}
                   />
                 )}

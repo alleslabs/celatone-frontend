@@ -103,7 +103,7 @@ export function CreateNewListModal({
           setInputState={setListName}
           labelBgColor="gray.900"
           status={status}
-          label="List Name"
+          label="List name"
         />
       </Box>
     </ActionModal>

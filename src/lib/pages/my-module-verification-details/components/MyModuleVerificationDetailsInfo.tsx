@@ -56,9 +56,9 @@ export const MyModuleVerificationDetailsInfo = ({
         </LabelText>
       )}
       {[
-        { label: "Language Version", value: languageVersion },
-        { label: "Compiler Version", value: compilerVersion },
-        { label: "Bytecode Version", value: bytecodeVersion },
+        { label: "Language version", value: languageVersion },
+        { label: "Compiler version", value: compilerVersion },
+        { label: "Bytecode version", value: bytecodeVersion },
       ].map(({ label, value }) => (
         <LabelText key={label} label={label}>
           {value ? <Text variant="body2">{value}</Text> : "-"}

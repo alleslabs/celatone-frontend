@@ -26,12 +26,12 @@ interface FilterByPoolTypeProps {
 
 const options: PoolTypeOption[] = [
   {
-    label: "All Pools",
+    label: "All pools",
     value: PoolType.ALL,
     disabled: false,
   },
   {
-    label: "Balancer Pools",
+    label: "Balancer pools",
     value: PoolType.BALANCER,
     image: <BalancerPoolIcon boxSize={5} />,
     disabled: false,
@@ -43,7 +43,7 @@ const options: PoolTypeOption[] = [
     disabled: false,
   },
   {
-    label: "Concentrated Liquidity Pools",
+    label: "Concentrated liquidity pools",
     value: PoolType.CL,
     image: <ClpIcon boxSize={5} />,
     disabled: false,

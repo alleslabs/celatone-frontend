@@ -58,7 +58,7 @@ export const submitWhitelistProposalTx = ({
             ),
           },
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             value: txInfo.transactionHash,
             html: (
               <ExplorerLink
@@ -69,7 +69,7 @@ export const submitWhitelistProposalTx = ({
             ),
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
@@ -79,7 +79,7 @@ export const submitWhitelistProposalTx = ({
           },
         ],
         receiptInfo: {
-          header: "Proposal Submitted",
+          header: "Proposal submitted",
           description: `Proposed ${whitelistNumber} ${
             whitelistNumber > 1 ? "addresses" : "address"
           } to whitelisting${
@@ -141,14 +141,14 @@ export const submitStoreCodeProposalTx = ({
             html: <ExplorerLink type="proposal_id" value={proposalId} />,
           },
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             value: txInfo.transactionHash,
             html: (
               <ExplorerLink type="tx_hash" value={txInfo.transactionHash} />
             ),
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
@@ -158,7 +158,7 @@ export const submitStoreCodeProposalTx = ({
           },
         ],
         receiptInfo: {
-          header: "Proposal Submitted",
+          header: "Proposal submitted",
           description: `${wasmFileName} is uploaded and pending ${
             amountToVote
               ? ` minimum deposit of ${amountToVote} to trigger voting period.`

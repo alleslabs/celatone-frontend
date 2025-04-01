@@ -76,8 +76,8 @@ const DisplayName = ({
   label,
 }: DisplayNameProps) => {
   const displayName = useMemo(() => {
-    if (notSelected) return "Not Selected";
-    if (!isValid) return "Invalid Contract";
+    if (notSelected) return "Not selected";
+    if (!isValid) return "Invalid contract";
     return name ?? label;
   }, [isValid, label, name, notSelected]);
 

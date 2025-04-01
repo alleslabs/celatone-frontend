@@ -120,7 +120,7 @@ export const CodeDetailsTemplateModal = ({
         setInputState={setName}
         size="lg"
         helperText="Fill in code name to define its use as a reminder"
-        label="Code Name"
+        label="Code name"
         labelBgColor="gray.900"
         maxLength={constants.maxCodeNameLength}
       />

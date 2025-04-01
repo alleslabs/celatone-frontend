@@ -151,7 +151,7 @@ export const AddNetworkManual = () => {
 
   return (
     <>
-      <CelatoneSeo pageName="Add Rollups" />
+      <CelatoneSeo pageName="Add rollups" />
       <Flex position="sticky" top={0} left={0} w="full" zIndex={2}>
         <AddNetworkStepper currentStepIndex={currentStepIndex} />
       </Flex>

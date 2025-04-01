@@ -75,7 +75,7 @@ export const ContractInputSection = ({
       <ControllerInput
         name="contractAddress"
         control={control}
-        label="Contract Address"
+        label="Contract address"
         placeholder={`ex. ${truncate(contractExample)}`}
         helperText="Input must be the contract that you have admin access"
         variant="fixed-floating"
@@ -115,7 +115,7 @@ export const ContractInputSection = ({
     >
       <Grid gridTemplateColumns="1fr 1fr" gap={6} flexGrow={1}>
         <GridItem>
-          <LabelText label="Contract Address">
+          <LabelText label="Contract address">
             {!isFetching ? (
               <ExplorerLink
                 value={debouncedKeyword}
@@ -128,7 +128,7 @@ export const ContractInputSection = ({
           </LabelText>
         </GridItem>
         <GridItem>
-          <LabelText label="Contract Name">
+          <LabelText label="Contract name">
             {!isFetching ? (
               data?.contract.label
             ) : (

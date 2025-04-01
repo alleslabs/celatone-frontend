@@ -123,7 +123,7 @@ const CollectionDetailsBody = ({
     name.length > 20 ? `${name.slice(0, 20)}...` : name;
 
   const getCollectionName = () => {
-    if (!name.length) return "Untitled Collection";
+    if (!name.length) return "Untitled collection";
     return isMobile ? displayCollectionName : name;
   };
 
@@ -166,7 +166,7 @@ const CollectionDetailsBody = ({
             color={name.length ? "text.main" : "text.disabled"}
             fontWeight={name.length ? "600" : "300"}
           >
-            {name.length ? name : "Untitled Collection"}
+            {name.length ? name : "Untitled collection"}
           </Heading>
           <Flex
             mt={{ base: 2, md: 0 }}
@@ -193,7 +193,7 @@ const CollectionDetailsBody = ({
               Type:
             </Text>
             <Badge textTransform="capitalize">
-              {isUnlimited ? "Unlimited Supply" : "Fixed Supply"}
+              {isUnlimited ? "Unlimited supply" : "Fixed supply"}
             </Badge>
           </Flex>
         </Flex>

@@ -38,7 +38,7 @@ export const ModuleLists = ({
         />
       ) : (
         <AccountSectionWrapper
-          title="Module Instances"
+          title="Module instances"
           showCount={false}
           helperText="This account deployed the following modules"
           hasHelperText={!!modules?.length}

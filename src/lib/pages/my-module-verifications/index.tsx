@@ -19,7 +19,7 @@ export const MyModuleVerifications = () => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="My Past Verification" />
+      <CelatoneSeo pageName="My past verification" />
       <Flex justifyContent="space-between" mb={4}>
         <Box>
           <Heading as="h5" variant="h5">
@@ -33,7 +33,7 @@ export const MyModuleVerifications = () => {
         <Flex gap={4}>
           <UserDocsButton
             variant="outline-white"
-            title="View Verification Guideline"
+            title="View verification guideline"
             href="initia/move/module-verification"
             isDevTool
           />

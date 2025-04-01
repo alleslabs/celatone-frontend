@@ -11,7 +11,7 @@ export const ModuleVerifyTop = () => (
           href: "/my-module-verifications",
         },
         {
-          text: "Verify Modules",
+          text: "Verify modules",
         },
       ]}
     />

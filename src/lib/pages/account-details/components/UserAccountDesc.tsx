@@ -35,7 +35,7 @@ export const UserAccountDesc = observer(
               variant="ghost-primary"
               leftIcon={<CustomIcon name="edit" boxSize={3} />}
             >
-              {description ? "Edit" : "Add Description"}
+              {description ? "Edit" : "Add description"}
             </Button>
           }
         />
@@ -44,7 +44,7 @@ export const UserAccountDesc = observer(
 
     const displayDescription = useMemo(() => {
       if (!description) {
-        return "No Account Description";
+        return "No account description";
       }
       return showMore ? description : clampedText;
     }, [clampedText, description, showMore]);
@@ -79,8 +79,8 @@ export const UserAccountDesc = observer(
 
         {!noClamp && description && (
           <ShowMoreButton
-            showMoreText="View Full Description"
-            showLessText="View Less Description"
+            showMoreText="View full description"
+            showLessText="View less description"
             toggleShowMore={showMore}
             setToggleShowMore={() => setShowMore(!showMore)}
           />

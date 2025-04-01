@@ -51,7 +51,7 @@ const GasOptionStandard = ({
   <ControllerInput
     name="gasPrice"
     control={control}
-    label="Gas Price"
+    label="Gas price"
     variant="fixed-floating"
     type="decimal"
     w="full"
@@ -212,7 +212,7 @@ const GasFeeDetails = ({
             <ControllerInput
               name="gasAdjustment"
               control={control}
-              label="Gas Adjustment"
+              label="Gas adjustment"
               variant="fixed-floating"
               type="decimal"
               w="full"
@@ -224,7 +224,7 @@ const GasFeeDetails = ({
             <ControllerInput
               name="maxGasLimit"
               control={control}
-              label="Max Gas Limit"
+              label="Max gas limit"
               variant="fixed-floating"
               type="decimal"
               w="full"
@@ -237,7 +237,7 @@ const GasFeeDetails = ({
           <ControllerInput
             name="denom"
             control={control}
-            label="Fee Tokens Denom"
+            label="Fee tokens denom"
             variant="fixed-floating"
             w="full"
             placeholder="ex. uinit"
@@ -246,7 +246,7 @@ const GasFeeDetails = ({
           />
         </Flex>
         <Flex direction="column" gap={6}>
-          <CustomNetworkSubheader title="Gas Price Configuration" />
+          <CustomNetworkSubheader title="Gas price configuration" />
           <RadioGroup
             onChange={(nextVal) =>
               setValue("gasConfig", nextVal as GasPriceConfiguration)

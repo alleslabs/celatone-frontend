@@ -88,13 +88,13 @@ export const AddNetworkJson = observer(() => {
     <>
       <ActionPageContainer>
         <CustomNetworkPageHeader
-          title="Add Custom Rollup"
+          title="Add custom rollup"
           subtitle="Import JSON"
           hasAlert={false}
         />
         <Flex direction="column" mt={12} gap={6} w="full">
           <CustomNetworkSubheader
-            title="Upload your .JSON File"
+            title="Upload your .JSON file"
             subtitle="The uploading JSON file must be in the supported format for InitiaScan only"
           />
           {file ? (

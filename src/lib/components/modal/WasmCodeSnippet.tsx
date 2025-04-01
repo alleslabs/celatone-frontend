@@ -294,7 +294,7 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
             <ModalFooter>
               <Flex w="full" justifyContent="flex-end">
                 <CopyButton
-                  buttonText="Copy Code Snippet"
+                  buttonText="Copy code snippet"
                   value={activeSnippet}
                   amptrackSection="code_snippet"
                   amptrackSubSection={type}

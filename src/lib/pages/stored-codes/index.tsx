@@ -72,7 +72,7 @@ const StoredCodes = observer(() => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="My Stored Codes" />
+      <CelatoneSeo pageName="My stored codes" />
       <Flex alignItems="center" justifyContent="space-between" mb={4}>
         <Flex align="center">
           <Heading

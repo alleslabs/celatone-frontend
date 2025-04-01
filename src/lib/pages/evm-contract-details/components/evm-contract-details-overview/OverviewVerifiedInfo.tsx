@@ -25,14 +25,14 @@ export const OverviewVerifiedInfo = ({
       rowGap={4}
     >
       <LabelText label="Language">{evmVerifyInfo.language}</LabelText>
-      <LabelText label="Compiler Version">
+      <LabelText label="Compiler version">
         {evmVerifyInfo.compilerVersion}
       </LabelText>
       <LabelText label="EVM Version">
         {capitalize(evmVerifyInfo.evmVersion)}
       </LabelText>
       <Optimizer evmVerifyInfo={evmVerifyInfo} />
-      <LabelText label="License Type">
+      <LabelText label="License type">
         {getLicenseTypeLabel(evmVerifyInfo.license)}
       </LabelText>
     </Grid>

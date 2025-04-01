@@ -118,7 +118,7 @@ export const ContractTop = ({
       <Breadcrumb
         items={[
           {
-            text: projectName ? "Public Projects" : "Contracts",
+            text: projectName ? "Public projects" : "Contracts",
             href: projectName ? "/projects" : "/contracts",
           },
           {
@@ -285,7 +285,7 @@ export const ContractTop = ({
               </Flex>
             )}
           </Flex>
-          <TotalValue address={contractAddress} label="Total Value" isCompact />
+          <TotalValue address={contractAddress} label="Total value" isCompact />
         </Flex>
       </Flex>
     </Flex>

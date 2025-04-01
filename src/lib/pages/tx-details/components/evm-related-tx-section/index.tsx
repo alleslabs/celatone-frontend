@@ -33,7 +33,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
   const toAddress = getEvmToAddress(data);
   return (
     <>
-      <EvmRelatedField label={isMobile ? "Tx Hash" : "Transaction Hash"}>
+      <EvmRelatedField label={isMobile ? "Tx hash" : "Transaction hash"}>
         <ExplorerLink
           type="evm_tx_hash"
           value={formatEvmTxHash(evmTxHash)}

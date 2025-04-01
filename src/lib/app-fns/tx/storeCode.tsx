@@ -85,7 +85,7 @@ export const storeCodeTx = ({
                 ),
               },
               {
-                title: "Tx Hash",
+                title: "Tx hash",
                 value: txInfo.transactionHash,
                 html: (
                   <ExplorerLink
@@ -96,7 +96,7 @@ export const storeCodeTx = ({
                 ),
               },
               {
-                title: "Tx Fee",
+                title: "Tx fee",
                 html: (
                   <EstimatedFeeRender
                     estimatedFee={feeFromStr(txFee)}

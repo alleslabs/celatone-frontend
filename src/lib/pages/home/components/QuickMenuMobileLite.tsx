@@ -149,7 +149,7 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
 
     if (publicProject.enabled)
       base.push({
-        title: "Public Projects",
+        title: "Public projects",
         slug: "projects",
         icon: "public-project" as const,
         isDocument: false,
@@ -157,7 +157,7 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
 
     // default
     base.push({
-      title: "User Guide",
+      title: "User guide",
       subtitle: "View Scan documents",
       icon: "document" as const,
       isDocument: true,

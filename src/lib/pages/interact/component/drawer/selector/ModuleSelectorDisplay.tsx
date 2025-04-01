@@ -63,7 +63,7 @@ export const ModuleSelectorDisplay = ({
       ) : (
         <>
           <Flex flex={1}>
-            <LabelText label="Viewing Address">
+            <LabelText label="Viewing address">
               <CopyLink
                 value={selectedAddress.address}
                 type="user_address"

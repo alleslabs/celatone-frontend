@@ -23,7 +23,7 @@ export const PoolAssetsTableHeader = ({
     <TableHeader>Asset</TableHeader>
     {poolType !== PoolType.COSMWASM && (
       <TableHeader textAlign="right">
-        {poolType === PoolType.STABLESWAP ? "Scaling Factor" : "Weight (%)"}
+        {poolType === PoolType.STABLESWAP ? "Scaling factor" : "Weight (%)"}
       </TableHeader>
     )}
     <TableHeader textAlign="right">{isSupported && "Allocation"}</TableHeader>

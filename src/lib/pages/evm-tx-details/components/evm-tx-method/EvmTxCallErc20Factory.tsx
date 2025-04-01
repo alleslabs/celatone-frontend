@@ -85,7 +85,7 @@ export const EvmTxCallErc20Factory = ({
         }
       />
       <EvmInfoLabelValue
-        label="Created Contract"
+        label="Created contract"
         value={
           contractAddress ? (
             <Flex gap={1} align="center">

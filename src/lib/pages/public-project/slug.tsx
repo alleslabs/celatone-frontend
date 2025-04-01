@@ -95,7 +95,7 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
         pageName={
           projectDetail?.name
             ? `${projectDetail.name} (Public Project)`
-            : "Public Project Detail"
+            : "Public project detail"
         }
       />
       <DetailHeader details={projectDetail} slug={slug} />

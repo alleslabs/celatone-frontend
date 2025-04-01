@@ -85,7 +85,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const attached = Boolean(derivedWasmVerifyInfo?.schema ?? localSchema);
   return (
     <>
-      <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code Detail"} />
+      <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code detail"} />
       <CodeTopInfo
         code={code}
         projectInfo={projectInfo}

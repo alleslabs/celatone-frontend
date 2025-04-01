@@ -108,11 +108,11 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
               ),
             },
             {
-              title: "Tx Hash",
+              title: "Tx hash",
               html: <ExplorerLink type="tx_hash" value={txResult.txHash} />,
             },
             {
-              title: "Tx Fee",
+              title: "Tx fee",
               html: (
                 <EstimatedFeeRender
                   estimatedFee={feeFromStr(txResult.txFee)}
@@ -148,7 +148,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
                   hidden={isApiChain}
                 >
                   <OptionButton
-                    title="Verify Code"
+                    title="Verify code"
                     description="Ensures that the deployed code matches its published source code"
                     disabled={!isApiChain}
                   />
@@ -159,7 +159,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
               <>
                 {derivedWasmVerifyInfo?.schema ? (
                   <OptionButtonDisabled
-                    title="Attach JSON Schema"
+                    title="Attach JSON schema"
                     description="JSON Schema is already available due to the code is indirectly verified"
                   />
                 ) : (
@@ -170,7 +170,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
                     codeHash={txResult.codeHash}
                     triggerElement={
                       <OptionButton
-                        title="Attach JSON Schema"
+                        title="Attach JSON schema"
                         description="Your attached JSON schema will be stored locally on your device"
                       />
                     }

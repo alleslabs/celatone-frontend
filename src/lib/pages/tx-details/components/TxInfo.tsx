@@ -53,7 +53,7 @@ export const TxInfo = ({
   return (
     <Container {...flexProps}>
       <LabelText label="Network">{txData.chainId}</LabelText>
-      <LabelText label="Block Height">
+      <LabelText label="Block height">
         <ExplorerLink
           value={txData.height}
           type="block_height"
@@ -74,7 +74,7 @@ export const TxInfo = ({
         {`${formatInteger(txData.gasUsed)}/${formatInteger(txData.gasWanted)}`}
       </LabelText>
       {gasRefundRatio && (
-        <LabelText label="Gas Refund Percentage">
+        <LabelText label="Gas refund percentage">
           {`${formatPrettyPercent(gasRefundRatio, 2, true)}`}
         </LabelText>
       )}

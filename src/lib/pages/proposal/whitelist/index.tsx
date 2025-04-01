@@ -287,7 +287,7 @@ const ProposalToWhitelist = () => {
                   name="title"
                   control={control}
                   placeholder="ex. Allow XYZ to store code without proposal"
-                  label="Proposal Title"
+                  label="Proposal title"
                   labelBgColor="gray.900"
                   variant="fixed-floating"
                   rules={{
@@ -304,7 +304,7 @@ const ProposalToWhitelist = () => {
                   name="description"
                   control={control}
                   height="160px"
-                  label="Proposal Description"
+                  label="Proposal description"
                   placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
                   variant="fixed-floating"
                   labelBgColor="gray.900"

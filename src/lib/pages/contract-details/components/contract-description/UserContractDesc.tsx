@@ -32,7 +32,7 @@ export const UserContractDesc = ({
 
   const displayDescription = useMemo(() => {
     if (!description) {
-      return "No Contract Description";
+      return "No contract description";
     }
     return showMore ? description : clampedText;
   }, [clampedText, description, showMore]);
@@ -69,7 +69,7 @@ export const UserContractDesc = ({
               display="none"
               _groupHover={{ display: "flex" }}
             >
-              {description ? "Edit" : "Add Description"}
+              {description ? "Edit" : "Add description"}
             </Button>
           }
         />
@@ -85,8 +85,8 @@ export const UserContractDesc = ({
 
       {!noClamp && description && (
         <ShowMoreButton
-          showMoreText="View Full Description"
-          showLessText="View Less Description"
+          showMoreText="View full description"
+          showLessText="View less description"
           toggleShowMore={showMore}
           setToggleShowMore={() => setShowMore(!showMore)}
         />

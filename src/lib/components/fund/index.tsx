@@ -77,7 +77,7 @@ export const AttachFund = ({
   <>
     <Flex mb={5}>
       <SelectInputBase
-        formLabel={showLabel ? "Attach Funds" : undefined}
+        formLabel={showLabel ? "Attach funds" : undefined}
         options={attachFundsOptions}
         onChange={(value: AttachFundsType) =>
           setValue(ATTACH_FUNDS_OPTION, value)

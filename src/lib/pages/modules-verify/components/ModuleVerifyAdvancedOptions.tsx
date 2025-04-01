@@ -75,7 +75,7 @@ export const ModuleVerifyAdvancedOptions = ({
         <AccordionPanel>
           <Stack gap={6}>
             <SelectInput
-              label="Language Version"
+              label="Language version"
               menuPortalTarget={document.body}
               placeholder="Select language version"
               options={languageVersionOptions}
@@ -89,7 +89,7 @@ export const ModuleVerifyAdvancedOptions = ({
               labelBg="gray.900"
             />
             <SelectInput
-              label="Compiler Version"
+              label="Compiler version"
               menuPortalTarget={document.body}
               placeholder="Select compiler version"
               options={compilerVersionOptions}
@@ -103,7 +103,7 @@ export const ModuleVerifyAdvancedOptions = ({
               labelBg="gray.900"
             />
             <SelectInput
-              label="Bytecode Version"
+              label="Bytecode version"
               menuPortalTarget={document.body}
               placeholder="Select bytecode version"
               options={bytecodeVersionOptions}

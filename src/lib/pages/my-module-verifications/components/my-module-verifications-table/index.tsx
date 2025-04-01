@@ -55,7 +55,7 @@ export const MyModuleVerificationsTable = observer(() => {
           label="Filter by Status"
           result={statuses}
           setResult={setStatuses}
-          placeholder="All Status"
+          placeholder="All status"
           isMulti
         />
       </Grid>

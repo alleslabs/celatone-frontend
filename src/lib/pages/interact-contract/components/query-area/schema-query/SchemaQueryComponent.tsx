@@ -231,7 +231,7 @@ export const SchemaQueryComponent = ({
                     isDisable={res === "" || Boolean(queryError)}
                     value={res}
                     amptrackSection="query_response"
-                    buttonText="Copy Output"
+                    buttonText="Copy output"
                   />
                   <Button
                     variant="primary"
@@ -254,7 +254,7 @@ export const SchemaQueryComponent = ({
                 isDisable={res === "" || Boolean(queryError)}
                 value={res}
                 amptrackSection="query_response"
-                buttonText="Copy Output"
+                buttonText="Copy output"
               />
             )}
           </GridItem>

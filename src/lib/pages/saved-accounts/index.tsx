@@ -48,7 +48,7 @@ const SavedAccounts = observer(() => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="Saved Accounts" />
+      <CelatoneSeo pageName="Saved accounts" />
       <Flex alignItems="center" justifyContent="space-between" mb={8}>
         <Flex direction="column">
           <Flex alignItems="center">

@@ -22,7 +22,7 @@ export const ProposalStepper = ({
     <Flex w="full" gap={2} alignItems="center">
       <StepIcon step={step} proposalData={proposalData} />
       <Text variant="body1" fontWeight={700} textAlign="start">
-        {step === 1 ? "Deposit Period" : "Voting Period"}
+        {step === 1 ? "Deposit period" : "Voting period"}
       </Text>
       <Spacer />
       <ProgressBadge {...getProgressBadgeProps(step, proposalData)} />

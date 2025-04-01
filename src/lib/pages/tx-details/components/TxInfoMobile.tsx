@@ -83,7 +83,7 @@ export const TxInfoMobile = ({
         </LabelText>
       </Flex>
       {gasRefundRatio && (
-        <LabelText flex={1} label="Gas Refund Percentage">
+        <LabelText flex={1} label="Gas refund percentage">
           {`${formatPrettyPercent(gasRefundRatio, 2, true)}`}
         </LabelText>
       )}

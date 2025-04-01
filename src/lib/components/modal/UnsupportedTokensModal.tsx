@@ -36,19 +36,19 @@ const unsupportedTokensContent = (
     case "contract_address": {
       return {
         icon: "assets-solid",
-        header: "Contract Address",
+        header: "Contract address",
       };
     }
     case "user_address": {
       return {
         icon: "assets-solid",
-        header: "Account Address",
+        header: "Account address",
       };
     }
     default:
       return {
         icon: "alert-triangle-solid",
-        header: "Invalid Address",
+        header: "Invalid address",
       };
   }
 };

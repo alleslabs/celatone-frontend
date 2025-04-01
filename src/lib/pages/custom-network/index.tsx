@@ -11,7 +11,7 @@ export const AddNetwork = () => {
 
   return (
     <ActionPageContainer>
-      <CelatoneSeo pageName="Add Rollups" />
+      <CelatoneSeo pageName="Add rollups" />
       <Flex direction="column" gap={12}>
         <Flex direction="column" gap={4} textAlign="center">
           <Heading as="h4" variant="h4">

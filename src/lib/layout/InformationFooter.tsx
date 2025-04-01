@@ -13,7 +13,7 @@ const FOOTER_BUTTONS = [
   {
     href: `${USER_GUIDE_DOCS_LINK}/introduction/overview`,
     icon: "document" as IconKeys,
-    text: "View Doc",
+    text: "View doc",
     onClick: () =>
       trackWebsite(`${USER_GUIDE_DOCS_LINK}/introduction/overview`),
   },

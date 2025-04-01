@@ -35,7 +35,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   } = useCelatoneApp();
 
   const openRestPage = () => {
-    trackUseViewJSON("Block Details");
+    trackUseViewJSON("Block details");
     openNewTab(
       `${restEndpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`
     );

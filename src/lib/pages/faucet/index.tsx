@@ -185,7 +185,7 @@ const Faucet = () => {
         value={address}
         setInputState={setAddress}
         status={status}
-        label="Receiving Address"
+        label="Receiving address"
         helperAction={
           <AssignMe
             onClick={() => {

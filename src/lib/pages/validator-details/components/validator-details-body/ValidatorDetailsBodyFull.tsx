@@ -74,7 +74,7 @@ export const ValidatorDetailsBodyFull = ({
         pageName={
           data.info.moniker
             ? `${data.info.moniker} (Validator)`
-            : "Validator Detail"
+            : "Validator detail"
         }
       />
       <PageHeaderContainer bgColor="transparent">

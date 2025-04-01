@@ -250,7 +250,7 @@ export const EvmContractVerifyBody = ({
                   </GridItem>
                   <GridItem colSpan={1}>
                     <ControllerInput
-                      label="Contract Address"
+                      label="Contract address"
                       isRequired
                       placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
                       name="contractAddress"
@@ -273,7 +273,7 @@ export const EvmContractVerifyBody = ({
                   </GridItem>
                   <GridItem colSpan={1} colStart={1}>
                     <SelectInput
-                      label="License Type"
+                      label="License type"
                       menuPortalTarget={document.body}
                       isRequired
                       placeholder="Select license type"
@@ -327,7 +327,7 @@ export const EvmContractVerifyBody = ({
                       menuPortalTarget={document.body}
                     />
                     <SelectInput
-                      label="Compiler Version"
+                      label="Compiler version"
                       isRequired
                       placeholder="Select compiler version"
                       options={compilerVersionOptions}
@@ -376,7 +376,7 @@ export const EvmContractVerifyBody = ({
             actionLabel={
               option === EvmVerifyOptions.SolidityHardhat ||
               option === EvmVerifyOptions.SolidityFoundry
-                ? "View Verification Status"
+                ? "View verification status"
                 : "Verify & Publish Contract"
             }
             handleNext={handleSubmit}

@@ -103,7 +103,7 @@ export const MyModuleVerificationDetails = observer(() => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="My Module Verification Details" />
+      <CelatoneSeo pageName="My module verification details" />
       {!validated.success ? (
         <EmptyState
           imageVariant="not-found"

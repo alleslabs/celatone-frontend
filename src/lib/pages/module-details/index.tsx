@@ -138,7 +138,7 @@ const ModuleDetailsBody = ({
         pageName={
           data.moduleName
             ? `${truncate(data.address)}::${data.moduleName} (Module)`
-            : "Module Detail"
+            : "Module detail"
         }
       />
       <ModuleTop moduleData={data} moveVerifyStatus={moveVerifyStatus} />

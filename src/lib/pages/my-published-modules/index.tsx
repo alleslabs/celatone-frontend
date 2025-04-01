@@ -22,7 +22,7 @@ export const MyPublishedModules = () => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="My Published Modules" />
+      <CelatoneSeo pageName="My published modules" />
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Flex direction="column">
           <Heading as="h5" variant="h5" minH="36px">

@@ -19,7 +19,7 @@ import { StateList } from "./StateList";
 import { StateLoader } from "./StateLoader";
 
 const getDisplayName = (namespace: string) => {
-  if (namespace === "all") return "All Contract States";
+  if (namespace === "all") return "All contract states";
   if (namespace === "others") return "Others";
 
   return namespace;

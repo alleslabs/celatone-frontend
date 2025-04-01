@@ -88,7 +88,7 @@ export const DelegationsSection = ({
           hasTotalBonded={totalBonded && Object.keys(totalBonded).length > 0}
           totalBondedCard={
             <TotalCard
-              title="Total Bonded"
+              title="Total bonded"
               message={`Total delegated and unbonding ${
                 stakingParams.bondDenoms.length === 1
                   ? getTokenLabel(

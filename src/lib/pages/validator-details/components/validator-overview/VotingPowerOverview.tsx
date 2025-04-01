@@ -196,7 +196,7 @@ export const VotingPowerOverview = ({
               assetInfo={assetInfo}
             />
             <VotingPowerDetail
-              label="From Delegators"
+              label="From delegators"
               ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
               amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
               denom={singleStakingDenom}
@@ -224,7 +224,7 @@ export const VotingPowerOverview = ({
           assetInfo={assetInfo}
         />
         <VotingPowerDetail
-          label="From Delegators"
+          label="From delegators"
           ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
           amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
           denom={singleStakingDenom}

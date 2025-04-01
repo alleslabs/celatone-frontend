@@ -67,7 +67,7 @@ export const ProposalsTableLite = () => {
             label="Filter by Status"
             result={status}
             setResult={setStatus}
-            placeholder="All Status"
+            placeholder="All status"
             isMulti={false}
           />
         </GridItem>

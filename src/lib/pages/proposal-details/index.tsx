@@ -64,7 +64,7 @@ const ProposalDetailsBody = ({
   return (
     <>
       <CelatoneSeo
-        pageName={info.id ? `Proposal #${info.id}` : "Proposal Detail"}
+        pageName={info.id ? `Proposal #${info.id}` : "Proposal detail"}
       />
       <ProposalTop proposalData={info} />
       <Tabs

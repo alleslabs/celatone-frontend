@@ -75,7 +75,7 @@ const Deploy = () => {
   );
   return (
     <ActionPageContainer>
-      <CelatoneSeo pageName="Deploy Contract" />
+      <CelatoneSeo pageName="Deploy contract" />
       <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
         DEPLOY NEW CONTRACT
       </Text>

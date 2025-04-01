@@ -123,7 +123,7 @@ export const SelectContractInstantiator = ({
           !notSelected ? <CustomIcon name="swap" boxSize="12px" /> : undefined
         }
       >
-        {notSelected ? "Select Contract" : "Change Contract"}
+        {notSelected ? "Select contract" : "Change contract"}
       </Button>
       <Drawer
         isOpen={isOpen}

@@ -67,7 +67,7 @@ export const MigrationMobileCard = ({
       middleContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel variant="body3" label="Code Name" />
+            <MobileLabel variant="body3" label="Code name" />
             <CodeNameCell
               code={{
                 id: history.codeId,
@@ -116,7 +116,7 @@ export const MigrationMobileCard = ({
               </Flex>
             )}
             <Flex flex={1} direction="column">
-              <MobileLabel label="Block Height" />
+              <MobileLabel label="Block height" />
               {history.height ? (
                 <ExplorerLink
                   value={history.height.toString()}

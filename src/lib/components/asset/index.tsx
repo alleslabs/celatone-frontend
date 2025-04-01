@@ -55,7 +55,7 @@ const MobileOverview = ({
       />
       <UserAssetInfoCard
         totalSupportedAssetsValue={totalSupportedAssetsValue}
-        helperText="Total Asset Value"
+        helperText="Total asset value"
       />
     </Flex>
     <CustomIcon name="chevron-right" color="gray.600" />

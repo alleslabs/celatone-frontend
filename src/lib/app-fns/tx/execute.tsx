@@ -59,7 +59,7 @@ export const executeContractTx = ({
         phase: TxStreamPhase.SUCCEED,
         receipts: [
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             value: txInfo.transactionHash,
             html: (
               <ExplorerLink
@@ -70,7 +70,7 @@ export const executeContractTx = ({
             ),
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}

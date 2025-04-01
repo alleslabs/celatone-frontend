@@ -150,7 +150,7 @@ export const ReadBox = ({
                     isDisable={isUndefined(data)}
                     value={data ?? ""}
                     amptrackSection="read_inputs"
-                    buttonText="Copy Encoded Inputs"
+                    buttonText="Copy encoded inputs"
                     w="100%"
                   />
                   <EvmCodeSnippet
@@ -209,7 +209,7 @@ export const ReadBox = ({
                       isDisable={isUndefined(data)}
                       value={data ?? ""}
                       amptrackSection="read_inputs"
-                      buttonText="Copy Encoded Inputs"
+                      buttonText="Copy encoded inputs"
                       w="100%"
                     />
                     <EvmCodeSnippet
@@ -223,7 +223,7 @@ export const ReadBox = ({
                     isDisable={res === "" || Boolean(queryError)}
                     value={res}
                     amptrackSection="read_outputs"
-                    buttonText="Copy Encoded Outputs"
+                    buttonText="Copy encoded outputs"
                     display={{ md: "none", base: "block" }}
                     w="100%"
                   />
@@ -239,7 +239,7 @@ export const ReadBox = ({
                     isDisable={res === "" || Boolean(queryError)}
                     value={res}
                     amptrackSection="read_outputs"
-                    buttonText="Copy Encoded Outputs"
+                    buttonText="Copy encoded outputs"
                     display={{ base: "none", md: "block" }}
                   />
                   <Button
@@ -275,7 +275,7 @@ export const ReadBox = ({
                   isDisable={res === "" || Boolean(queryError)}
                   value={res}
                   amptrackSection="read_outputs"
-                  buttonText="Copy Encoded Outputs"
+                  buttonText="Copy encoded outputs"
                   w="100%"
                 />
               </Flex>

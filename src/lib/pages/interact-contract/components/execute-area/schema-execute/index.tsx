@@ -145,7 +145,7 @@ export const SchemaExecute = ({
             );
           }}
         >
-          {expandedIndexes.length ? "Collapse All" : "Expand All"}
+          {expandedIndexes.length ? "Collapse all" : "Expand all"}
         </Button>
       </Flex>
       {filteredMsgs?.length ? (

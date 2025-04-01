@@ -65,7 +65,7 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
               }}
               color={name.length ? "text.primary" : "text.disabled"}
             >
-              {name.length ? name : "Untitled Collection"}
+              {name.length ? name : "Untitled collection"}
             </Heading>
             {description && (
               <Text

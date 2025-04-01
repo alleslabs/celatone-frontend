@@ -132,7 +132,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
       </Box>
       <Flex gap={4} direction={{ base: "column", md: "row" }}>
         <Box w="full">
-          <JsonInput topic="Query Msg" text={msg} setText={setMsg} />
+          <JsonInput topic="Query msg" text={msg} setText={setMsg} />
           <Flex
             direction={{ base: "column", md: "row" }}
             justify="space-between"
@@ -186,7 +186,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
 
         <Box w="full">
           <JsonReadOnly
-            topic="Return Output"
+            topic="Return output"
             text={res}
             canCopy={res.length !== 0}
           />
