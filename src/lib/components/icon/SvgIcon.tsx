@@ -816,9 +816,9 @@ export const ICONS = {
     svg: (
       <path
         fill="currentColor"
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M1.094 3.5h12.812v1H1.094zM1.094 7.5h12.812v1H1.094zM1.094 11.5h12.812v1H1.094z"
-        clip-rule="evenodd"
+        clipRule="evenodd"
       />
     ),
     viewBox: viewBox011616,
