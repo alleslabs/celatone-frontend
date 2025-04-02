@@ -26,7 +26,7 @@ export const MyPublishedModules = () => {
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Flex direction="column">
           <Heading as="h5" variant="h5" minH="36px">
-            My Published Modules
+            My published modules
           </Heading>
           <Text variant="body2" fontWeight={500} color="text.dark">
             This page displays all the modules published by me on this network
@@ -44,7 +44,7 @@ export const MyPublishedModules = () => {
           variant="primary"
           leftIcon={<CustomIcon name="add-new" />}
         >
-          Publish New Modules
+          Publish new modules
         </Button>
       </Flex>
       <MyPublishedModulesTable />

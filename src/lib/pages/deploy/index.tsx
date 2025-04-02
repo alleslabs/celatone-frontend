@@ -82,7 +82,7 @@ const Deploy = () => {
       <Stepper mode="deploy" currentStep={1} />
       <Flex direction="column" alignItems="center" my={12}>
         <Heading as="h5" variant="h5">
-          Select Deploy Option
+          Select deploy option
         </Heading>
         <UserDocsLink
           isDevTool
@@ -113,7 +113,7 @@ const Deploy = () => {
         mb={4}
       />
       <ButtonCard
-        title="Use existing Code IDs"
+        title="Use existing code IDs"
         description="Input code ID or select from previously stored or saved codes"
         onClick={() => navigate({ pathname: "/instantiate" })}
       />

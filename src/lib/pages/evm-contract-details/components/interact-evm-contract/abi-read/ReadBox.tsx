@@ -128,7 +128,7 @@ export const ReadBox = ({
           {inputRequired && (
             <GridItem>
               <Text variant="body2" color="text.dark" fontWeight={700} mb={3}>
-                Read Inputs
+                Read inputs
               </Text>
               <EvmAbiForm
                 types={abiSection.inputs ?? []}
@@ -175,7 +175,7 @@ export const ReadBox = ({
           )}
           <GridItem>
             <Text variant="body2" color="text.dark" fontWeight={700} mb={3}>
-              Read Outputs
+              Read outputs
             </Text>
             {queryError && (
               <Alert variant="error" mb={3} alignItems="center">
@@ -254,7 +254,7 @@ export const ReadBox = ({
                     leftIcon={<CustomIcon name="query" />}
                     w="100%"
                   >
-                    Read Again
+                    Read again
                   </Button>
                 </Flex>
               </Flex>

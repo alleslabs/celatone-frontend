@@ -14,7 +14,7 @@ export const OverviewVerifiedInfo = ({
 }: OverviewVerifiedInfoProps) => (
   <VStack spacing={4} alignItems="flex-start">
     <Heading as="h6" variant="h6">
-      Verified Info
+      Verified info
     </Heading>
     <Grid
       gridTemplateColumns={{

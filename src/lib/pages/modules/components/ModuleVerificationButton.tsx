@@ -35,7 +35,7 @@ export const ModuleVerificationButton = () => {
             });
           }}
         >
-          See My Past Verification
+          See my past verification
         </MenuItem>
       </MenuList>
     </Menu>

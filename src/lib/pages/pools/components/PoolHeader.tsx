@@ -27,12 +27,12 @@ const poolTypeRender = (type: PoolData["type"]) => {
       };
     case PoolType.STABLESWAP:
       return {
-        text: "StableSwap Pool",
+        text: "StableSwap pool",
         icon: <StableSwapIcon boxSize={4} />,
       };
     case PoolType.COSMWASM:
       return {
-        text: "CosmWasm Pool",
+        text: "CosmWasm pool",
         icon: <CosmWasmPoolIcon boxSize={4} />,
       };
     case PoolType.CL:

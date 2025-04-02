@@ -63,7 +63,7 @@ export const FilterByPoolType = ({
 }: FilterByPoolTypeProps) => (
   <Grid columnGap="16px" w="full" maxW="360px">
     <SelectInputBase<PoolTypeFilter>
-      formLabel="Filter by Pool Type"
+      formLabel="Filter by pool type"
       options={options}
       onChange={(newVal) => {
         trackUseFilter(AmpEvent.USE_FILTER_POOL_TYPE, [newVal], newVal);

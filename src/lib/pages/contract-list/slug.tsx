@@ -128,7 +128,7 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
               leftIcon={<CustomIcon name="add-new" boxSize="16px" />}
               onClick={() => navigate({ pathname: "/deploy" })}
             >
-              Deploy New Contract
+              Deploy new contract
             </Button>
           ) : (
             <SaveNewContractModal

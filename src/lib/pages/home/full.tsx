@@ -38,7 +38,7 @@ export const HomeFull = () => {
       />
       <Box as="section" mb="48px">
         <Heading as="h5" variant="h5" mb={5}>
-          Recent Transactions
+          Recent transactions
         </Heading>
         <TxsTableFull isViewMore />
         {overviewsStats?.txCount && overviewsStats.txCount > 5 && (
@@ -47,7 +47,7 @@ export const HomeFull = () => {
       </Box>
       <Box as="section">
         <Heading as="h5" variant="h5" mb={5}>
-          Recent Blocks
+          Recent blocks
         </Heading>
         <RecentBlocksTableFull isViewMore />
         {overviewsStats?.latestBlock && overviewsStats.latestBlock > 5 && (

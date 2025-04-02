@@ -36,7 +36,7 @@ export const MigrateOptions = ({
     <>
       <Flex direction="column" alignItems="center" gap={4} mb={6}>
         <Heading as="h5" variant="h5" textAlign="center">
-          Migrate Options
+          Migrate options
         </Heading>
         <UserDocsLink
           isDevTool
@@ -65,7 +65,7 @@ export const MigrateOptions = ({
       />
       <ButtonCard
         disabled={!isAdmin}
-        title="Use existing Code IDs"
+        title="Use existing code IDs"
         description="Input code ID or select from stored codes or your saved codes"
         onClick={existHandler}
       />

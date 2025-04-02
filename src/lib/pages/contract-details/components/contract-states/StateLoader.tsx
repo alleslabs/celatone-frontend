@@ -45,8 +45,8 @@ export const StateLoader = ({
           <CustomIcon name="check" color="success.main" />
           <Text variant="body2" fontWeight={600} color="text.dark">
             {isCompleted
-              ? `All States Loaded (${stateAmountText})`
-              : `${stateAmountText} Loaded`}
+              ? `All states loaded (${stateAmountText})`
+              : `${stateAmountText} loaded`}
           </Text>
           <Button
             size="sm"
