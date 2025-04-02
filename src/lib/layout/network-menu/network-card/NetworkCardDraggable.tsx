@@ -1,8 +1,8 @@
+import type { Option } from "lib/types";
+
 import { Box } from "@chakra-ui/react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-
-import type { Option } from "lib/types";
 
 import { NetworkCard } from "./NetworkCard";
 
@@ -39,19 +39,19 @@ export const NetworkCardDraggable = ({
 
   return (
     <Box
-      ref={setNodeRef}
       style={style}
+      ref={setNodeRef}
       {...attributes}
       {...listeners}
       cursor={index === undefined ? "grabbing" : "grab"}
     >
       <NetworkCard
         chainId={chainId}
-        index={index}
         cursor={cursor}
+        index={index}
+        isDraggable
         setCursor={setCursor}
         onClose={onClose}
-        isDraggable
       />
     </Box>
   );

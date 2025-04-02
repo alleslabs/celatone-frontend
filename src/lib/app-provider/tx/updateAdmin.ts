@@ -1,11 +1,12 @@
 import type { StdFee } from "@cosmjs/stargate";
-import { MsgUpdateAdmin } from "@initia/initia.js";
-import { useCallback } from "react";
+import type { BechAddr, BechAddr32, Option } from "lib/types";
 
+import { MsgUpdateAdmin } from "@initia/initia.js";
 import { trackTxSucceed } from "lib/amplitude";
 import { updateAdminTx } from "lib/app-fns/tx/updateAdmin";
-import type { BechAddr, BechAddr32, Option } from "lib/types";
 import { toEncodeObject } from "lib/utils";
+import { useCallback } from "react";
+
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface UpdateAdminStreamParams {

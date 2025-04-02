@@ -1,7 +1,7 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
-
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { TxDataJsonRpc } from "lib/services/types";
+
+import { Flex, Heading, Text } from "@chakra-ui/react";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 
 import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 
@@ -19,11 +19,11 @@ export const EvmTxDefault = ({ evmTxData }: EvmTxDefaultProps) => (
         label="From"
         value={
           <ExplorerLink
-            type="user_address"
-            value={evmTxData.tx.from}
+            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
-            fixedHeight={false}
+            type="user_address"
+            value={evmTxData.tx.from}
           />
         }
       />
@@ -32,14 +32,14 @@ export const EvmTxDefault = ({ evmTxData }: EvmTxDefaultProps) => (
         value={
           evmTxData.txReceipt.to ? (
             <ExplorerLink
-              type="evm_contract_address"
-              value={evmTxData.txReceipt.to}
+              fixedHeight={false}
               showCopyOnHover
               textFormat="normal"
-              fixedHeight={false}
+              type="evm_contract_address"
+              value={evmTxData.txReceipt.to}
             />
           ) : (
-            <Text variant="body2" color="text.disabled">
+            <Text color="text.disabled" variant="body2">
               -
             </Text>
           )

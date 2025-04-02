@@ -6,5 +6,5 @@ interface JsonFundProps {
   assetsJson: string;
 }
 export const JsonFund = ({ setValue, assetsJson }: JsonFundProps) => (
-  <JsonInput text={assetsJson} setText={setValue} minLines={12} />
+  <JsonInput minLines={12} setText={setValue} text={assetsJson} />
 );

@@ -1,4 +1,5 @@
 import type { BoxProps } from "@chakra-ui/react";
+
 import { Flex, useClipboard } from "@chakra-ui/react";
 import { useEffect } from "react";
 
@@ -29,13 +30,13 @@ export const CopyTemplate = ({
       <Flex
         as="span"
         display="inline-flex"
+        ml={ml}
+        w={w}
         onClick={(e) => {
           onCopy();
           e.stopPropagation();
           e.preventDefault();
         }}
-        w={w}
-        ml={ml}
       >
         {triggerElement}
       </Flex>

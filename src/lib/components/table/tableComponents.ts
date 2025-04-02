@@ -21,7 +21,8 @@ const tableHeaderBaseStyle = {
   fontWeight: 700,
   py: 6,
   px: 4,
-  borderBottom: "1px solid",
+  borderBottomWidth: "1px",
+  borderStyle: "solid",
   borderColor: "gray.700",
 };
 

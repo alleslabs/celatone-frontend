@@ -1,4 +1,5 @@
 import type { FlexProps } from "@chakra-ui/react";
+
 import { Flex, Text } from "@chakra-ui/react";
 
 import { TooltipInfo } from "./Tooltip";
@@ -30,28 +31,28 @@ export const LabelText = ({
   <Flex direction="column" gap={1} {...flexProps}>
     <Flex align="center" gap={1} minWidth={minWidth}>
       <Text
-        variant={isSmall ? "body3" : "body2"}
         color={labelColor}
         fontWeight={labelWeight}
+        variant={isSmall ? "body3" : "body2"}
       >
         {label}
       </Text>
       {tooltipText && <TooltipInfo label={tooltipText} />}
     </Flex>
     {typeof children === "string" ? (
-      <Text variant={isSmall ? "body3" : "body2"} overflowWrap="anywhere">
+      <Text overflowWrap="anywhere" variant={isSmall ? "body3" : "body2"}>
         {children}
       </Text>
     ) : (
       children
     )}
     {helperText1 && (
-      <Text variant="body3" color={labelColor}>
+      <Text color={labelColor} variant="body3">
         {helperText1}
       </Text>
     )}
     {helperText2 && (
-      <Text variant="body3" color={labelColor}>
+      <Text color={labelColor} variant="body3">
         {helperText2}
       </Text>
     )}

@@ -1,7 +1,7 @@
-import { Alert, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import type { ValidatorAddr } from "lib/types";
 import type { ChangeEvent } from "react";
-import { useMemo, useState } from "react";
 
+import { Alert, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { AmpEvent, trackUseFilter, trackUseViewMore } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { SelectInputBase } from "lib/components/forms";
@@ -16,7 +16,7 @@ import {
   useValidatorVotedProposalsAnswerCounts,
 } from "lib/services/validator";
 import { ProposalVoteType } from "lib/types";
-import type { ValidatorAddr } from "lib/types";
+import { useMemo, useState } from "react";
 
 import { VotedProposalsTableBody } from "./VotedProposalsTableBody";
 
@@ -137,28 +137,28 @@ export const VotedProposalsTable = ({
 
   return isMobileOverview ? (
     <Flex
+      alignItems="center"
       backgroundColor="gray.900"
+      justifyContent="space-between"
       p={4}
       rounded={8}
       w="100%"
-      justifyContent="space-between"
-      alignItems="center"
       onClick={() => {
         trackUseViewMore();
         onViewMore();
       }}
     >
-      <TableTitle title="Voted Proposals" count={answers?.all ?? 0} mb={0} />
-      <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
+      <TableTitle count={answers?.all ?? 0} mb={0} title="Voted Proposals" />
+      <CustomIcon boxSize={6} color="gray.600" m={0} name="chevron-right" />
     </Flex>
   ) : (
     <Flex direction="column" gap={6}>
-      <TableTitle title="Voted Proposals" count={answers?.all ?? 0} mb={0} />
+      <TableTitle count={answers?.all ?? 0} mb={0} title="Voted Proposals" />
       {!onViewMore && (
         <>
-          <Alert variant="info" gap={4} display={{ base: "none", md: "flex" }}>
+          <Alert display={{ base: "none", md: "flex" }} gap={4} variant="info">
             <CustomIcon boxSize={4} name="info-circle" />
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               Kindly note that the validator may not have voted on the proposal
               due to ineligibility, such as being recently added to the network.
             </Text>
@@ -166,22 +166,22 @@ export const VotedProposalsTable = ({
           <Grid gap={4} templateColumns={{ base: "1fr", md: "240px auto" }}>
             <GridItem>
               <SelectInputBase<ProposalVoteType>
-                formLabel="Filter by vote answer"
-                options={answerOptions}
-                onChange={handleOnAnswerFilterChange}
-                labelBgColor="background.main"
-                initialSelected={answerFilter}
-                popoverBgColor="gray.800"
                 disableMaxH
+                formLabel="Filter by vote answer"
+                initialSelected={answerFilter}
+                labelBgColor="background.main"
+                options={answerOptions}
+                popoverBgColor="gray.800"
+                onChange={handleOnAnswerFilterChange}
               />
             </GridItem>
             <GridItem>
               <InputWithIcon
+                amptrackSection="voted-proposals-search"
                 placeholder="Search with proposal ID or proposal title..."
+                size="lg"
                 value={search}
                 onChange={handleOnSearchChange}
-                size="lg"
-                amptrackSection="voted-proposals-search"
               />
             </GridItem>
           </Grid>
@@ -190,8 +190,8 @@ export const VotedProposalsTable = ({
       <VotedProposalsTableBody
         data={data}
         isLoading={isLoading}
-        onViewMore={onViewMore}
         search={search}
+        onViewMore={onViewMore}
       />
       {data &&
         (onViewMore
@@ -204,11 +204,11 @@ export const VotedProposalsTable = ({
           : data.total > 10 && (
               <Pagination
                 currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={data.total}
-                scrollComponentId={scrollComponentId}
                 pageSize={pageSize}
+                pagesQuantity={pagesQuantity}
+                scrollComponentId={scrollComponentId}
+                totalData={data.total}
                 onPageChange={setCurrentPage}
                 onPageSizeChange={(e) => {
                   const size = Number(e.target.value);

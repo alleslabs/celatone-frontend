@@ -1,7 +1,8 @@
-import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { TxReceiptJsonRpc } from "lib/services/types";
 import type { TxResultRendering } from "lib/types";
+
+import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
+import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TxStreamPhase } from "lib/types";
 
 interface PostEvmTxParams<T extends TxReceiptJsonRpc> {
@@ -21,9 +22,9 @@ export const postEvmTx = <T extends TxReceiptJsonRpc>({
             title: "Tx Hash",
             html: (
               <ExplorerLink
+                openNewTab
                 type="evm_tx_hash"
                 value={txResult.transactionHash}
-                openNewTab
               />
             ),
           },

@@ -1,7 +1,8 @@
-import axios from "axios";
-
 import type { PoolTypeFilter } from "lib/types";
+
+import axios from "axios";
 import { parseWithError } from "lib/utils";
+
 import {
   zPoolDataResponse,
   zPoolsLiquidityResponse,

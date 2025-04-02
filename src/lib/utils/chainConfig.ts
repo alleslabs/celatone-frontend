@@ -1,6 +1,7 @@
 import type { ChainConfig } from "@alleslabs/shared";
-import { wallets as compassWallets } from "@cosmos-kit/compass";
 import type { MainWalletBase } from "@cosmos-kit/core";
+
+import { wallets as compassWallets } from "@cosmos-kit/compass";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr-extension";
 
 export const getWallets = (wallets: ChainConfig["wallets"]) =>

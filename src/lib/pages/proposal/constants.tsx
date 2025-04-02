@@ -1,6 +1,7 @@
+import type { SidebarMetadata } from "lib/components/StickySidebar";
+
 import { trackUseRightHelperPanel } from "lib/amplitude";
 import { AppLink } from "lib/components/AppLink";
-import type { SidebarMetadata } from "lib/components/StickySidebar";
 
 export type NetworkPermission = "permissioned" | "permissionless";
 
@@ -81,12 +82,12 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
           On {chainName}, you can store code without submitting a proposal by
           using{" "}
           <AppLink
+            style={{ display: "inline-flex" }}
+            color="primary.main"
+            href="/deploy"
             onClick={() =>
               trackUseRightHelperPanel(storeCodePage, "to-/deploy")
             }
-            color="primary.main"
-            href="/deploy"
-            style={{ display: "inline-flex" }}
           >
             Deploy Contract
           </AppLink>

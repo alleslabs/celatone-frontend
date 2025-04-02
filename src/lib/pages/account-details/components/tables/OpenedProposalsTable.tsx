@@ -1,13 +1,14 @@
-import { Box } from "@chakra-ui/react";
+import type { BechAddr, Option } from "lib/types";
 import type { ChangeEvent } from "react";
 
+import { Box } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ErrorFetching } from "lib/components/state";
 import { MobileTitle, ProposalsTable, ViewMore } from "lib/components/table";
 import { useProposalsByAddress } from "lib/services/proposal";
-import type { BechAddr, Option } from "lib/types";
+
 import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 
@@ -67,27 +68,27 @@ export const OpenedProposalsTable = ({
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
         <MobileTitle
-          title="Opened Proposals"
           count={totalData}
+          title="Opened Proposals"
           onViewMore={onViewMore}
         />
       ) : (
         <AccountSectionWrapper title="Opened Proposals" totalData={totalData}>
           <ProposalsTable
-            proposals={proposals?.items}
-            isLoading={isLoading}
             emptyState={
               !proposals ? (
                 <ErrorFetching
                   dataName="proposals"
-                  withBorder
-                  my={2}
                   hasBorderTop={false}
+                  my={2}
+                  withBorder
                 />
               ) : (
                 <AccountDetailsEmptyState message="No proposals have been opened by this account before." />
               )
             }
+            isLoading={isLoading}
+            proposals={proposals?.items}
           />
         </AccountSectionWrapper>
       )}
@@ -97,11 +98,11 @@ export const OpenedProposalsTable = ({
           : totalData > 10 && (
               <Pagination
                 currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={totalData}
-                scrollComponentId={scrollComponentId}
                 pageSize={pageSize}
+                pagesQuantity={pagesQuantity}
+                scrollComponentId={scrollComponentId}
+                totalData={totalData}
                 onPageChange={onPageChange}
                 onPageSizeChange={onPageSizeChange}
               />

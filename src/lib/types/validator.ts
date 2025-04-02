@@ -1,12 +1,12 @@
-import { z } from "zod";
-
 import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
 import { formatUrl } from "lib/utils/formatter/url";
+import { z } from "zod";
+
+import type { Ratio } from "./currency";
 
 import { zPubkeySingle } from "./account";
 import { zBechAddr20, zConsensusAddr, zValidatorAddr } from "./addrs";
 import { zBig } from "./big";
-import type { Ratio } from "./currency";
 import { zRatio } from "./currency";
 
 export const zValidator = z

@@ -1,10 +1,10 @@
-import { useMemo } from "react";
+import type { Addr, IndexedModule, Option } from "lib/types";
 
 import {
   useModuleByAddressRest,
   useModulesByAddress,
 } from "lib/services/move/module";
-import type { Addr, IndexedModule, Option } from "lib/types";
+import { useMemo } from "react";
 
 export const useSearchModules = ({
   address,

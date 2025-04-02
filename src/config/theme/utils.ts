@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import type { ComponentConfig, ThemeConfig } from "./types";
 
 const getColor = (obj: object, path: string[], fallback: string): string => {

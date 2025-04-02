@@ -1,5 +1,4 @@
 import { Flex, Text } from "@chakra-ui/react";
-
 import { CustomIcon } from "lib/components/icon";
 
 export const getStepStyles = (index: number, currentStep: number) => {
@@ -19,7 +18,7 @@ export const getStepStyles = (index: number, currentStep: number) => {
         textColor: "text.main",
         content: (
           <Flex {...baseStyles} bg="text.main">
-            <CustomIcon name="check" color="gray.900" boxSize="12px" />
+            <CustomIcon boxSize="12px" color="gray.900" name="check" />
           </Flex>
         ),
       };
@@ -30,7 +29,7 @@ export const getStepStyles = (index: number, currentStep: number) => {
         textColor: "text.main",
         content: (
           <Flex {...baseStyles} bg="text.main">
-            <Text variant="body3" color="gray.900">
+            <Text color="gray.900" variant="body3">
               {index + 1}
             </Text>
           </Flex>
@@ -43,7 +42,7 @@ export const getStepStyles = (index: number, currentStep: number) => {
         textColor: "text.dark",
         content: (
           <Flex {...baseStyles} border="1px solid" borderColor="gray.500">
-            <Text variant="body3" color="gray.500">
+            <Text color="gray.500" variant="body3">
               {index + 1}
             </Text>
           </Flex>

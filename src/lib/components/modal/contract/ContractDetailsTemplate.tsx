@@ -1,18 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Flex, Text } from "@chakra-ui/react";
-import { useCallback, useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
-
-import { AmpEvent, track } from "lib/amplitude";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { IconKeys } from "lib/components/icon";
-import { ActionModal } from "lib/components/modal/ActionModal";
 import type { OffchainDetail } from "lib/components/OffChainForm";
-import { OffChainForm } from "lib/components/OffChainForm";
-import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { LVPair } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
+import { AmpEvent, track } from "lib/amplitude";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { ActionModal } from "lib/components/modal/ActionModal";
+import { OffChainForm } from "lib/components/OffChainForm";
+import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { getNameAndDescriptionDefault, getTagsDefault } from "lib/utils";
+import { useCallback, useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
 
 interface ContractDetailsTemplateModalProps {
   title: string;
@@ -92,36 +92,36 @@ export const ContractDetailsTemplateModal = ({
 
   return (
     <ActionModal
-      title={title}
-      subtitle={subtitle}
-      icon={icon}
+      closeOnOverlayClick={false}
+      disabledMain={!!errors.name || !!errors.description}
       headerContent={
-        <Flex gap={4} alignItems="center" pt={6}>
-          <Text variant="body2" fontWeight={500} color="text.dark">
+        <Flex alignItems="center" gap={4} pt={6}>
+          <Text color="text.dark" fontWeight={500} variant="body2">
             Contract Address
           </Text>
           <ExplorerLink
-            value={contractLocalInfo.contractAddress}
             type="contract_address"
+            value={contractLocalInfo.contractAddress}
           />
         </Flex>
       }
-      trigger={triggerElement}
-      mainBtnTitle="Save"
+      icon={icon}
       mainAction={handleSave}
-      disabledMain={!!errors.name || !!errors.description}
-      otherBtnTitle="Cancel"
+      mainBtnTitle="Save"
       otherAction={resetForm}
-      closeOnOverlayClick={false}
+      otherBtnTitle="Cancel"
+      subtitle={subtitle}
+      title={title}
+      trigger={triggerElement}
     >
       <OffChainForm<OffchainDetail>
-        state={offchainState}
         contractLabel={contractLocalInfo.label}
         control={control}
-        setTagsValue={setTagsValue}
-        setContractListsValue={setContractListsValue}
         errors={errors}
         labelBgColor="gray.900"
+        setContractListsValue={setContractListsValue}
+        setTagsValue={setTagsValue}
+        state={offchainState}
       />
     </ActionModal>
   );

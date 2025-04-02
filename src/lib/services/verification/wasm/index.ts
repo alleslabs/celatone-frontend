@@ -1,11 +1,11 @@
-// TODO: refactor app-provider/app-fns
-import { useMutation, useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-
-import { useCelatoneApp } from "lib/app-provider/contexts";
-import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import type { WasmVerifyRequest } from "lib/services/types";
 import type { Option } from "lib/types";
+
+// TODO: refactor app-provider/app-fns
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useCelatoneApp } from "lib/app-provider/contexts";
+import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 
 import {
   getWasmRelatedVerifyInfos,

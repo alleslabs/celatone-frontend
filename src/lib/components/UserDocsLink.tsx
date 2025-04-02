@@ -1,8 +1,7 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import Link from "next/link";
-
 import { trackWebsite } from "lib/amplitude";
 import { DEVELOPER_TOOL_DOCS_LINK, USER_GUIDE_DOCS_LINK } from "lib/data";
+import Link from "next/link";
 
 import { CustomIcon } from "./icon";
 
@@ -28,30 +27,30 @@ export const UserDocsLink = ({
   isButton ? (
     <Link
       href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
+      rel="noopener noreferrer"
+      target="_blank"
       onClick={(e) => {
         trackWebsite(
           `${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`
         );
         e.stopPropagation();
       }}
-      target="_blank"
-      rel="noopener noreferrer"
     >
       <Button
-        variant="ghost-primary"
+        leftIcon={<CustomIcon boxSize={3} name="document" />}
         size="sm"
-        leftIcon={<CustomIcon name="document" boxSize={3} />}
+        variant="ghost-primary"
       >
         View Doc
       </Button>
     </Link>
   ) : (
     <Flex
-      gap={{ base: 1, md: 2 }}
       alignItems="center"
-      mt={mt}
       direction={{ base: "column", md: "row" }}
       display={isInline ? "inline-flex" : "flex"}
+      gap={{ base: 1, md: 2 }}
+      mt={mt}
     >
       {title && (
         <Text color="text.main" variant="body2">
@@ -60,12 +59,12 @@ export const UserDocsLink = ({
       )}
       <Link
         href={`${isDevTool ? DEVELOPER_TOOL_DOCS_LINK : USER_GUIDE_DOCS_LINK}/${href}`}
-        target="_blank"
         rel="noopener noreferrer"
+        target="_blank"
       >
         <Flex
-          gap={1}
           alignItems="center"
+          gap={1}
           sx={{
             cursor: "pointer",
             "&:hover": {
@@ -79,7 +78,7 @@ export const UserDocsLink = ({
             },
           }}
         >
-          <CustomIcon name="document" color="primary.main" boxSize={3} />
+          <CustomIcon boxSize={3} color="primary.main" name="document" />
           <Text color="primary.main" fontWeight={800} variant="body2">
             {cta}
           </Text>

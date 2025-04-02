@@ -1,9 +1,11 @@
 import type { DecodeModuleQueryResponse } from "lib/services/types";
 import type { BechAddr20, Option } from "lib/types";
+
 import { UpgradePolicy } from "lib/types";
 import { bech32AddressToHex, truncate, unpadHexAddress } from "lib/utils";
 
 import type { Module, PublishStatus } from "./formConstants";
+
 import { PUBLISH_STATUS_DEFAULT } from "./formConstants";
 
 const priority = Object.keys(UpgradePolicy);

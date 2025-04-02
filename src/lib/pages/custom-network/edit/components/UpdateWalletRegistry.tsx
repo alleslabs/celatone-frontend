@@ -1,5 +1,4 @@
 import { Flex } from "@chakra-ui/react";
-
 import { CustomNetworkSubheader } from "lib/components/custom-network";
 
 export const UpdateWalletRegistry = () => {
@@ -11,8 +10,8 @@ export const UpdateWalletRegistry = () => {
       </Flex>
       <Flex direction="column" gap={6}>
         <CustomNetworkSubheader
-          title="Assets"
           subtitle="List the available supported tokens in this network"
+          title="Assets"
         />
         <Flex bg="teal">form goes here</Flex>
       </Flex>

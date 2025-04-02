@@ -1,8 +1,6 @@
 import type { AlertProps } from "@chakra-ui/react";
-import { Alert, AlertDescription, Flex, Heading, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
+import { Alert, AlertDescription, Flex, Heading, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -19,6 +17,8 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { Stepper } from "lib/components/stepper";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useUploadAccessParamsRest } from "lib/services/wasm/code";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const getAlertContent = (
   enabled: boolean,
@@ -33,9 +33,9 @@ const getAlertContent = (
         variant: "success",
         icon: (
           <CustomIcon
-            name="check-circle-solid"
-            color="success.main"
             boxSize={4}
+            color="success.main"
+            name="check-circle-solid"
           />
         ),
         description: "Your address is allowed to directly upload Wasm files",
@@ -43,7 +43,7 @@ const getAlertContent = (
     : {
         variant: "primary",
         icon: (
-          <CustomIcon name="info-circle" color="primary.light" boxSize={4} />
+          <CustomIcon boxSize={4} color="primary.light" name="info-circle" />
         ),
         description: `${chainPrettyName} is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.`,
       };
@@ -76,45 +76,45 @@ const Deploy = () => {
   return (
     <ActionPageContainer>
       <CelatoneSeo pageName="Deploy Contract" />
-      <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
+      <Text color="text.dark" fontWeight={700} mb={3} variant="body1">
         DEPLOY NEW CONTRACT
       </Text>
-      <Stepper mode="deploy" currentStep={1} />
-      <Flex direction="column" alignItems="center" my={12}>
+      <Stepper currentStep={1} mode="deploy" />
+      <Flex alignItems="center" direction="column" my={12}>
         <Heading as="h5" variant="h5">
           Select Deploy Option
         </Heading>
         <UserDocsLink
-          isDevTool
-          mt={2}
           cta="Read more about Deploy Contract"
           href="cosmwasm/upload-instantiate"
+          isDevTool
+          mt={2}
         />
       </Flex>
       <ConnectWalletAlert
-        subtitle="You need to connect wallet to proceed this action"
         mb={4}
+        subtitle="You need to connect wallet to proceed this action"
       />
       {address && data?.isPermissionedNetwork && (
-        <Alert variant={variant} mb={4} alignItems="flex-start" gap={2}>
+        <Alert alignItems="flex-start" gap={2} mb={4} variant={variant}>
           {icon}
           <AlertDescription>{description}</AlertDescription>
         </Alert>
       )}
       <ButtonCard
-        title="Upload new WASM File"
         description={
           data?.isPermissionedNetwork
             ? "Available for whitelisted addresses only"
             : "Store a new Wasm file on-chain"
         }
         disabled={!enableUpload || !address}
-        onClick={() => navigate({ pathname: "/upload" })}
         mb={4}
+        title="Upload new WASM File"
+        onClick={() => navigate({ pathname: "/upload" })}
       />
       <ButtonCard
-        title="Use existing Code IDs"
         description="Input code ID or select from previously stored or saved codes"
+        title="Use existing Code IDs"
         onClick={() => navigate({ pathname: "/instantiate" })}
       />
     </ActionPageContainer>

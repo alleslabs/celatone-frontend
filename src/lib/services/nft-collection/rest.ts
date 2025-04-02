@@ -1,11 +1,12 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-import { z } from "zod";
+import type { HexAddr, HexAddr32 } from "lib/types";
 
 import { zHexAddr } from "lib/types";
-import type { HexAddr, HexAddr32 } from "lib/types";
 import { parseWithError } from "lib/utils";
-import { getMoveViewJsonRest } from "../move/module/rest";
+import { z } from "zod";
+
 import type { CollectionByCollectionAddressResponse } from "../types";
+
+import { getMoveViewJsonRest } from "../move/module/rest";
 
 export const getCollectionByCollectionAddressRest = async (
   endpoint: string,

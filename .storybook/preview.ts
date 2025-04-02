@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/react";
+
 import defaultTheme from "../src/lib/styles/theme";
 
 const preview: Preview = {

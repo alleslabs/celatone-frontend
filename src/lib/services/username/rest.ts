@@ -1,7 +1,9 @@
-import { INITIA_USERNAME_REST, INITIA_USERNAME_MODULE_ADDRESS } from "env";
 import type { HexAddr } from "lib/types";
+
+import { INITIA_USERNAME_REST, INITIA_USERNAME_MODULE_ADDRESS } from "env";
 import { zHexAddr, zHexAddr32 } from "lib/types";
 import { parseWithError } from "lib/utils";
+
 import { getMoveViewJsonRest } from "../move/module/rest";
 
 export const getInitiaUsernameByAddress = async (address: HexAddr) =>

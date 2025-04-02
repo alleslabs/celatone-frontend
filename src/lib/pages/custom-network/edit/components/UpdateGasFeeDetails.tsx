@@ -7,7 +7,6 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-
 import { CustomNetworkSubheader } from "lib/components/custom-network";
 
 export const UpdateGasFeeDetails = () => {
@@ -25,9 +24,9 @@ export const UpdateGasFeeDetails = () => {
         <AccordionItem>
           <AccordionButton p={4}>
             <Text>Advanced Options</Text>
-            <AccordionIcon color="gray.600" ml="auto" boxSize={6} />
+            <AccordionIcon boxSize={6} color="gray.600" ml="auto" />
           </AccordionButton>
-          <AccordionPanel pt={0} pb={4}>
+          <AccordionPanel pb={4} pt={0}>
             <Flex gap={6} mt={2}>
               inputs
             </Flex>

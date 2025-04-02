@@ -1,5 +1,4 @@
 import type { Coin } from "@cosmjs/stargate";
-
 import type { TypeUrl } from "lib/data";
 import type {
   AccessConfigPermission,

@@ -1,3 +1,5 @@
+import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
+
 import {
   Box,
   Button,
@@ -7,9 +9,6 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-
-import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
 import {
   useInternalNavigate,
   useTierConfig,
@@ -35,6 +34,7 @@ import { useSchemaStore } from "lib/providers/store";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { WasmVerifyStatus } from "lib/types";
 import { feeFromStr, getWasmVerifyStatus } from "lib/utils";
+import { observer } from "mobx-react-lite";
 
 interface UploadCompleteProps {
   txResult: StoreCodeTxInternalResult;
@@ -63,30 +63,30 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
     wasmVerifyStatus !== WasmVerifyStatus.IN_PROGRESS && !attached;
   return (
     <ActionPageContainer>
-      <Heading variant="h6" as="h6" color="text.dark" mb={3}>
+      <Heading as="h6" color="text.dark" mb={3} variant="h6">
         Deploy new contract
       </Heading>
-      <Stepper mode="deploy" currentStep={1.5} />
+      <Stepper currentStep={1.5} mode="deploy" />
       <CustomIcon
-        name="check-circle-solid"
-        color="success.main"
         boxSize={8}
+        color="success.main"
         mt={10}
+        name="check-circle-solid"
       />
-      <Heading as="h4" variant="h4" mt={4} mb={12}>
+      <Heading as="h4" mb={12} mt={4} variant="h4">
         Upload Wasm File Complete!
       </Heading>
-      <Text variant="body2" color="text.dark" fontWeight={500} mb={4}>
+      <Text color="text.dark" fontWeight={500} mb={4} variant="body2">
         ‘{txResult.codeDisplayName}’ has been uploaded.
       </Text>
       <Flex
-        direction="column"
         border="1px solid"
         borderColor="gray.700"
-        p={4}
-        mb={4}
-        w="full"
         borderRadius="4px"
+        direction="column"
+        mb={4}
+        p={4}
+        w="full"
       >
         <TxReceiptRender
           receipts={[
@@ -94,16 +94,16 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
               title: "Code ID",
               html: (
                 <ExplorerLink
-                  type="code_id"
-                  value={txResult.codeId}
                   rightIcon={
                     <WasmVerifyBadge
-                      status={wasmVerifyStatus}
                       relatedVerifiedCodes={
                         derivedWasmVerifyInfo?.relatedVerifiedCodes
                       }
+                      status={wasmVerifyStatus}
                     />
                   }
+                  type="code_id"
+                  value={txResult.codeId}
                 />
               ),
             },
@@ -132,46 +132,46 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
       <Box h={12} />
       {displayOptions ? (
         <>
-          <Heading as="h6" variant="h6" fontWeight={500} mb={2}>
+          <Heading as="h6" fontWeight={500} mb={2} variant="h6">
             Would you like to:
           </Heading>
           <SimpleGrid columns={txResult.codeHash ? 2 : 1} spacing={4} w="full">
             <WasmVerifySubmitModal
-              codeId={Number(txResult.codeId)}
               codeHash={txResult.codeHash}
-              wasmVerifyStatus={getWasmVerifyStatus(derivedWasmVerifyInfo)}
-              relatedVerifiedCodes={derivedWasmVerifyInfo?.relatedVerifiedCodes}
+              codeId={Number(txResult.codeId)}
               disabled={!isApiChain}
+              relatedVerifiedCodes={derivedWasmVerifyInfo?.relatedVerifiedCodes}
               triggerElement={
                 <Tooltip
-                  label="Code verification is only available on official networks"
                   hidden={isApiChain}
+                  label="Code verification is only available on official networks"
                 >
                   <OptionButton
-                    title="Verify Code"
                     description="Ensures that the deployed code matches its published source code"
                     disabled={!isApiChain}
+                    title="Verify Code"
                   />
                 </Tooltip>
               }
+              wasmVerifyStatus={getWasmVerifyStatus(derivedWasmVerifyInfo)}
             />
             {txResult.codeHash && (
               <>
                 {derivedWasmVerifyInfo?.schema ? (
                   <OptionButtonDisabled
-                    title="Attach JSON Schema"
                     description="JSON Schema is already available due to the code is indirectly verified"
+                    title="Attach JSON Schema"
                   />
                 ) : (
                   <UploadSchema
                     attached={attached}
-                    localSchema={localSchema}
-                    codeId={Number(txResult.codeId)}
                     codeHash={txResult.codeHash}
+                    codeId={Number(txResult.codeId)}
+                    localSchema={localSchema}
                     triggerElement={
                       <OptionButton
-                        title="Attach JSON Schema"
                         description="Your attached JSON schema will be stored locally on your device"
+                        title="Attach JSON Schema"
                       />
                     }
                   />
@@ -179,9 +179,9 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
               </>
             )}
           </SimpleGrid>
-          <Flex my={8} gap={4} alignItems="center" w="full">
+          <Flex alignItems="center" gap={4} my={8} w="full">
             <Divider borderColor="gray.600" />
-            <Text variant="body1" color="text.dark">
+            <Text color="text.dark" variant="body1">
               OR
             </Text>
             <Divider borderColor="gray.600" />
@@ -196,9 +196,9 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
               {txResult.codeHash !== undefined && localSchema && (
                 <UploadSchema
                   attached={attached}
-                  localSchema={localSchema}
-                  codeId={Number(txResult.codeId)}
                   codeHash={txResult.codeHash}
+                  codeId={Number(txResult.codeId)}
+                  localSchema={localSchema}
                 />
               )}
             </>
@@ -207,9 +207,9 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         </>
       )}
       <Button
-        rightIcon={<CustomIcon name="chevron-right" boxSize={4} />}
-        w="full"
         mb={4}
+        rightIcon={<CustomIcon boxSize={4} name="chevron-right" />}
+        w="full"
         onClick={() => {
           navigate({
             pathname: "/instantiate",

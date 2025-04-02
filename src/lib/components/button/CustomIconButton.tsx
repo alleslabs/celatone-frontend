@@ -1,6 +1,7 @@
 import { Button, Link } from "@chakra-ui/react";
 
 import type { IconKeys } from "../icon";
+
 import { CustomIcon } from "../icon";
 
 interface CustomIconButtonProps {
@@ -15,22 +16,22 @@ export const CustomIconButton = ({
   onClick,
 }: CustomIconButtonProps) => (
   <Button
-    variant="ghost-gray"
-    size="xs"
-    px={1}
-    minWidth="32px"
-    minHeight="32px"
     height="full"
+    minHeight="32px"
+    minWidth="32px"
+    px={1}
+    size="xs"
+    variant="ghost-gray"
   >
     <Link
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      display="flex"
       alignItems="center"
+      display="flex"
+      href={href}
+      rel="noopener noreferrer"
+      target="_blank"
       onClick={onClick}
     >
-      <CustomIcon name={icon} boxSize={5} color="gray.600" />
+      <CustomIcon boxSize={5} color="gray.600" name={icon} />
     </Link>
   </Button>
 );

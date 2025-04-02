@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import type { BechAddr32 } from "lib/types";
 
 import { useDummyWallet } from "lib/app-provider";
 import { useSimulateFeeQuery } from "lib/services/tx";
-import type { BechAddr32 } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";
+import { useEffect, useState } from "react";
 
 export const useExecuteCmds = (contractAddress: BechAddr32) => {
   const [execCmds, setExecCmds] = useState<[string, string][]>([]);

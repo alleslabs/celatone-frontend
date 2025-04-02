@@ -1,8 +1,8 @@
-import { Flex, Text } from "@chakra-ui/react";
-import { capitalize, isUndefined } from "lodash";
-
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Remark, RemarkOperation } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { capitalize, isUndefined } from "lodash";
 
 // NOTE: change operation to prefix?
 interface RemarkRenderProps extends Remark {
@@ -20,20 +20,20 @@ export const RemarkRender = ({ operation, type, value }: RemarkRenderProps) => {
   return (
     <Flex
       direction="column"
+      mb={{ base: 0, md: "2px" }}
       sx={{
         "& > p:first-of-type": {
           color: "text.dark",
           fontSize: "12px",
         },
       }}
-      mb={{ base: 0, md: "2px" }}
     >
       <p>{isGovernance ? `${prefix} Proposal ID` : `${prefix} Tx`}</p>
       <ExplorerLink
-        type={isGovernance ? "proposal_id" : "tx_hash"}
-        value={value.toString()}
         showCopyOnHover
         textFormat={textFormat}
+        type={isGovernance ? "proposal_id" : "tx_hash"}
+        value={value.toString()}
       />
     </Flex>
   );

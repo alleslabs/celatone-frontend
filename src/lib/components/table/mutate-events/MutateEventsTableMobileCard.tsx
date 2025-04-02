@@ -1,8 +1,9 @@
-import { Badge, Flex, Stack, Text } from "@chakra-ui/react";
-
-import { CustomIcon } from "lib/components/icon";
 import type { MutateEvent } from "lib/types";
+
+import { Badge, Flex, Stack, Text } from "@chakra-ui/react";
+import { CustomIcon } from "lib/components/icon";
 import { dateFromNow, formatUTC } from "lib/utils";
+
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 
@@ -13,12 +14,12 @@ export const MutateEventsTableMobileCard = ({
   newValue,
 }: MutateEvent) => (
   <MobileCardTemplate
-    topContent={
-      <Flex direction="column">
-        <MobileLabel label="Field Name" />
-        <Badge width="fit-content" mt={1} size="sm" textTransform="capitalize">
-          {mutatedFieldName}
-        </Badge>
+    bottomContent={
+      <Flex direction="column" gap={1}>
+        <Text variant="body3">{formatUTC(timestamp)}</Text>
+        <Text color="text.dark" variant="body3">
+          {`(${dateFromNow(timestamp)})`}
+        </Text>
       </Flex>
     }
     middleContent={
@@ -29,7 +30,7 @@ export const MutateEventsTableMobileCard = ({
             {oldValue}
           </Text>
         </Flex>
-        <CustomIcon name="arrow-down" color="gray.600" />
+        <CustomIcon color="gray.600" name="arrow-down" />
         <Flex direction="column">
           <MobileLabel label="New Value" />
           <Text variant="body2" wordBreak="break-word">
@@ -38,12 +39,12 @@ export const MutateEventsTableMobileCard = ({
         </Flex>
       </Stack>
     }
-    bottomContent={
-      <Flex direction="column" gap={1}>
-        <Text variant="body3">{formatUTC(timestamp)}</Text>
-        <Text variant="body3" color="text.dark">
-          {`(${dateFromNow(timestamp)})`}
-        </Text>
+    topContent={
+      <Flex direction="column">
+        <MobileLabel label="Field Name" />
+        <Badge mt={1} size="sm" textTransform="capitalize" width="fit-content">
+          {mutatedFieldName}
+        </Badge>
       </Flex>
     }
   />

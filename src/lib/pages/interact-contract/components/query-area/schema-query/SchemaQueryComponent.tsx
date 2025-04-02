@@ -1,3 +1,14 @@
+import type { AxiosError } from "axios";
+import type { Activity } from "lib/stores/contract";
+import type {
+  BechAddr20,
+  BechAddr32,
+  JsonDataType,
+  Option,
+  RpcQueryError,
+  SchemaInfo,
+} from "lib/types";
+
 import {
   AccordionButton,
   AccordionIcon,
@@ -12,10 +23,6 @@ import {
   GridItem,
   Text,
 } from "@chakra-ui/react";
-import type { AxiosError } from "axios";
-import dynamic from "next/dynamic";
-import { useCallback, useEffect, useState } from "react";
-
 import { AmpEvent, track, trackActionQuery } from "lib/amplitude";
 import { CopyButton } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
@@ -26,15 +33,6 @@ import {
 } from "lib/components/json-schema";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useContractQueryRest } from "lib/services/wasm/contract";
-import type { Activity } from "lib/stores/contract";
-import type {
-  BechAddr20,
-  BechAddr32,
-  JsonDataType,
-  Option,
-  RpcQueryError,
-  SchemaInfo,
-} from "lib/types";
 import {
   encode,
   getCurrentDate,
@@ -42,6 +40,8 @@ import {
   isNonEmptyJsonData,
   jsonValidate,
 } from "lib/utils";
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useState } from "react";
 
 import { SchemaQueryResponse } from "./SchemaQueryResponse";
 
@@ -127,11 +127,11 @@ export const SchemaQueryComponent = ({
     <AccordionItem className={`query_msg_${msgSchema.schema.required?.[0]}`}>
       <h6>
         <AccordionButton p={4}>
-          <Box w="full" textAlign="start">
-            <Text variant="body1" fontWeight={700}>
+          <Box textAlign="start" w="full">
+            <Text fontWeight={700} variant="body1">
               {msgSchema.title}
             </Text>
-            <Text variant="body3" textColor="text.dark">
+            <Text textColor="text.dark" variant="body3">
               {msgSchema.description}
             </Text>
           </Box>
@@ -140,40 +140,40 @@ export const SchemaQueryComponent = ({
       </h6>
       <AccordionPanel mx={2}>
         <Grid
-          templateColumns={msgSchema.inputRequired ? "1fr 1fr" : "1fr"}
           columnGap={6}
+          templateColumns={msgSchema.inputRequired ? "1fr 1fr" : "1fr"}
         >
           {msgSchema.inputRequired && (
             <GridItem>
-              <Text variant="body2" color="text.dark" fontWeight={700}>
+              <Text color="text.dark" fontWeight={700} variant="body2">
                 Query Input
               </Text>
               <JsonSchemaForm
                 formId={`query-${msgSchema.title}`}
-                schema={msgSchema.schema}
                 initialFormData={initialMsg}
+                schema={msgSchema.schema}
                 onChange={(data) => setMsg(JSON.stringify(data))}
               />
               <Flex gap={2} justify="flex-start">
                 <CopyButton
-                  isDisable={msg === ""}
-                  value={msg}
                   amptrackSection="query_msg"
                   buttonText="Copy QueryMsg"
+                  isDisable={msg === ""}
+                  value={msg}
                 />
                 <WasmCodeSnippet
-                  type="query"
                   contractAddress={contractAddress}
                   message={msg}
+                  type="query"
                 />
                 <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={handleQuery}
                   isDisabled={jsonValidate(msg) !== null}
                   isLoading={isFetching}
                   leftIcon={<CustomIcon name="query" />}
                   ml="auto"
+                  size="sm"
+                  variant="primary"
+                  onClick={handleQuery}
                 >
                   Query
                 </Button>
@@ -184,66 +184,66 @@ export const SchemaQueryComponent = ({
             {/* TODO: refactor query response */}
             <Flex justify="space-between" mb={4}>
               <Flex direction="column">
-                <Text variant="body2" color="text.dark" fontWeight={700}>
+                <Text color="text.dark" fontWeight={700} variant="body2">
                   Return Output
                 </Text>
-                <Text variant="body3" textColor="text.dark">
+                <Text textColor="text.dark" variant="body3">
                   {resSchema.description}
                 </Text>
               </Flex>
               <MessageInputSwitch
                 currentTab={resTab}
-                onTabChange={setResTab}
-                ml="auto"
                 isOutput
+                ml="auto"
+                onTabChange={setResTab}
               />
             </Flex>
             {queryError && (
-              <Alert variant="error" mb={3} alignItems="center">
+              <Alert alignItems="center" mb={3} variant="error">
                 <AlertDescription wordBreak="break-word">
                   {queryError}
                 </AlertDescription>
               </Alert>
             )}
             <SchemaQueryResponse
-              res={res}
-              resTab={resTab}
-              msgSchema={msgSchema}
-              resSchema={resSchema}
-              timestamp={timestamp}
               isLoading={isFetching}
+              msgSchema={msgSchema}
+              res={res}
+              resSchema={resSchema}
+              resTab={resTab}
+              timestamp={timestamp}
             />
             {!msgSchema.inputRequired ? (
               <Flex gap={2} justify="flex-start" mt={3}>
                 <CopyButton
-                  isDisable={msg === ""}
-                  value={msg}
                   amptrackSection="query_msg"
                   buttonText="Copy QueryMsg"
+                  isDisable={msg === ""}
+                  value={msg}
                 />
                 <WasmCodeSnippet
-                  type="query"
                   contractAddress={contractAddress}
                   message={JSON.stringify({ [msgSchema.title ?? ""]: {} })}
+                  type="query"
                 />
                 <Flex gap={2} ml="auto">
                   <CopyButton
-                    isDisable={res === "" || Boolean(queryError)}
-                    value={res}
                     amptrackSection="query_response"
                     buttonText="Copy Output"
+                    isDisable={res === "" || Boolean(queryError)}
+                    value={res}
                   />
                   <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => {
-                      handleQuery();
-                      track(AmpEvent.USE_JSON_QUERY_AGAIN);
-                    }}
                     isDisabled={jsonValidate(msg) !== null}
                     isLoading={isFetching}
                     leftIcon={<CustomIcon name="query" />}
                     ml="auto"
+                    size="sm"
+                    variant="primary"
+                    onClick={() => {
+                      handleQuery();
+                      track(AmpEvent.USE_JSON_QUERY_AGAIN);
+                    }}
                   >
                     Query Again
                   </Button>
@@ -251,10 +251,10 @@ export const SchemaQueryComponent = ({
               </Flex>
             ) : (
               <CopyButton
-                isDisable={res === "" || Boolean(queryError)}
-                value={res}
                 amptrackSection="query_response"
                 buttonText="Copy Output"
+                isDisable={res === "" || Boolean(queryError)}
+                value={res}
               />
             )}
           </GridItem>

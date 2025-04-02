@@ -1,6 +1,6 @@
-import { snakeCase } from "snake-case";
-
 import type { CamelToSnakeCaseNested } from "lib/types";
+
+import { snakeCase } from "snake-case";
 
 type Resolver<T> =
   T extends Array<infer U>
@@ -38,6 +38,7 @@ export const camelToSnake = <T>(obj: T): Resolver<T> => {
             `Snake case key ${newKey} would overwrite existing key of the given JSON object`
           );
         }
+        // eslint-disable-next-line no-param-reassign
         acc[newKey as keyof CamelToSnakeCaseNested<T>] = camelToSnake(value);
         return acc;
       }

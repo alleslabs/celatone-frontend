@@ -1,6 +1,7 @@
+import type { Nullable, Option } from "lib/types";
+
 import { CustomIcon } from "lib/components/icon";
 import { big } from "lib/types";
-import type { Nullable, Option } from "lib/types";
 import { d2Formatter } from "lib/utils";
 
 interface AlertProps {
@@ -29,9 +30,9 @@ export const getAlert = (
       description: `${minDepositAmount} ${denom} is required to enter the deposit period.`,
       icon: (
         <CustomIcon
-          name="alert-triangle-solid"
-          color="error.main"
           boxSize={4}
+          color="error.main"
+          name="alert-triangle-solid"
         />
       ),
     };
@@ -45,9 +46,9 @@ export const getAlert = (
       )} more ${denom} is required to enter the voting period. If you proceed with this amount without further deposit after 7 days, The chain will remove your proposal with no fund return.`,
       icon: (
         <CustomIcon
-          name="alert-triangle-solid"
-          color="warning.main"
           boxSize={4}
+          color="warning.main"
+          name="alert-triangle-solid"
         />
       ),
     };
@@ -57,7 +58,7 @@ export const getAlert = (
       variant: "primary",
       description:
         "The proposal will proceed to voting period immediately after created.",
-      icon: <CustomIcon name="info-circle" color="primary.main" boxSize={4} />,
+      icon: <CustomIcon boxSize={4} color="primary.main" name="info-circle" />,
     };
   }
   if (big(minVotingDepositAmount).lt(enteredAmount)) {
@@ -67,9 +68,9 @@ export const getAlert = (
 `,
       icon: (
         <CustomIcon
-          name="alert-triangle-solid"
-          color="warning.main"
           boxSize={4}
+          color="warning.main"
+          name="alert-triangle-solid"
         />
       ),
     };

@@ -1,9 +1,4 @@
 import { Button, Flex, Heading, Stack } from "@chakra-ui/react";
-import { isUndefined, pick } from "lodash";
-import { useRouter } from "next/router";
-import { useCallback, useMemo } from "react";
-import { z } from "zod";
-
 import { useAllowCustomNetworks } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import {
@@ -17,6 +12,10 @@ import { RemoveChainConfigModal } from "lib/components/modal/RemoveChainConfigMo
 import { InvalidState } from "lib/components/state";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { jsonPrettify } from "lib/utils";
+import { isUndefined, pick } from "lodash";
+import { useRouter } from "next/router";
+import { useCallback, useMemo } from "react";
+import { z } from "zod";
 
 // import { ExportNetworkConfig } from "./components/ExportNetworkConfig";
 // import { UpdateGasFeeDetails } from "./components/UpdateGasFeeDetails";
@@ -97,19 +96,19 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   return (
     <ActionPageContainer width={900}>
       <CustomNetworkPageHeader
-        title={chainConfig.prettyName}
-        subtitle="Your Custom Rollup"
         hasAlert={false}
+        subtitle="Your Custom Rollup"
+        title={chainConfig.prettyName}
       />
       <Stack gap={12} mt={8} w="full">
-        <Flex justifyContent="space-between" gap={10}>
+        <Flex gap={10} justifyContent="space-between">
           <CustomNetworkSubheader
-            title="Export as JSON File"
             subtitle="You can export this Custom Rollup configuration in JSON file to use them in other device."
+            title="Export as JSON File"
           />
           <Button
-            minW={168}
             leftIcon={<CustomIcon name="download" />}
+            minW={168}
             onClick={handleExportJson}
           >
             Export as JSON
@@ -119,17 +118,17 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
           <Heading as="h6" variant="h6">
             Current Configuration in JSON
           </Heading>
-          <JsonReadOnly text={jsonPrettify(json)} canCopy fullWidth />
+          <JsonReadOnly canCopy fullWidth text={jsonPrettify(json)} />
           <RemoveChainConfigModal
             chainId={chainId}
             trigger={
               <Button
-                variant="ghost-error"
-                mt={10}
-                size="md"
                 border="1px solid"
                 borderColor="error.main"
                 leftIcon={<CustomIcon name="delete" />}
+                mt={10}
+                size="md"
+                variant="ghost-error"
               >
                 Remove Network
               </Button>

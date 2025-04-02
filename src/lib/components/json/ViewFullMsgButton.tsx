@@ -12,27 +12,28 @@ export const ViewFullMsgButton = ({
   viewFull,
 }: ViewFullMsgButtonProps) => (
   <Flex
+    _hover={{ bg: "gray.900" }}
     align="center"
-    justify="center"
-    w="full"
-    p={3}
-    borderTop="1px solid"
-    borderTopColor="gray.700"
     bg="background.main"
     borderRadius="0 0 8px 8px"
+    borderStyle="solid"
+    borderTopColor="gray.700"
+    borderTopWidth="1px"
     cursor="pointer"
-    _hover={{ bg: "gray.900" }}
+    justify="center"
+    p={3}
     transition="all 0.25s ease-in-out"
-    onClick={onClick}
+    w="full"
     zIndex="docked"
+    onClick={onClick}
   >
-    <Text variant="body3" fontWeight={700} color="text.dark">
+    <Text color="text.dark" fontWeight={700} variant="body3">
       {viewFull ? "View Less" : "View Full Message"}
     </Text>
     <CustomIcon
-      name={viewFull ? "chevron-up" : "chevron-down"}
       boxSize={3}
       color="text.dark"
+      name={viewFull ? "chevron-up" : "chevron-down"}
     />
   </Flex>
 );

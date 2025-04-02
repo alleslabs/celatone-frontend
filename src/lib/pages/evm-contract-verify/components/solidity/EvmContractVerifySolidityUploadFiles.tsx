@@ -1,11 +1,13 @@
-import { Heading, Stack } from "@chakra-ui/react";
-import { Fragment } from "react";
+import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
 import type { Control } from "react-hook-form";
-import { useFieldArray } from "react-hook-form";
+
+import { Heading, Stack } from "@chakra-ui/react";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { EvmVerifyOptions } from "lib/types";
-import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import { Fragment } from "react";
+import { useFieldArray } from "react-hook-form";
+
 import { ConstructorArgs } from "../ConstructorArgs";
 import { ContractLibraries } from "../ContractLibraries";
 import { EvmContractVerifyAlert } from "../EvmContractVerifyAlert";
@@ -35,12 +37,12 @@ export const EvmContractVerifySolidityUploadFiles = ({
         </Heading>
         {fields.map((field, index) => (
           <Fragment key={field.id}>
-            <UploadCard file={field.file} deleteFile={() => remove(index)} />
+            <UploadCard deleteFile={() => remove(index)} file={field.file} />
           </Fragment>
         ))}
         <DropZone
-          setFiles={(files) => append(files.map((file) => ({ file })))}
           fileType={["sol"]}
+          setFiles={(files) => append(files.map((file) => ({ file })))}
         />
       </Stack>
       <ConstructorArgs<EvmContractVerifyForm>
@@ -49,8 +51,8 @@ export const EvmContractVerifySolidityUploadFiles = ({
       />
       <EvmVersionToTarget<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.solidityUploadFiles.evmVersion"
         evmVerifyConfig={evmVerifyConfig}
+        name="verifyForm.solidityUploadFiles.evmVersion"
       />
       <OptimizerConfiguration<EvmContractVerifyForm>
         control={control}

@@ -1,16 +1,16 @@
-import type { OperatorFunction } from "rxjs";
-import { catchError } from "rxjs";
-
-import { trackTxFailed, trackTxRejected } from "lib/amplitude";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon";
 import type {
   ActionVariant,
   ReceiptInfo,
   TxReceipt,
   TxResultRendering,
 } from "lib/types";
+import type { OperatorFunction } from "rxjs";
+
+import { trackTxFailed, trackTxRejected } from "lib/amplitude";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
+import { catchError } from "rxjs";
 
 const getReceiptInfo = (
   error: Error
@@ -30,7 +30,7 @@ const getTxHashReceipts = (txHash?: string): TxReceipt[] =>
         {
           title: "Tx Hash",
           value: txHash,
-          html: <ExplorerLink type="tx_hash" value={txHash} openNewTab />,
+          html: <ExplorerLink openNewTab type="tx_hash" value={txHash} />,
         },
       ]
     : [];
@@ -56,9 +56,9 @@ export const catchTxError = (
         ...getReceiptInfo(error),
         headerIcon: (
           <CustomIcon
-            name="alert-triangle-solid"
-            color="error.light"
             boxSize={5}
+            color="error.light"
+            name="alert-triangle-solid"
           />
         ),
       },

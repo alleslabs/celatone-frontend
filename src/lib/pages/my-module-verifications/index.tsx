@@ -1,5 +1,4 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-
 import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
@@ -20,21 +19,21 @@ export const MyModuleVerifications = () => {
           <Heading as="h5" variant="h5">
             My Past Verification
           </Heading>
-          <Text variant="body2" fontWeight={500} color="text.dark">
+          <Text color="text.dark" fontWeight={500} variant="body2">
             Display the request queue for module verifications through
             InitiaScan
           </Text>
         </Box>
         <Flex gap={4}>
           <UserDocsButton
-            variant="outline-white"
-            title="View Verification Guideline"
             href="initia/move/module-verification"
             isDevTool
+            title="View Verification Guideline"
+            variant="outline-white"
           />
           <Button
-            onClick={() => navigate({ pathname: "/modules/verify" })}
             leftIcon={<CustomIcon name="plus" />}
+            onClick={() => navigate({ pathname: "/modules/verify" })}
           >
             Submit Verification
           </Button>

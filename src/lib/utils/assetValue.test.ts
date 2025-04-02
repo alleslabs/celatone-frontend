@@ -1,6 +1,4 @@
 import type Big from "big.js";
-
-import { big, zHexAddr } from "lib/types";
 import type {
   AssetInfos,
   MovePoolInfos,
@@ -9,6 +7,8 @@ import type {
   U,
   USD,
 } from "lib/types";
+
+import { big, zHexAddr } from "lib/types";
 
 import {
   addTokenWithValue,

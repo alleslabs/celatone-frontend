@@ -1,6 +1,6 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
 
+import { Button } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 
@@ -12,7 +12,7 @@ const buttonStyles: { [key in TriggerVariant]: ButtonProps } = {
   },
   "change-module": {
     variant: "outline-white",
-    leftIcon: <CustomIcon name="swap" boxSize={3} />,
+    leftIcon: <CustomIcon boxSize={3} name="swap" />,
   },
 };
 

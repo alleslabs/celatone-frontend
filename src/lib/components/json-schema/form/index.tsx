@@ -1,21 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-continue */
-/* eslint-disable no-console */
-/* eslint-disable no-restricted-syntax */
+
+import type { FormProps } from "@rjsf/core";
+import type { RJSFSchema, RJSFValidationError } from "@rjsf/utils";
+import type { JsonDataType } from "lib/types";
+import type { FC } from "react";
+
 import Form, {
   Templates as DefaultTemplates,
   Widgets as DefaultWidgets,
 } from "@rjsf/chakra-ui";
-import type { FormProps } from "@rjsf/core";
-import type { RJSFSchema, RJSFValidationError } from "@rjsf/utils";
 import { customizeValidator } from "@rjsf/validator-ajv8";
 import { isUndefined } from "lodash";
-import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
-
-import type { JsonDataType } from "lib/types";
 
 import { Fields } from "./fields";
 import { Templates } from "./templates";
@@ -79,33 +76,38 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
   return (
     <Form
       id={formId}
+      // onError={() => console.error("errors")}
+      experimental_defaultFormStateBehavior={{
+        // Assign value to formData when only default is set
+        emptyObjectFields: "skipEmptyDefaults",
+      }}
+      fields={{
+        ...Fields,
+        ...fields,
+      }}
       formContext={formContext}
       formData={formData}
+      liveValidate={!schema.readOnly}
+      noValidate
       schema={fixedSchema}
+      showErrorList={false}
+      templates={{
+        ...DefaultTemplates,
+        ...Templates,
+        ...templates,
+      }}
       uiSchema={{
         "ui:submitButtonOptions": {
           norender: true,
         },
         ...uiSchema,
       }}
+      validator={v8Validator}
       widgets={{
         ...DefaultWidgets,
         ...Widgets,
         ...widgets,
       }}
-      fields={{
-        ...Fields,
-        ...fields,
-      }}
-      templates={{
-        ...DefaultTemplates,
-        ...Templates,
-        ...templates,
-      }}
-      validator={v8Validator}
-      liveValidate={!schema.readOnly}
-      noValidate
-      showErrorList={false}
       onChange={({ formData: values, errors }) => {
         setFormData(values);
         propsOnChange?.(values, errors);
@@ -113,11 +115,6 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
       onSubmit={({ formData: values }) => {
         // console.log("onSubmit", values);
         propsOnSubmit?.(values);
-      }}
-      // onError={() => console.error("errors")}
-      experimental_defaultFormStateBehavior={{
-        // Assign value to formData when only default is set
-        emptyObjectFields: "skipEmptyDefaults",
       }}
     />
   );

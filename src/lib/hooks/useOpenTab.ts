@@ -1,12 +1,12 @@
-import { useCallback } from "react";
+import type { Option } from "lib/types";
 
 import {
   useBaseApiRoute,
   useCelatoneApp,
   useTierConfig,
 } from "lib/app-provider";
-import type { Option } from "lib/types";
 import { openNewTab } from "lib/utils";
+import { useCallback } from "react";
 
 export const useOpenTxTab = (type: "rest" | "tx-page") => {
   const { currentChainId } = useCelatoneApp();

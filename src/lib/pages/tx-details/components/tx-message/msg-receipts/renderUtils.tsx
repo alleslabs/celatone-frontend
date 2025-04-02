@@ -1,10 +1,6 @@
-import { Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
-
 import type { AddressReturnType } from "lib/app-provider";
 import type { LinkType } from "lib/components/ExplorerLink";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import type {
   BechAddr,
   Nullable,
@@ -12,6 +8,10 @@ import type {
   TxReceipt,
   ValidatorAddr,
 } from "lib/types";
+
+import { Text } from "@chakra-ui/react";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { convertToTitle } from "lib/utils";
 
 import { CoinsComponent } from "./CoinsComponent";
@@ -35,19 +35,19 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
   switch (true) {
     case value === null:
       return (
-        <Text variant="body2" color="gray.600">
+        <Text color="gray.600" variant="body2">
           null
         </Text>
       );
     case Boolean(!value && fallback):
       return (
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           {fallback}
         </Text>
       );
     case !value:
       return (
-        <Text variant="body2" color="warning.dark">
+        <Text color="warning.dark" variant="body2">
           Data not found
         </Text>
       );
@@ -55,22 +55,22 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
     case type === "json" || typeof value === "object":
       return (
         <JsonReadOnly
-          text={JSON.stringify(value, null, 2)}
+          amptrackSection="tx_page_msg_receipts"
           canCopy
           fullWidth
           isExpandable
-          amptrackSection="tx_page_msg_receipts"
+          text={JSON.stringify(value, null, 2)}
         />
       );
     default:
       return (
         <ExplorerLink
-          type={linkType}
-          value={value as string}
+          ampCopierSection="tx_msg_receipts"
+          maxWidth="full"
           showCopyOnHover
           textFormat="normal"
-          maxWidth="full"
-          ampCopierSection="tx_msg_receipts"
+          type={linkType}
+          value={value as string}
           wordBreak="break-word"
         />
       );
@@ -114,7 +114,7 @@ export const attachFundsReceipt = (value: Option<Coin[]>): TxReceipt => ({
   html: value?.length ? (
     <CoinsComponent coins={value} />
   ) : (
-    <Text variant="body2" color="text.dark">
+    <Text color="text.dark" variant="body2">
       No Attached Funds
     </Text>
   ),

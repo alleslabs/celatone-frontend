@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import type { Addr, BechAddr, HexAddr32 } from "lib/types";
+import type { IcnsNamesByAddress } from "lib/types/name";
 
 import {
   useCelatoneApp,
@@ -8,9 +9,7 @@ import {
   useTierConfig,
   useValidateAddress,
 } from "lib/app-provider";
-import type { Addr, BechAddr, HexAddr32 } from "lib/types";
 import { zBechAddr32, zHexAddr20, zHexAddr32, zValidatorAddr } from "lib/types";
-import type { IcnsNamesByAddress } from "lib/types/name";
 import {
   isHex,
   isHex20Bytes,
@@ -22,6 +21,7 @@ import {
   splitModulePath,
   toChecksumAddress,
 } from "lib/utils";
+import { useEffect, useMemo, useState } from "react";
 
 import { useBlockData, useBlockDataRest } from "./block";
 import { useEvmCodesByAddress } from "./evm";
@@ -77,11 +77,9 @@ interface SearchHandlerResponse {
   isLoading: boolean;
 }
 
-// eslint-disable-next-line complexity
 export const useSearchHandler = (
   keyword: string,
   resetHandlerStates: () => void
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 ): SearchHandlerResponse => {
   const { isFullTier, isLiteTier } = useTierConfig();
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
@@ -365,7 +363,6 @@ export const useSearchHandler = (
           ? toChecksumAddress(debouncedKeyword)
           : debouncedKeyword,
       type:
-        // eslint-disable-next-line sonarjs/no-duplicate-string
         contractData || evmCodes?.code ? "Contract Address" : "Account Address",
       metadata: {
         icns:

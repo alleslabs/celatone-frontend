@@ -1,7 +1,7 @@
-import { Flex } from "@chakra-ui/react";
-
-import { TokenComposition, TokenImageRender } from "lib/components/token";
 import type { TokenWithValue } from "lib/types";
+
+import { Flex } from "@chakra-ui/react";
+import { TokenComposition, TokenImageRender } from "lib/components/token";
 
 interface TokenCellProps {
   token: TokenWithValue;

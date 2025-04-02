@@ -1,10 +1,12 @@
-import { Grid, Heading, Stack, Text } from "@chakra-ui/react";
-import { useMemo } from "react";
-import type { Control, FieldPath, FieldValues } from "react-hook-form";
-import { useController, useWatch } from "react-hook-form";
-import { SelectInput } from "lib/components/forms";
 import type { EvmVerifyConfig } from "lib/types";
+import type { Control, FieldPath, FieldValues } from "react-hook-form";
+
+import { Grid, Heading, Stack, Text } from "@chakra-ui/react";
+import { SelectInput } from "lib/components/forms";
 import { EvmProgrammingLanguage } from "lib/types";
+import { useMemo } from "react";
+import { useController, useWatch } from "react-hook-form";
+
 import { formatEvmOptions } from "../helpers";
 
 interface EvmVersionToTargetProps<T extends FieldValues> {
@@ -43,24 +45,24 @@ export const EvmVersionToTarget = <T extends FieldValues>({
         <Heading as="h6" variant="h6">
           EVM Version to Target
         </Heading>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           The Ethereum Virtual Machine version that the smart contract is
           designed and optimized to run on
         </Text>
       </Stack>
       <Grid templateColumns="repeat(2, 1fr)">
         <SelectInput
+          isRequired
           label="EVM Version to target"
           menuPortalTarget={document.body}
-          isRequired
           options={evmVersionOptions}
+          value={evmVersionOptions.find(
+            (option) => option.value === evmVersion
+          )}
           onChange={(selectedOption) => {
             if (!selectedOption) return;
             onChange(selectedOption.value);
           }}
-          value={evmVersionOptions.find(
-            (option) => option.value === evmVersion
-          )}
         />
       </Grid>
     </Stack>

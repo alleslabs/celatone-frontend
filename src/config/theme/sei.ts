@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import type { ComponentConfig, ThemeConfig } from "config/theme/types";
 
 import { generateTheme } from "./utils";

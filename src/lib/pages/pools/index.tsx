@@ -7,10 +7,6 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
-
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import { usePoolConfig, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
@@ -19,6 +15,9 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { usePools } from "lib/services/pools";
 import { PoolType } from "lib/types";
+import { isUndefined } from "lodash";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
 
 import { SupportedSection } from "./components/supportedSection";
 import { UnsupportedSection } from "./components/unsupportedSection";
@@ -68,12 +67,12 @@ export const PoolIndex = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Pools" />
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex alignItems="center" justifyContent="space-between">
         <Flex direction="column">
-          <Heading variant="h5" as="h5" minH="36px">
+          <Heading as="h5" minH="36px" variant="h5">
             Osmosis Pools
           </Heading>
-          <Text variant="body2" color="text.dark" fontWeight="500">
+          <Text color="text.dark" fontWeight="500" variant="body2">
             This page displays liquidity pools on this network sorted by recency
           </Text>
         </Flex>
@@ -81,23 +80,28 @@ export const PoolIndex = () => {
       </Flex>
       <Tabs
         index={Object.values(TabIndex).indexOf(tabIndex)}
-        lazyBehavior="keepMounted"
         isLazy
+        lazyBehavior="keepMounted"
       >
-        <TabList my={8} borderBottom="1px" borderColor="gray.800">
+        <TabList
+          borderBottomWidth="1px"
+          borderColor="gray.800"
+          borderStyle="solid"
+          my={8}
+        >
           <CustomTab
             count={supportedPoolsData?.total}
-            onClick={() => handleTabChange(TabIndex.Supported)}
-            isLoading={isLoadingSupportedPools}
             isDisabled={!supportedPoolsData}
+            isLoading={isLoadingSupportedPools}
+            onClick={() => handleTabChange(TabIndex.Supported)}
           >
             Pools
           </CustomTab>
           <CustomTab
             count={unsupportedPoolsData?.total}
-            onClick={() => handleTabChange(TabIndex.Unsupported)}
-            isLoading={isLoadingUnsupportedPools}
             isDisabled={!unsupportedPoolsData}
+            isLoading={isLoadingUnsupportedPools}
+            onClick={() => handleTabChange(TabIndex.Unsupported)}
           >
             Pools with unsupported tokens
           </CustomTab>

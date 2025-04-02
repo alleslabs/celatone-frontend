@@ -1,16 +1,17 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Flex, Text } from "@chakra-ui/react";
-import { useCallback, useMemo } from "react";
 import type { FileWithPath } from "react-dropzone";
-import { useDropzone } from "react-dropzone";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { big } from "lib/types";
+import { useCallback, useMemo } from "react";
+import { useDropzone } from "react-dropzone";
 
 import type { DropzoneConfig, DropzoneFileType } from "./config";
-import { DROPZONE_CONFIG } from "./config";
+
 import { UploadIcon } from "../icon";
+import { DROPZONE_CONFIG } from "./config";
 
 interface DropZoneProps extends FlexProps {
   setFiles: (files: FileWithPath[]) => void;
@@ -90,16 +91,16 @@ export function DropZone({
   return (
     <Flex direction="column">
       <Flex
+        _hover={{ bg: "gray.900" }}
+        align="center"
         border="1px dashed"
         borderColor={isError ? "error.main" : "gray.700"}
-        w="full"
-        p="24px 16px"
         borderRadius="8px"
-        align="center"
-        direction="column"
-        _hover={{ bg: "gray.900" }}
-        transition="all 0.25s ease-in-out"
         cursor="pointer"
+        direction="column"
+        p="24px 16px"
+        transition="all 0.25s ease-in-out"
+        w="full"
         {...getRootProps()}
         {...componentProps}
       >
@@ -110,13 +111,13 @@ export function DropZone({
           })}
         />
         <UploadIcon />
-        <Flex my={2} gap={1}>
+        <Flex gap={1} my={2}>
           <Text
-            variant="body1"
+            style={{ textDecoration: "underline" }}
+            _hover={{ color: "primary.light" }}
             color="primary.main"
             transition="all 0.25s ease-in-out"
-            _hover={{ color: "primary.light" }}
-            style={{ textDecoration: "underline" }}
+            variant="body1"
           >
             Click to upload
           </Text>
@@ -127,11 +128,11 @@ export function DropZone({
           </Text>
         </Flex>
         {fileType.length > 1 ? (
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             (max. {big(maxSize).div(1_000_000).toPrecision(3)}MB)
           </Text>
         ) : (
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             {selectedConfigs[0].text.rawFileType} (max.{" "}
             {selectedConfigs[0].text.rawFileType === ".wasm"
               ? `${maxSize / 1000}KB`
@@ -141,7 +142,7 @@ export function DropZone({
         )}
       </Flex>
       {isError && (
-        <Text variant="body3" color="error.main" mt={1}>
+        <Text color="error.main" mt={1} variant="body3">
           {fileRejections[0]?.errors[0]?.message ?? error}
         </Text>
       )}

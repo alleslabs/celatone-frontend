@@ -1,7 +1,7 @@
 import type { FlexProps, SystemStyleObject } from "@chakra-ui/react";
-import { Flex, Text } from "@chakra-ui/react";
-
 import type { TxReceipt } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
 
 interface TxReceiptRenderProps extends FlexProps {
   receipts: TxReceipt[];
@@ -50,19 +50,19 @@ const variantStyle: Record<
 
 const ReceiptRow = ({ title, value, html }: TxReceipt) => (
   <Flex
-    fontSize="14px"
-    w="full"
     direction={{ base: "column", md: "row" }}
+    fontSize="14px"
     gap={4}
+    w="full"
   >
-    <Text variant="body2" mb={{ base: 1, md: 0 }} whiteSpace="nowrap">
+    <Text mb={{ base: 1, md: 0 }} variant="body2" whiteSpace="nowrap">
       {title}
     </Text>
     {html || (
       <Text
+        color={value === null ? "gray.600" : "text.main"}
         variant="body2"
         wordBreak="break-word"
-        color={value === null ? "gray.600" : "text.main"}
       >
         {String(value)}
       </Text>

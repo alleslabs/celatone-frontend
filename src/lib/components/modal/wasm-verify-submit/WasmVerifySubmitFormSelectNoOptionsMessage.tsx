@@ -1,8 +1,8 @@
-import { Text } from "@chakra-ui/react";
 import type { NoticeProps } from "chakra-react-select";
-import { components } from "chakra-react-select";
-
 import type { SelectInputOption } from "lib/components/forms";
+
+import { Text } from "@chakra-ui/react";
+import { components } from "chakra-react-select";
 
 import type { WasmVerifySubmitFormOptionValue } from "./WasmVerifySubmitFormSelectOption";
 

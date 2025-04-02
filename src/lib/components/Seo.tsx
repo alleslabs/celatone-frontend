@@ -1,6 +1,5 @@
-import { DefaultSeo } from "next-seo";
-
 import { useCelatoneApp } from "lib/app-provider";
+import { DefaultSeo } from "next-seo";
 
 export const CelatoneSeo = ({ pageName }: { pageName?: string }) => {
   const {
@@ -14,7 +13,6 @@ export const CelatoneSeo = ({ pageName }: { pageName?: string }) => {
 
   return (
     <DefaultSeo
-      title={title}
       description={theme.branding.seo.description}
       openGraph={{
         type: "website",
@@ -28,6 +26,7 @@ export const CelatoneSeo = ({ pageName }: { pageName?: string }) => {
           },
         ],
       }}
+      title={title}
       twitter={{
         handle: theme.branding.seo.x.handle,
         cardType: theme.branding.seo.x.cardType,

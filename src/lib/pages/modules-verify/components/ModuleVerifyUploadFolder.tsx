@@ -1,4 +1,6 @@
-/* eslint-disable sonarjs/no-duplicate-string */
+import type { FileWithPath } from "react-dropzone";
+import type { Control } from "react-hook-form";
+
 import {
   Alert,
   AlertDescription,
@@ -7,14 +9,12 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
-import type { FileWithPath } from "react-dropzone";
-import { useController, useWatch } from "react-hook-form";
-import type { Control } from "react-hook-form";
-
 import { DropZone } from "lib/components/dropzone";
 import { CustomIcon } from "lib/components/icon";
 import { UploadFolderCard } from "lib/components/upload/UploadFolderCard";
+import { useMemo, useState } from "react";
+import { useController, useWatch } from "react-hook-form";
+
 import type { ModuleVerifyForm } from "../types";
 
 interface ModuleVerifyUploadFolderProps {
@@ -74,7 +74,7 @@ export const ModuleVerifyUploadFolder = ({
     if (!rootFolderName)
       return (
         <>
-          <CustomIcon boxSize={4} name="check-circle-solid" color="gray.700" />
+          <CustomIcon boxSize={4} color="gray.700" name="check-circle-solid" />
           <Text variant="body2">{`\u201C.move\u201D files are required`}</Text>
         </>
       );
@@ -84,8 +84,8 @@ export const ModuleVerifyUploadFolder = ({
         <>
           <CustomIcon
             boxSize={4}
-            name="check-circle-solid"
             color="success.main"
+            name="check-circle-solid"
           />
           <Text variant="body2">{`Found ${moveFiles.length} \u201C.move\u201D files`}</Text>
         </>
@@ -93,7 +93,7 @@ export const ModuleVerifyUploadFolder = ({
 
     return (
       <>
-        <CustomIcon boxSize={4} name="close-circle-solid" color="error.main" />
+        <CustomIcon boxSize={4} color="error.main" name="close-circle-solid" />
         <Text variant="body2">{`\u201C.move\u201D is not found`}</Text>
       </>
     );
@@ -103,7 +103,7 @@ export const ModuleVerifyUploadFolder = ({
     if (!rootFolderName)
       return (
         <>
-          <CustomIcon boxSize={4} name="check-circle-solid" color="gray.700" />
+          <CustomIcon boxSize={4} color="gray.700" name="check-circle-solid" />
           <Text variant="body2">{`\u201CMove.toml\u201D file are required`}</Text>
         </>
       );
@@ -113,8 +113,8 @@ export const ModuleVerifyUploadFolder = ({
         <>
           <CustomIcon
             boxSize={4}
-            name="check-circle-solid"
             color="success.main"
+            name="check-circle-solid"
           />
           <Text variant="body2">{`Found \u201CMove.toml\u201D file`}</Text>
         </>
@@ -122,7 +122,7 @@ export const ModuleVerifyUploadFolder = ({
 
     return (
       <>
-        <CustomIcon boxSize={4} name="close-circle-solid" color="error.main" />
+        <CustomIcon boxSize={4} color="error.main" name="close-circle-solid" />
         <Text variant="body2">{`\u201CMove.toml\u201D is not found`}</Text>
       </>
     );
@@ -134,12 +134,12 @@ export const ModuleVerifyUploadFolder = ({
         <Heading as="h6" variant="h6">
           Upload Project Folder
         </Heading>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           Select a folder to upload files in order to verify the modules
         </Text>
       </Stack>
-      <Alert variant="primary" gap={4} alignItems="flex-start">
-        <CustomIcon name="info-circle" color="primary.main" boxSize={4} />
+      <Alert alignItems="flex-start" gap={4} variant="primary">
+        <CustomIcon boxSize={4} color="primary.main" name="info-circle" />
         <AlertDescription>
           {`If the verification module requires calling functions from other
     modules, please ensure that the corresponding \u201C.move\u201D files are
@@ -151,12 +151,12 @@ export const ModuleVerifyUploadFolder = ({
           <DropZone fileType={["move", "toml"]} setFiles={handleSetFiles} />
         ) : (
           <UploadFolderCard
-            fileName={rootFolderName}
             deleteFile={() => {
               moveFilesController.field.onChange([]);
               tomlFileController.field.onChange(null);
               setRootFolderName("");
             }}
+            fileName={rootFolderName}
             status={moveFiles.length > 0 && tomlFile ? undefined : "error"}
           />
         )}

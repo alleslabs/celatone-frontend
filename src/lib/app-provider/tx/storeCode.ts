@@ -1,12 +1,13 @@
 import type { StdFee } from "@cosmjs/stargate";
+import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
+import type { AccessType, BechAddr, Option } from "lib/types";
+
+import { trackTxSucceed } from "lib/amplitude";
+import { storeCodeTx } from "lib/app-fns/tx/storeCode";
+import { composeStoreCodeMsg } from "lib/utils";
 import { gzip } from "node-gzip";
 import { useCallback } from "react";
 
-import { trackTxSucceed } from "lib/amplitude";
-import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
-import { storeCodeTx } from "lib/app-fns/tx/storeCode";
-import type { AccessType, BechAddr, Option } from "lib/types";
-import { composeStoreCodeMsg } from "lib/utils";
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface StoreCodeStreamParams {

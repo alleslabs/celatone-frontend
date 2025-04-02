@@ -1,10 +1,10 @@
-import axios from "axios";
+import type { BechAddr, ValidatorAddr } from "lib/types";
 
+import axios from "axios";
 import {
   zCommissionsResponseRest,
   zDelegationRewardsResponseRest,
 } from "lib/services/types";
-import type { BechAddr, ValidatorAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getDelegationRewardsByAddressRest = (

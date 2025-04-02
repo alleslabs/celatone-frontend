@@ -1,16 +1,16 @@
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
-import { pipe } from "@rx-stream/pipe";
-import { capitalize } from "lodash";
+import type { SignAndBroadcast } from "lib/app-provider/hooks";
+import type { BechAddr20, Nullable, TxResultRendering } from "lib/types";
 import type { Observable } from "rxjs";
 
-import type { SignAndBroadcast } from "lib/app-provider/hooks";
+import { pipe } from "@rx-stream/pipe";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { BechAddr20, Nullable, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { feeFromStr, findAttr } from "lib/utils";
+import { capitalize } from "lodash";
 
 import { catchTxError, postTx, sendingTx } from "./common";
 
@@ -54,7 +54,7 @@ export const submitWhitelistProposalTx = ({
             title: "Proposal ID",
             value: proposalId,
             html: (
-              <ExplorerLink type="proposal_id" value={proposalId} openNewTab />
+              <ExplorerLink openNewTab type="proposal_id" value={proposalId} />
             ),
           },
           {
@@ -62,9 +62,9 @@ export const submitWhitelistProposalTx = ({
             value: txInfo.transactionHash,
             html: (
               <ExplorerLink
+                openNewTab
                 type="tx_hash"
                 value={txInfo.transactionHash}
-                openNewTab
               />
             ),
           },
@@ -88,7 +88,7 @@ export const submitWhitelistProposalTx = ({
               : "."
           }`,
           headerIcon: (
-            <CustomIcon name="submit-proposal" color="gray.600" boxSize={5} />
+            <CustomIcon boxSize={5} color="gray.600" name="submit-proposal" />
           ),
         },
         actionVariant: "proposal",
@@ -165,7 +165,7 @@ export const submitStoreCodeProposalTx = ({
               : ` ${capitalize(chainName)} governance voting.`
           }`,
           headerIcon: (
-            <CustomIcon name="submit-proposal" color="gray.600" boxSize="5" />
+            <CustomIcon boxSize="5" color="gray.600" name="submit-proposal" />
           ),
         },
         actionVariant: "proposal",

@@ -1,6 +1,7 @@
+import type { Option } from "lib/types";
+
 import { capitalize } from "lodash";
 
-import type { Option } from "lib/types";
 import { truncate } from "../truncate";
 
 export const getTokenType = (type: string) => {

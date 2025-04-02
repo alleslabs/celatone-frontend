@@ -1,3 +1,6 @@
+import type { Coin, StdFee } from "@cosmjs/stargate";
+import type { BechAddr } from "lib/types";
+
 import {
   Alert,
   AlertDescription,
@@ -8,11 +11,6 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import type { Coin, StdFee } from "@cosmjs/stargate";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-
 import {
   AmpEvent,
   track,
@@ -40,9 +38,12 @@ import { useGetMaxLengthError, useTxBroadcast } from "lib/hooks";
 import { useGovParamsDeprecated } from "lib/model/proposal";
 import { useSimulateFeeQuery } from "lib/services/tx";
 import { useUploadAccessParamsRest } from "lib/services/wasm/code";
-import type { BechAddr } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { composeSubmitWhitelistProposalMsg, getAmountToVote } from "lib/utils";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+
 import { AssetBox, Footer } from "../components";
 import { InitialDeposit } from "../components/InitialDeposit";
 import { PermissionlessAlert } from "../components/PermissionlessAlert";
@@ -238,8 +239,6 @@ const ProposalToWhitelist = () => {
     <>
       <PageContainer>
         <Grid
-          templateAreas={`"prespace alert alert postspace" "prespace main sidebar postspace"`}
-          templateColumns="1fr 6fr 4fr 1fr"
           sx={
             uploadAccessParams?.isPermissionedNetwork
               ? undefined
@@ -250,9 +249,11 @@ const ProposalToWhitelist = () => {
                   },
                 }
           }
+          templateAreas={`"prespace alert alert postspace" "prespace main sidebar postspace"`}
+          templateColumns="1fr 6fr 4fr 1fr"
         >
           {!uploadAccessParams?.isPermissionedNetwork && (
-            <GridItem area="alert" className="permissionless-alert" mb={10}>
+            <GridItem className="permissionless-alert" area="alert" mb={10}>
               <PermissionlessAlert />
             </GridItem>
           )}
@@ -260,74 +261,91 @@ const ProposalToWhitelist = () => {
             <Heading as="h5" variant="h5">
               Create Proposal to Whitelist
             </Heading>
-            <Text color="text.dark" mt={4} fontWeight={500} variant="body2">
+            <Text color="text.dark" fontWeight={500} mt={4} variant="body2">
               Allowed addresses will be able to upload and stored code without
               opening proposal
             </Text>
             <ConnectWalletAlert
-              subtitle="You need to connect wallet to proceed this action"
               mt={12}
+              subtitle="You need to connect wallet to proceed this action"
             />
             <form>
               <Flex
+                bgColor="gray.900"
+                borderRadius="8px"
+                flexDirection="column"
+                gap={6}
                 mt={12}
                 p={4}
-                gap={6}
-                bgColor="gray.900"
-                flexDirection="column"
-                borderRadius="8px"
               >
-                <Flex gap={2} alignItems="center">
-                  <CustomIcon name="proposal" color="gray.600" />
+                <Flex alignItems="center" gap={2}>
+                  <CustomIcon color="gray.600" name="proposal" />
                   <Heading as="h6" variant="h6">
                     Fill in Proposal Details
                   </Heading>
                 </Flex>
                 <ControllerInput
-                  name="title"
                   control={control}
-                  placeholder="ex. Allow XYZ to store code without proposal"
-                  label="Proposal Title"
-                  labelBgColor="gray.900"
-                  variant="fixed-floating"
-                  rules={{
-                    required: "Proposal Title is required",
-                    maxLength: constants.maxProposalTitleLength,
-                  }}
                   error={
                     title.length > constants.maxProposalTitleLength
                       ? getMaxLengthError(title.length, "proposal_title")
                       : formErrors.title?.message
                   }
+                  label="Proposal Title"
+                  labelBgColor="gray.900"
+                  name="title"
+                  placeholder="ex. Allow XYZ to store code without proposal"
+                  rules={{
+                    required: "Proposal Title is required",
+                    maxLength: constants.maxProposalTitleLength,
+                  }}
+                  variant="fixed-floating"
                 />
                 <ControllerTextarea
-                  name="description"
                   control={control}
+                  error={formErrors.description?.message}
                   height="160px"
                   label="Proposal Description"
-                  placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
-                  variant="fixed-floating"
                   labelBgColor="gray.900"
+                  name="description"
+                  placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
                   rules={{
                     required: "Proposal Description is required",
                   }}
-                  error={formErrors.description?.message}
+                  variant="fixed-floating"
                 />
               </Flex>
-              <Heading as="h6" variant="h6" mt={12}>
+              <Heading as="h6" mt={12} variant="h6">
                 Addresses to be allowed to store code
               </Heading>
-              <Text color="text.dark" my={2} fontWeight={500} variant="body2">
+              <Text color="text.dark" fontWeight={500} my={2} variant="body2">
                 If the proposal is passed, these addresses will be allowed to
                 upload and store code without opening proposal
               </Text>
               {fields.map((field, idx) => (
-                <Flex gap={2} my={6} key={field.id}>
+                <Flex key={field.id} gap={2} my={6}>
                   <AddressInput
-                    name={`addresses.${idx}.address`}
                     control={control}
+                    error={formErrors.addresses?.[idx]?.address?.message}
+                    helperAction={
+                      <AssignMe
+                        isDisable={
+                          addresses.findIndex(
+                            (x) => x.address === walletAddress
+                          ) > -1
+                        }
+                        onClick={() => {
+                          track(AmpEvent.USE_ASSIGN_ME);
+                          setValue(
+                            `addresses.${idx}.address`,
+                            walletAddress ?? ("" as BechAddr)
+                          );
+                          trigger(`addresses.${idx}.address`);
+                        }}
+                      />
+                    }
                     label="Address"
-                    variant="fixed-floating"
+                    name={`addresses.${idx}.address`}
                     validation={{
                       duplicate: () =>
                         addresses.find(
@@ -342,65 +360,43 @@ const ProposalToWhitelist = () => {
                           ? "This address is already included in whitelist"
                           : undefined,
                     }}
-                    error={formErrors.addresses?.[idx]?.address?.message}
-                    helperAction={
-                      <AssignMe
-                        onClick={() => {
-                          track(AmpEvent.USE_ASSIGN_ME);
-                          setValue(
-                            `addresses.${idx}.address`,
-                            walletAddress ?? ("" as BechAddr)
-                          );
-                          trigger(`addresses.${idx}.address`);
-                        }}
-                        isDisable={
-                          addresses.findIndex(
-                            (x) => x.address === walletAddress
-                          ) > -1
-                        }
-                      />
-                    }
+                    variant="fixed-floating"
                   />
                   <Button
-                    w="56px"
                     h="56px"
-                    variant="outline-gray"
-                    size="lg"
-                    p={0}
                     isDisabled={fields.length <= 1}
+                    p={0}
+                    size="lg"
+                    variant="outline-gray"
+                    w="56px"
                     onClick={() => remove(idx)}
                   >
-                    <CustomIcon name="delete" boxSize={4} />
+                    <CustomIcon boxSize={4} name="delete" />
                   </Button>
                 </Flex>
               ))}
               <Button
-                variant="outline-primary"
-                mt={3}
-                onClick={() => append({ address: "" as BechAddr })}
                 leftIcon={<CustomIcon name="plus" />}
+                mt={3}
+                variant="outline-primary"
+                onClick={() => append({ address: "" as BechAddr })}
               >
                 Add More Address
               </Button>
               <InitialDeposit govParams={govParams} />
-              <Grid py={6} columnGap={4} templateColumns="1fr 3fr">
+              <Grid columnGap={4} py={6} templateColumns="1fr 3fr">
                 <AssetBox baseDenom={initialDeposit.denom} />
                 <ControllerInput
-                  name="initialDeposit.amount"
                   control={control}
-                  label="Amount"
-                  placeholder="0.00"
-                  variant="fixed-floating"
-                  type="decimal"
                   helperAction={
                     <Text
-                      textAlign="right"
-                      mr={3}
-                      fontWeight={700}
-                      cursor="pointer"
-                      variant="body3"
-                      minW={16}
                       color="primary.main"
+                      cursor="pointer"
+                      fontWeight={700}
+                      minW={16}
+                      mr={3}
+                      textAlign="right"
+                      variant="body3"
                       onClick={() => {
                         if (!minDeposit) return;
                         trackUseDepositFill(minDeposit.formattedAmount);
@@ -413,20 +409,25 @@ const ProposalToWhitelist = () => {
                       Fill {minDeposit?.formattedToken}
                     </Text>
                   }
+                  label="Amount"
+                  name="initialDeposit.amount"
+                  placeholder="0.00"
+                  type="decimal"
+                  variant="fixed-floating"
                 />
               </Grid>
-              <Alert variant={variant} gap={2}>
+              <Alert gap={2} variant={variant}>
                 {icon}
                 <AlertDescription>{alertDesc}</AlertDescription>
               </Alert>
               <Flex
-                mt={12}
-                fontSize="14px"
-                color="text.dark"
-                alignSelf="flex-start"
                 alignItems="center"
+                alignSelf="flex-start"
+                color="text.dark"
                 display="flex"
+                fontSize="14px"
                 gap={1}
+                mt={12}
               >
                 <p>Transaction Fee:</p>
                 <EstimatedFeeRender
@@ -454,8 +455,8 @@ const ProposalToWhitelist = () => {
       </PageContainer>
       <Footer
         isDisabled={isSimulating || !enabledTx || !estimatedFee}
-        onSubmit={proceed}
         isLoading={processing}
+        onSubmit={proceed}
       />
     </>
   );

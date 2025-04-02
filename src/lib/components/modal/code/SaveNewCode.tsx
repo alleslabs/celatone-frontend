@@ -1,21 +1,22 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, FormControl, useToast } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import type { FormStatus } from "lib/components/forms";
+import type { BechAddr } from "lib/types";
 
+import { Button, FormControl, useToast } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
-import type { FormStatus } from "lib/components/forms";
 import { NumberInput, TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useCodeRest } from "lib/services/wasm/code";
-import type { BechAddr } from "lib/types";
 import {
   getNameAndDescriptionDefault,
   getPermissionHelper,
   isId,
 } from "lib/utils";
+import { useEffect, useMemo, useState } from "react";
+
 import { ActionModal } from "../ActionModal";
 
 interface SaveNewCodeModalProps {
@@ -107,7 +108,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
     });
 
     reset();
@@ -170,45 +171,45 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
   return (
     <ActionModal
-      title="Save New Code"
-      icon="bookmark-solid"
-      trigger={<Button {...buttonProps} as="button" />}
-      mainBtnTitle="Save New Code"
-      mainAction={handleSave}
-      otherAction={reset}
       disabledMain={disableMain}
+      icon="bookmark-solid"
+      mainAction={handleSave}
+      mainBtnTitle="Save New Code"
+      otherAction={reset}
       otherBtnTitle="Cancel"
+      title="Save New Code"
+      trigger={<Button {...buttonProps} as="button" />}
     >
       <FormControl display="flex" flexDir="column" gap={9}>
         Save other stored codes to your &ldquo;Saved Codes&rdquo; list
         <NumberInput
-          variant="fixed-floating"
-          value={codeId}
-          onInputChange={setCodeId}
           label="Code ID"
           labelBgColor="gray.900"
           placeholder="ex. 1234"
           status={codeIdStatus}
+          value={codeId}
+          variant="fixed-floating"
+          onInputChange={setCodeId}
         />
         <TextInput
-          variant="fixed-floating"
-          value={uploader}
+          isDisabled
           label="Uploader"
           labelBgColor="gray.900"
           placeholder="Uploader address will display here"
           setInputState={() => {}}
           status={uploaderStatus}
-          isDisabled
+          value={uploader}
+          variant="fixed-floating"
         />
         <TextInput
-          variant="fixed-floating"
-          value={name}
-          setInputState={setName}
+          helperText="Fill in code name to define its use as a reminder"
           label="Code Name"
           labelBgColor="gray.900"
           placeholder="Untitled Name"
-          helperText="Fill in code name to define its use as a reminder"
+          setInputState={setName}
           status={nameStatus}
+          value={name}
+          variant="fixed-floating"
         />
       </FormControl>
     </ActionModal>

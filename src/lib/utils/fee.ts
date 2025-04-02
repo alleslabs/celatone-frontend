@@ -1,7 +1,7 @@
 import type { StdFee } from "@cosmjs/stargate";
+import type { AssetInfos, Coin, MovePoolInfos, Option, Ratio } from "lib/types";
 
 import { big } from "lib/types";
-import type { AssetInfos, Coin, MovePoolInfos, Option, Ratio } from "lib/types";
 
 import { coinToTokenWithValue } from "./assetValue";
 import { coinsFromStr } from "./funds";

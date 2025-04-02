@@ -1,7 +1,7 @@
-import { Alert, Flex, Text } from "@chakra-ui/react";
-
-import { useIsApiChain, useMobile } from "lib/app-provider";
 import type { HexAddr20, Option, EvmVerifyInfo } from "lib/types";
+
+import { Alert, Flex, Text } from "@chakra-ui/react";
+import { useIsApiChain, useMobile } from "lib/app-provider";
 
 import { FailedDetails } from "./FailedDetails";
 import { InProgressDetails } from "./InProgressDetails";
@@ -21,7 +21,7 @@ const EvmVerifySectionBody = ({
 
   if (!isApiChain)
     return (
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         Contract verification is only available on official networks
       </Text>
     );
@@ -59,11 +59,11 @@ export const EvmVerifySection = (props: EvmVerifySectionProps) => {
   return (
     <Alert variant="info-left-primary">
       <Flex
-        w="full"
-        justifyContent="space-between"
         alignItems={isMobile ? "flex-start" : "center"}
         flexDirection={isMobile ? "column" : "row"}
         gap={2}
+        justifyContent="space-between"
+        w="full"
       >
         <EvmVerifySectionBody {...props} />
       </Flex>

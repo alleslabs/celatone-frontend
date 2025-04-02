@@ -1,8 +1,8 @@
 import type { BoxProps } from "@chakra-ui/react";
-import { Box } from "@chakra-ui/react";
+import type { Option } from "lib/types";
 import type { ReactNode } from "react";
 
-import type { Option } from "lib/types";
+import { Box } from "@chakra-ui/react";
 
 import { MessageTabs } from "./MessageInputSwitch";
 

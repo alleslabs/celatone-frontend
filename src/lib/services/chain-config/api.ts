@@ -1,7 +1,7 @@
-import axios from "axios";
-
-import { CELATONE_API_OVERRIDE } from "env";
 import type { Option } from "lib/types";
+
+import axios from "axios";
+import { CELATONE_API_OVERRIDE } from "env";
 import { zChainConfig } from "lib/types";
 import { parseWithError } from "lib/utils";
 

@@ -1,8 +1,8 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Grid } from "@chakra-ui/react";
-
-import { TableHeader } from "lib/components/table";
 import type { PoolData } from "lib/types";
+
+import { Grid } from "@chakra-ui/react";
+import { TableHeader } from "lib/components/table";
 import { PoolType } from "lib/types";
 
 interface PoolHeaderProps {
@@ -17,8 +17,8 @@ export const PoolAssetsTableHeader = ({
   templateColumns,
 }: PoolHeaderProps) => (
   <Grid
-    templateColumns={templateColumns}
     sx={{ "> div": { color: "text.dark" } }}
+    templateColumns={templateColumns}
   >
     <TableHeader>Asset</TableHeader>
     {poolType !== PoolType.COSMWASM && (

@@ -1,9 +1,9 @@
-import { Text } from "@chakra-ui/react";
-import { isNull } from "lodash";
-
 import type { Nullable, Ratio } from "lib/types";
+
+import { Text } from "@chakra-ui/react";
 import { ProposalStatus } from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
+import { isNull } from "lodash";
 
 interface VoteQuorumTextProps {
   status: ProposalStatus;
@@ -43,13 +43,13 @@ export const VoteQuorumText = ({
 
   if (status === ProposalStatus.VOTING_PERIOD)
     return isPassingQuorum ? (
-      <Text variant={fontVariant} color="text.main">
+      <Text color="text.main" variant={fontVariant}>
         The proposal has successfully met the voting{" "}
         <span style={{ fontWeight: 700 }}>{quorumPercent}</span> quorum and will
         be <Established /> after the voting period ends.
       </Text>
     ) : (
-      <Text variant={fontVariant} color="text.main">
+      <Text color="text.main" variant={fontVariant}>
         The proposal required{" "}
         <span style={{ fontWeight: 700 }}>{quorumPercent}</span> vote quorum to
         establish.
@@ -57,13 +57,13 @@ export const VoteQuorumText = ({
     );
 
   return isPassingQuorum ? (
-    <Text variant={fontVariant} color="text.main">
+    <Text color="text.main" variant={fontVariant}>
       The proposal has successfully met the voting{" "}
       <span style={{ fontWeight: 700 }}>{quorumPercent}</span> quorum and{" "}
       <Established />.
     </Text>
   ) : (
-    <Text variant={fontVariant} color="text.main">
+    <Text color="text.main" variant={fontVariant}>
       This proposal{" "}
       <span
         style={{

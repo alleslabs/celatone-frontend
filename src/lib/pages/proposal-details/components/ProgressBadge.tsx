@@ -1,7 +1,7 @@
 import { chakra, Flex, Text } from "@chakra-ui/react";
-
 import { ActiveDot } from "lib/components/ActiveDot";
 import { CustomIcon } from "lib/components/icon";
+
 import { PeriodState } from "../types";
 
 const StyledCustomIcon = chakra(CustomIcon, {
@@ -23,13 +23,13 @@ const BadgeIcon = ({ state }: { state: PeriodState }) => {
     case PeriodState.ONGOING:
       return <ActiveDot m={1} />;
     case PeriodState.FAILED:
-      return <StyledCustomIcon name="close-circle-solid" color="error.main" />;
+      return <StyledCustomIcon color="error.main" name="close-circle-solid" />;
     case PeriodState.COMPLETE:
       return (
-        <StyledCustomIcon name="check-circle-solid" color="success.main" />
+        <StyledCustomIcon color="success.main" name="check-circle-solid" />
       );
     default:
-      return <CustomIcon name="circle" color="gray.600" />;
+      return <CustomIcon color="gray.600" name="circle" />;
   }
 };
 
@@ -39,15 +39,15 @@ export const ProgressBadge = ({
   bgColor = "gray.900",
 }: ProgressBadgeProps) => (
   <Flex
-    p="4px 8px"
-    gap={2}
     alignItems="center"
-    justifyContent="center"
     bgColor={bgColor}
     borderRadius="8px"
+    gap={2}
+    justifyContent="center"
+    p="4px 8px"
   >
     <BadgeIcon state={state} />
-    <Text variant="body3" color="text.main" whiteSpace="nowrap">
+    <Text color="text.main" variant="body3" whiteSpace="nowrap">
       {text}
     </Text>
   </Flex>

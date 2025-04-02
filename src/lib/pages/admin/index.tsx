@@ -1,8 +1,8 @@
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import type { FormStatus } from "lib/components/forms";
+import type { BechAddr, BechAddr32 } from "lib/types";
 
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { AmpEvent, track, trackToAdminUpdate } from "lib/amplitude";
 import {
   useCurrentChain,
@@ -19,7 +19,6 @@ import { ContractInputSection } from "lib/components/ContractInputSection";
 import { ContractSelectSection } from "lib/components/ContractSelectSection";
 import { ErrorMessageRender } from "lib/components/ErrorMessageRender";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CelatoneSeo } from "lib/components/Seo";
 import { TierSwitcher } from "lib/components/TierSwitcher";
@@ -27,11 +26,13 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeQuery } from "lib/services/tx";
 import { useContractData } from "lib/services/wasm/contract";
-import type { BechAddr, BechAddr32 } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg } from "lib/utils";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
 
 import type { UpdateAdminQueryParams } from "./types";
+
 import { zUpdateAdminQueryParams } from "./types";
 
 const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
@@ -163,15 +164,15 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
   return (
     <ActionPageContainer>
       <CelatoneSeo pageName="Update Admin" />
-      <Flex direction="column" alignItems="center" mb={6}>
+      <Flex alignItems="center" direction="column" mb={6}>
         <Heading as="h5" variant="h5">
           Update Admin
         </Heading>
         <UserDocsLink
-          isDevTool
-          mt={2}
           cta="View Update Admin Guideline"
           href="cosmwasm/contracts/admin-actions#update-new-admin-to-the-contract"
+          isDevTool
+          mt={2}
         />
       </Flex>
       <ConnectWalletAlert
@@ -181,13 +182,13 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
       <TierSwitcher
         full={
           <ContractSelectSection
-            mode="only-admin"
             contractAddress={contractAddress}
+            mode="only-admin"
             onContractSelect={(contract) => onContractPathChange(contract)}
           />
         }
         lite={
-          <Box w="full" mb={12}>
+          <Box mb={12} w="full">
             <ContractInputSection
               contract={contractAddress}
               onContractSelect={(contract) => onContractPathChange(contract)}
@@ -196,18 +197,18 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
         }
       />
       <TextInput
-        variant="fixed-floating"
-        label="New Admin Address"
         helperText="This address will be an admin for the deployed smart contract."
-        value={adminAddress}
+        label="New Admin Address"
         setInputState={setAdminAddress}
         status={adminFormStatus}
+        value={adminAddress}
+        variant="fixed-floating"
       />
       <Flex
-        fontSize="14px"
-        color="text.dark"
         alignItems="center"
         alignSelf="flex-start"
+        color="text.dark"
+        fontSize="14px"
         gap={1}
         mt={12}
       >
@@ -216,15 +217,15 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
       </Flex>
       {simulateError && (
         <ErrorMessageRender
+          alignSelf="flex-start"
           error={simulateError}
           mt={4}
-          alignSelf="flex-start"
         />
       )}
       <Button
         isDisabled={!estimatedFee || isFetching}
-        onClick={proceed}
         mt={12}
+        onClick={proceed}
       >
         Update Admin
       </Button>

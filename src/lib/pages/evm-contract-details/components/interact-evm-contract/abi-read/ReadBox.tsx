@@ -1,3 +1,6 @@
+import type { JsonFragment } from "ethers";
+import type { Option, HexAddr20, JsonDataType } from "lib/types";
+
 import {
   AccordionButton,
   AccordionIcon,
@@ -12,23 +15,20 @@ import {
   HStack,
   Text,
 } from "@chakra-ui/react";
-import type { JsonFragment } from "ethers";
-import { isUndefined } from "lodash";
-import dynamic from "next/dynamic";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { CopyButton } from "lib/components/copy";
 import { EvmAbiForm } from "lib/components/evm-abi";
 import { CustomIcon } from "lib/components/icon";
 import { useEthCall } from "lib/services/evm";
-import type { Option, HexAddr20, JsonDataType } from "lib/types";
 import {
   dateFromNow,
   decodeEvmFunctionResult,
   encodeEvmFunctionData,
   getCurrentDate,
 } from "lib/utils";
+import { isUndefined } from "lodash";
+import dynamic from "next/dynamic";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 const EvmCodeSnippet = dynamic(
   () => import("lib/components/modal/EvmCodeSnippet"),
@@ -48,7 +48,7 @@ const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {
   }, []);
 
   return (
-    <Text variant="body3" color="text.dark" opacity={timestamp ? 1 : 0}>
+    <Text color="text.dark" opacity={timestamp ? 1 : 0} variant="body3">
       ({timestamp ? `Last queried ${dateFromNow(timestamp)}` : "N/A"})
     </Text>
   );
@@ -110,8 +110,8 @@ export const ReadBox = ({
   return (
     <AccordionItem className={`abi_read_${abiSection.name}`}>
       <h6>
-        <AccordionButton p={4} justifyContent="space-between">
-          <Text variant="body1" fontWeight={700}>
+        <AccordionButton justifyContent="space-between" p={4}>
+          <Text fontWeight={700} variant="body1">
             {abiSection.name}
           </Text>
           <AccordionIcon />
@@ -119,54 +119,54 @@ export const ReadBox = ({
       </h6>
       <AccordionPanel mx={2}>
         <Grid
+          gap={6}
           templateColumns={{
             md: inputRequired ? "1fr 1fr" : "1fr",
             base: "1fr",
           }}
-          gap={6}
         >
           {inputRequired && (
             <GridItem>
-              <Text variant="body2" color="text.dark" fontWeight={700} mb={3}>
+              <Text color="text.dark" fontWeight={700} mb={3} variant="body2">
                 Read Inputs
               </Text>
               <EvmAbiForm
-                types={abiSection.inputs ?? []}
                 isPayable={abiSection.stateMutability === "payable"}
                 propsOnChangeInputs={setInputs}
+                types={abiSection.inputs ?? []}
               />
               <Flex
                 flexDirection={{
                   md: "row",
                   base: "column",
                 }}
-                justifyContent="space-between"
                 gap={2}
+                justifyContent="space-between"
                 mt={6}
               >
                 <HStack gap={2}>
                   <CopyButton
-                    variant="outline-secondary"
-                    isDisable={isUndefined(data)}
-                    value={data ?? ""}
                     amptrackSection="read_inputs"
                     buttonText="Copy Encoded Inputs"
+                    isDisable={isUndefined(data)}
+                    value={data ?? ""}
+                    variant="outline-secondary"
                     w="100%"
                   />
                   <EvmCodeSnippet
                     abiSection={abiSection}
                     contractAddress={contractAddress}
-                    type="read"
                     inputs={inputs}
+                    type="read"
                   />
                 </HStack>
                 <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={handleRead}
                   isDisabled={isUndefined(data)}
                   isLoading={isFetching}
                   leftIcon={<CustomIcon name="query" />}
+                  size="sm"
+                  variant="primary"
+                  onClick={handleRead}
                 >
                   Read
                 </Button>
@@ -174,11 +174,11 @@ export const ReadBox = ({
             </GridItem>
           )}
           <GridItem>
-            <Text variant="body2" color="text.dark" fontWeight={700} mb={3}>
+            <Text color="text.dark" fontWeight={700} mb={3} variant="body2">
               Read Outputs
             </Text>
             {queryError && (
-              <Alert variant="error" mb={3} alignItems="center">
+              <Alert alignItems="center" mb={3} variant="error">
                 <AlertDescription wordBreak="break-word">
                   {queryError}
                 </AlertDescription>
@@ -186,9 +186,9 @@ export const ReadBox = ({
             )}
             <Flex direction="column" gap={2}>
               <EvmAbiForm
-                types={abiSection.outputs ?? []}
                 initialData={decodeEvmFunctionResult(abiSection, res)}
                 isDisabled
+                types={abiSection.outputs ?? []}
               />
               <TimestampText timestamp={timestamp} />
             </Flex>
@@ -199,17 +199,17 @@ export const ReadBox = ({
                   base: "column",
                 }}
                 gap={2}
-                mt={3}
                 justifyContent="space-between"
+                mt={3}
               >
-                <Grid gridTemplateColumns="1fr 1fr" gap={2}>
+                <Grid gap={2} gridTemplateColumns="1fr 1fr">
                   <HStack gap={2}>
                     <CopyButton
-                      variant="outline-secondary"
-                      isDisable={isUndefined(data)}
-                      value={data ?? ""}
                       amptrackSection="read_inputs"
                       buttonText="Copy Encoded Inputs"
+                      isDisable={isUndefined(data)}
+                      value={data ?? ""}
+                      variant="outline-secondary"
                       w="100%"
                     />
                     <EvmCodeSnippet
@@ -219,12 +219,12 @@ export const ReadBox = ({
                     />
                   </HStack>
                   <CopyButton
-                    variant="outline-secondary"
-                    isDisable={res === "" || Boolean(queryError)}
-                    value={res}
                     amptrackSection="read_outputs"
                     buttonText="Copy Encoded Outputs"
                     display={{ md: "none", base: "block" }}
+                    isDisable={res === "" || Boolean(queryError)}
+                    value={res}
+                    variant="outline-secondary"
                     w="100%"
                   />
                 </Grid>
@@ -235,24 +235,24 @@ export const ReadBox = ({
                   }}
                 >
                   <CopyButton
-                    variant="outline-secondary"
-                    isDisable={res === "" || Boolean(queryError)}
-                    value={res}
                     amptrackSection="read_outputs"
                     buttonText="Copy Encoded Outputs"
                     display={{ base: "none", md: "block" }}
+                    isDisable={res === "" || Boolean(queryError)}
+                    value={res}
+                    variant="outline-secondary"
                   />
                   <Button
-                    variant="primary"
+                    isDisabled={isUndefined(data)}
+                    isLoading={isFetching}
+                    leftIcon={<CustomIcon name="query" />}
                     size="sm"
+                    variant="primary"
+                    w="100%"
                     onClick={() => {
                       handleRead();
                       track(AmpEvent.ACTION_EVM_READ_AGAIN);
                     }}
-                    isDisabled={isUndefined(data)}
-                    isLoading={isFetching}
-                    leftIcon={<CustomIcon name="query" />}
-                    w="100%"
                   >
                     Read Again
                   </Button>
@@ -271,11 +271,11 @@ export const ReadBox = ({
                 }}
               >
                 <CopyButton
-                  variant="outline-secondary"
-                  isDisable={res === "" || Boolean(queryError)}
-                  value={res}
                   amptrackSection="read_outputs"
                   buttonText="Copy Encoded Outputs"
+                  isDisable={res === "" || Boolean(queryError)}
+                  value={res}
+                  variant="outline-secondary"
                   w="100%"
                 />
               </Flex>

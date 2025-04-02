@@ -1,17 +1,7 @@
-import axios from "axios";
-
 import type {
   ContractCw2InfoRest,
   MigrationHistoriesResponseItemRest,
   MigrationHistoriesResponseRest,
-} from "lib/services/types";
-import {
-  zContractCw2InfoRest,
-  zContractQueryMsgs,
-  zContractRest,
-  zContractsResponseRest,
-  zInstantiatedContractsRest,
-  zMigrationHistoriesResponseRest,
 } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
@@ -21,6 +11,16 @@ import type {
   Nullable,
   Option,
 } from "lib/types";
+
+import axios from "axios";
+import {
+  zContractCw2InfoRest,
+  zContractQueryMsgs,
+  zContractRest,
+  zContractsResponseRest,
+  zInstantiatedContractsRest,
+  zMigrationHistoriesResponseRest,
+} from "lib/services/types";
 import { encode, libEncode, parseWithError } from "lib/utils";
 
 export const getContractQueryRest = (

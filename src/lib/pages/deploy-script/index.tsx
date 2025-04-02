@@ -1,8 +1,7 @@
-import { Flex, Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import type { AbiFormData, ExposedFunction, Option } from "lib/types";
 
+import { Flex, Heading } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCurrentChain,
@@ -18,8 +17,9 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeQuery } from "lib/services/tx";
-import type { AbiFormData, ExposedFunction, Option } from "lib/types";
 import { composeScriptMsg, getAbiInitialData } from "lib/utils";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Footer } from "./components/Footer";
 import { ScriptInput } from "./components/ScriptInput";
@@ -155,18 +155,18 @@ export const DeployScript = () => {
           Upload a .mv file to deploy one-time use Script which execute
           messages.{" "}
           <UserDocsLink
-            isDevTool
-            mt={0}
             cta="Read more about Deploy Script"
             href="initia/move/deploy-script"
+            isDevTool
             isInline
+            mt={0}
           />
         </div>
         <ConnectWalletAlert
-          subtitle="You need to connect your wallet to perform this action"
           mb={12}
+          subtitle="You need to connect your wallet to perform this action"
         />
-        <Heading as="h6" variant="h6" mb={6} alignSelf="start">
+        <Heading alignSelf="start" as="h6" mb={6} variant="h6">
           Upload .mv file
         </Heading>
         <UploadScriptCard
@@ -187,7 +187,7 @@ export const DeployScript = () => {
               });
           }}
         />
-        <Heading as="h6" variant="h6" mt={8} mb={4} alignSelf="start">
+        <Heading alignSelf="start" as="h6" mb={4} mt={8} variant="h6">
           Script input
         </Heading>
         <ScriptInput
@@ -197,12 +197,12 @@ export const DeployScript = () => {
           propsOnErrors={setAbiErrors}
         />
         <Flex
-          mt={8}
-          fontSize="14px"
-          color="text.dark"
-          alignSelf="flex-start"
           alignItems="center"
+          alignSelf="flex-start"
+          color="text.dark"
+          fontSize="14px"
           gap={1}
+          mt={8}
         >
           <p>Transaction Fee:</p>
           <EstimatedFeeRender
@@ -212,19 +212,19 @@ export const DeployScript = () => {
         </Flex>
         {simulateError && (
           <ErrorMessageRender
+            alignSelf="flex-start"
             error={simulateError}
             mt={2}
-            alignSelf="flex-start"
           />
         )}
       </ActionPageContainer>
       <Footer
-        isLoading={processing}
         disabled={!enableDeploy || Boolean(simulateError) || isSimulating}
         executeScript={() => {
           track(AmpEvent.ACTION_EXECUTE_SCRIPT);
           proceed();
         }}
+        isLoading={processing}
       />
     </>
   );

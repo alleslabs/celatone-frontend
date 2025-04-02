@@ -1,6 +1,7 @@
+import type { Nullable } from "lib/types";
+
 import { Spinner, Text } from "@chakra-ui/react";
 
-import type { Nullable } from "lib/types";
 import { CustomIcon } from "../icon";
 
 export type ResponseState = "init" | "loading" | "success" | "error";
@@ -18,17 +19,17 @@ export const getStatusIcon = (state: ResponseState, boxSize = "1em") => {
     case "success":
       return (
         <CustomIcon
-          name="check-circle-solid"
-          color="success.main"
           boxSize={boxSize}
+          color="success.main"
+          name="check-circle-solid"
         />
       );
     case "error":
       return (
         <CustomIcon
-          name="alert-triangle-solid"
-          color="error.light"
           boxSize={boxSize}
+          color="error.light"
+          name="alert-triangle-solid"
         />
       );
     case "init":

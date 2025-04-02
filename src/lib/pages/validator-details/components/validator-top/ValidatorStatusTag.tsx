@@ -1,7 +1,7 @@
-import { Flex, Text } from "@chakra-ui/react";
-
-import { CustomIcon } from "lib/components/icon";
 import type { ValidatorData } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
+import { CustomIcon } from "lib/components/icon";
 
 interface ValidatorStatusProps {
   info: ValidatorData;
@@ -10,15 +10,15 @@ export const ValidatorStatusTag = ({ info }: ValidatorStatusProps) => {
   if (info.isActive) {
     return (
       <Flex
+        alignItems="center"
         background="gray.900"
         borderRadius={8}
-        py={1}
-        px={2}
-        alignItems="center"
         gap={2}
+        px={2}
+        py={1}
       >
-        <Flex h={3} w={3} borderRadius="full" background="success.main" />
-        <Text variant="body3" color="text.main">
+        <Flex background="success.main" borderRadius="full" h={3} w={3} />
+        <Text color="text.main" variant="body3">
           Active
         </Text>
       </Flex>
@@ -28,24 +28,24 @@ export const ValidatorStatusTag = ({ info }: ValidatorStatusProps) => {
   if (info.isJailed) {
     return (
       <Flex
+        alignItems="center"
         background="gray.900"
         borderRadius={8}
-        py={1}
-        px={2}
-        alignItems="center"
         gap={2}
+        px={2}
+        py={1}
       >
         <Flex
-          h={3}
-          w={3}
-          borderRadius="full"
           background="error.main"
+          borderRadius="full"
           display="grid"
+          h={3}
           placeItems="center"
+          w={3}
         >
-          <CustomIcon name="close" color="black" boxSize={1.5} margin={0} />
+          <CustomIcon boxSize={1.5} color="black" margin={0} name="close" />
         </Flex>
-        <Text variant="body3" color="text.main">
+        <Text color="text.main" variant="body3">
           Jailed
         </Text>
       </Flex>
@@ -54,15 +54,15 @@ export const ValidatorStatusTag = ({ info }: ValidatorStatusProps) => {
 
   return (
     <Flex
+      alignItems="center"
       background="gray.900"
       borderRadius={8}
-      py={1}
-      px={2}
-      alignItems="center"
       gap={2}
+      px={2}
+      py={1}
     >
-      <Flex h={3} w={3} borderRadius="full" background="gray.600" />
-      <Text variant="body3" color="text.main">
+      <Flex background="gray.600" borderRadius="full" h={3} w={3} />
+      <Text color="text.main" variant="body3">
         Inactive
       </Text>
     </Flex>

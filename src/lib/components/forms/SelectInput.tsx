@@ -1,6 +1,7 @@
-import { Stack, Text } from "@chakra-ui/react";
 import type { SystemStyleObject } from "@chakra-ui/styled-system";
 import type { Props } from "chakra-react-select";
+
+import { Stack, Text } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 
 type SelectInputOptionValue = object | string | boolean | number | null;
@@ -84,18 +85,7 @@ export const SelectInput = <
       </Text>
     )}
     <Select<SelectInputOption<OptionValue>, IsMulti>
-      menuPosition="fixed"
-      menuPortalTarget={menuPortalTarget}
-      placeholder={placeholder}
-      options={options}
-      value={value}
-      isDisabled={isDisabled}
-      onChange={onChange}
-      size={size}
-      filterOption={handleFilterOption}
-      formatOptionLabel={formatOptionLabel}
-      components={components}
-      isSearchable={isSearchable}
+      autoFocus={autoFocus}
       chakraStyles={{
         container: (provided: SystemStyleObject) => ({
           ...provided,
@@ -130,20 +120,31 @@ export const SelectInput = <
         }),
         ...chakraStyles,
       }}
+      classNamePrefix={classNamePrefix}
+      closeMenuOnSelect={closeMenuOnSelect}
+      components={components}
+      filterOption={handleFilterOption}
+      formatOptionLabel={formatOptionLabel}
+      inputId={inputId}
+      isDisabled={isDisabled}
+      isMulti={isMulti}
+      isSearchable={isSearchable}
+      menuPortalTarget={menuPortalTarget}
+      menuPosition="fixed"
+      name={name}
+      options={options}
+      placeholder={placeholder}
+      size={size}
       styles={{
         menuPortal: (provided) => ({
           ...provided,
           zIndex: 2,
         }),
       }}
-      inputId={inputId}
-      name={name}
-      isMulti={isMulti}
-      closeMenuOnSelect={closeMenuOnSelect}
+      value={value}
       onBlur={onBlur}
+      onChange={onChange}
       onFocus={onFocus}
-      autoFocus={autoFocus}
-      classNamePrefix={classNamePrefix}
     />
   </Stack>
 );

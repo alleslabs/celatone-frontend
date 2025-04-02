@@ -1,5 +1,4 @@
 import { Divider, Flex, Stack, Text } from "@chakra-ui/react";
-
 import { useMobile } from "lib/app-provider";
 import { TooltipInfo } from "lib/components/Tooltip";
 
@@ -15,10 +14,10 @@ const InfoComponent = ({
   <div>
     <Flex align="center" gap="4px">
       <Text
-        whiteSpace="nowrap"
         color="gray.400"
-        variant="body2"
         fontWeight={600}
+        variant="body2"
+        whiteSpace="nowrap"
       >
         {title}
       </Text>
@@ -55,22 +54,22 @@ export const CollectionSupplyInfo = ({
     "The maximum number of NFTs that can ever be minted in this collection.";
 
   return isMobile ? (
-    <Stack p="16px" spacing="16px" borderRadius="8px" bg="gray.900">
+    <Stack bg="gray.900" borderRadius="8px" p="16px" spacing="16px">
       <div>
-        <Flex fontSize="14px" fontWeight={600} align="center" gap="4px">
+        <Flex align="center" fontSize="14px" fontWeight={600} gap="4px">
           <Text color="gray.400">Current Supply (Minted - Burned)</Text>
           <TooltipInfo label={currentSupplyTooltip} />
         </Flex>
-        <Flex fontWeight={600} align="end" gap="8px">
+        <Flex align="end" fontWeight={600} gap="8px">
           <Text fontSize="16px">{currentSupply}</Text>
-          <Text fontSize="12px" color="gray.400">
+          <Text color="gray.400" fontSize="12px">
             ({totalMinted} - {totalBurned})
           </Text>
         </Flex>
       </div>
-      <Divider opacity={1} borderColor="gray.700" />
+      <Divider borderColor="gray.700" opacity={1} />
       <div>
-        <Flex fontSize="14px" fontWeight={600} align="center" gap="4px">
+        <Flex align="center" fontSize="14px" fontWeight={600} gap="4px">
           <Text color="gray.400">Max Supply</Text>
           <TooltipInfo label={maxSupplyTooltip} />
         </Flex>
@@ -82,42 +81,42 @@ export const CollectionSupplyInfo = ({
   ) : (
     <Flex
       align="center"
-      mt="24px"
-      p="16px"
-      w="100%"
       bg="gray.900"
       borderRadius="8px"
+      mt="24px"
       overflow="auto"
+      p="16px"
+      w="100%"
     >
-      <Flex gap="40px" align="center" w="100%">
+      <Flex align="center" gap="40px" w="100%">
         <InfoComponent
-          title="Current Supply"
           content={currentSupply}
+          title="Current Supply"
           tooltip={currentSupplyTooltip}
         />
-        <Text fontSize="24px" fontWeight={600} color="gray.100">
+        <Text color="gray.100" fontSize="24px" fontWeight={600}>
           =
         </Text>
         <InfoComponent
-          title="Total Minted"
           content={totalMinted}
+          title="Total Minted"
           tooltip={totalMintedTooltip}
         />
-        <Text fontSize="24px" fontWeight={600} color="gray.100">
+        <Text color="gray.100" fontSize="24px" fontWeight={600}>
           -
         </Text>
         <InfoComponent
-          title="Total Burned"
           content={totalBurned}
+          title="Total Burned"
           tooltip={totalBurnedTooltip}
         />
       </Flex>
 
-      <Flex w="248px" gap="48px" align="center" ml="48px">
-        <Divider orientation="vertical" height="47px" borderWidth="1px" />
+      <Flex align="center" gap="48px" ml="48px" w="248px">
+        <Divider borderWidth="1px" height="47px" orientation="vertical" />
         <InfoComponent
-          title="Max Supply"
           content={maxSupply}
+          title="Max Supply"
           tooltip={maxSupplyTooltip}
         />
       </Flex>

@@ -1,7 +1,7 @@
-import { Flex, Text } from "@chakra-ui/react";
-
-import { AppLink } from "lib/components/AppLink";
 import type { HexAddr32 } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
+import { AppLink } from "lib/components/AppLink";
 
 interface CollectionInfoProps {
   collectionAddress: HexAddr32;
@@ -15,22 +15,22 @@ export const CollectionInfo = ({
   description,
 }: CollectionInfoProps) => (
   <Flex direction="column">
-    <Text variant="body2" fontWeight={700} wordBreak="break-word">
+    <Text fontWeight={700} variant="body2" wordBreak="break-word">
       About {collectionName} Collection
     </Text>
-    <Text display="inline" color="gray.400" variant="body2" mt={2} mb={1}>
+    <Text color="gray.400" display="inline" mb={1} mt={2} variant="body2">
       {description ?? "No description was provided by the creator."}
     </Text>
     <AppLink href={`/nft-collections/${collectionAddress}`}>
       <Text
-        variant="body2"
-        color="primary.main"
-        mt={1}
         _hover={{
           textDecoration: "underline",
           textDecorationColor: "primary.light",
           "& > p": { color: "primary.light" },
         }}
+        color="primary.main"
+        mt={1}
+        variant="body2"
       >
         View Collection
       </Text>

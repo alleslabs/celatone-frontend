@@ -1,9 +1,9 @@
-import { Flex } from "@chakra-ui/react";
+import type { ProposalDeposit } from "lib/types";
 
+import { Flex } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
-import type { ProposalDeposit } from "lib/types";
 
 import { DepositAmounts } from "./DepositAmounts";
 
@@ -24,14 +24,14 @@ export const DepositList = ({
       {proposalDeposits.map((deposit, index) => (
         <Flex
           key={deposit.depositor + index.toString()}
+          borderY="1px solid var(--chakra-colors-gray-700)"
           justify="space-between"
           py="10px"
-          borderY="1px solid var(--chakra-colors-gray-700)"
         >
           <ExplorerLink
-            value={deposit.depositor}
-            type="user_address"
             showCopyOnHover={!isMobile}
+            type="user_address"
+            value={deposit.depositor}
           />
           <DepositAmounts deposit={deposit} />
         </Flex>

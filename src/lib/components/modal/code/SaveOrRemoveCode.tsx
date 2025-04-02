@@ -1,7 +1,7 @@
-import { chakra, IconButton } from "@chakra-ui/react";
-
-import { CustomIcon } from "lib/components/icon";
 import type { CodeInfo } from "lib/types";
+
+import { chakra, IconButton } from "@chakra-ui/react";
+import { CustomIcon } from "lib/components/icon";
 
 import { RemoveCodeModal } from "./RemoveCode";
 import { SaveCodeDetailsModal } from "./SaveCodeDetails";

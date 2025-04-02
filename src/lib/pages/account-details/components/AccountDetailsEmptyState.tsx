@@ -1,11 +1,12 @@
 import type { FlexProps, StyleProps, TextProps } from "@chakra-ui/react";
+
 import { Flex, Text } from "@chakra-ui/react";
 
 export interface AccountDetailsEmptyStateProps {
   message: string;
   textVariant?: TextProps["variant"];
   pt?: FlexProps["pt"];
-  borderBottom?: StyleProps["borderBottom"];
+  borderBottomWidth?: StyleProps["borderBottomWidth"];
   borderColor?: StyleProps["borderColor"];
 }
 
@@ -13,25 +14,26 @@ export const AccountDetailsEmptyState = ({
   message,
   textVariant = "body1",
   pt = 2,
-  borderBottom = "1px solid",
+  borderBottomWidth = "1px",
   borderColor = "gray.700",
 }: AccountDetailsEmptyStateProps) => (
   <Flex
     alignItems="flex-start"
+    borderBottomWidth={borderBottomWidth}
+    borderColor={borderColor}
+    borderStyle="solid"
+    direction="column"
     flexDir="column"
     gap={4}
-    width="full"
-    pt={pt}
     pb={8}
-    direction="column"
-    borderBottom={borderBottom}
-    borderColor={borderColor}
+    pt={pt}
+    width="full"
   >
     <Text
       color="text.dark"
       textAlign="center"
-      whiteSpace="pre-wrap"
       variant={textVariant}
+      whiteSpace="pre-wrap"
     >
       {message}
     </Text>

@@ -1,23 +1,23 @@
-import { Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
+import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 
+import { Button, Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import { trackUseViewJSON } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { useOpenAssetTab } from "lib/hooks";
 import { useBalanceInfos } from "lib/services/bank";
-import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
 
+import { CustomIcon } from "../icon";
+import { Loading } from "../Loading";
+import { ErrorFetching } from "../state";
+import { TableTitle } from "../table";
 import { AssetSectionOverview } from "./AssetSectionOverview";
 import { SupportedAssetSectionContent } from "./SupportedAssetSectionContent";
 import { SupportedAssetTitle } from "./SupportedAssetTitle";
 import { UnsupportedAssetSectionContent } from "./UnsupportedAssetSectionContent";
 import { UnsupportedAssetTitle } from "./UnsupportedAssetTitle";
 import { UserAssetInfoCard } from "./UserAssetInfoCard";
-import { CustomIcon } from "../icon";
-import { Loading } from "../Loading";
-import { ErrorFetching } from "../state";
-import { TableTitle } from "../table";
 
 interface AssetsSectionProps {
   address: BechAddr;
@@ -39,26 +39,26 @@ const MobileOverview = ({
   onViewMore: () => void;
 }) => (
   <Flex
-    justify="space-between"
-    w="full"
     bg="gray.900"
     borderRadius="8px"
-    p={4}
+    justify="space-between"
     opacity={hasNoAsset ? 0.5 : 1}
+    p={4}
+    w="full"
     onClick={hasNoAsset ? undefined : onViewMore}
   >
     <Flex direction="column" gap={2}>
       <TableTitle
-        title="Assets"
         count={supportedAssets.length + unsupportedAssets.length}
         mb={0}
+        title="Assets"
       />
       <UserAssetInfoCard
-        totalSupportedAssetsValue={totalSupportedAssetsValue}
         helperText="Total Asset Value"
+        totalSupportedAssetsValue={totalSupportedAssetsValue}
       />
     </Flex>
-    <CustomIcon name="chevron-right" color="gray.600" />
+    <CustomIcon color="gray.600" name="chevron-right" />
   </Flex>
 );
 
@@ -89,9 +89,9 @@ export const AssetsSection = ({
     return (
       <ErrorFetching
         dataName="balances"
-        withBorder
-        my={2}
         hasBorderTop={false}
+        my={2}
+        withBorder
       />
     );
 
@@ -99,29 +99,29 @@ export const AssetsSection = ({
     <Flex
       direction="column"
       gap={4}
-      mt={{ base: isMobileOverview ? 0 : 8, md: 4 }}
       mb={{ base: 0, md: 8 }}
+      mt={{ base: isMobileOverview ? 0 : 8, md: 4 }}
       width="full"
     >
       {isMobileOverview ? (
         <MobileOverview
+          hasNoAsset={hasNoAsset}
           supportedAssets={supportedAssets}
           totalSupportedAssetsValue={totalSupportedAssetsValue}
           unsupportedAssets={unsupportedAssets}
-          hasNoAsset={hasNoAsset}
           onViewMore={onViewMore}
         />
       ) : (
         <>
-          <Flex w="full" justifyContent="space-between">
-            <TableTitle title="Assets" count={totalData} mb={0} />
+          <Flex justifyContent="space-between" w="full">
+            <TableTitle count={totalData} mb={0} title="Assets" />
             <Button
               isDisabled={hasNoAsset}
-              variant="ghost-gray"
-              size="sm"
               rightIcon={
-                <CustomIcon name="launch" boxSize={3} color="text.dark" />
+                <CustomIcon boxSize={3} color="text.dark" name="launch" />
               }
+              size="sm"
+              variant="ghost-gray"
               onClick={() => {
                 trackUseViewJSON("account_details_page_assets");
                 openAssetTab(address);
@@ -147,14 +147,14 @@ export const AssetsSection = ({
                 />
                 <Divider borderColor="gray.700" />
                 {isMobile && (
-                  <Flex pt={4} px={4} direction="column">
-                    <Text variant="body2" color="text.dark">
+                  <Flex direction="column" pt={4} px={4}>
+                    <Text color="text.dark" variant="body2">
                       Total Asset Value
                     </Text>
                     <Heading
                       as="h6"
-                      variant="h6"
                       color={isZeroValue ? "text.dark" : "text.main"}
+                      variant="h6"
                     >
                       {totalSupportedAssetsValue
                         ? formatPrice(totalSupportedAssetsValue)

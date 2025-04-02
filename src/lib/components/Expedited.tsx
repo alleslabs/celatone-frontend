@@ -1,7 +1,7 @@
-import { Flex, SkeletonText, Text } from "@chakra-ui/react";
-
-import { useProposalParams } from "lib/services/proposal";
 import type { Option, Ratio } from "lib/types";
+
+import { Flex, SkeletonText, Text } from "@chakra-ui/react";
+import { useProposalParams } from "lib/services/proposal";
 import { formatPrettyPercent, formatSeconds } from "lib/utils";
 
 import { CustomIcon } from "./icon";
@@ -22,8 +22,8 @@ const ExpeditedText = ({
     <SkeletonText
       color="white"
       noOfLines={4}
-      spacing={2.5}
       skeletonHeight={2}
+      spacing={2.5}
       w="250px"
     />;
 
@@ -55,24 +55,24 @@ export const Expedited = ({ isActiveExpedited }: ExpeditedProps) => {
     <Tooltip
       label={
         <ExpeditedText
+          isLoading={isLoading}
           quorum={quorum}
           threshold={threshold}
           votingPeriod={votingPeriod}
-          isLoading={isLoading}
         />
       }
     >
-      <Flex as="span" align="center">
+      <Flex align="center" as="span">
         <CustomIcon
-          name="expedited"
           boxSize={4}
-          ml={0}
           color={isActiveExpedited ? "secondary.main" : "gray.400"}
+          ml={0}
+          name="expedited"
         />
         <Text
           as="span"
-          variant="body3"
           color={isActiveExpedited ? "secondary.main" : "text.dark"}
+          variant="body3"
         >
           Expedited
         </Text>

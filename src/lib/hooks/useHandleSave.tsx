@@ -1,8 +1,8 @@
-import { useToast } from "@chakra-ui/react";
+import type { BechAddr, BechAddr32, LVPair, Option } from "lib/types";
 
+import { useToast } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 import { useAccountStore, useContractStore } from "lib/providers/store";
-import type { BechAddr, BechAddr32, LVPair, Option } from "lib/types";
 
 import { useFormatAddresses } from "./useFormatAddresses";
 
@@ -62,7 +62,7 @@ export const useHandleContractSave = ({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
     });
   };
 };
@@ -90,7 +90,7 @@ export const useHandleAccountSave = ({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
     });
   };
 };

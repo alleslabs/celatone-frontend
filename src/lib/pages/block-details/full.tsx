@@ -23,9 +23,9 @@ export const BlockDetailsFull = ({ height }: { height: number }) => {
       <BlockInfo blockData={blockData} />
       <BlockTxsTableFull height={height} />
       <UserDocsLink
-        title="What is a block?"
         cta="Read more about Block"
         href="general/blocks/detail-page"
+        title="What is a block?"
       />
     </>
   );

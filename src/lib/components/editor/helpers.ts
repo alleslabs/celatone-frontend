@@ -1,5 +1,7 @@
 import { last, split } from "lodash";
+
 import type { FilePath, SourceTreeNode } from "./types";
+
 import { EXTENSION_LIB } from "./types";
 
 export const generateSourceTree = (
@@ -21,7 +23,7 @@ export const generateSourceTree = (
         const isFolder = extension ? !EXTENSION_LIB.includes(extension) : false;
         const isLib = !isFolder && libraryFilesPath.includes(path);
         const isInitializeNodePath = initialFilePath === path;
-        const isOpen = index === 0 ? true : false || isInitializeNodePath;
+        const isOpen = index === 0 ? true : isInitializeNodePath;
 
         existingNode = {
           name: part,

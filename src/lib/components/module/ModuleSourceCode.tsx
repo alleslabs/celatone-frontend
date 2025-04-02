@@ -1,3 +1,6 @@
+import type { MoveVerifyInfoResponse } from "lib/services/types";
+import type { Nullish } from "lib/types";
+
 import {
   Accordion,
   AccordionButton,
@@ -11,17 +14,15 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-
-import { useState } from "react";
-import type { MoveVerifyInfoResponse } from "lib/services/types";
 import { MoveVerifyStatus } from "lib/types";
-import type { Nullish } from "lib/types";
 import { formatUTC } from "lib/utils";
-import { ModuleFileTabs, ModuleFileSwitch } from "./ModuleFileSwitch";
+import { useState } from "react";
+
 import { AppLink } from "../AppLink";
 import { Editor } from "../editor/Editor";
 import { CustomIcon } from "../icon";
 import { MoveVerifyBadge } from "../MoveVerifyBadge";
+import { ModuleFileTabs, ModuleFileSwitch } from "./ModuleFileSwitch";
 
 interface ModuleSourceCodeProps {
   verificationData: Nullish<MoveVerifyInfoResponse>;
@@ -40,51 +41,51 @@ export const ModuleSourceCode = ({
       <AccordionItem>
         <AccordionButton p={4}>
           <Flex direction="column" w="full">
-            <Flex justifyContent="space-between" w="full" alignItems="center">
-              <Flex flexDirection="column" alignItems="start">
+            <Flex alignItems="center" justifyContent="space-between" w="full">
+              <Flex alignItems="start" flexDirection="column">
                 <Flex align="center" gap={1}>
                   <MoveVerifyBadge status={moveVerifyStatus} />
-                  <Heading as="h6" variant="h7" textAlign="left">
+                  <Heading as="h6" textAlign="left" variant="h7">
                     Verified Module Source Code
                   </Heading>
                 </Flex>
                 <Text
-                  fontWeight={600}
-                  variant="body2"
                   color="text.dark"
+                  fontWeight={600}
                   textAlign="start"
+                  variant="body2"
                 >
                   Verified at {formatUTC(verificationData.verifiedAt)}
                 </Text>
               </Flex>
-              <AccordionIcon color="gray.600" ml="auto" boxSize={6} />
+              <AccordionIcon boxSize={6} color="gray.600" ml="auto" />
             </Flex>
             {moveVerifyStatus === MoveVerifyStatus.Outdated && (
               <Alert
-                p={2}
-                variant="warning"
+                alignItems="flex-start"
                 gap={2}
                 mt={2}
-                alignItems="flex-start"
+                p={2}
+                variant="warning"
               >
-                <CustomIcon name="alert-triangle-solid" boxSize={4} />
+                <CustomIcon boxSize={4} name="alert-triangle-solid" />
                 <AlertDescription>
-                  <Text variant="body2" color="warning.main" textAlign="left">
+                  <Text color="warning.main" textAlign="left" variant="body2">
                     The displayed source code is an <b>older version</b> since
                     the module was republished after verification. If you are
                     the owner, you can{" "}
                     <AppLink href="/modules/verify">
                       <Text
-                        display="inline-flex"
-                        gap={1}
-                        size="sm"
-                        color="warning.main"
-                        textDecoration="underline"
-                        transition="all 0.25s ease-in-out"
                         _hover={{
                           color: "warning.light",
                           textDecorationColor: "warning.light",
                         }}
+                        color="warning.main"
+                        display="inline-flex"
+                        gap={1}
+                        size="sm"
+                        textDecoration="underline"
+                        transition="all 0.25s ease-in-out"
                       >
                         resubmit for verification
                       </Text>
@@ -96,17 +97,17 @@ export const ModuleSourceCode = ({
             )}
           </Flex>
         </AccordionButton>
-        <AccordionPanel pt={0} pb={4}>
+        <AccordionPanel pb={4} pt={0}>
           <Flex flexDirection="column" gap={4}>
             <ModuleFileSwitch
               currentTab={currentTab}
               onTabChange={setCurrentTab}
             />
             <Box
-              p="16px 12px"
               border="1px solid"
               borderColor="gray.700"
               borderRadius="8px"
+              p="16px 12px"
             >
               <Editor
                 value={
@@ -116,8 +117,8 @@ export const ModuleSourceCode = ({
                 }
               />
             </Box>
-            <Flex gap={4} flexWrap="wrap" rowGap={1}>
-              <Text variant="body2" fontWeight={600} mr={2} color="text.dark">
+            <Flex flexWrap="wrap" gap={4} rowGap={1}>
+              <Text color="text.dark" fontWeight={600} mr={2} variant="body2">
                 Advanced Settings
               </Text>
               {[
@@ -134,8 +135,8 @@ export const ModuleSourceCode = ({
                   value: verificationData.bytecodeVersion,
                 },
               ].map(({ label, value }) => (
-                <Flex gap={1} key={label}>
-                  <Text variant="body2" color="text.dark">
+                <Flex key={label} gap={1}>
+                  <Text color="text.dark" variant="body2">
                     {label}:
                   </Text>
                   <Text variant="body2">{value}</Text>

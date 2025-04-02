@@ -1,3 +1,6 @@
+import type { PermissionFilterValue } from "lib/hooks";
+import type { ChangeEvent } from "react";
+
 import {
   Button,
   Drawer,
@@ -14,12 +17,10 @@ import {
   Tabs,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { ChangeEvent } from "react";
+import { AmpEvent, track } from "lib/amplitude";
+import { useMyCodesData } from "lib/model/code";
 import { useForm } from "react-hook-form";
 
-import { AmpEvent, track } from "lib/amplitude";
-import type { PermissionFilterValue } from "lib/hooks";
-import { useMyCodesData } from "lib/model/code";
 import { CustomTab } from "../CustomTab";
 import { FilterByPermission } from "../forms";
 import { CustomIcon } from "../icon";
@@ -72,8 +73,8 @@ export const CodeSelectDrawerButton = ({
   return (
     <>
       <Button
-        variant="outline-primary"
         ml="auto"
+        variant="outline-primary"
         w="120px"
         onClick={() => {
           track(AmpEvent.USE_CODE_MODAL);
@@ -83,39 +84,43 @@ export const CodeSelectDrawerButton = ({
         {buttonText}
       </Button>
 
-      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+      <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent h="80%">
           <DrawerHeader>
-            <CustomIcon name="code" boxSize={6} color="gray.600" />
+            <CustomIcon boxSize={6} color="gray.600" name="code" />
             <Heading as="h5" variant="h5">
               Select Code ID
             </Heading>
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
-          <DrawerBody px={0} overflow="scroll" py={4}>
-            <Flex gap={4} px={6} py={2} mb={4}>
+          <DrawerBody overflow="scroll" px={0} py={4}>
+            <Flex gap={4} mb={4} px={6} py={2}>
               <InputWithIcon
-                placeholder="Search with Code ID or Code Name"
-                value={keyword}
+                amptrackSection="code-drawer-search"
                 autoFocus
+                placeholder="Search with Code ID or Code Name"
+                size={{ base: "md", md: "lg" }}
+                value={keyword}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValue("keyword", e.target.value)
                 }
-                size={{ base: "md", md: "lg" }}
-                amptrackSection="code-drawer-search"
               />
               <FilterByPermission
                 initialSelected="all"
+                labelBgColor="gray.900"
                 setPermissionValue={(newVal: PermissionFilterValue) => {
                   if (newVal === permissionValue) return;
                   setValue("permissionValue", newVal);
                 }}
-                labelBgColor="gray.900"
               />
             </Flex>
             <Tabs px={6}>
-              <TabList borderBottom="1px" borderColor="gray.800">
+              <TabList
+                borderBottomWidth="1px"
+                borderColor="gray.800"
+                borderStyle="solid"
+              >
                 <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
                 <CustomTab count={savedCodesCount}>My Saved Codes</CustomTab>
               </TabList>
@@ -123,21 +128,21 @@ export const CodeSelectDrawerButton = ({
                 <TabPanel p={0}>
                   <MyStoredCodesTable
                     codes={stored}
-                    totalData={storedCodesCount}
-                    isLoading={isStoredCodesLoading}
-                    onRowSelect={handleSelect}
-                    emptyMessage="You don’t have any stored codes in this device."
                     disconnectedMessage="to see your stored code."
+                    emptyMessage="You don’t have any stored codes in this device."
+                    isLoading={isStoredCodesLoading}
                     isReadOnly
+                    totalData={storedCodesCount}
+                    onRowSelect={handleSelect}
                   />
                 </TabPanel>
                 <TabPanel p={0}>
                   <MySavedCodesTable
                     codes={saved}
-                    totalData={savedCodesCount}
                     isLoading={isSavedCodesLoading}
-                    onRowSelect={handleSelect}
                     isReadOnly
+                    totalData={savedCodesCount}
+                    onRowSelect={handleSelect}
                   />
                 </TabPanel>
               </TabPanels>

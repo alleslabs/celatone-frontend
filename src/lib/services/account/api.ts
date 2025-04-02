@@ -1,13 +1,15 @@
-import axios from "axios";
-
 import type { BechAddr } from "lib/types";
+
+import axios from "axios";
 import { parseWithError } from "lib/utils";
+
+import type { AccountData, AccountTableCounts } from "../types";
+
 import {
   zAccountData,
   zAccountTableCounts,
   zAccountTypeResponse,
 } from "../types";
-import type { AccountData, AccountTableCounts } from "../types";
 
 export const getAccountData = async (
   endpoint: string,

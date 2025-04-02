@@ -1,14 +1,14 @@
-import { Accordion, Button, Flex } from "@chakra-ui/react";
 import type { JsonFragment } from "ethers";
-import { isUndefined } from "lodash";
-import { useEffect, useMemo, useRef, useState } from "react";
+import type { HexAddr20 } from "lib/types";
 
+import { Accordion, Button, Flex } from "@chakra-ui/react";
 import { trackUseExpandAll } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
+import { isUndefined } from "lodash";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import type { HexAddr20 } from "lib/types";
 import { ReadBox } from "./ReadBox";
 
 interface AbiReadProps {
@@ -71,22 +71,22 @@ export const AbiRead = ({
     <>
       <Flex gap={6} mb={6}>
         <InputWithIcon
+          amptrackSection="read-message-search"
           placeholder="Search by method name"
+          size="md"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          size="md"
-          amptrackSection="read-message-search"
         />
         <Button
-          variant="ghost-gray"
+          minH="40px"
           rightIcon={
             <CustomIcon
-              name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
               boxSize={3}
+              name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
               right={0}
             />
           }
-          minH="40px"
+          variant="ghost-gray"
           onClick={() => {
             trackUseExpandAll(expandedIndexes.length ? "collapse" : "expand");
             setExpandedIndexes((prev) =>
@@ -99,20 +99,20 @@ export const AbiRead = ({
       </Flex>
       {filteredAbiRead.length ? (
         <Accordion
-          ref={accordionRef}
           allowMultiple
-          rowGap={4}
           display="flex"
           flexDir="column"
           index={expandedIndexes}
-          onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
+          rowGap={4}
           sx={{ ".chakra-accordion__icon": { color: "gray.600" } }}
+          onChange={(indexes: number[]) => setExpandedIndexes(indexes)}
+          ref={accordionRef}
         >
           {filteredAbiRead.map((abiSection, idx) => (
             <ReadBox
               key={abiSection.name}
-              contractAddress={contractAddress}
               abiSection={abiSection}
+              contractAddress={contractAddress}
               opened={expandedIndexes.includes(idx)}
             />
           ))}

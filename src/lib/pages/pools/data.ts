@@ -1,7 +1,4 @@
 import type Big from "big.js";
-
-import { useAssetInfos } from "lib/services/assetService";
-import { usePoolData, usePools } from "lib/services/pools";
 import type { PoolsResponse } from "lib/services/types";
 import type {
   Nullish,
@@ -13,6 +10,9 @@ import type {
   Ratio,
   TokenWithValue,
 } from "lib/types";
+
+import { useAssetInfos } from "lib/services/assetService";
+import { usePoolData, usePools } from "lib/services/pools";
 import { big } from "lib/types";
 import { coinToTokenWithValue, divWithDefault, formatRatio } from "lib/utils";
 

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { ProposalStatus } from "lib/types";
+
 import { StatusChip } from "../StatusChip";
 
 const meta: Meta<typeof StatusChip> = {

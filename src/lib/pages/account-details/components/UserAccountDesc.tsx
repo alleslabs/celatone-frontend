@@ -1,13 +1,13 @@
+import type { AccountLocalInfo } from "lib/stores/account";
+
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { ShowMoreButton } from "lib/components/button";
+import { CustomIcon } from "lib/components/icon";
+import { EditSavedAccountModal } from "lib/components/modal";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
 import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
-
-import { ShowMoreButton } from "lib/components/button";
-import { CustomIcon } from "lib/components/icon";
-import { EditSavedAccountModal } from "lib/components/modal";
-import type { AccountLocalInfo } from "lib/stores/account";
 
 interface UserAccountDescProps {
   publicAccount?: boolean;
@@ -31,9 +31,9 @@ export const UserAccountDesc = observer(
           accountLocalInfo={accountLocalInfo}
           triggerElement={
             <Button
+              leftIcon={<CustomIcon boxSize={3} name="edit" />}
               size="xs"
               variant="ghost-primary"
-              leftIcon={<CustomIcon name="edit" boxSize={3} />}
             >
               {description ? "Edit" : "Add Description"}
             </Button>
@@ -51,38 +51,38 @@ export const UserAccountDesc = observer(
 
     return (
       <Flex
-        direction="column"
         bg="gray.900"
-        maxW="100%"
         borderRadius="8px"
-        p={4}
-        minH="full"
+        direction="column"
         flex={1}
+        maxW="100%"
+        minH="full"
+        p={4}
         role="group"
       >
-        <Flex justify="space-between" align="center" h="32px">
-          <Text variant="body2" fontWeight={500} color="text.dark">
+        <Flex align="center" h="32px" justify="space-between">
+          <Text color="text.dark" fontWeight={500} variant="body2">
             Your Account Description
           </Text>
-          <Box display="none" _groupHover={{ display: "flex" }}>
+          <Box _groupHover={{ display: "flex" }} display="none">
             {renderEditAccountButton()}
           </Box>
         </Flex>
         <Text
+          key={key}
           variant="body2"
           whiteSpace="pre-wrap"
           ref={ref as React.MutableRefObject<HTMLParagraphElement>}
-          key={key}
         >
           <Linkify>{displayDescription}</Linkify>
         </Text>
 
         {!noClamp && description && (
           <ShowMoreButton
-            showMoreText="View Full Description"
-            showLessText="View Less Description"
-            toggleShowMore={showMore}
             setToggleShowMore={() => setShowMore(!showMore)}
+            showLessText="View Less Description"
+            showMoreText="View Full Description"
+            toggleShowMore={showMore}
           />
         )}
       </Flex>

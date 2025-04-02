@@ -1,8 +1,8 @@
-import { Flex } from "@chakra-ui/react";
-
-import { useEvmConfig } from "lib/app-provider";
 import type { SearchResult } from "lib/services/searchService";
 import type { Option } from "lib/types";
+
+import { Flex } from "@chakra-ui/react";
+import { useEvmConfig } from "lib/app-provider";
 
 import { SearchResultItemBody } from "./SearchResultItemBody";
 import { SearchResultItemIcon } from "./SearchResultItemIcon";
@@ -32,28 +32,28 @@ export const SearchResultItem = ({
     <Flex id={`item-${index}`}>
       {route && (
         <Flex
-          p={2}
-          w="full"
-          gap={2}
-          alignItems="center"
-          borderRadius="8px"
           _hover={{ bg: "gray.700", cursor: "pointer" }}
-          cursor="pointer"
-          transition="all 0.25s ease-in-out"
+          alignItems="center"
           bg={index === cursor ? "gray.700" : undefined}
-          onMouseMove={() => index !== cursor && setCursor(index)}
+          borderRadius="8px"
+          cursor="pointer"
+          gap={2}
+          p={2}
+          transition="all 0.25s ease-in-out"
+          w="full"
           onClick={() => handleSelectResult(result, true)}
+          onMouseMove={() => index !== cursor && setCursor(index)}
         >
           <SearchResultItemIcon
-            type={result.type}
+            isIcns={isAccountAddress && !!result.metadata?.icns}
             isInitiaUsername={
               isAccountAddress && !!result.metadata?.initiaUsername
             }
-            isIcns={isAccountAddress && !!result.metadata?.icns}
+            type={result.type}
           />
           <SearchResultItemBody
-            result={result}
             isAccountAddress={isAccountAddress}
+            result={result}
           />
         </Flex>
       )}

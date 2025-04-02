@@ -1,15 +1,16 @@
-import { Button, Flex } from "@chakra-ui/react";
+import type { IndexedModule, Option } from "lib/types";
 import type { Dispatch, KeyboardEvent, SetStateAction } from "react";
-import { useCallback, useMemo, useState } from "react";
 
+import { Button, Flex } from "@chakra-ui/react";
 import { trackUseModuleSelectionInputFill } from "lib/amplitude";
 import { useExampleAddresses } from "lib/app-provider";
 import { TextInput } from "lib/components/forms";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useSearchModules } from "lib/pages/interact/data";
 import { useValidateModuleInput } from "lib/pages/interact/hooks/useValidateModuleInput";
-import type { IndexedModule, Option } from "lib/types";
 import { splitModulePath } from "lib/utils";
+import { useCallback, useMemo, useState } from "react";
+
 import type {
   DisplayMode,
   ModuleSelectFunction,
@@ -102,41 +103,41 @@ export const ModuleSelectorInput = ({
   return (
     <Flex
       className="selector-input"
-      justifyContent="space-between"
       bgColor="gray.800"
-      p={4}
-      mb={6}
-      gap={{ base: 2, md: 4 }}
       borderRadius={8}
       direction={{ base: "column", md: "row" }}
+      gap={{ base: 2, md: 4 }}
+      justifyContent="space-between"
+      mb={6}
+      p={4}
     >
       <TextInput
-        value={keyword}
-        setInputState={setKeyword}
-        isDisabled={isFetching}
         error={error}
-        size="md"
         helperText={`ex. “${user}”, “${user}::module_name”, or “${user}::module_name::function_name”`}
+        isDisabled={isFetching}
         label="Fill in address or module path"
-        variant="fixed-floating"
         labelBgColor="gray.800"
+        setInputState={setKeyword}
+        size="md"
+        value={keyword}
+        variant="fixed-floating"
         onKeyDown={handleKeydown}
       />
-      <Flex gap={2} w={{ base: "full", md: "auto" }} mt={{ base: 1, md: 0 }}>
+      <Flex gap={2} mt={{ base: 1, md: 0 }} w={{ base: "full", md: "auto" }}>
         <Button
-          variant="primary"
-          w={{ base: "full", md: "auto" }}
-          size={{ base: "sm", md: "md" }}
-          onClick={handleSubmit}
           isDisabled={!keyword.length || isFetching}
           isLoading={isFetching}
+          size={{ base: "sm", md: "md" }}
+          variant="primary"
+          w={{ base: "full", md: "auto" }}
+          onClick={handleSubmit}
         >
           Submit
         </Button>
         <Button
+          size={{ base: "sm", md: "md" }}
           variant="outline-white"
           w={{ base: "full", md: "auto" }}
-          size={{ base: "sm", md: "md" }}
           onClick={() =>
             selectedAddress.address ? setMode("display") : closeModal()
           }

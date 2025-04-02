@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import type { HexAddr, Option } from "lib/types";
 
 import { useCelatoneApp } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
@@ -6,7 +6,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
 import { useModuleHistories } from "lib/services/move/module";
-import type { HexAddr, Option } from "lib/types";
+import { useEffect } from "react";
 
 import { PublishedEventsTable } from "./PublishedEventsTable";
 
@@ -66,8 +66,6 @@ export const ModuleHistoryTable = ({
   return (
     <>
       <PublishedEventsTable
-        moduleHistories={moduleHistories?.items}
-        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="module published events history" />
@@ -79,6 +77,8 @@ export const ModuleHistoryTable = ({
             />
           )
         }
+        isLoading={isLoading}
+        moduleHistories={moduleHistories?.items}
       />
       {!!historyCount &&
         (onViewMore
@@ -86,17 +86,17 @@ export const ModuleHistoryTable = ({
           : historyCount > 10 && (
               <Pagination
                 currentPage={currentPage}
-                pagesQuantity={pagesQuantity}
                 offset={offset}
-                totalData={historyCount}
                 pageSize={pageSize}
+                pagesQuantity={pagesQuantity}
+                scrollComponentId={scrollComponentId}
+                totalData={historyCount}
                 onPageChange={setCurrentPage}
                 onPageSizeChange={(e) => {
                   const size = Number(e.target.value);
                   setPageSize(size);
                   setCurrentPage(1);
                 }}
-                scrollComponentId={scrollComponentId}
               />
             ))}
     </>

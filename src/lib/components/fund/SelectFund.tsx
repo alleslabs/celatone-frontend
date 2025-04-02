@@ -1,25 +1,26 @@
-import { Button, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
 import type { BigSource } from "big.js";
-import { sortBy } from "lodash";
-import { useCallback, useMemo } from "react";
+import type { AssetOption, Token, U, USD } from "lib/types";
 import type { Control, UseFormSetValue } from "react-hook-form";
-import { useFieldArray } from "react-hook-form";
 
+import { Button, Text } from "@chakra-ui/react";
 import { useCurrentChain } from "lib/app-provider";
 import { AssetInput, ControllerInput } from "lib/components/forms";
 import { useAssetInfosByType } from "lib/services/assetService";
 import { useBalances } from "lib/services/bank";
-import type { AssetOption, Token, U, USD } from "lib/types";
 import {
   coinToTokenWithValue,
   formatPrice,
   formatUTokenWithPrecision,
   toToken,
 } from "lib/utils";
+import { sortBy } from "lodash";
+import { useCallback, useMemo } from "react";
+import { useFieldArray } from "react-hook-form";
+
+import type { AttachFundsState } from "./types";
 
 import { ASSETS_SELECT } from "./data";
-import type { AttachFundsState } from "./types";
 
 interface SelectFundProps {
   control: Control<AttachFundsState>;
@@ -127,7 +128,7 @@ export const SelectFund = ({
 
       return {
         helperText: isSelected && (
-          <Text variant="body3" color="text.dark" w="100%">
+          <Text color="text.dark" variant="body3" w="100%">
             Balance: {formatted}
           </Text>
         ),
@@ -157,34 +158,34 @@ export const SelectFund = ({
       {fields.map((field, idx) => (
         <AssetInput
           key={field.id}
-          disableDelete={fields.length <= 1}
-          onDelete={() => remove(idx)}
-          setCurrencyValue={(newVal: string) =>
-            setValue(`${ASSETS_SELECT}.${idx}.denom`, newVal)
-          }
-          assetOptions={assetOptions}
-          value={assetOptions.find((option) => option.value.id === field.denom)}
           amountInput={
             <ControllerInput
               {...handleControllerInputProps(idx)}
-              name={`${ASSETS_SELECT}.${idx}.amount`}
               control={control}
               label="Amount"
-              variant="fixed-floating"
-              type="decimal"
               labelBgColor={labelBgColor}
+              name={`${ASSETS_SELECT}.${idx}.amount`}
               placeholder="0.00"
+              type="decimal"
+              variant="fixed-floating"
             />
           }
+          assetOptions={assetOptions}
+          disableDelete={fields.length <= 1}
+          setCurrencyValue={(newVal: string) =>
+            setValue(`${ASSETS_SELECT}.${idx}.denom`, newVal)
+          }
+          value={assetOptions.find((option) => option.value.id === field.denom)}
+          onDelete={() => remove(idx)}
         />
       ))}
       <Button
-        variant="outline-primary"
-        mt={8}
-        mb={5}
-        mx="auto"
-        onClick={() => append({ denom: "", amount: "" })}
         isDisabled={assetOptions.length === selectedAssets.length}
+        mb={5}
+        mt={8}
+        mx="auto"
+        variant="outline-primary"
+        onClick={() => append({ denom: "", amount: "" })}
       >
         Add More Asset
       </Button>

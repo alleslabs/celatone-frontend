@@ -1,3 +1,6 @@
+import type { Nft } from "lib/services/types";
+import type { Option } from "lib/types";
+
 import {
   Badge,
   Flex,
@@ -6,13 +9,10 @@ import {
   SimpleGrid,
   useBreakpointValue,
 } from "@chakra-ui/react";
-
 import { Loading } from "lib/components/Loading";
 import { NftCard } from "lib/components/nft";
 import { EmptyState } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
-import type { Nft } from "lib/services/types";
-import type { Option } from "lib/types";
 
 interface CollectionSuppliesOverviewProps {
   totalCount: number;
@@ -43,15 +43,15 @@ export const CollectionSuppliesOverviewBody = ({
     );
   return (
     <>
-      <SimpleGrid gap={6} columns={{ base: 2, lg: 4, xl: 5, "2xl": 6 }} my={8}>
+      <SimpleGrid columns={{ base: 2, lg: 4, xl: 5, "2xl": 6 }} gap={6} my={8}>
         {nftsInfo.map((nft) => (
           <GridItem key={nft.tokenId + nft.uri}>
             <NftCard
-              uri={nft.uri}
-              tokenId={nft.tokenId}
-              collectionName={nft.collectionName}
               collectionAddress={nft.collectionAddress}
+              collectionName={nft.collectionName}
               nftAddress={nft.nftAddress}
+              tokenId={nft.tokenId}
+              uri={nft.uri}
             />
           </GridItem>
         ))}
@@ -69,15 +69,15 @@ export const CollectionSuppliesOverview = ({
 }: CollectionSuppliesOverviewProps) => (
   <Flex direction="column">
     <Flex align="center" gap={2}>
-      <Heading as="h6" variant="h6" fontWeight={600}>
+      <Heading as="h6" fontWeight={600} variant="h6">
         NFTs in this collection
       </Heading>
       <Badge>{totalCount}</Badge>
     </Flex>
     <CollectionSuppliesOverviewBody
-      totalCount={totalCount}
-      nfts={nfts}
       isLoading={isLoading}
+      nfts={nfts}
+      totalCount={totalCount}
       onViewMore={onViewMore}
     />
   </Flex>

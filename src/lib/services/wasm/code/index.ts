@@ -1,6 +1,8 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import type { Code, CodeData, CodesResponse } from "lib/services/types";
+import type { BechAddr, BechAddr20, Option } from "lib/types";
 
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -8,8 +10,6 @@ import {
   useGovConfig,
   useTierConfig,
 } from "lib/app-provider";
-import type { Code, CodeData, CodesResponse } from "lib/services/types";
-import type { BechAddr, BechAddr20, Option } from "lib/types";
 
 import {
   getAllCodesByAddress,

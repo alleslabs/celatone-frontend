@@ -1,10 +1,11 @@
-import { Text } from "@chakra-ui/react";
-import { useCallback } from "react";
+import type { BechAddr32 } from "lib/types";
 
+import { Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useClearAdminTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/hooks";
-import type { BechAddr32 } from "lib/types";
+import { useCallback } from "react";
+
 import { ActionModal } from "../ActionModal";
 
 interface ClearAdminModalProps {
@@ -27,15 +28,15 @@ export const ClearAdminModal = ({
 
   return (
     <ActionModal
-      title="You'll no longer have admin access"
       icon="delete"
       iconColor="error.light"
-      trigger={triggerElement}
-      mainBtnTitle="Yes, clear it"
       mainAction={proceed}
+      mainBtnTitle="Yes, clear it"
       mainVariant="error"
       otherBtnTitle="No, keep it"
       otherVariant="outline-primary"
+      title="You'll no longer have admin access"
+      trigger={triggerElement}
     >
       <Text>
         Clearing the admin is a permanent action. You&apos;ll not be able to

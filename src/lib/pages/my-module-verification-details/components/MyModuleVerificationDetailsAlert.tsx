@@ -9,7 +9,6 @@ import {
   Text,
   UnorderedList,
 } from "@chakra-ui/react";
-
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { DEVELOPER_TOOL_DOCS_LINK } from "lib/data";
@@ -25,7 +24,7 @@ export const MyModuleVerificationDetailsAlert = ({
   const navigate = useInternalNavigate();
   if (status === MoveVerifyTaskStatus.Pending)
     return (
-      <Alert variant="info-left-secondary" alignItems="center" py={0}>
+      <Alert alignItems="center" py={0} variant="info-left-secondary">
         <AlertDescription wordBreak="break-word">
           There are{" "}
           <Text as="span" fontWeight={700}>
@@ -42,7 +41,7 @@ export const MyModuleVerificationDetailsAlert = ({
 
   if (status === MoveVerifyTaskStatus.Running)
     return (
-      <Alert variant="info-left-secondary" alignItems="center" py={0}>
+      <Alert alignItems="center" py={0} variant="info-left-secondary">
         <AlertDescription wordBreak="break-word">
           The request is now in progress with the module verification process.
         </AlertDescription>
@@ -52,11 +51,11 @@ export const MyModuleVerificationDetailsAlert = ({
   if (status === MoveVerifyTaskStatus.NotFound)
     return (
       <Alert variant="error">
-        <Flex gap={3} flexGrow={1}>
-          <CustomIcon name="info-circle" color="error.main" boxSize={4} />
+        <Flex flexGrow={1} gap={3}>
+          <CustomIcon boxSize={4} color="error.main" name="info-circle" />
           <Stack gap={1}>
             <AlertTitle>Verification Failed</AlertTitle>
-            <AlertDescription wordBreak="break-word" whiteSpace="pre-line">
+            <AlertDescription whiteSpace="pre-line" wordBreak="break-word">
               There are common problems that lead to verification failures,
               including:
               <UnorderedList>
@@ -75,10 +74,10 @@ export const MyModuleVerificationDetailsAlert = ({
               For more details to ensure the correctness of the process, please
               refer to the{" "}
               <a
-                href={`${DEVELOPER_TOOL_DOCS_LINK}/initia/move/module-verification`}
-                target="_blank"
-                rel="noopener noreferrer"
                 style={{ textDecoration: "underline" }}
+                href={`${DEVELOPER_TOOL_DOCS_LINK}/initia/move/module-verification`}
+                rel="noopener noreferrer"
+                target="_blank"
               >
                 verification guideline.{" "}
               </a>
@@ -86,11 +85,11 @@ export const MyModuleVerificationDetailsAlert = ({
           </Stack>
         </Flex>
         <Button
-          variant="ghost-error"
-          minW="fit-content"
           _hover={{
             backdropFilter: "brightness(130%)",
           }}
+          minW="fit-content"
+          variant="ghost-error"
           onClick={() =>
             navigate({
               pathname: "/modules/verify",

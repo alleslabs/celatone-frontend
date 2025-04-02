@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import { zHexAddr32 } from "lib/types";
+import { z } from "zod";
 
 export enum TabIndex {
   Overview = "overview",

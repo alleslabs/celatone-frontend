@@ -1,15 +1,16 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { chakra, Flex } from "@chakra-ui/react";
+import type { TxData, TxDataJsonRpc } from "lib/services/types";
+import type { TokenWithValue } from "lib/types";
 
+import { chakra, Flex } from "@chakra-ui/react";
 import { useCelatoneApp } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { TokenImageWithAmount } from "lib/components/token";
-import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import type { TokenWithValue } from "lib/types";
+
+import type { GasInfo } from "../data";
 
 import { EvmTxGasReceipt } from "./EvmTxGasReceipt";
-import type { GasInfo } from "../data";
 
 interface EvmTxInfoMobileProps extends FlexProps {
   evmTxData: TxDataJsonRpc;
@@ -46,20 +47,20 @@ export const EvmTxInfoMobile = ({
         </LabelText>
         <LabelText flex={1} label="Block">
           <ExplorerLink
-            value={evmTxData.tx.blockNumber.toString()}
-            type="block_height"
-            showCopyOnHover
             ampCopierSection="tx_page_block_height"
+            showCopyOnHover
+            type="block_height"
+            value={evmTxData.tx.blockNumber.toString()}
           />
         </LabelText>
       </Flex>
       <Flex gap={1}>
         <LabelText flex={1} label="Cosmos Tx">
           <ExplorerLink
-            value={cosmosTxData.txhash.toUpperCase()}
-            type="tx_hash"
-            showCopyOnHover
             fixedHeight={false}
+            showCopyOnHover
+            type="tx_hash"
+            value={cosmosTxData.txhash.toUpperCase()}
           />
         </LabelText>
         <LabelText flex={1} label="Nonce">
@@ -67,7 +68,7 @@ export const EvmTxInfoMobile = ({
         </LabelText>
       </Flex>
       <LabelText flex={1} label="Amount">
-        <TokenImageWithAmount token={evmTxValue} hasTrailingZeros={false} />
+        <TokenImageWithAmount hasTrailingZeros={false} token={evmTxValue} />
       </LabelText>
       <EvmTxGasReceipt gasInfo={gasInfo} />
     </Container>

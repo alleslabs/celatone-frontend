@@ -1,5 +1,6 @@
-import { Flex, Tag } from "@chakra-ui/react";
 import type { RJSFSchema } from "@rjsf/utils";
+
+import { Flex, Tag } from "@chakra-ui/react";
 
 export const FieldTypeTag = ({
   type,
@@ -13,15 +14,15 @@ export const FieldTypeTag = ({
         {types.map((value) => (
           // NOTE: Assuming there is only one Nonnullable type,
           // since `format` is of type string
-          <Tag key={value} variant="gray" size="xs">
-            {value !== "null" ? format ?? value : value}
+          <Tag key={value} size="xs" variant="gray">
+            {value !== "null" ? (format ?? value) : value}
           </Tag>
         ))}
       </Flex>
     );
   }
   return (
-    <Tag variant="gray" size="xs">
+    <Tag size="xs" variant="gray">
       {format ?? type}
     </Tag>
   );

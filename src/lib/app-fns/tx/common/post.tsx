@@ -1,9 +1,9 @@
 import type { DeliverTxResponse } from "@cosmjs/cosmwasm-stargate";
-import { isDeliverTxFailure } from "@cosmjs/stargate";
+import type { TxResultRendering } from "lib/types";
 
+import { isDeliverTxFailure } from "@cosmjs/stargate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
@@ -40,9 +40,9 @@ export const postTx = <T extends DeliverTxResponse>({
               title: "Tx Hash",
               html: (
                 <ExplorerLink
+                  openNewTab
                   type="tx_hash"
                   value={txResult.transactionHash}
-                  openNewTab
                 />
               ),
             },

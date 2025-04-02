@@ -1,8 +1,11 @@
+import type { Nullable } from "lib/types";
+
 import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import type { Nullable } from "lib/types";
-import { EditorFileBody } from "./EditorFileBody";
+
 import type { SourceTreeNode } from "./types";
+
+import { EditorFileBody } from "./EditorFileBody";
 
 export interface EditorSidebarProps {
   sourceTreeNode: SourceTreeNode[];
@@ -14,13 +17,13 @@ export interface EditorSidebarProps {
 const EditorSidebarSelectedMark = () => (
   <Flex
     alignItems="center"
-    position="absolute"
-    left={0}
-    height="full"
-    top={0}
     bottom={0}
+    height="full"
+    left={0}
+    position="absolute"
+    top={0}
   >
-    <Box rounded={8} bgColor="primary.main" h={5} w={1} />
+    <Box bgColor="primary.main" h={5} rounded={8} w={1} />
   </Flex>
 );
 
@@ -55,37 +58,37 @@ export const EditorSidebar = ({
     return (
       <Box key={`${node.path}-editor-sidebar`} position="relative">
         <Box
-          position="absolute"
-          h="full"
-          w="1px"
           bgColor={`${node.treeLevel === 0 ? "transparent" : "gray.700"}`}
+          h="full"
           left={`${node.treeLevel * 8}px`}
+          position="absolute"
+          w="1px"
           zIndex={1}
         />
         <Box
-          position="relative"
           _hover={{
             bg: "gray.800",
             cursor: "pointer",
           }}
           bgColor={isSelected ? "gray.800" : "transparent"}
           borderRadius={4}
+          position="relative"
           onClick={() => (node.isFolder ? onUpdateIsOpen(node) : onClick(node))}
         >
           {isSelected && <EditorSidebarSelectedMark />}
           <EditorFileBody
-            node={node}
             initialFilePath={initialFilePath}
-            py={1}
+            node={node}
             pl={`${node.treeLevel * 8}px`}
+            py={1}
           />
         </Box>
         {node.children.length > 0 && node.isOpen && (
           <EditorSidebar
             initialFilePath={initialFilePath}
+            selectedFile={selectedFile}
             sourceTreeNode={node.children}
             onClick={onClick}
-            selectedFile={selectedFile}
           />
         )}
       </Box>

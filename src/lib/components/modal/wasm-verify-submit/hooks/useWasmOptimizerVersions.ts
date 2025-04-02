@@ -1,8 +1,8 @@
-import { useMemo } from "react";
-
-import { useDockerImageTag } from "lib/services/docker-image";
 import type { DockerImageTagResult } from "lib/services/types/docker-image";
 import type { Option } from "lib/types";
+
+import { useDockerImageTag } from "lib/services/docker-image";
+import { useMemo } from "react";
 
 const mapOptimizerData = (
   data: Option<DockerImageTagResult[]>,

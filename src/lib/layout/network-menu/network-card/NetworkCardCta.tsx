@@ -1,7 +1,4 @@
 import { Flex, useToast } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useCallback } from "react";
-
 import {
   useChainConfigs,
   useInternalNavigate,
@@ -9,6 +6,8 @@ import {
 } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useLocalChainConfigStore, useNetworkStore } from "lib/providers/store";
+import { observer } from "mobx-react-lite";
+import { useCallback } from "react";
 
 interface NetworkCardCtaProps {
   chainId: string;
@@ -29,7 +28,7 @@ export const NetworkCardCta = observer(
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
     });
 
     const handleSave = useCallback(
@@ -74,8 +73,8 @@ export const NetworkCardCta = observer(
     return (
       <Flex className="icon-wrapper" gap={2} zIndex={1}>
         {isDraggable && (
-          <Flex align="center" className="icon-container" {...opacityStyle}>
-            <CustomIcon name="drag" color="gray.600" />
+          <Flex className="icon-container" align="center" {...opacityStyle}>
+            <CustomIcon color="gray.600" name="drag" />
           </Flex>
         )}
         {isNetworkPinned(chainId) ? (
@@ -105,7 +104,7 @@ export const NetworkCardCta = observer(
               });
             }}
           >
-            <CustomIcon name="settings" color="gray.600" boxSize={6} />
+            <CustomIcon boxSize={6} color="gray.600" name="settings" />
           </Flex>
         )}
       </Flex>

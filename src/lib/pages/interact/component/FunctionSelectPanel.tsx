@@ -1,11 +1,11 @@
-import { Accordion, Flex } from "@chakra-ui/react";
+import type { ExposedFunction, IndexedModule, Option } from "lib/types";
 import type { Dispatch, SetStateAction } from "react";
-import { useMemo, useState } from "react";
 
+import { Accordion, Flex } from "@chakra-ui/react";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
-import type { ExposedFunction, IndexedModule, Option } from "lib/types";
 import { checkAvailability } from "lib/utils";
+import { useMemo, useState } from "react";
 
 import {
   FunctionAccordion,
@@ -18,8 +18,8 @@ import {
 const EmptyStateRender = ({ desc }: { desc: string }) => (
   <ModuleContainer h="full">
     <EmptyState
-      imageWidth="80px"
       imageVariant="empty"
+      imageWidth="80px"
       message={desc}
       textVariant="body2"
     />
@@ -52,27 +52,27 @@ const RenderFunctions = ({
     return <NoImageEmptyState desc="No exposed_functions available" />;
 
   return (
-    <Accordion defaultIndex={[0]} allowMultiple>
+    <Accordion allowMultiple defaultIndex={[0]}>
       <FunctionAccordion
-        triggerText="Available functions"
-        isEmpty={states.noAvailableFns}
+        amptrackTab={tab}
         filteredFns={states.filteredFunctions.filter((fn) =>
           checkAvailability(fn)
         )}
+        isEmpty={states.noAvailableFns}
         selectedFn={selectedFn}
         setSelectedFn={setSelectedFn}
-        amptrackTab={tab}
+        triggerText="Available functions"
       />
       {tab === InteractionTabs.EXECUTE_MODULE && (
         <FunctionAccordion
-          triggerText="Other functions"
-          isEmpty={states.noOtherFns}
+          amptrackTab={tab}
           filteredFns={states.filteredFunctions.filter(
             (fn) => !checkAvailability(fn)
           )}
+          isEmpty={states.noOtherFns}
           selectedFn={selectedFn}
           setSelectedFn={setSelectedFn}
-          amptrackTab={tab}
+          triggerText="Other functions"
         />
       )}
     </Accordion>
@@ -116,24 +116,24 @@ export const FunctionSelectPanel = ({
   return (
     <div>
       <InputWithIcon
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
+        amptrackSection="function-select-panel-search"
         placeholder="Search with Function Name"
         size="md"
-        amptrackSection="function-select-panel-search"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
       />
       <InteractionTypeSwitch
-        currentTab={tab}
-        onTabChange={setTab}
-        my={3}
         counts={[module?.viewFunctions.length, module?.executeFunctions.length]}
+        currentTab={tab}
+        my={3}
+        onTabChange={setTab}
       />
       {/* TODO: find a better way to handle height */}
       <Flex direction="column" maxH="calc(100vh - 400px)" overflow="scroll">
         <RenderFunctions
-          states={functionStates}
           selectedFn={selectedFn}
           setSelectedFn={setSelectedFn}
+          states={functionStates}
           tab={tab}
         />
       </Flex>

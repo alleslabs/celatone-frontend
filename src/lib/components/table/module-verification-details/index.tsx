@@ -1,7 +1,8 @@
-import { Box, Grid, TableContainer } from "@chakra-ui/react";
-
-import { useInternalNavigate } from "lib/app-provider";
 import type { MoveVerificationModuleIdentifier } from "lib/services/types";
+
+import { Box, Grid, TableContainer } from "@chakra-ui/react";
+import { useInternalNavigate } from "lib/app-provider";
+
 import { ModulePathLink } from "../modules/ModulePathLink";
 import { TableHeader, TableRow } from "../tableComponents";
 
@@ -17,16 +18,16 @@ export const ModuleVerificationDetailsTable = ({
 
   return (
     <TableContainer>
-      <Grid templateColumns={templateColumns} minW="min-content">
+      <Grid minW="min-content" templateColumns={templateColumns}>
         <TableHeader>Module Path</TableHeader>
       </Grid>
       {moduleIdentifiers.map(({ name, address }) => (
-        <Box w="full" minW="min-content" key={address + name}>
+        <Box key={address + name} minW="min-content" w="full">
           <Grid
             className="copier-wrapper"
-            templateColumns={templateColumns}
-            cursor="pointer"
             _hover={{ background: "gray.900" }}
+            cursor="pointer"
+            templateColumns={templateColumns}
             transition="all 0.25s ease-in-out"
             onClick={() =>
               navigate({

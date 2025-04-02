@@ -1,4 +1,5 @@
 import type { ChainConfig } from "@alleslabs/shared";
+
 import { z } from "zod";
 
 export const zHttpsUrl = z

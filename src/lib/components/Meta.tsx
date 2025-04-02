@@ -1,51 +1,50 @@
-import { capitalize } from "lodash";
-
 import { FALLBACK_THEME } from "config/theme";
 import { CHAIN } from "env";
+import { capitalize } from "lodash";
 
 const Meta = () => {
   const APP_NAME = FALLBACK_THEME.branding.seo.appName;
   const title = `${capitalize(CHAIN)} Explorer | ${FALLBACK_THEME.branding.seo.title}`;
   return (
     <>
-      <meta name="application-name" content={APP_NAME} />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-      <meta name="apple-mobile-web-app-title" content={APP_NAME} />
-      <meta name="format-detection" content="telephone=no" />
-      <meta name="mobile-web-app-capable" content="yes" />
+      <meta content={APP_NAME} name="application-name" />
+      <meta content="yes" name="apple-mobile-web-app-capable" />
+      <meta content="default" name="apple-mobile-web-app-status-bar-style" />
+      <meta content={APP_NAME} name="apple-mobile-web-app-title" />
+      <meta content="telephone=no" name="format-detection" />
+      <meta content="yes" name="mobile-web-app-capable" />
       <meta
-        name="theme-color"
         content={FALLBACK_THEME.colors.background.main}
+        name="theme-color"
       />
       <title>{title}</title>
       <meta
-        name="description"
         content={FALLBACK_THEME.branding.seo.description}
+        name="description"
       />
 
       {/* Open Graph / Facebook */}
-      <meta property="og:type" content="website" />
-      <meta property="og:title" content={title} />
+      <meta content="website" property="og:type" />
+      <meta content={title} property="og:title" />
       <meta
-        property="og:description"
         content={FALLBACK_THEME.branding.seo.description}
+        property="og:description"
       />
-      <meta property="og:image" content={FALLBACK_THEME.branding.seo.image} />
+      <meta content={FALLBACK_THEME.branding.seo.image} property="og:image" />
 
       {/* Twitter */}
       <meta
-        property="twitter:card"
         content={FALLBACK_THEME.branding.seo.x.cardType}
+        property="twitter:card"
       />
-      <meta property="twitter:title" content={title} />
+      <meta content={title} property="twitter:title" />
       <meta
-        property="twitter:description"
         content={FALLBACK_THEME.branding.seo.description}
+        property="twitter:description"
       />
       <meta
-        property="twitter:image"
         content={FALLBACK_THEME.branding.seo.image}
+        property="twitter:image"
       />
     </>
   );

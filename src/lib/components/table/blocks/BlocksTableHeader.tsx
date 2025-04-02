@@ -1,6 +1,6 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Grid } from "@chakra-ui/react";
 
+import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "lib/components/table";
 
 interface BlocksTableHeaderProps {
@@ -13,8 +13,8 @@ export const BlocksTableHeader = ({
   showProposer = true,
 }: BlocksTableHeaderProps) => (
   <Grid
-    templateColumns={templateColumns}
     sx={{ "> div": { color: "text.dark" } }}
+    templateColumns={templateColumns}
   >
     <TableHeader>Block Height</TableHeader>
     <TableHeader>Block Hash</TableHeader>

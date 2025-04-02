@@ -1,10 +1,10 @@
-import { Flex, Heading, Image, Skeleton } from "@chakra-ui/react";
-
-import { useInitia } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon";
 import type { AccountData } from "lib/services/types";
 import type { AccountLocalInfo } from "lib/stores/account";
 import type { Nullable, Option } from "lib/types";
+
+import { Flex, Heading, Image, Skeleton } from "@chakra-ui/react";
+import { useInitia } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
 
 export interface InitiaUsernameDataResponse {
   username: Nullable<string>;
@@ -43,44 +43,44 @@ export const AccountTitle = ({
     if (accountData?.projectInfo?.logo || accountData?.icns?.primaryName)
       return (
         <Image
-          src="https://assets.alleslabs.dev/webapp-assets/name-services/icns.png"
-          borderRadius="full"
           alt={altText}
-          width={7}
+          borderRadius="full"
           height={7}
+          src="https://assets.alleslabs.dev/webapp-assets/name-services/icns.png"
+          width={7}
         />
       );
 
     if (isInitia && initiaUsernameData?.username && !accountLocalInfo?.name)
       return (
         <Image
-          src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
-          borderRadius="full"
           alt={altText}
-          width={6}
+          borderRadius="full"
           height={6}
           mr={1}
+          src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
+          width={6}
         />
       );
 
     if (accountLocalInfo?.name)
-      return <CustomIcon name="bookmark" boxSize={5} color="primary.main" />;
-    return <CustomIcon name="wallet" boxSize={5} color="primary.main" />;
+      return <CustomIcon boxSize={5} color="primary.main" name="bookmark" />;
+    return <CustomIcon boxSize={5} color="primary.main" name="wallet" />;
   };
 
   if (isInitiaUsernameDataLoading && isInitiaUsernameDataFetching)
     return (
       <Skeleton
-        h={6}
-        w={32}
         borderRadius={4}
-        startColor="gray.500"
         endColor="gray.700"
+        h={6}
+        startColor="gray.500"
+        w={32}
       />
     );
 
   return (
-    <Flex gap={1} align="center">
+    <Flex align="center" gap={1}>
       {handleIcon()}
       <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
         {handleDisplayName()}

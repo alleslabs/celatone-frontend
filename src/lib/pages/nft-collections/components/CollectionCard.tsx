@@ -1,10 +1,10 @@
-import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import type { Collection } from "lib/services/types";
 
+import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { NFT_IMAGE_PLACEHOLDER } from "lib/data";
 import { useMetadata } from "lib/services/nft";
-import type { Collection } from "lib/services/types";
 
 interface CollectionCardProps {
   collectionInfo: Collection;
@@ -17,70 +17,71 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
 
   return (
     <Box
-      p={{ base: 3, md: 6 }}
-      h="full"
-      bg="gray.900"
-      borderRadius="8px"
-      transition="all .25s ease-in-out"
       _hover={{
         bg: "gray.800",
       }}
+      bg="gray.900"
+      borderRadius="8px"
+      h="full"
+      p={{ base: 3, md: 6 }}
+      transition="all .25s ease-in-out"
     >
-      <Flex gap={{ base: 4, md: 6 }} maxW="full" w="full" overflow="hidden">
+      <Flex gap={{ base: 4, md: 6 }} maxW="full" overflow="hidden" w="full">
         <Image
-          minW={{ base: 28, md: 40 }}
-          w={{ base: 28, md: 40 }}
-          h={{ base: 28, md: 40 }}
-          objectFit="contain"
           background="gray.900"
           backgroundPosition="center"
           borderRadius="8px"
-          src={metadata?.image}
           fallbackSrc={NFT_IMAGE_PLACEHOLDER}
           fallbackStrategy="beforeLoadOrError"
+          h={{ base: 28, md: 40 }}
+          minW={{ base: 28, md: 40 }}
+          objectFit="contain"
+          src={metadata?.image}
+          w={{ base: 28, md: 40 }}
         />
         <Flex
+          alignSelf="center"
           direction="column"
           gap={2}
           overflow="hidden"
           w="full"
-          alignSelf="center"
         >
           <Flex
+            borderBottomColor="gray.700"
+            borderBottomWidth="1px"
+            borderStyle="solid"
             direction="column"
             gap={1}
-            borderBottom="1px solid"
-            borderBottomColor="gray.700"
             pb={{ base: 3, md: 4 }}
           >
             <Heading
               as="h6"
-              variant="h6"
-              overflow="hidden"
+              color={name.length ? "text.primary" : "text.disabled"}
               fontWeight={name.length ? 600 : 300}
+              overflow="hidden"
               sx={{
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
               }}
-              color={name.length ? "text.primary" : "text.disabled"}
+              variant="h6"
             >
               {name.length ? name : "Untitled Collection"}
             </Heading>
             {description && (
               <Text
                 color="text.dark"
-                variant={{ base: "body3", md: "body2" }}
                 fontWeight={400}
-                overflow="hidden"
-                wordBreak="break-word"
-                textOverflow="ellipsis"
                 lineHeight="125%"
+                overflow="hidden"
                 sx={{
                   display: "-webkit-box",
                   WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
                 }}
+                textOverflow="ellipsis"
+                variant={{ base: "body3", md: "body2" }}
+                wordBreak="break-word"
               >
                 {description}
               </Text>
@@ -88,15 +89,15 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
           </Flex>
           <Flex flexWrap="wrap" mt={{ md: 2 }}>
             <Flex direction="column" flex={1} minW="fit-content">
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 Created by
               </Text>
               <ExplorerLink
-                value={collectionInfo.creator}
-                type="user_address"
-                showCopyOnHover={!isMobile}
-                minW={36}
                 ampCopierSection="collection-list"
+                minW={36}
+                showCopyOnHover={!isMobile}
+                type="user_address"
+                value={collectionInfo.creator}
               />
             </Flex>
             <Flex direction="column" flex={1} minW="fit-content">
@@ -104,11 +105,11 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
                 Collection Address
               </Text>
               <ExplorerLink
-                value={collectionInfo.collectionAddress}
-                type="contract_address"
-                showCopyOnHover={!isMobile}
-                minW={36}
                 ampCopierSection="collection-list"
+                minW={36}
+                showCopyOnHover={!isMobile}
+                type="contract_address"
+                value={collectionInfo.collectionAddress}
               />
             </Flex>
           </Flex>

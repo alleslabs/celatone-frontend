@@ -1,5 +1,6 @@
-import { Grid, HStack, Text } from "@chakra-ui/react";
+import type { Nullish, WasmVerifyInfo } from "lib/types";
 
+import { Grid, HStack, Text } from "@chakra-ui/react";
 import {
   useGetAddressTypeByLength,
   useInternalNavigate,
@@ -10,7 +11,6 @@ import { SaveOrRemoveCodeModal } from "lib/components/modal";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { TableRow } from "lib/components/table";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
-import type { Nullish, WasmVerifyInfo } from "lib/types";
 import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
 
 import type { PublicCodeInfo } from ".";
@@ -38,24 +38,24 @@ export const PublicProjectCodeRow = ({
 
   return (
     <Grid
-      templateColumns={templateColumns}
-      onClick={goToCodeDetails}
       _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
       minW="min-content"
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
+      onClick={goToCodeDetails}
     >
       <TableRow>
         <ExplorerLink
-          value={publicInfo.id.toString()}
-          type="code_id"
           rightIcon={
             <WasmVerifyBadge
-              status={getWasmVerifyStatus(wasmVerifyInfo)}
               relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
             />
           }
           showCopyOnHover
+          type="code_id"
+          value={publicInfo.id.toString()}
         />
       </TableRow>
       <TableRow>
@@ -64,8 +64,8 @@ export const PublicProjectCodeRow = ({
       <TableRow>
         <Text
           color={cw2Info ? "text.main" : "text.disabled"}
-          wordBreak="break-all"
           whiteSpace="pre-wrap"
+          wordBreak="break-all"
         >
           {cw2Info ?? "N/A"}
         </Text>
@@ -75,9 +75,9 @@ export const PublicProjectCodeRow = ({
       </TableRow>
       <TableRow>
         <ExplorerLink
-          value={publicInfo.uploader}
-          type={getAddressTypeByLength(publicInfo.uploader)}
           showCopyOnHover
+          type={getAddressTypeByLength(publicInfo.uploader)}
+          value={publicInfo.uploader}
         />
       </TableRow>
       <TableRow>
@@ -89,9 +89,9 @@ export const PublicProjectCodeRow = ({
       <TableRow px={0}>
         <HStack onClick={(e) => e.stopPropagation()}>
           <InstantiateButton
+            codeId={publicInfo.id}
             instantiatePermission={publicInfo.instantiatePermission}
             permissionAddresses={publicInfo.permissionAddresses}
-            codeId={publicInfo.id}
           />
           <SaveOrRemoveCodeModal codeInfo={localInfo} />
         </HStack>

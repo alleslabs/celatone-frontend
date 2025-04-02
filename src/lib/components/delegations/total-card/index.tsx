@@ -1,6 +1,6 @@
-import { Box, Spinner } from "@chakra-ui/react";
-
 import type { BechAddr, Option, TokenWithValue } from "lib/types";
+
+import { Box, Spinner } from "@chakra-ui/react";
 
 import { MultiBondsCard } from "./MultiBondsCard";
 import { OverviewCard } from "./OverviewCard";
@@ -28,29 +28,29 @@ export const TotalCard = ({
   if (isLoading)
     return (
       <Box minW={48}>
-        <Spinner mt={2} alignSelf="center" size="xl" />
+        <Spinner alignSelf="center" mt={2} size="xl" />
       </Box>
     );
 
   if (isViewMore)
-    return <OverviewCard title={title} message={message} tokens={tokens} />;
+    return <OverviewCard message={message} title={title} tokens={tokens} />;
 
   if (bondDenoms.length === 1)
     return (
       <SingleBondCard
-        title={title}
-        message={message}
         address={address}
         bondDenom={bondDenoms[0]}
+        message={message}
+        title={title}
         tokens={tokens}
       />
     );
 
   return (
     <MultiBondsCard
-      title={title}
-      message={message}
       address={address}
+      message={message}
+      title={title}
       tokens={tokens}
     />
   );

@@ -1,5 +1,4 @@
 import { Flex } from "@chakra-ui/react";
-
 import { MoveVerifyStatus } from "lib/types";
 
 import { NotVerifiedDetails } from "./NotVerifiedDetails";
@@ -25,11 +24,11 @@ const MoveVerifySectionBody = ({ status }: MoveVerifySectionProps) => {
 
 export const MoveVerifySection = (props: MoveVerifySectionProps) => (
   <Flex
-    direction={{ base: "column", md: "row" }}
     alignItems={{ base: "start", md: "center" }}
+    direction={{ base: "column", md: "row" }}
+    gap={2}
     justifyContent="space-between"
     w="full"
-    gap={2}
   >
     <MoveVerifySectionBody {...props} />
   </Flex>

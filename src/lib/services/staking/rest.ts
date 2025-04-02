@@ -1,5 +1,6 @@
-import axios from "axios";
+import type { BechAddr } from "lib/types";
 
+import axios from "axios";
 import {
   zAnnualProvisionsResponseRest,
   zDelegationsResponseRest,
@@ -11,7 +12,6 @@ import {
   zUnbondingsResponseRest,
 } from "lib/services/types";
 import { big } from "lib/types";
-import type { BechAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getStakingParamsRest = (endpoint: string) =>

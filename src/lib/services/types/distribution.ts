@@ -1,7 +1,6 @@
-import { z } from "zod";
-
 import { zCoin, zValidatorAddr } from "lib/types";
 import { snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 export const zDelegationRewardsResponseRest = z
   .object({

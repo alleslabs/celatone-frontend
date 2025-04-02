@@ -1,14 +1,15 @@
-import { pipe } from "@rx-stream/pipe";
-import { toBeHex } from "ethers";
+import type { SignAndBroadcastEvm } from "lib/app-provider/hooks";
+import type { SimulatedFeeEvm, TxReceiptJsonRpc } from "lib/services/types";
+import type { HexAddr, TxResultRendering } from "lib/types";
 import type { Observable } from "rxjs";
 
-import type { SignAndBroadcastEvm } from "lib/app-provider/hooks";
+import { pipe } from "@rx-stream/pipe";
+import { toBeHex } from "ethers";
 import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { SimulatedFeeEvm, TxReceiptJsonRpc } from "lib/services/types";
-import type { HexAddr, TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
+
 import { catchTxError, postEvmTx } from "../common";
 import { sendingEvmTx } from "../common/sendingEvm";
 
@@ -52,9 +53,9 @@ export const requestEvmTx = ({
             value: txResult.value.transactionHash,
             html: (
               <ExplorerLink
+                openNewTab
                 type="evm_tx_hash"
                 value={txResult.value.transactionHash}
-                openNewTab
               />
             ),
           },
@@ -73,9 +74,9 @@ export const requestEvmTx = ({
           header: "Transaction Complete!",
           headerIcon: (
             <CustomIcon
-              name="check-circle-solid"
-              color="success.main"
               boxSize={5}
+              color="success.main"
+              name="check-circle-solid"
             />
           ),
         },

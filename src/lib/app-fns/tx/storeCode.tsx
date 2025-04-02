@@ -1,17 +1,17 @@
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
-import { pipe } from "@rx-stream/pipe";
-import type { Observable } from "rxjs";
-
 import type { SignAndBroadcast } from "lib/app-provider/hooks";
-import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon";
 import type {
   BechAddr20,
   ComposedMsg,
   Option,
   TxResultRendering,
 } from "lib/types";
+import type { Observable } from "rxjs";
+
+import { pipe } from "@rx-stream/pipe";
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 import { TxStreamPhase } from "lib/types";
 import { feeFromStr, findAttr } from "lib/utils";
 
@@ -80,7 +80,7 @@ export const storeCodeTx = ({
                 value: codeId,
                 html: (
                   <div style={{ display: "inline-flex", alignItems: "center" }}>
-                    <ExplorerLink type="code_id" value={codeId} openNewTab />
+                    <ExplorerLink openNewTab type="code_id" value={codeId} />
                   </div>
                 ),
               },
@@ -89,9 +89,9 @@ export const storeCodeTx = ({
                 value: txInfo.transactionHash,
                 html: (
                   <ExplorerLink
+                    openNewTab
                     type="tx_hash"
                     value={txInfo.transactionHash}
-                    openNewTab
                   />
                 ),
               },
@@ -116,7 +116,7 @@ export const storeCodeTx = ({
                 </>
               ),
               headerIcon: (
-                <CustomIcon name="upload-cloud" boxSize={5} color="gray.600" />
+                <CustomIcon boxSize={5} color="gray.600" name="upload-cloud" />
               ),
             },
             actionVariant: "upload-migrate",

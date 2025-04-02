@@ -1,13 +1,14 @@
+import type { CodeInfo, Option } from "lib/types";
+
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
-import type { CodeInfo, Option } from "lib/types";
 
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { CodesTableHeader } from "./CodesTableHeader";
 import { CodesTableMobileCard } from "./CodesTableMobileCard";
 import { CodesTableRow } from "./CodesTableRow";
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface CodesTableProps {
   codes: Option<CodeInfo[]>;
@@ -52,21 +53,21 @@ export const CodesTable = ({
   ) : (
     <TableContainer pb={6}>
       <CodesTableHeader
-        templateColumns={templateColumns}
+        disablePermission={disablePermission}
         isReadOnly={isReadOnly}
         showCw2andContracts={showCw2andContracts}
-        disablePermission={disablePermission}
+        templateColumns={templateColumns}
       />
       {codes.map((code) => (
         <CodesTableRow
           key={code.id + code.uploader + code.name}
           codeInfo={code}
-          templateColumns={templateColumns}
-          onRowSelect={onRowSelect}
+          disablePermission={disablePermission}
           isReadOnly={isReadOnly}
           showCw2andContracts={showCw2andContracts}
-          disablePermission={disablePermission}
+          templateColumns={templateColumns}
           wasmVerifyInfo={wasmVerifyInfos?.[code.id]}
+          onRowSelect={onRowSelect}
         />
       ))}
     </TableContainer>

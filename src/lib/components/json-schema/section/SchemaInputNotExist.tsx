@@ -1,7 +1,8 @@
-import { Text } from "@chakra-ui/react";
-
-import { CustomIcon } from "lib/components/icon";
 import type { CodeSchema, Nullish, Option } from "lib/types";
+
+import { Text } from "@chakra-ui/react";
+import { CustomIcon } from "lib/components/icon";
+
 import { AttachSchemaCard } from "../AttachSchemaCard";
 
 interface SchemaInputNotExistProps {
@@ -36,7 +37,7 @@ export const SchemaInputNotExist = ({
         ) : (
           <>
             You haven&#39;t attached the JSON Schema for{" "}
-            <CustomIcon name="code" mx={1} color="gray.400" />
+            <CustomIcon color="gray.400" mx={1} name="code" />
             code {codeId} yet
           </>
         )}
@@ -44,9 +45,9 @@ export const SchemaInputNotExist = ({
       <Text
         color="text.disabled"
         fontWeight={500}
-        variant="body2"
-        mt={2}
         mb={4}
+        mt={2}
+        variant="body2"
       >
         {localSchema
           ? `Please fill in ${prettyType} Message manually or change the schema`
@@ -54,9 +55,9 @@ export const SchemaInputNotExist = ({
       </Text>
       <AttachSchemaCard
         attached={Boolean(localSchema)}
-        localSchema={localSchema}
-        codeId={codeId}
         codeHash={codeHash}
+        codeId={codeId}
+        localSchema={localSchema}
         openModal={openModal}
       />
     </>

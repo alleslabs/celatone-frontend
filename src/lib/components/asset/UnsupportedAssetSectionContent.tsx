@@ -1,6 +1,7 @@
+import type { TokenWithValue } from "lib/types";
+
 import { Flex, Grid, Text } from "@chakra-ui/react";
 
-import type { TokenWithValue } from "lib/types";
 import { UnsupportedToken } from "../token";
 
 interface UnsupportedAssetSectionContentProps {
@@ -17,13 +18,13 @@ export const UnsupportedAssetSectionContent = ({
   if (!unsupportedAssets.length)
     return (
       <Flex
-        w="full"
         alignItems="center"
-        justifyContent={{ base: "flex-start", md: "center" }}
         h="calc(100% - 45px)"
+        justifyContent={{ base: "flex-start", md: "center" }}
         minH={20}
+        w="full"
       >
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           This {isAccount ? "address" : "contract"} does not hold any
           unsupported assets
         </Text>

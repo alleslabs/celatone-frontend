@@ -1,9 +1,10 @@
+import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/types";
+import type { AssetInfos, MovePoolInfos, Option } from "lib/types";
+
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/types";
-import type { AssetInfos, MovePoolInfos, Option } from "lib/types";
 
 import { DelegationRelatedTxsTableHeader } from "./DelegationRelatedTxsTableHeader";
 import { DelegationRelatedTxsTableMobileCard } from "./DelegationRelatedTxsTableMobileCard";
@@ -49,8 +50,8 @@ export const DelegationRelatedTxsTable = ({
       {delegationRelatedTxs.map((delegationRelatedTx) => (
         <DelegationRelatedTxsTableMobileCard
           key={delegationRelatedTx.txHash}
-          delegationRelatedTx={delegationRelatedTx}
           assetInfos={assetInfos}
+          delegationRelatedTx={delegationRelatedTx}
           movePoolInfos={movePoolInfos}
           onRowSelect={onRowSelect}
         />
@@ -62,10 +63,10 @@ export const DelegationRelatedTxsTable = ({
       {delegationRelatedTxs.map((delegationRelatedTx) => (
         <DelegationRelatedTxsTableRow
           key={delegationRelatedTx.txHash}
-          templateColumns={templateColumns}
-          delegationRelatedTx={delegationRelatedTx}
           assetInfos={assetInfos}
+          delegationRelatedTx={delegationRelatedTx}
           movePoolInfos={movePoolInfos}
+          templateColumns={templateColumns}
           onRowSelect={onRowSelect}
         />
       ))}

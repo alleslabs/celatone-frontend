@@ -1,9 +1,9 @@
-import { Box, Flex } from "@chakra-ui/react";
 import type { Coin, StdFee } from "@cosmjs/stargate";
-import dynamic from "next/dynamic";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useForm, useFormState } from "react-hook-form";
+import type { AttachFundsState } from "lib/components/fund/types";
+import type { Activity } from "lib/stores/contract";
+import type { BechAddr32, ComposedMsg } from "lib/types";
 
+import { Box, Flex } from "@chakra-ui/react";
 import { AmpEvent, trackActionWithFunds } from "lib/amplitude";
 import {
   useCurrentChain,
@@ -22,17 +22,17 @@ import {
   defaultAsset,
   defaultAssetJsonStr,
 } from "lib/components/fund/data";
-import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import JsonInput from "lib/components/json/JsonInput";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { useExecuteCmds, useTxBroadcast } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { useSimulateFeeQuery } from "lib/services/tx";
-import type { Activity } from "lib/stores/contract";
-import type { BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import { composeMsg, jsonPrettify, jsonValidate } from "lib/utils";
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useForm, useFormState } from "react-hook-form";
 
 import { MsgSuggestion } from "./MsgSuggestion";
 
@@ -232,48 +232,48 @@ export const JsonExecute = ({
     <>
       {cmdsFetching && <LoadingOverlay />}
       <MsgSuggestion
-        contractAddress={contractAddress}
         cmds={execCmds}
+        contractAddress={contractAddress}
         setMsg={setMsg}
       />
       <Flex direction="column" gap={10}>
-        <Flex gap={8} direction={{ sm: "column", lg: "row" }}>
+        <Flex direction={{ sm: "column", lg: "row" }} gap={8}>
           <Flex direction="column" w={{ sm: "full", lg: "50%" }}>
-            <JsonInput topic="Execute Msg" text={msg} setText={setMsg} />
+            <JsonInput setText={setMsg} text={msg} topic="Execute Msg" />
             {error && <ErrorMessageRender error={error} mb={4} />}
           </Flex>
           <Box w={{ sm: "full", lg: "50%" }}>
             <AttachFund
+              attachFundsOption={attachFundsOption}
               control={control}
               setValue={setValue}
-              attachFundsOption={attachFundsOption}
             />
           </Box>
         </Flex>
         <Flex alignItems="center" justify="space-between">
           <Flex gap={2}>
             <CopyButton
+              amptrackSection="execute_msg"
               isDisable={!msg.length}
               value={msg}
-              amptrackSection="execute_msg"
             />
             <WasmCodeSnippet
-              type="execute"
               contractAddress={contractAddress}
-              message={msg}
               funds={funds}
+              message={msg}
+              type="execute"
             />
           </Flex>
-          <Flex direction="row" align="center" gap={2}>
-            <Flex fontSize="14px" color="text.dark" alignItems="center">
+          <Flex align="center" direction="row" gap={2}>
+            <Flex alignItems="center" color="text.dark" fontSize="14px">
               Transaction Fee:{" "}
               <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
             </Flex>
             <SubmitButton
-              text="Execute"
-              isLoading={processing}
-              onSubmit={proceed}
               isDisabled={isButtonDisabled}
+              isLoading={processing}
+              text="Execute"
+              onSubmit={proceed}
             />
           </Flex>
         </Flex>

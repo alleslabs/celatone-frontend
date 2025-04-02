@@ -1,9 +1,10 @@
-import { Button } from "@chakra-ui/react";
+import type { Message, Msg } from "lib/types";
 
+import { Button } from "@chakra-ui/react";
 import { useCurrentChain } from "lib/app-provider";
 import { useRedo } from "lib/hooks/useRedo";
-import type { Message, Msg } from "lib/types";
 import { extractMsgType } from "lib/utils";
+
 import { CustomIcon } from "../icon";
 
 interface RedoButtonProps {
@@ -15,8 +16,8 @@ export const RedoButton = ({ message }: RedoButtonProps) => {
   const { chainName } = useCurrentChain();
   return (
     <Button
-      variant="outline-gray"
       size="sm"
+      variant="outline-gray"
       onClick={(e) =>
         onClickRedo(
           e,
@@ -26,7 +27,7 @@ export const RedoButton = ({ message }: RedoButtonProps) => {
         )
       }
     >
-      <CustomIcon name="redo" boxSize={3} />
+      <CustomIcon boxSize={3} name="redo" />
       Redo
     </Button>
   );

@@ -2,16 +2,16 @@ import { Flex, Spinner, Text } from "@chakra-ui/react";
 
 export const LoadingOverlay = () => (
   <Flex
-    w="100vw"
-    h="100vh"
-    justify="center"
     align="center"
+    bgColor="background.overlay"
     direction="column"
     gap={3}
-    bgColor="background.overlay"
+    h="100vh"
+    justify="center"
+    left={0}
     position="fixed"
     top={0}
-    left={0}
+    w="100vw"
     zIndex="overlay"
   >
     <Spinner size="xl" />

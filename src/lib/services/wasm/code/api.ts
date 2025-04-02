@@ -1,12 +1,12 @@
-import axios from "axios";
+import type { CodeData, CodesResponse } from "lib/services/types";
+import type { BechAddr, BechAddr20, Option } from "lib/types";
 
+import axios from "axios";
 import {
   zCodeData,
   zCodeListResponse,
   zCodesResponse,
 } from "lib/services/types";
-import type { CodeData, CodesResponse } from "lib/services/types";
-import type { BechAddr, BechAddr20, Option } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getCodes = async (

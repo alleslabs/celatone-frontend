@@ -1,5 +1,6 @@
-import { Flex } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+
+import { Flex } from "@chakra-ui/react";
 
 interface StatusMessageBoxProps {
   content: ReactNode;
@@ -11,7 +12,12 @@ export const StatusMessageBox = ({
   borderColor = "primary.main",
   pl = 6,
 }: StatusMessageBoxProps) => (
-  <Flex borderLeft="4px solid" borderColor={borderColor} pl={pl}>
+  <Flex
+    borderColor={borderColor}
+    borderLeftWidth="4px"
+    borderStyle="solid"
+    pl={pl}
+  >
     {content}
   </Flex>
 );

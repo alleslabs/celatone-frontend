@@ -1,12 +1,12 @@
-import axios from "axios";
-
 import type { AccountModulesResponse } from "lib/services/types";
+import type { Addr, HexAddr, IndexedModule, Nullable } from "lib/types";
+
+import axios from "axios";
 import {
   zModuleResponseRest,
   zModulesResponseRest,
   zMoveViewJsonResponseRest,
 } from "lib/services/types";
-import type { Addr, HexAddr, IndexedModule, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getModuleByAddressRest = async (

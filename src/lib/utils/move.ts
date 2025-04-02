@@ -1,4 +1,5 @@
 import type { Option } from "lib/types";
+
 import { MoveVerifyStatus } from "lib/types";
 
 export const resolveMoveVerifyStatus = (

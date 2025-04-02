@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-
 import { useInitia } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -16,7 +14,10 @@ import {
 import { useValidatorsRest } from "lib/services/validator";
 import { big } from "lib/types";
 import { valoperToAddr } from "lib/utils";
+import { useMemo } from "react";
+
 import type { ValidatorDetailsQueryParams } from "../../types";
+
 import { ValidatorOverview } from "../validator-overview";
 import { ValidatorTop } from "../validator-top";
 
@@ -75,31 +76,31 @@ export const ValidatorDetailsBodyLite = ({
         />
         <ValidatorTop
           info={foundValidator}
-          totalVotingPower={totalVotingPower}
           singleStakingDenom={stakingParams?.bondDenom}
+          totalVotingPower={totalVotingPower}
         />
       </PageHeaderContainer>
       <PageContainer>
         <ValidatorOverview
-          validatorAddress={validatorAddress}
-          onSelectVotes={undefined}
-          onSelectPerformance={undefined}
-          onSelectBondedTokenChanges={undefined}
+          assetInfos={assetInfos}
+          details={foundValidator.details}
           isActive={foundValidator.isActive}
           isJailed={foundValidator.isJailed}
-          details={foundValidator.details}
-          singleStakingDenom={stakingParams?.bondDenom}
-          assetInfos={assetInfos}
-          votingPower={foundValidator.votingPower}
-          totalVotingPower={totalVotingPower}
           selfVotingPower={
             delegations?.length ? big(delegations[0].balance.amount) : big(0)
           }
+          singleStakingDenom={stakingParams?.bondDenom}
+          totalVotingPower={totalVotingPower}
+          validatorAddress={validatorAddress}
+          votingPower={foundValidator.votingPower}
+          onSelectBondedTokenChanges={undefined}
+          onSelectPerformance={undefined}
+          onSelectVotes={undefined}
         />
         <UserDocsLink
-          title="What is a Validator?"
           cta="Read more about Validator Details"
           href="general/validators/detail-page"
+          title="What is a Validator?"
         />
       </PageContainer>
     </>

@@ -1,8 +1,9 @@
+import type { EvmVerifyInfoLibraries } from "lib/types";
+
 import { Box, Divider, Grid, GridItem, Text } from "@chakra-ui/react";
-import { Fragment } from "react";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { EvmVerifyInfoLibraries } from "lib/types";
+import { Fragment } from "react";
 
 interface ContractLibraryListProps {
   libraries: EvmVerifyInfoLibraries;
@@ -16,8 +17,8 @@ export const ContractLibraryList = ({
   const isMobile = useMobile();
 
   return (
-    <Box p={4} bg="gray.900" borderRadius={8}>
-      <Grid gridTemplateColumns={templateColumns} gap={3} alignItems="center">
+    <Box bg="gray.900" borderRadius={8} p={4}>
+      <Grid alignItems="center" gap={3} gridTemplateColumns={templateColumns}>
         <GridItem>
           <Text color="text.dark" variant="body2">
             #
@@ -35,7 +36,7 @@ export const ContractLibraryList = ({
         </GridItem>
       </Grid>
       <Divider my={3} />
-      <Grid gridTemplateColumns={templateColumns} gap={3} alignItems="center">
+      <Grid alignItems="center" gap={3} gridTemplateColumns={templateColumns}>
         {libraries.map((library, index) => (
           <Fragment key={index}>
             <GridItem>
@@ -50,10 +51,10 @@ export const ContractLibraryList = ({
             </GridItem>
             <GridItem>
               <ExplorerLink
-                value={library.contractAddress}
-                type="evm_contract_address"
-                textFormat={isMobile ? "truncate" : "normal"}
                 showCopyOnHover
+                textFormat={isMobile ? "truncate" : "normal"}
+                type="evm_contract_address"
+                value={library.contractAddress}
               />
             </GridItem>
           </Fragment>

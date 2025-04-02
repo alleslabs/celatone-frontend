@@ -1,3 +1,5 @@
+import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+
 import {
   Flex,
   Heading,
@@ -6,14 +8,12 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { useMemo } from "react";
-
 import { CustomTab } from "lib/components/CustomTab";
 import { EmptyState } from "lib/components/state";
 import { EvmTransactionsTable, TransactionsTable } from "lib/components/table";
 import { useBlockDataJsonRpc } from "lib/services/block";
 import { useTxsByBlockHeightSequencer } from "lib/services/tx";
-import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+import { useMemo } from "react";
 
 const tableHeaderId = "blockTxsTables";
 
@@ -48,21 +48,22 @@ export const BlockEvmTxsTablesSequencer = ({
 
   return (
     <Flex
+      borderTopColor="gray.700"
+      borderTopWidth="1px"
       direction="column"
       gap={6}
       pt={8}
-      borderTopColor="gray.700"
-      borderTopWidth="1px"
     >
       <Heading as="h6" variant="h6">
         Transactions
       </Heading>
       <Tabs isLazy lazyBehavior="keepMounted">
         <TabList
-          borderBottom="1px solid"
-          borderColor="gray.700"
-          overflowX="scroll"
           id={tableHeaderId}
+          borderBottomWidth="1px"
+          borderColor="gray.700"
+          borderStyle="solid"
+          overflowX="scroll"
         >
           <CustomTab count={cosmosTxs?.length}>Cosmos</CustomTab>
           <CustomTab count={evmTxs?.length}>EVM</CustomTab>
@@ -70,29 +71,29 @@ export const BlockEvmTxsTablesSequencer = ({
         <TabPanels>
           <TabPanel p={0} pt={{ base: 0, md: 6 }}>
             <TransactionsTable
-              transactions={cosmosTxs}
-              isLoading={isCosmosTxsLoading}
               emptyState={
                 <EmptyState
                   imageVariant="empty"
                   message="There are no submitted transactions in this block"
                 />
               }
-              showSuccess
+              isLoading={isCosmosTxsLoading}
               showRelations={false}
+              showSuccess
               showTimestamp={false}
+              transactions={cosmosTxs}
             />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 0, md: 6 }}>
             <EvmTransactionsTable
-              evmTransactions={evmTxs}
-              isLoading={isEvmBlockDataLoading}
               emptyState={
                 <EmptyState
                   imageVariant="empty"
                   message="There are no submitted EVM transactions in this block"
                 />
               }
+              evmTransactions={evmTxs}
+              isLoading={isEvmBlockDataLoading}
             />
           </TabPanel>
         </TabPanels>

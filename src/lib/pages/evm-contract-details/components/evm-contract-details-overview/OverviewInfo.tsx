@@ -1,9 +1,10 @@
+import type { BechAddr, Nullish, Option } from "lib/types";
+
 import { Flex, Grid, Spinner, Stack, Text } from "@chakra-ui/react";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import type { BechAddr, Nullish, Option } from "lib/types";
 import { dateFromNow, formatEvmTxHash, formatUTC } from "lib/utils";
 
 interface OverviewInfoProps {
@@ -27,23 +28,23 @@ export const OverviewInfo = ({
 
   return (
     <Grid
-      gridTemplateColumns={{
-        base: "1fr",
-        md: "repeat(4, max-content)",
-      }}
-      padding={4}
       bg="gray.900"
       borderRadius={8}
       columnGap={{
         base: 14,
         "2xl": 36,
       }}
+      gridTemplateColumns={{
+        base: "1fr",
+        md: "repeat(4, max-content)",
+      }}
+      padding={4}
       rowGap={4}
     >
       <LabelText label="Network">{currentChainId}</LabelText>
       <LabelText
-        label="Creator Address"
         helperText1={isMobile ? "(Wallet Address)" : undefined}
+        label="Creator Address"
       >
         {isContractInfoLoading ? (
           <Spinner boxSize={4} />
@@ -51,11 +52,11 @@ export const OverviewInfo = ({
           <>
             {sender ? (
               <ExplorerLink
-                value={formatAddresses(sender).hex}
                 type="user_address"
+                value={formatAddresses(sender).hex}
               />
             ) : (
-              <Text variant="body2" color="text.disabled">
+              <Text color="text.disabled" variant="body2">
                 -
               </Text>
             )}
@@ -67,29 +68,29 @@ export const OverviewInfo = ({
           <Spinner boxSize={4} />
         ) : (
           <Stack gap={0}>
-            <Flex gap={1} alignItems="center">
-              <Text variant="body2" color="text.dark">
+            <Flex alignItems="center" gap={1}>
+              <Text color="text.dark" variant="body2">
                 Cosmos:
               </Text>
               {hash ? (
-                <ExplorerLink value={hash} type="tx_hash" />
+                <ExplorerLink type="tx_hash" value={hash} />
               ) : (
-                <Text variant="body2" color="text.disabled">
+                <Text color="text.disabled" variant="body2">
                   -
                 </Text>
               )}
             </Flex>
-            <Flex gap={1} alignItems="center">
-              <Text variant="body2" color="text.dark">
+            <Flex alignItems="center" gap={1}>
+              <Text color="text.dark" variant="body2">
                 EVM:
               </Text>
               {evmHash ? (
                 <ExplorerLink
-                  value={formatEvmTxHash(evmHash)}
                   type="evm_tx_hash"
+                  value={formatEvmTxHash(evmHash)}
                 />
               ) : (
-                <Text variant="body2" color="text.disabled">
+                <Text color="text.disabled" variant="body2">
                   -
                 </Text>
               )}
@@ -104,15 +105,15 @@ export const OverviewInfo = ({
           <>
             {created ? (
               <>
-                <Text variant="body2" color="text.dark">
+                <Text color="text.dark" variant="body2">
                   {formatUTC(created)}
                 </Text>
-                <Text variant="body3" color="text.disabled">
+                <Text color="text.disabled" variant="body3">
                   ({dateFromNow(created)})
                 </Text>
               </>
             ) : (
-              <Text variant="body2" color="text.disabled">
+              <Text color="text.disabled" variant="body2">
                 -
               </Text>
             )}

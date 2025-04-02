@@ -1,4 +1,13 @@
-import { useMemo } from "react";
+import type {
+  BechAddr,
+  BechAddr20,
+  Delegation,
+  Redelegation,
+  TokenWithValue,
+  Unbonding,
+  ValidatorAddr,
+  ValidatorData,
+} from "lib/types";
 
 import { useValidateAddress } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
@@ -14,23 +23,15 @@ import {
   useUnbondingsByAddressRest,
 } from "lib/services/staking";
 import { useValidatorsRest } from "lib/services/validator";
-import type {
-  BechAddr,
-  BechAddr20,
-  Delegation,
-  Redelegation,
-  TokenWithValue,
-  Unbonding,
-  ValidatorAddr,
-  ValidatorData,
-} from "lib/types";
 import {
   addrToValoper,
   addTokenWithValue,
   coinToTokenWithValue,
 } from "lib/utils";
+import { useMemo } from "react";
 
 import type { DelegationInfos } from "./types";
+
 import { calBonded } from "./utils";
 
 export const useAccountDelegationInfosRest = (

@@ -1,19 +1,19 @@
-import { Flex, useDisclosure } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import type { BechAddr } from "lib/types";
 
+import { Flex, useDisclosure } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useAccountDelegationInfos } from "lib/model/account";
-import type { BechAddr } from "lib/types";
 import { getTokenLabel } from "lib/utils";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
+import { TableTitle } from "../table";
 import { DelegationInfo } from "./DelegationInfo";
 import { DelegationsBody } from "./DelegationsBody";
 import { RedelegationsSection } from "./RedelegationsSection";
 import { TotalCard } from "./total-card";
-import { TableTitle } from "../table";
 
 interface DelegationsSectionProps {
   address: BechAddr;
@@ -56,12 +56,12 @@ export const DelegationsSection = ({
   if (!stakingParams)
     return (
       <Flex direction="column">
-        <TableTitle title="Delegations" mb={2} showCount={false} />
+        <TableTitle mb={2} showCount={false} title="Delegations" />
         <ErrorFetching
           dataName="delegation data"
-          withBorder
-          my={2}
           hasBorderTop={false}
+          my={2}
+          withBorder
         />
       </Flex>
     );
@@ -71,43 +71,28 @@ export const DelegationsSection = ({
   return (
     <Flex
       mb={{ base: 0, md: 8 }}
-      position="relative"
       overflow="hidden"
+      position="relative"
       width="full"
     >
       <Flex
         direction="column"
         gap={8}
-        w="full"
-        position={isOpen ? "absolute" : "relative"}
-        opacity={isOpen ? 0 : 1}
         left={isOpen ? "-100%" : "0"}
+        opacity={isOpen ? 0 : 1}
+        position={isOpen ? "absolute" : "relative"}
         transition="all 0.25s ease-in-out"
+        w="full"
       >
         <DelegationInfo
           hasTotalBonded={totalBonded && Object.keys(totalBonded).length > 0}
-          totalBondedCard={
-            <TotalCard
-              title="Total Bonded"
-              message={`Total delegated and unbonding ${
-                stakingParams.bondDenoms.length === 1
-                  ? getTokenLabel(
-                      stakingParams.bondDenoms[0].denom,
-                      stakingParams.bondDenoms[0].symbol
-                    )
-                  : "tokens"
-              }, including those delegated through vesting`}
-              address={address}
-              bondDenoms={stakingParams.bondDenoms}
-              tokens={totalBonded}
-              isLoading={isTotalBondedLoading}
-              isViewMore={Boolean(onViewMore)}
-            />
-          }
           otherInfoCards={
             <>
               <TotalCard
-                title="Reward"
+                address={address}
+                bondDenoms={stakingParams.bondDenoms}
+                isLoading={isRewardsLoading}
+                isViewMore={Boolean(onViewMore)}
                 message={`Total rewards earned from delegated ${
                   stakingParams.bondDenoms.length === 1
                     ? getTokenLabel(
@@ -116,26 +101,41 @@ export const DelegationsSection = ({
                       )
                     : "tokens"
                 } across all validators`}
-                address={address}
-                bondDenoms={stakingParams.bondDenoms}
+                title="Reward"
                 tokens={totalRewards}
-                isLoading={isRewardsLoading}
-                isViewMore={Boolean(onViewMore)}
               />
               {isValidator && (
                 <TotalCard
-                  title="Commission"
-                  message="Total commission reward earned by validator"
                   address={address}
                   bondDenoms={stakingParams.bondDenoms}
-                  tokens={totalCommissions}
                   isLoading={isCommissionsLoading}
                   isViewMore={Boolean(onViewMore)}
+                  message="Total commission reward earned by validator"
+                  title="Commission"
+                  tokens={totalCommissions}
                 />
               )}
             </>
           }
           redelegationCount={redelegationCount}
+          totalBondedCard={
+            <TotalCard
+              address={address}
+              bondDenoms={stakingParams.bondDenoms}
+              isLoading={isTotalBondedLoading}
+              isViewMore={Boolean(onViewMore)}
+              message={`Total delegated and unbonding ${
+                stakingParams.bondDenoms.length === 1
+                  ? getTokenLabel(
+                      stakingParams.bondDenoms[0].denom,
+                      stakingParams.bondDenoms[0].symbol
+                    )
+                  : "tokens"
+              }, including those delegated through vesting`}
+              title="Total Bonded"
+              tokens={totalBonded}
+            />
+          }
           onClickToggle={() => {
             track(AmpEvent.USE_SEE_REDELEGATIONS);
             onToggle();
@@ -144,27 +144,27 @@ export const DelegationsSection = ({
         />
         {!onViewMore && (
           <DelegationsBody
-            totalDelegations={totalDelegations}
+            bondDenoms={stakingParams.bondDenoms}
             delegations={delegations}
-            totalUnbondings={totalUnbondings}
-            unbondings={unbondings}
-            rewards={rewards}
             isDelegationsLoading={isDelegationsLoading || isRewardsLoading}
             isUnbondingsLoading={isUnbondingsLoading}
-            bondDenoms={stakingParams.bondDenoms}
+            rewards={rewards}
+            totalDelegations={totalDelegations}
+            totalUnbondings={totalUnbondings}
+            unbondings={unbondings}
           />
         )}
       </Flex>
       <RedelegationsSection
-        stakingParams={stakingParams}
-        redelegations={redelegations ?? []}
         isLoading={isRedelegationsLoading}
-        onBack={onToggle}
-        w="full"
-        position={isOpen ? "relative" : "absolute"}
-        opacity={isOpen ? 1 : 0}
         left={isOpen ? "0" : "100%"}
+        opacity={isOpen ? 1 : 0}
+        position={isOpen ? "relative" : "absolute"}
+        redelegations={redelegations ?? []}
+        stakingParams={stakingParams}
         transition="all 0.25s ease-in-out"
+        w="full"
+        onBack={onToggle}
       />
     </Flex>
   );

@@ -1,15 +1,12 @@
-/* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable sonarjs/max-switch-cases */
-/* eslint-disable complexity */
-import { Flex } from "@chakra-ui/react";
-
 import type { AddressReturnType } from "lib/app-provider";
+import type { Option, TxReceipt } from "lib/types";
+import type { VoteOption } from "lib/utils";
+
+import { Flex } from "@chakra-ui/react";
 import { CopyButton } from "lib/components/copy";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
 import { big } from "lib/types";
-import type { Option, TxReceipt } from "lib/types";
-import type { VoteOption } from "lib/utils";
 import {
   extractMsgType,
   extractTxDetails,
@@ -17,6 +14,8 @@ import {
   parseDate,
   voteOption,
 } from "lib/utils";
+
+import type { TxMsgData } from "..";
 
 import { CoinsComponent } from "./CoinsComponent";
 import {
@@ -31,12 +30,10 @@ import {
   proposalIdReceipt,
   validatorAddrReceipt,
 } from "./renderUtils";
-import type { TxMsgData } from "..";
 
 export const generateReceipts = (
   { msgBody, log }: Omit<TxMsgData, "assetInfos">,
   getAddressType: (address: string) => AddressReturnType
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 ): Option<TxReceipt | null | false>[] => {
   const { "@type": type, ...body } = msgBody;
 
@@ -76,12 +73,12 @@ export const generateReceipts = (
                 }
               />
               <ViewPermissionAddresses
+                amptrackSection="tx_msg_receipts"
                 permissionAddresses={
                   details.instantiate_permission.address
                     ? [details.instantiate_permission.address]
                     : (details.instantiate_permission.addresses ?? [])
                 }
-                amptrackSection="tx_msg_receipts"
               />
             </Flex>
           ),
@@ -89,19 +86,19 @@ export const generateReceipts = (
         {
           title: "Wasm Byte Code",
           html: (
-            <Flex gap={3} align="flex-start">
+            <Flex align="flex-start" gap={3}>
               Size:{" "}
               {big(Buffer.from(details.wasm_byte_code).byteLength)
                 .div(1024)
                 .toFixed(1)}{" "}
               KB
               <CopyButton
-                value={details.wasm_byte_code}
-                variant="ghost-primary"
+                amptrackSection="tx_msg_receipts_wasm_byte_code"
                 buttonText="Click to Copy"
                 hasIcon={false}
                 mt={-1}
-                amptrackSection="tx_msg_receipts_wasm_byte_code"
+                value={details.wasm_byte_code}
+                variant="ghost-primary"
               />
             </Flex>
           ),

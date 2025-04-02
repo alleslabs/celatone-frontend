@@ -1,3 +1,5 @@
+import type { InternalResource } from "lib/types";
+
 import {
   AccordionButton,
   AccordionIcon,
@@ -6,11 +8,10 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-
 import { trackUseExpand } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
-import type { InternalResource } from "lib/types";
 import { parseJsonStr } from "lib/utils";
+
 import { Copier, CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 
@@ -28,12 +29,12 @@ export const ResourceDetailCard = ({
   // TODO: revisit later
   if (parsedMoveResource === "")
     return (
-      <Flex bg="gray.900" p={4} borderRadius={8} alignItems="center">
+      <Flex alignItems="center" bg="gray.900" borderRadius={8} p={4}>
         <CustomIcon
-          name="alert-triangle-solid"
-          color="gray.600"
           boxSize={4}
+          color="gray.600"
           mr={3}
+          name="alert-triangle-solid"
         />
         <Text color="text.dark" textAlign="center">
           Invalid Data, resource and module provided are incompatible or contain
@@ -68,75 +69,76 @@ export const ResourceDetailCard = ({
             }
           >
             <Flex
-              p={4}
-              justifyContent="space-between"
-              w="full"
-              align="center"
               className="copier-wrapper"
+              align="center"
+              justifyContent="space-between"
+              p={4}
+              w="full"
             >
               <Flex alignItems="center">
                 <Text
-                  variant="body1"
                   fontWeight={600}
                   textAlign="left"
+                  variant="body1"
                   wordBreak="break-word"
                 >
                   {resourceData.structTag}
                 </Text>
                 <Copier
-                  type="resource"
-                  display={!isMobile ? "none" : "inline"}
-                  value={resourceData.structTag}
                   copyLabel="Copied!"
+                  display={!isMobile ? "none" : "inline"}
+                  type="resource"
+                  value={resourceData.structTag}
                 />
               </Flex>
               <Flex alignItems="center" gap={2}>
                 <CopyButton
-                  value={resourceData.moveResource}
-                  variant="outline-gray"
-                  size="xs"
-                  gap={1}
-                  px={2}
                   buttonText="Copy JSON"
                   display={{ base: "none", md: "flex" }}
+                  gap={1}
+                  px={2}
+                  size="xs"
+                  value={resourceData.moveResource}
+                  variant="outline-gray"
                 />
                 <AccordionIcon color="gray.600" />
               </Flex>
             </Flex>
           </AccordionButton>
           <AccordionPanel
-            p={4}
-            borderTop="1px solid"
             borderColor="gray.700"
+            borderStyle="solid"
             borderTopRadius={0}
+            borderTopWidth="1px"
+            p={4}
           >
             <Flex direction="column" gap={3}>
               {formattedArray.map((item) => (
                 <Flex
                   key={item.key}
-                  gap={{ base: 1, md: 4 }}
                   direction={{ base: "column", md: "row" }}
+                  gap={{ base: 1, md: 4 }}
                 >
                   <Text
-                    variant="body2"
                     color="text.dark"
                     fontWeight="600"
                     minW={40}
+                    variant="body2"
                   >
                     {item.key}
                   </Text>
                   {typeof item.value === "object" ? (
                     <Text
-                      variant="body2"
                       color="text.main"
+                      variant="body2"
                       wordBreak="break-all"
                     >
                       {JSON.stringify(item.value)}
                     </Text>
                   ) : (
                     <Text
-                      variant="body2"
                       color="text.main"
+                      variant="body2"
                       wordBreak="break-word"
                     >
                       {item.value?.toString()}

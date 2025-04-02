@@ -1,8 +1,8 @@
-import { Text } from "@chakra-ui/react";
+import type { BechAddr, Option } from "lib/types";
 
+import { Text } from "@chakra-ui/react";
 import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { BechAddr, Option } from "lib/types";
 
 export const Proposer = ({
   proposer,
@@ -14,11 +14,11 @@ export const Proposer = ({
   const getAddressType = useGetAddressType();
   return proposer ? (
     <ExplorerLink
+      ampCopierSection={amptrackSection}
+      showCopyOnHover
+      textVariant="body2"
       type={getAddressType(proposer)}
       value={proposer}
-      showCopyOnHover
-      ampCopierSection={amptrackSection}
-      textVariant="body2"
     />
   ) : (
     <Text color="text.dark" variant="body2">

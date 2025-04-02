@@ -1,9 +1,4 @@
-/* eslint-disable complexity */
 import { Flex, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import { isNull } from "lodash";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
-
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useInternalNavigate,
@@ -26,6 +21,11 @@ import {
 } from "lib/services/move/module";
 import { useMoveVerifyInfo } from "lib/services/verification/move";
 import { resolveMoveVerifyStatus, truncate } from "lib/utils";
+import { isNull } from "lodash";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useMemo, useState } from "react";
+
+import type { ModuleDetailsQueryParams } from "./types";
 
 import {
   ModuleActions,
@@ -36,7 +36,6 @@ import {
   ModuleTablesTabIndex,
   ModuleTop,
 } from "./components";
-import type { ModuleDetailsQueryParams } from "./types";
 import {
   FunctionTypeTabIndex,
   TabIndex,
@@ -148,22 +147,23 @@ const ModuleDetailsBody = ({
         lazyBehavior="keepMounted"
       >
         <TabList
-          my={8}
-          borderBottom="1px solid"
-          borderColor="gray.700"
-          overflowX="scroll"
           id={mainTabHeaderId}
+          borderBottomWidth="1px"
+          borderColor="gray.700"
+          borderStyle="solid"
+          my={8}
+          overflowX="scroll"
         >
           <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
             Overview
           </CustomTab>
           <CustomTab
             count={data.parsedAbi.exposed_functions.length}
+            isDisabled={!data.parsedAbi.exposed_functions.length}
             onClick={handleTabChange(
               TabIndex.Function,
               FunctionTypeTabIndex.ALL
             )}
-            isDisabled={!data.parsedAbi.exposed_functions.length}
           >
             Functions
           </CustomTab>
@@ -174,22 +174,20 @@ const ModuleDetailsBody = ({
           )}
           <CustomTab
             count={data.parsedAbi.structs.length}
-            onClick={handleTabChange(TabIndex.Structs)}
             isDisabled={!data.parsedAbi.structs.length}
+            onClick={handleTabChange(TabIndex.Structs)}
           >
             Structs
           </CustomTab>
         </TabList>
         <TabPanels>
           <TabPanel p={0}>
-            <Flex gap={6} flexDirection="column">
+            <Flex flexDirection="column" gap={6}>
               <StatusMessageBox
                 borderColor="gray.100"
                 content={<MoveVerifySection status={moveVerifyStatus} />}
               />
               <ModuleActions
-                viewFns={data.viewFunctions.length}
-                executeFns={data.executeFunctions.length}
                 allTxsCount={
                   moduleTableCounts &&
                   !isNull(moduleTableCounts.txs) &&
@@ -197,6 +195,8 @@ const ModuleDetailsBody = ({
                     ? moduleTableCounts.txs + moduleTableCounts.histories
                     : undefined
                 }
+                executeFns={data.executeFunctions.length}
+                viewFns={data.viewFunctions.length}
                 onSelectAction={(
                   nextTab: TabIndex,
                   fnType?: FunctionTypeTabIndex
@@ -210,20 +210,20 @@ const ModuleDetailsBody = ({
               <ModuleInfo
                 indexedModule={data}
                 modulePublishInfo={modulePublishInfo}
-                verificationData={verificationData}
                 moveVerifyStatus={moveVerifyStatus}
+                verificationData={verificationData}
               />
               {isFullTier && (
                 <ModuleTables
-                  vmAddress={data.address}
-                  moduleName={data.moduleName}
-                  txsCount={moduleTableCounts?.txs ?? undefined}
                   historiesCount={moduleTableCounts?.histories ?? undefined}
+                  moduleName={data.moduleName}
                   relatedProposalsCount={
                     moduleTableCounts?.proposals ?? undefined
                   }
-                  tab={overviewTabIndex}
                   setTab={setOverviewTabIndex}
+                  tab={overviewTabIndex}
+                  txsCount={moduleTableCounts?.txs ?? undefined}
+                  vmAddress={data.address}
                   onViewMore={(nextTab: ModuleTablesTabIndex) => {
                     handleTabChange(TabIndex.TxsHistories)();
                     setTableTabIndex(nextTab);
@@ -232,52 +232,52 @@ const ModuleDetailsBody = ({
               )}
             </Flex>
             <UserDocsLink
-              title="What is a move module?"
               cta="Read more about Module"
               href="move/modules/detail-page"
+              title="What is a move module?"
             />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleFunctions
               address={data.address}
-              moduleName={data.moduleName}
-              fns={data.parsedAbi.exposed_functions}
-              viewFns={data.viewFunctions}
               executeFns={data.executeFunctions}
+              fns={data.parsedAbi.exposed_functions}
+              moduleName={data.moduleName}
               typeTab={type}
+              viewFns={data.viewFunctions}
             />
             <UserDocsLink
-              title="What is Module functions?"
               cta="Read more about View and Execute Functions"
               href="move/modules/detail-page#functions"
+              title="What is Module functions?"
             />
           </TabPanel>
           {isFullTier && (
             <TabPanel p={0}>
               <ModuleTables
-                vmAddress={data.address}
-                moduleName={data.moduleName}
-                txsCount={moduleTableCounts?.txs ?? undefined}
                 historiesCount={moduleTableCounts?.histories ?? undefined}
+                moduleName={data.moduleName}
                 relatedProposalsCount={
                   moduleTableCounts?.proposals ?? undefined
                 }
-                tab={tableTabIndex}
                 setTab={setTableTabIndex}
+                tab={tableTabIndex}
+                txsCount={moduleTableCounts?.txs ?? undefined}
+                vmAddress={data.address}
               />
               <UserDocsLink
-                title="What is Module Transaction?"
                 cta="Read more about transaction in module"
                 href="move/modules/detail-page#transactions-histories"
+                title="What is Module Transaction?"
               />
             </TabPanel>
           )}
           <TabPanel p={0}>
             <ModuleStructs structs={data.parsedAbi.structs} />
             <UserDocsLink
-              title="What is Module Struct?"
               cta="Read more about struct in module"
               href="move/modules/detail-page#structs"
+              title="What is Module Struct?"
             />
           </TabPanel>
         </TabPanels>

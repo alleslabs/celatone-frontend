@@ -5,7 +5,7 @@ export const EvmContractVerifyTop = () => (
     <Heading as="h5" variant="h5">
       Verify & Publish Contract
     </Heading>
-    <Text variant="body2" color="text.dark">
+    <Text color="text.dark" variant="body2">
       Verifying your contract offers enhanced credibility with a verified badge.
       Once verified, users will able to access its source code in contract
       details page.

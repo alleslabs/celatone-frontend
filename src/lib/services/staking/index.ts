@@ -1,12 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import type { BechAddr } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
   useGovConfig,
 } from "lib/app-provider";
-import type { BechAddr } from "lib/types";
 
 import { getDelegationData } from "./api";
 import {

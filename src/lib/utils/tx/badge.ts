@@ -1,5 +1,4 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
-
 import type { Option } from "lib/types";
 
 export const getTxBadges = (type: string, log: Option<Log>) => {

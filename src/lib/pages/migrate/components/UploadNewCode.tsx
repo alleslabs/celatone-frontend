@@ -1,9 +1,9 @@
-import { Heading } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/amino";
+import type { Option, SimulateStatus, UploadSectionState } from "lib/types";
 import type { UseFormReturn } from "react-hook-form";
 
+import { Heading } from "@chakra-ui/react";
 import { UploadSection } from "lib/components/upload";
-import type { Option, SimulateStatus, UploadSectionState } from "lib/types";
 
 interface UploadNewCodeProps {
   formData: UseFormReturn<UploadSectionState>;
@@ -17,7 +17,7 @@ interface UploadNewCodeProps {
 
 export const UploadNewCode = (props: UploadNewCodeProps) => (
   <>
-    <Heading as="h6" variant="h6" mb={6}>
+    <Heading as="h6" mb={6} variant="h6">
       Migrate to new code
     </Heading>
     <UploadSection {...props} />

@@ -1,20 +1,20 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Flex, Text } from "@chakra-ui/react";
-
 import type { FormStatus } from "lib/components/forms";
+import type { Code } from "lib/services/types";
+import type { Option } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
 import { UploadIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
-import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeRest } from "lib/services/wasm/code";
-import type { Option } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
 import { getWasmVerifyStatus } from "lib/utils";
 
-import { CodeSelectDrawerButton } from "./CodeSelectDrawerButton";
 import { DotSeparator } from "../DotSeparator";
 import { PermissionChip } from "../PermissionChip";
 import { WasmVerifyBadge } from "../WasmVerifyBadge";
+import { CodeSelectDrawerButton } from "./CodeSelectDrawerButton";
 
 interface CodeSelectProps extends Omit<FlexProps, "onSelect"> {
   codeId: Option<number>;
@@ -46,28 +46,28 @@ export const CodeSelect = ({
     <Flex direction="column" {...componentProps}>
       <Flex
         align="center"
-        p={4}
-        gap={4}
-        w="100%"
         bgColor="gray.900"
+        borderColor={isError ? "error.main" : "gray.700"}
         borderRadius="8px"
         borderWidth="1px"
-        borderColor={isError ? "error.main" : "gray.700"}
+        gap={4}
+        p={4}
+        w="100%"
       >
         <UploadIcon variant={codeId ? "primary" : "muted"} />
         {codeId ? (
           <Flex direction="column" w="60%">
             <Text
-              variant="body1"
               fontWeight={500}
               overflow="hidden"
-              whiteSpace="nowrap"
               textOverflow="ellipsis"
+              variant="body1"
+              whiteSpace="nowrap"
             >
               {name ?? "Untitled Name"}
             </Text>
             <Flex alignItems="center" gap={2}>
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 Code ID {codeId}
               </Text>
               <DotSeparator />
@@ -80,27 +80,27 @@ export const CodeSelect = ({
             </Flex>
             <Flex>
               <WasmVerifyBadge
-                status={getWasmVerifyStatus(wasmDerivedVerifyInfos)}
+                hasText
                 relatedVerifiedCodes={
                   wasmDerivedVerifyInfos?.relatedVerifiedCodes
                 }
-                hasText
+                status={getWasmVerifyStatus(wasmDerivedVerifyInfos)}
               />
             </Flex>
           </Flex>
         ) : (
-          <Text variant="body1" fontWeight={500}>
+          <Text fontWeight={500} variant="body1">
             Please select code
           </Text>
         )}
         <CodeSelectDrawerButton
-          onCodeSelect={onCodeSelect}
           buttonText={codeId ? "Change Code" : "Select Code"}
+          onCodeSelect={onCodeSelect}
         />
       </Flex>
 
       {isError && (
-        <Text variant="body3" color="error.main" mt={1} ml={3}>
+        <Text color="error.main" ml={3} mt={1} variant="body3">
           {status.message}
         </Text>
       )}

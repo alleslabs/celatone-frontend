@@ -8,22 +8,22 @@ export const ValidatorDescription = ({
   details,
 }: ValidatorDescriptionProps) => (
   <Flex
+    backgroundColor="gray.900"
     direction="column"
     gap={2}
-    backgroundColor="gray.900"
     p={4}
     rounded={8}
     w="100%"
   >
-    <Text variant="body2" fontWeight={500} as="h6" color="text.dark">
+    <Text as="h6" color="text.dark" fontWeight={500} variant="body2">
       Validator Description
     </Text>
     {!details ? (
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         No description provided
       </Text>
     ) : (
-      <Text variant="body2" color="text.main">
+      <Text color="text.main" variant="body2">
         {details}
       </Text>
     )}

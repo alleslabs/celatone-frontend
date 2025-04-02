@@ -1,12 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import type { Addr, Nullish } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useInitia,
   useValidateAddress,
 } from "lib/app-provider";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import type { Addr, Nullish } from "lib/types";
 
 import { getAddressByInitiaUsername, getInitiaUsernameByAddress } from "./rest";
 

@@ -1,11 +1,11 @@
+import type { TxBroadcast } from "lib/hooks";
+import type { Nullable, TxResultRendering } from "lib/types";
 import type { ProviderProps, ReactNode } from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Observable } from "rxjs";
 
 import { TxModal } from "lib/components/tx";
 import { TxBroadcastContext } from "lib/hooks";
-import type { TxBroadcast } from "lib/hooks";
-import type { Nullable, TxResultRendering } from "lib/types";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const TxBroadcastProvider = ({ children }: { children: ReactNode }) => {
   const [stream, setStream] =

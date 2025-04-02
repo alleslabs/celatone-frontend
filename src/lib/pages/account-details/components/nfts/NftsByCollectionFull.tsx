@@ -1,6 +1,6 @@
-import { Stack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import type { HexAddr, HexAddr32 } from "lib/types";
 
+import { Stack } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
@@ -9,7 +9,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
 import { useNftsByAccountAddress } from "lib/services/nft";
-import type { HexAddr, HexAddr32 } from "lib/types";
+import { useEffect, useState } from "react";
 
 interface NftsByCollectionFullProps {
   accountAddress: HexAddr;
@@ -61,36 +61,36 @@ export const NftsByCollectionFull = ({
   return (
     <Stack spacing="24px" w="full">
       <InputWithIcon
-        placeholder="Search with Token ID or NFT VM Address"
-        value={searchKeyword}
-        autoFocus={!isMobile}
-        onChange={(e) => setSearchKeyword(e.target.value)}
-        size={{ base: "md", md: "lg" }}
         amptrackSection="nft-account-detail-tokenid-search"
+        autoFocus={!isMobile}
+        placeholder="Search with Token ID or NFT VM Address"
+        size={{ base: "md", md: "lg" }}
+        value={searchKeyword}
+        onChange={(e) => setSearchKeyword(e.target.value)}
       />
       <NftList
-        nfts={data?.items}
-        isLoading={isLoading}
         emptyState={
           <EmptyState
+            imageVariant="empty"
             message={
               searchKeyword
                 ? "There are no NFTs matches your keyword."
                 : "There are currently no NFTs held by this account."
             }
-            imageVariant="empty"
             withBorder
           />
         }
+        isLoading={isLoading}
+        nfts={data?.items}
         showCollection
       />
       {data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={data.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={data.total}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

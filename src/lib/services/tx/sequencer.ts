@@ -1,12 +1,13 @@
-import axios from "axios";
-
 import type {
   Addr,
   Nullable,
   Option,
   TransactionWithSignerPubkey,
 } from "lib/types";
+
+import axios from "axios";
 import { parseWithError } from "lib/utils";
+
 import {
   zBlockTxsResponseSequencer,
   zTxsByHashResponseSequencer,

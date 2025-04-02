@@ -1,8 +1,8 @@
-import { Tag } from "@chakra-ui/react";
+import type { Proposal } from "lib/types";
 import type { CSSProperties } from "react";
 
+import { Tag } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
-import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
 const getBgColor = (
@@ -42,12 +42,12 @@ export const StatusChip = ({
       : status.replace(/([A-Z])/g, " $1").trim();
   return (
     <Tag
+      bgColor={isTransparent ? "transparent" : getBgColor(status)}
       border="1px solid"
       borderColor={getBgColor(status)}
-      bgColor={isTransparent ? "transparent" : getBgColor(status)}
     >
       {formatStatus}
-      {hasCloseBtn && <CustomIcon name="close" boxSize={3} mr={0} />}
+      {hasCloseBtn && <CustomIcon boxSize={3} mr={0} name="close" />}
     </Tag>
   );
 };

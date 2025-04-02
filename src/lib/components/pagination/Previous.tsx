@@ -1,9 +1,9 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
-import { useContext } from "react";
 import type { ReactNode } from "react";
 
+import { Button } from "@chakra-ui/react";
 import { trackUsePaginationNavigate } from "lib/amplitude";
+import { useContext } from "react";
 
 import { PaginatorContext } from "./PaginatorProvider";
 
@@ -32,8 +32,8 @@ export const Previous = ({
     <Button
       aria-label="Previous page"
       isDisabled={isFirst || isDisabled}
-      onClick={handlePreviousClick}
       pointerEvents={isDisabled ? "none" : "auto"}
+      onClick={handlePreviousClick}
       {...(isFirst || isDisabled ? { "aria-disabled": true } : {})}
       {...buttonProps}
     >

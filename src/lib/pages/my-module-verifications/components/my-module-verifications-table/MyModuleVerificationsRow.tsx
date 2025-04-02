@@ -1,15 +1,16 @@
-import { Flex, Grid, Text } from "@chakra-ui/react";
 import type { GridProps } from "@chakra-ui/react";
 
+import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { MyModuleVerificationDetailsStatusBadge } from "lib/pages/my-module-verification-details/components";
 import { dateFromNow, formatUTC } from "lib/utils";
 
+import type { MoveVerifyTaskInfo } from "../../data";
+
 import { FileNamesCell } from "./FileNamesCell";
 import { RequestNoteCell } from "./RequestNoteCell";
-import type { MoveVerifyTaskInfo } from "../../data";
 
 interface MyModuleVerificationsRowProps {
   templateColumns: GridProps["templateColumns"];
@@ -24,19 +25,19 @@ export const MyModuleVerificationsRow = ({
 
   return (
     <Grid
+      _hover={{ bg: "gray.900" }}
+      cursor="pointer"
       templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
       onClick={() =>
         navigate({
           pathname: "/my-module-verifications/[taskId]",
           query: { taskId: task.taskId },
         })
       }
-      _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
-      cursor="pointer"
     >
       <TableRow>
-        <ExplorerLink type="task_id" value={task.taskId} showCopyOnHover />
+        <ExplorerLink showCopyOnHover type="task_id" value={task.taskId} />
       </TableRow>
       <TableRow>
         <RequestNoteCell moveVerifyTask={task} />
@@ -50,15 +51,15 @@ export const MyModuleVerificationsRow = ({
       <TableRow>
         {task.verifiedAt ? (
           <Flex direction="column">
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               {formatUTC(task.verifiedAt)}
             </Text>
-            <Text variant="body3" color="text.disabled">
+            <Text color="text.disabled" variant="body3">
               ({dateFromNow(task.verifiedAt)})
             </Text>
           </Flex>
         ) : (
-          <Text variant="body2" color="text.disabled">
+          <Text color="text.disabled" variant="body2">
             -
           </Text>
         )}

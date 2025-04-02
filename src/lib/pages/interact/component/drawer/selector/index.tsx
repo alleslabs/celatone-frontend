@@ -1,7 +1,8 @@
-import { ModuleSelectorDisplay } from "./ModuleSelectorDisplay";
-import type { ModuleSelectorInputProps } from "./ModuleSelectorInput";
-import { ModuleSelectorInput } from "./ModuleSelectorInput";
 import type { DisplayMode } from "../types";
+import type { ModuleSelectorInputProps } from "./ModuleSelectorInput";
+
+import { ModuleSelectorDisplay } from "./ModuleSelectorDisplay";
+import { ModuleSelectorInput } from "./ModuleSelectorInput";
 
 interface ModuleSelectorProps extends ModuleSelectorInputProps {
   mode: DisplayMode;
@@ -24,12 +25,12 @@ export const ModuleSelector = ({
     />
   ) : (
     <ModuleSelectorInput
-      selectedAddress={selectedAddress}
-      setSelectedAddress={setSelectedAddress}
-      handleModuleSelect={handleModuleSelect}
-      setModules={setModules}
-      setMode={setMode}
       closeModal={closeModal}
+      handleModuleSelect={handleModuleSelect}
+      selectedAddress={selectedAddress}
+      setMode={setMode}
+      setModules={setModules}
+      setSelectedAddress={setSelectedAddress}
     />
   );
 };

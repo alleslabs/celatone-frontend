@@ -1,10 +1,10 @@
-import { Button } from "@chakra-ui/react";
 import type { BoxProps, ButtonProps } from "@chakra-ui/react";
 
+import { Button } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 
-import { CopyTemplate } from "./CopyTemplate";
 import { CustomIcon } from "../icon";
+import { CopyTemplate } from "./CopyTemplate";
 
 interface CopyButtonProps extends ButtonProps {
   isDisable?: boolean;
@@ -36,18 +36,16 @@ export const CopyButton = ({
   ...buttonProps
 }: CopyButtonProps) => (
   <CopyTemplate
-    value={value}
     copyLabel={copyLabel}
     isDisabled={isDisable}
     ml={ml}
-    w={w}
     triggerElement={
       <Button
-        w={w}
-        isDisabled={isDisable}
-        variant={variant}
-        size={size}
         float="right"
+        isDisabled={isDisable}
+        size={size}
+        variant={variant}
+        w={w}
         onClick={() =>
           track(AmpEvent.USE_COPY_BUTTON, {
             section: amptrackSection,
@@ -60,13 +58,15 @@ export const CopyButton = ({
       >
         {hasIcon && (
           <CustomIcon
-            name="copy"
             boxSize={size === "xs" ? 3 : 4}
             mr={iconGap}
+            name="copy"
           />
         )}
         {buttonText}
       </Button>
     }
+    value={value}
+    w={w}
   />
 );

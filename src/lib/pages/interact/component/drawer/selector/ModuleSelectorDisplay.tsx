@@ -1,10 +1,11 @@
-import { Button, Flex, IconButton, Text } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 
+import { Button, Flex, IconButton, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
+
 import type { DisplayMode, SelectedAddress } from "../types";
 
 interface ModuleSelectorDisplayProps {
@@ -20,44 +21,44 @@ export const ModuleSelectorDisplay = ({
   return (
     <Flex
       className="selector-display"
-      justifyContent="space-between"
-      w="full"
+      alignItems="center"
       bgColor="gray.800"
+      borderRadius={8}
+      justifyContent="space-between"
+      mb={6}
       px={4}
       py={3}
-      mb={6}
-      borderRadius={8}
-      alignItems="center"
+      w="full"
     >
       {isMobile ? (
         <>
           <Flex direction="column" gap={1}>
             <Flex alignItems="center" gap={2}>
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 VM Address:
               </Text>
               <CopyLink
-                value={selectedAddress.address}
-                type="user_address"
                 isTruncate
+                type="user_address"
+                value={selectedAddress.address}
               />
             </Flex>
             <Flex alignItems="center" gap={2}>
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 HEX Address:
               </Text>
               <CopyLink
-                value={selectedAddress.hex}
-                type="user_address"
                 isTruncate
+                type="user_address"
+                value={selectedAddress.hex}
               />
             </Flex>
           </Flex>
           <IconButton
+            aria-label="reattach schema"
+            icon={<CustomIcon boxSize={3} name="swap" />}
             variant="outline-white"
             onClick={() => setMode("input")}
-            icon={<CustomIcon name="swap" boxSize={3} />}
-            aria-label="reattach schema"
           />
         </>
       ) : (
@@ -65,25 +66,25 @@ export const ModuleSelectorDisplay = ({
           <Flex flex={1}>
             <LabelText label="Viewing Address">
               <CopyLink
-                value={selectedAddress.address}
-                type="user_address"
                 showCopyOnHover
+                type="user_address"
+                value={selectedAddress.address}
               />
             </LabelText>
           </Flex>
           <Flex flex={1}>
             <LabelText label="Hex">
               <CopyLink
-                value={selectedAddress.hex}
-                type="user_address"
                 showCopyOnHover
+                type="user_address"
+                value={selectedAddress.hex}
               />
             </LabelText>
           </Flex>
           <Button
-            variant="outline-white"
+            leftIcon={<CustomIcon boxSize={3} name="swap" />}
             size="sm"
-            leftIcon={<CustomIcon name="swap" boxSize={3} />}
+            variant="outline-white"
             onClick={() => setMode("input")}
           >
             Change Address

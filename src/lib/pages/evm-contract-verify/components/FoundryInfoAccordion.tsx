@@ -12,17 +12,17 @@ export const FoundryInfoAccordion = () => (
   <Accordion
     allowToggle
     defaultIndex={[0]}
-    variant="transparent"
     position="sticky"
     top={0}
+    variant="transparent"
   >
     <AccordionItem>
       <AccordionButton>
         <Text
-          variant="body2"
-          fontWeight={700}
           color="text.main"
+          fontWeight={700}
           textAlign="start"
+          variant="body2"
         >
           What is Foundry?
         </Text>
@@ -30,12 +30,12 @@ export const FoundryInfoAccordion = () => (
       </AccordionButton>
       <AccordionPanel
         bg="transparent"
-        py={3}
-        px={0}
-        borderY="1px solid"
         borderColor="gray.700"
+        borderY="1px solid"
+        px={0}
+        py={3}
       >
-        <Text variant="body2" color="text.dark" p={1}>
+        <Text color="text.dark" p={1} variant="body2">
           Foundry is a framework that generates and submits contract metadata,
           ensuring accurate verification by matching the deployed bytecode.
         </Text>

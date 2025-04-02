@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import { zJsonDataType } from "lib/types";
+import { z } from "zod";
 
 export const zJsonRpcResponse = z.object({
   jsonrpc: z.literal("2.0"),

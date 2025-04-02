@@ -1,6 +1,6 @@
-import { Box } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import type { HexAddr32 } from "lib/types";
 
+import { Box } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { NftList } from "lib/components/nft";
@@ -9,7 +9,7 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
 import { useNfts } from "lib/services/nft";
-import type { HexAddr32 } from "lib/types";
+import { useEffect, useState } from "react";
 
 interface CollectionSuppliesProps {
   collectionAddress: HexAddr32;
@@ -48,18 +48,16 @@ export const CollectionSupplies = ({
   useEffect(() => setCurrentPage(1), [debouncedSearch, setCurrentPage]);
 
   return (
-    <Box mt="32px" gap="40px">
+    <Box gap="40px" mt="32px">
       <InputWithIcon
-        placeholder="Search with Token ID or NFT VM Address"
-        value={searchKeyword}
-        autoFocus={!isMobile}
-        onChange={(e) => setSearchKeyword(e.target.value)}
-        size={{ base: "md", md: "lg" }}
         amptrackSection="collection-supplies-tokenId-search"
+        autoFocus={!isMobile}
+        placeholder="Search with Token ID or NFT VM Address"
+        size={{ base: "md", md: "lg" }}
+        value={searchKeyword}
+        onChange={(e) => setSearchKeyword(e.target.value)}
       />
       <NftList
-        nfts={nfts?.items}
-        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant="not-found"
@@ -67,15 +65,17 @@ export const CollectionSupplies = ({
             withBorder
           />
         }
+        isLoading={isLoading}
+        nfts={nfts?.items}
         showCollection={false}
       />
       {nfts && nfts.items.length !== 0 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={searchKeyword ? nfts.items.length : totalSupply}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={searchKeyword ? nfts.items.length : totalSupply}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

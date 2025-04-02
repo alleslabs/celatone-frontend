@@ -1,3 +1,5 @@
+import type { ContractListInfo } from "lib/stores/contract";
+
 import { useCurrentChain, useTierConfig } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/providers/store";
@@ -5,7 +7,6 @@ import {
   useAllInstantiatedContractsByAddress,
   useInstantiatedContractsByAddressRest,
 } from "lib/services/wasm/contract";
-import type { ContractListInfo } from "lib/stores/contract";
 import { formatSlugName, getCurrentDate } from "lib/utils";
 
 interface InstantiatedByMeState {

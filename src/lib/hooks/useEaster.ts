@@ -1,7 +1,6 @@
-import { useEffect } from "react";
-
 import { JENNIE_THEME } from "config/theme/jennie";
 import { useCelatoneApp } from "lib/app-provider";
+import { useEffect } from "react";
 
 export const useEaster = (keyword: string) => {
   const { currentChainId, setTheme } = useCelatoneApp();

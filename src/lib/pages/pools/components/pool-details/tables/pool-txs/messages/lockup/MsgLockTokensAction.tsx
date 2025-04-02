@@ -1,9 +1,10 @@
-import { Flex } from "@chakra-ui/react";
-
-import { MsgToken } from "lib/components/action-msg/MsgToken";
 import type { AssetInfos, Option, PoolData } from "lib/types";
-import { coinToTokenWithValue, formatDuration } from "lib/utils";
 import type { MsgLockTokensDetails } from "lib/utils/tx/types";
+
+import { Flex } from "@chakra-ui/react";
+import { MsgToken } from "lib/components/action-msg/MsgToken";
+import { coinToTokenWithValue, formatDuration } from "lib/utils";
+
 import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 
@@ -31,15 +32,15 @@ export const MsgLockTokensAction = ({
     assetInfos
   );
   return (
-    <Flex gap={1} alignItems="center" flexWrap="wrap">
+    <Flex alignItems="center" flexWrap="wrap" gap={1}>
       Bonded
       <MsgToken
-        token={poolToken}
-        fontWeight={700}
         ampCopierSection={ampCopierSection}
+        fontWeight={700}
+        token={poolToken}
       />
       to
-      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
+      <PoolLogoLink ampCopierSection={ampCopierSection} pool={pool} />
       with
       <span style={{ fontWeight: 700 }}>{formatDuration(msg.duration)}</span>
       unbonding

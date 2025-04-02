@@ -1,15 +1,15 @@
 import type { StdFee } from "@cosmjs/amino";
-import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { DeliverTxResponse } from "@cosmjs/stargate";
+import type { BechAddr20 } from "lib/types";
+
+import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import { sleep } from "lib/utils";
 import { useCallback } from "react";
 
-import type { BechAddr20 } from "lib/types";
-import { sleep } from "lib/utils";
-
+import { useCelatoneApp } from "../contexts";
 import { useCurrentChain } from "./useCurrentChain";
 import { useGetSigningClient } from "./useGetSigningClient";
-import { useCelatoneApp } from "../contexts";
 
 const getTxResponse = async (rpcEndpoint: string, txHash: string) => {
   const TIME_OUT_MS = 3000;

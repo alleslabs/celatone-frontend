@@ -1,8 +1,8 @@
-import { useState } from "react";
-
 import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
+
 import { useWasmConfig } from "lib/app-provider";
 import { scrollToTop } from "lib/utils";
+import { useState } from "react";
 
 import { UploadComplete } from "./completed";
 import { Upload } from "./upload";
