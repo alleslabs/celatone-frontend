@@ -40,7 +40,7 @@ export const composeMsg = (msgType: MsgType, msg: TxMessage): ComposedMsg => {
 interface StoreCodeMsgArgs {
   sender: BechAddr20;
   wasmByteCode: Uint8Array;
-  permission: AccessType;
+  permission?: AccessType;
   addresses?: BechAddr[];
 }
 
@@ -53,11 +53,13 @@ export const composeStoreCodeMsg = ({
   composeMsg(MsgType.STORE_CODE, {
     sender,
     wasmByteCode,
-    instantiatePermission: {
-      permission,
-      addresses,
-      address: "" as BechAddr,
-    },
+    instantiatePermission: permission
+      ? {
+          permission,
+          addresses,
+          address: "" as BechAddr,
+        }
+      : undefined,
   });
 
 interface WhitelistProposalMsgArgs {
