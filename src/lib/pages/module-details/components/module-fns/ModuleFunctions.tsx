@@ -130,7 +130,7 @@ export const ModuleFunctions = ({
         Exposed Functions
       </Heading>
       <InputWithIcon
-        placeholder="Search with Function Name"
+        placeholder="Search with function name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}

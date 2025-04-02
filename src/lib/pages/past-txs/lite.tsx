@@ -105,7 +105,7 @@ export const PastTxsLite = () => {
       </Flex>
       <Flex my={8}>
         <InputWithIcon
-          placeholder="Search with Transaction Hash"
+          placeholder="Search with transaction hash"
           value={search}
           onChange={handleOnSearchChange}
           size={{ base: "md", md: "lg" }}

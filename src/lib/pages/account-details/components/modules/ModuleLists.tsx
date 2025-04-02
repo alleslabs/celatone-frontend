@@ -50,7 +50,7 @@ export const ModuleLists = ({
           >
             {!onViewMore && (
               <InputWithIcon
-                placeholder="Search with Module Name"
+                placeholder="Search with module name"
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 size={{ base: "md", md: "lg" }}

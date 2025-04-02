@@ -69,7 +69,7 @@ export const PoolAssetsTableRow = ({
                 <Copier
                   type="token_denom"
                   value={token.denom}
-                  copyLabel="Token ID Copied!"
+                  copyLabel="Token ID copied!"
                   ml={0}
                   amptrackSection="pool_assets"
                 />

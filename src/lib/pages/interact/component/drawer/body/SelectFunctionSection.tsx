@@ -108,7 +108,7 @@ export const SelectFunctionSection = ({
           <InputWithIcon
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            placeholder="Search with Function Name"
+            placeholder="Search with function name"
             size="md"
             my={4}
             amptrackSection="module-select-drawer-function-search"

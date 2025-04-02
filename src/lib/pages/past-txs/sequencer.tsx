@@ -77,7 +77,7 @@ export const PastTxsSequencer = () => {
       </Flex>
       <Flex my={8}>
         <InputWithIcon
-          placeholder="Search with Transaction Hash"
+          placeholder="Search with transaction hash"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           size={{ base: "md", md: "lg" }}

@@ -84,7 +84,7 @@ export const PublishCompleted = ({
                 })
               }
             >
-              Submit Verification
+              Submit verification
             </Button>
           </Flex>
         </Flex>

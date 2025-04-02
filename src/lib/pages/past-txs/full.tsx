@@ -122,8 +122,8 @@ export const PastTxsFull = () => {
       </Flex>
       <Flex my={8} gap={3}>
         <InputWithIcon
-          placeholder={`Search with Transaction Hash${
-            wasm.enabled ? " or Contract Address" : ""
+          placeholder={`Search with transaction hash${
+            wasm.enabled ? " or contract address" : ""
           }`}
           value={pastTxsState.search}
           onChange={handleOnSearchChange}

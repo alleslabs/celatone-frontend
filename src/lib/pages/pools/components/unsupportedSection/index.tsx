@@ -81,7 +81,7 @@ export const UnsupportedSection = ({
       <Flex alignItems="center" mb={12}>
         <Flex grow={2} gap={4}>
           <InputWithIcon
-            placeholder="Search with Pool ID or Token ID"
+            placeholder="Search with pool ID or token ID"
             value={keyword}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setCurrentPage(1);

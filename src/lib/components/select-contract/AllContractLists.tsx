@@ -31,7 +31,7 @@ export const AllContractLists = ({
   return (
     <Box minH="xs" w="100%">
       <InputWithIcon
-        placeholder="Search with List Name"
+        placeholder="Search with list name"
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}

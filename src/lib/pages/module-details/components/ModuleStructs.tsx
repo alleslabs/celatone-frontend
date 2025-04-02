@@ -96,7 +96,7 @@ export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
         </Flex>
       </Flex>
       <InputWithIcon
-        placeholder="Search with Struct Name"
+        placeholder="Search with struct name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}

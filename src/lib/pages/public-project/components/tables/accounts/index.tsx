@@ -82,7 +82,7 @@ export const PublicProjectAccountTable = ({
       <TableTitle title="Accounts" count={accounts.length} />
       {!onViewMore && (
         <InputWithIcon
-          placeholder="Search with Account Address, Name, or Description"
+          placeholder="Search with account address, name, or description"
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
           size={{ base: "md", md: "lg" }}

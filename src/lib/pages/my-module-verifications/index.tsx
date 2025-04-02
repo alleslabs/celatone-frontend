@@ -41,7 +41,7 @@ export const MyModuleVerifications = () => {
             onClick={() => navigate({ pathname: "/modules/verify" })}
             leftIcon={<CustomIcon name="plus" />}
           >
-            Submit Verification
+            Submit verification
           </Button>
         </Flex>
       </Flex>

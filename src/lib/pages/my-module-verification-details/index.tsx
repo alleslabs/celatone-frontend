@@ -33,7 +33,7 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
     return (
       <EmptyState
         imageVariant="not-found"
-        heading="Task ID Not Found"
+        heading="Task ID not found"
         message="Please double-check your input and make sure you have selected the correct network."
         withBorder
       />
@@ -107,7 +107,7 @@ export const MyModuleVerificationDetails = observer(() => {
       {!validated.success ? (
         <EmptyState
           imageVariant="not-found"
-          heading="Task ID Not Found"
+          heading="Task ID not found"
           message="Please double-check your input and make sure you have selected the correct network."
           withBorder
         />

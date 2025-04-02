@@ -72,7 +72,7 @@ const SavedAccounts = observer(() => {
         <SaveAccountButton />
       </Flex>
       <InputWithIcon
-        placeholder="Search with Account Name, Address, or Description"
+        placeholder="Search with account name, address, or description"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size="lg"

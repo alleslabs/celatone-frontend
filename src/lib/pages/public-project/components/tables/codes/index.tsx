@@ -122,7 +122,7 @@ export const PublicProjectCodeTable = observer(
         <TableTitle title="Codes" count={codes.length} />
         {!onViewMore && (
           <InputWithIcon
-            placeholder="Search with Code ID or Code Name"
+            placeholder="Search with code ID or code name"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
             size={{ base: "md", md: "lg" }}
@@ -140,7 +140,7 @@ export const PublicProjectCodeTable = observer(
           <EmptyState
             message={
               codes.length
-                ? "No matching codes found for this project. Make sure you are searching with Code ID or Code Name"
+                ? "No matching codes found for this project. Make sure you are searching with code ID or code name"
                 : "There are currently no codes related to this project."
             }
             imageVariant={codes.length ? "not-found" : "empty"}

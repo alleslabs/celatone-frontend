@@ -84,7 +84,7 @@ export const PublicProjectModuleTable = ({
       <TableTitle title="Modules" count={modules.length} />
       {!onViewMore && (
         <InputWithIcon
-          placeholder="Search with Module Address or Module Name"
+          placeholder="Search with module address or module name"
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
           size={{ base: "md", md: "lg" }}

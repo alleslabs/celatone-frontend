@@ -112,7 +112,7 @@ export const PublicProjectContractTable = observer(
         <TableTitle title="Contracts" count={contracts.length} />
         {!onViewMore && (
           <InputWithIcon
-            placeholder="Search with Contract Address or Contract Name"
+            placeholder="Search with contract address or contract name"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
             size={{ base: "md", md: "lg" }}
