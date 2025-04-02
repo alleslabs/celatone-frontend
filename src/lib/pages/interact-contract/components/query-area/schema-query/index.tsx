@@ -82,7 +82,7 @@ export const SchemaQuery = ({
         <Flex direction="column" alignItems="center">
           <StateImage imageVariant="not-found" imageWidth="128px" />
           <Text variant="body1" fontWeight={700} mt={2}>
-            {verifiedSchema ? "Verified" : "Attached"} JSON Schema doesn’t have
+            {verifiedSchema ? "Verified" : "Attached"} JSON schema doesn’t have
             QueryMsg
           </Text>
           {!verifiedSchema && (

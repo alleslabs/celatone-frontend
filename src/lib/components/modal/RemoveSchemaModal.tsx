@@ -39,7 +39,7 @@ export function RemoveSchemaModal({
 
   return (
     <ActionModal
-      title={`Removed JSON Schema for code '${codeId}'?`}
+      title={`Removed JSON schema for code '${codeId}'?`}
       icon="delete"
       iconColor="error.light"
       trigger={trigger}

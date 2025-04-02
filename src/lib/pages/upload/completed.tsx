@@ -160,7 +160,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
                 {derivedWasmVerifyInfo?.schema ? (
                   <OptionButtonDisabled
                     title="Attach JSON schema"
-                    description="JSON Schema is already available due to the code is indirectly verified"
+                    description="JSON schema is already available due to the code is indirectly verified"
                   />
                 ) : (
                   <UploadSchema

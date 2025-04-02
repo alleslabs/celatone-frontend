@@ -75,7 +75,7 @@ export const SchemaInputSection = observer(
                   borderRadius="4px"
                   textAlign="center"
                 >
-                  {`${prettyType}Msg in attached JSON Schema takes no input`}
+                  {`${prettyType}Msg in attached JSON schema takes no input`}
                 </Text>
               )}
             </>
