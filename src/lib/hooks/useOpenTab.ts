@@ -8,7 +8,16 @@ import {
 import type { Option } from "lib/types";
 import { openNewTab } from "lib/utils";
 
-export const useOpenBlockTab = () => {};
+export const useOpenBlockTab = () => {
+  const blocksApiRoute = useBaseApiRoute("blocks");
+
+  return useCallback(
+    (blockHeight: number) => {
+      openNewTab(`${blocksApiRoute}/${blockHeight}`);
+    },
+    [blocksApiRoute]
+  );
+};
 
 export const useOpenTxTab = (type: "rest" | "tx-page") => {
   const {
@@ -18,9 +27,10 @@ export const useOpenTxTab = (type: "rest" | "tx-page") => {
   const txsApiRoute = useBaseApiRoute("txs");
 
   let baseUrl: string;
-  if (network_type === "local") baseUrl = `${rest}/cosmos/tx/v1beta1/txs`;
-  else if (type === "rest") baseUrl = txsApiRoute;
-  else baseUrl = `/${currentChainId}/txs`;
+  if (type === "rest") {
+    baseUrl =
+      network_type === "local" ? `${rest}/cosmos/tx/v1beta1/txs` : txsApiRoute;
+  } else baseUrl = `/${currentChainId}/txs`;
 
   return useCallback(
     (txHash: Option<string>) => {
