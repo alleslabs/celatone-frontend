@@ -814,22 +814,12 @@ export const ICONS = {
   },
   menu: {
     svg: (
-      <>
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M1.16667 12C0.522334 12 0 12.4477 0 13C0 13.5523 0.522334 14 1.16667 14H12.8333C13.4777 14 14 13.5523 14 13C14 12.4477 13.4777 12 12.8333 12H1.16667Z"
-          fill="currentColor"
-        />
-        <path
-          d="M0 1C0 0.447715 0.522334 0 1.16667 0H12.8333C13.4777 0 14 0.447715 14 1C14 1.55228 13.4777 2 12.8333 2H1.16667C0.522334 2 0 1.55228 0 1Z"
-          fill="currentColor"
-        />
-        <path
-          d="M3.2 6C2.53726 6 2 6.44772 2 7C2 7.55228 2.53726 8 3.2 8H12.8C13.4627 8 14 7.55228 14 7C14 6.44772 13.4627 6 12.8 6H3.2Z"
-          fill="currentColor"
-        />
-      </>
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        d="M1.094 3.5h12.812v1H1.094zM1.094 7.5h12.812v1H1.094zM1.094 11.5h12.812v1H1.094z"
+        clipRule="evenodd"
+      />
     ),
     viewBox: viewBox011616,
   },

@@ -5,6 +5,7 @@ import type { Dispatch, SetStateAction } from "react";
 import {
   useCurrentChain,
   useEvmConfig,
+  useIsApiChain,
   useMoveConfig,
   usePublicProjectConfig,
   useTierConfig,
@@ -38,6 +39,7 @@ interface NavbarProps {
 const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const { address } = useCurrentChain();
   const { isFullTier, isSequencerTier } = useTierConfig();
+  const isApiChain = useIsApiChain({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   const evm = useEvmConfig({ shouldRedirect: false });
@@ -80,7 +82,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                           slug: "/saved-accounts",
                           icon: "admin" as IconKeys,
                         },
-                        ...getDeviceSubmenuMove(move.enabled),
+                        ...getDeviceSubmenuMove(move.enabled && isApiChain),
                         ...getDeviceSubmenuWasm(wasm.enabled),
                       ],
                     },
