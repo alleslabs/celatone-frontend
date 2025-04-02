@@ -65,7 +65,7 @@ export const executeModuleTx = ({
           },
         ],
         receiptInfo: {
-          header: "Transaction Complete!",
+          header: "Transaction complete!",
           headerIcon: (
             <CustomIcon
               name="check-circle-solid"

@@ -46,7 +46,7 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         log && {
-          title: "Stored Code ID",
+          title: "Stored code ID",
           html: getCommonReceiptHtml({
             type: "explorer",
             value: details.code_id,

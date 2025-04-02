@@ -66,11 +66,11 @@ export const TxInfo = ({
           formatTokenWithValue(feeToken)
         ) : (
           <Text variant="body2" color="text.dark">
-            No Fee
+            No fee
           </Text>
         )}
       </LabelText>
-      <LabelText label="Gas Used/Wanted">
+      <LabelText label="Gas used/wanted">
         {`${formatInteger(txData.gasUsed)}/${formatInteger(txData.gasWanted)}`}
       </LabelText>
       {gasRefundRatio && (
@@ -81,7 +81,7 @@ export const TxInfo = ({
       <LabelText label="Memo">
         {txData.tx.body.memo || (
           <Text variant="body2" color="text.dark">
-            No Memo
+            No memo
           </Text>
         )}
       </LabelText>

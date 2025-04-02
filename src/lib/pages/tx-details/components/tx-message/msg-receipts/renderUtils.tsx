@@ -115,7 +115,7 @@ export const attachFundsReceipt = (value: Option<Coin[]>): TxReceipt => ({
     <CoinsComponent coins={value} />
   ) : (
     <Text variant="body2" color="text.dark">
-      No Attached Funds
+      No attached funds
     </Text>
   ),
 });

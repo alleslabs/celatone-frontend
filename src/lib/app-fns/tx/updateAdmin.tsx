@@ -65,7 +65,7 @@ export const updateAdminTx = ({
           },
         ],
         receiptInfo: {
-          header: "Update Admin Complete!",
+          header: "Update admin complete!",
           headerIcon: (
             <CustomIcon name="check-circle-solid" color="success.main" />
           ),

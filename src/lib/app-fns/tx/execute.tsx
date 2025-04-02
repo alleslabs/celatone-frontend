@@ -80,7 +80,7 @@ export const executeContractTx = ({
           },
         ],
         receiptInfo: {
-          header: "Transaction Complete!",
+          header: "Transaction complete!",
           headerIcon: (
             <CustomIcon
               name="check-circle-solid"

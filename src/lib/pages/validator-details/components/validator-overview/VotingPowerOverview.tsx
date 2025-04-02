@@ -152,7 +152,7 @@ export const VotingPowerOverview = ({
         <Flex direction="column" gap={1}>
           <Flex minH="36px" alignItems="center">
             <Heading variant="h6" as="h6" color="text.main">
-              Voting Power
+              Voting power
             </Heading>
           </Flex>
           <ValueWithIcon icon="vote" value={votingPowerPercent} />

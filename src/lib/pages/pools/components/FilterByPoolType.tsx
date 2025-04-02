@@ -37,7 +37,7 @@ const options: PoolTypeOption[] = [
     disabled: false,
   },
   {
-    label: "StableSwap Pools",
+    label: "StableSwap pools",
     value: PoolType.STABLESWAP,
     image: <StableSwapIcon boxSize={5} />,
     disabled: false,
@@ -49,7 +49,7 @@ const options: PoolTypeOption[] = [
     disabled: false,
   },
   {
-    label: "CosmWasm Pools",
+    label: "CosmWasm pools",
     value: PoolType.COSMWASM,
     image: <CosmWasmPoolIcon boxSize={5} />,
     disabled: false,

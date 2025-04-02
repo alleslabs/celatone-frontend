@@ -149,7 +149,7 @@ export const AssetsSection = ({
                 {isMobile && (
                   <Flex pt={4} px={4} direction="column">
                     <Text variant="body2" color="text.dark">
-                      Total Asset Value
+                      Total asset value
                     </Text>
                     <Heading
                       as="h6"

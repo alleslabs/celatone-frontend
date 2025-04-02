@@ -105,7 +105,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
             color="text.dark"
             display="inline"
           >
-            Block Hash:
+            Block hash:
           </Text>
           <CopyLink
             value={blockData.hash.toUpperCase()}

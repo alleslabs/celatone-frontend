@@ -74,7 +74,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         mt={10}
       />
       <Heading as="h4" variant="h4" mt={4} mb={12}>
-        Upload Wasm File Complete!
+        Upload Wasm file complete!
       </Heading>
       <Text variant="body2" color="text.dark" fontWeight={500} mb={4}>
         ‘{txResult.codeDisplayName}’ has been uploaded.

@@ -73,7 +73,7 @@ const SavedCodes = observer(() => {
               display="flex"
               alignItems="center"
             >
-              Saved Codes
+              Saved codes
             </Heading>
             <Badge variant="primary" ml={2}>
               {savedCodesCount}

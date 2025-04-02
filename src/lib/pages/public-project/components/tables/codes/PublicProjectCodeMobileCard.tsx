@@ -52,7 +52,7 @@ export const PublicProjectCodeMobileCard = ({
             <Text>{publicInfo.name}</Text>
           </Flex>
           <Flex direction="column">
-            <MobileLabel label="CW2 Info" />
+            <MobileLabel label="CW2 info" />
             <Text
               color={cw2Info ? "text.main" : "text.disabled"}
               wordBreak="break-all"

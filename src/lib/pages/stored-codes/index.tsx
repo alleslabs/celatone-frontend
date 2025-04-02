@@ -82,7 +82,7 @@ const StoredCodes = observer(() => {
             display="flex"
             alignItems="center"
           >
-            My Stored Codes
+            My stored codes
           </Heading>
           <Badge variant="primary" ml={2}>
             {storedCodesCount}

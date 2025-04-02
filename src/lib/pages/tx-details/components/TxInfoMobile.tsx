@@ -72,11 +72,11 @@ export const TxInfoMobile = ({
             formatTokenWithValue(feeToken)
           ) : (
             <Text variant="body2" color="text.dark">
-              No Fee
+              No fee
             </Text>
           )}
         </LabelText>
-        <LabelText flex={1} label="Gas Used/Wanted">
+        <LabelText flex={1} label="Gas used/wanted">
           {`${formatInteger(txData.gasUsed)}/${formatInteger(
             txData.gasWanted
           )}`}
@@ -90,7 +90,7 @@ export const TxInfoMobile = ({
       <LabelText label="Memo">
         {txData.tx.body.memo || (
           <Text variant="body2" color="text.dark">
-            No Memo
+            No memo
           </Text>
         )}
       </LabelText>

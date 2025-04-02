@@ -104,7 +104,7 @@ export const CodeDetailsTemplateModal = ({
           </Flex>
           <Flex align="center">
             <Text variant="body2" fontWeight={700} w="30%">
-              Instantiate Permission
+              Instantiate permission
             </Text>
             <PermissionChip
               instantiatePermission={codeInfo.instantiatePermission}

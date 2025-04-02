@@ -141,7 +141,7 @@ export const SelectContractInstantiator = ({
                   color="gray.600"
                 />
                 <Heading as="h5" variant="h5">
-                  Select Contract
+                  Select contract
                 </Heading>
               </DrawerHeader>
               <DrawerCloseButton />
@@ -185,7 +185,7 @@ export const SelectContractInstantiator = ({
                     </Flex>
 
                     <Heading as="h6" variant="h6" mb={4}>
-                      Select from your Contract List
+                      Select from your contract list
                     </Heading>
                     <AllContractLists
                       contractLists={contractLists}

@@ -59,7 +59,7 @@ export const EditSavedAccountModal = ({
   }, [resetForm]);
 
   const handleSave = useHandleAccountSave({
-    title: `Updated Saved Account!`,
+    title: `Updated saved account!`,
     address: addressState,
     name: nameState,
     description: descriptionState,

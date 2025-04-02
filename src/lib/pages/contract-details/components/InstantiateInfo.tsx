@@ -170,7 +170,7 @@ export const InstantiateInfo = ({
                           textDecorationColor: "primary.light",
                         }}
                       >
-                        Verify Code
+                        Verify code
                       </Text>
                     }
                   />
@@ -180,14 +180,14 @@ export const InstantiateInfo = ({
         </LabelText>
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
-        <LabelText flex={1} label="CW2 Info">
+        <LabelText flex={1} label="CW2 info">
           {cw2 ? (
             <Text variant="body2" wordBreak="break-all">
               {cw2}
             </Text>
           ) : (
             <Text variant="body2" color="text.dark">
-              No Info
+              No info
             </Text>
           )}
         </LabelText>
@@ -207,7 +207,7 @@ export const InstantiateInfo = ({
         ) : (
           <LabelText flex={1} label="Admin address">
             <Text variant="body2" color="text.dark">
-              No Admin
+              No admin
             </Text>
           </LabelText>
         )}

@@ -70,7 +70,7 @@ export const requestEvmTx = ({
           },
         ],
         receiptInfo: {
-          header: "Transaction Complete!",
+          header: "Transaction complete!",
           headerIcon: (
             <CustomIcon
               name="check-circle-solid"

@@ -117,7 +117,7 @@ export const AccountHeader = observer(
               direction={{ base: "column", md: "row" }}
             >
               <Text fontWeight={500} color="text.dark" variant="body2">
-                Account Address:
+                Account address:
               </Text>
               <CopyLink
                 value={accountAddress}
@@ -144,7 +144,7 @@ export const AccountHeader = observer(
             {accountLocalInfo?.name && initiaUsernameData?.username && (
               <Flex mt={{ base: 1, md: 0 }} alignItems="center">
                 <Text fontWeight={500} color="text.dark" variant="body2" mr={2}>
-                  Initia Username:
+                  Initia username:
                 </Text>
                 <Image
                   src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"

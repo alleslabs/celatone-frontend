@@ -62,12 +62,12 @@ export function RemoveSavedAccountModal({
       icon="delete"
       iconColor="error.light"
       mainVariant="error"
-      mainBtnTitle="Yes, Remove It"
+      mainBtnTitle="Yes, remove it"
       mainAction={() => {
         track(AmpEvent.ACCOUNT_REMOVE);
         handleRemove();
       }}
-      otherBtnTitle="No, Keep It"
+      otherBtnTitle="No, keep it"
       trigger={trigger}
     >
       <Text>

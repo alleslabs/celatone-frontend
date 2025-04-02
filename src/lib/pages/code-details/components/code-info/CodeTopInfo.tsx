@@ -96,7 +96,7 @@ export const CodeTopInfo = observer(
                 direction={{ base: "column", md: "row" }}
               >
                 <Text fontWeight={500} color="text.dark" variant="body2">
-                  Public Code Name:
+                  Public code name:
                 </Text>
                 <Text variant="body2">{publicInfo.name}</Text>
               </Flex>
@@ -119,7 +119,7 @@ export const CodeTopInfo = observer(
               direction={{ base: "column", md: "row" }}
             >
               <Text fontWeight={500} color="text.dark" variant="body2">
-                Code Hash:
+                Code hash:
               </Text>
               <CopyLink
                 type="code_hash"
@@ -133,7 +133,7 @@ export const CodeTopInfo = observer(
                 direction={{ base: "column", md: "row" }}
               >
                 <Text fontWeight={500} color="text.dark" variant="body2">
-                  CW2 Info:
+                  CW2 info:
                 </Text>
                 <Text
                   color={cw2Info ? "text.main" : "text.disabled"}

@@ -73,7 +73,7 @@ export const ButtonSection = ({
       return (
         <>
           <Button variant="ghost-primary" onClick={openTxExplorer}>
-            See Transaction
+            See transaction
           </Button>
           <Button
             variant="primary"
@@ -81,7 +81,7 @@ export const ButtonSection = ({
               navigate({ pathname: `/contracts/${router.query.contract}` })
             }
           >
-            View Contract Details
+            View contract details
             <CustomIcon name="chevron-right" boxSize={3} />
           </Button>
         </>
@@ -101,7 +101,7 @@ export const ButtonSection = ({
             // TODO: Revisit this when proposal page is live
             onClick={openProposalExplorer}
           >
-            View Proposal
+            View proposal
             <CustomIcon name="launch" boxSize={3} ml={2} />
           </Button>
           <Button
@@ -113,7 +113,7 @@ export const ButtonSection = ({
               onClose?.();
             }}
           >
-            See in Proposal List
+            See in proposal list
             <CustomIcon name="chevron-right" boxSize={3} ml={2} />
           </Button>
         </>
@@ -132,7 +132,7 @@ export const ButtonSection = ({
               Close
             </Button>
             <Button variant="primary" onClick={openTxExplorer}>
-              See Transaction
+              See transaction
             </Button>
           </Flex>
         </Flex>
@@ -144,7 +144,7 @@ export const ButtonSection = ({
             Close
           </Button>
           <Button variant="primary" onClick={openTxExplorer}>
-            See Transaction
+            See transaction
           </Button>
         </>
       );

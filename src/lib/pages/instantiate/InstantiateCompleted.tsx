@@ -26,7 +26,7 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
       <CelatoneSeo pageName="Instantiate contract" />
       <CustomIcon name="check-circle-solid" color="success.main" boxSize={12} />
       <Heading as="h5" variant="h5" mt={3} mb={12}>
-        Instantiate Complete!
+        Instantiate complete!
       </Heading>
       <TxReceiptRender
         receipts={[

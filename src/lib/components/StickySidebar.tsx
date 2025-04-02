@@ -75,7 +75,7 @@ export const StickySidebar = ({
           <Alert variant="primary" gap="2" w={96} mb={2}>
             <Box>
               <Text variant="body2" fontWeight={600} color="primary">
-                Forum Posting Required for Proposals
+                Forum posting required for proposals
               </Text>
               <Text variant="body3" color="primary" mt={1}>
                 Governance proposals must be posted as a draft on

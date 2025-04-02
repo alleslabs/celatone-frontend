@@ -37,7 +37,7 @@ export const StateLoader = ({
             Loading {numStatesToLoad} states...
           </Text>
           <Button size="sm" variant="outline-primary" isDisabled>
-            Load More
+            Load more
           </Button>
         </Flex>
       ) : (
@@ -54,7 +54,7 @@ export const StateLoader = ({
             isDisabled={isCompleted}
             onClick={onLoadMore}
           >
-            Load More
+            Load more
           </Button>
         </Flex>
       )}
@@ -67,7 +67,7 @@ export const StateLoader = ({
         onClick={onDownload}
       >
         <CustomIcon name="download" />
-        Download States
+        Download states
       </Button>
     </Flex>
   );

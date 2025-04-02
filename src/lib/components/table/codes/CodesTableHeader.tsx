@@ -19,7 +19,7 @@ export const CodesTableHeader = ({
     <TableHeader>Code name</TableHeader>
     {showCw2andContracts && (
       <>
-        <TableHeader>CW2 Info</TableHeader>
+        <TableHeader>CW2 info</TableHeader>
         <TableHeader textAlign="center">Contracts</TableHeader>
       </>
     )}

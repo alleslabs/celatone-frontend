@@ -92,7 +92,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
     <Flex direction="column" gap={8}>
       <Flex direction="column" gap={6}>
         <Heading as="h6" variant="h6">
-          Contract States
+          Contract states
         </Heading>
         <StateLoader
           numStatesToLoad={limit}

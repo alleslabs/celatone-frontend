@@ -23,14 +23,14 @@ export const hashAddress = (address: Option<string>): Option<string> => {
 export const getAddressTypeText = (addressType: AddressReturnType) => {
   switch (addressType) {
     case "contract_address":
-      return "(Contract Address)";
+      return "(Contract address)";
     case "user_address":
-      return "(Wallet Address)";
+      return "(Wallet address)";
     case "validator_address":
-      return "(Validator Address)";
+      return "(Validator address)";
     case "invalid_address":
     default:
-      return "(Invalid Address)";
+      return "(Invalid address)";
   }
 };
 

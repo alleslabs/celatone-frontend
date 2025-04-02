@@ -67,7 +67,7 @@ export const BondedTokenChanges = ({
       <Box>
         {!isMobile && (
           <TableTitle
-            title="Delegation-Related Transactions"
+            title="Delegation-related transactions"
             count={data?.total ?? 0}
             id={tableHeaderId}
             helperText="Shows transactions relevant to changes in delegated tokens, excluding any token reduction due to slashing."

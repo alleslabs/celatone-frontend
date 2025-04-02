@@ -80,7 +80,7 @@ export const MigrationMobileCard = ({
           {isFullTier && (
             <>
               <Flex direction="column">
-                <MobileLabel variant="body3" label="CW2 Info" />
+                <MobileLabel variant="body3" label="CW2 info" />
                 <Text
                   variant="body2"
                   color={cw2Info ? "text.main" : "text.disabled"}

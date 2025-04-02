@@ -38,10 +38,10 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
         <Flex pt={6} gap={9}>
           <Flex direction="column" gap={2}>
             <Text variant="body2" fontWeight={500} color="text.dark">
-              Contract Name
+              Contract name
             </Text>
             <Text variant="body2" fontWeight={500} color="text.dark">
-              Contract Address
+              Contract address
             </Text>
           </Flex>
 

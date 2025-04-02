@@ -105,7 +105,7 @@ export const ValidatorDetailsBodyFull = ({
               Performance
             </CustomTab>
             <CustomTab onClick={handleTabChange(TabIndex.BondedTokenChanges)}>
-              Bonded Token Changes
+              Bonded token changes
             </CustomTab>
           </TabList>
           <TabPanels>

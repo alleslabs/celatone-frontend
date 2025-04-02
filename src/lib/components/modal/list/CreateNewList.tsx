@@ -87,7 +87,7 @@ export function CreateNewListModal({
 
   return (
     <ActionModal
-      title="Create a New List"
+      title="Create a new list"
       icon="add-new"
       trigger={trigger || <Button {...buttonProps} as="button" />}
       mainBtnTitle="Create"

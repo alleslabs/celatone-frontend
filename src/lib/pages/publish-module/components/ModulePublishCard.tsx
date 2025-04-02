@@ -89,7 +89,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
             });
           }}
         >
-          See Module
+          See module
         </Button>
         <Button
           leftIcon={<CustomIcon name="query" boxSize={3} color="text.main" />}

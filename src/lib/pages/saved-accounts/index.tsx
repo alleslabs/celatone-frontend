@@ -59,7 +59,7 @@ const SavedAccounts = observer(() => {
               display="flex"
               alignItems="center"
             >
-              Saved Accounts
+              Saved accounts
             </Heading>
             <Badge variant="primary" ml={2}>
               {accountsCount}

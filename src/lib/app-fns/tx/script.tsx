@@ -65,7 +65,7 @@ export const deployScriptTx = ({
           },
         ],
         receiptInfo: {
-          header: "Script Deployed!",
+          header: "Script deployed!",
           headerIcon: (
             <CustomIcon
               name="check-circle-solid"

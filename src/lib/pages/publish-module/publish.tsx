@@ -263,13 +263,13 @@ export const PublishModule = ({
                 variant="ghost-primary"
                 p="0 4px"
               >
-                Publish More Modules
+                Publish more modules
               </Button>
             </Box>
             {/* Upgrade Policy Section */}
             <Box gridArea="3 / 2">
               <Heading as="h6" variant="h6">
-                Upgrade Policy
+                Upgrade policy
               </Heading>
               <Text color="text.dark" variant="body2" mt={2}>
                 Specify how publishing modules will be able to republish.

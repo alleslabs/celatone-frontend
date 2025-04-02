@@ -14,7 +14,7 @@ export const DelegationRelatedTxsTableHeader = ({
     <TableHeader>Sender</TableHeader>
     <TableHeader>Action</TableHeader>
     <TableHeader w="100%" textAlign="end">
-      Bonded Token Changes
+      Bonded token changes
     </TableHeader>
     <TableHeader>Timestamp</TableHeader>
   </Grid>

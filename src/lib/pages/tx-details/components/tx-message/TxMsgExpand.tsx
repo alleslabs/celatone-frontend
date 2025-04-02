@@ -243,7 +243,7 @@ export const TxMsgExpand = ({
       msgIcon = "submit-proposal";
       content = (
         <Flex gap={1} display="inline">
-          Submit Proposal {(body.is_expedited as boolean) && " Expedited "}
+          Submit proposal {(body.is_expedited as boolean) && " expedited "}
           {log && (
             <>
               ID{" "}

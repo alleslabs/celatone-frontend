@@ -65,7 +65,7 @@ export const resendTx = ({
           },
         ],
         receiptInfo: {
-          header: "Transaction Complete!",
+          header: "Transaction complete!",
           description: (
             <Text fontWeight={700}>
               Your transaction was successfully resent.

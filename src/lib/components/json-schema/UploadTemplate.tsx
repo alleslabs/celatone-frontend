@@ -165,7 +165,7 @@ const MethodRender = ({
       return (
         <>
           <Heading as="h6" variant="h6" mb={4}>
-            Contract Schema
+            Contract schema
           </Heading>
           <JsonInput
             text={schemaString}

@@ -110,7 +110,7 @@ export const UptimeSection = ({
                 onViewMore();
               }}
             >
-              View Performance
+              View performance
             </Button>
           )}
         </Flex>
@@ -135,7 +135,7 @@ export const UptimeSection = ({
                 onViewMore();
               }}
             >
-              View Performance
+              View performance
             </Button>
           )}
         </>

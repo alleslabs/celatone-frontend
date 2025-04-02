@@ -19,7 +19,7 @@ export const UserAccountDesc = observer(
     const [showMore, setShowMore] = useState(false);
     const description = accountLocalInfo?.description;
     const [ref, { noClamp, clampedText, key }] = useClampText({
-      text: description || "No Contract description",
+      text: description || "No contract description",
       ellipsis: "...",
       lines: publicAccount ? 4 : 2,
     });
@@ -62,7 +62,7 @@ export const UserAccountDesc = observer(
       >
         <Flex justify="space-between" align="center" h="32px">
           <Text variant="body2" fontWeight={500} color="text.dark">
-            Your Account Description
+            Your account description
           </Text>
           <Box display="none" _groupHover={{ display: "flex" }}>
             {renderEditAccountButton()}

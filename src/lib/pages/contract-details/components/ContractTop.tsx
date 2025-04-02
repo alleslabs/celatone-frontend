@@ -177,7 +177,7 @@ export const ContractTop = ({
                 fontWeight={500}
                 whiteSpace="nowrap"
               >
-                Contract Address:
+                Contract address:
               </Text>
               <CopyLink
                 value={contractAddress}
@@ -212,7 +212,7 @@ export const ContractTop = ({
                   variant="body2"
                   fontWeight={500}
                 >
-                  Public Name:
+                  Public name:
                 </Text>
                 <Text variant="body2" className="ellipsis">
                   {publicInfo.name}

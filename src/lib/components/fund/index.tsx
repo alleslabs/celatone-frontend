@@ -27,7 +27,7 @@ const attachFundsOptions = [
     disabled: false,
   },
   {
-    label: "Provide JSON Asset List",
+    label: "Provide JSON asset list",
     value: AttachFundsType.ATTACH_FUNDS_JSON,
     disabled: false,
   },

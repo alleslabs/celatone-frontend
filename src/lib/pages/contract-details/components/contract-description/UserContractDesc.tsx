@@ -25,7 +25,7 @@ export const UserContractDesc = ({
   const description = contractLocalInfo?.description;
 
   const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: description || "No Contract description",
+    text: description || "No contract description",
     ellipsis: "...",
     lines: publicInfo?.description ? 4 : 2,
   });
@@ -49,7 +49,7 @@ export const UserContractDesc = ({
     >
       <Flex justify="space-between" align="center" h="32px">
         <Text variant="body2" fontWeight={500} color="text.dark">
-          Your Contract Description
+          Your contract description
         </Text>
         <EditContractDetailsModal
           contractLocalInfo={{

@@ -43,10 +43,10 @@ export function RemoveSchemaModal({
       icon="delete"
       iconColor="error.light"
       trigger={trigger}
-      mainBtnTitle="Yes, Remove JSON Schema"
+      mainBtnTitle="Yes, remove JSON schema"
       mainVariant="error"
       mainAction={handleRemove}
-      otherBtnTitle="No, Keep It"
+      otherBtnTitle="No, keep it"
     >
       <Text>
         This action will remove JSON schema for code `{codeId}` and other codes

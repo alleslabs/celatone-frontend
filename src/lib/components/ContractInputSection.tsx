@@ -145,7 +145,7 @@ export const ContractInputSection = ({
           setIsChangeContract(true);
         }}
       >
-        Change Contract
+        Change contract
       </Button>
     </Flex>
   );

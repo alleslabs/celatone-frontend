@@ -147,7 +147,7 @@ export const CodeInfoSection = ({
   return (
     <Box my={8}>
       <Heading as="h6" variant="h6" mb={6}>
-        Code Info
+        Code info
       </Heading>
       <Flex
         flexWrap={isMobile ? "wrap" : "nowrap"}

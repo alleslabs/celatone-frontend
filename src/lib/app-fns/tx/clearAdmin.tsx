@@ -64,7 +64,7 @@ export const clearAdminTx = ({
           },
         ],
         receiptInfo: {
-          header: "Clear Admin Complete!",
+          header: "Clear admin complete!",
           headerIcon: (
             <CustomIcon
               name="check-circle-solid"

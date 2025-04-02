@@ -17,7 +17,7 @@ export const ModulesTableHeader = ({
       <>
         <TableHeader>Module name</TableHeader>
         <TableHeader w="full" textAlign="center">
-          View/Execute Functions
+          View/Execute functions
         </TableHeader>
       </>
     )}

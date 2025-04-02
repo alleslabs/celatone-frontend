@@ -194,7 +194,7 @@ export const UploadModuleCard = ({
       </Flex>
       <Flex justifyContent="space-between" w="full">
         <Text variant="body2" color="text.dark" fontWeight={600}>
-          Module Path
+          Module path
         </Text>
         <Text variant="body2" color="text.dark">
           {decodeRes?.modulePath ?? "-"}

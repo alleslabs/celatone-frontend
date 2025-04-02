@@ -165,7 +165,7 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
       <CelatoneSeo pageName="Update admin" />
       <Flex direction="column" alignItems="center" mb={6}>
         <Heading as="h5" variant="h5">
-          Update Admin
+          Update admin
         </Heading>
         <UserDocsLink
           isDevTool
@@ -226,7 +226,7 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
         onClick={proceed}
         mt={12}
       >
-        Update Admin
+        Update admin
       </Button>
     </ActionPageContainer>
   );

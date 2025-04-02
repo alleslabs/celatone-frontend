@@ -111,10 +111,10 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
             id={codeTabId}
           >
             <CustomTab onClick={handleTabChange(TabIndex.CodeInfo)}>
-              Code Information
+              Code information
             </CustomTab>
             <CustomTab onClick={handleTabChange(TabIndex.JsonSchema)}>
-              JSON Schema
+              JSON schema
             </CustomTab>
           </TabList>
         )}
