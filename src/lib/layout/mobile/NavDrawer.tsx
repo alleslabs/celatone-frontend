@@ -115,8 +115,7 @@ export const NavDrawer = () => {
         gap={1}
         onClick={onOpen}
       >
-        <CustomIcon name="menu" boxSize={3} />
-        Menu
+        <CustomIcon name="menu" boxSize={6} />
       </Button>
       <Drawer isOpen={isOpen} onClose={onClose} placement="right">
         <DrawerOverlay />

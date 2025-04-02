@@ -41,13 +41,13 @@ export const Heading: ComponentStyleConfig = {
     },
     h6: {
       fontSize: "18px",
-      fontWeight: 500,
+      fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: "0.15px",
     },
     h7: {
       fontSize: "16px",
-      fontWeight: 500,
+      fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: "0px",
     },

@@ -20,7 +20,7 @@ import {
   getSubHeaderSequencer,
 } from "./utils";
 
-const ACTIVE_COLOR = "primary.main";
+const ACTIVE_COLOR = "gray.100";
 
 const SubHeader = () => {
   const { tier } = useTierConfig();
@@ -69,7 +69,7 @@ const SubHeader = () => {
           <Flex
             alignItems="center"
             px={4}
-            gap={2}
+            gap={1}
             h="full"
             borderBottomWidth={2}
             borderColor={
@@ -94,9 +94,11 @@ const SubHeader = () => {
               color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "gray.600"}
             />
             <Text
-              variant="body2"
-              fontWeight={700}
-              color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "text.dark"}
+              variant="body3"
+              fontWeight={600}
+              color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "text.disabled"}
+              fontFamily="heading"
+              textTransform="uppercase"
             >
               {item.name}
             </Text>

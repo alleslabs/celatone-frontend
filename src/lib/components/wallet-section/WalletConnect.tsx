@@ -11,21 +11,21 @@ export const ConnectWalletButton = ({
   isDisabled,
   onClick,
   variant,
-  icon,
+  hasIcon,
 }: ConnectWalletType) => (
   <Button
-    w="170px"
     isLoading={isLoading}
     isDisabled={isDisabled}
     onClick={onClick}
     variant={variant}
     gap={1}
     alignContent="center"
-    minH="64px"
-    borderRadius={0}
+    maxH="32px"
+    px={hasIcon ? "8px" : "18px"}
   >
-    <CustomIcon name={icon ?? "wallet"} />
-    {buttonText || "Connect"}
+    {hasIcon && <CustomIcon name="wallet" mr={2} />}
+    {buttonText || "Connect wallet"}
+    {hasIcon && <CustomIcon name="chevron-down" boxSize={3} />}
   </Button>
 );
 

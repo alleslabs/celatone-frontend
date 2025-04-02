@@ -16,13 +16,7 @@ export const PageHeader = ({ title, subtitle, docHref }: PageHeaderProps) => {
     <Flex justifyContent="space-between" alignItems="center" mb={8} w="full">
       <div style={{ width: "100%" }}>
         <Flex justifyContent="space-between">
-          <Heading
-            as="h5"
-            variant="h5"
-            color="text.main"
-            fontWeight={600}
-            minH="36px"
-          >
+          <Heading as="h5" variant="h5" color="text.main" minH="36px">
             {title}
           </Heading>
           {isMobile && <UserDocsLink href={docHref} isButton />}
