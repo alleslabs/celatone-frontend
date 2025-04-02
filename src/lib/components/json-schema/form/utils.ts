@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { EnumOptionsType, RJSFSchema, ValidatorType } from "@rjsf/utils";
+
 import isEqual from "lodash/isEqual";
 
 /** Determines whether the given `value` is (one of) the `selected` value(s).

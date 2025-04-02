@@ -1,14 +1,16 @@
-import { Flex, Grid, Radio, RadioGroup, Text } from "@chakra-ui/react";
-import { useController, useWatch } from "react-hook-form";
 import type { Control, FieldErrors } from "react-hook-form";
 
+import { Flex, Grid, Radio, RadioGroup, Text } from "@chakra-ui/react";
 import {
   CustomNetworkPageHeader,
   CustomNetworkSubheader,
 } from "lib/components/custom-network";
 import { ControllerInput } from "lib/components/forms";
-import { VmType } from "../../types";
+import { useController, useWatch } from "react-hook-form";
+
 import type { AddNetworkManualForm } from "../../types";
+
+import { VmType } from "../../types";
 
 interface NetworkDetailsProps {
   control: Control<AddNetworkManualForm>;
@@ -27,47 +29,47 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
   });
 
   return (
-    <Flex direction="column" gap={2} alignItems="center">
+    <Flex alignItems="center" direction="column" gap={2}>
       <CustomNetworkPageHeader title="Add Network Details" />
-      <Flex w="full" direction="column" gap={6} mt={8}>
+      <Flex direction="column" gap={6} mt={8} w="full">
         <CustomNetworkSubheader
-          title="VM Type"
           subtitle="Choose supported VM for the custom Rollup"
+          title="VM Type"
         />
         <RadioGroup
-          onChange={(nextVal) => vmTypeField.onChange(nextVal)}
           value={vm.type}
+          onChange={(nextVal) => vmTypeField.onChange(nextVal)}
         >
           <Grid
-            gridTemplateColumns="repeat(3, 1fr)"
             gap={4}
-            maxW={640}
+            gridTemplateColumns="repeat(3, 1fr)"
             height={16}
+            maxW={640}
           >
             <Radio
-              variant="gray-card"
-              width="fit-content"
-              value={VmType.MOVE}
               overflow="hidden"
+              value={VmType.MOVE}
+              variant="gray-card"
               w="full"
+              width="fit-content"
             >
               Move
             </Radio>
             <Radio
-              variant="gray-card"
-              width="fit-content"
-              value={VmType.WASM}
               overflow="hidden"
+              value={VmType.WASM}
+              variant="gray-card"
               w="full"
+              width="fit-content"
             >
               Wasm
             </Radio>
             <Radio
-              variant="gray-card"
-              width="fit-content"
-              value={VmType.EVM}
               overflow="hidden"
+              value={VmType.EVM}
+              variant="gray-card"
               w="full"
+              width="fit-content"
             >
               EVM
             </Radio>
@@ -75,106 +77,106 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
         </RadioGroup>
         {vm.type === VmType.EVM && (
           <ControllerInput
-            name="vm.jsonRpc"
             control={control}
+            error={
+              (errors.vm as { jsonRpc?: { message: string } })?.jsonRpc?.message
+            }
             label="JSON RPC"
-            variant="fixed-floating"
-            w="full"
+            name="vm.jsonRpc"
             placeholder="https://"
             rules={{
               required: "",
             }}
-            error={
-              (errors.vm as { jsonRpc?: { message: string } })?.jsonRpc?.message
-            }
+            variant="fixed-floating"
+            w="full"
           />
         )}
       </Flex>
-      <Flex w="full" direction="column" gap={6} mt={8}>
+      <Flex direction="column" gap={6} mt={8} w="full">
         <CustomNetworkSubheader
-          title="Network Details"
           subtitle="Enter the Rollup’s general information and gather data touch points"
+          title="Network Details"
         />
         <ControllerInput
-          name="prettyName"
           control={control}
+          error={errors.prettyName?.message}
           label="Rollup Name"
-          variant="fixed-floating"
-          w="full"
+          name="prettyName"
           placeholder="ex. Jennie"
           rules={{
             required: "",
           }}
-          error={errors.prettyName?.message}
-        />
-        <ControllerInput
-          name="rest"
-          control={control}
-          label="Rollup REST URL"
           variant="fixed-floating"
           w="full"
-          placeholder="https://"
-          rules={{
-            required: "",
-          }}
+        />
+        <ControllerInput
+          control={control}
           error={errors.rest?.message}
-        />
-        <ControllerInput
-          name="rpc"
-          control={control}
-          label="Rollup RPC URL"
-          variant="fixed-floating"
-          w="full"
+          label="Rollup REST URL"
+          name="rest"
           placeholder="https://"
           rules={{
             required: "",
           }}
+          variant="fixed-floating"
+          w="full"
+        />
+        <ControllerInput
+          control={control}
           error={errors.rpc?.message}
+          label="Rollup RPC URL"
+          name="rpc"
+          placeholder="https://"
+          rules={{
+            required: "",
+          }}
+          variant="fixed-floating"
+          w="full"
         />
         <Flex gap={6}>
           <ControllerInput
-            name="chainId"
             control={control}
+            error={errors.chainId?.message}
             label="Rollup Chain ID"
-            variant="fixed-floating"
-            w="full"
+            name="chainId"
             placeholder="ex. jennie-init-1"
             rules={{
               required: "",
             }}
-            error={errors.chainId?.message}
-          />
-          <ControllerInput
-            name="registryChainName"
-            control={control}
-            label="Registry Chain Name"
             variant="fixed-floating"
             w="full"
-            placeholder="ex. jennieinit"
+          />
+          <ControllerInput
+            control={control}
+            error={errors.registryChainName?.message}
             helperText={
               errors.registryChainName?.message
                 ? ""
                 : "Lower case letter (a-z) or number (0-9)"
             }
+            label="Registry Chain Name"
+            name="registryChainName"
+            placeholder="ex. jennieinit"
             rules={{
               required: "",
             }}
-            error={errors.registryChainName?.message}
+            variant="fixed-floating"
+            w="full"
           />
         </Flex>
         <ControllerInput
-          name="logoUri"
           control={control}
-          label="Logo URI"
-          variant="fixed-floating"
-          w="full"
-          placeholder="https://"
           error={errors.logoUri?.message}
           helperText="1:1 ratio image is recommended"
+          label="Logo URI"
+          name="logoUri"
+          placeholder="https://"
+          variant="fixed-floating"
+          w="full"
         />
       </Flex>
       <Flex mt={8}>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           You can edit these details later.
         </Text>
       </Flex>

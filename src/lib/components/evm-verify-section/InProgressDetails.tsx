@@ -1,6 +1,7 @@
+import type { HexAddr20, EvmVerifyInfo } from "lib/types";
+
 import { Button, Text } from "@chakra-ui/react";
 
-import type { HexAddr20, EvmVerifyInfo } from "lib/types";
 import { EvmVerifyStatusModalWithTrigger } from "../modal/evm-verify-status";
 
 interface InProgressDetailsProps {
@@ -13,7 +14,7 @@ export const InProgressDetails = ({
   evmVerifyInfo,
 }: InProgressDetailsProps) => (
   <>
-    <Text variant="body2" color="text.dark">
+    <Text color="text.dark" variant="body2">
       Contract verification is in progress and may take several hours depending
       on contract complexity.
     </Text>
@@ -21,7 +22,7 @@ export const InProgressDetails = ({
       contractAddress={contractAddress}
       evmVerifyInfo={evmVerifyInfo}
       triggerElement={
-        <Button variant="ghost-primary" size="sm">
+        <Button size="sm" variant="ghost-primary">
           View Verification Details
         </Button>
       }

@@ -1,24 +1,25 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import type { FormStatus } from "lib/components/forms";
+import type { OffchainDetail } from "lib/components/OffChainForm";
+import type { BechAddr, BechAddr32, LVPair } from "lib/types";
 
+import { Button, VStack } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useExampleAddresses, useValidateAddress } from "lib/app-provider";
-import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
-import type { OffchainDetail } from "lib/components/OffChainForm";
 import { OffChainForm } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useHandleContractSave } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { useContractData } from "lib/services/wasm/contract";
-import type { BechAddr, BechAddr32, LVPair } from "lib/types";
 import {
   formatSlugName,
   getNameAndDescriptionDefault,
   getTagsDefault,
 } from "lib/utils";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+
 import { ActionModal } from "../ActionModal";
 
 interface SaveNewContractDetail extends OffchainDetail {
@@ -169,44 +170,44 @@ export function SaveNewContractModal({
 
   return (
     <ActionModal
-      title="Save New Contract"
-      icon="bookmark-solid"
-      trigger={<Button as="button" {...buttonProps} />}
-      mainBtnTitle="Save"
-      mainAction={handleSave}
       disabledMain={
         status.state !== "success" || !!errors.name || !!errors.description
       }
-      otherBtnTitle="Cancel"
+      icon="bookmark-solid"
+      mainAction={handleSave}
+      mainBtnTitle="Save"
       otherAction={resetForm}
+      otherBtnTitle="Cancel"
+      title="Save New Contract"
+      trigger={<Button as="button" {...buttonProps} />}
     >
       <VStack gap={4}>
         <ControllerInput
-          name="contractAddress"
           control={control}
           label="Contract Address"
-          variant="fixed-floating"
+          labelBgColor="gray.900"
+          name="contractAddress"
           placeholder={`ex. ${exampleContractAddress}`}
           status={status}
-          labelBgColor="gray.900"
+          variant="fixed-floating"
         />
         <ControllerInput
-          name="instantiator"
           control={control}
-          label="Instantiated by"
-          variant="fixed-floating"
           isDisabled
+          label="Instantiated by"
           labelBgColor="gray.900"
+          name="instantiator"
+          variant="fixed-floating"
         />
 
         <OffChainForm<SaveNewContractDetail>
-          state={offchainState}
           contractLabel={labelState}
           control={control}
-          setTagsValue={setTagsValue}
-          setContractListsValue={setContractListsValue}
           errors={errors}
           labelBgColor="gray.900"
+          setContractListsValue={setContractListsValue}
+          setTagsValue={setTagsValue}
+          state={offchainState}
         />
       </VStack>
     </ActionModal>

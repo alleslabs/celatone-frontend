@@ -1,8 +1,7 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import type { Option, TxFilters } from "lib/types";
 import type { ChangeEvent } from "react";
-import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
 
+import { Flex, Heading } from "@chakra-ui/react";
 import { useCurrentChain, useWasmConfig } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -17,7 +16,8 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useDebounce } from "lib/hooks";
 import { useTxsByAddress, useTxsCountByAddress } from "lib/services/tx";
-import type { Option, TxFilters } from "lib/types";
+import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
 
 interface PastTxsState {
   search: string;
@@ -108,45 +108,43 @@ export const PastTxsFull = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Past Transactions" />
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex alignItems="center" justifyContent="space-between">
         <Heading
-          variant="h5"
-          as="h5"
-          minH="36px"
-          display="flex"
           alignItems="center"
+          as="h5"
+          display="flex"
+          minH="36px"
+          variant="h5"
         >
           Past Transactions
         </Heading>
-        <UserDocsLink isButton href="general/transactions/past-txs" />
+        <UserDocsLink href="general/transactions/past-txs" isButton />
       </Flex>
-      <Flex my={8} gap={3}>
+      <Flex gap={3} my={8}>
         <InputWithIcon
+          amptrackSection="past-txs-search"
           placeholder={`Search with Transaction Hash${
             wasm.enabled ? " or Contract Address" : ""
           }`}
+          size={{ base: "md", md: "lg" }}
           value={pastTxsState.search}
           onChange={handleOnSearchChange}
-          size={{ base: "md", md: "lg" }}
-          amptrackSection="past-txs-search"
         />
         <Flex gap={3}>
           <TxRelationSelection
-            value={pastTxsState.isSigner}
             setValue={handleOnIsSignerChange}
+            value={pastTxsState.isSigner}
             w="165px"
           />
           <TxFilterSelection
-            result={selectedFilters}
-            setResult={handleOnFiltersChange}
             boxWidth="285px"
             placeholder="All"
+            result={selectedFilters}
+            setResult={handleOnFiltersChange}
           />
         </Flex>
       </Flex>
       <TransactionsTableWithWallet
-        transactions={txs?.items}
-        isLoading={isLoading}
         emptyState={
           pastTxsState.search.trim().length > 0 ||
           pastTxsState.isSigner !== undefined ||
@@ -166,16 +164,18 @@ export const PastTxsFull = () => {
             />
           )
         }
+        isLoading={isLoading}
         showActions
         showRelations
+        transactions={txs?.items}
       />
       {!!txCount && txCount > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={txCount}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={txCount}
           onPageChange={(nextPage) => {
             setCurrentPage(nextPage);
             refetchCount();

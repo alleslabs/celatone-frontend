@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import type { MutateEvent } from "lib/types";
+
 import {
   zBechAddr,
   zHexAddr,
@@ -10,6 +9,7 @@ import {
   zUtcDate,
 } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 export const zNft = z
   .object({

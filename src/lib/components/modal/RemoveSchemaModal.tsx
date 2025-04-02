@@ -1,6 +1,6 @@
-import { Text, useToast } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
+import { Text, useToast } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { useSchemaStore } from "lib/providers/store";
@@ -32,21 +32,21 @@ export function RemoveSchemaModal({
         duration: 5000,
         isClosable: false,
         position: "bottom-right",
-        icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+        icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       });
     }, 1000);
   };
 
   return (
     <ActionModal
-      title={`Removed JSON Schema for code '${codeId}'?`}
       icon="delete"
       iconColor="error.light"
-      trigger={trigger}
+      mainAction={handleRemove}
       mainBtnTitle="Yes, Remove JSON Schema"
       mainVariant="error"
-      mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
+      title={`Removed JSON Schema for code '${codeId}'?`}
+      trigger={trigger}
     >
       <Text>
         This action will remove JSON schema for code `{codeId}` and other codes

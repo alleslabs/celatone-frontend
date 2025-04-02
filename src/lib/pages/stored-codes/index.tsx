@@ -1,10 +1,7 @@
-import { Badge, Flex, Heading, Skeleton } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
+import type { PermissionFilterValue } from "lib/hooks";
 import type { ChangeEvent } from "react";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 
+import { Badge, Flex, Heading, Skeleton } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCurrentChain,
@@ -19,9 +16,12 @@ import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { MyStoredCodesTable } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
 import { useUploadAccessParamsRest } from "lib/services/wasm/code";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 import { ProposalButton } from "./components/ProposalButton";
 import { UploadButton } from "./components/UploadButton";
@@ -76,29 +76,29 @@ const StoredCodes = observer(() => {
       <Flex alignItems="center" justifyContent="space-between" mb={4}>
         <Flex align="center">
           <Heading
-            variant="h5"
-            as="h5"
-            minH="36px"
-            display="flex"
             alignItems="center"
+            as="h5"
+            display="flex"
+            minH="36px"
+            variant="h5"
           >
             My Stored Codes
           </Heading>
-          <Badge variant="primary" ml={2}>
+          <Badge ml={2} variant="primary">
             {storedCodesCount}
           </Badge>
         </Flex>
-        <Flex gap={4} align="center">
+        <Flex align="center" gap={4}>
           <UserDocsLink
-            isDevTool
             href="cosmwasm/codes/organize#viewing-my-stored-codes"
             isButton
+            isDevTool
           />
           <Skeleton
-            isLoaded={!isUploadAccessFetching}
+            borderRadius={8}
             display="flex"
             gap={2}
-            borderRadius={8}
+            isLoaded={!isUploadAccessFetching}
           >
             {data?.isPermissionedNetwork ? (
               <>
@@ -117,13 +117,13 @@ const StoredCodes = observer(() => {
       </Flex>
       <Flex gap={3} my={8}>
         <InputWithIcon
+          amptrackSection="stored-code-search"
           placeholder="Search with Code ID or Code Name"
+          size="lg"
           value={keyword}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setValue("keyword", e.target.value)
           }
-          size="lg"
-          amptrackSection="stored-code-search"
         />
         <FilterByPermission
           initialSelected="all"
@@ -135,11 +135,11 @@ const StoredCodes = observer(() => {
       </Flex>
       <MyStoredCodesTable
         codes={stored}
-        totalData={storedCodesCount}
-        isLoading={isStoredCodesLoading}
-        onRowSelect={onRowSelect}
-        emptyMessage="Your uploaded Wasm files will display as My Stored Codes."
         disconnectedMessage="to see your previously uploaded and stored codes."
+        emptyMessage="Your uploaded Wasm files will display as My Stored Codes."
+        isLoading={isStoredCodesLoading}
+        totalData={storedCodesCount}
+        onRowSelect={onRowSelect}
       />
     </PageContainer>
   );

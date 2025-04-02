@@ -1,5 +1,11 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type {
+  BechAddr,
+  ContractMigrationHistory,
+  Nullish,
+  WasmVerifyInfo,
+} from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import {
   useGetAddressType,
   useInternalNavigate,
@@ -13,12 +19,6 @@ import {
   RemarkRender,
 } from "lib/components/table";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
-import type {
-  BechAddr,
-  ContractMigrationHistory,
-  Nullish,
-  WasmVerifyInfo,
-} from "lib/types";
 import {
   dateFromNow,
   formatUTC,
@@ -40,34 +40,51 @@ export const MigrationMobileCard = ({
   const navigate = useInternalNavigate();
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/codes/[codeId]",
-          query: { codeId: history.codeId.toString() },
-        })
-      }
-      topContent={
-        <Flex w="full">
-          <Flex flex={1} gap={2} align="center">
-            <MobileLabel label="Code ID" variant="body2" />
-            <ExplorerLink
-              type="code_id"
-              value={history.codeId.toString()}
-              rightIcon={
-                <WasmVerifyBadge
-                  status={getWasmVerifyStatus(wasmVerifyInfo)}
-                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+      bottomContent={
+        <Flex direction="column" gap={3} w="full">
+          <Flex>
+            {isFullTier && (
+              <Flex direction="column" flex={1}>
+                <MobileLabel label="Sender" />
+                {history.sender ? (
+                  <ExplorerLink
+                    showCopyOnHover
+                    textFormat="truncate"
+                    type={getAddressType(history.sender)}
+                    value={history.sender}
+                  />
+                ) : (
+                  "N/A"
+                )}
+              </Flex>
+            )}
+            <Flex direction="column" flex={1}>
+              <MobileLabel label="Block Height" />
+              {history.height ? (
+                <ExplorerLink
+                  showCopyOnHover
+                  type="block_height"
+                  value={history.height.toString()}
                 />
-              }
-              showCopyOnHover
-            />
+              ) : (
+                "N/A"
+              )}
+            </Flex>
           </Flex>
+          {isFullTier && history.timestamp && (
+            <Flex direction="column">
+              <Text variant="body3">{formatUTC(history.timestamp)}</Text>
+              <Text color="text.dark" variant="body3">
+                ({dateFromNow(history.timestamp)})
+              </Text>
+            </Flex>
+          )}
         </Flex>
       }
       middleContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel variant="body3" label="Code Name" />
+            <MobileLabel label="Code Name" variant="body3" />
             <CodeNameCell
               code={{
                 id: history.codeId,
@@ -80,63 +97,46 @@ export const MigrationMobileCard = ({
           {isFullTier && (
             <>
               <Flex direction="column">
-                <MobileLabel variant="body3" label="CW2 Info" />
+                <MobileLabel label="CW2 Info" variant="body3" />
                 <Text
-                  variant="body2"
                   color={cw2Info ? "text.main" : "text.disabled"}
+                  variant="body2"
                   wordBreak="break-all"
                 >
                   {cw2Info ?? "N/A"}
                 </Text>
               </Flex>
               <Flex direction="column">
-                <MobileLabel variant="body3" label="Remark" />
+                <MobileLabel label="Remark" variant="body3" />
                 {history.remark ? <RemarkRender {...history.remark} /> : "N/A"}
               </Flex>
             </>
           )}
         </Flex>
       }
-      bottomContent={
-        <Flex w="full" direction="column" gap={3}>
-          <Flex>
-            {isFullTier && (
-              <Flex flex={1} direction="column">
-                <MobileLabel label="Sender" />
-                {history.sender ? (
-                  <ExplorerLink
-                    type={getAddressType(history.sender)}
-                    value={history.sender}
-                    textFormat="truncate"
-                    showCopyOnHover
-                  />
-                ) : (
-                  "N/A"
-                )}
-              </Flex>
-            )}
-            <Flex flex={1} direction="column">
-              <MobileLabel label="Block Height" />
-              {history.height ? (
-                <ExplorerLink
-                  value={history.height.toString()}
-                  type="block_height"
-                  showCopyOnHover
+      topContent={
+        <Flex w="full">
+          <Flex align="center" flex={1} gap={2}>
+            <MobileLabel label="Code ID" variant="body2" />
+            <ExplorerLink
+              rightIcon={
+                <WasmVerifyBadge
+                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                  status={getWasmVerifyStatus(wasmVerifyInfo)}
                 />
-              ) : (
-                "N/A"
-              )}
-            </Flex>
+              }
+              showCopyOnHover
+              type="code_id"
+              value={history.codeId.toString()}
+            />
           </Flex>
-          {isFullTier && history.timestamp && (
-            <Flex direction="column">
-              <Text variant="body3">{formatUTC(history.timestamp)}</Text>
-              <Text variant="body3" color="text.dark">
-                ({dateFromNow(history.timestamp)})
-              </Text>
-            </Flex>
-          )}
         </Flex>
+      }
+      onClick={() =>
+        navigate({
+          pathname: "/codes/[codeId]",
+          query: { codeId: history.codeId.toString() },
+        })
       }
     />
   );

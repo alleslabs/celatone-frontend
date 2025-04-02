@@ -1,8 +1,8 @@
 import type { Big } from "big.js";
+import type { BechAddr, USD } from "lib/types";
 
 import { useGovConfig, useInitia } from "lib/app-provider";
 import { useBalanceInfos } from "lib/services/bank";
-import type { BechAddr, USD } from "lib/types";
 import { big } from "lib/types";
 import { totalValueTokenWithValue } from "lib/utils";
 

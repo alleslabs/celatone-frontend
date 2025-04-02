@@ -1,12 +1,12 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Button, Flex } from "@chakra-ui/react";
-
-import { CustomIcon } from "lib/components/icon";
-import { Loading } from "lib/components/Loading";
 import type { Redelegation, StakingParams } from "lib/types";
 
-import { NonRedelegatableSection } from "./NonRedelegatableSection";
+import { Button, Flex } from "@chakra-ui/react";
+import { CustomIcon } from "lib/components/icon";
+import { Loading } from "lib/components/Loading";
+
 import { RedelegationsTable, TableTitle } from "../table";
+import { NonRedelegatableSection } from "./NonRedelegatableSection";
 
 interface RedelegationsSectionProps extends FlexProps {
   stakingParams: StakingParams;
@@ -24,23 +24,23 @@ export const RedelegationsSection = ({
 }: RedelegationsSectionProps) => (
   <Flex direction="column" gap={4} {...props}>
     <Flex
-      gap={3}
       alignItems={{ base: "start", md: "center" }}
       direction={{ base: "column", md: "row" }}
+      gap={3}
     >
       <Button
-        variant="ghost-primary"
-        size={{ base: "xs", md: "md" }}
         p={0}
+        size={{ base: "xs", md: "md" }}
+        variant="ghost-primary"
         onClick={onBack}
       >
-        <CustomIcon name="chevron-left" boxSize={6} />
+        <CustomIcon boxSize={6} name="chevron-left" />
       </Button>
       <TableTitle
-        title="Active Redelegations"
         count={redelegations.length}
         helperText={`Each wallet can redelegate up to ${stakingParams.maxEntries} entries between same pair of validators within last ${stakingParams.unbondingTime} timeframe`}
         mb={0}
+        title="Active Redelegations"
       />
     </Flex>
     {isLoading ? (

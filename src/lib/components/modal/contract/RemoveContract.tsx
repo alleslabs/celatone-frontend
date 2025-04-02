@@ -1,11 +1,11 @@
 import type { MenuItemProps } from "@chakra-ui/react";
-import { Highlight, MenuItem, Text } from "@chakra-ui/react";
+import type { ContractLocalInfo } from "lib/stores/contract";
+import type { LVPair } from "lib/types";
 
+import { Highlight, MenuItem, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import type { ContractLocalInfo } from "lib/stores/contract";
-import type { LVPair } from "lib/types";
 import { truncate } from "lib/utils";
 
 interface RemoveContractModalProps {
@@ -37,13 +37,13 @@ export function RemoveContractModal({
 
   return (
     <ActionModal
-      title={`Remove ${displayName}?`}
       icon="delete"
       iconColor="error.light"
+      mainAction={handleRemove}
       mainBtnTitle="Yes, Remove"
       mainVariant="error"
-      mainAction={handleRemove}
       otherBtnTitle="No, Keep It"
+      title={`Remove ${displayName}?`}
       trigger={<MenuItem {...menuItemProps} as="button" />}
     >
       <Text>

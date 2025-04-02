@@ -1,14 +1,15 @@
-import { Box } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
+import type { BechAddr, BechAddr32, Option } from "lib/types";
 import type { ChangeEvent } from "react";
 
+import { Box } from "@chakra-ui/react";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ErrorFetching } from "lib/components/state";
 import { ContractsTable, MobileTitle, ViewMore } from "lib/components/table";
 import { useAccountAdminContracts } from "lib/pages/account-details/data";
-import type { BechAddr, BechAddr32, Option } from "lib/types";
+import { observer } from "mobx-react-lite";
+
 import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 
@@ -74,32 +75,32 @@ export const AdminContractsTable = observer(
       <Box mt={{ base: 4, md: 8 }}>
         {isMobileOverview ? (
           <MobileTitle
-            title="Contract Admins"
             count={totalData}
+            title="Contract Admins"
             onViewMore={onViewMore}
           />
         ) : (
           <AccountSectionWrapper
+            hasHelperText={!!contracts?.length}
+            helperText="This account is the admin for following contracts"
             title="Contract Admins"
             totalData={totalData}
-            helperText="This account is the admin for following contracts"
-            hasHelperText={!!contracts?.length}
           >
             <ContractsTable
               contracts={contracts}
-              isLoading={isLoading}
               emptyState={
                 !contracts ? (
                   <ErrorFetching
                     dataName="admin contracts"
-                    withBorder
-                    my={2}
                     hasBorderTop={false}
+                    my={2}
+                    withBorder
                   />
                 ) : (
                   <AccountDetailsEmptyState message="This account does not have any admin access for any contracts." />
                 )
               }
+              isLoading={isLoading}
               onRowSelect={onRowSelect}
             />
           </AccountSectionWrapper>
@@ -110,11 +111,11 @@ export const AdminContractsTable = observer(
             : totalData > 10 && (
                 <Pagination
                   currentPage={currentPage}
-                  pagesQuantity={pagesQuantity}
                   offset={offset}
-                  totalData={totalData}
-                  scrollComponentId={scrollComponentId}
                   pageSize={pageSize}
+                  pagesQuantity={pagesQuantity}
+                  scrollComponentId={scrollComponentId}
+                  totalData={totalData}
                   onPageChange={onPageChange}
                   onPageSizeChange={onPageSizeChange}
                 />

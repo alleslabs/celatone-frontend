@@ -1,21 +1,22 @@
-import { Grid } from "@chakra-ui/react";
-
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type {
   BechAddr32,
   ContractInfo,
   Nullish,
   WasmVerifyInfo,
 } from "lib/types";
+
+import { Grid } from "@chakra-ui/react";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import { getWasmVerifyStatus } from "lib/utils";
 
+import type { CtaInfo } from "./ContractsTableRowCta";
+
+import { TableRow } from "../tableComponents";
 import { ContractInstantiatorCell } from "./ContractInstantiatorCell";
 import { ContractNameCell } from "./ContractNameCell";
-import type { CtaInfo } from "./ContractsTableRowCta";
 import { ContractsTableRowCta } from "./ContractsTableRowCta";
 import { TagsCell } from "./TagsCell";
-import { TableRow } from "../tableComponents";
 
 interface ContractsTableRowProps {
   contractInfo: ContractInfo;
@@ -39,28 +40,28 @@ export const ContractsTableRow = ({
   wasmVerifyInfo,
 }: ContractsTableRowProps) => (
   <Grid
-    templateColumns={templateColumns}
-    onClick={() => onRowSelect(contractInfo.contractAddress)}
     _hover={{ bg: "gray.900" }}
-    transition="all 0.25s ease-in-out"
     cursor="pointer"
     minW="min-content"
+    templateColumns={templateColumns}
+    transition="all 0.25s ease-in-out"
+    onClick={() => onRowSelect(contractInfo.contractAddress)}
   >
     <TableRow>
       <ExplorerLink
-        value={contractInfo.contractAddress}
-        type="contract_address"
+        isReadOnly={isReadOnly}
         rightIcon={
           contractInfo.codeId ? (
             <WasmVerifyBadge
-              status={getWasmVerifyStatus(wasmVerifyInfo)}
-              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
               linkedCodeId={contractInfo.codeId}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
             />
           ) : undefined
         }
         showCopyOnHover
-        isReadOnly={isReadOnly}
+        type="contract_address"
+        value={contractInfo.contractAddress}
       />
     </TableRow>
 
@@ -89,8 +90,8 @@ export const ContractsTableRow = ({
     {!isReadOnly && (
       <ContractsTableRowCta
         contractInfo={contractInfo}
-        withCta={withCta}
         showLastUpdate={showLastUpdate}
+        withCta={withCta}
       />
     )}
   </Grid>

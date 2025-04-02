@@ -1,3 +1,5 @@
+import type { BechAddr32 } from "lib/types";
+
 import {
   Alert,
   AlertDescription,
@@ -7,13 +9,11 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { saveAs } from "file-saver";
-import { useMemo, useState } from "react";
-
 import { AmpEvent, track, trackContractStatesLoad } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { useContractStatesRest } from "lib/services/wasm/contractState";
-import type { BechAddr32 } from "lib/types";
 import { groupContractStatesByFirstIndex } from "lib/utils";
+import { useMemo, useState } from "react";
 
 import { StateList } from "./StateList";
 import { StateLoader } from "./StateLoader";
@@ -95,18 +95,10 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           Contract States
         </Heading>
         <StateLoader
-          numStatesToLoad={limit}
-          isLoading={isFetching || isFetchingNextPage}
-          totalData={totalData}
           isCompleted={!hasNextPage}
-          onLoadMore={() => {
-            trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_LOAD_MORE, {
-              currentStates: totalData,
-              namespacesCount: namespaces.length,
-              namespaces,
-            });
-            fetchNextPage();
-          }}
+          isLoading={isFetching || isFetchingNextPage}
+          numStatesToLoad={limit}
+          totalData={totalData}
           onDownload={() => {
             trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_DOWNLOAD, {
               currentStates: totalData,
@@ -115,10 +107,18 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
             });
             handleDownload();
           }}
+          onLoadMore={() => {
+            trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_LOAD_MORE, {
+              currentStates: totalData,
+              namespacesCount: namespaces.length,
+              namespaces,
+            });
+            fetchNextPage();
+          }}
         />
       </Flex>
       {!!error && (
-        <Alert variant="error" alignItems="center">
+        <Alert alignItems="center" variant="error">
           <AlertDescription wordBreak="break-word">
             Error fetching data from REST. Please refresh to try again.
           </AlertDescription>
@@ -138,15 +138,15 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
         {namespaces.map((namespace) => (
           <Button
             key={namespace}
+            border="1px solid"
+            borderColor="gray.100"
+            borderRadius="16px"
+            fontSize="14px"
+            fontWeight={400}
+            height="28px"
             variant={
               namespace === selectedNamespace ? "primary" : "outline-white"
             }
-            border="1px solid"
-            borderColor="gray.100"
-            fontSize="14px"
-            height="28px"
-            borderRadius="16px"
-            fontWeight={400}
             onClick={() => {
               track(AmpEvent.USE_NAMESPACE_TAB, { namespace });
               setSelectedNamespace(namespace);
@@ -159,22 +159,22 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
 
       {/* Searchbar */}
       <InputWithIcon
+        amptrackSection="contract-states-search"
         placeholder="Search by Key"
+        size={{ base: "md", md: "lg" }}
         value={keyword}
         onChange={(e) => {
           const newVal = e.target.value;
           setKeyword(newVal);
         }}
-        size={{ base: "md", md: "lg" }}
-        amptrackSection="contract-states-search"
       />
 
       {/* State List */}
       <StateList
-        states={states}
-        totalData={totalDataByNamespace}
         isLoading={isFetching}
         isSearching={keyword.trim().length !== 0}
+        states={states}
+        totalData={totalDataByNamespace}
       />
     </Flex>
   );

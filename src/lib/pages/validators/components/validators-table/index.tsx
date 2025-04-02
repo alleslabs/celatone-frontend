@@ -1,22 +1,21 @@
-/* eslint-disable sonarjs/cognitive-complexity */
-import { TableContainer } from "@chakra-ui/react";
-import { Fragment } from "react";
+import type { ValidatorsResponse } from "lib/services/types";
+import type { Option } from "lib/types";
 
+import { TableContainer } from "@chakra-ui/react";
 import { useInitia, useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { MobileTableContainer } from "lib/components/table";
 import { useAssetInfos } from "lib/services/assetService";
 import { useStakingParamsRest } from "lib/services/staking";
-import type { ValidatorsResponse } from "lib/services/types";
-import type { Option } from "lib/types";
 import { getStakingAssetInfo } from "lib/utils";
+import { Fragment } from "react";
 
+import { ValidatorOrder } from "../../types";
 import { ValidatorsPercentDivider } from "./ValidatorsPercentDivider";
 import { ValidatorsTableHeader } from "./ValidatorsTableHeader";
 import { ValidatorsTableMobileCard } from "./ValidatorsTableMobileCard";
 import { ValidatorsTableRow } from "./ValidatorsTableRow";
-import { ValidatorOrder } from "../../types";
 
 interface ValidatorsTableProps {
   data: Option<ValidatorsResponse>;
@@ -76,48 +75,48 @@ export const ValidatorsTable = ({
           {data.items.map((validator) => (
             <ValidatorsTableMobileCard
               key={validator.validatorAddress}
-              isActive={isActive}
-              validator={validator}
-              totalVotingPower={data.metadata.totalVotingPower}
-              minCommissionRate={data.metadata.minCommissionRate}
               assetInfo={assetInfo}
+              isActive={isActive}
+              minCommissionRate={data.metadata.minCommissionRate}
               showUptime={showUptime}
+              totalVotingPower={data.metadata.totalVotingPower}
+              validator={validator}
             />
           ))}
         </MobileTableContainer>
       ) : (
         <TableContainer>
           <ValidatorsTableHeader
-            templateColumns={templateColumns}
-            scrollComponentId={scrollComponentId}
             isActive={isActive}
-            order={order}
-            setOrder={setOrder}
             isDesc={isDesc}
+            order={order}
+            scrollComponentId={scrollComponentId}
             setIsDesc={setIsDesc}
+            setOrder={setOrder}
             showUptime={showUptime}
+            templateColumns={templateColumns}
           />
           {data.items.map((validator) => (
             <Fragment key={validator.validatorAddress}>
               <ValidatorsTableRow
-                templateColumns={templateColumns}
-                isActive={isActive}
-                validator={validator}
-                totalVotingPower={data.metadata.totalVotingPower}
-                minCommissionRate={data.metadata.minCommissionRate}
                 assetInfo={assetInfo}
+                isActive={isActive}
+                minCommissionRate={data.metadata.minCommissionRate}
                 showUptime={showUptime}
+                templateColumns={templateColumns}
+                totalVotingPower={data.metadata.totalVotingPower}
+                validator={validator}
               />
               {displayDividers &&
                 (validator.rank === data.metadata.percent33Rank ||
                   validator.rank === data.metadata.percent66Rank) && (
                   <ValidatorsPercentDivider
-                    rank={validator.rank}
                     label={
                       validator.rank === data.metadata.percent66Rank
                         ? "66%"
                         : "33%"
                     }
+                    rank={validator.rank}
                   />
                 )}
             </Fragment>

@@ -1,18 +1,19 @@
-import { Box, Divider, Flex, Text } from "@chakra-ui/react";
-import { isNull } from "lodash";
+import type {
+  ProposalData,
+  ProposalParams,
+  ProposalVotesInfo,
+} from "lib/types";
 
+import { Box, Divider, Flex, Text } from "@chakra-ui/react";
 import { LegendText } from "lib/components/LegendText";
 import { Tooltip } from "lib/components/Tooltip";
 import {
   extractParams,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
-import type {
-  ProposalData,
-  ProposalParams,
-  ProposalVotesInfo,
-} from "lib/types";
 import { dateFromNow, formatPrettyPercent, formatUTC } from "lib/utils";
+import { isNull } from "lodash";
+
 import { VoteQuorumBadge } from "../../VoteQuorumBadge";
 import { VoteQuorumCircle } from "../../VoteQuorumCircle";
 import { VoteQuorumText } from "../../VoteQuorumText";
@@ -35,20 +36,22 @@ export const VotingOverviewQuorum = ({
   const endTime = proposalData.resolvedTimestamp ?? proposalData.votingEndTime;
   return (
     <Flex direction="column" gap={4}>
-      <Flex gap={2} alignItems="center">
+      <Flex alignItems="center" gap={2}>
         <VoteQuorumBadge
-          status={proposalData.status}
-          quorum={quorum}
-          totalRatio={totalRatio}
           isCompact
+          quorum={quorum}
+          status={proposalData.status}
+          totalRatio={totalRatio}
         />
-        <Text variant="body1" color="text.main">
+        <Text color="text.main" variant="body1">
           Quorum
         </Text>
       </Flex>
       <Divider borderColor="gray.700" />
       <Flex gap={4}>
         <Tooltip
+          bgColor="gray.700"
+          hidden={isNull(nonAbstainRatio) || isNull(abstainRatio)}
           label={
             <div>
               <LegendText
@@ -63,30 +66,28 @@ export const VotingOverviewQuorum = ({
               />
             </div>
           }
-          bgColor="gray.700"
-          hidden={isNull(nonAbstainRatio) || isNull(abstainRatio)}
         >
           <Box h="fit-content">
             <VoteQuorumCircle
-              quorum={quorum}
-              nonAbstainRatio={nonAbstainRatio}
-              totalRatio={totalRatio}
               isCompact
+              nonAbstainRatio={nonAbstainRatio}
+              quorum={quorum}
+              totalRatio={totalRatio}
             />
           </Box>
         </Tooltip>
         <Flex direction="column" gap={2}>
           <VoteQuorumText
-            status={proposalData.status}
-            quorum={quorum}
-            totalRatio={totalRatio}
             isCompact
+            quorum={quorum}
+            status={proposalData.status}
+            totalRatio={totalRatio}
           />
           <div>
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               Voting ended {endTime ? dateFromNow(endTime) : "N/A"}
             </Text>
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               {endTime ? formatUTC(endTime) : "N/A"}
             </Text>
           </div>

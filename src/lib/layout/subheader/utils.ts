@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import type { IconKeys } from "lib/components/icon";
 
 import type { SubHeaderMenuInfo } from "./types";

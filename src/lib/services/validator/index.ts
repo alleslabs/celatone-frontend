@@ -1,7 +1,15 @@
+import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
+import type {
+  Nullable,
+  Option,
+  ProposalVoteType,
+  Validator,
+  ValidatorAddr,
+  ValidatorData,
+} from "lib/types";
+
 import { useToken } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -11,15 +19,17 @@ import {
   useTierConfig,
 } from "lib/app-provider";
 import { createQueryFnWithTimeout } from "lib/services/utils";
-import type {
-  Nullable,
-  Option,
-  ProposalVoteType,
-  Validator,
-  ValidatorAddr,
-  ValidatorData,
-} from "lib/types";
 import { convertConsensusPubkeyToConsensusAddr } from "lib/utils";
+
+import type {
+  BlocksResponse,
+  StakingProvisionsResponse,
+  ValidatorDataResponse,
+  ValidatorDelegationRelatedTxsResponse,
+  ValidatorsResponse,
+  ValidatorUptimeResponse,
+  ValidatorVotedProposalsResponse,
+} from "../types";
 
 import {
   getHistoricalPowers,
@@ -39,15 +49,6 @@ import {
   getValidatorsRest,
   getValidatorStakingProvisionsRest,
 } from "./rest";
-import type {
-  BlocksResponse,
-  StakingProvisionsResponse,
-  ValidatorDataResponse,
-  ValidatorDelegationRelatedTxsResponse,
-  ValidatorsResponse,
-  ValidatorUptimeResponse,
-  ValidatorVotedProposalsResponse,
-} from "../types";
 
 export const useValidators = (
   limit: number,

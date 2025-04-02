@@ -1,3 +1,5 @@
+import type { HexAddr, Option } from "lib/types";
+
 import {
   Flex,
   Heading,
@@ -6,12 +8,10 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { useCallback } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import type { HexAddr, Option } from "lib/types";
+import { useCallback } from "react";
 
 import { ModuleHistoryTable } from "./history";
 import { ModuleRelatedProposalsTable } from "./ModuleRelatedProposalsTable";
@@ -74,7 +74,7 @@ export const ModuleTables = ({
 
   return (
     <Flex flexDirection="column" mt={6}>
-      <Heading as="h6" variant="h6" mb={6} fontWeight={600} id={tableHeaderId}>
+      <Heading id={tableHeaderId} as="h6" fontWeight={600} mb={6} variant="h6">
         Transactions & Histories
       </Heading>
       <Tabs
@@ -83,29 +83,30 @@ export const ModuleTables = ({
         lazyBehavior="keepMounted"
       >
         <TabList
-          borderBottom="1px solid"
+          borderBottomWidth="1px"
           borderColor="gray.700"
+          borderStyle="solid"
           overflowX={{ base: "scroll", md: "auto" }}
         >
           <CustomTab
             count={txsCount}
-            onClick={handleTabChange(ModuleTablesTabIndex.Transactions)}
             isDisabled={txsCount === 0}
+            onClick={handleTabChange(ModuleTablesTabIndex.Transactions)}
           >
             Transactions
           </CustomTab>
           <CustomTab
             count={historiesCount}
-            onClick={handleTabChange(ModuleTablesTabIndex.PublishedEvents)}
             isDisabled={historiesCount === 0}
+            onClick={handleTabChange(ModuleTablesTabIndex.PublishedEvents)}
           >
             Published Events
           </CustomTab>
           <CustomTab
             count={relatedProposalsCount}
-            onClick={handleTabChange(ModuleTablesTabIndex.RelatedProposals)}
-            isDisabled={relatedProposalsCount === 0}
             hidden={!gov.enabled}
+            isDisabled={relatedProposalsCount === 0}
+            onClick={handleTabChange(ModuleTablesTabIndex.RelatedProposals)}
           >
             Related Proposals
           </CustomTab>
@@ -113,19 +114,19 @@ export const ModuleTables = ({
         <TabPanels>
           <TabPanel p={0}>
             <ModuleTxsTable
-              vmAddress={vmAddress}
               moduleName={moduleName}
-              txCount={txsCount}
               scrollComponentId={tableHeaderId}
+              txCount={txsCount}
+              vmAddress={vmAddress}
               onViewMore={handleOnViewMore(ModuleTablesTabIndex.Transactions)}
             />
           </TabPanel>
           <TabPanel p={0}>
             <ModuleHistoryTable
-              vmAddress={vmAddress}
-              moduleName={moduleName}
               historyCount={historiesCount}
+              moduleName={moduleName}
               scrollComponentId={tableHeaderId}
+              vmAddress={vmAddress}
               onViewMore={handleOnViewMore(
                 ModuleTablesTabIndex.PublishedEvents
               )}
@@ -133,10 +134,10 @@ export const ModuleTables = ({
           </TabPanel>
           <TabPanel p={0}>
             <ModuleRelatedProposalsTable
-              vmAddress={vmAddress}
               moduleName={moduleName}
               relatedProposalsCount={relatedProposalsCount}
               scrollComponentId={tableHeaderId}
+              vmAddress={vmAddress}
               onViewMore={handleOnViewMore(
                 ModuleTablesTabIndex.RelatedProposals
               )}

@@ -1,6 +1,4 @@
-import { keccak256 } from "@initia/initia.js";
 import type { JsonFragment } from "ethers";
-import { Interface } from "ethers";
 import type { TxDataJsonRpc, TxReceiptJsonRpcLog } from "lib/services/types";
 import type {
   Coin,
@@ -10,6 +8,9 @@ import type {
   Nullable,
   Option,
 } from "lib/types";
+
+import { keccak256 } from "@initia/initia.js";
+import { Interface } from "ethers";
 import { big, EvmMethodId, EvmMethodName, zHexAddr20 } from "lib/types";
 
 import { toChecksumAddress } from "./address";

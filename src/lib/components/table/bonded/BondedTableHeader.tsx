@@ -1,4 +1,5 @@
 import type { GridProps } from "@chakra-ui/react";
+
 import { Grid } from "@chakra-ui/react";
 
 import { TableHeader } from "../tableComponents";
@@ -11,9 +12,9 @@ export const BondedTableHeader = ({
   isDelegation: boolean;
 }) => (
   <Grid
-    templateColumns={templateColumns}
     minW="min-content"
     sx={{ "& > div": { color: "text.dark" } }}
+    templateColumns={templateColumns}
   >
     <TableHeader>Validator</TableHeader>
     <TableHeader>Amount</TableHeader>

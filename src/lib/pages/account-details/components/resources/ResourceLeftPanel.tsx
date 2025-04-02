@@ -1,3 +1,10 @@
+import type {
+  BechAddr,
+  Option,
+  ResourceGroup,
+  ResourceGroupByAccount,
+} from "lib/types";
+
 import {
   Accordion,
   AccordionButton,
@@ -7,19 +14,12 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import { useCallback, useMemo, useState } from "react";
-
 import { AmpEvent, track, trackUseExpand } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { ResourceCard } from "lib/components/resource";
-import type {
-  BechAddr,
-  Option,
-  ResourceGroup,
-  ResourceGroupByAccount,
-} from "lib/types";
 import { truncate } from "lib/utils";
+import { useCallback, useMemo, useState } from "react";
 
 interface ResourceSectionBodyProps {
   address: BechAddr;
@@ -83,27 +83,28 @@ export const ResourceLeftPanel = ({
 
   return (
     <Flex
-      direction="column"
-      pb={{ base: 4, md: 0 }}
-      mb={{ base: 4, md: 0 }}
-      borderBottom={{ base: "1px solid", md: "none" }}
+      borderBottomWidth={{ base: "1px", md: "none" }}
       borderColor={{ base: "gray.700", md: "transparent" }}
+      borderStyle="solid"
+      direction="column"
+      mb={{ base: 4, md: 0 }}
+      pb={{ base: 4, md: 0 }}
     >
       <InputWithIcon
+        amptrackSection="resource-search-with-module-name"
         placeholder="Search with Module Name"
+        size="md"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        size="md"
-        amptrackSection="resource-search-with-module-name"
       />
       <Accordion
         allowMultiple
         defaultIndex={Array.from(Array(filteredResourcesByOwner.length).keys())}
-        width="full"
         mt={4}
+        width="full"
       >
         {filteredResourcesByOwner.map((item) => (
-          <AccordionItem mb={4} key={item.owner}>
+          <AccordionItem key={item.owner} mb={4}>
             {({ isExpanded }) => (
               <>
                 <AccordionButton
@@ -116,8 +117,8 @@ export const ResourceLeftPanel = ({
                     });
                   }}
                 >
-                  <Flex p={4} justifyContent="space-between" w="full">
-                    <Text variant="body1" fontWeight={600}>
+                  <Flex justifyContent="space-between" p={4} w="full">
+                    <Text fontWeight={600} variant="body1">
                       {truncate(item.owner)}
                     </Text>
                     <AccordionIcon color="gray.600" />
@@ -129,31 +130,31 @@ export const ResourceLeftPanel = ({
                       {Object.values(item.resources).map((subitem) => (
                         <ResourceCard
                           key={subitem.displayName}
-                          name={subitem.group}
                           amount={subitem.items.length}
+                          hasBorder
                           isSelected={
                             selectedResources?.account === subitem.account &&
                             selectedResources?.group === subitem.group
                           }
+                          name={subitem.group}
                           onClick={() => {
                             track(AmpEvent.USE_SELECT_RESOURCE_GROUP, {
                               resourcesByModuleCount: subitem.items.length,
                             });
                             handleSelectResource(item.owner, subitem.group);
                           }}
-                          hasBorder
                         />
                       ))}
                     </Flex>
                   ) : (
                     <Text
-                      variant="body2"
-                      color="text.dark"
-                      textAlign="center"
-                      p={4}
                       border="1px solid"
-                      borderRadius="8px"
                       borderColor="gray.700"
+                      borderRadius="8px"
+                      color="text.dark"
+                      p={4}
+                      textAlign="center"
+                      variant="body2"
                     >
                       No matching resource found
                     </Text>

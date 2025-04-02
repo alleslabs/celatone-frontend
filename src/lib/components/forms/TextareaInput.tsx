@@ -1,4 +1,6 @@
 import type { FormControlProps } from "@chakra-ui/react";
+import type { Dispatch, SetStateAction } from "react";
+
 import {
   FormControl,
   FormErrorMessage,
@@ -7,9 +9,9 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import type { Dispatch, SetStateAction } from "react";
 
 import type { FormStatus } from "./FormStatus";
+
 import { getResponseMsg } from "./FormStatus";
 
 // TODO: remove
@@ -46,8 +48,8 @@ export const TextareaInput = ({
       </FormLabel>
     )}
     <Textarea
-      resize="none"
       placeholder={placeholder}
+      resize="none"
       value={value}
       onChange={(e) => setInputState(e.target.value)}
     />

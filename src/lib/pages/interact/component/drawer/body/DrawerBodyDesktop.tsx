@@ -1,15 +1,16 @@
+import type { IndexedModule } from "lib/types";
+
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import type { IndexedModule } from "lib/types";
-
-import { SelectFunctionSection } from "./SelectFunctionSection";
-import { SelectModuleSection } from "./SelectModuleSection";
 import type {
   DisplayMode,
   ModuleSelectFunction,
   SelectedAddress,
 } from "../types";
+
+import { SelectFunctionSection } from "./SelectFunctionSection";
+import { SelectModuleSection } from "./SelectModuleSection";
 
 interface ModuleSelectBodyProps {
   selectedAddress: SelectedAddress;
@@ -37,39 +38,39 @@ export const DrawerBodyDesktop = ({
 
   return (
     <Grid
-      templateAreas={`"panel main""button button"`}
       columnGap={4}
-      rowGap={6}
-      templateColumns="minmax(300px, 20%) 1fr"
-      templateRows="1fr auto"
-      position="relative"
       overflow="hidden"
       pointerEvents={mode === "input" ? "none" : undefined}
+      position="relative"
+      rowGap={6}
+      templateAreas={`"panel main""button button"`}
+      templateColumns="minmax(300px, 20%) 1fr"
+      templateRows="1fr auto"
     >
       {mode === "input" && (
         <Box
-          position="absolute"
-          pointerEvents="none"
           bgColor="background.overlay"
-          opacity={0.8}
-          w="full"
           h="full"
+          opacity={0.8}
+          pointerEvents="none"
+          position="absolute"
+          w="full"
           zIndex="overlay"
         />
       )}
       <GridItem area="panel" overflow="hidden">
         <SelectModuleSection
-          selectedAddress={selectedAddress}
           modules={modules}
+          selectedAddress={selectedAddress}
           selectedModule={selectedModule}
           setSelectedModule={setSelectedModule}
         />
       </GridItem>
       <SelectFunctionSection
         area="main"
-        module={selectedModule}
-        handleModuleSelect={handleModuleSelect}
         closeModal={closeModal}
+        handleModuleSelect={handleModuleSelect}
+        module={selectedModule}
       />
     </Grid>
   );

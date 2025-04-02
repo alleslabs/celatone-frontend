@@ -10,7 +10,6 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useNavContext } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
@@ -18,6 +17,7 @@ import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 
 import type { MenuInfo, NavMenuProps, SubmenuInfo } from "./types";
+
 import { InformationFooter } from "../InformationFooter";
 
 interface NavInfoProps {
@@ -26,42 +26,42 @@ interface NavInfoProps {
 }
 const NavInfo = ({ submenu, isCurrentPage }: NavInfoProps) => (
   <Flex
-    gap={2}
-    p={2}
-    cursor={submenu.isDisable ? undefined : "pointer"}
     _hover={
       submenu.isDisable ? undefined : { bg: "gray.700", borderRadius: "4px" }
     }
-    my="1px"
-    transition="all 0.25s ease-in-out"
     alignItems="center"
-    position="relative"
     bgColor={isCurrentPage(submenu.slug) ? "gray.800" : "transparent"}
     borderRadius={isCurrentPage(submenu.slug) ? "4px" : "0px"}
+    cursor={submenu.isDisable ? undefined : "pointer"}
+    gap={2}
+    my="1px"
+    p={2}
+    position="relative"
+    transition="all 0.25s ease-in-out"
   >
     <Box
-      opacity={isCurrentPage(submenu.slug) ? 1 : 0}
-      width="3px"
-      height="20px"
       bgColor="primary.light"
+      borderRadius="2px"
+      height="20px"
+      left="0px"
+      opacity={isCurrentPage(submenu.slug) ? 1 : 0}
       position="absolute"
       top="10px"
-      borderRadius="2px"
-      left="0px"
+      width="3px"
     />
-    {submenu.icon && <CustomIcon name={submenu.icon} color="gray.600" />}
+    {submenu.icon && <CustomIcon color="gray.600" name={submenu.icon} />}
     {submenu.logo && (
       <Image
-        src={submenu.logo}
-        borderRadius="full"
         alt={submenu.slug}
+        borderRadius="full"
         boxSize={5}
+        src={submenu.logo}
       />
     )}
     <Text
-      variant="body2"
       className="ellipsis"
       color={submenu.isDisable ? "text.disabled" : "text.main"}
+      variant="body2"
     >
       {submenu.name}
     </Text>
@@ -78,18 +78,18 @@ const SubMenuRender = ({ submenu, isCurrentPage }: SubMenuProps) => (
     {submenu.map((subitem) =>
       subitem.isDisable ? (
         <Tooltip key={subitem.slug} label={subitem.tooltipText} maxW="240px">
-          <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
+          <NavInfo isCurrentPage={isCurrentPage} submenu={subitem} />
         </Tooltip>
       ) : (
         <AppLink
-          href={subitem.slug}
           key={subitem.slug}
+          href={subitem.slug}
           onClick={() => {
             track(AmpEvent.USE_SIDEBAR);
             subitem.trackEvent?.();
           }}
         >
-          <NavInfo submenu={subitem} isCurrentPage={isCurrentPage} />
+          <NavInfo isCurrentPage={isCurrentPage} submenu={subitem} />
         </AppLink>
       )
     )}
@@ -113,13 +113,14 @@ const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
 
   return (
     <Accordion
-      pt={2}
+      key={menuInfo.slug}
       allowMultiple
+      borderColor="gray.700"
+      borderStyle="solid"
+      borderTopWidth="1px"
       defaultIndex={defaultIndex}
       mt={2}
-      key={menuInfo.slug}
-      borderTop="1px solid"
-      borderColor="gray.700"
+      pt={2}
       sx={{
         "&:first-of-type": {
           borderTop: "none",
@@ -130,25 +131,25 @@ const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
       onChange={handleChange}
     >
       <AccordionItem bg="transparent">
-        <AccordionButton justifyContent="space-between" alignItems="center">
-          <Text py={2} variant="body3" fontWeight={700}>
+        <AccordionButton alignItems="center" justifyContent="space-between">
+          <Text fontWeight={700} py={2} variant="body3">
             {menuInfo.category}
           </Text>
           <AccordionIcon color="gray.600" ml="auto" />
         </AccordionButton>
         <AccordionPanel p={0}>
           <SubMenuRender
-            submenu={menuInfo.submenu}
             isCurrentPage={isCurrentPage}
+            submenu={menuInfo.submenu}
           />
           {menuInfo.subSection?.map((subitem) => (
             <div key={subitem.category}>
-              <Text py={2} variant="small" fontWeight={700} color="text.dark">
+              <Text color="text.dark" fontWeight={700} py={2} variant="small">
                 {subitem.category}
               </Text>
               <SubMenuRender
-                submenu={subitem.submenu}
                 isCurrentPage={isCurrentPage}
+                submenu={subitem.submenu}
               />
             </div>
           ))}
@@ -171,34 +172,34 @@ export const ExpandNavMenu = ({
       direction="column"
       h="full"
       justifyContent="space-between"
+      overflowY="auto"
       px={4}
       py={2}
-      overflowY="auto"
     >
       <div>
-        <Flex justifyContent="space-between" alignItems="center">
-          <Text py={2} variant="body3" fontWeight={700}>
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text fontWeight={700} py={2} variant="body3">
             {yourAccountMenu.category}
           </Text>
           <Button
-            variant="ghost-primary"
-            size="xs"
             iconSpacing={1}
-            leftIcon={<CustomIcon name="double-chevron-left" boxSize={3} />}
+            leftIcon={<CustomIcon boxSize={3} name="double-chevron-left" />}
+            size="xs"
+            variant="ghost-primary"
             onClick={() => setIsExpand(false)}
           >
             HIDE
           </Button>
         </Flex>
         <SubMenuRender
-          submenu={yourAccountMenu.submenu}
           isCurrentPage={isCurrentPage}
+          submenu={yourAccountMenu.submenu}
         />
         {restNavMenu.map((item) => (
           <NavbarRender
-            menuInfo={item}
             key={item.slug}
             isCurrentPage={isCurrentPage}
+            menuInfo={item}
           />
         ))}
       </div>

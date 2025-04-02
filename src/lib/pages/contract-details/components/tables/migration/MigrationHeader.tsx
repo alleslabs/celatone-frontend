@@ -1,6 +1,6 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Grid } from "@chakra-ui/react";
 
+import { Grid } from "@chakra-ui/react";
 import { useTierConfig } from "lib/app-provider";
 import { TableHeader } from "lib/components/table";
 

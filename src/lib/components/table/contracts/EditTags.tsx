@@ -1,14 +1,14 @@
-import { Box, Flex, FormControl, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import type { ContractLocalInfo } from "lib/stores/contract";
 
+import { Box, Flex, FormControl, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal";
 import { TagSelection } from "lib/components/TagSelection";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import type { ContractLocalInfo } from "lib/stores/contract";
 import { getTagsDefault } from "lib/utils";
+import { useState } from "react";
 
 interface EditTagsProps {
   contractLocalInfo: ContractLocalInfo;
@@ -30,17 +30,13 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
 
   return (
     <ActionModal
-      title="Edit Tags"
-      trigger={
-        <CustomIcon cursor="pointer" name="edit" color="gray.600" boxSize={3} />
-      }
       headerContent={
-        <Flex pt={6} gap={9}>
+        <Flex gap={9} pt={6}>
           <Flex direction="column" gap={2}>
-            <Text variant="body2" fontWeight={500} color="text.dark">
+            <Text color="text.dark" fontWeight={500} variant="body2">
               Contract Name
             </Text>
-            <Text variant="body2" fontWeight={500} color="text.dark">
+            <Text color="text.dark" fontWeight={500} variant="body2">
               Contract Address
             </Text>
           </Flex>
@@ -50,26 +46,30 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
               {contractLocalInfo.name ?? contractLocalInfo.label}
             </Text>
             <ExplorerLink
-              value={contractLocalInfo.contractAddress}
               type="contract_address"
+              value={contractLocalInfo.contractAddress}
             />
           </Flex>
         </Flex>
       }
-      mainBtnTitle="Save"
       mainAction={handleSave}
+      mainBtnTitle="Save"
       otherBtnTitle="Cancel"
+      title="Edit Tags"
+      trigger={
+        <CustomIcon boxSize={3} color="gray.600" cursor="pointer" name="edit" />
+      }
     >
       <FormControl>
         <Box my={6}>
           <TagSelection
-            result={tagResult}
-            placeholder="Tags"
             helperText="Add tag to organize and manage your contracts"
+            labelBgColor="gray.900"
+            placeholder="Tags"
+            result={tagResult}
             setResult={(selectedOptions: string[]) => {
               setTagResult(selectedOptions);
             }}
-            labelBgColor="gray.900"
           />
         </Box>
       </FormControl>

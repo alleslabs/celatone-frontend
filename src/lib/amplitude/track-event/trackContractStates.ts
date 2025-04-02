@@ -1,5 +1,6 @@
-import { amp } from "../Amplitude";
 import type { AmpEvent } from "../types";
+
+import { amp } from "../Amplitude";
 
 export const trackContractStatesLoad = (
   event:

@@ -1,8 +1,7 @@
-import { Box, Grid, TableContainer } from "@chakra-ui/react";
-import { matchSorter } from "match-sorter";
-import { observer } from "mobx-react-lite";
-import { useMemo, useState } from "react";
+import type { WasmVerifyInfosResponse } from "lib/services/types";
+import type { CodeInfo, Option, PublicCode } from "lib/types";
 
+import { Box, Grid, TableContainer } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
@@ -13,9 +12,10 @@ import {
   ViewMore,
 } from "lib/components/table";
 import { useCodeStore } from "lib/providers/store";
-import type { WasmVerifyInfosResponse } from "lib/services/types";
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
-import type { CodeInfo, Option, PublicCode } from "lib/types";
+import { matchSorter } from "match-sorter";
+import { observer } from "mobx-react-lite";
+import { useMemo, useState } from "react";
 
 import { PublicProjectCodeMobileCard } from "./PublicProjectCodeMobileCard";
 import { PublicProjectCodeRow } from "./PublicProjectCodeRow";
@@ -34,7 +34,7 @@ const TEMPLATE_COLUMNS =
   "max(100px) minmax(250px, 1fr) minmax(200px, 1fr) max(100px) max(160px) 150px 180px";
 
 const CodeTableHeader = () => (
-  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
+  <Grid minW="min-content" templateColumns={TEMPLATE_COLUMNS}>
     <TableHeader>Code ID</TableHeader>
     <TableHeader>Code Name</TableHeader>
     <TableHeader>CW2 Info</TableHeader>
@@ -118,32 +118,32 @@ export const PublicProjectCodeTable = observer(
     );
 
     return (
-      <Box mt={{ base: 8, md: 12 }} mb={4}>
-        <TableTitle title="Codes" count={codes.length} />
+      <Box mb={4} mt={{ base: 8, md: 12 }}>
+        <TableTitle count={codes.length} title="Codes" />
         {!onViewMore && (
           <InputWithIcon
+            amptrackSection="public-project-code-search"
+            my={2}
             placeholder="Search with Code ID or Code Name"
+            size={{ base: "md", md: "lg" }}
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
-            size={{ base: "md", md: "lg" }}
-            my={2}
-            amptrackSection="public-project-code-search"
           />
         )}
         {publicCodes.length ? (
           <ContentRender
-            publicCodes={publicCodes}
             isMobile={isMobile}
+            publicCodes={publicCodes}
             wasmVerifyInfos={wasmVerifyInfos}
           />
         ) : (
           <EmptyState
+            imageVariant={codes.length ? "not-found" : "empty"}
             message={
               codes.length
                 ? "No matching codes found for this project. Make sure you are searching with Code ID or Code Name"
                 : "There are currently no codes related to this project."
             }
-            imageVariant={codes.length ? "not-found" : "empty"}
             withBorder
           />
         )}

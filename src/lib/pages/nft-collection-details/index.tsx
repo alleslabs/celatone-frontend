@@ -9,9 +9,6 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useCallback, useEffect } from "react";
-
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useInternalNavigate,
@@ -35,6 +32,10 @@ import {
   useNftCollectionMutateEvents,
 } from "lib/services/nft-collection";
 import { isHexModuleAddress } from "lib/utils";
+import { useRouter } from "next/router";
+import { useCallback, useEffect } from "react";
+
+import type { CollectionDetailQueryParams } from "./types";
 
 import { CollectionInfoSection } from "./components/CollectionInfoSection";
 import { CollectionSupplies } from "./components/CollectionSupplies";
@@ -43,7 +44,6 @@ import { CollectionSupplyInfo } from "./components/CollectionSupplyInfo";
 import { ActivitiesFull, ActivitiesSequencer } from "./components/tables";
 import { CollectionMutateEvents } from "./components/tables/CollectionMutateEvents";
 import { useCollectionInfos } from "./data";
-import type { CollectionDetailQueryParams } from "./types";
 import { TabIndex, zCollectionDetailQueryParams } from "./types";
 
 const InvalidCollection = () => (
@@ -145,50 +145,50 @@ const CollectionDetailsBody = ({
         ]}
       />
       <Flex
+        alignItems={{ base: "start", md: "center" }}
         direction={{ base: "column", md: "row" }}
         justifyContent="space-between"
-        alignItems={{ base: "start", md: "center" }}
         w="full"
       >
         <Flex
           direction="column"
-          my={6}
           gap={1}
-          overflow="hidden"
-          minW={{ md: "680px" }}
           maxW="full"
+          minW={{ md: "680px" }}
+          my={6}
+          overflow="hidden"
         >
           <Heading
-            as="h5"
-            variant="h5"
-            mb={1}
             className="ellipsis"
+            as="h5"
             color={name.length ? "text.main" : "text.disabled"}
             fontWeight={name.length ? "600" : "300"}
+            mb={1}
+            variant="h5"
           >
             {name.length ? name : "Untitled Collection"}
           </Heading>
           <Flex
-            mt={{ base: 2, md: 0 }}
-            gap={{ base: 0, md: 2 }}
-            direction={{ base: "column", md: "row" }}
             alignItems={{ base: "start", md: "center" }}
+            direction={{ base: "column", md: "row" }}
+            gap={{ base: 0, md: 2 }}
+            mt={{ base: 2, md: 0 }}
           >
             <Text color="text.dark" variant="body2">
               Collection Address:
             </Text>
             <Tooltip label="View as Account Address">
               <ExplorerLink
-                value={collectionAddress}
-                type="contract_address"
-                textFormat="normal"
-                maxWidth="full"
-                fixedHeight={false}
                 ampCopierSection="collection-addresss-top"
+                fixedHeight={false}
+                maxWidth="full"
+                textFormat="normal"
+                type="contract_address"
+                value={collectionAddress}
               />
             </Tooltip>
           </Flex>
-          <Flex gap={1} align="center">
+          <Flex align="center" gap={1}>
             <Text color="text.dark" variant="body2">
               Type:
             </Text>
@@ -198,11 +198,11 @@ const CollectionDetailsBody = ({
           </Flex>
         </Flex>
         <Button
-          variant="outline-primary"
-          minW="140px !important"
-          w={{ base: "full", md: "auto" }}
-          size={{ base: "sm", md: "md" }}
           mb={{ base: 4, md: 0 }}
+          minW="140px !important"
+          size={{ base: "sm", md: "md" }}
+          variant="outline-primary"
+          w={{ base: "full", md: "auto" }}
           onClick={() => {
             track(AmpEvent.USE_NFT_VIEW_RESOURCE_CTA, {
               amptrackSection: "nft-collection-details",
@@ -225,33 +225,34 @@ const CollectionDetailsBody = ({
         lazyBehavior="keepMounted"
       >
         <TabList
-          borderBottom="1px solid"
-          borderColor="gray.700"
-          overflowX="scroll"
           id={tabHeaderId}
+          borderBottomWidth="1px"
+          borderColor="gray.700"
+          borderStyle="solid"
+          overflowX="scroll"
         >
           <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
             Overview
           </CustomTab>
           <CustomTab
             count={currentSupply}
-            onClick={handleTabChange(TabIndex.Supplies)}
             isDisabled={!currentSupply}
+            onClick={handleTabChange(TabIndex.Supplies)}
           >
             Supplies
           </CustomTab>
           <CustomTab
             count={activities?.total}
-            onClick={handleTabChange(TabIndex.Activities)}
             isDisabled={!activities?.total}
+            onClick={handleTabChange(TabIndex.Activities)}
           >
             Activities
           </CustomTab>
           {isFullTier && (
             <CustomTab
               count={mutateEvents?.total}
-              onClick={handleTabChange(TabIndex.MutateEvents)}
               isDisabled={!mutateEvents?.total}
+              onClick={handleTabChange(TabIndex.MutateEvents)}
             >
               Mutate Events
             </CustomTab>
@@ -261,33 +262,33 @@ const CollectionDetailsBody = ({
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>
             <Flex direction="column" gap={10}>
               <CollectionSupplyInfo
-                totalBurned={totalBurned}
-                totalMinted={totalMinted}
                 currentSupply={currentSupply}
                 maxSupply={maxSupply}
+                totalBurned={totalBurned}
+                totalMinted={totalMinted}
               />
               <CollectionSuppliesOverview
-                totalCount={currentSupply}
-                nfts={nfts?.items}
                 isLoading={isNftsLoading}
+                nfts={nfts?.items}
+                totalCount={currentSupply}
                 onViewMore={handleTabChange(TabIndex.Supplies)}
               />
               <CollectionInfoSection
+                activities={activities?.total}
                 collectionAddress={collectionAddress}
                 collectionName={name}
                 desc={description}
-                uri={uri}
-                activities={activities?.total}
                 mutateEventes={mutateEvents?.total}
                 royalty={royalty}
+                uri={uri}
                 onClickActivities={handleTabChange(TabIndex.Activities)}
                 onClickMutateEvents={handleTabChange(TabIndex.MutateEvents)}
               />
             </Flex>
             <UserDocsLink
-              title="What does an NFT Collection consist of?"
               cta="Read more about NFT Collection"
               href="move/nfts/collection-detail"
+              title="What does an NFT Collection consist of?"
             />
           </TabPanel>
           <TabPanel p={0} pt={{ base: 4, md: 0 }}>

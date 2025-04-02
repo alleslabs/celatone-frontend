@@ -1,16 +1,17 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Box, Button, useToast } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import type { FormStatus } from "lib/components/forms";
 import type { ReactNode } from "react";
 
+import { Box, Button, useToast } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp } from "lib/app-provider";
-import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
 import { shortenName } from "lib/utils";
+import { useCallback, useEffect, useState } from "react";
+
 import { ActionModal } from "../ActionModal";
 
 interface CreateNewListModalProps {
@@ -77,7 +78,7 @@ export function CreateNewListModal({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
     });
   }, [createNewList, listName, resetListName, onCreate, onClose, toast]);
 
@@ -87,23 +88,23 @@ export function CreateNewListModal({
 
   return (
     <ActionModal
-      title="Create a New List"
-      icon="add-new"
-      trigger={trigger || <Button {...buttonProps} as="button" />}
-      mainBtnTitle="Create"
-      mainAction={handleCreate}
       disabledMain={status.state !== "success"}
-      otherBtnTitle="Cancel"
+      icon="add-new"
+      mainAction={handleCreate}
+      mainBtnTitle="Create"
       otherAction={resetListName}
+      otherBtnTitle="Cancel"
+      title="Create a New List"
+      trigger={trigger || <Button {...buttonProps} as="button" />}
     >
       <Box py={4}>
         <TextInput
-          variant="fixed-floating"
-          value={listName}
-          setInputState={setListName}
-          labelBgColor="gray.900"
-          status={status}
           label="List Name"
+          labelBgColor="gray.900"
+          setInputState={setListName}
+          status={status}
+          value={listName}
+          variant="fixed-floating"
         />
       </Box>
     </ActionModal>

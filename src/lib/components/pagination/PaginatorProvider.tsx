@@ -1,4 +1,7 @@
 import type { ButtonProps } from "@chakra-ui/react";
+import type React from "react";
+import type { Dispatch, FC, SetStateAction } from "react";
+
 import {
   createContext,
   useCallback,
@@ -6,11 +9,10 @@ import {
   useMemo,
   useState,
 } from "react";
-import type React from "react";
-import type { Dispatch, FC, SetStateAction } from "react";
+
+import type { IconKeys } from "../icon";
 
 import { INITIAL_VALUES } from "./paginationData";
-import type { IconKeys } from "../icon";
 
 export type PaginatorContextValues = {
   state: {

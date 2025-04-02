@@ -1,15 +1,16 @@
 import { Flex, Heading } from "@chakra-ui/react";
-
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { extractParams } from "lib/pages/proposal-details/utils";
-import { VotingResult } from "./VotingResult";
+
 import type { VoteDetailsProps } from "..";
+
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import { ResultExplanation } from "../../ResultExplanation";
 import { VoteThresholdBadge } from "../../VoteThresholdBadge";
 import { VoteThresholdBar } from "../../VoteThresholdBar";
 import { VpPercentThreshold } from "../../VpPercentThreshold";
+import { VotingResult } from "./VotingResult";
 
 export const VotingThreshold = ({
   proposalData,
@@ -37,45 +38,47 @@ export const VotingThreshold = ({
             votesInfo={votesInfo}
           />
           <VoteThresholdBar
+            isCompact
             threshold={threshold}
             votesInfo={votesInfo}
-            isCompact
           />
           <ResultExplanation
-            proposalData={proposalData}
-            params={params}
-            votesInfo={votesInfo}
             isLoading={isLoading}
+            params={params}
+            proposalData={proposalData}
+            votesInfo={votesInfo}
           />
-          <VpPercentThreshold votesInfo={votesInfo} isCompact />
+          <VpPercentThreshold isCompact votesInfo={votesInfo} />
         </>
       ) : (
         <>
-          <Flex gap={2} align="center">
-            <Heading as="h6" variant="h6" textColor="text.main">
+          <Flex align="center" gap={2}>
+            <Heading as="h6" textColor="text.main" variant="h6">
               Voting Results
             </Heading>
             <VoteThresholdBadge
-              status={proposalData.status}
               isCompact={false}
+              status={proposalData.status}
             />
           </Flex>
-          <Flex gap={12} align="center">
-            <Flex flex="2 2 0" direction="column" gap={4}>
+          <Flex align="center" gap={12}>
+            <Flex direction="column" flex="2 2 0" gap={4}>
               <VoteThresholdBar
+                isCompact={false}
                 threshold={threshold}
                 votesInfo={votesInfo}
-                isCompact={false}
               />
-              <VpPercentThreshold votesInfo={votesInfo} isCompact={false} />
+              <VpPercentThreshold isCompact={false} votesInfo={votesInfo} />
             </Flex>
             <Flex
-              flex="1 1 0"
+              borderColor="gray.700"
+              borderLeftWidth="1px"
+              borderStyle="solid"
               direction="column"
+              flex="1 1 0"
               gap={2}
-              pl={6}
               h="fit-content"
-              borderLeft="1px solid var(--chakra-colors-gray-700)"
+              pl={6}
             >
               <VotingResult
                 status={proposalData.status}
@@ -84,10 +87,10 @@ export const VotingThreshold = ({
                 votesInfo={votesInfo}
               />
               <ResultExplanation
-                proposalData={proposalData}
-                params={params}
-                votesInfo={votesInfo}
                 isLoading={isLoading}
+                params={params}
+                proposalData={proposalData}
+                votesInfo={votesInfo}
               />
             </Flex>
           </Flex>

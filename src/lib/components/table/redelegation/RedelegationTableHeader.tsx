@@ -1,4 +1,5 @@
 import type { GridProps } from "@chakra-ui/react";
+
 import { Grid } from "@chakra-ui/react";
 
 import { TableHeader } from "../tableComponents";
@@ -8,7 +9,7 @@ export const RedelegationTableHeader = ({
 }: {
   templateColumns: GridProps["templateColumns"];
 }) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>From Validator</TableHeader>
     <TableHeader />
     <TableHeader>To Validator</TableHeader>

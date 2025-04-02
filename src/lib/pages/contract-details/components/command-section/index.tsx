@@ -1,8 +1,8 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type { BechAddr32, Nullish, WasmVerifyInfo } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { useExecuteCmds } from "lib/hooks";
 import { useContractQueryMsgsRest } from "lib/services/wasm/contract";
-import type { BechAddr32, Nullish, WasmVerifyInfo } from "lib/types";
 
 import { CommandSectionHeader } from "./CommandSectionHeader";
 import { ContractCmdGroup } from "./ContractCmdGroup";
@@ -25,45 +25,46 @@ export const CommandSection = ({
 
   return (
     <Flex
+      borderBottomColor={{ base: "transparent", md: "gray.700" }}
+      borderBottomWidth={{ base: "0px", md: "1px" }}
+      borderStyle="solid"
       direction="column"
       gap={4}
       pb={{ base: 0, md: 8 }}
-      borderBottom={{ base: "0px", md: "1px solid" }}
-      borderBottomColor={{ base: "transparent", md: "gray.700" }}
     >
       <CommandSectionHeader {...props} />
-      <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
+      <Flex direction={{ base: "column", md: "row" }} gap={{ base: 4, md: 6 }}>
         <Flex
-          direction="column"
           bg="gray.900"
-          p={4}
           borderRadius="8px"
+          direction="column"
           flex={0.5}
+          p={4}
         >
-          <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
+          <Text color="text.dark" fontWeight={500} mb={2} variant="body2">
             Query Shortcuts
           </Text>
           <ContractCmdGroup
-            isFetching={isQueryCmdsFetching}
             cmds={queryCmds}
             contractAddress={contractAddress}
+            isFetching={isQueryCmdsFetching}
             type="query"
           />
         </Flex>
         <Flex
-          direction="column"
           bg="gray.900"
-          p={4}
           borderRadius="8px"
+          direction="column"
           flex={0.5}
+          p={4}
         >
-          <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
+          <Text color="text.dark" fontWeight={500} mb={2} variant="body2">
             Execute Shortcuts
           </Text>
           <ContractCmdGroup
-            isFetching={isExecuteCmdsFetching}
             cmds={execCmds}
             contractAddress={contractAddress}
+            isFetching={isExecuteCmdsFetching}
             type="execute"
           />
         </Flex>

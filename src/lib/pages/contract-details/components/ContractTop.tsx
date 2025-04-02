@@ -1,3 +1,15 @@
+import type { Contract } from "lib/services/types";
+import type { ContractLocalInfo } from "lib/stores/contract";
+import type {
+  BechAddr32,
+  Nullable,
+  Nullish,
+  Option,
+  ProjectInfo,
+  PublicContractInfo,
+  WasmVerifyInfo,
+} from "lib/types";
+
 import {
   Button,
   Flex,
@@ -7,7 +19,6 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
-
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { AdminButton } from "lib/components/button";
@@ -21,17 +32,6 @@ import {
 } from "lib/components/modal";
 import { TotalValue } from "lib/components/TotalValue";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
-import type { Contract } from "lib/services/types";
-import type { ContractLocalInfo } from "lib/stores/contract";
-import type {
-  BechAddr32,
-  Nullable,
-  Nullish,
-  Option,
-  ProjectInfo,
-  PublicContractInfo,
-  WasmVerifyInfo,
-} from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
 import { getWasmVerifyStatus, truncate } from "lib/utils";
 
@@ -76,17 +76,17 @@ export const ContractTop = ({
           contractLocalInfo={contractLocalInfo}
           triggerElement={
             <IconButton
-              fontSize="24px"
-              variant="none"
-              size={{ base: "sm", md: "md" }}
               aria-label="save"
+              fontSize="24px"
               icon={
                 contractLocalInfo.lists ? (
-                  <CustomIcon name="bookmark-solid" color="primary.light" />
+                  <CustomIcon color="primary.light" name="bookmark-solid" />
                 ) : (
-                  <CustomIcon name="bookmark" color="gray.600" />
+                  <CustomIcon color="gray.600" name="bookmark" />
                 )
               }
+              size={{ base: "sm", md: "md" }}
+              variant="none"
             />
           }
         />
@@ -102,11 +102,11 @@ export const ContractTop = ({
         }}
         triggerElement={
           <IconButton
-            fontSize="24px"
-            variant="none"
             aria-label="save"
             color="gray.600"
+            fontSize="24px"
             icon={<CustomIcon name="bookmark" />}
+            variant="none"
           />
         }
       />
@@ -129,71 +129,71 @@ export const ContractTop = ({
         ]}
       />
       <Flex
-        justify="space-between"
-        mt={{ base: 3, md: 6 }}
         direction={{ base: "column", md: "row" }}
         gap={{ md: 4 }}
+        justify="space-between"
+        mt={{ base: 3, md: 6 }}
       >
         <Flex direction="column" gap={{ base: 1, md: 3 }} overflow="hidden">
-          <Flex gap={1} align="center">
+          <Flex align="center" gap={1}>
             <CustomIcon
-              name="contract-address"
               boxSize={5}
               color="primary.main"
+              name="contract-address"
             />
             {projectInfo && (
               <Image
-                src={projectInfo.logo}
-                borderRadius="full"
                 alt={projectInfo.name}
-                width={7}
+                borderRadius="full"
                 height={7}
+                src={projectInfo.logo}
+                width={7}
               />
             )}
             <Heading
               as="h5"
+              display="inline"
               variant={{ base: "h6", md: "h5" }}
               wordBreak="break-word"
-              display="inline"
             >
               {displayName}
             </Heading>
             <WasmVerifyBadge
-              status={getWasmVerifyStatus(wasmVerifyInfo)}
-              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
               linkedCodeId={contract.codeId}
+              relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
             />
           </Flex>
-          <Flex gap={{ base: 2, md: 1 }} direction="column">
+          <Flex direction="column" gap={{ base: 2, md: 1 }}>
             <Flex
-              mt={{ base: 2, md: 0 }}
-              gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
+              gap={{ base: 0, md: 2 }}
+              mt={{ base: 2, md: 0 }}
             >
               <Text
                 color="text.dark"
+                fontWeight={500}
                 minW={32}
                 variant="body2"
-                fontWeight={500}
                 whiteSpace="nowrap"
               >
                 Contract Address:
               </Text>
               <CopyLink
-                value={contractAddress}
                 amptrackSection="contract_top"
                 type="contract_address"
+                value={contractAddress}
               />
             </Flex>
             <Flex
-              gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
+              gap={{ base: 0, md: 2 }}
             >
               <Text
                 color="text.dark"
+                fontWeight={500}
                 minW={32}
                 variant="body2"
-                fontWeight={500}
               >
                 Label:
               </Text>
@@ -208,13 +208,13 @@ export const ContractTop = ({
               >
                 <Text
                   color="text.dark"
+                  fontWeight={500}
                   minW={32}
                   variant="body2"
-                  fontWeight={500}
                 >
                   Public Name:
                 </Text>
-                <Text variant="body2" className="ellipsis">
+                <Text className="ellipsis" variant="body2">
                   {publicInfo.name}
                 </Text>
               </Flex>
@@ -232,30 +232,30 @@ export const ContractTop = ({
           >
             {!isMobile && (
               <AdminButton
-                contractAddress={contractAddress}
                 admin={contract.admin}
+                contractAddress={contractAddress}
               />
             )}
             <Button
+              leftIcon={<CustomIcon name="query" />}
+              size={{ base: "sm", md: "md" }}
               variant="outline-primary"
               w={{ base: "full", md: "auto" }}
-              leftIcon={<CustomIcon name="query" />}
               onClick={() =>
                 goToInteractContract(ContractInteractionTabs.Query)
               }
-              size={{ base: "sm", md: "md" }}
             >
               Query
             </Button>
             <Button
+              isDisabled={isMobile}
+              leftIcon={<CustomIcon name="execute" />}
+              size={{ base: "sm", md: "md" }}
               variant="outline-primary"
               w={{ base: "full", md: "auto" }}
-              leftIcon={<CustomIcon name="execute" />}
               onClick={() => {
                 goToInteractContract(ContractInteractionTabs.Execute);
               }}
-              size={{ base: "sm", md: "md" }}
-              isDisabled={isMobile}
             >
               {isMobile ? (
                 <Tooltip label="Sorry, this feature is currently not supported on mobile.">
@@ -272,11 +272,11 @@ export const ContractTop = ({
                     contractLocalInfo={contractLocalInfo}
                     triggerElement={
                       <IconButton
-                        fontSize="24px"
-                        variant="none"
                         aria-label="edit"
                         color="gray.600"
+                        fontSize="24px"
                         icon={<CustomIcon name="edit" />}
+                        variant="none"
                       />
                     }
                   />
@@ -285,7 +285,7 @@ export const ContractTop = ({
               </Flex>
             )}
           </Flex>
-          <TotalValue address={contractAddress} label="Total Value" isCompact />
+          <TotalValue address={contractAddress} isCompact label="Total Value" />
         </Flex>
       </Flex>
     </Flex>

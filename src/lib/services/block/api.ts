@@ -1,5 +1,4 @@
 import axios from "axios";
-
 import { zBlockDataResponse, zBlocksResponse } from "lib/services/types";
 import { parseWithError } from "lib/utils";
 

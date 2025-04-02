@@ -1,3 +1,5 @@
+import type { BechAddr, HexAddr, IndexedModule, Option } from "lib/types";
+
 import {
   Button,
   Drawer,
@@ -10,25 +12,24 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-
 import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ModuleCard } from "lib/components/module";
 import { useModulesByAddress } from "lib/services/move/module";
 import { useMoveVerifyInfosByAddress } from "lib/services/verification/move";
-import type { BechAddr, HexAddr, IndexedModule, Option } from "lib/types";
 import { isHexWalletAddress, mergeModulePath } from "lib/utils";
+import { useEffect, useState } from "react";
 
-import { SelectFunctionSection, SelectModuleSection } from "./body";
-import { ModuleSelector } from "./selector";
 import type {
   DisplayMode,
   ModuleSelectFunction,
   SelectedAddress,
 } from "./types";
+
 import { ModuleInteractionMobileStep } from "../../types";
 import { ModuleEmptyState } from "../common";
+import { SelectFunctionSection, SelectModuleSection } from "./body";
+import { ModuleSelector } from "./selector";
 
 interface ModuleSelectDrawerMobileProps {
   isOpen: boolean;
@@ -92,16 +93,20 @@ export const ModuleSelectDrawerMobile = ({
   }, [isOpen, refetch, selectedAddress.hex]);
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+    <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
       <DrawerOverlay />
       <DrawerContent h="90%">
         {step === ModuleInteractionMobileStep.SelectModule ? (
           <>
-            <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
+            <DrawerHeader
+              borderBottomWidth="1px"
+              borderColor="gray.700"
+              borderStyle="solid"
+            >
               <CustomIcon
-                name="contract-address"
                 boxSize={6}
                 color="gray.600"
+                name="contract-address"
               />
               <Heading as="h5" variant="h5">
                 Select Module
@@ -109,20 +114,20 @@ export const ModuleSelectDrawerMobile = ({
             </DrawerHeader>
             <DrawerCloseButton color="text.dark" />
             <DrawerBody p={6}>
-              <Flex h="full" direction="column">
+              <Flex direction="column" h="full">
                 <ModuleSelector
+                  closeModal={onClose}
+                  handleModuleSelect={handleModuleSelect}
                   mode={mode}
                   selectedAddress={selectedAddress}
-                  setSelectedAddress={setSelectedAddress}
-                  setModules={setModules}
                   setMode={setMode}
-                  handleModuleSelect={handleModuleSelect}
-                  closeModal={onClose}
+                  setModules={setModules}
+                  setSelectedAddress={setSelectedAddress}
                 />
                 {modules ? (
                   <SelectModuleSection
-                    selectedAddress={selectedAddress}
                     modules={modules}
+                    selectedAddress={selectedAddress}
                     selectedModule={selectedModule}
                     setSelectedModule={setSelectedModule}
                     setStep={setStep}
@@ -138,12 +143,16 @@ export const ModuleSelectDrawerMobile = ({
           </>
         ) : (
           <>
-            <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
+            <DrawerHeader
+              borderBottomWidth="1px"
+              borderColor="gray.700"
+              borderStyle="solid"
+            >
               <CustomIcon
-                name="chevron-left"
                 boxSize={6}
                 color="gray.600"
                 cursor="pointer"
+                name="chevron-left"
                 onClick={() =>
                   setStep(ModuleInteractionMobileStep.SelectModule)
                 }
@@ -154,28 +163,27 @@ export const ModuleSelectDrawerMobile = ({
             </DrawerHeader>
             <DrawerCloseButton color="text.dark" />
             <DrawerBody p={6}>
-              <Flex h="full" direction="column">
+              <Flex direction="column" h="full">
                 {selectedModule && (
                   <>
                     <Flex alignItems="center" gap={2} mb={2}>
-                      <Text variant="body2" fontWeight={600} color="text.dark">
+                      <Text color="text.dark" fontWeight={600} variant="body2">
                         Selected Module
                       </Text>
                       <Button
+                        leftIcon={<CustomIcon boxSize={3} name="swap" />}
+                        px={1}
+                        size="sm"
+                        variant="ghost-primary"
                         onClick={() =>
                           setStep(ModuleInteractionMobileStep.SelectModule)
                         }
-                        size="sm"
-                        px={1}
-                        variant="ghost-primary"
-                        leftIcon={<CustomIcon name="swap" boxSize={3} />}
                       >
                         Change Module
                       </Button>
                     </Flex>
                     <ModuleCard
                       module={selectedModule}
-                      selectedModule={selectedModule}
                       moveVerifyInfo={
                         moveVerifyInfos?.[
                           mergeModulePath(
@@ -185,14 +193,15 @@ export const ModuleSelectDrawerMobile = ({
                         ]
                       }
                       readOnly
+                      selectedModule={selectedModule}
                     />
                   </>
                 )}
                 <SelectFunctionSection
                   area="main"
-                  module={selectedModule}
-                  handleModuleSelect={handleModuleSelect}
                   closeModal={onClose}
+                  handleModuleSelect={handleModuleSelect}
+                  module={selectedModule}
                 />
               </Flex>
             </DrawerBody>

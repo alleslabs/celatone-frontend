@@ -1,8 +1,8 @@
-import { Spinner } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-
-import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { TxResultRendering } from "lib/types";
+
+import { Spinner } from "@chakra-ui/react";
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { TxStreamPhase } from "lib/types";
 
 export const sendingTx = (fee: StdFee) => {

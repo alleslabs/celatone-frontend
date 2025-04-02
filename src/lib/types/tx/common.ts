@@ -1,4 +1,5 @@
 import type { StdFee } from "@cosmjs/stargate";
+
 import { z } from "zod";
 
 export interface Fee extends Omit<StdFee, "gas"> {

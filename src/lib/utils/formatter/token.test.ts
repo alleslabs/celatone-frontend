@@ -1,8 +1,7 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import type Big from "big.js";
+import type { Token, U, USD } from "lib/types";
 
 import { big } from "lib/types";
-import type { Token, U, USD } from "lib/types";
 
 import {
   d0Formatter,

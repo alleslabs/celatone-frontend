@@ -1,3 +1,10 @@
+import type {
+  Option,
+  ProposalData,
+  ProposalParams,
+  ProposalVotesInfo,
+} from "lib/types";
+
 import {
   Accordion,
   TabList,
@@ -5,17 +12,10 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { isNull } from "lodash";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { ProposalStatus } from "lib/types";
-import type {
-  Option,
-  ProposalData,
-  ProposalParams,
-  ProposalVotesInfo,
-} from "lib/types";
+import { isNull } from "lodash";
 
 import { DepositPeriodSection } from "./deposit-period/DepositPeriodSection";
 import { VoteDetailsAccordionItem } from "./VoteDetailsAccordionItem";
@@ -49,48 +49,49 @@ export const VoteDetails = ({ proposalData, ...props }: VoteDetailsProps) => {
   return isMobile ? (
     <Accordion
       allowToggle
-      w="full"
-      variant="transparent"
       defaultIndex={[subtabIndex]}
+      variant="transparent"
+      w="full"
       onChange={(expandedIndex: number) => {
         if (expandedIndex === -1) return;
         trackPeriodSubtab(expandedIndex);
       }}
     >
-      <VoteDetailsAccordionItem step={1} proposalData={proposalData}>
+      <VoteDetailsAccordionItem proposalData={proposalData} step={1}>
         <DepositPeriodSection proposalData={proposalData} {...props} />
       </VoteDetailsAccordionItem>
       <VoteDetailsAccordionItem
-        step={2}
-        proposalData={proposalData}
         isDisabled={isDepositOnly}
+        proposalData={proposalData}
+        step={2}
       >
         <VotingPeriod proposalData={proposalData} {...props} />
       </VoteDetailsAccordionItem>
     </Accordion>
   ) : (
     <Tabs
+      defaultIndex={subtabIndex}
       isLazy
       lazyBehavior="keepMounted"
       mt={6}
       w="full"
-      defaultIndex={subtabIndex}
       onChange={(index) => trackPeriodSubtab(index)}
     >
       <TabList borderBottom="0px solid" gap={2}>
-        <VoteDetailsTab step={1} proposalData={proposalData} />
+        <VoteDetailsTab proposalData={proposalData} step={1} />
         <VoteDetailsTab
-          step={2}
-          proposalData={proposalData}
           isDisabled={isDepositOnly}
+          proposalData={proposalData}
+          step={2}
         />
       </TabList>
       <TabPanels
         background="gray.800"
-        border="1px solid"
         borderColor="gray.700"
-        borderTopColor="transparent"
         borderRadius="0px 0px 8px 8px"
+        borderStyle="solid"
+        borderTopColor="transparent"
+        borderWidth="1px"
       >
         <TabPanel>
           <DepositPeriodSection proposalData={proposalData} {...props} />

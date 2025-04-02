@@ -34,9 +34,9 @@ export const BlockDetailsSequencer = ({ height }: { height: number }) => {
         <BlockTxsTableSequencer height={height} />
       )}
       <UserDocsLink
-        title="What is a block?"
         cta="Read more about Block"
         href="general/blocks/detail-page"
+        title="What is a block?"
       />
     </>
   );

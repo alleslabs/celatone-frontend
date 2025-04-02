@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import type { CodeInfo } from "lib/types";
+
 import {
   AccessConfigPermission,
   zBechAddr,
@@ -10,6 +9,7 @@ import {
   zUtcDate,
 } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 export const zUploadAccessParams = z
   .object({

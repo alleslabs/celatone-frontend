@@ -1,5 +1,4 @@
 import { Heading, Stack, Text } from "@chakra-ui/react";
-
 import { Breadcrumb } from "lib/components/Breadcrumb";
 
 export const ModuleVerifyTop = () => (
@@ -19,7 +18,7 @@ export const ModuleVerifyTop = () => (
       <Heading as="h5" variant="h5">
         Verify Modules
       </Heading>
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         Verifying your module offers enhanced credibility with a verified badge.
         Once verified, users will able to access its source code in module
         details page.

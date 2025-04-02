@@ -1,11 +1,11 @@
-import { Flex, Text } from "@chakra-ui/react";
 import type Big from "big.js";
+import type { Option, ValidatorData } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ValidatorImage } from "lib/components/ValidatorImage";
-import type { Option, ValidatorData } from "lib/types";
 import { truncate } from "lib/utils";
 
 import { ValidatorStats } from "./ValidatorStats";
@@ -33,62 +33,62 @@ export const ValidatorTop = ({
         { text: info.moniker || truncate(info.validatorAddress) },
       ]}
     />
-    <Flex gap={4} alignItems={{ base: "start", md: "center" }}>
+    <Flex alignItems={{ base: "start", md: "center" }} gap={4}>
       <Flex display={{ base: "none", md: "flex" }}>
-        <ValidatorImage validator={info} boxSize={32} />
+        <ValidatorImage boxSize={32} validator={info} />
       </Flex>
-      <Flex direction="column" w="full" gap={{ base: 2, md: 1 }}>
+      <Flex direction="column" gap={{ base: 2, md: 1 }} w="full">
         <ValidatorTitle info={info} />
         <ValidatorStats
-          validatorAddress={info.validatorAddress}
           commissionRate={info.commissionRate}
-          totalVotingPower={totalVotingPower}
           singleStakingDenom={singleStakingDenom}
+          totalVotingPower={totalVotingPower}
+          validatorAddress={info.validatorAddress}
         />
         <Flex
-          mt={{ base: 1, md: 0 }}
-          gap={{ base: 0, md: 2 }}
-          direction={{ base: "column", md: "row" }}
           alignItems={{ md: "center" }}
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: 0, md: 2 }}
+          mt={{ base: 1, md: 0 }}
         >
           <Text
             color="text.dark"
+            fontWeight={500}
             minW={32}
             variant="body2"
-            fontWeight={500}
             whiteSpace="nowrap"
           >
             Validator Address:
           </Text>
-          <CopyLink value={info.validatorAddress} type="validator_address" />
+          <CopyLink type="validator_address" value={info.validatorAddress} />
         </Flex>
         <Flex
-          mt={{ base: 1, md: 0 }}
-          gap={{ base: 0, md: 2 }}
-          direction={{ base: "column", md: "row" }}
           alignItems={{ md: "center" }}
+          direction={{ base: "column", md: "row" }}
+          gap={{ base: 0, md: 2 }}
+          mt={{ base: 1, md: 0 }}
         >
           <Text
             color="text.dark"
+            fontWeight={500}
             minW={32}
             variant="body2"
-            fontWeight={500}
             whiteSpace="nowrap"
           >
             Account Address:
           </Text>
           <ExplorerLink
+            fixedHeight={false}
+            maxWidth="full"
+            textFormat="normal"
             type="user_address"
             value={info.accountAddress}
-            textFormat="normal"
-            maxWidth="full"
-            fixedHeight={false}
           />
         </Flex>
         <WebsiteButton
+          display={{ base: "flex", md: "none" }}
           href={info.website}
           my={2}
-          display={{ base: "flex", md: "none" }}
         />
       </Flex>
     </Flex>

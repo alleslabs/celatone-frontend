@@ -1,8 +1,8 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
-import { z } from "zod";
-
 import type { Event } from "lib/services/types";
 import type { BechAddr, Option, Pubkey } from "lib/types";
+
+import { z } from "zod";
 
 export enum ActionMsgType {
   SINGLE_ACTION_MSG = "SINGLE_ACTION_MSG",

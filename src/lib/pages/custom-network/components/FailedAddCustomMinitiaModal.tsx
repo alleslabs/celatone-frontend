@@ -10,7 +10,6 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-
 import { CustomIcon } from "lib/components/icon";
 
 interface FailedAddCustomMinitiaModalProps {
@@ -23,25 +22,25 @@ export const FailedAddCustomMinitiaModal = ({
   onClose,
 }: FailedAddCustomMinitiaModalProps) => (
   <Modal
+    closeOnOverlayClick={false}
+    isCentered
     isOpen={isOpen}
     onClose={onClose}
-    isCentered
-    closeOnOverlayClick={false}
   >
     <ModalOverlay />
     <ModalContent bg="gray.800" py={10} w="414px">
-      <ModalHeader w="full" py={0}>
+      <ModalHeader py={0} w="full">
         <Stack alignItems="center" gap={4} w="100%">
           <CustomIcon
-            name="alert-triangle-solid"
-            color="error.main"
             boxSize={14}
+            color="error.main"
+            name="alert-triangle-solid"
           />
           <Heading variant="h5">JSON file is in wrong format</Heading>
         </Stack>
       </ModalHeader>
       <ModalBody overflow="overlay" pt={2}>
-        <Text variant="body2" color="text.dark" textAlign="center">
+        <Text color="text.dark" textAlign="center" variant="body2">
           There is something wrong with your JSON file. So that the Rollup is
           cannot be added to InitiaScan.
         </Text>

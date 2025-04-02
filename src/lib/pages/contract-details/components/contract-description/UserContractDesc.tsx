@@ -1,14 +1,14 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
-import Linkify from "react-linkify";
-import { useClampText } from "use-clamp-text";
-
-import { ShowMoreButton } from "lib/components/button";
-import { CustomIcon } from "lib/components/icon";
-import { EditContractDetailsModal } from "lib/components/modal";
 import type { Contract } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Nullable, Option, PublicContractInfo } from "lib/types";
+
+import { Button, Flex, Text } from "@chakra-ui/react";
+import { ShowMoreButton } from "lib/components/button";
+import { CustomIcon } from "lib/components/icon";
+import { EditContractDetailsModal } from "lib/components/modal";
+import { useMemo, useState } from "react";
+import Linkify from "react-linkify";
+import { useClampText } from "use-clamp-text";
 
 interface UserContractDescProps {
   publicInfo: Nullable<PublicContractInfo>;
@@ -39,16 +39,16 @@ export const UserContractDesc = ({
 
   return (
     <Flex
-      direction="column"
       bg="gray.900"
-      maxW="100%"
       borderRadius="8px"
-      p={4}
+      direction="column"
       flex={1}
+      maxW="100%"
+      p={4}
       role="group"
     >
-      <Flex justify="space-between" align="center" h="32px">
-        <Text variant="body2" fontWeight={500} color="text.dark">
+      <Flex align="center" h="32px" justify="space-between">
+        <Text color="text.dark" fontWeight={500} variant="body2">
           Your Contract Description
         </Text>
         <EditContractDetailsModal
@@ -63,11 +63,11 @@ export const UserContractDesc = ({
           }}
           triggerElement={
             <Button
+              _groupHover={{ display: "flex" }}
+              display="none"
+              leftIcon={<CustomIcon boxSize={3} name="edit" />}
               size="xs"
               variant="ghost-primary"
-              leftIcon={<CustomIcon name="edit" boxSize={3} />}
-              display="none"
-              _groupHover={{ display: "flex" }}
             >
               {description ? "Edit" : "Add Description"}
             </Button>
@@ -75,20 +75,20 @@ export const UserContractDesc = ({
         />
       </Flex>
       <Text
+        key={key}
         variant="body2"
         whiteSpace="pre-wrap"
         ref={ref as React.MutableRefObject<HTMLParagraphElement>}
-        key={key}
       >
         <Linkify>{displayDescription}</Linkify>
       </Text>
 
       {!noClamp && description && (
         <ShowMoreButton
-          showMoreText="View Full Description"
-          showLessText="View Less Description"
-          toggleShowMore={showMore}
           setToggleShowMore={() => setShowMore(!showMore)}
+          showLessText="View Less Description"
+          showMoreText="View Full Description"
+          toggleShowMore={showMore}
         />
       )}
     </Flex>

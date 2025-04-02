@@ -1,5 +1,4 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 
@@ -8,17 +7,17 @@ export const ModuleVerificationButton = () => {
   return (
     <Menu placement="top-end">
       <MenuButton
-        mb={8}
-        variant="primary"
         as={Button}
-        rightIcon={<CustomIcon name="chevron-down" />}
+        mb={8}
         minW={52}
+        rightIcon={<CustomIcon name="chevron-down" />}
+        variant="primary"
       >
         Module Verification
       </MenuButton>
       <MenuList>
         <MenuItem
-          icon={<CustomIcon name="plus" color="gray.600" />}
+          icon={<CustomIcon color="gray.600" name="plus" />}
           onClick={() => {
             navigate({
               pathname: "/modules/verify",
@@ -28,7 +27,7 @@ export const ModuleVerificationButton = () => {
           Submit Module Verification
         </MenuItem>
         <MenuItem
-          icon={<CustomIcon name="list" color="gray.600" />}
+          icon={<CustomIcon color="gray.600" name="list" />}
           onClick={() => {
             navigate({
               pathname: "/my-module-verifications",

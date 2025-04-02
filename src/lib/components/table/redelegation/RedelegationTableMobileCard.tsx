@@ -1,7 +1,8 @@
-import { Flex, Grid, Text } from "@chakra-ui/react";
-
 import type { Redelegation } from "lib/types";
+
+import { Flex, Grid, Text } from "@chakra-ui/react";
 import { dateFromNow, formatUTC } from "lib/utils";
+
 import { CustomIcon } from "../../icon";
 import { ValidatorBadge } from "../../ValidatorBadge";
 import { MobileLabel } from "../MobileLabel";
@@ -17,23 +18,24 @@ export const RedelegationTableMobileCard = ({
   <Flex
     background="gray.900"
     borderRadius="8px"
-    p={3}
     direction="column"
     gap={3}
+    p={3}
     w="full"
   >
     <Grid
-      borderBottom="1px solid"
-      pb={3}
-      borderBottomColor="gray.700"
-      templateColumns="1fr 32px 1fr"
       alignItems="center"
+      borderBottomColor="gray.700"
+      borderBottomWidth="1px"
+      borderStyle="solid"
+      pb={3}
+      templateColumns="1fr 32px 1fr"
     >
       <Flex direction="column" gap={1} minW={0}>
         <MobileLabel label="From validator" />
         <ValidatorBadge validator={redelegation.srcValidator} />
       </Flex>
-      <CustomIcon name="arrow-right" boxSize={3} color="gray.600" />
+      <CustomIcon boxSize={3} color="gray.600" name="arrow-right" />
       <Flex direction="column" gap={1} minW={0}>
         <MobileLabel label="To validator" />
         <ValidatorBadge validator={redelegation.dstValidator} />
@@ -49,7 +51,7 @@ export const RedelegationTableMobileCard = ({
       <MobileLabel label="Completed by" />
       <Flex direction="column">
         <Text variant="body2">{formatUTC(redelegation.completionTime)}</Text>
-        <Text variant="body3" color="text.disabled">
+        <Text color="text.disabled" variant="body3">
           {`(${dateFromNow(redelegation.completionTime)})`}
         </Text>
       </Flex>

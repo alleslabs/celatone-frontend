@@ -1,7 +1,6 @@
-import { Box, Grid } from "@chakra-ui/react";
-import { matchSorter } from "match-sorter";
-import { useMemo, useState } from "react";
+import type { PublicModule } from "lib/types";
 
+import { Box, Grid } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { EmptyState } from "lib/components/state";
@@ -12,8 +11,9 @@ import {
   TableTitle,
   ViewMore,
 } from "lib/components/table";
-import type { PublicModule } from "lib/types";
 import { mergeModulePath } from "lib/utils";
+import { matchSorter } from "match-sorter";
+import { useMemo, useState } from "react";
 
 import { PublicProjectModuleMobileCard } from "./PublicProjectModuleMobileCard";
 import { PublicProjectModuleRow } from "./PublicProjectModuleRow";
@@ -26,7 +26,7 @@ interface PublicProjectModuleTableProps {
 const TEMPLATE_COLUMNS = "320px 160px minmax(250px, 1fr) 160px";
 
 const ModuleTableHeader = () => (
-  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
+  <Grid minW="min-content" templateColumns={TEMPLATE_COLUMNS}>
     <TableHeader>Module Path</TableHeader>
     <TableHeader>Owner</TableHeader>
     <TableHeader>Module Description</TableHeader>
@@ -80,28 +80,28 @@ export const PublicProjectModuleTable = ({
   }, [modules, onViewMore, searchKeyword]);
 
   return (
-    <Box mt={{ base: 8, md: 12 }} mb={4}>
-      <TableTitle title="Modules" count={modules.length} />
+    <Box mb={4} mt={{ base: 8, md: 12 }}>
+      <TableTitle count={modules.length} title="Modules" />
       {!onViewMore && (
         <InputWithIcon
+          amptrackSection="public-project-module-search"
+          my={2}
           placeholder="Search with Module Address or Module Name"
+          size={{ base: "md", md: "lg" }}
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
-          size={{ base: "md", md: "lg" }}
-          my={2}
-          amptrackSection="public-project-module-search"
         />
       )}
       {filteredModules.length ? (
         <ContentRender filteredModules={filteredModules} isMobile={isMobile} />
       ) : (
         <EmptyState
+          imageVariant={onViewMore && "empty"}
           message={
             modules.length
               ? "No matching module found for this project. Make sure you are searching with Module Address or Module Name"
               : "There are currently no modules related to this project."
           }
-          imageVariant={onViewMore && "empty"}
           withBorder
         />
       )}

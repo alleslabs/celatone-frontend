@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import type { ContractState, DecodedKey } from "lib/types";
 
 import { isHex } from "./validate";
@@ -7,7 +8,6 @@ const nameRegex = /^[a-zA-Z0-9_{}:"'/\\,\\[\]()]+$/;
 export const hexToString = (hex: string) =>
   Buffer.from(hex, "hex").toString("utf-8");
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export const parseStateKey = (rawKey: string): DecodedKey => {
   try {
     const decodedStr = isHex(rawKey)

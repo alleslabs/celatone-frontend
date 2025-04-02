@@ -1,3 +1,5 @@
+import type { Message, Msg } from "lib/types";
+
 import {
   Button,
   Flex,
@@ -12,11 +14,10 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-
 import { useCurrentChain } from "lib/app-provider";
 import { useRedo } from "lib/hooks";
-import type { Message, Msg } from "lib/types";
 import { extractMsgType } from "lib/utils";
+
 import { CustomIcon } from "../icon";
 
 interface RedoModalProps {
@@ -31,21 +32,21 @@ export const RedoModal = ({ message }: RedoModalProps) => {
   return (
     <>
       <Button
-        leftIcon={<CustomIcon name="redo" />}
-        variant="outline-gray"
         iconSpacing="2"
+        leftIcon={<CustomIcon name="redo" />}
         size="sm"
+        variant="outline-gray"
         onClick={onOpen}
       >
         Redo
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal isCentered isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent w="640px">
           <ModalHeader>
-            <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <CustomIcon name="redo" boxSize={5} color="gray.600" />
-              <Heading variant="h5" as="h5">
+            <Flex alignItems="center" direction="row" gap={2} pt={1} w="full">
+              <CustomIcon boxSize={5} color="gray.600" name="redo" />
+              <Heading as="h5" variant="h5">
                 Redo Instantiate
               </Heading>
             </Flex>
@@ -71,11 +72,11 @@ export const RedoModal = ({ message }: RedoModalProps) => {
           </ModalBody>
           <ModalFooter>
             <Flex
-              w="full"
-              direction="row"
               align="center"
-              justifyContent="end"
+              direction="row"
               gap={4}
+              justifyContent="end"
+              w="full"
             >
               <Button
                 cursor="pointer"

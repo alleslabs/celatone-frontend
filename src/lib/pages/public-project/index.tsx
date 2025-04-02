@@ -1,11 +1,10 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { usePublicProjectConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { AllProject } from "./components/AllProject";
 
@@ -20,14 +19,14 @@ export const AllPublicProjectsPage = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Public Projects" />
-      <Flex direction="column" alignItems="center" gap={8}>
-        <Flex justifyContent="space-between" w="full" alignItems="center">
+      <Flex alignItems="center" direction="column" gap={8}>
+        <Flex alignItems="center" justifyContent="space-between" w="full">
           <Heading
-            as="h5"
-            variant="h5"
-            minH="36px"
-            display="flex"
             alignItems="center"
+            as="h5"
+            display="flex"
+            minH="36px"
+            variant="h5"
           >
             Public Projects
           </Heading>

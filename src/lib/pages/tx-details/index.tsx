@@ -1,7 +1,6 @@
-import { Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import type { Option } from "lib/types";
 
+import { Flex } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useEvmConfig, useMobile } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
@@ -11,8 +10,9 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { EmptyState, InvalidState } from "lib/components/state";
 import { useEvmParams } from "lib/services/evm";
 import { useEvmTxHashByCosmosTxHash, useTxData } from "lib/services/tx";
-import type { Option } from "lib/types";
 import { truncate } from "lib/utils";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { TxHeader, TxInfo, TxInfoMobile } from "./components";
 import { MessageSection } from "./components/MessageSection";
@@ -75,19 +75,19 @@ const TxDetailsBody = ({ txHash }: { txHash: string }) => {
         <>
           <TxHeader mt={2} txData={data} />
           {isMobile && (
-            <TxInfoMobile txData={data} gasRefundRatio={gasRefundRatio} />
+            <TxInfoMobile gasRefundRatio={gasRefundRatio} txData={data} />
           )}
-          <Flex my={{ base: 0, md: 12 }} gap={4} justify="space-between">
+          <Flex gap={4} justify="space-between" my={{ base: 0, md: 12 }}>
             {!isMobile && (
-              <TxInfo txData={data} gasRefundRatio={gasRefundRatio} />
+              <TxInfo gasRefundRatio={gasRefundRatio} txData={data} />
             )}
-            <MessageSection txData={data} relatedEvmTxHash={relatedEvmTxHash} />
+            <MessageSection relatedEvmTxHash={relatedEvmTxHash} txData={data} />
           </Flex>
         </>
       ) : (
         <EmptyState
-          imageVariant="not-found"
           heading="Transaction does not exist"
+          imageVariant="not-found"
           message="Please check your input or make sure you have selected the correct network."
         />
       )}

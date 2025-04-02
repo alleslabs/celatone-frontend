@@ -1,7 +1,5 @@
 import type { Coin } from "@cosmjs/amino";
 import type Big from "big.js";
-import { z } from "zod";
-
 import type {
   BechAddr,
   Nullable,
@@ -10,6 +8,8 @@ import type {
   TokenWithValue,
   Validator,
 } from "lib/types";
+
+import { z } from "zod";
 
 export enum ProposalStatus {
   DEPOSIT_PERIOD = "DepositPeriod",

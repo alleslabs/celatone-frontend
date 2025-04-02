@@ -1,6 +1,6 @@
-import { Flex, Text } from "@chakra-ui/react";
-
 import type { ComputedUptime, Ratio } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
 import { formatPrettyPercent } from "lib/utils";
 
 const LegendItem = ({
@@ -15,28 +15,28 @@ const LegendItem = ({
   ratio: Ratio<number>;
 }) => (
   <Flex gap={2} w="full">
-    <Flex w={3} h={3} borderRadius="2px" backgroundColor={color} mt={1} />
+    <Flex backgroundColor={color} borderRadius="2px" h={3} mt={1} w={3} />
     <Flex
-      direction={{ base: "row", md: "column" }}
       alignItems={{ base: "center", md: "start" }}
+      direction={{ base: "row", md: "column" }}
     >
       <Text
-        variant="body2"
-        fontWeight={700}
         color="text.dark"
+        fontWeight={700}
+        variant="body2"
         w={{ base: 40, md: "auto" }}
       >
         {label}
       </Text>
       <Text
-        variant={{ base: "body2", md: "body1" }}
-        fontWeight={700}
         color="text.main"
+        fontWeight={700}
+        variant={{ base: "body2", md: "body1" }}
         w={{ base: 12, md: "auto" }}
       >
         {value}
       </Text>
-      <Text variant="body3" color="text.dark">
+      <Text color="text.dark" variant="body3">
         {formatPrettyPercent(ratio)}
       </Text>
     </Flex>
@@ -52,22 +52,22 @@ export const RecentBlocksLegends = ({
 }: RecentBlocksLegendsProps) => (
   <Flex direction={{ base: "column", md: "row" }}>
     <LegendItem
-      label="Signed Blocks"
       color="recentBlocks.signed"
-      value={signed}
+      label="Signed Blocks"
       ratio={signedRatio}
+      value={signed}
     />
     <LegendItem
-      label="Proposed Blocks"
       color="recentBlocks.proposed"
-      value={proposed}
+      label="Proposed Blocks"
       ratio={proposedRatio}
+      value={proposed}
     />
     <LegendItem
-      label="Missed Blocks"
       color="recentBlocks.missed"
-      value={missed}
+      label="Missed Blocks"
       ratio={missedRatio}
+      value={missed}
     />
   </Flex>
 );

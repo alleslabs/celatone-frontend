@@ -1,11 +1,11 @@
-import { Flex } from "@chakra-ui/react";
-
-import { useMobile } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon";
-import { PublicDescription } from "lib/components/PublicDescription";
 import type { Contract } from "lib/services/types";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type { Nullable, Option, PublicContractInfo } from "lib/types";
+
+import { Flex } from "@chakra-ui/react";
+import { useMobile } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
+import { PublicDescription } from "lib/components/PublicDescription";
 
 import { UserContractDesc } from "./UserContractDesc";
 
@@ -29,17 +29,17 @@ export const ContractDesc = ({
     >
       {publicInfo?.description && (
         <PublicDescription
-          title="Public Contract Description"
           description={publicInfo.description}
+          icon={<CustomIcon color="gray.600" name="public-project" />}
           textLine={contractLocalInfo?.description ? 4 : 2}
-          icon={<CustomIcon name="public-project" color="gray.600" />}
+          title="Public Contract Description"
         />
       )}
       {!isMobile && contractLocalInfo && (
         <UserContractDesc
-          publicInfo={publicInfo}
           contract={contract}
           contractLocalInfo={contractLocalInfo}
+          publicInfo={publicInfo}
         />
       )}
     </Flex>

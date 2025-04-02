@@ -1,6 +1,6 @@
-import { Badge, Flex, Text } from "@chakra-ui/react";
-
 import type { Option } from "lib/types";
+
+import { Badge, Flex, Text } from "@chakra-ui/react";
 
 import { NetworkCard } from "./network-card";
 
@@ -27,7 +27,7 @@ export const NetworkAccordionSubsection = ({
         <Text color="text.dark" fontWeight={600} variant="body2">
           {title}
         </Text>
-        <Badge variant="gray" ml={2}>
+        <Badge ml={2} variant="gray">
           {networks.length}
         </Badge>
       </Flex>
@@ -36,8 +36,8 @@ export const NetworkAccordionSubsection = ({
       <NetworkCard
         key={chainId}
         chainId={chainId}
-        index={subsectionStartIndex + index}
         cursor={cursor}
+        index={subsectionStartIndex + index}
         setCursor={setCursor}
         onClose={onClose}
       />

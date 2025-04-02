@@ -1,13 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
-import { SkeletonText, Text } from "@chakra-ui/react";
-import { isNull } from "lodash";
-
-import { useGovConfig } from "lib/app-provider";
-import {
-  extractParams,
-  mapDeposit,
-  normalizeVotesInfo,
-} from "lib/pages/proposal-details/utils";
 import type {
   Option,
   ProposalData,
@@ -17,8 +7,17 @@ import type {
   TokenWithValue,
   U,
 } from "lib/types";
+
+import { SkeletonText, Text } from "@chakra-ui/react";
+import { useGovConfig } from "lib/app-provider";
+import {
+  extractParams,
+  mapDeposit,
+  normalizeVotesInfo,
+} from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
 import { formatPrettyPercent, formatTokenWithValueList } from "lib/utils";
+import { isNull } from "lodash";
 
 import { ErrorFetchingProposalInfos } from "./ErrorFetchingProposalInfos";
 import { NoVotingPeriodTallyExplanation } from "./NoVotingPeriodTally";
@@ -68,7 +67,6 @@ export interface ResultExplanationProps {
   isLoading: boolean;
 }
 
-// eslint-disable-next-line complexity
 export const ResultExplanation = ({
   proposalData,
   params,
@@ -104,7 +102,7 @@ export const ResultExplanation = ({
     );
 
   if (isLoading)
-    return <SkeletonText mt={1} noOfLines={3} spacing={4} skeletonHeight={2} />;
+    return <SkeletonText mt={1} noOfLines={3} skeletonHeight={2} spacing={4} />;
   if (!params || !votesInfo) return <ErrorFetchingProposalInfos />;
 
   const { minDeposit, quorum, threshold, vetoThreshold } = extractParams(

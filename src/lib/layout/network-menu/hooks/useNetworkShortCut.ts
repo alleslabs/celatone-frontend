@@ -1,6 +1,5 @@
-import { useEffect } from "react";
-
 import { useIsMac } from "lib/app-provider";
+import { useEffect } from "react";
 
 export const useNetworkShortCut = (onToggle: () => void) => {
   const isMac = useIsMac();

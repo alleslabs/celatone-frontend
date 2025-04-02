@@ -18,23 +18,23 @@ export const Footer = ({
   const publishText =
     fieldAmount > 1 ? `Publish ${fieldAmount} Modules` : "Publish Module";
   return (
-    <Box bg="gray.900" h="70px" bottom={0} position="sticky" zIndex={2}>
+    <Box bg="gray.900" bottom={0} h="70px" position="sticky" zIndex={2}>
       <Grid
+        columnGap={4}
+        h="full"
+        maxW="1440px"
+        mx="auto"
         px={{ base: "16px", md: "48px" }}
         templateAreas={`"prespace main accordion postspace"`}
         templateColumns="1fr 6fr 4fr 1fr"
-        columnGap={4}
-        maxW="1440px"
-        mx="auto"
-        h="full"
       >
-        <Flex align="center" justify="space-between" gridArea="main">
+        <Flex align="center" gridArea="main" justify="space-between">
           <Button variant="outline-primary" onClick={router.back}>
             Cancel
           </Button>
           <Button
-            variant="primary"
             isDisabled={isLoading || disabled}
+            variant="primary"
             onClick={publishModule}
           >
             {isLoading ? <Spinner size="md" variant="light" /> : publishText}

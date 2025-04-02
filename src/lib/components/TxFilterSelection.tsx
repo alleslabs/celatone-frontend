@@ -1,4 +1,6 @@
 import type { InputProps, LayoutProps } from "@chakra-ui/react";
+import type { CSSProperties, RefObject } from "react";
+
 import {
   Box,
   Flex,
@@ -12,10 +14,6 @@ import {
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
-import { matchSorter } from "match-sorter";
-import type { CSSProperties, RefObject } from "react";
-import { forwardRef, useMemo, useRef, useState } from "react";
-
 import { useInitia, useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import {
@@ -25,6 +23,8 @@ import {
   DEFAULT_WASM_TX_FILTERS,
 } from "lib/data";
 import { displayActionValue, mergeRefs } from "lib/utils";
+import { matchSorter } from "match-sorter";
+import { forwardRef, useMemo, useRef, useState } from "react";
 
 import { DropdownChevron } from "./DropdownChevron";
 
@@ -125,15 +125,15 @@ export const TxFilterSelection = forwardRef<
     });
 
     return (
-      <Box ref={boxRef} w={boxWidth} h={boxHeight}>
-        <FormControl w={boxWidth} h={boxHeight}>
+      <Box h={boxHeight} w={boxWidth} ref={boxRef}>
+        <FormControl h={boxHeight} w={boxWidth}>
           <Flex
             alignItems="center"
-            color="text.main"
             background="none"
-            borderRadius="8px"
             border="1px solid"
             borderColor="gray.700"
+            borderRadius="8px"
+            color="text.main"
             maxW="100%"
             overflowX="scroll"
           >
@@ -141,19 +141,19 @@ export const TxFilterSelection = forwardRef<
               <Flex alignItems="center" pl={2}>
                 {[...result].reverse().map((option) => (
                   <Flex
+                    key={option}
                     display="inline-block"
                     onClick={() => selectOption(option)}
-                    key={option}
                   >
                     <Tag
-                      variant="primary-light"
-                      mr={1}
-                      whiteSpace="nowrap"
                       cursor="pointer"
+                      mr={1}
                       size={tagSize}
+                      variant="primary-light"
+                      whiteSpace="nowrap"
                     >
                       {displayActionValue(option)}
-                      <CustomIcon name="close" boxSize={2} mr={2} />
+                      <CustomIcon boxSize={2} mr={2} name="close" />
                     </Tag>
                   </Flex>
                 ))}
@@ -161,19 +161,19 @@ export const TxFilterSelection = forwardRef<
             )}
 
             <Input
+              style={{ border: 0, maxHeight: "54px" }}
               autoComplete="off"
-              w="100%"
+              maxLength={36}
               minW="200px"
-              size={size}
               placeholder={result.length ? "" : placeholder}
-              onClick={() => setDisplayOptions(true)}
+              size={size}
+              w="100%"
               onChange={(e) => setKeyword(e.currentTarget.value)}
+              onClick={() => setDisplayOptions(true)}
               onFocus={() => {
                 setDisplayOptions(true);
               }}
               ref={mergeRefs([inputRef, ref])}
-              maxLength={36}
-              style={{ border: 0, maxHeight: "54px" }}
               {...rest}
             />
             <DropdownChevron
@@ -181,36 +181,36 @@ export const TxFilterSelection = forwardRef<
               onClick={() => setDisplayOptions((prev) => !prev)}
             />
             <FormLabel
-              position="absolute"
-              top={0}
-              left={0}
-              fontWeight={400}
-              color="text.dark"
               bgColor={labelBgColor}
-              pointerEvents="none"
-              px={1}
-              my={2}
+              color="text.dark"
+              fontWeight={400}
+              left={0}
               lineHeight="1.2"
+              my={2}
+              pointerEvents="none"
+              position="absolute"
+              px={1}
+              top={0}
               transform="scale(0.75) translateY(-24px) translateX(0px)"
             >
               {label}
             </FormLabel>
           </Flex>
-          <FormHelperText ml={3} mt={1} fontSize="12px" color="text.dark">
+          <FormHelperText color="text.dark" fontSize="12px" ml={3} mt={1}>
             {helperText}
           </FormHelperText>
 
           {displayOptions && (
             <List
-              borderRadius="8px"
               bg="gray.900"
-              px={2}
-              py={1}
+              borderRadius="8px"
               mt={0}
               position="absolute"
-              zIndex="2"
-              w="full"
+              px={2}
+              py={1}
               top="60px"
+              w="full"
+              zIndex="2"
             >
               {/* option selection section */}
               {partialResults.map((option) => (
@@ -225,9 +225,9 @@ export const TxFilterSelection = forwardRef<
                     <Text>{displayActionValue(option)}</Text>
                     {isOptionSelected(option) && (
                       <CustomIcon
-                        name="check"
-                        data-label={option}
                         color="gray.600"
+                        data-label={option}
+                        name="check"
                       />
                     )}
                   </Flex>

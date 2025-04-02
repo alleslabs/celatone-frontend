@@ -1,3 +1,10 @@
+import type {
+  Control,
+  FieldPath,
+  FieldValues,
+  UseControllerProps,
+} from "react-hook-form";
+
 import {
   FormControl,
   FormErrorMessage,
@@ -6,12 +13,6 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import type {
-  Control,
-  FieldPath,
-  FieldValues,
-  UseControllerProps,
-} from "react-hook-form";
 import { useController, useWatch } from "react-hook-form";
 
 import type { TextareaProps } from "./TextareaInput";
@@ -47,30 +48,30 @@ export const ControllerTextarea = <T extends FieldValues>({
   const isRequired = "required" in rules;
   return (
     <FormControl
-      size="md"
       isInvalid={isError && (isDirty || isTouched)}
       isRequired={isRequired}
+      size="md"
       sx={{ "> div": { marginTop: "1 !important" } }}
       {...componentProps}
       {...field}
     >
       {label && (
         <FormLabel
+          className="textarea-label"
+          bgColor={labelBgColor}
           requiredIndicator={
             <Text as="span" color="error.main" pl={1}>
               * (Required)
             </Text>
           }
-          className="textarea-label"
-          bgColor={labelBgColor}
         >
           {label}
         </FormLabel>
       )}
       <Textarea
-        resize="none"
         height={height}
         placeholder={placeholder}
+        resize="none"
         value={watcher}
         onChange={field.onChange}
       />

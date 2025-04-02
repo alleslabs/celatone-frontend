@@ -11,9 +11,8 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-
 import { CustomIcon } from "lib/components/icon";
+import { useEffect, useState } from "react";
 
 interface SuccessAddCustomMinitiaModalProps {
   isOpen: boolean;
@@ -42,23 +41,23 @@ export const SuccessAddCustomMinitiaModal = ({
 
   return (
     <Modal
+      closeOnOverlayClick={false}
+      isCentered
       isOpen={isOpen}
       onClose={onClose}
-      isCentered
-      closeOnOverlayClick={false}
     >
       <ModalOverlay />
-      <ModalContent w="645px" bg="gray.800" maxW="100vw" py={10}>
+      <ModalContent bg="gray.800" maxW="100vw" py={10} w="645px">
         {fakeLoading ? (
           <>
             <ModalHeader w="full">
               <Stack alignItems="center" gap={4} w="100%">
-                <Spinner w={16} h={16} thickness="4px" />
+                <Spinner h={16} thickness="4px" w={16} />
                 <Heading variant="h5">Adding Custom Rollup...</Heading>
               </Stack>
             </ModalHeader>
             <ModalBody maxH="400px" overflow="overlay">
-              <Text variant="body2" color="text.dark" textAlign="center">
+              <Text color="text.dark" textAlign="center" variant="body2">
                 Your rollup’s information is being processed, and the scan’s for
                 rollup will be ready shortly. Please do not close the browser
                 during this process.
@@ -70,15 +69,15 @@ export const SuccessAddCustomMinitiaModal = ({
             <ModalHeader w="full">
               <Stack alignItems="center" gap={4} w="100%">
                 <CustomIcon
-                  name="check-circle-solid"
-                  color="success.main"
                   boxSize={14}
+                  color="success.main"
+                  name="check-circle-solid"
                 />
                 <Heading variant="h5">“{prettyName}” is added!</Heading>
               </Stack>
             </ModalHeader>
             <ModalBody maxH="400px" overflow="overlay">
-              <Text variant="body2" color="text.dark" textAlign="center">
+              <Text color="text.dark" textAlign="center" variant="body2">
                 Your custom rollup is added to the InitiaScan locally on your
                 device. You also can download the configuration in to JSON file
                 to import them in other devices.
@@ -86,9 +85,9 @@ export const SuccessAddCustomMinitiaModal = ({
             </ModalBody>
             <ModalFooter py={0}>
               <Button
+                rightIcon={<CustomIcon boxSize={4} name="chevron-right" />}
                 variant="primary"
                 w="100%"
-                rightIcon={<CustomIcon name="chevron-right" boxSize={4} />}
                 onClick={() => {
                   window.location.href = `/${chainId}`;
                 }}

@@ -1,4 +1,15 @@
+import "ace-builds/src-noconflict/ace";
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-sh";
+import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/theme-one_dark";
+import "ace-builds/src-noconflict/theme-pastel_on_dark";
+
 import type { ButtonProps, FlexProps } from "@chakra-ui/react";
+import type { Coin } from "@cosmjs/stargate";
+import type { BechAddr32 } from "lib/types";
+
 import {
   Box,
   Button,
@@ -17,25 +28,15 @@ import {
   Tabs,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { Coin } from "@cosmjs/stargate";
-import { useState } from "react";
-import AceEditor from "react-ace";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useGas, useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import type { BechAddr32 } from "lib/types";
 import { coinsToStr, jsonPrettify } from "lib/utils";
+import { useState } from "react";
+import AceEditor from "react-ace";
+
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
-
-import "ace-builds/src-noconflict/ace";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/mode-sh";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-one_dark";
-import "ace-builds/src-noconflict/theme-pastel_on_dark";
 
 interface WasmCodeSnippetProps {
   contractAddress: BechAddr32;
@@ -210,13 +211,13 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   return (
     <>
       <Button
+        gap={1}
         isDisabled={isDisabled}
+        minW="128px"
+        ml={ml}
+        size="sm"
         variant="outline-white"
         w={w}
-        minW="128px"
-        size="sm"
-        ml={ml}
-        gap={1}
         onClick={() => {
           track(AmpEvent.USE_CONTRACT_SNIPPET, { actionType: type });
           onOpen();
@@ -226,19 +227,23 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
         Code Snippet
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
+      <Modal isCentered isOpen={isOpen} size="4xl" onClose={onClose}>
         <ModalOverlay />
-        <ModalContent w="840px" maxH="80vh">
+        <ModalContent maxH="80vh" w="840px">
           <ModalHeader>
-            <CustomIcon name="code" boxSize={6} color="gray.600" />
+            <CustomIcon boxSize={6} color="gray.600" name="code" />
             <Heading as="h5" variant="h5">
               Code Snippet
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />
-          <ModalBody px={4} overflow="scroll">
+          <ModalBody overflow="scroll" px={4}>
             <Tabs index={activeTabIndex} onChange={handleTabChange}>
-              <TabList borderBottom="1px solid" borderColor="gray.700">
+              <TabList
+                borderBottomWidth="1px"
+                borderColor="gray.700"
+                borderStyle="solid"
+              >
                 {codeSnippets[type].map((item, index) => (
                   <CustomTab
                     key={`menu-${item.name}`}
@@ -253,34 +258,34 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
                   <TabPanel key={item.name} px={2} py={4}>
                     <Box
                       bgColor="background.main"
-                      p={4}
                       borderRadius="8px"
+                      p={4}
                       position="relative"
                     >
                       <AceEditor
-                        readOnly
-                        mode={item.mode}
-                        theme={theme.jsonTheme}
-                        fontSize="14px"
                         style={{
                           width: "100%",
                           background: "transparent",
                         }}
-                        value={item.snippet}
+                        fontSize="14px"
+                        mode={item.mode}
+                        readOnly
                         setOptions={{
                           showGutter: false,
                           useWorker: false,
                           printMargin: false,
                           wrap: true,
                         }}
+                        theme={theme.jsonTheme}
+                        value={item.snippet}
                       />
                       {!isMobile && (
-                        <Box position="absolute" top={4} right={4}>
+                        <Box position="absolute" right={4} top={4}>
                           <CopyButton
-                            value={item.snippet}
+                            amptrackInfo={type}
                             amptrackSection="code_snippet"
                             amptrackSubSection={item.name}
-                            amptrackInfo={type}
+                            value={item.snippet}
                           />
                         </Box>
                       )}
@@ -292,13 +297,13 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
           </ModalBody>
           {isMobile && (
             <ModalFooter>
-              <Flex w="full" justifyContent="flex-end">
+              <Flex justifyContent="flex-end" w="full">
                 <CopyButton
-                  buttonText="Copy Code Snippet"
-                  value={activeSnippet}
+                  amptrackInfo={type}
                   amptrackSection="code_snippet"
                   amptrackSubSection={type}
-                  amptrackInfo={type}
+                  buttonText="Copy Code Snippet"
+                  value={activeSnippet}
                 />
               </Flex>
             </ModalFooter>

@@ -1,7 +1,3 @@
-import { makeAutoObservable } from "mobx";
-import { isHydrated, makePersistable } from "mobx-persist-store";
-
-import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import type {
   BechAddr,
   BechAddr20,
@@ -10,7 +6,11 @@ import type {
   LVPair,
   Option,
 } from "lib/types";
+
+import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { formatSlugName, getCurrentDate, getTagsDefault } from "lib/utils";
+import { makeAutoObservable } from "mobx";
+import { isHydrated, makePersistable } from "mobx-persist-store";
 
 export interface ContractLocalInfo {
   contractAddress: BechAddr32;

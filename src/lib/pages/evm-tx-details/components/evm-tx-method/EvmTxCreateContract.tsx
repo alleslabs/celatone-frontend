@@ -1,9 +1,9 @@
-import { Flex, Tag, Text } from "@chakra-ui/react";
+import type { TxDataJsonRpc } from "lib/services/types";
 
+import { Flex, Tag, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { useCreatedContractsByEvmTxHash } from "lib/services/tx";
-import type { TxDataJsonRpc } from "lib/services/types";
 
 import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
@@ -24,49 +24,49 @@ export const EvmTxCreateContract = ({
 
   return (
     <EvmTxMethodAccordion
-      msgIcon="instantiate"
       content={
         <Flex gap={1}>
           Create{" "}
           {contracts.length > 0 ? (
             contracts.length > 1 ? (
               <>
-                <Tag variant="primary" px={3}>
+                <Tag px={3} variant="primary">
                   {contracts.length}
                 </Tag>
                 <Text>contracts</Text>
               </>
             ) : (
-              <Flex gap={1} align="center">
+              <Flex align="center" gap={1}>
                 <CustomIcon
-                  name="contract-address"
                   boxSize={3}
                   color="primary.main"
+                  name="contract-address"
                 />
                 <ExplorerLink
-                  value={contracts[0]}
-                  type="evm_contract_address"
                   showCopyOnHover
+                  type="evm_contract_address"
+                  value={contracts[0]}
                 />
               </Flex>
             )
           ) : (
-            <Text variant="body2" color="text.disabled">
+            <Text color="text.disabled" variant="body2">
               -
             </Text>
           )}
         </Flex>
       }
+      msgIcon="instantiate"
     >
       <EvmInfoLabelValue
         label="Creator"
         value={
           <ExplorerLink
-            type="user_address"
-            value={from}
+            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
-            fixedHeight={false}
+            type="user_address"
+            value={from}
           />
         }
       />
@@ -76,24 +76,24 @@ export const EvmTxCreateContract = ({
           contracts.length > 0 ? (
             <Flex direction="column" gap={2}>
               {contracts.map((contract) => (
-                <Flex key={contract} gap={1} align="center">
+                <Flex key={contract} align="center" gap={1}>
                   <CustomIcon
-                    name="contract-address"
                     boxSize={3}
                     color="primary.main"
+                    name="contract-address"
                   />
                   <ExplorerLink
-                    value={contract}
-                    type="evm_contract_address"
+                    fixedHeight={false}
                     showCopyOnHover
                     textFormat="normal"
-                    fixedHeight={false}
+                    type="evm_contract_address"
+                    value={contract}
                   />
                 </Flex>
               ))}
             </Flex>
           ) : (
-            <Text variant="body2" color="text.disabled">
+            <Text color="text.disabled" variant="body2">
               -
             </Text>
           )

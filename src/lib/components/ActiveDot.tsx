@@ -1,9 +1,9 @@
-import { Box } from "@chakra-ui/react";
 import type { BoxProps } from "@chakra-ui/react";
-import { easeInOut, transform, useAnimationFrame } from "framer-motion";
-import { useRef } from "react";
 
+import { Box } from "@chakra-ui/react";
+import { easeInOut, transform, useAnimationFrame } from "framer-motion";
 import { getCurrentDate } from "lib/utils";
+import { useRef } from "react";
 
 const DURATION = 1500; // in milliseconds
 const opacityMap = transform([0, 0.5, 1], [1, 0.25, 1]);
@@ -26,10 +26,10 @@ export const ActiveDot = ({ isActive = true, ...props }: ActiveDotProps) => {
 
   return (
     <Box
-      ref={ref}
-      boxSize={3}
-      borderRadius="50%"
       bgColor="secondary.main"
+      borderRadius="50%"
+      boxSize={3}
+      ref={ref}
       {...props}
     />
   );

@@ -15,16 +15,16 @@ export const ShowMoreButton = ({
   setToggleShowMore,
 }: ShowMoreButtonProps) => (
   <Button
+    color="primary.main"
     p={0}
     rightIcon={
       <CustomIcon name={toggleShowMore ? "chevron-up" : "chevron-down"} />
     }
-    color="primary.main"
     variant="none"
     w="fit-content"
     onClick={setToggleShowMore}
   >
-    <Text variant="body3" color="primary.main" fontWeight={700}>
+    <Text color="primary.main" fontWeight={700} variant="body3">
       {toggleShowMore ? showLessText : showMoreText}
     </Text>
   </Button>

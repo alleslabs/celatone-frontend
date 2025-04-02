@@ -1,7 +1,8 @@
 import type { PermissionFilterValue } from "lib/hooks";
+import type { BechAddr20, CodeInfo, Option } from "lib/types";
+
 import { useCodeStore } from "lib/providers/store";
 import { useCodes, useCodesRest } from "lib/services/wasm/code";
-import type { BechAddr20, CodeInfo, Option } from "lib/types";
 
 export const useRecentCodes = (
   pageSize: number,

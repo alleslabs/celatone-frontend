@@ -1,9 +1,6 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import type { ChainConfig } from "@alleslabs/shared";
-import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useCallback, useState } from "react";
 
+import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { useChainConfigs, useInternalNavigate } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import {
@@ -13,6 +10,9 @@ import {
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import { useLocalChainConfigStore } from "lib/providers/store";
+import { observer } from "mobx-react-lite";
+import { useCallback, useState } from "react";
+
 import {
   DuplicatedAddCustomMinitiaModal,
   FailedAddCustomMinitiaModal,
@@ -88,41 +88,41 @@ export const AddNetworkJson = observer(() => {
     <>
       <ActionPageContainer>
         <CustomNetworkPageHeader
-          title="Add Custom Rollup"
-          subtitle="Import JSON"
           hasAlert={false}
+          subtitle="Import JSON"
+          title="Add Custom Rollup"
         />
-        <Flex direction="column" mt={12} gap={6} w="full">
+        <Flex direction="column" gap={6} mt={12} w="full">
           <CustomNetworkSubheader
-            title="Upload your .JSON File"
             subtitle="The uploading JSON file must be in the supported format for InitiaScan only"
+            title="Upload your .JSON File"
           />
           {file ? (
-            <UploadCard file={file} deleteFile={() => setFile(null)} />
+            <UploadCard deleteFile={() => setFile(null)} file={file} />
           ) : (
             <DropZone
-              setFiles={(files: File[]) => setFile(files[0])}
               fileType={["json"]}
+              setFiles={(files: File[]) => setFile(files[0])}
             />
           )}
           <Flex justifyContent="space-between" w="full">
             <Button
               variant="outline-primary"
-              onClick={() => navigate({ pathname: "/custom-network/add" })}
               w="140px"
+              onClick={() => navigate({ pathname: "/custom-network/add" })}
             >
               Cancel
             </Button>
             <Button
               isDisabled={!file}
               variant="primary"
-              onClick={handleSubmit}
               w="220px"
+              onClick={handleSubmit}
             >
               Import new Rollup
             </Button>
           </Flex>
-          <Text variant="body2" textAlign="center">
+          <Text textAlign="center" variant="body2">
             The added custom Rollup on Initiascan will be stored locally on your
             device.
           </Text>
@@ -134,15 +134,15 @@ export const AddNetworkJson = observer(() => {
       />
       <DuplicatedAddCustomMinitiaModal
         isOpen={isDuplicatedModalOpen}
-        onClose={duplicatedModalOnClose}
         label={duplicatedLabel()}
+        onClose={duplicatedModalOnClose}
       />
       {json && (
         <SuccessAddCustomMinitiaModal
-          isOpen={isSuccessModalOpen}
-          onClose={successModalOnClose}
-          prettyName={json.prettyName}
           chainId={json.chainId}
+          isOpen={isSuccessModalOpen}
+          prettyName={json.prettyName}
+          onClose={successModalOnClose}
         />
       )}
     </>

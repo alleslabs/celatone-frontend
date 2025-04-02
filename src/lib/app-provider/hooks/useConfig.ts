@@ -2,8 +2,8 @@ import type { ChainConfig } from "@alleslabs/shared";
 
 import { TierMap } from "lib/types";
 
-import { useInternalNavigate } from "./useInternalNavigate";
 import { useCelatoneApp } from "../contexts";
+import { useInternalNavigate } from "./useInternalNavigate";
 
 export const useTierConfig = (
   {

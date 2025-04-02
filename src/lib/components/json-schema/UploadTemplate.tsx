@@ -1,3 +1,7 @@
+import type { ResponseState } from "lib/components/forms";
+import type { Nullable } from "lib/types";
+import type { Dispatch } from "react";
+
 import {
   Button,
   Flex,
@@ -7,18 +11,15 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import type { Dispatch } from "react";
-import { useCallback, useMemo, useReducer, useState } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { DropZone } from "lib/components/dropzone";
-import type { ResponseState } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
 import JsonInput from "lib/components/json/JsonInput";
 import { UploadCard } from "lib/components/upload/UploadCard";
 import { useSchemaStore } from "lib/providers/store";
-import type { Nullable } from "lib/types";
 import { jsonValidate } from "lib/utils";
+import { useCallback, useMemo, useReducer, useState } from "react";
+
 import { CustomIcon } from "../icon";
 
 enum Method {
@@ -98,8 +99,6 @@ const MethodRender = ({
     case Method.UPLOAD_FILE:
       return jsonFile ? (
         <UploadCard
-          theme="gray"
-          file={jsonFile}
           deleteFile={() => {
             setJsonFile(undefined);
             dispatch({
@@ -108,9 +107,11 @@ const MethodRender = ({
               schemaString: "",
             });
           }}
+          file={jsonFile}
           // TODO: change to discriminated union pattern later
           status={error ? "error" : undefined}
           statusText={error}
+          theme="gray"
         />
       ) : (
         <DropZone
@@ -141,15 +142,10 @@ const MethodRender = ({
       else if (error) status = "error";
       return (
         <>
-          <Heading as="h6" variant="h6" mb={4}>
+          <Heading as="h6" mb={4} variant="h6">
             Fill in URL to load JSON Schema
           </Heading>
           <TextInput
-            status={{
-              state: status,
-              message: error,
-            }}
-            value={schemaString}
             setInputState={(url: string) =>
               dispatch({
                 type: ActionType.SET_SCHEMA,
@@ -157,6 +153,11 @@ const MethodRender = ({
                 schemaString: url,
               })
             }
+            status={{
+              state: status,
+              message: error,
+            }}
+            value={schemaString}
           />
         </>
       );
@@ -164,11 +165,11 @@ const MethodRender = ({
     case Method.FILL_MANUALLY:
       return (
         <>
-          <Heading as="h6" variant="h6" mb={4}>
+          <Heading as="h6" mb={4} variant="h6">
             Contract Schema
           </Heading>
           <JsonInput
-            text={schemaString}
+            maxLines={12}
             setText={(value: string) =>
               dispatch({
                 type: ActionType.SET_SCHEMA,
@@ -176,8 +177,8 @@ const MethodRender = ({
                 schemaString: value,
               })
             }
+            text={schemaString}
             validateFn={validateSchema}
-            maxLines={12}
           />
         </>
       );
@@ -258,7 +259,7 @@ export const UploadTemplate = ({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
     });
 
     setUrlLoading(false);
@@ -293,17 +294,18 @@ export const UploadTemplate = ({
 
   return (
     <Flex
+      borderColor="gray.700"
+      borderStyle="solid"
+      borderTopWidth="1px"
       direction="column"
-      px={6}
       mt={6}
       pt={6}
-      borderTop="1px solid"
-      borderColor="gray.700"
+      px={6}
     >
       <RadioGroup
-        onChange={(nextVal) => setMethod(nextVal as Method)}
-        value={method}
         mb={6}
+        value={method}
+        onChange={(nextVal) => setMethod(nextVal as Method)}
       >
         <Flex gap="64px">
           <Radio value={Method.UPLOAD_FILE}>Upload File</Radio>
@@ -312,21 +314,21 @@ export const UploadTemplate = ({
         </Flex>
       </RadioGroup>
       <MethodRender
+        dispatch={dispatchJsonState}
         method={method}
         state={jsonState}
         urlLoading={urlLoading}
-        dispatch={dispatchJsonState}
       />
       <Button
-        w="400px"
         alignSelf="center"
-        mt={6}
-        onClick={handleSave}
         isDisabled={disabledState}
+        mt={6}
+        w="400px"
+        onClick={handleSave}
       >
         Save JSON Schema
       </Button>
-      <Text variant="body2" color="text.dark" alignSelf="center" my={3}>
+      <Text alignSelf="center" color="text.dark" my={3} variant="body2">
         Your JSON schema will be{" "}
         <span style={{ fontWeight: 600 }}>stored locally on your device</span>
       </Text>

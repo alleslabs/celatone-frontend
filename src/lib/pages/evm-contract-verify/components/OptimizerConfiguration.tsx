@@ -1,7 +1,8 @@
-import { Checkbox, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
-import { useController, useWatch } from "react-hook-form";
+
+import { Checkbox, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { ControllerInput } from "lib/components/forms";
+import { useController, useWatch } from "react-hook-form";
 
 interface OptimizerConfigurationProps<T extends FieldValues> {
   control: Control<T>;
@@ -28,11 +29,11 @@ export const OptimizerConfiguration = <T extends FieldValues>({
         <Heading as="h6" variant="h6">
           Optimization Configuration
         </Heading>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           Provide optimization settings for the contract
         </Text>
       </Stack>
-      <Flex gap={4} pl={2} alignItems="center">
+      <Flex alignItems="center" gap={4} pl={2}>
         <Checkbox
           isChecked={enabled}
           onChange={(e) =>
@@ -41,14 +42,12 @@ export const OptimizerConfiguration = <T extends FieldValues>({
         >
           <Text>Optimization Enabled</Text>
         </Checkbox>
-        <Flex gap={2} alignItems="center">
+        <Flex alignItems="center" gap={2}>
           <Text color="text.disabled">Optimization Run:</Text>
           <ControllerInput
-            width={125}
-            type="number"
-            name={`${name}.runs` as FieldPath<T>}
-            isDisabled={!enabled}
             control={control}
+            isDisabled={!enabled}
+            name={`${name}.runs` as FieldPath<T>}
             size="md"
             status={
               enabled && runs === ""
@@ -57,6 +56,8 @@ export const OptimizerConfiguration = <T extends FieldValues>({
                   }
                 : undefined
             }
+            type="number"
+            width={125}
           />
         </Flex>
       </Flex>

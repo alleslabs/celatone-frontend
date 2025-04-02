@@ -1,8 +1,9 @@
-import { Button, HStack, Text } from "@chakra-ui/react";
-
-import { useInternalNavigate, useMobile } from "lib/app-provider";
 import type { EvmVerifyInfo, HexAddr20 } from "lib/types";
+
+import { Button, HStack, Text } from "@chakra-ui/react";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { formatUTC } from "lib/utils";
+
 import { EvmVerifyStatusModalWithTrigger } from "../modal/evm-verify-status";
 
 interface FailedDetailsProps {
@@ -26,11 +27,11 @@ export const FailedDetails = ({
   if (isMobile)
     return (
       <>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           Verification failed: Verification was submitted on{" "}
           {formatUTC(evmVerifyInfo.submittedTimestamp)} but an error occurred.
         </Text>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           If you are the owner, you can reverify this contract on the desktop
           interface.
         </Text>
@@ -38,7 +39,7 @@ export const FailedDetails = ({
           contractAddress={contractAddress}
           evmVerifyInfo={evmVerifyInfo}
           triggerElement={
-            <Button variant="ghost-primary" size="sm">
+            <Button size="sm" variant="ghost-primary">
               Verify Details
             </Button>
           }
@@ -48,7 +49,7 @@ export const FailedDetails = ({
 
   return (
     <>
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         Verification failed: Verification was submitted on{" "}
         {formatUTC(evmVerifyInfo.submittedTimestamp)} but an error occurred.
       </Text>
@@ -57,12 +58,12 @@ export const FailedDetails = ({
           contractAddress={contractAddress}
           evmVerifyInfo={evmVerifyInfo}
           triggerElement={
-            <Button variant="ghost-primary" size="sm">
+            <Button size="sm" variant="ghost-primary">
               Verify Details
             </Button>
           }
         />
-        <Button variant="ghost-primary" size="sm" onClick={handleNavigate}>
+        <Button size="sm" variant="ghost-primary" onClick={handleNavigate}>
           Verify Again
         </Button>
       </HStack>

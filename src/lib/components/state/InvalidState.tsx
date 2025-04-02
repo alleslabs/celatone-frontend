@@ -1,7 +1,6 @@
+import { trackInvalidState } from "lib/amplitude";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-
-import { trackInvalidState } from "lib/amplitude";
 
 import { EmptyState } from "./EmptyState";
 
@@ -19,9 +18,9 @@ export const InvalidState = ({ title }: InvalidStateProps) => {
   return (
     <EmptyState
       heading={title}
+      imageVariant="not-found"
       message="Please double-check your input and make sure you have selected the
     correct network."
-      imageVariant="not-found"
       textVariant="body2"
       withBorder
     />

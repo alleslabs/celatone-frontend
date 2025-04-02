@@ -1,3 +1,11 @@
+import type {
+  AbiFormData,
+  ExposedFunction,
+  HexAddr,
+  JsonDataType,
+  Option,
+} from "lib/types";
+
 import {
   Alert,
   AlertDescription,
@@ -8,9 +16,6 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
-import dynamic from "next/dynamic";
-import { useState } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { SubmitButton } from "lib/components/button";
 import { CustomIcon } from "lib/components/icon";
@@ -18,14 +23,9 @@ import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { AbiForm } from "lib/components/move-abi";
 import { DEFAULT_RPC_ERROR } from "lib/data";
 import { useFunctionView } from "lib/services/move/module";
-import type {
-  AbiFormData,
-  ExposedFunction,
-  HexAddr,
-  JsonDataType,
-  Option,
-} from "lib/types";
 import { getAbiInitialData, jsonPrettify } from "lib/utils";
+import dynamic from "next/dynamic";
+import { useState } from "react";
 
 const MoveCodeSnippet = dynamic(
   () => import("lib/components/modal/MoveCodeSnippet"),
@@ -76,7 +76,7 @@ export const ViewArea = ({
     Object.values(abiData.typeArgs).some((v) => !v.length) || !!abiErrors.length
   );
   return (
-    <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={6} w="full">
+    <Grid gap={6} templateColumns={{ base: "1fr", md: "1fr 1fr" }} w="full">
       <GridItem>
         <AbiForm
           fn={fn}
@@ -86,34 +86,34 @@ export const ViewArea = ({
         />
         <Flex align="center" justify="space-between" mt={4}>
           <MoveCodeSnippet
+            abiData={abiData}
+            fn={fn}
             moduleAddress={moduleAddress}
             moduleName={moduleName}
-            fn={fn}
-            abiData={abiData}
             type="view"
           />
           <SubmitButton
-            text="View"
+            isDisabled={isButtonDisabled}
             isLoading={isLoading}
+            text="View"
             onSubmit={() => {
               track(AmpEvent.ACTION_MOVE_VIEW);
               handleQuery();
             }}
-            isDisabled={isButtonDisabled}
           />
         </Flex>
       </GridItem>
       <GridItem>
         <Flex direction="column" gap={4}>
-          <Heading variant="h6" as="h6" color="text.main">
+          <Heading as="h6" color="text.main" variant="h6">
             Return
           </Heading>
           {error && (
-            <Alert variant="error" alignItems="center" gap={4}>
+            <Alert alignItems="center" gap={4} variant="error">
               <CustomIcon
-                name="alert-triangle-solid"
-                color="error.main"
                 boxSize={4}
+                color="error.main"
+                name="alert-triangle-solid"
               />
               <AlertDescription wordBreak="break-word">
                 {error}
@@ -122,15 +122,15 @@ export const ViewArea = ({
           )}
           {res === undefined ? (
             <Flex
-              direction="column"
               alignItems="center"
+              bg="gray.900"
+              borderRadius="8px"
+              direction="column"
               gap={4}
               p="24px 8px"
-              borderRadius="8px"
-              bg="gray.900"
             >
               {isLoading && <Spinner size="xl" />}
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 {isLoading
                   ? "Viewing ..."
                   : "Result from viewing function will display here."}
@@ -139,8 +139,8 @@ export const ViewArea = ({
           ) : (
             <JsonReadOnly
               amptrackSection="Module View Result"
-              text={jsonPrettify(JSON.stringify(res))}
               canCopy
+              text={jsonPrettify(JSON.stringify(res))}
             />
           )}
         </Flex>

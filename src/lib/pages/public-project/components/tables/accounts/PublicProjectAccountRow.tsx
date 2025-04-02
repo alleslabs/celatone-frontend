@@ -1,9 +1,9 @@
-import { Grid, Text } from "@chakra-ui/react";
+import type { PublicAccountInfo } from "lib/types";
 
+import { Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
-import type { PublicAccountInfo } from "lib/types";
 
 import { getNavigationArgs } from "./utils";
 
@@ -23,25 +23,25 @@ export const PublicProjectAccountRow = ({
 
   return (
     <Grid
-      templateColumns={templateColumns}
-      onClick={goToDetail}
       _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
       minW="min-content"
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
+      onClick={goToDetail}
     >
       <TableRow>
         <ExplorerLink
-          value={accountInfo.address.toString()}
+          showCopyOnHover
           type={
             accountInfo.type === "account" ? "user_address" : "contract_address"
           }
-          showCopyOnHover
+          value={accountInfo.address.toString()}
         />
       </TableRow>
       <TableRow>{accountInfo.name}</TableRow>
       <TableRow>
-        <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
+        <Text color="text.dark" variant="body2" whiteSpace="break-spaces">
           {accountInfo.description || "N/A"}
         </Text>
       </TableRow>

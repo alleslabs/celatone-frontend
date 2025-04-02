@@ -1,14 +1,15 @@
-import { Box } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
+import type { BechAddr, Option } from "lib/types";
 import type { ChangeEvent } from "react";
 
+import { Box } from "@chakra-ui/react";
 import { useInternalNavigate, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ErrorFetching } from "lib/components/state";
 import { CodesTable, MobileTitle, ViewMore } from "lib/components/table";
 import { useAccountCodes } from "lib/pages/account-details/data";
-import type { BechAddr, Option } from "lib/types";
+import { observer } from "mobx-react-lite";
+
 import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 
@@ -74,32 +75,32 @@ export const StoredCodesTable = observer(
       <Box mt={{ base: 4, md: 8 }}>
         {isMobileOverview ? (
           <MobileTitle
-            title="Stored Codes"
             count={totalData}
+            title="Stored Codes"
             onViewMore={onViewMore}
           />
         ) : (
           <AccountSectionWrapper
-            title="Stored Codes"
-            totalData={totalData}
             hasHelperText={!!codes?.length}
             helperText="This account stored the following codes"
+            title="Stored Codes"
+            totalData={totalData}
           >
             <CodesTable
               codes={codes}
-              isLoading={isLoading}
               emptyState={
                 !codes ? (
                   <ErrorFetching
                     dataName="codes"
-                    withBorder
-                    my={2}
                     hasBorderTop={false}
+                    my={2}
+                    withBorder
                   />
                 ) : (
                   <AccountDetailsEmptyState message="No codes have been stored by this account before." />
                 )
               }
+              isLoading={isLoading}
               onRowSelect={onRowSelect}
             />
           </AccountSectionWrapper>
@@ -110,11 +111,11 @@ export const StoredCodesTable = observer(
             : totalData > 10 && (
                 <Pagination
                   currentPage={currentPage}
-                  pagesQuantity={pagesQuantity}
                   offset={offset}
-                  totalData={totalData}
-                  scrollComponentId={scrollComponentId}
                   pageSize={pageSize}
+                  pagesQuantity={pagesQuantity}
+                  scrollComponentId={scrollComponentId}
+                  totalData={totalData}
                   onPageChange={onPageChange}
                   onPageSizeChange={onPageSizeChange}
                 />

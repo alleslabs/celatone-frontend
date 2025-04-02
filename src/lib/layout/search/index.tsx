@@ -1,3 +1,11 @@
+import type { SearchResult } from "lib/services/searchService";
+import type { Addr } from "lib/types";
+import type {
+  ChangeEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  RefObject,
+} from "react";
+
 import {
   Box,
   Button,
@@ -16,14 +24,6 @@ import {
   useDisclosure,
   useOutsideClick,
 } from "@chakra-ui/react";
-import plur from "plur";
-import type {
-  ChangeEvent,
-  KeyboardEvent as ReactKeyboardEvent,
-  RefObject,
-} from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
-
 import { trackUseMainSearch } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -35,10 +35,10 @@ import {
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { useEaster } from "lib/hooks";
-import type { SearchResult } from "lib/services/searchService";
 import { useSearchHandler } from "lib/services/searchService";
-import type { Addr } from "lib/types";
 import { splitModulePath } from "lib/utils";
+import plur from "plur";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { SearchResults } from "./SearchResults";
 import { SearchZeroState } from "./SearchZeroState";
@@ -169,32 +169,32 @@ export const SearchComponent = () => {
     <>
       {isMobile ? (
         <Button
-          variant="ghost-gray"
-          size="sm"
-          onClick={onOpen}
-          minW="60px"
-          minH="60px"
           borderRadius={0}
+          minH="60px"
+          minW="60px"
+          size="sm"
+          variant="ghost-gray"
+          onClick={onOpen}
         >
-          <CustomIcon name="search" boxSize={3} />
+          <CustomIcon boxSize={3} name="search" />
         </Button>
       ) : (
         <Flex
-          onClick={onOpen}
-          w="full"
-          h="full"
-          p={4}
-          alignItems="center"
-          justifyContent="space-between"
-          cursor="pointer"
-          transition="all 0.25s ease-in-out"
           _hover={{
             background: "gray.800",
           }}
+          alignItems="center"
+          cursor="pointer"
+          h="full"
+          justifyContent="space-between"
+          p={4}
+          transition="all 0.25s ease-in-out"
+          w="full"
+          onClick={onOpen}
         >
-          <Flex gap={1} alignItems="center">
-            <CustomIcon color="gray.600" name="search" boxSize={4} />
-            <Text variant="body2" color="text.disabled">
+          <Flex alignItems="center" gap={1}>
+            <CustomIcon boxSize={4} color="gray.600" name="search" />
+            <Text color="text.disabled" variant="body2">
               Search on {currentChainId}
             </Text>
           </Flex>
@@ -204,88 +204,89 @@ export const SearchComponent = () => {
         </Flex>
       )}
       <Modal
-        isOpen={isOpen}
-        onClose={onCloseWithClear}
         isCentered
+        isOpen={isOpen}
         returnFocusOnClose={false}
+        onClose={onCloseWithClear}
       >
         <ModalOverlay />
         <ModalContent
-          w={{ base: "100%", md: "800px" }}
-          h={{ base: "100%", md: "auto" }}
           bg="gray.800"
+          h={{ base: "100%", md: "auto" }}
           maxW="100vw"
+          w={{ base: "100%", md: "800px" }}
         >
           <ModalHeader
-            position="relative"
-            p={0}
-            borderBottom="1px solid"
             borderBottomColor="gray.700"
+            borderBottomWidth="1px"
+            borderStyle="solid"
+            p={0}
+            position="relative"
           >
-            <FormControl ref={boxRef} zIndex={3}>
+            <FormControl zIndex={3} ref={boxRef}>
               <Flex alignItems="center">
                 {isMobile && (
                   <Flex
-                    p={1}
-                    borderRadius={8}
                     bgColor="gray.700"
-                    ml={3}
-                    onClick={onCloseWithClear}
+                    borderRadius={8}
                     cursor="pointer"
+                    ml={3}
+                    p={1}
+                    onClick={onCloseWithClear}
                   >
                     <CustomIcon
-                      name="chevron-left"
-                      color="text.dark"
                       boxSize={4}
+                      color="text.dark"
+                      name="chevron-left"
                     />
                   </Flex>
                 )}
                 <InputWithIcon
-                  w="100%"
-                  minW="200px"
-                  size="lg"
-                  placeholder="Enter your keyword..."
                   style={{ maxHeight: "54px", border: "none" }}
-                  pr={40}
+                  autoComplete="off"
+                  minW="200px"
                   pl={10}
+                  placeholder="Enter your keyword..."
+                  pr={40}
+                  size="lg"
                   value={keyword}
+                  w="100%"
                   onChange={handleSearchChange}
                   onKeyDown={handleOnKeyDown}
-                  autoComplete="off"
                 />
               </Flex>
             </FormControl>
             <Tag
-              variant="primary-light"
-              size="sm"
               position="absolute"
               right={4}
+              size="sm"
+              variant="primary-light"
             >
               {currentChainId}
             </Tag>
           </ModalHeader>
           <ModalBody
-            px={3}
-            minH={{ base: "80vh", md: "460px" }}
-            justifyContent="center"
             alignItems="center"
+            justifyContent="center"
+            minH={{ base: "80vh", md: "460px" }}
+            px={3}
           >
             {keyword.length > 0 ? (
               <>
                 {isLoading || isTyping ? (
                   <Flex
-                    py={5}
-                    gap={3}
-                    direction="column"
-                    justifyContent="center"
                     alignItems="center"
+                    direction="column"
+                    gap={3}
+                    justifyContent="center"
                     minH="360px"
+                    py={5}
                   >
                     <Spinner color="gray.600" size="sm" />
                     <Text
                       color="text.disabled"
-                      variant="body2"
                       fontWeight={500}
+                      variant="body2"
                     >
                       Looking for results ...
                     </Text>
@@ -293,16 +294,16 @@ export const SearchComponent = () => {
                 ) : (
                   <List>
                     {results.length > 0 && (
-                      <Text variant="body2" color="text.dark" mb={3}>
+                      <Text color="text.dark" mb={3} variant="body2">
                         {results.length} Matched{" "}
                         {plur("result", results.length)}...
                       </Text>
                     )}
                     <SearchResults
-                      results={results}
                       cursor={cursor}
-                      setCursor={setCursor}
                       handleSelectResult={handleSelectResult}
+                      results={results}
+                      setCursor={setCursor}
                     />
                   </List>
                 )}
@@ -310,13 +311,13 @@ export const SearchComponent = () => {
             ) : (
               <Flex justifyContent="center">
                 <SearchZeroState
+                  isEvm={isEvm}
+                  isFullTier={isFullTier}
+                  isGov={isGov}
+                  isMove={isMove}
+                  isNft={isNft}
                   isPool={isPool}
                   isWasm={isWasm}
-                  isMove={isMove}
-                  isEvm={isEvm}
-                  isGov={isGov}
-                  isNft={isNft}
-                  isFullTier={isFullTier}
                 />
               </Flex>
             )}

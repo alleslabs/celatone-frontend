@@ -1,3 +1,6 @@
+import type { ContractListInfo, ContractLocalInfo } from "lib/stores/contract";
+import type { BechAddr32 } from "lib/types";
+
 import {
   Button,
   Drawer,
@@ -9,15 +12,12 @@ import {
   Heading,
   useDisclosure,
 } from "@chakra-ui/react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { ADMIN_SPECIAL_SLUG } from "lib/data";
 import { useContractStore } from "lib/providers/store";
 import { useAllAdminContractsByAddress } from "lib/services/wasm/contract";
-import type { ContractListInfo, ContractLocalInfo } from "lib/stores/contract";
-import type { BechAddr32 } from "lib/types";
 import { getCurrentDate } from "lib/utils";
 
 import { ContractListDetail } from "./ContractListDetail";
@@ -58,27 +58,27 @@ export const SelectContractAdmin = ({
   return (
     <>
       <Button
-        variant={notSelected ? "primary" : "outline-primary"}
-        py={1}
+        isDisabled={!address}
+        leftIcon={
+          !notSelected ? <CustomIcon boxSize="12px" name="swap" /> : undefined
+        }
         px={4}
+        py={1}
         size="sm"
+        variant={notSelected ? "primary" : "outline-primary"}
         onClick={() => {
           track(AmpEvent.USE_CONTRACT_MODAL);
           onOpen();
         }}
-        leftIcon={
-          !notSelected ? <CustomIcon name="swap" boxSize="12px" /> : undefined
-        }
-        isDisabled={!address}
       >
         {notSelected ? "Select Contract" : "Change Contract"}
       </Button>
 
-      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+      <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent h="80%">
           <DrawerHeader>
-            <CustomIcon name="contract-address" boxSize={5} color="gray.600" />
+            <CustomIcon boxSize={5} color="gray.600" name="contract-address" />
             <Heading as="h5" variant="h5">
               Select contract which you have permission
             </Heading>

@@ -1,3 +1,11 @@
+import type {
+  BechAddr,
+  CodeInfo,
+  ContractInfo,
+  Nullish,
+  Option,
+} from "lib/types";
+
 import { useTierConfig } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
 import { useAccountTableCounts } from "lib/services/account";
@@ -8,13 +16,6 @@ import {
   useInstantiatedContractsByAddress,
   useInstantiatedContractsByAddressRest,
 } from "lib/services/wasm/contract";
-import type {
-  BechAddr,
-  CodeInfo,
-  ContractInfo,
-  Nullish,
-  Option,
-} from "lib/types";
 
 // ------------------------------------------//
 // ---------------TABLE COUNTS---------------//

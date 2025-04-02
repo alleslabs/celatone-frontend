@@ -1,14 +1,3 @@
-import { Flex, Heading, Image, Text } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-
-import { useMobile, useTierConfig } from "lib/app-provider";
-import { Breadcrumb } from "lib/components/Breadcrumb";
-import { CopyLink } from "lib/components/CopyLink";
-import { CustomIcon } from "lib/components/icon";
-import { GitHubLink } from "lib/components/links";
-import { PublicDescription } from "lib/components/PublicDescription";
-import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
-import { useCodeStore } from "lib/providers/store";
 import type { Code } from "lib/services/types";
 import type {
   Nullable,
@@ -17,8 +6,20 @@ import type {
   PublicCodeInfo,
   WasmVerifyInfo,
 } from "lib/types";
+
+import { Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { useMobile, useTierConfig } from "lib/app-provider";
+import { Breadcrumb } from "lib/components/Breadcrumb";
+import { CopyLink } from "lib/components/CopyLink";
+import { CustomIcon } from "lib/components/icon";
+import { GitHubLink } from "lib/components/links";
+import { PublicDescription } from "lib/components/PublicDescription";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
+import { useCodeStore } from "lib/providers/store";
 import { AccessConfigPermission } from "lib/types";
 import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
+import { observer } from "mobx-react-lite";
+
 import { CtaSection } from "../CtaSection";
 
 interface CodeTopInfoProps {
@@ -60,79 +61,79 @@ export const CodeTopInfo = observer(
           ]}
         />
         <Flex
+          direction={{ base: "column", md: "row" }}
           justify="space-between"
           my={{ base: 3, md: 6 }}
-          direction={{ base: "column", md: "row" }}
         >
           <Flex direction="column" gap={{ base: 2, md: 1 }}>
             <Flex
-              justify={{ base: "space-between", md: "start" }}
               align="center"
+              justify={{ base: "space-between", md: "start" }}
             >
-              <Flex gap={1} minH="36px" align="center">
-                <CustomIcon name="code" boxSize={5} color="primary.main" />
+              <Flex align="center" gap={1} minH="36px">
+                <CustomIcon boxSize={5} color="primary.main" name="code" />
                 {projectInfo && (
                   <Image
-                    src={projectInfo.logo}
-                    borderRadius="full"
                     alt={projectInfo.name}
-                    width={7}
+                    borderRadius="full"
                     height={7}
+                    src={projectInfo.logo}
+                    width={7}
                   />
                 )}
                 <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
                   {localCodeInfo?.name ?? publicInfo?.name ?? codeId}
                 </Heading>
                 <WasmVerifyBadge
-                  status={getWasmVerifyStatus(wasmVerifyInfo)}
                   relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                  status={getWasmVerifyStatus(wasmVerifyInfo)}
                 />
               </Flex>
             </Flex>
             {publicInfo && (
               <Flex
-                mt={{ base: 2, md: 0 }}
-                gap={{ base: 0, md: 2 }}
                 direction={{ base: "column", md: "row" }}
+                gap={{ base: 0, md: 2 }}
+                mt={{ base: 2, md: 0 }}
               >
-                <Text fontWeight={500} color="text.dark" variant="body2">
+                <Text color="text.dark" fontWeight={500} variant="body2">
                   Public Code Name:
                 </Text>
                 <Text variant="body2">{publicInfo.name}</Text>
               </Flex>
             )}
             <Flex
-              gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
+              gap={{ base: 0, md: 2 }}
             >
-              <Text fontWeight={500} color="text.dark" variant="body2">
+              <Text color="text.dark" fontWeight={500} variant="body2">
                 Code ID:
               </Text>
               <CopyLink
-                value={codeId.toString()}
                 amptrackSection="code_top"
                 type="code_id"
+                value={codeId.toString()}
               />
             </Flex>
             <Flex
-              gap={{ base: 0, md: 2 }}
               direction={{ base: "column", md: "row" }}
+              gap={{ base: 0, md: 2 }}
             >
-              <Text fontWeight={500} color="text.dark" variant="body2">
+              <Text color="text.dark" fontWeight={500} variant="body2">
                 Code Hash:
               </Text>
               <CopyLink
-                type="code_hash"
                 amptrackSection="code_hash"
+                type="code_hash"
                 value={code.hash.toUpperCase()}
               />
             </Flex>
             {isFullTier && (
               <Flex
-                gap={{ base: 0, md: 2 }}
                 direction={{ base: "column", md: "row" }}
+                gap={{ base: 0, md: 2 }}
               >
-                <Text fontWeight={500} color="text.dark" variant="body2">
+                <Text color="text.dark" fontWeight={500} variant="body2">
                   CW2 Info:
                 </Text>
                 <Text
@@ -150,25 +151,25 @@ export const CodeTopInfo = observer(
             {!isMobile && (
               <CtaSection
                 id={codeId}
-                uploader={localCodeInfo?.uploader ?? code.uploader}
-                name={localCodeInfo?.name}
-                instantiatePermission={
-                  code.instantiatePermission ?? AccessConfigPermission.UNKNOWN
-                }
-                permissionAddresses={code.permissionAddresses ?? []}
                 contractCount={undefined}
                 cw2Contract={undefined}
                 cw2Version={undefined}
+                instantiatePermission={
+                  code.instantiatePermission ?? AccessConfigPermission.UNKNOWN
+                }
+                name={localCodeInfo?.name}
+                permissionAddresses={code.permissionAddresses ?? []}
+                uploader={localCodeInfo?.uploader ?? code.uploader}
               />
             )}
           </Flex>
         </Flex>
         {publicInfo && (
           <PublicDescription
-            title="Public Code Description"
             description={publicInfo.description}
+            icon={<CustomIcon color="gray.600" ml={0} name="public-project" />}
             textLine={2}
-            icon={<CustomIcon name="public-project" ml={0} color="gray.600" />}
+            title="Public Code Description"
           />
         )}
       </>

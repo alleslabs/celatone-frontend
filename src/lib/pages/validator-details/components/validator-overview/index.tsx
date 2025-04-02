@@ -1,16 +1,17 @@
-import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 import type Big from "big.js";
+import type { AssetInfos, Option, ValidatorAddr } from "lib/types";
 
+import { Alert, AlertDescription, Flex } from "@chakra-ui/react";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import type { AssetInfos, Option, ValidatorAddr } from "lib/types";
-import { ValidatorDescription } from "./ValidatorDescription";
-import { VotingPowerOverview } from "./VotingPowerOverview";
+
 import { VotingPowerChart } from "../bonded-token-changes/VotingPowerChart";
 import { Performance } from "../performance";
 import { RecentBlocksSection } from "../performance/RecentBlocksSection";
 import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 import { VotedProposalsTable } from "../tables/voted-proposals";
+import { ValidatorDescription } from "./ValidatorDescription";
+import { VotingPowerOverview } from "./VotingPowerOverview";
 
 interface ValidatorOverviewProps {
   onSelectVotes: Option<() => void>;
@@ -47,11 +48,11 @@ export const ValidatorOverview = ({
   return (
     <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
       {(!isActive || isJailed) && (
-        <Alert variant="error" gap={2} my={6}>
+        <Alert gap={2} my={6} variant="error">
           <CustomIcon
-            name="alert-triangle-solid"
             boxSize={4}
             color="error.main"
+            name="alert-triangle-solid"
           />
           <AlertDescription>
             This validator is currently {isJailed ? "jailed" : "inactive"}. The
@@ -63,15 +64,15 @@ export const ValidatorOverview = ({
       {isFullTier ? (
         <>
           <Flex
-            gap={{ base: 4, md: 6 }}
             direction={{ base: "column", md: "row" }}
+            gap={{ base: 4, md: 6 }}
           >
             <VotingPowerOverview
-              singleStakingDenom={singleStakingDenom}
               assetInfos={assetInfos}
-              votingPower={votingPower}
-              totalVotingPower={totalVotingPower}
               selfVotingPower={selfVotingPower}
+              singleStakingDenom={singleStakingDenom}
+              totalVotingPower={totalVotingPower}
+              votingPower={votingPower}
             />
             <Performance
               validatorAddress={validatorAddress}
@@ -84,9 +85,9 @@ export const ValidatorOverview = ({
             </Flex>
           )}
           <VotingPowerChart
-            validatorAddress={validatorAddress}
-            singleStakingDenom={singleStakingDenom}
             assetInfos={assetInfos}
+            singleStakingDenom={singleStakingDenom}
+            validatorAddress={validatorAddress}
             onViewMore={onSelectBondedTokenChanges}
           />
           <ProposedBlocksTable
@@ -100,11 +101,11 @@ export const ValidatorOverview = ({
         </>
       ) : (
         <VotingPowerOverview
-          singleStakingDenom={singleStakingDenom}
           assetInfos={assetInfos}
-          votingPower={votingPower}
-          totalVotingPower={totalVotingPower}
           selfVotingPower={selfVotingPower}
+          singleStakingDenom={singleStakingDenom}
+          totalVotingPower={totalVotingPower}
+          votingPower={votingPower}
         />
       )}
     </Flex>

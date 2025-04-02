@@ -1,7 +1,7 @@
+import type { AssetInfo, AssetInfos, ConsensusPubkey, Option } from "lib/types";
+
 import { Ripemd160, sha256 } from "@cosmjs/crypto";
 import { fromBase64, fromHex, toBech32, toHex } from "@cosmjs/encoding";
-
-import type { AssetInfo, AssetInfos, ConsensusPubkey, Option } from "lib/types";
 import { zConsensusAddr } from "lib/types";
 
 export const convertRawConsensusAddrToConsensusAddr = (

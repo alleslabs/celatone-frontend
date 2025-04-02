@@ -1,9 +1,12 @@
+import type { Nullable } from "lib/types";
+
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Fragment } from "react";
-import type { Nullable } from "lib/types";
-import { EditorFileBody } from "./EditorFileBody";
+
 import type { SourceTreeNode } from "./types";
+
 import { CustomIcon } from "../icon";
+import { EditorFileBody } from "./EditorFileBody";
 
 interface EditorTopProps {
   filesList: SourceTreeNode[];
@@ -22,15 +25,15 @@ export const EditorTop = ({
   onClick,
   onRemove,
 }: EditorTopProps) => (
-  <Box position="relative" height="72px" bgColor={vsCodeDarkColor}>
+  <Box bgColor={vsCodeDarkColor} height="72px" position="relative">
     <Flex
-      position="absolute"
       bgColor="gray.900"
-      top={0}
       left={0}
-      right={0}
-      zIndex={1}
       overflow="auto"
+      position="absolute"
+      right={0}
+      top={0}
+      zIndex={1}
     >
       {filesList.map((node, index) => {
         const isInitialFilePath = initialFilePath === node.path;
@@ -38,14 +41,13 @@ export const EditorTop = ({
 
         return (
           <Flex
-            py={1}
-            px={0.5}
-            pr={isInitialFilePath ? 2 : 0.5}
             key={`${node.path}-editor-top`}
-            gap={0.5}
-            cursor="pointer"
             alignItems="center"
-            onClick={() => onClick(index)}
+            cursor="pointer"
+            gap={0.5}
+            pr={isInitialFilePath ? 2 : 0.5}
+            px={0.5}
+            py={1}
             sx={{
               borderWidth: "1px",
               borderTopColor: isSelected ? "primary.main" : vsCodeDarkColor,
@@ -57,18 +59,19 @@ export const EditorTop = ({
                 borderLeftColor: vsCodeDarkColor,
               },
             }}
+            onClick={() => onClick(index)}
           >
             <EditorFileBody
+              initialFilePath={initialFilePath}
               isNoWrap
               node={node}
-              initialFilePath={initialFilePath}
             />
             {!isInitialFilePath && (
               <CustomIcon
-                name="close"
                 boxSize={3}
                 color="gray.600"
                 cursor="pointer"
+                name="close"
                 onClick={(e) => {
                   e.stopPropagation();
                   onRemove(node, index);
@@ -83,16 +86,17 @@ export const EditorTop = ({
       <Box pt="31px">
         <Flex
           bgColor={vsCodeDarkColor}
-          px={2}
+          borderColor="gray.700"
+          borderStyle="solid"
+          borderTopWidth="1px"
           pb={1}
           pt={4}
-          borderTop="1px"
-          borderTopColor="gray.700"
+          px={2}
         >
           {selectedFile.path.split("/").map((path, index) => (
             <Fragment key={`${path}-${index}`}>
               {index !== 0 && (
-                <CustomIcon name="chevron-right" boxSize={3} color="gray.600" />
+                <CustomIcon boxSize={3} color="gray.600" name="chevron-right" />
               )}
               <Text color="gray.600" variant="body3">
                 {path}

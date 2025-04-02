@@ -1,6 +1,7 @@
-import { Box, Grid, Text } from "@chakra-ui/react";
 import type { DividerProps, GridProps } from "@chakra-ui/react";
+import type { ValidatorVotedProposalsResponseItem } from "lib/services/types";
 
+import { Box, Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { StopPropagationBox } from "lib/components/StopPropagationBox";
@@ -11,7 +12,6 @@ import {
   TableRowFreeze,
 } from "lib/components/table";
 import { ProposalTextCell } from "lib/components/table/proposals/ProposalTextCell";
-import type { ValidatorVotedProposalsResponseItem } from "lib/services/types";
 import { ProposalStatus } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
@@ -41,10 +41,6 @@ export const VotedProposalsTableRow = ({
   return (
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(votedProposal.proposalId)}
-      minW="min-content"
-      cursor="pointer"
       _hover={{
         "> div": {
           bgColor:
@@ -53,25 +49,29 @@ export const VotedProposalsTableRow = ({
               : "gray.900",
         },
       }}
+      cursor="pointer"
+      minW="min-content"
+      templateColumns={templateColumns}
+      onClick={() => onRowSelect(votedProposal.proposalId)}
     >
       <TableRowFreeze left="0">
         <ExplorerLink
+          ampCopierSection="proposal-list"
+          showCopyOnHover
           type="proposal_id"
           value={votedProposal.proposalId.toString()}
-          showCopyOnHover
-          ampCopierSection="proposal-list"
         />
       </TableRowFreeze>
       <TableRowFreeze
-        left={templateColumns?.toString().split(" ")[0]}
         boxShadow={boxShadow}
         color="gray.800"
+        left={templateColumns?.toString().split(" ")[0]}
       >
         <ProposalTextCell
+          isDepositOrVoting={isDepositOrVoting}
+          isExpedited={votedProposal.isExpedited}
           title={votedProposal.title}
           types={votedProposal.types}
-          isExpedited={votedProposal.isExpedited}
-          isDepositOrVoting={isDepositOrVoting}
         />
       </TableRowFreeze>
       <TableRow justifyContent="center">
@@ -81,25 +81,25 @@ export const VotedProposalsTableRow = ({
       </TableRow>
       <TableRow>
         <Answer
+          abstain={votedProposal.abstain}
           isVoteWeighted={votedProposal.isVoteWeighted}
-          yes={votedProposal.yes}
           no={votedProposal.no}
           noWithVeto={votedProposal.noWithVeto}
-          abstain={votedProposal.abstain}
+          yes={votedProposal.yes}
         />
       </TableRow>
       <TableRow>
         {votedProposal.timestamp ? (
           <Box>
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               {formatUTC(votedProposal.timestamp)}
             </Text>
-            <Text variant="body3" color="text.disabled">
+            <Text color="text.disabled" variant="body3">
               {`(${dateFromNow(votedProposal.timestamp)})`}
             </Text>
           </Box>
         ) : (
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             -
           </Text>
         )}

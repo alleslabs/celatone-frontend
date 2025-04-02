@@ -1,5 +1,4 @@
 import type { ChainConfig } from "@alleslabs/shared";
-
 import type { Option } from "lib/types";
 
 export const filterChains = (

@@ -1,6 +1,7 @@
+import type { TokenWithValue } from "lib/types";
+
 import { Flex } from "@chakra-ui/react";
 
-import type { TokenWithValue } from "lib/types";
 import { TableTitle } from "../table";
 
 interface UnsupportedAssetTitleProps {
@@ -10,12 +11,12 @@ interface UnsupportedAssetTitleProps {
 export const UnsupportedAssetTitle = ({
   unsupportedAssets,
 }: UnsupportedAssetTitleProps) => (
-  <Flex w="full" py={1}>
+  <Flex py={1} w="full">
     <TableTitle
-      title="Unsupported Assets"
       count={unsupportedAssets.length}
-      mb={0}
       isSmall
+      mb={0}
+      title="Unsupported Assets"
     />
   </Flex>
 );

@@ -1,3 +1,5 @@
+import type { AccountLocalInfo } from "lib/stores/account";
+
 import {
   chakra,
   Highlight,
@@ -5,13 +7,12 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useCallback } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { useAccountStore } from "lib/providers/store";
-import type { AccountLocalInfo } from "lib/stores/account";
 import { truncate } from "lib/utils";
+import { useCallback } from "react";
+
 import { ActionModal } from "../ActionModal";
 
 const StyledIconButton = chakra(IconButton, {
@@ -52,22 +53,22 @@ export function RemoveSavedAccountModal({
       duration: 5000,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
     });
   }, [accountLocalInfo.address, displayName, removeSavedAccount, toast]);
 
   return (
     <ActionModal
-      title={`Remove account \u2018${displayName}\u2019?`}
       icon="delete"
       iconColor="error.light"
-      mainVariant="error"
-      mainBtnTitle="Yes, Remove It"
       mainAction={() => {
         track(AmpEvent.ACCOUNT_REMOVE);
         handleRemove();
       }}
+      mainBtnTitle="Yes, Remove It"
+      mainVariant="error"
       otherBtnTitle="No, Keep It"
+      title={`Remove account \u2018${displayName}\u2019?`}
       trigger={trigger}
     >
       <Text>

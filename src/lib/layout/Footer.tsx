@@ -1,11 +1,11 @@
 import type { IconProps } from "@chakra-ui/react";
-import { Flex, Image, Text } from "@chakra-ui/react";
-import Link from "next/link";
+import type { IconKeys } from "lib/components/icon";
 
+import { Flex, Image, Text } from "@chakra-ui/react";
 import { trackSocial } from "lib/amplitude";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import type { IconKeys } from "lib/components/icon";
+import Link from "next/link";
 
 import { InformationFooter } from "./InformationFooter";
 
@@ -61,6 +61,7 @@ const SocialMenuRender = ({
     theme.socialMedia ?? {}
   ).reduce<SocialMenuType[]>((acc, curr) => {
     if (curr[0] in socialSequence) {
+      // eslint-disable-next-line no-param-reassign
       acc[socialSequence[curr[0] as keyof typeof socialSequence]] = {
         url: curr[1],
         icon: curr[0] as IconKeys,
@@ -75,18 +76,18 @@ const SocialMenuRender = ({
         <Link
           key={`${isThemed ? "themed" : "social"}-${item.slug}`}
           href={item.url}
-          target="_blank"
           rel="noopener noreferrer"
+          target="_blank"
           onClick={() => {
             trackSocial(item.url);
           }}
         >
           <Flex
+            _hover={{ backgroundColor: "gray.800" }}
             borderRadius="8px"
             transition="all 0.25s ease-in-out"
-            _hover={{ backgroundColor: "gray.800" }}
           >
-            <CustomIcon name={item.icon} boxSize={iconSize} color="gray.600" />
+            <CustomIcon boxSize={iconSize} color="gray.600" name={item.icon} />
           </Flex>
         </Link>
       ))}
@@ -100,32 +101,32 @@ const Footer = () => {
 
   return theme.footer ? (
     <Flex
-      as="footer"
-      direction={{ base: "column", md: "row" }}
       align={{ base: "center", md: "end" }}
+      as="footer"
+      background="background.overlay"
+      direction={{ base: "column", md: "row" }}
       justifyContent="space-between"
+      mx={{ md: 1 }}
       px={{ base: 6, md: 12 }}
       py={6}
-      mx={{ md: 1 }}
-      background="background.overlay"
     >
-      <Flex direction="column" gap={2} align={{ base: "center", md: "start" }}>
-        <Flex direction={{ base: "column", md: "row" }} gap={1} align="center">
+      <Flex align={{ base: "center", md: "start" }} direction="column" gap={2}>
+        <Flex align="center" direction={{ base: "column", md: "row" }} gap={1}>
           <Link
             href={theme.socialMedia?.website ?? ""}
-            target="_blank"
             rel="noopener noreferrer"
+            target="_blank"
           >
-            <Image src={theme.footer.logo} h={{ base: 6, md: 8 }} mr={2} />
+            <Image h={{ base: 6, md: 8 }} mr={2} src={theme.footer.logo} />
           </Link>
           <Flex mt={{ base: 2, md: 0 }}>
-            <SocialMenuRender isThemed iconSize={5} />
+            <SocialMenuRender iconSize={5} isThemed />
           </Flex>
         </Flex>
         <Text
-          variant="body3"
           color="gray.400"
           textAlign={{ base: "center", md: "left" }}
+          variant="body3"
         >
           {theme.footer.description}
         </Text>
@@ -134,15 +135,15 @@ const Footer = () => {
     </Flex>
   ) : (
     <Flex
-      as="footer"
       align="center"
+      as="footer"
+      direction={{ base: "column", md: "row" }}
       justifyContent="center"
+      mx={1}
       px={12}
       py={4}
-      mx={1}
-      direction={{ base: "column", md: "row" }}
     >
-      <Flex direction="row" gap={1} align="center" mb={{ base: 2, md: 0 }}>
+      <Flex align="center" direction="row" gap={1} mb={{ base: 2, md: 0 }}>
         <SocialMenuRender iconSize={5} />
       </Flex>
       {isMobile && <InformationFooter />}

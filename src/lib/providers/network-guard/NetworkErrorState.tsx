@@ -1,7 +1,6 @@
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-
 import { FALLBACK_THEME } from "config/theme";
+import { useRouter } from "next/router";
 
 const bullets = [
   "The configuration for your chosen chain hasn't been set up yet.",
@@ -13,40 +12,40 @@ export const NetworkErrorState = () => {
   const router = useRouter();
   return (
     <Flex
-      flexDir="column"
       align="center"
-      justifyContent="center"
+      bg="background.main"
+      flexDir="column"
       gap="48px"
       h="100vh"
-      bg="background.main"
+      justifyContent="center"
     >
-      <Image src={FALLBACK_THEME.branding.logo} alt="Scan" width="300px" />
+      <Image alt="Scan" src={FALLBACK_THEME.branding.logo} width="300px" />
       <Flex
-        flexDir="column"
         align="center"
+        flexDir="column"
         sx={{ "& > p": { lineHeight: "22px" } }}
       >
         <Image
-          src={FALLBACK_THEME.illustration.searchNotFound}
           alt="config_not_found"
+          src={FALLBACK_THEME.illustration.searchNotFound}
           width="152px"
         />
-        <Heading as="h5" variant="h5" mt={6} mb={1} color="text.dark">
+        <Heading as="h5" color="text.dark" mb={1} mt={6} variant="h5">
           Network Error
         </Heading>
-        <Text fontWeight={500} color="text.dark" variant="body2">
+        <Text color="text.dark" fontWeight={500} variant="body2">
           The network you chose is currently unavailable. Here are a few
           possibilities:
         </Text>
         {bullets.map((bullet) => (
           <Text
             key={bullet}
-            fontWeight={500}
-            color="text.dark"
-            variant="body2"
             alignSelf="start"
+            color="text.dark"
+            fontWeight={500}
+            variant="body2"
           >
-            <Text as="span" mx={2} color="text.dark">
+            <Text as="span" color="text.dark" mx={2}>
               &#x2022;
             </Text>
             {bullet}

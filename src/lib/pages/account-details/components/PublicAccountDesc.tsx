@@ -1,24 +1,23 @@
 import { Flex, Text } from "@chakra-ui/react";
-
 import { CustomIcon } from "lib/components/icon";
 
 export const PublicAccountDesc = ({ description }: { description: string }) => (
   <Flex
-    direction="column"
     bg="gray.900"
-    maxW="100%"
     borderRadius="8px"
-    py={4}
-    px={4}
+    direction="column"
     flex={1}
+    maxW="100%"
+    px={4}
+    py={4}
   >
     <Flex alignItems="center" gap={1} minH="32px">
-      <CustomIcon name="website" ml={0} mb={2} color="gray.600" />
-      <Text variant="body2" fontWeight={500} color="text.dark">
+      <CustomIcon color="gray.600" mb={2} ml={0} name="website" />
+      <Text color="text.dark" fontWeight={500} variant="body2">
         Public Account Description
       </Text>
     </Flex>
-    <Text variant="body2" color="text.main" mb={1}>
+    <Text color="text.main" mb={1} variant="body2">
       {description}
     </Text>
   </Flex>

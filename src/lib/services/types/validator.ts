@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import type { ConsensusPubkey, ValidatorData } from "lib/types";
+
 import {
   BlockVote,
   SlashingEvent,
@@ -17,6 +16,7 @@ import {
   zValidatorData,
 } from "lib/types";
 import { parseTxHash, snakeToCamel, valoperToAddr } from "lib/utils";
+import { z } from "zod";
 
 const zValidatorInfoRest = z
   .object({

@@ -1,8 +1,8 @@
-import { useMemo } from "react";
+import type { BlockData, Nullable, Option, Validator } from "lib/types";
 
 import { useBlockDataRest } from "lib/services/block";
 import { useValidatorsRest } from "lib/services/validator";
-import type { BlockData, Nullable, Option, Validator } from "lib/types";
+import { useMemo } from "react";
 
 export const useBlockDataWithValidatorRest = (
   height: number

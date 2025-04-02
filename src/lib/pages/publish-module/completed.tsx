@@ -1,7 +1,4 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { capitalize } from "lodash";
-import plur from "plur";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
@@ -11,9 +8,12 @@ import { CustomIcon } from "lib/components/icon";
 import { CelatoneSeo } from "lib/components/Seo";
 import { TxReceiptRender } from "lib/components/tx";
 import { feeFromStr } from "lib/utils";
+import { capitalize } from "lodash";
+import plur from "plur";
+
+import type { PublishCompleteState } from ".";
 
 import { ModulePublishCard } from "./components/ModulePublishCard";
-import type { PublishCompleteState } from ".";
 
 interface PublishCompletedProps {
   publishTxInfo: PublishCompleteState;
@@ -29,13 +29,14 @@ export const PublishCompleted = ({
     <ActionPageContainer>
       <CelatoneSeo pageName="Publish / Republish Modules" />
       <CustomIcon boxSize={8} color="success.main" name="check-circle-solid" />
-      <Heading as="h4" variant="h4" mt={4} mb={2}>
+      <Heading as="h4" mb={2} mt={4} variant="h4">
         {modules.length} {plur("module", modules.length)} published!
       </Heading>
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         Your .mv files are uploaded and published as modules.
       </Text>
       <TxReceiptRender
+        my={12}
         receipts={[
           {
             title: "Tx Hash",
@@ -56,26 +57,25 @@ export const PublishCompleted = ({
           },
         ]}
         variant="full"
-        my={12}
       />
-      <Flex direction="column" gap={4} w="full" mb={12}>
+      <Flex direction="column" gap={4} mb={12} w="full">
         <Heading as="h6" variant="h6">
           Module Verification
         </Heading>
         <Flex
-          w="full"
-          justifyContent="space-between"
-          gap={6}
           alignItems="center"
+          gap={6}
+          justifyContent="space-between"
+          w="full"
         >
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             Verifying modules enhances credibility by displaying a verified
             badge. Once verified, users will be able to access the module&apos;s
             source code on the details page.
           </Text>
           <Button
-            variant="primary"
             minW={40}
+            variant="primary"
             onClick={() =>
               navigate({
                 pathname: "/modules/verify",
@@ -98,9 +98,9 @@ export const PublishCompleted = ({
         ))}
       </Flex>
       <Button
-        variant="outline-primary"
         mt={6}
-        rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
+        rightIcon={<CustomIcon boxSize={3} name="chevron-right" />}
+        variant="outline-primary"
         w="full"
         onClick={() => {
           track(AmpEvent.USE_PUBLISH_MORE_MODULE_BUTTON);

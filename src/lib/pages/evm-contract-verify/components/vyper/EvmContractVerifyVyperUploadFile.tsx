@@ -1,10 +1,12 @@
-import { Heading, Stack } from "@chakra-ui/react";
+import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
 import type { Control } from "react-hook-form";
-import { useController } from "react-hook-form";
+
+import { Heading, Stack } from "@chakra-ui/react";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { EvmVerifyOptions } from "lib/types";
-import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import { useController } from "react-hook-form";
+
 import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmContractVerifyAlert } from "../EvmContractVerifyAlert";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
@@ -33,11 +35,11 @@ export const EvmContractVerifyVyperUploadFile = ({
           Upload Source Code File
         </Heading>
         {value ? (
-          <UploadCard file={value} deleteFile={() => onChange("")} />
+          <UploadCard deleteFile={() => onChange("")} file={value} />
         ) : (
           <DropZone
-            setFiles={(files) => onChange(files[0])}
             fileType={["vy"]}
+            setFiles={(files) => onChange(files[0])}
           />
         )}
       </Stack>
@@ -47,8 +49,8 @@ export const EvmContractVerifyVyperUploadFile = ({
       />
       <EvmVersionToTarget<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.vyperUploadFile.evmVersion"
         evmVerifyConfig={evmVerifyConfig}
+        name="verifyForm.vyperUploadFile.evmVersion"
       />
     </Stack>
   );

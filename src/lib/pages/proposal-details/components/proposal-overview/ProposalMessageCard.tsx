@@ -5,7 +5,6 @@ import {
   AccordionPanel,
   Text,
 } from "@chakra-ui/react";
-
 import { trackUseExpand } from "lib/amplitude";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 
@@ -22,12 +21,12 @@ export const ProposalMessageCard = ({
     {({ isExpanded }) => (
       <>
         <AccordionButton
+          _hover={{ background: "gray.900" }}
+          alignItems="center"
           background="gray.900"
           borderRadius={8}
-          px={4}
           justifyContent="space-between"
-          alignItems="center"
-          _hover={{ background: "gray.900" }}
+          px={4}
           onClick={() =>
             trackUseExpand({
               action: !isExpanded ? "expand" : "collapse",
@@ -37,17 +36,17 @@ export const ProposalMessageCard = ({
           }
         >
           <Text
-            variant="body1"
             fontWeight={600}
-            wordBreak="break-all"
             textAlign="start"
+            variant="body1"
+            wordBreak="break-all"
           >
             {header}
           </Text>
           <AccordionIcon color="gray.600" />
         </AccordionButton>
         <AccordionPanel p={0} pt={4}>
-          <JsonReadOnly text={jsonString} canCopy isExpandable />
+          <JsonReadOnly canCopy isExpandable text={jsonString} />
         </AccordionPanel>
       </>
     )}

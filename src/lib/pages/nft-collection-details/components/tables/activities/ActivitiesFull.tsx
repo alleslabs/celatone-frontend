@@ -1,13 +1,13 @@
-import { Heading, Stack } from "@chakra-ui/react";
-import { useState } from "react";
+import type { HexAddr32 } from "lib/types";
 
+import { Heading, Stack } from "@chakra-ui/react";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
 import { useNftCollectionActivities } from "lib/services/nft-collection";
-import type { HexAddr32 } from "lib/types";
+import { useState } from "react";
 
 import { ActivitiesTable } from "./ActivitiesTable";
 
@@ -45,40 +45,40 @@ export const ActivitiesFull = ({ collectionAddress }: ActivitiesFullProps) => {
   );
 
   return (
-    <Stack spacing="32px" mt="32px">
-      <Heading as="h6" variant="h6" fontWeight={600}>
+    <Stack mt="32px" spacing="32px">
+      <Heading as="h6" fontWeight={600} variant="h6">
         Activities in this collection
       </Heading>
       <InputWithIcon
-        placeholder="Search by Tx Hash / Token Id / NFT Address"
-        value={searchKeyword}
+        amptrackSection="activities-in-this-collection-search"
         autoFocus
+        placeholder="Search by Tx Hash / Token Id / NFT Address"
+        size={{ base: "md", md: "lg" }}
+        value={searchKeyword}
         onChange={(e) => {
           setSearchKeyword(e.target.value);
           setCurrentPage(1);
         }}
-        size={{ base: "md", md: "lg" }}
-        amptrackSection="activities-in-this-collection-search"
       />
       <ActivitiesTable
-        collectionAddress={collectionAddress}
         activities={activities?.items}
-        isLoading={isLoading}
+        collectionAddress={collectionAddress}
         emptyState={
           <EmptyState
-            message="There are no activities matches your keyword."
             imageVariant="not-found"
+            message="There are no activities matches your keyword."
             withBorder
           />
         }
+        isLoading={isLoading}
       />
       {activities && activities.total > 10 && !searchKeyword && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={activities.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={activities.total}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

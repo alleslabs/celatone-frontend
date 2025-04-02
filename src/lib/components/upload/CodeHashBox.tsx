@@ -1,6 +1,6 @@
-import { Box, Text } from "@chakra-ui/react";
-
 import type { Option } from "lib/types";
+
+import { Box, Text } from "@chakra-ui/react";
 
 interface CodeHashBoxProps {
   codeHash: Option<string>;
@@ -9,26 +9,26 @@ interface CodeHashBoxProps {
 export const CodeHashBox = ({ codeHash }: CodeHashBoxProps) => (
   <Box position="relative">
     <Text
-      position="absolute"
-      variant="body3"
       color="text.dark"
+      left={3}
+      position="absolute"
       px="1px"
       top="-10px"
-      left={3}
+      variant="body3"
     >
       Code Hash
     </Text>
     <Box
-      border="1px"
-      borderRadius="5px"
-      px={3}
-      py={4}
-      borderColor="gray.700"
       bg="gray.800"
+      border="1px"
+      borderColor="gray.700"
+      borderRadius="5px"
       h="56px"
-      w="full"
       overflowX="auto"
       overflowY="hidden"
+      px={3}
+      py={4}
+      w="full"
     >
       <Text whiteSpace="nowrap">{codeHash}</Text>
     </Box>
