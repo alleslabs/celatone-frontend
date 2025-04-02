@@ -5,6 +5,7 @@ import {
   useGetAddressType,
   useMobile,
   useTierConfig,
+  useIsApiChain,
 } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -22,7 +23,6 @@ import {
   getWasmVerifyStatus,
 } from "lib/utils";
 import { getAddressTypeText } from "lib/utils/address";
-
 interface InstantiateInfoProps {
   contract: Contract;
   contractApi: Nullable<ContractApi>;
@@ -113,6 +113,9 @@ export const InstantiateInfo = ({
   codeLocalInfo,
   wasmVerifyInfo,
 }: InstantiateInfoProps) => {
+  const isApiChain = useIsApiChain({
+    shouldRedirect: false,
+  });
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();
   const getAddressType = useGetAddressType();
@@ -146,6 +149,7 @@ export const InstantiateInfo = ({
               />
             </Flex>
             {!isMobile &&
+              isApiChain &&
               wasmVerifyStatus !== WasmVerifyStatus.VERIFIED &&
               wasmVerifyStatus !== WasmVerifyStatus.IN_PROGRESS && (
                 <Text variant="body2" color="text.dark">

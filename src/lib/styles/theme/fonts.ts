@@ -1,14 +1,13 @@
 import type { DeepPartial, Theme } from "@chakra-ui/react";
 
 export const fonts: DeepPartial<Theme["fonts"]> = {
-  heading: "Poppins, serif",
-  body: "Space Grotesk, sans-serif",
-  mono: "PP Neue Montreal Mono Regular",
+  heading: "Pilat Wide, serif",
+  body: "Manrope, sans-serif",
+  mono: "Roboto Mono, monospace",
 };
 
 export const fontHrefs: DeepPartial<Theme["fonts"]> = {
-  heading:
-    "https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap",
-  body: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap",
-  mono: "/font/main.css",
+  heading: "https://assets.initia.xyz/fonts/PilatWide.css",
+  body: "https://fonts.googleapis.com/css2?family=Manrope:wght@300..700&display=swap",
+  mono: "https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300..700&display=swap",
 };
