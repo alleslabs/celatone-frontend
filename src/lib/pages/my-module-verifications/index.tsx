@@ -1,6 +1,10 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 
-import { useInternalNavigate, useMoveConfig } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useIsApiChain,
+  useMoveConfig,
+} from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
@@ -10,6 +14,7 @@ import { MyModuleVerificationsTable } from "./components/my-module-verifications
 
 export const MyModuleVerifications = () => {
   const navigate = useInternalNavigate();
+  useIsApiChain({ shouldRedirect: true });
   useMoveConfig({ shouldRedirect: true });
 
   return (
