@@ -78,7 +78,7 @@ export const QueryArea = observer(
                   label="Please select contract first"
                   hidden={Boolean(contractAddress)}
                 >
-                  Your Schema
+                  Your schema
                 </Tooltip>
               </CustomTab>
             </TabList>

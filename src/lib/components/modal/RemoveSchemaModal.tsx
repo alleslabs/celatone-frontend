@@ -27,7 +27,7 @@ export function RemoveSchemaModal({
 
     setTimeout(() => {
       toast({
-        title: `Removed JSON Schema`,
+        title: `Removed JSON schema`,
         status: "success",
         duration: 5000,
         isClosable: false,

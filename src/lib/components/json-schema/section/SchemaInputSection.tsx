@@ -103,7 +103,7 @@ export const SchemaInputSection = observer(
             <Text color="text.dark" variant="body2">
               {verifiedSchema
                 ? "The schema is available because the code is verified"
-                : "You are using a locally attached JSON Schema"}
+                : "You are using a locally attached JSON schema"}
             </Text>
             <Flex gap={3}>
               <ViewSchemaModal

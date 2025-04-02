@@ -192,7 +192,7 @@ export const CodeInfoSection = ({
         )}
         {!isMobile && (
           <CodeInfoLabelText
-            label="JSON Schema"
+            label="JSON schema"
             w={{ base: "full" }}
             maxW={{ md: "fit-content" }}
           >
