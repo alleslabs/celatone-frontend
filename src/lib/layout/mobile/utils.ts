@@ -109,7 +109,7 @@ export const getNavDrawerSequencer = (
       ...(isMove
         ? [
             {
-              name: "0x1 Page",
+              name: "0x1 page",
               slug: "/accounts/0x1",
               icon: "0x1" as IconKeys,
             },
@@ -186,7 +186,7 @@ export const getNavDrawerFull = (
               icon: "contract-address" as IconKeys,
             },
             {
-              name: "0x1 Page",
+              name: "0x1 page",
               slug: "/accounts/0x1",
               icon: "0x1" as IconKeys,
             },

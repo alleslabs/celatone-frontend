@@ -227,7 +227,7 @@ export const UploadTemplate = ({
             type: ActionType.SET_ERROR,
             method,
             error:
-              response.status === 404 ? "404 Not Found" : response.statusText,
+              response.status === 404 ? "404 not found" : response.statusText,
           });
         }
         schemaString = JSON.stringify(await response.json());
