@@ -258,7 +258,7 @@ const ProposalToWhitelist = () => {
           )}
           <GridItem area="main">
             <Heading as="h5" variant="h5">
-              Create Proposal to Whitelist
+              Create proposal to whitelist
             </Heading>
             <Text color="text.dark" mt={4} fontWeight={500} variant="body2">
               Allowed addresses will be able to upload and stored code without
@@ -280,7 +280,7 @@ const ProposalToWhitelist = () => {
                 <Flex gap={2} alignItems="center">
                   <CustomIcon name="proposal" color="gray.600" />
                   <Heading as="h6" variant="h6">
-                    Fill in Proposal Details
+                    Fill in proposal details
                   </Heading>
                 </Flex>
                 <ControllerInput

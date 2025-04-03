@@ -17,8 +17,8 @@ export const EvmContractVerifyAlert = ({
           <Flex gap={2}>
             <CustomIcon name="info-circle-solid" boxSize={4} />
             <AlertDescription>
-              When verifying with the <strong>Upload files</strong> and{" "}
-              <strong>Contract code</strong> method, we only expose configurable
+              When verifying with the <strong>Upload Files</strong> and{" "}
+              <strong>Contract Code</strong> method, we only expose configurable
               settings such as the optimizer, EVM target version, and libraries.{" "}
               <strong>
                 All other settings are kept at their default values.
@@ -36,8 +36,8 @@ export const EvmContractVerifyAlert = ({
           <Flex gap={2}>
             <CustomIcon name="info-circle-solid" boxSize={4} />
             <AlertDescription>
-              When verifying with the <strong>Upload file</strong> and{" "}
-              <strong>Contract code</strong> method, we only expose configurable
+              When verifying with the <strong>Upload File</strong> and{" "}
+              <strong>Contract Code</strong> method, we only expose configurable
               settings such as the EVM target version.{" "}
               <strong>
                 All other settings are kept at their default values.

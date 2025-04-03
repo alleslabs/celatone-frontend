@@ -49,7 +49,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           ampCopierSection="pool_info"
         />
       </LabelText>
-      <LabelText label="Pool Created by">
+      <LabelText label="Pool created by">
         <ExplorerLink
           value={pool.creator ?? "N/A"}
           type={getAddressType(pool.creator)}

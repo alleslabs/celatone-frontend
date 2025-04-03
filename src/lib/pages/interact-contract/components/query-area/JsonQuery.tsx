@@ -96,7 +96,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
       <Box width="full" mb={8} alignItems="center">
         {contractAddress && (
           <Text variant="body3" mb={2}>
-            Message Suggestions:
+            Message suggestions:
           </Text>
         )}
         {queryCmds.length ? (

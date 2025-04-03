@@ -146,7 +146,7 @@ export const SchemaQueryComponent = ({
           {msgSchema.inputRequired && (
             <GridItem>
               <Text variant="body2" color="text.dark" fontWeight={700}>
-                Query Input
+                Query input
               </Text>
               <JsonSchemaForm
                 formId={`query-${msgSchema.title}`}
@@ -185,7 +185,7 @@ export const SchemaQueryComponent = ({
             <Flex justify="space-between" mb={4}>
               <Flex direction="column">
                 <Text variant="body2" color="text.dark" fontWeight={700}>
-                  Return Output
+                  Return output
                 </Text>
                 <Text variant="body3" textColor="text.dark">
                   {resSchema.description}
@@ -245,7 +245,7 @@ export const SchemaQueryComponent = ({
                     leftIcon={<CustomIcon name="query" />}
                     ml="auto"
                   >
-                    Query Again
+                    Query again
                   </Button>
                 </Flex>
               </Flex>

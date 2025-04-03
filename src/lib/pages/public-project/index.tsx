@@ -29,7 +29,7 @@ export const AllPublicProjectsPage = () => {
             display="flex"
             alignItems="center"
           >
-            Public Projects
+            Public projects
           </Heading>
         </Flex>
         <AllProject />

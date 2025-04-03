@@ -18,7 +18,7 @@ export const ProposalVotesTableHeader = ({
   if (isMobile)
     return (
       <Grid templateColumns={templateColumns} minW="min-content">
-        <TableHeader pl={0}>Address (Vote Answer)</TableHeader>
+        <TableHeader pl={0}>Address (Vote answer)</TableHeader>
         <TableHeader />
       </Grid>
     );

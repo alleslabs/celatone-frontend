@@ -133,12 +133,12 @@ const CollectionDetailsBody = ({
         pageName={
           name.length > 0
             ? `Collection – ${name.length > 20 ? displayCollectionName : name}`
-            : "NFT Collection Detail"
+            : "NFT collection detail"
         }
       />
       <Breadcrumb
         items={[
-          { text: "NFT Collections", href: "/nft-collections" },
+          { text: "NFT collections", href: "/nft-collections" },
           {
             text: getCollectionName(),
           },
@@ -175,7 +175,7 @@ const CollectionDetailsBody = ({
             alignItems={{ base: "start", md: "center" }}
           >
             <Text color="text.dark" variant="body2">
-              Collection Address:
+              Collection address:
             </Text>
             <Tooltip label="View as Account Address">
               <ExplorerLink
@@ -216,7 +216,7 @@ const CollectionDetailsBody = ({
             });
           }}
         >
-          View Resource
+          View resource
         </Button>
       </Flex>
       <Tabs
@@ -253,7 +253,7 @@ const CollectionDetailsBody = ({
               onClick={handleTabChange(TabIndex.MutateEvents)}
               isDisabled={!mutateEvents?.total}
             >
-              Mutate Events
+              Mutate events
             </CustomTab>
           )}
         </TabList>

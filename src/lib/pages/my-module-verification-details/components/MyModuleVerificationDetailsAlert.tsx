@@ -97,7 +97,7 @@ export const MyModuleVerificationDetailsAlert = ({
             })
           }
         >
-          Resubmit Verification
+          Resubmit verification
         </Button>
       </Alert>
     );

@@ -47,7 +47,7 @@ export const CollectionInfoSection = ({
   return (
     <Flex direction="column">
       <Heading as="h6" variant="h6" fontWeight={600} mb={6}>
-        Collection Information
+        Collection information
       </Heading>
       <Flex direction={{ base: "column", md: "row" }} mb={{ base: 4, md: 10 }}>
         <Flex

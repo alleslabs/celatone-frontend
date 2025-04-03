@@ -21,7 +21,7 @@ export const MintInfo = ({ nftAddress }: MintInfoProps) => {
   return (
     <Stack spacing="16px" order={{ base: "1", md: "-1" }}>
       <Heading as="h6" variant="h6" fontWeight={600}>
-        Mint Information
+        Mint information
       </Heading>
       <Box
         p="16px"

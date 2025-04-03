@@ -4,7 +4,7 @@ import { getStepStyles } from "../helpers";
 
 const steps = [
   { label: "Network details" },
-  { label: "Gas & fee details" },
+  { label: "Gas & Fee details" },
   { label: "Wallet registry" },
 ];
 

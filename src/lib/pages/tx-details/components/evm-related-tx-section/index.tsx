@@ -70,7 +70,7 @@ export const EvmRelatedTxSection = ({
 }: EvmRelatedTxSectionProps) => (
   <Flex direction="column" gap={4} mb={8} minW="330px">
     <Heading as="h6" variant="h6">
-      Related EVM Transaction
+      Related EVM transaction
     </Heading>
     <Flex
       direction={{ base: "column", xl: "row" }}

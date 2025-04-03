@@ -31,7 +31,7 @@ export const MySavedCodesTable = ({
         <EmptyState
           my={0}
           imageVariant="not-found"
-          message="No matching codes found. Make sure you are searching with code ID or code name"
+          message="No matching codes found. Make sure you are searching with Code ID or Code Name"
           withBorder
         />
       }

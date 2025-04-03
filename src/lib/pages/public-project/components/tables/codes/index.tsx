@@ -140,7 +140,7 @@ export const PublicProjectCodeTable = observer(
           <EmptyState
             message={
               codes.length
-                ? "No matching codes found for this project. Make sure you are searching with code ID or code name"
+                ? "No matching codes found for this project. Make sure you are searching with Code ID or Code Name"
                 : "There are currently no codes related to this project."
             }
             imageVariant={codes.length ? "not-found" : "empty"}

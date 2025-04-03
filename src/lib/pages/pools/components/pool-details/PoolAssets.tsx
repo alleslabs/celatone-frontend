@@ -26,7 +26,7 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
       <Flex mt={12} mb={4} justifyContent="space-between" align="center">
         <Flex gap={2} align="center">
           <Heading as="h6" variant="h6">
-            Pool Assets
+            Pool assets
           </Heading>
           <Badge variant="gray" color="text.main" textColor="text.main">
             {pool.liquidity.length}

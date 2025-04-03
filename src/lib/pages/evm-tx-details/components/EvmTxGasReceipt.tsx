@@ -32,7 +32,7 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
         <LabelText label="Gas price">
           {formatTokenWithValue(gasInfo.gasPrice, undefined, false)}
         </LabelText>
-        <LabelText label="Usage by Tx & Gas Limit">
+        <LabelText label="Usage by tx & gas limit">
           {`${formatInteger(gasInfo.gasUsed)}/${formatInteger(gasInfo.gasLimit)}`}
         </LabelText>
         <LabelText label="Gas refund percentage">

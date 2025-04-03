@@ -228,7 +228,7 @@ const Faucet = () => {
               style={{ padding: "4px 12px" }}
               onClick={() => openTxTab(result.txHash)}
             >
-              View Transaction
+              View transaction
             </Button>
           )}
         </Alert>

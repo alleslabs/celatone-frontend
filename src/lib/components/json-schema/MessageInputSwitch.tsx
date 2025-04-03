@@ -8,16 +8,16 @@ import type { Option } from "lib/types";
 import { Tooltip } from "../Tooltip";
 
 export enum MessageTabs {
-  JSON_INPUT = "JSON Input",
+  JSON_INPUT = "JSON input",
   YOUR_SCHEMA = "Your schema",
 }
 
 export enum OutputMessageTabs {
-  JSON_OUTPUT = "JSON Output",
+  JSON_OUTPUT = "JSON output",
   YOUR_SCHEMA = "Your schema",
 }
 
-export const jsonInputFormKey = MessageTabs.JSON_INPUT as "JSON Input";
+export const jsonInputFormKey = MessageTabs.JSON_INPUT as "JSON input";
 export const yourSchemaInputFormKey = MessageTabs.YOUR_SCHEMA as "Your schema";
 
 interface MessageInputSwitchProps<

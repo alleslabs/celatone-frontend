@@ -62,7 +62,7 @@ export const PublishCompleted = ({
       {isApiChain && (
         <Flex direction="column" gap={4} w="full" mb={12}>
           <Heading as="h6" variant="h6">
-            Module Verification
+            Module verification
           </Heading>
           <Flex
             w="full"

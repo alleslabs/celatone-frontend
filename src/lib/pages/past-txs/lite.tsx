@@ -99,7 +99,7 @@ export const PastTxsLite = () => {
           display="flex"
           alignItems="center"
         >
-          Past Transactions
+          Past transactions
         </Heading>
         <UserDocsLink isButton href="general/transactions/past-txs" />
       </Flex>

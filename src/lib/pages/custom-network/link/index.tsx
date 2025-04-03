@@ -140,7 +140,7 @@ export const AddNetworkLink = observer(() => {
             <Box minW="40%" maxW="70%">
               <TextReadOnly text={error.message} canCopy />
             </Box>
-            <Text mt={6}>You can add this custom rollup manually</Text>
+            <Text mt={6}>You can add this custom Rollup manually</Text>
             <AppLink href="/custom-network/add">
               <Button
                 variant="outline-gray"

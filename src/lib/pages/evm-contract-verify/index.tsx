@@ -245,7 +245,7 @@ export const EvmContractVerifyBody = ({
                 <Grid templateColumns="6fr 4fr" columnGap="32px" rowGap="24px">
                   <GridItem colSpan={2}>
                     <Heading as="h6" variant="h6">
-                      Contract Address & License
+                      Contract address & license
                     </Heading>
                   </GridItem>
                   <GridItem colSpan={1}>
@@ -296,7 +296,7 @@ export const EvmContractVerifyBody = ({
                 <Stack spacing={6}>
                   <Stack spacing={1}>
                     <Heading as="h6" variant="h6">
-                      Verification Method
+                      Verification method
                     </Heading>
                     <Text variant="body2" color="text.dark">
                       Please ensure the setting is the matching with the created

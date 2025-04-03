@@ -209,7 +209,7 @@ export const PublishModule = ({
 
   return (
     <>
-      <CelatoneSeo pageName="Publish / Republish Modules" />
+      <CelatoneSeo pageName="Publish / Republish modules" />
       <PageContainer p={0}>
         <Box minH="inherit" maxW="1440px" mx="auto">
           <Grid

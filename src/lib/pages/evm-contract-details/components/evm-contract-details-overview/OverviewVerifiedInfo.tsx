@@ -28,7 +28,7 @@ export const OverviewVerifiedInfo = ({
       <LabelText label="Compiler version">
         {evmVerifyInfo.compilerVersion}
       </LabelText>
-      <LabelText label="EVM Version">
+      <LabelText label="EVM version">
         {capitalize(evmVerifyInfo.evmVersion)}
       </LabelText>
       <Optimizer evmVerifyInfo={evmVerifyInfo} />

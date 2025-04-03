@@ -148,7 +148,7 @@ export const ProposalsTableFull = () => {
             isMulti
           />
           <ProposalTypeFilter
-            label="Filter by Type"
+            label="Filter by type"
             result={types}
             setResult={setTypes}
             placeholder="All type"

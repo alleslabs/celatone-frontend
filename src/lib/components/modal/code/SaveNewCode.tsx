@@ -132,7 +132,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       if (isCodeIdSaved(Number(codeId))) {
         setCodeIdStatus({
           state: "error",
-          message: "You already added this code ID",
+          message: "You already added this Code ID",
         });
       } else {
         const timer = setTimeout(() => {

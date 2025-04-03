@@ -207,7 +207,7 @@ const GasFeeDetails = ({
       <CustomNetworkPageHeader title="Add gas & fee details" />
       <Flex w="full" direction="column" gap={8} mt={8}>
         <Flex direction="column" gap={6}>
-          <CustomNetworkSubheader title="Gas & fee details" />
+          <CustomNetworkSubheader title="Gas & Fee details" />
           <Flex gap={6}>
             <ControllerInput
               name="gasAdjustment"

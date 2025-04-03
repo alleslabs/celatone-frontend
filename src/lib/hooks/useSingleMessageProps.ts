@@ -89,7 +89,7 @@ const instantiateSingleMsgProps = (
           value: contractLocalInfo?.name || contractAddress,
           copyValue: contractAddress,
         },
-        text3: "from code ID",
+        text3: "from Code ID",
         link2: {
           type: "code_id" as LinkType,
           value: detail.codeId.toString(),
@@ -97,7 +97,7 @@ const instantiateSingleMsgProps = (
       }
     : {
         type: "Failed",
-        text1: `to ${type} contract from code ID`,
+        text1: `to ${type} contract from Code ID`,
         link1: {
           type: "code_id" as LinkType,
           value: detail.codeId.toString(),
@@ -360,7 +360,7 @@ const migrateSingleMsgProps = (
           value: contractLocalInfo?.name || detail.contract,
           copyValue: detail.contract,
         },
-        text3: "to code ID",
+        text3: "to Code ID",
         link2: {
           type: "code_id" as LinkType,
           value: detail.codeId.toString(),
@@ -549,7 +549,7 @@ const storeCodeSingleMsgProps = (isSuccess: boolean, messages: Message[]) => {
   return isSuccess
     ? {
         type: "Upload",
-        text1: "Wasm to code ID",
+        text1: "Wasm to Code ID",
         link1: {
           type: "code_id" as LinkType,
           value: detail.id ? detail.id.toString() : "",
@@ -557,7 +557,7 @@ const storeCodeSingleMsgProps = (isSuccess: boolean, messages: Message[]) => {
       }
     : {
         type: "Failed",
-        text1: "to upload Wasm to code ID",
+        text1: "to upload Wasm to Code ID",
         link1: {
           type: "code_id" as LinkType,
           value: detail.id ? detail.id.toString() : "",

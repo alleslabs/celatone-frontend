@@ -30,7 +30,7 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
           cursor="not-allowed"
           whiteSpace="nowrap"
         >
-          View Failed Reason
+          View failed reason
         </Text>
       </Tooltip>
     );
@@ -46,7 +46,7 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
         cursor="pointer"
         onClick={onOpen}
       >
-        View Failed Reason
+        View failed reason
       </Text>
 
       <Modal

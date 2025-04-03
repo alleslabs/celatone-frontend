@@ -43,7 +43,7 @@ export const EvmTxCallErc20Factory = ({
               -
             </Text>
           )}{" "}
-          via ERC20 Factory
+          via ERC20 factory
         </Flex>
       }
     >
@@ -60,7 +60,7 @@ export const EvmTxCallErc20Factory = ({
         }
       />
       <EvmInfoLabelValue
-        label="ERC20 Factory"
+        label="ERC20 factory"
         value={
           to ? (
             <Flex gap={1} align="center">

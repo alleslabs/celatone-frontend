@@ -50,7 +50,7 @@ export const VotingQuorum = ({
         ) : (
           <>
             <Heading as="h6" variant="h6" textColor="text.main">
-              Voting Participations
+              Voting participations
             </Heading>
             <VoteQuorumBadge
               status={proposalData.status}

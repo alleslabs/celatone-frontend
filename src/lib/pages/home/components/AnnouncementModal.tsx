@@ -38,7 +38,7 @@ export const AnnouncementModal = ({
         <Flex direction="column" gap={3} alignItems="center" textAlign="center">
           <Heading as="h5" variant="h5">
             Alles Labs is joining{" "}
-            <span style={{ display: "inline-flex" }}>Initia labs</span>
+            <span style={{ display: "inline-flex" }}>Initia Labs</span>
           </Heading>
           <Text variant="body1" textAlign="center" color="text.dark">
             Alles Labs, the team behind Celatone, is joining Initia Labs to
