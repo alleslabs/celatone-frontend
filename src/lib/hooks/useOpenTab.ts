@@ -9,13 +9,22 @@ import type { Option } from "lib/types";
 import { openNewTab } from "lib/utils";
 
 export const useOpenBlockTab = () => {
+  const {
+    chainConfig: { network_type, rest },
+  } = useCelatoneApp();
   const blocksApiRoute = useBaseApiRoute("blocks");
 
+  let baseUrl: string;
+  if (network_type === "local") {
+    baseUrl = `${rest}/cosmos/base/tendermint/v1beta1/blocks/`;
+  } else {
+    baseUrl = blocksApiRoute;
+  }
   return useCallback(
     (blockHeight: number) => {
-      openNewTab(`${blocksApiRoute}/${blockHeight}`);
+      openNewTab(`${baseUrl}/${blockHeight}`);
     },
-    [blocksApiRoute]
+    [baseUrl]
   );
 };
 
