@@ -16,7 +16,7 @@ export const useOpenBlockTab = () => {
 
   let baseUrl: string;
   if (network_type === "local") {
-    baseUrl = `${rest}/cosmos/base/tendermint/v1beta1/blocks/`;
+    baseUrl = `${rest}/cosmos/base/tendermint/v1beta1/blocks`;
   } else {
     baseUrl = blocksApiRoute;
   }
