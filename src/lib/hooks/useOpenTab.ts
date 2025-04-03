@@ -8,10 +8,38 @@ import {
 import type { Option } from "lib/types";
 import { openNewTab } from "lib/utils";
 
+export const useOpenBlockTab = () => {
+  const {
+    chainConfig: { network_type, rest },
+  } = useCelatoneApp();
+  const blocksApiRoute = useBaseApiRoute("blocks");
+
+  let baseUrl: string;
+  if (network_type === "local") {
+    baseUrl = `${rest}/cosmos/base/tendermint/v1beta1/blocks`;
+  } else {
+    baseUrl = blocksApiRoute;
+  }
+  return useCallback(
+    (blockHeight: number) => {
+      openNewTab(`${baseUrl}/${blockHeight}`);
+    },
+    [baseUrl]
+  );
+};
+
 export const useOpenTxTab = (type: "rest" | "tx-page") => {
-  const { currentChainId } = useCelatoneApp();
+  const {
+    currentChainId,
+    chainConfig: { network_type, rest },
+  } = useCelatoneApp();
   const txsApiRoute = useBaseApiRoute("txs");
-  const baseUrl = type === "rest" ? txsApiRoute : `/${currentChainId}/txs`;
+
+  let baseUrl: string;
+  if (type === "rest") {
+    baseUrl =
+      network_type === "local" ? `${rest}/cosmos/tx/v1beta1/txs` : txsApiRoute;
+  } else baseUrl = `/${currentChainId}/txs`;
 
   return useCallback(
     (txHash: Option<string>) => {

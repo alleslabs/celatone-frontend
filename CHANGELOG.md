@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1293](https://github.com/alleslabs/celatone-frontend/pull/1293) Improve useOpenTxTab and useOpenBlockTab
 - [#1290](https://github.com/alleslabs/celatone-frontend/pull/1290) Change minor ui
 - [#1291](https://github.com/alleslabs/celatone-frontend/pull/1291) Exclude instantiate permission from upload access if using Initia
 - [#1286](https://github.com/alleslabs/celatone-frontend/pull/1286) Adjust module verification info layout, query wallet widget latest version
