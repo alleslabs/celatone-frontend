@@ -152,7 +152,7 @@ export const DeployScript = () => {
             color: "var(--chakra-colors-text-dark)",
           }}
         >
-          Upload a .mv file to deploy one-time use Script which execute
+          Upload a .mv file to deploy one-time use script which execute
           messages.{" "}
           <UserDocsLink
             isDevTool

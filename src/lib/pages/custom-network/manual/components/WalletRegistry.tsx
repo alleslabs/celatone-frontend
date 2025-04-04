@@ -167,7 +167,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
       <CustomNetworkPageHeader title="Add wallet registry" />
       <Flex w="full" direction="column" gap={6} my={8}>
         <CustomNetworkSubheader
-          title="Account Prefix and Registered Coin Type"
+          title="Account prefix and registered coin type"
           subtitle="This information is fetched from provided REST URL"
         />
         <Stack bg="gray.900" py={4} px={6} rounded={8} gap={4}>
@@ -302,7 +302,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
               }
               leftIcon={<CustomIcon name="plus" boxSize={3} />}
             >
-              Add more Asset
+              Add more asset
             </Button>
           </Flex>
         ) : (
@@ -322,7 +322,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
                 }
                 leftIcon={<CustomIcon name="plus" boxSize={3} />}
               >
-                Add More Asset
+                Add more asset
               </Button>
             </Flex>
             <Text variant="body2" color="text.disabled">

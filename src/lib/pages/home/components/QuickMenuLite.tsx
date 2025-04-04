@@ -188,7 +188,7 @@ export const QuickMenuLite = () => {
         },
         {
           title: "Deploy script",
-          subtitle: "Deploy one-time use Script",
+          subtitle: "Deploy one-time use script",
           slug: "deploy-script",
           icon: "code" as const,
           isHighlight: false,

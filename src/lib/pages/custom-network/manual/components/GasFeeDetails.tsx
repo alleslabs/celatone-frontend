@@ -70,7 +70,7 @@ const GasOptionCustom = ({
     <Flex justifyContent="space-between" alignItems="center">
       <Box>
         <Text variant="body1" color="gray.500">
-          Fixed Minimum Gas Price
+          Fixed minimum gas price
         </Text>
         <Text variant="body3" color="error.main">
           (Required)
@@ -91,7 +91,7 @@ const GasOptionCustom = ({
     <Flex justifyContent="space-between" alignItems="center">
       <Box>
         <Text variant="body1" color="gray.500">
-          Low Gas Price
+          Low gas price
         </Text>
         <Text variant="body3" color="error.main">
           (Required)
@@ -112,7 +112,7 @@ const GasOptionCustom = ({
     <Flex justifyContent="space-between" alignItems="center">
       <Box>
         <Text variant="body1" color="gray.500">
-          Average Gas Price
+          Average gas price
         </Text>
         <Text variant="body3" color="error.main">
           (Required)
@@ -133,7 +133,7 @@ const GasOptionCustom = ({
     <Flex justifyContent="space-between" alignItems="center">
       <Box>
         <Text variant="body1" color="gray.500">
-          High Gas Price
+          High gas price
         </Text>
         <Text variant="body3" color="error.main">
           (Required)
@@ -204,7 +204,7 @@ const GasFeeDetails = ({
 
   return (
     <Flex direction="column" gap={2} alignItems="center">
-      <CustomNetworkPageHeader title="Add gas & fee details" />
+      <CustomNetworkPageHeader title="Add Gas & Fee details" />
       <Flex w="full" direction="column" gap={8} mt={8}>
         <Flex direction="column" gap={6}>
           <CustomNetworkSubheader title="Gas & Fee details" />
@@ -259,7 +259,7 @@ const GasFeeDetails = ({
                 width="fit-content"
                 value={GasPriceConfiguration.STANDARD}
               >
-                Standard Gas Price
+                Standard gas price
                 <Text variant="body3">
                   Set the standard gas price as the default for all gas price
                   configurations
@@ -270,7 +270,7 @@ const GasFeeDetails = ({
                 width="fit-content"
                 value={GasPriceConfiguration.CUSTOM}
               >
-                Custom Gas Prices
+                Custom gas prices
                 <Text variant="body3">
                   Set the custom value for minimum, low, average, and high gas
                   price
@@ -297,7 +297,7 @@ const GasFeeDetails = ({
                   labelBgColor="gray.900"
                   name="cosmos_send"
                   control={control}
-                  label="Gas Cost for Cosmos Send"
+                  label="Gas cost for cosmos Send"
                   variant="fixed-floating"
                   type="decimal"
                   w="full"
@@ -309,7 +309,7 @@ const GasFeeDetails = ({
                   labelBgColor="gray.900"
                   name="ibc_transfer"
                   control={control}
-                  label="Gas Cost for IBC"
+                  label="Gas cost for IBC"
                   variant="fixed-floating"
                   type="decimal"
                   w="full"

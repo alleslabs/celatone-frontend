@@ -32,7 +32,7 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
     >
       <Flex w="full" alignItems="center" justifyContent="space-between">
         <Heading as="h6" variant="h6">
-          Proposal Messages
+          Proposal messages
         </Heading>
         {hasMsgs && (
           <Button

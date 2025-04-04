@@ -189,7 +189,7 @@ export const VotingPowerOverview = ({
         {!isFullTier && !isMobile && (
           <>
             <VotingPowerDetail
-              label="Self-Bonded"
+              label="Self-bonded"
               ratio={selfVotingPowerRatio}
               amount={selfVotingPower as U<Token<Big>>}
               denom={singleStakingDenom}
@@ -217,7 +217,7 @@ export const VotingPowerOverview = ({
         gap={4}
       >
         <VotingPowerDetail
-          label="Self-Bonded"
+          label="Self-bonded"
           ratio={selfVotingPowerRatio}
           amount={selfVotingPower as U<Token<Big>>}
           denom={singleStakingDenom}

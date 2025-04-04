@@ -95,7 +95,7 @@ export const AddNetworkJson = observer(() => {
         <Flex direction="column" mt={12} gap={6} w="full">
           <CustomNetworkSubheader
             title="Upload your .JSON file"
-            subtitle="The uploading JSON file must be in the supported format for InitiaScan only"
+            subtitle="The uploading JSON file must be in the supported format for Initia Scan only"
           />
           {file ? (
             <UploadCard file={file} deleteFile={() => setFile(null)} />
@@ -123,8 +123,8 @@ export const AddNetworkJson = observer(() => {
             </Button>
           </Flex>
           <Text variant="body2" textAlign="center">
-            The added custom Rollup on Initiascan will be stored locally on your
-            device.
+            The added custom rollup on Initia Scan will be stored locally on
+            your device.
           </Text>
         </Flex>
       </ActionPageContainer>

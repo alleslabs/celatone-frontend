@@ -97,7 +97,7 @@ export const UptimeSection = ({
               </Menu>
             ) : (
               <Text variant="body2" color="text.dark">
-                Latest 100 Blocks
+                Latest 100 blocks
               </Text>
             )}
           </Flex>

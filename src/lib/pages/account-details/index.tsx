@@ -474,8 +474,8 @@ const AccountDetailsBody = ({
           <TabPanel p={0} mt={{ base: 0, md: 8 }}>
             <AssetsSection isAccount address={accountAddress} />
             <UserDocsLink
-              title="What is Supported and Unsupported Assets?"
-              cta="Read more about Assets"
+              title="What is supported and unsupported assets?"
+              cta="Read more about assets"
               href="general/accounts/detail-page#assets"
             />
           </TabPanel>
@@ -513,7 +513,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is transactions related to the account?"
-              cta="Read more about Account Transactions"
+              cta="Read more about Account transactions"
               href="general/accounts/detail-page#transactions"
             />
           </TabPanel>
@@ -567,7 +567,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is resources?"
-              cta="Read more about Resources in Account"
+              cta="Read more about Resources in account"
               href="general/accounts/detail-page#resources"
             />
           </TabPanel>
@@ -580,7 +580,7 @@ const AccountDetailsBody = ({
             />
             <UserDocsLink
               title="What is modules?"
-              cta="Read more about Modules in Account"
+              cta="Read more about Modules in account"
               href="general/accounts/detail-page#modules"
             />
           </TabPanel>

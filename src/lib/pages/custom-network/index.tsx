@@ -15,12 +15,12 @@ export const AddNetwork = () => {
       <Flex direction="column" gap={12}>
         <Flex direction="column" gap={4} textAlign="center">
           <Heading as="h4" variant="h4">
-            Add Custom Rollup
+            Add custom rollup
           </Heading>
           <Alert my={4} p={3} variant="info">
             <AlertDescription>
               <Text color="text.dark" textAlign="center" lineHeight="normal">
-                Please note that the custom Rollup you add on our website will
+                Please note that the custom rollup you add on our website will
                 only be stored locally on your device.
               </Text>
             </AlertDescription>
@@ -28,8 +28,8 @@ export const AddNetwork = () => {
         </Flex>
         <Flex direction="column" gap={4}>
           <ButtonCard
-            title="Fill in Network Details Manually"
-            description="Add new Rollup through fill in each configuration manually"
+            title="Fill in network details manually"
+            description="Add new rollup through fill in each configuration manually"
             onClick={() => navigate({ pathname: "/custom-network/add/manual" })}
           />
           <ButtonCard

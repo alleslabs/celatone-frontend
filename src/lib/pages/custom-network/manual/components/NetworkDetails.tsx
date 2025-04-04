@@ -31,8 +31,8 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
       <CustomNetworkPageHeader title="Add network details" />
       <Flex w="full" direction="column" gap={6} mt={8}>
         <CustomNetworkSubheader
-          title="VM Type"
-          subtitle="Choose supported VM for the custom Rollup"
+          title="VM"
+          subtitle="Choose supported VM for the custom rollup"
         />
         <RadioGroup
           onChange={(nextVal) => vmTypeField.onChange(nextVal)}

@@ -86,7 +86,7 @@ export const ModuleSelectorDisplay = ({
             leftIcon={<CustomIcon name="swap" boxSize={3} />}
             onClick={() => setMode("input")}
           >
-            Change Address
+            Change address
           </Button>
         </>
       )}

@@ -44,7 +44,7 @@ import { jsonPrettify } from "lib/utils";
 // const TabMenu = [
 //   { name: "Network details", key: "network-details" },
 //   { name: "Supported features", key: "supported-features" },
-//   { name: "Gas & fee details", key: "gas-fee-details" },
+//   { name: "Gas & Fee details", key: "gas-fee-details" },
 //   { name: "Wallet registry", key: "wallet-registry" },
 // ];
 
@@ -105,7 +105,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
         <Flex justifyContent="space-between" gap={10}>
           <CustomNetworkSubheader
             title="Export as JSON File"
-            subtitle="You can export this Custom Rollup configuration in JSON file to use them in other device."
+            subtitle="You can export this custom rollup configuration in JSON file to use them in other device."
           />
           <Button
             minW={168}

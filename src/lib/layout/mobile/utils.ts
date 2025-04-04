@@ -200,7 +200,7 @@ export const getNavDrawerFull = (
       ...(isNft
         ? [
             {
-              name: "NFT Collections",
+              name: "NFT collections",
               slug: "/nft-collections",
               icon: "collection" as IconKeys,
             },

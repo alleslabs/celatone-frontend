@@ -7,7 +7,7 @@ export const UpdateSupportedFeatures = () => {
     <Flex direction="column" gap={6}>
       <CustomNetworkSubheader
         title="Feature lists"
-        subtitle="Choose supported features for your custom Rollup"
+        subtitle="Choose supported features for your custom rollup"
       />
       <Flex bg="teal">form goes here</Flex>
     </Flex>

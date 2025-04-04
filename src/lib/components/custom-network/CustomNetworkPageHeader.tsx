@@ -24,7 +24,7 @@ export const CustomNetworkPageHeader = ({
       <Alert my={4} p={3} variant="info">
         <AlertDescription>
           <Text color="text.dark" textAlign="center" lineHeight="normal">
-            Please note that the custom Rollup you add on our website will only
+            Please note that the custom rollup you add on our website will only
             be stored locally on your device.
           </Text>
         </AlertDescription>

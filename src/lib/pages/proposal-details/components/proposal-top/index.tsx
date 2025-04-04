@@ -81,7 +81,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                 lineHeight="24px"
                 mt="1px"
               >
-                Proposal Messages:
+                Proposal messages:
               </Text>
               {proposalData.types.length ? (
                 <Flex display="inline-block">
@@ -124,7 +124,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
               >
                 <Flex gap={2} alignItems="center">
                   <Text color="text.dark" variant="body2" fontWeight={500}>
-                    Created Height:
+                    Created height:
                   </Text>
                   <ExplorerLink
                     type="block_height"

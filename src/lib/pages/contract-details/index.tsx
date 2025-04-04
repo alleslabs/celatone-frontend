@@ -276,8 +276,8 @@ const ContractDetailsBody = observer(
             <TabPanel p={0}>
               <AssetsSection address={contractAddress} />
               <UserDocsLink
-                title="What is Supported and Unsupported Assets? "
-                cta="Read more about Assets"
+                title="What is supported and unsupported assets? "
+                cta="Read more about assets"
                 href="cosmwasm/contracts/detail-page#assets"
               />
             </TabPanel>

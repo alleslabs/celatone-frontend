@@ -26,8 +26,8 @@ export const MyModuleVerifications = () => {
             My past verification
           </Heading>
           <Text variant="body2" fontWeight={500} color="text.dark">
-            Display the request queue for module verifications through
-            InitiaScan
+            Display the request queue for module verifications through Initia
+            Scan
           </Text>
         </Box>
         <Flex gap={4}>

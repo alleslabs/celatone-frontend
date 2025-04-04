@@ -126,7 +126,7 @@ export const RecentBlocksSection = ({
         w="full"
       >
         <Heading as="h6" variant="h6" color="text.main">
-          Most recent 100 Blocks
+          Most recent 100 blocks
         </Heading>
         <Text variant="body2" color="text.dark">
           Latest update: {formatUTC(new Date(dataUpdatedAt))}
