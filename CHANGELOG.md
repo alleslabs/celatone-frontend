@@ -53,6 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1297](https://github.com/alleslabs/celatone-frontend/pull/1297) Fix select input floating label
+
 ## v1.10.2
 
 - [#1280](https://github.com/alleslabs/celatone-frontend/pull/1280) Support archival fallback for txs and blocks
