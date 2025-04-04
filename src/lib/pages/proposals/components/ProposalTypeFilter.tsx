@@ -7,7 +7,7 @@ import {
   useOutsideClick,
 } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, RefObject, SetStateAction } from "react";
 import { forwardRef, useMemo, useRef, useState } from "react";
 
 import { AmpEvent, trackUseFilter } from "lib/amplitude";
@@ -53,7 +53,7 @@ export const ProposalTypeFilter = forwardRef<
     const boxRef = useRef<HTMLDivElement>(null);
 
     useOutsideClick({
-      ref: boxRef,
+      ref: boxRef as RefObject<HTMLDivElement>,
       handler: () => setIsDropdown(false),
     });
 

@@ -1,6 +1,7 @@
 import type { InputProps } from "@chakra-ui/react";
 import { Flex, FormControl, useOutsideClick } from "@chakra-ui/react";
 import { matchSorter } from "match-sorter";
+import type { RefObject } from "react";
 import { forwardRef, useMemo, useRef, useState } from "react";
 
 import {
@@ -77,7 +78,7 @@ export const MoveVerifyTaskStatusFilter = forwardRef<
     };
 
     useOutsideClick({
-      ref: boxRef,
+      ref: boxRef as RefObject<HTMLDivElement>,
       handler: () => setIsDropdown(false),
     });
 

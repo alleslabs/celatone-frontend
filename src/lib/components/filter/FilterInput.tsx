@@ -1,6 +1,7 @@
 import { Flex, FormLabel, Input } from "@chakra-ui/react";
 import type { Dispatch, ForwardedRef, RefObject, SetStateAction } from "react";
 
+import type { Nullable } from "lib/types";
 import { mergeRefs } from "lib/utils";
 import { DropdownChevron } from "../DropdownChevron";
 
@@ -9,7 +10,7 @@ interface FilterInputProps {
   result: string[];
   isDropdown: boolean;
   chipContainerComponent: JSX.Element;
-  inputRef: RefObject<HTMLInputElement>;
+  inputRef: RefObject<Nullable<HTMLInputElement>>;
   mainRef: ForwardedRef<HTMLInputElement>;
   placeholder?: string;
   label?: string;

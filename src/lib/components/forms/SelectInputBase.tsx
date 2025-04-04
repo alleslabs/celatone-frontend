@@ -9,7 +9,7 @@ import {
   PopoverTrigger,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { MutableRefObject, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import type { IconKeys } from "../icon";
@@ -76,7 +76,7 @@ export const SelectInputBase = <T extends string>({
   disableMaxH = false,
   isRequired,
 }: SelectInputProps<T>) => {
-  const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
+  const inputRef = useRef<HTMLInputElement>(null);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [selected, setSelected] = useState("");
 
