@@ -137,7 +137,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
               <ContentContainer>
                 <Flex alignItems="center" justifyContent="space-between">
                   <TableTitle
-                    title="Validator Votes"
+                    title="Validator votes"
                     mb={0}
                     count={answers?.validator.totalValidators}
                   />
@@ -147,7 +147,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                     rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
                     isDisabled={!answers?.validator.totalValidators}
                   >
-                    {isMobile ? "View" : "View Details"}
+                    {isMobile ? "View" : "View details"}
                   </Button>
                 </Flex>
                 {isProposalResolved && (
@@ -180,7 +180,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
               <ContentContainer>
                 <Flex alignItems="center" justifyContent="space-between">
                   <TableTitle
-                    title="Recent Votes"
+                    title="Recent votes"
                     mb={0}
                     count={answers?.all.total}
                   />
@@ -190,7 +190,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                     rightIcon={<CustomIcon name="chevron-right" boxSize={3} />}
                     isDisabled={!answers?.all.total}
                   >
-                    {isMobile ? "View" : "View Details"}
+                    {isMobile ? "View" : "View details"}
                   </Button>
                 </Flex>
                 <ProposalVotesTable

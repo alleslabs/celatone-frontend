@@ -61,7 +61,7 @@ export const AmplitudeProvider = ({
 
   amp.setMandatoryProperties({
     page: pathname,
-    rawAddressHash: hashAddress(address) ?? "Not Connected",
+    rawAddressHash: hashAddress(address) ?? "Not connected",
     chain: currentChainId,
     mobile: isMobile,
     navSidebar: isExpand,

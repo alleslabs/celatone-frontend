@@ -50,7 +50,7 @@ export const VotingQuorum = ({
         ) : (
           <>
             <Heading as="h6" variant="h6" textColor="text.main">
-              Voting Participations
+              Voting participations
             </Heading>
             <VoteQuorumBadge
               status={proposalData.status}
@@ -96,7 +96,7 @@ export const VotingQuorum = ({
               isCompact={isMobile}
             />
             <VpPercentCard
-              name="Voted Abstain"
+              name="Voted abstain"
               ratio={abstainRatio}
               power={abstain}
               color="voteParticipations.votedAbstain"

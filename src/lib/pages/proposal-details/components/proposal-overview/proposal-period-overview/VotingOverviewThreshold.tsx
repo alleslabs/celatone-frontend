@@ -55,12 +55,12 @@ export const VotingOverviewThreshold = ({
           <VoteThresholdBadge status={proposalData.status} isCompact />
           {proposalData.status === ProposalStatus.VOTING_PERIOD ? (
             <Text variant="body1" color="text.main">
-              Current Voting Result
+              Current voting result
             </Text>
           ) : (
             <Flex gap={2} alignItems="center">
               <Text variant="body1" color="text.main">
-                Final Vote Result:
+                Final vote result:
               </Text>
               {proposalData.status === ProposalStatus.FAILED ? (
                 <StatusChip status={ProposalStatus.FAILED} />

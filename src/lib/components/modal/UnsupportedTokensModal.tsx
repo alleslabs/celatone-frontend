@@ -36,19 +36,19 @@ const unsupportedTokensContent = (
     case "contract_address": {
       return {
         icon: "assets-solid",
-        header: "Contract Address",
+        header: "Contract address",
       };
     }
     case "user_address": {
       return {
         icon: "assets-solid",
-        header: "Account Address",
+        header: "Account address",
       };
     }
     default:
       return {
         icon: "alert-triangle-solid",
-        header: "Invalid Address",
+        header: "Invalid address",
       };
   }
 };
@@ -76,7 +76,7 @@ export const UnsupportedTokensModal = ({
           onOpen();
         }}
       >
-        {`View ${unsupportedAssets.length} Unsupported Assets`}
+        {`View ${unsupportedAssets.length} unsupported assets`}
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
@@ -85,7 +85,7 @@ export const UnsupportedTokensModal = ({
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
               <CustomIcon name={content.icon} boxSize={5} color="gray.600" />
               <Heading variant="h5" as="h5">
-                Unsupported Assets
+                Unsupported assets
               </Heading>
             </Flex>
           </ModalHeader>

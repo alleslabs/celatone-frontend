@@ -36,7 +36,7 @@ export const SingleMsg = ({
   text3,
   link2,
 }: SingleMsgProps) => {
-  if (!type) return <Text variant="body2">Message Unavailable</Text>;
+  if (!type) return <Text variant="body2">Message unavailable</Text>;
   return (
     <>
       <Text variant="body2">

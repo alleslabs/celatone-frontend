@@ -33,7 +33,7 @@ export const WasmVerifySubmitFailed = ({
           <Text variant="body2" textAlign="center">
             {errorMsg?.endsWith("Similar task is pending")
               ? "This code has already been submitted and is currently undergoing verification. You can check its verification status on the code page."
-              : errorMsg ?? "Something went wrong. Please try again later."}
+              : (errorMsg ?? "Something went wrong. Please try again later.")}
           </Text>
         </Flex>
         <Button onClick={onClose} variant="outline-primary" w="100%">

@@ -27,7 +27,7 @@ export const DelegationRelatedTxsTableMobileCard = ({
         <Grid templateColumns="1fr 1fr" gap={2}>
           <GridItem>
             <Text variant="body3" color="text.dark" fontWeight={600}>
-              Transaction Hash
+              Transaction hash
             </Text>
             <ExplorerLink
               value={delegationRelatedTx.txHash.toLocaleUpperCase()}
@@ -63,7 +63,7 @@ export const DelegationRelatedTxsTableMobileCard = ({
         </Box>
         <Box>
           <Text variant="body3" color="text.dark" fontWeight={600}>
-            Bonded Token Changes
+            Bonded token changes
           </Text>
           {delegationRelatedTx.tokens.map((coin) => (
             <DelegationRelatedTxsTokenChange

@@ -26,7 +26,7 @@ export const FullEditorSidebarMobile = ({
     <DrawerContent h="90%">
       <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
         <Heading as="h5" variant="h5">
-          File Tree
+          File tree
         </Heading>
       </DrawerHeader>
       <DrawerCloseButton color="text.dark" />

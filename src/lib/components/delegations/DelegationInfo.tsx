@@ -42,7 +42,7 @@ export const DelegationInfo = ({
         >
           <Flex direction="column" gap={2}>
             <Heading variant="h6" as="h6">
-              Delegation Details
+              Delegation details
             </Heading>
             {totalBondedCard}
           </Flex>
@@ -77,7 +77,7 @@ export const DelegationInfo = ({
                     onViewMore();
                   }}
                 >
-                  View Delegation Info
+                  View delegation info
                 </Button>
               ) : (
                 <Flex
@@ -93,7 +93,7 @@ export const DelegationInfo = ({
                     isDisabled={!redelegationCount}
                     onClick={onClickToggle}
                   >
-                    See Active Redelegations ({redelegationCount})
+                    See active redelegations ({redelegationCount})
                   </Button>
                 </Flex>
               )}

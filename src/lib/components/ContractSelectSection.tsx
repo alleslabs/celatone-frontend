@@ -76,8 +76,8 @@ const DisplayName = ({
   label,
 }: DisplayNameProps) => {
   const displayName = useMemo(() => {
-    if (notSelected) return "Not Selected";
-    if (!isValid) return "Invalid Contract";
+    if (notSelected) return "Not selected";
+    if (!isValid) return "Invalid contract";
     return name ?? label;
   }, [isValid, label, name, notSelected]);
 
@@ -129,7 +129,7 @@ const ContractDetailsButton = ({
           size="sm"
           leftIcon={<CustomIcon name="bookmark" boxSize="12px" />}
         >
-          Add To List
+          Add to list
         </Button>
       }
     />
@@ -218,7 +218,7 @@ export const ContractSelectSection = observer(
               direction="column"
               width={{ base: "auto", md: style.contractAddrContainer }}
             >
-              Contract Address
+              Contract address
               {!notSelected ? (
                 <ExplorerLink
                   value={contractAddress}
@@ -243,7 +243,7 @@ export const ContractSelectSection = observer(
                 />
               ) : (
                 <Text color="text.disabled" variant="body2">
-                  Not Selected
+                  Not selected
                 </Text>
               )}
             </Flex>
@@ -251,7 +251,7 @@ export const ContractSelectSection = observer(
               direction="column"
               width={{ base: "auto", md: style.contractNameContainer }}
             >
-              Contract Name
+              Contract name
               <DisplayName
                 notSelected={notSelected}
                 isValid={contractState.isValid}

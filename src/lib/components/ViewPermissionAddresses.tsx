@@ -54,7 +54,7 @@ export const ViewPermissionAddresses = ({
             />
           }
         >
-          {viewAll ? "See Less" : "View All Addresses"}
+          {viewAll ? "See less" : "View all addresses"}
         </Button>
       )}
     </>

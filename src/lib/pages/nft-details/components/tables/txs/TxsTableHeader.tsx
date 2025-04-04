@@ -9,7 +9,7 @@ export const TxsTableHeader = ({
   templateColumns: GridProps["templateColumns"];
 }) => (
   <Grid templateColumns={templateColumns} minW="min-content">
-    <TableHeader>Tx Hash</TableHeader>
+    <TableHeader>Tx hash</TableHeader>
     <TableHeader>Event</TableHeader>
     <TableHeader>Timestamp</TableHeader>
   </Grid>

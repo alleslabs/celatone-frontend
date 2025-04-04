@@ -39,7 +39,7 @@ export const OptimizerConfiguration = <T extends FieldValues>({
             field.onChange({ ...field.value, enabled: e.target.checked })
           }
         >
-          <Text>Optimization Enabled</Text>
+          <Text>Optimization enabled</Text>
         </Checkbox>
         <Flex gap={2} alignItems="center">
           <Text color="text.disabled">Optimization Run:</Text>

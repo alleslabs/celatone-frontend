@@ -31,7 +31,7 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
     onViewMore ? 5 : 10
   );
 
-  const title = evm.enabled ? "Cosmos Transactions" : "Transactions";
+  const title = evm.enabled ? "Cosmos transactions" : "Transactions";
   const isMobileOverview = isMobile && !!onViewMore;
 
   return (

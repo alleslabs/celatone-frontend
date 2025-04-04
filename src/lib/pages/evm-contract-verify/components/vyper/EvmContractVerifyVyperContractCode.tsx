@@ -39,7 +39,7 @@ export const EvmContractVerifyVyperContractCode = ({
           Provide Contract Code
         </Heading>
         <ControllerInput
-          label="Contract Name"
+          label="Contract name"
           placeholder="Provide contract name"
           name="verifyForm.vyperContractCode.contractName"
           isRequired
@@ -48,7 +48,7 @@ export const EvmContractVerifyVyperContractCode = ({
           error={contractNameError?.message}
         />
         <ControllerTextarea
-          label="Contract Code"
+          label="Contract code"
           placeholder="Provide contract source code here"
           name="verifyForm.vyperContractCode.contractCode"
           isRequired

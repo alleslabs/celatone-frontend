@@ -17,14 +17,14 @@ export const SavedAccountModalHeader = ({
     <Flex direction="column" gap={1}>
       <Flex gap={4} alignItems="center" pt={6}>
         <Text variant="body2" fontWeight={500} color="text.main" minW={32}>
-          Account Address
+          Account address
         </Text>
         <ExplorerLink value={address} type="user_address" />
       </Flex>
       {move.enabled && (
         <Flex gap={4} alignItems="center">
           <Text variant="body2" fontWeight={500} color="text.main" minW={32}>
-            Hex Address
+            Hex address
           </Text>
           <ExplorerLink
             value={unpadHexAddress(bech32AddressToHex(address))}

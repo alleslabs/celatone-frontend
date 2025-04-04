@@ -9,18 +9,18 @@ import { CardInfo } from "./CardInfo";
 import { DevShortcuts } from "./DevShortcuts";
 
 const txInfo = {
-  title: "Total Transactions",
+  title: "Total transactions",
   tooltip:
     "Verified transactions track network activity and growth, indicating ecosystem health.",
 };
 
 const blockInfo = {
-  title: "Latest Block Height",
+  title: "Latest block height",
   tooltip: "The latest block height indexed by the indexer.",
 };
 
 const blockTimeInfo = {
-  title: "Block Time",
+  title: "Block time",
   tooltip: "Average time to finality of the last 100 indexed blocks.",
 };
 

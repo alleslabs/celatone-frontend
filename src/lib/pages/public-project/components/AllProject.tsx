@@ -94,7 +94,7 @@ export const AllProject = observer(() => {
   return (
     <Box minH="xs" w="100%">
       <InputWithIcon
-        placeholder="Search with Project Name"
+        placeholder="Search with project name"
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}

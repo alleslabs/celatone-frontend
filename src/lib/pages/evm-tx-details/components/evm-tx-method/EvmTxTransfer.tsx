@@ -93,7 +93,7 @@ export const EvmTxTransfer = ({
         }
       />
       <EvmInfoLabelValue
-        label="Transferred Token"
+        label="Transferred token"
         value={
           isSupportedToken(amount) ? (
             <TokenCard token={amount} minW={{ base: "full", md: "50%" }} />

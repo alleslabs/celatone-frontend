@@ -6,7 +6,7 @@ export const SaveCodeButton = () => (
     buttonProps={{
       variant: "outline-primary",
       leftIcon: <CustomIcon name="bookmark" />,
-      children: "Save New Code",
+      children: "Save new code",
     }}
   />
 );

@@ -50,7 +50,7 @@ export const CollectionSupplies = ({
   return (
     <Box mt="32px" gap="40px">
       <InputWithIcon
-        placeholder="Search with Token ID or NFT VM Address"
+        placeholder="Search with token ID or NFT VM address"
         value={searchKeyword}
         autoFocus={!isMobile}
         onChange={(e) => setSearchKeyword(e.target.value)}

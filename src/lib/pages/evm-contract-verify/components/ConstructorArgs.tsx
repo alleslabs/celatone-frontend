@@ -51,7 +51,7 @@ export const ConstructorArgs = <T extends FieldValues>({
           name={`${name}.value` as FieldPath<T>}
           control={control}
           isRequired
-          label="Constructor Arguments"
+          label="Constructor arguments"
           placeholder="ex.000000000000000000000000c005dc82818d67af737725bd4bf75435d065d239"
           variant="fixed-floating"
           labelBgColor="gray.900"

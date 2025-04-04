@@ -23,21 +23,21 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
   const txFee = txInfo.events.find((e) => e.type === "tx")?.attributes[0].value;
   return (
     <ActionPageContainer>
-      <CelatoneSeo pageName="Instantiate Contract" />
+      <CelatoneSeo pageName="Instantiate contract" />
       <CustomIcon name="check-circle-solid" color="success.main" boxSize={12} />
       <Heading as="h5" variant="h5" mt={3} mb={12}>
-        Instantiate Complete!
+        Instantiate complete!
       </Heading>
       <TxReceiptRender
         receipts={[
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             html: (
               <ExplorerLink type="tx_hash" value={txInfo.transactionHash} />
             ),
           },
           {
-            title: "Contract Address",
+            title: "Contract address",
             html: txInfo.contractAddress ? (
               <ExplorerLink
                 type="contract_address"
@@ -46,7 +46,7 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
             ) : undefined,
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}

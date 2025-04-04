@@ -74,13 +74,13 @@ export const StoredCodesTable = observer(
       <Box mt={{ base: 4, md: 8 }}>
         {isMobileOverview ? (
           <MobileTitle
-            title="Stored Codes"
+            title="Stored codes"
             count={totalData}
             onViewMore={onViewMore}
           />
         ) : (
           <AccountSectionWrapper
-            title="Stored Codes"
+            title="Stored codes"
             totalData={totalData}
             hasHelperText={!!codes?.length}
             helperText="This account stored the following codes"

@@ -38,7 +38,7 @@ export const Footer = ({
             {isLoading ? (
               <Spinner size="md" variant="light" />
             ) : (
-              "Submit Proposal"
+              "Submit proposal"
             )}
           </Button>
         </Flex>

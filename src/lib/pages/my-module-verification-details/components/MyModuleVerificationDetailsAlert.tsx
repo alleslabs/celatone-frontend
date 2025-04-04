@@ -55,7 +55,7 @@ export const MyModuleVerificationDetailsAlert = ({
         <Flex gap={3} flexGrow={1}>
           <CustomIcon name="info-circle" color="error.main" boxSize={4} />
           <Stack gap={1}>
-            <AlertTitle>Verification Failed</AlertTitle>
+            <AlertTitle>Verification failed</AlertTitle>
             <AlertDescription wordBreak="break-word" whiteSpace="pre-line">
               There are common problems that lead to verification failures,
               including:
@@ -97,7 +97,7 @@ export const MyModuleVerificationDetailsAlert = ({
             })
           }
         >
-          Resubmit Verification
+          Resubmit verification
         </Button>
       </Alert>
     );

@@ -144,7 +144,7 @@ export const ContractsTableRowCta = ({
                   }}
                   isDisabled={!isAdmin}
                 >
-                  Update Admin
+                  Update admin
                 </MenuItem>
                 <ClearAdminModal
                   contractAddress={contractInfo.contractAddress}
@@ -159,7 +159,7 @@ export const ContractsTableRowCta = ({
                       }
                       isDisabled={!isAdmin}
                     >
-                      Clear Admin
+                      Clear admin
                     </MenuItem>
                   }
                 />

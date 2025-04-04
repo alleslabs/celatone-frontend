@@ -78,8 +78,8 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       setUploaderStatus({ state: "success" });
     },
     onError: () => {
-      setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
-      setUploader("Not Found");
+      setCodeIdStatus({ state: "error", message: "Invalid code ID" });
+      setUploader("Not found");
       setUploaderStatus({ state: "error" });
     },
   });
@@ -137,7 +137,7 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       } else {
         const timer = setTimeout(() => {
           if (isId(codeId)) refetch();
-          else setCodeIdStatus({ state: "error", message: "Invalid Code ID" });
+          else setCodeIdStatus({ state: "error", message: "Invalid code ID" });
         }, 500);
 
         return () => clearTimeout(timer);
@@ -170,10 +170,10 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
   return (
     <ActionModal
-      title="Save New Code"
+      title="Save new code"
       icon="bookmark-solid"
       trigger={<Button {...buttonProps} as="button" />}
-      mainBtnTitle="Save New Code"
+      mainBtnTitle="Save new code"
       mainAction={handleSave}
       otherAction={reset}
       disabledMain={disableMain}
@@ -204,9 +204,9 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           variant="fixed-floating"
           value={name}
           setInputState={setName}
-          label="Code Name"
+          label="Code name"
           labelBgColor="gray.900"
-          placeholder="Untitled Name"
+          placeholder="Untitled name"
           helperText="Fill in code name to define its use as a reminder"
           status={nameStatus}
         />

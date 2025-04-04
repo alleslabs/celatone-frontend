@@ -171,7 +171,7 @@ export const Leaflet = () => {
               alignSelf="center"
             />
             <Heading variant="h5" as="h5">
-              Compatible Upgrade Policy
+              Compatible upgrade policy
             </Heading>
             <ModalCloseButton color="gray.600" />
           </ModalHeader>
@@ -188,7 +188,7 @@ export const Leaflet = () => {
             <Header />
             <StructContent />
             <Heading variant="h6" as="h6" mt={6}>
-              Exposed Functions
+              Exposed functions
             </Heading>
             <Text variant="body2" my={3}>
               New functions can be added, but all old functions must remain a

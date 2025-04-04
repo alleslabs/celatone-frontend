@@ -39,7 +39,7 @@ export const TxMsgDetails = ({ isExpand, ...txMsgData }: TxMsgDetailsProps) => {
         <>
           <DividerWithArrow />
           <Text variant="body2" fontWeight={500} color="text.dark">
-            {plur("Event Log", txMsgData.log.events.length)}
+            {plur("Event log", txMsgData.log.events.length)}
           </Text>
           <Flex direction="column" gap={3} w="full">
             {txMsgData.log.events.map((event, idx) => (

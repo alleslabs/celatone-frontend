@@ -247,7 +247,7 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
         }}
       >
         <CustomIcon name="code" />
-        Code Snippet
+        Code snippet
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
@@ -256,7 +256,7 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
           <ModalHeader>
             <CustomIcon name="code" boxSize={6} color="gray.600" />
             <Heading as="h5" variant="h5">
-              Code Snippet
+              Code snippet
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />

@@ -48,7 +48,7 @@ export const EvmTxMsgDetails = ({
         <>
           <DividerWithArrow />
           <Text variant="body2" fontWeight={500} color="text.dark">
-            {plur("Event Log", evmTxData.txReceipt.logs.length)}
+            {plur("Event log", evmTxData.txReceipt.logs.length)}
           </Text>
           <Flex direction="column" gap={3} w="full">
             {evmTxData.txReceipt.logs.map((log) => (

@@ -71,7 +71,7 @@ export const CollectionSupplyInfo = ({
       <Divider opacity={1} borderColor="gray.700" />
       <div>
         <Flex fontSize="14px" fontWeight={600} align="center" gap="4px">
-          <Text color="gray.400">Max Supply</Text>
+          <Text color="gray.400">Max supply</Text>
           <TooltipInfo label={maxSupplyTooltip} />
         </Flex>
         <Text fontSize="18px" fontWeight={600}>
@@ -91,7 +91,7 @@ export const CollectionSupplyInfo = ({
     >
       <Flex gap="40px" align="center" w="100%">
         <InfoComponent
-          title="Current Supply"
+          title="Current supply"
           content={currentSupply}
           tooltip={currentSupplyTooltip}
         />
@@ -99,7 +99,7 @@ export const CollectionSupplyInfo = ({
           =
         </Text>
         <InfoComponent
-          title="Total Minted"
+          title="Total minted"
           content={totalMinted}
           tooltip={totalMintedTooltip}
         />
@@ -107,7 +107,7 @@ export const CollectionSupplyInfo = ({
           -
         </Text>
         <InfoComponent
-          title="Total Burned"
+          title="Total burned"
           content={totalBurned}
           tooltip={totalBurnedTooltip}
         />
@@ -116,7 +116,7 @@ export const CollectionSupplyInfo = ({
       <Flex w="248px" gap="48px" align="center" ml="48px">
         <Divider orientation="vertical" height="47px" borderWidth="1px" />
         <InfoComponent
-          title="Max Supply"
+          title="Max supply"
           content={maxSupply}
           tooltip={maxSupplyTooltip}
         />

@@ -6,7 +6,7 @@ export const UpdateWalletRegistry = () => {
   return (
     <Flex direction="column" gap={8}>
       <Flex direction="column" gap={6}>
-        <CustomNetworkSubheader title="Account Prefix and Registered Coin Type" />
+        <CustomNetworkSubheader title="Account prefix and registered coin type" />
         <Flex bg="teal">form goes here</Flex>
       </Flex>
       <Flex direction="column" gap={6}>

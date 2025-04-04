@@ -18,7 +18,7 @@ export const postEvmTx = <T extends TxReceiptJsonRpc>({
         phase: TxStreamPhase.BROADCAST,
         receipts: [
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             html: (
               <ExplorerLink
                 type="evm_tx_hash"
@@ -28,7 +28,7 @@ export const postEvmTx = <T extends TxReceiptJsonRpc>({
             ),
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             // TODO: Implement event/rawlog attribute picker
             html: (
               <EstimatedFeeEvmRender
@@ -40,7 +40,7 @@ export const postEvmTx = <T extends TxReceiptJsonRpc>({
           },
         ],
         receiptInfo: {
-          header: "Sending Transaction",
+          header: "Sending transaction",
         },
         actionVariant: "sending",
       } as TxResultRendering<T>;

@@ -42,13 +42,13 @@ import { jsonPrettify } from "lib/utils";
 // });
 
 // const TabMenu = [
-//   { name: "Network Details", key: "network-details" },
-//   { name: "Supported Features", key: "supported-features" },
-//   { name: "Gas & Fee Details", key: "gas-fee-details" },
-//   { name: "Wallet Registry", key: "wallet-registry" },
+//   { name: "Network details", key: "network-details" },
+//   { name: "Supported features", key: "supported-features" },
+//   { name: "Gas & Fee details", key: "gas-fee-details" },
+//   { name: "Wallet registry", key: "wallet-registry" },
 // ];
 
-const InvalidChainId = () => <InvalidState title="Invalid Chain ID" />;
+const InvalidChainId = () => <InvalidState title="Invalid chain ID" />;
 
 interface NetworkConfigBodyProps {
   chainId: string;
@@ -98,14 +98,14 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
     <ActionPageContainer width={900}>
       <CustomNetworkPageHeader
         title={chainConfig.prettyName}
-        subtitle="Your Custom Rollup"
+        subtitle="Your custom rollup"
         hasAlert={false}
       />
       <Stack gap={12} mt={8} w="full">
         <Flex justifyContent="space-between" gap={10}>
           <CustomNetworkSubheader
             title="Export as JSON File"
-            subtitle="You can export this Custom Rollup configuration in JSON file to use them in other device."
+            subtitle="You can export this custom rollup configuration in JSON file to use them in other device."
           />
           <Button
             minW={168}
@@ -145,7 +145,7 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   //     <ActionPageContainer width={900}>
   //       <CustomNetworkPageHeader
   //         title={chainConfig.prettyName}
-  //         subtitle="Your Custom Rollup"
+  //         subtitle="Your custom rollup"
   //         hasAlert={false}
   //       />
   //       <Tabs variant="unstyled" orientation="vertical" mt={6}>

@@ -115,7 +115,7 @@ export const BookmarkButton = observer(
             variant="outline-gray"
             hasText={hasText}
             icon="bookmark"
-            actionText="Bookmark Project"
+            actionText="Bookmark project"
             action={(e) => {
               if (details) {
                 e.stopPropagation();

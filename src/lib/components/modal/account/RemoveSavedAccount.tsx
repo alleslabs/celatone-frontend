@@ -62,17 +62,17 @@ export function RemoveSavedAccountModal({
       icon="delete"
       iconColor="error.light"
       mainVariant="error"
-      mainBtnTitle="Yes, Remove It"
+      mainBtnTitle="Yes, remove it"
       mainAction={() => {
         track(AmpEvent.ACCOUNT_REMOVE);
         handleRemove();
       }}
-      otherBtnTitle="No, Keep It"
+      otherBtnTitle="No, keep it"
       trigger={trigger}
     >
       <Text>
         <Highlight
-          query={[displayName, "Saved Accounts"]}
+          query={[displayName, "Saved accounts"]}
           styles={{ fontWeight: "bold", color: "inherit" }}
         >
           {`This action will remove \u2018${displayName}\u2019 from Saved Accounts. 

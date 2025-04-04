@@ -51,7 +51,7 @@ export const AssetInput = ({
     >
       <Text className="form-label">Asset</Text>
       <SelectInput<AssetOptionValue>
-        placeholder="Select Asset"
+        placeholder="Select asset"
         options={assetOptions}
         menuPortalTarget={document.body}
         value={value}

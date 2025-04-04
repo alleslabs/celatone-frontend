@@ -6,7 +6,7 @@ import { AmpEvent, track } from "lib/amplitude";
 import { MotionBox } from "lib/components/MotionBox";
 
 export enum ModuleFileTabs {
-  SOURCE_CODE = "Source Code",
+  SOURCE_CODE = "Source code",
   TOML = "Move.toml",
 }
 

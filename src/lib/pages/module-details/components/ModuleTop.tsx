@@ -227,7 +227,7 @@ export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
           direction={{ base: "column", md: "row" }}
         >
           <Text {...baseTextStyle} color="text.main">
-            Module Path:
+            Module path:
           </Text>
           <CopyLink
             value={mergeModulePath(moduleData.address, moduleData.moduleName)}

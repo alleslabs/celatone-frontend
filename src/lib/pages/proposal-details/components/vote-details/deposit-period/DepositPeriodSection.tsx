@@ -72,7 +72,7 @@ export const DepositPeriodSection = ({
                 whiteSpace="nowrap"
                 lineHeight={1.8}
               >
-                Total Deposited
+                Total deposited
               </Text>
               <TooltipInfo
                 label="After reaching the total deposit amount, the proposal proceeds to the voting period."

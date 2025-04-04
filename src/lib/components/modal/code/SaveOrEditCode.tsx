@@ -23,7 +23,7 @@ export const SaveOrEditCodeModal = observer(
             size={{ base: "sm", md: "md" }}
             leftIcon={<CustomIcon name="bookmark" />}
           >
-            Save Code
+            Save code
           </Button>
         }
       />

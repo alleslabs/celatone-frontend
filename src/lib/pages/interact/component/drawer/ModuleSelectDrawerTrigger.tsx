@@ -24,7 +24,7 @@ interface ModuleSelectDrawerTriggerProps {
 
 export const ModuleSelectDrawerTrigger = ({
   triggerVariant,
-  buttonText = "Select Module",
+  buttonText = "Select module",
   onOpen,
 }: ModuleSelectDrawerTriggerProps) => (
   <Button

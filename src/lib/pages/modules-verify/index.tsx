@@ -110,7 +110,7 @@ export const ModulesVerifyBody = observer(
 
     return (
       <>
-        <CelatoneSeo pageName="Modules Verify" />
+        <CelatoneSeo pageName="Modules verify" />
         {isMobile ? (
           <NoMobile />
         ) : (

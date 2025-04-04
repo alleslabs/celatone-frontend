@@ -62,7 +62,7 @@ export const PastTxsSequencer = () => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="Past Transactions" />
+      <CelatoneSeo pageName="Past transactions" />
       <Flex justifyContent="space-between" alignItems="center">
         <Heading
           variant="h5"
@@ -71,13 +71,13 @@ export const PastTxsSequencer = () => {
           display="flex"
           alignItems="center"
         >
-          Past Transactions
+          Past transactions
         </Heading>
         <UserDocsLink isButton href="general/transactions/past-txs" />
       </Flex>
       <Flex my={8}>
         <InputWithIcon
-          placeholder="Search with Transaction Hash"
+          placeholder="Search with transaction hash"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           size={{ base: "md", md: "lg" }}

@@ -59,7 +59,7 @@ export const EditSavedAccountModal = ({
   }, [resetForm]);
 
   const handleSave = useHandleAccountSave({
-    title: `Updated Saved Account!`,
+    title: `Updated saved account!`,
     address: addressState,
     name: nameState,
     description: descriptionState,
@@ -88,7 +88,7 @@ export const EditSavedAccountModal = ({
         <ControllerInput
           name="name"
           control={control}
-          label="Account Name"
+          label="Account name"
           variant="fixed-floating"
           placeholder="ex. Scan Account 1"
           labelBgColor="gray.900"
@@ -103,7 +103,7 @@ export const EditSavedAccountModal = ({
         <ControllerTextarea
           name="description"
           control={control}
-          label="Account Description"
+          label="Account description"
           placeholder="Help understanding what this account does ..."
           variant="fixed-floating"
           labelBgColor="gray.900"

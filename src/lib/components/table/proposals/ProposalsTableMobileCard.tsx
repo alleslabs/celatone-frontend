@@ -56,7 +56,7 @@ export const ProposalsTableMobileCard = ({
             isDepositOrVoting={isDepositOrVoting}
           />
           <Flex direction="column" gap={1}>
-            <MobileLabel label="Voting Ends" />
+            <MobileLabel label="Voting ends" />
             <VotingEndTime
               votingEndTime={proposal.votingEndTime}
               depositEndTime={proposal.depositEndTime}
@@ -75,7 +75,7 @@ export const ProposalsTableMobileCard = ({
         isFullTier && (
           <>
             <Flex direction="column" flex={1}>
-              <MobileLabel label="Resolved Block Height" />
+              <MobileLabel label="Resolved block height" />
               <ResolvedHeight
                 resolvedHeight={proposal.resolvedHeight}
                 isDepositOrVoting={isDepositOrVoting}

@@ -48,7 +48,7 @@ export const ValidatorVotesPanel = ({
         <Button variant="ghost-gray" size="sm" p={0} onClick={onBack}>
           <CustomIcon name="chevron-left" boxSize={4} />
         </Button>
-        <TableTitle title="Validator Votes" count={answers?.total} />
+        <TableTitle title="Validator votes" count={answers?.total} />
       </Flex>
       <ValidatorVotesTable
         id={id}

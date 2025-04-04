@@ -81,7 +81,7 @@ export const UnsupportedSection = ({
       <Flex alignItems="center" mb={12}>
         <Flex grow={2} gap={4}>
           <InputWithIcon
-            placeholder="Search with Pool ID or Token ID"
+            placeholder="Search with pool ID or token ID"
             value={keyword}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setCurrentPage(1);
@@ -145,7 +145,7 @@ export const UnsupportedSection = ({
                 setShowNewest(isDesc);
               }}
             >
-              {showNewest ? "Newest First" : "Oldest First"}
+              {showNewest ? "Newest first" : "Oldest first"}
               <CustomIcon
                 name={showNewest ? "arrow-down" : "arrow-up"}
                 color="text.dark"
@@ -171,7 +171,7 @@ export const UnsupportedSection = ({
                 );
               }}
             >
-              {expandedIndexes.length ? "Collapse All" : "Expand All"}
+              {expandedIndexes.length ? "Collapse all" : "Expand all"}
             </Button>
           </Flex>
         </Flex>

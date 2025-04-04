@@ -18,8 +18,8 @@ export const ContractsTableHeader = ({
   withCta?: CtaInfo;
 }) => (
   <Grid templateColumns={templateColumns} minW="min-content">
-    <TableHeader>Contract Address</TableHeader>
-    <TableHeader>Contract Name</TableHeader>
+    <TableHeader>Contract address</TableHeader>
+    <TableHeader>Contract name</TableHeader>
     {showTag && <TableHeader>Tags</TableHeader>}
     {showLastUpdate && <TableHeader>Instantiator</TableHeader>}
     {!isReadOnly && (

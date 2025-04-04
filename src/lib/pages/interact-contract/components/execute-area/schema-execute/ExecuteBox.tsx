@@ -348,7 +348,7 @@ export const ExecuteBox = ({
               justifyContent="space-between"
             >
               <Flex fontSize="14px" color="text.dark" alignItems="center">
-                Transaction Fee:{" "}
+                Transaction fee:{" "}
                 <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
               </Flex>
               <Button

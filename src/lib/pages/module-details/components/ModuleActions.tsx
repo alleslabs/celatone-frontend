@@ -36,7 +36,7 @@ export const ModuleActions = ({
     {
       icon: "query" as IconKeys,
       iconColor: "primary.main",
-      name: "View Functions",
+      name: "View functions",
       count: viewFns,
       onClick: () =>
         onSelectAction(TabIndex.Function, FunctionTypeTabIndex.VIEW),
@@ -46,7 +46,7 @@ export const ModuleActions = ({
     {
       icon: "execute" as IconKeys,
       iconColor: "secondary.main",
-      name: "Execute Functions",
+      name: "Execute functions",
       count: executeFns,
       onClick: () =>
         onSelectAction(TabIndex.Function, FunctionTypeTabIndex.EXECUTE),

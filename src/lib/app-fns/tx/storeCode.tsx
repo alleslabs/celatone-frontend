@@ -85,7 +85,7 @@ export const storeCodeTx = ({
                 ),
               },
               {
-                title: "Tx Hash",
+                title: "Tx hash",
                 value: txInfo.transactionHash,
                 html: (
                   <ExplorerLink
@@ -96,7 +96,7 @@ export const storeCodeTx = ({
                 ),
               },
               {
-                title: "Tx Fee",
+                title: "Tx fee",
                 html: (
                   <EstimatedFeeRender
                     estimatedFee={feeFromStr(txFee)}
@@ -106,7 +106,7 @@ export const storeCodeTx = ({
               },
             ],
             receiptInfo: {
-              header: "Upload Wasm Complete!",
+              header: "Upload Wasm complete!",
               description: (
                 <>
                   <span style={{ fontWeight: 700 }}>

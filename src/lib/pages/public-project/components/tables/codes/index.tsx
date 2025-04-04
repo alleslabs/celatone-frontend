@@ -36,8 +36,8 @@ const TEMPLATE_COLUMNS =
 const CodeTableHeader = () => (
   <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
     <TableHeader>Code ID</TableHeader>
-    <TableHeader>Code Name</TableHeader>
-    <TableHeader>CW2 Info</TableHeader>
+    <TableHeader>Code name</TableHeader>
+    <TableHeader>CW2 info</TableHeader>
     <TableHeader textAlign="center">Contracts</TableHeader>
     <TableHeader>Uploader</TableHeader>
     <TableHeader>Permission</TableHeader>
@@ -122,7 +122,7 @@ export const PublicProjectCodeTable = observer(
         <TableTitle title="Codes" count={codes.length} />
         {!onViewMore && (
           <InputWithIcon
-            placeholder="Search with Code ID or Code Name"
+            placeholder="Search with code ID or code name"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
             size={{ base: "md", md: "lg" }}

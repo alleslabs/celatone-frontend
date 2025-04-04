@@ -70,7 +70,7 @@ export const SearchResultItemBody = ({
       </Flex>
     );
 
-  if (result.type === "NFT Collection Address" || result.type === "NFT Address")
+  if (result.type === "NFT collection address" || result.type === "NFT address")
     return (
       <Flex direction="column">
         <Text
@@ -95,10 +95,10 @@ export const SearchResultItemBody = ({
 
   if (
     isAccountAddress ||
-    result.type === "Validator Address" ||
-    result.type === "Transaction Hash" ||
-    result.type === "EVM Transaction Hash" ||
-    result.type === "Module Path"
+    result.type === "Validator address" ||
+    result.type === "Transaction hash" ||
+    result.type === "EVM transaction hash" ||
+    result.type === "Module path"
   )
     return (
       <Flex gap={{ base: 0, md: 1 }} direction="column">

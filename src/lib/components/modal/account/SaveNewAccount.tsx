@@ -32,7 +32,7 @@ export interface SaveAccountDetail {
 
 const statusSuccess: FormStatus = {
   state: "success",
-  message: "Valid Address",
+  message: "Valid address",
 };
 
 interface SaveNewAccountModalProps {
@@ -129,7 +129,7 @@ export function SaveNewAccountModal({
       setIsContract(false);
       const timeoutId = setTimeout(() => {
         if (!isSomeValidAddress(addressState)) {
-          setErrorStatus("Invalid Address");
+          setErrorStatus("Invalid address");
           return;
         }
 
@@ -170,10 +170,10 @@ export function SaveNewAccountModal({
 
   return (
     <ActionModal
-      title="Save New Account"
+      title="Save new account"
       icon="bookmark-solid"
       trigger={<Button as="button" {...buttonProps} />}
-      mainBtnTitle="Save New Account"
+      mainBtnTitle="Save new account"
       mainAction={handleSave}
       otherAction={resetForm}
       disabledMain={
@@ -186,7 +186,7 @@ export function SaveNewAccountModal({
         <ControllerInput
           name="address"
           control={control}
-          label="Account Address"
+          label="Account address"
           variant="fixed-floating"
           placeholder={`ex. ${exampleUserAddress}`}
           status={status}
@@ -204,7 +204,7 @@ export function SaveNewAccountModal({
         <ControllerInput
           name="name"
           control={control}
-          label="Account Name"
+          label="Account name"
           variant="fixed-floating"
           placeholder="ex. Scan Account 1"
           labelBgColor="gray.900"
@@ -219,7 +219,7 @@ export function SaveNewAccountModal({
         <ControllerTextarea
           name="description"
           control={control}
-          label="Account Description"
+          label="Account description"
           placeholder="Help understanding what this account does ..."
           variant="fixed-floating"
           labelBgColor="gray.900"

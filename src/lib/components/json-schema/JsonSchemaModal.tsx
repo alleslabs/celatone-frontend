@@ -42,7 +42,7 @@ export const JsonSchemaModal = ({
       <ModalHeader>
         <CustomIcon name="code" boxSize={6} color="gray.600" />
         <Heading as="h5" variant="h5">
-          Attach JSON Schema for code ID “{codeId}”
+          Attach JSON schema for code ID “{codeId}”
         </Heading>
       </ModalHeader>
       <ModalCloseButton color="gray.600" />

@@ -42,7 +42,7 @@ export const InteractionBodySectionMobile = ({
           py={4}
         />
         <Button variant="primary" onClick={openDrawer}>
-          {!module ? "Select Module" : "Select Function"}
+          {!module ? "Select module" : "Select function"}
         </Button>
       </Flex>
     )}

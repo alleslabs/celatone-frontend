@@ -26,7 +26,7 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
       <Flex mt={12} mb={4} justifyContent="space-between" align="center">
         <Flex gap={2} align="center">
           <Heading as="h6" variant="h6">
-            Pool Assets
+            Pool assets
           </Heading>
           <Badge variant="gray" color="text.main" textColor="text.main">
             {pool.liquidity.length}
@@ -34,7 +34,7 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
         </Flex>
         {pool.isSupported && (
           <Text variant="body2" color="text.dark" fontWeight={500}>
-            Total Liquidity:
+            Total liquidity:
             <Text as="span" fontWeight={700} color="text.main" ml={2}>
               {pool.liquidity ? formatPrice(totalLiquidity) : "N/A"}
             </Text>

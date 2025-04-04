@@ -13,12 +13,12 @@ export const sendingTx = (fee: StdFee) => {
       phase: TxStreamPhase.BROADCAST,
       receipts: [
         {
-          title: "Estimated Tx Fee",
+          title: "Estimated tx fee",
           html: <EstimatedFeeRender estimatedFee={fee} loading={false} />,
         },
       ],
       receiptInfo: {
-        header: "Sending Transaction",
+        header: "Sending transaction",
         headerIcon: <Spinner size="md" />,
       },
       actionVariant: "sending",

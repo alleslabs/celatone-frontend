@@ -128,7 +128,7 @@ export const ContractListDetail = ({
       >
         <GridItem w="full">
           <InputWithIcon
-            placeholder="Search with Contract Address, Name, or Description"
+            placeholder="Search with contract address, name, or description"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
             size={{ base: "md", md: "lg" }}

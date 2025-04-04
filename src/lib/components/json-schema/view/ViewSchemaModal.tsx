@@ -91,7 +91,7 @@ export const ViewSchemaModal = ({
         </Tooltip>
       ) : (
         <Button variant="outline-gray" size="sm" onClick={handleView}>
-          View Schema
+          View schema
         </Button>
       )}
       <Modal
@@ -107,7 +107,7 @@ export const ViewSchemaModal = ({
             <Flex alignItems="center" gap={2}>
               <CustomIcon name="view" boxSize={6} color="gray.600" />
               <Heading as="h5" variant="h5">
-                View JSON Schema for code ID “{codeId}”
+                View JSON schema for code ID “{codeId}”
               </Heading>
             </Flex>
             <AppLink
@@ -129,7 +129,7 @@ export const ViewSchemaModal = ({
               onChange={trackTabOnChange}
             >
               <TabList>
-                <StyledCustomTab>Full Schema</StyledCustomTab>
+                <StyledCustomTab>Full schema</StyledCustomTab>
                 {SchemaMsgTabList.map((schemaProperty) => (
                   <StyledCustomTab key={schemaProperty}>
                     {capitalize(schemaProperty)}Msg

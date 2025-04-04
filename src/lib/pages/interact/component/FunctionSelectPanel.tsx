@@ -118,7 +118,7 @@ export const FunctionSelectPanel = ({
       <InputWithIcon
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        placeholder="Search with Function Name"
+        placeholder="Search with function name"
         size="md"
         amptrackSection="function-select-panel-search"
       />

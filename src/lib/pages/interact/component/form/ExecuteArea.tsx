@@ -183,7 +183,7 @@ export const ExecuteArea = ({
         />
         <Flex direction="row" align="center" gap={2}>
           <Flex fontSize="14px" color="text.dark" alignItems="center">
-            Transaction Fee:{" "}
+            Transaction fee:{" "}
             <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
           </Flex>
           <SubmitButton

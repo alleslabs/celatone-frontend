@@ -159,7 +159,7 @@ const ContractDetailsBody = observer(
               Transactions & Histories
             </CustomTab>
             <CustomTab onClick={handleTabChange(TabIndex.States)}>
-              Contract States
+              Contract states
             </CustomTab>
           </TabList>
           <TabPanels>
@@ -213,7 +213,7 @@ const ContractDetailsBody = observer(
                 <Flex direction="column" gap={6}>
                   {!isMobile && (
                     <Heading as="h6" variant="h6" minW="fit-content">
-                      Contract Information
+                      Contract information
                     </Heading>
                   )}
                   <Flex
@@ -225,7 +225,7 @@ const ContractDetailsBody = observer(
                     <div>
                       {isMobile && (
                         <Heading as="h6" variant="h6" mb={6}>
-                          Instantiate Info
+                          Instantiate info
                         </Heading>
                       )}
                       <InstantiateInfo
@@ -241,7 +241,7 @@ const ContractDetailsBody = observer(
                         pr={1}
                         onClick={handleTabChange(TabIndex.States)}
                       >
-                        View Contract States
+                        View contract states
                         <CustomIcon name="chevron-right" boxSize={3} />
                       </Button>
                     </div>
@@ -252,13 +252,13 @@ const ContractDetailsBody = observer(
                       mt={{ base: 12, md: 0 }}
                     >
                       <JsonInfo
-                        header="Contract Info"
+                        header="Contract info"
                         jsonString={jsonPrettify(
                           JSON.stringify(contractApi?.contract_info ?? {})
                         )}
                       />
                       <JsonInfo
-                        header="Instantiate Message"
+                        header="Instantiate message"
                         jsonString={jsonPrettify(contract.initMsg)}
                         defaultExpand
                       />
@@ -276,8 +276,8 @@ const ContractDetailsBody = observer(
             <TabPanel p={0}>
               <AssetsSection address={contractAddress} />
               <UserDocsLink
-                title="What is Supported and Unsupported Assets? "
-                cta="Read more about Assets"
+                title="What is supported and unsupported assets? "
+                cta="Read more about assets"
                 href="cosmwasm/contracts/detail-page#assets"
               />
             </TabPanel>

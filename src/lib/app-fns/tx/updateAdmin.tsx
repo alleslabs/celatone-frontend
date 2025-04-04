@@ -44,7 +44,7 @@ export const updateAdminTx = ({
         phase: TxStreamPhase.SUCCEED,
         receipts: [
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             value: txInfo.transactionHash,
             html: (
               <ExplorerLink
@@ -55,7 +55,7 @@ export const updateAdminTx = ({
             ),
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
@@ -65,7 +65,7 @@ export const updateAdminTx = ({
           },
         ],
         receiptInfo: {
-          header: "Update Admin Complete!",
+          header: "Update admin complete!",
           headerIcon: (
             <CustomIcon name="check-circle-solid" color="success.main" />
           ),

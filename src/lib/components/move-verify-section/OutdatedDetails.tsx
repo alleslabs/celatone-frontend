@@ -44,7 +44,7 @@ export const OutdatedDetails = () => {
         variant="ghost-primary"
         size="sm"
       >
-        Submit Verification
+        Submit verification
       </Button>
     </>
   );

@@ -49,12 +49,12 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
     case ProposalStatus.DEPOSIT_PERIOD:
       return (
         <>
-          <InfoItem label="Deposit Start">
+          <InfoItem label="Deposit start">
             <Text variant="body2" color="text.dark">
               {formatUTC(data.submitTime)}
             </Text>
           </InfoItem>
-          <InfoItem label="Deposit End">
+          <InfoItem label="Deposit end">
             <Text variant="body2" color="text.dark">
               {formatUTC(data.depositEndTime)}
             </Text>
@@ -73,12 +73,12 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
     case ProposalStatus.VOTING_PERIOD:
       return (
         <>
-          <InfoItem label="Voting Start">
+          <InfoItem label="Voting start">
             <Text variant="body2" color="text.dark">
               {data.votingTime ? `${formatUTC(data.votingTime)}` : "N/A"}
             </Text>
           </InfoItem>
-          <InfoItem label="Voting End">
+          <InfoItem label="Voting end">
             <Text variant="body2" color="text.dark">
               {data.votingEndTime ? `${formatUTC(data.votingEndTime)}` : "N/A"}
             </Text>
@@ -90,7 +90,7 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
     case ProposalStatus.REJECTED:
       return (
         <ResolvedTimeInfoItems
-          resolvedHeightLabel="Resolved Block Height"
+          resolvedHeightLabel="Resolved block height"
           resolvedTimestampLabel="Resolved at"
           resolvedHeight={data.resolvedHeight}
           resolvedTimestamp={data.resolvedTimestamp}
@@ -107,7 +107,7 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
       );
     default:
       return (
-        <InfoItem label="Proposal Status">
+        <InfoItem label="Proposal status">
           <Flex>N/A</Flex>
         </InfoItem>
       );

@@ -69,7 +69,7 @@ const InitRender = ({
 }: Contract) => {
   if (initTxHash) {
     return (
-      <LabelText label="Instantiate Transaction">
+      <LabelText label="Instantiate transaction">
         <ExplorerLink
           type="tx_hash"
           value={initTxHash.toUpperCase()}
@@ -83,7 +83,7 @@ const InitRender = ({
   if (initProposalTitle && initProposalId) {
     return (
       <LabelText
-        label="Instantiate Proposal ID"
+        label="Instantiate proposal ID"
         helperText1={initProposalTitle}
       >
         <ExplorerLink
@@ -101,7 +101,7 @@ const InitRender = ({
       <Text variant="body2">Genesis</Text>
     </LabelText>
   ) : (
-    <LabelText label="Instantiate Transaction">
+    <LabelText label="Instantiate transaction">
       <Text variant="body2">N/A</Text>
     </LabelText>
   );
@@ -132,7 +132,7 @@ export const InstantiateInfo = ({
         <LabelText flex={1} label="Network">
           {chainId}
         </LabelText>
-        <LabelText flex={1} label="From Code" helperText1={codeLocalInfo?.name}>
+        <LabelText flex={1} label="From code" helperText1={codeLocalInfo?.name}>
           <Flex direction="column">
             <Flex gap={1}>
               <ExplorerLink
@@ -170,7 +170,7 @@ export const InstantiateInfo = ({
                           textDecorationColor: "primary.light",
                         }}
                       >
-                        Verify Code
+                        Verify code
                       </Text>
                     }
                   />
@@ -180,21 +180,21 @@ export const InstantiateInfo = ({
         </LabelText>
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 4, md: 6 }}>
-        <LabelText flex={1} label="CW2 Info">
+        <LabelText flex={1} label="CW2 info">
           {cw2 ? (
             <Text variant="body2" wordBreak="break-all">
               {cw2}
             </Text>
           ) : (
             <Text variant="body2" color="text.dark">
-              No Info
+              No info
             </Text>
           )}
         </LabelText>
         {contract.admin ? (
           <LabelText
             flex={1}
-            label="Admin Address"
+            label="Admin address"
             helperText1={getAddressTypeText(adminType)}
           >
             <ExplorerLink
@@ -205,9 +205,9 @@ export const InstantiateInfo = ({
             />
           </LabelText>
         ) : (
-          <LabelText flex={1} label="Admin Address">
+          <LabelText flex={1} label="Admin address">
             <Text variant="body2" color="text.dark">
-              No Admin
+              No admin
             </Text>
           </LabelText>
         )}
@@ -215,7 +215,7 @@ export const InstantiateInfo = ({
       <Divider border="1px solid" borderColor="gray.700" />
       <LabelText
         flex={1}
-        label="Instantiated Block Height"
+        label="Instantiated block height"
         helperText1={
           contract.createdTimestamp
             ? formatUTC(contract.createdTimestamp)
@@ -259,7 +259,7 @@ export const InstantiateInfo = ({
       </Flex>
       <Flex direction={{ base: "row", md: "column" }} gap={{ base: 1, md: 6 }}>
         {contractApi?.contract_info.ibc_port_id && (
-          <LabelText label="IBC Port ID">
+          <LabelText label="IBC port ID">
             <PortIdRender portId={contractApi.contract_info.ibc_port_id} />
           </LabelText>
         )}

@@ -45,7 +45,7 @@ export const ModuleSourceCode = ({
                 <Flex align="center" gap={1}>
                   <MoveVerifyBadge status={moveVerifyStatus} />
                   <Heading as="h6" variant="h7" textAlign="left">
-                    Verified Module Source Code
+                    Verified module source code
                   </Heading>
                 </Flex>
                 <Text
@@ -118,19 +118,19 @@ export const ModuleSourceCode = ({
             </Box>
             <Flex gap={4} flexWrap="wrap" rowGap={1}>
               <Text variant="body2" fontWeight={600} mr={2} color="text.dark">
-                Advanced Settings
+                Advanced settings
               </Text>
               {[
                 {
-                  label: "Language Version",
+                  label: "Language version",
                   value: verificationData.languageVersion,
                 },
                 {
-                  label: "Compiler Version",
+                  label: "Compiler version",
                   value: verificationData.compilerVersion,
                 },
                 {
-                  label: "Bytecode Version",
+                  label: "Bytecode version",
                   value: verificationData.bytecodeVersion,
                 },
               ].map(({ label, value }) => (

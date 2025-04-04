@@ -6,18 +6,18 @@ export const getRouteOptions = (
   isEvm: boolean
 ): Nullable<{ pathname: string; query: string[] }> => {
   switch (type) {
-    case "Account Address":
+    case "Account address":
       return {
         pathname: "/accounts/[accountAddress]",
         query: ["accountAddress"],
       };
-    case "Transaction Hash":
+    case "Transaction hash":
       return { pathname: "/txs/[txHash]", query: ["txHash"] };
-    case "EVM Transaction Hash":
+    case "EVM transaction hash":
       return { pathname: "/evm-txs/[txHash]", query: ["txHash"] };
     case "Code ID":
       return { pathname: "/codes/[codeId]", query: ["codeId"] };
-    case "Contract Address":
+    case "Contract address":
       return {
         pathname: isEvm
           ? "/evm-contracts/[contractAddress]"
@@ -28,24 +28,24 @@ export const getRouteOptions = (
       return { pathname: "/blocks/[height]", query: ["height"] };
     case "Proposal ID":
       return { pathname: "/proposals/[proposalId]", query: ["proposalId"] };
-    case "Validator Address":
+    case "Validator address":
       return {
         pathname: "/validators/[validatorAddress]",
         query: ["validatorAddress"],
       };
     case "Pool ID":
       return { pathname: "/pools/[poolId]", query: ["poolId"] };
-    case "Module Path":
+    case "Module path":
       return {
         pathname: "/modules/[address]/[moduleName]",
         query: ["address", "moduleName"],
       };
-    case "NFT Address":
+    case "NFT address":
       return {
         pathname: "/nft-collections/[collectionAddress]/nft/[nftAddress]",
         query: ["collectionAddress", "nftAddress"],
       };
-    case "NFT Collection Address":
+    case "NFT collection address":
       return {
         pathname: "/nft-collections/[collectionAddress]",
         query: ["collectionAddress"],

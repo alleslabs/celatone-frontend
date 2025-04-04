@@ -56,7 +56,7 @@ export const ContractsTableMobileCard = ({
     onClick={() => onRowSelect(contractInfo.contractAddress)}
     topContent={
       <Flex gap={2} align="center">
-        <MobileLabel variant="body2" label="Contract Address" />
+        <MobileLabel variant="body2" label="Contract address" />
         <ExplorerLink
           value={contractInfo.contractAddress}
           type="contract_address"
@@ -76,7 +76,7 @@ export const ContractsTableMobileCard = ({
       showLastUpdate && (
         <Flex gap={3} direction="column" w="full">
           <div>
-            <MobileLabel label="Contract Name" />
+            <MobileLabel label="Contract name" />
             <Text
               variant="body2"
               maxW="full"

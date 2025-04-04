@@ -28,7 +28,7 @@ export const MsgToken = ({
     <Copier
       type={isSupportedToken(token) ? "supported_asset" : "unsupported_asset"}
       value={token.denom}
-      copyLabel="Token ID Copied!"
+      copyLabel="Token ID copied!"
       display="none"
       ml={1}
       amptrackSection={ampCopierSection}

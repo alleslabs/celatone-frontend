@@ -25,7 +25,7 @@ export default function AddButton<
       fontSize="12px"
       {...props}
     >
-      Add More
+      Add more
     </Button>
   );
 }

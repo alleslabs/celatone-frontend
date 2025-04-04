@@ -160,7 +160,7 @@ export const TxMsgExpand = ({
             textVariant="body1"
             ampCopierSection="tx_page_message_header_contract"
           />{" "}
-          to Code ID{" "}
+          to code ID{" "}
           <ExplorerLink
             type="code_id"
             value={body.code_id as string}
@@ -243,7 +243,7 @@ export const TxMsgExpand = ({
       msgIcon = "submit-proposal";
       content = (
         <Flex gap={1} display="inline">
-          Submit Proposal {(body.is_expedited as boolean) && " Expedited "}
+          Submit proposal {(body.is_expedited as boolean) && " expedited "}
           {log && (
             <>
               ID{" "}

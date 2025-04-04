@@ -77,7 +77,7 @@ const zContractsResponseItemRest = zBechAddr32.transform<ContractInfo>(
 
 export const zContractsResponseRest = z
   .object({
-    contracts: z.array(zContractsResponseItemRest).default([]), // by code id case
+    contracts: z.array(zContractsResponseItemRest).default([]), // by code ID case
     contract_addresses: z.array(zContractsResponseItemRest).optional(),
     pagination: zPagination,
   })

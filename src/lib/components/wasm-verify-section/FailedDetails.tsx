@@ -75,7 +75,7 @@ export const FailedDetails = ({
           relatedVerifiedCodes={relatedVerifiedCodes}
           triggerElement={
             <Button variant="ghost-primary" size="sm">
-              View Details
+              View details
             </Button>
           }
         />
@@ -89,7 +89,7 @@ export const FailedDetails = ({
               relatedVerifiedCodes,
             })}
             relatedVerifiedCodes={relatedVerifiedCodes}
-            label="Reverify Code"
+            label="Reverify code"
           />
         )}
       </Flex>

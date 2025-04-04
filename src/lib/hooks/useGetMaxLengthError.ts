@@ -26,8 +26,8 @@ export const useGetMaxLengthError = () => {
       };
 
       const fieldMap: Record<MaxLengthType, string> = {
-        account_name: "Account Name",
-        account_desc: "Account Description",
+        account_name: "Account name",
+        account_desc: "Account description",
         proposal_title: "Proposal title",
         code_name: "Code name",
         contract_name: "Contract name",

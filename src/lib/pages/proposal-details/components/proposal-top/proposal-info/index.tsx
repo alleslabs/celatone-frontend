@@ -21,14 +21,14 @@ export const ProposalInfo = ({ data }: ProposalStatusProps) => (
     borderRadius="8px"
     background="gray.900"
   >
-    <InfoItem label="Proposal Status">
+    <InfoItem label="Proposal status">
       <Flex minW="110px">
         <StatusChip status={data.status} />
       </Flex>
     </InfoItem>
     <Flex gap={8}>
       {data.createdTxHash && (
-        <InfoItem label="Created Tx" minW={36}>
+        <InfoItem label="Created tx" minW={36}>
           <ExplorerLink
             value={data.createdTxHash.toUpperCase()}
             type="tx_hash"

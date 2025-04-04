@@ -84,7 +84,7 @@ export const ModuleSelectDrawer = ({
         <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
           <CustomIcon name="contract-address" boxSize={6} color="gray.600" />
           <Heading as="h5" variant="h5">
-            Select Module
+            Select module
           </Heading>
         </DrawerHeader>
         <DrawerCloseButton color="text.dark" />

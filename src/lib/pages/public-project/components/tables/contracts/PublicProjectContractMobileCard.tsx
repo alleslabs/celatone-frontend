@@ -38,7 +38,7 @@ export const PublicProjectContractMobileCard = ({
       topContent={
         <>
           <Flex align="start" direction="column">
-            <MobileLabel variant="body2" label="Contract Address" />
+            <MobileLabel variant="body2" label="Contract address" />
             <ExplorerLink
               value={publicInfo.contractAddress}
               type="contract_address"
@@ -72,7 +72,7 @@ export const PublicProjectContractMobileCard = ({
         <Flex direction="column" gap={3}>
           <Flex flex={1} direction="column">
             <Flex direction="column">
-              <MobileLabel label="Contract Name" />
+              <MobileLabel label="Contract name" />
               <Text>{publicInfo.name}</Text>
               <Text variant="body3" color="text.dark" pt={1}>
                 {publicInfo.description}
@@ -81,7 +81,7 @@ export const PublicProjectContractMobileCard = ({
           </Flex>
           <Flex flex={1} direction="column">
             <Flex direction="column">
-              <MobileLabel label="Instantiated By" />
+              <MobileLabel label="Instantiated by" />
               <ExplorerLink
                 value={publicInfo.instantiator}
                 type={getAddressTypeByLength(publicInfo.instantiator)}

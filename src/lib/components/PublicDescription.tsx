@@ -52,8 +52,8 @@ export const PublicDescription = ({
       </Text>
       {!noClamp && (
         <ShowMoreButton
-          showMoreText="View Full Description"
-          showLessText="View Less Description"
+          showMoreText="View full description"
+          showLessText="View less description"
           toggleShowMore={showMore}
           setToggleShowMore={() => setShowMore(!showMore)}
         />

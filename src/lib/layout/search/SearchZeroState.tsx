@@ -19,14 +19,14 @@ export const SearchZeroState = ({
   isNft,
   isFullTier,
 }: SearchZeroStateProps) => {
-  const base = ["Account Address", "Block Height", "TX Hash"];
-  const govText = isGov ? ["Validator Address", "Proposal ID"] : [];
-  const wasmText = isWasm ? ["Code ID", "Contract Address"] : [];
-  const moveText = isMove ? ["Module Path"] : [];
-  const evmText = isEvm ? ["EVM TX Hash", "Contract Address"] : [];
+  const base = ["Account address", "Block height", "Tx hash"];
+  const govText = isGov ? ["Validator address", "Proposal ID"] : [];
+  const wasmText = isWasm ? ["Code ID", "Contract address"] : [];
+  const moveText = isMove ? ["Module path"] : [];
+  const evmText = isEvm ? ["EVM tx hash", "Contract address"] : [];
   const poolText = isPool && isFullTier ? ["Pool ID"] : [];
   const nftCollectionText = isNft
-    ? ["NFT Collection Address", "NFT Address"]
+    ? ["NFT collection address", "NFT address"]
     : [];
 
   const supportedItemsType = base.concat(

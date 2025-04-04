@@ -102,7 +102,7 @@ export const WasmVerifySubmitForm = ({
         <Flex w="full" direction="row" alignItems="center" gap={2}>
           <CustomIcon name="verification-solid" boxSize={6} color="gray.600" />
           <Heading variant="h5" as="h5">
-            Verify & Publish Source Code
+            Verify & Publish source code
           </Heading>
         </Flex>
       </ModalHeader>
@@ -161,7 +161,7 @@ export const WasmVerifySubmitForm = ({
               {codeHash && (
                 <Flex gap={2} alignItems="center">
                   <Text fontWeight={500} color="text.dark" variant="body2">
-                    Code Hash:
+                    Code hash:
                   </Text>
                   <CopyLink
                     type="code_hash"
@@ -186,7 +186,7 @@ export const WasmVerifySubmitForm = ({
             <ControllerInput
               name="commit"
               control={control}
-              label="Commit Hash:"
+              label="Commit hash:"
               labelBgColor="gray.800"
               variant="fixed-floating"
               placeholder="e.g. a1b2c3d4e5f67890abcdef1234567890abcdef12"
@@ -196,7 +196,7 @@ export const WasmVerifySubmitForm = ({
             <ControllerInput
               name="packageName"
               control={control}
-              label="Packages Name:"
+              label="Packages name:"
               labelBgColor="gray.800"
               variant="fixed-floating"
               placeholder="e.g. contract-name"

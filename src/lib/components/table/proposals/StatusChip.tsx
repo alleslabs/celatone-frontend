@@ -38,7 +38,7 @@ export const StatusChip = ({
 }) => {
   const formatStatus =
     status === ProposalStatus.DEPOSIT_FAILED
-      ? "Deposit Failed"
+      ? "Deposit failed"
       : status.replace(/([A-Z])/g, " $1").trim();
   return (
     <Tag

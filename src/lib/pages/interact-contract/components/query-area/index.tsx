@@ -78,7 +78,7 @@ export const QueryArea = observer(
                   label="Please select contract first"
                   hidden={Boolean(contractAddress)}
                 >
-                  Your Schema
+                  Your schema
                 </Tooltip>
               </CustomTab>
             </TabList>
@@ -112,7 +112,7 @@ export const QueryArea = observer(
                     title={
                       <Flex flexDirection="column" alignItems="center">
                         <Flex display="inline" textAlign="center">
-                          You haven&#39;t attached the JSON Schema for
+                          You haven&#39;t attached the JSON schema for
                           <CustomIcon name="code" mx={1} color="gray.400" />
                           code {codeId}
                         </Flex>

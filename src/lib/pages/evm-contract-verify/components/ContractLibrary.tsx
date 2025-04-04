@@ -22,7 +22,7 @@ export const ContractLibrary = <T extends FieldValues>({
   return (
     <>
       <ControllerInput
-        label="Library Name"
+        label="Library name"
         rules={{
           required: "",
         }}
@@ -34,7 +34,7 @@ export const ContractLibrary = <T extends FieldValues>({
         error={field.value.name !== "" ? "" : "Required"}
       />
       <ControllerInput
-        label="Contract Library Address"
+        label="Contract library address"
         rules={{
           required: "",
         }}

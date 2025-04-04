@@ -29,7 +29,7 @@ export const ContractDesc = ({
     >
       {publicInfo?.description && (
         <PublicDescription
-          title="Public Contract Description"
+          title="Public contract description"
           description={publicInfo.description}
           textLine={contractLocalInfo?.description ? 4 : 2}
           icon={<CustomIcon name="public-project" color="gray.600" />}

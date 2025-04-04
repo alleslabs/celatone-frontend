@@ -139,7 +139,7 @@ export const DeployScript = () => {
 
   return (
     <>
-      <CelatoneSeo pageName="Deploy Script" />
+      <CelatoneSeo pageName="Deploy script" />
       <ActionPageContainer>
         <Heading as="h4" variant="h4">
           Script
@@ -152,7 +152,7 @@ export const DeployScript = () => {
             color: "var(--chakra-colors-text-dark)",
           }}
         >
-          Upload a .mv file to deploy one-time use Script which execute
+          Upload a .mv file to deploy one-time use script which execute
           messages.{" "}
           <UserDocsLink
             isDevTool
@@ -204,7 +204,7 @@ export const DeployScript = () => {
           alignItems="center"
           gap={1}
         >
-          <p>Transaction Fee:</p>
+          <p>Transaction fee:</p>
           <EstimatedFeeRender
             estimatedFee={estimatedFee}
             loading={isSimulating}

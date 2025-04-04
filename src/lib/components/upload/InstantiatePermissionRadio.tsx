@@ -160,7 +160,7 @@ export const InstantiatePermissionRadio = ({
                   onClick={() => append({ address: "" as BechAddr })}
                   leftIcon={<CustomIcon name="plus" color="primary.light" />}
                 >
-                  Add More Address
+                  Add more address
                 </Button>
               </Box>
             )}

@@ -32,7 +32,7 @@ export const NetworkErrorState = () => {
           width="152px"
         />
         <Heading as="h5" variant="h5" mt={6} mb={1} color="text.dark">
-          Network Error
+          Network error
         </Heading>
         <Text fontWeight={500} color="text.dark" variant="body2">
           The network you chose is currently unavailable. Here are a few

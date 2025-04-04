@@ -11,7 +11,7 @@ export const EditContractDetailsModal = ({
   triggerElement,
 }: EditContractDetailsModalProps) => (
   <ContractDetailsTemplateModal
-    title="Edit Contract Details"
+    title="Edit contract details"
     subtitle="Filled information below will be saved on Scan only and able to edit later."
     contractLocalInfo={contractLocalInfo}
     triggerElement={triggerElement}

@@ -43,12 +43,12 @@ export const getNavDrawerLite = (
       ...(isMove
         ? [
             {
-              name: "0x1 Page",
+              name: "0x1 page",
               slug: "/accounts/0x1",
               icon: "0x1" as IconKeys,
             },
             {
-              name: "View Module",
+              name: "View module",
               slug: "/interact",
               icon: "query" as IconKeys,
             },
@@ -109,12 +109,12 @@ export const getNavDrawerSequencer = (
       ...(isMove
         ? [
             {
-              name: "0x1 Page",
+              name: "0x1 page",
               slug: "/accounts/0x1",
               icon: "0x1" as IconKeys,
             },
             {
-              name: "View Module",
+              name: "View module",
               slug: "/interact",
               icon: "query" as IconKeys,
             },
@@ -186,12 +186,12 @@ export const getNavDrawerFull = (
               icon: "contract-address" as IconKeys,
             },
             {
-              name: "0x1 Page",
+              name: "0x1 page",
               slug: "/accounts/0x1",
               icon: "0x1" as IconKeys,
             },
             {
-              name: "View Module",
+              name: "View module",
               slug: "/interact",
               icon: "query" as IconKeys,
             },
@@ -200,7 +200,7 @@ export const getNavDrawerFull = (
       ...(isNft
         ? [
             {
-              name: "NFT Collections",
+              name: "NFT collections",
               slug: "/nft-collections",
               icon: "collection" as IconKeys,
             },

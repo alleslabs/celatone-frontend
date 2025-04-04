@@ -49,7 +49,7 @@ export const getProcessSteps = (
   evmVerifyInfo: EvmVerifyInfo
 ): ProcessStep[] => {
   const step1 = {
-    label: "Submitted Source Code",
+    label: "Submitted source code",
     ...getProcessStep(
       evmVerifyInfo.submittedTimestamp,
       evmVerifyInfo.error?.message
@@ -64,7 +64,7 @@ export const getProcessSteps = (
     ),
   };
   const step3 = {
-    label: "Verification Completed",
+    label: "Verification completed",
     state:
       step2.state === ProcessStepState.COMPLETED
         ? ProcessStepState.COMPLETED

@@ -10,7 +10,7 @@ export const DeployButton = () => {
       onClick={() => navigate({ pathname: "/deploy" })}
       rightIcon={<CustomIcon name="plus" color="text.main" boxSize="12px" />}
     >
-      Deploy New Contract
+      Deploy new contract
     </Button>
   );
 };

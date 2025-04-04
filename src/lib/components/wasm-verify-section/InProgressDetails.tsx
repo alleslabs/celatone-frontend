@@ -48,7 +48,7 @@ export const InProgressDetails = ({
       relatedVerifiedCodes={relatedVerifiedCodes}
       triggerElement={
         <Button variant="ghost-primary" size="sm">
-          View Verification Details
+          View verification details
         </Button>
       }
     />

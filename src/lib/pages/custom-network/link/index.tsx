@@ -121,7 +121,7 @@ export const AddNetworkLink = observer(() => {
             py={0}
           >
             <Text color="text.dark" variant="body2">
-              You can access {json?.chainId} in InitiaScan through
+              You can access {json?.chainId} in Initia Scan through
               <Link href={`/${json?.chainId}`}>
                 <Text color="primary.main" display="inline-flex" mx={1}>
                   this link
@@ -133,14 +133,14 @@ export const AddNetworkLink = observer(() => {
         {error.type === "invalid_config" && (
           <EmptyState
             imageVariant="error"
-            heading={`There is an error adding ${json?.chainId ?? "custom network"} to InitiaScan`}
+            heading={`There is an error adding ${json?.chainId ?? "custom network"} to Initia Scan`}
             message="The provided configuration is invalid. Here is the error log"
             py={0}
           >
             <Box minW="40%" maxW="70%">
               <TextReadOnly text={error.message} canCopy />
             </Box>
-            <Text mt={6}>You can add this custom Rollup manually</Text>
+            <Text mt={6}>You can add this custom rollup manually</Text>
             <AppLink href="/custom-network/add">
               <Button
                 variant="outline-gray"

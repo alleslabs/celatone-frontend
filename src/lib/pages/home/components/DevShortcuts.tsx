@@ -77,8 +77,8 @@ export const DevShortcuts = () => {
               icon: "execute" as const,
             },
             {
-              title: "Deploy Script",
-              subtitle: "Deploy one-time use Script",
+              title: "Deploy script",
+              subtitle: "Deploy one-time use script",
               slug: "deploy-script",
               icon: "code" as const,
             },
@@ -93,7 +93,7 @@ export const DevShortcuts = () => {
   return (
     <Flex gap={4} direction="column" mb="48px">
       <Heading as="h5" variant="h5">
-        Dev Shortcuts
+        Dev shortcuts
       </Heading>
       <ConnectWalletAlert
         title={`Connect wallet to start using ${theme.branding.seo.appName}`}

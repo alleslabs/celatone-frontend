@@ -72,7 +72,7 @@ const StoredCodes = observer(() => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="My Stored Codes" />
+      <CelatoneSeo pageName="My stored codes" />
       <Flex alignItems="center" justifyContent="space-between" mb={4}>
         <Flex align="center">
           <Heading
@@ -82,7 +82,7 @@ const StoredCodes = observer(() => {
             display="flex"
             alignItems="center"
           >
-            My Stored Codes
+            My stored codes
           </Heading>
           <Badge variant="primary" ml={2}>
             {storedCodesCount}
@@ -117,7 +117,7 @@ const StoredCodes = observer(() => {
       </Flex>
       <Flex gap={3} my={8}>
         <InputWithIcon
-          placeholder="Search with Code ID or Code Name"
+          placeholder="Search with code ID or code name"
           value={keyword}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setValue("keyword", e.target.value)

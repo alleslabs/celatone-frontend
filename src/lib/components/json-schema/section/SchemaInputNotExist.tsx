@@ -24,7 +24,7 @@ export const SchemaInputNotExist = ({
   if (verifiedSchema)
     return (
       <Text color="text.main" fontWeight={700} variant="body1">
-        Verified JSON Schema doesn’t have {prettyType}Msg
+        Verified JSON schema doesn’t have {prettyType}Msg
       </Text>
     );
 
@@ -32,10 +32,10 @@ export const SchemaInputNotExist = ({
     <>
       <Text color="text.main" fontWeight={700} variant="body1">
         {localSchema ? (
-          `Attached JSON Schema doesn’t have ${prettyType}Msg`
+          `Attached JSON schema doesn’t have ${prettyType}Msg`
         ) : (
           <>
-            You haven&#39;t attached the JSON Schema for{" "}
+            You haven&#39;t attached the JSON schema for{" "}
             <CustomIcon name="code" mx={1} color="gray.400" />
             code {codeId} yet
           </>

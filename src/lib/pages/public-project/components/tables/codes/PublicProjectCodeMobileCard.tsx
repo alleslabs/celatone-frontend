@@ -48,11 +48,11 @@ export const PublicProjectCodeMobileCard = ({
       middleContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel label="Code Name" />
+            <MobileLabel label="Code name" />
             <Text>{publicInfo.name}</Text>
           </Flex>
           <Flex direction="column">
-            <MobileLabel label="CW2 Info" />
+            <MobileLabel label="CW2 info" />
             <Text
               color={cw2Info ? "text.main" : "text.disabled"}
               wordBreak="break-all"

@@ -14,19 +14,19 @@ type OrderOption = SelectInputOption<OrderOptionValue>;
 
 const ORDER_OPTIONS: OrderOption[] = [
   {
-    label: "Validator Name (A to Z)",
+    label: "Validator name (A to Z)",
     value: { order: ValidatorOrder.Moniker, isDesc: false },
   },
   {
-    label: "Validator Name (Z to A)",
+    label: "Validator name (Z to A)",
     value: { order: ValidatorOrder.Moniker, isDesc: true },
   },
   {
-    label: "Voting Power (High to Low)",
+    label: "Voting power (High to Low)",
     value: { order: ValidatorOrder.VotingPower, isDesc: true },
   },
   {
-    label: "Voting Power (Low to High)",
+    label: "Voting power (Low to High)",
     value: { order: ValidatorOrder.VotingPower, isDesc: false },
   },
   {

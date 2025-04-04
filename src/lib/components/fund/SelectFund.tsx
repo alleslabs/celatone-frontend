@@ -186,7 +186,7 @@ export const SelectFund = ({
         onClick={() => append({ denom: "", amount: "" })}
         isDisabled={assetOptions.length === selectedAssets.length}
       >
-        Add More Asset
+        Add more asset
       </Button>
     </>
   );

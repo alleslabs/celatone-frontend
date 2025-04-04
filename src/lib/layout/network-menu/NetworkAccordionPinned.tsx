@@ -75,7 +75,7 @@ export const NetworkAccodionPinned = observer(
           <AccordionButton p={0}>
             <Flex justifyContent="space-between" w="full">
               <Heading as="h6" variant="h6">
-                Pinned Network
+                Pinned network
               </Heading>
               <AccordionIcon color="gray.600" />
             </Flex>

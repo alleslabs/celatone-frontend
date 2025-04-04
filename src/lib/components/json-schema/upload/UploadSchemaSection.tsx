@@ -13,7 +13,7 @@ interface UploadSchemaSectionProps {
 export const UploadSchemaSection = ({
   codeId,
   codeHash,
-  title = `You haven't attached the JSON Schema for code ${codeId} yet`,
+  title = `You haven't attached the JSON schema for code ${codeId} yet`,
 }: UploadSchemaSectionProps) => {
   const sectionHeader =
     typeof title === "string" ? (

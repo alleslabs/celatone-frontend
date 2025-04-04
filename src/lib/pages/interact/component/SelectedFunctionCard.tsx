@@ -86,7 +86,7 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
             setExpand((prev) => !prev);
           }}
         >
-          {expand ? "View Less" : "View More"}
+          {expand ? "View less" : "View more"}
         </Button>
       </Flex>
       <MotionBox

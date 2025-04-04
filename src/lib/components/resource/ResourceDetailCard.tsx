@@ -24,7 +24,7 @@ export const ResourceDetailCard = ({
   const parsedMoveResource = parseJsonStr(resourceData.moveResource);
   const isMobile = useMobile();
 
-  // Handle fallback case where the move resource is invalid
+  // Handle fallback case where the Move resource is invalid
   // TODO: revisit later
   if (parsedMoveResource === "")
     return (
