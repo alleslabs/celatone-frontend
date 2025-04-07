@@ -26,7 +26,7 @@ export const NetworkMenuTop = observer(
         <Flex direction="column" gap={1}>
           <Flex alignItems="center" gap={2}>
             <Heading as="h6" variant="h6">
-              Select Network
+              Select network
             </Heading>
             {!isMobile && (
               <Flex gap={1}>
@@ -62,7 +62,7 @@ export const NetworkMenuTop = observer(
           )}
         </Flex>
         <InputWithIcon
-          placeholder="Search by Name or Chain ID"
+          placeholder="Search by name or chain ID"
           size="md"
           value={keyword}
           autoFocus={!isMobile}

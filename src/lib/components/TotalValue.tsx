@@ -11,7 +11,7 @@ interface TotalValueProps {
 }
 export const TotalValue = ({
   address,
-  label = "Total Account Value",
+  label = "Total account value",
   isCompact = false,
 }: TotalValueProps) => {
   const { totalAccountValue, isLoading } = useAccountTotalValue(address);

@@ -39,11 +39,11 @@ export const PublishCompleted = ({
       <TxReceiptRender
         receipts={[
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             html: <ExplorerLink type="tx_hash" value={txHash} />,
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
@@ -52,7 +52,7 @@ export const PublishCompleted = ({
             ),
           },
           {
-            title: "Upgrade Policy",
+            title: "Upgrade policy",
             value: capitalize(upgradePolicy),
           },
         ]}
@@ -62,7 +62,7 @@ export const PublishCompleted = ({
       {isApiChain && (
         <Flex direction="column" gap={4} w="full" mb={12}>
           <Heading as="h6" variant="h6">
-            Module Verification
+            Module verification
           </Heading>
           <Flex
             w="full"
@@ -84,7 +84,7 @@ export const PublishCompleted = ({
                 })
               }
             >
-              Submit Verification
+              Submit verification
             </Button>
           </Flex>
         </Flex>

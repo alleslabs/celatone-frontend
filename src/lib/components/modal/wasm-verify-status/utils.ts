@@ -49,14 +49,14 @@ export const getProcessSteps = (
   verificationInfo: WasmVerifyInfoBase
 ): ProcessStep[] => {
   const step1 = {
-    label: "Getting Source Code",
+    label: "Getting source code",
     ...getProcessStep(
       verificationInfo.downloadedTimestamp,
       verificationInfo.errorMessage
     ),
   };
   const step2 = {
-    label: "Compiling Source Code",
+    label: "Compiling source code",
     ...getProcessStep(
       verificationInfo.compiledTimestamp,
       verificationInfo.errorMessage,
@@ -64,7 +64,7 @@ export const getProcessSteps = (
     ),
   };
   const step3 = {
-    label: "Comparing The Code Hash",
+    label: "Comparing the code hash",
     ...getProcessStep(
       verificationInfo.comparedTimestamp,
       verificationInfo.errorMessage,
@@ -72,7 +72,7 @@ export const getProcessSteps = (
     ),
   };
   const step4 = {
-    label: "Verification Completed",
+    label: "Verification completed",
     state:
       step3.state === ProcessStepState.COMPLETED
         ? ProcessStepState.COMPLETED

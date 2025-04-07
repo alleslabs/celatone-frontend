@@ -191,7 +191,7 @@ export const ProposalVotesTable = ({
         >
           <GridItem>
             <SelectInputBase<ProposalVoteType>
-              formLabel="Filter by Answer"
+              formLabel="Filter by answer"
               options={answerOptions}
               onChange={handleOnAnswerFilterChange}
               labelBgColor="gray.900"

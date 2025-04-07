@@ -25,7 +25,7 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
       leftIcon={<CustomIcon name="add-new" boxSize={4} />}
       onClick={handleAction}
     >
-      Deploy New Contract
+      Deploy new contract
     </Button>
   ) : (
     <Flex alignItems="center" gap={4} color="text.dark" direction="column">
@@ -37,7 +37,7 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
           buttonProps={{
             variant: "outline-primary",
             leftIcon: <CustomIcon name="bookmark" />,
-            children: "Save Contract",
+            children: "Save contract",
             ml: 2,
           }}
         />

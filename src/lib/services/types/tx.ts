@@ -428,7 +428,7 @@ export const zTxsByPoolIdTxsCountResponse = z.object({
 // ----------------------------------------
 
 export const zEvmTxHashByCosmosTxHashJsonRpc = z.string().transform((val) =>
-  val !== "0x0000000000000000000000000000000000000000000000000000000000000000" // if no related evm tx
+  val !== "0x0000000000000000000000000000000000000000000000000000000000000000" // if no related EVM tx
     ? val
     : null
 );

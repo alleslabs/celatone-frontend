@@ -20,7 +20,7 @@ export const VoteThresholdBadge = ({
     ) : (
       <ProgressBadge
         state={PeriodState.ONGOING}
-        text="In Progress"
+        text="In progress"
         bgColor="gray.700"
       />
     );

@@ -52,7 +52,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     isFullTier || isSequencerTier
       ? [
           {
-            category: "Your Account",
+            category: "Your account",
             slug: "your-account",
             submenu: [...getYourAccountSubmenu(address)],
           },
@@ -65,7 +65,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
           ...(wasm.enabled || move.enabled || evm.enabled
             ? [
                 {
-                  category: "Developer Tools",
+                  category: "Developer tools",
                   slug: StorageKeys.DevSidebar,
                   submenu: [
                     ...getDevSubmenuMove(move.enabled),
@@ -75,10 +75,10 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                     ...getWalletSubSectionMove(move.enabled),
                     ...getWalletSubSectionWasm(wasm.enabled, isFullTier),
                     {
-                      category: "This Device",
+                      category: "This device",
                       submenu: [
                         {
-                          name: "Saved Accounts",
+                          name: "Saved accounts",
                           slug: "/saved-accounts",
                           icon: "admin" as IconKeys,
                         },
@@ -93,7 +93,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
         ]
       : [
           {
-            category: "Your Account",
+            category: "Your account",
             slug: "your-account",
             submenu: [
               ...getYourAccountSubmenu(address),
@@ -109,7 +109,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
           ...(move.enabled || wasm.enabled
             ? [
                 {
-                  category: "Developer Tools",
+                  category: "Developer tools",
                   slug: StorageKeys.DevSidebar,
                   submenu: [
                     ...getDevSubmenuMove(move.enabled),
@@ -117,10 +117,10 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                   ],
                   subSection: [
                     {
-                      category: "This Device",
+                      category: "This device",
                       submenu: [
                         {
-                          name: "Saved Accounts",
+                          name: "Saved accounts",
                           slug: "/saved-accounts",
                           icon: "admin" as IconKeys,
                         },

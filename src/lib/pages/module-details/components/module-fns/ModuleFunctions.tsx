@@ -130,7 +130,7 @@ export const ModuleFunctions = ({
         Exposed Functions
       </Heading>
       <InputWithIcon
-        placeholder="Search with Function Name"
+        placeholder="Search with function name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}
@@ -170,14 +170,14 @@ export const ModuleFunctions = ({
             onClick={() => {
               trackUseExpandAll(
                 expandedIndexes.length ? "collapse" : "expand",
-                "Module Function Tab"
+                "Module function tab"
               );
               setExpandedIndexes((prev) =>
                 !prev.length ? Array.from(Array(fns.length).keys()) : []
               );
             }}
           >
-            {expandedIndexes.length ? "Collapse All" : "Expand All"}
+            {expandedIndexes.length ? "Collapse all" : "Expand all"}
           </Button>
           <Button
             variant="outline-primary"
@@ -185,13 +185,13 @@ export const ModuleFunctions = ({
             size="sm"
             rightIcon={<CustomIcon name="launch" boxSize={3} />}
             onClick={() => {
-              trackUseViewJSON("Module Functions");
+              trackUseViewJSON("Module functions");
               const jsonString = JSON.stringify(fns, null, 2);
               const jsonWindow = window.open();
               if (jsonWindow) {
                 // Modify styling later
                 jsonWindow.document.write(
-                  `<html><head><title>Module Exposed Function</title>`
+                  `<html><head><title>Module exposed function</title>`
                 );
 
                 // Add styling

@@ -50,7 +50,7 @@ export const Collections = () => {
     <>
       <Stack spacing={8}>
         <InputWithIcon
-          placeholder="Search with Collection Name or Collection VM Address"
+          placeholder="Search with collection name or collection VM address"
           value={searchKeyword}
           autoFocus
           onChange={(e) => setSearchKeyword(e.target.value)}

@@ -79,7 +79,7 @@ export const SelectModuleSection = ({
       <InputWithIcon
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        placeholder="Search with Module Name"
+        placeholder="Search with module name"
         size="md"
         amptrackSection="module-select-drawer-module-search"
       />

@@ -252,7 +252,7 @@ export const MigrateContract = ({
   return (
     <>
       <Heading as="h6" variant="h6" mb={4}>
-        Migrate to Code ID
+        Migrate to code ID
       </Heading>
       <CodeSelectSection
         codeId={isId(codeId) ? Number(codeId) : undefined}
@@ -270,7 +270,7 @@ export const MigrateContract = ({
       />
       <Flex align="center" justify="space-between" mt={12} mb={6}>
         <Heading as="h6" variant="h6">
-          Migrate Message
+          Migrate message
         </Heading>
         <MessageInputSwitch
           currentTab={tab}
@@ -323,7 +323,7 @@ export const MigrateContract = ({
         display="flex"
         gap={1}
       >
-        <p>Transaction Fee:</p>
+        <p>Transaction fee:</p>
         <EstimatedFeeRender
           estimatedFee={estimatedFee}
           loading={isSimulating}

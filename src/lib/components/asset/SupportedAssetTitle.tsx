@@ -21,7 +21,7 @@ export const SupportedAssetTitle = ({
   return (
     <Flex w="full" py={1} gap={2} align="center" justifyContent="space-between">
       <TableTitle
-        title="Supported Assets"
+        title="Supported assets"
         count={supportedAssets.length}
         mb={0}
         isSmall

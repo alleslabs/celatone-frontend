@@ -16,10 +16,10 @@ export const DepositorsTableHeader = ({
     <TableHeader>Depositor</TableHeader>
     {showTransaction && (
       <>
-        <TableHeader>Transaction Hash</TableHeader>
+        <TableHeader>Transaction hash</TableHeader>
         <TableHeader>Timestamp</TableHeader>
       </>
     )}
-    <TableHeader>Deposited Amount</TableHeader>
+    <TableHeader>Deposited amount</TableHeader>
   </Grid>
 );

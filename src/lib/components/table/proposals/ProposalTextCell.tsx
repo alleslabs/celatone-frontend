@@ -35,7 +35,7 @@ export const ProposalTextCell = ({
   if (isMobile)
     return (
       <Flex direction="column" gap={1}>
-        <MobileLabel label="Proposal Title" />
+        <MobileLabel label="Proposal title" />
         <Text color="text.main" variant="body2" wordBreak="break-word">
           {title}
           {isExpedited && (

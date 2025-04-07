@@ -64,7 +64,7 @@ const ProposalDetailsBody = ({
   return (
     <>
       <CelatoneSeo
-        pageName={info.id ? `Proposal #${info.id}` : "Proposal Detail"}
+        pageName={info.id ? `Proposal #${info.id}` : "Proposal detail"}
       />
       <ProposalTop proposalData={info} />
       <Tabs
@@ -78,10 +78,10 @@ const ProposalDetailsBody = ({
           overflowX="scroll"
         >
           <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
-            Proposal Overview
+            Proposal overview
           </CustomTab>
           <CustomTab onClick={handleTabChange(TabIndex.Vote)}>
-            Voting Details
+            Voting details
           </CustomTab>
         </TabList>
         <TabPanels>

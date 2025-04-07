@@ -584,7 +584,7 @@ const StoreCodeProposal = () => {
                     display="flex"
                     gap={1}
                   >
-                    Transaction Fee:{" "}
+                    Transaction fee:{" "}
                     <EstimatedFeeRender
                       estimatedFee={estimatedFee}
                       loading={isSimulating}

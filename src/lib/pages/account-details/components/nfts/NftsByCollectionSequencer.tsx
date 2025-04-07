@@ -31,7 +31,7 @@ export const NftsByCollectionSequencer = ({
   return (
     <Stack spacing="24px" w="full">
       <InputWithIcon
-        placeholder="Search with Token ID"
+        placeholder="Search with token ID"
         value={searchKeyword}
         autoFocus={!isMobile}
         onChange={(e) => setSearchKeyword(e.target.value)}

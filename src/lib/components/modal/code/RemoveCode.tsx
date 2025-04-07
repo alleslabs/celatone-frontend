@@ -58,14 +58,14 @@ export function RemoveCodeModal({
       title={
         name
           ? `Remove \u2018${shortenName(name, 20)}\u2019?`
-          : `Remove Code ID: ${codeId} ?`
+          : `Remove code ID: ${codeId} ?`
       }
       icon="delete"
       iconColor="error.light"
       mainVariant="error"
-      mainBtnTitle="Yes, Remove It"
+      mainBtnTitle="Yes, remove it"
       mainAction={handleRemove}
-      otherBtnTitle="No, Keep It"
+      otherBtnTitle="No, keep it"
       trigger={trigger}
     >
       <Text>
