@@ -54,8 +54,8 @@ const MobileOverview = ({
         title="Assets"
       />
       <UserAssetInfoCard
-        totalSupportedAssetsValue={totalSupportedAssetsValue}
         helperText="Total asset value"
+        totalSupportedAssetsValue={totalSupportedAssetsValue}
       />
     </Flex>
     <CustomIcon color="gray.600" name="chevron-right" />
@@ -147,8 +147,8 @@ export const AssetsSection = ({
                 />
                 <Divider borderColor="gray.700" />
                 {isMobile && (
-                  <Flex pt={4} px={4} direction="column">
-                    <Text variant="body2" color="text.dark">
+                  <Flex direction="column" pt={4} px={4}>
+                    <Text color="text.dark" variant="body2">
                       Total asset value
                     </Text>
                     <Heading

@@ -132,8 +132,8 @@ export const AddNetworkLink = observer(() => {
         )}
         {error.type === "invalid_config" && (
           <EmptyState
-            imageVariant="error"
             heading={`There is an error adding ${json?.chainId ?? "custom network"} to Initia Scan`}
+            imageVariant="error"
             message="The provided configuration is invalid. Here is the error log"
             py={0}
           >

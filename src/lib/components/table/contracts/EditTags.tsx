@@ -30,17 +30,13 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
 
   return (
     <ActionModal
-      title="Edit tags"
-      trigger={
-        <CustomIcon cursor="pointer" name="edit" color="gray.600" boxSize={3} />
-      }
       headerContent={
         <Flex gap={9} pt={6}>
           <Flex direction="column" gap={2}>
-            <Text variant="body2" fontWeight={500} color="text.dark">
+            <Text color="text.dark" fontWeight={500} variant="body2">
               Contract name
             </Text>
-            <Text variant="body2" fontWeight={500} color="text.dark">
+            <Text color="text.dark" fontWeight={500} variant="body2">
               Contract address
             </Text>
           </Flex>
@@ -59,7 +55,11 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
       mainAction={handleSave}
       mainBtnTitle="Save"
       otherBtnTitle="Cancel"
+      title="Edit tags"
       title="Edit Tags"
+      trigger={
+        <CustomIcon boxSize={3} color="gray.600" cursor="pointer" name="edit" />
+      }
       trigger={
         <CustomIcon boxSize={3} color="gray.600" cursor="pointer" name="edit" />
       }

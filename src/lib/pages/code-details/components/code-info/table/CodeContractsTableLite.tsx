@@ -34,7 +34,7 @@ export const CodeContractsTableLite = observer(
     return (
       <>
         {data && !!error && <AlertPaginationRest />}
-        <TableTitle title="Contract instances" showCount={false} />
+        <TableTitle showCount={false} title="Contract instances" />
         <ContractsTable
           contracts={data}
           emptyState={<NoContracts />}

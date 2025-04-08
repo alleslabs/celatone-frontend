@@ -127,10 +127,10 @@ export const RecentBlocksSection = ({
         justify="space-between"
         w="full"
       >
-        <Heading as="h6" variant="h6" color="text.main">
+        <Heading as="h6" color="text.main" variant="h6">
           Most recent 100 blocks
         </Heading>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           Latest update: {formatUTC(new Date(dataUpdatedAt))}
         </Text>
       </Flex>

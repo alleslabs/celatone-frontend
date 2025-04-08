@@ -95,8 +95,8 @@ export const ContractDetailsTemplateModal = ({
       closeOnOverlayClick={false}
       disabledMain={!!errors.name || !!errors.description}
       headerContent={
-        <Flex gap={4} alignItems="center" pt={6}>
-          <Text variant="body2" fontWeight={500} color="text.dark">
+        <Flex alignItems="center" gap={4} pt={6}>
+          <Text color="text.dark" fontWeight={500} variant="body2">
             Contract address
           </Text>
           <ExplorerLink

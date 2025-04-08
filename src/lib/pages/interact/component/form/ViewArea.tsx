@@ -139,8 +139,8 @@ export const ViewArea = ({
           ) : (
             <JsonReadOnly
               amptrackSection="Module view result"
-              text={jsonPrettify(JSON.stringify(res))}
               canCopy
+              text={jsonPrettify(JSON.stringify(res))}
               text={jsonPrettify(JSON.stringify(res))}
             />
           )}

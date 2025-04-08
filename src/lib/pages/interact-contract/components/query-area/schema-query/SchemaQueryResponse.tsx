@@ -73,9 +73,9 @@ export const SchemaQueryResponse = ({
         <>
           {resTab === OutputMessageTabs.JSON_OUTPUT ? (
             <JsonReadOnly
-              topic="Return output"
               labelBgColor="gray.900"
               text={res}
+              topic="Return output"
               topic="Return Output"
             />
           ) : (

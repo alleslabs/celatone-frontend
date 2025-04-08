@@ -180,12 +180,6 @@ const Faucet = () => {
           "Requests are limited to once per hour for each receiving address and IP address."}
       </Text>
       <TextInput
-        variant="fixed-floating"
-        placeholder="Enter your address"
-        value={address}
-        setInputState={setAddress}
-        status={status}
-        label="Receiving address"
         helperAction={
           <AssignMe
             isDisable={address === walletAddress}
@@ -196,11 +190,17 @@ const Faucet = () => {
             }}
           />
         }
+        label="Receiving address"
         label="Receiving Address"
         placeholder="Enter your address"
+        placeholder="Enter your address"
+        setInputState={setAddress}
         setInputState={setAddress}
         status={status}
+        status={status}
         value={address}
+        value={address}
+        variant="fixed-floating"
         variant="fixed-floating"
       />
       <Button

@@ -45,7 +45,7 @@ export const ModuleSourceCode = ({
               <Flex alignItems="start" flexDirection="column">
                 <Flex align="center" gap={1}>
                   <MoveVerifyBadge status={moveVerifyStatus} />
-                  <Heading as="h6" variant="h7" textAlign="left">
+                  <Heading as="h6" textAlign="left" variant="h7">
                     Verified module source code
                   </Heading>
                 </Flex>
@@ -117,8 +117,8 @@ export const ModuleSourceCode = ({
                 }
               />
             </Box>
-            <Flex gap={4} flexWrap="wrap" rowGap={1}>
-              <Text variant="body2" fontWeight={600} mr={2} color="text.dark">
+            <Flex flexWrap="wrap" gap={4} rowGap={1}>
+              <Text color="text.dark" fontWeight={600} mr={2} variant="body2">
                 Advanced settings
               </Text>
               {[

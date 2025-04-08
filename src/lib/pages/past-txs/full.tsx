@@ -108,7 +108,7 @@ export const PastTxsFull = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Past transactions" />
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex alignItems="center" justifyContent="space-between">
         <Heading
           alignItems="center"
           as="h5"

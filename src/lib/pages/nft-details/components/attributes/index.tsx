@@ -76,7 +76,7 @@ export const Attributes = ({
         >
           <Flex align="center" gap="7px">
             <Text color="text.dark">View more</Text>
-            <CustomIcon name="chevron-down" color="text.dark" />
+            <CustomIcon color="text.dark" name="chevron-down" />
           </Flex>
         </Button>
       )}

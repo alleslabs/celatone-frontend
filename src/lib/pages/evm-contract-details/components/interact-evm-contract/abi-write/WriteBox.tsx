@@ -171,8 +171,8 @@ export const WriteBox = ({
                 type="write"
               />
             </Flex>
-            <Flex direction="row" align="center" gap={2}>
-              <Flex fontSize="14px" color="text.dark" alignItems="center">
+            <Flex align="center" direction="row" gap={2}>
+              <Flex alignItems="center" color="text.dark" fontSize="14px">
                 Transaction fee:{" "}
                 <EstimatedFeeEvmRender
                   gasPrice={fee?.gasPrice}

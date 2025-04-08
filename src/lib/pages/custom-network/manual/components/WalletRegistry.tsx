@@ -63,11 +63,11 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
             </Heading>
             <IconButton
               aria-label="Remove asset"
-              icon={<CustomIcon name="delete" boxSize={4} />}
-              onClick={() => remove(index)}
-              variant="ghost-gray"
+              icon={<CustomIcon boxSize={4} name="delete" />}
               size="sm"
               variant="ghost-gray"
+              variant="ghost-gray"
+              onClick={() => remove(index)}
               onClick={() => remove(index)}
             />
           </Flex>
@@ -167,12 +167,12 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
   });
 
   return (
-    <Flex direction="column" gap={2} alignItems="center">
+    <Flex alignItems="center" direction="column" gap={2}>
       <CustomNetworkPageHeader title="Add wallet registry" />
-      <Flex w="full" direction="column" gap={6} my={8}>
+      <Flex direction="column" gap={6} my={8} w="full">
         <CustomNetworkSubheader
-          title="Account prefix and registered coin type"
           subtitle="This information is fetched from provided REST URL"
+          title="Account prefix and registered coin type"
           title="Account Prefix and Registered Coin Type"
         />
         <Stack bg="gray.900" gap={4} px={6} py={4} rounded={8}>
@@ -240,11 +240,11 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
                   </Heading>
                   <IconButton
                     aria-label="Remove asset"
-                    icon={<CustomIcon name="delete" boxSize={4} />}
-                    onClick={() => remove(index)}
-                    variant="ghost-gray"
+                    icon={<CustomIcon boxSize={4} name="delete" />}
                     size="sm"
                     variant="ghost-gray"
+                    variant="ghost-gray"
+                    onClick={() => remove(index)}
                     onClick={() => remove(index)}
                   />
                 </Flex>

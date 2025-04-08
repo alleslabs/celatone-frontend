@@ -164,16 +164,16 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
   return (
     <ActionPageContainer>
       <CelatoneSeo pageName="Update admin" />
-      <Flex direction="column" alignItems="center" mb={6}>
+      <Flex alignItems="center" direction="column" mb={6}>
         <Heading as="h5" variant="h5">
           Update admin
         </Heading>
         <UserDocsLink
-          isDevTool
-          mt={2}
           cta="View update admin guideline"
           href="cosmwasm/contracts/admin-actions#update-new-admin-to-the-contract"
           isDevTool
+          isDevTool
+          mt={2}
           mt={2}
         />
       </Flex>
@@ -199,13 +199,13 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
         }
       />
       <TextInput
-        variant="fixed-floating"
-        label="New admin address"
         helperText="This address will be an admin for the deployed smart contract."
+        label="New admin address"
         label="New Admin Address"
         setInputState={setAdminAddress}
         status={adminFormStatus}
         value={adminAddress}
+        variant="fixed-floating"
         variant="fixed-floating"
       />
       <Flex

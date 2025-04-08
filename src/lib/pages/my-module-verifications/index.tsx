@@ -1,5 +1,4 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-
 import {
   useInternalNavigate,
   useIsApiChain,
@@ -25,18 +24,18 @@ export const MyModuleVerifications = () => {
           <Heading as="h5" variant="h5">
             My past verification
           </Heading>
-          <Text variant="body2" fontWeight={500} color="text.dark">
+          <Text color="text.dark" fontWeight={500} variant="body2">
             Display the request queue for module verifications through Initia
             Scan
           </Text>
         </Box>
         <Flex gap={4}>
           <UserDocsButton
-            variant="outline-white"
-            title="View verification guideline"
             href="initia/move/module-verification"
             isDevTool
+            title="View verification guideline"
             title="View Verification Guideline"
+            variant="outline-white"
             variant="outline-white"
           />
           <Button

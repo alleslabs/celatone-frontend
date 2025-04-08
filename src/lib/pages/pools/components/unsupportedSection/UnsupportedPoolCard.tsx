@@ -146,15 +146,15 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                       </Flex>
                       <Copier
                         copyLabel="Token ID Copied!"
+                        copyLabel="Token ID copied!"
                         display="none"
+                        display="none"
+                        ml="1px"
                         ml="1px"
                         type={
                           asset.symbol ? "supported_asset" : "unsupported_asset"
                         }
                         value={asset.denom}
-                        copyLabel="Token ID copied!"
-                        display="none"
-                        ml="1px"
                       />
                     </Flex>
                   ))}

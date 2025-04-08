@@ -89,45 +89,45 @@ export const EditSavedAccountModal = ({
         <ControllerInput
           autoFocus
           control={control}
-          label="Account name"
-          variant="fixed-floating"
-          placeholder="ex. Scan Account 1"
-          labelBgColor="gray.900"
-          rules={{
-            maxLength: constants.maxAccountNameLength,
-          }}
           error={
             errors.name && getMaxLengthError(nameState.length, "account_name")
           }
+          label="Account name"
           label="Account Name"
           labelBgColor="gray.900"
+          labelBgColor="gray.900"
           name="name"
+          placeholder="ex. Scan Account 1"
           placeholder="ex. Scan Account 1"
           rules={{
             maxLength: constants.maxAccountNameLength,
           }}
+          rules={{
+            maxLength: constants.maxAccountNameLength,
+          }}
+          variant="fixed-floating"
           variant="fixed-floating"
         />
         <ControllerTextarea
           control={control}
-          label="Account description"
-          placeholder="Help understanding what this account does ..."
-          variant="fixed-floating"
-          labelBgColor="gray.900"
-          rules={{
-            maxLength: constants.maxAccountDescriptionLength,
-          }}
           error={
             errors.description &&
             getMaxLengthError(descriptionState.length, "account_desc")
           }
+          label="Account description"
           label="Account Description"
           labelBgColor="gray.900"
+          labelBgColor="gray.900"
           name="description"
+          placeholder="Help understanding what this account does ..."
           placeholder="Help understanding what this account does ..."
           rules={{
             maxLength: constants.maxAccountDescriptionLength,
           }}
+          rules={{
+            maxLength: constants.maxAccountDescriptionLength,
+          }}
+          variant="fixed-floating"
           variant="fixed-floating"
         />
       </Flex>

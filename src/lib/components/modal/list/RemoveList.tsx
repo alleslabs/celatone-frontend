@@ -40,11 +40,11 @@ export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
     <ActionModal
       icon="delete"
       iconColor="error.light"
-      trigger={<MenuItem {...menuItemProps} as="button" />}
+      mainAction={handleRemove}
       mainBtnTitle="Yes, remove list"
       mainVariant="error"
-      mainAction={handleRemove}
       otherBtnTitle="No, keep it"
+      trigger={<MenuItem {...menuItemProps} as="button" />}
     >
       <Text>
         {`This action will remove ${shortenName(

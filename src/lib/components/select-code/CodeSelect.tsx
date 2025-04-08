@@ -94,8 +94,8 @@ export const CodeSelect = ({
           </Text>
         )}
         <CodeSelectDrawerButton
-          onCodeSelect={onCodeSelect}
           buttonText={codeId ? "Change code" : "Select code"}
+          onCodeSelect={onCodeSelect}
         />
       </Flex>
 

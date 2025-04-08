@@ -138,10 +138,10 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
               <ContentContainer>
                 <Flex alignItems="center" justifyContent="space-between">
                   <TableTitle
-                    title="Validator votes"
-                    mb={0}
                     count={answers?.validator.totalValidators}
                     mb={0}
+                    mb={0}
+                    title="Validator votes"
                     title="Validator Votes"
                   />
                   <Button
@@ -183,10 +183,10 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
               <ContentContainer>
                 <Flex alignItems="center" justifyContent="space-between">
                   <TableTitle
-                    title="Recent votes"
-                    mb={0}
                     count={answers?.all.total}
                     mb={0}
+                    mb={0}
+                    title="Recent votes"
                     title="Recent Votes"
                   />
                   <Button

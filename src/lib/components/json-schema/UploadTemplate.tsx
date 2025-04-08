@@ -142,7 +142,7 @@ const MethodRender = ({
       else if (error) status = "error";
       return (
         <>
-          <Heading as="h6" variant="h6" mb={4}>
+          <Heading as="h6" mb={4} variant="h6">
             Fill in URL to load JSON schema
           </Heading>
           <TextInput
@@ -165,7 +165,7 @@ const MethodRender = ({
     case Method.FILL_MANUALLY:
       return (
         <>
-          <Heading as="h6" variant="h6" mb={4}>
+          <Heading as="h6" mb={4} variant="h6">
             Contract schema
           </Heading>
           <JsonInput

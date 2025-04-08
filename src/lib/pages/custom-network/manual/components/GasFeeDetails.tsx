@@ -51,19 +51,19 @@ const GasOptionStandard = ({
 }: Omit<GasFeeDetailsProps, "setValue" | "trigger">) => (
   <ControllerInput
     control={control}
-    label="Gas price"
-    variant="fixed-floating"
-    type="decimal"
-    w="full"
-    placeholder="0.00"
     error={errors.gasPrice?.message}
+    label="Gas price"
     label="Gas Price"
     name="gasPrice"
+    placeholder="0.00"
     placeholder="0.00"
     restrictedNumberInputParams={restrictedNumberInputParams}
     rules={{ required: "" }}
     type="decimal"
+    type="decimal"
     variant="fixed-floating"
+    variant="fixed-floating"
+    w="full"
     w="full"
   />
 );
@@ -75,7 +75,7 @@ const GasOptionCustom = ({
   <>
     <Flex alignItems="center" justifyContent="space-between">
       <Box>
-        <Text variant="body1" color="gray.500">
+        <Text color="gray.500" variant="body1">
           Fixed minimum gas price
         </Text>
         <Text color="error.main" variant="body3">
@@ -96,7 +96,7 @@ const GasOptionCustom = ({
     </Flex>
     <Flex alignItems="center" justifyContent="space-between">
       <Box>
-        <Text variant="body1" color="gray.500">
+        <Text color="gray.500" variant="body1">
           Low gas price
         </Text>
         <Text color="error.main" variant="body3">
@@ -117,7 +117,7 @@ const GasOptionCustom = ({
     </Flex>
     <Flex alignItems="center" justifyContent="space-between">
       <Box>
-        <Text variant="body1" color="gray.500">
+        <Text color="gray.500" variant="body1">
           Average gas price
         </Text>
         <Text color="error.main" variant="body3">
@@ -138,7 +138,7 @@ const GasOptionCustom = ({
     </Flex>
     <Flex alignItems="center" justifyContent="space-between">
       <Box>
-        <Text variant="body1" color="gray.500">
+        <Text color="gray.500" variant="body1">
           High gas price
         </Text>
         <Text color="error.main" variant="body3">
@@ -209,57 +209,57 @@ const GasFeeDetails = ({
   ]);
 
   return (
-    <Flex direction="column" gap={2} alignItems="center">
+    <Flex alignItems="center" direction="column" gap={2}>
       <CustomNetworkPageHeader title="Add Gas & Fee details" />
-      <Flex w="full" direction="column" gap={8} mt={8}>
+      <Flex direction="column" gap={8} mt={8} w="full">
         <Flex direction="column" gap={6}>
           <CustomNetworkSubheader title="Gas & Fee details" />
           <Flex gap={6}>
             <ControllerInput
               control={control}
-              label="Gas adjustment"
-              variant="fixed-floating"
-              type="decimal"
-              w="full"
-              placeholder="0.00"
-              rules={{ required: "" }}
               error={errors.gasAdjustment?.message}
+              label="Gas adjustment"
               label="Gas Adjustment"
               name="gasAdjustment"
               placeholder="0.00"
+              placeholder="0.00"
               restrictedNumberInputParams={restrictedNumberInputParams}
               rules={{ required: "" }}
+              rules={{ required: "" }}
+              type="decimal"
               type="decimal"
               variant="fixed-floating"
+              variant="fixed-floating"
+              w="full"
               w="full"
             />
             <ControllerInput
               control={control}
-              label="Max gas limit"
-              variant="fixed-floating"
-              type="decimal"
-              w="full"
-              placeholder="0.00"
-              rules={{ required: "" }}
               error={errors.maxGasLimit?.message}
+              label="Max gas limit"
               label="Max Gas Limit"
               name="maxGasLimit"
               placeholder="0.00"
+              placeholder="0.00"
               restrictedNumberInputParams={restrictedNumberInputParams}
               rules={{ required: "" }}
+              rules={{ required: "" }}
+              type="decimal"
               type="decimal"
               variant="fixed-floating"
+              variant="fixed-floating"
+              w="full"
               w="full"
             />
           </Flex>
           <ControllerInput
             control={control}
             label="Fee tokens denom"
-            variant="fixed-floating"
-            w="full"
             placeholder="ex. uinit"
             rules={{ required: "" }}
             variant="fixed-floating"
+            variant="fixed-floating"
+            w="full"
             w="full"
           />
         </Flex>
@@ -307,42 +307,42 @@ const GasFeeDetails = ({
           <AccordionItem>
             <AccordionButton p={4}>
               <Text>Advanced options</Text>
-              <AccordionIcon color="gray.600" ml="auto" boxSize={6} />
+              <AccordionIcon boxSize={6} color="gray.600" ml="auto" />
             </AccordionButton>
             <AccordionPanel pb={4} pt={0}>
               <Flex gap={6} mt={2}>
                 <ControllerInput
                   control={control}
+                  control={control}
                   error={errors.cosmos_send?.message}
                   label="Gas Cost for Cosmos Send"
+                  label="Gas cost for cosmos Send"
                   labelBgColor="gray.900"
                   name="cosmos_send"
-                  control={control}
-                  label="Gas cost for cosmos Send"
-                  variant="fixed-floating"
-                  type="decimal"
-                  w="full"
                   placeholder="0.00"
                   restrictedNumberInputParams={restrictedNumberInputParams}
                   type="decimal"
+                  type="decimal"
                   variant="fixed-floating"
+                  variant="fixed-floating"
+                  w="full"
                   w="full"
                 />
                 <ControllerInput
                   control={control}
+                  control={control}
                   error={errors.ibc_transfer?.message}
                   label="Gas Cost for IBC"
+                  label="Gas cost for IBC"
                   labelBgColor="gray.900"
                   name="ibc_transfer"
-                  control={control}
-                  label="Gas cost for IBC"
-                  variant="fixed-floating"
-                  type="decimal"
-                  w="full"
                   placeholder="0.00"
                   restrictedNumberInputParams={restrictedNumberInputParams}
                   type="decimal"
+                  type="decimal"
                   variant="fixed-floating"
+                  variant="fixed-floating"
+                  w="full"
                   w="full"
                 />
               </Flex>

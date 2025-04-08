@@ -127,7 +127,7 @@ export const ReadBox = ({
         >
           {inputRequired && (
             <GridItem>
-              <Text variant="body2" color="text.dark" fontWeight={700} mb={3}>
+              <Text color="text.dark" fontWeight={700} mb={3} variant="body2">
                 Read inputs
               </Text>
               <EvmAbiForm
@@ -171,7 +171,7 @@ export const ReadBox = ({
             </GridItem>
           )}
           <GridItem>
-            <Text variant="body2" color="text.dark" fontWeight={700} mb={3}>
+            <Text color="text.dark" fontWeight={700} mb={3} variant="body2">
               Read outputs
             </Text>
             {queryError && (

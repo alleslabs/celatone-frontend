@@ -401,7 +401,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
     <>
       <ActionPageContainer>
         <CelatoneSeo pageName="Instantiate contract" />
-        <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
+        <Text color="text.dark" fontWeight={700} mb={3} variant="body1">
           DEPLOY NEW CONTRACT
         </Text>
         <Stepper currentStep={2} mode="deploy" />
@@ -410,11 +410,11 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
             Instantiate new contract
           </Heading>
           <UserDocsLink
-            isDevTool
-            mt={2}
             cta="View instantiate guideline"
             href="cosmwasm/upload-instantiate#instantiate-contract-from-code"
             isDevTool
+            isDevTool
+            mt={2}
             mt={2}
           />
         </Flex>

@@ -166,14 +166,14 @@ const MigrateBody = ({
             >
               MIGRATE CONTRACT
             </Text>
-            <Stepper mode="migrate" currentStep={1} />
-            <Heading as="h5" variant="h5" textAlign="center" mt={12}>
+            <Stepper currentStep={1} mode="migrate" />
+            <Heading as="h5" mt={12} textAlign="center" variant="h5">
               Migrate contract
             </Heading>
           </Box>
         ) : (
-          <Box w="full" mb={12}>
-            <Heading as="h5" variant="h5" textAlign="center" my={3}>
+          <Box mb={12} w="full">
+            <Heading as="h5" my={3} textAlign="center" variant="h5">
               Migrate contract
             </Heading>
             <Stepper currentStep={2} mode="migrate" />

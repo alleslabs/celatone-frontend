@@ -475,9 +475,9 @@ const AccountDetailsBody = ({
           <TabPanel mt={{ base: 0, md: 8 }} p={0}>
             <AssetsSection address={accountAddress} isAccount />
             <UserDocsLink
-              title="What is supported and unsupported assets?"
               cta="Read more about assets"
               href="general/accounts/detail-page#assets"
+              title="What is supported and unsupported assets?"
               title="What is Supported and Unsupported Assets?"
             />
           </TabPanel>
@@ -514,9 +514,9 @@ const AccountDetailsBody = ({
               scrollComponentId={tableHeaderId}
             />
             <UserDocsLink
-              title="What is transactions related to the account?"
               cta="Read more about Account transactions"
               href="general/accounts/detail-page#transactions"
+              title="What is transactions related to the account?"
               title="What is transactions related to the account?"
             />
           </TabPanel>
@@ -569,9 +569,9 @@ const AccountDetailsBody = ({
               totalCount={resourcesData?.totalCount}
             />
             <UserDocsLink
-              title="What is resources?"
               cta="Read more about Resources in account"
               href="general/accounts/detail-page#resources"
+              title="What is resources?"
               title="What is resources?"
             />
           </TabPanel>
@@ -583,9 +583,9 @@ const AccountDetailsBody = ({
               totalCount={modulesData?.total}
             />
             <UserDocsLink
-              title="What is modules?"
               cta="Read more about Modules in account"
               href="general/accounts/detail-page#modules"
+              title="What is modules?"
               title="What is modules?"
             />
           </TabPanel>

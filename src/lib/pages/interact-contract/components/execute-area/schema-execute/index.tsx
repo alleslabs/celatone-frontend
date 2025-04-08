@@ -92,7 +92,7 @@ export const SchemaExecute = ({
       >
         <Flex alignItems="center" direction="column">
           <StateImage imageVariant="not-found" imageWidth="128px" />
-          <Text variant="body1" fontWeight={700} mt={2}>
+          <Text fontWeight={700} mt={2} variant="body1">
             {verifiedSchema ? "Verified" : "Attached"} JSON schema doesn’t have
             ExecuteMsg
           </Text>

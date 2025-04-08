@@ -11,12 +11,11 @@ export const EditCodeDetailsModal = ({
   triggerElement,
 }: EditCodeDetailsModalProps) => (
   <CodeDetailsTemplateModal
-    title="Edit code name"
-    mainBtnTitle="Save"
+    codeInfo={codeInfo}
     icon="edit"
     isNewCode={false}
     mainBtnTitle="Save"
-    title="Edit Code Name"
+    title="Edit code name"
     triggerElement={triggerElement}
   />
 );

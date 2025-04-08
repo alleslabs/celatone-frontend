@@ -50,11 +50,11 @@ export const ActivitiesFull = ({ collectionAddress }: ActivitiesFullProps) => {
         Activities in this collection
       </Heading>
       <InputWithIcon
-        placeholder="Search by tx hash / token ID / NFT address"
-        value={searchKeyword}
         autoFocus
+        placeholder="Search by tx hash / token ID / NFT address"
         placeholder="Search by Tx Hash / Token Id / NFT Address"
         size={{ base: "md", md: "lg" }}
+        value={searchKeyword}
         value={searchKeyword}
         onChange={(e) => {
           setSearchKeyword(e.target.value);

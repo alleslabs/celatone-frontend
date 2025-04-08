@@ -79,11 +79,6 @@ export const AttachFund = ({
     <Flex mb={5}>
       <SelectInputBase
         formLabel={showLabel ? "Attach funds" : undefined}
-        options={attachFundsOptions}
-        onChange={(value: AttachFundsType) =>
-          setValue(ATTACH_FUNDS_OPTION, value)
-        }
-        initialSelected={attachFundsOption}
         helperTextComponent={
           <Text color="text.dark" variant="body3">
             Only the input values in your selected{" "}
@@ -94,7 +89,12 @@ export const AttachFund = ({
           </Text>
         }
         initialSelected={attachFundsOption}
+        initialSelected={attachFundsOption}
         options={attachFundsOptions}
+        options={attachFundsOptions}
+        onChange={(value: AttachFundsType) =>
+          setValue(ATTACH_FUNDS_OPTION, value)
+        }
         onChange={(value: AttachFundsType) =>
           setValue(ATTACH_FUNDS_OPTION, value)
         }

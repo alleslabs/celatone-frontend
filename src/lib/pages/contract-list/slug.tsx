@@ -138,14 +138,14 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
                 leftIcon: <CustomIcon boxSize={3} name="bookmark" />,
                 children: "Save Contract",
               }}
+              buttonProps={{
+                variant: "outline-primary",
+                leftIcon: <CustomIcon boxSize={3} name="bookmark" />,
+                children: "Save contract",
+              }}
               list={{
                 label: contractListInfo.name,
                 value: contractListInfo.slug,
-              }}
-              buttonProps={{
-                variant: "outline-primary",
-                leftIcon: <CustomIcon name="bookmark" boxSize={3} />,
-                children: "Save contract",
               }}
             />
           )}

@@ -96,7 +96,7 @@ export const CodeTopInfo = observer(
                 gap={{ base: 0, md: 2 }}
                 mt={{ base: 2, md: 0 }}
               >
-                <Text fontWeight={500} color="text.dark" variant="body2">
+                <Text color="text.dark" fontWeight={500} variant="body2">
                   Public code name:
                 </Text>
                 <Text variant="body2">{publicInfo.name}</Text>
@@ -119,7 +119,7 @@ export const CodeTopInfo = observer(
               direction={{ base: "column", md: "row" }}
               gap={{ base: 0, md: 2 }}
             >
-              <Text fontWeight={500} color="text.dark" variant="body2">
+              <Text color="text.dark" fontWeight={500} variant="body2">
                 Code hash:
               </Text>
               <CopyLink
@@ -133,7 +133,7 @@ export const CodeTopInfo = observer(
                 direction={{ base: "column", md: "row" }}
                 gap={{ base: 0, md: 2 }}
               >
-                <Text fontWeight={500} color="text.dark" variant="body2">
+                <Text color="text.dark" fontWeight={500} variant="body2">
                   CW2 info:
                 </Text>
                 <Text
@@ -166,10 +166,10 @@ export const CodeTopInfo = observer(
         </Flex>
         {publicInfo && (
           <PublicDescription
-            title="Public code description"
             description={publicInfo.description}
             icon={<CustomIcon color="gray.600" ml={0} name="public-project" />}
             textLine={2}
+            title="Public code description"
             title="Public Code Description"
           />
         )}

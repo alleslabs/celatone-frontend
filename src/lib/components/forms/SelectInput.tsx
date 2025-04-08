@@ -57,18 +57,7 @@ export const SelectInputBody = <
   isDisabled,
 }: SelectInputProps<OptionValue, IsMulti>) => (
   <Select<SelectInputOption<OptionValue>, IsMulti>
-    menuPosition="fixed"
-    menuPortalTarget={menuPortalTarget}
-    placeholder={placeholder}
-    options={options}
-    value={value}
-    isDisabled={isDisabled}
-    onChange={onChange}
-    size={size}
-    filterOption={handleFilterOption}
-    formatOptionLabel={formatOptionLabel}
-    components={components}
-    isSearchable={isSearchable}
+    autoFocus={autoFocus}
     chakraStyles={{
       container: (provided: SystemStyleObject) => ({
         ...provided,
@@ -103,20 +92,31 @@ export const SelectInputBody = <
       }),
       ...chakraStyles,
     }}
+    classNamePrefix={classNamePrefix}
+    closeMenuOnSelect={closeMenuOnSelect}
+    components={components}
+    filterOption={handleFilterOption}
+    formatOptionLabel={formatOptionLabel}
+    inputId={inputId}
+    isDisabled={isDisabled}
+    isMulti={isMulti}
+    isSearchable={isSearchable}
+    menuPortalTarget={menuPortalTarget}
+    menuPosition="fixed"
+    name={name}
+    options={options}
+    placeholder={placeholder}
+    size={size}
     styles={{
       menuPortal: (provided) => ({
         ...provided,
         zIndex: 2,
       }),
     }}
-    inputId={inputId}
-    name={name}
-    isMulti={isMulti}
-    closeMenuOnSelect={closeMenuOnSelect}
+    value={value}
     onBlur={onBlur}
+    onChange={onChange}
     onFocus={onFocus}
-    autoFocus={autoFocus}
-    classNamePrefix={classNamePrefix}
   />
 );
 

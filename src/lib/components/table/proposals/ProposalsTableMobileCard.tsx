@@ -38,7 +38,7 @@ export const ProposalsTableMobileCard = ({
         isFullTier && (
           <>
             <Flex direction="column" flex={1}>
-              <MobileLabel label="Resolved Block Height" />
+              <MobileLabel label="Resolved block height" />
               <ResolvedHeight
                 isDepositOrVoting={isDepositOrVoting}
                 resolvedHeight={proposal.resolvedHeight}
@@ -75,22 +75,18 @@ export const ProposalsTableMobileCard = ({
           )}
         </Flex>
       }
-      bottomContent={
-        isFullTier && (
-          <>
-            <Flex direction="column" flex={1}>
-              <MobileLabel label="Resolved block height" />
-              <ResolvedHeight
-                resolvedHeight={proposal.resolvedHeight}
-                isDepositOrVoting={isDepositOrVoting}
-              />
-            </Flex>
-            <Flex direction="column" flex={1}>
-              <MobileLabel label="Proposed by" />
-              <Proposer proposer={proposal.proposer} />
-            </Flex>
-          </>
-        )
+      topContent={
+        <>
+          <Flex align="center" gap={2}>
+            <MobileLabel label="Proposal ID" variant="body2" />
+            <ExplorerLink
+              showCopyOnHover
+              type="proposal_id"
+              value={proposal.id.toString()}
+            />
+          </Flex>
+          <StatusChip status={proposal.status} />
+        </>
       }
       onClick={() => onCardSelect(proposal.id)}
     />

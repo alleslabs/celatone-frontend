@@ -145,7 +145,7 @@ export const SchemaQueryComponent = ({
         >
           {msgSchema.inputRequired && (
             <GridItem>
-              <Text variant="body2" color="text.dark" fontWeight={700}>
+              <Text color="text.dark" fontWeight={700} variant="body2">
                 Query input
               </Text>
               <JsonSchemaForm
@@ -184,7 +184,7 @@ export const SchemaQueryComponent = ({
             {/* TODO: refactor query response */}
             <Flex justify="space-between" mb={4}>
               <Flex direction="column">
-                <Text variant="body2" color="text.dark" fontWeight={700}>
+                <Text color="text.dark" fontWeight={700} variant="body2">
                   Return output
                 </Text>
                 <Text textColor="text.dark" variant="body3">

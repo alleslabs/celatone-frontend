@@ -60,7 +60,7 @@ export const HomeSequencer = () => {
         {!!txsCount && txsCount > 5 && <ViewMore onClick={toTxs} />}
       </Box>
       <Box as="section">
-        <Heading as="h5" variant="h5" mb={5}>
+        <Heading as="h5" mb={5} variant="h5">
           Recent blocks
         </Heading>
         <RecentBlocksTableSequencer isViewMore />

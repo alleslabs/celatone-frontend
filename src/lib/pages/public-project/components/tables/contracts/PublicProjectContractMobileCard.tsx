@@ -38,7 +38,7 @@ export const PublicProjectContractMobileCard = ({
         <Flex direction="column" gap={3}>
           <Flex direction="column" flex={1}>
             <Flex direction="column">
-              <MobileLabel label="Contract Name" />
+              <MobileLabel label="Contract name" />
               <Text>{publicInfo.name}</Text>
               <Text color="text.dark" pt={1} variant="body3">
                 {publicInfo.description}
@@ -47,7 +47,7 @@ export const PublicProjectContractMobileCard = ({
           </Flex>
           <Flex direction="column" flex={1}>
             <Flex direction="column">
-              <MobileLabel label="Instantiated By" />
+              <MobileLabel label="Instantiated by" />
               <ExplorerLink
                 showCopyOnHover
                 type={getAddressTypeByLength(publicInfo.instantiator)}
@@ -60,7 +60,7 @@ export const PublicProjectContractMobileCard = ({
       topContent={
         <>
           <Flex align="start" direction="column">
-            <MobileLabel variant="body2" label="Contract address" />
+            <MobileLabel label="Contract address" variant="body2" />
             <ExplorerLink
               rightIcon={
                 <WasmVerifyBadge
@@ -90,29 +90,7 @@ export const PublicProjectContractMobileCard = ({
           </Flex>
         </>
       }
-      middleContent={
-        <Flex direction="column" gap={3}>
-          <Flex flex={1} direction="column">
-            <Flex direction="column">
-              <MobileLabel label="Contract name" />
-              <Text>{publicInfo.name}</Text>
-              <Text variant="body3" color="text.dark" pt={1}>
-                {publicInfo.description}
-              </Text>
-            </Flex>
-          </Flex>
-          <Flex flex={1} direction="column">
-            <Flex direction="column">
-              <MobileLabel label="Instantiated by" />
-              <ExplorerLink
-                value={publicInfo.instantiator}
-                type={getAddressTypeByLength(publicInfo.instantiator)}
-                showCopyOnHover
-              />
-            </Flex>
-          </Flex>
-        </Flex>
-      }
+      onClick={goToContractDetails}
     />
   );
 };

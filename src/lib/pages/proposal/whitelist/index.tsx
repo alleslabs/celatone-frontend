@@ -286,27 +286,27 @@ const ProposalToWhitelist = () => {
                 </Flex>
                 <ControllerInput
                   control={control}
-                  placeholder="ex. Allow XYZ to store code without proposal"
-                  label="Proposal title"
-                  labelBgColor="gray.900"
-                  variant="fixed-floating"
-                  rules={{
-                    required: "Proposal Title is required",
-                    maxLength: constants.maxProposalTitleLength,
-                  }}
                   error={
                     title.length > constants.maxProposalTitleLength
                       ? getMaxLengthError(title.length, "proposal_title")
                       : formErrors.title?.message
                   }
+                  label="Proposal title"
                   label="Proposal Title"
                   labelBgColor="gray.900"
+                  labelBgColor="gray.900"
                   name="title"
+                  placeholder="ex. Allow XYZ to store code without proposal"
                   placeholder="ex. Allow XYZ to store code without proposal"
                   rules={{
                     required: "Proposal Title is required",
                     maxLength: constants.maxProposalTitleLength,
                   }}
+                  rules={{
+                    required: "Proposal Title is required",
+                    maxLength: constants.maxProposalTitleLength,
+                  }}
+                  variant="fixed-floating"
                   variant="fixed-floating"
                 />
                 <ControllerTextarea
@@ -314,14 +314,14 @@ const ProposalToWhitelist = () => {
                   error={formErrors.description?.message}
                   height="160px"
                   label="Proposal description"
-                  placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
-                  variant="fixed-floating"
                   labelBgColor="gray.900"
                   name="description"
+                  placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
                   placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
                   rules={{
                     required: "Proposal Description is required",
                   }}
+                  variant="fixed-floating"
                   variant="fixed-floating"
                 />
               </Flex>

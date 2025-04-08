@@ -34,7 +34,7 @@ interface PublicProjectContractTableProps {
 const TEMPLATE_COLUMNS = "max(160px) minmax(300px, 1fr) max(200px) max(300px) ";
 
 const ContractTableHeader = () => (
-  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
+  <Grid minW="min-content" templateColumns={TEMPLATE_COLUMNS}>
     <TableHeader>Contract address</TableHeader>
     <TableHeader>Contract name</TableHeader>
     <TableHeader>Instantiated by</TableHeader>

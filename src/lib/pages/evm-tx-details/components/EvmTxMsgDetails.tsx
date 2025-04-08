@@ -47,7 +47,7 @@ export const EvmTxMsgDetails = ({
       {!!evmTxData.txReceipt.logs.length && (
         <>
           <DividerWithArrow />
-          <Text variant="body2" fontWeight={500} color="text.dark">
+          <Text color="text.dark" fontWeight={500} variant="body2">
             {plur("Event log", evmTxData.txReceipt.logs.length)}
           </Text>
           <Flex direction="column" gap={3} w="full">

@@ -171,19 +171,19 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
   return (
     <ActionModal
-      title="Save new code"
-      icon="bookmark-solid"
-      trigger={<Button {...buttonProps} as="button" />}
-      mainBtnTitle="Save new code"
-      mainAction={handleSave}
-      otherAction={reset}
       disabledMain={disableMain}
       icon="bookmark-solid"
+      icon="bookmark-solid"
       mainAction={handleSave}
+      mainAction={handleSave}
+      mainBtnTitle="Save new code"
       mainBtnTitle="Save New Code"
       otherAction={reset}
+      otherAction={reset}
       otherBtnTitle="Cancel"
+      title="Save new code"
       title="Save New Code"
+      trigger={<Button {...buttonProps} as="button" />}
       trigger={<Button {...buttonProps} as="button" />}
     >
       <FormControl display="flex" flexDir="column" gap={9}>
@@ -208,15 +208,15 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
           variant="fixed-floating"
         />
         <TextInput
-          variant="fixed-floating"
-          value={name}
-          setInputState={setName}
+          helperText="Fill in code name to define its use as a reminder"
           label="Code name"
           labelBgColor="gray.900"
           placeholder="Untitled name"
-          helperText="Fill in code name to define its use as a reminder"
+          setInputState={setName}
           status={nameStatus}
           value={name}
+          value={name}
+          variant="fixed-floating"
           variant="fixed-floating"
         />
       </FormControl>

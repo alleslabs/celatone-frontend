@@ -49,11 +49,11 @@ export const MyModuleVerificationsTable = observer(() => {
           onChange={(e) => setKeyword(e.target.value)}
         />
         <MoveVerifyTaskStatusFilter
+          isMulti
           label="Filter by status"
+          placeholder="All status"
           result={statuses}
           setResult={setStatuses}
-          placeholder="All status"
-          isMulti
         />
       </Grid>
 

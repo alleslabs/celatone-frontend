@@ -55,7 +55,7 @@ export const MyModuleVerificationDetailsAlert = ({
           <CustomIcon boxSize={4} color="error.main" name="info-circle" />
           <Stack gap={1}>
             <AlertTitle>Verification failed</AlertTitle>
-            <AlertDescription wordBreak="break-word" whiteSpace="pre-line">
+            <AlertDescription whiteSpace="pre-line" wordBreak="break-word">
               There are common problems that lead to verification failures,
               including:
               <UnorderedList>

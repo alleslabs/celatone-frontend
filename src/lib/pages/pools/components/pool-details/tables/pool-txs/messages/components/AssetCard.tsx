@@ -66,8 +66,7 @@ export const AssetCard = ({
             </Badge>
           )}
           <Copier
-            type={assetInfo?.price ? "supported_asset" : "unsupported_asset"}
-            value={denom}
+            amptrackSection={ampCopierSection}
             copyLabel="Token ID copied!"
             display="none"
             ml="1px"

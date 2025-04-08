@@ -76,7 +76,7 @@ const Deploy = () => {
   return (
     <ActionPageContainer>
       <CelatoneSeo pageName="Deploy contract" />
-      <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
+      <Text color="text.dark" fontWeight={700} mb={3} variant="body1">
         DEPLOY NEW CONTRACT
       </Text>
       <Stepper currentStep={1} mode="deploy" />
@@ -102,7 +102,6 @@ const Deploy = () => {
         </Alert>
       )}
       <ButtonCard
-        title="Upload new Wasm file"
         description={
           data?.isPermissionedNetwork
             ? "Available for whitelisted addresses only"
@@ -110,12 +109,13 @@ const Deploy = () => {
         }
         disabled={!enableUpload || !address}
         mb={4}
+        title="Upload new Wasm file"
         title="Upload new WASM File"
         onClick={() => navigate({ pathname: "/upload" })}
       />
       <ButtonCard
-        title="Use existing code IDs"
         description="Input code ID or select from previously stored or saved codes"
+        title="Use existing code IDs"
         title="Use existing Code IDs"
         onClick={() => navigate({ pathname: "/instantiate" })}
       />

@@ -96,7 +96,7 @@ export const UptimeSection = ({
                 </MenuList>
               </Menu>
             ) : (
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 Latest 100 blocks
               </Text>
             )}

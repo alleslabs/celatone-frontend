@@ -52,8 +52,8 @@ export const VotingThreshold = ({
         </>
       ) : (
         <>
-          <Flex gap={2} align="center">
-            <Heading as="h6" variant="h6" textColor="text.main">
+          <Flex align="center" gap={2}>
+            <Heading as="h6" textColor="text.main" variant="h6">
               Voting results
             </Heading>
             <VoteThresholdBadge

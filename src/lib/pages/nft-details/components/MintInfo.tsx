@@ -19,8 +19,8 @@ export const MintInfo = ({ nftAddress }: MintInfoProps) => {
   if (isLoading) return <Loading />;
   if (!mintInfo) return null;
   return (
-    <Stack spacing="16px" order={{ base: "1", md: "-1" }}>
-      <Heading as="h6" variant="h6" fontWeight={600}>
+    <Stack order={{ base: "1", md: "-1" }} spacing="16px">
+      <Heading as="h6" fontWeight={600} variant="h6">
         Mint information
       </Heading>
       <Box
@@ -34,9 +34,9 @@ export const MintInfo = ({ nftAddress }: MintInfoProps) => {
           templateColumns={isMobile ? "1fr" : "1fr 1fr 1fr"}
         >
           <LabelText
-            label="Minted block height"
             helperText1={formatUTC(mintInfo.timestamp)}
             helperText2={dateFromNow(mintInfo.timestamp)}
+            label="Minted block height"
             label="Minted Block Height"
           >
             <ExplorerLink

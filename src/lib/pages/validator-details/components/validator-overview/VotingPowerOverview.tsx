@@ -150,8 +150,8 @@ export const VotingPowerOverview = ({
         }
       >
         <Flex direction="column" gap={1}>
-          <Flex minH="36px" alignItems="center">
-            <Heading variant="h6" as="h6" color="text.main">
+          <Flex alignItems="center" minH="36px">
+            <Heading as="h6" color="text.main" variant="h6">
               Voting power
             </Heading>
           </Flex>

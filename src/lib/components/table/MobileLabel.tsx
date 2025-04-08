@@ -14,6 +14,7 @@ export const MobileLabel = ({
   <Text
     color="text.dark"
     fontWeight={fontWeight}
+    variant={variant}
     whiteSpace="nowrap"
   >
     {label}

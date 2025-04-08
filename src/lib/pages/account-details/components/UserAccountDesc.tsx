@@ -60,8 +60,8 @@ export const UserAccountDesc = observer(
         p={4}
         role="group"
       >
-        <Flex justify="space-between" align="center" h="32px">
-          <Text variant="body2" fontWeight={500} color="text.dark">
+        <Flex align="center" h="32px" justify="space-between">
+          <Text color="text.dark" fontWeight={500} variant="body2">
             Your account description
           </Text>
           <Box _groupHover={{ display: "flex" }} display="none">
@@ -79,12 +79,12 @@ export const UserAccountDesc = observer(
 
         {!noClamp && description && (
           <ShowMoreButton
-            showMoreText="View full description"
-            showLessText="View less description"
-            toggleShowMore={showMore}
             setToggleShowMore={() => setShowMore(!showMore)}
+            showLessText="View less description"
             showLessText="View Less Description"
+            showMoreText="View full description"
             showMoreText="View Full Description"
+            toggleShowMore={showMore}
             toggleShowMore={showMore}
           />
         )}

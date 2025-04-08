@@ -12,8 +12,8 @@ export const PublicAccountDesc = ({ description }: { description: string }) => (
     py={4}
   >
     <Flex alignItems="center" gap={1} minH="32px">
-      <CustomIcon name="website" ml={0} mb={2} color="gray.600" />
-      <Text variant="body2" fontWeight={500} color="text.dark">
+      <CustomIcon color="gray.600" mb={2} ml={0} name="website" />
+      <Text color="text.dark" fontWeight={500} variant="body2">
         Public account description
       </Text>
     </Flex>

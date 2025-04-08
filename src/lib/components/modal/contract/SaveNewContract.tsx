@@ -170,29 +170,29 @@ export function SaveNewContractModal({
 
   return (
     <ActionModal
-      title="Save new contract"
-      icon="bookmark-solid"
-      trigger={<Button as="button" {...buttonProps} />}
-      mainBtnTitle="Save"
-      mainAction={handleSave}
       disabledMain={
         status.state !== "success" || !!errors.name || !!errors.description
       }
       icon="bookmark-solid"
+      icon="bookmark-solid"
       mainAction={handleSave}
+      mainAction={handleSave}
+      mainBtnTitle="Save"
       mainBtnTitle="Save"
       otherAction={resetForm}
       otherBtnTitle="Cancel"
+      title="Save new contract"
       title="Save New Contract"
+      trigger={<Button as="button" {...buttonProps} />}
       trigger={<Button as="button" {...buttonProps} />}
     >
       <VStack gap={4}>
         <ControllerInput
           control={control}
           label="Contract address"
-          variant="fixed-floating"
           placeholder={`ex. ${exampleContractAddress}`}
           status={status}
+          variant="fixed-floating"
           variant="fixed-floating"
         />
         <ControllerInput

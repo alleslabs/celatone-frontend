@@ -33,9 +33,9 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
           </Badge>
         </Flex>
         {pool.isSupported && (
-          <Text variant="body2" color="text.dark" fontWeight={500}>
+          <Text color="text.dark" fontWeight={500} variant="body2">
             Total liquidity:
-            <Text as="span" fontWeight={700} color="text.main" ml={2}>
+            <Text as="span" color="text.main" fontWeight={700} ml={2}>
               {pool.liquidity ? formatPrice(totalLiquidity) : "N/A"}
             </Text>
           </Text>

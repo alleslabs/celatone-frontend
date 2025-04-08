@@ -60,7 +60,7 @@ export const ModuleInfoBody = ({
       padding={4}
     >
       <LabelText label="Upgrade policy">{upgradePolicy}</LabelText>
-      <LabelText label="Published by" helperText1="(Wallet Address)">
+      <LabelText helperText1="(Wallet Address)" label="Published by">
         {address ? (
           <ExplorerLink showCopyOnHover type="user_address" value={address} />
         ) : (
@@ -71,13 +71,13 @@ export const ModuleInfoBody = ({
         <>
           {modulePublishInfo?.recentPublishBlockTimestamp && (
             <LabelText
-              label="Published block height"
               helperText1={formatUTC(
                 modulePublishInfo.recentPublishBlockTimestamp
               )}
               helperText2={dateFromNow(
                 modulePublishInfo.recentPublishBlockTimestamp
               )}
+              label="Published block height"
               label="Published Block Height"
             >
               {modulePublishInfo?.recentPublishBlockHeight ? (

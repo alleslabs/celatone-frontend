@@ -97,11 +97,11 @@ export const CodeSelectDrawerButton = ({
           <DrawerBody overflow="scroll" px={0} py={4}>
             <Flex gap={4} mb={4} px={6} py={2}>
               <InputWithIcon
-                placeholder="Search with code ID or code name"
-                value={keyword}
                 autoFocus
+                placeholder="Search with code ID or code name"
                 placeholder="Search with Code ID or Code Name"
                 size={{ base: "md", md: "lg" }}
+                value={keyword}
                 value={keyword}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValue("keyword", e.target.value)

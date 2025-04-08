@@ -62,11 +62,11 @@ export const NftsSectionSequencer = ({
         >
           <FilterItem
             collectionName="All collections"
-            onClick={() => handleOnClick(undefined)}
-            isActive={selectedCollection === undefined}
             count={totalData}
             isActive={selectedCollection === undefined}
+            isActive={selectedCollection === undefined}
             isDefault
+            onClick={() => handleOnClick(undefined)}
             onClick={() => handleOnClick(undefined)}
           />
           {Object.entries(collections).map(([collectionAddress, nfts]) => (

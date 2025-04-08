@@ -71,7 +71,7 @@ export const TxInfoMobile = ({
           {feeToken ? (
             formatTokenWithValue(feeToken)
           ) : (
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               No fee
             </Text>
           )}
@@ -89,7 +89,7 @@ export const TxInfoMobile = ({
       )}
       <LabelText label="Memo">
         {txData.tx.body.memo || (
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             No memo
           </Text>
         )}

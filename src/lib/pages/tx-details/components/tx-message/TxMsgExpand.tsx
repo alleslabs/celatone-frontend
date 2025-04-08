@@ -241,7 +241,7 @@ export const TxMsgExpand = ({
     case "/cosmos.gov.v1.MsgSubmitProposal":
       msgIcon = "submit-proposal";
       content = (
-        <Flex gap={1} display="inline">
+        <Flex display="inline" gap={1}>
           Submit proposal {(body.is_expedited as boolean) && " expedited "}
           {log && (
             <>

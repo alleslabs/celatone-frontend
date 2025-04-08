@@ -42,7 +42,7 @@ export const DelegationInfo = ({
           }}
         >
           <Flex direction="column" gap={2}>
-            <Heading variant="h6" as="h6">
+            <Heading as="h6" variant="h6">
               Delegation details
             </Heading>
             {totalBondedCard}

@@ -47,10 +47,10 @@ export const CodeContractsTableFull = observer(
     return (
       <>
         <TableTitle
-          title="Contract instances"
-          count={data?.total ?? 0}
           id={tableHeaderId}
           count={data?.total ?? 0}
+          count={data?.total ?? 0}
+          title="Contract instances"
           title="Contract Instances"
         />
         <ContractsTable

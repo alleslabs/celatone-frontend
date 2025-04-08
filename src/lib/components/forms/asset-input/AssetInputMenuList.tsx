@@ -15,7 +15,7 @@ export const AssetInputMenuList = (
     <Box backgroundColor="gray.900" borderRadius="8px" overflow="hidden">
       <components.MenuList {...props}>
         <Flex justifyContent="space-between" px={3} py={4}>
-          <Text variant="body3" color="text.dark">
+          <Text color="text.dark" variant="body3">
             Token name
           </Text>
           <Text color="text.dark" variant="body3">

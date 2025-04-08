@@ -15,7 +15,7 @@ export const EvmVerifyFailed = ({ evmVerifyError }: EvmVerifyFailedProps) => (
     <EvmVerifyAlert errorMsg={evmVerifyError.message} />
     {typeof evmVerifyError.details === "string" ? (
       <Flex direction="column" gap={2}>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           Compiler warning
         </Text>
         <TextReadOnly
@@ -27,7 +27,7 @@ export const EvmVerifyFailed = ({ evmVerifyError }: EvmVerifyFailedProps) => (
     ) : (
       <>
         <Flex direction="column" gap={2}>
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             Expected bytecode
           </Text>
           <TextReadOnly
@@ -37,7 +37,7 @@ export const EvmVerifyFailed = ({ evmVerifyError }: EvmVerifyFailedProps) => (
           />
         </Flex>
         <Flex direction="column" gap={2} mt={2}>
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             Submitted bytecode
           </Text>
           <TextReadOnly

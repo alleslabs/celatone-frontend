@@ -56,7 +56,7 @@ export const WasmVerifyRequestInfo = ({
             status={wasmVerifyStatus}
           />
         </Flex>
-        <Flex gap={2} alignItems="center">
+        <Flex alignItems="center" gap={2}>
           <Text {...baseTextStyle}>Code hash:</Text>
           <CopyLink
             amptrackSection="code_hash"

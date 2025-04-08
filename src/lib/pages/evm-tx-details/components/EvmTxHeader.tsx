@@ -99,7 +99,7 @@ export const EvmTxHeader = ({
         gap={{ base: 1, md: 2 }}
         w="full"
       >
-        <Text variant="body2" fontWeight={500} color="text.dark">
+        <Text color="text.dark" fontWeight={500} variant="body2">
           Transaction hash:
         </Text>
         <CopyLink

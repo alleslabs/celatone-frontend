@@ -136,11 +136,11 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       {pool.scalingFactors !== null && (
         <LabelText label="Scaling factors">
           <JsonModalButton
-            modalHeader="Scaling factors"
             jsonString={JSON.stringify({
               scaling_factors: pool.scalingFactors,
               scaling_factor_controller: pool.scalingFactorController,
             })}
+            modalHeader="Scaling factors"
             modalHeader="Scaling Factors"
           />
         </LabelText>

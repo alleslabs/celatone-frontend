@@ -19,8 +19,8 @@ export const AllPublicProjectsPage = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Public projects" />
-      <Flex direction="column" alignItems="center" gap={8}>
-        <Flex justifyContent="space-between" w="full" alignItems="center">
+      <Flex alignItems="center" direction="column" gap={8}>
+        <Flex alignItems="center" justifyContent="space-between" w="full">
           <Heading
             alignItems="center"
             as="h5"

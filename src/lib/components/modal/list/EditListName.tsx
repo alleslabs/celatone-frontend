@@ -90,12 +90,12 @@ export function EditListNameModal({
       trigger={<MenuItem {...menuItemProps} as="button" />}
     >
       <TextInput
-        variant="fixed-floating"
-        value={listName}
-        setInputState={setListName}
-        labelBgColor="gray.900"
-        status={status}
         label="List name"
+        labelBgColor="gray.900"
+        setInputState={setListName}
+        status={status}
+        value={listName}
+        variant="fixed-floating"
       />
     </ActionModal>
   );

@@ -25,7 +25,7 @@ export const ModuleInfo = ({
   ...props
 }: ModuleInfoProps) => (
   <Flex flexDirection="column" gap={4}>
-    <Heading as="h6" variant="h6" fontWeight={600}>
+    <Heading as="h6" fontWeight={600} variant="h6">
       Module information
     </Heading>
     <ModuleInfoBody {...props} />

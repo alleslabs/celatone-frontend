@@ -215,7 +215,7 @@ const ContractDetailsBody = observer(
                 {/* Instantiate/Contract Info Section */}
                 <Flex direction="column" gap={6}>
                   {!isMobile && (
-                    <Heading as="h6" variant="h6" minW="fit-content">
+                    <Heading as="h6" minW="fit-content" variant="h6">
                       Contract information
                     </Heading>
                   )}
@@ -227,7 +227,7 @@ const ContractDetailsBody = observer(
                     {/* Instantiate Info */}
                     <div>
                       {isMobile && (
-                        <Heading as="h6" variant="h6" mb={6}>
+                        <Heading as="h6" mb={6} variant="h6">
                           Instantiate info
                         </Heading>
                       )}
@@ -245,7 +245,7 @@ const ContractDetailsBody = observer(
                         onClick={handleTabChange(TabIndex.States)}
                       >
                         View contract states
-                        <CustomIcon name="chevron-right" boxSize={3} />
+                        <CustomIcon boxSize={3} name="chevron-right" />
                       </Button>
                     </div>
                     <Flex
@@ -278,9 +278,9 @@ const ContractDetailsBody = observer(
             <TabPanel p={0}>
               <AssetsSection address={contractAddress} />
               <UserDocsLink
-                title="What is supported and unsupported assets? "
                 cta="Read more about assets"
                 href="cosmwasm/contracts/detail-page#assets"
+                title="What is supported and unsupported assets? "
                 title="What is Supported and Unsupported Assets? "
               />
             </TabPanel>

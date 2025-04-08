@@ -103,7 +103,7 @@ export const TotalCardModal = ({
             </GridItem>
             <GridItem>
               <Flex direction="column" gap="2px">
-                <Text variant="body2" fontWeight={600} textColor="text.dark">
+                <Text fontWeight={600} textColor="text.dark" variant="body2">
                   Account address
                 </Text>
                 <CopyLink isTruncate type="user_address" value={address} />

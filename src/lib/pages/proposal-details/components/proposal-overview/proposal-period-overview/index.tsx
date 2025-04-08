@@ -11,7 +11,7 @@ export const ProposalPeriodOverview = ({
   ...props
 }: ProposalOverviewProps) => (
   <div>
-    <Heading as="h6" variant="h6" mb={4}>
+    <Heading as="h6" mb={4} variant="h6">
       Proposal period
     </Heading>
     <ProposalStepper isOverview proposalData={proposalData} step={1} />

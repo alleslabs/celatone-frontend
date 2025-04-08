@@ -239,7 +239,7 @@ export const JsonExecute = ({
       <Flex direction="column" gap={10}>
         <Flex direction={{ sm: "column", lg: "row" }} gap={8}>
           <Flex direction="column" w={{ sm: "full", lg: "50%" }}>
-            <JsonInput topic="Execute msg" text={msg} setText={setMsg} />
+            <JsonInput setText={setMsg} text={msg} topic="Execute msg" />
             {error && <ErrorMessageRender error={error} mb={4} />}
           </Flex>
           <Box w={{ sm: "full", lg: "50%" }}>
@@ -264,8 +264,8 @@ export const JsonExecute = ({
               type="execute"
             />
           </Flex>
-          <Flex direction="row" align="center" gap={2}>
-            <Flex fontSize="14px" color="text.dark" alignItems="center">
+          <Flex align="center" direction="row" gap={2}>
+            <Flex alignItems="center" color="text.dark" fontSize="14px">
               Transaction fee:{" "}
               <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
             </Flex>

@@ -240,7 +240,7 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
                       onClick={() => setEnableOutside(false)}
                     >
                       <Flex alignItems="center" gap={2}>
-                        <CustomIcon name="plus" color="text.dark" boxSize={3} />
+                        <CustomIcon boxSize={3} color="text.dark" name="plus" />
                         <Text variant="body2">Create new list </Text>
                       </Flex>
                     </ListItem>

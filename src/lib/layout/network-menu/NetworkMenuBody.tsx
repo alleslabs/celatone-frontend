@@ -116,7 +116,7 @@ export const NetworkMenuBody = observer(
                     px={4}
                     py={2}
                   >
-                    <Text variant="body3" color="text.dark">
+                    <Text color="text.dark" variant="body3">
                       You can add custom rollup on Desktop only
                     </Text>
                   </Flex>

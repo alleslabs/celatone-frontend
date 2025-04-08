@@ -57,7 +57,7 @@ export const TxRelationSelection = ({
     <Box {...props}>
       <SelectInputBase
         formLabel="Filter by relation"
-        size={size}
+        initialSelected={initialValue}
         options={relationOptions}
         size={size}
         onChange={(newValue: RelationType) =>

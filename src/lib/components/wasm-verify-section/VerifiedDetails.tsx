@@ -57,7 +57,7 @@ export const VerifiedDetails = ({
         codeHash={codeHash}
         relatedVerifiedCodes={relatedVerifiedCodes}
         triggerElement={
-          <Button variant="ghost-primary" size="sm">
+          <Button size="sm" variant="ghost-primary">
             View details
           </Button>
         }
@@ -134,7 +134,7 @@ export const VerifiedDetails = ({
                   },
                 }}
               >
-                <Text color="primary.main" variant="body2" fontWeight={600}>
+                <Text color="primary.main" fontWeight={600} variant="body2">
                   View details
                 </Text>
               </Flex>

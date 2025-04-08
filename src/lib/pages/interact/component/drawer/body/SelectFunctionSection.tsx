@@ -99,7 +99,7 @@ export const SelectFunctionSection = ({
       {module ? (
         <>
           {isMobile ? (
-            <Heading as="h6" variant="h6" fontWeight={600} mt={6}>
+            <Heading as="h6" fontWeight={600} mt={6} variant="h6">
               Select view function
             </Heading>
           ) : (
@@ -108,11 +108,11 @@ export const SelectFunctionSection = ({
             </Heading>
           )}
           <InputWithIcon
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
             placeholder="Search with function name"
             size="md"
             value={keyword}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
             onChange={(e) => setKeyword(e.target.value)}
           />
           <Flex
@@ -130,7 +130,7 @@ export const SelectFunctionSection = ({
             >
               {!isMobile && (
                 <Flex alignItems="center" gap={1}>
-                  <Text variant="body2" fontWeight={600} color="text.dark">
+                  <Text color="text.dark" fontWeight={600} variant="body2">
                     View functions
                   </Text>
                   <CountBadge
@@ -157,7 +157,7 @@ export const SelectFunctionSection = ({
                 {...functionGridBaseStyle}
               >
                 <Flex alignItems="center" gap={1}>
-                  <Text variant="body2" fontWeight={600} color="text.dark">
+                  <Text color="text.dark" fontWeight={600} variant="body2">
                     Execute functions
                   </Text>
                   <CountBadge

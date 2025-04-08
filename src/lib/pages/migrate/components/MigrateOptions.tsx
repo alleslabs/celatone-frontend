@@ -34,8 +34,8 @@ export const MigrateOptions = ({
     );
   return (
     <>
-      <Flex direction="column" alignItems="center" gap={4} mb={6}>
-        <Heading as="h5" variant="h5" textAlign="center">
+      <Flex alignItems="center" direction="column" gap={4} mb={6}>
+        <Heading as="h5" textAlign="center" variant="h5">
           Migrate options
         </Heading>
         <UserDocsLink
@@ -53,23 +53,23 @@ export const MigrateOptions = ({
         </Alert>
       )}
       <ButtonCard
-        disabled={!isAdmin || !isAllowed}
-        title="Upload new Wasm file"
         description={
           uploadAccessParams?.isPermissionedNetwork
             ? "Available for whitelisted addresses only"
             : "Deploy contract by uploading new Wasm file"
         }
         disabled={!isAdmin || !isAllowed}
+        disabled={!isAdmin || !isAllowed}
         mb={4}
+        title="Upload new Wasm file"
         title="Upload new WASM File"
         onClick={uploadHandler}
       />
       <ButtonCard
         description="Input code ID or select from stored codes or your saved codes"
+        description="Input code ID or select from stored codes or your saved codes"
         disabled={!isAdmin}
         title="Use existing code IDs"
-        description="Input code ID or select from stored codes or your saved codes"
         onClick={existHandler}
       />
     </>

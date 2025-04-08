@@ -60,24 +60,24 @@ export const PublishCompleted = ({
         variant="full"
       />
       {isApiChain && (
-        <Flex direction="column" gap={4} w="full" mb={12}>
+        <Flex direction="column" gap={4} mb={12} w="full">
           <Heading as="h6" variant="h6">
             Module verification
           </Heading>
           <Flex
-            w="full"
-            justifyContent="space-between"
-            gap={6}
             alignItems="center"
+            gap={6}
+            justifyContent="space-between"
+            w="full"
           >
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               Verifying modules enhances credibility by displaying a verified
               badge. Once verified, users will be able to access the
               module&apos;s source code on the details page.
             </Text>
             <Button
-              variant="primary"
               minW={40}
+              variant="primary"
               onClick={() =>
                 navigate({
                   pathname: "/modules/verify",

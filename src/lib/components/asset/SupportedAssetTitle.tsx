@@ -22,10 +22,10 @@ export const SupportedAssetTitle = ({
   return (
     <Flex align="center" gap={2} justifyContent="space-between" py={1} w="full">
       <TableTitle
-        title="Supported assets"
         count={supportedAssets.length}
         isSmall
         mb={0}
+        title="Supported assets"
         title="Supported Assets"
       />
       {!isMobile && (

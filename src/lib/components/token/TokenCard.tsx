@@ -49,17 +49,17 @@ export const TokenCard = ({
         </Badge>
         <Copier
           amptrackSection={amptrackSection}
+          amptrackSection={amptrackSection}
           copyLabel="Token ID Copied!"
+          copyLabel="Token ID copied!"
           display={{ base: "flex", md: "none" }}
+          display={{ base: "flex", md: "none" }}
+          ml={1}
           ml={1}
           type={
             isSupportedToken(token) ? "supported_asset" : "unsupported_asset"
           }
           value={token.denom}
-          copyLabel="Token ID copied!"
-          display={{ base: "flex", md: "none" }}
-          ml={1}
-          amptrackSection={amptrackSection}
         />
       </Flex>
       <Flex

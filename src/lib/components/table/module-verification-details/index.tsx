@@ -18,7 +18,7 @@ export const ModuleVerificationDetailsTable = ({
 
   return (
     <TableContainer>
-      <Grid templateColumns={templateColumns} minW="min-content">
+      <Grid minW="min-content" templateColumns={templateColumns}>
         <TableHeader>Module path</TableHeader>
       </Grid>
       {moduleIdentifiers.map(({ name, address }) => (

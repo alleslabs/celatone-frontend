@@ -43,8 +43,8 @@ export const OverviewInfo = ({
     >
       <LabelText label="Network">{currentChainId}</LabelText>
       <LabelText
-        label="Creator address"
         helperText1={isMobile ? "(Wallet Address)" : undefined}
+        label="Creator address"
         label="Creator Address"
       >
         {isContractInfoLoading ? (

@@ -26,7 +26,7 @@ export const WasmVerifySubmitCompleted = ({
             name="check-circle-solid"
           />
           <Heading variant="h5">Submitted verification!</Heading>
-          <Text variant="body2" textAlign="center">
+          <Text textAlign="center" variant="body2">
             Your code verification request has been submitted.
             <br />
             You can view verification status on code or contract details page.

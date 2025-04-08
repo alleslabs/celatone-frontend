@@ -18,37 +18,6 @@ export const BlocksTableMobileCard = ({
   const navigate = useInternalNavigate();
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/blocks/[blockHeight]",
-          query: { blockHeight: blockData.height },
-        })
-      }
-      topContent={
-        <Flex align="center" gap={4} w="full">
-          <Flex direction="column" flex={1}>
-            <MobileLabel label="Block height" />
-            <ExplorerLink
-              type="block_height"
-              value={blockData.height.toString()}
-              showCopyOnHover
-            >
-              {blockData.height}
-            </ExplorerLink>
-          </Flex>
-          <Flex direction="column" flex={{ base: 2, sm: 3 }}>
-            <MobileLabel label="Block hash" />
-            <Flex h={6} align="end">
-              <Text variant="body2" color="text.main" fontFamily="mono">
-                {truncate(blockData.hash.toUpperCase())}
-              </Text>
-            </Flex>
-          </Flex>
-        </Flex>
-      }
-      middleContent={
-        showProposer && <ValidatorBadge validator={blockData.proposer} />
-      }
       bottomContent={
         <Flex align="start" gap={4} w="full">
           <Flex direction="column" flex={1}>
@@ -73,6 +42,31 @@ export const BlocksTableMobileCard = ({
       middleContent={
         showProposer && <ValidatorBadge validator={blockData.proposer} />
       }
+      middleContent={
+        showProposer && <ValidatorBadge validator={blockData.proposer} />
+      }
+      topContent={
+        <Flex align="center" gap={4} w="full">
+          <Flex direction="column" flex={1}>
+            <MobileLabel label="Block height" />
+            <ExplorerLink
+              showCopyOnHover
+              type="block_height"
+              value={blockData.height.toString()}
+            >
+              {blockData.height}
+            </ExplorerLink>
+          </Flex>
+          <Flex direction="column" flex={{ base: 2, sm: 3 }}>
+            <MobileLabel label="Block hash" />
+            <Flex align="end" h={6}>
+              <Text color="text.main" fontFamily="mono" variant="body2">
+                {truncate(blockData.hash.toUpperCase())}
+              </Text>
+            </Flex>
+          </Flex>
+        </Flex>
+      }
       topContent={
         <Flex align="center" gap={4} w="full">
           <Flex direction="column" flex={1}>
@@ -94,6 +88,12 @@ export const BlocksTableMobileCard = ({
             </Flex>
           </Flex>
         </Flex>
+      }
+      onClick={() =>
+        navigate({
+          pathname: "/blocks/[blockHeight]",
+          query: { blockHeight: blockData.height },
+        })
       }
       onClick={() =>
         navigate({

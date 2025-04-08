@@ -257,8 +257,8 @@ const InteractBody = ({
     <>
       <CelatoneSeo pageName="View / Execute Module" />
       <PageHeader
-        title={isMobile ? "View module" : "Module interactions"}
         docHref="move/view-execute"
+        title={isMobile ? "View module" : "Module interactions"}
         title={isMobile ? "View Module" : "Module Interactions"}
       />
       <Flex
@@ -280,8 +280,8 @@ const InteractBody = ({
             <Flex direction="column" gap={4}>
               <LabelText
                 label="Module path"
-                labelWeight={600}
                 labelColor="text.main"
+                labelWeight={600}
                 labelWeight={600}
               >
                 <Flex align="center" display="inline" gap={1}>
@@ -339,8 +339,8 @@ const InteractBody = ({
             </Flex>
             <Flex direction={{ base: "row", md: "column" }} gap={2}>
               <ModuleSelectDrawerTrigger
-                triggerVariant="change-module"
                 buttonText="Change module"
+                triggerVariant="change-module"
                 onOpen={() =>
                   handleDrawerOpen(ModuleInteractionMobileStep.SelectModule)
                 }

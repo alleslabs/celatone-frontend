@@ -90,7 +90,7 @@ export const ViewSchemaModal = ({
           />
         </Tooltip>
       ) : (
-        <Button variant="outline-gray" size="sm" onClick={handleView}>
+        <Button size="sm" variant="outline-gray" onClick={handleView}>
           View schema
         </Button>
       )}

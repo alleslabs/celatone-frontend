@@ -75,8 +75,8 @@ export const AdminContractsTable = observer(
       <Box mt={{ base: 4, md: 8 }}>
         {isMobileOverview ? (
           <MobileTitle
-            title="Contract admins"
             count={totalData}
+            title="Contract admins"
             title="Contract Admins"
             onViewMore={onViewMore}
           />

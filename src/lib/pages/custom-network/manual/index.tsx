@@ -152,7 +152,7 @@ export const AddNetworkManual = () => {
   return (
     <>
       <CelatoneSeo pageName="Add rollups" />
-      <Flex position="sticky" top={0} left={0} w="full" zIndex={2}>
+      <Flex left={0} position="sticky" top={0} w="full" zIndex={2}>
         <AddNetworkStepper currentStepIndex={currentStepIndex} />
       </Flex>
       <ActionPageContainer width={640}>
@@ -173,6 +173,14 @@ export const AddNetworkManual = () => {
           ) : undefined,
         }}
         actionLabel={handleActionLabel()}
+        cancelButton={{
+          onClick: handlePrevious,
+          variant: "outline-primary",
+          leftIcon: hasPrevious ? (
+            <CustomIcon boxSize={4} name="chevron-left" />
+          ) : undefined,
+        }}
+        cancelLabel={hasPrevious ? "Previous" : "Cancel"}
         helperText="The added custom rollup on Initia Scan will be stored locally on your device."
         sx={{
           backgroundColor: "background.main",

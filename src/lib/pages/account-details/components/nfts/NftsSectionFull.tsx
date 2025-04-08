@@ -58,11 +58,11 @@ export const NftsSectionFull = ({
         >
           <FilterItem
             collectionName="All collections"
-            onClick={() => handleOnClick(undefined)}
-            isActive={selectedCollection === undefined}
             count={totalData}
             isActive={selectedCollection === undefined}
+            isActive={selectedCollection === undefined}
             isDefault
+            onClick={() => handleOnClick(undefined)}
             onClick={() => handleOnClick(undefined)}
           />
           {collections.items.map((item) => (

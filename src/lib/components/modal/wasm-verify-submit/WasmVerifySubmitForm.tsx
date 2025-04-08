@@ -99,9 +99,9 @@ export const WasmVerifySubmitForm = ({
   return (
     <>
       <ModalHeader pb={0}>
-        <Flex w="full" direction="row" alignItems="center" gap={2}>
-          <CustomIcon name="verification-solid" boxSize={6} color="gray.600" />
-          <Heading variant="h5" as="h5">
+        <Flex alignItems="center" direction="row" gap={2} w="full">
+          <CustomIcon boxSize={6} color="gray.600" name="verification-solid" />
+          <Heading as="h5" variant="h5">
             Verify & Publish source code
           </Heading>
         </Flex>
@@ -159,8 +159,8 @@ export const WasmVerifySubmitForm = ({
                 )}
               </Flex>
               {codeHash && (
-                <Flex gap={2} alignItems="center">
-                  <Text fontWeight={500} color="text.dark" variant="body2">
+                <Flex alignItems="center" gap={2}>
+                  <Text color="text.dark" fontWeight={500} variant="body2">
                     Code hash:
                   </Text>
                   <CopyLink
@@ -193,16 +193,16 @@ export const WasmVerifySubmitForm = ({
             />
             <ControllerInput
               control={control}
-              label="Packages name:"
-              labelBgColor="gray.800"
-              variant="fixed-floating"
-              placeholder="e.g. contract-name"
               helperText="This should be the same name that is specified in Cargo.toml"
               isRequired
+              label="Packages name:"
               label="Packages Name:"
+              labelBgColor="gray.800"
               labelBgColor="gray.800"
               name="packageName"
               placeholder="e.g. contract-name"
+              placeholder="e.g. contract-name"
+              variant="fixed-floating"
               variant="fixed-floating"
             />
             <WasmVerifySubmitFormSelect

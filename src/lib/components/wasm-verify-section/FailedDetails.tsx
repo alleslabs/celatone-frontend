@@ -73,7 +73,7 @@ export const FailedDetails = ({
           codeHash={codeHash}
           relatedVerifiedCodes={relatedVerifiedCodes}
           triggerElement={
-            <Button variant="ghost-primary" size="sm">
+            <Button size="sm" variant="ghost-primary">
               View details
             </Button>
           }
@@ -84,14 +84,14 @@ export const FailedDetails = ({
             codeHash={codeHash}
             codeId={codeId}
             label="Reverify Code"
+            label="Reverify code"
+            relatedVerifiedCodes={relatedVerifiedCodes}
             relatedVerifiedCodes={relatedVerifiedCodes}
             wasmVerifyStatus={getWasmVerifyStatus({
               verificationInfo,
               schema: null,
               relatedVerifiedCodes,
             })}
-            relatedVerifiedCodes={relatedVerifiedCodes}
-            label="Reverify code"
           />
         )}
       </Flex>

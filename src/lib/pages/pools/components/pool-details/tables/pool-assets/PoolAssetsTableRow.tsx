@@ -67,11 +67,11 @@ export const PoolAssetsTableRow = ({
                   label={`Token ID: ${token.denom}`}
                 />
                 <Copier
-                  type="token_denom"
-                  value={token.denom}
                   copyLabel="Token ID copied!"
                   ml={0}
                   type="token_denom"
+                  type="token_denom"
+                  value={token.denom}
                   value={token.denom}
                 />
               </Flex>

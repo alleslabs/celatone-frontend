@@ -62,9 +62,9 @@ export const CodeSchemaSection = ({
       {!hasVerifiedSchema && (
         <>
           <UserDocsLink
-            title="How to attached and use JSON schema?"
             cta="Read more about JSON schema"
             href="cosmwasm/codes/attach-json-schema"
+            title="How to attached and use JSON schema?"
             title="How to attached and use JSON Schema?"
           />
           <JsonSchemaModal

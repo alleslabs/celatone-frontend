@@ -146,7 +146,7 @@ export const CodeInfoSection = ({
 
   return (
     <Box my={8}>
-      <Heading as="h6" variant="h6" mb={6}>
+      <Heading as="h6" mb={6} variant="h6">
         Code info
       </Heading>
       <Flex
@@ -193,8 +193,8 @@ export const CodeInfoSection = ({
         {!isMobile && (
           <CodeInfoLabelText
             label="JSON schema"
-            w={{ base: "full" }}
             maxW={{ md: "fit-content" }}
+            w={{ base: "full" }}
             w={{ base: "full" }}
           >
             <div>

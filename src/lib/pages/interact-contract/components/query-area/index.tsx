@@ -118,7 +118,7 @@ export const QueryArea = observer(
                       <Flex alignItems="center" flexDirection="column">
                         <Flex display="inline" textAlign="center">
                           You haven&#39;t attached the JSON schema for
-                          <CustomIcon name="code" mx={1} color="gray.400" />
+                          <CustomIcon color="gray.400" mx={1} name="code" />
                           code {codeId}
                         </Flex>
                         <Flex textAlign="center">

@@ -54,13 +54,13 @@ export const FilterByPermission = ({
   <Grid columnGap={4} maxW={{ md: maxWidth }} w="full">
     <SelectInputBase<PermissionFilterValue>
       formLabel="Filter by instantiate permission"
-      options={options}
-      onChange={setPermissionValue}
-      placeholder="Select"
       initialSelected={initialSelected}
       labelBgColor={labelBgColor}
       options={options}
+      options={options}
       placeholder="Select"
+      placeholder="Select"
+      onChange={setPermissionValue}
       onChange={setPermissionValue}
     />
   </Grid>

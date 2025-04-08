@@ -96,17 +96,17 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
   return (
     <ActionPageContainer width={900}>
       <CustomNetworkPageHeader
-        title={chainConfig.prettyName}
-        subtitle="Your custom rollup"
         hasAlert={false}
+        subtitle="Your custom rollup"
         subtitle="Your Custom Rollup"
+        title={chainConfig.prettyName}
         title={chainConfig.prettyName}
       />
       <Stack gap={12} mt={8} w="full">
         <Flex gap={10} justifyContent="space-between">
           <CustomNetworkSubheader
-            title="Export as JSON File"
             subtitle="You can export this custom rollup configuration in JSON file to use them in other device."
+            title="Export as JSON File"
           />
           <Button
             leftIcon={<CustomIcon name="download" />}

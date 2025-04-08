@@ -285,7 +285,7 @@ export const ContractTop = ({
               </Flex>
             )}
           </Flex>
-          <TotalValue address={contractAddress} label="Total value" isCompact />
+          <TotalValue address={contractAddress} isCompact label="Total value" />
         </Flex>
       </Flex>
     </Flex>

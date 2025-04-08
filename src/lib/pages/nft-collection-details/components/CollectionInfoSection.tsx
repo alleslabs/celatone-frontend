@@ -46,7 +46,7 @@ export const CollectionInfoSection = ({
   const infoGap = isMobile ? 1 : 4;
   return (
     <Flex direction="column">
-      <Heading as="h6" variant="h6" fontWeight={600} mb={6}>
+      <Heading as="h6" fontWeight={600} mb={6} variant="h6">
         Collection information
       </Heading>
       <Flex direction={{ base: "column", md: "row" }} mb={{ base: 4, md: 10 }}>
@@ -58,9 +58,9 @@ export const CollectionInfoSection = ({
           minW={60}
         >
           <LabelText
-            label="Created block height"
             helperText1={formatUTC(timestamp)}
             helperText2={dateFromNow(timestamp)}
+            label="Created block height"
             label="Created Block Height"
           >
             <ExplorerLink
@@ -165,11 +165,11 @@ export const CollectionInfoSection = ({
         />
         {isFullTier && (
           <InfoCard
-            title="Mutate events"
-            icon="migrate"
             content={mutateEventes}
             icon="migrate"
+            icon="migrate"
             isDisabled={mutateEventes === 0}
+            title="Mutate events"
             title="Mutate Events"
             onClick={onClickMutateEvents}
           />

@@ -191,18 +191,18 @@ export const ProposalVotesTable = ({
         >
           <GridItem>
             <SelectInputBase<ProposalVoteType>
-              formLabel="Filter by answer"
-              options={answerOptions}
-              onChange={handleOnAnswerFilterChange}
-              labelBgColor="gray.900"
-              initialSelected={answerFilter}
-              popoverBgColor="gray.800"
               disableMaxH
+              formLabel="Filter by answer"
               formLabel="Filter by Answer"
               initialSelected={answerFilter}
+              initialSelected={answerFilter}
+              labelBgColor="gray.900"
               labelBgColor="gray.900"
               options={answerOptions}
+              options={answerOptions}
               popoverBgColor="gray.800"
+              popoverBgColor="gray.800"
+              onChange={handleOnAnswerFilterChange}
               onChange={handleOnAnswerFilterChange}
             />
           </GridItem>

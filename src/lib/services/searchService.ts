@@ -363,7 +363,6 @@ export const useSearchHandler = (
           ? toChecksumAddress(debouncedKeyword)
           : debouncedKeyword,
       type:
-        // eslint-disable-next-line sonarjs/no-duplicate-string
         contractData || evmCodes?.code ? "Contract address" : "Account address",
       metadata: {
         icns:

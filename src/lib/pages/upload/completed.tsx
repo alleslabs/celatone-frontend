@@ -73,7 +73,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         mt={10}
         name="check-circle-solid"
       />
-      <Heading as="h4" variant="h4" mt={4} mb={12}>
+      <Heading as="h4" mb={12} mt={4} variant="h4">
         Upload Wasm file complete!
       </Heading>
       <Text color="text.dark" fontWeight={500} mb={4} variant="body2">
@@ -147,9 +147,9 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
                   label="Code verification is only available on official networks"
                 >
                   <OptionButton
-                    title="Verify code"
                     description="Ensures that the deployed code matches its published source code"
                     disabled={!isApiChain}
+                    title="Verify code"
                     title="Verify Code"
                   />
                 </Tooltip>
@@ -160,8 +160,8 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
               <>
                 {derivedWasmVerifyInfo?.schema ? (
                   <OptionButtonDisabled
-                    title="Attach JSON schema"
                     description="JSON schema is already available due to the code is indirectly verified"
+                    title="Attach JSON schema"
                   />
                 ) : (
                   <UploadSchema
@@ -171,8 +171,8 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
                     localSchema={localSchema}
                     triggerElement={
                       <OptionButton
-                        title="Attach JSON schema"
                         description="Your attached JSON schema will be stored locally on your device"
+                        title="Attach JSON schema"
                         title="Attach JSON Schema"
                       />
                     }

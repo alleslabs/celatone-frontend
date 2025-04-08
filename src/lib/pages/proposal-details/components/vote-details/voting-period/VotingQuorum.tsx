@@ -51,7 +51,7 @@ export const VotingQuorum = ({
           </>
         ) : (
           <>
-            <Heading as="h6" variant="h6" textColor="text.main">
+            <Heading as="h6" textColor="text.main" variant="h6">
               Voting participations
             </Heading>
             <VoteQuorumBadge
@@ -98,13 +98,13 @@ export const VotingQuorum = ({
               ratio={nonAbstainRatio}
             />
             <VpPercentCard
-              name="Voted abstain"
-              ratio={abstainRatio}
-              power={abstain}
               color="voteParticipations.votedAbstain"
               isCompact={isMobile}
+              name="Voted abstain"
               name="Voted Abstain"
               power={abstain}
+              power={abstain}
+              ratio={abstainRatio}
               ratio={abstainRatio}
             />
             <Divider

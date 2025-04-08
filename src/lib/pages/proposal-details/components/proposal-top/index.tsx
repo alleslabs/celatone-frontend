@@ -122,8 +122,8 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                 direction={{ base: "column", md: "row" }}
                 gap={{ base: 0, md: 2 }}
               >
-                <Flex gap={2} alignItems="center">
-                  <Text color="text.dark" variant="body2" fontWeight={500}>
+                <Flex alignItems="center" gap={2}>
+                  <Text color="text.dark" fontWeight={500} variant="body2">
                     Created height:
                   </Text>
                   <ExplorerLink

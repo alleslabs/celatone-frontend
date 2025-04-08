@@ -83,8 +83,8 @@ const InitRender = ({
   if (initProposalTitle && initProposalId) {
     return (
       <LabelText
-        label="Instantiate proposal ID"
         helperText1={initProposalTitle}
+        label="Instantiate proposal ID"
         label="Instantiate Proposal ID"
       >
         <ExplorerLink
@@ -133,7 +133,7 @@ export const InstantiateInfo = ({
         <LabelText flex={1} label="Network">
           {chainId}
         </LabelText>
-        <LabelText flex={1} label="From code" helperText1={codeLocalInfo?.name}>
+        <LabelText flex={1} helperText1={codeLocalInfo?.name} label="From code">
           <Flex direction="column">
             <Flex gap={1}>
               <ExplorerLink
@@ -187,7 +187,7 @@ export const InstantiateInfo = ({
               {cw2}
             </Text>
           ) : (
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               No info
             </Text>
           )}
@@ -195,8 +195,8 @@ export const InstantiateInfo = ({
         {contract.admin ? (
           <LabelText
             flex={1}
-            label="Admin address"
             helperText1={getAddressTypeText(adminType)}
+            label="Admin address"
             label="Admin Address"
           >
             <ExplorerLink
@@ -208,7 +208,7 @@ export const InstantiateInfo = ({
           </LabelText>
         ) : (
           <LabelText flex={1} label="Admin address">
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               No admin
             </Text>
           </LabelText>
@@ -217,7 +217,6 @@ export const InstantiateInfo = ({
       <Divider border="1px solid" borderColor="gray.700" />
       <LabelText
         flex={1}
-        label="Instantiated block height"
         helperText1={
           contract.createdTimestamp
             ? formatUTC(contract.createdTimestamp)
@@ -228,6 +227,7 @@ export const InstantiateInfo = ({
             ? dateFromNow(contract.createdTimestamp)
             : undefined
         }
+        label="Instantiated block height"
         label="Instantiated Block Height"
       >
         {contract.createdHeight ? (

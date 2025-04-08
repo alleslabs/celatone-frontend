@@ -120,19 +120,19 @@ export const UploadSection = ({
       <CodeHashBox codeHash={codeHash} />
       <ControllerInput
         control={control}
-        label="Code name (optional)"
-        placeholder="Untitled name"
-        helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
-        rules={{
-          maxLength: constants.maxCodeNameLength,
-        }}
         error={
           errors.codeName && getMaxLengthError(codeName.length, "code_name")
         }
         helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
+        helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
+        label="Code name (optional)"
         label="Code Name (Optional)"
         name="codeName"
+        placeholder="Untitled name"
         placeholder="Untitled Name"
+        rules={{
+          maxLength: constants.maxCodeNameLength,
+        }}
         rules={{
           maxLength: constants.maxCodeNameLength,
         }}
@@ -146,7 +146,7 @@ export const UploadSection = ({
       {isInitia ? (
         <Box>
           <Flex alignItems="center" gap={2}>
-            <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+            <Heading as="h6" fontWeight={600} my={2} variant="h6">
               Instantiate permission:
             </Heading>
             <PermissionChip
@@ -168,7 +168,7 @@ export const UploadSection = ({
         </Box>
       ) : (
         <Flex direction="column">
-          <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+          <Heading as="h6" fontWeight={600} my={2} variant="h6">
             Instantiate permission
           </Heading>
           <Text color="text.dark" mb={4} variant="body2">

@@ -88,28 +88,28 @@ export function CreateNewListModal({
 
   return (
     <ActionModal
-      title="Create a new list"
-      icon="add-new"
-      trigger={trigger || <Button {...buttonProps} as="button" />}
-      mainBtnTitle="Create"
-      mainAction={handleCreate}
       disabledMain={status.state !== "success"}
       icon="add-new"
+      icon="add-new"
       mainAction={handleCreate}
+      mainAction={handleCreate}
+      mainBtnTitle="Create"
       mainBtnTitle="Create"
       otherAction={resetListName}
       otherBtnTitle="Cancel"
+      title="Create a new list"
       title="Create a New List"
+      trigger={trigger || <Button {...buttonProps} as="button" />}
       trigger={trigger || <Button {...buttonProps} as="button" />}
     >
       <Box py={4}>
         <TextInput
-          variant="fixed-floating"
-          value={listName}
-          setInputState={setListName}
-          labelBgColor="gray.900"
-          status={status}
           label="List name"
+          labelBgColor="gray.900"
+          setInputState={setListName}
+          status={status}
+          value={listName}
+          variant="fixed-floating"
         />
       </Box>
     </ActionModal>

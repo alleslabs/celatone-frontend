@@ -95,7 +95,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
       {isCmdsFetching && <LoadingOverlay />}
       <Box alignItems="center" mb={8} width="full">
         {contractAddress && (
-          <Text variant="body3" mb={2}>
+          <Text mb={2} variant="body3">
             Message suggestions:
           </Text>
         )}
@@ -132,7 +132,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
       </Box>
       <Flex direction={{ base: "column", md: "row" }} gap={4}>
         <Box w="full">
-          <JsonInput topic="Query msg" text={msg} setText={setMsg} />
+          <JsonInput setText={setMsg} text={msg} topic="Query msg" />
           <Flex
             alignItems="center"
             direction={{ base: "column", md: "row" }}
@@ -186,10 +186,10 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
 
         <Box w="full">
           <JsonReadOnly
-            topic="Return output"
-            text={res}
             canCopy={res.length !== 0}
             text={res}
+            text={res}
+            topic="Return output"
             topic="Return Output"
           />
           {/* If response line count > 100, the copy button is visible. */}

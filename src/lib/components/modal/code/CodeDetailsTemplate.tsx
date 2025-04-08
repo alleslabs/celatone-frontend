@@ -99,7 +99,7 @@ export const CodeDetailsTemplateModal = ({
             <ExplorerLink type={uploaderType} value={codeInfo.uploader} />
           </Flex>
           <Flex align="center">
-            <Text variant="body2" fontWeight={700} w="30%">
+            <Text fontWeight={700} variant="body2" w="30%">
               Instantiate permission
             </Text>
             <PermissionChip

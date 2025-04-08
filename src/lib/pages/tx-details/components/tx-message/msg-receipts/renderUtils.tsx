@@ -114,7 +114,7 @@ export const attachFundsReceipt = (value: Option<Coin[]>): TxReceipt => ({
   html: value?.length ? (
     <CoinsComponent coins={value} />
   ) : (
-    <Text variant="body2" color="text.dark">
+    <Text color="text.dark" variant="body2">
       No attached funds
     </Text>
   ),

@@ -251,10 +251,6 @@ export const EvmContractVerifyBody = ({
                   </GridItem>
                   <GridItem colSpan={1}>
                     <ControllerInput
-                      label="Contract address"
-                      isRequired
-                      placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
-                      name="contractAddress"
                       control={control}
                       error={
                         evmVerifyInfo?.isVerified
@@ -262,8 +258,12 @@ export const EvmContractVerifyBody = ({
                           : errors.contractAddress?.message
                       }
                       isRequired
+                      isRequired
+                      label="Contract address"
                       label="Contract Address"
                       name="contractAddress"
+                      name="contractAddress"
+                      placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
                       placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
                       rules={{
                         required: "",
@@ -331,8 +331,8 @@ export const EvmContractVerifyBody = ({
                       }}
                     />
                     <SelectInput
-                      label="Compiler version"
                       isRequired
+                      label="Compiler version"
                       label="Compiler Version"
                       menuPortalTarget={document.body}
                       options={compilerVersionOptions}

@@ -24,7 +24,7 @@ export const UpdateGasFeeDetails = () => {
         <AccordionItem>
           <AccordionButton p={4}>
             <Text>Advanced options</Text>
-            <AccordionIcon color="gray.600" ml="auto" boxSize={6} />
+            <AccordionIcon boxSize={6} color="gray.600" ml="auto" />
           </AccordionButton>
           <AccordionPanel pb={4} pt={0}>
             <Flex gap={6} mt={2}>

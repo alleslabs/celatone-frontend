@@ -89,14 +89,14 @@ export const UnsupportedToken = ({
           )}
           <Copier
             amptrackSection="unsupported_token_copy"
+            amptrackSection="unsupported_token_copy"
             copyLabel="Token ID Copied!"
+            copyLabel="Token ID copied!"
             display={{ base: "flex", md: "none" }}
+            ml={{ base: 1, md: 0 }}
             ml={{ base: 1, md: 0 }}
             type="unsupported_asset"
             value={token.denom}
-            copyLabel="Token ID copied!"
-            ml={{ base: 1, md: 0 }}
-            amptrackSection="unsupported_token_copy"
           />
         </Flex>
       </Flex>

@@ -35,7 +35,7 @@ export const StateLoader = ({
           <Text color="text.dark" fontWeight={600} variant="body2">
             Loading {numStatesToLoad} states...
           </Text>
-          <Button size="sm" variant="outline-primary" isDisabled>
+          <Button isDisabled size="sm" variant="outline-primary">
             Load more
           </Button>
         </Flex>

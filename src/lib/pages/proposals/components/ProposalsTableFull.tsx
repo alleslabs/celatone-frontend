@@ -139,17 +139,17 @@ export const ProposalsTableFull = () => {
           pb={3}
         >
           <ProposalStatusFilter
+            isMulti
             label="Filter by status"
+            placeholder="All status"
             result={statuses}
             setResult={setStatuses}
-            placeholder="All status"
-            isMulti
           />
           <ProposalTypeFilter
             label="Filter by type"
+            placeholder="All type"
             result={types}
             setResult={setTypes}
-            placeholder="All type"
           />
         </Flex>
       </Flex>

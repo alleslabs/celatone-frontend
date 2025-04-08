@@ -84,9 +84,9 @@ export const UnsupportedTokensModal = ({
         <ModalOverlay />
         <ModalContent w="800px">
           <ModalHeader>
-            <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
-              <CustomIcon name={content.icon} boxSize={5} color="gray.600" />
-              <Heading variant="h5" as="h5">
+            <Flex alignItems="center" direction="row" gap={2} pt={1} w="full">
+              <CustomIcon boxSize={5} color="gray.600" name={content.icon} />
+              <Heading as="h5" variant="h5">
                 Unsupported assets
               </Heading>
             </Flex>

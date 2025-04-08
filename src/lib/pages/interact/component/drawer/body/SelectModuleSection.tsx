@@ -79,11 +79,11 @@ export const SelectModuleSection = ({
   return (
     <>
       <InputWithIcon
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
         placeholder="Search with module name"
         size="md"
         value={keyword}
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
         onChange={(e) => setKeyword(e.target.value)}
       />
       <Flex alignItems="center" gap={2} mt={6}>

@@ -70,16 +70,16 @@ export const CodeSelectSection = <T extends FieldValues>({
           <ControllerInput
             control={control}
             error={error}
-            label="Code ID"
             helperText="Input existing code ID manually"
-            variant="fixed-floating"
-            placeholder="ex. 1234"
+            label="Code ID"
             my={8}
             name={name}
+            placeholder="ex. 1234"
             placeholder="ex. 1234"
             rules={{ required: "Code ID is required" }}
             status={status}
             type="number"
+            variant="fixed-floating"
             variant="fixed-floating"
           />
         )}

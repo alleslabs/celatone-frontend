@@ -59,7 +59,7 @@ export const MigrationMobileCard = ({
               </Flex>
             )}
             <Flex direction="column" flex={1}>
-              <MobileLabel label="Block Height" />
+              <MobileLabel label="Block height" />
               {history.height ? (
                 <ExplorerLink
                   showCopyOnHover
@@ -84,7 +84,7 @@ export const MigrationMobileCard = ({
       middleContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel variant="body3" label="Code name" />
+            <MobileLabel label="Code name" variant="body3" />
             <CodeNameCell
               code={{
                 id: history.codeId,
@@ -97,7 +97,7 @@ export const MigrationMobileCard = ({
           {isFullTier && (
             <>
               <Flex direction="column">
-                <MobileLabel variant="body3" label="CW2 info" />
+                <MobileLabel label="CW2 info" variant="body3" />
                 <Text
                   color={cw2Info ? "text.main" : "text.disabled"}
                   variant="body2"
@@ -114,31 +114,15 @@ export const MigrationMobileCard = ({
           )}
         </Flex>
       }
-      bottomContent={
-        <Flex w="full" direction="column" gap={3}>
-          <Flex>
-            {isFullTier && (
-              <Flex flex={1} direction="column">
-                <MobileLabel label="Sender" />
-                {history.sender ? (
-                  <ExplorerLink
-                    type={getAddressType(history.sender)}
-                    value={history.sender}
-                    textFormat="truncate"
-                    showCopyOnHover
-                  />
-                ) : (
-                  "N/A"
-                )}
-              </Flex>
-            )}
-            <Flex flex={1} direction="column">
-              <MobileLabel label="Block height" />
-              {history.height ? (
-                <ExplorerLink
-                  value={history.height.toString()}
-                  type="block_height"
-                  showCopyOnHover
+      topContent={
+        <Flex w="full">
+          <Flex align="center" flex={1} gap={2}>
+            <MobileLabel label="Code ID" variant="body2" />
+            <ExplorerLink
+              rightIcon={
+                <WasmVerifyBadge
+                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                  status={getWasmVerifyStatus(wasmVerifyInfo)}
                 />
               }
               showCopyOnHover

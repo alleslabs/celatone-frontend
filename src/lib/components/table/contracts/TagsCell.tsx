@@ -44,7 +44,7 @@ export const TagsCell = ({
         {tags.length ? (
           <Tag size={tagSize}>{tags[0]}</Tag>
         ) : (
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             Not tagged
           </Text>
         )}
@@ -89,7 +89,7 @@ export const TagsCell = ({
                 );
               })
             ) : (
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 Not tagged
               </Text>
             )}

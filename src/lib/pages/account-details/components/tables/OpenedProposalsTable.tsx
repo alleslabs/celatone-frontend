@@ -68,8 +68,8 @@ export const OpenedProposalsTable = ({
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
         <MobileTitle
-          title="Opened proposals"
           count={totalData}
+          title="Opened proposals"
           title="Opened Proposals"
           onViewMore={onViewMore}
         />

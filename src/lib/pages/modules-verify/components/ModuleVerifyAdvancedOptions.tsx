@@ -64,9 +64,9 @@ export const ModuleVerifyAdvancedOptions = ({
             p={4}
             w="full"
           >
-            <Flex direction="column" gap={1} alignItems="flex-start">
+            <Flex alignItems="flex-start" direction="column" gap={1}>
               <Text>Advanced options</Text>
-              <Text variant="body3" color="text.dark" textAlign="left">
+              <Text color="text.dark" textAlign="left" variant="body3">
                 Skip this section if you built your module with default
                 settings. Otherwise, ensure your specified versions match here
                 to prevent verification errors.

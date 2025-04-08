@@ -74,11 +74,11 @@ export const ContractInputSection = ({
     <Flex gap={2} w="full">
       <ControllerInput
         control={control}
-        label="Contract address"
-        placeholder={`ex. ${truncate(contractExample)}`}
         helperText="Input must be the contract that you have admin access"
+        label="Contract address"
         label="Contract Address"
         name="contractAddress"
+        placeholder={`ex. ${truncate(contractExample)}`}
         placeholder={`ex. ${truncate(contractExample)}`}
         size="md"
         status={debouncedKeyword ? handleInputStatus : undefined}

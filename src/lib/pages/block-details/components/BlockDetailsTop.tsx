@@ -1,4 +1,5 @@
 import type { BlockData } from "lib/types";
+import type { BlockData } from "lib/types";
 
 import {
   Button,
@@ -14,7 +15,6 @@ import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { CustomIcon } from "lib/components/icon";
 import { useOpenBlockTab } from "lib/hooks/useOpenTab";
-import type { BlockData } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {

@@ -82,7 +82,7 @@ export const ButtonSection = ({
             }
           >
             View contract details
-            <CustomIcon name="chevron-right" boxSize={3} />
+            <CustomIcon boxSize={3} name="chevron-right" />
           </Button>
         </>
       );
@@ -102,7 +102,7 @@ export const ButtonSection = ({
             onClick={openProposalExplorer}
           >
             View proposal
-            <CustomIcon name="launch" boxSize={3} ml={2} />
+            <CustomIcon boxSize={3} ml={2} name="launch" />
           </Button>
           <Button
             variant="primary"
@@ -114,7 +114,7 @@ export const ButtonSection = ({
             }}
           >
             See in proposal list
-            <CustomIcon name="chevron-right" boxSize={3} ml={2} />
+            <CustomIcon boxSize={3} ml={2} name="chevron-right" />
           </Button>
         </>
       );
@@ -122,11 +122,11 @@ export const ButtonSection = ({
       return (
         <Flex justify="space-between" w="full">
           <CopyButton
-            buttonText="Copy error log"
-            value={errorMsg}
             amptrackSection="tx_error_log"
+            buttonText="Copy error log"
             buttonText="Copy Error Log"
             size="md"
+            value={errorMsg}
             value={errorMsg}
           />
           <Flex gap={2}>

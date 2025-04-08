@@ -62,7 +62,7 @@ export const WasmVerifyStatusModal = ({
                 color="gray.600"
                 name="verification-solid"
               />
-              <Heading variant={{ base: "h6", md: "h5" }} as="h5">
+              <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
                 Code verification status
               </Heading>
             </Flex>

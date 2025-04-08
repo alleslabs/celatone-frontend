@@ -50,12 +50,12 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
       return (
         <>
           <InfoItem label="Deposit start">
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               {formatUTC(data.submitTime)}
             </Text>
           </InfoItem>
           <InfoItem label="Deposit end">
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               {formatUTC(data.depositEndTime)}
             </Text>
           </InfoItem>
@@ -74,12 +74,12 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
       return (
         <>
           <InfoItem label="Voting start">
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               {data.votingTime ? `${formatUTC(data.votingTime)}` : "N/A"}
             </Text>
           </InfoItem>
           <InfoItem label="Voting end">
-            <Text variant="body2" color="text.dark">
+            <Text color="text.dark" variant="body2">
               {data.votingEndTime ? `${formatUTC(data.votingEndTime)}` : "N/A"}
             </Text>
           </InfoItem>
@@ -90,11 +90,11 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
     case ProposalStatus.REJECTED:
       return (
         <ResolvedTimeInfoItems
-          resolvedHeightLabel="Resolved block height"
-          resolvedTimestampLabel="Resolved at"
           resolvedHeight={data.resolvedHeight}
+          resolvedHeightLabel="Resolved block height"
           resolvedHeightLabel="Resolved Block Height"
           resolvedTimestamp={data.resolvedTimestamp}
+          resolvedTimestampLabel="Resolved at"
           resolvedTimestampLabel="Resolved at"
         />
       );

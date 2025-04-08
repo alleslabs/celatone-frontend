@@ -52,11 +52,11 @@ export function RemoveChainConfigModal({
     <ActionModal
       icon="delete"
       iconColor="error.light"
-      trigger={trigger}
+      mainAction={handleRemove}
       mainBtnTitle="Yes, remove it"
       mainVariant="error"
-      mainAction={handleRemove}
       otherBtnTitle="No, keep it"
+      trigger={trigger}
     >
       <Text>
         All information about your Rollup will be lost and can&lsquo;t be

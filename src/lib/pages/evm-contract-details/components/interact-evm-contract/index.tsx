@@ -106,7 +106,7 @@ export const InteractEvmContract = ({
 
   return (
     <Box>
-      <Flex gap={2} align="center" mb={8}>
+      <Flex align="center" gap={2} mb={8}>
         <Heading variant="h6">Contract interactions</Heading>
         {!isMobile && (
           <TypeSwitch

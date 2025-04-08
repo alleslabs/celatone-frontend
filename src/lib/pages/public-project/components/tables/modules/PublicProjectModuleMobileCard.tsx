@@ -29,7 +29,7 @@ export const PublicProjectModuleMobileCard = ({
       middleContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel variant="body2" label="Module path" />
+            <MobileLabel label="Module path" variant="body2" />
             <Text
               color="primary.main"
               variant="body2"
@@ -43,16 +43,16 @@ export const PublicProjectModuleMobileCard = ({
       middleContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel variant="body2" label="Owner" />
+            <MobileLabel label="Owner" variant="body2" />
             <ExplorerLink
-              value={module.address.toString()}
-              type="user_address"
               showCopyOnHover
+              type="user_address"
+              value={module.address.toString()}
             />
           </Flex>
           <Flex direction="column">
-            <MobileLabel variant="body2" label="Module description" />
-            <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
+            <MobileLabel label="Module description" variant="body2" />
+            <Text color="text.dark" variant="body2" whiteSpace="break-spaces">
               {module.description || "N/A"}
             </Text>
           </Flex>

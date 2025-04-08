@@ -42,28 +42,15 @@ export const EvmTransactionsTableMobileCard = ({
   const token = coinToTokenWithValue(denom, amount, assetInfos);
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/evm-txs/[txHash]",
-          query: { txHash: formatEvmTxHash(evmTransaction.tx.hash) },
-        })
-      }
-      topContent={
-        <Flex align="center" gap={2} w="full">
-          <Flex direction="column" flex={3} gap={1}>
-            <MobileLabel label="Transaction hash" />
-            <Flex gap={1} alignItems="center">
-              {evmTransaction.txReceipt.status ? (
-                <CustomIcon name="check" color="success.main" />
-              ) : (
-                <CustomIcon name="close" color="error.main" />
-              )}
-              <ExplorerLink
-                value={formatEvmTxHash(evmTransaction.tx.hash)}
-                type="tx_hash"
-                showCopyOnHover
-              />
-            </Flex>
+      bottomContent={
+        showTimestamp && (
+          <Flex direction="column">
+            <Text color="text.dark" variant="body2">
+              {formatUTC(evmTransaction.timestamp)}
+            </Text>
+            <Text color="text.disabled" variant="body3">
+              ({dateFromNow(evmTransaction.timestamp)})
+            </Text>
           </Flex>
         )
       }
@@ -107,7 +94,7 @@ export const EvmTransactionsTableMobileCard = ({
       topContent={
         <Flex align="center" gap={2} w="full">
           <Flex direction="column" flex={3} gap={1}>
-            <MobileLabel label="Transaction Hash" />
+            <MobileLabel label="Transaction hash" />
             <Flex alignItems="center" gap={1}>
               {evmTransaction.txReceipt.status ? (
                 <CustomIcon color="success.main" name="check" />

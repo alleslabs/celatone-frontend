@@ -26,7 +26,7 @@ interface PublicProjectModuleTableProps {
 const TEMPLATE_COLUMNS = "320px 160px minmax(250px, 1fr) 160px";
 
 const ModuleTableHeader = () => (
-  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
+  <Grid minW="min-content" templateColumns={TEMPLATE_COLUMNS}>
     <TableHeader>Module path</TableHeader>
     <TableHeader>Owner</TableHeader>
     <TableHeader>Module description</TableHeader>

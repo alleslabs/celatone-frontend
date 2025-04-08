@@ -35,8 +35,9 @@ export const CodeNameCell = ({
   };
   return (
     <EditableCell
-      initialValue={code.name}
       defaultValue="Untitled name"
+      initialValue={code.name}
+      isReadOnly={isReadOnly}
       maxLength={constants.maxCodeNameLength}
       onSave={onSave}
     />

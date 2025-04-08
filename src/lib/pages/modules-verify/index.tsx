@@ -9,10 +9,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-
 import {
   useCelatoneApp,
   useIsApiChain,
@@ -32,7 +28,10 @@ import {
   useMoveVerifyConfig,
 } from "lib/services/verification/move";
 import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
 import { useForm } from "react-hook-form";
 
 import type { ModuleVerifyForm } from "./types";

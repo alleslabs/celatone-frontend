@@ -184,7 +184,7 @@ export const SelectContractInstantiator = ({
                       <Divider borderColor="gray.700" />
                     </Flex>
 
-                    <Heading as="h6" variant="h6" mb={4}>
+                    <Heading as="h6" mb={4} variant="h6">
                       Select from your contract list
                     </Heading>
                     <AllContractLists

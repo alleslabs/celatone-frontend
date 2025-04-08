@@ -1,7 +1,4 @@
 import { Box, ListItem, Stack, Text, UnorderedList } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-
 import { useIsApiChain, useMoveConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
@@ -12,6 +9,8 @@ import { useMoveVerifyTaskStore } from "lib/providers/store";
 import { MoveVerifyTaskStatus } from "lib/services/types";
 import { useMoveVerifyTaskInfo } from "lib/services/verification/move";
 import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
 import { useRouter } from "next/router";
 
 import {
@@ -34,8 +33,8 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
   if (!data || error)
     return (
       <EmptyState
-        imageVariant="not-found"
         heading="Task ID not found"
+        imageVariant="not-found"
         message="Please double-check your input and make sure you have selected the correct network."
         withBorder
       />
@@ -108,8 +107,8 @@ export const MyModuleVerificationDetails = observer(() => {
       <CelatoneSeo pageName="My module verification details" />
       {!validated.success ? (
         <EmptyState
-          imageVariant="not-found"
           heading="Task ID not found"
+          imageVariant="not-found"
           message="Please double-check your input and make sure you have selected the correct network."
           withBorder
         />
