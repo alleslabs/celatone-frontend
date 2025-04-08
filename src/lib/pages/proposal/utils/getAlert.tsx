@@ -3,6 +3,7 @@ import type { Nullable, Option } from "lib/types";
 import { CustomIcon } from "lib/components/icon";
 import { big } from "lib/types";
 import { d2Formatter } from "lib/utils";
+import { JSX } from "react";
 
 interface AlertProps {
   variant: string;

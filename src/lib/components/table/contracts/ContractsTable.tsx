@@ -3,6 +3,7 @@ import type { BechAddr32, ContractInfo, Option } from "lib/types";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
+import { JSX } from "react";
 
 import type { CtaInfo } from "./ContractsTableRowCta";
 

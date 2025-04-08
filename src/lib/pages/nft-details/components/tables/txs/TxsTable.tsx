@@ -4,6 +4,7 @@ import type { Option } from "lib/types";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
+import { JSX } from "react";
 
 import { TxsTableHeader } from "./TxsTableHeader";
 import { TxsTableMobileCard } from "./TxsTableMobileCard";

@@ -1,6 +1,7 @@
 import type { ContractLocalInfo } from "lib/stores/contract";
 
 import { DEFAULT_LIST } from "lib/data";
+import { JSX } from "react";
 
 import { ContractDetailsTemplateModal } from "./ContractDetailsTemplate";
 

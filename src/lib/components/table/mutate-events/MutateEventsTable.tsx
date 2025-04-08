@@ -2,6 +2,7 @@ import type { MutateEvent, Option } from "lib/types";
 
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
+import { JSX } from "react";
 
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { MutateEventsTableHeader } from "./MutateEventsTableHeader";

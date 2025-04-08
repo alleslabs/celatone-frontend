@@ -10,6 +10,7 @@ import {
   StableSwapIcon,
 } from "lib/icon";
 import { PoolType } from "lib/types";
+import { JSX } from "react";
 
 interface PoolTypeOption {
   label: string;

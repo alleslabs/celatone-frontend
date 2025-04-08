@@ -18,6 +18,7 @@ import { Stepper } from "lib/components/stepper";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useUploadAccessParamsRest } from "lib/services/wasm/code";
 import { useRouter } from "next/router";
+import { JSX } from "react";
 import { useEffect } from "react";
 
 const getAlertContent = (

@@ -3,6 +3,7 @@ import type { Dispatch, ForwardedRef, RefObject, SetStateAction } from "react";
 
 import { Flex, FormLabel, Input } from "@chakra-ui/react";
 import { mergeRefs } from "lib/utils";
+import { JSX } from "react";
 
 import { DropdownChevron } from "../DropdownChevron";
 

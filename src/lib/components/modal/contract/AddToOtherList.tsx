@@ -7,6 +7,7 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ListSelection } from "lib/components/ListSelection";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { observer } from "mobx-react-lite";
+import { JSX } from "react";
 import { useEffect, useState } from "react";
 
 import { ActionModal } from "../ActionModal";

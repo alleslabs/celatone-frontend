@@ -1,4 +1,5 @@
 import { Flex, Tag, Text } from "@chakra-ui/react";
+import { JSX } from "react";
 
 interface TypeLabelProps {
   label?: string;

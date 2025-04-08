@@ -1,5 +1,7 @@
 import type { CodeInfo } from "lib/types";
 
+import { JSX } from "react";
+
 import { CodeDetailsTemplateModal } from "./CodeDetailsTemplate";
 
 interface EditCodeDetailsModalProps {
