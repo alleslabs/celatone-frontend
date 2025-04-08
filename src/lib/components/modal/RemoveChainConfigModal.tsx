@@ -60,7 +60,7 @@ export function RemoveChainConfigModal({
       otherBtnTitle="No, keep it"
     >
       <Text>
-        All information about your Rollup will be lost and can&lsquo;t be
+        All information about your rollup will be lost and can&lsquo;t be
         recovered. You can save this address again later, but you will need to
         add its new address name.
       </Text>
