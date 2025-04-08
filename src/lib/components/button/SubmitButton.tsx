@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
+import { useIsMac, useMobile } from "lib/app-provider";
 import { useEffect } from "react";
 
-import { useIsMac, useMobile } from "lib/app-provider";
 import { CustomIcon } from "../icon";
 
 interface SubmitButtonProps {
@@ -38,15 +38,15 @@ export const SubmitButton = ({
 
   return (
     <Button
-      w={isFullWidth ? "full" : "auto"}
-      variant="primary"
       fontSize="14px"
-      p="6px 16px"
-      onClick={onSubmit}
       isDisabled={isDisabled}
-      leftIcon={<CustomIcon name="execute" />}
       isLoading={isLoading}
+      leftIcon={<CustomIcon name="execute" />}
+      p="6px 16px"
       sx={{ pointerEvents: isLoading && "none" }}
+      variant="primary"
+      w={isFullWidth ? "full" : "auto"}
+      onClick={onSubmit}
     >
       {text} {!isMobile && `(${isMac ? "⌘" : "Ctrl"} + Enter)`}
     </Button>

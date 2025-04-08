@@ -1,9 +1,9 @@
 import type { DeliverTxResponse } from "@cosmjs/cosmwasm-stargate";
-import { useEffect, useState } from "react";
+import type { BechAddr20, BechAddr32 } from "lib/types";
 
 import { useWasmConfig } from "lib/app-provider";
-import type { BechAddr20, BechAddr32 } from "lib/types";
 import { scrollToTop } from "lib/utils";
+import { useEffect, useState } from "react";
 
 import InstantiateCompleted from "./InstantiateCompleted";
 import InstantiateFormPage from "./InstantiateFormPage";

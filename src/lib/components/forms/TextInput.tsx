@@ -1,3 +1,11 @@
+import type { FormControlProps } from "@chakra-ui/react";
+import type {
+  Dispatch,
+  HTMLInputTypeAttribute,
+  ReactNode,
+  SetStateAction,
+} from "react";
+
 import {
   Flex,
   FormControl,
@@ -9,15 +17,9 @@ import {
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
-import type { FormControlProps } from "@chakra-ui/react";
-import type {
-  Dispatch,
-  HTMLInputTypeAttribute,
-  ReactNode,
-  SetStateAction,
-} from "react";
 
 import type { FormStatus } from "./FormStatus";
+
 import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 export interface TextInputProps extends FormControlProps {
@@ -66,19 +68,19 @@ export const TextInput = ({
     <InputGroup>
       <Input
         autoFocus={autoFocus}
-        size={size}
+        maxLength={maxLength}
         placeholder={placeholder}
+        pr={status && "36px"}
+        size={size}
         type={type}
         value={value}
-        pr={status && "36px"}
         onChange={(e) => setInputState(e.target.value)}
-        maxLength={maxLength}
       />
       <InputRightElement h="full">
         {status && getStatusIcon(status.state, "16px")}
       </InputRightElement>
     </InputGroup>
-    <Flex gap={1} alignItems="center" mt={1} flexDir="row">
+    <Flex alignItems="center" flexDir="row" gap={1} mt={1}>
       {error ? (
         <FormErrorMessage className="error-text">{error}</FormErrorMessage>
       ) : (

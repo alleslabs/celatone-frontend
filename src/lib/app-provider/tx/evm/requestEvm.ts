@@ -1,10 +1,10 @@
-import { useCallback } from "react";
+import type { SimulatedFeeEvm } from "lib/services/types";
+import type { HexAddr20 } from "lib/types";
 
 import { trackTxSucceed } from "lib/amplitude";
 import { requestEvmTx } from "lib/app-fns/tx/evm/requestEvm";
 import { useSignAndBroadcastEvm } from "lib/app-provider/hooks";
-import type { SimulatedFeeEvm } from "lib/services/types";
-import type { HexAddr20 } from "lib/types";
+import { useCallback } from "react";
 
 export interface RequestEvmStreamParams {
   to: HexAddr20;

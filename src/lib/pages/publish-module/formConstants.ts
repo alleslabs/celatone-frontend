@@ -1,5 +1,6 @@
 import type { DecodeModuleQueryResponse } from "lib/services/types";
 import type { Option } from "lib/types";
+
 import { UpgradePolicy } from "lib/types";
 
 type Status = "error" | "info" | "init";

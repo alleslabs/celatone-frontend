@@ -1,9 +1,9 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type { PublicModule } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
-import type { PublicModule } from "lib/types";
 import { truncate } from "lib/utils";
 
 interface PublicProjectModuleMobileCardProps {
@@ -26,39 +26,39 @@ export const PublicProjectModuleMobileCard = ({
   };
   return (
     <MobileCardTemplate
-      onClick={goToModuleDetails}
-      topContent={
-        <Flex gap={2} align="center">
+      middleContent={
+        <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel variant="body2" label="Module path" />
+            <MobileLabel label="Owner" variant="body2" />
+            <ExplorerLink
+              showCopyOnHover
+              type="user_address"
+              value={module.address.toString()}
+            />
+          </Flex>
+          <Flex direction="column">
+            <MobileLabel label="Module description" variant="body2" />
+            <Text color="text.dark" variant="body2" whiteSpace="break-spaces">
+              {module.description || "N/A"}
+            </Text>
+          </Flex>
+        </Flex>
+      }
+      topContent={
+        <Flex align="center" gap={2}>
+          <Flex direction="column">
+            <MobileLabel label="Module path" variant="body2" />
             <Text
+              color="primary.main"
               variant="body2"
               onClick={goToModuleDetails}
-              color="primary.main"
             >
               {truncate(module.address)}::{module.name}
             </Text>
           </Flex>
         </Flex>
       }
-      middleContent={
-        <Flex direction="column" gap={3}>
-          <Flex direction="column">
-            <MobileLabel variant="body2" label="Owner" />
-            <ExplorerLink
-              value={module.address.toString()}
-              type="user_address"
-              showCopyOnHover
-            />
-          </Flex>
-          <Flex direction="column">
-            <MobileLabel variant="body2" label="Module description" />
-            <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
-              {module.description || "N/A"}
-            </Text>
-          </Flex>
-        </Flex>
-      }
+      onClick={goToModuleDetails}
     />
   );
 };

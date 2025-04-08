@@ -1,12 +1,13 @@
-import axios from "axios";
-
-import { CELATONE_VERIFICATION_API } from "env";
 import type {
   MoveVerifyByTaskIdResponse,
   MoveVerifyInfoResponse,
   MoveVerifyInfosByAddressResponse,
   SubmitMoveVerifyResponse,
 } from "lib/services/types";
+import type { Addr, HexAddr, Nullable } from "lib/types";
+
+import axios from "axios";
+import { CELATONE_VERIFICATION_API } from "env";
 import {
   zMoveVerifyByTaskIdResponse,
   zMoveVerifyInfoResponse,
@@ -14,7 +15,6 @@ import {
   zSubmitMoveVerifyResponse,
 } from "lib/services/types";
 import { zMoveVerifyConfig } from "lib/types";
-import type { Addr, HexAddr, Nullable } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getMoveVerifyConfig = () =>

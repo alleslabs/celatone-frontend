@@ -1,11 +1,12 @@
-import { useMobile, useTierConfig } from "lib/app-provider";
-import { Loading } from "lib/components/Loading";
 import type { Option, Proposal } from "lib/types";
 
+import { useMobile, useTierConfig } from "lib/app-provider";
+import { Loading } from "lib/components/Loading";
+
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { ProposalsTableHeader } from "./ProposalsTableHeader";
 import { ProposalsTableMobileCard } from "./ProposalsTableMobileCard";
 import { ProposalsTableRow } from "./ProposalsTableRow";
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface ProposalsTableProps {
   proposals: Option<Proposal[]>;
@@ -38,15 +39,15 @@ export const ProposalsTable = ({
   ) : (
     <TableContainer>
       <ProposalsTableHeader
-        templateColumns={templateColumns}
         boxShadow={boxShadow}
+        templateColumns={templateColumns}
       />
       {proposals.map((proposal) => (
         <ProposalsTableRow
           key={proposal.id}
+          boxShadow={boxShadow}
           proposal={proposal}
           templateColumns={templateColumns}
-          boxShadow={boxShadow}
         />
       ))}
     </TableContainer>

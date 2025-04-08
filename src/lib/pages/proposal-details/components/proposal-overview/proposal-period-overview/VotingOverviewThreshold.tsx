@@ -1,5 +1,10 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type {
+  ProposalData,
+  ProposalParams,
+  ProposalVotesInfo,
+} from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 import { LegendText } from "lib/components/LegendText";
 import { StatusChip } from "lib/components/table";
@@ -9,12 +14,8 @@ import {
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
-import type {
-  ProposalData,
-  ProposalParams,
-  ProposalVotesInfo,
-} from "lib/types";
 import { formatPrettyPercent } from "lib/utils";
+
 import { VoteThresholdBadge } from "../../VoteThresholdBadge";
 import { VoteThresholdBar } from "../../VoteThresholdBar";
 import { VpPercentThreshold } from "../../VpPercentThreshold";
@@ -45,59 +46,59 @@ export const VotingOverviewThreshold = ({
   return (
     <>
       <Flex
+        borderTop="1px solid"
+        borderTopColor="gray.700"
         direction="column"
         gap={4}
         pt={4}
-        borderTop="1px solid"
-        borderTopColor="gray.700"
       >
-        <Flex gap={2} alignItems="center">
-          <VoteThresholdBadge status={proposalData.status} isCompact />
+        <Flex alignItems="center" gap={2}>
+          <VoteThresholdBadge isCompact status={proposalData.status} />
           {proposalData.status === ProposalStatus.VOTING_PERIOD ? (
-            <Text variant="body1" color="text.main">
+            <Text color="text.main" variant="body1">
               Current voting result
             </Text>
           ) : (
-            <Flex gap={2} alignItems="center">
-              <Text variant="body1" color="text.main">
+            <Flex alignItems="center" gap={2}>
+              <Text color="text.main" variant="body1">
                 Final vote result:
               </Text>
               {proposalData.status === ProposalStatus.FAILED ? (
                 <StatusChip status={ProposalStatus.FAILED} />
               ) : (
                 <LegendText
+                  color="text.main"
+                  fontWeight={700}
                   label={result}
                   legendColor={resultColor}
                   variant="body2"
-                  color="text.main"
-                  fontWeight={700}
                 />
               )}
             </Flex>
           )}
         </Flex>
         <VoteThresholdBar
+          isCompact
           threshold={threshold}
           votesInfo={votesInfo}
-          isCompact
         />
-        <VpPercentThreshold votesInfo={votesInfo} isCompact />
+        <VpPercentThreshold isCompact votesInfo={votesInfo} />
       </Flex>
       {noWithVetoTotalRatio >= vetoThreshold && (
         <Flex
-          gap={3}
-          p="12px 16px"
+          alignItems="center"
           bgColor="warning.background"
           border="1px solid var(--chakra-colors-warning-dark)"
           borderRadius="8px"
-          alignItems="center"
+          gap={3}
+          p="12px 16px"
         >
           <CustomIcon
             boxSize={4}
-            name="alert-triangle-solid"
             color="warning.main"
+            name="alert-triangle-solid"
           />
-          <Text variant="body2" color="warning.main">
+          <Text color="warning.main" variant="body2">
             {proposalData.status === ProposalStatus.VOTING_PERIOD ? (
               <>
                 Currently, the &ldquo;No with veto&rdquo; vote proportion

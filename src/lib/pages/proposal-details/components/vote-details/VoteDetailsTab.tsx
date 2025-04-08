@@ -1,7 +1,8 @@
 import type { TabProps } from "@chakra-ui/react";
+import type { ProposalData } from "lib/types";
+
 import { Button, useMultiStyleConfig, useTab } from "@chakra-ui/react";
 
-import type { ProposalData } from "lib/types";
 import { ProposalStepper } from "../proposal-stepper";
 
 interface VoteDetailsTabProps extends TabProps {
@@ -21,12 +22,15 @@ export const VoteDetailsTab = ({
   return (
     <Button
       __css={styles.tab}
-      display="flex"
-      w="full"
-      mb={0}
-      py={3}
+      _active={{
+        bg: "unset",
+      }}
       borderRadius="8px 8px 0px 0px"
       color="text.main"
+      display="flex"
+      isDisabled={isDisabled}
+      mb={0}
+      py={3}
       sx={{
         "&[aria-selected=true]": {
           background: "gray.800",
@@ -43,13 +47,10 @@ export const VoteDetailsTab = ({
           borderBottomColor: "transparent",
         },
       }}
-      isDisabled={isDisabled}
-      _active={{
-        bg: "unset",
-      }}
+      w="full"
       {...tabProps}
     >
-      <ProposalStepper step={step} proposalData={proposalData} />
+      <ProposalStepper proposalData={proposalData} step={step} />
     </Button>
   );
 };

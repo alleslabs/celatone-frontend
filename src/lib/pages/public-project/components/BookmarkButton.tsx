@@ -1,13 +1,13 @@
-import { Button, Flex, Text, useToast } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
+import type { IconKeys } from "lib/components/icon";
+import type { Option, PublicDetail } from "lib/types";
 import type { CSSProperties, MouseEvent } from "react";
-import { useCallback } from "react";
 
+import { Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
-import type { IconKeys } from "lib/components/icon";
 import { usePublicProjectStore } from "lib/providers/store";
-import type { Option, PublicDetail } from "lib/types";
+import { observer } from "mobx-react-lite";
+import { useCallback } from "react";
 
 interface BookmarkButtonProps {
   details: Option<PublicDetail>;
@@ -28,7 +28,7 @@ const buttonIconProps: CSSProperties = {
   borderRadius: "full",
 };
 
-const toastIcon = <CustomIcon name="check-circle-solid" color="success.main" />;
+const toastIcon = <CustomIcon color="success.main" name="check-circle-solid" />;
 
 interface StyledButtonProps {
   hasText: boolean;
@@ -46,16 +46,16 @@ const StyledButton = ({
   variant,
 }: StyledButtonProps) => (
   <Button
-    variant={hasText ? variant : "ghost-gray"}
     style={hasText ? buttonTextProps : buttonIconProps}
     gap={2}
-    onClick={action}
     padding={{ base: "4px", md: "6px 16px" }}
     size={{ base: "xs", md: "md" }}
+    variant={hasText ? variant : "ghost-gray"}
+    onClick={action}
   >
     <CustomIcon
-      name={icon}
       color={icon === "bookmark" ? "gray.600" : "primary.light"}
+      name={icon}
     />
     {hasText && (
       <Text color={icon === "bookmark" ? "text.dark" : "primary.light"}>
@@ -101,27 +101,27 @@ export const BookmarkButton = observer(
       <Flex alignItems="center">
         {isPublicProjectSaved(slug) ? (
           <StyledButton
-            variant="outline-primary"
-            hasText={hasText}
-            icon="bookmark-solid"
-            actionText="Bookmarked"
             action={(e) => {
               e.stopPropagation();
               handleRemove();
             }}
+            actionText="Bookmarked"
+            hasText={hasText}
+            icon="bookmark-solid"
+            variant="outline-primary"
           />
         ) : (
           <StyledButton
-            variant="outline-gray"
-            hasText={hasText}
-            icon="bookmark"
-            actionText="Bookmark project"
             action={(e) => {
               if (details) {
                 e.stopPropagation();
                 handleSave();
               }
             }}
+            actionText="Bookmark project"
+            hasText={hasText}
+            icon="bookmark"
+            variant="outline-gray"
           />
         )}
       </Flex>

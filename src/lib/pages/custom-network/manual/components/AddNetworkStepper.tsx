@@ -26,13 +26,13 @@ export const AddNetworkStepper = ({
         <Flex
           key={step.label}
           alignItems="center"
-          w="full"
-          px={4}
-          py={3}
-          gap={2}
           bg={bgColor}
           borderBottom="4px solid"
           borderColor={borderColor}
+          gap={2}
+          px={4}
+          py={3}
+          w="full"
         >
           {content}
           <Text color={textColor}>{step.label}</Text>

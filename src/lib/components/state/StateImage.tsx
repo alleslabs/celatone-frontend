@@ -1,6 +1,6 @@
 import type { ImageProps } from "@chakra-ui/react";
-import { Image } from "@chakra-ui/react";
 
+import { Image } from "@chakra-ui/react";
 import { useCelatoneApp } from "lib/app-provider";
 
 export type ImageVariant = "error" | "not-found" | "empty" | "disconnected";
@@ -23,8 +23,8 @@ export const StateImage = ({
   };
   return (
     <Image
-      src={imageSourceMap[imageVariant]}
       alt={`result ${imageVariant}`}
+      src={imageSourceMap[imageVariant]}
       width={imageWidth}
     />
   );

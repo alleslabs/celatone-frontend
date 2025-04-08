@@ -1,17 +1,17 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useCallback } from "react";
+import type { Option } from "lib/types";
 
+import { Box, Flex, Text } from "@chakra-ui/react";
 import {
   useCelatoneApp,
   useChainConfigs,
   useMobile,
   useSelectChain,
 } from "lib/app-provider";
-import type { Option } from "lib/types";
+import { observer } from "mobx-react-lite";
+import { useCallback } from "react";
 
-import { NetworkCardCta } from "./NetworkCardCta";
 import { NetworkImage } from "../NetworkImage";
+import { NetworkCardCta } from "./NetworkCardCta";
 
 interface NetworkCardProps {
   chainId: string;
@@ -73,18 +73,6 @@ export const NetworkCard = observer(
     return (
       <Flex
         id={`item-${index}`}
-        position="relative"
-        justifyContent="space-between"
-        alignItems="center"
-        px={4}
-        py={2}
-        gap={4}
-        borderRadius={8}
-        transition="all 0.25s ease-in-out"
-        onClick={handleClick}
-        background={getCardBackground(index, cursor, isSelected)}
-        cursor={getDisplayCursor(isDraggable, isSelected)}
-        onMouseMove={() => index !== cursor && setCursor(index)}
         _hover={
           isMobile
             ? undefined
@@ -95,21 +83,33 @@ export const NetworkCard = observer(
                 },
               }
         }
+        alignItems="center"
+        background={getCardBackground(index, cursor, isSelected)}
+        borderRadius={8}
+        cursor={getDisplayCursor(isDraggable, isSelected)}
+        gap={4}
+        justifyContent="space-between"
+        position="relative"
+        px={4}
+        py={2}
+        transition="all 0.25s ease-in-out"
+        onClick={handleClick}
+        onMouseMove={() => index !== cursor && setCursor(index)}
       >
         <Box
-          opacity={isSelected ? 1 : 0}
-          width="4px"
-          height="60%"
           bgColor="primary.main"
+          borderRadius="2px"
+          height="60%"
+          left="0px"
+          opacity={isSelected ? 1 : 0}
           position="absolute"
           top="20%"
-          borderRadius="2px"
-          left="0px"
+          width="4px"
         />
         <Flex alignItems="center" gap={4}>
           <NetworkImage chainId={chainId} />
           <Flex direction="column">
-            <Text variant="body2" fontWeight={600}>
+            <Text fontWeight={600} variant="body2">
               {chainConfigs[chainId]?.prettyName || chainId}
             </Text>
             <Text color="text.dark" variant="body3">
@@ -119,8 +119,8 @@ export const NetworkCard = observer(
         </Flex>
         <NetworkCardCta
           chainId={chainId}
-          isSelected={isSelected}
           isDraggable={isDraggable}
+          isSelected={isSelected}
         />
       </Flex>
     );

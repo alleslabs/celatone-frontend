@@ -15,17 +15,17 @@ export const TypeLabel = ({
 }: TypeLabelProps) => {
   if (!label && !type) return children;
   return (
-    <Flex width="full" direction="column" gap={2}>
+    <Flex direction="column" gap={2} width="full">
       <Flex align="center" gap="1">
         <Text
-          variant="body3"
-          textColor={label ? "text.main" : "text.dark"}
           fontWeight={700}
+          textColor={label ? "text.main" : "text.dark"}
+          variant="body3"
         >
           {label} {isRequired && <span style={{ color: "red" }}>*</span>}
         </Text>
         {type && (
-          <Tag variant="gray" size="xs">
+          <Tag size="xs" variant="gray">
             {type}
           </Tag>
         )}

@@ -1,6 +1,8 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
+import type { BlocksResponse } from "lib/services/types";
+import type { BlockData, ConsensusAddr, Option, Transaction } from "lib/types";
 
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -8,8 +10,6 @@ import {
   useCurrentChain,
   useEvmConfig,
 } from "lib/app-provider";
-import type { BlocksResponse } from "lib/services/types";
-import type { BlockData, ConsensusAddr, Option, Transaction } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
   convertRawConsensusAddrToConsensusAddr,

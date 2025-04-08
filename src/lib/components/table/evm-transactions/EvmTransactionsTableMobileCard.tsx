@@ -1,13 +1,12 @@
-import { Flex, Stack, Text } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
+import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+import type { AssetInfos, Option } from "lib/types";
 
+import { Flex, Stack, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { EvmToCell } from "lib/components/evm-to-cell";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
-import type { AssetInfos, Option } from "lib/types";
 import {
   coinToTokenWithValue,
   dateFromNow,
@@ -19,6 +18,8 @@ import {
   getEvmToAddress,
   getTokenLabel,
 } from "lib/utils";
+import { isUndefined } from "lodash";
+
 import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 
@@ -41,46 +42,26 @@ export const EvmTransactionsTableMobileCard = ({
   const token = coinToTokenWithValue(denom, amount, assetInfos);
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/evm-txs/[txHash]",
-          query: { txHash: formatEvmTxHash(evmTransaction.tx.hash) },
-        })
-      }
-      topContent={
-        <Flex align="center" gap={2} w="full">
-          <Flex direction="column" flex={3} gap={1}>
-            <MobileLabel label="Transaction hash" />
-            <Flex gap={1} alignItems="center">
-              {evmTransaction.txReceipt.status ? (
-                <CustomIcon name="check" color="success.main" />
-              ) : (
-                <CustomIcon name="close" color="error.main" />
-              )}
-              <ExplorerLink
-                value={formatEvmTxHash(evmTransaction.tx.hash)}
-                type="tx_hash"
-                showCopyOnHover
-              />
-            </Flex>
+      bottomContent={
+        showTimestamp && (
+          <Flex direction="column">
+            <Text color="text.dark" variant="body2">
+              {formatUTC(evmTransaction.timestamp)}
+            </Text>
+            <Text color="text.disabled" variant="body3">
+              ({dateFromNow(evmTransaction.timestamp)})
+            </Text>
           </Flex>
-          <Flex direction="column" flex={2} gap={1}>
-            <MobileLabel label="Method" />
-            <EvmMethodChip
-              txInput={evmTransaction.tx.input}
-              txTo={evmTransaction.tx.to}
-            />
-          </Flex>
-        </Flex>
+        )
       }
       middleContent={
         <Stack gap={3}>
           <Flex direction="column" gap={1}>
             <MobileLabel label="sender" variant="body2" />
             <ExplorerLink
-              value={evmTransaction.tx.from}
-              type="user_address"
               showCopyOnHover
+              type="user_address"
+              value={evmTransaction.tx.from}
             />
           </Flex>
           <Flex direction="column" gap={1}>
@@ -89,7 +70,7 @@ export const EvmTransactionsTableMobileCard = ({
           </Flex>
           <Flex direction="column">
             <MobileLabel label="Amount" variant="body2" />
-            <Flex gap={2} align="center">
+            <Flex align="center" gap={2}>
               <Text variant="body2">
                 <Text as="span" fontWeight={700} mr={1}>
                   {formatUTokenWithPrecision(
@@ -102,7 +83,7 @@ export const EvmTransactionsTableMobileCard = ({
                 {getTokenLabel(token.denom, token.symbol)}
               </Text>
               {!isUndefined(token.value) && (
-                <Text variant="body3" color="text.dark">
+                <Text color="text.dark" variant="body3">
                   ({formatPrice(token.value)})
                 </Text>
               )}
@@ -110,17 +91,37 @@ export const EvmTransactionsTableMobileCard = ({
           </Flex>
         </Stack>
       }
-      bottomContent={
-        showTimestamp && (
-          <Flex direction="column">
-            <Text variant="body2" color="text.dark">
-              {formatUTC(evmTransaction.timestamp)}
-            </Text>
-            <Text variant="body3" color="text.disabled">
-              ({dateFromNow(evmTransaction.timestamp)})
-            </Text>
+      topContent={
+        <Flex align="center" gap={2} w="full">
+          <Flex direction="column" flex={3} gap={1}>
+            <MobileLabel label="Transaction hash" />
+            <Flex alignItems="center" gap={1}>
+              {evmTransaction.txReceipt.status ? (
+                <CustomIcon color="success.main" name="check" />
+              ) : (
+                <CustomIcon color="error.main" name="close" />
+              )}
+              <ExplorerLink
+                showCopyOnHover
+                type="tx_hash"
+                value={formatEvmTxHash(evmTransaction.tx.hash)}
+              />
+            </Flex>
           </Flex>
-        )
+          <Flex direction="column" flex={2} gap={1}>
+            <MobileLabel label="Method" />
+            <EvmMethodChip
+              txInput={evmTransaction.tx.input}
+              txTo={evmTransaction.tx.to}
+            />
+          </Flex>
+        </Flex>
+      }
+      onClick={() =>
+        navigate({
+          pathname: "/evm-txs/[txHash]",
+          query: { txHash: formatEvmTxHash(evmTransaction.tx.hash) },
+        })
       }
     />
   );

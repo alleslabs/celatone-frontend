@@ -1,3 +1,6 @@
+import type { PoolTypeFilter } from "lib/types";
+import type { ChangeEvent } from "react";
+
 import {
   Badge,
   Button,
@@ -8,11 +11,6 @@ import {
   Switch,
   Text,
 } from "@chakra-ui/react";
-import { matchSorter } from "match-sorter";
-import type { ChangeEvent } from "react";
-import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-
 import { trackUseSort, trackUseToggle, trackUseView } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -21,15 +19,18 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { ToggleWithName } from "lib/components/ToggleWithName";
 import { useDebounce } from "lib/hooks";
 import { useAssetInfos } from "lib/services/assetService";
-import type { PoolTypeFilter } from "lib/types";
 import { PoolType } from "lib/types";
 import { isPositiveInt } from "lib/utils";
+import { matchSorter } from "match-sorter";
+import { useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 
-import { SupportedPoolList } from "./SupportedPoolList";
-import { useDerivedPools } from "../../data";
 import type { PoolFilterState } from "../../types";
+
+import { useDerivedPools } from "../../data";
 import { FilterByPoolType } from "../FilterByPoolType";
 import { SuperfluidLabel } from "../SuperfluidLabel";
+import { SupportedPoolList } from "./SupportedPoolList";
 
 const OPTIONS = [
   {
@@ -106,16 +107,16 @@ export const SupportedSection = ({
   return (
     <>
       <Flex alignItems="center" mb={12}>
-        <Flex grow={2} gap={4}>
+        <Flex gap={4} grow={2}>
           <InputWithIcon
+            amptrackSection="supported-pool-list-search"
             placeholder="Search with pool ID, symbol or token ID"
+            size={{ base: "md", md: "lg" }}
             value={keyword}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setCurrentPage(1);
               setValue("keyword", e.target.value);
             }}
-            size={{ base: "md", md: "lg" }}
-            amptrackSection="supported-pool-list-search"
           />
           <FilterByPoolType
             initialSelected="All"
@@ -126,10 +127,10 @@ export const SupportedSection = ({
             }}
           />
           <Flex minW="250px">
-            <FormControl display="flex" alignItems="center" gap={2}>
+            <FormControl alignItems="center" display="flex" gap={2}>
               <Switch
-                size="md"
                 defaultChecked={isSuperfluidOnly}
+                size="md"
                 onChange={(e) => {
                   const isChecked = e.target.checked;
                   setCurrentPage(1);
@@ -137,8 +138,8 @@ export const SupportedSection = ({
                   setValue("isSuperfluidOnly", isChecked);
                 }}
               />
-              <FormLabel mb={0} cursor="pointer">
-                <Text display="flex" gap={2} alignItems="center">
+              <FormLabel cursor="pointer" mb={0}>
+                <Text alignItems="center" display="flex" gap={2}>
                   Show only
                   <SuperfluidLabel />
                 </Text>
@@ -148,25 +149,25 @@ export const SupportedSection = ({
         </Flex>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
-        <Flex gap={2} alignItems="center">
+        <Flex alignItems="center" gap={2}>
           <Heading as="h6" variant="h6">
             Pools
           </Heading>
           {totalCount && (
-            <Badge variant="gray" color="text.main" textColor="text.main">
+            <Badge color="text.main" textColor="text.main" variant="gray">
               {totalCount}
             </Badge>
           )}
         </Flex>
         <Flex gap={4}>
-          <Flex gap={2} alignItems="center">
-            <Text variant="body2" color="text.dark">
+          <Flex alignItems="center" gap={2}>
+            <Text color="text.dark" variant="body2">
               Sort Pool ID:
             </Text>
             <Button
-              variant="outline-gray"
-              size="sm"
               pr={1}
+              size="sm"
+              variant="outline-gray"
               onClick={() => {
                 const isDesc = !showNewest;
                 trackUseSort("newest", isDesc ? "descending" : "ascending");
@@ -175,18 +176,18 @@ export const SupportedSection = ({
             >
               {showNewest ? "Newest first" : "Oldest first"}
               <CustomIcon
-                name={showNewest ? "arrow-down" : "arrow-up"}
                 color="text.dark"
+                name={showNewest ? "arrow-down" : "arrow-up"}
               />
             </Button>
           </Flex>
-          <Flex gap={2} alignItems="center">
-            <Text variant="body2" color="text.dark">
+          <Flex alignItems="center" gap={2}>
+            <Text color="text.dark" variant="body2">
               View asset allocation in:
             </Text>
             <ToggleWithName
-              selectedValue={toggle}
               options={OPTIONS}
+              selectedValue={toggle}
               selectOption={(value: string) => {
                 trackUseView(value);
                 setToggle(value);
@@ -195,15 +196,15 @@ export const SupportedSection = ({
           </Flex>
         </Flex>
       </Flex>
-      <SupportedPoolList pools={pools} isLoading={isLoading} mode={toggle} />
+      <SupportedPoolList isLoading={isLoading} mode={toggle} pools={pools} />
       {!!totalCount && totalCount > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalCount}
-          scrollComponentId={scrollComponentId}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          scrollComponentId={scrollComponentId}
+          totalData={totalCount}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

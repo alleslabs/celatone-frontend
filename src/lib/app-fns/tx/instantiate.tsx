@@ -1,10 +1,10 @@
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
-import { pipe } from "@rx-stream/pipe";
-import type { Observable } from "rxjs";
-
 import type { SignAndBroadcast } from "lib/app-provider/hooks";
 import type { BechAddr20, BechAddr32, TxResultRendering } from "lib/types";
+import type { Observable } from "rxjs";
+
+import { pipe } from "@rx-stream/pipe";
 import { findAttr } from "lib/utils";
 
 import { catchTxError } from "./common";

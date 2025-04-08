@@ -1,7 +1,8 @@
+import type { MoveVerifyTaskLocalInfo } from "lib/stores/verify-module";
+
 import { useMoveVerifyTaskStore } from "lib/providers/store";
 import { MoveVerifyTaskStatus } from "lib/services/types";
 import { useMoveVerifyTaskInfos } from "lib/services/verification/move";
-import type { MoveVerifyTaskLocalInfo } from "lib/stores/verify-module";
 
 export type MoveVerifyTaskInfo = MoveVerifyTaskLocalInfo & {
   status: MoveVerifyTaskStatus;

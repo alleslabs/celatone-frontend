@@ -1,13 +1,13 @@
 import type { ChainContext as CosmosKitChainContext } from "@cosmos-kit/core";
-import { useChain } from "@cosmos-kit/react";
 import type { ReactWalletWidget as InitiaWidget } from "@initia/react-wallet-widget/dist/types";
-import { useWallet } from "@initia/react-wallet-widget/ssr";
-
-import { zBechAddr20 } from "lib/types";
 import type { BechAddr20, Option } from "lib/types";
 
-import { useInitia } from "./useInitia";
+import { useChain } from "@cosmos-kit/react";
+import { useWallet } from "@initia/react-wallet-widget/ssr";
+import { zBechAddr20 } from "lib/types";
+
 import { useCelatoneApp } from "../contexts";
+import { useInitia } from "./useInitia";
 
 interface CurrentChain {
   bech32Prefix: string;

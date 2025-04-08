@@ -1,10 +1,10 @@
 import type { FlexProps, IconProps } from "@chakra-ui/react";
-import { Flex, Text, useClipboard } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
 
+import { Flex, Text, useClipboard } from "@chakra-ui/react";
 import { trackUseCopier } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { truncate } from "lib/utils";
+import { useEffect, useMemo, useState } from "react";
 
 import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
@@ -49,46 +49,46 @@ export const CopyLink = ({
   const textValue = isTruncate ? truncate(value) : value;
   return (
     <Tooltip
+      closeOnClick={false}
       isOpen={isHover || hasCopied}
       label={hasCopied ? "Copied!" : "Click to copy"}
-      closeOnClick={false}
     >
       <Flex
-        w="fit-content"
-        align="center"
-        display={{ base: "inline", md: "flex" }}
-        onClick={() => {
-          trackUseCopier(type, amptrackSection);
-          onCopy();
-        }}
         _hover={{
           textDecoration: "underline",
           textDecorationColor: "primary.light",
           "& > p": { color: "primary.light" },
         }}
+        align="center"
         cursor="pointer"
+        display={{ base: "inline", md: "flex" }}
+        w="fit-content"
+        onClick={() => {
+          trackUseCopier(type, amptrackSection);
+          onCopy();
+        }}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
         {...flexProps}
       >
         <Text
-          wordBreak="break-all"
-          variant="body2"
           color="primary.main"
-          transition="all 0.25s ease-in-out"
           display="inline"
           fontFamily="mono"
+          transition="all 0.25s ease-in-out"
+          variant="body2"
+          wordBreak="break-all"
         >
           {value === address ? `${textValue} (Me)` : textValue}
         </Text>
         {!withoutIcon && (
           <CustomIcon
-            display={displayIcon}
-            cursor="pointer"
-            marginLeft={2}
-            name="copy"
             boxSize={3}
             color="gray.600"
+            cursor="pointer"
+            display={displayIcon}
+            marginLeft={2}
+            name="copy"
           />
         )}
       </Flex>

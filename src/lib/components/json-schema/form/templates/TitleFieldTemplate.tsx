@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Text } from "@chakra-ui/react";
 import type {
   FormContextType,
   RJSFSchema,
   StrictRJSFSchema,
   TitleFieldProps,
 } from "@rjsf/utils";
+
+import { Text } from "@chakra-ui/react";
 
 /** The `TitleField` is the template to use to render the title of a field
  *
@@ -18,7 +19,7 @@ export default function TitleField<
 >(props: TitleFieldProps<T, S, F>) {
   const { id, title, required } = props;
   return (
-    <Text id={id} variant="body3" fontWeight={700}>
+    <Text id={id} fontWeight={700} variant="body3">
       {title}
       {required && (
         <span

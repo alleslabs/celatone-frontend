@@ -1,7 +1,6 @@
-import { z } from "zod";
-
 import { zHexAddr, zUtcDate } from "lib/types";
 import { mergeModulePath, snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 export enum MoveVerifyTaskStatus {
   Finished = "FINISHED",
@@ -76,6 +75,7 @@ export const zMoveVerifyInfosByAddressResponse = z
   .transform((val) =>
     val.contracts.reduce<Record<string, MoveVerifyInfoResponse>>(
       (acc, contract) => {
+        // eslint-disable-next-line no-param-reassign
         acc[mergeModulePath(contract.moduleAddress, contract.moduleName)] =
           contract;
         return acc;

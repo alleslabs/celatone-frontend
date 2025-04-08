@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { isUndefined } from "lodash";
 import type { KeyboardEvent as ReactKeyboardEvent } from "react";
-import { useCallback, useMemo, useState } from "react";
 
 import { useChainConfigs } from "lib/app-provider";
 import { usePinnedNetworks } from "lib/hooks";
+import { isUndefined } from "lodash";
+import { useCallback, useMemo, useState } from "react";
 
 import { filterChains, getNextCursor } from "./utils";
 

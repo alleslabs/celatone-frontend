@@ -1,11 +1,11 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type { AssetInfos, Option, TokenWithValue } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
 import { usePoolsLiquidityByPoolIds } from "lib/services/pools";
-import type { AssetInfos, Option, TokenWithValue } from "lib/types";
 import {
   coinToTokenWithValue,
   formatTokenWithValue,
@@ -48,7 +48,7 @@ export const PoolAssetCard = ({
   return (
     <>
       <Flex justifyContent="space-between">
-        <Text variant="body2" textColor="text.dark">
+        <Text textColor="text.dark" variant="body2">
           {description}
         </Text>
         <Text>
@@ -60,37 +60,37 @@ export const PoolAssetCard = ({
       </Flex>
       <Flex
         alignItems="center"
+        background="gray.800"
+        borderRadius="8px"
         gap={3}
         px={3}
         py={2}
-        borderRadius="8px"
-        background="gray.800"
       >
         <PoolLogo
-          tokens={tokens}
           logoSize={5}
           marginLeft={-4}
           minW="fit-content"
           textVariant="small"
+          tokens={tokens}
         />
         <div>
           <Flex
-            gap={1}
             css={{
               "p:last-of-type > span": {
                 display: "none",
               },
             }}
+            gap={1}
           >
             {tokens.map((token) => (
               <Text
                 key={token.denom}
-                variant="body2"
-                fontWeight={400}
                 color="text.main"
+                fontWeight={400}
+                variant="body2"
               >
                 {getTokenLabel(token.denom, token.symbol)}
-                <Text as="span" fontWeight={400} color="primary.main">
+                <Text as="span" color="primary.main" fontWeight={400}>
                   {" "}
                   /
                 </Text>
@@ -98,10 +98,10 @@ export const PoolAssetCard = ({
             ))}
           </Flex>
           <ExplorerLink
+            ampCopierSection={ampCopierSection}
+            showCopyOnHover
             type="pool_id"
             value={poolId.toString()}
-            showCopyOnHover
-            ampCopierSection={ampCopierSection}
           />
         </div>
       </Flex>

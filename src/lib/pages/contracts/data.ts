@@ -1,6 +1,7 @@
+import type { ContractInfo } from "lib/types";
+
 import { useContractStore } from "lib/providers/store";
 import { useContracts } from "lib/services/wasm/contract";
-import type { ContractInfo } from "lib/types";
 
 export const useRecentContracts = (
   pageSize: number,

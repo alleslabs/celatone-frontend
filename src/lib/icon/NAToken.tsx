@@ -1,5 +1,6 @@
-import { Icon } from "@chakra-ui/react";
 import type { IconProps } from "@chakra-ui/react";
+
+import { Icon } from "@chakra-ui/react";
 
 export const NAToken = (props: IconProps) => (
   <Icon viewBox="0 0 40 40" {...props}>
@@ -15,7 +16,7 @@ export const NAToken = (props: IconProps) => (
     </g>
     <defs>
       <clipPath id="clip0_45_8268">
-        <rect width="100%" height="100%" fill="white" />
+        <rect fill="white" height="100%" width="100%" />
       </clipPath>
     </defs>
   </Icon>

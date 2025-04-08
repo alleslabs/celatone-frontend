@@ -1,6 +1,7 @@
-import { EmptyState } from "lib/components/state";
 import type { SearchResult } from "lib/services/searchService";
 import type { Option } from "lib/types";
+
+import { EmptyState } from "lib/components/state";
 
 import { SearchResultItem } from "./SearchResultItem";
 
@@ -20,19 +21,19 @@ export const SearchResults = ({
     {!results.length ? (
       <EmptyState
         imageVariant="not-found"
-        textVariant="body2"
         message="Matches not found. Please check your spelling or make sure you have
             selected the correct network."
+        textVariant="body2"
       />
     ) : (
       results.map((result, index) => (
         <SearchResultItem
           key={result.type + index.toString()}
+          cursor={cursor}
+          handleSelectResult={handleSelectResult}
           index={index}
           result={result}
-          cursor={cursor}
           setCursor={setCursor}
-          handleSelectResult={handleSelectResult}
         />
       ))
     )}

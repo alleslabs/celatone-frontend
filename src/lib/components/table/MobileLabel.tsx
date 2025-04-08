@@ -13,8 +13,8 @@ export const MobileLabel = ({
 }: MobileLabelProps) => (
   <Text
     color="text.dark"
-    variant={variant}
     fontWeight={fontWeight}
+    variant={variant}
     whiteSpace="nowrap"
   >
     {label}

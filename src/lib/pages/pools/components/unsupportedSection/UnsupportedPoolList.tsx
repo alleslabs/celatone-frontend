@@ -1,8 +1,8 @@
-import { Accordion, SimpleGrid } from "@chakra-ui/react";
+import type { Option, Pool } from "lib/types";
 
+import { Accordion, SimpleGrid } from "@chakra-ui/react";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import type { Option, Pool } from "lib/types";
 
 import { UnsupportedPoolCard } from "./UnsupportedPoolCard";
 

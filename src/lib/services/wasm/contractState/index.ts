@@ -1,7 +1,7 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-
-import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import type { BechAddr32 } from "lib/types";
+
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 
 import { getContractStatesRest } from "./rest";
 

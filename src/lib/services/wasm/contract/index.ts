@@ -1,13 +1,4 @@
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useCelatoneApp,
-  useGovConfig,
-  useTierConfig,
-} from "lib/app-provider";
 import type {
   ContractData,
   ContractsResponse,
@@ -21,6 +12,15 @@ import type {
   JsonDataType,
   Option,
 } from "lib/types";
+
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+  useGovConfig,
+  useTierConfig,
+} from "lib/app-provider";
 
 import {
   getAdminContractsByAddress,

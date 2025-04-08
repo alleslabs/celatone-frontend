@@ -1,11 +1,6 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import type { ChainConfig } from "@alleslabs/shared";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useChainConfigs } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
@@ -14,6 +9,11 @@ import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { EmptyState } from "lib/components/state";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { libDecode } from "lib/utils";
+import { observer } from "mobx-react-lite";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+
 import { zAddNetworkLinkChainConfigJson } from "../types";
 
 type AddCustomNetworkError =
@@ -103,21 +103,21 @@ export const AddNetworkLink = observer(() => {
     return (
       <Flex
         style={{ height: "calc(100vh - 140px)" }}
-        justifyContent="center"
         alignItems="center"
+        justifyContent="center"
         px={10}
       >
         {error.type === "no_config" && (
           <EmptyState
-            imageVariant="error"
             heading="No config provided"
+            imageVariant="error"
             message="There are no network config provided with the link."
           />
         )}
         {error.type === "chain_exists" && (
           <EmptyState
-            imageVariant="error"
             heading={`${json?.chainId} is already added`}
+            imageVariant="error"
             py={0}
           >
             <Text color="text.dark" variant="body2">
@@ -132,20 +132,20 @@ export const AddNetworkLink = observer(() => {
         )}
         {error.type === "invalid_config" && (
           <EmptyState
-            imageVariant="error"
             heading={`There is an error adding ${json?.chainId ?? "custom network"} to Initia Scan`}
+            imageVariant="error"
             message="The provided configuration is invalid. Here is the error log"
             py={0}
           >
-            <Box minW="40%" maxW="70%">
-              <TextReadOnly text={error.message} canCopy />
+            <Box maxW="70%" minW="40%">
+              <TextReadOnly canCopy text={error.message} />
             </Box>
             <Text mt={6}>You can add this custom rollup manually</Text>
             <AppLink href="/custom-network/add">
               <Button
-                variant="outline-gray"
                 leftIcon={<CustomIcon name="plus" />}
                 mt={2}
+                variant="outline-gray"
               >
                 Add custom rollup
               </Button>

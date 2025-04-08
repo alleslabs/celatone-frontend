@@ -1,17 +1,18 @@
-import axios from "axios";
-
 import type {
   ValidatorDelegatorsResponse,
   ValidatorInfoRest,
 } from "lib/services/types";
+import type { Nullable, ValidatorAddr } from "lib/types";
+
+import axios from "axios";
 import {
   zValidatorDelegatorsResponse,
   zValidatorResponseRest,
   zValidatorsResponseRest,
 } from "lib/services/types";
 import { big } from "lib/types";
-import type { Nullable, ValidatorAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
+
 import {
   getAnnualProvisionsRest,
   getDistributionParamsRest,

@@ -1,13 +1,14 @@
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
-import { useCallback } from "react";
+import type { Nullable } from "lib/types";
 
 import { trackTxSucceed } from "lib/amplitude";
 import {
   submitStoreCodeProposalTx,
   submitWhitelistProposalTx,
 } from "lib/app-fns/tx/submitProposal";
-import type { Nullable } from "lib/types";
+import { useCallback } from "react";
+
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface SubmitWhitelistProposalStreamParams {

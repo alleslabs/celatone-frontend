@@ -1,14 +1,14 @@
 import type { ChainConfig } from "@alleslabs/shared";
 import type { AssetList, Chain } from "@chain-registry/types";
-import chainRegistry from "chain-registry";
-import { isUndefined, unionBy } from "lodash";
-import { useMemo } from "react";
 
+import chainRegistry from "chain-registry";
 import { devChainConfigs } from "config/chain";
 import { CHAIN, SUPPORTED_NETWORK_TYPES } from "env";
 import { useLocalChainConfigStore } from "lib/providers/store";
 import { useApiChainConfigs } from "lib/services/chain-config";
 import { getRegistryAssets, getRegistryChain } from "lib/utils";
+import { isUndefined, unionBy } from "lodash";
+import { useMemo } from "react";
 
 const defaultConfigs = {
   chainConfigs: {} as { [chainId: string]: ChainConfig },

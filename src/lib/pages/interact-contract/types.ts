@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import { ContractInteractionTabs, zBechAddr32 } from "lib/types";
+import { z } from "zod";
 
 export const zInteractContractQueryParams = z.object({
   selectedType: z.union([

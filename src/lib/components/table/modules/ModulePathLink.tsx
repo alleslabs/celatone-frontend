@@ -1,10 +1,10 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type { HexAddr, MoveVerifyStatus } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { Copier } from "lib/components/copy";
 import { MoveVerifyBadge } from "lib/components/MoveVerifyBadge";
-import type { HexAddr, MoveVerifyStatus } from "lib/types";
 import { mergeModulePath, truncate } from "lib/utils";
 
 interface ModulePathLinkProps {
@@ -23,10 +23,10 @@ export const ModulePathLink = ({
   return (
     <Flex
       className="copier-wrapper"
-      display={{ base: "inline-flex", md: "flex" }}
       align="center"
-      h={{ base: "auto", md: "24px" }}
+      display={{ base: "inline-flex", md: "flex" }}
       gap={1}
+      h={{ base: "auto", md: "24px" }}
     >
       <AppLink
         href={`/modules/${hexAddr}/${moduleName}`}
@@ -34,26 +34,26 @@ export const ModulePathLink = ({
         onClick={(e) => e.stopPropagation()}
       >
         <Text
-          variant="body2"
-          color="primary.main"
-          transition="all 0.25s ease-in-out"
           _hover={{ color: "primary.light", textDecoration: "underline" }}
-          wordBreak={{ base: "break-all", md: "inherit" }}
+          color="primary.main"
           cursor="pointer"
+          transition="all 0.25s ease-in-out"
+          variant="body2"
+          wordBreak={{ base: "break-all", md: "inherit" }}
         >
           {`${truncate(hexAddr)} :: ${moduleName}`}
         </Text>
       </AppLink>
       {moveVerifyStatus && (
-        <MoveVerifyBadge status={moveVerifyStatus} hasTooltip />
+        <MoveVerifyBadge hasTooltip status={moveVerifyStatus} />
       )}
       <Copier
-        type="module_path"
-        value={mergeModulePath(hexAddr, moduleName)}
+        amptrackSection="module_table"
         copyLabel="Copied!"
         display={!isMobile ? "none" : "inline"}
-        amptrackSection="module_table"
         ml={0}
+        type="module_path"
+        value={mergeModulePath(hexAddr, moduleName)}
       />
     </Flex>
   );

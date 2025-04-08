@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
-import type * as React from "react";
-
 import type { Nullable } from "lib/types";
+import type * as React from "react";
 
 export const mergeRefs = <T = unknown>(
   refs: Array<React.MutableRefObject<T> | React.LegacyRef<T>>

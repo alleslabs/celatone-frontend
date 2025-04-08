@@ -1,5 +1,4 @@
 import type Big from "big.js";
-
 import type {
   BechAddr,
   BechAddr32,

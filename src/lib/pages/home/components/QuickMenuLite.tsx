@@ -1,13 +1,13 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
-import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
-import Link from "next/link";
-import { useMemo } from "react";
+import type { IconKeys } from "lib/components/icon";
 
+import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import { useMoveConfig, useWasmConfig } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
-import type { IconKeys } from "lib/components/icon";
 import { USER_GUIDE_DOCS_LINK } from "lib/data";
+import Link from "next/link";
+import { useMemo } from "react";
 
 const baseCardProps: SystemStyleObject = {
   width: "full",
@@ -40,24 +40,24 @@ interface ShortcutMetadata {
 const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
   <AppLink href={`/${item.slug}`}>
     <Flex
-      sx={highlightCardProps}
       _hover={{ opacity: "90%" }}
+      sx={highlightCardProps}
       transition="all 0.25s ease-in-out"
     >
       <Flex
-        gap={3}
         direction="column"
-        justifyContent="space-between"
+        gap={3}
         h="full"
+        justifyContent="space-between"
         w="full"
       >
         <CustomIcon
-          name={item.icon ?? "add-new"}
           boxSize={{ base: 5, md: 6 }}
           color="gray.100"
+          name={item.icon ?? "add-new"}
         />
         <Flex alignItems="center" justifyContent="space-between">
-          <Flex gap={1} direction="column">
+          <Flex direction="column" gap={1}>
             <Heading as="h6" variant="h6">
               {item.title}
             </Heading>
@@ -66,9 +66,9 @@ const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
             </Text>
           </Flex>
           <CustomIcon
-            name="chevron-right"
             boxSize={{ base: 5, md: 6 }}
             color="gray.100"
+            name="chevron-right"
           />
         </Flex>
       </Flex>
@@ -84,33 +84,33 @@ const ContentCard = ({
   isDocument: boolean;
 }) => (
   <Flex
-    sx={cardProps}
     _hover={{ bg: "gray.700" }}
+    sx={cardProps}
     transition="all 0.25s ease-in-out"
   >
     <Flex
-      gap={6}
       direction="column"
-      justifyContent="space-between"
+      gap={6}
       h="full"
+      justifyContent="space-between"
       w="full"
     >
       <CustomIcon
-        name={item.icon}
         boxSize={{ base: 5, md: 6 }}
         color="gray.600"
+        name={item.icon}
       />
-      <Flex justifyContent="space-between" alignItems="flex-end">
+      <Flex alignItems="flex-end" justifyContent="space-between">
         <Flex direction="column">
           <Heading variant="h6">{item.title}</Heading>
-          <Text textDecoration="none" variant="body2" color="text.dark">
+          <Text color="text.dark" textDecoration="none" variant="body2">
             {item.subtitle}
           </Text>
         </Flex>
         <CustomIcon
-          name={isDocument ? "launch" : "chevron-right"}
           boxSize={{ base: 5, md: 6 }}
           color="gray.600"
+          name={isDocument ? "launch" : "chevron-right"}
         />
       </Flex>
     </Flex>
@@ -208,31 +208,31 @@ export const QuickMenuLite = () => {
   }, [wasm.enabled, move.enabled]);
 
   return (
-    <Grid templateColumns="1fr 2fr" gap={4}>
+    <Grid gap={4} templateColumns="1fr 2fr">
       <HighlightCard
         item={quickMenu.find((x) => x.isHighlight) ?? quickMenu[0]}
       />
-      <Grid templateRows="repeat(2, 1fr)" templateColumns="1fr 1fr" gap={4}>
+      <Grid gap={4} templateColumns="1fr 1fr" templateRows="repeat(2, 1fr)">
         {quickMenu
           .filter((item) => !item.isHighlight)
           .map((item, index) => (
             <Flex
               key={item.slug}
-              width={move.enabled && index === 0 ? "100%" : "auto"}
-              gridColumn={move.enabled && index === 0 ? "1 / -1" : "auto"}
               direction="column"
+              gridColumn={move.enabled && index === 0 ? "1 / -1" : "auto"}
+              width={move.enabled && index === 0 ? "100%" : "auto"}
             >
               {item.isDocument ? (
                 <Link
-                  href={USER_GUIDE_DOCS_LINK}
                   style={{ height: "100%" }}
+                  href={USER_GUIDE_DOCS_LINK}
                   target="_blank"
                 >
-                  <ContentCard item={item} isDocument={item.isDocument} />
+                  <ContentCard isDocument={item.isDocument} item={item} />
                 </Link>
               ) : (
-                <AppLink href={`/${item.slug}`} style={{ height: "100%" }}>
-                  <ContentCard item={item} isDocument={item.isDocument} />
+                <AppLink style={{ height: "100%" }} href={`/${item.slug}`}>
+                  <ContentCard isDocument={item.isDocument} item={item} />
                 </AppLink>
               )}
             </Flex>

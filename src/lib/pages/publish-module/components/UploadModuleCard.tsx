@@ -1,6 +1,7 @@
-import { Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import type { DecodeModuleQueryResponse } from "lib/services/types";
+import type { Option, UpgradePolicy } from "lib/types";
 
+import { Flex, Heading, IconButton, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain } from "lib/app-provider";
 import { ComponentLoader } from "lib/components/ComponentLoader";
@@ -9,9 +10,10 @@ import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
 import { UploadCard } from "lib/components/upload";
 import { useDecodeModule } from "lib/services/move/module";
-import type { DecodeModuleQueryResponse } from "lib/services/types";
-import type { Option, UpgradePolicy } from "lib/types";
+import { useCallback, useState } from "react";
+
 import type { Module, PublishStatus } from "../formConstants";
+
 import { statusResolver } from "../utils";
 
 const DEFAULT_TEMP_FILE = {
@@ -105,12 +107,12 @@ export const UploadModuleCard = ({
       border="1px solid"
       borderColor="gray.700"
       borderRadius={8}
-      p={4}
-      gap={4}
       flexDirection="column"
+      gap={4}
+      p={4}
     >
-      <Flex justifyContent="space-between" w="full" alignItems="center">
-        <Heading as="h6" variant="h6" color="text.dark" fontWeight={600}>
+      <Flex alignItems="center" justifyContent="space-between" w="full">
+        <Heading as="h6" color="text.dark" fontWeight={600} variant="h6">
           Module {index + 1}
         </Heading>
         <Flex
@@ -120,6 +122,10 @@ export const UploadModuleCard = ({
         >
           <Tooltip label="Move up" variant="primary-light">
             <IconButton
+              aria-label="move-up"
+              disabled={index === 0}
+              size="sm"
+              variant="ghost"
               onClick={() => {
                 track(AmpEvent.USE_UPLOAD_CARD_MOVE_UP, {
                   currentPosition: index + 1,
@@ -128,16 +134,16 @@ export const UploadModuleCard = ({
                 });
                 moveEntry(index, index - 1);
               }}
-              aria-label="move-up"
-              variant="ghost"
-              size="sm"
-              disabled={index === 0}
             >
-              <CustomIcon name="arrow-up" color="gray.600" />
+              <CustomIcon color="gray.600" name="arrow-up" />
             </IconButton>
           </Tooltip>
           <Tooltip label="Move down" variant="primary-light">
             <IconButton
+              aria-label="move-down"
+              disabled={index === modules.length - 1}
+              size="sm"
+              variant="ghost"
               onClick={() => {
                 track(AmpEvent.USE_UPLOAD_CARD_MOVE_DOWN, {
                   currentPosition: index + 1,
@@ -146,27 +152,23 @@ export const UploadModuleCard = ({
                 });
                 moveEntry(index, index + 1);
               }}
-              aria-label="move-down"
-              variant="ghost"
-              size="sm"
-              disabled={index === modules.length - 1}
             >
-              <CustomIcon name="arrow-down" color="gray.600" />
+              <CustomIcon color="gray.600" name="arrow-down" />
             </IconButton>
           </Tooltip>
           <Tooltip label="Remove item" variant="primary-light">
             <IconButton
+              aria-label="remove"
+              size="sm"
+              variant="ghost"
               onClick={() => {
                 track(AmpEvent.USE_REMOVE_MODULE_UPLOAD_BOX, {
                   currentBoxAmount: modules.length - 1,
                 });
                 removeEntry();
               }}
-              aria-label="remove"
-              variant="ghost"
-              size="sm"
             >
-              <CustomIcon name="close" color="gray.600" />
+              <CustomIcon color="gray.600" name="close" />
             </IconButton>
           </Tooltip>
         </Flex>
@@ -175,28 +177,28 @@ export const UploadModuleCard = ({
         <ComponentLoader isLoading={isFetching}>
           {file ? (
             <UploadCard
-              file={file}
               deleteFile={removeFile}
-              theme="gray"
+              file={file}
               status={status}
               statusText={text}
+              theme="gray"
             />
           ) : (
             <DropZone
-              setFiles={(files: File[]) => handleFileDrop(files[0])}
-              fileType={["mv"]}
+              _hover={undefined}
               bgColor="background.main"
               error={decodeError}
-              _hover={undefined}
+              fileType={["mv"]}
+              setFiles={(files: File[]) => handleFileDrop(files[0])}
             />
           )}
         </ComponentLoader>
       </Flex>
       <Flex justifyContent="space-between" w="full">
-        <Text variant="body2" color="text.dark" fontWeight={600}>
+        <Text color="text.dark" fontWeight={600} variant="body2">
           Module path
         </Text>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           {decodeRes?.modulePath ?? "-"}
         </Text>
       </Flex>

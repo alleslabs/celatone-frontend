@@ -1,5 +1,4 @@
 import { Box, Flex, Grid, Text } from "@chakra-ui/react";
-
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
 import { dateFromNow, formatUTC } from "lib/utils";
@@ -32,29 +31,29 @@ export const TxsTableRow = ({
   isNftMint,
   isNftTransfer,
 }: TxsTableRowProps) => (
-  <Box w="full" minW="min-content">
+  <Box minW="min-content" w="full">
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
       _hover={{ background: "gray.900" }}
+      templateColumns={templateColumns}
       transition="all 0.25s ease-in-out"
     >
       <TableRow pr={1}>
         <ExplorerLink
-          value={hash.toUpperCase()}
-          type="tx_hash"
           showCopyOnHover
+          type="tx_hash"
+          value={hash.toUpperCase()}
         />
       </TableRow>
       <TableRow>
-        <Text variant="body2" color="text.main">
+        <Text color="text.main" variant="body2">
           {getEventMessage(isNftBurn, isNftMint, isNftTransfer)}
         </Text>
       </TableRow>
       <TableRow>
         <Flex direction="column" gap={1}>
           <Text variant="body3">{formatUTC(timestamp)}</Text>
-          <Text variant="body3" color="text.dark">
+          <Text color="text.dark" variant="body3">
             {`(${dateFromNow(timestamp)})`}
           </Text>
         </Flex>

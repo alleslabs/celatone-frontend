@@ -1,3 +1,7 @@
+import type { AxiosError, AxiosResponse } from "axios";
+import type { FormStatus } from "lib/components/forms";
+import type { IconKeys } from "lib/components/icon";
+
 import {
   Alert,
   AlertDescription,
@@ -6,11 +10,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import type { AxiosError, AxiosResponse } from "axios";
 import axios from "axios";
-import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -20,12 +20,12 @@ import {
 } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { AssignMe } from "lib/components/AssignMe";
-import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms";
-import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { useOpenTxTab } from "lib/hooks";
 import { useFaucetInfo } from "lib/services/faucetService";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
 
 type ResultStatus = "success" | "error" | "warning";
 
@@ -120,11 +120,11 @@ const Faucet = () => {
           position: "bottom-right",
           icon: (
             <CustomIcon
-              name="check-circle-solid"
-              color="success.main"
-              boxSize={4}
-              display="flex"
               alignItems="center"
+              boxSize={4}
+              color="success.main"
+              display="flex"
+              name="check-circle-solid"
             />
           ),
         });
@@ -174,58 +174,58 @@ const Faucet = () => {
       <Heading as="h5" variant="h5">
         {prettyName} Faucet
       </Heading>
-      <Text variant="body2" color="text.dark" pt={4} textAlign="center" mb={8}>
+      <Text color="text.dark" mb={8} pt={4} textAlign="center" variant="body2">
         The faucet provides {faucetAmount} testnet {faucetDenom} per request.{" "}
         {faucetInfo?.RateLimit &&
           "Requests are limited to once per hour for each receiving address and IP address."}
       </Text>
       <TextInput
-        variant="fixed-floating"
-        placeholder="Enter your address"
-        value={address}
-        setInputState={setAddress}
-        status={status}
-        label="Receiving address"
         helperAction={
           <AssignMe
+            isDisable={address === walletAddress}
+            textAlign="left"
             onClick={() => {
               track(AmpEvent.USE_ASSIGN_ME);
               setAddress(walletAddress);
             }}
-            isDisable={address === walletAddress}
-            textAlign="left"
           />
         }
+        label="Receiving address"
+        placeholder="Enter your address"
+        setInputState={setAddress}
+        status={status}
+        value={address}
+        variant="fixed-floating"
       />
       <Button
+        isDisabled={isDisabled}
+        isLoading={isLoading}
         mt={8}
         w="full"
         onClick={onSubmit}
-        isLoading={isLoading}
-        isDisabled={isDisabled}
       >
         Request {faucetAmount} testnet {faucetDenom}
       </Button>
       {result.status && (
         <Alert mt={8} variant={result.status}>
           <CustomIcon
-            name={STATUS_ICONS[result.status]}
-            color={`${result.status}.main`}
-            boxSize={6}
-            display="flex"
             alignItems="center"
+            boxSize={6}
+            color={`${result.status}.main`}
+            display="flex"
+            name={STATUS_ICONS[result.status]}
           />
           <AlertDescription mx={4}>
             {result.message || "Something went wrong"}
           </AlertDescription>
           {result.txHash && (
             <Button
-              variant="unstyled"
-              minW="unset"
-              size="sm"
-              ml="auto"
-              _hover={{ background: "success.dark" }}
               style={{ padding: "4px 12px" }}
+              _hover={{ background: "success.dark" }}
+              minW="unset"
+              ml="auto"
+              size="sm"
+              variant="unstyled"
               onClick={() => openTxTab(result.txHash)}
             >
               View transaction

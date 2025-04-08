@@ -1,16 +1,16 @@
+import type { ContractData } from "lib/services/types";
+import type { ContractLocalInfo } from "lib/stores/contract";
+import type { BechAddr, BechAddr32, Option } from "lib/types";
+
 import { Button, Flex, Text } from "@chakra-ui/react";
+import { useMobile } from "lib/app-provider";
+import { useContractStore } from "lib/providers/store";
+import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
+import { useContractData } from "lib/services/wasm/contract";
+import { getWasmVerifyStatus } from "lib/utils";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-
-import { useMobile } from "lib/app-provider";
-import { useContractStore } from "lib/providers/store";
-import type { ContractData } from "lib/services/types";
-import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
-import { useContractData } from "lib/services/wasm/contract";
-import type { ContractLocalInfo } from "lib/stores/contract";
-import type { BechAddr, BechAddr32, Option } from "lib/types";
-import { getWasmVerifyStatus } from "lib/utils";
 
 import { ExplorerLink } from "./ExplorerLink";
 import { CustomIcon } from "./icon";
@@ -105,10 +105,10 @@ const ContractDetailsButton = ({
       contractLocalInfo={contractLocalInfo}
       triggerElement={
         <Button
-          variant="ghost-gray"
           float="right"
-          size="sm"
           leftIcon={<CustomIcon name="edit" />}
+          size="sm"
+          variant="ghost-gray"
         >
           Edit
         </Button>
@@ -124,10 +124,10 @@ const ContractDetailsButton = ({
       }}
       triggerElement={
         <Button
-          variant="outline-gray"
           float="right"
+          leftIcon={<CustomIcon boxSize="12px" name="bookmark" />}
           size="sm"
-          leftIcon={<CustomIcon name="bookmark" boxSize="12px" />}
+          variant="outline-gray"
         >
           Add to list
         </Button>
@@ -203,17 +203,17 @@ export const ContractSelectSection = observer(
       <>
         {(isFetching || isDerivedWasmVerifyInfoLoading) && <LoadingOverlay />}
         <Flex
-          mb={style.container}
-          borderWidth="thin"
+          align="center"
           borderColor="gray.800"
-          p={4}
           borderRadius="8px"
+          borderWidth="thin"
           fontSize="12px"
           justify="space-between"
-          align="center"
+          mb={style.container}
+          p={4}
           width="full"
         >
-          <Flex gap={4} width="100%" direction={{ base: "column", md: "row" }}>
+          <Flex direction={{ base: "column", md: "row" }} gap={4} width="100%">
             <Flex
               direction="column"
               width={{ base: "auto", md: style.contractAddrContainer }}
@@ -221,25 +221,25 @@ export const ContractSelectSection = observer(
               Contract address
               {!notSelected ? (
                 <ExplorerLink
-                  value={contractAddress}
-                  type="contract_address"
+                  maxWidth="none"
+                  minWidth={style.contractAddrW}
+                  rightIcon={
+                    <WasmVerifyBadge
+                      linkedCodeId={codeId}
+                      relatedVerifiedCodes={
+                        derivedWasmVerifyInfo?.relatedVerifiedCodes
+                      }
+                      status={getWasmVerifyStatus(derivedWasmVerifyInfo)}
+                    />
+                  }
                   showCopyOnHover
                   // TODO - Revisit not necessary if disable UI for mobile is implemented
                   textFormat={
                     isMobile || mode === "only-admin" ? "truncate" : "normal"
                   }
-                  maxWidth="none"
-                  minWidth={style.contractAddrW}
+                  type="contract_address"
+                  value={contractAddress}
                   wordBreak="break-all"
-                  rightIcon={
-                    <WasmVerifyBadge
-                      status={getWasmVerifyStatus(derivedWasmVerifyInfo)}
-                      relatedVerifiedCodes={
-                        derivedWasmVerifyInfo?.relatedVerifiedCodes
-                      }
-                      linkedCodeId={codeId}
-                    />
-                  }
                 />
               ) : (
                 <Text color="text.disabled" variant="body2">
@@ -253,13 +253,13 @@ export const ContractSelectSection = observer(
             >
               Contract name
               <DisplayName
-                notSelected={notSelected}
                 isValid={contractState.isValid}
-                name={contractLocalInfo?.name}
                 label={contractState.label}
+                name={contractLocalInfo?.name}
+                notSelected={notSelected}
               />
             </Flex>
-            <Flex gap={2} alignItems="center">
+            <Flex alignItems="center" gap={2}>
               {mode === "all-lists" && contractState.isValid && (
                 <ContractDetailsButton
                   contractAddress={contractAddress}

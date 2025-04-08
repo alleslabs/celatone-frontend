@@ -1,9 +1,13 @@
 import type { StdFee } from "@cosmjs/amino";
-import { useCallback, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
+import type {
+  BechAddr,
+  Option,
+  SimulateStatus,
+  UploadSectionState,
+} from "lib/types";
 
 import { AmpEvent, track } from "lib/amplitude";
-import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
 import {
   useCelatoneApp,
   useCurrentChain,
@@ -15,19 +19,14 @@ import {
 import { useCodeStore } from "lib/providers/store";
 import { useSimulateFeeForStoreCode } from "lib/services/tx";
 import { AccessType } from "lib/types";
-import type {
-  BechAddr,
-  Option,
-  SimulateStatus,
-  UploadSectionState,
-} from "lib/types";
+import { useCallback, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 
 import { useTxBroadcast } from "./useTxBroadcast";
 
 export const useUploadCode = (
   onComplete: Option<StoreCodeSucceedCallback>,
   isMigrate: boolean
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 ) => {
   const { broadcast } = useTxBroadcast();
   const { updateCodeInfo } = useCodeStore();

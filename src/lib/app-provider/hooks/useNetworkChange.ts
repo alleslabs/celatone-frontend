@@ -1,7 +1,6 @@
+import { getFirstQueryParam } from "lib/utils";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-
-import { getFirstQueryParam } from "lib/utils";
 
 import { useChainConfigs } from "./useChainConfigs";
 import { useInternalNavigate } from "./useInternalNavigate";

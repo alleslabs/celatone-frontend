@@ -1,7 +1,10 @@
-import { FormControl, FormErrorMessage, Input } from "@chakra-ui/react";
 import type { FieldValues } from "react-hook-form";
+
+import { FormControl, FormErrorMessage, Input } from "@chakra-ui/react";
 import { useController } from "react-hook-form";
+
 import type { FieldProps } from "./types";
+
 import { getRules } from "./utils";
 
 interface BaseFieldProps<T extends FieldValues> extends FieldProps<T> {
@@ -26,7 +29,7 @@ export const BaseField = <T extends FieldValues>({
   const isError = (isTouched || isDirty) && !!error;
 
   return (
-    <FormControl isInvalid={isError} isDisabled={isDisabled} {...fieldProps}>
+    <FormControl isDisabled={isDisabled} isInvalid={isError} {...fieldProps}>
       <Input value={value} onBlur={onBlur} onChange={onChange} />
       {isError && <FormErrorMessage>{error.message}</FormErrorMessage>}
     </FormControl>

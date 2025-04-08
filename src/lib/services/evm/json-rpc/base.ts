@@ -1,8 +1,9 @@
 import axios from "axios";
+import { parseWithError } from "lib/utils";
 import * as uuid from "uuid";
 
-import { parseWithError } from "lib/utils";
 import type { JsonRpcResponse } from "../../types/evm";
+
 import { zBatchJsonRpcResponse, zJsonRpcResponse } from "../../types/evm";
 
 export type JsonRpcParams = object | string | boolean;

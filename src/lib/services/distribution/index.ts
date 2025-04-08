@@ -1,12 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { isUndefined } from "lodash";
+import type { BechAddr, Option, ValidatorAddr } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
   useGovConfig,
 } from "lib/app-provider";
-import type { BechAddr, Option, ValidatorAddr } from "lib/types";
+import { isUndefined } from "lodash";
 
 import {
   getCommissionsByValidatorAddressRest,

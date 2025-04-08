@@ -1,8 +1,8 @@
-import { fromBech32 } from "@cosmjs/encoding";
-import { useCallback, useMemo } from "react";
-
 import type { Option } from "lib/types";
+
+import { fromBech32 } from "@cosmjs/encoding";
 import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
+import { useCallback, useMemo } from "react";
 
 import { useEvmConfig, useMoveConfig } from "./useConfig";
 import { useCurrentChain } from "./useCurrentChain";

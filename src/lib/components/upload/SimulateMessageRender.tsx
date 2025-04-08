@@ -1,7 +1,8 @@
 import type { FlexProps } from "@chakra-ui/react";
+import type { Option } from "lib/types";
+
 import { Flex, Spinner, Text } from "@chakra-ui/react";
 
-import type { Option } from "lib/types";
 import { CustomIcon } from "../icon";
 
 interface SimulateMessageRenderProps extends FlexProps {
@@ -14,18 +15,18 @@ const item = {
   success: {
     color: "success.main",
     icon: (
-      <CustomIcon name="check-circle-solid" color="success.main" boxSize="3" />
+      <CustomIcon boxSize="3" color="success.main" name="check-circle-solid" />
     ),
   },
   fail: {
     color: "error.main",
     icon: (
-      <CustomIcon name="alert-triangle-solid" color="error.main" boxSize="3" />
+      <CustomIcon boxSize="3" color="error.main" name="alert-triangle-solid" />
     ),
   },
   loading: {
     color: "gray.500",
-    icon: <Spinner color="gray.600" size="sm" mx={1} />,
+    icon: <Spinner color="gray.600" mx={1} size="sm" />,
   },
 };
 
@@ -43,9 +44,9 @@ export const SimulateMessageRender = ({
 }: SimulateMessageRenderProps) => {
   const status = getStatus(isLoading, isSuccess);
   return (
-    <Flex gap={2} align="center" {...restProps}>
+    <Flex align="center" gap={2} {...restProps}>
       {item[status].icon}
-      <Text variant="body3" color={item[status].color}>
+      <Text color={item[status].color} variant="body3">
         {value}
       </Text>
     </Flex>

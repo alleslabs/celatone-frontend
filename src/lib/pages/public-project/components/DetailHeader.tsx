@@ -1,7 +1,7 @@
-import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
-
-import { Breadcrumb } from "lib/components/Breadcrumb";
 import type { Option, PublicDetail } from "lib/types";
+
+import { Box, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { Breadcrumb } from "lib/components/Breadcrumb";
 import { getNameAndDescriptionDefault } from "lib/utils";
 
 import { BookmarkButton } from "./BookmarkButton";
@@ -20,36 +20,36 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
       ]}
     />
     <Flex
-      justifyContent="space-between"
       alignItems="flex-start"
-      w="full"
-      mt={6}
-      gap={5}
       direction={{ base: "column", md: "row" }}
+      gap={5}
+      justifyContent="space-between"
+      mt={6}
+      w="full"
     >
       <Box>
-        <Flex gap={1} align="center" minH="36px">
+        <Flex align="center" gap={1} minH="36px">
           {details?.logo && (
             <Image
-              src={details?.logo}
-              borderRadius="full"
               alt="Scan"
-              width={7}
+              borderRadius="full"
               height={7}
+              src={details?.logo}
+              width={7}
             />
           )}
-          <Heading as="h5" variant="h5" className="ellipsis">
+          <Heading className="ellipsis" as="h5" variant="h5">
             {getNameAndDescriptionDefault(details?.name)}
           </Heading>
         </Flex>
-        <Text variant="body2" color="text.dark" mt={2}>
+        <Text color="text.dark" mt={2} variant="body2">
           {getNameAndDescriptionDefault(details?.description)}
         </Text>
       </Box>
       <Flex
         alignItems="center"
-        justify="space-between"
         gap={4}
+        justify="space-between"
         w={{ base: "full", md: "auto" }}
       >
         <SocialMedia details={details} />

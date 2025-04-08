@@ -1,15 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import type { BechAddr, BechAddr32, Option } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
   useCurrentChain,
   useGetAddressType,
 } from "lib/app-provider";
-import type { BechAddr, BechAddr32, Option } from "lib/types";
 
-import { getAddressByIcnsNameRest, getIcnsNamesByAddressRest } from "./rest";
 import { getContractRest } from "../wasm/contract/rest";
+import { getAddressByIcnsNameRest, getIcnsNamesByAddressRest } from "./rest";
 
 export const useIcnsNamesByAddressRest = (
   address: Option<BechAddr>,

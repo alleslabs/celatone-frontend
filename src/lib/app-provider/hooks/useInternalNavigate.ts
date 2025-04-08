@@ -1,9 +1,9 @@
-import { useRouter } from "next/router";
 import type { Router } from "next/router";
-import { useCallback } from "react";
 import type { ParsedUrlQueryInput } from "node:querystring";
 
 import { getFirstQueryParam } from "lib/utils";
+import { useRouter } from "next/router";
+import { useCallback } from "react";
 
 import { useChainConfigs } from "./useChainConfigs";
 

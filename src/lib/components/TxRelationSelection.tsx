@@ -1,7 +1,7 @@
 import type { BoxProps } from "@chakra-ui/react";
-import { Box } from "@chakra-ui/react";
-
 import type { Option } from "lib/types";
+
+import { Box } from "@chakra-ui/react";
 
 import { SelectInputBase } from "./forms";
 
@@ -57,8 +57,9 @@ export const TxRelationSelection = ({
     <Box {...props}>
       <SelectInputBase
         formLabel="Filter by relation"
-        size={size}
+        initialSelected={initialValue}
         options={relationOptions}
+        size={size}
         onChange={(newValue: RelationType) =>
           setValue(
             newValue === RelationType.ALL
@@ -66,7 +67,6 @@ export const TxRelationSelection = ({
               : newValue === RelationType.SIGNING
           )
         }
-        initialSelected={initialValue}
       />
     </Box>
   );

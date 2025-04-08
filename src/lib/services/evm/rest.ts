@@ -1,10 +1,11 @@
-import axios from "axios";
-
 import type { HexAddr20 } from "lib/types";
+
+import axios from "axios";
 import {
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
+
 import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import { zEvmMsgCreate } from "../types";
 import { zEvmCodesByAddressResponseRest, zEvmParams } from "../types/evm";

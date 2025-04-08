@@ -11,7 +11,6 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-
 import { Tooltip } from "lib/components/Tooltip";
 
 interface ViewFailedReasonProps {
@@ -25,9 +24,9 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
       <Tooltip label="This proposal failed before the &lsquo;failed_reason&rsquo; field is added to the network.">
         <Text
           as="span"
-          variant="body2"
           color="text.disabled"
           cursor="not-allowed"
+          variant="body2"
           whiteSpace="nowrap"
         >
           View failed reason
@@ -38,22 +37,22 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
   return (
     <>
       <Text
-        as="span"
-        variant="body2"
-        color="primary.main"
-        transition="all 0.25s ease-in-out"
         _hover={{ color: "primary.light", textDecoration: "underline" }}
+        as="span"
+        color="primary.main"
         cursor="pointer"
+        transition="all 0.25s ease-in-out"
+        variant="body2"
         onClick={onOpen}
       >
         View failed reason
       </Text>
 
       <Modal
-        isOpen={isOpen}
-        onClose={onClose}
         isCentered
+        isOpen={isOpen}
         returnFocusOnClose={false}
+        onClose={onClose}
       >
         <ModalOverlay />
         <ModalContent>
@@ -63,17 +62,17 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
             <Box
               bg="background.main"
               borderRadius="8px"
-              p={2}
-              mt={4}
               maxH="240px"
+              mt={4}
               overflowY="scroll"
+              p={2}
             >
               <Text>{text}</Text>
             </Box>
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="outline-primary" onClick={onClose} w="120px">
+            <Button variant="outline-primary" w="120px" onClick={onClose}>
               Close
             </Button>
           </ModalFooter>

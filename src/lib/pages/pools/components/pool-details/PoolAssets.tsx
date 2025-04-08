@@ -1,13 +1,13 @@
-import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
-import Link from "next/link";
+import type { PoolData, USD } from "lib/types";
 
+import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
 import { trackWebsite } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { EmptyState } from "lib/components/state";
-import type { PoolData, USD } from "lib/types";
 import { big, PoolType } from "lib/types";
 import { formatPrice } from "lib/utils";
+import Link from "next/link";
 
 import { PoolAssetsTable } from "./tables/pool-assets";
 
@@ -23,19 +23,19 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
 
   return (
     <>
-      <Flex mt={12} mb={4} justifyContent="space-between" align="center">
-        <Flex gap={2} align="center">
+      <Flex align="center" justifyContent="space-between" mb={4} mt={12}>
+        <Flex align="center" gap={2}>
           <Heading as="h6" variant="h6">
             Pool assets
           </Heading>
-          <Badge variant="gray" color="text.main" textColor="text.main">
+          <Badge color="text.main" textColor="text.main" variant="gray">
             {pool.liquidity.length}
           </Badge>
         </Flex>
         {pool.isSupported && (
-          <Text variant="body2" color="text.dark" fontWeight={500}>
+          <Text color="text.dark" fontWeight={500} variant="body2">
             Total liquidity:
-            <Text as="span" fontWeight={700} color="text.main" ml={2}>
+            <Text as="span" color="text.main" fontWeight={700} ml={2}>
               {pool.liquidity ? formatPrice(totalLiquidity) : "N/A"}
             </Text>
           </Text>
@@ -43,8 +43,8 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
       </Flex>
       {pool.type === PoolType.CL ? (
         <EmptyState
-          imageVariant="empty"
           heading="Coming soon!"
+          imageVariant="empty"
           message={
             "Asset allocation and liquidity information for \n concentrated liquidity pool are under construction."
           }
@@ -53,25 +53,25 @@ export const PoolAssets = ({ pool }: PoolAssetsProps) => {
       ) : (
         <>
           <PoolAssetsTable pool={pool} totalLiquidity={totalLiquidity} />
-          <Flex gap={2} alignItems="center" mt={4}>
-            <Text variant="body2" color="text.dark">
+          <Flex alignItems="center" gap={2} mt={4}>
+            <Text color="text.dark" variant="body2">
               What is asset weight and allocation?
             </Text>
             <Link
               href="https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
-              target="_blank"
               rel="noopener noreferrer"
+              target="_blank"
               onClick={() =>
                 trackWebsite(
                   "https://docs.osmosis.zone/osmosis-core/modules/gamm#weights"
                 )
               }
             >
-              <Flex gap="2px" alignItems="center">
+              <Flex alignItems="center" gap="2px">
                 <Text color="primary.main" variant="body2">
                   View more
                 </Text>
-                <CustomIcon name="launch" color="primary.main" boxSize={3} />
+                <CustomIcon boxSize={3} color="primary.main" name="launch" />
               </Flex>
             </Link>
           </Flex>

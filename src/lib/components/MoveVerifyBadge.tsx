@@ -14,16 +14,16 @@ const MoveVerifyBadgeIcon = ({
   if (status === MoveVerifyStatus.Outdated) {
     return (
       <CustomIcon
-        name="verification-solid"
-        opacity={0.5}
         color="secondary.main"
         mx={0}
+        name="verification-solid"
+        opacity={0.5}
       />
     );
   }
   if (status === MoveVerifyStatus.Verified) {
     return (
-      <CustomIcon name="verification-solid" color="secondary.main" mx={0} />
+      <CustomIcon color="secondary.main" mx={0} name="verification-solid" />
     );
   }
   return undefined;

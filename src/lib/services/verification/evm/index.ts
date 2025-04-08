@@ -1,8 +1,10 @@
+import type { HexAddr20 } from "lib/types";
+
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useCurrentChain } from "lib/app-provider";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
-import type { HexAddr20 } from "lib/types";
 import { isHex20Bytes } from "lib/utils/validate";
+
 import { getEvmVerifyConfig, getEvmVerifyInfos, submitEvmVerify } from "./api";
 
 export const useEvmVerifyConfig = () =>

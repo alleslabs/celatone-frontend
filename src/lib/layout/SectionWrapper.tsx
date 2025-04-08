@@ -1,6 +1,7 @@
 import type { BoxProps, FlexboxProps, FlexProps } from "@chakra-ui/react";
-import { Flex } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+
+import { Flex } from "@chakra-ui/react";
 
 interface SectionWrapperProps {
   children: ReactNode;
@@ -18,13 +19,13 @@ export const SectionWrapper = ({
   borderRight = true,
 }: SectionWrapperProps) => (
   <Flex
-    borderRight={borderRight ? "1px solid" : "none"}
-    borderColor="gray.700"
-    h="full"
     alignItems="center"
-    w={w}
-    minW={minW}
+    borderColor="gray.700"
+    borderRight={borderRight ? "1px solid" : "none"}
+    h="full"
     justifyContent={justifyContent}
+    minW={minW}
+    w={w}
   >
     {children}
   </Flex>

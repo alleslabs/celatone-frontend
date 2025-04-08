@@ -1,4 +1,5 @@
 import type { BoxProps } from "@chakra-ui/react";
+
 import {
   Accordion,
   AccordionButton,
@@ -10,10 +11,9 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import Link from "next/link";
-
 import { trackUseRightHelperPanel } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
+import Link from "next/link";
 
 import { CustomIcon } from "./icon";
 
@@ -37,25 +37,25 @@ interface ToPageProps {
 }
 const ToPage = ({ onClick, title }: ToPageProps) => (
   <Flex
-    align="center"
-    cursor="pointer"
-    borderRadius={4}
-    p={1}
-    gap={1}
-    alignItems="center"
-    width="fit-content"
-    transition="all 0.25s ease-in-out"
-    color="primary.main"
     _hover={{
       color: "primary.light",
       bgColor: "primary.background",
     }}
+    align="center"
+    alignItems="center"
+    borderRadius={4}
+    color="primary.main"
+    cursor="pointer"
+    gap={1}
+    p={1}
+    transition="all 0.25s ease-in-out"
+    width="fit-content"
     onClick={onClick}
   >
-    <Text variant="body3" color="primary.main" fontWeight={700}>
+    <Text color="primary.main" fontWeight={700} variant="body3">
       {title}
     </Text>
-    <CustomIcon name="chevron-right" color="primary.main" boxSize={3} m={0} />
+    <CustomIcon boxSize={3} color="primary.main" m={0} name="chevron-right" />
   </Flex>
 );
 
@@ -69,24 +69,24 @@ export const StickySidebar = ({
     metadata;
   const hasAction = toPage;
   return (
-    <Box flex={4} px={8} position="relative" {...boxProps}>
-      <Flex position="fixed" width="full" direction="column">
+    <Box flex={4} position="relative" px={8} {...boxProps}>
+      <Flex direction="column" position="fixed" width="full">
         {hasForumAlert && (
-          <Alert variant="primary" gap="2" w={96} mb={2}>
+          <Alert gap="2" mb={2} variant="primary" w={96}>
             <Box>
-              <Text variant="body2" fontWeight={600} color="primary">
+              <Text color="primary" fontWeight={600} variant="body2">
                 Forum Posting Required for Proposals
               </Text>
-              <Text variant="body3" color="primary" mt={1}>
+              <Text color="primary" mt={1} variant="body3">
                 Governance proposals must be posted as a draft on
                 <Flex align="center" display="inline-flex">
                   <Link
                     href="https://forum.osmosis.zone"
-                    target="_blank"
                     rel="noopener noreferrer"
+                    target="_blank"
                   >
                     https://forum.osmosis.zone
-                    <CustomIcon name="launch" boxSize={2} />
+                    <CustomIcon boxSize={2} name="launch" />
                   </Link>
                 </Flex>{" "}
                 for <b>at least three days</b> before being submitted to chain
@@ -98,17 +98,17 @@ export const StickySidebar = ({
         )}
         <Accordion
           allowToggle
-          width={96}
           defaultIndex={[0]}
           variant="transparent"
+          width={96}
         >
-          <AccordionItem borderTop="none" borderColor="gray.700">
-            <AccordionButton py={3} px={0}>
+          <AccordionItem borderColor="gray.700" borderTop="none">
+            <AccordionButton px={0} py={3}>
               <Text
-                variant="body2"
-                fontWeight={700}
                 color="text.main"
+                fontWeight={700}
                 textAlign="start"
+                variant="body2"
               >
                 {title}
               </Text>
@@ -116,27 +116,27 @@ export const StickySidebar = ({
             </AccordionButton>
             <AccordionPanel
               bg="transparent"
-              py={3}
-              px={0}
-              borderTop="1px solid"
               borderColor="gray.700"
+              borderTop="1px solid"
+              px={0}
+              py={3}
             >
               <Text
-                variant="body2"
                 color="text.dark"
                 mb={hasAction ? 3 : 0}
-                pb={2}
                 p={1}
+                pb={2}
+                variant="body2"
               >
                 {description}
               </Text>
               {toPage && toPagePath && toPageTitle && (
                 <ToPage
+                  title={toPageTitle}
                   onClick={() => {
                     trackUseRightHelperPanel(page, `to-${toPagePath}`);
                     navigate({ pathname: toPagePath });
                   }}
-                  title={toPageTitle}
                 />
               )}
             </AccordionPanel>

@@ -1,7 +1,7 @@
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-import { useCallback } from "react";
+import type { AccountType, BechAddr, Option } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -10,7 +10,13 @@ import {
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
-import type { AccountType, BechAddr, Option } from "lib/types";
+import { useCallback } from "react";
+
+import type {
+  AccountBech32RestResponse,
+  AccountData,
+  AccountTableCounts,
+} from "../types";
 
 import { getAccountData, getAccountTableCounts, getAccountType } from "./api";
 import {
@@ -18,11 +24,6 @@ import {
   getAccountDataRest,
   getAccountTypeRest,
 } from "./rest";
-import type {
-  AccountBech32RestResponse,
-  AccountData,
-  AccountTableCounts,
-} from "../types";
 
 export const useAccountData = (
   address: BechAddr

@@ -9,27 +9,27 @@ interface JsonLinkProps {
 
 export const JsonLink = ({ uri, type }: JsonLinkProps) => (
   <Flex display="inline">
-    <a href={uri} target="_blank" rel="noopener noreferrer" data-peer>
+    <a data-peer href={uri} rel="noopener noreferrer" target="_blank">
       <Text
-        display="inline"
-        color="primary.main"
-        variant="body2"
-        fontWeight={500}
-        wordBreak="break-all"
         _hover={{
           textDecoration: "underline",
           textDecorationColor: "primary.light",
           "& > p": { color: "primary.light" },
         }}
+        color="primary.main"
+        display="inline"
+        fontWeight={500}
+        variant="body2"
+        wordBreak="break-all"
       >
         {uri}
       </Text>
     </a>
     <Copier
-      type={type}
-      value={uri}
       copyLabel="Copied!"
       ml={{ base: 1, md: 2 }}
+      type={type}
+      value={uri}
     />
   </Flex>
 );

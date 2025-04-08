@@ -1,3 +1,10 @@
+import type {
+  Nullable,
+  Option,
+  ProposalData,
+  ProposalVotesInfo,
+} from "lib/types";
+
 import { useGovConfig, useTierConfig } from "lib/app-provider";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
@@ -7,12 +14,6 @@ import {
   useProposalDepositsRest,
   useProposalVotesInfo,
 } from "lib/services/proposal";
-import type {
-  Nullable,
-  Option,
-  ProposalData,
-  ProposalVotesInfo,
-} from "lib/types";
 import { ProposalStatus } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
 

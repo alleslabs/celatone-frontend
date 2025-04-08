@@ -1,10 +1,10 @@
-import { Flex } from "@chakra-ui/react";
+import type { AssetInfos, Option } from "lib/types";
+import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
 
+import { Flex } from "@chakra-ui/react";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { CustomIcon } from "lib/components/icon";
-import type { AssetInfos, Option } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
-import type { MsgSwapExactAmountInDetails } from "lib/utils/tx/types";
 
 interface MsgSwapExactAmountInActionProps {
   msg: MsgSwapExactAmountInDetails;
@@ -29,19 +29,19 @@ export const MsgSwapExactAmountInAction = ({
     assetInfos
   );
   return (
-    <Flex gap={1} alignItems="center" flexWrap="wrap">
+    <Flex alignItems="center" flexWrap="wrap" gap={1}>
       Swap
       <MsgToken
-        token={inToken}
-        fontWeight={700}
         ampCopierSection={ampCopierSection}
+        fontWeight={700}
+        token={inToken}
       />
-      <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
+      <CustomIcon boxSize={4} color="primary.main" name="arrow-right" />
       at least
       <MsgToken
-        token={outToken}
-        fontWeight={400}
         ampCopierSection={ampCopierSection}
+        fontWeight={400}
+        token={outToken}
       />
     </Flex>
   );

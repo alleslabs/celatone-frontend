@@ -1,5 +1,6 @@
-import { Flex, Text } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+
+import { Flex, Text } from "@chakra-ui/react";
 
 interface NftInfoItemProps {
   children: ReactNode;
@@ -13,19 +14,19 @@ export const NftInfoItem = ({
   isCentered = true,
 }: NftInfoItemProps) => (
   <Flex
-    gap={{ base: 0, md: 2 }}
-    mb={{ base: 2, md: 0 }}
-    direction={{ base: "column", md: "row" }}
     align={{ base: "start", md: isCentered ? "center" : "start" }}
+    direction={{ base: "column", md: "row" }}
+    gap={{ base: 0, md: 2 }}
     height={{ md: 6 }}
+    mb={{ base: 2, md: 0 }}
   >
     <Text
-      variant="body2"
       color="gray.400"
       fontWeight={500}
-      mt={isCentered ? 0 : 0.5}
-      whiteSpace="nowrap"
       minW={24}
+      mt={isCentered ? 0 : 0.5}
+      variant="body2"
+      whiteSpace="nowrap"
     >
       {label}
     </Text>

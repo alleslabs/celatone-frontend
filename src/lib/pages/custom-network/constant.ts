@@ -1,4 +1,5 @@
 import type { ChainConfig } from "@alleslabs/shared";
+
 import { SUPPORTED_NETWORK_TYPES } from "env";
 
 export const DEFAULT_WASM_CONFIG: ChainConfig["features"]["wasm"] = {

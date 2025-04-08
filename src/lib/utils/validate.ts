@@ -1,8 +1,8 @@
-import { fromHex } from "@cosmjs/encoding";
-import { z } from "zod";
-
-import { HEX_MODULE_ADDRESS_LENGTH, HEX_WALLET_ADDRESS_LENGTH } from "lib/data";
 import type { HexAddr } from "lib/types";
+
+import { fromHex } from "@cosmjs/encoding";
+import { HEX_MODULE_ADDRESS_LENGTH, HEX_WALLET_ADDRESS_LENGTH } from "lib/data";
+import { z } from "zod";
 
 import { padHexAddress } from "./address";
 

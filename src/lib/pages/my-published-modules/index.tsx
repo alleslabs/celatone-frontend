@@ -1,12 +1,11 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import router from "next/router";
-import { useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate, useIsConnected } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
+import router from "next/router";
+import { useEffect } from "react";
 
 import { MyPublishedModulesTable } from "./components/MyPublishedModulesTable";
 
@@ -23,16 +22,18 @@ export const MyPublishedModules = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="My published modules" />
-      <Flex justifyContent="space-between" alignItems="center" mb={4}>
+      <Flex alignItems="center" justifyContent="space-between" mb={4}>
         <Flex direction="column">
-          <Heading as="h5" variant="h5" minH="36px">
+          <Heading as="h5" minH="36px" variant="h5">
             My published modules
           </Heading>
-          <Text variant="body2" fontWeight={500} color="text.dark">
+          <Text color="text.dark" fontWeight={500} variant="body2">
             This page displays all the modules published by me on this network
           </Text>
         </Flex>
         <Button
+          leftIcon={<CustomIcon name="add-new" />}
+          variant="primary"
           onClick={() => {
             track(AmpEvent.USE_MY_PUBLISHED_MODULES_CTA, {
               label: "publish new modules",
@@ -41,8 +42,6 @@ export const MyPublishedModules = () => {
               pathname: "/publish-module",
             });
           }}
-          variant="primary"
-          leftIcon={<CustomIcon name="add-new" />}
         >
           Publish new modules
         </Button>

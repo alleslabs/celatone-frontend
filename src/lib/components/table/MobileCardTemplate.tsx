@@ -1,5 +1,6 @@
-import { Flex } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+
+import { Flex } from "@chakra-ui/react";
 
 interface MobileCardTemplateProps {
   topContent: ReactNode;
@@ -14,14 +15,14 @@ export const MobileCardTemplate = ({
   onClick,
 }: MobileCardTemplateProps) => (
   <Flex
-    borderRadius="8px"
     background="gray.900"
-    p={3}
+    borderRadius="8px"
     cursor="pointer"
     direction="column"
     gap={3}
-    w="full"
     minW={0}
+    p={3}
+    w="full"
     onClick={onClick}
   >
     <Flex align="center" justify="space-between">
@@ -29,20 +30,20 @@ export const MobileCardTemplate = ({
     </Flex>
     {middleContent && (
       <Flex
-        borderTop="1px solid"
         borderColor="gray.700"
-        pt={3}
+        borderTop="1px solid"
         direction="column"
+        pt={3}
       >
         {middleContent}
       </Flex>
     )}
     {bottomContent && (
       <Flex
-        borderTop="1px solid"
         borderColor="gray.700"
-        pt={3}
+        borderTop="1px solid"
         direction="column"
+        pt={3}
       >
         {bottomContent}
       </Flex>

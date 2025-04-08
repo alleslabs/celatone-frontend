@@ -1,4 +1,5 @@
 import type { FlexProps, StyleProps, TextProps } from "@chakra-ui/react";
+
 import { Flex, Text } from "@chakra-ui/react";
 
 export interface AccountDetailsEmptyStateProps {
@@ -18,20 +19,20 @@ export const AccountDetailsEmptyState = ({
 }: AccountDetailsEmptyStateProps) => (
   <Flex
     alignItems="flex-start"
-    flexDir="column"
-    gap={4}
-    width="full"
-    pt={pt}
-    pb={8}
-    direction="column"
     borderBottom={borderBottom}
     borderColor={borderColor}
+    direction="column"
+    flexDir="column"
+    gap={4}
+    pb={8}
+    pt={pt}
+    width="full"
   >
     <Text
       color="text.dark"
       textAlign="center"
-      whiteSpace="pre-wrap"
       variant={textVariant}
+      whiteSpace="pre-wrap"
     >
       {message}
     </Text>

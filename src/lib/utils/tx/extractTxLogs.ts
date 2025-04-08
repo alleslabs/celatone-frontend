@@ -1,5 +1,4 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
-
 import type { Event, TxResponse } from "lib/services/types";
 
 export const extractTxLogs = (txData: TxResponse): Log[] => {

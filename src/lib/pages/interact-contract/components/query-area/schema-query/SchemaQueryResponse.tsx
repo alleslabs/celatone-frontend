@@ -1,10 +1,10 @@
-import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
-import { memo, useEffect, useState } from "react";
-
-import JsonReadOnly from "lib/components/json/JsonReadOnly";
-import { JsonSchemaForm, OutputMessageTabs } from "lib/components/json-schema";
 import type { Option, QueryResponse, SchemaInfo } from "lib/types";
+
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import { JsonSchemaForm, OutputMessageTabs } from "lib/components/json-schema";
+import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { dateFromNow, parseJsonStr } from "lib/utils";
+import { memo, useEffect, useState } from "react";
 
 interface SchemaQueryResponseProps {
   res: string;
@@ -26,7 +26,7 @@ const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {
   }, []);
 
   return (
-    <Text variant="body3" color="text.dark" opacity={timestamp ? 1 : 0}>
+    <Text color="text.dark" opacity={timestamp ? 1 : 0} variant="body3">
       ({timestamp ? `Last queried ${dateFromNow(timestamp)}` : "N/A"})
     </Text>
   );
@@ -43,13 +43,13 @@ export const SchemaQueryResponse = ({
   if (isLoading)
     return (
       <Flex
-        borderRadius={8}
-        p="48px 12px"
-        gap={2}
-        direction="column"
+        alignItems="center"
         border="1px solid"
         borderColor="gray.700"
-        alignItems="center"
+        borderRadius={8}
+        direction="column"
+        gap={2}
+        p="48px 12px"
       >
         <Spinner color="text.100" />
         <Text color="text.dark">Querying...</Text>
@@ -62,10 +62,10 @@ export const SchemaQueryResponse = ({
         <Flex
           bg="gray.800"
           borderRadius={8}
-          p="16px 12px"
           justifyContent="center"
+          p="16px 12px"
         >
-          <Text variant="body3" color="text.dark">
+          <Text color="text.dark" variant="body3">
             Query response will display here
           </Text>
         </Flex>
@@ -73,17 +73,17 @@ export const SchemaQueryResponse = ({
         <>
           {resTab === OutputMessageTabs.JSON_OUTPUT ? (
             <JsonReadOnly
-              topic="Return output"
+              canCopy={res !== ""}
               labelBgColor="gray.900"
               text={res}
-              canCopy={res !== ""}
+              topic="Return output"
             />
           ) : (
-            <Box bg="gray.800" p={4} borderRadius="8px">
+            <Box bg="gray.800" borderRadius="8px" p={4}>
               <JsonSchemaForm
                 formId={`response-${msgSchema.title}`}
-                schema={resSchema.schema}
                 initialFormData={(parseJsonStr(res) as QueryResponse).data}
+                schema={resSchema.schema}
               />
             </Box>
           )}

@@ -1,7 +1,7 @@
-import { z } from "zod";
+import type { Option, TokenWithValue, USD } from "lib/types";
 
 import { zCoin, zPagination } from "lib/types";
-import type { Option, TokenWithValue, USD } from "lib/types";
+import { z } from "zod";
 
 export const zBalancesResponse = z.array(zCoin);
 

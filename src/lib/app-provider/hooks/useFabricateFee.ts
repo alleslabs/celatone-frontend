@@ -1,8 +1,8 @@
 import type { StdFee } from "@cosmjs/stargate";
-import { useCallback } from "react";
+import type { Gas } from "lib/types";
 
 import { big } from "lib/types";
-import type { Gas } from "lib/types";
+import { useCallback } from "react";
 
 import { useGas } from "./useGas";
 

@@ -1,7 +1,7 @@
-import { z } from "zod";
-
 import type { BechAddr32 } from "lib/types";
+
 import { zBechAddr32 } from "lib/types";
+import { z } from "zod";
 
 export const zUpdateAdminQueryParams = z
   .object({

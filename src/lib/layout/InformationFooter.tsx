@@ -1,13 +1,13 @@
-import { Flex, Skeleton, Text } from "@chakra-ui/react";
-import Link from "next/link";
+import type { IconKeys } from "lib/components/icon";
 
+import { Flex, Skeleton, Text } from "@chakra-ui/react";
 import { trackWebsite } from "lib/amplitude";
 import { useTierConfig } from "lib/app-provider";
-import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { USER_GUIDE_DOCS_LINK } from "lib/data";
 import { useLatestBlockRest } from "lib/services/block";
 import { useOverviewsStats } from "lib/services/stats";
+import Link from "next/link";
 
 const FOOTER_BUTTONS = [
   {
@@ -30,32 +30,31 @@ export const InformationFooter = () => {
 
   return (
     <Flex
-      direction="column"
-      mt={8}
-      mb={2}
       alignItems={{ base: "center", md: "start" }}
+      direction="column"
+      mb={2}
+      mt={8}
     >
-      <Flex gap={1} py={1} px={2} align="center">
-        <CustomIcon name="block" color="gray.600" boxSize={3} />
+      <Flex align="center" gap={1} px={2} py={1}>
+        <CustomIcon boxSize={3} color="gray.600" name="block" />
         {isLoading ? (
           <Skeleton
-            h={4}
-            w={24}
             borderRadius={8}
-            startColor="gray.500"
             endColor="gray.700"
+            h={4}
+            startColor="gray.500"
+            w={24}
           />
         ) : (
           <>
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               {latest ?? "N/A"}
             </Text>
             {latest && (
               <Flex
-                w={2}
-                h={2}
                 bgColor="success.main"
                 borderRadius="16px"
+                h={2}
                 sx={{
                   animation: `pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
                   "@keyframes pulse": {
@@ -63,6 +62,7 @@ export const InformationFooter = () => {
                     "50%": { opacity: 0.5 },
                   },
                 }}
+                w={2}
               />
             )}
           </>
@@ -73,22 +73,22 @@ export const InformationFooter = () => {
           <Link
             key={text}
             href={href}
-            target="_blank"
             rel="noopener noreferrer"
+            target="_blank"
             onClick={onClick}
           >
             <Flex
-              gap={1}
-              py={1}
-              px={2}
-              borderRadius={4}
-              align="center"
-              cursor="pointer"
               _hover={{ background: "gray.800" }}
+              align="center"
+              borderRadius={4}
+              cursor="pointer"
+              gap={1}
+              px={2}
+              py={1}
               transition="all 0.25s ease-in-out"
             >
-              <CustomIcon name={icon} color="gray.600" boxSize={3} />
-              <Text variant="body3" color="text.dark">
+              <CustomIcon boxSize={3} color="gray.600" name={icon} />
+              <Text color="text.dark" variant="body3">
                 {text}
               </Text>
             </Flex>
