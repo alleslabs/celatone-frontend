@@ -15,7 +15,7 @@ export const useInitiaUsernameByAddress = (
   address: Nullish<Addr>,
   enabled = true
 ) => {
-  const { l1Rest, l1Usernames } = useL1InfoByNetworkType();
+  const getL1InfoByNetworkType = useL1InfoByNetworkType();
   const isInitia = useInitia();
   const { isSomeValidAddress } = useValidateAddress();
   const formatAddress = useFormatAddresses();
@@ -24,6 +24,7 @@ export const useInitiaUsernameByAddress = (
     if (!address)
       throw new Error("address is undefined (useInitiaUsernameByAddress)");
 
+    const { l1Rest, l1Usernames } = getL1InfoByNetworkType();
     const username = await getInitiaUsernameByAddress(
       l1Rest,
       l1Usernames,
@@ -47,11 +48,12 @@ export const useAddressByInitiaUsername = (
   username: string,
   enabled = true
 ) => {
-  const { l1Rest, l1Usernames } = useL1InfoByNetworkType();
+  const getL1InfoByNetworkType = useL1InfoByNetworkType();
   const isInitia = useInitia();
   const formatAddress = useFormatAddresses();
 
   const queryFn = async () => {
+    const { l1Rest, l1Usernames } = getL1InfoByNetworkType();
     const address = await getAddressByInitiaUsername(
       l1Rest,
       l1Usernames,
