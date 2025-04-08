@@ -139,7 +139,7 @@ export const ModulesVerifyBody = observer(
                     <ControllerInput
                       name="requestNote"
                       control={control}
-                      label="Request Note (Optional)"
+                      label="Request note (optional)"
                       variant="fixed-floating"
                       placeholder="ex. My first lending modules"
                       helperText="A short description for this verification request, stored locally on your device."
@@ -171,7 +171,7 @@ export const ModulesVerifyBody = observer(
                   onClick: handleSubmit(handleSubmitForm),
                   isDisabled: !zModuleVerifyForm.safeParse(watch()).success,
                 }}
-                actionLabel="Upload file and Submit"
+                actionLabel="Upload file and submit"
                 sx={{
                   backgroundColor: "background.main",
                   columnGap: "32px",
