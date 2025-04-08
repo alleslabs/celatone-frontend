@@ -44,7 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1301](https://github.com/alleslabs/celatone-frontend/pull/1301) Convert more text to sentence case
+- [#1302](https://github.com/alleslabs/celatone-frontend/pull/1302) Convert more text to sentence case
+- [#1298](https://github.com/alleslabs/celatone-frontend/pull/1298) Fix tooltip click capture on TokenCard
 - [#1296](https://github.com/alleslabs/celatone-frontend/pull/1296) Convert title to sentence case
 - [#1293](https://github.com/alleslabs/celatone-frontend/pull/1293) Improve useOpenTxTab and useOpenBlockTab
 - [#1290](https://github.com/alleslabs/celatone-frontend/pull/1290) Change minor ui
