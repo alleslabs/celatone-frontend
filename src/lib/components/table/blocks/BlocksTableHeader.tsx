@@ -16,8 +16,8 @@ export const BlocksTableHeader = ({
     sx={{ "> div": { color: "text.dark" } }}
     templateColumns={templateColumns}
   >
-    <TableHeader>Block Height</TableHeader>
-    <TableHeader>Block Hash</TableHeader>
+    <TableHeader>Block height</TableHeader>
+    <TableHeader>Block hash</TableHeader>
     {showProposer && <TableHeader>Proposed by</TableHeader>}
     <TableHeader textAlign="center">Transactions</TableHeader>
     <TableHeader>Timestamp</TableHeader>

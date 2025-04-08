@@ -34,10 +34,10 @@ interface PublicProjectContractTableProps {
 const TEMPLATE_COLUMNS = "max(160px) minmax(300px, 1fr) max(200px) max(300px) ";
 
 const ContractTableHeader = () => (
-  <Grid minW="min-content" templateColumns={TEMPLATE_COLUMNS}>
-    <TableHeader>Contract Address</TableHeader>
-    <TableHeader>Contract Name</TableHeader>
-    <TableHeader>Instantiated By</TableHeader>
+  <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
+    <TableHeader>Contract address</TableHeader>
+    <TableHeader>Contract name</TableHeader>
+    <TableHeader>Instantiated by</TableHeader>
     <TableHeader />
   </Grid>
 );
@@ -112,10 +112,7 @@ export const PublicProjectContractTable = observer(
         <TableTitle count={contracts.length} title="Contracts" />
         {!onViewMore && (
           <InputWithIcon
-            amptrackSection="public-project-contract-search"
-            my={2}
-            placeholder="Search with Contract Address or Contract Name"
-            size={{ base: "md", md: "lg" }}
+            placeholder="Search with contract address or contract name"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
           />

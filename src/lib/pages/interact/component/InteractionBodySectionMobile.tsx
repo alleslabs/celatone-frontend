@@ -42,7 +42,7 @@ export const InteractionBodySectionMobile = ({
           textVariant="body2"
         />
         <Button variant="primary" onClick={openDrawer}>
-          {!module ? "Select Module" : "Select Function"}
+          {!module ? "Select module" : "Select function"}
         </Button>
       </Flex>
     )}

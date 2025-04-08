@@ -9,12 +9,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { trackUseViewJSON } from "lib/amplitude";
-import { useCelatoneApp } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CopyLink } from "lib/components/CopyLink";
 import { DotSeparator } from "lib/components/DotSeparator";
 import { CustomIcon } from "lib/components/icon";
-import { dateFromNow, formatUTC, openNewTab } from "lib/utils";
+import { useOpenBlockTab } from "lib/hooks/useOpenTab";
+import type { BlockData } from "lib/types";
+import { dateFromNow, formatUTC } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
@@ -30,15 +31,11 @@ interface BlockDetailsTopProps {
 
 export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
   const block = Number(blockData.height);
-  const {
-    chainConfig: { rest: restEndpoint },
-  } = useCelatoneApp();
+  const openBlockTab = useOpenBlockTab();
 
   const openRestPage = () => {
     trackUseViewJSON("Block Details");
-    openNewTab(
-      `${restEndpoint}/cosmos/base/tendermint/v1beta1/blocks/${blockData.height}`
-    );
+    openBlockTab(blockData.height);
   };
 
   const disablePrevious = block <= 1;
@@ -106,7 +103,7 @@ export const BlockDetailsTop = ({ blockData }: BlockDetailsTopProps) => {
             fontWeight={500}
             variant="body2"
           >
-            Block Hash:
+            Block hash:
           </Text>
           <CopyLink
             amptrackSection="block_details_top"

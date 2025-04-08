@@ -13,18 +13,18 @@ export const UpdateGasFeeDetails = () => {
   return (
     <Flex direction="column" gap={8}>
       <Flex direction="column" gap={6}>
-        <CustomNetworkSubheader title="Gas & Fee Details" />
+        <CustomNetworkSubheader title="Gas & Fee details" />
         <Flex bg="teal">form goes here</Flex>
       </Flex>
       <Flex direction="column" gap={6}>
-        <CustomNetworkSubheader title="Gas Price Configuration" />
+        <CustomNetworkSubheader title="Gas price configuration" />
         <Flex bg="teal">form goes here</Flex>
       </Flex>
       <Accordion allowToggle w="full">
         <AccordionItem>
           <AccordionButton p={4}>
-            <Text>Advanced Options</Text>
-            <AccordionIcon boxSize={6} color="gray.600" ml="auto" />
+            <Text>Advanced options</Text>
+            <AccordionIcon color="gray.600" ml="auto" boxSize={6} />
           </AccordionButton>
           <AccordionPanel pb={4} pt={0}>
             <Flex gap={6} mt={2}>

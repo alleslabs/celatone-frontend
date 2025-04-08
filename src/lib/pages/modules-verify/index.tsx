@@ -9,7 +9,16 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCelatoneApp, useMobile, useMoveConfig } from "lib/app-provider";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+
+import {
+  useCelatoneApp,
+  useIsApiChain,
+  useMobile,
+  useMoveConfig,
+} from "lib/app-provider";
 import { ControllerInput } from "lib/components/forms";
 import { FooterCta } from "lib/components/layouts";
 import { Loading } from "lib/components/Loading";
@@ -106,7 +115,7 @@ export const ModulesVerifyBody = observer(
 
     return (
       <>
-        <CelatoneSeo pageName="Modules Verify" />
+        <CelatoneSeo pageName="Modules verify" />
         {isMobile ? (
           <NoMobile />
         ) : (
@@ -204,6 +213,7 @@ export const ModulesVerifyBody = observer(
 
 export const ModulesVerify = () => {
   useMoveConfig({ shouldRedirect: true });
+  useIsApiChain({ shouldRedirect: true });
   const { data: moveVerifyConfig, isLoading } = useMoveVerifyConfig();
 
   if (isLoading) return <Loading />;

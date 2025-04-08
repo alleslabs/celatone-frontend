@@ -32,7 +32,7 @@ const handleFilterOption = (
   return true;
 };
 
-export const SelectInput = <
+export const SelectInputBody = <
   OptionValue extends SelectInputOptionValue,
   IsMulti extends boolean = false,
 >({
@@ -54,13 +54,84 @@ export const SelectInput = <
   onFocus,
   autoFocus,
   classNamePrefix,
+  isDisabled,
+}: SelectInputProps<OptionValue, IsMulti>) => (
+  <Select<SelectInputOption<OptionValue>, IsMulti>
+    menuPosition="fixed"
+    menuPortalTarget={menuPortalTarget}
+    placeholder={placeholder}
+    options={options}
+    value={value}
+    isDisabled={isDisabled}
+    onChange={onChange}
+    size={size}
+    filterOption={handleFilterOption}
+    formatOptionLabel={formatOptionLabel}
+    components={components}
+    isSearchable={isSearchable}
+    chakraStyles={{
+      container: (provided: SystemStyleObject) => ({
+        ...provided,
+        width: "100%",
+      }),
+      valueContainer: (provided: SystemStyleObject) => ({
+        ...provided,
+        pl: 3,
+        pr: 0,
+      }),
+      dropdownIndicator: (provided: SystemStyleObject) => ({
+        ...provided,
+        px: 2,
+        color: "gray.600",
+      }),
+      placeholder: (provided: SystemStyleObject) => ({
+        ...provided,
+        color: "gray.500",
+        fontSize: "14px",
+        whiteSpace: "nowrap",
+      }),
+      option: (provided) => ({
+        ...provided,
+        color: "text.main",
+        fontSize: size === "sm" ? "14px" : "16px",
+        _hover: {
+          bg: "gray.700",
+        },
+        _selected: {
+          bg: "gray.800",
+        },
+      }),
+      ...chakraStyles,
+    }}
+    styles={{
+      menuPortal: (provided) => ({
+        ...provided,
+        zIndex: 2,
+      }),
+    }}
+    inputId={inputId}
+    name={name}
+    isMulti={isMulti}
+    closeMenuOnSelect={closeMenuOnSelect}
+    onBlur={onBlur}
+    onFocus={onFocus}
+    autoFocus={autoFocus}
+    classNamePrefix={classNamePrefix}
+  />
+);
+
+export const SelectInput = <
+  OptionValue extends SelectInputOptionValue,
+  IsMulti extends boolean = false,
+>({
   label,
   isRequired,
   isDisabled,
   labelBg = "background.main",
-}: SelectInputProps<OptionValue, IsMulti>) => (
-  <Stack position="relative">
-    {label && (
+  ...options
+}: SelectInputProps<OptionValue, IsMulti>) =>
+  label ? (
+    <Stack position="relative">
       <Text
         className="form-label"
         sx={{
@@ -83,68 +154,8 @@ export const SelectInput = <
       >
         {label}
       </Text>
-    )}
-    <Select<SelectInputOption<OptionValue>, IsMulti>
-      autoFocus={autoFocus}
-      chakraStyles={{
-        container: (provided: SystemStyleObject) => ({
-          ...provided,
-          width: "100%",
-        }),
-        valueContainer: (provided: SystemStyleObject) => ({
-          ...provided,
-          pl: 3,
-          pr: 0,
-        }),
-        dropdownIndicator: (provided: SystemStyleObject) => ({
-          ...provided,
-          px: 2,
-          color: "gray.600",
-        }),
-        placeholder: (provided: SystemStyleObject) => ({
-          ...provided,
-          color: "gray.500",
-          fontSize: "14px",
-          whiteSpace: "nowrap",
-        }),
-        option: (provided) => ({
-          ...provided,
-          color: "text.main",
-          fontSize: size === "sm" ? "14px" : "16px",
-          _hover: {
-            bg: "gray.700",
-          },
-          _selected: {
-            bg: "gray.800",
-          },
-        }),
-        ...chakraStyles,
-      }}
-      classNamePrefix={classNamePrefix}
-      closeMenuOnSelect={closeMenuOnSelect}
-      components={components}
-      filterOption={handleFilterOption}
-      formatOptionLabel={formatOptionLabel}
-      inputId={inputId}
-      isDisabled={isDisabled}
-      isMulti={isMulti}
-      isSearchable={isSearchable}
-      menuPortalTarget={menuPortalTarget}
-      menuPosition="fixed"
-      name={name}
-      options={options}
-      placeholder={placeholder}
-      size={size}
-      styles={{
-        menuPortal: (provided) => ({
-          ...provided,
-          zIndex: 2,
-        }),
-      }}
-      value={value}
-      onBlur={onBlur}
-      onChange={onChange}
-      onFocus={onFocus}
-    />
-  </Stack>
-);
+      <SelectInputBody {...options} />
+    </Stack>
+  ) : (
+    <SelectInputBody {...options} />
+  );

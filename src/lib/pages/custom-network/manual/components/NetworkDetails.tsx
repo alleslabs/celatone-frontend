@@ -29,12 +29,12 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
   });
 
   return (
-    <Flex alignItems="center" direction="column" gap={2}>
-      <CustomNetworkPageHeader title="Add Network Details" />
-      <Flex direction="column" gap={6} mt={8} w="full">
+    <Flex direction="column" gap={2} alignItems="center">
+      <CustomNetworkPageHeader title="Add network details" />
+      <Flex w="full" direction="column" gap={6} mt={8}>
         <CustomNetworkSubheader
-          subtitle="Choose supported VM for the custom Rollup"
-          title="VM Type"
+          title="VM"
+          subtitle="Choose supported VM for the custom rollup"
         />
         <RadioGroup
           value={vm.type}
@@ -94,14 +94,15 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
       </Flex>
       <Flex direction="column" gap={6} mt={8} w="full">
         <CustomNetworkSubheader
+          title="Network details"
           subtitle="Enter the Rollup’s general information and gather data touch points"
           title="Network Details"
         />
         <ControllerInput
           control={control}
-          error={errors.prettyName?.message}
-          label="Rollup Name"
-          name="prettyName"
+          label="Rollup name"
+          variant="fixed-floating"
+          w="full"
           placeholder="ex. Jennie"
           rules={{
             required: "",
@@ -136,13 +137,19 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
         <Flex gap={6}>
           <ControllerInput
             control={control}
-            error={errors.chainId?.message}
-            label="Rollup Chain ID"
-            name="chainId"
+            label="Rollup chain ID"
+            variant="fixed-floating"
+            w="full"
             placeholder="ex. jennie-init-1"
             rules={{
               required: "",
             }}
+            error={errors.chainId?.message}
+          />
+          <ControllerInput
+            name="registryChainName"
+            control={control}
+            label="Registry chain name"
             variant="fixed-floating"
             w="full"
           />

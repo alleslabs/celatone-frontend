@@ -19,7 +19,7 @@ export const CodeVerificationSection = ({
   <Flex direction="column" gap={4} my={8}>
     <Flex alignItems="center" gap={2}>
       <Heading as="h6" variant="h6">
-        Verification Info
+        Verification info
       </Heading>
       <WasmVerifyBadge
         hasText

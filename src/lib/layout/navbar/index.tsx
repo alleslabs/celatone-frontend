@@ -5,6 +5,7 @@ import { Flex } from "@chakra-ui/react";
 import {
   useCurrentChain,
   useEvmConfig,
+  useIsApiChain,
   useMoveConfig,
   usePublicProjectConfig,
   useTierConfig,
@@ -39,6 +40,7 @@ interface NavbarProps {
 const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
   const { address } = useCurrentChain();
   const { isFullTier, isSequencerTier } = useTierConfig();
+  const isApiChain = useIsApiChain({ shouldRedirect: false });
   const wasm = useWasmConfig({ shouldRedirect: false });
   const move = useMoveConfig({ shouldRedirect: false });
   const evm = useEvmConfig({ shouldRedirect: false });
@@ -51,7 +53,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     isFullTier || isSequencerTier
       ? [
           {
-            category: "Your Account",
+            category: "Your account",
             slug: "your-account",
             submenu: [...getYourAccountSubmenu(address)],
           },
@@ -64,7 +66,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
           ...(wasm.enabled || move.enabled || evm.enabled
             ? [
                 {
-                  category: "Developer Tools",
+                  category: "Developer tools",
                   slug: StorageKeys.DevSidebar,
                   submenu: [
                     ...getDevSubmenuMove(move.enabled),
@@ -74,14 +76,14 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                     ...getWalletSubSectionMove(move.enabled),
                     ...getWalletSubSectionWasm(wasm.enabled, isFullTier),
                     {
-                      category: "This Device",
+                      category: "This device",
                       submenu: [
                         {
-                          name: "Saved Accounts",
+                          name: "Saved accounts",
                           slug: "/saved-accounts",
                           icon: "admin" as IconKeys,
                         },
-                        ...getDeviceSubmenuMove(move.enabled),
+                        ...getDeviceSubmenuMove(move.enabled && isApiChain),
                         ...getDeviceSubmenuWasm(wasm.enabled),
                       ],
                     },
@@ -92,7 +94,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
         ]
       : [
           {
-            category: "Your Account",
+            category: "Your account",
             slug: "your-account",
             submenu: [
               ...getYourAccountSubmenu(address),
@@ -108,7 +110,7 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
           ...(move.enabled || wasm.enabled
             ? [
                 {
-                  category: "Developer Tools",
+                  category: "Developer tools",
                   slug: StorageKeys.DevSidebar,
                   submenu: [
                     ...getDevSubmenuMove(move.enabled),
@@ -116,10 +118,10 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                   ],
                   subSection: [
                     {
-                      category: "This Device",
+                      category: "This device",
                       submenu: [
                         {
-                          name: "Saved Accounts",
+                          name: "Saved accounts",
                           slug: "/saved-accounts",
                           icon: "admin" as IconKeys,
                         },

@@ -46,7 +46,7 @@ export const CodeSchemaTabs = ({
   return (
     <Tabs mt={6} orientation="vertical" variant="unstyled">
       <TabList>
-        <StyledCustomTab>Full Schema</StyledCustomTab>
+        <StyledCustomTab>Full schema</StyledCustomTab>
         {SchemaMsgTabList.map((schemaProperty) => (
           <StyledCustomTab key={schemaProperty}>
             {capitalize(schemaProperty)}Msg

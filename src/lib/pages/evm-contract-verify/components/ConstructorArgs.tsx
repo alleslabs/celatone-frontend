@@ -50,6 +50,11 @@ export const ConstructorArgs = <T extends FieldValues>({
         <ControllerTextarea
           backgroundColor="gray.900"
           control={control}
+          isRequired
+          label="Constructor arguments"
+          placeholder="ex.000000000000000000000000c005dc82818d67af737725bd4bf75435d065d239"
+          variant="fixed-floating"
+          labelBgColor="gray.900"
           error={
             constructorArgsValue === ""
               ? "Invalid constructor arguments"

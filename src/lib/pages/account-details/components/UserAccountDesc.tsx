@@ -19,7 +19,7 @@ export const UserAccountDesc = observer(
     const [showMore, setShowMore] = useState(false);
     const description = accountLocalInfo?.description;
     const [ref, { noClamp, clampedText, key }] = useClampText({
-      text: description || "No Contract description",
+      text: description || "No contract description",
       ellipsis: "...",
       lines: publicAccount ? 4 : 2,
     });
@@ -35,7 +35,7 @@ export const UserAccountDesc = observer(
               size="xs"
               variant="ghost-primary"
             >
-              {description ? "Edit" : "Add Description"}
+              {description ? "Edit" : "Add description"}
             </Button>
           }
         />
@@ -44,7 +44,7 @@ export const UserAccountDesc = observer(
 
     const displayDescription = useMemo(() => {
       if (!description) {
-        return "No Account Description";
+        return "No account description";
       }
       return showMore ? description : clampedText;
     }, [clampedText, description, showMore]);
@@ -60,9 +60,9 @@ export const UserAccountDesc = observer(
         p={4}
         role="group"
       >
-        <Flex align="center" h="32px" justify="space-between">
-          <Text color="text.dark" fontWeight={500} variant="body2">
-            Your Account Description
+        <Flex justify="space-between" align="center" h="32px">
+          <Text variant="body2" fontWeight={500} color="text.dark">
+            Your account description
           </Text>
           <Box _groupHover={{ display: "flex" }} display="none">
             {renderEditAccountButton()}
@@ -79,6 +79,9 @@ export const UserAccountDesc = observer(
 
         {!noClamp && description && (
           <ShowMoreButton
+            showMoreText="View full description"
+            showLessText="View less description"
+            toggleShowMore={showMore}
             setToggleShowMore={() => setShowMore(!showMore)}
             showLessText="View Less Description"
             showMoreText="View Full Description"

@@ -30,8 +30,8 @@ export const NetworkErrorState = () => {
           src={FALLBACK_THEME.illustration.searchNotFound}
           width="152px"
         />
-        <Heading as="h5" color="text.dark" mb={1} mt={6} variant="h5">
-          Network Error
+        <Heading as="h5" variant="h5" mt={6} mb={1} color="text.dark">
+          Network error
         </Heading>
         <Text color="text.dark" fontWeight={500} variant="body2">
           The network you chose is currently unavailable. Here are a few

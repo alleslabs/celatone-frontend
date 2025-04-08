@@ -28,13 +28,13 @@ export const ProposalsTableHeader = ({
         left={columnsWidth && columnsWidth[0]}
       >
         <Text color="text.main" px={4}>
-          Proposal Title/Types
+          Proposal title/types
         </Text>
       </TableHeaderFreeze>
       <TableHeader textAlign="center">Status</TableHeader>
       <TableHeader>Voting ends</TableHeader>
-      {isFullTier && <TableHeader>Resolved Block Height</TableHeader>}
-      <TableHeader>Proposed By</TableHeader>
+      {isFullTier && <TableHeader>Resolved block height</TableHeader>}
+      <TableHeader>Proposed by</TableHeader>
     </Grid>
   );
 };

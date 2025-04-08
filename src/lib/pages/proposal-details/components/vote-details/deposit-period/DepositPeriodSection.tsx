@@ -72,7 +72,7 @@ export const DepositPeriodSection = ({
                 variant="body2"
                 whiteSpace="nowrap"
               >
-                Total Deposited
+                Total deposited
               </Text>
               <TooltipInfo
                 h="full"

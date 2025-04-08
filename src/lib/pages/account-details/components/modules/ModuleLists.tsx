@@ -38,6 +38,9 @@ export const ModuleLists = ({
         />
       ) : (
         <AccountSectionWrapper
+          title="Module instances"
+          showCount={false}
+          helperText="This account deployed the following modules"
           hasHelperText={!!modules?.length}
           helperText="This account deployed the following modules"
           showCount={false}
@@ -51,10 +54,7 @@ export const ModuleLists = ({
           >
             {!onViewMore && (
               <InputWithIcon
-                amptrackSection="account-detail-module-name-search"
-                my={4}
-                placeholder="Search with Module Name"
-                size={{ base: "md", md: "lg" }}
+                placeholder="Search with module name"
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
               />

@@ -66,7 +66,7 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
               }}
               variant="h6"
             >
-              {name.length ? name : "Untitled Collection"}
+              {name.length ? name : "Untitled collection"}
             </Heading>
             {description && (
               <Text
@@ -102,7 +102,7 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
             </Flex>
             <Flex direction="column" flex={1} minW="fit-content">
               <Text color="text.dark" variant="body2">
-                Collection Address
+                Collection address
               </Text>
               <ExplorerLink
                 ampCopierSection="collection-list"

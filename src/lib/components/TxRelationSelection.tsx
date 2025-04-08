@@ -18,12 +18,12 @@ const relationOptions = [
     disabled: false,
   },
   {
-    label: "Signing Address",
+    label: "Signing address",
     value: RelationType.SIGNING,
     disabled: false,
   },
   {
-    label: "Related Address",
+    label: "Related address",
     value: RelationType.RELATED,
     disabled: false,
   },
@@ -56,8 +56,8 @@ export const TxRelationSelection = ({
   return (
     <Box {...props}>
       <SelectInputBase
-        formLabel="Filter by Relation"
-        initialSelected={initialValue}
+        formLabel="Filter by relation"
+        size={size}
         options={relationOptions}
         size={size}
         onChange={(newValue: RelationType) =>

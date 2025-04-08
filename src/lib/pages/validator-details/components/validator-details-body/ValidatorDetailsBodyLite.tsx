@@ -71,7 +71,7 @@ export const ValidatorDetailsBodyLite = ({
           pageName={
             foundValidator.moniker
               ? `${foundValidator.moniker} (Validator)`
-              : "Validator Detail"
+              : "Validator detail"
           }
         />
         <ValidatorTop

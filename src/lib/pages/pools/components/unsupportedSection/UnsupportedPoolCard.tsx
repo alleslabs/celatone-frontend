@@ -152,6 +152,9 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                           asset.symbol ? "supported_asset" : "unsupported_asset"
                         }
                         value={asset.denom}
+                        copyLabel="Token ID copied!"
+                        display="none"
+                        ml="1px"
                       />
                     </Flex>
                   ))}

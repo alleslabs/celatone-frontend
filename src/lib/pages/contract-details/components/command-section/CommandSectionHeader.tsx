@@ -71,7 +71,7 @@ export const CommandSectionHeader = observer(
                 color="gray.600"
                 name="check-circle-solid"
               />
-              <Text variant="body3">Attached Schema to Code ID {codeId}</Text>
+              <Text variant="body3">Attached schema to code ID {codeId}</Text>
             </Tag>
             <ViewSchemaModal codeId={codeId} isIcon schema={localSchema} />
             <EditSchemaButtons
@@ -82,7 +82,7 @@ export const CommandSectionHeader = observer(
           </Flex>
         ) : (
           <Tooltip
-            label={`Attached the JSON Schema for code ${codeId}.`}
+            label={`Attached the JSON schema for code ${codeId}.`}
             minW="330px"
             textAlign="center"
           >
@@ -92,7 +92,7 @@ export const CommandSectionHeader = observer(
               variant="outline-gray"
               onClick={onOpen}
             >
-              Attach JSON Schema
+              Attach JSON schema
             </Button>
           </Tooltip>
         )}

@@ -19,8 +19,8 @@ export const AccountNameCell = ({ accountLocalInfo }: AccountNameCellProps) => {
   });
   return (
     <EditableCell
-      defaultValue="Untitled Name"
       initialValue={accountLocalInfo.name}
+      defaultValue="Untitled name"
       maxLength={constants.maxAccountNameLength}
       onSave={onSave}
     />

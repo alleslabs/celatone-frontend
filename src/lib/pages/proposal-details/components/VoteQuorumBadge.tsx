@@ -30,7 +30,8 @@ export const VoteQuorumBadge = ({
       <ProgressBadge
         bgColor="gray.700"
         state={PeriodState.COMPLETE}
-        text="Quorum Reached"
+        text="Quorum reached"
+        bgColor="gray.700"
       />
     );
 
@@ -41,7 +42,8 @@ export const VoteQuorumBadge = ({
       <ProgressBadge
         bgColor="gray.700"
         state={PeriodState.ONGOING}
-        text="In Progress"
+        text="In progress"
+        bgColor="gray.700"
       />
     );
 
@@ -51,7 +53,8 @@ export const VoteQuorumBadge = ({
     <ProgressBadge
       bgColor="gray.700"
       state={PeriodState.FAILED}
-      text="Quorum Not Reached"
+      text="Quorum not reached"
+      bgColor="gray.700"
     />
   );
 };

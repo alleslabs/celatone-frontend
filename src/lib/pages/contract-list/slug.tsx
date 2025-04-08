@@ -91,12 +91,12 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
         pageName={
           contractListInfo.name
             ? `${contractListInfo.name} ${!isInstantiatedByMe || !isSavedContract ? "" : "(Contract List)"}`
-            : "Contract List Detail"
+            : "Contract list detail"
         }
       />
       <Breadcrumb
         items={[
-          { text: "Contract Lists", href: "/contract-lists" },
+          { text: "Contract lists", href: "/contract-lists" },
           { text: contractListInfo.name },
         ]}
       />
@@ -128,7 +128,7 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
               leftIcon={<CustomIcon boxSize="16px" name="add-new" />}
               onClick={() => navigate({ pathname: "/deploy" })}
             >
-              Deploy New Contract
+              Deploy new contract
             </Button>
           ) : (
             <SaveNewContractModal
@@ -141,6 +141,11 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
               list={{
                 label: contractListInfo.name,
                 value: contractListInfo.slug,
+              }}
+              buttonProps={{
+                variant: "outline-primary",
+                leftIcon: <CustomIcon name="bookmark" boxSize={3} />,
+                children: "Save contract",
               }}
             />
           )}

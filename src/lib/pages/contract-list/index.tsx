@@ -35,9 +35,9 @@ const AllContractListsPage = observer(() => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="Contract Lists" />
-      <Flex alignItems="center" direction="column" gap={8}>
-        <Flex alignItems="center" justifyContent="space-between" w="full">
+      <CelatoneSeo pageName="Contract lists" />
+      <Flex direction="column" alignItems="center" gap={8}>
+        <Flex justifyContent="space-between" w="full" alignItems="center">
           <Heading as="h5" variant="h5">
             Contract lists
           </Heading>

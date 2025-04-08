@@ -99,8 +99,8 @@ export const SelectFunctionSection = ({
       {module ? (
         <>
           {isMobile ? (
-            <Heading as="h6" fontWeight={600} mt={6} variant="h6">
-              Select View Function
+            <Heading as="h6" variant="h6" fontWeight={600} mt={6}>
+              Select view function
             </Heading>
           ) : (
             <Heading as="h6" fontWeight={600} variant="h6">
@@ -108,9 +108,9 @@ export const SelectFunctionSection = ({
             </Heading>
           )}
           <InputWithIcon
-            amptrackSection="module-select-drawer-function-search"
-            my={4}
-            placeholder="Search with Function Name"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            placeholder="Search with function name"
             size="md"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
@@ -130,8 +130,8 @@ export const SelectFunctionSection = ({
             >
               {!isMobile && (
                 <Flex alignItems="center" gap={1}>
-                  <Text color="text.dark" fontWeight={600} variant="body2">
-                    View Functions
+                  <Text variant="body2" fontWeight={600} color="text.dark">
+                    View functions
                   </Text>
                   <CountBadge
                     count={module.viewFunctions.length}
@@ -157,8 +157,8 @@ export const SelectFunctionSection = ({
                 {...functionGridBaseStyle}
               >
                 <Flex alignItems="center" gap={1}>
-                  <Text color="text.dark" fontWeight={600} variant="body2">
-                    Execute Functions
+                  <Text variant="body2" fontWeight={600} color="text.dark">
+                    Execute functions
                   </Text>
                   <CountBadge
                     count={module.executeFunctions.length}

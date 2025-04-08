@@ -159,7 +159,7 @@ export const TxMsgExpand = ({
             type="contract_address"
             value={body.contract as string}
           />{" "}
-          to Code ID{" "}
+          to code ID{" "}
           <ExplorerLink
             ampCopierSection="tx_page_message_header_code"
             showCopyOnHover
@@ -241,8 +241,8 @@ export const TxMsgExpand = ({
     case "/cosmos.gov.v1.MsgSubmitProposal":
       msgIcon = "submit-proposal";
       content = (
-        <Flex display="inline" gap={1}>
-          Submit Proposal {(body.is_expedited as boolean) && " Expedited "}
+        <Flex gap={1} display="inline">
+          Submit proposal {(body.is_expedited as boolean) && " expedited "}
           {log && (
             <>
               ID{" "}

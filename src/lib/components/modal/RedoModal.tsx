@@ -44,10 +44,10 @@ export const RedoModal = ({ message }: RedoModalProps) => {
         <ModalOverlay />
         <ModalContent w="640px">
           <ModalHeader>
-            <Flex alignItems="center" direction="row" gap={2} pt={1} w="full">
-              <CustomIcon boxSize={5} color="gray.600" name="redo" />
-              <Heading as="h5" variant="h5">
-                Redo Instantiate
+            <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
+              <CustomIcon name="redo" boxSize={5} color="gray.600" />
+              <Heading variant="h5" as="h5">
+                Redo instantiate
               </Heading>
             </Flex>
           </ModalHeader>

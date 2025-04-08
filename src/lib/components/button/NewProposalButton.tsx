@@ -29,7 +29,7 @@ export const NewProposalButton = () => {
         variant="primary"
         onClick={() => track(AmpEvent.USE_CREATE_NEW_PROPOSAL)}
       >
-        Create New Proposal
+        Create new proposal
       </MenuButton>
       <MenuList flexDirection="column">
         <Tooltip hidden={!disableStoreCode} label="Coming soon!">
@@ -42,7 +42,7 @@ export const NewProposalButton = () => {
               });
             }}
           >
-            To Store Code
+            To store code
           </MenuItem>
         </Tooltip>
         {/* <MenuItem
@@ -53,7 +53,7 @@ export const NewProposalButton = () => {
             });
           }}
         >
-          To Instantiate Contract
+          To instantiate contract
         </MenuItem> */}
         {/* <Tooltip
           label={
@@ -72,7 +72,7 @@ export const NewProposalButton = () => {
               });
             }}
           >
-            To Whitelist
+            To whitelist
           </MenuItem>
         </Tooltip>
       </MenuList>

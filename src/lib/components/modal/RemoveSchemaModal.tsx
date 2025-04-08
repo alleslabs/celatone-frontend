@@ -27,7 +27,7 @@ export function RemoveSchemaModal({
 
     setTimeout(() => {
       toast({
-        title: `Removed JSON Schema`,
+        title: `Removed JSON schema`,
         status: "success",
         duration: 5000,
         isClosable: false,
@@ -39,14 +39,14 @@ export function RemoveSchemaModal({
 
   return (
     <ActionModal
+      title={`Removed JSON schema for code '${codeId}'?`}
       icon="delete"
       iconColor="error.light"
-      mainAction={handleRemove}
-      mainBtnTitle="Yes, Remove JSON Schema"
-      mainVariant="error"
-      otherBtnTitle="No, Keep It"
-      title={`Removed JSON Schema for code '${codeId}'?`}
       trigger={trigger}
+      mainBtnTitle="Yes, remove JSON schema"
+      mainVariant="error"
+      mainAction={handleRemove}
+      otherBtnTitle="No, keep it"
     >
       <Text>
         This action will remove JSON schema for code `{codeId}` and other codes

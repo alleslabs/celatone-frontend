@@ -50,6 +50,9 @@ export const CoinsComponent = ({ coins }: CoinsComponentProps) => {
       <Flex gap={2} mt={hasSupportedTokens ? 2 : 0}>
         {supportedTokens.length > 2 && (
           <ShowMoreButton
+            showMoreText="View all assets"
+            showLessText="View less assets"
+            toggleShowMore={showMore}
             setToggleShowMore={() => {
               trackUseExpand({
                 action: showMore ? "collapse" : "expand",

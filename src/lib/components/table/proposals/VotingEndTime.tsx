@@ -41,7 +41,7 @@ export const VotingEndTime = ({
       <Text variant={{ base: "body3", md: "body2" }}>
         (
         {isDepositPeriod
-          ? `Deposit Period ends ${dateFromNow(depositEndTime)}`
+          ? `Deposit period ends ${dateFromNow(depositEndTime)}`
           : dateFromNow(votingEndTime)}
         )
       </Text>

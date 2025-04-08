@@ -61,7 +61,9 @@ export const NftsSectionSequencer = ({
           w={{ base: "100%", md: "35%", lg: "25%" }}
         >
           <FilterItem
-            collectionName="All Collections"
+            collectionName="All collections"
+            onClick={() => handleOnClick(undefined)}
+            isActive={selectedCollection === undefined}
             count={totalData}
             isActive={selectedCollection === undefined}
             isDefault

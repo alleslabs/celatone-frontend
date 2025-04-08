@@ -181,9 +181,9 @@ export const ExecuteArea = ({
           moduleName={moduleName}
           type="execute"
         />
-        <Flex align="center" direction="row" gap={2}>
-          <Flex alignItems="center" color="text.dark" fontSize="14px">
-            Transaction Fee:{" "}
+        <Flex direction="row" align="center" gap={2}>
+          <Flex fontSize="14px" color="text.dark" alignItems="center">
+            Transaction fee:{" "}
             <EstimatedFeeRender estimatedFee={fee} loading={isFetching} />
           </Flex>
           <SubmitButton

@@ -36,8 +36,8 @@ export const DelegationRelatedTxsTableMobileCard = ({
       <Flex flexDirection="column" gap={2} w="100%">
         <Grid gap={2} templateColumns="1fr 1fr">
           <GridItem>
-            <Text color="text.dark" fontWeight={600} variant="body3">
-              Transaction Hash
+            <Text variant="body3" color="text.dark" fontWeight={600}>
+              Transaction hash
             </Text>
             <ExplorerLink
               showCopyOnHover
@@ -72,8 +72,8 @@ export const DelegationRelatedTxsTableMobileCard = ({
           </Text>
         </Box>
         <Box>
-          <Text color="text.dark" fontWeight={600} variant="body3">
-            Bonded Token Changes
+          <Text variant="body3" color="text.dark" fontWeight={600}>
+            Bonded token changes
           </Text>
           {delegationRelatedTx.tokens.map((coin) => (
             <DelegationRelatedTxsTokenChange

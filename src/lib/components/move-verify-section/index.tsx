@@ -1,4 +1,6 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
+
+import { useIsApiChain } from "lib/app-provider";
 import { MoveVerifyStatus } from "lib/types";
 
 import { NotVerifiedDetails } from "./NotVerifiedDetails";
@@ -10,6 +12,16 @@ interface MoveVerifySectionProps {
 }
 
 const MoveVerifySectionBody = ({ status }: MoveVerifySectionProps) => {
+  const isApiChain = useIsApiChain({
+    shouldRedirect: false,
+  });
+  if (!isApiChain)
+    return (
+      <Text variant="body2" color="text.dark">
+        Module verification is only available on official networks
+      </Text>
+    );
+
   if (status === MoveVerifyStatus.Verified) {
     return <VerifiedDetails />;
   }

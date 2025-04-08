@@ -19,7 +19,7 @@ import { StateList } from "./StateList";
 import { StateLoader } from "./StateLoader";
 
 const getDisplayName = (namespace: string) => {
-  if (namespace === "all") return "All Contract States";
+  if (namespace === "all") return "All contract states";
   if (namespace === "others") return "Others";
 
   return namespace;
@@ -92,7 +92,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
     <Flex direction="column" gap={8}>
       <Flex direction="column" gap={6}>
         <Heading as="h6" variant="h6">
-          Contract States
+          Contract states
         </Heading>
         <StateLoader
           isCompleted={!hasNextPage}
@@ -159,9 +159,7 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
 
       {/* Searchbar */}
       <InputWithIcon
-        amptrackSection="contract-states-search"
-        placeholder="Search by Key"
-        size={{ base: "md", md: "lg" }}
+        placeholder="Search by key"
         value={keyword}
         onChange={(e) => {
           const newVal = e.target.value;

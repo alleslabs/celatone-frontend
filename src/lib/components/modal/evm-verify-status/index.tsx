@@ -42,10 +42,10 @@ export const EvmVerifyStatusModal = ({
     <ModalOverlay />
     <ModalContent bg="gray.800" maxW="100vw" w={{ base: "full", md: "645px" }}>
       <ModalHeader pb={0}>
-        <Flex alignItems="center" direction="row" gap={2} w="full">
-          <CustomIcon boxSize={6} color="gray.600" name="verification-solid" />
-          <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
-            Contract Verification Status
+        <Flex w="full" direction="row" alignItems="center" gap={2}>
+          <CustomIcon name="verification-solid" boxSize={6} color="gray.600" />
+          <Heading variant={{ base: "h6", md: "h5" }} as="h5">
+            Contract verification status
           </Heading>
         </Flex>
       </ModalHeader>

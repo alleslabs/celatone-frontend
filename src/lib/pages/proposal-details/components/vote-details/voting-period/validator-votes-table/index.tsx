@@ -207,6 +207,12 @@ export const ValidatorVotesTable = ({
         >
           <GridItem>
             <SelectInputBase<ProposalVoteType>
+              formLabel="Filter by answer"
+              options={answerOptions}
+              onChange={handleOnAnswerFilterChange}
+              labelBgColor="gray.900"
+              initialSelected={answerFilter}
+              popoverBgColor="gray.800"
               disableMaxH
               formLabel="Filter by Answer"
               initialSelected={answerFilter}

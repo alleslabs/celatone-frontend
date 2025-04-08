@@ -16,7 +16,7 @@ export const sendingEvmTx = ({
       phase: TxStreamPhase.BROADCAST,
       receipts: [
         {
-          title: "Estimated Tx Fee",
+          title: "Estimated tx fee",
           html: (
             <EstimatedFeeEvmRender
               gasPrice={gasPrice}
@@ -27,7 +27,7 @@ export const sendingEvmTx = ({
         },
       ],
       receiptInfo: {
-        header: "Sending Transaction",
+        header: "Sending transaction",
         headerIcon: <Spinner size="md" />,
       },
       actionVariant: "sending",

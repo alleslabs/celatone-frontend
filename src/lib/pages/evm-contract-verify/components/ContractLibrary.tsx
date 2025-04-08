@@ -23,24 +23,14 @@ export const ContractLibrary = <T extends FieldValues>({
   return (
     <>
       <ControllerInput
-        control={control}
-        error={field.value.name !== "" ? "" : "Required"}
-        label="Library Name"
-        labelBgColor="gray.900"
-        name={`${name}.name` as FieldPath<T>}
-        placeholder="ex. simple_math"
+        label="Library name"
         rules={{
           required: "",
         }}
         variant="fixed-floating"
       />
       <ControllerInput
-        control={control}
-        error={field.value.address !== "" ? "" : "Required"}
-        label="Contract Library Address"
-        labelBgColor="gray.900"
-        name={`${name}.address` as FieldPath<T>}
-        placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
+        label="Contract library address"
         rules={{
           required: "",
         }}

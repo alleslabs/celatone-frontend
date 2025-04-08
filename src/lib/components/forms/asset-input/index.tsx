@@ -51,6 +51,20 @@ export const AssetInput = ({
     >
       <Text className="form-label">Asset</Text>
       <SelectInput<AssetOptionValue>
+        placeholder="Select asset"
+        options={assetOptions}
+        menuPortalTarget={document.body}
+        value={value}
+        onChange={(newValue) => {
+          if (!newValue) return;
+          setCurrencyValue(newValue.value.id);
+        }}
+        formatOptionLabel={AssetInputFormatOptionLabel}
+        components={{
+          Option: AssetInputOption,
+          MenuList: AssetInputMenuList,
+          NoOptionsMessage: AssetInputNoOptionsMessage,
+        }}
         chakraStyles={{
           menu: (provided: SystemStyleObject) => ({
             ...provided,

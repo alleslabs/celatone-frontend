@@ -23,7 +23,7 @@ export const getProgressBadgeProps = (
       return { state: PeriodState.FAILED, text: "Cancelled" };
 
     if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
-      return { state: PeriodState.ONGOING, text: "In Progress" };
+      return { state: PeriodState.ONGOING, text: "In progress" };
 
     return { state: PeriodState.COMPLETE, text: "Completed" };
   }
@@ -39,7 +39,7 @@ export const getProgressBadgeProps = (
     return { state: PeriodState.FAILED, text: "Cancelled" };
 
   if (proposalData.status === ProposalStatus.VOTING_PERIOD)
-    return { state: PeriodState.ONGOING, text: "In Progress" };
+    return { state: PeriodState.ONGOING, text: "In progress" };
 
   return { state: PeriodState.COMPLETE, text: "Ended" };
 };

@@ -13,6 +13,7 @@ export const UnsupportedAssetTitle = ({
 }: UnsupportedAssetTitleProps) => (
   <Flex py={1} w="full">
     <TableTitle
+      title="Unsupported assets"
       count={unsupportedAssets.length}
       isSmall
       mb={0}

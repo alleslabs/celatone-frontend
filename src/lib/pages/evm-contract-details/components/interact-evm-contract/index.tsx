@@ -106,8 +106,8 @@ export const InteractEvmContract = ({
 
   return (
     <Box>
-      <Flex align="center" gap={2} mb={8}>
-        <Heading variant="h6">Contract Interactions</Heading>
+      <Flex gap={2} align="center" mb={8}>
+        <Heading variant="h6">Contract interactions</Heading>
         {!isMobile && (
           <TypeSwitch
             currentTab={interactType}

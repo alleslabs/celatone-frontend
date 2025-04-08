@@ -75,6 +75,7 @@ export const EvmEventBox = ({ log, evmVerifyInfo }: EvmEventBoxProps) => {
       >
         <Stack>
           <LabelText
+            label="Log index"
             flexDirection={{ base: "column", md: "row" }}
             gap={{ base: 1, md: 4 }}
             label="Log Index"
@@ -83,6 +84,7 @@ export const EvmEventBox = ({ log, evmVerifyInfo }: EvmEventBoxProps) => {
             {log.logIndex.toString()}
           </LabelText>
           <LabelText
+            label="Contract address"
             flexDirection={{ base: "column", md: "row" }}
             gap={{ base: 1, md: 4 }}
             label="Contract Address"

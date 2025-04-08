@@ -75,8 +75,8 @@ export const Attributes = ({
           onClick={onOpen}
         >
           <Flex align="center" gap="7px">
-            <Text color="text.dark">View More</Text>
-            <CustomIcon color="text.dark" name="chevron-down" />
+            <Text color="text.dark">View more</Text>
+            <CustomIcon name="chevron-down" color="text.dark" />
           </Flex>
         </Button>
       )}

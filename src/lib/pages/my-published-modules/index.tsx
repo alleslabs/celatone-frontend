@@ -21,11 +21,11 @@ export const MyPublishedModules = () => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="My Published Modules" />
-      <Flex alignItems="center" justifyContent="space-between" mb={4}>
+      <CelatoneSeo pageName="My published modules" />
+      <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Flex direction="column">
-          <Heading as="h5" minH="36px" variant="h5">
-            My Published Modules
+          <Heading as="h5" variant="h5" minH="36px">
+            My published modules
           </Heading>
           <Text color="text.dark" fontWeight={500} variant="body2">
             This page displays all the modules published by me on this network
@@ -43,7 +43,7 @@ export const MyPublishedModules = () => {
             });
           }}
         >
-          Publish New Modules
+          Publish new modules
         </Button>
       </Flex>
       <MyPublishedModulesTable />

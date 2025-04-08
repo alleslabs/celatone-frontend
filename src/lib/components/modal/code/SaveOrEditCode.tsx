@@ -23,7 +23,7 @@ export const SaveOrEditCodeModal = observer(
             size={{ base: "sm", md: "md" }}
             variant="outline-gray"
           >
-            Save Code
+            Save code
           </Button>
         }
       />

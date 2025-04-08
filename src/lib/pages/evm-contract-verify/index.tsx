@@ -246,11 +246,15 @@ export const EvmContractVerifyBody = ({
                 <Grid columnGap="32px" rowGap="24px" templateColumns="6fr 4fr">
                   <GridItem colSpan={2}>
                     <Heading as="h6" variant="h6">
-                      Contract Address & License
+                      Contract address & license
                     </Heading>
                   </GridItem>
                   <GridItem colSpan={1}>
                     <ControllerInput
+                      label="Contract address"
+                      isRequired
+                      placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
+                      name="contractAddress"
                       control={control}
                       error={
                         evmVerifyInfo?.isVerified
@@ -274,8 +278,7 @@ export const EvmContractVerifyBody = ({
                   </GridItem>
                   <GridItem colSpan={1} colStart={1}>
                     <SelectInput
-                      isRequired
-                      label="License Type"
+                      label="License type"
                       menuPortalTarget={document.body}
                       options={licenseTypeOptions}
                       placeholder="Select license type"
@@ -297,7 +300,7 @@ export const EvmContractVerifyBody = ({
                 <Stack spacing={6}>
                   <Stack spacing={1}>
                     <Heading as="h6" variant="h6">
-                      Verification Method
+                      Verification method
                     </Heading>
                     <Text color="text.dark" variant="body2">
                       Please ensure the setting is the matching with the created
@@ -328,7 +331,7 @@ export const EvmContractVerifyBody = ({
                       }}
                     />
                     <SelectInput
-                      isDisabled={!language}
+                      label="Compiler version"
                       isRequired
                       label="Compiler Version"
                       menuPortalTarget={document.body}
@@ -377,7 +380,7 @@ export const EvmContractVerifyBody = ({
             actionLabel={
               option === EvmVerifyOptions.SolidityHardhat ||
               option === EvmVerifyOptions.SolidityFoundry
-                ? "View Verification Status"
+                ? "View verification status"
                 : "Verify & Publish Contract"
             }
             handleNext={handleSubmit}

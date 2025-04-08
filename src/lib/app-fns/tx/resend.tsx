@@ -44,7 +44,7 @@ export const resendTx = ({
         phase: TxStreamPhase.SUCCEED,
         receipts: [
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             value: txInfo.transactionHash,
             html: (
               <ExplorerLink
@@ -55,7 +55,7 @@ export const resendTx = ({
             ),
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
@@ -65,7 +65,7 @@ export const resendTx = ({
           },
         ],
         receiptInfo: {
-          header: "Transaction Complete!",
+          header: "Transaction complete!",
           description: (
             <Text fontWeight={700}>
               Your transaction was successfully resent.

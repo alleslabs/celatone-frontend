@@ -130,10 +130,10 @@ const InteractContractBody = ({
   const localSchema = codeHash ? getSchemaByCodeHash(codeHash) : undefined;
   return (
     <PageContainer>
-      <CelatoneSeo pageName="Query / Execute Contract" />
-      <Flex align="center" justify="space-between" mb={8} mt={1} w="full">
-        <Heading alignSelf="flex-start" as="h5" variant="h5">
-          {isMobile ? "Query" : "Contract Interactions"}
+      <CelatoneSeo pageName="Query / Execute contract" />
+      <Flex align="center" justify="space-between" w="full" mt={1} mb={8}>
+        <Heading variant="h5" as="h5" alignSelf="flex-start">
+          {isMobile ? "Query" : "Contract interactions"}
         </Heading>
         <UserDocsLink href="cosmwasm/query-execute" isButton isDevTool />
       </Flex>

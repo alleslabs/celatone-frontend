@@ -94,6 +94,9 @@ export const UnsupportedToken = ({
             ml={{ base: 1, md: 0 }}
             type="unsupported_asset"
             value={token.denom}
+            copyLabel="Token ID copied!"
+            ml={{ base: 1, md: 0 }}
+            amptrackSection="unsupported_token_copy"
           />
         </Flex>
       </Flex>

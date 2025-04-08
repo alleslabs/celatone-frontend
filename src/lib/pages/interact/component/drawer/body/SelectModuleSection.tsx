@@ -79,8 +79,9 @@ export const SelectModuleSection = ({
   return (
     <>
       <InputWithIcon
-        amptrackSection="module-select-drawer-module-search"
-        placeholder="Search with Module Name"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        placeholder="Search with module name"
         size="md"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}

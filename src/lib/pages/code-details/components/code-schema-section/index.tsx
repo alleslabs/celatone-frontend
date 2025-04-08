@@ -30,7 +30,7 @@ export const CodeSchemaSection = ({
     <>
       <Flex alignItems="center" gap={2} mb={3} mt={8}>
         <Heading as="h6" variant="h6">
-          JSON Schema
+          JSON schema
         </Heading>
         {!hasVerifiedSchema && attachedLocalSchema && (
           <EditSchemaButtons
@@ -62,7 +62,8 @@ export const CodeSchemaSection = ({
       {!hasVerifiedSchema && (
         <>
           <UserDocsLink
-            cta="Read more about JSON Schema"
+            title="How to attached and use JSON schema?"
+            cta="Read more about JSON schema"
             href="cosmwasm/codes/attach-json-schema"
             title="How to attached and use JSON Schema?"
           />

@@ -49,7 +49,7 @@ export const requestEvmTx = ({
         phase: TxStreamPhase.SUCCEED,
         receipts: [
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             value: txResult.value.transactionHash,
             html: (
               <ExplorerLink
@@ -60,7 +60,7 @@ export const requestEvmTx = ({
             ),
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             html: (
               <EstimatedFeeEvmRender
                 gasPrice={txResult.value.effectiveGasPrice}
@@ -71,7 +71,7 @@ export const requestEvmTx = ({
           },
         ],
         receiptInfo: {
-          header: "Transaction Complete!",
+          header: "Transaction complete!",
           headerIcon: (
             <CustomIcon
               boxSize={5}

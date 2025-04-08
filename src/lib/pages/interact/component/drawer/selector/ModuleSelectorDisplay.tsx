@@ -64,7 +64,7 @@ export const ModuleSelectorDisplay = ({
       ) : (
         <>
           <Flex flex={1}>
-            <LabelText label="Viewing Address">
+            <LabelText label="Viewing address">
               <CopyLink
                 showCopyOnHover
                 type="user_address"
@@ -87,7 +87,7 @@ export const ModuleSelectorDisplay = ({
             variant="outline-white"
             onClick={() => setMode("input")}
           >
-            Change Address
+            Change address
           </Button>
         </>
       )}

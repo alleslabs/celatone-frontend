@@ -23,7 +23,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
   if (!data)
     return (
       <EmptyState
-        message="Error fetching data from Json RPC. Please try again later."
+        message="Error fetching data from JSON RPC. Please try again later."
         my={3}
         py={1}
       />
@@ -32,7 +32,7 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
   const toAddress = getEvmToAddress(data);
   return (
     <>
-      <EvmRelatedField label={isMobile ? "Tx Hash" : "Transaction Hash"}>
+      <EvmRelatedField label={isMobile ? "Tx hash" : "Transaction hash"}>
         <ExplorerLink
           showCopyOnHover
           type="evm_tx_hash"
@@ -69,7 +69,7 @@ export const EvmRelatedTxSection = ({
 }: EvmRelatedTxSectionProps) => (
   <Flex direction="column" gap={4} mb={8} minW="330px">
     <Heading as="h6" variant="h6">
-      Related EVM Transaction
+      Related EVM transaction
     </Heading>
     <Flex
       border="1px solid var(--chakra-colors-gray-700)"

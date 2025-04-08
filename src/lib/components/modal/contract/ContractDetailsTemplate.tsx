@@ -77,7 +77,7 @@ export const ContractDetailsTemplateModal = ({
   };
 
   const handleSave = useHandleContractSave({
-    title: "Action Complete!",
+    title: "Action complete!",
     contractAddress: contractLocalInfo.contractAddress,
     label: contractLocalInfo.label,
     codeId: contractLocalInfo.codeId,
@@ -95,9 +95,9 @@ export const ContractDetailsTemplateModal = ({
       closeOnOverlayClick={false}
       disabledMain={!!errors.name || !!errors.description}
       headerContent={
-        <Flex alignItems="center" gap={4} pt={6}>
-          <Text color="text.dark" fontWeight={500} variant="body2">
-            Contract Address
+        <Flex gap={4} alignItems="center" pt={6}>
+          <Text variant="body2" fontWeight={500} color="text.dark">
+            Contract address
           </Text>
           <ExplorerLink
             type="contract_address"

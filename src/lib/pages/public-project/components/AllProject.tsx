@@ -94,10 +94,7 @@ export const AllProject = observer(() => {
   return (
     <Box minH="xs" w="100%">
       <InputWithIcon
-        amptrackSection="public-project-search"
-        my={2}
-        placeholder="Search with Project Name"
-        size={{ base: "md", md: "lg" }}
+        placeholder="Search with project name"
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
       />

@@ -33,7 +33,7 @@ export const AccountTitle = ({
     if (accountData?.icns?.primaryName) return accountData?.icns?.primaryName;
     if (isInitia && initiaUsernameData?.username)
       return initiaUsernameData?.username;
-    return "Account Details";
+    return "Account details";
   };
 
   const handleIcon = () => {

@@ -47,8 +47,8 @@ export const InProgressDetails = ({
       codeHash={codeHash}
       relatedVerifiedCodes={relatedVerifiedCodes}
       triggerElement={
-        <Button size="sm" variant="ghost-primary">
-          View Verification Details
+        <Button variant="ghost-primary" size="sm">
+          View verification details
         </Button>
       }
       verificationInfo={verificationInfo}

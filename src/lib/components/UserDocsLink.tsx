@@ -41,7 +41,7 @@ export const UserDocsLink = ({
         size="sm"
         variant="ghost-primary"
       >
-        View Doc
+        View doc
       </Button>
     </Link>
   ) : (

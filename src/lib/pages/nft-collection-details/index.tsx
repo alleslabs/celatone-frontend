@@ -123,7 +123,7 @@ const CollectionDetailsBody = ({
     name.length > 20 ? `${name.slice(0, 20)}...` : name;
 
   const getCollectionName = () => {
-    if (!name.length) return "Untitled Collection";
+    if (!name.length) return "Untitled collection";
     return isMobile ? displayCollectionName : name;
   };
 
@@ -133,12 +133,12 @@ const CollectionDetailsBody = ({
         pageName={
           name.length > 0
             ? `Collection – ${name.length > 20 ? displayCollectionName : name}`
-            : "NFT Collection Detail"
+            : "NFT collection detail"
         }
       />
       <Breadcrumb
         items={[
-          { text: "NFT Collections", href: "/nft-collections" },
+          { text: "NFT collections", href: "/nft-collections" },
           {
             text: getCollectionName(),
           },
@@ -166,7 +166,7 @@ const CollectionDetailsBody = ({
             mb={1}
             variant="h5"
           >
-            {name.length ? name : "Untitled Collection"}
+            {name.length ? name : "Untitled collection"}
           </Heading>
           <Flex
             alignItems={{ base: "start", md: "center" }}
@@ -175,7 +175,7 @@ const CollectionDetailsBody = ({
             mt={{ base: 2, md: 0 }}
           >
             <Text color="text.dark" variant="body2">
-              Collection Address:
+              Collection address:
             </Text>
             <Tooltip label="View as Account Address">
               <ExplorerLink
@@ -193,7 +193,7 @@ const CollectionDetailsBody = ({
               Type:
             </Text>
             <Badge textTransform="capitalize">
-              {isUnlimited ? "Unlimited Supply" : "Fixed Supply"}
+              {isUnlimited ? "Unlimited supply" : "Fixed supply"}
             </Badge>
           </Flex>
         </Flex>
@@ -216,7 +216,7 @@ const CollectionDetailsBody = ({
             });
           }}
         >
-          View Resource
+          View resource
         </Button>
       </Flex>
       <Tabs
@@ -254,7 +254,7 @@ const CollectionDetailsBody = ({
               isDisabled={!mutateEvents?.total}
               onClick={handleTabChange(TabIndex.MutateEvents)}
             >
-              Mutate Events
+              Mutate events
             </CustomTab>
           )}
         </TabList>
@@ -286,7 +286,8 @@ const CollectionDetailsBody = ({
               />
             </Flex>
             <UserDocsLink
-              cta="Read more about NFT Collection"
+              title="What does an NFT collection consist of?"
+              cta="Read more about NFT collection"
               href="move/nfts/collection-detail"
               title="What does an NFT Collection consist of?"
             />

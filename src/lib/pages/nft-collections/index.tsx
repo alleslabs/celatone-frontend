@@ -10,8 +10,10 @@ const NftCollections = () => {
   useNftConfig({ shouldRedirect: true });
   return (
     <PageContainer>
-      <CelatoneSeo pageName="NFT Collections" />
+      <CelatoneSeo pageName="NFT collections" />
       <PageHeader
+        title="NFT collections"
+        subtitle="These are the most recently NFT collections created on this network"
         docHref="move/nfts/collection-list"
         subtitle="These are the most recently NFT collections created on this network"
         title="NFT Collections"

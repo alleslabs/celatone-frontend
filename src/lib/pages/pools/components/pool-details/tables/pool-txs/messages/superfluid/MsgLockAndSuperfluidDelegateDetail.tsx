@@ -79,7 +79,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
           />
         </PoolInfoText>
         <PoolInfoText title="LockID">{lockId}</PoolInfoText>
-        <PoolInfoText title="To Validator">
+        <PoolInfoText title="To validator">
           <ValidatorBadge
             ampCopierSection={ampCopierSection}
             badgeSize={6}

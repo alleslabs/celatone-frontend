@@ -92,9 +92,7 @@ export const ProposalsTableFull = () => {
       <Flex direction="column" gap={{ base: 4, md: 8 }} my={8}>
         <Flex align="center" justify="space-between">
           <InputWithIcon
-            amptrackSection="proposal-list-search"
-            placeholder="Search with Proposal ID or Proposal Title"
-            size="lg"
+            placeholder="Search with proposal ID or proposal title"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -141,17 +139,17 @@ export const ProposalsTableFull = () => {
           pb={3}
         >
           <ProposalStatusFilter
-            isMulti
-            label="Filter by Status"
-            placeholder="All Status"
+            label="Filter by status"
             result={statuses}
             setResult={setStatuses}
+            placeholder="All status"
+            isMulti
           />
           <ProposalTypeFilter
-            label="Filter by Type"
-            placeholder="All Type"
+            label="Filter by type"
             result={types}
             setResult={setTypes}
+            placeholder="All type"
           />
         </Flex>
       </Flex>

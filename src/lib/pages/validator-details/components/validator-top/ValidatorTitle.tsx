@@ -40,7 +40,7 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
           variant="h5"
           wordBreak="break-word"
         >
-          {info.moniker || "Untitled Validator"}
+          {info.moniker || "Untitled validator"}
         </Heading>
         <ValidatorStatusTag info={info} />
       </Flex>
@@ -52,7 +52,7 @@ export const ValidatorTitle = ({ info }: ValidatorTitleProps) => (
         variant="h6"
         wordBreak="break-word"
       >
-        {info.moniker || "Untitled Validator"}
+        {info.moniker || "Untitled validator"}
       </Heading>
       <WebsiteButton
         display={{ base: "none", md: "flex" }}

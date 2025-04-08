@@ -91,9 +91,7 @@ export const ResourceLeftPanel = ({
       pb={{ base: 4, md: 0 }}
     >
       <InputWithIcon
-        amptrackSection="resource-search-with-module-name"
-        placeholder="Search with Module Name"
-        size="md"
+        placeholder="Search with module name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
       />

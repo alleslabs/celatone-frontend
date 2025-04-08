@@ -585,7 +585,7 @@ const StoreCodeProposal = () => {
                     fontSize="14px"
                     gap={1}
                   >
-                    Transaction Fee:{" "}
+                    Transaction fee:{" "}
                     <EstimatedFeeRender
                       estimatedFee={estimatedFee}
                       loading={isSimulating}

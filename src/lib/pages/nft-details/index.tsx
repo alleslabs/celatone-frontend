@@ -93,7 +93,7 @@ const NftDetailsBody = ({
       <CelatoneSeo pageName={tokenId ? `NFT – ${tokenId}` : "NFT Details"} />
       <Breadcrumb
         items={[
-          { text: "NFT Collections", href: "/nft-collections" },
+          { text: "NFT collections", href: "/nft-collections" },
           {
             text: displayCollectionName,
             href: `/nft-collections/${collectionAddress}`,

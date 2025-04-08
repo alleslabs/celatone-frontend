@@ -9,11 +9,11 @@ export const RedelegationTableHeader = ({
 }: {
   templateColumns: GridProps["templateColumns"];
 }) => (
-  <Grid minW="min-content" templateColumns={templateColumns}>
-    <TableHeader>From Validator</TableHeader>
+  <Grid templateColumns={templateColumns} minW="min-content">
+    <TableHeader>From validator</TableHeader>
     <TableHeader />
-    <TableHeader>To Validator</TableHeader>
-    <TableHeader>Redelegate Amount</TableHeader>
-    <TableHeader>Completed By</TableHeader>
+    <TableHeader>To validator</TableHeader>
+    <TableHeader>Redelegate amount</TableHeader>
+    <TableHeader>Completed by</TableHeader>
   </Grid>
 );

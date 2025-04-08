@@ -49,13 +49,13 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
     case ProposalStatus.DEPOSIT_PERIOD:
       return (
         <>
-          <InfoItem label="Deposit Start">
-            <Text color="text.dark" variant="body2">
+          <InfoItem label="Deposit start">
+            <Text variant="body2" color="text.dark">
               {formatUTC(data.submitTime)}
             </Text>
           </InfoItem>
-          <InfoItem label="Deposit End">
-            <Text color="text.dark" variant="body2">
+          <InfoItem label="Deposit end">
+            <Text variant="body2" color="text.dark">
               {formatUTC(data.depositEndTime)}
             </Text>
           </InfoItem>
@@ -73,13 +73,13 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
     case ProposalStatus.VOTING_PERIOD:
       return (
         <>
-          <InfoItem label="Voting Start">
-            <Text color="text.dark" variant="body2">
+          <InfoItem label="Voting start">
+            <Text variant="body2" color="text.dark">
               {data.votingTime ? `${formatUTC(data.votingTime)}` : "N/A"}
             </Text>
           </InfoItem>
-          <InfoItem label="Voting End">
-            <Text color="text.dark" variant="body2">
+          <InfoItem label="Voting end">
+            <Text variant="body2" color="text.dark">
               {data.votingEndTime ? `${formatUTC(data.votingEndTime)}` : "N/A"}
             </Text>
           </InfoItem>
@@ -90,6 +90,8 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
     case ProposalStatus.REJECTED:
       return (
         <ResolvedTimeInfoItems
+          resolvedHeightLabel="Resolved block height"
+          resolvedTimestampLabel="Resolved at"
           resolvedHeight={data.resolvedHeight}
           resolvedHeightLabel="Resolved Block Height"
           resolvedTimestamp={data.resolvedTimestamp}
@@ -107,7 +109,7 @@ export const TimeInfoItem = ({ data }: TimeInfoItemProps) => {
       );
     default:
       return (
-        <InfoItem label="Proposal Status">
+        <InfoItem label="Proposal status">
           <Flex>N/A</Flex>
         </InfoItem>
       );

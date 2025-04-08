@@ -60,7 +60,7 @@ export const ProposalsTableMobileCard = ({
             types={proposal.types}
           />
           <Flex direction="column" gap={1}>
-            <MobileLabel label="Voting Ends" />
+            <MobileLabel label="Voting ends" />
             <VotingEndTime
               depositEndTime={proposal.depositEndTime}
               status={proposal.status}
@@ -75,18 +75,22 @@ export const ProposalsTableMobileCard = ({
           )}
         </Flex>
       }
-      topContent={
-        <>
-          <Flex align="center" gap={2}>
-            <MobileLabel label="Proposal ID" variant="body2" />
-            <ExplorerLink
-              showCopyOnHover
-              type="proposal_id"
-              value={proposal.id.toString()}
-            />
-          </Flex>
-          <StatusChip status={proposal.status} />
-        </>
+      bottomContent={
+        isFullTier && (
+          <>
+            <Flex direction="column" flex={1}>
+              <MobileLabel label="Resolved block height" />
+              <ResolvedHeight
+                resolvedHeight={proposal.resolvedHeight}
+                isDepositOrVoting={isDepositOrVoting}
+              />
+            </Flex>
+            <Flex direction="column" flex={1}>
+              <MobileLabel label="Proposed by" />
+              <Proposer proposer={proposal.proposer} />
+            </Flex>
+          </>
+        )
       }
       onClick={() => onCardSelect(proposal.id)}
     />

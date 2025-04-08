@@ -29,7 +29,7 @@ export const ButtonSection = ({
 
   const openTxExplorer = () => {
     const txHash = receipts
-      .find((r) => r.title === "Tx Hash")
+      .find((r) => r.title === "Tx hash")
       ?.value?.toString();
     openTxTab(txHash);
   };
@@ -73,7 +73,7 @@ export const ButtonSection = ({
       return (
         <>
           <Button variant="ghost-primary" onClick={openTxExplorer}>
-            See Transaction
+            See transaction
           </Button>
           <Button
             variant="primary"
@@ -81,8 +81,8 @@ export const ButtonSection = ({
               navigate({ pathname: `/contracts/${router.query.contract}` })
             }
           >
-            View Contract Details
-            <CustomIcon boxSize={3} name="chevron-right" />
+            View contract details
+            <CustomIcon name="chevron-right" boxSize={3} />
           </Button>
         </>
       );
@@ -101,8 +101,8 @@ export const ButtonSection = ({
             // TODO: Revisit this when proposal page is live
             onClick={openProposalExplorer}
           >
-            View Proposal
-            <CustomIcon boxSize={3} ml={2} name="launch" />
+            View proposal
+            <CustomIcon name="launch" boxSize={3} ml={2} />
           </Button>
           <Button
             variant="primary"
@@ -113,8 +113,8 @@ export const ButtonSection = ({
               onClose?.();
             }}
           >
-            See in Proposal List
-            <CustomIcon boxSize={3} ml={2} name="chevron-right" />
+            See in proposal list
+            <CustomIcon name="chevron-right" boxSize={3} ml={2} />
           </Button>
         </>
       );
@@ -122,6 +122,8 @@ export const ButtonSection = ({
       return (
         <Flex justify="space-between" w="full">
           <CopyButton
+            buttonText="Copy error log"
+            value={errorMsg}
             amptrackSection="tx_error_log"
             buttonText="Copy Error Log"
             size="md"
@@ -132,7 +134,7 @@ export const ButtonSection = ({
               Close
             </Button>
             <Button variant="primary" onClick={openTxExplorer}>
-              See Transaction
+              See transaction
             </Button>
           </Flex>
         </Flex>
@@ -144,7 +146,7 @@ export const ButtonSection = ({
             Close
           </Button>
           <Button variant="primary" onClick={openTxExplorer}>
-            See Transaction
+            See transaction
           </Button>
         </>
       );

@@ -17,7 +17,7 @@ export const DEVELOPER_TOOL_DOCS_LINK = "https://docs.alleslabs.com/developers";
 
 export const INSTANTIATED_LIST_NAME = "Instantiated by me";
 
-export const SAVED_LIST_NAME = "Saved Contracts";
+export const SAVED_LIST_NAME = "Saved contracts";
 
 // special slug with all cap letters to avoid conflict with any list
 export const ADMIN_SPECIAL_SLUG = "ADMIN";

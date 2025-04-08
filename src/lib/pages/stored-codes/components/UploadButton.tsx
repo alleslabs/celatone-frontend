@@ -19,7 +19,7 @@ export const UploadButton = ({ isAllowed }: UploadButtonProps) => {
         rightIcon={<CustomIcon boxSize="12px" name="upload" />}
         onClick={() => navigate({ pathname: "/upload" })}
       >
-        Upload New Code
+        Upload new code
       </Button>
     </Tooltip>
   );

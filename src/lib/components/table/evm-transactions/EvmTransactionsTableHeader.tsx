@@ -15,7 +15,7 @@ export const EvmTransactionsTableHeader = ({
 }: EvmTransactionsTableHeaderProps) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader />
-    <TableHeader>Transaction Hash</TableHeader>
+    <TableHeader>Transaction hash</TableHeader>
     <TableHeader />
     <TableHeader>Method</TableHeader>
     <TableHeader>Sender</TableHeader>

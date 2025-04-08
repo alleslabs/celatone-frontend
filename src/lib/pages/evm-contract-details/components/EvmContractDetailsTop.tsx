@@ -138,6 +138,7 @@ export const EvmContractDetailsTop = ({
         )}
         <TotalValue
           address={convertHexWalletAddress(contractAddress)}
+          label="Total value"
           isCompact
           label="Total Value"
         />

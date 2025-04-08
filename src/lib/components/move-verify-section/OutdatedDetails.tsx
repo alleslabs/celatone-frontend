@@ -44,7 +44,7 @@ export const OutdatedDetails = () => {
           });
         }}
       >
-        Submit Verification
+        Submit verification
       </Button>
     </>
   );

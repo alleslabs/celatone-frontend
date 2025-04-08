@@ -50,7 +50,7 @@ export const CodeTopInfo = observer(
         <Breadcrumb
           items={[
             {
-              text: projectInfo?.name ? "Public Projects" : "Codes",
+              text: projectInfo?.name ? "Public projects" : "Codes",
               href: projectInfo?.name ? "/projects" : "/codes",
             },
             {
@@ -96,8 +96,8 @@ export const CodeTopInfo = observer(
                 gap={{ base: 0, md: 2 }}
                 mt={{ base: 2, md: 0 }}
               >
-                <Text color="text.dark" fontWeight={500} variant="body2">
-                  Public Code Name:
+                <Text fontWeight={500} color="text.dark" variant="body2">
+                  Public code name:
                 </Text>
                 <Text variant="body2">{publicInfo.name}</Text>
               </Flex>
@@ -119,8 +119,8 @@ export const CodeTopInfo = observer(
               direction={{ base: "column", md: "row" }}
               gap={{ base: 0, md: 2 }}
             >
-              <Text color="text.dark" fontWeight={500} variant="body2">
-                Code Hash:
+              <Text fontWeight={500} color="text.dark" variant="body2">
+                Code hash:
               </Text>
               <CopyLink
                 amptrackSection="code_hash"
@@ -133,8 +133,8 @@ export const CodeTopInfo = observer(
                 direction={{ base: "column", md: "row" }}
                 gap={{ base: 0, md: 2 }}
               >
-                <Text color="text.dark" fontWeight={500} variant="body2">
-                  CW2 Info:
+                <Text fontWeight={500} color="text.dark" variant="body2">
+                  CW2 info:
                 </Text>
                 <Text
                   color={cw2Info ? "text.main" : "text.disabled"}
@@ -166,6 +166,7 @@ export const CodeTopInfo = observer(
         </Flex>
         {publicInfo && (
           <PublicDescription
+            title="Public code description"
             description={publicInfo.description}
             icon={<CustomIcon color="gray.600" ml={0} name="public-project" />}
             textLine={2}

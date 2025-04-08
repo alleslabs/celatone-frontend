@@ -34,7 +34,7 @@ export const ToContractButton = ({
         );
       }}
     >
-      Go to {isAccountPrefilled ? "Saved Contracts" : "Contract Details"}
+      Go to {isAccountPrefilled ? "saved contracts" : "contract details"}
     </Text>
   );
 };

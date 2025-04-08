@@ -55,20 +55,18 @@ export const ProposalsTableLite = () => {
       >
         <GridItem>
           <InputWithIcon
-            amptrackSection="proposal-list-search"
-            placeholder="Search with Proposal ID"
-            size="lg"
+            placeholder="Search with proposal ID"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </GridItem>
         <GridItem>
           <ProposalStatusFilter
-            isMulti={false}
-            label="Filter by Status"
-            placeholder="All Status"
+            label="Filter by status"
             result={status}
             setResult={setStatus}
+            placeholder="All status"
+            isMulti={false}
           />
         </GridItem>
       </Grid>

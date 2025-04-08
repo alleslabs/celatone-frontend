@@ -96,8 +96,8 @@ export const UptimeSection = ({
                 </MenuList>
               </Menu>
             ) : (
-              <Text color="text.dark" variant="body2">
-                Latest 100 Blocks
+              <Text variant="body2" color="text.dark">
+                Latest 100 blocks
               </Text>
             )}
           </Flex>
@@ -110,7 +110,7 @@ export const UptimeSection = ({
                 onViewMore();
               }}
             >
-              View Performance
+              View performance
             </Button>
           )}
         </Flex>
@@ -135,7 +135,7 @@ export const UptimeSection = ({
                 onViewMore();
               }}
             >
-              View Performance
+              View performance
             </Button>
           )}
         </>

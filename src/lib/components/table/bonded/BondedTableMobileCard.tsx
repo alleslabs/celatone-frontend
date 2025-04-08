@@ -55,8 +55,8 @@ export const BondedTableMobileCard = ({
       )}
       {bondedInfo.completionTime && (
         <Flex direction="column">
-          <MobileLabel label="Unbond Completed By" />
-          <Text color="text.dark" mt={1} variant="body2">
+          <MobileLabel label="Unbond completed by" />
+          <Text variant="body2" color="text.dark" mt={1}>
             {formatUTC(bondedInfo.completionTime)}
           </Text>
           <Text color="text.disabled" variant="body3">

@@ -7,26 +7,26 @@ import { CustomIcon } from "lib/components/icon";
 
 const getIcon = (type: Option<SearchResultType>) => {
   switch (type) {
-    case "Account Address":
+    case "Account address":
       return "admin" as IconKeys;
-    case "Transaction Hash":
+    case "Transaction hash":
       return "file" as IconKeys;
     case "Code ID":
       return "code" as IconKeys;
-    case "Contract Address":
-    case "Module Path":
+    case "Contract address":
+    case "Module path":
       return "contract-address" as IconKeys;
     case "Block":
       return "block" as IconKeys;
     case "Proposal ID":
       return "proposal" as IconKeys;
-    case "Validator Address":
+    case "Validator address":
       return "validator" as IconKeys;
     case "Pool ID":
       return "pool" as IconKeys;
-    case "NFT Address":
+    case "NFT address":
       return "nft" as IconKeys;
-    case "NFT Collection Address":
+    case "NFT collection address":
       return "collection" as IconKeys;
     default:
       return "list" as IconKeys;

@@ -145,8 +145,8 @@ export const SchemaQueryComponent = ({
         >
           {msgSchema.inputRequired && (
             <GridItem>
-              <Text color="text.dark" fontWeight={700} variant="body2">
-                Query Input
+              <Text variant="body2" color="text.dark" fontWeight={700}>
+                Query input
               </Text>
               <JsonSchemaForm
                 formId={`query-${msgSchema.title}`}
@@ -184,8 +184,8 @@ export const SchemaQueryComponent = ({
             {/* TODO: refactor query response */}
             <Flex justify="space-between" mb={4}>
               <Flex direction="column">
-                <Text color="text.dark" fontWeight={700} variant="body2">
-                  Return Output
+                <Text variant="body2" color="text.dark" fontWeight={700}>
+                  Return output
                 </Text>
                 <Text textColor="text.dark" variant="body3">
                   {resSchema.description}
@@ -229,9 +229,7 @@ export const SchemaQueryComponent = ({
                 <Flex gap={2} ml="auto">
                   <CopyButton
                     amptrackSection="query_response"
-                    buttonText="Copy Output"
-                    isDisable={res === "" || Boolean(queryError)}
-                    value={res}
+                    buttonText="Copy output"
                   />
                   <Button
                     isDisabled={jsonValidate(msg) !== null}
@@ -245,16 +243,14 @@ export const SchemaQueryComponent = ({
                       track(AmpEvent.USE_JSON_QUERY_AGAIN);
                     }}
                   >
-                    Query Again
+                    Query again
                   </Button>
                 </Flex>
               </Flex>
             ) : (
               <CopyButton
                 amptrackSection="query_response"
-                buttonText="Copy Output"
-                isDisable={res === "" || Boolean(queryError)}
-                value={res}
+                buttonText="Copy output"
               />
             )}
           </GridItem>

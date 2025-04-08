@@ -1,6 +1,6 @@
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate } from "lib/app-provider";
+import { useInternalNavigate, useIsApiChain } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -25,6 +25,7 @@ export const PublishCompleted = ({
   resetState,
 }: PublishCompletedProps) => {
   const navigate = useInternalNavigate();
+  const isApiChain = useIsApiChain({ shouldRedirect: false });
   return (
     <ActionPageContainer>
       <CelatoneSeo pageName="Publish / Republish Modules" />
@@ -39,11 +40,11 @@ export const PublishCompleted = ({
         my={12}
         receipts={[
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             html: <ExplorerLink type="tx_hash" value={txHash} />,
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
@@ -52,40 +53,42 @@ export const PublishCompleted = ({
             ),
           },
           {
-            title: "Upgrade Policy",
+            title: "Upgrade policy",
             value: capitalize(upgradePolicy),
           },
         ]}
         variant="full"
       />
-      <Flex direction="column" gap={4} mb={12} w="full">
-        <Heading as="h6" variant="h6">
-          Module Verification
-        </Heading>
-        <Flex
-          alignItems="center"
-          gap={6}
-          justifyContent="space-between"
-          w="full"
-        >
-          <Text color="text.dark" variant="body2">
-            Verifying modules enhances credibility by displaying a verified
-            badge. Once verified, users will be able to access the module&apos;s
-            source code on the details page.
-          </Text>
-          <Button
-            minW={40}
-            variant="primary"
-            onClick={() =>
-              navigate({
-                pathname: "/modules/verify",
-              })
-            }
+      {isApiChain && (
+        <Flex direction="column" gap={4} w="full" mb={12}>
+          <Heading as="h6" variant="h6">
+            Module verification
+          </Heading>
+          <Flex
+            w="full"
+            justifyContent="space-between"
+            gap={6}
+            alignItems="center"
           >
-            Submit Verification
-          </Button>
+            <Text variant="body2" color="text.dark">
+              Verifying modules enhances credibility by displaying a verified
+              badge. Once verified, users will be able to access the
+              module&apos;s source code on the details page.
+            </Text>
+            <Button
+              variant="primary"
+              minW={40}
+              onClick={() =>
+                navigate({
+                  pathname: "/modules/verify",
+                })
+              }
+            >
+              Submit verification
+            </Button>
+          </Flex>
         </Flex>
-      </Flex>
+      )}
       <Flex direction="column" gap={6} w="full">
         <Heading as="h6" variant="h6">
           Published {modules.length} {plur("module", modules.length)}

@@ -180,6 +180,12 @@ const Faucet = () => {
           "Requests are limited to once per hour for each receiving address and IP address."}
       </Text>
       <TextInput
+        variant="fixed-floating"
+        placeholder="Enter your address"
+        value={address}
+        setInputState={setAddress}
+        status={status}
+        label="Receiving address"
         helperAction={
           <AssignMe
             isDisable={address === walletAddress}
@@ -228,7 +234,7 @@ const Faucet = () => {
               variant="unstyled"
               onClick={() => openTxTab(result.txHash)}
             >
-              View Transaction
+              View transaction
             </Button>
           )}
         </Alert>

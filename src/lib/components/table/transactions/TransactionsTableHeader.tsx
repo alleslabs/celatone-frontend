@@ -19,7 +19,7 @@ export const TransactionsTableHeader = ({
 }) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader />
-    <TableHeader>Transaction Hash</TableHeader>
+    <TableHeader>Transaction hash</TableHeader>
     {showSuccess && <TableHeader />}
     <TableHeader>Messages</TableHeader>
     {showRelations && <TableHeader>Relations</TableHeader>}

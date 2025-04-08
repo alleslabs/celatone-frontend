@@ -14,14 +14,14 @@ export const MigrationHeader = ({
   return (
     <Grid templateColumns={templateColumns}>
       <TableHeader>Code ID</TableHeader>
-      <TableHeader>Code Name</TableHeader>
+      <TableHeader>Code name</TableHeader>
       {isFullTier && (
         <>
-          <TableHeader>CW2 Info</TableHeader>
+          <TableHeader>CW2 info</TableHeader>
           <TableHeader>Sender</TableHeader>
         </>
       )}
-      <TableHeader>Block Height</TableHeader>
+      <TableHeader>Block height</TableHeader>
       {isFullTier && (
         <>
           <TableHeader>Timestamp</TableHeader>

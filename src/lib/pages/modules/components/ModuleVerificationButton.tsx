@@ -13,7 +13,7 @@ export const ModuleVerificationButton = () => {
         rightIcon={<CustomIcon name="chevron-down" />}
         variant="primary"
       >
-        Module Verification
+        Module verification
       </MenuButton>
       <MenuList>
         <MenuItem
@@ -24,7 +24,7 @@ export const ModuleVerificationButton = () => {
             });
           }}
         >
-          Submit Module Verification
+          Submit module verification
         </MenuItem>
         <MenuItem
           icon={<CustomIcon color="gray.600" name="list" />}
@@ -34,7 +34,7 @@ export const ModuleVerificationButton = () => {
             });
           }}
         >
-          See My Past Verification
+          See my past verification
         </MenuItem>
       </MenuList>
     </Menu>

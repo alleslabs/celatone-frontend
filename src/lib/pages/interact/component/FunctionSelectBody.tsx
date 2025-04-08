@@ -68,7 +68,7 @@ export const FunctionSelectBody = ({
             textVariant="body2"
           />
           <Button variant="primary" onClick={openDrawer}>
-            Select Module
+            Select module
           </Button>
         </>
       )}

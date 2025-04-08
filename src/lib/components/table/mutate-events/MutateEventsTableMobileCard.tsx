@@ -14,25 +14,25 @@ export const MutateEventsTableMobileCard = ({
   newValue,
 }: MutateEvent) => (
   <MobileCardTemplate
-    bottomContent={
-      <Flex direction="column" gap={1}>
-        <Text variant="body3">{formatUTC(timestamp)}</Text>
-        <Text color="text.dark" variant="body3">
-          {`(${dateFromNow(timestamp)})`}
-        </Text>
+    topContent={
+      <Flex direction="column">
+        <MobileLabel label="Field name" />
+        <Badge width="fit-content" mt={1} size="sm" textTransform="capitalize">
+          {mutatedFieldName}
+        </Badge>
       </Flex>
     }
     middleContent={
       <Stack spacing="12px">
         <Flex direction="column">
-          <MobileLabel label="Old Value" />
+          <MobileLabel label="Old value" />
           <Text variant="body2" wordBreak="break-word">
             {oldValue}
           </Text>
         </Flex>
         <CustomIcon color="gray.600" name="arrow-down" />
         <Flex direction="column">
-          <MobileLabel label="New Value" />
+          <MobileLabel label="New value" />
           <Text variant="body2" wordBreak="break-word">
             {newValue}
           </Text>

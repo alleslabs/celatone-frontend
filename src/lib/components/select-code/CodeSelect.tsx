@@ -64,7 +64,7 @@ export const CodeSelect = ({
               variant="body1"
               whiteSpace="nowrap"
             >
-              {name ?? "Untitled Name"}
+              {name ?? "Untitled name"}
             </Text>
             <Flex alignItems="center" gap={2}>
               <Text color="text.dark" variant="body2">
@@ -94,8 +94,8 @@ export const CodeSelect = ({
           </Text>
         )}
         <CodeSelectDrawerButton
-          buttonText={codeId ? "Change Code" : "Select Code"}
           onCodeSelect={onCodeSelect}
+          buttonText={codeId ? "Change code" : "Select code"}
         />
       </Flex>
 

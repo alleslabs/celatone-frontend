@@ -29,25 +29,7 @@ export const PublicProjectModuleMobileCard = ({
       middleContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel label="Owner" variant="body2" />
-            <ExplorerLink
-              showCopyOnHover
-              type="user_address"
-              value={module.address.toString()}
-            />
-          </Flex>
-          <Flex direction="column">
-            <MobileLabel label="Module Description" variant="body2" />
-            <Text color="text.dark" variant="body2" whiteSpace="break-spaces">
-              {module.description || "N/A"}
-            </Text>
-          </Flex>
-        </Flex>
-      }
-      topContent={
-        <Flex align="center" gap={2}>
-          <Flex direction="column">
-            <MobileLabel label="Module Path" variant="body2" />
+            <MobileLabel variant="body2" label="Module path" />
             <Text
               color="primary.main"
               variant="body2"
@@ -58,7 +40,24 @@ export const PublicProjectModuleMobileCard = ({
           </Flex>
         </Flex>
       }
-      onClick={goToModuleDetails}
+      middleContent={
+        <Flex direction="column" gap={3}>
+          <Flex direction="column">
+            <MobileLabel variant="body2" label="Owner" />
+            <ExplorerLink
+              value={module.address.toString()}
+              type="user_address"
+              showCopyOnHover
+            />
+          </Flex>
+          <Flex direction="column">
+            <MobileLabel variant="body2" label="Module description" />
+            <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
+              {module.description || "N/A"}
+            </Text>
+          </Flex>
+        </Flex>
+      }
     />
   );
 };

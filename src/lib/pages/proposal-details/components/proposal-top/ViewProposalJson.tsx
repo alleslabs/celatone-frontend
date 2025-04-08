@@ -21,7 +21,7 @@ export const ViewProposalJson = ({ id, status }: ViewProposalJsonProps) => {
   if (!config.enabled) return null;
 
   const openRestPage = () => {
-    trackUseViewJSON("Proposal Details");
+    trackUseViewJSON("Proposal details");
     openNewTab(
       `${restEndpoint}/${isInitia ? "initia" : "cosmos"}/gov/${config.version}/proposals/${encodeURIComponent(id)}`
     );

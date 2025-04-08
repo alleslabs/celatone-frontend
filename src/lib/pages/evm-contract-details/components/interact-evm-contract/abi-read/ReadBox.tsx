@@ -127,8 +127,8 @@ export const ReadBox = ({
         >
           {inputRequired && (
             <GridItem>
-              <Text color="text.dark" fontWeight={700} mb={3} variant="body2">
-                Read Inputs
+              <Text variant="body2" color="text.dark" fontWeight={700} mb={3}>
+                Read inputs
               </Text>
               <EvmAbiForm
                 isPayable={abiSection.stateMutability === "payable"}
@@ -147,10 +147,7 @@ export const ReadBox = ({
                 <HStack gap={2}>
                   <CopyButton
                     amptrackSection="read_inputs"
-                    buttonText="Copy Encoded Inputs"
-                    isDisable={isUndefined(data)}
-                    value={data ?? ""}
-                    variant="outline-secondary"
+                    buttonText="Copy encoded inputs"
                     w="100%"
                   />
                   <EvmCodeSnippet
@@ -174,8 +171,8 @@ export const ReadBox = ({
             </GridItem>
           )}
           <GridItem>
-            <Text color="text.dark" fontWeight={700} mb={3} variant="body2">
-              Read Outputs
+            <Text variant="body2" color="text.dark" fontWeight={700} mb={3}>
+              Read outputs
             </Text>
             {queryError && (
               <Alert alignItems="center" mb={3} variant="error">
@@ -206,10 +203,7 @@ export const ReadBox = ({
                   <HStack gap={2}>
                     <CopyButton
                       amptrackSection="read_inputs"
-                      buttonText="Copy Encoded Inputs"
-                      isDisable={isUndefined(data)}
-                      value={data ?? ""}
-                      variant="outline-secondary"
+                      buttonText="Copy encoded inputs"
                       w="100%"
                     />
                     <EvmCodeSnippet
@@ -220,7 +214,7 @@ export const ReadBox = ({
                   </HStack>
                   <CopyButton
                     amptrackSection="read_outputs"
-                    buttonText="Copy Encoded Outputs"
+                    buttonText="Copy encoded outputs"
                     display={{ md: "none", base: "block" }}
                     isDisable={res === "" || Boolean(queryError)}
                     value={res}
@@ -236,7 +230,7 @@ export const ReadBox = ({
                 >
                   <CopyButton
                     amptrackSection="read_outputs"
-                    buttonText="Copy Encoded Outputs"
+                    buttonText="Copy encoded outputs"
                     display={{ base: "none", md: "block" }}
                     isDisable={res === "" || Boolean(queryError)}
                     value={res}
@@ -254,7 +248,7 @@ export const ReadBox = ({
                       track(AmpEvent.ACTION_EVM_READ_AGAIN);
                     }}
                   >
-                    Read Again
+                    Read again
                   </Button>
                 </Flex>
               </Flex>
@@ -272,10 +266,7 @@ export const ReadBox = ({
               >
                 <CopyButton
                   amptrackSection="read_outputs"
-                  buttonText="Copy Encoded Outputs"
-                  isDisable={res === "" || Boolean(queryError)}
-                  value={res}
-                  variant="outline-secondary"
+                  buttonText="Copy encoded outputs"
                   w="100%"
                 />
               </Flex>

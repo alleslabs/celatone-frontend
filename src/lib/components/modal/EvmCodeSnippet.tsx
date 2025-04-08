@@ -136,7 +136,7 @@ main();`,
         }}
       >
         <CustomIcon name="code" />
-        Code Snippet
+        Code snippet
       </Button>
 
       <Modal isCentered isOpen={isOpen} size="4xl" onClose={onClose}>
@@ -145,7 +145,7 @@ main();`,
           <ModalHeader>
             <CustomIcon boxSize={6} color="gray.600" name="code" />
             <Heading as="h5" variant="h5">
-              Code Snippet
+              Code snippet
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />

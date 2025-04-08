@@ -37,6 +37,7 @@ export const RedelegationsSection = ({
         <CustomIcon boxSize={6} name="chevron-left" />
       </Button>
       <TableTitle
+        title="Active redelegations"
         count={redelegations.length}
         helperText={`Each wallet can redelegate up to ${stakingParams.maxEntries} entries between same pair of validators within last ${stakingParams.unbondingTime} timeframe`}
         mb={0}

@@ -31,6 +31,11 @@ export const NftsByCollectionSequencer = ({
   return (
     <Stack spacing="24px" w="full">
       <InputWithIcon
+        placeholder="Search with token ID"
+        value={searchKeyword}
+        autoFocus={!isMobile}
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        size={{ base: "md", md: "lg" }}
         amptrackSection="nft-account-detail-tokenid-search"
         autoFocus={!isMobile}
         placeholder="Search with Token ID"

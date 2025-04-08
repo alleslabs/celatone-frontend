@@ -28,7 +28,7 @@ export const EvmTxHeader = ({
       <Flex align="center" justify="space-between">
         <Flex gap={2} mb={{ base: 2, md: 0 }}>
           <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
-            EVM Transaction Details
+            EVM transaction details
           </Heading>
           {isMobile && (
             <Flex
@@ -75,7 +75,7 @@ export const EvmTxHeader = ({
               if (jsonWindow) {
                 // Modify styling later
                 jsonWindow.document.write(
-                  `<html><head><title>Evm Transaction Details</title>`
+                  `<html><head><title>Evm transaction details</title>`
                 );
 
                 // Add styling
@@ -99,8 +99,8 @@ export const EvmTxHeader = ({
         gap={{ base: 1, md: 2 }}
         w="full"
       >
-        <Text color="text.dark" fontWeight={500} variant="body2">
-          Transaction Hash:
+        <Text variant="body2" fontWeight={500} color="text.dark">
+          Transaction hash:
         </Text>
         <CopyLink
           amptrackSection="tx_header"

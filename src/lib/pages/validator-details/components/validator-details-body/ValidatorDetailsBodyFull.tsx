@@ -75,7 +75,7 @@ export const ValidatorDetailsBodyFull = ({
         pageName={
           data.info.moniker
             ? `${data.info.moniker} (Validator)`
-            : "Validator Detail"
+            : "Validator detail"
         }
       />
       <PageHeaderContainer bgColor="transparent">
@@ -107,7 +107,7 @@ export const ValidatorDetailsBodyFull = ({
               Performance
             </CustomTab>
             <CustomTab onClick={handleTabChange(TabIndex.BondedTokenChanges)}>
-              Bonded Token Changes
+              Bonded token changes
             </CustomTab>
           </TabList>
           <TabPanels>

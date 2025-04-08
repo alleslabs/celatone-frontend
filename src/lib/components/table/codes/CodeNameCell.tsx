@@ -25,7 +25,7 @@ export const CodeNameCell = ({
     track(AmpEvent.USE_QUICK_EDIT_CODE);
     updateCodeInfo(code.id, code.uploader, inputValue);
     toast({
-      title: "New Code Name Saved",
+      title: "New code name saved",
       status: "success",
       duration: 5000,
       isClosable: false,
@@ -35,9 +35,8 @@ export const CodeNameCell = ({
   };
   return (
     <EditableCell
-      defaultValue="Untitled Name"
       initialValue={code.name}
-      isReadOnly={isReadOnly}
+      defaultValue="Untitled name"
       maxLength={constants.maxCodeNameLength}
       onSave={onSave}
     />

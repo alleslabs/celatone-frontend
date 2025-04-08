@@ -26,7 +26,7 @@ interface AddressInputProps<T extends FieldValues>
 const getAddressStatus = (input: string, error: Option<string>): FormStatus => {
   if (error) return { state: "error", message: error };
   if (!input) return { state: "init" };
-  return { state: "success", message: "Valid Address" };
+  return { state: "success", message: "Valid address" };
 };
 
 export const AddressInput = <T extends FieldValues>({

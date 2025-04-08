@@ -16,7 +16,7 @@ export const CodeHashBox = ({ codeHash }: CodeHashBoxProps) => (
       top="-10px"
       variant="body3"
     >
-      Code Hash
+      Code hash
     </Text>
     <Box
       bg="gray.800"

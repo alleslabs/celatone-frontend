@@ -81,7 +81,7 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                 variant="body2"
                 whiteSpace="nowrap"
               >
-                Proposal Messages:
+                Proposal messages:
               </Text>
               {proposalData.types.length ? (
                 <Flex display="inline-block">
@@ -122,9 +122,9 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                 direction={{ base: "column", md: "row" }}
                 gap={{ base: 0, md: 2 }}
               >
-                <Flex alignItems="center" gap={2}>
-                  <Text color="text.dark" fontWeight={500} variant="body2">
-                    Created Height:
+                <Flex gap={2} alignItems="center">
+                  <Text color="text.dark" variant="body2" fontWeight={500}>
+                    Created height:
                   </Text>
                   <ExplorerLink
                     showCopyOnHover

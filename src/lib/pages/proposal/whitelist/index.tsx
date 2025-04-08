@@ -259,7 +259,7 @@ const ProposalToWhitelist = () => {
           )}
           <GridItem area="main">
             <Heading as="h5" variant="h5">
-              Create Proposal to Whitelist
+              Create proposal to whitelist
             </Heading>
             <Text color="text.dark" fontWeight={500} mt={4} variant="body2">
               Allowed addresses will be able to upload and stored code without
@@ -281,11 +281,19 @@ const ProposalToWhitelist = () => {
                 <Flex alignItems="center" gap={2}>
                   <CustomIcon color="gray.600" name="proposal" />
                   <Heading as="h6" variant="h6">
-                    Fill in Proposal Details
+                    Fill in proposal details
                   </Heading>
                 </Flex>
                 <ControllerInput
                   control={control}
+                  placeholder="ex. Allow XYZ to store code without proposal"
+                  label="Proposal title"
+                  labelBgColor="gray.900"
+                  variant="fixed-floating"
+                  rules={{
+                    required: "Proposal Title is required",
+                    maxLength: constants.maxProposalTitleLength,
+                  }}
                   error={
                     title.length > constants.maxProposalTitleLength
                       ? getMaxLengthError(title.length, "proposal_title")
@@ -305,7 +313,9 @@ const ProposalToWhitelist = () => {
                   control={control}
                   error={formErrors.description?.message}
                   height="160px"
-                  label="Proposal Description"
+                  label="Proposal description"
+                  placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
+                  variant="fixed-floating"
                   labelBgColor="gray.900"
                   name="description"
                   placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
@@ -429,7 +439,7 @@ const ProposalToWhitelist = () => {
                 gap={1}
                 mt={12}
               >
-                <p>Transaction Fee:</p>
+                <p>Transaction fee:</p>
                 <EstimatedFeeRender
                   estimatedFee={estimatedFee}
                   loading={isSimulating}

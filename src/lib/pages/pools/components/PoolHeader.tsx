@@ -22,22 +22,22 @@ const poolTypeRender = (type: PoolData["type"]) => {
   switch (type) {
     case PoolType.BALANCER:
       return {
-        text: "Balancer Pool",
+        text: "Balancer pool",
         icon: <BalancerPoolIcon boxSize={4} />,
       };
     case PoolType.STABLESWAP:
       return {
-        text: "StableSwap Pool",
+        text: "StableSwap pool",
         icon: <StableSwapIcon boxSize={4} />,
       };
     case PoolType.COSMWASM:
       return {
-        text: "CosmWasm Pool",
+        text: "CosmWasm pool",
         icon: <CosmWasmPoolIcon boxSize={4} />,
       };
     case PoolType.CL:
       return {
-        text: "Concentrated Liquidity Pool",
+        text: "Concentrated liquidity pool",
         icon: <ClpIcon boxSize={4} />,
       };
     default:

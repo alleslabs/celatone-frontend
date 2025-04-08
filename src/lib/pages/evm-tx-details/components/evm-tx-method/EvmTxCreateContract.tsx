@@ -71,7 +71,7 @@ export const EvmTxCreateContract = ({
         }
       />
       <EvmInfoLabelValue
-        label="Created Contract"
+        label="Created contract"
         value={
           contracts.length > 0 ? (
             <Flex direction="column" gap={2}>

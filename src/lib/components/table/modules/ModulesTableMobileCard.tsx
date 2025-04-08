@@ -64,7 +64,7 @@ export const ModulesTableMobileCard = ({
       }
       topContent={
         <Flex direction="column">
-          <MobileLabel label="Module Path" />
+          <MobileLabel label="Module path" />
           <ModulePathLink
             hexAddr={moduleInfo.address}
             moduleName={moduleInfo.moduleName}

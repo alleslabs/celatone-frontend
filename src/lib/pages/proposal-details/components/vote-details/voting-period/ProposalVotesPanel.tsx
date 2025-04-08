@@ -46,7 +46,7 @@ export const ProposalVotesPanel = ({
         <Button p={0} size="sm" variant="ghost-gray" onClick={onBack}>
           <CustomIcon boxSize={4} name="chevron-left" />
         </Button>
-        <TableTitle count={answers?.total} mb={0} title="All Votes" />
+        <TableTitle title="All votes" count={answers?.total} mb={0} />
       </Flex>
       <ProposalVotesTable
         id={id}

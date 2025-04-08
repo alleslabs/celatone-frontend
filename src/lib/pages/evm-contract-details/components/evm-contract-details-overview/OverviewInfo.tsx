@@ -43,6 +43,7 @@ export const OverviewInfo = ({
     >
       <LabelText label="Network">{currentChainId}</LabelText>
       <LabelText
+        label="Creator address"
         helperText1={isMobile ? "(Wallet Address)" : undefined}
         label="Creator Address"
       >
@@ -63,7 +64,7 @@ export const OverviewInfo = ({
           </>
         )}
       </LabelText>
-      <LabelText label="Created Transaction">
+      <LabelText label="Created transaction">
         {isContractInfoLoading ? (
           <Spinner boxSize={4} />
         ) : (
@@ -98,7 +99,7 @@ export const OverviewInfo = ({
           </Stack>
         )}
       </LabelText>
-      <LabelText label="Created Time">
+      <LabelText label="Created time">
         {isContractInfoLoading ? (
           <Spinner boxSize={4} />
         ) : (

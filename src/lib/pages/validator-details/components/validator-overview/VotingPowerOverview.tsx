@@ -150,9 +150,9 @@ export const VotingPowerOverview = ({
         }
       >
         <Flex direction="column" gap={1}>
-          <Flex alignItems="center" minH="36px">
-            <Heading as="h6" color="text.main" variant="h6">
-              Voting Power
+          <Flex minH="36px" alignItems="center">
+            <Heading variant="h6" as="h6" color="text.main">
+              Voting power
             </Heading>
           </Flex>
           <ValueWithIcon icon="vote" value={votingPowerPercent} />
@@ -189,17 +189,11 @@ export const VotingPowerOverview = ({
         {!isFullTier && !isMobile && (
           <>
             <VotingPowerDetail
-              amount={selfVotingPower as U<Token<Big>>}
-              assetInfo={assetInfo}
-              denom={singleStakingDenom}
-              label="Self-Bonded"
+              label="Self-bonded"
               ratio={selfVotingPowerRatio}
             />
             <VotingPowerDetail
-              amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
-              assetInfo={assetInfo}
-              denom={singleStakingDenom}
-              label="From Delegators"
+              label="From delegators"
               ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
             />
           </>
@@ -218,17 +212,11 @@ export const VotingPowerOverview = ({
         pt={4}
       >
         <VotingPowerDetail
-          amount={selfVotingPower as U<Token<Big>>}
-          assetInfo={assetInfo}
-          denom={singleStakingDenom}
-          label="Self-Bonded"
+          label="Self-bonded"
           ratio={selfVotingPowerRatio}
         />
         <VotingPowerDetail
-          amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
-          assetInfo={assetInfo}
-          denom={singleStakingDenom}
-          label="From Delegators"
+          label="From delegators"
           ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
         />
       </Grid>

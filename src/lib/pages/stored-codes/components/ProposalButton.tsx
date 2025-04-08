@@ -16,7 +16,7 @@ export const ProposalButton = () => {
       variant="outline-primary"
       onClick={() => navigate({ pathname: "/proposals/store-code" })}
     >
-      Propose to Store Code
+      Propose to store code
     </Button>
   );
 };

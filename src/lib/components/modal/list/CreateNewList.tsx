@@ -88,6 +88,11 @@ export function CreateNewListModal({
 
   return (
     <ActionModal
+      title="Create a new list"
+      icon="add-new"
+      trigger={trigger || <Button {...buttonProps} as="button" />}
+      mainBtnTitle="Create"
+      mainAction={handleCreate}
       disabledMain={status.state !== "success"}
       icon="add-new"
       mainAction={handleCreate}
@@ -99,12 +104,12 @@ export function CreateNewListModal({
     >
       <Box py={4}>
         <TextInput
-          label="List Name"
-          labelBgColor="gray.900"
-          setInputState={setListName}
-          status={status}
-          value={listName}
           variant="fixed-floating"
+          value={listName}
+          setInputState={setListName}
+          labelBgColor="gray.900"
+          status={status}
+          label="List name"
         />
       </Box>
     </ActionModal>

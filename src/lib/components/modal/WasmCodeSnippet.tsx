@@ -224,7 +224,7 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
         }}
       >
         <CustomIcon name="code" />
-        Code Snippet
+        Code snippet
       </Button>
 
       <Modal isCentered isOpen={isOpen} size="4xl" onClose={onClose}>
@@ -233,7 +233,7 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
           <ModalHeader>
             <CustomIcon boxSize={6} color="gray.600" name="code" />
             <Heading as="h5" variant="h5">
-              Code Snippet
+              Code snippet
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />
@@ -299,7 +299,8 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
             <ModalFooter>
               <Flex justifyContent="flex-end" w="full">
                 <CopyButton
-                  amptrackInfo={type}
+                  buttonText="Copy code snippet"
+                  value={activeSnippet}
                   amptrackSection="code_snippet"
                   amptrackSubSection={type}
                   buttonText="Copy Code Snippet"

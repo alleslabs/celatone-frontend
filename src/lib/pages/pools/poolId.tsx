@@ -32,7 +32,7 @@ const PoolIdBody = ({ poolId }: { poolId: number }) => {
 
   return (
     <>
-      <CelatoneSeo pageName={pool.id ? `Pool #${pool.id}` : "Pool Details"} />
+      <CelatoneSeo pageName={pool.id ? `Pool #${pool.id}` : "Pool details"} />
       <PoolTopSection pool={pool} />
       <PoolAssets pool={pool} />
       <PoolRelatedTxs pool={pool} />

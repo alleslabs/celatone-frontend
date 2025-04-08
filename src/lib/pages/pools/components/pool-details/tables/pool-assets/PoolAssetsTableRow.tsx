@@ -67,8 +67,9 @@ export const PoolAssetsTableRow = ({
                   label={`Token ID: ${token.denom}`}
                 />
                 <Copier
-                  amptrackSection="pool_assets"
-                  copyLabel="Token ID Copied!"
+                  type="token_denom"
+                  value={token.denom}
+                  copyLabel="Token ID copied!"
                   ml={0}
                   type="token_denom"
                   value={token.denom}

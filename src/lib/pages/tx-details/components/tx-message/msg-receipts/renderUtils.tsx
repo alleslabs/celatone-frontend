@@ -110,12 +110,12 @@ export const getGenericValueEntry = (
 };
 
 export const attachFundsReceipt = (value: Option<Coin[]>): TxReceipt => ({
-  title: "Attached Funds",
+  title: "Attached funds",
   html: value?.length ? (
     <CoinsComponent coins={value} />
   ) : (
-    <Text color="text.dark" variant="body2">
-      No Attached Funds
+    <Text variant="body2" color="text.dark">
+      No attached funds
     </Text>
   ),
 });
@@ -124,7 +124,7 @@ export const delegatorAddrReceipt = (
   value: BechAddr,
   addrType: LinkType
 ): TxReceipt => ({
-  title: "Delegator Address",
+  title: "Delegator address",
   html: getCommonReceiptHtml({
     type: "explorer",
     value,
@@ -133,7 +133,7 @@ export const delegatorAddrReceipt = (
 });
 
 export const validatorAddrReceipt = (value: ValidatorAddr): TxReceipt => ({
-  title: "Validator Address",
+  title: "Validator address",
   html: getCommonReceiptHtml({
     type: "explorer",
     value,
@@ -151,17 +151,17 @@ export const proposalIdReceipt = (value: Option<string>): TxReceipt => ({
 });
 
 export const clientStateReceipt = (value: object): TxReceipt => ({
-  title: "Client State",
+  title: "Client state",
   html: getCommonReceiptHtml({ type: "json", value }),
 });
 
 export const proofInitReceipt = (value: string): TxReceipt => ({
-  title: "Proof Init",
+  title: "Proof init",
   value,
 });
 
 export const proofHeightReceipt = (value: object): TxReceipt => ({
-  title: "Proof Height",
+  title: "Proof height",
   html: getCommonReceiptHtml({ type: "json", value }),
 });
 

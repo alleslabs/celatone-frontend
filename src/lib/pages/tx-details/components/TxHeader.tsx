@@ -27,7 +27,7 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
       <Flex align="center" justify="space-between">
         <Flex gap={2} mb={{ base: 2, md: 0 }} mt={{ base: 2, md: 4 }}>
           <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
-            {evm.enabled ? "Cosmos " : ""}Transaction Details
+            {evm.enabled ? "Cosmos transaction " : "Transaction "}Details
           </Heading>
           {isMobile && (
             <Flex
@@ -82,8 +82,8 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
         gap={{ base: 1, md: 2 }}
         w="full"
       >
-        <Text color="text.dark" fontWeight={500} variant="body2">
-          Transaction Hash:
+        <Text variant="body2" fontWeight={500} color="text.dark">
+          Transaction hash:
         </Text>
         <CopyLink
           amptrackSection="tx_header"

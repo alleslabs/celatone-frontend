@@ -84,7 +84,7 @@ export const MigrationMobileCard = ({
       middleContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel label="Code Name" variant="body3" />
+            <MobileLabel variant="body3" label="Code name" />
             <CodeNameCell
               code={{
                 id: history.codeId,
@@ -97,7 +97,7 @@ export const MigrationMobileCard = ({
           {isFullTier && (
             <>
               <Flex direction="column">
-                <MobileLabel label="CW2 Info" variant="body3" />
+                <MobileLabel variant="body3" label="CW2 info" />
                 <Text
                   color={cw2Info ? "text.main" : "text.disabled"}
                   variant="body2"
@@ -114,15 +114,31 @@ export const MigrationMobileCard = ({
           )}
         </Flex>
       }
-      topContent={
-        <Flex w="full">
-          <Flex align="center" flex={1} gap={2}>
-            <MobileLabel label="Code ID" variant="body2" />
-            <ExplorerLink
-              rightIcon={
-                <WasmVerifyBadge
-                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-                  status={getWasmVerifyStatus(wasmVerifyInfo)}
+      bottomContent={
+        <Flex w="full" direction="column" gap={3}>
+          <Flex>
+            {isFullTier && (
+              <Flex flex={1} direction="column">
+                <MobileLabel label="Sender" />
+                {history.sender ? (
+                  <ExplorerLink
+                    type={getAddressType(history.sender)}
+                    value={history.sender}
+                    textFormat="truncate"
+                    showCopyOnHover
+                  />
+                ) : (
+                  "N/A"
+                )}
+              </Flex>
+            )}
+            <Flex flex={1} direction="column">
+              <MobileLabel label="Block height" />
+              {history.height ? (
+                <ExplorerLink
+                  value={history.height.toString()}
+                  type="block_height"
+                  showCopyOnHover
                 />
               }
               showCopyOnHover

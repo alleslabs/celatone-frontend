@@ -74,6 +74,8 @@ export const ContractInputSection = ({
     <Flex gap={2} w="full">
       <ControllerInput
         control={control}
+        label="Contract address"
+        placeholder={`ex. ${truncate(contractExample)}`}
         helperText="Input must be the contract that you have admin access"
         label="Contract Address"
         name="contractAddress"
@@ -115,7 +117,7 @@ export const ContractInputSection = ({
     >
       <Grid flexGrow={1} gap={6} gridTemplateColumns="1fr 1fr">
         <GridItem>
-          <LabelText label="Contract Address">
+          <LabelText label="Contract address">
             {!isFetching ? (
               <ExplorerLink
                 showCopyOnHover
@@ -128,7 +130,7 @@ export const ContractInputSection = ({
           </LabelText>
         </GridItem>
         <GridItem>
-          <LabelText label="Contract Name">
+          <LabelText label="Contract name">
             {!isFetching ? (
               data?.contract.label
             ) : (
@@ -145,7 +147,7 @@ export const ContractInputSection = ({
           setIsChangeContract(true);
         }}
       >
-        Change Contract
+        Change contract
       </Button>
     </Flex>
   );

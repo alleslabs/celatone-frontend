@@ -52,7 +52,7 @@ export const CodeSelectSection = <T extends FieldValues>({
         >
           <Flex justify="space-around">
             <Radio value="select-existing">Select from your code</Radio>
-            <Radio value="fill-manually">Fill Code ID manually</Radio>
+            <Radio value="fill-manually">Fill code ID manually</Radio>
           </Flex>
         </RadioGroup>
       )}
@@ -70,8 +70,10 @@ export const CodeSelectSection = <T extends FieldValues>({
           <ControllerInput
             control={control}
             error={error}
-            helperText="Input existing Code ID manually"
             label="Code ID"
+            helperText="Input existing code ID manually"
+            variant="fixed-floating"
+            placeholder="ex. 1234"
             my={8}
             name={name}
             placeholder="ex. 1234"

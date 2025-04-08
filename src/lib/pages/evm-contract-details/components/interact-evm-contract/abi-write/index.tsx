@@ -94,7 +94,7 @@ export const AbiWrite = ({
             );
           }}
         >
-          {expandedIndexes.length ? "Collapse All" : "Expand All"}
+          {expandedIndexes.length ? "Collapse all" : "Expand all"}
         </Button>
       </Flex>
       {filteredAbiWrite.length ? (

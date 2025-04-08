@@ -28,7 +28,7 @@ const attachFundsOptions = [
     disabled: false,
   },
   {
-    label: "Provide JSON Asset List",
+    label: "Provide JSON asset list",
     value: AttachFundsType.ATTACH_FUNDS_JSON,
     disabled: false,
   },
@@ -78,7 +78,12 @@ export const AttachFund = ({
   <>
     <Flex mb={5}>
       <SelectInputBase
-        formLabel={showLabel ? "Attach Funds" : undefined}
+        formLabel={showLabel ? "Attach funds" : undefined}
+        options={attachFundsOptions}
+        onChange={(value: AttachFundsType) =>
+          setValue(ATTACH_FUNDS_OPTION, value)
+        }
+        initialSelected={attachFundsOption}
         helperTextComponent={
           <Text color="text.dark" variant="body3">
             Only the input values in your selected{" "}

@@ -118,7 +118,7 @@ export const ContractTop = ({
       <Breadcrumb
         items={[
           {
-            text: projectName ? "Public Projects" : "Contracts",
+            text: projectName ? "Public projects" : "Contracts",
             href: projectName ? "/projects" : "/contracts",
           },
           {
@@ -177,7 +177,7 @@ export const ContractTop = ({
                 variant="body2"
                 whiteSpace="nowrap"
               >
-                Contract Address:
+                Contract address:
               </Text>
               <CopyLink
                 amptrackSection="contract_top"
@@ -212,7 +212,7 @@ export const ContractTop = ({
                   minW={32}
                   variant="body2"
                 >
-                  Public Name:
+                  Public name:
                 </Text>
                 <Text className="ellipsis" variant="body2">
                   {publicInfo.name}
@@ -285,7 +285,7 @@ export const ContractTop = ({
               </Flex>
             )}
           </Flex>
-          <TotalValue address={contractAddress} isCompact label="Total Value" />
+          <TotalValue address={contractAddress} label="Total value" isCompact />
         </Flex>
       </Flex>
     </Flex>

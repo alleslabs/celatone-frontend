@@ -60,7 +60,7 @@ export const EditSavedAccountModal = ({
   }, [resetForm]);
 
   const handleSave = useHandleAccountSave({
-    title: `Updated Saved Account!`,
+    title: `Updated saved account!`,
     address: addressState,
     name: nameState,
     description: descriptionState,
@@ -89,6 +89,13 @@ export const EditSavedAccountModal = ({
         <ControllerInput
           autoFocus
           control={control}
+          label="Account name"
+          variant="fixed-floating"
+          placeholder="ex. Scan Account 1"
+          labelBgColor="gray.900"
+          rules={{
+            maxLength: constants.maxAccountNameLength,
+          }}
           error={
             errors.name && getMaxLengthError(nameState.length, "account_name")
           }
@@ -103,6 +110,13 @@ export const EditSavedAccountModal = ({
         />
         <ControllerTextarea
           control={control}
+          label="Account description"
+          placeholder="Help understanding what this account does ..."
+          variant="fixed-floating"
+          labelBgColor="gray.900"
+          rules={{
+            maxLength: constants.maxAccountDescriptionLength,
+          }}
           error={
             errors.description &&
             getMaxLengthError(descriptionState.length, "account_desc")

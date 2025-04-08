@@ -17,8 +17,8 @@ export const ProposalVotesTableHeader = ({
 
   if (isMobile)
     return (
-      <Grid minW="min-content" templateColumns={templateColumns}>
-        <TableHeader pl={0}>Address (Vote Answer)</TableHeader>
+      <Grid templateColumns={templateColumns} minW="min-content">
+        <TableHeader pl={0}>Address (Vote answer)</TableHeader>
         <TableHeader />
       </Grid>
     );
@@ -30,7 +30,7 @@ export const ProposalVotesTableHeader = ({
       {fullVersion && (
         <>
           <TableHeader>Timestamp</TableHeader>
-          <TableHeader>Transaction Hash</TableHeader>
+          <TableHeader>Transaction hash</TableHeader>
         </>
       )}
     </Grid>

@@ -18,7 +18,7 @@ export const MyModuleVerificationDetailsTop = ({
     <Breadcrumb
       items={[
         {
-          text: "My Past Verification",
+          text: "My past verification",
           href: "/my-module-verifications",
         },
         {
@@ -30,7 +30,7 @@ export const MyModuleVerificationDetailsTop = ({
       <Flex alignItems="center" gap={2}>
         <CustomIcon boxSize={6} color="primary.main" name="contract-address" />
         <Heading as="h5" variant="h5">
-          Verification Details
+          Verification details
         </Heading>
       </Flex>
       <Flex gap={1}>

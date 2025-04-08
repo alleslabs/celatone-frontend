@@ -30,7 +30,7 @@ const options: PermissionOption[] = [
     iconColor: "gray.600",
   },
   {
-    label: "Can Instantiate without proposal",
+    label: "Can instantiate without proposal",
     value: "without-proposal",
     disabled: false,
     icon: "instantiate",
@@ -53,7 +53,10 @@ export const FilterByPermission = ({
 }: FilterByPermissionProps) => (
   <Grid columnGap={4} maxW={{ md: maxWidth }} w="full">
     <SelectInputBase<PermissionFilterValue>
-      formLabel="Filter by Instantiate Permission"
+      formLabel="Filter by instantiate permission"
+      options={options}
+      onChange={setPermissionValue}
+      placeholder="Select"
       initialSelected={initialSelected}
       labelBgColor={labelBgColor}
       options={options}

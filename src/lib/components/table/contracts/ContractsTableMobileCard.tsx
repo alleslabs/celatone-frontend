@@ -53,21 +53,30 @@ export const ContractsTableMobileCard = ({
   wasmVerifyInfo,
 }: ContractsTableMobileCardProps) => (
   <MobileCardTemplate
-    bottomContent={
-      contractInfo.latestUpdated ? (
-        <div>
-          <Text variant="body3">{formatUTC(contractInfo.latestUpdated)}</Text>
-          <Text color="text.dark" variant="body3">
-            {`(${dateFromNow(contractInfo.latestUpdated)})`}
-          </Text>
-        </div>
-      ) : null
+    onClick={() => onRowSelect(contractInfo.contractAddress)}
+    topContent={
+      <Flex gap={2} align="center">
+        <MobileLabel variant="body2" label="Contract address" />
+        <ExplorerLink
+          value={contractInfo.contractAddress}
+          type="contract_address"
+          rightIcon={
+            contractInfo.codeId ? (
+              <WasmVerifyBadge
+                status={getWasmVerifyStatus(wasmVerifyInfo)}
+                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                linkedCodeId={contractInfo.codeId}
+              />
+            ) : undefined
+          }
+        />
+      </Flex>
     }
     middleContent={
       showLastUpdate && (
         <Flex direction="column" gap={3} w="full">
           <div>
-            <MobileLabel label="Contract Name" />
+            <MobileLabel label="Contract name" />
             <Text
               color="text.main"
               maxW="full"

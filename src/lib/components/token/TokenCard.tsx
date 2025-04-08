@@ -56,6 +56,10 @@ export const TokenCard = ({
             isSupportedToken(token) ? "supported_asset" : "unsupported_asset"
           }
           value={token.denom}
+          copyLabel="Token ID copied!"
+          display={{ base: "flex", md: "none" }}
+          ml={1}
+          amptrackSection={amptrackSection}
         />
       </Flex>
       <Flex

@@ -71,7 +71,7 @@ export const SelectContractAdmin = ({
           onOpen();
         }}
       >
-        {notSelected ? "Select Contract" : "Change Contract"}
+        {notSelected ? "Select contract" : "Change contract"}
       </Button>
 
       <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>

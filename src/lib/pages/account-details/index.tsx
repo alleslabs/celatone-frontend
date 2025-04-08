@@ -171,9 +171,9 @@ const AccountDetailsBody = ({
   const pageTitle = useMemo(() => {
     switch (true) {
       case address === accountAddress:
-        return "Your Account Detail";
+        return "Your account detail";
       case hexAddress === "0x1":
-        return "0x1 Page";
+        return "0x1 page";
       case !!accountData?.icns?.primaryName:
         return `${accountData.icns.primaryName} (Account)`;
       case !!initiaUsernameData?.username && move.enabled:
@@ -198,7 +198,7 @@ const AccountDetailsBody = ({
         {accountData?.projectInfo && accountData?.publicInfo && (
           <Breadcrumb
             items={[
-              { text: "Public Projects", href: "/projects" },
+              { text: "Public projects", href: "/projects" },
               {
                 text: accountData.projectInfo.name,
                 href: `/projects/${accountData.publicInfo.slug}`,
@@ -475,7 +475,8 @@ const AccountDetailsBody = ({
           <TabPanel mt={{ base: 0, md: 8 }} p={0}>
             <AssetsSection address={accountAddress} isAccount />
             <UserDocsLink
-              cta="Read more about Assets"
+              title="What is supported and unsupported assets?"
+              cta="Read more about assets"
               href="general/accounts/detail-page#assets"
               title="What is Supported and Unsupported Assets?"
             />
@@ -513,7 +514,8 @@ const AccountDetailsBody = ({
               scrollComponentId={tableHeaderId}
             />
             <UserDocsLink
-              cta="Read more about Account Transactions"
+              title="What is transactions related to the account?"
+              cta="Read more about Account transactions"
               href="general/accounts/detail-page#transactions"
               title="What is transactions related to the account?"
             />
@@ -567,7 +569,8 @@ const AccountDetailsBody = ({
               totalCount={resourcesData?.totalCount}
             />
             <UserDocsLink
-              cta="Read more about Resources in Account"
+              title="What is resources?"
+              cta="Read more about Resources in account"
               href="general/accounts/detail-page#resources"
               title="What is resources?"
             />
@@ -580,7 +583,8 @@ const AccountDetailsBody = ({
               totalCount={modulesData?.total}
             />
             <UserDocsLink
-              cta="Read more about Modules in Account"
+              title="What is modules?"
+              cta="Read more about Modules in account"
               href="general/accounts/detail-page#modules"
               title="What is modules?"
             />

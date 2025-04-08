@@ -55,7 +55,7 @@ export const EvmTxInfoMobile = ({
         </LabelText>
       </Flex>
       <Flex gap={1}>
-        <LabelText flex={1} label="Cosmos Tx">
+        <LabelText flex={1} label="Cosmos tx">
           <ExplorerLink
             fixedHeight={false}
             showCopyOnHover

@@ -187,7 +187,7 @@ export const SelectFund = ({
         variant="outline-primary"
         onClick={() => append({ denom: "", amount: "" })}
       >
-        Add More Asset
+        Add more asset
       </Button>
     </>
   );

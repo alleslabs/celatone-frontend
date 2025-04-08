@@ -170,8 +170,8 @@ export const Leaflet = () => {
               color="gray.600"
               name="info-circle"
             />
-            <Heading as="h5" variant="h5">
-              Compatible Upgrade Policy
+            <Heading variant="h5" as="h5">
+              Compatible upgrade policy
             </Heading>
             <ModalCloseButton color="gray.600" />
           </ModalHeader>
@@ -187,8 +187,8 @@ export const Leaflet = () => {
             </Text>
             <Header />
             <StructContent />
-            <Heading as="h6" mt={6} variant="h6">
-              Exposed Functions
+            <Heading variant="h6" as="h6" mt={6}>
+              Exposed functions
             </Heading>
             <Text my={3} variant="body2">
               New functions can be added, but all old functions must remain a

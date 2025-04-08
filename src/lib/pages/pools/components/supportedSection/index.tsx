@@ -109,9 +109,7 @@ export const SupportedSection = ({
       <Flex alignItems="center" mb={12}>
         <Flex gap={4} grow={2}>
           <InputWithIcon
-            amptrackSection="supported-pool-list-search"
-            placeholder="Search with Pool ID, Symbol or Token ID"
-            size={{ base: "md", md: "lg" }}
+            placeholder="Search with pool ID, symbol or token ID"
             value={keyword}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setCurrentPage(1);
@@ -174,7 +172,7 @@ export const SupportedSection = ({
                 setShowNewest(isDesc);
               }}
             >
-              {showNewest ? "Newest First" : "Oldest First"}
+              {showNewest ? "Newest first" : "Oldest first"}
               <CustomIcon
                 color="text.dark"
                 name={showNewest ? "arrow-down" : "arrow-up"}

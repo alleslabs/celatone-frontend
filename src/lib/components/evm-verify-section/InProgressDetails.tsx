@@ -22,8 +22,8 @@ export const InProgressDetails = ({
       contractAddress={contractAddress}
       evmVerifyInfo={evmVerifyInfo}
       triggerElement={
-        <Button size="sm" variant="ghost-primary">
-          View Verification Details
+        <Button variant="ghost-primary" size="sm">
+          View verification details
         </Button>
       }
     />

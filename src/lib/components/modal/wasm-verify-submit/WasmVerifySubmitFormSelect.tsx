@@ -57,7 +57,7 @@ export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
         },
       }}
     >
-      <Text className="form-label">Compiler Version</Text>
+      <Text className="form-label">Compiler version</Text>
       <SelectInput<WasmVerifySubmitFormOptionValue>
         chakraStyles={{
           placeholder: (provided: SystemStyleObject) => ({

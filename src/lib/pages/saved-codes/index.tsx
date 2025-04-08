@@ -62,7 +62,7 @@ const SavedCodes = observer(() => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="Saved Codes" />
+      <CelatoneSeo pageName="Saved codes" />
       <Flex alignItems="center" justifyContent="space-between" mb={4}>
         <Flex direction="column">
           <Flex align="center">
@@ -73,7 +73,7 @@ const SavedCodes = observer(() => {
               minH="36px"
               variant="h5"
             >
-              Saved Codes
+              Saved codes
             </Heading>
             <Badge ml={2} variant="primary">
               {savedCodesCount}
@@ -87,9 +87,7 @@ const SavedCodes = observer(() => {
       </Flex>
       <Flex gap={3} my={8}>
         <InputWithIcon
-          amptrackSection="saved-code-search"
-          placeholder="Search with Code ID or Code Name"
-          size="lg"
+          placeholder="Search with code ID or code name"
           value={keyword}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setValue("keyword", e.target.value)

@@ -16,7 +16,7 @@ export const OverviewVerifiedInfo = ({
 }: OverviewVerifiedInfoProps) => (
   <VStack alignItems="flex-start" spacing={4}>
     <Heading as="h6" variant="h6">
-      Verified Info
+      Verified info
     </Heading>
     <Grid
       columnGap={6}
@@ -27,14 +27,14 @@ export const OverviewVerifiedInfo = ({
       rowGap={4}
     >
       <LabelText label="Language">{evmVerifyInfo.language}</LabelText>
-      <LabelText label="Compiler Version">
+      <LabelText label="Compiler version">
         {evmVerifyInfo.compilerVersion}
       </LabelText>
-      <LabelText label="EVM Version">
+      <LabelText label="EVM version">
         {capitalize(evmVerifyInfo.evmVersion)}
       </LabelText>
       <Optimizer evmVerifyInfo={evmVerifyInfo} />
-      <LabelText label="License Type">
+      <LabelText label="License type">
         {getLicenseTypeLabel(evmVerifyInfo.license)}
       </LabelText>
     </Grid>

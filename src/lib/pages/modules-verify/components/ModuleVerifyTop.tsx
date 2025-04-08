@@ -10,13 +10,13 @@ export const ModuleVerifyTop = () => (
           href: "/my-module-verifications",
         },
         {
-          text: "Verify Modules",
+          text: "Verify modules",
         },
       ]}
     />
     <Stack gap={2}>
       <Heading as="h5" variant="h5">
-        Verify Modules
+        Verify modules
       </Heading>
       <Text color="text.dark" variant="body2">
         Verifying your module offers enhanced credibility with a verified badge.

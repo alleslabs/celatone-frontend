@@ -109,7 +109,7 @@ export const getSubHeaderFull = (
 
   if (isPool)
     base.push({
-      name: "Osmosis Pools",
+      name: "Osmosis pools",
       slug: "/pools",
       icon: "pool" as IconKeys,
     });

@@ -39,8 +39,8 @@ export const FailedDetails = ({
           contractAddress={contractAddress}
           evmVerifyInfo={evmVerifyInfo}
           triggerElement={
-            <Button size="sm" variant="ghost-primary">
-              Verify Details
+            <Button variant="ghost-primary" size="sm">
+              Verify details
             </Button>
           }
         />
@@ -58,13 +58,13 @@ export const FailedDetails = ({
           contractAddress={contractAddress}
           evmVerifyInfo={evmVerifyInfo}
           triggerElement={
-            <Button size="sm" variant="ghost-primary">
-              Verify Details
+            <Button variant="ghost-primary" size="sm">
+              Verify details
             </Button>
           }
         />
-        <Button size="sm" variant="ghost-primary" onClick={handleNavigate}>
-          Verify Again
+        <Button variant="ghost-primary" size="sm" onClick={handleNavigate}>
+          Verify again
         </Button>
       </HStack>
     </>

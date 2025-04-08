@@ -90,8 +90,8 @@ export const PastTxsLite = () => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="Past Transactions" />
-      <Flex alignItems="center" justifyContent="space-between">
+      <CelatoneSeo pageName="Past transactions" />
+      <Flex justifyContent="space-between" alignItems="center">
         <Heading
           alignItems="center"
           as="h5"
@@ -99,15 +99,13 @@ export const PastTxsLite = () => {
           minH="36px"
           variant="h5"
         >
-          Past Transactions
+          Past transactions
         </Heading>
         <UserDocsLink href="general/transactions/past-txs" isButton />
       </Flex>
       <Flex my={8}>
         <InputWithIcon
-          amptrackSection="past-txs-search"
-          placeholder="Search with Transaction Hash"
-          size={{ base: "md", md: "lg" }}
+          placeholder="Search with transaction hash"
           value={search}
           onChange={handleOnSearchChange}
         />

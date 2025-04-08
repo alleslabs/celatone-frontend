@@ -67,30 +67,30 @@ export const TxInfoMobile = ({
         </LabelText>
       </Flex>
       <Flex>
-        <LabelText flex={1} label="Transaction Fee">
+        <LabelText flex={1} label="Transaction fee">
           {feeToken ? (
             formatTokenWithValue(feeToken)
           ) : (
-            <Text color="text.dark" variant="body2">
-              No Fee
+            <Text variant="body2" color="text.dark">
+              No fee
             </Text>
           )}
         </LabelText>
-        <LabelText flex={1} label="Gas Used/Wanted">
+        <LabelText flex={1} label="Gas used/wanted">
           {`${formatInteger(txData.gasUsed)}/${formatInteger(
             txData.gasWanted
           )}`}
         </LabelText>
       </Flex>
       {gasRefundRatio && (
-        <LabelText flex={1} label="Gas Refund Percentage">
+        <LabelText flex={1} label="Gas refund percentage">
           {`${formatPrettyPercent(gasRefundRatio, 2, true)}`}
         </LabelText>
       )}
       <LabelText label="Memo">
         {txData.tx.body.memo || (
-          <Text color="text.dark" variant="body2">
-            No Memo
+          <Text variant="body2" color="text.dark">
+            No memo
           </Text>
         )}
       </LabelText>

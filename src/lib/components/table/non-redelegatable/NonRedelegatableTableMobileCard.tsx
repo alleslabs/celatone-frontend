@@ -24,9 +24,9 @@ export const NonRedelegatablesTableMobileCard = ({
     pt={3}
     w="full"
   >
-    <MobileLabel label="Cannot Redelegate From" />
+    <MobileLabel label="Cannot redelegate from" />
     <ValidatorBadge validator={nonRedelegatable.dstValidator} />
-    <MobileLabel label="Cannot Redelegate Until" />
+    <MobileLabel label="Cannot redelegate until" />
     <Flex direction="column">
       <Text variant="body2">{formatUTC(nonRedelegatable.completionTime)}</Text>
       <Text color="text.disabled" variant="body3">

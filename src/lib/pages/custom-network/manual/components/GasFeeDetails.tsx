@@ -51,6 +51,11 @@ const GasOptionStandard = ({
 }: Omit<GasFeeDetailsProps, "setValue" | "trigger">) => (
   <ControllerInput
     control={control}
+    label="Gas price"
+    variant="fixed-floating"
+    type="decimal"
+    w="full"
+    placeholder="0.00"
     error={errors.gasPrice?.message}
     label="Gas Price"
     name="gasPrice"
@@ -70,8 +75,8 @@ const GasOptionCustom = ({
   <>
     <Flex alignItems="center" justifyContent="space-between">
       <Box>
-        <Text color="gray.500" variant="body1">
-          Fixed Minimum Gas Price
+        <Text variant="body1" color="gray.500">
+          Fixed minimum gas price
         </Text>
         <Text color="error.main" variant="body3">
           (Required)
@@ -91,8 +96,8 @@ const GasOptionCustom = ({
     </Flex>
     <Flex alignItems="center" justifyContent="space-between">
       <Box>
-        <Text color="gray.500" variant="body1">
-          Low Gas Price
+        <Text variant="body1" color="gray.500">
+          Low gas price
         </Text>
         <Text color="error.main" variant="body3">
           (Required)
@@ -112,8 +117,8 @@ const GasOptionCustom = ({
     </Flex>
     <Flex alignItems="center" justifyContent="space-between">
       <Box>
-        <Text color="gray.500" variant="body1">
-          Average Gas Price
+        <Text variant="body1" color="gray.500">
+          Average gas price
         </Text>
         <Text color="error.main" variant="body3">
           (Required)
@@ -133,8 +138,8 @@ const GasOptionCustom = ({
     </Flex>
     <Flex alignItems="center" justifyContent="space-between">
       <Box>
-        <Text color="gray.500" variant="body1">
-          High Gas Price
+        <Text variant="body1" color="gray.500">
+          High gas price
         </Text>
         <Text color="error.main" variant="body3">
           (Required)
@@ -204,14 +209,20 @@ const GasFeeDetails = ({
   ]);
 
   return (
-    <Flex alignItems="center" direction="column" gap={2}>
-      <CustomNetworkPageHeader title="Add Gas & Fee Details" />
-      <Flex direction="column" gap={8} mt={8} w="full">
+    <Flex direction="column" gap={2} alignItems="center">
+      <CustomNetworkPageHeader title="Add Gas & Fee details" />
+      <Flex w="full" direction="column" gap={8} mt={8}>
         <Flex direction="column" gap={6}>
-          <CustomNetworkSubheader title="Gas & Fee Details" />
+          <CustomNetworkSubheader title="Gas & Fee details" />
           <Flex gap={6}>
             <ControllerInput
               control={control}
+              label="Gas adjustment"
+              variant="fixed-floating"
+              type="decimal"
+              w="full"
+              placeholder="0.00"
+              rules={{ required: "" }}
               error={errors.gasAdjustment?.message}
               label="Gas Adjustment"
               name="gasAdjustment"
@@ -224,6 +235,12 @@ const GasFeeDetails = ({
             />
             <ControllerInput
               control={control}
+              label="Max gas limit"
+              variant="fixed-floating"
+              type="decimal"
+              w="full"
+              placeholder="0.00"
+              rules={{ required: "" }}
               error={errors.maxGasLimit?.message}
               label="Max Gas Limit"
               name="maxGasLimit"
@@ -237,9 +254,9 @@ const GasFeeDetails = ({
           </Flex>
           <ControllerInput
             control={control}
-            error={errors.denom?.message}
-            label="Fee Tokens Denom"
-            name="denom"
+            label="Fee tokens denom"
+            variant="fixed-floating"
+            w="full"
             placeholder="ex. uinit"
             rules={{ required: "" }}
             variant="fixed-floating"
@@ -247,7 +264,7 @@ const GasFeeDetails = ({
           />
         </Flex>
         <Flex direction="column" gap={6}>
-          <CustomNetworkSubheader title="Gas Price Configuration" />
+          <CustomNetworkSubheader title="Gas price configuration" />
           <RadioGroup
             value={gasConfig}
             onChange={(nextVal) =>
@@ -260,7 +277,7 @@ const GasFeeDetails = ({
                 variant="gray-card"
                 width="fit-content"
               >
-                Standard Gas Price
+                Standard gas price
                 <Text variant="body3">
                   Set the standard gas price as the default for all gas price
                   configurations
@@ -271,7 +288,7 @@ const GasFeeDetails = ({
                 variant="gray-card"
                 width="fit-content"
               >
-                Custom Gas Prices
+                Custom gas prices
                 <Text variant="body3">
                   Set the custom value for minimum, low, average, and high gas
                   price
@@ -289,8 +306,8 @@ const GasFeeDetails = ({
         <Accordion allowToggle w="full">
           <AccordionItem>
             <AccordionButton p={4}>
-              <Text>Advanced Options</Text>
-              <AccordionIcon boxSize={6} color="gray.600" ml="auto" />
+              <Text>Advanced options</Text>
+              <AccordionIcon color="gray.600" ml="auto" boxSize={6} />
             </AccordionButton>
             <AccordionPanel pb={4} pt={0}>
               <Flex gap={6} mt={2}>
@@ -300,6 +317,11 @@ const GasFeeDetails = ({
                   label="Gas Cost for Cosmos Send"
                   labelBgColor="gray.900"
                   name="cosmos_send"
+                  control={control}
+                  label="Gas cost for cosmos Send"
+                  variant="fixed-floating"
+                  type="decimal"
+                  w="full"
                   placeholder="0.00"
                   restrictedNumberInputParams={restrictedNumberInputParams}
                   type="decimal"
@@ -312,6 +334,11 @@ const GasFeeDetails = ({
                   label="Gas Cost for IBC"
                   labelBgColor="gray.900"
                   name="ibc_transfer"
+                  control={control}
+                  label="Gas cost for IBC"
+                  variant="fixed-floating"
+                  type="decimal"
+                  w="full"
                   placeholder="0.00"
                   restrictedNumberInputParams={restrictedNumberInputParams}
                   type="decimal"

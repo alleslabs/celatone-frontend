@@ -32,7 +32,7 @@ export const FullEditorSidebarMobile = ({
         borderStyle="solid"
       >
         <Heading as="h5" variant="h5">
-          File Tree
+          File tree
         </Heading>
       </DrawerHeader>
       <DrawerCloseButton color="text.dark" />

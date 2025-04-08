@@ -18,7 +18,7 @@ export const EvmVerifyProcess = ({ evmVerifyInfo }: EvmVerifyProcessProps) => {
   return (
     <Flex direction="column">
       <Text fontWeight={600} variant="body1">
-        Verification Process
+        Verification process
       </Text>
       <Flex direction="column" mt={4}>
         {steps.map((step, index) => (

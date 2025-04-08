@@ -13,6 +13,8 @@ export const SaveContractDetailsModal = ({
   triggerElement,
 }: SaveContractDetailsProps) => (
   <ContractDetailsTemplateModal
+    title="Save contract details"
+    icon="bookmark-solid"
     contractLocalInfo={contractLocalInfo}
     defaultList={DEFAULT_LIST}
     icon="bookmark-solid"

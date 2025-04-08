@@ -10,7 +10,7 @@ const ModuleInfoBodyPublishedAndRepublished = ({
   modulePublishInfo,
 }: Pick<ModuleInfoProps, "modulePublishInfo">) => {
   const labelPrefix = modulePublishInfo?.isRepublished
-    ? "Latest Republished"
+    ? "Latest republished"
     : "Published";
 
   if (modulePublishInfo?.recentPublishTransaction) {
@@ -59,8 +59,8 @@ export const ModuleInfoBody = ({
       gridTemplateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
       padding={4}
     >
-      <LabelText label="Upgrade Policy">{upgradePolicy}</LabelText>
-      <LabelText helperText1="(Wallet Address)" label="Published by">
+      <LabelText label="Upgrade policy">{upgradePolicy}</LabelText>
+      <LabelText label="Published by" helperText1="(Wallet Address)">
         {address ? (
           <ExplorerLink showCopyOnHover type="user_address" value={address} />
         ) : (
@@ -71,6 +71,7 @@ export const ModuleInfoBody = ({
         <>
           {modulePublishInfo?.recentPublishBlockTimestamp && (
             <LabelText
+              label="Published block height"
               helperText1={formatUTC(
                 modulePublishInfo.recentPublishBlockTimestamp
               )}

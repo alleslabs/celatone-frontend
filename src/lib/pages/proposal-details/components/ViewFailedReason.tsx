@@ -29,7 +29,7 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
           variant="body2"
           whiteSpace="nowrap"
         >
-          View Failed Reason
+          View failed reason
         </Text>
       </Tooltip>
     );
@@ -45,7 +45,7 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
         variant="body2"
         onClick={onOpen}
       >
-        View Failed Reason
+        View failed reason
       </Text>
 
       <Modal
@@ -56,7 +56,7 @@ export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Failed Reason</ModalHeader>
+          <ModalHeader>Failed reason</ModalHeader>
           <ModalCloseButton color="gray.600" />
           <ModalBody>
             <Box

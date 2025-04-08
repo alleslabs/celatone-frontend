@@ -52,7 +52,7 @@ const getTooltipText = (
 const getTextProperties = (badgeStatus: BadgeStatus) => {
   switch (badgeStatus) {
     case BadgeStatus.IN_PROGRESS:
-      return { label: "In Progress", color: "text.dark" };
+      return { label: "In progress", color: "text.dark" };
     case BadgeStatus.VERIFIED:
       return {
         label: "Verified",
@@ -60,7 +60,7 @@ const getTextProperties = (badgeStatus: BadgeStatus) => {
       };
     case BadgeStatus.INDIRECTLY_VERIFIED:
       return {
-        label: "Indirectly Verified",
+        label: "Indirectly verified",
         color: "secondary.main",
       };
     default:

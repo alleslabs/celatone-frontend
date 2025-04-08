@@ -16,7 +16,7 @@ export const ViewMore = ({
   onClick,
   borderRadius = "0",
   minH = "64px",
-  text = "View More",
+  text = "View more",
 }: ViewMoreProps) => (
   <Flex justifyContent="center" textAlign="center" w="full">
     <Button

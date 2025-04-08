@@ -26,30 +26,30 @@ interface FilterByPoolTypeProps {
 
 const options: PoolTypeOption[] = [
   {
-    label: "All Pools",
+    label: "All pools",
     value: PoolType.ALL,
     disabled: false,
   },
   {
-    label: "Balancer Pools",
+    label: "Balancer pools",
     value: PoolType.BALANCER,
     image: <BalancerPoolIcon boxSize={5} />,
     disabled: false,
   },
   {
-    label: "StableSwap Pools",
+    label: "StableSwap pools",
     value: PoolType.STABLESWAP,
     image: <StableSwapIcon boxSize={5} />,
     disabled: false,
   },
   {
-    label: "Concentrated Liquidity Pools",
+    label: "Concentrated liquidity pools",
     value: PoolType.CL,
     image: <ClpIcon boxSize={5} />,
     disabled: false,
   },
   {
-    label: "CosmWasm Pools",
+    label: "CosmWasm pools",
     value: PoolType.COSMWASM,
     image: <CosmWasmPoolIcon boxSize={5} />,
     disabled: false,
@@ -63,9 +63,7 @@ export const FilterByPoolType = ({
 }: FilterByPoolTypeProps) => (
   <Grid columnGap="16px" maxW="360px" w="full">
     <SelectInputBase<PoolTypeFilter>
-      formLabel="Filter by Pool Type"
-      initialSelected={initialSelected}
-      labelBgColor={labelBgColor}
+      formLabel="Filter by pool type"
       options={options}
       onChange={(newVal) => {
         trackUseFilter(AmpEvent.USE_FILTER_POOL_TYPE, [newVal], newVal);

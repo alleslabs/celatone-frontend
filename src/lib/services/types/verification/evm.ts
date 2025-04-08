@@ -20,7 +20,7 @@ type SubmitEvmVerifyBaseArgs = {
 export type SubmitEvmVerifySolidityContractCodeArgs = SubmitEvmVerifyBaseArgs &
   EvmContractVerifyForm["verifyForm"]["solidityContractCode"];
 
-// MARK - Solidity Json Input
+// MARK - Solidity JSON Input
 export type SubmitEvmVerifySolidityJsonInputArgs = SubmitEvmVerifyBaseArgs &
   EvmContractVerifyForm["verifyForm"]["solidityJsonInput"];
 
@@ -32,7 +32,7 @@ export type SubmitEvmVerifySolidityUploadFilesArgs = SubmitEvmVerifyBaseArgs &
 export type SubmitEvmVerifyVyperContractCodeArgs = SubmitEvmVerifyBaseArgs &
   EvmContractVerifyForm["verifyForm"]["vyperContractCode"];
 
-// MARK - Vyper Json Input
+// MARK - Vyper JSON Input
 export type SubmitEvmVerifyVyperJsonInputArgs = SubmitEvmVerifyBaseArgs &
   EvmContractVerifyForm["verifyForm"]["vyperJsonInput"];
 

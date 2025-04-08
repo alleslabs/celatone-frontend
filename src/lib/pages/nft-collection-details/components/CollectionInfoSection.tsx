@@ -46,8 +46,8 @@ export const CollectionInfoSection = ({
   const infoGap = isMobile ? 1 : 4;
   return (
     <Flex direction="column">
-      <Heading as="h6" fontWeight={600} mb={6} variant="h6">
-        Collection Information
+      <Heading as="h6" variant="h6" fontWeight={600} mb={6}>
+        Collection information
       </Heading>
       <Flex direction={{ base: "column", md: "row" }} mb={{ base: 4, md: 10 }}>
         <Flex
@@ -58,6 +58,7 @@ export const CollectionInfoSection = ({
           minW={60}
         >
           <LabelText
+            label="Created block height"
             helperText1={formatUTC(timestamp)}
             helperText2={dateFromNow(timestamp)}
             label="Created Block Height"
@@ -79,7 +80,7 @@ export const CollectionInfoSection = ({
               value={creatorAddress}
             />
           </LabelText>
-          <LabelText label="Created Transaction">
+          <LabelText label="Created transaction">
             <ExplorerLink
               ampCopierSection="collection-creation-information"
               showCopyOnHover
@@ -121,7 +122,7 @@ export const CollectionInfoSection = ({
               variant="body2"
               wordBreak="break-word"
             >
-              {collectionName || "Untitled Collection"}
+              {collectionName || "Untitled collection"}
             </Text>
           </Flex>
           <Flex flexDir={infoDirection} gap={infoGap}>
@@ -164,6 +165,8 @@ export const CollectionInfoSection = ({
         />
         {isFullTier && (
           <InfoCard
+            title="Mutate events"
+            icon="migrate"
             content={mutateEventes}
             icon="migrate"
             isDisabled={mutateEventes === 0}

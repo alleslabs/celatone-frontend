@@ -93,7 +93,7 @@ export const FieldTemplate = <T extends FieldValues>({
             ])
           }
         >
-          Add Item
+          Add item
         </Button>
       )}
     </Flex>

@@ -57,8 +57,8 @@ export const VerifiedDetails = ({
         codeHash={codeHash}
         relatedVerifiedCodes={relatedVerifiedCodes}
         triggerElement={
-          <Button size="sm" variant="ghost-primary">
-            View Details
+          <Button variant="ghost-primary" size="sm">
+            View details
           </Button>
         }
         verificationInfo={verificationInfo}
@@ -67,7 +67,7 @@ export const VerifiedDetails = ({
   ) : (
     <Flex direction="column" gap={6} w="full">
       <Flex direction="column" gap={1}>
-        <Text {...baseTextStyle}>Source Code:</Text>
+        <Text {...baseTextStyle}>Source code:</Text>
         <Flex
           alignItems="center"
           gap={1}
@@ -99,7 +99,7 @@ export const VerifiedDetails = ({
       </Flex>
       <Flex direction={{ base: "column", md: "row" }} gap={{ base: 6, md: 12 }}>
         <Flex direction="column" gap={1}>
-          <Text {...baseTextStyle}>Compiler Version</Text>
+          <Text {...baseTextStyle}>Compiler version</Text>
           <Text color="text.main" variant="body2">
             {verificationInfo.compilerVersion}
           </Text>
@@ -134,8 +134,8 @@ export const VerifiedDetails = ({
                   },
                 }}
               >
-                <Text color="primary.main" fontWeight={600} variant="body2">
-                  View Details
+                <Text color="primary.main" variant="body2" fontWeight={600}>
+                  View details
                 </Text>
               </Flex>
             }

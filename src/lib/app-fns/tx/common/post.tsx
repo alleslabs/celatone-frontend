@@ -37,7 +37,7 @@ export const postTx = <T extends DeliverTxResponse>({
           phase: TxStreamPhase.BROADCAST,
           receipts: [
             {
-              title: "Tx Hash",
+              title: "Tx hash",
               html: (
                 <ExplorerLink
                   openNewTab
@@ -47,7 +47,7 @@ export const postTx = <T extends DeliverTxResponse>({
               ),
             },
             {
-              title: "Tx Fee",
+              title: "Tx fee",
               // TODO: Implement event/rawlog attribute picker
               html: (
                 <EstimatedFeeRender
@@ -58,7 +58,7 @@ export const postTx = <T extends DeliverTxResponse>({
             },
           ],
           receiptInfo: {
-            header: "Sending Transaction",
+            header: "Sending transaction",
           },
           actionVariant: "sending",
         } as TxResultRendering<T>;

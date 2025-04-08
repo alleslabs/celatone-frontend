@@ -10,7 +10,7 @@ export const PoolTxsTableHeader = ({
 }) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader />
-    <TableHeader>Transaction Hash</TableHeader>
+    <TableHeader>Transaction hash</TableHeader>
     <TableHeader />
     <TableHeader>Actions</TableHeader>
     <TableHeader>Sender</TableHeader>

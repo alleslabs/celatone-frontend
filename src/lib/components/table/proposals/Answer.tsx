@@ -66,7 +66,7 @@ export const Answer = ({
           label={[
             ["Yes", yes],
             ["No", no],
-            ["No With Veto", noWithVeto],
+            ["No with veto", noWithVeto],
             ["Abstain", abstain],
           ].map(([label, value]) => (
             <Flex key={label} gap={1}>

@@ -15,16 +15,16 @@ export const SavedAccountModalHeader = ({
   const move = useMoveConfig({ shouldRedirect: false });
   return (
     <Flex direction="column" gap={1}>
-      <Flex alignItems="center" gap={4} pt={6}>
-        <Text color="text.main" fontWeight={500} minW={32} variant="body2">
-          Account Address
+      <Flex gap={4} alignItems="center" pt={6}>
+        <Text variant="body2" fontWeight={500} color="text.main" minW={32}>
+          Account address
         </Text>
         <ExplorerLink type="user_address" value={address} />
       </Flex>
       {move.enabled && (
-        <Flex alignItems="center" gap={4}>
-          <Text color="text.main" fontWeight={500} minW={32} variant="body2">
-            Hex Address
+        <Flex gap={4} alignItems="center">
+          <Text variant="body2" fontWeight={500} color="text.main" minW={32}>
+            Hex address
           </Text>
           <ExplorerLink
             type="user_address"

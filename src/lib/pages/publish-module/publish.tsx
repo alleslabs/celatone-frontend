@@ -210,7 +210,7 @@ export const PublishModule = ({
 
   return (
     <>
-      <CelatoneSeo pageName="Publish / Republish Modules" />
+      <CelatoneSeo pageName="Publish / Republish modules" />
       <PageContainer p={0}>
         <Box maxW="1440px" minH="inherit" mx="auto">
           <Grid
@@ -264,13 +264,13 @@ export const PublishModule = ({
                   append(emptyModule);
                 }}
               >
-                Publish More Modules
+                Publish more modules
               </Button>
             </Box>
             {/* Upgrade Policy Section */}
             <Box gridArea="3 / 2">
               <Heading as="h6" variant="h6">
-                Upgrade Policy
+                Upgrade policy
               </Heading>
               <Text color="text.dark" mt={2} variant="body2">
                 Specify how publishing modules will be able to republish.
@@ -299,7 +299,7 @@ export const PublishModule = ({
                 gap={1}
                 mt={12}
               >
-                <p>Transaction Fee:</p>
+                <p>Transaction fee:</p>
                 <EstimatedFeeRender
                   estimatedFee={estimatedFee}
                   loading={isSimulating}

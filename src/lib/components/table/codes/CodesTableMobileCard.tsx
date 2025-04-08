@@ -53,7 +53,7 @@ export const CodesTableMobileCard = ({
       middleContent={
         showCw2andContracts && (
           <Flex direction="column">
-            <MobileLabel label="CW2 Info" />
+            <MobileLabel label="CW2 info" />
             <Text
               color={cw2Info ? "text.main" : "text.disabled"}
               wordBreak="break-all"

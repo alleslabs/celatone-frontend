@@ -30,7 +30,7 @@ export const SIDEBAR_WHITELIST_DETAILS: (
       ),
       toPage: true,
       toPagePath: "/proposals/store-code",
-      toPageTitle: "Submit Proposal To Store Code",
+      toPageTitle: "Submit proposal to store code",
     },
     permissionless: {
       page: whitelistPage,
@@ -103,7 +103,7 @@ export const SIDEBAR_STORE_CODE_DETAILS: (
       ),
       toPage: true,
       toPagePath: "/deploy",
-      toPageTitle: "Go To Deploy Contract",
+      toPageTitle: "Go to deploy contract",
     },
   })[permission];
 
@@ -113,16 +113,16 @@ export const PROPOSAL_STORE_CODE_TEXT = {
     "To store your contract code, you need to submit a `StoreCodeProposal`. After the proposal passes, the code will be stored on-chain and can then be instantiated.",
   connectWallet: "You need to connect wallet to proceed this action",
   titlePlaceholder: "ex. Store code for ...",
-  titleLabel: "Proposal Title",
+  titleLabel: "Proposal title",
   titleRequired: "Proposal Title is required",
   descriptionPlaceholder:
     "Usually details information such as the team behind the contract, what the contract does, the benefits the contract will have to the chain/ecosystem, and the compiled code checksum or commit hash for the code on GitHub etc.",
-  descriptionLabel: "Proposal Description",
+  descriptionLabel: "Proposal description",
   descriptionRequired: "Proposal Description is required",
   runAsLabel: "Run as",
   runAsHelperText: "This address will be stored as code creator.",
   runAsRequired: "Creator is required",
-  uploadHeader: "Upload Wasm File",
+  uploadHeader: "Upload Wasm file",
   unpinLabel: "Unpin code",
   unpinTooltip:
     "Unpin removes the guarantee of a contract to be pinned. After calling this, the code may or may not remain in memory depending on the implementor's choice. Unpin is idempotent.",
@@ -140,7 +140,7 @@ export const PROPOSAL_STORE_CODE_TEXT = {
   sourceHelperText:
     "Please provide absolute or path-absolute URL (ex. https://github.com/example/url/)",
   sourcePattern: /^(?!:)[a-zA-Z0-9+.-]+:/,
-  permissionTitle: "Instantiate Permission",
+  permissionTitle: "Instantiate permission",
   permissionDescription:
     "If the proposal is passed, the stored code can be instantiated to a contract by your selected option",
 };

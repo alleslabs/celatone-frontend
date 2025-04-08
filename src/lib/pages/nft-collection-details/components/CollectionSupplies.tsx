@@ -50,6 +50,11 @@ export const CollectionSupplies = ({
   return (
     <Box gap="40px" mt="32px">
       <InputWithIcon
+        placeholder="Search with token ID or NFT VM address"
+        value={searchKeyword}
+        autoFocus={!isMobile}
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        size={{ base: "md", md: "lg" }}
         amptrackSection="collection-supplies-tokenId-search"
         autoFocus={!isMobile}
         placeholder="Search with Token ID or NFT VM Address"

@@ -11,7 +11,8 @@ export const EditCodeDetailsModal = ({
   triggerElement,
 }: EditCodeDetailsModalProps) => (
   <CodeDetailsTemplateModal
-    codeInfo={codeInfo}
+    title="Edit code name"
+    mainBtnTitle="Save"
     icon="edit"
     isNewCode={false}
     mainBtnTitle="Save"

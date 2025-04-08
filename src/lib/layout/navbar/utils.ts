@@ -13,12 +13,12 @@ import { formatSlugName, getListIcon } from "lib/utils";
 
 export const getYourAccountSubmenu = (address: Option<BechAddr20>) => [
   {
-    name: "Past Transactions",
+    name: "Past transactions",
     slug: "/past-txs",
     icon: "history" as IconKeys,
   },
   {
-    name: "Your Account Details",
+    name: "Your account details",
     slug: `/accounts/${address}`,
     icon: "admin" as IconKeys,
     isDisable: !address,
@@ -40,7 +40,7 @@ export const getYourAccountSubmenuLite = (isWasm: boolean, isMove: boolean) => [
   ...(isMove
     ? [
         {
-          name: "My Published Modules",
+          name: "My published modules",
           slug: "/my-published-modules",
           icon: "contract-address" as IconKeys,
         },
@@ -55,7 +55,7 @@ export const getPublicProjectsSubmenu = (
   hasPublicProject
     ? [
         {
-          category: "Public Projects",
+          category: "Public projects",
           slug: StorageKeys.ProjectSidebar,
           submenu: [
             ...projects.map((list) => ({
@@ -64,7 +64,7 @@ export const getPublicProjectsSubmenu = (
               logo: list.logo || UNDEFINED_ICON_LIST[0],
             })),
             {
-              name: "View All Projects",
+              name: "View all projects",
               slug: "/projects",
               icon: "public-project" as IconKeys,
             },
@@ -77,7 +77,7 @@ export const getDevSubmenuMove = (isMove: boolean) =>
   isMove
     ? [
         {
-          name: "0x1 Page",
+          name: "0x1 page",
           slug: "/accounts/0x1",
           icon: "0x1" as IconKeys,
           trackEvent: () => track(AmpEvent.USE_TO_0X1_PAGE),
@@ -93,7 +93,7 @@ export const getDevSubmenuMove = (isMove: boolean) =>
           icon: "execute" as IconKeys,
         },
         {
-          name: "Deploy Script",
+          name: "Deploy script",
           slug: "/deploy-script",
           icon: "code" as IconKeys,
         },
@@ -104,7 +104,7 @@ export const getDevSubmenuWasm = (isWasm: boolean) =>
   isWasm
     ? [
         {
-          name: "Deploy Contract",
+          name: "Deploy contract",
           slug: "/deploy",
           icon: "add-new" as IconKeys,
         },
@@ -119,7 +119,7 @@ export const getDevSubmenuWasm = (isWasm: boolean) =>
           icon: "migrate" as IconKeys,
         },
         // {
-        //   name: "Recent Activities",
+        //   name: "Recent activities",
         //   slug: "/",
         //   icon: "list" as IconKeys,
         // },
@@ -130,10 +130,10 @@ export const getWalletSubSectionMove = (isMove: boolean) =>
   isMove
     ? [
         {
-          category: "This Wallet",
+          category: "This wallet",
           submenu: [
             {
-              name: "My Published Modules",
+              name: "My published modules",
               slug: "/my-published-modules",
               icon: "contract-address" as IconKeys,
             },
@@ -149,12 +149,12 @@ export const getWalletSubSectionWasm = (
   isWasm
     ? [
         {
-          category: "This Wallet",
+          category: "This wallet",
           submenu: [
             ...(isFullTier
               ? [
                   {
-                    name: "My Stored Codes",
+                    name: "My stored codes",
                     slug: "/stored-codes",
                     icon: "code" as IconKeys,
                   },
@@ -174,7 +174,7 @@ export const getDeviceSubmenuWasm = (isWasm: boolean) =>
   isWasm
     ? [
         {
-          name: "Saved Codes",
+          name: "Saved codes",
           slug: "/saved-codes",
           icon: "code" as IconKeys,
         },
@@ -184,18 +184,18 @@ export const getDeviceSubmenuWasm = (isWasm: boolean) =>
           icon: "contract-address" as IconKeys,
         },
         {
-          name: "View All Contract List",
+          name: "View all contract list",
           slug: "/contract-lists",
           icon: "more" as IconKeys,
         },
       ]
     : [];
 
-export const getDeviceSubmenuMove = (isMove: boolean) =>
-  isMove
+export const getDeviceSubmenuMove = (enabled: boolean) =>
+  enabled
     ? [
         {
-          name: "My Past Verification",
+          name: "My past verification",
           slug: "/my-module-verifications",
           icon: "list" as IconKeys,
         },

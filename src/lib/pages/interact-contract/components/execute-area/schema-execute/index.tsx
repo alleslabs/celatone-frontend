@@ -92,8 +92,8 @@ export const SchemaExecute = ({
       >
         <Flex alignItems="center" direction="column">
           <StateImage imageVariant="not-found" imageWidth="128px" />
-          <Text fontWeight={700} mt={2} variant="body1">
-            {verifiedSchema ? "Verified" : "Attached"} JSON Schema doesn’t have
+          <Text variant="body1" fontWeight={700} mt={2}>
+            {verifiedSchema ? "Verified" : "Attached"} JSON schema doesn’t have
             ExecuteMsg
           </Text>
           {!verifiedSchema && (
@@ -123,9 +123,7 @@ export const SchemaExecute = ({
     <>
       <Flex gap={6} mb={6}>
         <InputWithIcon
-          amptrackSection="execute-message-search"
-          placeholder="Search by Execute Message"
-          size="md"
+          placeholder="Search by execute message"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
@@ -145,7 +143,7 @@ export const SchemaExecute = ({
             );
           }}
         >
-          {expandedIndexes.length ? "Collapse All" : "Expand All"}
+          {expandedIndexes.length ? "Collapse all" : "Expand all"}
         </Button>
       </Flex>
       {filteredMsgs?.length ? (

@@ -64,9 +64,9 @@ export const ModuleVerifyAdvancedOptions = ({
             p={4}
             w="full"
           >
-            <Flex alignItems="flex-start" direction="column" gap={1}>
-              <Text>Advanced Options</Text>
-              <Text color="text.dark" textAlign="left" variant="body3">
+            <Flex direction="column" gap={1} alignItems="flex-start">
+              <Text>Advanced options</Text>
+              <Text variant="body3" color="text.dark" textAlign="left">
                 Skip this section if you built your module with default
                 settings. Otherwise, ensure your specified versions match here
                 to prevent verification errors.
@@ -78,8 +78,7 @@ export const ModuleVerifyAdvancedOptions = ({
         <AccordionPanel>
           <Stack gap={6}>
             <SelectInput
-              label="Language Version"
-              labelBg="gray.900"
+              label="Language version"
               menuPortalTarget={document.body}
               options={languageVersionOptions}
               placeholder="Select language version"
@@ -92,8 +91,7 @@ export const ModuleVerifyAdvancedOptions = ({
               }}
             />
             <SelectInput
-              label="Compiler Version"
-              labelBg="gray.900"
+              label="Compiler version"
               menuPortalTarget={document.body}
               options={compilerVersionOptions}
               placeholder="Select compiler version"
@@ -106,8 +104,7 @@ export const ModuleVerifyAdvancedOptions = ({
               }}
             />
             <SelectInput
-              label="Bytecode Version"
-              labelBg="gray.900"
+              label="Bytecode version"
               menuPortalTarget={document.body}
               options={bytecodeVersionOptions}
               placeholder="Select bytecode version"

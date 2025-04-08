@@ -60,7 +60,7 @@ export const PublicProjectContractMobileCard = ({
       topContent={
         <>
           <Flex align="start" direction="column">
-            <MobileLabel label="Contract Address" variant="body2" />
+            <MobileLabel variant="body2" label="Contract address" />
             <ExplorerLink
               rightIcon={
                 <WasmVerifyBadge
@@ -90,7 +90,29 @@ export const PublicProjectContractMobileCard = ({
           </Flex>
         </>
       }
-      onClick={goToContractDetails}
+      middleContent={
+        <Flex direction="column" gap={3}>
+          <Flex flex={1} direction="column">
+            <Flex direction="column">
+              <MobileLabel label="Contract name" />
+              <Text>{publicInfo.name}</Text>
+              <Text variant="body3" color="text.dark" pt={1}>
+                {publicInfo.description}
+              </Text>
+            </Flex>
+          </Flex>
+          <Flex flex={1} direction="column">
+            <Flex direction="column">
+              <MobileLabel label="Instantiated by" />
+              <ExplorerLink
+                value={publicInfo.instantiator}
+                type={getAddressTypeByLength(publicInfo.instantiator)}
+                showCopyOnHover
+              />
+            </Flex>
+          </Flex>
+        </Flex>
+      }
     />
   );
 };

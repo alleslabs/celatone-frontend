@@ -45,7 +45,7 @@ export const migrateContractTx = ({
         phase: TxStreamPhase.SUCCEED,
         receipts: [
           {
-            title: "Tx Hash",
+            title: "Tx hash",
             value: txInfo.transactionHash,
             html: (
               <ExplorerLink
@@ -56,7 +56,7 @@ export const migrateContractTx = ({
             ),
           },
           {
-            title: "Tx Fee",
+            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
@@ -66,7 +66,7 @@ export const migrateContractTx = ({
           },
         ],
         receiptInfo: {
-          header: "Migration Complete!",
+          header: "Migration complete!",
           headerIcon: (
             <CustomIcon color="success.main" name="check-circle-solid" />
           ),

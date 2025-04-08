@@ -50,7 +50,8 @@ export const ActivitiesFull = ({ collectionAddress }: ActivitiesFullProps) => {
         Activities in this collection
       </Heading>
       <InputWithIcon
-        amptrackSection="activities-in-this-collection-search"
+        placeholder="Search by tx hash / token ID / NFT address"
+        value={searchKeyword}
         autoFocus
         placeholder="Search by Tx Hash / Token Id / NFT Address"
         size={{ base: "md", md: "lg" }}

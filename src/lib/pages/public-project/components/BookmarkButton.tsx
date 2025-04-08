@@ -112,6 +112,10 @@ export const BookmarkButton = observer(
           />
         ) : (
           <StyledButton
+            variant="outline-gray"
+            hasText={hasText}
+            icon="bookmark"
+            actionText="Bookmark project"
             action={(e) => {
               if (details) {
                 e.stopPropagation();

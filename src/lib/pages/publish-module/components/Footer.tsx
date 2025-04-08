@@ -16,7 +16,7 @@ export const Footer = ({
 }: FooterProps) => {
   const router = useRouter();
   const publishText =
-    fieldAmount > 1 ? `Publish ${fieldAmount} Modules` : "Publish Module";
+    fieldAmount > 1 ? `Publish ${fieldAmount} modules` : "Publish module";
   return (
     <Box bg="gray.900" bottom={0} h="70px" position="sticky" zIndex={2}>
       <Grid

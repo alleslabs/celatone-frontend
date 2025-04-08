@@ -28,7 +28,7 @@ export const EvmVerifyRequestInfo = ({
     return (
       <>
         <HStack>
-          <Text {...baseTextStyle}>Contract Address:</Text>
+          <Text {...baseTextStyle}>Contract address:</Text>
           <ExplorerLink
             openNewTab
             showCopyOnHover
@@ -48,7 +48,7 @@ export const EvmVerifyRequestInfo = ({
     <>
       <Flex direction="column" gap={{ base: 2, sm: 1 }}>
         <HStack>
-          <Text {...baseTextStyle}>Contract Address:</Text>
+          <Text {...baseTextStyle}>Contract address:</Text>
           <ExplorerLink
             openNewTab
             showCopyOnHover
@@ -58,7 +58,7 @@ export const EvmVerifyRequestInfo = ({
           />
         </HStack>
         <HStack>
-          <Text {...baseTextStyle}>License Type:</Text>
+          <Text {...baseTextStyle}>License type:</Text>
           <Text color="text.main" variant="body2">
             {getLicenseTypeLabel(evmVerifyInfo.license)}
           </Text>
@@ -73,7 +73,7 @@ export const EvmVerifyRequestInfo = ({
           </Text>
         </HStack>
         <HStack>
-          <Text {...baseTextStyle}>Compiler Version:</Text>
+          <Text {...baseTextStyle}>Compiler version:</Text>
           <Text color="text.main" variant="body2">
             {evmVerifyInfo.compilerVersion}
           </Text>

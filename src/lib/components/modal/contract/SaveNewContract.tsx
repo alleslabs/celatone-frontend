@@ -115,7 +115,7 @@ export function SaveNewContractModal({
       });
       setStatus({
         state: "success",
-        message: "Valid Contract Address",
+        message: "Valid contract address",
       });
     },
     onError: (err) => {
@@ -170,6 +170,11 @@ export function SaveNewContractModal({
 
   return (
     <ActionModal
+      title="Save new contract"
+      icon="bookmark-solid"
+      trigger={<Button as="button" {...buttonProps} />}
+      mainBtnTitle="Save"
+      mainAction={handleSave}
       disabledMain={
         status.state !== "success" || !!errors.name || !!errors.description
       }
@@ -184,9 +189,8 @@ export function SaveNewContractModal({
       <VStack gap={4}>
         <ControllerInput
           control={control}
-          label="Contract Address"
-          labelBgColor="gray.900"
-          name="contractAddress"
+          label="Contract address"
+          variant="fixed-floating"
           placeholder={`ex. ${exampleContractAddress}`}
           status={status}
           variant="fixed-floating"

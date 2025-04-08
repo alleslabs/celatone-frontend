@@ -101,7 +101,7 @@ export const ValidatorsTableHeader = ({
       <StyledTableHeader
         onClick={handleOrderChange(ValidatorOrder.VotingPower)}
       >
-        Voting Power
+        Voting power
         <SortIcon
           column={ValidatorOrder.VotingPower}
           isDesc={isDesc}

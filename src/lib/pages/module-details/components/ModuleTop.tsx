@@ -227,7 +227,7 @@ export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
           mt={{ base: 2, md: 2 }}
         >
           <Text {...baseTextStyle} color="text.main">
-            Module Path:
+            Module path:
           </Text>
           <CopyLink
             amptrackSection="module_top"

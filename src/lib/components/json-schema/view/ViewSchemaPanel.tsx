@@ -23,9 +23,9 @@ export const ViewSchemaPanel = ({
         direction="column"
         p="24px 16px"
       >
-        <Text fontWeight={700} variant="body1">
-          You haven&#39;t attached the JSON Schema for{" "}
-          <CustomIcon color="gray.400" mx={1} name="code" />
+        <Text variant="body1" fontWeight={700}>
+          You haven&#39;t attached the JSON schema for{" "}
+          <CustomIcon name="code" mx={1} color="gray.400" />
           code {codeId} yet
         </Text>
         <Text

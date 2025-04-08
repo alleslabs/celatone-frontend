@@ -41,8 +41,8 @@ export const CommandSection = ({
           flex={0.5}
           p={4}
         >
-          <Text color="text.dark" fontWeight={500} mb={2} variant="body2">
-            Query Shortcuts
+          <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
+            Query shortcuts
           </Text>
           <ContractCmdGroup
             cmds={queryCmds}
@@ -58,8 +58,8 @@ export const CommandSection = ({
           flex={0.5}
           p={4}
         >
-          <Text color="text.dark" fontWeight={500} mb={2} variant="body2">
-            Execute Shortcuts
+          <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
+            Execute shortcuts
           </Text>
           <ContractCmdGroup
             cmds={execCmds}

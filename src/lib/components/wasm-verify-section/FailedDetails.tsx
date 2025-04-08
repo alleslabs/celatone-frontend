@@ -73,8 +73,8 @@ export const FailedDetails = ({
           codeHash={codeHash}
           relatedVerifiedCodes={relatedVerifiedCodes}
           triggerElement={
-            <Button size="sm" variant="ghost-primary">
-              View Details
+            <Button variant="ghost-primary" size="sm">
+              View details
             </Button>
           }
           verificationInfo={verificationInfo}
@@ -90,6 +90,8 @@ export const FailedDetails = ({
               schema: null,
               relatedVerifiedCodes,
             })}
+            relatedVerifiedCodes={relatedVerifiedCodes}
+            label="Reverify code"
           />
         )}
       </Flex>

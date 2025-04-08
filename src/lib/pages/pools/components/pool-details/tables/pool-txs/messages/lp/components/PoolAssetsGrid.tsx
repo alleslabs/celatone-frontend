@@ -81,8 +81,8 @@ export const PoolAssetsGrid = ({
       gap={2}
       p={4}
     >
-      <Text textColor="text.dark" variant="body2">
-        {isJoin ? "Provided Assets" : "Receiving Assets"}
+      <Text variant="body2" textColor="text.dark">
+        {isJoin ? "Provided assets" : "Receiving assets"}
       </Text>
       <SimpleGrid columns={2} spacing={2}>
         {assets.map((asset) => (

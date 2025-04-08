@@ -20,11 +20,11 @@ export const VotedProposalsTableHeader = ({
       left={templateColumns?.toString().split(" ")[0]}
     >
       <Text color="text.main" px={4}>
-        Proposal Title/Types
+        Proposal title/types
       </Text>
     </TableHeaderFreeze>
-    <TableHeader textAlign="center">Proposal Status</TableHeader>
-    <TableHeader>Vote Answer</TableHeader>
-    <TableHeader>Voted On</TableHeader>
+    <TableHeader textAlign="center">Proposal status</TableHeader>
+    <TableHeader>Vote answer</TableHeader>
+    <TableHeader>Voted on</TableHeader>
   </Grid>
 );

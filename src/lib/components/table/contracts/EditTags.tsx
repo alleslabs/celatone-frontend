@@ -30,14 +30,18 @@ export function EditTags({ contractLocalInfo }: EditTagsProps) {
 
   return (
     <ActionModal
+      title="Edit tags"
+      trigger={
+        <CustomIcon cursor="pointer" name="edit" color="gray.600" boxSize={3} />
+      }
       headerContent={
         <Flex gap={9} pt={6}>
           <Flex direction="column" gap={2}>
-            <Text color="text.dark" fontWeight={500} variant="body2">
-              Contract Name
+            <Text variant="body2" fontWeight={500} color="text.dark">
+              Contract name
             </Text>
-            <Text color="text.dark" fontWeight={500} variant="body2">
-              Contract Address
+            <Text variant="body2" fontWeight={500} color="text.dark">
+              Contract address
             </Text>
           </Flex>
 

@@ -87,7 +87,7 @@ export const VotingPowerChart = ({
       <div style="padding: 8px 12px;">
         <div style="font-weight: 700;">
           <h1 style="font-size: 12px; color: #D1D9E0;">${
-            singleStakingDenom ? "Bonded Token" : "Voting Powers"
+            singleStakingDenom ? "Bonded token" : "Voting powers"
           }</h1>
           <p style="font-size: 16px; color: #4CE2F7; white-space: nowrap;">${formattedAmount} ${currency}</p>
         </div>

@@ -123,7 +123,7 @@ export const SelectContractInstantiator = ({
           onOpen();
         }}
       >
-        {notSelected ? "Select Contract" : "Change Contract"}
+        {notSelected ? "Select contract" : "Change contract"}
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -141,7 +141,7 @@ export const SelectContractInstantiator = ({
                   name="contract-address"
                 />
                 <Heading as="h5" variant="h5">
-                  Select Contract
+                  Select contract
                 </Heading>
               </DrawerHeader>
               <DrawerCloseButton />
@@ -184,8 +184,8 @@ export const SelectContractInstantiator = ({
                       <Divider borderColor="gray.700" />
                     </Flex>
 
-                    <Heading as="h6" mb={4} variant="h6">
-                      Select from your Contract List
+                    <Heading as="h6" variant="h6" mb={4}>
+                      Select from your contract list
                     </Heading>
                     <AllContractLists
                       contractLists={contractLists}

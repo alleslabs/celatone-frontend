@@ -42,7 +42,7 @@ export const NotVerifiedDetails = () => {
           });
         }}
       >
-        Submit Verification
+        Submit verification
       </Button>
     </>
   );

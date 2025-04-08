@@ -137,7 +137,7 @@ const ModuleDetailsBody = ({
         pageName={
           data.moduleName
             ? `${truncate(data.address)}::${data.moduleName} (Module)`
-            : "Module Detail"
+            : "Module detail"
         }
       />
       <ModuleTop moduleData={data} moveVerifyStatus={moveVerifyStatus} />
@@ -232,7 +232,8 @@ const ModuleDetailsBody = ({
               )}
             </Flex>
             <UserDocsLink
-              cta="Read more about Module"
+              title="What is a Move module?"
+              cta="Read more about module"
               href="move/modules/detail-page"
               title="What is a move module?"
             />

@@ -84,7 +84,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
   const attached = Boolean(derivedWasmVerifyInfo?.schema ?? localSchema);
   return (
     <>
-      <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code Detail"} />
+      <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code detail"} />
       <CodeTopInfo
         code={code}
         codeId={codeId}
@@ -111,10 +111,10 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
             overflowX="scroll"
           >
             <CustomTab onClick={handleTabChange(TabIndex.CodeInfo)}>
-              Code Information
+              Code information
             </CustomTab>
             <CustomTab onClick={handleTabChange(TabIndex.JsonSchema)}>
-              JSON Schema
+              JSON schema
             </CustomTab>
           </TabList>
         )}

@@ -69,7 +69,7 @@ const getMethodSpecificRender = (
     const { hash, height, created } = transaction;
     return {
       methodRender: (
-        <CodeInfoLabelText label="Upload Transaction">
+        <CodeInfoLabelText label="Upload transaction">
           <Flex minW="150px">
             <ExplorerLink showCopyOnHover type="tx_hash" value={hash} />
           </Flex>
@@ -146,8 +146,8 @@ export const CodeInfoSection = ({
 
   return (
     <Box my={8}>
-      <Heading as="h6" mb={6} variant="h6">
-        Code Info
+      <Heading as="h6" variant="h6" mb={6}>
+        Code info
       </Heading>
       <Flex
         flexWrap={isMobile ? "wrap" : "nowrap"}
@@ -168,7 +168,7 @@ export const CodeInfoSection = ({
           </Flex>
         </CodeInfoLabelText>
         {isFullTier && methodRender}
-        <CodeInfoLabelText label="Instantiate Permission">
+        <CodeInfoLabelText label="Instantiate permission">
           <Flex direction="column" gap={1}>
             <PermissionChip
               instantiatePermission={instantiatePermission}
@@ -192,7 +192,8 @@ export const CodeInfoSection = ({
         )}
         {!isMobile && (
           <CodeInfoLabelText
-            label="JSON Schema"
+            label="JSON schema"
+            w={{ base: "full" }}
             maxW={{ md: "fit-content" }}
             w={{ base: "full" }}
           >
@@ -207,7 +208,7 @@ export const CodeInfoSection = ({
                 variant="outline-primary"
                 onClick={attached ? handleView : handleAttach}
               >
-                {attached ? "View Schema" : "Attach"}
+                {attached ? "View schema" : "Attach"}
               </Button>
               <JsonSchemaModal
                 codeHash={hash}

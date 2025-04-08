@@ -21,14 +21,14 @@ export const ProposalInfo = ({ data }: ProposalStatusProps) => (
     px={4}
     py={3}
   >
-    <InfoItem label="Proposal Status">
+    <InfoItem label="Proposal status">
       <Flex minW="110px">
         <StatusChip status={data.status} />
       </Flex>
     </InfoItem>
     <Flex gap={8}>
       {data.createdTxHash && (
-        <InfoItem label="Created Tx" minW={36}>
+        <InfoItem label="Created tx" minW={36}>
           <ExplorerLink
             showCopyOnHover
             type="tx_hash"

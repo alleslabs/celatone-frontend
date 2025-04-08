@@ -15,8 +15,8 @@ export const ValidatorDescription = ({
     rounded={8}
     w="100%"
   >
-    <Text as="h6" color="text.dark" fontWeight={500} variant="body2">
-      Validator Description
+    <Text variant="body2" fontWeight={500} as="h6" color="text.dark">
+      Validator description
     </Text>
     {!details ? (
       <Text color="text.dark" variant="body2">

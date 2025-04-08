@@ -99,7 +99,7 @@ export const AccountHeader = observer(
                       leftIcon: (
                         <CustomIcon boxSize={3} mr={0} name="bookmark" />
                       ),
-                      children: "Save Account",
+                      children: "Save account",
                     }}
                     publicDescription={accountData?.publicInfo?.description}
                     publicName={
@@ -117,8 +117,8 @@ export const AccountHeader = observer(
               gap={{ base: 0, md: 2 }}
               mt={{ base: 1, md: 0 }}
             >
-              <Text color="text.dark" fontWeight={500} variant="body2">
-                Account Address:
+              <Text fontWeight={500} color="text.dark" variant="body2">
+                Account address:
               </Text>
               <CopyLink
                 amptrackSection="account_top"
@@ -143,9 +143,9 @@ export const AccountHeader = observer(
               </Flex>
             )}
             {accountLocalInfo?.name && initiaUsernameData?.username && (
-              <Flex alignItems="center" mt={{ base: 1, md: 0 }}>
-                <Text color="text.dark" fontWeight={500} mr={2} variant="body2">
-                  Initia Username:
+              <Flex mt={{ base: 1, md: 0 }} alignItems="center">
+                <Text fontWeight={500} color="text.dark" variant="body2" mr={2}>
+                  Initia username:
                 </Text>
                 <Image
                   borderRadius="full"

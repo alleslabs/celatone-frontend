@@ -26,7 +26,7 @@ export const SearchResultItem = ({
   const evm = useEvmConfig({ shouldRedirect: false });
   const route = getRouteOptions(result.type, evm.enabled)?.pathname;
   const isAccountAddress =
-    result.type === "Account Address" || result.type === "Contract Address";
+    result.type === "Account address" || result.type === "Contract address";
 
   return (
     <Flex id={`item-${index}`}>

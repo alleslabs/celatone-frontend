@@ -120,6 +120,12 @@ export const UploadSection = ({
       <CodeHashBox codeHash={codeHash} />
       <ControllerInput
         control={control}
+        label="Code name (optional)"
+        placeholder="Untitled name"
+        helperText="A short description of what your code does. This is stored locally on your device and can be added or changed later."
+        rules={{
+          maxLength: constants.maxCodeNameLength,
+        }}
         error={
           errors.codeName && getMaxLengthError(codeName.length, "code_name")
         }
@@ -140,8 +146,8 @@ export const UploadSection = ({
       {isInitia ? (
         <Box>
           <Flex alignItems="center" gap={2}>
-            <Heading as="h6" fontWeight={600} my={2} variant="h6">
-              Instantiate Permission:
+            <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+              Instantiate permission:
             </Heading>
             <PermissionChip
               instantiatePermission={
@@ -162,8 +168,8 @@ export const UploadSection = ({
         </Box>
       ) : (
         <Flex direction="column">
-          <Heading as="h6" fontWeight={600} my={2} variant="h6">
-            Instantiate Permission
+          <Heading as="h6" variant="h6" fontWeight={600} my={2}>
+            Instantiate permission
           </Heading>
           <Text color="text.dark" mb={4} variant="body2">
             Specify who has the authority to instantiate the contract using this
@@ -197,7 +203,7 @@ export const UploadSection = ({
           fontSize="14px"
           gap={1}
         >
-          <p>Transaction Fee:</p>
+          <p>Transaction fee:</p>
           <EstimatedFeeRender
             estimatedFee={estimatedFee}
             loading={isSimulating}

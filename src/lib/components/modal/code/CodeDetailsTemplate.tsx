@@ -99,8 +99,8 @@ export const CodeDetailsTemplateModal = ({
             <ExplorerLink type={uploaderType} value={codeInfo.uploader} />
           </Flex>
           <Flex align="center">
-            <Text fontWeight={700} variant="body2" w="30%">
-              Instantiate Permission
+            <Text variant="body2" fontWeight={700} w="30%">
+              Instantiate permission
             </Text>
             <PermissionChip
               instantiatePermission={codeInfo.instantiatePermission}
@@ -117,7 +117,7 @@ export const CodeDetailsTemplateModal = ({
     >
       <TextInput
         helperText="Fill in code name to define its use as a reminder"
-        label="Code Name"
+        label="Code name"
         labelBgColor="gray.900"
         maxLength={constants.maxCodeNameLength}
         setInputState={setName}

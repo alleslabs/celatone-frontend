@@ -54,13 +54,13 @@ export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
             });
           }}
         >
-          Update Admin
+          Update admin
         </MenuItem>
         <ClearAdminModal
           contractAddress={contractAddress}
           triggerElement={
-            <MenuItem icon={<CustomIcon color="gray.600" name="admin-clear" />}>
-              Clear Admin
+            <MenuItem icon={<CustomIcon name="admin-clear" color="gray.600" />}>
+              Clear admin
             </MenuItem>
           }
         />

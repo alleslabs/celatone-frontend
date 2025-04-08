@@ -138,6 +138,8 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
               <ContentContainer>
                 <Flex alignItems="center" justifyContent="space-between">
                   <TableTitle
+                    title="Validator votes"
+                    mb={0}
                     count={answers?.validator.totalValidators}
                     mb={0}
                     title="Validator Votes"
@@ -148,7 +150,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                     variant="ghost-primary"
                     onClick={() => toggleDisclosure("validator")}
                   >
-                    {isMobile ? "View" : "View Details"}
+                    {isMobile ? "View" : "View details"}
                   </Button>
                 </Flex>
                 {isProposalResolved && (
@@ -181,6 +183,8 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
               <ContentContainer>
                 <Flex alignItems="center" justifyContent="space-between">
                   <TableTitle
+                    title="Recent votes"
+                    mb={0}
                     count={answers?.all.total}
                     mb={0}
                     title="Recent Votes"
@@ -191,7 +195,7 @@ export const VotingPeriod = ({ proposalData, ...props }: VoteDetailsProps) => {
                     variant="ghost-primary"
                     onClick={() => toggleDisclosure("all")}
                   >
-                    {isMobile ? "View" : "View Details"}
+                    {isMobile ? "View" : "View details"}
                   </Button>
                 </Flex>
                 <ProposalVotesTable

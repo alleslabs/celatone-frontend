@@ -31,10 +31,7 @@ export const AllContractLists = ({
   return (
     <Box minH="xs" w="100%">
       <InputWithIcon
-        amptrackSection="contract-list-search"
-        my={isReadOnly ? 4 : 0}
-        placeholder="Search with List Name"
-        size={{ base: "md", md: "lg" }}
+        placeholder="Search with list name"
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
       />

@@ -36,6 +36,10 @@ export const EvmContractVerifySolidityContractCode = ({
           Provide Contract Code
         </Heading>
         <ControllerTextarea
+          label="Contract code"
+          placeholder="Provide contract source code here"
+          name="verifyForm.solidityContractCode.contractCode"
+          isRequired
           control={control}
           error={error?.message}
           height="400px"

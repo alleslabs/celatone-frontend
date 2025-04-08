@@ -162,10 +162,7 @@ export const WriteBox = ({
             <Flex gap={2} justify="flex-start">
               <CopyButton
                 amptrackSection="write_inputs"
-                buttonText="Copy Encoded Inputs"
-                isDisable={isUndefined(data)}
-                value={data ?? ""}
-                variant="outline-secondary"
+                buttonText="Copy encoded inputs"
               />
               <EvmCodeSnippet
                 abiSection={abiSection}
@@ -174,9 +171,9 @@ export const WriteBox = ({
                 type="write"
               />
             </Flex>
-            <Flex align="center" direction="row" gap={2}>
-              <Flex alignItems="center" color="text.dark" fontSize="14px">
-                Transaction Fee:{" "}
+            <Flex direction="row" align="center" gap={2}>
+              <Flex fontSize="14px" color="text.dark" alignItems="center">
+                Transaction fee:{" "}
                 <EstimatedFeeEvmRender
                   gasPrice={fee?.gasPrice}
                   gasUsed={fee?.simulatedGasUsed}

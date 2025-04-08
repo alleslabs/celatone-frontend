@@ -44,18 +44,16 @@ export const MyModuleVerificationsTable = observer(() => {
     <Box>
       <Grid columnGap={4} my={6} templateColumns="3fr 1.2fr">
         <InputWithIcon
-          amptrackSection="my-published-modules-search"
-          placeholder="Search with Request ID"
-          size="lg"
+          placeholder="Search with request ID"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
         <MoveVerifyTaskStatusFilter
-          isMulti
-          label="Filter by Status"
-          placeholder="All Status"
+          label="Filter by status"
           result={statuses}
           setResult={setStatuses}
+          placeholder="All status"
+          isMulti
         />
       </Grid>
 
@@ -76,7 +74,7 @@ Please submit a new verification request.`
               leftIcon={<CustomIcon name="plus" />}
               onClick={() => navigate({ pathname: "/modules/verify" })}
             >
-              Submit Verification
+              Submit verification
             </Button>
           </EmptyState>
         </Stack>

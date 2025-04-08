@@ -86,6 +86,24 @@ export const DelegationsSection = ({
       >
         <DelegationInfo
           hasTotalBonded={totalBonded && Object.keys(totalBonded).length > 0}
+          totalBondedCard={
+            <TotalCard
+              title="Total bonded"
+              message={`Total delegated and unbonding ${
+                stakingParams.bondDenoms.length === 1
+                  ? getTokenLabel(
+                      stakingParams.bondDenoms[0].denom,
+                      stakingParams.bondDenoms[0].symbol
+                    )
+                  : "tokens"
+              }, including those delegated through vesting`}
+              address={address}
+              bondDenoms={stakingParams.bondDenoms}
+              tokens={totalBonded}
+              isLoading={isTotalBondedLoading}
+              isViewMore={Boolean(onViewMore)}
+            />
+          }
           otherInfoCards={
             <>
               <TotalCard

@@ -62,8 +62,10 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
               Denom Unit
             </Heading>
             <IconButton
-              aria-label="Remove Asset"
-              icon={<CustomIcon boxSize={4} name="delete" />}
+              aria-label="Remove asset"
+              icon={<CustomIcon name="delete" boxSize={4} />}
+              onClick={() => remove(index)}
+              variant="ghost-gray"
               size="sm"
               variant="ghost-gray"
               onClick={() => remove(index)}
@@ -165,10 +167,11 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
   });
 
   return (
-    <Flex alignItems="center" direction="column" gap={2}>
-      <CustomNetworkPageHeader title="Add Wallet Registry" />
-      <Flex direction="column" gap={6} my={8} w="full">
+    <Flex direction="column" gap={2} alignItems="center">
+      <CustomNetworkPageHeader title="Add wallet registry" />
+      <Flex w="full" direction="column" gap={6} my={8}>
         <CustomNetworkSubheader
+          title="Account prefix and registered coin type"
           subtitle="This information is fetched from provided REST URL"
           title="Account Prefix and Registered Coin Type"
         />
@@ -236,8 +239,10 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
                     Asset
                   </Heading>
                   <IconButton
-                    aria-label="Remove Asset"
-                    icon={<CustomIcon boxSize={4} name="delete" />}
+                    aria-label="Remove asset"
+                    icon={<CustomIcon name="delete" boxSize={4} />}
+                    onClick={() => remove(index)}
+                    variant="ghost-gray"
                     size="sm"
                     variant="ghost-gray"
                     onClick={() => remove(index)}
@@ -287,7 +292,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
                     justifyContent="space-between"
                     pb={4}
                   >
-                    <Heading variant="h7">Denom Units</Heading>
+                    <Heading variant="h7">Denom units</Heading>
                   </Flex>
                   <DenomUnits
                     assetIndex={index}
@@ -305,7 +310,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
                 append({ name: "", base: "", symbol: "", denoms: [] })
               }
             >
-              Add more Asset
+              Add more asset
             </Button>
           </Flex>
         ) : (
@@ -325,7 +330,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
                   append({ name: "", base: "", symbol: "", denoms: [] })
                 }
               >
-                Add More Asset
+                Add more asset
               </Button>
             </Flex>
             <Text color="text.disabled" variant="body2">
