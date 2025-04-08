@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1300](https://github.com/alleslabs/celatone-frontend/pull/1300) Apply Initia's constants from initia react widget to username and provider
 - [#1296](https://github.com/alleslabs/celatone-frontend/pull/1296) Convert title to sentence case
 - [#1293](https://github.com/alleslabs/celatone-frontend/pull/1293) Improve useOpenTxTab and useOpenBlockTab
 - [#1290](https://github.com/alleslabs/celatone-frontend/pull/1290) Change minor ui
