@@ -51,7 +51,7 @@ export const Upload = ({
   return (
     <>
       <ActionPageContainer>
-        <CelatoneSeo pageName="Upload Wasm File" />
+        <CelatoneSeo pageName="Upload Wasm file" />
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>
@@ -63,7 +63,7 @@ export const Upload = ({
           <UserDocsLink
             isDevTool
             mt={2}
-            cta="View Upload Guideline"
+            cta="View upload guideline"
             href="cosmwasm/upload-instantiate#upload-wasm-to-store-code"
           />
         </Flex>

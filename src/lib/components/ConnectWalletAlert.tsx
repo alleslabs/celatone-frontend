@@ -53,7 +53,7 @@ export const ConnectWalletAlert = ({
         gap={2}
         onClick={onClickConnect}
       >
-        <CustomIcon name="connect" /> Connect Wallet
+        <CustomIcon name="connect" /> Connect wallet
       </Button>
     </Alert>
   ) : null;

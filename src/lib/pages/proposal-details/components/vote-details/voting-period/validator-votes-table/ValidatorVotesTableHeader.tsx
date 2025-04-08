@@ -21,7 +21,7 @@ export const ValidatorVotesTableHeader = ({
     return (
       <Grid templateColumns={templateColumns} minW="min-content">
         {!isProposalResolved && <TableHeader pl={0}>#</TableHeader>}
-        <TableHeader>Validators (Vote Answer)</TableHeader>
+        <TableHeader>Validators (Vote answer)</TableHeader>
         <TableHeader />
       </Grid>
     );
@@ -36,7 +36,7 @@ export const ValidatorVotesTableHeader = ({
       {fullVersion && (
         <>
           <TableHeader>Timestamp</TableHeader>
-          <TableHeader>Transaction Hash</TableHeader>
+          <TableHeader>Transaction hash</TableHeader>
         </>
       )}
     </Grid>

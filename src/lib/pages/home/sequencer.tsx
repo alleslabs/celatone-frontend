@@ -49,7 +49,7 @@ export const HomeSequencer = () => {
       <Box as="section" mb="48px">
         <Box mb={5}>
           <Heading as="h5" variant="h5">
-            Recent Transactions
+            Recent transactions
           </Heading>
           {evm.enabled && (
             <Text variant="body2" color="text.dark" fontWeight={500}>
@@ -62,7 +62,7 @@ export const HomeSequencer = () => {
       </Box>
       <Box as="section">
         <Heading as="h5" variant="h5" mb={5}>
-          Recent Blocks
+          Recent blocks
         </Heading>
         <RecentBlocksTableSequencer isViewMore />
         {!!latestBlock && latestBlock > 5 && <ViewMore onClick={toBlocks} />}

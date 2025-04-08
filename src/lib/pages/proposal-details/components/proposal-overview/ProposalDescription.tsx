@@ -12,7 +12,7 @@ export const ProposalDescription = ({
 }: ProposalDescriptionProps) => (
   <Flex direction="column" gap={4}>
     <Heading as="h6" variant="h6">
-      Proposal Description
+      Proposal description
     </Heading>
     {description.length === 0 ? (
       <Text variant="body1" color="text.dark">

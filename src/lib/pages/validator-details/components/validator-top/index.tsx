@@ -58,7 +58,7 @@ export const ValidatorTop = ({
             fontWeight={500}
             whiteSpace="nowrap"
           >
-            Validator Address:
+            Validator address:
           </Text>
           <CopyLink value={info.validatorAddress} type="validator_address" />
         </Flex>
@@ -75,7 +75,7 @@ export const ValidatorTop = ({
             fontWeight={500}
             whiteSpace="nowrap"
           >
-            Account Address:
+            Account address:
           </Text>
           <ExplorerLink
             type="user_address"

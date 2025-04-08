@@ -11,10 +11,10 @@ export const SavedAccountsTableHeader = ({
   hasHexAddr: boolean;
 }) => (
   <Grid templateColumns={templateColumns} minW="min-content">
-    <TableHeader>Account Address</TableHeader>
-    {hasHexAddr && <TableHeader>Hex Address</TableHeader>}
-    <TableHeader>Account Name</TableHeader>
-    <TableHeader>Account Description</TableHeader>
+    <TableHeader>Account address</TableHeader>
+    {hasHexAddr && <TableHeader>Hex address</TableHeader>}
+    <TableHeader>Account name</TableHeader>
+    <TableHeader>Account description</TableHeader>
     <TableHeader />
   </Grid>
 );

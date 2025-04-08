@@ -17,7 +17,7 @@ export const ProposalButton = () => {
         />
       }
     >
-      Propose to Store Code
+      Propose to store code
     </Button>
   );
 };

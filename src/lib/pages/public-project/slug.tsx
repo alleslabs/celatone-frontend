@@ -94,8 +94,8 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
       <CelatoneSeo
         pageName={
           projectDetail?.name
-            ? `${projectDetail.name} (Public Project)`
-            : "Public Project Detail"
+            ? `${projectDetail.name} (Public project)`
+            : "Public project detail"
         }
       />
       <DetailHeader details={projectDetail} slug={slug} />

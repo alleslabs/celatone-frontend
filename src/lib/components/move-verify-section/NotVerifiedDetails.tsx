@@ -42,7 +42,7 @@ export const NotVerifiedDetails = () => {
         variant="ghost-primary"
         size="sm"
       >
-        Submit Verification
+        Submit verification
       </Button>
     </>
   );

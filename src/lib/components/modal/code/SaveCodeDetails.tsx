@@ -11,9 +11,9 @@ export const SaveCodeDetailsModal = ({
   triggerElement,
 }: SaveCodeDetailsModalProps) => (
   <CodeDetailsTemplateModal
-    title="Save New Code"
-    helperText={`Save other stored codes to your "Saved Codes" list`}
-    mainBtnTitle="Save New Code"
+    title="Save new code"
+    helperText={`Save other stored codes to your "Saved codes" list`}
+    mainBtnTitle="Save new code"
     isNewCode
     codeInfo={codeInfo}
     triggerElement={triggerElement}

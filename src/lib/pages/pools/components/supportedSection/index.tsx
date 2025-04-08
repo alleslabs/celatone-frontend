@@ -108,7 +108,7 @@ export const SupportedSection = ({
       <Flex alignItems="center" mb={12}>
         <Flex grow={2} gap={4}>
           <InputWithIcon
-            placeholder="Search with Pool ID, Symbol or Token ID"
+            placeholder="Search with pool ID, symbol or token ID"
             value={keyword}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setCurrentPage(1);
@@ -173,7 +173,7 @@ export const SupportedSection = ({
                 setShowNewest(isDesc);
               }}
             >
-              {showNewest ? "Newest First" : "Oldest First"}
+              {showNewest ? "Newest first" : "Oldest first"}
               <CustomIcon
                 name={showNewest ? "arrow-down" : "arrow-up"}
                 color="text.dark"

@@ -2,7 +2,7 @@ import { Box, ListItem, Stack, Text, UnorderedList } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 
-import { useMoveConfig } from "lib/app-provider";
+import { useIsApiChain, useMoveConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
@@ -25,6 +25,7 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
   const { data, isLoading, error } = useMoveVerifyTaskInfo(taskId, !!taskId);
   const { getMoveVerifyTask } = useMoveVerifyTaskStore();
   const verifyModuleTask = getMoveVerifyTask(taskId);
+  useIsApiChain({ shouldRedirect: true });
   useMoveConfig({ shouldRedirect: true });
 
   if (isLoading) return <Loading />;
@@ -32,7 +33,7 @@ const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
     return (
       <EmptyState
         imageVariant="not-found"
-        heading="Task ID Not Found"
+        heading="Task ID not found"
         message="Please double-check your input and make sure you have selected the correct network."
         withBorder
       />
@@ -102,11 +103,11 @@ export const MyModuleVerificationDetails = observer(() => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="My Module Verification Details" />
+      <CelatoneSeo pageName="My module verification details" />
       {!validated.success ? (
         <EmptyState
           imageVariant="not-found"
-          heading="Task ID Not Found"
+          heading="Task ID not found"
           message="Please double-check your input and make sure you have selected the correct network."
           withBorder
         />

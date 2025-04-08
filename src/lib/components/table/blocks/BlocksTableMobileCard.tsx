@@ -27,7 +27,7 @@ export const BlocksTableMobileCard = ({
       topContent={
         <Flex align="center" gap={4} w="full">
           <Flex direction="column" flex={1}>
-            <MobileLabel label="Block Height" />
+            <MobileLabel label="Block height" />
             <ExplorerLink
               type="block_height"
               value={blockData.height.toString()}
@@ -37,7 +37,7 @@ export const BlocksTableMobileCard = ({
             </ExplorerLink>
           </Flex>
           <Flex direction="column" flex={{ base: 2, sm: 3 }}>
-            <MobileLabel label="Block Hash" />
+            <MobileLabel label="Block hash" />
             <Flex h={6} align="end">
               <Text variant="body2" color="text.main" fontFamily="mono">
                 {truncate(blockData.hash.toUpperCase())}

@@ -76,7 +76,7 @@ export const ValidatorsTableMobileCard = ({
       middleContent={
         <Flex gap={3}>
           <Flex direction="column" flex={1}>
-            <MobileLabel label="Voting Power" />
+            <MobileLabel label="Voting power" />
             <Text variant="body2" color="text.main">
               {formatPrettyPercent(
                 divWithDefault(

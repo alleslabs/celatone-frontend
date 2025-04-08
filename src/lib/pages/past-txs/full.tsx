@@ -107,7 +107,7 @@ export const PastTxsFull = () => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="Past Transactions" />
+      <CelatoneSeo pageName="Past transactions" />
       <Flex justifyContent="space-between" alignItems="center">
         <Heading
           variant="h5"
@@ -116,14 +116,14 @@ export const PastTxsFull = () => {
           display="flex"
           alignItems="center"
         >
-          Past Transactions
+          Past transactions
         </Heading>
         <UserDocsLink isButton href="general/transactions/past-txs" />
       </Flex>
       <Flex my={8} gap={3}>
         <InputWithIcon
-          placeholder={`Search with Transaction Hash${
-            wasm.enabled ? " or Contract Address" : ""
+          placeholder={`Search with transaction hash${
+            wasm.enabled ? " or contract address" : ""
           }`}
           value={pastTxsState.search}
           onChange={handleOnSearchChange}

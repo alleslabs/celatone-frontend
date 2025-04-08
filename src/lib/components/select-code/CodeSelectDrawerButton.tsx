@@ -89,14 +89,14 @@ export const CodeSelectDrawerButton = ({
           <DrawerHeader>
             <CustomIcon name="code" boxSize={6} color="gray.600" />
             <Heading as="h5" variant="h5">
-              Select Code ID
+              Select code ID
             </Heading>
           </DrawerHeader>
           <DrawerCloseButton color="text.dark" />
           <DrawerBody px={0} overflow="scroll" py={4}>
             <Flex gap={4} px={6} py={2} mb={4}>
               <InputWithIcon
-                placeholder="Search with Code ID or Code Name"
+                placeholder="Search with code ID or code name"
                 value={keyword}
                 autoFocus
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -116,8 +116,8 @@ export const CodeSelectDrawerButton = ({
             </Flex>
             <Tabs px={6}>
               <TabList borderBottom="1px" borderColor="gray.800">
-                <CustomTab count={storedCodesCount}>My Stored Codes</CustomTab>
-                <CustomTab count={savedCodesCount}>My Saved Codes</CustomTab>
+                <CustomTab count={storedCodesCount}>My stored codes</CustomTab>
+                <CustomTab count={savedCodesCount}>My saved codes</CustomTab>
               </TabList>
               <TabPanels>
                 <TabPanel p={0}>

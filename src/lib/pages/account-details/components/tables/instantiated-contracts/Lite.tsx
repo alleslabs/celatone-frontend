@@ -29,14 +29,14 @@ export const InstantiatedContractsTableLite = ({
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
         <MobileTitle
-          title="Contract Instances"
+          title="Contract instances"
           count={contractsCount}
           onViewMore={onViewMore}
         />
       ) : (
         <AccountSectionWrapper
           totalData={contractsCount}
-          title="Contract Instances"
+          title="Contract instances"
           helperText="This account instantiated the following contracts"
           hasHelperText={!!contracts?.length}
         >

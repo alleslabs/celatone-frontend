@@ -107,9 +107,9 @@ export const SearchComponent = () => {
   const handleSelectResult = useCallback(
     (result?: SearchResult, isClick = false) => {
       const getQueryValue = () => {
-        if (result?.type === "Module Path")
+        if (result?.type === "Module path")
           return splitModulePath(result.value) as [Addr, string];
-        if (result?.type === "NFT Address")
+        if (result?.type === "NFT address")
           return [result.metadata?.nft?.collectionAddress ?? "", result.value];
         return result?.value || keyword;
       };

@@ -17,7 +17,7 @@ export const BlockInfo = ({ blockData }: BlockInfoProps) => {
     <Box mb={12}>
       <Flex mb={6} justifyContent="space-between">
         <Heading as="h6" variant="h6">
-          Block Info
+          Block info
         </Heading>
       </Flex>
       {!isLiteTier ? (

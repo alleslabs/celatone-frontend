@@ -56,14 +56,14 @@ export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
             onClick={() => {
               trackUseExpandAll(
                 expandedIndexes.length ? "collapse" : "expand",
-                "Module Struct"
+                "Module struct"
               );
               setExpandedIndexes((prev) =>
                 !prev.length ? Array.from(Array(structs.length).keys()) : []
               );
             }}
           >
-            {expandedIndexes.length ? "Collapse All" : "Expand All"}
+            {expandedIndexes.length ? "Collapse all" : "Expand all"}
           </Button>
           <Button
             variant="outline-primary"
@@ -71,13 +71,13 @@ export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
             size="sm"
             rightIcon={<CustomIcon name="launch" />}
             onClick={() => {
-              trackUseViewJSON("Module Struct");
+              trackUseViewJSON("Module struct");
               const jsonString = JSON.stringify(structs, null, 2);
               const jsonWindow = window.open();
               if (jsonWindow) {
                 // Modify styling later
                 jsonWindow.document.write(
-                  `<html><head><title>Module Structs</title>`
+                  `<html><head><title>Module structs</title>`
                 );
 
                 // Add styling
@@ -96,7 +96,7 @@ export const ModuleStructs = ({ structs }: ModuleStructsProps) => {
         </Flex>
       </Flex>
       <InputWithIcon
-        placeholder="Search with Struct Name"
+        placeholder="Search with struct name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size={{ base: "md", md: "lg" }}

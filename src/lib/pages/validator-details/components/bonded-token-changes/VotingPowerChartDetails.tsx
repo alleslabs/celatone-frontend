@@ -70,7 +70,7 @@ export const VotingPowerChartDetails = ({
   return (
     <Flex gap={2} direction="column" px={{ base: 0, md: 2 }}>
       <Heading variant="h6">
-        {singleStakingDenom ? "Current Bonded Token" : "Current Voting Powers"}
+        {singleStakingDenom ? "Current bonded token" : "Current voting powers"}
       </Heading>
       <Heading variant="h5" fontWeight={600}>
         {currentVotingPower} {currency}

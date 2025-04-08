@@ -30,7 +30,7 @@ export const PublicProjectModuleMobileCard = ({
       topContent={
         <Flex gap={2} align="center">
           <Flex direction="column">
-            <MobileLabel variant="body2" label="Module Path" />
+            <MobileLabel variant="body2" label="Module path" />
             <Text
               variant="body2"
               onClick={goToModuleDetails}
@@ -52,7 +52,7 @@ export const PublicProjectModuleMobileCard = ({
             />
           </Flex>
           <Flex direction="column">
-            <MobileLabel variant="body2" label="Module Description" />
+            <MobileLabel variant="body2" label="Module description" />
             <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
               {module.description || "N/A"}
             </Text>

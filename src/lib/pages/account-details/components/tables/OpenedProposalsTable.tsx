@@ -67,12 +67,12 @@ export const OpenedProposalsTable = ({
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
         <MobileTitle
-          title="Opened Proposals"
+          title="Opened proposals"
           count={totalData}
           onViewMore={onViewMore}
         />
       ) : (
-        <AccountSectionWrapper title="Opened Proposals" totalData={totalData}>
+        <AccountSectionWrapper title="Opened proposals" totalData={totalData}>
           <ProposalsTable
             proposals={proposals?.items}
             isLoading={isLoading}

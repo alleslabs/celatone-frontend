@@ -90,7 +90,7 @@ export const FieldTemplate = <T extends FieldValues>({
           }
           leftIcon={<CustomIcon name="plus" />}
         >
-          Add Item
+          Add item
         </Button>
       )}
     </Flex>

@@ -4,8 +4,8 @@ import type { Mode, Step } from "./types";
 import { CustomIcon } from "../icon";
 
 export const stepperText: Record<Mode, Record<number, string>> = {
-  deploy: { 1: "Upload or Select Code ID", 2: "Instantiate Contract" },
-  migrate: { 1: "Migrate Options", 2: "Migrate Details" },
+  deploy: { 1: "Upload or select code ID", 2: "Instantiate contract" },
+  migrate: { 1: "Migrate options", 2: "Migrate details" },
 };
 
 const StepLabel = ({

@@ -27,7 +27,7 @@ export const ViewFullMsgButton = ({
     zIndex="docked"
   >
     <Text variant="body3" fontWeight={700} color="text.dark">
-      {viewFull ? "View Less" : "View Full Message"}
+      {viewFull ? "View less" : "View full message"}
     </Text>
     <CustomIcon
       name={viewFull ? "chevron-up" : "chevron-down"}

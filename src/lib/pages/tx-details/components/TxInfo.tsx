@@ -53,7 +53,7 @@ export const TxInfo = ({
   return (
     <Container {...flexProps}>
       <LabelText label="Network">{txData.chainId}</LabelText>
-      <LabelText label="Block Height">
+      <LabelText label="Block height">
         <ExplorerLink
           value={txData.height}
           type="block_height"
@@ -61,27 +61,27 @@ export const TxInfo = ({
           ampCopierSection="tx_page_block_height"
         />
       </LabelText>
-      <LabelText label="Transaction Fee">
+      <LabelText label="Transaction fee">
         {feeToken ? (
           formatTokenWithValue(feeToken)
         ) : (
           <Text variant="body2" color="text.dark">
-            No Fee
+            No fee
           </Text>
         )}
       </LabelText>
-      <LabelText label="Gas Used/Wanted">
+      <LabelText label="Gas used/wanted">
         {`${formatInteger(txData.gasUsed)}/${formatInteger(txData.gasWanted)}`}
       </LabelText>
       {gasRefundRatio && (
-        <LabelText label="Gas Refund Percentage">
+        <LabelText label="Gas refund percentage">
           {`${formatPrettyPercent(gasRefundRatio, 2, true)}`}
         </LabelText>
       )}
       <LabelText label="Memo">
         {txData.tx.body.memo || (
           <Text variant="body2" color="text.dark">
-            No Memo
+            No memo
           </Text>
         )}
       </LabelText>

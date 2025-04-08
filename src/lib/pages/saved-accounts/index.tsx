@@ -48,7 +48,7 @@ const SavedAccounts = observer(() => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="Saved Accounts" />
+      <CelatoneSeo pageName="Saved accounts" />
       <Flex alignItems="center" justifyContent="space-between" mb={8}>
         <Flex direction="column">
           <Flex alignItems="center">
@@ -59,7 +59,7 @@ const SavedAccounts = observer(() => {
               display="flex"
               alignItems="center"
             >
-              Saved Accounts
+              Saved accounts
             </Heading>
             <Badge variant="primary" ml={2}>
               {accountsCount}
@@ -72,7 +72,7 @@ const SavedAccounts = observer(() => {
         <SaveAccountButton />
       </Flex>
       <InputWithIcon
-        placeholder="Search with Account Name, Address, or Description"
+        placeholder="Search with account name, address, or description"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         size="lg"

@@ -20,7 +20,7 @@ const getReceiptInfo = (
         header: "Rejected by user",
       }
     : {
-        header: "Transaction Failed",
+        header: "Transaction failed",
         errorMsg: error.message,
       };
 
@@ -28,7 +28,7 @@ const getTxHashReceipts = (txHash?: string): TxReceipt[] =>
   txHash
     ? [
         {
-          title: "Tx Hash",
+          title: "Tx hash",
           value: txHash,
           html: <ExplorerLink type="tx_hash" value={txHash} openNewTab />,
         },

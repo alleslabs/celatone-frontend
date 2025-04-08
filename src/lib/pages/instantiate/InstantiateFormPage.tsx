@@ -399,7 +399,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   return (
     <>
       <ActionPageContainer>
-        <CelatoneSeo pageName="Instantiate Contract" />
+        <CelatoneSeo pageName="Instantiate contract" />
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>
@@ -411,7 +411,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
           <UserDocsLink
             isDevTool
             mt={2}
-            cta="View Instantiate Guideline"
+            cta="View instantiate guideline"
             href="cosmwasm/upload-instantiate#instantiate-contract-from-code"
           />
         </Flex>
@@ -541,7 +541,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
           display="flex"
           gap={1}
         >
-          <p>Transaction Fee:</p>
+          <p>Transaction fee:</p>
           <EstimatedFeeRender
             estimatedFee={estimatedFee}
             loading={isSimulating}

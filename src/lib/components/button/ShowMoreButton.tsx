@@ -9,8 +9,8 @@ interface ShowMoreButtonProps {
   setToggleShowMore: () => void;
 }
 export const ShowMoreButton = ({
-  showMoreText = "View Full",
-  showLessText = "View Less",
+  showMoreText = "View full",
+  showLessText = "View less",
   toggleShowMore,
   setToggleShowMore,
 }: ShowMoreButtonProps) => (
