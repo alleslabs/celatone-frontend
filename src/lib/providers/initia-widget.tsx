@@ -1,11 +1,11 @@
-import { context, loadScript, TESTNET } from "@initia/react-wallet-widget/ssr";
-import type { WalletWidget, WidgetConfig, WidgetWallet } from "@initia/utils";
+import { context, loadScript } from "@initia/react-wallet-widget/ssr";
+import type { WalletWidget, WidgetConfig } from "@initia/utils";
 import { useEffect, useState } from "react";
 import type { ReactNode, PropsWithChildren } from "react";
 
-import { SUPPORTED_NETWORK_TYPES } from "env";
 import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import { useL1InfoByNetworkType } from "lib/hooks";
 import pkg from "../../../package.json";
 
 declare global {
@@ -45,18 +45,7 @@ const WalletWidgetProvider = ({
 export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
   const { chainConfig, currentChainId } = useCelatoneApp();
   const enabledWasm = useWasmConfig({ shouldRedirect: false });
-
-  const testnetConfigs = {
-    ...TESTNET,
-    filterWallet: (wallet: WidgetWallet) =>
-      !chainConfig.features.evm.enabled || wallet.type === "evm",
-  };
-
-  const networkType =
-    SUPPORTED_NETWORK_TYPES.length > 1
-      ? chainConfig.network_type
-      : SUPPORTED_NETWORK_TYPES[0];
-
+  const { configs } = useL1InfoByNetworkType();
   return (
     <WalletWidgetProvider
       key={currentChainId}
@@ -84,7 +73,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
           : undefined
       }
       fallback={<LoadingOverlay />}
-      {...(networkType !== "mainnet" && testnetConfigs)}
+      {...configs}
     >
       {children}
     </WalletWidgetProvider>
