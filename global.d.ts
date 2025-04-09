@@ -12,4 +12,8 @@ declare global {
       thisArg?: any
     ): T | undefined;
   }
+
+  namespace JSX {
+    interface Element extends React.ReactElement<any, any> {}
+  }
 }
