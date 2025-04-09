@@ -39,6 +39,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+## v1.11.0
+
+### Features
+
 - [#1289](https://github.com/alleslabs/celatone-frontend/pull/1289) Disable MOVE verification on custom rollups
 - [#1287](https://github.com/alleslabs/celatone-frontend/pull/1287) Disable WASM/EVM verification on custom rollups
 
