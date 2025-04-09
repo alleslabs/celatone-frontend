@@ -56,6 +56,7 @@ import type { BechAddr, BechAddr20, BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
+  isId,
   jsonPrettify,
   jsonValidate,
   libDecode,
@@ -114,7 +115,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   } = useForm<InstantiateFormState>({
     mode: "all",
     defaultValues: {
-      codeId: 0,
+      codeId: "",
       codeHash: "",
       label: "",
       adminAddress: "",
@@ -145,7 +146,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   // -------------------DATA-------------------//
   // ------------------------------------------//
   const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
-    codeId,
+    isId(codeId) ? Number(codeId) : undefined,
     codeHash
   );
 
@@ -160,7 +161,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
     const generalChecks =
       Boolean(address) &&
       Boolean(label) &&
-      codeId &&
+      isId(codeId) &&
       status.state === "success";
 
     switch (tab) {
@@ -299,12 +300,12 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   // ------------------------------------------//
   /** Remark: parsing initial msg, initial funds from query params */
   useEffect(() => {
-    if (codeIdQuery) setValue("codeId", codeIdQuery);
+    if (codeIdQuery) setValue("codeId", codeIdQuery.toString());
     if (msgQuery) {
       const decodedMsg = libDecode(msgQuery);
       try {
         const msgObject = JSON.parse(decodedMsg) as InstantiateRedoMsg;
-        setValue("codeId", msgObject.code_id);
+        setValue("codeId", msgObject.code_id.toString());
         setValue("label", msgObject.label);
         setValue("adminAddress", msgObject.admin);
         setValue(
@@ -354,7 +355,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
             composeMsg(MsgType.INSTANTIATE, {
               sender: address,
               admin: adminAddress as BechAddr,
-              codeId: Long.fromInt(codeId),
+              codeId: Long.fromString(codeId),
               label,
               msg: Buffer.from(currentInput),
               funds,
@@ -398,7 +399,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   return (
     <>
       <ActionPageContainer>
-        <CelatoneSeo pageName="Instantiate Contract" />
+        <CelatoneSeo pageName="Instantiate contract" />
         <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
           DEPLOY NEW CONTRACT
         </Text>
@@ -410,7 +411,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
           <UserDocsLink
             isDevTool
             mt={2}
-            cta="View Instantiate Guideline"
+            cta="View instantiate guideline"
             href="cosmwasm/upload-instantiate#instantiate-contract-from-code"
           />
         </Flex>
@@ -425,12 +426,12 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
             </Heading>
           )}
           <CodeSelectSection
-            codeId={codeId}
+            codeId={isId(codeId) ? Number(codeId) : undefined}
             name="codeId"
             control={control}
             error={formErrors.codeId?.message}
             onCodeSelect={(code: number) => {
-              setValue("codeId", code);
+              setValue("codeId", code.toString());
               resetMsgInputSchema();
             }}
             setCodeHash={(data: Code) =>
@@ -497,7 +498,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
               />
             }
             schemaContent={
-              codeId && (
+              isId(codeId) && (
                 <SchemaInputSection
                   type="instantiate"
                   codeHash={codeHash}
@@ -540,7 +541,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
           display="flex"
           gap={1}
         >
-          <p>Transaction Fee:</p>
+          <p>Transaction fee:</p>
           <EstimatedFeeRender
             estimatedFee={estimatedFee}
             loading={isSimulating}

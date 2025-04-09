@@ -77,7 +77,7 @@ export const CollapseNavMenu = ({
           }}
         >
           <Flex justifyContent="space-between" alignItems="center">
-            {!isMobile && item.category === "Your Account" && (
+            {!isMobile && item.category === "Your account" && (
               <Tooltip label="Expand" placement="right">
                 <IconButton
                   aria-label="overview"

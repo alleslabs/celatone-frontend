@@ -40,10 +40,10 @@ export function RemoveContractModal({
       title={`Remove ${displayName}?`}
       icon="delete"
       iconColor="error.light"
-      mainBtnTitle="Yes, Remove"
+      mainBtnTitle="Yes, remove"
       mainVariant="error"
       mainAction={handleRemove}
-      otherBtnTitle="No, Keep It"
+      otherBtnTitle="No, keep it"
       trigger={<MenuItem {...menuItemProps} as="button" />}
     >
       <Text>

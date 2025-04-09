@@ -42,17 +42,17 @@ import { useContractData } from "./wasm/contract";
 
 export type SearchResultType =
   | "Code ID"
-  | "Contract Address"
-  | "Account Address"
-  | "Transaction Hash"
+  | "Contract address"
+  | "Account address"
+  | "Transaction hash"
   | "Proposal ID"
   | "Block"
   | "Pool ID"
-  | "Validator Address"
-  | "Module Path"
-  | "NFT Address"
-  | "NFT Collection Address"
-  | "EVM Transaction Hash";
+  | "Validator address"
+  | "Module path"
+  | "NFT address"
+  | "NFT collection address"
+  | "EVM transaction hash";
 
 interface ResultMetadata {
   icns?: {
@@ -338,7 +338,7 @@ export const useSearchHandler = (
   if (nftCollectionData)
     results.push({
       value: debouncedKeyword,
-      type: "NFT Collection Address",
+      type: "NFT collection address",
       metadata: {
         nft: {
           name: nftCollectionData.name,
@@ -349,7 +349,7 @@ export const useSearchHandler = (
   if (nftData)
     results.push({
       value: debouncedKeyword,
-      type: "NFT Address",
+      type: "NFT address",
       metadata: {
         nft: {
           collectionAddress: nftData.collectionAddress,
@@ -366,7 +366,7 @@ export const useSearchHandler = (
           : debouncedKeyword,
       type:
         // eslint-disable-next-line sonarjs/no-duplicate-string
-        contractData || evmCodes?.code ? "Contract Address" : "Account Address",
+        contractData || evmCodes?.code ? "Contract address" : "Account address",
       metadata: {
         icns:
           icnsNamesByKeyword && icnsNamesByKeyword.names.length > 0
@@ -382,7 +382,7 @@ export const useSearchHandler = (
   if (addressByMovePrefixKeyword)
     results.push({
       value: addressByMovePrefixKeyword,
-      type: "Account Address",
+      type: "Account address",
     });
 
   if (icnsAddrByKeyword && icnsAddrByKeyword.address !== "")
@@ -390,8 +390,8 @@ export const useSearchHandler = (
       value: icnsAddrByKeyword.address,
       type:
         icnsAddrByKeyword.addressType === "contract_address"
-          ? "Contract Address"
-          : "Account Address",
+          ? "Contract address"
+          : "Account address",
       metadata: {
         icns:
           icnsNamesByIcnsAddr && icnsNamesByIcnsAddr.names.length > 0
@@ -408,7 +408,7 @@ export const useSearchHandler = (
   if (iuAddrByKeyword && iuAddrByKeyword.address !== null)
     results.push({
       value: iuAddrByKeyword.address,
-      type: "Account Address",
+      type: "Account address",
       metadata: {
         initiaUsername: debouncedKeyword.endsWith(`.${bech32Prefix}`)
           ? debouncedKeyword
@@ -419,7 +419,7 @@ export const useSearchHandler = (
   if (moduleData)
     results.push({
       value: debouncedKeyword,
-      type: "Module Path",
+      type: "Module path",
     });
 
   if (codeData)
@@ -431,13 +431,13 @@ export const useSearchHandler = (
   if (txData)
     results.push({
       value: debouncedKeyword,
-      type: "Transaction Hash",
+      type: "Transaction hash",
     });
 
   if (evmTxData)
     results.push({
       value: debouncedKeyword,
-      type: "EVM Transaction Hash",
+      type: "EVM transaction hash",
     });
 
   if (blockData)
@@ -455,7 +455,7 @@ export const useSearchHandler = (
   if (validatorData)
     results.push({
       value: debouncedKeyword,
-      type: "Validator Address",
+      type: "Validator address",
     });
 
   if (poolData?.info)

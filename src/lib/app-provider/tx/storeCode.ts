@@ -13,7 +13,7 @@ export interface StoreCodeStreamParams {
   wasmFileName: Option<string>;
   wasmCode: Option<Promise<ArrayBuffer>>;
   addresses?: BechAddr[];
-  permission: AccessType;
+  permission?: AccessType;
   codeName: string;
   estimatedFee: Option<StdFee>;
   onTxSucceed: StoreCodeSucceedCallback;

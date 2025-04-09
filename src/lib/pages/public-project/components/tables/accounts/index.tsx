@@ -27,7 +27,7 @@ const TEMPLATE_COLUMNS = "160px 320px minmax(250px, 1fr)";
 const AccountTableHeader = () => (
   <Grid templateColumns={TEMPLATE_COLUMNS} minW="min-content">
     <TableHeader>Address</TableHeader>
-    <TableHeader>Account Name</TableHeader>
+    <TableHeader>Account name</TableHeader>
     <TableHeader>Description</TableHeader>
   </Grid>
 );
@@ -82,7 +82,7 @@ export const PublicProjectAccountTable = ({
       <TableTitle title="Accounts" count={accounts.length} />
       {!onViewMore && (
         <InputWithIcon
-          placeholder="Search with Account Address, Name, or Description"
+          placeholder="Search with account address, name, or description"
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
           size={{ base: "md", md: "lg" }}

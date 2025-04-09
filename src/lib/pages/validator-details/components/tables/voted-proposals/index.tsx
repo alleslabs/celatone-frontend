@@ -148,12 +148,12 @@ export const VotedProposalsTable = ({
         onViewMore();
       }}
     >
-      <TableTitle title="Voted Proposals" count={answers?.all ?? 0} mb={0} />
+      <TableTitle title="Voted proposals" count={answers?.all ?? 0} mb={0} />
       <CustomIcon boxSize={6} m={0} name="chevron-right" color="gray.600" />
     </Flex>
   ) : (
     <Flex direction="column" gap={6}>
-      <TableTitle title="Voted Proposals" count={answers?.all ?? 0} mb={0} />
+      <TableTitle title="Voted proposals" count={answers?.all ?? 0} mb={0} />
       {!onViewMore && (
         <>
           <Alert variant="info" gap={4} display={{ base: "none", md: "flex" }}>

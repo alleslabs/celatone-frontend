@@ -79,7 +79,7 @@ export const NavDrawer = () => {
 
     if (publicProject.enabled)
       navMenuTmp.push({
-        category: "Public Projects",
+        category: "Public projects",
         slug: "public-projects",
         submenu: [
           ...getSavedPublicProjects().map((list) => ({
@@ -88,7 +88,7 @@ export const NavDrawer = () => {
             logo: list.logo,
           })),
           {
-            name: "View All Projects",
+            name: "View all projects",
             slug: "/projects",
             icon: "public-project" as IconKeys,
           },
@@ -115,8 +115,7 @@ export const NavDrawer = () => {
         gap={1}
         onClick={onOpen}
       >
-        <CustomIcon name="menu" boxSize={3} />
-        Menu
+        <CustomIcon name="menu" boxSize={6} />
       </Button>
       <Drawer isOpen={isOpen} onClose={onClose} placement="right">
         <DrawerOverlay />

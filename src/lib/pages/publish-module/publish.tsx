@@ -209,7 +209,7 @@ export const PublishModule = ({
 
   return (
     <>
-      <CelatoneSeo pageName="Publish / Republish Modules" />
+      <CelatoneSeo pageName="Publish / Republish modules" />
       <PageContainer p={0}>
         <Box minH="inherit" maxW="1440px" mx="auto">
           <Grid
@@ -232,7 +232,7 @@ export const PublishModule = ({
             </Box>
             {/* Upload File Section */}
             <Box gridArea="2 / 2">
-              <Heading as="h6" variant="h6" fontWeight={600}>
+              <Heading as="h6" variant="h6">
                 Upload .mv file(s)
               </Heading>
               <Flex gap={6} flexDirection="column" my={6}>
@@ -263,13 +263,13 @@ export const PublishModule = ({
                 variant="ghost-primary"
                 p="0 4px"
               >
-                Publish More Modules
+                Publish more modules
               </Button>
             </Box>
             {/* Upgrade Policy Section */}
             <Box gridArea="3 / 2">
-              <Heading as="h6" variant="h6" fontWeight={600}>
-                Upgrade Policy
+              <Heading as="h6" variant="h6">
+                Upgrade policy
               </Heading>
               <Text color="text.dark" variant="body2" mt={2}>
                 Specify how publishing modules will be able to republish.
@@ -298,7 +298,7 @@ export const PublishModule = ({
                 alignItems="center"
                 gap={1}
               >
-                <p>Transaction Fee:</p>
+                <p>Transaction fee:</p>
                 <EstimatedFeeRender
                   estimatedFee={estimatedFee}
                   loading={isSimulating}

@@ -131,7 +131,10 @@ const ProposalToWhitelist = () => {
           permission: uploadAccessParams?.isPermissionedNetwork
             ? AccessConfigPermission.ANY_OF_ADDRESSES
             : AccessConfigPermission.EVERYBODY,
-          addresses: uploadAccessParams?.addresses?.concat(addressesArray),
+          addresses:
+            uploadAccessParams?.codeUploadAccess.addresses?.concat(
+              addressesArray
+            ),
         }),
         initialDeposit,
         proposer: walletAddress,
@@ -255,7 +258,7 @@ const ProposalToWhitelist = () => {
           )}
           <GridItem area="main">
             <Heading as="h5" variant="h5">
-              Create Proposal to Whitelist
+              Create proposal to whitelist
             </Heading>
             <Text color="text.dark" mt={4} fontWeight={500} variant="body2">
               Allowed addresses will be able to upload and stored code without
@@ -277,14 +280,14 @@ const ProposalToWhitelist = () => {
                 <Flex gap={2} alignItems="center">
                   <CustomIcon name="proposal" color="gray.600" />
                   <Heading as="h6" variant="h6">
-                    Fill in Proposal Details
+                    Fill in proposal details
                   </Heading>
                 </Flex>
                 <ControllerInput
                   name="title"
                   control={control}
                   placeholder="ex. Allow XYZ to store code without proposal"
-                  label="Proposal Title"
+                  label="Proposal title"
                   labelBgColor="gray.900"
                   variant="fixed-floating"
                   rules={{
@@ -301,7 +304,7 @@ const ProposalToWhitelist = () => {
                   name="description"
                   control={control}
                   height="160px"
-                  label="Proposal Description"
+                  label="Proposal description"
                   placeholder="Please describe your proposal for whitelist. Include all relevant details such as the project you work on or addresses you want to add to the allow list and the reason for the proposal. The description should be clear and concise to help everyone understand your request."
                   variant="fixed-floating"
                   labelBgColor="gray.900"
@@ -333,7 +336,7 @@ const ProposalToWhitelist = () => {
                             addressObj.address === addresses[idx].address
                         ) && "You already input this address",
                       whitelisted: () =>
-                        uploadAccessParams?.addresses?.includes(
+                        uploadAccessParams?.codeUploadAccess.addresses?.includes(
                           addresses[idx].address
                         )
                           ? "This address is already included in whitelist"
@@ -425,7 +428,7 @@ const ProposalToWhitelist = () => {
                 display="flex"
                 gap={1}
               >
-                <p>Transaction Fee:</p>
+                <p>Transaction fee:</p>
                 <EstimatedFeeRender
                   estimatedFee={estimatedFee}
                   loading={isSimulating}

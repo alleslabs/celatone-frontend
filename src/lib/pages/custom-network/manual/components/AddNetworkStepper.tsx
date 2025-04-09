@@ -3,9 +3,9 @@ import { Flex, Text } from "@chakra-ui/react";
 import { getStepStyles } from "../helpers";
 
 const steps = [
-  { label: "Network Details" },
-  { label: "Gas & Fee Details" },
-  { label: "Wallet Registry" },
+  { label: "Network details" },
+  { label: "Gas & fee details" },
+  { label: "Wallet registry" },
 ];
 
 interface AddNetworkStepperProps {

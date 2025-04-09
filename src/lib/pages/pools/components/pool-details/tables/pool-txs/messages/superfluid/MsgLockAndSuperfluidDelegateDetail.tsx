@@ -78,7 +78,7 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
           />
         </PoolInfoText>
         <PoolInfoText title="LockID">{lockId}</PoolInfoText>
-        <PoolInfoText title="To Validator">
+        <PoolInfoText title="To validator">
           <ValidatorBadge
             validator={{
               validatorAddress: msg.val_addr,

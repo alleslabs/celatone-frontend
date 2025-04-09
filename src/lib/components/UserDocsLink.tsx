@@ -42,7 +42,7 @@ export const UserDocsLink = ({
         size="sm"
         leftIcon={<CustomIcon name="document" boxSize={3} />}
       >
-        View Doc
+        View doc
       </Button>
     </Link>
   ) : (

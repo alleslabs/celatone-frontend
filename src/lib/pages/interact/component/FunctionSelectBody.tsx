@@ -68,7 +68,7 @@ export const FunctionSelectBody = ({
             py={4}
           />
           <Button variant="primary" onClick={openDrawer}>
-            Select Module
+            Select module
           </Button>
         </>
       )}

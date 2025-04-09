@@ -56,7 +56,7 @@ export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
         },
       }}
     >
-      <Text className="form-label">Compiler Version</Text>
+      <Text className="form-label">Compiler version</Text>
       <SelectInput<WasmVerifySubmitFormOptionValue>
         placeholder="Select or input the compiler version"
         options={options}

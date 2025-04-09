@@ -6,7 +6,11 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { AmpEvent, track } from "lib/amplitude";
-import { useInternalNavigate } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useTierConfig,
+  useWasmConfig,
+} from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
 import PageContainer from "lib/components/PageContainer";
@@ -24,8 +28,11 @@ interface CodeFilterState {
 }
 
 const SavedCodes = observer(() => {
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
+  const { isFullTier } = useTierConfig();
+
   const onRowSelect = (codeId: number) =>
     navigate({
       pathname: "/codes/[codeId]",
@@ -55,7 +62,7 @@ const SavedCodes = observer(() => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="Saved Codes" />
+      <CelatoneSeo pageName="Saved codes" />
       <Flex alignItems="center" justifyContent="space-between" mb={4}>
         <Flex direction="column">
           <Flex align="center">
@@ -66,7 +73,7 @@ const SavedCodes = observer(() => {
               display="flex"
               alignItems="center"
             >
-              Saved Codes
+              Saved codes
             </Heading>
             <Badge variant="primary" ml={2}>
               {savedCodesCount}
@@ -80,7 +87,7 @@ const SavedCodes = observer(() => {
       </Flex>
       <Flex gap={3} my={8}>
         <InputWithIcon
-          placeholder="Search with Code ID or Code Name"
+          placeholder="Search with code ID or code name"
           value={keyword}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setValue("keyword", e.target.value)
@@ -88,19 +95,23 @@ const SavedCodes = observer(() => {
           size="lg"
           amptrackSection="saved-code-search"
         />
-        <FilterByPermission
-          initialSelected="all"
-          setPermissionValue={(newVal: PermissionFilterValue) => {
-            if (newVal === permissionValue) return;
-            setValue("permissionValue", newVal);
-          }}
-        />
+        {isFullTier && (
+          <FilterByPermission
+            initialSelected="all"
+            setPermissionValue={(newVal: PermissionFilterValue) => {
+              if (newVal === permissionValue) return;
+              setValue("permissionValue", newVal);
+            }}
+          />
+        )}
       </Flex>
       <MySavedCodesTable
         codes={saved}
         totalData={savedCodesCount}
         isLoading={isSavedCodesLoading}
         onRowSelect={onRowSelect}
+        showCw2andContracts={isFullTier}
+        disablePermission={!isFullTier}
       />
       <UserDocsLink
         isDevTool

@@ -126,10 +126,10 @@ export const RecentBlocksSection = ({
         w="full"
       >
         <Heading as="h6" variant="h6" color="text.main">
-          Most Recent 100 Blocks
+          Most recent 100 blocks
         </Heading>
         <Text variant="body2" color="text.dark">
-          Latest Update: {formatUTC(new Date(dataUpdatedAt))}
+          Latest update: {formatUTC(new Date(dataUpdatedAt))}
         </Text>
       </Flex>
       <Grid
@@ -154,7 +154,7 @@ export const RecentBlocksSection = ({
         bottom="0"
         ref={hoverTextRef}
       >
-        Most Recent Block: {data.recent100Blocks[0]?.height ?? "N/A"}
+        Most recent block: {data.recent100Blocks[0]?.height ?? "N/A"}
       </Text>
     </Flex>
   );

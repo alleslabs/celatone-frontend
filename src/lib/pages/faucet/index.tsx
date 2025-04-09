@@ -185,7 +185,7 @@ const Faucet = () => {
         value={address}
         setInputState={setAddress}
         status={status}
-        label="Receiving Address"
+        label="Receiving address"
         helperAction={
           <AssignMe
             onClick={() => {
@@ -228,7 +228,7 @@ const Faucet = () => {
               style={{ padding: "4px 12px" }}
               onClick={() => openTxTab(result.txHash)}
             >
-              View Transaction
+              View transaction
             </Button>
           )}
         </Alert>

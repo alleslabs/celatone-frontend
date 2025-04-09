@@ -11,7 +11,7 @@ export const Optimizer = ({ evmVerifyInfo: { optimizer } }: OptimizerProps) => {
   }
 
   return (
-    <LabelText label="Optimization Enabled">
+    <LabelText label="Optimization enabled">
       {optimizer
         ? optimizer.enabled
           ? `Yes with ${optimizer.runs} runs`

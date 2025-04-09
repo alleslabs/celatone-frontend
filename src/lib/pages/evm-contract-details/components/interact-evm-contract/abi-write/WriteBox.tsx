@@ -165,7 +165,7 @@ export const WriteBox = ({
                 isDisable={isUndefined(data)}
                 value={data ?? ""}
                 amptrackSection="write_inputs"
-                buttonText="Copy Encoded Inputs"
+                buttonText="Copy encoded inputs"
               />
               <EvmCodeSnippet
                 contractAddress={contractAddress}
@@ -176,7 +176,7 @@ export const WriteBox = ({
             </Flex>
             <Flex direction="row" align="center" gap={2}>
               <Flex fontSize="14px" color="text.dark" alignItems="center">
-                Transaction Fee:{" "}
+                Transaction fee:{" "}
                 <EstimatedFeeEvmRender
                   gasPrice={fee?.gasPrice}
                   gasUsed={fee?.simulatedGasUsed}

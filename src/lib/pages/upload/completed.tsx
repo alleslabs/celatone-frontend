@@ -10,7 +10,11 @@ import {
 import { observer } from "mobx-react-lite";
 
 import type { StoreCodeTxInternalResult } from "lib/app-fns/tx/storeCode";
-import { useInternalNavigate } from "lib/app-provider";
+import {
+  useInternalNavigate,
+  useTierConfig,
+  useIsApiChain,
+} from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -18,6 +22,7 @@ import { CustomIcon } from "lib/components/icon";
 import { UploadSchema } from "lib/components/json-schema";
 import { WasmVerifySubmitModal } from "lib/components/modal";
 import { Stepper } from "lib/components/stepper";
+import { Tooltip } from "lib/components/Tooltip";
 import { TxReceiptRender } from "lib/components/tx";
 import {
   IndirectlyVerifiedAlert,
@@ -36,6 +41,10 @@ interface UploadCompleteProps {
 }
 
 export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
+  const { isFullTier } = useTierConfig();
+  const isApiChain = useIsApiChain({
+    shouldRedirect: false,
+  });
   const navigate = useInternalNavigate();
   const { getSchemaByCodeHash } = useSchemaStore();
   const { data: derivedWasmVerifyInfo } = useDerivedWasmVerifyInfo(
@@ -65,7 +74,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         mt={10}
       />
       <Heading as="h4" variant="h4" mt={4} mb={12}>
-        Upload Wasm File Complete!
+        Upload Wasm file complete!
       </Heading>
       <Text variant="body2" color="text.dark" fontWeight={500} mb={4}>
         ‘{txResult.codeDisplayName}’ has been uploaded.
@@ -99,11 +108,11 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
               ),
             },
             {
-              title: "Tx Hash",
+              title: "Tx hash",
               html: <ExplorerLink type="tx_hash" value={txResult.txHash} />,
             },
             {
-              title: "Tx Fee",
+              title: "Tx fee",
               html: (
                 <EstimatedFeeRender
                   estimatedFee={feeFromStr(txResult.txFee)}
@@ -132,19 +141,26 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
               codeHash={txResult.codeHash}
               wasmVerifyStatus={getWasmVerifyStatus(derivedWasmVerifyInfo)}
               relatedVerifiedCodes={derivedWasmVerifyInfo?.relatedVerifiedCodes}
+              disabled={!isApiChain}
               triggerElement={
-                <OptionButton
-                  title="Verify Code"
-                  description="Ensures that the deployed code matches its published source code"
-                />
+                <Tooltip
+                  label="Code verification is only available on official networks"
+                  hidden={isApiChain}
+                >
+                  <OptionButton
+                    title="Verify code"
+                    description="Ensures that the deployed code matches its published source code"
+                    disabled={!isApiChain}
+                  />
+                </Tooltip>
               }
             />
             {txResult.codeHash && (
               <>
                 {derivedWasmVerifyInfo?.schema ? (
                   <OptionButtonDisabled
-                    title="Attach JSON Schema"
-                    description="JSON Schema is already available due to the code is indirectly verified"
+                    title="Attach JSON schema"
+                    description="JSON schema is already available due to the code is indirectly verified"
                   />
                 ) : (
                   <UploadSchema
@@ -154,7 +170,7 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
                     codeHash={txResult.codeHash}
                     triggerElement={
                       <OptionButton
-                        title="Attach JSON Schema"
+                        title="Attach JSON schema"
                         description="Your attached JSON schema will be stored locally on your device"
                       />
                     }
@@ -205,15 +221,17 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
           ? "Skip and proceed to instantiate"
           : "Proceed to instantiate"}
       </Button>
-      <Button
-        variant="outline-primary"
-        w="full"
-        onClick={() => {
-          navigate({ pathname: "/stored-codes" });
-        }}
-      >
-        Go to my stored codes
-      </Button>
+      {isFullTier && (
+        <Button
+          variant="outline-primary"
+          w="full"
+          onClick={() => {
+            navigate({ pathname: "/stored-codes" });
+          }}
+        >
+          Go to my stored codes
+        </Button>
+      )}
     </ActionPageContainer>
   );
 });

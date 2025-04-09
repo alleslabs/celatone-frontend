@@ -35,9 +35,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v1.10.2
+## Unreleased
 
 ### Features
+
+### Improvements
+
+### Bug fixes
+
+## v1.11.0
+
+### Features
+
+- [#1289](https://github.com/alleslabs/celatone-frontend/pull/1289) Disable MOVE verification on custom rollups
+- [#1287](https://github.com/alleslabs/celatone-frontend/pull/1287) Disable WASM/EVM verification on custom rollups
+
+### Improvements
+
+- [#1300](https://github.com/alleslabs/celatone-frontend/pull/1300) Apply Initia's constants from initia react widget to username and provider
+- [#1302](https://github.com/alleslabs/celatone-frontend/pull/1302) Convert more text to sentence case
+- [#1298](https://github.com/alleslabs/celatone-frontend/pull/1298) Fix tooltip click capture on TokenCard
+- [#1296](https://github.com/alleslabs/celatone-frontend/pull/1296) Convert title to sentence case
+- [#1293](https://github.com/alleslabs/celatone-frontend/pull/1293) Improve useOpenTxTab and useOpenBlockTab
+- [#1290](https://github.com/alleslabs/celatone-frontend/pull/1290) Change minor ui
+- [#1291](https://github.com/alleslabs/celatone-frontend/pull/1291) Exclude instantiate permission from upload access if using Initia
+- [#1286](https://github.com/alleslabs/celatone-frontend/pull/1286) Adjust module verification info layout, query wallet widget latest version
+- [#1284](https://github.com/alleslabs/celatone-frontend/pull/1284) Fix code ID type in form to prevent default 0 value
+- [#1285](https://github.com/alleslabs/celatone-frontend/pull/1285) Enable My Stored Codes in full tier only
+
+### Bug fixes
+
+- [#1297](https://github.com/alleslabs/celatone-frontend/pull/1297) Fix select input floating label
+
+## v1.10.2
 
 - [#1280](https://github.com/alleslabs/celatone-frontend/pull/1280) Support archival fallback for txs and blocks
 
@@ -51,6 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improvements
 
 - [#1276](https://github.com/alleslabs/celatone-frontend/pull/1276) Support backward LCD compatibility for custom networks
+- [#1251](https://github.com/alleslabs/celatone-frontend/pull/1251) Update naming convention from LCD to REST
 
 ## v1.10.0
 

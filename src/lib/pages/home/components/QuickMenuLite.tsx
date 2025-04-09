@@ -128,7 +128,7 @@ export const QuickMenuLite = () => {
       base.push(
         {
           title: "Deploy a new contract",
-          subtitle: "Upload a new wasm code or instantiate a new contract",
+          subtitle: "Upload a new Wasm code or instantiate a new contract",
           slug: "deploy",
           icon: "instantiate" as const,
           isHighlight: true,
@@ -159,7 +159,7 @@ export const QuickMenuLite = () => {
           isDocument: false,
         },
         {
-          title: "User Guide",
+          title: "User guide",
           subtitle: "View Scan documents",
           slug: "wasm-user-guide",
           icon: "document" as const,
@@ -187,15 +187,15 @@ export const QuickMenuLite = () => {
           isDocument: false,
         },
         {
-          title: "Deploy Script",
-          subtitle: "Deploy one-time use Script",
+          title: "Deploy script",
+          subtitle: "Deploy one-time use script",
           slug: "deploy-script",
           icon: "code" as const,
           isHighlight: false,
           isDocument: false,
         },
         {
-          title: "User Guide",
+          title: "User guide",
           subtitle: "View Scan documents",
           icon: "document" as const,
           slug: "move-user-guide",

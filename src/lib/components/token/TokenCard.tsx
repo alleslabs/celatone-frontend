@@ -24,7 +24,11 @@ export const TokenCard = ({
   amptrackSection,
   ...cardProps
 }: TokenCardProps) => (
-  <Tooltip label={`Token ID: ${token.denom}`} textAlign="center">
+  <Tooltip
+    label={`Token ID: ${token.denom}`}
+    textAlign="center"
+    disableClickCapture
+  >
     <Flex
       className="copier-wrapper"
       direction="column"
@@ -52,7 +56,7 @@ export const TokenCard = ({
             isSupportedToken(token) ? "supported_asset" : "unsupported_asset"
           }
           value={token.denom}
-          copyLabel="Token ID Copied!"
+          copyLabel="Token ID copied!"
           display={{ base: "flex", md: "none" }}
           ml={1}
           amptrackSection={amptrackSection}

@@ -20,7 +20,7 @@ export const AddToOtherListModal = observer(
     const [contractLists, setContractLists] = useState<LVPair[]>([]);
 
     const handleSave = useHandleContractSave({
-      title: "Action Complete!",
+      title: "Action complete!",
       contractAddress: contractLocalInfo.contractAddress,
       label: contractLocalInfo.label,
       codeId: contractLocalInfo.codeId,
@@ -43,10 +43,10 @@ export const AddToOtherListModal = observer(
           <Flex pt={6} gap={9}>
             <Flex direction="column" gap={2}>
               <Text variant="body2" fontWeight={500} color="text.dark">
-                Contract Name
+                Contract name
               </Text>
               <Text variant="body2" fontWeight={500} color="text.dark">
-                Contract Address
+                Contract address
               </Text>
             </Flex>
 

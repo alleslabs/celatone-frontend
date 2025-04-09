@@ -20,6 +20,7 @@ import {
   useEvmConfig,
   useExampleAddresses,
   useMobile,
+  useIsApiChain,
 } from "lib/app-provider";
 import { ControllerInput, SelectInput } from "lib/components/forms";
 import { Loading } from "lib/components/Loading";
@@ -78,6 +79,7 @@ export const EvmContractVerifyBody = ({
   evmVerifyConfig,
 }: EvmContractVerifyBodyProps) => {
   useEvmConfig({ shouldRedirect: true });
+  useIsApiChain({ shouldRedirect: true });
   const isMobile = useMobile();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -243,12 +245,12 @@ export const EvmContractVerifyBody = ({
                 <Grid templateColumns="6fr 4fr" columnGap="32px" rowGap="24px">
                   <GridItem colSpan={2}>
                     <Heading as="h6" variant="h6">
-                      Contract Address & License
+                      Contract address & license
                     </Heading>
                   </GridItem>
                   <GridItem colSpan={1}>
                     <ControllerInput
-                      label="Contract Address"
+                      label="Contract address"
                       isRequired
                       placeholder={`ex. ${truncate(bech32AddressToHex(exampleBechAddress))}`}
                       name="contractAddress"
@@ -271,7 +273,7 @@ export const EvmContractVerifyBody = ({
                   </GridItem>
                   <GridItem colSpan={1} colStart={1}>
                     <SelectInput
-                      label="License Type"
+                      label="License type"
                       menuPortalTarget={document.body}
                       isRequired
                       placeholder="Select license type"
@@ -294,7 +296,7 @@ export const EvmContractVerifyBody = ({
                 <Stack spacing={6}>
                   <Stack spacing={1}>
                     <Heading as="h6" variant="h6">
-                      Verification Method
+                      Verification method
                     </Heading>
                     <Text variant="body2" color="text.dark">
                       Please ensure the setting is the matching with the created
@@ -325,7 +327,7 @@ export const EvmContractVerifyBody = ({
                       menuPortalTarget={document.body}
                     />
                     <SelectInput
-                      label="Compiler Version"
+                      label="Compiler version"
                       isRequired
                       placeholder="Select compiler version"
                       options={compilerVersionOptions}
@@ -374,7 +376,7 @@ export const EvmContractVerifyBody = ({
             actionLabel={
               option === EvmVerifyOptions.SolidityHardhat ||
               option === EvmVerifyOptions.SolidityFoundry
-                ? "View Verification Status"
+                ? "View verification status"
                 : "Verify & Publish Contract"
             }
             handleNext={handleSubmit}

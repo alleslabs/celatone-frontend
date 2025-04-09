@@ -25,14 +25,14 @@ export const UserContractDesc = ({
   const description = contractLocalInfo?.description;
 
   const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: description || "No Contract description",
+    text: description || "No contract description",
     ellipsis: "...",
     lines: publicInfo?.description ? 4 : 2,
   });
 
   const displayDescription = useMemo(() => {
     if (!description) {
-      return "No Contract Description";
+      return "No contract description";
     }
     return showMore ? description : clampedText;
   }, [clampedText, description, showMore]);
@@ -49,7 +49,7 @@ export const UserContractDesc = ({
     >
       <Flex justify="space-between" align="center" h="32px">
         <Text variant="body2" fontWeight={500} color="text.dark">
-          Your Contract Description
+          Your contract description
         </Text>
         <EditContractDetailsModal
           contractLocalInfo={{
@@ -69,7 +69,7 @@ export const UserContractDesc = ({
               display="none"
               _groupHover={{ display: "flex" }}
             >
-              {description ? "Edit" : "Add Description"}
+              {description ? "Edit" : "Add description"}
             </Button>
           }
         />
@@ -85,8 +85,8 @@ export const UserContractDesc = ({
 
       {!noClamp && description && (
         <ShowMoreButton
-          showMoreText="View Full Description"
-          showLessText="View Less Description"
+          showMoreText="View full description"
+          showLessText="View less description"
           toggleShowMore={showMore}
           setToggleShowMore={() => setShowMore(!showMore)}
         />

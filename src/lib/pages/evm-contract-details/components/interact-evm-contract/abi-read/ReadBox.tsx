@@ -128,7 +128,7 @@ export const ReadBox = ({
           {inputRequired && (
             <GridItem>
               <Text variant="body2" color="text.dark" fontWeight={700} mb={3}>
-                Read Inputs
+                Read inputs
               </Text>
               <EvmAbiForm
                 types={abiSection.inputs ?? []}
@@ -150,7 +150,7 @@ export const ReadBox = ({
                     isDisable={isUndefined(data)}
                     value={data ?? ""}
                     amptrackSection="read_inputs"
-                    buttonText="Copy Encoded Inputs"
+                    buttonText="Copy encoded inputs"
                     w="100%"
                   />
                   <EvmCodeSnippet
@@ -175,7 +175,7 @@ export const ReadBox = ({
           )}
           <GridItem>
             <Text variant="body2" color="text.dark" fontWeight={700} mb={3}>
-              Read Outputs
+              Read outputs
             </Text>
             {queryError && (
               <Alert variant="error" mb={3} alignItems="center">
@@ -209,7 +209,7 @@ export const ReadBox = ({
                       isDisable={isUndefined(data)}
                       value={data ?? ""}
                       amptrackSection="read_inputs"
-                      buttonText="Copy Encoded Inputs"
+                      buttonText="Copy encoded inputs"
                       w="100%"
                     />
                     <EvmCodeSnippet
@@ -223,7 +223,7 @@ export const ReadBox = ({
                     isDisable={res === "" || Boolean(queryError)}
                     value={res}
                     amptrackSection="read_outputs"
-                    buttonText="Copy Encoded Outputs"
+                    buttonText="Copy encoded outputs"
                     display={{ md: "none", base: "block" }}
                     w="100%"
                   />
@@ -239,7 +239,7 @@ export const ReadBox = ({
                     isDisable={res === "" || Boolean(queryError)}
                     value={res}
                     amptrackSection="read_outputs"
-                    buttonText="Copy Encoded Outputs"
+                    buttonText="Copy encoded outputs"
                     display={{ base: "none", md: "block" }}
                   />
                   <Button
@@ -254,7 +254,7 @@ export const ReadBox = ({
                     leftIcon={<CustomIcon name="query" />}
                     w="100%"
                   >
-                    Read Again
+                    Read again
                   </Button>
                 </Flex>
               </Flex>
@@ -275,7 +275,7 @@ export const ReadBox = ({
                   isDisable={res === "" || Boolean(queryError)}
                   value={res}
                   amptrackSection="read_outputs"
-                  buttonText="Copy Encoded Outputs"
+                  buttonText="Copy encoded outputs"
                   w="100%"
                 />
               </Flex>

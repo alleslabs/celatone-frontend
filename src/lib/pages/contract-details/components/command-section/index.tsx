@@ -41,7 +41,7 @@ export const CommandSection = ({
           flex={0.5}
         >
           <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
-            Query Shortcuts
+            Query shortcuts
           </Text>
           <ContractCmdGroup
             isFetching={isQueryCmdsFetching}
@@ -58,7 +58,7 @@ export const CommandSection = ({
           flex={0.5}
         >
           <Text color="text.dark" variant="body2" fontWeight={500} mb={2}>
-            Execute Shortcuts
+            Execute shortcuts
           </Text>
           <ContractCmdGroup
             isFetching={isExecuteCmdsFetching}

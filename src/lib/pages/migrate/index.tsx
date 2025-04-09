@@ -152,7 +152,7 @@ const MigrateBody = ({
   if (isFetching) return <Loading withBorder={false} />;
   return (
     <>
-      <CelatoneSeo pageName="Migrate Contract" />
+      <CelatoneSeo pageName="Migrate contract" />
       <ActionPageContainer>
         {firstStep ? (
           <Box w="full" mb={6}>
@@ -167,13 +167,13 @@ const MigrateBody = ({
             </Text>
             <Stepper mode="migrate" currentStep={1} />
             <Heading as="h5" variant="h5" textAlign="center" mt={12}>
-              Migrate Contract
+              Migrate contract
             </Heading>
           </Box>
         ) : (
           <Box w="full" mb={12}>
             <Heading as="h5" variant="h5" textAlign="center" my={3}>
-              Migrate Contract
+              Migrate contract
             </Heading>
             <Stepper mode="migrate" currentStep={2} />
           </Box>

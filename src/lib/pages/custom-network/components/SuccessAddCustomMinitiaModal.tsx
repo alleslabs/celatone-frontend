@@ -54,7 +54,7 @@ export const SuccessAddCustomMinitiaModal = ({
             <ModalHeader w="full">
               <Stack alignItems="center" gap={4} w="100%">
                 <Spinner w={16} h={16} thickness="4px" />
-                <Heading variant="h5">Adding Custom Rollup...</Heading>
+                <Heading variant="h5">Adding custom rollup...</Heading>
               </Stack>
             </ModalHeader>
             <ModalBody maxH="400px" overflow="overlay">
@@ -79,7 +79,7 @@ export const SuccessAddCustomMinitiaModal = ({
             </ModalHeader>
             <ModalBody maxH="400px" overflow="overlay">
               <Text variant="body2" color="text.dark" textAlign="center">
-                Your custom rollup is added to the InitiaScan locally on your
+                Your custom rollup is added to the Initia Scan locally on your
                 device. You also can download the configuration in to JSON file
                 to import them in other devices.
               </Text>
@@ -93,7 +93,7 @@ export const SuccessAddCustomMinitiaModal = ({
                   window.location.href = `/${chainId}`;
                 }}
               >
-                Explore new Rollup
+                Explore new rollup
               </Button>
             </ModalFooter>
           </>

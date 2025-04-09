@@ -57,7 +57,7 @@ export const MyPublishedModulesTable = () => {
   return (
     <>
       <InputWithIcon
-        placeholder="Search with Module Name"
+        placeholder="Search with module name"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         amptrackSection="my-published-modules-search"

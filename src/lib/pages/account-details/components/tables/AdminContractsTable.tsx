@@ -74,13 +74,13 @@ export const AdminContractsTable = observer(
       <Box mt={{ base: 4, md: 8 }}>
         {isMobileOverview ? (
           <MobileTitle
-            title="Contract Admins"
+            title="Contract admins"
             count={totalData}
             onViewMore={onViewMore}
           />
         ) : (
           <AccountSectionWrapper
-            title="Contract Admins"
+            title="Contract admins"
             totalData={totalData}
             helperText="This account is the admin for following contracts"
             hasHelperText={!!contracts?.length}

@@ -17,6 +17,6 @@ export const BondedTableHeader = ({
   >
     <TableHeader>Validator</TableHeader>
     <TableHeader>Amount</TableHeader>
-    <TableHeader>{isDelegation ? "Reward" : "Unbond Completed By"}</TableHeader>
+    <TableHeader>{isDelegation ? "Reward" : "Unbond completed by"}</TableHeader>
   </Grid>
 );

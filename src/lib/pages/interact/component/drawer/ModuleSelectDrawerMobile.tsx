@@ -104,7 +104,7 @@ export const ModuleSelectDrawerMobile = ({
                 color="gray.600"
               />
               <Heading as="h5" variant="h5">
-                Select Module
+                Select module
               </Heading>
             </DrawerHeader>
             <DrawerCloseButton color="text.dark" />

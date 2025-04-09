@@ -56,7 +56,7 @@ export const WasmVerifyRequestInfo = ({
           />
         </Flex>
         <Flex gap={2} alignItems="center">
-          <Text {...baseTextStyle}>Code Hash:</Text>
+          <Text {...baseTextStyle}>Code hash:</Text>
           <CopyLink
             type="code_hash"
             amptrackSection="code_hash"
@@ -69,7 +69,7 @@ export const WasmVerifyRequestInfo = ({
       <Divider borderColor="gray.700" />{" "}
       <Flex direction="column" gap={{ base: 2, sm: 1 }}>
         <Flex {...baseContainerStyle}>
-          <Text {...baseTextStyle}>Source Code:</Text>
+          <Text {...baseTextStyle}>Source code:</Text>
           <Flex
             overflow="hidden"
             gap={1}
@@ -100,13 +100,13 @@ export const WasmVerifyRequestInfo = ({
           </Flex>
         </Flex>
         <Flex {...baseContainerStyle}>
-          <Text {...baseTextStyle}>Package Name:</Text>
+          <Text {...baseTextStyle}>Package name:</Text>
           <Text color="text.main" variant="body2">
             {verificationInfo.packageName}
           </Text>
         </Flex>
         <Flex {...baseContainerStyle}>
-          <Text {...baseTextStyle}>Compiler Version:</Text>
+          <Text {...baseTextStyle}>Compiler version:</Text>
           <Text color="text.main" variant="body2">
             {verificationInfo.compilerVersion}
           </Text>

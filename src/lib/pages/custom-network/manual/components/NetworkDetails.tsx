@@ -28,11 +28,11 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
 
   return (
     <Flex direction="column" gap={2} alignItems="center">
-      <CustomNetworkPageHeader title="Add Network Details" />
+      <CustomNetworkPageHeader title="Add network details" />
       <Flex w="full" direction="column" gap={6} mt={8}>
         <CustomNetworkSubheader
-          title="VM Type"
-          subtitle="Choose supported VM for the custom Rollup"
+          title="VM"
+          subtitle="Choose supported VM for the custom rollup"
         />
         <RadioGroup
           onChange={(nextVal) => vmTypeField.onChange(nextVal)}
@@ -92,13 +92,13 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
       </Flex>
       <Flex w="full" direction="column" gap={6} mt={8}>
         <CustomNetworkSubheader
-          title="Network Details"
-          subtitle="Enter the Rollup’s general information and gather data touch points"
+          title="Network details"
+          subtitle="Enter the rollup’s general information and gather data touch points"
         />
         <ControllerInput
           name="prettyName"
           control={control}
-          label="Rollup Name"
+          label="Rollup name"
           variant="fixed-floating"
           w="full"
           placeholder="ex. Jennie"
@@ -135,7 +135,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           <ControllerInput
             name="chainId"
             control={control}
-            label="Rollup Chain ID"
+            label="Rollup chain ID"
             variant="fixed-floating"
             w="full"
             placeholder="ex. jennie-init-1"
@@ -147,7 +147,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
           <ControllerInput
             name="registryChainName"
             control={control}
-            label="Registry Chain Name"
+            label="Registry chain name"
             variant="fixed-floating"
             w="full"
             placeholder="ex. jennieinit"

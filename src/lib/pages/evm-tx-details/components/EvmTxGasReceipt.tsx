@@ -23,19 +23,19 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
     <>
       <Divider />
       <SimpleGrid columns={{ base: 2, md: 1 }} gap={4}>
-        <LabelText flex={1} label="Transaction Fee">
+        <LabelText flex={1} label="Transaction fee">
           <TokenImageWithAmount
             token={gasInfo.txFee}
             hasTrailingZeros={false}
           />
         </LabelText>
-        <LabelText label="Gas Price">
+        <LabelText label="Gas price">
           {formatTokenWithValue(gasInfo.gasPrice, undefined, false)}
         </LabelText>
-        <LabelText label="Usage by Tx & Gas Limit">
+        <LabelText label="Usage by tx & gas limit">
           {`${formatInteger(gasInfo.gasUsed)}/${formatInteger(gasInfo.gasLimit)}`}
         </LabelText>
-        <LabelText label="Gas Refund Percentage">
+        <LabelText label="Gas refund percentage">
           {`${formatPrettyPercent(gasInfo.gasRefundRatio, 2, true)}`}
         </LabelText>
       </SimpleGrid>
@@ -63,13 +63,13 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
             }}
           >
             <Flex direction="column" gap={6} m={4}>
-              <LabelText label="Base Fee">
+              <LabelText label="Base fee">
                 {formatTokenWithValue(gasInfo.baseFee, undefined, false)}
               </LabelText>
-              <LabelText label="Max Priority">
+              <LabelText label="Max priority">
                 {formatTokenWithValue(gasInfo.maxPriorityFee, undefined, false)}
               </LabelText>
-              <LabelText label="Max Possible Gas Fee">
+              <LabelText label="Max possible gas fee">
                 {formatTokenWithValue(gasInfo.maxFee, undefined, false)}
               </LabelText>
             </Flex>

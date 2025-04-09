@@ -39,7 +39,7 @@ export const EvmTxInfo = ({
   return (
     <Container {...flexProps}>
       <LabelText label="Network">{currentChainId}</LabelText>
-      <LabelText label="Block Height">
+      <LabelText label="Block height">
         <ExplorerLink
           value={evmTxData.tx.blockNumber.toString()}
           type="block_height"
@@ -47,7 +47,7 @@ export const EvmTxInfo = ({
           ampCopierSection="tx_page_block_height"
         />
       </LabelText>
-      <LabelText label="Cosmos Tx">
+      <LabelText label="Cosmos tx">
         <ExplorerLink
           value={cosmosTxData.txhash.toUpperCase()}
           type="tx_hash"

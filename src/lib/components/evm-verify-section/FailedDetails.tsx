@@ -39,7 +39,7 @@ export const FailedDetails = ({
           evmVerifyInfo={evmVerifyInfo}
           triggerElement={
             <Button variant="ghost-primary" size="sm">
-              Verify Details
+              Verify details
             </Button>
           }
         />
@@ -58,12 +58,12 @@ export const FailedDetails = ({
           evmVerifyInfo={evmVerifyInfo}
           triggerElement={
             <Button variant="ghost-primary" size="sm">
-              Verify Details
+              Verify details
             </Button>
           }
         />
         <Button variant="ghost-primary" size="sm" onClick={handleNavigate}>
-          Verify Again
+          Verify again
         </Button>
       </HStack>
     </>

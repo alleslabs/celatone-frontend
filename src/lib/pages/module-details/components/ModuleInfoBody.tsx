@@ -11,12 +11,12 @@ const ModuleInfoBodyPublishedAndRepublished = ({
   modulePublishInfo,
 }: Pick<ModuleInfoProps, "modulePublishInfo">) => {
   const labelPrefix = modulePublishInfo?.isRepublished
-    ? "Latest Republished"
+    ? "Latest republished"
     : "Published";
 
   if (modulePublishInfo?.recentPublishTransaction) {
     return (
-      <LabelText label={`${labelPrefix} Transaction`}>
+      <LabelText label={`${labelPrefix} transaction`}>
         <ExplorerLink
           type="tx_hash"
           value={modulePublishInfo.recentPublishTransaction.toUpperCase()}
@@ -60,7 +60,7 @@ export const ModuleInfoBody = ({
       borderRadius={8}
       gap={6}
     >
-      <LabelText label="Upgrade Policy">{upgradePolicy}</LabelText>
+      <LabelText label="Upgrade policy">{upgradePolicy}</LabelText>
       <LabelText label="Published by" helperText1="(Wallet Address)">
         {address ? (
           <ExplorerLink type="user_address" value={address} showCopyOnHover />
@@ -72,7 +72,7 @@ export const ModuleInfoBody = ({
         <>
           {modulePublishInfo?.recentPublishBlockTimestamp && (
             <LabelText
-              label="Published Block Height"
+              label="Published block height"
               helperText1={formatUTC(
                 modulePublishInfo.recentPublishBlockTimestamp
               )}

@@ -10,6 +10,8 @@ import {
   useCurrentChain,
   useGovConfig,
   useInternalNavigate,
+  useTierConfig,
+  useWasmConfig,
 } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -30,6 +32,8 @@ interface CodeFilterState {
 }
 
 const StoredCodes = observer(() => {
+  useTierConfig({ minTier: "full" });
+  useWasmConfig({ shouldRedirect: true });
   const router = useRouter();
   const navigate = useInternalNavigate();
   const { address } = useCurrentChain();
@@ -52,7 +56,9 @@ const StoredCodes = observer(() => {
   const { data, isFetching: isUploadAccessFetching } =
     useUploadAccessParamsRest();
 
-  const isAllowed = Boolean(address && data?.addresses?.includes(address));
+  const isAllowed = Boolean(
+    address && data?.codeUploadAccess.addresses?.includes(address)
+  );
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_MY_STORED_CODES);
@@ -66,7 +72,7 @@ const StoredCodes = observer(() => {
 
   return (
     <PageContainer>
-      <CelatoneSeo pageName="My Stored Codes" />
+      <CelatoneSeo pageName="My stored codes" />
       <Flex alignItems="center" justifyContent="space-between" mb={4}>
         <Flex align="center">
           <Heading
@@ -76,7 +82,7 @@ const StoredCodes = observer(() => {
             display="flex"
             alignItems="center"
           >
-            My Stored Codes
+            My stored codes
           </Heading>
           <Badge variant="primary" ml={2}>
             {storedCodesCount}
@@ -111,7 +117,7 @@ const StoredCodes = observer(() => {
       </Flex>
       <Flex gap={3} my={8}>
         <InputWithIcon
-          placeholder="Search with Code ID or Code Name"
+          placeholder="Search with code ID or code name"
           value={keyword}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setValue("keyword", e.target.value)

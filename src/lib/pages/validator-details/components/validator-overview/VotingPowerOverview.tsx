@@ -152,7 +152,7 @@ export const VotingPowerOverview = ({
         <Flex direction="column" gap={1}>
           <Flex minH="36px" alignItems="center">
             <Heading variant="h6" as="h6" color="text.main">
-              Voting Power
+              Voting power
             </Heading>
           </Flex>
           <ValueWithIcon icon="vote" value={votingPowerPercent} />
@@ -189,14 +189,14 @@ export const VotingPowerOverview = ({
         {!isFullTier && !isMobile && (
           <>
             <VotingPowerDetail
-              label="Self-Bonded"
+              label="Self-bonded"
               ratio={selfVotingPowerRatio}
               amount={selfVotingPower as U<Token<Big>>}
               denom={singleStakingDenom}
               assetInfo={assetInfo}
             />
             <VotingPowerDetail
-              label="From Delegators"
+              label="From delegators"
               ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
               amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
               denom={singleStakingDenom}
@@ -217,14 +217,14 @@ export const VotingPowerOverview = ({
         gap={4}
       >
         <VotingPowerDetail
-          label="Self-Bonded"
+          label="Self-bonded"
           ratio={selfVotingPowerRatio}
           amount={selfVotingPower as U<Token<Big>>}
           denom={singleStakingDenom}
           assetInfo={assetInfo}
         />
         <VotingPowerDetail
-          label="From Delegators"
+          label="From delegators"
           ratio={(1 - selfVotingPowerRatio) as Ratio<number>}
           amount={votingPower.minus(selfVotingPower) as U<Token<Big>>}
           denom={singleStakingDenom}

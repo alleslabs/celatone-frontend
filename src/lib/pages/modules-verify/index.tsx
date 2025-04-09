@@ -11,7 +11,12 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
-import { useCelatoneApp, useMobile, useMoveConfig } from "lib/app-provider";
+import {
+  useCelatoneApp,
+  useIsApiChain,
+  useMobile,
+  useMoveConfig,
+} from "lib/app-provider";
 import { ControllerInput } from "lib/components/forms";
 import { FooterCta } from "lib/components/layouts";
 import { Loading } from "lib/components/Loading";
@@ -105,7 +110,7 @@ export const ModulesVerifyBody = observer(
 
     return (
       <>
-        <CelatoneSeo pageName="Modules Verify" />
+        <CelatoneSeo pageName="Modules verify" />
         {isMobile ? (
           <NoMobile />
         ) : (
@@ -134,7 +139,7 @@ export const ModulesVerifyBody = observer(
                     <ControllerInput
                       name="requestNote"
                       control={control}
-                      label="Request Note (Optional)"
+                      label="Request note (optional)"
                       variant="fixed-floating"
                       placeholder="ex. My first lending modules"
                       helperText="A short description for this verification request, stored locally on your device."
@@ -166,7 +171,7 @@ export const ModulesVerifyBody = observer(
                   onClick: handleSubmit(handleSubmitForm),
                   isDisabled: !zModuleVerifyForm.safeParse(watch()).success,
                 }}
-                actionLabel="Upload file and Submit"
+                actionLabel="Upload file and submit"
                 sx={{
                   backgroundColor: "background.main",
                   columnGap: "32px",
@@ -202,6 +207,7 @@ export const ModulesVerifyBody = observer(
 
 export const ModulesVerify = () => {
   useMoveConfig({ shouldRedirect: true });
+  useIsApiChain({ shouldRedirect: true });
   const { data: moveVerifyConfig, isLoading } = useMoveVerifyConfig();
 
   if (isLoading) return <Loading />;

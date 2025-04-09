@@ -40,7 +40,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           amptrackSection="pool_info"
         />
       </LabelText>
-      <LabelText label="Created Height">
+      <LabelText label="Created height">
         <ExplorerLink
           type="block_height"
           value={(pool.createdHeight ?? "N/A").toString()}
@@ -49,7 +49,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
           ampCopierSection="pool_info"
         />
       </LabelText>
-      <LabelText label="Pool Created by">
+      <LabelText label="Pool created by">
         <ExplorerLink
           value={pool.creator ?? "N/A"}
           type={getAddressType(pool.creator)}
@@ -64,7 +64,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       {(pool.type === PoolType.BALANCER ||
         pool.type === PoolType.STABLESWAP) && (
         <LabelText
-          label="Swap Fee"
+          label="Swap fee"
           tooltipText="The fee charged for making a swap in a pool, defined by the pool creator, and paid by traders in the form of a percentage the input swap asset amount"
         >
           <Text variant="body2">
@@ -75,7 +75,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       {(pool.type === PoolType.BALANCER ||
         pool.type === PoolType.STABLESWAP) && (
         <LabelText
-          label="Exit Fee"
+          label="Exit fee"
           tooltipText="The fee charged when withdrawing from a pool, defined by the pool creator, and paid by the withdrawer in the form of LP tokens"
         >
           <Text variant="body2">
@@ -85,7 +85,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       )}
       {(pool.type === PoolType.BALANCER ||
         pool.type === PoolType.STABLESWAP) && (
-        <LabelText label="Future Governor">
+        <LabelText label="Future governor">
           {futurePoolGovernorType !== "invalid_address" ? (
             <ExplorerLink
               type={futurePoolGovernorType}
@@ -109,7 +109,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       )}
       {pool.tickSpacing !== null && (
         <LabelText
-          label="Tick Spacing"
+          label="Tick spacing"
           tooltipText="The distance between two ticks."
         >
           <Text variant="body2">{pool.tickSpacing}</Text>
@@ -117,7 +117,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
       )}
       {pool.spreadFactor !== null && (
         <LabelText
-          label="Spread Factor"
+          label="Spread factor"
           tooltipText="Swap fee to be paid by swapper."
         >
           <Text variant="body2">
@@ -134,9 +134,9 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
         </LabelText>
       )}
       {pool.scalingFactors !== null && (
-        <LabelText label="Scaling Factors">
+        <LabelText label="Scaling factors">
           <JsonModalButton
-            modalHeader="Scaling Factors"
+            modalHeader="Scaling factors"
             jsonString={JSON.stringify({
               scaling_factors: pool.scalingFactors,
               scaling_factor_controller: pool.scalingFactorController,
@@ -145,7 +145,7 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
         </LabelText>
       )}
       {pool.type === PoolType.COSMWASM && (
-        <LabelText label="Relevant Contract">
+        <LabelText label="Relevant contract">
           {pool.contractAddress ? (
             <Text variant="body2">
               <ExplorerLink

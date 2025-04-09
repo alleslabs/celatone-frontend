@@ -46,7 +46,7 @@ export const RedoModal = ({ message }: RedoModalProps) => {
             <Flex w="full" direction="row" alignItems="center" gap={2} pt={1}>
               <CustomIcon name="redo" boxSize={5} color="gray.600" />
               <Heading variant="h5" as="h5">
-                Redo Instantiate
+                Redo instantiate
               </Heading>
             </Flex>
           </ModalHeader>

@@ -22,7 +22,7 @@ export const PublishedEventsTableMobileCard = ({
     topContent={
       <Flex direction="column" gap={3}>
         <Flex direction="column">
-          <MobileLabel label="Upgrade Policy Changes" />
+          <MobileLabel label="Upgrade policy changes" />
           <PolicyChanges history={history} />
         </Flex>
         <Flex direction="column">
@@ -34,7 +34,7 @@ export const PublishedEventsTableMobileCard = ({
     middleContent={
       <Flex direction="column" gap={3}>
         <Flex direction="column" flex={1}>
-          <MobileLabel label="Block Height" />
+          <MobileLabel label="Block height" />
           {history.height === 0 ? (
             <Text variant="body2" color="text.dark">
               Genesis

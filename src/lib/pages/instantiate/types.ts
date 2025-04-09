@@ -16,7 +16,7 @@ export const zInstantiateQueryParams = z.object({
 });
 
 export interface InstantiateFormState {
-  codeId: number;
+  codeId: string;
   codeHash: string;
   label: string;
   adminAddress: string;

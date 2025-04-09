@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   FormControl,
@@ -102,9 +103,9 @@ export const SearchComponent = () => {
   const handleSelectResult = useCallback(
     (result?: SearchResult, isClick = false) => {
       const getQueryValue = () => {
-        if (result?.type === "Module Path")
+        if (result?.type === "Module path")
           return splitModulePath(result.value) as [Addr, string];
-        if (result?.type === "NFT Address")
+        if (result?.type === "NFT address")
           return [result.metadata?.nft?.collectionAddress ?? "", result.value];
         return result?.value || keyword;
       };
@@ -187,17 +188,15 @@ export const SearchComponent = () => {
             background: "gray.800",
           }}
         >
-          <Flex gap={1}>
+          <Flex gap={1} alignItems="center">
             <CustomIcon color="gray.600" name="search" boxSize={4} />
-            <Text variant="body1" color="text.disabled">
+            <Text variant="body2" color="text.disabled">
               Search on {currentChainId}
             </Text>
           </Flex>
-          <Flex pb={1} borderRadius={4}>
-            <span>
-              <Kbd>{isMac ? "⌘" : "Ctrl"}</Kbd> <Kbd>K</Kbd>
-            </span>
-          </Flex>
+          <Box>
+            <Kbd>{isMac ? "⌘" : "Ctrl"}</Kbd> <Kbd>K</Kbd>
+          </Box>
         </Flex>
       )}
       <Modal

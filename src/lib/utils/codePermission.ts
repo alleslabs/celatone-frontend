@@ -33,7 +33,7 @@ export const getPermissionHelper = (
               permissionAddresses[0]
             )}`;
       default:
-        return "Valid Code ID";
+        return "Valid code ID";
     }
   };
   const getColor = () =>

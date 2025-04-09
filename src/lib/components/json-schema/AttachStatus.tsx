@@ -50,7 +50,7 @@ export const AttachStatus = ({
         color={isReattach ? "gray.400" : "primary.light"}
       />
       <Text color={isReattach ? "gray.400" : "primary.light"}>
-        {isReattach ? "Reattaching JSON Schema..." : "Attaching JSON Schema..."}
+        {isReattach ? "Reattaching JSON schema..." : "Attaching JSON schema..."}
       </Text>
     </Flex>
   </Flex>

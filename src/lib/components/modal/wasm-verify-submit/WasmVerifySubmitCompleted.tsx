@@ -26,7 +26,7 @@ export const WasmVerifySubmitCompleted = ({
             color="success.main"
             boxSize={12}
           />
-          <Heading variant="h5">Submitted Verification!</Heading>
+          <Heading variant="h5">Submitted verification!</Heading>
           <Text variant="body2" textAlign="center">
             Your code verification request has been submitted.
             <br />

@@ -50,7 +50,7 @@ export const EvmTransactionsTableMobileCard = ({
       topContent={
         <Flex align="center" gap={2} w="full">
           <Flex direction="column" flex={3} gap={1}>
-            <MobileLabel label="Transaction Hash" />
+            <MobileLabel label="Transaction hash" />
             <Flex gap={1} alignItems="center">
               {evmTransaction.txReceipt.status ? (
                 <CustomIcon name="check" color="success.main" />

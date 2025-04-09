@@ -77,7 +77,7 @@ const validateSchema = (schemaString: string): Nullable<string> => {
     jsonValidate(schemaString) ??
     ("instantiate" in JSON.parse(schemaString)
       ? null
-      : "`instantiate` field is missing in JSON Schema")
+      : "`instantiate` field is missing in JSON schema")
   );
 };
 
@@ -142,7 +142,7 @@ const MethodRender = ({
       return (
         <>
           <Heading as="h6" variant="h6" mb={4}>
-            Fill in URL to load JSON Schema
+            Fill in URL to load JSON schema
           </Heading>
           <TextInput
             status={{
@@ -165,7 +165,7 @@ const MethodRender = ({
       return (
         <>
           <Heading as="h6" variant="h6" mb={4}>
-            Contract Schema
+            Contract schema
           </Heading>
           <JsonInput
             text={schemaString}
@@ -227,7 +227,7 @@ export const UploadTemplate = ({
             type: ActionType.SET_ERROR,
             method,
             error:
-              response.status === 404 ? "404 Not Found" : response.statusText,
+              response.status === 404 ? "404 not found" : response.statusText,
           });
         }
         schemaString = JSON.stringify(await response.json());
@@ -253,7 +253,7 @@ export const UploadTemplate = ({
     saveNewSchema(codeHash, codeId.toString(), JSON.parse(schemaString));
     track(AmpEvent.ACTION_ATTACH_JSON, { method, isReattach });
     toast({
-      title: `Attached JSON Schema`,
+      title: `Attached JSON schema`,
       status: "success",
       duration: 5000,
       isClosable: false,
@@ -306,9 +306,9 @@ export const UploadTemplate = ({
         mb={6}
       >
         <Flex gap="64px">
-          <Radio value={Method.UPLOAD_FILE}>Upload File</Radio>
-          <Radio value={Method.LOAD_URL}>Load from URL</Radio>
-          <Radio value={Method.FILL_MANUALLY}>Fill Manually</Radio>
+          <Radio value={Method.UPLOAD_FILE}>Upload file</Radio>
+          <Radio value={Method.LOAD_URL}>Load from url</Radio>
+          <Radio value={Method.FILL_MANUALLY}>Fill manually</Radio>
         </Flex>
       </RadioGroup>
       <MethodRender
@@ -324,7 +324,7 @@ export const UploadTemplate = ({
         onClick={handleSave}
         isDisabled={disabledState}
       >
-        Save JSON Schema
+        Save JSON schema
       </Button>
       <Text variant="body2" color="text.dark" alignSelf="center" my={3}>
         Your JSON schema will be{" "}

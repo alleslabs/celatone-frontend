@@ -22,7 +22,7 @@ export const InProgressDetails = ({
       evmVerifyInfo={evmVerifyInfo}
       triggerElement={
         <Button variant="ghost-primary" size="sm">
-          View Verification Details
+          View verification details
         </Button>
       }
     />
