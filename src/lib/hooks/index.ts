@@ -14,3 +14,4 @@ export * from "./useLocalStorage";
 export * from "./useUploadCode";
 export * from "./useTxBroadcast";
 export * from "./useStepper";
+export * from "./useL1InfoByNetworkType";

@@ -32,13 +32,13 @@ import {
   getValidatorVotedProposals,
   getValidatorVotedProposalsAnswerCounts,
 } from "./api";
-import { resolveValIdentity } from "./misc";
 import {
   getValidatorDataRest,
   getValidatorDelegatorsRest,
   getValidatorsRest,
   getValidatorStakingProvisionsRest,
 } from "./rest";
+import { resolveValIdentity } from "./utils";
 import type {
   BlocksResponse,
   StakingProvisionsResponse,
