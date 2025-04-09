@@ -16,7 +16,7 @@ const ModuleInfoBodyPublishedAndRepublished = ({
 
   if (modulePublishInfo?.recentPublishTransaction) {
     return (
-      <LabelText label={`${labelPrefix} Transaction`}>
+      <LabelText label={`${labelPrefix} transaction`}>
         <ExplorerLink
           type="tx_hash"
           value={modulePublishInfo.recentPublishTransaction.toUpperCase()}

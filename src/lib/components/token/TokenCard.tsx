@@ -24,7 +24,11 @@ export const TokenCard = ({
   amptrackSection,
   ...cardProps
 }: TokenCardProps) => (
-  <Tooltip label={`Token ID: ${token.denom}`} textAlign="center">
+  <Tooltip
+    label={`Token ID: ${token.denom}`}
+    textAlign="center"
+    disableClickCapture
+  >
     <Flex
       className="copier-wrapper"
       direction="column"
