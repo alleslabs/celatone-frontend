@@ -65,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1304](https://github.com/alleslabs/celatone-frontend/pull/1304) Remove Initia Terms, update initia widget to v1.3.5
 - [#1297](https://github.com/alleslabs/celatone-frontend/pull/1297) Fix select input floating label
 
 ## v1.10.2
