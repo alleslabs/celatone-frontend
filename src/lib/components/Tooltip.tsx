@@ -1,12 +1,17 @@
-import type { TooltipProps } from "@chakra-ui/react";
+import type { TooltipProps as ChakraTooltipProps } from "@chakra-ui/react";
 
 import { Tooltip as ChakraTooltip, useDisclosure } from "@chakra-ui/react";
 
 import { CustomIcon } from "./icon";
 
+interface TooltipProps extends ChakraTooltipProps {
+  disableClickCapture?: boolean;
+}
+
 export const Tooltip = ({
   placement = "top",
   children,
+  disableClickCapture = false,
   ...tooltipProps
 }: TooltipProps) => {
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
@@ -24,7 +29,7 @@ export const Tooltip = ({
           alignItems: "center",
           height: "fit-content",
         }}
-        onClickCapture={onToggle}
+        onClickCapture={disableClickCapture ? undefined : onToggle}
         onMouseEnter={onOpen}
         onMouseLeave={onClose}
       >

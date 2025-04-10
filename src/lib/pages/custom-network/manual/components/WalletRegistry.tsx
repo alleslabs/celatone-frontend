@@ -59,7 +59,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
             w="full"
           >
             <Heading mb={2} variant="h7">
-              Denom Unit
+              Denom unit
             </Heading>
             <IconButton
               aria-label="Remove asset"
@@ -108,7 +108,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
         w="fit-content"
         onClick={() => append({ denom: "", exponent: 0 })}
       >
-        Add more Denom Unit
+        Add more denom unit
       </Button>
     </Flex>
   ) : (
@@ -125,7 +125,7 @@ const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
         w="fit-content"
         onClick={() => append({ denom: "", exponent: 0 })}
       >
-        Add Denom Unit
+        Add denom unit
       </Button>
     </Flex>
   );
@@ -190,7 +190,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
             pl={4}
           >
             <Text color="text.dark" fontWeight={600} variant="body2">
-              Account address in this Rollup will look like this:
+              Account address in this rollup will look like this:
             </Text>
             {isAccountBech32Loading ? (
               <SkeletonText noOfLines={1} skeletonHeight={4} />

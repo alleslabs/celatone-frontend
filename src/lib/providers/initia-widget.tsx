@@ -1,10 +1,10 @@
-import type { WalletWidget, WidgetConfig, WidgetWallet } from "@initia/utils";
+import type { WalletWidget, WidgetConfig } from "@initia/utils";
 import type { ReactNode, PropsWithChildren } from "react";
 
 import { context, loadScript } from "@initia/react-wallet-widget/ssr";
-import { SUPPORTED_NETWORK_TYPES } from "env";
 import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
+import { useL1InfoByNetworkType } from "lib/hooks";
 import { useEffect, useState } from "react";
 
 import pkg from "../../../package.json";
@@ -46,30 +46,7 @@ const WalletWidgetProvider = ({
 export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
   const { chainConfig, currentChainId } = useCelatoneApp();
   const enabledWasm = useWasmConfig({ shouldRedirect: false });
-
-  const testnetConfigs = {
-    registryUrl: "https://registry.testnet.initia.xyz",
-    apiUrl: "https://api.testnet.initia.xyz",
-    dexApiUrl: "https://dex-api.testnet.initia.xyz",
-    explorerUrl: "https://scan.testnet.initia.xyz",
-    swaplistUrl: "https://list.testnet.initia.xyz/pairs.json",
-    modules: {
-      usernames:
-        "0x42cd8467b1c86e59bf319e5664a09b6b5840bb3fac64f5ce690b5041c530565a",
-      dex_utils:
-        "0x42cd8467b1c86e59bf319e5664a09b6b5840bb3fac64f5ce690b5041c530565a",
-      swap_transfer:
-        "0x42cd8467b1c86e59bf319e5664a09b6b5840bb3fac64f5ce690b5041c530565a",
-    },
-    filterWallet: (wallet: WidgetWallet) =>
-      !chainConfig.features.evm.enabled || wallet.type === "evm",
-  };
-
-  const networkType =
-    SUPPORTED_NETWORK_TYPES.length > 1
-      ? chainConfig.network_type
-      : SUPPORTED_NETWORK_TYPES[0];
-
+  const { configs } = useL1InfoByNetworkType();
   return (
     <WalletWidgetProvider
       key={currentChainId}
@@ -97,7 +74,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
       }
       fallback={<LoadingOverlay />}
       useKeplrAsDirectSigner={enabledWasm.enabled}
-      {...(networkType !== "mainnet" && testnetConfigs)}
+      {...configs}
     >
       {children}
     </WalletWidgetProvider>

@@ -15,7 +15,7 @@ const ModuleInfoBodyPublishedAndRepublished = ({
 
   if (modulePublishInfo?.recentPublishTransaction) {
     return (
-      <LabelText label={`${labelPrefix} Transaction`}>
+      <LabelText label={`${labelPrefix} transaction`}>
         <ExplorerLink
           showCopyOnHover
           type="tx_hash"

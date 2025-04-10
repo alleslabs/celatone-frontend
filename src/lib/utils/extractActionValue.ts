@@ -7,7 +7,7 @@ export const displayActionValue = (isActionName: string) => {
     case "isOpinit":
       return "OPInit";
     case "isStoreCode":
-      return "Store Code";
+      return "Store code";
     case "isInstantiate":
       return "Instantiate";
     case "isExecute":
@@ -15,17 +15,17 @@ export const displayActionValue = (isActionName: string) => {
     case "isMigrate":
       return "Migrate";
     case "isClearAdmin":
-      return "Clear Admin";
+      return "Clear admin";
     case "isUpdateAdmin":
-      return "Update Admin";
+      return "Update admin";
     case "isMovePublish":
-      return "Publish Module";
+      return "Publish module";
     case "isMoveUpgrade":
-      return "Upgrade Module";
+      return "Upgrade module";
     case "isMoveExecute":
-      return "Execute Function";
+      return "Execute function";
     case "isMoveScript":
-      return "Run Script";
+      return "Run script";
     default:
       return "";
   }

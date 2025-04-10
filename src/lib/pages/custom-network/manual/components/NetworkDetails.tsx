@@ -94,7 +94,7 @@ export const NetworkDetails = ({ control, errors }: NetworkDetailsProps) => {
       </Flex>
       <Flex direction="column" gap={6} mt={8} w="full">
         <CustomNetworkSubheader
-          subtitle="Enter the Rollup’s general information and gather data touch points"
+          subtitle="Enter the rollup’s general information and gather data touch points"
           title="Network details"
         />
         <ControllerInput

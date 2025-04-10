@@ -119,7 +119,7 @@ export const AddNetworkJson = observer(() => {
               w="220px"
               onClick={handleSubmit}
             >
-              Import new Rollup
+              Import new rollup
             </Button>
           </Flex>
           <Text textAlign="center" variant="body2">

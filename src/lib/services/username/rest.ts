@@ -1,25 +1,32 @@
-import type { HexAddr } from "lib/types";
+import type { HexAddr, HexAddr32 } from "lib/types";
 
-import { INITIA_USERNAME_REST, INITIA_USERNAME_MODULE_ADDRESS } from "env";
-import { zHexAddr, zHexAddr32 } from "lib/types";
+import { zHexAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 import { getMoveViewJsonRest } from "../move/module/rest";
 
-export const getInitiaUsernameByAddress = async (address: HexAddr) =>
+export const getInitiaUsernameByAddress = async (
+  l1Rest: string,
+  usernameModule: HexAddr32,
+  address: HexAddr
+) =>
   getMoveViewJsonRest(
-    INITIA_USERNAME_REST,
-    zHexAddr32.parse(INITIA_USERNAME_MODULE_ADDRESS),
+    l1Rest,
+    usernameModule,
     "usernames",
     "get_name_from_address",
     [],
     [`"${address}"`]
   ).then((data) => (data ? `${data}.init` : null));
 
-export const getAddressByInitiaUsername = async (username: string) =>
+export const getAddressByInitiaUsername = async (
+  l1Rest: string,
+  usernameModule: HexAddr32,
+  username: string
+) =>
   getMoveViewJsonRest(
-    INITIA_USERNAME_REST,
-    zHexAddr32.parse(INITIA_USERNAME_MODULE_ADDRESS),
+    l1Rest,
+    usernameModule,
     "usernames",
     "get_address_from_name",
     [],

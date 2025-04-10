@@ -92,7 +92,7 @@ export const SuccessAddCustomMinitiaModal = ({
                   window.location.href = `/${chainId}`;
                 }}
               >
-                Explore new Rollup
+                Explore new rollup
               </Button>
             </ModalFooter>
           </>

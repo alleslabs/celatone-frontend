@@ -5,7 +5,7 @@ export const UpdateNetworkDetails = () => {
   return (
     <Flex direction="column" gap={6}>
       <CustomNetworkSubheader
-        subtitle="Enter the Rollup’s general information and gather data touch points"
+        subtitle="Enter the rollup’s general information and gather data touch points"
         title="Network details"
       />
       <Flex bg="teal">form goes here</Flex>

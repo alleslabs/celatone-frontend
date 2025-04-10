@@ -42,13 +42,13 @@ import {
   getValidatorVotedProposals,
   getValidatorVotedProposalsAnswerCounts,
 } from "./api";
-import { resolveValIdentity } from "./misc";
 import {
   getValidatorDataRest,
   getValidatorDelegatorsRest,
   getValidatorsRest,
   getValidatorStakingProvisionsRest,
 } from "./rest";
+import { resolveValIdentity } from "./utils";
 
 export const useValidators = (
   limit: number,
