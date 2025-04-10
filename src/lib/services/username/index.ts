@@ -5,6 +5,7 @@ import {
   useInitia,
   useValidateAddress,
 } from "lib/app-provider";
+import { useL1InfoByNetworkType } from "lib/hooks";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import type { Addr, Nullish } from "lib/types";
 
@@ -14,6 +15,7 @@ export const useInitiaUsernameByAddress = (
   address: Nullish<Addr>,
   enabled = true
 ) => {
+  const { l1Rest, l1Usernames } = useL1InfoByNetworkType();
   const isInitia = useInitia();
   const { isSomeValidAddress } = useValidateAddress();
   const formatAddress = useFormatAddresses();
@@ -23,6 +25,8 @@ export const useInitiaUsernameByAddress = (
       throw new Error("address is undefined (useInitiaUsernameByAddress)");
 
     const username = await getInitiaUsernameByAddress(
+      l1Rest,
+      l1Usernames,
       formatAddress(address).hex
     );
     return { username };
@@ -43,11 +47,16 @@ export const useAddressByInitiaUsername = (
   username: string,
   enabled = true
 ) => {
+  const { l1Rest, l1Usernames } = useL1InfoByNetworkType();
   const isInitia = useInitia();
   const formatAddress = useFormatAddresses();
 
   const queryFn = async () => {
-    const address = await getAddressByInitiaUsername(username);
+    const address = await getAddressByInitiaUsername(
+      l1Rest,
+      l1Usernames,
+      username
+    );
     return { address: address ? formatAddress(address).address : null };
   };
   return useQuery(

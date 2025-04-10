@@ -44,7 +44,7 @@ import { jsonPrettify } from "lib/utils";
 // const TabMenu = [
 //   { name: "Network details", key: "network-details" },
 //   { name: "Supported features", key: "supported-features" },
-//   { name: "Gas & Fee details", key: "gas-fee-details" },
+//   { name: "Gas & fee details", key: "gas-fee-details" },
 //   { name: "Wallet registry", key: "wallet-registry" },
 // ];
 
