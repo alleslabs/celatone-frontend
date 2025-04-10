@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1306](https://github.com/alleslabs/celatone-frontend/pull/1306) Fix validators list separate divider UI
+
 ## v1.11.0
 
 ### Features
