@@ -1,5 +1,4 @@
 import type Big from "big.js";
-
 import type {
   ProposalParams,
   ProposalVotesInfo,
@@ -8,6 +7,7 @@ import type {
   TokenWithValue,
   U,
 } from "lib/types";
+
 import { big } from "lib/types";
 import { divWithDefault } from "lib/utils";
 

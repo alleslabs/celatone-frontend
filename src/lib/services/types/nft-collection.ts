@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import {
   zHexAddr,
   zHexAddr32,
@@ -8,6 +6,7 @@ import {
   zUtcDate,
 } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 const zCollection = z
   .object({

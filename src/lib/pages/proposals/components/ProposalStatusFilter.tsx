@@ -1,9 +1,7 @@
 import type { InputProps } from "@chakra-ui/react";
-import { Flex, FormControl, useOutsideClick } from "@chakra-ui/react";
-import { matchSorter } from "match-sorter";
 import type { RefObject } from "react";
-import { forwardRef, useMemo, useRef, useState } from "react";
 
+import { Flex, FormControl, useOutsideClick } from "@chakra-ui/react";
 import { AmpEvent, trackUseFilter } from "lib/amplitude";
 import { useTierConfig } from "lib/app-provider";
 import {
@@ -15,6 +13,8 @@ import {
 import { StatusChip } from "lib/components/table";
 import { ProposalStatus } from "lib/types";
 import { toggleItem } from "lib/utils";
+import { matchSorter } from "match-sorter";
+import { forwardRef, useMemo, useRef, useState } from "react";
 
 export interface ProposalStatusFilterProps extends InputProps {
   result: ProposalStatus[];
@@ -92,28 +92,28 @@ export const ProposalStatusFilter = forwardRef<
     });
 
     return (
-      <FormControl ref={boxRef} minW={minW} maxW="full" h={8}>
+      <FormControl h={8} maxW="full" minW={minW} ref={boxRef}>
         <FilterInput
-          keyword={keyword}
-          placeholder={placeholder}
-          result={result}
-          label={label}
-          inputRef={inputRef}
-          mainRef={ref}
-          isDropdown={isDropdown}
-          setKeyword={setKeyword}
-          setIsDropdown={setIsDropdown}
           chipContainerComponent={
-            <Flex alignItems="center" pl={2} gap={2}>
+            <Flex alignItems="center" gap={2} pl={2}>
               {result.map((option: ProposalStatus) => (
                 <FilterChip
                   key={option}
-                  chipComponent={<StatusChip status={option} hasCloseBtn />}
+                  chipComponent={<StatusChip hasCloseBtn status={option} />}
                   onSelect={() => setResult(toggleItem(result, option))}
                 />
               ))}
             </Flex>
           }
+          inputRef={inputRef}
+          isDropdown={isDropdown}
+          keyword={keyword}
+          label={label}
+          mainRef={ref}
+          placeholder={placeholder}
+          result={result}
+          setIsDropdown={setIsDropdown}
+          setKeyword={setKeyword}
         />
 
         {isDropdown && (

@@ -1,3 +1,4 @@
+import type { PoolData, PoolTxFilter } from "lib/types";
 import type { ChangeEvent } from "react";
 
 import { Pagination } from "lib/components/pagination";
@@ -5,7 +6,6 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useAssetInfos } from "lib/services/assetService";
 import { useTxsByPoolId } from "lib/services/tx";
-import type { PoolData, PoolTxFilter } from "lib/types";
 
 import { PoolTxsTable } from "./PoolTxsTable";
 
@@ -61,10 +61,7 @@ export const PoolRelatedTxsTable = ({
   return (
     <>
       <PoolTxsTable
-        pool={pool}
-        transactions={txs?.items}
         assetInfos={assetInfos}
-        isLoading={isLoadingAssetInfos || isLoading}
         emptyState={
           isError ? (
             <ErrorFetching dataName="transactions" />
@@ -76,15 +73,18 @@ export const PoolRelatedTxsTable = ({
             />
           )
         }
+        isLoading={isLoadingAssetInfos || isLoading}
+        pool={pool}
+        transactions={txs?.items}
       />
       {countTxs > 0 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={countTxs}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
           scrollComponentId={scrollComponentId}
+          totalData={countTxs}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
         />

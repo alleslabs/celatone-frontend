@@ -1,4 +1,6 @@
-/* eslint-disable sonarjs/cognitive-complexity */
+import type { AbiFormData } from "lib/types";
+import type { Control } from "react-hook-form";
+
 import {
   Box,
   Checkbox,
@@ -8,13 +10,10 @@ import {
   FormLabel,
   Text,
 } from "@chakra-ui/react";
+import { useValidateAddress } from "lib/app-provider";
+import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 import { useCallback, useState } from "react";
 import { useController } from "react-hook-form";
-import type { Control } from "react-hook-form";
-
-import { useValidateAddress } from "lib/app-provider";
-import type { AbiFormData } from "lib/types";
-import { isHexModuleAddress, isHexWalletAddress } from "lib/utils";
 
 import { ArgFieldWidget } from "./ArgFieldWidget";
 import { OBJECT_TYPE, STRING_TYPE } from "./constants";
@@ -68,6 +67,9 @@ export const ArgFieldTemplate = ({
     <Box>
       <FormControl
         className={`${size}-form`}
+        isDisabled={isNull}
+        isInvalid={isError}
+        size={size}
         variant={
           (type === STRING_TYPE ||
             type.startsWith("vector") ||
@@ -76,9 +78,6 @@ export const ArgFieldTemplate = ({
             ? "fixed-floating"
             : "floating"
         }
-        size={size}
-        isInvalid={isError}
-        isDisabled={isNull}
         {...fieldProps}
       >
         <ArgFieldWidget
@@ -105,9 +104,9 @@ export const ArgFieldTemplate = ({
       </FormControl>
       {isOptional && (
         <Checkbox
-          pt="2px"
-          pl={2}
           isChecked={isNull}
+          pl={2}
+          pt="2px"
           onChange={(e) => {
             const newValue = e.target.checked;
             onChange(newValue ? null : "");

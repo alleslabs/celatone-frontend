@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import type { Addr, Nullish } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useInitia,
@@ -7,7 +8,6 @@ import {
 } from "lib/app-provider";
 import { useL1InfoByNetworkType } from "lib/hooks";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
-import type { Addr, Nullish } from "lib/types";
 
 import { getAddressByInitiaUsername, getInitiaUsernameByAddress } from "./rest";
 

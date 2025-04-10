@@ -6,7 +6,7 @@ export const SuperfluidLabel = ({ isSmall = false }: { isSmall?: boolean }) => (
       boxSize={4}
       src="https://assets.alleslabs.dev/celatone-brand/webapp-assets/pools/superfluid.svg"
     />
-    <Text variant={isSmall ? "body2" : "body1"} color="#ee64e8">
+    <Text color="#ee64e8" variant={isSmall ? "body2" : "body1"}>
       Superfluid
     </Text>
   </Flex>

@@ -1,3 +1,5 @@
+import type { BechAddr32 } from "lib/types";
+
 import {
   Button,
   Flex,
@@ -7,10 +9,6 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-import { useCallback, useEffect } from "react";
-
 import { AmpEvent, track, trackUseTab } from "lib/amplitude";
 import {
   useGovConfig,
@@ -32,8 +30,10 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useAccountDelegationInfos } from "lib/model/account";
 import { useBalances } from "lib/services/bank";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
-import type { BechAddr32 } from "lib/types";
 import { jsonPrettify, truncate } from "lib/utils";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
+import { useCallback, useEffect } from "react";
 
 import { CommandSection } from "./components/command-section";
 import { ContractDesc } from "./components/contract-description";
@@ -119,11 +119,11 @@ const ContractDetailsBody = observer(
       <>
         <CelatoneSeo pageName={`Contract – ${truncate(contractAddress)}`} />
         <ContractTop
+          contract={contract}
           contractAddress={contractAddress}
+          contractLocalInfo={contractLocalInfo}
           projectInfo={projectInfo}
           publicInfo={publicInfo}
-          contract={contract}
-          contractLocalInfo={contractLocalInfo}
           wasmVerifyInfo={derivedWasmVerifyInfo}
         />
         <Tabs
@@ -132,26 +132,26 @@ const ContractDetailsBody = observer(
           lazyBehavior="keepMounted"
         >
           <TabList
+            id={tableHeaderId}
             borderBottom="1px solid"
             borderColor="gray.700"
             overflowX="scroll"
-            id={tableHeaderId}
           >
             <CustomTab onClick={handleTabChange(TabIndex.Overview)}>
               Overview
             </CustomTab>
             <CustomTab
-              onClick={handleTabChange(TabIndex.Assets)}
               count={balances?.length}
               isDisabled={balances?.length === 0}
               isLoading={isBalancesLoading}
+              onClick={handleTabChange(TabIndex.Assets)}
             >
               Assets
             </CustomTab>
             <CustomTab
-              onClick={handleTabChange(TabIndex.Delegations)}
               hidden={!gov.enabled}
               isDisabled={hasTotalBonded}
+              onClick={handleTabChange(TabIndex.Delegations)}
             >
               Delegations
             </CustomTab>
@@ -168,21 +168,21 @@ const ContractDetailsBody = observer(
                 <Flex direction="column" gap={4} mt={{ base: 4, md: 0 }}>
                   {(publicInfo || contractLocalInfo) && (
                     <ContractDesc
-                      publicInfo={publicInfo}
                       contract={contract}
                       contractLocalInfo={contractLocalInfo}
+                      publicInfo={publicInfo}
                     />
                   )}
                   <ContractVerificationSection
-                    contractAddress={contractAddress}
-                    codeId={contract.codeId}
                     codeHash={contract.codeHash}
+                    codeId={contract.codeId}
+                    contractAddress={contractAddress}
                     wasmVerifyInfo={derivedWasmVerifyInfo}
                   />
                   <CommandSection
-                    contractAddress={contractAddress}
-                    codeId={contract.codeId}
                     codeHash={contract.codeHash}
+                    codeId={contract.codeId}
+                    contractAddress={contractAddress}
                     wasmVerifyInfo={derivedWasmVerifyInfo}
                   />
                   <Flex
@@ -212,37 +212,37 @@ const ContractDetailsBody = observer(
                 {/* Instantiate/Contract Info Section */}
                 <Flex direction="column" gap={6}>
                   {!isMobile && (
-                    <Heading as="h6" variant="h6" minW="fit-content">
+                    <Heading as="h6" minW="fit-content" variant="h6">
                       Contract information
                     </Heading>
                   )}
                   <Flex
-                    mb={12}
-                    justify="space-between"
                     direction={{ base: "column", md: "row" }}
+                    justify="space-between"
+                    mb={12}
                   >
                     {/* Instantiate Info */}
                     <div>
                       {isMobile && (
-                        <Heading as="h6" variant="h6" mb={6}>
+                        <Heading as="h6" mb={6} variant="h6">
                           Instantiate info
                         </Heading>
                       )}
                       <InstantiateInfo
+                        codeLocalInfo={codeLocalInfo}
                         contract={contract}
                         contractApi={contractApi}
-                        codeLocalInfo={codeLocalInfo}
                         wasmVerifyInfo={derivedWasmVerifyInfo}
                       />
                       <Button
-                        size="sm"
-                        variant="outline-primary"
                         mt={4}
                         pr={1}
+                        size="sm"
+                        variant="outline-primary"
                         onClick={handleTabChange(TabIndex.States)}
                       >
                         View contract states
-                        <CustomIcon name="chevron-right" boxSize={3} />
+                        <CustomIcon boxSize={3} name="chevron-right" />
                       </Button>
                     </div>
                     <Flex
@@ -258,9 +258,9 @@ const ContractDetailsBody = observer(
                         )}
                       />
                       <JsonInfo
+                        defaultExpand
                         header="Instantiate message"
                         jsonString={jsonPrettify(contract.initMsg)}
-                        defaultExpand
                       />
                     </Flex>
                   </Flex>
@@ -268,41 +268,41 @@ const ContractDetailsBody = observer(
                 <ContractTables contractAddress={contractAddress} />
               </Flex>
               <UserDocsLink
-                title="What is Contract in CosmWasm?"
                 cta="Read more about Contract Details"
                 href="cosmwasm/contracts/detail-page"
+                title="What is Contract in CosmWasm?"
               />
             </TabPanel>
             <TabPanel p={0}>
               <AssetsSection address={contractAddress} />
               <UserDocsLink
-                title="What is supported and unsupported assets? "
                 cta="Read more about assets"
                 href="cosmwasm/contracts/detail-page#assets"
+                title="What is supported and unsupported assets? "
               />
             </TabPanel>
-            <TabPanel px={0} pt={{ base: 0, md: 5 }}>
+            <TabPanel pt={{ base: 0, md: 5 }} px={0}>
               <DelegationsSection address={contractAddress} />
               <UserDocsLink
-                title="What is Delegations, Total Bonded, Rewards?"
                 cta="Read more about Delegations"
                 href="cosmwasm/contracts/detail-page#delegations"
+                title="What is Delegations, Total Bonded, Rewards?"
               />
             </TabPanel>
-            <TabPanel px={0} pt={5}>
+            <TabPanel pt={5} px={0}>
               <ContractTables contractAddress={contractAddress} />
               <UserDocsLink
-                title="What is transactions related to the contract?"
                 cta="Read more about Transactions & Histories"
                 href="cosmwasm/contracts/detail-page#transactions-and-histories"
+                title="What is transactions related to the contract?"
               />
             </TabPanel>
-            <TabPanel px={0} pt={5}>
+            <TabPanel pt={5} px={0}>
               <ContractStates contractAddress={contractAddress} />
               <UserDocsLink
-                title="What is contract states?"
                 cta="Read more about Contract States"
                 href="cosmwasm/contracts/detail-page#contract-states"
+                title="What is contract states?"
               />
             </TabPanel>
           </TabPanels>

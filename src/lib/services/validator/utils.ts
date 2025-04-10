@@ -1,6 +1,6 @@
-import axios from "axios";
-
 import type { Validator } from "lib/types";
+
+import axios from "axios";
 import { removeSpecialChars } from "lib/utils";
 
 export const resolveValIdentity = async (

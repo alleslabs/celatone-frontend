@@ -1,6 +1,6 @@
-import { Box } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import type { Option, Transaction, TxFilters } from "lib/types";
 
+import { Box } from "@chakra-ui/react";
 import { useCurrentChain, useMobile } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -10,12 +10,13 @@ import { TxFilterSelection } from "lib/components/TxFilterSelection";
 import { TxRelationSelection } from "lib/components/TxRelationSelection";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxsByAddress, useTxsCountByAddress } from "lib/services/tx";
-import type { Option, Transaction, TxFilters } from "lib/types";
+import { useEffect, useMemo, useState } from "react";
 
+import type { TxsTableProps } from "./types";
+
+import { AccountDetailsEmptyState } from "../../AccountDetailsEmptyState";
 import { TxsAlert } from "./TxsAlert";
 import { TxsTop } from "./TxsTop";
-import type { TxsTableProps } from "./types";
-import { AccountDetailsEmptyState } from "../../AccountDetailsEmptyState";
 
 const getEmptyState = ({
   transactions,
@@ -28,18 +29,18 @@ const getEmptyState = ({
     return (
       <ErrorFetching
         dataName="transactions"
-        withBorder
-        my={2}
         hasBorderTop={false}
+        my={2}
+        withBorder
       />
     );
   }
   if (selectedFilters.length)
     return (
       <EmptyState
-        withBorder
         imageVariant="not-found"
         message="No past transaction matches found with your input."
+        withBorder
       />
     );
 
@@ -130,44 +131,44 @@ export const TxsTableFull = ({
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
         <MobileTitle
-          title="Transactions"
           count={txsCount}
+          title="Transactions"
           onViewMore={onViewMore}
         />
       ) : (
         <>
           <TxsTop
-            txsCount={txsCount}
-            onViewMore={onViewMore}
             relationSelection={
               <TxRelationSelection
-                value={isSigner}
                 setValue={handleOnIsSignerChange}
-                w={{ base: "full", md: "200px" }}
                 size="lg"
+                value={isSigner}
+                w={{ base: "full", md: "200px" }}
               />
             }
+            txsCount={txsCount}
             txTypeSelection={
               <TxFilterSelection
-                result={selectedFilters}
-                setResult={handleOnFiltersChange}
                 boxWidth={{ base: "full", md: "285px" }}
                 placeholder="All"
+                result={selectedFilters}
+                setResult={handleOnFiltersChange}
                 size="lg"
                 tagSize={{ base: "sm", md: "md" }}
               />
             }
+            onViewMore={onViewMore}
           />
           {isTxsCountTimeout && <TxsAlert />}
           {!isMobileOverview && (
             <TransactionsTable
-              transactions={transactions?.items}
-              isLoading={isLoading || isTxCountLoading}
               emptyState={getEmptyState({
                 transactions: transactions?.items,
                 selectedFilters,
               })}
+              isLoading={isLoading || isTxCountLoading}
               showRelations
+              transactions={transactions?.items}
             />
           )}
           {Boolean(transactions?.items?.length) &&
@@ -179,11 +180,11 @@ export const TxsTableFull = ({
                 txsCount > 10 && (
                   <Pagination
                     currentPage={currentPage}
-                    pagesQuantity={pagesQuantity}
                     offset={offset}
-                    totalData={txsCount}
-                    scrollComponentId={scrollComponentId}
                     pageSize={pageSize}
+                    pagesQuantity={pagesQuantity}
+                    scrollComponentId={scrollComponentId}
+                    totalData={txsCount}
                     onPageChange={(nextPage) => {
                       setCurrentPage(nextPage);
                       refetchTxsCount();

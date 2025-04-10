@@ -1,5 +1,6 @@
-import { Box, Divider, Flex } from "@chakra-ui/react";
+import type { HexAddr } from "lib/types";
 
+import { Box, Divider, Flex } from "@chakra-ui/react";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { NftList } from "lib/components/nft";
 import { MobileTitle, ViewMore } from "lib/components/table";
@@ -7,7 +8,7 @@ import {
   useNftsByAccountAddress,
   useNftsByAccountByCollectionSequencer,
 } from "lib/services/nft";
-import type { HexAddr } from "lib/types";
+
 import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 
@@ -47,21 +48,21 @@ export const NftsOverview = ({
     : accountNftsSequencer;
 
   return (
-    <Box mt={{ base: 4, md: 8 }} mb={{ base: 0, md: 8 }}>
+    <Box mb={{ base: 0, md: 8 }} mt={{ base: 4, md: 8 }}>
       {isMobile ? (
-        <MobileTitle title="NFTs" count={totalCount} onViewMore={onViewMore} />
+        <MobileTitle count={totalCount} title="NFTs" onViewMore={onViewMore} />
       ) : (
         <AccountSectionWrapper title="NFTs" totalData={totalCount}>
           <Flex direction="column">
             <NftList
-              nfts={data?.items.slice(0, limit)}
-              isLoading={isFetching}
               emptyState={
                 <AccountDetailsEmptyState
-                  message="No NFTs are held by this account."
                   borderBottom={0}
+                  message="No NFTs are held by this account."
                 />
               }
+              isLoading={isFetching}
+              nfts={data?.items.slice(0, limit)}
               showCollection
             />
             {onViewMore && !!totalCount && totalCount > 5 && (

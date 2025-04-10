@@ -1,9 +1,10 @@
+/* eslint-disable no-param-reassign */
 import type { ChainConfig as SharedChainConfig } from "@alleslabs/shared";
+import type { Option } from "lib/types";
+
 import { find } from "lodash";
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
-
-import type { Option } from "lib/types";
 
 type SharedChainConfigWithLcd = SharedChainConfig & { lcd: string };
 

@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import type {
   Block,
   BlockData,
@@ -7,6 +5,7 @@ import type {
   TransactionWithSignerPubkey,
   Validator,
 } from "lib/types";
+
 import {
   ActionMsgType,
   MsgFurtherAction,
@@ -23,6 +22,7 @@ import {
   parseTxHash,
   snakeToCamel,
 } from "lib/utils";
+import { z } from "zod";
 
 import { zTx, zTxJsonRpc, zTxReceiptJsonRpc } from "./tx";
 

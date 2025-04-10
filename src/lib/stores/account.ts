@@ -1,7 +1,7 @@
+import type { BechAddr, Dict } from "lib/types";
+
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
-
-import type { BechAddr, Dict } from "lib/types";
 
 export interface AccountLocalInfo {
   address: BechAddr;

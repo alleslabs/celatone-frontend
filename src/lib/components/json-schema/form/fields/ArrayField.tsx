@@ -1,9 +1,4 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable react/no-unused-class-component-methods */
-/* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Flex, Text } from "@chakra-ui/react";
 import type {
   ArrayFieldTemplateProps,
   ErrorSchema,
@@ -15,6 +10,8 @@ import type {
   StrictRJSFSchema,
   UiSchema,
 } from "@rjsf/utils";
+
+import { Button, Flex, Text } from "@chakra-ui/react";
 import {
   allowAdditionalItems,
   getTemplate,
@@ -26,6 +23,7 @@ import {
   optionsList,
   TranslatableString,
 } from "@rjsf/utils";
+import { CustomIcon } from "lib/components/icon";
 import { cloneDeep } from "lodash";
 import get from "lodash/get";
 import isObject from "lodash/isObject";
@@ -33,7 +31,6 @@ import set from "lodash/set";
 import { Component } from "react";
 import * as uuid from "uuid";
 
-import { CustomIcon } from "lib/components/icon";
 import { isNullFormData } from "../utils";
 
 /** Type used to represent the keyed form data used in the state */
@@ -561,23 +558,23 @@ class ArrayField<
           (isNullFormData(rawFormData) ? (
             <Button
               fontSize="12px"
+              leftIcon={<CustomIcon boxSize={3} name="plus" />}
               variant="outline-primary"
               onClick={() => onChange([])}
-              leftIcon={<CustomIcon name="plus" boxSize={3} />}
             >
               Create an empty array
             </Button>
           ) : (
             <Button
-              py={0}
-              height="fit-content"
               alignSelf="start"
-              variant="outline"
+              height="fit-content"
+              py={0}
               size="sm"
+              variant="outline"
               onClick={() => onChange(null as any)}
             >
-              <Flex gap={1} alignItems="center" h="fit-content">
-                <CustomIcon name="delete" boxSize={3} color="error.main" />
+              <Flex alignItems="center" gap={1} h="fit-content">
+                <CustomIcon boxSize={3} color="error.main" name="delete" />
                 <Text color="error.main">Delete array</Text>
               </Flex>
             </Button>
@@ -622,26 +619,26 @@ class ArrayField<
     return (
       <Widget
         id={idSchema.$id}
-        name={name}
+        autofocus={autofocus}
+        disabled={disabled}
+        formContext={formContext}
+        hideError={hideError}
+        hideLabel={!displayLabel}
+        label={label}
         multiple
-        onChange={this.onSelectChange}
-        onBlur={onBlur}
-        onFocus={onFocus}
+        name={name}
         options={options}
+        placeholder={placeholder}
+        rawErrors={rawErrors}
+        readonly={readonly}
+        registry={registry}
+        required={required}
         schema={schema}
         uiSchema={uiSchema}
-        registry={registry}
         value={items}
-        disabled={disabled}
-        readonly={readonly}
-        hideError={hideError}
-        required={required}
-        label={label}
-        hideLabel={!displayLabel}
-        placeholder={placeholder}
-        formContext={formContext}
-        autofocus={autofocus}
-        rawErrors={rawErrors}
+        onBlur={onBlur}
+        onChange={this.onSelectChange}
+        onFocus={onFocus}
       />
     );
   }
@@ -683,25 +680,25 @@ class ArrayField<
     return (
       <Widget
         id={idSchema.$id}
-        name={name}
+        autofocus={autofocus}
+        disabled={disabled}
+        formContext={formContext}
+        hideLabel={!displayLabel}
+        label={label}
         multiple
-        onChange={this.onSelectChange}
-        onBlur={onBlur}
-        onFocus={onFocus}
+        name={name}
         options={{ ...options, enumOptions }}
+        placeholder={placeholder}
+        rawErrors={rawErrors}
+        readonly={readonly}
+        registry={registry}
+        required={required}
         schema={schema}
         uiSchema={uiSchema}
-        registry={registry}
         value={items}
-        disabled={disabled}
-        readonly={readonly}
-        required={required}
-        label={label}
-        hideLabel={!displayLabel}
-        placeholder={placeholder}
-        formContext={formContext}
-        autofocus={autofocus}
-        rawErrors={rawErrors}
+        onBlur={onBlur}
+        onChange={this.onSelectChange}
+        onFocus={onFocus}
       />
     );
   }
@@ -739,25 +736,25 @@ class ArrayField<
     );
     return (
       <Widget
-        options={options}
         id={idSchema.$id}
-        name={name}
+        autofocus={autofocus}
+        disabled={disabled}
+        formContext={formContext}
+        hideLabel={!displayLabel}
+        label={label}
         multiple
-        onChange={this.onSelectChange}
-        onBlur={onBlur}
-        onFocus={onFocus}
+        name={name}
+        options={options}
+        rawErrors={rawErrors}
+        readonly={readonly}
+        registry={registry}
+        required={required}
         schema={schema}
         uiSchema={uiSchema}
         value={items}
-        disabled={disabled}
-        readonly={readonly}
-        required={required}
-        registry={registry}
-        formContext={formContext}
-        autofocus={autofocus}
-        rawErrors={rawErrors}
-        label={label}
-        hideLabel={!displayLabel}
+        onBlur={onBlur}
+        onChange={this.onSelectChange}
+        onFocus={onFocus}
       />
     );
   }
@@ -957,27 +954,27 @@ class ArrayField<
     return {
       children: (
         <ItemSchemaField
-          name={name}
-          title={title}
-          index={index}
-          schema={itemSchema}
-          uiSchema={itemUiSchema}
-          formData={itemData}
-          formContext={formContext}
-          errorSchema={itemErrorSchema}
-          idPrefix={idPrefix}
-          idSeparator={idSeparator}
-          idSchema={itemIdSchema}
-          required={this.isItemRequired(itemSchema)}
-          onChange={this.onChangeForIndex(index)}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          registry={registry}
-          disabled={disabled}
-          readonly={readonly}
-          hideError={hideError}
           autofocus={autofocus}
+          disabled={disabled}
+          errorSchema={itemErrorSchema}
+          formContext={formContext}
+          formData={itemData}
+          hideError={hideError}
+          idPrefix={idPrefix}
+          idSchema={itemIdSchema}
+          idSeparator={idSeparator}
+          index={index}
+          name={name}
           rawErrors={rawErrors}
+          readonly={readonly}
+          registry={registry}
+          required={this.isItemRequired(itemSchema)}
+          schema={itemSchema}
+          title={title}
+          uiSchema={itemUiSchema}
+          onBlur={onBlur}
+          onChange={this.onChangeForIndex(index)}
+          onFocus={onFocus}
         />
       ),
       className: "array-item",
@@ -1018,10 +1015,10 @@ class ArrayField<
 
       return (
         <UnsupportedFieldTemplate
-          schema={schema}
           idSchema={idSchema}
           reason={translateString(TranslatableString.MissingItems)}
           registry={registry}
+          schema={schema}
         />
       );
     }

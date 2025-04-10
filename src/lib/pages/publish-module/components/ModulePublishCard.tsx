@@ -1,10 +1,10 @@
 import { Button, Flex, Grid, Heading, Text } from "@chakra-ui/react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { CountBadge } from "lib/components/module";
 import { useOpenNewTab } from "lib/hooks";
+
 import type { Module } from "../formConstants";
 
 interface ModulePublishCardProps {
@@ -20,30 +20,30 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
       border="1px solid"
       borderColor="gray.700"
       borderRadius="8px"
-      p={4}
       direction="column"
       gap={4}
+      p={4}
     >
       <Flex align="center" gap={2}>
-        <CustomIcon name="contract-address" color="primary.main" />
-        <Heading variant="h6" as="h6">
+        <CustomIcon color="primary.main" name="contract-address" />
+        <Heading as="h6" variant="h6">
           {decodeRes?.abi.name}
         </Heading>
         <Flex align="center" gap={1}>
           <CountBadge
-            variant="view"
             count={
               module.decodeRes?.abi.exposed_functions.filter((fn) => fn.is_view)
                 .length ?? 0
             }
+            variant="view"
           />
           <CountBadge
-            variant="execute"
             count={
               module.decodeRes?.abi.exposed_functions.filter(
                 (fn) => !fn.is_view
               ).length ?? 0
             }
+            variant="execute"
           />
         </Flex>
       </Flex>
@@ -68,16 +68,16 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           },
         ].map(({ title, value }) => (
           <Flex key={title} align="center" justify="space-between">
-            <Text variant="body2" color="text.dark" fontWeight={600}>
+            <Text color="text.dark" fontWeight={600} variant="body2">
               {title}
             </Text>
             {value}
           </Flex>
         ))}
       </Flex>
-      <Grid templateColumns="1fr 1fr 1fr" columnGap={4}>
+      <Grid columnGap={4} templateColumns="1fr 1fr 1fr">
         <Button
-          rightIcon={<CustomIcon name="launch" boxSize={3} />}
+          rightIcon={<CustomIcon boxSize={3} name="launch" />}
           variant="primary"
           onClick={() => {
             track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {
@@ -92,7 +92,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           See module
         </Button>
         <Button
-          leftIcon={<CustomIcon name="query" boxSize={3} color="text.main" />}
+          leftIcon={<CustomIcon boxSize={3} color="text.main" name="query" />}
           variant="outline-white"
           onClick={() => {
             track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {
@@ -115,7 +115,7 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           View
         </Button>
         <Button
-          leftIcon={<CustomIcon name="execute" boxSize={3} color="text.main" />}
+          leftIcon={<CustomIcon boxSize={3} color="text.main" name="execute" />}
           variant="outline-white"
           onClick={() => {
             track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {

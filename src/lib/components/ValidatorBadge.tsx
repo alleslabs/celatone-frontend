@@ -1,10 +1,10 @@
 import type { ImageProps } from "@chakra-ui/react";
-import { Flex, Text } from "@chakra-ui/react";
-import { isNull } from "lodash";
+import type { Nullable, Validator } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { Nullable, Validator } from "lib/types";
+import { isNull } from "lodash";
 
 import { MobileLabel } from "./table/MobileLabel";
 import { ValidatorImage } from "./ValidatorImage";
@@ -33,29 +33,29 @@ export const ValidatorBadge = ({
 
   return (
     <Flex alignItems="center" gap={2} w="full">
-      <ValidatorImage validator={validator} boxSize={badgeSize} />
+      <ValidatorImage boxSize={badgeSize} validator={validator} />
       {validator ? (
-        <Flex direction="column" w="full" minW={0}>
+        <Flex direction="column" minW={0} w="full">
           {isMobile && hasLabel && <MobileLabel label="Validator" />}
           <ExplorerLink
-            type="validator_address"
-            value={validator.moniker ?? validator.validatorAddress}
+            ampCopierSection={ampCopierSection}
             copyValue={validator.validatorAddress}
             externalLink={
               isValidatorExternalLink
                 ? `${isValidatorExternalLink}/${validator.validatorAddress}`
                 : undefined
             }
+            fixedHeight
             isReadOnly={isNull(isValidatorExternalLink)}
             showCopyOnHover
             textFormat="ellipsis"
-            ampCopierSection={ampCopierSection}
-            fixedHeight
+            type="validator_address"
+            value={validator.moniker ?? validator.validatorAddress}
           />
           {moreInfo}
         </Flex>
       ) : (
-        <Text variant="body2" color="text.disabled">
+        <Text color="text.disabled" variant="body2">
           N/A
         </Text>
       )}

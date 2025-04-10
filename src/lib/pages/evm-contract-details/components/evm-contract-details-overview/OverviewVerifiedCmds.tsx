@@ -1,9 +1,11 @@
+import type { EvmVerifyInfo, HexAddr20 } from "lib/types";
+
 import { Flex, Heading, VStack } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
-import type { EvmVerifyInfo, HexAddr20 } from "lib/types";
-import { EvmContractCmdGroup } from "./EvmContractCmdGroup";
+
 import { InteractTabsIndex } from "../../types";
 import { categorizeAbi } from "../interact-evm-contract/utils";
+import { EvmContractCmdGroup } from "./EvmContractCmdGroup";
 
 interface OverviewVerifiedCmdsProps {
   contractAddress: HexAddr20;
@@ -17,33 +19,33 @@ export const OverviewVerifiedCmds = ({
   const { read: abiRead, write: abiWrite } = categorizeAbi(evmVerifyInfo.abi);
 
   return (
-    <VStack spacing={4} alignItems="flex-start">
-      <Flex gap={1} alignItems="center">
+    <VStack alignItems="flex-start" spacing={4}>
+      <Flex alignItems="center" gap={1}>
         <Heading as="h6" variant="h6">
           Verified command shortcuts
         </Heading>
         <CustomIcon
-          name="verification-solid"
           boxSize={4}
           color="secondary.main"
+          name="verification-solid"
         />
       </Flex>
       <Flex
-        gap={4}
-        width="full"
         flexDirection={{
           base: "column",
           md: "row",
         }}
+        gap={4}
+        width="full"
       >
         <EvmContractCmdGroup
-          contractAddress={contractAddress}
           abiSections={abiRead}
+          contractAddress={contractAddress}
           interactTab={InteractTabsIndex.Read}
         />
         <EvmContractCmdGroup
-          contractAddress={contractAddress}
           abiSections={abiWrite}
+          contractAddress={contractAddress}
           interactTab={InteractTabsIndex.Write}
         />
       </Flex>

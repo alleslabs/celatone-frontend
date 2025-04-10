@@ -1,10 +1,10 @@
-import { Text, useToast } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 
+import { Text, useToast } from "@chakra-ui/react";
 import { useCelatoneApp } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useLocalChainConfigStore, useNetworkStore } from "lib/providers/store";
+import { useRouter } from "next/router";
 
 import { ActionModal } from "./ActionModal";
 
@@ -43,21 +43,21 @@ export function RemoveChainConfigModal({
         duration: 5000,
         isClosable: false,
         position: "bottom-right",
-        icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+        icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       });
     }, 1000);
   };
 
   return (
     <ActionModal
-      title={`Removed \u2018${chainConfig?.prettyName}\u2019?`}
       icon="delete"
       iconColor="error.light"
-      trigger={trigger}
+      mainAction={handleRemove}
       mainBtnTitle="Yes, remove it"
       mainVariant="error"
-      mainAction={handleRemove}
       otherBtnTitle="No, keep it"
+      title={`Removed \u2018${chainConfig?.prettyName}\u2019?`}
+      trigger={trigger}
     >
       <Text>
         All information about your rollup will be lost and can&lsquo;t be

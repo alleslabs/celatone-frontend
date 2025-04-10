@@ -1,8 +1,9 @@
+import type { Block, Option } from "lib/types";
+
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { Block, Option } from "lib/types";
 
 import { BlocksTableHeader } from "./BlocksTableHeader";
 import { BlocksTableMobileCard } from "./BlocksTableMobileCard";
@@ -44,15 +45,15 @@ export const BlocksTable = ({
   ) : (
     <TableContainer>
       <BlocksTableHeader
-        templateColumns={templateColumns}
         showProposer={showProposer}
+        templateColumns={templateColumns}
       />
       {blocks.map((block) => (
         <BlocksTableRow
           key={block.hash}
-          templateColumns={templateColumns}
           blockData={block}
           showProposer={showProposer}
+          templateColumns={templateColumns}
         />
       ))}
     </TableContainer>

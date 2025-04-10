@@ -1,13 +1,13 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import type { HexAddr, IndexedModule, Option } from "lib/types";
 
+import { Box, Flex } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { MobileTitle, ViewMore } from "lib/components/table";
-import type { HexAddr, IndexedModule, Option } from "lib/types";
+import { useState } from "react";
 
-import { ModuleListsBody } from "./ModuleListsBody";
 import AccountSectionWrapper from "../AccountSectionWrapper";
+import { ModuleListsBody } from "./ModuleListsBody";
 
 interface ModuleListsProps {
   address: HexAddr;
@@ -32,37 +32,37 @@ export const ModuleLists = ({
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
         <MobileTitle
-          title="Modules"
           count={totalCount}
+          title="Modules"
           onViewMore={onViewMore}
         />
       ) : (
         <AccountSectionWrapper
-          title="Module instances"
-          showCount={false}
-          helperText="This account deployed the following modules"
           hasHelperText={!!modules?.length}
+          helperText="This account deployed the following modules"
+          showCount={false}
+          title="Module instances"
         >
           <Flex
-            direction="column"
             borderBottom={modules?.length ? "1px solid" : "0px"}
             borderBottomColor="gray.700"
+            direction="column"
           >
             {!onViewMore && (
               <InputWithIcon
+                amptrackSection="account-detail-module-name-search"
+                my={4}
                 placeholder="Search with module name"
+                size={{ base: "md", md: "lg" }}
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
-                size={{ base: "md", md: "lg" }}
-                my={4}
-                amptrackSection="account-detail-module-name-search"
               />
             )}
             <ModuleListsBody
               address={address}
+              isLoading={isLoading}
               keyword={keyword}
               modules={modules}
-              isLoading={isLoading}
               onViewMore={onViewMore}
             />
             {onViewMore && !!totalCount && totalCount > 9 && (

@@ -1,8 +1,8 @@
-import { useCallback } from "react";
+import type { BechAddr20, BechAddr32, HexAddr } from "lib/types";
 
 import { HEX_MODULE_ADDRESS_LENGTH, HEX_WALLET_ADDRESS_LENGTH } from "lib/data";
-import type { BechAddr20, BechAddr32, HexAddr } from "lib/types";
 import { hexToBech32Address } from "lib/utils";
+import { useCallback } from "react";
 
 import { useCurrentChain } from "./useCurrentChain";
 

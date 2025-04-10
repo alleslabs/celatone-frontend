@@ -1,4 +1,6 @@
 import type { InputProps, LayoutProps } from "@chakra-ui/react";
+import type { CSSProperties, KeyboardEvent, RefObject } from "react";
+
 import {
   Box,
   Flex,
@@ -12,13 +14,11 @@ import {
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
-import { matchSorter } from "match-sorter";
-import { observer } from "mobx-react-lite";
-import type { CSSProperties, KeyboardEvent, RefObject } from "react";
-import { forwardRef, useEffect, useRef, useState } from "react";
-
 import { useContractStore } from "lib/providers/store";
 import { mergeRefs } from "lib/utils";
+import { matchSorter } from "match-sorter";
+import { observer } from "mobx-react-lite";
+import { forwardRef, useEffect, useRef, useState } from "react";
 
 import { DropdownChevron } from "./DropdownChevron";
 import { CustomIcon } from "./icon";
@@ -58,7 +58,6 @@ export const TagSelection = observer(
       }: TagSelectionProps,
       ref
       // TODO: refactor to reduce complexity
-      // eslint-disable-next-line sonarjs/cognitive-complexity
     ) => {
       const { getAllTags } = useContractStore();
       const options = getAllTags();
@@ -131,29 +130,29 @@ export const TagSelection = observer(
       });
 
       return (
-        <Box ref={boxRef} w={boxWidth}>
+        <Box w={boxWidth} ref={boxRef}>
           <FormControl w={boxWidth}>
             <Flex
               alignItems="center"
-              color="text.main"
               background="none"
-              borderRadius="8px"
-              maxW="100%"
               border="1px solid"
               borderColor="gray.700"
+              borderRadius="8px"
+              color="text.main"
+              maxW="100%"
               overflowX="scroll"
             >
               {result.length > 0 && (
                 <Flex alignItems="center" pl={2}>
                   {result.map((option) => (
                     <Flex
+                      key={option}
                       display="inline-block"
                       onClick={() => selectOption(option)}
-                      key={option}
                     >
-                      <Tag gap={1} mr={1} cursor="pointer">
+                      <Tag cursor="pointer" gap={1} mr={1}>
                         {option}
-                        <CustomIcon name="close" boxSize={3} />
+                        <CustomIcon boxSize={3} name="close" />
                       </Tag>
                     </Flex>
                   ))}
@@ -161,71 +160,71 @@ export const TagSelection = observer(
               )}
 
               <Input
-                w="100%"
+                autoComplete="off"
+                maxLength={15}
                 minW="200px"
-                size="lg"
                 placeholder={result.length ? "" : placeholder}
+                size="lg"
+                w="100%"
                 onChange={(e) => filterOptions(e.currentTarget.value)}
-                onKeyDown={handleKeydown}
                 onFocus={() => {
                   setPartialResult(optionsCopy);
                   setDisplayOptions(true);
                 }}
+                onKeyDown={handleKeydown}
                 ref={mergeRefs([inputRef, ref])}
-                maxLength={15}
-                autoComplete="off"
                 {...rest}
                 style={{ border: 0, maxHeight: "54px" }}
               />
               <DropdownChevron
-                isOpen={displayOptions}
                 bg={labelBgColor}
                 // input max height 54px + border top and bottom 2px
                 height="56px"
+                isOpen={displayOptions}
                 onClick={() => setDisplayOptions((prev) => !prev)}
               />
               <FormLabel
-                position="absolute"
-                top={0}
-                left={0}
-                fontWeight={400}
-                color="text.dark"
                 bgColor={labelBgColor}
-                pointerEvents="none"
-                px={1}
-                my={2}
+                color="text.dark"
+                fontWeight={400}
+                left={0}
                 lineHeight="1.2"
+                my={2}
+                pointerEvents="none"
+                position="absolute"
+                px={1}
+                top={0}
                 transform="scale(0.75) translateY(-24px) translateX(0px)"
               >
                 {label}
               </FormLabel>
             </Flex>
-            <FormHelperText ml={3} mt={1} fontSize="12px" color="text.dark">
+            <FormHelperText color="text.dark" fontSize="12px" ml={3} mt={1}>
               {helperText}
             </FormHelperText>
 
             {displayOptions && (
               <List
-                borderRadius="8px"
                 bg="gray.800"
+                borderRadius="8px"
+                maxH="195px"
+                mt={0}
+                overflow="scroll"
+                position="absolute"
                 px={2}
                 py={1}
-                mt={0}
-                position="absolute"
-                zIndex="2"
-                w="full"
                 top="60px"
-                maxH="195px"
-                overflow="scroll"
+                w="full"
+                zIndex="2"
               >
                 {/* header */}
                 <ListItem
-                  p={2}
                   borderBottomColor="gray.700"
                   borderBottomWidth={noResultAndUncreatable ? "0" : "1px"}
+                  p={2}
                 >
                   {noResultAndUncreatable ? (
-                    <Text variant="body3" color="text.dark">
+                    <Text color="text.dark" variant="body3">
                       No tags found
                     </Text>
                   ) : (
@@ -249,11 +248,11 @@ export const TagSelection = observer(
                       </Tag>
                       {isOptionSelected(option) && (
                         <CustomIcon
+                          boxSize={3}
+                          color="gray.600"
                           data-label={option}
                           mr={2}
                           name="check"
-                          color="gray.600"
-                          boxSize={3}
                         />
                       )}
                     </Flex>
@@ -264,8 +263,8 @@ export const TagSelection = observer(
                   <ListItem
                     style={listItemProps}
                     _hover={{ bg: "gray.700" }}
-                    transition="all 0.25s ease-in-out"
                     data-testid="create-option"
+                    transition="all 0.25s ease-in-out"
                     onClick={() => createOption()}
                   >
                     <Flex alignItems="center" gap={2}>

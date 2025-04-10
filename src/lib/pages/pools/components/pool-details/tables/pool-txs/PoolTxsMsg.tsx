@@ -1,10 +1,3 @@
-import { Badge, Box, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
-
-import { trackUseExpand } from "lib/amplitude";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon";
-import { TableNoBorderRow } from "lib/components/table";
-import { Tooltip } from "lib/components/Tooltip";
 import type {
   AssetInfos,
   Message,
@@ -12,6 +5,13 @@ import type {
   PoolData,
   Transaction,
 } from "lib/types";
+
+import { Badge, Box, Flex, Grid, Text, useDisclosure } from "@chakra-ui/react";
+import { trackUseExpand } from "lib/amplitude";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
+import { TableNoBorderRow } from "lib/components/table";
+import { Tooltip } from "lib/components/Tooltip";
 import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 
 import { PoolMsgAction, PoolMsgDetail } from "./messages";
@@ -48,21 +48,21 @@ export const PoolTxsMsg = ({
   return (
     <Box
       className="copier-wrapper"
-      w="full"
-      minW="min-content"
+      _hover={{ background: "gray.900" }}
       borderBottom="1px solid"
       borderColor="gray.700"
-      _hover={{ background: "gray.900" }}
+      minW="min-content"
       sx={{
         "&:hover .pool-msg-detail-container": {
           borderColor: "gray.700",
         },
       }}
+      w="full"
     >
       <Grid
+        cursor="pointer"
         templateColumns={templateColumns}
         transition="all 0.25s ease-in-out"
-        cursor="pointer"
         onClick={() => {
           if (message) {
             trackUseExpand({
@@ -78,11 +78,11 @@ export const PoolTxsMsg = ({
         <TableNoBorderRow p="0 0 0 8px">
           {hasMsgDetails && (
             <CustomIcon
+              color="gray.600"
+              m={0}
               name="chevron-down"
               transform={isOpen ? "rotate(0)" : "rotate(-90deg)"}
               transition="all 0.25s ease-in-out"
-              color="gray.600"
-              m={0}
             />
           )}
         </TableNoBorderRow>
@@ -90,14 +90,14 @@ export const PoolTxsMsg = ({
           {isFirstSubRow && (
             <>
               <ExplorerLink
-                value={transaction.hash.toLocaleUpperCase()}
-                type="tx_hash"
-                showCopyOnHover
                 ampCopierSection={`pool_txs-${transaction.messages.length}-tx_hash`}
+                showCopyOnHover
+                type="tx_hash"
+                value={transaction.hash.toLocaleUpperCase()}
               />
               {transaction.messages.length > 1 && (
                 <Tooltip label="There are at least one messages within this transaction that related to this pool.">
-                  <Badge variant="primary-light" ml="6px">
+                  <Badge ml="6px" variant="primary-light">
                     {transaction.messages.length}
                   </Badge>
                 </Tooltip>
@@ -108,30 +108,30 @@ export const PoolTxsMsg = ({
         <TableNoBorderRow>
           {isFirstSubRow &&
             (transaction.success ? (
-              <CustomIcon name="check" color="success.main" />
+              <CustomIcon color="success.main" name="check" />
             ) : (
-              <CustomIcon name="close" color="error.main" />
+              <CustomIcon color="error.main" name="close" />
             ))}
         </TableNoBorderRow>
         <TableNoBorderRow>
           {message ? (
             <PoolMsgAction
+              ampCopierSection={`pool_txs-${extractMsgType(message.type)}-row`}
+              assetInfos={assetInfos}
               msg={message}
               pool={pool}
-              assetInfos={assetInfos}
-              ampCopierSection={`pool_txs-${extractMsgType(message.type)}-row`}
             />
           ) : (
-            <PoolOtherMsgs otherMsgs={otherMsgs} isIbc={transaction.isIbc} />
+            <PoolOtherMsgs isIbc={transaction.isIbc} otherMsgs={otherMsgs} />
           )}
         </TableNoBorderRow>
 
         <TableNoBorderRow>
           <ExplorerLink
-            value={transaction.sender}
-            type="user_address"
-            showCopyOnHover
             ampCopierSection={`pool_txs-${transaction.messages.length}-sender`}
+            showCopyOnHover
+            type="user_address"
+            value={transaction.sender}
           />
         </TableNoBorderRow>
 
@@ -139,7 +139,7 @@ export const PoolTxsMsg = ({
           {isFirstSubRow && (
             <Flex direction="column" gap={1}>
               <Text variant="body3">{formatUTC(transaction.created)}</Text>
-              <Text variant="body3" color="text.dark">
+              <Text color="text.dark" variant="body3">
                 {`(${dateFromNow(transaction.created)})`}
               </Text>
             </Flex>
@@ -148,23 +148,23 @@ export const PoolTxsMsg = ({
       </Grid>
       {hasMsgDetails && (
         <Grid
-          w="full"
-          py={4}
           hidden={!isOpen}
+          py={4}
           templateColumns={msgDetailTemplateColumns}
+          w="full"
         >
           <TableNoBorderRow gridArea="1 / 4" py={0}>
             <PoolMsgDetail
-              txHash={transaction.hash}
-              blockHeight={transaction.height}
-              msgIndex={msgIndex}
-              msg={message}
-              pool={pool}
-              assetInfos={assetInfos}
-              isOpened={isOpen}
               ampCopierSection={`pool_txs-${extractMsgType(
                 message.type
               )}-detail`}
+              assetInfos={assetInfos}
+              blockHeight={transaction.height}
+              isOpened={isOpen}
+              msg={message}
+              msgIndex={msgIndex}
+              pool={pool}
+              txHash={transaction.hash}
             />
           </TableNoBorderRow>
         </Grid>

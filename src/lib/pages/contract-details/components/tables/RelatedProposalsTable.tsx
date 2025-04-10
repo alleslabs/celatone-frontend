@@ -1,3 +1,4 @@
+import type { BechAddr32, Option } from "lib/types";
 import type { ChangeEvent } from "react";
 
 import { Pagination } from "lib/components/pagination";
@@ -5,7 +6,6 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { useRelatedProposalsByContractAddress } from "lib/services/proposal";
-import type { BechAddr32, Option } from "lib/types";
 
 interface RelatedProposalsTableProps {
   contractAddress: BechAddr32;
@@ -57,8 +57,6 @@ export const RelatedProposalsTable = ({
   return (
     <>
       <ProposalsTable
-        proposals={relatedProposals?.items}
-        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="related proposals" />
@@ -69,15 +67,17 @@ export const RelatedProposalsTable = ({
             />
           )
         }
+        isLoading={isLoading}
+        proposals={relatedProposals?.items}
       />
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
-          scrollComponentId={scrollComponentId}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          scrollComponentId={scrollComponentId}
+          totalData={totalData}
           onPageChange={onPageChange}
           onPageSizeChange={onPageSizeChange}
         />

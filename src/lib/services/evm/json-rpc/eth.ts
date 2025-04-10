@@ -1,7 +1,9 @@
-import { zTxReceiptJsonRpc } from "lib/services/types";
 import type { HexAddr20, Nullable } from "lib/types";
+
+import { zTxReceiptJsonRpc } from "lib/services/types";
 import { zHex } from "lib/types";
 import { parseWithError } from "lib/utils";
+
 import { requestJsonRpc } from ".";
 
 export const getEthCall = (

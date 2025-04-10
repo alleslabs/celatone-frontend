@@ -1,12 +1,12 @@
-import { useMemo } from "react";
+import type { PermissionFilterValue } from "lib/hooks";
+import type { BechAddr, CodeInfo } from "lib/types";
 
 import { useCurrentChain } from "lib/app-provider";
-import type { PermissionFilterValue } from "lib/hooks";
 import { useCodePermissionFilter, useCodeSearchFilter } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useAllCodesByAddress, useCodeList } from "lib/services/wasm/code";
-import type { BechAddr, CodeInfo } from "lib/types";
 import { AccessConfigPermission } from "lib/types";
+import { useMemo } from "react";
 
 const useStoredCodes = () => {
   const { address } = useCurrentChain();

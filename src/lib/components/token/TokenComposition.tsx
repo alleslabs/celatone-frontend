@@ -1,7 +1,7 @@
-import { Flex, Text } from "@chakra-ui/react";
 import type { FlexProps } from "@chakra-ui/react";
-
 import type { TokenWithValue } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
 import {
   formatPrice,
   formatUTokenWithPrecision,
@@ -20,7 +20,7 @@ export const TokenComposition = ({
     {token.isLPToken ? (
       <Flex wrap="wrap">
         <Text variant="body2">
-          <Text as="span" mr={1} fontWeight={700}>
+          <Text as="span" fontWeight={700} mr={1}>
             {formatUTokenWithPrecision(
               token.poolInfo.coinA.amount,
               token.poolInfo.coinA.precision ?? 0
@@ -31,11 +31,11 @@ export const TokenComposition = ({
             token.poolInfo.coinA.symbol
           )}
         </Text>
-        <Text variant="body2" mx={1}>
+        <Text mx={1} variant="body2">
           +
         </Text>
         <Text variant="body2">
-          <Text as="span" mr={1} fontWeight={700}>
+          <Text as="span" fontWeight={700} mr={1}>
             {formatUTokenWithPrecision(
               token.poolInfo.coinB.amount,
               token.poolInfo.coinB.precision ?? 0
@@ -55,7 +55,7 @@ export const TokenComposition = ({
         {getTokenLabel(token.denom, token.symbol)}
       </Text>
     )}
-    <Text variant="body3" textColor="text.dark">
+    <Text textColor="text.dark" variant="body3">
       {token.value ? `(≈ ${formatPrice(token.value)})` : "-"}
     </Text>
   </Flex>

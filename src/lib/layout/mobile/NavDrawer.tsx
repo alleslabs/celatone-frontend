@@ -1,3 +1,5 @@
+import type { IconKeys } from "lib/components/icon";
+
 import {
   Box,
   Button,
@@ -12,8 +14,6 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useMemo } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useGovConfig,
@@ -24,17 +24,17 @@ import {
   useWasmConfig,
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import type { IconKeys } from "lib/components/icon";
 import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
+import { useMemo } from "react";
 
+import { NetworkMenu } from "../network-menu";
 import {
   getNavDrawerFull,
   getNavDrawerLite,
   getNavDrawerSequencer,
 } from "./utils";
-import { NetworkMenu } from "../network-menu";
 
 export const NavDrawer = () => {
   const { tier } = useTierConfig();
@@ -109,37 +109,37 @@ export const NavDrawer = () => {
   return (
     <>
       <Button
-        variant="ghost-gray"
-        h="full"
         borderRadius={0}
         gap={1}
+        h="full"
+        variant="ghost-gray"
         onClick={onOpen}
       >
-        <CustomIcon name="menu" boxSize={6} />
+        <CustomIcon boxSize={6} name="menu" />
       </Button>
-      <Drawer isOpen={isOpen} onClose={onClose} placement="right">
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent w="90%">
           <DrawerHeader alignItems="center" px={4}>
             <Flex align="center" justify="space-between" w="full">
               <NetworkMenu />
               <IconButton
-                variant="gray"
                 aria-label="close"
-                onClick={() => onClose()}
                 color="gray.600"
                 icon={<CustomIcon name="close" />}
+                variant="gray"
+                onClick={() => onClose()}
               />
             </Flex>
           </DrawerHeader>
           <DrawerBody overflowY="scroll" px={4}>
             {navMenu.map((item) => (
               <Box
-                pb={4}
-                mb={4}
                 key={item.category}
                 borderBottom="1px solid"
                 borderColor="gray.700"
+                mb={4}
+                pb={4}
                 sx={{
                   "&:last-of-type": {
                     borderBottom: "none",
@@ -148,54 +148,54 @@ export const NavDrawer = () => {
                   },
                 }}
               >
-                <Text py={2} variant="body3" fontWeight={700}>
+                <Text fontWeight={700} py={2} variant="body3">
                   {item.category}
                 </Text>
                 {item.submenu.map((submenu) => (
                   <AppLink
-                    href={submenu.slug}
                     key={submenu.slug}
+                    href={submenu.slug}
                     onClick={() => {
                       track(AmpEvent.USE_SIDEBAR);
                       onClose();
                     }}
                   >
                     <Flex
-                      gap={2}
-                      p={2}
-                      cursor="pointer"
                       _hover={{ bg: "gray.700", borderRadius: "8px" }}
-                      my="1px"
-                      transition="all 0.25s ease-in-out"
                       alignItems="center"
-                      position="relative"
                       bgColor={
                         isCurrentPage(submenu.slug) ? "gray.800" : "transparent"
                       }
                       borderRadius={isCurrentPage(submenu.slug) ? "8px" : "0px"}
+                      cursor="pointer"
+                      gap={2}
+                      my="1px"
+                      p={2}
+                      position="relative"
+                      transition="all 0.25s ease-in-out"
                     >
                       <Flex
-                        opacity={isCurrentPage(submenu.slug) ? 1 : 0}
-                        width="3px"
-                        height="20px"
                         bgColor="primary.light"
+                        borderRadius="2px"
+                        height="20px"
+                        left="0px"
+                        opacity={isCurrentPage(submenu.slug) ? 1 : 0}
                         position="absolute"
                         top="10px"
-                        borderRadius="2px"
-                        left="0px"
+                        width="3px"
                       />
                       {submenu.icon && (
-                        <CustomIcon name={submenu.icon} color="gray.600" />
+                        <CustomIcon color="gray.600" name={submenu.icon} />
                       )}
                       {submenu.logo && (
                         <Image
-                          src={submenu.logo}
-                          borderRadius="full"
                           alt={submenu.slug}
+                          borderRadius="full"
                           boxSize={5}
+                          src={submenu.logo}
                         />
                       )}
-                      <Text variant="body2" className="ellipsis">
+                      <Text className="ellipsis" variant="body2">
                         {submenu.name}
                       </Text>
                     </Flex>

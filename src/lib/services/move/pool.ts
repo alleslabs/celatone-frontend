@@ -1,8 +1,7 @@
 import axios from "axios";
-import { z } from "zod";
-
 import { zHexAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
+import { z } from "zod";
 
 const zPairResponseCoin = z.object({
   metadata: zHexAddr,

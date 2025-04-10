@@ -1,10 +1,11 @@
-import { Flex } from "@chakra-ui/react";
+import type { AssetInfos, Option, PoolData } from "lib/types";
+import type { MsgJoinSwapExternAmountInDetails } from "lib/utils/tx/types";
 
+import { Flex } from "@chakra-ui/react";
 import { MsgToken } from "lib/components/action-msg/MsgToken";
 import { CustomIcon } from "lib/components/icon";
-import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
-import type { MsgJoinSwapExternAmountInDetails } from "lib/utils/tx/types";
+
 import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 
@@ -33,21 +34,21 @@ export const MsgJoinSwapExternAmountInAction = ({
     assetInfos
   );
   return (
-    <Flex gap={1} alignItems="center" flexWrap="wrap">
+    <Flex alignItems="center" flexWrap="wrap" gap={1}>
       Provided
       <MsgToken
-        token={inToken}
-        fontWeight={700}
         ampCopierSection={ampCopierSection}
+        fontWeight={700}
+        token={inToken}
       />
       to
-      <PoolLogoLink pool={pool} ampCopierSection={ampCopierSection} />
-      <CustomIcon name="arrow-right" boxSize={4} color="primary.main" />
+      <PoolLogoLink ampCopierSection={ampCopierSection} pool={pool} />
+      <CustomIcon boxSize={4} color="primary.main" name="arrow-right" />
       at least
       <MsgToken
-        token={poolToken}
-        fontWeight={400}
         ampCopierSection={ampCopierSection}
+        fontWeight={400}
+        token={poolToken}
       />
     </Flex>
   );

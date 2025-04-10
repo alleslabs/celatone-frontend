@@ -1,8 +1,9 @@
-import { Flex, Text } from "@chakra-ui/react";
-
-import { trackUseSort } from "lib/amplitude";
 import type { SelectInputOption } from "lib/components/forms";
+
+import { Flex, Text } from "@chakra-ui/react";
+import { trackUseSort } from "lib/amplitude";
 import { SelectInput } from "lib/components/forms";
+
 import { ValidatorOrder } from "../types";
 
 interface OrderOptionValue {
@@ -63,7 +64,7 @@ export const OrderSelect = ({
   allowUptime,
 }: OrderSelectProps) => (
   <Flex direction="column" gap={1} minW="full">
-    <Text variant="body3" color="text.dark" pl={1}>
+    <Text color="text.dark" pl={1} variant="body3">
       Sorted by
     </Text>
     <SelectInput<OrderOptionValue>

@@ -1,7 +1,5 @@
 import type { ChainConfig } from "@alleslabs/shared";
-import { capitalize } from "lodash";
 import type { RefinementCtx } from "zod";
-import { z, ZodIssueCode } from "zod";
 
 import { getAccountBech32Rest } from "lib/services/account/rest";
 import {
@@ -18,6 +16,8 @@ import {
   zRegistry,
   zWasmConfig,
 } from "lib/types";
+import { capitalize } from "lodash";
+import { z, ZodIssueCode } from "zod";
 
 import {
   DEFAULT_BECH32_PREFIX,

@@ -1,8 +1,8 @@
 import type Big from "big.js";
-import { z } from "zod";
-
 import type { SelectInputOption } from "lib/components/forms";
 import type { Option, PoolInfo, Token, U, USD } from "lib/types";
+
+import { z } from "zod";
 
 export const zCoin = z.object({
   denom: z.string(),

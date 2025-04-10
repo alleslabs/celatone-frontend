@@ -1,8 +1,8 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig, useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
+
 import { Tooltip } from "../Tooltip";
 // import { useGovParams } from "lib/services/proposalService";
 // import { AccessConfigPermission } from "lib/types";
@@ -24,18 +24,18 @@ export const NewProposalButton = () => {
   return (
     <Menu>
       <MenuButton
-        onClick={() => track(AmpEvent.USE_CREATE_NEW_PROPOSAL)}
-        variant="primary"
         as={Button}
         rightIcon={<CustomIcon name="chevron-down" />}
+        variant="primary"
+        onClick={() => track(AmpEvent.USE_CREATE_NEW_PROPOSAL)}
       >
         Create new proposal
       </MenuButton>
       <MenuList flexDirection="column">
-        <Tooltip label="Coming soon!" hidden={!disableStoreCode}>
+        <Tooltip hidden={!disableStoreCode} label="Coming soon!">
           <MenuItem
+            icon={<CustomIcon color="gray.600" name="code" />}
             isDisabled={disableStoreCode}
-            icon={<CustomIcon name="code" color="gray.600" />}
             onClick={() => {
               navigate({
                 pathname: "/proposals/store-code",
@@ -62,10 +62,10 @@ export const NewProposalButton = () => {
               : undefined
           }
         > */}
-        <Tooltip label="Coming soon!" hidden={!disableWhitelist}>
+        <Tooltip hidden={!disableWhitelist} label="Coming soon!">
           <MenuItem
+            icon={<CustomIcon color="gray.600" name="admin" />}
             isDisabled={disableWhitelist}
-            icon={<CustomIcon name="admin" color="gray.600" />}
             onClick={() => {
               navigate({
                 pathname: "/proposals/whitelist",

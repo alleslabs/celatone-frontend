@@ -1,9 +1,10 @@
 import type { FlexProps, TextProps } from "@chakra-ui/react";
+import type { WasmVerifyInfoBase } from "lib/types";
+
 import { Divider, Flex, Text } from "@chakra-ui/react";
+import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 import Link from "next/link";
 
-import type { WasmVerifyInfoBase } from "lib/types";
-import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 import { Copier } from "../../copy";
 import { CopyLink } from "../../CopyLink";
 import { ExplorerLink } from "../../ExplorerLink";
@@ -42,27 +43,27 @@ export const WasmVerifyRequestInfo = ({
   return (
     <>
       <Flex direction={{ base: "column", sm: "row" }} gap={{ base: 2, sm: 6 }}>
-        <Flex gap={2} alignItems="center">
+        <Flex alignItems="center" gap={2}>
           <Text {...baseTextStyle}>Code ID:</Text>
           <ExplorerLink
-            type="code_id"
-            value={verificationInfo.codeId.toString()}
             openNewTab
             showCopyOnHover
+            type="code_id"
+            value={verificationInfo.codeId.toString()}
           />
           <WasmVerifyBadge
-            status={wasmVerifyStatus}
             relatedVerifiedCodes={relatedVerifiedCodes}
+            status={wasmVerifyStatus}
           />
         </Flex>
-        <Flex gap={2} alignItems="center">
+        <Flex alignItems="center" gap={2}>
           <Text {...baseTextStyle}>Code hash:</Text>
           <CopyLink
-            type="code_hash"
             amptrackSection="code_hash"
-            value={codeHash.toUpperCase()}
             isTruncate
             showCopyOnHover
+            type="code_hash"
+            value={codeHash.toUpperCase()}
           />
         </Flex>
       </Flex>
@@ -71,9 +72,9 @@ export const WasmVerifyRequestInfo = ({
         <Flex {...baseContainerStyle}>
           <Text {...baseTextStyle}>Source code:</Text>
           <Flex
-            overflow="hidden"
-            gap={1}
             alignItems="center"
+            gap={1}
+            overflow="hidden"
             sx={{
               cursor: "pointer",
               "&:hover": {
@@ -90,8 +91,8 @@ export const WasmVerifyRequestInfo = ({
             <Text className="ellipsis" color="primary.main" variant="body2">
               <Link
                 href={gitUrlWithCommit}
-                target="_blank"
                 rel="noopener noreferrer"
+                target="_blank"
               >
                 {gitUrlWithCommit}
               </Link>

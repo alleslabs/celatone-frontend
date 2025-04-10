@@ -1,6 +1,5 @@
-import { useCallback } from "react";
-
 import { useCelatoneApp } from "lib/app-provider";
+import { useCallback } from "react";
 
 type MaxLengthType =
   | "account_name"

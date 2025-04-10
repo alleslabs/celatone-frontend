@@ -1,11 +1,10 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useInitia } from "lib/app-provider";
 import { TierSwitcher } from "lib/components/TierSwitcher";
 import { StorageKeys } from "lib/data";
 import { useLocalStorage } from "lib/hooks";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import { AnnouncementModal } from "./components/AnnouncementModal";
 import { HomeFull } from "./full";
@@ -43,8 +42,8 @@ const Home = () => {
       )}
       <TierSwitcher
         full={<HomeFull />}
-        sequencer={<HomeSequencer />}
         lite={<HomeLite />}
+        sequencer={<HomeSequencer />}
       />
     </>
   );

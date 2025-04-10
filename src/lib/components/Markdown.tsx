@@ -1,6 +1,7 @@
+import type { PropsWithChildren } from "react";
+
 import { Box, Heading, List, ListItem, Text } from "@chakra-ui/react";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
-import type { PropsWithChildren } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -8,7 +9,7 @@ const defaultTheme = {
   h1: (props: PropsWithChildren) => {
     const { children } = props;
     return (
-      <Heading mb={1} as="h1" fontSize={{ sm: "22px", md: "24px" }}>
+      <Heading as="h1" fontSize={{ sm: "22px", md: "24px" }} mb={1}>
         {children}
       </Heading>
     );
@@ -16,7 +17,7 @@ const defaultTheme = {
   h2: (props: PropsWithChildren) => {
     const { children } = props;
     return (
-      <Heading mb={1} as="h2" fontSize={{ sm: "20px", md: "22px" }}>
+      <Heading as="h2" fontSize={{ sm: "20px", md: "22px" }} mb={1}>
         {children}
       </Heading>
     );
@@ -24,7 +25,7 @@ const defaultTheme = {
   h3: (props: PropsWithChildren) => {
     const { children } = props;
     return (
-      <Heading mb={1} as="h3" fontSize={{ sm: "18px", md: "20px" }}>
+      <Heading as="h3" fontSize={{ sm: "18px", md: "20px" }} mb={1}>
         {children}
       </Heading>
     );
@@ -32,7 +33,7 @@ const defaultTheme = {
   h4: (props: PropsWithChildren) => {
     const { children } = props;
     return (
-      <Heading mb={1} as="h4" fontSize={{ sm: "16px", md: "18px" }}>
+      <Heading as="h4" fontSize={{ sm: "16px", md: "18px" }} mb={1}>
         {children}
       </Heading>
     );
@@ -40,7 +41,7 @@ const defaultTheme = {
   h5: (props: PropsWithChildren) => {
     const { children } = props;
     return (
-      <Heading mb={1} as="h5" fontSize={{ sm: "14px", md: "16px" }}>
+      <Heading as="h5" fontSize={{ sm: "14px", md: "16px" }} mb={1}>
         {children}
       </Heading>
     );
@@ -48,7 +49,7 @@ const defaultTheme = {
   h6: (props: PropsWithChildren) => {
     const { children } = props;
     return (
-      <Heading mb={1} as="h6" fontSize={{ sm: "12px", md: "14px" }}>
+      <Heading as="h6" fontSize={{ sm: "12px", md: "14px" }} mb={1}>
         {children}
       </Heading>
     );
@@ -56,7 +57,7 @@ const defaultTheme = {
   p: (props: PropsWithChildren) => {
     const { children } = props;
     return (
-      <Text mb={1} variant="body2" color="text.main">
+      <Text color="text.main" mb={1} variant="body2">
         {children}
       </Text>
     );
@@ -67,11 +68,11 @@ const defaultTheme = {
       <Box
         as="blockquote"
         background="gray.900"
-        borderLeft="4px solid"
         borderColor="gray.700"
+        borderLeft="4px solid"
+        my={4}
         px={4}
         py={2}
-        my={4}
         sx={{ "> p": { marginBottom: 0 } }}
         whiteSpace="normal"
       >
@@ -84,12 +85,12 @@ const defaultTheme = {
     return (
       <Box
         as="code"
-        display="inline-block"
         background="gray.900"
+        borderRadius="4px"
+        display="inline-block"
+        mx={1}
         px={2}
         py={1}
-        mx={1}
-        borderRadius="4px"
         sx={{ "> p": { marginBottom: 0 } }}
         whiteSpace="normal"
       >
@@ -103,8 +104,8 @@ const defaultTheme = {
       <Box
         as="pre"
         background="gray.900"
-        p={4}
         borderRadius="4px"
+        p={4}
         sx={{ "> p": { marginBottom: 0 } }}
         whiteSpace="normal"
       >
@@ -115,7 +116,7 @@ const defaultTheme = {
   li: (props: PropsWithChildren) => {
     const { children } = props;
     return (
-      <ListItem mb={1} fontSize="16px" whiteSpace="normal">
+      <ListItem fontSize="16px" mb={1} whiteSpace="normal">
         {children}
       </ListItem>
     );
@@ -124,9 +125,9 @@ const defaultTheme = {
     const { children } = props;
     return (
       <List
-        styleType="disc"
-        ml={4}
         mb={2}
+        ml={4}
+        styleType="disc"
         sx={{ "li::marker": { color: "primary.light" } }}
         whiteSpace="normal"
       >
@@ -137,7 +138,7 @@ const defaultTheme = {
   ol: (props: PropsWithChildren) => {
     const { children } = props;
     return (
-      <List as="ol" styleType="decimal" ml={4} mb={2} whiteSpace="normal">
+      <List as="ol" mb={2} ml={4} styleType="decimal" whiteSpace="normal">
         {children}
       </List>
     );
@@ -149,8 +150,8 @@ export const Markdown = ({ markdown }: { markdown: string }) => {
     <div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
       <ReactMarkdown
         components={ChakraUIRenderer(defaultTheme)}
-        skipHtml
         remarkPlugins={[remarkGfm]}
+        skipHtml
       >
         {markdown.replace(/\\n/g, "\n")}
       </ReactMarkdown>

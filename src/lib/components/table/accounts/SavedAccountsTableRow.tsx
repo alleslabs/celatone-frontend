@@ -1,5 +1,7 @@
-import { Grid, IconButton, Text } from "@chakra-ui/react";
+import type { AccountLocalInfo } from "lib/stores/account";
+import type { BechAddr } from "lib/types";
 
+import { Grid, IconButton, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
@@ -7,12 +9,10 @@ import {
   EditSavedAccountModal,
   RemoveSavedAccountModal,
 } from "lib/components/modal";
-import type { AccountLocalInfo } from "lib/stores/account";
-import type { BechAddr } from "lib/types";
 import { bech32AddressToHex, unpadHexAddress } from "lib/utils";
 
-import { AccountNameCell } from "./AccountNameCell";
 import { TableRow } from "../tableComponents";
+import { AccountNameCell } from "./AccountNameCell";
 
 interface SavedAccountsTableRowProps {
   accountInfo: AccountLocalInfo;
@@ -35,26 +35,26 @@ export const SavedAccountsTableRow = ({
 
   return (
     <Grid
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(accountInfo.address)}
       _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
       minW="min-content"
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
+      onClick={() => onRowSelect(accountInfo.address)}
     >
       <TableRow>
         <ExplorerLink
+          showCopyOnHover
           type="user_address"
           value={accountInfo.address}
-          showCopyOnHover
         />
       </TableRow>
       {hasHexAddr && (
         <TableRow>
           <ExplorerLink
+            showCopyOnHover
             type="user_address"
             value={unpadHexAddress(bech32AddressToHex(accountInfo.address))}
-            showCopyOnHover
           />
         </TableRow>
       )}
@@ -64,9 +64,9 @@ export const SavedAccountsTableRow = ({
       <TableRow>
         <Text
           color={accountInfo.description ? "text.dark" : "text.disabled"}
-          textOverflow="ellipsis"
           maxW="450px"
           overflow="hidden"
+          textOverflow="ellipsis"
           whiteSpace="nowrap"
         >
           {accountInfo.description ?? "No description"}
@@ -77,10 +77,10 @@ export const SavedAccountsTableRow = ({
           accountLocalInfo={accountInfo}
           triggerElement={
             <IconButton
-              variant="ghost-gray-icon"
-              size="sm"
-              icon={<CustomIcon name="edit" boxSize={4} />}
               aria-label="edit account"
+              icon={<CustomIcon boxSize={4} name="edit" />}
+              size="sm"
+              variant="ghost-gray-icon"
             />
           }
         />
@@ -88,10 +88,10 @@ export const SavedAccountsTableRow = ({
           accountLocalInfo={accountInfo}
           trigger={
             <IconButton
-              variant="ghost-gray-icon"
-              size="sm"
-              icon={<CustomIcon name="delete" boxSize={4} />}
               aria-label="remove account"
+              icon={<CustomIcon boxSize={4} name="delete" />}
+              size="sm"
+              variant="ghost-gray-icon"
             />
           }
         />

@@ -1,6 +1,6 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-
 import type { ProposalData } from "lib/types";
+
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { isUrl } from "lib/utils";
 
 interface ProposalMetadataProps {
@@ -10,7 +10,7 @@ interface ProposalMetadataProps {
 const ProposalMetadataBody = ({ metadata }: ProposalMetadataProps) => {
   if (metadata.length === 0) {
     return (
-      <Text variant="body1" color="text.dark">
+      <Text color="text.dark" variant="body1">
         Not Provided
       </Text>
     );
@@ -18,17 +18,17 @@ const ProposalMetadataBody = ({ metadata }: ProposalMetadataProps) => {
   if (isUrl(metadata)) {
     return (
       <Box
-        display="inline-flex"
-        alignItems="center"
-        transition="all 0.25s ease-in-out"
         _hover={{
           textDecoration: "underline",
           textDecorationColor: "primary.light",
         }}
+        alignItems="center"
         color="primary.main"
+        display="inline-flex"
+        transition="all 0.25s ease-in-out"
         wordBreak="break-all"
       >
-        <a href={metadata} target="_blank" rel="noopener noreferrer" data-peer>
+        <a data-peer href={metadata} rel="noopener noreferrer" target="_blank">
           {metadata}
         </a>
       </Box>
@@ -36,7 +36,7 @@ const ProposalMetadataBody = ({ metadata }: ProposalMetadataProps) => {
   }
 
   return (
-    <Text variant="body1" color="text.main" wordBreak="break-word">
+    <Text color="text.main" variant="body1" wordBreak="break-word">
       {metadata}
     </Text>
   );

@@ -1,9 +1,9 @@
 /* eslint-disable no-use-before-define */
-import { createInstance, Identify } from "@amplitude/analytics-browser";
 import type { BrowserClient } from "@amplitude/analytics-types";
-import { userAgentEnrichmentPlugin } from "@amplitude/plugin-user-agent-enrichment-browser";
-
 import type { Nullable } from "lib/types";
+
+import { createInstance, Identify } from "@amplitude/analytics-browser";
+import { userAgentEnrichmentPlugin } from "@amplitude/plugin-user-agent-enrichment-browser";
 
 import type { AmpEvent } from "./types";
 

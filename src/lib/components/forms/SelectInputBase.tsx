@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import {
   Flex,
   Input,
@@ -9,10 +11,10 @@ import {
   PopoverTrigger,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import type { IconKeys } from "../icon";
+
 import { CustomIcon } from "../icon";
 
 const ITEM_HEIGHT = 56;
@@ -47,16 +49,16 @@ interface SelectItemProps {
 
 const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
   <Flex
-    px={4}
-    py={2}
-    onClick={onSelect}
+    _disabled={{ opacity: 0.4, pointerEvents: "none" }}
+    _hover={{ bg: "gray.800" }}
+    aria-disabled={disabled}
     color="text.main"
     cursor="pointer"
     gap={2}
-    aria-disabled={disabled}
-    _hover={{ bg: "gray.800" }}
+    px={4}
+    py={2}
     transition="all 0.25s ease-in-out"
-    _disabled={{ opacity: 0.4, pointerEvents: "none" }}
+    onClick={onSelect}
   >
     {children}
   </Flex>
@@ -92,12 +94,12 @@ export const SelectInputBase = <T extends string>({
 
   return (
     <Popover
-      placement="bottom-start"
-      strategy="fixed"
       isOpen={isOpen}
-      onOpen={onOpen}
-      onClose={onClose}
+      placement="bottom-start"
       returnFocusOnClose={false}
+      strategy="fixed"
+      onClose={onClose}
+      onOpen={onOpen}
     >
       <PopoverTrigger>
         <InputGroup
@@ -129,74 +131,74 @@ export const SelectInputBase = <T extends string>({
         >
           {formLabel && <div className="form-label">{formLabel}</div>}
           {selectedOption?.image && (
-            <InputLeftElement pointerEvents="none" h="full" ml={1}>
+            <InputLeftElement h="full" ml={1} pointerEvents="none">
               {selectedOption.image}
             </InputLeftElement>
           )}
           {selectedOption?.icon && (
-            <InputLeftElement pointerEvents="none" h="full" ml={1}>
+            <InputLeftElement h="full" ml={1} pointerEvents="none">
               <CustomIcon
-                name={selectedOption.icon}
                 color={selectedOption.iconColor}
+                name={selectedOption.icon}
               />
             </InputLeftElement>
           )}
           <Input
-            ref={inputRef}
+            color={selected ? "text.main" : "text.dark"}
+            fontSize="14px"
+            pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
             size={size}
             textAlign="start"
             type="button"
             value={selected || placeholder}
-            fontSize="14px"
-            color={selected ? "text.main" : "text.dark"}
-            pl={selectedOption?.icon || selectedOption?.image ? 10 : 4}
+            ref={inputRef}
           />
-          <InputRightElement pointerEvents="none" h="full">
-            <CustomIcon name="chevron-down" color="gray.600" />
+          <InputRightElement h="full" pointerEvents="none">
+            <CustomIcon color="gray.600" name="chevron-down" />
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
       <PopoverContent
-        border="unset"
-        bg={popoverBgColor}
-        w={inputRef.current?.clientWidth}
-        maxH={disableMaxH ? undefined : `${ITEM_HEIGHT * 4}px`}
-        borderRadius="8px"
         _focusVisible={{
           outline: "none",
         }}
+        bg={popoverBgColor}
+        border="unset"
+        borderRadius="8px"
+        maxH={disableMaxH ? undefined : `${ITEM_HEIGHT * 4}px`}
+        overflow="scroll"
         sx={{
           "> div:not(:last-of-type)": {
             borderBottom: hasDivider && "1px solid",
             borderBottomColor: hasDivider && "gray.700",
           },
         }}
-        overflow="scroll"
+        w={inputRef.current?.clientWidth}
       >
         {options.map(({ label, value, disabled, icon, iconColor, image }) => (
           <SelectItem
             key={value}
+            disabled={disabled}
             onSelect={() => {
               setSelected(label);
               onChange(value);
               onClose();
             }}
-            disabled={disabled}
           >
             <Flex alignItems="center" gap={2}>
               <Flex alignItems="center">{image}</Flex>
-              {icon && <CustomIcon name={icon} color={iconColor} />}
+              {icon && <CustomIcon color={iconColor} name={icon} />}
               {label}
             </Flex>
           </SelectItem>
         ))}
         {helperTextComponent && (
           <Flex
-            px={4}
-            h={`${ITEM_HEIGHT}px`}
             align="center"
             borderTop={!hasDivider ? "1px solid" : "none"}
             borderTopColor="gray.700"
+            h={`${ITEM_HEIGHT}px`}
+            px={4}
           >
             {helperTextComponent}
           </Flex>

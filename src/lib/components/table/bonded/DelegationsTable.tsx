@@ -1,16 +1,16 @@
-import { Box } from "@chakra-ui/react";
+import type { Delegation, Option, TokenWithValue } from "lib/types";
 
+import { Box } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import type { Delegation, Option, TokenWithValue } from "lib/types";
 
+import { MobileTableContainer, TableContainer } from "../tableComponents";
+import { TableTitle } from "../TableTitle";
 import { BondedTableHeader } from "./BondedTableHeader";
 import { BondedTableMobileCard } from "./BondedTableMobileCard";
 import { BondedTableRow } from "./BondedTableRow";
 import { TEMPLATE_COLUMNS } from "./constants";
-import { MobileTableContainer, TableContainer } from "../tableComponents";
-import { TableTitle } from "../TableTitle";
 
 interface DelegationsTableProps {
   delegations: Option<Delegation[]>;
@@ -59,7 +59,7 @@ const DelegationsTableBody = ({
     </MobileTableContainer>
   ) : (
     <TableContainer>
-      <BondedTableHeader templateColumns={TEMPLATE_COLUMNS} isDelegation />
+      <BondedTableHeader isDelegation templateColumns={TEMPLATE_COLUMNS} />
       {delegations.map((delegation) => (
         <BondedTableRow
           key={
@@ -89,12 +89,12 @@ export const DelegationsTable = ({
   isSingleBondDenom,
 }: DelegationsTableProps) => (
   <Box width="100%">
-    <TableTitle title="Delegated to" count={delegations?.length ?? 0} mb={2} />
+    <TableTitle count={delegations?.length ?? 0} mb={2} title="Delegated to" />
     <DelegationsTableBody
       delegations={delegations}
-      rewards={rewards}
       isLoading={isLoading}
       isSingleBondDenom={isSingleBondDenom}
+      rewards={rewards}
     />
   </Box>
 );

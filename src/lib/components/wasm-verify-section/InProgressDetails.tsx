@@ -1,7 +1,8 @@
-import { Button, Spacer, Text } from "@chakra-ui/react";
-
-import { WasmVerifyStatusModal } from "lib/components/modal";
 import type { BechAddr32, WasmVerifyInfoBase } from "lib/types";
+
+import { Button, Spacer, Text } from "@chakra-ui/react";
+import { WasmVerifyStatusModal } from "lib/components/modal";
+
 import { ExplorerLink } from "../ExplorerLink";
 import { CustomIcon } from "../icon";
 
@@ -23,13 +24,13 @@ export const InProgressDetails = ({
   <>
     {contractAddress ? (
       <>
-        <CustomIcon name="hourglass" boxSize={4} ml={0} color="gray.400" />
-        <Text variant="body2" color="text.dark">
+        <CustomIcon boxSize={4} color="gray.400" ml={0} name="hourglass" />
+        <Text color="text.dark" variant="body2">
           This contract is an instance of code ID{" "}
           <ExplorerLink
-            value={codeId.toString()}
-            type="code_id"
             showCopyOnHover
+            type="code_id"
+            value={codeId.toString()}
           />{" "}
           which is currently undergoing verification. This can take several
           hours, depending on the code complexity.
@@ -37,20 +38,20 @@ export const InProgressDetails = ({
         <Spacer />
       </>
     ) : (
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         Code verification is in progress and may take several hours depending on
         code complexity.
       </Text>
     )}
     <WasmVerifyStatusModal
       codeHash={codeHash}
-      verificationInfo={verificationInfo}
       relatedVerifiedCodes={relatedVerifiedCodes}
       triggerElement={
-        <Button variant="ghost-primary" size="sm">
+        <Button size="sm" variant="ghost-primary">
           View verification details
         </Button>
       }
+      verificationInfo={verificationInfo}
     />
   </>
 );

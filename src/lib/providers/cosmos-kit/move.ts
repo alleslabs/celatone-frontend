@@ -1,5 +1,6 @@
 import type { GeneratedType } from "@cosmjs/proto-signing";
 import type { AminoConverters } from "@cosmjs/stargate";
+
 import {
   MsgExecute as MsgExecuteClass,
   MsgPublish as MsgPublishClass,

@@ -1,8 +1,8 @@
 import type { Coin } from "@cosmjs/stargate";
-
 import type { GovParams } from "lib/model/proposal";
-import { big } from "lib/types";
 import type { Option } from "lib/types";
+
+import { big } from "lib/types";
 
 import { d2Formatter } from "./formatter";
 

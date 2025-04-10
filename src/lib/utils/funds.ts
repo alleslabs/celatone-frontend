@@ -1,7 +1,7 @@
-import { parseCoins } from "@cosmjs/stargate";
 import type { Coin } from "@cosmjs/stargate";
-
 import type { Option, Token } from "lib/types";
+
+import { parseCoins } from "@cosmjs/stargate";
 
 import { exponentify } from "./formatter";
 

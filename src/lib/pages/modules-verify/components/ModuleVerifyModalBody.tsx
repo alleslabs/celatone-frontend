@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
 import type { Control } from "react-hook-form";
+
+import { useEffect, useState } from "react";
+
+import type { ModuleVerifyForm } from "../types";
 
 import { ModuleVerifyFailedModal } from "./ModuleVerifyFailedModal";
 import { ModuleVerifyLoadingModal } from "./ModuleVerifyLoadingModal";
 import { ModuleVerifySuccessModal } from "./ModuleVerifySuccessModal";
-import type { ModuleVerifyForm } from "../types";
 
 interface ModuleVerifyModalBodyProps {
   isError: boolean;
@@ -36,6 +38,6 @@ export const ModuleVerifyModalBody = ({
   return isLoading || fakeLoading ? (
     <ModuleVerifyLoadingModal />
   ) : (
-    <ModuleVerifySuccessModal onClose={onClose} control={control} />
+    <ModuleVerifySuccessModal control={control} onClose={onClose} />
   );
 };

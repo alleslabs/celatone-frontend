@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import type { ModuleInfo, Option } from "lib/types";
 
 import { useCurrentChain } from "lib/app-provider";
 import InputWithIcon from "lib/components/InputWithIcon";
@@ -10,8 +10,8 @@ import {
 import { ModulesTable } from "lib/components/table";
 import { useModulesByAddress } from "lib/services/move/module";
 import { useMoveVerifyInfosByAddress } from "lib/services/verification/move";
-import type { ModuleInfo, Option } from "lib/types";
 import { bech32AddressToHex } from "lib/utils";
+import { useMemo, useState } from "react";
 
 export const MyPublishedModulesTable = () => {
   const [keyword, setKeyword] = useState("");
@@ -57,20 +57,20 @@ export const MyPublishedModulesTable = () => {
   return (
     <>
       <InputWithIcon
+        amptrackSection="my-published-modules-search"
+        my={8}
         placeholder="Search with module name"
+        size="lg"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        amptrackSection="my-published-modules-search"
-        size="lg"
-        my={8}
       />
       {address ? (
         <ModulesTable
-          modules={filteredPublishedModules}
-          isLoading={isModulesLoading}
           emptyState={emptyState()}
-          moveVerifyInfos={moveVerifyInfos}
+          isLoading={isModulesLoading}
           isPublishedModules
+          modules={filteredPublishedModules}
+          moveVerifyInfos={moveVerifyInfos}
         />
       ) : (
         <DisconnectedState text="to see your published modules" />

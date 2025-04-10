@@ -1,8 +1,8 @@
-import { Flex } from "@chakra-ui/react";
+import type { Option } from "lib/types";
 import type { ReactNode } from "react";
 
+import { Flex } from "@chakra-ui/react";
 import { TableTitle } from "lib/components/table";
-import type { Option } from "lib/types";
 
 interface TxsTopProps {
   txsCount: Option<number>;
@@ -17,17 +17,17 @@ export const TxsTop = ({
   txTypeSelection,
 }: TxsTopProps) => (
   <Flex
+    alignItems={{ base: "start", md: "center" }}
     direction={{ base: "column", md: "row" }}
     justify="space-between"
-    alignItems={{ base: "start", md: "center" }}
   >
-    <TableTitle title="Transactions" count={txsCount} mb={0} />
+    <TableTitle count={txsCount} mb={0} title="Transactions" />
     {!onViewMore && (
       <Flex
+        direction={{ base: "column", md: "row" }}
         gap={{ base: 6, md: 4 }}
         mt={{ base: 4, md: 0 }}
         w={{ base: "full", md: "auto" }}
-        direction={{ base: "column", md: "row" }}
       >
         {relationSelection}
         {txTypeSelection}

@@ -1,7 +1,7 @@
-import { Text } from "@chakra-ui/react";
 import type { Log } from "@cosmjs/stargate/build/logs";
-
 import type { AssetInfos, Message, Option, PoolData } from "lib/types";
+
+import { Text } from "@chakra-ui/react";
 import { extractTxDetails } from "lib/utils";
 
 import { MsgLockTokensAction, MsgLockTokensDetail } from "./lockup";
@@ -54,9 +54,9 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgSwapExactAmountInAction
-          msg={details}
-          assetInfos={assetInfos}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          msg={details}
         />
       );
     }
@@ -65,9 +65,9 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgSwapExactAmountOutAction
-          msg={details}
-          assetInfos={assetInfos}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          msg={details}
         />
       );
     }
@@ -75,10 +75,10 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgJoinPoolAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
           msg={details}
           pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -86,10 +86,10 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgJoinSwapExternAmountInAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
           msg={details}
           pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -97,10 +97,10 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgJoinSwapShareAmountOutAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
           msg={details}
           pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -108,10 +108,10 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgExitPoolAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
           msg={details}
           pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -119,10 +119,10 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgExitSwapShareAmountInAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
           msg={details}
           pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -130,10 +130,10 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgExitSwapExternAmountOutAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
           msg={details}
           pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -141,10 +141,10 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgLockTokensAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
           msg={details}
           pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -152,10 +152,10 @@ export const PoolMsgAction = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgLockAndSuperfluidDelegateAction
+          ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
           msg={details}
           pool={pool}
-          assetInfos={assetInfos}
-          ampCopierSection={ampCopierSection}
         />
       );
     }
@@ -197,13 +197,13 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgSwapExactAmountInDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
         />
       );
     }
@@ -212,13 +212,13 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgSwapExactAmountOutDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
         />
       );
     }
@@ -226,13 +226,13 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgJoinPoolDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
         />
       );
     }
@@ -240,13 +240,13 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgJoinSwapExternAmountInDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
         />
       );
     }
@@ -254,13 +254,13 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgJoinSwapShareAmountOutDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
         />
       );
     }
@@ -268,13 +268,13 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgExitPoolDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
         />
       );
     }
@@ -282,13 +282,13 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgExitSwapShareAmountInDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
         />
       );
     }
@@ -296,13 +296,13 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgExitSwapExternAmountOutDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          txHash={txHash}
         />
       );
     }
@@ -310,14 +310,14 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgLockTokensDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          pool={pool}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          pool={pool}
+          txHash={txHash}
         />
       );
     }
@@ -325,14 +325,14 @@ export const PoolMsgDetail = ({
       const details = extractTxDetails(type, detail, log);
       return (
         <MsgLockAndSuperfluidDelegateDetail
-          txHash={txHash}
-          blockHeight={blockHeight}
-          msgIndex={msgIndex}
-          msg={details}
-          pool={pool}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          blockHeight={blockHeight}
+          isOpened={isOpened}
+          msg={details}
+          msgIndex={msgIndex}
+          pool={pool}
+          txHash={txHash}
         />
       );
     }

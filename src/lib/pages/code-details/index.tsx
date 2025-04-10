@@ -1,8 +1,4 @@
 import { TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-import { useCallback, useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -21,6 +17,9 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useSchemaStore } from "lib/providers/store";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeData } from "lib/services/wasm/code";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
+import { useCallback, useEffect } from "react";
 
 import {
   CodeContractsTableFull,
@@ -88,27 +87,27 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
       <CelatoneSeo pageName={codeId ? `Code #${codeId}` : "Code detail"} />
       <CodeTopInfo
         code={code}
+        codeId={codeId}
         projectInfo={projectInfo}
         publicInfo={publicInfo}
-        codeId={codeId}
         wasmVerifyInfo={derivedWasmVerifyInfo}
       />
       <Tabs
-        index={Object.values(TabIndex).indexOf(tab)}
-        isLazy
-        lazyBehavior="keepMounted"
-        my={8}
         borderTop={{
           base: "1px solid var(--chakra-colors-gray-700)",
           md: "none",
         }}
+        index={Object.values(TabIndex).indexOf(tab)}
+        isLazy
+        lazyBehavior="keepMounted"
+        my={8}
       >
         {!isMobile && (
           <TabList
+            id={codeTabId}
             borderBottom="1px solid"
             borderColor="gray.700"
             overflowX="scroll"
-            id={codeTabId}
           >
             <CustomTab onClick={handleTabChange(TabIndex.CodeInfo)}>
               Code information
@@ -121,14 +120,14 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         <TabPanels>
           <TabPanel p={0}>
             <CodeInfoSection
-              code={code}
-              chainId={currentChainId}
               attached={attached}
+              chainId={currentChainId}
+              code={code}
               toJsonSchemaTab={handleTabChange(TabIndex.JsonSchema)}
             />
             <CodeVerificationSection
-              codeId={codeId}
               codeHash={code.hash}
+              codeId={codeId}
               wasmVerifyInfo={derivedWasmVerifyInfo}
             />
             <TierSwitcher
@@ -136,15 +135,15 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
               lite={<CodeContractsTableLite codeId={codeId} />}
             />
             <UserDocsLink
-              title="What is Code in CosmWasm?"
               cta="Read more about Code Details"
               href="cosmwasm/codes/detail-page"
+              title="What is Code in CosmWasm?"
             />
           </TabPanel>
           <TabPanel p={0}>
             <CodeSchemaSection
-              codeId={codeId}
               codeHash={code.hash}
+              codeId={codeId}
               localSchema={localSchema}
               wasmVerifyInfo={derivedWasmVerifyInfo}
             />

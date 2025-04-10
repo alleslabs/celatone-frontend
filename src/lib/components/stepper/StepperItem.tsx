@@ -1,6 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 import type { Mode, Step } from "./types";
+
 import { CustomIcon } from "../icon";
 
 export const stepperText: Record<Mode, Record<number, string>> = {
@@ -18,23 +19,23 @@ const StepLabel = ({
   currentStep: Step;
 }) => (
   <Flex
-    justify="center"
     align="center"
     backgroundColor={disabled ? "stepper.disabled.bg" : "stepper.active.bg"}
-    width="24px"
-    height="24px"
     borderRadius="50%"
+    height="24px"
+    justify="center"
+    width="24px"
   >
     {currentStep > step ? (
       <CustomIcon
-        name="check"
-        color={disabled ? "stepper.disabled.color" : "stepper.active.color"}
         boxSize={3}
+        color={disabled ? "stepper.disabled.color" : "stepper.active.color"}
+        name="check"
       />
     ) : (
       <Text
-        variant="body3"
         color={disabled ? "stepper.disabled.color" : "stepper.active.color"}
+        variant="body3"
       >
         {step}
       </Text>
@@ -67,11 +68,11 @@ export const StepperItem = ({
         },
       }}
     >
-      <StepLabel step={step} disabled={disabled} currentStep={currentStep} />
+      <StepLabel currentStep={currentStep} disabled={disabled} step={step} />
       <Text
-        variant="body2"
-        fontWeight={disabled ? 400 : 700}
         color={disabled ? "text.dark" : "text.main"}
+        fontWeight={disabled ? 400 : 700}
+        variant="body2"
       >
         {stepperText[mode][step]}
       </Text>

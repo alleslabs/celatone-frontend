@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import type { ChainConfig } from "@alleslabs/shared";
 
 export const devChainConfigs: ChainConfig[] = [

@@ -1,4 +1,3 @@
-import { usePublicProjectBySlug } from "lib/services/publicProjectService";
 import type {
   Option,
   PublicAccount,
@@ -7,6 +6,8 @@ import type {
   PublicDetail,
   PublicModule,
 } from "lib/types";
+
+import { usePublicProjectBySlug } from "lib/services/publicProjectService";
 
 interface PublicDataState {
   publicCodes: PublicCode[];
