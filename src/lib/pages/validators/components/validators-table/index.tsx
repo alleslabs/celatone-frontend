@@ -97,7 +97,7 @@ export const ValidatorsTable = ({
             setIsDesc={setIsDesc}
             showUptime={showUptime}
           />
-          {data.items.map((validator) => (
+          {data.items.map((validator, index) => (
             <Fragment key={validator.validatorAddress}>
               <ValidatorsTableRow
                 templateColumns={templateColumns}
@@ -109,6 +109,7 @@ export const ValidatorsTable = ({
                 showUptime={showUptime}
               />
               {displayDividers &&
+                index !== data.items.length - 1 &&
                 (validator.rank === data.metadata.percent33Rank ||
                   validator.rank === data.metadata.percent66Rank) && (
                   <ValidatorsPercentDivider
