@@ -4,7 +4,6 @@ import type { Option } from "lib/types";
 import { TableContainer } from "@chakra-ui/react";
 import { useEvmConfig, useMoveConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import { JSX } from "react";
 
 import { SavedAccountsTableHeader } from "./SavedAccountsTableHeader";
 import { SavedAccountsTableRow } from "./SavedAccountsTableRow";

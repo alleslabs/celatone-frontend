@@ -5,7 +5,6 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useCelatoneApp, useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { isNull } from "lodash";
-import { JSX } from "react";
 
 import { MobileLabel } from "./table/MobileLabel";
 import { ValidatorImage } from "./ValidatorImage";

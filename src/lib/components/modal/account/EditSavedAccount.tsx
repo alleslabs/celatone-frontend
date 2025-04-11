@@ -6,7 +6,6 @@ import { useCelatoneApp } from "lib/app-provider";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import { useCallback, useEffect, useMemo } from "react";
-import { JSX } from "react";
 import { useForm } from "react-hook-form";
 
 import type { SaveAccountDetail } from "./SaveNewAccount";

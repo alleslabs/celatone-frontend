@@ -2,7 +2,6 @@ import type { AssetInfos, Option, PoolData, Transaction } from "lib/types";
 
 import { TableContainer } from "@chakra-ui/react";
 import { Loading } from "lib/components/Loading";
-import { JSX } from "react";
 
 import { PoolTxsTableHeader } from "./PoolTxsTableHeader";
 import { PoolTxsTableRow } from "./PoolTxsTableRow";

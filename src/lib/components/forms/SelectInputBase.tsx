@@ -11,7 +11,6 @@ import {
   PopoverTrigger,
   useDisclosure,
 } from "@chakra-ui/react";
-import { JSX } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import type { IconKeys } from "../icon";

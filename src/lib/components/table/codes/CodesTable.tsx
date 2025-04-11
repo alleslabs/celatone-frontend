@@ -4,7 +4,6 @@ import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useWasmVerifyInfos } from "lib/services/verification/wasm";
-import { JSX } from "react";
 
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { CodesTableHeader } from "./CodesTableHeader";

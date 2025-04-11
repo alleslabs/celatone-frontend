@@ -2,7 +2,6 @@ import type { Option, Proposal } from "lib/types";
 
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
-import { JSX } from "react";
 
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { ProposalsTableHeader } from "./ProposalsTableHeader";

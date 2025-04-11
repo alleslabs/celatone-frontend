@@ -4,7 +4,6 @@ import { Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useClearAdminTx } from "lib/app-provider";
 import { useTxBroadcast } from "lib/hooks";
-import { JSX } from "react";
 import { useCallback } from "react";
 
 import { ActionModal } from "../ActionModal";

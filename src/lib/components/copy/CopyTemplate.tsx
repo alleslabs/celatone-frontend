@@ -2,7 +2,6 @@ import type { BoxProps } from "@chakra-ui/react";
 
 import { Flex, useClipboard } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { JSX } from "react";
 
 import { Tooltip } from "../Tooltip";
 

@@ -4,7 +4,6 @@ import type { ModuleInfo, Option } from "lib/types";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { mergeModulePath } from "lib/utils";
-import { JSX } from "react";
 
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { ModulesTableHeader } from "./ModulesTableHeader";

@@ -1,7 +1,5 @@
 import type { ContractLocalInfo } from "lib/stores/contract";
 
-import { JSX } from "react";
-
 import { ContractDetailsTemplateModal } from "./ContractDetailsTemplate";
 
 interface EditContractDetailsModalProps {

@@ -2,7 +2,6 @@ import type { Option, Transaction } from "lib/types";
 
 import { useCurrentChain } from "lib/app-provider";
 import { DisconnectedState } from "lib/components/state";
-import { JSX } from "react";
 
 import { TransactionsTable } from "./TransactionsTable";
 

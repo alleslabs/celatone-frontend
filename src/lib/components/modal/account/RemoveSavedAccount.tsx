@@ -12,7 +12,6 @@ import { CustomIcon } from "lib/components/icon";
 import { useAccountStore } from "lib/providers/store";
 import { truncate } from "lib/utils";
 import { useCallback } from "react";
-import { JSX } from "react";
 
 import { ActionModal } from "../ActionModal";
 

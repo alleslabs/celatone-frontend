@@ -18,7 +18,6 @@ import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
 import { useCallback } from "react";
-import { JSX } from "react";
 
 import { CodeInfoLabelText } from "./CodeInfoLabelText";
 

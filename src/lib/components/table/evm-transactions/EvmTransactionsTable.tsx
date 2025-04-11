@@ -5,7 +5,6 @@ import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
-import { JSX } from "react";
 
 import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { EvmTransactionsTableHeader } from "./EvmTransactionsTableHeader";

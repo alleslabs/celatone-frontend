@@ -1,6 +1,5 @@
 import { Flex } from "@chakra-ui/react";
 import { MobileLabel } from "lib/components/table";
-import { JSX } from "react";
 
 interface InfoItemProps {
   label: string;

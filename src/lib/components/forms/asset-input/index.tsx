@@ -2,7 +2,6 @@ import type { SystemStyleObject } from "@chakra-ui/react";
 import type { AssetOption, AssetOptionValue, Option } from "lib/types";
 
 import { Box, Button, Grid, Text } from "@chakra-ui/react";
-import { JSX } from "react";
 
 import { CustomIcon } from "../../icon";
 import { SelectInput } from "../SelectInput";

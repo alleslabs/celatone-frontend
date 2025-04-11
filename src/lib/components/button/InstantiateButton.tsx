@@ -5,7 +5,6 @@ import { Button } from "@chakra-ui/react";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
-import { JSX } from "react";
 
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";

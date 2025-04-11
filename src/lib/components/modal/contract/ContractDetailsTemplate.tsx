@@ -11,7 +11,6 @@ import { ActionModal } from "lib/components/modal/ActionModal";
 import { OffChainForm } from "lib/components/OffChainForm";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
 import { getNameAndDescriptionDefault, getTagsDefault } from "lib/utils";
-import { JSX } from "react";
 import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 

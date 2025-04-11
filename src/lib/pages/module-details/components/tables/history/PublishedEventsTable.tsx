@@ -5,7 +5,6 @@ import { TableContainer } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer } from "lib/components/table";
-import { JSX } from "react";
 
 import { PublishedEventsTableHeader } from "./PublishedEventsTableHeader";
 import { PublishedEventsTableMobileCard } from "./PublishedEventsTableMobileCard";

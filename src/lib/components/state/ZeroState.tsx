@@ -5,7 +5,6 @@ import { useInternalNavigate } from "lib/app-provider";
 import { SaveNewContractModal } from "lib/components/modal/contract";
 import { ADMIN_SPECIAL_SLUG, INSTANTIATED_LIST_NAME } from "lib/data";
 import { formatSlugName } from "lib/utils";
-import { JSX } from "react";
 
 import { CustomIcon } from "../icon";
 import { StateImage } from "./StateImage";

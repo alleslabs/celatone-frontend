@@ -4,7 +4,6 @@ import type { Option } from "lib/types";
 import { SimpleGrid } from "@chakra-ui/react";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
-import { JSX } from "react";
 
 import { NftCard } from "./NftCard";
 

@@ -10,7 +10,6 @@ import { CustomIcon } from "lib/components/icon";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { useCodeStore } from "lib/providers/store";
 import { useCallback, useEffect, useState } from "react";
-import { JSX } from "react";
 
 import { ActionModal } from "../ActionModal";
 

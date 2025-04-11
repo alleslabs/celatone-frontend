@@ -1,5 +1,4 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { JSX } from "react";
 
 import { ConnectingLine } from "../../ConnectingLine";
 import { CustomIcon } from "../../icon";

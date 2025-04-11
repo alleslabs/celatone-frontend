@@ -4,7 +4,6 @@ import { CustomIcon } from "lib/components/icon";
 import { useCodeStore } from "lib/providers/store";
 import { getNameAndDescriptionDefault, shortenName } from "lib/utils";
 import { useCallback } from "react";
-import { JSX } from "react";
 
 import { ActionModal } from "../ActionModal";
 

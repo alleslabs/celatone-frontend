@@ -1,7 +1,6 @@
 import type { FlexProps } from "@chakra-ui/react";
 
 import { Flex, Text } from "@chakra-ui/react";
-import { JSX } from "react";
 
 import { TooltipInfo } from "./Tooltip";
 

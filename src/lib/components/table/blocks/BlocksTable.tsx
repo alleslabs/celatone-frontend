@@ -4,7 +4,6 @@ import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import { JSX } from "react";
 
 import { BlocksTableHeader } from "./BlocksTableHeader";
 import { BlocksTableMobileCard } from "./BlocksTableMobileCard";
