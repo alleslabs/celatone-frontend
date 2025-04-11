@@ -7,7 +7,6 @@ const SENTRY_DSN =
   "https://examplePublicKey@o0.ingest.sentry.io/0";
 
 const nextConfig = {
-  swcMinify: true,
   reactStrictMode: true,
   eslint: {
     dirs: ["src"],
