@@ -61,8 +61,8 @@ export const ResourceOverviewBody = ({
 
   return (
     <Flex
-      borderBottom="1px solid"
       borderBottomColor="gray.700"
+      borderBottomWidth="1px"
       direction="column"
       mb={12}
       mt={6}

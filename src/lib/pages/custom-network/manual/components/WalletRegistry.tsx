@@ -185,7 +185,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
           </Grid>
           <Flex
             borderColor="gray.100"
-            borderLeft="2px solid"
+            borderLeftWidth="2px"
             direction="column"
             pl={4}
           >

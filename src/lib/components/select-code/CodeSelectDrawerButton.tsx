@@ -116,7 +116,7 @@ export const CodeSelectDrawerButton = ({
               />
             </Flex>
             <Tabs px={6}>
-              <TabList borderBottom="1px" borderColor="gray.800">
+              <TabList borderBottomWidth="1px" borderColor="gray.800">
                 <CustomTab count={storedCodesCount}>My stored codes</CustomTab>
                 <CustomTab count={savedCodesCount}>My saved codes</CustomTab>
               </TabList>

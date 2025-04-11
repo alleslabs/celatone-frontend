@@ -63,8 +63,8 @@ export const TokenCard = ({
         />
       </Flex>
       <Flex
-        borderTop="1px solid"
         borderTopColor="gray.700"
+        borderTopWidth="1px"
         direction="column"
         pt={2}
       >

@@ -151,7 +151,7 @@ main();`,
           <ModalCloseButton color="gray.600" />
           <ModalBody maxH="640px" overflow="scroll" px={4}>
             <Tabs>
-              <TabList borderBottom="1px solid" borderColor="gray.700">
+              <TabList borderBottomWidth="1px" borderColor="gray.700">
                 {codeSnippets[type].map((item) => (
                   <CustomTab key={`menu-${item.name}`}>{item.name}</CustomTab>
                 ))}

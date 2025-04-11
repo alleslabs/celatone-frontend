@@ -28,7 +28,7 @@ export const ModuleVerifyUploadFolderInfo = () => (
       <AccordionPanel
         bg="transparent"
         borderColor="gray.700"
-        borderTop="1px solid"
+        borderTopWidth="1px"
         px={0}
       >
         <Stack gap={3}>

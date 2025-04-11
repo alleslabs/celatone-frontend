@@ -30,9 +30,9 @@ export const UploadAccordion = () => (
       </AccordionButton>
       <AccordionPanel
         bg="transparent"
-        borderBottom="1px solid"
+        borderBottomWidth="1px"
         borderColor="gray.700"
-        borderTop="1px solid"
+        borderTopWidth="1px"
         px={0}
         py={3}
       >

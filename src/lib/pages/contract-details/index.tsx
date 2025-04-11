@@ -133,7 +133,7 @@ const ContractDetailsBody = observer(
         >
           <TabList
             id={tableHeaderId}
-            borderBottom="1px solid"
+            borderBottomWidth="1px"
             borderColor="gray.700"
             overflowX="scroll"
           >
@@ -186,8 +186,8 @@ const ContractDetailsBody = observer(
                     wasmVerifyInfo={derivedWasmVerifyInfo}
                   />
                   <Flex
-                    borderBottom={{ base: "0px", md: "1px solid" }}
                     borderBottomColor={{ base: "transparent", md: "gray.700" }}
+                    borderBottomWidth={{ base: "0px", md: "1px" }}
                   >
                     <AssetsSection
                       address={contractAddress}
@@ -196,11 +196,11 @@ const ContractDetailsBody = observer(
                   </Flex>
                   {gov.enabled && (
                     <Flex
-                      borderBottom={{ base: "0px", md: "1px solid" }}
                       borderBottomColor={{
                         base: "transparent",
                         md: "gray.700",
                       }}
+                      borderBottomWidth={{ base: "0px", md: "1px" }}
                     >
                       <DelegationsSection
                         address={contractAddress}

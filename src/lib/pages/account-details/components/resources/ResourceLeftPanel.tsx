@@ -83,7 +83,7 @@ export const ResourceLeftPanel = ({
 
   return (
     <Flex
-      borderBottom={{ base: "1px solid", md: "none" }}
+      borderBottomWidth={{ base: "1px", md: "none" }}
       borderColor={{ base: "gray.700", md: "transparent" }}
       direction="column"
       mb={{ base: 4, md: 0 }}

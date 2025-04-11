@@ -116,7 +116,7 @@ const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
       key={menuInfo.slug}
       allowMultiple
       borderColor="gray.700"
-      borderTop="1px solid"
+      borderTopWidth="1px"
       defaultIndex={defaultIndex}
       mt={2}
       pt={2}

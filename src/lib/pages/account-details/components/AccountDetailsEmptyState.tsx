@@ -6,7 +6,7 @@ export interface AccountDetailsEmptyStateProps {
   message: string;
   textVariant?: TextProps["variant"];
   pt?: FlexProps["pt"];
-  borderBottom?: StyleProps["borderBottom"];
+  borderBottomWidth?: StyleProps["borderBottomWidth"];
   borderColor?: StyleProps["borderColor"];
 }
 
@@ -14,12 +14,12 @@ export const AccountDetailsEmptyState = ({
   message,
   textVariant = "body1",
   pt = 2,
-  borderBottom = "1px solid",
+  borderBottomWidth = "1px",
   borderColor = "gray.700",
 }: AccountDetailsEmptyStateProps) => (
   <Flex
     alignItems="flex-start"
-    borderBottom={borderBottom}
+    borderBottomWidth={borderBottomWidth}
     borderColor={borderColor}
     direction="column"
     flexDir="column"

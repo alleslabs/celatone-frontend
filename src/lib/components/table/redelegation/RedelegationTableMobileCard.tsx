@@ -25,8 +25,8 @@ export const RedelegationTableMobileCard = ({
   >
     <Grid
       alignItems="center"
-      borderBottom="1px solid"
       borderBottomColor="gray.700"
+      borderBottomWidth="1px"
       pb={3}
       templateColumns="1fr 32px 1fr"
     >

@@ -105,7 +105,7 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
         {!isMobile && (
           <TabList
             id={codeTabId}
-            borderBottom="1px solid"
+            borderBottomWidth="1px"
             borderColor="gray.700"
             overflowX="scroll"
           >

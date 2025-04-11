@@ -46,8 +46,8 @@ export const VotingOverviewThreshold = ({
   return (
     <>
       <Flex
-        borderTop="1px solid"
         borderTopColor="gray.700"
+        borderTopWidth="1px"
         direction="column"
         gap={4}
         pt={4}

@@ -25,8 +25,8 @@ export const CommandSection = ({
 
   return (
     <Flex
-      borderBottom={{ base: "0px", md: "1px solid" }}
       borderBottomColor={{ base: "transparent", md: "gray.700" }}
+      borderBottomWidth={{ base: "0px", md: "1px" }}
       direction="column"
       gap={4}
       pb={{ base: 0, md: 8 }}

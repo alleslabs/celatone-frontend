@@ -14,8 +14,8 @@ export const NonRedelegatablesTableMobileCard = ({
   nonRedelegatable,
 }: NonRedelegatablesTableMobileCardProps) => (
   <Flex
-    borderTop="1px solid"
     borderTopColor="gray.700"
+    borderTopWidth="1px"
     direction="column"
     gap={2}
     minW={0}

@@ -104,7 +104,7 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
         lazyBehavior="keepMounted"
       >
         <TabList
-          borderBottom="1px solid"
+          borderBottomWidth="1px"
           borderColor="gray.700"
           my={6}
           overflowX="scroll"

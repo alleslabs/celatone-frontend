@@ -139,7 +139,7 @@ const EvmContractDetailsBody = ({
         >
           <TabList
             id={tableHeaderId}
-            borderBottom="1px solid"
+            borderBottomWidth="1px"
             borderColor="gray.700"
             overflowX="scroll"
           >

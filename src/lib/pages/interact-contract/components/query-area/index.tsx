@@ -64,7 +64,7 @@ export const QueryArea = observer(
             isLazy
             lazyBehavior="keepMounted"
           >
-            <TabList borderBottom="1px" borderColor="gray.800" mb={8}>
+            <TabList borderBottomWidth="1px" borderColor="gray.800" mb={8}>
               <CustomTab
                 onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}
               >

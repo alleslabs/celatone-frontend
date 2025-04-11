@@ -206,8 +206,8 @@ export const VotingPowerOverview = ({
         )}
       </Grid>
       <Grid
-        borderTop="1px solid"
         borderTopColor="gray.700"
+        borderTopWidth="1px"
         display={{
           base: isFullTier ? "none" : "grid",
           md: isFullTier ? "grid" : "none",

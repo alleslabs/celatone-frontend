@@ -82,7 +82,7 @@ export const ModuleSelectDrawer = ({
     <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
       <DrawerOverlay />
       <DrawerContent h="90%">
-        <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
+        <DrawerHeader borderBottomWidth="1px" borderColor="gray.700">
           <CustomIcon boxSize={6} color="gray.600" name="contract-address" />
           <Heading as="h5" variant="h5">
             Select module

@@ -49,7 +49,7 @@ export const PoolTxsMsg = ({
     <Box
       className="copier-wrapper"
       _hover={{ background: "gray.900" }}
-      borderBottom="1px solid"
+      borderBottomWidth="1px"
       borderColor="gray.700"
       minW="min-content"
       sx={{

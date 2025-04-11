@@ -107,8 +107,8 @@ export const ResourceDetailCard = ({
           </AccordionButton>
           <AccordionPanel
             borderColor="gray.700"
-            borderTop="1px solid"
             borderTopRadius={0}
+            borderTopWidth="1px"
             p={4}
           >
             <Flex direction="column" gap={3}>

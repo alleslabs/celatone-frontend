@@ -76,7 +76,7 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
       <Tabs isLazy lazyBehavior="keepMounted">
         <TabList
           id={tableHeaderId}
-          borderBottom="1px"
+          borderBottomWidth="1px"
           borderColor="gray.800"
           mt={4}
         >
