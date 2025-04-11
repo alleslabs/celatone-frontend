@@ -1,3 +1,5 @@
+import type { Struct } from "lib/types";
+
 import {
   AccordionButton,
   AccordionItem,
@@ -8,9 +10,8 @@ import {
   Tag,
   Text,
 } from "@chakra-ui/react";
-
 import { trackUseExpand } from "lib/amplitude";
-import type { Struct } from "lib/types";
+
 import { CustomIcon } from "../icon";
 import { LabelText } from "../LabelText";
 
@@ -31,21 +32,21 @@ const STRUCT_ABILITIES = ["copy", "drop", "key", "store"];
 
 export const StructCard = ({ struct }: StructCardProps) => (
   <AccordionItem
-    bg="gray.800"
     _hover={{ bg: "gray.700" }}
+    bg="gray.800"
     borderRadius={8}
+    flexDirection="column"
+    gap={1}
     px={4}
     py={3}
     transition="all .25s ease-in-out"
-    flexDirection="column"
-    gap={1}
   >
     {({ isExpanded }) => (
       <>
         <AccordionButton
-          flexDirection="column"
-          alignItems="flex-start"
           _hover={{ bg: "transparent" }}
+          alignItems="flex-start"
+          flexDirection="column"
           onClick={() =>
             trackUseExpand({
               action: !isExpanded ? "expand" : "collapse",
@@ -55,10 +56,10 @@ export const StructCard = ({ struct }: StructCardProps) => (
           }
         >
           <Flex
-            justifyContent="space-between"
-            w="full"
             alignItems={{ base: "flex-start", md: "center" }}
             direction={{ base: "column", md: "row" }}
+            justifyContent="space-between"
+            w="full"
           >
             <Text variant="body2">{struct.name}</Text>
             <Flex
@@ -70,18 +71,17 @@ export const StructCard = ({ struct }: StructCardProps) => (
                 {STRUCT_ABILITIES.map((item) => (
                   <Tag
                     key={item}
+                    opacity={struct.abilities.includes(item) ? 1 : 0.3}
                     size="sm"
                     variant="gray"
-                    opacity={struct.abilities.includes(item) ? 1 : 0.3}
                   >
                     {item}
                   </Tag>
                 ))}
               </Flex>
               <StyledIconButton
-                variant="none"
-                aria-label="external"
                 _hover={{ backgroundColor: "gray.700" }}
+                aria-label="external"
                 icon={
                   <CustomIcon
                     name="chevron-down"
@@ -89,26 +89,27 @@ export const StructCard = ({ struct }: StructCardProps) => (
                     transition="all .25s ease-in-out"
                   />
                 }
+                variant="none"
               />
             </Flex>
           </Flex>
         </AccordionButton>
-        <AccordionPanel bg="gray.900" borderRadius={8} mt={2} py={3} px={4}>
-          <Flex gap={3} direction="column">
+        <AccordionPanel bg="gray.900" borderRadius={8} mt={2} px={4} py={3}>
+          <Flex direction="column" gap={3}>
             <Flex gap={8}>
               <LabelText
                 isSmall
                 label="is_native"
-                labelWeight={700}
                 labelColor="text.disabled"
+                labelWeight={700}
               >
                 <Text variant="body3">{String(struct.is_native)}</Text>
               </LabelText>
               <LabelText
                 isSmall
                 label="abilities"
-                labelWeight={700}
                 labelColor="text.disabled"
+                labelWeight={700}
               >
                 <Text variant="body3">{JSON.stringify(struct.abilities)}</Text>
               </LabelText>
@@ -116,8 +117,8 @@ export const StructCard = ({ struct }: StructCardProps) => (
             <LabelText
               isSmall
               label="generic_type_params"
-              labelWeight={700}
               labelColor="text.disabled"
+              labelWeight={700}
             >
               <Text variant="body3">
                 {JSON.stringify(struct.generic_type_params)}
@@ -126,8 +127,8 @@ export const StructCard = ({ struct }: StructCardProps) => (
             <LabelText
               isSmall
               label="fields"
-              labelWeight={700}
               labelColor="text.disabled"
+              labelWeight={700}
             >
               <Text variant="body3">{JSON.stringify(struct.fields)}</Text>
             </LabelText>

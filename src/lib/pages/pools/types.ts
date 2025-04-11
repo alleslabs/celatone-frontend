@@ -1,6 +1,6 @@
-import { z } from "zod";
-
 import type { PoolTypeFilter } from "lib/types";
+
+import { z } from "zod";
 
 export interface PoolFilterState {
   keyword: string;

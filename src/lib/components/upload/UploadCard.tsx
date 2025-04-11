@@ -1,12 +1,13 @@
-import { Flex, IconButton, Text } from "@chakra-ui/react";
+import type { Nullable } from "lib/types";
 
+import { Flex, IconButton, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon, UploadIcon } from "lib/components/icon";
 import { big } from "lib/types";
-import type { Nullable } from "lib/types";
+
+import type { CardTheme, Status } from "./types";
 
 import { useCardTheme } from "./hooks/useCardTheme";
-import type { CardTheme, Status } from "./types";
 
 interface UploadCardProps {
   file: File;
@@ -29,20 +30,20 @@ export const UploadCard = ({
     <>
       <Flex
         align="center"
-        p="16px"
-        gap="16px"
-        w="full"
         bgColor={themeConfig.bgColor}
         border={themeConfig.border}
         borderColor={statusColor}
         borderRadius="8px"
+        gap="16px"
         justifyContent="space-between"
+        p="16px"
+        w="full"
       >
         <Flex gap={5}>
           <UploadIcon />
           <Flex direction="column">
             <Text variant="body1">{file.name}</Text>
-            <Text variant="body2" color="text.dark" display="flex" gap="4px">
+            <Text color="text.dark" display="flex" gap="4px" variant="body2">
               {big(file.size)
                 .div(1000)
                 .toFixed(file.size > 1000 ? 0 : undefined)}{" "}
@@ -52,14 +53,9 @@ export const UploadCard = ({
         </Flex>
         <Flex align="center" gap={4}>
           <IconButton
-            variant="ghost-error"
-            size="sm"
-            icon={<CustomIcon name="delete" boxSize={4} />}
-            onClick={() => {
-              track(AmpEvent.USE_REMOVE_UPLOAD_FILE);
-              deleteFile();
-            }}
             aria-label="upload card"
+            icon={<CustomIcon boxSize={4} name="delete" />}
+            size="sm"
             sx={{
               color: "gray.600",
               _hover: {
@@ -67,18 +63,23 @@ export const UploadCard = ({
                 backgroundColor: "error.background",
               },
             }}
+            variant="ghost-error"
+            onClick={() => {
+              track(AmpEvent.USE_REMOVE_UPLOAD_FILE);
+              deleteFile();
+            }}
           />
           {status === "error" && (
             <CustomIcon
-              name="alert-triangle-solid"
-              color="error.main"
               boxSize={4}
+              color="error.main"
+              name="alert-triangle-solid"
             />
           )}
         </Flex>
       </Flex>
       {status && (
-        <Text variant="body3" color={statusColor} mt={1}>
+        <Text color={statusColor} mt={1} variant="body3">
           {statusText}
         </Text>
       )}

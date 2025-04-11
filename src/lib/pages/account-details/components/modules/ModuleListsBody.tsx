@@ -1,12 +1,13 @@
-import { SimpleGrid } from "@chakra-ui/react";
-import { useMemo } from "react";
+import type { HexAddr, IndexedModule, Option } from "lib/types";
 
+import { SimpleGrid } from "@chakra-ui/react";
 import { Loading } from "lib/components/Loading";
 import { ModuleCard } from "lib/components/module";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useMoveVerifyInfosByAddress } from "lib/services/verification/move";
-import type { HexAddr, IndexedModule, Option } from "lib/types";
 import { mergeModulePath } from "lib/utils";
+import { useMemo } from "react";
+
 import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 
 interface ModuleListsBodyProps {
@@ -39,9 +40,9 @@ export const ModuleListsBody = ({
     return (
       <ErrorFetching
         dataName="modules"
-        withBorder
-        my={2}
         hasBorderTop={false}
+        my={2}
+        withBorder
       />
     );
   if (!modules.length)
@@ -64,10 +65,10 @@ export const ModuleListsBody = ({
           <ModuleCard
             key={item.moduleName}
             module={item}
-            selectedModule={undefined}
             moveVerifyInfo={
               moveVerifyInfos?.[mergeModulePath(item.address, item.moduleName)]
             }
+            selectedModule={undefined}
           />
         )
       )}

@@ -1,9 +1,9 @@
-import { Flex, Tag, Text } from "@chakra-ui/react";
-import { snakeCase } from "snake-case";
-
 import type { LinkType } from "lib/components/ExplorerLink";
-import { ExplorerLink } from "lib/components/ExplorerLink";
 import type { Option, TokenWithValue } from "lib/types";
+
+import { Flex, Tag, Text } from "@chakra-ui/react";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { snakeCase } from "snake-case";
 
 import { MsgToken } from "./MsgToken";
 
@@ -62,25 +62,25 @@ export const SingleMsg = ({
       {/* Tags */}
       {tags?.map((tag, index: number) => (
         <Tag
-          variant="gray"
-          size="sm"
-          wordBreak="break-word"
-          textAlign="left"
           key={index.toString() + tag}
           color={tag ? "text.main" : "text.disabled"}
+          size="sm"
+          textAlign="left"
+          variant="gray"
+          wordBreak="break-word"
         >
           {tag ? snakeCase(tag) : "undefined"}
         </Tag>
       ))}
       {/* Tag left over */}
       {tags && length && length - tags.length > 0 && (
-        <Tag variant="gray" size="sm" wordBreak="break-word" textAlign="left">
+        <Tag size="sm" textAlign="left" variant="gray" wordBreak="break-word">
           +{length - tags.length}
         </Tag>
       )}
       {/* Length  */}
       {!tags && length && (
-        <Tag variant="gray" size="sm" wordBreak="break-word" textAlign="left">
+        <Tag size="sm" textAlign="left" variant="gray" wordBreak="break-word">
           {length}
         </Tag>
       )}
@@ -89,12 +89,12 @@ export const SingleMsg = ({
       {/* Link */}
       {link1 && (
         <ExplorerLink
-          value={link1.value}
           copyValue={link1.copyValue}
-          type={link1.type}
           showCopyOnHover
           // Should ellipse when it is not tx hash, contract addr, user addr
           textFormat={link1.type !== "code_id" ? "truncate" : "normal"}
+          type={link1.type}
+          value={link1.value}
         />
       )}
       {/* Text3 */}
@@ -102,12 +102,12 @@ export const SingleMsg = ({
       {/* Link2 */}
       {link2 && (
         <ExplorerLink
-          value={link2.value}
           copyValue={link2.copyValue}
-          type={link2.type}
           showCopyOnHover
           // Should ellipse when it is not tx hash, contract addr, user addr
           textFormat={link2.type !== "code_id" ? "truncate" : "normal"}
+          type={link2.type}
+          value={link2.value}
         />
       )}
     </>

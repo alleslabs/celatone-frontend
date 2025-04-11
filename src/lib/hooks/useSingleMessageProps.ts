@@ -1,12 +1,6 @@
-import router from "next/router";
-
 import type { GetAddressTypeByLengthFn } from "lib/app-provider";
-import { useGetAddressTypeByLength, useTierConfig } from "lib/app-provider";
 import type { SingleMsgProps } from "lib/components/action-msg/SingleMsg";
 import type { LinkType } from "lib/components/ExplorerLink";
-import { useContractStore } from "lib/providers/store";
-import { useAssetInfos } from "lib/services/assetService";
-import { useMovePoolInfos } from "lib/services/move/poolService";
 import type { ContractLocalInfo } from "lib/stores/contract";
 import type {
   AssetInfos,
@@ -22,11 +16,17 @@ import type {
   MovePoolInfos,
   Option,
 } from "lib/types";
+
+import { useGetAddressTypeByLength, useTierConfig } from "lib/app-provider";
+import { useContractStore } from "lib/providers/store";
+import { useAssetInfos } from "lib/services/assetService";
+import { useMovePoolInfos } from "lib/services/move/poolService";
 import {
   coinToTokenWithValue,
   getExecuteMsgTags,
   getFirstQueryParam,
 } from "lib/utils";
+import router from "next/router";
 
 /**
  * Returns messages variations for MsgInstantiateContract and MsgInstantiateContract2.
@@ -154,7 +154,7 @@ const executeSingleMsgProps = (
           }
         : {
             type: "Failed",
-            // eslint-disable-next-line sonarjs/no-duplicate-string
+
             text1: "to execute",
             length: messages.length,
             text2: "messages",
@@ -265,7 +265,7 @@ const sendSingleMsgProps = (
           }
         : {
             type: "Failed",
-            // eslint-disable-next-line sonarjs/no-duplicate-string
+
             text1: "to send assets to",
             length: uniqueAddressLength,
             text2: "addresses",

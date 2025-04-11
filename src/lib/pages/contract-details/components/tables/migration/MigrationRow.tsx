@@ -1,16 +1,16 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Flex, Grid, Text } from "@chakra-ui/react";
-
-import { useGetAddressType, useTierConfig } from "lib/app-provider";
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CodeNameCell, RemarkRender, TableRow } from "lib/components/table";
-import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import type {
   BechAddr,
   ContractMigrationHistory,
   Nullish,
   WasmVerifyInfo,
 } from "lib/types";
+
+import { Flex, Grid, Text } from "@chakra-ui/react";
+import { useGetAddressType, useTierConfig } from "lib/app-provider";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CodeNameCell, RemarkRender, TableRow } from "lib/components/table";
+import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import {
   dateFromNow,
   formatUTC,
@@ -37,15 +37,15 @@ export const MigrationRow = ({
     <Grid templateColumns={templateColumns}>
       <TableRow>
         <ExplorerLink
-          type="code_id"
-          value={history.codeId.toString()}
           rightIcon={
             <WasmVerifyBadge
-              status={getWasmVerifyStatus(wasmVerifyInfo)}
               relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+              status={getWasmVerifyStatus(wasmVerifyInfo)}
             />
           }
           showCopyOnHover
+          type="code_id"
+          value={history.codeId.toString()}
         />
       </TableRow>
       <TableRow>
@@ -71,10 +71,10 @@ export const MigrationRow = ({
           <TableRow>
             {history.sender ? (
               <ExplorerLink
+                showCopyOnHover
+                textFormat="truncate"
                 type={getAddressType(history.sender)}
                 value={history.sender}
-                textFormat="truncate"
-                showCopyOnHover
               />
             ) : (
               "N/A"
@@ -85,9 +85,9 @@ export const MigrationRow = ({
       <TableRow>
         {history.height ? (
           <ExplorerLink
-            value={history.height.toString()}
-            type="block_height"
             showCopyOnHover
+            type="block_height"
+            value={history.height.toString()}
           />
         ) : (
           "N/A"

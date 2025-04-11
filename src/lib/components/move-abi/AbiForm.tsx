@@ -1,8 +1,8 @@
+import type { AbiFormData, ExposedFunction } from "lib/types";
+
 import { Flex } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-
-import type { AbiFormData, ExposedFunction } from "lib/types";
 
 import { ArgsForm } from "./args-form";
 import { TypesForm } from "./types-form";
@@ -44,8 +44,8 @@ export const AbiForm = ({
         />
       )}
       <ArgsForm
-        params={fn.params}
         initialData={args}
+        params={fn.params}
         propsOnChange={(value) => {
           setValue("args", value);
           propsOnChange?.(getValues());

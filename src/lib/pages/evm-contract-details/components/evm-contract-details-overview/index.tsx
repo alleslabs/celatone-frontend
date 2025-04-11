@@ -1,7 +1,3 @@
-import { Stack } from "@chakra-ui/react";
-
-import { AssetsSection } from "lib/components/asset";
-import { EvmVerifySection } from "lib/components/evm-verify-section";
 import type {
   BechAddr,
   BechAddr20,
@@ -11,12 +7,17 @@ import type {
   EvmVerifyInfo,
 } from "lib/types";
 
+import { Stack } from "@chakra-ui/react";
+import { AssetsSection } from "lib/components/asset";
+import { EvmVerifySection } from "lib/components/evm-verify-section";
+
+import type { TxsTabIndex } from "../../types";
+
+import { EvmContractDetailsTxs } from "../EvmContractDetailsTxs";
 import { OverviewInfo } from "./OverviewInfo";
 import { OverviewVerifiedCmds } from "./OverviewVerifiedCmds";
 import { OverviewVerifiedInfo } from "./OverviewVerifiedInfo";
 import { OverviewVerifiedProxyTargetCmds } from "./OverviewVerifiedProxyTargetCmds";
-import type { TxsTabIndex } from "../../types";
-import { EvmContractDetailsTxs } from "../EvmContractDetailsTxs";
 
 interface EvmContractDetailsOverviewProps {
   contractAddressBech: BechAddr20;
@@ -55,11 +56,11 @@ export const EvmContractDetailsOverview = ({
       evmVerifyInfo={evmVerifyInfo}
     />
     <OverviewInfo
-      hash={hash}
-      evmHash={evmHash}
-      sender={sender}
       created={created}
+      evmHash={evmHash}
+      hash={hash}
       isContractInfoLoading={isContractInfoLoading}
+      sender={sender}
     />
     {evmVerifyInfo?.isVerified && (
       <>
@@ -82,9 +83,9 @@ export const EvmContractDetailsOverview = ({
     />
     <EvmContractDetailsTxs
       address={contractAddressBech}
-      onViewMore={onViewMoreTxs}
-      tab={tab}
       setTab={setTab}
+      tab={tab}
+      onViewMore={onViewMoreTxs}
     />
   </Stack>
 );

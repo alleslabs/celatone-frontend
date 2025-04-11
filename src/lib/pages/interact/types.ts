@@ -1,7 +1,7 @@
-import { z } from "zod";
-
 import type { Addr } from "lib/types";
+
 import { zAddr } from "lib/types";
+import { z } from "zod";
 
 export enum ModuleInteractionMobileStep {
   SelectModule = "select-module",

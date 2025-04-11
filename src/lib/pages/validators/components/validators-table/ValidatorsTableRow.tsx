@@ -1,10 +1,5 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Grid, Text } from "@chakra-ui/react";
 import type Big from "big.js";
-
-import { useInternalNavigate } from "lib/app-provider";
-import { TableRow } from "lib/components/table";
-import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import type {
   AssetInfo,
   Option,
@@ -14,6 +9,11 @@ import type {
   ValidatorAddr,
   ValidatorData,
 } from "lib/types";
+
+import { Grid, Text } from "@chakra-ui/react";
+import { useInternalNavigate } from "lib/app-provider";
+import { TableRow } from "lib/components/table";
+import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import {
   divWithDefault,
   formatPrettyPercent,
@@ -53,32 +53,32 @@ export const ValidatorsTableRow = ({
   return (
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(validator.validatorAddress)}
       _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
+      onClick={() => onRowSelect(validator.validatorAddress)}
     >
       {isActive && (
         <TableRow justifyContent="center">
-          <Text variant="body3" color="text.main">
+          <Text color="text.main" variant="body3">
             {validator.rank}
           </Text>
         </TableRow>
       )}
       <TableRow>
         <ValidatorBadge
+          badgeSize={7}
           validator={{
             validatorAddress: validator.validatorAddress,
             identity: validator.identity,
             moniker: validator.moniker,
           }}
-          badgeSize={7}
         />
       </TableRow>
       <TableRow>
         <div>
-          <Text variant="body2" color="text.main">
+          <Text color="text.main" variant="body2">
             {formatPrettyPercent(
               divWithDefault(
                 validator.votingPower,
@@ -89,7 +89,7 @@ export const ValidatorsTableRow = ({
               true
             )}
           </Text>
-          <Text variant="body3" color="text.dark">
+          <Text color="text.dark" variant="body3">
             (
             {formatUTokenWithPrecision(
               validator.votingPower as U<Token<Big>>,
@@ -107,9 +107,9 @@ export const ValidatorsTableRow = ({
       {showUptime && (
         <TableRow>
           <Text
-            variant="body2"
             color={isZeroUptime ? "error.main" : "text.main"}
             fontWeight={isZeroUptime ? 700 : undefined}
+            variant="body2"
           >
             {formatPrettyPercent(
               ((validator.uptime ?? 0) / 100) as Ratio<number>,
@@ -121,9 +121,9 @@ export const ValidatorsTableRow = ({
       )}
       <TableRow>
         <Text
-          variant="body2"
           color={isMinCommissionRate ? "success.main" : "text.main"}
           fontWeight={isMinCommissionRate ? 700 : undefined}
+          variant="body2"
         >
           {formatPrettyPercent(validator.commissionRate, 2, true)}
         </Text>

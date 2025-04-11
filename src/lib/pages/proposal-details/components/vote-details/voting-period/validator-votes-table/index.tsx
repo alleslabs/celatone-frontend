@@ -1,7 +1,8 @@
-import { Button, Flex, Grid, GridItem, TableContainer } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import type { ProposalAnswerCountsResponse } from "lib/services/types";
+import type { Option, ProposalValidatorVote } from "lib/types";
 import type { ChangeEvent } from "react";
 
+import { Button, Flex, Grid, GridItem, TableContainer } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { SelectInputBase } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
@@ -12,9 +13,8 @@ import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useDebounce } from "lib/hooks";
 import { useProposalValidatorVotes } from "lib/services/proposal";
-import type { ProposalAnswerCountsResponse } from "lib/services/types";
 import { ProposalVoteType } from "lib/types";
-import type { Option, ProposalValidatorVote } from "lib/types";
+import { useMemo, useState } from "react";
 
 import { ValidatorVotesTableHeader } from "./ValidatorVotesTableHeader";
 import { ValidatorVotesTableRow } from "./ValidatorVotesTableRow";
@@ -33,7 +33,6 @@ export const ValidatorVotesTableBody = ({
   isLoading,
   isSearching,
   isProposalResolved,
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 }: ValidatorVotesTableBodyProps) => {
   const isMobile = useMobile();
 
@@ -59,9 +58,9 @@ export const ValidatorVotesTableBody = ({
   return (
     <TableContainer>
       <ValidatorVotesTableHeader
-        templateColumns={templateColumns}
         fullVersion={fullVersion}
         isProposalResolved={isProposalResolved}
+        templateColumns={templateColumns}
       />
       {validatorVotes.map((each, idx) => (
         <ValidatorVotesTableRow
@@ -71,10 +70,10 @@ export const ValidatorVotesTableBody = ({
             (each.txHash ?? "null") +
             idx.toString()
           }
-          proposalVote={each}
           fullVersion={fullVersion}
-          templateColumns={templateColumns}
           isProposalResolved={isProposalResolved}
+          proposalVote={each}
+          templateColumns={templateColumns}
         />
       ))}
     </TableContainer>
@@ -208,55 +207,55 @@ export const ValidatorVotesTable = ({
         >
           <GridItem>
             <SelectInputBase<ProposalVoteType>
-              formLabel="Filter by answer"
-              options={answerOptions}
-              onChange={handleOnAnswerFilterChange}
-              labelBgColor="gray.900"
-              initialSelected={answerFilter}
-              popoverBgColor="gray.800"
               disableMaxH
+              formLabel="Filter by answer"
+              initialSelected={answerFilter}
+              labelBgColor="gray.900"
+              options={answerOptions}
+              popoverBgColor="gray.800"
+              onChange={handleOnAnswerFilterChange}
             />
           </GridItem>
           <GridItem>
             <InputWithIcon
               placeholder="Search with address or validator moniker..."
+              size="lg"
               value={search}
               onChange={handleOnSearchChange}
-              size="lg"
             />
           </GridItem>
         </Grid>
       )}
       <ValidatorVotesTableBody
-        validatorVotes={data?.items}
-        isLoading={isLoading}
         fullVersion={fullVersion}
-        isSearching={isSearching}
+        isLoading={isLoading}
         isProposalResolved={isProposalResolved}
+        isSearching={isSearching}
+        validatorVotes={data?.items}
       />
       {data &&
         data.total > 10 &&
         (onViewMore ? (
-          <Flex w="full" justifyContent="center" textAlign="center" mt={4}>
+          <Flex justifyContent="center" mt={4} textAlign="center" w="full">
             <Button
-              w="full"
-              variant="ghost-primary"
               gap={2}
+              variant="ghost-primary"
+              w="full"
               onClick={onViewMore}
             >
               View all validator votes
-              <CustomIcon name="chevron-right" boxSize="12px" />
+              <CustomIcon boxSize="12px" name="chevron-right" />
             </Button>
           </Flex>
         ) : (
           fullVersion && (
             <Pagination
               currentPage={currentPage}
+              offset={offset}
+              pageSize={pageSize}
               pagesQuantity={pagesQuantity}
               scrollComponentId={tableHeaderId}
-              offset={offset}
               totalData={data?.total ?? 0}
-              pageSize={pageSize}
               onPageChange={setCurrentPage}
               onPageSizeChange={(e) => {
                 const size = Number(e.target.value);

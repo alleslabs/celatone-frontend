@@ -1,9 +1,9 @@
-import { Spinner } from "@chakra-ui/react";
 import type Big from "big.js";
+import type { Option } from "lib/types";
 
+import { Spinner } from "@chakra-ui/react";
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
-import type { Option } from "lib/types";
 import { coinToTokenWithValue, formatTokenWithValue } from "lib/utils";
 
 export const EstimatedFeeEvmRender = ({
@@ -21,11 +21,11 @@ export const EstimatedFeeEvmRender = ({
   const { data: evmParams, isLoading: isEvmParamsLoading } = useEvmParams();
 
   if (isAssetInfoLoading || isEvmParamsLoading)
-    return <Spinner size="sm" mx={1} />;
+    return <Spinner mx={1} size="sm" />;
   if (loading)
     return (
       <>
-        <Spinner size="sm" mx={1} /> Estimating ...
+        <Spinner mx={1} size="sm" /> Estimating ...
       </>
     );
 

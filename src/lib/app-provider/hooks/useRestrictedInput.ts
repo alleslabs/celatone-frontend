@@ -1,4 +1,5 @@
 import type { ChangeEvent, ClipboardEvent, KeyboardEvent } from "react";
+
 import { useCallback, useMemo } from "react";
 
 export interface RestrictedInputReturn {
@@ -50,7 +51,6 @@ export interface RestrictedNumberInputParams {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export function useRestrictedNumberInput({
   type = "decimal",
   maxDecimalPoints = 6,

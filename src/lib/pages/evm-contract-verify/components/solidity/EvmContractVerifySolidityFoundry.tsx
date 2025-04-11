@@ -1,12 +1,12 @@
-import { Stack, Text } from "@chakra-ui/react";
-import { useMemo } from "react";
-
+import type { EvmContractVerifyForm } from "lib/types";
 import type { Control } from "react-hook-form";
-import { useWatch } from "react-hook-form";
+
+import { Stack, Text } from "@chakra-ui/react";
 import { CELATONE_VERIFICATION_API } from "env";
 import { useCelatoneApp, useEvmConfig } from "lib/app-provider";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
-import type { EvmContractVerifyForm } from "lib/types";
+import { useMemo } from "react";
+import { useWatch } from "react-hook-form";
 
 interface EvmContractVerifySolidityFoundryProps {
   control: Control<EvmContractVerifyForm>;
@@ -36,7 +36,7 @@ export const EvmContractVerifySolidityFoundry = ({
   return (
     <Stack gap={4}>
       <Text>Foundry</Text>
-      <TextReadOnly text={cmd} canCopy />
+      <TextReadOnly canCopy text={cmd} />
     </Stack>
   );
 };

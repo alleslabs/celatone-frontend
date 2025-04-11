@@ -1,14 +1,14 @@
-/* eslint-disable sonarjs/no-duplicate-string */
-import { AmpEvent, track } from "lib/amplitude";
 import type { IconKeys } from "lib/components/icon";
+import type { PublicProject } from "lib/stores/project";
+import type { BechAddr20, Option } from "lib/types";
+
+import { AmpEvent, track } from "lib/amplitude";
 import {
   INSTANTIATED_LIST_NAME,
   SAVED_LIST_NAME,
   StorageKeys,
   UNDEFINED_ICON_LIST,
 } from "lib/data";
-import type { PublicProject } from "lib/stores/project";
-import type { BechAddr20, Option } from "lib/types";
 import { formatSlugName, getListIcon } from "lib/utils";
 
 export const getYourAccountSubmenu = (address: Option<BechAddr20>) => [

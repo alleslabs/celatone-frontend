@@ -1,5 +1,4 @@
 import { Button } from "@chakra-ui/react";
-
 import { useInternalNavigate } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
@@ -12,13 +11,13 @@ export const UploadButton = ({ isAllowed }: UploadButtonProps) => {
 
   return (
     <Tooltip
-      label="Only allowed address can upload Wasm file without opening proposal"
       hidden={isAllowed}
+      label="Only allowed address can upload Wasm file without opening proposal"
     >
       <Button
         isDisabled={!isAllowed}
+        rightIcon={<CustomIcon boxSize="12px" name="upload" />}
         onClick={() => navigate({ pathname: "/upload" })}
-        rightIcon={<CustomIcon name="upload" boxSize="12px" />}
       >
         Upload new code
       </Button>

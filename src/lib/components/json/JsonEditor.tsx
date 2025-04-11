@@ -1,12 +1,12 @@
-import { useRef } from "react";
-import AceEditor from "react-ace";
-
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/theme-one_dark";
 import "ace-builds/src-noconflict/theme-pastel_on_dark";
+
 import { useCelatoneApp } from "lib/app-provider";
+import { useRef } from "react";
+import AceEditor from "react-ace";
 
 interface JsonEditorProps {
   value: string;
@@ -28,17 +28,16 @@ const JsonEditor = ({
 
   return (
     <AceEditor
-      ref={editorRef}
-      mode="json"
-      theme={theme.jsonTheme}
-      fontSize="14px"
-      readOnly={readOnly}
       style={{
         width: "100%",
         background: "transparent",
         color: readOnly && !isValid ? "error.light" : "text.main",
         offset: 0,
       }}
+      editorProps={{ $blockScrolling: true }}
+      fontSize="14px"
+      mode="json"
+      readOnly={readOnly}
       setOptions={{
         tabSize: 2,
         useWorker: false,
@@ -48,9 +47,10 @@ const JsonEditor = ({
         minLines: showLines,
         maxLines: showLines,
       }}
-      onChange={setValue}
+      theme={theme.jsonTheme}
       value={value}
-      editorProps={{ $blockScrolling: true }}
+      onChange={setValue}
+      ref={editorRef}
     />
   );
 };

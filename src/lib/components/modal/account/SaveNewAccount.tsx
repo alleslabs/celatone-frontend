@@ -1,8 +1,8 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, Flex } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import type { FormStatus } from "lib/components/forms";
+import type { BechAddr } from "lib/types";
 
+import { Button, Flex } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -12,17 +12,17 @@ import {
   useValidateAddress,
   useWasmConfig,
 } from "lib/app-provider";
-import type { FormStatus } from "lib/components/forms";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { useGetMaxLengthError, useHandleAccountSave } from "lib/hooks";
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useAccountStore } from "lib/providers/store";
 import { useAccountType } from "lib/services/account";
-import type { BechAddr } from "lib/types";
 import { AccountType } from "lib/types";
+import { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 
-import { ToContractButton } from "./ToContractButton";
 import { ActionModal } from "../ActionModal";
+import { ToContractButton } from "./ToContractButton";
 
 export interface SaveAccountDetail {
   address: BechAddr;
@@ -170,66 +170,66 @@ export function SaveNewAccountModal({
 
   return (
     <ActionModal
-      title="Save new account"
-      icon="bookmark-solid"
-      trigger={<Button as="button" {...buttonProps} />}
-      mainBtnTitle="Save new account"
-      mainAction={handleSave}
-      otherAction={resetForm}
+      buttonRemark="Saved accounts are stored locally on your device."
       disabledMain={
         status.state !== "success" || !!errors.name || !!errors.description
       }
+      icon="bookmark-solid"
+      mainAction={handleSave}
+      mainBtnTitle="Save new account"
+      otherAction={resetForm}
       otherBtnTitle="Cancel"
-      buttonRemark="Saved accounts are stored locally on your device."
+      title="Save new account"
+      trigger={<Button as="button" {...buttonProps} />}
     >
       <Flex direction="column" gap={6}>
         <ControllerInput
-          name="address"
-          control={control}
-          label="Account address"
-          variant="fixed-floating"
-          placeholder={`ex. ${exampleUserAddress}`}
-          status={status}
-          labelBgColor="gray.900"
-          isRequired
           autoFocus={!accountAddress}
-          isReadOnly={!!accountAddress}
+          control={control}
           cursor={accountAddress ? "not-allowed" : "pointer"}
           helperAction={
             isContract && (
               <ToContractButton isAccountPrefilled={!accountAddress} />
             )
           }
+          isReadOnly={!!accountAddress}
+          isRequired
+          label="Account address"
+          labelBgColor="gray.900"
+          name="address"
+          placeholder={`ex. ${exampleUserAddress}`}
+          status={status}
+          variant="fixed-floating"
         />
         <ControllerInput
-          name="name"
+          autoFocus={!!accountAddress}
           control={control}
-          label="Account name"
-          variant="fixed-floating"
-          placeholder="ex. Scan Account 1"
-          labelBgColor="gray.900"
-          rules={{
-            maxLength: constants.maxAccountNameLength,
-          }}
           error={
             errors.name && getMaxLengthError(nameState.length, "account_name")
           }
-          autoFocus={!!accountAddress}
+          label="Account name"
+          labelBgColor="gray.900"
+          name="name"
+          placeholder="ex. Scan Account 1"
+          rules={{
+            maxLength: constants.maxAccountNameLength,
+          }}
+          variant="fixed-floating"
         />
         <ControllerTextarea
-          name="description"
           control={control}
-          label="Account description"
-          placeholder="Help understanding what this account does ..."
-          variant="fixed-floating"
-          labelBgColor="gray.900"
-          rules={{
-            maxLength: constants.maxAccountDescriptionLength,
-          }}
           error={
             errors.description &&
             getMaxLengthError(descriptionState.length, "account_desc")
           }
+          label="Account description"
+          labelBgColor="gray.900"
+          name="description"
+          placeholder="Help understanding what this account does ..."
+          rules={{
+            maxLength: constants.maxAccountDescriptionLength,
+          }}
+          variant="fixed-floating"
         />
       </Flex>
     </ActionModal>

@@ -1,10 +1,10 @@
-import { Flex, Heading } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
-
-import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import type { HexAddr20, Nullable } from "lib/types";
+
+import { Flex, Heading } from "@chakra-ui/react";
+import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { EvmMethodName } from "lib/types";
 import { getEvmMethod } from "lib/utils";
+import { useMemo, useState } from "react";
 
 import { EvmDataFormatSwitch, EvmDataFormatTabs } from "./EvmDataFormatSwitch";
 
@@ -51,9 +51,9 @@ export const EvmInputData = ({ txInput, txTo }: EvmInputDataProps) => {
   return (
     <>
       <Flex
-        gap={4}
         align={{ base: "flex-start", md: "center" }}
         direction={{ base: "column", md: "row" }}
+        gap={4}
       >
         <Heading as="h6" variant="h6">
           Input Data
@@ -62,7 +62,7 @@ export const EvmInputData = ({ txInput, txTo }: EvmInputDataProps) => {
           <EvmDataFormatSwitch currentTab={tab} onTabChange={setTab} />
         )}
       </Flex>
-      <TextReadOnly text={parsedInputData} canCopy />
+      <TextReadOnly canCopy text={parsedInputData} />
     </>
   );
 };

@@ -1,5 +1,4 @@
 import { Image, useToken } from "@chakra-ui/react";
-
 import { useChainConfigs } from "lib/app-provider";
 
 interface NetworkImageProps {
@@ -17,13 +16,13 @@ export const NetworkImage = ({ chainId }: NetworkImageProps) => {
 
   return (
     <Image
-      objectFit="cover"
-      w={6}
-      h={6}
       borderRadius="full"
-      src={image}
       fallbackSrc={fallbackImage}
       fallbackStrategy="onError"
+      h={6}
+      objectFit="cover"
+      src={image}
+      w={6}
     />
   );
 };

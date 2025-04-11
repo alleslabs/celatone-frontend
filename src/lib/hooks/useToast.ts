@@ -1,5 +1,6 @@
-import { useToast as useChakraToast } from "@chakra-ui/react";
 import type { AlertStatus } from "@chakra-ui/react";
+
+import { useToast as useChakraToast } from "@chakra-ui/react";
 // TODO: revisit this later
 
 // import type { ReactNode } from "react";

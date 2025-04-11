@@ -1,11 +1,11 @@
 import { Flex, Text } from "@chakra-ui/react";
-
 import { dateFromNow, formatUTC } from "lib/utils";
 
 import type { BondedInfo } from "./BondedTableRow";
-import { TokensCell } from "./TokensCell";
+
 import { ValidatorBadge } from "../../ValidatorBadge";
 import { MobileLabel } from "../MobileLabel";
+import { TokensCell } from "./TokensCell";
 
 interface BondedTableMobileCardProps {
   bondedInfo: BondedInfo;
@@ -17,29 +17,29 @@ export const BondedTableMobileCard = ({
   isSingleBondDenom,
 }: BondedTableMobileCardProps) => (
   <Flex
-    borderRadius="8px"
     background="gray.900"
-    p={3}
-    direction="column"
-    gap={3}
-    w="full"
-    minW={0}
     border="1px solid"
     borderColor="gray.700"
+    borderRadius="8px"
+    direction="column"
+    gap={3}
+    minW={0}
+    p={3}
+    w="full"
   >
     <ValidatorBadge validator={bondedInfo.validator} />
     <Flex
+      borderTopColor="gray.700"
+      borderTopWidth="1px"
       direction="column"
       gap={3}
-      borderTop="1px solid"
-      borderTopColor="gray.700"
       pt={3}
     >
       <Flex direction="column" gap={1}>
         <MobileLabel label="Amount" />
         <TokensCell
-          tokens={bondedInfo.balances}
           isSingleBondDenom={isSingleBondDenom}
+          tokens={bondedInfo.balances}
         />
       </Flex>
 
@@ -47,18 +47,18 @@ export const BondedTableMobileCard = ({
         <Flex direction="column" gap={1}>
           <MobileLabel label="Reward" />
           <TokensCell
-            tokens={bondedInfo.rewards}
             isSingleBondDenom={isSingleBondDenom}
+            tokens={bondedInfo.rewards}
           />
         </Flex>
       )}
       {bondedInfo.completionTime && (
         <Flex direction="column">
           <MobileLabel label="Unbond completed by" />
-          <Text variant="body2" color="text.dark" mt={1}>
+          <Text color="text.dark" mt={1} variant="body2">
             {formatUTC(bondedInfo.completionTime)}
           </Text>
-          <Text variant="body3" color="text.disabled">
+          <Text color="text.disabled" variant="body3">
             {`(${dateFromNow(bondedInfo.completionTime)})`}
           </Text>
         </Flex>

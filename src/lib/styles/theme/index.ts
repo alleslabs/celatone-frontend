@@ -1,5 +1,4 @@
 import { extendTheme } from "@chakra-ui/react";
-
 import { DEFAULT_THEME } from "config/theme/default";
 
 import { components } from "./components";

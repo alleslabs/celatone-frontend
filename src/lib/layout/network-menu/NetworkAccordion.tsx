@@ -1,3 +1,5 @@
+import type { Option } from "lib/types";
+
 import {
   AccordionButton,
   AccordionIcon,
@@ -6,10 +8,8 @@ import {
   Flex,
   Heading,
 } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-
 import { useChainConfigs } from "lib/app-provider";
-import type { Option } from "lib/types";
+import { observer } from "mobx-react-lite";
 
 import { NetworkAccordionSubsection } from "./NetworkAccordionSubsection";
 
@@ -57,8 +57,8 @@ export const NetworkAccordion = observer(
             <Flex direction="column" gap={4}>
               {nonInitiaNetworks.length > 0 && (
                 <NetworkAccordionSubsection
-                  networks={nonInitiaNetworks}
                   cursor={cursor}
+                  networks={nonInitiaNetworks}
                   setCursor={setCursor}
                   subsectionStartIndex={startIndex}
                   onClose={onClose}
@@ -66,23 +66,23 @@ export const NetworkAccordion = observer(
               )}
               {l1Networks.length > 0 && (
                 <NetworkAccordionSubsection
-                  title="Initia (Layer 1)"
-                  networks={l1Networks}
                   cursor={cursor}
+                  networks={l1Networks}
                   setCursor={setCursor}
                   subsectionStartIndex={startIndex + nonInitiaNetworks.length}
+                  title="Initia (Layer 1)"
                   onClose={onClose}
                 />
               )}
               {l2Networks.length > 0 && (
                 <NetworkAccordionSubsection
-                  title="Rollup (Layer 2)"
-                  networks={l2Networks}
                   cursor={cursor}
+                  networks={l2Networks}
                   setCursor={setCursor}
                   subsectionStartIndex={
                     startIndex + nonInitiaNetworks.length + l1Networks.length
                   }
+                  title="Rollup (Layer 2)"
                   onClose={onClose}
                 />
               )}

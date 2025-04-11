@@ -42,16 +42,16 @@ export const SearchZeroState = ({
     <Flex direction="column" gap={4} py={8}>
       <Text color="text.dark"> Please enter keyword, You can search with:</Text>
       <Flex
-        direction="column"
-        px={4}
-        py={2}
         border="1px solid"
         borderColor="gray.700"
         borderRadius={8}
+        direction="column"
+        px={4}
+        py={2}
       >
         {supportedItemsType.map((item) => (
-          <Flex alignItems="center" gap={3} key={item}>
-            <Flex w={1} h={1} borderRadius="full" bgColor="primary.darker" />
+          <Flex key={item} alignItems="center" gap={3}>
+            <Flex bgColor="primary.darker" borderRadius="full" h={1} w={1} />
             <Text color="text.dark">{item}</Text>
           </Flex>
         ))}

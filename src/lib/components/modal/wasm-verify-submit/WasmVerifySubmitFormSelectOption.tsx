@@ -1,8 +1,8 @@
-import { Box, Text } from "@chakra-ui/react";
 import type { OptionProps } from "chakra-react-select";
-import { components } from "chakra-react-select";
-
 import type { SelectInputOption } from "lib/components/forms";
+
+import { Box, Text } from "@chakra-ui/react";
+import { components } from "chakra-react-select";
 
 export type WasmVerifySubmitFormOptionValue = string;
 

@@ -1,6 +1,6 @@
 import axios from "axios";
-
 import { parseWithError } from "lib/utils";
+
 import { zBlockDataResponseRest, zBlockRest } from "../types";
 import { queryWithArchivalFallback } from "../utils";
 

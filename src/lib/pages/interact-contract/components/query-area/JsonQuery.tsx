@@ -1,3 +1,6 @@
+import type { AxiosError } from "axios";
+import type { BechAddr32, RpcQueryError } from "lib/types";
+
 import {
   Box,
   Button,
@@ -7,10 +10,6 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
-import type { AxiosError } from "axios";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-
 import { AmpEvent, track, trackActionQuery } from "lib/amplitude";
 import { useCurrentChain, useMobile } from "lib/app-provider";
 import { SubmitButton } from "lib/components/button";
@@ -25,7 +24,6 @@ import {
   useContractQueryMsgsRest,
   useContractQueryRest,
 } from "lib/services/wasm/contract";
-import type { BechAddr32, RpcQueryError } from "lib/types";
 import {
   encode,
   getCurrentDate,
@@ -33,6 +31,8 @@ import {
   jsonPrettify,
   jsonValidate,
 } from "lib/utils";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
 const WasmCodeSnippet = dynamic(
   () => import("lib/components/modal/WasmCodeSnippet"),
@@ -93,15 +93,14 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
   return (
     <>
       {isCmdsFetching && <LoadingOverlay />}
-      <Box width="full" mb={8} alignItems="center">
+      <Box alignItems="center" mb={8} width="full">
         {contractAddress && (
-          <Text variant="body3" mb={2}>
+          <Text mb={2} variant="body3">
             Message suggestions:
           </Text>
         )}
         {queryCmds.length ? (
           <ButtonGroup
-            width="90%"
             flexWrap="wrap"
             rowGap={2}
             sx={{
@@ -110,6 +109,7 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
                 marginInlineEnd: "1",
               },
             }}
+            width="90%"
           >
             {queryCmds.sort().map(([cmd, queryMsg]) => (
               <ContractCmdButton
@@ -124,45 +124,45 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
           </ButtonGroup>
         ) : (
           contractAddress && (
-            <Text my={1} variant="body2" color="text.dark">
+            <Text color="text.dark" my={1} variant="body2">
               No QueryMsgs suggestion available
             </Text>
           )
         )}
       </Box>
-      <Flex gap={4} direction={{ base: "column", md: "row" }}>
+      <Flex direction={{ base: "column", md: "row" }} gap={4}>
         <Box w="full">
-          <JsonInput topic="Query msg" text={msg} setText={setMsg} />
+          <JsonInput setText={setMsg} text={msg} topic="Query msg" />
           <Flex
-            direction={{ base: "column", md: "row" }}
-            justify="space-between"
             alignItems="center"
+            direction={{ base: "column", md: "row" }}
             gap={{ base: 1, md: 0 }}
+            justify="space-between"
           >
             <Grid
-              w={{ base: "full", md: "auto" }}
               columnGap={2}
               mb={{ base: 2, md: 0 }}
               templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(2, 1fr)" }}
+              w={{ base: "full", md: "auto" }}
             >
               <CopyButton
-                w="full"
+                amptrackSection="query_msg"
                 isDisable={!msg.length}
                 value={msg}
-                amptrackSection="query_msg"
+                w="full"
               />
               <WasmCodeSnippet
-                w="full"
-                type="query"
                 contractAddress={contractAddress}
                 message={msg}
+                type="query"
+                w="full"
               />
               {isMobile && (
                 <Button
-                  variant="outline-white"
-                  size="sm"
                   background="background.main"
                   isDisabled={isButtonDisabled}
+                  size="sm"
+                  variant="outline-white"
                   onClick={() => setMsg(jsonPrettify(msg))}
                 >
                   Format JSON
@@ -170,11 +170,11 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
               )}
             </Grid>
             <SubmitButton
-              text="Query"
-              isLoading={isFetching}
-              onSubmit={handleQuery}
               isDisabled={isButtonDisabled}
               isFullWidth={isMobile}
+              isLoading={isFetching}
+              text="Query"
+              onSubmit={handleQuery}
             />
           </Flex>
         </Box>
@@ -186,17 +186,17 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
 
         <Box w="full">
           <JsonReadOnly
-            topic="Return output"
-            text={res}
             canCopy={res.length !== 0}
+            text={res}
+            topic="Return output"
           />
           {/* If response line count > 100, the copy button is visible. */}
           {jsonLineCount(res) > 100 && (
             <Flex justifyContent="flex-end" mt={4}>
               <CopyButton
+                amptrackSection="query_response"
                 isDisable={res.length === 0}
                 value={res}
-                amptrackSection="query_response"
               />
             </Flex>
           )}

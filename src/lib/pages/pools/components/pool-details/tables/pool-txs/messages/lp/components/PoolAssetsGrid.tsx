@@ -1,11 +1,12 @@
-import { Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
+import type { AssetInfos, Option } from "lib/types";
 
+import { Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { Loading } from "lib/components/Loading";
 import { useTxData } from "lib/services/tx";
 import { big } from "lib/types";
-import type { AssetInfos, Option } from "lib/types";
 import { coinsFromStr } from "lib/utils";
+
 import { AssetCard, ErrorFetchingDetail } from "../../components";
 
 interface PoolAssetsGridProps {
@@ -72,15 +73,15 @@ export const PoolAssetsGrid = ({
   return (
     <Flex
       className="pool-msg-detail-container"
-      direction="column"
-      gap={2}
-      p={4}
+      bgColor="gray.900"
       border="1px solid"
       borderColor="transparent"
       borderRadius="8px"
-      bgColor="gray.900"
+      direction="column"
+      gap={2}
+      p={4}
     >
-      <Text variant="body2" textColor="text.dark">
+      <Text textColor="text.dark" variant="body2">
         {isJoin ? "Provided assets" : "Receiving assets"}
       </Text>
       <SimpleGrid columns={2} spacing={2}>
@@ -88,9 +89,9 @@ export const PoolAssetsGrid = ({
           <AssetCard
             key={asset.denom}
             amount={asset.amount}
-            denom={asset.denom}
-            assetInfo={assetInfos?.[asset.denom]}
             ampCopierSection={ampCopierSection}
+            assetInfo={assetInfos?.[asset.denom]}
+            denom={asset.denom}
           />
         ))}
       </SimpleGrid>

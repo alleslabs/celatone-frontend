@@ -1,12 +1,4 @@
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useCelatoneApp,
-  useTierConfig,
-} from "lib/app-provider";
 import type {
   BechAddr,
   BechAddr20,
@@ -20,6 +12,25 @@ import type {
   ProposalVotesInfo,
   ProposalVoteType,
 } from "lib/types";
+
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+  useTierConfig,
+} from "lib/app-provider";
+
+import type {
+  ProposalAnswerCountsResponse,
+  ProposalDataResponse,
+  ProposalDataResponseRest,
+  ProposalsResponse,
+  ProposalsResponseRest,
+  ProposalValidatorVotesResponse,
+  ProposalVotesResponse,
+  RelatedProposalsResponse,
+} from "../types";
 
 import {
   getProposalAnswerCounts,
@@ -40,16 +51,6 @@ import {
   getProposalsRest,
   getProposalVotesInfoRest,
 } from "./rest";
-import type {
-  ProposalAnswerCountsResponse,
-  ProposalDataResponse,
-  ProposalDataResponseRest,
-  ProposalsResponse,
-  ProposalsResponseRest,
-  ProposalValidatorVotesResponse,
-  ProposalVotesResponse,
-  RelatedProposalsResponse,
-} from "../types";
 
 export const useProposalParams = () => {
   const { isFullTier } = useTierConfig();

@@ -1,14 +1,14 @@
-import { Button, Flex } from "@chakra-ui/react";
+import type { PoolData } from "lib/types";
 
+import { Button, Flex } from "@chakra-ui/react";
 import { trackUseViewJSON, trackWebsite } from "lib/amplitude";
 import { useBaseApiRoute, usePoolConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
 import { CustomIcon } from "lib/components/icon";
-import type { PoolData } from "lib/types";
 import { openNewTab } from "lib/utils";
 
-import { PoolInfo } from "./PoolInfo";
 import { PoolHeader } from "../../PoolHeader";
+import { PoolInfo } from "./PoolInfo";
 
 interface PoolTopSectionProps {
   pool: PoolData;
@@ -36,28 +36,28 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
           { text: `#${pool.id.toString()}` },
         ]}
       />
-      <Flex justifyContent="space-between" align="center" w="full" mt={4}>
+      <Flex align="center" justifyContent="space-between" mt={4} w="full">
         <PoolHeader
-          poolId={pool.id}
           isSuperfluid={pool.isSuperfluid}
-          poolType={pool.type}
           liquidity={pool.liquidity}
+          poolId={pool.id}
+          poolType={pool.type}
         />
         <Flex align="center" gap={2}>
           <Button
-            variant="ghost-gray"
             rightIcon={
-              <CustomIcon name="launch" boxSize={3} color="gray.400" />
+              <CustomIcon boxSize={3} color="gray.400" name="launch" />
             }
+            variant="ghost-gray"
             onClick={openPoolRest}
           >
             View in JSON
           </Button>
           <Button
-            variant="outline-primary"
             rightIcon={
-              <CustomIcon name="launch" boxSize={3} color="primary.light" />
+              <CustomIcon boxSize={3} color="primary.light" name="launch" />
             }
+            variant="outline-primary"
             onClick={openOsmosisPool}
           >
             View in Osmosis

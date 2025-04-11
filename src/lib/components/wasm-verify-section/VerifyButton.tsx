@@ -1,7 +1,7 @@
-import { Button } from "@chakra-ui/react";
-
-import { WasmVerifySubmitModal } from "lib/components/modal";
 import type { BechAddr32, WasmVerifyStatus } from "lib/types";
+
+import { Button } from "@chakra-ui/react";
+import { WasmVerifySubmitModal } from "lib/components/modal";
 
 interface VerifyButtonProps {
   codeId: number;
@@ -23,15 +23,15 @@ export const VerifyButton = ({
   minW = "96px",
 }: VerifyButtonProps) => (
   <WasmVerifySubmitModal
-    codeId={codeId}
     codeHash={codeHash}
-    wasmVerifyStatus={wasmVerifyStatus}
-    relatedVerifiedCodes={relatedVerifiedCodes}
+    codeId={codeId}
     contractAddress={contractAddress}
+    relatedVerifiedCodes={relatedVerifiedCodes}
     triggerElement={
-      <Button variant="ghost-primary" size="sm" minW={minW}>
+      <Button minW={minW} size="sm" variant="ghost-primary">
         {label}
       </Button>
     }
+    wasmVerifyStatus={wasmVerifyStatus}
   />
 );

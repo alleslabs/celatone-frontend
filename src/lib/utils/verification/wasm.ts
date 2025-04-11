@@ -1,6 +1,4 @@
 import type { RJSFSchema as JsonSchema } from "@rjsf/utils";
-
-import { SchemaProperties, WasmVerifyStatus } from "lib/types";
 import type {
   CodeSchema,
   ExecuteSchema,
@@ -10,6 +8,8 @@ import type {
   SchemaInfo,
   WasmVerifyInfo,
 } from "lib/types";
+
+import { SchemaProperties, WasmVerifyStatus } from "lib/types";
 
 // ------------------------------------------//
 // ------------------SCHEMA------------------//

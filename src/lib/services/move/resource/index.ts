@@ -1,12 +1,12 @@
 import type { QueryFunction, UseQueryResult } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+import type { Addr, ResourceGroup, ResourceGroupByAccount } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
   useMoveConfig,
 } from "lib/app-provider";
-import type { Addr, ResourceGroup, ResourceGroupByAccount } from "lib/types";
 import { zHexAddr } from "lib/types";
 import { truncate } from "lib/utils";
 

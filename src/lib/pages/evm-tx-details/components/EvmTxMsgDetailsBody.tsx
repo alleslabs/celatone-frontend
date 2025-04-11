@@ -1,7 +1,8 @@
-import { useAssetInfos } from "lib/services/assetService";
 import type { TxDataJsonRpc } from "lib/services/types";
-import { EvmMethodName } from "lib/types";
 import type { Option } from "lib/types";
+
+import { useAssetInfos } from "lib/services/assetService";
+import { EvmMethodName } from "lib/types";
 import { getEvmMethod } from "lib/utils";
 
 import {
@@ -30,14 +31,14 @@ export const EvmTxMsgDetailsBody = ({
     case EvmMethodName.Transfer:
       return (
         <EvmTxTransfer
-          evmTxData={evmTxData}
-          evmDenom={evmDenom}
           assetInfos={assetInfos}
+          evmDenom={evmDenom}
+          evmTxData={evmTxData}
         />
       );
     case EvmMethodName.TransferErc20:
       return (
-        <EvmTxTransferErc20 evmTxData={evmTxData} assetInfos={assetInfos} />
+        <EvmTxTransferErc20 assetInfos={assetInfos} evmTxData={evmTxData} />
       );
     case EvmMethodName.Create:
       return <EvmTxCreateContract evmTxData={evmTxData} />;

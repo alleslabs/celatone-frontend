@@ -1,12 +1,12 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import type { PoolData } from "lib/types/pool";
 
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import {
   BalancerPoolIcon,
   ClpIcon,
   CosmWasmPoolIcon,
   StableSwapIcon,
 } from "lib/icon";
-import type { PoolData } from "lib/types/pool";
 import { PoolType } from "lib/types/pool";
 import { getTokenLabel } from "lib/utils";
 
@@ -57,18 +57,18 @@ export const PoolHeader = ({
       <Flex alignItems="center" gap={4}>
         <PoolLogo tokens={liquidity} />
         <div>
-          <Flex gap={1} flexWrap="wrap">
+          <Flex flexWrap="wrap" gap={1}>
             <Heading as="h6" fontWeight="600" variant="h6">
               {getTokenLabel(liquidity[0].denom, liquidity[0].symbol)}
             </Heading>
             {liquidity.slice(1, 3).map((item) => (
               <Flex key={item.denom} gap={1}>
                 <Heading
-                  as="h6"
                   id="separator"
+                  as="h6"
+                  color="primary.main"
                   fontWeight="600"
                   variant="h6"
-                  color="primary.main"
                 >
                   /
                 </Heading>
@@ -81,9 +81,9 @@ export const PoolHeader = ({
               <Flex gap={1}>
                 <Heading
                   as="h6"
+                  color="primary.main"
                   fontWeight="600"
                   variant="h6"
-                  color="primary.main"
                 >
                   /
                 </Heading>
@@ -96,7 +96,7 @@ export const PoolHeader = ({
             )}
           </Flex>
           <Flex alignItems="center" columnGap={2} flexWrap="wrap" mt={1}>
-            <Text variant="body2" color="primary.main">
+            <Text color="primary.main" variant="body2">
               #{poolId}
             </Text>
             {poolType && (
@@ -104,12 +104,12 @@ export const PoolHeader = ({
                 <Flex
                   backgroundColor="gray.600"
                   borderRadius="full"
-                  w="6px"
                   h="6px"
+                  w="6px"
                 />
                 <Flex alignItems="center">
                   {poolValue.icon}
-                  <Text variant="body2" color="text.dark" ml={1}>
+                  <Text color="text.dark" ml={1} variant="body2">
                     {poolValue.text}
                   </Text>
                 </Flex>
@@ -120,8 +120,8 @@ export const PoolHeader = ({
                 <Flex
                   backgroundColor="gray.600"
                   borderRadius="full"
-                  w="6px"
                   h="6px"
+                  w="6px"
                 />
                 <SuperfluidLabel />
               </Flex>

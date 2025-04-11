@@ -1,11 +1,11 @@
-import axios from "axios";
-
-import { zResourcesResponseRest } from "lib/services/types";
 import type {
   ResourceResponse,
   ResourceResponseItem,
 } from "lib/services/types";
 import type { Addr, Nullable } from "lib/types";
+
+import axios from "axios";
+import { zResourcesResponseRest } from "lib/services/types";
 import { parseWithError } from "lib/utils";
 
 export const getAccountResourcesRest = async (

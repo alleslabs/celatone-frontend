@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TranslatableString } from "@rjsf/utils";
 import type {
   FormContextType,
   IconButtonProps,
@@ -7,6 +6,7 @@ import type {
   StrictRJSFSchema,
 } from "@rjsf/utils";
 
+import { TranslatableString } from "@rjsf/utils";
 import { CustomIcon } from "lib/components/icon";
 
 import ChakraIconButton from "./ChakraIconButton";
@@ -21,8 +21,8 @@ export function MoveDownButton<
   } = props;
   return (
     <ChakraIconButton<T, S, F>
-      title={translateString(TranslatableString.MoveDownButton)}
       className="array-item-move-down"
+      title={translateString(TranslatableString.MoveDownButton)}
       {...props}
       icon={<CustomIcon name="arrow-down" />}
     />
@@ -39,8 +39,8 @@ export function MoveUpButton<
   } = props;
   return (
     <ChakraIconButton<T, S, F>
-      title={translateString(TranslatableString.MoveUpButton)}
       className="array-item-move-up"
+      title={translateString(TranslatableString.MoveUpButton)}
       {...props}
       icon={<CustomIcon name="arrow-up" />}
     />
@@ -57,10 +57,10 @@ export function RemoveButton<
   } = props;
   return (
     <ChakraIconButton<T, S, F>
-      title={translateString(TranslatableString.RemoveButton)}
       className="array-item-remove"
+      title={translateString(TranslatableString.RemoveButton)}
       {...props}
-      icon={<CustomIcon name="delete" boxSize={3} />}
+      icon={<CustomIcon boxSize={3} name="delete" />}
     />
   );
 }

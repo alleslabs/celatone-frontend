@@ -1,11 +1,13 @@
+/* eslint-disable no-param-reassign */
 import type { Log } from "@cosmjs/stargate/build/logs";
-import { snakeCase } from "snake-case";
-
 import type { TypeUrl } from "lib/data";
 import type { Option } from "lib/types";
 
-import { findAttr } from "./findAttr";
+import { snakeCase } from "snake-case";
+
 import type { MsgReturnType } from "./types";
+
+import { findAttr } from "./findAttr";
 
 type MsgBodyWithoutType = Record<string, unknown>;
 

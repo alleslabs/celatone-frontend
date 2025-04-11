@@ -1,9 +1,9 @@
-import { Heading, Stack } from "@chakra-ui/react";
+import type { HexAddr32 } from "lib/types";
 
+import { Heading, Stack } from "@chakra-ui/react";
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
 import { useNftCollectionActivitiesSequencer } from "lib/services/nft-collection";
-import type { HexAddr32 } from "lib/types";
 
 import { ActivitiesTable } from "./ActivitiesTable";
 
@@ -18,27 +18,27 @@ export const ActivitiesSequencer = ({
     useNftCollectionActivitiesSequencer(collectionAddress);
 
   return (
-    <Stack spacing="32px" mt="32px">
-      <Heading as="h6" variant="h6" fontWeight={600}>
+    <Stack mt="32px" spacing="32px">
+      <Heading as="h6" fontWeight={600} variant="h6">
         Activities in this collection
       </Heading>
       <ActivitiesTable
-        collectionAddress={collectionAddress}
         activities={data}
-        isLoading={isLoading}
+        collectionAddress={collectionAddress}
         emptyState={
           <EmptyState
-            message="There are no activities matches your keyword."
             imageVariant="not-found"
+            message="There are no activities matches your keyword."
             withBorder
           />
         }
+        isLoading={isLoading}
       />
       {hasNextPage && (
         <LoadNext
-          text="Load more activities"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          text="Load more activities"
         />
       )}
     </Stack>

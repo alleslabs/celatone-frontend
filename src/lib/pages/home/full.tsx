@@ -1,5 +1,4 @@
 import { Box, Heading } from "@chakra-ui/react";
-
 import { useInternalNavigate } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { ViewMore } from "lib/components/table";
@@ -27,17 +26,17 @@ export const HomeFull = () => {
   return (
     <PageContainer>
       <HomeTop
-        totalTxs={overviewsStats?.txCount}
-        isTotalTxsLoading={isLoading}
-        latestBlock={overviewsStats?.latestBlock}
-        isLatestBlockLoading={isLoading}
         blockTime={overviewsStats?.blockTime}
         isBlockTimeLoading={isLoading}
-        toTxs={toTxs}
+        isLatestBlockLoading={isLoading}
+        isTotalTxsLoading={isLoading}
+        latestBlock={overviewsStats?.latestBlock}
         toBlocks={toBlocks}
+        totalTxs={overviewsStats?.txCount}
+        toTxs={toTxs}
       />
       <Box as="section" mb="48px">
-        <Heading as="h5" variant="h5" mb={5}>
+        <Heading as="h5" mb={5} variant="h5">
           Recent transactions
         </Heading>
         <TxsTableFull isViewMore />
@@ -46,7 +45,7 @@ export const HomeFull = () => {
         )}
       </Box>
       <Box as="section">
-        <Heading as="h5" variant="h5" mb={5}>
+        <Heading as="h5" mb={5} variant="h5">
           Recent blocks
         </Heading>
         <RecentBlocksTableFull isViewMore />

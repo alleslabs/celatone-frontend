@@ -1,6 +1,7 @@
+import type { CodeInfo } from "lib/types";
+
 import { useCurrentChain } from "lib/app-provider";
 import { DisconnectedState } from "lib/components/state";
-import type { CodeInfo } from "lib/types";
 
 import { CodesTable } from "./CodesTable";
 
@@ -28,10 +29,10 @@ export const CodesTableWithWallet = ({
   ) : (
     <CodesTable
       codes={codes}
-      isLoading={isLoading}
-      onRowSelect={onRowSelect}
       emptyState={emptyState}
+      isLoading={isLoading}
       isReadOnly={isReadOnly}
+      onRowSelect={onRowSelect}
     />
   );
 };

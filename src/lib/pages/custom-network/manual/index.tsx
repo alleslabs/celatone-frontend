@@ -1,7 +1,5 @@
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
 import {
   useAllowCustomNetworks,
   useChainConfigs,
@@ -13,11 +11,12 @@ import { FooterCta } from "lib/components/layouts";
 import { CelatoneSeo } from "lib/components/Seo";
 import { useStepper } from "lib/hooks";
 import { useLocalChainConfigStore } from "lib/providers/store";
+import { useForm } from "react-hook-form";
 
-import { AddNetworkForm, AddNetworkStepper } from "./components";
+import type { AddNetworkManualForm } from "../types";
+
 import { SuccessAddCustomMinitiaModal } from "../components";
 import { DEFAULT_DENOM, DEFAULT_GAS, DEFAULT_SLIP44 } from "../constant";
-import type { AddNetworkManualForm } from "../types";
 import {
   VmType,
   zAddNetworkManualChainConfigJson,
@@ -26,6 +25,7 @@ import {
   zNetworkDetailsForm,
   zWalletRegistryForm,
 } from "../types";
+import { AddNetworkForm, AddNetworkStepper } from "./components";
 
 export const AddNetworkManual = () => {
   useAllowCustomNetworks({ shouldRedirect: true });
@@ -152,35 +152,35 @@ export const AddNetworkManual = () => {
   return (
     <>
       <CelatoneSeo pageName="Add rollups" />
-      <Flex position="sticky" top={0} left={0} w="full" zIndex={2}>
+      <Flex left={0} position="sticky" top={0} w="full" zIndex={2}>
         <AddNetworkStepper currentStepIndex={currentStepIndex} />
       </Flex>
       <ActionPageContainer width={640}>
         <AddNetworkForm
-          currentStepIndex={currentStepIndex}
           control={control}
+          currentStepIndex={currentStepIndex}
           errors={errors}
           setValue={setValue}
           trigger={trigger}
         />
       </ActionPageContainer>
       <FooterCta
-        cancelButton={{
-          onClick: handlePrevious,
-          variant: "outline-primary",
-          leftIcon: hasPrevious ? (
-            <CustomIcon name="chevron-left" boxSize={4} />
-          ) : undefined,
-        }}
-        cancelLabel={hasPrevious ? "Previous" : "Cancel"}
         actionButton={{
           onClick: handleNext,
           isDisabled: isFormDisabled(),
           rightIcon: hasNext ? (
-            <CustomIcon name="chevron-right" boxSize={4} />
+            <CustomIcon boxSize={4} name="chevron-right" />
           ) : undefined,
         }}
         actionLabel={handleActionLabel()}
+        cancelButton={{
+          onClick: handlePrevious,
+          variant: "outline-primary",
+          leftIcon: hasPrevious ? (
+            <CustomIcon boxSize={4} name="chevron-left" />
+          ) : undefined,
+        }}
+        cancelLabel={hasPrevious ? "Previous" : "Cancel"}
         helperText="The added custom rollup on Initia Scan will be stored locally on your device."
         sx={{
           backgroundColor: "background.main",
@@ -188,10 +188,10 @@ export const AddNetworkManual = () => {
         }}
       />
       <SuccessAddCustomMinitiaModal
-        isOpen={isOpen}
-        onClose={onClose}
-        prettyName={prettyName}
         chainId={chainId}
+        isOpen={isOpen}
+        prettyName={prettyName}
+        onClose={onClose}
       />
     </>
   );

@@ -1,8 +1,9 @@
+import type { Coin, Option, ProposalParams, Token, U } from "lib/types";
+
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import { useProposalParams } from "lib/services/proposal";
 import { big } from "lib/types";
-import type { Coin, Option, ProposalParams, Token, U } from "lib/types";
 import {
   coinToTokenWithValue,
   compareTokenWithValues,

@@ -1,17 +1,19 @@
-import { Flex, Stack, Text } from "@chakra-ui/react";
 import type { LogDescription } from "ethers";
-import { Fragment, useState } from "react";
+import type { TxReceiptJsonRpcLog } from "lib/services/types";
+import type { EvmVerifyInfo, Nullable, Option } from "lib/types";
+
+import { Flex, Stack, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { Tooltip } from "lib/components/Tooltip";
 import { TypeSwitch } from "lib/components/TypeSwitch";
-import type { TxReceiptJsonRpcLog } from "lib/services/types";
-import type { EvmVerifyInfo, Nullable, Option } from "lib/types";
 import { parseEvmLog } from "lib/utils";
+import { Fragment, useState } from "react";
+
+import { EvmEventBoxTabs } from "../../types";
 import { EvmEventBoxData } from "./evm-event-box-data";
 import { EvmEventBoxTopics } from "./evm-event-box-topics";
-import { EvmEventBoxTabs } from "../../types";
 
 interface EvmEventBoxProps {
   log: TxReceiptJsonRpcLog;
@@ -55,13 +57,13 @@ export const EvmEventBox = ({ log, evmVerifyInfo }: EvmEventBoxProps) => {
 
   return (
     <Stack
+      backgroundColor="gray.900"
       borderRadius="8px"
-      p={4}
       gap={{
         base: 4,
         md: 6,
       }}
-      backgroundColor="gray.900"
+      p={4}
     >
       <Flex
         flexDirection={{
@@ -73,24 +75,24 @@ export const EvmEventBox = ({ log, evmVerifyInfo }: EvmEventBoxProps) => {
       >
         <Stack>
           <LabelText
-            label="Log index"
             flexDirection={{ base: "column", md: "row" }}
             gap={{ base: 1, md: 4 }}
+            label="Log index"
             minWidth="120px"
           >
             {log.logIndex.toString()}
           </LabelText>
           <LabelText
-            label="Contract address"
             flexDirection={{ base: "column", md: "row" }}
             gap={{ base: 1, md: 4 }}
+            label="Contract address"
             minWidth="120px"
           >
             <Flex alignItems="center" gap={1}>
               <CustomIcon
+                boxSize={3}
                 color="primary.main"
                 name="contract-address"
-                boxSize={3}
               />
               <ExplorerLink
                 textFormat="normal"
@@ -100,20 +102,20 @@ export const EvmEventBox = ({ log, evmVerifyInfo }: EvmEventBoxProps) => {
               />
               {evmVerifyInfo?.isVerified && (
                 <CustomIcon
-                  name="verification-solid"
                   boxSize={4}
                   color="secondary.main"
+                  name="verification-solid"
                 />
               )}
             </Flex>
           </LabelText>
           {evmVerifyInfo?.isVerified && parsedLog && (
             <LabelText
-              label="Name"
+              alignItems="flex-start"
               flexDirection={{ base: "column", md: "row" }}
               gap={{ base: 1, md: 4 }}
+              label="Name"
               minWidth="120px"
-              alignItems="flex-start"
             >
               <EvmEventBoxName parsedLog={parsedLog} />
             </LabelText>
@@ -122,44 +124,44 @@ export const EvmEventBox = ({ log, evmVerifyInfo }: EvmEventBoxProps) => {
         <Stack alignItems="flex-end">
           <Tooltip
             hidden={!!evmVerifyInfo?.isVerified}
-            maxWidth="200px"
             label="Verify the contract to enable decoded"
+            maxWidth="200px"
           >
             <TypeSwitch
-              tabs={Object.values(EvmEventBoxTabs)}
-              onTabChange={setCurrentTab}
               currentTab={currentTab}
               disabled={!evmVerifyInfo?.isVerified}
               disabledScrollToTop
+              tabs={Object.values(EvmEventBoxTabs)}
+              onTabChange={setCurrentTab}
             />
           </Tooltip>
         </Stack>
       </Flex>
       <LabelText
-        label="Topic"
+        alignItems="flex-start"
         flexDirection={{ base: "column", md: "row" }}
         gap={{ base: 1, md: 4 }}
+        label="Topic"
         minWidth="120px"
-        alignItems="flex-start"
       >
         <EvmEventBoxTopics
           parsedLog={parsedLog}
-          topics={log.topics}
           tab={currentTab}
+          topics={log.topics}
         />
       </LabelText>
       <LabelText
-        label="Data"
+        alignItems="flex-start"
         flexDirection={{ base: "column", md: "row" }}
         gap={{ base: 1, md: 4 }}
+        label="Data"
         minWidth="120px"
-        alignItems="flex-start"
       >
         <EvmEventBoxData
           data={log.data}
-          topics={log.topics}
           parsedLog={parsedLog}
           tab={currentTab}
+          topics={log.topics}
         />
       </LabelText>
     </Stack>

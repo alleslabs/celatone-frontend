@@ -1,5 +1,6 @@
-import { DEFAULT_LIST } from "lib/data";
 import type { ContractLocalInfo } from "lib/stores/contract";
+
+import { DEFAULT_LIST } from "lib/data";
 
 import { ContractDetailsTemplateModal } from "./ContractDetailsTemplate";
 
@@ -12,11 +13,11 @@ export const SaveContractDetailsModal = ({
   triggerElement,
 }: SaveContractDetailsProps) => (
   <ContractDetailsTemplateModal
-    title="Save contract details"
-    icon="bookmark-solid"
     contractLocalInfo={contractLocalInfo}
-    triggerElement={triggerElement}
     defaultList={DEFAULT_LIST}
+    icon="bookmark-solid"
     isSave
+    title="Save contract details"
+    triggerElement={triggerElement}
   />
 );

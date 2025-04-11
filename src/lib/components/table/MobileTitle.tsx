@@ -1,7 +1,7 @@
-import { Flex } from "@chakra-ui/react";
-
-import { CustomIcon } from "lib/components/icon";
 import type { Option } from "lib/types";
+
+import { Flex } from "@chakra-ui/react";
+import { CustomIcon } from "lib/components/icon";
 
 import { TableTitle } from "./TableTitle";
 
@@ -28,12 +28,12 @@ export const MobileTitle = ({
   return (
     <Flex
       style={cardProps}
-      onClick={isDisabled ? undefined : onViewMore}
-      opacity={isDisabled ? 0.5 : 1}
       bg="gray.900"
+      opacity={isDisabled ? 0.5 : 1}
+      onClick={isDisabled ? undefined : onViewMore}
     >
-      <TableTitle title={title} count={count} showCount={showCount} mb={0} />
-      <CustomIcon name="chevron-right" color="gray.600" />
+      <TableTitle count={count} mb={0} showCount={showCount} title={title} />
+      <CustomIcon color="gray.600" name="chevron-right" />
     </Flex>
   );
 };

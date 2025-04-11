@@ -1,13 +1,13 @@
-import { Button, Divider, Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import type { ExposedFunction } from "lib/types";
 
+import { Button, Divider, Flex } from "@chakra-ui/react";
 import { trackUseExpand } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { MotionBox } from "lib/components/MotionBox";
-import type { ExposedFunction } from "lib/types";
 import { getVisibilityIcon } from "lib/utils";
+import { useState } from "react";
 
 interface SelectedFunctionCardProps {
   fn: ExposedFunction;
@@ -17,12 +17,12 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
   const isMobile = useMobile();
   const [expand, setExpand] = useState(false);
   return (
-    <Flex direction="column" bg="gray.900" borderRadius="8px">
+    <Flex bg="gray.900" borderRadius="8px" direction="column">
       <Flex
         align="center"
+        borderRadius="8px"
         justify="space-between"
         p={{ base: 0, md: 4 }}
-        borderRadius="8px"
       >
         <Flex gap={8} h="full">
           {!isMobile && (
@@ -30,22 +30,22 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
               <LabelText label="Selected function" labelWeight={700}>
                 {fn.name}
               </LabelText>
-              <Divider orientation="vertical" borderColor="gray.700" />
+              <Divider borderColor="gray.700" orientation="vertical" />
             </>
           )}
           <LabelText label="Visibility" labelWeight={700}>
             <Flex
               align="center"
-              gap={1}
-              fontSize="14px"
               color="text.dark"
+              fontSize="14px"
+              gap={1}
               lineHeight={0}
               textTransform="capitalize"
             >
               <CustomIcon
-                name={getVisibilityIcon(fn.visibility)}
                 boxSize={3}
                 color="gray.600"
+                name={getVisibilityIcon(fn.visibility)}
               />
               {fn.visibility}
             </Flex>
@@ -53,9 +53,9 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
           <LabelText label="is_entry" labelWeight={700}>
             <Flex
               align="center"
-              gap={1}
-              fontSize="14px"
               color="text.dark"
+              fontSize="14px"
+              gap={1}
               lineHeight={0}
             >
               <CustomIcon
@@ -68,16 +68,16 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
           </LabelText>
         </Flex>
         <Button
-          size="sm"
-          variant="ghost-gray"
           rightIcon={
             <CustomIcon
-              name="chevron-down"
               boxSize={3}
               color="gray.400"
+              name="chevron-down"
               transform={expand ? "rotate(180deg)" : "rotate(0)"}
             />
           }
+          size="sm"
+          variant="ghost-gray"
           onClick={() => {
             trackUseExpand({
               action: expand ? "collapse" : "expand",
@@ -90,22 +90,22 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
         </Button>
       </Flex>
       <MotionBox
+        animate={expand ? "expanded" : "collapsed"}
         display="flex"
         flexDir="column"
-        variants={{
-          expanded: { opacity: 1, height: "auto" },
-          collapsed: { opacity: 0, height: 0 },
-        }}
-        overflow="hidden"
+        gap={3}
         initial="collapsed"
-        animate={expand ? "expanded" : "collapsed"}
+        mt={{ base: 3, md: 0 }}
+        overflow="hidden"
+        p={{ base: 0, md: `0 16px ${expand ? "16px" : 0}` }}
         transition={{
           duration: "0.25",
           ease: "easeInOut",
         }}
-        p={{ base: 0, md: `0 16px ${expand ? "16px" : 0}` }}
-        mt={{ base: 3, md: 0 }}
-        gap={3}
+        variants={{
+          expanded: { opacity: 1, height: "auto" },
+          collapsed: { opacity: 0, height: 0 },
+        }}
       >
         <LabelText label="generic_type_params" labelWeight={700}>
           {JSON.stringify(fn.generic_type_params)}

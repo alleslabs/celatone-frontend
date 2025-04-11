@@ -1,7 +1,9 @@
 import type { GridProps } from "@chakra-ui/react";
+
 import { Grid } from "@chakra-ui/react";
 
 import type { CtaInfo } from "./ContractsTableRowCta";
+
 import { TableHeader } from "../tableComponents";
 
 export const ContractsTableHeader = ({
@@ -17,7 +19,7 @@ export const ContractsTableHeader = ({
   isReadOnly: boolean;
   withCta?: CtaInfo;
 }) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Contract address</TableHeader>
     <TableHeader>Contract name</TableHeader>
     {showTag && <TableHeader>Tags</TableHeader>}

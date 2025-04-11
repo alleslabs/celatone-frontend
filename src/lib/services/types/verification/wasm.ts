@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import { zRelatedWasmVerifyInfo, zWasmVerifyInfo } from "lib/types";
+import { z } from "zod";
 
 export interface WasmVerifyRequest {
   chainId: string;

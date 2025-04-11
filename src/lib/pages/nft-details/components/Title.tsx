@@ -1,8 +1,8 @@
-import { Alert, Flex, Heading, Text } from "@chakra-ui/react";
+import type { HexAddr32 } from "lib/types";
 
+import { Alert, Flex, Heading, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
-import type { HexAddr32 } from "lib/types";
 
 import { ViewResourceButton } from "./ViewResourceButton";
 
@@ -25,13 +25,13 @@ export const Title = ({
   return (
     <Flex direction="column" w="full">
       {isBurned && (
-        <Alert variant="warning" px={2} py={1} borderRadius="4px" mb={4}>
-          <Text variant="body2" color="warning.main">
+        <Alert borderRadius="4px" mb={4} px={2} py={1} variant="warning">
+          <Text color="warning.main" variant="body2">
             This NFT is already burned
           </Text>
         </Alert>
       )}
-      <Flex w="full" justifyContent="space-between" gap={8}>
+      <Flex gap={8} justifyContent="space-between" w="full">
         <Flex direction="column" overflow="hidden">
           <AppLink href={`/nft-collections/${collectionAddress}`}>
             <Text color="primary.main" fontSize="16px" fontWeight={700}>
@@ -39,9 +39,9 @@ export const Title = ({
             </Text>
           </AppLink>
           <Heading
-            variant={{ base: "h6", md: "h5" }}
-            as="h5"
             className="ellipsis"
+            as="h5"
+            variant={{ base: "h6", md: "h5" }}
             wordBreak="break-word"
           >
             {tokenId}

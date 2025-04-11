@@ -1,6 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Flex, Heading, Stack, Tag, Text } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+
+import { Flex, Heading, Stack, Tag, Text } from "@chakra-ui/react";
 
 import { CustomIcon } from "./icon";
 
@@ -23,42 +24,42 @@ export const ButtonCard = ({
   ...componentProps
 }: ButtonCardProps) => (
   <Flex
-    aria-disabled={disabled}
-    p={6}
-    align="center"
-    justify="space-between"
-    onClick={!disabled ? onClick : undefined}
-    bgColor="gray.800"
-    borderRadius="8px"
-    w="100%"
-    cursor="pointer"
-    _hover={{ bgColor: "gray.700" }}
-    transition="all 0.25s ease-in-out"
     _disabled={{
       bgColor: "gray.900",
       cursor: "not-allowed",
     }}
+    _hover={{ bgColor: "gray.700" }}
+    align="center"
+    aria-disabled={disabled}
+    bgColor="gray.800"
+    borderRadius="8px"
+    cursor="pointer"
+    justify="space-between"
+    p={6}
+    transition="all 0.25s ease-in-out"
+    w="100%"
+    onClick={!disabled ? onClick : undefined}
     {...componentProps}
   >
     <Stack>
       <Flex alignItems="center" gap={2}>
         <Heading
           as="h6"
-          variant="h6"
           color={disabled ? "text.disabled" : "text.main"}
+          variant="h6"
         >
           {title}
         </Heading>
         {tagLabel && <Tag size="sm">{tagLabel}</Tag>}
       </Flex>
       {typeof description === "string" ? (
-        <Text variant="body2" color={disabled ? "text.disabled" : "text.main"}>
+        <Text color={disabled ? "text.disabled" : "text.main"} variant="body2">
           {description}
         </Text>
       ) : (
         description
       )}
     </Stack>
-    {hasIcon && <CustomIcon name="chevron-right" color="gray.600" />}
+    {hasIcon && <CustomIcon color="gray.600" name="chevron-right" />}
   </Flex>
 );

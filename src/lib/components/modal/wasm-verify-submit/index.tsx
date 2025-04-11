@@ -1,3 +1,7 @@
+import type { WasmVerifyRequest } from "lib/services/types";
+import type { BechAddr32, Option, WasmVerifyStatus } from "lib/types";
+import type { ReactNode } from "react";
+
 import {
   Flex,
   Modal,
@@ -6,13 +10,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback } from "react";
-import type { ReactNode } from "react";
-
 import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
-import type { WasmVerifyRequest } from "lib/services/types";
 import { useSubmitWasmVerify } from "lib/services/verification/wasm";
-import type { BechAddr32, Option, WasmVerifyStatus } from "lib/types";
+import { useCallback } from "react";
 
 import { WasmVerifySubmitCompleted } from "./WasmVerifySubmitCompleted";
 import { WasmVerifySubmitFailed } from "./WasmVerifySubmitFailed";
@@ -92,29 +92,29 @@ export const WasmVerifySubmitModal = ({
         {triggerElement}
       </Flex>
       <Modal
-        isOpen={isOpen}
-        onClose={handleClose}
         isCentered
+        isOpen={isOpen}
         returnFocusOnClose={false}
+        onClose={handleClose}
       >
         <ModalOverlay />
         <ModalContent
-          w={{ base: "full", md: "645px" }}
           bg="gray.800"
           maxW="100vw"
+          w={{ base: "full", md: "645px" }}
         >
           <WasmVerifySubmitModalBody
-            codeId={codeId}
             codeHash={codeHash}
-            wasmVerifyStatus={wasmVerifyStatus}
-            relatedVerifiedCodes={relatedVerifiedCodes}
+            codeId={codeId}
             contractAddress={contractAddress}
-            onSubmit={mutate}
+            errorMsg={error?.response?.data.message}
+            isError={isError}
             isLoading={isLoading}
             isSuccess={isSuccess}
-            isError={isError}
-            errorMsg={error?.response?.data.message}
+            relatedVerifiedCodes={relatedVerifiedCodes}
+            wasmVerifyStatus={wasmVerifyStatus}
             onClose={handleClose}
+            onSubmit={mutate}
           />
         </ModalContent>
       </Modal>

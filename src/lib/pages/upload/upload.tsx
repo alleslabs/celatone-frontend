@@ -1,9 +1,7 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
-import { AmpEvent, track } from "lib/amplitude";
 import type { StoreCodeSucceedCallback } from "lib/app-fns/tx/storeCode";
+
+import { Flex, Heading, Text } from "@chakra-ui/react";
+import { AmpEvent, track } from "lib/amplitude";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
@@ -15,6 +13,8 @@ import { UploadSection } from "lib/components/upload";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useUploadCode } from "lib/hooks";
 import { useUploadAccessParamsRest } from "lib/services/wasm/code";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export const Upload = ({
   onComplete,
@@ -52,45 +52,45 @@ export const Upload = ({
     <>
       <ActionPageContainer>
         <CelatoneSeo pageName="Upload Wasm file" />
-        <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
+        <Text color="text.dark" fontWeight={700} mb={3} variant="body1">
           DEPLOY NEW CONTRACT
         </Text>
-        <Stepper mode="deploy" currentStep={1} />
-        <Flex direction="column" alignItems="center" my={12}>
+        <Stepper currentStep={1} mode="deploy" />
+        <Flex alignItems="center" direction="column" my={12}>
           <Heading as="h5" variant="h5">
             Upload Wasm file
           </Heading>
           <UserDocsLink
-            isDevTool
-            mt={2}
             cta="View upload guideline"
             href="cosmwasm/upload-instantiate#upload-wasm-to-store-code"
+            isDevTool
+            mt={2}
           />
         </Flex>
         <ConnectWalletAlert
-          subtitle="You need to connect your wallet first"
           mb={12}
+          subtitle="You need to connect your wallet first"
         />
         <UploadSection
-          formData={formData}
           estimatedFee={estimatedFee}
+          formData={formData}
+          isSimulating={isSimulating}
+          setDefaultBehavior={setDefaultBehavior}
           setEstimatedFee={setEstimatedFee}
           shouldNotSimulate={shouldNotSimulate}
-          setDefaultBehavior={setDefaultBehavior}
           simulateStatus={simulateStatus}
-          isSimulating={isSimulating}
         />
       </ActionPageContainer>
       <FooterCta
-        cancelButton={{
-          leftIcon: <CustomIcon name="chevron-left" />,
-          onClick: router.back,
-        }}
         actionButton={{
           isDisabled: isDisabledProcess,
           onClick: proceed,
         }}
         actionLabel="Upload"
+        cancelButton={{
+          leftIcon: <CustomIcon name="chevron-left" />,
+          onClick: router.back,
+        }}
       />
     </>
   );

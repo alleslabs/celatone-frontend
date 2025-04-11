@@ -32,7 +32,6 @@ export const RecentBlocksTableFull = ({
     <>
       <BlocksTable
         blocks={data?.items}
-        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant="empty"
@@ -40,14 +39,15 @@ export const RecentBlocksTableFull = ({
             withBorder
           />
         }
+        isLoading={isLoading}
       />
       {!isViewMore && data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={data.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={data.total}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

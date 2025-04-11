@@ -1,6 +1,6 @@
-import { fromBech32, toBech32 } from "@cosmjs/encoding";
-
 import type { BechAddr20, ValidatorAddr } from "lib/types";
+
+import { fromBech32, toBech32 } from "@cosmjs/encoding";
 
 export const addrToValoper = (address: BechAddr20) => {
   const { prefix, data } = fromBech32(address);

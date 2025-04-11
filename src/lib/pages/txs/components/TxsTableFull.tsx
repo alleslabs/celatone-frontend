@@ -29,29 +29,29 @@ export const TxsTableFull = ({ isViewMore }: TxsTableProps) => {
   return (
     <>
       <TransactionsTable
-        transactions={data?.items}
-        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="transactions" />
           ) : (
             <EmptyState
-              withBorder
               imageVariant="empty"
               message="There are no transactions on this network."
+              withBorder
             />
           )
         }
+        isLoading={isLoading}
         showAction={false}
         showRelations={false}
+        transactions={data?.items}
       />
       {!isViewMore && data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={data.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={data.total}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

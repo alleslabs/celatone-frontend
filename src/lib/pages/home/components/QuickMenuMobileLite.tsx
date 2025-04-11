@@ -1,8 +1,7 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
-import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
-import Link from "next/link";
-import { useMemo } from "react";
+import type { IconKeys } from "lib/components/icon";
 
+import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import {
   useGovConfig,
   useMoveConfig,
@@ -11,8 +10,9 @@ import {
 } from "lib/app-provider";
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
-import type { IconKeys } from "lib/components/icon";
 import { USER_GUIDE_DOCS_LINK } from "lib/data";
+import Link from "next/link";
+import { useMemo } from "react";
 
 const actionCardProps: SystemStyleObject = {
   width: "full",
@@ -46,37 +46,37 @@ const QuickActionCard = ({ item }: { item: CardProps }) => (
   <Box>
     <AppLink href={`/${item.slug}`}>
       <Flex
-        sx={actionCardProps}
         _hover={{ bg: "gray.700" }}
+        sx={actionCardProps}
         transition="all 0.25s ease-in-out"
       >
         <Flex
-          gap={6}
           direction="column"
-          justifyContent="space-between"
+          gap={6}
           h="full"
+          justifyContent="space-between"
         >
           <CustomIcon
-            name={item.icon}
             boxSize={{ base: 5, md: 6 }}
             color="gray.600"
+            name={item.icon}
           />
           <Box>
             <Heading variant="h6">{item.title}</Heading>
             <Text
-              textDecoration="none"
-              variant="body2"
               color="text.dark"
               mt={1}
+              textDecoration="none"
+              variant="body2"
             >
               {item.subtitle}
             </Text>
           </Box>
         </Flex>
         <CustomIcon
-          name="chevron-right"
           boxSize={{ base: 5, md: 6 }}
           color="gray.600"
+          name="chevron-right"
         />
       </Flex>
     </AppLink>
@@ -85,23 +85,23 @@ const QuickActionCard = ({ item }: { item: CardProps }) => (
 
 const ListPageCard = ({ item }: { item: CardProps }) => (
   <Flex
-    sx={cardProps}
     alignItems="center"
-    justifyContent="space-between"
     h="full"
+    justifyContent="space-between"
+    sx={cardProps}
   >
     <Flex alignItems="center" gap={2}>
       <CustomIcon
-        name={item.icon}
         boxSize={{ base: 5, md: 6 }}
         color="gray.600"
+        name={item.icon}
       />
       <Heading variant="h6">{item.title}</Heading>
     </Flex>
     <CustomIcon
-      name={item.isDocument ? "launch" : "chevron-right"}
       boxSize={{ base: 5, md: 6 }}
       color="gray.600"
+      name={item.isDocument ? "launch" : "chevron-right"}
     />
   </Flex>
 );
@@ -182,17 +182,17 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
           />
         </>
       )}
-      <Heading variant="h6" mt={6}>
+      <Heading mt={6} variant="h6">
         Explore {prettyName}
       </Heading>
       <Grid gap={4}>
         {quickMenu.map((item) =>
           item.isDocument ? (
-            <Link href={USER_GUIDE_DOCS_LINK} key={item.slug} target="_blank">
+            <Link key={item.slug} href={USER_GUIDE_DOCS_LINK} target="_blank">
               <ListPageCard item={item} />
             </Link>
           ) : (
-            <AppLink href={`/${item.slug}`} key={item.slug}>
+            <AppLink key={item.slug} href={`/${item.slug}`}>
               <ListPageCard item={item} />
             </AppLink>
           )

@@ -1,10 +1,10 @@
+import { TierSwitcher } from "lib/components/TierSwitcher";
 import { observer } from "mobx-react-lite";
 
-import { TierSwitcher } from "lib/components/TierSwitcher";
+import type { InstantiatedContractsTableProps } from "./types";
 
 import { InstantiatedContractsTableFull } from "./Full";
 import { InstantiatedContractsTableLite } from "./Lite";
-import type { InstantiatedContractsTableProps } from "./types";
 
 export const InstantiatedContractsTable = observer(
   (props: InstantiatedContractsTableProps) => (

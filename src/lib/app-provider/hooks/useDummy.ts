@@ -1,13 +1,13 @@
-import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
-import { useCallback, useEffect, useState } from "react";
-
-import { DUMMY_MNEMONIC } from "env";
-import { getCustomedSigningCosmwasm } from "lib/providers/cosmos-kit/options";
 import type { BechAddr20 } from "lib/types";
 
-import { useCurrentChain } from "./useCurrentChain";
+import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
+import { DUMMY_MNEMONIC } from "env";
+import { getCustomedSigningCosmwasm } from "lib/providers/cosmos-kit/options";
+import { useCallback, useEffect, useState } from "react";
+
 import { useCelatoneApp } from "../contexts";
+import { useCurrentChain } from "./useCurrentChain";
 
 export const useDummyWallet = () => {
   const { bech32Prefix } = useCurrentChain();

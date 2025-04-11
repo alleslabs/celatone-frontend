@@ -1,13 +1,13 @@
 import type { UseQueryResult } from "@tanstack/react-query";
-import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
-
-import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 import type {
   MoveVerifyByTaskIdResponse,
   MoveVerifyInfoResponse,
   MoveVerifyInfosByAddressResponse,
 } from "lib/services/types";
 import type { Addr, HexAddr, Option } from "lib/types";
+
+import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
+import { CELATONE_QUERY_KEYS, useCelatoneApp } from "lib/app-provider";
 
 import {
   getMoveVerifyByTaskId,

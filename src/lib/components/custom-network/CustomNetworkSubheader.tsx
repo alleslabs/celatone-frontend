@@ -15,7 +15,7 @@ export const CustomNetworkSubheader = ({
         {title}
       </Heading>
       {subtitle && (
-        <Text variant="body2" color="text.disabled">
+        <Text color="text.disabled" variant="body2">
           {subtitle}
         </Text>
       )}

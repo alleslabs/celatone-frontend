@@ -1,5 +1,6 @@
-import { EmptyState } from "lib/components/state";
 import type { CodeInfo } from "lib/types";
+
+import { EmptyState } from "lib/components/state";
 
 import { CodesTableWithWallet } from "./CodesTableWithWallet";
 
@@ -24,21 +25,21 @@ export const MyStoredCodesTable = ({
 }: MyStoredCodesTableProps) => (
   <CodesTableWithWallet
     codes={codes}
-    isLoading={isLoading}
+    disconnectedMessage={disconnectedMessage}
     emptyState={
       <EmptyState
-        my={0}
         imageVariant={totalData ? "not-found" : "empty"}
         message={
           totalData
             ? "No matched codes found. Make sure you are searching with Code ID or Code Name"
             : emptyMessage
         }
+        my={0}
         withBorder
       />
     }
-    onRowSelect={onRowSelect}
-    disconnectedMessage={disconnectedMessage}
+    isLoading={isLoading}
     isReadOnly={isReadOnly}
+    onRowSelect={onRowSelect}
   />
 );

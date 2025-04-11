@@ -18,27 +18,27 @@ export const TxsTableSequencer = ({ isViewMore }: TxsTableProps) => {
   return (
     <>
       <TransactionsTable
-        transactions={data}
-        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="transactions" />
           ) : (
             <EmptyState
-              withBorder
               imageVariant="empty"
               message="There are no transactions on this network."
+              withBorder
             />
           )
         }
+        isLoading={isLoading}
         showAction={false}
         showRelations={false}
+        transactions={data}
       />
       {!isViewMore && hasNextPage && (
         <LoadNext
-          text="Load more 10 transactions"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          text="Load more 10 transactions"
         />
       )}
     </>

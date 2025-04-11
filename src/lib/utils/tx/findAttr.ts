@@ -1,7 +1,7 @@
-import { findAttribute } from "@cosmjs/cosmwasm-stargate/build/signingcosmwasmclient";
 import type { Event } from "@cosmjs/stargate";
-
 import type { Option } from "lib/types";
+
+import { findAttribute } from "@cosmjs/cosmwasm-stargate/build/signingcosmwasmclient";
 
 export const findAttr = (
   events: readonly Event[] | undefined,

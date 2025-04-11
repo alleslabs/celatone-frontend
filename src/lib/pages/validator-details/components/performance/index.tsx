@@ -1,16 +1,16 @@
-import { Flex } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
-import { useState } from "react";
+import type { ValidatorAddr } from "lib/types";
 
+import { Flex } from "@chakra-ui/react";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { useValidatorUptime } from "lib/services/validator";
-import type { ValidatorAddr } from "lib/types";
+import { isUndefined } from "lodash";
+import { useState } from "react";
 
+import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 import { PenaltySection } from "./PenaltySection";
 import { RecentBlocksSection } from "./RecentBlocksSection";
 import { UptimeSection } from "./UptimeSection";
-import { ProposedBlocksTable } from "../tables/ProposedBlocksTable";
 
 interface PerformanceProps {
   validatorAddress: ValidatorAddr;
@@ -34,22 +34,22 @@ export const Performance = ({
   if (onViewMore)
     return (
       <UptimeSection
-        validatorAddress={validatorAddress}
-        uptimeData={uptimeData}
         uptimeBlock={uptimeBlock}
+        uptimeData={uptimeData}
+        validatorAddress={validatorAddress}
         onViewMore={onViewMore}
       />
     );
 
   return (
     <Flex direction="column" gap={{ base: 4, md: 6 }} pt={6}>
-      <Flex gap={{ base: 4, md: 6 }} direction={{ base: "column", md: "row" }}>
+      <Flex direction={{ base: "column", md: "row" }} gap={{ base: 4, md: 6 }}>
         <Flex flex={{ md: "2" }}>
           <UptimeSection
-            validatorAddress={validatorAddress}
-            uptimeData={uptimeData}
-            uptimeBlock={uptimeBlock}
             setUptimeBlock={(block) => setUptimeBlock(block)}
+            uptimeBlock={uptimeBlock}
+            uptimeData={uptimeData}
+            validatorAddress={validatorAddress}
           />
         </Flex>
         <Flex flex={{ md: "1" }}>

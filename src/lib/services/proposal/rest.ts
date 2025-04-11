@@ -1,15 +1,6 @@
-import axios from "axios";
-
 import type {
   ProposalDataResponseRest,
   ProposalsResponseRest,
-} from "lib/services/types";
-import {
-  zProposalDataResponseRest,
-  zProposalDepositsResponseRest,
-  zProposalParamsResponseRest,
-  zProposalsResponseRest,
-  zProposalVotesInfoResponseRest,
 } from "lib/services/types";
 import type {
   Coin,
@@ -19,6 +10,15 @@ import type {
   ProposalStatus,
   ProposalVotesInfo,
 } from "lib/types";
+
+import axios from "axios";
+import {
+  zProposalDataResponseRest,
+  zProposalDepositsResponseRest,
+  zProposalParamsResponseRest,
+  zProposalsResponseRest,
+  zProposalVotesInfoResponseRest,
+} from "lib/services/types";
 import { parseWithError } from "lib/utils";
 
 export const getProposalParamsRest = (restEndpoint: string) =>

@@ -1,12 +1,12 @@
-import axios from "axios";
-
 import type { UploadAccessParams } from "lib/services/types";
+import type { Option } from "lib/types";
+
+import axios from "axios";
 import {
   zCodeInfoResponseRest,
   zCodesResponseRest,
   zUploadAccessParams,
 } from "lib/services/types";
-import type { Option } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getUploadAccessParamsRest = (

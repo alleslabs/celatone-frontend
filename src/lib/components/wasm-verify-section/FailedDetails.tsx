@@ -1,13 +1,13 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import type { BechAddr32, WasmVerifyInfoBase } from "lib/types";
 
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { WasmVerifyStatusModal } from "lib/components/modal";
-import type { BechAddr32, WasmVerifyInfoBase } from "lib/types";
 import { formatUTC, getWasmVerifyStatus } from "lib/utils";
 
+import { ExplorerLink } from "../ExplorerLink";
 import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
 import { VerifyButton } from "./VerifyButton";
-import { ExplorerLink } from "../ExplorerLink";
 
 interface FailedDetailsProps {
   codeId: number;
@@ -27,14 +27,14 @@ export const FailedDetails = ({
   const isMobile = useMobile();
   return (
     <>
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         {contractAddress ? (
           <>
             This contract is an instance of code ID{" "}
             <ExplorerLink
-              value={codeId.toString()}
-              type="code_id"
               showCopyOnHover
+              type="code_id"
+              value={codeId.toString()}
             />
             , in which its verification was submitted on{" "}
             {formatUTC(verificationInfo.submittedTimestamp)} but an error
@@ -71,25 +71,25 @@ export const FailedDetails = ({
       <Flex gap={2}>
         <WasmVerifyStatusModal
           codeHash={codeHash}
-          verificationInfo={verificationInfo}
           relatedVerifiedCodes={relatedVerifiedCodes}
           triggerElement={
-            <Button variant="ghost-primary" size="sm">
+            <Button size="sm" variant="ghost-primary">
               View details
             </Button>
           }
+          verificationInfo={verificationInfo}
         />
         {!isMobile && (
           <VerifyButton
-            codeId={codeId}
             codeHash={codeHash}
+            codeId={codeId}
+            label="Reverify code"
+            relatedVerifiedCodes={relatedVerifiedCodes}
             wasmVerifyStatus={getWasmVerifyStatus({
               verificationInfo,
               schema: null,
               relatedVerifiedCodes,
             })}
-            relatedVerifiedCodes={relatedVerifiedCodes}
-            label="Reverify code"
           />
         )}
       </Flex>

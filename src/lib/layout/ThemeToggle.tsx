@@ -1,5 +1,4 @@
 import { IconButton, useColorMode } from "@chakra-ui/react";
-
 import { CustomIcon } from "lib/components/icon";
 
 const ThemeToggle = () => {

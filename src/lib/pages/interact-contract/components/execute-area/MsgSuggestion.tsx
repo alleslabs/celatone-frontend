@@ -1,8 +1,8 @@
-import { Box, ButtonGroup, Text } from "@chakra-ui/react";
+import type { BechAddr32 } from "lib/types";
 
+import { Box, ButtonGroup, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
-import type { BechAddr32 } from "lib/types";
 import { jsonPrettify } from "lib/utils";
 
 interface MsgSuggestionProps {
@@ -18,7 +18,7 @@ export const MsgSuggestion = ({
 }: MsgSuggestionProps) => (
   <Box mb={8}>
     {contractAddress && (
-      <Text variant="body3" mb={2}>
+      <Text mb={2} variant="body3">
         Message Suggestions:
       </Text>
     )}
@@ -46,7 +46,7 @@ export const MsgSuggestion = ({
       </ButtonGroup>
     ) : (
       contractAddress && (
-        <Text mt={2} variant="body2" color="text.dark">
+        <Text color="text.dark" mt={2} variant="body2">
           No ExecuteMsgs suggestion available
         </Text>
       )

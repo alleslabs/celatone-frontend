@@ -1,3 +1,5 @@
+import type { Pool } from "lib/types";
+
 import {
   AccordionButton,
   AccordionItem,
@@ -8,20 +10,19 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react";
-import Link from "next/link";
-
 import { trackUseExpand, trackWebsite } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { CustomIcon } from "lib/components/icon";
 import { TokenImageRender } from "lib/components/token";
 import { Tooltip } from "lib/components/Tooltip";
-import type { Pool } from "lib/types";
 import {
   formatUTokenWithPrecision,
   getTokenLabel,
   openNewTab,
 } from "lib/utils";
+import Link from "next/link";
+
 import { getUndefinedTokenIcon } from "../../utils";
 import { PoolHeader } from "../PoolHeader";
 
@@ -50,11 +51,11 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
 
   return (
     <AccordionItem
-      mt={4}
-      bg="gray.900"
       _hover={{ bg: "gray.800" }}
-      transition="all 0.25s ease-in-out"
+      bg="gray.900"
       cursor="pointer"
+      mt={4}
+      transition="all 0.25s ease-in-out"
     >
       {({ isExpanded }) => (
         <>
@@ -68,37 +69,36 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
               })
             }
           >
-            <Flex gap={4} flexDirection="column" p={4} w="full">
+            <Flex flexDirection="column" gap={4} p={4} w="full">
               <Flex alignItems="center" justifyContent="space-between">
                 <PoolHeader
-                  poolId={item.id}
                   isSuperfluid={item.isSuperfluid}
-                  poolType={item.type}
                   liquidity={item.liquidity}
+                  poolId={item.id}
+                  poolType={item.type}
                 />
                 <Flex>
                   <Tooltip label="See in osmosis.zone">
                     <Link
                       href={`${poolUrl}/${item.id}`}
+                      rel="noopener noreferrer"
+                      target="_blank"
                       onClick={(e) => {
                         trackWebsite(`${poolUrl}/${item.id}`);
                         e.stopPropagation();
                       }}
-                      target="_blank"
-                      rel="noopener noreferrer"
                     >
                       <StyledIconButton
-                        variant="none"
-                        aria-label="external"
                         _hover={{ backgroundColor: hoverBgColor }}
+                        aria-label="external"
                         icon={<CustomIcon name="launch" />}
+                        variant="none"
                       />
                     </Link>
                   </Tooltip>
                   <StyledIconButton
-                    variant="none"
-                    aria-label="external"
                     _hover={{ backgroundColor: hoverBgColor }}
+                    aria-label="external"
                     icon={
                       <CustomIcon
                         name="chevron-down"
@@ -106,6 +106,7 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                         transition="all 0.25s ease-in-out"
                       />
                     }
+                    variant="none"
                   />
                 </Flex>
               </Flex>
@@ -115,26 +116,26 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
             <Flex>
               <Text
                 color="text.dark"
-                variant="body2"
                 fontWeight="600"
+                variant="body2"
                 w="144px"
               >
                 Tokens in Pool
               </Text>
-              <Flex gap={4} flexDirection="column">
-                <Flex gap={2} flexDirection="column">
+              <Flex flexDirection="column" gap={4}>
+                <Flex flexDirection="column" gap={2}>
                   {item.liquidity.map((asset) => (
                     <Flex
-                      className="copier-wrapper"
                       key={asset.denom}
-                      gap={3}
+                      className="copier-wrapper"
                       alignItems="center"
+                      gap={3}
                     >
                       <TokenImageRender
-                        logo={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
                         boxSize={6}
+                        logo={asset.logo ?? getUndefinedTokenIcon(asset.denom)}
                       />
-                      <Text variant="body2" color="text.main" fontWeight="bold">
+                      <Text color="text.main" fontWeight="bold" variant="body2">
                         {formatUTokenWithPrecision(
                           asset.amount,
                           asset.precision ?? 0
@@ -144,31 +145,31 @@ export const UnsupportedPoolCard = ({ item }: UnsupportedPoolCardProps) => {
                         {getTokenLabel(asset.denom, asset.symbol, false)}
                       </Flex>
                       <Copier
+                        copyLabel="Token ID copied!"
+                        display="none"
+                        ml="1px"
                         type={
                           asset.symbol ? "supported_asset" : "unsupported_asset"
                         }
                         value={asset.denom}
-                        copyLabel="Token ID copied!"
-                        display="none"
-                        ml="1px"
                       />
                     </Flex>
                   ))}
                 </Flex>
                 <Flex gap={3}>
-                  <Button onClick={handleOnClick} size="sm">
+                  <Button size="sm" onClick={handleOnClick}>
                     View Pool Details
                   </Button>
                   <Button
+                    rightIcon={
+                      <CustomIcon color="outline-primary" name="launch" />
+                    }
+                    size="sm"
+                    variant="outline-primary"
                     onClick={() => {
                       trackWebsite(`${poolUrl}/${item.id}`);
                       openNewTab(`${poolUrl}/${item.id}`);
                     }}
-                    size="sm"
-                    variant="outline-primary"
-                    rightIcon={
-                      <CustomIcon name="launch" color="outline-primary" />
-                    }
                   >
                     View in Osmosis
                   </Button>

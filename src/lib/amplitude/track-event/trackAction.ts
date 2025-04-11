@@ -1,6 +1,8 @@
 import type { AttachFundsType } from "lib/components/fund/types";
-import { amp } from "../Amplitude";
+
 import type { ActionAmpEvent } from "../types";
+
+import { amp } from "../Amplitude";
 
 export const trackActionWithFunds = (
   event: ActionAmpEvent,

@@ -1,10 +1,10 @@
-import { Flex, Text } from "@chakra-ui/react";
-import { useMemo } from "react";
+import type { ValidatorUptimeResponse } from "lib/services/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
-import type { ValidatorUptimeResponse } from "lib/services/types";
 import { SlashingEvent } from "lib/types";
+import { useMemo } from "react";
 
 interface PenaltyEventProps {
   event: ValidatorUptimeResponse["events"][0];
@@ -26,14 +26,14 @@ export const PenaltyEvent = ({ event }: PenaltyEventProps) => {
   return (
     <Flex alignItems="center" gap={2}>
       <Flex alignItems="center" gap={1}>
-        <CustomIcon name={icon} color={color} boxSize={5} />
-        <Text variant="body2" color="text.main">
+        <CustomIcon boxSize={5} color={color} name={icon} />
+        <Text color="text.main" variant="body2">
           <span style={{ fontWeight: 700 }}>{event.type}</span> at block height
         </Text>
         <ExplorerLink
+          showCopyOnHover
           type="block_height"
           value={event.height.toString()}
-          showCopyOnHover
         />
       </Flex>
     </Flex>

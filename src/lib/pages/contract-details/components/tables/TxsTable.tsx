@@ -1,3 +1,5 @@
+import type { BechAddr32, Option } from "lib/types";
+
 import { useTierConfig } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
@@ -5,7 +7,6 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { TransactionsTable } from "lib/components/table";
 import { DEFAULT_TX_FILTERS } from "lib/data";
 import { useTxsByAddress, useTxsByContractAddressRest } from "lib/services/tx";
-import type { BechAddr32, Option } from "lib/types";
 
 interface TxsTableProps {
   contractAddress: BechAddr32;
@@ -63,33 +64,33 @@ export const TxsTable = ({
   return (
     <>
       <TransactionsTable
-        transactions={data?.items}
-        isLoading={isLoading}
         emptyState={
           error ? (
             <ErrorFetching dataName="transactions" />
           ) : (
             <EmptyState
-              withBorder
               imageVariant="empty"
               message={
                 isFullTier
                   ? "This contract does not have any transactions."
                   : "This contract does not have any transactions, or they are too old and have been pruned from the REST."
               }
+              withBorder
             />
           )
         }
+        isLoading={isLoading}
         showRelations={false}
+        transactions={data?.items}
       />
       {!!totalData && totalData > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalData}
-          scrollComponentId={scrollComponentId}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          scrollComponentId={scrollComponentId}
+          totalData={totalData}
           onPageChange={(nextPage) => {
             setCurrentPage(nextPage);
             refetchCount();

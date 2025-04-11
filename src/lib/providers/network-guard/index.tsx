@@ -1,5 +1,3 @@
-import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
 import type { ReactNode } from "react";
 
 import { useCelatoneApp, useChainConfigs } from "lib/app-provider";
@@ -13,6 +11,8 @@ import {
   usePublicProjectStore,
 } from "lib/providers/store";
 import { formatUserKey } from "lib/utils";
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 
 import { NetworkErrorState } from "./NetworkErrorState";
 

@@ -1,3 +1,6 @@
+import type { PoolTypeFilter } from "lib/types";
+import type { ChangeEvent } from "react";
+
 import {
   Badge,
   Button,
@@ -8,24 +11,22 @@ import {
   Switch,
   Text,
 } from "@chakra-ui/react";
-import type { ChangeEvent } from "react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-
 import { trackUseExpandAll, trackUseSort, trackUseToggle } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useDebounce } from "lib/hooks";
-import type { PoolTypeFilter } from "lib/types";
 import { PoolType } from "lib/types";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-import { UnsupportedPoolList } from "./UnsupportedPoolList";
-import { useDerivedPools } from "../../data";
 import type { PoolFilterState } from "../../types";
+
+import { useDerivedPools } from "../../data";
 import { FilterByPoolType } from "../FilterByPoolType";
 import { SuperfluidLabel } from "../SuperfluidLabel";
+import { UnsupportedPoolList } from "./UnsupportedPoolList";
 
 interface UnsupportedSectionProp {
   scrollComponentId: string;
@@ -79,16 +80,16 @@ export const UnsupportedSection = ({
   return (
     <>
       <Flex alignItems="center" mb={12}>
-        <Flex grow={2} gap={4}>
+        <Flex gap={4} grow={2}>
           <InputWithIcon
+            amptrackSection="unsupported-pool-list-search"
             placeholder="Search with pool ID or token ID"
+            size={{ base: "md", md: "lg" }}
             value={keyword}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setCurrentPage(1);
               setValue("keyword", e.target.value);
             }}
-            size={{ base: "md", md: "lg" }}
-            amptrackSection="unsupported-pool-list-search"
           />
           <FilterByPoolType
             initialSelected="All"
@@ -98,10 +99,10 @@ export const UnsupportedSection = ({
             }}
           />
           <Flex minW="250px">
-            <FormControl display="flex" alignItems="center" gap={2}>
+            <FormControl alignItems="center" display="flex" gap={2}>
               <Switch
-                size="md"
                 defaultChecked={isSuperfluidOnly}
+                size="md"
                 onChange={(e) => {
                   const isChecked = e.target.checked;
                   setCurrentPage(1);
@@ -109,8 +110,8 @@ export const UnsupportedSection = ({
                   setValue("isSuperfluidOnly", isChecked);
                 }}
               />
-              <FormLabel mb={0} cursor="pointer">
-                <Text display="flex" gap={2} alignItems="center">
+              <FormLabel cursor="pointer" mb={0}>
+                <Text alignItems="center" display="flex" gap={2}>
                   Show only
                   <SuperfluidLabel />
                 </Text>
@@ -119,26 +120,26 @@ export const UnsupportedSection = ({
           </Flex>
         </Flex>
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between" h="32px">
-        <Flex gap={2} alignItems="center">
+      <Flex alignItems="center" h="32px" justifyContent="space-between">
+        <Flex alignItems="center" gap={2}>
           <Heading as="h6" variant="h6">
             Pools with unsupported tokens
           </Heading>
           {totalCount && (
-            <Badge variant="gray" color="text.main" textColor="text.main">
+            <Badge color="text.main" textColor="text.main" variant="gray">
               {totalCount}
             </Badge>
           )}
         </Flex>
         <Flex gap={4}>
-          <Flex gap={2} alignItems="center">
-            <Text variant="body2" color="text.dark">
+          <Flex alignItems="center" gap={2}>
+            <Text color="text.dark" variant="body2">
               Sort Pool ID:
             </Text>
             <Button
-              variant="outline-gray"
-              size="sm"
               pr={1}
+              size="sm"
+              variant="outline-gray"
               onClick={() => {
                 const isDesc = !showNewest;
                 trackUseSort("newest", isDesc ? "descending" : "ascending");
@@ -147,21 +148,21 @@ export const UnsupportedSection = ({
             >
               {showNewest ? "Newest first" : "Oldest first"}
               <CustomIcon
-                name={showNewest ? "arrow-down" : "arrow-up"}
                 color="text.dark"
+                name={showNewest ? "arrow-down" : "arrow-up"}
               />
             </Button>
           </Flex>
-          <Flex gap={2} alignItems="center">
+          <Flex alignItems="center" gap={2}>
             <Button
-              variant="outline-gray"
-              size="sm"
               rightIcon={
                 <CustomIcon
-                  name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
                   boxSize={3}
+                  name={expandedIndexes.length ? "chevron-up" : "chevron-down"}
                 />
               }
+              size="sm"
+              variant="outline-gray"
               onClick={() => {
                 trackUseExpandAll(
                   expandedIndexes.length ? "collapse" : "expand"
@@ -177,19 +178,19 @@ export const UnsupportedSection = ({
         </Flex>
       </Flex>
       <UnsupportedPoolList
-        pools={pools}
-        isLoading={isLoading}
         expandedIndexes={expandedIndexes}
+        isLoading={isLoading}
+        pools={pools}
         updateExpandedIndexes={updateExpandedIndexes}
       />
       {totalCount && totalCount > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={totalCount}
-          scrollComponentId={scrollComponentId}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          scrollComponentId={scrollComponentId}
+          totalData={totalCount}
           onPageChange={(nextPage) => {
             setCurrentPage(nextPage);
             updateExpandedIndexes([]);

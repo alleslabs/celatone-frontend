@@ -1,6 +1,7 @@
 import type { ValidatorsResponse } from "lib/services/types";
-import { big } from "lib/types";
 import type { Option, Ratio, ValidatorData } from "lib/types";
+
+import { big } from "lib/types";
 import { divWithDefault } from "lib/utils";
 
 import { ValidatorOrder } from "./types";

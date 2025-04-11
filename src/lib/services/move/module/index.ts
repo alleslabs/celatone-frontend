@@ -3,17 +3,7 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
-
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useCelatoneApp,
-  useGovConfig,
-  useInitia,
-  useMoveConfig,
-} from "lib/app-provider";
 import type {
   AccountModulesResponse,
   DecodeModuleQueryResponse,
@@ -23,7 +13,6 @@ import type {
   ModuleTableCountsResponse,
   ModuleTxsResponse,
 } from "lib/services/types";
-import { zHexAddr } from "lib/types";
 import type {
   AbiFormData,
   Addr,
@@ -34,6 +23,17 @@ import type {
   Option,
   RpcQueryError,
 } from "lib/types";
+
+import { useQuery } from "@tanstack/react-query";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+  useGovConfig,
+  useInitia,
+  useMoveConfig,
+} from "lib/app-provider";
+import { zHexAddr } from "lib/types";
 import { truncate } from "lib/utils";
 
 import {

@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import { zPagination } from "lib/types";
+import { z } from "zod";
 
 export const zResponseContractState = z.object({
   key: z.string(),

@@ -1,11 +1,12 @@
-import { Flex, Text } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import type { ExposedFunction, Option } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { ComponentLoader } from "lib/components/ComponentLoader";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
 import { useDecodeScript } from "lib/services/move/module";
-import type { ExposedFunction, Option } from "lib/types";
+import { useCallback, useState } from "react";
+
 import type { FileState } from "..";
 
 const DEFAULT_TEMP_FILE = {
@@ -72,31 +73,31 @@ export const UploadScriptCard = ({
       border="1px solid"
       borderColor="gray.700"
       borderRadius={8}
-      p={4}
-      gap={4}
       flexDirection="column"
+      gap={4}
+      p={4}
       w="full"
     >
       <Flex direction="column">
         <ComponentLoader isLoading={isFetching}>
           {file ? (
-            <UploadCard file={file} deleteFile={removeFile} theme="gray" />
+            <UploadCard deleteFile={removeFile} file={file} theme="gray" />
           ) : (
             <DropZone
-              setFiles={(files: File[]) => handleFileDrop(files[0])}
-              fileType={["mv"]}
+              _hover={undefined}
               bgColor="background.main"
               error={decodeError}
-              _hover={undefined}
+              fileType={["mv"]}
+              setFiles={(files: File[]) => handleFileDrop(files[0])}
             />
           )}
         </ComponentLoader>
       </Flex>
       <Flex justifyContent="space-between" w="full">
-        <Text variant="body2" color="text.dark" fontWeight={600}>
+        <Text color="text.dark" fontWeight={600} variant="body2">
           Function name
         </Text>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           {decodeRes?.name ?? "-"}
         </Text>
       </Flex>

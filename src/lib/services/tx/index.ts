@@ -1,7 +1,18 @@
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { useCallback } from "react";
+import type {
+  Nullable,
+  BechAddr,
+  BechAddr20,
+  BechAddr32,
+  HexAddr20,
+  Option,
+  PoolTxFilter,
+  Transaction,
+  TransactionWithSignerPubkey,
+  TxFilters,
+} from "lib/types";
 
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -16,23 +27,19 @@ import {
 } from "lib/app-provider";
 import { createQueryFnWithTimeout } from "lib/services/utils";
 import { zHexAddr20 } from "lib/types";
-import type {
-  Nullable,
-  BechAddr,
-  BechAddr20,
-  BechAddr32,
-  HexAddr20,
-  Option,
-  PoolTxFilter,
-  Transaction,
-  TransactionWithSignerPubkey,
-  TxFilters,
-} from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
   extractTxLogs,
   isTxHash,
 } from "lib/utils";
+import { useCallback } from "react";
+
+import type {
+  AccountTxsResponse,
+  BlockTxsResponse,
+  TxData,
+  TxsResponse,
+} from "../types";
 
 import {
   getTxData,
@@ -63,12 +70,6 @@ import {
   getTxsCountSequencer,
   getTxsSequencer,
 } from "./sequencer";
-import type {
-  AccountTxsResponse,
-  BlockTxsResponse,
-  TxData,
-  TxsResponse,
-} from "../types";
 
 export const useTxData = (
   txHash: Option<string>,
@@ -374,7 +375,6 @@ export const useTxsByAddressRest = (
   } = useCelatoneApp();
   const { bech32Prefix } = useCurrentChain();
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   const queryfn = useCallback(async () => {
     const txs = await (async () => {
       if (search && isTxHash(search)) {
@@ -509,7 +509,6 @@ export const useTxsByAddressSequencer = (
   const { bech32Prefix } = useCurrentChain();
 
   const queryfn = useCallback(
-    // eslint-disable-next-line sonarjs/cognitive-complexity
     async (pageParam: Option<string>) => {
       return (async () => {
         if (search && isTxHash(search)) {

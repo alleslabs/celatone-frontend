@@ -1,9 +1,9 @@
-import { useCallback } from "react";
+import type { Msg, Option } from "lib/types";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { ContractInteractionTabs } from "lib/types";
-import type { Msg, Option } from "lib/types";
 import { camelToSnake, libEncode } from "lib/utils";
+import { useCallback } from "react";
 
 export const useRedo = () => {
   const navigate = useInternalNavigate();

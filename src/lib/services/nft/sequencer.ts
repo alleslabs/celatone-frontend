@@ -1,12 +1,14 @@
-import axios from "axios";
-
 import type { HexAddr, HexAddr32, Nullable, Option } from "lib/types";
+
+import axios from "axios";
 import {
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
-import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
+
 import type { Nft, NftMintInfo, NftTxResponse } from "../types";
+
+import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import {
   zNftsByAccountResponseSequencer,
   zNftsResponseSequencer,

@@ -29,9 +29,9 @@ export const SingleBondCardBody = ({
 
   return (
     <SingleBondCardBodyMulti
-      title={title}
-      message={message}
       address={address}
+      message={message}
+      title={title}
       tokens={tokens}
     />
   );

@@ -1,7 +1,7 @@
-import { Flex } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
+import type { IconKeys } from "lib/components/icon";
 import type { Dispatch, SetStateAction } from "react";
 
+import { Flex } from "@chakra-ui/react";
 import {
   useCurrentChain,
   useEvmConfig,
@@ -11,14 +11,15 @@ import {
   useTierConfig,
   useWasmConfig,
 } from "lib/app-provider";
-import type { IconKeys } from "lib/components/icon";
 import { StorageKeys } from "lib/data";
 import { useIsCurrentPage } from "lib/hooks";
 import { usePublicProjectStore } from "lib/providers/store";
+import { observer } from "mobx-react-lite";
+
+import type { MenuInfo } from "./types";
 
 import { CollapseNavMenu } from "./Collapse";
 import { ExpandNavMenu } from "./Expand";
-import type { MenuInfo } from "./types";
 import {
   getDeviceSubmenuMove,
   getDeviceSubmenuWasm,
@@ -137,14 +138,14 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
     <Flex direction="column" h="full" overflow="hidden" position="relative">
       {isExpand ? (
         <ExpandNavMenu
-          navMenu={navMenu}
           isCurrentPage={isCurrentPage}
+          navMenu={navMenu}
           setIsExpand={setIsExpand}
         />
       ) : (
         <CollapseNavMenu
-          navMenu={navMenu}
           isCurrentPage={isCurrentPage}
+          navMenu={navMenu}
           setIsExpand={setIsExpand}
         />
       )}

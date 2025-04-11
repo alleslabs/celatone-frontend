@@ -1,18 +1,18 @@
 import type { DividerProps, GridProps } from "@chakra-ui/react";
-import { Grid } from "@chakra-ui/react";
+import type { Proposal } from "lib/types";
 
+import { Grid } from "@chakra-ui/react";
 import { useInternalNavigate, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { StopPropagationBox } from "lib/components/StopPropagationBox";
-import type { Proposal } from "lib/types";
 import { ProposalStatus } from "lib/types";
 
+import { TableRow, TableRowFreeze } from "../tableComponents";
 import { ProposalTextCell } from "./ProposalTextCell";
 import { Proposer } from "./Proposer";
 import { ResolvedHeight } from "./ResolvedHeight";
 import { StatusChip } from "./StatusChip";
 import { VotingEndTime } from "./VotingEndTime";
-import { TableRow, TableRowFreeze } from "../tableComponents";
 
 export interface ProposalsTableRowProps {
   proposal: Proposal;
@@ -42,10 +42,6 @@ export const ProposalsTableRow = ({
   return (
     <Grid
       className="copier-wrapper"
-      templateColumns={templateColumns}
-      onClick={() => onRowSelect(proposal.id)}
-      minW="min-content"
-      cursor="pointer"
       _hover={{
         "> div": {
           bgColor:
@@ -54,25 +50,29 @@ export const ProposalsTableRow = ({
               : "gray.900",
         },
       }}
+      cursor="pointer"
+      minW="min-content"
+      templateColumns={templateColumns}
+      onClick={() => onRowSelect(proposal.id)}
     >
       <TableRowFreeze left="0">
         <ExplorerLink
+          ampCopierSection="proposal-list"
+          showCopyOnHover
           type="proposal_id"
           value={proposal.id.toString()}
-          showCopyOnHover
-          ampCopierSection="proposal-list"
         />
       </TableRowFreeze>
       <TableRowFreeze
-        left={columnsWidth && columnsWidth[0]}
         boxShadow={boxShadow}
         color="gray.800"
+        left={columnsWidth && columnsWidth[0]}
       >
         <ProposalTextCell
+          isDepositOrVoting={isDepositOrVoting}
+          isExpedited={proposal.isExpedited}
           title={proposal.title}
           types={proposal.types}
-          isExpedited={proposal.isExpedited}
-          isDepositOrVoting={isDepositOrVoting}
         />
       </TableRowFreeze>
       <TableRow justifyContent="center">
@@ -82,26 +82,26 @@ export const ProposalsTableRow = ({
       </TableRow>
       <TableRow>
         <VotingEndTime
-          votingEndTime={proposal.votingEndTime}
           depositEndTime={proposal.depositEndTime}
           status={proposal.status}
+          votingEndTime={proposal.votingEndTime}
         />
       </TableRow>
       {isFullTier && (
         <TableRow>
           <StopPropagationBox>
             <ResolvedHeight
-              resolvedHeight={proposal.resolvedHeight}
-              isDepositOrVoting={isDepositOrVoting}
               amptrackSection="proposal-list"
+              isDepositOrVoting={isDepositOrVoting}
+              resolvedHeight={proposal.resolvedHeight}
             />
           </StopPropagationBox>
         </TableRow>
       )}
       <TableRow>
         <Proposer
-          proposer={proposal.proposer}
           amptrackSection="proposal-list"
+          proposer={proposal.proposer}
         />
       </TableRow>
     </Grid>

@@ -1,7 +1,8 @@
-import { Flex, useDisclosure } from "@chakra-ui/react";
+import type { CodeSchema, Option } from "lib/types";
 import type { ReactNode } from "react";
 
-import type { CodeSchema, Option } from "lib/types";
+import { Flex, useDisclosure } from "@chakra-ui/react";
+
 import { AttachSchemaCard } from "../AttachSchemaCard";
 import { JsonSchemaModal } from "../JsonSchemaModal";
 
@@ -36,17 +37,17 @@ export const UploadSchema = ({
       ) : (
         <AttachSchemaCard
           attached={attached}
-          codeId={codeId}
           codeHash={codeHash}
+          codeId={codeId}
           localSchema={localSchema}
           openModal={onOpen}
         />
       )}
       <JsonSchemaModal
-        codeId={codeId}
         codeHash={codeHash}
-        isReattach={attached}
+        codeId={codeId}
         isOpen={isOpen}
+        isReattach={attached}
         onClose={onClose}
       />
     </>

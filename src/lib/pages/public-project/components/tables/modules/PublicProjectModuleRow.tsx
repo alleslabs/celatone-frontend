@@ -1,9 +1,9 @@
-import { Button, Flex, Grid, Text } from "@chakra-ui/react";
+import type { PublicModule } from "lib/types";
 
+import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { TableRow } from "lib/components/table";
-import type { PublicModule } from "lib/types";
 import { truncate } from "lib/utils";
 
 interface ModuleTableRowProps {
@@ -33,45 +33,45 @@ export const PublicProjectModuleRow = ({
 
   return (
     <Grid
-      templateColumns={templateColumns}
-      onClick={goToDetail}
       _hover={{ bg: "gray.900" }}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
       minW="min-content"
+      templateColumns={templateColumns}
+      transition="all 0.25s ease-in-out"
+      onClick={goToDetail}
     >
       <TableRow>
         <Text
-          onClick={goToDetail}
-          color="primary.main"
-          transition="all 0.25s ease-in-out"
-          cursor="pointer"
           _hover={{
             textDecoration: "underline",
             textDecorationColor: "primary.light",
             "& > p": { color: "primary.light" },
           }}
+          color="primary.main"
+          cursor="pointer"
+          transition="all 0.25s ease-in-out"
+          onClick={goToDetail}
         >
           {truncate(module.address)}::{module.name}
         </Text>
       </TableRow>
       <TableRow>
         <ExplorerLink
-          value={module.address}
-          type="user_address"
           showCopyOnHover
+          type="user_address"
+          value={module.address}
         />
       </TableRow>
       <TableRow>
-        <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
+        <Text color="text.dark" variant="body2" whiteSpace="break-spaces">
           {module.description || "N/A"}
         </Text>
       </TableRow>
       <TableRow>
         <Flex gap={2} onClick={(e) => e.stopPropagation()}>
           <Button
-            variant="outline-white"
             size="sm"
+            variant="outline-white"
             onClick={() =>
               navigate({
                 pathname: "/interact",
@@ -86,8 +86,8 @@ export const PublicProjectModuleRow = ({
             View
           </Button>
           <Button
-            variant="outline-white"
             size="sm"
+            variant="outline-white"
             onClick={() =>
               navigate({
                 pathname: "/interact",

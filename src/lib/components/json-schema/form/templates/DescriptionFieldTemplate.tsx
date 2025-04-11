@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Text } from "@chakra-ui/react";
 import type {
   DescriptionFieldProps,
   FormContextType,
   RJSFSchema,
   StrictRJSFSchema,
 } from "@rjsf/utils";
+
+import { Text } from "@chakra-ui/react";
 
 /** The `DescriptionField` is the template to use to render the description of a field
  *
@@ -25,8 +26,8 @@ export default function DescriptionField<
       <Text
         id={id}
         className="field-description"
-        variant="body3"
         textColor="text.dark"
+        variant="body3"
         wordBreak="break-word"
       >
         {description}

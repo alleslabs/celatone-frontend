@@ -1,3 +1,5 @@
+import type { ExposedFunction, Option } from "lib/types";
+
 import {
   AccordionButton,
   AccordionIcon,
@@ -6,10 +8,8 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-
 import { AmpEvent, track, trackUseExpand } from "lib/amplitude";
 import { CountBadge, FunctionCard } from "lib/components/module";
-import type { ExposedFunction, Option } from "lib/types";
 
 import { NoImageEmptyState } from "./EmptyState";
 
@@ -44,8 +44,8 @@ export const FunctionAccordion = ({
               });
             }}
           >
-            <Flex align="center" justify="space-between" gap={2}>
-              <Text variant="body2" color="text.dark">
+            <Flex align="center" gap={2} justify="space-between">
+              <Text color="text.dark" variant="body2">
                 {triggerText}
               </Text>
               <CountBadge count={filteredFns.length} variant="common" />
@@ -53,14 +53,14 @@ export const FunctionAccordion = ({
             <AccordionIcon color="gray.600" ml="auto" />
           </AccordionButton>
         </h6>
-        <AccordionPanel py={3} px={0}>
+        <AccordionPanel px={0} py={3}>
           {filteredFns.length ? (
             <Flex flexDirection="column" gap={1}>
               {filteredFns.map((fn) => (
                 <FunctionCard
                   key={fn.name}
-                  variant={selectedFn?.name === fn.name ? "selected" : "common"}
                   exposedFn={fn}
+                  variant={selectedFn?.name === fn.name ? "selected" : "common"}
                   onFunctionSelect={() => {
                     track(AmpEvent.USE_FUNCTION_SELECTION, {
                       functionType: fn.is_view ? "view" : "Execute",

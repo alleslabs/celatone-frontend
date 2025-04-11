@@ -1,4 +1,6 @@
 import type { TabProps } from "@chakra-ui/react";
+import type { Delegation, Option, TokenWithValue, Unbonding } from "lib/types";
+
 import {
   Button,
   TabList,
@@ -8,15 +10,13 @@ import {
   useMultiStyleConfig,
   useTab,
 } from "@chakra-ui/react";
+import { useMobile } from "lib/app-provider";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { useMobile } from "lib/app-provider";
-import type { Delegation, Option, TokenWithValue, Unbonding } from "lib/types";
-
+import { DelegationsTable, UnbondingsTable } from "../table";
 import { MultiBondsRadioCard } from "./radio-card/MultiBondsRadioCard";
 import { SingleBondRadioCard } from "./radio-card/SingleBondRadioCard";
-import { DelegationsTable, UnbondingsTable } from "../table";
 
 interface DelegationsBodyProps {
   totalDelegations: Option<Record<string, TokenWithValue>>;
@@ -57,12 +57,15 @@ const DelegationTab = ({
   return (
     <Button
       __css={styles.tab}
-      display="flex"
-      w="full"
-      mb={0}
-      py={3}
+      _active={{
+        bg: "unset",
+      }}
       borderRadius="8px 8px 0px 0px"
       color="text.main"
+      display="flex"
+      isDisabled={isDisabled}
+      mb={0}
+      py={3}
       sx={{
         "&[aria-selected=true]": {
           background: "gray.800",
@@ -79,25 +82,22 @@ const DelegationTab = ({
           borderBottomColor: "transparent",
         },
       }}
-      isDisabled={isDisabled}
-      _active={{
-        bg: "unset",
-      }}
+      w="full"
       {...tabProps}
     >
       {bondDenoms.length === 1 ? (
         <SingleBondRadioCard
-          value={value}
+          isLoading={isLoading}
           token={
             tokens ? (tokens[bondDenoms[0].denom] ?? bondDenoms[0]) : undefined
           }
-          isLoading={isLoading}
+          value={value}
         />
       ) : (
         <MultiBondsRadioCard
-          value={value}
-          tokens={tokens}
           isLoading={isLoading}
+          tokens={tokens}
+          value={value}
         />
       )}
     </Button>
@@ -128,39 +128,39 @@ export const DelegationsBody = ({
     <Tabs isLazy lazyBehavior="keepMounted" mt={6} w="full">
       <TabList borderBottom="0px solid" gap={2}>
         <DelegationTab
-          tokens={totalDelegations}
-          isLoading={isDelegationsLoading}
           bondDenoms={bondDenoms}
+          isLoading={isDelegationsLoading}
+          tokens={totalDelegations}
           value="Delegated"
         />
         <DelegationTab
-          value="Unbonding"
-          tokens={totalUnbondings}
-          isLoading={isUnbondingsLoading}
           bondDenoms={bondDenoms}
+          isLoading={isUnbondingsLoading}
+          tokens={totalUnbondings}
+          value="Unbonding"
         />
       </TabList>
       <TabPanels
         background="gray.800"
         border="1px solid"
         borderColor="gray.700"
-        borderTopColor="transparent"
         borderRadius="0px 0px 8px 8px"
+        borderTopColor="transparent"
         p={4}
       >
         <TabPanel {...getPanelStyle({ isMobile })}>
           <DelegationsTable
             delegations={delegations}
-            rewards={rewards}
             isLoading={isDelegationsLoading}
             isSingleBondDenom={bondDenoms.length === 1}
+            rewards={rewards}
           />
         </TabPanel>
         <TabPanel {...getPanelStyle({ isMobile })}>
           <UnbondingsTable
-            unbondings={unbondings}
             isLoading={isUnbondingsLoading}
             isSingleBondDenom={bondDenoms.length === 1}
+            unbondings={unbondings}
           />
         </TabPanel>
       </TabPanels>

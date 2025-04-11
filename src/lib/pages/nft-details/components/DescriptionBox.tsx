@@ -1,14 +1,14 @@
-import { Box, Text } from "@chakra-ui/react";
-
 import type { Option } from "lib/types";
+
+import { Box, Text } from "@chakra-ui/react";
 
 interface DescriptionBoxProps {
   description: Option<string>;
 }
 
 export const DescriptionBox = ({ description }: DescriptionBoxProps) => (
-  <Box fontSize="14px" p="16px" borderRadius="8px" backgroundColor="gray.900">
-    <Text mb="8px" fontWeight={700}>
+  <Box backgroundColor="gray.900" borderRadius="8px" fontSize="14px" p="16px">
+    <Text fontWeight={700} mb="8px">
       Description
     </Text>
     {description ? (

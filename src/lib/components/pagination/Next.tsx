@@ -1,8 +1,8 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
-import { useContext } from "react";
 
+import { Button } from "@chakra-ui/react";
 import { trackUsePaginationNavigate } from "lib/amplitude";
+import { useContext } from "react";
 
 import { PaginatorContext } from "./PaginatorProvider";
 

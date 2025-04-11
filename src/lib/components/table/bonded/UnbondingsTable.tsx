@@ -1,16 +1,16 @@
-import { Box } from "@chakra-ui/react";
+import type { Option, Unbonding } from "lib/types";
 
+import { Box } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
-import type { Option, Unbonding } from "lib/types";
 
+import { MobileTableContainer, TableContainer } from "../tableComponents";
+import { TableTitle } from "../TableTitle";
 import { BondedTableHeader } from "./BondedTableHeader";
 import { BondedTableMobileCard } from "./BondedTableMobileCard";
 import { BondedTableRow } from "./BondedTableRow";
 import { TEMPLATE_COLUMNS } from "./constants";
-import { MobileTableContainer, TableContainer } from "../tableComponents";
-import { TableTitle } from "../TableTitle";
 
 interface UnbondingsTableProps {
   unbondings: Option<Unbonding[]>;
@@ -59,8 +59,8 @@ const UnbondingsTableBody = ({
   ) : (
     <TableContainer>
       <BondedTableHeader
-        templateColumns={TEMPLATE_COLUMNS}
         isDelegation={false}
+        templateColumns={TEMPLATE_COLUMNS}
       />
       {unbondings.map((unbonding) => (
         <BondedTableRow
@@ -78,8 +78,8 @@ const UnbondingsTableBody = ({
             completionTime: unbonding.completionTime,
           }}
           isSingleBondDenom={isSingleBondDenom}
-          templateColumns={TEMPLATE_COLUMNS}
           isUnbonding
+          templateColumns={TEMPLATE_COLUMNS}
         />
       ))}
     </TableContainer>
@@ -92,11 +92,11 @@ export const UnbondingsTable = ({
   isSingleBondDenom,
 }: UnbondingsTableProps) => (
   <Box width="100%">
-    <TableTitle title="Unbonding" count={unbondings?.length ?? 0} mb={2} />
+    <TableTitle count={unbondings?.length ?? 0} mb={2} title="Unbonding" />
     <UnbondingsTableBody
-      unbondings={unbondings}
       isLoading={isLoading}
       isSingleBondDenom={isSingleBondDenom}
+      unbondings={unbondings}
     />
   </Box>
 );

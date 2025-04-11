@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import {
   zAddr,
   zBechAddr,
@@ -10,6 +8,7 @@ import {
   zValidatorAddr,
 } from "lib/types";
 import { formatSeconds, snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 export const zStakingParamsResponseRest = z
   .object({

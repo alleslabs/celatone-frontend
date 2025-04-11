@@ -1,14 +1,14 @@
-import { Flex, Text } from "@chakra-ui/react";
-
-import { useIsApiChain } from "lib/app-provider";
 import type { BechAddr32, Nullish, WasmVerifyInfo } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
+import { useIsApiChain } from "lib/app-provider";
+
+import { ExplorerLink } from "../ExplorerLink";
 import { FailedDetails } from "./FailedDetails";
 import { IndirectlyVerifiedDetails } from "./IndirectlyVerifiedDetails";
 import { InProgressDetails } from "./InProgressDetails";
 import { NotVerifiedDetails } from "./NotVerifiedDetails";
 import { VerifiedDetails } from "./VerifiedDetails";
-import { ExplorerLink } from "../ExplorerLink";
 
 interface WasmVerifySectionProps {
   codeId: number;
@@ -28,14 +28,14 @@ const WasmVerifySectionBody = ({
   });
   if (!isApiChain)
     return (
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         {contractAddress ? (
           <>
             This contract is an instance of code ID{" "}
             <ExplorerLink
-              value={codeId.toString()}
-              type="code_id"
               showCopyOnHover
+              type="code_id"
+              value={codeId.toString()}
             />
             .
           </>
@@ -47,8 +47,8 @@ const WasmVerifySectionBody = ({
   if (!wasmVerifyInfo)
     return (
       <NotVerifiedDetails
-        codeId={codeId}
         codeHash={codeHash}
+        codeId={codeId}
         contractAddress={contractAddress}
       />
     );
@@ -57,18 +57,18 @@ const WasmVerifySectionBody = ({
     if (wasmVerifyInfo.relatedVerifiedCodes.length === 0)
       return (
         <NotVerifiedDetails
-          codeId={codeId}
           codeHash={codeHash}
+          codeId={codeId}
           contractAddress={contractAddress}
         />
       );
 
     return (
       <IndirectlyVerifiedDetails
-        codeId={codeId}
         codeHash={codeHash}
-        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+        codeId={codeId}
         contractAddress={contractAddress}
+        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
       />
     );
   }
@@ -76,43 +76,43 @@ const WasmVerifySectionBody = ({
   if (wasmVerifyInfo.verificationInfo.errorMessage)
     return (
       <FailedDetails
-        codeId={codeId}
         codeHash={codeHash}
-        verificationInfo={wasmVerifyInfo.verificationInfo}
-        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+        codeId={codeId}
         contractAddress={contractAddress}
+        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+        verificationInfo={wasmVerifyInfo.verificationInfo}
       />
     );
 
   if (wasmVerifyInfo.verificationInfo.comparedTimestamp === null)
     return (
       <InProgressDetails
-        codeId={codeId}
         codeHash={codeHash}
-        verificationInfo={wasmVerifyInfo.verificationInfo}
-        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+        codeId={codeId}
         contractAddress={contractAddress}
+        relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+        verificationInfo={wasmVerifyInfo.verificationInfo}
       />
     );
 
   return (
     <VerifiedDetails
       codeHash={codeHash}
-      verificationInfo={wasmVerifyInfo.verificationInfo}
-      schema={wasmVerifyInfo.schema}
-      relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
       contractAddress={contractAddress}
+      relatedVerifiedCodes={wasmVerifyInfo.relatedVerifiedCodes}
+      schema={wasmVerifyInfo.schema}
+      verificationInfo={wasmVerifyInfo.verificationInfo}
     />
   );
 };
 
 export const WasmVerifySection = (props: WasmVerifySectionProps) => (
   <Flex
-    direction={{ base: "column", md: "row" }}
     alignItems={{ base: "start", md: "center" }}
+    direction={{ base: "column", md: "row" }}
+    gap={2}
     justifyContent="space-between"
     w="full"
-    gap={2}
   >
     <WasmVerifySectionBody {...props} />
   </Flex>

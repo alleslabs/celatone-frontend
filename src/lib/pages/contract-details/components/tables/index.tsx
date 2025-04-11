@@ -1,3 +1,5 @@
+import type { BechAddr32 } from "lib/types";
+
 import {
   Flex,
   Heading,
@@ -6,11 +8,9 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-
 import { useGovConfig, useTierConfig } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
 import { useContractTableCounts } from "lib/services/wasm/contract";
-import type { BechAddr32 } from "lib/types";
 
 import { MigrationTable } from "./migration";
 import { RelatedProposalsTable } from "./RelatedProposalsTable";
@@ -34,12 +34,12 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
   return (
     <Flex direction="column" gap={6}>
       {/* History Table section */}
-      <Heading as="h6" variant="h6" id={tableHeaderId}>
+      <Heading id={tableHeaderId} as="h6" variant="h6">
         Transactions & Histories
       </Heading>
       <Tabs isLazy lazyBehavior="keepMounted">
         <TabList
-          borderBottom="1px solid"
+          borderBottomWidth="1px"
           borderColor="gray.700"
           overflowX={{ base: "scroll", md: "auto" }}
         >
@@ -51,9 +51,9 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
           </CustomTab>
           <CustomTab
             count={data?.relatedProposal}
+            hidden={!gov.enabled || !isFullTier}
             isDisabled={data?.relatedProposal === 0}
             whiteSpace="nowrap"
-            hidden={!gov.enabled || !isFullTier}
           >
             Related Proposals
           </CustomTab>
@@ -62,25 +62,25 @@ export const ContractTables = ({ contractAddress }: ContractTablesProps) => {
           <TabPanel p={0}>
             <TxsTable
               contractAddress={contractAddress}
+              refetchCount={refetchCount}
               scrollComponentId={tableHeaderId}
               totalData={data?.tx ?? undefined}
-              refetchCount={refetchCount}
             />
           </TabPanel>
           <TabPanel p={0}>
             <MigrationTable
               contractAddress={contractAddress}
+              refetchCount={refetchCount}
               scrollComponentId={tableHeaderId}
               totalData={data?.migration ?? undefined}
-              refetchCount={refetchCount}
             />
           </TabPanel>
           <TabPanel p={0}>
             <RelatedProposalsTable
               contractAddress={contractAddress}
+              refetchCount={refetchCount}
               scrollComponentId={tableHeaderId}
               totalData={data?.relatedProposal ?? undefined}
-              refetchCount={refetchCount}
             />
           </TabPanel>
         </TabPanels>

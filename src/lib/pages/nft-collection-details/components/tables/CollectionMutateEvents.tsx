@@ -1,9 +1,10 @@
+import type { HexAddr32 } from "lib/types";
+
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { MutateEventsTable } from "lib/components/table";
 import { useNftCollectionMutateEvents } from "lib/services/nft-collection";
-import type { HexAddr32 } from "lib/types";
 
 interface CollectionMutateEventsProps {
   collectionAddress: HexAddr32;
@@ -38,22 +39,22 @@ export const CollectionMutateEvents = ({
   return (
     <>
       <MutateEventsTable
-        mutateEvents={mutateEvents?.items}
-        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant="empty"
             message="Mutate events are not found."
           />
         }
+        isLoading={isLoading}
+        mutateEvents={mutateEvents?.items}
       />
       {mutateEvents && mutateEvents.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={mutateEvents.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={mutateEvents.total}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

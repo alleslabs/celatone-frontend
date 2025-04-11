@@ -1,8 +1,8 @@
+import type { CodeSchema, Dict, Option } from "lib/types";
+
+import { SchemaProperties } from "lib/types";
 import { makeAutoObservable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
-
-import type { CodeSchema, Dict, Option } from "lib/types";
-import { SchemaProperties } from "lib/types";
 
 const normalize = (codeHash: string) => {
   return codeHash.toLowerCase();

@@ -1,6 +1,6 @@
-import { Button, Flex } from "@chakra-ui/react";
-
 import type { LVPair } from "lib/types";
+
+import { Button, Flex } from "@chakra-ui/react";
 
 interface ToggleWithNameProps {
   selectedValue: string;
@@ -13,15 +13,15 @@ export const ToggleWithName = ({
   options,
   selectOption,
 }: ToggleWithNameProps) => (
-  <Flex p={1} borderRadius={4} border="1px" borderColor="gray.700">
+  <Flex border="1px" borderColor="gray.700" borderRadius={4} p={1}>
     {options.map((item) => (
       <Button
         key={item.value}
         borderRadius={4}
-        size="sm"
         height="22px"
-        width="64px"
+        size="sm"
         variant={item.value === selectedValue ? "primary" : "ghost-primary"}
+        width="64px"
         onClick={() => selectOption(item.value)}
       >
         {item.label}

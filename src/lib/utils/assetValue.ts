@@ -1,7 +1,4 @@
 import type { BigSource } from "big.js";
-import big, { Big } from "big.js";
-import { isUndefined } from "lodash";
-
 import type {
   AssetInfos,
   MovePoolInfos,
@@ -11,6 +8,9 @@ import type {
   U,
   USD,
 } from "lib/types";
+
+import big, { Big } from "big.js";
+import { isUndefined } from "lodash";
 
 import { getTokenLabel, toToken } from "./formatter";
 

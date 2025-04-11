@@ -1,12 +1,12 @@
 import type { StdFee } from "@cosmjs/stargate";
-import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
-import { useCallback } from "react";
+import type { HexAddr } from "lib/types";
 
+import { MsgExecute as MsgExecuteModule } from "@initia/initia.js";
 import { trackTxSucceed } from "lib/amplitude";
 import { executeModuleTx } from "lib/app-fns/tx/move/executeModule";
 import { useCurrentChain, useSignAndBroadcast } from "lib/app-provider/hooks";
-import type { HexAddr } from "lib/types";
 import { toEncodeObject } from "lib/utils";
+import { useCallback } from "react";
 
 export interface ExecuteModuleStreamParams {
   moduleAddress: HexAddr;

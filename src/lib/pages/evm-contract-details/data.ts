@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+import type { BechAddr20, Nullish } from "lib/types";
 
 import {
   useEvmTxHashesByCosmosTxHashes,
   useEvmTxsDataJsonRpc,
   useTxsByAddressPaginationSequencer,
 } from "lib/services/tx";
-import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
-import type { BechAddr20, Nullish } from "lib/types";
+import { useEffect, useState } from "react";
 
 export const useContractDetailsEvmTxs = (address: BechAddr20) => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);

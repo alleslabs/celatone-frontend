@@ -1,8 +1,8 @@
-import { Spinner } from "@chakra-ui/react";
-import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
-
 import type { SimulatedFeeEvm } from "lib/services/types";
 import type { TxResultRendering } from "lib/types";
+
+import { Spinner } from "@chakra-ui/react";
+import { EstimatedFeeEvmRender } from "lib/components/EstimatedFeeEvmRender";
 import { TxStreamPhase } from "lib/types";
 
 export const sendingEvmTx = ({

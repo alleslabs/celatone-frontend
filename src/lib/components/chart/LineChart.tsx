@@ -5,6 +5,8 @@ import type {
   TooltipModel,
   TooltipOptions,
 } from "chart.js";
+import type { CrosshairOptions } from "chartjs-plugin-crosshair";
+
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -14,11 +16,9 @@ import {
   PointElement,
   Tooltip,
 } from "chart.js";
-import type { CrosshairOptions } from "chartjs-plugin-crosshair";
 import Crosshair from "chartjs-plugin-crosshair";
-import { Line } from "react-chartjs-2";
-
 import { useMobile } from "lib/app-provider";
+import { Line } from "react-chartjs-2";
 
 ChartJS.register(
   LinearScale,
@@ -220,7 +220,6 @@ export const LineChart = ({
 
   return (
     <Line
-      options={options}
       data={{
         labels,
         datasets: [
@@ -230,6 +229,7 @@ export const LineChart = ({
           },
         ],
       }}
+      options={options}
     />
   );
 };

@@ -1,11 +1,11 @@
-import axios from "axios";
+import type { WasmVerifyRequest } from "lib/services/types";
 
+import axios from "axios";
 import { CELATONE_VERIFICATION_API } from "env";
 import {
   zWasmRelatedVerifyInfosResponse,
   zWasmVerifyInfosResponse,
 } from "lib/services/types";
-import type { WasmVerifyRequest } from "lib/services/types";
 
 export const submitWasmVerify = async (
   wasmVerifyRequest: WasmVerifyRequest

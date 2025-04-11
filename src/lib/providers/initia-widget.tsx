@@ -1,11 +1,12 @@
-import { context, loadScript } from "@initia/react-wallet-widget/ssr";
 import type { WalletWidget, WidgetConfig } from "@initia/utils";
-import { useEffect, useState } from "react";
 import type { ReactNode, PropsWithChildren } from "react";
 
+import { context, loadScript } from "@initia/react-wallet-widget/ssr";
 import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
 import { LoadingOverlay } from "lib/components/LoadingOverlay";
 import { useL1InfoByNetworkType } from "lib/hooks";
+import { useEffect, useState } from "react";
+
 import pkg from "../../../package.json";
 
 declare global {
@@ -49,7 +50,6 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
   return (
     <WalletWidgetProvider
       key={currentChainId}
-      useKeplrAsDirectSigner={enabledWasm.enabled}
       customLayer={
         chainConfig.network_type === "local"
           ? {
@@ -73,6 +73,7 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
           : undefined
       }
       fallback={<LoadingOverlay />}
+      useKeplrAsDirectSigner={enabledWasm.enabled}
       {...configs}
     >
       {children}

@@ -1,11 +1,11 @@
-import { observer } from "mobx-react-lite";
+import type { BechAddr32 } from "lib/types";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { AlertPaginationRest } from "lib/components/AlertPaginationRest";
 import { LoadNext } from "lib/components/LoadNext";
 import { ContractsTable, TableTitle } from "lib/components/table";
 import { useCodeContractsRest } from "lib/pages/code-details/data";
-import type { BechAddr32 } from "lib/types";
+import { observer } from "mobx-react-lite";
 
 import { NoContracts } from "./NoContracts";
 
@@ -34,19 +34,19 @@ export const CodeContractsTableLite = observer(
     return (
       <>
         {data && !!error && <AlertPaginationRest />}
-        <TableTitle title="Contract instances" showCount={false} />
+        <TableTitle showCount={false} title="Contract instances" />
         <ContractsTable
           contracts={data}
-          isLoading={isLoading}
           emptyState={<NoContracts />}
-          onRowSelect={onRowSelect}
+          isLoading={isLoading}
           showLastUpdate={false}
+          onRowSelect={onRowSelect}
         />
         {hasNextPage && (
           <LoadNext
-            text="Load more 10 contracts"
             fetchNextPage={fetchNextPage}
             isFetchingNextPage={isFetchingNextPage}
+            text="Load more 10 contracts"
           />
         )}
       </>

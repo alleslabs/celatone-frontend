@@ -1,11 +1,12 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-
-import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
 import type { PoolTypeFilter } from "lib/types";
 
-import { getPoolData, getPools, getPoolsLiquidityByPoolIds } from "./api";
+import { useQuery } from "@tanstack/react-query";
+import { CELATONE_QUERY_KEYS, useBaseApiRoute } from "lib/app-provider";
+
 import type { PoolsResponse } from "../types";
+
+import { getPoolData, getPools, getPoolsLiquidityByPoolIds } from "./api";
 
 export const usePools = (
   limit: number,

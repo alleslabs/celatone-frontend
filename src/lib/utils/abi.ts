@@ -1,11 +1,11 @@
-import { BCS } from "@alleslabs/legacy-bcs";
-
 import type {
   AbiFormData,
   ExposedFunction,
   ModuleAbi,
   Nullable,
 } from "lib/types";
+
+import { BCS } from "@alleslabs/legacy-bcs";
 
 export const checkAvailability = (fn: ExposedFunction) =>
   fn.is_view || fn.is_entry;

@@ -1,17 +1,17 @@
+import type { FormStatus, TextInputProps } from "lib/components/forms";
+import type { Option } from "lib/types";
 import type { ReactNode } from "react";
-import { useCallback } from "react";
 import type {
   Control,
   FieldPath,
   FieldValues,
   RegisterOptions,
 } from "react-hook-form";
-import { useWatch } from "react-hook-form";
 
 import { useExampleAddresses, useValidateAddress } from "lib/app-provider";
-import type { FormStatus, TextInputProps } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
-import type { Option } from "lib/types";
+import { useCallback } from "react";
+import { useWatch } from "react-hook-form";
 
 interface AddressInputProps<T extends FieldValues>
   extends Omit<TextInputProps, "value" | "setInputState"> {
@@ -62,21 +62,21 @@ export const AddressInput = <T extends FieldValues>({
 
   return (
     <ControllerInput
-      name={name}
       control={control}
-      label={label}
-      placeholder={placeholder ?? exampleUserAddress}
-      variant="fixed-floating"
-      status={status}
-      labelBgColor={labelBgColor}
+      helperAction={helperAction}
       helperText={helperText}
-      size={size}
+      label={label}
+      labelBgColor={labelBgColor}
+      maxLength={maxLength}
+      name={name}
+      placeholder={placeholder ?? exampleUserAddress}
       rules={{
         required: requiredText,
         validate: { validateAddress, ...validation },
       }}
-      maxLength={maxLength}
-      helperAction={helperAction}
+      size={size}
+      status={status}
+      variant="fixed-floating"
     />
   );
 };

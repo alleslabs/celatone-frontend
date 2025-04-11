@@ -1,8 +1,8 @@
-import { ButtonGroup, Spinner, Text } from "@chakra-ui/react";
+import type { BechAddr32 } from "lib/types";
 
+import { ButtonGroup, Spinner, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
-import type { BechAddr32 } from "lib/types";
 import { jsonPrettify, libEncode } from "lib/utils";
 
 interface ContractCmdGroupProps {
@@ -21,12 +21,11 @@ export const ContractCmdGroup = ({
   const navigate = useInternalNavigate();
 
   if (isFetching) {
-    return <Spinner size="md" mx={1} />;
+    return <Spinner mx={1} size="md" />;
   }
   if (cmds.length) {
     return (
       <ButtonGroup
-        width="90%"
         flexWrap="wrap"
         rowGap={2}
         sx={{
@@ -35,6 +34,7 @@ export const ContractCmdGroup = ({
             marginInlineEnd: "1",
           },
         }}
+        width="90%"
       >
         {cmds.sort().map(([cmd, msg]) => (
           <ContractCmdButton
@@ -56,7 +56,7 @@ export const ContractCmdGroup = ({
     );
   }
   return (
-    <Text variant="body2" color="text.dark">
+    <Text color="text.dark" variant="body2">
       No messages available
     </Text>
   );

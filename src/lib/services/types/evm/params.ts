@@ -1,6 +1,6 @@
-import { z } from "zod";
 import { zRatio } from "lib/types";
 import { snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 export const zEvmParams = z
   .object({

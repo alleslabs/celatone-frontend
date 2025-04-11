@@ -1,5 +1,5 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import type { ComponentConfig, ThemeConfig } from "./types";
+
 import { generateTheme } from "./utils";
 
 const DEFAULT_BASE_THEME: ThemeConfig = {

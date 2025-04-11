@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import type {
   HexAddr,
   IndexedModule,
@@ -8,6 +6,7 @@ import type {
   ModulePublishInfo,
   Option,
 } from "lib/types";
+
 import {
   UpgradePolicy,
   zHexAddr,
@@ -21,6 +20,8 @@ import {
   sha256Hex,
   snakeToCamel,
 } from "lib/utils";
+import { z } from "zod";
+
 import { zProposal, zProposalsResponseItem } from "../proposal";
 import { zTxsResponseItem } from "../tx";
 

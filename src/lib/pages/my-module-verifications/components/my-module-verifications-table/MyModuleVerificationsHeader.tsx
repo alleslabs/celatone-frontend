@@ -1,6 +1,6 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Grid } from "@chakra-ui/react";
 
+import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "lib/components/table";
 
 interface ModulesTableHeaderProps {
@@ -9,7 +9,7 @@ interface ModulesTableHeaderProps {
 export const MyModuleVerificationsTableHeader = ({
   templateColumns,
 }: ModulesTableHeaderProps) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Request ID</TableHeader>
     <TableHeader>Request note</TableHeader>
     <TableHeader>Files</TableHeader>

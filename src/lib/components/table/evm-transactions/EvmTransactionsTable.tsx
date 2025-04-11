@@ -1,14 +1,15 @@
+import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
+import type { Option } from "lib/types";
+
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { useAssetInfos } from "lib/services/assetService";
 import { useEvmParams } from "lib/services/evm";
-import type { TxDataWithTimeStampJsonRpc } from "lib/services/types";
-import type { Option } from "lib/types";
 
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { EvmTransactionsTableHeader } from "./EvmTransactionsTableHeader";
 import { EvmTransactionsTableMobileCard } from "./EvmTransactionsTableMobileCard";
 import { EvmTransactionsTableRow } from "./EvmTransactionsTableRow";
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface EvmTransactionsTableProps {
   evmTransactions: Option<TxDataWithTimeStampJsonRpc[]>;
@@ -50,9 +51,9 @@ export const EvmTransactionsTable = ({
       {evmTransactions.map((evmTransaction) => (
         <EvmTransactionsTableMobileCard
           key={evmTransaction.tx.hash}
-          evmTransaction={evmTransaction}
-          evmDenom={evmParams?.params.feeDenom}
           assetInfos={assetInfos}
+          evmDenom={evmParams?.params.feeDenom}
+          evmTransaction={evmTransaction}
           showTimestamp={showTimestamp}
         />
       ))}
@@ -60,17 +61,17 @@ export const EvmTransactionsTable = ({
   ) : (
     <TableContainer>
       <EvmTransactionsTableHeader
-        templateColumns={templateColumns}
         showTimestamp={showTimestamp}
+        templateColumns={templateColumns}
       />
       {evmTransactions.map((evmTransaction) => (
         <EvmTransactionsTableRow
           key={evmTransaction.tx.hash}
-          templateColumns={templateColumns}
-          evmTransaction={evmTransaction}
-          evmDenom={evmParams?.params.feeDenom}
           assetInfos={assetInfos}
+          evmDenom={evmParams?.params.feeDenom}
+          evmTransaction={evmTransaction}
           showTimestamp={showTimestamp}
+          templateColumns={templateColumns}
         />
       ))}
     </TableContainer>

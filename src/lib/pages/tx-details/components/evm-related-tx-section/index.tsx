@@ -1,5 +1,4 @@
 import { Flex, Heading } from "@chakra-ui/react";
-
 import { useMobile } from "lib/app-provider";
 import { EvmToCell } from "lib/components/evm-to-cell";
 import { EvmMethodChip } from "lib/components/EvmMethodChip";
@@ -35,9 +34,9 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
     <>
       <EvmRelatedField label={isMobile ? "Tx hash" : "Transaction hash"}>
         <ExplorerLink
+          showCopyOnHover
           type="evm_tx_hash"
           value={formatEvmTxHash(evmTxHash)}
-          showCopyOnHover
         />
       </EvmRelatedField>
       <EvmRelatedField label="Method">
@@ -45,18 +44,18 @@ const EvmRelatedTxSectionBody = ({ evmTxHash }: EvmRelatedTxSectionProps) => {
       </EvmRelatedField>
       <EvmRelatedField label="Sender">
         <ExplorerLink
+          showCopyOnHover
           type="user_address"
           value={data.tx.from}
-          showCopyOnHover
         />
       </EvmRelatedField>
       <CustomIcon
-        name="arrow-right"
         boxSize={5}
         color="gray.600"
         display={{ base: "none", xl: "block" }}
         flex={0.3}
         mt={5}
+        name="arrow-right"
       />
       <EvmRelatedField label="To">
         <EvmToCell toAddress={toAddress} />
@@ -73,10 +72,10 @@ export const EvmRelatedTxSection = ({
       Related EVM transaction
     </Heading>
     <Flex
-      direction={{ base: "column", xl: "row" }}
-      gap={4}
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="8px"
+      direction={{ base: "column", xl: "row" }}
+      gap={4}
       p={4}
       sx={{ "& > div:last-child": { flex: 2, maxW: "unset" } }}
     >

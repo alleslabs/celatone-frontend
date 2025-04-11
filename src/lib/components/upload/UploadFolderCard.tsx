@@ -1,10 +1,10 @@
 import { Flex, IconButton, Text } from "@chakra-ui/react";
-
 import { AmpEvent, track } from "lib/amplitude";
 
-import { useCardTheme } from "./hooks/useCardTheme";
 import type { CardTheme, Status } from "./types";
+
 import { CustomIcon, UploadFolderIcon } from "../icon";
+import { useCardTheme } from "./hooks/useCardTheme";
 
 interface UploadFolderCardProps {
   fileName: string;
@@ -24,35 +24,35 @@ export const UploadFolderCard = ({
   return (
     <Flex
       align="center"
-      p="16px"
-      gap="16px"
-      w="full"
       bgColor={themeConfig.bgColor}
       border={themeConfig.border}
       borderColor={statusColor}
       borderRadius="8px"
+      gap="16px"
       justifyContent="space-between"
+      p="16px"
+      w="full"
     >
-      <Flex gap={5} alignItems="center">
+      <Flex alignItems="center" gap={5}>
         <UploadFolderIcon />
         <Text variant="body1">{fileName}</Text>
       </Flex>
       <Flex align="center" gap={4}>
         <IconButton
-          variant="ghost-gray-icon"
+          aria-label="reattach schema"
+          icon={<CustomIcon boxSize={4} name="delete" />}
           size="sm"
+          variant="ghost-gray-icon"
           onClick={() => {
             track(AmpEvent.USE_REMOVE_UPLOAD_FILE);
             deleteFile();
           }}
-          icon={<CustomIcon name="delete" boxSize={4} />}
-          aria-label="reattach schema"
         />
         {status === "error" && (
           <CustomIcon
-            name="alert-triangle-solid"
-            color="error.main"
             boxSize={4}
+            color="error.main"
+            name="alert-triangle-solid"
           />
         )}
       </Flex>

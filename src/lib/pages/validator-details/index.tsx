@@ -1,10 +1,9 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useGovConfig } from "lib/app-provider";
 import { InvalidState } from "lib/components/state";
 import { TierSwitcher } from "lib/components/TierSwitcher";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import {
   ValidatorDetailsBodyFull,

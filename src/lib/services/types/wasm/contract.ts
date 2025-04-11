@@ -1,6 +1,5 @@
-import z from "zod";
-
 import type { ContractInfo, ContractMigrationHistory } from "lib/types";
+
 import {
   zBechAddr,
   zBechAddr32,
@@ -12,6 +11,7 @@ import {
   zUtcDate,
 } from "lib/types";
 import { decode, parseTxHash, snakeToCamel } from "lib/utils";
+import z from "zod";
 
 const zContractCreated = z.object({
   block_height: z.coerce.number(),

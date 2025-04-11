@@ -1,5 +1,6 @@
-import { CELATONE_VERIFICATION_API } from "env";
 import type { ContractLibraries } from "lib/types";
+
+import { CELATONE_VERIFICATION_API } from "env";
 import { EvmVerifyOptions } from "lib/types";
 import { isHex20Bytes } from "lib/utils/validate";
 

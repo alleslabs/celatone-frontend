@@ -15,7 +15,7 @@ export const EvmContractVerifyAlert = ({
       return (
         <Alert variant="primary">
           <Flex gap={2}>
-            <CustomIcon name="info-circle-solid" boxSize={4} />
+            <CustomIcon boxSize={4} name="info-circle-solid" />
             <AlertDescription>
               When verifying with the <strong>Upload Files</strong> and{" "}
               <strong>Contract Code</strong> method, we only expose configurable
@@ -34,7 +34,7 @@ export const EvmContractVerifyAlert = ({
       return (
         <Alert variant="primary">
           <Flex gap={2}>
-            <CustomIcon name="info-circle-solid" boxSize={4} />
+            <CustomIcon boxSize={4} name="info-circle-solid" />
             <AlertDescription>
               When verifying with the <strong>Upload File</strong> and{" "}
               <strong>Contract Code</strong> method, we only expose configurable

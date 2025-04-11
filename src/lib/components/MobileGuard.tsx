@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 
 import { useChainConfigs, useMobile } from "lib/app-provider";
+import { useRouter } from "next/router";
 
 import { NoMobile } from "./modal";
 

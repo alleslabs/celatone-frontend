@@ -1,11 +1,14 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
-import type { FieldPath, FieldValues } from "react-hook-form";
-import { useController, useWatch } from "react-hook-form";
-import { CustomIcon } from "lib/components/icon";
 import type { Option } from "lib/types";
-import { Field } from "./Field";
+import type { FieldPath, FieldValues } from "react-hook-form";
+
+import { Button, Flex, Text } from "@chakra-ui/react";
+import { CustomIcon } from "lib/components/icon";
+import { useController, useWatch } from "react-hook-form";
+
 import type { FieldProps } from "./types";
+
 import { getDefaultValueFromDimensions } from "../utils";
+import { Field } from "./Field";
 
 interface FieldTemplateProps<T extends FieldValues> extends FieldProps<T> {
   dimensions?: Option<number>[];
@@ -29,7 +32,7 @@ export const FieldTemplate = <T extends FieldValues>({
 
   if (dimensions.length === 0)
     return (
-      <Field control={control} name={name} components={components} {...rest} />
+      <Field components={components} control={control} name={name} {...rest} />
     );
 
   const [currentDimension, ...restDimensions] = dimensions;
@@ -38,57 +41,57 @@ export const FieldTemplate = <T extends FieldValues>({
   const arrayValue = value as unknown[];
   return (
     <Flex
-      direction="column"
-      gap={2}
-      w="full"
-      p={4}
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="8px"
+      direction="column"
+      gap={2}
+      p={4}
+      w="full"
     >
       {arrayValue.length ? (
         <>
           {arrayValue.map((_, index) => (
             <Flex key={index} align="center" gap={4}>
               <FieldTemplate
-                name={`${name}.${index}` as FieldPath<T>}
-                control={control}
                 components={components}
+                control={control}
                 dimensions={restDimensions}
+                name={`${name}.${index}` as FieldPath<T>}
                 {...rest}
               />
               {isDynamic && (
                 <Button
-                  w="56px"
                   h="56px"
-                  variant="outline-gray"
+                  p={0}
                   size="lg"
+                  variant="outline-gray"
+                  w="56px"
                   onClick={() =>
                     onChange(arrayValue.filter((_, i) => i !== index))
                   }
-                  p={0}
                 >
-                  <CustomIcon name="delete" boxSize={3} />
+                  <CustomIcon boxSize={3} name="delete" />
                 </Button>
               )}
             </Flex>
           ))}
         </>
       ) : (
-        <Text variant="body2" color="text.dark" textAlign="center">
+        <Text color="text.dark" textAlign="center" variant="body2">
           Left blank to send as empty array
         </Text>
       )}
       {isDynamic && (
         <Button
-          variant="outline-gray"
+          leftIcon={<CustomIcon name="plus" />}
           mx="auto"
+          variant="outline-gray"
           onClick={() =>
             onChange([
               ...value,
               getDefaultValueFromDimensions(restDimensions, components),
             ])
           }
-          leftIcon={<CustomIcon name="plus" />}
         >
           Add item
         </Button>

@@ -1,4 +1,5 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
+
 import { defineStyle } from "@chakra-ui/react";
 
 const gray400 = "gray.400";

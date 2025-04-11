@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { withSentryConfig } = require("@sentry/nextjs");
 
 /** @type {import('next').NextConfig} */
@@ -6,7 +7,6 @@ const SENTRY_DSN =
   "https://examplePublicKey@o0.ingest.sentry.io/0";
 
 const nextConfig = {
-  swcMinify: true,
   reactStrictMode: true,
   eslint: {
     dirs: ["src"],

@@ -1,8 +1,10 @@
-import { ButtonGroup, Flex, Text } from "@chakra-ui/react";
 import type { JsonFragment } from "ethers";
+import type { HexAddr20 } from "lib/types";
+
+import { ButtonGroup, Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ContractCmdButton } from "lib/components/ContractCmdButton";
-import type { HexAddr20 } from "lib/types";
+
 import { InteractTabsIndex, TabIndex } from "../../types";
 import { getInteractTabsIndex } from "../../utils";
 
@@ -37,29 +39,29 @@ export const EvmContractCmdGroup = ({
   const isAsProxy = interactTab.endsWith("proxy");
   return (
     <Flex
+      bg="gray.900"
+      borderRadius={8}
       direction="column"
       flex={1}
       padding={4}
-      bg="gray.900"
-      borderRadius={8}
     >
-      <Text color="text.dark" variant="body2" mb={2}>
+      <Text color="text.dark" mb={2} variant="body2">
         {getGroupTitle(interactTab)}
       </Text>
       {abiSections.length === 0 ? (
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           No methods available
         </Text>
       ) : (
         <ButtonGroup
           flexWrap="wrap"
+          gap={2}
           sx={{
             "> button": {
               marginInlineStart: "0 !important",
               marginInlineEnd: "1",
             },
           }}
-          gap={2}
         >
           {abiSections.sort().map(({ name }, index) => (
             <ContractCmdButton

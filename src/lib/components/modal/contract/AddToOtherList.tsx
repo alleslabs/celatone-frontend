@@ -1,13 +1,14 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import type { ContractLocalInfo } from "lib/stores/contract";
+import type { LVPair } from "lib/types";
 
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { ListSelection } from "lib/components/ListSelection";
 import { useHandleContractSave } from "lib/hooks/useHandleSave";
-import type { ContractLocalInfo } from "lib/stores/contract";
-import type { LVPair } from "lib/types";
+import { observer } from "mobx-react-lite";
+import { useEffect, useState } from "react";
+
 import { ActionModal } from "../ActionModal";
 
 interface AddToOtherListModalProps {
@@ -37,15 +38,13 @@ export const AddToOtherListModal = observer(
 
     return (
       <ActionModal
-        title="Add or remove from lists"
-        icon="bookmark-solid"
         headerContent={
-          <Flex pt={6} gap={9}>
+          <Flex gap={9} pt={6}>
             <Flex direction="column" gap={2}>
-              <Text variant="body2" fontWeight={500} color="text.dark">
+              <Text color="text.dark" fontWeight={500} variant="body2">
                 Contract name
               </Text>
-              <Text variant="body2" fontWeight={500} color="text.dark">
+              <Text color="text.dark" fontWeight={500} variant="body2">
                 Contract address
               </Text>
             </Flex>
@@ -56,25 +55,27 @@ export const AddToOtherListModal = observer(
               </Text>
               <ExplorerLink
                 fixedHeight
-                value={contractLocalInfo.contractAddress}
                 type="contract_address"
+                value={contractLocalInfo.contractAddress}
               />
             </Flex>
           </Flex>
         }
-        trigger={triggerElement}
-        mainBtnTitle="Save"
+        icon="bookmark-solid"
         mainAction={handleSave}
+        mainBtnTitle="Save"
         otherBtnTitle="Cancel"
+        title="Add or remove from lists"
+        trigger={triggerElement}
       >
         <Box my={4}>
           <ListSelection
-            result={contractLists}
-            placeholder="Not listed"
             helperText="Grouping your contracts by adding to your existing list or create
               a new list"
-            setResult={setContractLists}
             labelBgColor="gray.900"
+            placeholder="Not listed"
+            result={contractLists}
+            setResult={setContractLists}
           />
         </Box>
       </ActionModal>

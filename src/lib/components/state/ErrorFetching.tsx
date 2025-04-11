@@ -18,11 +18,11 @@ export const ErrorFetching = ({
   hasBorderTop = true,
 }: ErrorFetchingProps) => (
   <EmptyState
+    hasBorderTop={hasBorderTop}
     imageVariant="error"
     message={`There is an error during fetching ${dataName}. Please try again later.`}
-    withBorder={withBorder}
-    py={py}
     my={my}
-    hasBorderTop={hasBorderTop}
+    py={py}
+    withBorder={withBorder}
   />
 );

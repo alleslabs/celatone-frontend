@@ -1,7 +1,7 @@
 import type { Big, BigSource } from "big.js";
+import type { NominalType, Option, Token, U } from "lib/types";
 
 import { big } from "lib/types";
-import type { NominalType, Option, Token, U } from "lib/types";
 
 /* eslint-disable */
 export function exponentify<T extends Token<BigSource>>(

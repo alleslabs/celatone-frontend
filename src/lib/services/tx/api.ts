@@ -1,7 +1,8 @@
-import axios from "axios";
-
 import type { BechAddr, Option, PoolTxFilter, TxFilters } from "lib/types";
+
+import axios from "axios";
 import { camelToSnake, parseWithError } from "lib/utils";
+
 import {
   zAccountTxsResponse,
   zBlockTxsResponse,

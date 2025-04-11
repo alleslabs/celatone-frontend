@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import type {
   ArrayFieldTemplateItemType,
   ArrayFieldTemplateProps,
@@ -7,10 +6,12 @@ import type {
   RJSFSchema,
   StrictRJSFSchema,
 } from "@rjsf/utils";
+
+import { Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import { getTemplate, getUiOptions } from "@rjsf/utils";
 
-import { FieldTypeTag } from "./FieldTypeTag";
 import { isNullFormData } from "../utils";
+import { FieldTypeTag } from "./FieldTypeTag";
 
 /** The `ArrayFieldTemplate` component is the template used to render all items in an array.
  *
@@ -63,49 +64,49 @@ export default function ArrayFieldTemplate<
       <Flex gap={3}>
         <ArrayFieldTitleTemplate
           idSchema={idSchema}
-          title={uiOptions.title || title}
+          registry={registry}
           required={required}
           schema={schema}
+          title={uiOptions.title || title}
           uiSchema={uiSchema}
-          registry={registry}
         />
         <FieldTypeTag type={schema.type} />
       </Flex>
       <ArrayFieldDescriptionTemplate
-        idSchema={idSchema}
         description={uiOptions.description || schema.description}
+        idSchema={idSchema}
+        registry={registry}
         schema={schema}
         uiSchema={uiSchema}
-        registry={registry}
       />
       {isNullFormData(formData) || (readonly && items.length === 0) ? (
         <Text
-          variant="body3"
-          fontWeight={700}
-          textColor="text.disabled"
-          textAlign="center"
-          my={2}
-          p={4}
           bgColor="gray.700"
           borderRadius="8px"
+          fontWeight={700}
+          my={2}
+          p={4}
+          textAlign="center"
+          textColor="text.disabled"
+          variant="body3"
         >
           {isNullFormData(formData) ? "NULL" : "Empty"}
         </Text>
       ) : (
         <Grid
           key={`array-item-list-${idSchema.$id}`}
-          my={2}
-          gap={4}
           bgColor="gray.800"
           borderRadius="8px"
+          gap={4}
+          my={2}
           p={4}
         >
           {items.length === 0 ? (
             <Text
+              color="text.dark"
+              fontWeight={700}
               textAlign="center"
               variant="body2"
-              fontWeight={700}
-              color="text.dark"
             >
               Empty array
             </Text>
@@ -122,10 +123,10 @@ export default function ArrayFieldTemplate<
             <GridItem display="flex" justifyContent="center">
               <AddButton
                 className="array-item-add"
-                onClick={onAddClick}
                 disabled={disabled || readonly}
-                uiSchema={uiSchema}
                 registry={registry}
+                uiSchema={uiSchema}
+                onClick={onAddClick}
               />
             </GridItem>
           )}

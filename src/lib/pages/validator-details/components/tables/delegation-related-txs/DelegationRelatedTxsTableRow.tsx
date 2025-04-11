@@ -1,9 +1,9 @@
-import { Badge, Box, Grid, Text } from "@chakra-ui/react";
-
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { TableRow } from "lib/components/table";
 import type { ValidatorDelegationRelatedTxsResponseItem } from "lib/services/types";
 import type { AssetInfos, MovePoolInfos, Option } from "lib/types";
+
+import { Badge, Box, Grid, Text } from "@chakra-ui/react";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { TableRow } from "lib/components/table";
 import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 
 import { DelegationRelatedTxsTokenChange } from "./DelegationRelatedTxsTokenChange";
@@ -25,34 +25,34 @@ export const DelegationRelatedTxsTableRow = ({
 }: DelegationRelatedTxsTableRowProps) => (
   <Grid
     className="copier-wrapper"
-    templateColumns={templateColumns}
     _hover={{ bg: "gray.900" }}
-    transition="all 0.25s ease-in-out"
     cursor="pointer"
     minW="min-content"
+    templateColumns={templateColumns}
+    transition="all 0.25s ease-in-out"
     onClick={() => onRowSelect(delegationRelatedTx.txHash)}
   >
     <TableRow>
       <ExplorerLink
-        value={delegationRelatedTx.txHash.toLocaleUpperCase()}
-        type="tx_hash"
         showCopyOnHover
+        type="tx_hash"
+        value={delegationRelatedTx.txHash.toLocaleUpperCase()}
       />
       {delegationRelatedTx.messages.length > 1 && (
-        <Badge variant="primary-light" ml={2}>
+        <Badge ml={2} variant="primary-light">
           {delegationRelatedTx.messages.length}
         </Badge>
       )}
     </TableRow>
     <TableRow>
       <ExplorerLink
-        value={delegationRelatedTx.sender}
-        type="user_address"
         showCopyOnHover
+        type="user_address"
+        value={delegationRelatedTx.sender}
       />
     </TableRow>
     <TableRow>
-      <Text variant="body2" color="white">
+      <Text color="white" variant="body2">
         {delegationRelatedTx.messages.length > 1
           ? `${delegationRelatedTx.messages.length} Messages`
           : extractMsgType(delegationRelatedTx.messages[0].type)}
@@ -62,19 +62,19 @@ export const DelegationRelatedTxsTableRow = ({
       {delegationRelatedTx.tokens.map((coin) => (
         <DelegationRelatedTxsTokenChange
           key={delegationRelatedTx.txHash + coin.amount + coin.denom}
-          txHash={delegationRelatedTx.txHash}
-          coin={coin}
           assetInfos={assetInfos}
+          coin={coin}
           movePoolInfos={movePoolInfos}
+          txHash={delegationRelatedTx.txHash}
         />
       ))}
     </TableRow>
     <TableRow>
       <Box>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           {formatUTC(delegationRelatedTx.timestamp)}
         </Text>
-        <Text variant="body3" color="text.disabled">
+        <Text color="text.disabled" variant="body3">
           {`(${dateFromNow(delegationRelatedTx.timestamp)})`}
         </Text>
       </Box>

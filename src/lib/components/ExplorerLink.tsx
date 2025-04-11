@@ -1,16 +1,16 @@
 import type { FlexProps, TextProps } from "@chakra-ui/react";
-import { Flex, Text } from "@chakra-ui/react";
-import { isUndefined } from "lodash";
+import type { AddressReturnType } from "lib/app-provider";
+import type { Option } from "lib/types";
 import type { ReactNode } from "react";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { trackMintScan } from "lib/amplitude";
-import type { AddressReturnType } from "lib/app-provider";
 import { useCelatoneApp } from "lib/app-provider/contexts";
 import { useWasmConfig } from "lib/app-provider/hooks/useConfig";
 import { useCurrentChain } from "lib/app-provider/hooks/useCurrentChain";
 import { useMobile } from "lib/app-provider/hooks/useMediaQuery";
-import type { Option } from "lib/types";
 import { truncate } from "lib/utils";
+import { isUndefined } from "lodash";
 
 import { AppLink } from "./AppLink";
 import { Copier } from "./copy";
@@ -134,11 +134,11 @@ const LinkRender = ({
   const { currentChainId } = useCelatoneApp();
   const textElement = (
     <Text
-      variant={textVariant}
-      fontFamily="mono"
-      color={textValue.length ? "primary.main" : "text.disabled"}
       className={isEllipsis ? "ellipsis" : undefined}
+      color={textValue.length ? "primary.main" : "text.disabled"}
+      fontFamily="mono"
       pointerEvents={hrefLink ? "auto" : "none"}
+      variant={textVariant}
       wordBreak={{ base: "break-all", md: "inherit" }}
     >
       {textValue || fallbackValue}
@@ -147,24 +147,24 @@ const LinkRender = ({
 
   return isInternal && !openNewTab ? (
     <AppLink
+      style={{ overflow: "hidden" }}
       href={hrefLink}
       passHref
       onClick={(e) => e.stopPropagation()}
-      style={{ overflow: "hidden" }}
     >
       {textElement}
     </AppLink>
   ) : (
     <a
-      href={isInternal ? `/${currentChainId}${hrefLink}` : hrefLink}
-      target="_blank"
-      rel="noopener noreferrer"
+      style={{ overflow: "hidden" }}
       data-peer
+      href={isInternal ? `/${currentChainId}${hrefLink}` : hrefLink}
+      rel="noopener noreferrer"
+      target="_blank"
       onClick={(e) => {
         if (!isInternal) trackMintScan(type);
         e.stopPropagation();
       }}
-      style={{ overflow: "hidden" }}
     >
       {textElement}
     </a>
@@ -204,7 +204,7 @@ export const ExplorerLink = ({
   // TODO: handle auto width
   return readOnly ? (
     <Flex alignItems="center" gap={1} {...componentProps}>
-      <Text variant="body2" color="text.disabled">
+      <Text color="text.disabled" variant="body2">
         {textValue}
       </Text>
       {rightIcon}
@@ -212,35 +212,35 @@ export const ExplorerLink = ({
   ) : (
     <Flex
       className="copier-wrapper"
-      display="inline-flex"
-      align="center"
-      h={fixedHeight ? "24px" : "auto"}
-      transition="all 0.25s ease-in-out"
       _hover={{
         textDecoration: "underline",
         textDecorationColor: "primary.light",
       }}
+      align="center"
+      display="inline-flex"
       gap={1}
+      h={fixedHeight ? "24px" : "auto"}
+      transition="all 0.25s ease-in-out"
       {...componentProps}
     >
       <LinkRender
-        type={type}
-        isInternal={isUndefined(externalLink)}
-        hrefLink={link}
-        textValue={textValue}
         fallbackValue={copyValue || value}
+        hrefLink={link}
         isEllipsis={textFormat === "ellipsis"}
-        textVariant={textVariant}
+        isInternal={isUndefined(externalLink)}
         openNewTab={openNewTab}
+        textValue={textValue}
+        textVariant={textVariant}
+        type={type}
       />
       {rightIcon}
       <Copier
-        type={type}
-        value={copyValue || value}
+        amptrackSection={ampCopierSection}
         copyLabel={copyValue ? `${getCopyLabel(type)} Copied!` : undefined}
         display={showCopyOnHover && !isMobile ? "none" : "inline"}
         ml={1}
-        amptrackSection={ampCopierSection}
+        type={type}
+        value={copyValue || value}
       />
     </Flex>
   );

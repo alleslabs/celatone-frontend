@@ -1,13 +1,14 @@
-import { Box, Button, Flex, Radio, RadioGroup, Text } from "@chakra-ui/react";
-import { useEffect } from "react";
+import type { BechAddr, UploadSectionState } from "lib/types";
 import type { Control, UseFormSetValue, UseFormTrigger } from "react-hook-form";
-import { useController, useFieldArray, useWatch } from "react-hook-form";
 
+import { Box, Button, Flex, Radio, RadioGroup, Text } from "@chakra-ui/react";
 import { AmpEvent, track, trackUseInstantiatePermission } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import type { BechAddr, UploadSectionState } from "lib/types";
 import { AccessType } from "lib/types";
+import { useEffect } from "react";
+import { useController, useFieldArray, useWatch } from "react-hook-form";
+
 import { AddressInput } from "../AddressInput";
 import { AssignMe } from "../AssignMe";
 
@@ -24,7 +25,7 @@ interface PermissionRadioProps {
 }
 
 const PermissionRadio = ({ isSelected, value, text }: PermissionRadioProps) => (
-  <Radio value={value.toString()} py={2} width="100%">
+  <Radio py={2} value={value.toString()} width="100%">
     <Text fontWeight={isSelected ? "600" : "400"}>{text} </Text>
   </Radio>
 );
@@ -74,22 +75,22 @@ export const InstantiatePermissionRadio = ({
   return (
     <RadioGroup
       name="instantiatePermission"
+      value={permission.toString()}
       onChange={(nextValue: string) => {
         const value = parseInt(nextValue, 10);
         setValue("permission", value);
       }}
-      value={permission.toString()}
     >
       <Box>
         <PermissionRadio
           isSelected={permission === AccessType.ACCESS_TYPE_EVERYBODY}
-          value={AccessType.ACCESS_TYPE_EVERYBODY}
           text="Anyone can instantiate (Everybody)"
+          value={AccessType.ACCESS_TYPE_EVERYBODY}
         />
         <PermissionRadio
           isSelected={permission === AccessType.ACCESS_TYPE_NOBODY}
-          value={AccessType.ACCESS_TYPE_NOBODY}
           text="Instantiate through governance only (Nobody)"
+          value={AccessType.ACCESS_TYPE_NOBODY}
         />
         {!disableAnyOfAddresses && (
           <Box>
@@ -97,18 +98,15 @@ export const InstantiatePermissionRadio = ({
               isSelected={
                 permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES
               }
-              value={AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES}
               text="Only a set of addresses can instantiate (AnyOfAddresses)"
+              value={AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES}
             />
             {permission === AccessType.ACCESS_TYPE_ANY_OF_ADDRESSES && (
               <Box>
                 {fields.map((field, idx) => (
-                  <Flex gap={2} my={6} key={field.id}>
+                  <Flex key={field.id} gap={2} my={6}>
                     <AddressInput
-                      name={`addresses.${idx}.address`}
                       control={control}
-                      label="Address"
-                      variant="fixed-floating"
                       error={
                         (addresses[idx]?.address &&
                           addresses.find(
@@ -120,6 +118,11 @@ export const InstantiatePermissionRadio = ({
                       }
                       helperAction={
                         <AssignMe
+                          isDisable={
+                            addresses.findIndex(
+                              (x) => x.address === walletAddress
+                            ) > -1
+                          }
                           onClick={() => {
                             track(AmpEvent.USE_ASSIGN_ME);
                             setValue(
@@ -128,37 +131,35 @@ export const InstantiatePermissionRadio = ({
                             );
                             trigger(`addresses.${idx}.address`);
                           }}
-                          isDisable={
-                            addresses.findIndex(
-                              (x) => x.address === walletAddress
-                            ) > -1
-                          }
                         />
                       }
+                      label="Address"
+                      name={`addresses.${idx}.address`}
+                      variant="fixed-floating"
                     />
                     <Button
-                      w="56px"
                       h="56px"
-                      variant="outline-gray"
-                      size="lg"
                       isDisabled={fields.length <= 1}
+                      size="lg"
+                      variant="outline-gray"
+                      w="56px"
                       onClick={() => {
                         remove(idx);
                       }}
                     >
                       <CustomIcon
-                        name="delete"
                         color={fields.length <= 1 ? "gray.600" : "text.dark"}
+                        name="delete"
                       />
                     </Button>
                   </Flex>
                 ))}
                 <Button
-                  variant="outline-primary"
+                  leftIcon={<CustomIcon color="primary.light" name="plus" />}
                   mt={3}
                   mx="auto"
+                  variant="outline-primary"
                   onClick={() => append({ address: "" as BechAddr })}
-                  leftIcon={<CustomIcon name="plus" color="primary.light" />}
                 >
                   Add more address
                 </Button>

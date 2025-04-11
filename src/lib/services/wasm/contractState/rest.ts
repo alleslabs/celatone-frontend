@@ -1,7 +1,7 @@
-import axios from "axios";
-
-import { zResponseContractStates } from "lib/services/types";
 import type { BechAddr32, ContractState, Option } from "lib/types";
+
+import axios from "axios";
+import { zResponseContractStates } from "lib/services/types";
 import {
   libDecode,
   parseJsonStr,

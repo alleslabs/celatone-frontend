@@ -1,7 +1,7 @@
-import { Flex, Tag } from "@chakra-ui/react";
-
-import { useCurrentChain } from "lib/app-provider";
 import type { AccessConfigPermission, PermissionAddresses } from "lib/types";
+
+import { Flex, Tag } from "@chakra-ui/react";
+import { useCurrentChain } from "lib/app-provider";
 import { getPermissionHelper, resolvePermission } from "lib/utils";
 
 import { Tooltip } from "./Tooltip";
@@ -33,7 +33,7 @@ export const PermissionChip = ({
 
   return (
     <Tooltip label={message}>
-      <Flex onClick={(e) => e.stopPropagation()} w="fit-content">
+      <Flex w="fit-content" onClick={(e) => e.stopPropagation()}>
         <Tag size={tagSize} variant={isAllowed ? "primary-darker" : "gray"}>
           {instantiatePermission}
         </Tag>

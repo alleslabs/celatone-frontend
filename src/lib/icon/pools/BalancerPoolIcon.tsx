@@ -1,5 +1,6 @@
-import { Icon } from "@chakra-ui/react";
 import type { IconProps } from "@chakra-ui/react";
+
+import { Icon } from "@chakra-ui/react";
 
 export const BalancerPoolIcon = (props: IconProps) => (
   <Icon viewBox="0 0 25 25" {...props}>

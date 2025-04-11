@@ -1,5 +1,14 @@
-import { capitalize } from "lodash";
-import { z } from "zod";
+import type {
+  Coin,
+  Proposal,
+  ProposalData,
+  ProposalDeposit,
+  ProposalParams,
+  ProposalStatus,
+  ProposalValidatorVote,
+  ProposalVote,
+  ProposalVotesInfo,
+} from "lib/types";
 
 import {
   zBechAddr,
@@ -12,19 +21,10 @@ import {
   zUtcDate,
   zValidator,
 } from "lib/types";
-import type {
-  Coin,
-  Proposal,
-  ProposalData,
-  ProposalDeposit,
-  ProposalParams,
-  ProposalStatus,
-  ProposalValidatorVote,
-  ProposalVote,
-  ProposalVotesInfo,
-} from "lib/types";
 import { zPagination } from "lib/types/rest";
 import { parseTxHash, snakeToCamel } from "lib/utils";
+import { capitalize } from "lodash";
+import { z } from "zod";
 
 export const zProposalParamsResponse = z
   .object({

@@ -1,11 +1,11 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import type { RJSFValidationError } from "@rjsf/utils";
-import Long from "long";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import type { FormStatus } from "lib/components/forms";
+import type { AttachFundsState } from "lib/components/fund/types";
+import type { Code } from "lib/services/types";
+import type { BechAddr, BechAddr20, BechAddr32, ComposedMsg } from "lib/types";
 
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import {
   AmpEvent,
   track,
@@ -25,14 +25,11 @@ import ActionPageContainer from "lib/components/ActionPageContainer";
 import { AssignMe } from "lib/components/AssignMe";
 import { ConnectWalletAlert } from "lib/components/ConnectWalletAlert";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
-import type { FormStatus } from "lib/components/forms";
 import { ControllerInput } from "lib/components/forms";
 import { AttachFund } from "lib/components/fund";
 import { defaultAsset, defaultAssetJsonStr } from "lib/components/fund/data";
-import type { AttachFundsState } from "lib/components/fund/types";
 import { AttachFundsType } from "lib/components/fund/types";
 import { CustomIcon } from "lib/components/icon";
-import JsonInput from "lib/components/json/JsonInput";
 import {
   jsonInputFormKey,
   MessageInputContent,
@@ -41,6 +38,7 @@ import {
   SchemaInputSection,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
+import JsonInput from "lib/components/json/JsonInput";
 import { FooterCta } from "lib/components/layouts";
 import { CodeSelectSection } from "lib/components/select-code";
 import { CelatoneSeo } from "lib/components/Seo";
@@ -49,10 +47,8 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useTxBroadcast } from "lib/hooks";
 import { useSchemaStore } from "lib/providers/store";
 import { useSimulateFeeQuery } from "lib/services/tx";
-import type { Code } from "lib/services/types";
 import { useDerivedWasmVerifyInfo } from "lib/services/verification/wasm";
 import { useCodeRest } from "lib/services/wasm/code";
-import type { BechAddr, BechAddr20, BechAddr32, ComposedMsg } from "lib/types";
 import { MsgType } from "lib/types";
 import {
   composeMsg,
@@ -62,9 +58,14 @@ import {
   libDecode,
   resolvePermission,
 } from "lib/utils";
+import Long from "long";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import type { InstantiateFormState, InstantiateRedoMsg } from "./types";
 
 import { zInstantiateQueryParams } from "./types";
-import type { InstantiateFormState, InstantiateRedoMsg } from "./types";
 
 interface InstantiateFormPageProps {
   onComplete: (
@@ -400,145 +401,145 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
     <>
       <ActionPageContainer>
         <CelatoneSeo pageName="Instantiate contract" />
-        <Text variant="body1" color="text.dark" mb={3} fontWeight={700}>
+        <Text color="text.dark" fontWeight={700} mb={3} variant="body1">
           DEPLOY NEW CONTRACT
         </Text>
-        <Stepper mode="deploy" currentStep={2} />
-        <Flex direction="column" alignItems="center" my={12}>
+        <Stepper currentStep={2} mode="deploy" />
+        <Flex alignItems="center" direction="column" my={12}>
           <Heading as="h5" variant="h5">
             Instantiate new contract
           </Heading>
           <UserDocsLink
-            isDevTool
-            mt={2}
             cta="View instantiate guideline"
             href="cosmwasm/upload-instantiate#instantiate-contract-from-code"
+            isDevTool
+            mt={2}
           />
         </Flex>
         <ConnectWalletAlert
-          subtitle="You need to connect your wallet to perform this action"
           mb={6}
+          subtitle="You need to connect your wallet to perform this action"
         />
         <Box w="100%">
           {!isFullTier && (
-            <Heading variant="h6" as="h6" mt={4} mb={6} alignSelf="flex-start">
+            <Heading alignSelf="flex-start" as="h6" mb={6} mt={4} variant="h6">
               Code ID
             </Heading>
           )}
           <CodeSelectSection
             codeId={isId(codeId) ? Number(codeId) : undefined}
-            name="codeId"
             control={control}
             error={formErrors.codeId?.message}
-            onCodeSelect={(code: number) => {
-              setValue("codeId", code.toString());
-              resetMsgInputSchema();
-            }}
+            name="codeId"
             setCodeHash={(data: Code) =>
               setValue("codeHash", data.hash.toLowerCase())
             }
             status={status}
+            onCodeSelect={(code: number) => {
+              setValue("codeId", code.toString());
+              resetMsgInputSchema();
+            }}
           />
         </Box>
         <form style={{ width: "100%" }}>
-          <Heading variant="h6" as="h6" mt={4} mb={6} alignSelf="flex-start">
+          <Heading alignSelf="flex-start" as="h6" mb={6} mt={4} variant="h6">
             Label
           </Heading>
           <ControllerInput
-            name="label"
             control={control}
             error={formErrors.label?.message}
-            placeholder="ex. Token Factory"
-            label="Label"
             helperText="The contract's label help briefly describe the contract and what it does."
-            variant="fixed-floating"
+            label="Label"
             mb={12}
+            name="label"
+            placeholder="ex. Token Factory"
             rules={{ required: "Label is required" }}
+            variant="fixed-floating"
           />
-          <Heading variant="h6" as="h6" my={6} alignSelf="flex-start">
+          <Heading alignSelf="flex-start" as="h6" my={6} variant="h6">
             Admin Address
           </Heading>
           <ControllerInput
-            name="adminAddress"
             control={control}
-            label="Admin Address (optional)"
-            placeholder={`ex. ${exampleUserAddress}`}
-            helperText="The contract's admin will be able to migrate and update future admins."
-            variant="fixed-floating"
             error={validateAdmin(adminAddress)}
             helperAction={
               <AssignMe
+                isDisable={adminAddress === address}
                 onClick={() => {
                   track(AmpEvent.USE_ASSIGN_ME);
                   setValue("adminAddress", address ?? "");
                 }}
-                isDisable={adminAddress === address}
               />
             }
+            helperText="The contract's admin will be able to migrate and update future admins."
+            label="Admin Address (optional)"
+            name="adminAddress"
+            placeholder={`ex. ${exampleUserAddress}`}
+            variant="fixed-floating"
           />
-          <Flex align="center" justify="space-between" mt={12} mb={4}>
-            <Heading variant="h6" as="h6" alignSelf="flex-start">
+          <Flex align="center" justify="space-between" mb={4} mt={12}>
+            <Heading alignSelf="flex-start" as="h6" variant="h6">
               Instantiate Message
             </Heading>
             <MessageInputSwitch
               currentTab={tab}
-              onTabChange={setTab}
               disabled={!codeHash}
+              onTabChange={setTab}
             />
           </Flex>
           <MessageInputContent
             currentTab={tab}
             jsonContent={
               <JsonInput
-                text={msgInput[jsonInputFormKey]}
+                minLines={10}
                 setText={(newVal: string) =>
                   setValue(`msgInput.${jsonInputFormKey}`, newVal)
                 }
-                minLines={10}
+                text={msgInput[jsonInputFormKey]}
               />
             }
             schemaContent={
               isId(codeId) && (
                 <SchemaInputSection
-                  type="instantiate"
                   codeHash={codeHash}
                   codeId={Number(codeId)}
-                  verifiedSchema={verifiedSchema}
-                  localSchema={localSchema}
-                  initialFormData={JSON.parse(msgInput[yourSchemaInputFormKey])}
                   handleChange={handleChange}
+                  initialFormData={JSON.parse(msgInput[yourSchemaInputFormKey])}
+                  localSchema={localSchema}
+                  type="instantiate"
+                  verifiedSchema={verifiedSchema}
                   onSchemaSave={resetMsgInputSchema}
                 />
               )
             }
           />
-          <Heading variant="h6" as="h6" mt={12} mb={6} alignSelf="flex-start">
+          <Heading alignSelf="flex-start" as="h6" mb={6} mt={12} variant="h6">
             Send asset to contract
           </Heading>
           <AttachFund
+            attachFundsOption={attachFundsOption}
             control={assetsControl}
             setValue={setAssets}
-            attachFundsOption={attachFundsOption}
           />
         </form>
         {simulateError && (
           <Flex gap={2} mb={4}>
             <CustomIcon
-              name="alert-triangle-solid"
               boxSize={3}
               color="error.main"
+              name="alert-triangle-solid"
             />
-            <Text variant="body3" color="error.main">
+            <Text color="error.main" variant="body3">
               {simulateError}
             </Text>
           </Flex>
         )}
         <Flex
-          fontSize="14px"
-          color="text.dark"
-          alignSelf="flex-start"
           alignItems="center"
+          alignSelf="flex-start"
+          color="text.dark"
           display="flex"
+          fontSize="14px"
           gap={1}
         >
           <p>Transaction fee:</p>
@@ -549,16 +550,16 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
         </Flex>
       </ActionPageContainer>
       <FooterCta
-        loading={processing}
-        cancelButton={{
-          onClick: router.back,
-          leftIcon: <CustomIcon name="chevron-left" />,
-        }}
         actionButton={{
           isDisabled: !enableInstantiate || !estimatedFee || isSimulating,
           onClick: proceed,
         }}
         actionLabel="Instantiate"
+        cancelButton={{
+          onClick: router.back,
+          leftIcon: <CustomIcon name="chevron-left" />,
+        }}
+        loading={processing}
       />
     </>
   );

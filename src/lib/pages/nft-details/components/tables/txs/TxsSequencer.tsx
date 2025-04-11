@@ -1,7 +1,8 @@
+import type { HexAddr32 } from "lib/types";
+
 import { LoadNext } from "lib/components/LoadNext";
 import { EmptyState } from "lib/components/state";
 import { useNftTransactionsSequencer } from "lib/services/nft";
-import type { HexAddr32 } from "lib/types";
 
 import { TxsTable } from "./TxsTable";
 
@@ -21,17 +22,17 @@ export const TxsSequencer = ({ nftAddress }: TxsSequencerProps) => {
   return (
     <>
       <TxsTable
-        txs={transactions}
-        isLoading={isLoading}
         emptyState={
           <EmptyState imageVariant="empty" message="Transactions not found." />
         }
+        isLoading={isLoading}
+        txs={transactions}
       />
       {hasNextPage && (
         <LoadNext
-          text="Load more transactions"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          text="Load more transactions"
         />
       )}
     </>
