@@ -239,7 +239,7 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
           <ModalCloseButton color="gray.600" />
           <ModalBody overflow="scroll" px={4}>
             <Tabs index={activeTabIndex} onChange={handleTabChange}>
-              <TabList borderBottom="1px solid" borderColor="gray.700">
+              <TabList borderBottomWidth="1px" borderColor="gray.700">
                 {codeSnippets[type].map((item, index) => (
                   <CustomTab
                     key={`menu-${item.name}`}

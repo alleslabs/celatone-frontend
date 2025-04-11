@@ -83,7 +83,7 @@ export const ModuleTables = ({
         lazyBehavior="keepMounted"
       >
         <TabList
-          borderBottom="1px solid"
+          borderBottomWidth="1px"
           borderColor="gray.700"
           overflowX={{ base: "scroll", md: "auto" }}
         >

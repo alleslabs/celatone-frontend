@@ -44,8 +44,8 @@ export const AssetCard = ({
       >
         <Flex
           alignItems="center"
-          borderBottom="1px solid"
           borderBottomColor="gray.700"
+          borderBottomWidth="1px"
           gap={1}
           pb={2}
         >

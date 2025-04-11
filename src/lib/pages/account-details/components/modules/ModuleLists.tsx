@@ -44,8 +44,8 @@ export const ModuleLists = ({
           title="Module instances"
         >
           <Flex
-            borderBottom={modules?.length ? "1px solid" : "0px"}
             borderBottomColor="gray.700"
+            borderBottomWidth={modules?.length ? "1px" : "0px"}
             direction="column"
           >
             {!onViewMore && (

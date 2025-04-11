@@ -29,7 +29,7 @@ export const EvmVerifyProcess = ({ evmVerifyInfo }: EvmVerifyProcessProps) => {
                 {index < steps.length - 1 && (
                   <Box
                     borderColor="gray.400"
-                    borderLeft="1px solid"
+                    borderLeftWidth="1px"
                     height="full"
                     left="50%"
                   />

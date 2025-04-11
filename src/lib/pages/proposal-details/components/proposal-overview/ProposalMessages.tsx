@@ -23,7 +23,7 @@ export const ProposalMessages = ({ messages }: ProposalMessagesProps) => {
 
   return (
     <Flex
-      borderBottom={{ base: hasMsgs ? "0px" : "1px solid", md: "0px" }}
+      borderBottomWidth={{ base: hasMsgs ? "0px" : "1px", md: "0px" }}
       borderColor="gray.700"
       direction="column"
       gap={4}

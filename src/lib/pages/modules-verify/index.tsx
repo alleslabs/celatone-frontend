@@ -158,7 +158,7 @@ export const ModulesVerifyBody = observer(
             </PageContainer>
             <Box
               borderColor="gray.700"
-              borderTop="1px"
+              borderTopWidth="1px"
               bottom={0}
               position="sticky"
               zIndex={2}

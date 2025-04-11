@@ -26,7 +26,7 @@ export const HomeLite = () => {
       >
         <Flex
           alignItems={{ base: "start", md: "center" }}
-          borderBottom={{ base: "1px solid", md: "0px" }}
+          borderBottomWidth={{ base: "1px", md: "0px" }}
           borderColor="gray.700"
           direction={{ base: "column", md: "row" }}
           gap={{ base: 4, md: 0 }}

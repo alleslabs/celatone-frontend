@@ -224,7 +224,7 @@ const AccountDetailsBody = ({
       >
         <TabList
           id={tableHeaderId}
-          borderBottom="1px solid"
+          borderBottomWidth="1px"
           borderColor="gray.700"
           overflowX="scroll"
         >
@@ -354,8 +354,8 @@ const AccountDetailsBody = ({
               </Flex>
             )}
             <Flex
-              borderBottom={{ base: "0px", md: "1px solid" }}
               borderBottomColor={{ base: "transparent", md: "gray.700" }}
+              borderBottomWidth={{ base: "0px", md: "1px" }}
               mt={{ base: 4 }}
             >
               <AssetsSection
@@ -366,8 +366,8 @@ const AccountDetailsBody = ({
             </Flex>
             {gov.enabled && (
               <Flex
-                borderBottom={{ base: "0px", md: "1px solid" }}
                 borderBottomColor={{ base: "transparent", md: "gray.700" }}
+                borderBottomWidth={{ base: "0px", md: "1px" }}
                 mt={{ base: 4, md: 8 }}
               >
                 <DelegationsSection

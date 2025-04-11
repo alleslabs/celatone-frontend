@@ -21,7 +21,7 @@ export const SectionWrapper = ({
   <Flex
     alignItems="center"
     borderColor="gray.700"
-    borderRight={borderRight ? "1px solid" : "none"}
+    borderRightWidth={borderRight ? "1px" : "none"}
     h="full"
     justifyContent={justifyContent}
     minW={minW}

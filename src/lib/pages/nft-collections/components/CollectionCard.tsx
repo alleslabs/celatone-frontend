@@ -47,8 +47,8 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
           w="full"
         >
           <Flex
-            borderBottom="1px solid"
             borderBottomColor="gray.700"
+            borderBottomWidth="1px"
             direction="column"
             gap={1}
             pb={{ base: 3, md: 4 }}

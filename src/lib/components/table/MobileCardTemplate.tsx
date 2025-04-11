@@ -31,7 +31,7 @@ export const MobileCardTemplate = ({
     {middleContent && (
       <Flex
         borderColor="gray.700"
-        borderTop="1px solid"
+        borderTopWidth="1px"
         direction="column"
         pt={3}
       >
@@ -41,7 +41,7 @@ export const MobileCardTemplate = ({
     {bottomContent && (
       <Flex
         borderColor="gray.700"
-        borderTop="1px solid"
+        borderTopWidth="1px"
         direction="column"
         pt={3}
       >

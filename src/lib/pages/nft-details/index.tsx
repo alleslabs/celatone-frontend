@@ -259,7 +259,7 @@ const NftDetailsBody = ({
           }
         >
           <TabList
-            borderBottom="1px solid"
+            borderBottomWidth="1px"
             borderColor="gray.700"
             marginBottom="32px"
             overflowX="scroll"

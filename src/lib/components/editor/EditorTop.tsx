@@ -86,8 +86,8 @@ export const EditorTop = ({
       <Box pt="31px">
         <Flex
           bgColor={vsCodeDarkColor}
-          borderTop="1px"
           borderTopColor="gray.700"
+          borderTopWidth="1px"
           pb={1}
           pt={4}
           px={2}

@@ -62,14 +62,14 @@ const Layout = ({ children }: LayoutProps) => {
         overflowY="auto"
         templateAreas={mode.templateAreas}
       >
-        <GridItem area="header" borderBottom="1px solid" borderColor="gray.700">
+        <GridItem area="header" borderBottomWidth="1px" borderColor="gray.700">
           {mode.header}
         </GridItem>
         {!isMobile && (
           <>
             <GridItem
               area="subheader"
-              borderBottom="1px solid"
+              borderBottomWidth="1px"
               borderColor="gray.700"
               px={{ base: 4, md: 0 }}
               py={{ base: 2, md: 0 }}
@@ -79,7 +79,7 @@ const Layout = ({ children }: LayoutProps) => {
             <GridItem
               area="nav"
               borderColor="gray.700"
-              borderRight="1px solid"
+              borderRightWidth="1px"
               overflowY="auto"
             >
               <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />

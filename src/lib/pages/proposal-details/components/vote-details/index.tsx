@@ -77,7 +77,7 @@ export const VoteDetails = ({ proposalData, ...props }: VoteDetailsProps) => {
       w="full"
       onChange={(index) => trackPeriodSubtab(index)}
     >
-      <TabList borderBottom="0px solid" gap={2}>
+      <TabList borderBottomWidth="0px" gap={2}>
         <VoteDetailsTab proposalData={proposalData} step={1} />
         <VoteDetailsTab
           isDisabled={isDepositOnly}

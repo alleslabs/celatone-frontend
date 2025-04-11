@@ -57,7 +57,7 @@ export const NftsOverview = ({
             <NftList
               emptyState={
                 <AccountDetailsEmptyState
-                  borderBottom={0}
+                  borderBottomWidth="0px"
                   message="No NFTs are held by this account."
                 />
               }

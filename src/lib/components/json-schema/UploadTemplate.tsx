@@ -295,7 +295,7 @@ export const UploadTemplate = ({
   return (
     <Flex
       borderColor="gray.700"
-      borderTop="1px solid"
+      borderTopWidth="1px"
       direction="column"
       mt={6}
       pt={6}

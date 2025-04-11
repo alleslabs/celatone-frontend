@@ -148,7 +148,7 @@ const ModuleDetailsBody = ({
       >
         <TabList
           id={mainTabHeaderId}
-          borderBottom="1px solid"
+          borderBottomWidth="1px"
           borderColor="gray.700"
           my={8}
           overflowX="scroll"

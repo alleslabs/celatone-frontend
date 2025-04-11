@@ -102,7 +102,7 @@ export const StickySidebar = ({
           variant="transparent"
           width={96}
         >
-          <AccordionItem borderColor="gray.700" borderTop="none">
+          <AccordionItem borderColor="gray.700" borderTopWidth="none">
             <AccordionButton px={0} py={3}>
               <Text
                 color="text.main"
@@ -117,7 +117,7 @@ export const StickySidebar = ({
             <AccordionPanel
               bg="transparent"
               borderColor="gray.700"
-              borderTop="1px solid"
+              borderTopWidth="1px"
               px={0}
               py={3}
             >

@@ -83,7 +83,7 @@ export const PoolIndex = () => {
         isLazy
         lazyBehavior="keepMounted"
       >
-        <TabList borderBottom="1px" borderColor="gray.800" my={8}>
+        <TabList borderBottomWidth="1px" borderColor="gray.800" my={8}>
           <CustomTab
             count={supportedPoolsData?.total}
             isDisabled={!supportedPoolsData}

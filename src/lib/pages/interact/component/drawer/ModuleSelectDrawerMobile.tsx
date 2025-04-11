@@ -98,7 +98,7 @@ export const ModuleSelectDrawerMobile = ({
       <DrawerContent h="90%">
         {step === ModuleInteractionMobileStep.SelectModule ? (
           <>
-            <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
+            <DrawerHeader borderBottomWidth="1px" borderColor="gray.700">
               <CustomIcon
                 boxSize={6}
                 color="gray.600"
@@ -139,7 +139,7 @@ export const ModuleSelectDrawerMobile = ({
           </>
         ) : (
           <>
-            <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
+            <DrawerHeader borderBottomWidth="1px" borderColor="gray.700">
               <CustomIcon
                 boxSize={6}
                 color="gray.600"

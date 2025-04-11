@@ -226,7 +226,7 @@ const CollectionDetailsBody = ({
       >
         <TabList
           id={tabHeaderId}
-          borderBottom="1px solid"
+          borderBottomWidth="1px"
           borderColor="gray.700"
           overflowX="scroll"
         >

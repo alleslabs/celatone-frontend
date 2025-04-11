@@ -136,7 +136,7 @@ export const NavDrawer = () => {
             {navMenu.map((item) => (
               <Box
                 key={item.category}
-                borderBottom="1px solid"
+                borderBottomWidth="1px"
                 borderColor="gray.700"
                 mb={4}
                 pb={4}

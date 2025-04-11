@@ -47,8 +47,8 @@ const FunctionSection = ({
   handleDrawerOpen?: (step: ModuleInteractionMobileStep) => void;
 }) => (
   <Flex
-    borderTop="1px solid"
     borderTopColor="gray.700"
+    borderTopWidth="1px"
     direction="column"
     gap={4}
     mt={2}

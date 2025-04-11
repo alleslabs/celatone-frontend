@@ -217,8 +217,8 @@ export const SearchComponent = () => {
           w={{ base: "100%", md: "800px" }}
         >
           <ModalHeader
-            borderBottom="1px solid"
             borderBottomColor="gray.700"
+            borderBottomWidth="1px"
             p={0}
             position="relative"
           >

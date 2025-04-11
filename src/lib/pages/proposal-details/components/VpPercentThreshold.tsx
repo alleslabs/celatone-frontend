@@ -54,8 +54,8 @@ export const VpPercentThreshold = ({
       {options.map(({ option, ratio, votingPower, color }) => (
         <Flex
           key={option}
-          borderBottom="1px solid"
           borderBottomColor="gray.700"
+          borderBottomWidth="1px"
           justifyContent="space-between"
           py={2}
         >

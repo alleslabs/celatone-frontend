@@ -195,8 +195,8 @@ export const SelectInputBase = <T extends string>({
         {helperTextComponent && (
           <Flex
             align="center"
-            borderTop={!hasDivider ? "1px solid" : "none"}
             borderTopColor="gray.700"
+            borderTopWidth={!hasDivider ? "1px" : "none"}
             h={`${ITEM_HEIGHT}px`}
             px={4}
           >

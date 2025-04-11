@@ -64,7 +64,7 @@ export const CollapseNavMenu = ({
       {navMenu.map((item) => (
         <Box
           key={item.category}
-          borderBottom="1px solid"
+          borderBottomWidth="1px"
           borderColor="gray.700"
           minW="fit-content"
           sx={{
