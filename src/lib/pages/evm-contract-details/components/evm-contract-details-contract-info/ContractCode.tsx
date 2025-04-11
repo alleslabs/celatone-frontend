@@ -1,3 +1,9 @@
+import type { JsonFragment } from "ethers";
+import type {
+  EvmVerifyInfoLibraries,
+  EvmVerifyInfoSourceFile,
+} from "lib/types";
+
 import {
   Badge,
   Box,
@@ -8,14 +14,10 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { JsonFragment } from "ethers";
 import { FullEditor } from "lib/components/editor/FullEditor";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
-import type {
-  EvmVerifyInfoLibraries,
-  EvmVerifyInfoSourceFile,
-} from "lib/types";
 import { findAndDecodeEvmConstructorArgs } from "lib/utils";
+
 import { ContractLibraryList } from "./ContractLibraryList";
 
 interface ContractCodeProps {
@@ -44,7 +46,7 @@ export const ContractCode = ({
     <Stack gap={8}>
       <Stack gap={4}>
         <Flex justifyContent="space-between">
-          <Flex gap={2} alignItems="center">
+          <Flex alignItems="center" gap={2}>
             <Heading as="h6" variant="h7">
               Contract source code
             </Heading>
@@ -55,9 +57,9 @@ export const ContractCode = ({
               base: "block",
               md: "none",
             }}
-            onClick={onOpen}
             size="sm"
             variant="outline-primary"
+            onClick={onOpen}
           >
             Open file tree
           </Button>
@@ -67,15 +69,15 @@ export const ContractCode = ({
             path: file.sourcePath,
             code: file.evmSourceFile.content,
           }))}
-          libraryFilesPath={libraries.map((lib) => lib.contractPath)}
           initialFilePath={contractPath}
           isOpen={isOpen}
+          libraryFilesPath={libraries.map((lib) => lib.contractPath)}
           onClose={onClose}
         />
       </Stack>
       {libraries.length > 0 && (
         <Stack gap={4}>
-          <Flex gap={2} alignItems="center">
+          <Flex alignItems="center" gap={2}>
             <Heading as="h6" variant="h7">
               Contract Library
             </Heading>
@@ -89,10 +91,10 @@ export const ContractCode = ({
           Constructor Arguments
         </Heading>
         {foundConstructorArgs ? (
-          <TextReadOnly text={foundConstructorArgs} canCopy />
+          <TextReadOnly canCopy text={foundConstructorArgs} />
         ) : (
           <Box>
-            <Text py={4} px={3} rounded={8} bg="gray.900" color="text.disabled">
+            <Text bg="gray.900" color="text.disabled" px={3} py={4} rounded={8}>
               No constructor arguments
             </Text>
           </Box>

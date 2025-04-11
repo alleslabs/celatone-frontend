@@ -1,10 +1,11 @@
-import { useMobile } from "lib/app-provider";
 import type { NonRedelegatable } from "lib/types";
 
+import { useMobile } from "lib/app-provider";
+
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { NonRedelegatableTableHeader } from "./NonRedelegatableTableHeader";
 import { NonRedelegatablesTableMobileCard } from "./NonRedelegatableTableMobileCard";
 import { NonRedelegatableTableRow } from "./NonRedelegatableTableRow";
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 const TEMPLATE_COLUMNS = "minmax(300px, 1fr) 2fr";
 

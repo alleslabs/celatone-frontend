@@ -1,12 +1,13 @@
 import type { TransactionRequest } from "ethers";
-import { useCallback } from "react";
+import type { TxReceiptJsonRpc } from "lib/services/types";
 
 import { useEvmParams } from "lib/services/evm";
 import { getEthGetTransactionReceipt } from "lib/services/evm/json-rpc";
-import type { TxReceiptJsonRpc } from "lib/services/types";
 import { convertCosmosChainIdToEvmChainId, sleep } from "lib/utils";
-import { useCurrentChain } from "./useCurrentChain";
+import { useCallback } from "react";
+
 import { useCelatoneApp } from "../contexts";
+import { useCurrentChain } from "./useCurrentChain";
 
 const getEvmTxResponse = async (jsonRpcEndpoint: string, txHash: string) => {
   const TIME_OUT_MS = 3000;

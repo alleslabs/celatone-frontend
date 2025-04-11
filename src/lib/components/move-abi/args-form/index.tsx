@@ -1,9 +1,9 @@
+import type { AbiFormData, Nullable } from "lib/types";
+import type { FormState } from "react-hook-form";
+
 import { Flex, Heading, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
-import type { FormState } from "react-hook-form";
 import { useForm } from "react-hook-form";
-
-import type { AbiFormData, Nullable } from "lib/types";
 
 import { ArgFieldTemplate } from "./field";
 
@@ -57,20 +57,20 @@ export const ArgsForm = ({
 
   return (
     <Flex direction="column" gap={4}>
-      <Heading variant="h6" as="h6" color="text.main">
+      <Heading as="h6" color="text.main" variant="h6">
         args
       </Heading>
       {!params.length ? (
         <Flex
-          direction="column"
           alignItems="center"
-          gap={4}
-          p="24px 8px"
           border="1px solid"
           borderColor="gray.700"
           borderRadius="8px"
+          direction="column"
+          gap={4}
+          p="24px 8px"
         >
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             This function does not require any inputs.
           </Text>
         </Flex>
@@ -85,9 +85,9 @@ export const ArgsForm = ({
           return (
             <ArgFieldTemplate
               key={param + index.toString()}
+              control={control}
               index={index}
               param={param}
-              control={control}
             />
           );
         })

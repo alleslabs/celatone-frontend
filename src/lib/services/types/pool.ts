@@ -1,7 +1,6 @@
-import { z } from "zod";
-
 import { PoolType, zBechAddr, zBechAddr32, zCoin } from "lib/types";
 import { snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 const zPoolBase = z.object({
   id: z.number().positive(),

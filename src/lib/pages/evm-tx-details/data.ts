@@ -1,5 +1,6 @@
 import type Big from "big.js";
-import { useMemo } from "react";
+import type { TxData, TxDataJsonRpc } from "lib/services/types";
+import type { Option, Ratio, TokenWithValue } from "lib/types";
 
 import { useAssetInfos } from "lib/services/assetService";
 import { useBlockDataJsonRpc } from "lib/services/block";
@@ -9,9 +10,8 @@ import {
   useEvmTxDataJsonRpc,
   useTxData,
 } from "lib/services/tx";
-import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import type { Option, Ratio, TokenWithValue } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
+import { useMemo } from "react";
 
 export interface GasInfo {
   isEIP1559: boolean;

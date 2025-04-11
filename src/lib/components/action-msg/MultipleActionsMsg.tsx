@@ -1,6 +1,6 @@
-import { Badge, Flex, Text } from "@chakra-ui/react";
-
 import type { Message } from "lib/types";
+
+import { Badge, Flex, Text } from "@chakra-ui/react";
 import { countMessages } from "lib/utils";
 
 interface MultipleActionsMsgProps {

@@ -1,15 +1,15 @@
-import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { forwardRef, useEffect, useRef } from "react";
+import type { ValidatorAddr } from "lib/types";
 
+import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import { useNavContext } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { ErrorFetching } from "lib/components/state";
 import { Tooltip } from "lib/components/Tooltip";
 import { useValidatorUptime } from "lib/services/validator";
 import { BlockVote } from "lib/types";
-import type { ValidatorAddr } from "lib/types";
 import { formatUTC } from "lib/utils";
+import { useRouter } from "next/router";
+import { forwardRef, useEffect, useRef } from "react";
 
 interface BlockProps {
   height: number;
@@ -33,22 +33,22 @@ const Block = forwardRef<HTMLDivElement, BlockProps>(
       <Tooltip label={`${height} (${voteLabel})`}>
         <Box position="relative">
           <Box
-            width="12px"
-            height="12px"
             backgroundColor={backgroundColor}
             borderRadius="2px"
+            height="12px"
+            width="12px"
           />
           {ref && (
             <Box
-              ref={ref}
-              position="absolute"
-              bottom="-16px"
-              left="1px"
-              width="0"
-              height="0"
               borderBottom="6px solid var(--chakra-colors-text-dark)"
               borderLeft="5px solid transparent"
               borderRight="5px solid transparent"
+              bottom="-16px"
+              height="0"
+              left="1px"
+              position="absolute"
+              width="0"
+              ref={ref}
             />
           )}
         </Box>
@@ -113,28 +113,28 @@ export const RecentBlocksSection = ({
   return (
     <Flex
       direction="column"
-      w="full"
       gap={4}
-      ref={parentRef}
-      position="relative"
       pb={10}
+      position="relative"
+      w="full"
+      ref={parentRef}
     >
       <Flex
+        align={{ base: "start", md: "center" }}
         direction={{ base: "column", md: "row" }}
         justify="space-between"
-        align={{ base: "start", md: "center" }}
         w="full"
       >
-        <Heading as="h6" variant="h6" color="text.main">
+        <Heading as="h6" color="text.main" variant="h6">
           Most recent 100 blocks
         </Heading>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           Latest update: {formatUTC(new Date(dataUpdatedAt))}
         </Text>
       </Flex>
       <Grid
-        templateColumns="repeat(auto-fit, minmax(12px, 1fr))"
         gap={1}
+        templateColumns="repeat(auto-fit, minmax(12px, 1fr))"
         width="full"
       >
         {data.recent100Blocks
@@ -148,10 +148,10 @@ export const RecentBlocksSection = ({
           .reverse()}
       </Grid>
       <Text
-        variant="body2"
+        bottom="0"
         color="text.dark"
         position="absolute"
-        bottom="0"
+        variant="body2"
         ref={hoverTextRef}
       >
         Most recent block: {data.recent100Blocks[0]?.height ?? "N/A"}

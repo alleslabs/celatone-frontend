@@ -15,23 +15,23 @@ export const EvmContractFooter = ({
   actionLabel,
 }: EvmContractFooterProps) => (
   <Box
-    position="sticky"
-    bottom={0}
-    borderTop="1px"
     borderColor="gray.700"
+    borderTop="1px"
+    bottom={0}
+    position="sticky"
     px={12}
     zIndex={2}
   >
     <FooterCta
-      cancelButton={{
-        onClick: handlePrevious,
-      }}
-      cancelLabel="Cancel"
       actionButton={{
         onClick: handleNext,
         isDisabled,
       }}
       actionLabel={actionLabel}
+      cancelButton={{
+        onClick: handlePrevious,
+      }}
+      cancelLabel="Cancel"
       sx={{
         backgroundColor: "background.main",
         columnGap: "32px",

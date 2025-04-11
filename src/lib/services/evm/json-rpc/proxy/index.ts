@@ -1,8 +1,10 @@
 import type { HexAddr20, Nullable } from "lib/types";
+
 import type { ProxyResult } from "./types";
+
+import { getEthCall, getEthGetCode, getEthGetStorageAt } from "../eth";
 import { ProxyType } from "./types";
 import { parse1167Bytecode, readAddress } from "./utils";
-import { getEthCall, getEthGetCode, getEthGetStorageAt } from "../eth";
 
 // obtained as bytes32(uint256(keccak256('eip1967.proxy.implementation')) - 1)
 const EIP_1967_LOGIC_SLOT =

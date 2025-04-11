@@ -1,7 +1,7 @@
-import { chakra, Flex } from "@chakra-ui/react";
-
-import { AbiForm } from "lib/components/move-abi";
 import type { AbiFormData, ExposedFunction, Option } from "lib/types";
+
+import { chakra, Flex } from "@chakra-ui/react";
+import { AbiForm } from "lib/components/move-abi";
 
 const MessageContainer = chakra(Flex, {
   baseStyle: {

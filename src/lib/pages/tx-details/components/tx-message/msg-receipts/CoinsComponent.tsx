@@ -1,7 +1,6 @@
-import { Flex, Grid } from "@chakra-ui/react";
 import type { Coin } from "@cosmjs/stargate";
-import { useState } from "react";
 
+import { Flex, Grid } from "@chakra-ui/react";
 import { trackUseExpand } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { ShowMoreButton } from "lib/components/button";
@@ -10,6 +9,7 @@ import { TokenCard } from "lib/components/token/TokenCard";
 import { useAssetInfos } from "lib/services/assetService";
 import { useMovePoolInfos } from "lib/services/move/poolService";
 import { coinToTokenWithValue, filterSupportedTokens } from "lib/utils";
+import { useState } from "react";
 
 interface CoinsComponentProps {
   coins: Coin[];
@@ -41,8 +41,8 @@ export const CoinsComponent = ({ coins }: CoinsComponentProps) => {
           {supportedTokens.slice(0, showMore ? undefined : 2).map((token) => (
             <TokenCard
               key={token.denom}
-              token={token}
               amptrackSection="tx_msg_receipts_assets"
+              token={token}
             />
           ))}
         </Grid>
@@ -50,9 +50,6 @@ export const CoinsComponent = ({ coins }: CoinsComponentProps) => {
       <Flex gap={2} mt={hasSupportedTokens ? 2 : 0}>
         {supportedTokens.length > 2 && (
           <ShowMoreButton
-            showMoreText="View all assets"
-            showLessText="View less assets"
-            toggleShowMore={showMore}
             setToggleShowMore={() => {
               trackUseExpand({
                 action: showMore ? "collapse" : "expand",
@@ -61,12 +58,15 @@ export const CoinsComponent = ({ coins }: CoinsComponentProps) => {
               });
               setShowMore(!showMore);
             }}
+            showLessText="View less assets"
+            showMoreText="View all assets"
+            toggleShowMore={showMore}
           />
         )}
         <UnsupportedTokensModal
-          unsupportedAssets={unsupportedTokens}
-          buttonProps={{ fontSize: "12px", mb: 0 }}
           amptrackSection="tx_msg_receipts_unsupported_assets"
+          buttonProps={{ fontSize: "12px", mb: 0 }}
+          unsupportedAssets={unsupportedTokens}
         />
       </Flex>
     </Flex>

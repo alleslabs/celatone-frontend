@@ -1,12 +1,14 @@
-import { Box, Heading, Stack, Text } from "@chakra-ui/react";
-import { useMemo } from "react";
-import { useWatch } from "react-hook-form";
 import type { Control } from "react-hook-form";
 
+import { Box, Heading, Stack, Text } from "@chakra-ui/react";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { jsonPrettify } from "lib/utils";
-import { generateFileMap } from "../helpers";
+import { useMemo } from "react";
+import { useWatch } from "react-hook-form";
+
 import type { ModuleVerifyForm } from "../types";
+
+import { generateFileMap } from "../helpers";
 
 interface ModuleVerifyFileMapProps {
   control: Control<ModuleVerifyForm>;
@@ -29,20 +31,20 @@ export const ModuleVerifyFileMap = ({ control }: ModuleVerifyFileMapProps) => {
         <Heading as="h6" variant="h6">
           Generated file map
         </Heading>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           You can refer to this file map to ensure that the uploaded files are
           in the correct structure.
         </Text>
       </Stack>
       {!tomlFile && !moveFiles.length ? (
-        <Box p={8} textAlign="center" bg="gray.900" rounded={8}>
-          <Text variant="body2" color="text.dark">
+        <Box bg="gray.900" p={8} rounded={8} textAlign="center">
+          <Text color="text.dark" variant="body2">
             The generated file map from the uploaded folder will be displayed
             here.
           </Text>
         </Box>
       ) : (
-        <JsonReadOnly text={jsonPrettify(fileMap)} canCopy fullWidth />
+        <JsonReadOnly canCopy fullWidth text={jsonPrettify(fileMap)} />
       )}
     </Stack>
   );

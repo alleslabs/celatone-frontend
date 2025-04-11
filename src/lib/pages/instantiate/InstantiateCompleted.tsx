@@ -1,5 +1,6 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import type { BechAddr32 } from "lib/types";
 
+import { Button, Flex, Heading } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
@@ -8,11 +9,11 @@ import { CustomIcon } from "lib/components/icon";
 import { CelatoneSeo } from "lib/components/Seo";
 import { TxReceiptRender } from "lib/components/tx";
 import { ContractInteractionTabs } from "lib/types";
-import type { BechAddr32 } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
-import { InstantiateOffChainForm } from "./component";
 import type { InstantiateTxInfo } from ".";
+
+import { InstantiateOffChainForm } from "./component";
 
 interface InstantiateCompletedProps {
   txInfo: InstantiateTxInfo;
@@ -24,8 +25,8 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
   return (
     <ActionPageContainer>
       <CelatoneSeo pageName="Instantiate contract" />
-      <CustomIcon name="check-circle-solid" color="success.main" boxSize={12} />
-      <Heading as="h5" variant="h5" mt={3} mb={12}>
+      <CustomIcon boxSize={12} color="success.main" name="check-circle-solid" />
+      <Heading as="h5" mb={12} mt={3} variant="h5">
         Instantiate complete!
       </Heading>
       <TxReceiptRender
@@ -58,16 +59,16 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
         variant="full"
       />
       <Flex
-        gap={6}
-        w="full"
-        borderBottomWidth={1}
         borderBottomColor="gray.700"
-        pb={8}
+        borderBottomWidth={1}
+        gap={6}
         my={8}
+        pb={8}
+        w="full"
       >
         <Button
-          w="full"
           variant="outline-gray"
+          w="full"
           onClick={() =>
             navigate({ pathname: `/contracts/${txInfo.contractAddress}` })
           }
@@ -75,8 +76,8 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
           View Contract
         </Button>
         <Button
-          w="full"
           variant="outline-gray"
+          w="full"
           onClick={() =>
             navigate({
               pathname: "/interact-contract",
@@ -90,8 +91,8 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
           Execute
         </Button>
         <Button
-          w="full"
           variant="outline-gray"
+          w="full"
           onClick={() =>
             navigate({
               pathname: "/interact-contract",
@@ -107,12 +108,12 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
       </Flex>
       {/* Off chain detail */}
       <InstantiateOffChainForm
-        title="Contract Off-Chain Detail"
-        subtitle="Filled information below will be saved on Scan only and able to edit later."
+        codeId={txInfo.codeId}
         contractAddress={txInfo.contractAddress as BechAddr32}
         contractLabel={txInfo.contractLabel}
-        codeId={txInfo.codeId}
         instantiator={txInfo.instantiator}
+        subtitle="Filled information below will be saved on Scan only and able to edit later."
+        title="Contract Off-Chain Detail"
       />
     </ActionPageContainer>
   );

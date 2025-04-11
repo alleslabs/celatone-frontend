@@ -1,6 +1,4 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { useMemo } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useGovConfig,
@@ -13,6 +11,7 @@ import {
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 import { useIsCurrentPage } from "lib/hooks";
+import { useMemo } from "react";
 
 import {
   getSubHeaderFull,
@@ -59,24 +58,23 @@ const SubHeader = () => {
   ]);
 
   return (
-    <Flex px={6} h="full">
+    <Flex h="full" px={6}>
       {subHeaderMenu.map((item) => (
         <AppLink
-          href={item.slug}
           key={item.slug}
+          href={item.slug}
           onClick={() => track(AmpEvent.USE_TOPBAR, { tab: item.name })}
         >
           <Flex
+            _hover={{ borderColor: ACTIVE_COLOR }}
             alignItems="center"
-            px={4}
-            gap={1}
-            h="full"
             borderBottomWidth={2}
             borderColor={
               isCurrentPage(item.slug) ? ACTIVE_COLOR : "transparent"
             }
-            transition="all 0.25s ease-in-out"
-            _hover={{ borderColor: ACTIVE_COLOR }}
+            gap={1}
+            h="full"
+            px={4}
             sx={{
               _hover: {
                 "> svg, > p": {
@@ -87,18 +85,19 @@ const SubHeader = () => {
                 borderColor: ACTIVE_COLOR,
               },
             }}
+            transition="all 0.25s ease-in-out"
           >
             <CustomIcon
               boxSize={3}
-              name={item.icon}
               color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "gray.600"}
+              name={item.icon}
             />
             <Text
-              variant="body3"
-              fontWeight={600}
               color={isCurrentPage(item.slug) ? ACTIVE_COLOR : "text.disabled"}
               fontFamily="heading"
+              fontWeight={600}
               textTransform="uppercase"
+              variant="body3"
             >
               {item.name}
             </Text>

@@ -1,9 +1,9 @@
 import type { Coin } from "@cosmjs/stargate";
-import { useCallback } from "react";
 
 import { AttachFundsType } from "lib/components/fund/types";
 import { useAssetInfos } from "lib/services/assetService";
 import { fabricateFunds, sortDenoms } from "lib/utils";
+import { useCallback } from "react";
 
 export const useAttachFunds = () => {
   const { data: assetInfos } = useAssetInfos({ withPrices: false });

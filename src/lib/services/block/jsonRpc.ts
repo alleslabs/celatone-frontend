@@ -1,4 +1,5 @@
 import { numberToHex, parseWithError } from "lib/utils";
+
 import { requestBatchJsonRpc } from "../evm/json-rpc";
 import { zBlockDataJsonRpc } from "../types";
 

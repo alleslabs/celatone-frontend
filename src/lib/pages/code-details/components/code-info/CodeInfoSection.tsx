@@ -1,3 +1,6 @@
+import type { Code } from "lib/services/types";
+import type { Option } from "lib/types";
+
 import {
   Box,
   Button,
@@ -6,8 +9,6 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useCallback } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useGetAddressType, useMobile, useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -15,9 +16,8 @@ import { CustomIcon } from "lib/components/icon";
 import { JsonSchemaModal } from "lib/components/json-schema";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { ViewPermissionAddresses } from "lib/components/ViewPermissionAddresses";
-import type { Code } from "lib/services/types";
-import type { Option } from "lib/types";
 import { dateFromNow, formatUTC, getAddressTypeText } from "lib/utils";
+import { useCallback } from "react";
 
 import { CodeInfoLabelText } from "./CodeInfoLabelText";
 
@@ -38,9 +38,9 @@ const getMethodSpecificRender = (
       methodRender: (
         <CodeInfoLabelText label="Proposal ID">
           <ExplorerLink
+            showCopyOnHover
             type="proposal_id"
             value={id.toString()}
-            showCopyOnHover
           />
         </CodeInfoLabelText>
       ),
@@ -48,14 +48,14 @@ const getMethodSpecificRender = (
         height && created ? (
           <>
             <ExplorerLink
+              showCopyOnHover
               type="block_height"
               value={height.toString()}
-              showCopyOnHover
             />
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               {formatUTC(created)}
             </Text>
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               {dateFromNow(created)}
             </Text>
           </>
@@ -71,7 +71,7 @@ const getMethodSpecificRender = (
       methodRender: (
         <CodeInfoLabelText label="Upload transaction">
           <Flex minW="150px">
-            <ExplorerLink type="tx_hash" value={hash} showCopyOnHover />
+            <ExplorerLink showCopyOnHover type="tx_hash" value={hash} />
           </Flex>
         </CodeInfoLabelText>
       ),
@@ -79,19 +79,19 @@ const getMethodSpecificRender = (
         height && created ? (
           <>
             <ExplorerLink
+              showCopyOnHover
               type="block_height"
               value={height.toString()}
-              showCopyOnHover
             />
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               {formatUTC(created)}
             </Text>
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               {dateFromNow(created)}
             </Text>
           </>
         ) : (
-          <Text variant="body3" color="text.dark">
+          <Text color="text.dark" variant="body3">
             N/A
           </Text>
         ),
@@ -146,7 +146,7 @@ export const CodeInfoSection = ({
 
   return (
     <Box my={8}>
-      <Heading as="h6" variant="h6" mb={6}>
+      <Heading as="h6" mb={6} variant="h6">
         Code info
       </Heading>
       <Flex
@@ -158,11 +158,11 @@ export const CodeInfoSection = ({
         <CodeInfoLabelText label="Uploaded by">
           <Flex direction="column" gap={1} w="150px">
             <ExplorerLink
+              showCopyOnHover
               type={uploaderType}
               value={uploader}
-              showCopyOnHover
             />
-            <Text variant="body3" color="text.dark">
+            <Text color="text.dark" variant="body3">
               {getAddressTypeText(uploaderType)}
             </Text>
           </Flex>
@@ -175,15 +175,15 @@ export const CodeInfoSection = ({
               permissionAddresses={permissionAddresses}
             />
             <ViewPermissionAddresses
-              permissionAddresses={permissionAddresses}
               amptrackSection="code_details"
+              permissionAddresses={permissionAddresses}
             />
           </Flex>
         </CodeInfoLabelText>
         {isFullTier && (
           <CodeInfoLabelText
-            label="Stored on block"
             gridColumn={{ base: "1 / span 2", md: "5 / span 1" }}
+            label="Stored on block"
           >
             <Flex direction="column" gap={1}>
               {storedBlockRender}
@@ -193,27 +193,27 @@ export const CodeInfoSection = ({
         {!isMobile && (
           <CodeInfoLabelText
             label="JSON schema"
-            w={{ base: "full" }}
             maxW={{ md: "fit-content" }}
+            w={{ base: "full" }}
           >
             <div>
               <Button
-                variant="outline-primary"
-                p="8px 6px"
                 leftIcon={
                   attached ? undefined : (
-                    <CustomIcon name="upload" boxSize={4} />
+                    <CustomIcon boxSize={4} name="upload" />
                   )
                 }
+                p="8px 6px"
+                variant="outline-primary"
                 onClick={attached ? handleView : handleAttach}
               >
                 {attached ? "View schema" : "Attach"}
               </Button>
               <JsonSchemaModal
+                codeHash={hash}
+                codeId={codeId}
                 isOpen={isOpen}
                 onClose={onClose}
-                codeId={codeId}
-                codeHash={hash}
               />
             </div>
           </CodeInfoLabelText>

@@ -1,10 +1,11 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
-
-import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import type { PermissionAddresses } from "lib/types";
+
+import { Button } from "@chakra-ui/react";
+import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
+
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 
@@ -80,12 +81,12 @@ export const InstantiateButton = ({
   return (
     <Tooltip label={tooltipLabel}>
       <Button
-        w={{ base: "full", md: "auto" }}
         // Change to isDisabled when create proposal flow is done
         isDisabled={!isAllowed || !address}
-        variant={variant}
         leftIcon={icon}
         size="sm"
+        variant={variant}
+        w={{ base: "full", md: "auto" }}
         onClick={isAllowed ? goToInstantiate : () => null}
         {...buttonProps}
       >

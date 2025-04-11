@@ -1,13 +1,12 @@
+import type { ReactNode } from "react";
+
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import pluginUtc from "dayjs/plugin/utc";
-
-import { useRouter } from "next/router";
-import type { ReactNode } from "react";
-import { useEffect, useMemo } from "react";
-
 import { useMobile, useNavContext } from "lib/app-provider";
 import { scrollToTop } from "lib/utils";
+import { useRouter } from "next/router";
+import { useEffect, useMemo } from "react";
 
 import Footer from "./Footer";
 import Header from "./Header";
@@ -55,39 +54,39 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <Box>
       <Grid
-        templateAreas={mode.templateAreas}
-        gridTemplateRows={mode.templateRows}
+        bg="background.main"
         gridTemplateColumns={mode.templateCols}
+        gridTemplateRows={mode.templateRows}
         h="100vh"
         overflowX="hidden"
         overflowY="auto"
-        bg="background.main"
+        templateAreas={mode.templateAreas}
       >
-        <GridItem borderBottom="1px solid" borderColor="gray.700" area="header">
+        <GridItem area="header" borderBottom="1px solid" borderColor="gray.700">
           {mode.header}
         </GridItem>
         {!isMobile && (
           <>
             <GridItem
+              area="subheader"
               borderBottom="1px solid"
               borderColor="gray.700"
-              area="subheader"
-              py={{ base: 2, md: 0 }}
               px={{ base: 4, md: 0 }}
+              py={{ base: 2, md: 0 }}
             >
               {mode.subHeader}
             </GridItem>
             <GridItem
-              borderRight="1px solid"
-              borderColor="gray.700"
               area="nav"
+              borderColor="gray.700"
+              borderRight="1px solid"
               overflowY="auto"
             >
               <Navbar isExpand={isExpand} setIsExpand={setIsExpand} />
             </GridItem>
           </>
         )}
-        <GridItem area="main" overflowX="hidden" id="content">
+        <GridItem id="content" area="main" overflowX="hidden">
           <div
             style={{ minHeight: "calc(100vh - 129px)", position: "relative" }}
           >

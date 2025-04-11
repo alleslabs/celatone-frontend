@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   EnumOptionsType,
@@ -7,6 +6,7 @@ import type {
   RJSFSchema,
   StrictRJSFSchema,
 } from "@rjsf/utils";
+
 import { getUiOptions, getWidget, optionsList } from "@rjsf/utils";
 import isObject from "lodash/isObject";
 
@@ -99,26 +99,26 @@ function BooleanField<
 
   return (
     <Widget
+      id={idSchema.$id}
+      autofocus={autofocus}
+      disabled={disabled}
+      formContext={formContext}
+      hideError={hideError}
+      hideLabel={!displayLabel}
+      label={label}
+      name={name}
       options={{ ...options, enumOptions }}
       placeholder={readonly ? undefined : "Select boolean option"}
+      rawErrors={rawErrors}
+      readonly={readonly}
+      registry={registry}
+      required={required}
       schema={schema}
       uiSchema={uiSchema}
-      id={idSchema.$id}
-      name={name}
+      value={formData}
+      onBlur={onBlur}
       onChange={onChange}
       onFocus={onFocus}
-      onBlur={onBlur}
-      label={label}
-      hideLabel={!displayLabel}
-      value={formData}
-      required={required}
-      disabled={disabled}
-      readonly={readonly}
-      hideError={hideError}
-      registry={registry}
-      formContext={formContext}
-      autofocus={autofocus}
-      rawErrors={rawErrors}
     />
   );
 }

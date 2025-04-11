@@ -1,9 +1,10 @@
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { StdFee } from "@cosmjs/stargate";
-import { useCallback } from "react";
 
 import { trackTxSucceed } from "lib/amplitude";
 import { resendTx } from "lib/app-fns/tx/resend";
+import { useCallback } from "react";
+
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface ResendStreamParams {

@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable no-useless-escape */
 import type { languages } from "monaco-editor";
 

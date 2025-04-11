@@ -1,12 +1,12 @@
-import { isNull } from "lodash";
+import type { Nullable, Ratio } from "lib/types";
 
 import { ActiveDot } from "lib/components/ActiveDot";
 import { CustomIcon } from "lib/components/icon";
-import type { Nullable, Ratio } from "lib/types";
 import { ProposalStatus } from "lib/types";
+import { isNull } from "lodash";
 
-import { ProgressBadge } from "./ProgressBadge";
 import { PeriodState } from "../types";
+import { ProgressBadge } from "./ProgressBadge";
 
 interface VoteQuorumBadgeProps {
   status: ProposalStatus;
@@ -25,12 +25,12 @@ export const VoteQuorumBadge = ({
 
   if (totalRatio >= quorum)
     return isCompact ? (
-      <CustomIcon m={0} name="check-circle-solid" color="success.main" />
+      <CustomIcon color="success.main" m={0} name="check-circle-solid" />
     ) : (
       <ProgressBadge
+        bgColor="gray.700"
         state={PeriodState.COMPLETE}
         text="Quorum reached"
-        bgColor="gray.700"
       />
     );
 
@@ -39,19 +39,19 @@ export const VoteQuorumBadge = ({
       <ActiveDot />
     ) : (
       <ProgressBadge
+        bgColor="gray.700"
         state={PeriodState.ONGOING}
         text="In progress"
-        bgColor="gray.700"
       />
     );
 
   return isCompact ? (
-    <CustomIcon m={0} name="close-circle-solid" color="error.main" />
+    <CustomIcon color="error.main" m={0} name="close-circle-solid" />
   ) : (
     <ProgressBadge
+      bgColor="gray.700"
       state={PeriodState.FAILED}
       text="Quorum not reached"
-      bgColor="gray.700"
     />
   );
 };

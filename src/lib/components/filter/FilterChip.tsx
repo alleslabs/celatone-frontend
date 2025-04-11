@@ -1,5 +1,6 @@
-import { Flex } from "@chakra-ui/react";
 import type { ReactNode } from "react";
+
+import { Flex } from "@chakra-ui/react";
 
 interface FilterChipProps {
   chipComponent: ReactNode;
@@ -8,10 +9,10 @@ interface FilterChipProps {
 
 export const FilterChip = ({ chipComponent, onSelect }: FilterChipProps) => (
   <Flex
-    display="inline-block"
-    onClick={onSelect}
-    w="max-content"
     cursor="pointer"
+    display="inline-block"
+    w="max-content"
+    onClick={onSelect}
   >
     {chipComponent}
   </Flex>

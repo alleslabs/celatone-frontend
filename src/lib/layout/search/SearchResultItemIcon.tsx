@@ -1,9 +1,9 @@
-import { Image } from "@chakra-ui/react";
-
 import type { IconKeys } from "lib/components/icon";
-import { CustomIcon } from "lib/components/icon";
 import type { SearchResultType } from "lib/services/searchService";
 import type { Option } from "lib/types";
+
+import { Image } from "@chakra-ui/react";
+import { CustomIcon } from "lib/components/icon";
 
 const getIcon = (type: Option<SearchResultType>) => {
   switch (type) {
@@ -47,22 +47,22 @@ export const SearchResultItemIcon = ({
   if (isInitiaUsername)
     return (
       <Image
-        src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
         borderRadius="full"
-        width={5}
         height={5}
+        src="https://assets.alleslabs.dev/webapp-assets/name-services/initia-username.svg"
+        width={5}
       />
     );
 
   if (isIcns)
     return (
       <Image
-        src="https://assets.alleslabs.dev/webapp-assets/name-services/icns.png"
         borderRadius="full"
-        width={5}
         height={5}
+        src="https://assets.alleslabs.dev/webapp-assets/name-services/icns.png"
+        width={5}
       />
     );
 
-  return <CustomIcon name={getIcon(type)} color="gray.600" />;
+  return <CustomIcon color="gray.600" name={getIcon(type)} />;
 };

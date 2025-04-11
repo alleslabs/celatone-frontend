@@ -1,16 +1,16 @@
 import type { Coin } from "@cosmjs/stargate";
 import type { UseQueryOptions } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-import { gzip } from "node-gzip";
+import type { AccessType, BechAddr, ComposedMsg, Gas, Option } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import {
   useCurrentChain,
   useDummyWallet,
   useSimulateFee,
 } from "lib/app-provider/hooks";
-import type { AccessType, BechAddr, ComposedMsg, Gas, Option } from "lib/types";
 import { composeStoreCodeMsg, composeStoreCodeProposalMsg } from "lib/utils";
+import { gzip } from "node-gzip";
 
 interface SimulateQueryParams {
   enabled: boolean;

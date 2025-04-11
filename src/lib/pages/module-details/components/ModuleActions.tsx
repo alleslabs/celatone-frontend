@@ -1,10 +1,11 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
-import type { MouseEventHandler } from "react";
-
-import { useTierConfig } from "lib/app-provider";
-import { CustomIcon } from "lib/components/icon";
 import type { IconKeys } from "lib/components/icon";
 import type { Option } from "lib/types";
+import type { MouseEventHandler } from "react";
+
+import { Flex, Heading, Text } from "@chakra-ui/react";
+import { useTierConfig } from "lib/app-provider";
+import { CustomIcon } from "lib/components/icon";
+
 import { FunctionTypeTabIndex, TabIndex } from "../types";
 
 interface ActionInfo {
@@ -66,21 +67,21 @@ export const ModuleActions = ({
 
   return (
     <Flex
-      justifyContent="space-between"
       direction={{ base: "column", md: "row" }}
       gap={{ base: 2, md: 6 }}
+      justifyContent="space-between"
       mb={{ base: 2, md: 6 }}
     >
       {actionList.map((item) => (
         <Flex
           key={item.name}
+          alignItems="center"
+          borderRadius={8}
+          display={item.hidden ? "none" : "flex"}
+          justifyContent="space-between"
           p={4}
           transition="all .25s ease-in-out"
-          borderRadius={8}
           w="full"
-          alignItems="center"
-          justifyContent="space-between"
-          display={item.hidden ? "none" : "flex"}
           {...(item.disabled
             ? {
                 bg: "gray.900",
@@ -93,18 +94,18 @@ export const ModuleActions = ({
                 onClick: item.onClick,
               })}
         >
-          <Flex gap={3} alignItems="center">
-            <CustomIcon name={item.icon} boxSize={6} color={item.iconColor} />
+          <Flex alignItems="center" gap={3}>
+            <CustomIcon boxSize={6} color={item.iconColor} name={item.icon} />
             <Flex flexDirection="column">
-              <Text variant="body1" color="text.dark" fontWeight={600}>
+              <Text color="text.dark" fontWeight={600} variant="body1">
                 {item.name}
               </Text>
-              <Heading as="h6" variant="h6" fontWeight={600}>
+              <Heading as="h6" fontWeight={600} variant="h6">
                 {item.count ?? "N/A"}
               </Heading>
             </Flex>
           </Flex>
-          <CustomIcon name="chevron-right" color="gray.600" />
+          <CustomIcon color="gray.600" name="chevron-right" />
         </Flex>
       ))}
     </Flex>

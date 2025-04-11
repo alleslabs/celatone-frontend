@@ -1,8 +1,8 @@
-import { Flex } from "@chakra-ui/react";
+import type { PoolData } from "lib/types";
 
+import { Flex } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
-import type { PoolData } from "lib/types";
 
 interface PoolLogoLinkProps {
   pool: PoolData;
@@ -11,12 +11,12 @@ interface PoolLogoLinkProps {
 
 export const PoolLogoLink = ({ pool, ampCopierSection }: PoolLogoLinkProps) => (
   <Flex gap={1}>
-    <PoolLogo tokens={pool.liquidity} logoSize={5} marginLeft={-4} minW={0} />
+    <PoolLogo logoSize={5} marginLeft={-4} minW={0} tokens={pool.liquidity} />
     <ExplorerLink
+      ampCopierSection={ampCopierSection}
+      showCopyOnHover
       type="pool_id"
       value={pool.id.toString()}
-      showCopyOnHover
-      ampCopierSection={ampCopierSection}
     />
   </Flex>
 );

@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import {
   AccountType,
   AccountTypeRest,
@@ -7,6 +5,7 @@ import {
   zPublicAccountInfo,
 } from "lib/types";
 import { snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 const zIcns = z.object({
   names: z.array(z.string()),

@@ -1,5 +1,6 @@
-import axios from "axios";
+import type { Option, ValidatorAddr } from "lib/types";
 
+import axios from "axios";
 import {
   zBlocksResponse,
   zHistoricalPowersResponse,
@@ -11,7 +12,6 @@ import {
   zValidatorVotedProposalsResponse,
   zValidatorVotedProposalsResponseAnswerCounts,
 } from "lib/services/types";
-import type { Option, ValidatorAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getValidators = async (

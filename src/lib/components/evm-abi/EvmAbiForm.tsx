@@ -1,8 +1,10 @@
 import type { JsonFragmentType } from "ethers";
+import type { JsonDataType } from "lib/types";
+
 import { cloneDeep } from "lodash";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import type { JsonDataType } from "lib/types";
+
 import { FormFields } from "./fields";
 import { getComponentsDefaultValues } from "./utils";
 
@@ -54,10 +56,10 @@ export const EvmAbiForm = ({
 
   return (
     <FormFields
-      control={control}
       components={types}
-      isPayable={isPayable}
+      control={control}
       isDisabled={isDisabled}
+      isPayable={isPayable}
     />
   );
 };

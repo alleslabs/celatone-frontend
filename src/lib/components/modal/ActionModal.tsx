@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import {
   Box,
   Button,
@@ -13,11 +15,11 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import type { ReactNode } from "react";
+import { trackUseOtherModal } from "lib/amplitude";
 import { useCallback } from "react";
 
-import { trackUseOtherModal } from "lib/amplitude";
 import type { IconKeys } from "../icon";
+
 import { CustomIcon } from "../icon";
 
 export interface ActionModalProps {
@@ -81,17 +83,17 @@ export function ActionModal({
         {trigger || <Button>Open {title} Modal</Button>}
       </Flex>
       <Modal
-        isOpen={isOpen}
-        onClose={handleOnOther}
         closeOnOverlayClick={closeOnOverlayClick}
         isCentered
+        isOpen={isOpen}
+        onClose={handleOnOther}
       >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
             <Box w="full">
               <Flex alignItems="center" gap={3}>
-                <CustomIcon name={icon} color={iconColor} boxSize={5} />
+                <CustomIcon boxSize={5} color={iconColor} name={icon} />
                 <Heading
                   as="h5"
                   variant={{ base: "h6", md: "h5" }}
@@ -101,7 +103,7 @@ export function ActionModal({
                 </Heading>
               </Flex>
               {subtitle && (
-                <Text variant="body3" color="text.dark" pt={2}>
+                <Text color="text.dark" pt={2} variant="body3">
                   {subtitle}
                 </Text>
               )}
@@ -113,30 +115,30 @@ export function ActionModal({
           <ModalFooter>
             <Flex
               alignItems="center"
-              w="full"
-              justifyContent="center"
               direction="column"
               gap={4}
+              justifyContent="center"
+              w="full"
             >
               <Flex gap={2}>
                 <Button
+                  isDisabled={disabledMain}
+                  variant={mainVariant}
                   w="200px"
                   onClick={handleOnMain}
-                  variant={mainVariant}
-                  isDisabled={disabledMain}
                 >
                   {mainBtnTitle}
                 </Button>
                 <Button
-                  w="200px"
                   variant={otherVariant}
+                  w="200px"
                   onClick={handleOnOther}
                 >
                   {otherBtnTitle}
                 </Button>
               </Flex>
               {buttonRemark && (
-                <Text variant="body3" color="text.dark">
+                <Text color="text.dark" variant="body3">
                   {buttonRemark}
                 </Text>
               )}

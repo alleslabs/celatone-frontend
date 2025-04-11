@@ -1,9 +1,9 @@
-import { Flex, Text } from "@chakra-ui/react";
-
-import { ExplorerLink } from "lib/components/ExplorerLink";
-import { CustomIcon } from "lib/components/icon";
 import type { TxDataJsonRpc } from "lib/services/types";
 import type { HexAddr20, Option } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
+import { ExplorerLink } from "lib/components/ExplorerLink";
+import { CustomIcon } from "lib/components/icon";
 
 import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
@@ -21,41 +21,41 @@ export const EvmTxCallErc20Factory = ({
 
   return (
     <EvmTxMethodAccordion
-      msgIcon="instantiate"
       content={
         <Flex gap={1}>
           Create{" "}
           {contractAddress ? (
-            <Flex gap={1} align="center">
+            <Flex align="center" gap={1}>
               <CustomIcon
-                name="contract-address"
                 boxSize={3}
                 color="primary.main"
+                name="contract-address"
               />
               <ExplorerLink
-                value={contractAddress}
-                type="evm_contract_address"
                 showCopyOnHover
+                type="evm_contract_address"
+                value={contractAddress}
               />
             </Flex>
           ) : (
-            <Text variant="body2" color="text.disabled">
+            <Text color="text.disabled" variant="body2">
               -
             </Text>
           )}{" "}
           via ERC20 factory
         </Flex>
       }
+      msgIcon="instantiate"
     >
       <EvmInfoLabelValue
         label="Creator"
         value={
           <ExplorerLink
-            type="user_address"
-            value={from}
+            fixedHeight={false}
             showCopyOnHover
             textFormat="normal"
-            fixedHeight={false}
+            type="user_address"
+            value={from}
           />
         }
       />
@@ -63,22 +63,22 @@ export const EvmTxCallErc20Factory = ({
         label="ERC20 factory"
         value={
           to ? (
-            <Flex gap={1} align="center">
+            <Flex align="center" gap={1}>
               <CustomIcon
-                name="contract-address"
                 boxSize={3}
                 color="primary.main"
+                name="contract-address"
               />
               <ExplorerLink
-                value={to}
-                type="evm_contract_address"
+                fixedHeight={false}
                 showCopyOnHover
                 textFormat="normal"
-                fixedHeight={false}
+                type="evm_contract_address"
+                value={to}
               />
             </Flex>
           ) : (
-            <Text variant="body2" color="text.disabled">
+            <Text color="text.disabled" variant="body2">
               -
             </Text>
           )
@@ -88,22 +88,22 @@ export const EvmTxCallErc20Factory = ({
         label="Created contract"
         value={
           contractAddress ? (
-            <Flex gap={1} align="center">
+            <Flex align="center" gap={1}>
               <CustomIcon
-                name="contract-address"
                 boxSize={3}
                 color="primary.main"
+                name="contract-address"
               />
               <ExplorerLink
-                value={contractAddress}
-                type="evm_contract_address"
+                fixedHeight={false}
                 showCopyOnHover
                 textFormat="normal"
-                fixedHeight={false}
+                type="evm_contract_address"
+                value={contractAddress}
               />
             </Flex>
           ) : (
-            <Text variant="body2" color="text.disabled">
+            <Text color="text.disabled" variant="body2">
               -
             </Text>
           )

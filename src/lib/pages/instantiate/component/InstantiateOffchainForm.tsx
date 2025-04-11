@@ -1,15 +1,15 @@
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useForm } from "react-hook-form";
+import type { OffchainDetail } from "lib/components/OffChainForm";
+import type { BechAddr20, BechAddr32, LVPair } from "lib/types";
 
+import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate } from "lib/app-provider";
 import { OffChainForm } from "lib/components/OffChainForm";
-import type { OffchainDetail } from "lib/components/OffChainForm";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/providers/store";
-import type { BechAddr20, BechAddr32, LVPair } from "lib/types";
 import { formatSlugName } from "lib/utils";
+import { observer } from "mobx-react-lite";
+import { useForm } from "react-hook-form";
 
 interface InstantiateOffChainFormProps {
   title?: string;
@@ -97,25 +97,25 @@ export const InstantiateOffChainForm = observer(
           </Flex>
         )}
         <OffChainForm<OffchainDetail>
-          state={offchainState}
           contractLabel={contractLabel}
           control={control}
-          setTagsValue={setTagsValue}
-          setContractListsValue={setContractListsValue}
           errors={errors}
+          setContractListsValue={setContractListsValue}
+          setTagsValue={setTagsValue}
+          state={offchainState}
         />
         {cta && (
-          <Flex gap={6} w="full" mt={4} justifyContent="center">
+          <Flex gap={6} justifyContent="center" mt={4} w="full">
             <Button
+              isDisabled={!!Object.keys(errors).length}
               w="128px"
               onClick={saveContract}
-              isDisabled={!!Object.keys(errors).length}
             >
               Save
             </Button>
             <Button
-              w="128px"
               variant="outline-gray"
+              w="128px"
               onClick={() =>
                 navigate({
                   pathname: "/contract-lists/[slug]",

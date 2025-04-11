@@ -1,7 +1,9 @@
-import type { Control } from "react-hook-form";
-import { useWatch } from "react-hook-form";
 import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import type { Control } from "react-hook-form";
+
 import { EvmVerifyOptions } from "lib/types";
+import { useWatch } from "react-hook-form";
+
 import {
   EvmContractVerifySolidityContractCode,
   EvmContractVerifySolidityFoundry,

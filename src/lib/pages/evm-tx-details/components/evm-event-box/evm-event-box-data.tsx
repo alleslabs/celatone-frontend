@@ -1,13 +1,15 @@
-import { Box, Checkbox, Flex, Stack, Text } from "@chakra-ui/react";
 import type { LogDescription } from "ethers";
-import { useState } from "react";
+import type { TxReceiptJsonRpcLog } from "lib/services/types";
+import type { Option } from "lib/types";
+
+import { Box, Checkbox, Flex, Stack, Text } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { SelectInput } from "lib/components/forms";
 import { TextReadOnly } from "lib/components/json/TextReadOnly";
-import type { TxReceiptJsonRpcLog } from "lib/services/types";
-import type { Option } from "lib/types";
-import { EvmEventBoxDecoded } from "./evm-event-box-decoded";
+import { useState } from "react";
+
 import { EvmEventBoxTabs } from "../../types";
+import { EvmEventBoxDecoded } from "./evm-event-box-decoded";
 
 interface EvmEventBoxDataProps
   extends Pick<TxReceiptJsonRpcLog, "data" | "topics"> {
@@ -58,35 +60,35 @@ const EvmEventBoxDataBody = ({ text }: { text: string }) => {
 
   return (
     <Flex
-      gap={4}
       alignItems={{
         base: "flex-start",
         md: "center",
       }}
+      gap={4}
       wordBreak="break-all"
     >
       <Box minWidth="110px">
         <SelectInput
           classNamePrefix="chakra-react-select"
-          size="sm"
+          menuPortalTarget={document.body}
           options={options}
           placeholder=""
+          size="sm"
           value={options.find(
             ({ value: optionValue }) => optionValue === value
           )}
           onChange={(newValue) => setValue(newValue?.value)}
-          menuPortalTarget={document.body}
         />
       </Box>
       {value === "address" ? (
         <ExplorerLink
-          value={handleDecodeText().toString()}
-          type="user_address"
           openNewTab
           textFormat="normal"
+          type="user_address"
+          value={handleDecodeText().toString()}
         />
       ) : (
-        <Text variant="body2" fontFamily="mono">
+        <Text fontFamily="mono" variant="body2">
           {handleDecodeText()}
         </Text>
       )}
@@ -107,27 +109,27 @@ export const EvmEventBoxData = ({
     <Stack gap={1} w="full">
       {isFormatted ? (
         <Box
-          minH={{ base: "360px", md: "auto" }}
-          px={3}
-          py={4}
-          position="relative"
-          borderWidth="thin"
-          borderColor="gray.700"
-          borderRadius="8px"
-          transition="all 0.25s ease-in-out"
           _hover={{
             borderColor: "gray.600",
             "& .copy-button-box": { display: "block" },
           }}
+          borderColor="gray.700"
+          borderRadius="8px"
+          borderWidth="thin"
+          minH={{ base: "360px", md: "auto" }}
+          position="relative"
+          px={3}
+          py={4}
+          transition="all 0.25s ease-in-out"
         >
           <Stack gap={2}>
             {formattedData.map((d, index) => (
-              <EvmEventBoxDataBody text={d} key={`${d}-${index}`} />
+              <EvmEventBoxDataBody key={`${d}-${index}`} text={d} />
             ))}
           </Stack>
         </Box>
       ) : (
-        <TextReadOnly text={data} canCopy />
+        <TextReadOnly canCopy text={data} />
       )}
       {data.trim() !== "0x" && (
         <Checkbox
@@ -142,11 +144,11 @@ export const EvmEventBoxData = ({
     <>
       {parsedLog && (
         <Stack
-          rowGap={4}
+          bgColor="gray.800"
+          borderRadius={8}
           columnGap={2}
           p={4}
-          borderRadius={8}
-          bgColor="gray.800"
+          rowGap={4}
           w="full"
         >
           {parsedLog.fragment.inputs
@@ -154,8 +156,8 @@ export const EvmEventBoxData = ({
             .map((input, index) => (
               <EvmEventBoxDecoded
                 key={input.name}
-                input={input}
                 decode={parsedLog.args.slice(topics.length - 1)[index]}
+                input={input}
               />
             ))}
         </Stack>

@@ -1,13 +1,13 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
+import type { ContractsResponse } from "lib/services/types";
+import type { ContractInfo, Option } from "lib/types";
 
 import { useContractStore } from "lib/providers/store";
-import type { ContractsResponse } from "lib/services/types";
 import { useCodeRest } from "lib/services/wasm/code";
 import {
   useContractsByCodeId,
   useContractsByCodeIdRest,
 } from "lib/services/wasm/contract";
-import type { ContractInfo, Option } from "lib/types";
 
 export const useCodeDataRest = (codeId: number, enabled: boolean) => {
   const { data, isLoading } = useCodeRest(codeId, {

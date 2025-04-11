@@ -1,7 +1,6 @@
-import { Flex, TabList, Tabs } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useCallback, useEffect, useState } from "react";
+import type { BechAddr32, CodeSchema, Nullish, Option } from "lib/types";
 
+import { Flex, TabList, Tabs } from "@chakra-ui/react";
 import { trackUseTab } from "lib/amplitude";
 import { useMobile } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
@@ -12,7 +11,8 @@ import {
   UploadSchemaSection,
 } from "lib/components/json-schema";
 import { Tooltip } from "lib/components/Tooltip";
-import type { BechAddr32, CodeSchema, Nullish, Option } from "lib/types";
+import { observer } from "mobx-react-lite";
+import { useCallback, useEffect, useState } from "react";
 
 import { JsonQuery } from "./JsonQuery";
 import { SchemaQuery } from "./schema-query";
@@ -60,23 +60,23 @@ export const QueryArea = observer(
       <>
         {!isMobile && (
           <Tabs
+            index={Object.values(MessageTabs).indexOf(tab)}
             isLazy
             lazyBehavior="keepMounted"
-            index={Object.values(MessageTabs).indexOf(tab)}
           >
-            <TabList mb={8} borderBottom="1px" borderColor="gray.800">
+            <TabList borderBottom="1px" borderColor="gray.800" mb={8}>
               <CustomTab
                 onClick={() => handleTabChange(MessageTabs.JSON_INPUT)}
               >
                 JSON Input
               </CustomTab>
               <CustomTab
-                onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
                 isDisabled={!contractAddress}
+                onClick={() => handleTabChange(MessageTabs.YOUR_SCHEMA)}
               >
                 <Tooltip
-                  label="Please select contract first"
                   hidden={Boolean(contractAddress)}
+                  label="Please select contract first"
                 >
                   Your schema
                 </Tooltip>
@@ -98,22 +98,22 @@ export const QueryArea = observer(
               <>
                 {hasSchema ? (
                   <SchemaQuery
-                    verifiedSchema={verifiedSchema}
-                    localSchema={localSchema}
+                    codeHash={codeHash}
+                    codeId={codeId}
                     contractAddress={contractAddress}
                     initialMsg={initialMsg}
-                    codeId={codeId}
-                    codeHash={codeHash}
+                    localSchema={localSchema}
+                    verifiedSchema={verifiedSchema}
                   />
                 ) : (
                   <UploadSchemaSection
-                    codeId={codeId}
                     codeHash={codeHash}
+                    codeId={codeId}
                     title={
-                      <Flex flexDirection="column" alignItems="center">
+                      <Flex alignItems="center" flexDirection="column">
                         <Flex display="inline" textAlign="center">
                           You haven&#39;t attached the JSON schema for
-                          <CustomIcon name="code" mx={1} color="gray.400" />
+                          <CustomIcon color="gray.400" mx={1} name="code" />
                           code {codeId}
                         </Flex>
                         <Flex textAlign="center">

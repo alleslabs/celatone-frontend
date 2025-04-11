@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export enum CELATONE_QUERY_KEYS {
   OVERVIEWS_STATS = "CELATONE_OVERVIEWS_STATS",
   // SIMULATE

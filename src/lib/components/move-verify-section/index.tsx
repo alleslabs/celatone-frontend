@@ -1,5 +1,4 @@
 import { Flex, Text } from "@chakra-ui/react";
-
 import { useIsApiChain } from "lib/app-provider";
 import { MoveVerifyStatus } from "lib/types";
 
@@ -17,7 +16,7 @@ const MoveVerifySectionBody = ({ status }: MoveVerifySectionProps) => {
   });
   if (!isApiChain)
     return (
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         Module verification is only available on official networks
       </Text>
     );
@@ -36,11 +35,11 @@ const MoveVerifySectionBody = ({ status }: MoveVerifySectionProps) => {
 
 export const MoveVerifySection = (props: MoveVerifySectionProps) => (
   <Flex
-    direction={{ base: "column", md: "row" }}
     alignItems={{ base: "start", md: "center" }}
+    direction={{ base: "column", md: "row" }}
+    gap={2}
     justifyContent="space-between"
     w="full"
-    gap={2}
   >
     <MoveVerifySectionBody {...props} />
   </Flex>

@@ -1,3 +1,7 @@
+import type { JsonFragment } from "ethers";
+import type { SimulatedFeeEvm } from "lib/services/types";
+import type { HexAddr20, JsonDataType } from "lib/types";
+
 import {
   AccordionButton,
   AccordionIcon,
@@ -9,11 +13,6 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import type { JsonFragment } from "ethers";
-import { isUndefined } from "lodash";
-import dynamic from "next/dynamic";
-import { useCallback, useEffect, useMemo, useState } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useRequestEvmTx } from "lib/app-provider";
 import { CopyButton } from "lib/components/copy";
@@ -22,9 +21,10 @@ import { EvmAbiForm } from "lib/components/evm-abi";
 import { CustomIcon } from "lib/components/icon";
 import { useTxBroadcast } from "lib/hooks";
 import { useSimulateFeeEvmQuery } from "lib/services/tx";
-import type { SimulatedFeeEvm } from "lib/services/types";
-import type { HexAddr20, JsonDataType } from "lib/types";
 import { encodeEvmFunctionData } from "lib/utils";
+import { isUndefined } from "lodash";
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const EvmCodeSnippet = dynamic(
   () => import("lib/components/modal/EvmCodeSnippet"),
@@ -136,8 +136,8 @@ export const WriteBox = ({
   return (
     <AccordionItem className={`abi_write_${abiSection.name}`}>
       <h6>
-        <AccordionButton p={4} justifyContent="space-between">
-          <Text variant="body1" fontWeight={700}>
+        <AccordionButton justifyContent="space-between" p={4}>
+          <Text fontWeight={700} variant="body1">
             {abiSection.name}
           </Text>
           <AccordionIcon />
@@ -146,13 +146,13 @@ export const WriteBox = ({
       <AccordionPanel mx={2}>
         <Flex direction="column" gap={6}>
           <EvmAbiForm
-            types={abiSection.inputs ?? []}
             isPayable={abiSection.stateMutability === "payable"}
             propsOnChangeInputs={handleChangeInputs}
             propsOnChangeValue={handleChangeValue}
+            types={abiSection.inputs ?? []}
           />
           {simulateFeeError && (
-            <Alert variant="error" alignItems="center">
+            <Alert alignItems="center" variant="error">
               <AlertDescription wordBreak="break-word">
                 {simulateFeeError}
               </AlertDescription>
@@ -161,21 +161,21 @@ export const WriteBox = ({
           <Flex align="center" justifyContent="space-between">
             <Flex gap={2} justify="flex-start">
               <CopyButton
-                variant="outline-secondary"
-                isDisable={isUndefined(data)}
-                value={data ?? ""}
                 amptrackSection="write_inputs"
                 buttonText="Copy encoded inputs"
+                isDisable={isUndefined(data)}
+                value={data ?? ""}
+                variant="outline-secondary"
               />
               <EvmCodeSnippet
-                contractAddress={contractAddress}
                 abiSection={abiSection}
-                type="write"
+                contractAddress={contractAddress}
                 inputs={inputs}
+                type="write"
               />
             </Flex>
-            <Flex direction="row" align="center" gap={2}>
-              <Flex fontSize="14px" color="text.dark" alignItems="center">
+            <Flex align="center" direction="row" gap={2}>
+              <Flex alignItems="center" color="text.dark" fontSize="14px">
                 Transaction fee:{" "}
                 <EstimatedFeeEvmRender
                   gasPrice={fee?.gasPrice}
@@ -184,14 +184,14 @@ export const WriteBox = ({
                 />
               </Flex>
               <Button
-                variant="primary"
                 fontSize="14px"
-                p="6px 16px"
-                onClick={proceed}
                 isDisabled={!enabledExecute || !fee || isFetching}
-                leftIcon={<CustomIcon name="execute" />}
                 isLoading={processing}
+                leftIcon={<CustomIcon name="execute" />}
+                p="6px 16px"
                 sx={{ pointerEvents: processing && "none" }}
+                variant="primary"
+                onClick={proceed}
               >
                 Execute
               </Button>

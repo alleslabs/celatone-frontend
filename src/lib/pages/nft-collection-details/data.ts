@@ -1,6 +1,7 @@
+import type { HexAddr, HexAddr32, Option } from "lib/types";
+
 import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { useResourcesByAddressRest } from "lib/services/move/resource";
-import type { HexAddr, HexAddr32, Option } from "lib/types";
 
 interface SupplyData {
   current_supply: string;

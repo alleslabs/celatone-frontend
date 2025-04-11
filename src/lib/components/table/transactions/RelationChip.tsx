@@ -1,6 +1,6 @@
-import { Tag } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
 
+import { Tag } from "@chakra-ui/react";
 import { Tooltip } from "lib/components/Tooltip";
 
 interface RelationChipProps {

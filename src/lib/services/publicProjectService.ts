@@ -1,15 +1,4 @@
 import type { UseQueryResult } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { useCallback } from "react";
-
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useMoveConfig,
-  usePublicProjectConfig,
-  useWasmConfig,
-} from "lib/app-provider";
 import type {
   Option,
   PublicCode,
@@ -21,7 +10,18 @@ import type {
   RawPublicContract,
   RawPublicProjectInfo,
 } from "lib/types";
+
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useMoveConfig,
+  usePublicProjectConfig,
+  useWasmConfig,
+} from "lib/app-provider";
 import { isId } from "lib/utils";
+import { useCallback } from "react";
 
 const parseContract = (raw: RawPublicContract): PublicContract => ({
   contractAddress: raw.address,

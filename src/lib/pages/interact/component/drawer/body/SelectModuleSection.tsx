@@ -1,14 +1,16 @@
-import { Flex, Text } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import type { ModuleInteractionMobileStep } from "lib/pages/interact/types";
+import type { IndexedModule, Option } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { CountBadge, ModuleCard } from "lib/components/module";
-import type { ModuleInteractionMobileStep } from "lib/pages/interact/types";
 import { useMoveVerifyInfosByAddress } from "lib/services/verification/move";
-import type { IndexedModule, Option } from "lib/types";
 import { mergeModulePath } from "lib/utils";
-import { NoImageEmptyState } from "../../common";
+import { useMemo, useState } from "react";
+
 import type { SelectedAddress } from "../types";
+
+import { NoImageEmptyState } from "../../common";
 
 interface SelectModuleSectionProps {
   selectedAddress: SelectedAddress;
@@ -47,12 +49,12 @@ const RenderModules = ({
       <ModuleCard
         key={module.moduleName}
         module={module}
-        selectedModule={selectedModule}
-        setSelectedModule={setSelectedModule}
-        setStep={setStep}
         moveVerifyInfo={
           moveVerifyInfos?.[mergeModulePath(module.address, module.moduleName)]
         }
+        selectedModule={selectedModule}
+        setSelectedModule={setSelectedModule}
+        setStep={setStep}
       />
     ))
   ) : (
@@ -77,30 +79,30 @@ export const SelectModuleSection = ({
   return (
     <>
       <InputWithIcon
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
+        amptrackSection="module-select-drawer-module-search"
         placeholder="Search with module name"
         size="md"
-        amptrackSection="module-select-drawer-module-search"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
       />
       <Flex alignItems="center" gap={2} mt={6}>
-        <Text variant="body2" fontWeight={600} color="text.dark">
+        <Text color="text.dark" fontWeight={600} variant="body2">
           Modules
         </Text>
-        <CountBadge variant="common" count={modules.length} />
+        <CountBadge count={modules.length} variant="common" />
       </Flex>
       <Flex
-        // TODO: 100% - element and margin hack, find better way to setup the height
-        h="calc(100% - 40px - 24px - 21px - 8px)"
-        overflowY="scroll"
         direction="column"
         gap={2}
+        // TODO: 100% - element and margin hack, find better way to setup the height
+        h="calc(100% - 40px - 24px - 21px - 8px)"
         mt={2}
+        overflowY="scroll"
       >
         <RenderModules
-          selectedAddress={selectedAddress}
-          modulesLength={modules.length}
           filtered={filteredModules}
+          modulesLength={modules.length}
+          selectedAddress={selectedAddress}
           selectedModule={selectedModule}
           setSelectedModule={setSelectedModule}
           setStep={setStep}

@@ -1,13 +1,12 @@
 import { Stack } from "@chakra-ui/react";
-import router from "next/router";
-import { useEffect, useState } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useDebounce } from "lib/hooks";
 import { useNftCollections } from "lib/services/nft-collection";
+import router from "next/router";
+import { useEffect, useState } from "react";
 
 import { CollectionList } from "./CollectionList";
 
@@ -50,12 +49,12 @@ export const Collections = () => {
     <>
       <Stack spacing={8}>
         <InputWithIcon
-          placeholder="Search with collection name or collection VM address"
-          value={searchKeyword}
-          autoFocus
-          onChange={(e) => setSearchKeyword(e.target.value)}
-          size={{ base: "md", md: "lg" }}
           amptrackSection="nft-collections-list-search"
+          autoFocus
+          placeholder="Search with collection name or collection VM address"
+          size={{ base: "md", md: "lg" }}
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
         />
         <CollectionList
           collections={collections?.items}
@@ -65,10 +64,10 @@ export const Collections = () => {
       {!isLoading && collections && collections.total > 0 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={collections?.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={collections?.total}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

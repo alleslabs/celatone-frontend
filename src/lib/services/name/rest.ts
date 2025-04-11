@@ -1,6 +1,6 @@
-import axios from "axios";
-
 import type { BechAddr } from "lib/types";
+
+import axios from "axios";
 import { zAddressByIcnsName, zIcnsNamesByAddress } from "lib/types/name";
 import { encode, parseWithError } from "lib/utils";
 

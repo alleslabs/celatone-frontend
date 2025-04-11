@@ -1,4 +1,5 @@
 import type { ComponentStyleConfig } from "@chakra-ui/react";
+
 import { cssVar } from "@chakra-ui/react";
 
 const $arrowBg = cssVar("popper-arrow-bg");

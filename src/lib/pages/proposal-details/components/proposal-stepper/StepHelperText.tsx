@@ -1,10 +1,10 @@
-/* eslint-disable sonarjs/cognitive-complexity */
-import { Text } from "@chakra-ui/react";
-import { isNull } from "lodash";
-
 import type { ProposalData } from "lib/types";
+
+import { Text } from "@chakra-ui/react";
 import { ProposalStatus } from "lib/types";
 import { formatUTC } from "lib/utils";
+import { isNull } from "lodash";
+
 import { Countdown } from "../proposal-overview/status-summary/Countdown";
 
 interface StepperHelperTextProps {
@@ -64,7 +64,7 @@ const StepperHelperTextBody = ({
 };
 
 export const StepperHelperText = (props: StepperHelperTextProps) => (
-  <Text variant="body3" color="text.dark" ml={8} textAlign="start">
+  <Text color="text.dark" ml={8} textAlign="start" variant="body3">
     <StepperHelperTextBody {...props} />
   </Text>
 );

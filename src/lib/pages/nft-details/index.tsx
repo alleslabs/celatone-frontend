@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import {
   Divider,
   Flex,
@@ -9,10 +8,6 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { Breadcrumb } from "lib/components/Breadcrumb";
@@ -34,6 +29,11 @@ import {
   useNftTransactions,
 } from "lib/services/nft";
 import { useNftCollectionByCollectionAddress } from "lib/services/nft-collection";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
+import type { NftDetailQueryParams } from "./types";
 
 import {
   Attributes,
@@ -47,7 +47,6 @@ import {
   TxsSequencer,
   ViewResourceButton,
 } from "./components";
-import type { NftDetailQueryParams } from "./types";
 import { zNftDetailQueryParams } from "./types";
 
 const InvalidNft = () => <InvalidState title="NFT does not exist" />;
@@ -111,16 +110,16 @@ const NftDetailsBody = ({
           <Flex
             direction="column"
             gap={6}
-            minW={{ md: "360px" }}
             maxW={{ md: "360px" }}
+            minW={{ md: "360px" }}
           >
             {isMobile && (
               <Title
                 collectionAddress={collectionAddress}
                 displayCollectionName={displayCollectionName}
-                tokenId={tokenId}
-                nftAddress={nftAddress}
                 isBurned={isBurned}
+                nftAddress={nftAddress}
+                tokenId={tokenId}
               />
             )}
             <div
@@ -144,9 +143,9 @@ const NftDetailsBody = ({
                 }}
                 background="gray.900"
                 borderRadius="8px"
-                src={metadata?.image}
                 fallbackSrc={NFT_IMAGE_PLACEHOLDER}
                 fallbackStrategy="beforeLoadOrError"
+                src={metadata?.image}
               />
             </div>
             {!isMobile && (
@@ -163,29 +162,29 @@ const NftDetailsBody = ({
           <Flex
             direction="column"
             gap={{ base: 6, md: 12 }}
-            w="full"
             overflow="hidden"
+            w="full"
           >
             <Flex direction="column" gap={4}>
               <Flex
-                justifyContent="space-between"
                 align="center"
                 direction={{ base: "column", md: "row" }}
+                justifyContent="space-between"
               >
                 {!isMobile && (
                   <Title
                     collectionAddress={collectionAddress}
                     displayCollectionName={displayCollectionName}
-                    tokenId={tokenId}
-                    nftAddress={nftAddress}
                     isBurned={isBurned}
+                    nftAddress={nftAddress}
+                    tokenId={tokenId}
                   />
                 )}
               </Flex>
               <Flex direction="column" gap={1} w="full">
                 {metadata?.name && (
                   <NftInfoItem label="NFT Name">
-                    <Text variant="body2" color="text.main">
+                    <Text color="text.main" variant="body2">
                       {metadata.name}
                     </Text>
                   </NftInfoItem>
@@ -194,12 +193,12 @@ const NftDetailsBody = ({
                   <Tooltip label="View as Account Address">
                     <Flex>
                       <ExplorerLink
-                        value={nftAddress}
-                        type="user_address"
-                        textFormat="normal"
-                        maxWidth="full"
                         ampCopierSection="nft-address-nft-detail-top"
                         fixedHeight={false}
+                        maxWidth="full"
+                        textFormat="normal"
+                        type="user_address"
+                        value={nftAddress}
                       />
                     </Flex>
                   </Tooltip>
@@ -207,17 +206,17 @@ const NftDetailsBody = ({
                 {!isBurned && (
                   <NftInfoItem label="Holder">
                     <ExplorerLink
-                      value={ownerAddress}
-                      type="user_address"
-                      textFormat="normal"
-                      maxWidth="full"
                       ampCopierSection="holder-address-nft-detail-top"
                       fixedHeight={false}
+                      maxWidth="full"
+                      textFormat="normal"
+                      type="user_address"
+                      value={ownerAddress}
                     />
                   </NftInfoItem>
                 )}
-                <NftInfoItem label="Token URI" isCentered={false}>
-                  <JsonLink uri={uri} type="token_uri" />
+                <NftInfoItem isCentered={false} label="Token URI">
+                  <JsonLink type="token_uri" uri={uri} />
                 </NftInfoItem>
               </Flex>
             </Flex>
@@ -239,7 +238,7 @@ const NftDetailsBody = ({
             </Flex>
             {isMobile && (
               <>
-                <Divider width="100%" color="gray.700" />
+                <Divider color="gray.700" width="100%" />
                 <CollectionInfo
                   collectionAddress={collectionAddress}
                   collectionName={collectionName}
@@ -249,7 +248,7 @@ const NftDetailsBody = ({
             )}
           </Flex>
         </Flex>
-        <Divider width="100%" color="gray.700" />
+        <Divider color="gray.700" width="100%" />
         <Tabs
           isLazy
           lazyBehavior="keepMounted"
@@ -260,9 +259,9 @@ const NftDetailsBody = ({
           }
         >
           <TabList
-            marginBottom="32px"
             borderBottom="1px solid"
             borderColor="gray.700"
+            marginBottom="32px"
             overflowX="scroll"
           >
             <CustomTab count={totalTxs}>Transactions</CustomTab>
@@ -290,9 +289,9 @@ const NftDetailsBody = ({
           </TabPanels>
         </Tabs>
         <UserDocsLink
-          title="What is a NFT?"
           cta="Read more about NFT"
           href="move/nfts/detail-page"
+          title="What is a NFT?"
         />
       </Flex>
     </>

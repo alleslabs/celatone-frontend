@@ -1,18 +1,18 @@
-import { Flex, IconButton, SimpleGrid, Text } from "@chakra-ui/react";
 import type Big from "big.js";
-import Link from "next/link";
+import type { Pool, Token, U, USD } from "lib/types";
 
+import { Flex, IconButton, SimpleGrid, Text } from "@chakra-ui/react";
 import { trackWebsite } from "lib/amplitude";
 import { useInternalNavigate, usePoolConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { LabelText } from "lib/components/LabelText";
 import { Tooltip } from "lib/components/Tooltip";
 import { big } from "lib/types";
-import type { Pool, Token, U, USD } from "lib/types";
 import { formatPrice } from "lib/utils";
+import Link from "next/link";
 
-import { AllocationBadge } from "./AllocationBadge";
 import { PoolHeader } from "../PoolHeader";
+import { AllocationBadge } from "./AllocationBadge";
 
 const hoverBgColor = "gray.700";
 
@@ -36,17 +36,13 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
 
   return (
     <Flex
-      justifyContent="space-between"
-      gap={4}
-      flexDirection="column"
-      onClick={() =>
-        navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } })
-      }
       bg="gray.900"
       borderRadius="8px"
-      p={4}
-      transition="all 0.25s ease-in-out"
       cursor="pointer"
+      flexDirection="column"
+      gap={4}
+      justifyContent="space-between"
+      p={4}
       sx={{
         _hover: {
           "> div:last-child > div": {
@@ -56,31 +52,35 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
           backgroundColor: "gray.800",
         },
       }}
+      transition="all 0.25s ease-in-out"
+      onClick={() =>
+        navigate({ pathname: `/pools/[poolId]`, query: { poolId: item.id } })
+      }
     >
       <Flex>
         <PoolHeader
-          poolId={item.id}
           isSuperfluid={item.isSuperfluid}
-          poolType={item.type}
           liquidity={item.liquidity}
+          poolId={item.id}
+          poolType={item.type}
         />
         <Tooltip label="See in osmosis.zone">
           <Link
             href={`${poolUrl}/${item.id}`}
+            rel="noopener noreferrer"
+            target="_blank"
             onClick={(e) => {
               trackWebsite(`${poolUrl}/${item.id}`);
               e.stopPropagation();
             }}
-            target="_blank"
-            rel="noopener noreferrer"
           >
             <IconButton
-              fontSize="24px"
-              variant="none"
-              aria-label="external"
               _hover={{ backgroundColor: hoverBgColor }}
+              aria-label="external"
               color="gray.600"
+              fontSize="24px"
               icon={<CustomIcon name="launch" />}
+              variant="none"
             />
           </Link>
         </Tooltip>
@@ -91,7 +91,7 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
           tooltipText="The total amount of asset liquidity provided in the pool."
         />
 
-        <Text variant="body2" color="text.main">
+        <Text color="text.main" variant="body2">
           {item.liquidity.some((coin) => !coin.amount)
             ? "N/A"
             : formatPrice(liquidity)}
@@ -101,23 +101,19 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
         {item.liquidity.slice(0, 3).map((asset) => (
           <AllocationBadge
             key={asset.denom}
-            denom={asset.denom}
-            logo={asset.logo as string}
-            symbol={asset.symbol}
-            precision={asset.precision}
             amount={asset.amount}
-            value={asset.value}
+            denom={asset.denom}
             liquidity={liquidity}
+            logo={asset.logo as string}
             mode={mode}
+            precision={asset.precision}
+            symbol={asset.symbol}
+            value={asset.value}
           />
         ))}
         {item.liquidity.length >= 4 && (
           <AllocationBadge
             key="OTHERS"
-            denom={is4Assets ? item.liquidity[3].denom : undefined}
-            logo={is4Assets ? (item.liquidity[3].logo as string) : undefined}
-            symbol={is4Assets ? item.liquidity[3].symbol : undefined}
-            precision={is4Assets ? item.liquidity[3].precision : undefined}
             amount={
               item.liquidity
                 .slice(3)
@@ -125,6 +121,12 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
                 Token<Big>
               >
             }
+            denom={is4Assets ? item.liquidity[3].denom : undefined}
+            liquidity={liquidity}
+            logo={is4Assets ? (item.liquidity[3].logo as string) : undefined}
+            mode={mode}
+            precision={is4Assets ? item.liquidity[3].precision : undefined}
+            symbol={is4Assets ? item.liquidity[3].symbol : undefined}
             value={
               item.liquidity
                 .slice(3)
@@ -133,8 +135,6 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
                   big(0)
                 ) as USD<Big>
             }
-            liquidity={liquidity}
-            mode={mode}
           />
         )}
       </SimpleGrid>

@@ -1,6 +1,6 @@
-import { Flex } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 
+import { Flex } from "@chakra-ui/react";
 import { MotionBox } from "lib/components/MotionBox";
 
 export enum EvmDataFormatTabs {
@@ -28,51 +28,51 @@ export const EvmDataFormatSwitch = ({
   return (
     <div>
       <Flex
+        align="center"
         border="1px solid var(--chakra-colors-gray-700)"
         borderRadius="4px"
-        p={1}
         direction="row"
-        align="center"
+        p={1}
         position="relative"
         sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
       >
         {tabs.map((tab) => (
           <MotionBox
             key={tab}
+            animate={currentTab === tab ? "active" : "inactive"}
             cursor="pointer"
-            p="2px 10px"
-            w="96px"
             fontSize="12px"
             fontWeight={700}
+            initial="inactive"
+            p="2px 10px"
+            textAlign="center"
             variants={{
               active: { color: "var(--chakra-colors-text-main)" },
               inactive: {
                 color: "var(--chakra-colors-primary-light)",
               },
             }}
-            initial="inactive"
-            animate={currentTab === tab ? "active" : "inactive"}
-            onClick={() => onTabChange(tab)}
+            w="96px"
             zIndex={1}
-            textAlign="center"
+            onClick={() => onTabChange(tab)}
           >
             {tab}
           </MotionBox>
         ))}
         <MotionBox
-          h="calc(100% - 8px)"
-          w="calc(33% - 4px)"
-          position="absolute"
-          borderRadius="2px"
-          backgroundColor="primary.darker"
           animate={{
             left: `${activeIndex * 96 + 4}px`,
           }}
+          backgroundColor="primary.darker"
+          borderRadius="2px"
+          h="calc(100% - 8px)"
+          position="absolute"
           transition={{
             type: "spring",
             stiffness: "250",
             damping: "30",
           }}
+          w="calc(33% - 4px)"
         />
       </Flex>
     </div>

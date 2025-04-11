@@ -1,5 +1,4 @@
 import { extendTheme, ChakraProvider as Provider } from "@chakra-ui/react";
-
 import { useCelatoneApp } from "lib/app-provider";
 import { components } from "lib/styles/theme/components";
 import { config } from "lib/styles/theme/config";

@@ -1,4 +1,14 @@
+import "ace-builds/src-noconflict/ace";
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-sh";
+import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/theme-one_dark";
+import "ace-builds/src-noconflict/theme-pastel_on_dark";
+
 import type { ButtonProps } from "@chakra-ui/react";
+import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
+
 import {
   Box,
   Button,
@@ -15,24 +25,15 @@ import {
   Tabs,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useMemo } from "react";
-import AceEditor from "react-ace";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useGas } from "lib/app-provider";
 import { CustomTab } from "lib/components/CustomTab";
-import type { AbiFormData, ExposedFunction, HexAddr } from "lib/types";
 import { getArgType, serializeAbiData } from "lib/utils";
+import { useMemo } from "react";
+import AceEditor from "react-ace";
+
 import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
-
-import "ace-builds/src-noconflict/ace";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/mode-python";
-import "ace-builds/src-noconflict/mode-sh";
-import "ace-builds/src-noconflict/theme-monokai";
-import "ace-builds/src-noconflict/theme-one_dark";
-import "ace-builds/src-noconflict/theme-pastel_on_dark";
 
 interface MoveCodeSnippetProps {
   moduleAddress: HexAddr;
@@ -235,10 +236,10 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
   return (
     <>
       <Button
-        variant="outline-white"
-        size="md"
-        ml={ml}
         gap={1}
+        ml={ml}
+        size="md"
+        variant="outline-white"
         onClick={() => {
           track(AmpEvent.USE_CONTRACT_SNIPPET, {
             functionType: fn.is_view ? "view" : "Execute",
@@ -250,17 +251,17 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
         Code snippet
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="4xl">
+      <Modal isCentered isOpen={isOpen} size="4xl" onClose={onClose}>
         <ModalOverlay />
         <ModalContent w="840px">
           <ModalHeader>
-            <CustomIcon name="code" boxSize={6} color="gray.600" />
+            <CustomIcon boxSize={6} color="gray.600" name="code" />
             <Heading as="h5" variant="h5">
               Code snippet
             </Heading>
           </ModalHeader>
           <ModalCloseButton color="gray.600" />
-          <ModalBody px={4} maxH="640px" overflow="scroll">
+          <ModalBody maxH="640px" overflow="scroll" px={4}>
             <Tabs>
               <TabList borderBottom="1px solid" borderColor="gray.700">
                 {codeSnippets[type].map((item) => (
@@ -274,33 +275,33 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
                   <TabPanel key={item.name} px={2} py={4}>
                     <Box
                       bgColor="background.main"
-                      p={4}
                       borderRadius="8px"
+                      p={4}
                       position="relative"
                     >
                       <AceEditor
-                        readOnly
-                        mode={item.mode}
-                        theme={theme.jsonTheme}
-                        fontSize="14px"
                         style={{
                           width: "100%",
                           background: "transparent",
                         }}
-                        value={item.snippet}
+                        fontSize="14px"
+                        mode={item.mode}
+                        readOnly
                         setOptions={{
                           showGutter: false,
                           useWorker: false,
                           printMargin: false,
                           wrap: true,
                         }}
+                        theme={theme.jsonTheme}
+                        value={item.snippet}
                       />
-                      <Box position="absolute" top={4} right={4}>
+                      <Box position="absolute" right={4} top={4}>
                         <CopyButton
-                          value={item.snippet}
+                          amptrackInfo={fn.is_view ? "view" : "Execute"}
                           amptrackSection="code_snippet"
                           amptrackSubSection={item.name}
-                          amptrackInfo={fn.is_view ? "view" : "Execute"}
+                          value={item.snippet}
                         />
                       </Box>
                     </Box>

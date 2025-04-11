@@ -1,9 +1,9 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type { PublicAccountInfo } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
-import type { PublicAccountInfo } from "lib/types";
 
 import { getNavigationArgs } from "./utils";
 
@@ -20,35 +20,35 @@ export const PublicProjectAccountMobileCard = ({
 
   return (
     <MobileCardTemplate
-      onClick={goToDetail}
-      topContent={
-        <Flex gap={2} align="center">
-          <MobileLabel variant="body2" label="Address" />
-          <ExplorerLink
-            value={accountInfo.address.toString()}
-            type={
-              accountInfo.type === "account"
-                ? "user_address"
-                : "contract_address"
-            }
-            showCopyOnHover
-          />
-        </Flex>
-      }
       middleContent={
         <Flex direction="column" gap={3}>
           <Flex direction="column">
-            <MobileLabel variant="body2" label="Address" />
+            <MobileLabel label="Address" variant="body2" />
             <Text variant="body2">{accountInfo.name}</Text>
           </Flex>
           <Flex direction="column">
-            <MobileLabel variant="body2" label="Description" />
-            <Text variant="body2" color="text.dark" whiteSpace="break-spaces">
+            <MobileLabel label="Description" variant="body2" />
+            <Text color="text.dark" variant="body2" whiteSpace="break-spaces">
               {accountInfo.description || "N/A"}
             </Text>
           </Flex>
         </Flex>
       }
+      topContent={
+        <Flex align="center" gap={2}>
+          <MobileLabel label="Address" variant="body2" />
+          <ExplorerLink
+            showCopyOnHover
+            type={
+              accountInfo.type === "account"
+                ? "user_address"
+                : "contract_address"
+            }
+            value={accountInfo.address.toString()}
+          />
+        </Flex>
+      }
+      onClick={goToDetail}
     />
   );
 };

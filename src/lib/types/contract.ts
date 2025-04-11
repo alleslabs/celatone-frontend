@@ -1,9 +1,10 @@
-import { z } from "zod";
-
 import type { ContractLocalInfo } from "lib/stores/contract";
+
+import { z } from "zod";
 
 import type { BechAddr } from "./addrs";
 import type { Nullable, Option } from "./common";
+
 import { zRemark } from "./tx";
 
 export enum RemarkOperation {

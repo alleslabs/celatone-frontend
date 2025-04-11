@@ -1,13 +1,14 @@
-import { Box, Flex } from "@chakra-ui/react";
+import type { AssetInfos, Option, PoolData } from "lib/types";
+import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
 
+import { Box, Flex } from "@chakra-ui/react";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { Loading } from "lib/components/Loading";
 import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { useTxData } from "lib/services/tx";
 import { useValidatorDataRest } from "lib/services/validator";
-import type { AssetInfos, Option, PoolData } from "lib/types";
 import { coinToTokenWithValue, extractMsgType } from "lib/utils";
-import type { MsgLockAndSuperfluidDelegateDetails } from "lib/utils/tx/types";
+
 import {
   ErrorFetchingDetail,
   PoolAssetCard,
@@ -67,39 +68,39 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
     ?.attributes.find((attr) => attr.key === "period_lock_id")?.value;
 
   return (
-    <Flex w="full" direction="column" gap={6}>
+    <Flex direction="column" gap={6} w="full">
       <Flex gap={12}>
         <PoolInfoText title="Block height">
           <ExplorerLink
-            value={blockHeight.toString()}
-            type="block_height"
-            showCopyOnHover
             ampCopierSection={ampCopierSection}
+            showCopyOnHover
+            type="block_height"
+            value={blockHeight.toString()}
           />
         </PoolInfoText>
         <PoolInfoText title="LockID">{lockId}</PoolInfoText>
         <PoolInfoText title="To validator">
           <ValidatorBadge
+            ampCopierSection={ampCopierSection}
+            badgeSize={6}
             validator={{
               validatorAddress: msg.val_addr,
               moniker: validator?.moniker,
               identity: undefined,
             }}
-            badgeSize={6}
-            ampCopierSection={ampCopierSection}
           />
         </PoolInfoText>
         <PoolInfoText title="Message">{extractMsgType(msg.type)}</PoolInfoText>
       </Flex>
       <Box w="full">
         <PoolAssetCard
-          poolId={pool.id}
-          description="Bonded to"
-          assetText="Bonded"
-          poolToken={poolToken}
-          assetInfos={assetInfos}
-          isOpened={isOpened}
           ampCopierSection={ampCopierSection}
+          assetInfos={assetInfos}
+          assetText="Bonded"
+          description="Bonded to"
+          isOpened={isOpened}
+          poolId={pool.id}
+          poolToken={poolToken}
         />
       </Box>
     </Flex>

@@ -1,11 +1,11 @@
-import { Flex, Grid, GridItem } from "@chakra-ui/react";
-
 import type {
   Option,
   ProposalData,
   ProposalParams,
   ProposalVotesInfo,
 } from "lib/types";
+
+import { Flex, Grid, GridItem } from "@chakra-ui/react";
 
 import { ProposalPeriodOverview } from "./proposal-period-overview";
 import { ProposalDescription } from "./ProposalDescription";
@@ -26,8 +26,8 @@ export const ProposalOverview = ({
   ...props
 }: ProposalOverviewProps) => (
   <Grid
-    gridTemplateColumns={{ base: "1fr", xl: "2fr minmax(360px, 1fr)" }}
     gridGap={16}
+    gridTemplateColumns={{ base: "1fr", xl: "2fr minmax(360px, 1fr)" }}
     mt={8}
   >
     <GridItem>

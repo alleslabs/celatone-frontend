@@ -1,8 +1,4 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useInternalNavigate, useWasmConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
@@ -13,6 +9,9 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { UserDocsLink } from "lib/components/UserDocsLink";
 import { useInstantiatedByMe } from "lib/model/contract";
 import { useContractStore } from "lib/providers/store";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const AllContractListsPage = observer(() => {
   useWasmConfig({ shouldRedirect: true });
@@ -37,15 +36,15 @@ const AllContractListsPage = observer(() => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Contract lists" />
-      <Flex direction="column" alignItems="center" gap={8}>
-        <Flex justifyContent="space-between" w="full" alignItems="center">
+      <Flex alignItems="center" direction="column" gap={8}>
+        <Flex alignItems="center" justifyContent="space-between" w="full">
           <Heading as="h5" variant="h5">
             Contract lists
           </Heading>
           <CreateNewListModal
             buttonProps={{
               variant: "outline-primary",
-              leftIcon: <CustomIcon name="plus" boxSize={3} />,
+              leftIcon: <CustomIcon boxSize={3} name="plus" />,
               children: "Create new list",
             }}
           />
@@ -57,10 +56,10 @@ const AllContractListsPage = observer(() => {
         />
       </Flex>
       <UserDocsLink
-        isDevTool
-        title="How to use contract list?"
         cta="Read more about Contract Lists"
         href="cosmwasm/contracts/organize#contract-list"
+        isDevTool
+        title="How to use contract list?"
       />
     </PageContainer>
   );

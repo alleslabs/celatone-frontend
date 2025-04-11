@@ -1,13 +1,13 @@
-import { Text } from "@chakra-ui/react";
-
-import { useMobile } from "lib/app-provider";
 import type { BechAddr32 } from "lib/types";
+
+import { Text } from "@chakra-ui/react";
+import { useMobile } from "lib/app-provider";
 import { WasmVerifyStatus } from "lib/types";
 
-import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
-import { VerifyButton } from "./VerifyButton";
 import { ExplorerLink } from "../ExplorerLink";
 import { WasmVerifyBadge } from "../WasmVerifyBadge";
+import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
+import { VerifyButton } from "./VerifyButton";
 
 interface IndirectlyVerifiedDetailsProps {
   codeId: number;
@@ -25,20 +25,20 @@ export const IndirectlyVerifiedDetails = ({
   const isMobile = useMobile();
   return (
     <>
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         {contractAddress ? (
           <>
             This contract is an instance of code ID{" "}
             <ExplorerLink
-              value={codeId.toString()}
-              type="code_id"
               rightIcon={
                 <WasmVerifyBadge
-                  status={WasmVerifyStatus.INDIRECTLY_VERIFIED}
                   relatedVerifiedCodes={relatedVerifiedCodes}
+                  status={WasmVerifyStatus.INDIRECTLY_VERIFIED}
                 />
               }
               showCopyOnHover
+              type="code_id"
+              value={codeId.toString()}
             />{" "}
             which has the same code hash with other verified codes.
           </>
@@ -58,11 +58,11 @@ export const IndirectlyVerifiedDetails = ({
         GitHub repository{isMobile && " on the desktop interface"}.
       </Text>
       <VerifyButton
-        codeId={codeId}
         codeHash={codeHash}
-        wasmVerifyStatus={WasmVerifyStatus.INDIRECTLY_VERIFIED}
-        relatedVerifiedCodes={relatedVerifiedCodes}
+        codeId={codeId}
         contractAddress={contractAddress}
+        relatedVerifiedCodes={relatedVerifiedCodes}
+        wasmVerifyStatus={WasmVerifyStatus.INDIRECTLY_VERIFIED}
       />
     </>
   );

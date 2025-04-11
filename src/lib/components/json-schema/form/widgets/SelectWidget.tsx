@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormControl } from "@chakra-ui/react";
 import type {
   EnumOptionsType,
   FormContextType,
@@ -7,14 +6,15 @@ import type {
   StrictRJSFSchema,
   WidgetProps,
 } from "@rjsf/utils";
+import type React from "react";
+
+import { FormControl } from "@chakra-ui/react";
 import {
   descriptionId,
   enumOptionsIndexForValue,
   enumOptionsValueForIndex,
   getTemplate,
 } from "@rjsf/utils";
-import type React from "react";
-
 import { SelectInput } from "lib/components/forms";
 
 /**
@@ -135,10 +135,10 @@ const SelectWidget = <
 
   return (
     <FormControl
-      my={2}
       isDisabled={disabled || readonly}
-      isRequired={required && !readonly}
       isReadOnly={readonly}
+      isRequired={required && !readonly}
+      my={2}
       // isInvalid={rawErrors && rawErrors.length > 0}
       sx={{ "& > p": { mt: 4, mb: 2 } }}
     >
@@ -146,26 +146,26 @@ const SelectWidget = <
         <DescriptionFieldTemplate
           id={descriptionId<T>(id)}
           description={schema.description}
-          schema={schema}
           registry={registry}
+          schema={schema}
         />
       )}
       <SelectInput
-        inputId={id}
-        name={id}
-        isMulti={isMultiple}
-        closeMenuOnSelect={!isMultiple}
-        onBlur={handleOnBlur}
-        onFocus={handleOnFocus}
         autoFocus={autofocus}
+        closeMenuOnSelect={!isMultiple}
+        inputId={id}
+        isMulti={isMultiple}
+        menuPortalTarget={document.body}
+        name={id}
         options={displayEnumOptions}
         placeholder={
           placeholder.length > 0 || readonly ? placeholder : "Select option"
         }
         size="md"
-        onChange={isMultiple ? handleOnMultiChange : handleOnChange}
         value={selectedIndex === undefined ? undefined : formValue}
-        menuPortalTarget={document.body}
+        onBlur={handleOnBlur}
+        onChange={isMultiple ? handleOnMultiChange : handleOnChange}
+        onFocus={handleOnFocus}
       />
     </FormControl>
   );

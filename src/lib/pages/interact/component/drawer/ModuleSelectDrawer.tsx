@@ -1,3 +1,5 @@
+import type { BechAddr, HexAddr, IndexedModule, Option } from "lib/types";
+
 import {
   Drawer,
   DrawerBody,
@@ -8,22 +10,21 @@ import {
   Flex,
   Heading,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-
 import { useConvertHexAddress } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { useModulesByAddress } from "lib/services/move/module";
-import type { BechAddr, HexAddr, IndexedModule, Option } from "lib/types";
 import { isHexWalletAddress } from "lib/utils";
+import { useEffect, useState } from "react";
 
-import { DrawerBodyDesktop } from "./body";
-import { ModuleSelector } from "./selector";
 import type {
   DisplayMode,
   ModuleSelectFunction,
   SelectedAddress,
 } from "./types";
+
 import { ModuleEmptyState } from "../common";
+import { DrawerBodyDesktop } from "./body";
+import { ModuleSelector } from "./selector";
 
 interface ModuleSelectDrawerProps {
   isOpen: boolean;
@@ -78,34 +79,34 @@ export const ModuleSelectDrawer = ({
   }, [isOpen, refetch, selectedAddress.hex]);
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+    <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
       <DrawerOverlay />
       <DrawerContent h="90%">
         <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
-          <CustomIcon name="contract-address" boxSize={6} color="gray.600" />
+          <CustomIcon boxSize={6} color="gray.600" name="contract-address" />
           <Heading as="h5" variant="h5">
             Select module
           </Heading>
         </DrawerHeader>
         <DrawerCloseButton color="text.dark" />
         <DrawerBody p={6}>
-          <Flex h="full" direction="column">
+          <Flex direction="column" h="full">
             <ModuleSelector
+              closeModal={onClose}
+              handleModuleSelect={handleModuleSelect}
               mode={mode}
               selectedAddress={selectedAddress}
-              setSelectedAddress={setSelectedAddress}
-              setModules={setModules}
               setMode={setMode}
-              handleModuleSelect={handleModuleSelect}
-              closeModal={onClose}
+              setModules={setModules}
+              setSelectedAddress={setSelectedAddress}
             />
             {modules ? (
               <DrawerBodyDesktop
-                selectedAddress={selectedAddress}
+                closeModal={onClose}
+                handleModuleSelect={handleModuleSelect}
                 mode={mode}
                 modules={modules}
-                handleModuleSelect={handleModuleSelect}
-                closeModal={onClose}
+                selectedAddress={selectedAddress}
               />
             ) : (
               <ModuleEmptyState

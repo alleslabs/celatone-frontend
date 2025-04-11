@@ -1,6 +1,6 @@
 import type { EndpointOptions } from "@cosmos-kit/core";
-import { ChainProvider as Provider } from "@cosmos-kit/react";
 
+import { ChainProvider as Provider } from "@cosmos-kit/react";
 import { useCelatoneApp, useChainConfigs } from "lib/app-provider";
 import { getWallets } from "lib/utils";
 
@@ -33,16 +33,8 @@ export const CosmosKitProvider = ({
   return (
     <Provider
       key={chain}
-      chains={registryChains}
       assetLists={registryAssets}
-      wallets={getWallets(wallets)}
-      // TODO
-      walletConnectOptions={{
-        signClient: {
-          projectId: "89b53d909ae6d042df584d8fb0491a77",
-          relayUrl: "wss://relay.walletconnect.org",
-        },
-      }}
+      chains={registryChains}
       endpointOptions={{
         isLazy: true,
         endpoints: availableChainsEndpoints,
@@ -51,6 +43,14 @@ export const CosmosKitProvider = ({
         signingCosmwasm: () => getCustomedSigningCosmwasm(),
         preferredSignType: () => "direct",
       }}
+      // TODO
+      walletConnectOptions={{
+        signClient: {
+          projectId: "89b53d909ae6d042df584d8fb0491a77",
+          relayUrl: "wss://relay.walletconnect.org",
+        },
+      }}
+      wallets={getWallets(wallets)}
     >
       {children}
     </Provider>
