@@ -39,12 +39,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
+### Improvements
+
+### Bug fixes
+
+## v1.11.0
+
+### Features
+
 - [#1289](https://github.com/alleslabs/celatone-frontend/pull/1289) Disable MOVE verification on custom rollups
 - [#1287](https://github.com/alleslabs/celatone-frontend/pull/1287) Disable WASM/EVM verification on custom rollups
 
 ### Improvements
 
 - [#1301](https://github.com/alleslabs/celatone-frontend/pull/1301) Upgrade Nextjs 14 to 15
+- [#1300](https://github.com/alleslabs/celatone-frontend/pull/1300) Apply Initia's constants from initia react widget to username and provider
+- [#1302](https://github.com/alleslabs/celatone-frontend/pull/1302) Convert more text to sentence case
+- [#1298](https://github.com/alleslabs/celatone-frontend/pull/1298) Fix tooltip click capture on TokenCard
 - [#1296](https://github.com/alleslabs/celatone-frontend/pull/1296) Convert title to sentence case
 - [#1294](https://github.com/alleslabs/celatone-frontend/pull/1294) Upgrade React & ESLint version
 - [#1293](https://github.com/alleslabs/celatone-frontend/pull/1293) Improve useOpenTxTab and useOpenBlockTab
@@ -56,6 +67,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
+- [#1306](https://github.com/alleslabs/celatone-frontend/pull/1306) Fix validators list separate divider UI
+- [#1305](https://github.com/alleslabs/celatone-frontend/pull/1305) Remove Initia Terms, update initia widget to v1.3.5
 - [#1297](https://github.com/alleslabs/celatone-frontend/pull/1297) Fix select input floating label
 
 ## v1.10.2
@@ -71,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1276](https://github.com/alleslabs/celatone-frontend/pull/1276) Support backward LCD compatibility for custom networks
 - [#1251](https://github.com/alleslabs/celatone-frontend/pull/1251) Update naming convention from LCD to REST
 
 ## v1.10.0
@@ -79,6 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#1257](https://github.com/alleslabs/celatone-frontend/pull/1257) Add EVM transaction event logs
 - [#1262](https://github.com/alleslabs/celatone-frontend/pull/1262) Change Move verification API path and response
+- [#1250](https://github.com/alleslabs/celatone-frontend/pull/1250) Add evm code snippet modal and fix input fields
 - [#1247](https://github.com/alleslabs/celatone-frontend/pull/1247) Support multi address creation txs
 - [#1245](https://github.com/alleslabs/celatone-frontend/pull/1245) Support assets from assetlist in chain config
 - [#1244](https://github.com/alleslabs/celatone-frontend/pull/1244) Add EVM contract verify alert info to both Solidity and Vyper upload file(s) and contract code

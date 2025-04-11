@@ -27,7 +27,7 @@ export const TxHeader = ({ txData, ...flexProps }: TxHeaderProps) => {
       <Flex align="center" justify="space-between">
         <Flex gap={2} mb={{ base: 2, md: 0 }} mt={{ base: 2, md: 4 }}>
           <Heading as="h5" variant={{ base: "h6", md: "h5" }}>
-            {evm.enabled ? "Cosmos transaction " : "Transaction "}Details
+            {evm.enabled ? "Cosmos transaction " : "Transaction "}details
           </Heading>
           {isMobile && (
             <Flex

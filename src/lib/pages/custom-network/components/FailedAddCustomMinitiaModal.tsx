@@ -41,7 +41,7 @@ export const FailedAddCustomMinitiaModal = ({
       </ModalHeader>
       <ModalBody overflow="overlay" pt={2}>
         <Text color="text.dark" textAlign="center" variant="body2">
-          There is something wrong with your JSON file. So that the Rollup is
+          There is something wrong with your JSON file. So that the rollup is
           cannot be added to Initia Scan.
         </Text>
       </ModalBody>

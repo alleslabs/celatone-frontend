@@ -47,7 +47,7 @@ export const ModuleVerifyUploadFolderInfo = () => (
           </AspectRatio>
           <Text color="text.dark" variant="body2">
             The folder can contain any additional files that will be used during
-            verification (Optional)
+            verification (optional)
           </Text>
         </Stack>
       </AccordionPanel>

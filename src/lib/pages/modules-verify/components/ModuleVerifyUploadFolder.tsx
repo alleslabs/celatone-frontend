@@ -132,7 +132,7 @@ export const ModuleVerifyUploadFolder = ({
     <Stack gap={4}>
       <Stack gap={2}>
         <Heading as="h6" variant="h6">
-          Upload Project Folder
+          Upload project folder
         </Heading>
         <Text color="text.dark" variant="body2">
           Select a folder to upload files in order to verify the modules

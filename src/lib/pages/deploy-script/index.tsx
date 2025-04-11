@@ -142,7 +142,7 @@ export const DeployScript = () => {
       <CelatoneSeo pageName="Deploy script" />
       <ActionPageContainer>
         <Heading as="h4" variant="h4">
-          Script
+          Deploy script
         </Heading>
         <div
           style={{

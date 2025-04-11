@@ -205,10 +205,10 @@ const GasFeeDetails = ({
 
   return (
     <Flex alignItems="center" direction="column" gap={2}>
-      <CustomNetworkPageHeader title="Add Gas & Fee details" />
+      <CustomNetworkPageHeader title="Add gas & fee details" />
       <Flex direction="column" gap={8} mt={8} w="full">
         <Flex direction="column" gap={6}>
-          <CustomNetworkSubheader title="Gas & Fee details" />
+          <CustomNetworkSubheader title="Gas & fee details" />
           <Flex gap={6}>
             <ControllerInput
               control={control}

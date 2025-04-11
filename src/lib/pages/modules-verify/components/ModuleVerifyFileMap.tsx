@@ -29,7 +29,7 @@ export const ModuleVerifyFileMap = ({ control }: ModuleVerifyFileMapProps) => {
     <Stack gap={4}>
       <Stack gap={2}>
         <Heading as="h6" variant="h6">
-          Generated File Map
+          Generated file map
         </Heading>
         <Text color="text.dark" variant="body2">
           You can refer to this file map to ensure that the uploaded files are
