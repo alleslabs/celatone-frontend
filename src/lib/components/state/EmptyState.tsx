@@ -35,9 +35,10 @@ export const EmptyState = ({
 }: EmptyStateProps) => (
   <Flex
     alignItems={alignItems}
+    borderBottomWidth={withBorder ? "1px" : undefined}
     borderColor="gray.700"
     borderTopColor={hasBorderTop ? "gray.700" : "transparent"}
-    borderY={withBorder ? "1px solid" : undefined}
+    borderTopWidth={withBorder ? "1px" : undefined}
     direction="column"
     flexDir="column"
     gap={4}

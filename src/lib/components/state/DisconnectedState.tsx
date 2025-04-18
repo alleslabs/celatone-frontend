@@ -14,8 +14,9 @@ export const DisconnectedState = ({
 }: DisconnectedStateProps) => (
   <Flex
     alignItems="center"
+    borderBottomWidth="1px"
     borderColor="gray.700"
-    borderY="1px solid"
+    borderTopWidth="1px"
     direction="column"
     gap={4}
     py={12}

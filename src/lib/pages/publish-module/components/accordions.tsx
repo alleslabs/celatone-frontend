@@ -73,8 +73,9 @@ export const PolicyAccordion = ({ chainName }: { chainName: string }) => (
       </AccordionButton>
       <AccordionPanel
         bg="transparent"
+        borderBottomWidth="1px"
         borderColor="gray.700"
-        borderY="1px solid"
+        borderTopWidth="1px"
         px={0}
         py={3}
       >

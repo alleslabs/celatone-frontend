@@ -67,8 +67,9 @@ export const ZeroState = ({ isReadOnly, list }: ZeroStateProps) => {
   return (
     <Flex
       alignItems="center"
+      borderBottomWidth="1px"
       borderColor="gray.700"
-      borderY="1px solid"
+      borderTopWidth="1px"
       direction="column"
       gap={4}
       py={12}
@@ -89,8 +90,9 @@ export const ZeroState = ({ isReadOnly, list }: ZeroStateProps) => {
 export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
   <Flex
     alignItems="center"
+    borderBottomWidth="1px"
     borderColor="gray.700"
-    borderY="1px solid"
+    borderTopWidth="1px"
     color="text.dark"
     direction="column"
     gap={4}
@@ -113,8 +115,9 @@ export const AccountZeroState = ({ button }: { button: JSX.Element }) => (
 export const SavedCodeZeroState = ({ button }: { button: JSX.Element }) => (
   <Flex
     alignItems="center"
+    borderBottomWidth="1px"
     borderColor="gray.700"
-    borderY="1px solid"
+    borderTopWidth="1px"
     color="text.dark"
     direction="column"
     gap={4}

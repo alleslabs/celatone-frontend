@@ -9,8 +9,9 @@ interface LoadingProps extends FlexProps {
 export const Loading = ({ withBorder = false, ...flexProps }: LoadingProps) => (
   <Flex
     alignItems="center"
+    borderBottomWidth={withBorder ? "1px" : undefined}
     borderColor="gray.700"
-    borderY={withBorder ? "1px solid" : undefined}
+    borderTopWidth={withBorder ? "1px" : undefined}
     flexDirection="column"
     my={12}
     py={15}
