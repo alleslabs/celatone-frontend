@@ -1,6 +1,6 @@
 import type { GridProps } from "@chakra-ui/react";
-import { Grid } from "@chakra-ui/react";
 
+import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "lib/components/table";
 
 interface DepositorsTableHeaderProps {
@@ -9,10 +9,10 @@ interface DepositorsTableHeaderProps {
 }
 
 export const DepositorsTableHeader = ({
-  templateColumns,
   showTransaction,
+  templateColumns,
 }: DepositorsTableHeaderProps) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Depositor</TableHeader>
     {showTransaction && (
       <>

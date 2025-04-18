@@ -1,4 +1,5 @@
 import type { BoxProps } from "@chakra-ui/react";
+
 import { Flex, useClipboard } from "@chakra-ui/react";
 import { useEffect } from "react";
 
@@ -14,14 +15,14 @@ interface CopyTemplateProps {
 }
 
 export const CopyTemplate = ({
-  value,
   copyLabel = "Copied!",
-  triggerElement,
   isDisabled = false,
   ml,
+  triggerElement,
+  value,
   w = "auto",
 }: CopyTemplateProps) => {
-  const { onCopy, hasCopied, setValue } = useClipboard(value);
+  const { hasCopied, onCopy, setValue } = useClipboard(value);
   useEffect(() => setValue(value), [value, setValue]);
 
   return (
@@ -29,13 +30,13 @@ export const CopyTemplate = ({
       <Flex
         as="span"
         display="inline-flex"
+        ml={ml}
+        w={w}
         onClick={(e) => {
           onCopy();
           e.stopPropagation();
           e.preventDefault();
         }}
-        w={w}
-        ml={ml}
       >
         {triggerElement}
       </Flex>

@@ -1,9 +1,9 @@
-import { Flex } from "@chakra-ui/react";
-
-import { trackSocial, trackWebsite } from "lib/amplitude";
-import { CustomIconButton } from "lib/components/button";
 import type { IconKeys } from "lib/components/icon";
 import type { Option, PublicDetail } from "lib/types";
+
+import { Flex } from "@chakra-ui/react";
+import { trackSocial, trackWebsite } from "lib/amplitude";
+import { CustomIconButton } from "lib/components/button";
 
 export const renderSocial = (name: string): IconKeys => {
   switch (name) {
@@ -26,8 +26,8 @@ export const SocialMedia = ({ details }: SocialMediaProps) => {
   return (
     <Flex
       alignItems="center"
-      onClick={(e) => e.stopPropagation()}
       minHeight="32px"
+      onClick={(e) => e.stopPropagation()}
     >
       {details.website && (
         <CustomIconButton

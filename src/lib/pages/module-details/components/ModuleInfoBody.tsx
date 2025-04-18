@@ -1,5 +1,4 @@
 import { Grid } from "@chakra-ui/react";
-
 import { useTierConfig } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { LabelText } from "lib/components/LabelText";
@@ -18,9 +17,9 @@ const ModuleInfoBodyPublishedAndRepublished = ({
     return (
       <LabelText label={`${labelPrefix} transaction`}>
         <ExplorerLink
+          showCopyOnHover
           type="tx_hash"
           value={modulePublishInfo.recentPublishTransaction.toUpperCase()}
-          showCopyOnHover
         />
       </LabelText>
     );
@@ -29,13 +28,13 @@ const ModuleInfoBodyPublishedAndRepublished = ({
   if (modulePublishInfo?.recentPublishProposal) {
     return (
       <LabelText
-        label={`${labelPrefix} Proposal ID`}
         helperText1={modulePublishInfo.recentPublishProposal.title}
+        label={`${labelPrefix} Proposal ID`}
       >
         <ExplorerLink
+          showCopyOnHover
           type="proposal_id"
           value={modulePublishInfo.recentPublishProposal.id.toString()}
-          showCopyOnHover
         />
       </LabelText>
     );
@@ -53,17 +52,17 @@ export const ModuleInfoBody = ({
 
   return (
     <Grid
-      gridTemplateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
-      padding={4}
       border="1px solid"
       borderColor="gray.700"
       borderRadius={8}
       gap={6}
+      gridTemplateColumns={{ base: "repeat(1, 1fr)", md: "repeat(4, 1fr)" }}
+      padding={4}
     >
       <LabelText label="Upgrade policy">{upgradePolicy}</LabelText>
-      <LabelText label="Published by" helperText1="(Wallet Address)">
+      <LabelText helperText1="(Wallet Address)" label="Published by">
         {address ? (
-          <ExplorerLink type="user_address" value={address} showCopyOnHover />
+          <ExplorerLink showCopyOnHover type="user_address" value={address} />
         ) : (
           "N/A"
         )}
@@ -72,19 +71,19 @@ export const ModuleInfoBody = ({
         <>
           {modulePublishInfo?.recentPublishBlockTimestamp && (
             <LabelText
-              label="Published block height"
               helperText1={formatUTC(
                 modulePublishInfo.recentPublishBlockTimestamp
               )}
               helperText2={dateFromNow(
                 modulePublishInfo.recentPublishBlockTimestamp
               )}
+              label="Published block height"
             >
               {modulePublishInfo?.recentPublishBlockHeight ? (
                 <ExplorerLink
+                  showCopyOnHover
                   type="block_height"
                   value={modulePublishInfo.recentPublishBlockHeight.toString()}
-                  showCopyOnHover
                 />
               ) : (
                 <>

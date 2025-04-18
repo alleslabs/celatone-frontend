@@ -1,5 +1,6 @@
-import { Alert, AlertDescription, Box, Flex } from "@chakra-ui/react";
+import type { BechAddr20 } from "lib/types";
 
+import { Alert, AlertDescription, Box, Flex } from "@chakra-ui/react";
 import { useMobile, useTierConfig } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
 import { Pagination } from "lib/components/pagination";
@@ -12,35 +13,34 @@ import {
   ViewMore,
 } from "lib/components/table";
 import { useTxsByAddressRest } from "lib/services/tx";
-import type { BechAddr20 } from "lib/types";
 
 import type { TxsTableProps } from "./types";
 
 export const TxsTableLite = ({
   address,
-  scrollComponentId,
   onViewMore,
+  scrollComponentId,
 }: TxsTableProps) => {
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
-  const { data, isLoading, error } = useTxsByAddressRest(
+  const { data, error, isLoading } = useTxsByAddressRest(
     address as BechAddr20,
     undefined,
     onViewMore ? 5 : pageSize,
@@ -56,24 +56,24 @@ export const TxsTableLite = ({
     <Box mt={{ base: 4, md: 8 }}>
       {isMobileOverview ? (
         <MobileTitle
-          title="Transactions"
           count={txsCount}
-          onViewMore={onViewMore}
           showCount={isFullTier}
+          title="Transactions"
+          onViewMore={onViewMore}
         />
       ) : (
         <Flex direction="column" gap={6}>
           <TableTitle
-            title="Transactions"
             count={txsCount}
             mb={0}
             showCount={isFullTier}
+            title="Transactions"
           />
-          <Alert variant="warning" gap={3}>
+          <Alert gap={3} variant="warning">
             <CustomIcon
-              name="alert-triangle-solid"
               boxSize={4}
               color="warning.main"
+              name="alert-triangle-solid"
             />
             <AlertDescription>
               Please note that account transactions are queried from the Rest
@@ -82,20 +82,20 @@ export const TxsTableLite = ({
           </Alert>
           {!isMobileOverview && (
             <TransactionsTable
-              transactions={data?.items}
-              isLoading={isLoading}
               emptyState={
                 error ? (
                   <ErrorFetching dataName="transactions" />
                 ) : (
                   <EmptyState
-                    withBorder
                     imageVariant="empty"
                     message="There are no transactions on this account, or they have been pruned from the REST."
+                    withBorder
                   />
                 )
               }
+              isLoading={isLoading}
               showRelations={false}
+              transactions={data?.items}
             />
           )}
           {Boolean(data?.items?.length) &&
@@ -107,11 +107,11 @@ export const TxsTableLite = ({
                 txsCount > 10 && (
                   <Pagination
                     currentPage={currentPage}
-                    pagesQuantity={pagesQuantity}
                     offset={offset}
-                    totalData={txsCount}
-                    scrollComponentId={scrollComponentId}
                     pageSize={pageSize}
+                    pagesQuantity={pagesQuantity}
+                    scrollComponentId={scrollComponentId}
+                    totalData={txsCount}
                     onPageChange={(nextPage) => setCurrentPage(nextPage)}
                     onPageSizeChange={(e) => {
                       const size = Number(e.target.value);

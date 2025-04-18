@@ -1,7 +1,7 @@
-import { Flex } from "@chakra-ui/react";
-
-import { TableTitle } from "lib/components/table";
 import type { BechAddr, Option, ResourceGroupByAccount } from "lib/types";
+
+import { Flex } from "@chakra-ui/react";
+import { TableTitle } from "lib/components/table";
 
 import { ResourceSectionBody } from "./ResourceSectionBody";
 
@@ -16,22 +16,22 @@ interface ResourceSectionProps {
 
 export const ResourceSection = ({
   address,
-  totalCount,
-  resourcesByOwner,
   isLoading,
+  resourcesByOwner,
   selectedAccountParam,
   selectedGroupNameParam,
+  totalCount,
 }: ResourceSectionProps) => (
   <Flex direction="column" mt={8}>
     <TableTitle
+      count={totalCount}
       helperText="Resources stored in this account"
       title="Resources"
-      count={totalCount}
     />
     <ResourceSectionBody
       address={address}
-      resourcesByOwner={resourcesByOwner}
       isLoading={isLoading}
+      resourcesByOwner={resourcesByOwner}
       selectedAccountParam={selectedAccountParam}
       selectedGroupNameParam={selectedGroupNameParam}
     />

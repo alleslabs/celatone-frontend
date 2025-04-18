@@ -6,11 +6,11 @@ export const Spinner: ComponentStyleConfig = {
     speed: "0.65s",
   },
   variants: {
-    primary: {
-      color: "primary.light",
-    },
     light: {
       color: "text.main",
+    },
+    primary: {
+      color: "primary.light",
     },
   },
 };

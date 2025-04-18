@@ -1,15 +1,16 @@
-import { Box } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import type { PermissionFilterValue } from "lib/hooks";
 
+import { Box } from "@chakra-ui/react";
 import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { FilterByPermission } from "lib/components/forms";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState } from "lib/components/state";
 import { CodesTable } from "lib/components/table";
-import type { PermissionFilterValue } from "lib/hooks";
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
 import { useRecentCodes } from "../data";
 
 interface RecentCodesState {
@@ -20,7 +21,7 @@ export const RecentCodesTableFull = observer(() => {
   const navigate = useInternalNavigate();
   const { address } = useCurrentChain();
 
-  const { watch, setValue } = useForm<RecentCodesState>({
+  const { setValue, watch } = useForm<RecentCodesState>({
     defaultValues: {
       permissionValue: "all",
     },
@@ -28,18 +29,18 @@ export const RecentCodesTableFull = observer(() => {
   const { permissionValue } = watch();
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
   const { data, isLoading } = useRecentCodes(
@@ -63,10 +64,10 @@ export const RecentCodesTableFull = observer(() => {
 
   return (
     <>
-      <Box mt={8} mb={4}>
+      <Box mb={4} mt={8}>
         <FilterByPermission
-          maxWidth="full"
           initialSelected="all"
+          maxWidth="full"
           setPermissionValue={(newVal: PermissionFilterValue) => {
             if (newVal === permissionValue) return;
             setValue("permissionValue", newVal);
@@ -75,7 +76,6 @@ export const RecentCodesTableFull = observer(() => {
       </Box>
       <CodesTable
         codes={data?.items}
-        isLoading={isLoading}
         emptyState={
           <EmptyState
             imageVariant="empty"
@@ -83,15 +83,16 @@ export const RecentCodesTableFull = observer(() => {
             withBorder
           />
         }
+        isLoading={isLoading}
         onRowSelect={onRowSelect}
       />
       {data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={data.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={data.total}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

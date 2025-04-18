@@ -1,7 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import { useCallback } from "react";
-
 import { MotionBox } from "lib/components/MotionBox";
+import { useCallback } from "react";
 
 interface TypeSwitchProps<T extends string> {
   tabs: T[];
@@ -12,11 +11,11 @@ interface TypeSwitchProps<T extends string> {
 }
 
 export const TypeSwitch = <T extends string>({
-  tabs,
   currentTab,
   disabled = false,
-  onTabChange: onTabChangeProps,
   disabledScrollToTop = false,
+  onTabChange: onTabChangeProps,
+  tabs,
 }: TypeSwitchProps<T>) => {
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
 
@@ -33,53 +32,53 @@ export const TypeSwitch = <T extends string>({
 
   return (
     <Flex
+      align="center"
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="4px"
-      p={1}
       direction="row"
-      align="center"
-      position="relative"
       height="fit-content"
-      sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
+      p={1}
+      position="relative"
+      sx={{ ...(disabled ? { opacity: 0.3, pointerEvents: "none" } : {}) }}
     >
       {tabs.map((tab) => (
         <MotionBox
           key={tab}
+          animate={currentTab === tab ? "active" : "inactive"}
           cursor="pointer"
-          p="2px 10px"
-          w="96px"
           fontSize="12px"
           fontWeight={700}
+          initial="inactive"
+          p="2px 10px"
+          textAlign="center"
+          textTransform="capitalize"
           variants={{
             active: { color: "var(--chakra-colors-text-main)" },
             inactive: {
               color: "var(--chakra-colors-white)",
             },
           }}
-          initial="inactive"
-          animate={currentTab === tab ? "active" : "inactive"}
-          onClick={() => onTabChange(tab as T)}
+          w="96px"
           zIndex={1}
-          textAlign="center"
-          textTransform="capitalize"
+          onClick={() => onTabChange(tab as T)}
         >
           {tab}
         </MotionBox>
       ))}
       <MotionBox
-        w="96px"
-        h="22px"
-        position="absolute"
-        borderRadius="2px"
-        backgroundColor="primary.darker"
         animate={{
           left: `${activeIndex * 96 + 4}px`,
         }}
+        backgroundColor="primary.darker"
+        borderRadius="2px"
+        h="22px"
+        position="absolute"
         transition={{
-          type: "spring",
-          stiffness: "250",
           damping: "30",
+          stiffness: "250",
+          type: "spring",
         }}
+        w="96px"
       />
     </Flex>
   );

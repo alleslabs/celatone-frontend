@@ -1,15 +1,16 @@
-import { Button, Flex, Grid, GridItem, SkeletonText } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import type { BechAddr32 } from "lib/types";
 
+import { Button, Flex, Grid, GridItem, SkeletonText } from "@chakra-ui/react";
 import { useCurrentChain, useExampleAddresses } from "lib/app-provider";
 import { useDebounce } from "lib/hooks";
 import { useContractData } from "lib/services/wasm/contract";
-import type { BechAddr32 } from "lib/types";
 import { truncate } from "lib/utils";
+import { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import type { FormStatus } from "./forms";
 
 import { ExplorerLink } from "./ExplorerLink";
-import type { FormStatus } from "./forms";
 import { ControllerInput } from "./forms";
 import { CustomIcon } from "./icon";
 import { LabelText } from "./LabelText";
@@ -22,7 +23,6 @@ interface ContractInputSectionProps {
 export const ContractInputSection = ({
   contract,
   onContractSelect,
-  // eslint-disable-next-line sonarjs/cognitive-complexity
 }: ContractInputSectionProps) => {
   const [isChangeContract, setIsChangeContract] = useState(false);
   const { address } = useCurrentChain();
@@ -47,18 +47,18 @@ export const ContractInputSection = ({
 
     if (!data)
       return {
-        state: "error",
         message: "Invalid contract address",
+        state: "error",
       };
     if (isPermissionAllowed)
       return {
-        state: "success",
         message: "You have admin access to this contract",
+        state: "success",
       };
     if (!isPermissionAllowed)
       return {
-        state: "error",
         message: "Your wallet does not have admin access to this contract",
+        state: "error",
       };
 
     return undefined;
@@ -71,23 +71,23 @@ export const ContractInputSection = ({
   }, [contract, setValue]);
 
   return isChangeContract || !contract ? (
-    <Flex w="full" gap={2}>
+    <Flex gap={2} w="full">
       <ControllerInput
-        name="contractAddress"
         control={control}
-        label="Contract address"
-        placeholder={`ex. ${truncate(contractExample)}`}
         helperText="Input must be the contract that you have admin access"
-        variant="fixed-floating"
+        label="Contract address"
+        name="contractAddress"
+        placeholder={`ex. ${truncate(contractExample)}`}
         size="md"
         status={debouncedKeyword ? handleInputStatus : undefined}
+        variant="fixed-floating"
       />
       <Button
+        isDisabled={!isPermissionAllowed}
         onClick={() => {
           onContractSelect(debouncedKeyword as BechAddr32);
           setIsChangeContract(false);
         }}
-        isDisabled={!isPermissionAllowed}
       >
         Submit
       </Button>
@@ -105,25 +105,25 @@ export const ContractInputSection = ({
     </Flex>
   ) : (
     <Flex
-      borderWidth="thin"
-      borderColor="gray.800"
-      p={4}
-      borderRadius="8px"
-      width="full"
       align="center"
+      borderColor="gray.800"
+      borderRadius="8px"
+      borderWidth="thin"
       gap={4}
+      p={4}
+      width="full"
     >
-      <Grid gridTemplateColumns="1fr 1fr" gap={6} flexGrow={1}>
+      <Grid flexGrow={1} gap={6} gridTemplateColumns="1fr 1fr">
         <GridItem>
           <LabelText label="Contract address">
             {!isFetching ? (
               <ExplorerLink
-                value={debouncedKeyword}
-                type="contract_address"
                 showCopyOnHover
+                type="contract_address"
+                value={debouncedKeyword}
               />
             ) : (
-              <SkeletonText size="sm" noOfLines={1} skeletonHeight={4} />
+              <SkeletonText noOfLines={1} size="sm" skeletonHeight={4} />
             )}
           </LabelText>
         </GridItem>
@@ -132,14 +132,14 @@ export const ContractInputSection = ({
             {!isFetching ? (
               data?.contract.label
             ) : (
-              <SkeletonText size="sm" noOfLines={1} skeletonHeight={4} />
+              <SkeletonText noOfLines={1} size="sm" skeletonHeight={4} />
             )}
           </LabelText>
         </GridItem>
       </Grid>
       <Button
+        leftIcon={<CustomIcon boxSize="12px" name="swap" />}
         variant="outline-primary"
-        leftIcon={<CustomIcon name="swap" boxSize="12px" />}
         onClick={() => {
           setValue("contractAddress", "");
           setIsChangeContract(true);

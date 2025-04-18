@@ -1,11 +1,12 @@
-import { useMobile } from "lib/app-provider";
-import { Loading } from "lib/components/Loading";
 import type { MutateEvent, Option } from "lib/types";
 
+import { useMobile } from "lib/app-provider";
+import { Loading } from "lib/components/Loading";
+
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { MutateEventsTableHeader } from "./MutateEventsTableHeader";
 import { MutateEventsTableMobileCard } from "./MutateEventsTableMobileCard";
 import { MutateEventsTableRow } from "./MutateEventsTableRow";
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface MutateEventsTableProps {
   mutateEvents: Option<MutateEvent[]>;
@@ -14,9 +15,9 @@ interface MutateEventsTableProps {
 }
 
 export const MutateEventsTable = ({
-  mutateEvents,
-  isLoading,
   emptyState,
+  isLoading,
+  mutateEvents,
 }: MutateEventsTableProps) => {
   const isMobile = useMobile();
 

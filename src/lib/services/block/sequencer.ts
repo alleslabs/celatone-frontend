@@ -1,7 +1,8 @@
-import axios from "axios";
-
 import type { Option } from "lib/types";
+
+import axios from "axios";
 import { parseWithError } from "lib/utils";
+
 import {
   zBlockDataResponseSequencer,
   zBlocksResponseSequencer,
@@ -36,12 +37,12 @@ export const getBlocksSequencer = (
     axios
       .get(`${endpoint}/indexer/block/v1/blocks`, {
         params: {
-          "pagination.offset": 0,
-          "pagination.limit": limit,
-          "pagination.reverse": true,
           "pagination.key": paginationKey
             ? incrementLastByte(paginationKey)
             : undefined,
+          "pagination.limit": limit,
+          "pagination.offset": 0,
+          "pagination.reverse": true,
         },
       })
       .then(({ data }) => parseWithError(zBlocksResponseSequencer, data));

@@ -1,6 +1,5 @@
-import { z } from "zod";
-
 import type { CodeInfo } from "lib/types";
+
 import {
   AccessConfigPermission,
   zBechAddr,
@@ -10,12 +9,13 @@ import {
   zUtcDate,
 } from "lib/types";
 import { parseTxHash, snakeToCamel } from "lib/utils";
+import { z } from "zod";
 
 export const zUploadAccessParams = z
   .object({
     code_upload_access: z.object({
-      permission: z.nativeEnum(AccessConfigPermission),
       addresses: zBechAddr.array(),
+      permission: z.nativeEnum(AccessConfigPermission),
     }),
     instantiate_default_permission: z.nativeEnum(AccessConfigPermission),
   })
@@ -28,13 +28,13 @@ export type UploadAccessParams = z.infer<typeof zUploadAccessParams>;
 
 const zCodesResponseItem = z
   .object({
-    id: z.number().nonnegative(),
+    contract_count: z.number().nonnegative(),
     cw2_contract: z.string().nullable(),
     cw2_version: z.string().nullable(),
-    uploader: zBechAddr,
-    contract_count: z.number().nonnegative(),
+    id: z.number().nonnegative(),
     instantiate_permission: z.nativeEnum(AccessConfigPermission),
     permission_addresses: z.array(zBechAddr),
+    uploader: zBechAddr,
   })
   .transform<CodeInfo>(snakeToCamel);
 
@@ -49,18 +49,18 @@ const zCodesResponseItemRest = z
     code_id: z.coerce.number(),
     creator: zBechAddr,
     instantiate_permission: z.object({
-      permission: z.nativeEnum(AccessConfigPermission),
       addresses: z.array(zBechAddr),
+      permission: z.nativeEnum(AccessConfigPermission),
     }),
   })
   .transform<CodeInfo>((val) => ({
-    id: val.code_id,
+    contractCount: undefined,
     cw2Contract: undefined,
     cw2Version: undefined,
-    uploader: val.creator,
-    contractCount: undefined,
+    id: val.code_id,
     instantiatePermission: val.instantiate_permission.permission,
     permissionAddresses: val.instantiate_permission.addresses,
+    uploader: val.creator,
   }));
 
 export const zCodesResponseRest = z.object({
@@ -78,16 +78,16 @@ const zCode = z
     permission_addresses: z.array(zBechAddr),
     proposal: z
       .object({
-        id: z.number().positive(),
-        height: z.number().positive(),
         created: zUtcDate,
+        height: z.number().positive(),
+        id: z.number().positive(),
       })
       .nullable(),
     transaction: z
       .object({
-        height: z.number(),
-        hash: z.string().transform((val) => parseTxHash(val).toUpperCase()),
         created: zUtcDate,
+        hash: z.string().transform((val) => parseTxHash(val).toUpperCase()),
+        height: z.number(),
       })
       .nullable(),
     uploader: zBechAddr,
@@ -114,9 +114,9 @@ export const zCodeInfoResponseRest = z
       creator: zBechAddr,
       data_hash: z.string(),
       instantiate_permission: z.object({
-        permission: z.nativeEnum(AccessConfigPermission),
         address: zBechAddr.optional(),
         addresses: z.array(zBechAddr).default([]),
+        permission: z.nativeEnum(AccessConfigPermission),
       }),
     }),
   })

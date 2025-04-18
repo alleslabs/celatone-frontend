@@ -1,15 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import type { BechAddr, BechAddr32, Option } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useCelatoneApp,
   useCurrentChain,
   useGetAddressType,
 } from "lib/app-provider";
-import type { BechAddr, BechAddr32, Option } from "lib/types";
 
-import { getAddressByIcnsNameRest, getIcnsNamesByAddressRest } from "./rest";
 import { getContractRest } from "../wasm/contract/rest";
+import { getAddressByIcnsNameRest, getIcnsNamesByAddressRest } from "./rest";
 
 export const useIcnsNamesByAddressRest = (
   address: Option<BechAddr>,
@@ -36,8 +36,8 @@ export const useIcnsNamesByAddressRest = (
     [CELATONE_QUERY_KEYS.ICNS_NAMES_BY_ADDRESS_REST, restEndpoint, address],
     queryFn,
     {
-      refetchOnWindowFocus: false,
       enabled,
+      refetchOnWindowFocus: false,
       retry: 1,
     }
   );
@@ -72,15 +72,15 @@ export const useAddressByIcnsNameRest = (name: string, enabled = true) => {
   };
 
   return useQuery({
+    enabled: enabled && Boolean(name),
+    queryFn,
     queryKey: [
       CELATONE_QUERY_KEYS.ADDRESS_BY_ICNS_NAME_REST,
       restEndpoint,
       name,
       bech32Prefix,
     ],
-    queryFn,
     refetchOnWindowFocus: false,
-    enabled: enabled && Boolean(name),
     retry: 1,
   });
 };

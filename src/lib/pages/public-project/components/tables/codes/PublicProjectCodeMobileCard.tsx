@@ -1,11 +1,11 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type { Nullish, WasmVerifyInfo } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { useInternalNavigate } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { PermissionChip } from "lib/components/PermissionChip";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
-import type { Nullish, WasmVerifyInfo } from "lib/types";
 import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
 
 import type { PublicCodeInfo } from ".";
@@ -23,26 +23,27 @@ export const PublicProjectCodeMobileCard = ({
 
   return (
     <MobileCardTemplate
-      onClick={() =>
-        navigate({
-          pathname: "/codes/[codeId]",
-          query: { codeId: publicInfo.id.toString() },
-        })
-      }
-      topContent={
-        <Flex gap={2} align="center">
-          <MobileLabel variant="body2" label="Code ID" />
-          <ExplorerLink
-            type="code_id"
-            value={publicInfo.id.toString()}
-            rightIcon={
-              <WasmVerifyBadge
-                status={getWasmVerifyStatus(wasmVerifyInfo)}
-                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
-              />
-            }
-            showCopyOnHover
-          />
+      bottomContent={
+        <Flex gap={3} w="full">
+          <Flex direction="column" flex={1}>
+            <MobileLabel label="Contracts" />
+            <Text
+              color={publicInfo.contractCount ? "text.main" : "text.disabled"}
+              cursor="text"
+              variant="body3"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {publicInfo.contractCount ?? "N/A"}
+            </Text>
+          </Flex>
+          <Flex direction="column" flex={1}>
+            <MobileLabel label="Permission" />
+            <PermissionChip
+              instantiatePermission={publicInfo.instantiatePermission}
+              permissionAddresses={publicInfo.permissionAddresses}
+              tagSize="xs"
+            />
+          </Flex>
         </Flex>
       }
       middleContent={
@@ -63,28 +64,27 @@ export const PublicProjectCodeMobileCard = ({
           </Flex>
         </Flex>
       }
-      bottomContent={
-        <Flex gap={3} w="full">
-          <Flex direction="column" flex={1}>
-            <MobileLabel label="Contracts" />
-            <Text
-              variant="body3"
-              onClick={(e) => e.stopPropagation()}
-              cursor="text"
-              color={publicInfo.contractCount ? "text.main" : "text.disabled"}
-            >
-              {publicInfo.contractCount ?? "N/A"}
-            </Text>
-          </Flex>
-          <Flex direction="column" flex={1}>
-            <MobileLabel label="Permission" />
-            <PermissionChip
-              instantiatePermission={publicInfo.instantiatePermission}
-              permissionAddresses={publicInfo.permissionAddresses}
-              tagSize="xs"
-            />
-          </Flex>
+      topContent={
+        <Flex align="center" gap={2}>
+          <MobileLabel label="Code ID" variant="body2" />
+          <ExplorerLink
+            rightIcon={
+              <WasmVerifyBadge
+                relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                status={getWasmVerifyStatus(wasmVerifyInfo)}
+              />
+            }
+            showCopyOnHover
+            type="code_id"
+            value={publicInfo.id.toString()}
+          />
         </Flex>
+      }
+      onClick={() =>
+        navigate({
+          pathname: "/codes/[codeId]",
+          query: { codeId: publicInfo.id.toString() },
+        })
       }
     />
   );

@@ -1,9 +1,9 @@
-import { TableContainer } from "@chakra-ui/react";
-
-import { useEvmConfig, useMoveConfig } from "lib/app-provider";
-import { Loading } from "lib/components/Loading";
 import type { AccountLocalInfo } from "lib/stores/account";
 import type { Option } from "lib/types";
+
+import { TableContainer } from "@chakra-ui/react";
+import { useEvmConfig, useMoveConfig } from "lib/app-provider";
+import { Loading } from "lib/components/Loading";
 
 import { SavedAccountsTableHeader } from "./SavedAccountsTableHeader";
 import { SavedAccountsTableRow } from "./SavedAccountsTableRow";
@@ -16,8 +16,8 @@ interface SavedAccountsTableProps {
 
 export const SavedAccountsTable = ({
   accounts,
-  isLoading,
   emptyState,
+  isLoading,
 }: SavedAccountsTableProps) => {
   const move = useMoveConfig({ shouldRedirect: false });
   const evm = useEvmConfig({ shouldRedirect: false });
@@ -33,15 +33,15 @@ export const SavedAccountsTable = ({
   return (
     <TableContainer py={6}>
       <SavedAccountsTableHeader
-        templateColumns={templateColumns}
         hasHexAddr={hasHexAddr}
+        templateColumns={templateColumns}
       />
       {accounts.map((account) => (
         <SavedAccountsTableRow
           key={account.address}
           accountInfo={account}
-          templateColumns={templateColumns}
           hasHexAddr={hasHexAddr}
+          templateColumns={templateColumns}
         />
       ))}
     </TableContainer>

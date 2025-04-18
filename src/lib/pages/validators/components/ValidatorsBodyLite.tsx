@@ -1,12 +1,13 @@
-import { useEffect, useMemo } from "react";
-
 import type { ValidatorsResponse } from "lib/services/types";
-import { useValidatorsRest } from "lib/services/validator";
 import type { Option } from "lib/types";
 
-import { ValidatorsTable } from "./validators-table";
+import { useValidatorsRest } from "lib/services/validator";
+import { useEffect, useMemo } from "react";
+
 import type { ValidatorCounts, ValidatorOrder } from "../types";
+
 import { compareValidator, indexValidatorsRest } from "../utils";
+import { ValidatorsTable } from "./validators-table";
 
 interface ValidatorsBodyLiteProps {
   isActive: boolean;
@@ -21,13 +22,13 @@ interface ValidatorsBodyLiteProps {
 
 export const ValidatorsBodyLite = ({
   isActive,
-  setCounts,
-  order,
-  setOrder,
   isDesc,
-  setIsDesc,
-  search,
+  order,
   scrollComponentId,
+  search,
+  setCounts,
+  setIsDesc,
+  setOrder,
 }: ValidatorsBodyLiteProps) => {
   const { data, isFetching: isLoading } = useValidatorsRest();
   const indexedData = useMemo(() => indexValidatorsRest(data), [data]);
@@ -44,13 +45,13 @@ export const ValidatorsBodyLite = ({
       .sort(compareValidator(order, isDesc));
     return {
       items: filteredList,
-      total: filteredList.length,
       metadata: {
         ...indexedData.metadata,
         minCommissionRate: isActive
           ? indexedData.minActiveCommissionRate
           : indexedData.minInactiveCommissionRate,
       },
+      total: filteredList.length,
     };
   }, [indexedData, isActive, isDesc, order, search]);
 
@@ -68,15 +69,15 @@ export const ValidatorsBodyLite = ({
   return (
     <ValidatorsTable
       data={filteredData}
-      isLoading={isLoading}
       isActive={isActive}
-      order={order}
-      setOrder={setOrder}
       isDesc={isDesc}
-      setIsDesc={setIsDesc}
-      scrollComponentId={scrollComponentId}
-      showUptime={false}
+      isLoading={isLoading}
       isSearching={!!search}
+      order={order}
+      scrollComponentId={scrollComponentId}
+      setIsDesc={setIsDesc}
+      setOrder={setOrder}
+      showUptime={false}
     />
   );
 };

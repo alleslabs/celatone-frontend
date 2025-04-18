@@ -1,3 +1,6 @@
+import type { FormControlProps } from "@chakra-ui/react";
+import type { ChangeEvent, HTMLInputTypeAttribute } from "react";
+
 import {
   Box,
   FormControl,
@@ -8,13 +11,11 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import type { FormControlProps } from "@chakra-ui/react";
-import type { ChangeEvent, HTMLInputTypeAttribute } from "react";
+import { useRestrictedNumberInput } from "lib/app-provider/hooks";
 import { useCallback } from "react";
 
-import { useRestrictedNumberInput } from "lib/app-provider/hooks";
-
 import type { FormStatus } from "./FormStatus";
+
 import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 /** TODO: refactor later */
@@ -31,15 +32,15 @@ export interface NumberInputProps extends FormControlProps {
 }
 
 export const NumberInput = ({
-  value,
+  error,
+  helperText,
   label,
   labelBgColor = "background.main",
-  helperText,
+  onInputChange,
   placeholder = " ",
-  error,
   size = "lg",
   status,
-  onInputChange,
+  value,
   ...componentProps
 }: NumberInputProps) => {
   const inputOnChange = useCallback(
@@ -50,10 +51,10 @@ export const NumberInput = ({
   );
 
   const handlers = useRestrictedNumberInput({
-    type: "integer",
-    maxIntegerPoints: 7,
     maxDecimalPoints: 0,
+    maxIntegerPoints: 7,
     onChange: inputOnChange,
+    type: "integer",
   });
 
   // Design system size: md = 40px, lg = 56px
@@ -68,10 +69,10 @@ export const NumberInput = ({
       </FormLabel>
       <InputGroup>
         <Input
-          size={size}
           placeholder={placeholder}
-          value={value}
           pr={status && "36px"}
+          size={size}
+          value={value}
           {...handlers}
         />
         {status && (

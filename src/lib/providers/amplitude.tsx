@@ -1,7 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { amp } from "lib/amplitude";
 import {
   useCelatoneApp,
@@ -12,6 +9,8 @@ import {
 import { StorageKeys } from "lib/data";
 import { useLocalStorage } from "lib/hooks";
 import { hashAddress } from "lib/utils";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export const AmplitudeProvider = ({
   children,
@@ -60,13 +59,13 @@ export const AmplitudeProvider = ({
   );
 
   amp.setMandatoryProperties({
-    page: pathname,
-    rawAddressHash: hashAddress(address) ?? "Not connected",
     chain: currentChainId,
+    devSidebar: submenus[StorageKeys.DevSidebar][0],
     mobile: isMobile,
     navSidebar: isExpand,
-    devSidebar: submenus[StorageKeys.DevSidebar][0],
+    page: pathname,
     projectSidebar: submenus[StorageKeys.ProjectSidebar][0],
+    rawAddressHash: hashAddress(address) ?? "Not connected",
   });
 
   return <>{children}</>;

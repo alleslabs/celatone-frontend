@@ -1,11 +1,11 @@
-import { Box, SimpleGrid } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
-
-import { EmptyState } from "lib/components/state";
 import type { ContractListInfo } from "lib/stores/contract";
 
-import { ContractListCard } from "./ContractListCard";
+import { Box, SimpleGrid } from "@chakra-ui/react";
+import { EmptyState } from "lib/components/state";
+import { useMemo, useState } from "react";
+
 import InputWithIcon from "../InputWithIcon";
+import { ContractListCard } from "./ContractListCard";
 
 interface AllContractListsProps {
   contractLists: ContractListInfo[];
@@ -31,33 +31,33 @@ export const AllContractLists = ({
   return (
     <Box minH="xs" w="100%">
       <InputWithIcon
+        amptrackSection="contract-list-search"
+        my={isReadOnly ? 4 : 0}
         placeholder="Search with list name"
+        size={{ base: "md", md: "lg" }}
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
-        size={{ base: "md", md: "lg" }}
-        my={isReadOnly ? 4 : 0}
-        amptrackSection="contract-list-search"
       />
       {filteredContractLists.length === 0 ? (
         <EmptyState
+          imageVariant="not-found"
           message="No matching lists found.
         Make sure you are searching with list name."
-          imageVariant="not-found"
           withBorder
         />
       ) : (
         <SimpleGrid
-          columns={{ sm: 1, md: 2, lg: 3 }}
+          columns={{ lg: 3, md: 2, sm: 1 }}
+          pt={12}
           spacing={4}
           w="full"
-          pt={12}
         >
           {filteredContractLists.map((item) => (
             <ContractListCard
               key={item.slug}
-              item={item}
               handleListSelect={handleListSelect}
               isReadOnly={isReadOnly}
+              item={item}
             />
           ))}
         </SimpleGrid>

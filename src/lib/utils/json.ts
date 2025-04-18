@@ -1,7 +1,7 @@
-import { getSchemaType } from "@rjsf/utils";
 import type { RJSFSchema } from "@rjsf/utils";
-
 import type { JsonDataType, SchemaInfo } from "lib/types";
+
+import { getSchemaType } from "@rjsf/utils";
 
 export const jsonValidate = (text: string) => {
   try {
@@ -44,7 +44,7 @@ export const isNonEmptyJsonData = (jsonData: JsonDataType): boolean => {
 };
 
 export const getDefaultMsg = (msgSchema: SchemaInfo) => {
-  const { type, required, enum: enumOptions, properties } = msgSchema.schema;
+  const { enum: enumOptions, properties, required, type } = msgSchema.schema;
   if (type === "object") {
     if (required && properties) {
       const propertyName = Object.keys(properties)[0];
@@ -63,7 +63,7 @@ export const resolveInitialMsg = (
   msgSchema: SchemaInfo
 ) => {
   const parsed = parseJsonStr(initialMsg);
-  const { required, enum: enumOptions } = msgSchema.schema;
+  const { enum: enumOptions, required } = msgSchema.schema;
   if (
     typeof parsed === "object" &&
     Object.keys(parsed as object)[0] === required?.[0]

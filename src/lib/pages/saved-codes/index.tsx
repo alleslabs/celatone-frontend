@@ -1,10 +1,7 @@
-import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
+import type { PermissionFilterValue } from "lib/hooks";
 import type { ChangeEvent } from "react";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 
+import { Badge, Flex, Heading, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import {
   useInternalNavigate,
@@ -17,8 +14,11 @@ import PageContainer from "lib/components/PageContainer";
 import { CelatoneSeo } from "lib/components/Seo";
 import { MySavedCodesTable } from "lib/components/table";
 import { UserDocsLink } from "lib/components/UserDocsLink";
-import type { PermissionFilterValue } from "lib/hooks";
 import { useMyCodesData } from "lib/model/code";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 import { SaveCodeButton } from "./components/SaveCodeButton";
 
@@ -39,18 +39,18 @@ const SavedCodes = observer(() => {
       query: { codeId },
     });
   // TODO refactor to useState
-  const { watch, setValue } = useForm<CodeFilterState>({
+  const { setValue, watch } = useForm<CodeFilterState>({
     defaultValues: {
-      permissionValue: "all",
       keyword: "",
+      permissionValue: "all",
     },
   });
   const { keyword, permissionValue } = watch();
 
   const {
-    savedCodesCount,
-    savedCodes: saved,
     isSavedCodesLoading,
+    savedCodes: saved,
+    savedCodesCount,
   } = useMyCodesData(keyword, permissionValue);
 
   useEffect(() => {
@@ -67,19 +67,19 @@ const SavedCodes = observer(() => {
         <Flex direction="column">
           <Flex align="center">
             <Heading
-              variant="h5"
-              as="h5"
-              minH="36px"
-              display="flex"
               alignItems="center"
+              as="h5"
+              display="flex"
+              minH="36px"
+              variant="h5"
             >
               Saved codes
             </Heading>
-            <Badge variant="primary" ml={2}>
+            <Badge ml={2} variant="primary">
               {savedCodesCount}
             </Badge>
           </Flex>
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             Your saved codes will be stored locally
           </Text>
         </Flex>
@@ -87,13 +87,13 @@ const SavedCodes = observer(() => {
       </Flex>
       <Flex gap={3} my={8}>
         <InputWithIcon
+          amptrackSection="saved-code-search"
           placeholder="Search with code ID or code name"
+          size="lg"
           value={keyword}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setValue("keyword", e.target.value)
           }
-          size="lg"
-          amptrackSection="saved-code-search"
         />
         {isFullTier && (
           <FilterByPermission
@@ -107,17 +107,17 @@ const SavedCodes = observer(() => {
       </Flex>
       <MySavedCodesTable
         codes={saved}
-        totalData={savedCodesCount}
-        isLoading={isSavedCodesLoading}
-        onRowSelect={onRowSelect}
-        showCw2andContracts={isFullTier}
         disablePermission={!isFullTier}
+        isLoading={isSavedCodesLoading}
+        showCw2andContracts={isFullTier}
+        totalData={savedCodesCount}
+        onRowSelect={onRowSelect}
       />
       <UserDocsLink
-        isDevTool
-        title="How to organize and save codes?"
         cta="Read more about Saved Codes"
         href="cosmwasm/codes/organize#saving-code-for-later-use"
+        isDevTool
+        title="How to organize and save codes?"
       />
     </PageContainer>
   );

@@ -1,14 +1,16 @@
 import type { UseQueryOptions } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+import type { HexAddr20, Option } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import { toBeHex } from "ethers";
 import { useCelatoneApp } from "lib/app-provider";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
 import { useCurrentChain } from "lib/app-provider/hooks";
-import type { HexAddr20, Option } from "lib/types";
 import { bech32AddressToHex } from "lib/utils";
-import { getSimulateFeeEvm } from "./jsonRpc";
+
 import type { SimulatedFeeEvm } from "../types";
+
+import { getSimulateFeeEvm } from "./jsonRpc";
 
 interface SimulateQueryEvmParams {
   enabled: boolean;
@@ -22,31 +24,26 @@ interface SimulateQueryEvmParams {
 }
 
 export const useSimulateFeeEvmQuery = ({
-  enabled,
-  to,
   data,
-  value,
-  retry = 2,
+  enabled,
   extraQueryKey = [],
-  onSuccess,
   onError,
+  onSuccess,
+  retry = 2,
+  to,
+  value,
 }: SimulateQueryEvmParams) => {
   const {
     chainConfig: {
       features: { evm },
     },
   } = useCelatoneApp();
-  const { walletProvider, address } = useCurrentChain();
+  const { address, walletProvider } = useCurrentChain();
 
   return useQuery({
-    queryKey: [
-      CELATONE_QUERY_KEYS.SIMULATE_FEE_EVM,
-      address,
-      to,
-      data,
-      value,
-      ...extraQueryKey,
-    ],
+    enabled: enabled && !!address,
+    onError,
+    onSuccess,
     queryFn: async () => {
       if (!evm.enabled)
         throw new Error("EVM is not enabled (useSimulateFeeEvmQuery)");
@@ -59,17 +56,22 @@ export const useSimulateFeeEvmQuery = ({
         throw new Error("Please reconnect to EVM wallet");
 
       return getSimulateFeeEvm(evm.jsonRpc, {
+        data,
         from: bech32AddressToHex(address),
         to,
-        data,
         value: value ? toBeHex(value) : null,
       });
     },
-    enabled: enabled && !!address,
-    retry,
+    queryKey: [
+      CELATONE_QUERY_KEYS.SIMULATE_FEE_EVM,
+      address,
+      to,
+      data,
+      value,
+      ...extraQueryKey,
+    ],
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    onSuccess,
-    onError,
+    retry,
   });
 };

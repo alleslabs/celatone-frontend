@@ -1,9 +1,8 @@
 import { Text } from "@chakra-ui/react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-
 import { useChainConfigs } from "lib/app-provider/hooks/useChainConfigs";
 import { getFirstQueryParam } from "lib/utils";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export const AppLink = ({
   children,
@@ -23,11 +22,11 @@ export const AppLink = ({
     <Link {...linkProps} href={`/${network}${componentHref}`}>
       {typeof children === "string" ? (
         <Text
-          variant={{ base: "body3", md: "body2" }}
-          w={{ base: "max-content", md: "auto" }}
+          _hover={{ textDecoration: "underline" }}
           color={linkProps.color}
           h="auto"
-          _hover={{ textDecoration: "underline" }}
+          variant={{ base: "body3", md: "body2" }}
+          w={{ base: "max-content", md: "auto" }}
         >
           {children}
         </Text>

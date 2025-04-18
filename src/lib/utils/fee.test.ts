@@ -5,7 +5,7 @@ describe("fee validation", () => {
     const fee = feeFromStr("10000uosmo");
 
     expect(fee).toEqual({
-      amount: [{ denom: "uosmo", amount: "10000" }],
+      amount: [{ amount: "10000", denom: "uosmo" }],
       gas: "0",
     });
   });
@@ -21,8 +21,8 @@ describe("fee validation", () => {
 
     expect(fee).toEqual({
       amount: [
-        { denom: "uosmo", amount: "10000" },
-        { denom: "ustake", amount: "89999" },
+        { amount: "10000", denom: "uosmo" },
+        { amount: "89999", denom: "ustake" },
       ],
       gas: "0",
     });

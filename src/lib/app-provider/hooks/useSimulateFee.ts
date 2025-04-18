@@ -1,9 +1,9 @@
 import type { EncodeObject } from "@cosmjs/proto-signing";
+import type { BechAddr20, Gas } from "lib/types";
+
+import { zGas } from "lib/types";
 import { useCallback } from "react";
 import { z } from "zod";
-
-import type { BechAddr20, Gas } from "lib/types";
-import { zGas } from "lib/types";
 
 import { useCurrentChain } from "./useCurrentChain";
 import { useGetDummyClient } from "./useDummy";
@@ -23,8 +23,8 @@ export const useSimulateFee = () => {
   return useCallback(
     async ({
       address,
-      messages,
       isDummyUser = false,
+      messages,
     }: SimulateFeeParams): Promise<Gas> => {
       if (isDummyUser) {
         const dummyClient = await getDummyClient();

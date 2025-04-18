@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Button } from "@chakra-ui/react";
 import type {
   FormContextType,
   RJSFSchema,
   StrictRJSFSchema,
   SubmitButtonProps,
 } from "@rjsf/utils";
+
+import { Box, Button } from "@chakra-ui/react";
 import { getSubmitButtonOptions } from "@rjsf/utils";
 
 export default function SubmitButton<
@@ -14,16 +15,16 @@ export default function SubmitButton<
   F extends FormContextType = any,
 >({ uiSchema }: SubmitButtonProps<T, S, F>) {
   const {
-    submitText,
     norender,
     props: submitButtonProps,
+    submitText,
   } = getSubmitButtonOptions(uiSchema);
   if (norender) {
     return null;
   }
 
   return (
-    <Box marginTop={3} display="flex" justifyContent="end">
+    <Box display="flex" justifyContent="end" marginTop={3}>
       <Button type="submit" {...submitButtonProps}>
         {submitText}
       </Button>

@@ -1,4 +1,5 @@
 import type { Option } from "lib/types";
+
 import type { CardTheme, Status } from "../types";
 
 export const useCardTheme = (theme: CardTheme, status: Option<Status>) => {
@@ -27,7 +28,7 @@ export const useCardTheme = (theme: CardTheme, status: Option<Status>) => {
   };
 
   return {
-    themeConfig: getTheme(),
     statusColor: resolveStatusColor(),
+    themeConfig: getTheme(),
   };
 };

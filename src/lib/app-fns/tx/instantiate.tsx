@@ -1,10 +1,10 @@
 import type { EncodeObject } from "@cosmjs/proto-signing";
 import type { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
-import { pipe } from "@rx-stream/pipe";
-import type { Observable } from "rxjs";
-
 import type { SignAndBroadcast } from "lib/app-provider/hooks";
 import type { BechAddr20, BechAddr32, TxResultRendering } from "lib/types";
+import type { Observable } from "rxjs";
+
+import { pipe } from "@rx-stream/pipe";
 import { findAttr } from "lib/utils";
 
 import { catchTxError } from "./common";
@@ -27,17 +27,17 @@ interface InstantiateTxParams {
 
 export const instantiateContractTx = ({
   address,
-  messages,
-  label,
   fee,
-  signAndBroadcast,
-  onTxSucceed,
+  label,
+  messages,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcast,
 }: InstantiateTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       const contractAddress =

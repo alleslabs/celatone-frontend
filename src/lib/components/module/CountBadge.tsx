@@ -1,6 +1,6 @@
-import { Badge } from "@chakra-ui/react";
-
 import type { Option } from "lib/types";
+
+import { Badge } from "@chakra-ui/react";
 
 interface CountBadgeProps {
   count: Option<number>;
@@ -8,11 +8,11 @@ interface CountBadgeProps {
 }
 export const CountBadge = ({ count, variant }: CountBadgeProps) => (
   <Badge
+    bgColor={variant === "common" ? "gray.700" : "transparent"}
     border={variant === "common" ? "none" : "1px solid"}
     borderColor={variant === "view" ? "primary.main" : "secondary.dark"}
-    bgColor={variant === "common" ? "gray.700" : "transparent"}
-    textColor="text.main"
     p="2px 8px"
+    textColor="text.main"
   >
     {count ?? "N/A"}
   </Badge>

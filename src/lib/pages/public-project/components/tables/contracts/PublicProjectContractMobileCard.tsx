@@ -1,5 +1,6 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import type { Nullish, WasmVerifyInfo } from "lib/types";
 
+import { Button, Flex, Text } from "@chakra-ui/react";
 import {
   useGetAddressTypeByLength,
   useInternalNavigate,
@@ -8,7 +9,6 @@ import { AppLink } from "lib/components/AppLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { MobileCardTemplate, MobileLabel } from "lib/components/table";
 import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
-import type { Nullish, WasmVerifyInfo } from "lib/types";
 import { ContractInteractionTabs } from "lib/types";
 import { getWasmVerifyStatus } from "lib/utils";
 
@@ -34,63 +34,63 @@ export const PublicProjectContractMobileCard = ({
 
   return (
     <MobileCardTemplate
-      onClick={goToContractDetails}
+      middleContent={
+        <Flex direction="column" gap={3}>
+          <Flex direction="column" flex={1}>
+            <Flex direction="column">
+              <MobileLabel label="Contract name" />
+              <Text>{publicInfo.name}</Text>
+              <Text color="text.dark" pt={1} variant="body3">
+                {publicInfo.description}
+              </Text>
+            </Flex>
+          </Flex>
+          <Flex direction="column" flex={1}>
+            <Flex direction="column">
+              <MobileLabel label="Instantiated by" />
+              <ExplorerLink
+                showCopyOnHover
+                type={getAddressTypeByLength(publicInfo.instantiator)}
+                value={publicInfo.instantiator}
+              />
+            </Flex>
+          </Flex>
+        </Flex>
+      }
       topContent={
         <>
           <Flex align="start" direction="column">
-            <MobileLabel variant="body2" label="Contract address" />
+            <MobileLabel label="Contract address" variant="body2" />
             <ExplorerLink
-              value={publicInfo.contractAddress}
-              type="contract_address"
               rightIcon={
                 <WasmVerifyBadge
-                  status={getWasmVerifyStatus(wasmVerifyInfo)}
-                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
                   linkedCodeId={publicInfo.code}
+                  relatedVerifiedCodes={wasmVerifyInfo?.relatedVerifiedCodes}
+                  status={getWasmVerifyStatus(wasmVerifyInfo)}
                 />
               }
               showCopyOnHover
+              type="contract_address"
+              value={publicInfo.contractAddress}
             />
           </Flex>
           <Flex
-            gap={3}
             alignItems="center"
+            gap={3}
             justifyContent="center"
             onClick={(e) => e.stopPropagation()}
           >
             <AppLink
               href={`/interact-contract?selectedType=${ContractInteractionTabs.Query}&contract=${publicInfo.contractAddress}`}
             >
-              <Button variant="outline-gray" size="sm">
+              <Button size="sm" variant="outline-gray">
                 Query
               </Button>
             </AppLink>
           </Flex>
         </>
       }
-      middleContent={
-        <Flex direction="column" gap={3}>
-          <Flex flex={1} direction="column">
-            <Flex direction="column">
-              <MobileLabel label="Contract name" />
-              <Text>{publicInfo.name}</Text>
-              <Text variant="body3" color="text.dark" pt={1}>
-                {publicInfo.description}
-              </Text>
-            </Flex>
-          </Flex>
-          <Flex flex={1} direction="column">
-            <Flex direction="column">
-              <MobileLabel label="Instantiated by" />
-              <ExplorerLink
-                value={publicInfo.instantiator}
-                type={getAddressTypeByLength(publicInfo.instantiator)}
-                showCopyOnHover
-              />
-            </Flex>
-          </Flex>
-        </Flex>
-      }
+      onClick={goToContractDetails}
     />
   );
 };

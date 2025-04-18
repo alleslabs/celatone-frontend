@@ -12,10 +12,10 @@ interface SingleBondCardBodyProps {
 }
 
 export const SingleBondCardBody = ({
-  title,
-  message,
   address,
   bondDenom,
+  message,
+  title,
   tokens,
 }: SingleBondCardBodyProps) => {
   const denoms = Object.keys(tokens);
@@ -29,9 +29,9 @@ export const SingleBondCardBody = ({
 
   return (
     <SingleBondCardBodyMulti
-      title={title}
-      message={message}
       address={address}
+      message={message}
+      title={title}
       tokens={tokens}
     />
   );

@@ -1,5 +1,6 @@
-import { Flex } from "@chakra-ui/react";
 import type { CSSProperties } from "react";
+
+import { Flex } from "@chakra-ui/react";
 
 interface ConnectingLineProp {
   alignment?: "horizontal" | "vertical";
@@ -10,8 +11,8 @@ const indicatorProp: CSSProperties = {
   border: "solid 2px",
   borderColor: "gray.600",
   borderRadius: "100%",
-  width: "12px",
   height: "12px",
+  width: "12px",
 };
 
 export const ConnectingLine = ({
@@ -20,18 +21,18 @@ export const ConnectingLine = ({
   style,
 }: ConnectingLineProp) => (
   <Flex
-    top="36px"
     style={style}
-    position="absolute"
     alignItems="center"
     direction={alignment === "vertical" ? "column" : "row"}
+    position="absolute"
+    top="36px"
   >
-    <Flex sx={indicatorProp} bgColor="gray.100" />
+    <Flex bgColor="gray.100" sx={indicatorProp} />
     <Flex
+      bgColor="gray.600"
       h={alignment === "vertical" ? "24px" : "2px"}
       w={alignment === "vertical" ? "2px" : "24px"}
-      bgColor="gray.600"
     />
-    <Flex sx={indicatorProp} bgColor={isFilled ? "gray.100" : "gray.900"} />
+    <Flex bgColor={isFilled ? "gray.100" : "gray.900"} sx={indicatorProp} />
   </Flex>
 );

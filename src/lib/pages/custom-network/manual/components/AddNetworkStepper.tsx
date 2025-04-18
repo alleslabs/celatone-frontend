@@ -17,7 +17,7 @@ export const AddNetworkStepper = ({
 }: AddNetworkStepperProps) => (
   <Flex justifyContent="space-between" mb={8} w="full">
     {steps.map((step, index) => {
-      const { bgColor, textColor, borderColor, content } = getStepStyles(
+      const { bgColor, borderColor, content, textColor } = getStepStyles(
         index,
         currentStepIndex
       );
@@ -26,13 +26,13 @@ export const AddNetworkStepper = ({
         <Flex
           key={step.label}
           alignItems="center"
-          w="full"
+          bg={bgColor}
+          borderBottomWidth="4px"
+          borderColor={borderColor}
+          gap={2}
           px={4}
           py={3}
-          gap={2}
-          bg={bgColor}
-          borderBottom="4px solid"
-          borderColor={borderColor}
+          w="full"
         >
           {content}
           <Text color={textColor}>{step.label}</Text>

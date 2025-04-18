@@ -2,27 +2,27 @@ import type { ComponentStyleConfig } from "@chakra-ui/react";
 
 export const Badge: ComponentStyleConfig = {
   baseStyle: {
-    p: "4px 8px",
     borderRadius: "16px",
-    fontWeight: "400",
     fontSize: "12px",
-    lineHeight: "100%",
+    fontWeight: "400",
     letterSpacing: "0.17px",
-    textAlign: "center",
+    lineHeight: "100%",
     maxH: "20px",
+    p: "4px 8px",
+    textAlign: "center",
+  },
+  defaultProps: {
+    variant: "gray",
   },
   variants: {
-    primary: { background: "primary.darker", color: "text.main" },
     gray: {
       background: "gray.700",
       color: "text.main",
     },
+    primary: { background: "primary.darker", color: "text.main" },
     "primary-light": {
       background: "primary.main",
       color: "background.main",
     },
-  },
-  defaultProps: {
-    variant: "gray",
   },
 };

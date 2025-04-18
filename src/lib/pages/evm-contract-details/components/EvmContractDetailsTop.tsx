@@ -1,11 +1,12 @@
-import { Button, Flex, Grid, Heading, Stack, Text } from "@chakra-ui/react";
+import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
 
+import { Button, Flex, Grid, Heading, Stack, Text } from "@chakra-ui/react";
 import { useConvertHexAddress, useInternalNavigate } from "lib/app-provider";
 import { CopyLink } from "lib/components/CopyLink";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 import { TotalValue } from "lib/components/TotalValue";
-import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
+
 import { TabIndex } from "../types";
 import { getInteractTabsIndex } from "../utils";
 
@@ -27,36 +28,36 @@ export const EvmContractDetailsTop = ({
 
   return (
     <Flex
-      flexDirection={{ md: "row", base: "column" }}
-      justifyContent="space-between"
+      flexDirection={{ base: "column", md: "row" }}
       gap={4}
+      justifyContent="space-between"
     >
       <Stack gap={1}>
-        <Flex gap={2} marginBottom={3} align="center">
+        <Flex align="center" gap={2} marginBottom={3}>
           <CustomIcon
-            name="contract-address"
             boxSize={5}
             color="primary.main"
+            name="contract-address"
           />
           <Heading as="h5" variant="h5" wordBreak="break-word">
             Contract Details
           </Heading>
         </Flex>
         <Flex columnGap={2} flexDirection={{ base: "column", md: "row" }}>
-          <Text variant="body2" fontWeight={500} color="text.dark">
+          <Text color="text.dark" fontWeight={500} variant="body2">
             Contract Address:
           </Text>
           <Flex alignItems="center">
             <CopyLink
-              value={contractAddress}
               amptrackSection="contract_top"
               type="contract_address"
+              value={contractAddress}
             />
             {!!evmVerifyInfo?.isVerified && (
               <CustomIcon
-                name="verification-solid"
                 boxSize={4}
                 color="secondary.main"
+                name="verification-solid"
               />
             )}
           </Flex>
@@ -64,33 +65,33 @@ export const EvmContractDetailsTop = ({
         {!!evmVerifyInfo?.isVerified && evmVerifyInfo.contractName && (
           <Flex
             columnGap={2}
-            flexDirection={{ md: "row", base: "column" }}
+            flexDirection={{ base: "column", md: "row" }}
             minHeight={6}
           >
-            <Text variant="body2" fontWeight={500} color="text.dark">
+            <Text color="text.dark" fontWeight={500} variant="body2">
               Contract Name:
             </Text>
-            <Text variant="body2" className="ellipsis">
+            <Text className="ellipsis" variant="body2">
               {evmVerifyInfo.contractName}
             </Text>
           </Flex>
         )}
         {proxyTargetAddress && (
-          <Flex columnGap={2} flexDirection={{ md: "row", base: "column" }}>
-            <Text variant="body2" fontWeight={500} color="text.dark">
+          <Flex columnGap={2} flexDirection={{ base: "column", md: "row" }}>
+            <Text color="text.dark" fontWeight={500} variant="body2">
               Implementation Address:
             </Text>
             <Flex alignItems="center">
               <ExplorerLink
+                textFormat="normal"
                 type="evm_contract_address"
                 value={proxyTargetAddress}
-                textFormat="normal"
               />
               {!!proxyTargetEvmVerifyInfo?.isVerified && (
                 <CustomIcon
-                  name="verification-solid"
                   boxSize={4}
                   color="secondary.main"
+                  name="verification-solid"
                 />
               )}
             </Flex>
@@ -99,17 +100,17 @@ export const EvmContractDetailsTop = ({
       </Stack>
       <Stack gap={4}>
         {!!evmVerifyInfo?.isVerified && (
-          <Grid gap={2} templateColumns={{ md: "repeat(2, 1fr)", base: "1fr" }}>
+          <Grid gap={2} templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}>
             <Button
-              variant="outline-primary"
               leftIcon={<CustomIcon name="query" />}
+              variant="outline-primary"
               onClick={() =>
                 navigate({
                   pathname: "/evm-contracts/[contractAddress]/[tab]",
                   query: {
                     contractAddress,
-                    tab: TabIndex.ReadWrite,
                     selectedType: getInteractTabsIndex(true, false),
+                    tab: TabIndex.ReadWrite,
                   },
                 })
               }
@@ -117,19 +118,19 @@ export const EvmContractDetailsTop = ({
               Read
             </Button>
             <Button
-              variant="outline-primary"
+              display={{ base: "none", md: "flex" }}
               leftIcon={<CustomIcon name="execute" />}
+              variant="outline-primary"
               onClick={() =>
                 navigate({
                   pathname: "/evm-contracts/[contractAddress]/[tab]",
                   query: {
                     contractAddress,
-                    tab: TabIndex.ReadWrite,
                     selectedType: getInteractTabsIndex(false, false),
+                    tab: TabIndex.ReadWrite,
                   },
                 })
               }
-              display={{ base: "none", md: "flex" }}
             >
               Write
             </Button>
@@ -137,8 +138,8 @@ export const EvmContractDetailsTop = ({
         )}
         <TotalValue
           address={convertHexWalletAddress(contractAddress)}
-          label="Total value"
           isCompact
+          label="Total value"
         />
       </Stack>
     </Flex>

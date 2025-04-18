@@ -1,10 +1,10 @@
-import { Flex, Text } from "@chakra-ui/react";
+import type { ProposalVotesInfo } from "lib/types";
 
+import { Flex, Text } from "@chakra-ui/react";
 import { LegendText } from "lib/components/LegendText";
 import { StatusChip } from "lib/components/table";
 import { getVoteResult } from "lib/pages/proposal-details/utils";
 import { ProposalStatus } from "lib/types";
-import type { ProposalVotesInfo } from "lib/types";
 
 interface VotingResultProps {
   status: ProposalStatus;
@@ -26,8 +26,8 @@ export const VotingResult = ({
   );
 
   return (
-    <Flex gap={2} alignItems="center">
-      <Text variant="body1" color="text.main" fontWeight={700}>
+    <Flex alignItems="center" gap={2}>
+      <Text color="text.main" fontWeight={700} variant="body1">
         {status === ProposalStatus.VOTING_PERIOD ? "Current" : "Final"} voting
         result:
       </Text>
@@ -35,11 +35,11 @@ export const VotingResult = ({
         <StatusChip status={ProposalStatus.FAILED} />
       ) : (
         <LegendText
+          color="text.main"
+          fontWeight={700}
           label={result}
           legendColor={resultColor}
           variant="body2"
-          color="text.main"
-          fontWeight={700}
         />
       )}
     </Flex>

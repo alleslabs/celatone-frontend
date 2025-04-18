@@ -1,7 +1,7 @@
-import { TableContainer } from "@chakra-ui/react";
-
-import { Loading } from "lib/components/Loading";
 import type { AssetInfos, Option, PoolData, Transaction } from "lib/types";
+
+import { TableContainer } from "@chakra-ui/react";
+import { Loading } from "lib/components/Loading";
 
 import { PoolTxsTableHeader } from "./PoolTxsTableHeader";
 import { PoolTxsTableRow } from "./PoolTxsTableRow";
@@ -18,11 +18,11 @@ interface PoolTxsTableProps {
 }
 
 export const PoolTxsTable = ({
+  assetInfos,
+  emptyState,
+  isLoading,
   pool,
   transactions,
-  assetInfos,
-  isLoading,
-  emptyState,
 }: PoolTxsTableProps) => {
   if (isLoading) return <Loading />;
   if (!transactions?.length) return emptyState;
@@ -33,10 +33,10 @@ export const PoolTxsTable = ({
       {transactions.map((transaction) => (
         <PoolTxsTableRow
           key={transaction.hash}
-          pool={pool}
-          transaction={transaction}
           assetInfos={assetInfos}
+          pool={pool}
           templateColumns={TEMPLATE_COLUMNS}
+          transaction={transaction}
         />
       ))}
     </TableContainer>

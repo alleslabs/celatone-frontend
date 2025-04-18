@@ -1,9 +1,9 @@
 /* eslint-disable no-use-before-define */
-import { createInstance, Identify } from "@amplitude/analytics-browser";
 import type { BrowserClient } from "@amplitude/analytics-types";
-import { userAgentEnrichmentPlugin } from "@amplitude/plugin-user-agent-enrichment-browser";
-
 import type { Nullable } from "lib/types";
+
+import { createInstance, Identify } from "@amplitude/analytics-browser";
+import { userAgentEnrichmentPlugin } from "@amplitude/plugin-user-agent-enrichment-browser";
 
 import type { AmpEvent } from "./types";
 
@@ -30,10 +30,10 @@ class Amplitude {
       this.client = createInstance();
       this.client.add(
         userAgentEnrichmentPlugin({
-          osName: true,
-          osVersion: true,
           deviceManufacturer: true,
           deviceModel: true,
+          osName: true,
+          osVersion: true,
         })
       );
 
@@ -45,24 +45,24 @@ class Amplitude {
           pageViews: false,
           sessions: true,
         },
+        serverUrl: "/amplitude",
         trackingOptions: {
           ipAddress: false,
           language: true,
           platform: true,
         },
-        serverUrl: "/amplitude",
       });
     }
 
     this.mandatoryProperties = {
-      page: null,
-      prevPathname: null,
-      rawAddressHash: null,
       chain: null,
+      devSidebar: null,
       mobile: null,
       navSidebar: null,
-      devSidebar: null,
+      page: null,
+      prevPathname: null,
       projectSidebar: null,
+      rawAddressHash: null,
     };
   }
 

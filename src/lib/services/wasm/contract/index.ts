@@ -1,13 +1,4 @@
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-
-import {
-  CELATONE_QUERY_KEYS,
-  useBaseApiRoute,
-  useCelatoneApp,
-  useGovConfig,
-  useTierConfig,
-} from "lib/app-provider";
 import type {
   ContractData,
   ContractsResponse,
@@ -21,6 +12,15 @@ import type {
   JsonDataType,
   Option,
 } from "lib/types";
+
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  CELATONE_QUERY_KEYS,
+  useBaseApiRoute,
+  useCelatoneApp,
+  useGovConfig,
+  useTierConfig,
+} from "lib/app-provider";
 
 import {
   getAdminContractsByAddress,
@@ -109,9 +109,9 @@ export const useMigrationHistoriesByContractAddressRest = (
     async () =>
       getMigrationHistoriesByContractAddressRest(restEndpoint, contractAddress),
     {
-      retry: 1,
-      keepPreviousData: true,
       enabled,
+      keepPreviousData: true,
+      retry: 1,
     }
   );
 };
@@ -147,8 +147,8 @@ export const useInstantiatedContractsByAddress = (
     },
     {
       enabled: Boolean(address) && enabled,
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -175,8 +175,8 @@ export const useAllInstantiatedContractsByAddress = (
     },
     {
       enabled: Boolean(address) && enabled,
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -197,7 +197,7 @@ export const useAdminContractsByAddress = (
       offset,
     ],
     async () => getAdminContractsByAddress(endpoint, address, limit, offset),
-    { retry: 1, refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -219,7 +219,7 @@ export const useContractData = (
       isFullTier
         ? getContractData(endpoint, contractAddress, isGov)
         : getContractRest(endpoint, contractAddress),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { refetchOnWindowFocus: false, retry: 1, ...options }
   );
 };
 
@@ -238,7 +238,7 @@ export const useContractTableCounts = (
       isGov,
     ],
     async () => getContractTableCounts(endpoint, contractAddress, isGov),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { refetchOnWindowFocus: false, retry: 1, ...options }
   );
 };
 
@@ -251,10 +251,10 @@ export const useContractQueryMsgsRest = (contractAddress: BechAddr32) => {
     [CELATONE_QUERY_KEYS.CONTRACT_QUERY_MSGS, restEndpoint, contractAddress],
     async () => getContractQueryMsgsRest(restEndpoint, contractAddress),
     {
-      enabled: !!contractAddress,
-      retry: false,
       cacheTime: 0,
+      enabled: !!contractAddress,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -271,8 +271,8 @@ export const useContractsByCodeId = (
     [CELATONE_QUERY_KEYS.CONTRACTS_BY_CODE_ID, endpoint, codeId, limit, offset],
     async () => getContractsByCodeId(endpoint, codeId, limit, offset),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
       ...options,
     }
   );
@@ -312,8 +312,8 @@ export const useContractQueryRest = (
     ],
     async () => getContractQueryRest(restEndpoint, contractAddress, msg),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
       ...options,
     }
   );
@@ -355,7 +355,7 @@ export const useContractCw2InfoRest = (
   return useQuery(
     [CELATONE_QUERY_KEYS.CONTRACT_CW2_INFO_REST, restEndpoint, contractAddress],
     async () => getContractCw2InfoRest(restEndpoint, contractAddress),
-    { retry: 1, refetchOnWindowFocus: false, enabled }
+    { enabled, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -374,7 +374,7 @@ export const useAllAdminContractsByAddress = (
 
       return getAllAdminContractsByAddress(endpoint, address);
     },
-    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
+    { enabled: !!address, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -386,8 +386,8 @@ export const useAdminsByContractAddresses = (
     [CELATONE_QUERY_KEYS.ADMINS_BY_CONTRACTS, endpoint, contractAddresses],
     () => getAdminsByContractAddresses(endpoint, contractAddresses),
     {
-      keepPreviousData: true,
       enabled: contractAddresses.length > 0,
+      keepPreviousData: true,
     }
   );
 };

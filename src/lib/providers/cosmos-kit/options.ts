@@ -1,5 +1,6 @@
-import { createWasmAminoConverters } from "@cosmjs/cosmwasm-stargate";
 import type { SigningCosmWasmClientOptions } from "@cosmjs/cosmwasm-stargate";
+
+import { createWasmAminoConverters } from "@cosmjs/cosmwasm-stargate";
 import { wasmTypes } from "@cosmjs/cosmwasm-stargate/build/modules";
 import { Registry } from "@cosmjs/proto-signing";
 import {
@@ -22,7 +23,7 @@ export const getCustomedSigningCosmwasm = (): SigningCosmWasmClientOptions => {
   };
 
   return {
-    registry: new Registry(registry),
     aminoTypes: new AminoTypes(aminoTypes),
+    registry: new Registry(registry),
   };
 };

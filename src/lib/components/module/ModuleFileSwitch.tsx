@@ -1,7 +1,7 @@
 import type { FlexProps } from "@chakra-ui/react";
-import { Flex, Heading } from "@chakra-ui/react";
 import type { Dispatch, SetStateAction } from "react";
 
+import { Flex, Heading } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { MotionBox } from "lib/components/MotionBox";
 
@@ -26,12 +26,12 @@ export const ModuleFileSwitch = ({
 
   return (
     <Flex
+      align="center"
       border="1px solid var(--chakra-colors-gray-700)"
       borderRadius="4px"
-      p={1}
-      h="32px"
       direction="row"
-      align="center"
+      h="32px"
+      p={1}
       position="relative"
       {...flexProps}
       w="300px"
@@ -39,41 +39,41 @@ export const ModuleFileSwitch = ({
       {tabs.map((tab) => (
         <MotionBox
           key={tab}
-          w="full"
+          animate={currentTab === tab ? "active" : "inactive"}
           cursor="pointer"
+          initial="inactive"
           p="2px 10px"
+          textAlign="center"
           variants={{
             active: { color: "var(--chakra-colors-text-main)" },
             inactive: {
               color: "var(--chakra-colors-primary-light)",
             },
           }}
-          initial="inactive"
-          animate={currentTab === tab ? "active" : "inactive"}
+          w="full"
+          zIndex={1}
           onClick={() => {
             track(AmpEvent.USE_SUBTAB, { currentTab: tab });
             onTabChange(tab);
           }}
-          zIndex={1}
-          textAlign="center"
         >
-          <Heading as="h6" variant="h6" fontSize="14px">
+          <Heading as="h6" fontSize="14px" variant="h6">
             {tab}
           </Heading>
         </MotionBox>
       ))}
       <MotionBox
-        h="calc(100% - 8px)"
-        w="calc(50% - 4px)"
-        position="absolute"
-        borderRadius="2px"
-        backgroundColor="primary.darker"
         animate={{ left: activeIndex === 0 ? "4px" : "50%" }}
+        backgroundColor="primary.darker"
+        borderRadius="2px"
+        h="calc(100% - 8px)"
+        position="absolute"
         transition={{
-          type: "spring",
-          stiffness: "250",
           damping: "30",
+          stiffness: "250",
+          type: "spring",
         }}
+        w="calc(50% - 4px)"
       />
     </Flex>
   );

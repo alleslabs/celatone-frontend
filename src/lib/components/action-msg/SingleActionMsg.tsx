@@ -1,7 +1,7 @@
-import { observer } from "mobx-react-lite";
+import type { Message } from "lib/types";
 
 import { useSingleActionMsgProps } from "lib/hooks/useSingleMessageProps";
-import type { Message } from "lib/types";
+import { observer } from "mobx-react-lite";
 
 import { SingleMsg } from "./SingleMsg";
 
@@ -12,7 +12,7 @@ interface SingleActionMsgProps {
   singleMsg?: boolean;
 }
 export const SingleActionMsg = observer(
-  ({ messages, type, success, singleMsg }: SingleActionMsgProps) => {
+  ({ messages, singleMsg, success, type }: SingleActionMsgProps) => {
     const singleMsgProps = useSingleActionMsgProps(
       type,
       success,

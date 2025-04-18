@@ -9,23 +9,23 @@ interface LoadNextProps {
 }
 
 export const LoadNext = ({
-  text,
   fetchNextPage,
   isFetchingNextPage,
+  text,
 }: LoadNextProps) => (
-  <Flex w="full" justifyContent="center" align="center" h="64px">
+  <Flex align="center" h="64px" justifyContent="center" w="full">
     {isFetchingNextPage ? (
       <Spinner />
     ) : (
       <Button
-        w="full"
+        gap={2}
         h="full"
         variant="ghost-gray"
-        gap={2}
+        w="full"
         onClick={fetchNextPage}
       >
         {text}
-        <CustomIcon name="chevron-down" boxSize="12px" />
+        <CustomIcon boxSize="12px" name="chevron-down" />
       </Button>
     )}
   </Flex>

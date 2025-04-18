@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import type { Option } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import { CELATONE_API_OVERRIDE } from "env";
 import { CELATONE_QUERY_KEYS } from "lib/app-provider/env";
-import type { Option } from "lib/types";
 import { isUrl } from "lib/utils";
 
 import { getApiChainConfigs } from "./api";
@@ -16,9 +16,9 @@ export const useApiChainConfigs = (
     async () => getApiChainConfigs(networkTypes, chain),
     {
       enabled: isUrl(String(CELATONE_API_OVERRIDE)),
-      retry: 1,
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
       refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: Infinity,
     }
   );

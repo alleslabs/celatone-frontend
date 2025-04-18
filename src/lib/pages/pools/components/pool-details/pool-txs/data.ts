@@ -26,21 +26,21 @@ export const usePoolTxsTableCounts = (poolId: number) => {
     useTxsByPoolIdTableCounts(poolId, "is_migrate");
 
   return {
-    totalAllData,
     isTotalAllLoading,
-    totalSwapData,
-    isTotalSwapLoading,
-    totalClpData,
-    isTotalClpLoading,
-    totalLpData,
-    isTotalLpLoading,
-    totalBondingData,
     isTotalBondingLoading,
-    totalSuperfluidData,
-    isTotalSuperfluidLoading,
-    totalCollectData,
+    isTotalClpLoading,
     isTotalCollectLoading,
-    totalMigrateData,
+    isTotalLpLoading,
     isTotalMigrateLoading,
+    isTotalSuperfluidLoading,
+    isTotalSwapLoading,
+    totalAllData,
+    totalBondingData,
+    totalClpData,
+    totalCollectData,
+    totalLpData,
+    totalMigrateData,
+    totalSuperfluidData,
+    totalSwapData,
   };
 };

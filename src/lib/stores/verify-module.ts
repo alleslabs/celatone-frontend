@@ -1,7 +1,7 @@
+import type { Dict } from "lib/types";
+
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
-
-import type { Dict } from "lib/types";
 
 export interface MoveVerifyTaskLocalInfo {
   taskId: string;
@@ -69,7 +69,7 @@ export class MoveVerifyTaskStore {
     if (!this.isMoveVerifyTaskExist(verifyModule.taskId)) {
       this.modules[this.userKey] = [
         ...this.getMoveVerifyTasks(),
-        { ...verifyModule, created: new Date(), completed: false },
+        { ...verifyModule, completed: false, created: new Date() },
       ];
     }
   }
@@ -77,7 +77,7 @@ export class MoveVerifyTaskStore {
   completeMoveVerifyTask(taskId: string, verifiedAt?: Date): void {
     const modules = this.getMoveVerifyTasks().map((module) =>
       module.taskId === taskId
-        ? { ...module, verifiedAt, completed: true }
+        ? { ...module, completed: true, verifiedAt }
         : module
     );
     this.modules[this.userKey] = modules;

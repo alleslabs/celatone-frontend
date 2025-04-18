@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import type { Option } from "lib/types";
 
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { useValidators } from "lib/services/validator";
-import type { Option } from "lib/types";
+import { useEffect } from "react";
+
+import type { ValidatorCounts, ValidatorOrder } from "../types";
 
 import { ValidatorsTable } from "./validators-table";
-import type { ValidatorCounts, ValidatorOrder } from "../types";
 
 interface ValidatorsBodyFullProps {
   isActive: boolean;
@@ -21,27 +22,27 @@ interface ValidatorsBodyFullProps {
 
 export const ValidatorsBodyFull = ({
   isActive,
-  setCounts,
-  order,
-  setOrder,
   isDesc,
-  setIsDesc,
-  search,
+  order,
   scrollComponentId,
+  search,
+  setCounts,
+  setIsDesc,
+  setOrder,
 }: ValidatorsBodyFullProps) => {
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 100,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 100,
     },
   });
   const { data, isFetching: isLoading } = useValidators(
@@ -52,7 +53,7 @@ export const ValidatorsBodyFull = ({
     isDesc,
     search,
     {
-      onSuccess: ({ total, metadata }) => {
+      onSuccess: ({ metadata, total }) => {
         setTotalData(total);
         setCounts(metadata);
       },
@@ -68,23 +69,23 @@ export const ValidatorsBodyFull = ({
     <>
       <ValidatorsTable
         data={data}
-        isLoading={isLoading}
         isActive={isActive}
-        order={order}
-        setOrder={setOrder}
         isDesc={isDesc}
-        setIsDesc={setIsDesc}
-        scrollComponentId={scrollComponentId}
+        isLoading={isLoading}
         isSearching={!!search}
+        order={order}
+        scrollComponentId={scrollComponentId}
+        setIsDesc={setIsDesc}
+        setOrder={setOrder}
       />
       {data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={data.total}
-          scrollComponentId={scrollComponentId}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          scrollComponentId={scrollComponentId}
+          totalData={data.total}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

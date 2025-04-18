@@ -1,5 +1,6 @@
-import { Heading, Stack } from "@chakra-ui/react";
 import type { JsonFragment } from "ethers";
+
+import { Heading, Stack } from "@chakra-ui/react";
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 
 interface ContractAbiProps {

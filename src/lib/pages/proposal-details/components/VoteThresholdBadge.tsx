@@ -2,8 +2,8 @@ import { ActiveDot } from "lib/components/ActiveDot";
 import { CustomIcon } from "lib/components/icon";
 import { ProposalStatus } from "lib/types";
 
-import { ProgressBadge } from "./ProgressBadge";
 import { PeriodState } from "../types";
+import { ProgressBadge } from "./ProgressBadge";
 
 interface VoteThresholdBadgeProps {
   status: ProposalStatus;
@@ -11,27 +11,27 @@ interface VoteThresholdBadgeProps {
 }
 
 export const VoteThresholdBadge = ({
-  status,
   isCompact,
+  status,
 }: VoteThresholdBadgeProps) => {
   if (status === ProposalStatus.VOTING_PERIOD)
     return isCompact ? (
       <ActiveDot />
     ) : (
       <ProgressBadge
+        bgColor="gray.700"
         state={PeriodState.ONGOING}
         text="In progress"
-        bgColor="gray.700"
       />
     );
 
   return isCompact ? (
-    <CustomIcon m={0} name="check-circle-solid" color="success.main" />
+    <CustomIcon color="success.main" m={0} name="check-circle-solid" />
   ) : (
     <ProgressBadge
+      bgColor="gray.700"
       state={PeriodState.COMPLETE}
       text="Ended"
-      bgColor="gray.700"
     />
   );
 };

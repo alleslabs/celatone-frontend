@@ -56,7 +56,7 @@ describe("jsonLineCount", () => {
 describe("parseJsonStr", () => {
   it("should return the parsed JSON for valid input", () => {
     const validJson = '{"name": "John", "age": 30}';
-    expect(parseJsonStr(validJson)).toEqual({ name: "John", age: 30 });
+    expect(parseJsonStr(validJson)).toEqual({ age: 30, name: "John" });
   });
 
   it("should return the fallback value for invalid input", () => {

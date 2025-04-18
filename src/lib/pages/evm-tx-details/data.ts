@@ -1,5 +1,6 @@
 import type Big from "big.js";
-import { useMemo } from "react";
+import type { TxData, TxDataJsonRpc } from "lib/services/types";
+import type { Option, Ratio, TokenWithValue } from "lib/types";
 
 import { useAssetInfos } from "lib/services/assetService";
 import { useBlockDataJsonRpc } from "lib/services/block";
@@ -9,9 +10,8 @@ import {
   useEvmTxDataJsonRpc,
   useTxData,
 } from "lib/services/tx";
-import type { TxData, TxDataJsonRpc } from "lib/services/types";
-import type { Option, Ratio, TokenWithValue } from "lib/types";
 import { coinToTokenWithValue } from "lib/utils";
+import { useMemo } from "react";
 
 export interface GasInfo {
   isEIP1559: boolean;
@@ -100,28 +100,28 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
     );
 
     return {
-      isEIP1559: evmTxData.tx.type === "0x2",
-      txFee,
-      gasPrice,
-      gasUsed: evmTxData.txReceipt.gasUsed,
-      gasLimit: evmTxData.tx.gas,
-      gasRefundRatio,
       baseFee,
+      gasLimit: evmTxData.tx.gas,
+      gasPrice,
+      gasRefundRatio,
+      gasUsed: evmTxData.txReceipt.gasUsed,
+      isEIP1559: evmTxData.tx.type === "0x2",
       maxFee,
       maxPriorityFee,
+      txFee,
     };
   }, [assetInfos, blockData, evmDenom, evmTxData, gasRefundRatio]);
 
   return {
+    cosmosTxData,
+    evmDenom,
+    evmTxData,
+    evmTxValue,
+    gasInfo,
     isLoading:
       isLoadingEvmTxData ||
       isLoadingCosmosTxData ||
       isEvmParamsLoading ||
       isLoadingBlockData,
-    cosmosTxData,
-    evmTxData,
-    evmDenom,
-    evmTxValue,
-    gasInfo,
   };
 };

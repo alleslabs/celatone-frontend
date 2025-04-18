@@ -1,5 +1,4 @@
 import { Flex } from "@chakra-ui/react";
-
 import { MobileLabel } from "lib/components/table";
 
 interface InfoItemProps {
@@ -8,7 +7,7 @@ interface InfoItemProps {
   minW?: number;
 }
 
-export const InfoItem = ({ label, children, minW = 40 }: InfoItemProps) => (
+export const InfoItem = ({ children, label, minW = 40 }: InfoItemProps) => (
   <Flex direction="column" gap={1} minW={minW}>
     <MobileLabel label={label} variant="body2" />
     {children}

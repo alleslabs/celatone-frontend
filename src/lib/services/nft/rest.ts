@@ -1,8 +1,11 @@
-import { zHexAddr } from "lib/types";
 import type { HexAddr, HexAddr32 } from "lib/types";
+
+import { zHexAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
-import { getMoveViewJsonRest } from "../move/module/rest";
+
 import type { Nft } from "../types";
+
+import { getMoveViewJsonRest } from "../move/module/rest";
 import { zNftInfoRest } from "../types";
 
 export const getNftHolderRest = async (
@@ -36,12 +39,12 @@ export const getNftByNftAddressRest = async (
     getNftHolderRest(endpoint, nftAddress),
     getNftInfoRest(endpoint, nftAddress),
   ]).then<Nft>(([holder, info]) => ({
-    uri: info.uri,
-    tokenId: info.tokenId,
-    description: info.description,
-    isBurned: false,
-    ownerAddress: holder,
-    nftAddress,
     collectionAddress: info.collection,
     collectionName: undefined,
+    description: info.description,
+    isBurned: false,
+    nftAddress,
+    ownerAddress: holder,
+    tokenId: info.tokenId,
+    uri: info.uri,
   }));

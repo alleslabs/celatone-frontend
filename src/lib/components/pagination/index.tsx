@@ -1,8 +1,8 @@
-import { Flex, Spacer } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useEffect, useMemo } from "react";
 
+import { Flex, Spacer } from "@chakra-ui/react";
 import { scrollToComponent, scrollToTop, scrollYPosition } from "lib/utils";
+import { useEffect, useMemo } from "react";
 
 import { PageDetail } from "./PageDetail";
 import { PageGoTo } from "./PageGoTo";
@@ -21,13 +21,13 @@ interface PaginationProps {
 }
 export const Pagination = ({
   currentPage,
-  pagesQuantity,
   offset,
-  totalData,
-  pageSize,
-  scrollComponentId,
   onPageChange,
   onPageSizeChange,
+  pageSize,
+  pagesQuantity,
+  scrollComponentId,
+  totalData,
 }: PaginationProps) => {
   useEffect(() => {
     const windowPosition = scrollYPosition();
@@ -40,12 +40,12 @@ export const Pagination = ({
     }
   }, [currentPage, pageSize, scrollComponentId]);
 
-  const { offsetData, lastDataInPage, lastPage } = useMemo(() => {
+  const { lastDataInPage, lastPage, offsetData } = useMemo(() => {
     return {
-      offsetData: offset + 1,
       lastDataInPage:
         currentPage !== pagesQuantity ? pageSize * currentPage : totalData,
       lastPage: Math.ceil(totalData / pageSize),
+      offsetData: offset + 1,
     };
   }, [currentPage, offset, pageSize, pagesQuantity, totalData]);
 
@@ -58,21 +58,21 @@ export const Pagination = ({
       <Flex
         direction={{ base: "column", md: "row" }}
         gap={{ base: 4, md: 8 }}
-        w="full"
         pt={6}
+        w="full"
       >
         <PageDetail
-          pageSize={pageSize}
-          offsetData={offsetData}
           lastDataInPage={lastDataInPage}
+          offsetData={offsetData}
+          pageSize={pageSize}
           totalData={totalData}
           onPageSizeChange={onPageSizeChange}
         />
         <Spacer />
         <PageList
-          pageSize={pageSize}
           currentPage={currentPage}
           lastPage={lastPage}
+          pageSize={pageSize}
           onPageChange={onPageChange}
         />
         <PageGoTo lastPage={lastPage} onPageChange={onPageChange} />

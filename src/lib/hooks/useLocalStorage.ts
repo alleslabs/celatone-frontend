@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
-import { useEffect, useState } from "react";
 
 import { getItem, setItem } from "lib/utils";
+import { useEffect, useState } from "react";
 
 type PersistedState<T> = [T, Dispatch<SetStateAction<T>>];
 

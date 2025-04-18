@@ -1,6 +1,7 @@
+import type { Option, Transaction } from "lib/types";
+
 import { useCurrentChain } from "lib/app-provider";
 import { DisconnectedState } from "lib/components/state";
-import type { Option, Transaction } from "lib/types";
 
 import { TransactionsTable } from "./TransactionsTable";
 
@@ -13,25 +14,25 @@ interface TransactionsTableWithWalletProps {
 }
 
 export const TransactionsTableWithWallet = ({
-  transactions,
-  isLoading,
   emptyState,
+  isLoading,
   showActions,
   showRelations,
+  transactions,
 }: TransactionsTableWithWalletProps) => {
   const { address } = useCurrentChain();
   return !address ? (
     <DisconnectedState
-      text="to see your past transactions."
       helperText="Past transactions will display here."
+      text="to see your past transactions."
     />
   ) : (
     <TransactionsTable
-      transactions={transactions}
-      isLoading={isLoading}
       emptyState={emptyState}
+      isLoading={isLoading}
       showAction={showActions}
       showRelations={showRelations}
+      transactions={transactions}
     />
   );
 };

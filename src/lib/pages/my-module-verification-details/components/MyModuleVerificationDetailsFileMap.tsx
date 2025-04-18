@@ -1,5 +1,4 @@
 import { Heading, Stack } from "@chakra-ui/react";
-
 import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { jsonPrettify } from "lib/utils";
 
@@ -15,9 +14,9 @@ export const MyModuleVerificationDetailsFileMap = ({
       File Map
     </Heading>
     <JsonReadOnly
-      text={jsonPrettify(JSON.stringify(fileMap))}
       canCopy
       fullWidth
+      text={jsonPrettify(JSON.stringify(fileMap))}
     />
   </Stack>
 );

@@ -1,5 +1,7 @@
 import { last, split } from "lodash";
+
 import type { FilePath, SourceTreeNode } from "./types";
+
 import { EXTENSION_LIB } from "./types";
 
 export const generateSourceTree = (
@@ -9,7 +11,7 @@ export const generateSourceTree = (
 ): SourceTreeNode[] => {
   const root: SourceTreeNode[] = [];
 
-  filesPath.forEach(({ path, code }) => {
+  filesPath.forEach(({ code, path }) => {
     const parts = path.split("/");
     let currentLevel = root;
 
@@ -21,18 +23,18 @@ export const generateSourceTree = (
         const isFolder = extension ? !EXTENSION_LIB.includes(extension) : false;
         const isLib = !isFolder && libraryFilesPath.includes(path);
         const isInitializeNodePath = initialFilePath === path;
-        const isOpen = index === 0 ? true : false || isInitializeNodePath;
+        const isOpen = index === 0 ? true : isInitializeNodePath;
 
         existingNode = {
-          name: part,
-          isOpen,
           children: [],
+          code,
           isFolder,
           isLib,
-          treeLevel: index,
-          code,
-          path: parts.slice(0, index + 1).join("/"),
+          isOpen,
           language: extension === "vy" ? "python" : extension,
+          name: part,
+          path: parts.slice(0, index + 1).join("/"),
+          treeLevel: index,
         };
         currentLevel.push(existingNode);
       }

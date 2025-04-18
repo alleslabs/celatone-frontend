@@ -1,7 +1,8 @@
 import type { BorderProps, LayoutProps } from "@chakra-ui/react";
-import { Button, Flex } from "@chakra-ui/react";
 
+import { Button, Flex } from "@chakra-ui/react";
 import { trackUseViewMore } from "lib/amplitude";
+
 import { CustomIcon } from "../icon";
 
 interface ViewMoreProps {
@@ -12,25 +13,25 @@ interface ViewMoreProps {
 }
 
 export const ViewMore = ({
-  onClick,
   borderRadius = "0",
   minH = "64px",
+  onClick,
   text = "View more",
 }: ViewMoreProps) => (
-  <Flex w="full" justifyContent="center" textAlign="center">
+  <Flex justifyContent="center" textAlign="center" w="full">
     <Button
-      w="full"
       borderRadius={borderRadius}
+      gap={2}
       minH={minH}
       variant="ghost-gray"
-      gap={2}
+      w="full"
       onClick={() => {
         trackUseViewMore();
         onClick();
       }}
     >
       {text}
-      <CustomIcon name="chevron-right" boxSize="12px" />
+      <CustomIcon boxSize="12px" name="chevron-right" />
     </Button>
   </Flex>
 );

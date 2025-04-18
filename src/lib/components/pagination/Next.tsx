@@ -1,8 +1,8 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
-import { useContext } from "react";
 
+import { Button } from "@chakra-ui/react";
 import { trackUsePaginationNavigate } from "lib/amplitude";
+import { useContext } from "react";
 
 import { PaginatorContext } from "./PaginatorProvider";
 
@@ -15,7 +15,7 @@ export const Next = ({ children, pageSize, ...buttonProps }: NextProps) => {
   const { actions, state } = useContext(PaginatorContext);
 
   const { changePage } = actions;
-  const { currentPage, pagesQuantity, isDisabled } = state;
+  const { currentPage, isDisabled, pagesQuantity } = state;
   const isLast = pagesQuantity ? currentPage > pagesQuantity - 1 : true;
 
   const handleNextClick = () => {

@@ -1,6 +1,8 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
+import type { BlocksResponse } from "lib/services/types";
+import type { BlockData, ConsensusAddr, Option, Transaction } from "lib/types";
 
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
@@ -8,8 +10,6 @@ import {
   useCurrentChain,
   useEvmConfig,
 } from "lib/app-provider";
-import type { BlocksResponse } from "lib/services/types";
-import type { BlockData, ConsensusAddr, Option, Transaction } from "lib/types";
 import {
   convertAccountPubkeyToAccountAddress,
   convertRawConsensusAddrToConsensusAddr,
@@ -33,7 +33,7 @@ export const useBlocks = (
   return useQuery<BlocksResponse>(
     [CELATONE_QUERY_KEYS.BLOCKS, endpoint, limit, offset],
     async () => getBlocks(endpoint, limit, offset),
-    { ...options, retry: 1, refetchOnWindowFocus: false }
+    { ...options, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -45,8 +45,8 @@ export const useBlockData = (height: number, enabled = true) => {
     async () => getBlockData(endpoint, height),
     {
       enabled,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -82,9 +82,9 @@ export const useBlockDataRest = (height: number, enabled = true) => {
       };
     },
     {
-      retry: false,
-      refetchOnWindowFocus: false,
       enabled,
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -98,9 +98,9 @@ export const useLatestBlockRest = () => {
     [CELATONE_QUERY_KEYS.BLOCK_LATEST_HEIGHT_REST, restEndpoint],
     async () => getLatestBlockRest(restEndpoint),
     {
-      retry: false,
-      refetchOnWindowFocus: false,
       cacheTime: 0,
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -134,8 +134,8 @@ export const useBlockTimeAverageSequencer = () => {
     [CELATONE_QUERY_KEYS.BLOCK_TIME_AVERAGE_SEQUENCER, restEndpoint],
     async () => getBlockTimeAverageSequencer(restEndpoint),
     {
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -149,8 +149,8 @@ export const useBlockDataSequencer = (height: number) => {
     [CELATONE_QUERY_KEYS.BLOCK_DATA_SEQUENCER, restEndpoint, height],
     async () => getBlockDataSequencer(restEndpoint, height),
     {
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -174,9 +174,9 @@ export const useBlockDataJsonRpc = (height: Option<number>, enabled = true) => {
       return getBlockDataJsonRpc(evm.jsonRpc, height);
     },
     {
-      retry: false,
-      refetchOnWindowFocus: false,
       enabled: enabled && evm.enabled && !!evm.jsonRpc && !!height,
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };

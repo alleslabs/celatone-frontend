@@ -18,8 +18,8 @@ export const BlockDetailsLite = ({ height }: { height: number }) => {
     return (
       <EmptyState
         heading={`Block ${height} is too old and has been pruned from REST`}
-        message="Due to the REST pruning the old blocks, this block's information cannot be retrieved."
         imageVariant="not-found"
+        message="Due to the REST pruning the old blocks, this block's information cannot be retrieved."
         textVariant="body2"
         withBorder
       />
@@ -29,7 +29,7 @@ export const BlockDetailsLite = ({ height }: { height: number }) => {
     <>
       <Breadcrumb
         items={[
-          { text: "Blocks", href: "/blocks" },
+          { href: "/blocks", text: "Blocks" },
           { text: data.height.toString() },
         ]}
       />
@@ -37,9 +37,9 @@ export const BlockDetailsLite = ({ height }: { height: number }) => {
       <BlockInfo blockData={data} />
       <BlockTxsTableLite height={height} />
       <UserDocsLink
-        title="What is a block?"
         cta="Read more about Block"
         href="general/blocks/detail-page"
+        title="What is a block?"
       />
     </>
   );

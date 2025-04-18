@@ -1,5 +1,4 @@
 import type { Log } from "@cosmjs/stargate/build/logs";
-
 import type { Event, TxResponse } from "lib/services/types";
 
 export const extractTxLogs = (txData: TxResponse): Log[] => {
@@ -11,9 +10,9 @@ export const extractTxLogs = (txData: TxResponse): Log[] => {
 
   // post Cosmos SDK 0.50
   const msgLogs = txData.tx.body.messages.map((_, index) => ({
-    msg_index: index,
-    log: "",
     events: [] as Event[],
+    log: "",
+    msg_index: index,
   }));
   txData.events.forEach((event) => {
     const index = event.attributes.find(

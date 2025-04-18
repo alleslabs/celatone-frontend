@@ -1,6 +1,6 @@
-import { Button, Link } from "@chakra-ui/react";
 import type { ButtonProps } from "@chakra-ui/react";
 
+import { Button, Link } from "@chakra-ui/react";
 import { trackWebsite } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 import { Tooltip } from "lib/components/Tooltip";
@@ -11,12 +11,12 @@ interface WebsiteButtonProps extends ButtonProps {
 
 const RenderWebsiteButton = ({ href, ...props }: WebsiteButtonProps) => (
   <Button
-    leftIcon={<CustomIcon name="website" boxSize={3} />}
-    rightIcon={<CustomIcon name="launch" boxSize={3} />}
+    isDisabled={!href}
+    leftIcon={<CustomIcon boxSize={3} name="website" />}
+    rightIcon={<CustomIcon boxSize={3} name="launch" />}
     size="sm"
     variant="outline-primary"
     width={{ base: "full", md: "auto" }}
-    isDisabled={!href}
     onClick={() => trackWebsite(href)}
     {...props}
   >
@@ -26,7 +26,7 @@ const RenderWebsiteButton = ({ href, ...props }: WebsiteButtonProps) => (
 
 export const WebsiteButton = ({ href, ...props }: WebsiteButtonProps) =>
   href ? (
-    <Link href={href} isExternal _hover={{ textDecoration: "none" }}>
+    <Link _hover={{ textDecoration: "none" }} href={href} isExternal>
       <RenderWebsiteButton href={href} {...props} />
     </Link>
   ) : (

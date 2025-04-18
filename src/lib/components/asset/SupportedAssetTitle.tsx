@@ -1,8 +1,9 @@
-import { Flex, Heading } from "@chakra-ui/react";
-
-import { useMobile } from "lib/app-provider";
 import type { Option, TokenWithValue, USD } from "lib/types";
+
+import { Flex, Heading } from "@chakra-ui/react";
+import { useMobile } from "lib/app-provider";
 import { formatPrice } from "lib/utils";
+
 import { TableTitle } from "../table";
 
 interface SupportedAssetTitleProps {
@@ -19,19 +20,19 @@ export const SupportedAssetTitle = ({
     !totalSupportedAssetsValue || totalSupportedAssetsValue.eq(0);
 
   return (
-    <Flex w="full" py={1} gap={2} align="center" justifyContent="space-between">
+    <Flex align="center" gap={2} justifyContent="space-between" py={1} w="full">
       <TableTitle
-        title="Supported assets"
         count={supportedAssets.length}
-        mb={0}
         isSmall
+        mb={0}
+        title="Supported assets"
       />
       {!isMobile && (
         <Heading
-          mt={1}
           as="h6"
-          variant="h7"
           color={isZeroValue ? "text.dark" : "text.main"}
+          mt={1}
+          variant="h7"
         >
           {totalSupportedAssetsValue
             ? formatPrice(totalSupportedAssetsValue)

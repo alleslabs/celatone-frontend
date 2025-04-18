@@ -1,8 +1,7 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { TierSwitcher } from "lib/components/TierSwitcher";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { PastTxsFull } from "./full";
 import { PastTxsLite } from "./lite";
@@ -18,8 +17,8 @@ const PastTxs = () => {
   return (
     <TierSwitcher
       full={<PastTxsFull />}
-      sequencer={<PastTxsSequencer />}
       lite={<PastTxsLite />}
+      sequencer={<PastTxsSequencer />}
     />
   );
 };

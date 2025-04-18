@@ -1,7 +1,7 @@
+import type { BechAddr, Dict } from "lib/types";
+
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
-
-import type { BechAddr, Dict } from "lib/types";
 
 export interface AccountLocalInfo {
   address: BechAddr;
@@ -58,8 +58,8 @@ export class AccountStore {
 
     const accountLocalInfo = this.accountLocalInfo[this.userKey]?.[address] ?? {
       address,
-      name,
       description,
+      name,
     };
 
     if (name !== undefined)
@@ -92,8 +92,8 @@ export class AccountStore {
     return savedAccountsByUserKey
       .map((address) => ({
         address,
-        name: this.getAccountLocalInfo(address)?.name,
         description: this.getAccountLocalInfo(address)?.description,
+        name: this.getAccountLocalInfo(address)?.name,
       }))
       .reverse();
   }

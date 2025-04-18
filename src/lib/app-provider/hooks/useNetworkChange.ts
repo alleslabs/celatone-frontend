@@ -1,7 +1,6 @@
+import { getFirstQueryParam } from "lib/utils";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-
-import { getFirstQueryParam } from "lib/utils";
 
 import { useChainConfigs } from "./useChainConfigs";
 import { useInternalNavigate } from "./useInternalNavigate";
@@ -10,9 +9,9 @@ export const useNetworkChange = (
   handleOnChainIdChange: (newChainId: string) => void
 ) => {
   const router = useRouter();
-  const networkRef = useRef<string>();
+  const networkRef = useRef<string>(null);
   const navigate = useInternalNavigate();
-  const { supportedChainIds, isLoading } = useChainConfigs();
+  const { isLoading, supportedChainIds } = useChainConfigs();
 
   useEffect(() => {
     if (router.isReady && !isLoading) {

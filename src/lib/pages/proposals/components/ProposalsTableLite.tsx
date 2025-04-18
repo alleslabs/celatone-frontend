@@ -1,6 +1,6 @@
-import { Alert, Button, Grid, GridItem, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import type { ProposalStatus } from "lib/types";
 
+import { Alert, Button, Grid, GridItem, Text } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 import InputWithIcon from "lib/components/InputWithIcon";
 import { LoadNext } from "lib/components/LoadNext";
@@ -8,8 +8,8 @@ import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ProposalsTable } from "lib/components/table";
 import { useDebounce } from "lib/hooks";
 import { useProposalDataRest, useProposalsRest } from "lib/services/proposal";
-import type { ProposalStatus } from "lib/types";
 import { isPositiveInt } from "lib/utils";
+import { useState } from "react";
 
 import { ProposalStatusFilter } from "./ProposalStatusFilter";
 
@@ -24,8 +24,8 @@ export const ProposalsTableLite = () => {
     error: proposalsError,
     fetchNextPage,
     hasNextPage,
-    isLoading: isProposalsLoading,
     isFetchingNextPage,
+    isLoading: isProposalsLoading,
   } = useProposalsRest(status[0]);
 
   const { data: proposalData, isFetching: isProposalDataFetching } =
@@ -48,34 +48,34 @@ export const ProposalsTableLite = () => {
   return (
     <>
       <Grid
-        mt={8}
-        mb={{ base: 10, md: 8 }}
-        gridTemplateColumns={{ base: "1fr", md: "1fr 370px" }}
         gap={{ base: 4, md: 6 }}
+        gridTemplateColumns={{ base: "1fr", md: "1fr 370px" }}
+        mb={{ base: 10, md: 8 }}
+        mt={8}
       >
         <GridItem>
           <InputWithIcon
+            amptrackSection="proposal-list-search"
             placeholder="Search with proposal ID"
+            size="lg"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            size="lg"
-            amptrackSection="proposal-list-search"
           />
         </GridItem>
         <GridItem>
           <ProposalStatusFilter
+            isMulti={false}
             label="Filter by status"
+            placeholder="All status"
             result={status}
             setResult={setStatus}
-            placeholder="All status"
-            isMulti={false}
           />
         </GridItem>
       </Grid>
       {showAlert && (
-        <Alert variant="info" gap={4}>
+        <Alert gap={4} variant="info">
           <CustomIcon boxSize={4} name="info-circle" />
-          <Text variant="body2" color="text.dark" w="full">
+          <Text color="text.dark" variant="body2" w="full">
             <span style={{ fontWeight: 700 }}>Deposit Failed</span> and
             <span style={{ fontWeight: 700 }}> Cancelled</span> proposals are
             pruned from the network; thus, cannot be shown or searched here.
@@ -86,8 +86,6 @@ export const ProposalsTableLite = () => {
         </Alert>
       )}
       <ProposalsTable
-        proposals={proposals}
-        isLoading={isProposalsLoading || isProposalDataFetching}
         emptyState={
           proposalsError ? (
             <ErrorFetching dataName="proposals" />
@@ -99,12 +97,14 @@ export const ProposalsTableLite = () => {
             />
           )
         }
+        isLoading={isProposalsLoading || isProposalDataFetching}
+        proposals={proposals}
       />
       {isLoadNext && (
         <LoadNext
-          text="Load more 10 proposals"
           fetchNextPage={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
+          text="Load more 10 proposals"
         />
       )}
     </>

@@ -1,12 +1,14 @@
-import axios from "axios";
-
 import type { HexAddr, HexAddr32, Nullable, Option } from "lib/types";
+
+import axios from "axios";
 import {
   convertAccountPubkeyToAccountAddress,
   parseWithError,
 } from "lib/utils";
-import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
+
 import type { Nft, NftMintInfo, NftTxResponse } from "../types";
+
+import { getTxsByAccountAddressSequencer } from "../tx/sequencer";
 import {
   zNftsByAccountResponseSequencer,
   zNftsResponseSequencer,
@@ -24,8 +26,8 @@ export const getNftsSequencer = async (
         `${endpoint}/indexer/nft/v1/tokens/by_collection/${collectionAddress}`,
         {
           params: {
-            "pagination.reverse": true,
             "pagination.key": paginationKey,
+            "pagination.reverse": true,
           },
         }
       )
@@ -54,9 +56,9 @@ export const getNftsByAccountSequencer = async (
         `${endpoint}/indexer/nft/v1/tokens/by_account/${encodeURI(accountAddress)}`,
         {
           params: {
-            "pagination.reverse": true,
-            "pagination.key": paginationKey,
             collection_addr: collectionAddress,
+            "pagination.key": paginationKey,
+            "pagination.reverse": true,
           },
         }
       )
@@ -83,8 +85,8 @@ export const getNftMintInfoSequencer = async (
   nftAddress: HexAddr32
 ): Promise<NftMintInfo> => {
   const txsByNftAddress = await getTxsByAccountAddressSequencer({
-    endpoint,
     address: nftAddress,
+    endpoint,
     limit: 1,
     reverse: false,
   });
@@ -97,10 +99,10 @@ export const getNftMintInfoSequencer = async (
   const sender = convertAccountPubkeyToAccountAddress(tx.signerPubkey, prefix);
 
   return {
-    minter: sender,
-    txhash: tx.hash,
     height: tx.height,
+    minter: sender,
     timestamp: tx.created,
+    txhash: tx.hash,
   };
 };
 
@@ -110,16 +112,16 @@ export const getNftTransactionsSequencer = async (
   nftAddress: HexAddr32
 ) => {
   const txsByNftAddress = await getTxsByAccountAddressSequencer({
-    endpoint,
     address: nftAddress,
-    paginationKey,
+    endpoint,
     limit: 10,
+    paginationKey,
   });
 
   const nftsTxs: NftTxResponse[] = [];
 
   txsByNftAddress.items.forEach((tx) => {
-    const { events, hash, created } = tx;
+    const { created, events, hash } = tx;
 
     events?.reverse()?.forEach((event) => {
       if (!event.attributes[0].value.includes("0x1::object::")) return;
@@ -127,11 +129,11 @@ export const getNftTransactionsSequencer = async (
       const eventValue = event.attributes[0].value.split("::")[2];
 
       nftsTxs.push({
-        txhash: hash,
-        timestamp: created,
         isNftBurn: false,
         isNftMint: eventValue === "CreateEvent",
         isNftTransfer: eventValue === "TransferEvent",
+        timestamp: created,
+        txhash: hash,
       });
     });
   });

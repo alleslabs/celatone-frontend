@@ -1,4 +1,7 @@
 import type { ButtonProps } from "@chakra-ui/react";
+import type React from "react";
+import type { Dispatch, FC, SetStateAction } from "react";
+
 import {
   createContext,
   useCallback,
@@ -6,11 +9,10 @@ import {
   useMemo,
   useState,
 } from "react";
-import type React from "react";
-import type { Dispatch, FC, SetStateAction } from "react";
+
+import type { IconKeys } from "../icon";
 
 import { INITIAL_VALUES } from "./paginationData";
-import type { IconKeys } from "../icon";
 
 export type PaginatorContextValues = {
   state: {
@@ -34,23 +36,23 @@ export type PaginatorContextValues = {
 };
 
 export const PaginatorContext = createContext<PaginatorContextValues>({
+  actions: {
+    changePage: () => null,
+    setCurrentPage: () => null,
+    setIsDisabled: () => null,
+  },
   state: {
-    currentPage: INITIAL_VALUES.currentPage,
     activeStyles: INITIAL_VALUES.activeStyles,
-    normalStyles: INITIAL_VALUES.normalStyles,
-    separatorStyles: INITIAL_VALUES.separatorStyles,
-    hoverIconRight: INITIAL_VALUES.hoverIconRight,
+    currentPage: INITIAL_VALUES.currentPage,
     hoverIconLeft: INITIAL_VALUES.hoverIconLeft,
+    hoverIconRight: INITIAL_VALUES.hoverIconRight,
     innerLimit: INITIAL_VALUES.innerLimit,
+    isDisabled: INITIAL_VALUES.isDisabled,
+    normalStyles: INITIAL_VALUES.normalStyles,
     outerLimit: INITIAL_VALUES.outerLimit,
     pagesQuantity: INITIAL_VALUES.pagesQuantity,
     separatorIcon: INITIAL_VALUES.separatorIcon,
-    isDisabled: INITIAL_VALUES.isDisabled,
-  },
-  actions: {
-    setCurrentPage: () => null,
-    setIsDisabled: () => null,
-    changePage: () => null,
+    separatorStyles: INITIAL_VALUES.separatorStyles,
   },
 });
 
@@ -72,19 +74,19 @@ type PaginatorProviderProps = {
 };
 
 export const PaginatorProvider: FC<PaginatorProviderProps> = ({
-  children,
-  pagesQuantity: pagesQuantityProp,
-  currentPage: currentPageProp,
-  innerLimit: innerLimitProp,
-  outerLimit: outerLimitProp,
-  separatorStyles: separatorStylesProp,
-  normalStyles: normalStylesProp,
   activeStyles: activeStylesProp,
-  separatorIcon: separatorIconProp,
-  hoverIconRight: hoverIconRightProp,
+  children,
+  currentPage: currentPageProp,
   hoverIconLeft: hoverIconLeftProp,
-  onPageChange,
+  hoverIconRight: hoverIconRightProp,
+  innerLimit: innerLimitProp,
   isDisabled: isDisabledProp,
+  normalStyles: normalStylesProp,
+  onPageChange,
+  outerLimit: outerLimitProp,
+  pagesQuantity: pagesQuantityProp,
+  separatorIcon: separatorIconProp,
+  separatorStyles: separatorStylesProp,
 }) => {
   // react hooks
   const [currentPage, setCurrentPage] = useState<number>(
@@ -161,17 +163,17 @@ export const PaginatorProvider: FC<PaginatorProviderProps> = ({
 
   const state = useMemo(() => {
     return {
+      activeStyles,
+      currentPage,
       hoverIconLeft,
       hoverIconRight,
-      currentPage,
+      innerLimit,
+      isDisabled,
+      normalStyles,
+      outerLimit,
       pagesQuantity,
       separatorIcon,
-      normalStyles,
-      activeStyles,
-      isDisabled,
-      innerLimit,
       separatorStyles,
-      outerLimit,
     };
   }, [
     activeStyles,
@@ -189,9 +191,9 @@ export const PaginatorProvider: FC<PaginatorProviderProps> = ({
 
   const actions = useMemo(() => {
     return {
+      changePage,
       setCurrentPage,
       setIsDisabled,
-      changePage,
     };
   }, [changePage]);
 
@@ -199,8 +201,8 @@ export const PaginatorProvider: FC<PaginatorProviderProps> = ({
     <PaginatorContext.Provider
       value={useMemo(() => {
         return {
-          state,
           actions,
+          state,
         };
       }, [actions, state])}
     >

@@ -1,6 +1,6 @@
-import { Grid, Text } from "@chakra-ui/react";
 import type { DividerProps, GridProps } from "@chakra-ui/react";
 
+import { Grid, Text } from "@chakra-ui/react";
 import { TableHeader, TableHeaderFreeze } from "lib/components/table";
 
 interface VotedProposalsTableHeaderProps {
@@ -9,15 +9,15 @@ interface VotedProposalsTableHeaderProps {
 }
 
 export const VotedProposalsTableHeader = ({
-  templateColumns,
   boxShadow,
+  templateColumns,
 }: VotedProposalsTableHeaderProps) => (
-  <Grid templateColumns={templateColumns} minW="min-content">
+  <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeaderFreeze left="0">Proposal ID</TableHeaderFreeze>
     <TableHeaderFreeze
-      left={templateColumns?.toString().split(" ")[0]}
       boxShadow={boxShadow}
       color="gray.800"
+      left={templateColumns?.toString().split(" ")[0]}
     >
       <Text color="text.main" px={4}>
         Proposal title/types

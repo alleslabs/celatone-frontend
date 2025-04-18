@@ -1,28 +1,29 @@
-import { observer } from "mobx-react-lite";
+import type { BechAddr32 } from "lib/types";
 
 import { useInternalNavigate } from "lib/app-provider";
 import { Pagination } from "lib/components/pagination";
 import { usePaginator } from "lib/components/pagination/usePaginator";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { ContractsTable } from "lib/components/table";
-import type { BechAddr32 } from "lib/types";
+import { observer } from "mobx-react-lite";
+
 import { useRecentContracts } from "../data";
 
 export const RecentContractsTable = observer(() => {
   const navigate = useInternalNavigate();
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
   const { data, isLoading } = useRecentContracts(
@@ -41,7 +42,6 @@ export const RecentContractsTable = observer(() => {
     <>
       <ContractsTable
         contracts={data?.items}
-        isLoading={isLoading}
         emptyState={
           data ? (
             <EmptyState
@@ -53,16 +53,17 @@ export const RecentContractsTable = observer(() => {
             <ErrorFetching dataName="contracts" />
           )
         }
-        onRowSelect={onRowSelect}
+        isLoading={isLoading}
         showTag={false}
+        onRowSelect={onRowSelect}
       />
       {data && data.total > 10 && (
         <Pagination
           currentPage={currentPage}
-          pagesQuantity={pagesQuantity}
           offset={offset}
-          totalData={data.total}
           pageSize={pageSize}
+          pagesQuantity={pagesQuantity}
+          totalData={data.total}
           onPageChange={setCurrentPage}
           onPageSizeChange={(e) => {
             const size = Number(e.target.value);

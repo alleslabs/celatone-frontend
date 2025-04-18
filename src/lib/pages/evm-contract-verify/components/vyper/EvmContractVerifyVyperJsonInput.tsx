@@ -1,9 +1,11 @@
-import { Heading, Stack } from "@chakra-ui/react";
+import type { EvmContractVerifyForm } from "lib/types";
 import type { Control } from "react-hook-form";
-import { useController } from "react-hook-form";
+
+import { Heading, Stack } from "@chakra-ui/react";
 import { DropZone } from "lib/components/dropzone";
 import { UploadCard } from "lib/components/upload";
-import type { EvmContractVerifyForm } from "lib/types";
+import { useController } from "react-hook-form";
+
 import { ConstructorArgs } from "../ConstructorArgs";
 
 interface EvmContractVerifyVyperJsonInputProps {
@@ -14,7 +16,7 @@ export const EvmContractVerifyVyperJsonInput = ({
   control,
 }: EvmContractVerifyVyperJsonInputProps) => {
   const {
-    field: { value, onChange },
+    field: { onChange, value },
   } = useController({
     control,
     name: "verifyForm.vyperJsonInput.jsonFile",
@@ -27,17 +29,17 @@ export const EvmContractVerifyVyperJsonInput = ({
           Provide Standard JSON Input
         </Heading>
         {value ? (
-          <UploadCard file={value} deleteFile={() => onChange("")} />
+          <UploadCard deleteFile={() => onChange("")} file={value} />
         ) : (
           <DropZone
-            setFiles={(files) => onChange(files[0])}
             fileType={["json"]}
+            setFiles={(files) => onChange(files[0])}
           />
         )}
       </Stack>
       <ConstructorArgs<EvmContractVerifyForm>
-        name="verifyForm.vyperJsonInput.constructorArgs"
         control={control}
+        name="verifyForm.vyperJsonInput.constructorArgs"
       />
     </Stack>
   );

@@ -1,12 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import axios from "axios";
-
-import { AccountType } from "lib/types";
 import type { BechAddr } from "lib/types";
+
+import axios from "axios";
+import { AccountType } from "lib/types";
 import { parseWithError } from "lib/utils";
+
+import type { AccountData } from "../types";
+
 import { getIcnsNamesByAddressRest } from "../name/rest";
 import { zAccountBech32RestResponse, zAccountTypeRest } from "../types";
-import type { AccountData } from "../types";
 
 export const getAccountDataRest = async (
   endpoint: string,
@@ -16,9 +17,9 @@ export const getAccountDataRest = async (
 
   // TODO: Implement this function
   return {
+    icns,
     projectInfo: null,
     publicInfo: null,
-    icns,
   };
 };
 

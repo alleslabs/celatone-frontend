@@ -1,5 +1,6 @@
-import axios from "axios";
+import type { Option, ValidatorAddr } from "lib/types";
 
+import axios from "axios";
 import {
   zBlocksResponse,
   zHistoricalPowersResponse,
@@ -11,7 +12,6 @@ import {
   zValidatorVotedProposalsResponse,
   zValidatorVotedProposalsResponseAnswerCounts,
 } from "lib/services/types";
-import type { Option, ValidatorAddr } from "lib/types";
 import { parseWithError } from "lib/utils";
 
 export const getValidators = async (
@@ -26,12 +26,12 @@ export const getValidators = async (
   axios
     .get(`${endpoint}`, {
       params: {
+        is_active: isActive,
+        is_desc: isDesc,
         limit,
         offset,
-        is_active: isActive,
-        sort_by: sortBy,
-        is_desc: isDesc,
         search,
+        sort_by: sortBy,
       },
     })
     .then(({ data }) => parseWithError(zValidatorsResponse, data));
@@ -70,9 +70,9 @@ export const getValidatorVotedProposals = async (
   axios
     .get(`${endpoint}/${encodeURI(validatorAddress)}/voted-proposals`, {
       params: {
+        answer,
         limit,
         offset,
-        answer,
         search,
       },
     })

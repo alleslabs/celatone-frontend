@@ -1,8 +1,9 @@
 import type { TextProps } from "@chakra-ui/react";
+import type { HexAddr20, Option, EvmVerifyInfo } from "lib/types";
+
 import { Flex, HStack, Divider, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { HexAddr20, Option, EvmVerifyInfo } from "lib/types";
 import { formatUTC, getLicenseTypeLabel } from "lib/utils";
 
 const baseTextStyle: TextProps = {
@@ -29,11 +30,11 @@ export const EvmVerifyRequestInfo = ({
         <HStack>
           <Text {...baseTextStyle}>Contract address:</Text>
           <ExplorerLink
-            type="evm_contract_address"
-            value={contractAddress}
             openNewTab
             showCopyOnHover
             textFormat={isMobile ? "truncate" : "normal"}
+            type="evm_contract_address"
+            value={contractAddress}
           />
         </HStack>
         <Divider borderColor="gray.700" />
@@ -49,11 +50,11 @@ export const EvmVerifyRequestInfo = ({
         <HStack>
           <Text {...baseTextStyle}>Contract address:</Text>
           <ExplorerLink
-            type="evm_contract_address"
-            value={contractAddress}
             openNewTab
             showCopyOnHover
             textFormat={isMobile ? "truncate" : "normal"}
+            type="evm_contract_address"
+            value={contractAddress}
           />
         </HStack>
         <HStack>

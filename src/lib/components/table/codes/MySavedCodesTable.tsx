@@ -1,6 +1,7 @@
+import type { CodeInfo } from "lib/types";
+
 import { EmptyState, SavedCodeZeroState } from "lib/components/state";
 import { SaveCodeButton } from "lib/pages/saved-codes/components/SaveCodeButton";
-import type { CodeInfo } from "lib/types";
 
 import { CodesTable } from "./CodesTable";
 
@@ -16,37 +17,37 @@ interface MySavedCodesTableProps {
 
 export const MySavedCodesTable = ({
   codes,
-  totalData,
-  isLoading,
-  onRowSelect,
-  isReadOnly = false,
-  showCw2andContracts = true,
   disablePermission = false,
+  isLoading,
+  isReadOnly = false,
+  onRowSelect,
+  showCw2andContracts = true,
+  totalData,
 }: MySavedCodesTableProps) =>
   totalData ? (
     <CodesTable
       codes={codes}
-      isLoading={isLoading}
+      disablePermission={disablePermission}
       emptyState={
         <EmptyState
-          my={0}
           imageVariant="not-found"
           message="No matching codes found. Make sure you are searching with Code ID or Code Name"
+          my={0}
           withBorder
         />
       }
-      onRowSelect={onRowSelect}
+      isLoading={isLoading}
       isReadOnly={isReadOnly}
       showCw2andContracts={showCw2andContracts}
-      disablePermission={disablePermission}
+      onRowSelect={onRowSelect}
     />
   ) : (
     <>
       {isReadOnly ? (
         <EmptyState
-          my={0}
           imageVariant="empty"
           message="You don’t have any saved codes."
+          my={0}
           withBorder
         />
       ) : (

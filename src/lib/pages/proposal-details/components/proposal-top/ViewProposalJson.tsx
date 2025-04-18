@@ -1,5 +1,4 @@
 import { Button } from "@chakra-ui/react";
-
 import { trackUseViewJSON } from "lib/amplitude";
 import { useCelatoneApp, useGovConfig, useInitia } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
@@ -33,17 +32,17 @@ export const ViewProposalJson = ({ id, status }: ViewProposalJsonProps) => {
     status === ProposalStatus.CANCELLED;
   return (
     <Tooltip
-      label="Deposit failed and cancelled proposals are pruned from the network"
       hidden={!disabled}
+      label="Deposit failed and cancelled proposals are pruned from the network"
     >
       <Button
+        isDisabled={disabled}
+        minWidth={{ md: "150px" }}
+        rightIcon={<CustomIcon name="launch" />}
+        size={{ base: "sm", md: "md" }}
         variant="outline-primary"
         w={{ base: "full", md: "min-content" }}
-        minWidth={{ md: "150px" }}
-        size={{ base: "sm", md: "md" }}
-        rightIcon={<CustomIcon name="launch" />}
         onClick={openRestPage}
-        isDisabled={disabled}
       >
         View in JSON
       </Button>

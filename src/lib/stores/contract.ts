@@ -1,7 +1,3 @@
-import { makeAutoObservable } from "mobx";
-import { isHydrated, makePersistable } from "mobx-persist-store";
-
-import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import type {
   BechAddr,
   BechAddr20,
@@ -10,7 +6,11 @@ import type {
   LVPair,
   Option,
 } from "lib/types";
+
+import { INSTANTIATED_LIST_NAME, SAVED_LIST_NAME } from "lib/data";
 import { formatSlugName, getCurrentDate, getTagsDefault } from "lib/utils";
+import { makeAutoObservable } from "mobx";
+import { isHydrated, makePersistable } from "mobx-persist-store";
 
 export interface ContractLocalInfo {
   contractAddress: BechAddr32;
@@ -58,12 +58,12 @@ export class ContractStore {
 
   private defaultContractList: ContractList[] = [
     {
+      contracts: [],
+      isContractRemovable: true,
+      isInfoEditable: false,
+      lastUpdated: getCurrentDate(),
       name: SAVED_LIST_NAME,
       slug: formatSlugName(SAVED_LIST_NAME),
-      contracts: [],
-      lastUpdated: getCurrentDate(),
-      isInfoEditable: false,
-      isContractRemovable: true,
     },
   ];
 
@@ -163,12 +163,12 @@ export class ContractStore {
       this.contractList[this.userKey] = [
         ...oldList,
         {
+          contracts: [],
+          isContractRemovable: true,
+          isInfoEditable: true,
+          lastUpdated: getCurrentDate(),
           name: name.trim(),
           slug: formatSlugName(name),
-          contracts: [],
-          lastUpdated: getCurrentDate(),
-          isInfoEditable: true,
-          isContractRemovable: true,
         },
       ];
     }
@@ -235,10 +235,10 @@ export class ContractStore {
     const contractLocalInfo = this.contractLocalInfo[this.userKey]?.[
       contractAddress
     ] ?? {
-      contractAddress,
-      label,
       codeId,
+      contractAddress,
       instantiator,
+      label,
     };
 
     if (name !== undefined)

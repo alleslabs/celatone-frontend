@@ -1,21 +1,22 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button, FormControl, useToast } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import type { FormStatus } from "lib/components/forms";
+import type { BechAddr } from "lib/types";
 
+import { Button, FormControl, useToast } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useCurrentChain } from "lib/app-provider";
-import type { FormStatus } from "lib/components/forms";
 import { NumberInput, TextInput } from "lib/components/forms";
 import { CustomIcon } from "lib/components/icon";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useCodeStore } from "lib/providers/store";
 import { useCodeRest } from "lib/services/wasm/code";
-import type { BechAddr } from "lib/types";
 import {
   getNameAndDescriptionDefault,
   getPermissionHelper,
   isId,
 } from "lib/utils";
+import { useEffect, useMemo, useState } from "react";
+
 import { ActionModal } from "../ActionModal";
 
 interface SaveNewCodeModalProps {
@@ -48,21 +49,25 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       setNameStatus({ state: "init" });
     } else if (trimedName.length > constants.maxCodeNameLength)
       setNameStatus({
-        state: "error",
         message: getMaxLengthError(trimedName.length, "code_name"),
+        state: "error",
       });
     else setNameStatus({ state: "success" });
   }, [constants.maxCodeNameLength, getMaxLengthError, name]);
 
   /* DEPENDENCY */
   const toast = useToast();
-  const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
+  const { getCodeLocalInfo, isCodeIdSaved, saveNewCode, updateCodeInfo } =
     useCodeStore();
 
-  const { refetch, isFetching, isRefetching } = useCodeRest(Number(codeId), {
-    enabled: false,
-    retry: false,
+  const { isFetching, isRefetching, refetch } = useCodeRest(Number(codeId), {
     cacheTime: 0,
+    enabled: false,
+    onError: () => {
+      setCodeIdStatus({ message: "Invalid code ID", state: "error" });
+      setUploader("Not found");
+      setUploaderStatus({ state: "error" });
+    },
     onSuccess: (data) => {
       const { message, messageColor } = getPermissionHelper(
         address,
@@ -70,18 +75,14 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
         data.permissionAddresses
       );
       setCodeIdStatus({
-        state: "success",
         message: `${message} (${data.instantiatePermission})`,
         messageColor,
+        state: "success",
       });
       setUploader(data.uploader);
       setUploaderStatus({ state: "success" });
     },
-    onError: () => {
-      setCodeIdStatus({ state: "error", message: "Invalid code ID" });
-      setUploader("Not found");
-      setUploaderStatus({ state: "error" });
-    },
+    retry: false,
   });
 
   /* CALLBACK */
@@ -102,12 +103,12 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
     // TODO: abstract toast to template later
     toast({
-      title: `Saved ${codeId} to Saved Codes`,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
+      status: "success",
+      title: `Saved ${codeId} to Saved Codes`,
     });
 
     reset();
@@ -131,13 +132,13 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
       if (isCodeIdSaved(Number(codeId))) {
         setCodeIdStatus({
-          state: "error",
           message: "You already added this Code ID",
+          state: "error",
         });
       } else {
         const timer = setTimeout(() => {
           if (isId(codeId)) refetch();
-          else setCodeIdStatus({ state: "error", message: "Invalid code ID" });
+          else setCodeIdStatus({ message: "Invalid code ID", state: "error" });
         }, 500);
 
         return () => clearTimeout(timer);
@@ -170,45 +171,45 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
   return (
     <ActionModal
-      title="Save new code"
-      icon="bookmark-solid"
-      trigger={<Button {...buttonProps} as="button" />}
-      mainBtnTitle="Save new code"
-      mainAction={handleSave}
-      otherAction={reset}
       disabledMain={disableMain}
+      icon="bookmark-solid"
+      mainAction={handleSave}
+      mainBtnTitle="Save new code"
+      otherAction={reset}
       otherBtnTitle="Cancel"
+      title="Save new code"
+      trigger={<Button {...buttonProps} as="button" />}
     >
       <FormControl display="flex" flexDir="column" gap={9}>
         Save other stored codes to your &ldquo;Saved Codes&rdquo; list
         <NumberInput
-          variant="fixed-floating"
-          value={codeId}
-          onInputChange={setCodeId}
           label="Code ID"
           labelBgColor="gray.900"
           placeholder="ex. 1234"
           status={codeIdStatus}
+          value={codeId}
+          variant="fixed-floating"
+          onInputChange={setCodeId}
         />
         <TextInput
-          variant="fixed-floating"
-          value={uploader}
+          isDisabled
           label="Uploader"
           labelBgColor="gray.900"
           placeholder="Uploader address will display here"
           setInputState={() => {}}
           status={uploaderStatus}
-          isDisabled
+          value={uploader}
+          variant="fixed-floating"
         />
         <TextInput
-          variant="fixed-floating"
-          value={name}
-          setInputState={setName}
+          helperText="Fill in code name to define its use as a reminder"
           label="Code name"
           labelBgColor="gray.900"
           placeholder="Untitled name"
-          helperText="Fill in code name to define its use as a reminder"
+          setInputState={setName}
           status={nameStatus}
+          value={name}
+          variant="fixed-floating"
         />
       </FormControl>
     </ActionModal>

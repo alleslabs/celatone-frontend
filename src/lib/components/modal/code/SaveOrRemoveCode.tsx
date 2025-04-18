@@ -1,17 +1,17 @@
-import { chakra, IconButton } from "@chakra-ui/react";
-
-import { CustomIcon } from "lib/components/icon";
 import type { CodeInfo } from "lib/types";
+
+import { chakra, IconButton } from "@chakra-ui/react";
+import { CustomIcon } from "lib/components/icon";
 
 import { RemoveCodeModal } from "./RemoveCode";
 import { SaveCodeDetailsModal } from "./SaveCodeDetails";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "full",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 

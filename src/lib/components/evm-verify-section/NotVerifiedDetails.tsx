@@ -1,7 +1,7 @@
-import { Button, Text } from "@chakra-ui/react";
-
-import { useInternalNavigate, useMobile } from "lib/app-provider";
 import type { HexAddr20 } from "lib/types";
+
+import { Button, Text } from "@chakra-ui/react";
+import { useInternalNavigate, useMobile } from "lib/app-provider";
 
 interface NotVerifiedDetailsProps {
   contractAddress: HexAddr20;
@@ -22,11 +22,11 @@ export const NotVerifiedDetails = ({
   if (isMobile)
     return (
       <>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           This contract has not been verified. If you are the owner, you can
           verify it to allow other users to view the source code
         </Text>
-        <Text variant="body2" color="text.dark">
+        <Text color="text.dark" variant="body2">
           Verification is only currently supported on desktop.
         </Text>
       </>
@@ -34,24 +34,24 @@ export const NotVerifiedDetails = ({
 
   return (
     <>
-      <Text variant="body2" color="text.dark">
+      <Text color="text.dark" variant="body2">
         This contract has not been verified. If you are the owner, you can{" "}
         <Text
-          as="span"
-          cursor="pointer"
-          color="primary.main"
-          transition="all 0.25s ease-in-out"
           _hover={{
             textDecoration: "underline",
             textDecorationColor: "primary.light",
           }}
+          as="span"
+          color="primary.main"
+          cursor="pointer"
+          transition="all 0.25s ease-in-out"
           onClick={handleNavigate}
         >
           verify it
         </Text>{" "}
         to allow other users to view the source code
       </Text>
-      <Button variant="ghost-primary" size="sm" onClick={handleNavigate}>
+      <Button size="sm" variant="ghost-primary" onClick={handleNavigate}>
         Verify contract
       </Button>
     </>

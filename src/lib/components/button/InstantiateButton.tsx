@@ -1,10 +1,11 @@
 import type { ButtonProps } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
-
-import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import type { PermissionAddresses } from "lib/types";
+
+import { Button } from "@chakra-ui/react";
+import { useCurrentChain, useInternalNavigate } from "lib/app-provider";
 import { AccessConfigPermission } from "lib/types";
 import { resolvePermission } from "lib/utils";
+
 import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 
@@ -26,33 +27,33 @@ const getInstantiateButtonProps = (
   const buttonDisabledState = "outline-gray";
   if (isUnknown) {
     return {
+      icon: undefined,
       tooltipLabel: "",
       variant: buttonDisabledState,
-      icon: undefined,
     };
   }
   if (isAllowed) {
     return {
+      icon: <CustomIcon name="instantiate" />,
       tooltipLabel: isWalletConnected
         ? "You can instantiate without opening proposal"
         : "You need to connect wallet to instantiate contract",
       variant: isWalletConnected ? "outline-primary" : buttonDisabledState,
-      icon: <CustomIcon name="instantiate" />,
     };
   }
   return {
+    icon: <CustomIcon name="vote" />,
     tooltipLabel: isWalletConnected
       ? "Instantiate through proposal only (Coming Soon)"
       : "You need to connect wallet to open instantiate proposal",
     variant: buttonDisabledState,
-    icon: <CustomIcon name="vote" />,
   };
 };
 
 export const InstantiateButton = ({
+  codeId,
   instantiatePermission = AccessConfigPermission.UNKNOWN,
   permissionAddresses = [],
-  codeId,
   ...buttonProps
 }: InstantiateButtonProps) => {
   const { address } = useCurrentChain();
@@ -71,7 +72,7 @@ export const InstantiateButton = ({
   //   instantiatePermission === AccessConfigPermission.UNKNOWN ||
   //   !isWalletConnected;
 
-  const { tooltipLabel, variant, icon } = getInstantiateButtonProps(
+  const { icon, tooltipLabel, variant } = getInstantiateButtonProps(
     isAllowed,
     instantiatePermission === AccessConfigPermission.UNKNOWN,
     !!address
@@ -80,12 +81,12 @@ export const InstantiateButton = ({
   return (
     <Tooltip label={tooltipLabel}>
       <Button
-        w={{ base: "full", md: "auto" }}
         // Change to isDisabled when create proposal flow is done
         isDisabled={!isAllowed || !address}
-        variant={variant}
         leftIcon={icon}
         size="sm"
+        variant={variant}
+        w={{ base: "full", md: "auto" }}
         onClick={isAllowed ? goToInstantiate : () => null}
         {...buttonProps}
       >

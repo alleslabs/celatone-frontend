@@ -1,13 +1,15 @@
-import { Divider, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
+import type { Ratio } from "lib/types";
 
+import { Divider, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import {
   extractParams,
   normalizeVotesInfo,
 } from "lib/pages/proposal-details/utils";
-import type { Ratio } from "lib/types";
+
 import type { VoteDetailsProps } from "..";
+
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import { VoteQuorumBadge } from "../../VoteQuorumBadge";
 import { VoteQuorumCircle } from "../../VoteQuorumCircle";
@@ -15,10 +17,10 @@ import { VoteQuorumText } from "../../VoteQuorumText";
 import { VpPercentCard } from "../../VpPercentCard";
 
 export const VotingQuorum = ({
-  proposalData,
-  params,
-  votesInfo,
   isLoading,
+  params,
+  proposalData,
+  votesInfo,
 }: VoteDetailsProps) => {
   const isMobile = useMobile();
   if (isLoading) return <Loading my={0} />;
@@ -28,38 +30,38 @@ export const VotingQuorum = ({
   const { abstainRatio, nonAbstainRatio, totalRatio } =
     normalizeVotesInfo(votesInfo);
 
-  const { yes, abstain, no, noWithVeto, totalVotingPower } = votesInfo;
+  const { abstain, no, noWithVeto, totalVotingPower, yes } = votesInfo;
   const nonAbstain = yes.add(no).add(noWithVeto);
   const allVotes = nonAbstain.add(abstain);
 
   return (
     <Flex direction="column" gap={4}>
-      <Flex gap={2} align="center">
+      <Flex align="center" gap={2}>
         {isMobile ? (
           <>
             <VoteQuorumBadge
-              status={proposalData.status}
-              quorum={quorum}
-              totalRatio={totalRatio}
               isCompact
+              quorum={quorum}
+              status={proposalData.status}
+              totalRatio={totalRatio}
             />
-            <Text variant="body1" color="text.main">
+            <Text color="text.main" variant="body1">
               Quorum
             </Text>
           </>
         ) : (
           <>
-            <Heading as="h6" variant="h6" textColor="text.main">
+            <Heading as="h6" textColor="text.main" variant="h6">
               Voting participations
             </Heading>
             <VoteQuorumBadge
-              status={proposalData.status}
-              quorum={quorum}
-              totalRatio={totalRatio}
               isCompact={false}
+              quorum={quorum}
+              status={proposalData.status}
+              totalRatio={totalRatio}
             />
             <Spacer />
-            <Text variant="body3" textColor="text.dark">
+            <Text textColor="text.dark" variant="body3">
               * Voting power displayed in bracket
             </Text>
           </>
@@ -67,53 +69,53 @@ export const VotingQuorum = ({
       </Flex>
       {isMobile && <Divider borderColor="gray.700" />}
       <Flex
+        align="center"
         direction={{ base: "column", md: "row" }}
         gap={{ base: 3, md: 12 }}
-        align="center"
         textAlign={{ base: "center", md: "start" }}
         w="full"
       >
         <VoteQuorumCircle
-          quorum={quorum}
-          nonAbstainRatio={nonAbstainRatio}
-          totalRatio={totalRatio}
-          isCompact={false}
           isBgGray={!isMobile}
+          isCompact={false}
+          nonAbstainRatio={nonAbstainRatio}
+          quorum={quorum}
+          totalRatio={totalRatio}
         />
         <Flex direction="column" gap={4} w="full">
           <VoteQuorumText
-            status={proposalData.status}
-            quorum={quorum}
-            totalRatio={totalRatio}
             isCompact={false}
+            quorum={quorum}
+            status={proposalData.status}
+            totalRatio={totalRatio}
           />
           <Flex direction={isMobile ? "column" : "row"} gap={isMobile ? 3 : 8}>
             <VpPercentCard
-              name="Voted"
-              ratio={nonAbstainRatio}
-              power={nonAbstain}
               color="voteParticipations.voted"
               isCompact={isMobile}
+              name="Voted"
+              power={nonAbstain}
+              ratio={nonAbstainRatio}
             />
             <VpPercentCard
-              name="Voted abstain"
-              ratio={abstainRatio}
-              power={abstain}
               color="voteParticipations.votedAbstain"
               isCompact={isMobile}
+              name="Voted abstain"
+              power={abstain}
+              ratio={abstainRatio}
             />
             <Divider
-              orientation="vertical"
-              h="auto"
               color="gray.700"
               display={{ base: "none", lg: "flex" }}
+              h="auto"
+              orientation="vertical"
             />
             <VpPercentCard
-              name="Did not vote"
-              ratio={totalRatio ? ((1 - totalRatio) as Ratio<number>) : null}
-              power={totalVotingPower ? totalVotingPower.minus(allVotes) : null}
               color="voteParticipations.didNotVote"
               isCompact={isMobile}
+              name="Did not vote"
+              power={totalVotingPower ? totalVotingPower.minus(allVotes) : null}
+              ratio={totalRatio ? ((1 - totalRatio) as Ratio<number>) : null}
             />
           </Flex>
         </Flex>

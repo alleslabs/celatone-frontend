@@ -12,17 +12,17 @@ export const ContractLicenseInfoAccordion = () => (
   <Accordion
     allowToggle
     defaultIndex={[0]}
-    variant="transparent"
     position="sticky"
     top={0}
+    variant="transparent"
   >
     <AccordionItem>
       <AccordionButton>
         <Text
-          variant="body2"
-          fontWeight={700}
           color="text.main"
+          fontWeight={700}
           textAlign="start"
+          variant="body2"
         >
           What is contract license?
         </Text>
@@ -30,22 +30,23 @@ export const ContractLicenseInfoAccordion = () => (
       </AccordionButton>
       <AccordionPanel
         bg="transparent"
-        py={3}
-        px={0}
-        borderY="1px solid"
+        borderBottomWidth="1px"
         borderColor="gray.700"
+        borderTopWidth="1px"
+        px={0}
+        py={3}
       >
-        <Text variant="body2" color="text.dark" p={1}>
+        <Text color="text.dark" p={1} variant="body2">
           A contract license specifies how a smart contract's code can be used,
           modified, and distributed, ensuring legal clarity and protecting
           creators' rights.
         </Text>
       </AccordionPanel>
       <UserDocsLink
-        mt={3}
         cta="See contract license types"
         href="source-code/license"
         isDevTool
+        mt={3}
       />
     </AccordionItem>
   </Accordion>

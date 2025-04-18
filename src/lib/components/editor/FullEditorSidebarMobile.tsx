@@ -8,7 +8,9 @@ import {
   DrawerOverlay,
   Heading,
 } from "@chakra-ui/react";
+
 import type { EditorSidebarProps } from "./EditorSidebar";
+
 import { EditorSidebar } from "./EditorSidebar";
 
 export interface FullEditorSidebarMobileProps extends EditorSidebarProps {
@@ -21,16 +23,16 @@ export const FullEditorSidebarMobile = ({
   onClose,
   ...props
 }: FullEditorSidebarMobileProps) => (
-  <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+  <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
     <DrawerOverlay />
     <DrawerContent h="90%">
-      <DrawerHeader borderBottom="1px solid" borderColor="gray.700">
+      <DrawerHeader borderBottomWidth="1px" borderColor="gray.700">
         <Heading as="h5" variant="h5">
           File tree
         </Heading>
       </DrawerHeader>
       <DrawerCloseButton color="text.dark" />
-      <DrawerBody py={2} px={4}>
+      <DrawerBody px={4} py={2}>
         <Box pb={4}>
           <EditorSidebar {...props} />
         </Box>

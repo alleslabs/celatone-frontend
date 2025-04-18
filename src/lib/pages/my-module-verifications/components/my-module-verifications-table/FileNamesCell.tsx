@@ -20,18 +20,17 @@ export const FileNamesCell = ({ task }: FileNamesCellProps) => {
     const firstPart = files.slice(0, 3).join(", ");
     const remaining = files.length - 3;
 
-    // eslint-disable-next-line sonarjs/no-nested-template-literals
     return `${firstPart}${remaining > 0 ? `, +${remaining}` : ""}`;
   }, [isHoverText, task.fileMap]);
 
   return (
     <Flex
-      borderRadius="8px"
       bgColor={isHoverText ? "gray.800" : "undefined"}
-      onMouseOver={() => setIsHoverText(true)}
-      onMouseOut={() => setIsHoverText(false)}
+      borderRadius="8px"
       flexWrap="wrap"
       wordBreak="break-word"
+      onMouseOut={() => setIsHoverText(false)}
+      onMouseOver={() => setIsHoverText(true)}
     >
       <Text>{formattedText}</Text>
     </Flex>

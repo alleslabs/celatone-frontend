@@ -1,44 +1,44 @@
 import type { ChainConfig } from "@alleslabs/shared";
 
 export const DEFAULT_CHAIN_CONFIG: ChainConfig = {
-  tier: "lite",
-  chainId: "",
   chain: "",
-  registryChainName: "",
-  prettyName: "",
-  rest: "",
-  rpc: "",
-  wallets: [],
+  chainId: "",
+  extra: {},
   features: {
-    wasm: {
-      enabled: false,
-    },
-    move: {
-      enabled: false,
-    },
     evm: {
-      enabled: false,
-    },
-    pool: {
       enabled: false,
     },
     gov: {
       enabled: false,
     },
+    move: {
+      enabled: false,
+    },
     nft: {
+      enabled: false,
+    },
+    pool: {
       enabled: false,
     },
     publicProject: {
       enabled: false,
     },
+    wasm: {
+      enabled: false,
+    },
+  },
+  fees: {
+    fee_tokens: [],
   },
   gas: {
     gasAdjustment: 1.0,
     maxGasLimit: 0,
   },
-  extra: {},
   network_type: "testnet",
-  fees: {
-    fee_tokens: [],
-  },
+  prettyName: "",
+  registryChainName: "",
+  rest: "",
+  rpc: "",
+  tier: "lite",
+  wallets: [],
 };

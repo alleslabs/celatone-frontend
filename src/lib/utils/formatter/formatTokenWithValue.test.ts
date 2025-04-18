@@ -1,5 +1,6 @@
-import { big } from "lib/types";
 import type { Token, TokenWithValue, U } from "lib/types";
+
+import { big } from "lib/types";
 
 import {
   formatTokenWithValue,
@@ -9,14 +10,14 @@ import {
 describe("formatTokenWithValue", () => {
   test("coin only", () => {
     const token: TokenWithValue = {
-      isLPToken: false,
       amount: big(1000000) as U<Token<Big>>,
       denom: "denom",
-      symbol: undefined,
+      isLPToken: false,
+      logo: undefined,
       precision: undefined,
       price: undefined,
+      symbol: undefined,
       value: undefined,
-      logo: undefined,
     };
 
     expect(formatTokenWithValue(token)).toBe("1,000,000 denom");
@@ -25,14 +26,14 @@ describe("formatTokenWithValue", () => {
 
   test("coin with precision", () => {
     const token: TokenWithValue = {
-      isLPToken: false,
       amount: big(1000000) as U<Token<Big>>,
       denom: "denom",
-      symbol: undefined,
+      isLPToken: false,
+      logo: undefined,
       precision: 6,
       price: undefined,
+      symbol: undefined,
       value: undefined,
-      logo: undefined,
     };
 
     expect(formatTokenWithValue(token)).toBe("1.000000 denom");
@@ -41,14 +42,14 @@ describe("formatTokenWithValue", () => {
 
   test("coin with symbol", () => {
     const token: TokenWithValue = {
-      isLPToken: false,
       amount: big(1000000) as U<Token<Big>>,
       denom: "denom",
-      symbol: "CLTN",
+      isLPToken: false,
+      logo: undefined,
       precision: undefined,
       price: undefined,
+      symbol: "CLTN",
       value: undefined,
-      logo: undefined,
     };
 
     expect(formatTokenWithValue(token)).toBe("1,000,000 CLTN");
@@ -57,14 +58,14 @@ describe("formatTokenWithValue", () => {
 
   test("coin with precision and symbol", () => {
     const token: TokenWithValue = {
-      isLPToken: false,
       amount: big(1000000) as U<Token<Big>>,
       denom: "denom",
-      symbol: "CLTN",
+      isLPToken: false,
+      logo: undefined,
       precision: 6,
       price: undefined,
+      symbol: "CLTN",
       value: undefined,
-      logo: undefined,
     };
 
     expect(formatTokenWithValue(token)).toBe("1.000000 CLTN");
@@ -75,34 +76,34 @@ describe("formatTokenWithValue", () => {
 describe("formatTokenWithValueList", () => {
   const tokens: TokenWithValue[] = [
     {
-      isLPToken: false,
       amount: big(1000000) as U<Token<Big>>,
       denom: "denom1",
-      symbol: "CLTN1",
+      isLPToken: false,
+      logo: undefined,
       precision: 6,
       price: undefined,
+      symbol: "CLTN1",
       value: undefined,
-      logo: undefined,
     },
     {
-      isLPToken: false,
       amount: big(2000000) as U<Token<Big>>,
       denom: "denom2",
-      symbol: "CLTN2",
+      isLPToken: false,
+      logo: undefined,
       precision: 6,
       price: undefined,
+      symbol: "CLTN2",
       value: undefined,
-      logo: undefined,
     },
     {
-      isLPToken: false,
       amount: big(3000000) as U<Token<Big>>,
       denom: "denom3",
-      symbol: "CLTN3",
+      isLPToken: false,
+      logo: undefined,
       precision: 6,
       price: undefined,
+      symbol: "CLTN3",
       value: undefined,
-      logo: undefined,
     },
   ];
 

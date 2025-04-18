@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import type {
   AssetInfo,
   BechAddr,
@@ -9,7 +7,9 @@ import type {
   Option,
   PermissionAddresses,
 } from "lib/types";
+
 import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
+import { z } from "zod";
 
 import { zBechAddr, zBechAddr32 } from "./addrs";
 import { AccessConfigPermission } from "./code";

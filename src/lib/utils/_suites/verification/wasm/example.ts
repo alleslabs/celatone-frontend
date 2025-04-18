@@ -1,4 +1,5 @@
 import type { CodeSchema } from "lib/types";
+
 import { SchemaProperties } from "lib/types";
 
 import schema from "./schema-example.json";

@@ -1,9 +1,9 @@
 import type { DeliverTxResponse } from "@cosmjs/cosmwasm-stargate";
-import { isDeliverTxFailure } from "@cosmjs/stargate";
+import type { TxResultRendering } from "lib/types";
 
+import { isDeliverTxFailure } from "@cosmjs/stargate";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { ExplorerLink } from "lib/components/ExplorerLink";
-import type { TxResultRendering } from "lib/types";
 import { TxStreamPhase } from "lib/types";
 import { feeFromStr } from "lib/utils";
 
@@ -33,21 +33,23 @@ export const postTx = <T extends DeliverTxResponse>({
           ?.attributes[0].value;
 
         return {
-          value: txResult,
+          actionVariant: "sending",
           phase: TxStreamPhase.BROADCAST,
+          receiptInfo: {
+            header: "Sending transaction",
+          },
           receipts: [
             {
-              title: "Tx hash",
               html: (
                 <ExplorerLink
+                  openNewTab
                   type="tx_hash"
                   value={txResult.transactionHash}
-                  openNewTab
                 />
               ),
+              title: "Tx hash",
             },
             {
-              title: "Tx fee",
               // TODO: Implement event/rawlog attribute picker
               html: (
                 <EstimatedFeeRender
@@ -55,12 +57,10 @@ export const postTx = <T extends DeliverTxResponse>({
                   loading={false}
                 />
               ),
+              title: "Tx fee",
             },
           ],
-          receiptInfo: {
-            header: "Sending transaction",
-          },
-          actionVariant: "sending",
+          value: txResult,
         } as TxResultRendering<T>;
       }
     );

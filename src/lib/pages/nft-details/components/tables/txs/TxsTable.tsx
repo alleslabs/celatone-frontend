@@ -1,8 +1,9 @@
+import type { NftTxResponse } from "lib/services/types";
+import type { Option } from "lib/types";
+
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { MobileTableContainer, TableContainer } from "lib/components/table";
-import type { NftTxResponse } from "lib/services/types";
-import type { Option } from "lib/types";
 
 import { TxsTableHeader } from "./TxsTableHeader";
 import { TxsTableMobileCard } from "./TxsTableMobileCard";
@@ -14,7 +15,7 @@ interface TxsTableProps {
   emptyState: JSX.Element;
 }
 
-export const TxsTable = ({ txs, isLoading, emptyState }: TxsTableProps) => {
+export const TxsTable = ({ emptyState, isLoading, txs }: TxsTableProps) => {
   const isMobile = useMobile();
 
   if (isLoading) return <Loading withBorder />;
@@ -38,8 +39,8 @@ export const TxsTable = ({ txs, isLoading, emptyState }: TxsTableProps) => {
       {txs.map((transaction, index) => (
         <TxsTableRow
           key={transaction.txhash + index.toString()}
-          templateColumns={templateColumns}
           hash={transaction.txhash}
+          templateColumns={templateColumns}
           {...transaction}
         />
       ))}

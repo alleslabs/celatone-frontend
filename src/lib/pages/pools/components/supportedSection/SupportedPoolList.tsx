@@ -1,8 +1,8 @@
-import { SimpleGrid } from "@chakra-ui/react";
+import type { Option, Pool } from "lib/types";
 
+import { SimpleGrid } from "@chakra-ui/react";
 import { Loading } from "lib/components/Loading";
 import { EmptyState } from "lib/components/state";
-import type { Option, Pool } from "lib/types";
 
 import { PoolCard } from "./PoolCard";
 
@@ -13,9 +13,9 @@ interface SupportedPoolListProps {
 }
 
 export const SupportedPoolList = ({
-  pools,
   isLoading,
   mode,
+  pools,
 }: SupportedPoolListProps) => {
   if (isLoading) return <Loading />;
   if (!pools?.length)
@@ -28,7 +28,7 @@ export const SupportedPoolList = ({
     );
 
   return (
-    <SimpleGrid columns={{ md: 1, lg: 2 }} spacing={4} mt={4}>
+    <SimpleGrid columns={{ lg: 2, md: 1 }} mt={4} spacing={4}>
       {pools.map((item) => (
         <PoolCard key={item.id} item={item} mode={mode} />
       ))}

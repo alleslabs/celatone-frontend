@@ -8,29 +8,29 @@ interface FooterProps {
 }
 
 export const Footer = ({
-  isLoading = false,
   disabled,
   executeScript,
+  isLoading = false,
 }: FooterProps) => {
   const router = useRouter();
   return (
     <Flex
-      w="full"
-      bg="gray.900"
-      h="70px"
-      bottom={0}
-      position="sticky"
-      zIndex={2}
-      justifyContent="center"
       alignItems="center"
+      bg="gray.900"
+      bottom={0}
+      h="70px"
+      justifyContent="center"
+      position="sticky"
+      w="full"
+      zIndex={2}
     >
       <Flex justify="space-between" w="540px">
         <Button variant="outline-primary" onClick={router.back}>
           Cancel
         </Button>
         <Button
-          variant="primary"
           isDisabled={isLoading || disabled}
+          variant="primary"
           onClick={executeScript}
         >
           {isLoading ? <Spinner size="md" variant="light" /> : "Execute script"}

@@ -1,7 +1,7 @@
 import { accordionAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 
-const { definePartsStyle, defineMultiStyleConfig } =
+const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(accordionAnatomy.keys);
 
 const gray900 = definePartsStyle({
@@ -18,6 +18,7 @@ const gray900 = definePartsStyle({
 });
 
 const transparent = definePartsStyle({
+  button: { padding: "12px 0px" },
   container: {
     bg: "transparent",
     borderRadius: "0px",
@@ -25,7 +26,6 @@ const transparent = definePartsStyle({
       bg: "gray.900",
     },
   },
-  button: { padding: "12px 0px" },
   panel: {
     borderRadius: "0px",
   },
@@ -36,15 +36,15 @@ export const Accordion = defineMultiStyleConfig({
       p: "0",
     },
     container: {
-      borderWidth: "0",
       borderColor: "transparent",
+      borderWidth: "0",
     },
+  },
+  defaultProps: {
+    variant: "gray900",
   },
   variants: {
     gray900,
     transparent,
-  },
-  defaultProps: {
-    variant: "gray900",
   },
 });

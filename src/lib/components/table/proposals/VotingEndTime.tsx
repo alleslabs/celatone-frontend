@@ -1,13 +1,13 @@
-import { Flex, Text } from "@chakra-ui/react";
-
 import type { Proposal } from "lib/types";
+
+import { Flex, Text } from "@chakra-ui/react";
 import { ProposalStatus } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 export const VotingEndTime = ({
-  votingEndTime,
   depositEndTime,
   status,
+  votingEndTime,
 }: {
   votingEndTime: Proposal["votingEndTime"];
   depositEndTime: Proposal["depositEndTime"];
@@ -21,6 +21,7 @@ export const VotingEndTime = ({
     status === ProposalStatus.DEPOSIT_PERIOD || votingEndTime === null;
   return (
     <Flex
+      cursor="initial"
       direction="column"
       sx={{
         "& > p:first-of-type": {
@@ -33,7 +34,6 @@ export const VotingEndTime = ({
         },
       }}
       onClick={(e) => e.stopPropagation()}
-      cursor="initial"
     >
       <Text variant={{ base: "body3", md: "body2" }}>
         {isDepositPeriod ? "Voting not started" : formatUTC(votingEndTime)}

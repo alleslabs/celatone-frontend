@@ -9,39 +9,39 @@ interface EvmContractFooterProps {
 }
 
 export const EvmContractFooter = ({
+  actionLabel,
   handleNext,
   handlePrevious,
   isDisabled,
-  actionLabel,
 }: EvmContractFooterProps) => (
   <Box
-    position="sticky"
-    bottom={0}
-    borderTop="1px"
     borderColor="gray.700"
+    borderTopWidth="1px"
+    bottom={0}
+    position="sticky"
     px={12}
     zIndex={2}
   >
     <FooterCta
+      actionButton={{
+        isDisabled,
+        onClick: handleNext,
+      }}
+      actionLabel={actionLabel}
       cancelButton={{
         onClick: handlePrevious,
       }}
       cancelLabel="Cancel"
-      actionButton={{
-        onClick: handleNext,
-        isDisabled,
-      }}
-      actionLabel={actionLabel}
       sx={{
+        "> div": {
+          width: "100%",
+        },
         backgroundColor: "background.main",
         columnGap: "32px",
         display: "grid",
         gridTemplateColumns: "6fr 4fr",
         maxW: "1080px",
         mx: "auto",
-        "> div": {
-          width: "100%",
-        },
       }}
     />
   </Box>

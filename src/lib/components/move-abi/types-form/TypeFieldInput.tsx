@@ -1,10 +1,10 @@
+import type { AbiFormData } from "lib/types";
+import type { Control } from "react-hook-form";
+
 import { Flex, FormControl, Input, Text } from "@chakra-ui/react";
 import { capitalize } from "lodash";
 import { useState } from "react";
 import { useController } from "react-hook-form";
-import type { Control } from "react-hook-form";
-
-import type { AbiFormData } from "lib/types";
 
 interface TypeFieldInputProps {
   index: number;
@@ -13,9 +13,9 @@ interface TypeFieldInputProps {
 }
 
 export const TypeFieldInput = ({
-  index,
   constraints,
   control,
+  index,
 }: TypeFieldInputProps) => {
   const [isEditted, setIsEditted] = useState(false);
 
@@ -26,11 +26,11 @@ export const TypeFieldInput = ({
     : "No ability";
 
   const {
-    field: { value, onChange, ...fieldProps },
-    fieldState: { isTouched, error },
+    field: { onChange, value, ...fieldProps },
+    fieldState: { error, isTouched },
   } = useController({
-    name: `${index}`,
     control,
+    name: `${index}`,
     rules: {
       required: true,
     },
@@ -40,13 +40,13 @@ export const TypeFieldInput = ({
   return (
     <FormControl isInvalid={isError} {...fieldProps}>
       <Flex
+        alignItems="center"
         bgColor="gray.900"
         borderRadius="8px"
-        p="8px 16px"
         gap={2}
-        alignItems="center"
+        p="8px 16px"
       >
-        <Text variant="body1" fontWeight={700} w={7}>
+        <Text fontWeight={700} variant="body1" w={7}>
           {`T${index}:`}
         </Text>
         <Input

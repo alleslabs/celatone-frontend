@@ -1,9 +1,10 @@
-import { z } from "zod";
 import { snakeToCamel } from "lib/utils/formatter/snakeToCamel";
-import type { ExposedFunction, ModuleAbi } from "./abi";
+import { z } from "zod";
+
 import type { HexAddr } from "../addrs";
 import type { Nullable } from "../common";
 import type { Proposal } from "../proposal";
+import type { ExposedFunction, ModuleAbi } from "./abi";
 
 export enum UpgradePolicy {
   UNSPECIFIED = "UNSPECIFIED",
@@ -49,12 +50,12 @@ export enum MoveVerifyStatus {
 
 export const zMoveVerifyConfig = z
   .object({
-    enable_compiler_versions: z.array(z.string()),
-    enable_language_versions: z.array(z.string()),
-    enable_bytecode_versions: z.array(z.number()),
+    default_bytecode_version: z.number(),
     default_compiler_version: z.string(),
     default_language_version: z.string(),
-    default_bytecode_version: z.number(),
+    enable_bytecode_versions: z.array(z.number()),
+    enable_compiler_versions: z.array(z.string()),
+    enable_language_versions: z.array(z.string()),
   })
   .transform((val) => snakeToCamel(val));
 export type MoveVerifyConfig = z.infer<typeof zMoveVerifyConfig>;

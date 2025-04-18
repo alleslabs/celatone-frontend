@@ -1,17 +1,17 @@
 import type { MenuItemProps } from "@chakra-ui/react";
-import { MenuItem, useToast } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import type { FormStatus } from "lib/components/forms";
+import type { LVPair } from "lib/types";
 
+import { MenuItem, useToast } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { useCelatoneApp, useInternalNavigate } from "lib/app-provider";
-import type { FormStatus } from "lib/components/forms";
 import { TextInput } from "lib/components/forms/TextInput";
 import { CustomIcon } from "lib/components/icon";
 import { ActionModal } from "lib/components/modal/ActionModal";
 import { useGetMaxLengthError } from "lib/hooks";
 import { useContractStore } from "lib/providers/store";
-import type { LVPair } from "lib/types";
 import { formatSlugName, shortenName } from "lib/utils";
+import { useEffect, useState } from "react";
 
 interface EditListNameModalProps {
   list: LVPair;
@@ -25,7 +25,7 @@ export function EditListNameModal({
 }: EditListNameModalProps) {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
-  const { renameList, isContractListExist } = useContractStore();
+  const { isContractListExist, renameList } = useContractStore();
   const navigate = useInternalNavigate();
   const toast = useToast();
 
@@ -39,14 +39,14 @@ export function EditListNameModal({
       setStatus({ state: "init" });
     } else if (trimedListName.length > constants.maxListNameLength)
       setStatus({
-        state: "error",
         message: getMaxLengthError(trimedListName.length, "list_name"),
+        state: "error",
       });
     else if (
       formatSlugName(listName) !== list.value &&
       isContractListExist(listName)
     )
-      setStatus({ state: "error", message: "Already existed" });
+      setStatus({ message: "Already existed", state: "error" });
     else setStatus({ state: "success" });
   }, [
     constants.maxListNameLength,
@@ -61,22 +61,20 @@ export function EditListNameModal({
     // TODO: check list name and different toast status
     renameList(list.value, listName);
     toast({
+      duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      isClosable: false,
+      position: "bottom-right",
+      status: "success",
       title: `Edit ${shortenName(list.label)} to ${shortenName(
         listName
       )} successfully`,
-      status: "success",
-      duration: 5000,
-      isClosable: false,
-      position: "bottom-right",
-      icon: <CustomIcon name="check-circle-solid" color="success.main" />,
     });
   };
   return (
     <ActionModal
-      title="Edit list name"
+      disabledMain={status.state !== "success"}
       icon="edit"
-      trigger={<MenuItem {...menuItemProps} as="button" />}
-      mainBtnTitle="Save"
       mainAction={() => {
         handleSave();
         if (reroute)
@@ -86,16 +84,18 @@ export function EditListNameModal({
             replace: true,
           });
       }}
-      disabledMain={status.state !== "success"}
+      mainBtnTitle="Save"
       otherAction={() => setListName(list.label)}
+      title="Edit list name"
+      trigger={<MenuItem {...menuItemProps} as="button" />}
     >
       <TextInput
-        variant="fixed-floating"
-        value={listName}
-        setInputState={setListName}
-        labelBgColor="gray.900"
-        status={status}
         label="List name"
+        labelBgColor="gray.900"
+        setInputState={setListName}
+        status={status}
+        value={listName}
+        variant="fixed-floating"
       />
     </ActionModal>
   );

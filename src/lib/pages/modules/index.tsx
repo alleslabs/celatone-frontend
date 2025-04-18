@@ -1,12 +1,11 @@
 import { Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-
 import { AmpEvent, track } from "lib/amplitude";
 import { useMobile, useMoveConfig, useTierConfig } from "lib/app-provider";
 import PageContainer from "lib/components/PageContainer";
 import { PageHeader } from "lib/components/PageHeader";
 import { CelatoneSeo } from "lib/components/Seo";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { ModuleVerificationButton } from "./components/ModuleVerificationButton";
 import { RecentModulesTable } from "./components/RecentModulesTable";
@@ -24,11 +23,11 @@ const RecentModules = () => {
   return (
     <PageContainer>
       <CelatoneSeo pageName="Modules" />
-      <Flex alignItems="center" w="full" gap={4}>
+      <Flex alignItems="center" gap={4} w="full">
         <PageHeader
-          title="Modules"
-          subtitle=" These modules are the most recently published on this network"
           docHref="move/modules/detail-page"
+          subtitle=" These modules are the most recently published on this network"
+          title="Modules"
         />
         {!isMobile && <ModuleVerificationButton />}
       </Flex>

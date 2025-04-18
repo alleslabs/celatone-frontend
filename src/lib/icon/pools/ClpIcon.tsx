@@ -1,5 +1,6 @@
-import { Icon } from "@chakra-ui/react";
 import type { IconProps } from "@chakra-ui/react";
+
+import { Icon } from "@chakra-ui/react";
 
 export const ClpIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...props}>

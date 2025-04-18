@@ -1,7 +1,5 @@
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
 import {
   useAllowCustomNetworks,
   useChainConfigs,
@@ -13,11 +11,12 @@ import { FooterCta } from "lib/components/layouts";
 import { CelatoneSeo } from "lib/components/Seo";
 import { useStepper } from "lib/hooks";
 import { useLocalChainConfigStore } from "lib/providers/store";
+import { useForm } from "react-hook-form";
 
-import { AddNetworkForm, AddNetworkStepper } from "./components";
+import type { AddNetworkManualForm } from "../types";
+
 import { SuccessAddCustomMinitiaModal } from "../components";
 import { DEFAULT_DENOM, DEFAULT_GAS, DEFAULT_SLIP44 } from "../constant";
-import type { AddNetworkManualForm } from "../types";
 import {
   VmType,
   zAddNetworkManualChainConfigJson,
@@ -26,6 +25,7 @@ import {
   zNetworkDetailsForm,
   zWalletRegistryForm,
 } from "../types";
+import { AddNetworkForm, AddNetworkStepper } from "./components";
 
 export const AddNetworkManual = () => {
   useAllowCustomNetworks({ shouldRedirect: true });
@@ -36,56 +36,56 @@ export const AddNetworkManual = () => {
 
   const {
     control,
-    handleSubmit,
     formState: { errors },
-    watch,
+    handleSubmit,
     setValue,
     trigger,
+    watch,
   } = useForm<AddNetworkManualForm>({
-    resolver: zodResolver(zAddNetworkManualForm({ isChainIdExist })),
-    mode: "all",
-    reValidateMode: "onChange",
     defaultValues: {
       ...DEFAULT_GAS,
+      assets: [],
+      bech32_prefix: "",
+      chainId: "",
+      denom: DEFAULT_DENOM,
+      gasConfig: "standard",
+      logoUri: "",
       prettyName: "",
+      registryChainName: "",
       rest: "",
       rpc: "",
-      chainId: "",
-      registryChainName: "",
-      logoUri: "",
+      slip44: DEFAULT_SLIP44,
       vm: {
         type: VmType.MOVE,
       },
-      denom: DEFAULT_DENOM,
-      gasConfig: "standard",
-      bech32_prefix: "",
-      slip44: DEFAULT_SLIP44,
-      assets: [],
     },
+    mode: "all",
+    resolver: zodResolver(zAddNetworkManualForm({ isChainIdExist })),
+    reValidateMode: "onChange",
   });
 
   const {
-    vm,
-    prettyName,
-    rest,
-    rpc,
+    assets,
+    average_gas_price: averageGasPrice,
+    bech32_prefix: bech32Prefix,
     chainId,
-    registryChainName,
-    logoUri,
-    gasAdjustment,
-    maxGasLimit,
+    cosmos_send: cosmosSend,
     denom,
+    fixed_min_gas_price: fixedMinGasPrice,
+    gasAdjustment,
     gasConfig,
     gasPrice,
-    fixed_min_gas_price: fixedMinGasPrice,
-    low_gas_price: lowGasPrice,
-    average_gas_price: averageGasPrice,
     high_gas_price: highGasPrice,
-    cosmos_send: cosmosSend,
     ibc_transfer: ibcTransfer,
-    bech32_prefix: bech32Prefix,
+    logoUri,
+    low_gas_price: lowGasPrice,
+    maxGasLimit,
+    prettyName,
+    registryChainName,
+    rest,
+    rpc,
     slip44,
-    assets,
+    vm,
   } = watch();
 
   const handleSubmitForm = (data: AddNetworkManualForm) => {
@@ -109,35 +109,35 @@ export const AddNetworkManual = () => {
       return !zNetworkDetailsForm({
         isChainIdExist,
       }).safeParse({
-        vm,
+        chainId,
+        logoUri,
         prettyName,
+        registryChainName,
         rest,
         rpc,
-        chainId,
-        registryChainName,
-        logoUri,
+        vm,
       }).success;
 
     if (currentStepIndex === 1)
       return !zGasConfigFeeDetailsForm.safeParse({
-        gasAdjustment,
-        maxGasLimit,
+        average_gas_price: averageGasPrice,
+        cosmos_send: cosmosSend,
         denom,
+        fixed_min_gas_price: fixedMinGasPrice,
+        gasAdjustment,
         gasConfig,
         gasPrice,
-        fixed_min_gas_price: fixedMinGasPrice,
-        low_gas_price: lowGasPrice,
-        average_gas_price: averageGasPrice,
         high_gas_price: highGasPrice,
-        cosmos_send: cosmosSend,
         ibc_transfer: ibcTransfer,
+        low_gas_price: lowGasPrice,
+        maxGasLimit,
       }).success;
 
     if (currentStepIndex === 2)
       return !zWalletRegistryForm.safeParse({
+        assets,
         bech32_prefix: bech32Prefix,
         slip44,
-        assets,
       }).success;
 
     return false;
@@ -152,35 +152,35 @@ export const AddNetworkManual = () => {
   return (
     <>
       <CelatoneSeo pageName="Add rollups" />
-      <Flex position="sticky" top={0} left={0} w="full" zIndex={2}>
+      <Flex left={0} position="sticky" top={0} w="full" zIndex={2}>
         <AddNetworkStepper currentStepIndex={currentStepIndex} />
       </Flex>
       <ActionPageContainer width={640}>
         <AddNetworkForm
-          currentStepIndex={currentStepIndex}
           control={control}
+          currentStepIndex={currentStepIndex}
           errors={errors}
           setValue={setValue}
           trigger={trigger}
         />
       </ActionPageContainer>
       <FooterCta
-        cancelButton={{
-          onClick: handlePrevious,
-          variant: "outline-primary",
-          leftIcon: hasPrevious ? (
-            <CustomIcon name="chevron-left" boxSize={4} />
-          ) : undefined,
-        }}
-        cancelLabel={hasPrevious ? "Previous" : "Cancel"}
         actionButton={{
-          onClick: handleNext,
           isDisabled: isFormDisabled(),
+          onClick: handleNext,
           rightIcon: hasNext ? (
-            <CustomIcon name="chevron-right" boxSize={4} />
+            <CustomIcon boxSize={4} name="chevron-right" />
           ) : undefined,
         }}
         actionLabel={handleActionLabel()}
+        cancelButton={{
+          leftIcon: hasPrevious ? (
+            <CustomIcon boxSize={4} name="chevron-left" />
+          ) : undefined,
+          onClick: handlePrevious,
+          variant: "outline-primary",
+        }}
+        cancelLabel={hasPrevious ? "Previous" : "Cancel"}
         helperText="The added custom rollup on Initia Scan will be stored locally on your device."
         sx={{
           backgroundColor: "background.main",
@@ -188,10 +188,10 @@ export const AddNetworkManual = () => {
         }}
       />
       <SuccessAddCustomMinitiaModal
-        isOpen={isOpen}
-        onClose={onClose}
-        prettyName={prettyName}
         chainId={chainId}
+        isOpen={isOpen}
+        prettyName={prettyName}
+        onClose={onClose}
       />
     </>
   );

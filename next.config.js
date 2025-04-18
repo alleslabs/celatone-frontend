@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { withSentryConfig } = require("@sentry/nextjs");
 
 /** @type {import('next').NextConfig} */
@@ -6,8 +7,6 @@ const SENTRY_DSN =
   "https://examplePublicKey@o0.ingest.sentry.io/0";
 
 const nextConfig = {
-  swcMinify: true,
-  reactStrictMode: true,
   eslint: {
     dirs: ["src"],
   },
@@ -22,32 +21,7 @@ const nextConfig = {
       "list.initia.tech",
     ],
   },
-  webpack: (config, { webpack }) => {
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        __SENTRY_DEBUG__: false,
-      })
-    );
-
-    return config;
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/sentry/:path*",
-        // https://abcdefghijklmnopqrstquwxyzabcdef@o123456.ingest.sentry.io/1234567
-        destination: `https://${SENTRY_DSN.split("@")[1].split("/")[0]}/:path*`,
-      },
-      {
-        source: "/amplitude",
-        destination: `https://api2.amplitude.com/2/httpapi`,
-      },
-      {
-        source: "/docker/image/:path*",
-        destination: `https://hub.docker.com/v2/namespaces/:path*`,
-      },
-    ];
-  },
+  reactStrictMode: true,
   async redirects() {
     const routes = [
       "account",
@@ -66,51 +40,77 @@ const nextConfig = {
 
     const rules = routes.reduce((acc, route) => {
       acc.push({
-        source: `/:network/${route}/:id`,
         destination: `/:network/${route}s/:id`,
         permanent: false,
+        source: `/:network/${route}/:id`,
       });
 
       acc.push({
-        source: `/${route}/:id`,
         destination: `/${route}s/:id`,
         permanent: false,
+        source: `/${route}/:id`,
       });
 
       acc.push({
-        source: `/:network/${route}`,
         destination: `/:network/${route}s`,
         permanent: false,
+        source: `/:network/${route}`,
       });
 
       acc.push({
-        source: `/${route}`,
         destination: `/${route}s`,
         permanent: false,
+        source: `/${route}`,
       });
 
       return acc;
     }, []);
 
     rules.push({
-      source: "/:network/accounts/usei",
       destination: "/:network",
       permanent: false,
+      source: "/:network/accounts/usei",
     });
 
     rules.push({
-      source: "/address/:accountAddress",
       destination: "/accounts/:accountAddress",
       permanent: false,
+      source: "/address/:accountAddress",
     });
 
     rules.push({
-      source: "/:network/address/:accountAddress",
       destination: "/:network/accounts/:accountAddress",
       permanent: false,
+      source: "/:network/address/:accountAddress",
     });
 
     return rules;
+  },
+  async rewrites() {
+    return [
+      {
+        // https://abcdefghijklmnopqrstquwxyzabcdef@o123456.ingest.sentry.io/1234567
+        destination: `https://${SENTRY_DSN.split("@")[1].split("/")[0]}/:path*`,
+        source: "/sentry/:path*",
+      },
+      {
+        destination: `https://api2.amplitude.com/2/httpapi`,
+        source: "/amplitude",
+      },
+      {
+        destination: `https://hub.docker.com/v2/namespaces/:path*`,
+        source: "/docker/image/:path*",
+      },
+    ];
+  },
+  webpack: (config, { webpack }) => {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __SENTRY_DEBUG__: false,
+      })
+    );
+
+    return config;
   },
 };
 

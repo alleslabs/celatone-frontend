@@ -1,4 +1,5 @@
 import type { EditorProps, Monaco } from "@monaco-editor/react";
+
 import MonacoEditor from "@monaco-editor/react";
 
 import { moveLanguageConfig, moveTokenProvider } from "./moveSyntax";
@@ -13,15 +14,15 @@ const loadMoveSyntax = (monaco: Monaco) => {
 
 export const Editor = ({ ...props }: EditorProps) => (
   <MonacoEditor
+    beforeMount={loadMoveSyntax}
     height={400}
     language="move"
-    theme="vs-dark"
-    beforeMount={loadMoveSyntax}
     options={{
+      automaticLayout: true,
       readOnly: true,
       scrollBeyondLastLine: false,
-      automaticLayout: true,
     }}
+    theme="vs-dark"
     {...props}
   />
 );

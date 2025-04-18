@@ -1,3 +1,6 @@
+import type { AddressReturnType } from "lib/app-provider";
+import type { BechAddr, HexAddr, Option, Pubkey } from "lib/types";
+
 import { keccak256, Ripemd160, Secp256k1, sha256 } from "@cosmjs/crypto";
 import {
   fromBase64,
@@ -6,9 +9,6 @@ import {
   toBech32,
   toHex,
 } from "@cosmjs/encoding";
-
-import type { AddressReturnType } from "lib/app-provider";
-import type { BechAddr, HexAddr, Option, Pubkey } from "lib/types";
 import { zBechAddr20, zHexAddr } from "lib/types";
 
 import { utf8ToBytes } from "./base64";

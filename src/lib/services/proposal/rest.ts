@@ -1,15 +1,6 @@
-import axios from "axios";
-
 import type {
   ProposalDataResponseRest,
   ProposalsResponseRest,
-} from "lib/services/types";
-import {
-  zProposalDataResponseRest,
-  zProposalDepositsResponseRest,
-  zProposalParamsResponseRest,
-  zProposalsResponseRest,
-  zProposalVotesInfoResponseRest,
 } from "lib/services/types";
 import type {
   Coin,
@@ -19,6 +10,15 @@ import type {
   ProposalStatus,
   ProposalVotesInfo,
 } from "lib/types";
+
+import axios from "axios";
+import {
+  zProposalDataResponseRest,
+  zProposalDepositsResponseRest,
+  zProposalParamsResponseRest,
+  zProposalsResponseRest,
+  zProposalVotesInfoResponseRest,
+} from "lib/services/types";
 import { parseWithError } from "lib/utils";
 
 export const getProposalParamsRest = (restEndpoint: string) =>
@@ -36,9 +36,9 @@ export const getProposalsRest = async (
   axios
     .get(`${endpoint}/cosmos/gov/v1/proposals`, {
       params: {
+        "pagination.key": paginationKey,
         "pagination.limit": 10,
         "pagination.reverse": true,
-        "pagination.key": paginationKey,
         ...(status && {
           proposal_status: `PROPOSAL_STATUS_${status.replace(/([a-z])([A-Z]+)/g, "$1_$2").toUpperCase()}`,
         }),

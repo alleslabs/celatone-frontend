@@ -1,11 +1,12 @@
-import { useMobile } from "lib/app-provider";
-import { Loading } from "lib/components/Loading";
 import type { Option, Transaction } from "lib/types";
 
+import { useMobile } from "lib/app-provider";
+import { Loading } from "lib/components/Loading";
+
+import { MobileTableContainer, TableContainer } from "../tableComponents";
 import { TransactionsTableHeader } from "./TransactionsTableHeader";
 import { TransactionsTableMobileCard } from "./TransactionsTableMobileCard";
 import { TransactionsTableRow } from "./TransactionsTableRow";
-import { MobileTableContainer, TableContainer } from "../tableComponents";
 
 interface TransactionsTableProps {
   transactions: Option<Transaction[]>;
@@ -18,13 +19,13 @@ interface TransactionsTableProps {
 }
 
 export const TransactionsTable = ({
-  transactions,
-  isLoading,
   emptyState,
-  showSuccess = true,
-  showRelations,
-  showTimestamp = true,
+  isLoading,
   showAction = false,
+  showRelations,
+  showSuccess = true,
+  showTimestamp = true,
+  transactions,
 }: TransactionsTableProps) => {
   const isMobile = useMobile();
 
@@ -48,31 +49,31 @@ export const TransactionsTable = ({
       {transactions.map((transaction) => (
         <TransactionsTableMobileCard
           key={transaction.hash}
-          transaction={transaction}
-          showSuccess={showSuccess}
           showRelations={showRelations}
+          showSuccess={showSuccess}
           showTimestamp={showTimestamp}
+          transaction={transaction}
         />
       ))}
     </MobileTableContainer>
   ) : (
     <TableContainer>
       <TransactionsTableHeader
-        templateColumns={templateColumns}
-        showSuccess={showSuccess}
-        showRelations={showRelations}
-        showTimestamp={showTimestamp}
         showAction={showAction}
+        showRelations={showRelations}
+        showSuccess={showSuccess}
+        showTimestamp={showTimestamp}
+        templateColumns={templateColumns}
       />
       {transactions.map((transaction) => (
         <TransactionsTableRow
           key={transaction.hash}
-          transaction={transaction}
-          templateColumns={templateColumns}
-          showSuccess={showSuccess}
-          showRelations={showRelations}
-          showTimestamp={showTimestamp}
           showAction={showAction}
+          showRelations={showRelations}
+          showSuccess={showSuccess}
+          showTimestamp={showTimestamp}
+          templateColumns={templateColumns}
+          transaction={transaction}
         />
       ))}
     </TableContainer>

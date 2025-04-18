@@ -1,5 +1,4 @@
 import { Flex, Text } from "@chakra-ui/react";
-
 import { AppLink } from "lib/components/AppLink";
 import { CustomIcon } from "lib/components/icon";
 
@@ -10,18 +9,18 @@ export const InProgressVerifiedSection = ({
   codeId,
 }: InProgressVerifiedSectionProps) => (
   <Flex
+    align="center"
+    bg="gray.800"
     border="1px solid"
     borderColor="gray.700"
-    bg="gray.800"
-    justify="space-between"
-    align="center"
-    p={4}
-    w="full"
-    minW="480px"
     borderRadius="4px"
     gap={2}
+    justify="space-between"
+    minW="480px"
+    p={4}
+    w="full"
   >
-    <CustomIcon name="hourglass" color="gray.600" boxSize={6} />
+    <CustomIcon boxSize={6} color="gray.600" name="hourglass" />
     <Flex direction="column">
       <Text color="text.main" variant="body1">
         Code verification is in progress

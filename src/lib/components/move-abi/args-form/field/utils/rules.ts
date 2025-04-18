@@ -1,10 +1,10 @@
-/* eslint-disable sonarjs/cognitive-complexity */
-import big from "big.js";
-import { parseInt } from "lodash";
+import type { Nullable, Option } from "lib/types";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
-import type { Nullable, Option } from "lib/types";
+import big from "big.js";
 import { getArgType, getVectorElements } from "lib/utils";
+import { parseInt } from "lodash";
+
 import {
   DECIMAL_TYPES,
   FIXED_POINT_TYPES,

@@ -1,7 +1,9 @@
 import type { FlexProps, ImageProps, TextProps } from "@chakra-ui/react";
+
 import { Flex, Heading, Text } from "@chakra-ui/react";
 
 import type { ImageVariant } from "./StateImage";
+
 import { StateImage } from "./StateImage";
 
 export interface EmptyStateProps {
@@ -19,35 +21,36 @@ export interface EmptyStateProps {
 }
 
 export const EmptyState = ({
-  message,
+  alignItems = "center",
+  children,
+  hasBorderTop = true,
+  heading,
   imageVariant,
   imageWidth,
-  heading,
-  withBorder = false,
+  message,
   my = 12,
   py = 8,
-  alignItems = "center",
   textVariant = "body1",
-  hasBorderTop = true,
-  children,
+  withBorder = false,
 }: EmptyStateProps) => (
   <Flex
     alignItems={alignItems}
-    flexDir="column"
-    gap={4}
-    width="full"
-    py={py}
-    my={my}
-    direction="column"
-    borderY={withBorder ? "1px solid" : undefined}
+    borderBottomWidth={withBorder ? "1px" : undefined}
     borderColor="gray.700"
     borderTopColor={hasBorderTop ? "gray.700" : "transparent"}
+    borderTopWidth={withBorder ? "1px" : undefined}
+    direction="column"
+    flexDir="column"
+    gap={4}
+    my={my}
+    py={py}
+    width="full"
   >
     {imageVariant && (
       <StateImage imageVariant={imageVariant} imageWidth={imageWidth} />
     )}
     {heading && (
-      <Heading as="h5" variant="h5" textAlign="center">
+      <Heading as="h5" textAlign="center" variant="h5">
         {heading}
       </Heading>
     )}
@@ -55,8 +58,8 @@ export const EmptyState = ({
       <Text
         color="text.dark"
         textAlign="center"
-        whiteSpace="pre-wrap"
         variant={textVariant}
+        whiteSpace="pre-wrap"
       >
         {message}
       </Text>

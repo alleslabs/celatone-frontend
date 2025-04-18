@@ -1,7 +1,7 @@
+import type { BechAddr, Dict } from "lib/types";
+
 import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
-
-import type { BechAddr, Dict } from "lib/types";
 
 export interface CodeLocalInfo {
   id: number;
@@ -61,10 +61,10 @@ export class CodeStore {
     return savedCodeIdsByUserKey
       .map((codeId) => ({
         id: codeId,
+        name: this.codeInfo[this.userKey]?.[codeId]?.name,
         uploader:
           this.codeInfo[this.userKey]?.[codeId]?.uploader ??
           ("N/A" as BechAddr),
-        name: this.codeInfo[this.userKey]?.[codeId]?.name,
       }))
       .reverse();
   }

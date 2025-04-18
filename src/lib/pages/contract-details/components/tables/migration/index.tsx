@@ -1,5 +1,6 @@
-import { TierSwitcher } from "lib/components/TierSwitcher";
 import type { BechAddr32, Option } from "lib/types";
+
+import { TierSwitcher } from "lib/components/TierSwitcher";
 
 import { MigrationTableFull } from "./MigrationTableFull";
 import { MigrationTableLite } from "./MigrationTableLite";
@@ -13,17 +14,17 @@ interface MigrationTableProps {
 
 export const MigrationTable = ({
   contractAddress,
+  refetchCount,
   scrollComponentId,
   totalData,
-  refetchCount,
 }: MigrationTableProps) => (
   <TierSwitcher
     full={
       <MigrationTableFull
         contractAddress={contractAddress}
+        refetchCount={refetchCount}
         scrollComponentId={scrollComponentId}
         totalData={totalData}
-        refetchCount={refetchCount}
       />
     }
     lite={<MigrationTableLite contractAddress={contractAddress} />}

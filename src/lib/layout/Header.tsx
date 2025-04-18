@@ -1,5 +1,4 @@
 import { Flex, Image } from "@chakra-ui/react";
-
 import { InitiaAppMenu } from "@initia/react-app-shell";
 import { SUPPORTED_NETWORK_TYPES } from "env";
 import { useCelatoneApp, useInitia } from "lib/app-provider";
@@ -13,20 +12,20 @@ import { SectionWrapper } from "./SectionWrapper";
 
 const Header = () => {
   const {
-    theme,
     chainConfig: {
       extra: { faucetUrl },
     },
+    theme,
   } = useCelatoneApp();
   const isInitia = useInitia();
   return (
     <Flex
-      as="header"
-      width="100vw"
-      height="full"
       align="center"
+      as="header"
+      height="full"
       justifyContent="space-between"
       minH="64px"
+      width="100vw"
     >
       <Flex h="full">
         {isInitia && (
@@ -44,13 +43,13 @@ const Header = () => {
         <SectionWrapper minW="171px">
           <AppLink href="/">
             <Image
-              src={theme.branding.logo}
+              _hover={{ cursor: "pointer", opacity: 0.85 }}
               alt="Scan"
-              minH="24px"
               h="24px"
               maxH="24px"
+              minH="24px"
+              src={theme.branding.logo}
               transition="all 0.25s ease-in-out"
-              _hover={{ cursor: "pointer", opacity: 0.85 }}
             />
           </AppLink>
         </SectionWrapper>

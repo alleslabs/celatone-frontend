@@ -1,11 +1,11 @@
 import type { ImageProps as ChakraImageProps } from "@chakra-ui/react";
-import { Image as ChakraImage, Flex } from "@chakra-ui/react";
+import type { Option } from "lib/types";
 import type { ImageProps } from "next/image";
+
+import { Image as ChakraImage, Flex } from "@chakra-ui/react";
+import { NAToken } from "lib/icon";
 import Image from "next/image";
 import { useState } from "react";
-
-import { NAToken } from "lib/icon";
-import type { Option } from "lib/types";
 
 const TokenImage = ({ boxSize = 5, ...props }: ChakraImageProps) => (
   <ChakraImage
@@ -23,11 +23,11 @@ interface TokenImageRenderProps extends ChakraImageProps {
 export const TokenImageRender = ({ logo, ...props }: TokenImageRenderProps) =>
   Array.isArray(logo) ? (
     <Flex minW="fit-content">
-      <TokenImage src={logo[0]} alt={logo[0]} zIndex={1} {...props} />
-      <TokenImage src={logo[1]} alt={logo[1]} ml="-6px" {...props} />
+      <TokenImage alt={logo[0]} src={logo[0]} zIndex={1} {...props} />
+      <TokenImage alt={logo[1]} ml="-6px" src={logo[1]} {...props} />
     </Flex>
   ) : (
-    <TokenImage src={logo} alt={logo} {...props} />
+    <TokenImage alt={logo} src={logo} {...props} />
   );
 
 export const TokenImageRenderWithCache = (props: ImageProps) => {

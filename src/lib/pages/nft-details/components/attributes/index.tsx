@@ -1,3 +1,5 @@
+import type { HexAddr32, Trait } from "lib/types";
+
 import {
   Badge,
   Button,
@@ -9,10 +11,8 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-
 import { useMobile } from "lib/app-provider";
 import { CustomIcon } from "lib/components/icon";
-import type { HexAddr32, Trait } from "lib/types";
 
 import { AttributesModal } from "./AttributesModal";
 
@@ -28,40 +28,40 @@ export const Attributes = ({
   tokenId,
 }: AttributesProps) => {
   const isMobile = useMobile();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const displayedCount = isMobile ? 4 : 6;
   return (
-    <Stack w="100%" spacing={4} order={{ base: "-1", md: "1" }}>
+    <Stack order={{ base: "-1", md: "1" }} spacing={4} w="100%">
       <Flex align="center" gap={1}>
-        <Heading as="h6" variant="h6" fontWeight={600}>
+        <Heading as="h6" fontWeight={600} variant="h6">
           Attributes
         </Heading>
         <Badge variant="primary">{attributes.length}</Badge>
       </Flex>
 
       <SimpleGrid
-        templateColumns={isMobile ? "1fr 1fr" : "1fr 1fr 1fr"}
-        minChildWidth="172px"
         gap={4}
+        minChildWidth="172px"
+        templateColumns={isMobile ? "1fr 1fr" : "1fr 1fr 1fr"}
       >
         {attributes.slice(0, displayedCount).map(({ traitType, value }) => (
           <GridItem
-            p="8px 12px"
+            key={traitType}
             background="gray.900"
             borderRadius="8px"
-            key={traitType}
+            p="8px 12px"
           >
             <Stack spacing="4px">
               <Text
-                variant="body3"
-                textTransform="capitalize"
-                fontWeight={700}
                 color="text.dark"
+                fontWeight={700}
+                textTransform="capitalize"
+                variant="body3"
               >
                 {traitType}
               </Text>
-              <Text variant="body2" textTransform="capitalize" fontWeight={700}>
+              <Text fontWeight={700} textTransform="capitalize" variant="body2">
                 {value}
               </Text>
             </Stack>
@@ -70,22 +70,22 @@ export const Attributes = ({
       </SimpleGrid>
       {attributes.length > displayedCount && (
         <Button
-          bg="transparent"
           _hover={{ background: "transparent" }}
+          bg="transparent"
           onClick={onOpen}
         >
           <Flex align="center" gap="7px">
             <Text color="text.dark">View more</Text>
-            <CustomIcon name="chevron-down" color="text.dark" />
+            <CustomIcon color="text.dark" name="chevron-down" />
           </Flex>
         </Button>
       )}
       <AttributesModal
-        title="Attributes"
-        attributes={attributes}
         address={nftAddress}
-        tokenId={tokenId}
+        attributes={attributes}
         isOpen={isOpen}
+        title="Attributes"
+        tokenId={tokenId}
         onClose={onClose}
       />
     </Stack>

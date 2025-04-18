@@ -1,10 +1,11 @@
-import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import type { OptionProps } from "chakra-react-select";
-import { components } from "chakra-react-select";
-
-import { TokenImageRenderWithCache } from "lib/components/token";
 import type { AssetOptionValue } from "lib/types";
+
+import { Box, Flex, Grid, Text } from "@chakra-ui/react";
+import { components } from "chakra-react-select";
+import { TokenImageRenderWithCache } from "lib/components/token";
 import { getTokenLabel } from "lib/utils";
+
 import type { SelectInputOption } from "../SelectInput";
 
 export const AssetInputOption = (
@@ -17,51 +18,51 @@ export const AssetInputOption = (
   return (
     <Box
       sx={{
-        position: "relative",
         "> div": {
-          background: isSelected ? "gray.800" : "gray.900",
           "&:hover": {
             background:
               data.isDisabled && !isSelected ? "gray.900" : "gray.800",
           },
+          background: isSelected ? "gray.800" : "gray.900",
         },
+        position: "relative",
       }}
     >
       <components.Option {...props}>
         {isSelected && (
           <Grid
+            bottom={0}
+            left={0}
+            placeItems="center"
             position="absolute"
             top={0}
-            left={0}
-            bottom={0}
-            placeItems="center"
           >
-            <Box w={1} height={8} background="primary.main" borderRadius={8} />
+            <Box background="primary.main" borderRadius={8} height={8} w={1} />
           </Grid>
         )}
-        <Flex justifyContent="space-between" alignItems="center">
-          <Flex gap={2} alignItems="center">
+        <Flex alignItems="center" justifyContent="space-between">
+          <Flex alignItems="center" gap={2}>
             {!!data.value.logo && (
               <Box opacity={data.isDisabled && !isSelected ? 0.6 : 1}>
                 <TokenImageRenderWithCache
-                  src={data.value.logo}
                   alt={getTokenLabel(data.value.id, data.label)}
-                  width={24}
                   height={24}
+                  src={data.value.logo}
+                  width={24}
                 />
               </Box>
             )}
-            <Text variant="body2" color={textMainColor}>
+            <Text color={textMainColor} variant="body2">
               {data.label}
             </Text>
           </Flex>
-          <Flex direction="column" alignItems="flex-end">
-            <Text variant="body2" color={textMainColor}>
+          <Flex alignItems="flex-end" direction="column">
+            <Text color={textMainColor} variant="body2">
               {data.value.formatted || "0.000000"}
             </Text>
             <Text
-              variant="body3"
               color={data.isDisabled ? "text.disabled" : "text.dark"}
+              variant="body3"
             >
               {`(${data.value.price || "$0.00"})`}
             </Text>

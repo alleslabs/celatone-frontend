@@ -1,8 +1,8 @@
-import { Flex, Tag, Text } from "@chakra-ui/react";
-import { useState } from "react";
-
 import type { ContractLocalInfo } from "lib/stores/contract";
+
+import { Flex, Tag, Text } from "@chakra-ui/react";
 import { getTagsDefault } from "lib/utils";
+import { useState } from "react";
 
 import { EditTags } from "./EditTags";
 
@@ -28,14 +28,14 @@ export const TagsCell = ({
 
   return (
     <Flex
-      w="full"
       position="relative"
-      onMouseOver={handleMouseEnter}
+      w="full"
       onMouseOut={handleMouseOut}
+      onMouseOver={handleMouseEnter}
     >
       <Flex
-        gap={1}
         color="text.dark"
+        gap={1}
         opacity={isHover ? "0" : "1"}
         onClick={(e) => {
           if (!isReadOnly) e.stopPropagation();
@@ -44,14 +44,14 @@ export const TagsCell = ({
         {tags.length ? (
           <Tag size={tagSize}>{tags[0]}</Tag>
         ) : (
-          <Text variant="body2" color="text.dark">
+          <Text color="text.dark" variant="body2">
             Not tagged
           </Text>
         )}
         <Tag
+          display={tags.length > 1 ? "flex" : "none"}
           size={tagSize}
           variant="gray"
-          display={tags.length > 1 ? "flex" : "none"}
         >
           {tags.length - 1}+
         </Tag>
@@ -60,36 +60,36 @@ export const TagsCell = ({
       {isHover && (
         <Flex
           bgColor={tags.length > 1 ? "gray.800" : "inherit"}
-          py={4}
           borderRadius="8px"
-          position="absolute"
-          w="340px"
-          top="-16px"
           left="-16px"
+          position="absolute"
+          py={4}
+          top="-16px"
+          w="340px"
+          zIndex="dropdown"
           onClick={(e) => {
             if (!isReadOnly) e.stopPropagation();
           }}
-          zIndex="dropdown"
         >
           <Flex
-            gap={1}
-            px={4}
             alignItems="center"
-            maxW="full"
             display="flex"
             flexWrap="wrap"
+            gap={1}
+            maxW="full"
+            px={4}
             rowGap={2}
           >
             {tags.length ? (
               tags.map((item) => {
                 return (
-                  <Tag size={tagSize} key={item}>
+                  <Tag key={item} size={tagSize}>
                     {item}
                   </Tag>
                 );
               })
             ) : (
-              <Text variant="body2" color="text.dark">
+              <Text color="text.dark" variant="body2">
                 Not tagged
               </Text>
             )}

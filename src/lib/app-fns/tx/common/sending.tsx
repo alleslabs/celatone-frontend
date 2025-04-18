@@ -1,27 +1,27 @@
-import { Spinner } from "@chakra-ui/react";
 import type { StdFee } from "@cosmjs/stargate";
-
-import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import type { TxResultRendering } from "lib/types";
+
+import { Spinner } from "@chakra-ui/react";
+import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";
 import { TxStreamPhase } from "lib/types";
 
 export const sendingTx = (fee: StdFee) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (_: void) => {
     return {
-      value: null,
+      actionVariant: "sending",
       phase: TxStreamPhase.BROADCAST,
-      receipts: [
-        {
-          title: "Estimated tx fee",
-          html: <EstimatedFeeRender estimatedFee={fee} loading={false} />,
-        },
-      ],
       receiptInfo: {
         header: "Sending transaction",
         headerIcon: <Spinner size="md" />,
       },
-      actionVariant: "sending",
+      receipts: [
+        {
+          html: <EstimatedFeeRender estimatedFee={fee} loading={false} />,
+          title: "Estimated tx fee",
+        },
+      ],
+      value: null,
     } as TxResultRendering;
   };
 };

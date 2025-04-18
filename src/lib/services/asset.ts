@@ -1,9 +1,9 @@
-import axios from "axios";
-import { z } from "zod";
-
 import type { AssetInfo } from "lib/types";
+
+import axios from "axios";
 import { zAssetInfo } from "lib/types";
 import { parseWithError } from "lib/utils";
+import { z } from "zod";
 
 export const getAssetInfos = async (
   endpoint: string,

@@ -1,5 +1,4 @@
 import { Flex, Text } from "@chakra-ui/react";
-
 import { useCurrentChain, useMobile } from "lib/app-provider";
 import { ConnectWalletBtn } from "lib/components/button";
 import { EmptyState, StateImage } from "lib/components/state";
@@ -8,20 +7,21 @@ const DisconnectedState = () => {
   const isMobile = useMobile();
   return (
     <Flex
-      direction="column"
       alignItems="center"
+      borderBottomWidth="1px"
+      borderColor="gray.700"
+      borderTopWidth="1px"
+      direction="column"
       gap={4}
       py={12}
-      borderY="1px solid"
-      borderColor="gray.700"
     >
       <StateImage imageVariant="empty" />
-      <Text variant="body1" color="text.dark">
+      <Text color="text.dark" variant="body1">
         No contract instances from this code.
       </Text>
       {!isMobile && (
         <Flex align="center" alignItems="center">
-          <Text variant="body1" color="text.dark" mr={2}>
+          <Text color="text.dark" mr={2} variant="body1">
             In order to instantiate contract from this code, you need to
           </Text>
           <ConnectWalletBtn />

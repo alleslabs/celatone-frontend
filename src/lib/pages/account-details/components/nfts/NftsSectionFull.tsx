@@ -1,11 +1,11 @@
-import { Badge, Box, Flex, Heading, Stack } from "@chakra-ui/react";
-import { useState } from "react";
+import type { HexAddr, HexAddr32, Option } from "lib/types";
 
+import { Badge, Box, Flex, Heading, Stack } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { Loading } from "lib/components/Loading";
 import { EmptyState, ErrorFetching } from "lib/components/state";
 import { useNftCollectionsByAccountAddress } from "lib/services/nft-collection";
-import type { HexAddr, HexAddr32, Option } from "lib/types";
+import { useState } from "react";
 
 import { FilterItem } from "./FilterItem";
 import { NftsByCollectionFull } from "./NftsByCollectionFull";
@@ -46,38 +46,38 @@ export const NftsSectionFull = ({
 
   return (
     <Box mt={{ base: 4, md: 8 }}>
-      <Flex gap="8px" align="center">
+      <Flex align="center" gap="8px">
         <Heading variant="h6">NFTs</Heading>
         <Badge>{totalData}</Badge>
       </Flex>
-      <Flex gap="40px" mt="32px" flexDir={isMobile ? "column" : "row"}>
+      <Flex flexDir={isMobile ? "column" : "row"} gap="40px" mt="32px">
         <Stack
-          w={{ base: "100%", md: "35%", lg: "25%" }}
           minW={64}
           spacing="8px"
+          w={{ base: "100%", lg: "25%", md: "35%" }}
         >
           <FilterItem
             collectionName="All collections"
-            onClick={() => handleOnClick(undefined)}
-            isActive={selectedCollection === undefined}
             count={totalData}
+            isActive={selectedCollection === undefined}
             isDefault
+            onClick={() => handleOnClick(undefined)}
           />
           {collections.items.map((item) => (
             <FilterItem
               key={item.collectionAddress}
               collectionName={item.collectionName}
+              count={item.hold}
+              isActive={
+                selectedCollection?.collectionAddress === item.collectionAddress
+              }
+              uri={item.uri}
               onClick={() =>
                 handleOnClick({
                   collectionAddress: item.collectionAddress,
                   nftsCount: item.hold,
                 })
               }
-              uri={item.uri}
-              isActive={
-                selectedCollection?.collectionAddress === item.collectionAddress
-              }
-              count={item.hold}
             />
           ))}
         </Stack>

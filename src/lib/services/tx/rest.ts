@@ -1,7 +1,8 @@
-import axios from "axios";
-
 import type { BechAddr20, BechAddr32 } from "lib/types";
+
+import axios from "axios";
 import { parseWithError } from "lib/utils";
+
 import {
   zTxByHashResponseRest,
   zTxsByAddressResponseRest,
@@ -33,18 +34,18 @@ export const getTxsByContractAddressRest = (
     Promise.allSettled([
       axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
         params: {
-          order_by: 2,
           limit,
+          order_by: 2,
           page: offset / limit + 1,
           query: `wasm._contract_address='${encodeURI(contractAddress)}'`,
         },
       }),
       axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
         params: {
-          order_by: 2,
-          limit,
-          page: offset / limit + 1,
           events: `wasm._contract_address='${encodeURI(contractAddress)}'`,
+          limit,
+          order_by: 2,
+          page: offset / limit + 1,
         },
       }),
     ]).then(([queryParam, eventsParam]) => {
@@ -72,18 +73,18 @@ export const getTxsByAccountAddressRest = (
   Promise.allSettled([
     axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
       params: {
-        order_by: 2,
         limit,
+        order_by: 2,
         page: offset / limit + 1,
         query: `message.sender='${encodeURI(address)}'`,
       },
     }),
     axios.get(`${endpoint}/cosmos/tx/v1beta1/txs`, {
       params: {
-        order_by: 2,
-        limit,
-        page: offset / limit + 1,
         events: `message.sender='${encodeURI(address)}'`,
+        limit,
+        order_by: 2,
+        page: offset / limit + 1,
       },
     }),
   ]).then(([queryParam, eventsParam]) => {

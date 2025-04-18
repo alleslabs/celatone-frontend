@@ -1,15 +1,15 @@
 import type { Coin } from "@cosmjs/stargate";
-import { useQuery } from "@tanstack/react-query";
 import type { UseQueryResult } from "@tanstack/react-query";
 import type { Big } from "big.js";
+import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   CELATONE_QUERY_KEYS,
   useBaseApiRoute,
   useCelatoneApp,
 } from "lib/app-provider";
 import { big } from "lib/types";
-import type { BechAddr, Option, TokenWithValue, USD } from "lib/types";
 import {
   coinToTokenWithValue,
   compareTokenWithValues,
@@ -17,11 +17,12 @@ import {
   totalValueTokenWithValue,
 } from "lib/utils";
 
-import { getBalances } from "./api";
-import { getBalancesRest } from "./rest";
+import type { BalanceInfos } from "../types";
+
 import { useAssetInfos } from "../assetService";
 import { useMovePoolInfos } from "../move/poolService";
-import type { BalanceInfos } from "../types";
+import { getBalances } from "./api";
+import { getBalancesRest } from "./rest";
 
 export const useBalances = (
   address: Option<BechAddr>,
@@ -42,7 +43,7 @@ export const useBalances = (
         ? getBalances(endpoint, address)
         : getBalancesRest(endpoint, address);
     },
-    { retry: 1, refetchOnWindowFocus: false, enabled }
+    { enabled, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -53,7 +54,7 @@ export const useBalanceInfos = (address: BechAddr): BalanceInfos => {
   const { data: movePoolInfos } = useMovePoolInfos({
     withPrices: true,
   });
-  const { data: accountBalances, isLoading, error } = useBalances(address);
+  const { data: accountBalances, error, isLoading } = useBalances(address);
 
   const balances = accountBalances
     ?.map<TokenWithValue>((balance) =>
@@ -76,11 +77,11 @@ export const useBalanceInfos = (address: BechAddr): BalanceInfos => {
     : undefined;
 
   return {
+    error: error as Error,
+    isLoading: isLoading || isAssetInfosLoading,
     supportedAssets,
+    totalData: balances?.length,
     totalSupportedAssetsValue,
     unsupportedAssets,
-    isLoading: isLoading || isAssetInfosLoading,
-    totalData: balances?.length,
-    error: error as Error,
   };
 };

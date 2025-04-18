@@ -1,7 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 const NextSitemapConfig = {
-  siteUrl: "",
   generateRobotsTxt: true,
+  siteUrl: "",
 };
 
 module.exports = NextSitemapConfig;

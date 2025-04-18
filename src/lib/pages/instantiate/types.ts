@@ -1,18 +1,18 @@
-import { z } from "zod";
-
 import type {
   jsonInputFormKey,
   yourSchemaInputFormKey,
 } from "lib/components/json-schema";
 import type { MsgInstantiateContract } from "lib/types";
+
 import { isId } from "lib/utils";
+import { z } from "zod";
 
 export const zInstantiateQueryParams = z.object({
-  msg: z.string().optional(),
   codeId: z
     .string()
     .transform((val) => (isId(val) ? Number(val) : undefined))
     .optional(),
+  msg: z.string().optional(),
 });
 
 export interface InstantiateFormState {

@@ -1,3 +1,5 @@
+import type { ContractListInfo } from "lib/stores/contract";
+
 import { useCurrentChain, useTierConfig } from "lib/app-provider";
 import { INSTANTIATED_LIST_NAME } from "lib/data";
 import { useContractStore } from "lib/providers/store";
@@ -5,7 +7,6 @@ import {
   useAllInstantiatedContractsByAddress,
   useInstantiatedContractsByAddressRest,
 } from "lib/services/wasm/contract";
-import type { ContractListInfo } from "lib/stores/contract";
 import { formatSlugName, getCurrentDate } from "lib/utils";
 
 interface InstantiatedByMeState {
@@ -33,11 +34,11 @@ export const useInstantiatedByMe = (enable: boolean): InstantiatedByMeState => {
         ...contract,
         ...getContractLocalInfo(contract.contractAddress),
       })),
+      isContractRemovable: false,
+      isInfoEditable: false,
+      lastUpdated: getCurrentDate(),
       name: INSTANTIATED_LIST_NAME,
       slug: formatSlugName(INSTANTIATED_LIST_NAME),
-      lastUpdated: getCurrentDate(),
-      isInfoEditable: false,
-      isContractRemovable: false,
     },
     isLoading,
   };

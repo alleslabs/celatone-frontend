@@ -1,17 +1,6 @@
-import axios from "axios";
-
-import { INITIA_MOVE_DECODER } from "env";
 import type {
   DecodeModuleReturn,
   ModuleTableCountsResponse,
-} from "lib/services/types";
-import {
-  zModuleHistoriesResponse,
-  zModulePublishInfoResponse,
-  zModuleRelatedProposalsResponse,
-  zModulesResponse,
-  zModuleTableCountsResponse,
-  zModuleTxsResponse,
 } from "lib/services/types";
 import type {
   AbiFormData,
@@ -20,6 +9,17 @@ import type {
   ModuleAbi,
   ModulePublishInfo,
 } from "lib/types";
+
+import axios from "axios";
+import { INITIA_MOVE_DECODER } from "env";
+import {
+  zModuleHistoriesResponse,
+  zModulePublishInfoResponse,
+  zModuleRelatedProposalsResponse,
+  zModulesResponse,
+  zModuleTableCountsResponse,
+  zModuleTxsResponse,
+} from "lib/services/types";
 import {
   libDecode,
   parseJsonABI,
@@ -119,9 +119,9 @@ export const getModuleTxs = async (
       `${endpoint}/modules/${encodeURI(vmAddress)}/${encodeURI(moduleName)}/txs`,
       {
         params: {
+          is_initia: isInitia,
           limit,
           offset,
-          is_initia: isInitia,
         },
       }
     )

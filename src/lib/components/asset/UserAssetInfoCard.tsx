@@ -1,7 +1,7 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
 import type Big from "big.js";
-
 import type { Option, USD } from "lib/types";
+
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import { formatPrice } from "lib/utils";
 
 interface UserAssetInfoCardProps {
@@ -10,22 +10,22 @@ interface UserAssetInfoCardProps {
 }
 
 export const UserAssetInfoCard = ({
-  totalSupportedAssetsValue,
   helperText,
+  totalSupportedAssetsValue,
 }: UserAssetInfoCardProps) => {
   const isZeroValue =
     !totalSupportedAssetsValue || totalSupportedAssetsValue.eq(0);
 
   return (
     <Flex direction="column" width="fit-content">
-      <Text variant="body2" fontWeight={500} color="text.dark">
+      <Text color="text.dark" fontWeight={500} variant="body2">
         {helperText}
       </Text>
       <Heading
-        mt={1}
         as="h6"
-        variant="h6"
         color={isZeroValue ? "text.dark" : "text.main"}
+        mt={1}
+        variant="h6"
       >
         {totalSupportedAssetsValue
           ? formatPrice(totalSupportedAssetsValue)

@@ -1,8 +1,9 @@
 import type { UseQueryResult } from "@tanstack/react-query";
+import type { ContractData } from "lib/services/types";
+import type { BechAddr32, ContractMigrationHistory } from "lib/types";
 
 import { useTierConfig } from "lib/app-provider";
 import { useCodeStore, useContractStore } from "lib/providers/store";
-import type { ContractData } from "lib/services/types";
 import { useCodeRest } from "lib/services/wasm/code";
 import {
   useContractCw2InfoRest,
@@ -11,7 +12,6 @@ import {
   useMigrationHistoriesByContractAddressRest,
 } from "lib/services/wasm/contract";
 import { RemarkOperation } from "lib/types";
-import type { BechAddr32, ContractMigrationHistory } from "lib/types";
 
 const useContractDataRest = (
   contractData: UseQueryResult<ContractData>,

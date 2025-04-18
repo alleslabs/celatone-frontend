@@ -1,9 +1,11 @@
-import { Heading, Stack } from "@chakra-ui/react";
+import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
 import type { Control } from "react-hook-form";
-import { useController } from "react-hook-form";
+
+import { Heading, Stack } from "@chakra-ui/react";
 import { ControllerInput, ControllerTextarea } from "lib/components/forms";
 import { EvmVerifyOptions } from "lib/types";
-import type { EvmContractVerifyForm, EvmVerifyConfig } from "lib/types";
+import { useController } from "react-hook-form";
+
 import { ConstructorArgs } from "../ConstructorArgs";
 import { EvmContractVerifyAlert } from "../EvmContractVerifyAlert";
 import { EvmVersionToTarget } from "../EvmVersionToTarget";
@@ -39,23 +41,23 @@ export const EvmContractVerifyVyperContractCode = ({
           Provide Contract Code
         </Heading>
         <ControllerInput
-          label="Contract name"
-          placeholder="Provide contract name"
-          name="verifyForm.vyperContractCode.contractName"
-          isRequired
           control={control}
-          variant="fixed-floating"
           error={contractNameError?.message}
+          isRequired
+          label="Contract name"
+          name="verifyForm.vyperContractCode.contractName"
+          placeholder="Provide contract name"
+          variant="fixed-floating"
         />
         <ControllerTextarea
-          label="Contract code"
-          placeholder="Provide contract source code here"
-          name="verifyForm.vyperContractCode.contractCode"
-          isRequired
           control={control}
-          variant="fixed-floating"
           error={contractCodeError?.message}
           height="400px"
+          isRequired
+          label="Contract code"
+          name="verifyForm.vyperContractCode.contractCode"
+          placeholder="Provide contract source code here"
+          variant="fixed-floating"
         />
       </Stack>
       <ConstructorArgs<EvmContractVerifyForm>
@@ -64,8 +66,8 @@ export const EvmContractVerifyVyperContractCode = ({
       />
       <EvmVersionToTarget<EvmContractVerifyForm>
         control={control}
-        name="verifyForm.vyperContractCode.evmVersion"
         evmVerifyConfig={evmVerifyConfig}
+        name="verifyForm.vyperContractCode.evmVersion"
       />
     </Stack>
   );
