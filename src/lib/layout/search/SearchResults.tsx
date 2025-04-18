@@ -12,10 +12,10 @@ interface SearchResultsProps {
   handleSelectResult: (result?: SearchResult, isClick?: boolean) => void;
 }
 export const SearchResults = ({
-  results,
   cursor,
-  setCursor,
   handleSelectResult,
+  results,
+  setCursor,
 }: SearchResultsProps) => (
   <>
     {!results.length ? (

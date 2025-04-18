@@ -17,8 +17,8 @@ export const useContractDetailsEvmTxs = (address: BechAddr20) => {
 
   const {
     data: cosmosTxs,
-    isFetching: isCosmosTxsFetching,
     isError: isCosmosTxsError,
+    isFetching: isCosmosTxsFetching,
     refetch,
   } = useTxsByAddressPaginationSequencer(
     address,
@@ -28,16 +28,16 @@ export const useContractDetailsEvmTxs = (address: BechAddr20) => {
   );
   const {
     data: newEvmTxHashes,
-    isFetching: isNewEvmHashesFetching,
     isError: isNewEvmHashesError,
+    isFetching: isNewEvmHashesFetching,
   } = useEvmTxHashesByCosmosTxHashes(
     cosmosTxs?.items.map((tx) => tx.hash),
     !isCosmosTxsFetching
   );
   const {
     data: newEvmTxsData,
-    isFetching: isNewEvmTxsDataFetching,
     isError: isNewEvmTxsDataError,
+    isFetching: isNewEvmTxsDataFetching,
   } = useEvmTxsDataJsonRpc(
     newEvmTxHashes?.filter((tx) => tx !== null) as string[],
     !isCosmosTxsFetching && !isNewEvmHashesFetching
@@ -68,12 +68,12 @@ export const useContractDetailsEvmTxs = (address: BechAddr20) => {
   const isError =
     isCosmosTxsError || isNewEvmHashesError || isNewEvmTxsDataError;
   return {
-    data: evmTxs,
-    isLoading: isInitialLoading && !isError,
-    isError,
-    fetchNextPage: refetch,
-    isFetchingNextPage: isFetching,
-    hasNextPage: paginationKey !== null,
     cosmosTxsCount,
+    data: evmTxs,
+    fetchNextPage: refetch,
+    hasNextPage: paginationKey !== null,
+    isError,
+    isFetchingNextPage: isFetching,
+    isLoading: isInitialLoading && !isError,
   };
 };

@@ -15,8 +15,8 @@ interface EvmTxHeaderProps extends FlexProps {
 }
 
 export const EvmTxHeader = ({
-  evmTxData,
   cosmosTxData,
+  evmTxData,
   ...flexProps
 }: EvmTxHeaderProps) => {
   const isMobile = useMobile();

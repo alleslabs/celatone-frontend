@@ -26,42 +26,42 @@ interface ModuleActionsProps {
 }
 
 export const ModuleActions = ({
-  viewFns,
-  executeFns,
   allTxsCount,
+  executeFns,
   onSelectAction,
+  viewFns,
 }: ModuleActionsProps) => {
   const { isFullTier } = useTierConfig();
 
   const actionList: ActionInfo[] = [
     {
+      count: viewFns,
+      disabled: viewFns === 0,
+      hidden: false,
       icon: "query" as IconKeys,
       iconColor: "primary.main",
       name: "View functions",
-      count: viewFns,
       onClick: () =>
         onSelectAction(TabIndex.Function, FunctionTypeTabIndex.VIEW),
-      disabled: viewFns === 0,
-      hidden: false,
     },
     {
+      count: executeFns,
+      disabled: executeFns === 0,
+      hidden: false,
       icon: "execute" as IconKeys,
       iconColor: "secondary.main",
       name: "Execute functions",
-      count: executeFns,
       onClick: () =>
         onSelectAction(TabIndex.Function, FunctionTypeTabIndex.EXECUTE),
-      disabled: executeFns === 0,
-      hidden: false,
     },
     {
+      count: allTxsCount,
+      disabled: allTxsCount === 0,
+      hidden: !isFullTier,
       icon: "list" as IconKeys,
       iconColor: "gray.600",
       name: "Transactions",
-      count: allTxsCount,
       onClick: () => onSelectAction(TabIndex.TxsHistories),
-      disabled: allTxsCount === 0,
-      hidden: !isFullTier,
     },
   ];
 
@@ -88,8 +88,8 @@ export const ModuleActions = ({
                 cursor: "not-allowed",
               }
             : {
-                bg: "gray.800",
                 _hover: { bg: "gray.700" },
+                bg: "gray.800",
                 cursor: "pointer",
                 onClick: item.onClick,
               })}

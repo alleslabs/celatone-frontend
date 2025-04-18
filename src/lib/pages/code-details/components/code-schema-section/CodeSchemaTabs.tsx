@@ -9,9 +9,9 @@ import { SchemaPanel } from "./SchemaPanel";
 
 const StyledCustomTab = chakra(CustomTab, {
   baseStyle: {
+    _selected: { bgColor: "gray.800" },
     border: "unset",
     borderRadius: "4px",
-    _selected: { bgColor: "gray.800" },
   },
 });
 
@@ -36,10 +36,10 @@ interface CodeSchemaTabsProps {
 }
 
 export const CodeSchemaTabs = ({
-  codeId,
   codeHash,
-  verifiedSchema,
+  codeId,
   localSchema,
+  verifiedSchema,
 }: CodeSchemaTabsProps) => {
   const schema = verifiedSchema ?? localSchema;
   const hasSchema = Boolean(schema);

@@ -18,10 +18,10 @@ interface WasmVerifySectionProps {
 }
 
 const WasmVerifySectionBody = ({
-  codeId,
   codeHash,
-  wasmVerifyInfo,
+  codeId,
   contractAddress,
+  wasmVerifyInfo,
 }: WasmVerifySectionProps) => {
   const isApiChain = useIsApiChain({
     shouldRedirect: false,

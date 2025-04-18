@@ -17,9 +17,9 @@ const baseTextStyle: TextProps = {
 };
 
 const baseContainerStyle: FlexProps = {
+  alignItems: { bases: "start", sm: "center" },
   direction: { base: "column", sm: "row" },
   gap: { base: 0, sm: 2 },
-  alignItems: { bases: "start", sm: "center" },
 };
 
 interface WasmVerifyRequestInfoProps {
@@ -30,13 +30,13 @@ interface WasmVerifyRequestInfoProps {
 
 export const WasmVerifyRequestInfo = ({
   codeHash,
-  verificationInfo,
   relatedVerifiedCodes,
+  verificationInfo,
 }: WasmVerifyRequestInfoProps) => {
   const wasmVerifyStatus = getWasmVerifyStatus({
-    verificationInfo,
-    schema: null,
     relatedVerifiedCodes,
+    schema: null,
+    verificationInfo,
   });
 
   const gitUrlWithCommit = `${verificationInfo.gitUrl}/tree/${verificationInfo.commit}`;
@@ -76,7 +76,6 @@ export const WasmVerifyRequestInfo = ({
             gap={1}
             overflow="hidden"
             sx={{
-              cursor: "pointer",
               "&:hover": {
                 "> *": {
                   color: "primary.light",
@@ -86,6 +85,7 @@ export const WasmVerifyRequestInfo = ({
                   transitionTimingFunction: "ease-in-out",
                 },
               },
+              cursor: "pointer",
             }}
           >
             <Text className="ellipsis" color="primary.main" variant="body2">

@@ -25,13 +25,7 @@ export enum EvmContractDetailsContractInfoTabs {
 
 export const zEvmContractDetailsQueryParams = z.object({
   contractAddress: zHexAddr20,
-  tab: z.union([
-    z.nativeEnum(TabIndex),
-    z
-      .string()
-      .optional()
-      .transform(() => TabIndex.Overview),
-  ]),
+  selectedFn: z.string().optional(),
   selectedType: z.union([
     z.nativeEnum(InteractTabsIndex),
     z
@@ -39,7 +33,13 @@ export const zEvmContractDetailsQueryParams = z.object({
       .optional()
       .transform(() => InteractTabsIndex.Read),
   ]),
-  selectedFn: z.string().optional(),
+  tab: z.union([
+    z.nativeEnum(TabIndex),
+    z
+      .string()
+      .optional()
+      .transform(() => TabIndex.Overview),
+  ]),
 });
 
 export enum TxsTabIndex {

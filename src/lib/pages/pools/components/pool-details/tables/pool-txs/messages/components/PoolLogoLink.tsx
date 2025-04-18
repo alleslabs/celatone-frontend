@@ -9,7 +9,7 @@ interface PoolLogoLinkProps {
   ampCopierSection?: string;
 }
 
-export const PoolLogoLink = ({ pool, ampCopierSection }: PoolLogoLinkProps) => (
+export const PoolLogoLink = ({ ampCopierSection, pool }: PoolLogoLinkProps) => (
   <Flex gap={1}>
     <PoolLogo logoSize={5} marginLeft={-4} minW={0} tokens={pool.liquidity} />
     <ExplorerLink

@@ -28,10 +28,10 @@ const EditorSidebarSelectedMark = () => (
 );
 
 export const EditorSidebar = ({
-  sourceTreeNode,
   initialFilePath,
   onClick,
   selectedFile,
+  sourceTreeNode,
 }: EditorSidebarProps) => {
   const [tree, setTree] = useState(sourceTreeNode);
 

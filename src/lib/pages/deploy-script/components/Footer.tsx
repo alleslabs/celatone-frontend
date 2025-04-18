@@ -8,9 +8,9 @@ interface FooterProps {
 }
 
 export const Footer = ({
-  isLoading = false,
   disabled,
   executeScript,
+  isLoading = false,
 }: FooterProps) => {
   const router = useRouter();
   return (

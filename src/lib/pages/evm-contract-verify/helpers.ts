@@ -24,8 +24,8 @@ const CONTRACT_LIBRARIES_DEFAULT_VALUE = {
   enabled: false,
   value: [
     {
-      name: "",
       address: zHexAddr20.parse(""),
+      name: "",
     },
   ],
 };
@@ -33,41 +33,41 @@ const CONTRACT_LIBRARIES_DEFAULT_VALUE = {
 export const getEvmContractVerifyFormDefaultValue = (
   contractAddressQueryParam: Option<HexAddr20>
 ): EvmContractVerifyForm => ({
-  contractAddress: contractAddressQueryParam ?? zHexAddr20.parse(""),
   compilerVersion: "",
-  licenseType: undefined,
+  contractAddress: contractAddressQueryParam ?? zHexAddr20.parse(""),
   language: undefined,
+  licenseType: undefined,
   option: undefined,
   verifyForm: {
-    solidityUploadFiles: {
-      files: [],
-      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
-      optimizerConfig: OPTIMIZER_CONFIG_DEFAULT_VALUE,
-      evmVersion: EVM_VERSION_DEFAULT_VALUE,
-      contractLibraries: CONTRACT_LIBRARIES_DEFAULT_VALUE,
-    },
     solidityContractCode: {
-      contractCode: "",
       constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
+      contractCode: "",
+      contractLibraries: CONTRACT_LIBRARIES_DEFAULT_VALUE,
       evmVersion: EVM_VERSION_DEFAULT_VALUE,
       optimizerConfig: OPTIMIZER_CONFIG_DEFAULT_VALUE,
-      contractLibraries: CONTRACT_LIBRARIES_DEFAULT_VALUE,
     },
     solidityJsonInput: {
+      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
+    },
+    solidityUploadFiles: {
+      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
+      contractLibraries: CONTRACT_LIBRARIES_DEFAULT_VALUE,
+      evmVersion: EVM_VERSION_DEFAULT_VALUE,
+      files: [],
+      optimizerConfig: OPTIMIZER_CONFIG_DEFAULT_VALUE,
+    },
+    vyperContractCode: {
+      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
+      contractCode: "",
+      contractName: "",
+      evmVersion: EVM_VERSION_DEFAULT_VALUE,
+    },
+    vyperJsonInput: {
       constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
     },
     vyperUploadFile: {
       constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
       evmVersion: EVM_VERSION_DEFAULT_VALUE,
-    },
-    vyperContractCode: {
-      contractName: "",
-      contractCode: "",
-      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
-      evmVersion: EVM_VERSION_DEFAULT_VALUE,
-    },
-    vyperJsonInput: {
-      constructorArgs: CONSTRUCTOR_ARGS_DEFAULT_VALUE,
     },
   },
 });

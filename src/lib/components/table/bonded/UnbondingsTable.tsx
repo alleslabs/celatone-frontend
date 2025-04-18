@@ -19,9 +19,9 @@ interface UnbondingsTableProps {
 }
 
 const UnbondingsTableBody = ({
-  unbondings,
   isLoading,
   isSingleBondDenom,
+  unbondings,
 }: UnbondingsTableProps) => {
   const isMobile = useMobile();
 
@@ -48,9 +48,9 @@ const UnbondingsTableBody = ({
             unbonding.completionTime
           }
           bondedInfo={{
-            validator: unbonding.validator,
             balances: unbonding.balances,
             completionTime: unbonding.completionTime,
+            validator: unbonding.validator,
           }}
           isSingleBondDenom={isSingleBondDenom}
         />
@@ -73,9 +73,9 @@ const UnbondingsTableBody = ({
             unbonding.completionTime
           }
           bondedInfo={{
-            validator: unbonding.validator,
             balances: unbonding.balances,
             completionTime: unbonding.completionTime,
+            validator: unbonding.validator,
           }}
           isSingleBondDenom={isSingleBondDenom}
           isUnbonding
@@ -87,9 +87,9 @@ const UnbondingsTableBody = ({
 };
 
 export const UnbondingsTable = ({
-  unbondings,
   isLoading,
   isSingleBondDenom,
+  unbondings,
 }: UnbondingsTableProps) => (
   <Box width="100%">
     <TableTitle count={unbondings?.length ?? 0} mb={2} title="Unbonding" />

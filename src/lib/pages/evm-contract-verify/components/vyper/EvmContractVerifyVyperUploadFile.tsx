@@ -21,7 +21,7 @@ export const EvmContractVerifyVyperUploadFile = ({
   evmVerifyConfig,
 }: EvmContractVerifyVyperUploadFileProps) => {
   const {
-    field: { value, onChange },
+    field: { onChange, value },
   } = useController({
     control,
     name: "verifyForm.vyperUploadFile.file",

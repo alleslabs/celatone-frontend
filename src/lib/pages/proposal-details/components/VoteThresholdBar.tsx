@@ -14,11 +14,11 @@ interface BarSectionProps {
 }
 
 const BarSection = ({
-  percent,
   color,
-  option,
-  textColor,
   isCompact,
+  option,
+  percent,
+  textColor,
 }: BarSectionProps) => (
   <Flex
     alignItems="center"
@@ -49,11 +49,11 @@ interface VoteThresholdBarProps {
 }
 
 export const VoteThresholdBar = ({
+  isCompact,
   threshold,
   votesInfo,
-  isCompact,
 }: VoteThresholdBarProps) => {
-  const { yesNonRatio, noNonRatio, noWithVetoNonRatio } =
+  const { noNonRatio, noWithVetoNonRatio, yesNonRatio } =
     normalizeVotesInfo(votesInfo);
 
   const thresholdPercent = formatPrettyPercent(threshold as Ratio<number>);

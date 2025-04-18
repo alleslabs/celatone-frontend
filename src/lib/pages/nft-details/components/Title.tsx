@@ -17,9 +17,9 @@ interface TitleProps {
 export const Title = ({
   collectionAddress,
   displayCollectionName,
-  tokenId,
-  nftAddress,
   isBurned,
+  nftAddress,
+  tokenId,
 }: TitleProps) => {
   const isMobile = useMobile();
   return (

@@ -33,12 +33,12 @@ const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {
 });
 
 export const SchemaQueryResponse = ({
-  res,
-  resTab,
-  msgSchema,
-  resSchema,
-  timestamp,
   isLoading,
+  msgSchema,
+  res,
+  resSchema,
+  resTab,
+  timestamp,
 }: SchemaQueryResponseProps) => {
   if (isLoading)
     return (

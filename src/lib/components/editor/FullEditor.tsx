@@ -23,8 +23,8 @@ interface FullEditorProps
 export const FullEditor = ({
   filesPath,
   initialFilePath,
-  libraryFilesPath,
   isOpen,
+  libraryFilesPath,
   onClose,
 }: FullEditorProps) => {
   const isMobile = useMobile();

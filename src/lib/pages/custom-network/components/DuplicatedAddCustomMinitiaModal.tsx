@@ -20,8 +20,8 @@ interface DuplicatedAddCustomMinitiaModalProps {
 
 export const DuplicatedAddCustomMinitiaModal = ({
   isOpen,
-  onClose,
   label,
+  onClose,
 }: DuplicatedAddCustomMinitiaModalProps) => (
   <Modal
     closeOnOverlayClick={false}

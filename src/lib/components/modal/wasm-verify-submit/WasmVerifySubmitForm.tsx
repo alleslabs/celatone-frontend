@@ -35,24 +35,42 @@ interface WasmVerifySubmitFormProps {
 }
 
 export const WasmVerifySubmitForm = ({
-  codeId,
   codeHash,
-  wasmVerifyStatus,
-  relatedVerifiedCodes,
+  codeId,
   contractAddress,
-  onSubmit,
   isLoading,
+  onSubmit,
+  relatedVerifiedCodes,
+  wasmVerifyStatus,
 }: WasmVerifySubmitFormProps) => {
   const { currentChainId } = useCelatoneApp();
   const wasmOptimizerVersions = useWasmOptimizerVersions();
 
   const {
     control,
-    handleSubmit,
     formState: { errors, isValid },
+    handleSubmit,
   } = useForm({
+    defaultValues: {
+      commit: "",
+      compilerVersion: "",
+      gitUrl: "",
+      packageName: "",
+    },
+    mode: "all",
     resolver: zodResolver(
       z.object({
+        commit: z
+          .string()
+          .min(1, { message: "Commit hash is required" })
+          .regex(
+            /^[0-9a-fA-F]+$/,
+            "Only hexadecimal digits are allowed, such as 0-9 and A-F"
+          )
+          .max(40, {
+            message: "The commit hash length must be 40 characters or fewer",
+          }),
+        compilerVersion: z.string().min(1),
         gitUrl: z
           .string()
           .min(1, {
@@ -66,16 +84,6 @@ export const WasmVerifySubmitForm = ({
             message:
               "Please enter GitHub URL in format: https://github.com/username/repository",
           }),
-        commit: z
-          .string()
-          .min(1, { message: "Commit hash is required" })
-          .regex(
-            /^[0-9a-fA-F]+$/,
-            "Only hexadecimal digits are allowed, such as 0-9 and A-F"
-          )
-          .max(40, {
-            message: "The commit hash length must be 40 characters or fewer",
-          }),
         packageName: z
           .string()
           .min(1, { message: "Wasm file name is required" })
@@ -83,17 +91,9 @@ export const WasmVerifySubmitForm = ({
             /^[^\\/:*?"<>|]+$/,
             'Filename cannot contain any of the following characters: \\ / : * ? " < > |'
           ),
-        compilerVersion: z.string().min(1),
       })
     ),
-    mode: "all",
     reValidateMode: "onChange",
-    defaultValues: {
-      gitUrl: "",
-      commit: "",
-      packageName: "",
-      compilerVersion: "",
-    },
   });
 
   return (

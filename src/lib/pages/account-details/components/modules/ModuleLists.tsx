@@ -19,10 +19,10 @@ interface ModuleListsProps {
 
 export const ModuleLists = ({
   address,
-  totalCount,
-  modules,
   isLoading,
+  modules,
   onViewMore,
+  totalCount,
 }: ModuleListsProps) => {
   const [keyword, setKeyword] = useState("");
   const isMobile = useMobile();

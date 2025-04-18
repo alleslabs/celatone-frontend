@@ -20,7 +20,7 @@ const InvalidPool = () => <InvalidState title="Pool does not exist" />;
 
 const PoolIdBody = ({ poolId }: { poolId: number }) => {
   const router = useRouter();
-  const { pool, isLoading } = useDerivedPoolData(poolId);
+  const { isLoading, pool } = useDerivedPoolData(poolId);
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_POOL_DETAILS);

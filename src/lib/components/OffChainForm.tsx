@@ -27,13 +27,13 @@ interface OffChainFormProps<T extends OffchainDetail> {
 }
 
 export const OffChainForm = <T extends OffchainDetail>({
-  state,
   contractLabel,
   control,
-  setTagsValue,
-  setContractListsValue,
   errors,
   labelBgColor = "background.main",
+  setContractListsValue,
+  setTagsValue,
+  state,
 }: OffChainFormProps<T>) => {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();

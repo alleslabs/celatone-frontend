@@ -15,9 +15,9 @@ interface NftListProps {
 }
 
 export const NftList = ({
-  nfts,
-  isLoading,
   emptyState,
+  isLoading,
+  nfts,
   showCollection,
 }: NftListProps) => {
   if (isLoading) return <Loading />;

@@ -11,10 +11,10 @@ interface TotalValueProps {
 }
 export const TotalValue = ({
   address,
-  label = "Total account value",
   isCompact = false,
+  label = "Total account value",
 }: TotalValueProps) => {
-  const { totalAccountValue, isLoading } = useAccountTotalValue(address);
+  const { isLoading, totalAccountValue } = useAccountTotalValue(address);
   return (
     <Flex
       border="1px solid"

@@ -36,8 +36,8 @@ export const useInitiaUsernameByAddress = (
     [CELATONE_QUERY_KEYS.INITIA_USERNAME_BY_ADDRESS, address],
     queryFn,
     {
-      refetchOnWindowFocus: false,
       enabled: enabled && isInitia && !!address && isSomeValidAddress(address),
+      refetchOnWindowFocus: false,
       retry: 1,
     }
   );
@@ -63,8 +63,8 @@ export const useAddressByInitiaUsername = (
     [CELATONE_QUERY_KEYS.ADDRESS_BY_INITIA_USERNAME, username],
     queryFn,
     {
-      refetchOnWindowFocus: false,
       enabled: enabled && username.length > 0 && isInitia,
+      refetchOnWindowFocus: false,
       retry: 1,
     }
   );

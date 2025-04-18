@@ -39,7 +39,7 @@ const getStepIconState = (step: number, proposalData: ProposalData) => {
   return PeriodState.COMPLETE;
 };
 
-export const StepIcon = ({ step, proposalData }: ProposalStepperProps) => {
+export const StepIcon = ({ proposalData, step }: ProposalStepperProps) => {
   const state = getStepIconState(step, proposalData);
   const isGray = state === PeriodState.WAITING || state === PeriodState.FAILED;
   return (

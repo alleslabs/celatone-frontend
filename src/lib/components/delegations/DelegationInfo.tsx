@@ -18,12 +18,12 @@ interface DelegationInfoProps {
 }
 
 export const DelegationInfo = ({
-  totalBondedCard,
-  otherInfoCards,
-  redelegationCount,
+  hasTotalBonded = true,
   onClickToggle,
   onViewMore,
-  hasTotalBonded = true,
+  otherInfoCards,
+  redelegationCount,
+  totalBondedCard,
 }: DelegationInfoProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;

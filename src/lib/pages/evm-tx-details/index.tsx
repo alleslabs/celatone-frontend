@@ -39,7 +39,7 @@ const EvmTxDetailsBody = ({ evmTxHash }: EvmTxDetailsBodyProps) => {
   useEvmConfig({ shouldRedirect: true });
   const router = useRouter();
   const isMobile = useMobile();
-  const { evmTxData, cosmosTxData, evmDenom, evmTxValue, gasInfo, isLoading } =
+  const { cosmosTxData, evmDenom, evmTxData, evmTxValue, gasInfo, isLoading } =
     useEvmTxDetailsData(evmTxHash);
 
   useEffect(() => {

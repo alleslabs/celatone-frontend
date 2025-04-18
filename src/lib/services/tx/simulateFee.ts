@@ -24,12 +24,12 @@ interface SimulateQueryParams {
 
 export const useSimulateFeeQuery = ({
   enabled,
-  messages,
-  isDummyUser,
-  retry = 2,
   extraQueryKey = [],
-  onSuccess,
+  isDummyUser,
+  messages,
   onError,
+  onSuccess,
+  retry = 2,
 }: SimulateQueryParams) => {
   const { address, chainId } = useCurrentChain();
   const { dummyAddress } = useDummyWallet();
@@ -39,10 +39,14 @@ export const useSimulateFeeQuery = ({
     const userAddress = isDummyUser ? dummyAddress : address;
     if (!userAddress)
       throw new Error("No address provided (useSimulateFeeQuery)");
-    return simulateFee({ address: userAddress, messages, isDummyUser });
+    return simulateFee({ address: userAddress, isDummyUser, messages });
   };
 
   return useQuery({
+    enabled,
+    onError,
+    onSuccess,
+    queryFn: simulateFn,
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE,
       chainId,
@@ -51,13 +55,9 @@ export const useSimulateFeeQuery = ({
       isDummyUser,
       ...extraQueryKey,
     ],
-    queryFn: simulateFn,
-    enabled,
-    retry,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    onSuccess,
-    onError,
+    retry,
   });
 };
 
@@ -71,12 +71,12 @@ interface SimulateQueryParamsForStoreCode {
 }
 
 export const useSimulateFeeForStoreCode = ({
-  enabled,
-  wasmFile,
-  permission,
   addresses,
-  onSuccess,
+  enabled,
   onError,
+  onSuccess,
+  permission,
+  wasmFile,
 }: SimulateQueryParamsForStoreCode) => {
   const { address, chainId } = useCurrentChain();
   const simulateFee = useSimulateFee();
@@ -89,16 +89,20 @@ export const useSimulateFeeForStoreCode = ({
 
     const submitStoreCodeMsg = async () => {
       return composeStoreCodeMsg({
+        addresses,
+        permission,
         sender: address,
         wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
-        permission,
-        addresses,
       });
     };
     const craftMsg = await submitStoreCodeMsg();
     return simulateFee({ address, messages: [craftMsg] });
   };
   return useQuery({
+    enabled,
+    onError,
+    onSuccess,
+    queryFn: simulateFn,
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE,
       chainId,
@@ -106,13 +110,9 @@ export const useSimulateFeeForStoreCode = ({
       permission,
       addresses,
     ],
-    queryFn: simulateFn,
-    enabled,
-    retry: 2,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    onSuccess,
-    onError,
+    retry: 2,
   });
 };
 
@@ -135,21 +135,21 @@ interface SimulateQueryParamsForProposalStoreCode {
 }
 
 export const useSimulateFeeForProposalStoreCode = ({
-  enabled,
-  title,
-  description,
-  runAs,
-  initialDeposit,
-  unpinCode,
-  builder,
-  source,
-  codeHash,
-  wasmFile,
-  permission,
   addresses,
-  precision,
-  onSuccess,
+  builder,
+  codeHash,
+  description,
+  enabled,
+  initialDeposit,
   onError,
+  onSuccess,
+  permission,
+  precision,
+  runAs,
+  source,
+  title,
+  unpinCode,
+  wasmFile,
 }: SimulateQueryParamsForProposalStoreCode) => {
   const { address, chainId } = useCurrentChain();
   const simulateFee = useSimulateFee();
@@ -166,19 +166,19 @@ export const useSimulateFeeForProposalStoreCode = ({
 
     const submitStoreCodeProposalMsg = async () => {
       return composeStoreCodeProposalMsg({
-        proposer: address,
-        title,
-        description,
-        runAs,
-        wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
-        permission,
         addresses,
-        unpinCode,
-        source,
         builder,
         codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
+        description,
         initialDeposit,
+        permission,
         precision,
+        proposer: address,
+        runAs,
+        source,
+        title,
+        unpinCode,
+        wasmByteCode: await gzip(new Uint8Array(await wasmFile.arrayBuffer())),
       });
     };
 
@@ -187,6 +187,10 @@ export const useSimulateFeeForProposalStoreCode = ({
   };
 
   return useQuery({
+    enabled,
+    onError,
+    onSuccess,
+    queryFn: simulateFn,
     queryKey: [
       CELATONE_QUERY_KEYS.SIMULATE_FEE_STORE_CODE_PROPOSAL,
       chainId,
@@ -201,12 +205,8 @@ export const useSimulateFeeForProposalStoreCode = ({
       addresses,
       enabled,
     ],
-    queryFn: simulateFn,
-    enabled,
-    retry: 2,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
-    onSuccess,
-    onError,
+    retry: 2,
   });
 };

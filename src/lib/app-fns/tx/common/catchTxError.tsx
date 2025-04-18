@@ -20,17 +20,17 @@ const getReceiptInfo = (
         header: "Rejected by user",
       }
     : {
-        header: "Transaction failed",
         errorMsg: error.message,
+        header: "Transaction failed",
       };
 
 const getTxHashReceipts = (txHash?: string): TxReceipt[] =>
   txHash
     ? [
         {
+          html: <ExplorerLink openNewTab type="tx_hash" value={txHash} />,
           title: "Tx hash",
           value: txHash,
-          html: <ExplorerLink openNewTab type="tx_hash" value={txHash} />,
         },
       ]
     : [];
@@ -50,7 +50,7 @@ export const catchTxError = (
     }
     onTxFailed?.();
     return Promise.resolve<TxResultRendering>({
-      value: null,
+      actionVariant: getActionVariant(!txHash),
       phase: TxStreamPhase.FAILED,
       receiptInfo: {
         ...getReceiptInfo(error),
@@ -63,7 +63,7 @@ export const catchTxError = (
         ),
       },
       receipts: getTxHashReceipts(txHash),
-      actionVariant: getActionVariant(!txHash),
+      value: null,
     });
   });
 };

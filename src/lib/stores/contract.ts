@@ -58,12 +58,12 @@ export class ContractStore {
 
   private defaultContractList: ContractList[] = [
     {
+      contracts: [],
+      isContractRemovable: true,
+      isInfoEditable: false,
+      lastUpdated: getCurrentDate(),
       name: SAVED_LIST_NAME,
       slug: formatSlugName(SAVED_LIST_NAME),
-      contracts: [],
-      lastUpdated: getCurrentDate(),
-      isInfoEditable: false,
-      isContractRemovable: true,
     },
   ];
 
@@ -163,12 +163,12 @@ export class ContractStore {
       this.contractList[this.userKey] = [
         ...oldList,
         {
+          contracts: [],
+          isContractRemovable: true,
+          isInfoEditable: true,
+          lastUpdated: getCurrentDate(),
           name: name.trim(),
           slug: formatSlugName(name),
-          contracts: [],
-          lastUpdated: getCurrentDate(),
-          isInfoEditable: true,
-          isContractRemovable: true,
         },
       ];
     }
@@ -235,10 +235,10 @@ export class ContractStore {
     const contractLocalInfo = this.contractLocalInfo[this.userKey]?.[
       contractAddress
     ] ?? {
-      contractAddress,
-      label,
       codeId,
+      contractAddress,
       instantiator,
+      label,
     };
 
     if (name !== undefined)

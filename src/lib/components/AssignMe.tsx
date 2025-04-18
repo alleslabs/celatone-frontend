@@ -11,8 +11,8 @@ interface AssignMeProps {
 }
 
 export const AssignMe = ({
-  onClick,
   isDisable = false,
+  onClick,
   textAlign = "right",
 }: AssignMeProps) => {
   const { address: walletAddress } = useCurrentChain();

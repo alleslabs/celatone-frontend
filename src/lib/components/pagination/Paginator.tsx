@@ -24,19 +24,19 @@ export type PaginatorProps = {
 };
 
 export const Paginator: FC<PaginatorProps> = ({
-  children,
-  pagesQuantity = INITIAL_VALUES.pagesQuantity,
-  normalStyles = INITIAL_VALUES.normalStyles,
   activeStyles = INITIAL_VALUES.activeStyles,
-  separatorStyles = INITIAL_VALUES.separatorStyles,
-  isDisabled = INITIAL_VALUES.isDisabled,
-  innerLimit = INITIAL_VALUES.innerLimit,
-  separatorIcon = INITIAL_VALUES.separatorIcon,
-  outerLimit = INITIAL_VALUES.outerLimit,
+  children,
+  currentPage = INITIAL_VALUES.currentPage,
   hoverIconLeft = INITIAL_VALUES.hoverIconLeft,
   hoverIconRight = INITIAL_VALUES.hoverIconRight,
-  currentPage = INITIAL_VALUES.currentPage,
+  innerLimit = INITIAL_VALUES.innerLimit,
+  isDisabled = INITIAL_VALUES.isDisabled,
+  normalStyles = INITIAL_VALUES.normalStyles,
   onPageChange,
+  outerLimit = INITIAL_VALUES.outerLimit,
+  pagesQuantity = INITIAL_VALUES.pagesQuantity,
+  separatorIcon = INITIAL_VALUES.separatorIcon,
+  separatorStyles = INITIAL_VALUES.separatorStyles,
 }) => (
   <PaginatorProvider
     activeStyles={activeStyles}

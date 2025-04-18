@@ -16,16 +16,16 @@ interface BookmarkButtonProps {
 }
 
 const buttonTextProps: CSSProperties = {
-  minWidth: "auto",
-  height: "auto",
   borderRadius: "8px",
+  height: "auto",
+  minWidth: "auto",
 };
 
 const buttonIconProps: CSSProperties = {
-  padding: "2px",
-  minWidth: "fit-content",
-  height: "fit-content",
   borderRadius: "full",
+  height: "fit-content",
+  minWidth: "fit-content",
+  padding: "2px",
 };
 
 const toastIcon = <CustomIcon color="success.main" name="check-circle-solid" />;
@@ -39,10 +39,10 @@ interface StyledButtonProps {
 }
 
 const StyledButton = ({
-  hasText,
-  actionText,
-  icon,
   action,
+  actionText,
+  hasText,
+  icon,
   variant,
 }: StyledButtonProps) => (
   <Button
@@ -66,23 +66,23 @@ const StyledButton = ({
 );
 
 export const BookmarkButton = observer(
-  ({ details, slug, hasText = true }: BookmarkButtonProps) => {
-    const { isPublicProjectSaved, savePublicProject, removePublicProject } =
+  ({ details, hasText = true, slug }: BookmarkButtonProps) => {
+    const { isPublicProjectSaved, removePublicProject, savePublicProject } =
       usePublicProjectStore();
     const toast = useToast({
-      status: "success",
       duration: 5000,
+      icon: toastIcon,
       isClosable: false,
       position: "bottom-right",
-      icon: toastIcon,
+      status: "success",
     });
 
     const handleSave = useCallback(() => {
       track(AmpEvent.PUBLIC_SAVE);
       savePublicProject({
+        logo: details?.logo || "",
         name: details?.name || "",
         slug,
-        logo: details?.logo || "",
       });
       toast({
         title: `Bookmarked \u2018${details?.name}\u2019 successfully`,

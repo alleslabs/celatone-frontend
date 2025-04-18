@@ -15,8 +15,8 @@ interface NotVerifiedDetailsProps {
 }
 
 export const NotVerifiedDetails = ({
-  codeId,
   codeHash,
+  codeId,
   contractAddress,
 }: NotVerifiedDetailsProps) => {
   const isMobile = useMobile();

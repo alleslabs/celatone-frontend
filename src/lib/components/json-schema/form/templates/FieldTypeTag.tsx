@@ -3,8 +3,8 @@ import type { RJSFSchema } from "@rjsf/utils";
 import { Flex, Tag } from "@chakra-ui/react";
 
 export const FieldTypeTag = ({
-  type,
   format,
+  type,
 }: Pick<RJSFSchema, "type" | "format">) => {
   if (!type) return null;
   if (Array.isArray(type)) {

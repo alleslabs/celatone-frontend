@@ -11,8 +11,8 @@ interface UploadSchemaSectionProps {
 }
 
 export const UploadSchemaSection = ({
-  codeId,
   codeHash,
+  codeId,
   title = `You haven't attached the JSON schema for code ${codeId} yet`,
 }: UploadSchemaSectionProps) => {
   const sectionHeader =

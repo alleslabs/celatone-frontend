@@ -32,8 +32,8 @@ interface CodeTopInfoProps {
 
 export const CodeTopInfo = observer(
   ({
-    codeId,
     code,
+    codeId,
     projectInfo,
     publicInfo,
     wasmVerifyInfo,
@@ -50,12 +50,12 @@ export const CodeTopInfo = observer(
         <Breadcrumb
           items={[
             {
-              text: projectInfo?.name ? "Public projects" : "Codes",
               href: projectInfo?.name ? "/projects" : "/codes",
+              text: projectInfo?.name ? "Public projects" : "Codes",
             },
             {
-              text: projectInfo?.name,
               href: `/projects/${publicInfo?.slug}`,
+              text: projectInfo?.name,
             },
             { text: codeId.toString() },
           ]}

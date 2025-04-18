@@ -113,14 +113,14 @@ const getCopyLabel = (type: LinkType) =>
     .join(" ");
 
 const LinkRender = ({
-  type,
-  isInternal,
-  hrefLink,
-  textValue,
   fallbackValue,
+  hrefLink,
   isEllipsis,
-  textVariant,
+  isInternal,
   openNewTab,
+  textValue,
+  textVariant,
+  type,
 }: {
   type: string;
   isInternal: boolean;
@@ -172,18 +172,18 @@ const LinkRender = ({
 };
 
 export const ExplorerLink = ({
-  type,
-  value,
+  ampCopierSection,
   copyValue,
   externalLink,
-  showCopyOnHover = false,
+  fixedHeight = true,
   isReadOnly = false,
+  openNewTab,
+  rightIcon = null,
+  showCopyOnHover = false,
   textFormat = "truncate",
   textVariant = "body2",
-  ampCopierSection,
-  openNewTab,
-  fixedHeight = true,
-  rightIcon = null,
+  type,
+  value,
   ...componentProps
 }: ExplorerLinkProps) => {
   const isMobile = useMobile();

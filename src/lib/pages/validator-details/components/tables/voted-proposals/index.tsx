@@ -28,8 +28,8 @@ interface VotedProposalsTableProps {
 }
 
 export const VotedProposalsTable = ({
-  validatorAddress,
   onViewMore,
+  validatorAddress,
 }: VotedProposalsTableProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
@@ -40,18 +40,18 @@ export const VotedProposalsTable = ({
   const debouncedSearch = useDebounce(search);
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
@@ -69,51 +69,51 @@ export const VotedProposalsTable = ({
   const answerOptions = useMemo(
     () => [
       {
+        disabled: !answers?.all,
         label: `All proposals (${answers?.all ?? 0})`,
         value: ProposalVoteType.ALL,
-        disabled: !answers?.all,
       },
       {
-        label: `Yes (${answers?.yes ?? 0})`,
-        value: ProposalVoteType.YES,
         disabled: !answers?.yes,
         hasLegend: true,
         iconColor: "success.main",
+        label: `Yes (${answers?.yes ?? 0})`,
+        value: ProposalVoteType.YES,
       },
       {
-        label: `No (${answers?.no ?? 0})`,
-        value: ProposalVoteType.NO,
         disabled: !answers?.no,
         hasLegend: true,
         iconColor: "error.main",
+        label: `No (${answers?.no ?? 0})`,
+        value: ProposalVoteType.NO,
       },
       {
-        label: `No with veto (${answers?.noWithVeto ?? 0})`,
-        value: ProposalVoteType.NO_WITH_VETO,
         disabled: !answers?.noWithVeto,
         hasLegend: true,
         iconColor: "error.dark",
+        label: `No with veto (${answers?.noWithVeto ?? 0})`,
+        value: ProposalVoteType.NO_WITH_VETO,
       },
       {
-        label: `Abstain (${answers?.abstain ?? 0})`,
-        value: ProposalVoteType.ABSTAIN,
         disabled: !answers?.abstain,
         hasLegend: true,
         iconColor: "gray.600",
+        label: `Abstain (${answers?.abstain ?? 0})`,
+        value: ProposalVoteType.ABSTAIN,
       },
       {
-        label: `Did not vote (${answers?.didNotVote ?? 0})`,
-        value: ProposalVoteType.DID_NOT_VOTE,
         disabled: !answers?.didNotVote,
         hasLegend: true,
         iconColor: "gray.600",
+        label: `Did not vote (${answers?.didNotVote ?? 0})`,
+        value: ProposalVoteType.DID_NOT_VOTE,
       },
       {
-        label: `Weighted (${answers?.weighted ?? 0})`,
-        value: ProposalVoteType.WEIGHTED,
         disabled: !answers?.weighted,
         hasLegend: true,
         iconColor: "primary.light",
+        label: `Weighted (${answers?.weighted ?? 0})`,
+        value: ProposalVoteType.WEIGHTED,
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -7,8 +7,8 @@ import { BoolField } from "./BoolField";
 import { TupleField } from "./TupleField";
 
 export const Field = <T extends FieldValues>({
-  type,
   components,
+  type,
   ...rest
 }: FieldProps<T>) => {
   if (components)

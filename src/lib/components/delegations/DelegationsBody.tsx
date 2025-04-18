@@ -44,11 +44,11 @@ interface DelegationTabProps extends TabProps {
 }
 
 const DelegationTab = ({
-  isDisabled,
-  value,
-  tokens,
-  isLoading,
   bondDenoms,
+  isDisabled,
+  isLoading,
+  tokens,
+  value,
   ...restProps
 }: DelegationTabProps) => {
   const tabProps = useTab({ ...restProps });
@@ -67,19 +67,19 @@ const DelegationTab = ({
       mb={0}
       py={3}
       sx={{
-        "&[aria-selected=true]": {
-          background: "gray.800",
-          border: "1px solid",
-          borderColor: "gray.700",
-          opacity: "100%",
-          borderBottomColor: "gray.800",
-        },
         "&[aria-selected=false]": {
           background: "transparent",
           border: "1px solid",
+          borderBottomColor: "transparent",
           borderColor: "gray.700",
           opacity: "70%",
-          borderBottomColor: "transparent",
+        },
+        "&[aria-selected=true]": {
+          background: "gray.800",
+          border: "1px solid",
+          borderBottomColor: "gray.800",
+          borderColor: "gray.700",
+          opacity: "100%",
         },
       }}
       w="full"
@@ -105,14 +105,14 @@ const DelegationTab = ({
 };
 
 export const DelegationsBody = ({
-  totalDelegations,
+  bondDenoms,
   delegations,
-  totalUnbondings,
-  unbondings,
-  rewards,
   isDelegationsLoading,
   isUnbondingsLoading,
-  bondDenoms,
+  rewards,
+  totalDelegations,
+  totalUnbondings,
+  unbondings,
 }: DelegationsBodyProps) => {
   // NOTE: set between "Delegated" and "Unbonding"
   const router = useRouter();

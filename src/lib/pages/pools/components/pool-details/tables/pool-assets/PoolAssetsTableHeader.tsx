@@ -12,8 +12,8 @@ interface PoolHeaderProps {
 }
 
 export const PoolAssetsTableHeader = ({
-  poolType,
   isSupported,
+  poolType,
   templateColumns,
 }: PoolHeaderProps) => (
   <Grid

@@ -11,13 +11,13 @@ interface SearchZeroStateProps {
 }
 
 export const SearchZeroState = ({
+  isEvm,
+  isFullTier,
+  isGov,
+  isMove,
+  isNft,
   isPool,
   isWasm,
-  isMove,
-  isEvm,
-  isGov,
-  isNft,
-  isFullTier,
 }: SearchZeroStateProps) => {
   const base = ["Account address", "Block height", "Tx hash"];
   const govText = isGov ? ["Validator address", "Proposal ID"] : [];

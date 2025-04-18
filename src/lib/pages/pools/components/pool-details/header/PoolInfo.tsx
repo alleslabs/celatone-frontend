@@ -137,8 +137,8 @@ export const PoolInfo = ({ pool }: PoolInfoProps) => {
         <LabelText label="Scaling factors">
           <JsonModalButton
             jsonString={JSON.stringify({
-              scaling_factors: pool.scalingFactors,
               scaling_factor_controller: pool.scalingFactorController,
+              scaling_factors: pool.scalingFactors,
             })}
             modalHeader="Scaling factors"
           />

@@ -40,8 +40,8 @@ const getMoveVerifyBadgeLabel = (status: MoveVerifyStatus) => {
 };
 
 export const MoveVerifyBadge = ({
-  status,
   hasTooltip = false,
+  status,
 }: MoveVerifyBadgeProps) => (
   <Tooltip hidden={!hasTooltip} label={getMoveVerifyBadgeLabel(status)}>
     <MoveVerifyBadgeIcon status={status} />

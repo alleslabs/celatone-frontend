@@ -38,8 +38,8 @@ interface ToPageProps {
 const ToPage = ({ onClick, title }: ToPageProps) => (
   <Flex
     _hover={{
-      color: "primary.light",
       bgColor: "primary.background",
+      color: "primary.light",
     }}
     align="center"
     alignItems="center"
@@ -60,12 +60,12 @@ const ToPage = ({ onClick, title }: ToPageProps) => (
 );
 
 export const StickySidebar = ({
-  metadata,
   hasForumAlert = false,
+  metadata,
   ...boxProps
 }: StickySidebarProps) => {
   const navigate = useInternalNavigate();
-  const { title, description, toPagePath, toPageTitle, toPage, page } =
+  const { description, page, title, toPage, toPagePath, toPageTitle } =
     metadata;
   const hasAction = toPage;
   return (

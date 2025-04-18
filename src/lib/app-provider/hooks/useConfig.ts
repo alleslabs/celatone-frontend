@@ -23,11 +23,11 @@ export const useTierConfig = (
     navigate({ pathname: "/", replace: true });
 
   return {
-    tier,
     isFullTier: tier === "full",
     isLiteTier: tier === "lite",
     isMesaTier: tier === "mesa",
     isSequencerTier: tier === "sequencer",
+    tier,
   };
 };
 

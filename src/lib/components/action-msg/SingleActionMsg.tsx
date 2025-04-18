@@ -12,7 +12,7 @@ interface SingleActionMsgProps {
   singleMsg?: boolean;
 }
 export const SingleActionMsg = observer(
-  ({ messages, type, success, singleMsg }: SingleActionMsgProps) => {
+  ({ messages, singleMsg, success, type }: SingleActionMsgProps) => {
     const singleMsgProps = useSingleActionMsgProps(
       type,
       success,

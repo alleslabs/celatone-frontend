@@ -18,10 +18,10 @@ interface FormFieldsProps<T extends FieldValues> {
 }
 
 export const FormFields = <T extends FieldValues>({
-  control,
   components,
-  isPayable,
+  control,
   isDisabled,
+  isPayable,
 }: FormFieldsProps<T>) => {
   const { data: evmParamsData } = useEvmParams();
   const { data: assetInfos } = useAssetInfos({

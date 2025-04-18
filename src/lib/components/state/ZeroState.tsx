@@ -19,7 +19,7 @@ interface ActionSectionProps {
   handleAction?: () => void;
 }
 
-const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
+const ActionSection = ({ handleAction, list }: ActionSectionProps) =>
   list.value === formatSlugName(INSTANTIATED_LIST_NAME) ? (
     <Button
       leftIcon={<CustomIcon boxSize={4} name="add-new" />}
@@ -34,10 +34,10 @@ const ActionSection = ({ list, handleAction }: ActionSectionProps) =>
         <SaveNewContractModal
           key={list.value}
           buttonProps={{
-            variant: "outline-primary",
-            leftIcon: <CustomIcon name="bookmark" />,
             children: "Save contract",
+            leftIcon: <CustomIcon name="bookmark" />,
             ml: 2,
+            variant: "outline-primary",
           }}
           list={list}
         />
@@ -62,7 +62,7 @@ const renderText = (listSlug: string) => {
  * @todo Will be refactored in the next PR
  */
 
-export const ZeroState = ({ list, isReadOnly }: ZeroStateProps) => {
+export const ZeroState = ({ isReadOnly, list }: ZeroStateProps) => {
   const navigate = useInternalNavigate();
   return (
     <Flex

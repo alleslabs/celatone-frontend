@@ -24,12 +24,12 @@ interface ContractsTableProps {
 
 export const ContractsTable = ({
   contracts,
-  isLoading,
   emptyState,
-  onRowSelect,
-  showTag = true,
-  showLastUpdate = true,
+  isLoading,
   isReadOnly = false,
+  onRowSelect,
+  showLastUpdate = true,
+  showTag = true,
   withCta,
 }: ContractsTableProps) => {
   const isMobile = useMobile();

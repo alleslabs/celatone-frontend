@@ -20,8 +20,8 @@ interface PastTxsLiteTransactionsTableWithWalletEmptyStateProps {
 }
 
 const PastTxsLiteTransactionsTableWithWalletEmptyState = ({
-  search,
   error,
+  search,
 }: PastTxsLiteTransactionsTableWithWalletEmptyStateProps) => {
   if (search.trim().length > 0)
     return (
@@ -50,22 +50,22 @@ export const PastTxsLite = () => {
   const debouncedSearch = useDebounce(search);
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
-  const { data, isLoading, error } = useTxsByAddressRest(
+  const { data, error, isLoading } = useTxsByAddressRest(
     address,
     debouncedSearch,
     pageSize,

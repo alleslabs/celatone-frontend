@@ -24,12 +24,12 @@ interface NetworkAccordionProps {
 
 export const NetworkAccordion = observer(
   ({
-    title,
-    networks,
     cursor,
+    networks,
+    onClose,
     setCursor,
     startIndex,
-    onClose,
+    title,
   }: NetworkAccordionProps) => {
     const { chainConfigs } = useChainConfigs();
     const nonInitiaNetworks = networks.filter(

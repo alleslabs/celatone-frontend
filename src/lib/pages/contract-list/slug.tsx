@@ -96,7 +96,7 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
       />
       <Breadcrumb
         items={[
-          { text: "Contract lists", href: "/contract-lists" },
+          { href: "/contract-lists", text: "Contract lists" },
           { text: contractListInfo.name },
         ]}
       />
@@ -134,9 +134,9 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
             <SaveNewContractModal
               key={slug}
               buttonProps={{
-                variant: "outline-primary",
-                leftIcon: <CustomIcon boxSize={3} name="bookmark" />,
                 children: "Save contract",
+                leftIcon: <CustomIcon boxSize={3} name="bookmark" />,
+                variant: "outline-primary",
               }}
               list={{
                 label: contractListInfo.name,
@@ -156,8 +156,8 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
                     value: contractListInfo.slug,
                   }}
                   menuItemProps={{
-                    icon: <CustomIcon color="gray.600" name="edit" />,
                     children: "Edit list name",
+                    icon: <CustomIcon color="gray.600" name="edit" />,
                   }}
                   reroute
                 />
@@ -167,8 +167,8 @@ const ContractByListBody = observer(({ slug }: { slug: string }) => {
                     value: contractListInfo.slug,
                   }}
                   menuItemProps={{
-                    icon: <CustomIcon color="error.light" name="delete" />,
                     children: "Remove list",
+                    icon: <CustomIcon color="error.light" name="delete" />,
                   }}
                 />
               </MenuList>

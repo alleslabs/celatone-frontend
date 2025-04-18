@@ -22,10 +22,10 @@ interface SuccessAddCustomMinitiaModalProps {
 }
 
 export const SuccessAddCustomMinitiaModal = ({
+  chainId,
   isOpen,
   onClose,
   prettyName,
-  chainId,
 }: SuccessAddCustomMinitiaModalProps) => {
   const [fakeLoading, setFakeLoading] = useState(false);
 

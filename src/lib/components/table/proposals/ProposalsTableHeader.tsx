@@ -11,8 +11,8 @@ interface ProposalsTableHeaderProps {
 }
 
 export const ProposalsTableHeader = ({
-  templateColumns,
   boxShadow,
+  templateColumns,
 }: ProposalsTableHeaderProps) => {
   const { isFullTier } = useTierConfig();
 

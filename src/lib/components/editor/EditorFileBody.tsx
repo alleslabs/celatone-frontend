@@ -14,9 +14,9 @@ interface EditorFileBodyProps extends FlexProps {
 }
 
 export const EditorFileBody = ({
-  node,
   initialFilePath,
   isNoWrap,
+  node,
   ...props
 }: EditorFileBodyProps) => (
   <Flex alignItems="center" gap={0.5} {...props}>

@@ -24,7 +24,7 @@ interface NavInfoProps {
   submenu: SubmenuInfo;
   isCurrentPage: (slug: string) => boolean;
 }
-const NavInfo = ({ submenu, isCurrentPage }: NavInfoProps) => (
+const NavInfo = ({ isCurrentPage, submenu }: NavInfoProps) => (
   <Flex
     _hover={
       submenu.isDisable ? undefined : { bg: "gray.700", borderRadius: "4px" }
@@ -73,7 +73,7 @@ interface SubMenuProps {
   isCurrentPage: (slug: string) => boolean;
 }
 
-const SubMenuRender = ({ submenu, isCurrentPage }: SubMenuProps) => (
+const SubMenuRender = ({ isCurrentPage, submenu }: SubMenuProps) => (
   <>
     {submenu.map((subitem) =>
       subitem.isDisable ? (
@@ -101,7 +101,7 @@ interface NavbarRenderProps {
   isCurrentPage: (slug: string) => boolean;
 }
 
-const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
+const NavbarRender = ({ isCurrentPage, menuInfo }: NavbarRenderProps) => {
   // Add slug to StorageKeys and NavContext
   const { submenus } = useNavContext();
   const [isExpand, setIsExpand] = submenus[menuInfo.slug];
@@ -123,8 +123,8 @@ const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
       sx={{
         "&:first-of-type": {
           borderTop: "none",
-          paddingTop: "0px",
           marginTop: "0px",
+          paddingTop: "0px",
         },
       }}
       onChange={handleChange}
@@ -159,8 +159,8 @@ const NavbarRender = ({ menuInfo, isCurrentPage }: NavbarRenderProps) => {
 };
 
 export const ExpandNavMenu = ({
-  navMenu,
   isCurrentPage,
+  navMenu,
   setIsExpand,
 }: NavMenuProps) => {
   const yourAccountMenu = navMenu[0];

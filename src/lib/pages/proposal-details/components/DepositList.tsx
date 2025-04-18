@@ -13,8 +13,8 @@ interface DepositListProps {
 }
 
 export const DepositList = ({
-  proposalDeposits,
   isDepositsLoading,
+  proposalDeposits,
 }: DepositListProps) => {
   const isMobile = useMobile();
 

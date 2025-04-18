@@ -26,44 +26,21 @@ export const deployScriptTx = ({
   address,
   fee,
   messages,
-  signAndBroadcast,
-  onTxSucceed,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcast,
 }: DeployScriptTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       const txFee = findAttr(txInfo.events, "tx", "fee");
 
       onTxSucceed?.();
       return {
-        value: null,
         phase: TxStreamPhase.SUCCEED,
-        receipts: [
-          {
-            title: "Tx hash",
-            value: txInfo.transactionHash,
-            html: (
-              <ExplorerLink
-                openNewTab
-                type="tx_hash"
-                value={txInfo.transactionHash}
-              />
-            ),
-          },
-          {
-            title: "Tx fee",
-            html: (
-              <EstimatedFeeRender
-                estimatedFee={feeFromStr(txFee)}
-                loading={false}
-              />
-            ),
-          },
-        ],
         receiptInfo: {
           header: "Script deployed!",
           headerIcon: (
@@ -74,6 +51,29 @@ export const deployScriptTx = ({
             />
           ),
         },
+        receipts: [
+          {
+            html: (
+              <ExplorerLink
+                openNewTab
+                type="tx_hash"
+                value={txInfo.transactionHash}
+              />
+            ),
+            title: "Tx hash",
+            value: txInfo.transactionHash,
+          },
+          {
+            html: (
+              <EstimatedFeeRender
+                estimatedFee={feeFromStr(txFee)}
+                loading={false}
+              />
+            ),
+            title: "Tx fee",
+          },
+        ],
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

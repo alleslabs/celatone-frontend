@@ -18,11 +18,11 @@ interface FailedDetailsProps {
 }
 
 export const FailedDetails = ({
-  codeId,
   codeHash,
-  verificationInfo,
-  relatedVerifiedCodes,
+  codeId,
   contractAddress,
+  relatedVerifiedCodes,
+  verificationInfo,
 }: FailedDetailsProps) => {
   const isMobile = useMobile();
   return (
@@ -86,9 +86,9 @@ export const FailedDetails = ({
             label="Reverify code"
             relatedVerifiedCodes={relatedVerifiedCodes}
             wasmVerifyStatus={getWasmVerifyStatus({
-              verificationInfo,
-              schema: null,
               relatedVerifiedCodes,
+              schema: null,
+              verificationInfo,
             })}
           />
         )}

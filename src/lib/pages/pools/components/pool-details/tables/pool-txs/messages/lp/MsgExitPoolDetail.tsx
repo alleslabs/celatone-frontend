@@ -20,13 +20,13 @@ interface MsgExitPoolDetailProps {
 }
 
 export const MsgExitPoolDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  txHash,
 }: MsgExitPoolDetailProps) => (
   <Flex alignItems="start" direction="column" gap={6} w="full">
     <Flex gap={12}>

@@ -8,11 +8,11 @@ import { CustomIcon } from "../icon";
 
 export const ConnectWalletButton = ({
   buttonText,
-  isLoading,
+  hasIcon,
   isDisabled,
+  isLoading,
   onClick,
   variant,
-  hasIcon,
 }: ConnectWalletType) => (
   <Button
     alignContent="center"
@@ -46,13 +46,13 @@ export const Others = ({
 );
 
 export const WalletConnectComponent = ({
-  walletStatus,
-  disconnect,
-  connecting,
   connected,
-  rejected,
+  connecting,
+  disconnect,
   error,
   notExist,
+  rejected,
+  walletStatus,
 }: {
   walletStatus: WalletStatus;
   disconnect: ReactNode;

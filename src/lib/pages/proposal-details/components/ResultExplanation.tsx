@@ -68,10 +68,10 @@ export interface ResultExplanationProps {
 }
 
 export const ResultExplanation = ({
-  proposalData,
-  params,
-  votesInfo,
   isLoading,
+  params,
+  proposalData,
+  votesInfo,
 }: ResultExplanationProps) => {
   const gov = useGovConfig({ shouldRedirect: false });
   if (
@@ -109,7 +109,7 @@ export const ResultExplanation = ({
     params,
     proposalData.isExpedited
   );
-  const { totalRatio, yesNonRatio, noWithVetoTotalRatio } =
+  const { noWithVetoTotalRatio, totalRatio, yesNonRatio } =
     normalizeVotesInfo(votesInfo);
 
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD) {

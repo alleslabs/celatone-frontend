@@ -17,9 +17,9 @@ interface PublishedEventsTableProps {
 }
 
 export const PublishedEventsTable = ({
-  moduleHistories,
-  isLoading,
   emptyState,
+  isLoading,
+  moduleHistories,
 }: PublishedEventsTableProps) => {
   const isMobile = useMobile();
 

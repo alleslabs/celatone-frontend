@@ -29,8 +29,8 @@ interface EvmContractCmdGroupProps {
 }
 
 export const EvmContractCmdGroup = ({
-  contractAddress,
   abiSections,
+  contractAddress,
   interactTab,
 }: EvmContractCmdGroupProps) => {
   const navigate = useInternalNavigate();
@@ -58,8 +58,8 @@ export const EvmContractCmdGroup = ({
           gap={2}
           sx={{
             "> button": {
-              marginInlineStart: "0 !important",
               marginInlineEnd: "1",
+              marginInlineStart: "0 !important",
             },
           }}
         >
@@ -72,9 +72,9 @@ export const EvmContractCmdGroup = ({
                   pathname: "/evm-contracts/[contractAddress]/[tab]",
                   query: {
                     contractAddress,
-                    tab: TabIndex.ReadWrite,
-                    selectedType: getInteractTabsIndex(isRead, isAsProxy),
                     selectedFn: name,
+                    selectedType: getInteractTabsIndex(isRead, isAsProxy),
+                    tab: TabIndex.ReadWrite,
                   },
                 });
               }}

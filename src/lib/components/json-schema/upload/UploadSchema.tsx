@@ -16,12 +16,12 @@ interface UploadSchemaContentInterface {
 
 export const UploadSchema = ({
   attached,
-  localSchema,
-  codeId,
   codeHash,
+  codeId,
+  localSchema,
   triggerElement,
 }: UploadSchemaContentInterface) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <>
       {triggerElement ? (

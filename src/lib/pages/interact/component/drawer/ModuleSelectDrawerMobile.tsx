@@ -43,16 +43,16 @@ interface ModuleSelectDrawerMobileProps {
 }
 
 export const ModuleSelectDrawerMobile = ({
+  handleModuleSelect,
+  hexAddress,
   isOpen,
   onClose,
-  hexAddress,
-  handleModuleSelect,
-  step,
-  setStep,
   selectedModule,
   setSelectedModule,
+  setStep,
+  step,
 }: ModuleSelectDrawerMobileProps) => {
-  const { convertHexWalletAddress, convertHexModuleAddress } =
+  const { convertHexModuleAddress, convertHexWalletAddress } =
     useConvertHexAddress();
   const { data: moveVerifyInfos } = useMoveVerifyInfosByAddress(hexAddress);
 

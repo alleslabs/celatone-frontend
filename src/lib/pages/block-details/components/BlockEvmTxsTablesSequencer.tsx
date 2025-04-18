@@ -34,9 +34,9 @@ export const BlockEvmTxsTablesSequencer = ({
     // TODO: double check if order matches
     evmBlockData?.block.transactions.forEach((tx, index) => {
       txs.push({
+        timestamp: evmBlockData.block.timestamp,
         tx,
         txReceipt: evmBlockData.blockReceipts[index],
-        timestamp: evmBlockData.block.timestamp,
       });
     });
     return txs;

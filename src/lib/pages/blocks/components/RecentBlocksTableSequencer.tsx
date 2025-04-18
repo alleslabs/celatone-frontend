@@ -8,7 +8,7 @@ import type { RecentBlocksTableProps } from "./type";
 export const RecentBlocksTableSequencer = ({
   isViewMore,
 }: RecentBlocksTableProps) => {
-  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useBlocksSequencer(isViewMore ? 5 : 10);
 
   return (

@@ -8,10 +8,10 @@ import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 
 export const MutateEventsTableMobileCard = ({
-  timestamp,
   mutatedFieldName,
-  oldValue,
   newValue,
+  oldValue,
+  timestamp,
 }: MutateEvent) => (
   <MobileCardTemplate
     bottomContent={

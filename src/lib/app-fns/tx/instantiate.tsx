@@ -27,17 +27,17 @@ interface InstantiateTxParams {
 
 export const instantiateContractTx = ({
   address,
-  messages,
-  label,
   fee,
-  signAndBroadcast,
-  onTxSucceed,
+  label,
+  messages,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcast,
 }: InstantiateTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       const contractAddress =

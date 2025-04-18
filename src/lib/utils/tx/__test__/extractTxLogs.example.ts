@@ -8,6 +8,45 @@ import { parseDate } from "lib/utils/date";
 type TestCase = { txData: TxResponse; result: Log[] };
 
 export const fromLogs: TestCase = {
+  result: [
+    {
+      events: [
+        {
+          attributes: [
+            {
+              key: "action",
+              value: "/cosmwasm.wasm.v1.MsgMigrateContract",
+            },
+            {
+              key: "module",
+              value: "wasm",
+            },
+            {
+              key: "sender",
+              value: "osmo18rf2vketuhfvrw0n986mghms33ahm884wsrfsj",
+            },
+          ],
+          type: "message",
+        },
+        {
+          attributes: [
+            {
+              key: "code_id",
+              value: "17",
+            },
+            {
+              key: "_contract_address",
+              value:
+                "osmo1cvtzwsj8lam9at8vfgxfnveyzjne8eecqjnsh6k3jvt3l7ve6zms3wtpd0",
+            },
+          ],
+          type: "migrate",
+        },
+      ],
+      log: "",
+      msg_index: 0,
+    },
+  ],
   txData: {
     code: 0,
     codespace: "",
@@ -319,48 +358,10 @@ export const fromLogs: TestCase = {
     },
     txhash: "1B1269C4B5704E9872B26ACE447B043099C98E9B7EA20373517CF59038321A43",
   },
-  result: [
-    {
-      events: [
-        {
-          attributes: [
-            {
-              key: "action",
-              value: "/cosmwasm.wasm.v1.MsgMigrateContract",
-            },
-            {
-              key: "module",
-              value: "wasm",
-            },
-            {
-              key: "sender",
-              value: "osmo18rf2vketuhfvrw0n986mghms33ahm884wsrfsj",
-            },
-          ],
-          type: "message",
-        },
-        {
-          attributes: [
-            {
-              key: "code_id",
-              value: "17",
-            },
-            {
-              key: "_contract_address",
-              value:
-                "osmo1cvtzwsj8lam9at8vfgxfnveyzjne8eecqjnsh6k3jvt3l7ve6zms3wtpd0",
-            },
-          ],
-          type: "migrate",
-        },
-      ],
-      log: "",
-      msg_index: 0,
-    },
-  ],
 };
 
 export const fromLogsTxFailed: TestCase = {
+  result: [],
   txData: {
     code: 10,
     codespace: "gov",
@@ -532,10 +533,81 @@ export const fromLogsTxFailed: TestCase = {
     },
     txhash: "4722758776F36276F617D6018E6AC7D4C1491B31267E7EB5CCC8CD93288F1B63",
   },
-  result: [],
 };
 
 export const fromEvents: TestCase = {
+  result: [
+    {
+      events: [
+        {
+          attributes: [
+            {
+              key: "action",
+              value: "/initia.move.v1.MsgPublish",
+            },
+            {
+              key: "sender",
+              value: "init18rf2vketuhfvrw0n986mghms33ahm884gas2dz",
+            },
+            {
+              key: "module",
+              value: "move",
+            },
+            {
+              key: "msg_index",
+              value: "0",
+            },
+          ],
+          type: "message",
+        },
+        {
+          attributes: [
+            {
+              key: "sender",
+              value: "0x38d2a65b2be5d2c1b9f329f5b45f708c7b7d9cf5",
+            },
+            {
+              key: "module_addr",
+              value: "0x1",
+            },
+            {
+              key: "module_name",
+              value: "code",
+            },
+            {
+              key: "function_name",
+              value: "publish",
+            },
+            {
+              key: "msg_index",
+              value: "0",
+            },
+          ],
+          type: "execute",
+        },
+        {
+          attributes: [
+            {
+              key: "type_tag",
+              value: "0x1::code::ModulePublishedEvent",
+            },
+            {
+              key: "data",
+              value:
+                '{"module_id":"0x38d2a65b2be5d2c1b9f329f5b45f708c7b7d9cf5::pool_infos","upgrade_policy":0}',
+            },
+            {
+              key: "msg_index",
+              value: "0",
+            },
+          ],
+          type: "move",
+        },
+      ],
+      log: "",
+      msg_index: 0,
+    },
+  ],
   txData: {
     code: 0,
     codespace: "",
@@ -796,81 +868,10 @@ export const fromEvents: TestCase = {
     },
     txhash: "CA11A83C242A5BF7139CFB1CCF529EC46A87CB6188B71EAAC63A8B7123894132",
   },
-  result: [
-    {
-      msg_index: 0,
-      log: "",
-      events: [
-        {
-          attributes: [
-            {
-              key: "action",
-              value: "/initia.move.v1.MsgPublish",
-            },
-            {
-              key: "sender",
-              value: "init18rf2vketuhfvrw0n986mghms33ahm884gas2dz",
-            },
-            {
-              key: "module",
-              value: "move",
-            },
-            {
-              key: "msg_index",
-              value: "0",
-            },
-          ],
-          type: "message",
-        },
-        {
-          attributes: [
-            {
-              key: "sender",
-              value: "0x38d2a65b2be5d2c1b9f329f5b45f708c7b7d9cf5",
-            },
-            {
-              key: "module_addr",
-              value: "0x1",
-            },
-            {
-              key: "module_name",
-              value: "code",
-            },
-            {
-              key: "function_name",
-              value: "publish",
-            },
-            {
-              key: "msg_index",
-              value: "0",
-            },
-          ],
-          type: "execute",
-        },
-        {
-          attributes: [
-            {
-              key: "type_tag",
-              value: "0x1::code::ModulePublishedEvent",
-            },
-            {
-              key: "data",
-              value:
-                '{"module_id":"0x38d2a65b2be5d2c1b9f329f5b45f708c7b7d9cf5::pool_infos","upgrade_policy":0}',
-            },
-            {
-              key: "msg_index",
-              value: "0",
-            },
-          ],
-          type: "move",
-        },
-      ],
-    },
-  ],
 };
 
 export const fromEventsTxFailed: TestCase = {
+  result: [],
   txData: {
     code: 1,
     codespace: "undefined",
@@ -1069,5 +1070,4 @@ export const fromEventsTxFailed: TestCase = {
     },
     txhash: "F252AA07AA9FA79A3488FD6E552E6B7A168E997CB923E0C43C770835F42F217C",
   },
-  result: [],
 };

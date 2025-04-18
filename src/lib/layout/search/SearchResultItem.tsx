@@ -17,11 +17,11 @@ interface ResultItemProps {
 }
 
 export const SearchResultItem = ({
+  cursor,
+  handleSelectResult,
   index,
   result,
-  cursor,
   setCursor,
-  handleSelectResult,
 }: ResultItemProps) => {
   const evm = useEvmConfig({ shouldRedirect: false });
   const route = getRouteOptions(result.type, evm.enabled)?.pathname;

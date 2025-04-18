@@ -28,9 +28,9 @@ interface WasmVerifyStatusModalProps {
 }
 export const WasmVerifyStatusModal = ({
   codeHash,
-  verificationInfo,
   relatedVerifiedCodes,
   triggerElement,
+  verificationInfo,
 }: WasmVerifyStatusModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   return (

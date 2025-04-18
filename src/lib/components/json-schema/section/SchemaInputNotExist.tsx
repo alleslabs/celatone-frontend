@@ -15,12 +15,12 @@ interface SchemaInputNotExistProps {
 }
 
 export const SchemaInputNotExist = ({
+  codeHash,
+  codeId,
+  localSchema,
+  openModal,
   prettyType,
   verifiedSchema,
-  localSchema,
-  codeId,
-  codeHash,
-  openModal,
 }: SchemaInputNotExistProps) => {
   if (verifiedSchema)
     return (

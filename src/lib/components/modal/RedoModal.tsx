@@ -25,7 +25,7 @@ interface RedoModalProps {
 }
 
 export const RedoModal = ({ message }: RedoModalProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const onClickRedo = useRedo();
   const { chainName } = useCurrentChain();
 

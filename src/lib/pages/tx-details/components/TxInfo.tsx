@@ -24,14 +24,14 @@ const Container = chakra(Flex, {
   baseStyle: {
     flexDir: "column",
     gap: 6,
-    w: "250px",
     minW: "180px",
+    w: "250px",
   },
 });
 
 export const TxInfo = ({
-  txData,
   gasRefundRatio,
+  txData,
   ...flexProps
 }: TxInfoProps) => {
   const { data: assetInfos } = useAssetInfos({

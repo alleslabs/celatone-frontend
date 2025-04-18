@@ -49,18 +49,18 @@ interface WasmCodeSnippetProps {
 
 const WasmCodeSnippet = ({
   contractAddress,
-  message,
-  type = "query",
-  ml,
-  w,
   funds = [],
+  message,
+  ml,
+  type = "query",
+  w,
 }: WasmCodeSnippetProps) => {
   const isMobile = useMobile();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const isDisabled = !contractAddress || !message.length;
   const {
-    currentChainId,
     chainConfig: { chain, rest: restEndpoint, rpc: rpcEndpoint },
+    currentChainId,
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();
@@ -76,70 +76,10 @@ const WasmCodeSnippet = ({
     string,
     { name: string; mode: string; snippet: string }[]
   > = {
-    query: [
-      {
-        name: "CLI",
-        mode: "sh",
-        snippet: `export CHAIN_ID='${currentChainId}'\n
-export CONTRACT_ADDRESS='${contractAddress}'\n
-export QUERY_MSG='${message}'\n
-export RPC_URL='${rpcEndpoint}'\n
-${daemonName} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
-  --chain-id $CHAIN_ID \\
-  --node $RPC_URL`,
-      },
-      {
-        name: "Python",
-        mode: "python",
-        snippet: `import base64
-import requests\n
-CONTRACT_ADDRESS = "${contractAddress}"
-LCD_URL = "${restEndpoint}"
-QUERY_MSG = b'''${message}'''\n
-query_b64encoded = base64.b64encode(QUERY_MSG).decode("ascii")
-res = requests.get(
-  f"{LCD_URL}/cosmwasm/wasm/v1/contract/{CONTRACT_ADDRESS}/smart/{query_b64encoded}"
-).json()\n
-print(res)`,
-      },
-      {
-        name: "CosmJS",
-        mode: "javascript",
-        snippet: `const { SigningCosmWasmClient } = require("@cosmjs/cosmwasm-stargate");
-const rpcURL = "${rpcEndpoint}";
-const contractAddress =
-"${contractAddress}";
-const queryMsg = \`${message}\`;\n
-const queryContract = async (rpcURL, contractAddress, queryMsg) => {
-  const client = await SigningCosmWasmClient.connect(rpcURL);
-  const queryResult = await client.queryContractSmart(
-    contractAddress,
-    JSON.parse(queryMsg)
-  );
-  console.log(queryResult);
-};\n
-queryContract(rpcURL, contractAddress, queryMsg);`,
-      },
-      {
-        name: "Axios",
-        mode: "javascript",
-        snippet: `const axios = require('axios');\n
-const lcdURL = '${restEndpoint}';
-const contractAddress =
-"${contractAddress}";
-const queryMsg = ${message};\n
-const queryContract = async () => {
-  const queryB64Encoded = Buffer.from(JSON.stringify(queryMsg)).toString('base64');
-  const res = await axios.get(\`$\{lcdURL}/cosmwasm/wasm/v1/contract/$\{contractAddress}/smart/$\{queryB64Encoded}\`);
-  console.log(res.data);
-};\n
-queryContract();`,
-      },
-    ],
     execute: [
       {
-        name: "CosmJS",
         mode: "javascript",
+        name: "CosmJS",
         snippet: `const { GasPrice } = require("@cosmjs/stargate");
 const { SigningCosmWasmClient } = require("@cosmjs/cosmwasm-stargate");
 const { getOfflineSignerAmino } = require("cosmjs-utils");
@@ -184,8 +124,8 @@ execute();
 `,
       },
       {
-        name: "CLI",
         mode: "sh",
+        name: "CLI",
         snippet: `export WALLET_NAME='<your-wallet-name>'\n
 export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
@@ -199,6 +139,66 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
   --gas auto \\
   --gas-prices ${gasPriceStr} \\
   --gas-adjustment 1.5`,
+      },
+    ],
+    query: [
+      {
+        mode: "sh",
+        name: "CLI",
+        snippet: `export CHAIN_ID='${currentChainId}'\n
+export CONTRACT_ADDRESS='${contractAddress}'\n
+export QUERY_MSG='${message}'\n
+export RPC_URL='${rpcEndpoint}'\n
+${daemonName} query wasm contract-state smart $CONTRACT_ADDRESS $QUERY_MSG \\
+  --chain-id $CHAIN_ID \\
+  --node $RPC_URL`,
+      },
+      {
+        mode: "python",
+        name: "Python",
+        snippet: `import base64
+import requests\n
+CONTRACT_ADDRESS = "${contractAddress}"
+LCD_URL = "${restEndpoint}"
+QUERY_MSG = b'''${message}'''\n
+query_b64encoded = base64.b64encode(QUERY_MSG).decode("ascii")
+res = requests.get(
+  f"{LCD_URL}/cosmwasm/wasm/v1/contract/{CONTRACT_ADDRESS}/smart/{query_b64encoded}"
+).json()\n
+print(res)`,
+      },
+      {
+        mode: "javascript",
+        name: "CosmJS",
+        snippet: `const { SigningCosmWasmClient } = require("@cosmjs/cosmwasm-stargate");
+const rpcURL = "${rpcEndpoint}";
+const contractAddress =
+"${contractAddress}";
+const queryMsg = \`${message}\`;\n
+const queryContract = async (rpcURL, contractAddress, queryMsg) => {
+  const client = await SigningCosmWasmClient.connect(rpcURL);
+  const queryResult = await client.queryContractSmart(
+    contractAddress,
+    JSON.parse(queryMsg)
+  );
+  console.log(queryResult);
+};\n
+queryContract(rpcURL, contractAddress, queryMsg);`,
+      },
+      {
+        mode: "javascript",
+        name: "Axios",
+        snippet: `const axios = require('axios');\n
+const lcdURL = '${restEndpoint}';
+const contractAddress =
+"${contractAddress}";
+const queryMsg = ${message};\n
+const queryContract = async () => {
+  const queryB64Encoded = Buffer.from(JSON.stringify(queryMsg)).toString('base64');
+  const res = await axios.get(\`$\{lcdURL}/cosmwasm/wasm/v1/contract/$\{contractAddress}/smart/$\{queryB64Encoded}\`);
+  console.log(res.data);
+};\n
+queryContract();`,
       },
     ],
   };
@@ -260,16 +260,16 @@ ${daemonName} tx wasm execute $CONTRACT_ADDRESS $EXECUTE_MSG \\
                     >
                       <AceEditor
                         style={{
-                          width: "100%",
                           background: "transparent",
+                          width: "100%",
                         }}
                         fontSize="14px"
                         mode={item.mode}
                         readOnly
                         setOptions={{
+                          printMargin: false,
                           showGutter: false,
                           useWorker: false,
-                          printMargin: false,
                           wrap: true,
                         }}
                         theme={theme.jsonTheme}

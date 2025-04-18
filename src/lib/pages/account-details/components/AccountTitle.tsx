@@ -22,8 +22,8 @@ export const AccountTitle = ({
   accountData,
   accountLocalInfo,
   initiaUsernameData,
-  isInitiaUsernameDataLoading,
   isInitiaUsernameDataFetching,
+  isInitiaUsernameDataLoading,
 }: AccountTitleProps) => {
   const isInitia = useInitia();
 

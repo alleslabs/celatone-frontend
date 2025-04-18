@@ -18,8 +18,8 @@ interface MyModuleVerificationsRowProps {
 }
 
 export const MyModuleVerificationsRow = ({
-  templateColumns,
   task,
+  templateColumns,
 }: MyModuleVerificationsRowProps) => {
   const navigate = useInternalNavigate();
 

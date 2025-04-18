@@ -9,10 +9,10 @@ interface MobileCardTemplateProps {
   onClick?: () => void;
 }
 export const MobileCardTemplate = ({
-  topContent,
-  middleContent,
   bottomContent,
+  middleContent,
   onClick,
+  topContent,
 }: MobileCardTemplateProps) => (
   <Flex
     background="gray.900"

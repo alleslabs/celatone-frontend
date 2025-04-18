@@ -29,18 +29,18 @@ interface ValidatorOverviewProps {
 }
 
 export const ValidatorOverview = ({
-  onSelectVotes,
-  onSelectPerformance,
-  onSelectBondedTokenChanges,
+  assetInfos,
+  details,
   isActive,
   isJailed,
-  details,
-  validatorAddress,
-  singleStakingDenom,
-  assetInfos,
-  votingPower,
-  totalVotingPower,
+  onSelectBondedTokenChanges,
+  onSelectPerformance,
+  onSelectVotes,
   selfVotingPower,
+  singleStakingDenom,
+  totalVotingPower,
+  validatorAddress,
+  votingPower,
 }: ValidatorOverviewProps) => {
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();

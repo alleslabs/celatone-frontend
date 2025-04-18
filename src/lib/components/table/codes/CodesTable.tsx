@@ -22,12 +22,12 @@ interface CodesTableProps {
 
 export const CodesTable = ({
   codes,
-  isLoading,
-  emptyState,
-  onRowSelect,
-  isReadOnly = false,
-  showCw2andContracts = true,
   disablePermission = false,
+  emptyState,
+  isLoading,
+  isReadOnly = false,
+  onRowSelect,
+  showCw2andContracts = true,
 }: CodesTableProps) => {
   const isMobile = useMobile();
   const { data: wasmVerifyInfos, isLoading: isWasmVerifyInfosLoading } =

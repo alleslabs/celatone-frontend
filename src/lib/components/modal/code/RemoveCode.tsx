@@ -9,10 +9,10 @@ import { ActionModal } from "../ActionModal";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "36px",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 
@@ -42,14 +42,14 @@ export function RemoveCodeModal({
     removeSavedCode(codeId);
 
     toast({
+      duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      isClosable: false,
+      position: "bottom-right",
+      status: "success",
       title: `Removed \u2018${
         shortenName(getNameAndDescriptionDefault(name), 20) || codeId
       }\u2019 from Saved Codes`,
-      status: "success",
-      duration: 5000,
-      isClosable: false,
-      position: "bottom-right",
-      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
     });
   }, [codeId, name, removeSavedCode, toast]);
 

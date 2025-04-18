@@ -29,9 +29,9 @@ import { zInteractContractQueryParams } from "./types";
 const INTERACT_CONTRACT_PATH_NAME = "/interact-contract";
 
 const InteractContractBody = ({
-  selectedType,
   contract,
   msg,
+  selectedType,
 }: InteractContractQueryParams) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -60,13 +60,13 @@ const InteractContractBody = ({
   const handleSetSelectedType = useCallback(
     (newType: ContractInteractionTabs) =>
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: INTERACT_CONTRACT_PATH_NAME,
         query: {
           selectedType: newType,
           ...(contract && { contract }),
-        },
-        options: {
-          shallow: true,
         },
       }),
     [contract, navigate]
@@ -75,12 +75,12 @@ const InteractContractBody = ({
   const onContractSelect = useCallback(
     (newContract: BechAddr32) => {
       navigate({
+        options: { shallow: true },
         pathname: INTERACT_CONTRACT_PATH_NAME,
         query: {
-          selectedType,
           contract: newContract,
+          selectedType,
         },
-        options: { shallow: true },
       });
     },
     [navigate, selectedType]
@@ -92,12 +92,12 @@ const InteractContractBody = ({
   useEffect(() => {
     if (isMobile && selectedType === ContractInteractionTabs.Execute)
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: INTERACT_CONTRACT_PATH_NAME,
         query: {
           ...(contract && { contract }),
-        },
-        options: {
-          shallow: true,
         },
       });
   }, [contract, isMobile, navigate, selectedType]);
@@ -194,7 +194,7 @@ const InteractContract = () => {
 
   useEffect(() => {
     if (router.isReady && validated.success) {
-      const { selectedType, contract, msg } = validated.data;
+      const { contract, msg, selectedType } = validated.data;
       if (selectedType === ContractInteractionTabs.Query)
         trackToQuery(!!contract, !!msg);
       else trackToExecute(!!contract, !!msg);

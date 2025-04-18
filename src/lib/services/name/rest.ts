@@ -32,7 +32,7 @@ export const getAddressByIcnsNameRest = async (
   bech32Prefix: string
 ) => {
   const encoded = encode(
-    JSON.stringify({ address: { name, bech32_prefix: bech32Prefix } })
+    JSON.stringify({ address: { bech32_prefix: bech32Prefix, name } })
   );
 
   return axios

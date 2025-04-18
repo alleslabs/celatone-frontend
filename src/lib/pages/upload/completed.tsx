@@ -91,7 +91,6 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
         <TxReceiptRender
           receipts={[
             {
-              title: "Code ID",
               html: (
                 <ExplorerLink
                   rightIcon={
@@ -106,19 +105,20 @@ export const UploadComplete = observer(({ txResult }: UploadCompleteProps) => {
                   value={txResult.codeId}
                 />
               ),
+              title: "Code ID",
             },
             {
-              title: "Tx hash",
               html: <ExplorerLink type="tx_hash" value={txResult.txHash} />,
+              title: "Tx hash",
             },
             {
-              title: "Tx fee",
               html: (
                 <EstimatedFeeRender
                   estimatedFee={feeFromStr(txResult.txFee)}
                   loading={false}
                 />
               ),
+              title: "Tx fee",
             },
           ]}
           variant="full"

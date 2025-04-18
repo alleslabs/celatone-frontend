@@ -14,13 +14,13 @@ interface VerifyButtonProps {
 }
 
 export const VerifyButton = ({
-  codeId,
   codeHash,
-  wasmVerifyStatus,
-  relatedVerifiedCodes,
+  codeId,
   contractAddress,
   label = "Verify code",
   minW = "96px",
+  relatedVerifiedCodes,
+  wasmVerifyStatus,
 }: VerifyButtonProps) => (
   <WasmVerifySubmitModal
     codeHash={codeHash}

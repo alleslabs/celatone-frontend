@@ -9,8 +9,8 @@ interface DepositorsTableHeaderProps {
 }
 
 export const DepositorsTableHeader = ({
-  templateColumns,
   showTransaction,
+  templateColumns,
 }: DepositorsTableHeaderProps) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Depositor</TableHeader>

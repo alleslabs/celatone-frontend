@@ -21,9 +21,9 @@ export interface ProposalsTableRowProps {
 }
 
 export const ProposalsTableRow = ({
+  boxShadow,
   proposal,
   templateColumns,
-  boxShadow,
 }: ProposalsTableRowProps) => {
   const { isFullTier } = useTierConfig();
   const navigate = useInternalNavigate();

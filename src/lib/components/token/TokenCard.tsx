@@ -20,8 +20,8 @@ interface TokenCardProps extends FlexProps {
 }
 
 export const TokenCard = ({
-  token,
   amptrackSection,
+  token,
   ...cardProps
 }: TokenCardProps) => (
   <Tooltip

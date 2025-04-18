@@ -18,7 +18,7 @@ interface ViewFailedReasonProps {
 }
 
 export const ViewFailedReason = ({ text }: ViewFailedReasonProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   if (text.length === 0)
     return (
       <Tooltip label="This proposal failed before the &lsquo;failed_reason&rsquo; field is added to the network.">

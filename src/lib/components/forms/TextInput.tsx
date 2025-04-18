@@ -38,19 +38,19 @@ export interface TextInputProps extends FormControlProps {
 }
 
 export const TextInput = ({
-  value,
-  setInputState,
+  autoFocus = false,
+  error,
+  helperAction,
+  helperText,
   label = "",
   labelBgColor = "background.main",
-  helperText,
-  placeholder = " ",
-  error,
-  size = "lg",
-  type = "text",
-  status,
   maxLength,
-  helperAction,
-  autoFocus = false,
+  placeholder = " ",
+  setInputState,
+  size = "lg",
+  status,
+  type = "text",
+  value,
   ...componentProps
 }: TextInputProps) => (
   // Design system size: md = 40px, lg = 56px

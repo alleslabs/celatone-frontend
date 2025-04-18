@@ -24,10 +24,10 @@ interface CreateNewListModalProps {
 
 export function CreateNewListModal({
   buttonProps,
-  trigger,
   inputValue,
-  onCreate,
   onClose,
+  onCreate,
+  trigger,
 }: CreateNewListModalProps) {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
@@ -49,11 +49,11 @@ export function CreateNewListModal({
       setStatus({ state: "init" });
     } else if (trimedListName.length > constants.maxListNameLength)
       setStatus({
-        state: "error",
         message: getMaxLengthError(trimedListName.length, "list_name"),
+        state: "error",
       });
     else if (isContractListExist(trimedListName))
-      setStatus({ state: "error", message: "Already existed" });
+      setStatus({ message: "Already existed", state: "error" });
     else setStatus({ state: "success" });
   }, [
     constants.maxListNameLength,
@@ -73,12 +73,12 @@ export function CreateNewListModal({
     track(AmpEvent.LIST_CREATE);
 
     toast({
-      title: `Create ${shortenName(listName)} successfully`,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      status: "success",
+      title: `Create ${shortenName(listName)} successfully`,
     });
   }, [createNewList, listName, resetListName, onCreate, onClose, toast]);
 

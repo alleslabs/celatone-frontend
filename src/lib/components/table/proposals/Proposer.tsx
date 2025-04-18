@@ -5,8 +5,8 @@ import { useGetAddressType } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 
 export const Proposer = ({
-  proposer,
   amptrackSection,
+  proposer,
 }: {
   proposer: Option<BechAddr>;
   amptrackSection?: string;

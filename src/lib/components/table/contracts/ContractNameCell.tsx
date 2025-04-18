@@ -17,12 +17,12 @@ export const ContractNameCell = ({
 }: ContractNameCellProps) => {
   const { constants } = useCelatoneApp();
   const onSave = useHandleContractSave({
-    title: "Changed name successfully!",
-    contractAddress: contractLocalInfo.contractAddress,
-    label: contractLocalInfo.label,
-    codeId: contractLocalInfo.codeId,
-    instantiator: contractLocalInfo.instantiator,
     actions: () => track(AmpEvent.USE_QUICK_EDIT_CONTRACT),
+    codeId: contractLocalInfo.codeId,
+    contractAddress: contractLocalInfo.contractAddress,
+    instantiator: contractLocalInfo.instantiator,
+    label: contractLocalInfo.label,
+    title: "Changed name successfully!",
   });
 
   return (

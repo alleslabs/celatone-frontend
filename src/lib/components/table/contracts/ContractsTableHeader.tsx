@@ -7,10 +7,10 @@ import type { CtaInfo } from "./ContractsTableRowCta";
 import { TableHeader } from "../tableComponents";
 
 export const ContractsTableHeader = ({
-  templateColumns,
-  showTag,
-  showLastUpdate,
   isReadOnly,
+  showLastUpdate,
+  showTag,
+  templateColumns,
   withCta,
 }: {
   templateColumns: GridProps["templateColumns"];

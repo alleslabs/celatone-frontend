@@ -24,8 +24,8 @@ import { ValidatorOverview } from "../validator-overview";
 import { ValidatorTop } from "../validator-top";
 
 export const ValidatorDetailsBodyFull = ({
-  validatorAddress,
   tab,
+  validatorAddress,
 }: ValidatorDetailsQueryParams) => {
   const navigate = useInternalNavigate();
   const isInitia = useInitia();
@@ -46,13 +46,13 @@ export const ValidatorDetailsBodyFull = ({
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
-        pathname: "/validators/[validatorAddress]/[tab]",
-        query: {
-          validatorAddress,
-          tab: nextTab,
-        },
         options: {
           shallow: true,
+        },
+        pathname: "/validators/[validatorAddress]/[tab]",
+        query: {
+          tab: nextTab,
+          validatorAddress,
         },
       });
     },

@@ -15,12 +15,12 @@ interface CopierProps {
 }
 
 export const Copier = ({
-  type,
-  value,
+  amptrackSection,
   copyLabel,
   display = "inline",
   ml = 2,
-  amptrackSection,
+  type,
+  value,
 }: CopierProps) => (
   <CopyTemplate
     copyLabel={copyLabel}

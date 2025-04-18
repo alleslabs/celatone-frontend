@@ -32,7 +32,7 @@ import {
 } from "./renderUtils";
 
 export const generateReceipts = (
-  { msgBody, log }: Omit<TxMsgData, "assetInfos">,
+  { log, msgBody }: Omit<TxMsgData, "assetInfos">,
   getAddressType: (address: string) => AddressReturnType
 ): Option<TxReceipt | null | false>[] => {
   const { "@type": type, ...body } = msgBody;
@@ -43,23 +43,22 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         log && {
-          title: "Stored code ID",
           html: getCommonReceiptHtml({
+            linkType: "code_id",
             type: "explorer",
             value: details.code_id,
-            linkType: "code_id",
           }),
+          title: "Stored code ID",
         },
         {
-          title: "Uploader",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Uploader",
         },
         details.instantiate_permission && {
-          title: "Instantiate permission",
           html: (
             <Flex direction="column" gap={1}>
               <PermissionChip
@@ -82,9 +81,9 @@ export const generateReceipts = (
               />
             </Flex>
           ),
+          title: "Instantiate permission",
         },
         {
-          title: "Wasm byte code",
           html: (
             <Flex align="flex-start" gap={3}>
               Size:{" "}
@@ -102,6 +101,7 @@ export const generateReceipts = (
               />
             </Flex>
           ),
+          title: "Wasm byte code",
         },
       ];
     }
@@ -109,38 +109,38 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         log && {
-          title: "Contract instance",
           html: getCommonReceiptHtml({
+            linkType: "contract_address",
             type: "explorer",
             value: details.contract_address,
-            linkType: "contract_address",
           }),
+          title: "Contract instance",
         },
 
         {
-          title: "From code ID",
           html: getCommonReceiptHtml({
+            linkType: "code_id",
             type: "explorer",
             value: details.code_id,
-            linkType: "code_id",
           }),
+          title: "From code ID",
         },
         {
-          title: "Instantiated by",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Instantiated by",
         },
         {
-          title: "Contract admin",
           html: getCommonReceiptHtml({
+            fallback: "No admin",
+            linkType: getAddressType(details.admin),
             type: "explorer",
             value: details.admin,
-            linkType: getAddressType(details.admin),
-            fallback: "No admin",
           }),
+          title: "Contract admin",
         },
         {
           title: "Label",
@@ -148,11 +148,11 @@ export const generateReceipts = (
         },
         attachFundsReceipt(details.funds),
         {
-          title: "Instantiate message",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.msg,
           }),
+          title: "Instantiate message",
         },
       ];
     }
@@ -160,37 +160,37 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         log && {
-          title: "Contract instance",
           html: getCommonReceiptHtml({
+            linkType: "contract_address",
             type: "explorer",
             value: details.contract_address,
-            linkType: "contract_address",
           }),
+          title: "Contract instance",
         },
         {
-          title: "From code ID",
           html: getCommonReceiptHtml({
+            linkType: "code_id",
             type: "explorer",
             value: details.code_id,
-            linkType: "code_id",
           }),
+          title: "From code ID",
         },
         {
-          title: "Instantiated by",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Instantiated by",
         },
         {
-          title: "Contract admin",
           html: getCommonReceiptHtml({
+            fallback: "No admin",
+            linkType: getAddressType(details.admin),
             type: "explorer",
             value: details.admin,
-            linkType: getAddressType(details.admin),
-            fallback: "No admin",
           }),
+          title: "Contract admin",
         },
         {
           title: "Label",
@@ -198,15 +198,15 @@ export const generateReceipts = (
         },
         attachFundsReceipt(details.funds),
         {
-          title: "Instantiate message",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.msg,
           }),
+          title: "Instantiate message",
         },
         {
-          title: "Salt",
           html: details.salt,
+          title: "Salt",
         },
         {
           title: "Fix msg",
@@ -218,28 +218,28 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "Contract",
           html: getCommonReceiptHtml({
+            linkType: "contract_address",
             type: "explorer",
             value: details.contract,
-            linkType: "contract_address",
           }),
+          title: "Contract",
         },
         attachFundsReceipt(details.funds),
         {
-          title: "Execute message",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.msg,
           }),
+          title: "Execute message",
         },
       ];
     }
@@ -247,35 +247,35 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "Contract",
           html: getCommonReceiptHtml({
+            linkType: "contract_address",
             type: "explorer",
             value: details.contract,
-            linkType: "contract_address",
           }),
+          title: "Contract",
         },
         {
-          title: "Code ID",
           html: getCommonReceiptHtml({
+            linkType: "code_id",
             type: "explorer",
             value: details.code_id,
-            linkType: "code_id",
           }),
+          title: "Code ID",
         },
         {
-          title: "Msg",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.msg,
           }),
+          title: "Msg",
         },
       ];
     }
@@ -283,28 +283,28 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "New admin",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.new_admin),
             type: "explorer",
             value: details.new_admin,
-            linkType: getAddressType(details.new_admin),
           }),
+          title: "New admin",
         },
         {
-          title: "Contract",
           html: getCommonReceiptHtml({
+            linkType: "contract_address",
             type: "explorer",
             value: details.contract,
-            linkType: "contract_address",
           }),
+          title: "Contract",
         },
       ];
     }
@@ -312,20 +312,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "Contract",
           html: getCommonReceiptHtml({
+            linkType: "contract_address",
             type: "explorer",
             value: details.contract,
-            linkType: "contract_address",
           }),
+          title: "Contract",
         },
       ];
     }
@@ -334,24 +334,24 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "From address",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.from_address),
             type: "explorer",
             value: details.from_address,
-            linkType: getAddressType(details.from_address),
           }),
+          title: "From address",
         },
         {
-          title: "To address",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.to_address),
             type: "explorer",
             value: details.to_address,
-            linkType: getAddressType(details.to_address),
           }),
+          title: "To address",
         },
         {
-          title: "Amount",
           html: <CoinsComponent coins={details.amount} />,
+          title: "Amount",
         },
       ];
     }
@@ -359,18 +359,18 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Inputs",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.inputs,
           }),
+          title: "Inputs",
         },
         {
-          title: "Outputs",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.outputs,
           }),
+          title: "Outputs",
         },
       ];
     }
@@ -379,27 +379,27 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Granter",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.granter),
             type: "explorer",
             value: details.granter,
-            linkType: getAddressType(details.granter),
           }),
+          title: "Granter",
         },
         {
-          title: "Grantee",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.grantee),
             type: "explorer",
             value: details.grantee,
-            linkType: getAddressType(details.grantee),
           }),
+          title: "Grantee",
         },
         {
-          title: "Grant",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.grant,
           }),
+          title: "Grant",
         },
       ];
     }
@@ -407,20 +407,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Granter",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.granter),
             type: "explorer",
             value: details.granter,
-            linkType: getAddressType(details.granter),
           }),
+          title: "Granter",
         },
         {
-          title: "Grantee",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.grantee),
             type: "explorer",
             value: details.grantee,
-            linkType: getAddressType(details.grantee),
           }),
+          title: "Grantee",
         },
         {
           title: "Msg type URL",
@@ -432,19 +432,19 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Grantee",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.grantee),
             type: "explorer",
             value: details.grantee,
-            linkType: getAddressType(details.grantee),
           }),
+          title: "Grantee",
         },
         {
-          title: "Msgs",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.msgs,
           }),
+          title: "Msgs",
         },
       ];
     }
@@ -453,12 +453,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Invariant module name",
@@ -476,12 +476,12 @@ export const generateReceipts = (
           getAddressType(details.delegator_address)
         ),
         {
-          title: "Withdraw address",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.withdraw_address),
             type: "explorer",
             value: details.withdraw_address,
-            linkType: getAddressType(details.withdraw_address),
           }),
+          title: "Withdraw address",
         },
       ];
     }
@@ -503,16 +503,16 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Amount",
           html: <CoinsComponent coins={details.amount} />,
+          title: "Amount",
         },
         {
-          title: "Depositor",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.depositor),
             type: "explorer",
             value: details.depositor,
-            linkType: getAddressType(details.depositor),
           }),
+          title: "Depositor",
         },
       ];
     }
@@ -521,19 +521,19 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Submitter",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.submitter),
             type: "explorer",
             value: details.submitter,
-            linkType: getAddressType(details.submitter),
           }),
+          title: "Submitter",
         },
         {
-          title: "Evidence",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.evidence,
           }),
+          title: "Evidence",
         },
       ];
     }
@@ -542,27 +542,27 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Granter",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.granter),
             type: "explorer",
             value: details.granter,
-            linkType: getAddressType(details.granter),
           }),
+          title: "Granter",
         },
         {
-          title: "Grantee",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.grantee),
             type: "explorer",
             value: details.grantee,
-            linkType: getAddressType(details.grantee),
           }),
+          title: "Grantee",
         },
         {
-          title: "Allowance",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.allowance,
           }),
+          title: "Allowance",
         },
       ];
     }
@@ -570,20 +570,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Granter",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.granter),
             type: "explorer",
             value: details.granter,
-            linkType: getAddressType(details.granter),
           }),
+          title: "Granter",
         },
         {
-          title: "Grantee",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.grantee),
             type: "explorer",
             value: details.grantee,
-            linkType: getAddressType(details.grantee),
           }),
+          title: "Grantee",
         },
       ];
     }
@@ -592,16 +592,16 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Initial deposit",
           html: <CoinsComponent coins={details.initial_deposit} />,
+          title: "Initial deposit",
         },
         {
-          title: "Proposer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.proposer),
             type: "explorer",
             value: details.proposer,
-            linkType: getAddressType(details.proposer),
           }),
+          title: "Proposer",
         },
         log && proposalIdReceipt(details.proposal_id),
         log && {
@@ -615,8 +615,8 @@ export const generateReceipts = (
         },
         { title: "Title", value: details.content.title },
         {
-          title: "Content",
           html: getCommonReceiptHtml({ type: "json", value: details.content }),
+          title: "Content",
         },
       ];
     }
@@ -625,12 +625,12 @@ export const generateReceipts = (
       return [
         proposalIdReceipt(details.proposal_id),
         {
-          title: "Voter",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.voter),
             type: "explorer",
             value: details.voter,
-            linkType: getAddressType(details.voter),
           }),
+          title: "Voter",
         },
         {
           title: "Option",
@@ -643,19 +643,19 @@ export const generateReceipts = (
       return [
         proposalIdReceipt(details.proposal_id),
         {
-          title: "Voter",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.voter),
             type: "explorer",
             value: details.voter,
-            linkType: getAddressType(details.voter),
           }),
+          title: "Voter",
         },
         {
-          title: "Options",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.options,
           }),
+          title: "Options",
         },
       ];
     }
@@ -664,16 +664,16 @@ export const generateReceipts = (
       return [
         proposalIdReceipt(details.proposal_id),
         {
-          title: "Depositor",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.depositor),
             type: "explorer",
             value: details.depositor,
-            linkType: getAddressType(details.depositor),
           }),
+          title: "Depositor",
         },
         {
-          title: "Amount",
           html: <CoinsComponent coins={details.amount} />,
+          title: "Amount",
         },
       ];
     }
@@ -687,18 +687,18 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Description",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.description,
           }),
+          title: "Description",
         },
         {
-          title: "Commission",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.commission,
           }),
+          title: "Commission",
         },
         {
           title: "Min self delegation",
@@ -710,15 +710,15 @@ export const generateReceipts = (
         ),
         validatorAddrReceipt(details.validator_address),
         {
-          title: "Public key",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.pubkey,
           }),
+          title: "Public key",
         },
         {
-          title: "Value",
           html: <CoinsComponent coins={[details.value]} />,
+          title: "Value",
         },
       ];
     }
@@ -726,11 +726,11 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Description",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.description,
           }),
+          title: "Description",
         },
         validatorAddrReceipt(details.validator_address),
         {
@@ -753,8 +753,8 @@ export const generateReceipts = (
         ),
         validatorAddrReceipt(details.validator_address),
         {
-          title: "Amount",
           html: <CoinsComponent coins={[details.amount]} />,
+          title: "Amount",
         },
       ];
     }
@@ -766,24 +766,24 @@ export const generateReceipts = (
           getAddressType(details.delegator_address)
         ),
         {
-          title: "Source validator address",
           html: getCommonReceiptHtml({
+            linkType: "validator_address",
             type: "explorer",
             value: details.validator_src_address,
-            linkType: "validator_address",
           }),
+          title: "Source validator address",
         },
         {
-          title: "Destination validator address",
           html: getCommonReceiptHtml({
+            linkType: "validator_address",
             type: "explorer",
             value: details.validator_dst_address,
-            linkType: "validator_address",
           }),
+          title: "Destination validator address",
         },
         {
-          title: "Amount",
           html: <CoinsComponent coins={[details.amount]} />,
+          title: "Amount",
         },
       ];
     }
@@ -800,31 +800,31 @@ export const generateReceipts = (
           value: details.source_channel,
         },
         {
-          title: "Token",
           html: <CoinsComponent coins={[details.token]} />,
+          title: "Token",
         },
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "Receiver",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.receiver),
             type: "explorer",
             value: details.receiver,
-            linkType: getAddressType(details.receiver),
           }),
+          title: "Receiver",
         },
         details.timeout_height && {
-          title: "Timeout height",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.timeout_height,
           }),
+          title: "Timeout height",
         },
         !!details.timeout_timestamp && {
           title: "Timeout timestamp",
@@ -842,19 +842,19 @@ export const generateReceipts = (
       return [
         clientStateReceipt(details.client_state),
         {
-          title: "Consensus state",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.consensus_state,
           }),
+          title: "Consensus state",
         },
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -867,27 +867,27 @@ export const generateReceipts = (
         },
         // newer version
         details.client_message && {
-          title: "Client message",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.client_message,
           }),
+          title: "Client message",
         },
         // older version
         details.header && {
-          title: "Header",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.header,
           }),
+          title: "Header",
         },
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -900,11 +900,11 @@ export const generateReceipts = (
         },
         clientStateReceipt(details.client_state),
         {
-          title: "Consensus state",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.consensus_state,
           }),
+          title: "Consensus state",
         },
         {
           title: "Proof upgrade client",
@@ -915,12 +915,12 @@ export const generateReceipts = (
           value: details.proof_upgrade_consensus_state,
         },
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -932,19 +932,19 @@ export const generateReceipts = (
           value: details.client_id,
         },
         {
-          title: "Misbehaviour",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.misbehaviour,
           }),
+          title: "Misbehaviour",
         },
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -956,30 +956,30 @@ export const generateReceipts = (
           value: details.client_id,
         },
         {
-          title: "Counterparty",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.counterparty,
           }),
+          title: "Counterparty",
         },
         {
-          title: "Version",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.version,
           }),
+          title: "Version",
         },
         {
           title: "Delay period",
           value: details.delay_period,
         },
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -996,22 +996,22 @@ export const generateReceipts = (
         },
         clientStateReceipt(details.client_state),
         {
-          title: "Counterparty",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.counterparty,
           }),
+          title: "Counterparty",
         },
         {
           title: "Delay period",
           value: details.delay_period,
         },
         {
-          title: "Counterparty versions",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.counterparty_versions,
           }),
+          title: "Counterparty versions",
         },
         proofHeightReceipt(details.proof_height),
         proofInitReceipt(details.proof_init),
@@ -1024,19 +1024,19 @@ export const generateReceipts = (
           value: details.proof_consensus,
         },
         {
-          title: "Consensus height",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.consensus_height,
           }),
+          title: "Consensus height",
         },
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1052,11 +1052,11 @@ export const generateReceipts = (
           value: details.counterparty_connection_id,
         },
         {
-          title: "Version",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.version,
           }),
+          title: "Version",
         },
         clientStateReceipt(details.client_state),
         proofHeightReceipt(details.proof_height),
@@ -1073,19 +1073,19 @@ export const generateReceipts = (
           value: details.proof_consensus,
         },
         {
-          title: "Consensus height",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.consensus_height,
           }),
+          title: "Consensus height",
         },
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1102,12 +1102,12 @@ export const generateReceipts = (
         },
         proofHeightReceipt(details.proof_height),
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1119,19 +1119,19 @@ export const generateReceipts = (
           value: details.port_id,
         },
         {
-          title: "Channel",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.channel,
           }),
+          title: "Channel",
         },
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1147,11 +1147,11 @@ export const generateReceipts = (
           value: details.previous_channel_id,
         },
         {
-          title: "Channel",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.channel,
           }),
+          title: "Channel",
         },
         {
           title: "Counterparty version",
@@ -1160,12 +1160,12 @@ export const generateReceipts = (
         proofInitReceipt(details.proof_init),
         proofHeightReceipt(details.proof_height),
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1191,12 +1191,12 @@ export const generateReceipts = (
         },
         proofHeightReceipt(details.proof_height),
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1214,12 +1214,12 @@ export const generateReceipts = (
         },
         proofHeightReceipt(details.proof_height),
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1232,12 +1232,12 @@ export const generateReceipts = (
         },
         channelIdReceipt(details.channel_id),
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1252,12 +1252,12 @@ export const generateReceipts = (
         proofInitReceipt(details.proof_init),
         proofHeightReceipt(details.proof_height),
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1265,11 +1265,11 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Packet",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.packet,
           }),
+          title: "Packet",
         },
         {
           title: "Proof commitment",
@@ -1277,12 +1277,12 @@ export const generateReceipts = (
         },
         proofHeightReceipt(details.proof_height),
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1290,11 +1290,11 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Packet",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.packet,
           }),
+          title: "Packet",
         },
         {
           title: "Proof unreceived",
@@ -1306,12 +1306,12 @@ export const generateReceipts = (
           value: details.next_sequence_recv,
         },
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1319,11 +1319,11 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Packet",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.packet,
           }),
+          title: "Packet",
         },
         {
           title: "Proof unreceived",
@@ -1339,12 +1339,12 @@ export const generateReceipts = (
           value: details.next_sequence_recv,
         },
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1352,11 +1352,11 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Packet",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.packet,
           }),
+          title: "Packet",
         },
         {
           title: "Acknowledgement",
@@ -1368,12 +1368,12 @@ export const generateReceipts = (
         },
         proofHeightReceipt(details.proof_height),
         {
-          title: "Signer",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.signer),
             type: "explorer",
             value: details.signer,
-            linkType: getAddressType(details.signer),
           }),
+          title: "Signer",
         },
       ];
     }
@@ -1382,26 +1382,26 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "Pool params",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.pool_params,
           }),
+          title: "Pool params",
         },
         {
-          title: "Pool assets",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.pool_assets,
           }),
+          title: "Pool assets",
         },
         {
           title: "Future pool governor",
@@ -1413,30 +1413,30 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "Pool params",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.pool_params,
           }),
+          title: "Pool params",
         },
         {
-          title: "Initial pool liquidity",
           html: <CoinsComponent coins={details.initial_pool_liquidity} />,
+          title: "Initial pool liquidity",
         },
         {
-          title: "Scaling factors",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.scaling_factors,
           }),
+          title: "Scaling factors",
         },
         {
           title: "Future pool governor",
@@ -1452,23 +1452,23 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Pool ID",
           value: details.pool_id,
         },
         {
-          title: "Scaling factors",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.scaling_factors,
           }),
+          title: "Scaling factors",
         },
       ];
     }
@@ -1476,12 +1476,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Pool ID",
@@ -1492,8 +1492,8 @@ export const generateReceipts = (
           value: details.share_out_amount,
         },
         {
-          title: "Token in maxs",
           html: <CoinsComponent coins={details.token_in_maxs ?? []} />,
+          title: "Token in maxs",
         },
       ];
     }
@@ -1501,12 +1501,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Pool ID",
@@ -1517,8 +1517,8 @@ export const generateReceipts = (
           value: details.share_in_amount,
         },
         {
-          title: "Token out mins",
           html: <CoinsComponent coins={details.token_out_mins ?? []} />,
+          title: "Token out mins",
         },
       ];
     }
@@ -1527,23 +1527,23 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "Routes",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.routes,
           }),
+          title: "Routes",
         },
         {
-          title: "Token in",
           html: <CoinsComponent coins={[details.token_in]} />,
+          title: "Token in",
         },
         {
           title: "Token out min amount",
@@ -1556,27 +1556,27 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "Routes",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.routes,
           }),
+          title: "Routes",
         },
         {
           title: "Token in max amount",
           value: details.token_in_max_amount,
         },
         {
-          title: "Token out",
           html: <CoinsComponent coins={[details.token_out]} />,
+          title: "Token out",
         },
       ];
     }
@@ -1584,20 +1584,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Pool ID",
           value: details.pool_id,
         },
         {
-          title: "Token in",
           html: <CoinsComponent coins={[details.token_in]} />,
+          title: "Token in",
         },
         {
           title: "Share out min amount",
@@ -1609,12 +1609,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Pool ID",
@@ -1638,12 +1638,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Pool ID",
@@ -1667,20 +1667,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Pool ID",
           value: details.pool_id,
         },
         {
-          title: "Token out",
           html: <CoinsComponent coins={[details.token_out]} />,
+          title: "Token out",
         },
         {
           title: "Share in max amount",
@@ -1697,23 +1697,23 @@ export const generateReceipts = (
           value: String(details.is_perpetual),
         },
         {
-          title: "Owner",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.owner),
             type: "explorer",
             value: details.owner,
-            linkType: getAddressType(details.owner),
           }),
+          title: "Owner",
         },
         {
-          title: "Distribute to",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.distribute_to,
           }),
+          title: "Distribute to",
         },
         {
-          title: "Coins",
           html: <CoinsComponent coins={details.coins} />,
+          title: "Coins",
         },
         {
           title: "Start time",
@@ -1729,20 +1729,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Owner",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.owner),
             type: "explorer",
             value: details.owner,
-            linkType: getAddressType(details.owner),
           }),
+          title: "Owner",
         },
         {
           title: "Gauge ID",
           value: details.gauge_id,
         },
         {
-          title: "Rewards",
           html: <CoinsComponent coins={details.rewards} />,
+          title: "Rewards",
         },
       ];
     }
@@ -1751,20 +1751,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Owner",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.owner),
             type: "explorer",
             value: details.owner,
-            linkType: getAddressType(details.owner),
           }),
+          title: "Owner",
         },
         {
           title: "Duration",
           value: details.duration,
         },
         {
-          title: "Coin",
           html: <CoinsComponent coins={details.coins} />,
+          title: "Coin",
         },
       ];
     }
@@ -1772,12 +1772,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Owner",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.owner),
             type: "explorer",
             value: details.owner,
-            linkType: getAddressType(details.owner),
           }),
+          title: "Owner",
         },
       ];
     }
@@ -1786,20 +1786,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Owner",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.owner),
             type: "explorer",
             value: details.owner,
-            linkType: getAddressType(details.owner),
           }),
+          title: "Owner",
         },
         {
           title: "ID",
           value: details.ID,
         },
         details.coins && {
-          title: "Coins",
           html: <CoinsComponent coins={details.coins} />,
+          title: "Coins",
         },
       ];
     }
@@ -1808,12 +1808,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Owner",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.owner),
             type: "explorer",
             value: details.owner,
-            linkType: getAddressType(details.owner),
           }),
+          title: "Owner",
         },
         {
           title: "ID",
@@ -1830,12 +1830,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Lock ID",
@@ -1849,12 +1849,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Lock ID",
@@ -1866,16 +1866,16 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "Coins",
           html: <CoinsComponent coins={details.coins} />,
+          title: "Coins",
         },
         validatorAddrReceipt(details.val_addr),
       ];
@@ -1884,12 +1884,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Pool ID",
@@ -1901,20 +1901,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Lock ID",
           value: details.lock_id,
         },
         {
-          title: "Coin",
           html: <CoinsComponent coins={[details.coin]} />,
+          title: "Coin",
         },
       ];
     }
@@ -1923,12 +1923,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Subdenom",
@@ -1941,16 +1941,16 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "Amount",
           html: <CoinsComponent coins={[details.amount]} />,
+          title: "Amount",
         },
       ];
     }
@@ -1958,24 +1958,24 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
           title: "Denom",
           value: details.denom,
         },
         {
-          title: "New admin",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.new_admin),
             type: "explorer",
             value: details.new_admin,
-            linkType: getAddressType(details.new_admin),
           }),
+          title: "New admin",
         },
       ];
     }
@@ -1984,19 +1984,19 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Sender",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.sender),
             type: "explorer",
             value: details.sender,
-            linkType: getAddressType(details.sender),
           }),
+          title: "Sender",
         },
         {
-          title: "Metadata",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.metadata,
           }),
+          title: "Metadata",
         },
       ];
     }
@@ -2005,19 +2005,19 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Admin",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.admin),
             type: "explorer",
             value: details.admin,
-            linkType: getAddressType(details.admin),
           }),
+          title: "Admin",
         },
         {
-          title: "Hot routes",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.hot_routes,
           }),
+          title: "Hot routes",
         },
       ];
     }
@@ -2025,19 +2025,19 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Admin",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.admin),
             type: "explorer",
             value: details.admin,
-            linkType: getAddressType(details.admin),
           }),
+          title: "Admin",
         },
         {
-          title: "Hot routes",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.base_denoms,
           }),
+          title: "Hot routes",
         },
       ];
     }
@@ -2045,20 +2045,20 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Admin",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.admin),
             type: "explorer",
             value: details.admin,
-            linkType: getAddressType(details.admin),
           }),
+          title: "Admin",
         },
         {
-          title: "Developer account",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.developer_account),
             type: "explorer",
             value: details.developer_account,
-            linkType: getAddressType(details.developer_account),
           }),
+          title: "Developer account",
         },
       ];
     }
@@ -2066,19 +2066,19 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Admin",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.admin),
             type: "explorer",
             value: details.admin,
-            linkType: getAddressType(details.admin),
           }),
+          title: "Admin",
         },
         {
-          title: "Pool weights",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.pool_weights,
           }),
+          title: "Pool weights",
         },
       ];
     }
@@ -2086,12 +2086,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Admin",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.admin),
             type: "explorer",
             value: details.admin,
-            linkType: getAddressType(details.admin),
           }),
+          title: "Admin",
         },
         {
           title: "Max pool points per tx",
@@ -2103,12 +2103,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Admin",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.admin),
             type: "explorer",
             value: details.admin,
-            linkType: getAddressType(details.admin),
           }),
+          title: "Admin",
         },
         {
           title: "Max pool points per block",
@@ -2122,16 +2122,16 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Delegator",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.delegator),
             type: "explorer",
             value: details.delegator,
-            linkType: getAddressType(details.delegator),
           }),
+          title: "Delegator",
         },
         {
-          title: "Coin",
           html: <CoinsComponent coins={[details.coin]} />,
+          title: "Coin",
         },
       ];
     }
@@ -2140,19 +2140,19 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Delegator",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.delegator),
             type: "explorer",
             value: details.delegator,
-            linkType: getAddressType(details.delegator),
           }),
+          title: "Delegator",
         },
         {
-          title: "Preferences",
           html: getCommonReceiptHtml({
             type: "json",
             value: details.preferences,
           }),
+          title: "Preferences",
         },
       ];
     }
@@ -2160,12 +2160,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Delegator",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.delegator),
             type: "explorer",
             value: details.delegator,
-            linkType: getAddressType(details.delegator),
           }),
+          title: "Delegator",
         },
       ];
     }
@@ -2173,12 +2173,12 @@ export const generateReceipts = (
       const details = extractTxDetails(type, body, log);
       return [
         {
-          title: "Delegator",
           html: getCommonReceiptHtml({
+            linkType: getAddressType(details.delegator),
             type: "explorer",
             value: details.delegator,
-            linkType: getAddressType(details.delegator),
           }),
+          title: "Delegator",
         },
         {
           title: "Lock ID",

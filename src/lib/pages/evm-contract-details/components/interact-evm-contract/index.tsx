@@ -36,8 +36,8 @@ export const InteractEvmContract = ({
   contractAddress,
   evmVerifyInfo,
   proxyTargetEvmVerifyInfo,
-  selectedType,
   selectedFn,
+  selectedType,
 }: InteractEvmContractProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -65,17 +65,17 @@ export const InteractEvmContract = ({
   const handleSetInteractType = useCallback(
     (newType: InteractType) =>
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: EVM_CONTRACT_INTERACT_PATH_NAME,
         query: {
           contractAddress,
-          tab: TabIndex.ReadWrite,
           selectedType: getInteractTabsIndex(
             newType === InteractType.Read,
             isAsProxy
           ),
-        },
-        options: {
-          shallow: true,
+          tab: TabIndex.ReadWrite,
         },
       }),
     [contractAddress, isAsProxy, navigate]
@@ -84,17 +84,17 @@ export const InteractEvmContract = ({
   const handleSetIsAsProxy = useCallback(
     (e: ChangeEvent<HTMLInputElement>) =>
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: EVM_CONTRACT_INTERACT_PATH_NAME,
         query: {
           contractAddress,
-          tab: TabIndex.ReadWrite,
           selectedType: getInteractTabsIndex(
             interactType === InteractType.Read,
             e.target.checked
           ),
-        },
-        options: {
-          shallow: true,
+          tab: TabIndex.ReadWrite,
         },
       }),
     [contractAddress, interactType, navigate]

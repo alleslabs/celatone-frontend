@@ -66,7 +66,7 @@ export const useProposalParams = () => {
   return useQuery<ProposalParams<Coin>>(
     [CELATONE_QUERY_KEYS.PROPOSAL_PARAMS, endpoint],
     async () => queryFn(endpoint),
-    { retry: 1, refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -75,7 +75,7 @@ export const useProposalTypes = () => {
   return useQuery<ProposalType[]>(
     [CELATONE_QUERY_KEYS.PROPOSAL_TYPES, endpoint],
     async () => getProposalTypes(endpoint),
-    { retry: 1, refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -111,7 +111,7 @@ export const useProposals = (
         types,
         trimmedSearch
       ),
-    { retry: 1, refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -153,7 +153,7 @@ export const useProposalsByAddress = (
       offset,
     ],
     async () => getProposalsByAddress(endpoint, address, limit, offset),
-    { retry: 1, refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -180,8 +180,8 @@ export const useRelatedProposalsByContractAddress = (
         offset
       ),
     {
-      retry: 1,
       keepPreviousData: true,
+      retry: 1,
     }
   );
 };
@@ -192,7 +192,7 @@ export const useProposalData = (id: number, enabled = true) => {
   return useQuery<ProposalDataResponse>(
     [CELATONE_QUERY_KEYS.PROPOSAL_DATA, endpoint, id],
     async () => getProposalData(endpoint, id),
-    { retry: 1, enabled }
+    { enabled, retry: 1 }
   );
 };
 
@@ -205,9 +205,9 @@ export const useProposalDataRest = (id: number, enabled = true) => {
     [CELATONE_QUERY_KEYS.PROPOSAL_DATA_REST, restEndpoint, id],
     async () => getProposalDataRest(restEndpoint, id),
     {
-      retry: 1,
-      refetchOnWindowFocus: false,
       enabled,
+      refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -221,9 +221,9 @@ export const useProposalDepositsRest = (id: number, enabled = true) => {
     [CELATONE_QUERY_KEYS.PROPOSAL_DEPOSITS_REST, restEndpoint, id],
     async () => getProposalDepositsRest(restEndpoint, id),
     {
-      retry: 1,
-      refetchOnWindowFocus: false,
       enabled,
+      refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -242,7 +242,7 @@ export const useProposalVotesInfo = (id: number, enabled: boolean) => {
   return useQuery<ProposalVotesInfo>(
     [CELATONE_QUERY_KEYS.PROPOSAL_VOTES_INFO, endpoint, id],
     async () => queryFn(endpoint, id),
-    { retry: 1, refetchOnWindowFocus: false, enabled }
+    { enabled, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -267,7 +267,7 @@ export const useProposalVotes = (
       answer,
     ],
     async () => getProposalVotes(endpoint, id, limit, offset, answer, search),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { refetchOnWindowFocus: false, retry: 1, ...options }
   );
 };
 
@@ -296,7 +296,7 @@ export const useProposalValidatorVotes = (
     ],
     async () =>
       getProposalValidatorVotes(endpoint, id, limit, offset, answer, search),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { refetchOnWindowFocus: false, retry: 1, ...options }
   );
 };
 
@@ -309,6 +309,6 @@ export const useProposalAnswerCounts = (
   return useQuery(
     [CELATONE_QUERY_KEYS.PROPOSAL_ANSWER_COUNTS, endpoint, id],
     async () => getProposalAnswerCounts(endpoint, id),
-    { retry: 1, refetchOnWindowFocus: false, enabled }
+    { enabled, refetchOnWindowFocus: false, retry: 1 }
   );
 };

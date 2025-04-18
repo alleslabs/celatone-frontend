@@ -9,7 +9,7 @@ interface StepperProps {
   currentStep: Step;
 }
 
-export const Stepper = ({ mode, currentStep }: StepperProps) => (
+export const Stepper = ({ currentStep, mode }: StepperProps) => (
   <Flex width="100%">
     <StepperItem currentStep={currentStep} mode={mode} step={1} />
     <StepperItem currentStep={currentStep} mode={mode} step={2} />

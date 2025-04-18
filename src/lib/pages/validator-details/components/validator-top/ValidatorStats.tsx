@@ -10,10 +10,10 @@ import {
 import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
 const StatWithLabel = ({
-  label,
-  value,
   isLoading,
+  label,
   tooltipLabel,
+  value,
 }: {
   label: string;
   value: Option<string>;
@@ -51,10 +51,10 @@ interface ValidatorStatsProps {
 }
 
 export const ValidatorStats = ({
-  validatorAddress,
   commissionRate,
-  totalVotingPower,
   singleStakingDenom,
+  totalVotingPower,
+  validatorAddress,
 }: ValidatorStatsProps) => {
   const { data: stakingProvisions, isLoading: isStakingProvisionsLoading } =
     useValidatorStakingProvisions(!!singleStakingDenom);

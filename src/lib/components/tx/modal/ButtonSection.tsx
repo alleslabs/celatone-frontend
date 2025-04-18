@@ -19,9 +19,9 @@ interface ButtonSectionProps {
 
 export const ButtonSection = ({
   actionVariant,
+  errorMsg = "",
   onClose,
   receipts,
-  errorMsg = "",
 }: ButtonSectionProps) => {
   const router = useRouter();
   const navigate = useInternalNavigate();
@@ -59,7 +59,7 @@ export const ButtonSection = ({
             const codeId = receipts.find((r) => r.title === "Code ID")?.value;
             navigate({
               pathname: "/migrate",
-              query: { contract: router.query.contract, codeId },
+              query: { codeId, contract: router.query.contract },
             });
             onClose?.();
           }}

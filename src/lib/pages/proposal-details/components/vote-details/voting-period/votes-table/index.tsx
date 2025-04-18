@@ -27,10 +27,10 @@ interface ProposalVotesTableBodyProps {
 }
 
 export const ProposalVotesTableBody = ({
-  proposalVotes,
   fullVersion,
   isLoading,
   isSearching,
+  proposalVotes,
 }: ProposalVotesTableBodyProps) => {
   const isMobile = useMobile();
   const templateColumns =
@@ -84,11 +84,11 @@ interface ProposalVotesTableProps {
 const tableHeaderId = "proposalVotesTable";
 
 export const ProposalVotesTable = ({
-  id,
   answers,
-  fullVersion,
-  onViewMore,
   enabled,
+  fullVersion,
+  id,
+  onViewMore,
 }: ProposalVotesTableProps) => {
   const [answerFilter, setAnswerFilter] = useState<ProposalVoteType>(
     ProposalVoteType.ALL
@@ -97,18 +97,18 @@ export const ProposalVotesTable = ({
   const debouncedSearch = useDebounce(search);
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
@@ -127,44 +127,44 @@ export const ProposalVotesTable = ({
   const answerOptions = useMemo(
     () => [
       {
+        disabled: !answers?.total,
         label: `All votes (${answers?.total ?? 0})`,
         value: ProposalVoteType.ALL,
-        disabled: !answers?.total,
       },
       {
-        label: `Yes (${answers?.yes ?? 0})`,
-        value: ProposalVoteType.YES,
         disabled: !answers?.yes,
         icon: "circle" as const,
         iconColor: "success.main",
+        label: `Yes (${answers?.yes ?? 0})`,
+        value: ProposalVoteType.YES,
       },
       {
-        label: `No (${answers?.no ?? 0})`,
-        value: ProposalVoteType.NO,
         disabled: !answers?.no,
         icon: "circle" as const,
         iconColor: "error.main",
+        label: `No (${answers?.no ?? 0})`,
+        value: ProposalVoteType.NO,
       },
       {
-        label: `No with veto (${answers?.noWithVeto ?? 0})`,
-        value: ProposalVoteType.NO_WITH_VETO,
         disabled: !answers?.noWithVeto,
         icon: "circle" as const,
         iconColor: "error.dark",
+        label: `No with veto (${answers?.noWithVeto ?? 0})`,
+        value: ProposalVoteType.NO_WITH_VETO,
       },
       {
-        label: `Abstain (${answers?.abstain ?? 0})`,
-        value: ProposalVoteType.ABSTAIN,
         disabled: !answers?.abstain,
         icon: "circle" as const,
         iconColor: "gray.600",
+        label: `Abstain (${answers?.abstain ?? 0})`,
+        value: ProposalVoteType.ABSTAIN,
       },
       {
-        label: `Weighted (${answers?.weighted ?? 0})`,
-        value: ProposalVoteType.WEIGHTED,
         disabled: !answers?.weighted,
         icon: "circle" as const,
         iconColor: "primary.light",
+        label: `Weighted (${answers?.weighted ?? 0})`,
+        value: ProposalVoteType.WEIGHTED,
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps

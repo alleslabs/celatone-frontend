@@ -16,7 +16,7 @@ export const EvmContractVerifyVyperJsonInput = ({
   control,
 }: EvmContractVerifyVyperJsonInputProps) => {
   const {
-    field: { value, onChange },
+    field: { onChange, value },
   } = useController({
     control,
     name: "verifyForm.vyperJsonInput.jsonFile",

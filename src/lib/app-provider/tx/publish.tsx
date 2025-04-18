@@ -21,23 +21,23 @@ export const usePublishModuleTx = () => {
 
   return useCallback(
     async ({
-      onTxSucceed,
-      onTxFailed,
       estimatedFee,
       messages,
+      onTxFailed,
+      onTxSucceed,
     }: PublishModuleStreamParams) => {
       if (!address) throw new Error("No address provided (usePublishModuleTx)");
       if (!estimatedFee) return null;
       return publishModuleTx({
         address,
-        signAndBroadcast,
+        fee: estimatedFee,
+        messages,
+        onTxFailed,
         onTxSucceed: (txResult) => {
           trackTxSucceed();
           onTxSucceed?.(txResult);
         },
-        onTxFailed,
-        fee: estimatedFee,
-        messages,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

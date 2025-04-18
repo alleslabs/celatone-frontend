@@ -10,8 +10,8 @@ interface UserAssetInfoCardProps {
 }
 
 export const UserAssetInfoCard = ({
-  totalSupportedAssetsValue,
   helperText,
+  totalSupportedAssetsValue,
 }: UserAssetInfoCardProps) => {
   const isZeroValue =
     !totalSupportedAssetsValue || totalSupportedAssetsValue.eq(0);

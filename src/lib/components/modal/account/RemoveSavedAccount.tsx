@@ -17,10 +17,10 @@ import { ActionModal } from "../ActionModal";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "36px",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 
@@ -48,12 +48,12 @@ export function RemoveSavedAccountModal({
     removeSavedAccount(accountLocalInfo.address);
 
     toast({
-      title: `Removed \u2018${displayName}\u2019 from Saved Accounts`,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      status: "success",
+      title: `Removed \u2018${displayName}\u2019 from Saved Accounts`,
     });
   }, [accountLocalInfo.address, displayName, removeSavedAccount, toast]);
 
@@ -74,7 +74,7 @@ export function RemoveSavedAccountModal({
       <Text>
         <Highlight
           query={[displayName, "Saved accounts"]}
-          styles={{ fontWeight: "bold", color: "inherit" }}
+          styles={{ color: "inherit", fontWeight: "bold" }}
         >
           {`This action will remove \u2018${displayName}\u2019 from Saved Accounts. 
           You can save this address again later, but you will need to add its new account name and description.`}

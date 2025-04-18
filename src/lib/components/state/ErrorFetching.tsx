@@ -12,10 +12,10 @@ interface ErrorFetchingProps {
 
 export const ErrorFetching = ({
   dataName,
-  withBorder = false,
+  hasBorderTop = true,
   my = 12,
   py = 8,
-  hasBorderTop = true,
+  withBorder = false,
 }: ErrorFetchingProps) => (
   <EmptyState
     hasBorderTop={hasBorderTop}

@@ -12,18 +12,18 @@ interface BlockTxsTableProps {
 
 export const BlockTxsTableFull = ({ height }: BlockTxsTableProps) => {
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
   const { data, isLoading } = useTxsByBlockHeight(height, pageSize, offset, {

@@ -11,7 +11,7 @@ interface EvmToCellProps {
   isCompact?: boolean;
 }
 
-export const EvmToCell = ({ toAddress, isCompact }: EvmToCellProps) => {
+export const EvmToCell = ({ isCompact, toAddress }: EvmToCellProps) => {
   if (!toAddress)
     return (
       <Text color="text.dark" variant="body2">

@@ -22,11 +22,11 @@ export const usePublicData = (slug: string): PublicDataState => {
   const { data: projectInfo, isLoading } = usePublicProjectBySlug(slug);
 
   return {
+    isLoading,
+    projectDetail: projectInfo?.details,
+    publicAccounts: projectInfo?.accounts || [],
     publicCodes: projectInfo?.codes || [],
     publicContracts: projectInfo?.contracts || [],
-    publicAccounts: projectInfo?.accounts || [],
     publicModules: projectInfo?.modules || [],
-    projectDetail: projectInfo?.details,
-    isLoading,
   };
 };

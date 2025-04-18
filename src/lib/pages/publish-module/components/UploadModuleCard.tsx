@@ -17,8 +17,8 @@ import type { Module, PublishStatus } from "../formConstants";
 import { statusResolver } from "../utils";
 
 const DEFAULT_TEMP_FILE = {
-  file: undefined,
   base64: "",
+  file: undefined,
 };
 
 interface UploadModuleCardProps {
@@ -38,18 +38,18 @@ interface UploadModuleCardProps {
 }
 
 export const UploadModuleCard = ({
-  index,
   fileState: {
-    file,
     decodeRes,
+    file,
     publishStatus: { status, text },
   },
+  index,
   modules,
-  policy,
-  setFile,
-  removeFile,
-  removeEntry,
   moveEntry,
+  policy,
+  removeEntry,
+  removeFile,
+  setFile,
 }: UploadModuleCardProps) => {
   const [tempFile, setTempFile] = useState<{
     file: Option<File>;
@@ -62,30 +62,30 @@ export const UploadModuleCard = ({
     base64EncodedFile: tempFile.base64,
     options: {
       enabled: Boolean(tempFile.base64),
-      retry: 0,
-      refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        setFile(
-          tempFile.file,
-          tempFile.base64,
-          data,
-          statusResolver({
-            data,
-            modules,
-            index,
-            policy,
-            address,
-          })
-        );
-        setDecodeError("");
-        setTempFile(DEFAULT_TEMP_FILE);
-      },
       onError: () => {
         setDecodeError(
           "Failed to decode .mv file. Please make sure the file is a module."
         );
         setTempFile(DEFAULT_TEMP_FILE);
       },
+      onSuccess: (data) => {
+        setFile(
+          tempFile.file,
+          tempFile.base64,
+          data,
+          statusResolver({
+            address,
+            data,
+            index,
+            modules,
+            policy,
+          })
+        );
+        setDecodeError("");
+        setTempFile(DEFAULT_TEMP_FILE);
+      },
+      refetchOnWindowFocus: false,
+      retry: 0,
     },
   });
 
@@ -96,7 +96,7 @@ export const UploadModuleCard = ({
       const dataUrl = reader.result as string;
       // strip "data:application/octet-stream;base64,oRzrCw..."
       const base64String = dataUrl.replace(/^data:.*;base64,/, "");
-      setTempFile({ file: target, base64: base64String });
+      setTempFile({ base64: base64String, file: target });
     };
     reader.readAsDataURL(target);
   }, []);
@@ -128,9 +128,9 @@ export const UploadModuleCard = ({
               variant="ghost"
               onClick={() => {
                 track(AmpEvent.USE_UPLOAD_CARD_MOVE_UP, {
+                  currentBoxAmount: modules.length,
                   currentPosition: index + 1,
                   newPosition: index,
-                  currentBoxAmount: modules.length,
                 });
                 moveEntry(index, index - 1);
               }}
@@ -146,9 +146,9 @@ export const UploadModuleCard = ({
               variant="ghost"
               onClick={() => {
                 track(AmpEvent.USE_UPLOAD_CARD_MOVE_DOWN, {
+                  currentBoxAmount: modules.length,
                   currentPosition: index + 1,
                   newPosition: index + 2,
-                  currentBoxAmount: modules.length,
                 });
                 moveEntry(index, index + 1);
               }}

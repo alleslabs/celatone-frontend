@@ -7,14 +7,14 @@ interface JsonLinkProps {
   type: string;
 }
 
-export const JsonLink = ({ uri, type }: JsonLinkProps) => (
+export const JsonLink = ({ type, uri }: JsonLinkProps) => (
   <Flex display="inline">
     <a data-peer href={uri} rel="noopener noreferrer" target="_blank">
       <Text
         _hover={{
+          "& > p": { color: "primary.light" },
           textDecoration: "underline",
           textDecorationColor: "primary.light",
-          "& > p": { color: "primary.light" },
         }}
         color="primary.main"
         display="inline"

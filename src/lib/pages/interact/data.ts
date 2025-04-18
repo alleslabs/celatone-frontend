@@ -9,9 +9,9 @@ import { useMemo } from "react";
 export const useSearchModules = ({
   address,
   moduleName,
-  onModuleSuccess,
-  onModulesSuccess,
   onError,
+  onModulesSuccess,
+  onModuleSuccess,
 }: {
   address: Addr;
   moduleName: Option<string>;
@@ -19,24 +19,24 @@ export const useSearchModules = ({
   onModulesSuccess: (modules: IndexedModule[]) => void;
   onError: (err: unknown) => void;
 }) => {
-  const { refetch: refetchModule, isFetching: isModuleFetching } =
+  const { isFetching: isModuleFetching, refetch: refetchModule } =
     useModuleByAddressRest({
       address,
       moduleName: moduleName ?? "",
       options: {
-        refetchOnWindowFocus: false,
         enabled: false,
-        retry: false,
-        onSuccess: onModuleSuccess,
         onError,
+        onSuccess: onModuleSuccess,
+        refetchOnWindowFocus: false,
+        retry: false,
       },
     });
-  const { refetch: refetchModules, isFetching: isModulesFetching } =
+  const { isFetching: isModulesFetching, refetch: refetchModules } =
     useModulesByAddress({
       address,
       enabled: false,
-      onSuccess: ({ items }) => onModulesSuccess(items),
       onError,
+      onSuccess: ({ items }) => onModulesSuccess(items),
     });
 
   const refetch = useMemo(
@@ -45,7 +45,7 @@ export const useSearchModules = ({
   );
 
   return {
-    refetch,
     isFetching: isModuleFetching || isModulesFetching,
+    refetch,
   };
 };

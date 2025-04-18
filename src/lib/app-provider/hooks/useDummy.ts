@@ -32,7 +32,7 @@ export const useDummyWallet = () => {
     })();
   }, [bech32Prefix]);
 
-  return { dummyWallet, dummyAddress };
+  return { dummyAddress, dummyWallet };
 };
 
 export const useGetDummyClient = () => {

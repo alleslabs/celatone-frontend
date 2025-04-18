@@ -22,24 +22,24 @@ const EvmEventBoxDataBody = ({ text }: { text: string }) => {
   const isAddress = countZero >= 24;
   const options = [
     {
+      isDisabled: false,
       label: "Hex",
       value: "hex",
-      isDisabled: false,
     },
     {
+      isDisabled: false,
       label: "Text",
       value: "text",
-      isDisabled: false,
     },
     {
+      isDisabled: false,
       label: "Number",
       value: "number",
-      isDisabled: false,
     },
     {
+      isDisabled: !isAddress,
       label: "Address",
       value: "address",
-      isDisabled: !isAddress,
     },
   ];
 
@@ -98,9 +98,9 @@ const EvmEventBoxDataBody = ({ text }: { text: string }) => {
 
 export const EvmEventBoxData = ({
   data,
-  topics,
-  tab,
   parsedLog,
+  tab,
+  topics,
 }: EvmEventBoxDataProps) => {
   const [isFormatted, setIsFormatted] = useState(false);
   const formattedData = data.replace("0x", "").match(/.{1,64}/g) ?? [];
@@ -110,8 +110,8 @@ export const EvmEventBoxData = ({
       {isFormatted ? (
         <Box
           _hover={{
-            borderColor: "gray.600",
             "& .copy-button-box": { display: "block" },
+            borderColor: "gray.600",
           }}
           borderColor="gray.700"
           borderRadius="8px"

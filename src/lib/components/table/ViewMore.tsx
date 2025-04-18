@@ -13,9 +13,9 @@ interface ViewMoreProps {
 }
 
 export const ViewMore = ({
-  onClick,
   borderRadius = "0",
   minH = "64px",
+  onClick,
   text = "View more",
 }: ViewMoreProps) => (
   <Flex justifyContent="center" textAlign="center" w="full">

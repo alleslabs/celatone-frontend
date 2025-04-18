@@ -39,9 +39,9 @@ export const useResourcesByAddressRest = (
         );
         if (groupResourcesIndex === -1)
           ownerResources.push({
-            group: groupName,
             account: zHexAddr.parse(ownerName),
             displayName: `${truncate(ownerName)}::${groupName}`,
+            group: groupName,
             items: [resource],
           });
         else ownerResources[groupResourcesIndex].items.push(resource);
@@ -68,8 +68,8 @@ export const useResourcesByAddressRest = (
         return {
           ...acc,
           [resourceKey]: {
-            displayName: `${truncate(accountName)}::${groupName}`,
             account: zHexAddr.parse(accountName),
+            displayName: `${truncate(accountName)}::${groupName}`,
             group: groupName,
             items,
           },
@@ -77,9 +77,9 @@ export const useResourcesByAddressRest = (
       }, {});
 
       return {
-        totalCount: resources.total,
-        groupedByOwner: Object.values(groupedByOwner),
         groupedByName: Object.values(groupedByName),
+        groupedByOwner: Object.values(groupedByOwner),
+        totalCount: resources.total,
       };
     });
   return useQuery(

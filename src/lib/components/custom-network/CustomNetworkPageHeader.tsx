@@ -7,9 +7,9 @@ interface CustomNetworkPageHeaderProps {
 }
 
 export const CustomNetworkPageHeader = ({
-  title,
-  subtitle = "Add custom rollup",
   hasAlert = true,
+  subtitle = "Add custom rollup",
+  title,
 }: CustomNetworkPageHeaderProps) => (
   <>
     <Flex alignItems="center" direction="column" gap={2}>

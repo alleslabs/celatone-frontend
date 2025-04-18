@@ -17,27 +17,27 @@ interface TxsTableProps {
 
 export const TxsTable = ({
   contractAddress,
+  refetchCount,
   scrollComponentId,
   totalData,
-  refetchCount,
 }: TxsTableProps) => {
   const { isFullTier } = useTierConfig();
 
   const {
-    setTotalData,
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
-    total: totalData,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: totalData,
   });
 
   const resApi = useTxsByAddress(
@@ -59,7 +59,7 @@ export const TxsTable = ({
     }
   );
 
-  const { data, isLoading, error } = isFullTier ? resApi : resRest;
+  const { data, error, isLoading } = isFullTier ? resApi : resRest;
 
   return (
     <>

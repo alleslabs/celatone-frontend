@@ -22,23 +22,23 @@ const poolTypeRender = (type: PoolData["type"]) => {
   switch (type) {
     case PoolType.BALANCER:
       return {
-        text: "Balancer pool",
         icon: <BalancerPoolIcon boxSize={4} />,
+        text: "Balancer pool",
       };
     case PoolType.STABLESWAP:
       return {
-        text: "StableSwap pool",
         icon: <StableSwapIcon boxSize={4} />,
+        text: "StableSwap pool",
       };
     case PoolType.COSMWASM:
       return {
-        text: "CosmWasm pool",
         icon: <CosmWasmPoolIcon boxSize={4} />,
+        text: "CosmWasm pool",
       };
     case PoolType.CL:
       return {
-        text: "Concentrated liquidity pool",
         icon: <ClpIcon boxSize={4} />,
+        text: "Concentrated liquidity pool",
       };
     default:
       return {};
@@ -46,10 +46,10 @@ const poolTypeRender = (type: PoolData["type"]) => {
 };
 
 export const PoolHeader = ({
-  poolId,
   isSuperfluid,
-  poolType,
   liquidity,
+  poolId,
+  poolType,
 }: PoolHeaderProps) => {
   const poolValue = poolTypeRender(poolType);
   return (

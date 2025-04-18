@@ -23,15 +23,15 @@ interface CollectionInfoSectionProps {
 }
 
 export const CollectionInfoSection = ({
+  activities,
   collectionAddress,
   collectionName,
   desc,
-  uri,
-  activities,
   mutateEventes,
-  royalty,
   onClickActivities,
   onClickMutateEvents,
+  royalty,
+  uri,
 }: CollectionInfoSectionProps) => {
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
@@ -41,7 +41,7 @@ export const CollectionInfoSection = ({
   if (isLoading) return <Loading />;
   if (!collectionCreator) return null;
 
-  const { height, txhash, timestamp, creatorAddress } = collectionCreator;
+  const { creatorAddress, height, timestamp, txhash } = collectionCreator;
   const infoDirection = isMobile ? "column" : "row";
   const infoGap = isMobile ? 1 : 4;
   return (

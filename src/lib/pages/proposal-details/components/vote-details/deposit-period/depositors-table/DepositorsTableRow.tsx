@@ -15,8 +15,8 @@ interface DepositorsTableRowProps {
 
 export const DepositorsTableRow = ({
   proposalDeposit,
-  templateColumns,
   showTransaction,
+  templateColumns,
 }: DepositorsTableRowProps) => (
   <Grid
     className="copier-wrapper"

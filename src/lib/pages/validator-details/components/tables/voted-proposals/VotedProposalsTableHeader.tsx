@@ -9,8 +9,8 @@ interface VotedProposalsTableHeaderProps {
 }
 
 export const VotedProposalsTableHeader = ({
-  templateColumns,
   boxShadow,
+  templateColumns,
 }: VotedProposalsTableHeaderProps) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeaderFreeze left="0">Proposal ID</TableHeaderFreeze>

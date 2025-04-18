@@ -9,8 +9,8 @@ interface DisconnectedStateProps {
 }
 
 export const DisconnectedState = ({
-  text,
   helperText,
+  text,
 }: DisconnectedStateProps) => (
   <Flex
     alignItems="center"

@@ -22,7 +22,7 @@ interface AccordionTxProps extends RenderButtonProps {
   accordionSpacing?: GridItemProps["pl"];
 }
 
-const RenderButton = ({ message, txHash, msgIndex }: RenderButtonProps) => {
+const RenderButton = ({ message, msgIndex, txHash }: RenderButtonProps) => {
   if (
     extractMsgType(message.type) === "MsgExecuteContract" ||
     extractMsgType(message.type) === "MsgInstantiateContract"
@@ -38,12 +38,12 @@ const RenderButton = ({ message, txHash, msgIndex }: RenderButtonProps) => {
 };
 
 export const AccordionTx = ({
-  message,
-  txHash,
-  msgIndex,
+  accordionSpacing = "260px",
   allowFurtherAction,
   isSigner = false,
-  accordionSpacing = "260px",
+  message,
+  msgIndex,
+  txHash,
 }: AccordionTxProps) => {
   const [showButton, setShowButton] = useState(false);
   return (

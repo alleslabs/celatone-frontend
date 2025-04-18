@@ -10,9 +10,9 @@ interface AlertProps {
   icon: Nullable<JSX.Element>;
 }
 const defaultAlertProps: AlertProps = {
-  variant: "",
   description: "",
   icon: null,
+  variant: "",
 };
 
 export const getAlert = (
@@ -26,7 +26,6 @@ export const getAlert = (
 
   if (enteredAmount.lt(minDepositAmount)) {
     return {
-      variant: "error",
       description: `${minDepositAmount} ${denom} is required to enter the deposit period.`,
       icon: (
         <CustomIcon
@@ -35,11 +34,11 @@ export const getAlert = (
           name="alert-triangle-solid"
         />
       ),
+      variant: "error",
     };
   }
   if (enteredAmount.lt(minVotingDepositAmount)) {
     return {
-      variant: "warning",
       description: `${d2Formatter(
         big(minVotingDepositAmount).sub(enteredAmount),
         "NaN"
@@ -51,19 +50,19 @@ export const getAlert = (
           name="alert-triangle-solid"
         />
       ),
+      variant: "warning",
     };
   }
   if (enteredAmount.eq(minVotingDepositAmount)) {
     return {
-      variant: "primary",
       description:
         "The proposal will proceed to voting period immediately after created.",
       icon: <CustomIcon boxSize={4} color="primary.main" name="info-circle" />,
+      variant: "primary",
     };
   }
   if (big(minVotingDepositAmount).lt(enteredAmount)) {
     return {
-      variant: "warning",
       description: `You’re depositing more than the minimum requirement, the proposal will proceed to voting immediately after creation. To prevent fund loss if not passing the quorum, deposit equal to the minimum requirement.
 `,
       icon: (
@@ -73,6 +72,7 @@ export const getAlert = (
           name="alert-triangle-solid"
         />
       ),
+      variant: "warning",
     };
   }
   return defaultAlertProps;

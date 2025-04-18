@@ -9,9 +9,9 @@ interface FooterProps {
 }
 
 export const Footer = ({
-  isLoading = false,
   disabled,
   fieldAmount,
+  isLoading = false,
   publishModule,
 }: FooterProps) => {
   const router = useRouter();

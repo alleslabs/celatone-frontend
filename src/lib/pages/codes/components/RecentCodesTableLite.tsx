@@ -14,8 +14,8 @@ export const RecentCodesTableLite = observer(() => {
     error,
     fetchNextPage,
     hasNextPage,
-    isLoading,
     isFetchingNextPage,
+    isLoading,
   } = useRecentCodesRest();
 
   const onRowSelect = (codeId: number) =>

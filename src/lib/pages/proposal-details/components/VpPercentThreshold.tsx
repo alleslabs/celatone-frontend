@@ -14,30 +14,30 @@ interface VpPercentThresholdProps {
 }
 
 export const VpPercentThreshold = ({
-  votesInfo,
   isCompact,
+  votesInfo,
 }: VpPercentThresholdProps) => {
-  const { yesNonRatio, noNonRatio, noWithVetoNonRatio } =
+  const { noNonRatio, noWithVetoNonRatio, yesNonRatio } =
     normalizeVotesInfo(votesInfo);
 
   const options = [
     {
+      color: "success.main",
       option: "Yes",
       ratio: yesNonRatio,
       votingPower: votesInfo.yes,
-      color: "success.main",
     },
     {
+      color: "error.main",
       option: "No",
       ratio: noNonRatio,
       votingPower: votesInfo.no,
-      color: "error.main",
     },
     {
+      color: "error.dark",
       option: "No with veto",
       ratio: noWithVetoNonRatio,
       votingPower: votesInfo.noWithVeto,
-      color: "error.dark",
     },
   ];
 
@@ -51,7 +51,7 @@ export const VpPercentThreshold = ({
           % (Voting Power)
         </Text>
       </Flex>
-      {options.map(({ option, ratio, votingPower, color }) => (
+      {options.map(({ color, option, ratio, votingPower }) => (
         <Flex
           key={option}
           borderBottomColor="gray.700"
@@ -79,7 +79,7 @@ export const VpPercentThreshold = ({
     </div>
   ) : (
     <Flex direction="row" gap={6}>
-      {options.map(({ option, ratio, votingPower, color }, idx) => (
+      {options.map(({ color, option, ratio, votingPower }, idx) => (
         <Fragment key={option}>
           <VpPercentCard
             color={color}

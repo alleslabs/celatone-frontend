@@ -30,9 +30,9 @@ interface RenderModulesProps {
 }
 
 const RenderModules = ({
-  selectedAddress,
-  modulesLength,
   filtered,
+  modulesLength,
+  selectedAddress,
   selectedModule,
   setSelectedModule,
   setStep,
@@ -63,8 +63,8 @@ const RenderModules = ({
 };
 
 export const SelectModuleSection = ({
-  selectedAddress,
   modules,
+  selectedAddress,
   selectedModule,
   setSelectedModule,
   setStep,

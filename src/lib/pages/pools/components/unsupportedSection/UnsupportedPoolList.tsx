@@ -14,9 +14,9 @@ interface UnsupportedPoolListProps {
 }
 
 export const UnsupportedPoolList = ({
-  pools,
-  isLoading,
   expandedIndexes,
+  isLoading,
+  pools,
   updateExpandedIndexes,
 }: UnsupportedPoolListProps) => {
   if (isLoading) return <Loading />;

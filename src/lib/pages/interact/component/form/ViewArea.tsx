@@ -35,17 +35,17 @@ const MoveCodeSnippet = dynamic(
 );
 
 export const ViewArea = ({
+  fn,
   moduleAddress,
   moduleName,
-  fn,
 }: {
   moduleAddress: HexAddr;
   moduleName: string;
   fn: ExposedFunction;
 }) => {
   const [abiData, setAbiData] = useState<AbiFormData>({
-    typeArgs: getAbiInitialData(fn.generic_type_params.length),
     args: getAbiInitialData(fn.params.length),
+    typeArgs: getAbiInitialData(fn.generic_type_params.length),
   });
   const [abiErrors, setAbiErrors] = useState<[string, string][]>([
     ["form", "initial"],
@@ -54,16 +54,16 @@ export const ViewArea = ({
   const [error, setError] = useState<Option<string>>(undefined);
 
   const {
-    refetch,
     isFetching: queryFetching,
     isRefetching: queryRefetching,
+    refetch,
   } = useFunctionView({
+    abiData,
+    fn,
     moduleAddress,
     moduleName,
-    fn,
-    abiData,
-    onSuccess: (data) => setRes(JSON.parse(data)),
     onError: (err) => setError(err.response?.data.message || DEFAULT_RPC_ERROR),
+    onSuccess: (data) => setRes(JSON.parse(data)),
   });
 
   const handleQuery = () => {

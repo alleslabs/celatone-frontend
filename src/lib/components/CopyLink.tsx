@@ -19,16 +19,16 @@ interface CopyLinkProps extends FlexProps {
 }
 
 export const CopyLink = ({
-  value,
-  type,
-  withoutIcon,
-  showCopyOnHover = false,
-  isTruncate = false,
   amptrackSection,
+  isTruncate = false,
+  showCopyOnHover = false,
+  type,
+  value,
+  withoutIcon,
   ...flexProps
 }: CopyLinkProps) => {
   const { address } = useCurrentChain();
-  const { onCopy, hasCopied, setValue } = useClipboard(value);
+  const { hasCopied, onCopy, setValue } = useClipboard(value);
   const [isHover, setIsHover] = useState(false);
 
   // TODO - Refactor
@@ -55,9 +55,9 @@ export const CopyLink = ({
     >
       <Flex
         _hover={{
+          "& > p": { color: "primary.light" },
           textDecoration: "underline",
           textDecorationColor: "primary.light",
-          "& > p": { color: "primary.light" },
         }}
         align="center"
         cursor="pointer"

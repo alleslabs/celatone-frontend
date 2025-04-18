@@ -52,9 +52,9 @@ interface ModuleFunctionBodyProps extends GridItemProps {
 }
 
 export const SelectFunctionSection = ({
-  module,
-  handleModuleSelect,
   closeModal,
+  handleModuleSelect,
+  module,
   ...gridItemProps
 }: ModuleFunctionBodyProps) => {
   const isMobile = useMobile();

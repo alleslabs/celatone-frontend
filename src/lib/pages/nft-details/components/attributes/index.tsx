@@ -28,7 +28,7 @@ export const Attributes = ({
   tokenId,
 }: AttributesProps) => {
   const isMobile = useMobile();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const displayedCount = isMobile ? 4 : 6;
   return (

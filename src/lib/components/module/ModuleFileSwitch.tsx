@@ -69,9 +69,9 @@ export const ModuleFileSwitch = ({
         h="calc(100% - 8px)"
         position="absolute"
         transition={{
-          type: "spring",
-          stiffness: "250",
           damping: "30",
+          stiffness: "250",
+          type: "spring",
         }}
         w="calc(50% - 4px)"
       />

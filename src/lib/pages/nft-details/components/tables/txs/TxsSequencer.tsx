@@ -15,8 +15,8 @@ export const TxsSequencer = ({ nftAddress }: TxsSequencerProps) => {
     data: transactions,
     fetchNextPage,
     hasNextPage,
-    isLoading,
     isFetchingNextPage,
+    isLoading,
   } = useNftTransactionsSequencer(nftAddress);
 
   return (

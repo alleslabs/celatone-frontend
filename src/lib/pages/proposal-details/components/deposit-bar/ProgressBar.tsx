@@ -10,7 +10,7 @@ interface ProgressBarProps {
   isCompact: boolean;
 }
 
-export const ProgressBar = ({ value, max, isCompact }: ProgressBarProps) => {
+export const ProgressBar = ({ isCompact, max, value }: ProgressBarProps) => {
   const ratio = divWithDefault(value, max, 0).toNumber() as Ratio<number>;
   const percent = formatPrettyPercent(ratio);
 

@@ -19,15 +19,15 @@ const useStoredCodes = () => {
   const storedCodes =
     rawStoredCodes?.items.map<CodeInfo>((code) => ({
       ...code,
-      name: getCodeLocalInfo(code.id)?.name,
       isSaved: isCodeIdSaved(code.id),
+      name: getCodeLocalInfo(code.id)?.name,
     })) ?? [];
 
-  return { storedCodes, isLoading: isFetching && isHydrated };
+  return { isLoading: isFetching && isHydrated, storedCodes };
 };
 
 const useSavedCodes = () => {
-  const { lastSavedCodes, lastSavedCodeIds, isHydrated } = useCodeStore();
+  const { isHydrated, lastSavedCodeIds, lastSavedCodes } = useCodeStore();
 
   const savedCodeIds = lastSavedCodeIds();
   const { data: rawSavedCodes, isFetching } = useCodeList(savedCodeIds);
@@ -39,16 +39,16 @@ const useSavedCodes = () => {
     return {
       ...localSavedCode,
       contractCount: rawSavedCode?.contractCount,
-      instantiatePermission:
-        rawSavedCode?.instantiatePermission ?? AccessConfigPermission.UNKNOWN,
-      permissionAddresses: rawSavedCode?.permissionAddresses ?? [],
       cw2Contract: rawSavedCode?.cw2Contract,
       cw2Version: rawSavedCode?.cw2Version,
+      instantiatePermission:
+        rawSavedCode?.instantiatePermission ?? AccessConfigPermission.UNKNOWN,
       isSaved: true,
+      permissionAddresses: rawSavedCode?.permissionAddresses ?? [],
     };
   });
 
-  return { savedCodes, isLoading: isFetching && isHydrated };
+  return { isLoading: isFetching && isHydrated, savedCodes };
 };
 
 interface MyCodesData {
@@ -68,8 +68,8 @@ export const useMyCodesData = (
   const permissionFilterFn = useCodePermissionFilter(permissionValue);
   const searchFilterFn = useCodeSearchFilter(keyword);
 
-  const { storedCodes, isLoading: isStoredCodesLoading } = useStoredCodes();
-  const { savedCodes, isLoading: isSavedCodesLoading } = useSavedCodes();
+  const { isLoading: isStoredCodesLoading, storedCodes } = useStoredCodes();
+  const { isLoading: isSavedCodesLoading, savedCodes } = useSavedCodes();
 
   const [filteredSavedCodes, filteredStoredCodes] = useMemo(
     () => [
@@ -83,12 +83,12 @@ export const useMyCodesData = (
   const savedCodesCount = savedCodes.length;
 
   return {
-    storedCodes: filteredStoredCodes,
-    savedCodes: filteredSavedCodes,
-    storedCodesCount,
-    savedCodesCount,
     allCodesCount: storedCodesCount + savedCodesCount,
-    isStoredCodesLoading,
     isSavedCodesLoading,
+    isStoredCodesLoading,
+    savedCodes: filteredSavedCodes,
+    savedCodesCount,
+    storedCodes: filteredStoredCodes,
+    storedCodesCount,
   };
 };

@@ -10,9 +10,9 @@ export const stepperText: Record<Mode, Record<number, string>> = {
 };
 
 const StepLabel = ({
-  step,
-  disabled,
   currentStep,
+  disabled,
+  step,
 }: {
   step: Step;
   disabled?: boolean;
@@ -44,9 +44,9 @@ const StepLabel = ({
 );
 
 export const StepperItem = ({
+  currentStep,
   mode,
   step,
-  currentStep,
 }: {
   mode: Mode;
   step: Step;
@@ -60,10 +60,10 @@ export const StepperItem = ({
       sx={{
         ":not(:last-of-type)": { flex: 1 },
         "&:not(:last-of-type)::after": {
+          backgroundColor: "gray.400",
           content: '""',
           flex: 1,
           height: "1px",
-          backgroundColor: "gray.400",
           marginInlineEnd: "8px",
         },
       }}

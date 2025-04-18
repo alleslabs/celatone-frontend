@@ -14,12 +14,12 @@ interface UploadFolderCardProps {
 }
 
 export const UploadFolderCard = ({
-  fileName,
   deleteFile,
-  theme = "primary",
+  fileName,
   status,
+  theme = "primary",
 }: UploadFolderCardProps) => {
-  const { themeConfig, statusColor } = useCardTheme(theme, status);
+  const { statusColor, themeConfig } = useCardTheme(theme, status);
 
   return (
     <Flex

@@ -17,10 +17,10 @@ interface ResourceOverviewProps {
 
 export const ResourceOverview = ({
   address,
-  totalCount,
-  resourcesByName,
   isLoading,
   onViewMore,
+  resourcesByName,
+  totalCount,
 }: ResourceOverviewProps) => {
   const isMobile = useMobile();
 

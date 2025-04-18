@@ -13,9 +13,9 @@ interface EvmTxMethodAccordionProps {
 }
 
 export const EvmTxMethodAccordion = ({
-  msgIcon,
-  content,
   children,
+  content,
+  msgIcon,
 }: EvmTxMethodAccordionProps) => {
   const [expand, setExpand] = useState(true);
 
@@ -23,14 +23,14 @@ export const EvmTxMethodAccordion = ({
     <>
       <Flex
         _after={{
-          content: '""',
-          position: "absolute",
-          bottom: 0,
-          left: "50%",
-          transform: "translateX(-50%)",
-          h: "1px",
-          w: "99%",
           bg: "gray.700",
+          bottom: 0,
+          content: '""',
+          h: "1px",
+          left: "50%",
+          position: "absolute",
+          transform: "translateX(-50%)",
+          w: "99%",
         }}
         _hover={{ backgroundColor: "gray.800" }}
         align="center"

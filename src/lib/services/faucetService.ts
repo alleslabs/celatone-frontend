@@ -37,10 +37,10 @@ export const useFaucetInfo = (): UseQueryResult<FaucetInfo> => {
   };
 
   return useQuery({
-    queryKey: [CELATONE_QUERY_KEYS.FAUCET_INFO, faucet, assetInfos],
-    queryFn,
     enabled: faucet.enabled,
-    retry: 2,
+    queryFn,
+    queryKey: [CELATONE_QUERY_KEYS.FAUCET_INFO, faucet, assetInfos],
     refetchOnWindowFocus: false,
+    retry: 2,
   });
 };

@@ -15,18 +15,18 @@ export const Collections = () => {
   const debouncedSearch = useDebounce(searchKeyword);
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setTotalData,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
   const { data: collections, isLoading } = useNftCollections(

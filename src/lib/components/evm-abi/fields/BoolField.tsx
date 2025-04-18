@@ -19,11 +19,11 @@ const BOOL_FIELD_OPTIONS: SelectInputOption<boolean>[] = [
 
 export const BoolField = <T extends FieldValues>({
   control,
-  name,
   isDisabled,
+  name,
 }: FieldProps<T>) => {
   const {
-    field: { value, onChange },
+    field: { onChange, value },
   } = useController({
     control,
     name,

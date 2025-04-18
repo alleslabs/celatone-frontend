@@ -18,11 +18,11 @@ interface PoolTxsTableProps {
 }
 
 export const PoolTxsTable = ({
+  assetInfos,
+  emptyState,
+  isLoading,
   pool,
   transactions,
-  assetInfos,
-  isLoading,
-  emptyState,
 }: PoolTxsTableProps) => {
   if (isLoading) return <Loading />;
   if (!transactions?.length) return emptyState;

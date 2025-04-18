@@ -16,10 +16,10 @@ interface MsgLockTokensActionProps {
 }
 
 export const MsgLockTokensAction = ({
+  ampCopierSection,
+  assetInfos,
   msg,
   pool,
-  assetInfos,
-  ampCopierSection,
 }: MsgLockTokensActionProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {

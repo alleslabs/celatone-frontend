@@ -37,14 +37,14 @@ interface ModuleTablesProps {
 const tableHeaderId = "moduleDetailsTableHeader";
 
 export const ModuleTables = ({
-  vmAddress,
-  moduleName,
-  txsCount,
   historiesCount,
-  relatedProposalsCount,
-  tab,
-  setTab,
+  moduleName,
   onViewMore,
+  relatedProposalsCount,
+  setTab,
+  tab,
+  txsCount,
+  vmAddress,
 }: ModuleTablesProps) => {
   const gov = useGovConfig({ shouldRedirect: false });
 

@@ -28,12 +28,12 @@ interface QueryAreaProps {
 
 export const QueryArea = observer(
   ({
-    verifiedSchema,
-    localSchema,
+    codeHash,
+    codeId,
     contractAddress,
     initialMsg,
-    codeId,
-    codeHash,
+    localSchema,
+    verifiedSchema,
   }: QueryAreaProps) => {
     const isMobile = useMobile();
     const [tab, setTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);

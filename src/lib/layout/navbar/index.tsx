@@ -79,9 +79,9 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                       category: "This device",
                       submenu: [
                         {
+                          icon: "admin" as IconKeys,
                           name: "Saved accounts",
                           slug: "/saved-accounts",
-                          icon: "admin" as IconKeys,
                         },
                         ...getDeviceSubmenuMove(move.enabled && isApiChain),
                         ...getDeviceSubmenuWasm(wasm.enabled),
@@ -121,9 +121,9 @@ const Navbar = observer(({ isExpand, setIsExpand }: NavbarProps) => {
                       category: "This device",
                       submenu: [
                         {
+                          icon: "admin" as IconKeys,
                           name: "Saved accounts",
                           slug: "/saved-accounts",
-                          icon: "admin" as IconKeys,
                         },
                         ...getDeviceSubmenuWasm(wasm.enabled),
                       ],

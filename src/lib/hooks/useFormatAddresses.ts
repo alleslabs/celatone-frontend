@@ -17,7 +17,7 @@ export const useFormatAddresses = () => {
       features: { move },
     },
   } = useCelatoneApp();
-  const { convertHexWalletAddress, convertHexModuleAddress } =
+  const { convertHexModuleAddress, convertHexWalletAddress } =
     useConvertHexAddress();
 
   const formatHexAddress = useCallback(

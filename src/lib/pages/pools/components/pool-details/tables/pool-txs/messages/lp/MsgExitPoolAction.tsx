@@ -17,10 +17,10 @@ interface MsgExitPoolActionProps {
 }
 
 export const MsgExitPoolAction = ({
+  ampCopierSection,
+  assetInfos,
   msg,
   pool,
-  assetInfos,
-  ampCopierSection,
 }: MsgExitPoolActionProps) => {
   const poolDenom = getPoolDenom(msg.pool_id);
   const poolToken = coinToTokenWithValue(

@@ -22,9 +22,9 @@ export interface VotedProposalsTableRowProps {
 }
 
 export const VotedProposalsTableRow = ({
-  votedProposal,
-  templateColumns,
   boxShadow,
+  templateColumns,
+  votedProposal,
 }: VotedProposalsTableRowProps) => {
   const navigate = useInternalNavigate();
 

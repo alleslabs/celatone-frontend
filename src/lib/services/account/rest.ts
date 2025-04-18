@@ -17,9 +17,9 @@ export const getAccountDataRest = async (
 
   // TODO: Implement this function
   return {
+    icns,
     projectInfo: null,
     publicInfo: null,
-    icns,
   };
 };
 

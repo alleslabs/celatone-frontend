@@ -18,20 +18,20 @@ export const getWallets = (wallets: ChainConfig["wallets"]) =>
 
 export const getRegistryChain = (config: ChainConfig) => ({
   $schema: "../chain.schema.json",
+  bech32_prefix: config.registry?.bech32_prefix ?? "",
+  chain_id: config.chainId,
   chain_name: config.registryChainName,
-  status: "live",
+  fees: config.fees,
+  logo_URIs: config.logo_URIs,
   network_type: config.network_type,
   pretty_name: config.prettyName,
-  chain_id: config.chainId,
-  bech32_prefix: config.registry?.bech32_prefix ?? "",
   slip44: config.registry?.slip44 ?? 118,
-  fees: config.fees,
   staking: config.registry?.staking,
-  logo_URIs: config.logo_URIs,
+  status: "live",
 });
 
 export const getRegistryAssets = (config: ChainConfig) => ({
   $schema: "../assetlist.schema.json",
-  chain_name: config.registryChainName,
   assets: config.registry?.assets ?? [],
+  chain_name: config.registryChainName,
 });

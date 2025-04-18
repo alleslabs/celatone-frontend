@@ -36,24 +36,24 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
   const move = useMoveConfig({ shouldRedirect: false });
 
   const {
+    isLoading,
+    projectDetail,
+    publicAccounts,
     publicCodes,
     publicContracts,
-    publicAccounts,
     publicModules,
-    projectDetail,
-    isLoading,
   } = usePublicData(slug);
 
   const handleTabChange = (nextTab: TabIndex) => () => {
     if (nextTab === tab) return;
     navigate({
+      options: {
+        shallow: true,
+      },
       pathname: "/projects/[slug]/[tab]",
       query: {
         slug,
         tab: nextTab,
-      },
-      options: {
-        shallow: true,
       },
     });
   };
@@ -66,15 +66,15 @@ const ProjectDetailsBody = ({ slug, tab }: ProjectDetailsBodyProps) => {
 
       if (!tab || !Object.values(TabIndex).includes(tab)) {
         navigate({
-          replace: true,
+          options: {
+            shallow: true,
+          },
           pathname: "/projects/[slug]/[tab]",
           query: {
             slug,
             tab: TabIndex.Overview,
           },
-          options: {
-            shallow: true,
-          },
+          replace: true,
         });
       }
     }

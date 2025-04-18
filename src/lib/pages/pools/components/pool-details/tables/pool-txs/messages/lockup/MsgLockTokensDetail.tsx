@@ -24,14 +24,14 @@ interface MsgLockTokensDetailProps {
 }
 
 export const MsgLockTokensDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  pool,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  pool,
+  txHash,
 }: MsgLockTokensDetailProps) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (isLoading) return <Loading withBorder={false} />;

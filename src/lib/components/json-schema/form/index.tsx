@@ -48,16 +48,16 @@ export interface JsonSchemaFormProps
 }
 
 export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
-  formId,
-  schema,
-  initialFormData = "",
-  onSubmit: propsOnSubmit,
-  onChange: propsOnChange,
-  widgets,
   fields,
+  formContext,
+  formId,
+  initialFormData = "",
+  onChange: propsOnChange,
+  onSubmit: propsOnSubmit,
+  schema,
   templates,
   uiSchema,
-  formContext,
+  widgets,
 }) => {
   const fixedSchema = useMemo(() => {
     fixSchema(schema);
@@ -108,7 +108,7 @@ export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({
         ...Widgets,
         ...widgets,
       }}
-      onChange={({ formData: values, errors }) => {
+      onChange={({ errors, formData: values }) => {
         setFormData(values);
         propsOnChange?.(values, errors);
       }}

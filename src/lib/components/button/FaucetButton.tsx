@@ -8,7 +8,7 @@ interface FaucetButtonProps {
 
 export const FaucetButton = ({ faucetUrl }: FaucetButtonProps) => (
   <a
-    style={{ overflow: "hidden", height: "100%" }}
+    style={{ height: "100%", overflow: "hidden" }}
     data-peer
     href={faucetUrl}
     rel="noopener noreferrer"

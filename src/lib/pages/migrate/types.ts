@@ -14,9 +14,9 @@ export interface MigratePageState {
 }
 
 export const zMigrateQueryParams = z.object({
-  contract: zBechAddr32.optional().default("" as BechAddr32),
   codeId: z
     .string()
     .transform((val) => (isId(val) ? Number(val) : undefined))
     .optional(),
+  contract: zBechAddr32.optional().default("" as BechAddr32),
 });

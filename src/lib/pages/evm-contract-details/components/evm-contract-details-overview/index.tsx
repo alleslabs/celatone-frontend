@@ -38,17 +38,17 @@ interface EvmContractDetailsOverviewProps {
 export const EvmContractDetailsOverview = ({
   contractAddressBech,
   contractAddressHex,
-  hash,
-  evmHash,
-  sender,
   created,
+  evmHash,
+  evmVerifyInfo,
+  hash,
   isContractInfoLoading,
   onViewMoreAssets,
   onViewMoreTxs,
-  tab,
-  setTab,
-  evmVerifyInfo,
   proxyTargetEvmVerifyInfo,
+  sender,
+  setTab,
+  tab,
 }: EvmContractDetailsOverviewProps) => (
   <Stack gap={8}>
     <EvmVerifySection

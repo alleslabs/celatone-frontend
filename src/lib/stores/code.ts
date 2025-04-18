@@ -61,10 +61,10 @@ export class CodeStore {
     return savedCodeIdsByUserKey
       .map((codeId) => ({
         id: codeId,
+        name: this.codeInfo[this.userKey]?.[codeId]?.name,
         uploader:
           this.codeInfo[this.userKey]?.[codeId]?.uploader ??
           ("N/A" as BechAddr),
-        name: this.codeInfo[this.userKey]?.[codeId]?.name,
       }))
       .reverse();
   }

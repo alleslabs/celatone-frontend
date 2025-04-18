@@ -103,8 +103,8 @@ export const SelectedFunctionCard = ({ fn }: SelectedFunctionCardProps) => {
           ease: "easeInOut",
         }}
         variants={{
-          expanded: { opacity: 1, height: "auto" },
-          collapsed: { opacity: 0, height: 0 },
+          collapsed: { height: 0, opacity: 0 },
+          expanded: { height: "auto", opacity: 1 },
         }}
       >
         <LabelText label="generic_type_params" labelWeight={700}>

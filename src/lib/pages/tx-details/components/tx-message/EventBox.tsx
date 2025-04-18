@@ -141,8 +141,8 @@ export const EventBox = ({ event, msgIndex }: EventBoxProps) => {
           ease: "easeInOut",
         }}
         variants={{
-          expanded: { opacity: 1, height: "auto" },
-          collapsed: { opacity: 0, height: 0 },
+          collapsed: { height: 0, opacity: 0 },
+          expanded: { height: "auto", opacity: 1 },
         }}
       >
         <Box borderTop="1px solid var(--chakra-colors-gray-700)" mx={4} />

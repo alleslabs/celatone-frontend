@@ -5,9 +5,9 @@ import { ProposalStatus } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 export const VotingEndTime = ({
-  votingEndTime,
   depositEndTime,
   status,
+  votingEndTime,
 }: {
   votingEndTime: Proposal["votingEndTime"];
   depositEndTime: Proposal["depositEndTime"];

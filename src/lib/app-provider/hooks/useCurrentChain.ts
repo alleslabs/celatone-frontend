@@ -29,7 +29,7 @@ interface CurrentChain {
 
 export const useCurrentChain = (): CurrentChain => {
   const {
-    chainConfig: { registryChainName, chainId, chain },
+    chainConfig: { chain, chainId, registryChainName },
   } = useCelatoneApp();
   const isInitia = useInitia();
   const cosmosKit = useChain(registryChainName);
@@ -37,17 +37,17 @@ export const useCurrentChain = (): CurrentChain => {
 
   if (isInitia) {
     return {
-      bech32Prefix: "init",
-      chainId,
-      chainName: chain,
       address: zBechAddr20
         .optional()
         .parse(initiaWidget.account?.address ?? undefined),
+      bech32Prefix: "init",
+      chainId,
+      chainName: chain,
       connect: async () => initiaWidget.onboard(),
       view: (event) => initiaWidget.view(event),
       walletProvider: {
-        type: "initia-widget",
         context: initiaWidget,
+        type: "initia-widget",
       },
     };
   }
@@ -60,8 +60,8 @@ export const useCurrentChain = (): CurrentChain => {
     connect: async () => cosmosKit.connect(),
     view: () => cosmosKit.openView(),
     walletProvider: {
-      type: "cosmos-kit",
       context: cosmosKit,
+      type: "cosmos-kit",
     },
   };
 };

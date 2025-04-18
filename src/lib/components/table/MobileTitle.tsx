@@ -12,17 +12,17 @@ interface MobileTitleProps {
   onViewMore?: () => void;
 }
 const cardProps = {
-  width: "100%",
+  borderRadius: "8px",
   justifyContent: "space-between",
   padding: "16px",
-  borderRadius: "8px",
+  width: "100%",
 };
 
 export const MobileTitle = ({
-  title,
   count,
-  showCount = true,
   onViewMore,
+  showCount = true,
+  title,
 }: MobileTitleProps) => {
   const isDisabled = count === 0;
   return (

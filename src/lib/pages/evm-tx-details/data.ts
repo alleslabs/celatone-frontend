@@ -100,28 +100,28 @@ export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {
     );
 
     return {
-      isEIP1559: evmTxData.tx.type === "0x2",
-      txFee,
-      gasPrice,
-      gasUsed: evmTxData.txReceipt.gasUsed,
-      gasLimit: evmTxData.tx.gas,
-      gasRefundRatio,
       baseFee,
+      gasLimit: evmTxData.tx.gas,
+      gasPrice,
+      gasRefundRatio,
+      gasUsed: evmTxData.txReceipt.gasUsed,
+      isEIP1559: evmTxData.tx.type === "0x2",
       maxFee,
       maxPriorityFee,
+      txFee,
     };
   }, [assetInfos, blockData, evmDenom, evmTxData, gasRefundRatio]);
 
   return {
+    cosmosTxData,
+    evmDenom,
+    evmTxData,
+    evmTxValue,
+    gasInfo,
     isLoading:
       isLoadingEvmTxData ||
       isLoadingCosmosTxData ||
       isEvmParamsLoading ||
       isLoadingBlockData,
-    cosmosTxData,
-    evmTxData,
-    evmDenom,
-    evmTxValue,
-    gasInfo,
   };
 };

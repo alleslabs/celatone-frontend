@@ -25,9 +25,9 @@ export const AttachStatus = ({
     </Flex>
     <ConnectingLine
       style={{
-        width: "full",
-        top: "calc(50% - 6px)",
         left: "calc(50% - 24px)",
+        top: "calc(50% - 6px)",
+        width: "full",
       }}
       alignment="horizontal"
       isFilled={isReattach}

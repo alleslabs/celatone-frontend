@@ -23,12 +23,12 @@ interface FunctionAccordionProps {
 }
 
 export const FunctionAccordion = ({
+  amptrackTab,
   filteredFns,
   isEmpty,
-  triggerText,
   selectedFn,
   setSelectedFn,
-  amptrackTab,
+  triggerText,
 }: FunctionAccordionProps) => (
   <AccordionItem bg="background.main" py={1}>
     {({ isExpanded }) => (

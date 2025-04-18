@@ -20,10 +20,10 @@ export const useDeployScriptTx = () => {
 
   return useCallback(
     async ({
-      onTxSucceed,
-      onTxFailed,
       estimatedFee,
       messages,
+      onTxFailed,
+      onTxSucceed,
     }: DeployScriptStreamParams) => {
       if (!address) throw new Error("No address provided (useDeployScriptTx)");
 
@@ -32,12 +32,12 @@ export const useDeployScriptTx = () => {
         address,
         fee: estimatedFee,
         messages,
-        signAndBroadcast,
+        onTxFailed,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

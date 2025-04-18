@@ -10,15 +10,6 @@ export const useConvertHexAddress = () => {
   const { bech32Prefix } = useCurrentChain();
 
   return {
-    convertHexWalletAddress: useCallback(
-      (hexAddr: HexAddr) =>
-        hexToBech32Address(
-          bech32Prefix,
-          hexAddr,
-          HEX_WALLET_ADDRESS_LENGTH
-        ) as BechAddr20,
-      [bech32Prefix]
-    ),
     convertHexModuleAddress: useCallback(
       (hexAddr: HexAddr) =>
         hexToBech32Address(
@@ -26,6 +17,15 @@ export const useConvertHexAddress = () => {
           hexAddr,
           HEX_MODULE_ADDRESS_LENGTH
         ) as BechAddr32,
+      [bech32Prefix]
+    ),
+    convertHexWalletAddress: useCallback(
+      (hexAddr: HexAddr) =>
+        hexToBech32Address(
+          bech32Prefix,
+          hexAddr,
+          HEX_WALLET_ADDRESS_LENGTH
+        ) as BechAddr20,
       [bech32Prefix]
     ),
   };

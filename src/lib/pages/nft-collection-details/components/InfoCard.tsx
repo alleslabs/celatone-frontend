@@ -14,11 +14,11 @@ interface InfoCardProps {
 }
 
 export const InfoCard = ({
-  title,
-  icon,
   content,
-  onClick,
+  icon,
   isDisabled,
+  onClick,
+  title,
 }: InfoCardProps) => (
   <Flex
     alignItems="center"
@@ -33,8 +33,8 @@ export const InfoCard = ({
           cursor: "not-allowed",
         }
       : {
-          bg: "gray.800",
           _hover: { bg: "gray.700" },
+          bg: "gray.800",
           cursor: "pointer",
           onClick: () => {
             track(AmpEvent.USE_NFT_COLLECTION_INFO_CARD, { label: title });

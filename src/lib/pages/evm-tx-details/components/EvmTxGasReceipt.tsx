@@ -54,12 +54,12 @@ export const EvmTxGasReceipt = ({ gasInfo }: EvmTxGasReceiptProps) => {
               ease: "easeInOut",
             }}
             variants={{
+              collapsed: { height: 0, marginBottom: 0, opacity: 0 },
               expanded: {
-                opacity: 1,
                 height: "auto",
                 marginBottom: "16px",
+                opacity: 1,
               },
-              collapsed: { opacity: 0, height: 0, marginBottom: 0 },
             }}
           >
             <Flex direction="column" gap={6} m={4}>

@@ -12,8 +12,8 @@ interface EvmEventBoxDecodedProps {
 }
 
 const EvmEventBoxDecodedBody = ({
-  decode,
   baseType,
+  decode,
 }: Pick<EvmEventBoxDecodedProps, "decode"> & {
   baseType: string;
 }) => {
@@ -45,9 +45,9 @@ const EvmEventBoxDecodedBody = ({
 };
 
 export const EvmEventBoxDecoded = ({
+  decode,
   index,
   input,
-  decode,
 }: EvmEventBoxDecodedProps) => (
   <Grid
     gap={1}

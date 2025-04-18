@@ -17,34 +17,34 @@ interface ModuleTxsTableProps {
 }
 
 export const ModuleTxsTable = ({
-  vmAddress,
   moduleName,
-  txCount,
   onViewMore,
   scrollComponentId,
+  txCount,
+  vmAddress,
 }: ModuleTxsTableProps) => {
   const { currentChainId } = useCelatoneApp();
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: txCount,
     initialState: {
-      pageSize: onViewMore ? 5 : 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: onViewMore ? 5 : 10,
     },
+    total: txCount,
   });
 
   const {
     data: moduleTxs,
-    isLoading,
     error,
+    isLoading,
   } = useModuleTxs(vmAddress, moduleName, pageSize, offset);
 
   useEffect(() => {

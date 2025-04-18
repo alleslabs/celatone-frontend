@@ -19,16 +19,16 @@ const resolveTabDisplay = (
 
 export const InteractionWrapper = ({
   currentTab,
-  queryContent,
   executeContent,
+  queryContent,
 }: InteractionWrapperProps) => (
   <Box
     sx={{
-      "& .query": {
-        display: resolveTabDisplay(currentTab, ContractInteractionTabs.Query),
-      },
       "& .execute": {
         display: resolveTabDisplay(currentTab, ContractInteractionTabs.Execute),
+      },
+      "& .query": {
+        display: resolveTabDisplay(currentTab, ContractInteractionTabs.Query),
       },
     }}
   >

@@ -30,8 +30,8 @@ interface ResourceSectionBodyProps {
 
 export const ResourceSectionBody = ({
   address,
-  resourcesByOwner,
   isLoading,
+  resourcesByOwner,
   selectedAccountParam,
   selectedGroupNameParam,
 }: ResourceSectionBodyProps) => {

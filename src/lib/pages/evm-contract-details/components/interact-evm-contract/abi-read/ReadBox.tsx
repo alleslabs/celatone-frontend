@@ -61,8 +61,8 @@ interface ReadBoxProps {
 }
 
 export const ReadBox = ({
-  contractAddress,
   abiSection,
+  contractAddress,
   opened,
 }: ReadBoxProps) => {
   // ------------------------------------------//
@@ -81,20 +81,20 @@ export const ReadBox = ({
     () => encodeEvmFunctionData(abiSection, inputs),
     [abiSection, inputs]
   );
-  const { refetch, isFetching } = useEthCall(contractAddress, data ?? "", {
-    enabled: opened && !isUndefined(data) && !inputRequired,
-    retry: false,
+  const { isFetching, refetch } = useEthCall(contractAddress, data ?? "", {
     cacheTime: 0,
-    onSuccess: (data) => {
-      setQueryError("");
-      setRes(data);
-      setTimestamp(getCurrentDate());
-    },
+    enabled: opened && !isUndefined(data) && !inputRequired,
     onError: (err) => {
       setQueryError((err as Error).message);
       setTimestamp(undefined);
       setRes("");
     },
+    onSuccess: (data) => {
+      setQueryError("");
+      setRes(data);
+      setTimestamp(getCurrentDate());
+    },
+    retry: false,
   });
 
   // ------------------------------------------//
@@ -121,8 +121,8 @@ export const ReadBox = ({
         <Grid
           gap={6}
           templateColumns={{
-            md: inputRequired ? "1fr 1fr" : "1fr",
             base: "1fr",
+            md: inputRequired ? "1fr 1fr" : "1fr",
           }}
         >
           {inputRequired && (
@@ -137,8 +137,8 @@ export const ReadBox = ({
               />
               <Flex
                 flexDirection={{
-                  md: "row",
                   base: "column",
+                  md: "row",
                 }}
                 gap={2}
                 justifyContent="space-between"
@@ -195,8 +195,8 @@ export const ReadBox = ({
             {!inputRequired ? (
               <Flex
                 flexDirection={{
-                  md: "row",
                   base: "column",
+                  md: "row",
                 }}
                 gap={2}
                 justifyContent="space-between"
@@ -221,7 +221,7 @@ export const ReadBox = ({
                   <CopyButton
                     amptrackSection="read_outputs"
                     buttonText="Copy encoded outputs"
-                    display={{ md: "none", base: "block" }}
+                    display={{ base: "block", md: "none" }}
                     isDisable={res === "" || Boolean(queryError)}
                     value={res}
                     variant="outline-secondary"
@@ -230,8 +230,8 @@ export const ReadBox = ({
                 </Grid>
                 <Flex
                   gap={{
-                    md: 2,
                     base: 0,
+                    md: 2,
                   }}
                 >
                   <CopyButton
@@ -261,13 +261,13 @@ export const ReadBox = ({
             ) : (
               <Flex
                 flexDirection={{
-                  md: "row",
                   base: "column",
+                  md: "row",
                 }}
                 justifyContent="flex-end"
                 mt={{
-                  md: 0,
                   base: 3,
+                  md: 0,
                 }}
               >
                 <CopyButton

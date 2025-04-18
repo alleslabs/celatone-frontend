@@ -49,11 +49,11 @@ const getDisplayCursor = (isDraggable: boolean, isSelected: boolean) => {
 export const NetworkCard = observer(
   ({
     chainId,
-    index,
     cursor,
-    setCursor,
-    onClose,
+    index,
     isDraggable = false,
+    onClose,
+    setCursor,
   }: NetworkCardProps) => {
     const { chainConfigs } = useChainConfigs();
     const isMobile = useMobile();
@@ -77,10 +77,10 @@ export const NetworkCard = observer(
           isMobile
             ? undefined
             : {
-                background: isSelected ? "gray.700" : "gray.800",
                 "> .icon-wrapper > .icon-container": {
                   opacity: 1,
                 },
+                background: isSelected ? "gray.700" : "gray.800",
               }
         }
         alignItems="center"

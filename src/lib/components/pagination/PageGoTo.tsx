@@ -15,8 +15,8 @@ export const PageGoTo = ({ lastPage, onPageChange }: PageGoToProps) => {
     const newPageValue = Number(newPage);
     if (newPageValue) {
       track(AmpEvent.USE_PAGINATION_GO_TO_PAGE, {
-        page: newPageValue,
         lastPage,
+        page: newPageValue,
       });
       onPageChange(newPageValue);
     }

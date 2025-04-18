@@ -14,11 +14,11 @@ interface EvmContractVerifyModalProps {
 }
 
 export const EvmContractVerifyModal = ({
-  isOpen,
-  onClose,
+  control,
   isError,
   isLoading,
-  control,
+  isOpen,
+  onClose,
 }: EvmContractVerifyModalProps) => (
   <Modal
     closeOnOverlayClick={false}

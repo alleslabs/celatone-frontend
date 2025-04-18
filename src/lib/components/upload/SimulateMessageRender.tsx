@@ -12,12 +12,6 @@ interface SimulateMessageRenderProps extends FlexProps {
 }
 
 const item = {
-  success: {
-    color: "success.main",
-    icon: (
-      <CustomIcon boxSize="3" color="success.main" name="check-circle-solid" />
-    ),
-  },
   fail: {
     color: "error.main",
     icon: (
@@ -28,6 +22,12 @@ const item = {
     color: "gray.500",
     icon: <Spinner color="gray.600" mx={1} size="sm" />,
   },
+  success: {
+    color: "success.main",
+    icon: (
+      <CustomIcon boxSize="3" color="success.main" name="check-circle-solid" />
+    ),
+  },
 };
 
 const getStatus = (isLoading: boolean, isSuccess: boolean) => {
@@ -37,9 +37,9 @@ const getStatus = (isLoading: boolean, isSuccess: boolean) => {
 };
 
 export const SimulateMessageRender = ({
-  value,
   isLoading,
   isSuccess,
+  value,
   ...restProps
 }: SimulateMessageRenderProps) => {
   const status = getStatus(isLoading, isSuccess);

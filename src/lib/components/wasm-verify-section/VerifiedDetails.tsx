@@ -33,10 +33,10 @@ interface VerifyDetailsProps {
 
 export const VerifiedDetails = ({
   codeHash,
-  verificationInfo,
-  schema,
-  relatedVerifiedCodes,
   contractAddress,
+  relatedVerifiedCodes,
+  schema,
+  verificationInfo,
 }: VerifyDetailsProps) => {
   const gitUrlWithCommit = `${verificationInfo.gitUrl}/tree/${verificationInfo.commit}`;
   return contractAddress ? (
@@ -73,7 +73,6 @@ export const VerifiedDetails = ({
           gap={1}
           overflow="hidden"
           sx={{
-            cursor: "pointer",
             "&:hover": {
               "> *": {
                 color: "primary.light",
@@ -83,6 +82,7 @@ export const VerifiedDetails = ({
                 transitionTimingFunction: "ease-in-out",
               },
             },
+            cursor: "pointer",
           }}
         >
           <Text className="ellipsis" color="primary.main" variant="body2">
@@ -122,7 +122,6 @@ export const VerifiedDetails = ({
                 alignItems="center"
                 gap={1}
                 sx={{
-                  cursor: "pointer",
                   "&:hover": {
                     "> *": {
                       color: "primary.light",
@@ -132,6 +131,7 @@ export const VerifiedDetails = ({
                       transitionTimingFunction: "ease-in-out",
                     },
                   },
+                  cursor: "pointer",
                 }}
               >
                 <Text color="primary.main" fontWeight={600} variant="body2">

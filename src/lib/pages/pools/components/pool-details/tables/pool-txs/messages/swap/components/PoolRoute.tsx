@@ -18,10 +18,10 @@ interface PoolRouteProps {
 }
 
 export const PoolRoute = ({
-  routes,
+  ampCopierSection,
   assetInfos,
   isOpened,
-  ampCopierSection,
+  routes,
 }: PoolRouteProps) => {
   const { data: poolAssets, isLoading } = usePoolsLiquidityByPoolIds(
     routes.map((pool) => pool.poolId),

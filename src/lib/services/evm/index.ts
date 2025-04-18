@@ -23,8 +23,8 @@ import {
 export const useEvmParams = () => {
   const {
     chainConfig: {
-      rest: restEndpoint,
       features: { evm },
+      rest: restEndpoint,
     },
   } = useCelatoneApp();
 
@@ -38,8 +38,8 @@ export const useEvmParams = () => {
       enabled: evm.enabled,
       refetchOnWindowFocus: false,
       retry: false,
-      staleTime: Infinity,
       retryOnMount: false,
+      staleTime: Infinity,
     }
   );
 };
@@ -53,9 +53,9 @@ export const useEvmCodesByAddress = (address: HexAddr20, enabled = true) => {
     [CELATONE_QUERY_KEYS.EVM_CODES_BY_ADDRESS_REST, restEndpoint, address],
     async () => getEvmCodesByAddress(restEndpoint, address),
     {
-      retry: 1,
-      refetchOnWindowFocus: false,
       enabled: enabled && address && isHexWalletAddress(address),
+      refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -76,9 +76,9 @@ export const useEvmContractInfoSequencer = (address: HexAddr20) => {
     async () =>
       getEvmContractInfoSequencer(restEndpoint, bech32Prefix, address),
     {
-      retry: 1,
-      refetchOnWindowFocus: false,
       enabled: address && isHexWalletAddress(address),
+      refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -108,9 +108,9 @@ export const useEthCall = (
     },
     {
       enabled: evm.enabled && !!evm.jsonRpc,
-      retry: false,
-      refetchOnWindowFocus: false,
       refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
       ...options,
     }
   );
@@ -138,9 +138,9 @@ export const useGetEvmProxyTarget = (
     },
     {
       enabled: evm.enabled && !!evm.jsonRpc,
-      retry: false,
-      refetchOnWindowFocus: false,
       refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
       ...options,
     }
   );

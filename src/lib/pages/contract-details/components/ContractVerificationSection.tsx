@@ -12,9 +12,9 @@ interface ContractVerificationSectionProps {
 }
 
 export const ContractVerificationSection = ({
-  contractAddress,
   codeHash,
   codeId,
+  contractAddress,
   wasmVerifyInfo,
 }: ContractVerificationSectionProps) => (
   <Flex direction="column" gap={4} mb={6}>

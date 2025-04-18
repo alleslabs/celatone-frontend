@@ -18,12 +18,12 @@ interface InteractionBodySectionProps {
 }
 
 export const InteractionBodySection = ({
+  handleFunctionSelect,
   module,
+  onOpen,
+  selectedFn,
   selectedType,
   setSelectedType,
-  selectedFn,
-  handleFunctionSelect,
-  onOpen,
 }: InteractionBodySectionProps) => (
   <Grid gap={8} overflow="hidden" templateColumns="minmax(300px, 20%) 1fr">
     <FunctionSelectPanel

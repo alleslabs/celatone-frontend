@@ -13,9 +13,9 @@ interface SupportedPoolListProps {
 }
 
 export const SupportedPoolList = ({
-  pools,
   isLoading,
   mode,
+  pools,
 }: SupportedPoolListProps) => {
   if (isLoading) return <Loading />;
   if (!pools?.length)
@@ -28,7 +28,7 @@ export const SupportedPoolList = ({
     );
 
   return (
-    <SimpleGrid columns={{ md: 1, lg: 2 }} mt={4} spacing={4}>
+    <SimpleGrid columns={{ lg: 2, md: 1 }} mt={4} spacing={4}>
       {pools.map((item) => (
         <PoolCard key={item.id} item={item} mode={mode} />
       ))}

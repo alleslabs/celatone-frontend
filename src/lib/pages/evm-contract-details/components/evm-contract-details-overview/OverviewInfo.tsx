@@ -16,11 +16,11 @@ interface OverviewInfoProps {
 }
 
 export const OverviewInfo = ({
-  hash,
-  evmHash,
-  sender,
   created,
+  evmHash,
+  hash,
   isContractInfoLoading,
+  sender,
 }: OverviewInfoProps) => {
   const isMobile = useMobile();
   const { currentChainId } = useCelatoneApp();
@@ -31,8 +31,8 @@ export const OverviewInfo = ({
       bg="gray.900"
       borderRadius={8}
       columnGap={{
-        base: 14,
         "2xl": 36,
+        base: 14,
       }}
       gridTemplateColumns={{
         base: "1fr",

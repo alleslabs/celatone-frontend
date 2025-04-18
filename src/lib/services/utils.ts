@@ -31,12 +31,12 @@ const callQueryFn = async <T>(
 };
 
 export const handleQueryByTier = async <R>({
-  tier,
-  threshold = "lite",
+  queryFull,
   queryLite,
   queryMesa,
   querySequencer,
-  queryFull,
+  threshold = "lite",
+  tier,
 }: {
   tier: ChainConfig["tier"];
   threshold: ChainConfig["tier"];

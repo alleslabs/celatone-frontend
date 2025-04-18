@@ -49,9 +49,9 @@ interface EvmContractDetailsBodyProps {
 
 const EvmContractDetailsBody = ({
   contractAddress,
-  tab,
-  selectedType,
   selectedFn,
+  selectedType,
+  tab,
 }: EvmContractDetailsBodyProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -93,13 +93,13 @@ const EvmContractDetailsBody = ({
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: "/evm-contracts/[contractAddress]/[tab]",
         query: {
           contractAddress,
           tab: nextTab,
-        },
-        options: {
-          shallow: true,
         },
       });
     },

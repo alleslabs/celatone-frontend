@@ -15,9 +15,9 @@ interface DepositBarProps {
 
 export const DepositBar = ({
   deposit,
-  minDeposit,
-  isDepositOrVoting,
   isCompact,
+  isDepositOrVoting,
+  minDeposit,
 }: DepositBarProps) => {
   const pairDeposit = mapDeposit(deposit, minDeposit);
   return (

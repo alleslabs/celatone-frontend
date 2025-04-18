@@ -9,8 +9,8 @@ interface SearchResultItemBodyProps {
 }
 
 export const SearchResultItemBody = ({
-  result,
   isAccountAddress,
+  result,
 }: SearchResultItemBodyProps) => {
   if (isAccountAddress && !!result.metadata?.initiaUsername)
     return (
@@ -45,9 +45,9 @@ export const SearchResultItemBody = ({
               result.metadata.icns.icnsNames.primaryName && (
               <Text
                 _before={{
+                  color: "text.dark",
                   content: '"/"',
                   fontSize: "12px",
-                  color: "text.dark",
                   mr: 1,
                 }}
                 variant="body2"

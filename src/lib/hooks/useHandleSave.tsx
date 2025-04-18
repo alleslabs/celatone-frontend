@@ -28,16 +28,16 @@ interface UseHandleAccountSaveProps {
 }
 
 export const useHandleContractSave = ({
-  title,
-  contractAddress,
-  label,
-  codeId,
-  instantiator,
-  name,
-  description,
-  tags,
-  lists,
   actions,
+  codeId,
+  contractAddress,
+  description,
+  instantiator,
+  label,
+  lists,
+  name,
+  tags,
+  title,
 }: UseHandleContractSaveProps) => {
   const toast = useToast();
   const { updateContractLocalInfo } = useContractStore();
@@ -57,22 +57,22 @@ export const useHandleContractSave = ({
     actions?.();
 
     toast({
-      title,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      status: "success",
+      title,
     });
   };
 };
 
 export const useHandleAccountSave = ({
-  title,
-  address,
-  name,
-  description,
   actions,
+  address,
+  description,
+  name,
+  title,
 }: UseHandleAccountSaveProps) => {
   const toast = useToast();
   const { updateAccountLocalInfo } = useAccountStore();
@@ -85,12 +85,12 @@ export const useHandleAccountSave = ({
     actions?.();
 
     toast({
-      title,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      status: "success",
+      title,
     });
   };
 };

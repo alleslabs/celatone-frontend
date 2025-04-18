@@ -14,7 +14,7 @@ interface PublishedEventsTableRowProps {
 }
 
 export const PolicyChanges = ({ history }: { history: ModuleHistory }) => {
-  const { upgradePolicy, previousPolicy } = history;
+  const { previousPolicy, upgradePolicy } = history;
 
   if (!previousPolicy)
     return (
@@ -53,8 +53,8 @@ export const PolicyChanges = ({ history }: { history: ModuleHistory }) => {
 };
 
 export const PublishedEventsTableRow = ({
-  templateColumns,
   history,
+  templateColumns,
 }: PublishedEventsTableRowProps) => (
   <Grid templateColumns={templateColumns}>
     <TableRow />

@@ -42,25 +42,25 @@ export interface ActionModalProps {
   buttonRemark?: string;
 }
 export function ActionModal({
+  buttonRemark,
+  children,
+  closeOnOverlayClick = true,
+  disabledMain = false,
+  headerContent,
   icon = "edit",
   iconColor = "gray.600",
-  title,
-  subtitle,
-  trigger,
-  headerContent,
-  children,
-  mainBtnTitle = "Proceed",
   mainAction,
+  mainBtnTitle = "Proceed",
   mainVariant = "primary",
-  disabledMain = false,
-  otherBtnTitle = "Cancel",
-  otherAction,
-  otherVariant = "outline-primary",
   noCloseButton = false,
-  closeOnOverlayClick = true,
-  buttonRemark,
+  otherAction,
+  otherBtnTitle = "Cancel",
+  otherVariant = "outline-primary",
+  subtitle,
+  title,
+  trigger,
 }: ActionModalProps) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const handleOnMain = useCallback(() => {
     mainAction();

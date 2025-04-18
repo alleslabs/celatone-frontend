@@ -38,16 +38,16 @@ interface CodeSelectDrawerButtonProps {
 }
 
 export const CodeSelectDrawerButton = ({
-  onCodeSelect,
   buttonText,
+  onCodeSelect,
 }: CodeSelectDrawerButtonProps) => {
   // ------------------------------------------//
   // ------------------STATES------------------//
   // ------------------------------------------//
-  const { watch, setValue } = useForm<CodeFilterState>({
+  const { setValue, watch } = useForm<CodeFilterState>({
     defaultValues: {
-      permissionValue: "all",
       keyword: "",
+      permissionValue: "all",
     },
   });
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -57,12 +57,12 @@ export const CodeSelectDrawerButton = ({
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
   const {
-    storedCodesCount,
-    storedCodes: stored,
-    savedCodesCount,
-    savedCodes: saved,
-    isStoredCodesLoading,
     isSavedCodesLoading,
+    isStoredCodesLoading,
+    savedCodes: saved,
+    savedCodesCount,
+    storedCodes: stored,
+    storedCodesCount,
   } = useMyCodesData(keyword, permissionValue);
 
   const handleSelect = (codeId: number) => {

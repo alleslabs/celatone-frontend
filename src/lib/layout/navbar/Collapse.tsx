@@ -11,7 +11,7 @@ interface CollapseNavInfoProps {
   submenu: SubmenuInfo;
   isCurrentPage: (slug: string) => boolean;
 }
-const CollapseNavInfo = ({ submenu, isCurrentPage }: CollapseNavInfoProps) => (
+const CollapseNavInfo = ({ isCurrentPage, submenu }: CollapseNavInfoProps) => (
   <Tooltip
     label={submenu.isDisable ? submenu.tooltipText : submenu.name}
     placement="right"
@@ -53,8 +53,8 @@ const CollapseNavInfo = ({ submenu, isCurrentPage }: CollapseNavInfoProps) => (
 );
 
 export const CollapseNavMenu = ({
-  navMenu,
   isCurrentPage,
+  navMenu,
   setIsExpand,
 }: NavMenuProps) => {
   const isMobile = useMobile();
@@ -70,8 +70,8 @@ export const CollapseNavMenu = ({
           sx={{
             "&:last-of-type": {
               borderBottom: "none",
-              paddingBottom: "0px",
               marginBottom: "0px",
+              paddingBottom: "0px",
             },
           }}
         >

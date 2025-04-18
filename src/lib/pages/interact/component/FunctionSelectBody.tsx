@@ -16,8 +16,8 @@ interface FunctionSelectBodyProps {
 
 export const FunctionSelectBody = ({
   module,
-  selectedFn,
   openDrawer,
+  selectedFn,
 }: FunctionSelectBodyProps) =>
   module && selectedFn ? (
     <Flex

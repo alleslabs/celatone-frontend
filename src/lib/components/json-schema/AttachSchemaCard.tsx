@@ -18,8 +18,8 @@ interface AttachSchemaCardProps {
 
 export const AttachSchemaCard = ({
   attached,
-  codeId,
   codeHash,
+  codeId,
   localSchema,
   openModal,
 }: AttachSchemaCardProps) => {

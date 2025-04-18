@@ -29,11 +29,11 @@ interface ContractCodeProps {
 }
 
 export const ContractCode = ({
-  sourceFiles,
-  contractPath,
-  constructorArguments,
   abi,
+  constructorArguments,
+  contractPath,
   libraries,
+  sourceFiles,
 }: ContractCodeProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -66,8 +66,8 @@ export const ContractCode = ({
         </Flex>
         <FullEditor
           filesPath={sourceFiles.map((file) => ({
-            path: file.sourcePath,
             code: file.evmSourceFile.content,
+            path: file.sourcePath,
           }))}
           initialFilePath={contractPath}
           isOpen={isOpen}

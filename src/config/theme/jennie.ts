@@ -4,63 +4,30 @@ import { generateTheme } from "./utils";
 
 const JENNIE_BASE_THEME: ThemeConfig = {
   branding: {
-    logo: "https://assets.alleslabs.dev/integrations/initia/jennie/logo.svg",
     favicon: "https://assets.alleslabs.dev/integrations/initia/favicon.svg",
+    logo: "https://assets.alleslabs.dev/integrations/initia/jennie/logo.svg",
     seo: {
       appName: "Initia",
-      title: "Initia Scan",
       description: "Initia, a network for interwoven rollups",
       image:
         "https://assets.alleslabs.dev/celatone-brand/socials/scan-ogimage.jpg",
+      title: "Initia Scan",
       x: {
-        handle: "@initia",
         cardType: "summary_large_image",
+        handle: "@initia",
       },
     },
   },
   colors: {
-    error: {
-      main: "#FF666E",
-      light: "#FF8086",
-      dark: "#B43E44",
-      background: "#4C1A1D",
-    },
-    warning: {
-      main: "#FFBB33",
-      light: "#FFCC66",
-      dark: "#CC8800",
-      background: "#523600",
-    },
-    success: {
-      main: "#42BEA6",
-      light: "#67CBB7",
-      dark: "#207966",
-      background: "#102E28",
-    },
     background: {
       main: "#050301",
       overlay: "rgba(17, 17, 23, 0.7)",
     },
-    text: {
-      main: "#F5F5F5",
-      dark: "#B7B7B7",
-      disabled: "#A1A6AA",
-    },
-    primary: {
-      main: "#FFB1E7",
-      light: "#FFB1E7",
-      lighter: "#FFD6F3",
-      dark: "#E06FB5",
-      darker: "#CA2B8D",
-      background: "#651546",
-    },
-    secondary: {
-      main: "#2AB9FC",
-      light: "#5FC1EE",
-      lighter: "#A3DBF5",
-      dark: "#15AFF8",
-      darker: "#008FD7",
-      background: "#004666",
+    error: {
+      background: "#4C1A1D",
+      dark: "#B43E44",
+      light: "#FF8086",
+      main: "#FF666E",
     },
     gray: {
       100: "#F5F5F5",
@@ -71,69 +38,107 @@ const JENNIE_BASE_THEME: ThemeConfig = {
       800: "#1F1D1D",
       900: "#151414",
     },
+    primary: {
+      background: "#651546",
+      dark: "#E06FB5",
+      darker: "#CA2B8D",
+      light: "#FFB1E7",
+      lighter: "#FFD6F3",
+      main: "#FFB1E7",
+    },
+    secondary: {
+      background: "#004666",
+      dark: "#15AFF8",
+      darker: "#008FD7",
+      light: "#5FC1EE",
+      lighter: "#A3DBF5",
+      main: "#2AB9FC",
+    },
+    success: {
+      background: "#102E28",
+      dark: "#207966",
+      light: "#67CBB7",
+      main: "#42BEA6",
+    },
+    text: {
+      dark: "#B7B7B7",
+      disabled: "#A1A6AA",
+      main: "#F5F5F5",
+    },
+    warning: {
+      background: "#523600",
+      dark: "#CC8800",
+      light: "#FFCC66",
+      main: "#FFBB33",
+    },
   },
-  jsonTheme: "monokai",
   illustration: {
     "404":
       "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/404.png",
-    error:
-      "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/error.png",
-    searchNotFound:
-      "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/search-not-found.png",
-    searchEmpty:
-      "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/search-empty.png",
     disconnected:
       "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/disconnected.png",
+    error:
+      "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/error.png",
+    searchEmpty:
+      "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/search-empty.png",
+    searchNotFound:
+      "https://assets.alleslabs.dev/integrations/initia/jennie/illustration/search-not-found.png",
   },
+  jsonTheme: "monokai",
   socialMedia: {
-    website: "https://initia.xyz",
     github: "https://github.com/initia-labs",
-    x: "https://x.com/initia",
     medium: "https://medium.com/@initialabs",
+    website: "https://initia.xyz",
+    x: "https://x.com/initia",
   },
 };
 
 const JENNIE_COMPONENT_CONFIG: ComponentConfig = {
   button: {
-    primary: {
-      background: "gray.100",
-      color: "gray.900",
-      disabledBackground: "gray.500",
-      disabledColor: "gray.900",
-      hoverBackground: "gray.400",
-      activeBackground: "gray.400",
-    },
     outlinePrimary: {
+      activeBackground: "transparent",
       borderColor: "primary.light",
       color: "primary.light",
       disabledBorderColor: "gray.700",
       disabledColor: "gray.600",
       hoverBackground: "primary.background",
-      activeBackground: "transparent",
+    },
+    primary: {
+      activeBackground: "gray.400",
+      background: "gray.100",
+      color: "gray.900",
+      disabledBackground: "gray.500",
+      disabledColor: "gray.900",
+      hoverBackground: "gray.400",
     },
   },
   proposalChip: {
-    depositPeriod: {
-      bg: "primary.darker",
-    },
-    votingPeriod: {
-      bg: "secondary.dark",
-    },
-    failed: {
-      bg: "error.dark",
-    },
-    rejected: {
-      bg: "error.dark",
-    },
-    passed: {
-      bg: "success.dark",
-    },
     cancelled: {
       bg: "error.background",
     },
     depositFailed: {
       bg: "gray.700",
     },
+    depositPeriod: {
+      bg: "primary.darker",
+    },
+    failed: {
+      bg: "error.dark",
+    },
+    passed: {
+      bg: "success.dark",
+    },
+    rejected: {
+      bg: "error.dark",
+    },
+    votingPeriod: {
+      bg: "secondary.dark",
+    },
+  },
+  recentBlocks: {
+    missed: "error.dark",
+    proposed: "secondary.light",
+    signed: "primary.dark",
   },
   stepper: {
     active: {
@@ -146,24 +151,19 @@ const JENNIE_COMPONENT_CONFIG: ComponentConfig = {
     },
   },
   tag: {
-    signer: {
-      bg: "primary.darker",
-      color: "text.main",
-    },
     related: {
       bg: "secondary.darker",
       color: "text.main",
     },
+    signer: {
+      bg: "primary.darker",
+      color: "text.main",
+    },
   },
   voteParticipations: {
+    didNotVote: "gray.700",
     voted: "primary.main",
     votedAbstain: "secondary.darker",
-    didNotVote: "gray.700",
-  },
-  recentBlocks: {
-    signed: "primary.dark",
-    proposed: "secondary.light",
-    missed: "error.dark",
   },
 };
 

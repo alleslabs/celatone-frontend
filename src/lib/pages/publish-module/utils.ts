@@ -16,11 +16,11 @@ const resolvePolicyPriority = (
 ) => priority.indexOf(selected) >= priority.indexOf(current);
 
 export const statusResolver = ({
-  data,
-  modules,
-  index,
-  policy,
   address,
+  data,
+  index,
+  modules,
+  policy,
 }: {
   data: Option<DecodeModuleQueryResponse>;
   modules: Module[];

@@ -15,10 +15,10 @@ export interface PublishCompleteState extends PublishTxInternalResult {
 }
 
 const DEFAULT_STATE: PublishCompleteState = {
-  txHash: "",
-  txFee: undefined,
-  upgradePolicy: UpgradePolicy.UNSPECIFIED,
   modules: [],
+  txFee: undefined,
+  txHash: "",
+  upgradePolicy: UpgradePolicy.UNSPECIFIED,
 };
 
 export const PublishIndex = () => {

@@ -10,8 +10,8 @@ interface NftInfoItemProps {
 
 export const NftInfoItem = ({
   children,
-  label,
   isCentered = true,
+  label,
 }: NftInfoItemProps) => (
   <Flex
     align={{ base: "start", md: isCentered ? "center" : "start" }}

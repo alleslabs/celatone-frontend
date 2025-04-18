@@ -55,19 +55,19 @@ export type SignAndBroadcastEvm = (
 export const useSignAndBroadcastEvm = () => {
   const {
     chainConfig: {
-      prettyName,
-      logo_URIs,
       features: { evm },
+      logo_URIs,
+      prettyName,
       registry,
     },
   } = useCelatoneApp();
-  const { walletProvider, chainId } = useCurrentChain();
+  const { chainId, walletProvider } = useCurrentChain();
   const { data } = useEvmParams();
 
   return useCallback(
     async (request: TransactionRequest): Promise<TxReceiptJsonRpc> => {
       if (evm.enabled && walletProvider.type === "initia-widget") {
-        const { requestEthereumTx, ethereum, wallet } = walletProvider.context;
+        const { ethereum, requestEthereumTx, wallet } = walletProvider.context;
         if (wallet?.type !== "evm")
           throw new Error("Please reconnect to EVM wallet");
 
@@ -95,9 +95,9 @@ export const useSignAndBroadcastEvm = () => {
                 chainName: prettyName,
                 iconUrls: Object.values(logo_URIs ?? {}),
                 nativeCurrency: {
+                  decimals: denomUnit.exponent,
                   name: foundAsset.name,
                   symbol: foundAsset.symbol,
-                  decimals: denomUnit.exponent,
                 },
                 rpcUrls: [evm.jsonRpc],
               },

@@ -24,13 +24,13 @@ interface CodeDetailsTemplateModalProps {
 }
 
 export const CodeDetailsTemplateModal = ({
-  title,
-  helperText,
-  mainBtnTitle,
-  isNewCode,
   codeInfo,
-  triggerElement,
+  helperText,
   icon = "bookmark-solid",
+  isNewCode,
+  mainBtnTitle,
+  title,
+  triggerElement,
 }: CodeDetailsTemplateModalProps) => {
   const { constants } = useCelatoneApp();
   const { saveNewCode, updateCodeInfo } = useCodeStore();
@@ -53,12 +53,12 @@ export const CodeDetailsTemplateModal = ({
 
     // TODO: abstract toast to template later
     toast({
-      title,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      status: "success",
+      title,
     });
   }, [
     codeInfo.id,

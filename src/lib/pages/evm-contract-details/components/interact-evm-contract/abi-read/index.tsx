@@ -18,8 +18,8 @@ interface AbiReadProps {
 }
 
 export const AbiRead = ({
-  contractAddress,
   abiRead,
+  contractAddress,
   selectedFn,
 }: AbiReadProps) => {
   // ------------------------------------------//

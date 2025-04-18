@@ -34,16 +34,16 @@ export const extractErc20TransferInput = (input: string) => ({
 export const getEvmToAddress = (
   evmTxData: TxDataJsonRpc
 ): Option<EvmToAddress> => {
-  const { to, input } = evmTxData.tx;
+  const { input, to } = evmTxData.tx;
   const method = getEvmMethod(input, to);
 
   if (method === EvmMethodName.Create) {
     const { contractAddress } = evmTxData.txReceipt;
     if (!contractAddress) return undefined;
     return {
-      toType: EvmMethodName.Create,
       address: toChecksumAddress(contractAddress),
       evmTxHash: evmTxData.tx.hash,
+      toType: EvmMethodName.Create,
     };
   }
 
@@ -52,22 +52,22 @@ export const getEvmToAddress = (
     const contractAddress = logs[0]?.address;
     if (!contractAddress) return undefined;
     return {
-      toType: EvmMethodName.CallErc20Factory,
       address: toChecksumAddress(zHexAddr20.parse(contractAddress)),
+      toType: EvmMethodName.CallErc20Factory,
     };
   }
 
   if (method === EvmMethodName.TransferErc20) {
     return {
-      toType: null,
       address: extractErc20TransferInput(input).address,
+      toType: null,
     };
   }
 
   if (to) {
     return {
-      toType: null,
       address: toChecksumAddress(to),
+      toType: null,
     };
   }
 

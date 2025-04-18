@@ -16,16 +16,16 @@ interface PublicDescriptionProps {
 
 export const PublicDescription = ({
   description,
-  title,
-  textLine,
   icon,
+  textLine,
+  title,
 }: PublicDescriptionProps) => {
   const [showMore, setShowMore] = useState(false);
 
-  const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: description,
+  const [ref, { clampedText, key, noClamp }] = useClampText({
     ellipsis: "...",
     lines: textLine,
+    text: description,
   });
 
   return (

@@ -34,7 +34,7 @@ export const EvmDataFormatSwitch = ({
         direction="row"
         p={1}
         position="relative"
-        sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
+        sx={{ ...(disabled ? { opacity: 0.3, pointerEvents: "none" } : {}) }}
       >
         {tabs.map((tab) => (
           <MotionBox
@@ -68,9 +68,9 @@ export const EvmDataFormatSwitch = ({
           h="calc(100% - 8px)"
           position="absolute"
           transition={{
-            type: "spring",
-            stiffness: "250",
             damping: "30",
+            stiffness: "250",
+            type: "spring",
           }}
           w="calc(33% - 4px)"
         />

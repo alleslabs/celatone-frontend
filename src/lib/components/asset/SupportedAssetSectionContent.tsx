@@ -10,9 +10,9 @@ interface SupportedAssetSectionContentProps {
 }
 
 export const SupportedAssetSectionContent = ({
-  supportedAssets,
   isAccount = false,
   onViewMore,
+  supportedAssets,
 }: SupportedAssetSectionContentProps) => {
   if (!supportedAssets.length)
     return (

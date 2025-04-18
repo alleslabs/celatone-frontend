@@ -39,12 +39,12 @@ export const getNftByNftAddressRest = async (
     getNftHolderRest(endpoint, nftAddress),
     getNftInfoRest(endpoint, nftAddress),
   ]).then<Nft>(([holder, info]) => ({
-    uri: info.uri,
-    tokenId: info.tokenId,
-    description: info.description,
-    isBurned: false,
-    ownerAddress: holder,
-    nftAddress,
     collectionAddress: info.collection,
     collectionName: undefined,
+    description: info.description,
+    isBurned: false,
+    nftAddress,
+    ownerAddress: holder,
+    tokenId: info.tokenId,
+    uri: info.uri,
   }));

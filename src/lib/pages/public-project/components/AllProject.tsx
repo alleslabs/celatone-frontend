@@ -110,7 +110,7 @@ export const AllProject = observer(() => {
         />
       ) : (
         <SimpleGrid
-          columns={{ sm: 1, md: 3 }}
+          columns={{ md: 3, sm: 1 }}
           mt={{ base: 6, md: 12 }}
           spacing={4}
           w="full"

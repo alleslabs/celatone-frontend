@@ -34,12 +34,12 @@ interface ModuleSelectDrawerProps {
 }
 
 export const ModuleSelectDrawer = ({
+  handleModuleSelect,
+  hexAddress,
   isOpen,
   onClose,
-  hexAddress,
-  handleModuleSelect,
 }: ModuleSelectDrawerProps) => {
-  const { convertHexWalletAddress, convertHexModuleAddress } =
+  const { convertHexModuleAddress, convertHexWalletAddress } =
     useConvertHexAddress();
 
   const [mode, setMode] = useState<DisplayMode>("input");

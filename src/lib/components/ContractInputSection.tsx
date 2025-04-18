@@ -47,18 +47,18 @@ export const ContractInputSection = ({
 
     if (!data)
       return {
-        state: "error",
         message: "Invalid contract address",
+        state: "error",
       };
     if (isPermissionAllowed)
       return {
-        state: "success",
         message: "You have admin access to this contract",
+        state: "success",
       };
     if (!isPermissionAllowed)
       return {
-        state: "error",
         message: "Your wallet does not have admin access to this contract",
+        state: "error",
       };
 
     return undefined;

@@ -79,21 +79,21 @@ interface StoreCodeProposalState {
 }
 
 const defaultValues: StoreCodeProposalState = {
-  title: "",
+  builder: "",
+  codeHash: "",
+  initialDeposit: { amount: "", denom: "" } as Coin,
   proposalDesc: "",
   runAs: "" as BechAddr,
-  initialDeposit: { denom: "", amount: "" } as Coin,
-  unpinCode: false,
-  builder: "",
   source: "",
-  codeHash: "",
+  title: "",
+  unpinCode: false,
 };
 
 const StoreCodeProposal = () => {
   useWasmConfig({ shouldRedirect: true });
   const {
-    constants,
     chainConfig: { prettyName },
+    constants,
   } = useCelatoneApp();
   const { user: exampleUserAddress } = useExampleAddresses();
   const getMaxLengthError = useGetMaxLengthError();
@@ -103,7 +103,7 @@ const StoreCodeProposal = () => {
   const { data: uploadAccessParams } = useUploadAccessParamsRest();
   const minDeposit = govParams?.depositParams.minDeposit;
 
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const submitStoreCodeProposalTx = useSubmitStoreCodeProposalTx();
   const { broadcast } = useTxBroadcast();
 
@@ -111,46 +111,46 @@ const StoreCodeProposal = () => {
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [processing, setProcessing] = useState(false);
   const [simulateStatus, setSimulateStatus] = useState<SimulateStatus>({
-    status: "default",
     message: "",
+    status: "default",
   });
   const {
     control,
-    watch,
-    setValue,
-    reset,
     formState: { errors },
+    reset,
+    setValue,
     trigger,
+    watch,
   } = useForm<StoreCodeProposalState>({
     defaultValues,
     mode: "all",
   });
   const {
     control: uploadSectionControl,
-    watch: uploadSectionWatch,
+    formState: { errors: uploadSectionErrors },
     setValue: uploadSectionSetValue,
     trigger: uploadSectionTrigger,
-    formState: { errors: uploadSectionErrors },
+    watch: uploadSectionWatch,
   } = useForm<UploadSectionState>({
     defaultValues: {
-      wasmFile: undefined,
+      addresses: [{ address: "" as BechAddr }],
       codeName: "",
       permission: AccessType.ACCESS_TYPE_EVERYBODY,
-      addresses: [{ address: "" as BechAddr }],
+      wasmFile: undefined,
     },
     mode: "all",
   });
   const {
-    title,
+    builder,
+    codeHash,
+    initialDeposit,
     proposalDesc,
     runAs,
-    initialDeposit,
-    unpinCode,
-    builder,
     source,
-    codeHash,
+    title,
+    unpinCode,
   } = watch();
-  const { wasmFile, permission, addresses } = uploadSectionWatch();
+  const { addresses, permission, wasmFile } = uploadSectionWatch();
 
   // Amp
   const router = useRouter();
@@ -158,7 +158,7 @@ const StoreCodeProposal = () => {
     if (router.isReady) track(AmpEvent.TO_PROPOSAL_TO_STORE_CODE);
   }, [router.isReady]);
 
-  const { variant, description, icon } = getAlert(
+  const { description, icon, variant } = getAlert(
     initialDeposit.amount,
     govParams?.depositParams.minInitialDeposit,
     minDeposit?.formattedAmount,
@@ -223,14 +223,14 @@ const StoreCodeProposal = () => {
 
   // Reset simulation status to default when some of the input is not filled
   useEffect(() => {
-    if (!enabledTx) setSimulateStatus({ status: "default", message: "" });
+    if (!enabledTx) setSimulateStatus({ message: "", status: "default" });
   }, [enabledTx]);
 
   useEffect(() => {
     if (minDeposit)
       reset({
         ...defaultValues,
-        initialDeposit: { denom: minDeposit.denom, amount: "" },
+        initialDeposit: { amount: "", denom: minDeposit.denom },
       });
   }, [minDeposit, reset]);
 
@@ -244,42 +244,42 @@ const StoreCodeProposal = () => {
   }, [setHashValue]);
 
   const { isFetching: isSimulating } = useSimulateFeeForProposalStoreCode({
-    enabled: Boolean(walletAddress && enabledTx),
-    title,
-    description: proposalDesc,
-    runAs,
-    initialDeposit,
-    unpinCode,
-    builder,
-    source,
-    codeHash,
-    wasmFile,
-    permission,
     addresses: addresses.map((addr) => addr.address),
-    precision: minDeposit?.precision,
+    builder,
+    codeHash,
+    description: proposalDesc,
+    enabled: Boolean(walletAddress && enabledTx),
+    initialDeposit,
+    onError: (e) => {
+      setSimulateStatus({ message: e.message, status: "failed" });
+      setEstimatedFee(undefined);
+    },
     onSuccess: (fee) => {
       if (wasmFile && walletAddress && fee) {
         setSimulateStatus({
-          status: "succeeded",
           message: "Valid Wasm file and submitting proposal conditions",
+          status: "succeeded",
         });
         setEstimatedFee(fabricateFee(fee));
       }
     },
-    onError: (e) => {
-      setSimulateStatus({ status: "failed", message: e.message });
-      setEstimatedFee(undefined);
-    },
+    permission,
+    precision: minDeposit?.precision,
+    runAs,
+    source,
+    title,
+    unpinCode,
+    wasmFile,
   });
 
   const proceed = useCallback(async () => {
     if (!wasmFile) return null;
 
     trackUseSubmitProposal({
-      initialDeposit: initialDeposit.amount,
-      assetDenom: initialDeposit.denom,
-      minDeposit: minDeposit?.formattedAmount,
       addressesCount: addresses.length,
+      assetDenom: initialDeposit.denom,
+      initialDeposit: initialDeposit.amount,
+      minDeposit: minDeposit?.formattedAmount,
       permission: AccessType[permission],
     });
 
@@ -287,33 +287,33 @@ const StoreCodeProposal = () => {
       if (!walletAddress) return [];
       return [
         composeStoreCodeProposalMsg({
-          proposer: walletAddress,
-          title,
+          addresses: addresses.map((addr) => addr.address),
+          builder,
+          codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
           description: proposalDesc,
+          initialDeposit,
+          permission,
+          precision: minDeposit?.precision,
+          proposer: walletAddress,
           runAs,
+          source,
+          title,
+          unpinCode,
           wasmByteCode: await gzip(
             new Uint8Array(await wasmFile.arrayBuffer())
           ),
-          permission,
-          addresses: addresses.map((addr) => addr.address),
-          unpinCode,
-          source,
-          builder,
-          codeHash: Uint8Array.from(Buffer.from(codeHash, "hex")),
-          initialDeposit,
-          precision: minDeposit?.precision,
         }),
       ];
     };
     const craftMsg = await submitStoreCodeProposalMsg();
 
     const stream = await submitStoreCodeProposalTx({
+      amountToVote: getAmountToVote(initialDeposit, minDeposit),
       estimatedFee,
       messages: craftMsg,
-      wasmFileName: wasmFile.name,
-      amountToVote: getAmountToVote(initialDeposit, minDeposit),
-      onTxSucceed: () => setProcessing(false),
       onTxFailed: () => setProcessing(false),
+      onTxSucceed: () => setProcessing(false),
+      wasmFileName: wasmFile.name,
     });
     if (stream) {
       setProcessing(true);
@@ -378,8 +378,8 @@ const StoreCodeProposal = () => {
                   name="title"
                   placeholder={PROPOSAL_STORE_CODE_TEXT.titlePlaceholder}
                   rules={{
-                    required: PROPOSAL_STORE_CODE_TEXT.titleRequired,
                     maxLength: constants.maxProposalTitleLength,
+                    required: PROPOSAL_STORE_CODE_TEXT.titleRequired,
                   }}
                   variant="fixed-floating"
                 />
@@ -482,8 +482,8 @@ const StoreCodeProposal = () => {
                   placeholder={PROPOSAL_STORE_CODE_TEXT.builderPlaceholder}
                   // Builder is a docker image, can be tagged, digested, or both
                   rules={{
-                    required: PROPOSAL_STORE_CODE_TEXT.builderRequired,
                     pattern: PROPOSAL_STORE_CODE_TEXT.builderPattern,
+                    required: PROPOSAL_STORE_CODE_TEXT.builderRequired,
                   }}
                   variant="fixed-floating"
                 />
@@ -504,8 +504,8 @@ const StoreCodeProposal = () => {
                   name="source"
                   placeholder={PROPOSAL_STORE_CODE_TEXT.sourcePlaceholder}
                   rules={{
-                    required: PROPOSAL_STORE_CODE_TEXT.sourceRequired,
                     pattern: PROPOSAL_STORE_CODE_TEXT.sourcePattern,
+                    required: PROPOSAL_STORE_CODE_TEXT.sourceRequired,
                   }}
                   variant="fixed-floating"
                 />

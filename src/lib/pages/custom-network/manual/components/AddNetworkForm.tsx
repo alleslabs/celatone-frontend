@@ -20,8 +20,8 @@ interface AddNetworkFormProps {
 }
 
 export const AddNetworkForm = ({
-  currentStepIndex,
   control,
+  currentStepIndex,
   errors,
   setValue,
   trigger,

@@ -12,7 +12,7 @@ export const getEthCall = (
   to: HexAddr20,
   data: string
 ) =>
-  requestJsonRpc(endpoint, "eth_call", [{ from, to, data }, "latest"]).then(
+  requestJsonRpc(endpoint, "eth_call", [{ data, from, to }, "latest"]).then(
     (result) => parseWithError(zHex, result)
   );
 

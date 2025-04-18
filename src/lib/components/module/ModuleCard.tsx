@@ -25,15 +25,15 @@ interface ModuleCardProps {
 export const ModuleCard = ({
   module,
   moveVerifyInfo,
+  readOnly = false,
   selectedModule,
   setSelectedModule,
   setStep,
-  readOnly = false,
 }: ModuleCardProps) => {
   const handleModuleClick = (clickedModule: IndexedModule) => {
     track(AmpEvent.USE_MODULE_CARD, {
-      viewCount: clickedModule.viewFunctions.length,
       executeCount: clickedModule.executeFunctions.length,
+      viewCount: clickedModule.viewFunctions.length,
     });
     setSelectedModule?.(clickedModule);
     setStep?.(ModuleInteractionMobileStep.SelectFunction);

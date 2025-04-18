@@ -24,10 +24,10 @@ const Established = () => (
 );
 
 export const VoteQuorumText = ({
-  status,
-  quorum,
-  totalRatio,
   isCompact,
+  quorum,
+  status,
+  totalRatio,
 }: VoteQuorumTextProps) => {
   const fontVariant = isCompact ? "body2" : "body1";
   if (isNull(totalRatio))

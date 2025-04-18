@@ -49,21 +49,25 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
       setNameStatus({ state: "init" });
     } else if (trimedName.length > constants.maxCodeNameLength)
       setNameStatus({
-        state: "error",
         message: getMaxLengthError(trimedName.length, "code_name"),
+        state: "error",
       });
     else setNameStatus({ state: "success" });
   }, [constants.maxCodeNameLength, getMaxLengthError, name]);
 
   /* DEPENDENCY */
   const toast = useToast();
-  const { isCodeIdSaved, saveNewCode, updateCodeInfo, getCodeLocalInfo } =
+  const { getCodeLocalInfo, isCodeIdSaved, saveNewCode, updateCodeInfo } =
     useCodeStore();
 
-  const { refetch, isFetching, isRefetching } = useCodeRest(Number(codeId), {
-    enabled: false,
-    retry: false,
+  const { isFetching, isRefetching, refetch } = useCodeRest(Number(codeId), {
     cacheTime: 0,
+    enabled: false,
+    onError: () => {
+      setCodeIdStatus({ message: "Invalid code ID", state: "error" });
+      setUploader("Not found");
+      setUploaderStatus({ state: "error" });
+    },
     onSuccess: (data) => {
       const { message, messageColor } = getPermissionHelper(
         address,
@@ -71,18 +75,14 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
         data.permissionAddresses
       );
       setCodeIdStatus({
-        state: "success",
         message: `${message} (${data.instantiatePermission})`,
         messageColor,
+        state: "success",
       });
       setUploader(data.uploader);
       setUploaderStatus({ state: "success" });
     },
-    onError: () => {
-      setCodeIdStatus({ state: "error", message: "Invalid code ID" });
-      setUploader("Not found");
-      setUploaderStatus({ state: "error" });
-    },
+    retry: false,
   });
 
   /* CALLBACK */
@@ -103,12 +103,12 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
     // TODO: abstract toast to template later
     toast({
-      title: `Saved ${codeId} to Saved Codes`,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      status: "success",
+      title: `Saved ${codeId} to Saved Codes`,
     });
 
     reset();
@@ -132,13 +132,13 @@ export function SaveNewCodeModal({ buttonProps }: SaveNewCodeModalProps) {
 
       if (isCodeIdSaved(Number(codeId))) {
         setCodeIdStatus({
-          state: "error",
           message: "You already added this Code ID",
+          state: "error",
         });
       } else {
         const timer = setTimeout(() => {
           if (isId(codeId)) refetch();
-          else setCodeIdStatus({ state: "error", message: "Invalid code ID" });
+          else setCodeIdStatus({ message: "Invalid code ID", state: "error" });
         }, 500);
 
         return () => clearTimeout(timer);

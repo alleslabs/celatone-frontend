@@ -26,45 +26,22 @@ interface ExecuteModuleTxParams {
 
 export const executeModuleTx = ({
   address,
-  messages,
   fee,
-  signAndBroadcast,
-  onTxSucceed,
+  messages,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcast,
 }: ExecuteModuleTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
       const txFee = findAttr(txInfo.events, "tx", "fee");
       return {
-        value: null,
         phase: TxStreamPhase.SUCCEED,
-        receipts: [
-          {
-            title: "Tx hash",
-            value: txInfo.transactionHash,
-            html: (
-              <ExplorerLink
-                openNewTab
-                type="tx_hash"
-                value={txInfo.transactionHash}
-              />
-            ),
-          },
-          {
-            title: "Tx fee",
-            html: (
-              <EstimatedFeeRender
-                estimatedFee={feeFromStr(txFee)}
-                loading={false}
-              />
-            ),
-          },
-        ],
         receiptInfo: {
           header: "Transaction complete!",
           headerIcon: (
@@ -75,6 +52,29 @@ export const executeModuleTx = ({
             />
           ),
         },
+        receipts: [
+          {
+            html: (
+              <ExplorerLink
+                openNewTab
+                type="tx_hash"
+                value={txInfo.transactionHash}
+              />
+            ),
+            title: "Tx hash",
+            value: txInfo.transactionHash,
+          },
+          {
+            html: (
+              <EstimatedFeeRender
+                estimatedFee={feeFromStr(txFee)}
+                loading={false}
+              />
+            ),
+            title: "Tx fee",
+          },
+        ],
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

@@ -102,16 +102,16 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
           onDownload={() => {
             trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_DOWNLOAD, {
               currentStates: totalData,
-              namespacesCount: namespaces.length,
               namespaces,
+              namespacesCount: namespaces.length,
             });
             handleDownload();
           }}
           onLoadMore={() => {
             trackContractStatesLoad(AmpEvent.USE_CONTRACT_STATES_LOAD_MORE, {
               currentStates: totalData,
-              namespacesCount: namespaces.length,
               namespaces,
+              namespacesCount: namespaces.length,
             });
             fetchNextPage();
           }}
@@ -130,8 +130,8 @@ export const ContractStates = ({ contractAddress }: ContractStatesProps) => {
         rowGap={2}
         sx={{
           "> button": {
-            marginInlineStart: "0 !important",
             marginInlineEnd: "1",
+            marginInlineStart: "0 !important",
           },
         }}
       >

@@ -46,7 +46,7 @@ export const NavDrawer = () => {
 
   const isCurrentPage = useIsCurrentPage();
   const { getSavedPublicProjects } = usePublicProjectStore();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const navMenu = useMemo(() => {
     let navMenuTmp = [];
@@ -83,14 +83,14 @@ export const NavDrawer = () => {
         slug: "public-projects",
         submenu: [
           ...getSavedPublicProjects().map((list) => ({
+            logo: list.logo,
             name: list.name,
             slug: `/projects/${list.slug}`,
-            logo: list.logo,
           })),
           {
+            icon: "public-project" as IconKeys,
             name: "View all projects",
             slug: "/projects",
-            icon: "public-project" as IconKeys,
           },
         ],
       });
@@ -143,8 +143,8 @@ export const NavDrawer = () => {
                 sx={{
                   "&:last-of-type": {
                     borderBottom: "none",
-                    paddingBottom: "0px",
                     marginBottom: "0px",
+                    paddingBottom: "0px",
                   },
                 }}
               >

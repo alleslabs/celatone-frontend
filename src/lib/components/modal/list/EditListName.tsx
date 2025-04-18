@@ -25,7 +25,7 @@ export function EditListNameModal({
 }: EditListNameModalProps) {
   const { constants } = useCelatoneApp();
   const getMaxLengthError = useGetMaxLengthError();
-  const { renameList, isContractListExist } = useContractStore();
+  const { isContractListExist, renameList } = useContractStore();
   const navigate = useInternalNavigate();
   const toast = useToast();
 
@@ -39,14 +39,14 @@ export function EditListNameModal({
       setStatus({ state: "init" });
     } else if (trimedListName.length > constants.maxListNameLength)
       setStatus({
-        state: "error",
         message: getMaxLengthError(trimedListName.length, "list_name"),
+        state: "error",
       });
     else if (
       formatSlugName(listName) !== list.value &&
       isContractListExist(listName)
     )
-      setStatus({ state: "error", message: "Already existed" });
+      setStatus({ message: "Already existed", state: "error" });
     else setStatus({ state: "success" });
   }, [
     constants.maxListNameLength,
@@ -61,14 +61,14 @@ export function EditListNameModal({
     // TODO: check list name and different toast status
     renameList(list.value, listName);
     toast({
+      duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      isClosable: false,
+      position: "bottom-right",
+      status: "success",
       title: `Edit ${shortenName(list.label)} to ${shortenName(
         listName
       )} successfully`,
-      status: "success",
-      duration: 5000,
-      isClosable: false,
-      position: "bottom-right",
-      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
     });
   };
   return (

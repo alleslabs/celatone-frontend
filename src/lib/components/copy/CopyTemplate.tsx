@@ -15,14 +15,14 @@ interface CopyTemplateProps {
 }
 
 export const CopyTemplate = ({
-  value,
   copyLabel = "Copied!",
-  triggerElement,
   isDisabled = false,
   ml,
+  triggerElement,
+  value,
   w = "auto",
 }: CopyTemplateProps) => {
-  const { onCopy, hasCopied, setValue } = useClipboard(value);
+  const { hasCopied, onCopy, setValue } = useClipboard(value);
   useEffect(() => setValue(value), [value, setValue]);
 
   return (

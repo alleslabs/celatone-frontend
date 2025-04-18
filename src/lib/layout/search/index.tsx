@@ -50,17 +50,17 @@ export const SearchComponent = () => {
   const { isFullTier } = useTierConfig();
   const navigate = useInternalNavigate();
   const {
-    currentChainId,
     chainConfig: {
       features: {
-        gov: { enabled: isGov },
-        wasm: { enabled: isWasm },
-        move: { enabled: isMove },
         evm: { enabled: isEvm },
-        pool: { enabled: isPool },
+        gov: { enabled: isGov },
+        move: { enabled: isMove },
         nft: { enabled: isNft },
+        pool: { enabled: isPool },
+        wasm: { enabled: isWasm },
       },
     },
+    currentChainId,
   } = useCelatoneApp();
 
   const boxRef = useRef<HTMLDivElement>(null);
@@ -69,7 +69,7 @@ export const SearchComponent = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [cursor, setCursor] = useState<number>();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const onCloseWithClear = useCallback(() => {
     setKeyword("");
     onClose();
@@ -93,7 +93,7 @@ export const SearchComponent = () => {
     };
   }, [isMac, isOpen, onCloseWithClear, onOpen]);
 
-  const { results, isLoading } = useSearchHandler(keyword, () =>
+  const { isLoading, results } = useSearchHandler(keyword, () =>
     setIsTyping(false)
   );
 
@@ -159,8 +159,8 @@ export const SearchComponent = () => {
   );
 
   useOutsideClick({
-    ref: boxRef as RefObject<HTMLDivElement>,
     handler: onCloseWithClear,
+    ref: boxRef as RefObject<HTMLDivElement>,
   });
 
   useEaster(keyword);
@@ -241,7 +241,7 @@ export const SearchComponent = () => {
                   </Flex>
                 )}
                 <InputWithIcon
-                  style={{ maxHeight: "54px", border: "none" }}
+                  style={{ border: "none", maxHeight: "54px" }}
                   autoComplete="off"
                   minW="200px"
                   pl={10}

@@ -7,9 +7,9 @@ interface PageButtonProps {
 }
 
 export const PageButton = ({
-  pageNumber,
   currentPage,
   onPageChange,
+  pageNumber,
 }: PageButtonProps) => {
   const isCurrentPage = pageNumber === currentPage;
   return (

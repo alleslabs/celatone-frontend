@@ -53,7 +53,7 @@ export const useAssetInfos = ({ withPrices }: { withPrices: boolean }) => {
 
         return assetsMap;
       }),
-    { enabled: Boolean(assetsApiRoute), retry: 1, refetchOnWindowFocus: false }
+    { enabled: Boolean(assetsApiRoute), refetchOnWindowFocus: false, retry: 1 }
   );
 };
 

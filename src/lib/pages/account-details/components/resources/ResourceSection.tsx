@@ -16,11 +16,11 @@ interface ResourceSectionProps {
 
 export const ResourceSection = ({
   address,
-  totalCount,
-  resourcesByOwner,
   isLoading,
+  resourcesByOwner,
   selectedAccountParam,
   selectedGroupNameParam,
+  totalCount,
 }: ResourceSectionProps) => (
   <Flex direction="column" mt={8}>
     <TableTitle

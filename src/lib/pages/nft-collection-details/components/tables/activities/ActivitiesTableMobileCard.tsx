@@ -19,14 +19,14 @@ export const ActivitiesTableMobileCard = ({
 }) => {
   const navigate = useInternalNavigate();
   const {
-    txhash,
-    timestamp,
+    isCollectionCreate,
     isNftBurn,
     isNftMint,
     isNftTransfer,
-    isCollectionCreate,
-    tokenId,
     nftAddress,
+    timestamp,
+    tokenId,
+    txhash,
   } = activity;
 
   return (

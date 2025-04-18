@@ -16,8 +16,8 @@ interface DelegationRelatedTxsTableMobileCardProps {
 }
 
 export const DelegationRelatedTxsTableMobileCard = ({
-  delegationRelatedTx,
   assetInfos,
+  delegationRelatedTx,
   movePoolInfos,
   onRowSelect,
 }: DelegationRelatedTxsTableMobileCardProps) => (

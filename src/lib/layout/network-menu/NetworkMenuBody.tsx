@@ -25,13 +25,13 @@ interface NetworkMenuBodyProps {
 export const NetworkMenuBody = observer(
   ({
     cursor,
-    setCursor,
-    filteredPinnedChains,
-    filteredMainnetChains,
-    filteredTestnetChains,
     filteredDevnetChains,
     filteredLocalChains,
+    filteredMainnetChains,
+    filteredPinnedChains,
+    filteredTestnetChains,
     onClose,
+    setCursor,
   }: NetworkMenuBodyProps) => {
     const isAllowCustomNetworks = useAllowCustomNetworks({
       shouldRedirect: false,

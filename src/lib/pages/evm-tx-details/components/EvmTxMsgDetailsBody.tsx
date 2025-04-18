@@ -19,8 +19,8 @@ interface EvmTxMsgDetailsBodyProps {
 }
 
 export const EvmTxMsgDetailsBody = ({
-  evmTxData,
   evmDenom,
+  evmTxData,
 }: EvmTxMsgDetailsBodyProps) => {
   const method = getEvmMethod(evmTxData.tx.input, evmTxData.tx.to);
   const { data: assetInfos } = useAssetInfos({

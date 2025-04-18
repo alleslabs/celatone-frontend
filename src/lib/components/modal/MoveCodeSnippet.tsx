@@ -56,17 +56,17 @@ interface FormatedData {
 }
 
 const MoveCodeSnippet = ({
+  abiData,
+  fn,
+  ml,
   moduleAddress,
   moduleName,
-  fn,
-  abiData,
   type = "view",
-  ml,
 }: MoveCodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
-    currentChainId,
     chainConfig: { chain, rest: restEndpoint, rpc: rpcEndpoint },
+    currentChainId,
     theme,
   } = useCelatoneApp();
   const gasPrice = useGas();
@@ -75,14 +75,14 @@ const MoveCodeSnippet = ({
   const gasPriceStr = `${gasPrice.tokenPerGas}${gasPrice.denom}`;
 
   const {
-    showTypeArgs,
-    showArgs,
+    argsFlags,
     formatedAbiData,
     formatedArgs,
     formatedTypeArgs,
-    typeArgsFlags,
-    argsFlags,
     isHiddenCLI,
+    showArgs,
+    showTypeArgs,
+    typeArgsFlags,
   } = useMemo<FormatedData>(() => {
     const serializedAbiData = serializeAbiData(fn, abiData);
     const displayTypeArgs = serializedAbiData.typeArgs.length > 0;
@@ -95,17 +95,12 @@ const MoveCodeSnippet = ({
     });
 
     return {
-      showTypeArgs: displayTypeArgs,
-      showArgs: displayArgs,
-      formatedTypeArgs: JSON.stringify(serializedAbiData.typeArgs),
-      formatedArgs: JSON.stringify(serializedAbiData.args),
-      formatedAbiData: JSON.stringify(serializedAbiData),
-      typeArgsFlags: displayTypeArgs
-        ? `\n\t--type-args '${serializedAbiData.typeArgs.join(" ")}' \\`
-        : "",
       argsFlags: displayArgs
         ? `\n\t--args '[${argsWithTypes.map((val) => JSON.stringify(val)).join(",")}]' \\`
         : "",
+      formatedAbiData: JSON.stringify(serializedAbiData),
+      formatedArgs: JSON.stringify(serializedAbiData.args),
+      formatedTypeArgs: JSON.stringify(serializedAbiData.typeArgs),
       isHiddenCLI: argTypes.some(
         (argType) =>
           argType === "vector" ||
@@ -116,6 +111,11 @@ const MoveCodeSnippet = ({
           argType === "decimal128" ||
           argType === "decimal256"
       ),
+      showArgs: displayArgs,
+      showTypeArgs: displayTypeArgs,
+      typeArgsFlags: displayTypeArgs
+        ? `\n\t--type-args '${serializedAbiData.typeArgs.join(" ")}' \\`
+        : "",
     };
   }, [abiData, fn]);
 
@@ -123,60 +123,10 @@ const MoveCodeSnippet = ({
     string,
     { name: string; mode: string; snippet: string; isHidden?: boolean }[]
   > = {
-    view: [
-      {
-        name: "Curl",
-        mode: "sh",
-        snippet: `\n\ncurl '${restEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
---data-raw '${formatedAbiData}'`,
-      },
-      {
-        name: "CLI",
-        mode: "sh",
-        isHidden: isHiddenCLI,
-        snippet: `export CHAIN_ID='${currentChainId}'\n
-export MODULE_ADDRESS='${moduleAddress}'\n
-export MODULE_NAME='${moduleName}'\n
-export MODULE_FN='${fn.name}'\n
-export RPC_URL='${rpcEndpoint}'\n
-${daemonName} query move view $MODULE_ADDRESS \\
-    $MODULE_NAME \\
-    $MODULE_FN \\${typeArgsFlags}${argsFlags}
-    --chain-id $CHAIN_ID \\
-    --node $RPC_URL`,
-      },
-      {
-        name: "InitiaJS",
-        mode: "javascript",
-        snippet: `import { LCDClient } from '@initia/initia.js'
-
-const lcd = new LCDClient('${restEndpoint}', {
-    chainId: '${currentChainId}',
-});
-const moduleAddress =
-"${moduleAddress}";
-const moduleName = "${moduleName}";
-const fnName = "${fn.name}";
-const viewModule = async (moduleAddress, moduleName, fnName) => {
-    const viewResult = await lcd.move.viewFunction(
-        moduleAddress,
-        moduleName,
-        fnName${showTypeArgs ? ",\n\t\t".concat(formatedTypeArgs) : ""}${
-          showArgs
-            ? (!showTypeArgs ? ",\n\t\tundefined" : "") +
-              ",\n\t\t".concat(formatedArgs)
-            : ""
-        }
-    )
-    console.log(viewResult);
-};\n
-viewModule(moduleAddress, moduleName, fnName);`,
-      },
-    ],
     execute: [
       {
-        name: "InitiaJS",
         mode: "javascript",
+        name: "InitiaJS",
         snippet: `import { LCDClient, Wallet, MnemonicKey, MsgExecute } from '@initia/initia.js';
 
 const lcd = new LCDClient('${restEndpoint}', {
@@ -210,9 +160,9 @@ const execute = async () => {
 execute();`,
       },
       {
-        name: "CLI",
-        mode: "sh",
         isHidden: isHiddenCLI,
+        mode: "sh",
+        name: "CLI",
         snippet: `export WALLET_NAME='<your-wallet-name>'\n
 export CHAIN_ID='${currentChainId}'\n
 export RPC_URL='${rpcEndpoint}'\n
@@ -229,6 +179,56 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
     --gas auto \\
     --gas-prices ${gasPriceStr} \\
     --gas-adjustment 1.5`,
+      },
+    ],
+    view: [
+      {
+        mode: "sh",
+        name: "Curl",
+        snippet: `\n\ncurl '${restEndpoint}/initia/move/v1/accounts/${moduleAddress}/modules/${moduleName}/view_functions/${fn.name}' \\
+--data-raw '${formatedAbiData}'`,
+      },
+      {
+        isHidden: isHiddenCLI,
+        mode: "sh",
+        name: "CLI",
+        snippet: `export CHAIN_ID='${currentChainId}'\n
+export MODULE_ADDRESS='${moduleAddress}'\n
+export MODULE_NAME='${moduleName}'\n
+export MODULE_FN='${fn.name}'\n
+export RPC_URL='${rpcEndpoint}'\n
+${daemonName} query move view $MODULE_ADDRESS \\
+    $MODULE_NAME \\
+    $MODULE_FN \\${typeArgsFlags}${argsFlags}
+    --chain-id $CHAIN_ID \\
+    --node $RPC_URL`,
+      },
+      {
+        mode: "javascript",
+        name: "InitiaJS",
+        snippet: `import { LCDClient } from '@initia/initia.js'
+
+const lcd = new LCDClient('${restEndpoint}', {
+    chainId: '${currentChainId}',
+});
+const moduleAddress =
+"${moduleAddress}";
+const moduleName = "${moduleName}";
+const fnName = "${fn.name}";
+const viewModule = async (moduleAddress, moduleName, fnName) => {
+    const viewResult = await lcd.move.viewFunction(
+        moduleAddress,
+        moduleName,
+        fnName${showTypeArgs ? ",\n\t\t".concat(formatedTypeArgs) : ""}${
+          showArgs
+            ? (!showTypeArgs ? ",\n\t\tundefined" : "") +
+              ",\n\t\t".concat(formatedArgs)
+            : ""
+        }
+    )
+    console.log(viewResult);
+};\n
+viewModule(moduleAddress, moduleName, fnName);`,
       },
     ],
   };
@@ -281,16 +281,16 @@ ${daemonName} tx move execute $MODULE_ADDRESS \\
                     >
                       <AceEditor
                         style={{
-                          width: "100%",
                           background: "transparent",
+                          width: "100%",
                         }}
                         fontSize="14px"
                         mode={item.mode}
                         readOnly
                         setOptions={{
+                          printMargin: false,
                           showGutter: false,
                           useWorker: false,
-                          printMargin: false,
                           wrap: true,
                         }}
                         theme={theme.jsonTheme}

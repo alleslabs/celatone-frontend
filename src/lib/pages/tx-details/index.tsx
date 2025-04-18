@@ -67,7 +67,7 @@ const TxDetailsBody = ({ txHash }: { txHash: string }) => {
       <CelatoneSeo pageName={`TxHash – ${truncate(data?.txhash)}`} />
       <Breadcrumb
         items={[
-          { text: "Transactions", href: "/txs" },
+          { href: "/txs", text: "Transactions" },
           { text: truncate(data?.txhash) },
         ]}
       />

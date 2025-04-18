@@ -28,12 +28,12 @@ interface ValidatorsTableMobileCardProps {
   showUptime: boolean;
 }
 export const ValidatorsTableMobileCard = ({
-  validator,
-  isActive,
-  totalVotingPower,
-  minCommissionRate,
   assetInfo,
+  isActive,
+  minCommissionRate,
   showUptime,
+  totalVotingPower,
+  validator,
 }: ValidatorsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
 
@@ -136,9 +136,9 @@ export const ValidatorsTableMobileCard = ({
               badgeSize={6}
               hasLabel={false}
               validator={{
-                validatorAddress: validator.validatorAddress,
                 identity: validator.identity,
                 moniker: validator.moniker,
+                validatorAddress: validator.validatorAddress,
               }}
             />
           </Flex>

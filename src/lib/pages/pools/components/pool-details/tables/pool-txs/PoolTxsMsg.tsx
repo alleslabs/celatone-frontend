@@ -29,14 +29,14 @@ interface PoolTxsMsgProps {
 }
 
 export const PoolTxsMsg = ({
+  assetInfos,
   isFirstSubRow,
-  msgIndex,
   message,
+  msgIndex,
   otherMsgs,
   pool,
-  transaction,
-  assetInfos,
   templateColumns,
+  transaction,
 }: PoolTxsMsgProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const msgDetailTemplateColumns = templateColumns

@@ -52,14 +52,14 @@ export const SupportedSection = ({
 }: SupportedSectionProp) => {
   const { data: assetInfos } = useAssetInfos({ withPrices: true });
 
-  const { watch, setValue } = useForm<PoolFilterState>({
+  const { setValue, watch } = useForm<PoolFilterState>({
     defaultValues: {
-      poolTypeValue: PoolType.ALL,
-      keyword: "",
       isSuperfluidOnly: false,
+      keyword: "",
+      poolTypeValue: PoolType.ALL,
     },
   });
-  const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
+  const { isSuperfluidOnly, keyword, poolTypeValue } = watch();
   const debouncedKeyword = useDebounce(keyword);
   const search = useMemo(
     () =>
@@ -78,22 +78,22 @@ export const SupportedSection = ({
   const [toggle, setToggle] = useState("percent-value");
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
-  const { pools, totalCount, isLoading } = useDerivedPools(
+  const { isLoading, pools, totalCount } = useDerivedPools(
     pageSize,
     offset,
     true,

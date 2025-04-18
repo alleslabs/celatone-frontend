@@ -34,14 +34,14 @@ interface UnsupportedSectionProp {
 export const UnsupportedSection = ({
   scrollComponentId,
 }: UnsupportedSectionProp) => {
-  const { watch, setValue } = useForm<PoolFilterState>({
+  const { setValue, watch } = useForm<PoolFilterState>({
     defaultValues: {
-      poolTypeValue: PoolType.ALL,
-      keyword: "",
       isSuperfluidOnly: false,
+      keyword: "",
+      poolTypeValue: PoolType.ALL,
     },
   });
-  const { poolTypeValue, keyword, isSuperfluidOnly } = watch();
+  const { isSuperfluidOnly, keyword, poolTypeValue } = watch();
   const search = useDebounce(keyword);
 
   const [showNewest, setShowNewest] = useState(true);
@@ -51,22 +51,22 @@ export const UnsupportedSection = ({
     setExpandedIndexes(indexes);
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
-  const { pools, totalCount, isLoading } = useDerivedPools(
+  const { isLoading, pools, totalCount } = useDerivedPools(
     pageSize,
     offset,
     false,

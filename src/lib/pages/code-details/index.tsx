@@ -62,13 +62,13 @@ const CodeDetailsBody = observer(({ codeId, tab }: CodeDetailsBodyProps) => {
     (nextTab: TabIndex) => () => {
       if (nextTab === tab) return;
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: "/codes/[codeId]/[tab]",
         query: {
           codeId,
           tab: nextTab,
-        },
-        options: {
-          shallow: true,
         },
       });
     },

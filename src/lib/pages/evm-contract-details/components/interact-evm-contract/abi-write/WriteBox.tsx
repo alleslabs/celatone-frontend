@@ -40,8 +40,8 @@ interface WriteBoxProps {
 }
 
 export const WriteBox = ({
-  contractAddress,
   abiSection,
+  contractAddress,
   opened,
 }: WriteBoxProps) => {
   // ------------------------------------------//
@@ -76,19 +76,19 @@ export const WriteBox = ({
   // -----------------REACT QUERY--------------//
   // ------------------------------------------//
   const { isFetching } = useSimulateFeeEvmQuery({
-    enabled: enabledExecute,
-    to: contractAddress,
     data: data ?? "",
-    value,
+    enabled: enabledExecute,
+    onError: (e) => {
+      setSimulateFeeError(e.message);
+      setFee(undefined);
+    },
     onSuccess: (gasRes) => {
       setSimulateFeeError(undefined);
       if (gasRes) setFee(gasRes);
       else setFee(undefined);
     },
-    onError: (e) => {
-      setSimulateFeeError(e.message);
-      setFee(undefined);
-    },
+    to: contractAddress,
+    value,
   });
 
   // ------------------------------------------//
@@ -112,12 +112,12 @@ export const WriteBox = ({
   const proceed = useCallback(async () => {
     track(AmpEvent.ACTION_EVM_WRITE);
     const stream = await requestEvmTx({
-      to: contractAddress,
       data: data ?? "",
-      value,
-      onTxSucceed: () => setProcessing(false),
-      onTxFailed: () => setProcessing(false),
       estimatedFee: fee,
+      onTxFailed: () => setProcessing(false),
+      onTxSucceed: () => setProcessing(false),
+      to: contractAddress,
+      value,
     });
     if (stream) {
       setProcessing(true);

@@ -18,10 +18,10 @@ import Head from "next/head";
 enableStaticRendering(typeof window === "undefined");
 
 localforage.config({
+  description: "Celatone",
   name: "celatone_web_app",
   storeName: "key_value_pairs",
   version: 1.0,
-  description: "Celatone",
 });
 
 const isBrowser = typeof window !== "undefined";

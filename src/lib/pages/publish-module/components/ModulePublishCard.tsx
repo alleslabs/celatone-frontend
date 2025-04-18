@@ -13,7 +13,7 @@ interface ModulePublishCardProps {
 
 export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
   const openNewTab = useOpenNewTab();
-  const { file, decodeRes } = module;
+  const { decodeRes, file } = module;
   return (
     <Flex
       bg="gray.900"
@@ -106,8 +106,8 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,
-                moduleName: decodeRes?.abi.name,
                 functionType: "view",
+                moduleName: decodeRes?.abi.name,
               },
             });
           }}
@@ -119,18 +119,18 @@ export const ModulePublishCard = ({ module }: ModulePublishCardProps) => {
           variant="outline-white"
           onClick={() => {
             track(AmpEvent.USE_PUBLISHED_MODULE_ACTION, {
-              label: "Execute",
               executeCount:
                 module.decodeRes?.abi.exposed_functions.filter(
                   (fn) => !fn.is_view
                 ).length ?? 0,
+              label: "Execute",
             });
             openNewTab({
               pathname: "/interact",
               query: {
                 address: decodeRes?.abi.address,
-                moduleName: decodeRes?.abi.name,
                 functionType: "execute",
+                moduleName: decodeRes?.abi.name,
               },
             });
           }}

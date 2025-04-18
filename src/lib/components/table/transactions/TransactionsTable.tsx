@@ -19,13 +19,13 @@ interface TransactionsTableProps {
 }
 
 export const TransactionsTable = ({
-  transactions,
-  isLoading,
   emptyState,
-  showSuccess = true,
-  showRelations,
-  showTimestamp = true,
+  isLoading,
   showAction = false,
+  showRelations,
+  showSuccess = true,
+  showTimestamp = true,
+  transactions,
 }: TransactionsTableProps) => {
   const isMobile = useMobile();
 

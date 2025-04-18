@@ -20,8 +20,8 @@ export interface ModuleInfoProps {
 }
 
 export const ModuleInfo = ({
-  verificationData,
   moveVerifyStatus,
+  verificationData,
   ...props
 }: ModuleInfoProps) => (
   <Flex flexDirection="column" gap={4}>

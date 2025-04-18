@@ -13,9 +13,9 @@ interface MsgSwapExactAmountInActionProps {
 }
 
 export const MsgSwapExactAmountInAction = ({
-  msg,
-  assetInfos,
   ampCopierSection,
+  assetInfos,
+  msg,
 }: MsgSwapExactAmountInActionProps) => {
   const tokenOutDenom = msg.routes[msg.routes.length - 1]?.tokenOutDenom ?? "";
   const inToken = coinToTokenWithValue(

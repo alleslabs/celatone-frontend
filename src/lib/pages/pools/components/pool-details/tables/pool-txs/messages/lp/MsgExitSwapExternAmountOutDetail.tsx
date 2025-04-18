@@ -20,13 +20,13 @@ interface MsgExitSwapExternAmountOutDetailProps {
 }
 
 export const MsgExitSwapExternAmountOutDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  txHash,
 }: MsgExitSwapExternAmountOutDetailProps) => (
   <Flex alignItems="start" direction="column" gap={12} w="full">
     <Flex gap={12}>

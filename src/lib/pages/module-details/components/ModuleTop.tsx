@@ -32,14 +32,14 @@ interface ModuleTopProps {
 
 const baseTextStyle: TextProps = {
   color: "text.dark",
-  variant: "body2",
   fontWeight: 500,
+  variant: "body2",
   whiteSpace: "nowrap",
 };
 
 const ModuleCta = ({
-  moduleData,
   moduleAddress,
+  moduleData,
 }: {
   moduleData: IndexedModule;
   moduleAddress: Addr;
@@ -93,8 +93,8 @@ const ModuleCta = ({
             pathname: "/interact",
             query: {
               address: moduleData.address,
-              moduleName: moduleData.moduleName,
               functionType: "view",
+              moduleName: moduleData.moduleName,
             },
           });
         }}
@@ -114,8 +114,8 @@ const ModuleCta = ({
                 pathname: "/interact",
                 query: {
                   address: moduleData.address,
-                  moduleName: moduleData.moduleName,
                   functionType: "execute",
+                  moduleName: moduleData.moduleName,
                 },
               });
             }}
@@ -161,7 +161,7 @@ const ModuleCta = ({
 export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
   const isMobile = useMobile();
 
-  const { convertHexWalletAddress, convertHexModuleAddress } =
+  const { convertHexModuleAddress, convertHexWalletAddress } =
     useConvertHexAddress();
 
   const moduleAddress = useMemo(() => {
@@ -177,12 +177,12 @@ export const ModuleTop = ({ moduleData, moveVerifyStatus }: ModuleTopProps) => {
       <Breadcrumb
         items={[
           {
-            text: truncate(moduleData.address),
             href: `/accounts/${moduleData.address}`,
+            text: truncate(moduleData.address),
           },
           {
-            text: "Modules",
             href: `/accounts/${moduleData.address}/modules`,
+            text: "Modules",
           },
           { text: moduleData.moduleName },
         ]}

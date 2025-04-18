@@ -18,10 +18,10 @@ interface TransactionsTableMobileCardProps {
   showTimestamp: boolean;
 }
 export const TransactionsTableMobileCard = ({
-  transaction,
-  showSuccess,
   showRelations,
+  showSuccess,
   showTimestamp,
+  transaction,
 }: TransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
   return (

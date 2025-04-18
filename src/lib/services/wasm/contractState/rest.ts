@@ -28,14 +28,14 @@ export const getContractStatesRest = async (
     .then(({ data }) => parseWithError(zResponseContractStates, data));
 
   const parsedStates = states.models.map<ContractState>((model) => ({
-    rawKey: model.key,
     key: parseStateKey(model.key),
+    rawKey: model.key,
     value: parseJsonStr(libDecode(model.value)),
   }));
 
   return {
-    states: parsedStates,
-    rawStates: states.models,
     nextKey: states.pagination.nextKey,
+    rawStates: states.models,
+    states: parsedStates,
   };
 };

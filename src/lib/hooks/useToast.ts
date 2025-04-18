@@ -20,11 +20,11 @@ export function useToast() {
 
   return (title: string, status: AlertStatus, isClosable: boolean) => {
     toast({
-      title,
-      status,
       duration: 5000,
       isClosable,
       position: "bottom-right",
+      status,
+      title,
     });
   };
 }

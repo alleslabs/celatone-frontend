@@ -52,10 +52,10 @@ export interface RestrictedNumberInputParams {
 }
 
 export function useRestrictedNumberInput({
-  type = "decimal",
   maxDecimalPoints = 6,
   maxIntegerPoints = 7,
   onChange: _onChange,
+  type = "decimal",
 }: RestrictedNumberInputParams): RestrictedInputReturn {
   const { onKeyPress: restrictCharacters } = useRestrictedInput(
     type === "integer" ? "0-9" : "0-9."
@@ -83,7 +83,7 @@ export function useRestrictedNumberInput({
         return;
       }
 
-      const { value, selectionStart, selectionEnd } =
+      const { selectionEnd, selectionStart, value } =
         event.target as HTMLInputElement;
 
       if (
@@ -119,7 +119,7 @@ export function useRestrictedNumberInput({
         event.stopPropagation();
       }
 
-      const { value, selectionStart, selectionEnd } =
+      const { selectionEnd, selectionStart, value } =
         event.target as HTMLInputElement;
 
       if (
@@ -160,5 +160,5 @@ export function useRestrictedNumberInput({
     [_onChange]
   );
 
-  return { onKeyPress, onPaste, onChange };
+  return { onChange, onKeyPress, onPaste };
 }

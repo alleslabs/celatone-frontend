@@ -17,12 +17,12 @@ interface MySavedCodesTableProps {
 
 export const MySavedCodesTable = ({
   codes,
-  totalData,
-  isLoading,
-  onRowSelect,
-  isReadOnly = false,
-  showCw2andContracts = true,
   disablePermission = false,
+  isLoading,
+  isReadOnly = false,
+  onRowSelect,
+  showCw2andContracts = true,
+  totalData,
 }: MySavedCodesTableProps) =>
   totalData ? (
     <CodesTable

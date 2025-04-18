@@ -20,11 +20,11 @@ interface NetworkAccordionLocalProps {
 }
 
 export const NetworkAccordionLocal = ({
-  networks,
   cursor,
+  networks,
+  onClose,
   setCursor,
   startIndex,
-  onClose,
 }: NetworkAccordionLocalProps) => (
   <AccordionItem hidden={networks.length === 0}>
     <Flex direction="column" gap={4}>

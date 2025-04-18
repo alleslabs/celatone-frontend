@@ -14,10 +14,10 @@ import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 import { DepositorsTable } from "./depositors-table";
 
 export const DepositPeriodSection = ({
-  proposalData,
-  params,
-  isLoading,
   isDepositsLoading,
+  isLoading,
+  params,
+  proposalData,
 }: ProposalOverviewProps) => {
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();

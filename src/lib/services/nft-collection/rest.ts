@@ -47,10 +47,10 @@ export const getCollectionByCollectionAddressRest = async (
     ).then((name) => parseWithError(zHexAddr, name)),
   ]).then<CollectionByCollectionAddressResponse>(
     ([name, description, uri, creatorAddress]) => ({
-      name,
-      description,
-      uri,
       createdHeight: null,
       creatorAddress,
+      description,
+      name,
+      uri,
     })
   );

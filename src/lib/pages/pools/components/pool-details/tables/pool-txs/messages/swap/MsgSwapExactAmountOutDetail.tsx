@@ -19,13 +19,13 @@ interface MsgSwapExactAmountOutDetailProps {
 }
 
 export const MsgSwapExactAmountOutDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  txHash,
 }: MsgSwapExactAmountOutDetailProps) => {
   const outDenoms = msg.routes
     .map((route) => route.tokenInDenom)
@@ -53,9 +53,9 @@ export const MsgSwapExactAmountOutDetail = ({
           ampCopierSection={ampCopierSection}
           assetInfos={assetInfos}
           exactInput={{
-            isExactIn: false,
             amount: msg.token_out,
             expectedDenom: msg.routes[0].tokenInDenom,
+            isExactIn: false,
           }}
           isOpened={isOpened}
           msgIndex={msgIndex}

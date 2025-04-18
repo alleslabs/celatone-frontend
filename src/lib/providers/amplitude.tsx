@@ -59,13 +59,13 @@ export const AmplitudeProvider = ({
   );
 
   amp.setMandatoryProperties({
-    page: pathname,
-    rawAddressHash: hashAddress(address) ?? "Not connected",
     chain: currentChainId,
+    devSidebar: submenus[StorageKeys.DevSidebar][0],
     mobile: isMobile,
     navSidebar: isExpand,
-    devSidebar: submenus[StorageKeys.DevSidebar][0],
+    page: pathname,
     projectSidebar: submenus[StorageKeys.ProjectSidebar][0],
+    rawAddressHash: hashAddress(address) ?? "Not connected",
   });
 
   return <>{children}</>;

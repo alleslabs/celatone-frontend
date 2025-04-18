@@ -8,7 +8,7 @@ import { useCodeStore } from "lib/providers/store";
 import { observer } from "mobx-react-lite";
 
 export const CtaSection = observer((codeInfo: CodeInfo) => {
-  const { isCodeIdSaved, getCodeLocalInfo } = useCodeStore();
+  const { getCodeLocalInfo, isCodeIdSaved } = useCodeStore();
   const isSaved = isCodeIdSaved(codeInfo.id);
   return (
     <Flex gap={{ base: 2, md: 4 }} justify="center" my={{ base: 8, md: 0 }}>

@@ -44,8 +44,8 @@ interface PublishModuleProps {
 }
 
 export const PublishModule = ({
-  setPublishTxInfo,
   setCompleted,
+  setPublishTxInfo,
 }: PublishModuleProps) => {
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
@@ -74,9 +74,9 @@ export const PublishModule = ({
     defaultValues,
   });
 
-  const { upgradePolicy, modules } = watch();
+  const { modules, upgradePolicy } = watch();
 
-  const { append, remove, update, move } = useFieldArray({
+  const { append, move, remove, update } = useFieldArray({
     control,
     name: "modules",
   });
@@ -90,9 +90,9 @@ export const PublishModule = ({
         publishStatus: PublishStatus
       ) => {
         update(index, {
-          file,
           base64EncodedFile,
           decodeRes,
+          file,
           publishStatus,
         });
       },
@@ -122,32 +122,32 @@ export const PublishModule = ({
       modules.map((file) => file.base64EncodedFile),
       upgradePolicy
     ),
+    onError: (e) => {
+      setSimulateError(e.message);
+      setEstimatedFee(undefined);
+    },
     onSuccess: (gasRes) => {
       if (gasRes) {
         setEstimatedFee(fabricateFee(gasRes));
         setSimulateError("");
       } else setEstimatedFee(undefined);
     },
-    onError: (e) => {
-      setSimulateError(e.message);
-      setEstimatedFee(undefined);
-    },
   });
 
   const proceed = useCallback(async () => {
     const stream = await postPublishTx({
-      onTxSucceed: (txResult) => {
-        setPublishTxInfo({ ...txResult, upgradePolicy, modules });
-        setProcessing(false);
-        setCompleted(true);
-      },
-      onTxFailed: () => setProcessing(false),
       estimatedFee,
       messages: composePublishMsg(
         address,
         modules.map((file) => file.base64EncodedFile),
         upgradePolicy
       ),
+      onTxFailed: () => setProcessing(false),
+      onTxSucceed: (txResult) => {
+        setPublishTxInfo({ ...txResult, modules, upgradePolicy });
+        setProcessing(false);
+        setCompleted(true);
+      },
     });
     if (stream) {
       setProcessing(true);
@@ -183,11 +183,11 @@ export const PublishModule = ({
       setValue(
         `modules.${index}.publishStatus`,
         statusResolver({
-          data: field.decodeRes,
-          modules,
-          index,
-          policy: upgradePolicy,
           address,
+          data: field.decodeRes,
+          index,
+          modules,
+          policy: upgradePolicy,
         })
       );
     });
@@ -195,11 +195,11 @@ export const PublishModule = ({
 
   const publishModuleText = useMemo(
     () => ({
-      header: "Publish / Republish modules",
+      connectWallet: "You need to connect wallet to proceed this action",
       description: `Upload .mv files to publish new module to ${chainPrettyName}. You can
       upload multiple .mv files to publish many modules within a
       transaction.`,
-      connectWallet: "You need to connect wallet to proceed this action",
+      header: "Publish / Republish modules",
     }),
     [chainPrettyName]
   );
@@ -332,8 +332,8 @@ export const PublishModule = ({
           );
           track(AmpEvent.ACTION_MOVE_PUBLISH, {
             numberOfModule: modules.length,
-            numberOfRepublishModules: republishModules.length,
             numberOfNewPublishModules: modules.length - republishModules.length,
+            numberOfRepublishModules: republishModules.length,
           });
           proceed();
         }}

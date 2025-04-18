@@ -16,9 +16,9 @@ interface ProposalVotesTableRowProps {
 }
 
 export const ProposalVotesTableRow = ({
+  fullVersion,
   proposalVote,
   templateColumns,
-  fullVersion,
 }: ProposalVotesTableRowProps) => {
   const isMobile = useMobile();
   const openTxTab = useOpenTxTab("tx-page");

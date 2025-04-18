@@ -16,10 +16,10 @@ interface RedelegationsSectionProps extends FlexProps {
 }
 
 export const RedelegationsSection = ({
-  stakingParams,
-  redelegations,
   isLoading,
   onBack,
+  redelegations,
+  stakingParams,
   ...props
 }: RedelegationsSectionProps) => (
   <Flex direction="column" gap={4} {...props}>

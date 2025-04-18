@@ -15,12 +15,12 @@ interface ButtonCardProps extends FlexProps {
 }
 
 export const ButtonCard = ({
-  title,
   description,
-  onClick,
   disabled,
-  tagLabel,
   hasIcon = true,
+  onClick,
+  tagLabel,
+  title,
   ...componentProps
 }: ButtonCardProps) => (
   <Flex

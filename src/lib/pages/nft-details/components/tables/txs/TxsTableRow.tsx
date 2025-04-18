@@ -24,12 +24,12 @@ interface TxsTableRowProps {
 }
 
 export const TxsTableRow = ({
-  templateColumns,
   hash,
-  timestamp,
   isNftBurn,
   isNftMint,
   isNftTransfer,
+  templateColumns,
+  timestamp,
 }: TxsTableRowProps) => (
   <Box minW="min-content" w="full">
     <Grid

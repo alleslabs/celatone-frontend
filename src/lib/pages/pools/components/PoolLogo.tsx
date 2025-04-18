@@ -15,11 +15,11 @@ interface PoolLogoProps {
 }
 
 export const PoolLogo = ({
-  tokens,
   logoSize = 10,
   marginLeft = -12,
   minW = 24,
   textVariant = "body2",
+  tokens,
 }: PoolLogoProps) => {
   const isShortened = tokens.length > 3;
   return (

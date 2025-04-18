@@ -17,15 +17,15 @@ export interface LabelTextProps extends FlexProps {
 }
 
 export const LabelText = ({
-  label,
-  labelWeight = 500,
-  isSmall = false,
-  labelColor = "text.dark",
-  tooltipText,
   children,
   helperText1,
   helperText2,
+  isSmall = false,
+  label,
+  labelColor = "text.dark",
+  labelWeight = 500,
   minWidth,
+  tooltipText,
   ...flexProps
 }: LabelTextProps) => (
   <Flex direction="column" gap={1} {...flexProps}>

@@ -40,9 +40,9 @@ interface SearchResultItemIconProps {
 }
 
 export const SearchResultItemIcon = ({
-  type,
-  isInitiaUsername,
   isIcns,
+  isInitiaUsername,
+  type,
 }: SearchResultItemIconProps) => {
   if (isInitiaUsername)
     return (

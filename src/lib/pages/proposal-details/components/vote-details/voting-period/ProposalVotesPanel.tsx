@@ -16,10 +16,10 @@ interface ProposalVotesPanelProps {
 }
 
 export const ProposalVotesPanel = ({
-  isOpen,
-  onBack,
   answers,
   id,
+  isOpen,
+  onBack,
 }: ProposalVotesPanelProps) => {
   const isMobile = useMobile();
 

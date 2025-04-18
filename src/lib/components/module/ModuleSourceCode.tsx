@@ -30,8 +30,8 @@ interface ModuleSourceCodeProps {
 }
 
 export const ModuleSourceCode = ({
-  verificationData,
   moveVerifyStatus,
+  verificationData,
 }: ModuleSourceCodeProps) => {
   const [currentTab, setCurrentTab] = useState(ModuleFileTabs.SOURCE_CODE);
 

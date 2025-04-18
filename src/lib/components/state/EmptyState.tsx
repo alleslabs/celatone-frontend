@@ -21,17 +21,17 @@ export interface EmptyStateProps {
 }
 
 export const EmptyState = ({
-  message,
+  alignItems = "center",
+  children,
+  hasBorderTop = true,
+  heading,
   imageVariant,
   imageWidth,
-  heading,
-  withBorder = false,
+  message,
   my = 12,
   py = 8,
-  alignItems = "center",
   textVariant = "body1",
-  hasBorderTop = true,
-  children,
+  withBorder = false,
 }: EmptyStateProps) => (
   <Flex
     alignItems={alignItems}

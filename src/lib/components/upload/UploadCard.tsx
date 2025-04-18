@@ -18,13 +18,13 @@ interface UploadCardProps {
 }
 
 export const UploadCard = ({
-  file,
   deleteFile,
-  theme = "primary",
+  file,
   status,
   statusText,
+  theme = "primary",
 }: UploadCardProps) => {
-  const { themeConfig, statusColor } = useCardTheme(theme, status);
+  const { statusColor, themeConfig } = useCardTheme(theme, status);
 
   return (
     <>
@@ -57,11 +57,11 @@ export const UploadCard = ({
             icon={<CustomIcon boxSize={4} name="delete" />}
             size="sm"
             sx={{
-              color: "gray.600",
               _hover: {
-                color: "error.main",
                 backgroundColor: "error.background",
+                color: "error.main",
               },
+              color: "gray.600",
             }}
             variant="ghost-error"
             onClick={() => {

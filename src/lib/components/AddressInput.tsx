@@ -24,27 +24,27 @@ interface AddressInputProps<T extends FieldValues>
 }
 
 const getAddressStatus = (input: string, error: Option<string>): FormStatus => {
-  if (error) return { state: "error", message: error };
+  if (error) return { message: error, state: "error" };
   if (!input) return { state: "init" };
-  return { state: "success", message: "Valid address" };
+  return { message: "Valid address", state: "success" };
 };
 
 export const AddressInput = <T extends FieldValues>({
-  name,
   control,
+  error,
+  helperAction,
+  helperText,
   label,
   labelBgColor = "background.main",
-  helperText,
+  maxLength,
+  name,
   placeholder,
-  error,
+  requiredText = "Address is empty",
   size = "lg",
   validation = {},
-  maxLength,
-  helperAction,
-  requiredText = "Address is empty",
 }: AddressInputProps<T>) => {
   const { user: exampleUserAddress } = useExampleAddresses();
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const validateAddress = useCallback(
     (input: string) =>
       input && !!validateContractAddress(input) && !!validateUserAddress(input)
@@ -54,8 +54,8 @@ export const AddressInput = <T extends FieldValues>({
   );
 
   const watcher = useWatch({
-    name,
     control,
+    name,
   });
 
   const status = getAddressStatus(watcher, error ?? validateAddress(watcher));

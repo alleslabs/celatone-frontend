@@ -17,10 +17,10 @@ interface ValidatorVotesTableRowProps {
 }
 
 export const ValidatorVotesTableRow = ({
-  proposalVote,
-  templateColumns,
   fullVersion,
   isProposalResolved,
+  proposalVote,
+  templateColumns,
 }: ValidatorVotesTableRowProps) => {
   const isMobile = useMobile();
   const openTxTab = useOpenTxTab("tx-page");

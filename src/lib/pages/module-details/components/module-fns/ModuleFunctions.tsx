@@ -27,11 +27,11 @@ interface ModuleFunctionsProps {
 }
 
 const FunctionAccordions = ({
-  fnType,
   address,
-  moduleName,
-  fns,
   expandedIndexes,
+  fns,
+  fnType,
+  moduleName,
   updateExpandedIndexes,
 }: {
   fnType: FunctionTypeTabIndex;
@@ -73,11 +73,11 @@ const FunctionAccordions = ({
 
 export const ModuleFunctions = ({
   address,
-  moduleName,
-  fns,
-  viewFns,
   executeFns,
+  fns,
+  moduleName,
   typeTab,
+  viewFns,
 }: ModuleFunctionsProps) => {
   const navigate = useInternalNavigate();
 
@@ -105,15 +105,15 @@ export const ModuleFunctions = ({
       if (nextTab === typeTab) return;
       track(AmpEvent.USE_SUBTAB, { currentTab: nextTab });
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: `/modules/[address]/[moduleName]/[tab]`,
         query: {
           address,
           moduleName,
           tab: "function",
           type: nextTab,
-        },
-        options: {
-          shallow: true,
         },
       });
     },

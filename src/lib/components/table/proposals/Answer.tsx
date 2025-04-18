@@ -13,11 +13,11 @@ interface AnswerProps {
 }
 
 const resolveVote = ({
+  abstain,
   isVoteWeighted,
-  yes,
   no,
   noWithVeto,
-  abstain,
+  yes,
 }: AnswerProps): [string, string] => {
   if (isVoteWeighted) {
     return ["primary.light", "Weighted"];
@@ -38,18 +38,18 @@ const resolveVote = ({
 };
 
 export const Answer = ({
+  abstain,
   isVoteWeighted,
-  yes,
   no,
   noWithVeto,
-  abstain,
+  yes,
 }: AnswerProps) => {
   const [color, text] = resolveVote({
+    abstain,
     isVoteWeighted,
-    yes,
     no,
     noWithVeto,
-    abstain,
+    yes,
   });
 
   return (

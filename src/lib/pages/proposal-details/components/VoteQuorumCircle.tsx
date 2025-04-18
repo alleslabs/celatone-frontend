@@ -13,11 +13,11 @@ interface VoteQuorumCircleProps {
 }
 
 export const VoteQuorumCircle = ({
-  quorum,
-  nonAbstainRatio,
-  totalRatio,
-  isCompact,
   isBgGray,
+  isCompact,
+  nonAbstainRatio,
+  quorum,
+  totalRatio,
 }: VoteQuorumCircleProps) => {
   const nonAbstainAngle = (nonAbstainRatio ?? 0) * 360;
   const totalAngle = (totalRatio ?? 0) * 360;

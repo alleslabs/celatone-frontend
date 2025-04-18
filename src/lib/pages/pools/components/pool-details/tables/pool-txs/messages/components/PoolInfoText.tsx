@@ -7,7 +7,7 @@ interface PoolInfoTextProps {
   children: ReactNode;
 }
 
-export const PoolInfoText = ({ title, children }: PoolInfoTextProps) => (
+export const PoolInfoText = ({ children, title }: PoolInfoTextProps) => (
   <Flex direction="column" gap={1} minW={0}>
     <Text fontWeight={500} textColor="gray.500" variant="body2">
       {title}

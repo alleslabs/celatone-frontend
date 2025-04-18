@@ -17,11 +17,11 @@ interface DelegationRelatedTxsTableRowProps {
 }
 
 export const DelegationRelatedTxsTableRow = ({
-  delegationRelatedTx,
-  templateColumns,
-  onRowSelect,
-  movePoolInfos,
   assetInfos,
+  delegationRelatedTx,
+  movePoolInfos,
+  onRowSelect,
+  templateColumns,
 }: DelegationRelatedTxsTableRowProps) => (
   <Grid
     className="copier-wrapper"

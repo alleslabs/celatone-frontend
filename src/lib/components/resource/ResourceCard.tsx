@@ -9,10 +9,10 @@ interface ResourceCardProps {
 }
 
 export const ResourceCard = ({
-  name,
   amount,
   hasBorder = false,
   isSelected = false,
+  name,
   onClick,
 }: ResourceCardProps) => (
   <Flex

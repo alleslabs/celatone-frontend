@@ -17,11 +17,11 @@ interface ValidatorVotesPanelProps {
 }
 
 export const ValidatorVotesPanel = ({
-  isOpen,
-  onBack,
   answers,
   id,
+  isOpen,
   isProposalResolved,
+  onBack,
 }: ValidatorVotesPanelProps) => {
   const isMobile = useMobile();
 

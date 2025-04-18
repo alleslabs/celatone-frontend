@@ -21,11 +21,11 @@ interface ModuleSelectBodyProps {
 }
 
 export const DrawerBodyDesktop = ({
-  selectedAddress,
+  closeModal,
+  handleModuleSelect,
   mode,
   modules,
-  handleModuleSelect,
-  closeModal,
+  selectedAddress,
 }: ModuleSelectBodyProps) => {
   const [selectedModule, setSelectedModule] = useState<IndexedModule>();
 

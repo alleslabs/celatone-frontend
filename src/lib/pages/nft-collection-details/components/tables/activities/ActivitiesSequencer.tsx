@@ -14,7 +14,7 @@ interface ActivitiesSequencerProps {
 export const ActivitiesSequencer = ({
   collectionAddress,
 }: ActivitiesSequencerProps) => {
-  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useNftCollectionActivitiesSequencer(collectionAddress);
 
   return (

@@ -46,9 +46,9 @@ const CodeTableHeader = () => (
 );
 
 const ContentRender = ({
+  isMobile,
   publicCodes,
   wasmVerifyInfos,
-  isMobile,
 }: {
   publicCodes: PublicCodeInfo[];
   wasmVerifyInfos: Option<WasmVerifyInfosResponse>;
@@ -102,13 +102,13 @@ export const PublicProjectCodeTable = observer(
       (code) => ({
         localInfo: {
           contractCount: code.contractCount,
-          instantiatePermission: code.instantiatePermission,
-          permissionAddresses: code.permissionAddresses,
-          id: code.id,
-          uploader: code.uploader,
           cw2Contract: code.cw2Contract,
           cw2Version: code.cw2Version,
+          id: code.id,
+          instantiatePermission: code.instantiatePermission,
           isSaved: isCodeIdSaved(code.id),
+          permissionAddresses: code.permissionAddresses,
+          uploader: code.uploader,
           ...getCodeLocalInfo(code.id),
         },
         publicInfo: {

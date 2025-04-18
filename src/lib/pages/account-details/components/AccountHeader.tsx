@@ -30,18 +30,18 @@ interface AccounHeaderProps {
 
 export const AccountHeader = observer(
   ({
-    accountData,
     accountAddress,
+    accountData,
     hexAddress,
     initiaUsernameData,
-    isInitiaUsernameDataLoading,
     isInitiaUsernameDataFetching,
+    isInitiaUsernameDataLoading,
   }: AccounHeaderProps) => {
     const isMobile = useMobile();
     const move = useMoveConfig({ shouldRedirect: false });
     const evm = useEvmConfig({ shouldRedirect: false });
 
-    const { isAccountSaved, getAccountLocalInfo } = useAccountStore();
+    const { getAccountLocalInfo, isAccountSaved } = useAccountStore();
     const isSaved = isAccountSaved(accountAddress);
     const accountLocalInfo = getAccountLocalInfo(accountAddress);
 
@@ -94,12 +94,12 @@ export const AccountHeader = observer(
                   <SaveNewAccountModal
                     accountAddress={accountAddress}
                     buttonProps={{
-                      size: "sm",
-                      variant: "outline-gray",
+                      children: "Save account",
                       leftIcon: (
                         <CustomIcon boxSize={3} mr={0} name="bookmark" />
                       ),
-                      children: "Save account",
+                      size: "sm",
+                      variant: "outline-gray",
                     }}
                     publicDescription={accountData?.publicInfo?.description}
                     publicName={

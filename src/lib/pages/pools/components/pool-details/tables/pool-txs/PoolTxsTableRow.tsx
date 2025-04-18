@@ -11,10 +11,10 @@ interface PoolTxsTableRowProps {
 }
 
 export const PoolTxsTableRow = ({
-  pool,
-  transaction,
   assetInfos,
+  pool,
   templateColumns,
+  transaction,
 }: PoolTxsTableRowProps) => {
   const { msgs: filteredMsgs, others } = extractPoolMsgs(
     transaction.messages,

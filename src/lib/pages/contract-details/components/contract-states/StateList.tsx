@@ -17,25 +17,25 @@ interface StateListProps {
 }
 
 export const StateList = ({
-  totalData,
-  states,
   isLoading,
   isSearching,
+  states,
+  totalData,
 }: StateListProps) => {
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: totalData,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: totalData,
   });
 
   const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {

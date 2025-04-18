@@ -13,11 +13,11 @@ interface SubmitButtonProps {
 }
 
 export const SubmitButton = ({
-  text,
-  isLoading,
-  onSubmit,
   isDisabled,
   isFullWidth = false,
+  isLoading,
+  onSubmit,
+  text,
 }: SubmitButtonProps) => {
   const isMobile = useMobile();
   const isMac = useIsMac();

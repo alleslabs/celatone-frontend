@@ -11,10 +11,10 @@ const UploadIndex = () => {
   useWasmConfig({ shouldRedirect: true });
   const [txInfo, setTxInfo] = useState<StoreCodeTxInternalResult>({
     codeDisplayName: "",
-    codeId: "",
     codeHash: "",
-    txHash: "",
+    codeId: "",
     txFee: undefined,
+    txHash: "",
   });
 
   const [completed, setCompleted] = useState(false);

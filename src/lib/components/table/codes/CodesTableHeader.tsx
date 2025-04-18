@@ -5,10 +5,10 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "../tableComponents";
 
 export const CodesTableHeader = ({
-  templateColumns,
+  disablePermission,
   isReadOnly,
   showCw2andContracts,
-  disablePermission,
+  templateColumns,
 }: {
   templateColumns: GridProps["templateColumns"];
   isReadOnly: boolean;

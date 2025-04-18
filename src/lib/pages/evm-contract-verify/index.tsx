@@ -87,7 +87,7 @@ export const EvmContractVerifyBody = ({
   const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
   const { user: exampleBechAddress } = useExampleAddresses();
-  const { mutate, isLoading, isError } = useSubmitEvmVerify();
+  const { isError, isLoading, mutate } = useSubmitEvmVerify();
 
   useEffect(() => {
     if (router.isReady) track(AmpEvent.TO_EVM_CONTRACT_VERIFY);
@@ -95,33 +95,33 @@ export const EvmContractVerifyBody = ({
 
   const {
     control,
-    watch,
-    setValue,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm<EvmContractVerifyForm>({
-    resolver: zodResolver(zEvmContractVerifyForm),
-    mode: "all",
-    reValidateMode: "onChange",
     defaultValues: getEvmContractVerifyFormDefaultValue(
       contractAddressQueryParam
     ),
+    mode: "all",
+    resolver: zodResolver(zEvmContractVerifyForm),
+    reValidateMode: "onChange",
   });
   const {
-    licenseType,
+    compilerVersion,
     contractAddress,
     language,
-    compilerVersion,
+    licenseType,
     option,
     verifyForm,
   } = watch();
 
-  const { licenseTypeOptions, compilerVersionOptions } = useMemo(
+  const { compilerVersionOptions, licenseTypeOptions } = useMemo(
     () => ({
-      licenseTypeOptions: getLicenseTypeOptions(evmVerifyConfig),
       compilerVersionOptions:
         language === EvmProgrammingLanguage.Solidity
           ? formatEvmOptions(evmVerifyConfig.solidityCompilerVersions)
           : formatEvmOptions(evmVerifyConfig.vyperCompilerVersions),
+      licenseTypeOptions: getLicenseTypeOptions(evmVerifyConfig),
     }),
     [evmVerifyConfig, language]
   );
@@ -130,7 +130,7 @@ export const EvmContractVerifyBody = ({
   const evmVerifyInfo =
     evmVerifyInfos?.[contractAddress.toLowerCase()] ?? undefined;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const isVerifyByExternals =
     option === EvmVerifyOptions.SolidityFoundry ||
     option === EvmVerifyOptions.SolidityHardhat;
@@ -138,10 +138,10 @@ export const EvmContractVerifyBody = ({
   const isFormDisabled = () => {
     const isEvmContractVerifyBaseSuccess =
       zEvmContractVerifyBase.safeParse({
-        contractAddress,
-        licenseType,
-        language,
         compilerVersion,
+        contractAddress,
+        language,
+        licenseType,
         option,
       }).success &&
       language !== undefined &&
@@ -206,12 +206,12 @@ export const EvmContractVerifyBody = ({
     if (!option || !language || !licenseType) return;
     mutate(
       {
+        chainId: currentChainId,
+        compilerVersion,
+        contractAddress,
+        licenseType,
         option,
         verifyForm,
-        contractAddress,
-        compilerVersion,
-        licenseType,
-        chainId: currentChainId,
       },
       {
         onSuccess: () => {

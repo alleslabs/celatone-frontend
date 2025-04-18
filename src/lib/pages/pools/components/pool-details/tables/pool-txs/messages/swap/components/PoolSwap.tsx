@@ -52,12 +52,12 @@ const getAssets = (
 };
 
 export const PoolSwap = ({
-  txHash,
-  exactInput,
-  msgIndex,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  exactInput,
+  isOpened,
+  msgIndex,
+  txHash,
 }: PoolSwapInterface) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (isLoading) return <Loading withBorder={false} />;

@@ -45,24 +45,24 @@ export const EvmToCellCreate = ({
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const { refs, floatingStyles, context } = useFloating({
-    open: isOpen,
-    onOpenChange: setIsOpen,
-    placement: "bottom-start",
+  const { context, floatingStyles, refs } = useFloating({
     middleware: [
       flip(),
       offset(({ placement, rects }) => {
         return {
-          mainAxis: placement.startsWith("bottom") ? -25 : -50,
           crossAxis: rects.reference.width / 2.5,
+          mainAxis: placement.startsWith("bottom") ? -25 : -50,
         };
       }),
     ],
+    onOpenChange: setIsOpen,
+    open: isOpen,
+    placement: "bottom-start",
   });
 
   const hover = useHover(context);
 
-  const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
+  const { getFloatingProps, getReferenceProps } = useInteractions([hover]);
 
   return (
     <Flex direction="column" ref={refs.setReference} {...getReferenceProps()}>

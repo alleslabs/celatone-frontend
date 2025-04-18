@@ -8,8 +8,8 @@ interface StatusMessageBoxProps {
   pl?: number;
 }
 export const StatusMessageBox = ({
-  content,
   borderColor = "primary.main",
+  content,
   pl = 6,
 }: StatusMessageBoxProps) => (
   <Flex borderColor={borderColor} borderLeftWidth="4px" pl={pl}>

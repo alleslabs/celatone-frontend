@@ -35,8 +35,8 @@ interface DenomUnitsProps extends WalletRegistryProps {
   assetIndex: number;
 }
 
-const DenomUnits = ({ control, assetIndex, errors }: DenomUnitsProps) => {
-  const { fields, append, remove } = useFieldArray({
+const DenomUnits = ({ assetIndex, control, errors }: DenomUnitsProps) => {
+  const { append, fields, remove } = useFieldArray({
     control,
     name: `assets.${assetIndex}.denoms`,
   });
@@ -143,8 +143,8 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
   const {
     field: { onChange },
   } = useController({
-    name: "bech32_prefix",
     control,
+    name: "bech32_prefix",
   });
 
   useEffect(() => {
@@ -159,7 +159,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
     onChange,
   ]);
 
-  const { fields, append, remove } = useFieldArray({
+  const { append, fields, remove } = useFieldArray({
     control,
     name: "assets",
   });
@@ -301,7 +301,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
               variant="ghost-primary"
               w="fit-content"
               onClick={() =>
-                append({ name: "", base: "", symbol: "", denoms: [] })
+                append({ base: "", denoms: [], name: "", symbol: "" })
               }
             >
               Add more asset
@@ -321,7 +321,7 @@ export const WalletRegistry = ({ control, errors }: WalletRegistryProps) => {
                 variant="outline-primary"
                 w="fit-content"
                 onClick={() =>
-                  append({ name: "", base: "", symbol: "", denoms: [] })
+                  append({ base: "", denoms: [], name: "", symbol: "" })
                 }
               >
                 Add more asset

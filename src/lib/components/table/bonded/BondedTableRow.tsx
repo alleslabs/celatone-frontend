@@ -24,8 +24,8 @@ interface BondedTableRowProps {
 export const BondedTableRow = ({
   bondedInfo,
   isSingleBondDenom,
-  templateColumns,
   isUnbonding,
+  templateColumns,
 }: BondedTableRowProps) => (
   <Grid
     _hover={{ bg: "gray.900" }}

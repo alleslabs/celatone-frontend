@@ -12,10 +12,10 @@ interface TimeInfoItemProps {
 }
 
 const ResolvedTimeInfoItems = ({
-  resolvedHeightLabel,
-  resolvedTimestampLabel,
   resolvedHeight,
+  resolvedHeightLabel,
   resolvedTimestamp,
+  resolvedTimestampLabel,
 }: {
   resolvedHeightLabel: string;
   resolvedTimestampLabel: string;

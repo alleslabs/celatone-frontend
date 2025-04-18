@@ -18,29 +18,29 @@ import type { TxsTableProps } from "./types";
 
 export const TxsTableLite = ({
   address,
-  scrollComponentId,
   onViewMore,
+  scrollComponentId,
 }: TxsTableProps) => {
   const isMobile = useMobile();
   const { isFullTier } = useTierConfig();
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
-  const { data, isLoading, error } = useTxsByAddressRest(
+  const { data, error, isLoading } = useTxsByAddressRest(
     address as BechAddr20,
     undefined,
     onViewMore ? 5 : pageSize,

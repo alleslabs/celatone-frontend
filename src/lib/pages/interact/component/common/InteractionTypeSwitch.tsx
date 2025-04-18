@@ -21,9 +21,9 @@ interface InteractionTypeSwitchProps extends FlexProps {
 const tabs = Object.values(InteractionTabs);
 
 export const InteractionTypeSwitch = ({
+  counts,
   currentTab,
   disabled = false,
-  counts,
   onTabChange,
   ...flexProps
 }: InteractionTypeSwitchProps) => {
@@ -38,7 +38,7 @@ export const InteractionTypeSwitch = ({
       h="32px"
       p={1}
       position="relative"
-      sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
+      sx={{ ...(disabled ? { opacity: 0.3, pointerEvents: "none" } : {}) }}
       {...flexProps}
     >
       {tabs.map((tab, idx) => (
@@ -74,9 +74,9 @@ export const InteractionTypeSwitch = ({
         h="calc(100% - 8px)"
         position="absolute"
         transition={{
-          type: "spring",
-          stiffness: "250",
           damping: "30",
+          stiffness: "250",
+          type: "spring",
         }}
         w="calc(50% - 4px)"
       />

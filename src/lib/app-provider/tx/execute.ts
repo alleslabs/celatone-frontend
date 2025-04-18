@@ -25,12 +25,12 @@ export const useExecuteContractTx = () => {
 
   return useCallback(
     async ({
-      onTxSucceed,
-      onTxFailed,
-      estimatedFee,
       contractAddress,
-      msg,
+      estimatedFee,
       funds,
+      msg,
+      onTxFailed,
+      onTxSucceed,
     }: ExecuteStreamParams) => {
       if (!address)
         throw new Error("No address provided (useExecuteContractTx)");
@@ -48,22 +48,22 @@ export const useExecuteContractTx = () => {
         ),
       ]);
 
-      const base64Message = libEncode(JSON.stringify({ msg, funds }));
+      const base64Message = libEncode(JSON.stringify({ funds, msg }));
 
       const action = typeof msg === "string" ? msg : Object.keys(msg)[0];
       return executeContractTx({
-        address,
-        contractAddress,
-        messages,
         action,
-        fee: estimatedFee,
+        address,
         base64Message,
-        signAndBroadcast,
+        contractAddress,
+        fee: estimatedFee,
+        messages,
+        onTxFailed,
         onTxSucceed: (activity) => {
           trackTxSucceed();
           onTxSucceed?.(activity);
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

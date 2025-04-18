@@ -20,19 +20,19 @@ interface CopyButtonProps extends ButtonProps {
 }
 
 export const CopyButton = ({
-  isDisable,
-  value,
-  size = "sm",
-  copyLabel,
-  hasIcon = true,
-  variant = "outline-white",
-  buttonText = "Copy",
+  amptrackInfo,
   amptrackSection,
   amptrackSubSection,
-  amptrackInfo,
-  ml,
-  w,
+  buttonText = "Copy",
+  copyLabel,
+  hasIcon = true,
   iconGap,
+  isDisable,
+  ml,
+  size = "sm",
+  value,
+  variant = "outline-white",
+  w,
   ...buttonProps
 }: CopyButtonProps) => (
   <CopyTemplate
@@ -48,9 +48,9 @@ export const CopyButton = ({
         w={w}
         onClick={() =>
           track(AmpEvent.USE_COPY_BUTTON, {
+            info: amptrackInfo,
             section: amptrackSection,
             subSection: amptrackSubSection,
-            info: amptrackInfo,
           })
         }
         {...buttonProps}

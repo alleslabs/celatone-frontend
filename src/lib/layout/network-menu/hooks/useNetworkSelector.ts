@@ -68,15 +68,15 @@ export const useNetworkSelector = (onClose: () => void) => {
   );
 
   return {
-    keyword,
-    setKeyword,
-    handleOnKeyDown,
     cursor,
-    setCursor,
-    filteredPinnedChains,
-    filteredMainnetChains,
-    filteredTestnetChains,
     filteredDevnetChains,
     filteredLocalChains,
+    filteredMainnetChains,
+    filteredPinnedChains,
+    filteredTestnetChains,
+    handleOnKeyDown,
+    keyword,
+    setCursor,
+    setKeyword,
   };
 };

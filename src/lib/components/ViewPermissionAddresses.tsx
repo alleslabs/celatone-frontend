@@ -9,8 +9,8 @@ import { ExplorerLink } from "./ExplorerLink";
 import { CustomIcon } from "./icon";
 
 export const ViewPermissionAddresses = ({
-  permissionAddresses,
   amptrackSection,
+  permissionAddresses,
 }: {
   permissionAddresses: PermissionAddresses;
   amptrackSection: string;

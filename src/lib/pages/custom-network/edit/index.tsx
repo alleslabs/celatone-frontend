@@ -62,15 +62,15 @@ const NetworkConfigBody = ({ chainId }: NetworkConfigBodyProps) => {
     // NOTE: hardcoding so the order is fixed
     return JSON.stringify({
       chainId: chainConfig.chainId,
-      registryChainName: chainConfig.registryChainName,
-      prettyName: chainConfig.prettyName,
+      features: pick(chainConfig.features, ["wasm", "move", "evm"]),
+      fees: chainConfig.fees,
+      gas: chainConfig.gas,
       logo_URIs: chainConfig.logo_URIs,
+      prettyName: chainConfig.prettyName,
+      registry: chainConfig.registry,
+      registryChainName: chainConfig.registryChainName,
       rest: chainConfig.rest,
       rpc: chainConfig.rpc,
-      features: pick(chainConfig.features, ["wasm", "move", "evm"]),
-      gas: chainConfig.gas,
-      fees: chainConfig.fees,
-      registry: chainConfig.registry,
     });
   }, [chainConfig]);
 

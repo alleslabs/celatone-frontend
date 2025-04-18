@@ -21,11 +21,11 @@ interface EvmTxTransferProps {
 }
 
 export const EvmTxTransfer = ({
-  evmTxData,
-  evmDenom,
   assetInfos,
+  evmDenom,
+  evmTxData,
 }: EvmTxTransferProps) => {
-  const { from, to, input } = evmTxData.tx;
+  const { from, input, to } = evmTxData.tx;
 
   const amount = coinToTokenWithValue(
     evmDenom ?? "",

@@ -18,10 +18,10 @@ export const UserAccountDesc = observer(
   ({ accountLocalInfo, publicAccount = false }: UserAccountDescProps) => {
     const [showMore, setShowMore] = useState(false);
     const description = accountLocalInfo?.description;
-    const [ref, { noClamp, clampedText, key }] = useClampText({
-      text: description || "No contract description",
+    const [ref, { clampedText, key, noClamp }] = useClampText({
       ellipsis: "...",
       lines: publicAccount ? 4 : 2,
+      text: description || "No contract description",
     });
 
     const renderEditAccountButton = () => {

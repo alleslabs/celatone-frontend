@@ -23,33 +23,33 @@ interface FilterByPermissionProps {
 
 const options: PermissionOption[] = [
   {
-    label: "All",
-    value: "all",
     disabled: false,
     icon: "check",
     iconColor: "gray.600",
+    label: "All",
+    value: "all",
   },
   {
-    label: "Can instantiate without proposal",
-    value: "without-proposal",
     disabled: false,
     icon: "instantiate",
     iconColor: "gray.600",
+    label: "Can instantiate without proposal",
+    value: "without-proposal",
   },
   {
-    label: "Instantiate through proposal only",
-    value: "with-proposal",
     disabled: false,
     icon: "vote",
     iconColor: "gray.600",
+    label: "Instantiate through proposal only",
+    value: "with-proposal",
   },
 ];
 
 export const FilterByPermission = ({
-  setPermissionValue,
   initialSelected,
   labelBgColor = "background.main",
   maxWidth = "360px",
+  setPermissionValue,
 }: FilterByPermissionProps) => (
   <Grid columnGap={4} maxW={{ md: maxWidth }} w="full">
     <SelectInputBase<PermissionFilterValue>

@@ -23,14 +23,14 @@ const Container = chakra(Flex, {
   baseStyle: {
     flexDir: "column",
     gap: 6,
-    w: "250px",
     minW: "180px",
+    w: "250px",
   },
 });
 
 export const EvmTxInfo = ({
-  evmTxData,
   cosmosTxData,
+  evmTxData,
   evmTxValue,
   gasInfo,
   ...flexProps

@@ -22,8 +22,8 @@ interface CodeTableRowProps {
 }
 
 export const PublicProjectCodeRow = ({
+  publicCodeInfo: { localInfo, publicInfo },
   templateColumns,
-  publicCodeInfo: { publicInfo, localInfo },
   wasmVerifyInfo,
 }: CodeTableRowProps) => {
   const navigate = useInternalNavigate();

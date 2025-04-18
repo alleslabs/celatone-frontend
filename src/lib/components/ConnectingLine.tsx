@@ -11,8 +11,8 @@ const indicatorProp: CSSProperties = {
   border: "solid 2px",
   borderColor: "gray.600",
   borderRadius: "100%",
-  width: "12px",
   height: "12px",
+  width: "12px",
 };
 
 export const ConnectingLine = ({

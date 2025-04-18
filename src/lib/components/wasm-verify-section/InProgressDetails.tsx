@@ -15,11 +15,11 @@ interface InProgressDetailsProps {
 }
 
 export const InProgressDetails = ({
-  codeId,
   codeHash,
-  verificationInfo,
-  relatedVerifiedCodes,
+  codeId,
   contractAddress,
+  relatedVerifiedCodes,
+  verificationInfo,
 }: InProgressDetailsProps) => (
   <>
     {contractAddress ? (

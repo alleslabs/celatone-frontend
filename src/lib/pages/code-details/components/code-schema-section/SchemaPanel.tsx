@@ -16,10 +16,10 @@ interface SchemaPanelProps {
 }
 
 export const SchemaPanel = ({
-  codeId,
   codeHash,
-  jsonSchema,
+  codeId,
   hasSchema,
+  jsonSchema,
   schemaProperty,
 }: SchemaPanelProps) => {
   if (jsonSchema === undefined)

@@ -30,13 +30,13 @@ interface ExecuteAreaProps {
 
 export const ExecuteArea = observer(
   ({
-    verifiedSchema,
-    localSchema,
-    contractAddress,
-    initialMsg,
-    initialFunds,
     codeHash,
     codeId,
+    contractAddress,
+    initialFunds,
+    initialMsg,
+    localSchema,
+    verifiedSchema,
   }: ExecuteAreaProps) => {
     const [tab, setTab] = useState<MessageTabs>(MessageTabs.JSON_INPUT);
 

@@ -16,12 +16,12 @@ interface MyStoredCodesTableProps {
 
 export const MyStoredCodesTable = ({
   codes,
-  totalData,
-  isLoading,
-  onRowSelect,
-  emptyMessage,
   disconnectedMessage,
+  emptyMessage,
+  isLoading,
   isReadOnly = false,
+  onRowSelect,
+  totalData,
 }: MyStoredCodesTableProps) => (
   <CodesTableWithWallet
     codes={codes}

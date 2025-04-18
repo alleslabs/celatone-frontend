@@ -25,14 +25,14 @@ interface JsonReadOnlyProps {
 const THRESHOLD_LINES = 16;
 
 const JsonReadOnly = ({
-  topic,
-  labelBgColor = "background.main",
-  text,
-  canCopy,
-  isExpandable,
-  showLines,
-  fullWidth,
   amptrackSection,
+  canCopy,
+  fullWidth,
+  isExpandable,
+  labelBgColor = "background.main",
+  showLines,
+  text,
+  topic,
 }: JsonReadOnlyProps) => {
   const [viewFull, setViewFull] = useState(false);
 
@@ -57,8 +57,8 @@ const JsonReadOnly = ({
   return (
     <Box
       _hover={{
-        borderColor: isJsonValid && "gray.600",
         "& .copy-button-box": { display: "block" },
+        borderColor: isJsonValid && "gray.600",
       }}
       borderColor={!isJsonValid ? "error.main" : "gray.700"}
       borderRadius="8px"

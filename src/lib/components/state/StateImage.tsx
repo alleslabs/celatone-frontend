@@ -16,10 +16,10 @@ export const StateImage = ({
 }: StateImageProps) => {
   const { theme } = useCelatoneApp();
   const imageSourceMap: Record<ImageVariant, string> = {
+    disconnected: theme.illustration.disconnected,
+    empty: theme.illustration.searchEmpty,
     error: theme.illustration.error,
     "not-found": theme.illustration.searchNotFound,
-    empty: theme.illustration.searchEmpty,
-    disconnected: theme.illustration.disconnected,
   };
   return (
     <Image

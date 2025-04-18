@@ -13,8 +13,8 @@ interface InteractionBodySectionMobileProps {
 
 export const InteractionBodySectionMobile = ({
   module,
-  selectedFn,
   openDrawer,
+  selectedFn,
 }: InteractionBodySectionMobileProps) => (
   <Flex>
     {module && selectedFn ? (

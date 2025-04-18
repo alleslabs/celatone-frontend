@@ -15,18 +15,18 @@ interface NetworkCardDraggableProps {
 }
 export const NetworkCardDraggable = ({
   chainId,
-  index,
   cursor,
-  setCursor,
+  index,
   onClose,
+  setCursor,
 }: NetworkCardDraggableProps) => {
   const {
     attributes,
+    isDragging,
     listeners,
     setNodeRef,
     transform,
     transition,
-    isDragging,
   } = useSortable({
     id: chainId,
   });

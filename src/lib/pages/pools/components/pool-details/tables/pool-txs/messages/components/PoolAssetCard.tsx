@@ -23,13 +23,13 @@ interface PoolAssetCardProps {
 }
 
 export const PoolAssetCard = ({
-  poolId,
-  description,
-  assetText,
-  poolToken,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  assetText,
+  description,
+  isOpened,
+  poolId,
+  poolToken,
 }: PoolAssetCardProps) => {
   const { data: poolAssets, isLoading } = usePoolsLiquidityByPoolIds(
     [poolId],

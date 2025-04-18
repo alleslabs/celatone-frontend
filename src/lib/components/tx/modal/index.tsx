@@ -23,7 +23,7 @@ interface TxModalProps {
   onClose: () => void;
 }
 
-export const TxModal = ({ result, onClose }: TxModalProps) => {
+export const TxModal = ({ onClose, result }: TxModalProps) => {
   const navigate = useInternalNavigate();
 
   const isUpdateAdminSucceed =

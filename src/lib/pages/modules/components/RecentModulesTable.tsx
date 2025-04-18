@@ -11,21 +11,21 @@ import { useMemo } from "react";
 
 export const RecentModulesTable = () => {
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
-  const { data, isLoading, error } = useModules(pageSize, offset, {
+  const { data, error, isLoading } = useModules(pageSize, offset, {
     onSuccess: ({ total }) => setTotalData(total),
   });
 

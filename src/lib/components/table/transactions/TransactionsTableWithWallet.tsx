@@ -14,11 +14,11 @@ interface TransactionsTableWithWalletProps {
 }
 
 export const TransactionsTableWithWallet = ({
-  transactions,
-  isLoading,
   emptyState,
+  isLoading,
   showActions,
   showRelations,
+  transactions,
 }: TransactionsTableWithWalletProps) => {
   const { address } = useCurrentChain();
   return !address ? (

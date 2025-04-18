@@ -16,10 +16,10 @@ interface MigrateOptionsProps {
 }
 
 export const MigrateOptions = ({
+  existHandler,
   isAdmin,
   uploadAccessParams,
   uploadHandler,
-  existHandler,
 }: MigrateOptionsProps) => {
   const { address } = useCurrentChain();
   const {

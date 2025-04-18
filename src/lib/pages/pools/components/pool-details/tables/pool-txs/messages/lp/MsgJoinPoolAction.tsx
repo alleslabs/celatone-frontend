@@ -17,10 +17,10 @@ interface MsgJoinPoolActionProps {
 }
 
 export const MsgJoinPoolAction = ({
+  ampCopierSection,
+  assetInfos,
   msg,
   pool,
-  assetInfos,
-  ampCopierSection,
 }: MsgJoinPoolActionProps) => {
   const poolDenom = getPoolDenom(msg.pool_id);
   const poolToken = coinToTokenWithValue(

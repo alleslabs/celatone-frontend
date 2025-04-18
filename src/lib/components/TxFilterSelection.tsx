@@ -43,9 +43,9 @@ export interface TxFilterSelectionProps extends InputProps {
 
 const listItemProps: CSSProperties = {
   borderRadius: "8px",
+  cursor: "pointer",
   margin: "4px 0px",
   padding: "8px",
-  cursor: "pointer",
 };
 
 const BASE_OPTIONS = Object.keys(DEFAULT_BASE_TX_FILTERS);
@@ -60,14 +60,14 @@ export const TxFilterSelection = forwardRef<
 >(
   (
     {
+      boxHeight = "56px",
+      boxWidth = "full",
+      helperText,
+      label = "Filter by action",
+      labelBgColor = "background.main",
+      placeholder,
       result,
       setResult,
-      placeholder,
-      helperText,
-      labelBgColor = "background.main",
-      label = "Filter by action",
-      boxWidth = "full",
-      boxHeight = "56px",
       size = "lg",
       tagSize = "md",
       ...rest
@@ -120,8 +120,8 @@ export const TxFilterSelection = forwardRef<
     };
 
     useOutsideClick({
-      ref: boxRef as RefObject<HTMLDivElement>,
       handler: () => setDisplayOptions(false),
+      ref: boxRef as RefObject<HTMLDivElement>,
     });
 
     return (

@@ -22,7 +22,7 @@ export const BlockDetailsSequencer = ({ height }: { height: number }) => {
     <>
       <Breadcrumb
         items={[
-          { text: "Blocks", href: "/blocks" },
+          { href: "/blocks", text: "Blocks" },
           { text: blockData.height.toString() },
         ]}
       />

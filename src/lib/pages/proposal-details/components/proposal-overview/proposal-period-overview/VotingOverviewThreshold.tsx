@@ -27,8 +27,8 @@ interface VotingOverviewThresholdProps {
 }
 
 export const VotingOverviewThreshold = ({
-  proposalData,
   params,
+  proposalData,
   votesInfo,
 }: VotingOverviewThresholdProps) => {
   const { threshold, vetoThreshold } = extractParams(

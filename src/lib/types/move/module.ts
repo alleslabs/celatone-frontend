@@ -50,12 +50,12 @@ export enum MoveVerifyStatus {
 
 export const zMoveVerifyConfig = z
   .object({
-    enable_compiler_versions: z.array(z.string()),
-    enable_language_versions: z.array(z.string()),
-    enable_bytecode_versions: z.array(z.number()),
+    default_bytecode_version: z.number(),
     default_compiler_version: z.string(),
     default_language_version: z.string(),
-    default_bytecode_version: z.number(),
+    enable_bytecode_versions: z.array(z.number()),
+    enable_compiler_versions: z.array(z.string()),
+    enable_language_versions: z.array(z.string()),
   })
   .transform((val) => snakeToCamel(val));
 export type MoveVerifyConfig = z.infer<typeof zMoveVerifyConfig>;

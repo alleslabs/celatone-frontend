@@ -53,30 +53,30 @@ export const ModulesVerifyBody = observer(
     const router = useRouter();
     const isMobile = useMobile();
     const { currentChainId } = useCelatoneApp();
-    const { mutateAsync, isError, isLoading } = useSubmitMoveVerify();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isError, isLoading, mutateAsync } = useSubmitMoveVerify();
+    const { isOpen, onClose, onOpen } = useDisclosure();
     const { addMoveVerifyTask } = useMoveVerifyTaskStore();
 
-    const { control, watch, handleSubmit, setValue } =
+    const { control, handleSubmit, setValue, watch } =
       useForm<ModuleVerifyForm>({
-        mode: "all",
-        reValidateMode: "onChange",
-        resolver: zodResolver(zModuleVerifyForm),
         defaultValues: {
-          moveFiles: [],
           bytecodeVersion: moveVerifyConfig.defaultBytecodeVersion,
           compilerVersion: moveVerifyConfig.defaultCompilerVersion,
           languageVersion: moveVerifyConfig.defaultLanguageVersion,
+          moveFiles: [],
         },
+        mode: "all",
+        resolver: zodResolver(zModuleVerifyForm),
+        reValidateMode: "onChange",
       });
 
     const {
-      moveFiles,
-      tomlFile,
-      requestNote,
       bytecodeVersion,
       compilerVersion,
       languageVersion,
+      moveFiles,
+      requestNote,
+      tomlFile,
     } = watch();
 
     const handleSubmitForm = async () => {
@@ -102,10 +102,10 @@ export const ModulesVerifyBody = observer(
 
       setValue("taskId", data.id);
       addMoveVerifyTask({
-        taskId: data.id,
         chainId: currentChainId,
-        requestNote,
         fileMap: JSON.parse(fileMap),
+        requestNote,
+        taskId: data.id,
       });
     };
 
@@ -165,8 +165,8 @@ export const ModulesVerifyBody = observer(
             >
               <FooterCta
                 actionButton={{
-                  onClick: handleSubmit(handleSubmitForm),
                   isDisabled: !zModuleVerifyForm.safeParse(watch()).success,
+                  onClick: handleSubmit(handleSubmitForm),
                 }}
                 actionLabel="Upload file and submit"
                 cancelButton={{
@@ -174,17 +174,17 @@ export const ModulesVerifyBody = observer(
                 }}
                 cancelLabel="Cancel"
                 sx={{
+                  "> div": {
+                    gridArea: "1 / 2",
+                    width: "100%",
+                  },
                   backgroundColor: "background.main",
                   columnGap: "32px",
-                  px: "48px",
                   display: "grid",
                   gridTemplateColumns: "1fr 6fr 4fr 1fr",
                   maxWidth: "1440px",
                   mx: "auto",
-                  "> div": {
-                    width: "100%",
-                    gridArea: "1 / 2",
-                  },
+                  px: "48px",
                 }}
               />
             </Box>

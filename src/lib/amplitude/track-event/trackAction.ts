@@ -11,8 +11,8 @@ export const trackActionWithFunds = (
   method: "json-input" | "schema"
 ) =>
   amp.track(event, {
-    funds,
     attachFundsOption,
+    funds,
     method,
   });
 
@@ -30,6 +30,6 @@ export const trackActionQuery = (
   isInputRequired: boolean
 ) =>
   amp.track(event, {
-    method,
     isInputRequired,
+    method,
   });

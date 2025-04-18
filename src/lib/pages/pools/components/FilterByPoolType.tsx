@@ -26,40 +26,40 @@ interface FilterByPoolTypeProps {
 
 const options: PoolTypeOption[] = [
   {
+    disabled: false,
     label: "All pools",
     value: PoolType.ALL,
-    disabled: false,
   },
   {
+    disabled: false,
+    image: <BalancerPoolIcon boxSize={5} />,
     label: "Balancer pools",
     value: PoolType.BALANCER,
-    image: <BalancerPoolIcon boxSize={5} />,
-    disabled: false,
   },
   {
+    disabled: false,
+    image: <StableSwapIcon boxSize={5} />,
     label: "StableSwap pools",
     value: PoolType.STABLESWAP,
-    image: <StableSwapIcon boxSize={5} />,
-    disabled: false,
   },
   {
+    disabled: false,
+    image: <ClpIcon boxSize={5} />,
     label: "Concentrated liquidity pools",
     value: PoolType.CL,
-    image: <ClpIcon boxSize={5} />,
-    disabled: false,
   },
   {
+    disabled: false,
+    image: <CosmWasmPoolIcon boxSize={5} />,
     label: "CosmWasm pools",
     value: PoolType.COSMWASM,
-    image: <CosmWasmPoolIcon boxSize={5} />,
-    disabled: false,
   },
 ];
 
 export const FilterByPoolType = ({
-  setPoolTypeValue,
   initialSelected,
   labelBgColor = "background.main",
+  setPoolTypeValue,
 }: FilterByPoolTypeProps) => (
   <Grid columnGap="16px" maxW="360px" w="full">
     <SelectInputBase<PoolTypeFilter>

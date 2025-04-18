@@ -22,8 +22,8 @@ interface JsonSchemaModalProps {
 }
 
 export const JsonSchemaModal = ({
-  codeId,
   codeHash,
+  codeId,
   isOpen,
   isReattach = false,
   onClose,

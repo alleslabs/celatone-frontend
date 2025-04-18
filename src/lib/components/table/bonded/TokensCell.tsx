@@ -17,9 +17,9 @@ const EmptyTokenCell = () => (
 );
 
 export const TokensCell = ({
-  tokens,
   isSingleBondDenom,
   isUnbonding,
+  tokens,
 }: TokensCellProps) => {
   if (isSingleBondDenom)
     return !tokens.length ? (

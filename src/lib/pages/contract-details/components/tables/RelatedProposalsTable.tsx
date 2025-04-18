@@ -16,30 +16,30 @@ interface RelatedProposalsTableProps {
 
 export const RelatedProposalsTable = ({
   contractAddress,
+  refetchCount,
   scrollComponentId,
   totalData,
-  refetchCount,
 }: RelatedProposalsTableProps) => {
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: totalData,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: totalData,
   });
 
   const {
     data: relatedProposals,
-    isLoading,
     error,
+    isLoading,
   } = useRelatedProposalsByContractAddress(contractAddress, offset, pageSize);
 
   const onPageChange = (nextPage: number) => {

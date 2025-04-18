@@ -14,9 +14,9 @@ interface MigrationTableProps {
 
 export const MigrationTable = ({
   contractAddress,
+  refetchCount,
   scrollComponentId,
   totalData,
-  refetchCount,
 }: MigrationTableProps) => (
   <TierSwitcher
     full={

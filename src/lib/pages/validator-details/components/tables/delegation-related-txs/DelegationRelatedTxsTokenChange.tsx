@@ -28,10 +28,10 @@ interface DelegationRelatedTxsTokenChangeProps {
 }
 
 export const DelegationRelatedTxsTokenChange = ({
-  txHash,
-  coin,
   assetInfos,
+  coin,
   movePoolInfos,
+  txHash,
 }: DelegationRelatedTxsTokenChangeProps) => {
   const token = coinToTokenWithValue(
     coin.denom,

@@ -34,11 +34,11 @@ interface UptimeSectionProps {
 }
 
 export const UptimeSection = ({
-  validatorAddress,
-  uptimeData,
-  uptimeBlock,
-  setUptimeBlock,
   onViewMore,
+  setUptimeBlock,
+  uptimeBlock,
+  uptimeData,
+  validatorAddress,
 }: UptimeSectionProps) => {
   const isMobile = useMobile();
 
@@ -46,12 +46,12 @@ export const UptimeSection = ({
     const data = uptimeData.uptime;
 
     return {
-      signed: data.signedBlocks,
-      proposed: data.proposedBlocks,
       missed: data.missedBlocks,
-      signedRatio: (data.signedBlocks / data.total) as Ratio<number>,
-      proposedRatio: (data.proposedBlocks / data.total) as Ratio<number>,
       missedRatio: (data.missedBlocks / data.total) as Ratio<number>,
+      proposed: data.proposedBlocks,
+      proposedRatio: (data.proposedBlocks / data.total) as Ratio<number>,
+      signed: data.signedBlocks,
+      signedRatio: (data.signedBlocks / data.total) as Ratio<number>,
       uptimeRatio: ((data.signedBlocks + data.proposedBlocks) /
         data.total) as Ratio<number>,
     };

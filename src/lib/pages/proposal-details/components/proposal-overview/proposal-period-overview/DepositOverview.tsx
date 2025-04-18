@@ -15,10 +15,10 @@ import { DepositList } from "../../DepositList";
 import { ErrorFetchingProposalInfos } from "../../ErrorFetchingProposalInfos";
 
 const DepositOverviewBody = ({
-  proposalData,
-  params,
-  isLoading,
   isDepositsLoading,
+  isLoading,
+  params,
+  proposalData,
 }: Omit<ProposalOverviewProps, "votesInfo">) => {
   const navigate = useInternalNavigate();
 
@@ -61,13 +61,13 @@ const DepositOverviewBody = ({
           variant="ghost-primary"
           onClick={() =>
             navigate({
+              options: {
+                shallow: true,
+              },
               pathname: "/proposals/[proposalId]/[tab]",
               query: {
                 proposalId: proposalData.id,
                 tab: TabIndex.Vote,
-              },
-              options: {
-                shallow: true,
               },
             })
           }

@@ -23,21 +23,21 @@ const formatErrors = (
   ]);
 
 export const ArgsForm = ({
-  params,
   initialData,
+  params,
   propsOnChange,
   propsOnErrors,
 }: ArgsFormProps) => {
   const {
-    trigger,
-    control,
-    getValues,
     clearErrors,
+    control,
     formState: { errors, isValid },
+    getValues,
+    trigger,
   } = useForm<Record<string, Nullable<string>>>({
     defaultValues: initialData,
-    mode: "all",
     delayError: 500,
+    mode: "all",
   });
 
   useEffect(() => {

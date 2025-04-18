@@ -13,10 +13,10 @@ import { VpPercentThreshold } from "../../VpPercentThreshold";
 import { VotingResult } from "./VotingResult";
 
 export const VotingThreshold = ({
-  proposalData,
-  params,
-  votesInfo,
   isLoading,
+  params,
+  proposalData,
+  votesInfo,
 }: VoteDetailsProps) => {
   const isMobile = useMobile();
   if (isLoading) return <Loading my={0} />;

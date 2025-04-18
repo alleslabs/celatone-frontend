@@ -10,7 +10,7 @@ interface CustomIconProps extends IconProps {
   color?: string;
 }
 
-export const CustomIcon = ({ name, color, ...props }: CustomIconProps) => {
+export const CustomIcon = ({ color, name, ...props }: CustomIconProps) => {
   if (name === "circle") {
     return <CircleIcon color={color} />;
   }

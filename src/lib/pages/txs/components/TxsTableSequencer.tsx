@@ -11,8 +11,8 @@ export const TxsTableSequencer = ({ isViewMore }: TxsTableProps) => {
     error,
     fetchNextPage,
     hasNextPage,
-    isLoading,
     isFetchingNextPage,
+    isLoading,
   } = useTxsSequencer(isViewMore ? 5 : 10);
 
   return (

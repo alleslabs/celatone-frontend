@@ -33,17 +33,17 @@ interface SelectFundProps {
  * @remarks amount in assetsSelect is an amount before multiplying precision, the multiplication will be done before sending transaction
  */
 export const SelectFund = ({
-  control,
-  setValue,
   assetsSelect,
+  control,
   labelBgColor,
+  setValue,
 }: SelectFundProps) => {
   const { address } = useCurrentChain();
   const { data: balances } = useBalances(address, !!address);
   const { data: assetInfos } = useAssetInfosByType({
     assetType: "native",
   });
-  const { fields, append, remove } = useFieldArray({
+  const { append, fields, remove } = useFieldArray({
     control,
     name: ASSETS_SELECT,
   });
@@ -75,7 +75,7 @@ export const SelectFund = ({
 
       const price = formatPrice(token.value as USD<BigSource>);
 
-      return { raw, formatted, price };
+      return { formatted, price, raw };
     },
     [assetInfos]
   );
@@ -91,23 +91,23 @@ export const SelectFund = ({
 
       if (balanceMap?.has(asset.id)) {
         assetInfosInBalance.push({
+          isDisabled: selectedAssets.includes(asset.id),
           label: asset.symbol,
           value: {
+            formatted,
             id: asset.id,
             logo: asset.logo,
-            formatted,
             price,
           },
-          isDisabled: selectedAssets.includes(asset.id),
         });
       } else {
         assetInfosNotInBalance.push({
+          isDisabled: true,
           label: asset.symbol,
           value: {
             id: asset.id,
             logo: asset.logo,
           },
-          isDisabled: true,
         });
       }
     });
@@ -127,11 +127,6 @@ export const SelectFund = ({
       const overBalance = Number(assetsSelect[idx].amount) > raw;
 
       return {
-        helperText: isSelected && (
-          <Text color="text.dark" variant="body3" w="100%">
-            Balance: {formatted}
-          </Text>
-        ),
         cta: isSelected && {
           label: "MAX",
           onClick: (changeValue: (value: string) => void) => {
@@ -142,6 +137,11 @@ export const SelectFund = ({
           isSelected && overBalance
             ? `Not enough ${assetInfos?.[selectedAssets[idx]]?.symbol} in your wallet`
             : undefined,
+        helperText: isSelected && (
+          <Text color="text.dark" variant="body3" w="100%">
+            Balance: {formatted}
+          </Text>
+        ),
       };
     },
     [
@@ -185,7 +185,7 @@ export const SelectFund = ({
         mt={8}
         mx="auto"
         variant="outline-primary"
-        onClick={() => append({ denom: "", amount: "" })}
+        onClick={() => append({ amount: "", denom: "" })}
       >
         Add more asset
       </Button>

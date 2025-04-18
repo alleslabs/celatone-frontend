@@ -46,23 +46,23 @@ const SelectWidget = <
   props: WidgetProps<T, S, F>
 ) => {
   const {
-    schema,
+    autofocus,
+    disabled,
     id,
+    multiple,
+    onBlur,
+    onChange,
+    onFocus,
     options,
     placeholder = "",
-    multiple,
-    required,
-    disabled,
     readonly,
-    value,
-    autofocus,
-    onChange,
-    onBlur,
-    onFocus,
     // rawErrors = [],
     registry,
+    required,
+    schema,
+    value,
   } = props;
-  const { enumOptions, enumDisabled, emptyValue } = options;
+  const { emptyValue, enumDisabled, enumOptions } = options;
 
   const DescriptionFieldTemplate = getTemplate<
     "DescriptionFieldTemplate",
@@ -100,14 +100,14 @@ const SelectWidget = <
   const valueLabelMap: any = {};
   const displayEnumOptions = Array.isArray(enumOptions)
     ? enumOptions.map((option: EnumOptionsType<S>, index: number) => {
-        const { value: optionValue, label: optionLabel } = option;
+        const { label: optionLabel, value: optionValue } = option;
         valueLabelMap[index] = optionLabel || String(optionValue);
         return {
-          label: optionLabel,
-          value: String(index),
           isDisabled:
             Array.isArray(enumDisabled) &&
             enumDisabled.indexOf(optionValue) !== -1,
+          label: optionLabel,
+          value: String(index),
         };
       })
     : [];
@@ -140,7 +140,7 @@ const SelectWidget = <
       isRequired={required && !readonly}
       my={2}
       // isInvalid={rawErrors && rawErrors.length > 0}
-      sx={{ "& > p": { mt: 4, mb: 2 } }}
+      sx={{ "& > p": { mb: 2, mt: 4 } }}
     >
       {!!schema.description && (
         <DescriptionFieldTemplate

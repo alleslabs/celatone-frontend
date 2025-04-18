@@ -26,7 +26,7 @@ export const ContractLibraries = <T extends FieldValues>({
     name: `${name}.enabled` as FieldPath<T>,
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { append, fields, remove } = useFieldArray({
     control,
     name: `${name}.value` as FieldArrayPath<T>,
   });
@@ -80,7 +80,7 @@ export const ContractLibraries = <T extends FieldValues>({
           size="md"
           variant="ghost-primary"
           w="fit-content"
-          onClick={() => append({ name: "", address: "" } as FieldArray<T>)}
+          onClick={() => append({ address: "", name: "" } as FieldArray<T>)}
         >
           <CustomIcon boxSize={3} name="plus" />
           Add library

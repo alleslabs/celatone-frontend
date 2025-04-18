@@ -12,9 +12,9 @@ interface DropdownChevronProps {
 }
 
 export const DropdownChevron = ({
-  isOpen,
-  height = "full",
   bg = "background.main",
+  height = "full",
+  isOpen,
   onClick,
 }: DropdownChevronProps) => (
   <Flex

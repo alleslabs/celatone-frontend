@@ -20,14 +20,14 @@ interface PoolLPCardProps {
 }
 
 export const PoolLPCard = ({
-  txHash,
-  msgIndex,
-  poolId,
-  msgShareAmount,
+  ampCopierSection,
   assetInfos,
   isJoin,
   isOpened,
-  ampCopierSection,
+  msgIndex,
+  msgShareAmount,
+  poolId,
+  txHash,
 }: PoolLPCardProps) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (txHash && isLoading) return <Loading withBorder={false} />;

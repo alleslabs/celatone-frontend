@@ -20,18 +20,18 @@ interface WasmVerifySubmitFormSelectProps<T extends FieldValues> {
 }
 
 export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
-  name,
   control,
+  name,
   options,
 }: WasmVerifySubmitFormSelectProps<T>) => {
   const watcher = useWatch({
-    name,
     control,
+    name,
   });
 
   const { field } = useController<T>({
-    name,
     control,
+    name,
   });
 
   return (
@@ -39,21 +39,21 @@ export const WasmVerifySubmitFormSelect = <T extends FieldValues>({
       position="relative"
       sx={{
         "& .form-label": {
-          fontSize: "12px",
-          color: "text.dark",
-          backgroundColor: "gray.800",
-          letterSpacing: "0.15px",
-          position: "absolute",
-          ml: 3,
-          px: 1,
-          top: -2,
-          zIndex: 1,
-
           "::after": {
-            content: '"* (Required)"',
             color: "error.main",
+            content: '"* (Required)"',
             ml: 1,
           },
+          backgroundColor: "gray.800",
+          color: "text.dark",
+          fontSize: "12px",
+          letterSpacing: "0.15px",
+          ml: 3,
+          position: "absolute",
+          px: 1,
+          top: -2,
+
+          zIndex: 1,
         },
       }}
     >

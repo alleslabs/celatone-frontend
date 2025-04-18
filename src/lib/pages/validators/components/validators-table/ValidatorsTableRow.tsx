@@ -32,13 +32,13 @@ interface ValidatorsTableRowProps {
 }
 
 export const ValidatorsTableRow = ({
-  templateColumns,
-  isActive,
-  validator,
-  totalVotingPower,
-  minCommissionRate,
   assetInfo,
+  isActive,
+  minCommissionRate,
   showUptime,
+  templateColumns,
+  totalVotingPower,
+  validator,
 }: ValidatorsTableRowProps) => {
   const navigate = useInternalNavigate();
 
@@ -70,9 +70,9 @@ export const ValidatorsTableRow = ({
         <ValidatorBadge
           badgeSize={7}
           validator={{
-            validatorAddress: validator.validatorAddress,
             identity: validator.identity,
             moniker: validator.moniker,
+            validatorAddress: validator.validatorAddress,
           }}
         />
       </TableRow>

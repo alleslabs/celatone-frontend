@@ -24,10 +24,10 @@ export const useUpdateAdminTx = () => {
   return useCallback(
     async ({
       contractAddress,
-      newAdmin,
       estimatedFee,
-      onTxSucceed,
+      newAdmin,
       onTxFailed,
+      onTxSucceed,
     }: UpdateAdminStreamParams) => {
       if (!address) throw new Error("No address provided (useUpdateAdminTx)");
 
@@ -39,14 +39,14 @@ export const useUpdateAdminTx = () => {
 
       return updateAdminTx({
         address,
-        messages,
         fee: estimatedFee,
-        signAndBroadcast,
+        messages,
+        onTxFailed,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

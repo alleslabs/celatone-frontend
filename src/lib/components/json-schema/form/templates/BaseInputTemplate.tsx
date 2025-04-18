@@ -100,28 +100,28 @@ export default function BaseInputTemplate<
   F extends FormContextType = any,
 >(props: BaseInputTemplateProps<T, S, F>) {
   const {
-    id,
-    name, // remove this from ...rest
-    value,
-    label,
-    readonly,
-    disabled,
     autofocus,
+    disabled,
+    formContext,
+    hideError, // remove this from ...rest
+    hideLabel, // remove this from ...rest
+    id,
+    label,
+    name, // remove this from ...rest
     onBlur,
-    onFocus,
     onChange,
     onChangeOverride,
+    onFocus,
     options,
+    placeholder,
+    rawErrors,
+    readonly,
+    registry,
     required = false,
     schema,
-    uiSchema,
-    formContext,
-    registry,
-    rawErrors,
     type,
-    hideLabel, // remove this from ...rest
-    hideError, // remove this from ...rest
-    placeholder,
+    uiSchema,
+    value,
     ...rest
   } = props;
   const DescriptionFieldTemplate = getTemplate<
@@ -222,14 +222,14 @@ export default function BaseInputTemplate<
             value={inputValue}
             {...inputProps}
             _disabled={{
-              color: "text.main",
-              cursor: "not-allowed",
-              _hover: {
-                borderColor: "gray.700",
-              },
               _active: {
                 border: "1px solid var(--chakra-colors-gray-700)",
               },
+              _hover: {
+                borderColor: "gray.700",
+              },
+              color: "text.main",
+              cursor: "not-allowed",
             }}
             aria-describedby={ariaDescribedByIds<T>(id, !!schema.examples)}
             list={schema.examples ? examplesId<T>(id) : undefined}

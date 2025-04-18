@@ -8,9 +8,9 @@ interface OptionButtonProps {
 }
 
 export const OptionButton = ({
-  title,
   description,
   disabled,
+  title,
 }: OptionButtonProps) => (
   <Flex
     _hover={{ bg: "gray.700" }}
@@ -36,8 +36,8 @@ export const OptionButton = ({
 );
 
 export const OptionButtonDisabled = ({
-  title,
   description,
+  title,
 }: OptionButtonProps) => (
   <Flex
     _hover={{ bg: "gray.900" }}

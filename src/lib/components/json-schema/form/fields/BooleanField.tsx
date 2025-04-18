@@ -21,30 +21,30 @@ function BooleanField<
   F extends FormContextType = any,
 >(props: FieldProps<T, S, F>) {
   const {
-    schema,
-    name,
-    uiSchema,
-    idSchema,
-    formData,
-    registry,
-    required,
-    disabled,
-    readonly,
-    hideError,
     autofocus,
-    title,
+    disabled,
+    formData,
+    hideError,
+    idSchema,
+    name,
+    onBlur,
     onChange,
     onFocus,
-    onBlur,
     rawErrors,
+    readonly,
+    registry,
+    required,
+    schema,
+    title,
+    uiSchema,
   } = props;
   const { title: schemaTitle } = schema;
-  const { widgets, formContext, globalUiOptions } = registry;
+  const { formContext, globalUiOptions, widgets } = registry;
   const {
-    widget = "select",
-    title: uiTitle,
     // Unlike the other fields, don't use `getDisplayLabel()` since it always returns false for the boolean type
     label: displayLabel = true,
+    title: uiTitle,
+    widget = "select",
     ...options
   } = getUiOptions<T, S, F>(uiSchema, globalUiOptions);
 
@@ -77,12 +77,12 @@ function BooleanField<
     ) {
       enumOptions = [
         {
-          value: enums[0],
           label: enums[0] ? "True" : "False",
+          value: enums[0],
         },
         {
-          value: enums[1],
           label: enums[1] ? "True" : "False",
+          value: enums[1],
         },
       ];
     } else {
@@ -95,7 +95,7 @@ function BooleanField<
   }
 
   if (!required)
-    enumOptions = [...(enumOptions ?? []), { value: null, label: "null" }];
+    enumOptions = [...(enumOptions ?? []), { label: "null", value: null }];
 
   return (
     <Widget

@@ -24,10 +24,10 @@ interface StoredCodesTableProps {
 export const StoredCodesTable = observer(
   ({
     address,
+    onViewMore,
+    refetchCount,
     scrollComponentId,
     totalData,
-    refetchCount,
-    onViewMore,
   }: StoredCodesTableProps) => {
     const isMobile = useMobile();
     const navigate = useInternalNavigate();
@@ -38,19 +38,19 @@ export const StoredCodesTable = observer(
       });
 
     const {
-      pagesQuantity,
       currentPage,
-      setCurrentPage,
-      pageSize,
-      setPageSize,
       offset,
+      pageSize,
+      pagesQuantity,
+      setCurrentPage,
+      setPageSize,
     } = usePaginator({
-      total: totalData,
       initialState: {
-        pageSize: 10,
         currentPage: 1,
         isDisabled: false,
+        pageSize: 10,
       },
+      total: totalData,
     });
     const { codes, isLoading } = useAccountCodes(
       address,

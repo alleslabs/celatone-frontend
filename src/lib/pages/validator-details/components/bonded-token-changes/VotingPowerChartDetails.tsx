@@ -26,9 +26,9 @@ interface VotingPowerChartDetailsProps {
 }
 
 export const VotingPowerChartDetails = ({
+  assetInfo,
   historicalPowers,
   singleStakingDenom,
-  assetInfo,
 }: VotingPowerChartDetailsProps) => {
   const currency = singleStakingDenom
     ? `${getTokenLabel(singleStakingDenom, assetInfo?.symbol)}`

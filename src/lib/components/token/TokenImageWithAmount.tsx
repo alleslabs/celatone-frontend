@@ -11,8 +11,8 @@ interface TokenImageWithAmountProps {
 }
 
 export const TokenImageWithAmount = ({
-  token,
   hasTrailingZeros,
+  token,
 }: TokenImageWithAmountProps) => (
   <Flex alignItems="center" gap={2}>
     <TokenImageRender logo={token.logo} />

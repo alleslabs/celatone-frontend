@@ -13,7 +13,7 @@ interface SaveOrEditCodeModalProps {
 }
 
 export const SaveOrEditCodeModal = observer(
-  ({ mode, codeInfo }: SaveOrEditCodeModalProps) =>
+  ({ codeInfo, mode }: SaveOrEditCodeModalProps) =>
     mode === "save" ? (
       <SaveCodeDetailsModal
         codeInfo={codeInfo}

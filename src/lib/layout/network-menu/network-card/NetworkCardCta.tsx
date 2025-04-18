@@ -16,7 +16,7 @@ interface NetworkCardCtaProps {
 }
 
 export const NetworkCardCta = observer(
-  ({ chainId, isSelected, isDraggable }: NetworkCardCtaProps) => {
+  ({ chainId, isDraggable, isSelected }: NetworkCardCtaProps) => {
     const navigate = useInternalNavigate();
     const { chainConfigs } = useChainConfigs();
     const { isLocalChainIdExist } = useLocalChainConfigStore();
@@ -24,11 +24,11 @@ export const NetworkCardCta = observer(
     const isEditable = isLocalChainIdExist(chainId);
     const { isNetworkPinned, pinNetwork, removeNetwork } = useNetworkStore();
     const toast = useToast({
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      status: "success",
     });
 
     const handleSave = useCallback(
@@ -58,16 +58,16 @@ export const NetworkCardCta = observer(
     };
 
     const pinIconStyles = {
-      cursor: "pointer",
-      className: "icon-container",
-      align: "center",
-      padding: 1,
       _hover: isMobile
         ? undefined
         : {
             background: isSelected ? "gray.800" : "gray.900",
             borderRadius: 4,
           },
+      align: "center",
+      className: "icon-container",
+      cursor: "pointer",
+      padding: 1,
     };
 
     return (

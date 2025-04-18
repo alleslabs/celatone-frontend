@@ -25,25 +25,25 @@ interface ControllerTextareaProps<T extends FieldValues>
 }
 
 export const ControllerTextarea = <T extends FieldValues>({
-  name,
   control,
-  label,
-  labelBgColor = "background.main",
-  helperText,
-  placeholder = " ",
   error,
   height = "112px",
+  helperText,
+  label,
+  labelBgColor = "background.main",
+  name,
+  placeholder = " ",
   rules = {},
   ...componentProps
 }: ControllerTextareaProps<T>) => {
   const watcher = useWatch({
-    name,
     control,
+    name,
   });
   const {
     field,
     fieldState: { isDirty, isTouched },
-  } = useController<T>({ name, control, rules });
+  } = useController<T>({ control, name, rules });
   const isError = Boolean(error);
   const isRequired = "required" in rules;
   return (

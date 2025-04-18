@@ -82,7 +82,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   // ---------------DEPENDENCIES---------------//
   // ------------------------------------------//
   const router = useRouter();
-  const { msg: msgQuery, codeId: codeIdQuery } = zInstantiateQueryParams.parse(
+  const { codeId: codeIdQuery, msg: msgQuery } = zInstantiateQueryParams.parse(
     router.query
   );
   const { user: exampleUserAddress } = useExampleAddresses();
@@ -90,7 +90,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   const instantiateTx = useInstantiateContractTx();
   const fabricateFee = useFabricateFee();
   const { broadcast } = useTxBroadcast();
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const { validateContractAddress, validateUserAddress } = useValidateAddress();
   const getAttachFunds = useAttachFunds();
   const { getSchemaByCodeHash } = useSchemaStore();
   const { isFullTier } = useTierConfig();
@@ -114,19 +114,19 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
     setValue,
     watch,
   } = useForm<InstantiateFormState>({
-    mode: "all",
     defaultValues: {
-      codeId: "",
-      codeHash: "",
-      label: "",
       adminAddress: "",
+      codeHash: "",
+      codeId: "",
+      label: "",
       msgInput: {
         [jsonInputFormKey]: "{}",
         [yourSchemaInputFormKey]: "{}",
       },
     },
+    mode: "all",
   });
-  const { codeId, codeHash, label, adminAddress, msgInput } = watch();
+  const { adminAddress, codeHash, codeId, label, msgInput } = watch();
   const currentInput = tab ? msgInput[tab] : "{}";
 
   const {
@@ -134,14 +134,14 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
     setValue: setAssets,
     watch: watchAssets,
   } = useForm<AttachFundsState>({
-    mode: "all",
     defaultValues: {
-      assetsSelect: defaultAsset,
       assetsJsonStr: defaultAssetJsonStr,
+      assetsSelect: defaultAsset,
       attachFundsOption: AttachFundsType.ATTACH_FUNDS_NULL,
     },
+    mode: "all",
   });
-  const { assetsSelect, assetsJsonStr, attachFundsOption } = watchAssets();
+  const { assetsJsonStr, assetsSelect, attachFundsOption } = watchAssets();
 
   // ------------------------------------------//
   // -------------------DATA-------------------//
@@ -189,20 +189,23 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
-    onSuccess: (gasRes) => {
-      if (gasRes) setEstimatedFee(fabricateFee(gasRes));
-      else setEstimatedFee(undefined);
-    },
     onError: (e) => {
       setSimulateError(e.message);
       setEstimatedFee(undefined);
     },
+    onSuccess: (gasRes) => {
+      if (gasRes) setEstimatedFee(fabricateFee(gasRes));
+      else setEstimatedFee(undefined);
+    },
   });
 
   const { refetch } = useCodeRest(Number(codeId), {
-    enabled: false,
-    retry: false,
     cacheTime: 0,
+    enabled: false,
+    onError: () => {
+      setStatus({ message: "This code ID does not exist", state: "error" });
+      setSimulateError("");
+    },
     onSuccess: (data) => {
       setValue("codeHash", data.hash.toLowerCase());
       if (
@@ -215,16 +218,13 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
         setStatus({ state: "success" });
       else {
         setStatus({
-          state: "error",
           message:
             "This wallet does not have permission to instantiate to this code",
+          state: "error",
         });
       }
     },
-    onError: () => {
-      setStatus({ state: "error", message: "This code ID does not exist" });
-      setSimulateError("");
-    },
+    retry: false,
   });
 
   // ------------------------------------------//
@@ -258,12 +258,13 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
       tab === MessageTabs.YOUR_SCHEMA ? "schema" : "json-input"
     );
     const stream = await instantiateTx({
+      admin: adminAddress,
       codeId: Number(codeId),
+      estimatedFee,
+      funds,
       initMsg: JSON.parse(currentInput),
       label,
-      admin: adminAddress,
-      funds,
-      estimatedFee,
+      onTxFailed: () => setProcessing(false),
       onTxSucceed: (txResult, contractLabel, contractAddress) => {
         setProcessing(false);
         onComplete(
@@ -274,7 +275,6 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
           address ?? ("" as BechAddr20)
         );
       },
-      onTxFailed: () => setProcessing(false),
     });
 
     if (stream) {
@@ -339,7 +339,7 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
         if (codeId) refetch();
-        else setStatus({ state: "error", message: "Invalid Code ID" });
+        else setStatus({ message: "Invalid Code ID", state: "error" });
       }, 500);
       return () => clearTimeout(timer);
     }
@@ -354,12 +354,12 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
       const composedMsg = address
         ? [
             composeMsg(MsgType.INSTANTIATE, {
-              sender: address,
               admin: adminAddress as BechAddr,
               codeId: Long.fromString(codeId),
+              funds,
               label,
               msg: Buffer.from(currentInput),
-              funds,
+              sender: address,
             }),
           ]
         : [];
@@ -556,8 +556,8 @@ const InstantiateFormPage = ({ onComplete }: InstantiateFormPageProps) => {
         }}
         actionLabel="Instantiate"
         cancelButton={{
-          onClick: router.back,
           leftIcon: <CustomIcon name="chevron-left" />,
+          onClick: router.back,
         }}
         loading={processing}
       />

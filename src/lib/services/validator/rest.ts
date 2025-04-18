@@ -104,8 +104,8 @@ export const getValidatorDelegatorsRest = async (
   return axios
     .get(`${endpoint}/${route}/${encodeURI(validatorAddress)}/delegations`, {
       params: {
-        "pagination.limit": "1",
         "pagination.count_total": "true",
+        "pagination.limit": "1",
       },
     })
     .then(({ data }) =>

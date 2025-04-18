@@ -11,7 +11,7 @@ interface EvmEventBoxTopicProps {
   index: number;
 }
 
-const EvmEventBoxTopicHex = ({ topic, index }: EvmEventBoxTopicProps) => (
+const EvmEventBoxTopicHex = ({ index, topic }: EvmEventBoxTopicProps) => (
   <Flex key={topic} alignItems="center" gap={2}>
     <Text fontFamily="mono" variant="body2">
       [{index}]
@@ -29,9 +29,9 @@ interface EvmEventBoxTopicsProps {
 }
 
 export const EvmEventBoxTopics = ({
+  parsedLog,
   tab,
   topics,
-  parsedLog,
 }: EvmEventBoxTopicsProps) => (
   <Stack columnGap={2} rowGap={4} w="full" wordBreak="break-all">
     {tab === EvmEventBoxTabs.Hex ? (

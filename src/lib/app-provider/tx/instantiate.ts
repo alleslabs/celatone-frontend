@@ -30,14 +30,14 @@ export const useInstantiateContractTx = () => {
 
   return useCallback(
     async ({
-      estimatedFee,
+      admin,
       codeId,
+      estimatedFee,
+      funds,
       initMsg,
       label,
-      admin,
-      funds,
-      onTxSucceed,
       onTxFailed,
+      onTxSucceed,
     }: InstantiateStreamParams) => {
       if (!address)
         throw new Error("No address provided (useInstantiatetContractTx)");
@@ -56,15 +56,15 @@ export const useInstantiateContractTx = () => {
 
       return instantiateContractTx({
         address,
-        messages,
-        label,
         fee: estimatedFee,
-        signAndBroadcast,
+        label,
+        messages,
+        onTxFailed,
         onTxSucceed: (txResult, contractLabel, contractAddress) => {
           trackTxSucceed();
           onTxSucceed?.(txResult, contractLabel, contractAddress);
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

@@ -21,12 +21,12 @@ interface TransactionsTableRowProps {
 }
 
 export const TransactionsTableRow = ({
-  transaction,
-  templateColumns,
-  showSuccess,
-  showRelations,
-  showTimestamp,
   showAction,
+  showRelations,
+  showSuccess,
+  showTimestamp,
+  templateColumns,
+  transaction,
 }: TransactionsTableRowProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const isAccordion = transaction.messages.length > 1;

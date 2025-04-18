@@ -9,12 +9,12 @@ interface TooltipProps extends ChakraTooltipProps {
 }
 
 export const Tooltip = ({
-  placement = "top",
   children,
   disableClickCapture = false,
+  placement = "top",
   ...tooltipProps
 }: TooltipProps) => {
-  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+  const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
   return (
     <ChakraTooltip
       arrowSize={8}
@@ -25,8 +25,8 @@ export const Tooltip = ({
     >
       <span
         style={{
-          display: "inline-flex",
           alignItems: "center",
+          display: "inline-flex",
           height: "fit-content",
         }}
         onClickCapture={disableClickCapture ? undefined : onToggle}

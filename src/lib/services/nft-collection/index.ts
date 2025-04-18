@@ -48,8 +48,8 @@ export const useNftCollections = (
     [CELATONE_QUERY_KEYS.NFT_COLLECTIONS, apiEndpoint, limit, offset, search],
     async () => getNftCollections(apiEndpoint, limit, offset, search),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
       ...options,
     }
   );
@@ -75,8 +75,6 @@ export const useNftCollectionByCollectionAddress = (
     ],
     async () =>
       handleQueryByTier({
-        tier,
-        threshold: "sequencer",
         queryFull: () =>
           getNftCollectionByCollectionAddress(apiEndpoint, collectionAddress),
         querySequencer: () =>
@@ -84,11 +82,13 @@ export const useNftCollectionByCollectionAddress = (
             restEndpoint,
             collectionAddress
           ),
+        threshold: "sequencer",
+        tier,
       }),
     {
-      retry: 1,
-      refetchOnWindowFocus: false,
       enabled,
+      refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -112,8 +112,6 @@ export const useNftCollectionCreator = (collectionAddress: HexAddr32) => {
     ],
     async () =>
       handleQueryByTier({
-        tier,
-        threshold: "sequencer",
         queryFull: () =>
           getNftCollectionCreatorByCollectionAddress(
             apiEndpoint,
@@ -125,10 +123,12 @@ export const useNftCollectionCreator = (collectionAddress: HexAddr32) => {
             bech32Prefix,
             collectionAddress
           ),
+        threshold: "sequencer",
+        tier,
       }),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -160,8 +160,8 @@ export const useNftCollectionActivities = (
         search
       ),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
       ...options,
     }
   );
@@ -221,8 +221,8 @@ export const useNftCollectionMutateEvents = (
         offset
       ),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
       ...options,
     }
   );
@@ -245,8 +245,6 @@ export const useNftCollectionsByAccountAddress = (accountAddress: HexAddr) => {
     ],
     async () =>
       handleQueryByTier({
-        tier,
-        threshold: "sequencer",
         queryFull: () =>
           getNftCollectionsByAccountAddress(apiEndpoint, accountAddress),
         querySequencer: () =>
@@ -254,10 +252,12 @@ export const useNftCollectionsByAccountAddress = (accountAddress: HexAddr) => {
             restEndpoint,
             accountAddress
           ),
+        threshold: "sequencer",
+        tier,
       }),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };

@@ -22,8 +22,8 @@ interface SavedAccountsTableRowProps {
 
 export const SavedAccountsTableRow = ({
   accountInfo,
-  templateColumns,
   hasHexAddr,
+  templateColumns,
 }: SavedAccountsTableRowProps) => {
   const navigate = useInternalNavigate();
 

@@ -19,9 +19,9 @@ interface EvmTransactionsTableProps {
 }
 
 export const EvmTransactionsTable = ({
+  emptyState,
   evmTransactions,
   isLoading,
-  emptyState,
   showTimestamp = false,
 }: EvmTransactionsTableProps) => {
   const isMobile = useMobile();

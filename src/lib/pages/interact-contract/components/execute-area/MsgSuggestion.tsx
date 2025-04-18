@@ -12,8 +12,8 @@ interface MsgSuggestionProps {
 }
 
 export const MsgSuggestion = ({
-  contractAddress,
   cmds,
+  contractAddress,
   setMsg,
 }: MsgSuggestionProps) => (
   <Box mb={8}>
@@ -28,8 +28,8 @@ export const MsgSuggestion = ({
         rowGap={4}
         sx={{
           "> button": {
-            marginInlineStart: "0 !important",
             marginInlineEnd: "1",
+            marginInlineStart: "0 !important",
           },
         }}
       >

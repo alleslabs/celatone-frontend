@@ -24,8 +24,8 @@ export const ProposalsTableLite = () => {
     error: proposalsError,
     fetchNextPage,
     hasNextPage,
-    isLoading: isProposalsLoading,
     isFetchingNextPage,
+    isLoading: isProposalsLoading,
   } = useProposalsRest(status[0]);
 
   const { data: proposalData, isFetching: isProposalDataFetching } =

@@ -19,16 +19,16 @@ interface FilterInputProps {
   setKeyword: Dispatch<SetStateAction<string>>;
 }
 export const FilterInput = ({
+  chipContainerComponent,
+  inputRef,
+  isDropdown,
   keyword,
+  label,
+  mainRef,
   placeholder,
   result,
-  isDropdown,
-  label,
-  inputRef,
-  mainRef,
   setIsDropdown,
   setKeyword,
-  chipContainerComponent,
 }: FilterInputProps) => (
   <>
     <Flex

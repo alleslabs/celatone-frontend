@@ -12,11 +12,14 @@ export const sendingEvmTx = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (_: void) => {
     return {
-      value: null,
+      actionVariant: "sending",
       phase: TxStreamPhase.BROADCAST,
+      receiptInfo: {
+        header: "Sending transaction",
+        headerIcon: <Spinner size="md" />,
+      },
       receipts: [
         {
-          title: "Estimated tx fee",
           html: (
             <EstimatedFeeEvmRender
               gasPrice={gasPrice}
@@ -24,13 +27,10 @@ export const sendingEvmTx = ({
               loading={false}
             />
           ),
+          title: "Estimated tx fee",
         },
       ],
-      receiptInfo: {
-        header: "Sending transaction",
-        headerIcon: <Spinner size="md" />,
-      },
-      actionVariant: "sending",
+      value: null,
     } as TxResultRendering;
   };
 };

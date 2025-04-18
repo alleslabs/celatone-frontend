@@ -30,14 +30,14 @@ const getProcessStep = (
 
   if (date)
     return {
-      timestamp: date,
       state: ProcessStepState.COMPLETED,
+      timestamp: date,
     };
 
   if (errorMsg)
     return {
-      state: ProcessStepState.FAILED,
       errorMsg,
+      state: ProcessStepState.FAILED,
     };
 
   return {

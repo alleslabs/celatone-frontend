@@ -29,8 +29,8 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
       <Breadcrumb
         items={[
           {
-            text: "Proposals",
             href: "/proposals",
+            text: "Proposals",
           },
           { text: `#${proposalData.id.toString()}` },
         ]}
@@ -99,8 +99,8 @@ export const ProposalTop = ({ proposalData }: ProposalTopProps) => {
                         <span
                           style={{
                             color: "var(--chakra-colors-primary-main)",
-                            marginLeft: "4px",
                             fontWeight: 600,
+                            marginLeft: "4px",
                           }}
                         >
                           {" , "}

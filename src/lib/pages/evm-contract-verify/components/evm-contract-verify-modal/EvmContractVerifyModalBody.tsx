@@ -15,10 +15,10 @@ interface EvmContractVerifyModalBodyProps {
 }
 
 export const EvmContractVerifyModalBody = ({
+  control,
   isError,
   isLoading,
   onClose,
-  control,
 }: EvmContractVerifyModalBodyProps) => {
   const [fakeLoading, setFakeLoading] = useState(false);
 

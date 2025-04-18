@@ -23,18 +23,18 @@ const getInputValueTextProps = (
   defaultValue: string
 ): Pick<TextProps, "fontWeight" | "color" | "children"> => {
   if (isShowInputValue) {
-    return { fontWeight: 600, color: "text.main", children: inputValue };
+    return { children: inputValue, color: "text.main", fontWeight: 600 };
   }
-  return { fontWeight: 400, color: "text.dark", children: defaultValue };
+  return { children: defaultValue, color: "text.dark", fontWeight: 400 };
 };
 
 export const EditableCell = ({
-  initialValue = "",
   defaultValue,
-  maxLength,
-  tooltip,
+  initialValue = "",
   isReadOnly,
+  maxLength,
   onSave,
+  tooltip,
 }: EditableCellProps) => {
   const [inputValue, setInputValue] = useState(initialValue);
   const [isHover, setIsHover] = useState(false);
@@ -44,10 +44,10 @@ export const EditableCell = ({
   const textRef = useRef<HTMLParagraphElement>(null);
   const [isEditCellOpen, setIsEditCellOpen] = useState(false);
   useOutsideClick({
-    ref: editCellRef as RefObject<HTMLDivElement>,
     handler: () => {
       setIsEditCellOpen(false);
     },
+    ref: editCellRef as RefObject<HTMLDivElement>,
   });
 
   const handleMouseEnter = () => {

@@ -17,8 +17,8 @@ interface PastTxsSequencerTransactionsTableWithWalletEmptyStateProps {
 }
 
 const PastTxsSequencerTransactionsTableWithWalletEmptyState = ({
-  search,
   error,
+  search,
 }: PastTxsSequencerTransactionsTableWithWalletEmptyStateProps) => {
   if (search.trim().length > 0)
     return (
@@ -51,8 +51,8 @@ export const PastTxsSequencer = () => {
     error,
     fetchNextPage,
     hasNextPage,
-    isLoading,
     isFetchingNextPage,
+    isLoading,
   } = useTxsByAddressSequencer(address, debouncedSearch);
 
   useEffect(() => {

@@ -26,15 +26,15 @@ export interface SingleMsgProps {
 }
 
 export const SingleMsg = ({
-  type,
-  text1,
-  tokens,
-  tags,
   length,
-  text2,
   link1,
-  text3,
   link2,
+  tags,
+  text1,
+  text2,
+  text3,
+  tokens,
+  type,
 }: SingleMsgProps) => {
   if (!type) return <Text variant="body2">Message unavailable</Text>;
   return (

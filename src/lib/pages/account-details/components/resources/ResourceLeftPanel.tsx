@@ -44,17 +44,17 @@ export const ResourceLeftPanel = ({
     ) => {
       if (account === selectedAccount && resource === selectedGroupName) return;
       navigate({
-        pathname: `/accounts/[accountAddress]/[tab]`,
-        query: {
-          accountAddress: address,
-          tab: "resources",
-          account,
-          selected: resource,
-        },
-        replace: true,
         options: {
           shallow: true,
         },
+        pathname: `/accounts/[accountAddress]/[tab]`,
+        query: {
+          account,
+          accountAddress: address,
+          selected: resource,
+          tab: "resources",
+        },
+        replace: true,
       });
     },
     [selectedGroupName, selectedAccount, address, navigate]

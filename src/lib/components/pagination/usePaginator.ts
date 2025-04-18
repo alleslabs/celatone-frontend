@@ -15,8 +15,8 @@ type UsePaginator = {
 };
 
 export const usePaginator = ({
-  total,
   initialState,
+  total,
 }: UsePaginator): {
   offset: number;
   pagesQuantity: number;
@@ -65,14 +65,14 @@ export const usePaginator = ({
   }, [total]);
 
   return {
-    offset,
     currentPage,
-    pagesQuantity,
-    setTotalData,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     isDisabled,
+    offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
     setIsDisabled,
+    setPageSize,
+    setTotalData,
   };
 };

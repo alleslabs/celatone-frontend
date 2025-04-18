@@ -28,7 +28,7 @@ export const useCardTheme = (theme: CardTheme, status: Option<Status>) => {
   };
 
   return {
-    themeConfig: getTheme(),
     statusColor: resolveStatusColor(),
+    themeConfig: getTheme(),
   };
 };

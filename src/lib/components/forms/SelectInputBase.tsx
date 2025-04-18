@@ -47,7 +47,7 @@ interface SelectItemProps {
   disabled: boolean;
 }
 
-const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
+const SelectItem = ({ children, disabled, onSelect }: SelectItemProps) => (
   <Flex
     _disabled={{ opacity: 0.4, pointerEvents: "none" }}
     _hover={{ bg: "gray.800" }}
@@ -65,18 +65,18 @@ const SelectItem = ({ children, onSelect, disabled }: SelectItemProps) => (
 );
 
 export const SelectInputBase = <T extends string>({
+  disableMaxH = false,
   formLabel,
-  options,
-  onChange,
-  placeholder = "",
-  initialSelected,
   hasDivider = false,
   helperTextComponent,
+  initialSelected,
+  isRequired,
   labelBgColor = "background.main",
+  onChange,
+  options,
+  placeholder = "",
   popoverBgColor = "gray.900",
   size = "lg",
-  disableMaxH = false,
-  isRequired,
 }: SelectInputProps<T>) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -104,27 +104,27 @@ export const SelectInputBase = <T extends string>({
       <PopoverTrigger>
         <InputGroup
           sx={{
+            "& .form-label": {
+              "::after": {
+                color: "error.main",
+                content: isRequired ? '"* (Required)"' : '""',
+                ml: 1,
+              },
+              bg: labelBgColor,
+              color: "text.dark",
+              fontSize: "12px",
+              letterSpacing: "0.15px",
+              ml: 3,
+              position: "absolute",
+              px: 1,
+              top: -2,
+
+              zIndex: 2,
+            },
             "&[aria-expanded=true]": {
               "> input": {
                 border: "2px solid",
                 borderColor: "primary.dark",
-              },
-            },
-            "& .form-label": {
-              fontSize: "12px",
-              color: "text.dark",
-              letterSpacing: "0.15px",
-              position: "absolute",
-              ml: 3,
-              px: 1,
-              zIndex: 2,
-              bg: labelBgColor,
-              top: -2,
-
-              "::after": {
-                content: isRequired ? '"* (Required)"' : '""',
-                color: "error.main",
-                ml: 1,
               },
             },
           }}
@@ -175,7 +175,7 @@ export const SelectInputBase = <T extends string>({
         }}
         w={inputRef.current?.clientWidth}
       >
-        {options.map(({ label, value, disabled, icon, iconColor, image }) => (
+        {options.map(({ disabled, icon, iconColor, image, label, value }) => (
           <SelectItem
             key={value}
             disabled={disabled}

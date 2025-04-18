@@ -31,9 +31,9 @@ import { ViewSchemaPanel } from "./ViewSchemaPanel";
 
 const StyledCustomTab = chakra(CustomTab, {
   baseStyle: {
+    _selected: { bgColor: "gray.800" },
     border: "unset",
     borderRadius: "4px",
-    _selected: { bgColor: "gray.800" },
   },
 });
 
@@ -60,8 +60,8 @@ const ALL_TABS = ["full schema", ...SchemaMsgTabList];
 
 export const ViewSchemaModal = ({
   codeId,
-  schema,
   isIcon = false,
+  schema,
 }: ViewSchemaModalProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 

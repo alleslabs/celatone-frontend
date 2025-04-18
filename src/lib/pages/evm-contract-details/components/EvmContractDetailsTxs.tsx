@@ -26,8 +26,8 @@ interface EvmContractDetailsTxsProps {
 export const EvmContractDetailsTxs = ({
   address,
   onViewMore,
-  tab,
   setTab,
+  tab,
 }: EvmContractDetailsTxsProps) => {
   const handleTabChange = useCallback(
     (nextTab: TxsTabIndex) => () => {

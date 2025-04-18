@@ -9,9 +9,9 @@ interface LoadNextProps {
 }
 
 export const LoadNext = ({
-  text,
   fetchNextPage,
   isFetchingNextPage,
+  text,
 }: LoadNextProps) => (
   <Flex align="center" h="64px" justifyContent="center" w="full">
     {isFetchingNextPage ? (

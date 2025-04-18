@@ -32,15 +32,15 @@ interface ValidatorsTableProps {
 
 export const ValidatorsTable = ({
   data,
-  isLoading,
   isActive,
-  order,
-  setOrder,
   isDesc,
-  setIsDesc,
-  scrollComponentId,
-  showUptime = true,
+  isLoading,
   isSearching = false,
+  order,
+  scrollComponentId,
+  setIsDesc,
+  setOrder,
+  showUptime = true,
 }: ValidatorsTableProps) => {
   const isMobile = useMobile();
   const isInitia = useInitia();

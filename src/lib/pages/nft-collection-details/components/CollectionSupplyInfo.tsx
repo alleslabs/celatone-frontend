@@ -3,9 +3,9 @@ import { useMobile } from "lib/app-provider";
 import { TooltipInfo } from "lib/components/Tooltip";
 
 const InfoComponent = ({
+  content,
   title,
   tooltip,
-  content,
 }: {
   title: string;
   tooltip: string;
@@ -37,10 +37,10 @@ interface CollectionSupplyInfoProps {
 }
 
 export const CollectionSupplyInfo = ({
-  totalBurned,
-  totalMinted,
   currentSupply,
   maxSupply,
+  totalBurned,
+  totalMinted,
 }: CollectionSupplyInfoProps) => {
   const isMobile = useMobile();
 

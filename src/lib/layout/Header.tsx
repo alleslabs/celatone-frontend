@@ -12,10 +12,10 @@ import { SectionWrapper } from "./SectionWrapper";
 
 const Header = () => {
   const {
-    theme,
     chainConfig: {
       extra: { faucetUrl },
     },
+    theme,
   } = useCelatoneApp();
   const isInitia = useInitia();
   return (

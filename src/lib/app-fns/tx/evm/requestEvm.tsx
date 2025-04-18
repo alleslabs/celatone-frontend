@@ -24,52 +24,28 @@ interface RequestEvmTxParams {
 }
 
 export const requestEvmTx = ({
-  to,
   data,
-  value,
   estimatedFee,
-  signAndBroadcastEvm,
-  onTxSucceed,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcastEvm,
+  to,
+  value,
 }: RequestEvmTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingEvmTx(estimatedFee),
     postEvmTx<TxReceiptJsonRpc>({
       postFn: () =>
         signAndBroadcastEvm({
-          to,
           data,
+          to,
           value: value ? toBeHex(value) : null,
         }),
     }),
     (txResult) => {
       onTxSucceed?.();
       return {
-        value: null,
         phase: TxStreamPhase.SUCCEED,
-        receipts: [
-          {
-            title: "Tx hash",
-            value: txResult.value.transactionHash,
-            html: (
-              <ExplorerLink
-                openNewTab
-                type="evm_tx_hash"
-                value={txResult.value.transactionHash}
-              />
-            ),
-          },
-          {
-            title: "Tx fee",
-            html: (
-              <EstimatedFeeEvmRender
-                gasPrice={txResult.value.effectiveGasPrice}
-                gasUsed={txResult.value.gasUsed}
-                loading={false}
-              />
-            ),
-          },
-        ],
         receiptInfo: {
           header: "Transaction complete!",
           headerIcon: (
@@ -80,6 +56,30 @@ export const requestEvmTx = ({
             />
           ),
         },
+        receipts: [
+          {
+            html: (
+              <ExplorerLink
+                openNewTab
+                type="evm_tx_hash"
+                value={txResult.value.transactionHash}
+              />
+            ),
+            title: "Tx hash",
+            value: txResult.value.transactionHash,
+          },
+          {
+            html: (
+              <EstimatedFeeEvmRender
+                gasPrice={txResult.value.effectiveGasPrice}
+                gasUsed={txResult.value.gasUsed}
+                loading={false}
+              />
+            ),
+            title: "Tx fee",
+          },
+        ],
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

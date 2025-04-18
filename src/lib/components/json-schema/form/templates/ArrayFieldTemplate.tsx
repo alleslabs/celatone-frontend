@@ -23,12 +23,11 @@ export default function ArrayFieldTemplate<
   F extends FormContextType = any,
 >(props: ArrayFieldTemplateProps<T, S, F>) {
   const {
-    formData,
     canAdd,
     className,
     disabled,
+    formData,
     idSchema,
-    uiSchema,
     items,
     onAddClick,
     readonly,
@@ -36,6 +35,7 @@ export default function ArrayFieldTemplate<
     required,
     schema,
     title,
+    uiSchema,
   } = props;
   const uiOptions = getUiOptions<T, S, F>(uiSchema);
   const ArrayFieldDescriptionTemplate = getTemplate<

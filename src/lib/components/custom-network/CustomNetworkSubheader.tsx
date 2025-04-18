@@ -6,8 +6,8 @@ interface CustomNetworkSubheaderProps {
 }
 
 export const CustomNetworkSubheader = ({
-  title,
   subtitle,
+  title,
 }: CustomNetworkSubheaderProps) => {
   return (
     <Flex direction="column" gap={1}>

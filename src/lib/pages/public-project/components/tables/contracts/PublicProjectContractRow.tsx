@@ -37,16 +37,16 @@ interface ContractTableRowProps {
 // TODO - Revisit this style (exist in multiple places)
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "36px",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 
 export const PublicProjectContractRow = ({
-  templateColumns,
   publicContractInfo,
+  templateColumns,
   wasmVerifyInfo,
 }: ContractTableRowProps) => {
   const navigate = useInternalNavigate();

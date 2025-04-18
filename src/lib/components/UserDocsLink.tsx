@@ -16,13 +16,13 @@ interface UserDocsLinkProps {
 }
 
 export const UserDocsLink = ({
-  title,
   cta,
   href,
   isButton = false,
-  isInline = false,
   isDevTool = false,
+  isInline = false,
   mt = 8,
+  title,
 }: UserDocsLinkProps) =>
   isButton ? (
     <Link
@@ -66,7 +66,6 @@ export const UserDocsLink = ({
           alignItems="center"
           gap={1}
           sx={{
-            cursor: "pointer",
             "&:hover": {
               "> *": {
                 color: "primary.light",
@@ -76,6 +75,7 @@ export const UserDocsLink = ({
                 transitionTimingFunction: "ease-in-out",
               },
             },
+            cursor: "pointer",
           }}
         >
           <CustomIcon boxSize={3} color="primary.main" name="document" />

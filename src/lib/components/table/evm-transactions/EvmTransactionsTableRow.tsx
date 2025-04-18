@@ -31,11 +31,11 @@ interface EvmTransactionsTableRowProps {
 }
 
 export const EvmTransactionsTableRow = ({
-  templateColumns,
-  evmTransaction,
-  evmDenom,
   assetInfos,
+  evmDenom,
+  evmTransaction,
   showTimestamp,
+  templateColumns,
 }: EvmTransactionsTableRowProps) => {
   const navigate = useInternalNavigate();
   const toAddress = getEvmToAddress(evmTransaction);

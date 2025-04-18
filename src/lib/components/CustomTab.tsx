@@ -17,9 +17,9 @@ interface CustomTabProps extends TabProps {
 
 export const CustomTab = ({
   count,
-  isLoading,
-  isDisabled,
   fallbackValue = "N/A",
+  isDisabled,
+  isLoading,
   ...restProps
 }: CustomTabProps) => {
   const tabProps = useTab({ ...restProps });
@@ -42,11 +42,11 @@ export const CustomTab = ({
       mb={0}
       minW="fit-content"
       sx={{
-        "&[aria-selected=true]": {
-          color: "primary.light",
-        },
         "&[aria-selected=false]": {
           color: "gray.500",
+        },
+        "&[aria-selected=true]": {
+          color: "primary.light",
         },
       }}
       variant="ghost-gray"

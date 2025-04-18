@@ -17,8 +17,8 @@ interface EvmVersionToTargetProps<T extends FieldValues> {
 
 export const EvmVersionToTarget = <T extends FieldValues>({
   control,
-  name,
   evmVerifyConfig,
+  name,
 }: EvmVersionToTargetProps<T>) => {
   const {
     field: { onChange },

@@ -18,13 +18,13 @@ export const EvmContractDetailsEvmTxs = ({
   onViewMore,
 }: EvmContractDetailsEvmTxsProps) => {
   const {
-    data,
-    isLoading,
-    isError,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
     cosmosTxsCount,
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isFetchingNextPage,
+    isLoading,
   } = useContractDetailsEvmTxs(address);
 
   return (

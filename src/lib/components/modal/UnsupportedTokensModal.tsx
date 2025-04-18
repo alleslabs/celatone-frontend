@@ -37,32 +37,32 @@ const unsupportedTokensContent = (
   switch (addressType) {
     case "contract_address": {
       return {
-        icon: "assets-solid",
         header: "Contract address",
+        icon: "assets-solid",
       };
     }
     case "user_address": {
       return {
-        icon: "assets-solid",
         header: "Account address",
+        icon: "assets-solid",
       };
     }
     default:
       return {
-        icon: "alert-triangle-solid",
         header: "Invalid address",
+        icon: "alert-triangle-solid",
       };
   }
 };
 
 export const UnsupportedTokensModal = ({
-  unsupportedAssets,
   address,
   addressType = "invalid_address",
-  buttonProps,
   amptrackSection,
+  buttonProps,
+  unsupportedAssets,
 }: UnsupportedTokensModalProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   if (unsupportedAssets.length === 0) return null;
 
   const content = unsupportedTokensContent(addressType);

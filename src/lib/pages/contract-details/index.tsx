@@ -91,13 +91,13 @@ const ContractDetailsBody = observer(
         if (nextTab === tab) return;
         trackUseTab(nextTab);
         navigate({
+          options: {
+            shallow: true,
+          },
           pathname: "/contracts/[contractAddress]/[tab]",
           query: {
             contractAddress,
             tab: nextTab,
-          },
-          options: {
-            shallow: true,
           },
         });
       },
@@ -108,7 +108,7 @@ const ContractDetailsBody = observer(
       return <Loading withBorder />;
     if (!contractData) return <ErrorFetching dataName="contract information" />;
 
-    const { projectInfo, publicInfo, contract, contractApi } = contractData;
+    const { contract, contractApi, projectInfo, publicInfo } = contractData;
 
     const hasTotalBonded =
       !isTotalBondedLoading &&

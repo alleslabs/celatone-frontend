@@ -4,10 +4,10 @@ import { Flex, Text } from "@chakra-ui/react";
 import { formatPrettyPercent } from "lib/utils";
 
 const LegendItem = ({
-  label,
   color,
-  value,
+  label,
   ratio,
+  value,
 }: {
   label: string;
   color: string;
@@ -48,7 +48,7 @@ interface RecentBlocksLegendsProps {
 }
 
 export const RecentBlocksLegends = ({
-  uptime: { signed, proposed, missed, signedRatio, proposedRatio, missedRatio },
+  uptime: { missed, missedRatio, proposed, proposedRatio, signed, signedRatio },
 }: RecentBlocksLegendsProps) => (
   <Flex direction={{ base: "column", md: "row" }}>
     <LegendItem

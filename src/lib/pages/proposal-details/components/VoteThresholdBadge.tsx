@@ -11,8 +11,8 @@ interface VoteThresholdBadgeProps {
 }
 
 export const VoteThresholdBadge = ({
-  status,
   isCompact,
+  status,
 }: VoteThresholdBadgeProps) => {
   if (status === ProposalStatus.VOTING_PERIOD)
     return isCompact ? (

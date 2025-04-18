@@ -59,6 +59,7 @@ export const useGovParamsDeprecated = (): {
   return {
     data: {
       depositParams: {
+        maxDepositPeriod: data.maxDepositPeriod,
         minDeposit: {
           ...minDepositParam,
           amount: minDepositToken.amount,
@@ -70,16 +71,15 @@ export const useGovParamsDeprecated = (): {
           formattedToken: formatTokenWithValue(minDepositToken),
           precision: minDepositToken.precision ?? 0,
         },
+        minExpeditedDeposit: data.expeditedMinDeposit,
         minInitialDeposit: big(data.minInitialDepositRatio)
           .times(minDepositAmount)
           .toFixed(2) as Token,
-        maxDepositPeriod: data.maxDepositPeriod,
         minInitialDepositRatio: data.minInitialDepositRatio.toString(),
-        minExpeditedDeposit: data.expeditedMinDeposit,
       },
       votingParams: {
-        votingPeriod: data.votingPeriod,
         expeditedVotingPeriod: data.expeditedVotingPeriod,
+        votingPeriod: data.votingPeriod,
       },
     },
     isLoading,
@@ -108,8 +108,8 @@ export const useDerivedProposalParams = (
   return {
     data: {
       ...data,
-      minDeposit: data.minDeposit
-        .map((coin) =>
+      emergencyMinDeposit: data.emergencyMinDeposit
+        ?.map((coin) =>
           coinToTokenWithValue(
             coin.denom,
             coin.amount,
@@ -128,8 +128,8 @@ export const useDerivedProposalParams = (
           )
         )
         .sort(compareTokenWithValues),
-      emergencyMinDeposit: data.emergencyMinDeposit
-        ?.map((coin) =>
+      minDeposit: data.minDeposit
+        .map((coin) =>
           coinToTokenWithValue(
             coin.denom,
             coin.amount,

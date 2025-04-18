@@ -58,10 +58,10 @@ interface WhiteListState {
 }
 
 const defaultValues: WhiteListState = {
-  title: "",
-  description: "",
   addresses: [{ address: "" as BechAddr }],
-  initialDeposit: { denom: "", amount: "" } as Coin,
+  description: "",
+  initialDeposit: { amount: "", denom: "" } as Coin,
+  title: "",
 };
 
 const ProposalToWhitelist = () => {
@@ -80,11 +80,11 @@ const ProposalToWhitelist = () => {
   const { broadcast } = useTxBroadcast();
   const {
     control,
-    watch,
-    setValue,
-    reset,
     formState: { errors: formErrors },
+    reset,
+    setValue,
     trigger,
+    watch,
   } = useForm<WhiteListState>({
     defaultValues,
     mode: "all",
@@ -93,8 +93,8 @@ const ProposalToWhitelist = () => {
   const [estimatedFee, setEstimatedFee] = useState<StdFee>();
   const [simulateError, setSimulateError] = useState<string>();
   const [processing, setProcessing] = useState(false);
-  const { title, description, addresses, initialDeposit } = watch();
-  const { fields, append, remove } = useFieldArray({
+  const { addresses, description, initialDeposit, title } = watch();
+  const { append, fields, remove } = useFieldArray({
     control,
     name: "addresses",
   });
@@ -126,20 +126,20 @@ const ProposalToWhitelist = () => {
     if (!walletAddress) return [];
     return [
       composeSubmitWhitelistProposalMsg({
-        title,
-        description,
         changesValue: JSON.stringify({
-          permission: uploadAccessParams?.isPermissionedNetwork
-            ? AccessConfigPermission.ANY_OF_ADDRESSES
-            : AccessConfigPermission.EVERYBODY,
           addresses:
             uploadAccessParams?.codeUploadAccess.addresses?.concat(
               addressesArray
             ),
+          permission: uploadAccessParams?.isPermissionedNetwork
+            ? AccessConfigPermission.ANY_OF_ADDRESSES
+            : AccessConfigPermission.EVERYBODY,
         }),
+        description,
         initialDeposit,
-        proposer: walletAddress,
         precision: minDeposit?.precision,
+        proposer: walletAddress,
+        title,
       }),
     ];
   }, [
@@ -155,22 +155,22 @@ const ProposalToWhitelist = () => {
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: enabledTx,
     messages: submitWhitelistProposalMsg,
+    onError: (e) => {
+      setSimulateError(e.message);
+      setEstimatedFee(undefined);
+    },
     onSuccess: (fee) => {
       if (fee) {
         setSimulateError(undefined);
         setEstimatedFee(fabricateFee(fee));
       } else setEstimatedFee(undefined);
     },
-    onError: (e) => {
-      setSimulateError(e.message);
-      setEstimatedFee(undefined);
-    },
   });
 
   const {
-    variant,
     description: alertDesc,
     icon,
+    variant,
   } = getAlert(
     initialDeposit.amount,
     govParams?.depositParams.minInitialDeposit,
@@ -180,19 +180,19 @@ const ProposalToWhitelist = () => {
 
   const proceed = useCallback(async () => {
     const stream = await submitProposalTx({
+      amountToVote: getAmountToVote(initialDeposit, minDeposit),
       estimatedFee,
       messages: submitWhitelistProposalMsg,
-      whitelistNumber: addressesArray.length,
-      amountToVote: getAmountToVote(initialDeposit, minDeposit),
+      onTxFailed: () => setProcessing(false),
 
       onTxSucceed: () => setProcessing(false),
-      onTxFailed: () => setProcessing(false),
+      whitelistNumber: addressesArray.length,
     });
     trackUseSubmitProposal({
-      initialDeposit: initialDeposit.amount,
-      assetDenom: initialDeposit.denom,
-      minDeposit: minDeposit?.formattedAmount,
       addressesCount: addresses.length,
+      assetDenom: initialDeposit.denom,
+      initialDeposit: initialDeposit.amount,
+      minDeposit: minDeposit?.formattedAmount,
     });
     if (stream) {
       setProcessing(true);
@@ -225,7 +225,7 @@ const ProposalToWhitelist = () => {
     if (minDeposit)
       reset({
         ...defaultValues,
-        initialDeposit: { denom: minDeposit.denom, amount: "" },
+        initialDeposit: { amount: "", denom: minDeposit.denom },
       });
   }, [minDeposit, reset]);
 
@@ -296,8 +296,8 @@ const ProposalToWhitelist = () => {
                   name="title"
                   placeholder="ex. Allow XYZ to store code without proposal"
                   rules={{
-                    required: "Proposal Title is required",
                     maxLength: constants.maxProposalTitleLength,
+                    required: "Proposal Title is required",
                   }}
                   variant="fixed-floating"
                 />

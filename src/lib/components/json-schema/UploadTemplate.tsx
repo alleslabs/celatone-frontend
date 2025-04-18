@@ -47,9 +47,9 @@ type Action = {
 };
 
 const initialJsonState: JsonState = {
-  [Method.UPLOAD_FILE]: { schemaString: "", error: null },
-  [Method.LOAD_URL]: { schemaString: "", error: null },
-  [Method.FILL_MANUALLY]: { schemaString: "", error: null },
+  [Method.FILL_MANUALLY]: { error: null, schemaString: "" },
+  [Method.LOAD_URL]: { error: null, schemaString: "" },
+  [Method.UPLOAD_FILE]: { error: null, schemaString: "" },
 };
 
 const reducer = (state: JsonState, action: Action): JsonState => {
@@ -58,14 +58,14 @@ const reducer = (state: JsonState, action: Action): JsonState => {
       return {
         ...state,
         [action.method]: {
-          schemaString: state[action.method].schemaString,
           error: action.error,
+          schemaString: state[action.method].schemaString,
         },
       };
     case ActionType.SET_SCHEMA:
       return {
         ...state,
-        [action.method]: { schemaString: action.schemaString, error: null },
+        [action.method]: { error: null, schemaString: action.schemaString },
       };
     case ActionType.RESET:
     default:
@@ -83,10 +83,10 @@ const validateSchema = (schemaString: string): Nullable<string> => {
 };
 
 const MethodRender = ({
+  dispatch,
   method,
   state,
   urlLoading,
-  dispatch,
 }: {
   method: Method;
   state: JsonState;
@@ -102,9 +102,9 @@ const MethodRender = ({
           deleteFile={() => {
             setJsonFile(undefined);
             dispatch({
-              type: ActionType.SET_SCHEMA,
               method,
               schemaString: "",
+              type: ActionType.SET_SCHEMA,
             });
           }}
           file={jsonFile}
@@ -122,9 +122,9 @@ const MethodRender = ({
             reader.onload = () => {
               const content = reader.result as string;
               dispatch({
-                type: ActionType.SET_SCHEMA,
                 method,
                 schemaString: content,
+                type: ActionType.SET_SCHEMA,
               });
             };
             try {
@@ -148,14 +148,14 @@ const MethodRender = ({
           <TextInput
             setInputState={(url: string) =>
               dispatch({
-                type: ActionType.SET_SCHEMA,
                 method,
                 schemaString: url,
+                type: ActionType.SET_SCHEMA,
               })
             }
             status={{
-              state: status,
               message: error,
+              state: status,
             }}
             value={schemaString}
           />
@@ -172,9 +172,9 @@ const MethodRender = ({
             maxLines={12}
             setText={(value: string) =>
               dispatch({
-                type: ActionType.SET_SCHEMA,
                 method,
                 schemaString: value,
+                type: ActionType.SET_SCHEMA,
               })
             }
             text={schemaString}
@@ -196,10 +196,10 @@ interface UploadTemplateInterface {
 }
 
 export const UploadTemplate = ({
+  closeDrawer,
   codeHash,
   codeId,
   isReattach,
-  closeDrawer,
   onSchemaSave,
 }: UploadTemplateInterface) => {
   const { saveNewSchema } = useSchemaStore();
@@ -212,9 +212,9 @@ export const UploadTemplate = ({
     let { schemaString } = jsonState[method];
     if (!schemaString)
       return dispatchJsonState({
-        type: ActionType.SET_ERROR,
-        method,
         error: "Empty schema input",
+        method,
+        type: ActionType.SET_ERROR,
       });
 
     // Retrieve schemaString from url
@@ -225,19 +225,19 @@ export const UploadTemplate = ({
         if (!response.ok) {
           setUrlLoading(false);
           return dispatchJsonState({
-            type: ActionType.SET_ERROR,
-            method,
             error:
               response.status === 404 ? "404 not found" : response.statusText,
+            method,
+            type: ActionType.SET_ERROR,
           });
         }
         schemaString = JSON.stringify(await response.json());
       } catch (err) {
         setUrlLoading(false);
         return dispatchJsonState({
-          type: ActionType.SET_ERROR,
-          method,
           error: (err as Error).message,
+          method,
+          type: ActionType.SET_ERROR,
         });
       }
     }
@@ -246,26 +246,26 @@ export const UploadTemplate = ({
     if (schemaValidateError) {
       setUrlLoading(false);
       return dispatchJsonState({
-        type: ActionType.SET_ERROR,
-        method,
         error: schemaValidateError,
+        method,
+        type: ActionType.SET_ERROR,
       });
     }
     saveNewSchema(codeHash, codeId.toString(), JSON.parse(schemaString));
-    track(AmpEvent.ACTION_ATTACH_JSON, { method, isReattach });
+    track(AmpEvent.ACTION_ATTACH_JSON, { isReattach, method });
     toast({
-      title: `Attached JSON schema`,
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      status: "success",
+      title: `Attached JSON schema`,
     });
 
     setUrlLoading(false);
     onSchemaSave?.();
     closeDrawer();
-    return dispatchJsonState({ type: ActionType.RESET, method });
+    return dispatchJsonState({ method, type: ActionType.RESET });
   }, [
     closeDrawer,
     codeHash,

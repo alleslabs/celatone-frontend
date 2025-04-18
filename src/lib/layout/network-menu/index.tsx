@@ -22,16 +22,16 @@ export const NetworkMenu = observer(() => {
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
 
   const {
-    keyword,
-    setKeyword,
-    handleOnKeyDown,
     cursor,
-    setCursor,
-    filteredPinnedChains,
-    filteredMainnetChains,
-    filteredTestnetChains,
     filteredDevnetChains,
     filteredLocalChains,
+    filteredMainnetChains,
+    filteredPinnedChains,
+    filteredTestnetChains,
+    handleOnKeyDown,
+    keyword,
+    setCursor,
+    setKeyword,
   } = useNetworkSelector(onClose);
 
   useNetworkShortCut(onToggle);

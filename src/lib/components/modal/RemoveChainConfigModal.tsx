@@ -17,7 +17,7 @@ export function RemoveChainConfigModal({
   chainId,
   trigger,
 }: RemoveChainConfigModalProps) {
-  const { removeLocalChainConfig, getLocalChainConfig } =
+  const { getLocalChainConfig, removeLocalChainConfig } =
     useLocalChainConfigStore();
   const { removeNetwork } = useNetworkStore();
   const router = useRouter();
@@ -38,12 +38,12 @@ export function RemoveChainConfigModal({
 
     setTimeout(() => {
       toast({
-        title: `Removed '${chainConfig?.prettyName}'`,
-        status: "success",
         duration: 5000,
+        icon: <CustomIcon color="success.main" name="check-circle-solid" />,
         isClosable: false,
         position: "bottom-right",
-        icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+        status: "success",
+        title: `Removed '${chainConfig?.prettyName}'`,
       });
     }, 1000);
   };

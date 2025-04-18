@@ -80,8 +80,8 @@ const NftDetailsBody = ({
   if (isCollectionLoading || isNftLoading) return <Loading />;
   if (!collection || !nft) return <InvalidNft />;
 
-  const { name: collectionName, description: collectionDesc } = collection;
-  const { tokenId, description, uri, ownerAddress, isBurned } = nft;
+  const { description: collectionDesc, name: collectionName } = collection;
+  const { description, isBurned, ownerAddress, tokenId, uri } = nft;
 
   const displayCollectionName =
     collectionName.length > 20
@@ -93,10 +93,10 @@ const NftDetailsBody = ({
       <CelatoneSeo pageName={tokenId ? `NFT – ${tokenId}` : "NFT Details"} />
       <Breadcrumb
         items={[
-          { text: "NFT collections", href: "/nft-collections" },
+          { href: "/nft-collections", text: "NFT collections" },
           {
-            text: displayCollectionName,
             href: `/nft-collections/${collectionAddress}`,
+            text: displayCollectionName,
           },
           { text: tokenId },
         ]}
@@ -124,22 +124,22 @@ const NftDetailsBody = ({
             )}
             <div
               style={{
-                width: "100%",
                 height: "0",
                 paddingTop: "100%",
                 position: "relative",
+                width: "100%",
               }}
             >
               <Image
                 style={{
+                  backgroundPosition: "center",
+                  borderRadius: "8px",
+                  height: "100%",
+                  left: 0,
+                  objectFit: "contain",
                   position: "absolute",
                   top: 0,
-                  left: 0,
                   width: "100%",
-                  height: "100%",
-                  borderRadius: "8px",
-                  objectFit: "contain",
-                  backgroundPosition: "center",
                 }}
                 background="gray.900"
                 borderRadius="8px"

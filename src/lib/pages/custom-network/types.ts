@@ -56,8 +56,8 @@ const zWasmVmRadio = z.object({
 });
 
 const zEvmVmRadio = z.object({
-  type: z.literal(VmType.EVM),
   jsonRpc: zHttpsUrl,
+  type: z.literal(VmType.EVM),
 });
 export type EvmVmRadio = z.infer<typeof zEvmVmRadio>;
 
@@ -67,15 +67,15 @@ const zVmTypeRadio = z.union([zMoveVmRadio, zWasmVmRadio, zEvmVmRadio]);
 const zNetworkDetails = zChainConfig
   .innerType()
   .pick({
+    chainId: true,
     prettyName: true,
+    registryChainName: true,
     rest: true,
     rpc: true,
-    chainId: true,
-    registryChainName: true,
   })
   .extend({
-    vm: zVmTypeRadio,
     logoUri: z.union([zHttpsUrl, z.literal("")]),
+    vm: zVmTypeRadio,
   });
 type NetworkDetails = z.infer<typeof zNetworkDetails>;
 
@@ -84,7 +84,7 @@ const networkDetailsFormValidator = (
   ctx: RefinementCtx,
   validateExistingChain: ValidateExistingChain
 ) => {
-  const { prettyName, chainId, registryChainName } = val;
+  const { chainId, prettyName, registryChainName } = val;
   const { isChainIdExist } = validateExistingChain;
 
   if (prettyName === "")
@@ -143,11 +143,11 @@ const zGasConfigFeeDetails = zGasConfig
   })
   .merge(
     zFeeToken.pick({
+      average_gas_price: true,
       denom: true,
       fixed_min_gas_price: true,
-      low_gas_price: true,
-      average_gas_price: true,
       high_gas_price: true,
+      low_gas_price: true,
     })
   )
   .merge(zGasConfigCosts.pick({ cosmos_send: true, ibc_transfer: true }))
@@ -159,13 +159,13 @@ type GasFeeDetails = z.infer<typeof zGasConfigFeeDetails>;
 
 const gasFeeDetailsFormValidator = (val: GasFeeDetails, ctx: RefinementCtx) => {
   const {
-    denom,
-    gasConfig,
-    fixed_min_gas_price: fixedMinGasPrice,
-    low_gas_price: lowGasPrice,
     average_gas_price: averageGasPrice,
-    high_gas_price: highGasPrice,
+    denom,
+    fixed_min_gas_price: fixedMinGasPrice,
+    gasConfig,
     gasPrice,
+    high_gas_price: highGasPrice,
+    low_gas_price: lowGasPrice,
   } = val;
 
   if (!isAlphabetNumberAndSpecialCharacters(denom))
@@ -245,15 +245,15 @@ const zWalletRegistryAssetDenom = zDenomUnit
 
 const zWalletRegistryAsset = zAsset
   .pick({
-    name: true,
     base: true,
+    name: true,
     symbol: true,
   })
   .extend({
     denoms: z.array(zWalletRegistryAssetDenom),
   })
   .superRefine((val, ctx) => {
-    const { name, base, symbol } = val;
+    const { base, name, symbol } = val;
 
     if (!/^[a-z-]+$/.test(name))
       ctx.addIssue({
@@ -350,37 +350,28 @@ export const zAddNetworkManualChainConfigJson = ({
     isChainIdExist,
   }).transform<ChainConfig>(
     ({
+      assets,
+      average_gas_price,
+      bech32_prefix,
       chainId,
-      registryChainName,
-      prettyName,
-      logoUri,
-      rest,
-      rpc,
-      vm,
-      gasAdjustment,
-      maxGasLimit,
+      cosmos_send,
       denom,
       fixed_min_gas_price,
-      low_gas_price,
-      average_gas_price,
-      cosmos_send,
+      gasAdjustment,
       ibc_transfer,
-      bech32_prefix,
+      logoUri,
+      low_gas_price,
+      maxGasLimit,
+      prettyName,
+      registryChainName,
+      rest,
+      rpc,
       slip44,
-      assets,
+      vm,
     }: AddNetworkManualForm) => ({
       ...DEFAULT_CUSTOM_MINITIA_NETWORK,
       chainId,
-      registryChainName,
-      prettyName,
-      logo_URIs: {
-        png: logoUri || undefined,
-      },
-      rest,
-      rpc,
       features: {
-        wasm: vm.type === "wasm" ? DEFAULT_WASM_CONFIG : { enabled: false },
-        move: vm.type === "move" ? DEFAULT_MOVE_CONFIG : { enabled: false },
         evm:
           vm.type === "evm"
             ? {
@@ -388,45 +379,54 @@ export const zAddNetworkManualChainConfigJson = ({
                 jsonRpc: vm.jsonRpc,
               }
             : { enabled: false },
-        pool: DEFAULT_POOL_CONFIG,
-        publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
         gov: DEFAULT_GOV_CONFIG,
+        move: vm.type === "move" ? DEFAULT_MOVE_CONFIG : { enabled: false },
         nft: {
           enabled: vm.type === "move",
         },
+        pool: DEFAULT_POOL_CONFIG,
+        publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
+        wasm: vm.type === "wasm" ? DEFAULT_WASM_CONFIG : { enabled: false },
+      },
+      fees: {
+        fee_tokens: [
+          {
+            average_gas_price,
+            denom,
+            fixed_min_gas_price,
+            gas_costs: {
+              cosmos_send,
+              ibc_transfer,
+            },
+            low_gas_price,
+          },
+        ],
       },
       gas: {
         gasAdjustment,
         maxGasLimit,
       },
-      fees: {
-        fee_tokens: [
-          {
-            denom,
-            fixed_min_gas_price,
-            low_gas_price,
-            average_gas_price,
-            gas_costs: {
-              cosmos_send,
-              ibc_transfer,
-            },
-          },
-        ],
+      logo_URIs: {
+        png: logoUri || undefined,
       },
+      prettyName,
       registry: {
-        bech32_prefix,
-        slip44,
-        assets: assets.map(({ name, base, symbol, denoms }) => ({
-          name,
+        assets: assets.map(({ base, denoms, name, symbol }) => ({
           base,
-          symbol,
           denom_units: denoms.map(({ denom: denomUnit, exponent }) => ({
             denom: denomUnit,
             exponent,
           })),
           display: symbol,
+          name,
+          symbol,
         })),
+        bech32_prefix,
+        slip44,
       },
+      registryChainName,
+      rest,
+      rpc,
     })
   );
 
@@ -439,20 +439,20 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
   .innerType()
   .pick({
     chainId: true,
-    registryChainName: true,
-    prettyName: true,
+    fees: true,
+    gas: true,
     logo_URIs: true,
+    prettyName: true,
+    registry: true,
+    registryChainName: true,
     rest: true,
     rpc: true,
-    gas: true,
-    fees: true,
-    registry: true,
   })
   .extend({
     features: z.object({
-      wasm: zWasmConfig,
-      move: zMoveConfig,
       evm: zEvmConfig,
+      move: zMoveConfig,
+      wasm: zWasmConfig,
     }),
   })
   .transform<ChainConfig>(({ features, ...val }) => ({
@@ -460,12 +460,12 @@ export const zAddNetworkJsonChainConfigJson = zChainConfig
     ...DEFAULT_CUSTOM_MINITIA_NETWORK,
     features: {
       ...features,
-      pool: DEFAULT_POOL_CONFIG,
-      publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
       gov: DEFAULT_GOV_CONFIG,
       nft: {
         enabled: features.move.enabled,
       },
+      pool: DEFAULT_POOL_CONFIG,
+      publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
     },
   }));
 
@@ -476,14 +476,14 @@ export type AddNetworkJsonChainConfigJson = z.infer<
 export const zAddNetworkLinkChainConfigJson = z
   .object({
     chainId: z.string().min(1, "Chain ID cannot be empty"),
+    denom: z.string(),
+    jsonRpc: zHttpsUrl.optional(),
     // MARK: Support backward lcd to rest
     lcd: zHttpsUrl.optional(),
+    minGasPrice: z.number(),
     rest: zHttpsUrl.optional(),
     rpc: zHttpsUrl,
-    jsonRpc: zHttpsUrl.optional(),
     vm: z.nativeEnum(VmType),
-    minGasPrice: z.number(),
-    denom: z.string(),
   })
   .superRefine((val, ctx) => {
     if (!val.lcd && !val.rest) {
@@ -513,42 +513,42 @@ export const zAddNetworkLinkChainConfigJson = z
     return {
       ...DEFAULT_CUSTOM_MINITIA_NETWORK,
       chainId: val.chainId,
-      registryChainName: val.chainId,
-      prettyName: capitalize(val.chainId),
-      rest: restEndpoint,
-      rpc: val.rpc,
       features: {
-        wasm: val.vm === VmType.WASM ? DEFAULT_WASM_CONFIG : { enabled: false },
-        move: val.vm === VmType.MOVE ? DEFAULT_MOVE_CONFIG : { enabled: false },
         evm:
           val.vm === VmType.EVM
             ? { enabled: true, jsonRpc: val.jsonRpc! } // jsonRpc is required when vm is evm
             : { enabled: false },
-        pool: DEFAULT_POOL_CONFIG,
-        publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
         gov: DEFAULT_GOV_CONFIG,
+        move: val.vm === VmType.MOVE ? DEFAULT_MOVE_CONFIG : { enabled: false },
         nft: {
           enabled: val.vm === VmType.MOVE,
         },
+        pool: DEFAULT_POOL_CONFIG,
+        publicProject: DEFAULT_PUBLIC_PROJECT_CONFIG,
+        wasm: val.vm === VmType.WASM ? DEFAULT_WASM_CONFIG : { enabled: false },
+      },
+      fees: {
+        fee_tokens: [
+          {
+            average_gas_price: val.minGasPrice,
+            denom: val.denom,
+            fixed_min_gas_price: val.minGasPrice,
+            low_gas_price: val.minGasPrice,
+          },
+        ],
       },
       gas: {
         gasAdjustment: DEFAULT_GAS.gasAdjustment,
         maxGasLimit: DEFAULT_GAS.maxGasLimit,
       },
-      fees: {
-        fee_tokens: [
-          {
-            denom: val.denom,
-            fixed_min_gas_price: val.minGasPrice,
-            low_gas_price: val.minGasPrice,
-            average_gas_price: val.minGasPrice,
-          },
-        ],
-      },
+      prettyName: capitalize(val.chainId),
       registry: {
+        assets: [],
         bech32_prefix: bech32Prefix,
         slip44: DEFAULT_SLIP44,
-        assets: [],
       },
+      registryChainName: val.chainId,
+      rest: restEndpoint,
+      rpc: val.rpc,
     };
   });

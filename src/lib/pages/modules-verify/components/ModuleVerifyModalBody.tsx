@@ -16,10 +16,10 @@ interface ModuleVerifyModalBodyProps {
 }
 
 export const ModuleVerifyModalBody = ({
+  control,
   isError,
   isLoading,
   onClose,
-  control,
 }: ModuleVerifyModalBodyProps) => {
   const [fakeLoading, setFakeLoading] = useState(false);
 

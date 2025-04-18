@@ -11,9 +11,9 @@ interface VoteDetailsTabProps extends TabProps {
 }
 
 export const VoteDetailsTab = ({
-  step,
-  proposalData,
   isDisabled,
+  proposalData,
+  step,
   ...restProps
 }: VoteDetailsTabProps) => {
   const tabProps = useTab({ ...restProps });
@@ -32,19 +32,19 @@ export const VoteDetailsTab = ({
       mb={0}
       py={3}
       sx={{
-        "&[aria-selected=true]": {
-          background: "gray.800",
-          border: "1px solid",
-          borderColor: "gray.700",
-          opacity: "100%",
-          borderBottomColor: "gray.800",
-        },
         "&[aria-selected=false]": {
           background: "transparent",
           border: "1px solid",
+          borderBottomColor: "transparent",
           borderColor: "gray.700",
           opacity: "70%",
-          borderBottomColor: "transparent",
+        },
+        "&[aria-selected=true]": {
+          background: "gray.800",
+          border: "1px solid",
+          borderBottomColor: "gray.800",
+          borderColor: "gray.700",
+          opacity: "100%",
         },
       }}
       w="full"

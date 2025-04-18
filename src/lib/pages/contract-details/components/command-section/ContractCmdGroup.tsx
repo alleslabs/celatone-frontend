@@ -13,9 +13,9 @@ interface ContractCmdGroupProps {
 }
 
 export const ContractCmdGroup = ({
-  isFetching,
   cmds,
   contractAddress,
+  isFetching,
   type,
 }: ContractCmdGroupProps) => {
   const navigate = useInternalNavigate();
@@ -30,8 +30,8 @@ export const ContractCmdGroup = ({
         rowGap={2}
         sx={{
           "> button": {
-            marginInlineStart: "0 !important",
             marginInlineEnd: "1",
+            marginInlineStart: "0 !important",
           },
         }}
         width="90%"
@@ -44,9 +44,9 @@ export const ContractCmdGroup = ({
               navigate({
                 pathname: `/interact-contract`,
                 query: {
-                  selectedType: type,
                   contract: contractAddress,
                   msg: libEncode(jsonPrettify(msg)),
+                  selectedType: type,
                 },
               });
             }}

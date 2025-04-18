@@ -19,9 +19,9 @@ interface NftsOverviewProps {
 }
 
 export const NftsOverview = ({
-  userAddress,
-  totalCount,
   onViewMore,
+  totalCount,
+  userAddress,
 }: NftsOverviewProps) => {
   const isMobile = useMobile();
   const { isFullTier, isSequencerTier } = useTierConfig();

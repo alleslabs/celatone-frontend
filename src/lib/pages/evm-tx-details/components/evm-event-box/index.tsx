@@ -51,7 +51,7 @@ const EvmEventBoxName = ({
   );
 };
 
-export const EvmEventBox = ({ log, evmVerifyInfo }: EvmEventBoxProps) => {
+export const EvmEventBox = ({ evmVerifyInfo, log }: EvmEventBoxProps) => {
   const [currentTab, setCurrentTab] = useState(EvmEventBoxTabs.Hex);
   const parsedLog = parseEvmLog(evmVerifyInfo?.abi ?? [], log);
 

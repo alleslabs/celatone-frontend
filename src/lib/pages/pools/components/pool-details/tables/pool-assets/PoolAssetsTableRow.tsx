@@ -27,11 +27,11 @@ interface PoolAssetsTableRowProps {
 }
 
 export const PoolAssetsTableRow = ({
-  pool: { type: poolType, weight, scalingFactors, isSupported },
-  token,
-  templateColumns,
-  totalLiquidity,
   liquidityIndex,
+  pool: { isSupported, scalingFactors, type: poolType, weight },
+  templateColumns,
+  token,
+  totalLiquidity,
 }: PoolAssetsTableRowProps) => {
   const allocation = token.value
     ? formatRatio(divWithDefault(token.value, totalLiquidity, 0) as Ratio<Big>)

@@ -34,9 +34,9 @@ interface FunctionStates {
 }
 
 const RenderFunctions = ({
-  states,
   selectedFn,
   setSelectedFn,
+  states,
   tab,
 }: {
   states: FunctionStates;
@@ -89,10 +89,10 @@ interface FunctionSelectPanelProps {
 
 export const FunctionSelectPanel = ({
   module,
-  tab,
-  setTab,
   selectedFn,
   setSelectedFn,
+  setTab,
+  tab,
 }: FunctionSelectPanelProps) => {
   const [keyword, setKeyword] = useState("");
 

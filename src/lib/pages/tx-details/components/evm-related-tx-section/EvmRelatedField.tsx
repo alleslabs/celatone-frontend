@@ -8,7 +8,7 @@ interface EvmRelatedFieldProps {
   children: FlexProps["children"];
 }
 
-export const EvmRelatedField = ({ label, children }: EvmRelatedFieldProps) => {
+export const EvmRelatedField = ({ children, label }: EvmRelatedFieldProps) => {
   const isMobile = useMobile();
   return (
     <Flex

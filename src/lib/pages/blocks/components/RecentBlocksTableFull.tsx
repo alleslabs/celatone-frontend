@@ -10,18 +10,18 @@ export const RecentBlocksTableFull = ({
   isViewMore,
 }: RecentBlocksTableProps) => {
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: isViewMore ? 5 : 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: isViewMore ? 5 : 10,
     },
   });
   const { data, isLoading } = useBlocks(pageSize, offset, {

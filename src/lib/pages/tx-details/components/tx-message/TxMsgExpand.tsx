@@ -29,10 +29,10 @@ interface TxMsgExpandProps extends TxMsgData {
 }
 
 export const TxMsgExpand = ({
-  msgBody,
-  log,
   isExpand,
   isSingleMsg,
+  log,
+  msgBody,
   onClick,
 }: TxMsgExpandProps) => {
   const isMobile = useMobile();
@@ -41,7 +41,7 @@ export const TxMsgExpand = ({
   const { data: movePoolInfos } = useMovePoolInfos({ withPrices: false });
 
   const { "@type": type, ...body } = msgBody;
-  const { isIbc, isOpinit, isEvm } = getTxBadges(type, log);
+  const { isEvm, isIbc, isOpinit } = getTxBadges(type, log);
 
   let msgIcon: IconKeys = "file";
   let content: ReactNode;
@@ -311,14 +311,14 @@ export const TxMsgExpand = ({
   return (
     <Flex
       _after={{
-        content: '""',
-        position: "absolute",
-        bottom: 0,
-        left: "50%",
-        transform: "translateX(-50%)",
-        h: "1px",
-        w: "99%",
         bg: "gray.700",
+        bottom: 0,
+        content: '""',
+        h: "1px",
+        left: "50%",
+        position: "absolute",
+        transform: "translateX(-50%)",
+        w: "99%",
       }}
       _hover={{ backgroundColor: "gray.800" }}
       align="center"
@@ -331,9 +331,9 @@ export const TxMsgExpand = ({
       onClick={() => {
         track(AmpEvent.USE_TX_MSG_EXPAND, {
           action: isExpand ? "collapse" : "expand",
-          msg: type,
           ibc: isIbc,
           isSingleMsg,
+          msg: type,
         });
         onClick();
       }}

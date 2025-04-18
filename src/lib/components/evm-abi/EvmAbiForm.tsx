@@ -18,12 +18,12 @@ interface EvmAbiFormProps {
 }
 
 export const EvmAbiForm = ({
-  types,
-  isPayable = false,
   initialData,
+  isDisabled,
+  isPayable = false,
   propsOnChangeInputs,
   propsOnChangeValue,
-  isDisabled,
+  types,
 }: EvmAbiFormProps) => {
   const defaultValues = useMemo(
     () => initialData ?? getComponentsDefaultValues(types),

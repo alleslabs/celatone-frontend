@@ -16,8 +16,8 @@ interface SavedAccountsTableProps {
 
 export const SavedAccountsTable = ({
   accounts,
-  isLoading,
   emptyState,
+  isLoading,
 }: SavedAccountsTableProps) => {
   const move = useMoveConfig({ shouldRedirect: false });
   const evm = useEvmConfig({ shouldRedirect: false });

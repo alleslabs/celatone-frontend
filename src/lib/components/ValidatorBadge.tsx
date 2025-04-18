@@ -18,11 +18,11 @@ interface ValidatorBadgeProps {
 }
 
 export const ValidatorBadge = ({
-  validator,
-  badgeSize = 10,
   ampCopierSection,
+  badgeSize = 10,
   hasLabel = true,
   moreInfo,
+  validator,
 }: ValidatorBadgeProps) => {
   const isMobile = useMobile();
   const {

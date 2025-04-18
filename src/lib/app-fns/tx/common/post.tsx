@@ -33,11 +33,13 @@ export const postTx = <T extends DeliverTxResponse>({
           ?.attributes[0].value;
 
         return {
-          value: txResult,
+          actionVariant: "sending",
           phase: TxStreamPhase.BROADCAST,
+          receiptInfo: {
+            header: "Sending transaction",
+          },
           receipts: [
             {
-              title: "Tx hash",
               html: (
                 <ExplorerLink
                   openNewTab
@@ -45,9 +47,9 @@ export const postTx = <T extends DeliverTxResponse>({
                   value={txResult.transactionHash}
                 />
               ),
+              title: "Tx hash",
             },
             {
-              title: "Tx fee",
               // TODO: Implement event/rawlog attribute picker
               html: (
                 <EstimatedFeeRender
@@ -55,12 +57,10 @@ export const postTx = <T extends DeliverTxResponse>({
                   loading={false}
                 />
               ),
+              title: "Tx fee",
             },
           ],
-          receiptInfo: {
-            header: "Sending transaction",
-          },
-          actionVariant: "sending",
+          value: txResult,
         } as TxResultRendering<T>;
       }
     );

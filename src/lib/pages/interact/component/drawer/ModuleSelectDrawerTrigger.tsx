@@ -7,12 +7,12 @@ import { CustomIcon } from "lib/components/icon";
 type TriggerVariant = "select-module" | "change-module";
 
 const buttonStyles: { [key in TriggerVariant]: ButtonProps } = {
+  "change-module": {
+    leftIcon: <CustomIcon boxSize={3} name="swap" />,
+    variant: "outline-white",
+  },
   "select-module": {
     variant: "primary",
-  },
-  "change-module": {
-    variant: "outline-white",
-    leftIcon: <CustomIcon boxSize={3} name="swap" />,
   },
 };
 
@@ -23,9 +23,9 @@ interface ModuleSelectDrawerTriggerProps {
 }
 
 export const ModuleSelectDrawerTrigger = ({
-  triggerVariant,
   buttonText = "Select module",
   onOpen,
+  triggerVariant,
 }: ModuleSelectDrawerTriggerProps) => (
   <Button
     {...buttonStyles[triggerVariant]}

@@ -31,12 +31,12 @@ export const ProposalStatusFilter = forwardRef<
 >(
   (
     {
-      result,
-      minW = "50%",
-      setResult,
-      placeholder,
-      label,
       isMulti,
+      label,
+      minW = "50%",
+      placeholder,
+      result,
+      setResult,
     }: ProposalStatusFilterProps,
     ref
   ) => {
@@ -87,8 +87,8 @@ export const ProposalStatusFilter = forwardRef<
     };
 
     useOutsideClick({
-      ref: boxRef as RefObject<HTMLDivElement>,
       handler: () => setIsDropdown(false),
+      ref: boxRef as RefObject<HTMLDivElement>,
     });
 
     return (

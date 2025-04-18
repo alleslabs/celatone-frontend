@@ -26,12 +26,12 @@ export function RemoveListModal({ list, menuItemProps }: RemoveListModalProps) {
     // TODO: show toast after removed and redirect to /contract-lists
     setTimeout(() => {
       toast({
-        title: `Removed '${shortenName(list.label)}'`,
-        status: "success",
         duration: 5000,
+        icon: <CustomIcon color="success.main" name="check-circle-solid" />,
         isClosable: false,
         position: "bottom-right",
-        icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+        status: "success",
+        title: `Removed '${shortenName(list.label)}'`,
       });
     }, 1000);
   };

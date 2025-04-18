@@ -34,12 +34,12 @@ interface AppContextInterface {
 }
 
 const DEFAULT_STATES: AppContextInterface = {
-  isHydrated: false,
-  currentChainId: "",
   chainConfig: DEFAULT_CHAIN_CONFIG,
   constants: PROJECT_CONSTANTS,
-  theme: FALLBACK_THEME,
+  currentChainId: "",
+  isHydrated: false,
   setTheme: () => {},
+  theme: FALLBACK_THEME,
 };
 
 const AppContext = createContext<AppContextInterface>(DEFAULT_STATES);
@@ -69,13 +69,13 @@ export const AppProvider = observer(({ children }: AppProviderProps) => {
       changeFavicon(theme.branding.favicon);
 
       setStates({
-        isHydrated: true,
-        currentChainId: newChainId,
         chainConfig,
         constants: PROJECT_CONSTANTS,
-        theme,
+        currentChainId: newChainId,
+        isHydrated: true,
         setTheme: (newTheme: ThemeConfig) =>
           setStates((prev) => ({ ...prev, theme: newTheme })),
+        theme,
       });
     },
     [chainConfigs]

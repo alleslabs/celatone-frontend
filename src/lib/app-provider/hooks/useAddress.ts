@@ -136,9 +136,6 @@ export const useValidateAddress = () => {
   );
 
   return {
-    validateContractAddress,
-    validateUserAddress,
-    validateValidatorAddress,
     isSomeValidAddress: useCallback(
       (address: string) => {
         const errUser = validateUserAddress(address);
@@ -150,5 +147,8 @@ export const useValidateAddress = () => {
       },
       [hasHexAddr, validateContractAddress, validateUserAddress]
     ),
+    validateContractAddress,
+    validateUserAddress,
+    validateValidatorAddress,
   };
 };

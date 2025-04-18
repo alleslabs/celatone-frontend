@@ -11,7 +11,7 @@ export const generateSourceTree = (
 ): SourceTreeNode[] => {
   const root: SourceTreeNode[] = [];
 
-  filesPath.forEach(({ path, code }) => {
+  filesPath.forEach(({ code, path }) => {
     const parts = path.split("/");
     let currentLevel = root;
 
@@ -26,15 +26,15 @@ export const generateSourceTree = (
         const isOpen = index === 0 ? true : isInitializeNodePath;
 
         existingNode = {
-          name: part,
-          isOpen,
           children: [],
+          code,
           isFolder,
           isLib,
-          treeLevel: index,
-          code,
-          path: parts.slice(0, index + 1).join("/"),
+          isOpen,
           language: extension === "vy" ? "python" : extension,
+          name: part,
+          path: parts.slice(0, index + 1).join("/"),
+          treeLevel: index,
         };
         currentLevel.push(existingNode);
       }

@@ -61,27 +61,27 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
     setRes("");
   }, [contractAddress, initialMsg]);
 
-  const { refetch, isFetching } = useContractQueryRest(contractAddress, msg, {
-    enabled: false,
-    retry: false,
+  const { isFetching, refetch } = useContractQueryRest(contractAddress, msg, {
     cacheTime: 0,
-    onSettled: () => setMsg(jsonPrettify(msg)),
-    onSuccess: (data) => {
-      setRes(JSON.stringify(data, null, 2));
-      addActivity({
-        type: "query",
-        action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
-        sender: address,
-        contractAddress,
-        msg: encode(msg),
-        timestamp: getCurrentDate(),
-      });
-    },
+    enabled: false,
     onError: (err) =>
       setRes(
         (err as AxiosError<RpcQueryError>).response?.data.message ||
           DEFAULT_RPC_ERROR
       ),
+    onSettled: () => setMsg(jsonPrettify(msg)),
+    onSuccess: (data) => {
+      setRes(JSON.stringify(data, null, 2));
+      addActivity({
+        action: Object.keys(JSON.parse(msg))[0] ?? "Unknown",
+        contractAddress,
+        msg: encode(msg),
+        sender: address,
+        timestamp: getCurrentDate(),
+        type: "query",
+      });
+    },
+    retry: false,
   });
 
   const handleQuery = () => {
@@ -105,8 +105,8 @@ export const JsonQuery = ({ contractAddress, initialMsg }: JsonQueryProps) => {
             rowGap={2}
             sx={{
               "> button": {
-                marginInlineStart: "0 !important",
                 marginInlineEnd: "1",
+                marginInlineStart: "0 !important",
               },
             }}
             width="90%"

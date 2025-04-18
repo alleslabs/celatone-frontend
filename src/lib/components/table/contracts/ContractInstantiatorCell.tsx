@@ -11,7 +11,7 @@ interface ContractInstantiatorCellProps {
 }
 
 export const ContractInstantiatorCell = ({
-  contractInfo: { instantiator, remark, latestUpdater },
+  contractInfo: { instantiator, latestUpdater, remark },
   isReadOnly,
 }: ContractInstantiatorCellProps) => {
   const isMobile = useMobile();

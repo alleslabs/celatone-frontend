@@ -16,7 +16,10 @@ export enum TabIndex {
 }
 
 export const zAccountDetailsQueryParams = z.object({
+  // for resource tab
+  account: z.string().optional(),
   accountAddress: zAddr,
+  selected: z.string().optional(),
   tab: z.union([
     z.nativeEnum(TabIndex),
     z
@@ -24,7 +27,4 @@ export const zAccountDetailsQueryParams = z.object({
       .optional()
       .transform(() => TabIndex.Overview),
   ]),
-  // for resource tab
-  account: z.string().optional(),
-  selected: z.string().optional(),
 });

@@ -22,16 +22,16 @@ interface CollectionSuppliesOverviewProps {
 }
 
 export const CollectionSuppliesOverviewBody = ({
-  totalCount,
-  nfts,
   isLoading,
+  nfts,
   onViewMore,
+  totalCount,
 }: CollectionSuppliesOverviewProps) => {
   const displayedNftCount =
     useBreakpointValue({
       "2xl": 6,
-      xl: 5,
       sm: 4,
+      xl: 5,
     }) ?? 4;
 
   const nftsInfo = nfts?.slice(0, displayedNftCount);
@@ -43,7 +43,7 @@ export const CollectionSuppliesOverviewBody = ({
     );
   return (
     <>
-      <SimpleGrid columns={{ base: 2, lg: 4, xl: 5, "2xl": 6 }} gap={6} my={8}>
+      <SimpleGrid columns={{ "2xl": 6, base: 2, lg: 4, xl: 5 }} gap={6} my={8}>
         {nftsInfo.map((nft) => (
           <GridItem key={nft.tokenId + nft.uri}>
             <NftCard
@@ -62,10 +62,10 @@ export const CollectionSuppliesOverviewBody = ({
 };
 
 export const CollectionSuppliesOverview = ({
-  totalCount,
-  nfts,
   isLoading,
+  nfts,
   onViewMore,
+  totalCount,
 }: CollectionSuppliesOverviewProps) => (
   <Flex direction="column">
     <Flex align="center" gap={2}>

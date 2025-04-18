@@ -28,10 +28,10 @@ interface VotingPowerChartProps {
 }
 
 export const VotingPowerChart = ({
-  validatorAddress,
-  singleStakingDenom,
   assetInfos,
   onViewMore,
+  singleStakingDenom,
+  validatorAddress,
 }: VotingPowerChartProps) => {
   const isMobile = useMobile();
   const isMobileOverview = isMobile && !!onViewMore;
@@ -53,8 +53,6 @@ export const VotingPowerChart = ({
   });
 
   const dataset = {
-    data: historicalPowers.items.map((item) => item.votingPower.toNumber()),
-    borderColor: "#4CE2F7",
     backgroundColor: (context: ScriptableContext<"line">) => {
       const { ctx } = context.chart;
 
@@ -65,12 +63,14 @@ export const VotingPowerChart = ({
 
       return gradient;
     },
+    borderColor: "#4CE2F7",
+    data: historicalPowers.items.map((item) => item.votingPower.toNumber()),
     pointHoverBackgroundColor: "#F5F5F5",
     pointHoverBorderColor: "#4CE2F7",
   };
 
   const customizeTooltip = (tooltip: TooltipModel<"line">) => {
-    const { raw, dataIndex } = tooltip.dataPoints[0];
+    const { dataIndex, raw } = tooltip.dataPoints[0];
 
     const formattedAmount = formatUTokenWithPrecision(
       raw as U<Token<BigSource>>,
@@ -121,8 +121,8 @@ export const VotingPowerChart = ({
     <Flex
       backgroundColor="gray.900"
       direction={{
-        lg: "row",
         base: "column",
+        lg: "row",
       }}
       gap={8}
       px={4}

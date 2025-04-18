@@ -16,11 +16,11 @@ interface CodesTableWithWalletProps {
 
 export const CodesTableWithWallet = ({
   codes,
-  isLoading,
-  emptyState,
-  onRowSelect,
   disconnectedMessage,
+  emptyState,
+  isLoading,
   isReadOnly = false,
+  onRowSelect,
 }: CodesTableWithWalletProps) => {
   const { address } = useCurrentChain();
 

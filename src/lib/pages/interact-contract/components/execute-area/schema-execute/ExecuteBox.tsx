@@ -73,16 +73,16 @@ interface ExecuteBoxProps {
 }
 
 const assetDefault = {
-  assetsSelect: defaultAsset,
   assetsJsonStr: defaultAssetJsonStr,
+  assetsSelect: defaultAsset,
   attachFundsOption: AttachFundsType.ATTACH_FUNDS_NULL,
 };
 
 export const ExecuteBox = ({
-  msgSchema,
   contractAddress,
-  initialMsg,
   initialFunds,
+  initialMsg,
+  msgSchema,
   opened,
 }: ExecuteBoxProps) => {
   // ------------------------------------------//
@@ -108,9 +108,9 @@ export const ExecuteBox = ({
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
-  const { control, setValue, watch, reset } = useForm<AttachFundsState>({
-    mode: "all",
+  const { control, reset, setValue, watch } = useForm<AttachFundsState>({
     defaultValues: assetDefault,
+    mode: "all",
   });
   const { errors: attachFundErrors } = useFormState({ control });
   const { assetsJsonStr, assetsSelect, attachFundsOption } = watch();
@@ -164,14 +164,14 @@ export const ExecuteBox = ({
   const { isFetching } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
+    onError: (e) => {
+      setSimulateFeeError(e.message);
+      setFee(undefined);
+    },
     onSuccess: (gasRes) => {
       setSimulateFeeError(undefined);
       if (gasRes) setFee(fabricateFee(gasRes));
       else setFee(undefined);
-    },
-    onError: (e) => {
-      setSimulateFeeError(e.message);
-      setFee(undefined);
     },
   });
 
@@ -198,15 +198,15 @@ export const ExecuteBox = ({
       "schema"
     );
     const stream = await executeTx({
+      contractAddress,
+      estimatedFee: fee,
+      funds,
+      msg: JSON.parse(msg),
+      onTxFailed: () => setProcessing(false),
       onTxSucceed: (activity: Activity) => {
         addActivity(activity);
         setProcessing(false);
       },
-      onTxFailed: () => setProcessing(false),
-      estimatedFee: fee,
-      contractAddress,
-      msg: JSON.parse(msg),
-      funds,
     });
     if (stream) {
       setProcessing(true);
@@ -257,10 +257,10 @@ export const ExecuteBox = ({
       const composedMsg = address
         ? [
             composeMsg(MsgType.EXECUTE, {
-              sender: address,
               contract: contractAddress,
-              msg: Uint8Array.from(Buffer.from(msg)),
               funds,
+              msg: Uint8Array.from(Buffer.from(msg)),
+              sender: address,
             }),
           ]
         : [];

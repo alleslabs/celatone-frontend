@@ -33,19 +33,19 @@ export interface ListSelectionProps extends InputProps {
 
 const listItemProps: CSSProperties = {
   borderRadius: "8px",
+  cursor: "pointer",
   margin: "4px 0px",
   padding: "8px",
-  cursor: "pointer",
 };
 
 export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
   (
     {
-      result,
-      setResult,
-      placeholder,
       helperText,
       labelBgColor = "gray.900",
+      placeholder,
+      result,
+      setResult,
       ...rest
     }: ListSelectionProps,
     ref
@@ -114,8 +114,8 @@ export const ListSelection = forwardRef<HTMLInputElement, ListSelectionProps>(
 
     useOutsideClick({
       enabled: enableOutside,
-      ref: boxRef as RefObject<HTMLDivElement>,
       handler: () => setDisplayOptions(false),
+      ref: boxRef as RefObject<HTMLDivElement>,
     });
 
     return (

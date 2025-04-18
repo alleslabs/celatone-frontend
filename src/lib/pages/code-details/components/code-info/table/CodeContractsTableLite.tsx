@@ -21,8 +21,8 @@ export const CodeContractsTableLite = observer(
       error,
       fetchNextPage,
       hasNextPage,
-      isLoading,
       isFetchingNextPage,
+      isLoading,
     } = useCodeContractsRest(codeId);
 
     const onRowSelect = (contract: BechAddr32) =>

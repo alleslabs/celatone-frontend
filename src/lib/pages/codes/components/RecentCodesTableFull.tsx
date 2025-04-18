@@ -21,7 +21,7 @@ export const RecentCodesTableFull = observer(() => {
   const navigate = useInternalNavigate();
   const { address } = useCurrentChain();
 
-  const { watch, setValue } = useForm<RecentCodesState>({
+  const { setValue, watch } = useForm<RecentCodesState>({
     defaultValues: {
       permissionValue: "all",
     },
@@ -29,18 +29,18 @@ export const RecentCodesTableFull = observer(() => {
   const { permissionValue } = watch();
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
   const { data, isLoading } = useRecentCodes(

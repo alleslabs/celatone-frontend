@@ -64,7 +64,7 @@ interface RecentBlocksSectionProps {
 export const RecentBlocksSection = ({
   validatorAddress,
 }: RecentBlocksSectionProps) => {
-  const { data, isLoading, dataUpdatedAt } = useValidatorUptime(
+  const { data, dataUpdatedAt, isLoading } = useValidatorUptime(
     validatorAddress,
     100
   );

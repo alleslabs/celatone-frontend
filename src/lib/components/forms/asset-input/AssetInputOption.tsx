@@ -18,14 +18,14 @@ export const AssetInputOption = (
   return (
     <Box
       sx={{
-        position: "relative",
         "> div": {
-          background: isSelected ? "gray.800" : "gray.900",
           "&:hover": {
             background:
               data.isDisabled && !isSelected ? "gray.900" : "gray.800",
           },
+          background: isSelected ? "gray.800" : "gray.900",
         },
+        position: "relative",
       }}
     >
       <components.Option {...props}>

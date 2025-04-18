@@ -27,8 +27,8 @@ interface ModuleVerifyAdvancedOptionsProps {
 
 export const ModuleVerifyAdvancedOptions = ({
   control,
-  setValue,
   moveVerifyConfig,
+  setValue,
 }: ModuleVerifyAdvancedOptionsProps) => {
   const [bytecodeVersion, compilerVersion, languageVersion] = useWatch({
     control,
@@ -36,19 +36,19 @@ export const ModuleVerifyAdvancedOptions = ({
   });
 
   const {
-    languageVersionOptions,
-    compilerVersionOptions,
     bytecodeVersionOptions,
+    compilerVersionOptions,
+    languageVersionOptions,
   } = useMemo(() => {
     return {
-      languageVersionOptions: formatMoveOptions(
-        moveVerifyConfig.enableLanguageVersions
+      bytecodeVersionOptions: formatMoveOptions(
+        moveVerifyConfig.enableBytecodeVersions
       ),
       compilerVersionOptions: formatMoveOptions(
         moveVerifyConfig.enableCompilerVersions
       ),
-      bytecodeVersionOptions: formatMoveOptions(
-        moveVerifyConfig.enableBytecodeVersions
+      languageVersionOptions: formatMoveOptions(
+        moveVerifyConfig.enableLanguageVersions
       ),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

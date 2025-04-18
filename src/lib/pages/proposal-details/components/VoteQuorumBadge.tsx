@@ -16,10 +16,10 @@ interface VoteQuorumBadgeProps {
 }
 
 export const VoteQuorumBadge = ({
-  status,
-  quorum,
-  totalRatio,
   isCompact,
+  quorum,
+  status,
+  totalRatio,
 }: VoteQuorumBadgeProps) => {
   if (isNull(totalRatio)) return null;
 

@@ -19,35 +19,35 @@ interface ModuleHistoryTableProps {
 }
 
 export const ModuleHistoryTable = ({
-  vmAddress,
-  moduleName,
   historyCount,
-  scrollComponentId,
+  moduleName,
   onViewMore,
+  scrollComponentId,
+  vmAddress,
 }: ModuleHistoryTableProps) => {
   const { currentChainId } = useCelatoneApp();
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
     setTotalData,
   } = usePaginator({
-    total: historyCount,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: historyCount,
   });
 
   const {
     data: moduleHistories,
-    isLoading,
     error,
+    isLoading,
   } = useModuleHistories(
     vmAddress,
     moduleName,

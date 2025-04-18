@@ -10,8 +10,8 @@ interface ProposalVotesTableHeaderProps {
 }
 
 export const ProposalVotesTableHeader = ({
-  templateColumns,
   fullVersion,
+  templateColumns,
 }: ProposalVotesTableHeaderProps) => {
   const isMobile = useMobile();
 

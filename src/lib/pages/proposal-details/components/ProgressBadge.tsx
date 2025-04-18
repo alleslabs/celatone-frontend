@@ -7,8 +7,8 @@ import { PeriodState } from "../types";
 const StyledCustomIcon = chakra(CustomIcon, {
   baseStyle: {
     boxSize: 3,
-    p: 0,
     m: 1,
+    p: 0,
   },
 });
 
@@ -34,9 +34,9 @@ const BadgeIcon = ({ state }: { state: PeriodState }) => {
 };
 
 export const ProgressBadge = ({
+  bgColor = "gray.900",
   state,
   text,
-  bgColor = "gray.900",
 }: ProgressBadgeProps) => (
   <Flex
     alignItems="center"

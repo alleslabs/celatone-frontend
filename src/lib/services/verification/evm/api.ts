@@ -32,8 +32,8 @@ export const getEvmVerifyInfos = async (
   axios
     .get(`${CELATONE_VERIFICATION_API}/evm/verification/infos`, {
       params: {
-        chain_id: chainId,
         addresses: contractAddresses.join(","),
+        chain_id: chainId,
       },
     })
     .then(({ data }) => zEvmVerifyInfosResponse.parse(data));
@@ -45,41 +45,41 @@ export const getEvmVerifyInfos = async (
 
 // ============== Solidity ==============
 const submitEvmVerifySolidityContractCode = async ({
-  verifierUrl,
-  contractAddress,
   chainId,
   compilerVersion,
-  licenseType,
-  contractCode,
-  optimizerConfig,
   constructorArgs,
-  evmVersion,
+  contractAddress,
+  contractCode,
   contractLibraries,
+  evmVersion,
+  licenseType,
+  optimizerConfig,
+  verifierUrl,
 }: SubmitEvmVerifySolidityContractCodeArgs) => {
   const settings = {
     evmVersion,
+    libraries: formatContractLibraries(contractLibraries),
     optimizer: {
       enabled: optimizerConfig.enabled,
       runs: Number(optimizerConfig.runs),
     },
-    libraries: formatContractLibraries(contractLibraries),
   };
 
   return axios.post(
     verifierUrl,
     {
-      license: licenseType,
       bytecode_type: BYTECODE_TYPE,
       compiler_version: compilerVersion,
       constructor_arguments: constructorArgs.enabled
         ? constructorArgs.value
         : undefined,
+      license: licenseType,
       metadata: {
         chain_id: chainId,
         contract_address: contractAddress,
       },
-      source_code: contractCode,
       settings: JSON.stringify(settings),
+      source_code: contractCode,
     },
     {
       headers: {
@@ -90,16 +90,16 @@ const submitEvmVerifySolidityContractCode = async ({
 };
 
 const submitEvmVerifySolidityUploadFiles = async ({
-  verifierUrl,
-  evmVersion,
-  contractAddress,
   chainId,
   compilerVersion,
-  licenseType,
   constructorArgs,
+  contractAddress,
   contractLibraries,
+  evmVersion,
   files,
+  licenseType,
   optimizerConfig,
+  verifierUrl,
 }: SubmitEvmVerifySolidityUploadFilesArgs) => {
   if (files.length === 0)
     throw new Error(
@@ -126,11 +126,11 @@ const submitEvmVerifySolidityUploadFiles = async ({
     "settings",
     JSON.stringify({
       evmVersion,
+      libraries: formatContractLibraries(contractLibraries),
       optimizer: {
         enabled: optimizerConfig.enabled,
         runs: Number(optimizerConfig.runs),
       },
-      libraries: formatContractLibraries(contractLibraries),
     })
   );
 
@@ -147,34 +147,34 @@ const submitEvmVerifySolidityUploadFiles = async ({
 
 // ============== Vyper ==============
 const submitEvmVerifyVyperContractCode = async ({
-  verifierUrl,
-  contractAddress,
   chainId,
   compilerVersion,
-  licenseType,
-  contractCode,
-  evmVersion,
-  contractName,
   constructorArgs,
+  contractAddress,
+  contractCode,
+  contractName,
+  evmVersion,
+  licenseType,
+  verifierUrl,
 }: SubmitEvmVerifyVyperContractCodeArgs) =>
   axios.post(
     verifierUrl,
     {
-      license: licenseType,
       bytecode_type: BYTECODE_TYPE,
-      contract_name: contractName,
       compiler_version: compilerVersion,
       constructor_arguments: constructorArgs.enabled
         ? constructorArgs.value
         : undefined,
+      contract_name: contractName,
+      license: licenseType,
       metadata: {
         chain_id: chainId,
         contract_address: contractAddress,
       },
-      source_code: contractCode,
       settings: JSON.stringify({
         evmVersion,
       }),
+      source_code: contractCode,
     },
     {
       headers: {
@@ -184,14 +184,14 @@ const submitEvmVerifyVyperContractCode = async ({
   );
 
 const submitEvmVerifyVyperUploadFiles = async ({
-  verifierUrl,
-  evmVersion,
-  contractAddress,
   chainId,
   compilerVersion,
-  licenseType,
   constructorArgs,
+  contractAddress,
+  evmVersion,
   file,
+  licenseType,
+  verifierUrl,
 }: SubmitEvmVerifyVyperUploadFilesArgs) => {
   if (!file)
     throw new Error("File is required (submitEvmVerifyVyperUploadFiles)");
@@ -229,13 +229,13 @@ const submitEvmVerifyVyperUploadFiles = async ({
 
 // ============= JSON Input For Both ==============
 const submitEvmVerifyJsonInput = async ({
-  verifierUrl,
-  contractAddress,
   chainId,
   compilerVersion,
-  licenseType,
-  jsonFile,
   constructorArgs,
+  contractAddress,
+  jsonFile,
+  licenseType,
+  verifierUrl,
 }:
   | SubmitEvmVerifySolidityJsonInputArgs
   | SubmitEvmVerifyVyperJsonInputArgs) => {
@@ -250,17 +250,17 @@ const submitEvmVerifyJsonInput = async ({
   return axios.post(
     verifierUrl,
     {
-      license: licenseType,
       bytecode_type: BYTECODE_TYPE,
       compiler_version: compilerVersion,
       constructor_arguments: constructorArgs.enabled
         ? constructorArgs.value
         : undefined,
+      input: jsonContent,
+      license: licenseType,
       metadata: {
         chain_id: chainId,
         contract_address: contractAddress,
       },
-      input: jsonContent,
     },
     {
       headers: {

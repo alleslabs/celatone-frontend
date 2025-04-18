@@ -23,8 +23,8 @@ export const useSimulateFee = () => {
   return useCallback(
     async ({
       address,
-      messages,
       isDummyUser = false,
+      messages,
     }: SimulateFeeParams): Promise<Gas> => {
       if (isDummyUser) {
         const dummyClient = await getDummyClient();

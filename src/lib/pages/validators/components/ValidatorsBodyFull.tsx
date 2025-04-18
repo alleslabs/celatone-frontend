@@ -22,27 +22,27 @@ interface ValidatorsBodyFullProps {
 
 export const ValidatorsBodyFull = ({
   isActive,
-  setCounts,
-  order,
-  setOrder,
   isDesc,
-  setIsDesc,
-  search,
+  order,
   scrollComponentId,
+  search,
+  setCounts,
+  setIsDesc,
+  setOrder,
 }: ValidatorsBodyFullProps) => {
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 100,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 100,
     },
   });
   const { data, isFetching: isLoading } = useValidators(
@@ -53,7 +53,7 @@ export const ValidatorsBodyFull = ({
     isDesc,
     search,
     {
-      onSuccess: ({ total, metadata }) => {
+      onSuccess: ({ metadata, total }) => {
         setTotalData(total);
         setCounts(metadata);
       },

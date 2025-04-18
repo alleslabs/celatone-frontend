@@ -50,8 +50,8 @@ const WasmCodeSnippet = dynamic(
 );
 
 const assetDefault = {
-  assetsSelect: defaultAsset,
   assetsJsonStr: defaultAssetJsonStr,
+  assetsSelect: defaultAsset,
   attachFundsOption: AttachFundsType.ATTACH_FUNDS_NULL,
 };
 
@@ -82,9 +82,9 @@ export const JsonExecute = ({
   // ------------------------------------------//
   // ----------------FORM HOOKS----------------//
   // ------------------------------------------//
-  const { control, setValue, watch, reset } = useForm<AttachFundsState>({
-    mode: "all",
+  const { control, reset, setValue, watch } = useForm<AttachFundsState>({
     defaultValues: assetDefault,
+    mode: "all",
   });
   const { errors } = useFormState({ control });
   const { assetsJsonStr, assetsSelect, attachFundsOption } = watch();
@@ -131,19 +131,19 @@ export const JsonExecute = ({
   // ------------------------------------------//
   // -----------------REACT QUERY--------------//
   // ------------------------------------------//
-  const { isFetching: cmdsFetching, execCmds } =
+  const { execCmds, isFetching: cmdsFetching } =
     useExecuteCmds(contractAddress);
   const { isFetching } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
+    onError: (e) => {
+      setError(e.message);
+      setFee(undefined);
+    },
     onSuccess: (gasRes) => {
       setError(undefined);
       if (gasRes) setFee(fabricateFee(gasRes));
       else setFee(undefined);
-    },
-    onError: (e) => {
-      setError(e.message);
-      setFee(undefined);
     },
   });
 
@@ -159,15 +159,15 @@ export const JsonExecute = ({
       "json-input"
     );
     const stream = await executeTx({
+      contractAddress,
+      estimatedFee: fee,
+      funds,
+      msg: JSON.parse(msg),
+      onTxFailed: () => setProcessing(false),
       onTxSucceed: (activity: Activity) => {
         addActivity(activity);
         setProcessing(false);
       },
-      onTxFailed: () => setProcessing(false),
-      estimatedFee: fee,
-      contractAddress,
-      msg: JSON.parse(msg),
-      funds,
     });
     if (stream) {
       setProcessing(true);
@@ -211,10 +211,10 @@ export const JsonExecute = ({
       const composedMsg = address
         ? [
             composeMsg(MsgType.EXECUTE, {
-              sender: address,
               contract: contractAddress,
-              msg: Buffer.from(msg),
               funds,
+              msg: Buffer.from(msg),
+              sender: address,
             }),
           ]
         : [];
@@ -237,12 +237,12 @@ export const JsonExecute = ({
         setMsg={setMsg}
       />
       <Flex direction="column" gap={10}>
-        <Flex direction={{ sm: "column", lg: "row" }} gap={8}>
-          <Flex direction="column" w={{ sm: "full", lg: "50%" }}>
+        <Flex direction={{ lg: "row", sm: "column" }} gap={8}>
+          <Flex direction="column" w={{ lg: "50%", sm: "full" }}>
             <JsonInput setText={setMsg} text={msg} topic="Execute msg" />
             {error && <ErrorMessageRender error={error} mb={4} />}
           </Flex>
-          <Box w={{ sm: "full", lg: "50%" }}>
+          <Box w={{ lg: "50%", sm: "full" }}>
             <AttachFund
               attachFundsOption={attachFundsOption}
               control={control}

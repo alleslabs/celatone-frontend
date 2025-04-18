@@ -52,16 +52,16 @@ const getTooltipText = (
 const getTextProperties = (badgeStatus: BadgeStatus) => {
   switch (badgeStatus) {
     case BadgeStatus.IN_PROGRESS:
-      return { label: "In progress", color: "text.dark" };
+      return { color: "text.dark", label: "In progress" };
     case BadgeStatus.VERIFIED:
       return {
-        label: "Verified",
         color: "secondary.main",
+        label: "Verified",
       };
     case BadgeStatus.INDIRECTLY_VERIFIED:
       return {
-        label: "Indirectly verified",
         color: "secondary.main",
+        label: "Indirectly verified",
       };
     default:
       return null;
@@ -91,10 +91,10 @@ interface WasmVerifyBadgeProps {
 }
 
 export const WasmVerifyBadge = ({
-  status,
-  relatedVerifiedCodes = [],
   hasText = false,
   linkedCodeId,
+  relatedVerifiedCodes = [],
+  status,
 }: WasmVerifyBadgeProps) => {
   const badgeStatus = getBadgeStatus(status, relatedVerifiedCodes);
 

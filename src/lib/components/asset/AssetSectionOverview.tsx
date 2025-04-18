@@ -21,10 +21,10 @@ interface AssetSectionOverviewProps {
 
 export const AssetSectionOverview = ({
   isAccount,
+  onViewMore,
   supportedAssets,
   totalSupportedAssetsValue,
   unsupportedAssets,
-  onViewMore,
 }: AssetSectionOverviewProps) => {
   if (!supportedAssets.length && !unsupportedAssets.length)
     return (

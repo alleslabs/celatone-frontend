@@ -10,8 +10,8 @@ interface EvmTransactionsTableHeaderProps {
 }
 
 export const EvmTransactionsTableHeader = ({
-  templateColumns,
   showTimestamp,
+  templateColumns,
 }: EvmTransactionsTableHeaderProps) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader />

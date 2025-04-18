@@ -18,10 +18,10 @@ interface FilterItemProps {
 export const FilterItem = ({
   collectionName,
   count,
-  onClick,
-  uri,
   isActive,
   isDefault = false,
+  onClick,
+  uri,
 }: FilterItemProps) => {
   const { data: metadata } = useMetadata(uri ?? "");
 

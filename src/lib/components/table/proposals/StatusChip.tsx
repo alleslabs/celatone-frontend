@@ -28,9 +28,9 @@ const getBgColor = (
 };
 
 export const StatusChip = ({
-  status,
-  isTransparent = false,
   hasCloseBtn = false,
+  isTransparent = false,
+  status,
 }: {
   status: Proposal["status"];
   isTransparent?: boolean;

@@ -11,8 +11,8 @@ import { ValidatorOrder } from "../../types";
 
 const SortIcon = ({
   column,
-  order,
   isDesc,
+  order,
 }: {
   column: ValidatorOrder;
   order: ValidatorOrder;
@@ -31,13 +31,13 @@ const SortIcon = ({
 
 const StyledTableHeader = chakra(TableHeader, {
   baseStyle: {
+    _hover: { bgColor: "gray.800", borderRadius: "4px" },
+    alignItems: "center",
+    cursor: "pointer",
     display: "flex",
     gap: 1,
-    alignItems: "center",
     py: 4,
-    cursor: "pointer",
     transition: "all 0.25s ease-in-out",
-    _hover: { bgColor: "gray.800", borderRadius: "4px" },
   },
 });
 
@@ -53,14 +53,14 @@ interface ValidatorsTableHeaderProps {
 }
 
 export const ValidatorsTableHeader = ({
-  templateColumns,
-  scrollComponentId,
   isActive,
-  order,
-  setOrder,
   isDesc,
+  order,
+  scrollComponentId,
   setIsDesc,
+  setOrder,
   showUptime,
+  templateColumns,
 }: ValidatorsTableHeaderProps) => {
   const handleOrderChange = useCallback(
     (column: ValidatorOrder) => () => {

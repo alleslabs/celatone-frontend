@@ -14,10 +14,10 @@ interface SingleBondCardProps {
 }
 
 export const SingleBondCard = ({
-  title,
-  message,
   address,
   bondDenom,
+  message,
+  title,
   tokens,
 }: SingleBondCardProps) => (
   <Flex direction="column" gap={1} minW="233px">

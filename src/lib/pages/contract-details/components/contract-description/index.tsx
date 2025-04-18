@@ -15,9 +15,9 @@ interface ContractDescProps {
   contractLocalInfo: Option<ContractLocalInfo>;
 }
 export const ContractDesc = ({
-  publicInfo,
   contract,
   contractLocalInfo,
+  publicInfo,
 }: ContractDescProps) => {
   const isMobile = useMobile();
 

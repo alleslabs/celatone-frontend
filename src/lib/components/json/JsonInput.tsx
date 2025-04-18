@@ -75,11 +75,11 @@ const getResponse = (jsonState: JsonState) => {
 };
 
 const JsonInput = ({
-  topic,
-  text = "",
-  minLines = 16,
   maxLines = 100,
+  minLines = 16,
   setText,
+  text = "",
+  topic,
   validateFn = jsonValidate,
 }: JsonInputProps) => {
   const isMobile = useMobile();
@@ -94,7 +94,7 @@ const JsonInput = ({
       const error = validateFn(text);
 
       if (text.trim().length === 0) setJsonState({ state: "empty" });
-      else if (error) setJsonState({ state: "error", errMsg: error });
+      else if (error) setJsonState({ errMsg: error, state: "error" });
       else setJsonState({ state: "success" });
     }, 400);
 

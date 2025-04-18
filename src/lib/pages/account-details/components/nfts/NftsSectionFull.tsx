@@ -54,7 +54,7 @@ export const NftsSectionFull = ({
         <Stack
           minW={64}
           spacing="8px"
-          w={{ base: "100%", md: "35%", lg: "25%" }}
+          w={{ base: "100%", lg: "25%", md: "35%" }}
         >
           <FilterItem
             collectionName="All collections"

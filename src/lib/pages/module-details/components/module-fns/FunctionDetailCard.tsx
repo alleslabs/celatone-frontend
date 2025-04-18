@@ -28,10 +28,10 @@ interface FunctionDetailCardProps {
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "24px",
     color: "gray.600",
+    display: "flex",
+    fontSize: "24px",
   },
 });
 
@@ -49,12 +49,12 @@ const VisibilityLabel = ({ visibility }: { visibility: Visibility }) => (
 );
 
 const FunctionButton = ({
+  address,
+  disabled,
+  exposedFn,
   fnType,
   isView,
-  disabled,
-  address,
   moduleName,
-  exposedFn,
 }: {
   fnType: FunctionTypeTabIndex;
   isView: boolean;
@@ -68,9 +68,9 @@ const FunctionButton = ({
 
   const getButtonStyle = () => {
     if ((isMobile && !isView) || disabled)
-      return { variant: "outline-gray", color: "gray.500" };
-    if (isView) return { variant: "outline-primary", color: "primary.dark" };
-    return { variant: "outline-secondary", color: "secondary.main" };
+      return { color: "gray.500", variant: "outline-gray" };
+    if (isView) return { color: "primary.dark", variant: "outline-primary" };
+    return { color: "secondary.main", variant: "outline-secondary" };
   };
 
   return (
@@ -99,18 +99,18 @@ const FunctionButton = ({
         onClick={(e) => {
           track(AmpEvent.USE_MODULE_FUNCTION_CTA, {
             address,
-            moduleName,
-            functionType: isView ? "view" : "execute",
             functionName: exposedFn.name,
+            functionType: isView ? "view" : "execute",
+            moduleName,
             section: fnType,
           });
           navigate({
             pathname: "/interact",
             query: {
               address,
-              moduleName,
-              functionType: isView ? "view" : "execute",
               functionName: exposedFn.name,
+              functionType: isView ? "view" : "execute",
+              moduleName,
             },
           });
           e.stopPropagation();
@@ -202,12 +202,12 @@ const FunctionDetail = ({ exposedFn }: { exposedFn: ExposedFunction }) => (
 );
 
 export const FunctionDetailCard = ({
-  fnType,
-  exposedFn,
   address,
+  exposedFn,
+  fnType,
   moduleName,
 }: FunctionDetailCardProps) => {
-  const { is_view: isView, visibility, name } = exposedFn;
+  const { is_view: isView, name, visibility } = exposedFn;
   const disabled = !checkAvailability(exposedFn);
   const isMobile = useMobile();
   const fnColor = isView ? "primary.main" : "secondary.main";

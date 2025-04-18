@@ -32,7 +32,7 @@ export const PoolTopSection = ({ pool }: PoolTopSectionProps) => {
     <>
       <Breadcrumb
         items={[
-          { text: "Pools", href: "/pools" },
+          { href: "/pools", text: "Pools" },
           { text: `#${pool.id.toString()}` },
         ]}
       />

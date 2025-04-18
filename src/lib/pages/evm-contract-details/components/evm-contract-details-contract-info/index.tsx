@@ -19,8 +19,8 @@ interface EvmContractDetailsContractInfoProps extends ContractByteCodeProps {
 }
 
 export const EvmContractDetailsContractInfo = ({
-  contractAddress,
   byteCode,
+  contractAddress,
   deployedByteCode,
   evmVerifyInfo,
 }: EvmContractDetailsContractInfoProps) => {

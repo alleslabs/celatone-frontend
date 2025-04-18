@@ -10,8 +10,8 @@ import { useCallback, useState } from "react";
 import type { FileState } from "..";
 
 const DEFAULT_TEMP_FILE = {
-  file: undefined,
   base64: "",
+  file: undefined,
 };
 
 interface UploadScriptCardProps {
@@ -25,7 +25,7 @@ interface UploadScriptCardProps {
 }
 
 export const UploadScriptCard = ({
-  fileState: { file, decodeRes },
+  fileState: { decodeRes, file },
   removeFile,
   setFile,
 }: UploadScriptCardProps) => {
@@ -39,19 +39,19 @@ export const UploadScriptCard = ({
     base64EncodedFile: tempFile.base64,
     options: {
       enabled: Boolean(tempFile.base64),
-      retry: 0,
-      refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        setFile(tempFile.file, tempFile.base64, data);
-        setTempFile(DEFAULT_TEMP_FILE);
-        setDecodeError("");
-      },
       onError: () => {
         setDecodeError(
           "Failed to decode .mv file. Please make sure the file is a script."
         );
         setTempFile(DEFAULT_TEMP_FILE);
       },
+      onSuccess: (data) => {
+        setFile(tempFile.file, tempFile.base64, data);
+        setTempFile(DEFAULT_TEMP_FILE);
+        setDecodeError("");
+      },
+      refetchOnWindowFocus: false,
+      retry: 0,
     },
   });
 
@@ -62,7 +62,7 @@ export const UploadScriptCard = ({
       const dataUrl = reader.result as string;
       // strip "data:application/octet-stream;base64,oRzrCw..."
       const base64String = dataUrl.replace(/^data:.*;base64,/, "");
-      setTempFile({ file: target, base64: base64String });
+      setTempFile({ base64: base64String, file: target });
     };
     reader.readAsDataURL(target);
   }, []);

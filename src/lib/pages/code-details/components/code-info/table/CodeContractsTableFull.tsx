@@ -23,18 +23,18 @@ export const CodeContractsTableFull = observer(
       });
 
     const {
-      pagesQuantity,
-      setTotalData,
       currentPage,
-      setCurrentPage,
-      pageSize,
-      setPageSize,
       offset,
+      pageSize,
+      pagesQuantity,
+      setCurrentPage,
+      setPageSize,
+      setTotalData,
     } = usePaginator({
       initialState: {
-        pageSize: 10,
         currentPage: 1,
         isDisabled: false,
+        pageSize: 10,
       },
     });
 

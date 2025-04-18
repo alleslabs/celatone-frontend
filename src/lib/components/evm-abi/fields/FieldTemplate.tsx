@@ -15,10 +15,10 @@ interface FieldTemplateProps<T extends FieldValues> extends FieldProps<T> {
 }
 
 export const FieldTemplate = <T extends FieldValues>({
-  control,
-  name,
   components,
+  control,
   dimensions = [],
+  name,
   ...rest
 }: FieldTemplateProps<T>) => {
   const {

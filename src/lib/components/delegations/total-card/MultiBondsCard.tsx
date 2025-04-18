@@ -18,12 +18,12 @@ interface MultiBondsCardProps {
 }
 
 export const MultiBondsCard = ({
-  title,
-  message,
   address,
+  message,
+  title,
   tokens,
 }: MultiBondsCardProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const isDisabled = !tokens;
   const numTokens = tokens ? Object.entries(tokens).length : 0;

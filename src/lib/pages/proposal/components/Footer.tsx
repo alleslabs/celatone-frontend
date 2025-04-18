@@ -8,9 +8,9 @@ interface FooterProps {
 }
 
 export const Footer = ({
-  onSubmit,
   isDisabled,
   isLoading = false,
+  onSubmit,
 }: FooterProps) => {
   const router = useRouter();
   return (

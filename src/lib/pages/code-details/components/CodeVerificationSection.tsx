@@ -12,8 +12,8 @@ interface CodeVerificationSectionProps {
 }
 
 export const CodeVerificationSection = ({
-  codeId,
   codeHash,
+  codeId,
   wasmVerifyInfo,
 }: CodeVerificationSectionProps) => (
   <Flex direction="column" gap={4} my={8}>

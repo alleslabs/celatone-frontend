@@ -10,9 +10,9 @@ interface InputWithIconProps extends InputProps {
 }
 
 const InputWithIcon = ({
+  amptrackSection,
   my,
   size = "md",
-  amptrackSection,
   ...inputProps
 }: InputWithIconProps) => (
   <InputGroup my={my}>

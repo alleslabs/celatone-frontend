@@ -20,10 +20,10 @@ interface ModulesTableRowProps {
 }
 
 export const ModulesTableRow = ({
-  moduleInfo,
-  templateColumns,
   isPublishedModules,
+  moduleInfo,
   moveVerifyInfo,
+  templateColumns,
 }: ModulesTableRowProps) => {
   const navigate = useInternalNavigate();
   const formatAddresses = useFormatAddresses();
@@ -120,8 +120,8 @@ export const ModulesTableRow = ({
                   pathname: "/interact",
                   query: {
                     address: moduleInfo.address,
-                    moduleName: moduleInfo.moduleName,
                     functionType: "view",
+                    moduleName: moduleInfo.moduleName,
                   },
                 });
               }}
@@ -138,8 +138,8 @@ export const ModulesTableRow = ({
                   pathname: "/interact",
                   query: {
                     address: moduleInfo.address,
-                    moduleName: moduleInfo.moduleName,
                     functionType: "execute",
+                    moduleName: moduleInfo.moduleName,
                   },
                 });
               }}

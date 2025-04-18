@@ -18,8 +18,8 @@ import { dateFromNow, formatUTC } from "lib/utils";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
+    display: "flex",
     padding: 0,
   },
 });

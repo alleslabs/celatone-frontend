@@ -25,8 +25,8 @@ interface VotingOverviewQuorumProps {
 }
 
 export const VotingOverviewQuorum = ({
-  proposalData,
   params,
+  proposalData,
   votesInfo,
 }: VotingOverviewQuorumProps) => {
   const { quorum } = extractParams(params, proposalData.isExpedited);

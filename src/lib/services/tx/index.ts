@@ -76,8 +76,8 @@ export const useTxData = (
   enabled = true
 ): UseQueryResult<TxData> => {
   const {
-    currentChainId,
     chainConfig: { rest: restEndpoint },
+    currentChainId,
   } = useCelatoneApp();
   const { isFullTier } = useTierConfig();
   const apiEndpoint = useBaseApiRoute("txs");
@@ -98,9 +98,9 @@ export const useTxData = (
 
       return {
         ...txResponse,
-        logs,
         chainId: currentChainId,
         isTxFailed: Boolean(txResponse.code),
+        logs,
       };
     },
     [currentChainId, endpoint, isFullTier]
@@ -139,7 +139,7 @@ export const useTxs = (
     ],
     async () =>
       getTxs(endpoint, limit, offset, wasmEnable, moveEnable, isInitia),
-    { ...options, retry: 1, refetchOnWindowFocus: false }
+    { ...options, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -168,8 +168,8 @@ export const useTxsByPoolId = (
       return getTxsByPoolId(endpoint, poolId, type, limit, offset);
     },
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -196,8 +196,8 @@ export const useTxsByPoolIdTableCounts = (
       return getTxsByPoolIdTableCounts(endpoint, poolId, type);
     },
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -244,7 +244,7 @@ export const useTxsByAddress = (
         isInitia
       );
     },
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { refetchOnWindowFocus: false, retry: 1, ...options }
   );
 };
 
@@ -282,8 +282,8 @@ export const useTxsByBlockHeight = (
       ),
     {
       ...options,
-      keepPreviousData: true,
       enabled: !!height,
+      keepPreviousData: true,
     }
   );
 };
@@ -318,7 +318,7 @@ export const useTxsCountByAddress = (
         wasmEnable
       );
     },
-    { retry: 1, refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -359,7 +359,7 @@ export const useTxsByContractAddressRest = (
       offset,
     ],
     queryfn,
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { refetchOnWindowFocus: false, retry: 1, ...options }
   );
 };
 
@@ -424,7 +424,7 @@ export const useTxsByAddressRest = (
       offset,
     ],
     createQueryFnWithTimeout(queryfn, 20000),
-    { ...options, retry: 1, refetchOnWindowFocus: false }
+    { ...options, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -476,7 +476,7 @@ export const useTxsCountSequencer = () => {
   return useQuery(
     [CELATONE_QUERY_KEYS.TXS_COUNT_SEQUENCER, restEndpoint],
     async () => getTxsCountSequencer(restEndpoint),
-    { retry: 1, refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -493,8 +493,8 @@ const mapTxsByAddressSequencerItems = (
 
     return {
       ...item,
-      sender,
       isSigner: sender === address,
+      sender,
     };
   });
 
@@ -543,10 +543,10 @@ export const useTxsByAddressSequencer = (
           throw new Error("address is undefined (useTxsByAddressSequncer)");
 
         return getTxsByAccountAddressSequencer({
-          endpoint: restEndpoint,
           address,
-          paginationKey: pageParam,
+          endpoint: restEndpoint,
           limit,
+          paginationKey: pageParam,
         });
       })();
     },
@@ -564,8 +564,8 @@ export const useTxsByAddressSequencer = (
     ({ pageParam }) => queryfn(pageParam),
     {
       getNextPageParam: (lastPage) => lastPage.pagination.nextKey ?? undefined,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 
@@ -603,16 +603,16 @@ export const useTxsByAddressPaginationSequencer = (
     ],
     () =>
       getTxsByAccountAddressSequencer({
-        endpoint: restEndpoint,
         address,
-        paginationKey,
+        endpoint: restEndpoint,
         limit,
+        paginationKey,
       }),
     {
       enabled,
-      retry: false,
-      refetchOnWindowFocus: false,
       refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -641,7 +641,7 @@ export const useTxsByBlockHeightSequencer = (height: number) => {
         ),
       }));
     },
-    { retry: 1, refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -666,8 +666,8 @@ export const useEvmTxHashByCosmosTxHash = (cosmosTxHash: Option<string>) => {
     },
     {
       enabled: evm.enabled && !!evm.jsonRpc && !!cosmosTxHash,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
       staleTime: Infinity,
     }
   );
@@ -698,9 +698,9 @@ export const useEvmTxHashesByCosmosTxHashes = (
     },
     {
       enabled: enabled && evm.enabled && !!evm.jsonRpc && !!cosmosTxHashes,
-      retry: false,
-      refetchOnWindowFocus: false,
       refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -721,9 +721,9 @@ export const useEvmTxDataJsonRpc = (evmTxHash: string, enabled = true) => {
       return getTxDataJsonRpc(evm.jsonRpc, evmTxHash);
     },
     {
-      retry: false,
-      refetchOnWindowFocus: false,
       enabled: enabled && evm.enabled && !!evm.jsonRpc,
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };
@@ -747,8 +747,8 @@ export const useCosmosTxHashByEvmTxHash = (evmTxHash: Option<string>) => {
     },
     {
       enabled: evm.enabled && !!evm.jsonRpc && !!evmTxHash,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
       staleTime: Infinity,
     }
   );
@@ -777,9 +777,9 @@ export const useEvmTxsDataJsonRpc = (
     },
     {
       enabled: enabled && evm.enabled && !!evm.jsonRpc && !!evmTxHashes,
-      retry: false,
-      refetchOnWindowFocus: false,
       refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 };

@@ -23,13 +23,13 @@ interface SchemaExecuteProps {
 }
 
 export const SchemaExecute = ({
-  verifiedSchema,
-  localSchema,
-  contractAddress,
-  initialMsg,
-  initialFunds,
-  codeId,
   codeHash,
+  codeId,
+  contractAddress,
+  initialFunds,
+  initialMsg,
+  localSchema,
+  verifiedSchema,
 }: SchemaExecuteProps) => {
   // ------------------------------------------//
   // -----------------REFERENCE----------------//

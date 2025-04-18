@@ -6,62 +6,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 const defaultTheme = {
-  h1: (props: PropsWithChildren) => {
-    const { children } = props;
-    return (
-      <Heading as="h1" fontSize={{ sm: "22px", md: "24px" }} mb={1}>
-        {children}
-      </Heading>
-    );
-  },
-  h2: (props: PropsWithChildren) => {
-    const { children } = props;
-    return (
-      <Heading as="h2" fontSize={{ sm: "20px", md: "22px" }} mb={1}>
-        {children}
-      </Heading>
-    );
-  },
-  h3: (props: PropsWithChildren) => {
-    const { children } = props;
-    return (
-      <Heading as="h3" fontSize={{ sm: "18px", md: "20px" }} mb={1}>
-        {children}
-      </Heading>
-    );
-  },
-  h4: (props: PropsWithChildren) => {
-    const { children } = props;
-    return (
-      <Heading as="h4" fontSize={{ sm: "16px", md: "18px" }} mb={1}>
-        {children}
-      </Heading>
-    );
-  },
-  h5: (props: PropsWithChildren) => {
-    const { children } = props;
-    return (
-      <Heading as="h5" fontSize={{ sm: "14px", md: "16px" }} mb={1}>
-        {children}
-      </Heading>
-    );
-  },
-  h6: (props: PropsWithChildren) => {
-    const { children } = props;
-    return (
-      <Heading as="h6" fontSize={{ sm: "12px", md: "14px" }} mb={1}>
-        {children}
-      </Heading>
-    );
-  },
-  p: (props: PropsWithChildren) => {
-    const { children } = props;
-    return (
-      <Text color="text.main" mb={1} variant="body2">
-        {children}
-      </Text>
-    );
-  },
   blockquote: (props: PropsWithChildren) => {
     const { children } = props;
     return (
@@ -98,6 +42,78 @@ const defaultTheme = {
       </Box>
     );
   },
+  h1: (props: PropsWithChildren) => {
+    const { children } = props;
+    return (
+      <Heading as="h1" fontSize={{ md: "24px", sm: "22px" }} mb={1}>
+        {children}
+      </Heading>
+    );
+  },
+  h2: (props: PropsWithChildren) => {
+    const { children } = props;
+    return (
+      <Heading as="h2" fontSize={{ md: "22px", sm: "20px" }} mb={1}>
+        {children}
+      </Heading>
+    );
+  },
+  h3: (props: PropsWithChildren) => {
+    const { children } = props;
+    return (
+      <Heading as="h3" fontSize={{ md: "20px", sm: "18px" }} mb={1}>
+        {children}
+      </Heading>
+    );
+  },
+  h4: (props: PropsWithChildren) => {
+    const { children } = props;
+    return (
+      <Heading as="h4" fontSize={{ md: "18px", sm: "16px" }} mb={1}>
+        {children}
+      </Heading>
+    );
+  },
+  h5: (props: PropsWithChildren) => {
+    const { children } = props;
+    return (
+      <Heading as="h5" fontSize={{ md: "16px", sm: "14px" }} mb={1}>
+        {children}
+      </Heading>
+    );
+  },
+  h6: (props: PropsWithChildren) => {
+    const { children } = props;
+    return (
+      <Heading as="h6" fontSize={{ md: "14px", sm: "12px" }} mb={1}>
+        {children}
+      </Heading>
+    );
+  },
+  li: (props: PropsWithChildren) => {
+    const { children } = props;
+    return (
+      <ListItem fontSize="16px" mb={1} whiteSpace="normal">
+        {children}
+      </ListItem>
+    );
+  },
+  ol: (props: PropsWithChildren) => {
+    const { children } = props;
+    return (
+      <List as="ol" mb={2} ml={4} styleType="decimal" whiteSpace="normal">
+        {children}
+      </List>
+    );
+  },
+  p: (props: PropsWithChildren) => {
+    const { children } = props;
+    return (
+      <Text color="text.main" mb={1} variant="body2">
+        {children}
+      </Text>
+    );
+  },
   pre: (props: PropsWithChildren) => {
     const { children } = props;
     return (
@@ -113,14 +129,6 @@ const defaultTheme = {
       </Box>
     );
   },
-  li: (props: PropsWithChildren) => {
-    const { children } = props;
-    return (
-      <ListItem fontSize="16px" mb={1} whiteSpace="normal">
-        {children}
-      </ListItem>
-    );
-  },
   ul: (props: PropsWithChildren) => {
     const { children } = props;
     return (
@@ -131,14 +139,6 @@ const defaultTheme = {
         sx={{ "li::marker": { color: "primary.light" } }}
         whiteSpace="normal"
       >
-        {children}
-      </List>
-    );
-  },
-  ol: (props: PropsWithChildren) => {
-    const { children } = props;
-    return (
-      <List as="ol" mb={2} ml={4} styleType="decimal" whiteSpace="normal">
         {children}
       </List>
     );

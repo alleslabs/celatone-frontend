@@ -12,8 +12,8 @@ interface MultiBondsRadioCardProps {
 }
 
 const MultiBondsRadioCardBody = ({
-  tokens,
   isLoading,
+  tokens,
 }: Omit<MultiBondsRadioCardProps, "value">) => {
   if (isLoading) return <Spinner alignSelf="center" mt={2} size="xl" />;
   if (!tokens)
@@ -31,9 +31,9 @@ const MultiBondsRadioCardBody = ({
 };
 
 export const MultiBondsRadioCard = ({
-  value,
-  tokens,
   isLoading,
+  tokens,
+  value,
 }: MultiBondsRadioCardProps) => (
   <Flex alignItems="flex-start" direction="column" gap={1} w="full">
     <Text fontWeight={600} textColor="gray.400" variant="body2">

@@ -25,44 +25,21 @@ interface ClearAdminTxParams {
 
 export const clearAdminTx = ({
   address,
-  messages,
   fee,
-  signAndBroadcast,
+  messages,
   onTxSucceed,
+  signAndBroadcast,
 }: ClearAdminTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
       const txFee = findAttr(txInfo.events, "tx", "fee");
       return {
-        value: null,
         phase: TxStreamPhase.SUCCEED,
-        receipts: [
-          {
-            title: "Tx hash",
-            value: txInfo.transactionHash,
-            html: (
-              <ExplorerLink
-                openNewTab
-                type="tx_hash"
-                value={txInfo.transactionHash}
-              />
-            ),
-          },
-          {
-            title: "Tx fee",
-            html: (
-              <EstimatedFeeRender
-                estimatedFee={feeFromStr(txFee)}
-                loading={false}
-              />
-            ),
-          },
-        ],
         receiptInfo: {
           header: "Clear admin complete!",
           headerIcon: (
@@ -73,6 +50,29 @@ export const clearAdminTx = ({
             />
           ),
         },
+        receipts: [
+          {
+            html: (
+              <ExplorerLink
+                openNewTab
+                type="tx_hash"
+                value={txInfo.transactionHash}
+              />
+            ),
+            title: "Tx hash",
+            value: txInfo.transactionHash,
+          },
+          {
+            html: (
+              <EstimatedFeeRender
+                estimatedFee={feeFromStr(txFee)}
+                loading={false}
+              />
+            ),
+            title: "Tx fee",
+          },
+        ],
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError());

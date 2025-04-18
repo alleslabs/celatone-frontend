@@ -20,9 +20,9 @@ interface DropZoneProps extends FlexProps {
 }
 
 export function DropZone({
-  setFiles,
-  fileType,
   error,
+  fileType,
+  setFiles,
   ...componentProps
 }: DropZoneProps) {
   const wasm = useWasmConfig({ shouldRedirect: false });
@@ -37,8 +37,8 @@ export function DropZone({
 
   const { accept, maxSize, selectedConfigs } = useMemo(() => {
     const initialAccept: { [key: string]: string[] } = {
-      "application/octet-stream": [],
       "application/json": [],
+      "application/octet-stream": [],
     };
 
     const sizes: {
@@ -46,12 +46,12 @@ export function DropZone({
     } = {
       json: 10_000_000,
       move: 10_000_000,
-      wasm: wasm.enabled ? wasm.storeCodeMaxFileSize : 0,
       mv: move.enabled ? move.moduleMaxFileSize : 0,
+      sol: 10_000_000,
       toml: 1_000_000,
       // TODO - Revisit
       vy: 10_000_000,
-      sol: 10_000_000,
+      wasm: wasm.enabled ? wasm.storeCodeMaxFileSize : 0,
     };
 
     const selectedSizes: number[] = [];
@@ -77,11 +77,11 @@ export function DropZone({
     };
   }, [fileType, move, wasm]);
 
-  const { getRootProps, getInputProps, fileRejections } = useDropzone({
-    onDrop,
-    multiple: true,
+  const { fileRejections, getInputProps, getRootProps } = useDropzone({
     accept,
     maxSize,
+    multiple: true,
+    onDrop,
     useFsAccessApi: false,
   });
 

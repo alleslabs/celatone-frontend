@@ -53,8 +53,8 @@ const ContentContainer = (props: GridItemProps) => (
 
 const GridTemplate = chakra(Grid, {
   baseStyle: {
-    gridTemplateColumns: "140px repeat(3, 1fr)",
     columnGap: "2px",
+    gridTemplateColumns: "140px repeat(3, 1fr)",
     rowGap: "2px",
   },
 });
@@ -137,7 +137,7 @@ const ExposedFnsContent = () => (
   </Flex>
 );
 export const Leaflet = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <>
       <Text

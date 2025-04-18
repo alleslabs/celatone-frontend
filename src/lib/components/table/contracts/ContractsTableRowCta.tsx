@@ -34,10 +34,10 @@ import { TableRow } from "../tableComponents";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "36px",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 
@@ -53,8 +53,8 @@ interface ContractsTableRowCtaProps {
 
 export const ContractsTableRowCta = ({
   contractInfo,
-  withCta,
   showLastUpdate = true,
+  withCta,
 }: ContractsTableRowCtaProps) => {
   const { address } = useCurrentChain();
   const { isFullTier } = useTierConfig();
@@ -173,8 +173,8 @@ export const ContractsTableRowCta = ({
                   contractLocalInfo={contractInfo}
                   contractRemovalInfo={withCta.removingContractList}
                   menuItemProps={{
-                    icon: <CustomIcon color="error.light" name="delete" />,
                     children: "Remove from this list",
+                    icon: <CustomIcon color="error.light" name="delete" />,
                   }}
                 />
               </>

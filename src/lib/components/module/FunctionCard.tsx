@@ -24,37 +24,37 @@ interface FunctionCardBodyProps extends FunctionCardProps {
 
 const cardStyles: { [key in CardVariant]: FlexProps } = {
   common: {
-    bgColor: "gray.800",
     _hover: { bg: "gray.700" },
-    cursor: "pointer",
+    bgColor: "gray.800",
     borderColor: "transparent",
+    cursor: "pointer",
   },
   disabled: {
-    bgColor: "gray.900",
     _hover: { bg: "gray.900" },
-    cursor: "not-allowed",
+    bgColor: "gray.900",
     borderColor: "gray.700",
-  },
-  selected: {
-    bgColor: "gray.700",
-    _hover: { bg: "gray.700" },
-    cursor: "pointer",
-    borderColor: "gray.600",
+    cursor: "not-allowed",
   },
   readonly: {
     bgColor: "gray.800",
     borderColor: "transparent",
   },
+  selected: {
+    _hover: { bg: "gray.700" },
+    bgColor: "gray.700",
+    borderColor: "gray.600",
+    cursor: "pointer",
+  },
 };
 
 const FunctionCardBody = ({
-  variant = "common",
-  onFunctionSelect,
-  isReadOnly,
   disabled,
   exposedFn,
+  isReadOnly,
+  onFunctionSelect,
+  variant = "common",
 }: FunctionCardBodyProps) => {
-  const { is_view: isView, visibility, name } = exposedFn;
+  const { is_view: isView, name, visibility } = exposedFn;
 
   return (
     <Flex
@@ -120,10 +120,10 @@ const FunctionCardBody = ({
 };
 
 export const FunctionCard = ({
-  variant = "common",
   exposedFn,
-  onFunctionSelect,
   isReadOnly = false,
+  onFunctionSelect,
+  variant = "common",
 }: FunctionCardProps) => {
   const isMobile = useMobile();
   const disabled = !checkAvailability(exposedFn);

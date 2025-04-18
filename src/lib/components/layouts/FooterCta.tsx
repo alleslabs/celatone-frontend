@@ -13,12 +13,12 @@ interface FooterCtaProps {
 }
 
 export const FooterCta = ({
-  loading = false,
-  cancelButton,
-  cancelLabel = "Previous",
   actionButton,
   actionLabel = "Submit",
+  cancelButton,
+  cancelLabel = "Previous",
   helperText,
+  loading = false,
   sx,
 }: FooterCtaProps) => (
   <Flex

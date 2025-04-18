@@ -23,9 +23,9 @@ interface AssetCardProps extends FlexProps {
 
 export const AssetCard = ({
   amount,
-  denom,
-  assetInfo,
   ampCopierSection,
+  assetInfo,
+  denom,
   ...cardProps
 }: AssetCardProps) => {
   const symbol = getTokenLabel(denom, assetInfo?.symbol, false);

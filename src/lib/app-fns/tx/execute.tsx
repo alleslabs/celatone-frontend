@@ -27,58 +27,35 @@ interface ExecuteTxParams {
 }
 
 export const executeContractTx = ({
-  address,
-  contractAddress,
-  messages,
   action,
-  fee,
+  address,
   base64Message,
-  signAndBroadcast,
-  onTxSucceed,
+  contractAddress,
+  fee,
+  messages,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcast,
 }: ExecuteTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.({
-        type: "execute",
         action,
-        sender: address,
         contractAddress,
         msg: base64Message,
+        sender: address,
         timestamp: getCurrentDate(),
+        type: "execute",
       });
 
       const txFee = findAttr(txInfo.events, "tx", "fee");
 
       return {
-        value: null,
         phase: TxStreamPhase.SUCCEED,
-        receipts: [
-          {
-            title: "Tx hash",
-            value: txInfo.transactionHash,
-            html: (
-              <ExplorerLink
-                openNewTab
-                type="tx_hash"
-                value={txInfo.transactionHash}
-              />
-            ),
-          },
-          {
-            title: "Tx fee",
-            html: (
-              <EstimatedFeeRender
-                estimatedFee={feeFromStr(txFee)}
-                loading={false}
-              />
-            ),
-          },
-        ],
         receiptInfo: {
           header: "Transaction complete!",
           headerIcon: (
@@ -89,6 +66,29 @@ export const executeContractTx = ({
             />
           ),
         },
+        receipts: [
+          {
+            html: (
+              <ExplorerLink
+                openNewTab
+                type="tx_hash"
+                value={txInfo.transactionHash}
+              />
+            ),
+            title: "Tx hash",
+            value: txInfo.transactionHash,
+          },
+          {
+            html: (
+              <EstimatedFeeRender
+                estimatedFee={feeFromStr(txFee)}
+                loading={false}
+              />
+            ),
+            title: "Tx fee",
+          },
+        ],
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

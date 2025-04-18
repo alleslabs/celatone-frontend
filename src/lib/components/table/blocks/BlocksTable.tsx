@@ -18,8 +18,8 @@ interface BlocksTableProps {
 
 export const BlocksTable = ({
   blocks,
-  isLoading,
   emptyState,
+  isLoading,
   showProposer = true,
 }: BlocksTableProps) => {
   const isMobile = useMobile();

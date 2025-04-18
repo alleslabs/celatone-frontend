@@ -36,14 +36,14 @@ interface HomeTopProps {
 }
 
 export const HomeTop = ({
-  totalTxs,
-  isTotalTxsLoading,
-  latestBlock,
-  isLatestBlockLoading,
   blockTime,
   isBlockTimeLoading,
-  toTxs,
+  isLatestBlockLoading,
+  isTotalTxsLoading,
+  latestBlock,
   toBlocks,
+  totalTxs,
+  toTxs,
 }: HomeTopProps) => {
   const isMobile = useMobile();
   const {

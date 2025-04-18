@@ -37,23 +37,23 @@ export interface TagSelectionProps extends InputProps {
 
 const listItemProps: CSSProperties = {
   borderRadius: "8px",
+  cursor: "pointer",
   margin: "4px 0px",
   padding: "8px",
-  cursor: "pointer",
 };
 
 export const TagSelection = observer(
   forwardRef<HTMLInputElement, TagSelectionProps>(
     (
       {
-        result,
-        setResult,
-        placeholder,
-        helperText,
-        labelBgColor = "background.main",
-        label = "Tags",
         boxWidth = "full",
         creatable = true,
+        helperText,
+        label = "Tags",
+        labelBgColor = "background.main",
+        placeholder,
+        result,
+        setResult,
         ...rest
       }: TagSelectionProps,
       ref
@@ -125,8 +125,8 @@ export const TagSelection = observer(
       };
 
       useOutsideClick({
-        ref: boxRef as RefObject<HTMLDivElement>,
         handler: () => setDisplayOptions(false),
+        ref: boxRef as RefObject<HTMLDivElement>,
       });
 
       return (

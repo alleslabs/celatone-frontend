@@ -16,10 +16,10 @@ interface MsgLockAndSuperfluidDelegateActionProps {
 }
 
 export const MsgLockAndSuperfluidDelegateAction = ({
+  ampCopierSection,
+  assetInfos,
   msg,
   pool,
-  assetInfos,
-  ampCopierSection,
 }: MsgLockAndSuperfluidDelegateActionProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {

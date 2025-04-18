@@ -20,9 +20,9 @@ export const getCodesRest = (endpoint: string, paginationKey: Option<string>) =>
   axios
     .get(`${endpoint}/cosmwasm/wasm/v1/code`, {
       params: {
+        "pagination.key": paginationKey,
         "pagination.limit": 10,
         "pagination.reverse": true,
-        "pagination.key": paginationKey,
       },
     })
     .then(({ data }) => parseWithError(zCodesResponseRest, data));

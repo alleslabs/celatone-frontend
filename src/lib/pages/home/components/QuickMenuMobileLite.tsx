@@ -15,23 +15,23 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 const actionCardProps: SystemStyleObject = {
-  width: "full",
-  height: "full",
-  padding: "16px",
-  borderRadius: "8px",
-  justifyContent: "space-between",
   alignItems: "center",
   bg: "gray.800",
+  borderRadius: "8px",
+  height: "full",
+  justifyContent: "space-between",
+  padding: "16px",
+  width: "full",
 };
 
 const cardProps: SystemStyleObject = {
-  width: "full",
-  height: "full",
-  padding: "16px",
-  borderRadius: "8px",
-  justifyContent: "space-between",
   alignItems: "center",
   bg: "gray.800",
+  borderRadius: "8px",
+  height: "full",
+  justifyContent: "space-between",
+  padding: "16px",
+  width: "full",
 };
 
 interface CardProps {
@@ -118,49 +118,49 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
     if (gov.enabled)
       base.push(
         {
-          title: "Validators",
-          slug: "validators",
           icon: "admin" as const,
           isDocument: false,
+          slug: "validators",
+          title: "Validators",
         },
         {
-          title: "Proposals",
-          slug: "proposals",
           icon: "proposal" as const,
           isDocument: false,
+          slug: "proposals",
+          title: "Proposals",
         }
       );
 
     if (wasm.enabled)
       base.push({
-        title: "Codes",
-        slug: "codes",
         icon: "code" as const,
         isDocument: false,
+        slug: "codes",
+        title: "Codes",
       });
 
     if (move.enabled)
       base.push({
-        title: "0x1 page",
-        slug: "/accounts/0x1",
         icon: "0x1" as IconKeys,
         isDocument: false,
+        slug: "/accounts/0x1",
+        title: "0x1 page",
       });
 
     if (publicProject.enabled)
       base.push({
-        title: "Public projects",
-        slug: "projects",
         icon: "public-project" as const,
         isDocument: false,
+        slug: "projects",
+        title: "Public projects",
       });
 
     // default
     base.push({
-      title: "User guide",
-      subtitle: "View Scan documents",
       icon: "document" as const,
       isDocument: true,
+      subtitle: "View Scan documents",
+      title: "User guide",
     });
 
     return base;
@@ -173,11 +173,11 @@ export const QuickMenuMobileLite = ({ prettyName }: { prettyName: string }) => {
           <Heading variant="h6">Quick action</Heading>
           <QuickActionCard
             item={{
-              title: "Query",
-              subtitle: "Query and get contract state data",
-              slug: "interact-contract",
               icon: "query" as const,
               isDocument: false,
+              slug: "interact-contract",
+              subtitle: "Query and get contract state data",
+              title: "Query",
             }}
           />
         </>

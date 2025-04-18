@@ -16,35 +16,35 @@ type OrderOption = SelectInputOption<OrderOptionValue>;
 const ORDER_OPTIONS: OrderOption[] = [
   {
     label: "Validator name (A to Z)",
-    value: { order: ValidatorOrder.Moniker, isDesc: false },
+    value: { isDesc: false, order: ValidatorOrder.Moniker },
   },
   {
     label: "Validator name (Z to A)",
-    value: { order: ValidatorOrder.Moniker, isDesc: true },
+    value: { isDesc: true, order: ValidatorOrder.Moniker },
   },
   {
     label: "Voting power (High to Low)",
-    value: { order: ValidatorOrder.VotingPower, isDesc: true },
+    value: { isDesc: true, order: ValidatorOrder.VotingPower },
   },
   {
     label: "Voting power (Low to High)",
-    value: { order: ValidatorOrder.VotingPower, isDesc: false },
+    value: { isDesc: false, order: ValidatorOrder.VotingPower },
   },
   {
     label: "Uptime (High to Low)",
-    value: { order: ValidatorOrder.Uptime, isDesc: true },
+    value: { isDesc: true, order: ValidatorOrder.Uptime },
   },
   {
     label: "Uptime (Low to High)",
-    value: { order: ValidatorOrder.Uptime, isDesc: false },
+    value: { isDesc: false, order: ValidatorOrder.Uptime },
   },
   {
     label: "Commission (High to Low)",
-    value: { order: ValidatorOrder.Commission, isDesc: true },
+    value: { isDesc: true, order: ValidatorOrder.Commission },
   },
   {
     label: "Commission (Low to High)",
-    value: { order: ValidatorOrder.Commission, isDesc: false },
+    value: { isDesc: false, order: ValidatorOrder.Commission },
   },
 ];
 
@@ -57,11 +57,11 @@ interface OrderSelectProps {
 }
 
 export const OrderSelect = ({
-  order,
-  setOrder,
-  isDesc,
-  setIsDesc,
   allowUptime,
+  isDesc,
+  order,
+  setIsDesc,
+  setOrder,
 }: OrderSelectProps) => (
   <Flex direction="column" gap={1} minW="full">
     <Text color="text.dark" pl={1} variant="body3">

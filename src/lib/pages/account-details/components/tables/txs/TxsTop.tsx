@@ -11,9 +11,9 @@ interface TxsTopProps {
   txTypeSelection: ReactNode;
 }
 export const TxsTop = ({
-  txsCount,
   onViewMore,
   relationSelection,
+  txsCount,
   txTypeSelection,
 }: TxsTopProps) => (
   <Flex

@@ -12,7 +12,7 @@ interface CollectionCardProps {
 
 export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
   const isMobile = useMobile();
-  const { uri, description, name } = collectionInfo;
+  const { description, name, uri } = collectionInfo;
   const { data: metadata } = useMetadata(uri);
 
   return (
@@ -60,8 +60,8 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
               overflow="hidden"
               sx={{
                 display: "-webkit-box",
-                WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 2,
               }}
               variant="h6"
             >
@@ -75,8 +75,8 @@ export const CollectionCard = ({ collectionInfo }: CollectionCardProps) => {
                 overflow="hidden"
                 sx={{
                   display: "-webkit-box",
-                  WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3,
                 }}
                 textOverflow="ellipsis"
                 variant={{ base: "body3", md: "body2" }}

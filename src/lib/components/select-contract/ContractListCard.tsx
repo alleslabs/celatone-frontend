@@ -22,9 +22,9 @@ interface ContractListCardProps {
 }
 
 export const ContractListCard = ({
-  item,
   handleListSelect,
   isReadOnly,
+  item,
 }: ContractListCardProps) => {
   const isInstantiatedByMe =
     item.slug === formatSlugName(INSTANTIATED_LIST_NAME);
@@ -92,15 +92,15 @@ export const ContractListCard = ({
             <EditListNameModal
               list={{ label: item.name, value: item.slug }}
               menuItemProps={{
-                icon: <CustomIcon color="gray.600" name="edit" />,
                 children: "Edit list name",
+                icon: <CustomIcon color="gray.600" name="edit" />,
               }}
             />
             <RemoveListModal
               list={{ label: item.name, value: item.slug }}
               menuItemProps={{
-                icon: <CustomIcon color="error.light" name="delete" />,
                 children: "Remove list",
+                icon: <CustomIcon color="error.light" name="delete" />,
               }}
             />
           </MenuList>

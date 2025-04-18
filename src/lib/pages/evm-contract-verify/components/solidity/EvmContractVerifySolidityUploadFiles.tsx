@@ -23,7 +23,7 @@ export const EvmContractVerifySolidityUploadFiles = ({
   control,
   evmVerifyConfig,
 }: EvmContractVerifySolidityUploadFilesProps) => {
-  const { fields, append, remove } = useFieldArray({
+  const { append, fields, remove } = useFieldArray({
     control,
     name: "verifyForm.solidityUploadFiles.files",
   });

@@ -36,8 +36,8 @@ interface Result {
 }
 
 const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
-  success: "check-circle-solid",
   error: "alert-triangle-solid",
+  success: "check-circle-solid",
   warning: "alert-triangle-solid",
 };
 
@@ -65,19 +65,19 @@ const Faucet = () => {
 
   const { data: faucetInfo } = useFaucetInfo();
 
-  const { faucetUrl, faucetDenom, faucetAmount } = useMemo(() => {
+  const { faucetAmount, faucetDenom, faucetUrl } = useMemo(() => {
     if (!faucet.enabled)
       // Remark: this shouldn't be used as the faucet is disabled
       return {
-        faucetUrl: "",
-        faucetDenom: "",
         faucetAmount: "",
+        faucetDenom: "",
+        faucetUrl: "",
       };
 
     return {
-      faucetUrl: faucet.url,
-      faucetDenom: faucetInfo?.formattedDenom ?? "token",
       faucetAmount: faucetInfo?.formattedAmount,
+      faucetDenom: faucetInfo?.formattedDenom ?? "token",
+      faucetUrl: faucet.url,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [faucet.enabled, faucetInfo?.formattedAmount, faucetInfo?.formattedDenom]);
@@ -90,7 +90,7 @@ const Faucet = () => {
     if (address) {
       const errorMsg = validateUserAddress(address);
       if (errorMsg) {
-        setStatus({ state: "error", message: errorMsg });
+        setStatus({ message: errorMsg, state: "error" });
       } else {
         setStatus({ state: "success" });
       }
@@ -102,7 +102,7 @@ const Faucet = () => {
     track(AmpEvent.ACTION_FAUCET);
 
     if (!faucetUrl) {
-      setResult({ status: "error", message: "Faucet URL not set" });
+      setResult({ message: "Faucet URL not set", status: "error" });
       setIsLoading(false);
       return;
     }
@@ -113,11 +113,7 @@ const Faucet = () => {
       })
       .then(({ data: { txHash } }) => {
         toast({
-          title: `${faucetAmount} Testnet ${faucetDenom} sent from the faucet`,
-          status: "success",
           duration: 5000,
-          isClosable: false,
-          position: "bottom-right",
           icon: (
             <CustomIcon
               alignItems="center"
@@ -127,17 +123,21 @@ const Faucet = () => {
               name="check-circle-solid"
             />
           ),
+          isClosable: false,
+          position: "bottom-right",
+          status: "success",
+          title: `${faucetAmount} Testnet ${faucetDenom} sent from the faucet`,
         });
 
         track(AmpEvent.TX_SUCCEED);
         setIsLoading(false);
         setResult({
-          status: "success",
           message: `Sent ${faucetAmount} testnet ${faucetDenom} from the faucet. ${
             faucetInfo?.RateLimit
               ? "You will need to wait for another hour to request again."
               : ""
           }`,
+          status: "success",
           txHash,
         });
       })
@@ -145,20 +145,20 @@ const Faucet = () => {
         if (axios.isAxiosError(err)) {
           if (err.response?.status === 429) {
             setResult({
-              status: "warning",
               message:
                 "There is a limit of one request per hour for each receiving address and IP address. Please try again later.",
+              status: "warning",
             });
           } else {
             setResult({
-              status: "error",
               message: err.response?.data?.error?.message || err.message,
+              status: "error",
             });
           }
         } else {
           setResult({
-            status: "error",
             message: err.message,
+            status: "error",
           });
         }
 

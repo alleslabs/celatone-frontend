@@ -31,8 +31,8 @@ export interface SaveAccountDetail {
 }
 
 const statusSuccess: FormStatus = {
-  state: "success",
   message: "Valid address",
+  state: "success",
 };
 
 interface SaveNewAccountModalProps {
@@ -43,10 +43,10 @@ interface SaveNewAccountModalProps {
 }
 
 export function SaveNewAccountModal({
-  buttonProps,
   accountAddress,
-  publicName,
+  buttonProps,
   publicDescription,
+  publicName,
 }: SaveNewAccountModalProps) {
   const { constants } = useCelatoneApp();
   const { user: exampleUserAddress } = useExampleAddresses();
@@ -65,16 +65,16 @@ export function SaveNewAccountModal({
   const defaultValues: SaveAccountDetail = useMemo(() => {
     return {
       address: defaultAddress,
-      name: publicName ?? "",
       description: publicDescription ?? "",
+      name: publicName ?? "",
     };
   }, [defaultAddress, publicDescription, publicName]);
 
   const {
     control,
-    watch,
-    reset,
     formState: { errors },
+    reset,
+    watch,
   } = useForm<SaveAccountDetail>({
     defaultValues,
     mode: "all",
@@ -95,7 +95,7 @@ export function SaveNewAccountModal({
 
   const setErrorStatus = (message: string) => {
     track(AmpEvent.ACCOUNT_FILLED_ERROR, { message });
-    setStatus({ state: "error", message });
+    setStatus({ message, state: "error" });
   };
 
   const onSuccess = (type: AccountType) => {
@@ -113,8 +113,8 @@ export function SaveNewAccountModal({
 
   const { refetch } = useAccountType(addressState, {
     enabled: false,
-    onSuccess,
     onError,
+    onSuccess,
   });
 
   useEffect(() => {
@@ -158,14 +158,14 @@ export function SaveNewAccountModal({
   ]);
 
   const handleSave = useHandleAccountSave({
-    title: `Saved ${nameState}`,
-    address: addressState,
-    name: nameState,
-    description: descriptionState,
     actions: () => {
       track(AmpEvent.ACCOUNT_SAVE, { isPrefilled: !!accountAddress });
       resetForm();
     },
+    address: addressState,
+    description: descriptionState,
+    name: nameState,
+    title: `Saved ${nameState}`,
   });
 
   return (

@@ -23,8 +23,8 @@ interface EvmTxTransferErc20Props {
 }
 
 export const EvmTxTransferErc20 = ({
-  evmTxData,
   assetInfos,
+  evmTxData,
 }: EvmTxTransferErc20Props) => {
   const { from, input, to: erc20Contract } = evmTxData.tx;
 

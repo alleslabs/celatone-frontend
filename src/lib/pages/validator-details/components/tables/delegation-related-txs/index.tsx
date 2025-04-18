@@ -18,9 +18,9 @@ interface DelegationRelatedTxsTableProps {
 }
 
 export const DelegationRelatedTxsTable = ({
+  assetInfos,
   delegationRelatedTxs,
   isLoading,
-  assetInfos,
   movePoolInfos,
 }: DelegationRelatedTxsTableProps) => {
   const isMobile = useMobile();

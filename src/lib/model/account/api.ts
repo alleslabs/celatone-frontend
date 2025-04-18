@@ -40,24 +40,24 @@ export const useAccountDelegationInfosApi = (
     isLoadingMovePoolInfos;
 
   const data: DelegationInfos = {
-    isLoading,
-    stakingParams: undefined,
-    isValidator: undefined,
-    isTotalBondedLoading: isLoading,
-    totalBonded: undefined,
-    isDelegationsLoading: isLoading,
-    totalDelegations: undefined,
     delegations: undefined,
+    isCommissionsLoading: isLoading,
+    isDelegationsLoading: isLoading,
+    isLoading,
+    isRedelegationsLoading: isLoading,
+    isRewardsLoading: isLoading,
+    isTotalBondedLoading: isLoading,
     isUnbondingsLoading: isLoading,
+    isValidator: undefined,
+    redelegations: undefined,
+    rewards: undefined,
+    stakingParams: undefined,
+    totalBonded: undefined,
+    totalCommissions: undefined,
+    totalDelegations: undefined,
+    totalRewards: undefined,
     totalUnbondings: undefined,
     unbondings: undefined,
-    isRewardsLoading: isLoading,
-    totalRewards: undefined,
-    rewards: undefined,
-    isRedelegationsLoading: isLoading,
-    redelegations: undefined,
-    isCommissionsLoading: isLoading,
-    totalCommissions: undefined,
   };
 
   if (accountDelegations) {
@@ -72,7 +72,6 @@ export const useAccountDelegationInfosApi = (
 
     data.delegations = accountDelegations.delegations.map<Delegation>(
       (raw) => ({
-        validator: raw.validator,
         balances: raw.balance
           .map((coin) =>
             coinToTokenWithValue(
@@ -83,6 +82,7 @@ export const useAccountDelegationInfosApi = (
             )
           )
           .sort(compareTokenWithValues),
+        validator: raw.validator,
       })
     );
     data.totalDelegations = data.delegations?.reduce<
@@ -100,8 +100,6 @@ export const useAccountDelegationInfosApi = (
     );
 
     data.unbondings = accountDelegations.unbondings.map<Unbonding>((raw) => ({
-      validator: raw.validator,
-      completionTime: raw.completionTime,
       balances: raw.balance
         .map((coin) =>
           coinToTokenWithValue(
@@ -112,6 +110,8 @@ export const useAccountDelegationInfosApi = (
           )
         )
         .sort(compareTokenWithValues),
+      completionTime: raw.completionTime,
+      validator: raw.validator,
     }));
     data.totalUnbondings = data.unbondings?.reduce<
       Record<string, TokenWithValue>
@@ -162,9 +162,6 @@ export const useAccountDelegationInfosApi = (
 
     data.redelegations = accountDelegations.redelegations.map<Redelegation>(
       (raw) => ({
-        srcValidator: raw.srcValidator,
-        dstValidator: raw.dstValidator,
-        completionTime: raw.completionTime,
         balances: raw.balance
           .map((coin) =>
             coinToTokenWithValue(
@@ -175,6 +172,9 @@ export const useAccountDelegationInfosApi = (
             )
           )
           .sort(compareTokenWithValues),
+        completionTime: raw.completionTime,
+        dstValidator: raw.dstValidator,
+        srcValidator: raw.srcValidator,
       })
     );
 

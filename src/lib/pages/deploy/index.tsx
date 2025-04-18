@@ -30,7 +30,7 @@ const getAlertContent = (
 } =>
   enabled
     ? {
-        variant: "success",
+        description: "Your address is allowed to directly upload Wasm files",
         icon: (
           <CustomIcon
             boxSize={4}
@@ -38,14 +38,14 @@ const getAlertContent = (
             name="check-circle-solid"
           />
         ),
-        description: "Your address is allowed to directly upload Wasm files",
+        variant: "success",
       }
     : {
-        variant: "primary",
+        description: `${chainPrettyName} is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.`,
         icon: (
           <CustomIcon boxSize={4} color="primary.light" name="info-circle" />
         ),
-        description: `${chainPrettyName} is a permissioned CosmWasm network. Only whitelisted addresses can directly upload Wasm files.`,
+        variant: "primary",
       };
 
 const Deploy = () => {
@@ -69,7 +69,7 @@ const Deploy = () => {
 
   if (isFetching) return <Loading />;
 
-  const { variant, icon, description } = getAlertContent(
+  const { description, icon, variant } = getAlertContent(
     enableUpload,
     chainPrettyName
   );

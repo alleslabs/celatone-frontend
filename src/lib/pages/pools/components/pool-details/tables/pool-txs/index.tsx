@@ -17,35 +17,35 @@ interface PoolRelatedTxsTableProps {
 }
 
 export const PoolRelatedTxsTable = ({
-  pool,
   countTxs,
-  type,
+  pool,
   scrollComponentId,
+  type,
 }: PoolRelatedTxsTableProps) => {
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: countTxs,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: countTxs,
   });
 
   const {
     data: txs,
-    isLoading,
     isError,
+    isLoading,
   } = useTxsByPoolId(pool.id, type, pageSize, offset);
 
   const onPageChange = (nextPage: number) => {

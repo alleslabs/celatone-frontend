@@ -54,11 +54,11 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
         chainConfig.network_type === "local"
           ? {
               apis: {
-                rest: [{ address: chainConfig.rest }],
-                rpc: [{ address: chainConfig.rpc }],
                 "json-rpc": chainConfig.features.evm.enabled
                   ? [{ address: chainConfig.features.evm.jsonRpc }]
                   : undefined,
+                rest: [{ address: chainConfig.rest }],
+                rpc: [{ address: chainConfig.rpc }],
               },
               bech32_prefix: "init" as const,
               chain_id: currentChainId,
@@ -67,8 +67,8 @@ export const InitiaWidgetProvider = ({ children }: { children: ReactNode }) => {
               logo_URIs: chainConfig.logo_URIs,
               network_type: "devnet",
               pretty_name: chainConfig.prettyName,
-              staking: chainConfig.registry?.staking,
               slip44: chainConfig.registry?.slip44,
+              staking: chainConfig.registry?.staking,
             }
           : undefined
       }

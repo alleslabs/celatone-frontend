@@ -20,26 +20,26 @@ export const useRequestEvmTx = () => {
 
   return useCallback(
     async ({
-      to,
       data,
-      value,
       estimatedFee,
-      onTxSucceed,
       onTxFailed,
+      onTxSucceed,
+      to,
+      value,
     }: RequestEvmStreamParams) => {
       if (!estimatedFee) return null;
 
       return requestEvmTx({
-        to,
         data,
-        value,
         estimatedFee,
-        signAndBroadcastEvm,
+        onTxFailed,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
-        onTxFailed,
+        signAndBroadcastEvm,
+        to,
+        value,
       });
     },
     [signAndBroadcastEvm]

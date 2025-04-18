@@ -15,33 +15,33 @@ interface ModuleRelatedProposalsTableProps {
 }
 
 export const ModuleRelatedProposalsTable = ({
-  vmAddress,
   moduleName,
-  scrollComponentId,
-  relatedProposalsCount,
   onViewMore,
+  relatedProposalsCount,
+  scrollComponentId,
+  vmAddress,
 }: ModuleRelatedProposalsTableProps) => {
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
     setTotalData,
   } = usePaginator({
-    total: relatedProposalsCount,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: relatedProposalsCount,
   });
 
   const {
     data: relatedProposals,
-    isLoading,
     error,
+    isLoading,
   } = useModuleRelatedProposals(
     vmAddress,
     moduleName,

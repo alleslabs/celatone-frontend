@@ -25,27 +25,27 @@ export const DelegationsSection = ({
   onViewMore,
 }: DelegationsSectionProps) => {
   const router = useRouter();
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { isOpen, onClose, onToggle } = useDisclosure();
 
   const {
-    isLoading,
-    stakingParams,
-    isValidator,
-    isTotalBondedLoading,
-    totalBonded,
-    isDelegationsLoading,
-    totalDelegations,
     delegations,
+    isCommissionsLoading,
+    isDelegationsLoading,
+    isLoading,
+    isRedelegationsLoading,
+    isRewardsLoading,
+    isTotalBondedLoading,
     isUnbondingsLoading,
+    isValidator,
+    redelegations,
+    rewards,
+    stakingParams,
+    totalBonded,
+    totalCommissions,
+    totalDelegations,
+    totalRewards,
     totalUnbondings,
     unbondings,
-    isRewardsLoading,
-    totalRewards,
-    rewards,
-    isRedelegationsLoading,
-    redelegations,
-    isCommissionsLoading,
-    totalCommissions,
   } = useAccountDelegationInfos(address);
 
   useEffect(() => {

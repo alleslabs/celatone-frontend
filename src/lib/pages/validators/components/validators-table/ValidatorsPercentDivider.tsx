@@ -7,8 +7,8 @@ interface ValidatorsPercentDividerProps {
 }
 
 export const ValidatorsPercentDivider = ({
-  rank,
   label,
+  rank,
 }: ValidatorsPercentDividerProps) => (
   <Flex bgColor="gray.700" h={1} position="relative">
     <div style={{ position: "absolute", top: "-300%" }}>

@@ -5,8 +5,8 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "../tableComponents";
 
 export const SavedAccountsTableHeader = ({
-  templateColumns,
   hasHexAddr,
+  templateColumns,
 }: {
   templateColumns: GridProps["templateColumns"];
   hasHexAddr: boolean;

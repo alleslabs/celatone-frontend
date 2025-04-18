@@ -26,15 +26,15 @@ export const Upload = ({
   const navigate = useInternalNavigate();
   const { data, isLoading } = useUploadAccessParamsRest();
   const {
-    proceed,
-    formData,
     estimatedFee,
+    formData,
+    isDisabledProcess,
+    isSimulating,
+    proceed,
+    setDefaultBehavior,
     setEstimatedFee,
     shouldNotSimulate,
-    setDefaultBehavior,
     simulateStatus,
-    isSimulating,
-    isDisabledProcess,
   } = useUploadCode(onComplete, false);
 
   const enableUpload =

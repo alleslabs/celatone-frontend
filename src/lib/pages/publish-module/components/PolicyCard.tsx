@@ -42,11 +42,11 @@ interface PolicyCardProps {
 }
 
 export const PolicyCard = ({
-  value,
-  selected,
   description,
   hasCondition = false,
   onSelect,
+  selected,
+  value,
 }: PolicyCardProps) => {
   const isChecked = value === selected;
   return (

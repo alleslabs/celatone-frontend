@@ -14,10 +14,10 @@ import { VotingOverviewQuorum } from "./VotingOverviewQuorum";
 import { VotingOverviewThreshold } from "./VotingOverviewThreshold";
 
 const VotingOverviewBody = ({
-  proposalData,
-  params,
-  votesInfo,
   isLoading,
+  params,
+  proposalData,
+  votesInfo,
 }: ProposalOverviewProps) => {
   const navigate = useInternalNavigate();
 
@@ -74,13 +74,13 @@ const VotingOverviewBody = ({
         variant="ghost-primary"
         onClick={() =>
           navigate({
+            options: {
+              shallow: true,
+            },
             pathname: "/proposals/[proposalId]/[tab]",
             query: {
               proposalId: proposalData.id,
               tab: TabIndex.Vote,
-            },
-            options: {
-              shallow: true,
             },
           })
         }

@@ -14,41 +14,41 @@ const variantStyle: Record<
   SystemStyleObject
 > = {
   full: {
-    w: "full",
     "> div": {
-      justifyContent: "space-between",
       alignItems: "center",
+      justifyContent: "space-between",
     },
     "> div > p:first-of-type": {
       fontWeight: 600,
     },
+    w: "full",
   },
   packed: {
-    w: "60%",
     "> div": {
       alignItems: "center",
     },
     "> div > p:first-of-type": {
-      w: "140px",
       fontWeight: 700,
+      w: "140px",
     },
+    w: "60%",
   },
   "tx-page": {
-    w: "full",
     "> div": {
       alignItems: "flex-start",
     },
     "> div > p:first-of-type": {
-      minW: "180px",
-      w: "180px",
-      mr: 4,
       color: "text.dark",
       fontWeight: 500,
+      minW: "180px",
+      mr: 4,
+      w: "180px",
     },
+    w: "full",
   },
 };
 
-const ReceiptRow = ({ title, value, html }: TxReceipt) => (
+const ReceiptRow = ({ html, title, value }: TxReceipt) => (
   <Flex
     direction={{ base: "column", md: "row" }}
     fontSize="14px"
@@ -71,10 +71,10 @@ const ReceiptRow = ({ title, value, html }: TxReceipt) => (
 );
 
 export const TxReceiptRender = ({
-  receipts,
-  variant = "packed",
   gap = 2,
   keyPrefix = "",
+  receipts,
+  variant = "packed",
   ...containerProps
 }: TxReceiptRenderProps) => (
   <Flex

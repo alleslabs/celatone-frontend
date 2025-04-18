@@ -13,7 +13,7 @@ export interface OverviewCardProps {
   tokens: Option<Record<string, TokenWithValue>>;
 }
 
-export const OverviewCard = ({ title, message, tokens }: OverviewCardProps) => (
+export const OverviewCard = ({ message, title, tokens }: OverviewCardProps) => (
   <Flex direction="column" gap={1} minW="233px">
     <TotalCardTop fontWeight={600} message={message} title={title} />
     {!tokens ? (

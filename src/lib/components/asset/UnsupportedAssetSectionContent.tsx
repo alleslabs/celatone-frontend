@@ -11,9 +11,9 @@ interface UnsupportedAssetSectionContentProps {
 }
 
 export const UnsupportedAssetSectionContent = ({
-  unsupportedAssets,
-  onViewMore,
   isAccount = false,
+  onViewMore,
+  unsupportedAssets,
 }: UnsupportedAssetSectionContentProps) => {
   if (!unsupportedAssets.length)
     return (

@@ -20,13 +20,13 @@ interface MsgJoinSwapExternAmountInDetailProps {
 }
 
 export const MsgJoinSwapExternAmountInDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  txHash,
 }: MsgJoinSwapExternAmountInDetailProps) => (
   <Flex alignItems="start" direction="column" gap={6} w="full">
     <Flex gap={12}>

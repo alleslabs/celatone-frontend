@@ -20,10 +20,10 @@ const vsCodeDarkColor = "#1E1E1E";
 
 export const EditorTop = ({
   filesList,
-  selectedFile,
   initialFilePath,
   onClick,
   onRemove,
+  selectedFile,
 }: EditorTopProps) => (
   <Box bgColor={vsCodeDarkColor} height="72px" position="relative">
     <Flex
@@ -49,15 +49,15 @@ export const EditorTop = ({
             px={0.5}
             py={1}
             sx={{
-              borderWidth: "1px",
-              borderTopColor: isSelected ? "primary.main" : vsCodeDarkColor,
-              borderLeftColor: "transparent",
-              borderRightColor: "gray.700",
-              borderBottomColor: isSelected ? vsCodeDarkColor : "gray.700",
-              bgColor: isSelected ? vsCodeDarkColor : "gray.900",
               "&:first-of-type": {
                 borderLeftColor: vsCodeDarkColor,
               },
+              bgColor: isSelected ? vsCodeDarkColor : "gray.900",
+              borderBottomColor: isSelected ? vsCodeDarkColor : "gray.700",
+              borderLeftColor: "transparent",
+              borderRightColor: "gray.700",
+              borderTopColor: isSelected ? "primary.main" : vsCodeDarkColor,
+              borderWidth: "1px",
             }}
             onClick={() => onClick(index)}
           >

@@ -29,19 +29,19 @@ const Layout = ({ children }: LayoutProps) => {
   const mode = useMemo(() => {
     if (isMobile)
       return {
-        templateAreas: `"header""main"`,
-        templateRows: `60px 1fr`,
-        templateCols: "1fr",
         header: <MobileHeader />,
         subHeader: undefined,
+        templateAreas: `"header""main"`,
+        templateCols: "1fr",
+        templateRows: `60px 1fr`,
       };
 
     return {
-      templateAreas: `"header header""subheader subheader""nav main"`,
-      templateRows: defaultRow,
-      templateCols: isExpand ? "235px 1fr" : "48px 1fr",
       header: <Header />,
       subHeader: <SubHeader />,
+      templateAreas: `"header header""subheader subheader""nav main"`,
+      templateCols: isExpand ? "235px 1fr" : "48px 1fr",
+      templateRows: defaultRow,
     };
   }, [defaultRow, isExpand, isMobile]);
 

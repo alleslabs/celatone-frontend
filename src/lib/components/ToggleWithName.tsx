@@ -9,8 +9,8 @@ interface ToggleWithNameProps {
 }
 
 export const ToggleWithName = ({
-  selectedValue,
   options,
+  selectedValue,
   selectOption,
 }: ToggleWithNameProps) => (
   <Flex border="1px" borderColor="gray.700" borderRadius={4} p={1}>

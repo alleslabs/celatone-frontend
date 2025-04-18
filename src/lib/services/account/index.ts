@@ -41,7 +41,7 @@ export const useAccountData = (
       isFullTier
         ? getAccountData(endpoint, address)
         : getAccountDataRest(endpoint, address),
-    { enabled: !!address, retry: 1, refetchOnWindowFocus: false }
+    { enabled: !!address, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -62,7 +62,7 @@ export const useAccountTableCounts = (
       isWasm,
     ],
     async () => getAccountTableCounts(endpoint, address, isGov, isWasm),
-    { retry: 1, refetchOnWindowFocus: false, ...options }
+    { refetchOnWindowFocus: false, retry: 1, ...options }
   );
 };
 
@@ -95,8 +95,8 @@ export const useAccountType = (
     queryFn,
     {
       ...options,
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );
 };
@@ -108,7 +108,7 @@ export const useAccountBech32 = (
     [CELATONE_QUERY_KEYS.ACCOUNT_BECH_32_REST, endpoint],
     async () => getAccountBech32Rest(endpoint),
     {
-      retry: 1,
       refetchOnWindowFocus: false,
+      retry: 1,
     }
   );

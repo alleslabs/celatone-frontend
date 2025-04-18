@@ -66,37 +66,37 @@ export enum WasmVerifyStatus {
 const zWasmVerifyInfoBase = z.object({
   chainId: z.string(),
   codeId: z.number(),
-  gitUrl: z.string(),
   commit: z.string(),
-  packageName: z.string(),
-  compilerVersion: z.string(),
-  submittedTimestamp: zUtcDate,
-  downloadedTimestamp: zUtcDate.nullable(),
-  compiledTimestamp: zUtcDate.nullable(),
   comparedTimestamp: zUtcDate.nullable(),
+  compiledTimestamp: zUtcDate.nullable(),
+  compilerVersion: z.string(),
+  downloadedTimestamp: zUtcDate.nullable(),
   errorMessage: z.string().nullable(),
+  gitUrl: z.string(),
+  packageName: z.string(),
+  submittedTimestamp: zUtcDate,
 });
 export type WasmVerifyInfoBase = z.infer<typeof zWasmVerifyInfoBase>;
 
 export const zWasmVerifyInfo = z
   .object({
-    verificationInfo: zWasmVerifyInfoBase.nullable(),
-    schema: z.unknown().nullable(),
     relatedVerifiedCodes: z.number().array(),
+    schema: z.unknown().nullable(),
+    verificationInfo: zWasmVerifyInfoBase.nullable(),
   })
-  .transform(({ verificationInfo, schema, relatedVerifiedCodes }) => ({
-    verificationInfo,
-    schema: schema !== null ? (schema as CodeSchema) : null,
+  .transform(({ relatedVerifiedCodes, schema, verificationInfo }) => ({
     relatedVerifiedCodes,
+    schema: schema !== null ? (schema as CodeSchema) : null,
+    verificationInfo,
   }));
 export type WasmVerifyInfo = z.infer<typeof zWasmVerifyInfo>;
 
 export const zRelatedWasmVerifyInfo = z
   .object({
-    schema: z.unknown().nullable(),
     relatedVerifiedCodes: z.number().array(),
+    schema: z.unknown().nullable(),
   })
-  .transform(({ schema, relatedVerifiedCodes }) => ({
-    schema: schema !== null ? (schema as CodeSchema) : null,
+  .transform(({ relatedVerifiedCodes, schema }) => ({
     relatedVerifiedCodes,
+    schema: schema !== null ? (schema as CodeSchema) : null,
   }));

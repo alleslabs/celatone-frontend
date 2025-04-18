@@ -1,7 +1,7 @@
 import { tagAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 
-const { definePartsStyle, defineMultiStyleConfig } =
+const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(tagAnatomy.keys);
 
 const teal = definePartsStyle({
@@ -49,17 +49,20 @@ const gray = definePartsStyle({
 export const Tag = defineMultiStyleConfig({
   baseStyle: {
     container: {
-      px: 2,
-      py: 1,
       borderRadius: "full",
       lineHeight: "100%",
+      px: 2,
+      py: 1,
       textAlign: "center",
     },
   },
+  defaultProps: {
+    size: "md",
+    variant: "primary-darker",
+  },
   sizes: {
-    xs: {
+    md: {
       container: {
-        height: "18px",
         fontSize: "12px",
       },
     },
@@ -68,22 +71,19 @@ export const Tag = defineMultiStyleConfig({
         fontSize: "12px",
       },
     },
-    md: {
+    xs: {
       container: {
         fontSize: "12px",
+        height: "18px",
       },
     },
   },
   variants: {
+    gray,
     primary,
-    "primary-light": primaryLight,
     "primary-darker": primaryDarker,
+    "primary-light": primaryLight,
     secondary,
     teal,
-    gray,
-  },
-  defaultProps: {
-    size: "md",
-    variant: "primary-darker",
   },
 });

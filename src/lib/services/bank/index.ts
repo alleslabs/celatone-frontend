@@ -43,7 +43,7 @@ export const useBalances = (
         ? getBalances(endpoint, address)
         : getBalancesRest(endpoint, address);
     },
-    { retry: 1, refetchOnWindowFocus: false, enabled }
+    { enabled, refetchOnWindowFocus: false, retry: 1 }
   );
 };
 
@@ -54,7 +54,7 @@ export const useBalanceInfos = (address: BechAddr): BalanceInfos => {
   const { data: movePoolInfos } = useMovePoolInfos({
     withPrices: true,
   });
-  const { data: accountBalances, isLoading, error } = useBalances(address);
+  const { data: accountBalances, error, isLoading } = useBalances(address);
 
   const balances = accountBalances
     ?.map<TokenWithValue>((balance) =>
@@ -77,11 +77,11 @@ export const useBalanceInfos = (address: BechAddr): BalanceInfos => {
     : undefined;
 
   return {
+    error: error as Error,
+    isLoading: isLoading || isAssetInfosLoading,
     supportedAssets,
+    totalData: balances?.length,
     totalSupportedAssetsValue,
     unsupportedAssets,
-    isLoading: isLoading || isAssetInfosLoading,
-    totalData: balances?.length,
-    error: error as Error,
   };
 };

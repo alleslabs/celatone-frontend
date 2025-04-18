@@ -89,15 +89,15 @@ const ModuleDetailsBody = ({
       if (nextTab === currentTab) return;
       trackUseTab(nextTab);
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: "/modules/[address]/[moduleName]/[tab]",
         query: {
           address: vmAddress,
           moduleName,
           tab: nextTab,
           ...(fnType && { type: fnType }),
-        },
-        options: {
-          shallow: true,
         },
       });
     },

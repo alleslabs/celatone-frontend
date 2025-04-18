@@ -19,8 +19,8 @@ import { TxsAlert } from "./TxsAlert";
 import { TxsTop } from "./TxsTop";
 
 const getEmptyState = ({
-  transactions,
   selectedFilters,
+  transactions,
 }: {
   transactions: Option<Transaction[]>;
   selectedFilters: string[];
@@ -54,9 +54,9 @@ const getEmptyState = ({
 
 export const TxsTableFull = ({
   address,
-  scrollComponentId,
-  refetchCount,
   onViewMore,
+  refetchCount,
+  scrollComponentId,
 }: TxsTableProps) => {
   const { chainId } = useCurrentChain();
   const [isSigner, setIsSigner] = useState<Option<boolean>>();
@@ -72,19 +72,19 @@ export const TxsTableFull = ({
   const isTxsCountTimeout = rawTxCount === null;
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: txsCount,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: txsCount,
   });
 
   const { data: transactions, isLoading } = useTxsByAddress(
@@ -163,8 +163,8 @@ export const TxsTableFull = ({
           {!isMobileOverview && (
             <TransactionsTable
               emptyState={getEmptyState({
-                transactions: transactions?.items,
                 selectedFilters,
+                transactions: transactions?.items,
               })}
               isLoading={isLoading || isTxCountLoading}
               showRelations

@@ -24,11 +24,11 @@ interface CodesTableRowProps {
 
 export const CodesTableRow = ({
   codeInfo,
-  templateColumns,
-  onRowSelect,
-  isReadOnly,
-  showCw2andContracts,
   disablePermission,
+  isReadOnly,
+  onRowSelect,
+  showCw2andContracts,
+  templateColumns,
   wasmVerifyInfo,
 }: CodesTableRowProps) => {
   const getAddressType = useGetAddressType();

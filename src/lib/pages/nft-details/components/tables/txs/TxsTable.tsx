@@ -15,7 +15,7 @@ interface TxsTableProps {
   emptyState: JSX.Element;
 }
 
-export const TxsTable = ({ txs, isLoading, emptyState }: TxsTableProps) => {
+export const TxsTable = ({ emptyState, isLoading, txs }: TxsTableProps) => {
   const isMobile = useMobile();
 
   if (isLoading) return <Loading withBorder />;

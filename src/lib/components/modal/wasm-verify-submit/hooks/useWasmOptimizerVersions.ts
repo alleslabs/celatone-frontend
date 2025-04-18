@@ -10,9 +10,9 @@ const mapOptimizerData = (
 ) =>
   data?.map((result) => ({
     label: `${prefix}:${result.name}`,
+    lastUpdated: result.lastUpdated,
     value: `${prefix}:${result.name}`,
     version: result.name,
-    lastUpdated: result.lastUpdated,
   })) ?? [];
 
 export const useWasmOptimizerVersions = () => {

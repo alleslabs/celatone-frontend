@@ -11,9 +11,9 @@ interface JsonInfoProps {
 }
 
 export const JsonInfo = ({
+  defaultExpand = false,
   header,
   jsonString,
-  defaultExpand = false,
 }: JsonInfoProps) => {
   const [expand, setExpand] = useState(defaultExpand);
 
@@ -40,7 +40,7 @@ export const JsonInfo = ({
         />
       </Flex>
       <div
-        style={expand ? { display: "block" } : { height: 0, display: "none" }}
+        style={expand ? { display: "block" } : { display: "none", height: 0 }}
       >
         <JsonReadOnly canCopy isExpandable text={jsonString} />
       </div>

@@ -20,9 +20,9 @@ export const OutdatedDetails = () => {
         <AppLink href="/modules/verify">
           <Text
             _hover={{
+              "& > p": { color: "primary.light" },
               textDecoration: "underline",
               textDecorationColor: "primary.light",
-              "& > p": { color: "primary.light" },
             }}
             color="primary.main"
             display="inline-flex"

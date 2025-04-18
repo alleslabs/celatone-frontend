@@ -27,8 +27,8 @@ export const EditSavedAccountModal = ({
   const defaultValues = useMemo(() => {
     return {
       address: accountLocalInfo.address,
-      name: accountLocalInfo.name ?? "",
       description: accountLocalInfo.description ?? "",
+      name: accountLocalInfo.name ?? "",
     };
   }, [
     accountLocalInfo.address,
@@ -38,9 +38,9 @@ export const EditSavedAccountModal = ({
 
   const {
     control,
-    watch,
-    reset,
     formState: { errors },
+    reset,
+    watch,
   } = useForm<SaveAccountDetail>({
     defaultValues,
     mode: "all",
@@ -60,11 +60,11 @@ export const EditSavedAccountModal = ({
   }, [resetForm]);
 
   const handleSave = useHandleAccountSave({
-    title: `Updated saved account!`,
-    address: addressState,
-    name: nameState,
-    description: descriptionState,
     actions: () => {},
+    address: addressState,
+    description: descriptionState,
+    name: nameState,
+    title: `Updated saved account!`,
   });
 
   return (

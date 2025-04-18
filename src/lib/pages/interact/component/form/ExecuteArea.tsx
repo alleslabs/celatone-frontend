@@ -29,9 +29,9 @@ const MoveCodeSnippet = dynamic(
 );
 
 export const ExecuteArea = ({
+  fn,
   moduleAddress,
   moduleName,
-  fn,
 }: {
   moduleAddress: HexAddr;
   moduleName: string;
@@ -51,8 +51,8 @@ export const ExecuteArea = ({
   const { broadcast } = useTxBroadcast();
 
   const [data, setData] = useState<AbiFormData>({
-    typeArgs: getAbiInitialData(executeFn.generic_type_params.length),
     args: getAbiInitialData(executeFn.params.length),
+    typeArgs: getAbiInitialData(executeFn.generic_type_params.length),
   });
   const [abiErrors, setAbiErrors] = useState<[string, string][]>([
     ["form", "initial"],
@@ -74,28 +74,28 @@ export const ExecuteArea = ({
   const { isFetching } = useSimulateFeeQuery({
     enabled: enableExecute,
     messages: composedTxMsgs,
+    onError: (e) => {
+      setSimulateFeeError(e.message);
+      setFee(undefined);
+    },
     onSuccess: (gasRes) => {
       setSimulateFeeError(undefined);
       if (gasRes) setFee(fabricateFee(gasRes));
       else setFee(undefined);
     },
-    onError: (e) => {
-      setSimulateFeeError(e.message);
-      setFee(undefined);
-    },
   });
 
   const proceed = useCallback(async () => {
-    const { typeArgs, args } = serializeAbiData(executeFn, data);
+    const { args, typeArgs } = serializeAbiData(executeFn, data);
     const stream = await executeModuleTx({
-      moduleAddress,
-      moduleName,
-      functionName: executeFn.name,
-      typeArgs,
       args,
       estimatedFee: fee,
-      onTxSucceed: () => setProcessing(false),
+      functionName: executeFn.name,
+      moduleAddress,
+      moduleName,
       onTxFailed: () => setProcessing(false),
+      onTxSucceed: () => setProcessing(false),
+      typeArgs,
     });
     if (stream) {
       setProcessing(true);
@@ -113,7 +113,7 @@ export const ExecuteArea = ({
 
   useEffect(() => {
     if (enableExecute) {
-      const { typeArgs, args } = serializeAbiData(executeFn, data);
+      const { args, typeArgs } = serializeAbiData(executeFn, data);
 
       const composedMsgs = toEncodeObject([
         new MsgExecuteModule(

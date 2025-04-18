@@ -24,20 +24,20 @@ interface ContractDetailsTemplateModalProps {
   icon?: IconKeys;
 }
 export const ContractDetailsTemplateModal = ({
-  title,
-  subtitle,
-  icon = "edit",
   contractLocalInfo,
-  triggerElement,
   defaultList = [],
+  icon = "edit",
   isSave = false,
+  subtitle,
+  title,
+  triggerElement,
 }: ContractDetailsTemplateModalProps) => {
   const defaultValues = useMemo(() => {
     return {
-      name: contractLocalInfo.name ?? "",
       description: getNameAndDescriptionDefault(contractLocalInfo.description),
-      tags: getTagsDefault(contractLocalInfo.tags),
       lists: contractLocalInfo.lists ?? defaultList,
+      name: contractLocalInfo.name ?? "",
+      tags: getTagsDefault(contractLocalInfo.tags),
     };
   }, [
     contractLocalInfo.description,
@@ -49,10 +49,10 @@ export const ContractDetailsTemplateModal = ({
 
   const {
     control,
+    formState: { errors },
+    reset,
     setValue,
     watch,
-    reset,
-    formState: { errors },
   } = useForm<OffchainDetail>({
     defaultValues,
     mode: "all",
@@ -77,17 +77,17 @@ export const ContractDetailsTemplateModal = ({
   };
 
   const handleSave = useHandleContractSave({
-    title: "Action complete!",
-    contractAddress: contractLocalInfo.contractAddress,
-    label: contractLocalInfo.label,
-    codeId: contractLocalInfo.codeId,
-    instantiator: contractLocalInfo.instantiator,
-    name: offchainState.name,
-    description: offchainState.description,
-    tags: offchainState.tags,
-    lists: offchainState.lists,
     actions: () =>
       track(isSave ? AmpEvent.CONTRACT_SAVE : AmpEvent.CONTRACT_EDIT),
+    codeId: contractLocalInfo.codeId,
+    contractAddress: contractLocalInfo.contractAddress,
+    description: offchainState.description,
+    instantiator: contractLocalInfo.instantiator,
+    label: contractLocalInfo.label,
+    lists: offchainState.lists,
+    name: offchainState.name,
+    tags: offchainState.tags,
+    title: "Action complete!",
   });
 
   return (

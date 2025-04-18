@@ -10,9 +10,9 @@ interface MyModuleVerificationDetailsStatusBadgeProps {
 }
 
 export const MyModuleVerificationDetailsStatusBadge = ({
-  status,
   hasCloseBtn,
   isActiveOnVerifying = true,
+  status,
 }: MyModuleVerificationDetailsStatusBadgeProps) => {
   const renderStatus = () => {
     if (status === MoveVerifyTaskStatus.Pending)

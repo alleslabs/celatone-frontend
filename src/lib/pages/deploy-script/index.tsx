@@ -32,9 +32,9 @@ export interface FileState {
 }
 
 const DEFAULT_FILE_STATE: FileState = {
-  file: undefined,
   base64File: "",
   decodeRes: undefined,
+  file: undefined,
 };
 
 export const DeployScript = () => {
@@ -54,8 +54,8 @@ export const DeployScript = () => {
   const [processing, setProcessing] = useState(false);
   // Form State
   const [inputData, setInputData] = useState<AbiFormData>({
-    typeArgs: {},
     args: {},
+    typeArgs: {},
   });
   const [abiErrors, setAbiErrors] = useState<[string, string][]>([
     ["form", "initial"],
@@ -83,7 +83,7 @@ export const DeployScript = () => {
     setFileState(DEFAULT_FILE_STATE);
     setEstimatedFee(undefined);
     setSimulateError("");
-    setInputData({ typeArgs: {}, args: {} });
+    setInputData({ args: {}, typeArgs: {} });
     setAbiErrors([["form", "initial"]]);
   }, []);
 
@@ -95,22 +95,20 @@ export const DeployScript = () => {
       fileState.decodeRes,
       inputData
     ),
+    onError: (e) => {
+      setSimulateError(e.message);
+      setEstimatedFee(undefined);
+    },
     onSuccess: (gasRes) => {
       if (gasRes) {
         setEstimatedFee(fabricateFee(gasRes));
         setSimulateError("");
       } else setEstimatedFee(undefined);
     },
-    onError: (e) => {
-      setSimulateError(e.message);
-      setEstimatedFee(undefined);
-    },
   });
 
   const proceed = useCallback(async () => {
     const stream = await deployScriptTx({
-      onTxSucceed: () => setProcessing(false),
-      onTxFailed: () => setProcessing(false),
       estimatedFee,
       messages: composeScriptMsg(
         address,
@@ -118,6 +116,8 @@ export const DeployScript = () => {
         fileState.decodeRes,
         inputData
       ),
+      onTxFailed: () => setProcessing(false),
+      onTxSucceed: () => setProcessing(false),
     });
     if (stream) {
       setProcessing(true);
@@ -146,10 +146,10 @@ export const DeployScript = () => {
         </Heading>
         <div
           style={{
-            marginTop: "16px",
-            marginBottom: "48px",
-            textAlign: "center",
             color: "var(--chakra-colors-text-dark)",
+            marginBottom: "48px",
+            marginTop: "16px",
+            textAlign: "center",
           }}
         >
           Upload a .mv file to deploy one-time use script which execute
@@ -177,13 +177,13 @@ export const DeployScript = () => {
             base64File: string,
             decodeRes: Option<ExposedFunction>
           ) => {
-            setFileState({ file, base64File, decodeRes });
+            setFileState({ base64File, decodeRes, file });
             if (decodeRes)
               setInputData({
+                args: getAbiInitialData(decodeRes.params.length),
                 typeArgs: getAbiInitialData(
                   decodeRes.generic_type_params.length
                 ),
-                args: getAbiInitialData(decodeRes.params.length),
               });
           }}
         />

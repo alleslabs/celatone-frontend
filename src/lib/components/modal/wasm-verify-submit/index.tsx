@@ -39,9 +39,9 @@ interface WasmVerifySubmitModalBodyProps
 }
 
 const WasmVerifySubmitModalBody = ({
-  isSuccess,
-  isError,
   errorMsg,
+  isError,
+  isSuccess,
   onClose,
   ...props
 }: WasmVerifySubmitModalBodyProps) => {
@@ -52,17 +52,17 @@ const WasmVerifySubmitModalBody = ({
 };
 
 export const WasmVerifySubmitModal = ({
-  codeId,
   codeHash,
-  wasmVerifyStatus,
-  relatedVerifiedCodes,
+  codeId,
   contractAddress,
-  triggerElement,
   disabled,
+  relatedVerifiedCodes,
+  triggerElement,
+  wasmVerifyStatus,
 }: WasmVerifySubmitModalProps) => {
   const queryClient = useQueryClient();
   const { currentChainId } = useCelatoneApp();
-  const { mutate, isLoading, isSuccess, isError, error } =
+  const { error, isError, isLoading, isSuccess, mutate } =
     useSubmitWasmVerify();
 
   const { isOpen, onClose, onOpen } = useDisclosure();

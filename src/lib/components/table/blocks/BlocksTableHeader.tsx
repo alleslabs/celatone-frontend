@@ -9,8 +9,8 @@ interface BlocksTableHeaderProps {
 }
 
 export const BlocksTableHeader = ({
-  templateColumns,
   showProposer = true,
+  templateColumns,
 }: BlocksTableHeaderProps) => (
   <Grid
     sx={{ "> div": { color: "text.dark" } }}

@@ -8,10 +8,10 @@ import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
 
 const ExpeditedText = ({
+  isLoading,
   quorum,
   threshold,
   votingPeriod,
-  isLoading,
 }: {
   quorum: Option<Ratio<number>>;
   threshold: Option<Ratio<number>>;
@@ -30,7 +30,7 @@ const ExpeditedText = ({
   return (
     <Text variant="body3">
       An expedited governance proposal is required to{" "}
-      <span style={{ fontWeight: 700, color: "text.main" }}>
+      <span style={{ color: "text.main", fontWeight: 700 }}>
         pass a quorum of {quorum ? formatPrettyPercent(quorum, 1, true) : "N/A"}{" "}
         and a high threshold of{" "}
         {threshold ? formatPrettyPercent(threshold, 1, true) : "N/A"} within{" "}

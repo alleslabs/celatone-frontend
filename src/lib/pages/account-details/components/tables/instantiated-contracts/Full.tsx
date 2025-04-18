@@ -16,10 +16,10 @@ import AccountSectionWrapper from "../../AccountSectionWrapper";
 
 export const InstantiatedContractsTableFull = ({
   address,
+  onViewMore,
+  refetchCount,
   scrollComponentId,
   totalData,
-  refetchCount,
-  onViewMore,
 }: InstantiatedContractsTableProps) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
@@ -30,19 +30,19 @@ export const InstantiatedContractsTableFull = ({
     });
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: totalData,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: totalData,
   });
   const { contracts, isLoading } = useAccountContracts(
     address,

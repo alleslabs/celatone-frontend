@@ -23,12 +23,12 @@ interface SchemaQueryProps {
 }
 
 export const SchemaQuery = ({
-  verifiedSchema,
-  localSchema,
+  codeHash,
+  codeId,
   contractAddress,
   initialMsg,
-  codeId,
-  codeHash,
+  localSchema,
+  verifiedSchema,
 }: SchemaQueryProps) => {
   const { address } = useCurrentChain();
   const { addActivity } = useContractStore();

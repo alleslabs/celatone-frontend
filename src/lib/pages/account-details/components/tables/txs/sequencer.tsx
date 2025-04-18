@@ -23,8 +23,8 @@ export const TxsTableSequencer = ({ address, onViewMore }: TxsTableProps) => {
     error,
     fetchNextPage,
     hasNextPage,
-    isLoading,
     isFetchingNextPage,
+    isLoading,
   } = useTxsByAddressSequencer(
     address as BechAddr20,
     undefined,

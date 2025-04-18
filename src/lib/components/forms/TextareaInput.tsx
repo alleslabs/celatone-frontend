@@ -27,14 +27,14 @@ export interface TextareaProps extends FormControlProps {
 }
 
 export const TextareaInput = ({
-  value,
-  setInputState,
+  error,
+  helperText,
   label,
   labelBgColor = "background.main",
-  helperText,
   placeholder = " ",
-  error,
+  setInputState,
   status,
+  value,
   ...componentProps
 }: TextareaProps) => (
   <FormControl

@@ -45,11 +45,11 @@ interface ContractTopProps {
 }
 
 export const ContractTop = ({
+  contract,
   contractAddress,
+  contractLocalInfo,
   projectInfo,
   publicInfo,
-  contract,
-  contractLocalInfo,
   wasmVerifyInfo,
 }: ContractTopProps) => {
   const isMobile = useMobile();
@@ -118,12 +118,12 @@ export const ContractTop = ({
       <Breadcrumb
         items={[
           {
-            text: projectName ? "Public projects" : "Contracts",
             href: projectName ? "/projects" : "/contracts",
+            text: projectName ? "Public projects" : "Contracts",
           },
           {
-            text: projectName,
             href: `/projects/${publicInfo?.slug}`,
+            text: projectName,
           },
           { text: truncate(contractAddress) },
         ]}

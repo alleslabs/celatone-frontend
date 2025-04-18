@@ -11,12 +11,12 @@ interface StateLoaderProps {
   onDownload: () => void;
 }
 export const StateLoader = ({
-  numStatesToLoad,
-  isLoading,
   isCompleted,
-  totalData,
-  onLoadMore,
+  isLoading,
+  numStatesToLoad,
   onDownload,
+  onLoadMore,
+  totalData,
 }: StateLoaderProps) => {
   const stateAmountText = `${totalData} ${plur("State", totalData)}`;
 

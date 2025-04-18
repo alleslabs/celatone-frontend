@@ -45,13 +45,13 @@ interface UploadSectionProps {
 }
 
 export const UploadSection = ({
-  formData,
   estimatedFee,
-  setEstimatedFee,
+  formData,
+  isSimulating,
   setDefaultBehavior,
+  setEstimatedFee,
   shouldNotSimulate,
   simulateStatus,
-  isSimulating,
 }: UploadSectionProps) => {
   const isInitia = useInitia();
   const { data: uploadAccessParams } = useUploadAccessParamsRest();
@@ -66,12 +66,12 @@ export const UploadSection = ({
 
   const {
     control,
-    setValue,
-    watch,
     formState: { errors },
+    setValue,
     trigger,
+    watch,
   } = formData;
-  const { wasmFile, codeName, permission } = watch();
+  const { codeName, permission, wasmFile } = watch();
 
   // Generate hash value from wasm file
   const setHashValue = useCallback(async () => {

@@ -20,11 +20,11 @@ export const AbiForm = ({
   propsOnChange,
   propsOnErrors,
 }: AbiFormProps) => {
-  const { setValue, watch, getValues, reset } = useForm<AbiFormData>({
+  const { getValues, reset, setValue, watch } = useForm<AbiFormData>({
     defaultValues: initialData,
     mode: "all",
   });
-  const { typeArgs, args } = watch();
+  const { args, typeArgs } = watch();
 
   useEffect(() => {
     reset(initialData);

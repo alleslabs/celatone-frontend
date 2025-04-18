@@ -75,9 +75,9 @@ const InvalidAccount = () => <InvalidState title="Account does not exist" />;
 
 const AccountDetailsBody = ({
   accountAddressParam,
-  tabParam,
   resourceSelectedAccountParam,
   resourceSelectedGroupNameParam,
+  tabParam,
 }: AccountDetailsBodyProps) => {
   // ------------------------------------------//
   // ---------------DEPENDENCIES---------------//
@@ -106,9 +106,9 @@ const AccountDetailsBody = ({
   const { getAccountLocalInfo } = useAccountStore();
   const accountLocalInfo = getAccountLocalInfo(accountAddress);
   const {
-    tableCounts,
-    refetchCounts,
     isLoading: isLoadingAccountTableCounts,
+    refetchCounts,
+    tableCounts,
   } = useAccountDetailsTableCounts(accountAddress);
   // gov
   const { isTotalBondedLoading, totalBonded } =
@@ -146,13 +146,13 @@ const AccountDetailsBody = ({
       if (nextTab === tabParam) return;
       trackUseTab(nextTab, undefined, total?.toString());
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: "/accounts/[accountAddress]/[tab]",
         query: {
           accountAddress: getAddressOnPath(hexAddress, accountAddress),
           tab: nextTab,
-        },
-        options: {
-          shallow: true,
         },
       });
     },
@@ -162,8 +162,8 @@ const AccountDetailsBody = ({
   const { address } = useCurrentChain();
   const {
     data: initiaUsernameData,
-    isLoading: isInitiaUsernameDataLoading,
     isFetching: isInitiaUsernameDataFetching,
+    isLoading: isInitiaUsernameDataLoading,
   } = useInitiaUsernameByAddress(hexAddress, isInitia);
 
   const nftEnabled = nft.enabled && (isFullTier || isSequencerTier);
@@ -198,10 +198,10 @@ const AccountDetailsBody = ({
         {accountData?.projectInfo && accountData?.publicInfo && (
           <Breadcrumb
             items={[
-              { text: "Public projects", href: "/projects" },
+              { href: "/projects", text: "Public projects" },
               {
-                text: accountData.projectInfo.name,
                 href: `/projects/${accountData.publicInfo.slug}`,
+                text: accountData.projectInfo.name,
               },
               { text: truncate(accountAddress) },
             ]}

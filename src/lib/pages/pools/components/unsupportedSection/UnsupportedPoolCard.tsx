@@ -31,10 +31,10 @@ interface UnsupportedPoolCardProps {
 }
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "24px",
     color: "gray.600",
+    display: "flex",
+    fontSize: "24px",
   },
 });
 

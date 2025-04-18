@@ -36,25 +36,25 @@ export const SelectInputBody = <
   OptionValue extends SelectInputOptionValue,
   IsMulti extends boolean = false,
 >({
-  options,
-  value = null,
-  onChange,
-  size = "lg",
-  placeholder,
-  menuPortalTarget,
-  isSearchable,
-  formatOptionLabel,
-  components,
-  chakraStyles,
-  inputId,
-  name,
-  isMulti,
-  closeMenuOnSelect,
-  onBlur,
-  onFocus,
   autoFocus,
+  chakraStyles,
   classNamePrefix,
+  closeMenuOnSelect,
+  components,
+  formatOptionLabel,
+  inputId,
   isDisabled,
+  isMulti,
+  isSearchable,
+  menuPortalTarget,
+  name,
+  onBlur,
+  onChange,
+  onFocus,
+  options,
+  placeholder,
+  size = "lg",
+  value = null,
 }: SelectInputProps<OptionValue, IsMulti>) => (
   <Select<SelectInputOption<OptionValue>, IsMulti>
     autoFocus={autoFocus}
@@ -63,15 +63,21 @@ export const SelectInputBody = <
         ...provided,
         width: "100%",
       }),
-      valueContainer: (provided: SystemStyleObject) => ({
-        ...provided,
-        pl: 3,
-        pr: 0,
-      }),
       dropdownIndicator: (provided: SystemStyleObject) => ({
         ...provided,
-        px: 2,
         color: "gray.600",
+        px: 2,
+      }),
+      option: (provided) => ({
+        ...provided,
+        _hover: {
+          bg: "gray.700",
+        },
+        _selected: {
+          bg: "gray.800",
+        },
+        color: "text.main",
+        fontSize: size === "sm" ? "14px" : "16px",
       }),
       placeholder: (provided: SystemStyleObject) => ({
         ...provided,
@@ -79,16 +85,10 @@ export const SelectInputBody = <
         fontSize: "14px",
         whiteSpace: "nowrap",
       }),
-      option: (provided) => ({
+      valueContainer: (provided: SystemStyleObject) => ({
         ...provided,
-        color: "text.main",
-        fontSize: size === "sm" ? "14px" : "16px",
-        _hover: {
-          bg: "gray.700",
-        },
-        _selected: {
-          bg: "gray.800",
-        },
+        pl: 3,
+        pr: 0,
       }),
       ...chakraStyles,
     }}
@@ -124,9 +124,9 @@ export const SelectInput = <
   OptionValue extends SelectInputOptionValue,
   IsMulti extends boolean = false,
 >({
-  label,
-  isRequired,
   isDisabled,
+  isRequired,
+  label,
   labelBg = "background.main",
   ...options
 }: SelectInputProps<OptionValue, IsMulti>) =>
@@ -135,21 +135,21 @@ export const SelectInput = <
       <Text
         className="form-label"
         sx={{
-          fontSize: "12px",
-          color: "text.dark",
-          letterSpacing: "0.15px",
-          position: "absolute",
-          ml: 3,
-          px: 1,
-          bg: labelBg,
-          top: -2,
-          zIndex: 1,
           "::after": {
-            content: isRequired ? '"* (Required)"' : '""',
             color: "error.main",
+            content: isRequired ? '"* (Required)"' : '""',
             ml: 1,
           },
+          bg: labelBg,
+          color: "text.dark",
+          fontSize: "12px",
+          letterSpacing: "0.15px",
+          ml: 3,
           opacity: isDisabled ? 0.3 : 1,
+          position: "absolute",
+          px: 1,
+          top: -2,
+          zIndex: 1,
         }}
       >
         {label}

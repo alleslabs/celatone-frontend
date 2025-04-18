@@ -12,11 +12,11 @@ interface SectionWrapperProps {
 }
 
 export const SectionWrapper = ({
+  borderRight = true,
   children,
+  justifyContent = "center",
   minW = "auto",
   w = "auto",
-  justifyContent = "center",
-  borderRight = true,
 }: SectionWrapperProps) => (
   <Flex
     alignItems="center"

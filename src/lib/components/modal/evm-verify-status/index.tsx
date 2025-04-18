@@ -81,9 +81,9 @@ interface EvmVerifyStatusModalTriggerProps
 }
 
 export const EvmVerifyStatusModalWithTrigger = ({
-  triggerElement,
   contractAddress,
   evmVerifyInfo,
+  triggerElement,
 }: EvmVerifyStatusModalTriggerProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 

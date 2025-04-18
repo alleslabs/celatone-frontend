@@ -11,31 +11,31 @@ import { zRatio } from "./currency";
 
 export const zValidator = z
   .object({
-    validator_address: zValidatorAddr,
     identity: z.string().nullable(),
     moniker: z.string().nullable(),
+    validator_address: zValidatorAddr,
   })
   .transform((val) => ({
-    validatorAddress: val.validator_address,
     identity: val.identity ?? undefined,
     moniker: val.moniker ?? undefined,
+    validatorAddress: val.validator_address,
   }));
 export type Validator = z.infer<typeof zValidator>;
 
 export const zValidatorData = z
   .object({
-    rank: z.number().nullable(),
-    validator_address: zValidatorAddr,
     account_address: zBechAddr20,
-    consensus_address: zConsensusAddr,
-    identity: z.string(),
-    moniker: z.string(),
-    details: z.string(),
     commission_rate: zRatio(z.coerce.number()),
-    is_jailed: z.boolean(),
+    consensus_address: zConsensusAddr,
+    details: z.string(),
+    identity: z.string(),
     is_active: z.boolean(),
-    voting_power: zBig,
+    is_jailed: z.boolean(),
+    moniker: z.string(),
+    rank: z.number().nullable(),
     uptime: z.number().optional(),
+    validator_address: zValidatorAddr,
+    voting_power: zBig,
     website: z.string(),
   })
   .transform(({ website, ...val }) => ({

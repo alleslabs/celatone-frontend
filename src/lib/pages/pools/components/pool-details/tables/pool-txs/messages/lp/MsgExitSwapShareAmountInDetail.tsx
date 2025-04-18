@@ -20,13 +20,13 @@ interface MsgExitSwapShareAmountInDetailProps {
 }
 
 export const MsgExitSwapShareAmountInDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  txHash,
 }: MsgExitSwapShareAmountInDetailProps) => (
   <Flex alignItems="start" direction="column" gap={6} minW="full">
     <Flex gap={12}>

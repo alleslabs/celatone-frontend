@@ -13,11 +13,11 @@ interface AccountSectionWrapperProps {
 }
 const AccountSectionWrapper = ({
   children,
+  hasHelperText,
+  helperText,
+  showCount = true,
   title,
   totalData,
-  helperText,
-  hasHelperText,
-  showCount = true,
 }: AccountSectionWrapperProps) => (
   <>
     <TableTitle

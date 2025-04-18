@@ -27,33 +27,33 @@ const getInstantiateButtonProps = (
   const buttonDisabledState = "outline-gray";
   if (isUnknown) {
     return {
+      icon: undefined,
       tooltipLabel: "",
       variant: buttonDisabledState,
-      icon: undefined,
     };
   }
   if (isAllowed) {
     return {
+      icon: <CustomIcon name="instantiate" />,
       tooltipLabel: isWalletConnected
         ? "You can instantiate without opening proposal"
         : "You need to connect wallet to instantiate contract",
       variant: isWalletConnected ? "outline-primary" : buttonDisabledState,
-      icon: <CustomIcon name="instantiate" />,
     };
   }
   return {
+    icon: <CustomIcon name="vote" />,
     tooltipLabel: isWalletConnected
       ? "Instantiate through proposal only (Coming Soon)"
       : "You need to connect wallet to open instantiate proposal",
     variant: buttonDisabledState,
-    icon: <CustomIcon name="vote" />,
   };
 };
 
 export const InstantiateButton = ({
+  codeId,
   instantiatePermission = AccessConfigPermission.UNKNOWN,
   permissionAddresses = [],
-  codeId,
   ...buttonProps
 }: InstantiateButtonProps) => {
   const { address } = useCurrentChain();
@@ -72,7 +72,7 @@ export const InstantiateButton = ({
   //   instantiatePermission === AccessConfigPermission.UNKNOWN ||
   //   !isWalletConnected;
 
-  const { tooltipLabel, variant, icon } = getInstantiateButtonProps(
+  const { icon, tooltipLabel, variant } = getInstantiateButtonProps(
     isAllowed,
     instantiatePermission === AccessConfigPermission.UNKNOWN,
     !!address

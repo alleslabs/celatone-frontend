@@ -22,9 +22,9 @@ export const PublicProjectCard = observer(
     };
 
     const [ref, { clampedText }] = useClampText({
-      text: item?.description || "",
       ellipsis: "...",
       lines: 3,
+      text: item?.description || "",
     });
 
     return (

@@ -18,9 +18,9 @@ interface TextReadOnlyProps {
 }
 
 export const TextReadOnly = ({
-  text,
   canCopy,
   showLines,
+  text,
 }: TextReadOnlyProps) => {
   const editorRef = useRef<AceEditor>(null);
   const { theme } = useCelatoneApp();
@@ -28,8 +28,8 @@ export const TextReadOnly = ({
   return (
     <Box
       _hover={{
-        borderColor: "gray.600",
         "& .copy-button-box": { display: "block" },
+        borderColor: "gray.600",
       }}
       borderColor="gray.700"
       borderRadius="8px"
@@ -43,23 +43,23 @@ export const TextReadOnly = ({
       <AceEditor
         className="text-editor"
         style={{
-          width: "100%",
           background: "transparent",
           color: "text.main",
           offset: 0,
+          width: "100%",
         }}
         editorProps={{ $blockScrolling: true }}
         fontSize="14px"
         mode="text"
         readOnly
         setOptions={{
-          tabSize: 2,
-          useWorker: false,
-          showGutter: false,
-          printMargin: false,
           indentedSoftWrap: false,
           maxLines: showLines ?? Infinity,
           minLines: showLines,
+          printMargin: false,
+          showGutter: false,
+          tabSize: 2,
+          useWorker: false,
         }}
         theme={theme.jsonTheme}
         value={text}

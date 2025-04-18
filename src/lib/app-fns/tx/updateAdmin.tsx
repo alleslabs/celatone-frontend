@@ -24,28 +24,32 @@ interface UpdateAdminTxParams {
 
 export const updateAdminTx = ({
   address,
-  messages,
   fee,
-  signAndBroadcast,
-  onTxSucceed,
+  messages,
   onTxFailed,
+  onTxSucceed,
+  signAndBroadcast,
 }: UpdateAdminTxParams): Observable<TxResultRendering> => {
   return pipe(
     sendingTx(fee),
     postTx<DeliverTxResponse>({
-      postFn: () => signAndBroadcast({ address, messages, fee }),
+      postFn: () => signAndBroadcast({ address, fee, messages }),
     }),
     ({ value: txInfo }) => {
       onTxSucceed?.();
       const txFee = findAttr(txInfo.events, "tx", "fee");
 
       return {
-        value: null,
+        actionVariant: "update-admin",
         phase: TxStreamPhase.SUCCEED,
+        receiptInfo: {
+          header: "Update admin complete!",
+          headerIcon: (
+            <CustomIcon color="success.main" name="check-circle-solid" />
+          ),
+        },
         receipts: [
           {
-            title: "Tx hash",
-            value: txInfo.transactionHash,
             html: (
               <ExplorerLink
                 openNewTab
@@ -53,24 +57,20 @@ export const updateAdminTx = ({
                 value={txInfo.transactionHash}
               />
             ),
+            title: "Tx hash",
+            value: txInfo.transactionHash,
           },
           {
-            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
+            title: "Tx fee",
           },
         ],
-        receiptInfo: {
-          header: "Update admin complete!",
-          headerIcon: (
-            <CustomIcon color="success.main" name="check-circle-solid" />
-          ),
-        },
-        actionVariant: "update-admin",
+        value: null,
       } as TxResultRendering;
     }
   )().pipe(catchTxError(onTxFailed));

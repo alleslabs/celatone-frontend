@@ -11,11 +11,11 @@ export interface AccountDetailsEmptyStateProps {
 }
 
 export const AccountDetailsEmptyState = ({
-  message,
-  textVariant = "body1",
-  pt = 2,
   borderBottomWidth = "1px",
   borderColor = "gray.700",
+  message,
+  pt = 2,
+  textVariant = "body1",
 }: AccountDetailsEmptyStateProps) => (
   <Flex
     alignItems="flex-start"

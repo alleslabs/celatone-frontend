@@ -62,10 +62,10 @@ const PortIdRender = ({ portId }: { portId: string }) => {
 };
 
 const InitRender = ({
-  initTxHash,
-  initProposalTitle,
-  initProposalId,
   createdHeight,
+  initProposalId,
+  initProposalTitle,
+  initTxHash,
 }: Contract) => {
   if (initTxHash) {
     return (
@@ -108,9 +108,9 @@ const InitRender = ({
 };
 
 export const InstantiateInfo = ({
+  codeLocalInfo,
   contract,
   contractApi,
-  codeLocalInfo,
   wasmVerifyInfo,
 }: InstantiateInfoProps) => {
   const isApiChain = useIsApiChain({

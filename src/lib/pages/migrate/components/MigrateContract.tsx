@@ -38,8 +38,8 @@ interface MigrateContractProps {
 }
 
 export const MigrateContract = ({
-  contractAddress,
   codeIdParam,
+  contractAddress,
   handleBack,
 }: MigrateContractProps) => {
   // ------------------------------------------//
@@ -56,13 +56,13 @@ export const MigrateContract = ({
   // ------------------------------------------//
   const {
     control,
-    watch,
-    setValue,
     formState: { errors: formErrors },
+    setValue,
+    watch,
   } = useForm({
     defaultValues: {
-      codeId: codeIdParam?.toString() ?? "",
       codeHash: "",
+      codeId: codeIdParam?.toString() ?? "",
       msgInput: {
         [jsonInputFormKey]: "{}",
         [yourSchemaInputFormKey]: "{}",
@@ -70,7 +70,7 @@ export const MigrateContract = ({
     },
     mode: "all",
   });
-  const { codeId, codeHash, msgInput } = watch();
+  const { codeHash, codeId, msgInput } = watch();
 
   // ------------------------------------------//
   // ------------------STATES------------------//
@@ -118,20 +118,23 @@ export const MigrateContract = ({
   const { isFetching: isSimulating } = useSimulateFeeQuery({
     enabled: composedTxMsg.length > 0,
     messages: composedTxMsg,
-    onSuccess: (gasRes) =>
-      gasRes
-        ? setEstimatedFee(fabricateFee(gasRes))
-        : setEstimatedFee(undefined),
     onError: (e) => {
       setSimulateError(e.message);
       setEstimatedFee(undefined);
     },
+    onSuccess: (gasRes) =>
+      gasRes
+        ? setEstimatedFee(fabricateFee(gasRes))
+        : setEstimatedFee(undefined),
   });
 
   const { refetch } = useCodeRest(Number(codeId), {
-    enabled: false,
-    retry: false,
     cacheTime: 0,
+    enabled: false,
+    onError: () => {
+      setStatus({ message: "This code ID does not exist", state: "error" });
+      setSimulateError("");
+    },
     onSuccess: (data) => {
       setValue("codeHash", data.hash.toLowerCase());
       if (
@@ -144,17 +147,14 @@ export const MigrateContract = ({
         setStatus({ state: "success" });
       else {
         setStatus({
-          state: "error",
           message:
             "This wallet does not have permission to migrate to this code",
+          state: "error",
         });
         setSimulateError("");
       }
     },
-    onError: () => {
-      setStatus({ state: "error", message: "This code ID does not exist" });
-      setSimulateError("");
-    },
+    retry: false,
   });
 
   // ------------------------------------------//
@@ -178,12 +178,12 @@ export const MigrateContract = ({
       tab === MessageTabs.YOUR_SCHEMA ? "schema" : "json-input"
     );
     const stream = await migrateTx({
-      contractAddress,
       codeId: Number(codeId),
-      migrateMsg: JSON.parse(currentInput),
+      contractAddress,
       estimatedFee,
-      onTxSucceed: () => setProcessing(false),
+      migrateMsg: JSON.parse(currentInput),
       onTxFailed: () => setProcessing(false),
+      onTxSucceed: () => setProcessing(false),
     });
 
     if (stream) {
@@ -211,7 +211,7 @@ export const MigrateContract = ({
       setStatus({ state: "loading" });
       const timer = setTimeout(() => {
         if (codeId) refetch();
-        else setStatus({ state: "error", message: "Invalid Code ID" });
+        else setStatus({ message: "Invalid Code ID", state: "error" });
       }, 500);
       return () => clearTimeout(timer);
     }
@@ -226,10 +226,10 @@ export const MigrateContract = ({
       const composedMsg = address
         ? [
             composeMsg(MsgType.MIGRATE, {
-              sender: address,
-              contract: contractAddress,
               codeId: Long.fromString(codeId),
+              contract: contractAddress,
               msg: Buffer.from(currentInput),
+              sender: address,
             }),
           ]
         : [];

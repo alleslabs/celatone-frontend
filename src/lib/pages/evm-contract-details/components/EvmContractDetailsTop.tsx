@@ -28,7 +28,7 @@ export const EvmContractDetailsTop = ({
 
   return (
     <Flex
-      flexDirection={{ md: "row", base: "column" }}
+      flexDirection={{ base: "column", md: "row" }}
       gap={4}
       justifyContent="space-between"
     >
@@ -65,7 +65,7 @@ export const EvmContractDetailsTop = ({
         {!!evmVerifyInfo?.isVerified && evmVerifyInfo.contractName && (
           <Flex
             columnGap={2}
-            flexDirection={{ md: "row", base: "column" }}
+            flexDirection={{ base: "column", md: "row" }}
             minHeight={6}
           >
             <Text color="text.dark" fontWeight={500} variant="body2">
@@ -77,7 +77,7 @@ export const EvmContractDetailsTop = ({
           </Flex>
         )}
         {proxyTargetAddress && (
-          <Flex columnGap={2} flexDirection={{ md: "row", base: "column" }}>
+          <Flex columnGap={2} flexDirection={{ base: "column", md: "row" }}>
             <Text color="text.dark" fontWeight={500} variant="body2">
               Implementation Address:
             </Text>
@@ -100,7 +100,7 @@ export const EvmContractDetailsTop = ({
       </Stack>
       <Stack gap={4}>
         {!!evmVerifyInfo?.isVerified && (
-          <Grid gap={2} templateColumns={{ md: "repeat(2, 1fr)", base: "1fr" }}>
+          <Grid gap={2} templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}>
             <Button
               leftIcon={<CustomIcon name="query" />}
               variant="outline-primary"
@@ -109,8 +109,8 @@ export const EvmContractDetailsTop = ({
                   pathname: "/evm-contracts/[contractAddress]/[tab]",
                   query: {
                     contractAddress,
-                    tab: TabIndex.ReadWrite,
                     selectedType: getInteractTabsIndex(true, false),
+                    tab: TabIndex.ReadWrite,
                   },
                 })
               }
@@ -126,8 +126,8 @@ export const EvmContractDetailsTop = ({
                   pathname: "/evm-contracts/[contractAddress]/[tab]",
                   query: {
                     contractAddress,
-                    tab: TabIndex.ReadWrite,
                     selectedType: getInteractTabsIndex(false, false),
+                    tab: TabIndex.ReadWrite,
                   },
                 })
               }

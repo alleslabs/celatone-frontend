@@ -15,9 +15,9 @@ export default function SubmitButton<
   F extends FormContextType = any,
 >({ uiSchema }: SubmitButtonProps<T, S, F>) {
   const {
-    submitText,
     norender,
     props: submitButtonProps,
+    submitText,
   } = getSubmitButtonOptions(uiSchema);
   if (norender) {
     return null;

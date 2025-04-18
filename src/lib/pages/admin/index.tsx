@@ -55,9 +55,9 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
   const onContractPathChange = useCallback(
     (contract?: BechAddr32) => {
       navigate({
+        options: { shallow: true },
         pathname: "/admin",
         query: { ...(contract && { contract }) },
-        options: { shallow: true },
       });
     },
     [navigate]
@@ -69,21 +69,21 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
     messages: address
       ? [
           composeMsg(MsgType.UPDATE_ADMIN, {
-            sender: address,
-            newAdmin: adminAddress as BechAddr,
             contract: contractAddress,
+            newAdmin: adminAddress as BechAddr,
+            sender: address,
           }),
         ]
       : [],
+    onError: (e) => {
+      setSimulateError(e.message);
+      setEstimatedFee(undefined);
+    },
     onSuccess: (fee) => {
       if (fee) {
         setSimulateError(undefined);
         setEstimatedFee(fabricateFee(fee));
       } else setEstimatedFee(undefined);
-    },
-    onError: (e) => {
-      setSimulateError(e.message);
-      setEstimatedFee(undefined);
     },
   });
 
@@ -91,8 +91,8 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
     track(AmpEvent.ACTION_ADMIN_UPDATE);
     const stream = await updateAdminTx({
       contractAddress,
-      newAdmin: adminAddress as BechAddr,
       estimatedFee,
+      newAdmin: adminAddress as BechAddr,
     });
 
     if (stream) broadcast(stream);
@@ -102,10 +102,10 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
    * @remarks Contract admin validation
    */
   useContractData(contractAddress, {
+    onError: () => onContractPathChange(),
     onSuccess: (data) => {
       if (data.contract.admin !== address) onContractPathChange();
     },
-    onError: () => onContractPathChange(),
   });
 
   useEffect(() => {
@@ -135,8 +135,8 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
       const addressType = getAddressType(adminAddress);
       if (addressType === "invalid_address") {
         setAdminFormStatus({
-          state: "error",
           message: "Invalid address length",
+          state: "error",
         });
       } else {
         const validateResult =
@@ -144,7 +144,7 @@ const UpdateAdminBody = ({ contractAddress }: UpdateAdminQueryParams) => {
             ? validateUserAddress(adminAddress)
             : validateContractAddress(adminAddress);
         if (validateResult) {
-          setAdminFormStatus({ state: "error", message: validateResult });
+          setAdminFormStatus({ message: validateResult, state: "error" });
         } else {
           setAdminFormStatus({ state: "success" });
         }

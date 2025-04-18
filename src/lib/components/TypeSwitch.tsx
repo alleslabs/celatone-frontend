@@ -11,11 +11,11 @@ interface TypeSwitchProps<T extends string> {
 }
 
 export const TypeSwitch = <T extends string>({
-  tabs,
   currentTab,
   disabled = false,
-  onTabChange: onTabChangeProps,
   disabledScrollToTop = false,
+  onTabChange: onTabChangeProps,
+  tabs,
 }: TypeSwitchProps<T>) => {
   const activeIndex = currentTab ? tabs.indexOf(currentTab) : 0;
 
@@ -39,7 +39,7 @@ export const TypeSwitch = <T extends string>({
       height="fit-content"
       p={1}
       position="relative"
-      sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
+      sx={{ ...(disabled ? { opacity: 0.3, pointerEvents: "none" } : {}) }}
     >
       {tabs.map((tab) => (
         <MotionBox
@@ -74,9 +74,9 @@ export const TypeSwitch = <T extends string>({
         h="22px"
         position="absolute"
         transition={{
-          type: "spring",
-          stiffness: "250",
           damping: "30",
+          stiffness: "250",
+          type: "spring",
         }}
         w="96px"
       />

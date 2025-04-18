@@ -9,13 +9,13 @@ interface ModuleSelectorProps extends ModuleSelectorInputProps {
 }
 
 export const ModuleSelector = ({
+  closeModal,
+  handleModuleSelect,
   mode,
   selectedAddress,
-  setSelectedAddress,
   setMode,
   setModules,
-  handleModuleSelect,
-  closeModal,
+  setSelectedAddress,
 }: ModuleSelectorProps) => {
   const showDisplay = mode === "display" && Boolean(selectedAddress.address);
   return showDisplay ? (

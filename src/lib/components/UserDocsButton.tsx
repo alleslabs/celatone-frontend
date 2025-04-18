@@ -13,9 +13,9 @@ interface UserDocsButtonProps extends ButtonProps {
 }
 
 export const UserDocsButton = ({
-  title,
   href,
   isDevTool,
+  title,
   ...props
 }: UserDocsButtonProps) => (
   <Link

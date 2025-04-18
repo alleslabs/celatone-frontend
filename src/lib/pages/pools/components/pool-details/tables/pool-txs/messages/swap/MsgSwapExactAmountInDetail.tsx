@@ -19,13 +19,13 @@ interface MsgSwapExactAmountInDetailProps {
 }
 
 export const MsgSwapExactAmountInDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  txHash,
 }: MsgSwapExactAmountInDetailProps) => (
   <Flex alignItems="start" direction="column" gap={6} w="full">
     <Flex gap={12}>
@@ -44,9 +44,9 @@ export const MsgSwapExactAmountInDetail = ({
         ampCopierSection={ampCopierSection}
         assetInfos={assetInfos}
         exactInput={{
-          isExactIn: true,
           amount: msg.token_in,
           expectedDenom: msg.routes[msg.routes.length - 1].tokenOutDenom,
+          isExactIn: true,
         }}
         isOpened={isOpened}
         msgIndex={msgIndex}

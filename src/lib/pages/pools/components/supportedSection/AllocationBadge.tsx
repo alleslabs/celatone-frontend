@@ -25,14 +25,14 @@ interface AllocationBadgeProps {
 }
 
 export const AllocationBadge = ({
-  denom,
-  logo,
-  symbol,
-  precision,
   amount,
-  value,
+  denom,
   liquidity,
+  logo,
   mode,
+  precision,
+  symbol,
+  value,
 }: AllocationBadgeProps) => {
   const formattedValue = formatRatio(
     divWithDefault(value ?? big(0), liquidity, 0) as Ratio<Big>

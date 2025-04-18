@@ -16,7 +16,7 @@ export const EvmContractVerifySolidityJsonInput = ({
   control,
 }: EvmContractVerifySolidityJsonInputProps) => {
   const {
-    field: { value, onChange },
+    field: { onChange, value },
   } = useController({
     control,
     name: "verifyForm.solidityJsonInput.jsonFile",

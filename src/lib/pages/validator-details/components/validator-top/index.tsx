@@ -20,15 +20,15 @@ interface ValidatorTopProps {
 
 export const ValidatorTop = ({
   info,
-  totalVotingPower,
   singleStakingDenom,
+  totalVotingPower,
 }: ValidatorTopProps) => (
   <>
     <Breadcrumb
       items={[
         {
-          text: "Validators",
           href: "/validators",
+          text: "Validators",
         },
         { text: info.moniker || truncate(info.validatorAddress) },
       ]}

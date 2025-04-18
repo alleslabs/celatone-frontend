@@ -31,23 +31,23 @@ export const SelectContractAdmin = ({
   notSelected,
   onContractSelect,
 }: SelectContractAdminProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const { address } = useCurrentChain();
   const { getContractLocalInfo } = useContractStore();
 
   const { data, isLoading } = useAllAdminContractsByAddress(address);
 
   const contractList: ContractListInfo = {
-    name: ADMIN_SPECIAL_SLUG,
-    slug: ADMIN_SPECIAL_SLUG,
     contracts:
       data?.items.map<ContractLocalInfo>((contract) => ({
         ...contract,
         ...getContractLocalInfo(contract.contractAddress),
       })) ?? [],
-    lastUpdated: getCurrentDate(),
-    isInfoEditable: false,
     isContractRemovable: false,
+    isInfoEditable: false,
+    lastUpdated: getCurrentDate(),
+    name: ADMIN_SPECIAL_SLUG,
+    slug: ADMIN_SPECIAL_SLUG,
   };
 
   const onSelectThenClose = (contract: BechAddr32) => {

@@ -21,9 +21,9 @@ export const getEventMessage = (
 };
 
 const TokenIdRender = ({
-  tokenId,
-  nftAddress,
   collectionAddress,
+  nftAddress,
+  tokenId,
 }: {
   tokenId: Activity["tokenId"];
   nftAddress: Activity["nftAddress"];
@@ -48,8 +48,8 @@ const TokenIdRender = ({
     <AppLink href={`/nft-collections/${collectionAddress}/nft/${nftAddress}`}>
       <Text
         _hover={{
-          textDecoration: "underline",
           color: "primary.light",
+          textDecoration: "underline",
         }}
         color="primary.main"
         wordBreak="break-word"
@@ -68,18 +68,18 @@ interface ActivitiesTableRowProps {
 
 export const ActivitiesTableRow = ({
   activity,
-  templateColumns,
   collectionAddress,
+  templateColumns,
 }: ActivitiesTableRowProps) => {
   const {
-    txhash,
-    timestamp,
+    isCollectionCreate,
     isNftBurn,
     isNftMint,
     isNftTransfer,
-    isCollectionCreate,
-    tokenId,
     nftAddress,
+    timestamp,
+    tokenId,
+    txhash,
   } = activity;
 
   return (

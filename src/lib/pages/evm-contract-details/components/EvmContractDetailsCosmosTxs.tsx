@@ -18,11 +18,11 @@ export const EvmContractDetailsCosmosTxs = ({
 }: EvmContractDetailsCosmosTxsProps) => {
   const {
     data,
-    isLoading,
-    isError,
-    hasNextPage,
     fetchNextPage,
+    hasNextPage,
+    isError,
     isFetchingNextPage,
+    isLoading,
   } = useTxsByAddressSequencer(address, undefined);
 
   return (

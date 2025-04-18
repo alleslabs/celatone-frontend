@@ -40,10 +40,10 @@ interface NetworkAccodionPinnedProps {
 
 export const NetworkAccodionPinned = observer(
   ({
-    pinnedNetworks,
     cursor,
-    setCursor,
     onClose,
+    pinnedNetworks,
+    setCursor,
   }: NetworkAccodionPinnedProps) => {
     const { setPinnedNetworks } = useNetworkStore();
     const [dndActive, setDndActive] = useState<Nullable<Active>>(null);

@@ -36,10 +36,10 @@ import { SelectedFunctionCard } from "./component/SelectedFunctionCard";
 import { ModuleInteractionMobileStep, zInteractQueryParams } from "./types";
 
 const FunctionSection = ({
+  handleDrawerOpen,
+  isZeroState,
   selectedFn,
   setSelectedFn,
-  isZeroState,
-  handleDrawerOpen,
 }: {
   selectedFn?: ExposedFunction;
   setSelectedFn?: Dispatch<SetStateAction<ExposedFunction | undefined>>;
@@ -100,8 +100,8 @@ const FunctionSection = ({
 );
 
 const ZeroState = ({
-  onOpen,
   isMobile,
+  onOpen,
 }: {
   onOpen: () => void;
   isMobile: boolean;
@@ -121,9 +121,9 @@ const ZeroState = ({
 
 const InteractBody = ({
   address,
-  moduleName,
   functionName,
   functionType,
+  moduleName,
 }: InteractQueryParams) => {
   const router = useRouter();
   const isMobile = useMobile();
@@ -159,13 +159,13 @@ const InteractBody = ({
       handleSetSelectedType((fn?.is_view ?? true) ? "view" : "execute");
 
       navigate({
+        options: { shallow: true },
         pathname: "/interact",
         query: {
           address: selectedModuleInput.address,
           moduleName: selectedModuleInput.moduleName,
           ...(fn && { functionName: fn.name }),
         },
-        options: { shallow: true },
       });
     },
     [navigate]
@@ -175,12 +175,12 @@ const InteractBody = ({
     (fn: ExposedFunction) => {
       setSelectedFn(fn);
       navigate({
+        options: { shallow: true },
         pathname: "/interact",
         query: {
           ...router.query,
           functionName: fn.name,
         },
-        options: { shallow: true },
       });
     },
     [navigate, router.query]
@@ -195,9 +195,7 @@ const InteractBody = ({
     address: address as Addr,
     moduleName,
     options: {
-      refetchOnWindowFocus: false,
       enabled: false,
-      retry: false,
       onSuccess: (data) => {
         setModule(data);
         if (functionName) {
@@ -212,6 +210,8 @@ const InteractBody = ({
           handleSetSelectedType(functionType);
         }
       },
+      refetchOnWindowFocus: false,
+      retry: false,
     },
   });
 

@@ -11,15 +11,15 @@ interface MyModuleVerificationDetailsTopProps {
 }
 
 export const MyModuleVerificationDetailsTop = ({
-  taskId,
   requestNote,
+  taskId,
 }: MyModuleVerificationDetailsTopProps) => (
   <Stack gap={6}>
     <Breadcrumb
       items={[
         {
-          text: "My past verification",
           href: "/my-module-verifications",
+          text: "My past verification",
         },
         {
           text: taskId,

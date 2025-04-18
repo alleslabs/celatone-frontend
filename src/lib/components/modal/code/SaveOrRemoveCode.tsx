@@ -8,10 +8,10 @@ import { SaveCodeDetailsModal } from "./SaveCodeDetails";
 
 const StyledIconButton = chakra(IconButton, {
   baseStyle: {
-    display: "flex",
     alignItems: "center",
-    fontSize: "22px",
     borderRadius: "full",
+    display: "flex",
+    fontSize: "22px",
   },
 });
 

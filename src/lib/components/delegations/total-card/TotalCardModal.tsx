@@ -60,12 +60,12 @@ const DelegationTokenCard = ({ token }: { token: TokenWithValue }) => (
 );
 
 export const TotalCardModal = ({
-  title,
-  message,
-  tokens,
   address,
   isOpen,
+  message,
   onClose,
+  title,
+  tokens,
 }: TotalCardModel) => (
   <Modal
     isCentered

@@ -20,9 +20,9 @@ export const useInternalNavigate = () => {
 
   return useCallback(
     ({
+      options = {},
       pathname,
       query = {},
-      options = {},
       replace = false,
     }: NavigationArgs) => {
       const routerFn = replace ? router.replace : router.push;

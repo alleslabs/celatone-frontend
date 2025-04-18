@@ -5,8 +5,8 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "../tableComponents";
 
 export const BondedTableHeader = ({
-  templateColumns,
   isDelegation,
+  templateColumns,
 }: {
   templateColumns: GridProps["templateColumns"];
   isDelegation: boolean;

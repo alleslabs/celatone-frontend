@@ -20,8 +20,8 @@ interface ConnectWalletAlertProps extends AlertProps {
 }
 
 export const ConnectWalletAlert = ({
-  title,
   subtitle,
+  title,
   ...alertProps
 }: ConnectWalletAlertProps) => {
   const { address, connect } = useCurrentChain();

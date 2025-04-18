@@ -70,10 +70,10 @@ const modeStyle = (mode: string) => {
 };
 
 const DisplayName = ({
-  notSelected,
   isValid,
-  name,
   label,
+  name,
+  notSelected,
 }: DisplayNameProps) => {
   const displayName = useMemo(() => {
     if (notSelected) return "Not selected";
@@ -138,8 +138,8 @@ const ContractDetailsButton = ({
 
 export const ContractSelectSection = observer(
   ({
-    mode,
     contractAddress,
+    mode,
     onContractSelect,
     successCallback,
   }: ContractSelectSectionProps) => {
@@ -150,32 +150,32 @@ export const ContractSelectSection = observer(
 
     const contractLocalInfo = getContractLocalInfo(contractAddress);
     const {
-      watch,
-      reset,
       formState: { defaultValues },
+      reset,
+      watch,
     } = useForm({
       defaultValues: {
-        isValid: false,
         instantiator: "",
+        isValid: false,
         label: "",
       },
       mode: "all",
     });
 
-    const { refetch, isFetching } = useContractData(contractAddress, {
+    const { isFetching, refetch } = useContractData(contractAddress, {
       enabled: !!contractAddress,
+      onError: () => reset(defaultValues),
       onSuccess: (data) => {
         successCallback?.(data);
         reset({
-          isValid: true,
           instantiator: data.contract.instantiator,
+          isValid: true,
           label: data.contract.label,
         });
 
         setCodeId(data.contract.codeId);
         setCodeHash(data.contract.codeHash);
       },
-      onError: () => reset(defaultValues),
     });
 
     const {
@@ -188,8 +188,8 @@ export const ContractSelectSection = observer(
         if (contractAddress) refetch();
       } else {
         reset({
-          isValid: true,
           instantiator: contractLocalInfo.instantiator,
+          isValid: true,
           label: contractLocalInfo.label,
         });
       }

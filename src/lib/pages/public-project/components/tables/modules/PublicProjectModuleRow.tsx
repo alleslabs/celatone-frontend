@@ -18,16 +18,16 @@ export const PublicProjectModuleRow = ({
   const navigate = useInternalNavigate();
   const goToDetail = () => {
     navigate({
-      replace: true,
+      options: {
+        shallow: true,
+      },
       pathname: "/modules/[address]/[moduleName]/[tab]",
       query: {
         address: module.address,
         moduleName: module.name,
         tab: "overview",
       },
-      options: {
-        shallow: true,
-      },
+      replace: true,
     });
   };
 
@@ -43,9 +43,9 @@ export const PublicProjectModuleRow = ({
       <TableRow>
         <Text
           _hover={{
+            "& > p": { color: "primary.light" },
             textDecoration: "underline",
             textDecorationColor: "primary.light",
-            "& > p": { color: "primary.light" },
           }}
           color="primary.main"
           cursor="pointer"
@@ -77,8 +77,8 @@ export const PublicProjectModuleRow = ({
                 pathname: "/interact",
                 query: {
                   address: module.address,
-                  moduleName: module.name,
                   functionType: "view",
+                  moduleName: module.name,
                 },
               })
             }
@@ -93,8 +93,8 @@ export const PublicProjectModuleRow = ({
                 pathname: "/interact",
                 query: {
                   address: module.address,
-                  moduleName: module.name,
                   functionType: "execute",
+                  moduleName: module.name,
                 },
               })
             }

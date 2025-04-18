@@ -35,24 +35,24 @@ export const ProposalsTableFull = () => {
   const debouncedSearch = useDebounce(search);
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 
   const {
     data: proposals,
-    isLoading,
     error,
+    isLoading,
   } = useProposals(
     pageSize,
     offset,

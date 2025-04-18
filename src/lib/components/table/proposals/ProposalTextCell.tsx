@@ -16,10 +16,10 @@ interface ProposalTextCellProps {
 }
 
 export const ProposalTextCell = ({
+  isDepositOrVoting,
+  isExpedited,
   title,
   types,
-  isExpedited,
-  isDepositOrVoting,
 }: ProposalTextCellProps) => {
   const isMobile = useMobile();
   const [isHoverText, setIsHoverText] = useState(false);

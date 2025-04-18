@@ -26,312 +26,312 @@ const data: Omit<
   | "votingEndTime"
   | "resolvedTimestamp"
 > = {
-  id: 999,
-  title: "storybook",
-  resolvedHeight: null,
-  types: [],
-  proposer: undefined,
-  isExpedited: false,
   createdHeight: null,
   createdTimestamp: null,
   createdTxHash: null,
   description: "This is a description.",
-  messages: null,
-  metadata: "metadata",
-  proposalDeposits: [],
-  submitTime: dayjs("01 Jan 1970 00:00:00 UTC").toDate(),
-  totalDeposit: [
-    {
-      isLPToken: false,
-      denom: "denom",
-      amount: big(1000000) as U<Token<Big>>,
-      precision: 10,
-      symbol: "CLTN",
-      logo: undefined,
-      price: undefined,
-      value: undefined,
-    },
-  ],
-  votingTime: null,
   finalTallyResult: {
-    yes: Big(0),
     abstain: Big(0),
     no: Big(0),
     noWithVeto: Big(0),
     totalVotingPower: null,
+    yes: Big(0),
   },
+  id: 999,
+  isExpedited: false,
+  messages: null,
+  metadata: "metadata",
+  proposalDeposits: [],
+  proposer: undefined,
+  resolvedHeight: null,
+  submitTime: dayjs("01 Jan 1970 00:00:00 UTC").toDate(),
+  title: "storybook",
+  totalDeposit: [
+    {
+      amount: big(1000000) as U<Token<Big>>,
+      denom: "denom",
+      isLPToken: false,
+      logo: undefined,
+      precision: 10,
+      price: undefined,
+      symbol: "CLTN",
+      value: undefined,
+    },
+  ],
+  types: [],
+  votingTime: null,
 };
 
 const params: ProposalParams = {
+  maxDepositPeriod: "",
   minDeposit: [
     {
-      isLPToken: false,
-      denom: "denom",
       amount: big(10000000) as U<Token<Big>>,
-      precision: 10,
-      symbol: "CLTN",
+      denom: "denom",
+      isLPToken: false,
       logo: undefined,
+      precision: 10,
       price: undefined,
+      symbol: "CLTN",
       value: undefined,
     },
   ],
   minInitialDepositRatio: 0.2,
-  maxDepositPeriod: "",
-  votingPeriod: "",
-  vetoThreshold: 0.3 as Ratio<number>,
   quorum: 0.3 as Ratio<number>,
   threshold: 0.5 as Ratio<number>,
+  vetoThreshold: 0.3 as Ratio<number>,
+  votingPeriod: "",
 };
 
 export const DepositPeriod: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.DEPOSIT_PERIOD,
-      failedReason: "",
       depositEndTime: dayjs().utc().add(2, "days").toDate(),
-      votingEndTime: null,
+      failedReason: "",
       resolvedTimestamp: null,
+      status: ProposalStatus.DEPOSIT_PERIOD,
+      votingEndTime: null,
     },
-    params,
     votesInfo: {
-      yes: big(0),
       abstain: big(0),
       no: big(0),
       noWithVeto: big(0),
       totalVotingPower: big(0),
+      yes: big(0),
     },
   },
 };
 
 export const VotingPeriodRejectedQuorum: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.VOTING_PERIOD,
-      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
-      votingEndTime: dayjs().utc().add(2, "days").toDate(),
+      failedReason: "",
       resolvedTimestamp: null,
+      status: ProposalStatus.VOTING_PERIOD,
+      votingEndTime: dayjs().utc().add(2, "days").toDate(),
     },
-    params,
     votesInfo: {
-      yes: big(1),
       abstain: big(1),
       no: big(0),
       noWithVeto: big(0),
       totalVotingPower: big(10),
+      yes: big(1),
     },
   },
 };
 
 export const VotingPeriodRejectedNoWithVeto: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.VOTING_PERIOD,
-      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
-      votingEndTime: dayjs().utc().add(2, "days").toDate(),
+      failedReason: "",
       resolvedTimestamp: null,
+      status: ProposalStatus.VOTING_PERIOD,
+      votingEndTime: dayjs().utc().add(2, "days").toDate(),
     },
-    params,
     votesInfo: {
-      yes: big(1),
       abstain: big(1),
       no: big(1),
       noWithVeto: big(4),
       totalVotingPower: big(10),
+      yes: big(1),
     },
   },
 };
 
 export const VotingPeriodRejectedNotPassed: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.VOTING_PERIOD,
-      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
-      votingEndTime: dayjs().utc().add(2, "days").toDate(),
+      failedReason: "",
       resolvedTimestamp: null,
+      status: ProposalStatus.VOTING_PERIOD,
+      votingEndTime: dayjs().utc().add(2, "days").toDate(),
     },
-    params,
     votesInfo: {
-      yes: big(2),
       abstain: big(1),
       no: big(1),
       noWithVeto: big(1),
       totalVotingPower: big(10),
+      yes: big(2),
     },
   },
 };
 
 export const VotingPeriodPassed: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.VOTING_PERIOD,
-      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
-      votingEndTime: dayjs().utc().add(2, "days").toDate(),
+      failedReason: "",
       resolvedTimestamp: null,
+      status: ProposalStatus.VOTING_PERIOD,
+      votingEndTime: dayjs().utc().add(2, "days").toDate(),
     },
-    params,
     votesInfo: {
-      yes: big(3),
       abstain: big(1),
       no: big(1),
       noWithVeto: big(1),
       totalVotingPower: big(10),
+      yes: big(3),
     },
   },
 };
 
 export const Failed: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.FAILED,
+      depositEndTime: dayjs().utc().toDate(),
       failedReason:
         "VM error: status BACKWARD_INCOMPATIBLE_MODULE_UPDATE of type Verification with message Module Update Failure: Public function/struct signature of new module differs from existing module in 0000000000000000000000000000000000000000000000000000000000000001::simple_json",
-      depositEndTime: dayjs().utc().toDate(),
-      votingEndTime: dayjs().utc().toDate(),
       resolvedTimestamp: dayjs().utc().toDate(),
+      status: ProposalStatus.FAILED,
+      votingEndTime: dayjs().utc().toDate(),
     },
-    params,
     votesInfo: {
-      yes: big(2),
       abstain: big(1),
       no: big(1),
       noWithVeto: big(1),
       totalVotingPower: big(10),
+      yes: big(2),
     },
   },
 };
 
 export const RejectedQuorum: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.REJECTED,
-      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
-      votingEndTime: dayjs().utc().toDate(),
+      failedReason: "",
       resolvedTimestamp: dayjs().utc().toDate(),
+      status: ProposalStatus.REJECTED,
+      votingEndTime: dayjs().utc().toDate(),
     },
-    params,
     votesInfo: {
-      yes: big(1),
       abstain: big(1),
       no: big(0),
       noWithVeto: big(0),
       totalVotingPower: big(10),
+      yes: big(1),
     },
   },
 };
 
 export const RejectedNoWithVeto: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.REJECTED,
-      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
-      votingEndTime: dayjs().utc().toDate(),
+      failedReason: "",
       resolvedTimestamp: dayjs().utc().toDate(),
+      status: ProposalStatus.REJECTED,
+      votingEndTime: dayjs().utc().toDate(),
     },
-    params,
     votesInfo: {
-      yes: big(1),
       abstain: big(1),
       no: big(1),
       noWithVeto: big(4),
       totalVotingPower: big(10),
+      yes: big(1),
     },
   },
 };
 
 export const RejectedNotPassed: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.REJECTED,
-      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
-      votingEndTime: dayjs().utc().toDate(),
+      failedReason: "",
       resolvedTimestamp: dayjs().utc().toDate(),
+      status: ProposalStatus.REJECTED,
+      votingEndTime: dayjs().utc().toDate(),
     },
-    params,
     votesInfo: {
-      yes: big(2),
       abstain: big(1),
       no: big(1),
       noWithVeto: big(1),
       totalVotingPower: big(10),
+      yes: big(2),
     },
   },
 };
 
 export const Passed: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.PASSED,
-      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
-      votingEndTime: dayjs().utc().toDate(),
+      failedReason: "",
       resolvedTimestamp: dayjs().utc().toDate(),
+      status: ProposalStatus.PASSED,
+      votingEndTime: dayjs().utc().toDate(),
     },
-    params,
     votesInfo: {
-      yes: big(3),
       abstain: big(1),
       no: big(1),
       noWithVeto: big(1),
       totalVotingPower: big(10),
+      yes: big(3),
     },
   },
 };
 
 export const Cancelled: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.CANCELLED,
-      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
-      votingEndTime: dayjs().utc().toDate(),
+      failedReason: "",
       resolvedTimestamp: dayjs().utc().toDate(),
+      status: ProposalStatus.CANCELLED,
+      votingEndTime: dayjs().utc().toDate(),
     },
-    params,
     votesInfo: {
-      yes: big(3),
       abstain: big(1),
       no: big(1),
       noWithVeto: big(1),
       totalVotingPower: big(10),
+      yes: big(3),
     },
   },
 };
 
 export const DepositFailed: Story = {
   args: {
+    params,
     proposalData: {
       ...data,
-      status: ProposalStatus.DEPOSIT_FAILED,
-      failedReason: "",
       depositEndTime: dayjs().utc().toDate(),
-      votingEndTime: null,
+      failedReason: "",
       resolvedTimestamp: dayjs().utc().toDate(),
+      status: ProposalStatus.DEPOSIT_FAILED,
+      votingEndTime: null,
     },
-    params,
     votesInfo: {
-      yes: big(0),
       abstain: big(0),
       no: big(0),
       noWithVeto: big(0),
       totalVotingPower: big(0),
+      yes: big(0),
     },
   },
 };

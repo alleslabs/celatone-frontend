@@ -17,10 +17,10 @@ interface ActivitiesTableProps {
 }
 
 export const ActivitiesTable = ({
-  collectionAddress,
   activities,
-  isLoading,
+  collectionAddress,
   emptyState,
+  isLoading,
 }: ActivitiesTableProps) => {
   const isMobile = useMobile();
 

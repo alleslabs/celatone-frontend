@@ -50,10 +50,10 @@ interface EvmCodeSnippetProps {
 }
 
 const EvmCodeSnippet = ({
-  contractAddress,
   abiSection,
-  type,
+  contractAddress,
   inputs,
+  type,
 }: EvmCodeSnippetProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { theme } = useCelatoneApp();
@@ -69,8 +69,8 @@ const EvmCodeSnippet = ({
       return {
         read: [
           {
-            name: "Ethers",
             mode: "javascript",
+            name: "Ethers",
             snippet: `import { ethers, Interface } from "ethers";
 
 const provider = new ethers.JsonRpcProvider("${evm.jsonRpc}");
@@ -93,8 +93,8 @@ main();`,
         ],
         write: [
           {
-            name: "Ethers",
             mode: "javascript",
+            name: "Ethers",
             snippet: `import { ethers, Interface } from "ethers";
 
 const provider = new ethers.JsonRpcProvider("${evm.jsonRpc}");
@@ -167,16 +167,16 @@ main();`,
                     >
                       <AceEditor
                         style={{
-                          width: "100%",
                           background: "transparent",
+                          width: "100%",
                         }}
                         fontSize="14px"
                         mode={item.mode}
                         readOnly
                         setOptions={{
+                          printMargin: false,
                           showGutter: false,
                           useWorker: false,
-                          printMargin: false,
                           wrap: true,
                         }}
                         theme={theme.jsonTheme}

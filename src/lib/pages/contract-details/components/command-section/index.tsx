@@ -18,9 +18,9 @@ export const CommandSection = ({
   contractAddress,
   ...props
 }: CommandSectionProps) => {
-  const { isFetching: isQueryCmdsFetching, data: queryCmds = [] } =
+  const { data: queryCmds = [], isFetching: isQueryCmdsFetching } =
     useContractQueryMsgsRest(contractAddress);
-  const { isFetching: isExecuteCmdsFetching, execCmds } =
+  const { execCmds, isFetching: isExecuteCmdsFetching } =
     useExecuteCmds(contractAddress);
 
   return (

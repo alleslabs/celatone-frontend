@@ -19,8 +19,8 @@ export const MyPublishedModulesTable = () => {
 
   const {
     data,
-    isFetching: isModulesLoading,
     error,
+    isFetching: isModulesLoading,
   } = useModulesByAddress({ address });
 
   const { data: moveVerifyInfos } = useMoveVerifyInfosByAddress(

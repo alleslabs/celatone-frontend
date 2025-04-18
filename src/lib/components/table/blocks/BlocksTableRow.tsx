@@ -15,9 +15,9 @@ interface BlocksTableRowProps {
 }
 
 export const BlocksTableRow = ({
-  templateColumns,
   blockData,
   showProposer,
+  templateColumns,
 }: BlocksTableRowProps) => {
   const navigate = useInternalNavigate();
 

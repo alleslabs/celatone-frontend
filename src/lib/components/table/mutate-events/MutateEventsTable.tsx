@@ -15,9 +15,9 @@ interface MutateEventsTableProps {
 }
 
 export const MutateEventsTable = ({
-  mutateEvents,
-  isLoading,
   emptyState,
+  isLoading,
+  mutateEvents,
 }: MutateEventsTableProps) => {
   const isMobile = useMobile();
 

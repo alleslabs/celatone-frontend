@@ -19,10 +19,10 @@ interface ModulesTableProps {
 }
 
 export const ModulesTable = ({
-  modules,
-  isLoading,
   emptyState,
+  isLoading,
   isPublishedModules = false,
+  modules,
   moveVerifyInfos,
 }: ModulesTableProps) => {
   const isMobile = useMobile();

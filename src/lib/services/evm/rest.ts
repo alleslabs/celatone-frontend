@@ -26,8 +26,8 @@ export const getEvmContractInfoSequencer = async (
   address: HexAddr20
 ) => {
   const txs = await getTxsByAccountAddressSequencer({
-    endpoint,
     address,
+    endpoint,
     limit: 1,
     reverse: false,
   });
@@ -53,9 +53,9 @@ export const getEvmContractInfoSequencer = async (
       : undefined;
 
   return {
+    code,
+    created: tx.created,
     hash: tx.hash,
     sender,
-    created: tx.created,
-    code,
   };
 };

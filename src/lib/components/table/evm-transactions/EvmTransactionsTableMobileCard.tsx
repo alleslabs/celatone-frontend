@@ -30,9 +30,9 @@ interface EvmTransactionsTableMobileCardProps {
   showTimestamp: boolean;
 }
 export const EvmTransactionsTableMobileCard = ({
-  evmTransaction,
-  evmDenom,
   assetInfos,
+  evmDenom,
+  evmTransaction,
   showTimestamp,
 }: EvmTransactionsTableMobileCardProps) => {
   const navigate = useInternalNavigate();

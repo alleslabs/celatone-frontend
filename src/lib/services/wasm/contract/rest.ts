@@ -52,9 +52,9 @@ export const getContractsByCodeIdRest = (
       `${endpoint}/cosmwasm/wasm/v1/code/${encodeURIComponent(codeId)}/contracts`,
       {
         params: {
+          "pagination.key": paginationKey,
           "pagination.limit": 10,
           "pagination.reverse": true,
-          "pagination.key": paginationKey,
         },
       }
     )
@@ -107,8 +107,8 @@ export const getMigrationHistoriesByContractAddressRest = async (
         `${endpoint}/cosmwasm/wasm/v1/contract/${encodeURI(contractAddress)}/history`,
         {
           params: {
-            "pagination.reverse": true,
             "pagination.key": paginationKey,
+            "pagination.reverse": true,
           },
         }
       )

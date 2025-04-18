@@ -9,7 +9,7 @@ interface PageHeaderProps {
   docHref: string;
 }
 
-export const PageHeader = ({ title, subtitle, docHref }: PageHeaderProps) => {
+export const PageHeader = ({ docHref, subtitle, title }: PageHeaderProps) => {
   const isMobile = useMobile();
   return (
     <Flex alignItems="center" justifyContent="space-between" mb={8} w="full">

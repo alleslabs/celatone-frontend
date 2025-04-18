@@ -12,16 +12,16 @@ export type WasmVerifySubmitFormOption =
 export const WasmVerifySubmitFormSelectOption = (
   props: OptionProps<SelectInputOption<WasmVerifySubmitFormOptionValue>>
 ) => {
-  const { isSelected, data } = props;
+  const { data, isSelected } = props;
 
   return (
     <Box
       sx={{
         "> div": {
-          background: isSelected ? "gray.800" : "gray.900",
           "&:hover": {
             background: "gray.800",
           },
+          background: isSelected ? "gray.800" : "gray.900",
         },
       }}
     >

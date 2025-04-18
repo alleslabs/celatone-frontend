@@ -22,13 +22,13 @@ interface ValidatorsBodyLiteProps {
 
 export const ValidatorsBodyLite = ({
   isActive,
-  setCounts,
-  order,
-  setOrder,
   isDesc,
-  setIsDesc,
-  search,
+  order,
   scrollComponentId,
+  search,
+  setCounts,
+  setIsDesc,
+  setOrder,
 }: ValidatorsBodyLiteProps) => {
   const { data, isFetching: isLoading } = useValidatorsRest();
   const indexedData = useMemo(() => indexValidatorsRest(data), [data]);
@@ -45,13 +45,13 @@ export const ValidatorsBodyLite = ({
       .sort(compareValidator(order, isDesc));
     return {
       items: filteredList,
-      total: filteredList.length,
       metadata: {
         ...indexedData.metadata,
         minCommissionRate: isActive
           ? indexedData.minActiveCommissionRate
           : indexedData.minInactiveCommissionRate,
       },
+      total: filteredList.length,
     };
   }, [indexedData, isActive, isDesc, order, search]);
 

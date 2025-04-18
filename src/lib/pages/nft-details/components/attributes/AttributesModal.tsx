@@ -25,12 +25,12 @@ interface AttributesModalProps {
 }
 
 export const AttributesModal = ({
-  title,
   address,
-  tokenId,
   attributes,
   isOpen,
   onClose,
+  title,
+  tokenId,
 }: AttributesModalProps) => (
   <Modal
     isCentered

@@ -38,11 +38,11 @@ export const ProposalTypeFilter = forwardRef<
 >(
   (
     {
-      result,
-      minW = "50%",
-      setResult,
-      placeholder,
       label,
+      minW = "50%",
+      placeholder,
+      result,
+      setResult,
     }: ProposalTypeFilterProps,
     ref
   ) => {
@@ -53,8 +53,8 @@ export const ProposalTypeFilter = forwardRef<
     const boxRef = useRef<HTMLDivElement>(null);
 
     useOutsideClick({
-      ref: boxRef as RefObject<HTMLDivElement>,
       handler: () => setIsDropdown(false),
+      ref: boxRef as RefObject<HTMLDivElement>,
     });
 
     const dropdownValue = useMemo(() => {

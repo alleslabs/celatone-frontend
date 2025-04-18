@@ -17,10 +17,10 @@ interface IndirectlyVerifiedDetailsProps {
 }
 
 export const IndirectlyVerifiedDetails = ({
-  codeId,
   codeHash,
-  relatedVerifiedCodes,
+  codeId,
   contractAddress,
+  relatedVerifiedCodes,
 }: IndirectlyVerifiedDetailsProps) => {
   const isMobile = useMobile();
   return (

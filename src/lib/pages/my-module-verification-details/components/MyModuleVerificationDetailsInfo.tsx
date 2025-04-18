@@ -14,8 +14,8 @@ interface MyModuleVerificationDetailsInfoProps {
 }
 
 export const MyModuleVerificationDetailsInfo = ({
-  verifyTaskLocalInfo,
   verifyTaskInfo,
+  verifyTaskLocalInfo,
 }: MyModuleVerificationDetailsInfoProps) => {
   const chainId =
     verifyTaskLocalInfo?.chainId ?? verifyTaskInfo.result?.chainId;

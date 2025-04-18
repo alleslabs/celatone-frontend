@@ -15,23 +15,23 @@ export const useGetMaxLengthError = () => {
   return useCallback(
     (currentLength: number, type: MaxLengthType) => {
       const maxLengthMap: Record<MaxLengthType, number> = {
-        account_name: constants.maxAccountNameLength,
         account_desc: constants.maxAccountDescriptionLength,
-        proposal_title: constants.maxProposalTitleLength,
+        account_name: constants.maxAccountNameLength,
         code_name: constants.maxCodeNameLength,
-        contract_name: constants.maxContractNameLength,
         contract_desc: constants.maxContractDescriptionLength,
+        contract_name: constants.maxContractNameLength,
         list_name: constants.maxListNameLength,
+        proposal_title: constants.maxProposalTitleLength,
       };
 
       const fieldMap: Record<MaxLengthType, string> = {
-        account_name: "Account name",
         account_desc: "Account description",
-        proposal_title: "Proposal title",
+        account_name: "Account name",
         code_name: "Code name",
-        contract_name: "Contract name",
         contract_desc: "Contract description",
+        contract_name: "Contract name",
         list_name: "List name",
+        proposal_title: "Proposal title",
       };
 
       const maxLength = maxLengthMap[type] ?? 0;

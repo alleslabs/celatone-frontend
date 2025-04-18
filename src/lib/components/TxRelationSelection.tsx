@@ -13,19 +13,19 @@ enum RelationType {
 
 const relationOptions = [
   {
+    disabled: false,
     label: "All",
     value: RelationType.ALL,
-    disabled: false,
   },
   {
+    disabled: false,
     label: "Signing address",
     value: RelationType.SIGNING,
-    disabled: false,
   },
   {
+    disabled: false,
     label: "Related address",
     value: RelationType.RELATED,
-    disabled: false,
   },
 ];
 
@@ -36,9 +36,9 @@ interface TxRelationSelectionProps extends BoxProps {
 }
 
 export const TxRelationSelection = ({
-  value,
   setValue,
   size = "lg",
+  value,
   ...props
 }: TxRelationSelectionProps) => {
   let initialValue;

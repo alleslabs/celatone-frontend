@@ -26,12 +26,12 @@ interface ArgFieldTemplateProps {
 }
 
 export const ArgFieldTemplate = ({
+  control,
   index,
   param,
-  control,
 }: ArgFieldTemplateProps) => {
   const [isEditted, setIsEditted] = useState(false);
-  const { validateUserAddress, validateContractAddress } = useValidateAddress();
+  const { validateContractAddress, validateUserAddress } = useValidateAddress();
 
   const isValidArgAddress = useCallback(
     (input: string) =>
@@ -52,11 +52,11 @@ export const ArgFieldTemplate = ({
   const rules = getRules(type, isOptional, isValidArgAddress, isValidArgObject);
 
   const {
-    field: { value, onChange, ...fieldProps },
-    fieldState: { isTouched, error },
+    field: { onChange, value, ...fieldProps },
+    fieldState: { error, isTouched },
   } = useController({
-    name: `${index}`,
     control,
+    name: `${index}`,
     rules,
   });
   const isError = (isTouched || isEditted) && !!error;

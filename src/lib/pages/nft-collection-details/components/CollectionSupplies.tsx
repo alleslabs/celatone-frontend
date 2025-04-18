@@ -25,17 +25,17 @@ export const CollectionSupplies = ({
   const debouncedSearch = useDebounce(searchKeyword);
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
   const { data: nfts, isLoading } = useNfts(

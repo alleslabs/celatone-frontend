@@ -16,18 +16,18 @@ interface UserContractDescProps {
   contractLocalInfo: Option<ContractLocalInfo>;
 }
 export const UserContractDesc = ({
-  publicInfo,
   contract,
   contractLocalInfo,
+  publicInfo,
 }: UserContractDescProps) => {
   const [showMore, setShowMore] = useState(false);
 
   const description = contractLocalInfo?.description;
 
-  const [ref, { noClamp, clampedText, key }] = useClampText({
-    text: description || "No contract description",
+  const [ref, { clampedText, key, noClamp }] = useClampText({
     ellipsis: "...",
     lines: publicInfo?.description ? 4 : 2,
+    text: description || "No contract description",
   });
 
   const displayDescription = useMemo(() => {
@@ -54,12 +54,12 @@ export const UserContractDesc = ({
         <EditContractDetailsModal
           contractLocalInfo={{
             contractAddress: contract.address,
+            description,
             instantiator: contract.instantiator,
             label: contract.label,
-            name: contractLocalInfo?.name,
-            description,
-            tags: contractLocalInfo?.tags,
             lists: contractLocalInfo?.lists,
+            name: contractLocalInfo?.name,
+            tags: contractLocalInfo?.tags,
           }}
           triggerElement={
             <Button

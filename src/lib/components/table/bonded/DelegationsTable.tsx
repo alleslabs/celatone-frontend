@@ -21,9 +21,9 @@ interface DelegationsTableProps {
 
 const DelegationsTableBody = ({
   delegations,
-  rewards,
   isLoading,
   isSingleBondDenom,
+  rewards,
 }: DelegationsTableProps) => {
   const isMobile = useMobile();
 
@@ -49,9 +49,9 @@ const DelegationsTableBody = ({
             )
           }
           bondedInfo={{
-            validator: delegation.validator,
             balances: delegation.balances,
             rewards: rewards[delegation.validator.validatorAddress] ?? [],
+            validator: delegation.validator,
           }}
           isSingleBondDenom={isSingleBondDenom}
         />
@@ -70,9 +70,9 @@ const DelegationsTableBody = ({
             )
           }
           bondedInfo={{
-            validator: delegation.validator,
             balances: delegation.balances,
             rewards: rewards[delegation.validator.validatorAddress] ?? [],
+            validator: delegation.validator,
           }}
           isSingleBondDenom={isSingleBondDenom}
           templateColumns={TEMPLATE_COLUMNS}
@@ -84,9 +84,9 @@ const DelegationsTableBody = ({
 
 export const DelegationsTable = ({
   delegations,
-  rewards,
   isLoading,
   isSingleBondDenom,
+  rewards,
 }: DelegationsTableProps) => (
   <Box width="100%">
     <TableTitle count={delegations?.length ?? 0} mb={2} title="Delegated to" />

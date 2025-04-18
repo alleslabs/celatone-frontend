@@ -3,8 +3,8 @@ import type { FlexProps } from "@chakra-ui/react";
 import { Flex } from "@chakra-ui/react";
 
 const PageHeaderContainer = ({
-  children,
   bgColor,
+  children,
   ...containerProps
 }: FlexProps) => (
   <Flex

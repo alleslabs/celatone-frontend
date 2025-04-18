@@ -33,7 +33,7 @@ const getMethodSpecificRender = (
   transaction: Option<Code["transaction"]>
 ): { methodRender: JSX.Element; storedBlockRender: JSX.Element } => {
   if (proposal) {
-    const { id, height, created } = proposal;
+    const { created, height, id } = proposal;
     return {
       methodRender: (
         <CodeInfoLabelText label="Proposal ID">
@@ -66,7 +66,7 @@ const getMethodSpecificRender = (
   }
 
   if (transaction) {
-    const { hash, height, created } = transaction;
+    const { created, hash, height } = transaction;
     return {
       methodRender: (
         <CodeInfoLabelText label="Upload transaction">
@@ -108,9 +108,9 @@ const getMethodSpecificRender = (
 };
 
 export const CodeInfoSection = ({
-  code,
-  chainId,
   attached,
+  chainId,
+  code,
   toJsonSchemaTab,
 }: CodeInfoSectionProps) => {
   const { isFullTier } = useTierConfig();
@@ -119,12 +119,12 @@ export const CodeInfoSection = ({
   const getAddressType = useGetAddressType();
   const {
     codeId,
-    proposal,
-    uploader,
+    hash,
     instantiatePermission,
     permissionAddresses,
+    proposal,
     transaction,
-    hash,
+    uploader,
   } = code;
 
   const { methodRender, storedBlockRender } = getMethodSpecificRender(

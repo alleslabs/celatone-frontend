@@ -18,10 +18,10 @@ interface VoteDetailsAccordionItemProps {
 }
 
 export const VoteDetailsAccordionItem = ({
-  step,
-  proposalData,
   children,
   isDisabled,
+  proposalData,
+  step,
 }: VoteDetailsAccordionItemProps) => (
   <AccordionItem
     borderColor="gray.700"

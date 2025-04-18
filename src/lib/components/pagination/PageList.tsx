@@ -15,16 +15,16 @@ interface PageListProps {
 }
 
 export const PageList = ({
-  pageSize,
   currentPage,
   lastPage,
   onPageChange,
+  pageSize,
 }: PageListProps) => {
   const handlePageChange = useCallback(
     (pageNumber: number) => {
       track(AmpEvent.USE_PAGINATION_PAGE_BUTTON, {
-        page: pageNumber,
         lastPage,
+        page: pageNumber,
         pageSize,
       });
       onPageChange(pageNumber);

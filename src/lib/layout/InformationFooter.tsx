@@ -13,9 +13,9 @@ const FOOTER_BUTTONS = [
   {
     href: `${USER_GUIDE_DOCS_LINK}/introduction/overview`,
     icon: "document" as IconKeys,
-    text: "View doc",
     onClick: () =>
       trackWebsite(`${USER_GUIDE_DOCS_LINK}/introduction/overview`),
+    text: "View doc",
   },
 ];
 
@@ -56,11 +56,11 @@ export const InformationFooter = () => {
                 borderRadius="16px"
                 h={2}
                 sx={{
-                  animation: `pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
                   "@keyframes pulse": {
                     "0%, 100%": { opacity: 1 },
                     "50%": { opacity: 0.5 },
                   },
+                  animation: `pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
                 }}
                 w={2}
               />
@@ -69,7 +69,7 @@ export const InformationFooter = () => {
         )}
       </Flex>
       <Flex>
-        {FOOTER_BUTTONS.map(({ href, icon, text, onClick }) => (
+        {FOOTER_BUTTONS.map(({ href, icon, onClick, text }) => (
           <Link
             key={text}
             href={href}

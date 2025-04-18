@@ -28,14 +28,14 @@ interface MsgLockAndSuperfluidDelegateDetailProps {
 }
 
 export const MsgLockAndSuperfluidDelegateDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  pool,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  pool,
+  txHash,
 }: MsgLockAndSuperfluidDelegateDetailProps) => {
   const poolDenom = getPoolDenom(pool.id.toString());
   const poolAsset = msg.coins.find((coin) => coin.denom === poolDenom) ?? {
@@ -84,9 +84,9 @@ export const MsgLockAndSuperfluidDelegateDetail = ({
             ampCopierSection={ampCopierSection}
             badgeSize={6}
             validator={{
-              validatorAddress: msg.val_addr,
-              moniker: validator?.moniker,
               identity: undefined,
+              moniker: validator?.moniker,
+              validatorAddress: msg.val_addr,
             }}
           />
         </PoolInfoText>

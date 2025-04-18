@@ -47,37 +47,37 @@ export interface ControllerInputProps<T extends FieldValues>
 }
 
 export const ControllerInput = <T extends FieldValues>({
-  name,
+  autoFocus,
   control,
+  cta,
+  cursor,
+  error,
+  helperAction,
+  helperText,
   label,
   labelBgColor = "background.main",
-  helperText,
-  placeholder = " ",
-  error,
-  size = "lg",
-  type = "text",
-  rules = {},
-  status,
   maxLength,
-  autoFocus,
-  cursor,
-  helperAction,
-  textAlign = "left",
-  cta,
+  name,
+  placeholder = " ",
   restrictedNumberInputParams,
+  rules = {},
+  size = "lg",
+  status,
+  textAlign = "left",
+  type = "text",
   ...componentProps
 }: ControllerInputProps<T>) => {
   const watcher = useWatch({
-    name,
     control,
+    name,
   });
 
   const {
     field,
-    fieldState: { isTouched, isDirty },
+    fieldState: { isDirty, isTouched },
   } = useController<T>({
-    name,
     control,
+    name,
     rules,
   });
 
@@ -100,16 +100,16 @@ export const ControllerInput = <T extends FieldValues>({
   };
 
   const decimalHandlers = useRestrictedNumberInput({
-    type: "decimal",
     onChange: field.onChange,
+    type: "decimal",
     ...restrictedNumberInputParams,
   });
 
   const numberHandlers = useRestrictedNumberInput({
-    type: "integer",
-    maxIntegerPoints: 7,
     maxDecimalPoints: 0,
+    maxIntegerPoints: 7,
     onChange: field.onChange,
+    type: "integer",
   });
 
   return (

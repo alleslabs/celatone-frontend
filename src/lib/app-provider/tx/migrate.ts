@@ -24,12 +24,12 @@ export const useMigrateContractTx = () => {
 
   return useCallback(
     async ({
-      contractAddress,
       codeId,
-      migrateMsg,
+      contractAddress,
       estimatedFee,
-      onTxSucceed,
+      migrateMsg,
       onTxFailed,
+      onTxSucceed,
     }: MigrateStreamParams) => {
       if (!address)
         throw new Error("No address provided (useMigrateContractTx)");
@@ -46,14 +46,14 @@ export const useMigrateContractTx = () => {
 
       return migrateContractTx({
         address,
-        messages,
         fee: estimatedFee,
-        signAndBroadcast,
+        messages,
+        onTxFailed,
         onTxSucceed: (txHash) => {
           trackTxSucceed();
           onTxSucceed?.(txHash);
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

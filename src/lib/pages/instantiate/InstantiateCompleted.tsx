@@ -32,28 +32,28 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
       <TxReceiptRender
         receipts={[
           {
-            title: "Tx hash",
             html: (
               <ExplorerLink type="tx_hash" value={txInfo.transactionHash} />
             ),
+            title: "Tx hash",
           },
           {
-            title: "Contract address",
             html: txInfo.contractAddress ? (
               <ExplorerLink
                 type="contract_address"
                 value={txInfo.contractAddress}
               />
             ) : undefined,
+            title: "Contract address",
           },
           {
-            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
+            title: "Tx fee",
           },
         ]}
         variant="full"
@@ -82,8 +82,8 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
             navigate({
               pathname: "/interact-contract",
               query: {
-                selectedType: ContractInteractionTabs.Execute,
                 contract: txInfo.contractAddress,
+                selectedType: ContractInteractionTabs.Execute,
               },
             })
           }
@@ -97,8 +97,8 @@ const InstantiateCompleted = ({ txInfo }: InstantiateCompletedProps) => {
             navigate({
               pathname: "/interact-contract",
               query: {
-                selectedType: ContractInteractionTabs.Query,
                 contract: txInfo.contractAddress,
+                selectedType: ContractInteractionTabs.Query,
               },
             })
           }

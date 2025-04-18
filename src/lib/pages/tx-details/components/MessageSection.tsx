@@ -20,16 +20,16 @@ interface MessageSectionProps {
 }
 
 export const MessageSection = ({
-  txData,
   relatedEvmTxHash,
+  txData,
 }: MessageSectionProps) => {
   const evm = useEvmConfig({ shouldRedirect: false });
 
   const {
+    logs,
     tx: {
       body: { messages },
     },
-    logs,
   } = txData;
 
   return (

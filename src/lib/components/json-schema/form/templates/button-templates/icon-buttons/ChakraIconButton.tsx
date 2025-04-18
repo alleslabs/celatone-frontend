@@ -17,12 +17,12 @@ function ChakraIconButton<
   F extends FormContextType = any,
 >(props: IconButtonProps<T, S, F>) {
   const {
-    iconType = "default",
-    icon,
     className,
-    uiSchema,
+    icon,
+    iconType = "default",
     registry,
     title,
+    uiSchema,
     ...otherProps
   } = props;
   return (

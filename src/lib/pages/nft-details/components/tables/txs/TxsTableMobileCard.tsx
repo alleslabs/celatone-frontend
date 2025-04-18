@@ -15,11 +15,11 @@ interface TxsTableMobileCardProps {
 }
 
 export const TxsTableMobileCard = ({
-  timestamp,
   hash,
   isNftBurn,
   isNftMint,
   isNftTransfer,
+  timestamp,
 }: TxsTableMobileCardProps) => {
   const navigate = useInternalNavigate();
 

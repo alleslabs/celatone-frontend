@@ -24,7 +24,7 @@ export const JsonModalButton = ({
   jsonString,
   modalHeader,
 }: JsonModalButtonProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   return (
     <>
       <Button

@@ -18,41 +18,41 @@ interface SocialMenuType {
 
 const socialMenu: SocialMenuType[] = [
   {
-    url: "https://initia.xyz",
     icon: "website",
     slug: "website",
+    url: "https://initia.xyz",
   },
   {
-    url: "https://github.com/initia-labs",
     icon: "github",
     slug: "github",
+    url: "https://github.com/initia-labs",
   },
   {
-    url: "https://x.com/initia",
     icon: "x",
     slug: "x",
+    url: "https://x.com/initia",
   },
   {
-    url: "https://medium.com/@initialabs",
     icon: "medium",
     slug: "medium",
+    url: "https://medium.com/@initialabs",
   },
 ];
 
 const socialSequence = {
-  website: 0,
-  github: 1,
   discord: 2,
-  x: 3,
-  telegram: 4,
+  github: 1,
+  linkedin: 7,
   medium: 5,
   reddit: 6,
-  linkedin: 7,
+  telegram: 4,
+  website: 0,
+  x: 3,
 };
 
 const SocialMenuRender = ({
-  isThemed,
   iconSize,
+  isThemed,
 }: {
   isThemed?: boolean;
   iconSize: IconProps["boxSize"];
@@ -63,9 +63,9 @@ const SocialMenuRender = ({
   ).reduce<SocialMenuType[]>((acc, curr) => {
     if (curr[0] in socialSequence) {
       acc[socialSequence[curr[0] as keyof typeof socialSequence]] = {
-        url: curr[1],
         icon: curr[0] as IconKeys,
         slug: curr[0],
+        url: curr[1],
       };
     }
     return acc;

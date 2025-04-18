@@ -20,11 +20,11 @@ interface AssetInputProps {
 }
 
 export const AssetInput = ({
+  amountInput: AmountInput,
+  assetOptions,
   disableDelete,
   onDelete,
   setCurrencyValue,
-  amountInput: AmountInput,
-  assetOptions,
   value,
 }: AssetInputProps) => (
   <Grid
@@ -37,12 +37,12 @@ export const AssetInput = ({
     <Box
       sx={{
         "& .form-label": {
-          fontSize: "12px",
-          color: "text.dark",
           backgroundColor: "background.main",
+          color: "text.dark",
+          fontSize: "12px",
           letterSpacing: "0.15px",
-          position: "absolute",
           ml: 3,
+          position: "absolute",
           px: 1,
           top: -2,
           zIndex: 1,
@@ -58,9 +58,9 @@ export const AssetInput = ({
           }),
         }}
         components={{
-          Option: AssetInputOption,
           MenuList: AssetInputMenuList,
           NoOptionsMessage: AssetInputNoOptionsMessage,
+          Option: AssetInputOption,
         }}
         formatOptionLabel={AssetInputFormatOptionLabel}
         menuPortalTarget={document.body}

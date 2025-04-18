@@ -14,9 +14,9 @@ export interface ProposalStepperProps {
 }
 
 export const ProposalStepper = ({
-  step,
-  proposalData,
   isOverview = false,
+  proposalData,
+  step,
 }: ProposalStepperProps) => (
   <Flex align="start" direction="column" gap={1} w="full">
     <Flex alignItems="center" gap={2} w="full">

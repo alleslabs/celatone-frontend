@@ -10,9 +10,9 @@ interface TotalCardTopProps {
 }
 
 export const TotalCardTop = ({
-  title,
-  message,
   fontWeight,
+  message,
+  title,
 }: TotalCardTopProps) => (
   <Flex alignItems="center" gap={2}>
     <Text fontWeight={fontWeight} textColor="text.dark" variant="body2">

@@ -59,13 +59,13 @@ const generateVariantStyle = (
     dupStyleKeys.map((key) => [
       key,
       {
-        color: mainColor,
         border,
         borderRadius,
+        color: mainColor,
         ...(key === "container" && {
           bg: bgColor,
-          borderLeft,
           borderColor: borderColor || mainColor,
+          borderLeft,
         }),
       },
     ])
@@ -74,12 +74,6 @@ const generateVariantStyle = (
 
 export const Alert: ComponentStyleConfig = {
   baseStyle: {
-    title: {
-      color: "text.main",
-      fontSize: "16px",
-      fontWeight: 600,
-      letterSpacing: "0.4px",
-    },
     container: {
       bg: "gray.800",
       border: "1px solid",
@@ -90,14 +84,20 @@ export const Alert: ComponentStyleConfig = {
       fontWeight: 400,
       letterSpacing: "0.1px",
     },
+    title: {
+      color: "text.main",
+      fontSize: "16px",
+      fontWeight: 600,
+      letterSpacing: "0.4px",
+    },
   },
   variants: {
-    primary: generateVariantStyle("primary"),
-    success: generateVariantStyle("success"),
-    warning: generateVariantStyle("warning"),
     error: generateVariantStyle("error"),
     info: generateVariantStyle("info"),
     "info-left-primary": generateVariantStyle("info-left-primary"),
     "info-left-secondary": generateVariantStyle("info-left-secondary"),
+    primary: generateVariantStyle("primary"),
+    success: generateVariantStyle("success"),
+    warning: generateVariantStyle("warning"),
   },
 };

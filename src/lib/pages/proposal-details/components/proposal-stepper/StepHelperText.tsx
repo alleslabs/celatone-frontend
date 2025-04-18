@@ -13,8 +13,8 @@ interface StepperHelperTextProps {
 }
 
 const StepperHelperTextBody = ({
-  step,
   proposalData,
+  step,
 }: StepperHelperTextProps) => {
   // Deposit Period
   if (step === 1) {

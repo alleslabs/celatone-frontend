@@ -14,8 +14,8 @@ interface SingleBondRadioCardProps {
 }
 
 const SingleBondRadioCardBody = ({
-  token,
   isLoading,
+  token,
 }: Omit<SingleBondRadioCardProps, "value">) => {
   if (isLoading) return <Spinner alignSelf="center" mt={2} size="xl" />;
   if (!token)
@@ -38,9 +38,9 @@ const SingleBondRadioCardBody = ({
 };
 
 export const SingleBondRadioCard = ({
-  value,
-  token,
   isLoading,
+  token,
+  value,
 }: SingleBondRadioCardProps) => (
   <Flex
     alignItems={{ base: "flex-start", md: "center" }}

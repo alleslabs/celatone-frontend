@@ -29,10 +29,10 @@ export const TxBroadcastProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (stream) {
       const subscription = stream.subscribe({
-        next: setResult,
         error: () => {
           onModalClose();
         },
+        next: setResult,
       });
       return () => subscription.unsubscribe();
     }

@@ -21,13 +21,13 @@ export const AddToOtherListModal = observer(
     const [contractLists, setContractLists] = useState<LVPair[]>([]);
 
     const handleSave = useHandleContractSave({
-      title: "Action complete!",
-      contractAddress: contractLocalInfo.contractAddress,
-      label: contractLocalInfo.label,
-      codeId: contractLocalInfo.codeId,
-      instantiator: contractLocalInfo.instantiator,
-      lists: contractLists,
       actions: () => track(AmpEvent.CONTRACT_EDIT_LISTS),
+      codeId: contractLocalInfo.codeId,
+      contractAddress: contractLocalInfo.contractAddress,
+      instantiator: contractLocalInfo.instantiator,
+      label: contractLocalInfo.label,
+      lists: contractLists,
+      title: "Action complete!",
     });
 
     useEffect(() => {

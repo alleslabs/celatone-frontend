@@ -14,15 +14,15 @@ export const trackUseMainSearch = (
 ) =>
   amp.track(AmpEvent.USE_MAIN_SEARCH, {
     isClick,
-    type,
     section,
+    type,
   });
 
 export const trackUseTab = (tab: string, section?: string, info?: string) =>
   amp.track(AmpEvent.USE_TAB, {
-    tab,
-    section,
     info,
+    section,
+    tab,
   });
 
 export const trackUseViewMore = (properties?: { [key: string]: string }) =>
@@ -42,8 +42,8 @@ export const trackUseRadio = (radio: string, section?: string) =>
 
 export const trackUseOtherModal = (title: string, section?: string) =>
   amp.track(AmpEvent.USE_OTHER_MODAL, {
-    title,
     section,
+    title,
   });
 
 export const trackUseViewJSON = (section?: string) =>
@@ -63,10 +63,10 @@ export const trackUseCopier = (
   info?: string
 ) =>
   amp.track(AmpEvent.USE_COPIER, {
-    type,
+    info,
     section,
     subSection,
-    info,
+    type,
   });
 
 export const trackUseExpand = ({
@@ -133,10 +133,10 @@ export const trackUseInstantiatePermission = (
   section?: string
 ) =>
   amp.track(AmpEvent.USE_INSTANTIATE_PERMISSION, {
-    type,
-    emptyAddressesLength,
     addressesLength,
+    emptyAddressesLength,
     section,
+    type,
   });
 
 export const trackUseWhitelistedAddress = (
@@ -195,21 +195,21 @@ export const trackUsePaginationNavigate = (
   currentPage: number
 ) =>
   amp.track(AmpEvent.USE_PAGINATION_NAVIGATION, {
+    currentPage,
     navigate,
     pageSize,
-    currentPage,
   });
 
 export const trackUseSort = (
   sortBy: string,
   order: "ascending" | "descending"
-) => amp.track(AmpEvent.USE_SORT, { sortBy, order });
+) => amp.track(AmpEvent.USE_SORT, { order, sortBy });
 
 export const trackUseView = (view: string) =>
   amp.track(AmpEvent.USE_VIEW, { view });
 
 export const trackUseToggle = (name: string, isActive: boolean) =>
-  amp.track(AmpEvent.USE_TOGGLE, { name, isActive });
+  amp.track(AmpEvent.USE_TOGGLE, { isActive, name });
 
 export const trackUseModuleSelectionInputFill = (
   address: Addr,
@@ -219,6 +219,6 @@ export const trackUseModuleSelectionInputFill = (
   amp.track(AmpEvent.USE_MODULE_SELECTION_INPUT_FILL, {
     address: !!address,
     isHex: isHexWalletAddress(address) || isHexModuleAddress(address),
-    manualModuleName,
     manualFunctionName,
+    manualModuleName,
   });

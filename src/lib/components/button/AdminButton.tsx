@@ -12,7 +12,7 @@ interface AdminButtonProps {
   admin: Nullable<BechAddr>;
 }
 
-export const AdminButton = ({ contractAddress, admin }: AdminButtonProps) => {
+export const AdminButton = ({ admin, contractAddress }: AdminButtonProps) => {
   const { address } = useCurrentChain();
   const navigate = useInternalNavigate();
 

@@ -18,19 +18,19 @@ interface AttachFundContentProps {
 
 const attachFundsOptions = [
   {
+    disabled: false,
     label: "No funds attached",
     value: AttachFundsType.ATTACH_FUNDS_NULL,
-    disabled: false,
   },
   {
+    disabled: false,
     label: "Select asset and fill amount",
     value: AttachFundsType.ATTACH_FUNDS_SELECT,
-    disabled: false,
   },
   {
+    disabled: false,
     label: "Provide JSON asset list",
     value: AttachFundsType.ATTACH_FUNDS_JSON,
-    disabled: false,
   },
 ];
 
@@ -70,8 +70,8 @@ interface AttachFundProps {
 }
 
 export const AttachFund = ({
-  control,
   attachFundsOption,
+  control,
   setValue,
   showLabel = true,
 }: AttachFundProps) => (

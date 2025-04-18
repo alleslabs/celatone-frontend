@@ -16,9 +16,9 @@ interface FunctionTypeSwitchProps extends FlexProps {
 const tabs = Object.values(FunctionTypeTabIndex);
 
 export const FunctionTypeSwitch = ({
+  counts,
   currentTab,
   disabled = false,
-  counts,
   onTabChange,
   ...flexProps
 }: FunctionTypeSwitchProps) => {
@@ -32,7 +32,7 @@ export const FunctionTypeSwitch = ({
       h="32px"
       p={1}
       position="relative"
-      sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
+      sx={{ ...(disabled ? { opacity: 0.3, pointerEvents: "none" } : {}) }}
       w={{ base: "full", md: "auto" }}
       {...flexProps}
     >
@@ -54,13 +54,13 @@ export const FunctionTypeSwitch = ({
           zIndex={1}
           {...(counts[idx] === 0
             ? {
-                opacity: 0.3,
                 cursor: "not-allowed",
                 onClick: undefined,
+                opacity: 0.3,
               }
             : {
-                onClick: () => onTabChange(tab),
                 cursor: "pointer",
+                onClick: () => onTabChange(tab),
               })}
         >
           <Heading as="h6" fontSize={{ base: "12px", md: "14px" }} variant="h6">
@@ -83,9 +83,9 @@ export const FunctionTypeSwitch = ({
         h="calc(100% - 8px)"
         position="absolute"
         transition={{
-          type: "spring",
-          stiffness: "250",
           damping: "30",
+          stiffness: "250",
+          type: "spring",
         }}
         w={{ base: "33%", md: "128px" }}
       />

@@ -32,15 +32,15 @@ export interface NumberInputProps extends FormControlProps {
 }
 
 export const NumberInput = ({
-  value,
+  error,
+  helperText,
   label,
   labelBgColor = "background.main",
-  helperText,
+  onInputChange,
   placeholder = " ",
-  error,
   size = "lg",
   status,
-  onInputChange,
+  value,
   ...componentProps
 }: NumberInputProps) => {
   const inputOnChange = useCallback(
@@ -51,10 +51,10 @@ export const NumberInput = ({
   );
 
   const handlers = useRestrictedNumberInput({
-    type: "integer",
-    maxIntegerPoints: 7,
     maxDecimalPoints: 0,
+    maxIntegerPoints: 7,
     onChange: inputOnChange,
+    type: "integer",
   });
 
   // Design system size: md = 40px, lg = 56px

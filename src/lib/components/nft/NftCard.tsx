@@ -17,12 +17,12 @@ interface NftCardProps {
 }
 
 export const NftCard = ({
-  uri,
-  tokenId,
-  nftAddress,
-  collectionName,
   collectionAddress,
+  collectionName,
+  nftAddress,
   showCollection = false,
+  tokenId,
+  uri,
 }: NftCardProps) => {
   const { data: metadata } = useMetadata(uri);
 

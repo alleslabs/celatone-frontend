@@ -14,7 +14,7 @@ interface NetworkMenuTopProps {
 }
 
 export const NetworkMenuTop = observer(
-  ({ keyword, setKeyword, handleOnKeyDown, onClose }: NetworkMenuTopProps) => {
+  ({ handleOnKeyDown, keyword, onClose, setKeyword }: NetworkMenuTopProps) => {
     const isMobile = useMobile();
     const isMac = useIsMac();
     const isAllowCustomNetworks = useAllowCustomNetworks({

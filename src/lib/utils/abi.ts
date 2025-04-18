@@ -38,8 +38,8 @@ const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
       return acc;
     },
     {
-      view: [],
       execute: [],
+      view: [],
     }
   );
 
@@ -51,13 +51,13 @@ const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
 
 export const indexModuleAbi = (abi: string) => {
   const parsedAbi = parseJsonABI<ModuleAbi>(abi);
-  const { view, execute } = splitViewExecuteFunctions(
+  const { execute, view } = splitViewExecuteFunctions(
     parsedAbi.exposed_functions
   );
   return {
+    executeFunctions: execute,
     parsedAbi,
     viewFunctions: view,
-    executeFunctions: execute,
   };
 };
 
@@ -135,7 +135,7 @@ export const serializeAbiData = (fn: ExposedFunction, abiData: AbiFormData) => {
   );
 
   return {
-    typeArgs: fn.generic_type_params.map((_, index) => abiData.typeArgs[index]),
     args: serializedArgs,
+    typeArgs: fn.generic_type_params.map((_, index) => abiData.typeArgs[index]),
   };
 };

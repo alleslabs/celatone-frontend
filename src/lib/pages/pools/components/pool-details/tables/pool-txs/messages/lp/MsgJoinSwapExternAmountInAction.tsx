@@ -17,10 +17,10 @@ interface MsgJoinSwapExternAmountInActionProps {
 }
 
 export const MsgJoinSwapExternAmountInAction = ({
+  ampCopierSection,
+  assetInfos,
   msg,
   pool,
-  assetInfos,
-  ampCopierSection,
 }: MsgJoinSwapExternAmountInActionProps) => {
   const poolDenom = getPoolDenom(msg.pool_id);
   const inToken = coinToTokenWithValue(

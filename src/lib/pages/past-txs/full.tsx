@@ -30,12 +30,12 @@ export const PastTxsFull = () => {
   const { address, chainId } = useCurrentChain();
 
   const defaultValues: PastTxsState = {
-    search: "",
     filters: DEFAULT_TX_FILTERS,
     isSigner: undefined,
+    search: "",
   };
 
-  const { watch, setValue, reset } = useForm({
+  const { reset, setValue, watch } = useForm({
     defaultValues,
     mode: "all",
   });
@@ -51,19 +51,19 @@ export const PastTxsFull = () => {
   const txCount = rawTxCount ?? undefined;
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
   } = usePaginator({
-    total: txCount,
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
+    total: txCount,
   });
 
   const { data: txs, isLoading } = useTxsByAddress(

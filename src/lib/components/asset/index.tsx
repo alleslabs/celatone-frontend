@@ -26,11 +26,11 @@ interface AssetsSectionProps {
 }
 
 const MobileOverview = ({
+  hasNoAsset,
+  onViewMore,
   supportedAssets,
   totalSupportedAssetsValue,
   unsupportedAssets,
-  hasNoAsset,
-  onViewMore,
 }: {
   supportedAssets: TokenWithValue[];
   totalSupportedAssetsValue: Option<USD<Big>>;
@@ -64,20 +64,20 @@ const MobileOverview = ({
 
 export const AssetsSection = ({
   address,
-  onViewMore,
   isAccount = false,
+  onViewMore,
 }: AssetsSectionProps) => {
   const isMobile = useMobile();
   const openAssetTab = useOpenAssetTab();
   const isMobileOverview = isMobile && !!onViewMore;
 
   const {
+    error,
+    isLoading,
     supportedAssets,
+    totalData = 0,
     totalSupportedAssetsValue,
     unsupportedAssets,
-    totalData = 0,
-    isLoading,
-    error,
   } = useBalanceInfos(address);
 
   const isZeroValue =

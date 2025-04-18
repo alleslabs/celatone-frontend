@@ -27,7 +27,7 @@ interface CommandSectionHeaderProps {
 }
 
 export const CommandSectionHeader = observer(
-  ({ codeId, codeHash, wasmVerifyInfo }: CommandSectionHeaderProps) => {
+  ({ codeHash, codeId, wasmVerifyInfo }: CommandSectionHeaderProps) => {
     const { getSchemaByCodeHash } = useSchemaStore();
     const { isOpen, onClose, onOpen } = useDisclosure();
 

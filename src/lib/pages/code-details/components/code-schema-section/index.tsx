@@ -16,8 +16,8 @@ interface CodeSchemaSectionProps {
 }
 
 export const CodeSchemaSection = ({
-  codeId,
   codeHash,
+  codeId,
   localSchema,
   wasmVerifyInfo,
 }: CodeSchemaSectionProps) => {

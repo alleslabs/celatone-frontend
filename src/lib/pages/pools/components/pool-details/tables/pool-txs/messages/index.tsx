@@ -31,10 +31,10 @@ import {
 } from "./swap";
 
 export const PoolMsgAction = ({
+  ampCopierSection,
+  assetInfos,
   msg,
   pool,
-  assetInfos,
-  ampCopierSection,
 }: {
   msg: Message;
   pool: PoolData;
@@ -42,7 +42,7 @@ export const PoolMsgAction = ({
   ampCopierSection?: string;
 }) => {
   // TODO: fix this type casting
-  const { type, detail, log } = msg as unknown as {
+  const { detail, log, type } = msg as unknown as {
     type: string;
     detail: Record<string, unknown>;
     log: Log;
@@ -166,14 +166,14 @@ export const PoolMsgAction = ({
 };
 
 export const PoolMsgDetail = ({
-  txHash,
-  blockHeight,
-  msgIndex,
-  msg,
-  pool,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  blockHeight,
+  isOpened,
+  msg,
+  msgIndex,
+  pool,
+  txHash,
 }: {
   txHash: string;
   blockHeight: number;
@@ -185,7 +185,7 @@ export const PoolMsgDetail = ({
   ampCopierSection?: string;
 }) => {
   // TODO: fix this type casting
-  const { type, detail, log } = msg as unknown as {
+  const { detail, log, type } = msg as unknown as {
     type: string;
     detail: Record<string, unknown>;
     log: Log;

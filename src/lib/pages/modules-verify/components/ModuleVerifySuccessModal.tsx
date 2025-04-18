@@ -27,8 +27,8 @@ interface ModuleVerifySuccessModalProps {
 }
 
 export const ModuleVerifySuccessModal = ({
-  onClose,
   control,
+  onClose,
 }: ModuleVerifySuccessModalProps) => {
   const navigate = useInternalNavigate();
   const { currentChainId } = useCelatoneApp();

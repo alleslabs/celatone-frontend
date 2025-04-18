@@ -11,9 +11,9 @@ interface ValidatorVotesTableHeaderProps {
 }
 
 export const ValidatorVotesTableHeader = ({
-  templateColumns,
   fullVersion,
   isProposalResolved,
+  templateColumns,
 }: ValidatorVotesTableHeaderProps) => {
   const isMobile = useMobile();
 

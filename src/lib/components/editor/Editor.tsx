@@ -18,9 +18,9 @@ export const Editor = ({ ...props }: EditorProps) => (
     height={400}
     language="move"
     options={{
+      automaticLayout: true,
       readOnly: true,
       scrollBeyondLastLine: false,
-      automaticLayout: true,
     }}
     theme="vs-dark"
     {...props}

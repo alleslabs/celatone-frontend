@@ -30,7 +30,7 @@ const ProposalDetailsBody = ({
 
   const isMobile = useMobile();
   const navigate = useInternalNavigate();
-  const { data, isLoading, isDepositsLoading } =
+  const { data, isDepositsLoading, isLoading } =
     useDerivedProposalData(proposalId);
   const { data: votesInfo, isLoading: isVotesInfoLoading } =
     useDerivedProposalVotesInfo(proposalId, data, isLoading);
@@ -42,13 +42,13 @@ const ProposalDetailsBody = ({
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: "/proposals/[proposalId]/[tab]",
         query: {
           proposalId,
           tab: nextTab,
-        },
-        options: {
-          shallow: true,
         },
       });
     },

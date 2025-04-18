@@ -40,18 +40,18 @@ const StoredCodes = observer(() => {
   const govConfig = useGovConfig({ shouldRedirect: false });
 
   // TODO refactor to useState
-  const { watch, setValue } = useForm<CodeFilterState>({
+  const { setValue, watch } = useForm<CodeFilterState>({
     defaultValues: {
-      permissionValue: "all",
       keyword: "",
+      permissionValue: "all",
     },
   });
   const { keyword, permissionValue } = watch();
 
   const {
-    storedCodesCount,
-    storedCodes: stored,
     isStoredCodesLoading,
+    storedCodes: stored,
+    storedCodesCount,
   } = useMyCodesData(keyword, permissionValue);
   const { data, isFetching: isUploadAccessFetching } =
     useUploadAccessParamsRest();

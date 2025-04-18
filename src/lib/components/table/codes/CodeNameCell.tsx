@@ -25,12 +25,12 @@ export const CodeNameCell = ({
     track(AmpEvent.USE_QUICK_EDIT_CODE);
     updateCodeInfo(code.id, code.uploader, inputValue);
     toast({
-      title: "New code name saved",
-      status: "success",
       duration: 5000,
+      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
       isClosable: false,
       position: "bottom-right",
-      icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+      status: "success",
+      title: "New code name saved",
     });
   };
   return (

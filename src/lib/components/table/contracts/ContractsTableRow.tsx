@@ -31,13 +31,13 @@ interface ContractsTableRowProps {
 
 export const ContractsTableRow = ({
   contractInfo,
-  templateColumns,
-  onRowSelect,
-  showTag,
-  showLastUpdate,
   isReadOnly,
-  withCta,
+  onRowSelect,
+  showLastUpdate,
+  showTag,
+  templateColumns,
   wasmVerifyInfo,
+  withCta,
 }: ContractsTableRowProps) => (
   <Grid
     _hover={{ bg: "gray.900" }}

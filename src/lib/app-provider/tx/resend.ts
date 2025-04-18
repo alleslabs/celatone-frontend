@@ -20,10 +20,10 @@ export const useResendTx = () => {
 
   return useCallback(
     async ({
-      onTxSucceed,
-      onTxFailed,
       estimatedFee,
       messages,
+      onTxFailed,
+      onTxSucceed,
     }: ResendStreamParams) => {
       if (!address) throw new Error("No address provided (useResendTx)");
       if (!estimatedFee) return null;
@@ -31,12 +31,12 @@ export const useResendTx = () => {
         address,
         fee: estimatedFee,
         messages,
-        signAndBroadcast,
+        onTxFailed,
         onTxSucceed: (txHash) => {
           trackTxSucceed();
           onTxSucceed?.(txHash);
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

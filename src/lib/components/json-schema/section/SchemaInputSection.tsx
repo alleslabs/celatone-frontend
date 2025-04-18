@@ -25,14 +25,14 @@ interface SchemaSectionProps {
 
 export const SchemaInputSection = observer(
   ({
-    type,
     codeHash,
     codeId,
-    verifiedSchema,
-    localSchema,
-    initialFormData,
     handleChange,
+    initialFormData,
+    localSchema,
     onSchemaSave,
+    type,
+    verifiedSchema,
   }: SchemaSectionProps) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     const msgSchema = verifiedSchema?.[type] ?? localSchema?.[type];

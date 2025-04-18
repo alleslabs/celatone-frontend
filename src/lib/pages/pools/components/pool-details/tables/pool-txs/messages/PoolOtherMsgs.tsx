@@ -6,7 +6,7 @@ interface PoolOtherMsgsProps {
   isIbc: boolean;
 }
 
-export const PoolOtherMsgs = ({ otherMsgs, isIbc }: PoolOtherMsgsProps) => {
+export const PoolOtherMsgs = ({ isIbc, otherMsgs }: PoolOtherMsgsProps) => {
   const typePaths = Object.keys(otherMsgs);
   return (
     <Flex alignContent="center" flexWrap="wrap" gap={2}>

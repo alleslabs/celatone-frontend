@@ -18,9 +18,9 @@ interface EvmTxMsgDetailsProps {
 }
 
 export const EvmTxMsgDetails = ({
-  evmTxData,
   cosmosTxData,
   evmDenom,
+  evmTxData,
 }: EvmTxMsgDetailsProps) => {
   const { data } = useEvmVerifyInfos(
     evmTxData.txReceipt.logs.map((log) => log.address)

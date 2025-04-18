@@ -15,11 +15,11 @@ interface VpPercentCardProps {
 }
 
 export const VpPercentCard = ({
-  name,
-  ratio,
-  power,
   color,
   isCompact,
+  name,
+  power,
+  ratio,
 }: VpPercentCardProps) => (
   <Flex
     direction={isCompact ? "row-reverse" : "column"}
@@ -48,7 +48,7 @@ export const VpPercentCard = ({
     <Flex
       bgColor={color}
       borderRadius={10}
-      {...(isCompact ? { w: 1, h: "full" } : { w: "full", h: 1 })}
+      {...(isCompact ? { h: "full", w: 1 } : { h: 1, w: "full" })}
     />
   </Flex>
 );

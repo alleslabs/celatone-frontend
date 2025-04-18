@@ -38,22 +38,22 @@ export const PoolRelatedTxs = ({ pool }: PoolRelatedTxsProps) => {
   const [tab, setTab] = useState(TabIndex.All);
 
   const {
-    totalAllData,
     isTotalAllLoading,
-    totalSwapData,
-    isTotalSwapLoading,
-    totalClpData,
-    isTotalClpLoading,
-    totalLpData,
-    isTotalLpLoading,
-    totalBondingData,
     isTotalBondingLoading,
-    totalSuperfluidData,
-    isTotalSuperfluidLoading,
-    totalCollectData,
+    isTotalClpLoading,
     isTotalCollectLoading,
-    totalMigrateData,
+    isTotalLpLoading,
     isTotalMigrateLoading,
+    isTotalSuperfluidLoading,
+    isTotalSwapLoading,
+    totalAllData,
+    totalBondingData,
+    totalClpData,
+    totalCollectData,
+    totalLpData,
+    totalMigrateData,
+    totalSuperfluidData,
+    totalSwapData,
   } = usePoolTxsTableCounts(pool.id);
 
   const handleTabChange = useCallback(

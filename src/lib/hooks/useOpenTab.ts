@@ -30,8 +30,8 @@ export const useOpenBlockTab = () => {
 
 export const useOpenTxTab = (type: "rest" | "tx-page") => {
   const {
-    currentChainId,
     chainConfig: { network_type, rest },
+    currentChainId,
   } = useCelatoneApp();
   const txsApiRoute = useBaseApiRoute("txs");
 

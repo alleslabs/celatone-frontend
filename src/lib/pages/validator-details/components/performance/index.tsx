@@ -18,8 +18,8 @@ interface PerformanceProps {
 }
 
 export const Performance = ({
-  validatorAddress,
   onViewMore,
+  validatorAddress,
 }: PerformanceProps) => {
   const [uptimeBlock, setUptimeBlock] = useState(100);
   const { data: uptimeData, isLoading } = useValidatorUptime(

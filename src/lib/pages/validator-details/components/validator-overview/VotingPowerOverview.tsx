@@ -25,11 +25,11 @@ import {
 } from "lib/utils";
 
 const VotingPowerDetail = ({
+  amount,
+  assetInfo,
+  denom,
   label,
   ratio,
-  amount,
-  denom,
-  assetInfo,
 }: {
   label: string;
   ratio: Ratio<number>;
@@ -91,11 +91,11 @@ interface VotingPowerOverviewProps {
 }
 
 export const VotingPowerOverview = ({
-  singleStakingDenom,
   assetInfos,
-  votingPower,
-  totalVotingPower,
   selfVotingPower,
+  singleStakingDenom,
+  totalVotingPower,
+  votingPower,
 }: VotingPowerOverviewProps) => {
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();

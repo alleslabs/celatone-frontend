@@ -25,8 +25,8 @@ interface MigrationRowProps {
 }
 
 export const MigrationRow = ({
-  templateColumns,
   history,
+  templateColumns,
   wasmVerifyInfo,
 }: MigrationRowProps) => {
   const { isFullTier } = useTierConfig();
@@ -52,9 +52,9 @@ export const MigrationRow = ({
         <CodeNameCell
           code={{
             id: history.codeId,
+            name: history.codeName,
             // TODO: fix by handle uploader undefined
             uploader: history.uploader ?? ("" as BechAddr),
-            name: history.codeName,
           }}
         />
       </TableRow>

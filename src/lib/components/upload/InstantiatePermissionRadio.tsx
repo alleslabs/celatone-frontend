@@ -24,7 +24,7 @@ interface PermissionRadioProps {
   text: string;
 }
 
-const PermissionRadio = ({ isSelected, value, text }: PermissionRadioProps) => (
+const PermissionRadio = ({ isSelected, text, value }: PermissionRadioProps) => (
   <Radio py={2} value={value.toString()} width="100%">
     <Text fontWeight={isSelected ? "600" : "400"}>{text} </Text>
   </Radio>
@@ -42,7 +42,7 @@ export const InstantiatePermissionRadio = ({
     },
   } = useCelatoneApp();
 
-  const { fields, append, remove } = useFieldArray({
+  const { append, fields, remove } = useFieldArray({
     control,
     name: "addresses",
   });

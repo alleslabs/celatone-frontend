@@ -86,12 +86,12 @@ export const useSearchHandler = (
   const {
     chainConfig: {
       features: {
-        gov: { enabled: isGov },
-        wasm: { enabled: isWasm },
-        move: { enabled: isMove },
         evm: { enabled: isEvm },
-        pool: { enabled: isPool },
+        gov: { enabled: isGov },
+        move: { enabled: isMove },
         nft: { enabled: isNft },
+        pool: { enabled: isPool },
+        wasm: { enabled: isWasm },
       },
     },
   } = useCelatoneApp();
@@ -100,9 +100,9 @@ export const useSearchHandler = (
 
   const getAddressType = useGetAddressType();
   const {
+    isSomeValidAddress,
     validateContractAddress,
     validateValidatorAddress,
-    isSomeValidAddress,
   } = useValidateAddress();
 
   /// /////////////////////////////////////////////////////
@@ -327,43 +327,37 @@ export const useSearchHandler = (
     poolFetching
   )
     return {
-      results: [],
       isLoading: true,
+      results: [],
     };
 
   const results: SearchResult[] = [];
 
   if (nftCollectionData)
     results.push({
-      value: debouncedKeyword,
-      type: "NFT collection address",
       metadata: {
         nft: {
           name: nftCollectionData.name,
         },
       },
+      type: "NFT collection address",
+      value: debouncedKeyword,
     });
 
   if (nftData)
     results.push({
-      value: debouncedKeyword,
-      type: "NFT address",
       metadata: {
         nft: {
           collectionAddress: nftData.collectionAddress,
           name: nftData.tokenId,
         },
       },
+      type: "NFT address",
+      value: debouncedKeyword,
     });
 
   if (isAddr)
     results.push({
-      value:
-        isEvm && isHex20Bytes(debouncedKeyword)
-          ? toChecksumAddress(debouncedKeyword)
-          : debouncedKeyword,
-      type:
-        contractData || evmCodes?.code ? "Contract address" : "Account address",
       metadata: {
         icns:
           icnsNamesByKeyword && icnsNamesByKeyword.names.length > 0
@@ -373,22 +367,23 @@ export const useSearchHandler = (
             : undefined,
         initiaUsername: iuNameByKeyword?.username ?? undefined,
       },
+      type:
+        contractData || evmCodes?.code ? "Contract address" : "Account address",
+      value:
+        isEvm && isHex20Bytes(debouncedKeyword)
+          ? toChecksumAddress(debouncedKeyword)
+          : debouncedKeyword,
     });
 
   // handle "move/" prefix hex module address
   if (addressByMovePrefixKeyword)
     results.push({
-      value: addressByMovePrefixKeyword,
       type: "Account address",
+      value: addressByMovePrefixKeyword,
     });
 
   if (icnsAddrByKeyword && icnsAddrByKeyword.address !== "")
     results.push({
-      value: icnsAddrByKeyword.address,
-      type:
-        icnsAddrByKeyword.addressType === "contract_address"
-          ? "Contract address"
-          : "Account address",
       metadata: {
         icns:
           icnsNamesByIcnsAddr && icnsNamesByIcnsAddr.names.length > 0
@@ -400,69 +395,74 @@ export const useSearchHandler = (
               }
             : undefined,
       },
+      type:
+        icnsAddrByKeyword.addressType === "contract_address"
+          ? "Contract address"
+          : "Account address",
+      value: icnsAddrByKeyword.address,
     });
 
   if (iuAddrByKeyword && iuAddrByKeyword.address !== null)
     results.push({
-      value: iuAddrByKeyword.address,
-      type: "Account address",
       metadata: {
         initiaUsername: debouncedKeyword.endsWith(`.${bech32Prefix}`)
           ? debouncedKeyword
           : `${debouncedKeyword}.${bech32Prefix}`,
       },
+      type: "Account address",
+      value: iuAddrByKeyword.address,
     });
 
   if (moduleData)
     results.push({
-      value: debouncedKeyword,
       type: "Module path",
+      value: debouncedKeyword,
     });
 
   if (codeData)
     results.push({
-      value: debouncedKeyword,
       type: "Code ID",
+      value: debouncedKeyword,
     });
 
   if (txData)
     results.push({
-      value: debouncedKeyword,
       type: "Transaction hash",
+      value: debouncedKeyword,
     });
 
   if (evmTxData)
     results.push({
-      value: debouncedKeyword,
       type: "EVM transaction hash",
+      value: debouncedKeyword,
     });
 
   if (blockData)
     results.push({
-      value: debouncedKeyword,
       type: "Block",
+      value: debouncedKeyword,
     });
 
   if (proposalData?.info)
     results.push({
-      value: debouncedKeyword,
       type: "Proposal ID",
+      value: debouncedKeyword,
     });
 
   if (validatorData)
     results.push({
-      value: debouncedKeyword,
       type: "Validator address",
+      value: debouncedKeyword,
     });
 
   if (poolData?.info)
     results.push({
-      value: debouncedKeyword,
       type: "Pool ID",
+      value: debouncedKeyword,
     });
 
   return {
-    results,
     isLoading: false,
+    results,
   };
 };

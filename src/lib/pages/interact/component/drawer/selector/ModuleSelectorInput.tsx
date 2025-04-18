@@ -27,12 +27,12 @@ export interface ModuleSelectorInputProps {
 }
 
 export const ModuleSelectorInput = ({
-  selectedAddress,
-  setSelectedAddress,
-  handleModuleSelect,
-  setModules,
-  setMode,
   closeModal,
+  handleModuleSelect,
+  selectedAddress,
+  setMode,
+  setModules,
+  setSelectedAddress,
 }: ModuleSelectorInputProps) => {
   const [keyword, setKeyword] = useState(selectedAddress.hex as string);
   const [error, setError] = useState("");
@@ -48,9 +48,14 @@ export const ModuleSelectorInput = ({
     setMode("display");
   }, [addr, formatAddresses, setMode, setSelectedAddress]);
 
-  const { refetch, isFetching } = useSearchModules({
+  const { isFetching, refetch } = useSearchModules({
     address: addr,
     moduleName,
+    onError: (err) => setError((err as Error).message),
+    onModulesSuccess: (data) => {
+      setModules(data);
+      onSuccessCallback();
+    },
     onModuleSuccess: (data) => {
       const searchedFn = functionName
         ? data.parsedAbi.exposed_functions.find(
@@ -61,11 +66,6 @@ export const ModuleSelectorInput = ({
       onSuccessCallback();
       closeModal();
     },
-    onModulesSuccess: (data) => {
-      setModules(data);
-      onSuccessCallback();
-    },
-    onError: (err) => setError((err as Error).message),
   });
 
   const validateModuleInput = useValidateModuleInput();

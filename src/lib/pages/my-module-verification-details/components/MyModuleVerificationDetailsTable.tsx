@@ -13,8 +13,8 @@ interface MyModuleVerificationDetailsTableProps {
 }
 
 export const MyModuleVerificationDetailsTable = ({
-  moveVerifyTaskStatus,
   moduleIdentifiers = [],
+  moveVerifyTaskStatus,
 }: MyModuleVerificationDetailsTableProps) => (
   <Stack gap={2}>
     <TableTitle

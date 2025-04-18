@@ -12,12 +12,12 @@ interface MutateEventsTableRowProps extends MutateEvent {
 }
 
 export const MutateEventsTableRow = ({
-  timestamp,
-  templateColumns,
   mutatedFieldName,
-  oldValue,
   newValue,
+  oldValue,
   remark,
+  templateColumns,
+  timestamp,
 }: MutateEventsTableRowProps) => (
   <Box minW="min-content" w="full">
     <Grid

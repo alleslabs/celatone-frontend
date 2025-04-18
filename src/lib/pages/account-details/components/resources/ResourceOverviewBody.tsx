@@ -20,24 +20,24 @@ interface ResourceOverviewBodyProps {
 
 export const ResourceOverviewBody = ({
   address,
-  resourcesByName,
   isLoading,
   onViewMore,
+  resourcesByName,
 }: ResourceOverviewBodyProps) => {
   const navigate = useInternalNavigate();
 
   const handleSelectResource = useCallback(
     (resource: ResourceGroup) => {
       navigate({
-        pathname: `/accounts/[accountAddress]/[tab]`,
-        query: {
-          accountAddress: address,
-          tab: "resources",
-          account: resource.account,
-          selected: resource.group,
-        },
         options: {
           shallow: true,
+        },
+        pathname: `/accounts/[accountAddress]/[tab]`,
+        query: {
+          account: resource.account,
+          accountAddress: address,
+          selected: resource.group,
+          tab: "resources",
         },
       });
     },
@@ -68,7 +68,7 @@ export const ResourceOverviewBody = ({
       mt={6}
       pb={6}
     >
-      <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} mb={6} spacing={4}>
+      <SimpleGrid columns={{ lg: 4, md: 2, sm: 1 }} mb={6} spacing={4}>
         {resourcesByName.slice(0, 8).map((item) => (
           <ResourceCard
             key={item.displayName}

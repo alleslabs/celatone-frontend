@@ -16,10 +16,10 @@ interface TupleFieldProps<T extends FieldValues> extends FieldProps<T> {
 }
 
 export const TupleField = <T extends FieldValues>({
-  name,
-  control,
   components,
+  control,
   isDisabled,
+  name,
   withoutBorder,
 }: TupleFieldProps<T>) => {
   const values = useWatch<T>({
@@ -33,9 +33,9 @@ export const TupleField = <T extends FieldValues>({
       gap={2}
       w="full"
       {...(!withoutBorder && {
-        p: 4,
         border: "1px solid var(--chakra-colors-gray-700)",
         borderRadius: "8px",
+        p: 4,
       })}
     >
       {(values as unknown[]).map((_, index) => {

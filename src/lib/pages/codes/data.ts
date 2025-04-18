@@ -29,8 +29,8 @@ export const useRecentCodes = (
     data: {
       items: codes.items.map<CodeInfo>((code) => ({
         ...code,
-        name: getCodeLocalInfo(code.id)?.name,
         isSaved: isCodeIdSaved(code.id),
+        name: getCodeLocalInfo(code.id)?.name,
       })),
       total: codes.total,
     },
@@ -46,8 +46,8 @@ export const useRecentCodesRest = () => {
     data: data?.pages.flatMap((page) =>
       page.code_infos.map<CodeInfo>((code) => ({
         ...code,
-        name: getCodeLocalInfo(code.id)?.name,
         isSaved: isCodeIdSaved(code.id),
+        name: getCodeLocalInfo(code.id)?.name,
       }))
     ),
     ...rest,

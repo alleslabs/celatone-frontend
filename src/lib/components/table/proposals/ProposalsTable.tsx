@@ -15,9 +15,9 @@ interface ProposalsTableProps {
 }
 
 export const ProposalsTable = ({
-  proposals,
-  isLoading,
   emptyState,
+  isLoading,
+  proposals,
 }: ProposalsTableProps) => {
   const { isFullTier } = useTierConfig();
   const isMobile = useMobile();

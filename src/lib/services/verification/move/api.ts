@@ -54,8 +54,8 @@ export const getMoveVerifyInfo = (
   axios
     .get(`${CELATONE_VERIFICATION_API}/move/verify-info`, {
       params: {
-        chainId,
         address,
+        chainId,
         moduleName,
       },
     })
@@ -68,8 +68,8 @@ export const getMoveVerifyInfosByAddress = (
   axios
     .get(`${CELATONE_VERIFICATION_API}/move/verify-infos`, {
       params: {
-        chainId,
         address,
+        chainId,
       },
     })
     .then(({ data }) =>

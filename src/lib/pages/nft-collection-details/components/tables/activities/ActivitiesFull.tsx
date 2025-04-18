@@ -20,18 +20,18 @@ export const ActivitiesFull = ({ collectionAddress }: ActivitiesFullProps) => {
   const debouncedSearch = useDebounce(searchKeyword);
 
   const {
-    pagesQuantity,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
     setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
   const { data: activities, isLoading } = useNftCollectionActivities(

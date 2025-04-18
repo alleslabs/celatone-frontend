@@ -18,8 +18,8 @@ interface AbiWriteProps {
 }
 
 export const AbiWrite = ({
-  contractAddress,
   abiWrite,
+  contractAddress,
   selectedFn,
 }: AbiWriteProps) => {
   // ------------------------------------------//

@@ -14,12 +14,12 @@ interface NetworkAccordionSubsectionProps {
 }
 
 export const NetworkAccordionSubsection = ({
-  title,
-  networks,
   cursor,
+  networks,
+  onClose,
   setCursor,
   subsectionStartIndex,
-  onClose,
+  title,
 }: NetworkAccordionSubsectionProps) => (
   <Flex direction="column" gap={2}>
     {title !== undefined && (

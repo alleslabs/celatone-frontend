@@ -11,12 +11,12 @@ interface TableTitleProps extends BoxProps {
 }
 
 export const TableTitle = ({
-  title,
   count,
-  showCount = true,
   helperText,
-  mb = 6,
   isSmall = false,
+  mb = 6,
+  showCount = true,
+  title,
   ...props
 }: TableTitleProps) => (
   <Box mb={mb} {...props}>

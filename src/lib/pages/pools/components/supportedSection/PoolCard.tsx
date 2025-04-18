@@ -46,8 +46,8 @@ export const PoolCard = ({ item, mode = "percent-value" }: PoolCardProps) => {
       sx={{
         _hover: {
           "> div:last-child > div": {
-            borderColor: "gray.600",
             backgroundColor: hoverBgColor,
+            borderColor: "gray.600",
           },
           backgroundColor: "gray.800",
         },

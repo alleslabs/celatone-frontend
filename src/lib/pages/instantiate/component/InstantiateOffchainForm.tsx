@@ -23,13 +23,13 @@ interface InstantiateOffChainFormProps {
 
 export const InstantiateOffChainForm = observer(
   ({
-    title,
-    subtitle,
-    cta = true,
+    codeId,
     contractAddress,
     contractLabel,
-    codeId,
+    cta = true,
     instantiator,
+    subtitle,
+    title,
   }: InstantiateOffChainFormProps) => {
     const navigate = useInternalNavigate();
     const { updateContractLocalInfo } = useContractStore();
@@ -37,25 +37,25 @@ export const InstantiateOffChainForm = observer(
 
     const {
       control,
+      formState: { errors },
+      handleSubmit,
       setValue,
       watch,
-      handleSubmit,
-      formState: { errors },
     } = useForm<OffchainDetail>({
       defaultValues: {
-        name: "",
         description: "",
-        tags: [],
         lists: [],
+        name: "",
+        tags: [],
       },
       mode: "all",
     });
 
     const offchainState: OffchainDetail = {
-      name: watch("name"),
       description: watch("description"),
-      tags: watch("tags"),
       lists: watch("lists"),
+      name: watch("name"),
+      tags: watch("tags"),
     };
     const setTagsValue = (selectedTags: string[]) => {
       setValue("tags", selectedTags);

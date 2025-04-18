@@ -9,8 +9,8 @@ interface ModulesTableHeaderProps {
   isPublishedModules: boolean;
 }
 export const ModulesTableHeader = ({
-  templateColumns,
   isPublishedModules,
+  templateColumns,
 }: ModulesTableHeaderProps) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Module path</TableHeader>

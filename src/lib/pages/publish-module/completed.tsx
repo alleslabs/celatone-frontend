@@ -21,7 +21,7 @@ interface PublishCompletedProps {
 }
 
 export const PublishCompleted = ({
-  publishTxInfo: { txHash, txFee, upgradePolicy, modules },
+  publishTxInfo: { modules, txFee, txHash, upgradePolicy },
   resetState,
 }: PublishCompletedProps) => {
   const navigate = useInternalNavigate();
@@ -40,17 +40,17 @@ export const PublishCompleted = ({
         my={12}
         receipts={[
           {
-            title: "Tx hash",
             html: <ExplorerLink type="tx_hash" value={txHash} />,
+            title: "Tx hash",
           },
           {
-            title: "Tx fee",
             html: (
               <EstimatedFeeRender
                 estimatedFee={feeFromStr(txFee)}
                 loading={false}
               />
             ),
+            title: "Tx fee",
           },
           {
             title: "Upgrade policy",

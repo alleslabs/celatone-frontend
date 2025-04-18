@@ -8,10 +8,10 @@ interface TypeLabelProps {
 }
 
 export const TypeLabel = ({
+  children,
+  isRequired = false,
   label,
   type,
-  isRequired = false,
-  children,
 }: TypeLabelProps) => {
   if (!label && !type) return children;
   return (

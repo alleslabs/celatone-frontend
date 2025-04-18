@@ -11,8 +11,8 @@ interface ViewSchemaPanelProps {
 }
 
 export const ViewSchemaPanel = ({
-  jsonSchema,
   codeId,
+  jsonSchema,
 }: ViewSchemaPanelProps) => (
   <>
     {jsonSchema === undefined ? (

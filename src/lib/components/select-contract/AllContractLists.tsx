@@ -47,7 +47,7 @@ export const AllContractLists = ({
         />
       ) : (
         <SimpleGrid
-          columns={{ sm: 1, md: 2, lg: 3 }}
+          columns={{ lg: 3, md: 2, sm: 1 }}
           pt={12}
           spacing={4}
           w="full"

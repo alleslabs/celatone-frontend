@@ -17,10 +17,10 @@ import { VoteQuorumText } from "../../VoteQuorumText";
 import { VpPercentCard } from "../../VpPercentCard";
 
 export const VotingQuorum = ({
-  proposalData,
-  params,
-  votesInfo,
   isLoading,
+  params,
+  proposalData,
+  votesInfo,
 }: VoteDetailsProps) => {
   const isMobile = useMobile();
   if (isLoading) return <Loading my={0} />;
@@ -30,7 +30,7 @@ export const VotingQuorum = ({
   const { abstainRatio, nonAbstainRatio, totalRatio } =
     normalizeVotesInfo(votesInfo);
 
-  const { yes, abstain, no, noWithVeto, totalVotingPower } = votesInfo;
+  const { abstain, no, noWithVeto, totalVotingPower, yes } = votesInfo;
   const nonAbstain = yes.add(no).add(noWithVeto);
   const allVotes = nonAbstain.add(abstain);
 

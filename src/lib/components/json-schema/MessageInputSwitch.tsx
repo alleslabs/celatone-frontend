@@ -37,10 +37,10 @@ export const MessageInputSwitch = <
 >({
   currentTab,
   disabled = false,
-  tooltipLabel = "Select or fill code ID first",
-  ml,
   isOutput = false,
+  ml,
   onTabChange: onTabChangeProps,
+  tooltipLabel = "Select or fill code ID first",
 }: MessageInputSwitchProps<T>) => {
   const tabs = useMemo<T[]>(
     () => Object.values(isOutput ? OutputMessageTabs : MessageTabs),
@@ -67,7 +67,7 @@ export const MessageInputSwitch = <
           direction="row"
           p={1}
           position="relative"
-          sx={{ ...(disabled ? { pointerEvents: "none", opacity: 0.3 } : {}) }}
+          sx={{ ...(disabled ? { opacity: 0.3, pointerEvents: "none" } : {}) }}
         >
           {tabs.map((tab) => (
             <MotionBox
@@ -101,9 +101,9 @@ export const MessageInputSwitch = <
             h="22px"
             position="absolute"
             transition={{
-              type: "spring",
-              stiffness: "250",
               damping: "30",
+              stiffness: "250",
+              type: "spring",
             }}
             w="96px"
           />

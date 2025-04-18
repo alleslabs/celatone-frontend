@@ -63,13 +63,13 @@ interface SchemaQueryComponentProps {
 }
 
 export const SchemaQueryComponent = ({
-  msgSchema,
-  resSchema,
-  contractAddress,
-  walletAddress,
-  initialMsg,
-  opened,
   addActivity,
+  contractAddress,
+  initialMsg,
+  msgSchema,
+  opened,
+  resSchema,
+  walletAddress,
 }: SchemaQueryComponentProps) => {
   const [resTab, setResTab] = useState<Option<OutputMessageTabs>>(
     OutputMessageTabs.YOUR_SCHEMA
@@ -79,24 +79,9 @@ export const SchemaQueryComponent = ({
   const [queryError, setQueryError] = useState("");
   const [timestamp, setTimestamp] = useState<Date>();
 
-  const { refetch, isFetching } = useContractQueryRest(contractAddress, msg, {
-    enabled: !msgSchema.inputRequired && opened,
-    retry: false,
+  const { isFetching, refetch } = useContractQueryRest(contractAddress, msg, {
     cacheTime: 0,
-    onSuccess: (data) => {
-      const currentDate = getCurrentDate();
-      setQueryError("");
-      setRes(JSON.stringify(data, null, 2));
-      setTimestamp(currentDate);
-      addActivity({
-        type: "query",
-        action: msgSchema.title ?? "Unknown",
-        sender: walletAddress,
-        contractAddress,
-        msg: encode(msg),
-        timestamp: currentDate,
-      });
-    },
+    enabled: !msgSchema.inputRequired && opened,
     onError: (err) => {
       setQueryError(
         (err as AxiosError<RpcQueryError>).response?.data.message ||
@@ -105,6 +90,21 @@ export const SchemaQueryComponent = ({
       setTimestamp(undefined);
       setRes("");
     },
+    onSuccess: (data) => {
+      const currentDate = getCurrentDate();
+      setQueryError("");
+      setRes(JSON.stringify(data, null, 2));
+      setTimestamp(currentDate);
+      addActivity({
+        action: msgSchema.title ?? "Unknown",
+        contractAddress,
+        msg: encode(msg),
+        sender: walletAddress,
+        timestamp: currentDate,
+        type: "query",
+      });
+    },
+    retry: false,
   });
 
   const handleQuery = useCallback(() => {

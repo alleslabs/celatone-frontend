@@ -92,13 +92,13 @@ const CollectionDetailsBody = ({
       if (nextTab === tab) return;
       trackUseTab(nextTab);
       navigate({
+        options: {
+          shallow: true,
+        },
         pathname: "/nft-collections/[collectionAddress]/[tab]",
         query: {
           collectionAddress,
           tab: nextTab,
-        },
-        options: {
-          shallow: true,
         },
       });
     },
@@ -111,11 +111,11 @@ const CollectionDetailsBody = ({
     return <ErrorFetching dataName="collection information" />;
   if (!collection) return <InvalidCollection />;
 
-  const { name, description, uri } = collection;
+  const { description, name, uri } = collection;
   const {
-    supplies: { maxSupply, totalMinted, currentSupply },
     isUnlimited,
     royalty,
+    supplies: { currentSupply, maxSupply, totalMinted },
   } = collectionInfos;
   const totalBurned = totalMinted - currentSupply;
 
@@ -138,7 +138,7 @@ const CollectionDetailsBody = ({
       />
       <Breadcrumb
         items={[
-          { text: "NFT collections", href: "/nft-collections" },
+          { href: "/nft-collections", text: "NFT collections" },
           {
             text: getCollectionName(),
           },

@@ -21,14 +21,14 @@ interface PoolAssetsGridProps {
 }
 
 export const PoolAssetsGrid = ({
-  txHash,
-  msgIndex,
-  msgAssets,
-  msgSwapDenom,
-  isJoin,
-  assetInfos,
-  isOpened,
   ampCopierSection,
+  assetInfos,
+  isJoin,
+  isOpened,
+  msgAssets,
+  msgIndex,
+  msgSwapDenom,
+  txHash,
 }: PoolAssetsGridProps) => {
   const { data: txData, isLoading } = useTxData(txHash, isOpened);
   if (txHash && isLoading) return <Loading withBorder={false} />;

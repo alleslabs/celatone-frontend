@@ -10,12 +10,12 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 const baseCardProps: SystemStyleObject = {
-  width: "full",
-  height: "full",
-  padding: "16px",
-  borderRadius: "8px",
-  justifyContent: "space-between",
   alignItems: "center",
+  borderRadius: "8px",
+  height: "full",
+  justifyContent: "space-between",
+  padding: "16px",
+  width: "full",
 };
 
 const cardProps = {
@@ -77,8 +77,8 @@ const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
 );
 
 const ContentCard = ({
-  item,
   isDocument,
+  item,
 }: {
   item: ShortcutMetadata;
   isDocument: boolean;
@@ -127,80 +127,80 @@ export const QuickMenuLite = () => {
     if (wasm.enabled)
       base.push(
         {
-          title: "Deploy a new contract",
-          subtitle: "Upload a new Wasm code or instantiate a new contract",
-          slug: "deploy",
           icon: "instantiate" as const,
+          isDocument: false,
           isHighlight: true,
-          isDocument: false,
+          slug: "deploy",
+          subtitle: "Upload a new Wasm code or instantiate a new contract",
+          title: "Deploy a new contract",
         },
         {
-          title: "Query",
-          subtitle: "Query and get contract state data",
-          slug: "interact-contract",
           icon: "query" as const,
-          isHighlight: false,
           isDocument: false,
+          isHighlight: false,
+          slug: "interact-contract",
+          subtitle: "Query and get contract state data",
+          title: "Query",
         },
         {
-          title: "Execute",
-          subtitle: "Send transactions to contracts",
-          slug: "interact-contract?selectedType=execute",
           icon: "execute" as const,
-          isHighlight: false,
           isDocument: false,
+          isHighlight: false,
+          slug: "interact-contract?selectedType=execute",
+          subtitle: "Send transactions to contracts",
+          title: "Execute",
         },
         {
-          title: "Migrate",
-          subtitle: "Migrate contract to new code ID",
-          slug: "migrate",
           icon: "migrate" as const,
-          isHighlight: false,
           isDocument: false,
+          isHighlight: false,
+          slug: "migrate",
+          subtitle: "Migrate contract to new code ID",
+          title: "Migrate",
         },
         {
-          title: "User guide",
-          subtitle: "View Scan documents",
-          slug: "wasm-user-guide",
           icon: "document" as const,
-          isHighlight: false,
           isDocument: true,
+          isHighlight: false,
+          slug: "wasm-user-guide",
+          subtitle: "View Scan documents",
+          title: "User guide",
         }
       );
 
     if (move.enabled)
       base.push(
         {
-          title: "Publish / Republish",
-          subtitle: "Upload .mv files to publish new module",
-          slug: "publish-module",
           icon: "add-new" as const,
+          isDocument: false,
           isHighlight: true,
-          isDocument: false,
+          slug: "publish-module",
+          subtitle: "Upload .mv files to publish new module",
+          title: "Publish / Republish",
         },
         {
-          title: "View / Execute",
-          subtitle: "Interact with module's functions",
-          slug: "interact",
           icon: "execute" as const,
-          isHighlight: false,
           isDocument: false,
+          isHighlight: false,
+          slug: "interact",
+          subtitle: "Interact with module's functions",
+          title: "View / Execute",
         },
         {
-          title: "Deploy script",
-          subtitle: "Deploy one-time use script",
-          slug: "deploy-script",
           icon: "code" as const,
-          isHighlight: false,
           isDocument: false,
+          isHighlight: false,
+          slug: "deploy-script",
+          subtitle: "Deploy one-time use script",
+          title: "Deploy script",
         },
         {
-          title: "User guide",
-          subtitle: "View Scan documents",
           icon: "document" as const,
-          slug: "move-user-guide",
-          isHighlight: false,
           isDocument: true,
+          isHighlight: false,
+          slug: "move-user-guide",
+          subtitle: "View Scan documents",
+          title: "User guide",
         }
       );
 

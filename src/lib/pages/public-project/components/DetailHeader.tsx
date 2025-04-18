@@ -15,7 +15,7 @@ export const DetailHeader = ({ details, slug }: DetailHeaderProps) => (
   <>
     <Breadcrumb
       items={[
-        { text: "Public projects", href: "/projects" },
+        { href: "/projects", text: "Public projects" },
         { text: details?.name },
       ]}
     />

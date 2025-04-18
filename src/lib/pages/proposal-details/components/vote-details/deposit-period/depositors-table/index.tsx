@@ -17,8 +17,8 @@ interface DepositorsTableProps {
 export const DepositorsTable = ({
   depositors,
   isDepositsLoading,
-  showTransaction,
   isPruned,
+  showTransaction,
 }: DepositorsTableProps) => {
   const templateColumns = showTransaction ? "1.5fr 1.5fr 2fr 1fr" : "240px 1fr";
 

@@ -11,8 +11,8 @@ interface ValidatorImageProps {
 }
 
 export const ValidatorImage = ({
-  validator,
   boxSize = 10,
+  validator,
 }: ValidatorImageProps) => {
   const { data, isLoading } = useValidatorImage(validator);
 

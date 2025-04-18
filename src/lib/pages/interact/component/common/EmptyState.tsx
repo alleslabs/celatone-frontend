@@ -14,10 +14,10 @@ interface ModuleEmptyStateProps {
 
 export const ModuleEmptyState = ({
   description,
-  imageWidth = "160px",
-  hasImage = false,
-  noBorder = false,
   h = "full",
+  hasImage = false,
+  imageWidth = "160px",
+  noBorder = false,
   p,
 }: ModuleEmptyStateProps) => (
   <Flex

@@ -47,21 +47,21 @@ export const useMovePoolInfos = ({ withPrices }: { withPrices: boolean }) => {
 
   const {
     data: assetInfos,
-    isLoading: isAssetsLoading,
     error: assetsErrors,
+    isLoading: isAssetsLoading,
   } = useAssetInfos({ withPrices });
   const {
     data: pools,
-    isFetching: isPoolsFetching,
     error: poolsErrors,
+    isFetching: isPoolsFetching,
     ...queryResult
   } = useQuery(
     [CELATONE_QUERY_KEYS.MOVE_POOL_INFOS, moveEndpoint],
     async () => getMovePoolInfos(moveEndpoint),
     {
       enabled: moveConfig.enabled,
-      retry: false,
       refetchOnWindowFocus: false,
+      retry: false,
     }
   );
 
@@ -106,17 +106,17 @@ export const useMovePoolInfos = ({ withPrices }: { withPrices: boolean }) => {
           precision: coinBInfo?.precision,
           symbol: coinBInfo?.symbol,
         },
-        precision: curr.precision,
-        lpPricePerPShare,
         logo: [coinAInfo?.logo, coinBInfo?.logo],
+        lpPricePerPShare,
+        precision: curr.precision,
       },
     };
   }, {});
 
   return {
     ...queryResult,
-    isLoading: isAssetsLoading || isPoolsFetching,
-    error: assetsErrors ?? poolsErrors,
     data,
+    error: assetsErrors ?? poolsErrors,
+    isLoading: isAssetsLoading || isPoolsFetching,
   };
 };

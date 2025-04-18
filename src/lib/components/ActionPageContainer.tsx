@@ -10,8 +10,8 @@ type ActionPageContainerProps = {
 };
 
 const ActionPageContainer = ({
-  children,
   boxProps,
+  children,
   width = 572,
 }: ActionPageContainerProps) => (
   <Flex

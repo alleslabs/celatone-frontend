@@ -16,12 +16,12 @@ interface SingleBondCardBodyMultiProps {
 }
 
 export const SingleBondCardBodyMulti = ({
-  title,
-  message,
   address,
+  message,
+  title,
   tokens,
 }: SingleBondCardBodyMultiProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
     <>
@@ -30,9 +30,9 @@ export const SingleBondCardBodyMulti = ({
       </Heading>
       <Flex
         _hover={{
+          "& > p": { color: "primary.light" },
           textDecoration: "underline",
           textDecorationColor: "primary.light",
-          "& > p": { color: "primary.light" },
         }}
         align="center"
         cursor="pointer"

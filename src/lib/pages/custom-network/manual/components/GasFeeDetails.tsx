@@ -41,8 +41,8 @@ interface GasFeeDetailsProps {
 }
 
 const restrictedNumberInputParams = {
-  maxIntegerPoints: 20,
   maxDecimalPoints: 20,
+  maxIntegerPoints: 20,
 };
 
 const GasOptionStandard = ({
@@ -162,12 +162,12 @@ const GasFeeDetails = ({
   trigger,
 }: GasFeeDetailsProps) => {
   const {
-    gasPrice,
-    gasConfig,
-    fixed_min_gas_price: fixedMinGasPrice,
-    low_gas_price: lowGasPrice,
     average_gas_price: averageGasPrice,
+    fixed_min_gas_price: fixedMinGasPrice,
+    gasConfig,
+    gasPrice,
     high_gas_price: highGasPrice,
+    low_gas_price: lowGasPrice,
   } = useWatch({ control });
 
   useEffect(() => {

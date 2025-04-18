@@ -24,9 +24,9 @@ export const CollectionInfo = ({
     <AppLink href={`/nft-collections/${collectionAddress}`}>
       <Text
         _hover={{
+          "& > p": { color: "primary.light" },
           textDecoration: "underline",
           textDecorationColor: "primary.light",
-          "& > p": { color: "primary.light" },
         }}
         color="primary.main"
         mt={1}

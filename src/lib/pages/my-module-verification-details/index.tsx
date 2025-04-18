@@ -21,7 +21,7 @@ import {
 import { zMyModuleVerificationDetailsQueryParams } from "./types";
 
 const MyModuleVerificationDetailsBody = ({ taskId }: { taskId: string }) => {
-  const { data, isLoading, error } = useMoveVerifyTaskInfo(taskId, !!taskId);
+  const { data, error, isLoading } = useMoveVerifyTaskInfo(taskId, !!taskId);
   const { getMoveVerifyTask } = useMoveVerifyTaskStore();
   const verifyModuleTask = getMoveVerifyTask(taskId);
   useIsApiChain({ shouldRedirect: true });

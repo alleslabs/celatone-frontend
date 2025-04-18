@@ -12,11 +12,11 @@ interface PageDetailProps {
 }
 
 export const PageDetail = ({
-  pageSize,
-  offsetData,
   lastDataInPage,
-  totalData,
+  offsetData,
   onPageSizeChange,
+  pageSize,
+  totalData,
 }: PageDetailProps) => (
   <Flex
     align="center"

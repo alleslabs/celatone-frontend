@@ -6,9 +6,9 @@ import { CustomIcon } from "../icon";
 
 const listItemProps: CSSProperties = {
   borderRadius: "8px",
+  cursor: "pointer",
   margin: "4px 0px",
   padding: "8px",
-  cursor: "pointer",
 };
 
 interface FilterDropdownItemProps {
@@ -18,8 +18,8 @@ interface FilterDropdownItemProps {
 }
 
 export const FilterDropdownItem = ({
-  isOptionSelected,
   filterDropdownComponent,
+  isOptionSelected,
   onSelect,
 }: FilterDropdownItemProps) => (
   <ListItem

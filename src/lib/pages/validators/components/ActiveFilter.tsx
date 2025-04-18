@@ -17,10 +17,10 @@ const getOptionLabel = (label: string, count: Option<number>) =>
   label + (!isUndefined(count) ? ` (${count})` : "");
 
 export const ActiveFilter = ({
-  isActive,
-  setIsActive,
   activeCount,
   inactiveCount,
+  isActive,
+  setIsActive,
 }: ActiveFilterProps) => {
   const activeOptions = useMemo(
     () => [

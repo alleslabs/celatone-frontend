@@ -25,14 +25,14 @@ export const useExecuteModuleTx = () => {
 
   return useCallback(
     async ({
-      moduleAddress,
-      moduleName,
-      functionName,
-      typeArgs,
       args,
       estimatedFee,
-      onTxSucceed,
+      functionName,
+      moduleAddress,
+      moduleName,
       onTxFailed,
+      onTxSucceed,
+      typeArgs,
     }: ExecuteModuleStreamParams) => {
       if (!address) throw new Error("No address provided (useExecuteModuleTx)");
 
@@ -50,14 +50,14 @@ export const useExecuteModuleTx = () => {
       if (!estimatedFee) return null;
       return executeModuleTx({
         address,
-        messages,
         fee: estimatedFee,
-        signAndBroadcast,
+        messages,
+        onTxFailed,
         onTxSucceed: () => {
           trackTxSucceed();
           onTxSucceed?.();
         },
-        onTxFailed,
+        signAndBroadcast,
       });
     },
     [address, signAndBroadcast]

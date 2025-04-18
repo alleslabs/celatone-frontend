@@ -10,10 +10,10 @@ import { isNull } from "lodash";
 import type { ProposalOverviewProps } from "..";
 
 export const SummaryStatusChip = ({
-  proposalData,
-  params,
-  votesInfo,
   isLoading,
+  params,
+  proposalData,
+  votesInfo,
 }: ProposalOverviewProps) => {
   if (proposalData.status === ProposalStatus.DEPOSIT_PERIOD)
     return <StatusChip isTransparent status={ProposalStatus.DEPOSIT_FAILED} />;
@@ -25,7 +25,7 @@ export const SummaryStatusChip = ({
         params,
         proposalData.isExpedited
       );
-      const { totalRatio, yesNonRatio, noWithVetoTotalRatio } =
+      const { noWithVetoTotalRatio, totalRatio, yesNonRatio } =
         normalizeVotesInfo(votesInfo);
 
       if (!isNull(totalRatio))

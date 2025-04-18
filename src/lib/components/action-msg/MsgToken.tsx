@@ -13,9 +13,9 @@ interface MsgTokenProps {
 }
 
 export const MsgToken = ({
-  token,
-  fontWeight = 600,
   ampCopierSection,
+  fontWeight = 600,
+  token,
 }: MsgTokenProps) => (
   <Flex align="center" gap={1} role="group">
     <Text fontWeight={fontWeight} variant="body2">

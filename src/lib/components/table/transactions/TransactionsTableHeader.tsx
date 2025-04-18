@@ -5,11 +5,11 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "../tableComponents";
 
 export const TransactionsTableHeader = ({
-  templateColumns,
-  showSuccess,
-  showRelations,
-  showTimestamp,
   showAction,
+  showRelations,
+  showSuccess,
+  showTimestamp,
+  templateColumns,
 }: {
   templateColumns: GridProps["templateColumns"];
   showSuccess: boolean;

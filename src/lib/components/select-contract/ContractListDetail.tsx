@@ -26,8 +26,8 @@ const ContractListContent = ({
   contractListInfo,
   filteredContracts,
   isLoading,
-  onContractSelect,
   isReadOnly,
+  onContractSelect,
 }: ContractListContentProps) => {
   const { address } = useCurrentChain();
   const isInstantiatedByMe =
@@ -86,8 +86,8 @@ interface ContractListDetailProps {
 export const ContractListDetail = ({
   contractListInfo,
   isLoading,
-  onContractSelect,
   isReadOnly = false,
+  onContractSelect,
 }: ContractListDetailProps) => {
   const { isFullTier } = useTierConfig();
   const dataFull = useAdminsByContractAddresses(
@@ -112,8 +112,8 @@ export const ContractListDetail = ({
         .map<ContractInfo>((contractLocalInfo) => ({
           ...contractLocalInfo,
           admin: admins[contractLocalInfo.contractAddress],
-          latestUpdater: undefined,
           latestUpdated: undefined,
+          latestUpdater: undefined,
           remark: undefined,
         })),
     [admins, contractListInfo.contracts, searchKeyword, tagFilter]

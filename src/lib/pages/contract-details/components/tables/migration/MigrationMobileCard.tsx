@@ -88,9 +88,9 @@ export const MigrationMobileCard = ({
             <CodeNameCell
               code={{
                 id: history.codeId,
+                name: history.codeName,
                 // TODO: fix by handle uploader undefined
                 uploader: history.uploader ?? ("" as BechAddr),
-                name: history.codeName,
               }}
             />
           </Flex>

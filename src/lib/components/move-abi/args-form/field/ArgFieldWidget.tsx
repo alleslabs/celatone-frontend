@@ -58,9 +58,9 @@ interface ArgFieldWidgetProps {
 }
 
 export const ArgFieldWidget = ({
+  onChange,
   type,
   value,
-  onChange,
 }: ArgFieldWidgetProps) => {
   const { bech32Prefix } = useCurrentChain();
   const { user: exampleAddress } = useExampleAddresses();

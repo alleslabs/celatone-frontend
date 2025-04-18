@@ -23,9 +23,9 @@ interface CodeSelectSectionProps<T extends FieldValues> {
 
 export const CodeSelectSection = <T extends FieldValues>({
   codeId,
-  name,
   control,
   error,
+  name,
   onCodeSelect,
   setCodeHash,
   status,

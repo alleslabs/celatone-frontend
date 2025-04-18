@@ -29,7 +29,7 @@ export const BlockDetailsLite = ({ height }: { height: number }) => {
     <>
       <Breadcrumb
         items={[
-          { text: "Blocks", href: "/blocks" },
+          { href: "/blocks", text: "Blocks" },
           { text: data.height.toString() },
         ]}
       />

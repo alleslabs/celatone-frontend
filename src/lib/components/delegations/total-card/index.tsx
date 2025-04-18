@@ -17,13 +17,13 @@ export interface TotalCardProps {
 }
 
 export const TotalCard = ({
-  title,
-  message,
   address,
   bondDenoms,
-  tokens,
   isLoading,
   isViewMore,
+  message,
+  title,
+  tokens,
 }: TotalCardProps) => {
   if (isLoading)
     return (

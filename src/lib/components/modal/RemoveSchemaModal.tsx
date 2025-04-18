@@ -14,8 +14,8 @@ interface RemoveSchemaModalProps {
 }
 
 export function RemoveSchemaModal({
-  codeId,
   codeHash,
+  codeId,
   trigger,
 }: RemoveSchemaModalProps) {
   const { deleteSchema } = useSchemaStore();
@@ -27,12 +27,12 @@ export function RemoveSchemaModal({
 
     setTimeout(() => {
       toast({
-        title: `Removed JSON schema`,
-        status: "success",
         duration: 5000,
+        icon: <CustomIcon color="success.main" name="check-circle-solid" />,
         isClosable: false,
         position: "bottom-right",
-        icon: <CustomIcon color="success.main" name="check-circle-solid" />,
+        status: "success",
+        title: `Removed JSON schema`,
       });
     }, 1000);
   };

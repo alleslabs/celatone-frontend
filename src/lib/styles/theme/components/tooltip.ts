@@ -6,21 +6,21 @@ const $arrowBg = cssVar("popper-arrow-bg");
 
 export const Tooltip: ComponentStyleConfig = {
   baseStyle: {
+    [$arrowBg.variable]: "colors.primary.darker",
+    bg: "primary.darker",
     borderRadius: "8px",
     color: "text.main",
-    padding: "8px 16px",
-    mb: "4px",
-    fontWeight: 400,
     fontSize: "14px",
+    fontWeight: 400,
     maxW: "280px",
-    bg: "primary.darker",
-    [$arrowBg.variable]: "colors.primary.darker",
+    mb: "4px",
+    padding: "8px 16px",
   },
   variants: {
     "primary-light": {
-      color: "gray.900",
-      bg: "primary.light",
       [$arrowBg.variable]: "colors.primary.light",
+      bg: "primary.light",
+      color: "gray.900",
     },
   },
 };

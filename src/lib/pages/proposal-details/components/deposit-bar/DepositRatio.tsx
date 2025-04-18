@@ -13,9 +13,9 @@ interface DepositRatioProps {
 
 export const DepositRatio = ({
   current,
-  min,
-  isDepositOrVoting,
   isCompact,
+  isDepositOrVoting,
+  min,
 }: DepositRatioProps) => (
   <Flex align="center" gap={1} minW="fit-content">
     <Text variant={isCompact ? "body2" : "body1"}>

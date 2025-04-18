@@ -13,8 +13,8 @@ interface EditSchemaButtonsProps {
 }
 
 export const EditSchemaButtons = ({
-  codeId,
   codeHash,
+  codeId,
   openModal,
 }: EditSchemaButtonsProps) => {
   const handleReattach = useCallback(() => {

@@ -60,8 +60,8 @@ export const AddNetworkLink = observer(() => {
 
         if (!validated.success) {
           setError({
-            type: "invalid_config",
             message: validated.error.message,
+            type: "invalid_config",
           });
           return;
         }
@@ -79,8 +79,8 @@ export const AddNetworkLink = observer(() => {
         // eslint-disable-next-line no-console
         console.error(err);
         setError({
-          type: "invalid_config",
           message: "An unknown error occurred",
+          type: "invalid_config",
         });
       }
     };

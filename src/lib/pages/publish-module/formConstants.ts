@@ -30,21 +30,21 @@ export const PUBLISH_STATUS_DEFAULT: PublishStatus = {
 export const emptyModule: Module = {
   base64EncodedFile: "",
   decodeRes: undefined,
-  publishStatus: PUBLISH_STATUS_DEFAULT,
   file: undefined,
+  publishStatus: PUBLISH_STATUS_DEFAULT,
 };
 
 export const POLICIES = [
   {
-    value: UpgradePolicy.COMPATIBLE,
+    condition: true,
     description:
       "This address can publish these modules again but need to maintain several properties.",
-    condition: true,
+    value: UpgradePolicy.COMPATIBLE,
   },
   {
-    value: UpgradePolicy.IMMUTABLE,
-    description: "You cannot publish these modules again with this address",
     condition: false,
+    description: "You cannot publish these modules again with this address",
+    value: UpgradePolicy.IMMUTABLE,
   },
 ];
 

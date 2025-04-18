@@ -19,25 +19,25 @@ interface ProposedBlocksTableProps {
 }
 
 export const ProposedBlocksTable = ({
-  validatorAddress,
   onViewMore,
+  validatorAddress,
 }: ProposedBlocksTableProps) => {
   const isMobile = useMobile();
   const isMoibleOverview = isMobile && !!onViewMore;
 
   const {
-    pagesQuantity,
-    setTotalData,
     currentPage,
-    setCurrentPage,
-    pageSize,
-    setPageSize,
     offset,
+    pageSize,
+    pagesQuantity,
+    setCurrentPage,
+    setPageSize,
+    setTotalData,
   } = usePaginator({
     initialState: {
-      pageSize: 10,
       currentPage: 1,
       isDisabled: false,
+      pageSize: 10,
     },
   });
 

@@ -39,18 +39,18 @@ const SavedCodes = observer(() => {
       query: { codeId },
     });
   // TODO refactor to useState
-  const { watch, setValue } = useForm<CodeFilterState>({
+  const { setValue, watch } = useForm<CodeFilterState>({
     defaultValues: {
-      permissionValue: "all",
       keyword: "",
+      permissionValue: "all",
     },
   });
   const { keyword, permissionValue } = watch();
 
   const {
-    savedCodesCount,
-    savedCodes: saved,
     isSavedCodesLoading,
+    savedCodes: saved,
+    savedCodesCount,
   } = useMyCodesData(keyword, permissionValue);
 
   useEffect(() => {
