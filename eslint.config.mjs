@@ -85,6 +85,12 @@ export default defineConfig([
       perfectionist,
     },
     rules: {
+      "perfectionist/sort-exports": [
+        "error",
+        {
+          order: "asc",
+        },
+      ],
       "perfectionist/sort-imports": [
         "error",
         {
