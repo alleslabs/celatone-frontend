@@ -1,3 +1,5 @@
+@import url("@initia/react-app-shell/dist/index.css");
+
 /* Global Styling here */
 div[data-floating-ui-portal] {
   position: relative;
