@@ -41,6 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1301](https://github.com/alleslabs/celatone-frontend/pull/1301) Upgrade Nextjs 14 to 15
+- [#1294](https://github.com/alleslabs/celatone-frontend/pull/1294) Upgrade React & ESLint version
+
 ### Bug fixes
 
 ## v1.11.0
@@ -52,12 +55,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
-- [#1301](https://github.com/alleslabs/celatone-frontend/pull/1301) Upgrade Nextjs 14 to 15
 - [#1300](https://github.com/alleslabs/celatone-frontend/pull/1300) Apply Initia's constants from initia react widget to username and provider
 - [#1302](https://github.com/alleslabs/celatone-frontend/pull/1302) Convert more text to sentence case
 - [#1298](https://github.com/alleslabs/celatone-frontend/pull/1298) Fix tooltip click capture on TokenCard
 - [#1296](https://github.com/alleslabs/celatone-frontend/pull/1296) Convert title to sentence case
-- [#1294](https://github.com/alleslabs/celatone-frontend/pull/1294) Upgrade React & ESLint version
 - [#1293](https://github.com/alleslabs/celatone-frontend/pull/1293) Improve useOpenTxTab and useOpenBlockTab
 - [#1290](https://github.com/alleslabs/celatone-frontend/pull/1290) Change minor ui
 - [#1291](https://github.com/alleslabs/celatone-frontend/pull/1291) Exclude instantiate permission from upload access if using Initia
