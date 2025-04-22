@@ -18,17 +18,17 @@ import Link from "next/link";
 import { CustomIcon } from "./icon";
 
 export interface SidebarMetadata {
+  description: React.ReactElement;
   page: string;
   title: string;
-  description: React.ReactElement;
+  toPage?: boolean;
   toPagePath?: string;
   toPageTitle?: string;
-  toPage?: boolean;
 }
 
 interface StickySidebarProps extends BoxProps {
-  metadata: SidebarMetadata;
   hasForumAlert?: boolean;
+  metadata: SidebarMetadata;
 }
 
 interface ToPageProps {

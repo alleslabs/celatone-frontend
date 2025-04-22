@@ -14,13 +14,13 @@ import { useCallback, useEffect, useState } from "react";
 import { ActionModal } from "../ActionModal";
 
 interface CodeDetailsTemplateModalProps {
-  title: string;
-  helperText?: string;
-  mainBtnTitle: string;
-  isNewCode: boolean;
   codeInfo: CodeInfo;
-  triggerElement: JSX.Element;
+  helperText?: string;
   icon?: IconKeys;
+  isNewCode: boolean;
+  mainBtnTitle: string;
+  title: string;
+  triggerElement: JSX.Element;
 }
 
 export const CodeDetailsTemplateModal = ({

@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import { Flex, Text } from "@chakra-ui/react";
 
 interface PoolInfoTextProps {
-  title: string;
   children: ReactNode;
+  title: string;
 }
 
 export const PoolInfoText = ({ children, title }: PoolInfoTextProps) => (

@@ -8,9 +8,9 @@ import {
 } from "lib/utils";
 
 interface SingleBondRadioCardProps {
-  value: string;
-  token: Option<TokenWithValue>;
   isLoading: boolean;
+  token: Option<TokenWithValue>;
+  value: string;
 }
 
 const SingleBondRadioCardBody = ({

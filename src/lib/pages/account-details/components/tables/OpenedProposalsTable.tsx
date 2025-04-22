@@ -14,10 +14,10 @@ import AccountSectionWrapper from "../AccountSectionWrapper";
 
 interface OpenedProposalsTableProps {
   address: BechAddr;
+  onViewMore?: () => void;
+  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
-  refetchCount: () => void;
-  onViewMore?: () => void;
 }
 
 export const OpenedProposalsTable = ({

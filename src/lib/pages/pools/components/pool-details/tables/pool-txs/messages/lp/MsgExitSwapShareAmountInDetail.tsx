@@ -10,13 +10,13 @@ import { PoolInfoText } from "../components/PoolInfoText";
 import { PoolAssetsGrid, PoolLPCard } from "./components";
 
 interface MsgExitSwapShareAmountInDetailProps {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: MsgExitSwapShareAmountInDetails;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: MsgExitSwapShareAmountInDetails;
+  msgIndex: number;
+  txHash: string;
 }
 
 export const MsgExitSwapShareAmountInDetail = ({

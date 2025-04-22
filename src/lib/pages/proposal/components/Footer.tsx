@@ -2,9 +2,9 @@ import { Button, Flex, Grid, GridItem, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 interface FooterProps {
-  onSubmit: () => void;
   isDisabled: boolean;
   isLoading: boolean;
+  onSubmit: () => void;
 }
 
 export const Footer = ({

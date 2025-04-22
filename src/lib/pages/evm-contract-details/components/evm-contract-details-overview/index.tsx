@@ -1,10 +1,10 @@
 import type {
   BechAddr,
   BechAddr20,
+  EvmVerifyInfo,
   HexAddr20,
   Nullish,
   Option,
-  EvmVerifyInfo,
 } from "lib/types";
 
 import { Stack } from "@chakra-ui/react";
@@ -22,17 +22,17 @@ import { OverviewVerifiedProxyTargetCmds } from "./OverviewVerifiedProxyTargetCm
 interface EvmContractDetailsOverviewProps {
   contractAddressBech: BechAddr20;
   contractAddressHex: HexAddr20;
-  hash: Option<string>;
-  evmHash: Nullish<string>;
-  sender: Option<BechAddr>;
   created: Option<Date>;
+  evmHash: Nullish<string>;
+  evmVerifyInfo: Option<EvmVerifyInfo>;
+  hash: Option<string>;
   isContractInfoLoading: boolean;
   onViewMoreAssets: () => void;
   onViewMoreTxs: () => void;
-  tab: TxsTabIndex;
-  setTab: (tab: TxsTabIndex) => void;
-  evmVerifyInfo: Option<EvmVerifyInfo>;
   proxyTargetEvmVerifyInfo: Option<EvmVerifyInfo>;
+  sender: Option<BechAddr>;
+  setTab: (tab: TxsTabIndex) => void;
+  tab: TxsTabIndex;
 }
 
 export const EvmContractDetailsOverview = ({

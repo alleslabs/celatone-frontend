@@ -5,11 +5,11 @@ import { TooltipInfo } from "lib/components/Tooltip";
 import { formatRatio } from "lib/utils";
 
 interface AnswerProps {
+  abstain: number;
   isVoteWeighted: boolean;
-  yes: number;
   no: number;
   noWithVeto: number;
-  abstain: number;
+  yes: number;
 }
 
 const resolveVote = ({

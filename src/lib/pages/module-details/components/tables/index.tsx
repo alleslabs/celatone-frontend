@@ -18,20 +18,20 @@ import { ModuleRelatedProposalsTable } from "./ModuleRelatedProposalsTable";
 import { ModuleTxsTable } from "./ModuleTxsTable";
 
 export enum ModuleTablesTabIndex {
-  Transactions = "transactions",
   PublishedEvents = "published-events",
   RelatedProposals = "related-proposals",
+  Transactions = "transactions",
 }
 
 interface ModuleTablesProps {
-  vmAddress: HexAddr;
-  moduleName: string;
-  txsCount: Option<number>;
   historiesCount: Option<number>;
-  relatedProposalsCount: Option<number>;
-  tab: ModuleTablesTabIndex;
-  setTab: (nextTab: ModuleTablesTabIndex) => void;
+  moduleName: string;
   onViewMore?: (nextTab: ModuleTablesTabIndex) => void;
+  relatedProposalsCount: Option<number>;
+  setTab: (nextTab: ModuleTablesTabIndex) => void;
+  tab: ModuleTablesTabIndex;
+  txsCount: Option<number>;
+  vmAddress: HexAddr;
 }
 
 const tableHeaderId = "moduleDetailsTableHeader";

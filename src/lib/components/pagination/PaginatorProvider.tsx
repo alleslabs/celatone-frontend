@@ -15,23 +15,23 @@ import type { IconKeys } from "../icon";
 import { INITIAL_VALUES } from "./paginationData";
 
 export type PaginatorContextValues = {
-  state: {
-    currentPage: number;
-    pagesQuantity?: number;
-    outerLimit: number;
-    activeStyles: ButtonProps;
-    hoverIconRight?: IconKeys;
-    hoverIconLeft?: IconKeys;
-    separatorStyles: ButtonProps;
-    normalStyles: ButtonProps;
-    innerLimit: number;
-    separatorIcon?: IconKeys;
-    isDisabled: boolean;
-  };
   actions: {
+    changePage: (page: number) => void;
     setCurrentPage: Dispatch<SetStateAction<number>>;
     setIsDisabled: Dispatch<SetStateAction<boolean>>;
-    changePage: (page: number) => void;
+  };
+  state: {
+    activeStyles: ButtonProps;
+    currentPage: number;
+    hoverIconLeft?: IconKeys;
+    hoverIconRight?: IconKeys;
+    innerLimit: number;
+    isDisabled: boolean;
+    normalStyles: ButtonProps;
+    outerLimit: number;
+    pagesQuantity?: number;
+    separatorIcon?: IconKeys;
+    separatorStyles: ButtonProps;
   };
 };
 
@@ -57,20 +57,20 @@ export const PaginatorContext = createContext<PaginatorContextValues>({
 });
 
 type PaginatorProviderProps = {
-  children?: React.ReactNode;
-
-  pagesQuantity?: number;
-  normalStyles: ButtonProps;
   activeStyles: ButtonProps;
-  hoverIconRight?: IconKeys;
-  separatorStyles: ButtonProps;
-  hoverIconLeft?: IconKeys;
-  innerLimit: number;
+
+  children?: React.ReactNode;
   currentPage: number;
-  outerLimit: number;
-  separatorIcon?: IconKeys;
-  onPageChange: (page: number) => void;
+  hoverIconLeft?: IconKeys;
+  hoverIconRight?: IconKeys;
+  innerLimit: number;
   isDisabled: boolean;
+  normalStyles: ButtonProps;
+  onPageChange: (page: number) => void;
+  outerLimit: number;
+  pagesQuantity?: number;
+  separatorIcon?: IconKeys;
+  separatorStyles: ButtonProps;
 };
 
 export const PaginatorProvider: FC<PaginatorProviderProps> = ({

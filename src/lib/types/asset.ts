@@ -26,11 +26,11 @@ export type AssetInfo = z.infer<typeof zAssetInfo>;
 export type AssetInfos = Record<string, AssetInfo>;
 
 interface BaseTokenWithValue {
-  denom: string;
   amount: U<Token<Big>>;
-  symbol: Option<string>;
+  denom: string;
   precision: Option<number>;
   price: Option<USD<Big>>;
+  symbol: Option<string>;
   value: Option<USD<Big>>;
 }
 
@@ -48,9 +48,9 @@ export type TokenWithValue = BaseTokenWithValue &
   );
 
 export interface AssetOptionValue {
+  formatted?: string;
   id: string;
   logo: string;
-  formatted?: string;
   price?: string;
 }
 

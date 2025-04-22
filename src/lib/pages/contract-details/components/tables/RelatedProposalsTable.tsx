@@ -9,9 +9,9 @@ import { useRelatedProposalsByContractAddress } from "lib/services/proposal";
 
 interface RelatedProposalsTableProps {
   contractAddress: BechAddr32;
+  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
-  refetchCount: () => void;
 }
 
 export const RelatedProposalsTable = ({

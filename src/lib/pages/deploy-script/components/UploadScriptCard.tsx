@@ -30,8 +30,8 @@ export const UploadScriptCard = ({
   setFile,
 }: UploadScriptCardProps) => {
   const [tempFile, setTempFile] = useState<{
-    file: Option<File>;
     base64: string;
+    file: Option<File>;
   }>(DEFAULT_TEMP_FILE);
   const [decodeError, setDecodeError] = useState("");
 

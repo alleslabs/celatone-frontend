@@ -13,11 +13,11 @@ import { SelectFunctionSection } from "./SelectFunctionSection";
 import { SelectModuleSection } from "./SelectModuleSection";
 
 interface ModuleSelectBodyProps {
-  selectedAddress: SelectedAddress;
-  modules: IndexedModule[];
-  mode: DisplayMode;
-  handleModuleSelect: ModuleSelectFunction;
   closeModal: () => void;
+  handleModuleSelect: ModuleSelectFunction;
+  mode: DisplayMode;
+  modules: IndexedModule[];
+  selectedAddress: SelectedAddress;
 }
 
 export const DrawerBodyDesktop = ({

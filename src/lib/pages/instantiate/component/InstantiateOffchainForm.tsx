@@ -12,13 +12,13 @@ import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 
 interface InstantiateOffChainFormProps {
-  title?: string;
-  subtitle?: string;
-  cta?: boolean;
+  codeId: number;
   contractAddress: BechAddr32;
   contractLabel: string;
-  codeId: number;
+  cta?: boolean;
   instantiator: BechAddr20;
+  subtitle?: string;
+  title?: string;
 }
 
 export const InstantiateOffChainForm = observer(

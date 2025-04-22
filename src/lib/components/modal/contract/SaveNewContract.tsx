@@ -23,15 +23,15 @@ import { useForm } from "react-hook-form";
 import { ActionModal } from "../ActionModal";
 
 interface SaveNewContractDetail extends OffchainDetail {
-  contractAddress: string;
-  label: string;
   codeId: number;
+  contractAddress: string;
   instantiator: string;
+  label: string;
 }
 
 interface SaveNewContractModalProps {
-  list: LVPair;
   buttonProps: ButtonProps;
+  list: LVPair;
 }
 export function SaveNewContractModal({
   buttonProps,

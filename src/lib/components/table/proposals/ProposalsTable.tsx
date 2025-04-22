@@ -9,9 +9,9 @@ import { ProposalsTableMobileCard } from "./ProposalsTableMobileCard";
 import { ProposalsTableRow } from "./ProposalsTableRow";
 
 interface ProposalsTableProps {
-  proposals: Option<Proposal[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
+  proposals: Option<Proposal[]>;
 }
 
 export const ProposalsTable = ({

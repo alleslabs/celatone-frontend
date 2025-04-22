@@ -15,11 +15,11 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface UpdateAdminTxParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   fee: StdFee;
-  signAndBroadcast: SignAndBroadcast;
-  onTxSucceed?: () => void;
+  messages: EncodeObject[];
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const updateAdminTx = ({

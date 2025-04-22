@@ -7,12 +7,12 @@ import { dateFromNow, parseJsonStr } from "lib/utils";
 import { memo, useEffect, useState } from "react";
 
 interface SchemaQueryResponseProps {
-  res: string;
-  resTab: Option<OutputMessageTabs>;
-  msgSchema: SchemaInfo;
-  resSchema: SchemaInfo;
-  timestamp: Option<Date>;
   isLoading: boolean;
+  msgSchema: SchemaInfo;
+  res: string;
+  resSchema: SchemaInfo;
+  resTab: Option<OutputMessageTabs>;
+  timestamp: Option<Date>;
 }
 
 const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {

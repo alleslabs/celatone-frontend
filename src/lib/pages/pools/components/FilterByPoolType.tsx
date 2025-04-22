@@ -12,16 +12,16 @@ import {
 import { PoolType } from "lib/types";
 
 interface PoolTypeOption {
+  disabled: boolean;
+  image?: JSX.Element;
   label: string;
   value: PoolTypeFilter;
-  image?: JSX.Element;
-  disabled: boolean;
 }
 
 interface FilterByPoolTypeProps {
-  setPoolTypeValue: (newVal: PoolTypeFilter) => void;
   initialSelected: string;
   labelBgColor?: string;
+  setPoolTypeValue: (newVal: PoolTypeFilter) => void;
 }
 
 const options: PoolTypeOption[] = [

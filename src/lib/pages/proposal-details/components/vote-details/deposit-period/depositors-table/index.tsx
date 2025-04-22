@@ -10,8 +10,8 @@ import { DepositorsTableRow } from "./DepositorsTableRow";
 interface DepositorsTableProps {
   depositors: ProposalDeposit[];
   isDepositsLoading: boolean;
-  showTransaction: boolean;
   isPruned: boolean;
+  showTransaction: boolean;
 }
 
 export const DepositorsTable = ({

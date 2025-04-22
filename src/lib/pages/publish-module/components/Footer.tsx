@@ -2,10 +2,10 @@ import { Box, Button, Flex, Grid, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 interface FooterProps {
-  publishModule: () => void;
   disabled: boolean;
-  isLoading: boolean;
   fieldAmount: number;
+  isLoading: boolean;
+  publishModule: () => void;
 }
 
 export const Footer = ({

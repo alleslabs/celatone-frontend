@@ -63,9 +63,9 @@ const tableHeaderId = "accountDetailsTab";
 
 interface AccountDetailsBodyProps {
   accountAddressParam: Addr;
-  tabParam: TabIndex;
   resourceSelectedAccountParam: Option<string>;
   resourceSelectedGroupNameParam: Option<string>;
+  tabParam: TabIndex;
 }
 
 const getAddressOnPath = (hexAddress: HexAddr, accountAddress: BechAddr) =>

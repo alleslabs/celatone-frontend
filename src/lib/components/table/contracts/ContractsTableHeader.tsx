@@ -13,10 +13,10 @@ export const ContractsTableHeader = ({
   templateColumns,
   withCta,
 }: {
-  templateColumns: GridProps["templateColumns"];
-  showTag: boolean;
-  showLastUpdate: boolean;
   isReadOnly: boolean;
+  showLastUpdate: boolean;
+  showTag: boolean;
+  templateColumns: GridProps["templateColumns"];
   withCta?: CtaInfo;
 }) => (
   <Grid minW="min-content" templateColumns={templateColumns}>

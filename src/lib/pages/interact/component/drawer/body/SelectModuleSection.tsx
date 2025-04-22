@@ -13,17 +13,17 @@ import type { SelectedAddress } from "../types";
 import { NoImageEmptyState } from "../../common";
 
 interface SelectModuleSectionProps {
-  selectedAddress: SelectedAddress;
   modules: IndexedModule[];
-  setStep?: (step: ModuleInteractionMobileStep) => void;
+  selectedAddress: SelectedAddress;
   selectedModule: Option<IndexedModule>;
   setSelectedModule: (module: IndexedModule) => void;
+  setStep?: (step: ModuleInteractionMobileStep) => void;
 }
 
 interface RenderModulesProps {
-  selectedAddress: SelectedAddress;
-  modulesLength: number;
   filtered: IndexedModule[];
+  modulesLength: number;
+  selectedAddress: SelectedAddress;
   selectedModule: Option<IndexedModule>;
   setSelectedModule: (module: IndexedModule) => void;
   setStep?: (step: ModuleInteractionMobileStep) => void;

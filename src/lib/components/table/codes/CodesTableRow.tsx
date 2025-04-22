@@ -14,11 +14,11 @@ import { CodeNameCell } from "./CodeNameCell";
 
 interface CodesTableRowProps {
   codeInfo: CodeInfo;
-  templateColumns: string;
-  onRowSelect: (codeId: number) => void;
-  isReadOnly: boolean;
-  showCw2andContracts: boolean;
   disablePermission: boolean;
+  isReadOnly: boolean;
+  onRowSelect: (codeId: number) => void;
+  showCw2andContracts: boolean;
+  templateColumns: string;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 

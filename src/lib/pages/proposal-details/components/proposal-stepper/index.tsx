@@ -8,9 +8,9 @@ import { StepIcon } from "./StepIcon";
 import { getProgressBadgeProps } from "./utils";
 
 export interface ProposalStepperProps {
-  step: number;
-  proposalData: ProposalData;
   isOverview?: boolean;
+  proposalData: ProposalData;
+  step: number;
 }
 
 export const ProposalStepper = ({

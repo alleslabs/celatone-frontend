@@ -3,12 +3,12 @@ import { CustomIcon } from "lib/components/icon";
 import plur from "plur";
 
 interface StateLoaderProps {
-  numStatesToLoad: number;
-  isLoading: boolean;
   isCompleted: boolean;
-  totalData: number;
-  onLoadMore: () => void;
+  isLoading: boolean;
+  numStatesToLoad: number;
   onDownload: () => void;
+  onLoadMore: () => void;
+  totalData: number;
 }
 export const StateLoader = ({
   isCompleted,

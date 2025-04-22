@@ -12,9 +12,9 @@ import { useRouter } from "next/router";
 // TODO: refactor props to pass param in txResultRendering instead of receipt
 interface ButtonSectionProps {
   actionVariant?: ActionVariant;
+  errorMsg?: string;
   onClose?: () => void;
   receipts: TxReceipt[];
-  errorMsg?: string;
 }
 
 export const ButtonSection = ({
@@ -49,24 +49,24 @@ export const ButtonSection = ({
   };
 
   switch (actionVariant) {
-    case "sending":
-      return null;
-    case "upload-migrate":
+    case "failed":
       return (
-        <Button
-          variant="primary"
-          onClick={() => {
-            const codeId = receipts.find((r) => r.title === "Code ID")?.value;
-            navigate({
-              pathname: "/migrate",
-              query: { codeId, contract: router.query.contract },
-            });
-            onClose?.();
-          }}
-        >
-          Proceed to Migrate
-          <CustomIcon boxSize={3} name="migrate" />
-        </Button>
+        <Flex justify="space-between" w="full">
+          <CopyButton
+            amptrackSection="tx_error_log"
+            buttonText="Copy error log"
+            size="md"
+            value={errorMsg}
+          />
+          <Flex gap={2}>
+            <Button variant="outline-primary" onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={openTxExplorer}>
+              See transaction
+            </Button>
+          </Flex>
+        </Flex>
       );
     case "migrate":
     case "update-admin":
@@ -85,13 +85,6 @@ export const ButtonSection = ({
             <CustomIcon boxSize={3} name="chevron-right" />
           </Button>
         </>
-      );
-    case "rejected":
-    case "resend":
-      return (
-        <Button variant="outline-primary" w="120px" onClick={onClose}>
-          Close
-        </Button>
       );
     case "proposal":
       return (
@@ -118,24 +111,31 @@ export const ButtonSection = ({
           </Button>
         </>
       );
-    case "failed":
+    case "rejected":
+    case "resend":
       return (
-        <Flex justify="space-between" w="full">
-          <CopyButton
-            amptrackSection="tx_error_log"
-            buttonText="Copy error log"
-            size="md"
-            value={errorMsg}
-          />
-          <Flex gap={2}>
-            <Button variant="outline-primary" onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={openTxExplorer}>
-              See transaction
-            </Button>
-          </Flex>
-        </Flex>
+        <Button variant="outline-primary" w="120px" onClick={onClose}>
+          Close
+        </Button>
+      );
+    case "sending":
+      return null;
+    case "upload-migrate":
+      return (
+        <Button
+          variant="primary"
+          onClick={() => {
+            const codeId = receipts.find((r) => r.title === "Code ID")?.value;
+            navigate({
+              pathname: "/migrate",
+              query: { codeId, contract: router.query.contract },
+            });
+            onClose?.();
+          }}
+        >
+          Proceed to Migrate
+          <CustomIcon boxSize={3} name="migrate" />
+        </Button>
       );
     default:
       return (

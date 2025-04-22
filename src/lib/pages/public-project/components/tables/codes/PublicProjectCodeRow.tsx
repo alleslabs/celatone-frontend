@@ -16,8 +16,8 @@ import { getCw2Info, getWasmVerifyStatus } from "lib/utils";
 import type { PublicCodeInfo } from ".";
 
 interface CodeTableRowProps {
-  templateColumns: string;
   publicCodeInfo: PublicCodeInfo;
+  templateColumns: string;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 

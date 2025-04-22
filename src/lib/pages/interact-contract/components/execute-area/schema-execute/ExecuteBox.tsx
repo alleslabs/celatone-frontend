@@ -65,10 +65,10 @@ const WasmCodeSnippet = dynamic(
 );
 
 interface ExecuteBoxProps {
-  msgSchema: SchemaInfo;
   contractAddress: BechAddr32;
-  initialMsg: JsonDataType;
   initialFunds: Coin[];
+  initialMsg: JsonDataType;
+  msgSchema: SchemaInfo;
   opened: boolean;
 }
 
@@ -132,10 +132,10 @@ export const ExecuteBox = ({
         isValidForm
     );
     switch (attachFundsOption) {
-      case AttachFundsType.ATTACH_FUNDS_SELECT:
-        return generalCheck && isValidAssetsSelect;
       case AttachFundsType.ATTACH_FUNDS_JSON:
         return generalCheck && isValidAssetsJsonStr;
+      case AttachFundsType.ATTACH_FUNDS_SELECT:
+        return generalCheck && isValidAssetsSelect;
       default:
         return generalCheck;
     }

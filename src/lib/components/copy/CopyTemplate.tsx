@@ -6,11 +6,11 @@ import { useEffect } from "react";
 import { Tooltip } from "../Tooltip";
 
 interface CopyTemplateProps {
-  value: string;
   copyLabel?: string;
-  triggerElement: JSX.Element;
   isDisabled?: boolean;
   ml?: BoxProps["ml"];
+  triggerElement: JSX.Element;
+  value: string;
   w?: BoxProps["width"];
 }
 

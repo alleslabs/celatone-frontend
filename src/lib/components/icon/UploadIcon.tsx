@@ -4,7 +4,7 @@ import { CustomIcon } from "./CustomIcon";
 import { SvgIcon } from "./SvgIcon";
 
 interface UploadIconProps {
-  variant?: "primary" | "muted";
+  variant?: "muted" | "primary";
 }
 
 const getVariantStyle = (variant: UploadIconProps["variant"]) => {

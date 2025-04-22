@@ -8,8 +8,8 @@ export const SavedAccountsTableHeader = ({
   hasHexAddr,
   templateColumns,
 }: {
-  templateColumns: GridProps["templateColumns"];
   hasHexAddr: boolean;
+  templateColumns: GridProps["templateColumns"];
 }) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Account address</TableHeader>

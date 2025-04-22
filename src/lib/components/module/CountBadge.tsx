@@ -4,7 +4,7 @@ import { Badge } from "@chakra-ui/react";
 
 interface CountBadgeProps {
   count: Option<number>;
-  variant: "view" | "execute" | "common";
+  variant: "common" | "execute" | "view";
 }
 export const CountBadge = ({ count, variant }: CountBadgeProps) => (
   <Badge

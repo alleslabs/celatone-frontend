@@ -70,7 +70,7 @@ export const useAccountType = (
   address: Option<BechAddr>,
   options: Pick<
     UseQueryOptions<AccountType, Error>,
-    "enabled" | "onSuccess" | "onError"
+    "enabled" | "onError" | "onSuccess"
   > = {}
 ): UseQueryResult<AccountType> => {
   const { isFullTier } = useTierConfig();

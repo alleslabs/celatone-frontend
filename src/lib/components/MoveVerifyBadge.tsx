@@ -4,8 +4,8 @@ import { MoveVerifyStatus } from "lib/types";
 import { CustomIcon } from "./icon";
 
 interface MoveVerifyBadgeProps {
-  status: MoveVerifyStatus;
   hasTooltip?: boolean;
+  status: MoveVerifyStatus;
 }
 
 const MoveVerifyBadgeIcon = ({

@@ -8,10 +8,10 @@ import type { SourceTreeNode } from "./types";
 import { EditorFileBody } from "./EditorFileBody";
 
 export interface EditorSidebarProps {
-  sourceTreeNode: SourceTreeNode[];
-  selectedFile: Nullable<SourceTreeNode>;
   initialFilePath: string;
   onClick: (node: SourceTreeNode) => void;
+  selectedFile: Nullable<SourceTreeNode>;
+  sourceTreeNode: SourceTreeNode[];
 }
 
 const EditorSidebarSelectedMark = () => (

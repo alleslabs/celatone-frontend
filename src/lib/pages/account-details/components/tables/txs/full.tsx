@@ -22,8 +22,8 @@ const getEmptyState = ({
   selectedFilters,
   transactions,
 }: {
-  transactions: Option<Transaction[]>;
   selectedFilters: string[];
+  transactions: Option<Transaction[]>;
 }) => {
   if (!transactions) {
     return (

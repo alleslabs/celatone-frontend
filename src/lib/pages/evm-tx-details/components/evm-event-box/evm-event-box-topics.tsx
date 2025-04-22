@@ -7,8 +7,8 @@ import { EvmEventBoxTabs } from "../../types";
 import { EvmEventBoxDecoded } from "./evm-event-box-decoded";
 
 interface EvmEventBoxTopicProps {
-  topic: string;
   index: number;
+  topic: string;
 }
 
 const EvmEventBoxTopicHex = ({ index, topic }: EvmEventBoxTopicProps) => (
@@ -23,9 +23,9 @@ const EvmEventBoxTopicHex = ({ index, topic }: EvmEventBoxTopicProps) => (
 );
 
 interface EvmEventBoxTopicsProps {
+  parsedLog: Option<LogDescription>;
   tab: EvmEventBoxTabs;
   topics: string[];
-  parsedLog: Option<LogDescription>;
 }
 
 export const EvmEventBoxTopics = ({

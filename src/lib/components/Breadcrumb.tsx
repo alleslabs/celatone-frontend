@@ -11,8 +11,8 @@ import { AppLink } from "./AppLink";
 import { CustomIcon } from "./icon";
 
 type BreadcrumbItemProps = {
-  text: Option<string>;
   href?: string;
+  text: Option<string>;
 };
 
 type BreadcrumbProps = {

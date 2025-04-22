@@ -36,11 +36,11 @@ import { ContractInteractionTabs } from "lib/types";
 import { getWasmVerifyStatus, truncate } from "lib/utils";
 
 interface ContractTopProps {
+  contract: Contract;
   contractAddress: BechAddr32;
+  contractLocalInfo: Option<ContractLocalInfo>;
   projectInfo: Nullable<ProjectInfo>;
   publicInfo: Nullable<PublicContractInfo>;
-  contract: Contract;
-  contractLocalInfo: Option<ContractLocalInfo>;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 

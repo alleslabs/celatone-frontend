@@ -8,9 +8,9 @@ import { useCallback } from "react";
 import { useChainConfigs } from "./useChainConfigs";
 
 export interface NavigationArgs {
+  options?: Parameters<Pick<Router, "push">["push"]>[2];
   pathname: string;
   query?: ParsedUrlQueryInput;
-  options?: Parameters<Pick<Router, "push">["push"]>[2];
   replace?: boolean;
 }
 

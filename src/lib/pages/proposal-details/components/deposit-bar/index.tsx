@@ -8,9 +8,9 @@ import { ProgressBar } from "./ProgressBar";
 
 interface DepositBarProps {
   deposit: ProposalData["totalDeposit"];
-  minDeposit: TokenWithValue[];
-  isDepositOrVoting: boolean;
   isCompact: boolean;
+  isDepositOrVoting: boolean;
+  minDeposit: TokenWithValue[];
 }
 
 export const DepositBar = ({

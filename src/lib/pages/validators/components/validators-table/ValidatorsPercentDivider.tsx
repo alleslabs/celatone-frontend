@@ -2,8 +2,8 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Tooltip } from "lib/components/Tooltip";
 
 interface ValidatorsPercentDividerProps {
-  rank: number;
   label: string;
+  rank: number;
 }
 
 export const ValidatorsPercentDivider = ({

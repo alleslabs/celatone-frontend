@@ -5,11 +5,11 @@ import { TableTitle } from "lib/components/table";
 
 interface AccountSectionWrapperProps {
   children: ReactNode;
+  hasHelperText?: boolean;
+  helperText?: string;
+  showCount?: boolean;
   title: string;
   totalData?: Option<number>;
-  helperText?: string;
-  hasHelperText?: boolean;
-  showCount?: boolean;
 }
 const AccountSectionWrapper = ({
   children,

@@ -13,12 +13,12 @@ import { ContractsTableRow } from "./ContractsTableRow";
 
 interface ContractsTableProps {
   contracts: Option<ContractInfo[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
-  onRowSelect: (contract: BechAddr32) => void;
-  showTag?: boolean;
-  showLastUpdate?: boolean;
+  isLoading: boolean;
   isReadOnly?: boolean;
+  onRowSelect: (contract: BechAddr32) => void;
+  showLastUpdate?: boolean;
+  showTag?: boolean;
   withCta?: CtaInfo;
 }
 

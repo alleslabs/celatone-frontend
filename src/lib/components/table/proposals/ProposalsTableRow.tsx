@@ -15,9 +15,9 @@ import { StatusChip } from "./StatusChip";
 import { VotingEndTime } from "./VotingEndTime";
 
 export interface ProposalsTableRowProps {
+  boxShadow: DividerProps["boxShadow"];
   proposal: Proposal;
   templateColumns: GridProps["templateColumns"];
-  boxShadow: DividerProps["boxShadow"];
 }
 
 export const ProposalsTableRow = ({

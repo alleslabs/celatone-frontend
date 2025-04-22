@@ -7,8 +7,8 @@ import { SelectInput } from "lib/components/forms";
 import { ValidatorOrder } from "../types";
 
 interface OrderOptionValue {
-  order: ValidatorOrder;
   isDesc: boolean;
+  order: ValidatorOrder;
 }
 
 type OrderOption = SelectInputOption<OrderOptionValue>;
@@ -49,11 +49,11 @@ const ORDER_OPTIONS: OrderOption[] = [
 ];
 
 interface OrderSelectProps {
-  order: ValidatorOrder;
-  setOrder: (value: ValidatorOrder) => void;
-  isDesc: boolean;
-  setIsDesc: (value: boolean) => void;
   allowUptime: boolean;
+  isDesc: boolean;
+  order: ValidatorOrder;
+  setIsDesc: (value: boolean) => void;
+  setOrder: (value: ValidatorOrder) => void;
 }
 
 export const OrderSelect = ({

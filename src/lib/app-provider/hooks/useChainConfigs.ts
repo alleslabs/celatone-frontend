@@ -19,11 +19,11 @@ const defaultConfigs = {
 
 export const useChainConfigs = (): {
   chainConfigs: { [chainId: string]: ChainConfig };
-  registryChains: Chain[];
-  registryAssets: AssetList[];
-  supportedChainIds: string[];
   isChainIdExist: (chainId: string) => boolean;
   isLoading: boolean;
+  registryAssets: AssetList[];
+  registryChains: Chain[];
+  supportedChainIds: string[];
 } => {
   const { data: apiChainConfigs, isFetching } = useApiChainConfigs(
     SUPPORTED_NETWORK_TYPES,

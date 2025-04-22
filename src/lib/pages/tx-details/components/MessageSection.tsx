@@ -15,8 +15,8 @@ import { EvmRelatedTxSection } from "./evm-related-tx-section";
 import { TxMessage } from "./tx-message";
 
 interface MessageSectionProps {
-  txData: TxData;
   relatedEvmTxHash: Nullish<string>;
+  txData: TxData;
 }
 
 export const MessageSection = ({

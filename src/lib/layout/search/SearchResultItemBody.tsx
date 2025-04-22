@@ -4,8 +4,8 @@ import { Flex, Text } from "@chakra-ui/react";
 import { PrimaryNameMark } from "lib/components/PrimaryNameMark";
 
 interface SearchResultItemBodyProps {
-  result: SearchResult;
   isAccountAddress: boolean;
+  result: SearchResult;
 }
 
 export const SearchResultItemBody = ({

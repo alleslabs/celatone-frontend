@@ -10,10 +10,10 @@ import { useTxsByPoolId } from "lib/services/tx";
 import { PoolTxsTable } from "./PoolTxsTable";
 
 interface PoolRelatedTxsTableProps {
-  pool: PoolData;
   countTxs: number;
-  type: PoolTxFilter;
+  pool: PoolData;
   scrollComponentId: string;
+  type: PoolTxFilter;
 }
 
 export const PoolRelatedTxsTable = ({

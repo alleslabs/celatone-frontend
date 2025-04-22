@@ -11,10 +11,10 @@ import { TupleField } from "./TupleField";
 import { TypeLabel } from "./TypeLabel";
 
 interface FormFieldsProps<T extends FieldValues> {
-  control: Control<T>;
   components: ReadonlyArray<JsonFragmentType>;
-  isPayable: boolean;
+  control: Control<T>;
   isDisabled?: boolean;
+  isPayable: boolean;
 }
 
 export const FormFields = <T extends FieldValues>({

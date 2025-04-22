@@ -12,10 +12,10 @@ interface PenaltyEventProps {
 export const PenaltyEvent = ({ event }: PenaltyEventProps) => {
   const { color, icon } = useMemo(() => {
     switch (event.type) {
-      case SlashingEvent.Slashed:
-        return { color: "error.main", icon: "slashed" as const };
       case SlashingEvent.Jailed:
         return { color: "error.main", icon: "jailed" as const };
+      case SlashingEvent.Slashed:
+        return { color: "error.main", icon: "slashed" as const };
       case SlashingEvent.Unjailed:
         return { color: "success.main", icon: "unjailed" as const };
       default:

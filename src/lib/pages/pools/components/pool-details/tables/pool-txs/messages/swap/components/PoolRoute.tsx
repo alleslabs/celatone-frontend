@@ -11,10 +11,10 @@ import { usePoolsLiquidityByPoolIds } from "lib/services/pools";
 import { coinToTokenWithValue, getTokenLabel } from "lib/utils";
 
 interface PoolRouteProps {
-  routes: MsgSwapExactAmountInDetails["routes"];
+  ampCopierSection?: string;
   assetInfos: Option<AssetInfos>;
   isOpened: boolean;
-  ampCopierSection?: string;
+  routes: MsgSwapExactAmountInDetails["routes"];
 }
 
 export const PoolRoute = ({

@@ -5,9 +5,9 @@ import { Flex } from "@chakra-ui/react";
 import { TableTitle } from "lib/components/table";
 
 interface TxsTopProps {
-  txsCount: Option<number>;
   onViewMore?: () => void;
   relationSelection: ReactNode;
+  txsCount: Option<number>;
   txTypeSelection: ReactNode;
 }
 export const TxsTop = ({

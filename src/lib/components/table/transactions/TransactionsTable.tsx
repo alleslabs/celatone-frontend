@@ -9,13 +9,13 @@ import { TransactionsTableMobileCard } from "./TransactionsTableMobileCard";
 import { TransactionsTableRow } from "./TransactionsTableRow";
 
 interface TransactionsTableProps {
-  transactions: Option<Transaction[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
-  showSuccess?: boolean;
-  showRelations: boolean;
-  showTimestamp?: boolean;
+  isLoading: boolean;
   showAction?: boolean;
+  showRelations: boolean;
+  showSuccess?: boolean;
+  showTimestamp?: boolean;
+  transactions: Option<Transaction[]>;
 }
 
 export const TransactionsTable = ({

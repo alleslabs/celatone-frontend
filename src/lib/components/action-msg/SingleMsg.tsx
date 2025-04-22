@@ -8,21 +8,21 @@ import { snakeCase } from "snake-case";
 import { MsgToken } from "./MsgToken";
 
 interface LinkElement {
+  copyValue?: string;
   type: LinkType;
   value: string;
-  copyValue?: string;
 }
 
 export interface SingleMsgProps {
-  type: string;
-  text1?: string;
-  tokens?: TokenWithValue[];
-  tags?: Option<string>[];
   length?: number;
-  text2?: string;
   link1?: LinkElement;
-  text3?: string;
   link2?: LinkElement;
+  tags?: Option<string>[];
+  text1?: string;
+  text2?: string;
+  text3?: string;
+  tokens?: TokenWithValue[];
+  type: string;
 }
 
 export const SingleMsg = ({

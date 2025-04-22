@@ -6,8 +6,8 @@ import { useCallback } from "react";
 
 export type PermissionFilterValue =
   | "all"
-  | "without-proposal"
-  | "with-proposal";
+  | "with-proposal"
+  | "without-proposal";
 
 export const useCodePermissionFilter = (filterValue: PermissionFilterValue) => {
   const { address } = useCurrentChain();

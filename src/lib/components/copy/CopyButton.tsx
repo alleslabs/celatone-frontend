@@ -7,15 +7,15 @@ import { CustomIcon } from "../icon";
 import { CopyTemplate } from "./CopyTemplate";
 
 interface CopyButtonProps extends ButtonProps {
-  isDisable?: boolean;
-  value: string;
-  copyLabel?: string;
-  hasIcon?: boolean;
-  buttonText?: string;
+  amptrackInfo?: string;
   amptrackSection?: string;
   amptrackSubSection?: string;
-  amptrackInfo?: string;
+  buttonText?: string;
+  copyLabel?: string;
+  hasIcon?: boolean;
   iconGap?: number;
+  isDisable?: boolean;
+  value: string;
   w?: BoxProps["width"];
 }
 

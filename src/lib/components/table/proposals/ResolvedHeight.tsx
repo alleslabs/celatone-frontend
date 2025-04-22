@@ -8,9 +8,9 @@ export const ResolvedHeight = ({
   isDepositOrVoting,
   resolvedHeight,
 }: {
-  resolvedHeight: ProposalsTableRowProps["proposal"]["resolvedHeight"];
-  isDepositOrVoting: boolean;
   amptrackSection?: string;
+  isDepositOrVoting: boolean;
+  resolvedHeight: ProposalsTableRowProps["proposal"]["resolvedHeight"];
 }) => {
   if (isDepositOrVoting)
     return (

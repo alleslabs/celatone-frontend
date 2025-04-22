@@ -10,10 +10,10 @@ import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 
 interface MsgJoinSwapExternAmountInActionProps {
+  ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
   msg: MsgJoinSwapExternAmountInDetails;
   pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  ampCopierSection?: string;
 }
 
 export const MsgJoinSwapExternAmountInAction = ({

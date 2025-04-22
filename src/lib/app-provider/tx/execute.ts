@@ -11,12 +11,12 @@ import { useCallback } from "react";
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface ExecuteStreamParams {
-  estimatedFee: StdFee | undefined;
   contractAddress: BechAddr32;
-  msg: string | object;
+  estimatedFee: StdFee | undefined;
   funds: Coin[];
-  onTxSucceed?: (activity: Activity) => void;
+  msg: object | string;
   onTxFailed?: () => void;
+  onTxSucceed?: (activity: Activity) => void;
 }
 
 export const useExecuteContractTx = () => {

@@ -23,23 +23,23 @@ import type { IconKeys } from "../icon";
 import { CustomIcon } from "../icon";
 
 export interface ActionModalProps {
+  buttonRemark?: string;
+  children?: ReactNode;
+  closeOnOverlayClick?: boolean;
+  disabledMain?: boolean;
+  headerContent?: ReactNode;
   icon?: IconKeys;
   iconColor?: string;
-  title: string;
-  subtitle?: string;
-  headerContent?: ReactNode;
-  trigger?: ReactNode;
-  children?: ReactNode;
-  mainBtnTitle?: string;
   mainAction: () => void;
+  mainBtnTitle?: string;
   mainVariant?: string;
-  disabledMain?: boolean;
-  otherBtnTitle?: string;
-  otherAction?: () => void;
-  otherVariant?: string;
   noCloseButton?: boolean;
-  closeOnOverlayClick?: boolean;
-  buttonRemark?: string;
+  otherAction?: () => void;
+  otherBtnTitle?: string;
+  otherVariant?: string;
+  subtitle?: string;
+  title: string;
+  trigger?: ReactNode;
 }
 export function ActionModal({
   buttonRemark,

@@ -6,8 +6,8 @@ import { TableHeader } from "lib/components/table";
 import { PoolType } from "lib/types";
 
 interface PoolHeaderProps {
-  poolType: PoolData["type"];
   isSupported: PoolData["isSupported"];
+  poolType: PoolData["type"];
   templateColumns: GridProps["templateColumns"];
 }
 

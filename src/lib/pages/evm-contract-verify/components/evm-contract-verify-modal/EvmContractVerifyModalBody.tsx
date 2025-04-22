@@ -8,10 +8,10 @@ import { EvmContractVerifyLoadingModal } from "./EvmContractVerifyLoadingModal";
 import { EvmContractVerifySuccessModal } from "./EvmContractVerifySuccessModal";
 
 interface EvmContractVerifyModalBodyProps {
+  control: Control<EvmContractVerifyForm>;
   isError: boolean;
   isLoading: boolean;
   onClose: () => void;
-  control: Control<EvmContractVerifyForm>;
 }
 
 export const EvmContractVerifyModalBody = ({

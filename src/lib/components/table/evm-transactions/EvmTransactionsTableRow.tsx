@@ -23,11 +23,11 @@ import { isUndefined } from "lodash";
 import { TableRow } from "../tableComponents";
 
 interface EvmTransactionsTableRowProps {
-  templateColumns: string;
-  evmTransaction: TxDataWithTimeStampJsonRpc;
-  evmDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  evmDenom: Option<string>;
+  evmTransaction: TxDataWithTimeStampJsonRpc;
   showTimestamp: boolean;
+  templateColumns: string;
 }
 
 export const EvmTransactionsTableRow = ({

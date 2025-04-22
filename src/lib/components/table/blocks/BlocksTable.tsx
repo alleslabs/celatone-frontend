@@ -11,8 +11,8 @@ import { BlocksTableRow } from "./BlocksTableRow";
 
 interface BlocksTableProps {
   blocks: Option<Block[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
   showProposer?: boolean;
 }
 

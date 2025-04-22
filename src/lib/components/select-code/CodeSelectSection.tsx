@@ -13,9 +13,9 @@ import { CodeSelect } from "./CodeSelect";
 
 interface CodeSelectSectionProps<T extends FieldValues> {
   codeId: Option<number>;
-  name: FieldPath<T>;
   control: Control<T>;
   error: Option<string>;
+  name: FieldPath<T>;
   onCodeSelect: (codeId: number) => void;
   setCodeHash: (data: Code) => void;
   status: FormStatus;
@@ -31,7 +31,7 @@ export const CodeSelectSection = <T extends FieldValues>({
   status,
 }: CodeSelectSectionProps<T>) => {
   const { isFullTier } = useTierConfig();
-  const [method, setMethod] = useState<"select-existing" | "fill-manually">(
+  const [method, setMethod] = useState<"fill-manually" | "select-existing">(
     isFullTier ? "select-existing" : "fill-manually"
   );
 
@@ -41,7 +41,7 @@ export const CodeSelectSection = <T extends FieldValues>({
         <RadioGroup
           value={method}
           w="100%"
-          onChange={(nextVal: "select-existing" | "fill-manually") => {
+          onChange={(nextVal: "fill-manually" | "select-existing") => {
             track(
               nextVal === "fill-manually"
                 ? AmpEvent.USE_CODE_FILL

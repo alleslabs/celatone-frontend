@@ -7,9 +7,9 @@ import { MotionBox } from "lib/components/MotionBox";
 import { useState } from "react";
 
 interface EvmTxMethodAccordionProps {
-  msgIcon: IconKeys;
-  content: ReactNode;
   children: ReactNode;
+  content: ReactNode;
+  msgIcon: IconKeys;
 }
 
 export const EvmTxMethodAccordion = ({

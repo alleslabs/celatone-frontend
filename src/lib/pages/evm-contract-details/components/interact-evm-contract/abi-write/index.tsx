@@ -12,8 +12,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { WriteBox } from "./WriteBox";
 
 interface AbiWriteProps {
-  contractAddress: HexAddr20;
   abiWrite: JsonFragment[];
+  contractAddress: HexAddr20;
   selectedFn?: string;
 }
 

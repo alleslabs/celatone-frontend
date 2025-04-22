@@ -19,13 +19,13 @@ import { JsonExecute } from "./JsonExecute";
 import { SchemaExecute } from "./schema-execute";
 
 interface ExecuteAreaProps {
-  verifiedSchema: Nullish<CodeSchema>;
-  localSchema: Option<CodeSchema>;
-  contractAddress: BechAddr32;
-  initialMsg: string;
-  initialFunds: Coin[];
-  codeId: Option<number>;
   codeHash: Option<string>;
+  codeId: Option<number>;
+  contractAddress: BechAddr32;
+  initialFunds: Coin[];
+  initialMsg: string;
+  localSchema: Option<CodeSchema>;
+  verifiedSchema: Nullish<CodeSchema>;
 }
 
 export const ExecuteArea = observer(

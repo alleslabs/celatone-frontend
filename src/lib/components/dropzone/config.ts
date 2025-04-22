@@ -1,13 +1,13 @@
 import type { Accept } from "react-dropzone";
 
 export type DropzoneFileType =
-  | "wasm"
   | "json"
-  | "mv"
   | "move"
+  | "mv"
+  | "sol"
   | "toml"
   | "vy"
-  | "sol";
+  | "wasm";
 
 export interface DropzoneConfig {
   accept: Accept;

@@ -38,8 +38,8 @@ import { MsgSuggestion } from "./MsgSuggestion";
 
 interface JsonExecuteProps {
   contractAddress: BechAddr32;
-  initialMsg: string;
   initialFunds: Coin[];
+  initialMsg: string;
 }
 
 const WasmCodeSnippet = dynamic(
@@ -104,10 +104,10 @@ export const JsonExecute = ({
       contractAddress
     );
     switch (attachFundsOption) {
-      case AttachFundsType.ATTACH_FUNDS_SELECT:
-        return generalCheck && isValidAssetsSelect;
       case AttachFundsType.ATTACH_FUNDS_JSON:
         return generalCheck && isValidAssetsJsonStr;
+      case AttachFundsType.ATTACH_FUNDS_SELECT:
+        return generalCheck && isValidAssetsSelect;
       default:
         return generalCheck;
     }

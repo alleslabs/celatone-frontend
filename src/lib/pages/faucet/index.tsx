@@ -27,12 +27,12 @@ import { useFaucetInfo } from "lib/services/faucetService";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
-type ResultStatus = "success" | "error" | "warning";
+type ResultStatus = "error" | "success" | "warning";
 
 interface Result {
+  message?: string;
   status?: ResultStatus;
   txHash?: string;
-  message?: string;
 }
 
 const STATUS_ICONS: Record<ResultStatus, IconKeys> = {
@@ -141,7 +141,7 @@ const Faucet = () => {
           txHash,
         });
       })
-      .catch((err: Error | AxiosError) => {
+      .catch((err: AxiosError | Error) => {
         if (axios.isAxiosError(err)) {
           if (err.response?.status === 429) {
             setResult({

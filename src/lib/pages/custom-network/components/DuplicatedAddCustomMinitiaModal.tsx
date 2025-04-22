@@ -14,8 +14,8 @@ import { CustomIcon } from "lib/components/icon";
 
 interface DuplicatedAddCustomMinitiaModalProps {
   isOpen: boolean;
-  onClose: () => void;
   label: string;
+  onClose: () => void;
 }
 
 export const DuplicatedAddCustomMinitiaModal = ({

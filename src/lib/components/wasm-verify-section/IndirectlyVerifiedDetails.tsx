@@ -10,10 +10,10 @@ import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
 import { VerifyButton } from "./VerifyButton";
 
 interface IndirectlyVerifiedDetailsProps {
-  codeId: number;
   codeHash: string;
-  relatedVerifiedCodes: number[];
+  codeId: number;
   contractAddress?: BechAddr32;
+  relatedVerifiedCodes: number[];
 }
 
 export const IndirectlyVerifiedDetails = ({

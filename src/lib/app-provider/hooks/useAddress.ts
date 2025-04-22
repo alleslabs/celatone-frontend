@@ -9,10 +9,10 @@ import { useCurrentChain } from "./useCurrentChain";
 import { useExampleAddresses } from "./useExampleAddresses";
 
 export type AddressReturnType =
-  | "user_address"
   | "contract_address"
-  | "validator_address"
-  | "invalid_address";
+  | "invalid_address"
+  | "user_address"
+  | "validator_address";
 
 export const useGetAddressTypeByLength = () => {
   const exampleAddresses = useExampleAddresses();

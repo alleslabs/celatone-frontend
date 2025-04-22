@@ -12,40 +12,40 @@ import { zUtcDate } from "./time";
 // ------------------------------------------//
 
 export enum SchemaProperties {
+  ATTACHED_CODE_ID = "attached_code_id",
   CONTRACT_NAME = "contract_name",
   CONTRACT_VERSION = "contract_version",
+  EXECUTE = "execute",
   IDL_VERSION = "idl_version",
   INSTANTIATE = "instantiate",
-  EXECUTE = "execute",
-  QUERY = "query",
   MIGRATE = "migrate",
-  SUDO = "sudo",
+  QUERY = "query",
   RESPONSES = "responses",
-  ATTACHED_CODE_ID = "attached_code_id",
+  SUDO = "sudo",
 }
 
 export interface SchemaInfo {
-  title: Option<string>;
   description: Option<string>;
-  schema: JsonSchema;
   inputRequired?: boolean;
+  schema: JsonSchema;
+  title: Option<string>;
 }
 
 export interface CodeSchema {
+  [SchemaProperties.ATTACHED_CODE_ID]: string;
   [SchemaProperties.CONTRACT_NAME]: string;
   [SchemaProperties.CONTRACT_VERSION]: string;
+  [SchemaProperties.EXECUTE]: Nullable<JsonSchema>;
   [SchemaProperties.IDL_VERSION]: string;
   [SchemaProperties.INSTANTIATE]: JsonSchema;
-  [SchemaProperties.EXECUTE]: Nullable<JsonSchema>;
-  [SchemaProperties.QUERY]: Nullable<JsonSchema>;
   [SchemaProperties.MIGRATE]: Nullable<JsonSchema>;
-  [SchemaProperties.SUDO]: Nullable<JsonSchema>;
+  [SchemaProperties.QUERY]: Nullable<JsonSchema>;
   [SchemaProperties.RESPONSES]: { [key: string]: JsonSchema };
-  [SchemaProperties.ATTACHED_CODE_ID]: string;
+  [SchemaProperties.SUDO]: Nullable<JsonSchema>;
 }
 
-export type QuerySchema = Array<[SchemaInfo, SchemaInfo]>;
 export type ExecuteSchema = Array<SchemaInfo>;
+export type QuerySchema = Array<[SchemaInfo, SchemaInfo]>;
 
 export interface QueryResponse {
   data: JsonDataType;

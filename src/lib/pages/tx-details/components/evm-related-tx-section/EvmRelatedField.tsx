@@ -4,8 +4,8 @@ import { Flex, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 
 interface EvmRelatedFieldProps {
-  label: TextProps["children"];
   children: FlexProps["children"];
+  label: TextProps["children"];
 }
 
 export const EvmRelatedField = ({ children, label }: EvmRelatedFieldProps) => {

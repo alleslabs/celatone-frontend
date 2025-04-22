@@ -9,12 +9,12 @@ import { FunctionSelectBody } from "./FunctionSelectBody";
 import { FunctionSelectPanel } from "./FunctionSelectPanel";
 
 interface InteractionBodySectionProps {
-  module: Option<IndexedModule>;
-  selectedType: InteractionTabs;
-  selectedFn: Option<ExposedFunction>;
-  setSelectedType: Dispatch<SetStateAction<InteractionTabs>>;
   handleFunctionSelect: (fn: ExposedFunction) => void;
+  module: Option<IndexedModule>;
   onOpen: () => void;
+  selectedFn: Option<ExposedFunction>;
+  selectedType: InteractionTabs;
+  setSelectedType: Dispatch<SetStateAction<InteractionTabs>>;
 }
 
 export const InteractionBodySection = ({

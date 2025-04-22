@@ -43,6 +43,15 @@ export const ContractInstantiatorCell = ({
           Genesis
         </Text>
       );
+    case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT:
+      return (
+        <ExplorerLink
+          isReadOnly={isReadOnly}
+          showCopyOnHover
+          type={updaterType}
+          value={latestUpdater}
+        />
+      );
     case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_MIGRATE:
       return (
         <Flex direction="column" onClick={(e) => e.stopPropagation()}>
@@ -58,15 +67,6 @@ export const ContractInstantiatorCell = ({
             value={latestUpdater}
           />
         </Flex>
-      );
-    case RemarkOperation.CONTRACT_CODE_HISTORY_OPERATION_TYPE_INIT:
-      return (
-        <ExplorerLink
-          isReadOnly={isReadOnly}
-          showCopyOnHover
-          type={updaterType}
-          value={latestUpdater}
-        />
       );
     default:
       return (

@@ -6,9 +6,9 @@ import { big } from "lib/types";
 import { formatPrice, totalValueTokenWithValue } from "lib/utils";
 
 interface MultiBondsRadioCardProps {
-  value: string;
-  tokens: Option<Record<string, TokenWithValue>>;
   isLoading: boolean;
+  tokens: Option<Record<string, TokenWithValue>>;
+  value: string;
 }
 
 const MultiBondsRadioCardBody = ({

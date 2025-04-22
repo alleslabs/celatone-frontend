@@ -5,7 +5,7 @@ import { Flex, Tag } from "@chakra-ui/react";
 export const FieldTypeTag = ({
   format,
   type,
-}: Pick<RJSFSchema, "type" | "format">) => {
+}: Pick<RJSFSchema, "format" | "type">) => {
   if (!type) return null;
   if (Array.isArray(type)) {
     const types: string[] = type;

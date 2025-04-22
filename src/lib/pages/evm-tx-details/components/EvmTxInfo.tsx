@@ -13,8 +13,8 @@ import type { GasInfo } from "../data";
 import { EvmTxGasReceipt } from "./EvmTxGasReceipt";
 
 interface EvmTxInfoProps extends FlexProps {
-  evmTxData: TxDataJsonRpc;
   cosmosTxData: TxData;
+  evmTxData: TxDataJsonRpc;
   evmTxValue: TokenWithValue;
   gasInfo: GasInfo;
 }

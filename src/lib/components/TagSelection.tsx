@@ -24,15 +24,15 @@ import { DropdownChevron } from "./DropdownChevron";
 import { CustomIcon } from "./icon";
 
 export interface TagSelectionProps extends InputProps {
+  badgeBgColor?: string;
+  boxWidth?: LayoutProps["width"];
+  creatable?: boolean;
+  helperText?: string;
+  label?: string;
+  labelBgColor?: string;
   placeholder?: string;
   result: string[];
   setResult: (options: string[]) => void;
-  badgeBgColor?: string;
-  helperText?: string;
-  labelBgColor?: string;
-  label?: string;
-  boxWidth?: LayoutProps["width"];
-  creatable?: boolean;
 }
 
 const listItemProps: CSSProperties = {

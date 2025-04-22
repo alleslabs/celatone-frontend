@@ -9,8 +9,8 @@ import { dateFromNow, formatUTC } from "lib/utils";
 import { MyModuleVerificationDetailsStatusBadge } from "./MyModuleVerificationDetailsStatusBadge";
 
 interface MyModuleVerificationDetailsInfoProps {
-  verifyTaskLocalInfo: Option<MoveVerifyTaskLocalInfo>;
   verifyTaskInfo: MoveVerifyByTaskIdResponse;
+  verifyTaskLocalInfo: Option<MoveVerifyTaskLocalInfo>;
 }
 
 export const MyModuleVerificationDetailsInfo = ({

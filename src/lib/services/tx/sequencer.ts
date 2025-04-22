@@ -54,10 +54,10 @@ export const getTxsByAccountAddressSequencer = ({
   paginationKey,
   reverse = true,
 }: {
-  endpoint: string;
   address: Addr;
-  paginationKey?: string;
+  endpoint: string;
   limit?: number;
+  paginationKey?: string;
   reverse?: boolean;
 }) => {
   const fetch = (endpoint: string) =>

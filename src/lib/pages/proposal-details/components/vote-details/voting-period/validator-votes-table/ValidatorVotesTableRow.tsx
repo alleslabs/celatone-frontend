@@ -10,10 +10,10 @@ import { dateFromNow, formatUTC } from "lib/utils";
 import { Voter } from "../table/Voter";
 
 interface ValidatorVotesTableRowProps {
-  proposalVote: ProposalValidatorVote;
-  templateColumns: string;
   fullVersion: boolean;
   isProposalResolved: boolean;
+  proposalVote: ProposalValidatorVote;
+  templateColumns: string;
 }
 
 export const ValidatorVotesTableRow = ({

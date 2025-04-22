@@ -1,9 +1,9 @@
 import { Button } from "@chakra-ui/react";
 
 interface PageButtonProps {
-  pageNumber: number;
   currentPage: number;
   onPageChange: (pageNumber: number) => void;
+  pageNumber: number;
 }
 
 export const PageButton = ({

@@ -9,10 +9,10 @@ import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 
 interface MsgLockTokensActionProps {
+  ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
   msg: MsgLockTokensDetails;
   pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  ampCopierSection?: string;
 }
 
 export const MsgLockTokensAction = ({

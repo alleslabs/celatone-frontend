@@ -8,10 +8,10 @@ import { jsonPrettify } from "lib/utils";
 import { capitalize } from "lodash";
 
 interface SchemaPanelProps {
-  codeId: number;
   codeHash: string;
-  jsonSchema: Option<Nullable<object>>;
+  codeId: number;
   hasSchema: boolean;
+  jsonSchema: Option<Nullable<object>>;
   schemaProperty?: string;
 }
 

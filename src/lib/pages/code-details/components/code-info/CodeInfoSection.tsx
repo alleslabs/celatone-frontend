@@ -22,9 +22,9 @@ import { useCallback } from "react";
 import { CodeInfoLabelText } from "./CodeInfoLabelText";
 
 interface CodeInfoSectionProps {
-  code: Code;
-  chainId: string;
   attached: boolean;
+  chainId: string;
+  code: Code;
   toJsonSchemaTab: () => void;
 }
 

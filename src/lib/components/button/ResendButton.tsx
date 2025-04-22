@@ -11,8 +11,8 @@ import { useCallback, useState } from "react";
 
 interface ResendButtonProps {
   messages: Message[];
-  txHash: string;
   msgIndex?: number;
+  txHash: string;
 }
 
 const formatMsgs = (messages: Message[]) =>

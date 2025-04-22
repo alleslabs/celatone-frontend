@@ -11,9 +11,9 @@ import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
 interface UserContractDescProps {
-  publicInfo: Nullable<PublicContractInfo>;
   contract: Contract;
   contractLocalInfo: Option<ContractLocalInfo>;
+  publicInfo: Nullable<PublicContractInfo>;
 }
 export const UserContractDesc = ({
   contract,

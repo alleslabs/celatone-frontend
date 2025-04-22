@@ -5,10 +5,10 @@ import { Flex } from "@chakra-ui/react";
 import { CustomIcon } from "./icon";
 
 interface DropdownChevronProps {
+  bg?: FlexProps["bg"];
+  height?: FlexProps["height"];
   isOpen: boolean;
   onClick: FlexProps["onClick"];
-  height?: FlexProps["height"];
-  bg?: FlexProps["bg"];
 }
 
 export const DropdownChevron = ({

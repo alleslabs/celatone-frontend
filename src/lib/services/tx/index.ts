@@ -1,10 +1,10 @@
 import type { UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 import type {
-  Nullable,
   BechAddr,
   BechAddr20,
   BechAddr32,
   HexAddr20,
+  Nullable,
   Option,
   PoolTxFilter,
   Transaction,

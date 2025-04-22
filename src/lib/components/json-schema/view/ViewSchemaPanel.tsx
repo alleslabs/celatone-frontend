@@ -6,8 +6,8 @@ import JsonReadOnly from "lib/components/json/JsonReadOnly";
 import { jsonPrettify } from "lib/utils";
 
 interface ViewSchemaPanelProps {
-  jsonSchema: Option<Nullable<object>>;
   codeId: number;
+  jsonSchema: Option<Nullable<object>>;
 }
 
 export const ViewSchemaPanel = ({

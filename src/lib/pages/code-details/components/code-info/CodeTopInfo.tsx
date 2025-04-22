@@ -23,8 +23,8 @@ import { observer } from "mobx-react-lite";
 import { CtaSection } from "../CtaSection";
 
 interface CodeTopInfoProps {
-  codeId: number;
   code: Code;
+  codeId: number;
   projectInfo: Nullable<ProjectInfo>;
   publicInfo: Nullable<PublicCodeInfo>;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;

@@ -5,9 +5,9 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { divWithDefault, formatPrettyPercent } from "lib/utils";
 
 interface ProgressBarProps {
-  value: Big;
-  max: Big;
   isCompact: boolean;
+  max: Big;
+  value: Big;
 }
 
 export const ProgressBar = ({ isCompact, max, value }: ProgressBarProps) => {

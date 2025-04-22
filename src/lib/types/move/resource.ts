@@ -11,9 +11,9 @@ export interface ResponseResource {
 export type InternalResource = SnakeToCamelCaseNested<ResponseResource>;
 
 export interface ResourceGroup {
-  group: string;
   account: HexAddr;
   displayName: string;
+  group: string;
   items: InternalResource[];
 }
 

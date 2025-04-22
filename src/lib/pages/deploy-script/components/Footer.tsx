@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 
 interface FooterProps {
   disabled: boolean;
-  isLoading: boolean;
   executeScript: () => void;
+  isLoading: boolean;
 }
 
 export const Footer = ({

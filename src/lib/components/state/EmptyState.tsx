@@ -7,17 +7,17 @@ import type { ImageVariant } from "./StateImage";
 import { StateImage } from "./StateImage";
 
 export interface EmptyStateProps {
+  alignItems?: FlexProps["alignItems"];
+  children?: React.ReactNode;
+  hasBorderTop?: boolean;
+  heading?: string;
   imageVariant?: ImageVariant;
   imageWidth?: ImageProps["width"];
   message?: string;
-  heading?: string;
-  withBorder?: boolean;
   my?: FlexProps["my"];
   py?: FlexProps["py"];
-  alignItems?: FlexProps["alignItems"];
   textVariant?: TextProps["variant"];
-  hasBorderTop?: boolean;
-  children?: React.ReactNode;
+  withBorder?: boolean;
 }
 
 export const EmptyState = ({

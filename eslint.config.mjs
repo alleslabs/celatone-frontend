@@ -80,15 +80,14 @@ export default defineConfig([
     },
   }),
   // Perfectionist
+  perfectionist.configs["recommended-natural"],
   {
-    plugins: {
-      perfectionist,
-    },
     rules: {
       "perfectionist/sort-exports": [
         "error",
         {
           order: "asc",
+          partitionByNewLine: true,
         },
       ],
       "perfectionist/sort-imports": [
@@ -106,6 +105,13 @@ export default defineConfig([
             "object",
             "unknown",
           ],
+        },
+      ],
+      "perfectionist/sort-interfaces": [
+        "error",
+        {
+          order: "asc",
+          partitionByNewLine: true,
         },
       ],
       "perfectionist/sort-jsx-props": [
@@ -130,10 +136,11 @@ export default defineConfig([
           ],
         },
       ],
-      "perfectionist/sort-objects": [
+      "perfectionist/sort-modules": [
         "error",
         {
           order: "asc",
+          partitionByNewLine: true,
         },
       ],
     },

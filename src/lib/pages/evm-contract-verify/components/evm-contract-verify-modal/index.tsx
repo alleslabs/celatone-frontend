@@ -6,11 +6,11 @@ import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/react";
 import { EvmContractVerifyModalBody } from "./EvmContractVerifyModalBody";
 
 interface EvmContractVerifyModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  control: Control<EvmContractVerifyForm>;
   isError: boolean;
   isLoading: boolean;
-  control: Control<EvmContractVerifyForm>;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export const EvmContractVerifyModal = ({

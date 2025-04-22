@@ -5,9 +5,9 @@ import { CustomIcon } from "../../icon";
 import { UploadSchema } from "./UploadSchema";
 
 interface UploadSchemaSectionProps {
-  codeId: number;
   codeHash: string;
-  title?: string | JSX.Element;
+  codeId: number;
+  title?: JSX.Element | string;
 }
 
 export const UploadSchemaSection = ({

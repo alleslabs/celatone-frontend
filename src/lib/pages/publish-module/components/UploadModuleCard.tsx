@@ -22,19 +22,19 @@ const DEFAULT_TEMP_FILE = {
 };
 
 interface UploadModuleCardProps {
-  index: number;
   fileState: Module;
+  index: number;
   modules: Module[];
+  moveEntry: (from: number, to: number) => void;
   policy: UpgradePolicy;
+  removeEntry: () => void;
+  removeFile: () => void;
   setFile: (
     file: Option<File>,
     base64File: string,
     decodeRes: DecodeModuleQueryResponse,
     publishStatus: PublishStatus
   ) => void;
-  removeFile: () => void;
-  removeEntry: () => void;
-  moveEntry: (from: number, to: number) => void;
 }
 
 export const UploadModuleCard = ({
@@ -52,8 +52,8 @@ export const UploadModuleCard = ({
   setFile,
 }: UploadModuleCardProps) => {
   const [tempFile, setTempFile] = useState<{
-    file: Option<File>;
     base64: string;
+    file: Option<File>;
   }>(DEFAULT_TEMP_FILE);
   const [decodeError, setDecodeError] = useState("");
   const { address } = useCurrentChain();

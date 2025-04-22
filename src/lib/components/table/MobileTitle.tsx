@@ -6,10 +6,10 @@ import { CustomIcon } from "lib/components/icon";
 import { TableTitle } from "./TableTitle";
 
 interface MobileTitleProps {
-  title: string;
   count: Option<number>;
-  showCount?: boolean;
   onViewMore?: () => void;
+  showCount?: boolean;
+  title: string;
 }
 const cardProps = {
   borderRadius: "8px",

@@ -14,13 +14,13 @@ import { catchTxError, postEvmTx } from "../common";
 import { sendingEvmTx } from "../common/sendingEvm";
 
 interface RequestEvmTxParams {
-  to: HexAddr;
   data: string;
-  value: string;
   estimatedFee: SimulatedFeeEvm;
-  signAndBroadcastEvm: SignAndBroadcastEvm;
-  onTxSucceed?: () => void;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  signAndBroadcastEvm: SignAndBroadcastEvm;
+  to: HexAddr;
+  value: string;
 }
 
 export const requestEvmTx = ({

@@ -8,9 +8,9 @@ import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 
 interface EditorFileBodyProps extends FlexProps {
-  node: SourceTreeNode;
   initialFilePath: string;
   isNoWrap?: boolean;
+  node: SourceTreeNode;
 }
 
 export const EditorFileBody = ({

@@ -8,12 +8,12 @@ import { useMetadata } from "lib/services/nft";
 import { AppLink } from "../AppLink";
 
 interface NftCardProps {
-  uri: string;
-  tokenId: string;
-  collectionName: Option<string>;
   collectionAddress: HexAddr32;
+  collectionName: Option<string>;
   nftAddress: Nullable<HexAddr32>;
   showCollection?: boolean;
+  tokenId: string;
+  uri: string;
 }
 
 export const NftCard = ({

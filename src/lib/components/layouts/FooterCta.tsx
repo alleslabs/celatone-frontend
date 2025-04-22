@@ -3,12 +3,12 @@ import type { ButtonProps, SystemStyleObject } from "@chakra-ui/react";
 import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
 
 interface FooterCtaProps {
-  loading?: boolean;
-  cancelButton: ButtonProps;
-  cancelLabel?: string;
   actionButton: ButtonProps;
   actionLabel?: string;
+  cancelButton: ButtonProps;
+  cancelLabel?: string;
   helperText?: string;
+  loading?: boolean;
   sx?: SystemStyleObject;
 }
 

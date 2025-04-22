@@ -13,16 +13,16 @@ import { sendingTx } from "./common/sending";
 
 interface InstantiateTxParams {
   address: BechAddr20;
-  messages: EncodeObject[];
-  label: string;
   fee: StdFee;
-  signAndBroadcast: SignAndBroadcast;
+  label: string;
+  messages: EncodeObject[];
+  onTxFailed?: () => void;
   onTxSucceed?: (
     txInfo: DeliverTxResponse,
     contractLabel: string,
     contractAddress: BechAddr32
   ) => void;
-  onTxFailed?: () => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const instantiateContractTx = ({

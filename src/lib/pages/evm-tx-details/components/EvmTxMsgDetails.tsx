@@ -12,9 +12,9 @@ import { EvmInputData } from "./EvmInputData";
 import { EvmTxMsgDetailsBody } from "./EvmTxMsgDetailsBody";
 
 interface EvmTxMsgDetailsProps {
-  evmTxData: TxDataJsonRpc;
   cosmosTxData: TxData;
   evmDenom: Option<string>;
+  evmTxData: TxDataJsonRpc;
 }
 
 export const EvmTxMsgDetails = ({

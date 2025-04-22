@@ -15,12 +15,12 @@ import { matchSorter } from "match-sorter";
 import { forwardRef, useMemo, useRef, useState } from "react";
 
 export interface MoveVerifyTaskStatusFilterProps extends InputProps {
-  result: MoveVerifyTaskStatus[];
-  minW?: string;
-  label?: string;
-  placeholder?: string;
-  setResult: (option: MoveVerifyTaskStatus[]) => void;
   isMulti: boolean;
+  label?: string;
+  minW?: string;
+  placeholder?: string;
+  result: MoveVerifyTaskStatus[];
+  setResult: (option: MoveVerifyTaskStatus[]) => void;
 }
 
 const OPTIONS = [

@@ -5,9 +5,9 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 import { UnsupportedToken } from "../token";
 
 interface UnsupportedAssetSectionContentProps {
-  unsupportedAssets: TokenWithValue[];
   isAccount?: boolean;
   onViewMore?: () => void;
+  unsupportedAssets: TokenWithValue[];
 }
 
 export const UnsupportedAssetSectionContent = ({

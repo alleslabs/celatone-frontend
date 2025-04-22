@@ -1,31 +1,31 @@
 export const displayActionValue = (isActionName: string) => {
   switch (isActionName) {
-    case "isSend":
-      return "Send";
-    case "isIbc":
-      return "IBC";
-    case "isOpinit":
-      return "OPInit";
-    case "isStoreCode":
-      return "Store code";
-    case "isInstantiate":
-      return "Instantiate";
-    case "isExecute":
-      return "Execute";
-    case "isMigrate":
-      return "Migrate";
     case "isClearAdmin":
       return "Clear admin";
-    case "isUpdateAdmin":
-      return "Update admin";
-    case "isMovePublish":
-      return "Publish module";
-    case "isMoveUpgrade":
-      return "Upgrade module";
+    case "isExecute":
+      return "Execute";
+    case "isIbc":
+      return "IBC";
+    case "isInstantiate":
+      return "Instantiate";
+    case "isMigrate":
+      return "Migrate";
     case "isMoveExecute":
       return "Execute function";
+    case "isMovePublish":
+      return "Publish module";
     case "isMoveScript":
       return "Run script";
+    case "isMoveUpgrade":
+      return "Upgrade module";
+    case "isOpinit":
+      return "OPInit";
+    case "isSend":
+      return "Send";
+    case "isStoreCode":
+      return "Store code";
+    case "isUpdateAdmin":
+      return "Update admin";
     default:
       return "";
   }

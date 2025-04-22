@@ -22,8 +22,8 @@ import { useWatch } from "react-hook-form";
 import type { ModuleVerifyForm } from "../types";
 
 interface ModuleVerifySuccessModalProps {
-  onClose: () => void;
   control: Control<ModuleVerifyForm>;
+  onClose: () => void;
 }
 
 export const ModuleVerifySuccessModal = ({

@@ -40,7 +40,7 @@ export const AllProject = observer(() => {
         )
       );
 
-      const order = new Set([...orderSavedProjects, ...orderedProjects]);
+      const order = new Set([...orderedProjects, ...orderSavedProjects]);
 
       return matchSorter([...Array.from(order)], searchKeyword, {
         keys: ["details.name"],

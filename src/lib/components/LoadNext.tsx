@@ -3,9 +3,9 @@ import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { CustomIcon } from "./icon";
 
 interface LoadNextProps {
-  text: string;
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;
+  text: string;
 }
 
 export const LoadNext = ({

@@ -8,9 +8,9 @@ import { CommandSectionHeader } from "./CommandSectionHeader";
 import { ContractCmdGroup } from "./ContractCmdGroup";
 
 interface CommandSectionProps {
-  contractAddress: BechAddr32;
   codeHash: string;
   codeId: number;
+  contractAddress: BechAddr32;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 

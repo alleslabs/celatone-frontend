@@ -24,9 +24,9 @@ import { MobileCardTemplate } from "../MobileCardTemplate";
 import { MobileLabel } from "../MobileLabel";
 
 interface EvmTransactionsTableMobileCardProps {
-  evmTransaction: TxDataWithTimeStampJsonRpc;
-  evmDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  evmDenom: Option<string>;
+  evmTransaction: TxDataWithTimeStampJsonRpc;
   showTimestamp: boolean;
 }
 export const EvmTransactionsTableMobileCard = ({

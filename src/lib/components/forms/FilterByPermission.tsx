@@ -7,18 +7,18 @@ import type { IconKeys } from "../icon";
 import { SelectInputBase } from "./SelectInputBase";
 
 interface PermissionOption {
-  label: string;
-  value: PermissionFilterValue;
   disabled: boolean;
   icon: IconKeys;
   iconColor: string;
+  label: string;
+  value: PermissionFilterValue;
 }
 
 interface FilterByPermissionProps {
-  setPermissionValue: (newVal: PermissionFilterValue) => void;
   initialSelected: string;
   labelBgColor?: string;
   maxWidth?: string;
+  setPermissionValue: (newVal: PermissionFilterValue) => void;
 }
 
 const options: PermissionOption[] = [

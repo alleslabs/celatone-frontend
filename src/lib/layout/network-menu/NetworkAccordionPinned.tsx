@@ -32,10 +32,10 @@ import { createPortal } from "react-dom";
 import { NetworkCardDraggable } from "./network-card";
 
 interface NetworkAccodionPinnedProps {
-  pinnedNetworks: string[];
   cursor: Option<number>;
-  setCursor: (index: Option<number>) => void;
   onClose: () => void;
+  pinnedNetworks: string[];
+  setCursor: (index: Option<number>) => void;
 }
 
 export const NetworkAccodionPinned = observer(

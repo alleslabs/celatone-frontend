@@ -4,8 +4,8 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "lib/components/table";
 
 interface BlocksTableHeaderProps {
-  templateColumns: GridProps["templateColumns"];
   showProposer: boolean;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const BlocksTableHeader = ({

@@ -9,10 +9,10 @@ import { ModuleVerifyLoadingModal } from "./ModuleVerifyLoadingModal";
 import { ModuleVerifySuccessModal } from "./ModuleVerifySuccessModal";
 
 interface ModuleVerifyModalBodyProps {
+  control: Control<ModuleVerifyForm>;
   isError: boolean;
   isLoading: boolean;
   onClose: () => void;
-  control: Control<ModuleVerifyForm>;
 }
 
 export const ModuleVerifyModalBody = ({

@@ -39,9 +39,9 @@ const RenderFunctions = ({
   states,
   tab,
 }: {
-  states: FunctionStates;
   selectedFn: Option<ExposedFunction>;
   setSelectedFn: (fn: ExposedFunction) => void;
+  states: FunctionStates;
   tab: InteractionTabs;
 }) => {
   if (!states.filteredFunctions)
@@ -81,10 +81,10 @@ const RenderFunctions = ({
 
 interface FunctionSelectPanelProps {
   module: Option<IndexedModule>;
-  tab: InteractionTabs;
-  setTab: Dispatch<SetStateAction<InteractionTabs>>;
   selectedFn: Option<ExposedFunction>;
   setSelectedFn: (fn: ExposedFunction) => void;
+  setTab: Dispatch<SetStateAction<InteractionTabs>>;
+  tab: InteractionTabs;
 }
 
 export const FunctionSelectPanel = ({

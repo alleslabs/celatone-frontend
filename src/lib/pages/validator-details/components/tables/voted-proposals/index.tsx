@@ -23,8 +23,8 @@ import { VotedProposalsTableBody } from "./VotedProposalsTableBody";
 const scrollComponentId = "voted-proposals-table-header";
 
 interface VotedProposalsTableProps {
-  validatorAddress: ValidatorAddr;
   onViewMore?: () => void;
+  validatorAddress: ValidatorAddr;
 }
 
 export const VotedProposalsTable = ({

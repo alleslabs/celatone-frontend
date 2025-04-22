@@ -17,9 +17,9 @@ interface DeployScriptTxParams {
   address: BechAddr20;
   fee: StdFee;
   messages: EncodeObject[];
-  signAndBroadcast: SignAndBroadcast;
-  onTxSucceed?: () => void;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const deployScriptTx = ({

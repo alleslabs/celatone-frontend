@@ -14,8 +14,8 @@ import {
 } from "./evm-tx-method";
 
 interface EvmTxMsgDetailsBodyProps {
-  evmTxData: TxDataJsonRpc;
   evmDenom: Option<string>;
+  evmTxData: TxDataJsonRpc;
 }
 
 export const EvmTxMsgDetailsBody = ({
@@ -28,6 +28,10 @@ export const EvmTxMsgDetailsBody = ({
   });
 
   switch (method) {
+    case EvmMethodName.CallErc20Factory:
+      return <EvmTxCallErc20Factory evmTxData={evmTxData} />;
+    case EvmMethodName.Create:
+      return <EvmTxCreateContract evmTxData={evmTxData} />;
     case EvmMethodName.Transfer:
       return (
         <EvmTxTransfer
@@ -40,10 +44,6 @@ export const EvmTxMsgDetailsBody = ({
       return (
         <EvmTxTransferErc20 assetInfos={assetInfos} evmTxData={evmTxData} />
       );
-    case EvmMethodName.Create:
-      return <EvmTxCreateContract evmTxData={evmTxData} />;
-    case EvmMethodName.CallErc20Factory:
-      return <EvmTxCallErc20Factory evmTxData={evmTxData} />;
     default:
       return <EvmTxDefault evmTxData={evmTxData} />;
   }

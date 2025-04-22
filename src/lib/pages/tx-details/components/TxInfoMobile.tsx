@@ -15,8 +15,8 @@ import {
 } from "lib/utils";
 
 interface TxInfoMobileProps extends FlexProps {
-  txData: TxData;
   gasRefundRatio: Option<Ratio<number>>;
+  txData: TxData;
 }
 
 const Container = chakra(Flex, {

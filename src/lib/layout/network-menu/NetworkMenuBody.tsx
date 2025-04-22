@@ -13,13 +13,13 @@ import { NetworkAccodionPinned } from "./NetworkAccordionPinned";
 
 interface NetworkMenuBodyProps {
   cursor: Option<number>;
-  setCursor: (cursor: Option<number>) => void;
-  filteredPinnedChains: string[];
-  filteredMainnetChains: string[];
-  filteredTestnetChains: string[];
   filteredDevnetChains: string[];
   filteredLocalChains: string[];
+  filteredMainnetChains: string[];
+  filteredPinnedChains: string[];
+  filteredTestnetChains: string[];
   onClose: () => void;
+  setCursor: (cursor: Option<number>) => void;
 }
 
 export const NetworkMenuBody = observer(

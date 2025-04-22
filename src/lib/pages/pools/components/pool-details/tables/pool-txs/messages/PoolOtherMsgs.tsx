@@ -2,8 +2,8 @@ import { Flex, Tag, Text } from "@chakra-ui/react";
 import { extractMsgType } from "lib/utils";
 
 interface PoolOtherMsgsProps {
-  otherMsgs: { [key: string]: number };
   isIbc: boolean;
+  otherMsgs: { [key: string]: number };
 }
 
 export const PoolOtherMsgs = ({ isIbc, otherMsgs }: PoolOtherMsgsProps) => {

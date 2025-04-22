@@ -9,9 +9,9 @@ export const VotingEndTime = ({
   status,
   votingEndTime,
 }: {
-  votingEndTime: Proposal["votingEndTime"];
   depositEndTime: Proposal["depositEndTime"];
   status: Proposal["status"];
+  votingEndTime: Proposal["votingEndTime"];
 }) => {
   if (status === ProposalStatus.DEPOSIT_FAILED) {
     return <Text color="text.dark">N/A</Text>;

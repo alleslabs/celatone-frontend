@@ -9,10 +9,10 @@ import { UserDocsLink } from "lib/components/UserDocsLink";
 import { resolvePermission } from "lib/utils";
 
 interface MigrateOptionsProps {
+  existHandler: () => void;
   isAdmin: boolean;
   uploadAccessParams: Option<UploadAccessParams>;
   uploadHandler: () => void;
-  existHandler: () => void;
 }
 
 export const MigrateOptions = ({

@@ -28,7 +28,7 @@ import { ProposalVotesTable } from "./votes-table";
 import { VotingQuorum } from "./VotingQuorum";
 import { VotingThreshold } from "./VotingThreshold";
 
-type VoterVariant = "validator" | "all";
+type VoterVariant = "all" | "validator";
 
 const ContentContainer = ({
   children,

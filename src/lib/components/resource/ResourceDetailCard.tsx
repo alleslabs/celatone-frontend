@@ -44,8 +44,8 @@ export const ResourceDetailCard = ({
     );
 
   const moveResourceObject = parsedMoveResource as {
-    type: string;
     data: Record<string, unknown>;
+    type: string;
   };
 
   const formattedArray: { key: string; value: unknown }[] = Object.entries(

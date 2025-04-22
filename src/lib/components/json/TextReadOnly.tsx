@@ -12,9 +12,9 @@ import AceEditor from "react-ace";
 import { CopyButton } from "../copy";
 
 interface TextReadOnlyProps {
-  text: string;
   canCopy?: boolean;
   showLines?: number;
+  text: string;
 }
 
 export const TextReadOnly = ({

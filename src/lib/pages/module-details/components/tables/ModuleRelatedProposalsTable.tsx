@@ -7,11 +7,11 @@ import { ProposalsTable, ViewMore } from "lib/components/table";
 import { useModuleRelatedProposals } from "lib/services/move/module";
 
 interface ModuleRelatedProposalsTableProps {
-  vmAddress: HexAddr;
   moduleName: string;
-  scrollComponentId: string;
-  relatedProposalsCount: Option<number>;
   onViewMore?: () => void;
+  relatedProposalsCount: Option<number>;
+  scrollComponentId: string;
+  vmAddress: HexAddr;
 }
 
 export const ModuleRelatedProposalsTable = ({

@@ -8,8 +8,8 @@ import { Tooltip } from "lib/components/Tooltip";
 import type { NavMenuProps, SubmenuInfo } from "./types";
 
 interface CollapseNavInfoProps {
-  submenu: SubmenuInfo;
   isCurrentPage: (slug: string) => boolean;
+  submenu: SubmenuInfo;
 }
 const CollapseNavInfo = ({ isCurrentPage, submenu }: CollapseNavInfoProps) => (
   <Tooltip

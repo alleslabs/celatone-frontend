@@ -12,9 +12,9 @@ import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 
 interface ModuleListsBodyProps {
   address: HexAddr;
+  isLoading: boolean;
   keyword: string;
   modules: Option<IndexedModule[]>;
-  isLoading: boolean;
   onViewMore?: () => void;
 }
 

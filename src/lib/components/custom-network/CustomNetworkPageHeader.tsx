@@ -1,9 +1,9 @@
 import { Alert, AlertDescription, Flex, Heading, Text } from "@chakra-ui/react";
 
 interface CustomNetworkPageHeaderProps {
-  title: string;
-  subtitle?: string;
   hasAlert?: boolean;
+  subtitle?: string;
+  title: string;
 }
 
 export const CustomNetworkPageHeader = ({

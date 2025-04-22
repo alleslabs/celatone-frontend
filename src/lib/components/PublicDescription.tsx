@@ -9,9 +9,9 @@ import { ShowMoreButton } from "./button";
 
 interface PublicDescriptionProps {
   description: string;
-  title: string;
-  textLine: number;
   icon?: ReactNode;
+  textLine: number;
+  title: string;
 }
 
 export const PublicDescription = ({

@@ -9,18 +9,18 @@ const getBgColor = (
   status: Proposal["status"]
 ): CSSProperties["backgroundColor"] => {
   switch (status) {
-    case ProposalStatus.DEPOSIT_PERIOD:
-      return "proposalChip.depositPeriod.bg";
-    case ProposalStatus.VOTING_PERIOD:
-      return "proposalChip.votingPeriod.bg";
-    case ProposalStatus.FAILED:
-      return "proposalChip.failed.bg";
-    case ProposalStatus.REJECTED:
-      return "proposalChip.rejected.bg";
-    case ProposalStatus.PASSED:
-      return "proposalChip.passed.bg";
     case ProposalStatus.CANCELLED:
       return "proposalChip.cancelled.bg";
+    case ProposalStatus.DEPOSIT_PERIOD:
+      return "proposalChip.depositPeriod.bg";
+    case ProposalStatus.FAILED:
+      return "proposalChip.failed.bg";
+    case ProposalStatus.PASSED:
+      return "proposalChip.passed.bg";
+    case ProposalStatus.REJECTED:
+      return "proposalChip.rejected.bg";
+    case ProposalStatus.VOTING_PERIOD:
+      return "proposalChip.votingPeriod.bg";
     case ProposalStatus.DEPOSIT_FAILED:
     default:
       return "proposalChip.depositFailed.bg";
@@ -32,9 +32,9 @@ export const StatusChip = ({
   isTransparent = false,
   status,
 }: {
-  status: Proposal["status"];
-  isTransparent?: boolean;
   hasCloseBtn?: boolean;
+  isTransparent?: boolean;
+  status: Proposal["status"];
 }) => {
   const formatStatus =
     status === ProposalStatus.DEPOSIT_FAILED

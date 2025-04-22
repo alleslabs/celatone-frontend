@@ -7,9 +7,9 @@ import { DEVELOPER_TOOL_DOCS_LINK, USER_GUIDE_DOCS_LINK } from "lib/data";
 import { CustomIcon } from "./icon";
 
 interface UserDocsButtonProps extends ButtonProps {
-  title: string;
   href: string;
   isDevTool: boolean;
+  title: string;
 }
 
 export const UserDocsButton = ({

@@ -6,9 +6,9 @@ import { formatUTokenWithPrecision, getTokenLabel } from "lib/utils";
 
 interface DepositRatioProps {
   current: TokenWithValue;
-  min: TokenWithValue;
-  isDepositOrVoting: boolean;
   isCompact: boolean;
+  isDepositOrVoting: boolean;
+  min: TokenWithValue;
 }
 
 export const DepositRatio = ({

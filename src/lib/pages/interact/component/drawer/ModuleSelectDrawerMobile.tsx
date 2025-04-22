@@ -32,14 +32,14 @@ import { SelectFunctionSection, SelectModuleSection } from "./body";
 import { ModuleSelector } from "./selector";
 
 interface ModuleSelectDrawerMobileProps {
+  handleModuleSelect: ModuleSelectFunction;
+  hexAddress: Option<HexAddr>;
   isOpen: boolean;
   onClose: () => void;
-  hexAddress: Option<HexAddr>;
-  handleModuleSelect: ModuleSelectFunction;
-  step: ModuleInteractionMobileStep;
-  setStep: (step: ModuleInteractionMobileStep) => void;
   selectedModule: Option<IndexedModule>;
   setSelectedModule: (module: IndexedModule) => void;
+  setStep: (step: ModuleInteractionMobileStep) => void;
+  step: ModuleInteractionMobileStep;
 }
 
 export const ModuleSelectDrawerMobile = ({

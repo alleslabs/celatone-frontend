@@ -5,12 +5,12 @@ import { Badge, Flex, Text } from "@chakra-ui/react";
 import { NetworkCard } from "./network-card";
 
 interface NetworkAccordionSubsectionProps {
-  title?: string;
-  networks: string[];
   cursor: Option<number>;
+  networks: string[];
+  onClose: () => void;
   setCursor: (index: Option<number>) => void;
   subsectionStartIndex: number;
-  onClose: () => void;
+  title?: string;
 }
 
 export const NetworkAccordionSubsection = ({

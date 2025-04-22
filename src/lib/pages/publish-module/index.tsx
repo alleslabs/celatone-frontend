@@ -10,8 +10,8 @@ import { PublishCompleted } from "./completed";
 import { PublishModule } from "./publish";
 
 export interface PublishCompleteState extends PublishTxInternalResult {
-  upgradePolicy: UpgradePolicy;
   modules: Module[];
+  upgradePolicy: UpgradePolicy;
 }
 
 const DEFAULT_STATE: PublishCompleteState = {

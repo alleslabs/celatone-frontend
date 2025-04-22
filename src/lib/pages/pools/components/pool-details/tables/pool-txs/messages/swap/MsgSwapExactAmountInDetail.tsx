@@ -9,13 +9,13 @@ import { PoolInfoText } from "../components/PoolInfoText";
 import { PoolRoute, PoolSwap } from "./components";
 
 interface MsgSwapExactAmountInDetailProps {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: MsgSwapExactAmountInDetails;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: MsgSwapExactAmountInDetails;
+  msgIndex: number;
+  txHash: string;
 }
 
 export const MsgSwapExactAmountInDetail = ({

@@ -10,11 +10,11 @@ import { RelatedVerifiedCodeLinks } from "./RelatedVerifiedCodeLinks";
 import { VerifyButton } from "./VerifyButton";
 
 interface FailedDetailsProps {
-  codeId: number;
   codeHash: string;
-  verificationInfo: WasmVerifyInfoBase;
-  relatedVerifiedCodes: number[];
+  codeId: number;
   contractAddress?: BechAddr32;
+  relatedVerifiedCodes: number[];
+  verificationInfo: WasmVerifyInfoBase;
 }
 
 export const FailedDetails = ({

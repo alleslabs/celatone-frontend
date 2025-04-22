@@ -10,13 +10,13 @@ import { PoolInfoText } from "../components/PoolInfoText";
 import { PoolAssetsGrid, PoolLPCard } from "./components";
 
 interface MsgExitSwapExternAmountOutDetailProps {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: MsgExitSwapExternAmountOutDetails;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: MsgExitSwapExternAmountOutDetails;
+  msgIndex: number;
+  txHash: string;
 }
 
 export const MsgExitSwapExternAmountOutDetail = ({

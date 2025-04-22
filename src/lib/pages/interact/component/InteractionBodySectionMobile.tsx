@@ -7,8 +7,8 @@ import { ViewArea } from "./form";
 
 interface InteractionBodySectionMobileProps {
   module: Option<IndexedModule>;
-  selectedFn: Option<ExposedFunction>;
   openDrawer: () => void;
+  selectedFn: Option<ExposedFunction>;
 }
 
 export const InteractionBodySectionMobile = ({

@@ -11,13 +11,13 @@ import { useCallback } from "react";
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface StoreCodeStreamParams {
-  wasmFileName: Option<string>;
-  wasmCode: Option<Promise<ArrayBuffer>>;
   addresses?: BechAddr[];
-  permission?: AccessType;
   codeName: string;
   estimatedFee: Option<StdFee>;
   onTxSucceed: StoreCodeSucceedCallback;
+  permission?: AccessType;
+  wasmCode: Option<Promise<ArrayBuffer>>;
+  wasmFileName: Option<string>;
 }
 
 export const useStoreCodeTx = (isMigrate: boolean) => {

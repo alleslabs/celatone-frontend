@@ -19,15 +19,15 @@ import { ValidatorsTableRow } from "./ValidatorsTableRow";
 
 interface ValidatorsTableProps {
   data: Option<ValidatorsResponse>;
-  isLoading: boolean;
   isActive: boolean;
-  order: ValidatorOrder;
-  setOrder: (value: ValidatorOrder) => void;
   isDesc: boolean;
-  setIsDesc: (value: boolean) => void;
-  scrollComponentId: string;
-  showUptime?: boolean;
+  isLoading: boolean;
   isSearching?: boolean;
+  order: ValidatorOrder;
+  scrollComponentId: string;
+  setIsDesc: (value: boolean) => void;
+  setOrder: (value: ValidatorOrder) => void;
+  showUptime?: boolean;
 }
 
 export const ValidatorsTable = ({

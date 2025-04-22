@@ -9,11 +9,11 @@ import { SearchResultItemIcon } from "./SearchResultItemIcon";
 import { getRouteOptions } from "./utils";
 
 interface ResultItemProps {
+  cursor: Option<number>;
+  handleSelectResult: (result?: SearchResult, isClick?: boolean) => void;
   index: number;
   result: SearchResult;
-  cursor: Option<number>;
   setCursor: (index: Option<number>) => void;
-  handleSelectResult: (result?: SearchResult, isClick?: boolean) => void;
 }
 
 export const SearchResultItem = ({

@@ -12,9 +12,9 @@ import { EvmTransactionsTableMobileCard } from "./EvmTransactionsTableMobileCard
 import { EvmTransactionsTableRow } from "./EvmTransactionsTableRow";
 
 interface EvmTransactionsTableProps {
+  emptyState: JSX.Element;
   evmTransactions: Option<TxDataWithTimeStampJsonRpc[]>;
   isLoading: boolean;
-  emptyState: JSX.Element;
   showTimestamp?: boolean;
 }
 

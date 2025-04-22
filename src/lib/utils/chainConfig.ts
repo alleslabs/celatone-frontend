@@ -7,10 +7,10 @@ import { wallets as keplrWallets } from "@cosmos-kit/keplr-extension";
 export const getWallets = (wallets: ChainConfig["wallets"]) =>
   wallets.reduce((acc, wallet) => {
     switch (wallet) {
-      case "keplr":
-        return [...acc, ...keplrWallets];
       case "compass":
         return [...acc, ...compassWallets];
+      case "keplr":
+        return [...acc, ...keplrWallets];
       default:
         return acc;
     }

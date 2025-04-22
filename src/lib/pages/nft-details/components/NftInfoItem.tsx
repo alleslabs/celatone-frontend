@@ -4,8 +4,8 @@ import { Flex, Text } from "@chakra-ui/react";
 
 interface NftInfoItemProps {
   children: ReactNode;
-  label: string;
   isCentered?: boolean;
+  label: string;
 }
 
 export const NftInfoItem = ({

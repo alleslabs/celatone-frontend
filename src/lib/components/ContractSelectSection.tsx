@@ -23,10 +23,10 @@ import {
 import { WasmVerifyBadge } from "./WasmVerifyBadge";
 
 interface DisplayNameProps {
-  notSelected: boolean;
   isValid: boolean;
-  name?: string;
   label: string;
+  name?: string;
+  notSelected: boolean;
 }
 
 interface ContractDetailsButtonProps {
@@ -37,8 +37,8 @@ interface ContractDetailsButtonProps {
 }
 
 interface ContractSelectSectionProps {
-  mode: "all-lists" | "only-admin";
   contractAddress: BechAddr32;
+  mode: "all-lists" | "only-admin";
   onContractSelect: (contract: BechAddr32) => void;
   successCallback?: (data: ContractData) => void;
 }

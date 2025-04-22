@@ -29,8 +29,8 @@ import { useWatch } from "react-hook-form";
 import type { AddNetworkManualForm } from "../../types";
 
 export enum GasPriceConfiguration {
-  STANDARD = "standard",
   CUSTOM = "custom",
+  STANDARD = "standard",
 }
 
 interface GasFeeDetailsProps {

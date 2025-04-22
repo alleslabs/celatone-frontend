@@ -10,8 +10,8 @@ import { SelectedFunctionCard } from "./SelectedFunctionCard";
 
 interface FunctionSelectBodyProps {
   module: Option<IndexedModule>;
-  selectedFn: Option<ExposedFunction>;
   openDrawer: () => void;
+  selectedFn: Option<ExposedFunction>;
 }
 
 export const FunctionSelectBody = ({

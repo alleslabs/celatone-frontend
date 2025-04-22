@@ -1,10 +1,10 @@
 import { Flex, Tag, Text } from "@chakra-ui/react";
 
 interface TypeLabelProps {
+  children?: JSX.Element;
+  isRequired?: boolean;
   label?: string;
   type?: string;
-  isRequired?: boolean;
-  children?: JSX.Element;
 }
 
 export const TypeLabel = ({

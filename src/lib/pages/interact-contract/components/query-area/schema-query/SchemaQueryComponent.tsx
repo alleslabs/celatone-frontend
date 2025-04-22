@@ -53,13 +53,13 @@ const WasmCodeSnippet = dynamic(
 );
 
 interface SchemaQueryComponentProps {
-  msgSchema: SchemaInfo;
-  resSchema: SchemaInfo;
-  contractAddress: BechAddr32;
-  walletAddress: Option<BechAddr20>;
-  initialMsg: JsonDataType;
-  opened: boolean;
   addActivity: (activity: Activity) => void;
+  contractAddress: BechAddr32;
+  initialMsg: JsonDataType;
+  msgSchema: SchemaInfo;
+  opened: boolean;
+  resSchema: SchemaInfo;
+  walletAddress: Option<BechAddr20>;
 }
 
 export const SchemaQueryComponent = ({

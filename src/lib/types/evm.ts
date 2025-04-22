@@ -11,31 +11,31 @@ import { zHexAddr20 } from "./addrs";
 import { zUtcDate } from "./time";
 
 export enum EvmMethodId {
+  CallErc20Factory = "0x06ef1a86",
   Transfer = "0x",
   TransferErc20 = "0xa9059cbb",
-  CallErc20Factory = "0x06ef1a86",
 }
 
 export enum EvmMethodName {
+  CallErc20Factory = "Call ERC20 Factory",
+  Create = "Create",
   Transfer = "Transfer",
   TransferErc20 = "Transfer ERC20",
-  Create = "Create",
-  CallErc20Factory = "Call ERC20 Factory",
 }
 
 export type EvmToAddress =
   | {
-      toType: EvmMethodName.Create;
       address: HexAddr20;
       evmTxHash: Option<string>;
+      toType: EvmMethodName.Create;
     }
   | {
+      address: HexAddr20;
       toType: EvmMethodName.CallErc20Factory;
-      address: HexAddr20;
     }
   | {
-      toType: null;
       address: HexAddr20;
+      toType: null;
     };
 
 // MARK: Verification
@@ -45,31 +45,31 @@ export enum EvmProgrammingLanguage {
 }
 
 export enum EvmVerifyLicenseType {
-  None = "none",
-  Unlicense = "unlicense",
-  MIT = "mit",
+  Apache2_0 = "apache_2_0",
+  BSD2Clause = "bsd_2_clause",
+  BSD3Clause = "bsd_3_clause",
+  BSL1_1 = "bsl_1_1",
+  GNUAGPLv3 = "gnu_agpl_v3",
   GNUGPLv2 = "gnu_gpl_v2",
   GNUGPLv3 = "gnu_gpl_v3",
   GNULGPLv2_1 = "gnu_lgpl_v2_1",
   GNULGPLv3 = "gnu_lgpl_v3",
-  BSD2Clause = "bsd_2_clause",
-  BSD3Clause = "bsd_3_clause",
+  MIT = "mit",
   MPL2_0 = "mpl_2_0",
+  None = "none",
   OSL3_0 = "osl_3_0",
-  Apache2_0 = "apache_2_0",
-  GNUAGPLv3 = "gnu_agpl_v3",
-  BSL1_1 = "bsl_1_1",
+  Unlicense = "unlicense",
 }
 
 export enum EvmVerifyOptions {
-  VyperUploadFile = "vyper-upload-file",
+  SolidityContractCode = "solidity-contract-code",
+  SolidityFoundry = "solidity-foundry",
+  SolidityHardhat = "solidity-hardhat",
+  SolidityJsonInput = "solidity-json-input",
+  SolidityUploadFiles = "solidity-upload-files",
   VyperContractCode = "vyper-contract-code",
   VyperJsonInput = "vyper-json-input",
-  SolidityUploadFiles = "solidity-upload-files",
-  SolidityContractCode = "solidity-contract-code",
-  SolidityJsonInput = "solidity-json-input",
-  SolidityHardhat = "solidity-hardhat",
-  SolidityFoundry = "solidity-foundry",
+  VyperUploadFile = "vyper-upload-file",
 }
 
 // MARK - Shared Components

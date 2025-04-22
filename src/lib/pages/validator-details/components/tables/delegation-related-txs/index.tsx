@@ -11,9 +11,9 @@ import { DelegationRelatedTxsTableMobileCard } from "./DelegationRelatedTxsTable
 import { DelegationRelatedTxsTableRow } from "./DelegationRelatedTxsTableRow";
 
 interface DelegationRelatedTxsTableProps {
+  assetInfos: Option<AssetInfos>;
   delegationRelatedTxs: Option<ValidatorDelegationRelatedTxsResponseItem[]>;
   isLoading: boolean;
-  assetInfos: Option<AssetInfos>;
   movePoolInfos: Option<MovePoolInfos>;
 }
 

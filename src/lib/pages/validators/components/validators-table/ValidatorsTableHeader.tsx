@@ -15,8 +15,8 @@ const SortIcon = ({
   order,
 }: {
   column: ValidatorOrder;
-  order: ValidatorOrder;
   isDesc: boolean;
+  order: ValidatorOrder;
 }) => {
   if (column !== order) return null;
   return (
@@ -42,14 +42,14 @@ const StyledTableHeader = chakra(TableHeader, {
 });
 
 interface ValidatorsTableHeaderProps {
-  templateColumns: GridProps["templateColumns"];
-  scrollComponentId: string;
   isActive: boolean;
-  order: ValidatorOrder;
-  setOrder: (value: ValidatorOrder) => void;
   isDesc: boolean;
+  order: ValidatorOrder;
+  scrollComponentId: string;
   setIsDesc: (value: boolean) => void;
+  setOrder: (value: ValidatorOrder) => void;
   showUptime: boolean;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const ValidatorsTableHeader = ({

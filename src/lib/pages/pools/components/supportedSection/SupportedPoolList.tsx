@@ -7,9 +7,9 @@ import { EmptyState } from "lib/components/state";
 import { PoolCard } from "./PoolCard";
 
 interface SupportedPoolListProps {
-  pools: Option<Pool[]>;
   isLoading: boolean;
   mode: string;
+  pools: Option<Pool[]>;
 }
 
 export const SupportedPoolList = ({

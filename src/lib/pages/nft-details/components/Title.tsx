@@ -8,10 +8,10 @@ import { ViewResourceButton } from "./ViewResourceButton";
 
 interface TitleProps {
   collectionAddress: HexAddr32;
-  nftAddress: HexAddr32;
   displayCollectionName: string;
-  tokenId: string;
   isBurned: boolean;
+  nftAddress: HexAddr32;
+  tokenId: string;
 }
 
 export const Title = ({

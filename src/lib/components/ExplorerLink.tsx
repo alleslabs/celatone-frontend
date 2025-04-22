@@ -16,29 +16,29 @@ import { AppLink } from "./AppLink";
 import { Copier } from "./copy";
 
 export type LinkType =
-  | AddressReturnType
-  | "evm_contract_address"
-  | "tx_hash"
-  | "evm_tx_hash"
-  | "code_id"
   | "block_height"
-  | "proposal_id"
+  | "code_id"
+  | "evm_contract_address"
+  | "evm_tx_hash"
   | "pool_id"
-  | "task_id";
+  | "proposal_id"
+  | "task_id"
+  | "tx_hash"
+  | AddressReturnType;
 
 interface ExplorerLinkProps extends FlexProps {
-  value: string;
-  type: LinkType;
+  ampCopierSection?: string;
   copyValue?: string;
   externalLink?: string;
-  showCopyOnHover?: boolean;
-  isReadOnly?: boolean;
-  textFormat?: "truncate" | "ellipsis" | "normal";
-  textVariant?: TextProps["variant"];
-  ampCopierSection?: string;
-  openNewTab?: boolean;
   fixedHeight?: boolean;
+  isReadOnly?: boolean;
+  openNewTab?: boolean;
   rightIcon?: ReactNode;
+  showCopyOnHover?: boolean;
+  textFormat?: "ellipsis" | "normal" | "truncate";
+  textVariant?: TextProps["variant"];
+  type: LinkType;
+  value: string;
 }
 
 export const getNavigationUrl = ({
@@ -52,11 +52,13 @@ export const getNavigationUrl = ({
 }) => {
   let url = "";
   switch (type) {
-    case "tx_hash":
-      url = "/txs";
+    case "block_height":
+      // no block info for Genesis height (0)
+      if (value === "0") return "";
+      url = "/blocks";
       break;
-    case "evm_tx_hash":
-      url = "/evm-txs";
+    case "code_id":
+      url = "/codes";
       break;
     case "contract_address":
       url = wasmEnabled ? "/contracts" : "/accounts";
@@ -64,31 +66,29 @@ export const getNavigationUrl = ({
     case "evm_contract_address":
       url = "/evm-contracts";
       break;
+    case "evm_tx_hash":
+      url = "/evm-txs";
+      break;
+    case "invalid_address":
+      return "";
+    case "pool_id":
+      url = "/pools";
+      break;
+    case "proposal_id":
+      url = "/proposals";
+      break;
+    case "task_id":
+      url = "/my-module-verifications";
+      break;
+    case "tx_hash":
+      url = "/txs";
+      break;
     case "user_address":
       url = "/accounts";
       break;
     case "validator_address":
       url = "/validators";
       break;
-    case "code_id":
-      url = "/codes";
-      break;
-    case "block_height":
-      // no block info for Genesis height (0)
-      if (value === "0") return "";
-      url = "/blocks";
-      break;
-    case "proposal_id":
-      url = "/proposals";
-      break;
-    case "pool_id":
-      url = "/pools";
-      break;
-    case "task_id":
-      url = "/my-module-verifications";
-      break;
-    case "invalid_address":
-      return "";
     default:
       break;
   }
@@ -122,14 +122,14 @@ const LinkRender = ({
   textVariant,
   type,
 }: {
-  type: string;
-  isInternal: boolean;
-  hrefLink: string;
-  textValue: string;
   fallbackValue: string;
+  hrefLink: string;
   isEllipsis: boolean;
-  textVariant: TextProps["variant"];
+  isInternal: boolean;
   openNewTab: Option<boolean>;
+  textValue: string;
+  textVariant: TextProps["variant"];
+  type: string;
 }) => {
   const { currentChainId } = useCelatoneApp();
   const textElement = (

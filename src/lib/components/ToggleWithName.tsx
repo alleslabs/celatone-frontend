@@ -3,8 +3,8 @@ import type { LVPair } from "lib/types";
 import { Button, Flex } from "@chakra-ui/react";
 
 interface ToggleWithNameProps {
-  selectedValue: string;
   options: LVPair[];
+  selectedValue: string;
   selectOption: (value: string) => void;
 }
 

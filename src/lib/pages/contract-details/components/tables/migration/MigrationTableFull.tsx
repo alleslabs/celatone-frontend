@@ -16,9 +16,9 @@ import { MigrationRow } from "./MigrationRow";
 
 interface MigrationTableFullProps {
   contractAddress: BechAddr32;
+  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
-  refetchCount: () => void;
 }
 
 export const MigrationTableFull = ({

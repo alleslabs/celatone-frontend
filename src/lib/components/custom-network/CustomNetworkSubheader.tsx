@@ -1,8 +1,8 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
 
 interface CustomNetworkSubheaderProps {
-  title: string;
   subtitle?: string;
+  title: string;
 }
 
 export const CustomNetworkSubheader = ({

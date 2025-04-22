@@ -13,9 +13,9 @@ import { BondedTableRow } from "./BondedTableRow";
 import { TEMPLATE_COLUMNS } from "./constants";
 
 interface UnbondingsTableProps {
-  unbondings: Option<Unbonding[]>;
   isLoading: boolean;
   isSingleBondDenom: boolean;
+  unbondings: Option<Unbonding[]>;
 }
 
 const UnbondingsTableBody = ({

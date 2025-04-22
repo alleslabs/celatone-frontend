@@ -15,11 +15,11 @@ import { NetworkCardCta } from "./NetworkCardCta";
 
 interface NetworkCardProps {
   chainId: string;
-  index?: number;
   cursor: Option<number>;
-  setCursor: (index: Option<number>) => void;
-  onClose: () => void;
+  index?: number;
   isDraggable?: boolean;
+  onClose: () => void;
+  setCursor: (index: Option<number>) => void;
 }
 
 const getCardBackground = (

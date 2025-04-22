@@ -39,9 +39,9 @@ export const ViewArea = ({
   moduleAddress,
   moduleName,
 }: {
+  fn: ExposedFunction;
   moduleAddress: HexAddr;
   moduleName: string;
-  fn: ExposedFunction;
 }) => {
   const [abiData, setAbiData] = useState<AbiFormData>({
     args: getAbiInitialData(fn.params.length),

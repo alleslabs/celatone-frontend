@@ -8,14 +8,14 @@ import { userAgentEnrichmentPlugin } from "@amplitude/plugin-user-agent-enrichme
 import type { AmpEvent } from "./types";
 
 interface MandatoryProperties {
-  page: Nullable<string>;
-  prevPathname: Nullable<string>;
-  rawAddressHash: Nullable<string>;
   chain: Nullable<string>;
+  devSidebar: Nullable<boolean>;
   mobile: Nullable<boolean>;
   navSidebar: Nullable<boolean>;
-  devSidebar: Nullable<boolean>;
+  page: Nullable<string>;
+  prevPathname: Nullable<string>;
   projectSidebar: Nullable<boolean>;
+  rawAddressHash: Nullable<string>;
 }
 
 class Amplitude {
@@ -71,6 +71,18 @@ class Amplitude {
     return Amplitude.amplitude;
   }
 
+  public setMandatoryProperties(
+    properties: Omit<MandatoryProperties, "prevPathname">
+  ) {
+    const { page, ...rest } = properties;
+    const prevPathname = this.mandatoryProperties.page;
+    this.mandatoryProperties = {
+      page,
+      prevPathname,
+      ...rest,
+    };
+  }
+
   public setUserIdentity(
     wallets: string[],
     networks: string[],
@@ -89,18 +101,6 @@ class Amplitude {
     identifyEvent.set("Project Sidebar", projectSidebar);
 
     this.client?.identify(identifyEvent);
-  }
-
-  public setMandatoryProperties(
-    properties: Omit<MandatoryProperties, "prevPathname">
-  ) {
-    const { page, ...rest } = properties;
-    const prevPathname = this.mandatoryProperties.page;
-    this.mandatoryProperties = {
-      page,
-      prevPathname,
-      ...rest,
-    };
   }
 
   public track(event: AmpEvent, properties?: Record<string, unknown>) {

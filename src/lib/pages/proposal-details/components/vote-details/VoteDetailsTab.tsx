@@ -6,8 +6,8 @@ import { Button, useMultiStyleConfig, useTab } from "@chakra-ui/react";
 import { ProposalStepper } from "../proposal-stepper";
 
 interface VoteDetailsTabProps extends TabProps {
-  step: number;
   proposalData: ProposalData;
+  step: number;
 }
 
 export const VoteDetailsTab = ({

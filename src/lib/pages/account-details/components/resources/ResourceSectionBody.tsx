@@ -22,8 +22,8 @@ import { ResourceLeftPanel } from "./ResourceLeftPanel";
 
 interface ResourceSectionBodyProps {
   address: BechAddr;
-  resourcesByOwner: Option<ResourceGroupByAccount[]>;
   isLoading: boolean;
+  resourcesByOwner: Option<ResourceGroupByAccount[]>;
   selectedAccountParam: Option<string>;
   selectedGroupNameParam: Option<string>;
 }

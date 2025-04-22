@@ -9,11 +9,11 @@ import { useRef } from "react";
 import AceEditor from "react-ace";
 
 interface JsonEditorProps {
-  value: string;
-  setValue?: (value: string) => void;
-  readOnly?: boolean;
   isValid: boolean;
+  readOnly?: boolean;
+  setValue?: (value: string) => void;
   showLines: number;
+  value: string;
 }
 
 const JsonEditor = ({

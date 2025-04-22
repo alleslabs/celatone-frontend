@@ -14,12 +14,12 @@ import { CountBadge, FunctionCard } from "lib/components/module";
 import { NoImageEmptyState } from "./EmptyState";
 
 interface FunctionAccordionProps {
+  amptrackTab: string;
   filteredFns: ExposedFunction[];
   isEmpty: boolean;
-  triggerText: string;
   selectedFn: Option<ExposedFunction>;
   setSelectedFn: (fn: ExposedFunction) => void;
-  amptrackTab: string;
+  triggerText: string;
 }
 
 export const FunctionAccordion = ({

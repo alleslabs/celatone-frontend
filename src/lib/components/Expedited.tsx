@@ -13,10 +13,10 @@ const ExpeditedText = ({
   threshold,
   votingPeriod,
 }: {
+  isLoading: boolean;
   quorum: Option<Ratio<number>>;
   threshold: Option<Ratio<number>>;
   votingPeriod: Option<string>;
-  isLoading: boolean;
 }) => {
   if (isLoading)
     <SkeletonText

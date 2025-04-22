@@ -11,8 +11,8 @@ import { useCallback } from "react";
 
 interface BookmarkButtonProps {
   details: Option<PublicDetail>;
-  slug: string;
   hasText?: boolean;
+  slug: string;
 }
 
 const buttonTextProps: CSSProperties = {
@@ -31,10 +31,10 @@ const buttonIconProps: CSSProperties = {
 const toastIcon = <CustomIcon color="success.main" name="check-circle-solid" />;
 
 interface StyledButtonProps {
-  hasText: boolean;
-  actionText: string;
-  icon: IconKeys;
   action: (e: MouseEvent<HTMLButtonElement>) => void;
+  actionText: string;
+  hasText: boolean;
+  icon: IconKeys;
   variant: string;
 }
 

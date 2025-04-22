@@ -34,11 +34,11 @@ const RadioCard = ({ checked, children, ...props }: RadioCardProps) => (
 );
 
 interface PolicyCardProps {
-  value: UpgradePolicy;
-  selected: UpgradePolicy;
   description: string;
   hasCondition?: boolean;
   onSelect: () => void;
+  selected: UpgradePolicy;
+  value: UpgradePolicy;
 }
 
 export const PolicyCard = ({

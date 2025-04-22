@@ -29,16 +29,16 @@ import { forwardRef, useMemo, useRef, useState } from "react";
 import { DropdownChevron } from "./DropdownChevron";
 
 export interface TxFilterSelectionProps extends InputProps {
+  boxHeight?: LayoutProps["height"];
+  boxWidth?: LayoutProps["width"];
+  helperText?: string;
+  label?: string;
+  labelBgColor?: string;
   placeholder?: string;
   result: string[];
   setResult: (option: string, bool: boolean) => void;
-  helperText?: string;
-  labelBgColor?: string;
-  label?: string;
-  boxWidth?: LayoutProps["width"];
-  boxHeight?: LayoutProps["height"];
-  size?: string | object;
-  tagSize?: string | object;
+  size?: object | string;
+  tagSize?: object | string;
 }
 
 const listItemProps: CSSProperties = {

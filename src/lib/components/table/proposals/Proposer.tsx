@@ -8,8 +8,8 @@ export const Proposer = ({
   amptrackSection,
   proposer,
 }: {
-  proposer: Option<BechAddr>;
   amptrackSection?: string;
+  proposer: Option<BechAddr>;
 }) => {
   const getAddressType = useGetAddressType();
   return proposer ? (

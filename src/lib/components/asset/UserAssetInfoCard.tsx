@@ -5,8 +5,8 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import { formatPrice } from "lib/utils";
 
 interface UserAssetInfoCardProps {
-  totalSupportedAssetsValue: Option<USD<Big>>;
   helperText?: string;
+  totalSupportedAssetsValue: Option<USD<Big>>;
 }
 
 export const UserAssetInfoCard = ({

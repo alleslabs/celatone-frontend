@@ -17,12 +17,12 @@ import { matchSorter } from "match-sorter";
 import { forwardRef, useMemo, useRef, useState } from "react";
 
 export interface ProposalStatusFilterProps extends InputProps {
-  result: ProposalStatus[];
-  minW?: string;
-  label?: string;
-  placeholder?: string;
-  setResult: (option: ProposalStatus[]) => void;
   isMulti: boolean;
+  label?: string;
+  minW?: string;
+  placeholder?: string;
+  result: ProposalStatus[];
+  setResult: (option: ProposalStatus[]) => void;
 }
 
 export const ProposalStatusFilter = forwardRef<

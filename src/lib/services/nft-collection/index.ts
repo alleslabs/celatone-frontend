@@ -39,7 +39,7 @@ export const useNftCollections = (
   search?: string,
   options?: Pick<
     UseQueryOptions<NftCollectionsResponse>,
-    "onSuccess" | "enabled"
+    "enabled" | "onSuccess"
   >
 ) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");
@@ -138,7 +138,7 @@ export const useNftCollectionActivities = (
   limit: number,
   offset: number,
   search = "",
-  options?: Pick<UseQueryOptions<ActivitiesResponse>, "onSuccess" | "enabled">
+  options?: Pick<UseQueryOptions<ActivitiesResponse>, "enabled" | "onSuccess">
 ) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");
 
@@ -200,7 +200,7 @@ export const useNftCollectionMutateEvents = (
   offset: number,
   options?: Pick<
     UseQueryOptions<CollectionMutateEventsResponse>,
-    "onSuccess" | "enabled"
+    "enabled" | "onSuccess"
   >
 ) => {
   const apiEndpoint = useBaseApiRoute("nft_collections");

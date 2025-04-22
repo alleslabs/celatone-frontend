@@ -9,12 +9,12 @@ import { FormFields } from "./fields";
 import { getComponentsDefaultValues } from "./utils";
 
 interface EvmAbiFormProps {
-  types: ReadonlyArray<JsonFragmentType>;
-  isPayable?: boolean;
   initialData?: JsonDataType[];
+  isDisabled?: boolean;
+  isPayable?: boolean;
   propsOnChangeInputs?: (data: JsonDataType[]) => void;
   propsOnChangeValue?: (value: string) => void;
-  isDisabled?: boolean;
+  types: ReadonlyArray<JsonFragmentType>;
 }
 
 export const EvmAbiForm = ({

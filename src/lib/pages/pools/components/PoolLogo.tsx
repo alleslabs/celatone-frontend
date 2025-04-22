@@ -7,11 +7,11 @@ import { TokenImageRender } from "lib/components/token";
 import { getUndefinedTokenIcon } from "../utils";
 
 interface PoolLogoProps {
-  tokens: TokenWithValue[];
   logoSize?: ImageProps["boxSize"];
   marginLeft?: number;
   minW?: FlexProps["minW"];
   textVariant?: TextProps["variant"];
+  tokens: TokenWithValue[];
 }
 
 export const PoolLogo = ({

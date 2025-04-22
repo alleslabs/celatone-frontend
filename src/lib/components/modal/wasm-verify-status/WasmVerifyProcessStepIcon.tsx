@@ -3,10 +3,10 @@ import { CustomIcon } from "lib/components/icon";
 
 export const WasmVerifyProcessStepIcon = ({ state }: { state: string }) => {
   switch (state) {
-    case "Failed":
-      return <CustomIcon color="error.main" name="close-circle-solid" />;
     case "Completed":
       return <CustomIcon color="primary.main" name="check-circle-solid" />;
+    case "Failed":
+      return <CustomIcon color="error.main" name="close-circle-solid" />;
     case "In Progress":
       return (
         <Flex

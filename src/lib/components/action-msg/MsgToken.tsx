@@ -7,9 +7,9 @@ import { Copier } from "../copy";
 import { TooltipInfo } from "../Tooltip";
 
 interface MsgTokenProps {
-  token: TokenWithValue;
-  fontWeight?: number;
   ampCopierSection?: string;
+  fontWeight?: number;
+  token: TokenWithValue;
 }
 
 export const MsgToken = ({

@@ -15,8 +15,8 @@ import { Tooltip } from "../Tooltip";
 import { TokenImageRender } from "./TokenImageRender";
 
 interface TokenCardProps extends FlexProps {
-  token: TokenWithValue;
   amptrackSection?: string;
+  token: TokenWithValue;
 }
 
 export const TokenCard = ({

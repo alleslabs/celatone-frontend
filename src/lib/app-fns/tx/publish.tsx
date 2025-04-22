@@ -10,8 +10,8 @@ import { findAttr } from "lib/utils";
 import { catchTxError, postTx, sendingTx } from "./common";
 
 export interface PublishTxInternalResult {
-  txHash: string;
   txFee: Option<string>;
+  txHash: string;
 }
 
 export type PublishSucceedCallback = (
@@ -22,9 +22,9 @@ interface PublishModuleTxParams {
   address: BechAddr20;
   fee: StdFee;
   messages: EncodeObject[];
-  signAndBroadcast: SignAndBroadcast;
-  onTxSucceed?: PublishSucceedCallback;
   onTxFailed?: () => void;
+  onTxSucceed?: PublishSucceedCallback;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const publishModuleTx = ({

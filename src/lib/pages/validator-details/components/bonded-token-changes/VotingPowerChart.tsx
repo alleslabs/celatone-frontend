@@ -21,10 +21,10 @@ import {
 import { VotingPowerChartDetails } from "./VotingPowerChartDetails";
 
 interface VotingPowerChartProps {
-  validatorAddress: ValidatorAddr;
-  singleStakingDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
   onViewMore?: () => void;
+  singleStakingDenom: Option<string>;
+  validatorAddress: ValidatorAddr;
 }
 
 export const VotingPowerChart = ({

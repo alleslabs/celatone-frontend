@@ -11,10 +11,10 @@ import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface UpdateAdminStreamParams {
   contractAddress: BechAddr32;
-  newAdmin: BechAddr;
   estimatedFee: Option<StdFee>;
-  onTxSucceed?: () => void;
+  newAdmin: BechAddr;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
 }
 
 export const useUpdateAdminTx = () => {

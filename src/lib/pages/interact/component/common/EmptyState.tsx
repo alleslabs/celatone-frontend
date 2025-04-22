@@ -5,10 +5,10 @@ import { StateImage } from "lib/components/state";
 
 interface ModuleEmptyStateProps {
   description: string;
-  imageWidth?: string;
-  hasImage?: boolean;
-  noBorder?: boolean;
   h?: FlexProps["h"];
+  hasImage?: boolean;
+  imageWidth?: string;
+  noBorder?: boolean;
   p?: FlexProps["p"];
 }
 

@@ -40,8 +40,8 @@ const defaultValues: MigratePageState = {
 };
 
 interface MigrateBodyProps {
-  contractAddress: BechAddr32;
   codeId: Option<number>;
+  contractAddress: BechAddr32;
 }
 
 const MigrateBody = ({

@@ -36,23 +36,23 @@ import { CopyButton } from "../copy";
 import { CustomIcon } from "../icon";
 
 interface MoveCodeSnippetProps {
+  abiData: AbiFormData;
+  fn: ExposedFunction;
+  ml?: ButtonProps["ml"];
   moduleAddress: HexAddr;
   moduleName: string;
-  fn: ExposedFunction;
-  abiData: AbiFormData;
-  type: "view" | "execute";
-  ml?: ButtonProps["ml"];
+  type: "execute" | "view";
 }
 
 interface FormatedData {
-  showTypeArgs: boolean;
-  showArgs: boolean;
-  formatedTypeArgs: string;
-  formatedArgs: string;
-  formatedAbiData: string;
-  typeArgsFlags: string;
   argsFlags: string;
+  formatedAbiData: string;
+  formatedArgs: string;
+  formatedTypeArgs: string;
   isHiddenCLI: boolean;
+  showArgs: boolean;
+  showTypeArgs: boolean;
+  typeArgsFlags: string;
 }
 
 const MoveCodeSnippet = ({
@@ -121,7 +121,7 @@ const MoveCodeSnippet = ({
 
   const codeSnippets: Record<
     string,
-    { name: string; mode: string; snippet: string; isHidden?: boolean }[]
+    { isHidden?: boolean; mode: string; name: string; snippet: string }[]
   > = {
     execute: [
       {

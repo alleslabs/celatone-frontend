@@ -10,12 +10,12 @@ import { useCallback } from "react";
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface MigrateStreamParams {
-  contractAddress: BechAddr32;
   codeId: number;
-  migrateMsg: object;
+  contractAddress: BechAddr32;
   estimatedFee: Option<StdFee>;
-  onTxSucceed?: (txHash: string) => void;
+  migrateMsg: object;
   onTxFailed?: () => void;
+  onTxSucceed?: (txHash: string) => void;
 }
 
 export const useMigrateContractTx = () => {

@@ -7,9 +7,9 @@ import { SingleMsg } from "./SingleMsg";
 
 interface SingleActionMsgProps {
   messages: Message[];
-  type: string;
-  success: boolean;
   singleMsg?: boolean;
+  success: boolean;
+  type: string;
 }
 export const SingleActionMsg = observer(
   ({ messages, singleMsg, success, type }: SingleActionMsgProps) => {

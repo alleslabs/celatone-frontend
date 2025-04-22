@@ -22,16 +22,16 @@ import {
 // ------------------------------------------//
 
 interface AccountDetailsTableCounts {
+  isLoading: boolean;
+  refetchCounts: () => void;
   tableCounts: {
+    assetsCount: Option<number>;
     codesCount: Nullish<number>;
     contractsAdminCount: Nullish<number>;
     contractsCount: Nullish<number>;
-    txsCount: Nullish<number>;
     proposalsCount: Nullish<number>;
-    assetsCount: Option<number>;
+    txsCount: Nullish<number>;
   };
-  isLoading: boolean;
-  refetchCounts: () => void;
 }
 
 export const useAccountDetailsTableCounts = (

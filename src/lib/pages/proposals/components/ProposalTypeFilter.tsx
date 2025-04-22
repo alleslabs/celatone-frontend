@@ -23,10 +23,10 @@ import { matchSorter } from "match-sorter";
 import { forwardRef, useMemo, useRef, useState } from "react";
 
 export interface ProposalTypeFilterProps extends InputProps {
-  result: ProposalType[];
-  minW?: string;
   label?: string;
+  minW?: string;
   placeholder?: string;
+  result: ProposalType[];
   setResult: Dispatch<SetStateAction<ProposalType[]>>;
 }
 

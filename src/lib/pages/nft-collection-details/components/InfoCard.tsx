@@ -6,11 +6,11 @@ import { CustomIcon } from "lib/components/icon";
 import { isUndefined } from "lodash";
 
 interface InfoCardProps {
-  title: string;
-  icon: IconKeys;
   content?: number;
-  onClick: () => void;
+  icon: IconKeys;
   isDisabled: boolean;
+  onClick: () => void;
+  title: string;
 }
 
 export const InfoCard = ({

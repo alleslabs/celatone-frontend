@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 import { Flex } from "@chakra-ui/react";
 
 type ActionPageContainerProps = {
-  children: ReactNode;
   boxProps?: BoxProps;
+  children: ReactNode;
   width?: number;
 };
 

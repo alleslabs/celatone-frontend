@@ -15,15 +15,15 @@ import { feeFromStr, findAttr, getCurrentDate } from "lib/utils";
 import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ExecuteTxParams {
-  address: BechAddr20;
-  contractAddress: BechAddr32;
-  messages: EncodeObject[];
   action: string;
-  fee: StdFee;
+  address: BechAddr20;
   base64Message: string;
-  signAndBroadcast: SignAndBroadcast;
-  onTxSucceed?: (activity: Activity) => void;
+  contractAddress: BechAddr32;
+  fee: StdFee;
+  messages: EncodeObject[];
   onTxFailed?: () => void;
+  onTxSucceed?: (activity: Activity) => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const executeContractTx = ({

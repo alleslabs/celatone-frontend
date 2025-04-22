@@ -10,12 +10,12 @@ import { CustomIcon } from "./icon";
 import { Tooltip } from "./Tooltip";
 
 interface CopyLinkProps extends FlexProps {
-  value: string;
-  type: string;
-  withoutIcon?: boolean;
-  showCopyOnHover?: boolean;
-  isTruncate?: boolean;
   amptrackSection?: string;
+  isTruncate?: boolean;
+  showCopyOnHover?: boolean;
+  type: string;
+  value: string;
+  withoutIcon?: boolean;
 }
 
 export const CopyLink = ({

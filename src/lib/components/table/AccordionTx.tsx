@@ -12,14 +12,14 @@ import { TableRow } from "./tableComponents";
 
 interface RenderButtonProps {
   message: Message;
-  txHash: string;
   msgIndex?: number;
+  txHash: string;
 }
 
 interface AccordionTxProps extends RenderButtonProps {
+  accordionSpacing?: GridItemProps["pl"];
   allowFurtherAction: boolean;
   isSigner?: boolean;
-  accordionSpacing?: GridItemProps["pl"];
 }
 
 const RenderButton = ({ message, msgIndex, txHash }: RenderButtonProps) => {

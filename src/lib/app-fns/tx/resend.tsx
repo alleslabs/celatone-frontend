@@ -16,11 +16,11 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface ResendTxParams {
   address: BechAddr20;
-  signAndBroadcast: SignAndBroadcast;
   fee: StdFee;
   messages: EncodeObject[];
-  onTxSucceed?: (txHash: string) => void;
   onTxFailed?: () => void;
+  onTxSucceed?: (txHash: string) => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const resendTx = ({

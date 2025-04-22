@@ -20,15 +20,15 @@ import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 /** TODO: refactor later */
 export interface NumberInputProps extends FormControlProps {
-  value: string;
-  onInputChange: (nextValue: string) => void;
+  error?: string;
+  helperText?: string;
   label: string;
   labelBgColor?: string;
-  helperText?: string;
+  onInputChange: (nextValue: string) => void;
   placeholder?: string;
-  error?: string;
-  type?: HTMLInputTypeAttribute;
   status?: FormStatus;
+  type?: HTMLInputTypeAttribute;
+  value: string;
 }
 
 export const NumberInput = ({

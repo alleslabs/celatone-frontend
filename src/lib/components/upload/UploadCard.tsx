@@ -10,11 +10,11 @@ import type { CardTheme, Status } from "./types";
 import { useCardTheme } from "./hooks/useCardTheme";
 
 interface UploadCardProps {
-  file: File;
   deleteFile: () => void;
-  theme?: CardTheme;
+  file: File;
   status?: Status;
   statusText?: Nullable<string>;
+  theme?: CardTheme;
 }
 
 export const UploadCard = ({

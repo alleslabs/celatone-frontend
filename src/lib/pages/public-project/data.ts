@@ -10,12 +10,12 @@ import type {
 import { usePublicProjectBySlug } from "lib/services/publicProjectService";
 
 interface PublicDataState {
+  isLoading: boolean;
+  projectDetail: Option<PublicDetail>;
+  publicAccounts: PublicAccount[];
   publicCodes: PublicCode[];
   publicContracts: PublicContract[];
-  publicAccounts: PublicAccount[];
   publicModules: PublicModule[];
-  projectDetail: Option<PublicDetail>;
-  isLoading: boolean;
 }
 
 export const usePublicData = (slug: string): PublicDataState => {

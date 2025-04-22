@@ -41,8 +41,8 @@ const ModuleCta = ({
   moduleAddress,
   moduleData,
 }: {
-  moduleData: IndexedModule;
   moduleAddress: Addr;
+  moduleData: IndexedModule;
 }) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();

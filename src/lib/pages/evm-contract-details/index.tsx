@@ -42,9 +42,9 @@ const tableHeaderId = "evmContractDetailsTab";
 
 interface EvmContractDetailsBodyProps {
   contractAddress: HexAddr20;
-  tab: TabIndex;
-  selectedType: InteractTabsIndex;
   selectedFn?: string;
+  selectedType: InteractTabsIndex;
+  tab: TabIndex;
 }
 
 const EvmContractDetailsBody = ({

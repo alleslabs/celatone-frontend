@@ -39,8 +39,8 @@ import { defaultValues, emptyModule, POLICIES } from "./formConstants";
 import { statusResolver } from "./utils";
 
 interface PublishModuleProps {
-  setPublishTxInfo: Dispatch<SetStateAction<PublishCompleteState>>;
   setCompleted: Dispatch<SetStateAction<boolean>>;
+  setPublishTxInfo: Dispatch<SetStateAction<PublishCompleteState>>;
 }
 
 export const PublishModule = ({

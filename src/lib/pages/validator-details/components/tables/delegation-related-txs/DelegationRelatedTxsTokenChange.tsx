@@ -21,10 +21,10 @@ import {
 } from "lib/utils";
 
 interface DelegationRelatedTxsTokenChangeProps {
-  txHash: string;
-  coin: Coin;
   assetInfos: Option<AssetInfos>;
+  coin: Coin;
   movePoolInfos: Option<MovePoolInfos>;
+  txHash: string;
 }
 
 export const DelegationRelatedTxsTokenChange = ({

@@ -20,9 +20,9 @@ import { OBJECT_TYPE, STRING_TYPE } from "./constants";
 import { getHelperText, getRules } from "./utils";
 
 interface ArgFieldTemplateProps {
+  control: Control<AbiFormData["args"]>;
   index: number;
   param: string;
-  control: Control<AbiFormData["args"]>;
 }
 
 export const ArgFieldTemplate = ({

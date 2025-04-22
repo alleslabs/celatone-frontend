@@ -24,9 +24,9 @@ const getAlertContent = (
   enabled: boolean,
   chainPrettyName: string
 ): {
-  variant: AlertProps["variant"];
-  icon: JSX.Element;
   description: string;
+  icon: JSX.Element;
+  variant: AlertProps["variant"];
 } =>
   enabled
     ? {

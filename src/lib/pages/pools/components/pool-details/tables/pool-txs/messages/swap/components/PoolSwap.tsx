@@ -11,18 +11,18 @@ import { coinsFromStr } from "lib/utils";
 import { AssetCard, ErrorFetchingDetail } from "../../components";
 
 interface ExactInput {
-  isExactIn: boolean;
   amount: Coin;
   expectedDenom: string;
+  isExactIn: boolean;
 }
 
 interface PoolSwapInterface {
-  txHash: string;
-  exactInput: ExactInput;
-  msgIndex: number;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  exactInput: ExactInput;
+  isOpened: boolean;
+  msgIndex: number;
+  txHash: string;
 }
 
 const getAssets = (

@@ -12,8 +12,8 @@ import { useTxsByAddressSequencer } from "lib/services/tx";
 import { useEffect, useState } from "react";
 
 interface PastTxsSequencerTransactionsTableWithWalletEmptyStateProps {
-  search: string;
   error: unknown;
+  search: string;
 }
 
 const PastTxsSequencerTransactionsTableWithWalletEmptyState = ({

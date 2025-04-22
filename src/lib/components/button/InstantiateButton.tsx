@@ -10,9 +10,9 @@ import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 
 interface InstantiateButtonProps extends ButtonProps {
+  codeId: number;
   instantiatePermission: AccessConfigPermission;
   permissionAddresses: PermissionAddresses;
-  codeId: number;
 }
 
 const getInstantiateButtonProps = (
@@ -20,9 +20,9 @@ const getInstantiateButtonProps = (
   isUnknown: boolean,
   isWalletConnected: boolean
 ): {
+  icon: JSX.Element | undefined;
   tooltipLabel: string;
   variant: string;
-  icon: JSX.Element | undefined;
 } => {
   const buttonDisabledState = "outline-gray";
   if (isUnknown) {

@@ -15,9 +15,9 @@ export const useSearchModules = ({
 }: {
   address: Addr;
   moduleName: Option<string>;
-  onModuleSuccess: (modules: IndexedModule) => void;
-  onModulesSuccess: (modules: IndexedModule[]) => void;
   onError: (err: unknown) => void;
+  onModulesSuccess: (modules: IndexedModule[]) => void;
+  onModuleSuccess: (modules: IndexedModule) => void;
 }) => {
   const { isFetching: isModuleFetching, refetch: refetchModule } =
     useModuleByAddressRest({

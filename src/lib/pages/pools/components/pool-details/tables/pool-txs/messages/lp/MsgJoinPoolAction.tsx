@@ -10,10 +10,10 @@ import { PoolLogoLink } from "../components";
 import { getPoolDenom } from "../utils";
 
 interface MsgJoinPoolActionProps {
+  ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
   msg: MsgJoinPoolDetails;
   pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  ampCopierSection?: string;
 }
 
 export const MsgJoinPoolAction = ({

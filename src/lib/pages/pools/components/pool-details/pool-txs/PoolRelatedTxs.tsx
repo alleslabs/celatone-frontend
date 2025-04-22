@@ -20,12 +20,12 @@ import { usePoolTxsTableCounts } from "./data";
 
 enum TabIndex {
   All = "all",
-  Swap = "swap",
-  CLP = "clp",
-  LP = "lp",
   Bonding = "bonding",
-  Superfluid = "superfluid",
+  CLP = "clp",
   Collect = "collect",
+  LP = "lp",
+  Superfluid = "superfluid",
+  Swap = "swap",
 }
 
 interface PoolRelatedTxsProps {

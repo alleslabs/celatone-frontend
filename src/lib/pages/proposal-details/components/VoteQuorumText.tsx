@@ -6,10 +6,10 @@ import { formatPrettyPercent } from "lib/utils";
 import { isNull } from "lodash";
 
 interface VoteQuorumTextProps {
-  status: ProposalStatus;
-  quorum: Ratio<number>;
-  totalRatio: Nullable<Ratio<number>>;
   isCompact: boolean;
+  quorum: Ratio<number>;
+  status: ProposalStatus;
+  totalRatio: Nullable<Ratio<number>>;
 }
 
 const Established = () => (

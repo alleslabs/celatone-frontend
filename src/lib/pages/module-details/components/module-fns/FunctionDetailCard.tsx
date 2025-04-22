@@ -20,9 +20,9 @@ import { Tooltip } from "lib/components/Tooltip";
 import { checkAvailability, getVisibilityIcon } from "lib/utils";
 
 interface FunctionDetailCardProps {
-  fnType: FunctionTypeTabIndex;
-  exposedFn: ExposedFunction;
   address: IndexedModule["address"];
+  exposedFn: ExposedFunction;
+  fnType: FunctionTypeTabIndex;
   moduleName: IndexedModule["moduleName"];
 }
 
@@ -56,12 +56,12 @@ const FunctionButton = ({
   isView,
   moduleName,
 }: {
+  address: string;
+  disabled: boolean;
+  exposedFn: ExposedFunction;
   fnType: FunctionTypeTabIndex;
   isView: boolean;
-  disabled: boolean;
-  address: string;
   moduleName: string;
-  exposedFn: ExposedFunction;
 }) => {
   const isMobile = useMobile();
   const navigate = useInternalNavigate();

@@ -26,9 +26,9 @@ import { ScriptInput } from "./components/ScriptInput";
 import { UploadScriptCard } from "./components/UploadScriptCard";
 
 export interface FileState {
-  file: Option<File>;
   base64File: string;
   decodeRes: Option<ExposedFunction>;
+  file: Option<File>;
 }
 
 const DEFAULT_FILE_STATE: FileState = {

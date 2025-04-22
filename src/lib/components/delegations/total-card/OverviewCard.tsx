@@ -8,8 +8,8 @@ import { formatPrice, totalValueTokenWithValue } from "lib/utils";
 import { TotalCardTop } from "./TotalCardTop";
 
 export interface OverviewCardProps {
-  title: string;
   message: string;
+  title: string;
   tokens: Option<Record<string, TokenWithValue>>;
 }
 

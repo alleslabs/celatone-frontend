@@ -1,17 +1,17 @@
 import type { EvmVerifyInfo, Option } from "lib/types";
 
 enum ProcessStepState {
-  PENDING = "Pending",
-  IN_PROGRESS = "In Progress",
   COMPLETED = "Completed",
   FAILED = "Failed",
+  IN_PROGRESS = "In Progress",
+  PENDING = "Pending",
 }
 
 interface ProcessStep {
+  errorMsg?: string;
   label: string;
   state: ProcessStepState;
   timestamp?: Date;
-  errorMsg?: string;
 }
 
 const getProcessStep = (

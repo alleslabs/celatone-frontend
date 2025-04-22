@@ -7,8 +7,8 @@ import { ContractInteractionTabs } from "lib/types";
 
 interface InteractionWrapperProps {
   currentTab: Option<ContractInteractionTabs>;
-  queryContent: ReactNode;
   executeContent: ReactNode;
+  queryContent: ReactNode;
 }
 const resolveTabDisplay = (
   current: Option<ContractInteractionTabs>,

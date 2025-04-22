@@ -15,10 +15,10 @@ import { EmptyState } from "lib/components/state";
 import { ViewMore } from "lib/components/table";
 
 interface CollectionSuppliesOverviewProps {
-  totalCount: number;
-  nfts: Option<Nft[]>;
   isLoading: boolean;
+  nfts: Option<Nft[]>;
   onViewMore: () => void;
+  totalCount: number;
 }
 
 export const CollectionSuppliesOverviewBody = ({

@@ -20,8 +20,8 @@ interface InstantiatePermissionRadioProps {
 
 interface PermissionRadioProps {
   isSelected: boolean;
-  value: AccessType;
   text: string;
+  value: AccessType;
 }
 
 const PermissionRadio = ({ isSelected, text, value }: PermissionRadioProps) => (

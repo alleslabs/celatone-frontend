@@ -36,15 +36,15 @@ function fixSchema(schema: RJSFSchema) {
 export interface JsonSchemaFormProps
   extends Pick<
     Partial<FormProps>,
-    "widgets" | "fields" | "templates" | "uiSchema"
+    "fields" | "templates" | "uiSchema" | "widgets"
   > {
-  schema: RJSFSchema;
+  formContext?: Record<string, unknown>;
   formId: string;
   initialFormData?: JsonDataType;
-  onSubmit?: (data: JsonDataType) => void;
   /** Onchange callback is with BROKEN data */
   onChange?: (data: JsonDataType, errors: RJSFValidationError[]) => void;
-  formContext?: Record<string, unknown>;
+  onSubmit?: (data: JsonDataType) => void;
+  schema: RJSFSchema;
 }
 
 export const JsonSchemaForm: FC<JsonSchemaFormProps> = ({

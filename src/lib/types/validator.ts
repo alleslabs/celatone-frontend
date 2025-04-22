@@ -48,23 +48,23 @@ export const zConsensusPubkey = zPubkeySingle;
 export type ConsensusPubkey = z.infer<typeof zConsensusPubkey>;
 
 export enum BlockVote {
+  ABSTAIN = "ABSTAIN",
   PROPOSE = "PROPOSE",
   VOTE = "VOTE",
-  ABSTAIN = "ABSTAIN",
 }
 
 export type ComputedUptime = {
-  signed: number;
-  proposed: number;
   missed: number;
-  signedRatio: Ratio<number>;
-  proposedRatio: Ratio<number>;
   missedRatio: Ratio<number>;
+  proposed: number;
+  proposedRatio: Ratio<number>;
+  signed: number;
+  signedRatio: Ratio<number>;
   uptimeRatio: Ratio<number>;
 };
 
 export enum SlashingEvent {
-  Unjailed = "Unjailed",
   Jailed = "Jailed",
   Slashed = "Slashed",
+  Unjailed = "Unjailed",
 }

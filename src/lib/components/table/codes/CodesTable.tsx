@@ -12,12 +12,12 @@ import { CodesTableRow } from "./CodesTableRow";
 
 interface CodesTableProps {
   codes: Option<CodeInfo[]>;
-  isLoading: boolean;
-  emptyState: JSX.Element;
-  onRowSelect: (codeId: number) => void;
-  isReadOnly?: boolean;
-  showCw2andContracts?: boolean;
   disablePermission?: boolean;
+  emptyState: JSX.Element;
+  isLoading: boolean;
+  isReadOnly?: boolean;
+  onRowSelect: (codeId: number) => void;
+  showCw2andContracts?: boolean;
 }
 
 export const CodesTable = ({

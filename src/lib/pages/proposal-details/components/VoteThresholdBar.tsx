@@ -6,11 +6,11 @@ import { formatPrettyPercent } from "lib/utils";
 import { normalizeVotesInfo } from "../utils";
 
 interface BarSectionProps {
-  percent: string;
   color: string;
-  option: string;
-  textColor: string;
   isCompact: boolean;
+  option: string;
+  percent: string;
+  textColor: string;
 }
 
 const BarSection = ({
@@ -43,9 +43,9 @@ const BarSection = ({
 );
 
 interface VoteThresholdBarProps {
+  isCompact: boolean;
   threshold: number;
   votesInfo: ProposalVotesInfo;
-  isCompact: boolean;
 }
 
 export const VoteThresholdBar = ({

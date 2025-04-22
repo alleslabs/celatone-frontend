@@ -45,7 +45,7 @@ export const DEFAULT_DENOM = "umin";
 
 export const DEFAULT_CUSTOM_MINITIA_NETWORK: Pick<
   ChainConfig,
-  "tier" | "chain" | "wallets" | "network_type" | "extra"
+  "chain" | "extra" | "network_type" | "tier" | "wallets"
 > = {
   chain: "initia",
   extra: {

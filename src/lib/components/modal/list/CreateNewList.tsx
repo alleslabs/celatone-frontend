@@ -16,10 +16,10 @@ import { ActionModal } from "../ActionModal";
 
 interface CreateNewListModalProps {
   buttonProps?: ButtonProps;
-  trigger?: ReactNode;
-  onCreate?: (listName: string) => void;
-  onClose?: () => void;
   inputValue?: string;
+  onClose?: () => void;
+  onCreate?: (listName: string) => void;
+  trigger?: ReactNode;
 }
 
 export function CreateNewListModal({

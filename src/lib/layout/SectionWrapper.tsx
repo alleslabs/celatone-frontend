@@ -4,11 +4,11 @@ import type { ReactNode } from "react";
 import { Flex } from "@chakra-ui/react";
 
 interface SectionWrapperProps {
+  borderRight?: boolean;
   children: ReactNode;
+  justifyContent?: FlexboxProps["justifyContent"];
   minW?: FlexProps["minW"];
   w?: BoxProps["w"];
-  justifyContent?: FlexboxProps["justifyContent"];
-  borderRight?: boolean;
 }
 
 export const SectionWrapper = ({

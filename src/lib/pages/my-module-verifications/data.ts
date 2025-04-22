@@ -9,8 +9,8 @@ export type MoveVerifyTaskInfo = MoveVerifyTaskLocalInfo & {
 };
 
 export const useMyModuleVerifications = (): {
-  isLoading: boolean;
   data: MoveVerifyTaskInfo[];
+  isLoading: boolean;
 } => {
   const { completeMoveVerifyTask, getMoveVerifyTask, latestMoveVerifyTasks } =
     useMoveVerifyTaskStore();

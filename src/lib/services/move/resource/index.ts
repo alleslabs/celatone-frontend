@@ -13,8 +13,8 @@ import { truncate } from "lib/utils";
 import { getAccountResourcesRest } from "./rest";
 
 export interface ResourcesByAddressReturn {
-  groupedByOwner: ResourceGroupByAccount[];
   groupedByName: ResourceGroup[];
+  groupedByOwner: ResourceGroupByAccount[];
   totalCount: number;
 }
 

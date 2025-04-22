@@ -5,8 +5,8 @@ import type { Mode, Step } from "./types";
 import { StepperItem } from "./StepperItem";
 
 interface StepperProps {
-  mode: Mode;
   currentStep: Step;
+  mode: Mode;
 }
 
 export const Stepper = ({ currentStep, mode }: StepperProps) => (

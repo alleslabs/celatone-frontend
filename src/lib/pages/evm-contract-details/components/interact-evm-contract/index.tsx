@@ -28,8 +28,8 @@ interface InteractEvmContractProps {
   contractAddress: HexAddr20;
   evmVerifyInfo: Option<EvmVerifyInfo>;
   proxyTargetEvmVerifyInfo: Option<EvmVerifyInfo>;
-  selectedType: InteractTabsIndex;
   selectedFn?: string;
+  selectedType: InteractTabsIndex;
 }
 
 export const InteractEvmContract = ({

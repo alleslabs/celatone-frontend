@@ -9,14 +9,14 @@ import { toEncodeObject } from "lib/utils";
 import { useCallback } from "react";
 
 export interface ExecuteModuleStreamParams {
-  moduleAddress: HexAddr;
-  moduleName: string;
-  functionName: string;
-  typeArgs: string[];
   args: string[];
   estimatedFee?: StdFee;
-  onTxSucceed?: () => void;
+  functionName: string;
+  moduleAddress: HexAddr;
+  moduleName: string;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  typeArgs: string[];
 }
 
 export const useExecuteModuleTx = () => {

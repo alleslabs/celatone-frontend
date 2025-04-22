@@ -7,24 +7,24 @@ import { useAccountStore, useContractStore } from "lib/providers/store";
 import { useFormatAddresses } from "./useFormatAddresses";
 
 interface UseHandleContractSaveProps {
-  title: string;
-  contractAddress: BechAddr32;
-  label: string;
-  codeId: Option<number>;
-  instantiator: Option<BechAddr>;
-  name?: string;
-  description?: string;
-  tags?: string[];
-  lists?: LVPair[];
   actions?: () => void;
+  codeId: Option<number>;
+  contractAddress: BechAddr32;
+  description?: string;
+  instantiator: Option<BechAddr>;
+  label: string;
+  lists?: LVPair[];
+  name?: string;
+  tags?: string[];
+  title: string;
 }
 
 interface UseHandleAccountSaveProps {
-  title: string;
-  address: BechAddr;
-  name: string;
-  description?: string;
   actions?: () => void;
+  address: BechAddr;
+  description?: string;
+  name: string;
+  title: string;
 }
 
 export const useHandleContractSave = ({

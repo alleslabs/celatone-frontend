@@ -9,10 +9,10 @@ import { PeriodState } from "../types";
 import { ProgressBadge } from "./ProgressBadge";
 
 interface VoteQuorumBadgeProps {
-  status: ProposalStatus;
-  quorum: number;
-  totalRatio: Nullable<Ratio<number>>;
   isCompact: boolean;
+  quorum: number;
+  status: ProposalStatus;
+  totalRatio: Nullable<Ratio<number>>;
 }
 
 export const VoteQuorumBadge = ({

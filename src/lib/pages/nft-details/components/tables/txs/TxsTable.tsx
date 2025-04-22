@@ -10,9 +10,9 @@ import { TxsTableMobileCard } from "./TxsTableMobileCard";
 import { TxsTableRow } from "./TxsTableRow";
 
 interface TxsTableProps {
-  txs: Option<NftTxResponse[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
+  txs: Option<NftTxResponse[]>;
 }
 
 export const TxsTable = ({ emptyState, isLoading, txs }: TxsTableProps) => {

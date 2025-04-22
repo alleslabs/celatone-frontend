@@ -14,11 +14,11 @@ import { ProposalMetadata } from "./ProposalMetadata";
 import { StatusSummary } from "./status-summary";
 
 export interface ProposalOverviewProps {
+  isDepositsLoading: boolean;
+  isLoading: boolean;
+  params: Option<ProposalParams>;
   proposalData: ProposalData;
   votesInfo: Option<ProposalVotesInfo>;
-  params: Option<ProposalParams>;
-  isLoading: boolean;
-  isDepositsLoading: boolean;
 }
 
 export const ProposalOverview = ({

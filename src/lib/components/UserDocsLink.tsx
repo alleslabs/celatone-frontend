@@ -6,13 +6,13 @@ import Link from "next/link";
 import { CustomIcon } from "./icon";
 
 interface UserDocsLinkProps {
-  href?: string;
-  title?: string;
   cta?: string;
+  href?: string;
   isButton?: boolean;
-  isInline?: boolean;
   isDevTool?: boolean;
+  isInline?: boolean;
   mt?: number;
+  title?: string;
 }
 
 export const UserDocsLink = ({

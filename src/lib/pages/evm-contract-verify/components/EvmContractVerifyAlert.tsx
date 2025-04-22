@@ -10,8 +10,8 @@ export const EvmContractVerifyAlert = ({
   option,
 }: EvmContractVerifyAlertProps) => {
   switch (option) {
-    case EvmVerifyOptions.SolidityUploadFiles:
     case EvmVerifyOptions.SolidityContractCode:
+    case EvmVerifyOptions.SolidityUploadFiles:
       return (
         <Alert variant="primary">
           <Flex gap={2}>
@@ -29,8 +29,8 @@ export const EvmContractVerifyAlert = ({
           </Flex>
         </Alert>
       );
-    case EvmVerifyOptions.VyperUploadFile:
     case EvmVerifyOptions.VyperContractCode:
+    case EvmVerifyOptions.VyperUploadFile:
       return (
         <Alert variant="primary">
           <Flex gap={2}>

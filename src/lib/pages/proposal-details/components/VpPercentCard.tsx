@@ -7,11 +7,11 @@ import { d0Formatter, formatPrettyPercent } from "lib/utils";
 import { isNull } from "lodash";
 
 interface VpPercentCardProps {
-  name: string;
-  ratio: Nullable<Ratio<number>>;
-  power: Nullable<Big>;
   color: FlexProps["bgColor"];
   isCompact: boolean;
+  name: string;
+  power: Nullable<Big>;
+  ratio: Nullable<Ratio<number>>;
 }
 
 export const VpPercentCard = ({

@@ -11,9 +11,9 @@ import { PublishedEventsTableMobileCard } from "./PublishedEventsTableMobileCard
 import { PublishedEventsTableRow } from "./PublishedEventsTableRow";
 
 interface PublishedEventsTableProps {
-  moduleHistories: Option<ModuleHistory[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
+  moduleHistories: Option<ModuleHistory[]>;
 }
 
 export const PublishedEventsTable = ({

@@ -13,13 +13,13 @@ import {
 } from "lib/utils";
 
 interface PoolAssetCardProps {
-  poolId: number;
-  description: string;
-  assetText: string;
-  poolToken: TokenWithValue;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  assetText: string;
+  description: string;
+  isOpened: boolean;
+  poolId: number;
+  poolToken: TokenWithValue;
 }
 
 export const PoolAssetCard = ({

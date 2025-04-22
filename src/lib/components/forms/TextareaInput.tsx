@@ -16,14 +16,14 @@ import { getResponseMsg } from "./FormStatus";
 
 // TODO: remove
 export interface TextareaProps extends FormControlProps {
-  value: string;
-  setInputState: Dispatch<SetStateAction<string>> | ((newVal: string) => void);
+  error?: string;
+  helperText?: string;
   label?: string;
   labelBgColor?: string;
-  helperText?: string;
   placeholder?: string;
-  error?: string;
+  setInputState: ((newVal: string) => void) | Dispatch<SetStateAction<string>>;
   status?: FormStatus;
+  value: string;
 }
 
 export const TextareaInput = ({

@@ -18,12 +18,12 @@ import type {
 } from "../types";
 
 export interface ModuleSelectorInputProps {
-  selectedAddress: SelectedAddress;
-  setSelectedAddress: Dispatch<SetStateAction<SelectedAddress>>;
-  handleModuleSelect: ModuleSelectFunction;
-  setModules: Dispatch<SetStateAction<Option<IndexedModule[]>>>;
-  setMode: Dispatch<SetStateAction<DisplayMode>>;
   closeModal: () => void;
+  handleModuleSelect: ModuleSelectFunction;
+  selectedAddress: SelectedAddress;
+  setMode: Dispatch<SetStateAction<DisplayMode>>;
+  setModules: Dispatch<SetStateAction<Option<IndexedModule[]>>>;
+  setSelectedAddress: Dispatch<SetStateAction<SelectedAddress>>;
 }
 
 export const ModuleSelectorInput = ({

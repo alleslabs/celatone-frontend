@@ -6,8 +6,8 @@ import { useValidatorImage } from "lib/services/validator";
 import { isUndefined } from "lodash";
 
 interface ValidatorImageProps {
-  validator: Nullable<Validator>;
   boxSize?: ImageProps["boxSize"];
+  validator: Nullable<Validator>;
 }
 
 export const ValidatorImage = ({

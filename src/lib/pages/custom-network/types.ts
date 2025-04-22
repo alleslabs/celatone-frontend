@@ -42,9 +42,9 @@ interface ValidateExistingChain {
 }
 
 export enum VmType {
+  EVM = "evm",
   MOVE = "move",
   WASM = "wasm",
-  EVM = "evm",
 }
 
 const zMoveVmRadio = z.object({

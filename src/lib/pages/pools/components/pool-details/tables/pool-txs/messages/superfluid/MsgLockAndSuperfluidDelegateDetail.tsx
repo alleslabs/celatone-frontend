@@ -17,14 +17,14 @@ import {
 import { getPoolDenom } from "../utils";
 
 interface MsgLockAndSuperfluidDelegateDetailProps {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: MsgLockAndSuperfluidDelegateDetails;
-  pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: MsgLockAndSuperfluidDelegateDetails;
+  msgIndex: number;
+  pool: PoolData;
+  txHash: string;
 }
 
 export const MsgLockAndSuperfluidDelegateDetail = ({

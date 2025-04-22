@@ -25,13 +25,13 @@ import { useWasmOptimizerVersions } from "./hooks";
 import { WasmVerifySubmitFormSelect } from "./WasmVerifySubmitFormSelect";
 
 interface WasmVerifySubmitFormProps {
-  codeId: number;
   codeHash: Option<string>;
-  wasmVerifyStatus: WasmVerifyStatus;
-  relatedVerifiedCodes?: number[];
+  codeId: number;
   contractAddress?: BechAddr32;
-  onSubmit: (wasmVerifyRequest: WasmVerifyRequest) => void;
   isLoading: boolean;
+  onSubmit: (wasmVerifyRequest: WasmVerifyRequest) => void;
+  relatedVerifiedCodes?: number[];
+  wasmVerifyStatus: WasmVerifyStatus;
 }
 
 export const WasmVerifySubmitForm = ({

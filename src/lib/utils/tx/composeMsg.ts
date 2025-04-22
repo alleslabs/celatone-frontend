@@ -39,10 +39,10 @@ export const composeMsg = (msgType: MsgType, msg: TxMessage): ComposedMsg => {
 };
 
 interface StoreCodeMsgArgs {
+  addresses?: BechAddr[];
+  permission?: AccessType;
   sender: BechAddr20;
   wasmByteCode: Uint8Array;
-  permission?: AccessType;
-  addresses?: BechAddr[];
 }
 
 export const composeStoreCodeMsg = ({
@@ -64,12 +64,12 @@ export const composeStoreCodeMsg = ({
   });
 
 interface WhitelistProposalMsgArgs {
-  title: string;
-  description: string;
   changesValue: string;
+  description: string;
   initialDeposit: Coin;
-  proposer: BechAddr20;
   precision: Option<number>;
+  proposer: BechAddr20;
+  title: string;
 }
 
 export const composeSubmitWhitelistProposalMsg = ({
@@ -110,19 +110,19 @@ export const composeSubmitWhitelistProposalMsg = ({
   });
 
 interface StoreCodeProposalMsgArgs {
-  proposer: BechAddr20;
-  title: string;
-  description: string;
-  runAs: BechAddr;
-  wasmByteCode: Uint8Array;
-  permission: AccessType;
   addresses: BechAddr[];
-  unpinCode: boolean;
-  source: string;
   builder: string;
   codeHash: Uint8Array;
+  description: string;
   initialDeposit: Coin;
+  permission: AccessType;
   precision: Option<number>;
+  proposer: BechAddr20;
+  runAs: BechAddr;
+  source: string;
+  title: string;
+  unpinCode: boolean;
+  wasmByteCode: Uint8Array;
 }
 
 export const composeStoreCodeProposalMsg = ({

@@ -6,8 +6,8 @@ import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { jsonPrettify } from "lib/utils";
 
 interface MsgSuggestionProps {
-  contractAddress: BechAddr32;
   cmds: [string, string][];
+  contractAddress: BechAddr32;
   setMsg: (msg: string) => void;
 }
 

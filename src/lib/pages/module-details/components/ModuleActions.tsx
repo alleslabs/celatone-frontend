@@ -9,20 +9,20 @@ import { CustomIcon } from "lib/components/icon";
 import { FunctionTypeTabIndex, TabIndex } from "../types";
 
 interface ActionInfo {
+  count: Option<number>;
+  disabled: boolean;
+  hidden: Option<boolean>;
   icon: IconKeys;
   iconColor: string;
   name: string;
-  count: Option<number>;
   onClick: MouseEventHandler<HTMLDivElement>;
-  disabled: boolean;
-  hidden: Option<boolean>;
 }
 
 interface ModuleActionsProps {
-  viewFns: number;
-  executeFns: number;
   allTxsCount: Option<number>;
+  executeFns: number;
   onSelectAction: (nextTab: TabIndex, fnType?: FunctionTypeTabIndex) => void;
+  viewFns: number;
 }
 
 export const ModuleActions = ({

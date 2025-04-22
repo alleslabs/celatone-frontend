@@ -200,7 +200,7 @@ export const useNftTransactions = (
   limit: number,
   offset: number,
   nftAddress: HexAddr32,
-  options: Pick<UseQueryOptions<NftTxsResponse>, "onSuccess" | "enabled"> = {}
+  options: Pick<UseQueryOptions<NftTxsResponse>, "enabled" | "onSuccess"> = {}
 ) => {
   const apiEndpoint = useBaseApiRoute("nfts");
 
@@ -247,7 +247,7 @@ export const useNftMutateEvents = (
   offset: number,
   options: Pick<
     UseQueryOptions<NftMutateEventsResponse>,
-    "onSuccess" | "enabled"
+    "enabled" | "onSuccess"
   > = {}
 ) => {
   const apiEndpoint = useBaseApiRoute("nfts");
@@ -277,7 +277,7 @@ export const useNftsByAccountAddress = (
   search = "",
   options: Pick<
     UseQueryOptions<NftsByAccountAddressResponse>,
-    "onSuccess" | "enabled"
+    "enabled" | "onSuccess"
   > = {}
 ) => {
   const apiEndpoint = useBaseApiRoute("nfts");

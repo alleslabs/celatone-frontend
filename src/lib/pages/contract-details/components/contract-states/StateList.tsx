@@ -10,10 +10,10 @@ import { useEffect, useMemo } from "react";
 import { StateCard } from "./StateCard";
 
 interface StateListProps {
-  totalData: number;
-  states: ContractState[];
   isLoading: boolean;
   isSearching: boolean;
+  states: ContractState[];
+  totalData: number;
 }
 
 export const StateList = ({

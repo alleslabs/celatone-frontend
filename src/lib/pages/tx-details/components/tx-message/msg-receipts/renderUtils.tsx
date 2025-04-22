@@ -16,13 +16,13 @@ import { convertToTitle } from "lib/utils";
 
 import { CoinsComponent } from "./CoinsComponent";
 
-type HtmlType = "json" | "explorer";
+type HtmlType = "explorer" | "json";
 
 interface CommonReceiptHtmlArgs<T extends HtmlType, V> {
+  fallback?: string;
+  linkType?: LinkType;
   type: T;
   value: Option<Nullable<V>>;
-  linkType?: LinkType;
-  fallback?: string;
 }
 
 // Util Functions
@@ -78,7 +78,7 @@ export const getCommonReceiptHtml = <T extends HtmlType>({
 };
 
 export const getGenericValueEntry = (
-  [title, value]: [string, string | object],
+  [title, value]: [string, object | string],
   getAddressType: (address: string) => AddressReturnType
 ): TxReceipt => {
   let valueObj: Omit<TxReceipt, "title">;

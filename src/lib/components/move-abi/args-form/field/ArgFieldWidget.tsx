@@ -52,9 +52,9 @@ const boolOptions = [
 ];
 
 interface ArgFieldWidgetProps {
+  onChange: ControllerRenderProps["onChange"];
   type: string;
   value: Nullable<string>;
-  onChange: ControllerRenderProps["onChange"];
 }
 
 export const ArgFieldWidget = ({

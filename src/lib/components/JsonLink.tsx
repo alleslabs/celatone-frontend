@@ -3,8 +3,8 @@ import { Flex, Text } from "@chakra-ui/react";
 import { Copier } from "./copy";
 
 interface JsonLinkProps {
-  uri: string;
   type: string;
+  uri: string;
 }
 
 export const JsonLink = ({ type, uri }: JsonLinkProps) => (

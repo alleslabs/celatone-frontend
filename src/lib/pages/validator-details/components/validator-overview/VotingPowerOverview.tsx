@@ -31,11 +31,11 @@ const VotingPowerDetail = ({
   label,
   ratio,
 }: {
+  amount: U<Token<Big>>;
+  assetInfo: Option<AssetInfo>;
+  denom: Option<string>;
   label: string;
   ratio: Ratio<number>;
-  amount: U<Token<Big>>;
-  denom: Option<string>;
-  assetInfo: Option<AssetInfo>;
 }) => {
   const formattedPercent = formatPrettyPercent(ratio, 2, true);
   const formattedAmount = formatUTokenWithPrecision(
@@ -83,11 +83,11 @@ const VotingPowerDetail = ({
 };
 
 interface VotingPowerOverviewProps {
-  singleStakingDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
-  votingPower: Big;
-  totalVotingPower: Big;
   selfVotingPower: Big;
+  singleStakingDenom: Option<string>;
+  totalVotingPower: Big;
+  votingPower: Big;
 }
 
 export const VotingPowerOverview = ({

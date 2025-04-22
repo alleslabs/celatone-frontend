@@ -41,8 +41,8 @@ const SubHeader = () => {
           nftConfig.enabled,
           poolConfig.enabled
         );
-      case "sequencer":
       case "mesa":
+      case "sequencer":
         return getSubHeaderSequencer(govConfig.enabled, wasmConfig.enabled);
       case "lite":
       default:

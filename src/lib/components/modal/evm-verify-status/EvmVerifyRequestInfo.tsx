@@ -1,7 +1,7 @@
 import type { TextProps } from "@chakra-ui/react";
-import type { HexAddr20, Option, EvmVerifyInfo } from "lib/types";
+import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
 
-import { Flex, HStack, Divider, Text } from "@chakra-ui/react";
+import { Divider, Flex, HStack, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { ExplorerLink } from "lib/components/ExplorerLink";
 import { formatUTC, getLicenseTypeLabel } from "lib/utils";

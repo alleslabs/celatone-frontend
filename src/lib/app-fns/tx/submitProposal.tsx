@@ -16,13 +16,13 @@ import { catchTxError, postTx, sendingTx } from "./common";
 
 interface SubmitWhitelistProposalTxParams {
   address: BechAddr20;
+  amountToVote: Nullable<string>;
   fee: StdFee;
   messages: EncodeObject[];
-  whitelistNumber: number;
-  amountToVote: Nullable<string>;
-  signAndBroadcast: SignAndBroadcast;
-  onTxSucceed?: () => void;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  signAndBroadcast: SignAndBroadcast;
+  whitelistNumber: number;
 }
 
 export const submitWhitelistProposalTx = ({
@@ -99,14 +99,14 @@ export const submitWhitelistProposalTx = ({
 
 interface SubmitStoreCodeProposalTxParams {
   address: BechAddr20;
-  fee: StdFee;
-  chainName: string;
-  wasmFileName: string;
-  messages: EncodeObject[];
   amountToVote: Nullable<string>;
-  signAndBroadcast: SignAndBroadcast;
-  onTxSucceed?: () => void;
+  chainName: string;
+  fee: StdFee;
+  messages: EncodeObject[];
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  signAndBroadcast: SignAndBroadcast;
+  wasmFileName: string;
 }
 
 export const submitStoreCodeProposalTx = ({

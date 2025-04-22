@@ -13,8 +13,8 @@ import { RecentBlocksSection } from "./RecentBlocksSection";
 import { UptimeSection } from "./UptimeSection";
 
 interface PerformanceProps {
-  validatorAddress: ValidatorAddr;
   onViewMore?: () => void;
+  validatorAddress: ValidatorAddr;
 }
 
 export const Performance = ({

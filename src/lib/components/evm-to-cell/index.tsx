@@ -7,8 +7,8 @@ import { ExplorerLink } from "../ExplorerLink";
 import { EvmToCellCreate } from "./evm-to-cell-create";
 
 interface EvmToCellProps {
-  toAddress: Option<EvmToAddress>;
   isCompact?: boolean;
+  toAddress: Option<EvmToAddress>;
 }
 
 export const EvmToCell = ({ isCompact, toAddress }: EvmToCellProps) => {

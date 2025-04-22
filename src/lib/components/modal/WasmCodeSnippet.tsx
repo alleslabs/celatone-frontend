@@ -40,10 +40,10 @@ import { CustomIcon } from "../icon";
 
 interface WasmCodeSnippetProps {
   contractAddress: BechAddr32;
-  message: string;
-  type: "query" | "execute";
-  ml?: ButtonProps["ml"];
   funds?: Coin[];
+  message: string;
+  ml?: ButtonProps["ml"];
+  type: "execute" | "query";
   w?: FlexProps["width"];
 }
 
@@ -74,7 +74,7 @@ const WasmCodeSnippet = ({
 
   const codeSnippets: Record<
     string,
-    { name: string; mode: string; snippet: string }[]
+    { mode: string; name: string; snippet: string }[]
   > = {
     execute: [
       {

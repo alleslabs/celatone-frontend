@@ -51,10 +51,10 @@ import { SIDEBAR_WHITELIST_DETAILS } from "../constants";
 import { getAlert } from "../utils";
 
 interface WhiteListState {
-  title: string;
-  description: string;
   addresses: { address: BechAddr }[];
+  description: string;
   initialDeposit: Coin;
+  title: string;
 }
 
 const defaultValues: WhiteListState = {

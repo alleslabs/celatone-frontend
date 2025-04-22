@@ -26,11 +26,11 @@ import { RecentBlocksSection } from "./RecentBlocksSection";
 const SUPPORTED_UPTIME_BLOCKS = [100, 1000, 10000];
 
 interface UptimeSectionProps {
-  validatorAddress: ValidatorAddr;
-  uptimeData: ValidatorUptimeResponse;
-  uptimeBlock: number;
-  setUptimeBlock?: (block: number) => void;
   onViewMore?: () => void;
+  setUptimeBlock?: (block: number) => void;
+  uptimeBlock: number;
+  uptimeData: ValidatorUptimeResponse;
+  validatorAddress: ValidatorAddr;
 }
 
 export const UptimeSection = ({

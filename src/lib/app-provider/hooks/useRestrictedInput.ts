@@ -3,9 +3,9 @@ import type { ChangeEvent, ClipboardEvent, KeyboardEvent } from "react";
 import { useCallback, useMemo } from "react";
 
 export interface RestrictedInputReturn {
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   onKeyPress: (event: KeyboardEvent<HTMLInputElement>) => void;
   onPaste?: (event: ClipboardEvent<HTMLInputElement>) => void;
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 /**
@@ -45,10 +45,10 @@ export function useRestrictedInput(
 }
 
 export interface RestrictedNumberInputParams {
-  type?: "decimal" | "integer";
   maxDecimalPoints?: number;
   maxIntegerPoints?: number;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  type?: "decimal" | "integer";
 }
 
 export function useRestrictedNumberInput({

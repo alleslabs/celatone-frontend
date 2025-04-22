@@ -15,13 +15,13 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 interface ContractDetailsTemplateModalProps {
-  title: string;
-  subtitle?: string;
   contractLocalInfo: ContractLocalInfo;
-  triggerElement: JSX.Element;
   defaultList?: LVPair[];
-  isSave?: boolean;
   icon?: IconKeys;
+  isSave?: boolean;
+  subtitle?: string;
+  title: string;
+  triggerElement: JSX.Element;
 }
 export const ContractDetailsTemplateModal = ({
   contractLocalInfo,

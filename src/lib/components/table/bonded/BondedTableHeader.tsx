@@ -8,8 +8,8 @@ export const BondedTableHeader = ({
   isDelegation,
   templateColumns,
 }: {
-  templateColumns: GridProps["templateColumns"];
   isDelegation: boolean;
+  templateColumns: GridProps["templateColumns"];
 }) => (
   <Grid
     minW="min-content"

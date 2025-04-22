@@ -6,8 +6,8 @@ import { formatPrice } from "lib/utils";
 
 interface TotalValueProps {
   address: BechAddr;
-  label?: string;
   isCompact?: boolean;
+  label?: string;
 }
 export const TotalValue = ({
   address,

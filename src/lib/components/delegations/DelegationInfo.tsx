@@ -9,12 +9,12 @@ import { EmptyState } from "../state";
 import { TableTitle } from "../table";
 
 interface DelegationInfoProps {
-  totalBondedCard: JSX.Element;
-  otherInfoCards: JSX.Element;
-  redelegationCount: number;
+  hasTotalBonded?: boolean;
   onClickToggle?: MouseEventHandler<HTMLButtonElement> | undefined;
   onViewMore?: () => void;
-  hasTotalBonded?: boolean;
+  otherInfoCards: JSX.Element;
+  redelegationCount: number;
+  totalBondedCard: JSX.Element;
 }
 
 export const DelegationInfo = ({

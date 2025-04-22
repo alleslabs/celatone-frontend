@@ -14,8 +14,8 @@ interface AccountTitleProps {
   accountData: Option<AccountData>;
   accountLocalInfo: Option<AccountLocalInfo>;
   initiaUsernameData: Option<InitiaUsernameDataResponse>;
-  isInitiaUsernameDataLoading: boolean;
   isInitiaUsernameDataFetching: boolean;
+  isInitiaUsernameDataLoading: boolean;
 }
 
 export const AccountTitle = ({

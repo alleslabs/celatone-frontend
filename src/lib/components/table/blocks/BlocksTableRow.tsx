@@ -9,9 +9,9 @@ import { ValidatorBadge } from "lib/components/ValidatorBadge";
 import { dateFromNow, formatUTC, truncate } from "lib/utils";
 
 interface BlocksTableRowProps {
-  templateColumns: GridProps["templateColumns"];
   blockData: Block;
   showProposer: boolean;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const BlocksTableRow = ({

@@ -21,8 +21,8 @@ import { VoteThresholdBar } from "../../VoteThresholdBar";
 import { VpPercentThreshold } from "../../VpPercentThreshold";
 
 interface VotingOverviewThresholdProps {
-  proposalData: ProposalData;
   params: ProposalParams;
+  proposalData: ProposalData;
   votesInfo: ProposalVotesInfo;
 }
 

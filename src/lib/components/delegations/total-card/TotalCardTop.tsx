@@ -4,9 +4,9 @@ import { Flex, Text } from "@chakra-ui/react";
 import { TooltipInfo } from "lib/components/Tooltip";
 
 interface TotalCardTopProps {
-  title: string;
-  message: string;
   fontWeight: TextProps["fontWeight"];
+  message: string;
+  title: string;
 }
 
 export const TotalCardTop = ({

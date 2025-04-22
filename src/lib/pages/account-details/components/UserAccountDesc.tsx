@@ -10,8 +10,8 @@ import Linkify from "react-linkify";
 import { useClampText } from "use-clamp-text";
 
 interface UserAccountDescProps {
-  publicAccount?: boolean;
   accountLocalInfo: AccountLocalInfo;
+  publicAccount?: boolean;
 }
 
 export const UserAccountDesc = observer(

@@ -6,10 +6,10 @@ import { EmptyState } from "lib/components/state";
 import { SearchResultItem } from "./SearchResultItem";
 
 interface SearchResultsProps {
-  results: SearchResult[];
   cursor: Option<number>;
-  setCursor: (index: Option<number>) => void;
   handleSelectResult: (result?: SearchResult, isClick?: boolean) => void;
+  results: SearchResult[];
+  setCursor: (index: Option<number>) => void;
 }
 export const SearchResults = ({
   cursor,

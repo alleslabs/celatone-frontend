@@ -2,17 +2,17 @@ import { zAddr } from "lib/types";
 import { z } from "zod";
 
 export enum TabIndex {
-  Overview = "overview",
+  Admins = "admins",
   Assets = "assets",
-  Delegations = "delegations",
-  Nfts = "nfts",
-  Txs = "txs",
   Codes = "codes",
   Contracts = "contracts",
-  Admins = "admins",
-  Resources = "resources",
+  Delegations = "delegations",
   Modules = "modules",
+  Nfts = "nfts",
+  Overview = "overview",
   Proposals = "proposals",
+  Resources = "resources",
+  Txs = "txs",
 }
 
 export const zAccountDetailsQueryParams = z.object({

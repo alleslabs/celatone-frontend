@@ -16,9 +16,9 @@ import { ProposalStatus } from "lib/types";
 import { dateFromNow, formatUTC } from "lib/utils";
 
 export interface VotedProposalsTableRowProps {
-  votedProposal: ValidatorVotedProposalsResponseItem;
-  templateColumns: GridProps["templateColumns"];
   boxShadow: DividerProps["boxShadow"];
+  templateColumns: GridProps["templateColumns"];
+  votedProposal: ValidatorVotedProposalsResponseItem;
 }
 
 export const VotedProposalsTableRow = ({

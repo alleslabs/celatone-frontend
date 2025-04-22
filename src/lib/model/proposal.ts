@@ -15,6 +15,7 @@ import {
 // TODO: remove and use `useDerivedProposalParams` instead
 export interface GovParams {
   depositParams: {
+    maxDepositPeriod: string;
     minDeposit: {
       amount: U<Token<Big>>;
       denom: string;
@@ -23,14 +24,13 @@ export interface GovParams {
       formattedToken: string;
       precision: number;
     };
-    minInitialDeposit: Token;
-    maxDepositPeriod: string;
     minExpeditedDeposit: Option<Coin[]>;
+    minInitialDeposit: Token;
     minInitialDepositRatio: Option<string>;
   };
   votingParams: {
-    votingPeriod: string;
     expeditedVotingPeriod: Option<string>;
+    votingPeriod: string;
   };
 }
 

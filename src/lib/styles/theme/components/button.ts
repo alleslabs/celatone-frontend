@@ -24,10 +24,10 @@ const generateStyle = ({
   disabled,
   hoverBg,
 }: {
+  activeBg: string;
   basic: object;
   disabled: object;
   hoverBg: string;
-  activeBg: string;
 }) => {
   return defineStyle({
     ...basic,

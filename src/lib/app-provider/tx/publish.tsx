@@ -9,10 +9,10 @@ import { useCallback } from "react";
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface PublishModuleStreamParams {
-  onTxSucceed?: PublishSucceedCallback;
-  onTxFailed?: () => void;
   estimatedFee?: StdFee;
   messages: EncodeObject[];
+  onTxFailed?: () => void;
+  onTxSucceed?: PublishSucceedCallback;
 }
 
 export const usePublishModuleTx = () => {

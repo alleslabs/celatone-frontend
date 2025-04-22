@@ -7,9 +7,9 @@ import { CustomIcon } from "lib/components/icon";
 import { coinToTokenWithValue } from "lib/utils";
 
 interface MsgSwapExactAmountOutActionProps {
-  msg: MsgSwapExactAmountOutDetails;
-  assetInfos: Option<AssetInfos>;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  msg: MsgSwapExactAmountOutDetails;
 }
 
 export const MsgSwapExactAmountOutAction = ({

@@ -7,9 +7,9 @@ import { useState } from "react";
 import { useController } from "react-hook-form";
 
 interface TypeFieldInputProps {
-  index: number;
   constraints: string[];
   control: Control<AbiFormData["typeArgs"]>;
+  index: number;
 }
 
 export const TypeFieldInput = ({

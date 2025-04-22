@@ -37,16 +37,16 @@ import { CustomIcon } from "../icon";
 type CodeSnippetType = "read" | "write";
 
 interface CodeSnippet {
-  name: string;
   mode: string;
+  name: string;
   snippet: string;
 }
 
 interface EvmCodeSnippetProps {
-  type: CodeSnippetType;
-  contractAddress: HexAddr20;
   abiSection: JsonFragment;
+  contractAddress: HexAddr20;
   inputs?: JsonDataType[];
+  type: CodeSnippetType;
 }
 
 const EvmCodeSnippet = ({

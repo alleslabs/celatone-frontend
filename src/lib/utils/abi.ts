@@ -26,8 +26,8 @@ const sortByAvailability = (a: ExposedFunction, b: ExposedFunction) => {
 
 const splitViewExecuteFunctions = (functions: ExposedFunction[]) => {
   const functionMap = functions.reduce<{
-    view: ExposedFunction[];
     execute: ExposedFunction[];
+    view: ExposedFunction[];
   }>(
     (acc, fn) => {
       if (fn.is_view) acc.view.push(fn);

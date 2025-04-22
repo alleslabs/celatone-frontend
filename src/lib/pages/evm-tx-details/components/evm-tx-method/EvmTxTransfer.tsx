@@ -15,9 +15,9 @@ import { EvmInfoLabelValue } from "./EvmInfoLabelValue";
 import { EvmTxMethodAccordion } from "./EvmTxMethodAccordion";
 
 interface EvmTxTransferProps {
-  evmTxData: TxDataJsonRpc;
-  evmDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
+  evmDenom: Option<string>;
+  evmTxData: TxDataJsonRpc;
 }
 
 export const EvmTxTransfer = ({

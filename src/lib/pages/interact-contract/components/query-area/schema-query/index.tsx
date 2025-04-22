@@ -14,12 +14,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { SchemaQueryComponent } from "./SchemaQueryComponent";
 
 interface SchemaQueryProps {
-  verifiedSchema: Nullish<CodeSchema>;
-  localSchema: Option<CodeSchema>;
+  codeHash: string;
+  codeId: number;
   contractAddress: BechAddr32;
   initialMsg: string;
-  codeId: number;
-  codeHash: string;
+  localSchema: Option<CodeSchema>;
+  verifiedSchema: Nullish<CodeSchema>;
 }
 
 export const SchemaQuery = ({

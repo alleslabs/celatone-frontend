@@ -296,17 +296,17 @@ export const submitEvmVerify = async ({
         ...rest,
         ...verifyForm.solidityUploadFiles,
       });
-    case EvmVerifyOptions.VyperJsonInput:
-      return submitEvmVerifyJsonInput({
-        verifierUrl,
-        ...rest,
-        ...verifyForm.vyperJsonInput,
-      });
     case EvmVerifyOptions.VyperContractCode:
       return submitEvmVerifyVyperContractCode({
         verifierUrl,
         ...rest,
         ...verifyForm.vyperContractCode,
+      });
+    case EvmVerifyOptions.VyperJsonInput:
+      return submitEvmVerifyJsonInput({
+        verifierUrl,
+        ...rest,
+        ...verifyForm.vyperJsonInput,
       });
     case EvmVerifyOptions.VyperUploadFile:
       return submitEvmVerifyVyperUploadFiles({

@@ -30,19 +30,19 @@ const getTooltipText = (
 ) => {
   if (!linkedCodeId) {
     switch (badgeStatus) {
-      case BadgeStatus.VERIFIED:
-        return "This code has been verified.";
       case BadgeStatus.INDIRECTLY_VERIFIED:
         return `This code’s hash matches the verified codes of ${formatRelatedVerifiedCodes(relatedVerifyCodes)}.`;
+      case BadgeStatus.VERIFIED:
+        return "This code has been verified.";
       default:
         return undefined;
     }
   } else {
     switch (badgeStatus) {
-      case BadgeStatus.VERIFIED:
-        return `This contract has been verified using code ${linkedCodeId}, which is confirmed as verified.`;
       case BadgeStatus.INDIRECTLY_VERIFIED:
         return `This contract is verified as its base code, ${linkedCodeId}, has a code hash that matches other verified codes.`;
+      case BadgeStatus.VERIFIED:
+        return `This contract has been verified using code ${linkedCodeId}, which is confirmed as verified.`;
       default:
         return undefined;
     }
@@ -53,15 +53,15 @@ const getTextProperties = (badgeStatus: BadgeStatus) => {
   switch (badgeStatus) {
     case BadgeStatus.IN_PROGRESS:
       return { color: "text.dark", label: "In progress" };
-    case BadgeStatus.VERIFIED:
-      return {
-        color: "secondary.main",
-        label: "Verified",
-      };
     case BadgeStatus.INDIRECTLY_VERIFIED:
       return {
         color: "secondary.main",
         label: "Indirectly verified",
+      };
+    case BadgeStatus.VERIFIED:
+      return {
+        color: "secondary.main",
+        label: "Verified",
       };
     default:
       return null;
@@ -72,22 +72,22 @@ const WasmVerifyIcon = ({ badgeStatus }: { badgeStatus: BadgeStatus }) => {
   switch (badgeStatus) {
     case BadgeStatus.IN_PROGRESS:
       return <CustomIcon color="text.dark" mx={0} name="hourglass" />;
+    case BadgeStatus.INDIRECTLY_VERIFIED:
+      return <CustomIcon color="secondary.main" mx={0} name="verification" />;
     case BadgeStatus.VERIFIED:
       return (
         <CustomIcon color="secondary.main" mx={0} name="verification-solid" />
       );
-    case BadgeStatus.INDIRECTLY_VERIFIED:
-      return <CustomIcon color="secondary.main" mx={0} name="verification" />;
     default:
       return undefined;
   }
 };
 
 interface WasmVerifyBadgeProps {
-  status: WasmVerifyStatus;
-  relatedVerifiedCodes?: number[];
   hasText?: boolean;
   linkedCodeId?: number;
+  relatedVerifiedCodes?: number[];
+  status: WasmVerifyStatus;
 }
 
 export const WasmVerifyBadge = ({

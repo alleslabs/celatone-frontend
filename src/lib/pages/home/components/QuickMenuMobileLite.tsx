@@ -35,11 +35,11 @@ const cardProps: SystemStyleObject = {
 };
 
 interface CardProps {
-  title: string;
-  subtitle?: string;
-  slug?: string;
   icon: IconKeys;
   isDocument: boolean;
+  slug?: string;
+  subtitle?: string;
+  title: string;
 }
 
 const QuickActionCard = ({ item }: { item: CardProps }) => (

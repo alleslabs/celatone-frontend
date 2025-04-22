@@ -6,11 +6,11 @@ import { DisconnectedState } from "lib/components/state";
 import { TransactionsTable } from "./TransactionsTable";
 
 interface TransactionsTableWithWalletProps {
-  transactions: Option<Transaction[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
   showActions: boolean;
   showRelations: boolean;
+  transactions: Option<Transaction[]>;
 }
 
 export const TransactionsTableWithWallet = ({

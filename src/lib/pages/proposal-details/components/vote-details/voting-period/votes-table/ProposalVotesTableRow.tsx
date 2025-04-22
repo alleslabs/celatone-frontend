@@ -10,9 +10,9 @@ import { dateFromNow, formatUTC } from "lib/utils";
 import { Voter } from "../table/Voter";
 
 interface ProposalVotesTableRowProps {
+  fullVersion: boolean;
   proposalVote: ProposalVote;
   templateColumns: string;
-  fullVersion: boolean;
 }
 
 export const ProposalVotesTableRow = ({

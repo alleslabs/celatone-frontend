@@ -8,11 +8,11 @@ import { useFormatAddresses } from "lib/hooks/useFormatAddresses";
 import { dateFromNow, formatEvmTxHash, formatUTC } from "lib/utils";
 
 interface OverviewInfoProps {
-  hash: Option<string>;
-  evmHash: Nullish<string>;
-  sender: Option<BechAddr>;
   created: Option<Date>;
+  evmHash: Nullish<string>;
+  hash: Option<string>;
   isContractInfoLoading: boolean;
+  sender: Option<BechAddr>;
 }
 
 export const OverviewInfo = ({

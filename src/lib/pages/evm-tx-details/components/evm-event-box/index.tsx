@@ -16,8 +16,8 @@ import { EvmEventBoxData } from "./evm-event-box-data";
 import { EvmEventBoxTopics } from "./evm-event-box-topics";
 
 interface EvmEventBoxProps {
-  log: TxReceiptJsonRpcLog;
   evmVerifyInfo: Nullable<EvmVerifyInfo>;
+  log: TxReceiptJsonRpcLog;
 }
 
 const EvmEventBoxName = ({

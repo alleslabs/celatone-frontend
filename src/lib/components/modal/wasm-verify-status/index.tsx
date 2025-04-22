@@ -22,9 +22,9 @@ import { WasmVerifyRequestInfo } from "./WasmVerifyRequestInfo";
 
 interface WasmVerifyStatusModalProps {
   codeHash: string;
-  verificationInfo: WasmVerifyInfoBase;
   relatedVerifiedCodes: number[];
   triggerElement: ReactNode;
+  verificationInfo: WasmVerifyInfoBase;
 }
 export const WasmVerifyStatusModal = ({
   codeHash,

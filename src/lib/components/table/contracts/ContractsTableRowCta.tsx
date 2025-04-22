@@ -47,8 +47,8 @@ export interface CtaInfo {
 
 interface ContractsTableRowCtaProps {
   contractInfo: ContractInfo;
-  withCta?: CtaInfo;
   showLastUpdate?: boolean;
+  withCta?: CtaInfo;
 }
 
 export const ContractsTableRowCta = ({

@@ -63,8 +63,8 @@ const getTxResponse = async (rpcEndpoint: string, txHash: string) => {
 
 interface SignAndBroadcastParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   fee: StdFee;
+  messages: EncodeObject[];
 }
 
 export type SignAndBroadcast = (

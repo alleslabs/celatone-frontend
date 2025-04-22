@@ -1,5 +1,5 @@
 import type { WalletWidget, WidgetConfig } from "@initia/utils";
-import type { ReactNode, PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 
 import { context, loadScript } from "@initia/react-wallet-widget/ssr";
 import { useCelatoneApp, useWasmConfig } from "lib/app-provider";
@@ -22,7 +22,7 @@ const WalletWidgetProvider = ({
 }: PropsWithChildren<WidgetConfig> & {
   fallback?: ReactNode;
 }) => {
-  const [widget, setWidget] = useState<WalletWidget | null>(null);
+  const [widget, setWidget] = useState<null | WalletWidget>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;

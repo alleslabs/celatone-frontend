@@ -19,8 +19,8 @@ import { VoteQuorumCircle } from "../../VoteQuorumCircle";
 import { VoteQuorumText } from "../../VoteQuorumText";
 
 interface VotingOverviewQuorumProps {
-  proposalData: ProposalData;
   params: ProposalParams;
+  proposalData: ProposalData;
   votesInfo: ProposalVotesInfo;
 }
 

@@ -16,10 +16,10 @@ import { DelegationRelatedTxsTable } from "../tables";
 import { VotingPowerChart } from "./VotingPowerChart";
 
 interface BondedTokenChangesProps {
-  validatorAddress: ValidatorAddr;
-  singleStakingDenom: Option<string>;
   assetInfos: Option<AssetInfos>;
   movePoolInfos: Option<MovePoolInfos>;
+  singleStakingDenom: Option<string>;
+  validatorAddress: ValidatorAddr;
 }
 
 export const BondedTokenChanges = ({

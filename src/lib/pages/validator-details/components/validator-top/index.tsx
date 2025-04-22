@@ -14,8 +14,8 @@ import { WebsiteButton } from "./WebsiteButton";
 
 interface ValidatorTopProps {
   info: ValidatorData;
-  totalVotingPower: Big;
   singleStakingDenom: Option<string>;
+  totalVotingPower: Big;
 }
 
 export const ValidatorTop = ({

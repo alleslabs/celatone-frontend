@@ -13,14 +13,14 @@ import type { SimulatedFeeEvm } from "../types";
 import { getSimulateFeeEvm } from "./jsonRpc";
 
 interface SimulateQueryEvmParams {
-  enabled: boolean;
-  to: HexAddr20;
   data: string;
-  value: string;
-  retry?: UseQueryOptions["retry"];
+  enabled: boolean;
   extraQueryKey?: UseQueryOptions["queryKey"];
-  onSuccess?: (gas: Option<SimulatedFeeEvm>) => void;
   onError?: (err: Error) => void;
+  onSuccess?: (gas: Option<SimulatedFeeEvm>) => void;
+  retry?: UseQueryOptions["retry"];
+  to: HexAddr20;
+  value: string;
 }
 
 export const useSimulateFeeEvmQuery = ({

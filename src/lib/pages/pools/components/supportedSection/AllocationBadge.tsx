@@ -14,14 +14,14 @@ import {
 import { getUndefinedTokenIcon } from "../../utils";
 
 interface AllocationBadgeProps {
-  denom?: string;
-  logo?: string;
-  symbol?: string;
-  precision?: number;
   amount: U<Token<Big>>;
-  value: Option<USD<Big>>;
+  denom?: string;
   liquidity: USD<Big>;
+  logo?: string;
   mode: string;
+  precision?: number;
+  symbol?: string;
+  value: Option<USD<Big>>;
 }
 
 export const AllocationBadge = ({

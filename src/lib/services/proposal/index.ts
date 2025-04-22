@@ -116,7 +116,7 @@ export const useProposals = (
 };
 
 export const useProposalsRest = (
-  status?: Omit<ProposalStatus, "DEPOSIT_FAILED" | "CANCELLED">
+  status?: Omit<ProposalStatus, "CANCELLED" | "DEPOSIT_FAILED">
 ) => {
   const {
     chainConfig: { rest: restEndpoint },

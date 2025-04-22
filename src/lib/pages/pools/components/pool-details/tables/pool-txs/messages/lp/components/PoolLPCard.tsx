@@ -9,14 +9,14 @@ import { ErrorFetchingDetail, PoolAssetCard } from "../../components";
 import { getPoolDenom } from "../../utils";
 
 interface PoolLPCardProps {
-  txHash?: string;
-  msgIndex: number;
-  poolId: string;
-  msgShareAmount?: string;
+  ampCopierSection?: string;
   assetInfos: Option<AssetInfos>;
   isJoin: boolean;
   isOpened: boolean;
-  ampCopierSection?: string;
+  msgIndex: number;
+  msgShareAmount?: string;
+  poolId: string;
+  txHash?: string;
 }
 
 export const PoolLPCard = ({

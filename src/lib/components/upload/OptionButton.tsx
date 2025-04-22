@@ -2,9 +2,9 @@ import { Flex, Text } from "@chakra-ui/react";
 import { CustomIcon } from "lib/components/icon";
 
 interface OptionButtonProps {
-  title: string;
   description: string;
   disabled?: boolean;
+  title: string;
 }
 
 export const OptionButton = ({

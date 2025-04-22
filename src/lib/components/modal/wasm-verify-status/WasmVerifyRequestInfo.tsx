@@ -24,8 +24,8 @@ const baseContainerStyle: FlexProps = {
 
 interface WasmVerifyRequestInfoProps {
   codeHash: string;
-  verificationInfo: WasmVerifyInfoBase;
   relatedVerifiedCodes: number[];
+  verificationInfo: WasmVerifyInfoBase;
 }
 
 export const WasmVerifyRequestInfo = ({

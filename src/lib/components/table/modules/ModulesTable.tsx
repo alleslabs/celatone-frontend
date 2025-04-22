@@ -11,10 +11,10 @@ import { ModulesTableMobileCard } from "./ModulesTableMobileCard";
 import { ModulesTableRow } from "./ModulesTableRow";
 
 interface ModulesTableProps {
-  modules: Option<ModuleInfo[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
   isPublishedModules?: boolean;
+  modules: Option<ModuleInfo[]>;
   moveVerifyInfos: Option<Record<string, MoveVerifyInfoResponse>>;
 }
 

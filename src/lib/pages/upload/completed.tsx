@@ -11,8 +11,8 @@ import {
 } from "@chakra-ui/react";
 import {
   useInternalNavigate,
-  useTierConfig,
   useIsApiChain,
+  useTierConfig,
 } from "lib/app-provider";
 import ActionPageContainer from "lib/components/ActionPageContainer";
 import { EstimatedFeeRender } from "lib/components/EstimatedFeeRender";

@@ -12,12 +12,12 @@ import { useCallback } from "react";
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface SubmitWhitelistProposalStreamParams {
+  amountToVote: Nullable<string>;
   estimatedFee?: StdFee;
   messages: EncodeObject[];
-  whitelistNumber: number;
-  amountToVote: Nullable<string>;
-  onTxSucceed?: () => void;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  whitelistNumber: number;
 }
 
 export const useSubmitWhitelistProposalTx = () => {
@@ -55,12 +55,12 @@ export const useSubmitWhitelistProposalTx = () => {
 };
 
 interface SubmitStoreCodeProposalStreamParams {
-  wasmFileName: string;
-  messages: EncodeObject[];
   amountToVote: Nullable<string>;
   estimatedFee?: StdFee;
-  onTxSucceed?: () => void;
+  messages: EncodeObject[];
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  wasmFileName: string;
 }
 
 export const useSubmitStoreCodeProposalTx = () => {

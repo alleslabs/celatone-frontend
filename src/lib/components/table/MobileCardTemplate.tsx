@@ -3,10 +3,10 @@ import type { ReactNode } from "react";
 import { Flex } from "@chakra-ui/react";
 
 interface MobileCardTemplateProps {
-  topContent: ReactNode;
-  middleContent?: ReactNode;
   bottomContent?: ReactNode;
+  middleContent?: ReactNode;
   onClick?: () => void;
+  topContent: ReactNode;
 }
 export const MobileCardTemplate = ({
   bottomContent,

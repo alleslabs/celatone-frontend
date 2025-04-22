@@ -15,10 +15,10 @@ import AccountSectionWrapper from "../AccountSectionWrapper";
 
 interface AdminContractsTableProps {
   address: BechAddr;
+  onViewMore?: () => void;
+  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
-  refetchCount: () => void;
-  onViewMore?: () => void;
 }
 
 export const AdminContractsTable = observer(

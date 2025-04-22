@@ -21,8 +21,8 @@ import type { MenuInfo, NavMenuProps, SubmenuInfo } from "./types";
 import { InformationFooter } from "../InformationFooter";
 
 interface NavInfoProps {
-  submenu: SubmenuInfo;
   isCurrentPage: (slug: string) => boolean;
+  submenu: SubmenuInfo;
 }
 const NavInfo = ({ isCurrentPage, submenu }: NavInfoProps) => (
   <Flex
@@ -69,8 +69,8 @@ const NavInfo = ({ isCurrentPage, submenu }: NavInfoProps) => (
 );
 
 interface SubMenuProps {
-  submenu: SubmenuInfo[];
   isCurrentPage: (slug: string) => boolean;
+  submenu: SubmenuInfo[];
 }
 
 const SubMenuRender = ({ isCurrentPage, submenu }: SubMenuProps) => (
@@ -97,8 +97,8 @@ const SubMenuRender = ({ isCurrentPage, submenu }: SubMenuProps) => (
 );
 
 interface NavbarRenderProps {
-  menuInfo: MenuInfo;
   isCurrentPage: (slug: string) => boolean;
+  menuInfo: MenuInfo;
 }
 
 const NavbarRender = ({ isCurrentPage, menuInfo }: NavbarRenderProps) => {

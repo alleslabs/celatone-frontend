@@ -10,8 +10,8 @@ import { SavedAccountsTableRow } from "./SavedAccountsTableRow";
 
 interface SavedAccountsTableProps {
   accounts: Option<AccountLocalInfo[]>;
-  isLoading: boolean;
   emptyState: JSX.Element;
+  isLoading: boolean;
 }
 
 export const SavedAccountsTable = ({

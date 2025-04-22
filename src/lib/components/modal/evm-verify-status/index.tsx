@@ -1,4 +1,4 @@
-import type { HexAddr20, Option, EvmVerifyInfo } from "lib/types";
+import type { EvmVerifyInfo, HexAddr20, Option } from "lib/types";
 import type { ReactNode } from "react";
 
 import {

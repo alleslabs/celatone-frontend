@@ -75,12 +75,12 @@ export const DEFAULT_TX_FILTERS: TxFilters = {
 };
 
 export enum StorageKeys {
-  NavSidebar = "nav-sidebar",
+  Annoucement = "annoucement",
   DevSidebar = "dev-sidebar",
+  NavSidebar = "nav-sidebar",
+  Networks = "networks",
   ProjectSidebar = "project-sidebar",
   Wallets = "wallets",
-  Networks = "networks",
-  Annoucement = "annoucement",
 }
 
 export const HEX_WALLET_ADDRESS_LENGTH = 40;

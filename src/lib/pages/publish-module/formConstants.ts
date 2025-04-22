@@ -11,9 +11,9 @@ export interface PublishStatus {
 }
 
 export interface Module {
-  file: Option<File>;
   base64EncodedFile: string;
   decodeRes: Option<DecodeModuleQueryResponse>;
+  file: Option<File>;
   publishStatus: PublishStatus;
 }
 

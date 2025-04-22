@@ -68,14 +68,14 @@ import {
 import { getAlert } from "../utils";
 
 interface StoreCodeProposalState {
-  title: string;
+  builder: string;
+  codeHash: string;
+  initialDeposit: Coin;
   proposalDesc: string;
   runAs: BechAddr;
-  initialDeposit: Coin;
-  unpinCode: boolean;
-  builder: string;
   source: string;
-  codeHash: string;
+  title: string;
+  unpinCode: boolean;
 }
 
 const defaultValues: StoreCodeProposalState = {

@@ -21,10 +21,10 @@ import { SelectInput } from "lib/components/forms";
  * chakra-react-select option base.
  */
 interface OptionBase {
-  variant?: string;
   colorScheme?: string;
-  isFixed?: boolean;
   isDisabled?: boolean;
+  isFixed?: boolean;
+  variant?: string;
 }
 
 export interface SelectOptionBase<T = unknown> extends OptionBase {

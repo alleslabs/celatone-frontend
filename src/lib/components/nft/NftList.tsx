@@ -8,9 +8,9 @@ import { ErrorFetching } from "lib/components/state";
 import { NftCard } from "./NftCard";
 
 interface NftListProps {
-  nfts: Option<Nft[]>;
-  isLoading?: boolean;
   emptyState: JSX.Element;
+  isLoading?: boolean;
+  nfts: Option<Nft[]>;
   showCollection: boolean;
 }
 

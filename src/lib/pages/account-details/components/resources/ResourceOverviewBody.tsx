@@ -13,9 +13,9 @@ import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 
 interface ResourceOverviewBodyProps {
   address: BechAddr;
-  resourcesByName: Option<ResourceGroup[]>;
   isLoading: boolean;
   onViewMore: () => void;
+  resourcesByName: Option<ResourceGroup[]>;
 }
 
 export const ResourceOverviewBody = ({

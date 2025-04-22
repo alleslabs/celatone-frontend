@@ -6,8 +6,8 @@ import { CopyLink } from "lib/components/CopyLink";
 import { CustomIcon } from "lib/components/icon";
 
 interface MyModuleVerificationDetailsTopProps {
-  taskId: string;
   requestNote: Option<string>;
+  taskId: string;
 }
 
 export const MyModuleVerificationDetailsTop = ({

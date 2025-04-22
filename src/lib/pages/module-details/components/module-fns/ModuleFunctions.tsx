@@ -19,11 +19,11 @@ import { FunctionTypeSwitch } from "./FunctionTypeSwitch";
 
 interface ModuleFunctionsProps {
   address: IndexedModule["address"];
-  moduleName: IndexedModule["moduleName"];
-  fns: IndexedModule["parsedAbi"]["exposed_functions"];
-  viewFns: IndexedModule["viewFunctions"];
   executeFns: IndexedModule["executeFunctions"];
+  fns: IndexedModule["parsedAbi"]["exposed_functions"];
+  moduleName: IndexedModule["moduleName"];
   typeTab: FunctionTypeTabIndex;
+  viewFns: IndexedModule["viewFunctions"];
 }
 
 const FunctionAccordions = ({
@@ -34,11 +34,11 @@ const FunctionAccordions = ({
   moduleName,
   updateExpandedIndexes,
 }: {
-  fnType: FunctionTypeTabIndex;
   address: IndexedModule["address"];
-  moduleName: IndexedModule["moduleName"];
-  fns: ExposedFunction[];
   expandedIndexes: number[];
+  fns: ExposedFunction[];
+  fnType: FunctionTypeTabIndex;
+  moduleName: IndexedModule["moduleName"];
   updateExpandedIndexes: (indexes: number[]) => void;
 }) => (
   <Accordion

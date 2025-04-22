@@ -10,9 +10,9 @@ import { PublicDescription } from "lib/components/PublicDescription";
 import { UserContractDesc } from "./UserContractDesc";
 
 interface ContractDescProps {
-  publicInfo: Nullable<PublicContractInfo>;
   contract: Contract;
   contractLocalInfo: Option<ContractLocalInfo>;
+  publicInfo: Nullable<PublicContractInfo>;
 }
 export const ContractDesc = ({
   contract,

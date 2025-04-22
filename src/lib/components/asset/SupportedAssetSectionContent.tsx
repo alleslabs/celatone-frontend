@@ -4,9 +4,9 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 import { TokenCard } from "lib/components/token";
 
 interface SupportedAssetSectionContentProps {
-  supportedAssets: TokenWithValue[];
   isAccount?: boolean;
   onViewMore?: () => void;
+  supportedAssets: TokenWithValue[];
 }
 
 export const SupportedAssetSectionContent = ({

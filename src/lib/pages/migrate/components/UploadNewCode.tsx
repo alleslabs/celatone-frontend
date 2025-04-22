@@ -6,13 +6,13 @@ import { Heading } from "@chakra-ui/react";
 import { UploadSection } from "lib/components/upload";
 
 interface UploadNewCodeProps {
-  formData: UseFormReturn<UploadSectionState>;
   estimatedFee: Option<StdFee>;
-  setEstimatedFee: (fee: StdFee | undefined) => void;
+  formData: UseFormReturn<UploadSectionState>;
+  isSimulating: boolean;
   setDefaultBehavior: () => void;
+  setEstimatedFee: (fee: StdFee | undefined) => void;
   shouldNotSimulate: boolean;
   simulateStatus: SimulateStatus;
-  isSimulating: boolean;
 }
 
 export const UploadNewCode = (props: UploadNewCodeProps) => (

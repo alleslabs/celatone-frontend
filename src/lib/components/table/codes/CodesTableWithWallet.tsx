@@ -7,11 +7,11 @@ import { CodesTable } from "./CodesTable";
 
 interface CodesTableWithWalletProps {
   codes: CodeInfo[];
-  isLoading: boolean;
-  emptyState: JSX.Element;
-  onRowSelect: (codeId: number) => void;
   disconnectedMessage: string;
+  emptyState: JSX.Element;
+  isLoading: boolean;
   isReadOnly?: boolean;
+  onRowSelect: (codeId: number) => void;
 }
 
 export const CodesTableWithWallet = ({

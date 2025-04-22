@@ -5,11 +5,11 @@ import { useEffect } from "react";
 import { CustomIcon } from "../icon";
 
 interface SubmitButtonProps {
-  text: string;
-  isLoading: boolean;
-  onSubmit: () => void;
   isDisabled: boolean;
   isFullWidth?: boolean;
+  isLoading: boolean;
+  onSubmit: () => void;
+  text: string;
 }
 
 export const SubmitButton = ({

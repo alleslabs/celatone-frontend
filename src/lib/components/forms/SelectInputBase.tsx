@@ -20,31 +20,31 @@ import { CustomIcon } from "../icon";
 const ITEM_HEIGHT = 56;
 
 interface SelectInputProps<T extends string> {
+  disableMaxH?: boolean;
   formLabel?: string;
+  hasDivider?: boolean;
+  helperTextComponent?: ReactNode;
+  initialSelected?: string;
+  isRequired?: boolean;
+  labelBgColor?: string;
+  onChange: (newVal: T) => void;
   options: {
-    label: string;
-    value: T;
     disabled: boolean;
     icon?: IconKeys;
     iconColor?: string;
     image?: JSX.Element;
+    label: string;
+    value: T;
   }[];
-  onChange: (newVal: T) => void;
   placeholder?: string;
-  initialSelected?: string;
-  hasDivider?: boolean;
-  helperTextComponent?: ReactNode;
-  labelBgColor?: string;
   popoverBgColor?: string;
-  size?: string | object;
-  disableMaxH?: boolean;
-  isRequired?: boolean;
+  size?: object | string;
 }
 
 interface SelectItemProps {
   children: NonNullable<ReactNode>;
-  onSelect?: () => void;
   disabled: boolean;
+  onSelect?: () => void;
 }
 
 const SelectItem = ({ children, disabled, onSelect }: SelectItemProps) => (

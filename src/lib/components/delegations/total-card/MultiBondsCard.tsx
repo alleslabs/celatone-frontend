@@ -11,9 +11,9 @@ import { TotalCardModal } from "./TotalCardModal";
 import { TotalCardTop } from "./TotalCardTop";
 
 interface MultiBondsCardProps {
-  title: string;
-  message: string;
   address: BechAddr;
+  message: string;
+  title: string;
   tokens: Option<Record<string, TokenWithValue>>;
 }
 

@@ -2,25 +2,25 @@ import { zHexAddr20 } from "lib/types";
 import { z } from "zod";
 
 export enum TabIndex {
-  Overview = "overview",
-  Contract = "contract",
-  ReadWrite = "read-write",
   Assets = "assets",
+  Contract = "contract",
+  Overview = "overview",
+  ReadWrite = "read-write",
   Transactions = "transactions",
 }
 
 export enum InteractTabsIndex {
   Read = "read",
-  Write = "write",
   ReadProxy = "read-proxy",
+  Write = "write",
   WriteProxy = "write-proxy",
 }
 
 export enum EvmContractDetailsContractInfoTabs {
-  Code = "Code",
-  Compiler = "Compiler",
   Abi = "ABI",
   ByteCode = "ByteCode",
+  Code = "Code",
+  Compiler = "Compiler",
 }
 
 export const zEvmContractDetailsQueryParams = z.object({

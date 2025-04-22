@@ -4,10 +4,10 @@ import { extractPoolMsgs } from "./messages/utils";
 import { PoolTxsMsg } from "./PoolTxsMsg";
 
 interface PoolTxsTableRowProps {
-  pool: PoolData;
-  transaction: Transaction;
   assetInfos: Option<AssetInfos>;
+  pool: PoolData;
   templateColumns: string;
+  transaction: Transaction;
 }
 
 export const PoolTxsTableRow = ({

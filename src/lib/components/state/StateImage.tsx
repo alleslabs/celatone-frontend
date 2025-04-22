@@ -3,7 +3,7 @@ import type { ImageProps } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 import { useCelatoneApp } from "lib/app-provider";
 
-export type ImageVariant = "error" | "not-found" | "empty" | "disconnected";
+export type ImageVariant = "disconnected" | "empty" | "error" | "not-found";
 
 interface StateImageProps {
   imageVariant: ImageVariant;

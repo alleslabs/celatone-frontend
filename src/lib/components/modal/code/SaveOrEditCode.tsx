@@ -8,8 +8,8 @@ import { EditCodeDetailsModal } from "./EditCodeDetails";
 import { SaveCodeDetailsModal } from "./SaveCodeDetails";
 
 interface SaveOrEditCodeModalProps {
-  mode: "save" | "edit";
   codeInfo: CodeInfo;
+  mode: "edit" | "save";
 }
 
 export const SaveOrEditCodeModal = observer(

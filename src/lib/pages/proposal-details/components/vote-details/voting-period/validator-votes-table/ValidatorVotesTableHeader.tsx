@@ -5,9 +5,9 @@ import { useMobile } from "lib/app-provider";
 import { TableHeader } from "lib/components/table";
 
 interface ValidatorVotesTableHeaderProps {
-  templateColumns: GridProps["templateColumns"];
   fullVersion: boolean;
   isProposalResolved: boolean;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const ValidatorVotesTableHeader = ({

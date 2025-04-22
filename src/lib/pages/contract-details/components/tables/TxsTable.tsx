@@ -10,9 +10,9 @@ import { useTxsByAddress, useTxsByContractAddressRest } from "lib/services/tx";
 
 interface TxsTableProps {
   contractAddress: BechAddr32;
+  refetchCount: () => void;
   scrollComponentId: string;
   totalData: Option<number>;
-  refetchCount: () => void;
 }
 
 export const TxsTable = ({

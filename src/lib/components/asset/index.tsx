@@ -21,8 +21,8 @@ import { UserAssetInfoCard } from "./UserAssetInfoCard";
 
 interface AssetsSectionProps {
   address: BechAddr;
-  onViewMore?: () => void;
   isAccount?: boolean;
+  onViewMore?: () => void;
 }
 
 const MobileOverview = ({
@@ -32,11 +32,11 @@ const MobileOverview = ({
   totalSupportedAssetsValue,
   unsupportedAssets,
 }: {
+  hasNoAsset: boolean;
+  onViewMore: () => void;
   supportedAssets: TokenWithValue[];
   totalSupportedAssetsValue: Option<USD<Big>>;
   unsupportedAssets: TokenWithValue[];
-  hasNoAsset: boolean;
-  onViewMore: () => void;
 }) => (
   <Flex
     bg="gray.900"

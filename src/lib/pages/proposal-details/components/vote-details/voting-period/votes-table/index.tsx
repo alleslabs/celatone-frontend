@@ -20,10 +20,10 @@ import { ProposalVotesTableHeader } from "./ProposalVotesTableHeader";
 import { ProposalVotesTableRow } from "./ProposalVotesTableRow";
 
 interface ProposalVotesTableBodyProps {
-  proposalVotes: Option<ProposalVote[]>;
   fullVersion: boolean;
   isLoading: boolean;
   isSearching: boolean;
+  proposalVotes: Option<ProposalVote[]>;
 }
 
 export const ProposalVotesTableBody = ({
@@ -74,11 +74,11 @@ export const ProposalVotesTableBody = ({
 };
 
 interface ProposalVotesTableProps {
-  id: number;
   answers: Option<ProposalAnswerCountsResponse["all"]>;
-  fullVersion: boolean;
-  onViewMore?: () => void;
   enabled?: boolean;
+  fullVersion: boolean;
+  id: number;
+  onViewMore?: () => void;
 }
 
 const tableHeaderId = "proposalVotesTable";

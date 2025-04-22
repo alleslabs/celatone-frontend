@@ -20,9 +20,9 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 interface PastTxsState {
-  search: string;
   filters: TxFilters;
   isSigner: Option<boolean>;
+  search: string;
 }
 
 export const PastTxsFull = () => {

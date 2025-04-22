@@ -9,10 +9,10 @@ const LegendItem = ({
   ratio,
   value,
 }: {
-  label: string;
   color: string;
-  value: number;
+  label: string;
   ratio: Ratio<number>;
+  value: number;
 }) => (
   <Flex gap={2} w="full">
     <Flex backgroundColor={color} borderRadius="2px" h={3} mt={1} w={3} />

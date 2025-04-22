@@ -12,8 +12,8 @@ export const ViewPermissionAddresses = ({
   amptrackSection,
   permissionAddresses,
 }: {
-  permissionAddresses: PermissionAddresses;
   amptrackSection: string;
+  permissionAddresses: PermissionAddresses;
 }) => {
   const [viewAll, setViewAll] = useState(false);
   const getAddressType = useGetAddressType();

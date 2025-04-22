@@ -8,17 +8,17 @@ import { TableRow } from "../tableComponents";
 import { TokensCell } from "./TokensCell";
 
 export interface BondedInfo {
-  validator: Validator;
   balances: TokenWithValue[];
-  rewards?: TokenWithValue[];
   completionTime?: Date;
+  rewards?: TokenWithValue[];
+  validator: Validator;
 }
 
 interface BondedTableRowProps {
   bondedInfo: BondedInfo;
   isSingleBondDenom: boolean;
-  templateColumns: string;
   isUnbonding?: boolean;
+  templateColumns: string;
 }
 
 export const BondedTableRow = ({

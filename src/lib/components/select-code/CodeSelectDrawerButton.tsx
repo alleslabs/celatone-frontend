@@ -33,8 +33,8 @@ interface CodeFilterState {
 }
 
 interface CodeSelectDrawerButtonProps {
-  onCodeSelect: (code: number) => void;
   buttonText: string;
+  onCodeSelect: (code: number) => void;
 }
 
 export const CodeSelectDrawerButton = ({

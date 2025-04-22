@@ -14,8 +14,8 @@ import { WasmVerifySubmitFormSelectNoOptionsMessage } from "./WasmVerifySubmitFo
 import { WasmVerifySubmitFormSelectOption } from "./WasmVerifySubmitFormSelectOption";
 
 interface WasmVerifySubmitFormSelectProps<T extends FieldValues> {
-  name: FieldPath<T>;
   control: Control<T>;
+  name: FieldPath<T>;
   options: WasmVerifySubmitFormOption[];
 }
 

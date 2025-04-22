@@ -19,8 +19,8 @@ import {
 } from "lib/utils";
 
 interface MigrationRowProps {
-  templateColumns: GridProps["templateColumns"];
   history: ContractMigrationHistory;
+  templateColumns: GridProps["templateColumns"];
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 

@@ -16,17 +16,17 @@ const getStatusSummaryBorderColor = (
   status: ProposalStatus
 ): CSSProperties["backgroundColor"] => {
   switch (status) {
+    case ProposalStatus.CANCELLED:
+      return "error.background";
     case ProposalStatus.DEPOSIT_PERIOD:
       return "primary.dark";
-    case ProposalStatus.VOTING_PERIOD:
-      return "secondary.dark";
     case ProposalStatus.FAILED:
     case ProposalStatus.REJECTED:
       return "error.dark";
     case ProposalStatus.PASSED:
       return "success.dark";
-    case ProposalStatus.CANCELLED:
-      return "error.background";
+    case ProposalStatus.VOTING_PERIOD:
+      return "secondary.dark";
     case ProposalStatus.DEPOSIT_FAILED:
     default:
       return "gray.700";

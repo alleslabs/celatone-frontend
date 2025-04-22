@@ -7,12 +7,12 @@ import { CodesTable } from "./CodesTable";
 
 interface MySavedCodesTableProps {
   codes: CodeInfo[];
-  totalData: number;
-  isLoading: boolean;
-  onRowSelect: (codeId: number) => void;
-  isReadOnly?: boolean;
-  showCw2andContracts?: boolean;
   disablePermission?: boolean;
+  isLoading: boolean;
+  isReadOnly?: boolean;
+  onRowSelect: (codeId: number) => void;
+  showCw2andContracts?: boolean;
+  totalData: number;
 }
 
 export const MySavedCodesTable = ({

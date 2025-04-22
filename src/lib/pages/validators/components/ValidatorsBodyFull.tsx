@@ -11,13 +11,13 @@ import { ValidatorsTable } from "./validators-table";
 
 interface ValidatorsBodyFullProps {
   isActive: boolean;
-  setCounts: (counts: Option<ValidatorCounts>) => void;
-  order: ValidatorOrder;
-  setOrder: (newOrder: ValidatorOrder) => void;
   isDesc: boolean;
-  setIsDesc: (newIsDesc: boolean) => void;
-  search: string;
+  order: ValidatorOrder;
   scrollComponentId: string;
+  search: string;
+  setCounts: (counts: Option<ValidatorCounts>) => void;
+  setIsDesc: (newIsDesc: boolean) => void;
+  setOrder: (newOrder: ValidatorOrder) => void;
 }
 
 export const ValidatorsBodyFull = ({

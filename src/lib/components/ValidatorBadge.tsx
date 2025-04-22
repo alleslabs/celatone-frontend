@@ -10,11 +10,11 @@ import { MobileLabel } from "./table/MobileLabel";
 import { ValidatorImage } from "./ValidatorImage";
 
 interface ValidatorBadgeProps {
-  validator: Nullable<Validator>;
-  badgeSize?: ImageProps["boxSize"];
   ampCopierSection?: string;
+  badgeSize?: ImageProps["boxSize"];
   hasLabel?: boolean;
   moreInfo?: JSX.Element;
+  validator: Nullable<Validator>;
 }
 
 export const ValidatorBadge = ({

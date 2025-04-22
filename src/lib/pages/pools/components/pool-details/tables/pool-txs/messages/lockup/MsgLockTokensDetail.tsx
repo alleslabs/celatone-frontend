@@ -13,14 +13,14 @@ import { PoolInfoText } from "../components/PoolInfoText";
 import { getPoolDenom } from "../utils";
 
 interface MsgLockTokensDetailProps {
-  txHash: string;
-  blockHeight: number;
-  msgIndex: number;
-  msg: MsgLockTokensDetails;
-  pool: PoolData;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  blockHeight: number;
+  isOpened: boolean;
+  msg: MsgLockTokensDetails;
+  msgIndex: number;
+  pool: PoolData;
+  txHash: string;
 }
 
 export const MsgLockTokensDetail = ({

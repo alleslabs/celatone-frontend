@@ -8,9 +8,9 @@ import { TxMsgDetails } from "./TxMsgDetails";
 import { TxMsgExpand } from "./TxMsgExpand";
 
 export interface TxMsgData {
-  msgBody: MessageResponse;
-  log: Option<Log>;
   isSingleMsg?: boolean;
+  log: Option<Log>;
+  msgBody: MessageResponse;
 }
 
 export const TxMessage = ({ isSingleMsg, ...txMsgData }: TxMsgData) => {

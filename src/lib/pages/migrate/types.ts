@@ -4,13 +4,13 @@ import { zBechAddr32 } from "lib/types";
 import { isId } from "lib/utils";
 import { z } from "zod";
 
-type MigrateStep = "migrate_options" | "upload_new_code" | "migrate_contract";
+type MigrateStep = "migrate_contract" | "migrate_options" | "upload_new_code";
 
 export interface MigratePageState {
-  migrateStep: MigrateStep;
-  contractAddress: BechAddr32;
   admin: Option<BechAddr>;
   codeId: Option<number>;
+  contractAddress: BechAddr32;
+  migrateStep: MigrateStep;
 }
 
 export const zMigrateQueryParams = z.object({

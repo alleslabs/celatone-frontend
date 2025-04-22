@@ -6,12 +6,12 @@ import { Flex, Heading, Stack, Tag, Text } from "@chakra-ui/react";
 import { CustomIcon } from "./icon";
 
 interface ButtonCardProps extends FlexProps {
-  title: string;
   description: ReactNode;
-  onClick: () => void;
   disabled?: boolean;
-  tagLabel?: string;
   hasIcon?: boolean;
+  onClick: () => void;
+  tagLabel?: string;
+  title: string;
 }
 
 export const ButtonCard = ({

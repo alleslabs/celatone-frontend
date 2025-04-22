@@ -59,15 +59,15 @@ export const NavDrawer = () => {
           nftConfig.enabled
         );
         break;
-      case "sequencer":
-        navMenuTmp = getNavDrawerSequencer(
+      case "lite":
+        navMenuTmp = getNavDrawerLite(
           govConfig.enabled,
           wasmConfig.enabled,
           moveConfig.enabled
         );
         break;
-      case "lite":
-        navMenuTmp = getNavDrawerLite(
+      case "sequencer":
+        navMenuTmp = getNavDrawerSequencer(
           govConfig.enabled,
           wasmConfig.enabled,
           moveConfig.enabled

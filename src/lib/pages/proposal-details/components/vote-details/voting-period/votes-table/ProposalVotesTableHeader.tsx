@@ -5,8 +5,8 @@ import { useMobile } from "lib/app-provider";
 import { TableHeader } from "lib/components/table";
 
 interface ProposalVotesTableHeaderProps {
-  templateColumns: GridProps["templateColumns"];
   fullVersion: boolean;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const ProposalVotesTableHeader = ({

@@ -12,12 +12,12 @@ import { FurtherActionButton } from "./FurtherActionButton";
 import { RelationChip } from "./RelationChip";
 
 interface TransactionsTableRowProps {
-  transaction: Transaction;
-  templateColumns: string;
-  showSuccess: boolean;
-  showRelations: boolean;
-  showTimestamp: boolean;
   showAction: boolean;
+  showRelations: boolean;
+  showSuccess: boolean;
+  showTimestamp: boolean;
+  templateColumns: string;
+  transaction: Transaction;
 }
 
 export const TransactionsTableRow = ({

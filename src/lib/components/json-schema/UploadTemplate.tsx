@@ -23,27 +23,27 @@ import { useCallback, useMemo, useReducer, useState } from "react";
 import { CustomIcon } from "../icon";
 
 enum Method {
-  UPLOAD_FILE = "upload-file",
-  LOAD_URL = "load-url",
   FILL_MANUALLY = "fill-manually",
+  LOAD_URL = "load-url",
+  UPLOAD_FILE = "upload-file",
 }
 
 type JsonState = Record<
   Method,
-  { schemaString: string; error: Nullable<string> }
+  { error: Nullable<string>; schemaString: string }
 >;
 
 enum ActionType {
-  SET_SCHEMA = "set-schema",
-  SET_ERROR = "set-error",
   RESET = "reset",
+  SET_ERROR = "set-error",
+  SET_SCHEMA = "set-schema",
 }
 
 type Action = {
-  type: ActionType;
+  error?: Nullable<string>;
   method: Method;
   schemaString?: string;
-  error?: Nullable<string>;
+  type: ActionType;
 };
 
 const initialJsonState: JsonState = {
@@ -88,14 +88,60 @@ const MethodRender = ({
   state,
   urlLoading,
 }: {
+  dispatch: Dispatch<Action>;
   method: Method;
   state: JsonState;
   urlLoading: boolean;
-  dispatch: Dispatch<Action>;
 }) => {
   const [jsonFile, setJsonFile] = useState<File>();
   const { error, schemaString } = state[method];
   switch (method) {
+    case Method.FILL_MANUALLY:
+      return (
+        <>
+          <Heading as="h6" mb={4} variant="h6">
+            Contract schema
+          </Heading>
+          <JsonInput
+            maxLines={12}
+            setText={(value: string) =>
+              dispatch({
+                method,
+                schemaString: value,
+                type: ActionType.SET_SCHEMA,
+              })
+            }
+            text={schemaString}
+            validateFn={validateSchema}
+          />
+        </>
+      );
+    case Method.LOAD_URL: {
+      let status: ResponseState = "init";
+      if (urlLoading) status = "loading";
+      else if (error) status = "error";
+      return (
+        <>
+          <Heading as="h6" mb={4} variant="h6">
+            Fill in URL to load JSON schema
+          </Heading>
+          <TextInput
+            setInputState={(url: string) =>
+              dispatch({
+                method,
+                schemaString: url,
+                type: ActionType.SET_SCHEMA,
+              })
+            }
+            status={{
+              message: error,
+              state: status,
+            }}
+            value={schemaString}
+          />
+        </>
+      );
+    }
     case Method.UPLOAD_FILE:
       return jsonFile ? (
         <UploadCard
@@ -136,62 +182,16 @@ const MethodRender = ({
           }}
         />
       );
-    case Method.LOAD_URL: {
-      let status: ResponseState = "init";
-      if (urlLoading) status = "loading";
-      else if (error) status = "error";
-      return (
-        <>
-          <Heading as="h6" mb={4} variant="h6">
-            Fill in URL to load JSON schema
-          </Heading>
-          <TextInput
-            setInputState={(url: string) =>
-              dispatch({
-                method,
-                schemaString: url,
-                type: ActionType.SET_SCHEMA,
-              })
-            }
-            status={{
-              message: error,
-              state: status,
-            }}
-            value={schemaString}
-          />
-        </>
-      );
-    }
-    case Method.FILL_MANUALLY:
-      return (
-        <>
-          <Heading as="h6" mb={4} variant="h6">
-            Contract schema
-          </Heading>
-          <JsonInput
-            maxLines={12}
-            setText={(value: string) =>
-              dispatch({
-                method,
-                schemaString: value,
-                type: ActionType.SET_SCHEMA,
-              })
-            }
-            text={schemaString}
-            validateFn={validateSchema}
-          />
-        </>
-      );
     default:
       return null;
   }
 };
 
 interface UploadTemplateInterface {
+  closeDrawer: () => void;
   codeHash: string;
   codeId: number;
   isReattach: boolean;
-  closeDrawer: () => void;
   onSchemaSave?: () => void;
 }
 
@@ -281,12 +281,12 @@ export const UploadTemplate = ({
   const disabledState = useMemo(() => {
     const methodSchemaString = jsonState[method].schemaString;
     switch (method) {
-      case Method.UPLOAD_FILE:
-        return !methodSchemaString;
-      case Method.LOAD_URL:
-        return !methodSchemaString || urlLoading;
       case Method.FILL_MANUALLY:
         return Boolean(validateSchema(methodSchemaString));
+      case Method.LOAD_URL:
+        return !methodSchemaString || urlLoading;
+      case Method.UPLOAD_FILE:
+        return !methodSchemaString;
       default:
         return false;
     }

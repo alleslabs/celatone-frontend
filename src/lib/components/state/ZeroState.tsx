@@ -10,13 +10,13 @@ import { CustomIcon } from "../icon";
 import { StateImage } from "./StateImage";
 
 interface ZeroStateProps {
-  list: LVPair;
   isReadOnly?: boolean;
+  list: LVPair;
 }
 
 interface ActionSectionProps {
-  list: LVPair;
   handleAction?: () => void;
+  list: LVPair;
 }
 
 const ActionSection = ({ handleAction, list }: ActionSectionProps) =>
@@ -48,10 +48,10 @@ const ActionSection = ({ handleAction, list }: ActionSectionProps) =>
 
 const renderText = (listSlug: string) => {
   switch (listSlug) {
-    case formatSlugName(INSTANTIATED_LIST_NAME):
-      return "Your deployed contract through this address will display here.";
     case ADMIN_SPECIAL_SLUG:
       return "You don’t have any admin access to any contracts.";
+    case formatSlugName(INSTANTIATED_LIST_NAME):
+      return "Your deployed contract through this address will display here.";
     default:
       return "You don’t have any saved contracts.";
   }

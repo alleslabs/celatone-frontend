@@ -14,8 +14,8 @@ import { useValidatorProposedBlocks } from "lib/services/validator";
 const scrollComponentId = "proposed-block-table-header";
 
 interface ProposedBlocksTableProps {
-  validatorAddress: ValidatorAddr;
   onViewMore?: () => void;
+  validatorAddress: ValidatorAddr;
 }
 
 export const ProposedBlocksTable = ({

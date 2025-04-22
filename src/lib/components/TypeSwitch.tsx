@@ -3,11 +3,11 @@ import { MotionBox } from "lib/components/MotionBox";
 import { useCallback } from "react";
 
 interface TypeSwitchProps<T extends string> {
-  tabs: T[];
   currentTab: T;
   disabled?: boolean;
-  onTabChange: (newType: T) => void;
   disabledScrollToTop?: boolean;
+  onTabChange: (newType: T) => void;
+  tabs: T[];
 }
 
 export const TypeSwitch = <T extends string>({

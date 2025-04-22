@@ -84,8 +84,8 @@ export const useModulesByAddress = ({
 }: {
   address: Option<Addr>;
   enabled?: boolean;
-  onSuccess?: (data: AccountModulesResponse) => void;
   onError?: (err: AxiosError<RpcQueryError>) => void;
+  onSuccess?: (data: AccountModulesResponse) => void;
 }) => {
   const {
     chainConfig: { rest: restEndpoint },
@@ -116,12 +116,12 @@ export const useFunctionView = ({
   onError,
   onSuccess,
 }: {
+  abiData: AbiFormData;
+  fn: ExposedFunction;
   moduleAddress: HexAddr;
   moduleName: string;
-  fn: ExposedFunction;
-  abiData: AbiFormData;
-  onSuccess?: (data: string) => void;
   onError?: (err: AxiosError<RpcQueryError>) => void;
+  onSuccess?: (data: string) => void;
 }): UseQueryResult<string> => {
   const {
     chainConfig: { rest: restEndpoint },

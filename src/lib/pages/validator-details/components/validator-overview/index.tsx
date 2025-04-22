@@ -14,18 +14,18 @@ import { ValidatorDescription } from "./ValidatorDescription";
 import { VotingPowerOverview } from "./VotingPowerOverview";
 
 interface ValidatorOverviewProps {
-  onSelectVotes: Option<() => void>;
-  onSelectPerformance: Option<() => void>;
-  onSelectBondedTokenChanges: Option<() => void>;
+  assetInfos: Option<AssetInfos>;
+  details: string;
   isActive: boolean;
   isJailed: boolean;
-  details: string;
-  validatorAddress: ValidatorAddr;
-  singleStakingDenom: Option<string>;
-  assetInfos: Option<AssetInfos>;
-  votingPower: Big;
-  totalVotingPower: Big;
+  onSelectBondedTokenChanges: Option<() => void>;
+  onSelectPerformance: Option<() => void>;
+  onSelectVotes: Option<() => void>;
   selfVotingPower: Big;
+  singleStakingDenom: Option<string>;
+  totalVotingPower: Big;
+  validatorAddress: ValidatorAddr;
+  votingPower: Big;
 }
 
 export const ValidatorOverview = ({

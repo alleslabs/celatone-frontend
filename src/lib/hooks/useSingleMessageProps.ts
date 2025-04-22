@@ -610,27 +610,18 @@ export const useSingleActionMsgProps = (
   if (!isFullTier) return otherMessageSingleMsgProps(isSuccess, messages, type);
 
   switch (type) {
+    case "MsgClearAdmin":
+      return clearAdminSingleMsgProps(
+        isSuccess,
+        messages,
+        getContractLocalInfo,
+        getAddressTypeByLength
+      );
     case "MsgExecuteContract":
       return executeSingleMsgProps(
         isSuccess,
         messages,
         singleMsg,
-        getContractLocalInfo,
-        getAddressTypeByLength
-      );
-    case "MsgSend":
-      return sendSingleMsgProps(
-        isSuccess,
-        messages,
-        assetInfos,
-        movePoolInfos,
-        getContractLocalInfo,
-        getAddressTypeByLength
-      );
-    case "MsgMigrateContract":
-      return migrateSingleMsgProps(
-        isSuccess,
-        messages,
         getContractLocalInfo,
         getAddressTypeByLength
       );
@@ -650,6 +641,24 @@ export const useSingleActionMsgProps = (
         true,
         getAddressTypeByLength
       );
+    case "MsgMigrateContract":
+      return migrateSingleMsgProps(
+        isSuccess,
+        messages,
+        getContractLocalInfo,
+        getAddressTypeByLength
+      );
+    case "MsgSend":
+      return sendSingleMsgProps(
+        isSuccess,
+        messages,
+        assetInfos,
+        movePoolInfos,
+        getContractLocalInfo,
+        getAddressTypeByLength
+      );
+    case "MsgStoreCode":
+      return storeCodeSingleMsgProps(isSuccess, messages);
     case "MsgUpdateAdmin":
       return updateAdminSingleMsgProps(
         isSuccess,
@@ -657,15 +666,6 @@ export const useSingleActionMsgProps = (
         getContractLocalInfo,
         getAddressTypeByLength
       );
-    case "MsgClearAdmin":
-      return clearAdminSingleMsgProps(
-        isSuccess,
-        messages,
-        getContractLocalInfo,
-        getAddressTypeByLength
-      );
-    case "MsgStoreCode":
-      return storeCodeSingleMsgProps(isSuccess, messages);
     default:
       return otherMessageSingleMsgProps(isSuccess, messages, type);
   }

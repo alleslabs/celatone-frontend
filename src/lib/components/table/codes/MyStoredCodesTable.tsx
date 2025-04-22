@@ -6,12 +6,12 @@ import { CodesTableWithWallet } from "./CodesTableWithWallet";
 
 interface MyStoredCodesTableProps {
   codes: CodeInfo[];
-  totalData: number;
-  isLoading: boolean;
-  onRowSelect: (codeId: number) => void;
-  emptyMessage: string;
   disconnectedMessage: string;
+  emptyMessage: string;
+  isLoading: boolean;
   isReadOnly?: boolean;
+  onRowSelect: (codeId: number) => void;
+  totalData: number;
 }
 
 export const MyStoredCodesTable = ({

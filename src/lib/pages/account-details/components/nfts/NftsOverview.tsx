@@ -13,9 +13,9 @@ import { AccountDetailsEmptyState } from "../AccountDetailsEmptyState";
 import AccountSectionWrapper from "../AccountSectionWrapper";
 
 interface NftsOverviewProps {
-  userAddress: HexAddr;
-  totalCount?: number;
   onViewMore?: () => void;
+  totalCount?: number;
+  userAddress: HexAddr;
 }
 
 export const NftsOverview = ({

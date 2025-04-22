@@ -29,8 +29,8 @@ import { getWasmVerifyStatus } from "lib/utils";
 import type { PublicContractInfo } from ".";
 
 interface ContractTableRowProps {
-  templateColumns: string;
   publicContractInfo: PublicContractInfo;
+  templateColumns: string;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 

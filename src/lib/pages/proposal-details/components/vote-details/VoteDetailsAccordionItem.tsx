@@ -11,10 +11,10 @@ import {
 import { ProposalStepper } from "../proposal-stepper";
 
 interface VoteDetailsAccordionItemProps {
-  step: number;
-  proposalData: ProposalData;
   children: ReactNode;
   isDisabled?: boolean;
+  proposalData: ProposalData;
+  step: number;
 }
 
 export const VoteDetailsAccordionItem = ({

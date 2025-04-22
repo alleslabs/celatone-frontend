@@ -4,9 +4,9 @@ import { CustomIcon } from "lib/components/icon";
 import { MoveVerifyTaskStatus } from "lib/services/types";
 
 interface MyModuleVerificationDetailsStatusBadgeProps {
-  status: MoveVerifyTaskStatus;
   hasCloseBtn?: boolean;
   isActiveOnVerifying?: boolean;
+  status: MoveVerifyTaskStatus;
 }
 
 export const MyModuleVerificationDetailsStatusBadge = ({

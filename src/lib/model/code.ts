@@ -52,13 +52,13 @@ const useSavedCodes = () => {
 };
 
 interface MyCodesData {
-  savedCodes: CodeInfo[];
-  storedCodes: CodeInfo[];
-  savedCodesCount: number;
-  storedCodesCount: number;
   allCodesCount: number;
-  isStoredCodesLoading: boolean;
   isSavedCodesLoading: boolean;
+  isStoredCodesLoading: boolean;
+  savedCodes: CodeInfo[];
+  savedCodesCount: number;
+  storedCodes: CodeInfo[];
+  storedCodesCount: number;
 }
 
 export const useMyCodesData = (

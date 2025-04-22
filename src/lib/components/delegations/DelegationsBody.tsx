@@ -19,14 +19,14 @@ import { MultiBondsRadioCard } from "./radio-card/MultiBondsRadioCard";
 import { SingleBondRadioCard } from "./radio-card/SingleBondRadioCard";
 
 interface DelegationsBodyProps {
-  totalDelegations: Option<Record<string, TokenWithValue>>;
+  bondDenoms: TokenWithValue[];
   delegations: Option<Delegation[]>;
-  totalUnbondings: Option<Record<string, TokenWithValue>>;
-  unbondings: Option<Unbonding[]>;
-  rewards: Option<Record<string, TokenWithValue[]>>;
   isDelegationsLoading: boolean;
   isUnbondingsLoading: boolean;
-  bondDenoms: TokenWithValue[];
+  rewards: Option<Record<string, TokenWithValue[]>>;
+  totalDelegations: Option<Record<string, TokenWithValue>>;
+  totalUnbondings: Option<Record<string, TokenWithValue>>;
+  unbondings: Option<Unbonding[]>;
 }
 
 const getPanelStyle = ({ isMobile }: { isMobile: boolean }) => ({
@@ -37,10 +37,10 @@ const getPanelStyle = ({ isMobile }: { isMobile: boolean }) => ({
 });
 
 interface DelegationTabProps extends TabProps {
-  value: string;
-  tokens: Option<Record<string, TokenWithValue>>;
-  isLoading: boolean;
   bondDenoms: TokenWithValue[];
+  isLoading: boolean;
+  tokens: Option<Record<string, TokenWithValue>>;
+  value: string;
 }
 
 const DelegationTab = ({

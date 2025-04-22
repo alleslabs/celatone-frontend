@@ -6,8 +6,8 @@ import { useTierConfig } from "lib/app-provider";
 import { TableHeader, TableHeaderFreeze } from "../tableComponents";
 
 interface ProposalsTableHeaderProps {
-  templateColumns: GridProps["templateColumns"];
   boxShadow: DividerProps["boxShadow"];
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const ProposalsTableHeader = ({

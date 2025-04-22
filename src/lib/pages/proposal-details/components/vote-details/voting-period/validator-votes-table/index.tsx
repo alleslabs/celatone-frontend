@@ -20,11 +20,11 @@ import { ValidatorVotesTableHeader } from "./ValidatorVotesTableHeader";
 import { ValidatorVotesTableRow } from "./ValidatorVotesTableRow";
 
 interface ValidatorVotesTableBodyProps {
-  validatorVotes: Option<ProposalValidatorVote[]>;
   fullVersion: boolean;
   isLoading: boolean;
-  isSearching: boolean;
   isProposalResolved: boolean;
+  isSearching: boolean;
+  validatorVotes: Option<ProposalValidatorVote[]>;
 }
 
 export const ValidatorVotesTableBody = ({
@@ -81,12 +81,12 @@ export const ValidatorVotesTableBody = ({
 };
 
 interface ValidatorVotesTableProps {
-  id: number;
   answers: Option<ProposalAnswerCountsResponse["validator"]>;
+  enabled?: boolean;
   fullVersion: boolean;
+  id: number;
   isProposalResolved: boolean;
   onViewMore?: () => void;
-  enabled?: boolean;
 }
 
 const tableHeaderId = "validatorVotesTable";

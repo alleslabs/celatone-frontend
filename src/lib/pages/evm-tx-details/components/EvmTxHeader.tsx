@@ -10,8 +10,8 @@ import { CustomIcon } from "lib/components/icon";
 import { dateFromNow, formatEvmTxHash, formatUTC } from "lib/utils";
 
 interface EvmTxHeaderProps extends FlexProps {
-  evmTxData: TxDataJsonRpc;
   cosmosTxData: TxData;
+  evmTxData: TxDataJsonRpc;
 }
 
 export const EvmTxHeader = ({

@@ -21,11 +21,11 @@ import { findAndDecodeEvmConstructorArgs } from "lib/utils";
 import { ContractLibraryList } from "./ContractLibraryList";
 
 interface ContractCodeProps {
-  sourceFiles: EvmVerifyInfoSourceFile[];
-  contractPath: string;
-  constructorArguments: string;
   abi: JsonFragment[];
+  constructorArguments: string;
+  contractPath: string;
   libraries: EvmVerifyInfoLibraries;
+  sourceFiles: EvmVerifyInfoSourceFile[];
 }
 
 export const ContractCode = ({

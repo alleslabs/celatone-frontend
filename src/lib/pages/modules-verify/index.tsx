@@ -24,8 +24,8 @@ import { CelatoneSeo } from "lib/components/Seo";
 import { ErrorFetching } from "lib/components/state";
 import { useMoveVerifyTaskStore } from "lib/providers/store";
 import {
-  useSubmitMoveVerify,
   useMoveVerifyConfig,
+  useSubmitMoveVerify,
 } from "lib/services/verification/move";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";

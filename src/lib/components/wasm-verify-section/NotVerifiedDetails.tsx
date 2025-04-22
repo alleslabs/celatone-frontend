@@ -9,8 +9,8 @@ import { ExplorerLink } from "../ExplorerLink";
 import { VerifyButton } from "./VerifyButton";
 
 interface NotVerifiedDetailsProps {
-  codeId: number;
   codeHash: string;
+  codeId: number;
   contractAddress?: BechAddr32;
 }
 

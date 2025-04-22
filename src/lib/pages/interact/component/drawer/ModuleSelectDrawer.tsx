@@ -27,10 +27,10 @@ import { DrawerBodyDesktop } from "./body";
 import { ModuleSelector } from "./selector";
 
 interface ModuleSelectDrawerProps {
+  handleModuleSelect: ModuleSelectFunction;
+  hexAddress: Option<HexAddr>;
   isOpen: boolean;
   onClose: () => void;
-  hexAddress: Option<HexAddr>;
-  handleModuleSelect: ModuleSelectFunction;
 }
 
 export const ModuleSelectDrawer = ({

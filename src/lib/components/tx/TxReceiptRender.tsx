@@ -4,9 +4,9 @@ import type { TxReceipt } from "lib/types";
 import { Flex, Text } from "@chakra-ui/react";
 
 interface TxReceiptRenderProps extends FlexProps {
+  keyPrefix?: string;
   receipts: TxReceipt[];
   variant?: "full" | "packed" | "tx-page";
-  keyPrefix?: string;
 }
 
 const variantStyle: Record<

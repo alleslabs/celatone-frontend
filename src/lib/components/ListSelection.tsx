@@ -24,11 +24,11 @@ import { CustomIcon } from "./icon";
 import { CreateNewListModal } from "./modal/list";
 
 export interface ListSelectionProps extends InputProps {
+  helperText?: string;
+  labelBgColor?: string;
   placeholder?: string;
   result: LVPair[];
   setResult: (options: LVPair[]) => void;
-  helperText?: string;
-  labelBgColor?: string;
 }
 
 const listItemProps: CSSProperties = {

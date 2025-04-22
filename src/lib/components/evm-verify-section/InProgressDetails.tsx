@@ -1,4 +1,4 @@
-import type { HexAddr20, EvmVerifyInfo } from "lib/types";
+import type { EvmVerifyInfo, HexAddr20 } from "lib/types";
 
 import { Button, Text } from "@chakra-ui/react";
 

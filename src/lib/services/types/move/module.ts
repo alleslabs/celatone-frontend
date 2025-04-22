@@ -134,17 +134,17 @@ export type ModuleRelatedProposalsResponse = z.infer<
 
 export interface DecodeModuleQueryResponse {
   abi: ModuleAbi;
-  modulePath: string;
   currentPolicy: Option<UpgradePolicy>;
+  modulePath: string;
 }
 
 export interface ModuleInitialPublishInfo {
-  publisherVmAddress: HexAddr;
   createdHeight: Option<number>;
   createdTime: Option<Date>;
-  initTxHash: Option<string>;
   initProposalId: Option<number>;
   initProposalTitle: Option<string>;
+  initTxHash: Option<string>;
+  publisherVmAddress: HexAddr;
 }
 
 export const zMoveViewJsonResponseRest = z

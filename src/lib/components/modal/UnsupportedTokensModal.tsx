@@ -24,16 +24,16 @@ import { CustomIcon } from "../icon";
 import { UnsupportedToken } from "../token";
 
 interface UnsupportedTokensModalProps {
-  unsupportedAssets: TokenWithValue[];
   address?: BechAddr;
   addressType?: AddressReturnType;
-  buttonProps?: ButtonProps;
   amptrackSection?: string;
+  buttonProps?: ButtonProps;
+  unsupportedAssets: TokenWithValue[];
 }
 
 const unsupportedTokensContent = (
   addressType: AddressReturnType
-): { icon: IconKeys; header: string } => {
+): { header: string; icon: IconKeys } => {
   switch (addressType) {
     case "contract_address": {
       return {

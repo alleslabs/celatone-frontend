@@ -13,13 +13,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ExecuteBox } from "./ExecuteBox";
 
 interface SchemaExecuteProps {
-  verifiedSchema: Nullish<CodeSchema>;
-  localSchema: Option<CodeSchema>;
-  contractAddress: BechAddr32;
-  initialMsg: string;
-  initialFunds: Coin[];
-  codeId: number;
   codeHash: string;
+  codeId: number;
+  contractAddress: BechAddr32;
+  initialFunds: Coin[];
+  initialMsg: string;
+  localSchema: Option<CodeSchema>;
+  verifiedSchema: Nullish<CodeSchema>;
 }
 
 export const SchemaExecute = ({

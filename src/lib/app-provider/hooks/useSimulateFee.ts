@@ -11,8 +11,8 @@ import { useGetSigningClient } from "./useGetSigningClient";
 
 interface SimulateFeeParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   isDummyUser?: boolean;
+  messages: EncodeObject[];
 }
 
 export const useSimulateFee = () => {

@@ -9,11 +9,11 @@ import { useModuleTxs } from "lib/services/move/module";
 import { useEffect } from "react";
 
 interface ModuleTxsTableProps {
-  vmAddress: HexAddr;
   moduleName: string;
-  txCount: Option<number>;
   onViewMore?: () => void;
   scrollComponentId?: string;
+  txCount: Option<number>;
+  vmAddress: HexAddr;
 }
 
 export const ModuleTxsTable = ({

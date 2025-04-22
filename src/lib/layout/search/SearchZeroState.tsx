@@ -1,13 +1,13 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 interface SearchZeroStateProps {
+  isEvm: boolean;
+  isFullTier: boolean;
+  isGov: boolean;
+  isMove: boolean;
+  isNft: boolean;
   isPool: boolean;
   isWasm: boolean;
-  isMove: boolean;
-  isEvm: boolean;
-  isGov: boolean;
-  isNft: boolean;
-  isFullTier: boolean;
 }
 
 export const SearchZeroState = ({

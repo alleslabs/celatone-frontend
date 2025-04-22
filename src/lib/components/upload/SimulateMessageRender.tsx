@@ -6,9 +6,9 @@ import { Flex, Spinner, Text } from "@chakra-ui/react";
 import { CustomIcon } from "../icon";
 
 interface SimulateMessageRenderProps extends FlexProps {
-  value: Option<string>;
   isLoading: boolean;
   isSuccess: boolean;
+  value: Option<string>;
 }
 
 const item = {

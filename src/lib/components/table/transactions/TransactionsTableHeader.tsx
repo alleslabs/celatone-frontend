@@ -11,11 +11,11 @@ export const TransactionsTableHeader = ({
   showTimestamp,
   templateColumns,
 }: {
-  templateColumns: GridProps["templateColumns"];
-  showSuccess: boolean;
-  showRelations: boolean;
-  showTimestamp: boolean;
   showAction: boolean;
+  showRelations: boolean;
+  showSuccess: boolean;
+  showTimestamp: boolean;
+  templateColumns: GridProps["templateColumns"];
 }) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader />

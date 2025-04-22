@@ -22,13 +22,13 @@ import {
 } from "lib/utils";
 
 interface ValidatorsTableRowProps {
-  templateColumns: GridProps["templateColumns"];
-  isActive: boolean;
-  validator: ValidatorData;
-  totalVotingPower: Big;
-  minCommissionRate: number;
   assetInfo: Option<AssetInfo>;
+  isActive: boolean;
+  minCommissionRate: number;
   showUptime: boolean;
+  templateColumns: GridProps["templateColumns"];
+  totalVotingPower: Big;
+  validator: ValidatorData;
 }
 
 export const ValidatorsTableRow = ({

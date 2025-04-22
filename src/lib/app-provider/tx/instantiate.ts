@@ -10,18 +10,18 @@ import { useCallback } from "react";
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface InstantiateStreamParams {
-  estimatedFee: StdFee | undefined;
+  admin: string;
   codeId: number;
+  estimatedFee: StdFee | undefined;
+  funds: Coin[];
   initMsg: object;
   label: string;
-  admin: string;
-  funds: Coin[];
+  onTxFailed?: () => void;
   onTxSucceed?: (
     txResult: DeliverTxResponse,
     contractLabel: string,
     contractAddress: BechAddr32
   ) => void;
-  onTxFailed?: () => void;
 }
 
 export const useInstantiateContractTx = () => {

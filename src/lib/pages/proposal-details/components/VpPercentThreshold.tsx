@@ -9,8 +9,8 @@ import { normalizeVotesInfo } from "../utils";
 import { VpPercentCard } from "./VpPercentCard";
 
 interface VpPercentThresholdProps {
-  votesInfo: ProposalVotesInfo;
   isCompact: boolean;
+  votesInfo: ProposalVotesInfo;
 }
 
 export const VpPercentThreshold = ({

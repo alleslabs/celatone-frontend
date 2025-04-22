@@ -9,10 +9,10 @@ import { useRef, useState } from "react";
 import { MobileLabel } from "../MobileLabel";
 
 interface ProposalTextCellProps {
+  isDepositOrVoting: boolean;
+  isExpedited: boolean;
   title: string;
   types: ProposalType[];
-  isExpedited: boolean;
-  isDepositOrVoting: boolean;
 }
 
 export const ProposalTextCell = ({

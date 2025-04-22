@@ -13,8 +13,8 @@ import { FileNamesCell } from "./FileNamesCell";
 import { RequestNoteCell } from "./RequestNoteCell";
 
 interface MyModuleVerificationsRowProps {
-  templateColumns: GridProps["templateColumns"];
   task: MoveVerifyTaskInfo;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const MyModuleVerificationsRow = ({

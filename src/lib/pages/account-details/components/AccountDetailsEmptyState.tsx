@@ -3,11 +3,11 @@ import type { FlexProps, StyleProps, TextProps } from "@chakra-ui/react";
 import { Flex, Text } from "@chakra-ui/react";
 
 export interface AccountDetailsEmptyStateProps {
-  message: string;
-  textVariant?: TextProps["variant"];
-  pt?: FlexProps["pt"];
   borderBottomWidth?: StyleProps["borderBottomWidth"];
   borderColor?: StyleProps["borderColor"];
+  message: string;
+  pt?: FlexProps["pt"];
+  textVariant?: TextProps["variant"];
 }
 
 export const AccountDetailsEmptyState = ({

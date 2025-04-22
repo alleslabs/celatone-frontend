@@ -8,10 +8,10 @@ import { NetworkCard } from "./NetworkCard";
 
 interface NetworkCardDraggableProps {
   chainId: string;
-  index?: number;
   cursor: Option<number>;
-  setCursor: (index: Option<number>) => void;
+  index?: number;
   onClose: () => void;
+  setCursor: (index: Option<number>) => void;
 }
 export const NetworkCardDraggable = ({
   chainId,

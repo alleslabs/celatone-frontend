@@ -6,8 +6,8 @@ import { WasmVerifyBadge } from "lib/components/WasmVerifyBadge";
 import { getWasmVerifyStatus } from "lib/utils";
 
 interface CodeVerificationSectionProps {
-  codeId: number;
   codeHash: string;
+  codeId: number;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 

@@ -7,14 +7,14 @@ import { mergeRefs } from "lib/utils";
 import { DropdownChevron } from "../DropdownChevron";
 
 interface FilterInputProps {
-  keyword: string;
-  result: string[];
-  isDropdown: boolean;
   chipContainerComponent: JSX.Element;
   inputRef: RefObject<Nullable<HTMLInputElement>>;
+  isDropdown: boolean;
+  keyword: string;
+  label?: string;
   mainRef: ForwardedRef<HTMLInputElement>;
   placeholder?: string;
-  label?: string;
+  result: string[];
   setIsDropdown: Dispatch<SetStateAction<boolean>>;
   setKeyword: Dispatch<SetStateAction<string>>;
 }

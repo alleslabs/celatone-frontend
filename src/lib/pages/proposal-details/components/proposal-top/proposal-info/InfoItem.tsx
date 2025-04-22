@@ -2,8 +2,8 @@ import { Flex } from "@chakra-ui/react";
 import { MobileLabel } from "lib/components/table";
 
 interface InfoItemProps {
-  label: string;
   children: JSX.Element;
+  label: string;
   minW?: number;
 }
 

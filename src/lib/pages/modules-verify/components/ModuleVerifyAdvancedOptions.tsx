@@ -21,8 +21,8 @@ import { formatMoveOptions } from "../helpers";
 
 interface ModuleVerifyAdvancedOptionsProps {
   control: Control<ModuleVerifyForm>;
-  setValue: UseFormSetValue<ModuleVerifyForm>;
   moveVerifyConfig: MoveVerifyConfig;
+  setValue: UseFormSetValue<ModuleVerifyForm>;
 }
 
 export const ModuleVerifyAdvancedOptions = ({

@@ -18,14 +18,14 @@ import { PoolMsgAction, PoolMsgDetail } from "./messages";
 import { PoolOtherMsgs } from "./messages/PoolOtherMsgs";
 
 interface PoolTxsMsgProps {
+  assetInfos: Option<AssetInfos>;
   isFirstSubRow: boolean;
-  msgIndex: number;
   message: Option<Message>;
+  msgIndex: number;
   otherMsgs: { [key: string]: number };
   pool: PoolData;
-  transaction: Transaction;
-  assetInfos: Option<AssetInfos>;
   templateColumns: string;
+  transaction: Transaction;
 }
 
 export const PoolTxsMsg = ({

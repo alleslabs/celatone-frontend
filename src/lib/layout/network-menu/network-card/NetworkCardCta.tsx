@@ -11,8 +11,8 @@ import { useCallback } from "react";
 
 interface NetworkCardCtaProps {
   chainId: string;
-  isSelected: boolean;
   isDraggable?: boolean;
+  isSelected: boolean;
 }
 
 export const NetworkCardCta = observer(

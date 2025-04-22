@@ -29,10 +29,10 @@ const SchemaMsgTabList = [
 ];
 
 interface CodeSchemaTabsProps {
-  codeId: number;
   codeHash: string;
-  verifiedSchema: Nullish<CodeSchema>;
+  codeId: number;
   localSchema: Option<CodeSchema>;
+  verifiedSchema: Nullish<CodeSchema>;
 }
 
 export const CodeSchemaTabs = ({

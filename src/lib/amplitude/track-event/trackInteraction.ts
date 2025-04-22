@@ -75,21 +75,21 @@ export const trackUseExpand = ({
   info,
   section,
 }: {
-  action: "expand" | "collapse";
+  action: "collapse" | "expand";
   component:
     | "assets"
-    | "json"
-    | "permission_address"
     | "event_box"
-    | "unsupported_pool"
+    | "json"
     | "module_function_accordion"
-    | "module_struct_accordion"
     | "module_interaction_function_accordion"
     | "module_interaction_selected_function_card"
+    | "module_struct_accordion"
+    | "permission_address"
     | "pool_tx_msg"
     | "proposal_message_card"
+    | "resources_by_account_card"
     | "resources_detail_card"
-    | "resources_by_account_card";
+    | "unsupported_pool";
   info?: object;
   section?: string;
 }) =>
@@ -101,7 +101,7 @@ export const trackUseExpand = ({
   });
 
 export const trackUseExpandAll = (
-  action: "expand" | "collapse",
+  action: "collapse" | "expand",
   section?: string
 ) =>
   amp.track(AmpEvent.USE_EXPAND_ALL, {
@@ -158,10 +158,10 @@ export const trackUseDepositFill = (amount: Token, section?: string) =>
 
 export const trackUseSubmitProposal = (
   properties: {
+    [key: string]: unknown;
+    assetDenom: Option<string>;
     initialDeposit: string;
     minDeposit: Option<string>;
-    assetDenom: Option<string>;
-    [key: string]: unknown;
   },
   section?: string
 ) => {
@@ -181,8 +181,8 @@ export const trackUseSubmitProposal = (
 export const trackUseFilter = (
   event:
     | AmpEvent.USE_FILTER_POOL_TYPE
-    | AmpEvent.USE_FILTER_PROPOSALS_TYPE
     | AmpEvent.USE_FILTER_PROPOSALS_STATUS
+    | AmpEvent.USE_FILTER_PROPOSALS_TYPE
     | AmpEvent.USE_FILTER_VALIDATORS_ACTIVE
     | AmpEvent.USE_FILTER_VOTED_PROPOSALS_ANSWER,
   filters: string[],

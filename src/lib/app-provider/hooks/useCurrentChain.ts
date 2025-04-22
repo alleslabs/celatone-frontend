@@ -10,20 +10,20 @@ import { useCelatoneApp } from "../contexts";
 import { useInitia } from "./useInitia";
 
 interface CurrentChain {
+  address: Option<BechAddr20>;
   bech32Prefix: string;
   chainId: string;
   chainName: string;
-  address: Option<BechAddr20>;
   connect: () => Promise<void>;
   view(event: React.MouseEvent): void;
   walletProvider:
     | {
-        type: "cosmos-kit";
         context: CosmosKitChainContext;
+        type: "cosmos-kit";
       }
     | {
-        type: "initia-widget";
         context: InitiaWidget;
+        type: "initia-widget";
       };
 }
 

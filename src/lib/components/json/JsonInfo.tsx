@@ -5,9 +5,9 @@ import { CustomIcon } from "../icon";
 import JsonReadOnly from "./JsonReadOnly";
 
 interface JsonInfoProps {
+  defaultExpand?: boolean;
   header: string;
   jsonString: string;
-  defaultExpand?: boolean;
 }
 
 export const JsonInfo = ({

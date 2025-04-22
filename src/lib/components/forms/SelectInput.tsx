@@ -4,21 +4,21 @@ import type { Props } from "chakra-react-select";
 import { Stack, Text } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 
-type SelectInputOptionValue = object | string | boolean | number | null;
+type SelectInputOptionValue = boolean | null | number | object | string;
 
 export interface SelectInputOption<OptionValue extends SelectInputOptionValue> {
+  isDisabled?: boolean;
   label: string;
   value: OptionValue;
-  isDisabled?: boolean;
 }
 
 interface SelectInputProps<
   OptionValue extends SelectInputOptionValue,
   IsMulti extends boolean = false,
 > extends Props<SelectInputOption<OptionValue>, IsMulti> {
+  isRequired?: boolean;
   label?: string;
   labelBg?: string;
-  isRequired?: boolean;
 }
 
 const handleFilterOption = (

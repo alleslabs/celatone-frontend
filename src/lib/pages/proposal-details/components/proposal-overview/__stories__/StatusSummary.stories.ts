@@ -20,11 +20,11 @@ type Story = StoryObj<typeof StatusSummary>;
 
 const data: Omit<
   ProposalData,
-  | "status"
-  | "failedReason"
   | "depositEndTime"
-  | "votingEndTime"
+  | "failedReason"
   | "resolvedTimestamp"
+  | "status"
+  | "votingEndTime"
 > = {
   createdHeight: null,
   createdTimestamp: null,

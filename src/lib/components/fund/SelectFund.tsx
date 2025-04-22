@@ -23,10 +23,10 @@ import type { AttachFundsState } from "./types";
 import { ASSETS_SELECT } from "./data";
 
 interface SelectFundProps {
-  control: Control<AttachFundsState>;
-  setValue: UseFormSetValue<AttachFundsState>;
   assetsSelect: Coin[];
+  control: Control<AttachFundsState>;
   labelBgColor?: string;
+  setValue: UseFormSetValue<AttachFundsState>;
 }
 
 /**

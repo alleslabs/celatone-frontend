@@ -21,10 +21,10 @@ import { sendingTx } from "./common/sending";
 
 export interface StoreCodeTxInternalResult {
   codeDisplayName: string;
-  codeId: string;
   codeHash: Option<string>;
-  txHash: string;
+  codeId: string;
   txFee: Option<string>;
+  txHash: string;
 }
 
 export type StoreCodeSucceedCallback = (
@@ -34,12 +34,12 @@ export type StoreCodeSucceedCallback = (
 interface StoreCodeTxParams {
   address: BechAddr20;
   codeName: string;
-  messages: ComposedMsg[];
-  wasmFileName: string;
   fee: StdFee;
   isMigrate: boolean;
-  signAndBroadcast: SignAndBroadcast;
+  messages: ComposedMsg[];
   onTxSucceed: StoreCodeSucceedCallback;
+  signAndBroadcast: SignAndBroadcast;
+  wasmFileName: string;
 }
 
 export const storeCodeTx = ({

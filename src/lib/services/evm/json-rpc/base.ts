@@ -6,7 +6,7 @@ import type { JsonRpcResponse } from "../../types/evm";
 
 import { zBatchJsonRpcResponse, zJsonRpcResponse } from "../../types/evm";
 
-export type JsonRpcParams = object | string | boolean;
+export type JsonRpcParams = boolean | object | string;
 
 export const requestJsonRpc = (
   endpoint: string,

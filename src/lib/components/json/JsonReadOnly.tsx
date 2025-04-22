@@ -12,14 +12,14 @@ const JsonEditor = dynamic(() => import("lib/components/json/JsonEditor"), {
 });
 
 interface JsonReadOnlyProps {
-  topic?: string;
-  labelBgColor?: string;
-  text: string;
-  canCopy?: boolean;
-  isExpandable?: boolean;
-  showLines?: number;
-  fullWidth?: boolean;
   amptrackSection?: string;
+  canCopy?: boolean;
+  fullWidth?: boolean;
+  isExpandable?: boolean;
+  labelBgColor?: string;
+  showLines?: number;
+  text: string;
+  topic?: string;
 }
 
 const THRESHOLD_LINES = 16;

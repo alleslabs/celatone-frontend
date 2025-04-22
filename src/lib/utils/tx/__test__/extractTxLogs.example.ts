@@ -5,7 +5,7 @@ import type { TxResponse } from "lib/services/types";
 import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
 import { parseDate } from "lib/utils/date";
 
-type TestCase = { txData: TxResponse; result: Log[] };
+type TestCase = { result: Log[]; txData: TxResponse };
 
 export const fromLogs: TestCase = {
   result: [

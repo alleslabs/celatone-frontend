@@ -10,10 +10,10 @@ import { ActivitiesTableMobileCard } from "./ActivitiesTableMobileCard";
 import { ActivitiesTableRow } from "./ActivitiesTableRow";
 
 interface ActivitiesTableProps {
-  collectionAddress: HexAddr32;
   activities: Option<Activity[]>;
-  isLoading: boolean;
+  collectionAddress: HexAddr32;
   emptyState: JSX.Element;
+  isLoading: boolean;
 }
 
 export const ActivitiesTable = ({

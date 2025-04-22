@@ -4,13 +4,13 @@ import { Button } from "@chakra-ui/react";
 import { WasmVerifySubmitModal } from "lib/components/modal";
 
 interface VerifyButtonProps {
-  codeId: number;
   codeHash: string;
-  wasmVerifyStatus: WasmVerifyStatus;
-  relatedVerifiedCodes?: number[];
+  codeId: number;
   contractAddress?: BechAddr32;
   label?: string;
   minW?: string;
+  relatedVerifiedCodes?: number[];
+  wasmVerifyStatus: WasmVerifyStatus;
 }
 
 export const VerifyButton = ({

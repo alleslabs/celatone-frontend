@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 export enum TabIndex {
-  Overview = "overview",
+  Accounts = "accounts",
   Codes = "codes",
   Contracts = "contracts",
-  Accounts = "accounts",
   Modules = "modules",
+  Overview = "overview",
 }
 
 export const zProjectDetailsQueryParams = z.object({

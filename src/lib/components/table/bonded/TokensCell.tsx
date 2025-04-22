@@ -5,9 +5,9 @@ import { Flex, Text } from "@chakra-ui/react";
 import { TokenCell } from "../TokenCell";
 
 interface TokensCellProps {
-  tokens: TokenWithValue[];
   isSingleBondDenom: boolean;
   isUnbonding?: boolean;
+  tokens: TokenWithValue[];
 }
 
 const EmptyTokenCell = () => (

@@ -31,7 +31,7 @@ const labelTransform = {
   md: "scale(0.75) translateY(-20px)",
 };
 
-const getActiveLabelStyles = (size: "md" | "lg") => ({
+const getActiveLabelStyles = (size: "lg" | "md") => ({
   _focusWithin: {
     label: {
       lineHeight: "1.2",
@@ -46,11 +46,11 @@ const getActiveLabelStyles = (size: "md" | "lg") => ({
 });
 
 const subtextStyles = {
-  _disabled: {
-    color: "text.disabled",
-  },
   "&.chakra-form__error-message": {
     color: errorMain,
+  },
+  _disabled: {
+    color: "text.disabled",
   },
   color: "text.dark",
   fontSize: "12px",

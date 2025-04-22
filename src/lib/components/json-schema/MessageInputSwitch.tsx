@@ -26,10 +26,10 @@ interface MessageInputSwitchProps<
 > {
   currentTab: T;
   disabled?: boolean;
-  tooltipLabel?: string;
-  ml?: CSSProperties["marginLeft"];
   isOutput?: boolean;
+  ml?: CSSProperties["marginLeft"];
   onTabChange: Dispatch<SetStateAction<T>>;
+  tooltipLabel?: string;
 }
 
 export const MessageInputSwitch = <

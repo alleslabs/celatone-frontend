@@ -9,10 +9,10 @@ import InstantiateCompleted from "./InstantiateCompleted";
 import InstantiateFormPage from "./InstantiateFormPage";
 
 export interface InstantiateTxInfo extends DeliverTxResponse {
-  contractLabel: string;
   codeId: number;
-  instantiator: BechAddr20;
   contractAddress: BechAddr32;
+  contractLabel: string;
+  instantiator: BechAddr20;
 }
 
 const Instantiate = () => {

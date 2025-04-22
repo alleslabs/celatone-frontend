@@ -14,13 +14,13 @@ import { useCallback } from "react";
 import { useWatch } from "react-hook-form";
 
 interface AddressInputProps<T extends FieldValues>
-  extends Omit<TextInputProps, "value" | "setInputState"> {
-  name: FieldPath<T>;
+  extends Omit<TextInputProps, "setInputState" | "value"> {
   control: Control<T>;
-  validation?: RegisterOptions["validate"];
-  maxLength?: number;
   helperAction?: ReactNode;
+  maxLength?: number;
+  name: FieldPath<T>;
   requiredText?: string;
+  validation?: RegisterOptions["validate"];
 }
 
 const getAddressStatus = (input: string, error: Option<string>): FormStatus => {

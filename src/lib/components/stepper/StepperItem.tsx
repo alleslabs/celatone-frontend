@@ -14,9 +14,9 @@ const StepLabel = ({
   disabled,
   step,
 }: {
-  step: Step;
-  disabled?: boolean;
   currentStep: Step;
+  disabled?: boolean;
+  step: Step;
 }) => (
   <Flex
     align="center"
@@ -48,9 +48,9 @@ export const StepperItem = ({
   mode,
   step,
 }: {
+  currentStep: Step;
   mode: Mode;
   step: Step;
-  currentStep: Step;
 }) => {
   const disabled = currentStep < step;
   return (
@@ -58,7 +58,6 @@ export const StepperItem = ({
       align="center"
       gap={2}
       sx={{
-        ":not(:last-of-type)": { flex: 1 },
         "&:not(:last-of-type)::after": {
           backgroundColor: "gray.400",
           content: '""',
@@ -66,6 +65,7 @@ export const StepperItem = ({
           height: "1px",
           marginInlineEnd: "8px",
         },
+        ":not(:last-of-type)": { flex: 1 },
       }}
     >
       <StepLabel currentStep={currentStep} disabled={disabled} step={step} />

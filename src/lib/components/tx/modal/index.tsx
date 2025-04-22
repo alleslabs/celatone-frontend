@@ -19,8 +19,8 @@ import { TxReceiptRender } from "../TxReceiptRender";
 import { ButtonSection } from "./ButtonSection";
 
 interface TxModalProps {
-  result: TxResultRendering;
   onClose: () => void;
+  result: TxResultRendering;
 }
 
 export const TxModal = ({ onClose, result }: TxModalProps) => {

@@ -2,13 +2,13 @@ import { useCelatoneApp } from "lib/app-provider";
 import { useCallback } from "react";
 
 type MaxLengthType =
-  | "account_name"
   | "account_desc"
-  | "proposal_title"
+  | "account_name"
   | "code_name"
-  | "contract_name"
   | "contract_desc"
-  | "list_name";
+  | "contract_name"
+  | "list_name"
+  | "proposal_title";
 
 export const useGetMaxLengthError = () => {
   const { constants } = useCelatoneApp();

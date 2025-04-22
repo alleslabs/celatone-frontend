@@ -34,8 +34,8 @@ const EvmCodeSnippet = dynamic(
 );
 
 interface WriteBoxProps {
-  contractAddress: HexAddr20;
   abiSection: JsonFragment;
+  contractAddress: HexAddr20;
   opened: boolean;
 }
 

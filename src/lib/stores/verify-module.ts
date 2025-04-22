@@ -4,19 +4,23 @@ import { makeAutoObservable } from "mobx";
 import { isHydrated, makePersistable } from "mobx-persist-store";
 
 export interface MoveVerifyTaskLocalInfo {
-  taskId: string;
-  requestNote?: string;
   chainId: string;
-  fileMap: Record<string, string>;
-  created: Date;
-  verifiedAt?: Date;
   completed: boolean;
+  created: Date;
+  fileMap: Record<string, string>;
+  requestNote?: string;
+  taskId: string;
+  verifiedAt?: Date;
 }
 
 export class MoveVerifyTaskStore {
-  private userKey: string;
-
   modules: Dict<string, MoveVerifyTaskLocalInfo[]>;
+
+  get isHydrated(): boolean {
+    return isHydrated(this);
+  }
+
+  private userKey: string;
 
   constructor() {
     this.userKey = "";
@@ -30,40 +34,10 @@ export class MoveVerifyTaskStore {
     });
   }
 
-  get isHydrated(): boolean {
-    return isHydrated(this);
-  }
-
-  isMoveVerifyTaskUserKeyExist(): boolean {
-    return !!this.userKey;
-  }
-
-  setMoveVerifyTaskUserKey(userKey: string) {
-    this.userKey = userKey;
-  }
-
-  isMoveVerifyTaskExist(taskId: string): boolean {
-    return (
-      this.getMoveVerifyTasks().findIndex((item) => item.taskId === taskId) > -1
-    );
-  }
-
-  getMoveVerifyTasks(): MoveVerifyTaskLocalInfo[] {
-    return this.modules[this.userKey] ?? [];
-  }
-
-  latestMoveVerifyTasks(): MoveVerifyTaskLocalInfo[] {
-    return this.getMoveVerifyTasks().slice().reverse();
-  }
-
-  getMoveVerifyTask(taskId: string): MoveVerifyTaskLocalInfo | undefined {
-    return this.getMoveVerifyTasks().find((module) => module.taskId === taskId);
-  }
-
   addMoveVerifyTask(
     verifyModule: Omit<
       MoveVerifyTaskLocalInfo,
-      "created" | "completed" | "verifiedAt"
+      "completed" | "created" | "verifiedAt"
     >
   ): void {
     if (!this.isMoveVerifyTaskExist(verifyModule.taskId)) {
@@ -81,6 +55,32 @@ export class MoveVerifyTaskStore {
         : module
     );
     this.modules[this.userKey] = modules;
+  }
+
+  getMoveVerifyTask(taskId: string): MoveVerifyTaskLocalInfo | undefined {
+    return this.getMoveVerifyTasks().find((module) => module.taskId === taskId);
+  }
+
+  getMoveVerifyTasks(): MoveVerifyTaskLocalInfo[] {
+    return this.modules[this.userKey] ?? [];
+  }
+
+  isMoveVerifyTaskExist(taskId: string): boolean {
+    return (
+      this.getMoveVerifyTasks().findIndex((item) => item.taskId === taskId) > -1
+    );
+  }
+
+  isMoveVerifyTaskUserKeyExist(): boolean {
+    return !!this.userKey;
+  }
+
+  latestMoveVerifyTasks(): MoveVerifyTaskLocalInfo[] {
+    return this.getMoveVerifyTasks().slice().reverse();
+  }
+
+  setMoveVerifyTaskUserKey(userKey: string) {
+    this.userKey = userKey;
   }
 
   updateRequestNote(taskId: string, newRequestNote?: string): void {

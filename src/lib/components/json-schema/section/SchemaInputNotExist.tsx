@@ -6,12 +6,12 @@ import { CustomIcon } from "lib/components/icon";
 import { AttachSchemaCard } from "../AttachSchemaCard";
 
 interface SchemaInputNotExistProps {
+  codeHash: string;
+  codeId: number;
+  localSchema: Option<CodeSchema>;
+  openModal: () => void;
   prettyType: string;
   verifiedSchema: Nullish<CodeSchema>;
-  localSchema: Option<CodeSchema>;
-  codeId: number;
-  codeHash: string;
-  openModal: () => void;
 }
 
 export const SchemaInputNotExist = ({

@@ -6,9 +6,9 @@ import { trackUseViewMore } from "lib/amplitude";
 import { CustomIcon } from "../icon";
 
 interface ViewMoreProps {
-  onClick: () => void;
   borderRadius?: BorderProps["borderRadius"];
   minH?: LayoutProps["minH"];
+  onClick: () => void;
   text?: string;
 }
 

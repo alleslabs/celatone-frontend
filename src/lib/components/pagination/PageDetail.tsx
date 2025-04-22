@@ -4,11 +4,11 @@ import { Flex, Select, Text } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 
 interface PageDetailProps {
-  pageSize: number;
-  offsetData: number;
   lastDataInPage: number;
-  totalData: number;
+  offsetData: number;
   onPageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  pageSize: number;
+  totalData: number;
 }
 
 export const PageDetail = ({

@@ -13,21 +13,35 @@ const JsonEditor = dynamic(() => import("./JsonEditor"), {
 });
 
 interface JsonInputProps {
-  topic?: string;
-  text?: string;
-  minLines?: number;
   maxLines?: number;
+  minLines?: number;
   setText: (value: string) => void;
+  text?: string;
+  topic?: string;
   validateFn?: (value: string) => Nullable<string>;
 }
 
 interface JsonState {
-  state: "empty" | "loading" | "success" | "error";
   errMsg?: string;
+  state: "empty" | "error" | "loading" | "success";
 }
 
 const getResponse = (jsonState: JsonState) => {
   switch (jsonState.state) {
+    case "error":
+      return {
+        color: "error.main",
+        response: (
+          <>
+            <CustomIcon
+              boxSize={3}
+              color="error.light"
+              name="alert-triangle-solid"
+            />
+            {jsonState.errMsg}
+          </>
+        ),
+      };
     case "loading":
       return {
         color: "text.dark",
@@ -48,20 +62,6 @@ const getResponse = (jsonState: JsonState) => {
               name="check-circle-solid"
             />
             Valid JSON Format
-          </>
-        ),
-      };
-    case "error":
-      return {
-        color: "error.main",
-        response: (
-          <>
-            <CustomIcon
-              boxSize={3}
-              color="error.light"
-              name="alert-triangle-solid"
-            />
-            {jsonState.errMsg}
           </>
         ),
       };

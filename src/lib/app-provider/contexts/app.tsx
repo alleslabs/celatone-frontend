@@ -25,12 +25,12 @@ interface AppProviderProps {
 }
 
 interface AppContextInterface {
-  isHydrated: boolean;
-  currentChainId: string;
   chainConfig: ChainConfig;
   constants: ProjectConstants;
-  theme: ThemeConfig;
+  currentChainId: string;
+  isHydrated: boolean;
   setTheme: (newTheme: ThemeConfig) => void;
+  theme: ThemeConfig;
 }
 
 const DEFAULT_STATES: AppContextInterface = {

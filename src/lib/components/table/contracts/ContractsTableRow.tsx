@@ -20,13 +20,13 @@ import { TagsCell } from "./TagsCell";
 
 interface ContractsTableRowProps {
   contractInfo: ContractInfo;
-  templateColumns: string;
-  onRowSelect: (contract: BechAddr32) => void;
-  showTag: boolean;
-  showLastUpdate: boolean;
   isReadOnly: boolean;
-  withCta?: CtaInfo;
+  onRowSelect: (contract: BechAddr32) => void;
+  showLastUpdate: boolean;
+  showTag: boolean;
+  templateColumns: string;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
+  withCta?: CtaInfo;
 }
 
 export const ContractsTableRow = ({

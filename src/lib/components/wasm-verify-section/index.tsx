@@ -11,10 +11,10 @@ import { NotVerifiedDetails } from "./NotVerifiedDetails";
 import { VerifiedDetails } from "./VerifiedDetails";
 
 interface WasmVerifySectionProps {
-  codeId: number;
   codeHash: string;
-  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
+  codeId: number;
   contractAddress?: BechAddr32;
+  wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 
 const WasmVerifySectionBody = ({

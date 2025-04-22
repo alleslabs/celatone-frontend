@@ -15,10 +15,10 @@ import { CustomIcon } from "lib/components/icon";
 import { useEffect, useState } from "react";
 
 interface SuccessAddCustomMinitiaModalProps {
+  chainId: string;
   isOpen: boolean;
   onClose: () => void;
   prettyName: string;
-  chainId: string;
 }
 
 export const SuccessAddCustomMinitiaModal = ({

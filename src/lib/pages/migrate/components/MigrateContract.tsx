@@ -32,8 +32,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface MigrateContractProps {
-  contractAddress: BechAddr32;
   codeIdParam: Option<number>;
+  contractAddress: BechAddr32;
   handleBack: () => void;
 }
 

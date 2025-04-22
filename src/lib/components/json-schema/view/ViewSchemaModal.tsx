@@ -45,8 +45,8 @@ const StyledTabPanel = chakra(TabPanel, {
 
 interface ViewSchemaModalProps {
   codeId: number;
-  schema: Option<CodeSchema>;
   isIcon?: boolean;
+  schema: Option<CodeSchema>;
 }
 
 const SchemaMsgTabList = [

@@ -14,25 +14,25 @@ import { coinToTokenWithValue } from "lib/utils";
 import { useMemo } from "react";
 
 export interface GasInfo {
-  isEIP1559: boolean;
-  txFee: TokenWithValue;
-  gasPrice: TokenWithValue;
-  gasUsed: Big;
-  gasLimit: Big;
-  gasRefundRatio: Ratio<number>;
   // eip-1559
   baseFee: TokenWithValue;
+  gasLimit: Big;
+  gasPrice: TokenWithValue;
+  gasRefundRatio: Ratio<number>;
+  gasUsed: Big;
+  isEIP1559: boolean;
   maxFee: TokenWithValue;
   maxPriorityFee: TokenWithValue;
+  txFee: TokenWithValue;
 }
 
 interface EvmTxDetailsData {
-  isLoading: boolean;
   cosmosTxData: Option<TxData>;
-  evmTxData: Option<TxDataJsonRpc>;
   evmDenom: Option<string>;
+  evmTxData: Option<TxDataJsonRpc>;
   evmTxValue: Option<TokenWithValue>;
   gasInfo: Option<GasInfo>;
+  isLoading: boolean;
 }
 
 export const useEvmTxDetailsData = (evmTxHash: string): EvmTxDetailsData => {

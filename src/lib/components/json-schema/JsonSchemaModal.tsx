@@ -13,8 +13,8 @@ import { AttachStatus } from "./AttachStatus";
 import { UploadTemplate } from "./UploadTemplate";
 
 interface JsonSchemaModalProps {
-  codeId: number;
   codeHash: string;
+  codeId: number;
   isOpen: boolean;
   isReattach?: boolean;
   onClose: () => void;

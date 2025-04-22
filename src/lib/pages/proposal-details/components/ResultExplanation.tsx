@@ -61,10 +61,10 @@ const QuorumRejected = () => (
 );
 
 export interface ResultExplanationProps {
+  isLoading: boolean;
+  params: Option<ProposalParams>;
   proposalData: ProposalData;
   votesInfo: Option<ProposalVotesInfo>;
-  params: Option<ProposalParams>;
-  isLoading: boolean;
 }
 
 export const ResultExplanation = ({

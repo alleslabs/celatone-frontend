@@ -3,10 +3,10 @@ import { Button, Text } from "@chakra-ui/react";
 import { CustomIcon } from "../icon";
 
 interface ShowMoreButtonProps {
-  showMoreText: string;
-  showLessText: string;
-  toggleShowMore: boolean;
   setToggleShowMore: () => void;
+  showLessText: string;
+  showMoreText: string;
+  toggleShowMore: boolean;
 }
 export const ShowMoreButton = ({
   setToggleShowMore,

@@ -8,10 +8,10 @@ import { useCallback } from "react";
 import { useCurrentChain, useSignAndBroadcast } from "../hooks";
 
 export interface DeployScriptStreamParams {
-  onTxSucceed?: () => void;
-  onTxFailed?: () => void;
   estimatedFee?: StdFee;
   messages: EncodeObject[];
+  onTxFailed?: () => void;
+  onTxSucceed?: () => void;
 }
 
 export const useDeployScriptTx = () => {

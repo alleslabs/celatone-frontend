@@ -25,14 +25,14 @@ const blockTimeInfo = {
 };
 
 interface HomeTopProps {
-  totalTxs: Nullish<number>;
-  isTotalTxsLoading: boolean;
-  latestBlock: Nullish<number>;
-  isLatestBlockLoading: boolean;
   blockTime: Nullish<number>;
   isBlockTimeLoading: boolean;
-  toTxs: () => void;
+  isLatestBlockLoading: boolean;
+  isTotalTxsLoading: boolean;
+  latestBlock: Nullish<number>;
   toBlocks: () => void;
+  totalTxs: Nullish<number>;
+  toTxs: () => void;
 }
 
 export const HomeTop = ({

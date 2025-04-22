@@ -27,23 +27,23 @@ import type { TextInputProps } from "./TextInput";
 import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 export interface ControllerInputProps<T extends FieldValues>
-  extends Omit<TextInputProps, "value" | "setInputState" | "type"> {
-  name: FieldPath<T>;
+  extends Omit<TextInputProps, "setInputState" | "type" | "value"> {
   control: Control<T>;
-  type?: "text" | "number" | "decimal";
-  rules?: UseControllerProps<T>["rules"];
-  status?: FormStatus;
-  maxLength?: number;
-  helperAction?: ReactNode;
-  textAlign?: "left" | "right";
   cta?: {
     label: string;
     onClick: (changeValue?: (...event: string[]) => void) => void;
   };
+  helperAction?: ReactNode;
+  maxLength?: number;
+  name: FieldPath<T>;
   restrictedNumberInputParams?: Pick<
     RestrictedNumberInputParams,
     "maxDecimalPoints" | "maxIntegerPoints"
   >;
+  rules?: UseControllerProps<T>["rules"];
+  status?: FormStatus;
+  textAlign?: "left" | "right";
+  type?: "decimal" | "number" | "text";
 }
 
 export const ControllerInput = <T extends FieldValues>({

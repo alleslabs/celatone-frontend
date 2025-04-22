@@ -8,9 +8,9 @@ import { JsonSchemaModal } from "../JsonSchemaModal";
 
 interface UploadSchemaContentInterface {
   attached: boolean;
-  localSchema: Option<CodeSchema>;
-  codeId: number;
   codeHash: string;
+  codeId: number;
+  localSchema: Option<CodeSchema>;
   triggerElement?: ReactNode;
 }
 

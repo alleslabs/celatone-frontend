@@ -13,21 +13,21 @@ const StyledCustomIcon = chakra(CustomIcon, {
 });
 
 export interface ProgressBadgeProps {
+  bgColor?: string;
   state: PeriodState;
   text: string;
-  bgColor?: string;
 }
 
 const BadgeIcon = ({ state }: { state: PeriodState }) => {
   switch (state) {
-    case PeriodState.ONGOING:
-      return <ActiveDot m={1} />;
-    case PeriodState.FAILED:
-      return <StyledCustomIcon color="error.main" name="close-circle-solid" />;
     case PeriodState.COMPLETE:
       return (
         <StyledCustomIcon color="success.main" name="check-circle-solid" />
       );
+    case PeriodState.FAILED:
+      return <StyledCustomIcon color="error.main" name="close-circle-solid" />;
+    case PeriodState.ONGOING:
+      return <ActiveDot m={1} />;
     default:
       return <CustomIcon color="gray.600" name="circle" />;
   }

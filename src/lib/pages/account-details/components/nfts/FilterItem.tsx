@@ -9,10 +9,10 @@ import { useMetadata } from "lib/services/nft";
 interface FilterItemProps {
   collectionName: Option<string>;
   count: number;
-  onClick: () => void;
-  uri?: string;
   isActive?: boolean;
   isDefault?: boolean;
+  onClick: () => void;
+  uri?: string;
 }
 
 export const FilterItem = ({

@@ -17,11 +17,11 @@ import { sendingTx } from "../common/sending";
 
 interface ExecuteModuleTxParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   fee: StdFee;
-  signAndBroadcast: SignAndBroadcast;
-  onTxSucceed?: () => void;
+  messages: EncodeObject[];
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const executeModuleTx = ({

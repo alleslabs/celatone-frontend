@@ -25,10 +25,10 @@ const baseTextStyle: TextProps = {
 
 interface VerifyDetailsProps {
   codeHash: string;
-  verificationInfo: WasmVerifyInfoBase;
-  schema: Nullish<JsonDataType>;
-  relatedVerifiedCodes: number[];
   contractAddress?: BechAddr32;
+  relatedVerifiedCodes: number[];
+  schema: Nullish<JsonDataType>;
+  verificationInfo: WasmVerifyInfoBase;
 }
 
 export const VerifiedDetails = ({

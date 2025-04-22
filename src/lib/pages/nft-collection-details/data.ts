@@ -5,8 +5,8 @@ import { useResourcesByAddressRest } from "lib/services/move/resource";
 
 interface SupplyData {
   current_supply: string;
-  total_minted: string;
   max_supply?: string;
+  total_minted: string;
 }
 
 interface RoyaltyData {
@@ -16,8 +16,8 @@ interface RoyaltyData {
 
 interface CollectionInfos {
   isUnlimited: boolean;
-  supplies: { currentSupply: number; totalMinted: number; maxSupply?: number };
   royalty: number;
+  supplies: { currentSupply: number; maxSupply?: number; totalMinted: number };
 }
 
 export const useCollectionInfos = (

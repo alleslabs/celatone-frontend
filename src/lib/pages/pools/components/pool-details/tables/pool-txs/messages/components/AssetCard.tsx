@@ -16,9 +16,9 @@ import {
 
 interface AssetCardProps extends FlexProps {
   amount: string;
-  denom: string;
-  assetInfo: Option<AssetInfo>;
   ampCopierSection?: string;
+  assetInfo: Option<AssetInfo>;
+  denom: string;
 }
 
 export const AssetCard = ({

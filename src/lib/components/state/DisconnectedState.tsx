@@ -4,8 +4,8 @@ import { ConnectWalletBtn } from "../button/ConnectWallet";
 import { StateImage } from "./StateImage";
 
 interface DisconnectedStateProps {
-  text: string;
   helperText?: string;
+  text: string;
 }
 
 export const DisconnectedState = ({

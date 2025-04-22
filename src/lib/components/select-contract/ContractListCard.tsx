@@ -16,9 +16,9 @@ import { dateFromNow, formatSlugName, getListIcon } from "lib/utils";
 import { CustomIcon } from "../icon";
 
 interface ContractListCardProps {
-  item: ContractListInfo;
   handleListSelect: (value: string) => void;
   isReadOnly: boolean;
+  item: ContractListInfo;
 }
 
 export const ContractListCard = ({

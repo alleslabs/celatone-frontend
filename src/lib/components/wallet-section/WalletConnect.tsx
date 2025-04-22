@@ -54,27 +54,27 @@ export const WalletConnectComponent = ({
   rejected,
   walletStatus,
 }: {
-  walletStatus: WalletStatus;
-  disconnect: ReactNode;
-  connecting: ReactNode;
   connected: ReactNode;
-  rejected: ReactNode;
+  connecting: ReactNode;
+  disconnect: ReactNode;
   error: ReactNode;
   notExist: ReactNode;
+  rejected: ReactNode;
+  walletStatus: WalletStatus;
 }) => {
   switch (walletStatus) {
-    case WalletStatus.Disconnected:
-      return <>{disconnect}</>;
-    case WalletStatus.Connecting:
-      return <>{connecting}</>;
     case WalletStatus.Connected:
       return <>{connected}</>;
-    case WalletStatus.Rejected:
-      return <>{rejected}</>;
+    case WalletStatus.Connecting:
+      return <>{connecting}</>;
+    case WalletStatus.Disconnected:
+      return <>{disconnect}</>;
     case WalletStatus.Error:
       return <>{error}</>;
     case WalletStatus.NotExist:
       return <>{notExist}</>;
+    case WalletStatus.Rejected:
+      return <>{rejected}</>;
     default:
       return <>{disconnect}</>;
   }

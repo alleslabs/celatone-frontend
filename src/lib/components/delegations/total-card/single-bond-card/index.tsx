@@ -6,10 +6,10 @@ import { TotalCardTop } from "../TotalCardTop";
 import { SingleBondCardBody } from "./SingleBondCardBody";
 
 interface SingleBondCardProps {
-  title: string;
-  message: string;
   address: BechAddr;
   bondDenom: TokenWithValue;
+  message: string;
+  title: string;
   tokens: Option<Record<string, TokenWithValue>>;
 }
 

@@ -13,10 +13,10 @@ import { TableRow } from "../tableComponents";
 import { ModulePathLink } from "./ModulePathLink";
 
 interface ModulesTableRowProps {
-  moduleInfo: ModuleInfo;
-  templateColumns: string;
   isPublishedModules: boolean;
+  moduleInfo: ModuleInfo;
   moveVerifyInfo: Option<MoveVerifyInfoResponse>;
+  templateColumns: string;
 }
 
 export const ModulesTableRow = ({

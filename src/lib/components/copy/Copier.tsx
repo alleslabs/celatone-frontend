@@ -6,12 +6,12 @@ import { CustomIcon } from "../icon";
 import { CopyTemplate } from "./CopyTemplate";
 
 interface CopierProps {
-  type: string;
-  value: string;
+  amptrackSection?: string;
   copyLabel?: string;
   display?: LayoutProps["display"];
   ml?: IconProps["ml"];
-  amptrackSection?: string;
+  type: string;
+  value: string;
 }
 
 export const Copier = ({

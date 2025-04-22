@@ -41,18 +41,18 @@ import { useCodeRest } from "./wasm/code";
 import { useContractData } from "./wasm/contract";
 
 export type SearchResultType =
+  | "Account address"
+  | "Block"
   | "Code ID"
   | "Contract address"
-  | "Account address"
-  | "Transaction hash"
-  | "Proposal ID"
-  | "Block"
-  | "Pool ID"
-  | "Validator address"
+  | "EVM transaction hash"
   | "Module path"
   | "NFT address"
   | "NFT collection address"
-  | "EVM transaction hash";
+  | "Pool ID"
+  | "Proposal ID"
+  | "Transaction hash"
+  | "Validator address";
 
 interface ResultMetadata {
   icns?: {
@@ -67,14 +67,14 @@ interface ResultMetadata {
 }
 
 export interface SearchResult {
-  value: string;
-  type: SearchResultType;
   metadata?: ResultMetadata;
+  type: SearchResultType;
+  value: string;
 }
 
 interface SearchHandlerResponse {
-  results: SearchResult[];
   isLoading: boolean;
+  results: SearchResult[];
 }
 
 export const useSearchHandler = (

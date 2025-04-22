@@ -11,15 +11,15 @@ import { dateFromNow, formatUTC } from "lib/utils";
 import { InfoCard } from "./InfoCard";
 
 interface CollectionInfoSectionProps {
+  activities?: number;
   collectionAddress: HexAddr32;
   collectionName: string;
   desc: string;
-  uri: string;
-  activities?: number;
   mutateEventes?: number;
-  royalty: number;
   onClickActivities: () => void;
   onClickMutateEvents: () => void;
+  royalty: number;
+  uri: string;
 }
 
 export const CollectionInfoSection = ({

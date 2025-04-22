@@ -20,9 +20,9 @@ const formatColor = (value: Big) => {
 };
 
 interface VotingPowerChartDetailsProps {
+  assetInfo: Option<AssetInfo>;
   historicalPowers: HistoricalPowersResponse;
   singleStakingDenom: Option<string>;
-  assetInfo: Option<AssetInfo>;
 }
 
 export const VotingPowerChartDetails = ({

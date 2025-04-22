@@ -5,9 +5,9 @@ import { StatusMessageBox } from "lib/components/StatusMessageBox";
 import { WasmVerifySection } from "lib/components/wasm-verify-section";
 
 interface ContractVerificationSectionProps {
-  contractAddress: BechAddr32;
-  codeId: number;
   codeHash: string;
+  codeId: number;
+  contractAddress: BechAddr32;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 

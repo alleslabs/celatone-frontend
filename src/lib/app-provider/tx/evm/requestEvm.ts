@@ -7,12 +7,12 @@ import { useSignAndBroadcastEvm } from "lib/app-provider/hooks";
 import { useCallback } from "react";
 
 export interface RequestEvmStreamParams {
-  to: HexAddr20;
   data: string;
-  value: string;
   estimatedFee?: SimulatedFeeEvm;
-  onTxSucceed?: () => void;
   onTxFailed?: () => void;
+  onTxSucceed?: () => void;
+  to: HexAddr20;
+  value: string;
 }
 
 export const useRequestEvmTx = () => {

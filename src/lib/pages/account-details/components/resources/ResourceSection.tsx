@@ -7,11 +7,11 @@ import { ResourceSectionBody } from "./ResourceSectionBody";
 
 interface ResourceSectionProps {
   address: BechAddr;
-  totalCount: Option<number>;
-  resourcesByOwner: Option<ResourceGroupByAccount[]>;
   isLoading: boolean;
+  resourcesByOwner: Option<ResourceGroupByAccount[]>;
   selectedAccountParam: Option<string>;
   selectedGroupNameParam: Option<string>;
+  totalCount: Option<number>;
 }
 
 export const ResourceSection = ({

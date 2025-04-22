@@ -10,8 +10,8 @@ import { ViewSchemaModal } from "./view/ViewSchemaModal";
 
 interface AttachSchemaCardProps {
   attached: boolean;
-  codeId: number;
   codeHash: string;
+  codeId: number;
   localSchema: Option<CodeSchema>;
   openModal: () => void;
 }

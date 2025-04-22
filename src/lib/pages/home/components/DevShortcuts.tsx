@@ -26,10 +26,10 @@ const cardProps: SystemStyleObject = {
 };
 
 interface ShortcutMetadata {
-  title: string;
-  subtitle: string;
-  slug: string;
   icon: IconKeys;
+  slug: string;
+  subtitle: string;
+  title: string;
 }
 
 export const DevShortcuts = () => {

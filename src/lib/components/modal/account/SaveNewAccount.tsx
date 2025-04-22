@@ -26,8 +26,8 @@ import { ToContractButton } from "./ToContractButton";
 
 export interface SaveAccountDetail {
   address: BechAddr;
-  name: string;
   description: string;
+  name: string;
 }
 
 const statusSuccess: FormStatus = {
@@ -36,10 +36,10 @@ const statusSuccess: FormStatus = {
 };
 
 interface SaveNewAccountModalProps {
-  buttonProps: ButtonProps;
   accountAddress?: BechAddr;
-  publicName?: string;
+  buttonProps: ButtonProps;
   publicDescription?: string;
+  publicName?: string;
 }
 
 export function SaveNewAccountModal({

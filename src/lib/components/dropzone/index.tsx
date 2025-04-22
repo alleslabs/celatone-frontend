@@ -14,9 +14,9 @@ import { UploadIcon } from "../icon";
 import { DROPZONE_CONFIG } from "./config";
 
 interface DropZoneProps extends FlexProps {
-  setFiles: (files: FileWithPath[]) => void;
-  fileType: DropzoneFileType[];
   error?: string;
+  fileType: DropzoneFileType[];
+  setFiles: (files: FileWithPath[]) => void;
 }
 
 export function DropZone({

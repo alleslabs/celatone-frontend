@@ -21,8 +21,8 @@ import { getWasmVerifyStatus } from "lib/utils";
 import { observer } from "mobx-react-lite";
 
 interface CommandSectionHeaderProps {
-  codeId: number;
   codeHash: string;
+  codeId: number;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 

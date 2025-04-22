@@ -8,14 +8,14 @@ const dupStyleKeys = ["title", "container", "description"];
 
 const generateVariantStyle = (
   variant:
-    | "primary"
-    | "secondary"
-    | "success"
-    | "warning"
     | "error"
     | "info"
     | "info-left-primary"
     | "info-left-secondary"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "warning"
 ) => {
   let mainColor: ColorProps["color"];
   let bgColor: ColorProps["color"];
@@ -25,11 +25,6 @@ const generateVariantStyle = (
   let borderRadius: BorderProps["borderRadius"];
 
   switch (variant) {
-    case "primary":
-      mainColor = `${variant}.light`;
-      bgColor = `${variant}.background`;
-      borderColor = `${variant}.dark`;
-      break;
     case "info":
       mainColor = "gray.400";
       bgColor = "gray.800";
@@ -47,6 +42,11 @@ const generateVariantStyle = (
       border = "0";
       borderLeft = "3px solid";
       borderRadius = "0";
+      break;
+    case "primary":
+      mainColor = `${variant}.light`;
+      bgColor = `${variant}.background`;
+      borderColor = `${variant}.dark`;
       break;
     case "error":
     default:

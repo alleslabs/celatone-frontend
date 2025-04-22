@@ -7,12 +7,12 @@ import { CustomIconButton } from "lib/components/button";
 
 export const renderSocial = (name: string): IconKeys => {
   switch (name) {
-    case "x":
-      return "x";
-    case "telegram":
-      return "telegram";
     case "discord":
       return "discord";
+    case "telegram":
+      return "telegram";
+    case "x":
+      return "x";
     default:
       return "info-circle";
   }

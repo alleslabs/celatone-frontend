@@ -23,18 +23,18 @@ import type { FormStatus } from "./FormStatus";
 import { getResponseMsg, getStatusIcon } from "./FormStatus";
 
 export interface TextInputProps extends FormControlProps {
-  value: string;
-  setInputState: Dispatch<SetStateAction<string>> | ((value: string) => void);
+  autoFocus?: boolean;
+  error?: string;
+  helperAction?: ReactNode;
+  helperText?: string;
   label?: string;
   labelBgColor?: string;
-  helperText?: string;
-  placeholder?: string;
-  error?: string;
-  type?: HTMLInputTypeAttribute;
-  status?: FormStatus;
   maxLength?: number;
-  helperAction?: ReactNode;
-  autoFocus?: boolean;
+  placeholder?: string;
+  setInputState: ((value: string) => void) | Dispatch<SetStateAction<string>>;
+  status?: FormStatus;
+  type?: HTMLInputTypeAttribute;
+  value: string;
 }
 
 export const TextInput = ({

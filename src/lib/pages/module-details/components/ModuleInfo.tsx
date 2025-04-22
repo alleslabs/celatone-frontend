@@ -15,8 +15,8 @@ import { ModuleInfoBody } from "./ModuleInfoBody";
 export interface ModuleInfoProps {
   indexedModule: IndexedModule;
   modulePublishInfo: Option<ModulePublishInfo>;
-  verificationData: Nullish<MoveVerifyInfoResponse>;
   moveVerifyStatus: MoveVerifyStatus;
+  verificationData: Nullish<MoveVerifyInfoResponse>;
 }
 
 export const ModuleInfo = ({

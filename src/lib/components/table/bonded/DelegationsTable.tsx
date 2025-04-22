@@ -14,9 +14,9 @@ import { TEMPLATE_COLUMNS } from "./constants";
 
 interface DelegationsTableProps {
   delegations: Option<Delegation[]>;
-  rewards: Option<Record<string, TokenWithValue[]>>;
   isLoading: boolean;
   isSingleBondDenom: boolean;
+  rewards: Option<Record<string, TokenWithValue[]>>;
 }
 
 const DelegationsTableBody = ({

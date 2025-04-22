@@ -1,5 +1,5 @@
 import type { JsonFragment } from "ethers";
-import type { Option, HexAddr20, JsonDataType } from "lib/types";
+import type { HexAddr20, JsonDataType, Option } from "lib/types";
 
 import {
   AccordionButton,
@@ -55,8 +55,8 @@ const TimestampText = memo(({ timestamp }: { timestamp: Option<Date> }) => {
 });
 
 interface ReadBoxProps {
-  contractAddress: HexAddr20;
   abiSection: JsonFragment;
+  contractAddress: HexAddr20;
   opened: boolean;
 }
 

@@ -4,8 +4,8 @@ import { zAddr } from "lib/types";
 import { z } from "zod";
 
 export enum ModuleInteractionMobileStep {
-  SelectModule = "select-module",
   SelectFunction = "select-function",
+  SelectModule = "select-module",
 }
 
 export const zInteractQueryParams = z.object({

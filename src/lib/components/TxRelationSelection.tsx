@@ -7,8 +7,8 @@ import { SelectInputBase } from "./forms";
 
 enum RelationType {
   ALL = "ALL",
-  SIGNING = "SIGNING",
   RELATED = "RELATED",
+  SIGNING = "SIGNING",
 }
 
 const relationOptions = [
@@ -30,9 +30,9 @@ const relationOptions = [
 ];
 
 interface TxRelationSelectionProps extends BoxProps {
-  value: Option<boolean>;
   setValue: (value: Option<boolean>) => void;
-  size?: string | object;
+  size?: object | string;
+  value: Option<boolean>;
 }
 
 export const TxRelationSelection = ({
@@ -43,11 +43,11 @@ export const TxRelationSelection = ({
 }: TxRelationSelectionProps) => {
   let initialValue;
   switch (value) {
-    case undefined:
-      initialValue = RelationType.ALL;
-      break;
     case true:
       initialValue = RelationType.SIGNING;
+      break;
+    case undefined:
+      initialValue = RelationType.ALL;
       break;
     default:
       initialValue = RelationType.RELATED;

@@ -15,10 +15,10 @@ const StatWithLabel = ({
   tooltipLabel,
   value,
 }: {
-  label: string;
-  value: Option<string>;
   isLoading: boolean;
+  label: string;
   tooltipLabel?: string;
+  value: Option<string>;
 }) => (
   <Flex
     align={{ md: "center" }}
@@ -44,10 +44,10 @@ const StatWithLabel = ({
 );
 
 interface ValidatorStatsProps {
-  validatorAddress: ValidatorAddr;
   commissionRate: Ratio<number>;
-  totalVotingPower: Big;
   singleStakingDenom: Option<string>;
+  totalVotingPower: Big;
+  validatorAddress: ValidatorAddr;
 }
 
 export const ValidatorStats = ({

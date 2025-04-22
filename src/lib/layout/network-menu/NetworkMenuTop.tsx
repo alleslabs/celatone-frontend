@@ -7,10 +7,10 @@ import InputWithIcon from "lib/components/InputWithIcon";
 import { observer } from "mobx-react-lite";
 
 interface NetworkMenuTopProps {
-  keyword: string;
-  setKeyword: (value: string) => void;
   handleOnKeyDown: (e: ReactKeyboardEvent<HTMLDivElement>) => void;
+  keyword: string;
   onClose: () => void;
+  setKeyword: (value: string) => void;
 }
 
 export const NetworkMenuTop = observer(

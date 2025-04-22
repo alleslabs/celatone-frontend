@@ -10,11 +10,11 @@ const TEMPLATE_COLUMNS =
   "24px max(200px) 50px minmax(360px, 1fr) max(160px) max(220px)";
 
 interface PoolTxsTableProps {
+  assetInfos: Option<AssetInfos>;
+  emptyState: JSX.Element;
+  isLoading: boolean;
   pool: PoolData;
   transactions: Option<Transaction[]>;
-  assetInfos: Option<AssetInfos>;
-  isLoading: boolean;
-  emptyState: JSX.Element;
 }
 
 export const PoolTxsTable = ({

@@ -15,8 +15,8 @@ import { useCurrentChain } from "lib/app-provider";
 import { CustomIcon } from "./icon";
 
 interface ConnectWalletAlertProps extends AlertProps {
-  title?: string;
   subtitle?: string;
+  title?: string;
 }
 
 export const ConnectWalletAlert = ({

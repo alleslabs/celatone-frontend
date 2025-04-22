@@ -11,11 +11,11 @@ import { useEffect } from "react";
 import { PublishedEventsTable } from "./PublishedEventsTable";
 
 interface ModuleHistoryTableProps {
-  vmAddress: HexAddr;
-  moduleName: string;
   historyCount: Option<number>;
-  scrollComponentId?: string;
+  moduleName: string;
   onViewMore?: () => void;
+  scrollComponentId?: string;
+  vmAddress: HexAddr;
 }
 
 export const ModuleHistoryTable = ({

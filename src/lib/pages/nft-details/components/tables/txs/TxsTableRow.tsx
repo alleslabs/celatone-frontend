@@ -15,12 +15,12 @@ export const getEventMessage = (
 };
 
 interface TxsTableRowProps {
-  templateColumns: string;
   hash: string;
-  timestamp: Date;
   isNftBurn: boolean;
   isNftMint: boolean;
   isNftTransfer: boolean;
+  templateColumns: string;
+  timestamp: Date;
 }
 
 export const TxsTableRow = ({

@@ -8,8 +8,8 @@ import { useForm } from "react-hook-form";
 import { ArgFieldTemplate } from "./field";
 
 interface ArgsFormProps {
-  params: string[];
   initialData: AbiFormData["args"];
+  params: string[];
   propsOnChange?: (data: AbiFormData["args"]) => void;
   propsOnErrors?: (errors: [string, string][]) => void;
 }

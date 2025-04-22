@@ -8,10 +8,10 @@ import { PageButton } from "./PageButton";
 import { Previous } from "./Previous";
 
 interface PageListProps {
-  pageSize: number;
   currentPage: number;
   lastPage: number;
   onPageChange: (pageNumber: number) => void;
+  pageSize: number;
 }
 
 export const PageList = ({

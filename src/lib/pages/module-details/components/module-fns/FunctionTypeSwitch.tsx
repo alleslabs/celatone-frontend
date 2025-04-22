@@ -7,9 +7,9 @@ import { MotionBox } from "lib/components/MotionBox";
 import { FunctionTypeTabIndex } from "../../types";
 
 interface FunctionTypeSwitchProps extends FlexProps {
+  counts: [Option<number>, Option<number>, Option<number>];
   currentTab: FunctionTypeTabIndex;
   disabled?: boolean;
-  counts: [Option<number>, Option<number>, Option<number>];
   onTabChange: (newTab: FunctionTypeTabIndex) => void;
 }
 

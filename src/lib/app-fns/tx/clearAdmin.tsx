@@ -17,10 +17,10 @@ import { sendingTx } from "./common/sending";
 
 interface ClearAdminTxParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   fee: StdFee;
-  signAndBroadcast: SignAndBroadcast;
+  messages: EncodeObject[];
   onTxSucceed?: () => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const clearAdminTx = ({

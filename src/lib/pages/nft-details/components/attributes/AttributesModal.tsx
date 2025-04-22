@@ -16,12 +16,12 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { CustomIcon } from "lib/components/icon";
 
 interface AttributesModalProps {
-  title: string;
   address: string;
-  tokenId: string;
   attributes: Trait[];
   isOpen: boolean;
   onClose: () => void;
+  title: string;
+  tokenId: string;
 }
 
 export const AttributesModal = ({

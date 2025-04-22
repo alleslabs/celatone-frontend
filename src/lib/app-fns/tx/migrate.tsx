@@ -17,11 +17,11 @@ import { sendingTx } from "./common/sending";
 
 interface MigrateTxParams {
   address: BechAddr20;
-  messages: EncodeObject[];
   fee: StdFee;
-  signAndBroadcast: SignAndBroadcast;
-  onTxSucceed?: (txHash: string) => void;
+  messages: EncodeObject[];
   onTxFailed?: () => void;
+  onTxSucceed?: (txHash: string) => void;
+  signAndBroadcast: SignAndBroadcast;
 }
 
 export const migrateContractTx = ({

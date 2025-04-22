@@ -8,8 +8,8 @@ import { ClearAdminModal } from "../modal/contract/ClearAdmin";
 import { Tooltip } from "../Tooltip";
 
 interface AdminButtonProps {
-  contractAddress: BechAddr32;
   admin: Nullable<BechAddr>;
+  contractAddress: BechAddr32;
 }
 
 export const AdminButton = ({ admin, contractAddress }: AdminButtonProps) => {

@@ -19,11 +19,11 @@ import {
 } from "lib/utils";
 
 interface PoolAssetsTableRowProps {
-  pool: PoolData;
-  token: TokenWithValue;
-  templateColumns: GridProps["templateColumns"];
-  totalLiquidity: USD<Big>;
   liquidityIndex: number;
+  pool: PoolData;
+  templateColumns: GridProps["templateColumns"];
+  token: TokenWithValue;
+  totalLiquidity: USD<Big>;
 }
 
 export const PoolAssetsTableRow = ({

@@ -50,9 +50,9 @@ const ContentRender = ({
   publicCodes,
   wasmVerifyInfos,
 }: {
+  isMobile: boolean;
   publicCodes: PublicCodeInfo[];
   wasmVerifyInfos: Option<WasmVerifyInfosResponse>;
-  isMobile: boolean;
 }) =>
   isMobile ? (
     <MobileTableContainer>

@@ -9,8 +9,8 @@ import { DepositAmounts } from "../../../DepositAmounts";
 
 interface DepositorsTableRowProps {
   proposalDeposit: ProposalDeposit;
-  templateColumns: string;
   showTransaction: boolean;
+  templateColumns: string;
 }
 
 export const DepositorsTableRow = ({

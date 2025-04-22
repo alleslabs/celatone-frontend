@@ -2,9 +2,9 @@ import { useCelatoneApp } from "../contexts";
 
 interface GasParams {
   denom: string;
-  tokenPerGas: number;
   gasAdjustment: number;
   maxGasLimit: number;
+  tokenPerGas: number;
 }
 
 export const useGas = (): GasParams => {

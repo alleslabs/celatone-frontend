@@ -8,8 +8,8 @@ import { ModuleVerificationDetailsTable } from "lib/components/table/module-veri
 import { MoveVerifyTaskStatus } from "lib/services/types";
 
 interface MyModuleVerificationDetailsTableProps {
-  moveVerifyTaskStatus: MoveVerifyTaskStatus;
   moduleIdentifiers: Option<MoveVerificationModuleIdentifier[]>;
+  moveVerifyTaskStatus: MoveVerifyTaskStatus;
 }
 
 export const MyModuleVerificationDetailsTable = ({

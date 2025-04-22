@@ -12,10 +12,10 @@ import { MobileLabel } from "../MobileLabel";
 import { RelationChip } from "./RelationChip";
 
 interface TransactionsTableMobileCardProps {
-  transaction: Transaction;
-  showSuccess: boolean;
   showRelations: boolean;
+  showSuccess: boolean;
   showTimestamp: boolean;
+  transaction: Transaction;
 }
 export const TransactionsTableMobileCard = ({
   showRelations,

@@ -14,12 +14,12 @@ import { gzip } from "node-gzip";
 
 interface SimulateQueryParams {
   enabled: boolean;
-  messages: ComposedMsg[];
-  isDummyUser?: boolean;
-  retry?: UseQueryOptions["retry"];
   extraQueryKey?: UseQueryOptions["queryKey"];
-  onSuccess?: (gas: Option<Gas>) => void;
+  isDummyUser?: boolean;
+  messages: ComposedMsg[];
   onError?: (err: Error) => void;
+  onSuccess?: (gas: Option<Gas>) => void;
+  retry?: UseQueryOptions["retry"];
 }
 
 export const useSimulateFeeQuery = ({
@@ -62,12 +62,12 @@ export const useSimulateFeeQuery = ({
 };
 
 interface SimulateQueryParamsForStoreCode {
-  enabled: boolean;
-  wasmFile: Option<File>;
-  permission?: AccessType;
   addresses?: BechAddr[];
-  onSuccess?: (gas: Option<Gas>) => void;
+  enabled: boolean;
   onError?: (err: Error) => void;
+  onSuccess?: (gas: Option<Gas>) => void;
+  permission?: AccessType;
+  wasmFile: Option<File>;
 }
 
 export const useSimulateFeeForStoreCode = ({
@@ -117,21 +117,21 @@ export const useSimulateFeeForStoreCode = ({
 };
 
 interface SimulateQueryParamsForProposalStoreCode {
-  enabled: boolean;
-  title: string;
-  description: string;
-  runAs: BechAddr;
-  initialDeposit: Coin;
-  unpinCode: boolean;
-  builder: string;
-  source: string;
-  codeHash: string;
-  wasmFile: Option<File>;
-  permission: AccessType;
   addresses: BechAddr[];
-  precision: Option<number>;
-  onSuccess?: (gas: Option<Gas>) => void;
+  builder: string;
+  codeHash: string;
+  description: string;
+  enabled: boolean;
+  initialDeposit: Coin;
   onError?: (err: Error) => void;
+  onSuccess?: (gas: Option<Gas>) => void;
+  permission: AccessType;
+  precision: Option<number>;
+  runAs: BechAddr;
+  source: string;
+  title: string;
+  unpinCode: boolean;
+  wasmFile: Option<File>;
 }
 
 export const useSimulateFeeForProposalStoreCode = ({

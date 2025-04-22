@@ -4,8 +4,8 @@ import { Grid, Text } from "@chakra-ui/react";
 import { TableHeader, TableHeaderFreeze } from "lib/components/table";
 
 interface VotedProposalsTableHeaderProps {
-  templateColumns: GridProps["templateColumns"];
   boxShadow: DividerProps["boxShadow"];
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const VotedProposalsTableHeader = ({

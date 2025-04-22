@@ -6,9 +6,9 @@ import { TextReadOnly } from "lib/components/json/TextReadOnly";
 import { jsonPrettify } from "lib/utils";
 
 interface EvmEventBoxDecodedProps {
+  decode: unknown;
   index?: number;
   input: ParamType;
-  decode: unknown;
 }
 
 const EvmEventBoxDecodedBody = ({
@@ -27,14 +27,14 @@ const EvmEventBoxDecodedBody = ({
           value={String(decode)}
         />
       );
-    case "tuple":
-      return <TextReadOnly text={jsonPrettify(JSON.stringify(decode))} />;
     case "array":
       return (
         <Text fontFamily="mono" variant="body2">
           [{String(decode)}]
         </Text>
       );
+    case "tuple":
+      return <TextReadOnly text={jsonPrettify(JSON.stringify(decode))} />;
     default:
       return (
         <Text fontFamily="mono" variant="body2">

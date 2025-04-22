@@ -7,9 +7,9 @@ const InfoComponent = ({
   title,
   tooltip,
 }: {
+  content?: number;
   title: string;
   tooltip: string;
-  content?: number;
 }) => (
   <div>
     <Flex align="center" gap="4px">
@@ -30,10 +30,10 @@ const InfoComponent = ({
 );
 
 interface CollectionSupplyInfoProps {
-  totalBurned: number;
-  totalMinted: number;
   currentSupply: number;
   maxSupply?: number;
+  totalBurned: number;
+  totalMinted: number;
 }
 
 export const CollectionSupplyInfo = ({

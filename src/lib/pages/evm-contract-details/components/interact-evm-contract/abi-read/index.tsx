@@ -12,8 +12,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ReadBox } from "./ReadBox";
 
 interface AbiReadProps {
-  contractAddress: HexAddr20;
   abiRead: JsonFragment[];
+  contractAddress: HexAddr20;
   selectedFn?: string;
 }
 

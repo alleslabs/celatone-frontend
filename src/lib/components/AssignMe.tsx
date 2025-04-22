@@ -5,8 +5,8 @@ import { Text } from "@chakra-ui/react";
 import { useCurrentChain } from "lib/app-provider";
 
 interface AssignMeProps {
-  onClick?: MouseEventHandler<HTMLParagraphElement>;
   isDisable?: boolean;
+  onClick?: MouseEventHandler<HTMLParagraphElement>;
   textAlign?: TextProps["textAlign"];
 }
 

@@ -131,8 +131,8 @@ export const SearchComponent = () => {
   const handleOnKeyDown = useCallback(
     (e: ReactKeyboardEvent<HTMLInputElement>) => {
       switch (e.key) {
-        case "ArrowUp":
-        case "ArrowDown": {
+        case "ArrowDown":
+        case "ArrowUp": {
           const lastIndex = results.length - 1;
           const nextCursor = getNextCursor(e.key, cursor, lastIndex);
           const listItem = document.getElementById(`item-${nextCursor}`);

@@ -5,11 +5,11 @@ import { formatPrettyPercent } from "lib/utils";
 import { isNull } from "lodash";
 
 interface VoteQuorumCircleProps {
-  quorum: Ratio<number>;
-  nonAbstainRatio: Nullable<Ratio<number>>;
-  totalRatio: Nullable<Ratio<number>>;
-  isCompact: boolean;
   isBgGray?: boolean;
+  isCompact: boolean;
+  nonAbstainRatio: Nullable<Ratio<number>>;
+  quorum: Ratio<number>;
+  totalRatio: Nullable<Ratio<number>>;
 }
 
 export const VoteQuorumCircle = ({

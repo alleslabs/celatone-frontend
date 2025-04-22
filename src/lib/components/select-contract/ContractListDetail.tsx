@@ -17,9 +17,9 @@ import { ContractsTable } from "../table";
 interface ContractListContentProps {
   contractListInfo: ContractListInfo;
   filteredContracts: ContractInfo[];
-  onContractSelect: (addr: BechAddr32) => void;
   isLoading: boolean;
   isReadOnly: boolean;
+  onContractSelect: (addr: BechAddr32) => void;
 }
 
 const ContractListContent = ({

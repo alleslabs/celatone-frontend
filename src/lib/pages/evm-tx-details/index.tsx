@@ -22,10 +22,10 @@ import { zEvmTxDetailsQueryParams } from "./types";
 
 const mapEvmTxStatus = (status: Option<boolean>) => {
   switch (status) {
-    case true:
-      return "success";
     case false:
       return "failed";
+    case true:
+      return "success";
     default:
       return "not-found";
   }

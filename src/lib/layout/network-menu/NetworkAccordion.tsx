@@ -14,12 +14,12 @@ import { observer } from "mobx-react-lite";
 import { NetworkAccordionSubsection } from "./NetworkAccordionSubsection";
 
 interface NetworkAccordionProps {
-  title: string;
-  networks: string[];
   cursor: Option<number>;
+  networks: string[];
+  onClose: () => void;
   setCursor: (index: Option<number>) => void;
   startIndex: number;
-  onClose: () => void;
+  title: string;
 }
 
 export const NetworkAccordion = observer(

@@ -16,10 +16,10 @@ export const zInstantiateQueryParams = z.object({
 });
 
 export interface InstantiateFormState {
-  codeId: string;
-  codeHash: string;
-  label: string;
   adminAddress: string;
+  codeHash: string;
+  codeId: string;
+  label: string;
   msgInput: {
     [jsonInputFormKey]: string;
     [yourSchemaInputFormKey]: string;

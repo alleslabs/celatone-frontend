@@ -41,10 +41,10 @@ const FunctionSection = ({
   selectedFn,
   setSelectedFn,
 }: {
+  handleDrawerOpen?: (step: ModuleInteractionMobileStep) => void;
+  isZeroState?: boolean;
   selectedFn?: ExposedFunction;
   setSelectedFn?: Dispatch<SetStateAction<ExposedFunction | undefined>>;
-  isZeroState?: boolean;
-  handleDrawerOpen?: (step: ModuleInteractionMobileStep) => void;
 }) => (
   <Flex
     borderTopColor="gray.700"
@@ -103,8 +103,8 @@ const ZeroState = ({
   isMobile,
   onOpen,
 }: {
-  onOpen: () => void;
   isMobile: boolean;
+  onOpen: () => void;
 }) => (
   <Flex
     alignItems={{ md: "center" }}

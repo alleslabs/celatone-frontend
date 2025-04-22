@@ -22,11 +22,11 @@ import { AppLink } from "../AppLink";
 import { Editor } from "../editor/Editor";
 import { CustomIcon } from "../icon";
 import { MoveVerifyBadge } from "../MoveVerifyBadge";
-import { ModuleFileTabs, ModuleFileSwitch } from "./ModuleFileSwitch";
+import { ModuleFileSwitch, ModuleFileTabs } from "./ModuleFileSwitch";
 
 interface ModuleSourceCodeProps {
-  verificationData: Nullish<MoveVerifyInfoResponse>;
   moveVerifyStatus: MoveVerifyStatus;
+  verificationData: Nullish<MoveVerifyInfoResponse>;
 }
 
 export const ModuleSourceCode = ({

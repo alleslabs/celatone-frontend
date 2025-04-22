@@ -10,20 +10,20 @@ import { ListSelection } from "./ListSelection";
 import { TagSelection } from "./TagSelection";
 
 export interface OffchainDetail {
-  name: string;
   description: string;
-  tags: string[];
   lists: LVPair[];
+  name: string;
+  tags: string[];
 }
 
 interface OffChainFormProps<T extends OffchainDetail> {
-  state: OffchainDetail;
   contractLabel: string;
   control: Control<T>;
-  setTagsValue: (options: string[]) => void;
-  setContractListsValue: (options: LVPair[]) => void;
   errors: Partial<FieldErrorsImpl<T>>;
   labelBgColor?: string;
+  setContractListsValue: (options: LVPair[]) => void;
+  setTagsValue: (options: string[]) => void;
+  state: OffchainDetail;
 }
 
 export const OffChainForm = <T extends OffchainDetail>({

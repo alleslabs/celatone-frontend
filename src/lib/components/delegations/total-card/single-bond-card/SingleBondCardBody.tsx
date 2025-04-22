@@ -4,10 +4,10 @@ import { SingleBondCardBodyMulti } from "./SingleBondCardBodyMulti";
 import { SingleBondCardBodySingle } from "./SingleBondCardBodySingle";
 
 interface SingleBondCardBodyProps {
-  title: string;
-  message: string;
   address: BechAddr;
   bondDenom: TokenWithValue;
+  message: string;
+  title: string;
   tokens: Record<string, TokenWithValue>;
 }
 

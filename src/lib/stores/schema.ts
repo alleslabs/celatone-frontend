@@ -33,13 +33,6 @@ export class SchemaStore {
     });
   }
 
-  saveNewSchema(codeHash: string, codeId: string, schema: CodeSchema) {
-    this.jsonSchemas[normalize(codeHash)] = {
-      ...schema,
-      [SchemaProperties.ATTACHED_CODE_ID]: codeId,
-    };
-  }
-
   deleteSchema(codeHash: string) {
     delete this.jsonSchemas[normalize(codeHash)];
   }
@@ -51,5 +44,12 @@ export class SchemaStore {
   // TODO: add test
   getSchemaCount(): number {
     return Object.keys(this.jsonSchemas).length;
+  }
+
+  saveNewSchema(codeHash: string, codeId: string, schema: CodeSchema) {
+    this.jsonSchemas[normalize(codeHash)] = {
+      ...schema,
+      [SchemaProperties.ATTACHED_CODE_ID]: codeId,
+    };
   }
 }

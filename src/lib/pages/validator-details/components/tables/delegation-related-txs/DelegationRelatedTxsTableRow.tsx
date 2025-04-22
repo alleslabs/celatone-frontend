@@ -9,11 +9,11 @@ import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 import { DelegationRelatedTxsTokenChange } from "./DelegationRelatedTxsTokenChange";
 
 interface DelegationRelatedTxsTableRowProps {
-  delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
-  templateColumns: string;
   assetInfos: Option<AssetInfos>;
+  delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
   movePoolInfos: Option<MovePoolInfos>;
   onRowSelect: (txHash: string) => void;
+  templateColumns: string;
 }
 
 export const DelegationRelatedTxsTableRow = ({

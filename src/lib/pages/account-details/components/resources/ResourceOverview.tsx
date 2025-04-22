@@ -9,10 +9,10 @@ import { ResourceOverviewBody } from "./ResourceOverviewBody";
 
 interface ResourceOverviewProps {
   address: BechAddr;
-  totalCount: Option<number>;
-  resourcesByName: Option<ResourceGroup[]>;
   isLoading: boolean;
   onViewMore: () => void;
+  resourcesByName: Option<ResourceGroup[]>;
+  totalCount: Option<number>;
 }
 
 export const ResourceOverview = ({

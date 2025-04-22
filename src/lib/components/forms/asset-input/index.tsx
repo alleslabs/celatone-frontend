@@ -11,11 +11,11 @@ import { AssetInputNoOptionsMessage } from "./AssetInputNoOptionsMessage";
 import { AssetInputOption } from "./AssetInputOption";
 
 interface AssetInputProps {
+  amountInput: JSX.Element;
+  assetOptions: AssetOption[];
   disableDelete: boolean;
   onDelete: () => void;
   setCurrencyValue: (newVal: string) => void;
-  amountInput: JSX.Element;
-  assetOptions: AssetOption[];
   value: Option<AssetOption>;
 }
 

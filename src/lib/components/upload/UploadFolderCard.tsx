@@ -7,10 +7,10 @@ import { CustomIcon, UploadFolderIcon } from "../icon";
 import { useCardTheme } from "./hooks/useCardTheme";
 
 interface UploadFolderCardProps {
-  fileName: string;
   deleteFile: () => void;
-  theme?: CardTheme;
+  fileName: string;
   status?: Status;
+  theme?: CardTheme;
 }
 
 export const UploadFolderCard = ({

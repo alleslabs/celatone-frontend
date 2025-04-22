@@ -12,10 +12,10 @@ const getGroupTitle = (interactTab: InteractTabsIndex) => {
   switch (interactTab) {
     case InteractTabsIndex.Read:
       return "Read";
-    case InteractTabsIndex.Write:
-      return "Write";
     case InteractTabsIndex.ReadProxy:
       return "Read as Proxy";
+    case InteractTabsIndex.Write:
+      return "Write";
     case InteractTabsIndex.WriteProxy:
     default:
       return "Write as Proxy";
@@ -23,8 +23,8 @@ const getGroupTitle = (interactTab: InteractTabsIndex) => {
 };
 
 interface EvmContractCmdGroupProps {
-  contractAddress: HexAddr20;
   abiSections: JsonFragment[];
+  contractAddress: HexAddr20;
   interactTab: InteractTabsIndex;
 }
 

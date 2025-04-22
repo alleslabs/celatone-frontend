@@ -11,13 +11,13 @@ import { Paginator } from "./Paginator";
 
 interface PaginationProps {
   currentPage: number;
-  pagesQuantity: number;
   offset: number;
-  totalData: number;
-  pageSize: number;
-  scrollComponentId?: string;
   onPageChange: (pageNumber: number) => void;
   onPageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  pageSize: number;
+  pagesQuantity: number;
+  scrollComponentId?: string;
+  totalData: number;
 }
 export const Pagination = ({
   currentPage,

@@ -21,8 +21,8 @@ interface DerivedProposalDataResponse {
   data: Option<{
     info: Nullable<ProposalData>;
   }>;
-  isLoading: boolean;
   isDepositsLoading: boolean;
+  isLoading: boolean;
 }
 
 export const useDerivedProposalData = (

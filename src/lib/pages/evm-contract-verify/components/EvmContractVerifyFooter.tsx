@@ -2,10 +2,10 @@ import { Box } from "@chakra-ui/react";
 import { FooterCta } from "lib/components/layouts";
 
 interface EvmContractFooterProps {
+  actionLabel: string;
   handleNext: () => void;
   handlePrevious: () => void;
   isDisabled: boolean;
-  actionLabel: string;
 }
 
 export const EvmContractFooter = ({

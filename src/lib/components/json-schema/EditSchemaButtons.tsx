@@ -7,8 +7,8 @@ import { RemoveSchemaModal } from "../modal/RemoveSchemaModal";
 import { Tooltip } from "../Tooltip";
 
 interface EditSchemaButtonsProps {
-  codeId: number;
   codeHash: string;
+  codeId: number;
   openModal: () => void;
 }
 

@@ -16,11 +16,11 @@ const cardProps: SystemStyleObject = {
 };
 
 interface CardInfoProps {
+  isLoading: boolean;
+  navigate: () => void;
   title: string;
   tooltip: string;
   value: Option<string>;
-  isLoading: boolean;
-  navigate: () => void;
 }
 
 export const CardInfo = ({

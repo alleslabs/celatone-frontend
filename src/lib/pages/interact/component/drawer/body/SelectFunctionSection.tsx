@@ -46,9 +46,9 @@ const RenderFunctions = ({
 };
 
 interface ModuleFunctionBodyProps extends GridItemProps {
-  module: Option<IndexedModule>;
-  handleModuleSelect: ModuleSelectFunction;
   closeModal: () => void;
+  handleModuleSelect: ModuleSelectFunction;
+  module: Option<IndexedModule>;
 }
 
 export const SelectFunctionSection = ({

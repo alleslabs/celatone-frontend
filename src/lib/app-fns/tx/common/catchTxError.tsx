@@ -14,7 +14,7 @@ import { catchError } from "rxjs";
 
 const getReceiptInfo = (
   error: Error
-): Pick<ReceiptInfo, "header" | "errorMsg"> =>
+): Pick<ReceiptInfo, "errorMsg" | "header"> =>
   error.message === "Request rejected"
     ? {
         header: "Rejected by user",

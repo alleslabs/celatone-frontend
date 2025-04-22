@@ -33,9 +33,9 @@ export const ExecuteArea = ({
   moduleAddress,
   moduleName,
 }: {
+  fn: ExposedFunction;
   moduleAddress: HexAddr;
   moduleName: string;
-  fn: ExposedFunction;
 }) => {
   // Remove `signer` or `&signer` field from the params
   // as they are auto-filled by the chain

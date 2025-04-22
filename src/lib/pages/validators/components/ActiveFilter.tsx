@@ -7,10 +7,10 @@ import { isUndefined } from "lodash";
 import { useMemo } from "react";
 
 interface ActiveFilterProps {
-  isActive: boolean;
-  setIsActive: (value: boolean) => void;
   activeCount: Option<number>;
   inactiveCount: Option<number>;
+  isActive: boolean;
+  setIsActive: (value: boolean) => void;
 }
 
 const getOptionLabel = (label: string, count: Option<number>) =>

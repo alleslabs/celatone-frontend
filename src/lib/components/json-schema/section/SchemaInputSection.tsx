@@ -13,14 +13,14 @@ import { ViewSchemaModal } from "../view/ViewSchemaModal";
 import { SchemaInputNotExist } from "./SchemaInputNotExist";
 
 interface SchemaSectionProps {
-  type: "migrate" | "instantiate";
   codeHash: string;
   codeId: number;
-  verifiedSchema: Nullish<CodeSchema>;
-  localSchema: Option<CodeSchema>;
-  initialFormData?: Record<string, unknown>;
   handleChange: (data: unknown, errors: RJSFValidationError[]) => void;
+  initialFormData?: Record<string, unknown>;
+  localSchema: Option<CodeSchema>;
   onSchemaSave?: () => void;
+  type: "instantiate" | "migrate";
+  verifiedSchema: Nullish<CodeSchema>;
 }
 
 export const SchemaInputSection = observer(

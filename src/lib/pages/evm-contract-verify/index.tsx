@@ -23,8 +23,8 @@ import {
   useCelatoneApp,
   useEvmConfig,
   useExampleAddresses,
-  useMobile,
   useIsApiChain,
+  useMobile,
 } from "lib/app-provider";
 import { ControllerInput, SelectInput } from "lib/components/forms";
 import { Loading } from "lib/components/Loading";

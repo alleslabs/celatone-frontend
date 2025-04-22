@@ -9,19 +9,19 @@ import { CustomIcon } from "../icon";
 import { Tooltip } from "../Tooltip";
 
 interface EditableCellProps {
-  initialValue?: string;
   defaultValue: string;
-  maxLength: number;
-  tooltip?: string;
+  initialValue?: string;
   isReadOnly?: boolean;
+  maxLength: number;
   onSave?: (value?: string) => void;
+  tooltip?: string;
 }
 
 const getInputValueTextProps = (
   isShowInputValue: boolean,
   inputValue: string,
   defaultValue: string
-): Pick<TextProps, "fontWeight" | "color" | "children"> => {
+): Pick<TextProps, "children" | "color" | "fontWeight"> => {
   if (isShowInputValue) {
     return { children: inputValue, color: "text.main", fontWeight: 600 };
   }

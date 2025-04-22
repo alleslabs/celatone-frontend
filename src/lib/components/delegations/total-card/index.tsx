@@ -7,13 +7,13 @@ import { OverviewCard } from "./OverviewCard";
 import { SingleBondCard } from "./single-bond-card";
 
 export interface TotalCardProps {
-  title: string;
-  message: string;
   address: BechAddr;
   bondDenoms: TokenWithValue[];
-  tokens: Option<Record<string, TokenWithValue>>;
   isLoading: boolean;
   isViewMore: boolean;
+  message: string;
+  title: string;
+  tokens: Option<Record<string, TokenWithValue>>;
 }
 
 export const TotalCard = ({

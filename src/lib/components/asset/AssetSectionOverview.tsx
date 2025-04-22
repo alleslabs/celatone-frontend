@@ -13,10 +13,10 @@ const MAX_UNSUPPORTED_ASSETS_SHOW = 3;
 
 interface AssetSectionOverviewProps {
   isAccount: boolean;
+  onViewMore: () => void;
   supportedAssets: TokenWithValue[];
   totalSupportedAssetsValue: Option<USD<Big>>;
   unsupportedAssets: TokenWithValue[];
-  onViewMore: () => void;
 }
 
 export const AssetSectionOverview = ({

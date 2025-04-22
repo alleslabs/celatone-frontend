@@ -9,8 +9,8 @@ import { getWasmVerifyStatus } from "lib/utils";
 import { CodeSchemaTabs } from "./CodeSchemaTabs";
 
 interface CodeSchemaSectionProps {
-  codeId: number;
   codeHash: string;
+  codeId: number;
   localSchema: Option<CodeSchema>;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }

@@ -12,8 +12,8 @@ import { NetworkDetails } from "./NetworkDetails";
 import { WalletRegistry } from "./WalletRegistry";
 
 interface AddNetworkFormProps {
-  currentStepIndex: number;
   control: Control<AddNetworkManualForm>;
+  currentStepIndex: number;
   errors: FieldErrors<AddNetworkManualForm>;
   setValue: UseFormSetValue<AddNetworkManualForm>;
   trigger: UseFormTrigger<AddNetworkManualForm>;

@@ -15,8 +15,8 @@ import { useTxsByAddressRest } from "lib/services/tx";
 import { useEffect, useState } from "react";
 
 interface PastTxsLiteTransactionsTableWithWalletEmptyStateProps {
-  search: string;
   error: unknown;
+  search: string;
 }
 
 const PastTxsLiteTransactionsTableWithWalletEmptyState = ({

@@ -3,11 +3,11 @@ import type { BoxProps } from "@chakra-ui/react";
 import { Badge, Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 interface TableTitleProps extends BoxProps {
-  title: string;
   count?: number;
-  showCount?: boolean;
   helperText?: string;
   isSmall?: boolean;
+  showCount?: boolean;
+  title: string;
 }
 
 export const TableTitle = ({

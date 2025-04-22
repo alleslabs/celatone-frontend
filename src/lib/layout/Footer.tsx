@@ -11,9 +11,9 @@ import Link from "next/link";
 import { InformationFooter } from "./InformationFooter";
 
 interface SocialMenuType {
-  url: string;
   icon: IconKeys;
   slug: string;
+  url: string;
 }
 
 const socialMenu: SocialMenuType[] = [
@@ -54,8 +54,8 @@ const SocialMenuRender = ({
   iconSize,
   isThemed,
 }: {
-  isThemed?: boolean;
   iconSize: IconProps["boxSize"];
+  isThemed?: boolean;
 }) => {
   const { theme } = useCelatoneApp();
   const themedSocial: SocialMenuType[] = Object.entries(

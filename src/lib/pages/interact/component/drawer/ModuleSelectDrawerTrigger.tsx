@@ -4,7 +4,7 @@ import { Button } from "@chakra-ui/react";
 import { AmpEvent, track } from "lib/amplitude";
 import { CustomIcon } from "lib/components/icon";
 
-type TriggerVariant = "select-module" | "change-module";
+type TriggerVariant = "change-module" | "select-module";
 
 const buttonStyles: { [key in TriggerVariant]: ButtonProps } = {
   "change-module": {
@@ -17,9 +17,9 @@ const buttonStyles: { [key in TriggerVariant]: ButtonProps } = {
 };
 
 interface ModuleSelectDrawerTriggerProps {
-  triggerVariant: TriggerVariant;
   buttonText?: string;
   onOpen: () => void;
+  triggerVariant: TriggerVariant;
 }
 
 export const ModuleSelectDrawerTrigger = ({

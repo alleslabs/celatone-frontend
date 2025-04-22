@@ -5,16 +5,20 @@ import { isHydrated, makePersistable } from "mobx-persist-store";
 
 export interface CodeLocalInfo {
   id: number;
-  uploader: BechAddr;
   name?: string;
+  uploader: BechAddr;
 }
 
 export class CodeStore {
-  private userKey: string;
+  codeInfo: Dict<string, Record<number, CodeLocalInfo>>;
 
   savedCodeIds: Dict<string, number[]>;
 
-  codeInfo: Dict<string, Record<number, CodeLocalInfo>>;
+  get isHydrated(): boolean {
+    return isHydrated(this);
+  }
+
+  private userKey: string;
 
   constructor() {
     this.savedCodeIds = {};
@@ -29,24 +33,16 @@ export class CodeStore {
     });
   }
 
-  get isHydrated(): boolean {
-    return isHydrated(this);
-  }
-
-  isCodeUserKeyExist(): boolean {
-    return !!this.userKey;
-  }
-
-  setCodeUserKey(userKey: string) {
-    this.userKey = userKey;
-  }
-
   getCodeLocalInfo(id: number): CodeLocalInfo | undefined {
     return this.codeInfo[this.userKey]?.[id];
   }
 
   isCodeIdSaved(id: number): boolean {
     return this.savedCodeIds[this.userKey]?.includes(id) ?? false;
+  }
+
+  isCodeUserKeyExist(): boolean {
+    return !!this.userKey;
   }
 
   lastSavedCodeIds(): number[] {
@@ -69,6 +65,12 @@ export class CodeStore {
       .reverse();
   }
 
+  removeSavedCode(id: number): void {
+    this.savedCodeIds[this.userKey] = this.savedCodeIds[this.userKey]?.filter(
+      (each) => each !== id
+    );
+  }
+
   saveNewCode(id: number): void {
     if (this.savedCodeIds[this.userKey]) {
       this.savedCodeIds[this.userKey]?.push(id);
@@ -77,10 +79,8 @@ export class CodeStore {
     }
   }
 
-  removeSavedCode(id: number): void {
-    this.savedCodeIds[this.userKey] = this.savedCodeIds[this.userKey]?.filter(
-      (each) => each !== id
-    );
+  setCodeUserKey(userKey: string) {
+    this.userKey = userKey;
   }
 
   updateCodeInfo(id: number, uploader: BechAddr, name?: string): void {

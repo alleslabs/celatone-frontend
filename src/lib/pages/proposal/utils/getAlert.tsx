@@ -5,9 +5,9 @@ import { big } from "lib/types";
 import { d2Formatter } from "lib/utils";
 
 interface AlertProps {
-  variant: string;
   description: string;
   icon: Nullable<JSX.Element>;
+  variant: string;
 }
 const defaultAlertProps: AlertProps = {
   description: "",

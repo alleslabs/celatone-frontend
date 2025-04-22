@@ -11,10 +11,10 @@ import { ModuleListsBody } from "./ModuleListsBody";
 
 interface ModuleListsProps {
   address: HexAddr;
-  totalCount: Option<number>;
-  modules: Option<IndexedModule[]>;
   isLoading: boolean;
+  modules: Option<IndexedModule[]>;
   onViewMore?: () => void;
+  totalCount: Option<number>;
 }
 
 export const ModuleLists = ({

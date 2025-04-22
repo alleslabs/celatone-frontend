@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import { Flex } from "@chakra-ui/react";
 
 interface StatusMessageBoxProps {
-  content: ReactNode;
   borderColor?: string;
+  content: ReactNode;
   pl?: number;
 }
 export const StatusMessageBox = ({

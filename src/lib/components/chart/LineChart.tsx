@@ -31,10 +31,10 @@ ChartJS.register(
 );
 
 interface LineChartProps {
-  labels: string[];
-  dataset: ChartDataset<"line", number[]>;
   customizeTooltip?: (tooltip: TooltipModel<"line">) => string;
-  customizeYAxisTicks?: (value: string | number) => string;
+  customizeYAxisTicks?: (value: number | string) => string;
+  dataset: ChartDataset<"line", number[]>;
+  labels: string[];
 }
 
 const renderChartTooltip = (
@@ -177,7 +177,7 @@ export const LineChart = ({
           drawTicks: false,
         },
         ticks: {
-          callback: (_value: string | number, index: number) => {
+          callback: (_value: number | string, index: number) => {
             if (index === 0) {
               return "";
             }
@@ -207,7 +207,7 @@ export const LineChart = ({
         ticks: {
           align: isMobile ? "start" : "center",
           autoSkip: true,
-          callback: (value: string | number) => {
+          callback: (value: number | string) => {
             return customizeYAxisTicks ? customizeYAxisTicks(value) : value;
           },
           labelOffset: isMobile ? 5 : 0,

@@ -9,8 +9,8 @@ import { dateFromNow, extractMsgType, formatUTC } from "lib/utils";
 import { DelegationRelatedTxsTokenChange } from "./DelegationRelatedTxsTokenChange";
 
 interface DelegationRelatedTxsTableMobileCardProps {
-  delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
   assetInfos: Option<AssetInfos>;
+  delegationRelatedTx: ValidatorDelegationRelatedTxsResponseItem;
   movePoolInfos: Option<MovePoolInfos>;
   onRowSelect: (txHash: string) => void;
 }

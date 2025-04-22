@@ -10,10 +10,10 @@ import { EditorFileBody } from "./EditorFileBody";
 
 interface EditorTopProps {
   filesList: SourceTreeNode[];
-  selectedFile: Nullable<SourceTreeNode>;
   initialFilePath: string;
   onClick: (index: number) => void;
   onRemove: (node: SourceTreeNode, index: number) => void;
+  selectedFile: Nullable<SourceTreeNode>;
 }
 
 const vsCodeDarkColor = "#1E1E1E";

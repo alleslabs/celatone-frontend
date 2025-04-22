@@ -29,12 +29,12 @@ const highlightCardProps = {
 };
 
 interface ShortcutMetadata {
-  title: string;
-  subtitle: string;
-  slug: string;
   icon: IconKeys;
-  isHighlight: boolean;
   isDocument: boolean;
+  isHighlight: boolean;
+  slug: string;
+  subtitle: string;
+  title: string;
 }
 
 const HighlightCard = ({ item }: { item: ShortcutMetadata }) => (
@@ -80,8 +80,8 @@ const ContentCard = ({
   isDocument,
   item,
 }: {
-  item: ShortcutMetadata;
   isDocument: boolean;
+  item: ShortcutMetadata;
 }) => (
   <Flex
     _hover={{ bg: "gray.700" }}

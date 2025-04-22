@@ -6,8 +6,8 @@ import { CircleIcon } from "./CircleIcon";
 import { SvgIcon } from "./SvgIcon";
 
 interface CustomIconProps extends IconProps {
-  name: IconKeys;
   color?: string;
+  name: IconKeys;
 }
 
 export const CustomIcon = ({ color, name, ...props }: CustomIconProps) => {

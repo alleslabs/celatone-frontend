@@ -8,8 +8,8 @@ import { isNull } from "lodash";
 import { Countdown } from "../proposal-overview/status-summary/Countdown";
 
 interface StepperHelperTextProps {
-  step: number;
   proposalData: ProposalData;
+  step: number;
 }
 
 const StepperHelperTextBody = ({

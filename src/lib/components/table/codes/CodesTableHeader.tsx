@@ -10,10 +10,10 @@ export const CodesTableHeader = ({
   showCw2andContracts,
   templateColumns,
 }: {
-  templateColumns: GridProps["templateColumns"];
+  disablePermission: boolean;
   isReadOnly: boolean;
   showCw2andContracts: boolean;
-  disablePermission: boolean;
+  templateColumns: GridProps["templateColumns"];
 }) => (
   <Grid minW="min-content" templateColumns={templateColumns}>
     <TableHeader>Code ID</TableHeader>

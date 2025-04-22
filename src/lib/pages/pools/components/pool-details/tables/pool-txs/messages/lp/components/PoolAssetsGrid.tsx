@@ -10,14 +10,14 @@ import { coinsFromStr } from "lib/utils";
 import { AssetCard, ErrorFetchingDetail } from "../../components";
 
 interface PoolAssetsGridProps {
-  txHash?: string;
-  msgIndex: number;
-  msgAssets?: Coin[];
-  msgSwapDenom?: string;
-  isJoin: boolean;
-  assetInfos: Option<AssetInfos>;
-  isOpened: boolean;
   ampCopierSection?: string;
+  assetInfos: Option<AssetInfos>;
+  isJoin: boolean;
+  isOpened: boolean;
+  msgAssets?: Coin[];
+  msgIndex: number;
+  msgSwapDenom?: string;
+  txHash?: string;
 }
 
 export const PoolAssetsGrid = ({

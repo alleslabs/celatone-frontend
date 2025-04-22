@@ -6,9 +6,9 @@ import { ContractCmdButton } from "lib/components/ContractCmdButton";
 import { jsonPrettify, libEncode } from "lib/utils";
 
 interface ContractCmdGroupProps {
-  isFetching: boolean;
   cmds: [string, string][];
   contractAddress: BechAddr32;
+  isFetching: boolean;
   type: string;
 }
 

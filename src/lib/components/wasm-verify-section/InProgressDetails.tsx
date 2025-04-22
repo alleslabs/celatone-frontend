@@ -7,11 +7,11 @@ import { ExplorerLink } from "../ExplorerLink";
 import { CustomIcon } from "../icon";
 
 interface InProgressDetailsProps {
-  codeId: number;
   codeHash: string;
-  verificationInfo: WasmVerifyInfoBase;
-  relatedVerifiedCodes: number[];
+  codeId: number;
   contractAddress?: BechAddr32;
+  relatedVerifiedCodes: number[];
+  verificationInfo: WasmVerifyInfoBase;
 }
 
 export const InProgressDetails = ({

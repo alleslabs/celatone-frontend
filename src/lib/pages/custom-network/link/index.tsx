@@ -18,14 +18,14 @@ import { zAddNetworkLinkChainConfigJson } from "../types";
 
 type AddCustomNetworkError =
   | {
-      type: "no_config";
-    }
-  | {
-      type: "invalid_config";
       message: string;
+      type: "invalid_config";
     }
   | {
       type: "chain_exists";
+    }
+  | {
+      type: "no_config";
     }
   | { type: "no_error" };
 

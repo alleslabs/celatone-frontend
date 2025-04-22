@@ -12,8 +12,8 @@ const listItemProps: CSSProperties = {
 };
 
 interface FilterDropdownItemProps {
-  isOptionSelected: boolean;
   filterDropdownComponent: ReactNode;
+  isOptionSelected: boolean;
   onSelect: () => void;
 }
 

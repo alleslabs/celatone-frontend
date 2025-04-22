@@ -9,13 +9,13 @@ import { checkAvailability, getVisibilityIcon } from "lib/utils";
 import { DotSeparator } from "../DotSeparator";
 import { CustomIcon } from "../icon";
 
-type CardVariant = "common" | "disabled" | "selected" | "readonly";
+type CardVariant = "common" | "disabled" | "readonly" | "selected";
 
 interface FunctionCardProps {
-  variant?: CardVariant;
-  isReadOnly?: boolean;
   exposedFn: ExposedFunction;
+  isReadOnly?: boolean;
   onFunctionSelect: (fn: ExposedFunction) => void;
+  variant?: CardVariant;
 }
 
 interface FunctionCardBodyProps extends FunctionCardProps {

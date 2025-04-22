@@ -9,8 +9,8 @@ import { dateFromNow, formatUTC } from "lib/utils";
 import { capitalize } from "lodash";
 
 interface PublishedEventsTableRowProps {
-  templateColumns: GridProps["templateColumns"];
   history: ModuleHistory;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const PolicyChanges = ({ history }: { history: ModuleHistory }) => {

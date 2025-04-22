@@ -8,10 +8,10 @@ import { getEventMessage } from "./TxsTableRow";
 
 interface TxsTableMobileCardProps {
   hash: string;
-  timestamp: Date;
   isNftBurn: boolean;
   isNftMint: boolean;
   isNftTransfer: boolean;
+  timestamp: Date;
 }
 
 export const TxsTableMobileCard = ({

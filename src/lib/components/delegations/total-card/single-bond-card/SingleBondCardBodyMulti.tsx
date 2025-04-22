@@ -9,9 +9,9 @@ import { formatPrice, totalValueTokenWithValue } from "lib/utils";
 import { TotalCardModal } from "../TotalCardModal";
 
 interface SingleBondCardBodyMultiProps {
-  title: string;
-  message: string;
   address: BechAddr;
+  message: string;
+  title: string;
   tokens: Record<string, TokenWithValue>;
 }
 

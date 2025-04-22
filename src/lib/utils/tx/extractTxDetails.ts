@@ -34,11 +34,16 @@ export const extractTxDetails = <T extends TypeUrl>(
    */
   const msgBody = transformKeyToSnake(body);
   switch (type) {
-    case "/cosmwasm.wasm.v1.MsgStoreCode":
+    case "/cosmos.gov.v1beta1.MsgSubmitProposal":
       return {
         type,
         ...msgBody,
-        code_id: findAttr(log?.events, "store_code", "code_id"),
+        proposal_id: findAttr(log?.events, "submit_proposal", "proposal_id"),
+        proposal_type: findAttr(
+          log?.events,
+          "submit_proposal",
+          "proposal_type"
+        ),
       } as MsgReturnType<T>;
     case "/cosmwasm.wasm.v1.MsgInstantiateContract":
     case "/cosmwasm.wasm.v1.MsgInstantiateContract2":
@@ -51,16 +56,11 @@ export const extractTxDetails = <T extends TypeUrl>(
           "_contract_address"
         ),
       } as MsgReturnType<T>;
-    case "/cosmos.gov.v1beta1.MsgSubmitProposal":
+    case "/cosmwasm.wasm.v1.MsgStoreCode":
       return {
         type,
         ...msgBody,
-        proposal_id: findAttr(log?.events, "submit_proposal", "proposal_id"),
-        proposal_type: findAttr(
-          log?.events,
-          "submit_proposal",
-          "proposal_type"
-        ),
+        code_id: findAttr(log?.events, "store_code", "code_id"),
       } as MsgReturnType<T>;
     default:
       return { type, ...msgBody } as MsgReturnType<T>;

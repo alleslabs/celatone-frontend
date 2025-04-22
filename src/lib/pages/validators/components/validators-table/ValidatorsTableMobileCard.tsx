@@ -20,12 +20,12 @@ import {
 } from "lib/utils";
 
 interface ValidatorsTableMobileCardProps {
-  validator: ValidatorData;
-  isActive: boolean;
-  totalVotingPower: Big;
-  minCommissionRate: number;
   assetInfo: Option<AssetInfo>;
+  isActive: boolean;
+  minCommissionRate: number;
   showUptime: boolean;
+  totalVotingPower: Big;
+  validator: ValidatorData;
 }
 export const ValidatorsTableMobileCard = ({
   assetInfo,

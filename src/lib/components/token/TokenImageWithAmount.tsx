@@ -6,8 +6,8 @@ import { formatTokenWithValue } from "lib/utils";
 import { TokenImageRender } from "./TokenImageRender";
 
 interface TokenImageWithAmountProps {
-  token: TokenWithValue;
   hasTrailingZeros?: boolean;
+  token: TokenWithValue;
 }
 
 export const TokenImageWithAmount = ({

@@ -26,9 +26,9 @@ export const useDerivedPools = (
   isDesc: boolean,
   onSuccess?: (data: PoolsResponse) => void
 ): {
+  isLoading: boolean;
   pools: Option<Pool[]>;
   totalCount: Option<number>;
-  isLoading: boolean;
 } => {
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
@@ -61,7 +61,7 @@ export const useDerivedPools = (
 
 export const useDerivedPoolData = (
   poolId: number
-): { pool: Nullish<PoolData>; isLoading: boolean } => {
+): { isLoading: boolean; pool: Nullish<PoolData> } => {
   const { data: assetInfos, isLoading: isLoadingAssetInfos } = useAssetInfos({
     withPrices: true,
   });

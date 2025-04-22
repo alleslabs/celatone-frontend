@@ -1,10 +1,10 @@
 import { Badge, Flex, Text } from "@chakra-ui/react";
 
 interface ResourceCardProps {
-  name: string;
   amount: number;
   hasBorder?: boolean;
   isSelected?: boolean;
+  name: string;
   onClick: () => void;
 }
 

@@ -13,8 +13,8 @@ import { EvmEventBoxDecoded } from "./evm-event-box-decoded";
 
 interface EvmEventBoxDataProps
   extends Pick<TxReceiptJsonRpcLog, "data" | "topics"> {
-  tab: EvmEventBoxTabs;
   parsedLog: Option<LogDescription>;
+  tab: EvmEventBoxTabs;
 }
 
 const EvmEventBoxDataBody = ({ text }: { text: string }) => {

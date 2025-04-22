@@ -11,8 +11,8 @@ import { formatEvmOptions } from "../helpers";
 
 interface EvmVersionToTargetProps<T extends FieldValues> {
   control: Control<T>;
-  name: FieldPath<T>;
   evmVerifyConfig: EvmVerifyConfig;
+  name: FieldPath<T>;
 }
 
 export const EvmVersionToTarget = <T extends FieldValues>({

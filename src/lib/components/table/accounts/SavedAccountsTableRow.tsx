@@ -16,8 +16,8 @@ import { AccountNameCell } from "./AccountNameCell";
 
 interface SavedAccountsTableRowProps {
   accountInfo: AccountLocalInfo;
-  templateColumns: string;
   hasHexAddr: boolean;
+  templateColumns: string;
 }
 
 export const SavedAccountsTableRow = ({

@@ -15,11 +15,11 @@ import { CountBadge } from "./CountBadge";
 
 interface ModuleCardProps {
   module: IndexedModule;
-  selectedModule: Option<IndexedModule>;
   moveVerifyInfo: Option<MoveVerifyInfoResponse>;
+  readOnly?: boolean;
+  selectedModule: Option<IndexedModule>;
   setSelectedModule?: (module: IndexedModule) => void;
   setStep?: (step: ModuleInteractionMobileStep) => void;
-  readOnly?: boolean;
 }
 
 export const ModuleCard = ({

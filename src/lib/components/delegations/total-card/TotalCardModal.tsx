@@ -28,12 +28,12 @@ import {
 import { TotalCardTop } from "./TotalCardTop";
 
 interface TotalCardModel {
-  title: string;
-  message: string;
   address: BechAddr;
-  tokens: Record<string, TokenWithValue>;
   isOpen: boolean;
+  message: string;
   onClose: () => void;
+  title: string;
+  tokens: Record<string, TokenWithValue>;
 }
 
 const DelegationTokenCard = ({ token }: { token: TokenWithValue }) => (

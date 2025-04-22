@@ -9,10 +9,10 @@ import { RedelegationsTable, TableTitle } from "../table";
 import { NonRedelegatableSection } from "./NonRedelegatableSection";
 
 interface RedelegationsSectionProps extends FlexProps {
-  stakingParams: StakingParams;
-  redelegations: Redelegation[];
   isLoading: boolean;
   onBack: () => void;
+  redelegations: Redelegation[];
+  stakingParams: StakingParams;
 }
 
 export const RedelegationsSection = ({

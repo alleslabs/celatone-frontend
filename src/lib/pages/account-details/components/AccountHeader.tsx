@@ -20,12 +20,12 @@ import type { InitiaUsernameDataResponse } from "./AccountTitle";
 import { AccountTitle } from "./AccountTitle";
 
 interface AccounHeaderProps {
-  accountData: Option<AccountData>;
   accountAddress: BechAddr;
+  accountData: Option<AccountData>;
   hexAddress: HexAddr;
   initiaUsernameData: Option<InitiaUsernameDataResponse>;
-  isInitiaUsernameDataLoading: boolean;
   isInitiaUsernameDataFetching: boolean;
+  isInitiaUsernameDataLoading: boolean;
 }
 
 export const AccountHeader = observer(

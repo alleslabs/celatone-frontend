@@ -4,9 +4,9 @@ import { useMobile } from "lib/app-provider";
 import { UserDocsLink } from "./UserDocsLink";
 
 interface PageHeaderProps {
-  title: string;
-  subtitle?: string;
   docHref: string;
+  subtitle?: string;
+  title: string;
 }
 
 export const PageHeader = ({ docHref, subtitle, title }: PageHeaderProps) => {

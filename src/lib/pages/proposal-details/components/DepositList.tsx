@@ -8,8 +8,8 @@ import { Loading } from "lib/components/Loading";
 import { DepositAmounts } from "./DepositAmounts";
 
 interface DepositListProps {
-  proposalDeposits: ProposalDeposit[];
   isDepositsLoading: boolean;
+  proposalDeposits: ProposalDeposit[];
 }
 
 export const DepositList = ({

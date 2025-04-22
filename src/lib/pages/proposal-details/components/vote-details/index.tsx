@@ -28,11 +28,11 @@ const trackPeriodSubtab = (index: number) =>
   });
 
 export interface VoteDetailsProps {
+  isDepositsLoading: boolean;
+  isLoading: boolean;
+  params: Option<ProposalParams>;
   proposalData: ProposalData;
   votesInfo: Option<ProposalVotesInfo>;
-  params: Option<ProposalParams>;
-  isLoading: boolean;
-  isDepositsLoading: boolean;
 }
 
 export const VoteDetails = ({ proposalData, ...props }: VoteDetailsProps) => {

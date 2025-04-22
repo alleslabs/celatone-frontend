@@ -7,9 +7,9 @@ import { EmptyState } from "lib/components/state";
 import { UnsupportedPoolCard } from "./UnsupportedPoolCard";
 
 interface UnsupportedPoolListProps {
-  pools: Option<Pool[]>;
-  isLoading: boolean;
   expandedIndexes: number[];
+  isLoading: boolean;
+  pools: Option<Pool[]>;
   updateExpandedIndexes: (index: number[]) => void;
 }
 

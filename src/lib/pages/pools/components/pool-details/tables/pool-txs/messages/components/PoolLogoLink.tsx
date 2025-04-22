@@ -5,8 +5,8 @@ import { ExplorerLink } from "lib/components/ExplorerLink";
 import { PoolLogo } from "lib/pages/pools/components/PoolLogo";
 
 interface PoolLogoLinkProps {
-  pool: PoolData;
   ampCopierSection?: string;
+  pool: PoolData;
 }
 
 export const PoolLogoLink = ({ ampCopierSection, pool }: PoolLogoLinkProps) => (

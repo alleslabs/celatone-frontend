@@ -4,10 +4,10 @@ import { EmptyState } from "./EmptyState";
 
 interface ErrorFetchingProps {
   dataName: string;
-  withBorder?: boolean;
+  hasBorderTop?: boolean;
   my?: FlexProps["my"];
   py?: FlexProps["py"];
-  hasBorderTop?: boolean;
+  withBorder?: boolean;
 }
 
 export const ErrorFetching = ({

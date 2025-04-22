@@ -31,7 +31,7 @@ export const getProposalParamsRest = (restEndpoint: string) =>
 export const getProposalsRest = async (
   endpoint: string,
   paginationKey: Option<string>,
-  status?: Omit<ProposalStatus, "DEPOSIT_FAILED" | "CANCELLED">
+  status?: Omit<ProposalStatus, "CANCELLED" | "DEPOSIT_FAILED">
 ): Promise<ProposalsResponseRest> =>
   axios
     .get(`${endpoint}/cosmos/gov/v1/proposals`, {

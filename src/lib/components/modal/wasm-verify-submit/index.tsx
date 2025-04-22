@@ -19,23 +19,23 @@ import { WasmVerifySubmitFailed } from "./WasmVerifySubmitFailed";
 import { WasmVerifySubmitForm } from "./WasmVerifySubmitForm";
 
 interface WasmVerifySubmitModalProps {
-  codeId: number;
   codeHash: Option<string>;
-  wasmVerifyStatus: WasmVerifyStatus;
-  relatedVerifiedCodes?: number[];
+  codeId: number;
   contractAddress?: BechAddr32;
-  triggerElement: ReactNode;
   disabled?: boolean;
+  relatedVerifiedCodes?: number[];
+  triggerElement: ReactNode;
+  wasmVerifyStatus: WasmVerifyStatus;
 }
 
 interface WasmVerifySubmitModalBodyProps
   extends Omit<WasmVerifySubmitModalProps, "triggerElement"> {
-  onSubmit: (wasmVerifyRequest: WasmVerifyRequest) => void;
+  errorMsg: Option<string>;
+  isError: boolean;
   isLoading: boolean;
   isSuccess: boolean;
-  isError: boolean;
-  errorMsg: Option<string>;
   onClose: () => void;
+  onSubmit: (wasmVerifyRequest: WasmVerifyRequest) => void;
 }
 
 const WasmVerifySubmitModalBody = ({

@@ -25,9 +25,9 @@ const TokenIdRender = ({
   nftAddress,
   tokenId,
 }: {
-  tokenId: Activity["tokenId"];
-  nftAddress: Activity["nftAddress"];
   collectionAddress: HexAddr32;
+  nftAddress: Activity["nftAddress"];
+  tokenId: Activity["tokenId"];
 }) => {
   if (!tokenId)
     return (
@@ -62,8 +62,8 @@ const TokenIdRender = ({
 
 interface ActivitiesTableRowProps {
   activity: Activity;
-  templateColumns: string;
   collectionAddress: HexAddr32;
+  templateColumns: string;
 }
 
 export const ActivitiesTableRow = ({

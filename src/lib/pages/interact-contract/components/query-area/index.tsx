@@ -18,12 +18,12 @@ import { JsonQuery } from "./JsonQuery";
 import { SchemaQuery } from "./schema-query";
 
 interface QueryAreaProps {
-  verifiedSchema: Nullish<CodeSchema>;
-  localSchema: Option<CodeSchema>;
+  codeHash: Option<string>;
+  codeId: Option<number>;
   contractAddress: BechAddr32;
   initialMsg: string;
-  codeId: Option<number>;
-  codeHash: Option<string>;
+  localSchema: Option<CodeSchema>;
+  verifiedSchema: Nullish<CodeSchema>;
 }
 
 export const QueryArea = observer(

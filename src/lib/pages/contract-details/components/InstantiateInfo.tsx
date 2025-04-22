@@ -6,9 +6,9 @@ import { Box, chakra, Divider, Flex, Text } from "@chakra-ui/react";
 import {
   useCurrentChain,
   useGetAddressType,
+  useIsApiChain,
   useMobile,
   useTierConfig,
-  useIsApiChain,
 } from "lib/app-provider";
 import { Copier } from "lib/components/copy";
 import { ExplorerLink } from "lib/components/ExplorerLink";
@@ -24,9 +24,9 @@ import {
 } from "lib/utils";
 import { getAddressTypeText } from "lib/utils/address";
 interface InstantiateInfoProps {
+  codeLocalInfo: Option<CodeLocalInfo>;
   contract: Contract;
   contractApi: Nullable<ContractApi>;
-  codeLocalInfo: Option<CodeLocalInfo>;
   wasmVerifyInfo: Nullish<WasmVerifyInfo>;
 }
 

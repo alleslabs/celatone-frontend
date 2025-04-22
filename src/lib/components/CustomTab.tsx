@@ -11,8 +11,8 @@ import {
 
 interface CustomTabProps extends TabProps {
   count?: Nullish<number>;
-  isLoading?: boolean;
   fallbackValue?: string;
+  isLoading?: boolean;
 }
 
 export const CustomTab = ({

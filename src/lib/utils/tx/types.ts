@@ -21,95 +21,99 @@ export interface MsgUnknownDetails extends MsgBaseDetails {
 }
 
 interface InstantiatePermissionResponse {
-  permission: AccessConfigPermission;
   address: BechAddr;
   // Remark: addresses will undefined in case of Cosmos SDK v0.26
   addresses?: BechAddr[];
+  permission: AccessConfigPermission;
 }
 
 // cosmwasm/wasm
 export interface MsgStoreCodeDetails extends MsgBaseDetails {
   code_id: Option<string>;
+  instantiate_permission: Nullable<InstantiatePermissionResponse>;
   sender: BechAddr;
   wasm_byte_code: string; // base64
-  instantiate_permission: Nullable<InstantiatePermissionResponse>;
 }
 
 export interface MsgInstantiateDetails extends MsgBaseDetails {
-  contract_address: Option<BechAddr32>;
-  sender: BechAddr;
   admin: BechAddr;
   code_id: string;
+  contract_address: Option<BechAddr32>;
+  funds: Coin[];
   label: string;
   msg: object;
-  funds: Coin[];
+  sender: BechAddr;
 }
 
 export interface MsgInstantiate2Details extends MsgInstantiateDetails {
-  salt: string;
   fix_msg: boolean;
+  salt: string;
 }
 
 export interface MsgExecuteDetails extends MsgBaseDetails {
-  sender: BechAddr;
   contract: BechAddr32;
-  msg: object;
   funds: Coin[];
+  msg: object;
+  sender: BechAddr;
 }
 
 export interface MsgMigrateDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  contract: BechAddr32;
   code_id: string;
+  contract: BechAddr32;
   msg: object;
+  sender: BechAddr;
 }
 
 export interface MsgUpdateAdminDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  new_admin: BechAddr;
   contract: BechAddr32;
+  new_admin: BechAddr;
+  sender: BechAddr;
 }
 
 export interface MsgClearAdminDetails extends MsgBaseDetails {
-  sender: BechAddr;
   contract: BechAddr32;
+  sender: BechAddr;
 }
 
-// x/authz
-export interface MsgGrantDetails extends MsgBaseDetails {
-  granter: BechAddr;
-  grantee: BechAddr;
-  grant: object;
-}
-export interface MsgRevokeDetails extends MsgBaseDetails {
-  granter: BechAddr;
-  grantee: BechAddr;
-  msg_type_url: string;
-}
 export interface MsgExecDetails extends MsgBaseDetails {
   grantee: BechAddr;
+  msg_type_url: string;
   msgs: object[];
+}
+// x/authz
+export interface MsgGrantDetails extends MsgBaseDetails {
+  grant: object;
+  grantee: BechAddr;
+  granter: BechAddr;
+}
+export interface MsgRevokeDetails extends MsgBaseDetails {
+  grantee: BechAddr;
+  granter: BechAddr;
   msg_type_url: string;
 }
 
-// x/bank
-export interface MsgSendDetails extends MsgBaseDetails {
-  from_address: BechAddr;
-  to_address: BechAddr;
-  amount: Coin[];
-}
 export interface MsgMultiSendDetails extends MsgBaseDetails {
   inputs: object;
   outputs: object;
 }
+// x/bank
+export interface MsgSendDetails extends MsgBaseDetails {
+  amount: Coin[];
+  from_address: BechAddr;
+  to_address: BechAddr;
+}
 
 // x/crisis
 export interface MsgVerifyInvariantDetails extends MsgBaseDetails {
-  sender: BechAddr;
   invariant_module_name: string;
   invariant_route: string;
+  sender: BechAddr;
 }
 
+export interface MsgFundCommunityPoolDetails extends MsgBaseDetails {
+  amount: Coin[];
+  depositor: BechAddr;
+}
 // x/distribution
 export interface MsgSetWithdrawAddressDetails extends MsgBaseDetails {
   delegator_address: BechAddr;
@@ -122,58 +126,54 @@ export interface MsgWithdrawDelegatorRewardDetails extends MsgBaseDetails {
 export interface MsgWithdrawValidatorCommissionDetails extends MsgBaseDetails {
   validator_address: ValidatorAddr;
 }
-export interface MsgFundCommunityPoolDetails extends MsgBaseDetails {
-  amount: Coin[];
-  depositor: BechAddr;
-}
 
 // x/evidence
 export interface MsgSubmitEvidenceDetails extends MsgBaseDetails {
-  submitter: BechAddr;
   evidence: object;
+  submitter: BechAddr;
 }
 
 // x/feegrant
 export interface MsgGrantAllowanceDetails extends MsgBaseDetails {
-  granter: BechAddr;
-  grantee: BechAddr;
   allowance: object;
+  grantee: BechAddr;
+  granter: BechAddr;
 }
 export interface MsgRevokeAllowanceDetails extends MsgBaseDetails {
-  granter: BechAddr;
   grantee: BechAddr;
+  granter: BechAddr;
 }
 
+export interface MsgDepositDetails extends MsgBaseDetails {
+  amount: Coin[];
+  depositor: BechAddr;
+  proposal_id: string;
+}
 // x/gov
 export interface MsgSubmitProposalDetails extends MsgBaseDetails {
-  initial_deposit: Coin[];
-  proposer: BechAddr;
-  proposal_id: Option<string>;
-  proposal_type: Option<string>;
   content: {
     "@type": string;
+    changes?: { key: string; subspace: string; value: string }[];
     description: string;
     subject_client_id: string;
     substitute_client_id: string;
     title: string;
-    changes?: { key: string; subspace: string; value: string }[];
   };
+  initial_deposit: Coin[];
   is_expedited?: boolean;
+  proposal_id: Option<string>;
+  proposal_type: Option<string>;
+  proposer: BechAddr;
 }
 export interface MsgVoteDetails extends MsgBaseDetails {
+  option: VoteOption;
   proposal_id: string;
   voter: BechAddr;
-  option: VoteOption;
 }
 export interface MsgVoteWeightedDetails extends MsgBaseDetails {
+  options: { option: VoteOption; weight: string }[];
   proposal_id: string;
   voter: BechAddr;
-  options: { option: VoteOption; weight: string }[];
-}
-export interface MsgDepositDetails extends MsgBaseDetails {
-  proposal_id: string;
-  depositor: BechAddr;
-  amount: Coin[];
 }
 
 // x/slashing
@@ -181,55 +181,169 @@ export interface MsgUnjailDetails extends MsgBaseDetails {
   validator_addr: ValidatorAddr;
 }
 
+export interface MsgBeginRedelegateDetails extends MsgBaseDetails {
+  amount: Coin;
+  delegator_address: BechAddr;
+  validator_dst_address: ValidatorAddr;
+  validator_src_address: ValidatorAddr;
+}
 // x/staking
 export interface MsgCreateValidatorDetails extends MsgBaseDetails {
-  description: object;
   commission: object;
-  min_self_delegation: string;
   delegator_address: BechAddr;
-  validator_address: ValidatorAddr;
+  description: object;
+  min_self_delegation: string;
   pubkey: object;
+  validator_address: ValidatorAddr;
   value: Coin;
 }
-export interface MsgEditValidatorDetails extends MsgBaseDetails {
-  description: object;
-  validator_address: ValidatorAddr;
-  commission_rate: string;
-  min_self_delegation: string;
-}
 export interface MsgDelegateDetails extends MsgBaseDetails {
+  amount: Coin;
   delegator_address: BechAddr;
   validator_address: ValidatorAddr;
-  amount: Coin;
 }
-export interface MsgBeginRedelegateDetails extends MsgBaseDetails {
-  delegator_address: BechAddr;
-  validator_src_address: ValidatorAddr;
-  validator_dst_address: ValidatorAddr;
-  amount: Coin;
+export interface MsgEditValidatorDetails extends MsgBaseDetails {
+  commission_rate: string;
+  description: object;
+  min_self_delegation: string;
+  validator_address: ValidatorAddr;
 }
 export interface MsgUndelegateDetails extends MsgBaseDetails {
+  amount: Coin;
   delegator_address: BechAddr;
   validator_address: ValidatorAddr;
-  amount: Coin;
 }
 
 // ibc/applications
 export interface MsgTransferDetails extends MsgBaseDetails {
-  source_port: string;
-  source_channel: string;
-  token: Coin;
-  sender: BechAddr;
+  memo: string;
   receiver: BechAddr;
+  sender: BechAddr;
+  source_channel: string;
+  source_port: string;
   timeout_height: object;
   timeout_timestamp: string;
-  memo: string;
+  token: Coin;
 }
 
+export interface MsgAcknowledgementDetails extends MsgBaseDetails {
+  acknowledgement: string;
+  packet: object;
+  proof_acked: string;
+  proof_height: object;
+  signer: BechAddr;
+}
+export interface MsgChannelCloseConfirmDetails extends MsgBaseDetails {
+  channel_id: string;
+  port_id: string;
+  proof_height: object;
+  proof_init: string;
+  signer: BechAddr;
+}
+export interface MsgChannelCloseInitDetails extends MsgBaseDetails {
+  channel_id: string;
+  port_id: string;
+  signer: BechAddr;
+}
+export interface MsgChannelOpenAckDetails extends MsgBaseDetails {
+  channel_id: string;
+  counterparty_channel_id: string;
+  counterparty_version: string;
+  port_id: string;
+  proof_height: object;
+  proof_try: string;
+  signer: BechAddr;
+}
+export interface MsgChannelOpenConfirmDetails extends MsgBaseDetails {
+  channel_id: string;
+  port_id: string;
+  proof_ack: string;
+  proof_height: object;
+  signer: BechAddr;
+}
+export interface MsgChannelOpenInitDetails extends MsgBaseDetails {
+  channel: object;
+  port_id: string;
+  signer: BechAddr;
+}
+export interface MsgChannelOpenTryDetails extends MsgBaseDetails {
+  channel: object;
+  counterparty_version: string;
+  port_id: string;
+  previous_channel_id: string;
+  proof_height: object;
+  proof_init: string;
+  signer: BechAddr;
+}
+export interface MsgConnectionOpenAckDetails extends MsgBaseDetails {
+  client_state: object;
+  connection_id: string;
+  consensus_height: object;
+  counterparty_connection_id: string;
+  proof_client: string;
+  proof_consensus: string;
+  proof_height: object;
+  proof_try: string;
+  signer: BechAddr;
+  version: object;
+}
+export interface MsgConnectionOpenConfirmDetails extends MsgBaseDetails {
+  connection_id: string;
+  proof_ack: string;
+  proof_height: object;
+  signer: BechAddr;
+}
+export interface MsgConnectionOpenInitDetails extends MsgBaseDetails {
+  client_id: string;
+  counterparty: object;
+  delay_period: number;
+  signer: BechAddr;
+  version: object;
+}
+export interface MsgConnectionOpenTryDetails extends MsgBaseDetails {
+  client_id: string;
+  client_state: object;
+  consensus_height: object;
+  counterparty: object;
+  counterparty_versions: object;
+  delay_period: number;
+  previous_connection_id: string;
+  proof_client: string;
+  proof_consensus: string;
+  proof_height: object;
+  proof_init: string;
+  signer: BechAddr;
+}
 // ibc/core
 export interface MsgCreateClientDetails extends MsgBaseDetails {
   client_state: object;
   consensus_state: object;
+  signer: BechAddr;
+}
+export interface MsgRecvPacketDetails extends MsgBaseDetails {
+  packet: object;
+  proof_commitment: string;
+  proof_height: object;
+  signer: BechAddr;
+}
+export interface MsgSubmitMisbehaviourDetails extends MsgBaseDetails {
+  client_id: string;
+  misbehaviour: object;
+  signer: BechAddr;
+}
+export interface MsgTimeoutDetails extends MsgBaseDetails {
+  next_sequence_recv: number;
+  packet: object;
+  proof_height: object;
+  proof_unreceived: string;
+  signer: BechAddr;
+}
+export interface MsgTimeoutOnCloseDetails extends MsgBaseDetails {
+  next_sequence_recv: number;
+  packet: object;
+  proof_close: string;
+  proof_height: object;
+  proof_unreceived: string;
   signer: BechAddr;
 }
 export interface MsgUpdateClientDetails extends MsgBaseDetails {
@@ -248,283 +362,155 @@ export interface MsgUpgradeClientDetails extends MsgBaseDetails {
   proof_upgrade_consensus_state: string;
   signer: BechAddr;
 }
-export interface MsgSubmitMisbehaviourDetails extends MsgBaseDetails {
-  client_id: string;
-  misbehaviour: object;
-  signer: BechAddr;
-}
-export interface MsgConnectionOpenInitDetails extends MsgBaseDetails {
-  client_id: string;
-  counterparty: object;
-  version: object;
-  delay_period: number;
-  signer: BechAddr;
-}
-export interface MsgConnectionOpenTryDetails extends MsgBaseDetails {
-  client_id: string;
-  previous_connection_id: string;
-  client_state: object;
-  counterparty: object;
-  delay_period: number;
-  counterparty_versions: object;
-  proof_height: object;
-  proof_init: string;
-  proof_client: string;
-  proof_consensus: string;
-  consensus_height: object;
-  signer: BechAddr;
-}
-export interface MsgConnectionOpenAckDetails extends MsgBaseDetails {
-  connection_id: string;
-  counterparty_connection_id: string;
-  version: object;
-  client_state: object;
-  proof_height: object;
-  proof_try: string;
-  proof_client: string;
-  proof_consensus: string;
-  consensus_height: object;
-  signer: BechAddr;
-}
-export interface MsgConnectionOpenConfirmDetails extends MsgBaseDetails {
-  connection_id: string;
-  proof_ack: string;
-  proof_height: object;
-  signer: BechAddr;
-}
-export interface MsgChannelOpenInitDetails extends MsgBaseDetails {
-  port_id: string;
-  channel: object;
-  signer: BechAddr;
-}
-export interface MsgChannelOpenTryDetails extends MsgBaseDetails {
-  port_id: string;
-  previous_channel_id: string;
-  channel: object;
-  counterparty_version: string;
-  proof_init: string;
-  proof_height: object;
-  signer: BechAddr;
-}
-export interface MsgChannelOpenAckDetails extends MsgBaseDetails {
-  port_id: string;
-  channel_id: string;
-  counterparty_channel_id: string;
-  counterparty_version: string;
-  proof_try: string;
-  proof_height: object;
-  signer: BechAddr;
-}
-export interface MsgChannelOpenConfirmDetails extends MsgBaseDetails {
-  port_id: string;
-  channel_id: string;
-  proof_ack: string;
-  proof_height: object;
-  signer: BechAddr;
-}
-export interface MsgChannelCloseInitDetails extends MsgBaseDetails {
-  port_id: string;
-  channel_id: string;
-  signer: BechAddr;
-}
-export interface MsgChannelCloseConfirmDetails extends MsgBaseDetails {
-  port_id: string;
-  channel_id: string;
-  proof_init: string;
-  proof_height: object;
-  signer: BechAddr;
-}
-export interface MsgRecvPacketDetails extends MsgBaseDetails {
-  packet: object;
-  proof_commitment: string;
-  proof_height: object;
-  signer: BechAddr;
-}
-export interface MsgTimeoutDetails extends MsgBaseDetails {
-  packet: object;
-  proof_unreceived: string;
-  proof_height: object;
-  next_sequence_recv: number;
-  signer: BechAddr;
-}
-export interface MsgTimeoutOnCloseDetails extends MsgBaseDetails {
-  packet: object;
-  proof_unreceived: string;
-  proof_close: string;
-  proof_height: object;
-  next_sequence_recv: number;
-  signer: BechAddr;
-}
-export interface MsgAcknowledgementDetails extends MsgBaseDetails {
-  packet: object;
-  acknowledgement: string;
-  proof_acked: string;
-  proof_height: object;
-  signer: BechAddr;
-}
 
 // osmosis/gamm
 export interface MsgCreateBalancerPoolDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  pool_params: object;
-  pool_assets: object;
   future_pool_governor: string;
+  pool_assets: object;
+  pool_params: object;
+  sender: BechAddr;
 }
 export interface MsgCreateStableswapPoolDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  pool_params: object;
-  initial_pool_liquidity: Coin[];
-  scaling_factors: string[];
   future_pool_governor: string;
+  initial_pool_liquidity: Coin[];
+  pool_params: object;
   scaling_factor_controller: string;
-}
-export interface MsgStableSwapAdjustScalingFactorsDetails
-  extends MsgBaseDetails {
-  sender: BechAddr;
-  pool_id: string;
   scaling_factors: string[];
-}
-export interface MsgJoinPoolDetails extends MsgBaseDetails {
   sender: BechAddr;
-  pool_id: string;
-  share_out_amount: string;
-  token_in_maxs: Option<Coin[]>;
 }
 export interface MsgExitPoolDetails extends MsgBaseDetails {
-  sender: BechAddr;
   pool_id: string;
+  sender: BechAddr;
   share_in_amount: string;
   token_out_mins: Option<Coin[]>;
 }
-export interface MsgSwapExactAmountInDetails extends MsgBaseDetails {
+export interface MsgExitSwapExternAmountOutDetails extends MsgBaseDetails {
+  pool_id: string;
   sender: BechAddr;
+  share_in_max_amount: string;
+  token_out: Coin;
+}
+export interface MsgExitSwapShareAmountInDetails extends MsgBaseDetails {
+  pool_id: string;
+  sender: BechAddr;
+  share_in_amount: string;
+  token_out_denom: string;
+  token_out_min_amount: string;
+}
+export interface MsgJoinPoolDetails extends MsgBaseDetails {
+  pool_id: string;
+  sender: BechAddr;
+  share_out_amount: string;
+  token_in_maxs: Option<Coin[]>;
+}
+export interface MsgJoinSwapExternAmountInDetails extends MsgBaseDetails {
+  pool_id: string;
+  sender: BechAddr;
+  share_out_min_amount: string;
+  token_in: Coin;
+}
+export interface MsgJoinSwapShareAmountOutDetails extends MsgBaseDetails {
+  pool_id: string;
+  sender: BechAddr;
+  share_out_amount: string;
+  token_in_denom: string;
+  token_in_max_amount: string;
+}
+export interface MsgStableSwapAdjustScalingFactorsDetails
+  extends MsgBaseDetails {
+  pool_id: string;
+  scaling_factors: string[];
+  sender: BechAddr;
+}
+export interface MsgSwapExactAmountInDetails extends MsgBaseDetails {
   routes: { poolId: number; tokenOutDenom: string }[];
+  sender: BechAddr;
   token_in: Coin;
   token_out_min_amount: string;
 }
 export interface MsgSwapExactAmountOutDetails extends MsgBaseDetails {
-  sender: BechAddr;
   routes: { poolId: number; tokenInDenom: string }[];
+  sender: BechAddr;
   token_in_max_amount: string;
   token_out: Coin;
-}
-export interface MsgJoinSwapExternAmountInDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  pool_id: string;
-  token_in: Coin;
-  share_out_min_amount: string;
-}
-export interface MsgJoinSwapShareAmountOutDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  pool_id: string;
-  token_in_denom: string;
-  share_out_amount: string;
-  token_in_max_amount: string;
-}
-export interface MsgExitSwapShareAmountInDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  pool_id: string;
-  token_out_denom: string;
-  share_in_amount: string;
-  token_out_min_amount: string;
-}
-export interface MsgExitSwapExternAmountOutDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  pool_id: string;
-  token_out: Coin;
-  share_in_max_amount: string;
 }
 
-// osmosis/incentives
-export interface MsgCreateGaugeDetails extends MsgBaseDetails {
-  is_perpetual: boolean;
-  owner: BechAddr;
-  distribute_to: object;
-  coins: Coin[];
-  start_time: string;
-  num_epochs_paid_over: string;
-}
 export interface MsgAddToGaugeDetails extends MsgBaseDetails {
-  owner: BechAddr;
   gauge_id: string;
+  owner: BechAddr;
   rewards: Coin[];
 }
-
-// osmosis/lockup
-export interface MsgLockTokensDetails extends MsgBaseDetails {
-  owner: BechAddr;
-  duration: string | number;
+// osmosis/incentives
+export interface MsgCreateGaugeDetails extends MsgBaseDetails {
   coins: Coin[];
+  distribute_to: object;
+  is_perpetual: boolean;
+  num_epochs_paid_over: string;
+  owner: BechAddr;
+  start_time: string;
 }
+
 export interface MsgBeginUnlockingAllDetails extends MsgBaseDetails {
   owner: BechAddr;
 }
 export interface MsgBeginUnlockingDetails extends MsgBaseDetails {
-  owner: BechAddr;
-  ID: string;
   coins?: Coin[];
+  ID: string;
+  owner: BechAddr;
 }
 export interface MsgExtendLockupDetails extends MsgBaseDetails {
-  owner: BechAddr;
+  duration: number | string;
   ID: string;
-  duration: string | number;
+  owner: BechAddr;
 }
 export interface MsgForceUnlockDetails extends MsgBaseDetails {
-  owner: BechAddr;
-  ID: string;
   coins?: Coin[];
+  ID: string;
+  owner: BechAddr;
+}
+// osmosis/lockup
+export interface MsgLockTokensDetails extends MsgBaseDetails {
+  coins: Coin[];
+  duration: number | string;
+  owner: BechAddr;
 }
 
 export interface MsgSetRewardReceiverAddressDetails extends MsgBaseDetails {
-  owner: BechAddr;
   lock_id: string;
+  owner: BechAddr;
   reward_receiver: BechAddr;
 }
 
+export interface MsgLockAndSuperfluidDelegateDetails extends MsgBaseDetails {
+  coins: Coin[];
+  sender: BechAddr;
+  val_addr: ValidatorAddr;
+}
 // osmosis/superfluid
 export interface MsgSuperfluidDelegateDetails extends MsgBaseDetails {
-  sender: BechAddr;
   lock_id: string;
+  sender: BechAddr;
   val_addr: ValidatorAddr;
-}
-export interface MsgSuperfluidUndelegateDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  lock_id: string;
 }
 export interface MsgSuperfluidUnbondLockDetails extends MsgBaseDetails {
-  sender: BechAddr;
   lock_id: string;
-}
-export interface MsgLockAndSuperfluidDelegateDetails extends MsgBaseDetails {
   sender: BechAddr;
-  coins: Coin[];
-  val_addr: ValidatorAddr;
-}
-export interface MsgUnPoolWhitelistedPoolDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  pool_id: string;
 }
 export interface MsgSuperfluidUndelegateAndUnbondLockDetails
   extends MsgBaseDetails {
-  sender: BechAddr;
-  lock_id: string;
   coin: Coin;
+  lock_id: string;
+  sender: BechAddr;
+}
+export interface MsgSuperfluidUndelegateDetails extends MsgBaseDetails {
+  lock_id: string;
+  sender: BechAddr;
+}
+export interface MsgUnPoolWhitelistedPoolDetails extends MsgBaseDetails {
+  pool_id: string;
+  sender: BechAddr;
 }
 
-export interface MsgCreateFullRangePositionAndSuperfluidDelegateDetails
-  extends MsgBaseDetails {
-  sender: BechAddr;
-  coins: Coin[];
-  val_addr: ValidatorAddr;
-  pool_id: string;
-}
-export interface MsgUnlockAndMigrateSharesToFullRangeConcentratedPositionDetails
-  extends MsgBaseDetails {
-  sender: BechAddr;
-  lock_id: string;
-  shares_to_migrate: Coin;
-  token_out_mins: Coin[];
-}
 export interface MsgAddToConcentratedLiquiditySuperfluidPositionDetails
   extends MsgBaseDetails {
   position_id: string;
@@ -532,53 +518,62 @@ export interface MsgAddToConcentratedLiquiditySuperfluidPositionDetails
   token_desired0: Coin;
   token_desired1: Coin;
 }
+export interface MsgCreateFullRangePositionAndSuperfluidDelegateDetails
+  extends MsgBaseDetails {
+  coins: Coin[];
+  pool_id: string;
+  sender: BechAddr;
+  val_addr: ValidatorAddr;
+}
 export interface MsgLockExistingFullRangePositionAndSFStakeDetails
   extends MsgBaseDetails {
   position_id: string;
   sender: BechAddr;
   val_addr: ValidatorAddr;
 }
+export interface MsgUnlockAndMigrateSharesToFullRangeConcentratedPositionDetails
+  extends MsgBaseDetails {
+  lock_id: string;
+  sender: BechAddr;
+  shares_to_migrate: Coin;
+  token_out_mins: Coin[];
+}
 
+export interface MsgBurnDetails extends MsgBaseDetails {
+  amount: Coin;
+  sender: BechAddr;
+}
+export interface MsgChangeAdminDetails extends MsgBaseDetails {
+  denom: string;
+  new_admin: BechAddr;
+  sender: BechAddr;
+}
 // osmosis/tokenfactory
 export interface MsgCreateDenomDetails extends MsgBaseDetails {
   sender: BechAddr;
   subdenom: string;
 }
 export interface MsgMintDetails extends MsgBaseDetails {
-  sender: BechAddr;
   amount: Coin;
-}
-export interface MsgBurnDetails extends MsgBaseDetails {
   sender: BechAddr;
-  amount: Coin;
-}
-export interface MsgChangeAdminDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  denom: string;
-  new_admin: BechAddr;
 }
 export interface MsgSetDenomMetadataDetails extends MsgBaseDetails {
-  sender: BechAddr;
   metadata: object;
+  sender: BechAddr;
 }
 
 export interface MsgForceTransferDetails extends MsgBaseDetails {
-  sender: BechAddr;
   amount: Coin;
+  sender: BechAddr;
   transfer_from_address: BechAddr;
   transfer_to_address: BechAddr;
 }
 export interface MsgSetBeforeSendHookDetails extends MsgBaseDetails {
-  sender: BechAddr;
-  denom: string;
   cosmwasm_address: string;
+  denom: string;
+  sender: BechAddr;
 }
 
-// osmosis/protorev
-export interface MsgSetHotRoutesDetails extends MsgBaseDetails {
-  admin: BechAddr;
-  hot_routes: object[];
-}
 export interface MsgSetBaseDenomsDetails extends MsgBaseDetails {
   admin: BechAddr;
   base_denoms: object[];
@@ -587,95 +582,100 @@ export interface MsgSetDeveloperAccountDetails extends MsgBaseDetails {
   admin: BechAddr;
   developer_account: BechAddr;
 }
-export interface MsgSetPoolWeightsDetails extends MsgBaseDetails {
+// osmosis/protorev
+export interface MsgSetHotRoutesDetails extends MsgBaseDetails {
   admin: BechAddr;
-  pool_weights: object;
-}
-export interface MsgSetMaxPoolPointsPerTxDetails extends MsgBaseDetails {
-  admin: BechAddr;
-  max_pool_points_per_tx: string;
+  hot_routes: object[];
 }
 export interface MsgSetMaxPoolPointsPerBlockDetails extends MsgBaseDetails {
   admin: BechAddr;
   max_pool_points_per_block: string;
 }
+export interface MsgSetMaxPoolPointsPerTxDetails extends MsgBaseDetails {
+  admin: BechAddr;
+  max_pool_points_per_tx: string;
+}
+export interface MsgSetPoolWeightsDetails extends MsgBaseDetails {
+  admin: BechAddr;
+  pool_weights: object;
+}
 
+export interface MsgDelegateBondedTokensDetails extends MsgBaseDetails {
+  delegator: BechAddr;
+  lockID: string;
+}
 // osmosis/valset-pref
 export interface MsgDelegateToValidatorSetDetails extends MsgBaseDetails {
-  delegator: BechAddr;
   coin: Coin;
-}
-export interface MsgUndelegateFromValidatorSetDetails extends MsgBaseDetails {
   delegator: BechAddr;
-  coin: Coin;
 }
 export interface MsgRedelegateValidatorSetDetails extends MsgBaseDetails {
   delegator: BechAddr;
   preferences: object[];
 }
-export interface MsgWithdrawDelegationRewardsDetails extends MsgBaseDetails {
-  delegator: BechAddr;
-}
-export interface MsgDelegateBondedTokensDetails extends MsgBaseDetails {
-  delegator: BechAddr;
-  lockID: string;
-}
 export interface MsgSetValidatorSetPreferenceDetails extends MsgBaseDetails {
   delegator: BechAddr;
   preferences: object[];
 }
+export interface MsgUndelegateFromValidatorSetDetails extends MsgBaseDetails {
+  coin: Coin;
+  delegator: BechAddr;
+}
+export interface MsgWithdrawDelegationRewardsDetails extends MsgBaseDetails {
+  delegator: BechAddr;
+}
 
 // osmosis/poolmanager
 export interface MsgSplitRouteSwapExactAmountInDetails extends MsgBaseDetails {
-  sender: BechAddr;
   routes: object[];
+  sender: BechAddr;
   token_in_denom: string;
   token_out_min_amount: string;
 }
 export interface MsgSplitRouteSwapExactAmountOutDetails extends MsgBaseDetails {
-  sender: BechAddr;
   routes: object[];
-  token_out_denom: string;
+  sender: BechAddr;
   token_in_max_amount: string;
+  token_out_denom: string;
 }
 
-// osmosis/concentratedliquidity
-export interface MsgCreatePositionDetails extends MsgBaseDetails {
-  pool_id: string;
-  sender: BechAddr;
-  lower_tick: string;
-  upper_tick: string;
-  tokens_provided: Coin[];
-  token_min_amount0: string;
-  token_min_amount1: string;
-}
 export interface MsgAddToPositionDetails extends MsgBaseDetails {
-  position_id: string;
-  sender: BechAddr;
   amount0: string;
   amount1: string;
-  token_min_amount0: string;
-  token_min_amount1: string;
-}
-export interface MsgWithdrawPositionDetails extends MsgBaseDetails {
   position_id: string;
   sender: BechAddr;
-  liquidity_amount: string;
-}
-export interface MsgCollectSpreadRewardsDetails extends MsgBaseDetails {
-  position_ids: string[];
-  sender: BechAddr;
+  token_min_amount0: string;
+  token_min_amount1: string;
 }
 export interface MsgCollectIncentivesDetails extends MsgBaseDetails {
   position_ids: string[];
   sender: BechAddr;
 }
-export interface MsgCreateConcentratedPoolDetails extends MsgBaseDetails {
+export interface MsgCollectSpreadRewardsDetails extends MsgBaseDetails {
+  position_ids: string[];
   sender: BechAddr;
+}
+export interface MsgCreateConcentratedPoolDetails extends MsgBaseDetails {
   denom0: string;
   denom1: string;
-  tick_spacing: string;
+  sender: BechAddr;
   spread_factor: string;
+  tick_spacing: string;
+}
+// osmosis/concentratedliquidity
+export interface MsgCreatePositionDetails extends MsgBaseDetails {
+  lower_tick: string;
+  pool_id: string;
+  sender: BechAddr;
+  token_min_amount0: string;
+  token_min_amount1: string;
+  tokens_provided: Coin[];
+  upper_tick: string;
+}
+export interface MsgWithdrawPositionDetails extends MsgBaseDetails {
+  liquidity_amount: string;
+  position_id: string;
+  sender: BechAddr;
 }
 
 // osmosis/cosmwasmpool

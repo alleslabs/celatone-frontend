@@ -4,8 +4,8 @@ import { Grid } from "@chakra-ui/react";
 import { TableHeader } from "lib/components/table";
 
 interface DepositorsTableHeaderProps {
-  templateColumns: GridProps["templateColumns"];
   showTransaction: boolean;
+  templateColumns: GridProps["templateColumns"];
 }
 
 export const DepositorsTableHeader = ({

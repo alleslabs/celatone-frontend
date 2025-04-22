@@ -8,19 +8,19 @@ import { INITIAL_VALUES } from "./paginationData";
 import { PaginatorProvider } from "./PaginatorProvider";
 
 export type PaginatorProps = {
-  children?: React.ReactNode;
-  pagesQuantity?: number;
-  normalStyles?: ButtonProps;
   activeStyles?: ButtonProps;
-  separatorStyles?: ButtonProps;
+  children?: React.ReactNode;
   currentPage?: number;
-  innerLimit?: number;
-  outerLimit?: number;
-  separatorIcon?: IconKeys;
-  hoverIconRight?: IconKeys;
   hoverIconLeft?: IconKeys;
+  hoverIconRight?: IconKeys;
+  innerLimit?: number;
   isDisabled?: boolean;
+  normalStyles?: ButtonProps;
   onPageChange: (page: number) => void;
+  outerLimit?: number;
+  pagesQuantity?: number;
+  separatorIcon?: IconKeys;
+  separatorStyles?: ButtonProps;
 };
 
 export const Paginator: FC<PaginatorProps> = ({
