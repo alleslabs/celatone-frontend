@@ -2,10 +2,10 @@ import { zValidatorAddr } from "lib/types";
 import { z } from "zod";
 
 export enum TabIndex {
-  BondedTokenChanges = "bonded-token-changes",
   Overview = "overview",
-  Performance = "performance",
   Votes = "votes",
+  Performance = "performance",
+  BondedTokenChanges = "bonded-token-changes",
 }
 
 export const zValidatorDetailsQueryParams = z.object({

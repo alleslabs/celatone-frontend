@@ -2,10 +2,10 @@ import { zHexAddr32 } from "lib/types";
 import { z } from "zod";
 
 export enum TabIndex {
-  Activities = "activities",
-  MutateEvents = "mutate_events",
   Overview = "overview",
   Supplies = "supplies",
+  Activities = "activities",
+  MutateEvents = "mutate_events",
 }
 
 export const zCollectionDetailQueryParams = z.object({

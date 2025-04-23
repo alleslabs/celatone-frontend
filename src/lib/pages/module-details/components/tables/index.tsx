@@ -18,9 +18,9 @@ import { ModuleRelatedProposalsTable } from "./ModuleRelatedProposalsTable";
 import { ModuleTxsTable } from "./ModuleTxsTable";
 
 export enum ModuleTablesTabIndex {
+  Transactions = "transactions",
   PublishedEvents = "published-events",
   RelatedProposals = "related-proposals",
-  Transactions = "transactions",
 }
 
 interface ModuleTablesProps {

@@ -83,6 +83,7 @@ export default defineConfig([
   perfectionist.configs["recommended-natural"],
   {
     rules: {
+      "perfectionist/sort-enums": "off",
       "perfectionist/sort-exports": [
         "error",
         {
