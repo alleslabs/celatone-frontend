@@ -60,6 +60,7 @@ export const zProposal = z.object({
   title: z.string(),
   types: zProposalType.array(),
   voting_end_time: zUtcDate.nullable(),
+  is_emergency: z.boolean().optional().default(false),
 });
 
 export const zProposalsResponseItem =
@@ -259,6 +260,7 @@ export const zProposalDataResponseRest = z
     resolvedHeight: null,
     types: val.messages?.map((msg) => msg["@type"]) ?? [],
     isExpedited: val.expedited,
+    isEmergency: false,
     failedReason: "",
     createdHeight: null,
     createdTimestamp: null,

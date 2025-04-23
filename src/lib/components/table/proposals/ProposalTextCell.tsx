@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 
 import { useMobile } from "lib/app-provider";
 import { DotSeparator } from "lib/components/DotSeparator";
+import { Emergency } from "lib/components/Emergency";
 import { Expedited } from "lib/components/Expedited";
 import type { ProposalType } from "lib/types";
 import { MobileLabel } from "../MobileLabel";
@@ -11,6 +12,7 @@ interface ProposalTextCellProps {
   title: string;
   types: ProposalType[];
   isExpedited: boolean;
+  isEmergency: boolean;
   isDepositOrVoting: boolean;
 }
 
@@ -18,6 +20,7 @@ export const ProposalTextCell = ({
   title,
   types,
   isExpedited,
+  isEmergency,
   isDepositOrVoting,
 }: ProposalTextCellProps) => {
   const isMobile = useMobile();
@@ -38,7 +41,7 @@ export const ProposalTextCell = ({
         <MobileLabel label="Proposal title" />
         <Text color="text.main" variant="body2" wordBreak="break-word">
           {title}
-          {isExpedited && (
+          {(isExpedited || isEmergency) && (
             <span
               style={{
                 display: "inline-block",
@@ -46,7 +49,10 @@ export const ProposalTextCell = ({
                 verticalAlign: "middle",
               }}
             >
-              <Expedited isActiveExpedited={isDepositOrVoting} />
+              {isExpedited && (
+                <Expedited isActiveExpedited={isDepositOrVoting} />
+              )}
+              {isEmergency && <Emergency />}
             </span>
           )}
         </Text>
@@ -92,9 +98,10 @@ export const ProposalTextCell = ({
         {title}
       </Text>
       <Flex align="center" gap={2}>
-        {isExpedited && (
+        {(isExpedited || isEmergency) && (
           <>
-            <Expedited isActiveExpedited={isDepositOrVoting} />
+            {isExpedited && <Expedited isActiveExpedited={isDepositOrVoting} />}
+            {isEmergency && <Emergency />}
             <DotSeparator />
           </>
         )}
