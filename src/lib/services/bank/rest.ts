@@ -15,7 +15,7 @@ export const getBalancesRest = async (
       .get(`${endpoint}/cosmos/bank/v1beta1/balances/${encodeURI(address)}`, {
         params: {
           "pagination.key": paginationKey,
-          "pagination.limit": "500",
+          "pagination.limit": "100",
         },
       })
       .then(({ data }) => parseWithError(zBalancesReponseRest, data));
