@@ -26,7 +26,7 @@ export const OptimizerConfiguration = <T extends FieldValues>({
     <Stack spacing={2}>
       <Stack spacing={1}>
         <Heading as="h6" variant="h6">
-          Optimization Configuration
+          Optimization configuration
         </Heading>
         <Text variant="body2" color="text.dark">
           Provide optimization settings for the contract
@@ -42,7 +42,7 @@ export const OptimizerConfiguration = <T extends FieldValues>({
           <Text>Optimization enabled</Text>
         </Checkbox>
         <Flex gap={2} alignItems="center">
-          <Text color="text.disabled">Optimization Run:</Text>
+          <Text color="text.disabled">Optimization run:</Text>
           <ControllerInput
             width={125}
             type="number"
