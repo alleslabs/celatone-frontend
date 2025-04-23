@@ -1,4 +1,5 @@
 import { Flex, Spinner, Text } from "@chakra-ui/react";
+import { useInitia } from "lib/app-provider";
 
 import { DotSeparator } from "lib/components/DotSeparator";
 import { TooltipInfo } from "lib/components/Tooltip";
@@ -60,6 +61,7 @@ export const ValidatorStats = ({
     useValidatorStakingProvisions(!!singleStakingDenom);
   const { data: delegations, isLoading: isDelegationsLoading } =
     useValidatorDelegators(validatorAddress);
+  const isInitia = useInitia();
 
   const estimatedApr = stakingProvisions
     ? formatPrettyPercent(
@@ -103,12 +105,17 @@ export const ValidatorStats = ({
           />
         </>
       )}
-      <DotSeparator bg="gray.600" display={{ base: "none", md: "flex" }} />
-      <StatWithLabel
-        label="Delegators"
-        value={delegatorsCount}
-        isLoading={isDelegationsLoading}
-      />
+      {/* TODO: Hide this in initia, once we have a way to get the delegators count */}
+      {!isInitia && (
+        <>
+          <DotSeparator bg="gray.600" display={{ base: "none", md: "flex" }} />
+          <StatWithLabel
+            label="Delegators"
+            value={delegatorsCount}
+            isLoading={isDelegationsLoading}
+          />
+        </>
+      )}
     </Flex>
   );
 };
