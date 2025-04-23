@@ -96,7 +96,7 @@ export const getTxsByBlockHeightSequencer = async (
           {
             params: {
               "pagination.key": paginationKey,
-              "pagination.limit": "500",
+              "pagination.limit": "100",
             },
           }
         )

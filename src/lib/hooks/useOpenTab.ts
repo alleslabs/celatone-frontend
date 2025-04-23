@@ -61,7 +61,7 @@ export const useOpenAssetTab = () => {
       openNewTab(
         isFullTier
           ? `${apiEndpoint}/${walletAddr}/balances`
-          : `${restEndpoint}/cosmos/bank/v1beta1/balances/${walletAddr}?pagination.limit=1000`
+          : `${restEndpoint}/cosmos/bank/v1beta1/balances/${walletAddr}?pagination.limit=100`
       );
     },
     [apiEndpoint, isFullTier, restEndpoint]
