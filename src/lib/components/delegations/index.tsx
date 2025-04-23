@@ -55,14 +55,9 @@ export const DelegationsSection = ({
   if (isLoading) return <Loading />;
   if (!stakingParams)
     return (
-      <Flex direction="column">
+      <Flex direction="column" w="full">
         <TableTitle title="Delegations" mb={2} showCount={false} />
-        <ErrorFetching
-          dataName="delegation data"
-          withBorder
-          my={2}
-          hasBorderTop={false}
-        />
+        <ErrorFetching dataName="delegation data" my={2} hasBorderTop={false} />
       </Flex>
     );
 
