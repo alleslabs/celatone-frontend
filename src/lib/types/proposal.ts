@@ -76,6 +76,7 @@ export interface Proposal {
   types: ProposalType[];
   proposer: Option<BechAddr>;
   isExpedited: boolean;
+  isEmergency: boolean;
 }
 
 export interface ProposalParams<

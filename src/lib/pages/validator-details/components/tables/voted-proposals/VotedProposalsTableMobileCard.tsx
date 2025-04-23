@@ -55,6 +55,7 @@ export const VotedProposalsTableMobileCard = ({
             title={votedProposal.title}
             types={votedProposal.types}
             isExpedited={votedProposal.isExpedited}
+            isEmergency={votedProposal.isEmergency}
             isDepositOrVoting={isDepositOrVoting}
           />
           <Box>

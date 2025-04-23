@@ -31,6 +31,7 @@ const data: Omit<
   types: [],
   proposer: undefined,
   isExpedited: false,
+  isEmergency: false,
   createdHeight: null,
   createdTimestamp: null,
   createdTxHash: null,

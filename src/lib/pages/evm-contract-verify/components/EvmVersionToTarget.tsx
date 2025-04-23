@@ -41,7 +41,7 @@ export const EvmVersionToTarget = <T extends FieldValues>({
     <Stack spacing={6}>
       <Stack spacing={1}>
         <Heading as="h6" variant="h6">
-          EVM Version to Target
+          EVM version to target
         </Heading>
         <Text variant="body2" color="text.dark">
           The Ethereum Virtual Machine version that the smart contract is
@@ -50,7 +50,7 @@ export const EvmVersionToTarget = <T extends FieldValues>({
       </Stack>
       <Grid templateColumns="repeat(2, 1fr)">
         <SelectInput
-          label="EVM Version to target"
+          label="EVM version to target"
           menuPortalTarget={document.body}
           isRequired
           options={evmVersionOptions}

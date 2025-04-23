@@ -136,6 +136,7 @@ const zValidatorVotedProposalsResponseItem = z
     proposal_id: z.number().nonnegative(),
     abstain: z.number().nonnegative(),
     is_expedited: z.boolean(),
+    is_emergency: z.boolean().optional().default(false),
     is_vote_weighted: z.boolean().default(false),
     no: z.number().nonnegative(),
     no_with_veto: z.number().nonnegative(),

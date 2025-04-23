@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improvements
 
+- [#1309](https://github.com/alleslabs/celatone-frontend/pull/1309) Add emergency tag and fix sentence case in EVM verification flow
+
 ### Bug fixes
 
 ## v1.11.0
