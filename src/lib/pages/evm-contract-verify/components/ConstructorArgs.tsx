@@ -27,7 +27,7 @@ export const ConstructorArgs = <T extends FieldValues>({
     <Stack spacing={2}>
       <Stack spacing={1}>
         <Heading as="h6" variant="h6">
-          Input Constructor Arguments
+          Input constructor arguments
         </Heading>
         <Text color="text.dark" variant="body2">
           Provide ABI that will become the config of the contract

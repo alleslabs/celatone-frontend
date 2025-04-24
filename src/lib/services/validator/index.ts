@@ -197,7 +197,8 @@ export const useValidatorDelegators = (validatorAddress: ValidatorAddr) => {
       isInitia,
     ],
     createQueryFnWithTimeout(queryFn, 10000),
-    { retry: false }
+    // TODO: Remove this once we have a way to get the delegators count in initia
+    { enabled: !isInitia, retry: false }
   );
 };
 

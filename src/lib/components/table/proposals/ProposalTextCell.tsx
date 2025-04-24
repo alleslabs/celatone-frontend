@@ -3,6 +3,7 @@ import type { ProposalType } from "lib/types";
 import { Flex, Text } from "@chakra-ui/react";
 import { useMobile } from "lib/app-provider";
 import { DotSeparator } from "lib/components/DotSeparator";
+import { Emergency } from "lib/components/Emergency";
 import { Expedited } from "lib/components/Expedited";
 import { useRef, useState } from "react";
 
@@ -10,6 +11,7 @@ import { MobileLabel } from "../MobileLabel";
 
 interface ProposalTextCellProps {
   isDepositOrVoting: boolean;
+  isEmergency: boolean;
   isExpedited: boolean;
   title: string;
   types: ProposalType[];
@@ -17,6 +19,7 @@ interface ProposalTextCellProps {
 
 export const ProposalTextCell = ({
   isDepositOrVoting,
+  isEmergency,
   isExpedited,
   title,
   types,
@@ -39,7 +42,7 @@ export const ProposalTextCell = ({
         <MobileLabel label="Proposal title" />
         <Text color="text.main" variant="body2" wordBreak="break-word">
           {title}
-          {isExpedited && (
+          {(isExpedited || isEmergency) && (
             <span
               style={{
                 display: "inline-block",
@@ -47,7 +50,10 @@ export const ProposalTextCell = ({
                 verticalAlign: "middle",
               }}
             >
-              <Expedited isActiveExpedited={isDepositOrVoting} />
+              {isExpedited && (
+                <Expedited isActiveExpedited={isDepositOrVoting} />
+              )}
+              {isEmergency && <Emergency />}
             </span>
           )}
         </Text>
@@ -93,9 +99,10 @@ export const ProposalTextCell = ({
         {title}
       </Text>
       <Flex align="center" gap={2}>
-        {isExpedited && (
+        {(isExpedited || isEmergency) && (
           <>
-            <Expedited isActiveExpedited={isDepositOrVoting} />
+            {isExpedited && <Expedited isActiveExpedited={isDepositOrVoting} />}
+            {isEmergency && <Emergency />}
             <DotSeparator />
           </>
         )}

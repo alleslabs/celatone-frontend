@@ -44,7 +44,7 @@ export const EvmContractVerifySuccessModal = ({
             color="success.main"
             name="check-circle-solid"
           />
-          <Heading variant="h5">Submitted Verification!</Heading>
+          <Heading variant="h5">Submitted verification!</Heading>
         </Stack>
       </ModalHeader>
       <ModalBody overflow="overlay">
@@ -55,7 +55,7 @@ export const EvmContractVerifySuccessModal = ({
             </Text>
             <Text variant="body2">{currentChainId}</Text>
             <Text color="text.dark" fontWeight={500} variant="body2">
-              Contract Address
+              Contract address
             </Text>
             <ExplorerLink
               showCopyOnHover
@@ -68,11 +68,11 @@ export const EvmContractVerifySuccessModal = ({
       </ModalBody>
       <ModalFooter display="grid" gap={4} gridTemplateColumns="1fr 1fr" pb={0}>
         <Button variant="outline-primary" onClick={router.reload}>
-          Verify More
+          Verify more
         </Button>
         <AppLink href={`/evm-contracts/${contractAddress}`}>
           <Button variant="primary" w="full">
-            See Contract Details
+            See contract details
           </Button>
         </AppLink>
       </ModalFooter>

@@ -134,6 +134,7 @@ export const zValidatorVotedProposalsResponseAnswerCounts = z
 const zValidatorVotedProposalsResponseItem = z
   .object({
     abstain: z.number().nonnegative(),
+    is_emergency: z.boolean().optional().default(false),
     is_expedited: z.boolean(),
     is_vote_weighted: z.boolean().default(false),
     no: z.number().nonnegative(),
