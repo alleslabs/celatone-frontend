@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug fixes
 
-- [#1313](https://github.com/alleslabs/celatone-frontend/pull/1313) Fix css, sentence case in EVM verification flow
+- [#1314](https://github.com/alleslabs/celatone-frontend/pull/1314) Fix css, sentence case in EVM verification flow
 
 ## v1.11.0
 
